@@ -14,9 +14,9 @@ include = [
 	"/README.md",
 	"/LICENSE-*",
 ]
-categories = []
+categories = ["rust-patterns"]
 keywords = []
-publish = false
+publish = true
 
 [dependencies]
 
