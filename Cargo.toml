@@ -1,0 +1,30 @@
+[package]
+name = "devela"
+description = "rust development helper & extension utilities"
+version = "0.1.0"
+edition = "2018" # 2021 increases MSRV to 1.56.1
+rust-version = "1.41.1" # checked for v0.1.0
+authors = ["José Luis Cruz <joseluis@andamira.net>"]
+repository = "https://github.com/andamira/devela"
+documentation = "https://docs.rs/devela"
+license = "MIT OR Apache-2.0"
+include = [
+	"/src/**/*.rs",
+	"/Cargo.toml",
+	"/README.md",
+	"/LICENSE-*",
+]
+categories = []
+keywords = []
+publish = false
+
+[dependencies]
+
+[features]
+default = ["std"]
+std = []
+
+[dev-dependencies]
+
+[badges]
+maintenance = { status = "experimental" }
