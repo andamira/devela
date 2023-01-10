@@ -15,39 +15,42 @@
 #![forbid(unsafe_code)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
-/// Returns the minimum of two `PartialOrd` values.
+/// Returns the minimum of two [`PartialOrd`]ered values.
 ///
 /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires
 /// [`Ord`][core::cmp::Ord].
 ///
 /// # Example
 /// ```
-/// # use devela::pmin;
+/// use devela::pmin;
+///
 /// assert_eq![0.2, pmin(0.2, 0.4)];
 /// ```
 #[inline(always)]
 #[rustfmt::skip]
 pub fn pmin<T: PartialOrd>(a: T, b: T) -> T { if a < b { a } else { b } }
 
-/// Returns the maximum of two `PartialOrd` values.
+/// Returns the maximum of two [`PartialOrd`]ered values.
 ///
 /// Complements `core::cmp::`[`max`][`core::cmp::max] which requires
 /// [`Ord`][core::cmp::Ord].
 ///
 /// # Example
 /// ```
-/// # use devela::pmax;
+/// use devela::pmax;
+///
 /// assert_eq![0.4, pmax(0.2, 0.4)];
 /// ```
 #[inline(always)]
 #[rustfmt::skip]
 pub fn pmax<T: PartialOrd>(a: T, b: T) -> T { if a > b { a } else { b } }
 
-/// Returns the `PartialOrd` `value` clamped between `min` and `max`.
+/// Returns a [`PartialOrd`]ered `value` clamped between `min` and `max`.
 ///
 /// # Example
 /// ```
-/// # use devela::pclamp;
+/// use devela::pclamp;
+///
 /// assert_eq![0.4, pclamp(1.0, 0.2, 0.4)];
 /// assert_eq![0.2, pclamp(0.0, 0.2, 0.4)];
 /// ```
@@ -68,7 +71,7 @@ mod std_utils {
         path::{Path, PathBuf},
     };
 
-    /// Returns a string where you always know each character's position.
+    /// Returns a [`String`] where you always know each character's position.
     ///
     /// A [*counter string*][0] is a graduated string of arbitrary `length`,
     /// with a `separator` positioned after the immediately preceding number.
@@ -76,7 +79,8 @@ mod std_utils {
     /// ## Example
     ///
     /// ```
-    /// # use devela::counter_string;
+    /// use devela::counter_string;
+    ///
     /// assert_eq!("2*4*6*8*11*14*", counter_string(14, '*'));
     /// assert_eq!("_3_5_7_9_12_15_", counter_string(15, '_'));
     /// ```
@@ -99,7 +103,7 @@ mod std_utils {
         cstr.chars().rev().collect::<String>()
     }
 
-    /// Returns an absolute `path`, relative to the crate's root.
+    /// Returns an absolute [`PathBuf`], relative to the `crate`'s root.
     ///
     /// It determines the root by finding the first `Cargo.toml` file, from the
     /// current directory through its ancestors.
@@ -110,7 +114,8 @@ mod std_utils {
     ///
     /// # Example
     /// ```rust
-    /// # use devela::crate_root;
+    /// use devela::crate_root;
+    ///
     /// match crate_root("") {
     ///     Ok(p) => println!("Current crate root is {:?}", p),
     ///     Err(e) => println!("Error obtaining crate root {:?}", e)
@@ -136,7 +141,7 @@ mod std_utils {
         ))
     }
 
-    /// Like [`crate_root`] but returns a `String`.
+    /// Like [`crate_root`] but returns a [`String`].
     ///
     /// In case of an error the returned string will be empty.
     pub fn crate_root_string<P: AsRef<Path>>(path: P) -> String {
@@ -144,11 +149,23 @@ mod std_utils {
     }
 }
 
-/// Inline `if` macro, for concise evaluations.
+/// Brief [`Box`] constructor.
+///
+/// # Examples
+/// ```
+/// use devela::bx;
+///
+/// assert_eq![bx(45), Box::new(45)];
+/// ```
+#[inline(always)]
+pub fn bx<T> (v: T) -> Box::<T> { Box::new (v) }
+
+/// Inline `if` macro.
 ///
 /// # Example
 /// ```
-/// # use devela::iif;
+/// use devela::iif;
+///
 /// let s = iif![1 > 0; true; false];
 /// ```
 /// instead of
@@ -161,11 +178,11 @@ mod std_utils {
 /// ```
 #[macro_export]
 macro_rules! iif {
-    ($if_condition: expr ; $if_true: expr ; $if_false: expr) => {
-        if $if_condition {
-            $if_true
+    ($if: expr ; $true: expr ; $false: expr) => {
+        if $if {
+            $true
         } else {
-            $if_false
+            $false
         }
     };
 }
