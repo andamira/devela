@@ -1,7 +1,7 @@
 [package]
 name = "devela"
 description = "rust development helper & extension utilities"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2018" # 2021 increases MSRV to 1.56.1
 rust-version = "1.41.1" # checked for v0.1.0
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
@@ -21,10 +21,11 @@ publish = true
 [dependencies]
 
 [features]
-default = ["std"]
+default = ["std", "safe"]
 std = []
+safe = []
 
 [dev-dependencies]
 
 [badges]
-maintenance = { status = "experimental" }
+maintenance = { status = "actively-developed" }

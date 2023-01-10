@@ -12,7 +12,7 @@
     clippy::pattern_type_mismatch
 )]
 //
-#![forbid(unsafe_code)]
+#![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(not(feature = "std"), no_std)]
 
 /// Returns the minimum of two [`PartialOrd`]ered values.
@@ -158,7 +158,9 @@ mod std_utils {
 /// assert_eq![bx(45), Box::new(45)];
 /// ```
 #[inline(always)]
-pub fn bx<T> (v: T) -> Box::<T> { Box::new (v) }
+pub fn bx<T>(v: T) -> Box<T> {
+    Box::new(v)
+}
 
 /// Inline `if` macro.
 ///

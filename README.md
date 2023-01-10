@@ -11,8 +11,6 @@ rust development helper & extension utilities
 
 - `pmin`, `pmax` & `pclamp` functions over `PartialOrd` values.
 - `crate_root` & `crate_root_string` functions.
+- `counter_string` strings for measuring.
 - `iif!` inline if macro.
-
-# Status
-
-Experimental
+- `bx` `Box` constructor.
