@@ -158,6 +158,7 @@ mod std_utils {
 /// assert_eq![bx(45), Box::new(45)];
 /// ```
 #[inline(always)]
+#[cfg(feature = "std")]
 pub fn bx<T>(v: T) -> Box<T> {
     Box::new(v)
 }
