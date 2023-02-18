@@ -170,6 +170,7 @@ pub fn bx<T>(v: T) -> Box<T> {
 /// use devela::iif;
 ///
 /// let s = iif![1 > 0; true; false];
+/// iif![1 > 0; println!("true")];
 /// ```
 /// instead of
 /// ```
@@ -178,9 +179,17 @@ pub fn bx<T>(v: T) -> Box<T> {
 /// } else {
 ///     false
 /// };
+/// if 1 > 0 {
+///     println!("true");
+/// }
 /// ```
 #[macro_export]
 macro_rules! iif {
+    ($if: expr; $true: expr) => {
+        if $if {
+            $true
+        }
+    };
     ($if: expr ; $true: expr ; $false: expr) => {
         if $if {
             $true
