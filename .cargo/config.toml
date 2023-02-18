@@ -13,6 +13,11 @@ d = "doc --no-deps"
 do = "doc --no-deps --open"
 dd = "doc"
 ddo = "doc --open"
+# +nightly
+nd = "doc --no-deps --all-features"
+ndo = "doc --no-deps --open --all-features"
+ndd = "doc --all-features"
+nddo = "doc --open --all-features"
 
 # BUILD
 b = "build"

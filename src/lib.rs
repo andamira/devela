@@ -14,6 +14,7 @@
 //
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(not(feature = "std"), no_std)]
+#![cfg_attr(feature = "nightly", feature(doc_cfg))]
 
 /// Returns the minimum of two [`PartialOrd`]ered values.
 ///
@@ -61,15 +62,30 @@ pub fn pclamp<T: PartialOrd>(value: T, min: T, max: T) -> T {
 }
 
 #[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 pub use std_utils::*;
 
 #[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 mod std_utils {
     use std::{
         convert::AsRef,
         env, fs, io,
         path::{Path, PathBuf},
     };
+
+    /// Brief [`Box`] constructor.
+    ///
+    /// # Examples
+    /// ```
+    /// use devela::bx;
+    ///
+    /// assert_eq![bx(45), Box::new(45)];
+    /// ```
+    #[inline(always)]
+    pub fn bx<T>(v: T) -> Box<T> {
+        Box::new(v)
+    }
 
     /// Returns a [`String`] where you always know each character's position.
     ///
@@ -147,20 +163,6 @@ mod std_utils {
     pub fn crate_root_string<P: AsRef<Path>>(path: P) -> String {
         crate_root(Path::new(path.as_ref())).map_or("".into(), |p| p.to_str().unwrap().to_owned())
     }
-}
-
-/// Brief [`Box`] constructor.
-///
-/// # Examples
-/// ```
-/// use devela::bx;
-///
-/// assert_eq![bx(45), Box::new(45)];
-/// ```
-#[inline(always)]
-#[cfg(feature = "std")]
-pub fn bx<T>(v: T) -> Box<T> {
-    Box::new(v)
 }
 
 /// Inline `if` macro.

@@ -22,10 +22,14 @@ publish = true
 
 [features]
 default = ["std", "safe"]
-std = []
 safe = []
+std = []
+nightly = []
 
 [dev-dependencies]
+
+[package.metadata.docs.rs]
+all-features = true
 
 [badges]
 maintenance = { status = "actively-developed" }
