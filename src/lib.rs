@@ -211,3 +211,19 @@ mod tests {
         assert_eq!('b', iif!(false ; 'a' ; 'b'));
     }
 }
+
+/// A Rust macro that preserves the formatting of the code provided as arguments,
+/// by relying on the fact that `rustfmt` does not apply formatting to macros.
+///
+/// This macro can be used as an alternative to the `#[rustfmt::skip]` attribute.
+///
+/// # Example
+///
+/// ```
+/// use devela::fmtkeep;
+///
+/// // rustfmt has no powers here
+/// fmtkeep! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
+/// ```
+#[macro_export]
+macro_rules! fmtkeep { ( $($line:tt)+ ) => { $($line)+ }; }
