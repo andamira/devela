@@ -7,10 +7,21 @@
 
 rust development helper & extension utilities
 
-# Features
+## Features
 
 - `pmin`, `pmax` & `pclamp` functions over `PartialOrd` values.
 - `crate_root` & `crate_root_string` functions.
 - `counter_string` strings for measuring.
+- `rfs!` rust format skip macro.
 - `iif!` inline if macro.
 - `bx` `Box` constructor.
+
+## Status
+
+This is currently in an experimental stage of development.
+
+## Contributing
+
+Contributions are welcomed to help refine and improve this library over time.
+If you notice a bug, have an idea for a new feature, or simply want to suggest
+improvements to the existing codebase, please don’t hesitate to get in touch.

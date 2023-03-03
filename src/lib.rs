@@ -36,7 +36,7 @@ pub fn pmin<T: PartialOrd>(a: T, b: T) -> T { if a < b { a } else { b } }
 /// Complements `core::cmp::`[`max`][`core::cmp::max] which requires
 /// [`Ord`][core::cmp::Ord].
 ///
-/// # Example
+/// # Examples
 /// ```
 /// use devela::pmax;
 ///
@@ -48,7 +48,7 @@ pub fn pmax<T: PartialOrd>(a: T, b: T) -> T { if a > b { a } else { b } }
 
 /// Returns a [`PartialOrd`]ered `value` clamped between `min` and `max`.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// use devela::pclamp;
 ///
@@ -92,7 +92,7 @@ mod std_utils {
     /// A [*counter string*][0] is a graduated string of arbitrary `length`,
     /// with a `separator` positioned after the immediately preceding number.
     ///
-    /// ## Example
+    /// ## Examples
     ///
     /// ```
     /// use devela::counter_string;
@@ -128,8 +128,8 @@ mod std_utils {
     /// Returns an error if it can't find any `Cargo.toml` file,
     /// or if it encounters an invalid path during the search process.
     ///
-    /// # Example
-    /// ```rust
+    /// # Examples
+    /// ```
     /// use devela::crate_root;
     ///
     /// match crate_root("") {
@@ -167,7 +167,7 @@ mod std_utils {
 
 /// Inline `if` macro.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// use devela::iif;
 ///
@@ -212,18 +212,18 @@ mod tests {
     }
 }
 
-/// A Rust macro that preserves the formatting of the code provided as arguments,
-/// by relying on the fact that `rustfmt` does not apply formatting to macros.
+/// `rfs` stands for *Rust Format Skip*. It is a Rust macro that preserves the
+/// formatting of the code provided as arguments, by relying on the fact that
+/// `rustfmt` does not apply formatting inside macros.
 ///
-/// This macro can be used as an alternative to the `#[rustfmt::skip]` attribute.
+/// It can be used as an alternative to the `#[rustfmt::skip]` attribute.
 ///
-/// # Example
-///
+/// # Examples
 /// ```
-/// use devela::fmtkeep;
+/// use devela::rfs;
 ///
 /// // rustfmt has no powers here
-/// fmtkeep! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
+/// rfs! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
 /// ```
 #[macro_export]
-macro_rules! fmtkeep { ( $($line:tt)+ ) => { $($line)+ }; }
+macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
