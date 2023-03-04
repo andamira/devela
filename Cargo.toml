@@ -29,7 +29,7 @@ nightly = []
 [dev-dependencies]
 
 [package.metadata.docs.rs]
-all-features = true
+features = ["nightly"]
 
 [badges]
-maintenance = { status = "actively-developed" }
+maintenance = { status = "experimental" }

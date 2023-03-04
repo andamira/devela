@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # in order to configure git locally to use the new hook:
 
