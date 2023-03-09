@@ -196,7 +196,7 @@ pub fn subslice_mid<T>(slice: &[T], mid_len: usize) -> &[T] {
     &slice[start_idx..end_idx]
 }
 
-/// Inline `if` macro.
+/// *`i`nline `if`* macro.
 ///
 /// # Examples
 /// ```
@@ -243,11 +243,13 @@ mod tests {
     }
 }
 
-/// `rfs` stands for *Rust Format Skip*. It is a Rust macro that preserves the
-/// formatting of the code provided as arguments, by relying on the fact that
-/// `rustfmt` does not apply formatting inside macros.
+/// *`r`ust `f`ormat `s`kip* macro.
 ///
-/// It can be used as an alternative to the `#[rustfmt::skip]` attribute.
+/// Preserves the formatting of the code provided as arguments, by relying on
+/// the fact that `rustfmt` does not usually apply formatting inside macros.
+///
+/// It can be used as an alternative to the `#[rustfmt::skip]` attribute,
+/// specially where it can't be applied yet on stable rust.
 ///
 /// # Examples
 /// ```
