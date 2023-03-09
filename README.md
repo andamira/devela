@@ -9,6 +9,7 @@ rust development helper & extension utilities
 
 ## Features
 
+- `subslice_left`, `subslice_mid`, `subslice_right` functions.
 - `pmin`, `pmax` & `pclamp` functions over `PartialOrd` values.
 - `crate_root` & `crate_root_string` functions.
 - `counter_string` strings for measuring.
