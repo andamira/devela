@@ -165,6 +165,37 @@ mod std_utils {
     }
 }
 
+/// Returns a subslice at the left of `slice`, with max length `left_len`.
+///
+/// If `left_len > slice.len()` it returns the full slice.
+pub fn subslice_left<T>(slice: &[T], left_len: usize) -> &[T] {
+    let start_idx = 0;
+    let end_idx = (left_len).clamp(start_idx, slice.len());
+    &slice[start_idx..end_idx]
+}
+
+/// Returns a subslice from the right of `slice`, with max length `right_len`.
+///
+/// If `left_len > slice.len()` it returns the full slice.
+pub fn subslice_right<T>(slice: &[T], right_len: usize) -> &[T] {
+    let start_idx = slice.len().saturating_sub(right_len);
+    let end_idx = slice.len();
+    &slice[start_idx..end_idx]
+}
+
+/// Returns a subslice from the middle of `slice`, with max length `mid_len`.
+///
+/// If `mid_len > slice.len()` it returns the full slice.
+///
+/// In case of a non-perfect middle split, it leaves an extra left character.
+pub fn subslice_mid<T>(slice: &[T], mid_len: usize) -> &[T] {
+    let mid_idx = slice.len() / 2;
+    let half_mid_len = mid_len / 2;
+    let start_idx = mid_idx.saturating_sub(half_mid_len);
+    let end_idx = (mid_idx + half_mid_len + (mid_len % 2)).min(slice.len());
+    &slice[start_idx..end_idx]
+}
+
 /// Inline `if` macro.
 ///
 /// # Examples
