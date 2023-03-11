@@ -16,6 +16,9 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
 
+mod apply;
+pub use apply::{Also, Apply};
+
 /// Returns the minimum of two [`PartialOrd`]ered values.
 ///
 /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires
