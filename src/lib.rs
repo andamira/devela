@@ -145,9 +145,7 @@ mod std_utils {
         let mut root_path = current_path.clone();
 
         for p in current_path.as_path().ancestors() {
-            let has_cargo = fs::read_dir(p)?
-                .into_iter()
-                .any(|p| p.unwrap().file_name() == *"Cargo.toml");
+            let has_cargo = fs::read_dir(p)?.any(|p| p.unwrap().file_name() == *"Cargo.toml");
             if has_cargo {
                 return Ok(root_path.join(path.as_ref()));
             } else {
