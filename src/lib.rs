@@ -64,6 +64,27 @@ pub fn pclamp<T: PartialOrd>(value: T, min: T, max: T) -> T {
     pmin(pmax(value, min), max)
 }
 
+#[cfg(test)]
+mod test_min_max_clamp {
+    use super::{pclamp, pmax, pmin};
+
+    #[test]
+    fn min_max_clamp() {
+        assert_eq![2, pmin(2, 5)];
+        assert_eq![2, pmin(5, 2)];
+        assert_eq![2., pmin(2., 5.)];
+
+        assert_eq![5, pmax(2, 5)];
+        assert_eq![5, pmax(5, 2)];
+        assert_eq![5., pmax(2., 5.)];
+
+        assert_eq![3, pclamp(3, 2, 5)];
+        assert_eq![3., pclamp(3., 2., 5.)];
+        assert_eq![2, pclamp(1, 2, 5)];
+        assert_eq![5, pclamp(7, 2, 5)];
+    }
+}
+
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 pub use std_utils::*;
@@ -234,7 +255,7 @@ macro_rules! iif {
 }
 
 #[cfg(test)]
-mod tests {
+mod test_iif {
     use crate::iif;
 
     #[test]
