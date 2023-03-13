@@ -57,11 +57,12 @@ jobs:
       - name: Install nightly
         uses: dtolnay/rust-toolchain@nightly
       - name: cargo doc
-        run: cargo doc --no-deps --all-features
+        run: cargo doc --features=nightly
         env:
           RUSTDOCFLAGS: --cfg docsrs
   # 2.
-  # IMPROVE
+  # NOTE:DISABLED
+  # TODO:IMPROVE
   # hack:
   #   runs-on: ubuntu-latest
   #   name: ubuntu / stable / features
@@ -75,7 +76,9 @@ jobs:
   #       uses: taiki-e/install-action@cargo-hack
   #     - name: cargo hack
   #       run: cargo hack --feature-powerset check --lib --tests
-  # 2. MSRV: NOTE keep in sync with Cargo.toml
+  #
+  # 2. MSRV
+  # NOTE:CUSTOM keep in sync with Cargo.toml
   msrv:
     runs-on: ubuntu-latest
     # we use a matrix here just because env can't be used in job names
