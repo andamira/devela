@@ -68,6 +68,8 @@ pub trait Also: Sized {
     ///
     /// Similar to [`apply`], but instead of returning self directly from `f`,
     /// since it has a different signature, returns it indirectly.
+    ///
+    /// [`apply`]: Apply::apply
     fn also_mut<F: FnOnce(&mut Self)>(mut self, f: F) -> Self {
         f(&mut self);
         self
@@ -78,6 +80,8 @@ pub trait Also: Sized {
     ///
     /// Similar to [`apply`], but instead of returning self directly from `f`,
     /// since it has a different signature, returns it indirectly.
+    ///
+    /// [`apply`]: Apply::apply
     fn also_ref<F: FnOnce(&Self)>(self, f: F) -> Self {
         f(&self);
         self
