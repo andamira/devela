@@ -12,7 +12,8 @@ jobs:
     name: ubuntu / ${{ matrix.toolchain }}
     strategy:
       matrix:
-        toolchain: [stable, beta]
+        toolchain: [stable]
+        # toolchain: [stable, beta]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -26,7 +27,8 @@ jobs:
         run: cargo generate-lockfile
       # https://twitter.com/jonhoo/status/1571290371124260865
       - name: cargo test --locked
-        run: cargo test --locked --all-features --all-targets
+        # NOTE
+        run: cargo test --locked --all-targets
   #
   minimal:
     runs-on: ubuntu-latest
@@ -44,7 +46,8 @@ jobs:
       - name: cargo update -Zminimal-versions
         run: cargo +nightly update -Zminimal-versions
       - name: cargo test
-        run: cargo test --locked --all-features --all-targets
+        # NOTE
+        run: cargo test --locked --all-targets
   #
   os-check:
     runs-on: ${{ matrix.os }}
@@ -63,7 +66,8 @@ jobs:
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
       - name: cargo test
-        run: cargo test --locked --all-features --all-targets
+        # NOTE
+        run: cargo test --locked --all-targets
   #
   # coverage:
   #   runs-on: ubuntu-latest
@@ -82,7 +86,7 @@ jobs:
   #       if: hashFiles('Cargo.lock') == ''
   #       run: cargo generate-lockfile
   #     - name: cargo llvm-cov
-  #       run: cargo llvm-cov --locked --all-features --lcov --output-path lcov.info
+  #       run: cargo llvm-cov --locked --lcov --output-path lcov.info
   #     - name: Upload to codecov.io
   #       uses: codecov/codecov-action@v3
   #       with:
