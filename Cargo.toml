@@ -2,8 +2,8 @@
 name = "devela"
 description = "rust development helper & extension utilities"
 version = "0.1.7"
-edition = "2018" # 2021 increases MSRV to 1.56.1
-rust-version = "1.41.1" # checked for v0.1.4
+edition = "2021"
+rust-version = "1.60.0" # checked for v0.1.7
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
