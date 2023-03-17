@@ -18,13 +18,18 @@ categories = ["rust-patterns"]
 keywords = []
 publish = true
 
-[dependencies]
-
 [features]
 default = ["std", "safe"]
+#
+std = ["alloc"]
+no-std = []
+alloc = []
+#
 safe = []
-std = []
-nightly = []
+#
+nightly = [] # used only for docs
+
+[dependencies]
 
 [dev-dependencies]
 

@@ -7,7 +7,7 @@
 // - iif!
 // - rfs!
 
-/// Brief [`Box`] constructor.
+/// Brief [`Box`][alloc::boxed::Box] constructor.
 ///
 /// # Examples
 /// ```
@@ -16,10 +16,10 @@
 /// assert_eq![bx(45), Box::new(45)];
 /// ```
 #[inline(always)]
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
-pub fn bx<T>(v: T) -> Box<T> {
-    Box::new(v)
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+pub fn bx<T>(v: T) -> alloc::boxed::Box<T> {
+    alloc::boxed::Box::new(v)
 }
 
 /// *`i`nline `if`* macro.

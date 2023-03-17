@@ -16,6 +16,12 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
 
+#[cfg(all(feature = "std", feature = "no-std"))]
+compile_error!("You can't enable the `std` and `no-std` features at the same time.");
+
+#[cfg(feature = "alloc")]
+extern crate alloc;
+
 mod apply;
 mod ops;
 mod slice;
@@ -27,24 +33,15 @@ pub use crate::{
     slice::{subslice_left, subslice_middle, subslice_right},
 };
 
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
+#[cfg(feature = "alloc")]
 #[doc(inline)]
 pub use crate::sugar::bx;
 
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
-pub use std_utils::*;
-
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
-mod std_utils {
-    use std::{
-        convert::AsRef,
-        env, fs, io,
-        path::{Path, PathBuf},
-    };
-
+#[cfg(feature = "alloc")]
+pub use alloc_utils::*;
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+mod alloc_utils {
     /// Returns a [`String`] where you always know each character's position.
     ///
     /// A [*counter string*][0] is a graduated string of arbitrary `length`,
@@ -76,6 +73,18 @@ mod std_utils {
         }
         cstr.chars().rev().collect::<String>()
     }
+}
+
+#[cfg(feature = "std")]
+pub use std_utils::*;
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
+mod std_utils {
+    use std::{
+        convert::AsRef,
+        env, fs, io,
+        path::{Path, PathBuf},
+    };
 
     /// Returns an absolute [`PathBuf`], relative to the `crate`'s root.
     ///
