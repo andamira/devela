@@ -17,7 +17,7 @@ rust development helper & extension utilities
 - `iif!` inline if macro.
 - `bx` `Box` constructor.
 
-See [the documentation](https://docs.rs/depura/) for more information.
+See [the documentation](https://docs.rs/devela/) for more information.
 
 ## Status
 

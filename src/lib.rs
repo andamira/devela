@@ -17,73 +17,20 @@
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
 
 mod apply;
-pub use apply::{Also, Apply};
+mod ops;
+mod slice;
+mod sugar;
 
-/// Returns the minimum of two [`PartialOrd`]ered values.
-///
-/// Complements `core::cmp::`[`min`][`core::cmp::min] which requires
-/// [`Ord`][core::cmp::Ord].
-///
-/// # Example
-/// ```
-/// use devela::pmin;
-///
-/// assert_eq![0.2, pmin(0.2, 0.4)];
-/// ```
-#[inline(always)]
-#[rustfmt::skip]
-pub fn pmin<T: PartialOrd>(a: T, b: T) -> T { if a < b { a } else { b } }
+pub use crate::{
+    apply::{Also, Apply},
+    ops::{pclamp, pmax, pmin},
+    slice::{subslice_left, subslice_middle, subslice_right},
+};
 
-/// Returns the maximum of two [`PartialOrd`]ered values.
-///
-/// Complements `core::cmp::`[`max`][`core::cmp::max] which requires
-/// [`Ord`][core::cmp::Ord].
-///
-/// # Examples
-/// ```
-/// use devela::pmax;
-///
-/// assert_eq![0.4, pmax(0.2, 0.4)];
-/// ```
-#[inline(always)]
-#[rustfmt::skip]
-pub fn pmax<T: PartialOrd>(a: T, b: T) -> T { if a > b { a } else { b } }
-
-/// Returns a [`PartialOrd`]ered `value` clamped between `min` and `max`.
-///
-/// # Examples
-/// ```
-/// use devela::pclamp;
-///
-/// assert_eq![0.4, pclamp(1.0, 0.2, 0.4)];
-/// assert_eq![0.2, pclamp(0.0, 0.2, 0.4)];
-/// ```
-#[inline(always)]
-#[rustfmt::skip]
-pub fn pclamp<T: PartialOrd>(value: T, min: T, max: T) -> T {
-    pmin(pmax(value, min), max)
-}
-
-#[cfg(test)]
-mod test_min_max_clamp {
-    use super::{pclamp, pmax, pmin};
-
-    #[test]
-    fn min_max_clamp() {
-        assert_eq![2, pmin(2, 5)];
-        assert_eq![2, pmin(5, 2)];
-        assert_eq![2., pmin(2., 5.)];
-
-        assert_eq![5, pmax(2, 5)];
-        assert_eq![5, pmax(5, 2)];
-        assert_eq![5., pmax(2., 5.)];
-
-        assert_eq![3, pclamp(3, 2, 5)];
-        assert_eq![3., pclamp(3., 2., 5.)];
-        assert_eq![2, pclamp(1, 2, 5)];
-        assert_eq![5, pclamp(7, 2, 5)];
-    }
-}
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
+#[doc(inline)]
+pub use crate::sugar::bx;
 
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
@@ -97,19 +44,6 @@ mod std_utils {
         env, fs, io,
         path::{Path, PathBuf},
     };
-
-    /// Brief [`Box`] constructor.
-    ///
-    /// # Examples
-    /// ```
-    /// use devela::bx;
-    ///
-    /// assert_eq![bx(45), Box::new(45)];
-    /// ```
-    #[inline(always)]
-    pub fn bx<T>(v: T) -> Box<T> {
-        Box::new(v)
-    }
 
     /// Returns a [`String`] where you always know each character's position.
     ///
@@ -186,102 +120,3 @@ mod std_utils {
         crate_root(Path::new(path.as_ref())).map_or("".into(), |p| p.to_str().unwrap().to_owned())
     }
 }
-
-/// Returns a left subslice of `slice`, with the given maximum `len`.
-///
-/// If `left_len > slice.len()` it returns the full slice.
-#[inline]
-pub fn subslice_left<T>(slice: &[T], len: usize) -> &[T] {
-    let start_idx = 0;
-    let end_idx = len.clamp(start_idx, slice.len());
-    &slice[start_idx..end_idx]
-}
-
-/// Returns a right subslice of `slice`, with the given maximum `len`.
-///
-/// If `left_len > slice.len()` it returns the full slice.
-#[inline]
-pub fn subslice_right<T>(slice: &[T], len: usize) -> &[T] {
-    let start_idx = slice.len().saturating_sub(len);
-    let end_idx = slice.len();
-    &slice[start_idx..end_idx]
-}
-
-/// Returns a middle subslice of `slice`, with the given maximum `len`.
-///
-/// If `len > slice.len()` returns the full `slice`.
-///
-/// In case of a non-perfect middle split, it leaves an extra left character.
-#[inline]
-pub fn subslice_middle<T>(slice: &[T], len: usize) -> &[T] {
-    let mid_idx = slice.len() / 2;
-    let half_len = len / 2;
-    let start_idx = mid_idx.saturating_sub(half_len);
-    let end_idx = (mid_idx + half_len + (len % 2)).min(slice.len());
-    &slice[start_idx..end_idx]
-}
-
-/// *`i`nline `if`* macro.
-///
-/// # Examples
-/// ```
-/// use devela::iif;
-///
-/// let s = iif![1 > 0; true; false];
-/// iif![1 > 0; println!("true")];
-/// ```
-/// instead of
-/// ```
-/// let s = if 1 > 0 {
-///     true
-/// } else {
-///     false
-/// };
-/// if 1 > 0 {
-///     println!("true");
-/// }
-/// ```
-#[macro_export]
-macro_rules! iif {
-    ($if: expr; $true: expr) => {
-        if $if {
-            $true
-        }
-    };
-    ($if: expr ; $true: expr ; $false: expr) => {
-        if $if {
-            $true
-        } else {
-            $false
-        }
-    };
-}
-
-#[cfg(test)]
-mod test_iif {
-    use crate::iif;
-
-    #[test]
-    fn iif() {
-        assert_eq!('a', iif!(true ; 'a' ; 'b'));
-        assert_eq!('b', iif!(false ; 'a' ; 'b'));
-    }
-}
-
-/// *`r`ust `f`ormat `s`kip* macro.
-///
-/// Preserves the formatting of the code provided as arguments, by relying on
-/// the fact that `rustfmt` does not usually apply formatting inside macros.
-///
-/// It can be used as an alternative to the `#[rustfmt::skip]` attribute,
-/// specially where it can't be applied yet on stable rust.
-///
-/// # Examples
-/// ```
-/// use devela::rfs;
-///
-/// // rustfmt has no powers here
-/// rfs! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
-/// ```
-#[macro_export]
-macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
