@@ -1,7 +1,7 @@
 [package]
 name = "devela"
 description = "rust development helper & extension utilities"
-version = "0.1.8"
+version = "0.1.9"
 edition = "2021"
 rust-version = "1.60.0"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
