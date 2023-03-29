@@ -1,5 +1,8 @@
 // devela::string
 
+#[cfg(feature = "alloc")]
+use alloc::string::{String, ToString};
+
 /// Returns a [`String`] where you always know each character's position.
 ///
 /// A [*counter string*][0] is a graduated string of arbitrary `length`,
