@@ -10,6 +10,7 @@ rust development helper & extension utilities
 
 - `subslice_left`, `subslice_mid`, `subslice_right` functions.
 - `pmin`, `pmax` & `pclamp` functions over `PartialOrd` values.
+- `format_buf` function and macro for `no_std` formatting.
 - `Apply`, `Also` traits for free function chaining.
 - `crate_root` & `crate_root_string` functions.
 - `counter_string` strings for measuring.

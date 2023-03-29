@@ -15,6 +15,7 @@ compile_error!("You can't enable the `std` and `no-std` features at the same tim
 extern crate alloc;
 
 mod apply;
+mod format;
 mod ops;
 mod project;
 mod slice;
@@ -23,6 +24,7 @@ mod sugar;
 
 pub use {
     apply::{Also, Apply},
+    format::format_buf,
     ops::{pclamp, pmax, pmin},
     slice::{subslice_left, subslice_middle, subslice_right},
 };
