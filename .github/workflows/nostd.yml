@@ -1,26 +1,31 @@
 permissions:
   contents: read
+
+# runs on push to the main branch, and PRs
 on:
   push:
     branches: [main]
   pull_request:
-name: no-std
+
+name: "no-std"
 jobs:
   #
   nostd:
+    name: "${{ matrix.target }}"
     runs-on: ubuntu-latest
-    name: ${{ matrix.target }}
     strategy:
       matrix:
-        # IMPROVE
         target: [thumbv7m-none-eabi, aarch64-unknown-none]
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Install stable
+      - name: "checkout"
+        uses: actions/checkout@v3
+
+      - name: "Install stable"
         uses: dtolnay/rust-toolchain@stable
-      - name: rustup target add ${{ matrix.target }}
+
+      - name: "rustup target add ${{ matrix.target }}"
         run: rustup target add ${{ matrix.target }}
-      - name: cargo check
+
+      - name: "cargo check"
+        # NOTE: custom
         run: cargo check --target ${{ matrix.target }} --no-default-features

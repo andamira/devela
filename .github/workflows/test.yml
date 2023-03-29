@@ -1,74 +1,95 @@
 permissions:
   contents: read
+
+# runs on push to the main branch, and PRs
 on:
   push:
     branches: [main]
   pull_request:
-name: test
+
+name: "test"
 jobs:
-  #
+
+  # 1.
   required:
+    name: "ubuntu / ${{ matrix.toolchain }}"
     runs-on: ubuntu-latest
-    name: ubuntu / ${{ matrix.toolchain }}
     strategy:
       matrix:
         toolchain: [stable]
         # toolchain: [stable, beta]
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Install ${{ matrix.toolchain }}
+      - name "checkout"
+        uses: actions/checkout@v3
+        # with:
+        #   submodules: true
+
+      - name: "Install ${{ matrix.toolchain }}"
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.toolchain }}
-      - name: cargo generate-lockfile
+
+      - name: "cargo generate-lockfile"
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
+
       # https://twitter.com/jonhoo/status/1571290371124260865
-      - name: cargo test --locked
-        # NOTE
+      - name: "cargo test --locked"
+        # NOTE: custom
         run: cargo test --locked --all-targets
-  #
+
+  # 2.
   minimal:
+    name: "ubuntu / stable / minimal-versions"
     runs-on: ubuntu-latest
-    name: ubuntu / stable / minimal-versions
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Install stable
+      - name: "checkout"
+        uses: actions/checkout@v3
+        # with:
+        #   submodules: true
+
+      - name: "Install stable"
         uses: dtolnay/rust-toolchain@stable
-      - name: Install nightly for -Zminimal-versions
+
+      - name: "Install nightly for -Zminimal-versions"
         uses: dtolnay/rust-toolchain@nightly
-      - name: rustup default stable
+
+      - name: "rustup default stable"
         run: rustup default stable
-      - name: cargo update -Zminimal-versions
+
+      - name: "cargo update -Zminimal-versions"
         run: cargo +nightly update -Zminimal-versions
-      - name: cargo test
-        # NOTE
+
+      - name: "cargo test"
+        # NOTE: custom
         run: cargo test --locked --all-targets
-  #
+
+  # 3.
   os-check:
+    name: "${{ matrix.os }} / stable"
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.os }} / stable
     strategy:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest]
     steps:
+      - name: "checkout"
       - uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Install stable
+        # with:
+        #   submodules: true
+
+      - name: "Install stable"
         uses: dtolnay/rust-toolchain@stable
-      - name: cargo generate-lockfile
+
+      - name: "cargo generate-lockfile"
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
-      - name: cargo test
-        # NOTE
+
+      - name: "cargo test"
+        # NOTE: custom
         run: cargo test --locked --all-targets
-  #
+
+  # 4.
   # coverage:
   #   runs-on: ubuntu-latest
   #   name: ubuntu / stable / coverage
