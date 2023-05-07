@@ -4,7 +4,7 @@ members = [".", "macros"]
 [package]
 name = "devela"
 description = "rust development helper & extension utilities"
-version = "0.1.10"
+version = "0.2.0"
 edition = "2021"
 rust-version = "1.60.0"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
@@ -33,7 +33,7 @@ safe = []
 nightly = [] # used only for docs
 
 [dependencies]
-devela_macros = "0.1.0"
+devela_macros = "0.2.0"
 
 [dev-dependencies]
 

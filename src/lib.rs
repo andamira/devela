@@ -14,6 +14,9 @@ compile_error!("You can't enable the `std` and `no-std` features at the same tim
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
+extern crate devela_macros;
+pub use devela_macros::compile;
+
 mod apply;
 mod format;
 mod ops;
