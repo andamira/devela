@@ -27,7 +27,7 @@ edition = "2021" # *2015,2018,2021 CHECK
 
 # Control the layout of arguments in a function.
 # https://rust-lang.github.io/rustfmt/?search=#fn_args_layout
-fn_args_layout = "Tall" # *"Tall", "Compressed", "Vertical"
+fn_params_layout = "Tall" # *"Tall", "Compressed", "Vertical"
 
 # Maximum width of the args of a function call before falling back to vertical
 # formatting.
