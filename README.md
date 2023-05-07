@@ -8,6 +8,7 @@ rust development helper & extension utilities
 
 ## Features
 
+- `#[compile]` attribute macro for conditional compilation.
 - `subslice_left`, `subslice_mid`, `subslice_right` functions.
 - `pmin`, `pmax` & `pclamp` functions over `PartialOrd` values.
 - `format_buf` function and macro for `no_std` formatting.
