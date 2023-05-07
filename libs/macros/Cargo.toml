@@ -1,0 +1,25 @@
+[package]
+name = "devela_macros"
+description = "procedural macros for devela"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.56.1"
+authors = ["José Luis Cruz <joseluis@andamira.net>"]
+repository = "https://github.com/andamira/devela_macros"
+documentation = "https://docs.rs/devela_macros"
+license = "MIT OR Apache-2.0"
+include = [
+	"/src/**/*.rs",
+	"/Cargo.toml",
+	"/README.md",
+	"/LICENSE-*",
+]
+categories = []
+keywords = []
+publish = true
+
+[lib]
+proc-macro = true
+
+[badges]
+maintenance = { status = "experimental" }
