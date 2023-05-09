@@ -1,7 +1,7 @@
 [package]
 name = "devela_macros"
 description = "procedural macros for devela"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 rust-version = "1.56.1"
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
