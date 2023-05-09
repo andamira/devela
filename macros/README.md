@@ -3,7 +3,7 @@
 [![Crate](https://img.shields.io/crates/v/devela_macros.svg)](https://crates.io/crates/devela_macros)
 [![API](https://docs.rs/devela_macros/badge.svg)](https://docs.rs/devela_macros/)
 
-Procedural macros for [`devela`][https://crates.io/crates/devela].
+Procedural macros for [`devela`](https://crates.io/crates/devela).
 
 See [the documentation](https://docs.rs/devela_macros/) for more information.
 
