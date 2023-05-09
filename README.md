@@ -2,7 +2,6 @@
 
 [![Crate](https://img.shields.io/crates/v/devela.svg)](https://crates.io/crates/devela)
 [![API](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
-[![Lines Of Code](https://tokei.rs/b1/github/andamira/devela?category=code)](https://github.com/andamira/devela)
 
 rust development helper & extension utilities
 
