@@ -2,7 +2,6 @@
 
 [![Crate](https://img.shields.io/crates/v/devela_macros.svg)](https://crates.io/crates/devela_macros)
 [![API](https://docs.rs/devela_macros/badge.svg)](https://docs.rs/devela_macros/)
-[![Lines Of Code](https://tokei.rs/b1/github/andamira/devela_macros?category=code)](https://github.com/andamira/devela_macros)
 
 Procedural macros for [`devela`][https://crates.io/crates/devela].
 
