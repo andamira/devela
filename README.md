@@ -18,6 +18,10 @@ rust development helper & extension utilities
 - `iif!` inline if macro.
 - `bx` `Box` constructor.
 
+- reexported external crates:
+  - `az` casting traits.
+  - `paste` macro.
+
 See [the documentation](https://docs.rs/devela/) for more information.
 
 ## Status
