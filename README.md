@@ -7,16 +7,22 @@ rust development helper & extension utilities
 
 ## Features
 
-- `#[compile]` attribute macro for conditional compilation.
-- `subslice_left`, `subslice_mid`, `subslice_right` functions.
-- `pmin`, `pmax` & `pclamp` functions over `PartialOrd` values.
-- `format_buf` function and macro for `no_std` formatting.
-- `Apply`, `Also` traits for free function chaining.
-- `crate_root` & `crate_root_string` functions.
-- `counter_string` strings for measuring.
-- `rfs!` rust format skip macro.
-- `iif!` inline if macro.
-- `bx` `Box` constructor.
+
+- conversion fns: `vec_into_vec`, `slice_into_vec`, `slice_into_array`, `try_vec_into_vec`, `try_slice_into_vec`.
+- ops fns: `pmin`, `pmax` & `pclamp` useful for `PartialOrd` values.
+- slice fns: `subslice_left`, `subslice_mid`, `subslice_right`.
+- strings fns: `counter_string`.
+- `no_std` formatting fn: `format_buf` and macro: `format_buf!`.
+- path related fns: `crate_root`, `crate_root_string` and macro: `manifest_dir!.
+- misc. sugar fn: `bx` compact `Box` constructor.
+- misc. sugar macros:
+  - `cdbg!` compact `dbg!`.
+  - `iif!` compact inline if.
+  - `rfs!` compact rust format skip.
+- free function chaning traits: `Apply`, `Also`.
+
+- attribute macros:
+  - `#[compile]` for boolean conditional compilation.
 
 - reexported external crates:
   - `az` casting traits.
