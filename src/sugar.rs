@@ -4,6 +4,7 @@
 //
 // TOC
 // - bx
+// - bdbg!
 // - iif!
 // - rfs!
 
@@ -20,6 +21,28 @@
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 pub fn bx<T>(v: T) -> alloc::boxed::Box<T> {
     alloc::boxed::Box::new(v)
+}
+
+/// *`b`riefer [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
+//
+// copied from Rusts's implementation
+#[macro_export]
+macro_rules! bdbg {
+    () => {
+        $crate::eprintln!("[{}:{}]", $crate::file!(), $crate::line!())
+    };
+    ($val:expr $(,)?) => {
+        match $val {
+            tmp => {
+                $crate::eprintln!("[{}:{}] {} = {:?}", // <- HERE
+                    $crate::file!(), $crate::line!(), $crate::stringify!($val), &tmp);
+                tmp
+            }
+        }
+    };
+    ($($val:expr),+ $(,)?) => {
+        ($($crate::dbg!($val)),+,)
+    };
 }
 
 /// *`i`nline `if`* macro.
