@@ -1,8 +1,12 @@
 [alias]
 
 # CHECK
+c = "check"
+cr = "check --release"
+
+# CLIPPY
 cl = "clippy"
-clq = "clippy --quiet"
+clr = "clippy --release"
 
 # CLEAN PACKAGE
 cp = "clean --package"
