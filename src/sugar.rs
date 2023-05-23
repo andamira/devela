@@ -4,7 +4,7 @@
 //
 // TOC
 // - bx
-// - bdbg!
+// - cdbg!
 // - iif!
 // - rfs!
 
@@ -23,11 +23,11 @@ pub fn bx<T>(v: T) -> alloc::boxed::Box<T> {
     alloc::boxed::Box::new(v)
 }
 
-/// *`b`riefer [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
+/// *`c`compact [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
 //
 // copied from Rusts's implementation
 #[macro_export]
-macro_rules! bdbg {
+macro_rules! cdbg {
     () => {
         $crate::eprintln!("[{}:{}]", $crate::file!(), $crate::line!())
     };
