@@ -25,6 +25,7 @@ pub use az;
 pub use paste::paste;
 
 mod apply;
+mod convert;
 mod format;
 mod ops;
 mod project;
@@ -34,6 +35,7 @@ mod sugar;
 
 pub use {
     apply::{Also, Apply},
+    convert::slice_into_array,
     format::format_buf,
     ops::{pclamp, pmax, pmin},
     slice::{subslice_left, subslice_middle, subslice_right},
@@ -41,7 +43,11 @@ pub use {
 
 #[cfg(feature = "alloc")]
 #[doc(inline)]
-pub use {string::counter_string, sugar::bx};
+pub use {
+    convert::{slice_into_vec, try_slice_into_vec, try_vec_into_vec, vec_into_vec},
+    string::counter_string,
+    sugar::bx,
+};
 
 #[cfg(feature = "std")]
 pub use project::{crate_root, crate_root_string};
