@@ -7,6 +7,14 @@ use std::{
     path::{Path, PathBuf},
 };
 
+/// Alias of `Path::new(concat![env!("CARGO_MANIFEST_DIR"), $path])`.
+#[macro_export]
+macro_rules! manifest_dir {
+    ($path:literal) => {
+        std::path::Path::new(concat![std::env!("CARGO_MANIFEST_DIR"), $path])
+    };
+}
+
 /// Returns an absolute [`PathBuf`], relative to the `crate`'s root.
 ///
 /// It determines the root by finding the first `Cargo.toml` file, from the
