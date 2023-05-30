@@ -11,7 +11,7 @@ use core::array::from_fn;
 #[cfg(not(feature = "safe"))]
 use core::mem::MaybeUninit;
 
-/// Converts `Vec<T>` to `Vec<U>` using the `From` trait.
+/// Converts `Vec<T>` to `Vec<U>` when `U` implements `From<T>`.
 ///
 /// # Examples
 /// ```
@@ -32,7 +32,7 @@ pub fn vec_into_vec<T, U: From<T>>(vec: Vec<T>) -> Vec<U> {
         .collect()
 }
 
-/// Converts `&[T]` to `Vec<U>` using the `From` trait.
+/// Converts `&[T]` to `Vec<U>` when `U` implements `From<T>`.
 ///
 /// # Examples
 /// ```
@@ -54,7 +54,7 @@ pub fn slice_into_vec<T: Clone, U: From<T>>(slice: &[T]) -> Vec<U> {
         .collect()
 }
 
-/// Converts `&[T]` to `[U; N]` using the `From` trait.
+/// Converts `&[T]` to `[U; N]` when `U` implements `From<T>`.
 ///
 /// # Panics
 /// If the length of the slice is less than the length of the array.
@@ -95,7 +95,7 @@ pub fn slice_into_array<T: Clone, U: From<T>, const N: usize>(slice: &[T]) -> [U
     }
 }
 
-/// Tries to convert `Vec<T>` to `Vec<U>` using the `TryFrom` trait.
+/// Tries to convert `Vec<T>` to `Vec<U>` when `U` implements `TryFrom<T>`.
 ///
 /// # Examples
 /// ```
@@ -117,7 +117,7 @@ pub fn try_vec_into_vec<T, E, U: TryFrom<T, Error = E>>(vec: Vec<T>) -> Result<V
         .collect::<Result<Vec<_>, _>>()
 }
 
-/// Tries to convert `&[T]` to `Vec<U>` using the `TryFrom` trait.
+/// Tries to convert `&[T]` to `Vec<U>` when `U` implements `TryFrom<T>`.
 ///
 /// # Examples
 /// ```
