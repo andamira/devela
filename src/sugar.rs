@@ -24,24 +24,34 @@ pub fn bx<T>(v: T) -> alloc::boxed::Box<T> {
 }
 
 /// *`c`compact [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
-//
-// copied from Rusts's implementation
+///
+/// # Examples
+/// ```
+/// use devela::cdbg;
+///
+/// let a = vec![1, 2, 3];
+/// let _b = cdbg![a];
+/// //       ^-- prints: [src/main.rs:5] a = [1, 2, 3]
+/// ```
+// Source code based on the original `dbg!` implementation.
 #[macro_export]
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 macro_rules! cdbg {
     () => {
-        $crate::eprintln!("[{}:{}]", $crate::file!(), $crate::line!())
+        eprintln!("[{}:{}]", file!(), line!())
     };
     ($val:expr $(,)?) => {
         match $val {
             tmp => {
-                $crate::eprintln!("[{}:{}] {} = {:?}", // <- HERE
-                    $crate::file!(), $crate::line!(), $crate::stringify!($val), &tmp);
+                eprintln!("[{}:{}] {} = {:?}", // <- KEY CHANGE
+                    file!(), line!(), stringify!($val), &tmp);
                 tmp
             }
         }
     };
     ($($val:expr),+ $(,)?) => {
-        ($($crate::dbg!($val)),+,)
+        ($(cdbg!($val)),+,)
     };
 }
 
