@@ -4,7 +4,7 @@ members = [".", "macros"]
 [package]
 name = "devela"
 description = "rust development helper & extension utilities"
-version = "0.4.0"
+version = "0.4.1"
 edition = "2021"
 rust-version = "1.63.0" # from_fn
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
