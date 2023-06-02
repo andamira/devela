@@ -3,10 +3,15 @@
 //! Syntax sugar abstractions.
 //
 // TOC
-// - bx
-// - cdbg!
-// - iif!
-// - rfs!
+// - fns
+//   - bx
+//
+// - macros
+//   - cdbg!
+//   - iif!
+//   - rfs!
+
+/* fns */
 
 /// Brief [`Box`][alloc::boxed::Box] constructor.
 ///
@@ -22,6 +27,8 @@
 pub fn bx<T>(v: T) -> alloc::boxed::Box<T> {
     alloc::boxed::Box::new(v)
 }
+
+/* macros */
 
 /// *`c`compact [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
 ///

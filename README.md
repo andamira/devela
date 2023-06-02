@@ -20,6 +20,7 @@ rust development helper & extension utilities
   - `iif!` compact inline if.
   - `rfs!` compact rust format skip.
 - free function chaning traits: `Apply`, `Also`.
+- extension traits: `OptionExt`, `ResultExt`.
 
 - attribute macros:
   - `#[compile]` for boolean conditional compilation.

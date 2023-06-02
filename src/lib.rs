@@ -26,6 +26,7 @@ pub use paste::paste;
 
 mod apply;
 mod convert;
+mod ext;
 mod format;
 mod ops;
 mod project;
@@ -36,6 +37,7 @@ mod sugar;
 pub use {
     apply::{Also, Apply},
     convert::slice_into_array,
+    ext::{OptionExt, ResultExt},
     format::format_buf,
     ops::{pclamp, pmax, pmin},
     slice::{subslice_left, subslice_middle, subslice_right},
