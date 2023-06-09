@@ -2,10 +2,16 @@
 
 # CHECK
 c = "check"
+cu = "check --no-default-features --features=std"
+cn = "check --no-default-features --features=safe"
+cnu = "check --no-default-features"
 cr = "check --release"
 
 # CLIPPY
 cl = "clippy"
+clu = "clippy --no-default-features --features=std"
+cln = "clippy --no-default-features --features=safe"
+clnu = "clippy --no-default-features"
 clr = "clippy --release"
 
 # CLEAN PACKAGE
@@ -42,6 +48,7 @@ rre = "run --release --example"
 # TEST
 t = "test"
 td = "test --doc"
+td_ = "test --doc -- --nocapture"
 t_ = "test -- --nocapture"
 t_1 = "test -- --test-threads 1 --nocapture"
 
