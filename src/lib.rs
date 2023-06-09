@@ -1,6 +1,8 @@
 // devela
 //
-//! Rust development helper & extension utilities.
+//! A varied collection of [`Rust`] development helper & extension utilities.
+//!
+//! [`Rust`]: https://www.rust-lang.org/
 //
 
 #![warn(clippy::all)]
