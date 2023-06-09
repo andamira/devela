@@ -17,7 +17,7 @@ rust development helper & extension utilities
 - misc. sugar fn: `bx` compact `Box` constructor.
 - misc. sugar macros:
   - `cdbg!` compact `dbg!`.
-  - `iif!` compact inline if.
+  - `iif!` compact inline `if` and `if let`.
   - `rfs!` compact rust format skip.
 - free function chaning traits: `Apply`, `Also`.
 - extension traits: `OptionExt`, `ResultExt`.
