@@ -10,6 +10,7 @@
 //   - cdbg!
 //   - iif!
 //   - rfs!
+//   - S!
 
 /* fns */
 
@@ -183,3 +184,50 @@ mod test_iif {
 /// ```
 #[macro_export]
 macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
+
+/// Brief [`String`] constructor.
+///
+/// # Examples
+/// ```
+/// use devela::{iif, S};
+///
+/// // This
+/// let s = iif![2 > 1; S!("string"); S!()];
+///
+/// // Would be equivalent to
+/// let s = if 2 > 1 {
+///     String::from("string")
+/// } else {
+///     "".into()
+/// };
+/// ```
+///
+#[macro_export]
+macro_rules! S {
+    () => {
+        String::new()
+    };
+
+    ($from:expr) => {
+        String::from($from)
+    };
+}
+
+#[cfg(test)]
+#[allow(non_snake_case)]
+mod test_S {
+    #[test]
+    fn iif() {
+        assert_eq!('a', iif!(true ; 'a' ; 'b'));
+        assert_eq!('b', iif!(false ; 'a' ; 'b'));
+    }
+
+    #[test]
+    fn iif_let() {
+        let somea = Some('a');
+        let noa: Option<char> = None;
+
+        assert_eq!('a', iif!(let Some(a) = somea; a ; 'b'));
+        assert_eq!('b', iif!(let Some(a) = noa; a ; 'b'));
+    }
+}

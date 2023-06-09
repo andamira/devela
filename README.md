@@ -19,6 +19,7 @@ rust development helper & extension utilities
   - `cdbg!` compact `dbg!`.
   - `iif!` compact inline `if` and `if let`.
   - `rfs!` compact rust format skip.
+  - `S!` brief `String` constructor.
 - free function chaning traits: `Apply`, `Also`.
 - extension traits: `OptionExt`, `ResultExt`.
 - alternative Debug trait `AltDebug`.
