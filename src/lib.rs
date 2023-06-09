@@ -50,7 +50,7 @@ pub use {
 pub use {
     convert::{slice_into_vec, try_slice_into_vec, try_vec_into_vec, vec_into_vec},
     format::AltDebug,
-    string::counter_string,
+    string::{counter_string, indent},
     sugar::bx,
 };
 

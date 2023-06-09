@@ -35,7 +35,7 @@ pub fn format_buf<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a str,
     w.as_str().ok_or(fmt::Error)
 }
 
-/// Returns a formatted string backed by a buffer, `no_std` compatible.
+/// Returns a formatted [`str`]ing slice backed by a buffer, `no_std` compatible.
 ///
 /// See also the [`format_buf`][format_buf()] function.
 ///
@@ -110,6 +110,16 @@ impl<'a> fmt::Write for WriteTo<'a> {
             Ok(())
         }
     }
+}
+
+/// *`i`ndented `format`*.
+///
+// TODO WIP
+#[macro_export]
+macro_rules! iformat {
+    ($indent:expr, $($args:tt)*) => {
+        $crate::indent($indent, &format![$($args)*])
+    };
 }
 
 /// An alternative `Debug`.

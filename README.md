@@ -39,6 +39,7 @@ See [the documentation](https://docs.rs/devela/) for more information.
 [`iif!`]: https://docs.rs/devela/latest/devela/macro.iif.html
 [`cdbg!`]: https://docs.rs/devela/latest/devela/macro.cdbg.html
 [`format_buf!`]: https://docs.rs/devela/latest/devela/macro.format_buf.html
+[`iformat!`]: https://docs.rs/devela/latest/devela/macro.iformat.html
 [`manifest_dir!`]: https://docs.rs/devela/latest/devela/macro.manifest_dir.html
 [`paste!`]: https://docs.rs/devela/latest/devela/macro.paste.html
 [`rfs!`]: https://docs.rs/devela/latest/devela/macro.rfs.html
@@ -49,6 +50,7 @@ See [the documentation](https://docs.rs/devela/) for more information.
 [`crate_root_string`]: https://docs.rs/devela/latest/devela/fn.crate_root_string.html
 [`counter_string`]: https://docs.rs/devela/latest/devela/fn.counter_string.html
 [`format_buf`]: https://docs.rs/devela/latest/devela/fn.format_buf.html
+[`indent`]: https://docs.rs/devela/latest/devela/fn.indent.html
 [`pclamp`]: https://docs.rs/devela/latest/devela/fn.pclamp.html
 [`pmax`]: https://docs.rs/devela/latest/devela/fn.pmax.html
 [`pmin`]: https://docs.rs/devela/latest/devela/fn.pmin.html

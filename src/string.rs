@@ -1,7 +1,11 @@
 // devela::string
 
 #[cfg(feature = "alloc")]
-use alloc::string::{String, ToString};
+use alloc::{
+    format,
+    string::{String, ToString},
+    vec::Vec,
+};
 
 /// Returns a [`String`] where you always know each character's position.
 ///
@@ -35,4 +39,23 @@ pub fn counter_string(mut length: usize, separator: char) -> String {
         length -= tmpstr.len();
     }
     cstr.chars().rev().collect::<String>()
+}
+
+/// Indents the `input` multi-line string with the given number of `spaces`.
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+pub fn indent(spaces: usize, string: &str) -> String {
+    let indentation = " ".repeat(spaces);
+
+    // Split the string into lines
+    let lines: Vec<&str> = string.lines().collect();
+
+    // Add the indentation to each line
+    let mut indented_lines: Vec<String> = Vec::new();
+    for line in lines {
+        indented_lines.push(format!("{}{}", indentation, line));
+    }
+
+    // Join the modified lines back together
+    indented_lines.join("\n")
 }
