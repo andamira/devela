@@ -13,6 +13,9 @@ use core::{
     str::{from_utf8, from_utf8_unchecked},
 };
 
+#[cfg(feature = "alloc")]
+use alloc::{format, string::String};
+
 /// Returns a formatted string backed by a buffer, `no_std` compatible.
 ///
 /// See also the [`format_buf!`][crate::format_buf!] macro.
@@ -106,5 +109,53 @@ impl<'a> fmt::Write for WriteTo<'a> {
         } else {
             Ok(())
         }
+    }
+}
+
+/// An alternative `Debug`.
+///
+/// # Examples
+///
+/// Basic usage:
+/// ```
+/// use devela::AltDebug;
+///
+/// #[derive(Debug)]
+/// struct Example(bool, i32, String);
+///
+/// impl AltDebug for Example {}
+///
+/// let example = Example(true, 4, "2+2".into());
+/// assert_eq!["Example(true, 4, \"2+2\")", &example.to_dbg()];
+/// ```
+///
+/// Custom usage:
+/// ```
+/// use devela::AltDebug;
+///
+/// #[derive(Debug)]
+/// struct Example(bool, i32, String);
+///
+/// impl AltDebug for Example {
+///     fn to_dbg(&self) -> String {
+///         format!["{2}={1}:{0}", self.0, self.1, self.2]
+///     }
+/// }
+///
+/// let example = Example(true, 4, "2+2".into());
+/// assert_eq!["2+2=4:true", &example.to_dbg()];
+/// ```
+// IMPROVE: use alternative formatting.
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+pub trait AltDebug: core::fmt::Debug {
+    /// Converts the current instance into a debug string.
+    ///
+    /// By default, this method leverages the standard `Debug` trait to create
+    /// the debug representation.
+    ///
+    /// Implementers can override this method to provide a custom debug string.
+    fn to_dbg(&self) -> String {
+        format!["{self:?}"]
     }
 }
