@@ -14,7 +14,7 @@ A varied collection of [`Rust`] development helper & extension utilities.
 - slice fns: [`subslice_left`], [`subslice_middle`], [`subslice_right`].
 - strings fns: [`counter_string`].
 - `no_std` formatting fn: [`format_buf`] and macro: [`format_buf!`].
-- path related fns: [`crate_root`], [`crate_root_string`] and macro: [`manifest_dir!].
+- path related fns: [`crate_root`], [`crate_root_string`] and macro: [`manifest_dir!`].
 - misc. sugar fn: [`bx`] compact `Box` constructor.
 - misc. sugar macros:
   - [`cdbg!`] compact `dbg!`.
