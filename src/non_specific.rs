@@ -4,7 +4,7 @@
 //
 
 use crate::paste;
-use core::{fmt, num::*};
+use core::{fmt, num::*, str::FromStr};
 
 macro_rules! impl_non_specific {
     ($name:ident) => {
@@ -29,19 +29,8 @@ macro_rules! impl_non_specific {
         #[doc = "assert![" [<$name $S $b>] "::<13>::new(13).is_none()];"]
         #[doc = "assert![" [<$name $S $b>] "::<13>::new(12).unwrap().get() == 12];"]
         /// ```
-        #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+        #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct [<$name $S $b>]<const V: [<$s $b>]>([<NonZero $S $b>]);
-
-        impl<const V: [<$s $b>]> fmt::Display for [<$name $S $b>]<V> {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                write!(f, "{}", self.get())
-            }
-        }
-        impl<const V: [<$s $b>]> fmt::Debug for [<$name $S $b>]<V> {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                write!(f, "{}({})", stringify!([<$name $S $b>]), self.get())
-            }
-        }
 
         impl<const V: [<$s $b>]> [<$name $S $b>]<V> {
             #[doc = "Creates a `" [<$name $S $b>] "` if the given value is not `V`."]
@@ -63,6 +52,46 @@ macro_rules! impl_non_specific {
             /// Returns the value as a primitive type.
             pub const fn get(&self) -> [<$s $b>] {
                 self.0.get() ^ V
+            }
+        }
+
+        /* core impls */
+
+        impl<const V: [<$s $b>]> fmt::Display for [<$name $S $b>]<V> {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                write!(f, "{}", self.get())
+            }
+        }
+        impl<const V: [<$s $b>]> fmt::Debug for [<$name $S $b>]<V> {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                write!(f, "{}({})", stringify!([<$name $S $b>]), self.get())
+            }
+        }
+        impl<const V: [<$s $b>]> fmt::Binary for [<$name $S $b>]<V> {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                fmt::Binary::fmt(&self.get(), f)
+            }
+        }
+        impl<const V: [<$s $b>]> fmt::Octal for [<$name $S $b>]<V> {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                fmt::Octal::fmt(&self.get(), f)
+            }
+        }
+        impl<const V: [<$s $b>]> fmt::LowerHex for [<$name $S $b>]<V> {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                fmt::LowerHex::fmt(&self.get(), f)
+            }
+        }
+        impl<const V: [<$s $b>]> fmt::UpperHex for [<$name $S $b>]<V> {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                fmt::UpperHex::fmt(&self.get(), f)
+            }
+        }
+
+        impl<const V: [<$s $b>]> FromStr for [<$name $S $b>]<V> {
+            type Err = ParseIntError;
+            fn from_str(s: &str) -> Result<Self, Self::Err> {
+                Self::new([<$s $b>]::from_str(s)?).ok_or_else(||"".parse::<i32>().unwrap_err())
             }
         }
     }};
