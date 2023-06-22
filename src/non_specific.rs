@@ -1,6 +1,6 @@
 // devela::non_specific
 //
-//! Create a const generic customizable version of NonZero primitives.
+//! Creates const generic customizable wrappers over the `NonZero` primitives.
 //
 
 use crate::paste;
@@ -44,7 +44,7 @@ macro_rules! impl_non_specific {
         }
 
         impl<const V: [<$s $b>]> [<$name $S $b>]<V> {
-            #[doc = "Creates a " [<$name $S $b>]  " if the given value is not `V`."]
+            #[doc = "Creates a `" [<$name $S $b>] "` if the given value is not `V`."]
             pub const fn new(value: [<$s $b>]) -> Option<Self> {
                 // [<NonZero $S $b>]::new(value ^ V).map(Self) // non-const
                 match [<NonZero $S $b>]::new(value ^ V) {
@@ -53,7 +53,7 @@ macro_rules! impl_non_specific {
                 }
             }
 
-            #[doc = "Creates a " [<$name $S $b>]  " if the given value is not `V`."]
+            #[doc = "Creates a `" [<$name $S $b>] "` if the given value is not `V`."]
             #[cfg(not(feature = "safe"))]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe")))]
             pub const unsafe fn new_unchecked(value: [<$s $b>]) -> Self {

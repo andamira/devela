@@ -9,8 +9,9 @@ A varied collection of [`Rust`] development helper & extension utilities.
 
 ## Features
 
+- `NonSpecific` wrappers over the `NonZero` primitives. E.g.: [`NonSpecificU8`].
 - conversion fns: [`vec_into_vec`], [`slice_into_vec`], [`slice_into_array`], [`try_vec_into_vec`], [`try_slice_into_vec`].
-- ops fns: [`pmin`], [`pmax`] & [`pclamp`] useful for `PartialOrd` values.
+- ops fns: [`pmin`], [`pmax`] & [`pclamp`] for `PartialOrd` values.
 - slice fns: [`subslice_left`], [`subslice_middle`], [`subslice_right`].
 - strings fns: [`counter_string`].
 - `no_std` formatting fn: [`format_buf`] and macro: [`format_buf!`].
@@ -68,6 +69,8 @@ See [the documentation](https://docs.rs/devela/) for more information.
 [`Apply`]: https://docs.rs/devela/latest/devela/trait.Apply.html
 [`OptionExt`]: https://docs.rs/devela/latest/devela/trait.OptionExt.html
 [`ResultExt`]: https://docs.rs/devela/latest/devela/trait.ResultExt.html
+
+[`NonSpecificU8`]: https://docs.rs/devela/latest/devela/struct.NonSpecificU8.html
 
 [compile]: https://docs.rs/devela/latest/devela/attr.compile.html
 

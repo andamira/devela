@@ -63,13 +63,13 @@ macro_rules! cdbg {
     };
 }
 
-/// *`i`nline `if`* macro.
+/// *`i`nline `if`*.
 ///
-/// A briefer inline replacement for `if` and `if let`.
+/// A inline alternative for `if` and `if let`.
 ///
 /// # Examples
 ///
-/// Replacing `if`
+/// Replacing `if`:
 /// ```
 /// use devela::iif;
 ///
@@ -84,7 +84,7 @@ macro_rules! cdbg {
 /// };
 /// ```
 ///
-/// Replacing `if let`
+/// Replacing `if let`:
 /// ```
 /// use devela::iif;
 ///
