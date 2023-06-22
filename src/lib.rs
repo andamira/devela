@@ -32,6 +32,7 @@ mod apply;
 mod convert;
 mod ext;
 mod format;
+mod non_specific;
 mod ops;
 mod project;
 mod slice;
@@ -43,6 +44,10 @@ pub use {
     convert::slice_into_array,
     ext::{OptionExt, ResultExt},
     format::format_buf,
+    non_specific::{
+        NonSpecificI128, NonSpecificI16, NonSpecificI32, NonSpecificI64, NonSpecificI8,
+        NonSpecificU128, NonSpecificU16, NonSpecificU32, NonSpecificU64, NonSpecificU8,
+    },
     ops::{pclamp, pmax, pmin},
     slice::{subslice_left, subslice_middle, subslice_right},
 };
