@@ -45,8 +45,12 @@ pub use {
     ext::{OptionExt, ResultExt},
     format::format_buf,
     non_specific::{
+        NonMaxI128, NonMaxI16, NonMaxI32, NonMaxI64, NonMaxI8, NonMaxIsize, NonMaxU128, NonMaxU16,
+        NonMaxU32, NonMaxU64, NonMaxU8, NonMaxUsize, NonMinI128, NonMinI16, NonMinI32, NonMinI64,
+        NonMinI8, NonMinIsize, NonMinU128, NonMinU16, NonMinU32, NonMinU64, NonMinU8, NonMinUsize,
         NonSpecificI128, NonSpecificI16, NonSpecificI32, NonSpecificI64, NonSpecificI8,
-        NonSpecificU128, NonSpecificU16, NonSpecificU32, NonSpecificU64, NonSpecificU8,
+        NonSpecificIsize, NonSpecificU128, NonSpecificU16, NonSpecificU32, NonSpecificU64,
+        NonSpecificU8, NonSpecificUsize,
     },
     ops::{pclamp, pmax, pmin},
     slice::{subslice_left, subslice_middle, subslice_right},

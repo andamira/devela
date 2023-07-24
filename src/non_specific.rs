@@ -7,20 +7,26 @@ use crate::paste;
 use core::{fmt, num::*, str::FromStr};
 
 macro_rules! impl_non_specific {
+    // Entry point, generates NonSpecific structures for each sign and size.
     ($name:ident) => {
-        impl_non_specific![NonSpecific, i, I, 8, 16, 32, 64, 128];
-        impl_non_specific![NonSpecific, u, U, 8, 16, 32, 64, 128];
+        impl_non_specific![NonSpecific, i, I, 8, 16, 32, 64, 128, size];
+        impl_non_specific![NonSpecific, u, U, 8, 16, 32, 64, 128, size];
     };
-    ($name:ident, $s:ident, $S:ident, $( $b:literal ),+) => {
+    ($name:ident, $s:ident, $S:ident, $( $b:expr ),+) => {
         $( impl_non_specific![@NonSpecific, $s, $S, $b]; )+
     };
 
     // $name: the base name of the new type. E.g. NonSpecific.
     // $s: the sign identifier, lowercase: i or u.
     // $S: the sign identifier, uppercase: I or U.
-    // $b: the bits of the type, from 8 to 128.
-    (@$name:ident, $s:ident, $S:ident, $b:literal) => { paste! {
+    // $b: the bits of the type, from 8 to 128, or the `size` suffix.
+    (@$name:ident, $s:ident, $S:ident, $b:expr) => { paste! {
+        /* definition */
+
         /// An integer that is known not to equal the specific value `V`.
+        ///
+        /// It has an optimized memory layout, so that
+        #[doc = "`Option<"[<$name $S $b>]">` is the same size as `"[<$name $S $b>]"`."]
         ///
         /// # Examples
         /// ```
@@ -31,6 +37,18 @@ macro_rules! impl_non_specific {
         /// ```
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct [<$name $S $b>]<const V: [<$s $b>]>([<NonZero $S $b>]);
+
+        /* aliases */
+
+        /// An integer that is known not to equal its maximum representable value
+        #[doc = "[`" [< $s $b >] "::MAX`]."]
+        pub type [<NonMax $S $b>] = [<$name $S $b>]<{[<$s $b>]::MAX}>;
+
+        /// An integer that is known not to equal its minimum representable value
+        #[doc = "[`" [< $s $b >] "::MIN`]."]
+        pub type [<NonMin $S $b>] = [<$name $S $b>]<{[<$s $b>]::MIN}>;
+
+        /* methods */
 
         impl<const V: [<$s $b>]> [<$name $S $b>]<V> {
             #[doc = "Creates a `" [<$name $S $b>] "` if the given value is not `V`."]
@@ -43,9 +61,18 @@ macro_rules! impl_non_specific {
             }
 
             #[doc = "Creates a `" [<$name $S $b>] "` if the given value is not `V`."]
+            ///
+            /// # Panics
+            /// Panics in debug if the given `value` is equal to `V`.
+            /// # Safety
+            /// The given `value` must never be equal to `V`.
             #[cfg(not(feature = "safe"))]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe")))]
             pub const unsafe fn new_unchecked(value: [<$s $b>]) -> Self {
+                // debug_assert_ne![value, V]; // non-const
+                #[cfg(debug_assertions)]
+                if value == V { panic!("The given value is specificly prohibited.") }
+
                 Self([<NonZero $S $b>]::new_unchecked(value ^ V))
             }
 
@@ -58,31 +85,37 @@ macro_rules! impl_non_specific {
         /* core impls */
 
         impl<const V: [<$s $b>]> fmt::Display for [<$name $S $b>]<V> {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                 write!(f, "{}", self.get())
             }
         }
         impl<const V: [<$s $b>]> fmt::Debug for [<$name $S $b>]<V> {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                 write!(f, "{}({})", stringify!([<$name $S $b>]), self.get())
             }
         }
         impl<const V: [<$s $b>]> fmt::Binary for [<$name $S $b>]<V> {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                 fmt::Binary::fmt(&self.get(), f)
             }
         }
         impl<const V: [<$s $b>]> fmt::Octal for [<$name $S $b>]<V> {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                 fmt::Octal::fmt(&self.get(), f)
             }
         }
         impl<const V: [<$s $b>]> fmt::LowerHex for [<$name $S $b>]<V> {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                 fmt::LowerHex::fmt(&self.get(), f)
             }
         }
         impl<const V: [<$s $b>]> fmt::UpperHex for [<$name $S $b>]<V> {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                 fmt::UpperHex::fmt(&self.get(), f)
             }
@@ -90,8 +123,34 @@ macro_rules! impl_non_specific {
 
         impl<const V: [<$s $b>]> FromStr for [<$name $S $b>]<V> {
             type Err = ParseIntError;
+            #[inline]
             fn from_str(s: &str) -> Result<Self, Self::Err> {
                 Self::new([<$s $b>]::from_str(s)?).ok_or_else(||"".parse::<i32>().unwrap_err())
+            }
+        }
+
+        /* conversions */
+
+        impl<const V: [<$s $b>]> From<[<$name $S $b>]<V>> for [<$s $b>] {
+            #[inline]
+            fn from(value: [<$name $S $b>]<V>) -> [<$s $b>] {
+                value.get()
+            }
+        }
+
+        impl<const V: [<$s $b>]> TryFrom<[<$s $b>]> for [<$name $S $b>]<V> {
+            type Error = core::num::TryFromIntError;
+
+            #[inline]
+            fn try_from(value: [<$s $b>]) -> Result<Self, Self::Error> {
+                // We generate a TryFromIntError by intentionally causing a failed conversion.
+
+                #[cfg(feature = "safe")]
+                return Self::new(value).ok_or_else(|| i8::try_from(255_u8).unwrap_err());
+
+                #[cfg(not(feature = "safe"))]
+                return Self::new(value)
+                    .ok_or_else(|| unsafe { i8::try_from(255_u8).unwrap_err_unchecked() });
             }
         }
     }};

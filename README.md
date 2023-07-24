@@ -9,7 +9,7 @@ A varied collection of [`Rust`] development helper & extension utilities.
 
 ## Features
 
-- `NonSpecific` wrappers over the `NonZero` primitives. E.g.: [`NonSpecificU8`].
+- `NonSpecific` wrappers over the `NonZero` primitives. E.g.: [`NonSpecificU8`], plus convenient aliases `NonMax` and `NonMin`.
 - conversion fns: [`vec_into_vec`], [`slice_into_vec`], [`slice_into_array`], [`try_vec_into_vec`], [`try_slice_into_vec`].
 - ops fns: [`pmin`], [`pmax`] & [`pclamp`] for `PartialOrd` values.
 - slice fns: [`subslice_left`], [`subslice_middle`], [`subslice_right`].
