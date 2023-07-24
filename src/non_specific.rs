@@ -44,6 +44,18 @@ macro_rules! impl_non_specific {
         #[doc = "[`" [< $s $b >] "::MAX`]."]
         pub type [<NonMax $S $b>] = [<$name $S $b>]<{[<$s $b>]::MAX}>;
 
+        impl Default for [<NonMax $S $b>] {
+            fn default() -> Self {
+                #[cfg(feature = "safe")]
+                return [<NonMax $S $b>]::new([<$s $b>]::default()).unwrap();
+
+                #[cfg(not(feature = "safe"))]
+                // SAFETY: the default numeric primitive values is always 0,
+                // and their maximum value is never 0.
+                unsafe { return [<NonMax $S $b>]::new_unchecked([<$s $b>]::default()); }
+            }
+        }
+
         /// An integer that is known not to equal its minimum representable value
         #[doc = "[`" [< $s $b >] "::MIN`]."]
         pub type [<NonMin $S $b>] = [<$name $S $b>]<{[<$s $b>]::MIN}>;
@@ -67,7 +79,7 @@ macro_rules! impl_non_specific {
             /// # Safety
             /// The given `value` must never be equal to `V`.
             #[cfg(not(feature = "safe"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe")))]
+            #[cfg_attr(feature = "nightly", doc(cfg(feature = "not(safe)")))]
             pub const unsafe fn new_unchecked(value: [<$s $b>]) -> Self {
                 // debug_assert_ne![value, V]; // non-const
                 #[cfg(debug_assertions)]
