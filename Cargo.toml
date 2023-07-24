@@ -18,26 +18,31 @@ include = [
 	"/LICENSE-*",
 ]
 categories = ["rust-patterns"]
-keywords = []
+keywords = ["dev", "helper", "helpers", "extension", "extensions"]
 publish = true
 
 [features]
 default = ["std", "safe"]
-#
+
 std = ["alloc"]
-alloc = []
-no-std = []
-safe = []
-unsafe = [] # enable unsafe alternatives
+alloc = [] # allocating no-std
+no-std = [] # non-allocating no-std, incompatible with "std" (unused)
+
+safe = [] # disable unsafe in this crate
+safest = ["safe"] # disable unsafe in dependencies (unused)
+unsafe = [] # enable unsafe alternatives, incompatible with "safe" (unused)
+
 nightly = [] # used only for better docs
+
 
 [dependencies]
 az = "1.2.1"
 devela_macros = "0.3.0"
 #devela_macros = { path = "macros" }
-paste = "1.0.12"
+paste = "1.0.14"
 
 [dev-dependencies]
+
 
 [package.metadata.docs.rs]
 no-default-features = true
