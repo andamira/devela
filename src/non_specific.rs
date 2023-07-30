@@ -35,6 +35,8 @@ macro_rules! impl_non_specific {
         #[doc = "assert![" [<$name $S $b>] "::<13>::new(13).is_none()];"]
         #[doc = "assert![" [<$name $S $b>] "::<13>::new(12).unwrap().get() == 12];"]
         /// ```
+        ///
+        #[doc = "See also [`NonMax" $S $b "`] and [`NonMin" $S $b "`]."]
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct [<$name $S $b>]<const V: [<$s $b>]>([<NonZero $S $b>]);
 
@@ -45,6 +47,7 @@ macro_rules! impl_non_specific {
         pub type [<NonMax $S $b>] = [<$name $S $b>]<{[<$s $b>]::MAX}>;
 
         impl Default for [<NonMax $S $b>] {
+            #[inline]
             fn default() -> Self {
                 #[cfg(feature = "safe")]
                 return [<NonMax $S $b>]::new([<$s $b>]::default()).unwrap();
@@ -89,6 +92,7 @@ macro_rules! impl_non_specific {
             }
 
             /// Returns the value as a primitive type.
+            #[inline]
             pub const fn get(&self) -> [<$s $b>] {
                 self.0.get() ^ V
             }
