@@ -6,6 +6,9 @@
 use crate::paste;
 use core::{fmt, num::*, str::FromStr};
 
+#[cfg(all(feature = "bytemuck", not(feature = "safe")))]
+use bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
+
 macro_rules! impl_non_specific {
     // Entry point, generates NonSpecific structures for each sign and size.
     ($name:ident) => {
@@ -167,6 +170,32 @@ macro_rules! impl_non_specific {
                 #[cfg(not(feature = "safe"))]
                 return Self::new(value)
                     .ok_or_else(|| unsafe { i8::try_from(255_u8).unwrap_err_unchecked() });
+            }
+        }
+
+        /* external impls*/
+
+        #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
+        unsafe impl<const V: [<$s $b>]> ZeroableInOption for super::[<$name $S $b>]<V> {}
+
+        #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
+        unsafe impl<const V: [<$s $b>]> PodInOption for super::[<$name $S $b>]<V> {}
+
+        #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
+        unsafe impl<const V: [<$s $b>]> NoUninit for super::[<$name $S $b>]<V> {}
+
+        #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
+        unsafe impl<const V: [<$s $b>]> CheckedBitPattern for super::[<$name $S $b>]<V> {
+            type Bits = [<$s $b>];
+
+            #[inline]
+            fn is_valid_bit_pattern(bits: &Self::Bits) -> bool {
+                // Since inner repr is NonZero, 0 is the only invalid bit pattern
+                *bits != 0
             }
         }
     }};

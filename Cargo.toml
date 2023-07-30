@@ -33,7 +33,7 @@ safest = ["safe"] # disable unsafe in dependencies (unused)
 unsafe = [] # enable unsafe alternatives, incompatible with "safe" (unused)
 
 nightly = [] # used only for better docs
-nightly_docs = ["nightly", "std"] # features to document
+nightly_docs = ["nightly", "std", "bytemuck"] # features to document
 
 
 [dependencies]
