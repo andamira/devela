@@ -80,10 +80,10 @@ do = "doc --no-deps --open"
 dd = "doc"
 ddo = "doc --open"
 # +nightly
-nd = "doc --no-deps --no-default-features --features=nightly,std"
-ndo = "doc --open --no-deps --no-default-features --features=nightly,std"
-ndd = "doc --no-default-features --features=nightly,std"
-nddo = "doc --open --no-default-features --features=nightly,std"
+nd = "doc --no-deps --no-default-features --features=nightly_docs"
+ndo = "doc --open --no-deps --no-default-features --features=nightly_docs"
+ndd = "doc --no-default-features --features=nightly_docs"
+nddo = "doc --open --no-default-features --features=nightly_docs"
 
 # TREE
 tr = "tree"

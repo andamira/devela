@@ -33,6 +33,7 @@ safest = ["safe"] # disable unsafe in dependencies (unused)
 unsafe = [] # enable unsafe alternatives, incompatible with "safe" (unused)
 
 nightly = [] # used only for better docs
+nightly_docs = ["nightly", "std"] # features to document
 
 
 [dependencies]
@@ -41,12 +42,15 @@ devela_macros = "0.3.0"
 #devela_macros = { path = "macros" }
 paste = "1.0.14"
 
+bytemuck = { version = "1.13.1", optional = true, default-features = false }
+
+
 [dev-dependencies]
 
 
 [package.metadata.docs.rs]
 no-default-features = true
-features = ["nightly", "std"]
+features = ["nightly_docs"]
 
 [badges]
 maintenance = { status = "experimental" }
