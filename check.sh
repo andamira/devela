@@ -4,7 +4,7 @@
 
 set -e # stops on error
 
-MSRV="1.63.0"
+MSRV="1.70.0"
 RCMD="rustup -v run $MSRV"
 
 # NOTE: need to install thumbv7m-none-eabi
