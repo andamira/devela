@@ -4,7 +4,7 @@
 
 set -e # stops on error
 
-MSRV="1.70.0"
+MSRV="1.70.0" # in sync with ./Cargo.toml & .github/workflows/check.yml
 RCMD="rustup -v run $MSRV"
 
 # NOTE: need to install thumbv7m-none-eabi
