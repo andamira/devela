@@ -34,6 +34,7 @@ mod ext;
 mod format;
 mod non_specific;
 mod ops;
+mod primitive;
 mod project;
 mod slice;
 mod string;
@@ -53,6 +54,7 @@ pub use {
         NonSpecificU8, NonSpecificUsize,
     },
     ops::{pclamp, pmax, pmin},
+    primitive::*,
     slice::{subslice_left, subslice_middle, subslice_right},
 };
 
