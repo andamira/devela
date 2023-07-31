@@ -28,44 +28,62 @@ pub use az;
 /// Allows to paste identifiers in a macro.
 pub use paste::paste;
 
-mod apply;
-mod convert;
-mod ext;
-mod format;
-mod non_specific;
-mod ops;
-mod primitive;
-mod project;
-mod slice;
-mod string;
-mod sugar;
+pub mod apply;
+pub mod convert;
+pub mod ext;
+pub mod format;
+pub mod non_specific;
+pub mod ops;
+pub mod primitive;
+pub mod project;
+pub mod slice;
+pub mod string;
+pub mod sugar;
 
-pub use {
-    apply::{Also, Apply},
-    convert::slice_into_array,
-    ext::{OptionExt, ResultExt},
-    format::format_buf,
-    non_specific::{
-        NonMaxI128, NonMaxI16, NonMaxI32, NonMaxI64, NonMaxI8, NonMaxIsize, NonMaxU128, NonMaxU16,
-        NonMaxU32, NonMaxU64, NonMaxU8, NonMaxUsize, NonMinI128, NonMinI16, NonMinI32, NonMinI64,
-        NonMinI8, NonMinIsize, NonMinU128, NonMinU16, NonMinU32, NonMinU64, NonMinU8, NonMinUsize,
-        NonSpecificI128, NonSpecificI16, NonSpecificI32, NonSpecificI64, NonSpecificI8,
-        NonSpecificIsize, NonSpecificU128, NonSpecificU16, NonSpecificU32, NonSpecificU64,
-        NonSpecificU8, NonSpecificUsize,
-    },
-    ops::{pclamp, pmax, pmin},
-    primitive::*,
-    slice::{subslice_left, subslice_middle, subslice_right},
-};
+/// All types and traits.
+///
+/// Everything is re-exported from here.
+pub mod all {
+    #[doc(inline)]
+    pub use super::{
+        apply::{Also, Apply},
+        convert::slice_into_array,
+        ext::{OptionExt, ResultExt},
+        format::format_buf,
+        non_specific::{
+            NonMaxI128, NonMaxI16, NonMaxI32, NonMaxI64, NonMaxI8, NonMaxIsize, NonMaxU128,
+            NonMaxU16, NonMaxU32, NonMaxU64, NonMaxU8, NonMaxUsize, NonMinI128, NonMinI16,
+            NonMinI32, NonMinI64, NonMinI8, NonMinIsize, NonMinU128, NonMinU16, NonMinU32,
+            NonMinU64, NonMinU8, NonMinUsize, NonSpecificI128, NonSpecificI16, NonSpecificI32,
+            NonSpecificI64, NonSpecificI8, NonSpecificIsize, NonSpecificU128, NonSpecificU16,
+            NonSpecificU32, NonSpecificU64, NonSpecificU8, NonSpecificUsize,
+        },
+        ops::{pclamp, pmax, pmin},
+        primitive::*,
+        slice::{subslice_left, subslice_middle, subslice_right},
+    };
 
-#[cfg(feature = "alloc")]
-#[doc(inline)]
-pub use {
-    convert::{slice_into_vec, try_slice_into_vec, try_vec_into_vec, vec_into_vec},
-    format::AltDebug,
-    string::{counter_string, indent},
-    sugar::bx,
-};
+    // macros
+    /// Reexported from the [`paste`](https://docs.rs/paste) crate.
+    /// Allows to paste identifiers in a macro.
+    pub use super::paste;
+    #[doc(inline)]
+    pub use super::{
+        format::iformat, // format_buf
+        project::manifest_dir,
+        sugar::{cdbg, iif, rfs, S},
+    };
 
-#[cfg(feature = "std")]
-pub use project::{crate_root, crate_root_string};
+    #[cfg(feature = "alloc")]
+    #[doc(inline)]
+    pub use super::{
+        convert::{slice_into_vec, try_slice_into_vec, try_vec_into_vec, vec_into_vec},
+        format::AltDebug,
+        string::{counter_string, indent},
+        sugar::bx,
+    };
+
+    #[cfg(feature = "std")]
+    #[doc(inline)]
+    pub use super::project::{crate_root, crate_root_string};
+}

@@ -1,4 +1,7 @@
 // devela::string
+//
+//! String related helpers.
+//
 
 #[cfg(feature = "alloc")]
 use alloc::{

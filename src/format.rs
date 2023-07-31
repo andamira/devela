@@ -1,5 +1,7 @@
 // devela::format
 //
+//! Formatting helpers.
+//
 // DOCS
 // - https://doc.rust-lang.org/core/fmt/trait.Write.html
 // - https://doc.rust-lang.org/nightly/core/macro.format_args.html
@@ -58,6 +60,7 @@ macro_rules! format_buf {
         $crate::format_buf($buf, format_args![$fmt, $($args)*])
     };
 }
+// pub use format_buf; // FIXME
 
 #[derive(Debug)]
 struct WriteTo<'a> {
@@ -121,6 +124,7 @@ macro_rules! iformat {
         $crate::indent($indent, &format![$($args)*])
     };
 }
+pub use iformat;
 
 /// An alternative `Debug`.
 ///

@@ -22,7 +22,7 @@ A varied collection of [`Rust`] development helper & extension utilities.
   - [`iif!`] compact inline `if` and `if let`.
   - [`rfs!`] compact rust format skip.
   - [`S!`] brief `String` constructor.
-- free function chaning traits: [`Apply`], [`Also`].
+- free function chaining traits: [`Apply`], [`Also`].
 - extension traits:  [`OptionExt`], [`ResultExt`].
 - alternative Debug trait [`AltDebug`].
 

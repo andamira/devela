@@ -26,7 +26,7 @@ macro_rules! impl_non_specific {
     (@$name:ident, $s:ident, $S:ident, $b:expr) => { paste! {
         /* definition */
 
-        /// An integer that is known not to equal the specific value `V`.
+        /// An integer that is known not to equal some specific value.
         ///
         /// It has an optimized memory layout, so that
         #[doc = "`Option<"[<$name $S $b>]">` is the same size as `"[<$name $S $b>]"`."]
@@ -177,19 +177,19 @@ macro_rules! impl_non_specific {
 
         #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
         #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
-        unsafe impl<const V: [<$s $b>]> ZeroableInOption for super::[<$name $S $b>]<V> {}
+        unsafe impl<const V: [<$s $b>]> ZeroableInOption for [<$name $S $b>]<V> {}
 
         #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
         #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
-        unsafe impl<const V: [<$s $b>]> PodInOption for super::[<$name $S $b>]<V> {}
+        unsafe impl<const V: [<$s $b>]> PodInOption for [<$name $S $b>]<V> {}
 
         #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
         #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
-        unsafe impl<const V: [<$s $b>]> NoUninit for super::[<$name $S $b>]<V> {}
+        unsafe impl<const V: [<$s $b>]> NoUninit for [<$name $S $b>]<V> {}
 
         #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
         #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
-        unsafe impl<const V: [<$s $b>]> CheckedBitPattern for super::[<$name $S $b>]<V> {
+        unsafe impl<const V: [<$s $b>]> CheckedBitPattern for [<$name $S $b>]<V> {
             type Bits = [<$s $b>];
 
             #[inline]

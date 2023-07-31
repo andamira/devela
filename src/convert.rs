@@ -1,6 +1,6 @@
 // devela::convert
 //
-//! Conversion helpers.
+//! Generic conversion helpers.
 //
 
 #[cfg(feature = "alloc")]

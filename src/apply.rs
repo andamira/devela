@@ -1,5 +1,7 @@
 // devela::apply
 //
+//! Free function chaining traits.
+//
 // Based on the code by George Burton, Unlicense licensed.
 // https://crates.io/crates/apply/0.3.0
 

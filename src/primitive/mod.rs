@@ -1,6 +1,6 @@
 // devela::primitive
 //
-//! helpers for primitives.
+//! Helpers for primitives.
 //
 
 mod join;

@@ -1,4 +1,7 @@
 // devela::project
+//
+//! Crate related helpers.
+//
 
 #[cfg(feature = "std")]
 use std::{
@@ -14,6 +17,7 @@ macro_rules! manifest_dir {
         std::path::Path::new(concat![std::env!("CARGO_MANIFEST_DIR"), $path])
     };
 }
+pub use manifest_dir;
 
 /// Returns an absolute [`PathBuf`], relative to the `crate`'s root.
 ///

@@ -1,6 +1,6 @@
 // devela:: ops
 //
-//!
+//! Operators.
 //
 // TOC
 // - pclamp

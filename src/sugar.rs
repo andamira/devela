@@ -62,6 +62,7 @@ macro_rules! cdbg {
         ($(cdbg!($val)),+,)
     };
 }
+pub use cdbg;
 
 /// *`i`nline `if`*.
 ///
@@ -146,6 +147,7 @@ macro_rules! iif {
         }
     };
 }
+pub use iif;
 
 #[cfg(test)]
 mod test_iif {
@@ -184,6 +186,7 @@ mod test_iif {
 /// ```
 #[macro_export]
 macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
+pub use rfs;
 
 /// Brief [`String`] constructor.
 ///
@@ -203,15 +206,20 @@ macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
 /// ```
 ///
 #[macro_export]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 macro_rules! S {
+    // new String
     () => {
         String::new()
     };
 
+    // new String from
     ($from:expr) => {
         String::from($from)
     };
 }
+pub use S;
 
 #[cfg(test)]
 #[allow(non_snake_case)]
