@@ -9,7 +9,7 @@ A varied collection of [`Rust`] development helper & extension utilities.
 
 ## Features
 
-- `NonSpecific` wrappers over the `NonZero` primitives. E.g.: [`NonSpecificU8`], plus convenient aliases `NonMax` and `NonMin`.
+- `NonSpecific*` wrappers over the `NonZero` primitives. E.g.: [`NonSpecificU8`], plus convenient aliases `NonMax*` and `NonMin*`.
 - conversion fns: [`vec_into_vec`], [`slice_into_vec`], [`slice_into_array`], [`try_vec_into_vec`], [`try_slice_into_vec`].
 - ops fns: [`pmin`], [`pmax`] & [`pclamp`] for `PartialOrd` values.
 - slice fns: [`subslice_left`], [`subslice_middle`], [`subslice_right`].
@@ -32,6 +32,9 @@ A varied collection of [`Rust`] development helper & extension utilities.
 - reexported external crates:
   - [`az`] casting traits.
   - [`paste!`] macro.
+
+- optional external trait implementations:
+  - `bytemuck` traits for `NonSpecific*` types.
 
 See [the documentation](https://docs.rs/devela/) for more information.
 
