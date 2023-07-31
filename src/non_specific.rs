@@ -33,7 +33,7 @@ macro_rules! impl_non_specific {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::" [<$name $S $b>] ";"]
+        #[doc = "use devela::non_specific::" [<$name $S $b>] ";"]
         ///
         #[doc = "assert![" [<$name $S $b>] "::<13>::new(13).is_none()];"]
         #[doc = "assert![" [<$name $S $b>] "::<13>::new(12).unwrap().get() == 12];"]

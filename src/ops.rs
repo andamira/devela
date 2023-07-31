@@ -11,7 +11,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::pclamp;
+/// use devela::ops::pclamp;
 ///
 /// assert_eq![0.4, pclamp(1.0, 0.2, 0.4)];
 /// assert_eq![0.2, pclamp(0.0, 0.2, 0.4)];
@@ -29,7 +29,7 @@ pub fn pclamp<T: PartialOrd>(value: T, min: T, max: T) -> T {
 ///
 /// # Examples
 /// ```
-/// use devela::pmax;
+/// use devela::ops::pmax;
 ///
 /// assert_eq![0.4, pmax(0.2, 0.4)];
 /// ```
@@ -44,7 +44,7 @@ pub fn pmax<T: PartialOrd>(a: T, b: T) -> T { if a > b { a } else { b } }
 ///
 /// # Example
 /// ```
-/// use devela::pmin;
+/// use devela::ops::pmin;
 ///
 /// assert_eq![0.2, pmin(0.2, 0.4)];
 /// ```

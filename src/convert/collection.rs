@@ -1,6 +1,6 @@
-// devela::convert
+// devela::convert::collection
 //
-//! Generic conversion helpers.
+//! Helpers for converting between collections.
 //
 
 #[cfg(feature = "alloc")]
@@ -11,11 +11,76 @@ use core::array::from_fn;
 #[cfg(not(feature = "safe"))]
 use core::mem::MaybeUninit;
 
+// not very succesful experiments.
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+pub trait ConvertToVec<T, U: From<T>> {
+    fn to_vec(self) -> Vec<U>;
+}
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+impl<T, U: From<T>> ConvertToVec<T, U> for Vec<T> {
+    fn to_vec(self) -> Vec<U> {
+        vec_into_vec(self)
+    }
+}
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+impl<T: Clone, U: From<T>> ConvertToVec<T, U> for &[T] {
+    fn to_vec(self) -> Vec<U> {
+        // println!(" > slice to vec"); // DEBUG
+        slice_into_vec(self)
+    }
+}
+
+// TEMP
+// pub trait ConvertFrom<T, U: From<T>, const N: usize> {
+//     fn to_vec(self) -> Vec<U>;
+//     // MAYBE
+//     fn to_array(self) -> [T; N];
+// }
+// impl<T, U: From<T>, const N: usize> ConvertFrom<T, U, N> for Vec<T> {
+//     fn to_vec(self) -> Vec<U> {
+//         vec_into_vec(self)
+//     }
+//     fn to_array(self) -> [T; N] {
+//         todo![]
+//     }
+// }
+// impl<T: Clone, U: From<T>, const N: usize> ConvertFrom<T, U, N> for &[T] {
+//     fn to_vec(self) -> Vec<U> {
+//         slice_into_vec(self)
+//     }
+//     fn to_array(self) -> [T; N] {
+//         slice_into_array(self)
+//     }
+// }
+
+/// WIP
+// NOTE: in order to differentiate I have to put names
+#[macro_export]
+macro_rules! convert {
+    (slice:$slice:expr) => {
+        slice_into_vec($slice)
+    };
+    (vec:$vec:expr) => {
+        vec_into_vec($vec)
+    }; // ($vec:expr => Vec<$t:ty> => Vec<$u:ty>) => {
+       //     vec_into_vec::<$t, $u>($vec)
+       // };
+       // ($slice:expr => &[$t:ty] => Vec<$u:ty>) => {
+       //     slice_into_vec::<$t, $u>($slice)
+       // };
+       // ($slice:expr => &[$t:ty] => [$u:ty; $n:expr]) => {
+       //     slice_into_array::<$t, $u, $n>($slice)
+       // };
+}
+
 /// Converts `Vec<T>` to `Vec<U>` when `U` implements `From<T>`.
 ///
 /// # Examples
 /// ```
-/// use devela::vec_into_vec;
+/// use devela::convert::vec_into_vec;
 ///
 /// let a: Vec<u32> = vec_into_vec(vec![1_u8, 2, 3]);
 /// assert_eq![a, vec![1_u32, 2, 3]];
@@ -36,7 +101,7 @@ pub fn vec_into_vec<T, U: From<T>>(vec: Vec<T>) -> Vec<U> {
 ///
 /// # Examples
 /// ```
-/// use devela::slice_into_vec;
+/// use devela::convert::slice_into_vec;
 ///
 /// let a: Vec<u32> = slice_into_vec(&[1_u8, 2, 3]);
 /// assert_eq![a, vec![1_u32, 2, 3]];
@@ -61,7 +126,7 @@ pub fn slice_into_vec<T: Clone, U: From<T>>(slice: &[T]) -> Vec<U> {
 ///
 /// # Examples
 /// ```
-/// use devela::slice_into_array;
+/// use devela::convert::slice_into_array;
 ///
 /// let a: [u32; 3] = slice_into_array(&[1_u8, 2, 3, 4, 5]);
 /// assert_eq![a, [1_u32, 2, 3]];
@@ -99,7 +164,7 @@ pub fn slice_into_array<T: Clone, U: From<T>, const N: usize>(slice: &[T]) -> [U
 ///
 /// # Examples
 /// ```
-/// use devela::try_vec_into_vec;
+/// use devela::convert::try_vec_into_vec;
 ///
 /// let a: Result<Vec<u32>, _> = try_vec_into_vec(vec![1_u64, 2, 3]);
 /// assert_eq![a, Ok(vec![1_u32, 2, 3])];
@@ -121,7 +186,7 @@ pub fn try_vec_into_vec<T, E, U: TryFrom<T, Error = E>>(vec: Vec<T>) -> Result<V
 ///
 /// # Examples
 /// ```
-/// use devela::try_slice_into_vec;
+/// use devela::convert::try_slice_into_vec;
 ///
 /// let a: Result<Vec<u32>, _> = try_slice_into_vec(&[1_u64, 2, 3]);
 /// assert_eq![a, Ok(vec![1_u32, 2, 3])];

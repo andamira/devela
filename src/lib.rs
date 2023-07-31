@@ -34,7 +34,6 @@ pub mod ext;
 pub mod format;
 pub mod non_specific;
 pub mod ops;
-pub mod primitive;
 pub mod project;
 pub mod slice;
 pub mod string;
@@ -47,7 +46,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         apply::{Also, Apply},
-        convert::slice_into_array,
+        convert::*,
         ext::{OptionExt, ResultExt},
         format::format_buf,
         non_specific::{
@@ -59,7 +58,6 @@ pub mod all {
             NonSpecificU32, NonSpecificU64, NonSpecificU8, NonSpecificUsize,
         },
         ops::{pclamp, pmax, pmin},
-        primitive::*,
         slice::{subslice_left, subslice_middle, subslice_right},
     };
 
@@ -71,19 +69,21 @@ pub mod all {
     pub use super::{
         format::iformat, // format_buf
         project::manifest_dir,
-        sugar::{cdbg, iif, rfs, S},
+        sugar::{iif, rfs},
     };
 
     #[cfg(feature = "alloc")]
     #[doc(inline)]
     pub use super::{
-        convert::{slice_into_vec, try_slice_into_vec, try_vec_into_vec, vec_into_vec},
         format::AltDebug,
         string::{counter_string, indent},
-        sugar::bx,
+        sugar::{bx, S},
     };
 
     #[cfg(feature = "std")]
     #[doc(inline)]
-    pub use super::project::{crate_root, crate_root_string};
+    pub use super::{
+        project::{crate_root, crate_root_string},
+        sugar::cdbg,
+    };
 }

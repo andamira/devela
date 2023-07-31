@@ -18,7 +18,7 @@ use alloc::{
 /// ## Examples
 ///
 /// ```
-/// use devela::counter_string;
+/// use devela::string::counter_string;
 ///
 /// assert_eq!("2*4*6*8*11*14*", counter_string(14, '*'));
 /// assert_eq!("_3_5_7_9_12_15_", counter_string(15, '_'));

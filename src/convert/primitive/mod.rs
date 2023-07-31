@@ -1,6 +1,6 @@
-// devela::primitive
+// devela::conversion::primitive
 //
-//! Helpers for primitives.
+//! Helpers for converting between primitives.
 //
 
 mod join;

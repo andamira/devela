@@ -30,7 +30,7 @@ pub use manifest_dir;
 ///
 /// # Examples
 /// ```
-/// use devela::crate_root;
+/// use devela::project::crate_root;
 ///
 /// match crate_root("") {
 ///     Ok(p) => println!("Current crate root is {:?}", p),

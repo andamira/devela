@@ -19,7 +19,7 @@ pub trait OptionExt<T> {
     ///
     /// # Examples
     /// ```
-    /// use devela::OptionExt;
+    /// use devela::ext::OptionExt;
     ///
     /// let x: Option<u32> = Some(2);
     /// assert_eq!(x.contains(&2), true);
@@ -44,7 +44,7 @@ pub trait OptionExt<T> {
     ///
     /// # Examples
     /// ```
-    /// use devela::OptionExt;
+    /// use devela::ext::OptionExt;
     /// use core::{cmp::min, ops::Add};
     ///
     /// let x = Some(2);
@@ -100,7 +100,7 @@ pub trait ResultExt<T, E> {
     ///
     /// # Examples
     /// ```
-    /// use devela::ResultExt;
+    /// use devela::ext::ResultExt;
     ///
     /// let x: Result<u32, &str> = Ok(2);
     /// assert_eq!(x.contains(&2), true);
@@ -120,7 +120,7 @@ pub trait ResultExt<T, E> {
     ///
     /// # Examples
     /// ```
-    /// use devela::ResultExt;
+    /// use devela::ext::ResultExt;
     ///
     /// let x: Result<u32, &str> = Ok(2);
     /// assert_eq!(x.contains_err(&"Some error message"), false);

@@ -1,4 +1,4 @@
-// devela::primitive::join
+// devela::conversion::primitive::join
 //
 //! construct an unsigned primitive by joining an array of smaller unsigned primitives.
 //
@@ -397,6 +397,6 @@ pub const fn u128_from_u8_le(v: [u8; 16]) -> u128 {
 /// Constructs a `u128` from an array of `[u8; 16]` in native-endian order.
 #[inline]
 #[must_use]
-pub const fn u4_from_u8_ne(v: [u8; 16]) -> u128 {
+pub const fn u128_from_u8_ne(v: [u8; 16]) -> u128 {
     u128::from_ne_bytes(v)
 }

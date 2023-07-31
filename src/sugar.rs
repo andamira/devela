@@ -18,7 +18,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::bx;
+/// use devela::all::bx;
 ///
 /// assert_eq![bx(45), Box::new(45)];
 /// ```
@@ -35,7 +35,7 @@ pub fn bx<T>(v: T) -> alloc::boxed::Box<T> {
 ///
 /// # Examples
 /// ```
-/// use devela::cdbg;
+/// use devela::all::cdbg;
 ///
 /// let a = vec![1, 2, 3];
 /// let _b = cdbg![a];
@@ -62,6 +62,7 @@ macro_rules! cdbg {
         ($(cdbg!($val)),+,)
     };
 }
+#[cfg(feature = "std")]
 pub use cdbg;
 
 /// *`i`nline `if`*.
@@ -72,7 +73,7 @@ pub use cdbg;
 ///
 /// Replacing `if`:
 /// ```
-/// use devela::iif;
+/// use devela::all::iif;
 ///
 /// // This
 /// let s = iif![1 > 0; true; false];
@@ -87,7 +88,7 @@ pub use cdbg;
 ///
 /// Replacing `if let`:
 /// ```
-/// use devela::iif;
+/// use devela::all::iif;
 ///
 /// let num = Some(123);
 ///
@@ -104,7 +105,7 @@ pub use cdbg;
 ///
 /// Nested:
 /// ```
-/// use devela::iif;
+/// use devela::all::iif;
 ///
 /// let mut s = String::new();
 /// let is_premium = Some(true);
@@ -179,7 +180,7 @@ mod test_iif {
 ///
 /// # Examples
 /// ```
-/// use devela::rfs;
+/// use devela::all::rfs;
 ///
 /// // rustfmt has no powers here
 /// rfs! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
@@ -192,7 +193,7 @@ pub use rfs;
 ///
 /// # Examples
 /// ```
-/// use devela::{iif, S};
+/// use devela::all::{iif, S};
 ///
 /// // This
 /// let s = iif![2 > 1; S!("string"); S!()];
@@ -219,6 +220,7 @@ macro_rules! S {
         String::from($from)
     };
 }
+#[cfg(feature = "alloc")]
 pub use S;
 
 #[cfg(test)]
