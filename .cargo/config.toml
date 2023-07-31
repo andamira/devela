@@ -1,3 +1,6 @@
+[build]
+
+
 [alias]
 
 # CHECK
@@ -90,12 +93,15 @@ tr = "tree"
 trf = "tree --format {p}:{f}" # with feature list
 trr = "tree --format {p}:{r}" # with repository url
 
-# Cargo subcommands:
-## cargo-expand
+#/ cargo subcommands: /#
+
+# https://crates.io/crates/cargo-expand
 E = "expand"
 Eb = "expand --bin"
 Ee = "expand --example"
 El = "expand --lib"
 
-[build]
-# rustdocflags = [ "--html-in-header", "./res/rustdoc-header.html"]
+# https://crates.io/crates/cargo-show-asm
+# e.g.: `cargo A -p devela --lib fn_name`
+# (must not be inline)
+A = "asm"
