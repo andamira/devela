@@ -46,7 +46,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         apply::{Also, Apply},
-        convert::*,
+        convert::{collection::*, primitive::*},
         ext::{OptionExt, ResultExt},
         format::format_buf,
         non_specific::{
