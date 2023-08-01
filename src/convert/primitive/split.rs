@@ -6,11 +6,6 @@
 /* u16 */
 
 /// Splits a `u16` into an array of `[u8; 2]` in big-endian order.
-// ```asm-x86-64
-// mov eax, edi
-// rol ax, 8
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u16_into_u8_be(v: u16) -> [u8; 2] {
@@ -18,10 +13,6 @@ pub const fn u16_into_u8_be(v: u16) -> [u8; 2] {
 }
 
 /// Splits a `u16` into an array of `[u8; 2]` in little-endian order.
-// ```asm-x86-64
-// mov eax, edi
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u16_into_u8_le(v: u16) -> [u8; 2] {
@@ -38,11 +29,6 @@ pub const fn u16_into_u8_ne(v: u16) -> [u8; 2] {
 /* u32 */
 
 /// Splits a `u32` into an array of `[u16; 2]` in big-endian order.
-// ```asm-x86-64
-// move eax, edi
-// rol eax, 16
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u32_into_u16_be(v: u32) -> [u16; 2] {
@@ -52,10 +38,6 @@ pub const fn u32_into_u16_be(v: u32) -> [u16; 2] {
 }
 
 /// Splits a `u32` into an array of `[u16; 2]` in little-endian order.
-// ```asm-x86-64
-// mov eax, edi
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u32_into_u16_le(v: u32) -> [u16; 2] {
@@ -76,11 +58,6 @@ pub const fn u32_into_u16_ne(v: u32) -> [u16; 2] {
 }
 
 /// Splits a `u32` into an array of `[u8; 4]` in big-endian order.
-// ```asm-x86-64
-// mov eax, edi
-// bswap eax
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u32_into_u8_be(v: u32) -> [u8; 4] {
@@ -88,10 +65,6 @@ pub const fn u32_into_u8_be(v: u32) -> [u8; 4] {
 }
 
 /// Splits a `u32` into an array of `[u8; 4]` in little-endian order.
-// ```asm-x86-64
-// mov eax, edi
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u32_into_u8_le(v: u32) -> [u8; 4] {
@@ -108,11 +81,6 @@ pub const fn u32_into_u8_ne(v: u32) -> [u8; 4] {
 /* u64 */
 
 /// Splits a `u64` into an array of `[u32; 2]` in big-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// rol rax, 32
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u64_into_u32_be(v: u64) -> [u32; 2] {
@@ -122,10 +90,6 @@ pub const fn u64_into_u32_be(v: u64) -> [u32; 2] {
 }
 
 /// Splits a `u64` into an array of `[u32; 2]` in little-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u64_into_u32_le(v: u64) -> [u32; 2] {
@@ -146,21 +110,6 @@ pub const fn u64_into_u32_ne(v: u64) -> [u32; 2] {
 }
 
 /// Splits a `u64` into an array of `[u16; 4]` in big-endian order.
-// ```asm-x86-64
-// mov rcx, rdi
-// shr rcx, 48
-// mov rdx, rdi
-// shl rdx, 48
-// mov eax, edi
-// and eax, -65536
-// shl rax, 16
-// or rax, rdx
-// shr rdi, 16
-// and edi, -65536
-// or rax, rdi
-// or rax, rcx
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u64_into_u16_be(v: u64) -> [u16; 4] {
@@ -172,10 +121,6 @@ pub const fn u64_into_u16_be(v: u64) -> [u16; 4] {
 }
 
 /// Splits a `u64` into an array of `[u16; 4]` in little-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u64_into_u16_le(v: u64) -> [u16; 4] {
@@ -198,10 +143,6 @@ pub const fn u64_into_u16_ne(v: u64) -> [u16; 4] {
 }
 
 /// Splits a `u64` into an array of `[u8; 8]` in big-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// bswap rax
-// ```
 #[inline]
 #[must_use]
 pub const fn u64_into_u8_be(v: u64) -> [u8; 8] {
@@ -209,10 +150,6 @@ pub const fn u64_into_u8_be(v: u64) -> [u8; 8] {
 }
 
 /// Splits a `u64` into an array of `[u8; 8]` in little-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u64_into_u8_le(v: u64) -> [u8; 8] {
@@ -233,12 +170,6 @@ pub const fn u64_into_u8_ne(v: u64) -> [u8; 8] {
 /* u128 */
 
 /// Splits a `u128` into an array of `[u64; 2]` in big-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// mov qword ptr [rdi], rdx
-// mov qword ptr [rdi + 8], rsi
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u128_into_u64_be(v: u128) -> [u64; 2] {
@@ -248,12 +179,6 @@ pub const fn u128_into_u64_be(v: u128) -> [u64; 2] {
 }
 
 /// Splits a `u128` into an array of `[u64; 2]` in little-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// mov qword ptr [rdi], rsi
-// mov qword ptr [rdi + 8], rdx
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u128_into_u64_le(v: u128) -> [u64; 2] {
@@ -274,20 +199,6 @@ pub const fn u128_into_u64_ne(v: u128) -> [u64; 2] {
 }
 
 /// Splits a `u128` into an array of `[u32; 4]` in big-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// movd xmm0, edx
-// shr rdx, 32
-// movd xmm1, esi
-// shr rsi, 32
-// movd xmm2, esi
-// punpckldq xmm2, xmm1
-// movd xmm1, edx
-// punpckldq xmm1, xmm0
-// punpcklqdq xmm1, xmm2
-// movdqu xmmword ptr [rdi], xmm1
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u128_into_u32_be(v: u128) -> [u32; 4] {
@@ -299,12 +210,6 @@ pub const fn u128_into_u32_be(v: u128) -> [u32; 4] {
 }
 
 /// Splits a `u128` into an array of `[u32; 4]` in little-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// mov qword ptr [rdi + 8], rdx
-// mov qword ptr [rdi], rsi
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u128_into_u32_le(v: u128) -> [u32; 4] {
@@ -327,36 +232,6 @@ pub const fn u128_into_u32_ne(v: u128) -> [u32; 4] {
 }
 
 /// Splits a `u128` into an array of `[u16; 8]` in big-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// mov rcx, rdx
-// mov rdi, rdx
-// movd xmm0, edx
-// shr rdx, 48
-// shr rcx, 32
-// shr rdi, 16
-// mov r8, rsi
-// mov r9, rsi
-// movd xmm1, esi
-// shr rsi, 48
-// shr r8, 32
-// shr r9, 16
-// movd xmm2, r9d
-// punpcklwd xmm2, xmm1
-// movd xmm1, r8d
-// movd xmm3, esi
-// punpcklwd xmm3, xmm1
-// punpckldq xmm3, xmm2
-// movd xmm1, edi
-// punpcklwd xmm1, xmm0
-// movd xmm0, ecx
-// movd xmm2, edx
-// punpcklwd xmm2, xmm0
-// punpckldq xmm2, xmm1
-// punpcklqdq xmm2, xmm3
-// movdqu xmmword ptr [rax], xmm2
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u128_into_u16_be(v: u128) -> [u16; 8] {
@@ -372,12 +247,6 @@ pub const fn u128_into_u16_be(v: u128) -> [u16; 8] {
 }
 
 /// Splits a `u128` into an array of `[u16; 8]` in little-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// mov qword ptr [rdi + 8], rdx
-// mov qword ptr [rdi], rsi
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u128_into_u16_le(v: u128) -> [u16; 8] {
@@ -404,14 +273,6 @@ pub const fn u128_into_u16_ne(v: u128) -> [u16; 8] {
 }
 
 /// Splits a `u128` into an array of `[u8; 16]` in big-endian order.
-// ```asm-x86-64
-// bswap rdx
-// bswap rsi
-// mov rax, rdi
-// mov qword ptr [rdi + 8], rsi
-// mov qword ptr [rdi], rdx
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u128_into_u8_be(v: u128) -> [u8; 16] {
@@ -419,12 +280,6 @@ pub const fn u128_into_u8_be(v: u128) -> [u8; 16] {
 }
 
 /// Splits a `u128` into an array of `[u8; 16]` in little-endian order.
-// ```asm-x86-64
-// mov rax, rdi
-// mov qword ptr [rdi + 8], rdx
-// mov qword ptr [rdi], rsi
-// ret
-// ```
 #[inline]
 #[must_use]
 pub const fn u128_into_u8_le(v: u128) -> [u8; 16] {
