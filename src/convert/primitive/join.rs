@@ -193,7 +193,7 @@ pub const fn u64_from_u16_ne(v: [u16; 4]) -> u64 {
 // bswap rax
 // ret
 // ```
-// #[inline]
+#[inline]
 #[must_use]
 pub const fn u64_from_u8_be(v: [u8; 8]) -> u64 {
     u64::from_be_bytes(v)
