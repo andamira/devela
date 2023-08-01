@@ -50,7 +50,7 @@ pub use paste::paste;
 pub mod apply;
 pub mod convert;
 pub mod ext;
-pub mod format;
+pub mod fmt;
 pub mod non_specific;
 pub mod ops;
 pub mod project;
@@ -67,7 +67,7 @@ pub mod all {
         apply::{Also, Apply},
         convert::{collection::*, primitive::*},
         ext::{OptionExt, ResultExt},
-        format::format_buf,
+        fmt::format_buf,
         non_specific::{
             NonMaxI128, NonMaxI16, NonMaxI32, NonMaxI64, NonMaxI8, NonMaxIsize, NonMaxU128,
             NonMaxU16, NonMaxU32, NonMaxU64, NonMaxU8, NonMaxUsize, NonMinI128, NonMinI16,
@@ -86,7 +86,7 @@ pub mod all {
     pub use super::paste;
     #[doc(inline)]
     pub use super::{
-        format::iformat, // format_buf
+        fmt::iformat, // format_buf
         project::manifest_dir,
         sugar::{iif, rfs},
     };
@@ -94,7 +94,7 @@ pub mod all {
     #[cfg(feature = "alloc")]
     #[doc(inline)]
     pub use super::{
-        format::AltDebug,
+        fmt::AltDebug,
         string::{counter_string, indent},
         sugar::{bx, S},
     };

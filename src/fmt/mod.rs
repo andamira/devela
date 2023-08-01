@@ -1,4 +1,4 @@
-// devela::format
+// devela::fmt
 //
 //! Formatting helpers.
 //
@@ -24,7 +24,7 @@ use alloc::{format, string::String};
 ///
 /// # Examples
 /// ```
-/// use devela::format::format_buf;
+/// use devela::fmt::format_buf;
 ///
 /// let mut buf = [0u8; 64];
 /// let s = format_buf(&mut buf, format_args!["Test: {} {}", "foo", 42]);
@@ -53,11 +53,11 @@ pub fn format_buf<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a str,
 #[macro_export]
 macro_rules! format_buf {
     ($buf:expr, $fmt:expr) => {
-        $crate::format::format_buf($buf, format_args![$fmt])
+        $crate::fmt::format_buf($buf, format_args![$fmt])
     };
 
     ($buf:expr, $fmt:expr, $($args:tt)*) => {
-        $crate::format::format_buf($buf, format_args![$fmt, $($args)*])
+        $crate::fmt::format_buf($buf, format_args![$fmt, $($args)*])
     };
 }
 // pub use format_buf; // FIXME
@@ -132,7 +132,7 @@ pub use iformat;
 ///
 /// Basic usage:
 /// ```
-/// use devela::format::AltDebug;
+/// use devela::fmt::AltDebug;
 ///
 /// #[derive(Debug)]
 /// struct Example(bool, i32, String);
@@ -145,7 +145,7 @@ pub use iformat;
 ///
 /// Custom usage:
 /// ```
-/// use devela::format::AltDebug;
+/// use devela::fmt::AltDebug;
 ///
 /// #[derive(Debug)]
 /// struct Example(bool, i32, String);
