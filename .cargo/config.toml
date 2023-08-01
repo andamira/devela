@@ -102,6 +102,15 @@ Ee = "expand --example"
 El = "expand --lib"
 
 # https://crates.io/crates/cargo-show-asm
-# e.g.: `cargo A -p devela --lib fn_name`
-# (must not be inline)
+# e.g.: `cargo A -p package_name --lib fn_name`
+# (functions need not be inlined)
 A = "asm"
+Ab = "asm --bin"
+Ae = "asm --example"
+Al = "asm --lib"
+
+# https://crates.io/crates/cargo-supply-chain
+S = "supply-chain"
+Sc = "supply-chain crates"
+Sp = "supply-chain publishers"
+Su = "supply-chain update"
