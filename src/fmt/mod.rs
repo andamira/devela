@@ -8,6 +8,13 @@
 // - https://doc.rust-lang.org/nightly/core/fmt/struct.Arguments.html
 // - https://stackoverflow.com/questions/50200268/how-can-i-use-the-format-macro-in-a-no-std-environment
 
+#[cfg(feature = "unsafe_int_buf")]
+mod int_buf;
+
+#[cfg(feature = "unsafe_int_buf")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_int_buf")))]
+pub use int_buf::{IntBuf, IntBufAble};
+
 #[allow(unused_imports)]
 use core::{
     cmp::min,

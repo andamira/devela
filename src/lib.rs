@@ -14,7 +14,11 @@
 //!   Functionality that depends on unsafe code wont be available.
 //! - `unsafe`: meta feature that enables all `unsafe_*` features.
 //! - `unsafe_uninit`: enables using [`MaybeUninit`][core::mem::MaybeUninit].
+//! - `unsafe_int_buf`: enable [`IntBuf`] struct and [`IntBufable`] trait.
 //! - `unsafe_non_specific`: enables unsafe in `NonSpecific*` impls.
+//!
+//! [`IntBuf`]: fmt::IntBuf
+//! [`IntBufable`]: fmt::IntBufAble
 //
 
 #![warn(clippy::all)]
@@ -29,6 +33,7 @@ compile_error!("You can't enable the `std` and `no-std` features at the same tim
     any(
         feature = "unsafe",
         feature = "unsafe_uninit",
+        feature = "unsafe_int_buf",
         feature = "unsafe_non_specific"
     )
 ))]
