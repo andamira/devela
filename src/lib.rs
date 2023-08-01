@@ -1,21 +1,20 @@
 // devela::lib
 //
-//! A varied collection of mostly low-level helpers & extensions for [Rust].
-//!
-//! [Rust]: https://www.rust-lang.org/
+//! A varied collection of helpers & extensions for developing in Rust.
 //!
 //! ## Crate features
 //!
 //! - `std` (default): enables functionality that depends on the standard library.
 //!   Disabling it makes the crate `no_std` compatible.
 //! - `alloc`: enables functionality that depends on allocation. Included in `std`.
-//!
+//! - `no-std`: enables functionality incompatible with `std` (unused).
+//! ---
 //! - `safe` (default): forbids `unsafe` code at the crate level.
 //!   Functionality that depends on unsafe code wont be available.
 //! - `unsafe`: meta feature that enables all `unsafe_*` features.
-//! - `unsafe_uninit`: enables using [`MaybeUninit`][core::mem::MaybeUninit].
-//! - `unsafe_int_buf`: enable [`IntBuf`] struct and [`IntBufable`] trait.
-//! - `unsafe_non_specific`: enables unsafe in `NonSpecific*` impls.
+//!   - `unsafe_uninit`: enables using [`MaybeUninit`][core::mem::MaybeUninit].
+//!   - `unsafe_int_buf`: enable [`IntBuf`] struct and [`IntBufable`] trait.
+//!   - `unsafe_non_specific`: enables unsafe in `NonSpecific*` impls.
 //!
 //! [`IntBuf`]: fmt::IntBuf
 //! [`IntBufable`]: fmt::IntBufAble
@@ -69,45 +68,19 @@ pub mod sugar;
 pub mod all {
     #[doc(inline)]
     pub use super::{
-        apply::{Also, Apply},
+        apply::*,
         convert::{collection::*, primitive::*},
-        ext::{OptionExt, ResultExt},
-        fmt::format_buf,
-        non_specific::{
-            NonMaxI128, NonMaxI16, NonMaxI32, NonMaxI64, NonMaxI8, NonMaxIsize, NonMaxU128,
-            NonMaxU16, NonMaxU32, NonMaxU64, NonMaxU8, NonMaxUsize, NonMinI128, NonMinI16,
-            NonMinI32, NonMinI64, NonMinI8, NonMinIsize, NonMinU128, NonMinU16, NonMinU32,
-            NonMinU64, NonMinU8, NonMinUsize, NonSpecificI128, NonSpecificI16, NonSpecificI32,
-            NonSpecificI64, NonSpecificI8, NonSpecificIsize, NonSpecificU128, NonSpecificU16,
-            NonSpecificU32, NonSpecificU64, NonSpecificU8, NonSpecificUsize,
-        },
-        ops::{pclamp, pmax, pmin},
-        slice::{subslice_left, subslice_middle, subslice_right},
+        ext::*,
+        fmt::*,
+        non_specific::*,
+        ops::*,
+        project::*,
+        slice::*,
+        string::*,
+        sugar::*,
     };
 
-    // macros
     /// Reexported from the [`paste`](https://docs.rs/paste) crate.
     /// Allows to paste identifiers in a macro.
     pub use super::paste;
-    #[doc(inline)]
-    pub use super::{
-        fmt::iformat, // format_buf
-        project::manifest_dir,
-        sugar::{iif, rfs},
-    };
-
-    #[cfg(feature = "alloc")]
-    #[doc(inline)]
-    pub use super::{
-        fmt::AltDebug,
-        string::{counter_string, indent},
-        sugar::{bx, S},
-    };
-
-    #[cfg(feature = "std")]
-    #[doc(inline)]
-    pub use super::{
-        project::{crate_root, crate_root_string},
-        sugar::cdbg,
-    };
 }

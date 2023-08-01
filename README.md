@@ -3,9 +3,7 @@
 [![Crate](https://img.shields.io/crates/v/devela.svg)](https://crates.io/crates/devela)
 [![API](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
 
-A varied collection of mostly low-level helpers & extensions for [Rust].
-
-[Rust]: https://www.rust-lang.org/
+A varied collection of helpers & extensions for developing in Rust.
 
 See [the documentation](https://docs.rs/devela/) for more information.
 
