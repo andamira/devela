@@ -102,12 +102,17 @@ Ee = "expand --example"
 El = "expand --lib"
 
 # https://crates.io/crates/cargo-show-asm
-# e.g.: `cargo A -p package_name --lib fn_name`
-# (functions need not be inlined)
-A = "asm"
-Ab = "asm --bin"
-Ae = "asm --example"
-Al = "asm --lib"
+# Functions need not to be inlined. Defaults to release mode.
+A = "asm -p devela"
+Ab = "asm -p devela --bin"
+Ae = "asm -p devela --example"
+Al = "asm -p devela --lib"
+Aub = "asm -p devela --no-default-features --features=unsafe,std --bin"
+Aue = "asm -p devela --no-default-features --features=unsafe,std --example"
+Aul = "asm -p devela --no-default-features --features=unsafe,std --lib"
+ANub = "asm -p devela --target thumbv7m-none-eabi --no-default-features --features=unsafe,no-std --bin"
+ANue = "asm -p devela --target thumbv7m-none-eabi --no-default-features --features=unsafe,no-std --example"
+ANul = "asm -p devela --target thumbv7m-none-eabi --no-default-features --features=unsafe,no-std --lib"
 
 # https://crates.io/crates/cargo-supply-chain
 S = "supply-chain"
