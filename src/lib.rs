@@ -1,8 +1,20 @@
-// devela
+// devela::lib
 //
-//! A varied collection of [`Rust`] development helper & extension utilities.
+//! A varied collection of mostly low-level helpers & extensions for [Rust].
 //!
-//! [`Rust`]: https://www.rust-lang.org/
+//! [Rust]: https://www.rust-lang.org/
+//!
+//! ## Crate features
+//!
+//! - `std` (default): enables functionality that depends on the standard library.
+//!   Disabling it makes the crate `no_std` compatible.
+//! - `alloc`: enables functionality that depends on allocation. Included in `std`.
+//!
+//! - `safe` (default): forbids `unsafe` code at the crate level.
+//!   Functionality that depends on unsafe code wont be available.
+//! - `unsafe`: meta feature that enables all `unsafe_*` features.
+//! - `unsafe_uninit`: enables using [`MaybeUninit`][core::mem::MaybeUninit].
+//! - `unsafe_non_specific`: enables unsafe in `NonSpecific*` impls.
 //
 
 #![warn(clippy::all)]
@@ -12,8 +24,15 @@
 
 #[cfg(all(feature = "std", feature = "no-std"))]
 compile_error!("You can't enable the `std` and `no-std` features at the same time.");
-#[cfg(all(feature = "safe", feature = "unsafe"))]
-compile_error!("You can't enable the `safe` and `unsafe` features at the same time.");
+#[cfg(all(
+    feature = "safe",
+    any(
+        feature = "unsafe",
+        feature = "unsafe_uninit",
+        feature = "unsafe_non_specific"
+    )
+))]
+compile_error!("You can't enable the `safe` and `unsafe*` features at the same time.");
 
 #[cfg(feature = "alloc")]
 extern crate alloc;

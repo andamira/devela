@@ -24,16 +24,17 @@ publish = true
 [features]
 default = ["std", "safe"]
 
-std = ["alloc"]
-alloc = [] # allocating no-std
-no-std = [] # non-allocating no-std, incompatible with "std" (unused)
+std = ["alloc"] # enable features that depends on "std"
+alloc = [] # enable features that depend on allocation
+no-std = [] # enable features incompatible with "std" (unused)
 
-safe = [] # disable unsafe in this crate
-safest = ["safe"] # disable unsafe in dependencies (unused)
-unsafe = [] # enable unsafe alternatives, incompatible with "safe" (unused)
+safe = [] # forbid unsafe at the crate level
+unsafe = ["unsafe_uninit", "unsafe_non_specific"]
+unsafe_uninit = [] # enable using `MaybeUninit`.
+unsafe_non_specific = [] # enable unsafe in `NonSpecific*` implementations
 
 nightly = [] # used only for better docs
-nightly_docs = ["nightly", "std", "bytemuck"] # features to document
+nightly_docs = ["nightly", "std", "unsafe", "bytemuck"] # features to document
 
 
 [dependencies]

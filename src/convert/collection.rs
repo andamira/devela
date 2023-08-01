@@ -6,76 +6,6 @@
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 
-#[cfg(feature = "safe")]
-use core::array::from_fn;
-#[cfg(not(feature = "safe"))]
-use core::mem::MaybeUninit;
-
-// not very succesful experiments.
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub trait ConvertToVec<T, U: From<T>> {
-    fn to_vec(self) -> Vec<U>;
-}
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-impl<T, U: From<T>> ConvertToVec<T, U> for Vec<T> {
-    fn to_vec(self) -> Vec<U> {
-        vec_into_vec(self)
-    }
-}
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-impl<T: Clone, U: From<T>> ConvertToVec<T, U> for &[T] {
-    fn to_vec(self) -> Vec<U> {
-        // println!(" > slice to vec"); // DEBUG
-        slice_into_vec(self)
-    }
-}
-
-// TEMP
-// pub trait ConvertFrom<T, U: From<T>, const N: usize> {
-//     fn to_vec(self) -> Vec<U>;
-//     // MAYBE
-//     fn to_array(self) -> [T; N];
-// }
-// impl<T, U: From<T>, const N: usize> ConvertFrom<T, U, N> for Vec<T> {
-//     fn to_vec(self) -> Vec<U> {
-//         vec_into_vec(self)
-//     }
-//     fn to_array(self) -> [T; N] {
-//         todo![]
-//     }
-// }
-// impl<T: Clone, U: From<T>, const N: usize> ConvertFrom<T, U, N> for &[T] {
-//     fn to_vec(self) -> Vec<U> {
-//         slice_into_vec(self)
-//     }
-//     fn to_array(self) -> [T; N] {
-//         slice_into_array(self)
-//     }
-// }
-
-/// WIP
-// NOTE: in order to differentiate I have to put names
-#[macro_export]
-macro_rules! convert {
-    (slice:$slice:expr) => {
-        slice_into_vec($slice)
-    };
-    (vec:$vec:expr) => {
-        vec_into_vec($vec)
-    }; // ($vec:expr => Vec<$t:ty> => Vec<$u:ty>) => {
-       //     vec_into_vec::<$t, $u>($vec)
-       // };
-       // ($slice:expr => &[$t:ty] => Vec<$u:ty>) => {
-       //     slice_into_vec::<$t, $u>($slice)
-       // };
-       // ($slice:expr => &[$t:ty] => [$u:ty; $n:expr]) => {
-       //     slice_into_array::<$t, $u, $n>($slice)
-       // };
-}
-
 /// Converts `Vec<T>` to `Vec<U>` when `U` implements `From<T>`.
 ///
 /// # Examples
@@ -137,9 +67,9 @@ pub fn slice_into_vec<T: Clone, U: From<T>>(slice: &[T]) -> Vec<U> {
 #[must_use]
 pub fn slice_into_array<T: Clone, U: From<T>, const N: usize>(slice: &[T]) -> [U; N] {
     if slice.len() >= N {
-        #[cfg(feature = "safe")]
+        #[cfg(not(feature = "unsafe_uninit"))]
         {
-            let mut array: [U; N] = from_fn(|i| U::from(slice[i].clone()));
+            let mut array: [U; N] = core::array::from_fn(|i| U::from(slice[i].clone()));
 
             for (i, item) in slice.iter().take(N).enumerate() {
                 array[i] = U::from(item.clone());
@@ -147,8 +77,10 @@ pub fn slice_into_array<T: Clone, U: From<T>, const N: usize>(slice: &[T]) -> [U
             array
         }
 
-        #[cfg(not(feature = "safe"))]
+        #[cfg(feature = "unsafe_uninit")]
         {
+            use core::mem::MaybeUninit;
+
             let mut array: [MaybeUninit<U>; N] = unsafe { MaybeUninit::uninit().assume_init() };
             for i in 0..N {
                 array[i] = MaybeUninit::new(U::from(slice[i].clone()));

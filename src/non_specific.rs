@@ -52,10 +52,10 @@ macro_rules! impl_non_specific {
         impl Default for [<NonMax $S $b>] {
             #[inline]
             fn default() -> Self {
-                #[cfg(feature = "safe")]
+                #[cfg(not(feature = "unsafe_non_specific"))]
                 return [<NonMax $S $b>]::new([<$s $b>]::default()).unwrap();
 
-                #[cfg(not(feature = "safe"))]
+                #[cfg(feature = "unsafe_non_specific")]
                 // SAFETY: the default numeric primitive values is always 0,
                 // and their maximum value is never 0.
                 unsafe { return [<NonMax $S $b>]::new_unchecked([<$s $b>]::default()); }
@@ -84,8 +84,8 @@ macro_rules! impl_non_specific {
             /// Panics in debug if the given `value` is equal to `V`.
             /// # Safety
             /// The given `value` must never be equal to `V`.
-            #[cfg(not(feature = "safe"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "not(safe)")))]
+            #[cfg(feature = "unsafe_non_specific")]
+            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_non_specific")))]
             pub const unsafe fn new_unchecked(value: [<$s $b>]) -> Self {
                 // debug_assert_ne![value, V]; // non-const
                 #[cfg(debug_assertions)]
@@ -164,10 +164,10 @@ macro_rules! impl_non_specific {
             fn try_from(value: [<$s $b>]) -> Result<Self, Self::Error> {
                 // We generate a TryFromIntError by intentionally causing a failed conversion.
 
-                #[cfg(feature = "safe")]
+                #[cfg(not(feature = "unsafe_non_specific"))]
                 return Self::new(value).ok_or_else(|| i8::try_from(255_u8).unwrap_err());
 
-                #[cfg(not(feature = "safe"))]
+                #[cfg(feature = "unsafe_non_specific")]
                 return Self::new(value)
                     .ok_or_else(|| unsafe { i8::try_from(255_u8).unwrap_err_unchecked() });
             }
@@ -175,20 +175,24 @@ macro_rules! impl_non_specific {
 
         /* external impls*/
 
-        #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_non_specific"))]
+        #[cfg_attr(feature = "nightly",
+            doc(cfg(all(feature = "bytemuck", feature = "unsafe_non_specific"))))]
         unsafe impl<const V: [<$s $b>]> ZeroableInOption for [<$name $S $b>]<V> {}
 
-        #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_non_specific"))]
+        #[cfg_attr(feature = "nightly",
+            doc(cfg(all(feature = "bytemuck", feature = "unsafe_non_specific"))))]
         unsafe impl<const V: [<$s $b>]> PodInOption for [<$name $S $b>]<V> {}
 
-        #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_non_specific"))]
+        #[cfg_attr(feature = "nightly",
+            doc(cfg(all(feature = "bytemuck", feature = "unsafe_non_specific"))))]
         unsafe impl<const V: [<$s $b>]> NoUninit for [<$name $S $b>]<V> {}
 
-        #[cfg(all(feature = "bytemuck", not(feature = "safe")))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "not(safe)"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_non_specific"))]
+        #[cfg_attr(feature = "nightly",
+            doc(cfg(all(feature = "bytemuck", feature = "unsafe_non_specific"))))]
         unsafe impl<const V: [<$s $b>]> CheckedBitPattern for [<$name $S $b>]<V> {
             type Bits = [<$s $b>];
 
