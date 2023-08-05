@@ -44,9 +44,6 @@ extern crate alloc;
 extern crate devela_macros;
 pub use devela_macros::compile;
 
-/// Reexported [`az`](https://docs.rs/az) crate. Provides casts and checked casts.
-#[doc(inline)]
-pub use az;
 /// Reexported from the [`paste`](https://docs.rs/paste) crate.
 /// Allows to paste identifiers in a macro.
 pub use paste::paste;
@@ -70,7 +67,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         apply::*,
-        convert::{collection::*, primitive::*},
+        convert::{az::*, collection::*, primitive::*},
         fmt::*,
         num::*,
         ops::*,
