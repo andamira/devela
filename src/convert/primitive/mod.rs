@@ -13,6 +13,8 @@ mod split;
 
 pub use {join::*, split::*};
 
+/* define traits */
+
 /// Offers methods to construct a primitive `T` from a slice of `U` primitives.
 ///
 /// Methods expecting an array are more efficient than the ones expecting an
@@ -21,6 +23,8 @@ pub use {join::*, split::*};
 ///   fill in the missing values with zeros.
 /// - If the slice contains more elements than required, the method will
 ///   ignore the extra elements.
+///
+/// See also [`IntoPrimitives`].
 pub trait FromPrimitives<T, U, const LEN: usize> {
     /// Constructs a primitive `T` from an array of `U` in big-endian order.
     #[must_use]
@@ -50,6 +54,8 @@ pub trait FromPrimitives<T, U, const LEN: usize> {
 ///   fill in the missing values with zeros.
 /// - If the slice contains more elements than required, the method will
 ///   ignore the extra elements.
+///
+/// See also [`FromPrimitives`].
 pub trait IntoPrimitives<T, U, const LEN: usize> {
     /// Splits a primitive `T` from a slice of `U` in big-endian order.
     #[must_use]

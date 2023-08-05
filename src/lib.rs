@@ -59,7 +59,7 @@ pub mod result;
 pub mod slice;
 pub mod string;
 
-/// All the types and traits together.
+/// All the types and traits in the same place.
 ///
 /// Everything is re-exported from here.
 pub mod all {
@@ -81,4 +81,15 @@ pub mod all {
     /// Reexported from the [`paste`](https://docs.rs/paste) crate.
     /// Allows to paste identifiers in a macro.
     pub use super::paste;
+}
+
+/// The common prelude.
+pub mod prelude {
+    pub use super::{
+        convert::{FromPrimitives, IntoPrimitives},
+        ops::{Also, Apply},
+        option::OptionExt,
+        result::ResultExt,
+        slice::SliceExt,
+    };
 }

@@ -3,7 +3,7 @@
 //! Option, extends [`core::option`].
 //
 
-/// Extension trait providing additional methods for `Option`.
+/// Extension trait providing additional methods for [`Option`].
 ///
 /// See also [`ResultExt`][crate::result::ResultExt].
 //
