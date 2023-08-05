@@ -11,11 +11,10 @@ use proc_macro::TokenStream;
 /// Anything other than `true` is considered `false` and the code wont compile.
 ///
 /// It supports the `not()` option that makes `true` become `false`
-/// and anything other than `true` become `true`.
+/// and anything other than `true` becomes `true`.
 ///
 /// # Examples
 /// ```
-/// # extern crate devela_macros;
 /// # use devela_macros::compile;
 /// #[compile(true)]
 /// fn compiled() {}
