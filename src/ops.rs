@@ -1,4 +1,4 @@
-// devela:: ops
+// devela::ops
 //
 //! Operators.
 //

@@ -55,7 +55,7 @@ pub mod apply;
 pub mod convert;
 pub mod ext;
 pub mod fmt;
-pub mod non_specific;
+pub mod num;
 pub mod ops;
 pub mod project;
 pub mod slice;
@@ -72,7 +72,7 @@ pub mod all {
         convert::{collection::*, primitive::*},
         ext::*,
         fmt::*,
-        non_specific::*,
+        num::*,
         ops::*,
         project::*,
         slice::*,

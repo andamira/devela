@@ -1,4 +1,4 @@
-// devela::non_specific
+// devela::num::non_specific
 //
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //
@@ -33,7 +33,7 @@ macro_rules! impl_non_specific {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::non_specific::" [<$name $S $b>] ";"]
+        #[doc = "use devela::num::" [<$name $S $b>] ";"]
         ///
         #[doc = "assert![" [<$name $S $b>] "::<13>::new(13).is_none()];"]
         #[doc = "assert![" [<$name $S $b>] "::<13>::new(12).unwrap().get() == 12];"]
