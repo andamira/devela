@@ -1,12 +1,7 @@
-// devela::ext
+// devela::option
 //
-//! Extension traits for core types.
+//! Option, extends [`std::option`].
 //
-// TOC
-// - OptionExt
-// - ResultExt
-
-/* Option */
 
 /// Extension trait providing additional methods for `Option`.
 //
@@ -19,7 +14,7 @@ pub trait OptionExt<T> {
     ///
     /// # Examples
     /// ```
-    /// use devela::ext::OptionExt;
+    /// use devela::option::OptionExt;
     ///
     /// let x: Option<u32> = Some(2);
     /// assert_eq!(x.contains(&2), true);
@@ -44,7 +39,7 @@ pub trait OptionExt<T> {
     ///
     /// # Examples
     /// ```
-    /// use devela::ext::OptionExt;
+    /// use devela::option::OptionExt;
     /// use core::{cmp::min, ops::Add};
     ///
     /// let x = Some(2);
@@ -84,79 +79,6 @@ impl<T> OptionExt<T> for Option<T> {
             (Some(l), Some(r)) => Some(f(l, r)),
             (x @ Some(_), None) | (None, x @ Some(_)) => x,
             (None, None) => None,
-        }
-    }
-}
-
-/* Result */
-
-/// Extension trait providing additional methods for `Result`.
-//
-// Based on work from:
-// - https://github.com/rust-lang/rust/issues/62358 closed proposal.
-// - https://crates.io/crates/result-ext by Simon Ochsenreither
-pub trait ResultExt<T, E> {
-    /// Returns `true` if the result is an [`Ok`] value containing the given value.
-    ///
-    /// # Examples
-    /// ```
-    /// use devela::ext::ResultExt;
-    ///
-    /// let x: Result<u32, &str> = Ok(2);
-    /// assert_eq!(x.contains(&2), true);
-    ///
-    /// let x: Result<u32, &str> = Ok(3);
-    /// assert_eq!(x.contains(&2), false);
-    ///
-    /// let x: Result<u32, &str> = Err("Some error message");
-    /// assert_eq!(x.contains(&2), false);
-    /// ```
-    #[must_use]
-    fn contains<U>(&self, x: &U) -> bool
-    where
-        U: PartialEq<T>;
-
-    /// Returns `true` if the result is an [`Err`] value containing the given value.
-    ///
-    /// # Examples
-    /// ```
-    /// use devela::ext::ResultExt;
-    ///
-    /// let x: Result<u32, &str> = Ok(2);
-    /// assert_eq!(x.contains_err(&"Some error message"), false);
-    ///
-    /// let x: Result<u32, &str> = Err("Some error message");
-    /// assert_eq!(x.contains_err(&"Some error message"), true);
-    ///
-    /// let x: Result<u32, &str> = Err("Some other error message");
-    /// assert_eq!(x.contains_err(&"Some error message"), false);
-    /// ```
-    #[must_use]
-    fn contains_err<F>(&self, f: &F) -> bool
-    where
-        F: PartialEq<E>;
-}
-
-impl<T, E> ResultExt<T, E> for Result<T, E> {
-    #[inline]
-    fn contains<U>(&self, x: &U) -> bool
-    where
-        U: PartialEq<T>,
-    {
-        match *self {
-            Ok(ref y) => x == y,
-            Err(_) => false,
-        }
-    }
-
-    #[inline]
-    fn contains_err<F>(&self, f: &F) -> bool
-    where
-        F: PartialEq<E>,
-    {
-        match *self {
-            Ok(_) => false,
-            Err(ref e) => f == e,
         }
     }
 }

@@ -53,11 +53,12 @@ pub use paste::paste;
 
 pub mod apply;
 pub mod convert;
-pub mod ext;
 pub mod fmt;
 pub mod num;
 pub mod ops;
+pub mod option;
 pub mod project;
+pub mod result;
 pub mod slice;
 pub mod string;
 pub mod sugar;
@@ -70,11 +71,12 @@ pub mod all {
     pub use super::{
         apply::*,
         convert::{collection::*, primitive::*},
-        ext::*,
         fmt::*,
         num::*,
         ops::*,
+        option::*,
         project::*,
+        result::*,
         slice::*,
         string::*,
         sugar::*,
