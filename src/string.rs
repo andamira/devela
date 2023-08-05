@@ -1,6 +1,6 @@
 // devela::string
 //
-//! String related helpers.
+//! Strings, extends [`alloc::string`].
 //
 
 #[cfg(feature = "alloc")]
@@ -62,3 +62,38 @@ pub fn indent(spaces: usize, string: &str) -> String {
     // Join the modified lines back together
     indented_lines.join("\n")
 }
+
+/// Brief [`String`] constructor.
+///
+/// # Examples
+/// ```
+/// use devela::all::{iif, S};
+///
+/// // This
+/// let s = iif![2 > 1; S!("string"); S!()];
+///
+/// // Would be equivalent to
+/// let s = if 2 > 1 {
+///     String::from("string")
+/// } else {
+///     "".into()
+/// };
+///
+/// ```
+///
+#[macro_export]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+macro_rules! S {
+    // new String
+    () => {
+        String::new()
+    };
+
+    // new String from
+    ($from:expr) => {
+        String::from($from)
+    };
+}
+#[cfg(feature = "alloc")]
+pub use S;

@@ -10,7 +10,6 @@
 //   - cdbg!
 //   - iif!
 //   - rfs!
-//   - S!
 
 /* fns */
 
@@ -188,40 +187,6 @@ mod test_iif {
 #[macro_export]
 macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
 pub use rfs;
-
-/// Brief [`String`] constructor.
-///
-/// # Examples
-/// ```
-/// use devela::all::{iif, S};
-///
-/// // This
-/// let s = iif![2 > 1; S!("string"); S!()];
-///
-/// // Would be equivalent to
-/// let s = if 2 > 1 {
-///     String::from("string")
-/// } else {
-///     "".into()
-/// };
-/// ```
-///
-#[macro_export]
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-macro_rules! S {
-    // new String
-    () => {
-        String::new()
-    };
-
-    // new String from
-    ($from:expr) => {
-        String::from($from)
-    };
-}
-#[cfg(feature = "alloc")]
-pub use S;
 
 #[cfg(test)]
 #[allow(non_snake_case)]
