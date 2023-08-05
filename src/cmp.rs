@@ -1,11 +1,36 @@
 // devela::cmp
 //
 //! Comparing and ordering, extends [`core::cmp`].
+//!
+//! This module defines many constant functions for comparing primitives, and the
+//! [`pclamp`], [`pmax`] and [`pmin`] functions for comparing partially ordered values.
 //
-// TOC
-// - pclamp
-// - pmax
-// - pmin
+
+use crate::paste;
+
+// generate the const fns for primitive comparison
+macro_rules! primitive_const_cmp {
+    // $p: the types of the primitives
+    ($($p:expr),+) => { paste! { $( primitive_const_cmp![@$p]; )+ }};
+
+    // $p: the type of the primitive
+    (@$p:expr) => { paste! {
+        #[doc = "Compares and returns a " $p " clamped between `min` and `max`."]
+        #[inline]
+        pub const fn [<clamp_$p>](value: $p, min: $p, max: $p) -> $p {
+            [<min_$p>]([<max_$p>](value, min), max)
+        }
+
+        #[doc = "Compares and returns the maximum of two " $p " values."]
+        #[inline]
+        pub const fn [<max_$p>](a: $p, b: $p) -> $p { if a > b { a } else { b } }
+
+        #[doc = "Compares and returns the minimum of two " $p " values."]
+        #[inline]
+        pub const fn [<min_$p>](a: $p, b: $p) -> $p { if a < b { a } else { b } }
+    }};
+}
+primitive_const_cmp![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
 
 /// Compares and returns a [`PartialOrd`]ered `value` clamped between `min` and `max`.
 ///
@@ -16,7 +41,7 @@
 /// assert_eq![0.4, pclamp(1.0, 0.2, 0.4)];
 /// assert_eq![0.2, pclamp(0.0, 0.2, 0.4)];
 /// ```
-#[inline(always)]
+#[inline]
 #[rustfmt::skip]
 pub fn pclamp<T: PartialOrd>(value: T, min: T, max: T) -> T {
     pmin(pmax(value, min), max)
@@ -33,7 +58,7 @@ pub fn pclamp<T: PartialOrd>(value: T, min: T, max: T) -> T {
 ///
 /// assert_eq![0.4, pmax(0.2, 0.4)];
 /// ```
-#[inline(always)]
+#[inline]
 #[rustfmt::skip]
 pub fn pmax<T: PartialOrd>(a: T, b: T) -> T { if a > b { a } else { b } }
 
@@ -48,7 +73,7 @@ pub fn pmax<T: PartialOrd>(a: T, b: T) -> T { if a > b { a } else { b } }
 ///
 /// assert_eq![0.2, pmin(0.2, 0.4)];
 /// ```
-#[inline(always)]
+#[inline]
 #[rustfmt::skip]
 pub fn pmin<T: PartialOrd>(a: T, b: T) -> T { if a < b { a } else { b } }
 
