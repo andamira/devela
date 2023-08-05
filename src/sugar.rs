@@ -3,21 +3,6 @@
 //! Syntax sugar abstractions.
 //
 
-/// Brief [`Box`][alloc::boxed::Box] constructor.
-///
-/// # Examples
-/// ```
-/// use devela::all::bx;
-///
-/// assert_eq![bx(45), Box::new(45)];
-/// ```
-#[inline(always)]
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub fn bx<T>(v: T) -> alloc::boxed::Box<T> {
-    alloc::boxed::Box::new(v)
-}
-
 /// *`i`nline `if`*.
 ///
 /// A inline alternative for `if` and `if let`.

@@ -49,6 +49,7 @@ pub use devela_macros::compile;
 pub use paste::paste;
 
 pub mod apply;
+pub mod boxed;
 pub mod cmp;
 pub mod convert;
 pub mod fmt;
@@ -67,6 +68,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         apply::*,
+        boxed::*,
         cmp::*,
         convert::{az::*, collection::*, primitive::*},
         fmt::*,
