@@ -1,6 +1,6 @@
-// devela::project
+// devela::path
 //
-//! Crate related helpers.
+//! Paths, extends [`std::path`].
 //
 
 #[cfg(feature = "std")]
@@ -30,7 +30,7 @@ pub use manifest_dir;
 ///
 /// # Examples
 /// ```
-/// use devela::project::crate_root;
+/// use devela::path::crate_root;
 ///
 /// match crate_root("") {
 ///     Ok(p) => println!("Current crate root is {:?}", p),

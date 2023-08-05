@@ -54,7 +54,7 @@ pub mod convert;
 pub mod fmt;
 pub mod num;
 pub mod option;
-pub mod project;
+pub mod path;
 pub mod result;
 pub mod slice;
 pub mod string;
@@ -72,7 +72,7 @@ pub mod all {
         fmt::*,
         num::*,
         option::*,
-        project::*,
+        path::*,
         result::*,
         slice::*,
         string::*,
