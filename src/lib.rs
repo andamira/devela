@@ -48,18 +48,17 @@ pub use devela_macros::compile;
 /// Allows to paste identifiers in a macro.
 pub use paste::paste;
 
-pub mod apply;
 pub mod boxed;
 pub mod cmp;
 pub mod convert;
 pub mod fmt;
 pub mod num;
+pub mod ops;
 pub mod option;
 pub mod path;
 pub mod result;
 pub mod slice;
 pub mod string;
-pub mod sugar;
 
 /// All the types and traits.
 ///
@@ -67,18 +66,17 @@ pub mod sugar;
 pub mod all {
     #[doc(inline)]
     pub use super::{
-        apply::*,
         boxed::*,
         cmp::*,
         convert::{az::*, collection::*, primitive::*},
         fmt::*,
         num::*,
+        ops::*,
         option::*,
         path::*,
         result::*,
         slice::*,
         string::*,
-        sugar::*,
     };
 
     /// Reexported from the [`paste`](https://docs.rs/paste) crate.

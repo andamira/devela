@@ -1,6 +1,6 @@
-// devela::sugar
+// devela::ops::iif
 //
-//! Syntax sugar abstractions.
+//! Miscellaneous items.
 //
 
 /// *`i`nline `if`*.
@@ -11,7 +11,7 @@
 ///
 /// Replacing `if`:
 /// ```
-/// use devela::all::iif;
+/// use devela::ops::iif;
 ///
 /// // This
 /// let s = iif![1 > 0; true; false];
@@ -26,7 +26,7 @@
 ///
 /// Replacing `if let`:
 /// ```
-/// use devela::all::iif;
+/// use devela::ops::iif;
 ///
 /// let num = Some(123);
 ///
@@ -43,7 +43,7 @@
 ///
 /// Nested:
 /// ```
-/// use devela::all::iif;
+/// use devela::ops::iif;
 ///
 /// let mut s = String::new();
 /// let is_premium = Some(true);
@@ -90,7 +90,7 @@ pub use iif;
 
 #[cfg(test)]
 mod test_iif {
-    use crate::iif;
+    use crate::ops::iif;
 
     #[test]
     fn iif() {

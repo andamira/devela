@@ -1,4 +1,4 @@
-// devela::apply
+// devela::ops::chain
 //
 //! Free function chaining traits.
 //
@@ -9,7 +9,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::apply::Apply;
+/// use devela::ops::Apply;
 ///
 /// let s = 1
 ///     .apply(|s| s * 2)
@@ -58,7 +58,7 @@ impl<T: ?Sized, Res> Apply<Res> for T {}
 /// reference and returns the modified value.
 ///
 /// ```
-/// use devela::apply::Also;
+/// use devela::ops::Also;
 ///
 /// let v = vec![3, 2, 1, 5]
 ///     .also_mut(|v| v.sort())
