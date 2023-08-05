@@ -4,6 +4,8 @@
 //
 
 /// Extension trait providing additional methods for `Option`.
+///
+/// See also [`ResultExt`][crate::result::ResultExt].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 closed proposal.

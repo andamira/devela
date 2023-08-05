@@ -60,7 +60,7 @@ pub mod result;
 pub mod slice;
 pub mod string;
 
-/// All the types and traits.
+/// All the types and traits together.
 ///
 /// Everything is re-exported from here.
 pub mod all {

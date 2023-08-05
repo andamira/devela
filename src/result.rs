@@ -4,6 +4,8 @@
 //
 
 /// Extension trait providing additional methods for `Result`.
+///
+/// See also [`OptionExt`][crate::option::OptionExt].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 closed proposal.
@@ -48,6 +50,33 @@ pub trait ResultExt<T, E> {
     fn contains_err<F>(&self, f: &F) -> bool
     where
         F: PartialEq<E>;
+
+    // WIP
+    // /// Merges `self` with another `Result`.
+    // ///
+    // /// Returns
+    // /// - `Ok(f(l, r))` if both options are `Ok(_)`.
+    // /// - `Err((le, re))` if any or both options are `Err(_)`.
+    // ///
+    // /// # Examples
+    // /// ```
+    // /// use devela::result::OptionExt;
+    // /// use core::{cmp::min, ops::Add};
+    // ///
+    // /// let x = Some(2);
+    // /// let y = Some(4);
+    // ///
+    // /// assert_eq!(x.reduce(y, Add::add), Some(6));
+    // /// assert_eq!(x.reduce(y, min), Some(2));
+    // ///
+    // /// assert_eq!(x.reduce(None, Add::add), x);
+    // /// assert_eq!(None.reduce(y, min), y);
+    // ///
+    // /// assert_eq!(None.reduce(None, i32::add), None);
+    // /// ```
+    // fn reduce<F>(self, other: Result<T, E>, f: F) -> Result<T, E>
+    // where
+    //     F: FnOnce(T, T) -> T;
 }
 
 impl<T, E> ResultExt<T, E> for Result<T, E> {
@@ -72,4 +101,17 @@ impl<T, E> ResultExt<T, E> for Result<T, E> {
             Err(ref e) => f == e,
         }
     }
+
+    // // WIP
+    // #[inline]
+    // fn reduce<F>(self, other: Result<T, E>, f: F) -> Result<T, E>
+    // where
+    //     F: FnOnce(T, T) -> T,
+    // {
+    //     match (self, other) {
+    //         (Some(l), Some(r)) => Some(f(l, r)),
+    //         (x @ Some(_), None) | (None, x @ Some(_)) => x,
+    //         (None, None) => None,
+    //     }
+    // }
 }
