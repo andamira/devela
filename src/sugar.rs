@@ -2,16 +2,6 @@
 //
 //! Syntax sugar abstractions.
 //
-// TOC
-// - fns
-//   - bx
-//
-// - macros
-//   - cdbg!
-//   - iif!
-//   - rfs!
-
-/* fns */
 
 /// Brief [`Box`][alloc::boxed::Box] constructor.
 ///
@@ -27,42 +17,6 @@
 pub fn bx<T>(v: T) -> alloc::boxed::Box<T> {
     alloc::boxed::Box::new(v)
 }
-
-/* macros */
-
-/// *`c`compact [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
-///
-/// # Examples
-/// ```
-/// use devela::all::cdbg;
-///
-/// let a = vec![1, 2, 3];
-/// let _b = cdbg![a];
-/// //       ^-- prints: [src/main.rs:5] a = [1, 2, 3]
-/// ```
-// Source code based on the original `dbg!` implementation.
-#[macro_export]
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
-macro_rules! cdbg {
-    () => {
-        eprintln!("[{}:{}]", file!(), line!())
-    };
-    ($val:expr $(,)?) => {
-        match $val {
-            tmp => {
-                eprintln!("[{}:{}] {} = {:?}", // <- KEY CHANGE
-                    file!(), line!(), stringify!($val), &tmp);
-                tmp
-            }
-        }
-    };
-    ($($val:expr),+ $(,)?) => {
-        ($(cdbg!($val)),+,)
-    };
-}
-#[cfg(feature = "std")]
-pub use cdbg;
 
 /// *`i`nline `if`*.
 ///
@@ -169,28 +123,9 @@ mod test_iif {
     }
 }
 
-/// *`r`ust `f`ormat `s`kip* macro.
-///
-/// Preserves the formatting of the code provided as arguments, by relying on
-/// the fact that `rustfmt` does not usually apply formatting inside macros.
-///
-/// It can be used as an alternative to the `#[rustfmt::skip]` attribute,
-/// specially where it can't be applied yet on stable rust.
-///
-/// # Examples
-/// ```
-/// use devela::all::rfs;
-///
-/// // rustfmt has no powers here
-/// rfs! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
-/// ```
-#[macro_export]
-macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
-pub use rfs;
-
 #[cfg(test)]
 #[allow(non_snake_case)]
-mod test_S {
+mod tests {
     #[test]
     fn iif() {
         assert_eq!('a', iif!(true ; 'a' ; 'b'));
