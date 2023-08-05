@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A varied collection of helpers & extensions for developing in Rust.
+//! Development extensions for the Rust Standard Library.
 //!
 //! ## Crate features
 //!

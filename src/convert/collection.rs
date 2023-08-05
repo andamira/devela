@@ -52,7 +52,7 @@ pub fn slice_into_vec<T: Clone, U: From<T>>(slice: &[T]) -> Vec<U> {
 /// Converts `&[T]` to `[U; N]` when `U` implements `From<T>`.
 ///
 /// # Panics
-/// If the length of the slice is less than the length of the array.
+/// Panics if the length of the slice is less than the length of the array.
 ///
 /// # Examples
 /// ```
