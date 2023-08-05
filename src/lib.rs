@@ -9,12 +9,11 @@
 //! - `alloc`: enables functionality that depends on allocation. Included in `std`.
 //! - `no-std`: enables functionality incompatible with `std` (unused).
 //! ---
-//! - `safe` (default): forbids `unsafe` code at the crate level.
-//!   Functionality that depends on unsafe code wont be available.
-//! - `unsafe`: meta feature that enables all `unsafe_*` features.
+//! - `safe`: forbids `unsafe` code at the crate level.
+//!   - `unsafe`: meta feature that enables all the specific unsafe features:
+//!   - `unsafe_int_buf`: enables the [`IntBuf`] struct and the [`IntBufable`] trait.
+//!   - `unsafe_non_specific`: enables unsafe in the `NonSpecific*` types.
 //!   - `unsafe_uninit`: enables using [`MaybeUninit`][core::mem::MaybeUninit].
-//!   - `unsafe_int_buf`: enable [`IntBuf`] struct and [`IntBufable`] trait.
-//!   - `unsafe_non_specific`: enables unsafe in `NonSpecific*` impls.
 //!
 //! [`IntBuf`]: fmt::IntBuf
 //! [`IntBufable`]: fmt::IntBufAble

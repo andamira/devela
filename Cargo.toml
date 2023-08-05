@@ -22,7 +22,7 @@ keywords = ["dev", "helper", "helpers", "extension", "extensions"]
 publish = true
 
 [features]
-default = ["std", "safe"]
+default = ["std"]
 
 std = ["alloc"] # enable features that depends on "std"
 alloc = [] # enable features that depend on allocation
@@ -51,7 +51,7 @@ bytemuck = { version = "1.13.1", optional = true, default-features = false }
 
 
 [package.metadata.docs.rs]
-no-default-features = true
+# no-default-features = true
 features = ["nightly_docs"]
 
 [badges]
