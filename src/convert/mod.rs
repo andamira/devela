@@ -1,6 +1,6 @@
 // devela::convert
 //
-//! Conversion helpers.
+//! Conversion, extends [`std::convert`].
 //
 
 pub mod collection;

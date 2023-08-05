@@ -1,6 +1,6 @@
 // revela::slice
 //
-//! Slice-related abstractions.
+//! Slice, extends [`std::slice`].
 //
 
 /// Returns a left subslice of `slice`, with the given maximum `len`.

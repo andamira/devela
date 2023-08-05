@@ -1,6 +1,6 @@
 // devela::ops
 //
-//! Operators.
+//! Operators, extends [`std::ops`].
 //
 // TOC
 // - pclamp

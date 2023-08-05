@@ -62,7 +62,7 @@ pub mod slice;
 pub mod string;
 pub mod sugar;
 
-/// All types and traits.
+/// All the types and traits.
 ///
 /// Everything is re-exported from here.
 pub mod all {

@@ -1,6 +1,6 @@
 // devela::fmt
 //
-//! Formatting helpers.
+//! Formatting, extends [`std::fmt`].
 //
 // DOCS
 // - https://doc.rust-lang.org/core/fmt/trait.Write.html
