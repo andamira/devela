@@ -52,6 +52,7 @@ mod private {
 /// - new fn [`to_bytes`][Self#method.to_bytes].
 /// - refactored; updated docs and examples.
 /// - removed `no_panic`.
+#[repr(C)]
 pub struct IntBuf {
     bytes: [MaybeUninit<u8>; I128_MAX_LEN],
 }

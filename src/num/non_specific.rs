@@ -41,6 +41,7 @@ macro_rules! impl_non_specific {
         ///
         #[doc = "See also [`NonMax" $S $b "`] and [`NonMin" $S $b "`]."]
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        #[repr(C)]
         pub struct [<$name $S $b>]<const V: [<$s $b>]>([<NonZero $S $b>]);
 
         /* aliases */
