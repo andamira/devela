@@ -49,10 +49,10 @@ pub use devela_macros::compile;
 pub use paste::paste;
 
 pub mod apply;
+pub mod cmp;
 pub mod convert;
 pub mod fmt;
 pub mod num;
-pub mod ops;
 pub mod option;
 pub mod project;
 pub mod result;
@@ -67,10 +67,10 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         apply::*,
+        cmp::*,
         convert::{az::*, collection::*, primitive::*},
         fmt::*,
         num::*,
-        ops::*,
         option::*,
         project::*,
         result::*,
