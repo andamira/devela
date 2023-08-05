@@ -78,20 +78,20 @@ pub use cdbg;
 macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
 pub use rfs;
 
-/// Returns a formatted string backed by a buffer, `no_std` compatible.
+/// Returns a formatted [`str`]ing slice backed by a buffer, `no_std` compatible.
 ///
-/// See also the [`format_buf!`][crate::format_buf!] macro.
+/// See also the slightly more convenient to use [`format_buf!`][crate::format_buf!] macro.
 ///
 /// # Examples
 /// ```
-/// use devela::fmt::format_buf;
+/// use devela::fmt::format_buf_args;
 ///
 /// let mut buf = [0u8; 64];
-/// let s = format_buf(&mut buf, format_args!["Test: {} {}", "foo", 42]);
+/// let s = format_buf_args(&mut buf, format_args!["Test: {} {}", "foo", 42]);
 ///
 /// assert_eq!(Ok("Test: foo 42"), s);
 /// ```
-pub fn format_buf<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a str, fmt::Error> {
+pub fn format_buf_args<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a str, fmt::Error> {
     let mut w = WriteTo::new(buf);
     fmt::write(&mut w, arg)?;
     w.as_str().ok_or(fmt::Error)
@@ -99,7 +99,8 @@ pub fn format_buf<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a str,
 
 /// Returns a formatted [`str`]ing slice backed by a buffer, `no_std` compatible.
 ///
-/// See also the [`format_buf`][format_buf()] function.
+/// It calls the [`format_buf_args`][format_buf_args()] function with the
+/// [`format_args`] macro.
 ///
 /// # Examples
 /// ```
@@ -112,15 +113,11 @@ pub fn format_buf<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a str,
 /// ```
 #[macro_export]
 macro_rules! format_buf {
-    ($buf:expr, $fmt:expr) => {
-        $crate::fmt::format_buf($buf, format_args![$fmt])
-    };
-
-    ($buf:expr, $fmt:expr, $($args:tt)*) => {
-        $crate::fmt::format_buf($buf, format_args![$fmt, $($args)*])
+    ($buf:expr, $($args:tt)*) => {
+        $crate::fmt::format_buf_args($buf, format_args![$($args)*])
     };
 }
-// pub use format_buf; // FIXME
+pub use format_buf;
 
 #[derive(Debug)]
 struct WriteTo<'a> {
