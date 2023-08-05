@@ -1,6 +1,6 @@
 // devela::num
 //
-//! Numerics, extends [`std::num`].
+//! Numerics, extends [`core::num`].
 //
 
 mod non_specific;

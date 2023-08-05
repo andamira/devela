@@ -1,6 +1,6 @@
 // revela::slice
 //
-//! Slice, extends [`std::slice`].
+//! Slice, extends [`alloc::slice`].
 //
 
 /// Returns a left subslice of `slice`, with the given maximum `len`.

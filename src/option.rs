@@ -1,6 +1,6 @@
 // devela::option
 //
-//! Option, extends [`std::option`].
+//! Option, extends [`core::option`].
 //
 
 /// Extension trait providing additional methods for `Option`.

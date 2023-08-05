@@ -1,6 +1,6 @@
 // devela::result
 //
-//! Result, extends [`std::result`].
+//! Result, extends [`core::result`].
 //
 
 /// Extension trait providing additional methods for `Result`.
