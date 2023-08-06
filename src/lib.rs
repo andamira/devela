@@ -11,10 +11,14 @@
 //! ---
 //! - `safe`: forbids `unsafe` code at the crate level.
 //!   - `unsafe`: meta feature that enables all the specific unsafe features:
-//!   - `unsafe_const_float`: enables const floating-point comparison.
-//!   - `unsafe_int_buf`: enables the [`IntBuf`] struct and the [`IntBufable`] trait.
-//!   - `unsafe_non_specific`: enables unsafe in the `NonSpecific*` types.
-//!   - `unsafe_uninit`: enables using [`MaybeUninit`][core::mem::MaybeUninit].
+//!   - `unsafe_const_float`: enables const floating-point comparison in [`cmp`].
+//!   - `unsafe_int_buf`: enables the [`IntBuf`] struct and the [`IntBufable`]
+//!      trait in [`fmt`].
+//!   - `unsafe_non_specific`: enables unsafe methods and traits for the
+//!      `NonSpecific*` types in [`num`].
+//!   - `unsafe_uninit_array`: enables using
+//!     [`MaybeUninit`][core::mem::MaybeUninit] for array initialization in
+//!     [`slice_into_array`][convert::collection::slice_into_array].
 //!
 //! [`IntBuf`]: fmt::IntBuf
 //! [`IntBufable`]: fmt::IntBufAble

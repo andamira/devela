@@ -29,11 +29,11 @@ alloc = [] # enable features that depend on allocation
 no-std = [] # enable features incompatible with "std" (unused)
 
 safe = [] # forbid unsafe at the crate level
-unsafe = ["unsafe_const_float", "unsafe_int_buf", "unsafe_non_specific", "unsafe_uninit"]
+unsafe = ["unsafe_const_float", "unsafe_int_buf", "unsafe_non_specific", "unsafe_uninit_array"]
 unsafe_const_float = [] # enable const floating-point comparison.
 unsafe_int_buf = [] # enable `IntBuf` struct and `IntBufable` trait.
 unsafe_non_specific = [] # enable unsafe in `NonSpecific*` implementations
-unsafe_uninit = [] # enable using `MaybeUninit`.
+unsafe_uninit_array = [] # enable using `MaybeUninit` for array initalization.
 
 nightly = [] # used only for better docs
 nightly_docs = ["nightly", "std", "unsafe", "bytemuck"] # features to document
