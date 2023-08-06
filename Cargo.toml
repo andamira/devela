@@ -4,7 +4,7 @@ members = [".", "macros"]
 [package]
 name = "devela"
 description = "rust development helper & extension utilities"
-version = "0.5.3"
+version = "0.6.0"
 edition = "2021"
 rust-version = "1.71.0" # in sync with ./check.sh & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
