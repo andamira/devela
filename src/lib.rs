@@ -2,7 +2,7 @@
 //
 //! Development extensions for the Rust Standard Library.
 //!
-//! ## Crate features
+//! ## Features
 //!
 //! - `std` (default): enables functionality that depends on the standard library.
 //!   Disabling it makes the crate `no_std` compatible.
@@ -10,8 +10,8 @@
 //! - `no-std`: enables functionality incompatible with `std` (unused).
 //! ---
 //! - `safe`: forbids `unsafe` code at the crate level.
-//!   - `unsafe`: meta feature that enables all the specific unsafe features:
-//!   - `unsafe_const_float`: enables const floating-point comparison in [`cmp`].
+//! - `unsafe`: meta feature that enables all the specific unsafe features:
+//!   - `unsafe_cmp_float`: enables const floating-point comparison in [`cmp`].
 //!   - `unsafe_int_buf`: enables the [`IntBuf`] struct and the [`IntBufable`]
 //!      trait in [`fmt`].
 //!   - `unsafe_non_specific`: enables unsafe methods and traits for the
