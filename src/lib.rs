@@ -70,17 +70,21 @@ pub mod all {
     pub use super::{
         boxed::*,
         cmp::*,
-        convert::{az::*, collection::*, primitive::*},
+        convert::{collection::*, primitive::*},
         fmt::*,
         num::*,
         ops::*,
         option::*,
-        paste,
         path::*,
         result::*,
         slice::*,
         string::*,
     };
+
+    #[doc(no_inline)]
+    pub use ::az::*;
+    #[doc(no_inline)]
+    pub use ::paste::*;
 }
 
 /// The common prelude.
