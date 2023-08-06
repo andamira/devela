@@ -8,6 +8,7 @@
 // - https://doc.rust-lang.org/nightly/core/fmt/struct.Arguments.html
 // - https://stackoverflow.com/questions/50200268/how-can-i-use-the-format-macro-in-a-no-std-environment
 
+// SAFETY: unsafe blocks are ported verbatim from the throughly tested `itoa` crate.
 #[cfg(feature = "unsafe_int_buf")]
 mod int_buf;
 

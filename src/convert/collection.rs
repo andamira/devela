@@ -81,6 +81,7 @@ pub fn slice_into_array<T: Clone, U: From<T>, const N: usize>(slice: &[T]) -> [U
             array
         }
 
+        // SAFETY: we make sure of initializing every array element
         #[cfg(feature = "unsafe_uninit_array")]
         {
             use core::mem::MaybeUninit;

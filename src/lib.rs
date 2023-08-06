@@ -2,26 +2,33 @@
 //
 //! Development extensions for the Rust Standard Library.
 //!
-//! ## Features
+//! # Features
 //!
 //! - `std` (default): enables functionality that depends on the standard library.
 //!   Disabling it makes the crate `no_std` compatible.
 //! - `alloc`: enables functionality that depends on allocation. Included in `std`.
 //! - `no-std`: enables functionality incompatible with `std` (unused).
 //! ---
-//! - `safe`: forbids `unsafe` code at the crate level.
-//! - `unsafe`: meta feature that enables all the specific unsafe features:
-//!   - `unsafe_cmp_float`: enables const floating-point comparison in [`cmp`].
-//!   - `unsafe_int_buf`: enables the [`IntBuf`] struct and the [`IntBufable`]
-//!      trait in [`fmt`].
-//!   - `unsafe_non_specific`: enables unsafe methods and traits for the
-//!      `NonSpecific*` types in [`num`].
-//!   - `unsafe_uninit_array`: enables using
-//!     [`MaybeUninit`][core::mem::MaybeUninit] for array initialization in
-//!     [`slice_into_array`][convert::collection::slice_into_array].
+//! - `safe`: forbids all `unsafe` code at the crate level.
+//! - `unsafe`: meta feature enabling every specific unsafe feature:
+//!   - `unsafe_cmp_float`: enables const floating-point comparison in [`cmp`],
+//!      using [`transmute`] for constant access to the bits.
+//!   - `unsafe_int_buf`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
+//!     Unsafe blocks are ported verbatim from [`itoa`].
+//!   - `unsafe_non_specific`: enables `new_unchecked` and implements
+//!     [`bytemuck`] traits for `NonSpecific*` types in [`num`].
+//!   - `unsafe_uninit_array`: enables using [`MaybeUninit`] for array
+//!     initialization in [`slice_into_array`].
+//! ---
+//! - `bytemuck`: implements several [`bytemuck`] traits for `NonSpecific*`,
+//!   if the `unsafe_non_specific` feature is enabled.
 //!
 //! [`IntBuf`]: fmt::IntBuf
 //! [`IntBufable`]: fmt::IntBufAble
+//! [`slice_into_array`]: convert::collection::slice_into_array
+//! [`MaybeUninit`]: core::mem::MaybeUninit
+//! [`transmute`]: core::mem::transmute
+//! [`itoa`]: https://docs.rs/itoa
 //
 
 #![warn(clippy::all)]
