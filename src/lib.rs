@@ -64,11 +64,9 @@ pub mod result;
 pub mod slice;
 pub mod string;
 
-/// All the types and traits in the same place.
-///
-/// Everything is re-exported from here.
+/// All the types and traits are reexported here.
 pub mod all {
-    #[doc(inline)]
+    #[doc(no_inline)]
     pub use super::{
         boxed::*,
         cmp::*,
@@ -77,15 +75,12 @@ pub mod all {
         num::*,
         ops::*,
         option::*,
+        paste,
         path::*,
         result::*,
         slice::*,
         string::*,
     };
-
-    /// Reexported from the [`paste`](https://docs.rs/paste) crate.
-    /// Allows to paste identifiers in a macro.
-    pub use super::paste;
 }
 
 /// The common prelude.
