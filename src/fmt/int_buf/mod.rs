@@ -42,16 +42,6 @@ mod private {
 }
 
 /// A correctly sized stack allocation for the formatted integer to be written into.
-///
-/// This is a fork from the [`itoa`](https://crates.io/crates/itoa/1.0.9) crate,
-/// with the following changes:
-/// - renamed `Buffer` to [`IntBuf`].
-/// - renamed `Integer` to [`IntBufAble`].
-/// - divided fn `write` into [`write_bytes`][Self#method.write_bytes] and [`write_str`][Self#method.write_str].
-/// - renamed fn [`format`] to [`to_str`][Self#method.str].
-/// - new fn [`to_bytes`][Self#method.to_bytes].
-/// - refactored; updated docs and examples.
-/// - removed `no_panic`.
 #[repr(C)]
 pub struct IntBuf {
     bytes: [MaybeUninit<u8>; I128_MAX_LEN],
