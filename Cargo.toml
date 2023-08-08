@@ -38,10 +38,11 @@ unsafe_uninit_array = [] # enable using `MaybeUninit` for array initalization.
 nightly = [] # used only for better docs
 nightly_docs = ["nightly", "std", "unsafe", "bytemuck"] # features to document
 
+bytemuck = ["dep:bytemuck", "unsafe_non_specific"]
 
 [dependencies]
 az = "1.2.1"
-devela_macros = "0.3.0"
+devela_macros = "0.3.1"
 #devela_macros = { path = "macros" }
 paste = "1.0.14"
 
