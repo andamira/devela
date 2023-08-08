@@ -18,14 +18,33 @@ This project is dual licensed under either of
  * MIT license ([LICENSE-MIT](LICENSE-MIT)
 at your option.
 
-## Embedded Third-Party and Derived Works
+## Derived Works
 
-This project embeds the following third-party libraries and derived works:
+This project includes the following derived works:
 
-- A [modified][mod0] version of [itoa], licensed as MIT OR Apache-2.0.
+- A [modified][0] version of [itoa] by David Tolnay, licensed as MIT OR Apache-2.0,
+  in [`IntBuf`] and [`IntBufAble`].
+- Adaptation of [opt_reduce] by Waffle Lapkin, licensed as MIT,
+  as part of the [`OptionExt`] trait.
+- Adaptation of [option-ext] by Simon Ochsenreither, licensed as MPL-2.0,
+  as part of the [`OptionExt`] trait.
+- Adaptation of [result-ext] by Simon Ochsenreither, licensed as MPL-2.0,
+  as part of the [`ResultExt`] trait.
+- Adaptation of [apply] by George Burton, licensed as Unlicense,
+  as part of the [`Also`] and [`Apply`] traits.
 
+[0]: https://github.com/andamira/devela/blob/main/src/fmt/int_buf/MODIFICATIONS.md
 [itoa]: https://crates.io/crates/itoa/1.0.9
-[mod0]: https://github.com/andamira/devela/blob/main/src/fmt/int_buf/MODIFICATIONS
+[`IntBuf`]: https://docs.rs/devela/latest/devela/fmt/struct.IntBuf.html
+[`IntBufAble`]: https://docs.rs/devela/latest/devela/fmt/trait.IntBufAble.html
+[opt_reduce]: https://crates.io/crates/opt_reduce/1.0.0
+[option-ext]: https://crates.io/crates/option-ext/0.2.0
+[result-ext]: https://crates.io/crates/result-ext/0.2.0
+[`OptionExt`]: https://docs.rs/devela/latest/devela/option/trait.OptionExt.html
+[`ResultExt`]: https://docs.rs/devela/latest/devela/result/trait.ResultExt.html
+[apply]: https://crates.io/crates/apply/0.3.0
+[`Also`]: https://docs.rs/devela/latest/devela/ops/trait.Also.html
+[`Apply`]: https://docs.rs/devela/latest/devela/ops/trait.Apply.html
 
 ## Contributing
 

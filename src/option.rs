@@ -16,9 +16,9 @@ mod private {
 /// See also [`ResultExt`][crate::result::ResultExt].
 //
 // Based on work from:
-// - https://github.com/rust-lang/rust/issues/62358 closed proposal.
-// - https://crates.io/crates/option-ext by Simon Ochsenreither.
-// - https://crates.io/crates/opt_reduce by Waffle Lapkin.
+// - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
+// - https://crates.io/crates/option-ext/0.2.0 by Simon Ochsenreither.
+// - https://crates.io/crates/opt_reduce/1.0.0 by Waffle Lapkin.
 pub trait OptionExt<T>: private::Sealed {
     /// Returns `true` if the option is a [`Some`] value containing the given value.
     ///

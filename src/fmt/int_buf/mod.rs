@@ -27,9 +27,10 @@ const DEC_DIGITS_LUT: &[u8] = b"\
 
 /// An integer that can be written into an [`IntBuf`].
 ///
-/// This is a fork of []
-///
 /// This trait is sealed and cannot be implemented for external types.
+///
+/// # Derived Work
+#[doc = include_str!("./MODIFICATIONS.md")]
 pub trait IntBufAble: private::Sealed {}
 
 // Seal to prevent downstream implementations of the `IntBufAble` trait.
@@ -42,6 +43,8 @@ mod private {
 }
 
 /// A correctly sized stack allocation for the formatted integer to be written into.
+/// # Derived Work
+#[doc = include_str!("./MODIFICATIONS.md")]
 #[repr(C)]
 pub struct IntBuf {
     bytes: [MaybeUninit<u8>; I128_MAX_LEN],
@@ -126,10 +129,9 @@ fn u128_mulhi(x: u128, y: u128) -> u128 {
 //
 // Integer division algorithm is based on the following paper:
 //
-//   T. Granlund and P. Montgomery, “Division by Invariant Integers Using Multiplication”
-//   in Proc. of the SIGPLAN94 Conference on Programming Language Design and
-//   Implementation, 1994, pp. 61–72
-//
+// T. Granlund and P. Montgomery, “Division by Invariant Integers Using Multiplication”
+// in Proc. of the SIGPLAN94 Conference on Programming Language Design and
+// Implementation, 1994, pp. 61–72
 #[inline]
 fn udivmod_1e19(n: u128) -> (u128, u64) {
     let d = 10_000_000_000_000_000_000_u64; // 10^19
