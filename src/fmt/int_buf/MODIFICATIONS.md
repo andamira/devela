@@ -3,6 +3,7 @@ This is derived work from the
 including the following modifications:
 
 - renamed `Integer` to [`IntBufAble`].
+  - implemented also for `NonZero*` and `NonSpecific*` types.
 - renamed `Buffer` to [`IntBuf`].
 	- divided fn `write` into `write_bytes` and `write_str`.
 	- renamed fn `format` to `to_str`.
