@@ -3,14 +3,22 @@
 //! Result, extends [`core::result`].
 //
 
+// Marker trait to prevent downstream implementations of the `ResultExt` trait.
+impl<T, E> private::Sealed for Result<T, E> {}
+mod private {
+    pub trait Sealed {}
+}
+
 /// Extension trait providing additional methods for [`Result`].
+///
+/// This trait is sealed and cannot be implemented for any other type.
 ///
 /// See also [`OptionExt`][crate::option::OptionExt].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 closed proposal.
 // - https://crates.io/crates/result-ext by Simon Ochsenreither
-pub trait ResultExt<T, E> {
+pub trait ResultExt<T, E>: private::Sealed {
     /// Returns `true` if the result is an [`Ok`] value containing the given value.
     ///
     /// # Examples

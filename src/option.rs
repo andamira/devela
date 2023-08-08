@@ -3,7 +3,15 @@
 //! Option, extends [`core::option`].
 //
 
+// Marker trait to prevent downstream implementations of the `OptionExt` trait.
+impl<T> private::Sealed for Option<T> {}
+mod private {
+    pub trait Sealed {}
+}
+
 /// Extension trait providing additional methods for [`Option`].
+///
+/// This trait is sealed and cannot be implemented for any other type.
 ///
 /// See also [`ResultExt`][crate::result::ResultExt].
 //
@@ -11,7 +19,7 @@
 // - https://github.com/rust-lang/rust/issues/62358 closed proposal.
 // - https://crates.io/crates/option-ext by Simon Ochsenreither.
 // - https://crates.io/crates/opt_reduce by Waffle Lapkin.
-pub trait OptionExt<T> {
+pub trait OptionExt<T>: private::Sealed {
     /// Returns `true` if the option is a [`Some`] value containing the given value.
     ///
     /// # Examples
