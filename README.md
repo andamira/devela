@@ -13,12 +13,10 @@ See [the documentation](https://docs.rs/devela/) for more information.
 This is currently in an experimental stage of development.
 
 ## License
-This project is dual licensed under either of
- * Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE)
- * MIT license ([LICENSE-MIT](LICENSE-MIT)
-at your option.
+This project is dual licensed under either [MIT](LICENSE-MIT)
+or [Apache-2.0](LICENSE-APACHE) at your option.
 
-## Derived Works
+### Derived Works
 
 This project includes the following derived works:
 
