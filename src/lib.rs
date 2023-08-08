@@ -73,7 +73,7 @@ pub mod string;
 
 /// All the types and traits are reexported here.
 pub mod all {
-    #[doc(no_inline)]
+    #[doc(inline)]
     pub use super::{
         boxed::*,
         cmp::*,
@@ -98,9 +98,14 @@ pub mod all {
 pub mod prelude {
     pub use super::{
         convert::{FromPrimitives, IntoPrimitives},
+        num::*,
         ops::{Also, Apply},
         option::OptionExt,
         result::ResultExt,
         slice::SliceExt,
+    };
+    pub use core::num::{
+        NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
+        NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
     };
 }
