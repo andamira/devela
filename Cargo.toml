@@ -4,7 +4,7 @@ members = [".", "macros"]
 [package]
 name = "devela"
 description = "rust development helper & extension utilities"
-version = "0.6.0"
+version = "0.6.1"
 edition = "2021"
 rust-version = "1.71.0" # in sync with ./check.sh & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
@@ -13,6 +13,7 @@ documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
 include = [
 	"/src/**/*.rs",
+	"/src/**/*.md",
 	"/Cargo.toml",
 	"/README.md",
 	"/LICENSE-*",
