@@ -102,7 +102,7 @@ pub mod prelude {
         ops::{Also, Apply},
         option::OptionExt,
         result::ResultExt,
-        slice::SliceExt,
+        slice::{SliceExt, SliceExtMut},
     };
     pub use core::num::{
         NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
