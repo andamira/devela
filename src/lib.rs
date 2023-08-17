@@ -15,13 +15,13 @@
 //!      using [`transmute`] for constant access to the bits.
 //!   - `unsafe_int_buf`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
 //!     Unsafe blocks are ported verbatim from [`itoa`].
-//!   - `unsafe_non_specific`: enables `new_unchecked` and implements
-//!     [`bytemuck`] traits for `NonSpecific*` types in [`num`].
+//!   - `unsafe_num`: enables `new_unchecked` and implements
+//!     [`bytemuck`] traits for new types defined in [`num`].
 //!   - `unsafe_uninit_array`: enables using [`MaybeUninit`] for array
 //!     initialization in [`slice_into_array`].
 //! ---
 //! - `bytemuck`: implements several [`bytemuck`] traits for `NonSpecific*`,
-//!   if the `unsafe_non_specific` feature is enabled.
+//!   if the `unsafe_num` feature is enabled.
 //!
 //! [`IntBuf`]: fmt::IntBuf
 //! [`IntBufable`]: fmt::IntBufAble
