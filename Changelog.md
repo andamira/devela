@@ -116,25 +116,74 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [0.1.10] - 2023-03-29
 
+### Fixes
+- fix `alloc` compilation.
+
 ## [0.1.9] - 2023-03-29
+
+### Added
+- add `format_buf` function and macro.
 
 ## [0.1.8] - 2023-03-17
 
+### Added
+- add `alloc` and `no-std` features.
+
+### Changed
+- bump MSRV to `1.60.0`.
+
 ## [0.1.7] - 2023-03-11
+
+### Added
+- add `Also` & `Apply` traits.
 
 ## [0.1.6] - 2023-03-09
 
+### Added
+- new functions `subslice_left`, `subslice_mid`, `subslice_right`.
+
 ## [0.1.5] - 2023-03-03
+
+### Added
+- new `rfs` macro that allows skipping rust formatting.
 
 ## [0.1.4] - 2023-02-18
 
+### Added
+- add `nighly` feature
+
+### Changed
+- update the `iif` macro to support the absence of a false branch.
+
 ## [0.1.3] - 2023-02-17
+
+### Fixed
+- fix `no_std` mode.
 
 ## [0.1.2] - 2023-01-10
 
+### Added
+- add `safe` feature.
+
+### Fixes
+- minor fixes and updates.
+
 ## [0.1.1] - 2023-01-10
 
+### Added
+- add `bx` function.
+
+### Changed
+- enable cargo publish.
+- add cargo categories.
+- update docs.
+
 ## [0.1.0] - 2022-12-17
+
+### Added
+- add functions `pclamp`, `pmax`, `pmin`, `project_root_path`,
+  `project_root_path_string`.
+- add macro `iif`.
 
 [unreleased]: https://github.com/andamira/devela/compare/v0.6.1...HEAD
 [0.6.1]: https://github.com/andamira/devela/releases/tag/v0.6.1
@@ -161,12 +210,3 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
-
-<!--
-### Added
-### Changed
-### Deprecated
-### Removed
-### Fixed
-### Security
--->
