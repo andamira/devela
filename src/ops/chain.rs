@@ -19,7 +19,7 @@
 /// ```
 ///
 /// ```compile_fail
-/// use devela::Apply;
+/// use devela::ops::Apply;
 ///
 /// // We can sort it, but we don't receive the new vec.
 /// let v: Vec<i32> = vec![3, 2, 1, 5].apply_mut(|it| it.sort());

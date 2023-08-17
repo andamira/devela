@@ -70,7 +70,8 @@ macro_rules! impl_non_specific {
         /* methods */
 
         impl<const V: [<$s $b>]> [<$name $S $b>]<V> {
-            #[doc = "Creates a `" [<$name $S $b>] "` if the given value is not `V`."]
+            #[doc = "Returns a `" [<$name $S $b>] "` with the given `value`,"
+                " if it is not equal to `V`."]
             pub const fn new(value: [<$s $b>]) -> Option<Self> {
                 // [<NonZero $S $b>]::new(value ^ V).map(Self) // non-const
                 match [<NonZero $S $b>]::new(value ^ V) {
@@ -79,7 +80,8 @@ macro_rules! impl_non_specific {
                 }
             }
 
-            #[doc = "Creates a `" [<$name $S $b>] "` if the given value is not `V`."]
+            #[doc = "Returns a `" [<$name $S $b>] "` if the given `value`"
+                " if it is not equal to `V`."]
             ///
             /// # Panics
             /// Panics in debug if the given `value` is equal to `V`.
@@ -90,7 +92,7 @@ macro_rules! impl_non_specific {
             pub const unsafe fn new_unchecked(value: [<$s $b>]) -> Self {
                 // debug_assert_ne![value, V]; // non-const
                 #[cfg(debug_assertions)]
-                if value == V { panic!("The given value is specificly prohibited.") }
+                if value == V { panic!("The given value was specifically prohibited.") }
 
                 Self([<NonZero $S $b>]::new_unchecked(value ^ V))
             }

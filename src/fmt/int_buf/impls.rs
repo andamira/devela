@@ -5,9 +5,11 @@
 
 use super::*;
 use crate::num::{
-    NonSpecificI128, NonSpecificI16, NonSpecificI32, NonSpecificI64, NonSpecificI8,
-    NonSpecificIsize, NonSpecificU128, NonSpecificU16, NonSpecificU32, NonSpecificU64,
-    NonSpecificU8, NonSpecificUsize,
+    NonRangeI128, NonRangeI16, NonRangeI32, NonRangeI64, NonRangeI8, NonRangeIsize, NonRangeU128,
+    NonRangeU16, NonRangeU32, NonRangeU64, NonRangeU8, NonRangeUsize, NonSpecificI128,
+    NonSpecificI16, NonSpecificI32, NonSpecificI64, NonSpecificI8, NonSpecificIsize,
+    NonSpecificU128, NonSpecificU16, NonSpecificU32, NonSpecificU64, NonSpecificU8,
+    NonSpecificUsize,
 };
 use core::num::{
     NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
@@ -116,6 +118,23 @@ macro_rules! impl_IntBufAble {
         impl<const V: $inner_t> IntBufAble for $t<V> {}
 
         impl<const V: $inner_t> private::Sealed for $t<V> {
+            type IntBuf = [MaybeUninit<u8>; $max_len];
+
+            #[inline]
+            fn write(self, buf: &mut [MaybeUninit<u8>; $max_len]) -> &str {
+                <$inner_t as private::Sealed>::write(self.get(), buf)
+            }
+            #[inline]
+            fn write_bytes(self, buf: &mut [MaybeUninit<u8>; $max_len]) -> &[u8] {
+                <$inner_t as private::Sealed>::write_bytes(self.get(), buf)
+            }
+        }
+    )*};
+    // Implementation for NonRange* which defers to the implementation for integers.
+    (non_range: $($max_len:expr => $t:ident($inner_t:ident)),*) => {$(
+        impl<const RMIN: $inner_t, const RMAX: $inner_t> IntBufAble for $t<RMIN, RMAX> {}
+
+        impl<const RMIN: $inner_t, const RMAX: $inner_t> private::Sealed for $t<RMIN, RMAX> {
             type IntBuf = [MaybeUninit<u8>; $max_len];
 
             #[inline]
@@ -253,6 +272,7 @@ impl_IntBufAble!(non_zero:
     I64_MAX_LEN => NonZeroIsize(isize),
     U64_MAX_LEN => NonZeroUsize(usize)
 );
+
 /* impl for NonSpecific* */
 
 impl_IntBufAble!(non_specific:
@@ -281,4 +301,34 @@ impl_IntBufAble!(non_specific:
 impl_IntBufAble!(non_specific:
     I64_MAX_LEN => NonSpecificIsize(isize),
     U64_MAX_LEN => NonSpecificUsize(usize)
+);
+
+/* impl for NonRange* */
+
+impl_IntBufAble!(non_range:
+    I8_MAX_LEN => NonRangeI8(i8),
+    U8_MAX_LEN => NonRangeU8(u8),
+    I16_MAX_LEN => NonRangeI16(i16),
+    U16_MAX_LEN => NonRangeU16(u16),
+    I32_MAX_LEN => NonRangeI32(i32),
+    U32_MAX_LEN => NonRangeU32(u32),
+    I64_MAX_LEN => NonRangeI64(i64),
+    U64_MAX_LEN => NonRangeU64(u64),
+    I128_MAX_LEN => NonRangeI128(i128),
+    U128_MAX_LEN => NonRangeU128(u128)
+);
+#[cfg(target_pointer_width = "16")]
+impl_IntBufAble!(non_range:
+    I16_MAX_LEN => NonRangeIsize(isize),
+    U16_MAX_LEN => NonRangeUsize(usize)
+);
+#[cfg(target_pointer_width = "32")]
+impl_IntBufAble!(non_range:
+    I32_MAX_LEN => NonRangeIsize(isize),
+    U32_MAX_LEN => NonRangeUsize(usize)
+);
+#[cfg(target_pointer_width = "64")]
+impl_IntBufAble!(non_range:
+    I64_MAX_LEN => NonRangeIsize(isize),
+    U64_MAX_LEN => NonRangeUsize(usize)
 );
