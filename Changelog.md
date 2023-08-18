@@ -8,9 +8,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [Unreleased]
 
 ### Added
+- new `NonRange*` number types.
 - new `SliceExtMut` trait.
+- new `OptionExt` methods: `fmt_or`, `fmt_or_else`, `fmt_or_empty`.
+- new structs: `OptionFmtOr`, `OptionFmtOrElse`, `OptionFmtOrEmpty`.
 
 ### Changed
+- implement `InBufAble` for `NonRange*`.
 - rename feature `unsafe_non_specific` to `unsafe_num`
 - move mutable methods from `SliceExt` to the new `SliceExtMut` trait.
 - implement the slice extension traits for slice references, arrays and vecs.

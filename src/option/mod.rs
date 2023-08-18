@@ -3,6 +3,11 @@
 //! Option, extends [`core::option`].
 //
 
+use core::fmt::Display;
+
+mod fmt;
+pub use fmt::{OptionFmt, OptionFmtOr, OptionFmtOrElse};
+
 // Marker trait to prevent downstream implementations of the `OptionExt` trait.
 impl<T> private::Sealed for Option<T> {}
 mod private {
@@ -66,6 +71,63 @@ pub trait OptionExt<T>: private::Sealed {
     fn reduce<F>(self, other: Option<T>, f: F) -> Option<T>
     where
         F: FnOnce(T, T) -> T;
+
+    /// Format some value, or display an empty string if it's `None`.
+    ///
+    /// # Examples
+    /// ```
+    /// use devela::option::OptionExt;
+    ///
+    /// let foo: Option<u32> = Some(0x42);
+    /// let bar: Option<u32> = None;
+    ///
+    /// assert_eq!("0x42", format!("{:#x}", foo.fmt_or_empty()));
+    /// assert_eq!("", format!("{:#x}", bar.fmt_or_empty()));
+    /// ```
+    fn fmt_or_empty(&self) -> OptionFmt<T>;
+
+    /// Format some value, or an alternative if it's `None`.
+    ///
+    /// The alternative value must implement [`Display`]
+    /// regardless of which formatting is used originally.
+    ///
+    /// # Examples
+    /// ```
+    /// use devela::option::OptionExt;
+    ///
+    /// let foo: Option<Box<u32>> = Some(Box::new(42));
+    /// let bar: Option<Box<u32>> = None;
+    ///
+    /// assert_eq!("42", format!("{}", foo.fmt_or("Nothing")));
+    /// assert_eq!("Nothing", format!("{}", bar.fmt_or("Nothing")));
+    /// ```
+    fn fmt_or<U>(&self, u: U) -> OptionFmtOr<T, U>
+    where
+        U: Display;
+
+    /// Format some value, or run an alternative closure if it's `None`.
+    ///
+    /// The value returned from the closure must implement [`Display`]
+    /// regardless of which formatting is used originally.
+    ///
+    /// The value returned from the closure is not stored after use.
+    /// Therefore, using a single [`OptionFmtOrElse`] object for multiple
+    /// formatting operations will run the closure multiple times.
+    ///
+    /// # Examples
+    /// ```
+    /// use devela::option::OptionExt;
+    ///
+    /// let foo: Option<u32> = Some(42);
+    /// let bar: Option<u32> = None;
+    ///
+    /// assert_eq!("42", format!("{}", foo.fmt_or_else(|| "Nothing")));
+    /// assert_eq!("Nothing", format!("{}", bar.fmt_or_else(|| "Nothing")));
+    /// ```
+    fn fmt_or_else<U, F>(&self, f: F) -> OptionFmtOrElse<T, F>
+    where
+        U: Display,
+        F: Fn() -> U;
 }
 
 impl<T> OptionExt<T> for Option<T> {
@@ -90,5 +152,27 @@ impl<T> OptionExt<T> for Option<T> {
             (x @ Some(_), None) | (None, x @ Some(_)) => x,
             (None, None) => None,
         }
+    }
+
+    #[inline]
+    fn fmt_or_empty(&self) -> OptionFmt<T> {
+        OptionFmt(self)
+    }
+
+    #[inline]
+    fn fmt_or<U>(&self, u: U) -> OptionFmtOr<T, U>
+    where
+        U: Display,
+    {
+        OptionFmtOr(self, u)
+    }
+
+    #[inline]
+    fn fmt_or_else<U, F>(&self, f: F) -> OptionFmtOrElse<T, F>
+    where
+        U: Display,
+        F: Fn() -> U,
+    {
+        OptionFmtOrElse(self, f)
     }
 }
