@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Fixed
 - improve `Debug` impl for `NonSpecific*` and `NonRange*`.
+- improve `num` tests.
 
 ## [0.6.1] - 2024-08-08
 

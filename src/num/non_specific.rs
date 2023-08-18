@@ -102,6 +102,12 @@ macro_rules! impl_non_specific {
             pub const fn get(&self) -> [<$s $b>] {
                 self.0.get() ^ V
             }
+
+            /// Returns the number of valid values.
+            pub const VALID_VALUES: [<u $b>] = [<u $b>]::MAX;
+
+            /// Returns the number of invalid values.
+            pub const INVALID_VALUES: [<u $b>] = 1;
         }
 
         /* core impls */
