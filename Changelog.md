@@ -18,6 +18,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename feature `unsafe_non_specific` to `unsafe_num`
 - move mutable methods from `SliceExt` to the new `SliceExtMut` trait.
 - implement the slice extension traits for slice references, arrays and vecs.
+- reexport used bytemuck types in `all`.
+- include `bytemuck` in `unsafe`.
+
+### Fixed
+- improve `Debug` impl for `NonSpecific*` and `NonRange*`.
 
 ## [0.6.1] - 2024-08-08
 

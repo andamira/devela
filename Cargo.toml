@@ -30,7 +30,7 @@ alloc = [] # enable features that depend on allocation
 no-std = [] # enable features incompatible with "std" (unused)
 
 safe = [] # forbid unsafe at the crate level
-unsafe = ["unsafe_cmp_float", "unsafe_int_buf", "unsafe_num", "unsafe_uninit_array"]
+unsafe = ["unsafe_cmp_float", "unsafe_int_buf", "unsafe_num", "unsafe_uninit_array", "bytemuck"]
 unsafe_cmp_float = [] # enable const floating-point comparisons.
 unsafe_int_buf = [] # enable `IntBuf` struct and `IntBufable` trait.
 unsafe_num = [] # enable unsafe in the `num` module.
