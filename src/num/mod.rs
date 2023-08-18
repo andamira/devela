@@ -8,5 +8,6 @@ mod tests;
 
 mod non_range;
 mod non_specific;
+mod range;
 
-pub use {non_range::*, non_specific::*};
+pub use {non_range::*, non_specific::*, range::*};
