@@ -11,7 +11,7 @@ macro_rules! primitive_float_const_cmp {
     //
     // $b: the bits of the floating-point primitives
     // $sh: the shift amount for the given bits ($b - 1)
-    ($($b:literal >> $sh:literal),+) => { paste! {
+    ($($b:literal >> $sh:literal),+ $(,)?) => { paste! {
         $( primitive_float_const_cmp![@$b >> $sh]; )+
     }};
 

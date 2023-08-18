@@ -71,7 +71,7 @@ pub trait IntoPrimitives<T, U, const LEN: usize> {
 /* implement traits */
 
 macro_rules! impl_from_primitives {
-    ( $( $T:ident, $U:ident, $LEN:literal );+ ) => {
+    ( $( $T:ident, $U:ident, $LEN:literal );+ $(;)? ) => {
         $( impl_from_primitives![@$T, $U, $LEN]; )+
     };
     (@$T:ident, $U:ident, $LEN:literal) => { paste! {
@@ -123,11 +123,11 @@ impl_from_primitives![
     u128, u64, 2; u128, u32, 4; u128, u16, 8; u128, u8, 16;
     u64, u32, 2; u64, u16, 4; u64, u8, 8;
     u32, u16, 2; u32, u8, 4;
-    u16, u8, 2
+    u16, u8, 2;
 ];
 
 macro_rules! impl_into_primitives {
-    ( $( $T:ident, $U:ident, $LEN:literal );+ ) => {
+    ( $( $T:ident, $U:ident, $LEN:literal );+ $(;)? ) => {
         $( impl_into_primitives![@$T, $U, $LEN]; )+
     };
     (@$T:ident, $U:ident, $LEN:literal) => { paste! {
@@ -151,5 +151,5 @@ impl_into_primitives![
     u128, u64, 2; u128, u32, 4; u128, u16, 8; u128, u8, 16;
     u64, u32, 2; u64, u16, 4; u64, u8, 8;
     u32, u16, 2; u32, u8, 4;
-    u16, u8, 2
+    u16, u8, 2;
 ];

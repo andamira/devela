@@ -14,7 +14,7 @@ pub use float::*;
 // generate the const fns for primitive comparison
 macro_rules! primitive_const_cmp {
     // $p: the types of the primitives
-    ($($p:expr),+) => { paste! { $( primitive_const_cmp![@$p]; )+ }};
+    ($($p:expr),+ $(,)?) => { paste! { $( primitive_const_cmp![@$p]; )+ }};
 
     // $p: the type of the primitive
     (@$p:expr) => { paste! {
