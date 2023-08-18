@@ -26,7 +26,7 @@ macro_rules! impl_non_range {
     (@$name:ident, $s:ident, $S:ident, $b:expr) => { paste! {
         /* definition */
 
-        /// An integer that is known not be part of some inclusive range.
+        /// An integer that is known to be excluded from some inclusive range.
         ///
         /// It has an optimized memory layout, so that
         #[doc = "`Option<"[<$name $S $b>]">` is the same size as `"[<$name $S $b>]"`."]
@@ -41,9 +41,9 @@ macro_rules! impl_non_range {
         #[doc = "assert![" [<$name $S $b>] "::<5, 25>::new(26).unwrap().get() == 26];"]
         ///
         #[doc = "// Self::INVALID_VALUES + Self::VALID_VALUES == "[<u $b>]"::MAX + 1."]
-        #[doc = "assert![" [<$name $S $b>] "::<5, 25>::INVALID_VALUES == 21];"]
         #[doc = "assert![" [<$name $S $b>] "::<5, 25>::VALID_VALUES == "
             [<u $b>]"::MAX - 21 + 1];"]
+        #[doc = "assert![" [<$name $S $b>] "::<5, 25>::INVALID_VALUES == 21];"]
         /// ```
         ///
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -55,7 +55,7 @@ macro_rules! impl_non_range {
 
         impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]> [<$name $S $b>]<RMIN, RMAX> {
             #[doc = "Returns a `" [<$name $S $b>] "` with the given `value`,"
-                " only if it's **not** between `RMIN` and `RMAX`."]
+            " only if it's **not** between `RMIN` and `RMAX`."]
             ///
             /// Returns `None` if `value` is between `RMIN` and `RMAX`, inclusive,
             /// or if `RMIN > RMAX`.
@@ -71,11 +71,11 @@ macro_rules! impl_non_range {
             }
 
             #[doc = "Returns a `" [<$name $S $b>]
-                "` if the given value is **not** between `RMIN` and `RMAX`."]
+            "` if the given value is **not** between `RMIN` and `RMAX`."]
             ///
             /// # Panics
-            /// Panics in debug if the given `value` is between `RMIN` and `RMAX`, inclusive,
-            /// or if RMIN > RMAX.
+            /// Panics in debug if the given `value` is between `RMIN` and `RMAX`,
+            /// inclusive, or if `RMIN > RMAX`.
             /// # Safety
             /// The given `value` must never be between `RMIN` and `RMAX`, inclusive.
             #[cfg(feature = "unsafe_num")]
@@ -85,12 +85,10 @@ macro_rules! impl_non_range {
                 if RMIN > RMAX {
                     panic!("RMIN must be less or equal than RMAX.")
                 }
-                // debug_assert_ne![value, RMIN, "msg"]; // non-const
                 #[cfg(debug_assertions)]
                 if value >= RMIN || value <= RMAX {
                     panic!("The given value was inside the given prohibited range.")
                 }
-
                 Self([<NonZero $S $b>]::new_unchecked(value ^ RMIN))
             }
 
@@ -111,38 +109,41 @@ macro_rules! impl_non_range {
                 RMAX.wrapping_sub(RMIN)
             };
 
+            /// Returns the number of valid values outside the range from `RMIN` to `RMAX`,
+            /// inclusive, as an unsigned integer with equal bit size.
+            ///
+            /// # Notice
+            /// A range where `RMAX == RMIN` will result in `VALID_VALUES ==
+            #[doc = "`[`" [<u $b>]"::MAX`], as expected."]
+            ///
+            #[doc = "A range from [`"[<$s $b>]"::MIN`] to [`"[<$s $b>]"::MAX`] will result"]
+            /// in `VALID_VALUES == 0`, also as expected.
+            /// Just be aware that in this case `INVALID_VALUES` will also be `== 0` instead of
+            #[doc = " [`" [<u $b>]"::MAX`]` + 1`."]
+            pub const VALID_VALUES: [<u $b>] = ([<u $b>]::MAX - Self::INVALID_VALUES)
+                .wrapping_add(1);
+
             /// Returns the number of invalid values in the range from `RMIN` to `RMAX`,
-            /// inclusive, as an unsigned integer with the same bit size.
+            /// inclusive, as an unsigned integer with equal bit size.
             ///
             /// # Notice
             /// A range where `RMAX == RMIN` will result in `INVALID_VALUES == 1`, as expected.
             ///
-            #[doc = "A range from [`"[<$s $b>]"::MIN`] to [`"[<$s $b>]"::MAX`] will result"]
-            #[doc = "in `INVALID_VALUES == 0` instead of [`"[<u $b>]"::MAX`]` + 1`."]
+            #[doc = "A range from [`"[<$s $b>]"::MIN`] to [`"[<$s $b>]"::MAX`] will result"
+            " in `INVALID_VALUES == 0` instead of [`"[<u $b>]"::MAX`]` + 1`."]
             /// This is because the maximum number of representable values for a given
             /// bit-size can't be represented using the same number of bits.
+            /// In this case `VALID_VALUES` will also be `== 0`.
             ///
             #[doc = "This doesn't matter as much because a [`"[<$name $S $b>]"`] with the"]
             /// largest range of invalid values can't ever be constructed.
+            ///
+            #[doc = "Remember that `INVALID_VALUES + VALID_VALUES == "[<u $b>]"::MAX + 1`,"]
+            /// which would wrap to `0`.
             pub const INVALID_VALUES: [<u $b>] = {
                 iif![RMIN > RMAX; panic!("RMIN must be less or equal than RMAX.")];
                 RMAX.wrapping_add((RMIN.wrapping_neg()).wrapping_add(1)) as [<u $b>]
             };
-
-            /// Returns the number of valid values outside the range from `RMIN` to `RMAX`,
-            /// inclusive, as an unsigned integer with the same bit size.
-            ///
-            /// # Notice
-            /// A range where `RMAX` == `RMIN` will result in `VALID_VALUES` ==
-            #[doc = "[`" [<u $b>]"::MAX`]."]
-            ///
-            #[doc = "A range from [`"[<$s $b>]"::MIN`] to [`"[<$s $b>]"::MAX`] will result"]
-            /// in `VALID_VALUES` == 0, as expected.
-            /// But then again in this case `INVALID_VALUES` will also be == 0.
-            ///
-            #[doc = "Remember that `INVALID_VALUES + VALID_VALUES == "[<u $b>]"::MAX + 1`."]
-            pub const VALID_VALUES: [<u $b>] = ([<u $b>]::MAX - Self::INVALID_VALUES)
-                .wrapping_add(1);
         }
 
         /* core impls */
@@ -158,7 +159,7 @@ macro_rules! impl_non_range {
             fmt::Debug for [<$name $S $b>]<RMIN, RMAX> {
             #[inline]
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                write!(f, "{}({})", stringify!([<$name $S $b>]), self.get())
+                write!(f, "{}::<{}, {}>({})", stringify!([<$name $S $b>]), RMIN, RMAX, self.get())
             }
         }
         impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>

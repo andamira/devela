@@ -8,8 +8,8 @@ use super::*;
 #[test]
 fn non_range() {
     // a range that doesn't wrap around
-    assert_eq!(NonRangeI8::<-10, 10>::INVALID_VALUES, 21);
     assert_eq!(NonRangeI8::<-10, 10>::VALID_VALUES, 235);
+    assert_eq!(NonRangeI8::<-10, 10>::INVALID_VALUES, 21);
     assert!(NonRangeI8::<-10, 10>::new(11).is_some());
     assert!(NonRangeI8::<-10, 10>::new(-11).is_some());
     //
@@ -18,15 +18,15 @@ fn non_range() {
     assert!(NonRangeI8::<-10, 10>::new(-10).is_none());
 
     // a range that wraps around
-    assert_eq!(NonRangeI8::<-121, 10>::INVALID_VALUES, 132);
     assert_eq!(NonRangeI8::<-121, 10>::VALID_VALUES, 124);
+    assert_eq!(NonRangeI8::<-121, 10>::INVALID_VALUES, 132);
     assert!(NonRangeI8::<-121, 10>::new(11).is_some());
     assert!(NonRangeI8::<-121, 10>::new(-122).is_some());
     //
 
     // a range that includes all possible values except one
-    assert_eq!(NonRangeI8::<-127, 127>::INVALID_VALUES, 255);
     assert_eq!(NonRangeI8::<-127, 127>::VALID_VALUES, 1);
+    assert_eq!(NonRangeI8::<-127, 127>::INVALID_VALUES, 255);
     //
     assert!(NonRangeI8::<-127, 127>::new(-128).is_some());
     //
@@ -35,11 +35,11 @@ fn non_range() {
     assert!(NonRangeI8::<-127, 127>::new(1).is_none());
 
     // checking the extremes
-    assert_eq!(NonRangeI8::<0, 0>::INVALID_VALUES, 1);
     assert_eq!(NonRangeI8::<0, 0>::VALID_VALUES, 255);
+    assert_eq!(NonRangeI8::<0, 0>::INVALID_VALUES, 1);
 
-    assert_eq!(NonRangeI8::<-128, 127>::INVALID_VALUES, 0); // wrapped 256
-    assert_eq!(NonRangeI8::<-128, 127>::VALID_VALUES, 0);
+    assert_eq!(NonRangeI8::<{ i8::MIN }, { i8::MAX }>::VALID_VALUES, 0);
+    assert_eq!(NonRangeI8::<{ i8::MIN }, { i8::MAX }>::INVALID_VALUES, 0); // wrapped 256
 }
 
 #[test]

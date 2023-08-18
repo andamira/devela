@@ -115,7 +115,7 @@ macro_rules! impl_non_specific {
         impl<const V: [<$s $b>]> fmt::Debug for [<$name $S $b>]<V> {
             #[inline]
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                write!(f, "{}({})", stringify!([<$name $S $b>]), self.get())
+                write!(f, "{}::<{}>({})", stringify!([<$name $S $b>]), V, self.get())
             }
         }
         impl<const V: [<$s $b>]> fmt::Binary for [<$name $S $b>]<V> {
