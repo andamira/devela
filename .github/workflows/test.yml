@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: "checkout"
         uses: actions/checkout@v3
+        with:
+            submodules: true
 
       - name: "Install ${{ matrix.toolchain }}"
         uses: dtolnay/rust-toolchain@master
@@ -43,6 +45,8 @@ jobs:
     steps:
       - name: "checkout"
         uses: actions/checkout@v3
+        with:
+            submodules: true
 
       - name: "Install stable"
         uses: dtolnay/rust-toolchain@stable
@@ -71,6 +75,8 @@ jobs:
     steps:
       - name: "checkout"
         uses: actions/checkout@v3
+        with:
+            submodules: true
 
       - name: "Install stable"
         uses: dtolnay/rust-toolchain@stable
