@@ -7,14 +7,21 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.4.0] - 2023-08-20
+
 ### Added
 - new argument wrapper modifiers for the `compile` macro:
   `all()`, `any()`, `none()`, `some()`.
 - improved docs and examples.
 - add changelog.
+- add CI.
+
+### Changed
+- split the project into its own repository.
+- bump MSRV to `1.60.0`.
 
 ### Fixed
-- [ ] update manifest repository key.
+- update manifest repository key.
 
 ## [0.3.1] - 2023-08-06
 
@@ -34,7 +41,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.2.0] - 2023-05-07
 
 ### Added
-- Add docs and examples.
+- add docs and examples.
 
 ### Changed
 - rename `include_block` macro to `compile`.
@@ -44,7 +51,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - new attribute macro `include_block`.
 
-[unreleased]: https://github.com/andamira/devela_macros/compare/v0.3.1...HEAD
+[unreleased]: https://github.com/andamira/devela_macros/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/andamira/devela_macros/releases/tag/v0.4.0
 [0.3.1]: https://github.com/andamira/devela_macros/releases/tag/v0.3.1
 [0.3.0]: https://github.com/andamira/devela_macros/releases/tag/v0.3.0
 [0.2.0]: https://github.com/andamira/devela_macros/releases/tag/v0.2.0
