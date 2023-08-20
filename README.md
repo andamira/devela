@@ -2,7 +2,7 @@
 
 [![Crate](https://img.shields.io/crates/v/devela_macros.svg)](https://crates.io/crates/devela_macros)
 [![API](https://docs.rs/devela_macros/badge.svg)](https://docs.rs/devela_macros/)
-[![MSRV: 1.56.1](https://flat.badgen.net/badge/MSRV/1.56.1/purple)](https://releases.rs/docs/1.56.1/)
+[![MSRV: 1.60.0](https://flat.badgen.net/badge/MSRV/1.60.0/purple)](https://releases.rs/docs/1.60.0/)
 
 Procedural macros for [`devela`](https://crates.io/crates/devela).
 
