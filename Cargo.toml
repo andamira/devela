@@ -43,7 +43,7 @@ bytemuck = ["dep:bytemuck", "unsafe_num"]
 
 [dependencies]
 az = "1.2.1"
-devela_macros = "0.3.1"
+devela_macros = "0.4.0"
 #devela_macros = { path = "macros" }
 paste = "1.0.14"
 
