@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - implement the slice extension traits for slice references, arrays and vecs.
 - reexport used bytemuck types in `all`.
 - include `bytemuck` in `unsafe`.
+- bump MSRV to `1.71.1`.
 
 ### Fixed
 - improve `Debug` impl for `NonSpecific*` and `NonRange*`.
