@@ -60,6 +60,7 @@ pub mod cmp;
 pub mod codegen;
 pub mod convert;
 pub mod fmt;
+pub mod mem;
 pub mod num;
 pub mod ops;
 pub mod option;
@@ -68,7 +69,7 @@ pub mod result;
 pub mod slice;
 pub mod string;
 
-/// All the types and traits are reexported here.
+/// All the types and traits are flat reexported here.
 pub mod all {
     #[doc(inline)]
     pub use super::{
@@ -77,6 +78,7 @@ pub mod all {
         codegen::*,
         convert::{collection::*, primitive::*},
         fmt::*,
+        // mem::{},
         num::*,
         ops::*,
         option::*,
