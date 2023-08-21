@@ -6,7 +6,7 @@
 //! [`pclamp`], [`pmax`] and [`pmin`] functions for comparing partially ordered values.
 //
 
-use crate::paste;
+use crate::codegen::paste;
 
 mod float;
 pub use float::*;

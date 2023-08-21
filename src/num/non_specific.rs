@@ -3,7 +3,7 @@
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //
 
-use crate::paste;
+use crate::codegen::paste;
 use core::{fmt, num::*, str::FromStr};
 
 #[cfg(all(feature = "bytemuck", not(feature = "safe")))]

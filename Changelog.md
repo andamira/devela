@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `SliceExtMut` trait.
 - new `OptionExt` methods: `fmt_or`, `fmt_or_else`, `fmt_or_empty`.
 - new structs: `OptionFmtOr`, `OptionFmtOrElse`, `OptionFmtOrEmpty`.
+- new `codegen` module; reexport the `compile` and `paste` macros from there.
+
+### Removed
+- avoid reexporting external macros from the root and hide the root documentation for the rest.
 
 ### Changed
 - implement `InBufAble` for `NonRange*` and `Range*`.

@@ -37,6 +37,7 @@ use alloc::{format, string::String};
 /// //       ^-- prints: [src/main.rs:5] a = [1, 2, 3]
 /// ```
 // Source code based on the original `dbg!` implementation.
+#[doc(hidden)]
 #[macro_export]
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
@@ -57,6 +58,7 @@ macro_rules! cdbg {
         ($(cdbg!($val)),+,)
     };
 }
+#[doc(inline)]
 #[cfg(feature = "std")]
 pub use cdbg;
 
@@ -76,7 +78,9 @@ pub use cdbg;
 /// rfs! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
 /// ```
 #[macro_export]
+#[doc(hidden)]
 macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
+#[doc(inline)]
 pub use rfs;
 
 /// Returns a formatted [`str`]ing slice backed by a buffer, `no_std` compatible.
@@ -113,11 +117,13 @@ pub fn format_buf_args<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a
 /// assert_eq!(Ok("Test: foo 42"), s);
 /// ```
 #[macro_export]
+#[doc(hidden)]
 macro_rules! format_buf {
     ($buf:expr, $($args:tt)*) => {
         $crate::fmt::format_buf_args($buf, format_args![$($args)*])
     };
 }
+#[doc(inline)]
 pub use format_buf;
 
 #[derive(Debug)]
@@ -177,11 +183,13 @@ impl<'a> fmt::Write for WriteTo<'a> {
 ///
 // TODO WIP
 #[macro_export]
+#[doc(hidden)]
 macro_rules! iformat {
     ($indent:expr, $($args:tt)*) => {
         $crate::indent($indent, &format![$($args)*])
     };
 }
+#[doc(inline)]
 pub use iformat;
 
 /// An alternative `Debug`.

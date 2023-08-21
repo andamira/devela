@@ -3,7 +3,7 @@
 //! Generate the (const) fns for floating-point primitive comparison.
 //
 
-use crate::paste;
+use crate::codegen::paste;
 use core::cmp::Ordering::{self, *};
 
 macro_rules! primitive_float_const_cmp {

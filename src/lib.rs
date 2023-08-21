@@ -54,14 +54,10 @@ compile_error!("You can't enable the `safe` and `unsafe*` features at the same t
 extern crate alloc;
 
 extern crate devela_macros;
-pub use devela_macros::compile;
-
-/// Reexported from the [`paste`](https://docs.rs/paste) crate.
-/// Allows to paste identifiers in a macro.
-pub use paste::paste;
 
 pub mod boxed;
 pub mod cmp;
+pub mod codegen;
 pub mod convert;
 pub mod fmt;
 pub mod num;
@@ -78,6 +74,7 @@ pub mod all {
     pub use super::{
         boxed::*,
         cmp::*,
+        codegen::*,
         convert::{collection::*, primitive::*},
         fmt::*,
         num::*,
@@ -88,6 +85,9 @@ pub mod all {
         slice::*,
         string::*,
     };
+
+    #[doc(inline)]
+    pub use devela_macros::compile;
 
     #[doc(no_inline)]
     pub use ::az::*;
@@ -101,7 +101,7 @@ pub mod all {
 
 /// The common prelude.
 pub mod prelude {
-    pub use super::{
+    pub use crate::{
         convert::{FromPrimitives, IntoPrimitives},
         num::*,
         ops::{Also, Apply},
@@ -109,6 +109,8 @@ pub mod prelude {
         result::ResultExt,
         slice::{SliceExt, SliceExtMut},
     };
+
+    #[doc(no_inline)]
     pub use core::num::{
         NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
         NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
