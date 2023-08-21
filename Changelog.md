@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - include `bytemuck` in `unsafe`.
 - bump MSRV to `1.71.1`.
 - rename `unsafe_*` features: `unsafe_int_buf` to `unsafe_fmt`, `unsafe_cmp_float` to `unsafe_cmp`, `unsafe_uninit_array` to `unsafe_convert`.
+- remove `std` requirement for `cdbg` macro.
 
 ### Fixed
 - improve `Debug` impl for `NonSpecific*` and `NonRange*`.

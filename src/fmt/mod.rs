@@ -39,8 +39,6 @@ use alloc::{format, string::String};
 // Source code based on the original `dbg!` implementation.
 #[doc(hidden)]
 #[macro_export]
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 macro_rules! cdbg {
     () => {
         eprintln!("[{}:{}]", file!(), line!())
@@ -59,7 +57,6 @@ macro_rules! cdbg {
     };
 }
 #[doc(inline)]
-#[cfg(feature = "std")]
 pub use cdbg;
 
 /// *`r`ust `f`ormat `s`kip* macro.
