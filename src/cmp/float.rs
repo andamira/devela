@@ -23,11 +23,11 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "A port of `f" $b "::`[`total_cmp`][f" $b "#method.total_cmp]."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp_float` is enabled.
+        /// This function will only be `const` if the `unsafe_cmp` feature is enabled.
         #[inline]
-        #[cfg(feature = "unsafe_cmp_float")]
+        #[cfg(feature = "unsafe_cmp")]
         #[cfg_attr(feature = "nightly",
-            doc(cfg(any(feature = "unsafe_cmp_float", feature = ""))))]
+            doc(cfg(any(feature = "unsafe_cmp", feature = ""))))]
         pub const fn [<total_cmp_f $b>](a: [<f$b>], b: [<f$b>]) -> Ordering {
             // WAIT:const_float_bits_conv https://github.com/rust-lang/rust/issues/72447
             // let mut left = a.to_bits() as [<i $b>];
@@ -50,7 +50,7 @@ macro_rules! primitive_float_const_cmp {
         }
         // safe, non-const version
         #[inline]
-        #[cfg(not(feature = "unsafe_cmp_float"))]
+        #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<total_cmp_f $b>](a: [<f$b>], b: [<f$b>]) -> Ordering {
             let mut left = a.to_bits() as [<i $b>];
             let mut right = b.to_bits() as [<i $b>];
@@ -71,7 +71,7 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "using [total ordering][total_cmp_f" $b "]."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp_float` is enabled.
+        /// This function will only be `const` if the `unsafe_cmp` is enabled.
         ///
         /// # Examples
         /// ```
@@ -81,15 +81,15 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "assert_eq![-1.0, clamp_f" $b "(-5.0, -1.0, 2.0)];"]
         /// ```
         #[inline]
-        #[cfg(feature = "unsafe_cmp_float")]
+        #[cfg(feature = "unsafe_cmp")]
         #[cfg_attr(feature = "nightly",
-            doc(cfg(any(feature = "unsafe_cmp_float", feature = ""))))]
+            doc(cfg(any(feature = "unsafe_cmp", feature = ""))))]
         pub const fn [<clamp_f $b>](value: [<f $b>], min: [<f $b>], max: [<f $b>]) -> [<f $b>] {
             [<min_f $b>]([<max_f $b>](value, min), max)
         }
         // safe, non-const version
         #[inline]
-        #[cfg(not(feature = "unsafe_cmp_float"))]
+        #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<clamp_f $b>](value: [<f $b>], min: [<f $b>], max: [<f $b>]) -> [<f $b>] {
             [<min_f $b>]([<max_f $b>](value, min), max)
         }
@@ -98,7 +98,7 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "using [total ordering][total_cmp_f" $b "]."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp_float` is enabled.
+        /// This function will only be `const` if the `unsafe_cmp` is enabled.
         ///
         /// # Examples
         /// ```
@@ -111,9 +111,9 @@ macro_rules! primitive_float_const_cmp {
             "(f" $b "::INFINITY, f" $b "::NEG_INFINITY)];"]
         /// ```
         #[inline]
-        #[cfg(feature = "unsafe_cmp_float")]
+        #[cfg(feature = "unsafe_cmp")]
         #[cfg_attr(feature = "nightly",
-            doc(cfg(any(feature = "unsafe_cmp_float", feature = ""))))]
+            doc(cfg(any(feature = "unsafe_cmp", feature = ""))))]
         pub const fn [<max_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match [<total_cmp_f $b>](a, b) {
                 Greater | Equal => a,
@@ -122,7 +122,7 @@ macro_rules! primitive_float_const_cmp {
         }
         // safe, non-const version
         #[inline]
-        #[cfg(not(feature = "unsafe_cmp_float"))]
+        #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<max_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match a.[<total_cmp>](&b) {
                 Greater | Equal => a,
@@ -134,7 +134,7 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "using [total ordering][total_cmp_f" $b "]."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp_float` is enabled.
+        /// This function will only be `const` if the `unsafe_cmp` is enabled.
         ///
         /// # Examples
         /// ```
@@ -147,9 +147,9 @@ macro_rules! primitive_float_const_cmp {
             "(f" $b "::INFINITY, f" $b "::NEG_INFINITY)];"]
         /// ```
         #[inline]
-        #[cfg(feature = "unsafe_cmp_float")]
+        #[cfg(feature = "unsafe_cmp")]
         #[cfg_attr(feature = "nightly",
-            doc(cfg(any(feature = "unsafe_cmp_float", feature = ""))))]
+            doc(cfg(any(feature = "unsafe_cmp", feature = ""))))]
         pub const fn [<min_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match [<total_cmp_f $b>](a, b) {
                 Greater | Equal => b,
@@ -158,7 +158,7 @@ macro_rules! primitive_float_const_cmp {
         }
         // safe, non-const version
         #[inline]
-        #[cfg(not(feature = "unsafe_cmp_float"))]
+        #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<min_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match a.[<total_cmp>](&b) {
                 Greater | Equal => b,

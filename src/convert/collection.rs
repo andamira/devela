@@ -63,7 +63,7 @@ pub fn slice_into_vec<T: Clone, U: From<T>>(slice: &[T]) -> Vec<U> {
 /// ```
 ///
 /// # Features
-/// It makes use of the `unsafe_uninit_array` feature if enabled.
+/// It makes use of the `unsafe_convert` feature if enabled.
 ///
 // IMPROVE make a try_slice_into_array version:
 // WAITING https://doc.rust-lang.org/nightly/core/array/fn.try_from_fn.html
@@ -71,7 +71,7 @@ pub fn slice_into_vec<T: Clone, U: From<T>>(slice: &[T]) -> Vec<U> {
 #[must_use]
 pub fn slice_into_array<T: Clone, U: From<T>, const N: usize>(slice: &[T]) -> [U; N] {
     if slice.len() >= N {
-        #[cfg(not(feature = "unsafe_uninit_array"))]
+        #[cfg(not(feature = "unsafe_convert"))]
         {
             let mut array: [U; N] = core::array::from_fn(|i| U::from(slice[i].clone()));
 
@@ -82,7 +82,7 @@ pub fn slice_into_array<T: Clone, U: From<T>, const N: usize>(slice: &[T]) -> [U
         }
 
         // SAFETY: we make sure of initializing every array element
-        #[cfg(feature = "unsafe_uninit_array")]
+        #[cfg(feature = "unsafe_convert")]
         {
             use core::mem::MaybeUninit;
 

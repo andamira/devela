@@ -1,6 +1,6 @@
 // devela::num
 //
-//! Numerics, extends [`core::num`].
+//! Numeric types, extends [`core::num`].
 //
 
 #[cfg(test)]

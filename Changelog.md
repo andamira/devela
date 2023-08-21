@@ -21,9 +21,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 - reexport used bytemuck types in `all`.
 - include `bytemuck` in `unsafe`.
 - bump MSRV to `1.71.1`.
+- rename `unsafe_*` features: `unsafe_int_buf` to `unsafe_fmt`, `unsafe_cmp_float` to `unsafe_cmp`, `unsafe_uninit_array` to `unsafe_convert`.
 
 ### Fixed
 - improve `Debug` impl for `NonSpecific*` and `NonRange*`.
+- fix unsafe features safeguarding.
 - improve `num` tests.
 
 ## [0.6.1] - 2024-08-08

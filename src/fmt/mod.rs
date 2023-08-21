@@ -9,11 +9,11 @@
 // - https://stackoverflow.com/questions/50200268/how-can-i-use-the-format-macro-in-a-no-std-environment
 
 // SAFETY: unsafe blocks are ported verbatim from the throughly tested `itoa` crate.
-#[cfg(feature = "unsafe_int_buf")]
+#[cfg(feature = "unsafe_fmt")]
 mod int_buf;
 
-#[cfg(feature = "unsafe_int_buf")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_int_buf")))]
+#[cfg(feature = "unsafe_fmt")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_fmt")))]
 pub use int_buf::{IntBuf, IntBufAble};
 
 #[allow(unused_imports)]

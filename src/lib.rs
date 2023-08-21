@@ -11,14 +11,14 @@
 //! ---
 //! - `safe`: forbids all `unsafe` code at the crate level.
 //! - `unsafe`: meta feature enabling every specific unsafe feature:
-//!   - `unsafe_cmp_float`: enables const floating-point comparison in [`cmp`],
+//!   - `unsafe_cmp`: enables const floating-point comparison in [`cmp`],
 //!      using [`transmute`] for constant access to the bits.
-//!   - `unsafe_int_buf`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
+//!   - `unsafe_convert`: enables using [`MaybeUninit`] for array
+//!     initialization in [`slice_into_array`].
+//!   - `unsafe_fmt`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
 //!     Unsafe blocks are ported verbatim from [`itoa`].
 //!   - `unsafe_num`: enables `new_unchecked` and implements
 //!     [`bytemuck`] traits for new types defined in [`num`].
-//!   - `unsafe_uninit_array`: enables using [`MaybeUninit`] for array
-//!     initialization in [`slice_into_array`].
 //! ---
 //! - `bytemuck`: implements several [`bytemuck`] traits for `NonSpecific*`,
 //!   if the `unsafe_num` feature is enabled.
@@ -42,9 +42,10 @@ compile_error!("You can't enable the `std` and `no-std` features at the same tim
     feature = "safe",
     any(
         feature = "unsafe",
-        feature = "unsafe_uninit",
-        feature = "unsafe_int_buf",
-        feature = "unsafe_non_specific"
+        feature = "unsafe_cmp",
+        feature = "unsafe_convert",
+        feature = "unsafe_num",
+        feature = "unsafe_fmt"
     )
 ))]
 compile_error!("You can't enable the `safe` and `unsafe*` features at the same time.");
