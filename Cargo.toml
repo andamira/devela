@@ -18,7 +18,7 @@ include = [
 	"/README.md",
 	"/LICENSE-*",
 ]
-categories = ["rust-patterns"]
+categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "helpers", "extension", "extensions"]
 publish = true
 

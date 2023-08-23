@@ -10,7 +10,7 @@
 //! - `no-std`: enables functionality incompatible with `std` (unused).
 //! ---
 //! - `safe`: forbids all `unsafe` code at the crate level.
-//! - `unsafe`: meta feature enabling every specific unsafe feature:
+//! - `unsafe`: meta feature enabling every modular unsafe feature:
 //!   - `unsafe_cmp`: enables const floating-point comparison in [`cmp`],
 //!      using [`transmute`] for constant access to the bits.
 //!   - `unsafe_convert`: enables using [`MaybeUninit`] for array
@@ -20,8 +20,7 @@
 //!   - `unsafe_num`: enables `new_unchecked` and implements
 //!     [`bytemuck`] traits for new types defined in [`num`].
 //! ---
-//! - `bytemuck`: implements several [`bytemuck`] traits for `NonSpecific*`,
-//!   if the `unsafe_num` feature is enabled.
+//! - `bytemuck`: implements several unsafe [`bytemuck`] traits for [`num`] types.
 //!
 //! [`IntBuf`]: fmt::IntBuf
 //! [`IntBufable`]: fmt::IntBufAble

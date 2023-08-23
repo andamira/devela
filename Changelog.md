@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `OptionExt` methods: `fmt_or`, `fmt_or_else`, `fmt_or_empty`.
 - new structs: `OptionFmtOr`, `OptionFmtOrElse`, `OptionFmtOrEmpty`.
 - new `codegen` module; reexport the `compile` and `paste` macros from there.
+- add categories: `development-tools`, `no-std::no-alloc`.
 
 ### Removed
 - avoid reexporting external macros from the root and hide the root documentation for the rest.
@@ -190,10 +191,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - add `bx` function.
+- add cargo categories.
 
 ### Changed
 - enable cargo publish.
-- add cargo categories.
 - update docs.
 
 ## [0.1.0] - 2022-12-17
