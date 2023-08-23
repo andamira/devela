@@ -53,7 +53,7 @@ pub fn pclamp<T: PartialOrd>(value: T, min: T, max: T) -> T {
 /// Compares and returns the maximum of two [`PartialOrd`]ered values.
 ///
 /// Complements `core::cmp::`[`max`][`core::cmp::max] which requires
-/// [`Ord`][core::cmp::Ord].
+/// [`Ord`]
 ///
 /// # Examples
 /// ```
@@ -68,7 +68,7 @@ pub fn pmax<T: PartialOrd>(a: T, b: T) -> T { if a > b { a } else { b } }
 /// Compares and returns the minimum of two [`PartialOrd`]ered values.
 ///
 /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires
-/// [`Ord`][core::cmp::Ord].
+/// [`Ord`]
 ///
 /// # Example
 /// ```

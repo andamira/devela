@@ -3,7 +3,7 @@
 //! The `Box<T>` type, extends [`alloc::boxed`].
 //
 
-/// Brief [`Box`][alloc::boxed::Box] constructor.
+/// Brief [`Box`] constructor.
 ///
 /// # Examples
 /// ```
