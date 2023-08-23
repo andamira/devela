@@ -10,10 +10,10 @@ RCMD="rustup -v run $MSRV"
 rustup override set $MSRV
 
 # check
-cmd="$RCMD cargo c"; echo "std, safe\n$ " $cmd; $cmd
+cmd="$RCMD cargo c"; echo "check\n$ " $cmd; $cmd
 
 # test
 cmd="$RCMD cargo t"; echo "tests\n$" $cmd; $cmd
 
 # docs
-cmd="cargo doc"; echo "docs\n$" $cmd; $cmd
+cmd="cargo +nightly nd"; echo "docs\n$" $cmd; $cmd
