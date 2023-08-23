@@ -3,10 +3,14 @@
 //! Code generation and meta-programming.
 //
 
+pub(crate) mod all {
+    pub use super::{cif, compile, compile_attr, paste};
+}
+
 pub use ::devela_macros::{cif, compile, compile_attr};
 
-/// Allows to paste identifiers together (reexported from the [paste][mod@paste]
-/// crate).
+/// Allows to paste identifiers together (reexported from the
+/// [paste][paste_crate] crate).
 ///
 /// Within the `paste!` macro, identifiers inside `[<`...`>]` are pasted
 /// together to form a single identifier.
@@ -67,7 +71,10 @@ pub use ::devela_macros::{cif, compile, compile_attr};
 #[macro_export]
 macro_rules! paste {
     ($($tt:tt)*) => {
-        ::paste::paste!{ $($tt)* }
+        $crate::codegen::_paste!{ $($tt)* }
     }
 }
+#[doc(inline)]
 pub use paste;
+#[doc(hidden)] // dont export this
+pub use paste_crate::paste as _paste;
