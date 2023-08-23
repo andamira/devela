@@ -9,9 +9,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - add category `depevelopment-tools::procedural-macro-helpers`.
+- add new attribute macro: `compile_attr`.
+- add new procedural macro: `cif!`.
 - add new predicates:
   - binary: `eq()`, `ne()`, `xor()`.
-- non binary: `xodd`, `xome`, `same()`, `diff()`.
+  - non binary: `xodd`, `xome`, `same()`, `diff()`.
 - add unit tests.
 - add a new example.
 - update documentation.
