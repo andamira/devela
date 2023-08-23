@@ -92,8 +92,6 @@ pub mod all {
 
     #[doc(no_inline)]
     pub use ::az::*;
-    #[doc(no_inline)]
-    pub use ::paste::*;
 
     #[doc(no_inline)]
     #[cfg(feature = "bytemuck")]
