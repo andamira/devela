@@ -11,14 +11,12 @@ use std::{
 };
 
 /// Alias of `Path::new(concat![env!("CARGO_MANIFEST_DIR"), $path])`.
-#[doc(hidden)]
 #[macro_export]
 macro_rules! manifest_dir {
     ($path:literal) => {
         std::path::Path::new(concat![std::env!("CARGO_MANIFEST_DIR"), $path])
     };
 }
-#[doc(inline)]
 pub use manifest_dir;
 
 /// Returns an absolute [`PathBuf`], relative to the `crate`'s root.

@@ -82,7 +82,6 @@ pub fn indent(spaces: usize, string: &str) -> String {
 /// ```
 ///
 #[macro_export]
-#[doc(hidden)]
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 macro_rules! S {
@@ -96,6 +95,5 @@ macro_rules! S {
         String::from($from)
     };
 }
-#[doc(inline)]
 #[cfg(feature = "alloc")]
 pub use S;

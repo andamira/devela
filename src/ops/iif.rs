@@ -58,7 +58,6 @@
 ///     }
 /// }
 /// ```
-#[doc(hidden)]
 #[macro_export]
 macro_rules! iif {
     ($if:expr; $true:expr) => {
@@ -87,7 +86,6 @@ macro_rules! iif {
         }
     };
 }
-#[doc(inline)]
 pub use iif;
 
 #[cfg(test)]
