@@ -4,7 +4,7 @@ members = [".", "macros"]
 [package]
 name = "devela"
 description = "rust development helper & extension utilities"
-version = "0.6.1"
+version = "0.7.0"
 edition = "2021"
 rust-version = "1.71.1" # sync with readme, check.sh & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
@@ -53,7 +53,7 @@ bytemuck = { version = "1.13.1", optional = true, default-features = false }
 
 
 [package.metadata.docs.rs]
-# no-default-features = true
+no-default-features = true
 features = ["nightly_docs"]
 
 [badges]

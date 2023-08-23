@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.7.0] - 2023-08-23
+
 ### Added
 - new number types: `NonRange*`, `Range*`.
 - new `SliceExtMut` trait.
