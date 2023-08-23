@@ -6,16 +6,17 @@
 extern crate proc_macro;
 use proc_macro::TokenStream;
 
-/// Compiles the associated code only if the inner predicate equals `true`.
+/// Compiles the associated code only if the inner predicate is `true`.
 ///
 /// Anything other than `true` is considered `false` and the code wont compile.
 ///
-/// It supports the following argument wrapper modifiers, that can be nested:
-/// - `not()`: returns `true` if the argument is `false`.
-/// - `some()`: returns `true` if there **is** an inner argument.
-/// - `none()`: returns `true` if there is **not** an inner argument.
-/// - `all()`: returns `true` if all the arguments are `true`.
-/// - `any()`: returns `true` if any argument is `true`.
+/// The following combinable predicate modifiers are supported:
+///
+/// - `not()`: returns `true` if the predicate is `false`.
+/// - `some()`: returns `true` if there **is** a predicate.
+/// - `none()`: returns `true` if there is **no** predicate.
+/// - `all()`: returns `true` if all the predicates are `true`.
+/// - `any()`: returns `true` if any of the predicates is `true`.
 ///
 /// # Examples
 /// ```
@@ -56,7 +57,7 @@ use proc_macro::TokenStream;
 /// fn not_compiled_any() {}
 ///
 /// // nested:
-/// #[compile(all(true, not(any(some(), none(thing), not(true)))))]
+/// #[compile(all(true, not(any(some(), none(thing), not(not(false))))))]
 /// fn compiled_nested() {}
 /// #[compile(all(true, not(any(some(), none(thing), true))))]
 /// fn not_compiled_nested() {}
