@@ -10,7 +10,7 @@
 //! attributes and the [`cif!`][cif()] macro.
 //!
 //! They are similar to the [`#[cfg]`][1] and [`#[cfg_attr]`][2] attributes and
-//! the [`cfg!`][3] macro, except for using *compilation predicates*.
+//! the [`cfg!`][3] macro, except they use *compilation predicates*.
 //!
 //! ### Compilation predicates
 //!
