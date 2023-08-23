@@ -4,6 +4,7 @@
 //
 
 pub(crate) mod all {
+    #[doc(inline)]
     pub use super::{cif, compile, compile_attr, paste};
 }
 
