@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.5.0] - 2023-08-23
+
 ### Added
 - add category `depevelopment-tools::procedural-macro-helpers`.
 - add new attribute macro: `compile_attr`.
