@@ -46,7 +46,7 @@ macro_rules! impl_non_specific {
 
         /* aliases */
 
-        /// An integer that is known not to equal its maximum representable value
+        /// An integer that is known not to equal its maximum value
         #[doc = "[`" [< $s $b >] "::MAX`]."]
         pub type [<NonMax $S $b>] = [<$name $S $b>]<{[<$s $b>]::MAX}>;
 
@@ -63,7 +63,7 @@ macro_rules! impl_non_specific {
             }
         }
 
-        /// An integer that is known not to equal its minimum representable value
+        /// An integer that is known not to equal its minimum value
         #[doc = "[`" [< $s $b >] "::MIN`]."]
         pub type [<NonMin $S $b>] = [<$name $S $b>]<{[<$s $b>]::MIN}>;
 
