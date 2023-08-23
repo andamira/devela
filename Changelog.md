@@ -7,9 +7,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.7.1] - 2023-08-23
+
 ### Changed
 - unhide the macros from the root.
-- reexport `paste` via a documented wrapper;
+- reexport `paste` with wrapped documentation.
 
 ## [0.7.0] - 2023-08-23
 
