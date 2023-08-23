@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- add category `depevelopment-tools::procedural-macro-helpers`.
+
 ## [0.4.0] - 2023-08-20
 
 ### Added
