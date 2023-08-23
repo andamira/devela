@@ -28,6 +28,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - bump MSRV to `1.71.1`.
 - rename `unsafe_*` features: `unsafe_int_buf` to `unsafe_fmt`, `unsafe_cmp_float` to `unsafe_cmp`, `unsafe_uninit_array` to `unsafe_convert`.
 - remove `std` requirement for `cdbg` macro.
+- bump `devela_macros` to `0.5.0`.
+  - reexport new macros: `compile_attr` and `cif`.
 
 ### Fixed
 - improve `Debug` impl for `NonSpecific*` and `NonRange*`.
