@@ -21,5 +21,8 @@ publish = true
 [lib]
 proc-macro = true
 
+[features]
+nightly_docs = []
+
 [badges]
 maintenance = { status = "experimental" }
