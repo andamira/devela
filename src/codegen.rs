@@ -7,4 +7,4 @@
 /// Allows to paste identifiers in a macro.
 pub use paste::paste;
 
-pub use ::devela_macros::compile;
+pub use ::devela_macros::{cif, compile, compile_attr};
