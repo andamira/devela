@@ -9,6 +9,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - add category `depevelopment-tools::procedural-macro-helpers`.
+- add new predicates:
+  - binary: `eq()`, `ne()`, `xor()`.
+- non binary: `xodd`, `xome`, `same()`, `diff()`.
+- add unit tests.
+- add a new example.
+- update documentation.
+- new feature `nightly_docs`.
 
 ## [0.4.0] - 2023-08-20
 

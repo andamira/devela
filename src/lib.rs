@@ -6,80 +6,39 @@
 extern crate proc_macro;
 use proc_macro::TokenStream;
 
-mod common;
-use common::{compile_eval};
+#[cfg(test)]
+mod tests;
 
-/// Compiles the associated code only if the inner predicate is `true`.
+mod common;
+use common::compile_eval;
+
+/// Compiles the associated code only if the inner predicate evaluates to `true`.
 ///
-/// Anything other than `true` is considered `false` and the code wont compile.
+/// Anything other than a `true` result is considered as `false`
+/// and the code wont be compiled.
 ///
 /// The following combinable predicate modifiers are supported:
 ///
-/// - `not()`: returns `true` if the predicate is `false`.
-/// - `some()`: returns `true` if there **is** a predicate.
-/// - `none()`: returns `true` if there is **no** predicate.
-/// - `all()`: returns `true` if all the predicates are `true`.
-/// - `any()`: returns `true` if any of the predicates is `true`.
+/// - unary:
+///   - returns `true` if the single predicate is `true`.
+///   - `not()`: returns `true` if the predicate is **not** `true`.
+/// - binary:
+///   - `eq()`: returns `true` if both predicates evaluate equally.
+///   - `ne()`: returns `true` if both predicates does **not** evaluate equally.
+///   - `xor()`: returns `true` only if **one** predicate is `true`, but not both.
+/// - non-binary:
+///   - `any()`: returns `true` if any predicate is `true`.
+///   - `all()`: returns `true` if all of the predicates are `true`.
+///   - `xodd()`: returns `true` if there is an **odd number** of `true` predicates.
+///   - `xome()`: returns `true` if there is **some `true`** predicates, but not all.
+///   - `same()`: returns `true` if all the predicates have the **same text**.
+///   - `diff()`: returns `true` if any predicate has a **different text**.
+///   - `some()`: returns `true` if there is **some given** predicate.
+///   - `none()`: returns `true` if there is **no given** predicate.
 ///
 /// # Examples
 /// ```
-/// # use devela_macros::compile;
-/// #[compile(true)]
-/// fn compiled() {}
-/// #[compile(other_than_true)]
-/// fn not_compiled() {}
-///
-/// // `not()`:
-/// #[compile(not(other_than_true))]
-/// fn compiled_not() {}
-/// #[compile(not(true))]
-/// fn not_compiled_not() {}
-///
-/// // `some()`
-/// #[compile(some(thing))]
-/// fn compiled_some() {}
-/// #[compile(some())]
-/// fn not_compiled_some() {}
-///
-/// // `none()`
-/// #[compile(none())]
-/// fn compiled_none() {}
-/// #[compile(none(thing))]
-/// fn not_compiled_none() {}
-///
-/// // `all()`:
-/// #[compile(all(true, true, none(), some(thing), not(none(thing))))]
-/// fn compiled_all() {}
-/// #[compile(all(true, false))]
-/// fn not_compiled_all() {}
-///
-/// // `any()`:
-/// #[compile(any(true, false))]
-/// fn compiled_any() {}
-/// #[compile(any(false, false))]
-/// fn not_compiled_any() {}
-///
-/// // nested:
-/// #[compile(all(true, not(any(some(), none(thing), not(not(false))))))]
-/// fn compiled_nested() {}
-/// #[compile(all(true, not(any(some(), none(thing), true))))]
-/// fn not_compiled_nested() {}
-///
-/// compiled();
-/// compiled_not();
-/// compiled_some();
-/// compiled_none();
-/// compiled_all();
-/// compiled_any();
-/// compiled_nested();
-///
-/// // not_compiled()
-/// // not_compiled_not();
-/// // not_compiled_some();
-/// // not_compiled_none();
-/// // not_compiled_all();
-/// // not_compiled_any();
-/// // not_compiled_nested();
+#[doc = include_str!("../examples/compile.rs")]
 /// ```
 #[proc_macro_attribute]
 pub fn compile(argument: TokenStream, input: TokenStream) -> TokenStream {
