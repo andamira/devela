@@ -3,6 +3,28 @@
 //! Common functionality for procedural macros.
 //
 
+// Argument parser that correctly deals with nested arguments with commas.
+fn split_args(arg: &str) -> Vec<String> {
+    let mut args = Vec::new();
+    let (mut start, mut level) = (0, 0);
+
+    for (i, ch) in arg.chars().enumerate() {
+        match ch {
+            '(' => level += 1,
+            ')' => level -= 1,
+            ',' if level == 0 => {
+                args.push(arg[start..i].trim().to_string());
+                start = i + 1;
+            }
+            _ => {}
+        }
+    }
+
+    args.push(arg[start..].trim().to_string());
+    args
+}
+
+// Evaluator for the `compile` attribute macro
 #[rustfmt::skip]
 pub(crate) fn compile_eval(arg: String) -> bool {
     if arg == "true" {
@@ -28,28 +50,47 @@ pub(crate) fn compile_eval(arg: String) -> bool {
         let inner_args = &arg[4..arg.len() - 1];
         split_args(inner_args).into_iter().any(compile_eval)
 
+    } else if arg.starts_with("eq(") && arg.ends_with(')') {
+        let inner_args = &arg[3..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && compile_eval(args[0].clone()) == compile_eval(args[1].clone())
+
+    } else if arg.starts_with("ne(") && arg.ends_with(')') {
+        let inner_args = &arg[3..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && compile_eval(args[0].clone()) != compile_eval(args[1].clone())
+
+    } else if arg.starts_with("same(") && arg.ends_with(')') {
+        let inner_args = &arg[5..arg.len() - 1];
+        let args: Vec<_> = split_args(inner_args);
+        args.iter().all(|b| b == &args[0])
+
+    } else if arg.starts_with("diff(") && arg.ends_with(')') {
+        let inner_args = &arg[5..arg.len() - 1];
+        let args: Vec<_> = split_args(inner_args);
+        args.iter().any(|b| b != &args[0])
+
+    } else if arg.starts_with("xor(") && arg.ends_with(')') {
+        let inner_args = &arg[4..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && (compile_eval(args[0].clone()) ^ compile_eval(args[1].clone()))
+
+    } else if arg.starts_with("xodd(") && arg.ends_with(')') {
+        let inner_args = &arg[5..arg.len() - 1];
+        split_args(inner_args).into_iter()
+            .map(compile_eval).filter(|&b| b).count() % 2 == 1
+
+    } else if arg.starts_with("xome(") && arg.ends_with(')') {
+        let inner_args = &arg[5..arg.len() - 1];
+        let args = split_args(inner_args);
+        let trues = args.iter()
+            .map(|x| compile_eval(x.clone())).filter(|&b| b).count();
+        trues > 0 && trues < args.len()
+
     } else {
         false
     }
-}
-
-// Argument parser that correctly deals with nested arguments with commas.
-fn split_args(arg: &str) -> Vec<String> {
-    let mut args = Vec::new();
-    let (mut start, mut level) = (0, 0);
-
-    for (i, ch) in arg.chars().enumerate() {
-        match ch {
-            '(' => level += 1,
-            ')' => level -= 1,
-            ',' if level == 0 => {
-                args.push(arg[start..i].trim().to_string());
-                start = i + 1;
-            }
-            _ => {}
-        }
-    }
-
-    args.push(arg[start..].trim().to_string());
-    args
 }
