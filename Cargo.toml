@@ -25,22 +25,30 @@ publish = true
 [features]
 default = ["std"]
 
-std = ["alloc"] # enable features that depends on "std"
-alloc = [] # enable features that depend on allocation
-no-std = [] # enable features incompatible with "std" (unused)
+# environment features
+std = ["alloc"] # features that depend on the standard library
+alloc = [] # features that depend on allocation
+no-std = [] # features incompatible with "std" (unused)
 
+# safety features
 safe = [] # forbid unsafe at the crate level
 safest = ["safe"] # forbid unsafe recursively (unused)
-
-unsafe = ["unsafe_cmp", "unsafe_fmt", "unsafe_num", "unsafe_convert", "bytemuck"]
+unsafe = [ # all the unsafe features
+	"unsafe_cmp",
+	"unsafe_fmt",
+	"unsafe_num",
+	"unsafe_convert",
+	"bytemuck"
+]
 unsafe_cmp = [] # enable const floating-point comparisons.
 unsafe_convert = [] # enable using `MaybeUninit` for array initalization.
 unsafe_fmt = [] # enable `IntBuf` struct and `IntBufable` trait.
 unsafe_num = [] # enable unsafe in the `num` module.
 unsafest = ["unsafe"] # enable unsafe recursively (unused)
 
-nightly = [] # used only for better docs
-nightly_docs = ["nightly", "std", "unsafe", "bytemuck"] # features to document
+# nightly features
+nightly = [] # used only for enhanced documentation
+nightly_docs = ["nightly", "std", "unsafe"] # features for docs.rs
 
 bytemuck = ["dep:bytemuck", "unsafe_num"]
 
@@ -48,9 +56,9 @@ bytemuck = ["dep:bytemuck", "unsafe_num"]
 [dependencies]
 az = "1.2.1"
 devela_macros = "0.5.0"
-#devela_macros = { path = "macros" }
 paste_crate = { package = "paste", version = "1.0.14" }
 
+# optional
 bytemuck = { version = "1.13.1", optional = true, default-features = false }
 
 [dev-dependencies]
