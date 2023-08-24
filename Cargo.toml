@@ -30,15 +30,19 @@ alloc = [] # enable features that depend on allocation
 no-std = [] # enable features incompatible with "std" (unused)
 
 safe = [] # forbid unsafe at the crate level
+safest = ["safe"] # forbid unsafe recursively (unused)
+
 unsafe = ["unsafe_cmp", "unsafe_fmt", "unsafe_num", "unsafe_convert", "bytemuck"]
 unsafe_cmp = [] # enable const floating-point comparisons.
 unsafe_convert = [] # enable using `MaybeUninit` for array initalization.
 unsafe_fmt = [] # enable `IntBuf` struct and `IntBufable` trait.
 unsafe_num = [] # enable unsafe in the `num` module.
-bytemuck = ["dep:bytemuck", "unsafe_num"]
+unsafest = ["unsafe"] # enable unsafe recursively (unused)
 
 nightly = [] # used only for better docs
 nightly_docs = ["nightly", "std", "unsafe", "bytemuck"] # features to document
+
+bytemuck = ["dep:bytemuck", "unsafe_num"]
 
 
 [dependencies]
