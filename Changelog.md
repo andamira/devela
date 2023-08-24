@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- add features: `safest` and `unsafe`.
+
+### Fixed
+- fix cargo aliases.
+- fix external reexports.
+
+
 ## [0.7.1] - 2023-08-23
 
 ### Changed
@@ -107,7 +115,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.5.0] - 2023-06-09
 
 ### Added
-- new traits `AltDebug`, `OptionExt`, `ResultExt`. 
+- new traits `AltDebug`, `OptionExt`, `ResultExt`.
 - new macros `S`, `iformat`.
 - new `indent` function.
 
@@ -135,7 +143,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - reexport the `az` crate and the `paste` macro.
 
 ### Changed
-- improve the `compile` attribute macro to support the `not()` option. 
+- improve the `compile` attribute macro to support the `not()` option.
 
 ## [0.2.0] - 2023-05-07
 
@@ -214,7 +222,10 @@ The format is based on [Keep a Changelog], and this project adheres to
   `project_root_path_string`.
 - add macro `iif`.
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.6.1...HEAD
+
+[unreleased]: https://github.com/andamira/devela/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/andamira/devela/releases/tag/v0.7.1
+[0.7.0]: https://github.com/andamira/devela/releases/tag/v0.7.0
 [0.6.1]: https://github.com/andamira/devela/releases/tag/v0.6.1
 [0.6.0]: https://github.com/andamira/devela/releases/tag/v0.6.0
 [0.5.3]: https://github.com/andamira/devela/releases/tag/v0.5.3
