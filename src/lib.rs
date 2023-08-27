@@ -69,6 +69,9 @@ pub mod path;
 pub mod result;
 pub mod slice;
 pub mod string;
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
+pub mod thread;
 
 /// All items are reexported here.
 pub mod all {
@@ -88,6 +91,10 @@ pub mod all {
         slice::*,
         string::*,
     };
+
+    #[doc(inline)]
+    #[cfg(feature = "std")]
+    pub use super::thread::*;
 
     #[doc(inline)]
     pub use devela_macros::{cif, compile, compile_attr};
