@@ -46,12 +46,12 @@ pub use ::devela_macros::{cif, compile, compile_attr};
 /// The precise Unicode conversions are as defined by [`str::to_lowercase`][0]
 /// and [`str::to_uppercase`][1].
 ///
-/// [0]: https://doc.rust-lang.org/std/primitive.str.html#method.to_lowercase
-/// [1]: https://doc.rust-lang.org/std/primitive.str.html#method.to_uppercase
+/// [0]: https://doc.rust-lang.org/core/primitive.str.html#method.to_lowercase
+/// [1]: https://doc.rust-lang.org/core/primitive.str.html#method.to_uppercase
 ///
 /// ## Pasting documentation strings
 ///
-/// Within the `paste!` macro, arguments to a #\[doc ...\] attribute are
+/// Within the `paste!` macro, arguments to a `#[doc ...]` attribute are
 /// implicitly concatenated together to form a coherent documentation string.
 ///
 /// ```
@@ -82,10 +82,12 @@ pub use paste_crate::paste as _paste;
 
 /// Set a deprecated feature in order to display a warning if it's enabled.
 ///
-/// Note that you can only call this macro once per deprecated feature.
+/// You can only call this macro once per deprecated feature.
 ///
 /// # Examples
 /// ```
+/// # use devela::deprecate_feature;
+///
 /// deprecate_feature![old: "old-feature-1"];
 ///
 /// deprecate_feature![old: "old-feature-2", since: "2.0.0"];

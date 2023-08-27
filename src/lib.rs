@@ -70,7 +70,7 @@ pub mod result;
 pub mod slice;
 pub mod string;
 
-/// All the types and traits are flat reexported here.
+/// All items are reexported here.
 pub mod all {
     #[doc(inline)]
     pub use super::{
