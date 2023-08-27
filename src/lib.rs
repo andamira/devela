@@ -7,7 +7,7 @@
 //! - `std` (default): enables functionality that depends on the standard library.
 //!   Disabling it makes the crate `no_std` compatible.
 //! - `alloc`: enables functionality that depends on allocation. Included in `std`.
-//! - `no-std`: enables functionality incompatible with `std` (unused).
+//! - `no_std`: enables functionality incompatible with `std` (unused).
 //! ---
 //! - `safe`: forbids all `unsafe` code at the crate level.
 //! - `unsafe`: meta feature enabling every modular unsafe feature:
@@ -35,8 +35,8 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
 
-#[cfg(all(feature = "std", feature = "no-std"))]
-compile_error!("You can't enable the `std` and `no-std` features at the same time.");
+#[cfg(all(feature = "std", feature = "no_std"))]
+compile_error!("You can't enable the `std` and `no_std` features at the same time.");
 #[cfg(all(
     feature = "safe",
     any(
@@ -48,6 +48,8 @@ compile_error!("You can't enable the `std` and `no-std` features at the same tim
     )
 ))]
 compile_error!("You can't enable the `safe` and `unsafe*` features at the same time.");
+
+deprecate_feature![old: "no-std", new: "no_std", since: "0.8.0"];
 
 #[cfg(feature = "alloc")]
 extern crate alloc;

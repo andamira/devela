@@ -28,7 +28,7 @@ default = ["std"]
 # environment features
 std = ["alloc"] # features that depend on the standard library
 alloc = [] # features that depend on allocation
-no-std = [] # features incompatible with "std" (unused)
+no_std = [] # features incompatible with "std" (unused)
 
 # safety features
 safe = [] # forbid unsafe at the crate level
@@ -51,6 +51,9 @@ nightly = [] # used only for enhanced documentation
 nightly_docs = ["nightly", "std", "unsafe"] # features for docs.rs
 
 bytemuck = ["dep:bytemuck", "unsafe_num"]
+
+# deprecated features:
+no-std = ["no_std"]
 
 
 [dependencies]
