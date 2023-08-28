@@ -47,6 +47,10 @@ mod private {
 /// A correctly sized stack allocation for the formatted integer to be written into.
 /// # Derived Work
 #[doc = include_str!("./MODIFICATIONS.md")]
+/// # Safety
+/// All the unsafe code is ported verbatim from the throughly tested [`itoa`] crate.
+///
+/// [`itoa`]: https://docs.rs/itoa
 #[repr(C)]
 pub struct IntBuf {
     bytes: [MaybeUninit<u8>; I128_MAX_LEN],

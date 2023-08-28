@@ -26,14 +26,15 @@ publish = true
 default = ["std"]
 
 # environment features
+# (not enabling "std" declares the library as "no_std")
 std = ["alloc"] # features that depend on the standard library
 alloc = [] # features that depend on allocation
-no_std = [] # features incompatible with "std" (unused)
+no_std = [] # features incompatible with the standard library (unused)
 
 # safety features
 safe = [] # forbid unsafe at the crate level
 safest = ["safe"] # forbid unsafe recursively (unused)
-unsafe = [ # all the unsafe features
+unsafe = [ # enable all the unsafe features
 	"unsafe_cmp",
 	"unsafe_fmt",
 	"unsafe_num",
@@ -50,9 +51,10 @@ unsafest = ["unsafe"] # enable unsafe recursively (unused)
 nightly = [] # used only for enhanced documentation
 nightly_docs = ["nightly", "std", "unsafe"] # features for docs.rs
 
+# other features
 bytemuck = ["dep:bytemuck", "unsafe_num"]
 
-# deprecated features:
+# deprecated features
 no-std = ["no_std"]
 
 

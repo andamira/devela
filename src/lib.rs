@@ -13,10 +13,9 @@
 //! - `unsafe`: meta feature enabling every modular unsafe feature:
 //!   - `unsafe_cmp`: enables const floating-point comparison in [`cmp`],
 //!      using [`transmute`] for constant access to the bits.
-//!   - `unsafe_convert`: enables using [`MaybeUninit`] for array
-//!     initialization in [`slice_into_array`].
+//!   - `unsafe_convert`: enables using [`MaybeUninit`] for [`slice_into_array`]
+//!     initialization in [`convert`].
 //!   - `unsafe_fmt`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
-//!     Unsafe blocks are ported verbatim from [`itoa`].
 //!   - `unsafe_num`: enables `new_unchecked` and implements
 //!     [`bytemuck`] traits for new types defined in [`num`].
 //! ---
@@ -27,14 +26,18 @@
 //! [`slice_into_array`]: convert::collection::slice_into_array
 //! [`MaybeUninit`]: core::mem::MaybeUninit
 //! [`transmute`]: core::mem::transmute
-//! [`itoa`]: https://docs.rs/itoa
 //
 
+// warnings
 #![warn(clippy::all)]
+// environment
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
+#[cfg(feature = "alloc")]
+extern crate alloc;
 
+// safeguards
 #[cfg(all(feature = "std", feature = "no_std"))]
 compile_error!("You can't enable the `std` and `no_std` features at the same time.");
 #[cfg(all(
@@ -48,11 +51,8 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     )
 ))]
 compile_error!("You can't enable the `safe` and `unsafe*` features at the same time.");
-
+// deprecated
 deprecate_feature![old: "no-std", new: "no_std", since: "0.8.0"];
-
-#[cfg(feature = "alloc")]
-extern crate alloc;
 
 extern crate devela_macros;
 
