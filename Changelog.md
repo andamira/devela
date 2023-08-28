@@ -9,6 +9,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - add features: `safest` and `unsafe`.
+- new `deprecate_feature` macro.
+- new `sleep4` macro.
+
+### Removed
+- remove `num::*` module reexport from the prelude.
+
+### Changed
+- deprecate feature `no-std` for `no_std`.
+- bump MSRV to `1.72.0`.
 
 ### Fixed
 - fix cargo aliases.
