@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.6.0] - 2023-08-29
+
 ### Added
 - new features `alloc`, `std`, `safe`, `safest`, `unsafe`, `unsafest` and `nightly`.
 - make `alloc` and `safe` default features.
@@ -81,7 +83,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - new attribute macro `include_block`.
 
-[unreleased]: https://github.com/andamira/devela_macros/compare/v0.4.0...HEAD
+[unreleased]: https://github.com/andamira/devela_macros/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/andamira/devela_macros/releases/tag/v0.6.0
+[0.5.0]: https://github.com/andamira/devela_macros/releases/tag/v0.5.0
 [0.4.0]: https://github.com/andamira/devela_macros/releases/tag/v0.4.0
 [0.3.1]: https://github.com/andamira/devela_macros/releases/tag/v0.3.1
 [0.3.0]: https://github.com/andamira/devela_macros/releases/tag/v0.3.0
