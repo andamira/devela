@@ -26,8 +26,8 @@
 //! - non-binary:
 //!   - `any()`: returns `true` if any predicate is `true`.
 //!   - `all()`: returns `true` if all of the predicates are `true`.
+//!   - `xany()`: returns `true` if there is **some `true`** predicate, but not all.
 //!   - `xodd()`: returns `true` if there is an **odd number** of `true` predicates.
-//!   - `xome()`: returns `true` if there is **some `true`** predicates, but not all.
 //!   - `same()`: returns `true` if all the predicates have the **same text**.
 //!   - `diff()`: returns `true` if any predicate has a **different text**.
 //!   - `some()`: returns `true` if there is **some given** predicate.

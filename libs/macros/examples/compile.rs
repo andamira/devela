@@ -47,17 +47,17 @@ fn compiled_all() {}
 #[compile(all(true, false))]
 fn not_compiled_all() {}
 
+// xany()
+#[compile(xany(true, false, true, true))]
+fn compiled_xany() {}
+#[compile(xany(true, true, true, true))]
+fn not_compiled_xany() {}
+
 // xodd()
 #[compile(xodd(true, false, false))]
 fn compiled_xodd() {}
 #[compile(xodd(true, true, false))]
 fn not_compiled_xodd() {}
-
-// xome()
-#[compile(xome(true, false, true, true))]
-fn compiled_xome() {}
-#[compile(xome(true, true, true, true))]
-fn not_compiled_xome() {}
 
 // same()
 #[compile(same(ABC, ABC))]
@@ -110,8 +110,8 @@ fn main() {
 
     compiled_any();
     compiled_all();
+    compiled_xany();
     compiled_xodd();
-    compiled_xome();
     compiled_some();
     compiled_none();
     compiled_same();
@@ -119,8 +119,8 @@ fn main() {
     compiled_nested();
     // not_compiled_any();
     // not_compiled_all();
+    // not_compiled_xany();
     // not_compiled_xodd();
-    // not_compiled_xome();
     // not_compiled_some();
     // not_compiled_none();
     // not_compiled_same();
