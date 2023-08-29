@@ -47,6 +47,30 @@ fn compiled_all() {}
 #[compile(all(true, false))]
 fn not_compiled_all() {}
 
+// diff()
+#[compile(diff(ABC, DEF))]
+fn compiled_diff() {}
+#[compile(diff(true, true))]
+fn not_compiled_diff() {}
+
+// same()
+#[compile(same(ABC, ABC))]
+fn compiled_same() {}
+#[compile(same(ABC, DEF))]
+fn not_compiled_same() {}
+
+// none()
+#[compile(none())]
+fn compiled_none() {}
+#[compile(none(thing))]
+fn not_compiled_none() {}
+
+// some()
+#[compile(some(thing))]
+fn compiled_some() {}
+#[compile(some())]
+fn not_compiled_some() {}
+
 // xany()
 #[compile(xany(true, false, true, true))]
 fn compiled_xany() {}
@@ -64,30 +88,6 @@ fn not_compiled_xodd() {}
 fn compiled_xone() {}
 #[compile(xone(true, true, true, false))]
 fn not_compiled_xone() {}
-
-// same()
-#[compile(same(ABC, ABC))]
-fn compiled_same() {}
-#[compile(same(ABC, DEF))]
-fn not_compiled_same() {}
-
-// diff()
-#[compile(diff(ABC, DEF))]
-fn compiled_diff() {}
-#[compile(diff(true, true))]
-fn not_compiled_diff() {}
-
-// some()
-#[compile(some(thing))]
-fn compiled_some() {}
-#[compile(some())]
-fn not_compiled_some() {}
-
-// none()
-#[compile(none())]
-fn compiled_none() {}
-#[compile(none(thing))]
-fn not_compiled_none() {}
 
 // nested
 #[compile(all(true, not(any(some(), none(thing), not(not(false))))))]
@@ -116,22 +116,22 @@ fn main() {
 
     compiled_any();
     compiled_all();
+    compiled_none();
+    compiled_some();
+    compiled_diff();
+    compiled_same();
     compiled_xany();
     compiled_xodd();
     compiled_xone();
-    compiled_some();
-    compiled_none();
-    compiled_same();
-    compiled_diff();
     compiled_nested();
     // not_compiled_any();
     // not_compiled_all();
+    // not_compiled_none();
+    // not_compiled_some();
+    // not_compiled_diff();
+    // not_compiled_same();
     // not_compiled_xany();
     // not_compiled_xodd();
     // not_compiled_xone();
-    // not_compiled_some();
-    // not_compiled_none();
-    // not_compiled_same();
-    // not_compiled_diff();
     // not_compiled_nested();
 }

@@ -17,22 +17,22 @@
 //! The following compilation predicates are supported:
 //!
 //! - unary:
-//!   - A bare predicate returns `true` only if it is the word `true`.
-//!   - `not()`: returns `true` only if the single predicate is **not** `true`.
+//!   - A bare predicate returns `true` only if it is the **`true`** literal
+//!   - `not()`: returns `true` only if the predicate does **not** evaluate to **`true`**.
 //! - binary:
-//!   - `eq()`: returns `true` if both predicates evaluate as equal.
-//!   - `ne()`: returns `true` if both predicates does **not** evaluate as equal.
-//!   - `xor()`: returns `true` only if **one** predicate is `true`, but not both.
+//!   - `eq()`: returns `true` if both predicates are evaluated as **equal**.
+//!   - `ne()`: returns `true` if both predicates are **not** evaluated as **equal**.
+//!   - `xor()`: returns `true` if **only one** predicate **is `true`**, but **not both**.
 //! - non-binary:
-//!   - `any()`: returns `true` if any predicate is `true`.
-//!   - `all()`: returns `true` if all of the predicates are `true`.
-//!   - `xany()`: returns `true` if there is **some `true`** predicate, but not all.
-//!   - `xodd()`: returns `true` if there is an **odd number** of `true` predicates.
-//!   - `xone()`: returns `true` if there is just **one `true`** predicate, no more.
-//!   - `same()`: returns `true` if all the predicates have the **same text**.
-//!   - `diff()`: returns `true` if any predicate has a **different text**.
-//!   - `some()`: returns `true` if there is **some given** predicate.
+//!   - `any()`: returns `true` if **any** predicate **is `true`**.
+//!   - `all()`: returns `true` if **all** predicates **are `true`**.
 //!   - `none()`: returns `true` if there is **no given** predicate.
+//!   - `some()`: returns `true` if there is **some given** predicate.
+//!   - `diff()`: returns `true` if **any** predicate has a **different text**.
+//!   - `same()`: returns `true` if **all** the predicates have the **same text**.
+//!   - `xany()`: returns `true` if there are **any `true`** predicates, but **not all**.
+//!   - `xodd()`: returns `true` if there is an **odd number** of `true` predicates.
+//!   - `xone()`: returns `true` if there is just **one `true`** predicate, but **no more**.
 //!
 //! When more than 1 predicate is supported, they are separated by commas.
 //!
