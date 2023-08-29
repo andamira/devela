@@ -7,6 +7,22 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- new features `alloc`, `std`, `safe`, `safest`, `unsafe`, `unsafest` and `nightly`.
+- make `alloc` and `safe` default features.
+- add global warning config and attributes.
+- add `docs.rs` package metadata.
+- new `xone()` predicate.
+
+### Changed
+- rename `xome()` predicate to `xany()`.
+- depend on `alloc` instead of `std`.
+- include any markdown files inside `src` in the crate.
+
+### Fixed
+- update CI and readme.
+- improve docs and tests.
+
 ## [0.5.0] - 2023-08-23
 
 ### Added
