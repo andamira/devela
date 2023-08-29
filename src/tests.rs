@@ -2,6 +2,8 @@
 
 use super::compile_eval;
 
+use alloc::string::ToString;
+
 #[test]
 fn test_compile_eval() {
     assert_eq!(compile_eval("true".into()), true);

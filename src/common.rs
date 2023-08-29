@@ -3,7 +3,14 @@
 //! Common functionality for procedural macros.
 //
 
+#[cfg(feature = "alloc")]
+use alloc::{
+    string::{String, ToString},
+    vec::Vec,
+};
+
 // Argument parser that correctly deals with nested arguments with commas.
+#[cfg(feature = "alloc")]
 pub(crate) fn split_args(arg: &str) -> Vec<String> {
     let mut args = Vec::new();
     let (mut start, mut level) = (0, 0);
@@ -26,6 +33,7 @@ pub(crate) fn split_args(arg: &str) -> Vec<String> {
 
 // Evaluator of compilation predicates
 #[rustfmt::skip]
+#[cfg(feature = "alloc")]
 pub(crate) fn compile_eval(arg: String) -> bool {
     if arg == "true" {
         true

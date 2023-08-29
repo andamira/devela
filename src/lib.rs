@@ -43,16 +43,24 @@
 // warnings
 #![warn(clippy::all)]
 // environment
+#![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
+#[cfg(feature = "alloc")]
+extern crate alloc;
+
+#[cfg(feature = "alloc")]
+use alloc::{format, string::ToString};
 
 extern crate proc_macro;
 use proc_macro::TokenStream;
 
+#[cfg(feature = "alloc")]
 #[cfg(test)]
 mod tests;
 
 mod common;
+#[cfg(feature = "alloc")]
 use common::{compile_eval, split_args};
 
 /// Conditionally compiles the thing it is attached to based on the
@@ -63,6 +71,8 @@ use common::{compile_eval, split_args};
 #[doc = include_str!("../examples/compile.rs")]
 /// ```
 #[proc_macro_attribute]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 pub fn compile(argument: TokenStream, input: TokenStream) -> TokenStream {
     if compile_eval(argument.to_string()) {
         input
@@ -79,6 +89,8 @@ pub fn compile(argument: TokenStream, input: TokenStream) -> TokenStream {
 #[doc = include_str!("../examples/compile_attr.rs")]
 /// ```
 #[proc_macro_attribute]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 pub fn compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
     let args = args.to_string();
     let mut args = split_args(&args);
@@ -117,6 +129,8 @@ pub fn compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
 /// assert_eq!(the_answer_is, "two");
 /// ```
 #[proc_macro]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 pub fn cif(input: TokenStream) -> TokenStream {
     let input = input.to_string();
     let result = compile_eval(input);
