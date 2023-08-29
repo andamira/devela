@@ -86,19 +86,19 @@ pub(crate) fn compile_eval(arg: String) -> bool {
         args.len() == 2
             && (compile_eval(args[0].clone()) ^ compile_eval(args[1].clone()))
 
-    // common generalization of xor that emphasizes the oddness property
-    } else if arg.starts_with("xodd(") && arg.ends_with(')') {
-        let inner_args = &arg[5..arg.len() - 1];
-        split_args(inner_args).into_iter()
-            .map(compile_eval).filter(|&b| b).count() % 2 == 1
-
     // generalization of xor that emphasizes the limited inclusivity property
-    } else if arg.starts_with("xome(") && arg.ends_with(')') {
+    } else if arg.starts_with("xany(") && arg.ends_with(')') {
         let inner_args = &arg[5..arg.len() - 1];
         let args = split_args(inner_args);
         let trues = args.iter()
             .map(|x| compile_eval(x.clone())).filter(|&b| b).count();
         trues > 0 && trues < args.len()
+
+    // common generalization of xor that emphasizes the oddness property
+    } else if arg.starts_with("xodd(") && arg.ends_with(')') {
+        let inner_args = &arg[5..arg.len() - 1];
+        split_args(inner_args).into_iter()
+            .map(compile_eval).filter(|&b| b).count() % 2 == 1
 
     } else {
         false

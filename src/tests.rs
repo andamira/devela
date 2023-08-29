@@ -32,10 +32,10 @@ fn test_compile_eval() {
     assert_eq!(compile_eval("xor(true, false)".into()), true);
     assert_eq!(compile_eval("xor(true, true)".into()), false);
 
+    assert_eq!(compile_eval("xany(true, false)".into()), true);
+    assert_eq!(compile_eval("xany(true, true)".into()), false);
+
     assert_eq!(compile_eval("xodd(true, false, false)".into()), true);
     assert_eq!(compile_eval("xodd(true, true, false)".into()), false);
     assert_eq!(compile_eval("xodd(true, true, true)".into()), true);
-
-    assert_eq!(compile_eval("xome(true, false)".into()), true);
-    assert_eq!(compile_eval("xome(true, true)".into()), false);
 }
