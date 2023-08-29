@@ -24,7 +24,11 @@ publish = true
 proc-macro = true
 
 [features]
-default = ["safe"]
+default = ["alloc", "safe"]
+
+# environment features
+std = ["alloc"]
+alloc = []
 
 # safety features
 safe = [] # forbid unsafe at the crate level
@@ -34,7 +38,7 @@ unsafest = ["unsafe"] # enable unsafe features recursively
 
 # nightly features
 nightly = [] # used only for enhanced documentation (unused)
-nightly_docs = ["nightly"] # features for docs.rs
+nightly_docs = ["nightly", "alloc"] # features for docs.rs
 
 
 [package.metadata.docs.rs]
