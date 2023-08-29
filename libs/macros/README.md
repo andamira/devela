@@ -12,6 +12,10 @@ See [the documentation](https://docs.rs/devela_macros/) for more information.
 
 This is currently in an experimental stage of development.
 
+## License
+This project is dual licensed under either [MIT](LICENSE-MIT)
+or [Apache-2.0](LICENSE-APACHE) at your option.
+
 ## Contributing
 
 Contributions are welcomed to help refine and improve this library over time.
