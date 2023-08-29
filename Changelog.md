@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Removed
 - remove `num::*` module reexport from the prelude.
+- remove fns `counter_string`, `indent`, macro `iformat` (move to `textos`).
 
 ### Changed
 - deprecate feature `no-std` for `no_std`.

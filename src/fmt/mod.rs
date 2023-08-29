@@ -170,17 +170,6 @@ impl<'a> fmt::Write for WriteTo<'a> {
     }
 }
 
-/// *`i`ndented `format`*.
-///
-// TODO WIP
-#[macro_export]
-macro_rules! iformat {
-    ($indent:expr, $($args:tt)*) => {
-        $crate::indent($indent, &format![$($args)*])
-    };
-}
-pub use iformat;
-
 /// An alternative `Debug`.
 ///
 /// # Examples
