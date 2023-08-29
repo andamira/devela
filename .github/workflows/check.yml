@@ -70,7 +70,7 @@ jobs:
         uses: dtolnay/rust-toolchain@nightly
 
       - name: "cargo doc"
-        run: cargo doc
+        run: cargo doc --features=nightly_docs
         env:
           RUSTDOCFLAGS: --cfg docsrs
 
