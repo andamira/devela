@@ -9,8 +9,9 @@
 //! - `alloc`: enables functionality that depends on allocation. Included in `std`.
 //! - `no_std`: enables functionality incompatible with `std` (unused).
 //! ---
-//! - `safe`: forbids all `unsafe` code at the crate level.
-//! - `unsafe`: meta feature enabling every modular unsafe feature:
+//! - `safe`: forbids unsafe at the crate level.
+//! - `safest`: forbids unsafe recursively (unused).
+//! - `unsafe`: enables all the unsafe features:
 //!   - `unsafe_cmp`: enables const floating-point comparison in [`cmp`],
 //!      using [`transmute`] for constant access to the bits.
 //!   - `unsafe_convert`: enables using [`MaybeUninit`] for [`slice_into_array`]
@@ -18,6 +19,7 @@
 //!   - `unsafe_fmt`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
 //!   - `unsafe_num`: enables `new_unchecked` and implements
 //!     [`bytemuck`] traits for new types defined in [`num`].
+//! - `unsafest`: enables unsafe recursively (unused).
 //! ---
 //! - `bytemuck`: implements several unsafe [`bytemuck`] traits for [`num`] types.
 //!
