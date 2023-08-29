@@ -10,6 +10,7 @@ documentation = "https://docs.rs/devela_macros"
 license = "MIT OR Apache-2.0"
 include = [
 	"/src/**/*.rs",
+	"/src/**/*.md",
 	"/examples/*.rs",
 	"/Cargo.toml",
 	"/README.md",
@@ -23,7 +24,22 @@ publish = true
 proc-macro = true
 
 [features]
-nightly_docs = []
+default = ["safe"]
+
+# safety features
+safe = [] # forbid unsafe at the crate level
+safest = ["safe"] # forbid unsafe recursively
+unsafe = [] # enable the unsafe features (unused)
+unsafest = ["unsafe"] # enable unsafe features recursively
+
+# nightly features
+nightly = [] # used only for enhanced documentation (unused)
+nightly_docs = ["nightly"] # features for docs.rs
+
+
+[package.metadata.docs.rs]
+no-default-features = true
+features = ["nightly_docs"]
 
 [badges]
 maintenance = { status = "experimental" }

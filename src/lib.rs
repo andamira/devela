@@ -40,6 +40,12 @@
 //! [3]: https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg-macro
 //
 
+// warnings
+#![warn(clippy::all)]
+// environment
+#![cfg_attr(feature = "safe", forbid(unsafe_code))]
+#![cfg_attr(feature = "nightly", feature(doc_cfg))]
+
 extern crate proc_macro;
 use proc_macro::TokenStream;
 
