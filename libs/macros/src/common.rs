@@ -100,6 +100,14 @@ pub(crate) fn compile_eval(arg: String) -> bool {
         split_args(inner_args).into_iter()
             .map(compile_eval).filter(|&b| b).count() % 2 == 1
 
+    // generalization of xor that emphasizes the singular inclusivity property
+    } else if arg.starts_with("xone(") && arg.ends_with(')') {
+        let inner_args = &arg[5..arg.len() - 1];
+        let args = split_args(inner_args);
+        let trues = args.iter()
+            .map(|x| compile_eval(x.clone())).filter(|&b| b).count();
+        trues == 1
+
     } else {
         false
     }
