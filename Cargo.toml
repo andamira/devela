@@ -22,52 +22,53 @@ categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "helpers", "extension", "extensions"]
 publish = true
 
+# ------------------------------------------------------------------------------
+
 [features]
 default = ["std"]
 
-# environment features
+#* environment features *#
 # (not enabling "std" declares the library as "no_std")
-std = ["alloc"] # features that depend on the standard library
-alloc = [] # features that depend on allocation
-no_std = [] # features incompatible with the standard library (unused)
+std = ["alloc"] # enables functionality that depend on the standard library
+alloc = [] # enables functionality that depend on allocation
+no_std = [] # enables functionality incompatible with the standard library (unused)
 
-# safety features
-safe = [] # forbid unsafe at the crate level
-safest = ["safe"] # forbid unsafe recursively (unused)
-unsafe = [ # enable all the unsafe features
-	"unsafe_cmp",
-	"unsafe_fmt",
-	"unsafe_num",
-	"unsafe_convert",
-	"bytemuck"
+#* safety features *#
+safe = [] # forbids unsafe at the crate level
+safest = ["safe"] # forbids unsafe recursively (unused)
+unsafe = [ # enables all the unsafe features at the crate level
+	"unsafe_cmp", "unsafe_fmt", "unsafe_num", "unsafe_convert",
+	"bytemuck",
 ]
-unsafe_cmp = [] # enable const floating-point comparisons.
-unsafe_convert = [] # enable using `MaybeUninit` for array initalization.
-unsafe_fmt = [] # enable `IntBuf` struct and `IntBufable` trait.
-unsafe_num = [] # enable unsafe in the `num` module.
-unsafest = ["unsafe"] # enable unsafe recursively (unused)
+unsafe_cmp = [] # enables const floating-point comparisons.
+unsafe_convert = [] # enables using `MaybeUninit` for array initalization.
+unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait.
+unsafe_num = [] # enables unsafe in the `num` module.
+unsafest = ["unsafe"] # enables unsafe recursively (unused)
 
-# nightly features
-nightly = [] # used only for enhanced documentation
+#* nightly features *#
+nightly = [] # enables the nightly features
 nightly_docs = ["nightly", "std", "unsafe"] # features for docs.rs
 
-# other features
-bytemuck = ["dep:bytemuck", "unsafe_num"]
-
-# deprecated features
+#* deprecated features *#
 no-std = ["no_std"]
 
+#* other features *#
+bytemuck = ["dep:bytemuck", "unsafe_num"]
+
+# ------------------------------------------------------------------------------
 
 [dependencies]
 az = "1.2.1"
 devela_macros = "0.6.0"
 paste_crate = { package = "paste", version = "1.0.14" }
 
-# optional
+#* optional dependencies *#
 bytemuck = { version = "1.13.1", optional = true, default-features = false }
 
 [dev-dependencies]
 
+# ------------------------------------------------------------------------------
 
 [package.metadata.docs.rs]
 no-default-features = true

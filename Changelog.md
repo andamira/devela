@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Fixed
+- fix the `iif` module.
+- refactor manifest and update comments.
+- separate lengthy module level docs into markdown files.
+
 ## [0.8.0] - 2023-08-29
 
 ### Added
