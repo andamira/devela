@@ -1,6 +1,6 @@
 // devela::ops::iif
 //
-//! Miscellaneous items.
+//! inline if macro.
 //
 
 /// *`i`nline `if`*.
@@ -92,25 +92,6 @@ pub use iif;
 mod test_iif {
     use crate::ops::iif;
 
-    #[test]
-    fn iif() {
-        assert_eq!('a', iif!(true ; 'a' ; 'b'));
-        assert_eq!('b', iif!(false ; 'a' ; 'b'));
-    }
-
-    #[test]
-    fn iif_let() {
-        let somea = Some('a');
-        let noa: Option<char> = None;
-
-        assert_eq!('a', iif!(let Some(a) = somea; a ; 'b'));
-        assert_eq!('b', iif!(let Some(a) = noa; a ; 'b'));
-    }
-}
-
-#[cfg(test)]
-#[allow(non_snake_case)]
-mod tests {
     #[test]
     fn iif() {
         assert_eq!('a', iif!(true ; 'a' ; 'b'));
