@@ -30,7 +30,9 @@ default = ["std"]
 #* environment features *#
 # (not enabling "std" declares the library as "no_std")
 std = ["alloc"] # enables functionality that depend on the standard library
-alloc = [] # enables functionality that depend on allocation
+alloc = [ # enables functionality that depend on allocation
+	"bytemuck?/extern_crate_alloc",
+]
 no_std = [] # enables functionality incompatible with the standard library (unused)
 
 #* safety features *#
