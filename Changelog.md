@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Removed
+- remove the `Copy` trait from `IntBuf`.
+
 ### Fixed
 - fix the `iif` module.
 - refactor manifest and update comments.

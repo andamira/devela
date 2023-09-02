@@ -57,13 +57,13 @@ pub struct IntBuf {
 }
 
 impl Clone for IntBuf {
+    /// Creates a new `IntBuf` with uninitialized memory.
     #[inline]
     fn clone(&self) -> Self {
+        // discussion: https://github.com/rust-lang/rust-clippy/issues/11072
         IntBuf::new()
     }
 }
-
-impl Copy for IntBuf {}
 
 impl Default for IntBuf {
     #[inline]
