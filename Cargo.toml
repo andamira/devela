@@ -39,13 +39,14 @@ no_std = [] # enables functionality incompatible with the standard library (unus
 safe = [] # forbids unsafe at the crate level
 safest = ["safe"] # forbids unsafe recursively (unused)
 unsafe = [ # enables all the unsafe features at the crate level
-	"unsafe_cmp", "unsafe_fmt", "unsafe_num", "unsafe_convert",
+	"unsafe_cmp", "unsafe_fmt", "unsafe_num", "unsafe_convert", "unsafe_os",
 	"bytemuck",
 ]
-unsafe_cmp = [] # enables const floating-point comparisons.
-unsafe_convert = [] # enables using `MaybeUninit` for array initalization.
-unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait.
-unsafe_num = [] # enables unsafe in the `num` module.
+unsafe_cmp = [] # enables const floating-point comparisons
+unsafe_convert = [] # enables using `MaybeUninit` for array initalization
+unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait
+unsafe_os = [] # enables using linux syscalls
+unsafe_num = [] # enables unsafe in the `num` module
 unsafest = ["unsafe"] # enables unsafe recursively (unused)
 
 #* nightly features *#

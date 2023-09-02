@@ -42,6 +42,7 @@ pub mod mem;
 pub mod num;
 pub mod ops;
 pub mod option;
+pub mod os;
 pub mod path;
 pub mod result;
 pub mod slice;
@@ -63,6 +64,7 @@ pub mod all {
         num::*,
         ops::*,
         option::*,
+        os::all::*,
         path::*,
         result::*,
         slice::*,

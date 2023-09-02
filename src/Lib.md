@@ -16,6 +16,7 @@
   - `unsafe_fmt`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
   - `unsafe_num`: enables `new_unchecked` and implements
     [`bytemuck`] traits for new types defined in [`num`].
+  - `unsafe_os`: provides functionality that depends on linux syscalls.
 - `unsafest`: enables unsafe recursively (unused).
 ---
 - `bytemuck`: implements several unsafe [`bytemuck`] traits for [`num`] types.
