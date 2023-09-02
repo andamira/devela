@@ -33,6 +33,30 @@ fn compiled_xor() {}
 #[compile(xor(true, true))]
 fn not_compiled_xor() {}
 
+// ge()
+#[compile(ge(5, 5))]
+fn compiled_ge() {}
+#[compile(ge(2, 5))]
+fn not_compiled_ge() {}
+
+// gt()
+#[compile(gt(4, 3))]
+fn compiled_gt() {}
+#[compile(any(gt(5, 5), gt(2, 5)))]
+fn not_compiled_gt() {}
+
+// le()
+#[compile(all(le(2, 5), le(5, 5)))]
+fn compiled_le() {}
+#[compile(le(5, 2))]
+fn not_compiled_le() {}
+
+// lt()
+#[compile(lt(2, 5))]
+fn compiled_lt() {}
+#[compile(any(lt(5, 5), lt(5, 2)))]
+fn not_compiled_lt() {}
+
 /* non-binary */
 
 // any()
@@ -108,9 +132,17 @@ fn main() {
     compiled_eq();
     compiled_ne();
     compiled_xor();
+    compiled_gt();
+    compiled_ge();
+    compiled_lt();
+    compiled_le();
     // not_compiled_eq();
     // not_compiled_ne();
     // not_compiled_xor();
+    // not_compiled_gt();
+    // not_compiled_ge();
+    // not_compiled_lt();
+    // not_compiled_le();
 
     /* non-binary */
 

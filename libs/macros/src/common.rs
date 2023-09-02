@@ -64,6 +64,42 @@ pub(crate) fn compile_eval(arg: String) -> bool {
         args.len() == 2
             && (compile_eval(args[0].clone()) ^ compile_eval(args[1].clone()))
 
+    } else if arg.starts_with("ge(") && arg.ends_with(')') {
+        let inner_args = &arg[3..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && args[0].parse::<i128>().ok()
+            .zip(args[1].parse::<i128>().ok())
+            .filter(|(first_num, second_num)| first_num >= second_num)
+            .is_some()
+
+    } else if arg.starts_with("gt(") && arg.ends_with(')') {
+        let inner_args = &arg[3..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && args[0].parse::<i128>().ok()
+            .zip(args[1].parse::<i128>().ok())
+            .filter(|(first_num, second_num)| first_num > second_num)
+            .is_some()
+
+    } else if arg.starts_with("le(") && arg.ends_with(')') {
+        let inner_args = &arg[3..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && args[0].parse::<i128>().ok()
+            .zip(args[1].parse::<i128>().ok())
+            .filter(|(first_num, second_num)| first_num <= second_num)
+            .is_some()
+
+    } else if arg.starts_with("lt(") && arg.ends_with(')') {
+        let inner_args = &arg[3..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && args[0].parse::<i128>().ok()
+            .zip(args[1].parse::<i128>().ok())
+            .filter(|(first_num, second_num)| first_num < second_num)
+            .is_some()
+
     /* non-binary */
 
     } else if arg.starts_with("any(") && arg.ends_with(')') {
