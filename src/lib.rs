@@ -19,10 +19,16 @@
 //! - unary:
 //!   - A bare predicate returns `true` only if it is the **`true`** literal
 //!   - `not()`: returns `true` only if the predicate does **not** evaluate to **`true`**.
+//!
 //! - binary:
 //!   - `eq()`: returns `true` if both predicates are evaluated as **equal**.
 //!   - `ne()`: returns `true` if both predicates are **not** evaluated as **equal**.
 //!   - `xor()`: returns `true` if **only one** predicate **is `true`**, but **not both**.
+//!   - `ge()`: returns `true` if both predicates are **numbers** and the first **>=** the second.
+//!   - `gt()`: returns `true` if both predicates are **numbers** and the first **>** the second.
+//!   - `le()`: returns `true` if both predicates are **numbers** and the first **<=** the second.
+//!   - `lt()`: returns `true` if both predicates are **numbers** and the first **<** the second.
+//!
 //! - non-binary:
 //!   - `any()`: returns `true` if **any** predicate **is `true`**.
 //!   - `all()`: returns `true` if **all** predicates **are `true`**.

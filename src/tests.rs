@@ -40,6 +40,22 @@ fn test_compile_eval() {
     assert_eq!(compile_eval("xor(false, true)".into()), true);
     assert_eq!(compile_eval("xor(true, true)".into()), false);
 
+    // ge()
+    assert_eq!(compile_eval("all(ge(2, 1), ge(2, 2))".into()), true);
+    assert_eq!(compile_eval("ge(1, 2)".into()), false);
+
+    // gt()
+    assert_eq!(compile_eval("gt(2, 1)".into()), true);
+    assert_eq!(compile_eval("any(gt(1, 2), gt(2, 2))".into()), false);
+
+    // le()
+    assert_eq!(compile_eval("all(le(1, 2), le(2, 2))".into()), true);
+    assert_eq!(compile_eval("le(2, 1)".into()), false);
+
+    // lt()
+    assert_eq!(compile_eval("lt(1, 2)".into()), true);
+    assert_eq!(compile_eval("any(lt(2, 1), lt(2, 2))".into()), false);
+
     /* non-binary */
 
     // any()
