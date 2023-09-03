@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
-## [0.6.1] - 2023-08-29
+## [0.6.1] - 2023-09-02
 
 ### Added
 - add binary number comparisons: `ge`, `gt`, `le`, `lt`
