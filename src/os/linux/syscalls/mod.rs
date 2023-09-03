@@ -5,7 +5,7 @@
 // INFO
 // - https://doc.rust-lang.org/reference/inline-assembly.html
 
-// documentation is created in the parent module
+// documentation is add in the parent module
 #![allow(clippy::missing_safety_doc)]
 
 #[cfg_attr(
@@ -23,7 +23,10 @@
         feature = "unsafe_os",
     )))
 )]
-pub use sys::{exit, read, write};
+pub use sys::{exit, nanosleep, read, write};
+
+mod structs;
+pub use structs::timespec;
 
 /* architecture-specific */
 

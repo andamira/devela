@@ -44,3 +44,17 @@ pub unsafe fn write(fd: i32, buf: *const u8, count: usize) -> isize {
     );
     r0
 }
+
+pub unsafe fn nanosleep(req: *const timespec, rem: *mut timespec) -> isize {
+    const SYS_NANOSLEEP: isize = 35;
+    let r0;
+    asm!(
+        "svc 0",
+        inlateout("x8") SYS_NANOSLEEP => r0,
+        in("x0") req,
+        in("x1") rem,
+        lateout("x2") _,
+        options(nostack, preserves_flags)
+    );
+    r0
+}

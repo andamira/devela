@@ -3,6 +3,7 @@
 //!
 //
 
+use super::timespec;
 use core::arch::asm;
 
 pub unsafe fn exit(status: i32) -> ! {
@@ -40,6 +41,20 @@ pub unsafe fn write(fd: i32, buf: *const u8, count: usize) -> isize {
         in("ebx") fd,
         in("ecx") buf,
         in("edx") count,
+        options(nostack, preserves_flags)
+    );
+    r0
+}
+
+pub unsafe fn nanosleep(req: *const timespec, rem: *mut timespec) -> isize {
+    const SYS_NANOSLEEP: isize = 162;
+    let r0;
+    asm!(
+        "int 0x80",
+        inlateout("eax") SYS_NANOSLEEP => r0,
+        in("ebx") req,
+        in("ecx") rem,
+        lateout("edx") _,
         options(nostack, preserves_flags)
     );
     r0
