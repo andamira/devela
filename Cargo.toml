@@ -63,7 +63,7 @@ bytemuck = ["dep:bytemuck", "unsafe_num"]
 
 [dependencies]
 az = "1.2.1"
-devela_macros = "0.6.0"
+devela_macros = "0.6.1"
 paste_crate = { package = "paste", version = "1.0.14" }
 
 #* optional dependencies *#
