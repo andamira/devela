@@ -21,7 +21,7 @@ pub mod io {
         feature = "unsafe_os",
         not(miri),
     ))]
-    pub use super::fns::{get_byte, print, print_bytes, read, write};
+    pub use super::fns::{get_byte, print, print_bytes, sys_read, sys_write};
 }
 
 pub mod process {
@@ -38,7 +38,7 @@ pub mod process {
         feature = "unsafe_os",
         not(miri),
     ))]
-    pub use super::fns::exit;
+    pub use super::fns::sys_exit;
 }
 
 pub mod thread {
@@ -53,7 +53,7 @@ pub mod thread {
         feature = "unsafe_os",
         not(miri),
     ))]
-    pub use super::fns_no_riscv::{nanosleep, sleep, timespec};
+    pub use super::fns_no_riscv::{sleep, sys_nanosleep, SysTimeSpec};
 }
 
 /* private modules */
@@ -94,14 +94,14 @@ mod fns {
     ///
     /// # Examples
     /// ```
-    /// use devela::os::linux::exit;
+    /// use devela::os::linux::sys_exit;
     ///
-    /// unsafe { exit(0) };
+    /// unsafe { sys_exit(0) };
     /// ```
     ///
     /// # Safety
     /// TODO
-    pub use syscalls::exit;
+    pub use syscalls::sys_exit;
 
     /// Performs a `read` syscall.
     ///
@@ -110,16 +110,16 @@ mod fns {
     /// # Examples
     /// ```ignore
     // IMPROVE: The test doc example fails for lack of input
-    /// use devela::os::linux::{STDIN, read};
+    /// use devela::os::linux::{STDIN, sys_read};
     ///
     /// let mut buf: [u8; 1024] = [0; 1024];
-    /// let bytes_read: isize = unsafe { read(STDIN, buf.as_mut_ptr(), buf.len()) };
+    /// let bytes_read: isize = unsafe { sys_read(STDIN, buf.as_mut_ptr(), buf.len()) };
     /// assert![bytes_read > 0];
     /// ```
     ///
     /// # Safety
     /// TODO
-    pub use syscalls::read;
+    pub use syscalls::sys_read;
 
     /// Performs a `write` syscall.
     ///
@@ -129,16 +129,16 @@ mod fns {
     ///
     /// # Examples
     /// ```
-    /// use devela::os::linux::{STDOUT, write};
+    /// use devela::os::linux::{STDOUT, sys_write};
     ///
     /// let buf = "Hello\n".as_bytes();
-    /// let bytes_written: isize = unsafe { write(STDOUT, buf.as_ptr(), buf.len()) };
+    /// let bytes_written: isize = unsafe { sys_write(STDOUT, buf.as_ptr(), buf.len()) };
     /// assert![bytes_written > 0];
     /// ```
     ///
     /// # Safety
     /// TODO
-    pub use syscalls::write;
+    pub use syscalls::sys_write;
 
     /* new */
 
@@ -151,10 +151,10 @@ mod fns {
     pub fn print(s: &str) {
         let mut s = s.as_bytes();
         while !s.is_empty() {
-            let n = unsafe { write(super::fd::STDOUT, s.as_ptr(), s.len()) };
+            let n = unsafe { sys_write(super::fd::STDOUT, s.as_ptr(), s.len()) };
             if n < 0 || n as usize > s.len() {
                 print("write failed");
-                unsafe { exit(10) };
+                unsafe { sys_exit(10) };
             }
             // Update the byte slice to exclude the bytes that have been written
             s = &s[n as usize..];
@@ -170,10 +170,10 @@ mod fns {
     pub fn print_bytes(b: &[u8]) {
         let mut b = b;
         while !b.is_empty() {
-            let n = unsafe { write(super::fd::STDOUT, b.as_ptr(), b.len()) };
+            let n = unsafe { sys_write(super::fd::STDOUT, b.as_ptr(), b.len()) };
             if n < 0 || n as usize > b.len() {
                 print("write failed");
-                unsafe { exit(10) };
+                unsafe { sys_exit(10) };
             }
             // Update the byte slice to exclude the bytes that have been written
             b = &b[n as usize..];
@@ -189,10 +189,10 @@ mod fns {
     pub fn get_byte() -> u8 {
         let mut c = 0;
         loop {
-            let n = unsafe { read(super::fd::STDIN, &mut c as *mut u8, 1) };
+            let n = unsafe { sys_read(super::fd::STDIN, &mut c as *mut u8, 1) };
             if n < 0 {
                 print("read failed");
-                unsafe { exit(11) };
+                unsafe { sys_exit(11) };
             }
             if n == 1 {
                 break;
@@ -217,10 +217,10 @@ mod fns {
 )]
 #[cfg(all(feature = "unsafe_os", not(miri)))]
 mod fns_no_riscv {
-    use super::{exit, print, syscalls};
+    use super::{print, sys_exit, syscalls};
     use core::time::Duration;
 
-    pub use syscalls::timespec;
+    pub use syscalls::SysTimeSpec;
 
     /// Suspends execution of calling thread.
     ///
@@ -232,27 +232,28 @@ mod fns_no_riscv {
     ///
     /// # Examples
     /// ```
-    /// use devela::os::linux::{nanosleep, timespec};
+    /// use devela::os::linux::{sys_nanosleep, SysTimeSpec};
     /// use core::time::Duration;
     ///
-    /// let mut req = timespec::from(Duration::from_millis(99));
-    /// let mut rem = timespec::new();
-    /// assert_eq![0, unsafe { nanosleep(&mut req, &mut rem) }];
+    /// let mut req = SysTimeSpec::from(Duration::from_millis(99));
+    /// let mut rem = SysTimeSpec::new();
+    /// assert_eq![0, unsafe { sys_nanosleep(&mut req, &mut rem) }];
     /// ```
     ///
     /// # Safety
     /// TODO
-    pub use syscalls::nanosleep;
+    pub use syscalls::sys_nanosleep;
 
     /// Suspends execution of calling thread.
     pub fn sleep(duration: Duration) {
-        let mut req = timespec::with(duration);
-        let mut rem = timespec::new();
+        let mut req = SysTimeSpec::with(duration);
+        let mut rem = SysTimeSpec::new();
         loop {
-            let n = unsafe { nanosleep(&req as *const timespec, &mut rem as *mut timespec) };
+            let n =
+                unsafe { sys_nanosleep(&req as *const SysTimeSpec, &mut rem as *mut SysTimeSpec) };
             if n < 0 {
                 print("nanosleep failed");
-                unsafe { exit(13) };
+                unsafe { sys_exit(13) };
             }
             if n == 0 {
                 break;

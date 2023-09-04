@@ -23,10 +23,10 @@
         feature = "unsafe_os",
     )))
 )]
-pub use sys::{exit, nanosleep, read, write};
+pub use sys::{sys_exit, sys_nanosleep, sys_read, sys_write};
 
 mod structs;
-pub use structs::timespec;
+pub use structs::SysTimeSpec;
 
 /* architecture-specific */
 
