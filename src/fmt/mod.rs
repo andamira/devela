@@ -76,7 +76,7 @@ pub use cdbg;
 macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
 pub use rfs;
 
-/// Returns a formatted [`str`]ing slice backed by a buffer, `no_std` compatible.
+/// Returns a formatted [`str`] slice backed by a buffer, `no_std` compatible.
 ///
 /// See also the slightly more convenient to use [`format_buf!`][crate::format_buf!] macro.
 ///
@@ -95,7 +95,7 @@ pub fn format_buf_args<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a
     w.as_str().ok_or(fmt::Error)
 }
 
-/// Returns a formatted [`str`]ing slice backed by a buffer, `no_std` compatible.
+/// Returns a formatted [`str`] slice backed by a buffer, `no_std` compatible.
 ///
 /// It calls the [`format_buf_args`][format_buf_args()] function with the
 /// [`format_args`] macro.
