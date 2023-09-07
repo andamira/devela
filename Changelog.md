@@ -7,11 +7,19 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- new feature `unsafe_os`.
+- new `os` module, with `linux` submodule.
+- new functions: `sys_exit`, `sys_read`, `sys_write`, `sys_nanosleep`, `get_byte`, `print`, `print_bytes`.
+- new struct `SysTimeSpec`.
+
 ### Removed
 - remove the `Copy` trait from `IntBuf`.
+- remove the `boxed` module and `bx` fn.
 
 ### Fixed
 - fix the `iif` module.
+- improve the `num` docs.
 - refactor manifest and update comments.
 - separate lengthy module level docs into markdown files.
 
