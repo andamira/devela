@@ -26,7 +26,7 @@ chain_width = 60 # *60
 edition = "2021" # *2015,2018,2021 CHECK
 
 # Control the layout of arguments in a function.
-# https://rust-lang.github.io/rustfmt/?search=#fn_args_layout
+# https://rust-lang.github.io/rustfmt/?search=#fn_params_layout
 fn_params_layout = "Tall" # *"Tall", "Compressed", "Vertical"
 
 # Maximum width of the args of a function call before falling back to vertical
