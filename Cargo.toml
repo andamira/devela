@@ -25,7 +25,7 @@ publish = true
 # ------------------------------------------------------------------------------
 
 [features]
-default = ["std"]
+default = []
 
 #* environment features *#
 # (not enabling "std" declares the library as "no_std")
@@ -36,21 +36,22 @@ alloc = [ # enables functionality that depend on allocation
 no_std = [] # enables functionality incompatible with the standard library (unused)
 
 #* safety features *#
-safe = [] # forbids unsafe at the crate level
+safe = [] # forbids unsafe in this crate
 safest = ["safe"] # forbids unsafe recursively (unused)
-unsafe = [ # enables all the unsafe features at the crate level
+unsafe = [ # enables unsafe features in this crate
 	"unsafe_cmp", "unsafe_fmt", "unsafe_num", "unsafe_convert", "unsafe_os",
 	"bytemuck",
 ]
+unsafest = ["unsafe"] # enables unsafe recursively (unused)
+# unsafe features:
 unsafe_cmp = [] # enables const floating-point comparisons
 unsafe_convert = [] # enables using `MaybeUninit` for array initalization
 unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait
-unsafe_os = [] # enables using linux syscalls
+unsafe_os = [] # enables linux syscalls
 unsafe_num = [] # enables unsafe in the `num` module
-unsafest = ["unsafe"] # enables unsafe recursively (unused)
 
 #* nightly features *#
-nightly = [] # enables the nightly features
+nightly = [] # enables nightly features
 nightly_docs = ["nightly", "std", "unsafe"] # features for docs.rs
 
 #* deprecated features *#
