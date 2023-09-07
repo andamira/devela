@@ -6,6 +6,14 @@
 /// Briefer `std::thread::`[`sleep`][std::thread::sleep].
 ///
 /// Sleeps for `$ns` seconds + `$ms` milliseconds + `$us` microseconds + `$ns` nanoseconds
+///
+/// # Examples
+/// ```
+/// # use devela::all::sleep4;
+///
+/// let millis = 1250;
+/// sleep4![millis / 1000, 0, 100 * 5]; // sleeps for 1 second + 500 microseconds
+/// ```
 #[macro_export]
 macro_rules! sleep4 {
     ($s:expr) => {
