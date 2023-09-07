@@ -33,7 +33,6 @@ deprecate_feature![old: "no-std", new: "no_std", since: "0.8.0"];
 
 extern crate devela_macros;
 
-pub mod boxed;
 pub mod cmp;
 pub mod codegen;
 pub mod convert;
@@ -55,7 +54,6 @@ pub mod thread;
 pub mod all {
     #[doc(inline)]
     pub use super::{
-        boxed::*,
         cmp::*,
         codegen::all::*,
         convert::{collection::*, primitive::*},
