@@ -2,13 +2,20 @@
 //
 //! Linux-specific definitions
 //
+// NOTE: doc cfg attributes for target_arch are hidden from reexports
+// in order to be have a more concise documentation in the libera crate.
+// This is achieved by attaching a brief version to the item itself,
+// and attaching a complete version to the module that reexports them.
+//
+// This is so both for syscalls and safe syscall wrappers. And when more
+// platforms are supported they will all need to be updated accordingly.
 
 /* public modules */
 
 pub mod fd;
 
+/// Linux-specific extensions to [`std::io`].
 pub mod io {
-    //! Linux-specific extensions to [`std::io`].
     #[cfg(all(
         any(
             target_arch = "x86_64",
@@ -24,8 +31,8 @@ pub mod io {
     pub use super::fns::{get_byte, print, print_bytes, sys_read, sys_write};
 }
 
+/// Linux-specific extensions to [`std::process`].
 pub mod process {
-    //! Linux-specific extensions to [`std::process`].
     #[cfg(all(
         any(
             target_arch = "x86_64",
@@ -41,8 +48,8 @@ pub mod process {
     pub use super::fns::sys_exit;
 }
 
+/// Linux-specific extensions to [`std::thread`].
 pub mod thread {
-    //! Linux-specific extensions to [`std::thread`].
     #[cfg(all(
         any(
             target_arch = "x86_64",
@@ -67,6 +74,7 @@ pub(crate) mod all {
 #[cfg(all(feature = "unsafe_os", not(miri)))]
 mod syscalls;
 
+// functions supported by all targets
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(
@@ -84,63 +92,8 @@ mod syscalls;
 )]
 #[cfg(all(feature = "unsafe_os", not(miri)))]
 mod fns {
-    use super::syscalls;
-
-    /* reexported */
-
-    /// Performs an `exit` syscall.
-    ///
-    /// Terminates the process with an exit status.
-    ///
-    /// # Examples
-    /// ```
-    /// use devela::os::linux::sys_exit;
-    ///
-    /// unsafe { sys_exit(0) };
-    /// ```
-    ///
-    /// # Safety
-    /// TODO
-    pub use syscalls::sys_exit;
-
-    /// Performs a `read` syscall.
-    ///
-    /// Reads `count` bytes from a file descriptor `fd` into a buffer `buf`.
-    ///
-    /// # Examples
-    /// ```ignore
-    // IMPROVE: The test doc example fails for lack of input
-    /// use devela::os::linux::{STDIN, sys_read};
-    ///
-    /// let mut buf: [u8; 1024] = [0; 1024];
-    /// let bytes_read: isize = unsafe { sys_read(STDIN, buf.as_mut_ptr(), buf.len()) };
-    /// assert![bytes_read > 0];
-    /// ```
-    ///
-    /// # Safety
-    /// TODO
-    pub use syscalls::sys_read;
-
-    /// Performs a `write` syscall.
-    ///
-    /// Writes `count` bytes from a buffer `buf` into a file descriptor `fd`.
-    ///
-    /// Returns the syscall return value.
-    ///
-    /// # Examples
-    /// ```
-    /// use devela::os::linux::{STDOUT, sys_write};
-    ///
-    /// let buf = "Hello\n".as_bytes();
-    /// let bytes_written: isize = unsafe { sys_write(STDOUT, buf.as_ptr(), buf.len()) };
-    /// assert![bytes_written > 0];
-    /// ```
-    ///
-    /// # Safety
-    /// TODO
-    pub use syscalls::sys_write;
-
-    /* new */
+    // reexport syscalls
+    pub use super::syscalls::{sys_exit, sys_read, sys_write};
 
     /// Prints a string to *stdout*.
     ///
@@ -148,6 +101,10 @@ mod fns {
     ///
     /// # Error Handling
     /// If the write fails, it prints an error message and exits with status code 10.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
     pub fn print(s: &str) {
         let mut s = s.as_bytes();
         while !s.is_empty() {
@@ -167,6 +124,10 @@ mod fns {
     ///
     /// # Error Handling
     /// If the write fails, it prints an error message and exits with status code 10.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
     pub fn print_bytes(b: &[u8]) {
         let mut b = b;
         while !b.is_empty() {
@@ -186,6 +147,10 @@ mod fns {
     ///
     /// # Error Handling
     /// If the read fails, it prints an error message and exits with status code 11.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
     pub fn get_byte() -> u8 {
         let mut c = 0;
         loop {
@@ -202,6 +167,7 @@ mod fns {
     }
 }
 
+// functions not supported for risc-v
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(
@@ -217,34 +183,17 @@ mod fns {
 )]
 #[cfg(all(feature = "unsafe_os", not(miri)))]
 mod fns_no_riscv {
-    use super::{print, sys_exit, syscalls};
+    use super::{print, sys_exit};
     use core::time::Duration;
 
-    pub use syscalls::SysTimeSpec;
+    // reexport syscalls
+    pub use super::syscalls::{sys_nanosleep, SysTimeSpec};
 
     /// Suspends execution of calling thread.
-    ///
-    /// Suspension will last until either the time interval specified in `*req`
-    /// has elapsed or a signal is delivered to the calling thread, in which
-    /// case the remaining time will be stored in `rem`.
-    ///
-    /// Returns the syscall return value.
-    ///
-    /// # Examples
-    /// ```
-    /// use devela::os::linux::{sys_nanosleep, SysTimeSpec};
-    /// use core::time::Duration;
-    ///
-    /// let mut req = SysTimeSpec::from(Duration::from_millis(99));
-    /// let mut rem = SysTimeSpec::new();
-    /// assert_eq![0, unsafe { sys_nanosleep(&mut req, &mut rem) }];
-    /// ```
-    ///
-    /// # Safety
-    /// TODO
-    pub use syscalls::sys_nanosleep;
-
-    /// Suspends execution of calling thread.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
     pub fn sleep(duration: Duration) {
         let mut req = SysTimeSpec::with(duration);
         let mut rem = SysTimeSpec::new();
