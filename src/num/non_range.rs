@@ -12,20 +12,21 @@ use bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 macro_rules! impl_non_range {
     // Entry point, generates NonRange structures for each sign and size.
     ($name:ident) => {
-        impl_non_range![NonRange, i, 8, 16, 32, 64, 128, size];
-        impl_non_range![NonRange, u, 8, 16, 32, 64, 128, size];
+        impl_non_range![NonRange, "A signed", i, 8, 16, 32, 64, 128, size];
+        impl_non_range![NonRange, "An unsigned", u, 8, 16, 32, 64, 128, size];
     };
-    ($name:ident, $s:ident, $( $b:expr ),+) => {
-        $( impl_non_range![@NonRange, $s, $b]; )+
+    ($name:ident, $doc:literal, $s:ident, $( $b:expr ),+) => {
+        $( impl_non_range![@NonRange, $doc, $s, $b]; )+
     };
 
     // $name: the base name of the new type. E.g. NonRange.
-    // $s: the sign identifier, lowercase: i or u.
-    // $b: the bits of the type, from 8 to 128, or the `size` suffix.
-    (@$name:ident, $s:ident, $b:expr) => { paste! {
+    // $doc:  the specific beginning of the documentation.
+    // $s:    the sign identifier, lowercase: i or u.
+    // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
+    (@$name:ident, $doc:literal, $s:ident, $b:expr) => { paste! {
         /* definition */
 
-        /// An integer that is known to be excluded from some inclusive range.
+        #[doc = $doc " integer that is known to be excluded from some inclusive range." ]
         ///
         /// It has an optimized memory layout, so that
         #[doc = "`Option<"[<$name $s:upper $b>]">` is the same size as `"[<$name $s:upper $b>]"`."]

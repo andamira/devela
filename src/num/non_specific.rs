@@ -12,20 +12,21 @@ use bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 macro_rules! impl_non_specific {
     // Entry point, generates NonSpecific structures for each sign and size.
     ($name:ident) => {
-        impl_non_specific![NonSpecific, i, 8, 16, 32, 64, 128, size];
-        impl_non_specific![NonSpecific, u, 8, 16, 32, 64, 128, size];
+        impl_non_specific![NonSpecific, "A signed", i, 8, 16, 32, 64, 128, size];
+        impl_non_specific![NonSpecific, "An unsigned", u, 8, 16, 32, 64, 128, size];
     };
-    ($name:ident, $s:ident, $( $b:expr ),+) => {
-        $( impl_non_specific![@NonSpecific, $s, $b]; )+
+    ($name:ident, $doc:literal, $s:ident, $( $b:expr ),+) => {
+        $( impl_non_specific![@NonSpecific, $doc, $s, $b]; )+
     };
 
     // $name: the base name of the new type. E.g. NonSpecific.
-    // $s: the sign identifier: i or u.
-    // $b: the bits of the type, from 8 to 128, or the `size` suffix.
-    (@$name:ident, $s:ident, $b:expr) => { paste! {
+    // $doc:  the specific beginning of the documentation.
+    // $s:    the sign identifier: i or u.
+    // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
+    (@$name:ident, $doc:literal, $s:ident, $b:expr) => { paste! {
         /* definition */
 
-        /// An integer that is known not to equal some specific value.
+        #[doc = $doc " integer that is known not to equal some specific value." ]
         ///
         /// It has an optimized memory layout, so that
         #[doc = "`Option<"[<$name $s:upper $b>]">` is the same size as `"
@@ -46,8 +47,8 @@ macro_rules! impl_non_specific {
 
         /* aliases */
 
-        /// An integer that is known not to equal its maximum value
-        #[doc = "[`" [< $s:lower $b >] "::MAX`]."]
+        #[doc = $doc " integer that is known not to equal its maximum value [`"
+        [< $s:lower $b >] "::MAX`]."]
         pub type [<NonMax $s:upper $b>] = [<$name $s:upper $b>]<{[<$s:lower $b>]::MAX}>;
 
         impl Default for [<NonMax $s:upper $b>] {
@@ -63,8 +64,8 @@ macro_rules! impl_non_specific {
             }
         }
 
-        /// An integer that is known not to equal its minimum value
-        #[doc = "[`" [< $s:lower $b >] "::MIN`]."]
+        #[doc = $doc " integer that is known not to equal its minimum value [`"
+        [< $s:lower $b >] "::MIN`]."]
         pub type [<NonMin $s:upper $b>] = [<$name $s:upper $b>]<{[<$s:lower $b>]::MIN}>;
 
         /* methods */
