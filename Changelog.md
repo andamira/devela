@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.9.0] - 2023-09-08
+
 ### Added
 - new features: `full`, `unsafe_os`.
 - add `full` to `nightly_docs` feature.
@@ -260,7 +262,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.8.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/andamira/devela/releases/tag/v0.9.0
 [0.8.0]: https://github.com/andamira/devela/releases/tag/v0.8.0
 [0.7.1]: https://github.com/andamira/devela/releases/tag/v0.7.1
 [0.7.0]: https://github.com/andamira/devela/releases/tag/v0.7.0
