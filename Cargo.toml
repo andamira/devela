@@ -25,11 +25,11 @@ publish = true
 [features]
 
 #* capability features *#
-# default = []
-full = [
+default = []
+full = [ # enables optional capabilities in this crate
 	"bytemuck", # needs also `unsafe_num`
 ] # sub-features:
-	# bytemuck = ["dep:bytemuck"]
+	bytemuck = ["dep:bytemuck"]
 
 #* environment features *#
 std = ["alloc", # disables `no_std` compatibility and enables `std` functionality
@@ -42,7 +42,7 @@ no_std = [] # enables functionality incompatible with `std` (unused)
 
 #* safety features *#
 unsafest = ["unsafe"] # enables unsafe recursively (unused)
-unsafe = [ # enables all the unsafe sub-features in this crate
+unsafe = [ # enables unsafe features in this crate
 	"unsafe_cmp", "unsafe_fmt", "unsafe_num", "unsafe_convert", "unsafe_os",
 ] # sub-features:
 	unsafe_cmp = [] # enables const floating-point comparisons
