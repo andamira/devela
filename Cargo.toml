@@ -23,40 +23,44 @@ publish = true
 # ------------------------------------------------------------------------------
 
 [features]
-default = []
+
+#* capability features *#
+# default = []
+full = [
+	"bytemuck", # needs also `unsafe_num`
+] # sub-features:
+	# bytemuck = ["dep:bytemuck"]
 
 #* environment features *#
-std = ["alloc"] # disables `no_std` mode and enables `std` functionality
+std = ["alloc", # disables `no_std` compatibility and enables `std` functionality
+	"bytemuck?/extern_crate_std",
+]
 alloc = [ # enables `alloc` functionality
 	"bytemuck?/extern_crate_alloc",
 ]
 no_std = [] # enables functionality incompatible with `std` (unused)
 
 #* safety features *#
-safest = ["safe"] # forbids unsafe recursively (unused)
-safe = [] # forbids unsafe in this crate
-unsafe = [ # enables all the unsafe sub-features
-	"unsafe_cmp", "unsafe_fmt", "unsafe_num", "unsafe_convert", "unsafe_os",
-	"bytemuck",
-]
 unsafest = ["unsafe"] # enables unsafe recursively (unused)
-# unsafe sub-features correspond to root modules:
-unsafe_cmp = [] # enables const floating-point comparisons
-unsafe_convert = [] # enables using `MaybeUninit` for array initalization
-unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait
-unsafe_os = [] # enables linux syscalls
-unsafe_num = [] # enables unsafe constructors and bytemuck's traits
+unsafe = [ # enables all the unsafe sub-features in this crate
+	"unsafe_cmp", "unsafe_fmt", "unsafe_num", "unsafe_convert", "unsafe_os",
+] # sub-features:
+	unsafe_cmp = [] # enables const floating-point comparisons
+	unsafe_convert = [] # enables using `MaybeUninit` for array initalization
+	unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait
+	unsafe_os = [] # enables linux syscalls
+	unsafe_num = [] # enables unsafe constructors and bytemuck's traits
+safe = [] # forbids unsafe in this crate
+safest = ["safe"] # forbids unsafe recursively (unused)
 
 #* nightly features *#
-
 nightly = [] # enables nightly features
-nightly_docs = ["nightly", "std", "unsafe"] # enables features for docs.rs
+nightly_docs = [ # enables features for docs.rs
+	"nightly", "full", "std", "unsafe"
+]
 
 #* deprecated features *#
 no-std = ["no_std"]
-
-#* other features *#
-bytemuck = ["dep:bytemuck", "unsafe_num"]
 
 # ------------------------------------------------------------------------------
 
