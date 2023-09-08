@@ -26,19 +26,19 @@ use core::{
 #[cfg(feature = "alloc")]
 use alloc::{format, string::String};
 
-/// *`c`compact [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
+/// *`b`riefer [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
 ///
 /// # Examples
 /// ```
-/// use devela::fmt::cdbg;
+/// use devela::fmt::bdbg;
 ///
 /// let a = vec![1, 2, 3];
-/// let _b = cdbg![a];
+/// let _b = bdbg![a];
 /// //       ^-- prints: [src/main.rs:5] a = [1, 2, 3]
 /// ```
 // Source code based on the original `dbg!` implementation.
 #[macro_export]
-macro_rules! cdbg {
+macro_rules! bdbg {
     () => {
         eprintln!("[{}:{}]", file!(), line!())
     };
@@ -52,9 +52,19 @@ macro_rules! cdbg {
         }
     };
     ($($val:expr),+ $(,)?) => {
-        ($(cdbg!($val)),+,)
+        ($(bdbg!($val)),+,)
     };
 }
+pub use bdbg;
+
+#[doc(hidden)]
+#[macro_export]
+#[deprecated(since = "0.9.0", note = "please use `bdbg`")]
+macro_rules! cdbg {
+    ($($val:expr)? $(,)?) => { $crate::fmt::bdbg![$($val)?]; }
+}
+#[doc(hidden)]
+#[allow(deprecated)]
 pub use cdbg;
 
 /// *`r`ust `f`ormat `s`kip* macro.
