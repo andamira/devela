@@ -2,7 +2,7 @@
 //
 //! Development extensions for the Rust Standard Library.
 //!
-#![doc = include_str!("./Lib.md")]
+// #![doc = include_str!("./Lib.md")]
 //
 
 // warnings
@@ -97,4 +97,9 @@ pub mod prelude {
         result::ResultExt,
         slice::{SliceExt, SliceExtMut},
     };
+}
+
+/// Documentation on features.
+pub mod _features {
+    #![doc = include_str!("./Doc.md")]
 }
