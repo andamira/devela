@@ -14,7 +14,7 @@ license = "MIT OR Apache-2.0"
 include = [
 	"/Cargo.toml",
 	"/src/**/*.rs", "/src/**/*.md",
-	"/README.md", "/LICENSE-*",
+	"/README.md", "/DERIVED.md", "/LICENSE-*",
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "helpers", "extension", "extensions"]
