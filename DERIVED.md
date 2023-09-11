@@ -12,6 +12,8 @@ This project includes the following derived works:
   as part of the [`ResultExt`] trait.
 - Adaptation of [apply] by George Burton, licensed as Unlicense,
   as part of the [`Also`] and [`Apply`] traits.
+- Adaptation of [rawbytes] by Frank Denis, licensed as MIT,
+  into the [`as_bytes`] and [`as_bytes_mut`] functions.
 
 [0]: https://github.com/andamira/devela/blob/main/src/fmt/int_buf/MODIFICATIONS.md
 [itoa]: https://crates.io/crates/itoa/1.0.9
@@ -26,3 +28,6 @@ This project includes the following derived works:
 [apply]: https://crates.io/crates/apply/0.3.0
 [`Also`]: https://docs.rs/devela/latest/devela/ops/trait.Also.html
 [`Apply`]: https://docs.rs/devela/latest/devela/ops/trait.Apply.html
+[rawbytes]: https://crates.io/crates/rawbytes/1.0.0
+[`as_bytes`]: https://docs.rs/devela/latest/devela/mem/fn.as_bytes.html
+[`as_bytes_mut`]: https://docs.rs/devela/latest/devela/mem/fn.as_bytes_mut.html

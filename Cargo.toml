@@ -42,11 +42,12 @@ no_std = [] # enables functionality incompatible with `std` (unused)
 #* safety features *#
 unsafest = ["unsafe"] # enables unsafe recursively (unused)
 unsafe = [ # enables unsafe features in this crate
-	"unsafe_cmp", "unsafe_fmt", "unsafe_num", "unsafe_convert", "unsafe_os",
+	"unsafe_cmp", "unsafe_fmt", "unsafe_mem", "unsafe_num", "unsafe_convert", "unsafe_os",
 ] # sub-features:
 	unsafe_cmp = [] # enables const floating-point comparisons
 	unsafe_convert = [] # enables using `MaybeUninit` for array initalization
 	unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait
+	unsafe_mem = [] # enables `as_bytes*` functions
 	unsafe_os = [] # enables linux syscalls
 	unsafe_num = [] # enables unsafe constructors and bytemuck's traits
 safe = [] # forbids unsafe in this crate

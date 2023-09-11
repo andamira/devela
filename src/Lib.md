@@ -23,6 +23,8 @@ A gradient of safety. By default nothing is enabled.
   - `unsafe_convert`: enables using [`MaybeUninit`] for [`slice_into_array`]
     initialization in [`convert`].
   - `unsafe_fmt`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
+  - `unsafe_mem`: provides [`as_bytes`], [`as_bytes_mut`] and [`as_bytes_sized`]
+    in [`mem`].
   - `unsafe_num`: enables `new_unchecked` constructors and implements
     [`bytemuck`] traits for types defined in [`num`].
   - `unsafe_os`: provides functionality that depends on linux syscalls.
@@ -40,3 +42,6 @@ Currently only used for improved documentation.
 [`slice_into_array`]: convert::collection::slice_into_array
 [`MaybeUninit`]: core::mem::MaybeUninit
 [`transmute`]: core::mem::transmute
+[`as_bytes`]: mem::as_bytes
+[`as_bytes_mut`]: mem::as_bytes_mut
+[`as_bytes_sized`]: mem::as_bytes_sized

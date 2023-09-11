@@ -57,7 +57,7 @@ pub mod all {
         codegen::all::*,
         convert::{collection::*, primitive::*},
         fmt::*,
-        // mem::{},
+        mem::all::*,
         num::*,
         ops::*,
         option::*,
