@@ -28,8 +28,7 @@ publish = true
 default = []
 full = [ # enables optional capabilities in this crate
 	"bytemuck", # needs also `unsafe_num`
-] # sub-features:
-	bytemuck = ["dep:bytemuck"]
+]
 
 #* environment features *#
 std = ["alloc", # disables `no_std` compatibility and enables `std` functionality
@@ -56,7 +55,7 @@ safest = ["safe"] # forbids unsafe recursively (unused)
 #* nightly features *#
 nightly = [] # enables nightly features
 nightly_docs = [ # enables features for docs.rs
-	"nightly", "full", "std", "unsafe"
+	"nightly", "full", "std", "unsafe",
 ]
 
 #* deprecated features *#
@@ -71,8 +70,6 @@ paste_crate = { package = "paste", version = "1.0.14" }
 
 #* optional dependencies *#
 bytemuck = { version = "1.13.1", optional = true, default-features = false }
-
-[dev-dependencies]
 
 # ------------------------------------------------------------------------------
 
