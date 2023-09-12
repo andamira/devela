@@ -78,7 +78,6 @@ pub mod all {
     pub use ::az;
 
     #[doc(no_inline)]
-    #[cfg(feature = "bytemuck")]
     pub use ::bytemuck;
 
     #[doc(no_inline)]

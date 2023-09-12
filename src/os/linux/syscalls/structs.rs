@@ -90,9 +90,4 @@ impl SysTermios {
     }
 }
 
-#[cfg(all(feature = "bytemuck", feature = "unsafe_os"))]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "bytemuck", feature = "unsafe_os")))
-)]
 unsafe impl bytemuck::NoUninit for SysTermios {}

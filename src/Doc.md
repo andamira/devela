@@ -4,9 +4,7 @@ are independent from each other.
 
 ### Capability features
 - `default`: no features.
-- `full`: enables optional capabilities:
-  - `bytemuck`: implements several [`bytemuck`] traits for [`num`] types
-    if the `unsafe_num` feature is also enabled.
+- `full`: enables optional capabilities (unused).
 
 ### Environment features
 By default the crate is `no_std` compatible.
@@ -25,9 +23,10 @@ A gradient of safety. By default nothing is enabled.
   - `unsafe_fmt`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
   - `unsafe_mem`: provides [`as_bytes`], [`as_bytes_mut`] and [`as_bytes_sized`]
     in [`mem`].
-  - `unsafe_num`: enables `new_unchecked` constructors and implements
-    [`bytemuck`] traits for types defined in [`num`].
-  - `unsafe_os`: provides functionality that depends on linux syscalls.
+  - `unsafe_num`: enables `new_unchecked` constructors and implements `bytemuck`
+    traits.
+  - `unsafe_os`: provides functionality that depends on linux syscalls and
+    implements `bytemuck` traits.
 - `safe`: forbids unsafe at the crate level.
 - `safest`: forbids unsafe recursively (unused).
 
@@ -36,7 +35,6 @@ Currently only used for improved documentation.
 - `nightly`: enables nightly features.
 - `nightly_docs`: enables features for docs.rs
 
-[`bytemuck`]: mem::bytemuck
 [`IntBuf`]: fmt::IntBuf
 [`IntBufable`]: fmt::IntBufAble
 [`slice_into_array`]: convert::collection::slice_into_array
