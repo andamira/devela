@@ -12,7 +12,7 @@
 
 /* public modules */
 
-pub mod consts;
+mod consts;
 
 /// Linux-specific extensions to [`std::io`].
 pub mod io {
@@ -110,7 +110,7 @@ mod fns {
     pub fn print(s: &str) {
         let mut s = s.as_bytes();
         while !s.is_empty() {
-            let n = unsafe { sys_write(super::consts::STDOUT, s.as_ptr(), s.len()) };
+            let n = unsafe { sys_write(super::FILENO::STDOUT, s.as_ptr(), s.len()) };
             if n < 0 || n as usize > s.len() {
                 print("write failed");
                 unsafe { sys_exit(10) };
@@ -133,7 +133,7 @@ mod fns {
     pub fn print_bytes(b: &[u8]) {
         let mut b = b;
         while !b.is_empty() {
-            let n = unsafe { sys_write(super::consts::STDOUT, b.as_ptr(), b.len()) };
+            let n = unsafe { sys_write(super::FILENO::STDOUT, b.as_ptr(), b.len()) };
             if n < 0 || n as usize > b.len() {
                 print("write failed");
                 unsafe { sys_exit(10) };
@@ -156,7 +156,7 @@ mod fns {
     pub fn get_byte() -> u8 {
         let mut c = 0;
         loop {
-            let n = unsafe { sys_read(super::consts::STDIN, &mut c as *mut u8, 1) };
+            let n = unsafe { sys_read(super::FILENO::STDIN, &mut c as *mut u8, 1) };
             if n < 0 {
                 print("read failed");
                 unsafe { sys_exit(11) };

@@ -3,8 +3,8 @@
 //! Linux constants.
 //
 
-pub mod errno;
-pub mod fd;
+mod errno;
+mod fd;
 
 pub use all::*;
 pub(crate) mod all {
