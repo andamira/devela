@@ -26,6 +26,45 @@ mod all_targets {
     use super::super::consts::{ERRNO, FILENO, IOCTL};
     pub use super::super::syscalls::{sys_exit, sys_ioctl, sys_read, sys_write, SysTermios};
 
+    /// Disables raw mode in a terminal, restoring the initial terminal settings.
+    ///
+    /// See also [`enable_raw_mode`].
+    pub fn disable_raw_mode(mut initial_term: SysTermios) {
+        unsafe {
+            sys_ioctl(
+                FILENO::STDIN,
+                IOCTL::TCSETS,
+                initial_term.as_mut_bytes_ptr(),
+            );
+        }
+    }
+
+    /// Enables raw mode in a terminal and returns the initial terminal settings.
+    ///
+    /// Raw mode is a way to configure the terminal so that it does not process or
+    /// interpret any of the input but instead passes it directly to the program.
+    ///
+    /// See also [`disable_raw_mode`].
+    pub fn enable_raw_mode() -> SysTermios {
+        const ICANON: u32 = 0x2;
+        const ECHO: u32 = 0x8;
+
+        let mut termios = SysTermios::default();
+
+        unsafe {
+            sys_ioctl(FILENO::STDIN, IOCTL::TCGETS, termios.as_mut_bytes_ptr());
+        }
+        let initial_term = termios.clone();
+
+        termios.c_lflag &= !ICANON;
+        termios.c_lflag &= !ECHO;
+        unsafe {
+            sys_ioctl(FILENO::STDIN, IOCTL::TCSETS, termios.as_mut_bytes_ptr());
+        }
+
+        initial_term
+    }
+
     /// Returns `true` if this is a terminal.
     #[cfg_attr(
         feature = "nightly",
