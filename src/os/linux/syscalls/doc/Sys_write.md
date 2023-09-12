@@ -6,10 +6,10 @@ Returns the syscall return value.
 
 # Examples
 ```
-use devela::os::linux::{STDOUT, sys_write};
+use devela::os::linux::{FILENO, sys_write};
 
 let buf = "Hello\n".as_bytes();
-let bytes_written: isize = unsafe { sys_write(STDOUT, buf.as_ptr(), buf.len()) };
+let bytes_written: isize = unsafe { sys_write(FILENO::STDOUT, buf.as_ptr(), buf.len()) };
 assert![bytes_written > 0];
 ```
 
