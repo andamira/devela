@@ -6,7 +6,7 @@
 use core::time::Duration;
 
 /// Represents a time interval measured in seconds and nanoseconds.
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 #[allow(dead_code)]
 #[repr(C)]
 pub struct SysTimeSpec {
@@ -54,7 +54,7 @@ impl From<Duration> for SysTimeSpec {
 ///
 /// It has fields for input, output, control, and local modes,
 /// as well as a line discipline and control characters.
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 #[allow(dead_code)]
 #[repr(C)]
 pub struct SysTermios {
