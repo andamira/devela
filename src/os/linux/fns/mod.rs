@@ -78,7 +78,7 @@ mod all_targets {
 
     /// Prints a string to *stdout*.
     ///
-    /// This function makes use of the `write` syscall to print a string.
+    /// This function makes use of the [`sys_write`] syscall to print a string.
     ///
     /// # Error Handling
     /// If the write fails, it prints an error message and exits with status code 10.
@@ -101,7 +101,7 @@ mod all_targets {
 
     /// Prints bytes to *stdout*.
     ///
-    /// This function makes use of the `write` syscall to print bytes.
+    /// This function makes use of the [`sys_write`] syscall to print bytes.
     ///
     /// # Error Handling
     /// If the write fails, it prints an error message and exits with status code 10.
@@ -124,7 +124,7 @@ mod all_targets {
 
     /// Gets a single byte from *stdin*.
     ///
-    /// This function makes use of the `read` syscall to read a byte.
+    /// This function makes use of the [`sys_read`] syscall to read a byte.
     ///
     /// # Error Handling
     /// If the read fails, it prints an error message and exits with status code 11.
@@ -170,6 +170,8 @@ mod no_riscv {
     pub use super::super::syscalls::{sys_nanosleep, SysTimeSpec};
 
     /// Suspends execution of calling thread.
+    ///
+    /// This function makes use of the [`sys_nanosleep`] syscall.
     #[cfg_attr(
         feature = "nightly",
         doc(cfg(all(target_os = "linux", feature = "unsafe_os")))

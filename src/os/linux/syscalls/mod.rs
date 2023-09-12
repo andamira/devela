@@ -4,6 +4,7 @@
 //
 // INFO
 // - https://doc.rust-lang.org/reference/inline-assembly.html
+// - https://doc.rust-lang.org/nightly/rust-by-example/unsafe/asm.html
 
 // documentation is add in the parent module
 #![allow(clippy::missing_safety_doc)]
