@@ -31,7 +31,18 @@ impl SysTimeSpec {
             tv_nsec: duration.subsec_nanos() as isize,
         }
     }
+
+    /// Returns a raw pointer to self.
+    pub const fn as_ptr(&self) -> *const Self {
+        self as *const Self
+    }
+
+    /// Returns a raw mutable pointer to self.
+    pub fn as_mut_ptr(&mut self) -> *mut Self {
+        self as *mut Self
+    }
 }
+
 impl From<Duration> for SysTimeSpec {
     fn from(duration: Duration) -> Self {
         Self::with(duration)
@@ -47,10 +58,22 @@ impl From<Duration> for SysTimeSpec {
 #[allow(dead_code)]
 #[repr(C)]
 pub struct SysTermios {
-    c_iflag: u32,
-    c_oflag: u32,
-    c_cflag: u32,
-    c_lflag: u32,
-    c_line: u8,
-    c_cc: [u8; 19],
+    pub c_iflag: u32,
+    pub c_oflag: u32,
+    pub c_cflag: u32,
+    pub c_lflag: u32,
+    pub c_line: u8,
+    pub c_cc: [u8; 19],
+}
+
+impl SysTermios {
+    /// Returns a raw byte pointer to self.
+    pub const fn as_bytes_ptr(&self) -> *const u8 {
+        self as *const Self as *const u8
+    }
+
+    /// Returns a raw mutable byte pointer to self.
+    pub fn as_mut_bytes_ptr(&mut self) -> *mut u8 {
+        self as *mut Self as *mut u8
+    }
 }

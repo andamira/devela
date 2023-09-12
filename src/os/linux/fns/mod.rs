@@ -33,13 +33,7 @@ mod all_targets {
     )]
     pub fn is_terminal() -> bool {
         let mut termios = SysTermios::default();
-        let res = unsafe {
-            sys_ioctl(
-                FILENO::STDOUT,
-                IOCTL::TCGETS,
-                &mut termios as *mut _ as *mut u8,
-            )
-        };
+        let res = unsafe { sys_ioctl(FILENO::STDOUT, IOCTL::TCGETS, termios.as_mut_bytes_ptr()) };
         res != -ERRNO::ENOTTY && res != -ERRNO::EINVAL
     }
 
@@ -131,7 +125,7 @@ mod all_targets {
 )]
 mod no_riscv {
     use super::{print, sys_exit};
-    use core::time::Duration;
+    use core::{cmp::Ordering, time::Duration};
 
     // reexport syscalls
     pub use super::super::syscalls::{sys_nanosleep, SysTimeSpec};
@@ -144,17 +138,17 @@ mod no_riscv {
     pub fn sleep(duration: Duration) {
         let mut req = SysTimeSpec::with(duration);
         let mut rem = SysTimeSpec::default();
+
         loop {
-            let n =
-                unsafe { sys_nanosleep(&req as *const SysTimeSpec, &mut rem as *mut SysTimeSpec) };
-            if n < 0 {
-                print("nanosleep failed");
-                unsafe { sys_exit(13) };
+            let n = unsafe { sys_nanosleep(req.as_ptr(), rem.as_mut_ptr()) };
+            match n.cmp(&0) {
+                Ordering::Less => {
+                    print("nanosleep failed");
+                    unsafe { sys_exit(13) };
+                }
+                Ordering::Equal => break,
+                Ordering::Greater => req = rem,
             }
-            if n == 0 {
-                break;
-            }
-            req = rem;
         }
     }
 }
