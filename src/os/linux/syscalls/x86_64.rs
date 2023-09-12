@@ -4,14 +4,17 @@
 //
 
 use super::SysTimeSpec;
-use core::arch::asm;
+use core::{
+    arch::asm,
+    ffi::{c_int, c_ulong},
+};
 
 #[doc = include_str!("./doc/Sys_exit.md")]
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_exit(status: i32) -> ! {
+pub unsafe fn sys_exit(status: c_int) -> ! {
     const SYS_EXIT: isize = 60;
     unsafe {
         asm!(
@@ -28,7 +31,7 @@ pub unsafe fn sys_exit(status: i32) -> ! {
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_read(fd: i32, buf: *mut u8, count: usize) -> isize {
+pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     const SYS_READ: isize = 0;
     let r0;
     asm!(
@@ -49,7 +52,7 @@ pub unsafe fn sys_read(fd: i32, buf: *mut u8, count: usize) -> isize {
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_write(fd: i32, buf: *const u8, count: usize) -> isize {
+pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
     const SYS_WRITE: isize = 1;
     let r0;
     asm!(
@@ -90,7 +93,7 @@ pub unsafe fn sys_nanosleep(req: *const SysTimeSpec, rem: *mut SysTimeSpec) -> i
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_ioctl(fd: i32, request: u64, argp: *mut u8) -> isize {
+pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
     const SYS_IOCTL: isize = 16;
     let r0;
     asm!(
