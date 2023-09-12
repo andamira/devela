@@ -23,7 +23,22 @@
         feature = "unsafe_os",
     )))
 )]
-pub use sys::{sys_exit, sys_nanosleep, sys_read, sys_write};
+pub use sys::{sys_exit, sys_isatty, sys_read, sys_write};
+
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(
+        target_os = "linux",
+        any(
+            target_arch = "x86_64",
+            target_arch = "x86",
+            target_arch = "arm",
+            target_arch = "aarch64",
+        ),
+        feature = "unsafe_os",
+    )))
+)]
+pub use sys::sys_nanosleep;
 
 mod structs;
 pub use structs::SysTimeSpec;
