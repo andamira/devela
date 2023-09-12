@@ -5,9 +5,10 @@
 
 mod errno;
 mod fd;
+mod ioctl;
 
 pub use all::*;
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{errno::*, fd::*};
+    pub use super::{errno::*, fd::*, ioctl::*};
 }
