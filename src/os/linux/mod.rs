@@ -196,7 +196,7 @@ mod fns_no_riscv {
     )]
     pub fn sleep(duration: Duration) {
         let mut req = SysTimeSpec::with(duration);
-        let mut rem = SysTimeSpec::new();
+        let mut rem = SysTimeSpec::default();
         loop {
             let n =
                 unsafe { sys_nanosleep(&req as *const SysTimeSpec, &mut rem as *mut SysTimeSpec) };

@@ -6,7 +6,7 @@
 use core::time::Duration;
 
 /// Represents a time interval measured in seconds and nanoseconds.
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 #[allow(dead_code)]
 #[repr(C)]
 pub struct SysTimeSpec {
@@ -16,11 +16,11 @@ pub struct SysTimeSpec {
     pub tv_nsec: isize,
 }
 impl SysTimeSpec {
-    /// Returns a new empty `SysTimeSpec`.
-    pub const fn new() -> Self {
+    /// Returns a new `SysTimeSpec` with the given `seconds` and `nanoseconds`.
+    pub const fn new(seconds: isize, nanoseconds: isize) -> Self {
         Self {
-            tv_sec: 0,
-            tv_nsec: 0,
+            tv_sec: seconds,
+            tv_nsec: nanoseconds,
         }
     }
 
@@ -32,13 +32,6 @@ impl SysTimeSpec {
         }
     }
 }
-
-impl Default for SysTimeSpec {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl From<Duration> for SysTimeSpec {
     fn from(duration: Duration) -> Self {
         Self::with(duration)

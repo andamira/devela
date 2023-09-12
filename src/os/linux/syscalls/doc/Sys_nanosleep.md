@@ -12,7 +12,7 @@ use devela::os::linux::{sys_nanosleep, SysTimeSpec};
 use core::time::Duration;
 
 let mut req = SysTimeSpec::from(Duration::from_millis(99));
-let mut rem = SysTimeSpec::new();
+let mut rem = SysTimeSpec::default();
 assert_eq![0, unsafe { sys_nanosleep(&mut req, &mut rem) }];
 ```
 
