@@ -29,7 +29,7 @@ pub mod io {
         not(miri),
     ))]
     pub use super::fns::{
-        get_byte, print, print_bytes, sys_ioctl, sys_read, sys_write, SysTermios,
+        get_byte, is_terminal, print, print_bytes, sys_ioctl, sys_read, sys_write, SysTermios,
     };
 }
 
@@ -95,7 +95,25 @@ mod syscalls;
 #[cfg(all(feature = "unsafe_os", not(miri)))]
 mod fns {
     // reexport syscalls
+    use super::consts::{ERRNO, FILENO, IOCTL};
     pub use super::syscalls::{sys_exit, sys_ioctl, sys_read, sys_write, SysTermios};
+
+    /// Returns `true` if this is a terminal.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    pub fn is_terminal() -> bool {
+        let mut termios = SysTermios::default();
+        let res = unsafe {
+            sys_ioctl(
+                FILENO::STDOUT,
+                IOCTL::TCGETS,
+                &mut termios as *mut _ as *mut u8,
+            )
+        };
+        res != -ERRNO::ENOTTY && res != -ERRNO::EINVAL
+    }
 
     /// Prints a string to *stdout*.
     ///
@@ -110,7 +128,7 @@ mod fns {
     pub fn print(s: &str) {
         let mut s = s.as_bytes();
         while !s.is_empty() {
-            let n = unsafe { sys_write(super::FILENO::STDOUT, s.as_ptr(), s.len()) };
+            let n = unsafe { sys_write(FILENO::STDOUT, s.as_ptr(), s.len()) };
             if n < 0 || n as usize > s.len() {
                 print("write failed");
                 unsafe { sys_exit(10) };
@@ -133,7 +151,7 @@ mod fns {
     pub fn print_bytes(b: &[u8]) {
         let mut b = b;
         while !b.is_empty() {
-            let n = unsafe { sys_write(super::FILENO::STDOUT, b.as_ptr(), b.len()) };
+            let n = unsafe { sys_write(FILENO::STDOUT, b.as_ptr(), b.len()) };
             if n < 0 || n as usize > b.len() {
                 print("write failed");
                 unsafe { sys_exit(10) };
@@ -156,7 +174,7 @@ mod fns {
     pub fn get_byte() -> u8 {
         let mut c = 0;
         loop {
-            let n = unsafe { sys_read(super::FILENO::STDIN, &mut c as *mut u8, 1) };
+            let n = unsafe { sys_read(FILENO::STDIN, &mut c as *mut u8, 1) };
             if n < 0 {
                 print("read failed");
                 unsafe { sys_exit(11) };
