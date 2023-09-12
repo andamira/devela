@@ -70,7 +70,7 @@ pub mod thread {
 pub use all::*;
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{consts::*, io::*, process::*, thread::*};
+    pub use super::{consts::all::*, io::*, process::*, thread::*};
 }
 
 #[cfg(all(feature = "unsafe_os", not(miri)))]

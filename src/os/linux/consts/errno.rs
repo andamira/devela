@@ -1,20 +1,9 @@
-// devela::os::fd
+// devela::os::linux::consts::errno
 //
-//! Linux file descriptors.
+//! `errno.h` constants.
 //
 
 use core::ffi::c_int;
-
-/// File descriptor for standard input.
-pub const STDIN: c_int = 0;
-
-/// File descriptor for standard output.
-pub const STDOUT: c_int = 1;
-
-/// File descriptor for standard error.
-pub const STDERR: c_int = 2;
-
-/* errno.h */
 
 /// “Operation not permitted.”
 ///
