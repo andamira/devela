@@ -54,7 +54,7 @@ mod all_targets {
         unsafe {
             sys_ioctl(FILENO::STDIN, IOCTL::TCGETS, termios.as_mut_bytes_ptr());
         }
-        let initial_term = termios.clone();
+        let initial_term = termios;
 
         termios.c_lflag &= !ICANON;
         termios.c_lflag &= !ECHO;
