@@ -37,3 +37,20 @@ impl From<Duration> for SysTimeSpec {
         Self::with(duration)
     }
 }
+
+/// Represents the termios structure from the Linux kernel,
+/// used to control terminal I/O.
+///
+/// It has fields for input, output, control, and local modes,
+/// as well as a line discipline and control characters.
+#[derive(Clone, Default)]
+#[allow(dead_code)]
+#[repr(C)]
+pub struct SysTermios {
+    c_iflag: u32,
+    c_oflag: u32,
+    c_cflag: u32,
+    c_lflag: u32,
+    c_line: u8,
+    c_cc: [u8; 19],
+}

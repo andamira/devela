@@ -79,3 +79,22 @@ pub unsafe fn sys_nanosleep(req: *const SysTimeSpec, rem: *mut SysTimeSpec) -> i
     );
     r0
 }
+
+#[doc = include_str!("./doc/Sys_ioctl.md")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+)]
+pub unsafe fn sys_ioctl(fd: i32, request: u64, argp: *mut u8) -> isize {
+    const SYS_IOCTL: isize = 54;
+    let r0;
+    asm!(
+        "swi 0",
+        inlateout("r7") SYS_IOCTL => r0,
+        in("r0") fd,
+        in("r1") request,
+        in("r2") argp,
+        options(nostack, preserves_flags)
+    );
+    r0
+}

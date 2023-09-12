@@ -23,7 +23,7 @@
         feature = "unsafe_os",
     )))
 )]
-pub use sys::{sys_exit, sys_isatty, sys_read, sys_write};
+pub use sys::{sys_exit, sys_ioctl, sys_read, sys_write};
 
 #[cfg_attr(
     feature = "nightly",
@@ -41,7 +41,7 @@ pub use sys::{sys_exit, sys_isatty, sys_read, sys_write};
 pub use sys::sys_nanosleep;
 
 mod structs;
-pub use structs::SysTimeSpec;
+pub use structs::{SysTermios, SysTimeSpec};
 
 /* architecture-specific */
 

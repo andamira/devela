@@ -28,7 +28,9 @@ pub mod io {
         feature = "unsafe_os",
         not(miri),
     ))]
-    pub use super::fns::{get_byte, print, print_bytes, sys_read, sys_write};
+    pub use super::fns::{
+        get_byte, print, print_bytes, sys_ioctl, sys_read, sys_write, SysTermios,
+    };
 }
 
 /// Linux-specific extensions to [`std::process`].
@@ -93,7 +95,7 @@ mod syscalls;
 #[cfg(all(feature = "unsafe_os", not(miri)))]
 mod fns {
     // reexport syscalls
-    pub use super::syscalls::{sys_exit, sys_read, sys_write};
+    pub use super::syscalls::{sys_exit, sys_ioctl, sys_read, sys_write, SysTermios};
 
     /// Prints a string to *stdout*.
     ///
