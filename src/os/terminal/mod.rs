@@ -3,6 +3,9 @@
 //! Definitions for terminal control and manipulation.
 //!
 //! Reexports terminal related functions from [`os::linux`][super::linux].
+//!
+//! The provided functionaliy is optimized for an `no_std` environment.
+//!
 //
 
 mod ansi;
@@ -26,6 +29,7 @@ pub use {ansi::Ansi, color::AnsiColor};
 ))]
 #[doc(inline)]
 pub use super::linux::{
-    disable_raw_mode, enable_raw_mode, get_byte, get_char, get_dirty_char, get_utf8_bytes,
-    is_terminal, print, print_bytes,
+    disable_raw_mode, enable_raw_mode, eprint, eprintln, get_byte, get_char, get_dirty_char,
+    get_line, get_str, get_utf8_bytes, is_terminal, pause_until_char, print, print_bytes, println,
+    prompt,
 };

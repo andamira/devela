@@ -86,9 +86,9 @@ mod all_targets {
         res != -ERRNO::ENOTTY && res != -ERRNO::EINVAL
     }
 
-    /// Prints a string slice to *stdout*.
+    /// Prints a string slice to standard output.
     ///
-    /// This function makes use of the [`sys_write`] syscall to print a string.
+    /// This function makes use of [`sys_write`].
     ///
     /// # Error Handling
     /// If the write fails, it prints an error message and exits with status code 10.
@@ -107,6 +107,61 @@ mod all_targets {
             // Update the byte slice to exclude the bytes that have been written
             s = &s[n as usize..];
         }
+    }
+
+    /// Prints a string slice to standard output, with a newline.
+    ///
+    /// This function makes use of [`sys_write`].
+    ///
+    /// # Error Handling
+    /// If the write fails, it prints an error message and exits with status code 10.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    #[inline]
+    pub fn println(s: &str) {
+        print(s);
+        print("\n");
+    }
+
+    /// Prints a string slice to standard error.
+    ///
+    /// This function makes use of [`sys_write`].
+    ///
+    /// # Error Handling
+    /// If the write fails, it prints an error message and exits with status code 10.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    pub fn eprint(s: &str) {
+        let mut s = s.as_bytes();
+        while !s.is_empty() {
+            let n = unsafe { sys_write(FILENO::STDERR, s.as_ptr(), s.len()) };
+            if n < 0 || n as usize > s.len() {
+                print("write failed");
+                unsafe { sys_exit(10) };
+            }
+            // Update the byte slice to exclude the bytes that have been written
+            s = &s[n as usize..];
+        }
+    }
+
+    /// Prints a string slice to standard error, with a newline.
+    ///
+    /// This function makes use of the [`sys_write`] syscall to print a string.
+    ///
+    /// # Error Handling
+    /// If the write fails, it prints an error message and exits with status code 10.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    #[inline]
+    pub fn eprintln(s: &str) {
+        eprint(s);
+        eprint("\n");
     }
 
     /// Prints a byte slice to *stdout*.
@@ -157,6 +212,20 @@ mod all_targets {
             }
         }
         c
+    }
+
+    /// Pauses execution until receiving from *stdin* any `char` in the `list`.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    #[inline]
+    pub fn pause_until_char(list: &[char]) {
+        loop {
+            if list.contains(&get_dirty_char()) {
+                break;
+            }
+        }
     }
 
     /// Gets a single `char` from *stdin*,
@@ -229,6 +298,83 @@ mod all_targets {
         }
 
         Some(bytes)
+    }
+
+    /// Prompts the user for a string from *stdin*, backed by a `buffer`.
+    ///
+    /// # Examples
+    /// ```ignore
+    /// let mut name_buffer = [0_u8; 32];
+    /// let name: &str = prompt::<32>("Enter your name: ", &mut name_buffer);
+    /// ```
+    ///
+    /// # Error Handling
+    /// If the write fails, it prints an error message and exits with status code 10.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    #[inline]
+    pub fn prompt<'input, const CAP: usize>(
+        text: &str,
+        buffer: &'input mut [u8; CAP],
+    ) -> &'input str {
+        print(text);
+        get_line(buffer)
+    }
+
+    /// Gets a string from *stdin* backed by a `buffer`, until a newline.
+    ///
+    /// # Examples
+    /// ```ignore
+    /// use devela::os::terminal::get_line;
+    ///
+    /// let mut buf = [0_u8; 32];
+    /// let name: &str = get_line::<32>(&mut buf);
+    /// ```
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    #[inline]
+    pub fn get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> &str {
+        get_str(buffer, '\n')
+    }
+
+    /// Gets a string from *stdin* backed by a `buffer`,
+    /// until the `stop` char is received.
+    ///
+    /// # Examples
+    /// ```ignore
+    /// let mut buf = [0_u8; 32];
+    /// let name: &str = get_str::<32>(&mut buf, '\n');
+    /// ```
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    #[inline]
+    pub fn get_str<const CAP: usize>(buffer: &mut [u8; CAP], stop: char) -> &str {
+        let mut index = 0;
+        loop {
+            if let Some(c) = get_char() {
+                let mut c_buf = [0; 4];
+                let c_str = c.encode_utf8(&mut c_buf);
+
+                if c == stop {
+                    break;
+                } else if index + c_str.len() <= CAP {
+                    print(c_str);
+
+                    for &b in c_str.as_bytes() {
+                        buffer[index] = b;
+                        index += 1;
+                    }
+                }
+            }
+        }
+
+        unsafe { from_utf8_unchecked(&buffer[..index]) }
     }
 }
 
