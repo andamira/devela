@@ -46,6 +46,7 @@ pub mod os;
 pub mod path;
 pub mod result;
 pub mod slice;
+pub mod str;
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 pub mod thread;
@@ -67,6 +68,7 @@ pub mod all {
         path::*,
         result::*,
         slice::*,
+        str::*,
     };
 
     #[doc(inline)]
@@ -94,6 +96,7 @@ pub mod prelude {
         option::OptionExt,
         result::ResultExt,
         slice::{SliceExt, SliceExtMut},
+        str::StrExt,
     };
 }
 
