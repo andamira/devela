@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [Unreleased]
 
 ### Added
-- new feature: `unsafe_mem`.
+- new features: `unsafe_mem`, `unsafe_str`.
 - new modules : `ascii`, `os::terminal`, `str`, `_features`.
 - new fns in `ascii:`: `ascii_d[1-4]`, `u[BITS]_to_ascii`.
 - new fns in `mem:` `as_bytes`, `as_bytes_mut`, `as_bytes_sized`.
@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move derived works info to a separate file.
 - avoid loading `sys_nanosleep` in risc-v.
 - fix `az` and `bytemuck` reexports.
+- fix arm assembly.
 
 ## [0.9.0] - 2023-09-08
 
