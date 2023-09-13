@@ -3,6 +3,9 @@
 //! String slices, extends [`core::str`].
 //
 
+#[cfg(not(feature = "unsafe_str"))]
+use core::str::from_utf8;
+#[cfg(feature = "unsafe_str")]
 use core::str::from_utf8_unchecked;
 
 // Marker trait to prevent downstream implementations of the `StrExt` trait.
@@ -24,6 +27,9 @@ pub trait StrExt {
     /// let repeated = "ay".repeat_into(3, &mut buf);
     /// assert_eq![repeated, "ayayay"];
     /// ```
+    ///
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
     fn repeat_into<'input, const CAP: usize>(
         &self,
         n: usize,
@@ -50,6 +56,11 @@ impl StrExt for str {
             }
         }
 
-        unsafe { from_utf8_unchecked(&buffer[..index]) }
+        #[cfg(feature = "unsafe_str")]
+        unsafe {
+            from_utf8_unchecked(&buffer[..index])
+        }
+        #[cfg(not(feature = "unsafe_str"))]
+        from_utf8(&buffer[..index]).unwrap()
     }
 }

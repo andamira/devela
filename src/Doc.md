@@ -27,6 +27,7 @@ A gradient of safety. By default nothing is enabled.
     traits.
   - `unsafe_os`: provides functionality that depends on linux syscalls and
     implements `bytemuck` traits.
+  - `unsafe_str`: enables unsafe use in [`str`][mod@str].
 - `safe`: forbids unsafe at the crate level.
 - `safest`: forbids unsafe recursively (unused).
 
