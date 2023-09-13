@@ -74,10 +74,7 @@ pub mod all {
     #[doc(inline)]
     pub use devela_macros::{cif, compile, compile_attr};
 
-    #[doc(no_inline)]
     pub use ::az;
-
-    #[doc(no_inline)]
     pub use ::bytemuck;
 
     #[doc(no_inline)]

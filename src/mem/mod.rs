@@ -1,15 +1,17 @@
 // devela::mem
 //
 //! Memory, extends [`core::mem`].
+//!
+//! It also reexports the [`bytemuck`](https://docs.rs/bytemuck) crate.
 //
 
 pub(crate) mod all {
     pub use super::fns::*;
 }
 
-/// Reexported [`bytemuck`](https://docs.rs/bytemuck)'s crate types.
-/// Gives small utilities for casting between plain data types.
-#[doc(inline)]
+// Reexported [`bytemuck`](https://docs.rs/bytemuck)'s crate.
+// Gives small utilities for casting between plain data types.
+#[doc(no_inline)]
 pub use ::bytemuck;
 
 pub use fns::*;
