@@ -71,7 +71,7 @@ mod common;
 use common::{compile_eval, split_args};
 
 /// Conditionally compiles the thing it is attached to based on the
-/// [compilation predicate][crate#compilation-predicates].
+/// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
 ///
 /// # Examples
 /// ```
@@ -89,7 +89,7 @@ pub fn compile(argument: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 /// Conditionally compiles the given attributes based on the
-/// [compilation predicate][crate#compilation-predicates].
+/// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
 ///
 /// # Examples
 /// ```
@@ -119,7 +119,7 @@ pub fn compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 /// Evaluates to either a `true` of `false` literal based on the
-/// [compilation predicate][crate#compilation-predicates].
+/// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
 ///
 /// # Examples
 /// ```
