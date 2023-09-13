@@ -7,6 +7,34 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- new feature: `unsafe_mem`.
+- new modules : `ascii`, `os::terminal`, `str`, `_features`.
+- new fns in `ascii:`: `ascii_d[1-4]`, `u[BITS]_to_ascii`.
+- new fns in `mem:` `as_bytes`, `as_bytes_mut`, `as_bytes_sized`.
+- new fns in `os::linux`: `sys_ioctl`.
+- new fns in `os::terminal`: `is_terminal`, `enable_raw_terminal`, `disable_raw_terminal`, `eprint`, `eprintln` `get_char`, `get_dirty_char`, `get_line`, `get_utf8_bytes`, `get_str`, `pause_until_char`, `println`, `prompt`.
+- new structs in `os::linux`: `ERRNO`, `FILENO`, `IOCTL`, `SysTermios`.
+- new struct in `os::terminal`: `Ansi`, `AnsiColor`.
+- new methods for `SysTimeSpecs`: `as_ptr` and `as_mut_ptr`.
+- new trait `StrExt`.
+- new macro: `sfb`.
+
+### Changed
+- rename and deprecate `rfs` macro for `sf`.
+- change `SysTimeSpec` to accept arguments in `new` fn, and derive `Default`.
+- move `os::linux` file descriptor constnts to `FILENO` struct.
+- make `bytemuck` non-optional.
+
+### Fixed
+- use `isize` instead of `i32` for `os::linux` `errno` constants.
+- use `c_int` and `c_ulong` instead of `i32` and `u64` for `fd` constants and syscall args.
+- remove cfg check for `os::linux` to be `no_std` compatible.
+- move documentation on features to `_features`.
+- move derived works info to a separate file.
+- avoid loading `sys_nanosleep` in risc-v.
+- fix `az` and `bytemuck` reexports.
+
 ## [0.9.0] - 2023-09-08
 
 ### Added
