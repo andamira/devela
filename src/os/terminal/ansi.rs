@@ -254,28 +254,28 @@ impl Ansi {
     /* screen */
 
     /// Code to clear the screen.
-    pub const CLEAR_SCREEN: &[u8] = b"\x1b[2J";
+    pub const CLEAR_SCREEN: &'static [u8] = b"\x1b[2J";
 
     /// Code to enable the alternative screen.
-    pub const ENABLE_ALTERNATIVE_SCREEN: &[u8] = b"\x1b[1049h";
+    pub const ENABLE_ALTERNATIVE_SCREEN: &'static [u8] = b"\x1b[1049h";
 
     /// Code to disable the alternative screen.
-    pub const DISABLE_ALTERNATIVE_SCREEN: &[u8] = b"\x1b[1049l";
+    pub const DISABLE_ALTERNATIVE_SCREEN: &'static [u8] = b"\x1b[1049l";
 
     /* cursor */
 
     /// Code to make the cursor invisible.
-    pub const CURSOR_INVISIBLE: &[u8] = b"\x1b[?25l";
+    pub const CURSOR_INVISIBLE: &'static [u8] = b"\x1b[?25l";
     /// Code to make the cursor visible.
-    pub const CURSOR_VISIBLE: &[u8] = b"\x1b[?25h";
+    pub const CURSOR_VISIBLE: &'static [u8] = b"\x1b[?25h";
 
     /// Code to save the cursor position.
-    pub const CURSOR_SAVE: &[u8] = b"\x1b[s";
+    pub const CURSOR_SAVE: &'static [u8] = b"\x1b[s";
     /// Code to estore the cursor position.
-    pub const CURSOR_RESTORE: &[u8] = b"\x1b[u";
+    pub const CURSOR_RESTORE: &'static [u8] = b"\x1b[u";
 
     /// Code to move the cursor to the home position (1, 1).
-    pub const CURSOR_HOME: &[u8] = b"\x1b[H";
+    pub const CURSOR_HOME: &'static [u8] = b"\x1b[H";
 
     /// Code to move the cursor to the specified 1-digit position (row, col).
     /// # Panics
@@ -317,7 +317,7 @@ impl Ansi {
     }
 
     /// Code to move the cursor up by one line.
-    pub const CURSOR_UP: &[u8] = b"\x1b[A";
+    pub const CURSOR_UP: &'static [u8] = b"\x1b[A";
     /// Code to move the cursor up by 1-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 9.
@@ -351,7 +351,7 @@ impl Ansi {
     }
 
     /// Code to move the cursor down by one line.
-    pub const CURSOR_DOWN: &[u8] = b"\x1b[B";
+    pub const CURSOR_DOWN: &'static [u8] = b"\x1b[B";
     /// Code to move the cursor down by 1-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 9.
@@ -385,7 +385,7 @@ impl Ansi {
     }
 
     /// Code to move the cursor right by one column.
-    pub const CURSOR_RIGHT: &[u8] = b"\x1b[C";
+    pub const CURSOR_RIGHT: &'static [u8] = b"\x1b[C";
     /// Code to move the cursor right by 1-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 9.
@@ -419,7 +419,7 @@ impl Ansi {
     }
 
     /// Code to move the cursor left by one column.
-    pub const CURSOR_LEFT: &[u8] = b"\x1b[D";
+    pub const CURSOR_LEFT: &'static [u8] = b"\x1b[D";
     /// Code to move the cursor left by 1-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 9.
@@ -455,57 +455,57 @@ impl Ansi {
     /* font effects */
 
     /// Code to turn off all effects and colors.
-    pub const RESET: &[u8] = b"\x1b[0m";
+    pub const RESET: &'static [u8] = b"\x1b[0m";
 
     /// Code to set bold effect.
-    pub const BOLD: &[u8] = b"\x1b[1m";
+    pub const BOLD: &'static [u8] = b"\x1b[1m";
     /// Code to unset bold and dim effects.
-    pub const BOLD_OFF: &[u8] = b"\x1b[22m";
+    pub const BOLD_OFF: &'static [u8] = b"\x1b[22m";
 
     /// Code to set dim effect.
-    pub const DIM: &[u8] = b"\x1b[2m";
+    pub const DIM: &'static [u8] = b"\x1b[2m";
     /// Code to unset bold and dim effects.
-    pub const DIM_OFF: &[u8] = b"\x1b[22m";
+    pub const DIM_OFF: &'static [u8] = b"\x1b[22m";
 
     /// Code to set italic effect.
-    pub const ITALIC: &[u8] = b"\x1b[3m";
+    pub const ITALIC: &'static [u8] = b"\x1b[3m";
     /// Code to unset italic and fraktur effects.
-    pub const ITALIC_OFF: &[u8] = b"\x1b[23m";
+    pub const ITALIC_OFF: &'static [u8] = b"\x1b[23m";
 
     /// Code to set underline effect.
-    pub const UNDERLINE: &[u8] = b"\x1b[4m";
-    // pub const UNDERLINE_DOUBLE: &[u8] = b"\x1b[21m"; // or bold_off
+    pub const UNDERLINE: &'static [u8] = b"\x1b[4m";
+    // pub const UNDERLINE_DOUBLE: &'static [u8] = b"\x1b[21m"; // or bold_off
     /// Code to unset underline effect.
-    pub const UNDERLINE_OFF: &[u8] = b"\x1b[24m";
+    pub const UNDERLINE_OFF: &'static [u8] = b"\x1b[24m";
 
     /// Code to set blink effect.
-    pub const BLINK: &[u8] = b"\x1b[5m";
+    pub const BLINK: &'static [u8] = b"\x1b[5m";
     /// Code to unset blink effect.
-    pub const BLINK_OFF: &[u8] = b"\x1b[25m";
-    // pub const BLINK_FAST: &[u8] = b"\x1b[6m";
+    pub const BLINK_OFF: &'static [u8] = b"\x1b[25m";
+    // pub const BLINK_FAST: &'static [u8] = b"\x1b[6m";
 
     /// Code to set inverse effect.
-    pub const INVERSE: &[u8] = b"\x1b[7m";
+    pub const INVERSE: &'static [u8] = b"\x1b[7m";
     /// Code to unset inverse effect.
-    pub const INVERSE_OFF: &[u8] = b"\x1b[27m";
+    pub const INVERSE_OFF: &'static [u8] = b"\x1b[27m";
 
     /// Code to set crossed effect.
-    pub const CROSSED: &[u8] = b"\x1b[9m";
+    pub const CROSSED: &'static [u8] = b"\x1b[9m";
     /// Code to unset crossed effect.
-    pub const CROSSED_OFF: &[u8] = b"\x1b[29m";
+    pub const CROSSED_OFF: &'static [u8] = b"\x1b[29m";
 
     /* 4-bit colors*/
 
     // all &[u8; 5] except bright background colors &[u8; 6]
 
     /// Code to set the foreground color to black.
-    pub const BLACK: &[u8] = &[b'\x1b', b'[', Color::BLACK_FG[0], Color::BLACK_FG[1], b'm'];
+    pub const BLACK: &'static [u8] = &[b'\x1b', b'[', Color::BLACK_FG[0], Color::BLACK_FG[1], b'm'];
     /// Code to set the foreground color to red.
-    pub const RED: &[u8] = &[b'\x1b', b'[', Color::RED_FG[0], Color::RED_FG[1], b'm'];
+    pub const RED: &'static [u8] = &[b'\x1b', b'[', Color::RED_FG[0], Color::RED_FG[1], b'm'];
     /// Code to set the foreground color to green.
-    pub const GREEN: &[u8] = &[b'\x1b', b'[', Color::GREEN_FG[0], Color::GREEN_FG[1], b'm'];
+    pub const GREEN: &'static [u8] = &[b'\x1b', b'[', Color::GREEN_FG[0], Color::GREEN_FG[1], b'm'];
     /// Code to set the foreground color to yellow.
-    pub const YELLOW: &[u8] = &[
+    pub const YELLOW: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::YELLOW_FG[0],
@@ -513,9 +513,9 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the foreground color to blue.
-    pub const BLUE: &[u8] = &[b'\x1b', b'[', Color::BLUE_FG[0], Color::BLUE_FG[1], b'm'];
+    pub const BLUE: &'static [u8] = &[b'\x1b', b'[', Color::BLUE_FG[0], Color::BLUE_FG[1], b'm'];
     /// Code to set the foreground color to magenta.
-    pub const MAGENTA: &[u8] = &[
+    pub const MAGENTA: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::MAGENTA_FG[0],
@@ -523,18 +523,20 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the foreground color to cyan.
-    pub const CYAN: &[u8] = &[b'\x1b', b'[', Color::CYAN_FG[0], Color::CYAN_FG[1], b'm'];
+    pub const CYAN: &'static [u8] = &[b'\x1b', b'[', Color::CYAN_FG[0], Color::CYAN_FG[1], b'm'];
     /// Code to set the foreground color to white.
-    pub const WHITE: &[u8] = &[b'\x1b', b'[', Color::WHITE_FG[0], Color::WHITE_FG[1], b'm'];
+    pub const WHITE: &'static [u8] = &[b'\x1b', b'[', Color::WHITE_FG[0], Color::WHITE_FG[1], b'm'];
 
     /// Code to set the background color to black.
-    pub const BLACK_BG: &[u8] = &[b'\x1b', b'[', Color::BLACK_BG[0], Color::BLACK_BG[1], b'm'];
+    pub const BLACK_BG: &'static [u8] =
+        &[b'\x1b', b'[', Color::BLACK_BG[0], Color::BLACK_BG[1], b'm'];
     /// Code to set the background color to red.
-    pub const RED_BG: &[u8] = &[b'\x1b', b'[', Color::RED_BG[0], Color::RED_BG[1], b'm'];
+    pub const RED_BG: &'static [u8] = &[b'\x1b', b'[', Color::RED_BG[0], Color::RED_BG[1], b'm'];
     /// Code to set the background color to green.
-    pub const GREEN_BG: &[u8] = &[b'\x1b', b'[', Color::GREEN_BG[0], Color::GREEN_BG[1], b'm'];
+    pub const GREEN_BG: &'static [u8] =
+        &[b'\x1b', b'[', Color::GREEN_BG[0], Color::GREEN_BG[1], b'm'];
     /// Code to set the background color to yellow.
-    pub const YELLOW_BG: &[u8] = &[
+    pub const YELLOW_BG: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::YELLOW_BG[0],
@@ -542,9 +544,9 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the background color to blue.
-    pub const BLUE_BG: &[u8] = &[b'\x1b', b'[', Color::BLUE_BG[0], Color::BLUE_BG[1], b'm'];
+    pub const BLUE_BG: &'static [u8] = &[b'\x1b', b'[', Color::BLUE_BG[0], Color::BLUE_BG[1], b'm'];
     /// Code to set the background color to magenta.
-    pub const MAGENTA_BG: &[u8] = &[
+    pub const MAGENTA_BG: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::MAGENTA_BG[0],
@@ -552,12 +554,13 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the background color to cyan.
-    pub const CYAN_BG: &[u8] = &[b'\x1b', b'[', Color::CYAN_BG[0], Color::CYAN_BG[1], b'm'];
+    pub const CYAN_BG: &'static [u8] = &[b'\x1b', b'[', Color::CYAN_BG[0], Color::CYAN_BG[1], b'm'];
     /// Code to set the background color to white.
-    pub const WHITE_BG: &[u8] = &[b'\x1b', b'[', Color::WHITE_BG[0], Color::WHITE_BG[1], b'm'];
+    pub const WHITE_BG: &'static [u8] =
+        &[b'\x1b', b'[', Color::WHITE_BG[0], Color::WHITE_BG[1], b'm'];
 
     /// Code to set the foreground color to bright black.
-    pub const BRIGHT_BLACK: &[u8] = &[
+    pub const BRIGHT_BLACK: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_BLACK_FG[0],
@@ -565,7 +568,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the foreground color to bright red.
-    pub const BRIGHT_RED: &[u8] = &[
+    pub const BRIGHT_RED: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_RED_FG[0],
@@ -573,7 +576,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the foreground color to bright green.
-    pub const BRIGHT_GREEN: &[u8] = &[
+    pub const BRIGHT_GREEN: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_GREEN_FG[0],
@@ -581,7 +584,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the foreground color to bright yellow.
-    pub const BRIGHT_YELLOW: &[u8] = &[
+    pub const BRIGHT_YELLOW: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_YELLOW_FG[0],
@@ -589,7 +592,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the foreground color to bright blue.
-    pub const BRIGHT_BLUE: &[u8] = &[
+    pub const BRIGHT_BLUE: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_BLUE_FG[0],
@@ -597,7 +600,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the foreground color to bright magenta.
-    pub const BRIGHT_MAGENTA: &[u8] = &[
+    pub const BRIGHT_MAGENTA: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_MAGENTA_FG[0],
@@ -605,7 +608,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the foreground color to bright cyan.
-    pub const BRIGHT_CYAN: &[u8] = &[
+    pub const BRIGHT_CYAN: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_CYAN_FG[0],
@@ -613,7 +616,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the foreground color to bright white.
-    pub const BRIGHT_WHITE: &[u8] = &[
+    pub const BRIGHT_WHITE: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_WHITE_FG[0],
@@ -622,7 +625,7 @@ impl Ansi {
     ];
 
     /// Code to set the background color to bright black.
-    pub const BRIGHT_BLACK_BG: &[u8] = &[
+    pub const BRIGHT_BLACK_BG: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_BLACK_BG[0],
@@ -631,7 +634,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the background color to bright red.
-    pub const BRIGHT_RED_BG: &[u8] = &[
+    pub const BRIGHT_RED_BG: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_RED_BG[0],
@@ -640,7 +643,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the background color to bright green.
-    pub const BRIGHT_GREEN_BG: &[u8] = &[
+    pub const BRIGHT_GREEN_BG: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_GREEN_BG[0],
@@ -649,7 +652,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the background color to bright yellow.
-    pub const BRIGHT_YELLOW_BG: &[u8] = &[
+    pub const BRIGHT_YELLOW_BG: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_YELLOW_BG[0],
@@ -658,7 +661,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the background color to bright blue.
-    pub const BRIGHT_BLUE_BG: &[u8] = &[
+    pub const BRIGHT_BLUE_BG: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_BLUE_BG[0],
@@ -667,7 +670,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the background color to bright magenta.
-    pub const BRIGHT_MAGENTA_BG: &[u8] = &[
+    pub const BRIGHT_MAGENTA_BG: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_MAGENTA_BG[0],
@@ -676,7 +679,7 @@ impl Ansi {
         b'm',
     ]; // 6
     /// Code to set the background color to bright cyan.
-    pub const BRIGHT_CYAN_BG: &[u8] = &[
+    pub const BRIGHT_CYAN_BG: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_CYAN_BG[0],
@@ -685,7 +688,7 @@ impl Ansi {
         b'm',
     ];
     /// Code to set the background color to bright white.
-    pub const BRIGHT_WHITE_BG: &[u8] = &[
+    pub const BRIGHT_WHITE_BG: &'static [u8] = &[
         b'\x1b',
         b'[',
         Color::BRIGHT_WHITE_BG[0],
