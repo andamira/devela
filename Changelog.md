@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.10.0] - 2023-09-13
+
 ### Added
 - new features: `unsafe_mem`, `unsafe_str`.
 - new modules : `ascii`, `os::terminal`, `str`, `_features`.
@@ -291,7 +293,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.9.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/andamira/devela/releases/tag/v0.9.0
 [0.9.0]: https://github.com/andamira/devela/releases/tag/v0.9.0
 [0.8.0]: https://github.com/andamira/devela/releases/tag/v0.8.0
 [0.7.1]: https://github.com/andamira/devela/releases/tag/v0.7.1
