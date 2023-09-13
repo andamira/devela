@@ -26,6 +26,22 @@ use core::{
 #[cfg(feature = "alloc")]
 use alloc::{format, string::String};
 
+#[doc(hidden)]
+#[macro_export]
+#[deprecated(since = "0.9.0", note = "please use `bdbg`")]
+macro_rules! cdbg { ($($val:expr)? $(,)?) => { $crate::fmt::bdbg![$($val)?]; } }
+#[allow(deprecated)]
+#[doc(hidden)]
+pub use cdbg;
+
+#[doc(hidden)]
+#[deprecated(since = "0.10.0", note = "please use `sf`")]
+#[macro_export]
+macro_rules! rfs { ( $($line:tt)+ ) => { sf![$($line)+] }; }
+#[allow(deprecated)]
+#[doc(hidden)]
+pub use rfs;
+
 /// *`b`riefer [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
 ///
 /// # Examples
@@ -57,17 +73,7 @@ macro_rules! bdbg {
 }
 pub use bdbg;
 
-#[doc(hidden)]
-#[macro_export]
-#[deprecated(since = "0.9.0", note = "please use `bdbg`")]
-macro_rules! cdbg {
-    ($($val:expr)? $(,)?) => { $crate::fmt::bdbg![$($val)?]; }
-}
-#[doc(hidden)]
-#[allow(deprecated)]
-pub use cdbg;
-
-/// *`r`ust `f`ormat `s`kip* macro.
+/// *`s`kip `f`ormatting* macro.
 ///
 /// Preserves the formatting of the code provided as arguments, by relying on
 /// the fact that `rustfmt` does not usually apply formatting inside macros.
@@ -77,14 +83,32 @@ pub use cdbg;
 ///
 /// # Examples
 /// ```
-/// use devela::fmt::rfs;
+/// use devela::fmt::sf;
 ///
 /// // rustfmt has no powers here
-/// rfs! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
+/// sf! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
 /// ```
 #[macro_export]
-macro_rules! rfs { ( $($line:tt)+ ) => { $($line)+ }; }
-pub use rfs;
+macro_rules! sf { ( $($line:tt)+ ) => { $($line)+ }; }
+pub use sf;
+
+/// *`s`kip `f`ormatting `b`lock* macro.
+///
+/// Surrounds with brackets the provided code, and preserves its formatting.
+///
+/// It can be used as an alternative to the `#[rustfmt::skip]` attribute,
+/// specially where it can't be applied yet on stable rust.
+///
+/// # Examples
+/// ```
+/// use devela::fmt::sfb;
+///
+/// // rustfmt has no powers here
+/// sfb! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
+/// ```
+#[macro_export]
+macro_rules! sfb { ( $($line:tt)+ ) => { { $($line)+ } }; }
+pub use sfb;
 
 /// Returns a formatted [`str`] slice backed by a buffer, `no_std` compatible.
 ///
