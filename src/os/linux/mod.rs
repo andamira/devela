@@ -39,8 +39,8 @@ pub mod io {
         not(miri),
     ))]
     pub use super::fns::{
-        disable_raw_mode, enable_raw_mode, get_byte, is_terminal, print, print_bytes, sys_ioctl,
-        sys_read, sys_write, SysTermios,
+        disable_raw_mode, enable_raw_mode, get_byte, get_char, get_dirty_char, get_utf8_bytes,
+        is_terminal, print, print_bytes, sys_ioctl, sys_read, sys_write, SysTermios,
     };
 }
 

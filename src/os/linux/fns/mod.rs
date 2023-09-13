@@ -23,8 +23,10 @@ pub use {all_targets::*, no_riscv::*};
 )]
 mod all_targets {
     // reexport syscalls
-    use super::super::consts::{ERRNO, FILENO, IOCTL};
     pub use super::super::syscalls::{sys_exit, sys_ioctl, sys_read, sys_write, SysTermios};
+
+    use super::super::consts::{ERRNO, FILENO, IOCTL};
+    use core::str::from_utf8_unchecked;
 
     /// Disables raw mode in a terminal, restoring the initial terminal settings.
     ///
@@ -117,6 +119,7 @@ mod all_targets {
         feature = "nightly",
         doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
     )]
+    #[inline]
     pub fn print_bytes(b: &[u8]) {
         let mut b = b;
         while !b.is_empty() {
@@ -140,6 +143,7 @@ mod all_targets {
         feature = "nightly",
         doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
     )]
+    #[inline]
     pub fn get_byte() -> u8 {
         let mut c = 0;
         loop {
@@ -153,6 +157,78 @@ mod all_targets {
             }
         }
         c
+    }
+
+    /// Gets a single `char` from *stdin*,
+    /// or `None` if the bytes are not valid utf-8.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    #[inline]
+    pub fn get_char() -> Option<char> {
+        let bytes = get_utf8_bytes()?;
+        let s = unsafe { from_utf8_unchecked(&bytes) };
+        Some(s.chars().next().unwrap())
+    }
+
+    /// Gets either a single `char` from *stdin*, or the replacement character.
+    ///
+    /// If the bytes received doesn't form a valid unicode scalar then the
+    /// [replacement character (�)][char::REPLACEMENT_CHARACTER] will be returned.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    #[inline]
+    pub fn get_dirty_char() -> char {
+        match get_utf8_bytes() {
+            Some(bytes) => {
+                let s = unsafe { from_utf8_unchecked(&bytes) };
+                s.chars().next().unwrap()
+            }
+            None => char::REPLACEMENT_CHARACTER,
+        }
+    }
+
+    /// Gets a utf-8 encoded byte sequence from *stdin* representing a `char`.
+    ///
+    /// Returns `None` if the bytes does not form a valid unicode scalar.
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
+    #[inline]
+    pub fn get_utf8_bytes() -> Option<[u8; 4]> {
+        let mut bytes = [0u8; 4];
+        let len;
+
+        // Read the first byte to determine the length of the character.
+        bytes[0] = get_byte();
+        if bytes[0] & 0x80 == 0 {
+            // This is an ASCII character, so we can return it immediately.
+            return Some([bytes[0], 0, 0, 0]);
+        } else if bytes[0] & 0xE0 == 0xC0 {
+            len = 2;
+        } else if bytes[0] & 0xF0 == 0xE0 {
+            len = 3;
+        } else if bytes[0] & 0xF8 == 0xF0 {
+            len = 4;
+        } else {
+            // Not a valid first byte of a UTF-8 character.
+            return None;
+        }
+
+        // Read the remaining bytes of the character.
+        for i in 1..len {
+            bytes[i as usize] = get_byte();
+            if bytes[i as usize] & 0xC0 != 0x80 {
+                // Not a valid continuation byte.
+                return None;
+            }
+        }
+
+        Some(bytes)
     }
 }
 
