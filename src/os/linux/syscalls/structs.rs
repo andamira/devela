@@ -5,9 +5,11 @@
 
 use core::time::Duration;
 
-/// Represents a time interval measured in seconds and nanoseconds.
+/// Represents the [`timespec`] structure from libc.
+/// Time in seconds and nanoseconds.
+///
+/// [`timespec`]: https://man7.org/linux/man-pages/man3/timespec.3type.html
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
-#[allow(dead_code)]
 #[repr(C)]
 pub struct SysTimeSpec {
     /// Number of whole seconds.
@@ -15,6 +17,7 @@ pub struct SysTimeSpec {
     /// Number of nanoseconds.
     pub tv_nsec: isize,
 }
+
 impl SysTimeSpec {
     /// Returns a new `SysTimeSpec` with the given `seconds` and `nanoseconds`.
     pub const fn new(seconds: isize, nanoseconds: isize) -> Self {
@@ -49,13 +52,14 @@ impl From<Duration> for SysTimeSpec {
     }
 }
 
-/// Represents the termios structure from the Linux kernel,
+/// Represents the [`termios`] structure from libc,
 /// used to control terminal I/O.
 ///
 /// It has fields for input, output, control, and local modes,
 /// as well as a line discipline and control characters.
+///
+/// [`termios`]: https://man7.org/linux/man-pages/man3/termios.3.html
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
-#[allow(dead_code)]
 #[repr(C)]
 pub struct SysTermios {
     pub c_iflag: u32,

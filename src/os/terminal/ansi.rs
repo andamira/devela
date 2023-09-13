@@ -22,7 +22,7 @@ use crate::os::linux::print_bytes;
 #[cfg(feature = "std")]
 use std::io::{stdout, Write};
 
-/// ANSI codes and functions.
+/// ANSI escape codes with print support.
 pub struct Ansi;
 
 #[cfg(any(

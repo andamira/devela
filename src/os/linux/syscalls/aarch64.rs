@@ -9,7 +9,7 @@ use core::{
     ffi::{c_int, c_ulong},
 };
 
-#[doc = include_str!("./Sys_exit.md")]
+#[doc = include_str!("./doc/Sys_exit.md")]
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
@@ -26,7 +26,7 @@ pub unsafe fn sys_exit(status: c_int) -> ! {
     }
 }
 
-#[doc = include_str!("./Sys_read.md")]
+#[doc = include_str!("./doc/Sys_read.md")]
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
@@ -45,7 +45,7 @@ pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     r0
 }
 
-#[doc = include_str!("./Sys_write.md")]
+#[doc = include_str!("./doc/Sys_write.md")]
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
@@ -64,7 +64,7 @@ pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
     r0
 }
 
-#[doc = include_str!("./Sys_nanosleep.md")]
+#[doc = include_str!("./doc/Sys_nanosleep.md")]
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))

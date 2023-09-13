@@ -10,9 +10,19 @@
 // This is so both for syscalls and safe syscall wrappers. And when more
 // platforms are supported they will all need to be updated accordingly.
 
-/* public modules */
-
 mod consts;
+#[cfg(all(feature = "unsafe_os", not(miri)))]
+mod fns;
+#[cfg(all(feature = "unsafe_os", not(miri)))]
+mod syscalls;
+
+pub use all::*;
+pub(super) mod all {
+    #[doc(inline)]
+    pub use super::{consts::all::*, io::*, process::*, thread::*};
+}
+
+/* public modules */
 
 /// Linux-specific extensions to [`std::io`].
 pub mod io {
@@ -65,17 +75,3 @@ pub mod thread {
     ))]
     pub use super::fns::{sleep, sys_nanosleep, SysTimeSpec};
 }
-
-/* private modules */
-
-pub use all::*;
-pub(super) mod all {
-    #[doc(inline)]
-    pub use super::{consts::all::*, io::*, process::*, thread::*};
-}
-
-#[cfg(all(feature = "unsafe_os", not(miri)))]
-mod syscalls;
-
-#[cfg(all(feature = "unsafe_os", not(miri)))]
-mod fns;

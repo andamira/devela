@@ -29,6 +29,10 @@ mod all_targets {
     /// Disables raw mode in a terminal, restoring the initial terminal settings.
     ///
     /// See also [`enable_raw_mode`].
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
     pub fn disable_raw_mode(mut initial_term: SysTermios) {
         unsafe {
             sys_ioctl(
@@ -45,6 +49,10 @@ mod all_targets {
     /// interpret any of the input but instead passes it directly to the program.
     ///
     /// See also [`disable_raw_mode`].
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+    )]
     pub fn enable_raw_mode() -> SysTermios {
         const ICANON: u32 = 0x2;
         const ECHO: u32 = 0x8;
@@ -76,7 +84,7 @@ mod all_targets {
         res != -ERRNO::ENOTTY && res != -ERRNO::EINVAL
     }
 
-    /// Prints a string to *stdout*.
+    /// Prints a string slice to *stdout*.
     ///
     /// This function makes use of the [`sys_write`] syscall to print a string.
     ///
@@ -99,7 +107,7 @@ mod all_targets {
         }
     }
 
-    /// Prints bytes to *stdout*.
+    /// Prints a byte slice to *stdout*.
     ///
     /// This function makes use of the [`sys_write`] syscall to print bytes.
     ///
