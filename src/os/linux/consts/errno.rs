@@ -3,7 +3,7 @@
 //! `errno.h` constants.
 //
 
-/// Namespaced `errno.h` constants.
+/// `errno.h` constants.
 pub struct ERRNO;
 
 impl ERRNO {

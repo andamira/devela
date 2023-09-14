@@ -5,7 +5,7 @@
 
 use core::ffi::c_int;
 
-/// Namespaced Linux standard file descriptor constants.
+/// File descriptor constants.
 pub struct FILENO;
 
 impl FILENO {

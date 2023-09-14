@@ -1,6 +1,6 @@
 // devela::os::linuxconsts::ioctl
 //
-//! ioctl constants.
+//! `ioctl` constants.
 //
 // https://man7.org/linux/man-pages/man4/tty_ioctl.4.html
 
