@@ -1,9 +1,9 @@
-// devela::io::linux::riscv
+// devela::io::linux::fns::syscalls::x86
 //
-//! Both for riscv32 and riscv64
+//!
 //
 
-// use super::SysTimeSpec;
+use super::SysTimeSpec;
 use core::{
     arch::asm,
     ffi::{c_int, c_ulong},
@@ -15,12 +15,12 @@ use core::{
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_exit(status: c_int) -> ! {
-    const SYS_EXIT: isize = 93;
+    const SYS_EXIT: isize = 1;
     unsafe {
         asm!(
-            "ecall",
-            in("a7") SYS_EXIT,
-            in("a0") status,
+            "int 0x80",
+            in("eax") SYS_EXIT,
+            in("ebx") status,
             options(noreturn)
         );
     }
@@ -32,14 +32,14 @@ pub unsafe fn sys_exit(status: c_int) -> ! {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
-    const SYS_READ: isize = 63;
+    const SYS_READ: isize = 3;
     let r0;
     asm!(
-        "ecall",
-        inlateout("a7") SYS_READ => r0,
-        in("a0") fd,
-        in("a1") buf,
-        in("a2") count,
+        "int 0x80",
+        inlateout("eax") SYS_READ => r0,
+        in("ebx") fd,
+        in("ecx") buf,
+        in("edx") count,
         options(nostack, preserves_flags)
     );
     r0
@@ -51,37 +51,37 @@ pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
-    const SYS_WRITE: isize = 64;
+    const SYS_WRITE: isize = 4;
     let r0;
     asm!(
-        "ecall",
-        inlateout("a7") SYS_WRITE => r0,
-        in("a0") fd,
-        in("a1") buf,
-        in("a2") count,
+        "int 0x80",
+        inlateout("eax") SYS_WRITE => r0,
+        in("ebx") fd,
+        in("ecx") buf,
+        in("edx") count,
         options(nostack, preserves_flags)
     );
     r0
 }
 
-// #[doc = include_str!("./doc/Sys_nanosleep.md")]
-// #[cfg_attr(
-//     feature = "nightly",
-//     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-// )]
-// pub unsafe fn sys_nanosleep(req: *const SysTimeSpec, rem: *mut SysTimeSpec) -> isize {
-//     // const SYS_NANOSLEEP: isize = ???; // TODO
-//     let r0;
-//     asm!(
-//         "ecall",
-//         inlateout("a7") SYS_NANOSLEEP => r0,
-//         in("a0") fd,
-//         in("a1") buf,
-//         lateout("a2") _,
-//         options(nostack, preserves_flags)
-//     );
-//     r0
-// }
+#[doc = include_str!("./doc/Sys_nanosleep.md")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+)]
+pub unsafe fn sys_nanosleep(req: *const SysTimeSpec, rem: *mut SysTimeSpec) -> isize {
+    const SYS_NANOSLEEP: isize = 162;
+    let r0;
+    asm!(
+        "int 0x80",
+        inlateout("eax") SYS_NANOSLEEP => r0,
+        in("ebx") req,
+        in("ecx") rem,
+        lateout("edx") _,
+        options(nostack, preserves_flags)
+    );
+    r0
+}
 
 #[doc = include_str!("./doc/Sys_ioctl.md")]
 #[cfg_attr(
@@ -92,11 +92,11 @@ pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
     const SYS_IOCTL: isize = 54;
     let r0;
     asm!(
-        "ecall",
-        inlateout("a7") SYS_IOCTL => r0,
-        in("a0") fd,
-        in("a1") request,
-        in("a2") argp,
+        "int 0x80",
+        inlateout("eax") SYS_IOCTL => r0,
+        in("ebx") fd,
+        in("ecx") request,
+        in("edx") argp,
         options(nostack, preserves_flags)
     );
     r0

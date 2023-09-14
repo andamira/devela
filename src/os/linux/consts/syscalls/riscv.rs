@@ -1,4 +1,4 @@
-// devela::os::linux::syscall::consts::riscv
+// devela::os::linux::consts::syscalls::riscv
 //
 //! Defines the syscall numbers for `riscv`.
 //

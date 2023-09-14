@@ -5,6 +5,8 @@
 
 pub use {all_targets::*, no_riscv::*};
 
+mod syscalls;
+
 // functions supported by all targets
 #[cfg_attr(
     feature = "nightly",
@@ -23,7 +25,7 @@ pub use {all_targets::*, no_riscv::*};
 )]
 mod all_targets {
     // reexport syscalls
-    pub use super::super::syscalls::{sys_exit, sys_ioctl, sys_read, sys_write, SysTermios};
+    pub use super::syscalls::{sys_exit, sys_ioctl, sys_read, sys_write, SysTermios};
 
     use super::super::consts::{ERRNO, FILENO, IOCTL};
     use core::str::from_utf8_unchecked;
@@ -397,7 +399,7 @@ mod no_riscv {
     use core::{cmp::Ordering, time::Duration};
 
     // reexport syscalls
-    pub use super::super::syscalls::{sys_nanosleep, SysTimeSpec};
+    pub use super::syscalls::{sys_nanosleep, SysTimeSpec};
 
     /// Suspends execution of calling thread.
     ///

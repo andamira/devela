@@ -1,4 +1,4 @@
-// devela::os::linux::syscall::structs
+// devela::os::linux::fns::syscall::structs
 //
 //!
 //

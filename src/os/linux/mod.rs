@@ -13,8 +13,6 @@
 mod consts;
 #[cfg(all(feature = "unsafe_os", not(miri)))]
 mod fns;
-#[cfg(all(feature = "unsafe_os", not(miri)))]
-mod syscalls;
 
 pub use all::*;
 pub(super) mod all {

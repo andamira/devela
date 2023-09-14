@@ -1,4 +1,4 @@
-// devela::os::linux::syscall::consts::arm
+// devela::os::linux::consts::syscalls::arm
 //
 //! Defines the syscall numbers for `armv7`.
 //

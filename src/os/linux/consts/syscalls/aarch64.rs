@@ -1,4 +1,4 @@
-// devela::os::linux::syscall::consts::aarch64
+// devela::os::linux::consts::syscalls::aarch64
 //
 //! Defines the syscall numbers for `aarch64`
 //

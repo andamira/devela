@@ -1,4 +1,4 @@
-// devela::os::linux::syscall::consts::x86
+// devela::os::linux::consts::syscalls::x86
 //
 //! Defines the syscall numbers for x86.
 //

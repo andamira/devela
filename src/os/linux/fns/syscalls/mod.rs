@@ -1,4 +1,4 @@
-// devela::os::linux::syscall
+// devela::os::linux::fns::syscalls
 //
 //!
 //

@@ -1,4 +1,4 @@
-// devela::io::linux::x86_64
+// devela::io::linux::fns::syscalls::aarch64
 //
 //!
 //
@@ -15,12 +15,12 @@ use core::{
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_exit(status: c_int) -> ! {
-    const SYS_EXIT: isize = 60;
+    const SYS_EXIT: isize = 93;
     unsafe {
         asm!(
-            "syscall",
-            in("rax") SYS_EXIT,
-            in("rdi") status,
+            "svc 0",
+            in("x8") SYS_EXIT,
+            in("x0") status,
             options(noreturn)
         );
     }
@@ -32,16 +32,14 @@ pub unsafe fn sys_exit(status: c_int) -> ! {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
-    const SYS_READ: isize = 0;
+    const SYS_READ: isize = 63;
     let r0;
     asm!(
-        "syscall",
-        inlateout("rax") SYS_READ => r0,
-        in("rdi") fd,
-        in("rsi") buf,
-        in("rdx") count,
-        lateout("rcx") _,
-        lateout("r11") _,
+        "svc 0",
+        inlateout("x8") SYS_READ => r0,
+        in("x0") fd,
+        in("x1") buf,
+        in("x2") count,
         options(nostack, preserves_flags)
     );
     r0
@@ -53,16 +51,14 @@ pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
-    const SYS_WRITE: isize = 1;
+    const SYS_WRITE: isize = 64;
     let r0;
     asm!(
-        "syscall",
-        inlateout("rax") SYS_WRITE => r0,
-        in("rdi") fd,
-        in("rsi") buf,
-        in("rdx") count,
-        lateout("rcx") _,
-        lateout("r11") _,
+        "svc 0",
+        inlateout("x8") SYS_WRITE => r0,
+        in("x0") fd,
+        in("x1") buf,
+        in("x2") count,
         options(nostack, preserves_flags)
     );
     r0
@@ -77,12 +73,11 @@ pub unsafe fn sys_nanosleep(req: *const SysTimeSpec, rem: *mut SysTimeSpec) -> i
     const SYS_NANOSLEEP: isize = 35;
     let r0;
     asm!(
-        "syscall",
-        inlateout("rax") SYS_NANOSLEEP => r0,
-        in("rdi") req,
-        in("rsi") rem,
-        lateout("rcx") _,
-        lateout("r11") _,
+        "svc 0",
+        inlateout("x8") SYS_NANOSLEEP => r0,
+        in("x0") req,
+        in("x1") rem,
+        lateout("x2") _,
         options(nostack, preserves_flags)
     );
     r0
@@ -97,13 +92,11 @@ pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
     const SYS_IOCTL: isize = 16;
     let r0;
     asm!(
-        "syscall",
-        inlateout("rax") SYS_IOCTL => r0,
-        in("rdi") fd,
-        in("rsi") request,
-        in("rdx") argp,
-        lateout("rcx") _,
-        lateout("r11") _,
+        "svc 0",
+        inlateout("x8") SYS_IOCTL => r0,
+        in("x0") fd,
+        in("x1") request,
+        in("x2") argp,
         options(nostack, preserves_flags)
     );
     r0
