@@ -4,7 +4,6 @@ Reads `count` bytes from a file descriptor `fd` into a buffer `buf`.
 
 # Examples
 ```ignore
-MPROVE: The test doc example fails for lack of input
 use devela::os::linux::{FILENO, sys_read};
 
 let mut buf: [u8; 1024] = [0; 1024];

@@ -13,7 +13,7 @@ pub use read::{
     get_byte, get_char, get_dirty_char, get_line, get_str, get_utf8_bytes, pause_until_char, prompt,
 };
 pub use syscalls::{
-    sys_exit, sys_ioctl, sys_nanosleep, sys_read, sys_write, SysTermios, SysTimeSpec,
+    sys_exit, sys_getrandom, sys_ioctl, sys_nanosleep, sys_read, sys_write, SysTermios, SysTimeSpec,
 };
 pub use write::{eprint, eprintln, print, print_bytes, println};
 

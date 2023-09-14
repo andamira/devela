@@ -7,7 +7,7 @@
 use crate::os::linux::{SysTimeSpec, SYS_ARM as SYS};
 use core::{
     arch::asm,
-    ffi::{c_int, c_ulong},
+    ffi::{c_int, c_uint, c_ulong},
 };
 
 #[doc = include_str!("./doc/Sys_exit.md")]
@@ -93,6 +93,24 @@ pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
         in("r0") fd,
         in("r1") request,
         in("r2") argp,
+        options(nostack, preserves_flags)
+    );
+    r0
+}
+
+#[doc = include_str!("./doc/Sys_getrandom.md")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+)]
+pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
+    let r0;
+    asm!(
+        "swi 0",
+        inlateout("r8") SYS::GETRANDOM => r0,
+        in("r0") buffer,
+        in("r1") size,
+        in("r2") flags,
         options(nostack, preserves_flags)
     );
     r0

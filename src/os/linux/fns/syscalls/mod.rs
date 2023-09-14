@@ -23,7 +23,7 @@
         feature = "unsafe_os",
     )))
 )]
-pub use sys::{sys_exit, sys_ioctl, sys_nanosleep, sys_read, sys_write};
+pub use sys::{sys_exit, sys_getrandom, sys_ioctl, sys_nanosleep, sys_read, sys_write};
 
 mod structs;
 pub use structs::{SysTermios, SysTimeSpec};
