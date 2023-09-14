@@ -14,3 +14,6 @@ assert![bytes_read > 0];
 
 # Safety
 TODO
+
+# Info
+- <https://www.man7.org/linux/man-pages/man2/read.2.html>
