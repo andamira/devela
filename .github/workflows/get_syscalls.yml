@@ -1,15 +1,15 @@
-# gets linux syscalls for each target,
+# gets linux syscall.h values on each target,
 # creates rust files with constants
 # and uploads them as artifacts.
 
-name: get syscalls as rust constants
+name: get syscall.h values as rust constants
 
 on:
   workflow_dispatch:
 
 jobs:
   syscalls:
-    name: "syscalls for ${{ matrix.config.target }}"
+    name: "get syscall.h values for ${{ matrix.config.target }}"
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,16 +30,16 @@ jobs:
       - name: "Set up QEMU"
         uses: docker/setup-qemu-action@v3
 
-      - name: "get syscalls"
+      - name: "get syscall.h values"
         run: |
             docker run --rm -v $PWD:/workdir -w /workdir ${{ matrix.config.docker_image }} /bin/bash -c "
               apt-get update && apt-get install -y apt-utils && apt-get install -y gcc && \
               ./tools/get_syscalls.sh ${{ matrix.config.target }}
             "
-      - name: "Upload syscalls files"
+      - name: "Upload syscall files"
         uses: actions/upload-artifact@v3
         with:
-          name: "exported_syscalls_rust_consts"
-          path: syscalls_${{ matrix.config.target }}.rs
+          name: "exported_syscall_rust_consts"
+          path: syscall_${{ matrix.config.target }}.rs
           if-no-files-found: error
 

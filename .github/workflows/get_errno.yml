@@ -1,4 +1,4 @@
-# gets linux errno.h values for each target,
+# gets linux errno.h values on each target,
 # creates rust files with constants
 # and uploads them as artifacts.
 
@@ -9,7 +9,7 @@ on:
 
 jobs:
   errno:
-    name: "errno for ${{ matrix.config.target }}"
+    name: "get errno.h values for ${{ matrix.config.target }}"
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,7 +30,7 @@ jobs:
       - name: "Set up QEMU"
         uses: docker/setup-qemu-action@v3
 
-      - name: "get errno"
+      - name: "get errno.h values"
         run: |
             docker run --rm -v $PWD:/workdir -w /workdir ${{ matrix.config.docker_image }} /bin/bash -c "
               apt-get update && apt-get install -y apt-utils && apt-get install -y gcc && \
@@ -39,7 +39,7 @@ jobs:
       - name: "Upload errno files"
         uses: actions/upload-artifact@v3
         with:
-          name: "exported_errno_rust_consts.zip"
+          name: "exported_errno_rust_consts"
           path: errno_${{ matrix.config.target }}.rs
           if-no-files-found: error
 

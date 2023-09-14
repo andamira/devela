@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 # devela/tools/get_errno.sh
 #
-# Generates a rust file with consts for the errno.h file of the current target.
+# Generates a rust file with consts for from errno.h on the current target.
 # It is called by the `.github/workflows/get_errno.yml` manual CI action.
+
+# the errno.h files should be the same in most linux platforms,
+# you can quickly check if the files are equal with the following command:
+#
+# $ diff -q --from-file errno_*
 
 TARGET=$1
 if [ -z "$TARGET" ]; then
