@@ -19,3 +19,6 @@ echo -e '#include <sys/syscall.h>' | cpp -dM \
 	| sort -k 1,1 \
 	| awk '{print "pub const " toupper($1) ": isize = " $2 ";"}' \
 	> "syscalls_${TARGET}.rs"
+
+# sort by number instead:
+# | sort -g -k 2,1 \
