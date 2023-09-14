@@ -1,3 +1,6 @@
+# Info
+- <https://www.man7.org/linux/man-pages/man2/nanosleep.2.html>
+
 Suspends execution of calling thread.
 
 Suspension will last until either the time interval specified in `*req`
@@ -18,6 +21,3 @@ assert_eq![0, unsafe { sys_nanosleep(&mut req, &mut rem) }];
 
 # Safety
 TODO
-
-# Info
-- <https://www.man7.org/linux/man-pages/man2/nanosleep.2.html>

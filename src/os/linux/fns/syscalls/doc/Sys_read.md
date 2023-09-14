@@ -2,6 +2,9 @@ Performs a `read` syscall.
 
 Reads `count` bytes from a file descriptor `fd` into a buffer `buf`.
 
+# Info
+- <https://www.man7.org/linux/man-pages/man2/read.2.html>
+
 # Examples
 ```ignore
 use devela::os::linux::{FILENO, sys_read};
@@ -13,6 +16,3 @@ assert![bytes_read > 0];
 
 # Safety
 TODO
-
-# Info
-- <https://www.man7.org/linux/man-pages/man2/read.2.html>
