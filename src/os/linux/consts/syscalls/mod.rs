@@ -2,6 +2,7 @@
 //
 //! Defines the syscall numbers for each target.
 //
+// - https://marcin.juszkiewicz.com.pl/download/tables/syscalls.html
 
 #![allow(dead_code)]
 

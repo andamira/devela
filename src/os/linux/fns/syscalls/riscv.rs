@@ -3,7 +3,7 @@
 //! Both for riscv32 and riscv64
 //
 
-// use super::SysTimeSpec;
+use crate::os::linux::{SysTimeSpec, SYS_RISCV as SYS};
 use core::{
     arch::asm,
     ffi::{c_int, c_ulong},
@@ -15,11 +15,10 @@ use core::{
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_exit(status: c_int) -> ! {
-    const SYS_EXIT: isize = 93;
     unsafe {
         asm!(
             "ecall",
-            in("a7") SYS_EXIT,
+            in("a7") SYS::EXIT,
             in("a0") status,
             options(noreturn)
         );
@@ -32,11 +31,10 @@ pub unsafe fn sys_exit(status: c_int) -> ! {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
-    const SYS_READ: isize = 63;
     let r0;
     asm!(
         "ecall",
-        inlateout("a7") SYS_READ => r0,
+        inlateout("a7") SYS::READ => r0,
         in("a0") fd,
         in("a1") buf,
         in("a2") count,
@@ -51,11 +49,10 @@ pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
-    const SYS_WRITE: isize = 64;
     let r0;
     asm!(
         "ecall",
-        inlateout("a7") SYS_WRITE => r0,
+        inlateout("a7") SYS::WRITE => r0,
         in("a0") fd,
         in("a1") buf,
         in("a2") count,
@@ -64,24 +61,23 @@ pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
     r0
 }
 
-// #[doc = include_str!("./doc/Sys_nanosleep.md")]
-// #[cfg_attr(
-//     feature = "nightly",
-//     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-// )]
-// pub unsafe fn sys_nanosleep(req: *const SysTimeSpec, rem: *mut SysTimeSpec) -> isize {
-//     // const SYS_NANOSLEEP: isize = ???; // TODO
-//     let r0;
-//     asm!(
-//         "ecall",
-//         inlateout("a7") SYS_NANOSLEEP => r0,
-//         in("a0") fd,
-//         in("a1") buf,
-//         lateout("a2") _,
-//         options(nostack, preserves_flags)
-//     );
-//     r0
-// }
+#[doc = include_str!("./doc/Sys_nanosleep.md")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+)]
+pub unsafe fn sys_nanosleep(req: *const SysTimeSpec, rem: *mut SysTimeSpec) -> isize {
+    let r0;
+    asm!(
+        "ecall",
+        inlateout("a7") SYS::NANOSLEEP => r0,
+        in("a0") fd,
+        in("a1") buf,
+        lateout("a2") _,
+        options(nostack, preserves_flags)
+    );
+    r0
+}
 
 #[doc = include_str!("./doc/Sys_ioctl.md")]
 #[cfg_attr(
@@ -89,11 +85,10 @@ pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
-    const SYS_IOCTL: isize = 54;
     let r0;
     asm!(
         "ecall",
-        inlateout("a7") SYS_IOCTL => r0,
+        inlateout("a7") SYS::IOCTL => r0,
         in("a0") fd,
         in("a1") request,
         in("a2") argp,

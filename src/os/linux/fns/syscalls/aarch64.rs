@@ -3,7 +3,7 @@
 //!
 //
 
-use super::SysTimeSpec;
+use crate::os::linux::{SysTimeSpec, SYS_AARCH64 as SYS};
 use core::{
     arch::asm,
     ffi::{c_int, c_ulong},
@@ -15,11 +15,10 @@ use core::{
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_exit(status: c_int) -> ! {
-    const SYS_EXIT: isize = 93;
     unsafe {
         asm!(
             "svc 0",
-            in("x8") SYS_EXIT,
+            in("x8") SYS::EXIT,
             in("x0") status,
             options(noreturn)
         );
@@ -32,11 +31,10 @@ pub unsafe fn sys_exit(status: c_int) -> ! {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
-    const SYS_READ: isize = 63;
     let r0;
     asm!(
         "svc 0",
-        inlateout("x8") SYS_READ => r0,
+        inlateout("x8") SYS::READ => r0,
         in("x0") fd,
         in("x1") buf,
         in("x2") count,
@@ -51,11 +49,10 @@ pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
-    const SYS_WRITE: isize = 64;
     let r0;
     asm!(
         "svc 0",
-        inlateout("x8") SYS_WRITE => r0,
+        inlateout("x8") SYS::WRITE => r0,
         in("x0") fd,
         in("x1") buf,
         in("x2") count,
@@ -70,11 +67,10 @@ pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_nanosleep(req: *const SysTimeSpec, rem: *mut SysTimeSpec) -> isize {
-    const SYS_NANOSLEEP: isize = 35;
     let r0;
     asm!(
         "svc 0",
-        inlateout("x8") SYS_NANOSLEEP => r0,
+        inlateout("x8") SYS::NANOSLEEP => r0,
         in("x0") req,
         in("x1") rem,
         lateout("x2") _,
@@ -89,11 +85,10 @@ pub unsafe fn sys_nanosleep(req: *const SysTimeSpec, rem: *mut SysTimeSpec) -> i
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
-    const SYS_IOCTL: isize = 16;
     let r0;
     asm!(
         "svc 0",
-        inlateout("x8") SYS_IOCTL => r0,
+        inlateout("x8") SYS::IOCTL => r0,
         in("x0") fd,
         in("x1") request,
         in("x2") argp,

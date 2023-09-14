@@ -2,7 +2,6 @@
 //
 //!
 //
-// INFO
 // - https://doc.rust-lang.org/reference/inline-assembly.html
 // - https://doc.rust-lang.org/nightly/rust-by-example/unsafe/asm.html
 
@@ -24,22 +23,7 @@
         feature = "unsafe_os",
     )))
 )]
-pub use sys::{sys_exit, sys_ioctl, sys_read, sys_write};
-
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(
-        target_os = "linux",
-        any(
-            target_arch = "x86_64",
-            target_arch = "x86",
-            target_arch = "arm",
-            target_arch = "aarch64",
-        ),
-        feature = "unsafe_os",
-    )))
-)]
-pub use sys::sys_nanosleep;
+pub use sys::{sys_exit, sys_ioctl, sys_nanosleep, sys_read, sys_write};
 
 mod structs;
 pub use structs::{SysTermios, SysTimeSpec};
