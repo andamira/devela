@@ -6,9 +6,10 @@
 mod errno;
 mod fd;
 mod ioctl;
+mod syscalls;
 
 pub use all::*;
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{errno::*, fd::*, ioctl::*};
+    pub use super::{errno::*, fd::*, ioctl::*, syscalls::*};
 }
