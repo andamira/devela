@@ -1,9 +1,9 @@
-// devela::os::linux::consts::syscalls::x86
+// devela::os::linux::consts::syscall::x86
 //
-//! Defines the syscall numbers for x86.
+//!
 //
 
-/// Syscall numbers for `x86`.
+/// `sys/syscall.h` constants for `x86`.
 #[allow(non_camel_case_types)]
 pub struct SYS_X86;
 

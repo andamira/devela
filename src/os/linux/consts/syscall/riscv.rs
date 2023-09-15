@@ -1,9 +1,9 @@
-// devela::os::linux::consts::syscalls::riscv
+// devela::os::linux::consts::syscall::riscv
 //
-//! Defines the syscall numbers for `riscv`.
+//!
 //
 
-/// Syscall numbers for `riscv`.
+/// `sys/syscall.h` constants for `riscv`.
 #[allow(non_camel_case_types)]
 pub struct SYS_RISCV;
 

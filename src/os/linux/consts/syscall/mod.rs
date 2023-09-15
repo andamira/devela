@@ -4,8 +4,6 @@
 //
 // - https://marcin.juszkiewicz.com.pl/download/tables/syscalls.html
 
-#![allow(dead_code)]
-
 mod aarch64;
 mod arm;
 mod riscv;

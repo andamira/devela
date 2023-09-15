@@ -1,9 +1,9 @@
-// devela::os::linux::consts::syscalls::arm
+// devela::os::linux::consts::syscall::arm
 //
-//! Defines the syscall numbers for `armv7`.
+//!
 //
 
-/// Syscall numbers for `armv7`.
+/// `sys/syscall.h` constants for `armv7`.
 #[allow(non_camel_case_types)]
 pub struct SYS_ARM;
 

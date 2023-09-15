@@ -1,10 +1,10 @@
-// devela::os::linux::consts::syscalls::x86_64
+// devela::os::linux::consts::syscall::x86_64
 //
-//! Defines the syscall numbers for `x86_64`.
+//!
 //
 // - https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/
 
-/// Syscall numbers for `x86_64`.
+/// `sys/syscall.h` constants for `x86_64`.
 #[allow(non_camel_case_types)]
 pub struct SYS_X86_64;
 

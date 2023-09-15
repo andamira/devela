@@ -1,10 +1,10 @@
-// devela::os::linux::consts::syscalls::aarch64
+// devela::os::linux::consts::syscall::aarch64
 //
-//! Defines the syscall numbers for `aarch64`
+//!
 //
 // - https://arm64.syscall.sh/
 
-/// Syscall numbers for `aarch64`.
+/// `sys/syscall.h` constants for `aarch64`.
 #[allow(non_camel_case_types)]
 pub struct SYS_AARCH64;
 
