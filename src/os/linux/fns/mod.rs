@@ -5,7 +5,7 @@
 
 use super::{
     consts::{ERRNO, FILENO, IOCTL},
-    structs::{SysTermios, SysTimeSpec},
+    structs::{SysTermios, SysTimespec},
 };
 use core::{cmp::Ordering, time::Duration};
 
@@ -86,8 +86,8 @@ pub fn is_terminal() -> bool {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub fn sleep(duration: Duration) {
-    let mut req = SysTimeSpec::with(duration);
-    let mut rem = SysTimeSpec::default();
+    let mut req = SysTimespec::with(duration);
+    let mut rem = SysTimespec::default();
 
     loop {
         let n = unsafe { sys_nanosleep(req.as_ptr(), rem.as_mut_ptr()) };

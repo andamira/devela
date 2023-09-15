@@ -6,15 +6,15 @@ use core::time::Duration;
 /// [`timespec`]: https://man7.org/linux/man-pages/man3/timespec.3type.html
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 #[repr(C)]
-pub struct SysTimeSpec {
+pub struct SysTimespec {
     /// Number of whole seconds.
     pub tv_sec: isize,
     /// Number of nanoseconds.
     pub tv_nsec: isize,
 }
 
-impl SysTimeSpec {
-    /// Returns a new `SysTimeSpec` with the given `seconds` and `nanoseconds`.
+impl SysTimespec {
+    /// Returns a new `SysTimespec` with the given `seconds` and `nanoseconds`.
     pub const fn new(seconds: isize, nanoseconds: isize) -> Self {
         Self {
             tv_sec: seconds,
@@ -22,7 +22,7 @@ impl SysTimeSpec {
         }
     }
 
-    /// Returns a new `SysTimeSpec` with the given `duration`.
+    /// Returns a new `SysTimespec` with the given `duration`.
     pub const fn with(duration: Duration) -> Self {
         Self {
             tv_sec: duration.as_secs() as isize,
@@ -41,7 +41,7 @@ impl SysTimeSpec {
     }
 }
 
-impl From<Duration> for SysTimeSpec {
+impl From<Duration> for SysTimespec {
     fn from(duration: Duration) -> Self {
         Self::with(duration)
     }

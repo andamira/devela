@@ -4,7 +4,7 @@
 //
 // - https://arm64.syscall.sh/
 
-use crate::os::linux::{SysTimeSpec, SYS_X86_64 as SYS};
+use crate::os::linux::{SysTimespec, SYS_X86_64 as SYS};
 use core::{
     arch::asm,
     ffi::{c_int, c_uint, c_ulong},
@@ -71,7 +71,7 @@ pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_nanosleep(req: *const SysTimeSpec, rem: *mut SysTimeSpec) -> isize {
+pub unsafe fn sys_nanosleep(req: *const SysTimespec, rem: *mut SysTimespec) -> isize {
     let r0;
     asm!(
         "syscall",

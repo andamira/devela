@@ -76,5 +76,5 @@ pub mod thread {
         not(miri),
     ))]
     pub use super::fns::{sleep, sys_nanosleep};
-    pub use super::structs::SysTimeSpec;
+    pub use super::structs::SysTimespec;
 }

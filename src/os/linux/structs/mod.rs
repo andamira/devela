@@ -6,4 +6,4 @@
 mod termios;
 mod timespec;
 
-pub use {termios::SysTermios, timespec::SysTimeSpec};
+pub use {termios::SysTermios, timespec::SysTimespec};
