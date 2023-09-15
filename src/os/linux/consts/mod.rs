@@ -17,6 +17,6 @@ pub(crate) mod all {
         fd::FILENO,
         ioctl::IOCTL,
         signal::{SYS_SIGACTION, SYS_SIGNAL},
-        syscall::{SYS_AARCH64, SYS_ARM, SYS_RISCV, SYS_X86, SYS_X86_64},
+        syscall::*,
     };
 }

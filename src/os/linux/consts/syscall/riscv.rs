@@ -3,7 +3,7 @@
 //!
 //
 
-/// `sys/syscall.h` constants for `riscv`.
+/// Linux `sys/syscall.h` constants for `riscv`.
 #[allow(non_camel_case_types)]
 pub struct SYS_RISCV;
 

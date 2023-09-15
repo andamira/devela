@@ -4,7 +4,7 @@
 //
 // - https://arm64.syscall.sh/
 
-/// `sys/syscall.h` constants for `aarch64`.
+/// Linux `sys/syscall.h` constants for `aarch64`.
 #[allow(non_camel_case_types)]
 pub struct SYS_AARCH64;
 

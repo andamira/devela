@@ -5,10 +5,10 @@
 
 use core::ffi::c_int;
 
-/// Flags for [`SysSigaction`][crate::os::linux::SysSigaction].
+/// Linux flag constants for [`SysSigaction`][crate::os::linux::SysSigaction].
 pub struct SYS_SIGACTION;
 
-/// Linux standard signals.
+/// Linux standard signals constants.
 ///
 /// Each signal has a current disposition, which determines how the process
 /// behaves when it is delivered the signal.

@@ -3,7 +3,7 @@
 //!
 //
 
-/// `sys/syscall.h` constants for `armv7`.
+/// Linux `sys/syscall.h` constants for `armv7`.
 #[allow(non_camel_case_types)]
 pub struct SYS_ARM;
 

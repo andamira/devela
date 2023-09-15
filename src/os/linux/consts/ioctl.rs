@@ -1,12 +1,12 @@
 // devela::os::linux::consts::ioctl
 //
-//! `ioctl` constants.
+//! Linux `ioctl` constants.
 //
 // https://man7.org/linux/man-pages/man4/tty_ioctl.4.html
 
 use core::ffi::{c_int, c_ulong};
 
-/// Namespaced `ioctl` constants.
+/// Linux `ioctl` constants.
 pub struct IOCTL;
 
 /// # Get and set terminal attributes

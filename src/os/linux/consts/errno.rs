@@ -3,7 +3,7 @@
 //! `errno.h` constants.
 //
 
-/// `errno.h` constants.
+/// Linux `sys/errno.h` constants.
 pub struct ERRNO;
 
 impl ERRNO {
