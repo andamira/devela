@@ -25,9 +25,6 @@
 )]
 pub use sys::{sys_exit, sys_getrandom, sys_ioctl, sys_nanosleep, sys_read, sys_write};
 
-mod structs;
-pub use structs::{SysTermios, SysTimeSpec};
-
 /* architecture-specific */
 
 #[cfg(target_arch = "x86_64")]

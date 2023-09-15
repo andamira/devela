@@ -1,6 +1,6 @@
 // devela::os::linux::consts
 //
-//! Linux constants.
+//! Linux related constants.
 //
 
 mod errno;
