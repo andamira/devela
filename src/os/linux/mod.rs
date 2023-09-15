@@ -39,7 +39,8 @@ pub mod io {
     pub use super::fns::{
         disable_raw_mode, enable_raw_mode, eprint, eprintln, get_byte, get_char, get_dirty_char,
         get_line, get_str, get_utf8_bytes, is_terminal, pause_until_char, print, print_bytes,
-        println, prompt, sys_getrandom, sys_ioctl, sys_read, sys_write, SysTermios,
+        println, prompt, rand_bytes, rand_u128, rand_u16, rand_u32, rand_u64, rand_u8,
+        sys_getrandom, sys_ioctl, sys_read, sys_write, SysTermios,
     };
 }
 
