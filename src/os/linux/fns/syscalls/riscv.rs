@@ -114,3 +114,27 @@ pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isiz
     );
     r0
 }
+
+#[doc = include_str!("./doc/Sys_rt_sigaction.md")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+)]
+pub unsafe fn sys_rt_sigaction(
+    sig: c_int,
+    act: *const SysSigaction,
+    oact: *mut SysSigaction,
+    sigsetsize: usize,
+) -> isize {
+    let r0;
+    asm!(
+        "ecall",
+        inlateout("a7") SYS::RT_SIGACTION => r0,
+        in("a0") sig,
+        in("a1") act,
+        in("a2") oact,
+        in("a3") sigsetsize,
+        options(nostack, preserves_flags)
+    );
+    r0
+}

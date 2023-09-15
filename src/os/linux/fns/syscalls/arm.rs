@@ -70,7 +70,7 @@ pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
 pub unsafe fn sys_nanosleep(req: *const SysTimespec, rem: *mut SysTimespec) -> isize {
     let r0;
     asm!(
-        "svc 0",
+        "swi 0",
         inlateout("r8") SYS::NANOSLEEP => r0,
         in("r0") req,
         in("r1") rem,
@@ -111,6 +111,30 @@ pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isiz
         in("r0") buffer,
         in("r1") size,
         in("r2") flags,
+        options(nostack, preserves_flags)
+    );
+    r0
+}
+
+#[doc = include_str!("./doc/Sys_rt_sigaction.md")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+)]
+pub unsafe fn sys_rt_sigaction(
+    sig: c_int,
+    act: *const SysSigaction,
+    oact: *mut SysSigaction,
+    sigsetsize: usize,
+) -> isize {
+    let r0;
+    asm!(
+        "swi 0",
+        inlateout("r8") SYS::RT_SIGACTION => r0,
+        in("r0") sig,
+        in("r1") act,
+        in("r2") oact,
+        in("r3") sigsetsize,
         options(nostack, preserves_flags)
     );
     r0

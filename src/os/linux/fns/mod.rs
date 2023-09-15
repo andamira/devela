@@ -17,7 +17,9 @@ pub use rand::{rand_bytes, rand_u128, rand_u16, rand_u32, rand_u64, rand_u8};
 pub use read::{
     get_byte, get_char, get_dirty_char, get_line, get_str, get_utf8_bytes, pause_until_char, prompt,
 };
-pub use syscalls::{sys_exit, sys_getrandom, sys_ioctl, sys_nanosleep, sys_read, sys_write};
+pub use syscalls::{
+    sys_exit, sys_getrandom, sys_ioctl, sys_nanosleep, sys_read, sys_rt_sigaction, sys_write,
+};
 pub use write::{eprint, eprintln, print, print_bytes, println};
 
 /// Disables raw mode in a terminal, restoring the initial terminal settings.

@@ -4,7 +4,7 @@
 //
 // - https://arm64.syscall.sh/
 
-use crate::os::linux::{SysTimespec, SYS_X86_64 as SYS};
+use crate::os::linux::{SysSigaction, SysTimespec, SYS_X86_64 as SYS};
 use core::{
     arch::asm,
     ffi::{c_int, c_uint, c_ulong},
@@ -118,6 +118,32 @@ pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isiz
         in("rdi") buffer,
         in("rsi") size,
         in("rdx") flags,
+        lateout("rcx") _,
+        lateout("r11") _,
+        options(nostack, preserves_flags)
+    );
+    r0
+}
+
+#[doc = include_str!("./doc/Sys_rt_sigaction.md")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+)]
+pub unsafe fn sys_rt_sigaction(
+    sig: c_int,
+    act: *const SysSigaction,
+    oact: *mut SysSigaction,
+    sigsetsize: usize,
+) -> isize {
+    let r0;
+    asm!(
+        "syscall",
+        inlateout("rax") SYS::RT_SIGACTION => r0,
+        in("rdi") sig,
+        in("rsi") act,
+        in("rdx") oact,
+        in("r10") sigsetsize,
         lateout("rcx") _,
         lateout("r11") _,
         options(nostack, preserves_flags)

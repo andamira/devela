@@ -60,7 +60,8 @@ pub mod process {
         feature = "unsafe_os",
         not(miri),
     ))]
-    pub use super::fns::sys_exit;
+    pub use super::fns::{sys_exit, sys_rt_sigaction};
+    pub use super::structs::SysSigaction;
 }
 
 /// Linux-specific extensions to [`std::thread`].

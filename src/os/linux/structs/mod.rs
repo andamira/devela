@@ -3,7 +3,8 @@
 //! Linux related structs.
 //
 
+mod sigaction;
 mod termios;
 mod timespec;
 
-pub use {termios::SysTermios, timespec::SysTimespec};
+pub use {sigaction::SysSigaction, termios::SysTermios, timespec::SysTimespec};

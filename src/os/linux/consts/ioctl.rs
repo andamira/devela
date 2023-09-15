@@ -1,4 +1,4 @@
-// devela::os::linuxconsts::ioctl
+// devela::os::linux::consts::ioctl
 //
 //! `ioctl` constants.
 //
