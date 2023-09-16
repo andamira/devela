@@ -1,6 +1,6 @@
-// devela::str
+// devela::str::ext
 //
-//! String slices, extends [`core::str`].
+//!
 //
 
 #[cfg(not(feature = "unsafe_str"))]
