@@ -24,10 +24,10 @@
 //!   - `eq()`: returns `true` if both predicates are evaluated as **equal**.
 //!   - `ne()`: returns `true` if both predicates are **not** evaluated as **equal**.
 //!   - `xor()`: returns `true` if **only one** predicate **is `true`**, but **not both**.
-//!   - `ge()`: returns `true` if both predicates are **numbers** and the first **>=** the second.
-//!   - `gt()`: returns `true` if both predicates are **numbers** and the first **>** the second.
-//!   - `le()`: returns `true` if both predicates are **numbers** and the first **<=** the second.
-//!   - `lt()`: returns `true` if both predicates are **numbers** and the first **<** the second.
+//!   - `ge()`: returns `true` if both predicates are **number literals** and Left **>=** Right.
+//!   - `gt()`: returns `true` if both predicates are **number literals** and Left **>** Right.
+//!   - `le()`: returns `true` if both predicates are **number literals** and Left **<=** Right.
+//!   - `lt()`: returns `true` if both predicates are **number literals** and Left **<** Right.
 //!
 //! - non-binary:
 //!   - `any()`: returns `true` if **any** predicate **is `true`**.
