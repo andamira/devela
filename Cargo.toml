@@ -63,11 +63,11 @@ nightly_docs = [ # enables features for docs.rs
 # ------------------------------------------------------------------------------
 
 [dependencies]
-az = "1.2.1"
 devela_macros = "0.6.1"
-paste_crate = { package = "paste", version = "1.0.14" }
+az = { version = "1.2.1", default-features = false }
 bytemuck = { version = "1.13.1", default-features = false }
 const-str = { version = "0.5.6", default-features = false }
+paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 
 # ------------------------------------------------------------------------------
 
