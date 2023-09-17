@@ -8,17 +8,34 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [Unreleased]
 
 ### Added
-- new structs `SYS_X86_64`, `SYS_X86`, `SYS_ARM`, `SYS_AARCH64`, `SYS_RISCV`.
-- new functions: `sys_getrandom`, `rand_bytes`, `rand_u8`, `rand_u16`, `rand_u32`, `rand_u64`, `rand_i128`.
+- new structs `SYS_X86_64`, `SYS_X86`, `SYS_ARM`, `SYS_AARCH64`, `SYS_RISCV`, `SYS_SIG_ACTION`, `SysSigAction`.
+- new functions: `sys_getrandom`, `sys_rt_sigaction`, `rand_bytes`, `rand_u8`, `rand_u16`, `rand_u32`, `rand_u64`, `rand_i128`.
 - add `sys_nanosleep` for `riscv`.
 - add a script to get syscalls as rust constants.
 - add CI actions to get `syscall.h` and `errno.h` values for each target.
 - add missing `ERRNO` values.
+- new type alias `SYS_TARGET`.
+- new `check_miri.sh` script.
+- new dependency: `const-str`.
+- reexport renamed const-str macros from `ascii` and `str` modules.
+- new macros: `os_print`, `os_println`, `os_eprint`, `os_eprintln`.
+
+### Removed
+- remove the already deprecated macros `cdbg`, `rfs`.
+- remove the already deprecated feature `no-std`.
+
+### Changed
+- rename `SysTimeSpec` for `SysTimespec`.
+- moved check scripts inside `/tools/`.
+- remove `_features` module to `_doc`.
 
 ### Fixed
 - fix `ioctl` and `nanosleep` syscalls for `aarch64`.
 - fix `nanosleep` syscall for `arm`.
 - fix `ioctl` syscall for `riscv`.
+- refactor modules: `ascii`, `codegen`, `option`, `result`, `str`.
+- ensure dependencies doesn't include default features.
+- update .gitattributes to show all languages.
 
 ## [0.10.0] - 2023-09-13
 
