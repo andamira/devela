@@ -100,7 +100,7 @@ pub mod prelude {
     };
 }
 
-/// Documentation on features.
-pub mod _features {
+/// General documentation.
+pub mod _doc {
     #![doc = include_str!("./Doc.md")]
 }
