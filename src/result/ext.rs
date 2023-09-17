@@ -1,6 +1,6 @@
-// devela::result
+// devela::result::ext
 //
-//! Result, extends [`core::result`].
+//!
 //
 
 // Marker trait to prevent downstream implementations of the `ResultExt` trait.
