@@ -26,22 +26,6 @@ use core::{
 #[cfg(feature = "alloc")]
 use alloc::{format, string::String};
 
-#[doc(hidden)]
-#[macro_export]
-#[deprecated(since = "0.9.0", note = "please use `bdbg`")]
-macro_rules! cdbg { ($($val:expr)? $(,)?) => { $crate::fmt::bdbg![$($val)?]; } }
-#[allow(deprecated)]
-#[doc(hidden)]
-pub use cdbg;
-
-#[doc(hidden)]
-#[deprecated(since = "0.10.0", note = "please use `sf`")]
-#[macro_export]
-macro_rules! rfs { ( $($line:tt)+ ) => { sf![$($line)+] }; }
-#[allow(deprecated)]
-#[doc(hidden)]
-pub use rfs;
-
 /// *`b`riefer [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
 ///
 /// # Examples
