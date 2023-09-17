@@ -28,8 +28,6 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     )
 ))]
 compile_error!("You can't enable the `safe` and `unsafe*` features at the same time.");
-// deprecated
-deprecate_feature![old: "no-std", new: "no_std", since: "0.8.0"];
 
 extern crate devela_macros;
 

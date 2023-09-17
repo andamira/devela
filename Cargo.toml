@@ -60,9 +60,6 @@ nightly_docs = [ # enables features for docs.rs
 	"nightly", "full", "std", "unsafe",
 ]
 
-#* deprecated features *#
-no-std = ["no_std"]
-
 # ------------------------------------------------------------------------------
 
 [dependencies]
