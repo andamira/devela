@@ -8,26 +8,27 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [Unreleased]
 
 ### Added
-- new structs `SYS_X86_64`, `SYS_X86`, `SYS_ARM`, `SYS_AARCH64`, `SYS_RISCV`, `SYS_SIG_ACTION`, `SysSigAction`.
-- new functions: `sys_getrandom`, `sys_rt_sigaction`, `rand_bytes`, `rand_u8`, `rand_u16`, `rand_u32`, `rand_u64`, `rand_i128`.
-- add `sys_nanosleep` for `riscv`.
-- add a script to get syscalls as rust constants.
-- add CI actions to get `syscall.h` and `errno.h` values for each target.
-- add missing `ERRNO` values.
-- new type alias `SYS_TARGET`.
+- new structs `LINUX_SYS_X86_64`, `LINUX_SYS_X86`, `LINUX_SYS_ARM`, `LINUX_SYS_AARCH64`, `LINUX_SYS_RISCV`, `LINUX_SIGACTION`, `LinuxSigaction`.
+- new functions: `linux_sys_getrand`, `linux_sys_rt_sigaction`, `linux_random_bytes`, `linux_random_u8`, `linux_random_u16`, `linux_random_u32`, `linux_random_u64`, `linux_random_i128`.
+- add `linux_sys_nanosleep` for `riscv`.
+- add missing `LINUX_ERRNO` values.
+- new type alias `LINUX_SYS`.
 - new `check_miri.sh` script.
 - new dependency: `const-str`.
 - reexport renamed const-str macros from `ascii` and `str` modules.
 - new macros: `os_print`, `os_println`, `os_eprint`, `os_eprintln`.
+- add scripts to get linux syscalls and error numbers as rust constants.
+- add CI actions to get `syscall.h` and `errno.h` values for each target.
 
 ### Removed
 - remove the already deprecated macros `cdbg`, `rfs`.
 - remove the already deprecated feature `no-std`.
 
 ### Changed
-- rename `SysTimeSpec` for `SysTimespec`.
-- moved check scripts inside `/tools/`.
-- remove `_features` module to `_doc`.
+- rename `SysTimeSpec` to `LinuxTimespec`, `SysTermios` to `LinuxTermios`.
+- rename `ERRNO` to `LINUX_ERRNO`, `IOCTL` to `LINUX_IOCTL`.
+- rename `_features` module to `_doc`.
+- move check scripts to `/tools/`.
 
 ### Fixed
 - fix `ioctl` and `nanosleep` syscalls for `aarch64`.
