@@ -5,7 +5,7 @@
 // - https://www.man7.org/linux/man-pages/man2/getrandom.2.html
 // - https://www.gnu.org/software/libc/manual/html_node/Unpredictable-Bytes.html
 
-use crate::os::linux::{print, sys_exit, sys_getrandom, ERRNO};
+use crate::os::linux::{linux_print, linux_sys_exit, linux_sys_getrandom, LINUX_ERRNO as ERRNO};
 use crate::{codegen::paste, ops::iif};
 use core::ffi::c_uint;
 
@@ -18,7 +18,7 @@ const RAND_FLAGS: c_uint = GRND_NONBLOCK | GRND_INSECURE;
 const MAX_ATTEMPTS: usize = 15;
 
 // generates a rand function for each given integer primitive
-macro_rules! rand_fns {
+macro_rules! random_fns {
     // $prim: the unsigned integer primitive
     // $len: the length of the primitive in bytes
     ($($prim:ident : $len:literal),+) => { paste! { $(
@@ -27,11 +27,11 @@ macro_rules! rand_fns {
         /// It makes use of the `GRND_NONBLOCK` and `GRND_INSECURE` flags. So when the randomness
         /// source is not ready, instead of blocking it may return less secure data in linux >= 5.6
         /// or retry it a certain number of times, or even return 0 in some cases.
-        pub fn [<rand_ $prim>]() -> $prim {
+        pub fn [<linux_random_ $prim>]() -> $prim {
             let mut r = [0; $len];
             let mut attempts = 0;
             loop {
-                let n = unsafe { sys_getrandom(r.as_mut_ptr(), $len, RAND_FLAGS) };
+                let n = unsafe { linux_sys_getrandom(r.as_mut_ptr(), $len, RAND_FLAGS) };
                 if n == $len {
                     // hot path!
                     break;
@@ -45,7 +45,7 @@ macro_rules! rand_fns {
         }
     )+ }};
 }
-rand_fns![u8:1, u16:2, u32:4, u64:8, u128:16];
+random_fns![u8:1, u16:2, u32:4, u64:8, u128:16];
 
 /// Fills the given `buffer` with random bytes that may not be cryptographically secure.
 ///
@@ -55,13 +55,13 @@ rand_fns![u8:1, u16:2, u32:4, u64:8, u128:16];
 ///
 /// # Panic
 /// Panics in debug if `buffer.len() > `[`isize::MAX`]
-pub fn rand_bytes(buffer: &mut [u8]) {
+pub fn linux_random_bytes(buffer: &mut [u8]) {
     debug_assert![buffer.len() <= isize::MAX as usize];
     let mut attempts = 0;
     let mut offset = 0;
     while offset < buffer.len() {
         let n = unsafe {
-            sys_getrandom(
+            linux_sys_getrandom(
                 buffer[offset..].as_mut_ptr(),
                 buffer.len() - offset,
                 RAND_FLAGS,
@@ -91,8 +91,8 @@ fn getrandom_try_again(attempts: &mut usize) -> bool {
 #[cold]
 #[inline]
 fn getrandom_failed() {
-    print("getrandom failed");
+    linux_print("getrandom failed");
     unsafe {
-        sys_exit(12);
+        linux_sys_exit(12);
     }
 }

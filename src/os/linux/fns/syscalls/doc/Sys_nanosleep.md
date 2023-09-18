@@ -11,12 +11,12 @@ Returns the syscall return value.
 
 # Examples
 ```
-use devela::os::linux::{sys_nanosleep, SysTimespec};
+use devela::os::linux::{linux_sys_nanosleep, LinuxTimespec};
 use core::time::Duration;
 
-let mut req = SysTimespec::from(Duration::from_millis(99));
-let mut rem = SysTimespec::default();
-assert_eq![0, unsafe { sys_nanosleep(&mut req, &mut rem) }];
+let mut req = LinuxTimespec::from(Duration::from_millis(99));
+let mut rem = LinuxTimespec::default();
+assert_eq![0, unsafe { linux_sys_nanosleep(&mut req, &mut rem) }];
 ```
 
 # Safety

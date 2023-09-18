@@ -15,21 +15,21 @@ pub use {ansi::Ansi, color::AnsiColor};
 
 /* reexports */
 
-#[cfg(all(
-    any(
-        target_arch = "x86_64",
-        target_arch = "x86",
-        target_arch = "arm",
-        target_arch = "aarch64",
-        target_arch = "riscv32",
-        target_arch = "riscv64"
-    ),
-    feature = "unsafe_os",
-    not(miri),
-))]
-#[doc(inline)]
-pub use super::linux::{
-    disable_raw_mode, enable_raw_mode, eprint, eprintln, get_byte, get_char, get_dirty_char,
-    get_line, get_str, get_utf8_bytes, is_terminal, pause_until_char, print, print_bytes, println,
-    prompt,
-};
+// #[cfg(all(
+//     any(
+//         target_arch = "x86_64",
+//         target_arch = "x86",
+//         target_arch = "arm",
+//         target_arch = "aarch64",
+//         target_arch = "riscv32",
+//         target_arch = "riscv64"
+//     ),
+//     feature = "unsafe_os",
+//     not(miri),
+// ))]
+// #[doc(inline)]
+// pub use super::linux::{
+//     disable_raw_mode, enable_raw_mode, eprint, eprintln, get_byte, get_char, get_dirty_char,
+//     get_line, get_str, get_utf8_bytes, is_terminal, pause_until_char, print, print_bytes, println,
+//     prompt,
+// };

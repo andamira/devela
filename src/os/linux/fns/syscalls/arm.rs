@@ -4,7 +4,7 @@
 //
 // https://github.com/rust-lang/rust/issues/85056 can't use r7 register
 
-use crate::os::linux::{SysTimespec, SYS_ARM as SYS};
+use crate::os::linux::{LinuxSigaction, LinuxTimespec, LINUX_SYS_ARM as SYS};
 use core::{
     arch::asm,
     ffi::{c_int, c_uint, c_ulong},
@@ -15,7 +15,7 @@ use core::{
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_exit(status: c_int) -> ! {
+pub unsafe fn linux_sys_exit(status: c_int) -> ! {
     unsafe {
         asm!(
             "swi 0",
@@ -31,7 +31,7 @@ pub unsafe fn sys_exit(status: c_int) -> ! {
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
+pub unsafe fn linux_sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     let r0;
     asm!(
         "swi 0",
@@ -49,7 +49,7 @@ pub unsafe fn sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
+pub unsafe fn linux_sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
     let r0;
     asm!(
         "swi 0",
@@ -67,7 +67,7 @@ pub unsafe fn sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_nanosleep(req: *const SysTimespec, rem: *mut SysTimespec) -> isize {
+pub unsafe fn linux_sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
     let r0;
     asm!(
         "swi 0",
@@ -85,7 +85,7 @@ pub unsafe fn sys_nanosleep(req: *const SysTimespec, rem: *mut SysTimespec) -> i
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
+pub unsafe fn linux_sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
     let r0;
     asm!(
         "swi 0",
@@ -103,7 +103,7 @@ pub unsafe fn sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
+pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
     let r0;
     asm!(
         "swi 0",
@@ -121,10 +121,10 @@ pub unsafe fn sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isiz
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
-pub unsafe fn sys_rt_sigaction(
+pub unsafe fn linux_sys_rt_sigaction(
     sig: c_int,
-    act: *const SysSigaction,
-    oact: *mut SysSigaction,
+    act: *const LinuxSigaction,
+    oact: *mut LinuxSigaction,
     sigsetsize: usize,
 ) -> isize {
     let r0;

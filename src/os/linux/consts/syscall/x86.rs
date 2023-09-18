@@ -5,9 +5,9 @@
 
 /// Linux `sys/syscall.h` constants for `x86`.
 #[allow(non_camel_case_types)]
-pub struct SYS_X86;
+pub struct LINUX_SYS_X86;
 
-impl SYS_X86 {
+impl LINUX_SYS_X86 {
     pub const ACCEPT4: isize = 364;
     pub const ACCESS: isize = 33;
     pub const ACCT: isize = 51;

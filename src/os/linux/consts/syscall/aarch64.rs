@@ -6,9 +6,9 @@
 
 /// Linux `sys/syscall.h` constants for `aarch64`.
 #[allow(non_camel_case_types)]
-pub struct SYS_AARCH64;
+pub struct LINUX_SYS_AARCH64;
 
-impl SYS_AARCH64 {
+impl LINUX_SYS_AARCH64 {
     pub const ACCEPT: isize = 202;
     pub const ACCEPT4: isize = 242;
     pub const ACCT: isize = 89;

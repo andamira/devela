@@ -7,10 +7,10 @@ obtain a series of random bytes
 
 # Examples
 ```ignore
-use devela::os::linux::{sys_getrandom};
+use devela::os::linux::{linux_sys_getrandom};
 
 let mut r = 0u8;
-unsafe { sys_getrandom(&mut r as *mut u8, 1, 0) };
+unsafe { linux_sys_getrandom(&mut r as *mut u8, 1, 0) };
 ```
 
 # Flags

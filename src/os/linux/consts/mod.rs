@@ -13,10 +13,10 @@ pub use all::*;
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        errno::ERRNO,
-        fd::FILENO,
-        ioctl::IOCTL,
-        signal::{SYS_SIGACTION, SYS_SIGNAL},
+        errno::LINUX_ERRNO,
+        fd::LINUX_FILENO,
+        ioctl::LINUX_IOCTL,
+        signal::{LINUX_SIGACTION, LINUX_SIGNAL},
         syscall::*,
     };
 }

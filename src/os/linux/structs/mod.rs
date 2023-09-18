@@ -7,4 +7,4 @@ mod sigaction;
 mod termios;
 mod timespec;
 
-pub use {sigaction::SysSigaction, termios::SysTermios, timespec::SysTimespec};
+pub use {sigaction::LinuxSigaction, termios::LinuxTermios, timespec::LinuxTimespec};

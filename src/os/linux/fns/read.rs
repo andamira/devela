@@ -3,12 +3,12 @@
 //! read related functions
 //
 
-use super::{print, sys_exit, sys_read, FILENO};
+use super::{linux_print, linux_sys_exit, linux_sys_read, LINUX_FILENO as FILENO};
 use core::str::from_utf8_unchecked;
 
 /// Gets a single byte from *stdin*.
 ///
-/// This function makes use of the [`sys_read`] syscall to read a byte.
+/// This function makes use of the [`linux_sys_read`] syscall to read a byte.
 ///
 /// # Error Handling
 /// If the read fails, it prints an error message and exits with status code 11.
@@ -17,13 +17,13 @@ use core::str::from_utf8_unchecked;
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 #[inline]
-pub fn get_byte() -> u8 {
+pub fn linux_get_byte() -> u8 {
     let mut c = 0;
     loop {
-        let n = unsafe { sys_read(FILENO::STDIN, &mut c as *mut u8, 1) };
+        let n = unsafe { linux_sys_read(FILENO::STDIN, &mut c as *mut u8, 1) };
         if n < 0 {
-            print("read failed");
-            unsafe { sys_exit(11) };
+            linux_print("read failed");
+            unsafe { linux_sys_exit(11) };
         }
         if n == 1 {
             break;
@@ -41,9 +41,9 @@ pub fn get_byte() -> u8 {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 #[inline]
-pub fn pause_until_char(list: &[char]) {
+pub fn linux_pause_until_char(list: &[char]) {
     loop {
-        if list.contains(&get_dirty_char()) {
+        if list.contains(&linux_get_dirty_char()) {
             break;
         }
     }
@@ -59,8 +59,8 @@ pub fn pause_until_char(list: &[char]) {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 #[inline]
-pub fn get_char() -> Option<char> {
-    let bytes = get_utf8_bytes()?;
+pub fn linux_get_char() -> Option<char> {
+    let bytes = linux_get_utf8_bytes()?;
     let s = unsafe { from_utf8_unchecked(&bytes) };
     Some(s.chars().next().unwrap())
 }
@@ -77,8 +77,8 @@ pub fn get_char() -> Option<char> {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 #[inline]
-pub fn get_dirty_char() -> char {
-    match get_utf8_bytes() {
+pub fn linux_get_dirty_char() -> char {
+    match linux_get_utf8_bytes() {
         Some(bytes) => {
             let s = unsafe { from_utf8_unchecked(&bytes) };
             s.chars().next().unwrap()
@@ -98,12 +98,12 @@ pub fn get_dirty_char() -> char {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 #[inline]
-pub fn get_utf8_bytes() -> Option<[u8; 4]> {
+pub fn linux_get_utf8_bytes() -> Option<[u8; 4]> {
     let mut bytes = [0u8; 4];
     let len;
 
     // Read the first byte to determine the length of the character.
-    bytes[0] = get_byte();
+    bytes[0] = linux_get_byte();
     if bytes[0] & 0x80 == 0 {
         // This is an ASCII character, so we can return it immediately.
         return Some([bytes[0], 0, 0, 0]);
@@ -120,7 +120,7 @@ pub fn get_utf8_bytes() -> Option<[u8; 4]> {
 
     // Read the remaining bytes of the character.
     for i in 1..len {
-        bytes[i as usize] = get_byte();
+        bytes[i as usize] = linux_get_byte();
         if bytes[i as usize] & 0xC0 != 0x80 {
             // Not a valid continuation byte.
             return None;
@@ -134,7 +134,7 @@ pub fn get_utf8_bytes() -> Option<[u8; 4]> {
 ///
 /// # Examples
 /// ```ignore
-/// use devela::os::terminal::prompt;
+/// use devela::os::linux::prompt;
 ///
 /// let mut name_buffer = [0_u8; 32];
 /// let name: &str = prompt::<32>("Enter your name: ", &mut name_buffer);
@@ -148,19 +148,22 @@ pub fn get_utf8_bytes() -> Option<[u8; 4]> {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 #[inline]
-pub fn prompt<'input, const CAP: usize>(text: &str, buffer: &'input mut [u8; CAP]) -> &'input str {
-    print(text);
-    get_line(buffer)
+pub fn linux_prompt<'input, const CAP: usize>(
+    text: &str,
+    buffer: &'input mut [u8; CAP],
+) -> &'input str {
+    linux_print(text);
+    linux_get_line(buffer)
 }
 
 /// Gets a string from *stdin* backed by a `buffer`, until a newline.
 ///
 /// # Examples
 /// ```ignore
-/// use devela::os::terminal::get_line;
+/// use devela::os::linux::get_line;
 ///
 /// let mut buf = [0_u8; 32];
-/// let name: &str = get_line::<32>(&mut buf);
+/// let name: &str = linux_get_line::<32>(&mut buf);
 /// ```
 ///
 /// # Error handling
@@ -170,8 +173,8 @@ pub fn prompt<'input, const CAP: usize>(text: &str, buffer: &'input mut [u8; CAP
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 #[inline]
-pub fn get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> &str {
-    get_str(buffer, '\n')
+pub fn linux_get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> &str {
+    linux_get_str(buffer, '\n')
 }
 
 /// Gets a string from *stdin* backed by a `buffer`,
@@ -179,27 +182,27 @@ pub fn get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> &str {
 ///
 /// # Examples
 /// ```ignore
-/// use devela::os::terminal::get_str;
+/// use devela::os::linux::linux_get_str;
 ///
 /// let mut buf = [0_u8; 32];
-/// let name: &str = get_str::<32>(&mut buf, '\n');
+/// let name: &str = linux_get_str::<32>(&mut buf, '\n');
 /// ```
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 #[inline]
-pub fn get_str<const CAP: usize>(buffer: &mut [u8; CAP], stop: char) -> &str {
+pub fn linux_get_str<const CAP: usize>(buffer: &mut [u8; CAP], stop: char) -> &str {
     let mut index = 0;
     loop {
-        if let Some(c) = get_char() {
+        if let Some(c) = linux_get_char() {
             let mut c_buf = [0; 4];
             let c_str = c.encode_utf8(&mut c_buf);
 
             if c == stop {
                 break;
             } else if index + c_str.len() <= CAP {
-                print(c_str);
+                linux_print(c_str);
 
                 for &b in c_str.as_bytes() {
                     buffer[index] = b;

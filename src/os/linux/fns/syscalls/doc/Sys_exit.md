@@ -7,9 +7,9 @@ Terminates the process with an exit status.
 
 # Examples
 ```
-use devela::os::linux::sys_exit;
+use devela::os::linux::linux_sys_exit;
 
-unsafe { sys_exit(0) };
+unsafe { linux_sys_exit(0) };
 ```
 
 # Safety

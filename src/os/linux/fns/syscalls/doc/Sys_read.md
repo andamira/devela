@@ -7,10 +7,12 @@ Reads `count` bytes from a file descriptor `fd` into a buffer `buf`.
 
 # Examples
 ```ignore
-use devela::os::linux::{FILENO, sys_read};
+use devela::os::linux::{LINUX_FILENO, linux_sys_read};
 
 let mut buf: [u8; 1024] = [0; 1024];
-let bytes_read: isize = unsafe { sys_read(FILENO::STDIN, buf.as_mut_ptr(), buf.len()) };
+let bytes_read: isize = unsafe {
+    linux_sys_read(LINUX_FILENO::STDIN, buf.as_mut_ptr(), buf.len())
+};
 assert![bytes_read > 0];
 ```
 

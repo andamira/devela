@@ -18,7 +18,7 @@ use crate::ascii::{ascii_d1, ascii_d2, ascii_d3, ascii_d4};
     feature = "unsafe_os",
     not(miri),
 ))]
-use crate::os::linux::print_bytes;
+use crate::os::linux::linux_print_bytes;
 #[cfg(feature = "std")]
 use std::io::{stdout, Write};
 
@@ -61,14 +61,14 @@ pub struct Ansi;
 impl Ansi {
     /// Prints an ANSI escape `sequence` of bytes to `stdout`.
     ///
-    /// It uses the [`Write`] trait on `std`, and [`print_bytes`] on `no_std`.
+    /// It uses the [`Write`] trait on `std`, and [`linux_print_bytes`] on `no_std`.
     #[inline]
     pub fn print(sequence: &[u8]) {
         // MAYBE -> Result<()>
         #[cfg(feature = "std")]
         let _ = stdout().write_all(sequence);
         #[cfg(not(feature = "std"))]
-        print_bytes(sequence);
+        linux_print_bytes(sequence);
     }
 }
 
@@ -79,7 +79,7 @@ impl Ansi {
 // $ansi  : function name (smallcase) and ansi constant (uppercase)
 // $doc   : doc string
 #[allow(unused_macros)]
-macro_rules! std_sys_print {
+macro_rules! __print {
     // referring to an associated const
     ($ansi:ident, $doc:literal) => { crate::codegen::paste! {
         #[doc = $doc]
@@ -126,126 +126,126 @@ macro_rules! std_sys_print {
 impl Ansi {
     /* screen */
 
-    std_sys_print![clear_screen, "Clears the screen."];
-    std_sys_print![enable_alternative_screen, "Enables the alternative screen."];
-    std_sys_print![disable_alternative_screen, "Disables the alternative screen."];
+    __print![clear_screen, "Clears the screen."];
+    __print![enable_alternative_screen, "Enables the alternative screen."];
+    __print![disable_alternative_screen, "Disables the alternative screen."];
 
     /* cursor */
 
-    std_sys_print![cursor_invisible, "Makes the cursor invisible."];
-    std_sys_print![cursor_visible, "Makes the cursor visible."];
-    std_sys_print![cursor_save, "Saves the cursor position."];
-    std_sys_print![cursor_restore, "Restores the cursor position."];
-    std_sys_print![cursor_home, "Moves the cursor to the home position (1, 1)."];
+    __print![cursor_invisible, "Makes the cursor invisible."];
+    __print![cursor_visible, "Makes the cursor visible."];
+    __print![cursor_save, "Saves the cursor position."];
+    __print![cursor_restore, "Restores the cursor position."];
+    __print![cursor_home, "Moves the cursor to the home position (1, 1)."];
 
-    std_sys_print![cursor_move1, row: u8, col: u8;
+    __print![cursor_move1, row: u8, col: u8;
     "Moves the cursor to the specified 1-digit position.
     \n# Panics\n\nPanics in debug if either `row` or `col` > 9."];
-    std_sys_print![cursor_move2, row: u8, col: u8;
+    __print![cursor_move2, row: u8, col: u8;
     "Moves the cursor to the specified 2-digit position.
     \n# Panics\n\nPanics in debug if either `row` or `col` > 99."];
-    std_sys_print![cursor_move3, row: u16, col: u16;
+    __print![cursor_move3, row: u16, col: u16;
     "Moves the cursor to the specified 3-digit position.
     \n# Panics\n\nPanics in debug if either `row` or `col` > 999."];
-    std_sys_print![cursor_move4, row: u16, col: u16;
+    __print![cursor_move4, row: u16, col: u16;
     "Moves the cursor to the specified 4-digit position.
     \n# Panics\n\nPanics in debug if either `row` or `col` > 9999."];
 
-    std_sys_print![cursor_up, "Moves the cursor up by one line."];
-    std_sys_print![cursor_up1, n: u8; "Moves the cursor up by 1-digit `n` lines.
+    __print![cursor_up, "Moves the cursor up by one line."];
+    __print![cursor_up1, n: u8; "Moves the cursor up by 1-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 9."];
-    std_sys_print![cursor_up2, n: u8; "Moves the cursor up by 2-digit `n` lines.
+    __print![cursor_up2, n: u8; "Moves the cursor up by 2-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 99."];
-    std_sys_print![cursor_up3, n: u16; "Moves the cursor up by 3-digit `n` lines.
+    __print![cursor_up3, n: u16; "Moves the cursor up by 3-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 999."];
-    std_sys_print![cursor_up4, n: u16; "Moves the cursor up by 4-digit `n` lines.
+    __print![cursor_up4, n: u16; "Moves the cursor up by 4-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 9999."];
 
-    std_sys_print![cursor_down, "Moves the cursor down by one line."];
-    std_sys_print![cursor_down1, n: u8; "Moves the cursor down by 1-digit `n` lines.
+    __print![cursor_down, "Moves the cursor down by one line."];
+    __print![cursor_down1, n: u8; "Moves the cursor down by 1-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 9."];
-    std_sys_print![cursor_down2, n: u8; "Moves the cursor down by 2-digit `n` lines.
+    __print![cursor_down2, n: u8; "Moves the cursor down by 2-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 99."];
-    std_sys_print![cursor_down3, n: u16; "Moves the cursor down by 3-digit `n` lines.
+    __print![cursor_down3, n: u16; "Moves the cursor down by 3-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 999."];
-    std_sys_print![cursor_down4, n: u16; "Moves the cursor down by 4-digit `n` lines.
+    __print![cursor_down4, n: u16; "Moves the cursor down by 4-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 9999."];
 
-    std_sys_print![cursor_right, "Moves the cursor right by one line."];
-    std_sys_print![cursor_right1, n: u8; "Moves the cursor right by 1-digit `n` lines.
+    __print![cursor_right, "Moves the cursor right by one line."];
+    __print![cursor_right1, n: u8; "Moves the cursor right by 1-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 9."];
-    std_sys_print![cursor_right2, n: u8; "Moves the cursor right by 2-digit `n` lines.
+    __print![cursor_right2, n: u8; "Moves the cursor right by 2-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 99."];
-    std_sys_print![cursor_right3, n: u16; "Moves the cursor right by 3-digit `n` lines.
+    __print![cursor_right3, n: u16; "Moves the cursor right by 3-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 999."];
-    std_sys_print![cursor_right4, n: u16; "Moves the cursor right by 4-digit `n` lines.
+    __print![cursor_right4, n: u16; "Moves the cursor right by 4-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 9999."];
 
-    std_sys_print![cursor_left, "Moves the cursor left by one line."];
-    std_sys_print![cursor_left1, n: u8; "Moves the cursor left by 1-digit `n` lines.
+    __print![cursor_left, "Moves the cursor left by one line."];
+    __print![cursor_left1, n: u8; "Moves the cursor left by 1-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 9."];
-    std_sys_print![cursor_left2, n: u8; "Moves the cursor left by 2-digit `n` lines.
+    __print![cursor_left2, n: u8; "Moves the cursor left by 2-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 99."];
-    std_sys_print![cursor_left3, n: u16; "Moves the cursor left by 3-digit `n` lines.
+    __print![cursor_left3, n: u16; "Moves the cursor left by 3-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 999."];
-    std_sys_print![cursor_left4, n: u16; "Moves the cursor left by 4-digit `n` lines.
+    __print![cursor_left4, n: u16; "Moves the cursor left by 4-digit `n` lines.
     \n# Panics\n\nPanics in debug if `n` > 9999."];
 
     /* font effects */
 
-    std_sys_print![reset, "Turns off all effects and colors."];
-    std_sys_print![bold, "Turns bold on."];
-    std_sys_print![bold_off, "Turns bold and dim off."];
-    std_sys_print![dim, "Turns dim on."];
-    std_sys_print![dim_off, "Turns bold and dim off."];
-    std_sys_print![italic, "Turns italic on."];
-    std_sys_print![italic_off, "Turns italic off."];
-    std_sys_print![underline, "Turns underline on."];
-    std_sys_print![underline_off, "Turns underline off."];
-    std_sys_print![blink, "Turns blink on."];
-    std_sys_print![blink_off, "Turns blink off."];
-    std_sys_print![inverse, "Turns inverse on."];
-    std_sys_print![inverse_off, "Turns inverse off."];
-    std_sys_print![crossed, "Turns crossed on."];
-    std_sys_print![crossed_off, "Turns crossed off."];
+    __print![reset, "Turns off all effects and colors."];
+    __print![bold, "Turns bold on."];
+    __print![bold_off, "Turns bold and dim off."];
+    __print![dim, "Turns dim on."];
+    __print![dim_off, "Turns bold and dim off."];
+    __print![italic, "Turns italic on."];
+    __print![italic_off, "Turns italic off."];
+    __print![underline, "Turns underline on."];
+    __print![underline_off, "Turns underline off."];
+    __print![blink, "Turns blink on."];
+    __print![blink_off, "Turns blink off."];
+    __print![inverse, "Turns inverse on."];
+    __print![inverse_off, "Turns inverse off."];
+    __print![crossed, "Turns crossed on."];
+    __print![crossed_off, "Turns crossed off."];
 
     /* 4-bit colors */
 
-    std_sys_print![black, "Sets the foreground color to black."];
-    std_sys_print![red, "Sets the foreground color to red."];
-    std_sys_print![green, "Sets the foreground color to green."];
-    std_sys_print![yellow, "Sets the foreground color to yellow."];
-    std_sys_print![blue, "Sets the foreground color to blue."];
-    std_sys_print![magenta, "Sets the foreground color to magenta."];
-    std_sys_print![cyan, "Sets the foreground color to cyan."];
-    std_sys_print![white, "Sets the foreground color to white."];
+    __print![black, "Sets the foreground color to black."];
+    __print![red, "Sets the foreground color to red."];
+    __print![green, "Sets the foreground color to green."];
+    __print![yellow, "Sets the foreground color to yellow."];
+    __print![blue, "Sets the foreground color to blue."];
+    __print![magenta, "Sets the foreground color to magenta."];
+    __print![cyan, "Sets the foreground color to cyan."];
+    __print![white, "Sets the foreground color to white."];
 
-    std_sys_print![black_bg, "Sets the background color to black."];
-    std_sys_print![red_bg, "Sets the background color to red."];
-    std_sys_print![green_bg, "Sets the background color to green."];
-    std_sys_print![yellow_bg, "Sets the background color to yellow."];
-    std_sys_print![blue_bg, "Sets the background color to blue."];
-    std_sys_print![magenta_bg, "Sets the background color to magenta."];
-    std_sys_print![cyan_bg, "Sets the background color to cyan."];
-    std_sys_print![white_bg, "Sets the background color to white."];
+    __print![black_bg, "Sets the background color to black."];
+    __print![red_bg, "Sets the background color to red."];
+    __print![green_bg, "Sets the background color to green."];
+    __print![yellow_bg, "Sets the background color to yellow."];
+    __print![blue_bg, "Sets the background color to blue."];
+    __print![magenta_bg, "Sets the background color to magenta."];
+    __print![cyan_bg, "Sets the background color to cyan."];
+    __print![white_bg, "Sets the background color to white."];
 
-    std_sys_print![bright_black, "Sets the foreground color to bright black."];
-    std_sys_print![bright_red, "Sets the foreground color to bright red."];
-    std_sys_print![bright_green, "Sets the foreground color to bright green."];
-    std_sys_print![bright_yellow, "Sets the foreground color to bright yellow."];
-    std_sys_print![bright_blue, "Sets the foreground color to bright blue."];
-    std_sys_print![bright_magenta, "Sets the foreground color to bright magenta."];
-    std_sys_print![bright_cyan, "Sets the foreground color to bright cyan."];
-    std_sys_print![bright_white, "Sets the foreground color to bright white."];
+    __print![bright_black, "Sets the foreground color to bright black."];
+    __print![bright_red, "Sets the foreground color to bright red."];
+    __print![bright_green, "Sets the foreground color to bright green."];
+    __print![bright_yellow, "Sets the foreground color to bright yellow."];
+    __print![bright_blue, "Sets the foreground color to bright blue."];
+    __print![bright_magenta, "Sets the foreground color to bright magenta."];
+    __print![bright_cyan, "Sets the foreground color to bright cyan."];
+    __print![bright_white, "Sets the foreground color to bright white."];
 
-    std_sys_print![bright_black_bg, "Sets the background color to bright black."];
-    std_sys_print![bright_red_bg, "Sets the background color to bright red."];
-    std_sys_print![bright_green_bg, "Sets the background color to bright green."];
-    std_sys_print![bright_yellow_bg, "Sets the background color to bright yellow."];
-    std_sys_print![bright_blue_bg, "Sets the background color to bright blue."];
-    std_sys_print![bright_magenta_bg, "Sets the background color to bright magenta."];
-    std_sys_print![bright_cyan_bg, "Sets the background color to bright cyan."];
-    std_sys_print![bright_white_bg, "Sets the background color to bright white."];
+    __print![bright_black_bg, "Sets the background color to bright black."];
+    __print![bright_red_bg, "Sets the background color to bright red."];
+    __print![bright_green_bg, "Sets the background color to bright green."];
+    __print![bright_yellow_bg, "Sets the background color to bright yellow."];
+    __print![bright_blue_bg, "Sets the background color to bright blue."];
+    __print![bright_magenta_bg, "Sets the background color to bright magenta."];
+    __print![bright_cyan_bg, "Sets the background color to bright cyan."];
+    __print![bright_white_bg, "Sets the background color to bright white."];
 }
 
 /// # Ansi escape codes

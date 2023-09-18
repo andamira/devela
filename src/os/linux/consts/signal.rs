@@ -5,8 +5,9 @@
 
 use core::ffi::c_int;
 
-/// Linux flag constants for [`SysSigaction`][crate::os::linux::SysSigaction].
-pub struct SYS_SIGACTION;
+/// Linux flag constants for [`LinuxSigaction`][crate::os::linux::LinuxSigaction].
+#[allow(non_camel_case_types)]
+pub struct LINUX_SIGACTION;
 
 /// Linux standard signals constants.
 ///
@@ -26,9 +27,10 @@ pub struct SYS_SIGACTION;
 ///
 /// [`SIGKILL`]: Self::SIGKILL
 /// [`SIGSTOP`]: Self::SIGSTOP
-pub struct SYS_SIGNAL;
+#[allow(non_camel_case_types)]
+pub struct LINUX_SIGNAL;
 
-impl SYS_SIGNAL {
+impl LINUX_SIGNAL {
     /// Hangup detected on controlling terminal or death of controlling process.
     ///
     /// Default action: `Term`.
@@ -224,7 +226,7 @@ impl SYS_SIGNAL {
     // pub const SIGLOST: c_int = ?
 }
 
-impl SYS_SIGACTION {
+impl LINUX_SIGACTION {
     /// If signum is [`SIGCHLD`], do not receive notification when child processes
     /// stop (i.e., when they receive one of [`SIGSTOP`], [`SIGTSTP`], [`SIGTTIN`],
     /// or [`SIGTTOU`]) or resume (i.e., they receive [`SIGCONT`])
@@ -232,12 +234,12 @@ impl SYS_SIGACTION {
     ///
     /// This flag is meaningful only when establishing a handler for `SIGCHLD`.
     ///
-    /// [`SIGCHLD`]: SYS_SIGNAL::SIGCHLD
-    /// [`SIGSTOP`]: SYS_SIGNAL::SIGSTOP
-    /// [`SIGTSTP`]: SYS_SIGNAL::SIGTSTP
-    /// [`SIGTTIN`]: SYS_SIGNAL::SIGTTIN
-    /// [`SIGTTOU`]: SYS_SIGNAL::SIGTTOU
-    /// [`SIGCONT`]: SYS_SIGNAL::SIGCONT
+    /// [`SIGCHLD`]: LINUX_SIGNAL::SIGCHLD
+    /// [`SIGSTOP`]: LINUX_SIGNAL::SIGSTOP
+    /// [`SIGTSTP`]: LINUX_SIGNAL::SIGTSTP
+    /// [`SIGTTIN`]: LINUX_SIGNAL::SIGTTIN
+    /// [`SIGTTOU`]: LINUX_SIGNAL::SIGTTOU
+    /// [`SIGCONT`]: LINUX_SIGNAL::SIGCONT
     /// [`wait(2)`]: https://man7.org/linux/man-pages/man2/wait.2.html
     pub const SA_NOCLDSTOP: u64 = 0x00000001;
 
@@ -251,8 +253,8 @@ impl SYS_SIGACTION {
     ///
     /// (since Linux 2.6)
     ///
-    /// [`SIGCHLD`]: SYS_SIGNAL::SIGCHLD
-    /// [`SIG_DFL`]: crate::all::SysSigaction::SIG_DFL
+    /// [`SIGCHLD`]: LINUX_SIGNAL::SIGCHLD
+    /// [`SIG_DFL`]: crate::all::LinuxSigaction::SIG_DFL
     /// [`waitpid(2)`]: https://man7.org/linux/man-pages/man2/wait.2.html
     pub const SA_NOCLDWAIT: u64 = 0x00000002;
 
@@ -271,7 +273,7 @@ impl SYS_SIGACTION {
     ///
     /// `SA_NOMASK` is an obsolete, nonstandard synonym for this flag.
     ///
-    /// [`SIGCHLD`]: SYS_SIGNAL::SIGCHLD
+    /// [`SIGCHLD`]: LINUX_SIGNAL::SIGCHLD
     /// [`SA_NOCLDWAIT`]: Self::SA_NOCLDWAIT
     pub const SA_NODEFER: u64 = 0x40000000;
 

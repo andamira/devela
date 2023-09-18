@@ -9,10 +9,12 @@ Returns the syscall return value.
 
 # Examples
 ```
-use devela::os::linux::{FILENO, sys_write};
+use devela::os::linux::{LINUX_FILENO, linux_sys_write};
 
 let buf = "Hello\n".as_bytes();
-let bytes_written: isize = unsafe { sys_write(FILENO::STDOUT, buf.as_ptr(), buf.len()) };
+let bytes_written: isize = unsafe {
+    linux_sys_write(LINUX_FILENO::STDOUT, buf.as_ptr(), buf.len())
+};
 assert![bytes_written > 0];
 ```
 

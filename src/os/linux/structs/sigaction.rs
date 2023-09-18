@@ -4,7 +4,7 @@
 /// [`sigaction`]: https://man7.org/linux/man-pages/man2/sigaction.2.html
 #[derive(Debug)]
 #[repr(C)]
-pub struct SysSigaction {
+pub struct LinuxSigaction {
     /// Specifies the action to be associated with signum.
     ///
     /// - [`SIG_DFL`][Self::SIG_DFL] for the default action.
@@ -25,7 +25,7 @@ pub struct SysSigaction {
 }
 
 /// [`sa_handler`][Self::sa_handler] field constants.
-impl SysSigaction {
+impl LinuxSigaction {
     /// The default signal handling.
     pub const SIG_DFL: isize = 0;
 

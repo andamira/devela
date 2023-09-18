@@ -30,7 +30,7 @@ macro_rules! generate_os_print_macros {
     //
     ($d:tt $name:ident, $doc:literal) => { paste! {
         #[doc = $doc]
-        #[doc = " using `os::linux::io::`[`" $name "`][super::linux::" $name "]."]
+        #[doc = " using `os::linux::io::`[`" [<linux_ $name>] "`][super::linux::" [<linux_ $name>] "]."]
         #[doc = ""]
         #[doc = "Usage is similar to `std::`[`" $name "!`], with the addition of a byte buffer."]
         #[doc = ""]
@@ -40,6 +40,7 @@ macro_rules! generate_os_print_macros {
         ///
         #[doc = [<os_ $name>]"!(); // print a blank line"]
         #[doc = [<os_ $name>]r#"!("hello world 1!"); // print a literal"#]
+        #[doc = [<os_ $name>]r#"!("hello", "world ", 1_i32, "!"); // print a literal"#]
         #[doc = [<os_ $name>]r#"!(buf2=16); // create a buffer of 16 bytes"#]
         #[doc = [<os_ $name>]r#"!(buf2, "hello world {}!", 2); // formatted print using the buffer"#]
         #[doc = [<os_ $name>]r#"!(buf3=16, "hello world {}!", 3); // create a buffer and print"#]
@@ -71,29 +72,36 @@ macro_rules! generate_os_print_macros {
         macro_rules! [<os_ $name>] {
             // print a newline
             () => {
-                $crate::os::linux::$name("");
+                $crate::os::linux::[<linux_ $name>]("");
             };
 
             // print a literal
             ($str:literal) => {
-                $crate::os::linux::$name($str);
+                $crate::os::linux::[<linux_ $name>]($str);
             };
 
-            // create a buffer of the given size
+            // print concatenated literals
+            ($d($d str:literal),+ $d(,)?) => {
+                $crate::os::linux::[<linux_ $name>](
+                    $crate::str::str_concat!($d($d str,)+)
+                );
+            };
+
+            // create a buffer of the given length
             ($buf:ident = $len:literal) => {
                 let mut $buf = [0u8; $len];
             };
 
-            // create a buffer and print
+            // create a buffer of the given lenght and print formatted args
             ($buf:ident = $len:literal, $d($d args:tt)*) => {
                 [<os_ $name>]![$buf = $len];
 
                 [<os_ $name>]![$buf, $d($d args)*];
             };
 
-            // print using an existing buffer
+            // print formatted args using an existing buffer
             ($buf:ident, $d($d args:tt)*) => {
-                $crate::os::linux::println(
+                $crate::os::linux::[<linux_ $name>](
                     $crate::fmt::format_buf![&mut $buf, $d($d args)*].unwrap()
                 );
             };

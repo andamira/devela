@@ -4,9 +4,10 @@
 //
 
 /// Linux `sys/errno.h` constants.
-pub struct ERRNO;
+#[allow(non_camel_case_types)]
+pub struct LINUX_ERRNO;
 
-impl ERRNO {
+impl LINUX_ERRNO {
     /// “Operation not permitted.”
     ///
     /// Only the owner of the file (or other resource) or processes with special

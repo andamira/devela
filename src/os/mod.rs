@@ -19,5 +19,9 @@ pub(crate) mod all {
 pub mod linux;
 pub mod terminal;
 
+// `os_` functions and macros derive to specific OS implementations.
+// For now, only linux is supported.
+
+#[cfg_attr(feature = "nightly", doc(cfg(target_os = "linux")))]
 mod macros;
 pub use macros::*;

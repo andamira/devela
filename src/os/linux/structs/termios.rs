@@ -7,7 +7,7 @@
 /// [`termios`]: https://man7.org/linux/man-pages/man3/termios.3.html
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 #[repr(C)]
-pub struct SysTermios {
+pub struct LinuxTermios {
     pub c_iflag: u32,
     pub c_oflag: u32,
     pub c_cflag: u32,
@@ -16,7 +16,7 @@ pub struct SysTermios {
     pub c_cc: [u8; 19],
 }
 
-impl SysTermios {
+impl LinuxTermios {
     /// Returns a new empty struct.
     pub const fn new() -> Self {
         Self {
@@ -40,4 +40,4 @@ impl SysTermios {
     }
 }
 
-unsafe impl bytemuck::NoUninit for SysTermios {}
+unsafe impl bytemuck::NoUninit for LinuxTermios {}

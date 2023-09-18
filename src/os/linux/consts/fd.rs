@@ -6,9 +6,10 @@
 use core::ffi::c_int;
 
 /// Linux file descriptor constants.
-pub struct FILENO;
+#[allow(non_camel_case_types)]
+pub struct LINUX_FILENO;
 
-impl FILENO {
+impl LINUX_FILENO {
     /// File descriptor for standard input.
     pub const STDIN: c_int = 0;
 

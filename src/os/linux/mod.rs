@@ -13,12 +13,13 @@
 mod consts;
 #[cfg(all(feature = "unsafe_os", not(miri)))]
 mod fns;
+#[cfg(all(feature = "unsafe_os", not(miri)))]
 mod structs;
 
 pub use all::*;
 pub(super) mod all {
     #[doc(inline)]
-    pub use super::{consts::all::*, io::*, process::*, structs::*, thread::*};
+    pub use super::{consts::all::*, io::*, process::*, thread::*};
 }
 
 /* public modules */
@@ -37,13 +38,17 @@ pub mod io {
         feature = "unsafe_os",
         not(miri),
     ))]
-    pub use super::fns::{
-        disable_raw_mode, enable_raw_mode, eprint, eprintln, get_byte, get_char, get_dirty_char,
-        get_line, get_str, get_utf8_bytes, is_terminal, pause_until_char, print, print_bytes,
-        println, prompt, rand_bytes, rand_u128, rand_u16, rand_u32, rand_u64, rand_u8,
-        sys_getrandom, sys_ioctl, sys_read, sys_write,
+    pub use super::{
+        fns::{
+            linux_disable_raw_mode, linux_enable_raw_mode, linux_eprint, linux_eprintln,
+            linux_get_byte, linux_get_char, linux_get_dirty_char, linux_get_line, linux_get_str,
+            linux_get_utf8_bytes, linux_is_terminal, linux_pause_until_char, linux_print,
+            linux_print_bytes, linux_println, linux_prompt, linux_random_bytes, linux_random_u128,
+            linux_random_u16, linux_random_u32, linux_random_u64, linux_random_u8,
+            linux_sys_getrandom, linux_sys_ioctl, linux_sys_read, linux_sys_write,
+        },
+        structs::LinuxTermios,
     };
-    pub use super::structs::SysTermios;
 }
 
 /// Linux-specific extensions to [`std::process`].
@@ -60,8 +65,10 @@ pub mod process {
         feature = "unsafe_os",
         not(miri),
     ))]
-    pub use super::fns::{sys_exit, sys_rt_sigaction};
-    pub use super::structs::SysSigaction;
+    pub use super::{
+        fns::{linux_sys_exit, linux_sys_rt_sigaction},
+        structs::LinuxSigaction,
+    };
 }
 
 /// Linux-specific extensions to [`std::thread`].
@@ -76,6 +83,8 @@ pub mod thread {
         feature = "unsafe_os",
         not(miri),
     ))]
-    pub use super::fns::{sleep, sys_nanosleep};
-    pub use super::structs::SysTimespec;
+    pub use super::{
+        fns::{linux_sleep, linux_sys_nanosleep},
+        structs::LinuxTimespec,
+    };
 }

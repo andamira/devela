@@ -5,9 +5,9 @@
 
 /// Linux `sys/syscall.h` constants for `armv7`.
 #[allow(non_camel_case_types)]
-pub struct SYS_ARM;
+pub struct LINUX_SYS_ARM;
 
-impl SYS_ARM {
+impl LINUX_SYS_ARM {
     pub const ACCEPT: isize = 285;
     pub const ACCEPT4: isize = 366;
     pub const ACCESS: isize = 33;

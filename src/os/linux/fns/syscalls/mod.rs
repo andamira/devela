@@ -24,7 +24,8 @@
     )))
 )]
 pub use sys::{
-    sys_exit, sys_getrandom, sys_ioctl, sys_nanosleep, sys_read, sys_rt_sigaction, sys_write,
+    linux_sys_exit, linux_sys_getrandom, linux_sys_ioctl, linux_sys_nanosleep, linux_sys_read,
+    linux_sys_rt_sigaction, linux_sys_write,
 };
 
 /* architecture-specific */

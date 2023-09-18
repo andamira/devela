@@ -5,9 +5,9 @@
 
 /// Linux `sys/syscall.h` constants for `riscv`.
 #[allow(non_camel_case_types)]
-pub struct SYS_RISCV;
+pub struct LINUX_SYS_RISCV;
 
-impl SYS_RISCV {
+impl LINUX_SYS_RISCV {
     pub const ACCEPT: isize = 202;
     pub const ACCEPT4: isize = 242;
     pub const ACCT: isize = 89;

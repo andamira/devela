@@ -7,11 +7,12 @@
 use core::ffi::{c_int, c_ulong};
 
 /// Linux `ioctl` constants.
-pub struct IOCTL;
+#[allow(non_camel_case_types)]
+pub struct LINUX_IOCTL;
 
 /// # Get and set terminal attributes
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Get the current serial port settings.
     ///
     /// Argument: struct termios *argp
@@ -87,7 +88,7 @@ impl IOCTL {
 
 /// # Software flow control
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Equivalent to tcflow(fd, arg).
     ///
     /// Argument: int arg
@@ -110,7 +111,7 @@ impl IOCTL {
 
 /// # Exclusive mode
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     pub const TIOCEXCL: c_ulong = 0x540C;
     pub const TIOCGEXCL: c_ulong = 0x80045440;
     pub const TIOCNXCL: c_ulong = 0x540D;
@@ -118,7 +119,7 @@ impl IOCTL {
 
 /// # Faking input
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Insert the given byte in the input queue.
     ///
     /// Argument: const char *argp
@@ -127,7 +128,7 @@ impl IOCTL {
 
 /// # Get and set window size
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Get window size.
     ///
     /// Argument: struct winsize *argp
@@ -141,7 +142,7 @@ impl IOCTL {
 
 /// # Modem control
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Get the status of modem bits.
     ///
     /// Argument: int *argp
@@ -188,7 +189,7 @@ impl IOCTL {
 
 /// # Marking a line as local
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// ("Get software carrier flag")
     ///
     /// Get the status of the `CLOCAL` flag in the `c_cflag` field of the termios
@@ -208,7 +209,7 @@ impl IOCTL {
 
 /// # Buffer count and flushing
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Get the number of bytes in the input buffer.
     pub const FIONREAD: c_ulong = 0x541B;
 
@@ -232,7 +233,7 @@ impl IOCTL {
 
 /// # Linux-specific
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Linux-specific ioctls.
     ///
     /// The action of the following ioctls depends on the first byte in
@@ -247,7 +248,7 @@ impl IOCTL {
 
 /// # Redirecting console output
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Redirect output that would have gone to `/dev/console` or `/dev/tty0` to
     /// the given terminal.
     ///
@@ -264,7 +265,7 @@ impl IOCTL {
 
 /// # Pseudoterminal ioctls
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Enable (when *argp is nonzero) or disable packet mode.
     ///
     /// Argument: const int *argp
@@ -323,7 +324,7 @@ impl IOCTL {
 
 /// # Controlling terminal
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Make the given terminal the controlling terminal of the calling process.
     ///
     /// Argument: int arg
@@ -350,7 +351,7 @@ impl IOCTL {
 
 /// # Line discipline
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Get the line discipline of the terminal.
     ///
     /// Argument: int *argp
@@ -364,7 +365,7 @@ impl IOCTL {
 
 /// # Sending a break
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Equivalent to tcsendbreak(fd, arg).
     ///
     /// Argument: int arg
@@ -397,7 +398,7 @@ impl IOCTL {
 
 /// Process group and session ID
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Get the session ID of the given terminal.
     ///
     /// Argument: pid_t *argp
@@ -419,7 +420,7 @@ impl IOCTL {
 
 /// # Miscellaneous
 /// ---
-impl IOCTL {
+impl LINUX_IOCTL {
     /// Set non-blocking I/O mode if the argument is non-zero.
     ///
     /// In non-blocking mode, read(2) or write(2) calls return -1 and set errno to
