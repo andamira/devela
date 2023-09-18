@@ -1,8 +1,9 @@
 // devela::codegen::paste
 //
 
-/// Allows to paste identifiers together (reexported from the
-/// [paste][paste_crate] crate).
+/// Allows to paste identifiers together.
+///
+#[doc = "*Reexported from the [`paste`](https://docs.rs/paste)* crate.\n\n---"]
 ///
 /// Within the `paste!` macro, identifiers inside `[<`...`>]` are pasted
 /// together to form a single identifier.
@@ -60,6 +61,8 @@
 ///
 /// method_new!(Paste);  // expands to #[doc = "Create a new `Paste` object"]
 /// ```
+/// ---
+/// ---
 #[macro_export]
 macro_rules! paste {
     ($($tt:tt)*) => {

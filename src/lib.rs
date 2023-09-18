@@ -80,12 +80,6 @@ pub mod all {
 
     pub use ::az;
     pub use ::bytemuck;
-
-    #[doc(no_inline)]
-    pub use core::num::{
-        NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
-        NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
-    };
 }
 
 /// The common prelude.

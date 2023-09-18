@@ -56,6 +56,7 @@ impl StrExt for str {
             }
         }
 
+        // SAFETY: since self is a valid &str, checks are unneeded.
         #[cfg(feature = "unsafe_str")]
         unsafe {
             from_utf8_unchecked(&buffer[..index])

@@ -16,15 +16,20 @@ pub mod atomic {
     //! [`atomic`](https://docs.rs/atomic) crate,
     //! and some useful definitions from `libcore`.
 
-    #[doc = "[`atomic`](https://docs.rs/atomic) crate's generic atomic wrapper type.\n\n---"]
+    #[doc = "A generic atomic wrapper type.\n\n"]
+    #[doc = "*Reexported from the [`atomic`](https://docs.rs/atomic)* crate.\n\n---"]
     #[doc(inline)]
     pub use ::atomic::Atomic;
 
     /* Re-export some useful definitions from libcore */
 
-    #[doc = "`::core::sync::`[`atomic`](core::sync::atomic) fence.\n\n---"]
+    #[doc = "An atomic fence.\n\n"]
+    #[doc = "*Reexported from"]
+    #[doc = "`core::sync::`[`atomic`](https://doc.rust-lang.org/core/sync/atomic)*.\n\n---"]
     pub use core::sync::atomic::fence as atomic_fence;
 
-    #[doc = "`::core::sync::`[`atomic`](core::sync::atomic) memory ordering.\n\n---"]
+    #[doc = "Atomic memory ordering.\n\n"]
+    #[doc = "*Reexported from"]
+    #[doc = "`core::sync::`[`atomic`](https://doc.rust-lang.org/core/sync/atomic)*.\n\n---"]
     pub use core::sync::atomic::Ordering as AtomicOrdering;
 }
