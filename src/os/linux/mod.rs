@@ -1,6 +1,15 @@
 // devela::os::linux
 //
 //! Linux-specific definitions
+//!
+//! # Supported architectures
+//!
+//! Linux functionality will only be compiled in the following target architectures:
+//! - `x86-64`, `x86`, `ARM`, `AArch64`, `RISC-V RV32`, `RISC-V RV64`.
+//!
+//! Apart from that, this module will compile without checking whether the
+//! current OS is `linux`, since that would require enabling `std` and the
+//! whole point is to be able to use all of this functionality from `no_std`.
 //
 // NOTE: doc cfg attributes for target_arch are hidden from reexports
 // in order to be have a more concise documentation in the libera crate.

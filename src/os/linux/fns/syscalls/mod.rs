@@ -8,21 +8,6 @@
 // documentation is add in the parent module
 #![allow(clippy::missing_safety_doc)]
 
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(
-        target_os = "linux",
-        any(
-            target_arch = "x86_64",
-            target_arch = "x86",
-            target_arch = "arm",
-            target_arch = "aarch64",
-            target_arch = "riscv32",
-            target_arch = "riscv64"
-        ),
-        feature = "unsafe_os",
-    )))
-)]
 pub use sys::{
     linux_sys_exit, linux_sys_getrandom, linux_sys_ioctl, linux_sys_nanosleep, linux_sys_read,
     linux_sys_rt_sigaction, linux_sys_write,
