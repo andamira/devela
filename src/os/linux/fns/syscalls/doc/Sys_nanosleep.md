@@ -1,5 +1,4 @@
-# Info
-- <https://www.man7.org/linux/man-pages/man2/nanosleep.2.html>
+Performs a `nanosleep` syscall.
 
 Suspends execution of calling thread.
 
@@ -8,6 +7,9 @@ has elapsed or a signal is delivered to the calling thread, in which
 case the remaining time will be stored in `rem`.
 
 Returns the syscall return value.
+
+# Info
+- <https://www.man7.org/linux/man-pages/man2/nanosleep.2.html>
 
 # Examples
 ```
