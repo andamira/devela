@@ -45,6 +45,7 @@ pub mod path;
 pub mod result;
 pub mod slice;
 pub mod str;
+pub mod sync;
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 pub mod thread;
@@ -67,6 +68,7 @@ pub mod all {
         result::*,
         slice::*,
         str::*,
+        sync::all::*,
     };
 
     #[doc(inline)]
