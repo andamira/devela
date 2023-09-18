@@ -19,6 +19,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new macros: `os_print`, `os_println`, `os_eprint`, `os_eprintln`.
 - add scripts to get linux syscalls and error numbers as rust constants.
 - add CI actions to get `syscall.h` and `errno.h` values for each target.
+- new `atomic` dependency.
+- reexport `atomic::Atomic` type.
+- new `sync` module and `atomic` submodule.
+- reexport `core::sync::atomic::{fence, Ordering}` as `atomic_fence` and `AtomicOrdering`, respectively.
+- reexport `core::num::NonZero*` types from `num` module.
 
 ### Removed
 - remove the already deprecated macros `cdbg`, `rfs`.
@@ -37,6 +42,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - refactor modules: `ascii`, `codegen`, `option`, `result`, `str`.
 - ensure dependencies doesn't include default features.
 - update .gitattributes to show all languages.
+- move lengthy `target_arch` rustdoc tags to the doc-comments.
+- update documentation on reexported types.
 
 ## [0.10.0] - 2023-09-13
 
