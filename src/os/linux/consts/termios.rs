@@ -9,16 +9,16 @@
 
 use core::ffi::c_uint;
 
-/// [`LinuxTermios`][super::LinuxTermios] input flags.
+/// [`LinuxTermios`][super::super::LinuxTermios] input flags.
 pub struct LINUX_TERMIOS_IFLAG;
 
-/// [`LinuxTermios`][super::LinuxTermios] output flags.
+/// [`LinuxTermios`][super::super::LinuxTermios] output flags.
 pub struct LINUX_TERMIOS_OFLAG;
 
-/// [`LinuxTermios`][super::LinuxTermios] control flags.
+/// [`LinuxTermios`][super::super::LinuxTermios] control flags.
 pub struct LINUX_TERMIOS_CFLAG;
 
-/// [`LinuxTermios`][super::LinuxTermios] local flags.
+/// [`LinuxTermios`][super::super::LinuxTermios] local flags.
 pub struct LINUX_TERMIOS_LFLAG;
 
 impl LINUX_TERMIOS_IFLAG {
@@ -46,7 +46,7 @@ impl LINUX_TERMIOS_IFLAG {
     /// If this bit is set, input bytes with parity or framing
     /// errors are marked when passed to the program.
     ///
-    /// This bit is meaningful only when [`INPCK`](Sef::INPCK) is set and
+    /// This bit is meaningful only when [`INPCK`](Self::INPCK) is set and
     /// [`IGNPAR`](Self::IGNPAR) is not set.
     ///
     /// The way erroneous bytes are marked is with two preceding
@@ -149,7 +149,7 @@ impl LINUX_TERMIOS_OFLAG {
     /// `NLDLY`: Newline type 1.
     pub const NL1: c_uint = 0000400;
 
-    /// Carriage return delay mask. Values are [`CR0`](self::CR0),
+    /// Carriage return delay mask. Values are [`CR0`](Self::CR0),
     /// [`CR1`](Self::CR1), [`CR2`](Self::CR2), or [`CR3`](Self::CR3).
     ///
     /// [requires `_BSD_SOURCE` or `_SVID_SOURCE` or `_XOPEN_SOURCE`]
@@ -166,7 +166,7 @@ impl LINUX_TERMIOS_OFLAG {
     /// Horizontal tab delay mask.
     ///
     /// Values are [`TAB0`](Self::TAB0), [`TAB1`](Self::TAB1),
-    /// [`TAB2`](self::TAB2), [`TAB3`](self::TAB3)
+    /// [`TAB2`](Self::TAB2), [`TAB3`](Self::TAB3)
     /// (or `XTABS`, but see the BUGS section).
     ///
     /// A value of `TAB3`, that is, `XTABS`, expands tabs to spaces
@@ -328,7 +328,7 @@ impl LINUX_TERMIOS_LFLAG {
     pub const ECHOK: c_uint = 0000040;
 
     /// If [`ICANON`](Self::ICANON) is also set, echo the `NL` character
-    /// even if [`ECHO`](self::ECHO) is not set.
+    /// even if [`ECHO`](Self::ECHO) is not set.
     pub const ECHONL: c_uint = 0000100;
 
     /// Disable flushing the input and output queues when
@@ -396,7 +396,8 @@ impl LINUX_TERMIOS_LFLAG {
     ///
     /// This flag, as well as [`ICANON`](Self::ICANON) must be enabled for
     /// the special characters `EOL2`, `LNEXT`, `REPRINT`, `WERASE` to be
-    /// interpreted, and for the [`IUCLC`](Self::IUCLC) flag to be effective.
+    /// interpreted, and for the [`IUCLC`](LINUX_TERMIOS_IFLAG::IUCLC) flag
+    /// to be effective.
     pub const IEXTEN: c_uint = 0100000;
 
     //

@@ -29,9 +29,16 @@ pub use all::*;
 pub(super) mod all {
     #[doc(inline)]
     pub use super::{consts::all::*, io::*, process::*, thread::*};
+
+    #[doc(inline)]
+    #[cfg(all(feature = "unsafe_os", not(miri)))]
+    pub use super::terminal::*;
 }
 
 /* public modules */
+
+#[cfg(all(feature = "unsafe_os", not(miri)))]
+pub mod terminal;
 
 /// Linux-specific extensions to [`std::io`].
 pub mod io {
@@ -49,12 +56,11 @@ pub mod io {
     ))]
     pub use super::{
         fns::{
-            linux_disable_raw_mode, linux_enable_raw_mode, linux_eprint, linux_eprintln,
-            linux_get_byte, linux_get_char, linux_get_dirty_char, linux_get_line, linux_get_str,
-            linux_get_utf8_bytes, linux_is_terminal, linux_pause_until_char, linux_print,
-            linux_print_bytes, linux_println, linux_prompt, linux_random_bytes, linux_random_u128,
-            linux_random_u16, linux_random_u32, linux_random_u64, linux_random_u8,
-            linux_sys_getrandom, linux_sys_ioctl, linux_sys_read, linux_sys_write,
+            linux_eprint, linux_eprintln, linux_get_byte, linux_get_char, linux_get_dirty_char,
+            linux_get_line, linux_get_str, linux_get_utf8_bytes, linux_pause_until_char,
+            linux_print, linux_print_bytes, linux_println, linux_prompt, linux_random_bytes,
+            linux_random_u128, linux_random_u16, linux_random_u32, linux_random_u64,
+            linux_random_u8, linux_sys_getrandom, linux_sys_ioctl, linux_sys_read, linux_sys_write,
         },
         structs::LinuxTermios,
     };
