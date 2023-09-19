@@ -4,7 +4,7 @@
 //
 
 use super::{
-    consts::{LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL},
+    consts::{LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG},
     structs::{LinuxTermios, LinuxTimespec},
 };
 use core::{cmp::Ordering, time::Duration};
@@ -56,9 +56,6 @@ pub fn linux_disable_raw_mode(mut initial_term: LinuxTermios) {
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
 )]
 pub fn linux_enable_raw_mode() -> LinuxTermios {
-    const ICANON: u32 = 0x2;
-    const ECHO: u32 = 0x8;
-
     let mut termios = LinuxTermios::default();
 
     unsafe {
@@ -70,8 +67,8 @@ pub fn linux_enable_raw_mode() -> LinuxTermios {
     }
     let initial_term = termios;
 
-    termios.c_lflag &= !ICANON;
-    termios.c_lflag &= !ECHO;
+    termios.c_lflag &= !LINUX_TERMIOS_LFLAG::ICANON;
+    termios.c_lflag &= !LINUX_TERMIOS_LFLAG::ECHO;
     unsafe {
         linux_sys_ioctl(
             LINUX_FILENO::STDIN,

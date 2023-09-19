@@ -1,3 +1,10 @@
+// devela::os::linux
+//
+//!
+//
+
+use core::ffi::c_uint;
+
 /// Represents the [`termios`] structure from libc,
 /// used to control terminal I/O.
 ///
@@ -8,11 +15,20 @@
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 #[repr(C)]
 pub struct LinuxTermios {
-    pub c_iflag: u32,
-    pub c_oflag: u32,
-    pub c_cflag: u32,
-    pub c_lflag: u32,
+    /// Input flags.
+    pub c_iflag: c_uint,
+
+    /// Output flags.
+    pub c_oflag: c_uint,
+
+    /// Control flags.
+    pub c_cflag: c_uint,
+
+    /// Local flags.
+    pub c_lflag: c_uint,
+
     pub c_line: u8,
+
     pub c_cc: [u8; 19],
 }
 
