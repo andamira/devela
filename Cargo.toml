@@ -31,6 +31,7 @@ full = [ # enables optional capabilities in this crate (unused)
 
 #* environment features *#
 std = ["alloc", # disables `no_std` compatibility and enables `std` functionality
+	"atomic/std",
 	"bytemuck/extern_crate_std",
 ]
 alloc = [ # enables `alloc` functionality
@@ -68,6 +69,7 @@ az = { version = "1.2.1", default-features = false }
 bytemuck = { version = "1.13.1", default-features = false }
 const-str = { version = "0.5.6", default-features = false }
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
+atomic = { version = "0.6.0", default-features = false, features = ["fallback"] }
 
 # ------------------------------------------------------------------------------
 
