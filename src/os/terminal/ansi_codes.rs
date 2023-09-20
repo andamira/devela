@@ -2,9 +2,10 @@
 //
 //! ANSI codes.
 //
+#![allow(non_snake_case)]
 
-use super::AnsiColor as Color;
 use crate::ascii::{ascii_d1, ascii_d2, ascii_d3, ascii_d4};
+
 #[cfg(all(
     any(not(feature = "std"), doc),
     any(
@@ -22,7 +23,13 @@ use crate::os::linux::linux_print_bytes;
 #[cfg(feature = "std")]
 use std::io::{stdout, Write};
 
-/// ANSI escape codes with print support.
+/// ANSI escape codes.
+///
+/// # List of escape codes
+/// - [Screen][Self#screen-escape-codes]
+/// - [Cursor][Self#cursor-escape-codes]
+/// - [Font effects][Self#font-effects-escape-codes]
+/// - [Color][Self#color-escape-codes]
 pub struct Ansi;
 
 #[cfg(any(
@@ -42,26 +49,20 @@ pub struct Ansi;
 ))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(any(
-        feature = "std",
-        all(
-            target_os = "linux",
-            any(
-                target_arch = "x86_64",
-                target_arch = "x86",
-                target_arch = "arm",
-                target_arch = "aarch64",
-                target_arch = "riscv32",
-                target_arch = "riscv64"
-            ),
-            feature = "unsafe_os",
-        )
-    )))
+    doc(cfg(any(feature = "std", all(target_os = "linux", feature = "unsafe_os"))))
 )]
 impl Ansi {
-    /// Prints an ANSI escape `sequence` of bytes to `stdout`.
+    /// Convenience method to print an ANSI escape `sequence` of bytes to `stdout`.
     ///
     /// It uses the [`Write`] trait on `std`, and [`linux_print_bytes`] on `no_std`.
+    ///
+    /// # Example
+    /// ```
+    /// use devela::os::terminal::Ansi;
+    ///
+    /// Ansi::print(Ansi::CLEAR_SCREEN);
+    /// Ansi::print(&Ansi::CURSOR_MOVE3(120, 80));
+    /// ```
     #[inline]
     pub fn print(sequence: &[u8]) {
         // MAYBE -> Result<()>
@@ -72,198 +73,20 @@ impl Ansi {
     }
 }
 
-// Generates methods for printing the escape codes.
-//
-// # Common arguments:
-// $fn    : function name
-// $ansi  : function name (smallcase) and ansi constant (uppercase)
-// $doc   : doc string
-#[allow(unused_macros)]
-macro_rules! __print {
-    // referring to an associated const
-    ($ansi:ident, $doc:literal) => { crate::codegen::paste! {
-        #[doc = $doc]
-        #[inline]
-        pub fn [<$ansi:lower>]() {
-            let _ = Self::print(Self::[<$ansi:upper>]);
-        }
-    }};
-
-    // referring to an associated (const) fn
-    //
-    // $arg: $t   : optional pairs of [argument: type],
-    ($ansi:ident, $($arg:ident: $t:ty),* ; $doc:literal) => { crate::codegen::paste! {
-        #[doc = $doc]
-        #[inline]
-        pub fn [<$ansi:lower>]($($arg: $t,)*) {
-            let _ = Self::print(&Self::[<$ansi:upper>]($($arg, )*));
-        }
-    }};
-}
-
-/// # Methods to print the ANSI escape codes to `stdout`.
-///
-/// Uses the [`print`][Self::print] method, so they are only available on either:
-/// - crate feature `std`, or
-/// - Linux and (`x86`-64 or `x86` or `ARM` or `AArch64` or `RISC-V RV32`
-/// or `RISC-V RV64`) and crate feature `unsafe_os`.
-#[cfg(any(
-    feature = "std",
-    all(
-        any(
-            target_arch = "x86_64",
-            target_arch = "x86",
-            target_arch = "arm",
-            target_arch = "aarch64",
-            target_arch = "riscv32",
-            target_arch = "riscv64"
-        ),
-        feature = "unsafe_os",
-        not(miri),
-    )
-))]
-#[rustfmt::skip]
+/// # Screen escape codes
 impl Ansi {
-    /* screen */
-
-    __print![clear_screen, "Clears the screen."];
-    __print![enable_alternative_screen, "Enables the alternative screen."];
-    __print![disable_alternative_screen, "Disables the alternative screen."];
-
-    /* cursor */
-
-    __print![cursor_invisible, "Makes the cursor invisible."];
-    __print![cursor_visible, "Makes the cursor visible."];
-    __print![cursor_save, "Saves the cursor position."];
-    __print![cursor_restore, "Restores the cursor position."];
-    __print![cursor_home, "Moves the cursor to the home position (1, 1)."];
-
-    __print![cursor_move1, row: u8, col: u8;
-    "Moves the cursor to the specified 1-digit position.
-    \n# Panics\n\nPanics in debug if either `row` or `col` > 9."];
-    __print![cursor_move2, row: u8, col: u8;
-    "Moves the cursor to the specified 2-digit position.
-    \n# Panics\n\nPanics in debug if either `row` or `col` > 99."];
-    __print![cursor_move3, row: u16, col: u16;
-    "Moves the cursor to the specified 3-digit position.
-    \n# Panics\n\nPanics in debug if either `row` or `col` > 999."];
-    __print![cursor_move4, row: u16, col: u16;
-    "Moves the cursor to the specified 4-digit position.
-    \n# Panics\n\nPanics in debug if either `row` or `col` > 9999."];
-
-    __print![cursor_up, "Moves the cursor up by one line."];
-    __print![cursor_up1, n: u8; "Moves the cursor up by 1-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 9."];
-    __print![cursor_up2, n: u8; "Moves the cursor up by 2-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 99."];
-    __print![cursor_up3, n: u16; "Moves the cursor up by 3-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 999."];
-    __print![cursor_up4, n: u16; "Moves the cursor up by 4-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 9999."];
-
-    __print![cursor_down, "Moves the cursor down by one line."];
-    __print![cursor_down1, n: u8; "Moves the cursor down by 1-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 9."];
-    __print![cursor_down2, n: u8; "Moves the cursor down by 2-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 99."];
-    __print![cursor_down3, n: u16; "Moves the cursor down by 3-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 999."];
-    __print![cursor_down4, n: u16; "Moves the cursor down by 4-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 9999."];
-
-    __print![cursor_right, "Moves the cursor right by one line."];
-    __print![cursor_right1, n: u8; "Moves the cursor right by 1-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 9."];
-    __print![cursor_right2, n: u8; "Moves the cursor right by 2-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 99."];
-    __print![cursor_right3, n: u16; "Moves the cursor right by 3-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 999."];
-    __print![cursor_right4, n: u16; "Moves the cursor right by 4-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 9999."];
-
-    __print![cursor_left, "Moves the cursor left by one line."];
-    __print![cursor_left1, n: u8; "Moves the cursor left by 1-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 9."];
-    __print![cursor_left2, n: u8; "Moves the cursor left by 2-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 99."];
-    __print![cursor_left3, n: u16; "Moves the cursor left by 3-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 999."];
-    __print![cursor_left4, n: u16; "Moves the cursor left by 4-digit `n` lines.
-    \n# Panics\n\nPanics in debug if `n` > 9999."];
-
-    /* font effects */
-
-    __print![reset, "Turns off all effects and colors."];
-    __print![bold, "Turns bold on."];
-    __print![bold_off, "Turns bold and dim off."];
-    __print![dim, "Turns dim on."];
-    __print![dim_off, "Turns bold and dim off."];
-    __print![italic, "Turns italic on."];
-    __print![italic_off, "Turns italic off."];
-    __print![underline, "Turns underline on."];
-    __print![underline_off, "Turns underline off."];
-    __print![blink, "Turns blink on."];
-    __print![blink_off, "Turns blink off."];
-    __print![inverse, "Turns inverse on."];
-    __print![inverse_off, "Turns inverse off."];
-    __print![crossed, "Turns crossed on."];
-    __print![crossed_off, "Turns crossed off."];
-
-    /* 4-bit colors */
-
-    __print![black, "Sets the foreground color to black."];
-    __print![red, "Sets the foreground color to red."];
-    __print![green, "Sets the foreground color to green."];
-    __print![yellow, "Sets the foreground color to yellow."];
-    __print![blue, "Sets the foreground color to blue."];
-    __print![magenta, "Sets the foreground color to magenta."];
-    __print![cyan, "Sets the foreground color to cyan."];
-    __print![white, "Sets the foreground color to white."];
-
-    __print![black_bg, "Sets the background color to black."];
-    __print![red_bg, "Sets the background color to red."];
-    __print![green_bg, "Sets the background color to green."];
-    __print![yellow_bg, "Sets the background color to yellow."];
-    __print![blue_bg, "Sets the background color to blue."];
-    __print![magenta_bg, "Sets the background color to magenta."];
-    __print![cyan_bg, "Sets the background color to cyan."];
-    __print![white_bg, "Sets the background color to white."];
-
-    __print![bright_black, "Sets the foreground color to bright black."];
-    __print![bright_red, "Sets the foreground color to bright red."];
-    __print![bright_green, "Sets the foreground color to bright green."];
-    __print![bright_yellow, "Sets the foreground color to bright yellow."];
-    __print![bright_blue, "Sets the foreground color to bright blue."];
-    __print![bright_magenta, "Sets the foreground color to bright magenta."];
-    __print![bright_cyan, "Sets the foreground color to bright cyan."];
-    __print![bright_white, "Sets the foreground color to bright white."];
-
-    __print![bright_black_bg, "Sets the background color to bright black."];
-    __print![bright_red_bg, "Sets the background color to bright red."];
-    __print![bright_green_bg, "Sets the background color to bright green."];
-    __print![bright_yellow_bg, "Sets the background color to bright yellow."];
-    __print![bright_blue_bg, "Sets the background color to bright blue."];
-    __print![bright_magenta_bg, "Sets the background color to bright magenta."];
-    __print![bright_cyan_bg, "Sets the background color to bright cyan."];
-    __print![bright_white_bg, "Sets the background color to bright white."];
-}
-
-/// # Ansi escape codes
-#[allow(non_snake_case)]
-impl Ansi {
-    /* screen */
-
     /// Code to clear the screen.
     pub const CLEAR_SCREEN: &'static [u8] = b"\x1b[2J";
 
     /// Code to enable the alternative screen.
-    pub const ENABLE_ALTERNATIVE_SCREEN: &'static [u8] = b"\x1b[1049h";
+    pub const ENABLE_ALT_SCREEN: &'static [u8] = b"\x1b[1049h";
 
     /// Code to disable the alternative screen.
-    pub const DISABLE_ALTERNATIVE_SCREEN: &'static [u8] = b"\x1b[1049l";
+    pub const DISABLE_ALT_SCREEN: &'static [u8] = b"\x1b[1049l";
+}
 
-    /* cursor */
-
+/// # Cursor escape codes
+impl Ansi {
     /// Code to make the cursor invisible.
     pub const CURSOR_INVISIBLE: &'static [u8] = b"\x1b[?25l";
     /// Code to make the cursor visible.
@@ -451,9 +274,10 @@ impl Ansi {
         let n: [u8; 4] = ascii_d4(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'D']
     }
+}
 
-    /* font effects */
-
+/// # Font effects escape codes
+impl Ansi {
     /// Code to turn off all effects and colors.
     pub const RESET: &'static [u8] = b"\x1b[0m";
 
@@ -493,7 +317,63 @@ impl Ansi {
     pub const CROSSED: &'static [u8] = b"\x1b[9m";
     /// Code to unset crossed effect.
     pub const CROSSED_OFF: &'static [u8] = b"\x1b[29m";
+}
 
+// the bare color escape codes
+mod Color {
+    pub const FG: u8 = b'3';
+    pub const BG: u8 = b'4';
+    pub const BRIGHT_FG: u8 = b'9';
+    pub const BRIGHT_BG: [u8; 2] = [b'1', b'0'];
+    //
+    pub const BLACK: u8 = b'0';
+    pub const RED: u8 = b'1';
+    pub const GREEN: u8 = b'2';
+    pub const YELLOW: u8 = b'3';
+    pub const BLUE: u8 = b'4';
+    pub const MAGENTA: u8 = b'5';
+    pub const CYAN: u8 = b'6';
+    pub const WHITE: u8 = b'7';
+    //
+    pub const BLACK_FG: &[u8; 2] = &[FG, BLACK];
+    pub const RED_FG: &[u8; 2] = &[FG, RED];
+    pub const GREEN_FG: &[u8; 2] = &[FG, GREEN];
+    pub const YELLOW_FG: &[u8; 2] = &[FG, YELLOW];
+    pub const BLUE_FG: &[u8; 2] = &[FG, BLUE];
+    pub const MAGENTA_FG: &[u8; 2] = &[FG, MAGENTA];
+    pub const CYAN_FG: &[u8; 2] = &[FG, CYAN];
+    pub const WHITE_FG: &[u8; 2] = &[FG, WHITE];
+
+    pub const BLACK_BG: &[u8; 2] = &[BG, BLACK];
+    pub const RED_BG: &[u8; 2] = &[BG, RED];
+    pub const GREEN_BG: &[u8; 2] = &[BG, GREEN];
+    pub const YELLOW_BG: &[u8; 2] = &[BG, YELLOW];
+    pub const BLUE_BG: &[u8; 2] = &[BG, BLUE];
+    pub const MAGENTA_BG: &[u8; 2] = &[BG, MAGENTA];
+    pub const CYAN_BG: &[u8; 2] = &[BG, CYAN];
+    pub const WHITE_BG: &[u8; 2] = &[BG, WHITE];
+
+    pub const BRIGHT_BLACK_FG: &[u8; 2] = &[BRIGHT_FG, BLACK];
+    pub const BRIGHT_RED_FG: &[u8; 2] = &[BRIGHT_FG, RED];
+    pub const BRIGHT_GREEN_FG: &[u8; 2] = &[BRIGHT_FG, GREEN];
+    pub const BRIGHT_YELLOW_FG: &[u8; 2] = &[BRIGHT_FG, YELLOW];
+    pub const BRIGHT_BLUE_FG: &[u8; 2] = &[BRIGHT_FG, BLUE];
+    pub const BRIGHT_MAGENTA_FG: &[u8; 2] = &[BRIGHT_FG, MAGENTA];
+    pub const BRIGHT_CYAN_FG: &[u8; 2] = &[BRIGHT_FG, CYAN];
+    pub const BRIGHT_WHITE_FG: &[u8; 2] = &[BRIGHT_FG, WHITE];
+
+    pub const BRIGHT_BLACK_BG: &[u8; 3] = &[BRIGHT_BG[0], BRIGHT_BG[1], BLACK];
+    pub const BRIGHT_RED_BG: &[u8; 3] = &[BRIGHT_BG[0], BRIGHT_BG[1], RED];
+    pub const BRIGHT_GREEN_BG: &[u8; 3] = &[BRIGHT_BG[0], BRIGHT_BG[1], GREEN];
+    pub const BRIGHT_YELLOW_BG: &[u8; 3] = &[BRIGHT_BG[0], BRIGHT_BG[1], YELLOW];
+    pub const BRIGHT_BLUE_BG: &[u8; 3] = &[BRIGHT_BG[0], BRIGHT_BG[1], BLUE];
+    pub const BRIGHT_MAGENTA_BG: &[u8; 3] = &[BRIGHT_BG[0], BRIGHT_BG[1], MAGENTA];
+    pub const BRIGHT_CYAN_BG: &[u8; 3] = &[BRIGHT_BG[0], BRIGHT_BG[1], CYAN];
+    pub const BRIGHT_WHITE_BG: &[u8; 3] = &[BRIGHT_BG[0], BRIGHT_BG[1], WHITE];
+}
+
+/// # Color escape codes
+impl Ansi {
     /* 4-bit colors*/
 
     // all &[u8; 5] except bright background colors &[u8; 6]
