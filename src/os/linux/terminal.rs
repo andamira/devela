@@ -6,14 +6,14 @@
 use super::LinuxTermios;
 use crate::sync::atomic::{Atomic, AtomicOrdering};
 
-/// State of the terminal intended to be restored on exit.
+/// State of the terminal saved globally, that can be restored from anywhere.
 ///
 /// This allows to restore the initial terminal state from a panic handler. E.g.:
 ///
 /// ```ignore
 /// #[panic_handler]
 /// fn panic(_info: &core::panic::PanicInfo) -> ! {
-///     LinuxTerminal::restore_saved_state();
+///     LinuxTerminal::restore_saved_state().unwrap();
 /// }
 /// ```
 #[cfg_attr(
@@ -22,7 +22,7 @@ use crate::sync::atomic::{Atomic, AtomicOrdering};
 )]
 pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios::new());
 
-/// Allows to manage the linux terminal.
+/// Linux terminal manager.
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
