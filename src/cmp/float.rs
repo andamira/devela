@@ -27,7 +27,7 @@ macro_rules! primitive_float_const_cmp {
         #[inline]
         #[cfg(feature = "unsafe_cmp")]
         #[cfg_attr(feature = "nightly",
-            doc(cfg(any(feature = "unsafe_cmp", feature = ""))))]
+            doc(cfg(any(feature = "", feature = "unsafe_cmp"))))]
         pub const fn [<total_cmp_f $b>](a: [<f$b>], b: [<f$b>]) -> Ordering {
             // WAIT:const_float_bits_conv https://github.com/rust-lang/rust/issues/72447
             // let mut left = a.to_bits() as [<i $b>];
@@ -83,7 +83,7 @@ macro_rules! primitive_float_const_cmp {
         #[inline]
         #[cfg(feature = "unsafe_cmp")]
         #[cfg_attr(feature = "nightly",
-            doc(cfg(any(feature = "unsafe_cmp", feature = ""))))]
+            doc(cfg(any(feature = "", feature = "unsafe_cmp"))))]
         pub const fn [<clamp_f $b>](value: [<f $b>], min: [<f $b>], max: [<f $b>]) -> [<f $b>] {
             [<min_f $b>]([<max_f $b>](value, min), max)
         }
@@ -113,7 +113,7 @@ macro_rules! primitive_float_const_cmp {
         #[inline]
         #[cfg(feature = "unsafe_cmp")]
         #[cfg_attr(feature = "nightly",
-            doc(cfg(any(feature = "unsafe_cmp", feature = ""))))]
+            doc(cfg(any(feature = "", feature = "unsafe_cmp"))))]
         pub const fn [<max_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match [<total_cmp_f $b>](a, b) {
                 Greater | Equal => a,
@@ -149,7 +149,7 @@ macro_rules! primitive_float_const_cmp {
         #[inline]
         #[cfg(feature = "unsafe_cmp")]
         #[cfg_attr(feature = "nightly",
-            doc(cfg(any(feature = "unsafe_cmp", feature = ""))))]
+            doc(cfg(any(feature = "", feature = "unsafe_cmp"))))]
         pub const fn [<min_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match [<total_cmp_f $b>](a, b) {
                 Greater | Equal => b,

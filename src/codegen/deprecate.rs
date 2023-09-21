@@ -10,13 +10,9 @@
 /// # Examples
 /// ```
 /// # use devela::deprecate_feature;
-///
 /// deprecate_feature![old: "old-feature-1"];
-///
 /// deprecate_feature![old: "old-feature-2", since: "2.0.0"];
-///
 /// deprecate_feature![old: "old-feature-3", new: "new_feature_3"];
-///
 /// deprecate_feature![old: "old-feature-4", new: "new_feature_4", since: "4.0.0"];
 /// ```
 #[macro_export]
