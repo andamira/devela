@@ -67,7 +67,7 @@ macro_rules! generate_os_print_macros {
             ///
             /// # Examples
             /// ```
-            #[doc = "use devela::os::" [<os_ $name>] ";"]
+            #[doc = "use devela::os::{ansi, " [<os_ $name>] "};"]
             ///
             #[doc = [<os_ $name>]"!(); // prints " $doc_ln " (1st arm)"]
             #[doc = [<os_ $name>]r#"!("hello world! 2nd arm"); // one literal"#]
