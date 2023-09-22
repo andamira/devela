@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.11.0] - 2023-09-22
+
 ### Added
 - new structs `LINUX_SYS_X86_64`, `LINUX_SYS_X86`, `LINUX_SYS_ARM`, `LINUX_SYS_AARCH64`, `LINUX_SYS_RISCV`, `LINUX_SIGACTION`, `LinuxSigaction`, `LINUX_TERMIOS_CFLAG`, `LINUX_TERMIOS_IFLAG`, `LINUX_TERMIOS_LFLAG`, `LINUX_TERMIOS_OFLAG`, `LinuxTerminal`.
 - new functions: `linux_sys_getrand`, `linux_sys_getpid`, `linux_sys_rt_sigaction`, `linux_getpid`, `linux_handle_signals`, `linux_random_bytes`, `linux_random_u8`, `linux_random_u16`, `linux_random_u32`, `linux_random_u64`, `linux_random_i128`.
@@ -344,8 +346,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.10.0...HEAD
-[0.10.0]: https://github.com/andamira/devela/releases/tag/v0.9.0
+[unreleased]: https://github.com/andamira/devela/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/andamira/devela/releases/tag/v0.11.0
+[0.10.0]: https://github.com/andamira/devela/releases/tag/v0.10.0
 [0.9.0]: https://github.com/andamira/devela/releases/tag/v0.9.0
 [0.8.0]: https://github.com/andamira/devela/releases/tag/v0.8.0
 [0.7.1]: https://github.com/andamira/devela/releases/tag/v0.7.1
