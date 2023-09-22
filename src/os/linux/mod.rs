@@ -81,7 +81,7 @@ pub mod process {
         not(miri),
     ))]
     pub use super::{
-        fns::{linux_sys_exit, linux_sys_rt_sigaction},
+        fns::{linux_handle_signals, linux_sys_exit, linux_sys_rt_sigaction},
         structs::LinuxSigaction,
     };
 }

@@ -11,17 +11,28 @@ pub struct LinuxSigaction {
     /// - [`SIG_IGN`][Self::SIG_IGN] to ignore this signal.
     /// - A pointer to a signal handling function.
     ///   This function receives the signal number as its only argument.
-    // pub sa_sigaction: unsafe exern "C" fn(i32),
-    pub sa_handler: unsafe extern "C" fn(i32),
+    // pub sa_sigaction: extern "C" fn(i32),
+    pub sa_handler: extern "C" fn(i32),
 
     /// Specifies a mask of signals which should be blocked.
     pub sa_flags: u64,
 
     // a legacy field that is not used on modern Linux systems, but must be
     // filled in for compatibility
-    pub sa_restorer: unsafe extern "C" fn(),
+    pub sa_restorer: Option<extern "C" fn()>,
 
     pub sa_mask: u64,
+}
+
+impl LinuxSigaction {
+    pub fn new(handler: extern "C" fn(i32), flags: u64, mask: u64) -> Self {
+        Self {
+            sa_handler: handler,
+            sa_flags: flags,
+            sa_restorer: None,
+            sa_mask: mask,
+        }
+    }
 }
 
 /// [`sa_handler`][Self::sa_handler] field constants.
