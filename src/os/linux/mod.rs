@@ -99,7 +99,7 @@ pub mod thread {
         not(miri),
     ))]
     pub use super::{
-        fns::{linux_sleep, linux_sys_nanosleep},
+        fns::{linux_getpid, linux_sleep, linux_sys_getpid, linux_sys_nanosleep},
         structs::LinuxTimespec,
     };
 }

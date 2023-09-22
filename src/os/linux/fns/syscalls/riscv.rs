@@ -115,6 +115,21 @@ pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -
     r0
 }
 
+#[doc = include_str!("./doc/Sys_getpid.md")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+)]
+pub unsafe fn linux_sys_getpid() -> i32 {
+    let r0: isize;
+    asm!(
+        "ecall",
+        inlateout("a7") SYS::GETPID => r0,
+        options(nostack, preserves_flags)
+    );
+    r0 as i32
+}
+
 #[doc = include_str!("./doc/Sys_rt_sigaction.md")]
 #[cfg_attr(
     feature = "nightly",

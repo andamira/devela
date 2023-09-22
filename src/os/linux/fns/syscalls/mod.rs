@@ -8,10 +8,7 @@
 // documentation is add in the parent module
 #![allow(clippy::missing_safety_doc)]
 
-pub use sys::{
-    linux_sys_exit, linux_sys_getrandom, linux_sys_ioctl, linux_sys_nanosleep, linux_sys_read,
-    linux_sys_rt_sigaction, linux_sys_write,
-};
+pub use sys::*;
 
 /* architecture-specific */
 

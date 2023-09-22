@@ -105,7 +105,7 @@ pub unsafe fn linux_sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isi
 pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
     let r0;
     asm!(
-        "svc 0x0",
+        "svc 0",
         inlateout("x8") SYS::GETRANDOM => r0,
         in("x0") buffer,
         in("x1") size,
@@ -114,6 +114,21 @@ pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -
         options(nostack, preserves_flags)
     );
     r0
+}
+
+#[doc = include_str!("./doc/Sys_getpid.md")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+)]
+pub unsafe fn linux_sys_getpid() -> i32 {
+    let r0: isize;
+    asm!(
+        "svc 0",
+        inlateout("x8") SYS::GETPID => r0,
+        options(nostack, preserves_flags)
+    );
+    r0 as i32
 }
 
 #[doc = include_str!("./doc/Sys_rt_sigaction.md")]
@@ -129,7 +144,7 @@ pub unsafe fn linux_sys_rt_sigaction(
 ) -> isize {
     let r0;
     asm!(
-        "svc #0",
+        "svc 0",
         inlateout("x8") SYS::GETRANDOM => r0,
         in("x0") sig,
         in("x1") act,

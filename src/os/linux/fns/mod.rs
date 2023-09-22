@@ -19,10 +19,7 @@ pub use read::{
     linux_get_byte, linux_get_char, linux_get_dirty_char, linux_get_line, linux_get_str,
     linux_get_utf8_bytes, linux_pause_until_char, linux_prompt,
 };
-pub use syscalls::{
-    linux_sys_exit, linux_sys_getrandom, linux_sys_ioctl, linux_sys_nanosleep, linux_sys_read,
-    linux_sys_rt_sigaction, linux_sys_write,
-};
+pub use syscalls::*;
 pub use write::{linux_eprint, linux_eprintln, linux_print, linux_print_bytes, linux_println};
 
 /// Suspends execution of calling thread.
@@ -47,4 +44,15 @@ pub fn linux_sleep(duration: Duration) {
             Ordering::Greater => req = rem,
         }
     }
+}
+
+/// Gets the process number.
+///
+/// This function makes use of the [`linux_sys_getpid`] syscall.
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+)]
+pub fn linux_getpid() -> i32 {
+    unsafe { linux_sys_getpid() }
 }
