@@ -9,33 +9,39 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - new structs `LINUX_SYS_X86_64`, `LINUX_SYS_X86`, `LINUX_SYS_ARM`, `LINUX_SYS_AARCH64`, `LINUX_SYS_RISCV`, `LINUX_SIGACTION`, `LinuxSigaction`, `LINUX_TERMIOS_CFLAG`, `LINUX_TERMIOS_IFLAG`, `LINUX_TERMIOS_LFLAG`, `LINUX_TERMIOS_OFLAG`, `LinuxTerminal`.
-- new functions: `linux_sys_getrand`, `linux_sys_rt_sigaction`, `linux_random_bytes`, `linux_random_u8`, `linux_random_u16`, `linux_random_u32`, `linux_random_u64`, `linux_random_i128`.
+- new functions: `linux_sys_getrand`, `linux_sys_getpid`, `linux_sys_rt_sigaction`, `linux_getpid`, `linux_handle_signals`, `linux_random_bytes`, `linux_random_u8`, `linux_random_u16`, `linux_random_u32`, `linux_random_u64`, `linux_random_i128`.
+- new macros: `ansi`, `ansib`, `ansip`.
 - new static: `LINUX_TERMINAL_STATE`.
 - add `linux_sys_nanosleep` for `riscv`.
 - add missing `LINUX_ERRNO` values.
 - new type alias `LINUX_SYS`.
 - new `check_miri.sh` script.
-- new dependency: `const-str`.
+- new dependencies: `const-str`, `atomic`, `portable-atomic`.
 - new macros: `os_print`, `os_println`, `os_eprint`, `os_eprintln`.
 - add scripts to get linux syscalls and error numbers as rust constants.
 - add CI actions to get `syscall.h` and `errno.h` values for each target.
-- new `atomic` dependency.
-- reexport `atomic::Atomic` type.
 - new `sync` module and `atomic` submodule.
 - new `os::linux::terminal` module.
 - new `LinuxTermios` methods: `enable_raw_mode`, `disable_raw_mode`, `is_terminal`, `get_state`, `set_state`.
-- reexport `core::sync::atomic::{fence, Ordering}` as `atomic_fence` and `AtomicOrdering`, respectively.
-- reexport renamed const-str macros from `ascii` and `str` modules.
+- new `LinuxSigaction` method `new`.
+- reexport all `core::sync::atomic` types; reexport `Ordering` as `AtomicOrdering`.
+- reexport renamed `const-str` macros from `ascii`, `str` and `option` modules.
+- reexport `atomic::Atomic` and all `portable-atomic` types.
 - reexport `core::num::NonZero*` types from `num` module.
 
 ### Removed
 - remove the already deprecated macros `cdbg`, `rfs`.
 - remove the already deprecated feature `no-std`.
-- delete fns: `linux_enable_raw_mode`, `linux_disable_raw_mode`, `linux_is_terminal`.
+- remove fns: `linux_enable_raw_mode`, `linux_disable_raw_mode`, `linux_is_terminal`.
+- remove struct `AnsiColor`, and move its constants to `Ansi`.
+- remove the specific print methods from `Ansi`.
 
 ### Changed
 - rename `SysTimeSpec` to `LinuxTimespec`, `SysTermios` to `LinuxTermios`.
 - rename `ERRNO` to `LINUX_ERRNO`, `IOCTL` to `LINUX_IOCTL`.
+- rename `Ansi` associated constants `*_ALTERNATIVE_SCREEN` to `*_ALT_SCREEN`.
+- rename `Ansi` associated functions `*_alternative_screen` to `*_alt_screen`.
+- modify `LinuxSigaction` fields: remove `unsafe` and wrap `sa_restorer` with `Option`.
 - rename `_features` module to `_doc`.
 - move check scripts to `/tools/`.
 
