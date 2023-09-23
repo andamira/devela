@@ -5,7 +5,7 @@
 // improve set flags
 
 use super::super::{linux_sys_ioctl, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG};
-use crate::ops::iif;
+use crate::codegen::iif;
 use core::ffi::c_uint;
 
 /// Represents the [`termios`] structure from libc,

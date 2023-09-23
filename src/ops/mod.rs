@@ -4,6 +4,4 @@
 //
 
 mod chain;
-mod iif;
-
-pub use {chain::*, iif::*};
+pub use chain::*;

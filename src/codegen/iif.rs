@@ -1,4 +1,4 @@
-// devela::ops::iif
+// devela::codegen::iif
 //
 //! inline if macro.
 //
@@ -11,7 +11,7 @@
 ///
 /// Replacing `if`:
 /// ```
-/// use devela::ops::iif;
+/// use devela::codegen::iif;
 ///
 /// // This
 /// let s = iif![1 > 0; true; false];
@@ -26,7 +26,7 @@
 ///
 /// Replacing `if let`:
 /// ```
-/// use devela::ops::iif;
+/// use devela::codegen::iif;
 ///
 /// let num = Some(123);
 ///
@@ -43,7 +43,7 @@
 ///
 /// Nested:
 /// ```
-/// use devela::ops::iif;
+/// use devela::codegen::iif;
 ///
 /// let mut s = String::new();
 /// let is_premium = Some(true);
@@ -90,7 +90,7 @@ pub use iif;
 
 #[cfg(test)]
 mod test_iif {
-    use crate::ops::iif;
+    use crate::codegen::iif;
 
     #[test]
     fn iif() {

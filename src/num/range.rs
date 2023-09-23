@@ -3,7 +3,7 @@
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //
 
-use crate::{codegen::paste, iif};
+use crate::codegen::{iif, paste};
 use core::{fmt, num::*, str::FromStr};
 
 #[cfg(feature = "unsafe_num")]

@@ -11,9 +11,11 @@ pub(crate) mod all {
 pub use ::devela_macros::{cif, compile, compile_attr};
 
 mod deprecate;
+mod iif;
 mod paste;
 
 pub use deprecate::deprecate_feature;
+pub use iif::iif;
 pub use paste::paste;
 
 #[doc(hidden)]
