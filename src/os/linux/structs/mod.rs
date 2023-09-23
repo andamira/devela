@@ -7,8 +7,5 @@ mod sigaction;
 mod termios;
 mod timespec;
 
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_os")))]
 pub use {sigaction::LinuxSigaction, termios::LinuxTermios, timespec::LinuxTimespec};

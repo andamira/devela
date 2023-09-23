@@ -4,18 +4,17 @@
 //
 
 pub(crate) mod all {
+    #[cfg(feature = "linux")]
     #[doc(inline)]
     pub use super::linux::all::*;
 
     #[doc(inline)]
-    pub use super::{linux::all::*, terminal::*};
-
-    #[doc(inline)]
-    pub use super::macros::*;
+    pub use super::{macros::*, terminal::*};
 }
 
 // do not block for non-linux oses so it can be used from no_std.
-#[cfg_attr(feature = "nightly", doc(cfg(target_os = "linux")))]
+#[cfg(feature = "linux")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
 pub mod linux;
 pub mod terminal;
 
@@ -25,6 +24,5 @@ pub use terminal::*;
 // `os_` functions and macros derive to specific OS implementations.
 // For now, only linux is supported.
 
-#[cfg_attr(feature = "nightly", doc(cfg(target_os = "linux")))]
 mod macros;
 pub use macros::*;

@@ -21,8 +21,10 @@
 
 mod consts;
 #[cfg(all(feature = "unsafe_os", not(miri)))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_os")))]
 mod fns;
 #[cfg(all(feature = "unsafe_os", not(miri)))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_os")))]
 mod structs;
 
 pub use all::*;
@@ -38,6 +40,7 @@ pub(super) mod all {
 /* public modules */
 
 #[cfg(all(feature = "unsafe_os", not(miri)))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_os")))]
 pub mod terminal;
 
 /// Linux-specific extensions to [`std::io`].

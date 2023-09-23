@@ -6,6 +6,7 @@ set -e # stops on error
 
 MSRV="1.72.1" # sync with readme, Cargo.toml & .github/workflows/check.yml
 RCMD="rustup -v run $MSRV"
+COPT="--features=linux" # cargo options
 
 rustup override set $MSRV
 
@@ -36,28 +37,28 @@ rustup target add thumbv7m-none-eabi # tier 2 (_thumb)
 
 
 # check
-cmd="$RCMD cargo c"; echo "std, safe\n$ " $cmd; $cmd
-cmd="$RCMD cargo cu"; echo "std, unsafe\n$" $cmd; $cmd
-cmd="$RCMD cargo cn"; echo "no_std, safe\n$" $cmd; $cmd
+cmd="$RCMD cargo c $COPT"; echo "std, safe\n$ " $cmd; $cmd
+cmd="$RCMD cargo cu $COPT"; echo "std, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cn $COPT"; echo "no_std, safe\n$" $cmd; $cmd
 
 # check additional targets
-cmd="$RCMD cargo cuT1"; echo "std, unsafe\n$" $cmd; $cmd
-cmd="$RCMD cargo cuT2"; echo "std, unsafe\n$" $cmd; $cmd
-cmd="$RCMD cargo cuT3"; echo "std, unsafe\n$" $cmd; $cmd
-cmd="$RCMD cargo cuT6"; echo "std, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cuT1 $COPT"; echo "std, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cuT2 $COPT"; echo "std, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cuT3 $COPT"; echo "std, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cuT6 $COPT"; echo "std, unsafe\n$" $cmd; $cmd
 
-cmd="$RCMD cargo cnuT5"; echo "no_std, no-alloc, unsafe\n$" $cmd; $cmd
-cmd="$RCMD cargo cnuT7"; echo "no_std, no-alloc, unsafe\n$" $cmd; $cmd
-cmd="$RCMD cargo cnuT8"; echo "no_std, no-alloc, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cnuT5 $COPT"; echo "no_std, no-alloc, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cnuT7 $COPT"; echo "no_std, no-alloc, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo cnuT8 $COPT"; echo "no_std, no-alloc, unsafe\n$" $cmd; $cmd
 
 # TODO
-# cmd="$RCMD cargo cnuT5"; echo "no_std, alloc, unsafe\n$" $cmd; $cmd
-# cmd="$RCMD cargo cnuT7"; echo "no_std, alloc, unsafe\n$" $cmd; $cmd
-# cmd="$RCMD cargo cnuT8"; echo "no_std, alloc, unsafe\n$" $cmd; $cmd
+# cmd="$RCMD cargo cnuT5 $COPT"; echo "no_std, alloc, unsafe\n$" $cmd; $cmd
+# cmd="$RCMD cargo cnuT7 $COPT"; echo "no_std, alloc, unsafe\n$" $cmd; $cmd
+# cmd="$RCMD cargo cnuT8 $COPT"; echo "no_std, alloc, unsafe\n$" $cmd; $cmd
 
 # test
-cmd="$RCMD cargo t"; echo "tests\n$" $cmd; $cmd
-cmd="$RCMD cargo tu"; echo "tests, unsafe\n$" $cmd; $cmd
+cmd="$RCMD cargo t $COPT"; echo "tests\n$" $cmd; $cmd
+cmd="$RCMD cargo tu $COPT"; echo "tests, unsafe\n$" $cmd; $cmd
 
 # docs
 cmd="cargo +nightly nd"; echo "docs\n$" $cmd; $cmd

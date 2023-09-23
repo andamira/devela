@@ -16,17 +16,9 @@ use crate::sync::atomic::{Atomic, AtomicOrdering};
 ///     LinuxTerminal::restore_saved_state().unwrap();
 /// }
 /// ```
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios::new());
 
 /// Linux terminal manager.
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 #[derive(Debug, Default)]
 pub struct LinuxTerminal;
 

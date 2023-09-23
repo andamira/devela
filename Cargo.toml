@@ -26,8 +26,10 @@ publish = true
 
 #* capability features *#
 default = []
-full = [ # enables optional capabilities in this crate (unused)
+full = [
+	"linux",
 ]
+linux = [] # enables os::linux functionality
 
 #* environment features *#
 std = ["alloc", # disables `no_std` compatibility and enables `std` functionality
@@ -49,7 +51,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_convert = [] # enables using `MaybeUninit` for array initalization
 	unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
-	unsafe_os = [] # enables linux syscalls
+	unsafe_os = [] # together with `linux` feature enables linux syscalls
 	unsafe_num = [] # enables unsafe constructors and bytemuck's traits
 	unsafe_str = [] # enables unsafe use in `str`
 safe = [] # forbids unsafe in this crate
@@ -58,7 +60,7 @@ safest = ["safe"] # forbids unsafe recursively (unused)
 #* nightly features *#
 nightly = [] # enables nightly features
 nightly_docs = [ # enables features for docs.rs
-	"nightly", "full", "std", "unsafe",
+	"nightly", "full", "std", "unsafe", "linux",
 ]
 
 # ------------------------------------------------------------------------------

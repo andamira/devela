@@ -11,10 +11,6 @@ use core::{
 };
 
 #[doc = include_str!("./doc/Sys_exit.md")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub unsafe fn linux_sys_exit(status: c_int) -> ! {
     unsafe {
         asm!(
@@ -27,10 +23,6 @@ pub unsafe fn linux_sys_exit(status: c_int) -> ! {
 }
 
 #[doc = include_str!("./doc/Sys_read.md")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub unsafe fn linux_sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     let r0;
     asm!(
@@ -47,10 +39,6 @@ pub unsafe fn linux_sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
 }
 
 #[doc = include_str!("./doc/Sys_write.md")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub unsafe fn linux_sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
     let r0;
     asm!(
@@ -67,10 +55,6 @@ pub unsafe fn linux_sys_write(fd: c_int, buf: *const u8, count: usize) -> isize 
 }
 
 #[doc = include_str!("./doc/Sys_nanosleep.md")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub unsafe fn linux_sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
     let r0;
     asm!(
@@ -86,10 +70,6 @@ pub unsafe fn linux_sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTime
 }
 
 #[doc = include_str!("./doc/Sys_ioctl.md")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub unsafe fn linux_sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
     let r0;
     asm!(
@@ -106,10 +86,6 @@ pub unsafe fn linux_sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isi
 }
 
 #[doc = include_str!("./doc/Sys_getrandom.md")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
     let r0;
     asm!(
@@ -126,10 +102,6 @@ pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -
 }
 
 #[doc = include_str!("./doc/Sys_getpid.md")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub unsafe fn linux_sys_getpid() -> i32 {
     let r0: isize;
     asm!(
@@ -141,10 +113,6 @@ pub unsafe fn linux_sys_getpid() -> i32 {
 }
 
 #[doc = include_str!("./doc/Sys_rt_sigaction.md")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub unsafe fn linux_sys_rt_sigaction(
     sig: c_int,
     act: *const LinuxSigaction,

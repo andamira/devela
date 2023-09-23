@@ -3,13 +3,12 @@
 //! OS related macros.
 //
 
-use crate::codegen::paste;
-
 // Generates the macros:
 // - os_print
 // - os_println
 // - os_eprint
 // - os_eprintln
+#[cfg(feature = "linux")]
 macro_rules! generate_os_print_macros {
     () => {
         generate_os_print_macros![
@@ -57,7 +56,7 @@ macro_rules! generate_os_print_macros {
     (
         $d:tt $name:ident + $name2:ident, $doc:literal, $doc_ln:literal, $newline:literal $(,)?
     ) => {
-        paste! {
+        $crate::codegen::paste! {
             #[doc = $doc]
             #[doc = "\n\nLeverages [`" [<linux_ $name>] "`][super::linux::" [<linux_ $name>] "]"]
             #[doc = ", [`format_buf`][crate::fmt::format_buf]"]
@@ -107,7 +106,7 @@ macro_rules! generate_os_print_macros {
             ))]
             #[cfg_attr(
                 feature = "nightly",
-                doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
+                doc(cfg(all(feature = "linux", feature = "unsafe_os")))
             )]
             macro_rules! [<os_ $name>] {
                 // 1) print a newline (or nothing)
@@ -167,12 +166,9 @@ macro_rules! generate_os_print_macros {
                 feature = "unsafe_os",
                 not(miri),
             ))]
-            #[cfg_attr(
-                feature = "nightly",
-                doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-            )]
             pub use [<os_ $name>];
         }
     };
 }
+#[cfg(feature = "linux")]
 generate_os_print_macros![];

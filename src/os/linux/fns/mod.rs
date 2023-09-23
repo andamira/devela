@@ -24,13 +24,9 @@ pub use signal::linux_handle_signals;
 pub use syscalls::*;
 pub use write::{linux_eprint, linux_eprintln, linux_print, linux_print_bytes, linux_println};
 
-/// Suspends execution of calling thread.
+/// Suspends execution of calling thread for `duration`.
 ///
 /// This function makes use of the [`linux_sys_nanosleep`] syscall.
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub fn linux_sleep(duration: Duration) {
     let mut req = LinuxTimespec::with(duration);
     let mut rem = LinuxTimespec::default();
@@ -48,13 +44,9 @@ pub fn linux_sleep(duration: Duration) {
     }
 }
 
-/// Gets the process number.
+/// Returns the current process number.
 ///
 /// This function makes use of the [`linux_sys_getpid`] syscall.
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub fn linux_getpid() -> i32 {
     unsafe { linux_sys_getpid() }
 }

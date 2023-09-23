@@ -6,20 +6,6 @@
 
 use crate::ascii::{ascii_d1, ascii_d2, ascii_d3, ascii_d4};
 
-#[cfg(all(
-    any(not(feature = "std"), doc),
-    any(
-        target_arch = "x86_64",
-        target_arch = "x86",
-        target_arch = "arm",
-        target_arch = "aarch64",
-        target_arch = "riscv32",
-        target_arch = "riscv64"
-    ),
-    feature = "unsafe_os",
-    not(miri),
-))]
-use crate::os::linux::linux_print_bytes;
 #[cfg(feature = "std")]
 use std::io::{stdout, Write};
 
@@ -43,18 +29,20 @@ pub struct Ansi;
             target_arch = "riscv32",
             target_arch = "riscv64"
         ),
+        feature = "linux",
         feature = "unsafe_os",
         not(miri),
     )
 ))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(any(feature = "std", all(target_os = "linux", feature = "unsafe_os"))))
+    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_os"))))
 )]
 impl Ansi {
     /// Convenience method to print an ANSI escape `sequence` of bytes to `stdout`.
     ///
-    /// It uses the [`Write`] trait on `std`, and [`linux_print_bytes`] on `no_std`.
+    /// It uses the `Write` trait on `std` and
+    /// [`linux_print_bytes`][crate::os::linux::linux_print_bytes] on `no_std`.
     ///
     /// # Example
     /// ```
@@ -64,12 +52,25 @@ impl Ansi {
     /// Ansi::print(&Ansi::CURSOR_MOVE3(120, 80));
     /// ```
     #[inline]
+    // MAYBE -> Result<()>
     pub fn print(sequence: &[u8]) {
-        // MAYBE -> Result<()>
         #[cfg(feature = "std")]
         let _ = stdout().write_all(sequence);
-        #[cfg(not(feature = "std"))]
-        linux_print_bytes(sequence);
+
+        #[cfg(all(
+            not(feature = "std"),
+            feature = "linux",
+            feature = "unsafe_os",
+            any(
+                target_arch = "x86_64",
+                target_arch = "x86",
+                target_arch = "arm",
+                target_arch = "aarch64",
+                target_arch = "riscv32",
+                target_arch = "riscv64"
+            )
+        ))]
+        crate::os::linux::linux_print_bytes(sequence);
     }
 }
 

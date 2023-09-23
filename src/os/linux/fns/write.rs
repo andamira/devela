@@ -11,10 +11,6 @@ use super::{linux_sys_exit, linux_sys_write, LINUX_FILENO as FILENO};
 ///
 /// # Error Handling
 /// If the write fails, it prints an error message and exits with status code 10.
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub fn linux_print(s: &str) {
     let mut s = s.as_bytes();
     while !s.is_empty() {
@@ -34,10 +30,6 @@ pub fn linux_print(s: &str) {
 ///
 /// # Error Handling
 /// If the write fails, it prints an error message and exits with status code 10.
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 #[inline]
 pub fn linux_println(s: &str) {
     linux_print(s);
@@ -50,10 +42,6 @@ pub fn linux_println(s: &str) {
 ///
 /// # Error Handling
 /// If the write fails, it prints an error message and exits with status code 10.
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 pub fn linux_eprint(s: &str) {
     let mut s = s.as_bytes();
     while !s.is_empty() {
@@ -73,10 +61,6 @@ pub fn linux_eprint(s: &str) {
 ///
 /// # Error Handling
 /// If the write fails, it prints an error message and exits with status code 10.
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 #[inline]
 pub fn linux_eprintln(s: &str) {
     linux_eprint(s);
@@ -89,10 +73,6 @@ pub fn linux_eprintln(s: &str) {
 ///
 /// # Error Handling
 /// If the write fails, it prints an error message and exits with status code 10.
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 #[inline]
 pub fn linux_print_bytes(b: &[u8]) {
     let mut b = b;

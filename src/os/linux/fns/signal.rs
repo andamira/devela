@@ -8,10 +8,6 @@ use super::super::{linux_sys_rt_sigaction, LinuxSigaction, LINUX_SIGACTION};
 /// Register a single signal `handler` with multiple `signals`.
 //
 // IMPROVE documentation; add an example.
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(target_os = "linux", feature = "unsafe_os")))
-)]
 #[inline]
 pub fn linux_handle_signals(handler: extern "C" fn(i32), signals: &[i32]) {
     for s in signals {

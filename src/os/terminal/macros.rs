@@ -130,7 +130,7 @@ pub use ansi;
 ))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(any(all(target_os = "linux", feature = "unsafe_os"), feature = "std")))
+    doc(cfg(any(all(feature = "linux", feature = "unsafe_os"), feature = "std")))
 )]
 #[macro_export]
 macro_rules! ansip {
