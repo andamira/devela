@@ -6,9 +6,6 @@
 
 use crate::ascii::{ascii_d1, ascii_d2, ascii_d3, ascii_d4};
 
-#[cfg(feature = "std")]
-use std::io::{stdout, Write};
-
 /// ANSI escape codes.
 ///
 /// # List of escape codes
@@ -17,62 +14,6 @@ use std::io::{stdout, Write};
 /// - [Font effects][Self#font-effects-escape-codes]
 /// - [Color][Self#color-escape-codes]
 pub struct Ansi;
-
-#[cfg(any(
-    feature = "std",
-    all(
-        any(
-            target_arch = "x86_64",
-            target_arch = "x86",
-            target_arch = "arm",
-            target_arch = "aarch64",
-            target_arch = "riscv32",
-            target_arch = "riscv64"
-        ),
-        feature = "linux",
-        feature = "unsafe_os",
-        not(miri),
-    )
-))]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_os"))))
-)]
-impl Ansi {
-    /// Convenience method to print an ANSI escape `sequence` of bytes to `stdout`.
-    ///
-    /// It uses the `Write` trait on `std` and
-    /// [`linux_print_bytes`][crate::os::linux::linux_print_bytes] on `no_std`.
-    ///
-    /// # Example
-    /// ```
-    /// use devela::os::terminal::Ansi;
-    ///
-    /// Ansi::print(Ansi::CLEAR_SCREEN);
-    /// Ansi::print(&Ansi::CURSOR_MOVE3(120, 80));
-    /// ```
-    #[inline]
-    // MAYBE -> Result<()>
-    pub fn print(sequence: &[u8]) {
-        #[cfg(feature = "std")]
-        let _ = stdout().write_all(sequence);
-
-        #[cfg(all(
-            not(feature = "std"),
-            feature = "linux",
-            feature = "unsafe_os",
-            any(
-                target_arch = "x86_64",
-                target_arch = "x86",
-                target_arch = "arm",
-                target_arch = "aarch64",
-                target_arch = "riscv32",
-                target_arch = "riscv64"
-            )
-        ))]
-        crate::os::linux::linux_print_bytes(sequence);
-    }
-}
 
 /// # Screen escape codes
 impl Ansi {
