@@ -14,6 +14,8 @@ This project includes the following derived works:
   as part of the [`Also`] and [`Apply`] traits.
 - Adaptation of [rawbytes] by Frank Denis, licensed as MIT,
   into the [`as_bytes`] and [`as_bytes_mut`] functions.
+- Integration of [const_for] by Joachim Enggård Nebel, licensed as MIT,
+  as the [`const_for`] macro.
 
 [0]: https://github.com/andamira/devela/blob/main/src/fmt/int_buf/MODIFICATIONS.md
 [itoa]: https://crates.io/crates/itoa/1.0.9
@@ -31,3 +33,5 @@ This project includes the following derived works:
 [rawbytes]: https://crates.io/crates/rawbytes/1.0.0
 [`as_bytes`]: https://docs.rs/devela/latest/devela/mem/fn.as_bytes.html
 [`as_bytes_mut`]: https://docs.rs/devela/latest/devela/mem/fn.as_bytes_mut.html
+[const_for]: https://crates.io/crates/const_for
+[`const_for`]: https://docs.rs/devela/latest/devela/codegen/macro.const_for.html
