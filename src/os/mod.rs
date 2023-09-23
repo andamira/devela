@@ -1,4 +1,4 @@
-// devela::io
+// devela::os
 //
 //! OS-specific, extends [`std::os`].
 //
@@ -9,7 +9,7 @@ pub(crate) mod all {
     pub use super::linux::all::*;
 
     #[doc(inline)]
-    pub use super::{macros::*, terminal::*};
+    pub use super::{print::*, terminal::*};
 }
 
 // do not block for non-linux oses so it can be used from no_std.
@@ -21,8 +21,5 @@ pub mod terminal;
 #[doc(inline)]
 pub use terminal::*;
 
-// `os_` functions and macros derive to specific OS implementations.
-// For now, only linux is supported.
-
-mod macros;
-pub use macros::*;
+mod print;
+pub use print::*;
