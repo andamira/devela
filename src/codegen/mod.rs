@@ -5,7 +5,7 @@
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{cif, compile, compile_attr, const_for, paste};
+    pub use super::{cif, compile, compile_attr, const_for, iif, paste};
 }
 
 pub use ::devela_macros::{cif, compile, compile_attr};
