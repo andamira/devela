@@ -9,7 +9,7 @@ mod timespec;
 
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_os")))]
 pub use {
-    sigaction::LinuxSigaction,
+    sigaction::{LinuxSigaction, LinuxSigset},
     termios::{LinuxTerminalSize, LinuxTermios},
     timespec::LinuxTimespec,
 };

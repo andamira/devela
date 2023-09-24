@@ -20,7 +20,7 @@ pub use read::{
     linux_get_byte, linux_get_char, linux_get_dirty_char, linux_get_line, linux_get_str,
     linux_get_utf8_bytes, linux_pause_until_char, linux_prompt,
 };
-pub use signal::linux_handle_signals;
+pub use signal::linux_sig_handler_no_return;
 pub use syscalls::*;
 pub use write::{linux_eprint, linux_eprintln, linux_print, linux_print_bytes, linux_println};
 

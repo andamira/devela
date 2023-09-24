@@ -30,6 +30,7 @@ pub struct LINUX_SIGACTION;
 #[allow(non_camel_case_types)]
 pub struct LINUX_SIGNAL;
 
+// 36 signals
 impl LINUX_SIGNAL {
     /// Hangup detected on controlling terminal or death of controlling process.
     ///
@@ -226,6 +227,7 @@ impl LINUX_SIGNAL {
     // pub const SIGLOST: c_int = ?
 }
 
+// 8 flags
 impl LINUX_SIGACTION {
     /// If signum is [`SIGCHLD`], do not receive notification when child processes
     /// stop (i.e., when they receive one of [`SIGSTOP`], [`SIGTSTP`], [`SIGTTIN`],
@@ -241,7 +243,7 @@ impl LINUX_SIGACTION {
     /// [`SIGTTOU`]: LINUX_SIGNAL::SIGTTOU
     /// [`SIGCONT`]: LINUX_SIGNAL::SIGCONT
     /// [`wait(2)`]: https://man7.org/linux/man-pages/man2/wait.2.html
-    pub const SA_NOCLDSTOP: u64 = 0x00000001;
+    pub const SA_NOCLDSTOP: usize = 0x00000001;
 
     /// If signum is [`SIGCHLD`], do not transform children into
     /// zombies when they terminate.
@@ -256,7 +258,7 @@ impl LINUX_SIGACTION {
     /// [`SIGCHLD`]: LINUX_SIGNAL::SIGCHLD
     /// [`SIG_DFL`]: crate::all::LinuxSigaction::SIG_DFL
     /// [`waitpid(2)`]: https://man7.org/linux/man-pages/man2/wait.2.html
-    pub const SA_NOCLDWAIT: u64 = 0x00000002;
+    pub const SA_NOCLDWAIT: usize = 0x00000002;
 
     /// If the [`SA_NOCLDWAIT`] flag is set when establishing a handler for
     /// [`SIGCHLD`], POSIX.1 leaves it unspecified whether a `SIGCHLD` signal is
@@ -275,7 +277,7 @@ impl LINUX_SIGACTION {
     ///
     /// [`SIGCHLD`]: LINUX_SIGNAL::SIGCHLD
     /// [`SA_NOCLDWAIT`]: Self::SA_NOCLDWAIT
-    pub const SA_NODEFER: u64 = 0x40000000;
+    pub const SA_NODEFER: usize = 0x40000000;
 
     /// Call the signal handler on an alternate signal stack provided by
     /// [`sigaltstack(2)`].
@@ -284,14 +286,14 @@ impl LINUX_SIGACTION {
     /// This flag is meaningful only when establishing a signal handler.
     ///
     /// [`sigaltstack(2)`]: https://man7.org/linux/man-pages/man2/sigaltstack.2.html
-    pub const SA_ONSTACK: u64 = 0x08000000;
+    pub const SA_ONSTACK: usize = 0x08000000;
 
     /// Restore the signal action to the default upon entry to the signal handler.
     ///
     /// This flag is meaningful only when establishing a signal handler.
     ///
     /// `SA_ONESHOT` is an obsolete, nonstandard synonym for this flag.
-    pub const SA_RESETHAND: u64 = 0x80000000;
+    pub const SA_RESETHAND: usize = 0x80000000;
 
     /// Provide behavior compatible with BSD signal semantics by making certain
     /// system calls restartable across signals. This flag is meaningful only
@@ -299,7 +301,7 @@ impl LINUX_SIGACTION {
     /// system call restarting.
     ///
     /// [`signal(7)`]: https://man7.org/linux/man-pages/man7/signal.7.html
-    pub const SA_RESTART: u64 = 0x10000000;
+    pub const SA_RESTART: usize = 0x10000000;
 
     /// Not intended for application use.
     ///
@@ -308,7 +310,7 @@ impl LINUX_SIGACTION {
     /// details.
     ///
     /// [`sigreturn(2)`]: https://man7.org/linux/man-pages/man2/sigreturn.2.html
-    pub const SA_RESTORER: u64 = 0x04000000;
+    pub const SA_RESTORER: usize = 0x04000000;
 
     /// The signal handler takes three arguments, not one.
     ///
@@ -317,5 +319,5 @@ impl LINUX_SIGACTION {
     /// This flag is meaningful only when establishing a signal handler.
     ///
     /// (since Linux 2.2)
-    pub const SA_SIGINFO: u64 = 0x00000004;
+    pub const SA_SIGINFO: usize = 0x00000004;
 }
