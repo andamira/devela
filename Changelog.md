@@ -7,6 +7,22 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- new `linux` feature.
+- new `const_for` macro.
+- new struct `LinuxTerminalSize`.
+- new `LinuxTerminal` method `size`.
+- new `LinuxTermios` method `get_winsize`.
+- new function `linux_sig_handler_no_return`.
+
+### Removed
+- remove `Ansi::print` method, and `ansip` macro.
+
+### Changed
+- update `os_*print*` macros to work in `std`.
+- move `iif` macro to `codegen` module.
+- rename `bdbg` again to `cdbg` (again, yeah I know).
+
 ## [0.11.0] - 2023-09-22
 
 ### Added
