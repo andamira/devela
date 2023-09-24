@@ -30,10 +30,14 @@ pub struct LinuxTermios {
     /// Local flags.
     pub c_lflag: c_uint,
 
+    /// …
     pub c_line: u8,
 
+    /// …
     pub c_cc: [u8; 19],
 }
+
+unsafe impl bytemuck::NoUninit for LinuxTermios {}
 
 impl LinuxTermios {
     /// Returns a new empty struct.
@@ -126,6 +130,45 @@ impl LinuxTermios {
         state.c_lflag &= !LINUX_TERMIOS_LFLAG::ECHO;
         LinuxTermios::set_state(state)
     }
+
+    /// Returns the size of the window, in cells and pixels.
+    pub fn get_winsize() -> Result<LinuxTerminalSize, isize> {
+        let mut winsize = LinuxTerminalSize::default();
+        let res = unsafe {
+            linux_sys_ioctl(
+                LINUX_FILENO::STDIN,
+                LINUX_IOCTL::TIOCGWINSZ,
+                &mut winsize as *mut LinuxTerminalSize as *mut u8,
+            )
+        };
+        iif![res >= 0; Ok(winsize); Err(res)]
+    }
 }
 
-unsafe impl bytemuck::NoUninit for LinuxTermios {}
+/// The size of the terminal.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+#[repr(C)]
+pub struct LinuxTerminalSize {
+    /// Rows.
+    pub rows: u16,
+
+    /// Columns.
+    pub cols: u16,
+
+    /// Horizontal pixels.
+    pub x: u16,
+
+    /// Vertical pixels.
+    pub y: u16,
+}
+
+impl LinuxTerminalSize {
+    /// Returns a tuple of (x, y) pixels.
+    pub const fn pixels(&self) -> (u16, u16) {
+        (self.x, self.y)
+    }
+    /// Returns a tuple of (columns, rows) cells.
+    pub const fn cells(&self) -> (u16, u16) {
+        (self.rows, self.cols)
+    }
+}

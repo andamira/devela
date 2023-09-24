@@ -3,7 +3,7 @@
 //! Linux terminal related items.
 //
 
-use super::LinuxTermios;
+use super::{LinuxTerminalSize, LinuxTermios};
 use crate::sync::atomic::{Atomic, AtomicOrdering};
 
 /// State of the terminal saved globally, that can be restored from anywhere.
@@ -69,6 +69,11 @@ impl LinuxTerminal {
     #[inline]
     pub fn is_terminal(&self) -> bool {
         LinuxTermios::is_terminal()
+    }
+
+    /// Returns the terminal dimensions.
+    pub fn size(&self) -> Result<LinuxTerminalSize, isize> {
+        LinuxTermios::get_winsize()
     }
 
     /// Enables raw mode.

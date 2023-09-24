@@ -65,7 +65,7 @@ pub mod io {
             linux_random_u128, linux_random_u16, linux_random_u32, linux_random_u64,
             linux_random_u8, linux_sys_getrandom, linux_sys_ioctl, linux_sys_read, linux_sys_write,
         },
-        structs::LinuxTermios,
+        structs::{LinuxTerminalSize, LinuxTermios},
     };
 }
 
