@@ -30,15 +30,15 @@ use alloc::{format, string::String};
 ///
 /// # Examples
 /// ```
-/// use devela::fmt::bdbg;
+/// use devela::fmt::cdbg;
 ///
 /// let a = vec![1, 2, 3];
-/// let _b = bdbg![a];
+/// let _b = cdbg![a];
 /// //       ^-- prints: [src/main.rs:5] a = [1, 2, 3]
 /// ```
 // Source code based on the original `dbg!` implementation.
 #[macro_export]
-macro_rules! bdbg {
+macro_rules! cdbg {
     () => {
         eprintln!("[{}:{}]", file!(), line!())
     };
@@ -52,9 +52,16 @@ macro_rules! bdbg {
         }
     };
     ($($val:expr),+ $(,)?) => {
-        ($(bdbg!($val)),+,)
+        ($(cdbg!($val)),+,)
     };
 }
+pub use cdbg;
+#[doc(hidden)]
+#[macro_export]
+#[deprecated(since = "0.12.0", note = "please use `cdbg`")]
+macro_rules! bdbg { ($($val:expr)? $(,)?) => { $crate::fmt::cdbg![$($val)?]; } }
+#[allow(deprecated)]
+#[doc(hidden)]
 pub use bdbg;
 
 /// *`s`kip `f`ormatting* macro.
