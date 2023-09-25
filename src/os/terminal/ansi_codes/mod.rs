@@ -4,7 +4,7 @@
 //
 #![allow(non_snake_case)]
 
-use crate::ascii::{ascii_d1, ascii_d2, ascii_d3, ascii_d4};
+use crate::ascii::{ascii_d1, ascii_d2, ascii_d3, ascii_d4, calc_digit_u32};
 
 mod color;
 pub use color::{AnsiColor256, AnsiColor8};
@@ -29,6 +29,26 @@ impl Ansi {
     ///
     /// <https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_(Control_Sequence_Introducer)_sequences>
     pub const CSI: [u8; 2] = *b"\x1b[";
+
+    /* helper functions */
+
+    // Writes an ansi code with a dynamic number of digits as an argument.
+    fn write_ansi_code_n(buffer: &mut [u8], n: u32, final_byte: u8) -> &[u8] {
+        buffer[0] = b'\x1b';
+        buffer[1] = b'[';
+        let mut divisor = 1;
+        while n / divisor >= 10 {
+            divisor *= 10;
+        }
+        let mut index = 2;
+        while divisor > 0 {
+            buffer[index] = calc_digit_u32(n, divisor);
+            divisor /= 10;
+            index += 1;
+        }
+        buffer[index] = final_byte;
+        &buffer[..=index]
+    }
 }
 
 /// # Screen escape codes
@@ -114,10 +134,46 @@ impl Ansi {
             b'\x1b', b'[', r[0], r[1], r[2], r[3], b';', c[0], c[1], c[2], c[3], b'H',
         ]
     }
+    /// Returns a slice with the code to move the cursor to the specified position (row, col).
+    ///
+    /// It needs a `buffer` where to store the bytes.
+    ///
+    /// # Panics
+    /// Panics if the buffer is not big enough.
+    pub fn CURSOR_MOVE_N(buffer: &mut [u8], row: u32, col: u32) -> &[u8] {
+        buffer[0] = b'\x1b';
+        buffer[1] = b'[';
+
+        let mut divisor = 1;
+        while row / divisor >= 10 {
+            divisor *= 10;
+        }
+        let mut index = 2;
+        while divisor > 0 {
+            buffer[index] = calc_digit_u32(row, divisor);
+            divisor /= 10;
+            index += 1;
+        }
+
+        buffer[index] = b';';
+        index += 1;
+
+        divisor = 1;
+        while col / divisor >= 10 {
+            divisor *= 10;
+        }
+        while divisor > 0 {
+            buffer[index] = calc_digit_u32(col, divisor);
+            divisor /= 10;
+            index += 1;
+        }
+
+        buffer[index] = b'H';
+        &buffer[..=index]
+    }
 
     /// Code to move the cursor up by one line.
     pub const CURSOR_UP: [u8; 3] = *b"\x1b[A";
-
     /// Code to move the cursor up by 1-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 9.
@@ -149,10 +205,19 @@ impl Ansi {
         let n: [u8; 4] = ascii_d4(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'A']
     }
+    /// Returns a slice with the code to move the cursor up by `n` lines.
+    ///
+    /// It needs a `buffer` where to store the bytes.
+    ///
+    /// # Panics
+    /// Panics if the buffer is not big enough.
+    #[inline]
+    pub fn CURSOR_UP_N(buffer: &mut [u8], n: u32) -> &[u8] {
+        Self::write_ansi_code_n(buffer, n, b'A')
+    }
 
     /// Code to move the cursor down by one line.
     pub const CURSOR_DOWN: [u8; 3] = *b"\x1b[B";
-
     /// Code to move the cursor down by 1-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 9.
@@ -184,10 +249,19 @@ impl Ansi {
         let n: [u8; 4] = ascii_d4(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'B']
     }
+    /// Returns a slice with the code to move the cursor down by `n` lines.
+    ///
+    /// It needs a `buffer` where to store the bytes.
+    ///
+    /// # Panics
+    /// Panics if the buffer is not big enough.
+    #[inline]
+    pub fn CURSOR_DOWN_N(buffer: &mut [u8], n: u32) -> &[u8] {
+        Self::write_ansi_code_n(buffer, n, b'B')
+    }
 
     /// Code to move the cursor right by one column.
     pub const CURSOR_RIGHT: [u8; 3] = *b"\x1b[C";
-
     /// Code to move the cursor right by 1-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 9.
@@ -219,10 +293,19 @@ impl Ansi {
         let n: [u8; 4] = ascii_d4(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'C']
     }
+    /// Returns a slice with the code to move the cursor right by `n` lines.
+    ///
+    /// It needs a `buffer` where to store the bytes.
+    ///
+    /// # Panics
+    /// Panics if the buffer is not big enough.
+    #[inline]
+    pub fn CURSOR_RIGHT_N(buffer: &mut [u8], n: u32) -> &[u8] {
+        Self::write_ansi_code_n(buffer, n, b'C')
+    }
 
     /// Code to move the cursor left by one column.
     pub const CURSOR_LEFT: [u8; 3] = *b"\x1b[D";
-
     /// Code to move the cursor left by 1-digit `n` lines.
     /// # Panics
     /// Panics in debug if `n` > 9.
@@ -253,6 +336,16 @@ impl Ansi {
     pub const fn CURSOR_LEFT4(n: u16) -> [u8; 7] {
         let n: [u8; 4] = ascii_d4(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'D']
+    }
+    /// Returns a slice with the code to move the cursor left by `n` lines.
+    ///
+    /// It needs a `buffer` where to store the bytes.
+    ///
+    /// # Panics
+    /// Panics if the buffer is not big enough.
+    #[inline]
+    pub fn CURSOR_LEFT_N(buffer: &mut [u8], n: u32) -> &[u8] {
+        Self::write_ansi_code_n(buffer, n, b'D')
     }
 
     /// Code to move the cursor to the beginning of the next line.
@@ -288,6 +381,16 @@ impl Ansi {
         let n: [u8; 4] = ascii_d4(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'E']
     }
+    /// Returns a slice with the code to move the cursor to the beginning of the next `n` lines.
+    ///
+    /// It needs a `buffer` where to store the bytes.
+    ///
+    /// # Panics
+    /// Panics if the buffer is not big enough.
+    #[inline]
+    pub fn CURSOR_NEXT_LINE_N(buffer: &mut [u8], n: u32) -> &[u8] {
+        Self::write_ansi_code_n(buffer, n, b'F')
+    }
 
     /// Code to move the cursor to the beginning of the previous line.
     pub const CURSOR_PREV_LINE: [u8; 3] = *b"\x1b[E";
@@ -321,6 +424,15 @@ impl Ansi {
     pub const fn CURSOR_PREV_LINE4(n: u16) -> [u8; 7] {
         let n: [u8; 4] = ascii_d4(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'E']
+    }
+    /// Returns a slice with the code to move the cursor to the beginning of the previous `n` lines.
+    ///
+    /// It needs a `buffer` where to store the bytes.
+    ///
+    /// # Panics
+    /// Panics if the buffer is not big enough.
+    pub fn CURSOR_PREV_LINE_N(buffer: &mut [u8], n: u32) -> &[u8] {
+        Self::write_ansi_code_n(buffer, n, b'E')
     }
 }
 
