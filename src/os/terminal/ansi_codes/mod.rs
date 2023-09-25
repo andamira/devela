@@ -18,6 +18,7 @@ mod print;
 /// - [Color (8-bit)][Self#8-bit-color-escape-codes]
 /// - [Color (rgb)][Self#rgb-color-escape-codes]
 /// - [Screen][Self#screen-escape-codes]
+/// - [Erase][Self#erase-escape-codes]
 /// - [Cursor][Self#cursor-escape-codes]
 /// - [Font effects][Self#font-effects-escape-codes]
 /// - [Print method](Self#print-method)
@@ -32,14 +33,32 @@ impl Ansi {
 
 /// # Screen escape codes
 impl Ansi {
-    /// Code to clear the screen.
-    pub const CLEAR_SCREEN: [u8; 4] = *b"\x1b[2J";
-
     /// Code to enable the alternative screen.
     pub const ENABLE_ALT_SCREEN: [u8; 7] = *b"\x1b[1049h";
 
     /// Code to disable the alternative screen.
     pub const DISABLE_ALT_SCREEN: [u8; 7] = *b"\x1b[1049l";
+}
+
+/// # Erase escape codes
+impl Ansi {
+    /// Code to erase from the cursor to the end of the line.
+    pub const ERASE_END_LINE: [u8; 3] = *b"\x1b[K"; // also "\x1b[0K"
+
+    /// Code to erase from the cursor to the start of the line.
+    pub const ERASE_START_LINE: [u8; 4] = *b"\x1b[1K";
+
+    /// Code to erase the entire line.
+    pub const ERASE_LINE: [u8; 4] = *b"\x1b[2K";
+
+    /// Code to erase from the cursor to the end of the screen.
+    pub const ERASE_END_SCREEN: [u8; 3] = *b"\x1b[J"; // also "\x1b[0J"
+
+    /// Code to erase from the cursor to the start of the screen.
+    pub const ERASE_START_SCREEN: [u8; 4] = *b"\x1b[1J";
+
+    /// Code to erase the entire screen.
+    pub const ERASE_SCREEN: [u8; 4] = *b"\x1b[2J";
 }
 
 /// # Cursor escape codes
@@ -234,6 +253,74 @@ impl Ansi {
     pub const fn CURSOR_LEFT4(n: u16) -> [u8; 7] {
         let n: [u8; 4] = ascii_d4(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'D']
+    }
+
+    /// Code to move the cursor to the beginning of the next line.
+    pub const CURSOR_NEXT_LINE: [u8; 3] = *b"\x1b[E";
+    /// Code to move the cursor to the beginning of the next 1-digit `n` lines.
+    /// # Panics
+    /// Panics in debug if `n` > 9.
+    #[inline]
+    pub const fn CURSOR_NEXT_LINE1(n: u8) -> [u8; 4] {
+        [b'\x1b', b'[', ascii_d1(n), b'E']
+    }
+    /// Code to move the cursor to the beginning of the next 2-digit `n` lines.
+    /// # Panics
+    /// Panics in debug if `n` > 99.
+    #[inline]
+    pub const fn CURSOR_NEXT_LINE2(n: u8) -> [u8; 5] {
+        let n: [u8; 2] = ascii_d2(n);
+        [b'\x1b', b'[', n[0], n[1], b'E']
+    }
+    /// Code to move the cursor to the beginning of the next 3-digit `n` lines.
+    /// # Panics
+    /// Panics in debug if `n` > 999.
+    #[inline]
+    pub const fn CURSOR_NEXT_LINE3(n: u16) -> [u8; 6] {
+        let n: [u8; 3] = ascii_d3(n);
+        [b'\x1b', b'[', n[0], n[1], n[2], b'E']
+    }
+    /// Code to move the cursor to the beginning of the next 4-digit `n` lines.
+    /// # Panics
+    /// Panics in debug if `n` > 999.
+    #[inline]
+    pub const fn CURSOR_NEXT_LINE4(n: u16) -> [u8; 7] {
+        let n: [u8; 4] = ascii_d4(n);
+        [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'E']
+    }
+
+    /// Code to move the cursor to the beginning of the previous line.
+    pub const CURSOR_PREV_LINE: [u8; 3] = *b"\x1b[E";
+    /// Code to move the cursor to the beginning of the previous 1-digit `n` lines.
+    /// # Panics
+    /// Panics in debug if `n` > 9.
+    #[inline]
+    pub const fn CURSOR_PREV_LINE1(n: u8) -> [u8; 4] {
+        [b'\x1b', b'[', ascii_d1(n), b'E']
+    }
+    /// Code to move the cursor to the beginning of the previous 2-digit `n` lines.
+    /// # Panics
+    /// Panics in debug if `n` > 99.
+    #[inline]
+    pub const fn CURSOR_PREV_LINE2(n: u8) -> [u8; 5] {
+        let n: [u8; 2] = ascii_d2(n);
+        [b'\x1b', b'[', n[0], n[1], b'E']
+    }
+    /// Code to move the cursor to the beginning of the previous 3-digit `n` lines.
+    /// # Panics
+    /// Panics in debug if `n` > 999.
+    #[inline]
+    pub const fn CURSOR_PREV_LINE3(n: u16) -> [u8; 6] {
+        let n: [u8; 3] = ascii_d3(n);
+        [b'\x1b', b'[', n[0], n[1], n[2], b'E']
+    }
+    /// Code to move the cursor to the beginning of the previous 4-digit `n` lines.
+    /// # Panics
+    /// Panics in debug if `n` > 999.
+    #[inline]
+    pub const fn CURSOR_PREV_LINE4(n: u16) -> [u8; 7] {
+        let n: [u8; 4] = ascii_d4(n);
+        [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'E']
     }
 }
 
