@@ -26,7 +26,7 @@
 /// ];
 /// ```
 ///
-/// See [`ansi`] for the `&str` version.
+/// See [`ansi`] for the `&str` version and [`ansip`] for the printing version.
 ///
 /// [0]: super::Ansi#ansi-escape-codes
 #[macro_export]
@@ -63,7 +63,7 @@ pub use ansib;
 /// ];
 /// ```
 ///
-/// See [`ansib`] for the `&[u8]` version.
+/// See [`ansib`] for the `&[u8]` version and [`ansip`] for the printing version.
 ///
 /// # Features
 /// The `unsafe_str` feature allows the unchecked conversion to `&str`
@@ -93,3 +93,65 @@ macro_rules! ansi {
 }
 #[doc(inline)]
 pub use ansi;
+
+/// Prints concatenated [`Ansi` escape codes][0]
+/// using the Ansi [`print`][super::Ansi#method.print] method.
+///
+/// - codes are case-insensitive.
+/// - accepts a list of codes separated by spaces and/or commas.
+/// - codes without parenthesis refers to `Ansi` associated constants.
+/// - codes identifiers with parenthesis refers to `Ansi` associated functions.
+///
+/// # Examples
+/// ```
+/// use devela::os::terminal::ansip;
+///
+/// // prints the codes to `stdout`
+/// ansip![bold, ITALIC, cursor_move1(2, 3)];
+/// ```
+///
+/// See [`ansi!`] and [`ansib`] for the non-printing versions.
+///
+/// [0]: super::Ansi#ansi-escape-codes
+#[cfg(any(
+    all(feature = "std", not(miri)),
+    all(
+        any(
+            target_arch = "x86_64",
+            target_arch = "x86",
+            target_arch = "arm",
+            target_arch = "aarch64",
+            target_arch = "riscv32",
+            target_arch = "riscv64"
+        ),
+        feature = "unsafe_os",
+        not(miri),
+    )
+))]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(any(all(feature = "linux", feature = "unsafe_os"), feature = "std")))
+)]
+#[macro_export]
+macro_rules! ansip {
+    ($($arg:tt)*) => {
+        $crate::os::terminal::Ansi::print( $crate::os::terminal::ansib![ $($arg)* ] );
+    };
+}
+#[cfg(any(
+    all(feature = "std", not(miri)),
+    all(
+        any(
+            target_arch = "x86_64",
+            target_arch = "x86",
+            target_arch = "arm",
+            target_arch = "aarch64",
+            target_arch = "riscv32",
+            target_arch = "riscv64"
+        ),
+        feature = "unsafe_os",
+        not(miri),
+    )
+))]
+#[doc(inline)]
+pub use ansip;
