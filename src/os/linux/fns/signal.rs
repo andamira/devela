@@ -4,7 +4,8 @@
 //
 
 use super::super::{linux_sys_rt_sigaction, LinuxSigaction, LinuxSigset, LINUX_SIGACTION as SA};
-use core::ptr::null_mut;
+use crate::sync::{AtomicOrdering, AtomicPtr};
+use core::{mem::transmute, ptr::null_mut};
 
 /// Registers multiple signals using a handler function that never returns.
 ///
@@ -41,16 +42,16 @@ use core::ptr::null_mut;
 pub fn linux_sig_handler_no_return(handler: fn(i32) -> !, signals: &[i32]) {
     // We store the given `handler` function in a static to be able to call it
     // from the new extern function which can't capture its environment.
-    static mut HANDLER: Option<fn(i32) -> !> = None;
-    unsafe {
-        HANDLER = Some(handler);
-    }
+    static HANDLER: AtomicPtr<fn(i32) -> !> = AtomicPtr::new(null_mut());
+    HANDLER.store(handler as *mut _, AtomicOrdering::SeqCst);
 
     extern "C" fn c_handler(sig: i32) {
-        unsafe {
-            if let Some(handler) = HANDLER {
-                handler(sig);
-            }
+        let handler = HANDLER.load(AtomicOrdering::SeqCst);
+        if !handler.is_null() {
+            #[allow(clippy::crosspointer_transmute)]
+            // SAFETY: The non-null pointer is originally created from a `fn(i32) -> !` pointer.
+            let handler = unsafe { transmute::<*mut fn(i32) -> !, fn(i32) -> !>(handler) };
+            handler(sig);
         }
     }
 
