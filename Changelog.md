@@ -8,20 +8,31 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [Unreleased]
 
 ### Added
-- new `linux` feature.
 - new `const_for` macro.
-- new struct `LinuxTerminalSize`.
+- new fn `ascii_calc_digit`.
 - new `LinuxTerminal` method `size`.
+- new features: `linux`, `unsafe_char`.
 - new `LinuxTermios` method `get_winsize`.
 - new function `linux_sig_handler_no_return`.
-
-### Removed
-- remove `Ansi::print` method, and `ansip` macro.
+- new `Ansi` methods `CURSOR_NEXT_LINE*`, `CURSOR_PREV_LINE*`.
+- new `Ansi` methods: `CURSOR_PREV_LINE_N`, `CURSOR_NEXT_LINE_N`, `CURSOR_LEFT_N`, `CURSOR_RIGHT_N`, `CURSOR_UP_N`, `CURSOR_MOVE_N`.
+- new `Ansi` const methods: `COLORS`, `BRIGHT_COLORS`, `COLORS_BRIGHT_FG`, `COLORS_BRIGHT_BG`, `COLORS256`, `COLOR256_FG`, `COLOR256_BG`, `RGB`, `RGB_FG`, `RGB_BG`, `GRAY`.
+- new `Ansi` consts: `CSI`, `GRAY*`, `GRAY*_BG`, `ERASE_LINE`, `ERASE_LINE_END`, `ERASE_LINE_START`, `ERASE_SCREEN_START`, `ERASE_SCREEN_END`.
+- new structs: `LinuxTerminalSize`, `AnsiColor8`, `Char7`, `Char8`, `Char16`, `Char24`, `Char32`, `CharConversionError`.
+- new enum `AnsiColor3`.
 
 ### Changed
-- update `os_*print*` macros to work in `std`.
 - move `iif` macro to `codegen` module.
-- rename `bdbg` again to `cdbg` (again, yeah I know).
+- update `os_*print*` macros to work in `std`.
+- use const byte arrays instead of const slices for `Ansi` escape codes.
+- rename ansi constant `CLEAR_SCREEN` to `ERASE_SCREEN`.
+- rename fns `u*_to_ascii` to `ascii_u*_digits`.
+- rename fns `ascii_d*` to `ascii_*digit`.
+- rename `bdbg` to `cdbg`, again.
+
+### Fixed
+- use `u8_to_ascii` instead of `ascii_3digit` for `u8` types.
+- add missing inlines for `Ansi` const fns.
 
 ## [0.11.0] - 2023-09-22
 
