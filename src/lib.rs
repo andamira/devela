@@ -7,6 +7,7 @@
 
 // warnings
 #![warn(clippy::all)]
+#![allow(clippy::wrong_self_convention)] // allow `is_` methods with owned self
 // environment
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
@@ -32,6 +33,7 @@ compile_error!("You can't enable the `safe` and `unsafe*` features at the same t
 extern crate devela_macros;
 
 pub mod ascii;
+pub mod char;
 pub mod cmp;
 pub mod codegen;
 pub mod convert;
@@ -55,6 +57,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         ascii::*,
+        char::*,
         cmp::*,
         codegen::all::*,
         convert::{collection::*, primitive::*},

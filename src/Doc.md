@@ -1,10 +1,10 @@
 ## Features
 Features from different groups (*Capability, Environment, Safety* and *Nightly*)
-are independent from each other.
+are mostly independent from each other.
 
 ### Capability features
 - `default`: no features.
-- `full`: enables optional capabilities (unused).
+- `full`: enables full capabilities (unused).
 
 ### Environment features
 By default the crate is `no_std` compatible.
@@ -16,6 +16,7 @@ By default the crate is `no_std` compatible.
 A gradient of safety. By default nothing is enabled.
 - `unsafest`: enables unsafe recursively (unused).
 - `unsafe`: enables unsafe features:
+  - `unsafe_char`: enables unchecked conversions in [`mod@char`],
   - `unsafe_cmp`: enables const floating-point comparison in [`cmp`],
      using [`transmute`] for constant access to the bits.
   - `unsafe_convert`: enables using [`MaybeUninit`] for [`slice_into_array`]
