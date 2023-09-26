@@ -18,7 +18,7 @@ macro_rules! primitive_const_cmp {
 
     // $p: the type of the primitive
     (@$p:expr) => { paste! {
-        #[doc = "Compares and returns a `" $p "` clamped between `min` and `max`."]
+        #[doc = "Compares and returns a clamped `" $p "` between `min` and `max`."]
         #[inline]
         pub const fn [<clamp_$p>](value: $p, min: $p, max: $p) -> $p {
             [<min_$p>]([<max_$p>](value, min), max)

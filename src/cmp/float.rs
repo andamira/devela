@@ -20,7 +20,7 @@ macro_rules! primitive_float_const_cmp {
     // $b: the bits of the floating-point primitive
     // $sh: the shift amount for the given bits ($b - 1)
     (@$b:literal >> $sh:literal) => { paste! {
-        #[doc = "A port of `f" $b "::`[`total_cmp`][f" $b "#method.total_cmp]."]
+        #[doc = "A (`const`) port of `f" $b "::`[`total_cmp`][f" $b "#method.total_cmp]."]
         ///
         /// # Features
         /// This function will only be `const` if the `unsafe_cmp` feature is enabled.
@@ -67,8 +67,7 @@ macro_rules! primitive_float_const_cmp {
             }
         }
 
-        #[doc = "Compares and returns a `f" $b "` clamped between `min` and `max`"]
-        #[doc = "using [total ordering][total_cmp_f" $b "]."]
+        #[doc = "Compares and returns a clamped [total ordered] `f" $b "` between `min` and `max`."]
         ///
         /// # Features
         /// This function will only be `const` if the `unsafe_cmp` is enabled.
@@ -80,6 +79,8 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "assert_eq![2.0, clamp_f" $b "(5.0, -1.0, 2.0)];"]
         #[doc = "assert_eq![-1.0, clamp_f" $b "(-5.0, -1.0, 2.0)];"]
         /// ```
+        ///
+        #[doc = "[total ordered]: total_cmp_f" $b]
         #[inline]
         #[cfg(feature = "unsafe_cmp")]
         #[cfg_attr(feature = "nightly",
