@@ -22,7 +22,7 @@ pub enum AnsiColor3 {
 }
 
 impl AnsiColor3 {
-    /// Returns the ASCII representation of the 8-bit color number, with padding zeros.
+    /// Returns the ASCII byte representation of the 8-bit color number, with padding zeros.
     #[inline]
     pub const fn to_ascii(&self) -> u8 {
         ascii_1digit(*self as u8)
@@ -181,7 +181,7 @@ impl AnsiColor8 {
         }
     }
 
-    /// Returns the ASCII representation of the 8-bit color number, with leading zeros.
+    /// Returns the ASCII byte representation of the 8-bit color number, with leading zeros.
     #[inline]
     pub const fn to_ascii(&self) -> [u8; 3] {
         ascii_u8_digits(self.0)
@@ -541,8 +541,10 @@ impl Ansi {
     #[rustfmt::skip]
     pub const fn RGB(fg: [u8; 3], bg: [u8; 3]) -> [u8; 35] {
         const X: [u8; 4] = C::RGB;
-        let [fr, fg, fb] = [ascii_u8_digits(fg[0]), ascii_u8_digits(fg[1]), ascii_u8_digits(fg[2])];
-        let [br, bg, bb] = [ascii_u8_digits(bg[0]), ascii_u8_digits(bg[1]), ascii_u8_digits(bg[2])];
+        let [fr, fg, fb] = fg;
+        let [br, bg, bb] = bg;
+        let [fr, fg, fb] = [ascii_u8_digits(fr), ascii_u8_digits(fg), ascii_u8_digits(fb)];
+        let [br, bg, bb] = [ascii_u8_digits(br), ascii_u8_digits(bg), ascii_u8_digits(bb)];
         [
             b'\x1b', b'[',
             C::FG, X[0], X[1], X[2], X[3],
@@ -556,8 +558,9 @@ impl Ansi {
     /// Code to set the foreground color to `fg: [r, g, b]` values.
     #[inline]
     #[rustfmt::skip]
-    pub const fn RGB_FG(r: u8, g: u8, b: u8) -> [u8; 19] {
+    pub const fn RGB_FG(fg: [u8; 3]) -> [u8; 19] {
         const X: [u8; 4] = C::RGB;
+        let [r, g, b] = fg;
         let [r, g, b] = [ascii_u8_digits(r), ascii_u8_digits(g), ascii_u8_digits(b)];
         [
             b'\x1b', b'[',
@@ -570,8 +573,9 @@ impl Ansi {
     /// Code to set the background color to `bg: [r, g, b]` values.
     #[inline]
     #[rustfmt::skip]
-    pub const fn RGB_BG(r: u8, g: u8, b: u8) -> [u8; 19] {
+    pub const fn RGB_BG(bg: [u8; 3]) -> [u8; 19] {
         const X: [u8; 4] = C::RGB;
+        let [r, g, b] = bg;
         let [r, g, b] = [ascii_u8_digits(r), ascii_u8_digits(g), ascii_u8_digits(b)];
         [
             b'\x1b', b'[',
