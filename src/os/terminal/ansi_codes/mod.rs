@@ -4,7 +4,7 @@
 //
 #![allow(non_snake_case)]
 
-use crate::ascii::{ascii_d1, ascii_d2, ascii_d3, ascii_d4, calc_digit_u32};
+use crate::ascii::{ascii_calc_digit_u32, ascii_d1, ascii_d2, ascii_d3, ascii_d4};
 
 mod color;
 pub use color::{AnsiColor256, AnsiColor8};
@@ -42,7 +42,7 @@ impl Ansi {
         }
         let mut index = 2;
         while divisor > 0 {
-            buffer[index] = calc_digit_u32(n, divisor);
+            buffer[index] = ascii_calc_digit_u32(n, divisor);
             divisor /= 10;
             index += 1;
         }
@@ -150,7 +150,7 @@ impl Ansi {
         }
         let mut index = 2;
         while divisor > 0 {
-            buffer[index] = calc_digit_u32(row, divisor);
+            buffer[index] = ascii_calc_digit_u32(row, divisor);
             divisor /= 10;
             index += 1;
         }
@@ -163,7 +163,7 @@ impl Ansi {
             divisor *= 10;
         }
         while divisor > 0 {
-            buffer[index] = calc_digit_u32(col, divisor);
+            buffer[index] = ascii_calc_digit_u32(col, divisor);
             divisor /= 10;
             index += 1;
         }
