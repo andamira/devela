@@ -12,7 +12,7 @@ mod ansi_codes;
 mod macros;
 pub use {
     // ansi_codes::Ansi,
-    ansi_codes::{Ansi, AnsiColor256, AnsiColor8},
+    ansi_codes::{Ansi, AnsiColor3, AnsiColor8},
     macros::{ansi, ansib},
 };
 

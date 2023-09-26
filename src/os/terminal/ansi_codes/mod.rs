@@ -7,7 +7,7 @@
 use crate::ascii::{ascii_1digit, ascii_2digit, ascii_3digit, ascii_4digit, ascii_calc_digit_u32};
 
 mod color;
-pub use color::{AnsiColor256, AnsiColor8};
+pub use color::{AnsiColor3, AnsiColor8};
 
 mod print;
 
