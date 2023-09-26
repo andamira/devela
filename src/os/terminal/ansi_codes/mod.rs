@@ -63,19 +63,19 @@ impl Ansi {
 /// # Erase escape codes
 impl Ansi {
     /// Code to erase from the cursor to the end of the line.
-    pub const ERASE_END_LINE: [u8; 3] = *b"\x1b[K"; // also "\x1b[0K"
+    pub const ERASE_LINE_END: [u8; 3] = *b"\x1b[K"; // also "\x1b[0K"
 
     /// Code to erase from the cursor to the start of the line.
-    pub const ERASE_START_LINE: [u8; 4] = *b"\x1b[1K";
+    pub const ERASE_LINE_START: [u8; 4] = *b"\x1b[1K";
 
     /// Code to erase the entire line.
     pub const ERASE_LINE: [u8; 4] = *b"\x1b[2K";
 
     /// Code to erase from the cursor to the end of the screen.
-    pub const ERASE_END_SCREEN: [u8; 3] = *b"\x1b[J"; // also "\x1b[0J"
+    pub const ERASE_SCREEN_END: [u8; 3] = *b"\x1b[J"; // also "\x1b[0J"
 
     /// Code to erase from the cursor to the start of the screen.
-    pub const ERASE_START_SCREEN: [u8; 4] = *b"\x1b[1J";
+    pub const ERASE_SCREEN_START: [u8; 4] = *b"\x1b[1J";
 
     /// Code to erase the entire screen.
     pub const ERASE_SCREEN: [u8; 4] = *b"\x1b[2J";

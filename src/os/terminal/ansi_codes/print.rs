@@ -35,11 +35,11 @@ impl super::Ansi {
     ///
     /// # Example
     /// ```
-    /// use devela::os::terminal::{Ansi, AnsiColor8};
+    /// use devela::os::terminal::{Ansi, AnsiColor3};
     ///
-    /// Ansi::print(&Ansi::CLEAR_SCREEN);
+    /// Ansi::print(&Ansi::ERASE_SCREEN);
     /// Ansi::print(&Ansi::CURSOR_MOVE3(120, 80));
-    /// Ansi::print(&Ansi::COLORS_BRIGHT_BG(AnsiColor8::Blue, AnsiColor8::Black));
+    /// Ansi::print(&Ansi::COLORS_BRIGHT_BG(AnsiColor3::Blue, AnsiColor3::Black));
     /// ```
     #[inline]
     // MAYBE -> Result<()>
