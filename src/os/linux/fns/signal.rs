@@ -38,6 +38,8 @@ use core::{mem::transmute, ptr::null_mut};
 ///
 /// The `libc` library sets it up correctly but doing so manually seems a too
 /// complex too low level task.
+///
+/// [`SA_RESTORER`]: SA::SA_RESTORER
 #[inline]
 pub fn linux_sig_handler_no_return(handler: fn(i32) -> !, signals: &[i32]) {
     // We store the given `handler` function in a static to be able to call it

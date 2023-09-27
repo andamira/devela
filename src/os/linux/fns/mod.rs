@@ -15,7 +15,6 @@ pub use rand::{
     linux_random_bytes, linux_random_u128, linux_random_u16, linux_random_u32, linux_random_u64,
     linux_random_u8,
 };
-// IMPROVE: move to os_
 pub use read::{
     linux_get_byte, linux_get_char, linux_get_dirty_char, linux_get_line, linux_get_str,
     linux_get_utf8_bytes, linux_pause_until_char, linux_prompt,

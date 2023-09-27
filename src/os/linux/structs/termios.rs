@@ -2,7 +2,6 @@
 //
 //!
 //
-// improve set flags
 
 use super::super::{linux_sys_ioctl, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG};
 use crate::codegen::iif;
@@ -107,7 +106,6 @@ impl LinuxTermios {
     }
 
     /// Returns `true` if we're in a terminal context.
-    /// IMPROVE DOC low lovel
     pub fn is_terminal() -> bool {
         match Self::get_state() {
             Ok(_) => true,
