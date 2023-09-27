@@ -1,8 +1,18 @@
 // devela::ascii::char::char32
 
 use super::*;
+use crate::ascii::AsciiChar;
 
 impl Char8 {
+    /* private helper fns */
+
+    // SAFETY: this is not marked as unsafe because it's only used privately
+    // by this module for a few selected operations.
+    #[inline]
+    const fn from_char_unchecked(c: char) -> Char8 {
+        Char8(c as u32 as u8)
+    }
+
     /* constants */
 
     /// The highest unicode scalar a `Char8` can represent, `'\u{FF}'`.
@@ -10,15 +20,21 @@ impl Char8 {
 
     /* conversions */
 
+    /// Converts an `AsciiChar` to `Char8`.
+    #[inline]
+    pub const fn from_ascii_char(c: AsciiChar) -> Char8 {
+        Char8(c as u8)
+    }
+
     /// Converts a `Char7` to `Char8`.
     #[inline]
     pub const fn from_char7(c: Char7) -> Char8 {
-        Self(c.0.get())
+        Char8(c.0.get())
     }
     /// Tries to convert a `Char16` to `Char8`.
     #[inline]
     pub const fn try_from_char16(c: Char16) -> Result<Char8> {
-        if byte_len(c.to_u32()) == 1 {
+        if char_byte_len(c.to_u32()) == 1 {
             Ok(Char8(c.to_u32() as u8))
         } else {
             Err(CharConversionError(()))
@@ -28,7 +44,7 @@ impl Char8 {
     #[inline]
     pub const fn try_from_char24(c: Char24) -> Result<Char8> {
         let c = c.to_u32();
-        if byte_len(c) == 1 {
+        if char_byte_len(c) == 1 {
             Ok(Char8(c as u8))
         } else {
             Err(CharConversionError(()))
@@ -37,7 +53,7 @@ impl Char8 {
     /// Tries to convert a `Char32` to `Char8`.
     #[inline]
     pub const fn try_from_char32(c: Char32) -> Result<Char8> {
-        if byte_len(c.to_u32()) == 1 {
+        if char_byte_len(c.to_u32()) == 1 {
             Ok(Char8(c.to_u32() as u8))
         } else {
             Err(CharConversionError(()))
@@ -46,17 +62,33 @@ impl Char8 {
     /// Tries to convert a `char` to `Char8`.
     #[inline]
     pub const fn try_from_char(c: char) -> Result<Char8> {
-        if byte_len(c as u32) == 1 {
+        if char_byte_len(c as u32) == 1 {
             Ok(Char8(c as u32 as u8))
         } else {
             Err(CharConversionError(()))
         }
     }
-    const fn from_char_unchecked(c: char) -> Char8 {
-        Char8(c as u32 as u8)
-    }
 
     //
+
+    /// Tries to convert this `Char8` to `AsciiChar`.
+    #[inline]
+    pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
+        if char_is_7bit(self.to_u32()) {
+            #[cfg(not(feature = "unsafe_char"))]
+            if let Some(c) = AsciiChar::from_u8(self.0) {
+                Ok(c)
+            } else {
+                unreachable![]
+            }
+
+            #[cfg(feature = "unsafe_char")]
+            // SAFETY: we've already checked it's in range.
+            return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0) });
+        } else {
+            Err(CharConversionError(()))
+        }
+    }
 
     /// Tries to convert this `Char8` to `Char7`.
     #[inline]
@@ -125,7 +157,7 @@ impl Char8 {
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[inline]
     pub const fn is_noncharacter(self) -> bool {
-        is_noncharacter(self.0 as u32)
+        char_is_noncharacter(self.0 as u32)
     }
 
     /// Returns `true` if this unicode scalar is an [abstract character][0].

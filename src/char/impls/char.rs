@@ -9,7 +9,7 @@ impl UnicodeScalar for char {
 
     #[inline]
     fn byte_len(self) -> usize {
-        byte_len(self as u32)
+        char_byte_len(self as u32)
     }
     #[inline]
     fn len_utf8(self) -> usize {
@@ -48,7 +48,7 @@ impl UnicodeScalar for char {
 
     #[inline]
     fn is_noncharacter(self) -> bool {
-        is_noncharacter(self as u32)
+        char_is_noncharacter(self as u32)
     }
     #[inline]
     fn is_digit(self, radix: u32) -> bool {

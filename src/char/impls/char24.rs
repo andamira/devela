@@ -1,8 +1,26 @@
 // devela::ascii::char::char24
 
 use super::*;
+use crate::ascii::AsciiChar;
 
 impl Char24 {
+    /* private helper fns */
+
+    // SAFETY: this is not marked as unsafe because it's only used privately
+    // by this module for a few selected operations.
+    const fn new_unchecked_hi(value: u8) -> NonMaxU8 {
+        #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_num")))]
+        if let Some(c) = NonMaxU8::new(value) {
+            c
+        } else {
+            unreachable![]
+        }
+        #[cfg(all(feature = "unsafe_char", feature = "unsafe_num"))]
+        unsafe {
+            NonMaxU8::new_unchecked(value)
+        }
+    }
+
     /* constants */
 
     /// The highest unicode scalar a `Char24` can represent, `'\u{10FFFF}'`.
@@ -12,6 +30,16 @@ impl Char24 {
     pub const REPLACEMENT_CHARACTER: Char24 = Char24::from_char(char::REPLACEMENT_CHARACTER);
 
     /* conversions */
+
+    /// Converts an `AsciiChar` to `Char24`.
+    #[inline]
+    pub const fn from_ascii_char(c: AsciiChar) -> Char24 {
+        Char24 {
+            hi: Self::new_unchecked_hi(0),
+            mi: 0,
+            lo: c as u8,
+        }
+    }
 
     /// Converts a `Char7` to `Char24`.
     #[inline]
@@ -59,21 +87,27 @@ impl Char24 {
             lo,
         }
     }
-    // useful because Option::<T>::unwrap is not yet stable as const fn
-    const fn new_unchecked_hi(value: u8) -> NonMaxU8 {
-        #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_num")))]
-        if let Some(c) = NonMaxU8::new(value) {
-            c
-        } else {
-            unreachable![]
-        }
-        #[cfg(all(feature = "unsafe_char", feature = "unsafe_num"))]
-        unsafe {
-            NonMaxU8::new_unchecked(value)
-        }
-    }
 
     //
+
+    /// Tries to convert this `Char24` to `AsciiChar`.
+    #[inline]
+    pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
+        if char_is_7bit(self.to_u32()) {
+            #[cfg(not(feature = "unsafe_char"))]
+            if let Some(c) = AsciiChar::from_u8(self.lo) {
+                Ok(c)
+            } else {
+                unreachable![]
+            }
+
+            #[cfg(feature = "unsafe_char")]
+            // SAFETY: we've already checked it's in range.
+            return Ok(unsafe { AsciiChar::from_u8_unchecked(self.lo) });
+        } else {
+            Err(CharConversionError(()))
+        }
+    }
 
     /// Tries to convert this `Char24` to `Char7`.
     #[inline]
@@ -187,7 +221,7 @@ impl Char24 {
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[inline]
     pub const fn is_noncharacter(self) -> bool {
-        is_noncharacter(self.to_u32())
+        char_is_noncharacter(self.to_u32())
     }
 
     /// Returns `true` if this unicode scalar is an [abstract character][0].

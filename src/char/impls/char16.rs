@@ -1,8 +1,33 @@
 // devela::ascii::char::char16
 
 use super::*;
+use crate::ascii::AsciiChar;
 
 impl Char16 {
+    /* private helper fns */
+
+    // SAFETY: this is not marked as unsafe because it's only used privately
+    // by this module for a few selected operations.
+    #[inline]
+    const fn from_char_unchecked(c: char) -> Char16 {
+        Char16::new_unchecked(c as u32 as u16)
+    }
+
+    // useful because Option::<T>::unwrap is not yet stable as const fn
+    #[inline]
+    const fn new_unchecked(value: u16) -> Char16 {
+        #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_num")))]
+        if let Some(c) = NonSurrogateU16::new(value) {
+            Char16(c)
+        } else {
+            unreachable![]
+        }
+        #[cfg(all(feature = "unsafe_char", feature = "unsafe_num"))]
+        unsafe {
+            Char16(NonSurrogateU16::new_unchecked(value))
+        }
+    }
+
     /* constants */
 
     /// The highest unicode scalar a `Char16` can represent, `'\u{FFFF}'`.
@@ -15,6 +40,12 @@ impl Char16 {
         Char16::new_unchecked(char::REPLACEMENT_CHARACTER as u32 as u16);
 
     /* conversions */
+
+    /// Converts an `AsciiChar` to `Char16`.
+    #[inline]
+    pub const fn from_ascii_char(c: AsciiChar) -> Char16 {
+        Char16::new_unchecked(c as u8 as u16)
+    }
 
     /// Converts a `Char7` to `Char16`.
     #[inline]
@@ -30,7 +61,7 @@ impl Char16 {
     #[inline]
     pub const fn try_from_char24(c: Char24) -> Result<Char16> {
         let c = c.to_u32();
-        if byte_len(c) == 1 {
+        if char_byte_len(c) == 1 {
             Ok(Char16::new_unchecked(c as u16))
         } else {
             Err(CharConversionError(()))
@@ -44,29 +75,33 @@ impl Char16 {
     /// Tries to convert a `char` to `Char16`.
     #[inline]
     pub const fn try_from_char(c: char) -> Result<Char16> {
-        if byte_len(c as u32) <= 2 {
+        if char_byte_len(c as u32) <= 2 {
             Ok(Char16::new_unchecked(c as u32 as u16))
         } else {
             Err(CharConversionError(()))
         }
     }
-    const fn from_char_unchecked(c: char) -> Char16 {
-        Char16::new_unchecked(c as u32 as u16)
-    }
-    // useful because Option::<T>::unwrap is not yet stable as const fn
-    const fn new_unchecked(value: u16) -> Char16 {
-        #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_num")))]
-        if let Some(c) = NonSurrogateU16::new(value) {
-            Char16(c)
-        } else {
-            unreachable![]
-        }
-        #[cfg(all(feature = "unsafe_char", feature = "unsafe_num"))]
-        unsafe {
-            Char16(NonSurrogateU16::new_unchecked(value))
-        }
-    }
+
     //
+
+    /// Tries to convert this `Char16` to `AsciiChar`.
+    #[inline]
+    pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
+        if char_is_7bit(self.to_u32()) {
+            #[cfg(not(feature = "unsafe_char"))]
+            if let Some(c) = AsciiChar::from_u8(self.0.get() as u8) {
+                Ok(c)
+            } else {
+                unreachable![]
+            }
+
+            #[cfg(feature = "unsafe_char")]
+            // SAFETY: we've already checked it's in range.
+            return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0.get() as u8) });
+        } else {
+            Err(CharConversionError(()))
+        }
+    }
 
     /// Tries to convert this `Char16` to `Char7`.
     #[inline]
@@ -170,7 +205,7 @@ impl Char16 {
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[inline]
     pub const fn is_noncharacter(self) -> bool {
-        is_noncharacter(self.0.get() as u32)
+        char_is_noncharacter(self.0.get() as u32)
     }
 
     /// Returns `true` if this unicode scalar is an [abstract character][0].

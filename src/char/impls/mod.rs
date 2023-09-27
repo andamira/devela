@@ -3,23 +3,16 @@
 //!
 //
 // TOC
+// - specific implementations
 // - common implementations
-//   - traits
-//   - const fns
-// - separate implementations
-//   - Char7
-//   - Char8
-//   - Char16
-//   - Char24
-//   - Char32
-//   - traits for char
-// - helper fns
 
 use super::{
-    Char16, Char24, Char32, Char7, Char8, CharConversionError, NonMaxU8, NonSurrogateU16, Result,
-    UnicodeScalar,
+    char_byte_len, char_is_7bit, char_is_noncharacter, Char16, Char24, Char32, Char7, Char8,
+    CharConversionError, NonMaxU8, NonSurrogateU16, Result, UnicodeScalar,
 };
 use crate::codegen::paste;
+
+/* specific implementations */
 
 mod char;
 mod char16;
@@ -108,7 +101,7 @@ macro_rules! impls {
             /* encode */
 
             /// Returns the number of bytes needed to represent the scalar value.
-            pub const fn byte_len(self) -> usize { byte_len(self.to_u32()) }
+            pub const fn byte_len(self) -> usize { char_byte_len(self.to_u32()) }
 
             /// Returns the number of bytes needed to encode in UTF-8.
             #[inline]
@@ -150,34 +143,3 @@ macro_rules! impls {
     }};
 }
 impls![Char: 7, 8, 16, 24, 32];
-
-/* helper fns */
-
-/// Returns `true` if the given unicode scalar code is a 7bit ASCII code.
-#[inline]
-const fn is_noncharacter(code: u32) -> bool {
-    // sub-block of 32 non-characters:
-    (code >= 0xFDD0 && code <= 0xFDEF)
-        // 2× non-characters at the end of each plane:
-        || (code >= 0xFFFE && (code & 0xFF) == 0xFE)
-        || (code >= 0xFFFE && (code & 0xFF) == 0xFF)
-        // unallocated range (16 potential non-characters):
-        || (code >= 0x2FE0 && code <= 0x2FEF)
-    // surrogates (0xD800..=0xDFFF) are already filtered out in `char`.
-}
-
-/// Returns `true` if the given unicode scalar code is a 7bit ASCII code.
-#[inline]
-const fn is_7bit(code: u32) -> bool {
-    code <= 0x7F
-}
-
-/// Returns the number of bytes necessary to store the given unicode scalar code.
-#[inline]
-const fn byte_len(code: u32) -> usize {
-    match code {
-        0..=0xFF => 1,
-        0x100..=0xFFFF => 2,
-        _ => 3,
-    }
-}

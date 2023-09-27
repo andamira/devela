@@ -1,6 +1,7 @@
 // devela::ascii::char::char8
 
 use super::*;
+use crate::ascii::AsciiChar;
 
 impl Char32 {
     /* constants */
@@ -12,6 +13,12 @@ impl Char32 {
     pub const REPLACEMENT_CHARACTER: Char32 = Char32(char::REPLACEMENT_CHARACTER);
 
     /* conversions */
+
+    /// Converts an `AsciiChar` to `Char32`.
+    #[inline]
+    pub const fn from_ascii_char(c: AsciiChar) -> Char32 {
+        Char32(c.as_char())
+    }
 
     /// Converts a `Char7` to `Char32`.
     #[inline]
@@ -40,6 +47,25 @@ impl Char32 {
     }
 
     //
+
+    /// Tries to convert this `Char32` to `AsciiChar`.
+    #[inline]
+    pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
+        if char_is_7bit(self.to_u32()) {
+            #[cfg(not(feature = "unsafe_char"))]
+            if let Some(c) = AsciiChar::from_u8(self.0 as u8) {
+                Ok(c)
+            } else {
+                unreachable![]
+            }
+
+            #[cfg(feature = "unsafe_char")]
+            // SAFETY: we've already checked it's in range.
+            return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0 as u8) });
+        } else {
+            Err(CharConversionError(()))
+        }
+    }
 
     /// Tries to convert this `Char32` to `Char7`.
     #[inline]
@@ -145,7 +171,7 @@ impl Char32 {
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[inline]
     pub const fn is_noncharacter(self) -> bool {
-        is_noncharacter(self.0 as u32)
+        char_is_noncharacter(self.0 as u32)
     }
 
     /// Returns `true` if this unicode scalar is an [abstract character][0].

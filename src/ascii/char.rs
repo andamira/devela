@@ -460,7 +460,6 @@ impl AsciiChar {
     /// without checking whether it's valid.
     ///
     /// # Safety
-    ///
     /// `b` must be in `0..=127`, or else this is UB.
     #[inline]
     #[cfg(feature = "unsafe_char")]
@@ -487,7 +486,6 @@ impl AsciiChar {
     /// `'0'`, `'1'`, …, `'9'` respectively, without checking that it's in-range.
     ///
     /// # Safety
-    ///
     /// This is immediate UB if called with `d > 64`.
     ///
     /// If `d >= 10` and `d <= 64`, this is allowed to return any value or panic.

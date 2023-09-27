@@ -1,65 +1,21 @@
 // devela::ascii::char::char7
 
 use super::*;
+use crate::ascii::AsciiChar;
 
 impl Char7 {
-    /* constants */
+    /* private helper fns */
 
-    /// The highest unicode scalar a `Char7` can represent, `'\u{7F}'`.
-    pub const MAX: Char7 = Char7::new_unchecked(0x7F);
-
-    /* conversions */
-
-    /// Tries to convert a `Char8` to `Char7`.
+    // SAFETY: this is not marked as unsafe because it's only used privately
+    // by this module for a few selected operations.
     #[inline]
-    pub const fn try_from_char8(c: Char8) -> Result<Char7> {
-        if is_7bit(c.to_u32()) {
-            Ok(Char7::new_unchecked(c.to_u32() as u8))
-        } else {
-            Err(CharConversionError(()))
-        }
-    }
-    /// Tries to convert a `Char16` to `Char7`.
-    #[inline]
-    pub const fn try_from_char16(c: Char16) -> Result<Char7> {
-        if is_7bit(c.to_u32()) {
-            Ok(Char7::new_unchecked(c.to_u32() as u8))
-        } else {
-            Err(CharConversionError(()))
-        }
-    }
-    /// Tries to convert a `Char24` to `Char7`.
-    #[inline]
-    pub const fn try_from_char24(c: Char24) -> Result<Char7> {
-        let c = c.to_u32();
-        if is_7bit(c) {
-            Ok(Char7::new_unchecked(c as u8))
-        } else {
-            Err(CharConversionError(()))
-        }
-    }
-    /// Tries to convert a `Char32` to `Char8`.
-    #[inline]
-    pub const fn try_from_char32(c: Char32) -> Result<Char7> {
-        if is_7bit(c.to_u32()) {
-            Ok(Char7::new_unchecked(c.to_u32() as u8))
-        } else {
-            Err(CharConversionError(()))
-        }
-    }
-    /// Tries to convert a `char` to `Char8`.
-    #[inline]
-    pub const fn try_from_char(c: char) -> Result<Char7> {
-        if is_7bit(c as u32) {
-            Ok(Char7::new_unchecked(c as u32 as u8))
-        } else {
-            Err(CharConversionError(()))
-        }
-    }
     const fn from_char_unchecked(c: char) -> Char7 {
         Char7::new_unchecked(c as u32 as u8)
     }
-    // useful because Option::<T>::unwrap is not yet stable as const fn
+
+    // SAFETY: this is not marked as unsafe because it's only used privately
+    // by this module for a few selected operations.
+    #[inline]
     const fn new_unchecked(value: u8) -> Char7 {
         #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_num")))]
         if let Some(c) = NonMaxU8::new(value) {
@@ -73,7 +29,81 @@ impl Char7 {
         }
     }
 
+    /* constants */
+
+    /// The highest unicode scalar a `Char7` can represent, `'\u{7F}'`.
+    pub const MAX: Char7 = Char7::new_unchecked(0x7F);
+
+    /* conversions */
+
+    /// Converts an `AsciiChar` to `Char7`.
+    #[inline]
+    pub const fn from_ascii_char(c: AsciiChar) -> Char7 {
+        Char7::new_unchecked(c as u8)
+    }
+
+    /// Tries to convert a `Char8` to `Char7`.
+    #[inline]
+    pub const fn try_from_char8(c: Char8) -> Result<Char7> {
+        if char_is_7bit(c.to_u32()) {
+            Ok(Char7::new_unchecked(c.to_u32() as u8))
+        } else {
+            Err(CharConversionError(()))
+        }
+    }
+    /// Tries to convert a `Char16` to `Char7`.
+    #[inline]
+    pub const fn try_from_char16(c: Char16) -> Result<Char7> {
+        if char_is_7bit(c.to_u32()) {
+            Ok(Char7::new_unchecked(c.to_u32() as u8))
+        } else {
+            Err(CharConversionError(()))
+        }
+    }
+    /// Tries to convert a `Char24` to `Char7`.
+    #[inline]
+    pub const fn try_from_char24(c: Char24) -> Result<Char7> {
+        let c = c.to_u32();
+        if char_is_7bit(c) {
+            Ok(Char7::new_unchecked(c as u8))
+        } else {
+            Err(CharConversionError(()))
+        }
+    }
+    /// Tries to convert a `Char32` to `Char8`.
+    #[inline]
+    pub const fn try_from_char32(c: Char32) -> Result<Char7> {
+        if char_is_7bit(c.to_u32()) {
+            Ok(Char7::new_unchecked(c.to_u32() as u8))
+        } else {
+            Err(CharConversionError(()))
+        }
+    }
+    /// Tries to convert a `char` to `Char8`.
+    #[inline]
+    pub const fn try_from_char(c: char) -> Result<Char7> {
+        if char_is_7bit(c as u32) {
+            Ok(Char7::new_unchecked(c as u32 as u8))
+        } else {
+            Err(CharConversionError(()))
+        }
+    }
+
     //
+
+    /// Converts a `Char7` to `AsciiChar`.
+    #[inline]
+    pub const fn to_ascii_char(c: Char7) -> AsciiChar {
+        #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_ascii")))]
+        if let Some(c) = AsciiChar::from_u8(c.0.get()) {
+            c
+        } else {
+            unreachable!()
+        }
+
+        #[cfg(all(feature = "unsafe_char", feature = "unsafe_ascii"))]
+        return AsciiChar::from_u8_unchecked(c.0.get());
+    }
 
     /// Converts this `Char7` to `Char8`.
     #[inline]
