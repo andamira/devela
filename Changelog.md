@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.12.0] - 2023-09-27
+
 ### Added
 - new `const_for` macro.
 - new fn `ascii_calc_digit`.
@@ -19,7 +21,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `Ansi` const methods: `COLORS`, `BRIGHT_COLORS`, `COLORS_BRIGHT_FG`, `COLORS_BRIGHT_BG`, `COLORS256`, `COLOR256_FG`, `COLOR256_BG`, `RGB`, `RGB_FG`, `RGB_BG`, `GRAY`.
 - new `Ansi` consts: `CSI`, `GRAY*`, `GRAY*_BG`, `ERASE_LINE`, `ERASE_LINE_END`, `ERASE_LINE_START`, `ERASE_SCREEN_START`, `ERASE_SCREEN_END`.
 - new structs: `LinuxTerminalSize`, `AnsiColor8`, `Char7`, `Char8`, `Char16`, `Char24`, `Char32`, `CharConversionError`.
-- new enum `AnsiColor3`.
+- new enums: `AnsiColor3`, `NeverOk`, `NeverErr`.
 
 ### Changed
 - move `iif` macro to `codegen` module.
@@ -373,7 +375,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.11.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/andamira/devela/releases/tag/v0.12.0
 [0.11.0]: https://github.com/andamira/devela/releases/tag/v0.11.0
 [0.10.0]: https://github.com/andamira/devela/releases/tag/v0.10.0
 [0.9.0]: https://github.com/andamira/devela/releases/tag/v0.9.0
