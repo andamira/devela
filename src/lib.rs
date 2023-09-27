@@ -1,8 +1,6 @@
 // devela::lib
 //
 //! Development extensions for the Rust Standard Library.
-//!
-// #![doc = include_str!("./Lib.md")]
 //
 
 // warnings
@@ -47,6 +45,7 @@ pub mod path;
 pub mod result;
 pub mod slice;
 pub mod str;
+pub mod string;
 pub mod sync;
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
@@ -71,6 +70,7 @@ pub mod all {
         result::*,
         slice::*,
         str::*,
+        string::all::*,
         sync::all::*,
     };
 
