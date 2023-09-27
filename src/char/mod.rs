@@ -10,6 +10,9 @@
 use crate::num::{NonMaxU8, NonSpecificU16};
 use core::fmt;
 
+mod fns;
+pub use fns::{char_utf8_2bytes_len, char_utf8_3bytes_len, char_utf8_4bytes_len};
+
 mod core_impls;
 mod impls;
 #[cfg(test)]
