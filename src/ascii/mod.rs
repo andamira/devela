@@ -6,8 +6,10 @@
 //! directly related to ASCII, prefixed with `ascii_`, and a new description.
 //
 
+mod char;
 mod fns;
-pub use fns::*;
+
+pub use {char::AsciiChar, fns::*};
 
 mod reexport_const_str;
 pub use reexport_const_str::*;
