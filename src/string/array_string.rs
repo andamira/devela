@@ -423,7 +423,7 @@ macro_rules! generate_array_string {
             }
         }
 
-        #[cfg(all(feature = "std", any(unix, target_os = "wasi", target_os = "windows")))]
+        #[cfg(all(feature = "std", any(unix, target_os = "wasi")))]
         mod [< std_impls_ $t >] {
             use super::[<Array $t:upper String>];
             use std::ffi::OsStr;
@@ -432,11 +432,9 @@ macro_rules! generate_array_string {
             use std::os::unix::ffi::OsStrExt;
             #[cfg(target_os = "wasi")]
             use std::os::wasi::ffi::OsStrExt;
-            #[cfg(target_os = "windows")]
-            use std::os::windows::ffi::OsStrExt;
 
             #[cfg_attr(feature = "nightly", doc(cfg(
-                all(feature = "std", any(unix, target_os = "wasi", target_os = "windows"))
+                all(feature = "std", any(unix, target_os = "wasi"))
             )))]
             impl<const CAP: usize> AsRef<OsStr> for [<Array $t:upper String>]<CAP> {
                 fn as_ref(&self) -> &OsStr {
