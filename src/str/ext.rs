@@ -51,11 +51,11 @@ pub trait StrExt {
     ///
     /// # Examples
     /// ```
-    /// use devela::{ascii::AsciiChar, str::counter_str};
+    /// use devela::{ascii::AsciiChar, str::StrExt};
     ///
     /// let mut buf = [0; 15];
-    /// assert_eq!("2*4*6*8*11*14*", counter_str(&mut buf, 14, AsciiChar::Asterisk));
-    /// assert_eq!("_3_5_7_9_12_15_", counter_str(&mut buf, 15, AsciiChar::LowLine));
+    /// assert_eq!("2*4*6*8*11*14*", str::new_counter(&mut buf, 14, AsciiChar::Asterisk));
+    /// assert_eq!("_3_5_7_9_12_15_", str::new_counter(&mut buf, 15, AsciiChar::LowLine));
     /// ```
     /// # Panics
     /// Panics if `buffer.len() < length`

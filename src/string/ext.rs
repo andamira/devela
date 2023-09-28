@@ -26,10 +26,10 @@ pub trait StringExt {
     ///
     /// # Examples
     /// ```
-    /// use devela::{ascii::AsciiChar, string::counter_string};
+    /// use devela::{ascii::AsciiChar, string::StringExt};
     ///
-    /// assert_eq!("2*4*6*8*11*14*", counter_string(14, '*'));
-    /// assert_eq!("_3_5_7_9_12_15_", counter_string(15, '_'));
+    /// assert_eq!("2*4*6*8*11*14*", String::new_counter(14, AsciiChar::Asterisk));
+    /// assert_eq!("_3_5_7_9_12_15_", String::new_counter(15, AsciiChar::LowLine));
     /// ```
     /// [0]: https://www.satisfice.com/blog/archives/22
     fn new_counter(length: usize, separator: AsciiChar) -> String;
