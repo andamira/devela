@@ -1,4 +1,4 @@
-// devela::os::terminal
+// devela::os::term
 //
 //! Definitions for terminal control and manipulation.
 //!

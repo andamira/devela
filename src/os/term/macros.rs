@@ -1,4 +1,4 @@
-// devela::os::terminal::ansi::macros
+// devela::os::term::ansi::macros
 //
 //! ANSI macros.
 //
@@ -12,7 +12,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::os::terminal::ansib;
+/// use devela::os::term::ansib;
 ///
 /// assert_eq![&[27, 91, 49, 109], ansib![bold]];
 /// assert_eq![&[27, 91, 49, 109, 27, 91, 51, 109], ansib![bold, ITALIC]];
@@ -33,7 +33,7 @@
 macro_rules! ansib {
     ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::codegen::paste! {
         $crate::str::str_concat_bytes!(
-            $($crate::os::terminal::Ansi::[<$command:upper>] $( ($($arg),*) )? ,)+
+            $($crate::os::term::Ansi::[<$command:upper>] $( ($($arg),*) )? ,)+
         )
     }};
 }
@@ -49,7 +49,7 @@ pub use ansib;
 ///
 /// # Examples
 /// ```
-/// use devela::os::terminal::ansi;
+/// use devela::os::term::ansi;
 ///
 /// assert_eq!["\u{1b}[1m", ansi![bold]];
 /// assert_eq!["\u{1b}[1m\u{1b}[3m", ansi![bold, ITALIC]];
@@ -80,10 +80,10 @@ macro_rules! ansi {
         if cfg!(feature = "unsafe_str") {
             // SAFETY: ANSI escape codes are always ASCII and therefore utf-8 compatible
             unsafe {
-                core::str::from_utf8_unchecked($crate::os::terminal::ansib![ $($arg)* ])
+                core::str::from_utf8_unchecked($crate::os::term::ansib![ $($arg)* ])
             }
         } else {
-            if let Ok(s) = core::str::from_utf8($crate::os::terminal::ansib![ $($arg)* ]) {
+            if let Ok(s) = core::str::from_utf8($crate::os::term::ansib![ $($arg)* ]) {
                 s
             } else {
                 unreachable![]
@@ -104,7 +104,7 @@ pub use ansi;
 ///
 /// # Examples
 /// ```
-/// use devela::os::terminal::ansip;
+/// use devela::os::term::ansip;
 ///
 /// // prints the codes to `stdout`
 /// ansip![bold, ITALIC, cursor_move1(2, 3)];
@@ -135,7 +135,7 @@ pub use ansi;
 #[macro_export]
 macro_rules! ansip {
     ($($arg:tt)*) => {
-        $crate::os::terminal::Ansi::print( $crate::os::terminal::ansib![ $($arg)* ] );
+        $crate::os::term::Ansi::print( $crate::os::term::ansib![ $($arg)* ] );
     };
 }
 #[cfg(any(

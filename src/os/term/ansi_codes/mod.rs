@@ -1,4 +1,4 @@
-// devela::os::terminal::ansi
+// devela::os::term::ansi
 //
 //! ANSI codes.
 //
