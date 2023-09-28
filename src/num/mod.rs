@@ -8,11 +8,12 @@
 #[cfg(test)]
 mod tests;
 
+mod fns;
 mod non_range;
 mod non_specific;
 mod range;
 
-pub use {non_range::*, non_specific::*, range::*};
+pub use {fns::*, non_range::*, non_specific::*, range::*};
 
 #[doc = "A signed integer that is known not to equal zero.\n\n"]
 #[doc = "*Reexported from"]
