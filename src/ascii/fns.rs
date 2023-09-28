@@ -3,6 +3,8 @@
 //!
 //
 
+use crate::num::count_digits;
+
 /// Converts a one-digit number to the corresponding `1` ASCII digit.
 ///
 /// # Panics
@@ -203,4 +205,31 @@ pub const fn ascii_u128_digits(n: u128) -> [u8; 39] {
         ascii_calc_digit_u128(n, 10),
         ascii_calc_digit_u128(n, 1),
     ]
+}
+
+/// Converts a `usize` into a byte array of [`count_digits`]`(usize::MAX)` ascii
+/// digits, padded with zeros.
+///
+/// The actual array length depends on the target platform's pointer size.
+#[inline]
+#[cfg(target_pointer_width = "16")]
+pub const fn ascii_usize_digits(n: usize) -> [u8; 5] {
+    ascii_u16_digits(n as u16)
+}
+/// Converts a `usize` into a byte array of `10` ascii digits, padded with zeros.
+///
+/// The actual array length depends on the target platform's pointer size.
+#[inline]
+#[cfg(target_pointer_width = "32")]
+pub const fn ascii_usize_digits(n: usize) -> [u8; count_digits(usize::MAX)] {
+    ascii_u32_digits(n as u32)
+}
+/// Converts a `usize` into a byte array of [`count_digits`]`(usize::MAX)` ascii
+/// digits, padded with zeros.
+///
+/// The actual array length depends on the target platform's pointer size.
+#[inline]
+#[cfg(target_pointer_width = "64")]
+pub const fn ascii_usize_digits(n: usize) -> [u8; count_digits(usize::MAX)] {
+    ascii_u64_digits(n as u64)
 }

@@ -16,6 +16,7 @@ By default the crate is `no_std` compatible.
 A gradient of safety. By default nothing is enabled.
 - `unsafest`: enables unsafe recursively (unused).
 - `unsafe`: enables unsafe features:
+  - `unsafe_ascii`: enables unchecked conversions in [`ascii`],
   - `unsafe_char`: enables unchecked conversions in [`mod@char`],
   - `unsafe_cmp`: enables const floating-point comparison in [`cmp`],
      using [`transmute`] for constant access to the bits.
