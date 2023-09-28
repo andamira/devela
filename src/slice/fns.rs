@@ -226,3 +226,22 @@ pub fn slice_msplit_left_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
     let (middle, _) = right.split_at_mut(end_idx - start_idx);
     middle
 }
+
+/// Returns a subslice without the given leading `byte`s.
+#[inline]
+pub fn slice_trim_leading_bytes(slice: &[u8], byte: u8) -> &[u8] {
+    let mut start = 0;
+    while start < slice.len() && slice[start] == byte {
+        start += 1;
+    }
+    &slice[start..]
+}
+/// Replaces the `old` leading byte with a `new` byte.
+#[inline]
+pub fn slice_replace_leading_bytes(slice: &mut [u8], old: u8, new: u8) {
+    let mut start = 0;
+    while start < slice.len() && slice[start] == old {
+        slice[start] = new;
+        start += 1;
+    }
+}
