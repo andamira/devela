@@ -95,6 +95,9 @@ pub mod prelude {
         slice::{SliceExt, SliceExtMut},
         str::StrExt,
     };
+
+    #[cfg(feature = "alloc")]
+    pub use crate::string::StringExt;
 }
 
 /// General documentation.

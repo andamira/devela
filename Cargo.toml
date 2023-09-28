@@ -45,7 +45,7 @@ no_std = [] # enables functionality incompatible with `std` (unused)
 unsafest = ["unsafe"] # enables unsafe recursively (unused)
 unsafe = [ # enables unsafe features in this crate
 	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_convert", "unsafe_fmt",
-	"unsafe_mem", "unsafe_num", "unsafe_os", "unsafe_str",
+	"unsafe_mem", "unsafe_num", "unsafe_os", "unsafe_str", "unsafe_string",
 ] # sub-features:
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
@@ -56,6 +56,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_num = [] # enables unsafe constructors and bytemuck's traits
 	unsafe_os = [] # together with `linux` feature enables linux syscalls
 	unsafe_str = [] # enables unsafe use in `str`
+	unsafe_string = [] # enables unsafe use in `string`
 safe = [] # forbids unsafe in this crate
 safest = ["safe"] # forbids unsafe recursively (unused)
 

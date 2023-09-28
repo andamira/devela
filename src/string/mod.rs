@@ -5,12 +5,13 @@
 
 mod array_string;
 mod error;
+mod ext;
 mod non_nul;
 
 pub use all::*;
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{array_string::*, error::*, non_nul::*};
+    pub use super::{array_string::*, error::*, ext::*, non_nul::*};
 }
 
 // define type aliases for specific sizes.
