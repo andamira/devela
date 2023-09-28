@@ -34,21 +34,25 @@ macro_rules! core_impls {
             }
         }
         impl fmt::Binary for [<$name $bits>] {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::Binary::fmt(&self.to_u32(), f)
             }
         }
         impl fmt::LowerHex for [<$name $bits>] {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::LowerHex::fmt(&self.to_u32(), f)
             }
         }
         impl fmt::UpperHex for [<$name $bits>] {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::UpperHex::fmt(&self.to_u32(), f)
             }
         }
         impl fmt::Octal for [<$name $bits>] {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::Octal::fmt(&self.to_u32(), f)
             }
