@@ -102,7 +102,9 @@ impl Char7 {
         }
 
         #[cfg(all(feature = "unsafe_char", feature = "unsafe_ascii"))]
-        return AsciiChar::from_u8_unchecked(c.0.get());
+        unsafe {
+            AsciiChar::from_u8_unchecked(c.0.get())
+        }
     }
 
     /// Converts this `Char7` to `Char8`.
