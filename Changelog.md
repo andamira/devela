@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.13.0] - 2023-09-29
+
 ### Added
 - new enum `AsciiChar` ported from unstable `std`.
 - new fns: `char_byte_len`, `char_is_7b`, `char_is_noncharacter`, `ascii_usize_digits`, `count_digits`, `count_digits_unchecked`.
@@ -393,7 +395,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.12.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/andamira/devela/releases/tag/v0.13.0
 [0.12.0]: https://github.com/andamira/devela/releases/tag/v0.12.0
 [0.11.0]: https://github.com/andamira/devela/releases/tag/v0.11.0
 [0.10.0]: https://github.com/andamira/devela/releases/tag/v0.10.0
