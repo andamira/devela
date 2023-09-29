@@ -7,6 +7,24 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- new enum `AsciiChar` ported from unstable `std`.
+- new fns: `char_byte_len`, `char_is_7b`, `char_is_noncharacter`, `ascii_usize_digits`, `count_digits`, `count_digits_unchecked`.
+- new `char*` methods: `from_ascii_char`, `to_ascii_char`.
+- new module: `string`.
+- new trait: `StringExt`.
+- new enum: `ArrayStringError`.
+- new features: `unsafe_ascii`, `unsafe_string`.
+- new structs: `ArrayU8String`, `ArrayU16String`, `ArrayU32String`, `ArrayU8NonNulString`.
+- new type alises: `String16`, `String32`, `String64`, `String128`, `NonNulString128`, `NonNulString16`, `NonNulString32`, `NonNulString64`, `NonNulString128`.
+- new `StrExt` method: `new_counter`.
+
+### Changed
+- rename `os::terminal` and `os::linux::terminal` submodules  to `term`.
+
+### Fixed
+- add missing inlines.
+
 ## [0.12.0] - 2023-09-27
 
 ### Added
