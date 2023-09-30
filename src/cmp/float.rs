@@ -48,6 +48,7 @@ macro_rules! primitive_float_const_cmp {
         }
         // safe, non-const version (undocumented)
         #[inline]
+        #[allow(missing_docs)]
         #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<total_cmp_f $b>](a: [<f$b>], b: [<f$b>]) -> Ordering {
             let mut left = a.to_bits() as [<i $b>];
@@ -86,6 +87,7 @@ macro_rules! primitive_float_const_cmp {
         }
         // safe, non-const version (undocumented)
         #[inline]
+        #[allow(missing_docs)]
         #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<clamp_f $b>](value: [<f $b>], min: [<f $b>], max: [<f $b>]) -> [<f $b>] {
             [<min_f $b>]([<max_f $b>](value, min), max)
@@ -117,6 +119,7 @@ macro_rules! primitive_float_const_cmp {
         }
         // safe, non-const version (undocumented)
         #[inline]
+        #[allow(missing_docs)]
         #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<max_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match a.[<total_cmp>](&b) {
@@ -151,6 +154,7 @@ macro_rules! primitive_float_const_cmp {
         }
         // safe, non-const version (undocumented)
         #[inline]
+        #[allow(missing_docs)]
         #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<min_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match a.[<total_cmp>](&b) {

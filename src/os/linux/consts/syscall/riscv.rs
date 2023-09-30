@@ -7,6 +7,7 @@
 #[allow(non_camel_case_types)]
 pub struct LINUX_SYS_RISCV;
 
+#[allow(missing_docs)]
 impl LINUX_SYS_RISCV {
     pub const ACCEPT: isize = 202;
     pub const ACCEPT4: isize = 242;

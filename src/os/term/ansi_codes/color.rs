@@ -13,14 +13,22 @@ use crate::{
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum AnsiColor3 {
+    /// 0 Black
     #[default]
     Black = 0,
+    /// 1 Red
     Red = 1,
+    /// 2 Green
     Green = 2,
+    /// 3 Yellow
     Yellow = 3,
+    /// 4 Blue
     Blue = 4,
+    /// 5 Magenta
     Magenta = 5,
+    /// 6 Cyan
     Cyan = 6,
+    /// 7 White
     White = 7,
 }
 

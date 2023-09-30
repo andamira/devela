@@ -7,6 +7,7 @@
 #[allow(non_camel_case_types)]
 pub struct LINUX_ERRNO;
 
+#[allow(missing_docs)]
 impl LINUX_ERRNO {
     /// “Operation not permitted.”
     ///

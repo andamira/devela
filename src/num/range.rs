@@ -56,7 +56,7 @@ macro_rules! impl_range {
 
         impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]> [<$name $s:upper $b>]<RMIN, RMAX> {
             // The constant value used to shift the range of values away from 0,
-            pub const XOR_VALUE: [<$s:lower $b>] = RMIN.wrapping_sub(1);
+            const XOR_VALUE: [<$s:lower $b>] = RMIN.wrapping_sub(1);
 
             #[doc = "Returns a `" [<$name $s:upper $b>] "` with the given `value`,"
             " only if it's between `RMIN` and `RMAX`."]

@@ -112,9 +112,19 @@ impl LINUX_IOCTL {
 /// # Exclusive mode
 /// ---
 impl LINUX_IOCTL {
+    /// Put the terminal into exclusive mode.
+    ///
+    /// No further open(2) operations on the terminal are permitted.  (They fail
+    /// with EBUSY, except for a process with the `CAP_SYS_ADMIN` capability.)
     pub const TIOCEXCL: c_ulong = 0x540C;
-    pub const TIOCGEXCL: c_ulong = 0x80045440;
+
+    /// Disable exclusive mode.
     pub const TIOCNXCL: c_ulong = 0x540D;
+
+    /// (since Linux 3.8) If the terminal is currently in exclusive mode, place
+    /// a nonzero value in the location pointed to by argp; otherwise, place
+    /// zero in *argp.
+    pub const TIOCGEXCL: c_ulong = 0x80045440;
 }
 
 /// # Faking input
@@ -256,7 +266,7 @@ impl LINUX_IOCTL {
     ///
     /// If that was a pseudoterminal master, send it to the slave. Before Linux
     /// 2.6.10, anybody can do this as long as the output was not redirected
-    /// yet; since Linux 2.6.10, only a process with the CAP_SYS_ADMIN
+    /// yet; since Linux 2.6.10, only a process with the `CAP_SYS_ADMIN`
     /// capability may do this. If output was redirected already, then EBUSY is
     /// returned, but redirection can be stopped by using this ioctl with fd
     /// pointing at /dev/console or /dev/tty0.
@@ -420,6 +430,7 @@ impl LINUX_IOCTL {
 
 /// # Miscellaneous
 /// ---
+#[allow(missing_docs)]
 impl LINUX_IOCTL {
     /// Set non-blocking I/O mode if the argument is non-zero.
     ///

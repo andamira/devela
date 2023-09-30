@@ -7,6 +7,7 @@
 #[allow(non_camel_case_types)]
 pub struct LINUX_SYS_ARM;
 
+#[allow(missing_docs)]
 impl LINUX_SYS_ARM {
     pub const ACCEPT: isize = 285;
     pub const ACCEPT4: isize = 366;

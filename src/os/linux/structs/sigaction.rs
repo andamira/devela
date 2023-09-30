@@ -22,6 +22,7 @@ pub struct LinuxSigaction {
 }
 
 impl LinuxSigaction {
+    /// Retuns a new `LinuxSigation`.
     pub fn new(handler: extern "C" fn(i32), flags: usize, mask: LinuxSigset) -> Self {
         Self {
             sa_handler: handler,

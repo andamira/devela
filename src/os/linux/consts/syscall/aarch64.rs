@@ -8,6 +8,7 @@
 #[allow(non_camel_case_types)]
 pub struct LINUX_SYS_AARCH64;
 
+#[allow(missing_docs)]
 impl LINUX_SYS_AARCH64 {
     pub const ACCEPT: isize = 202;
     pub const ACCEPT4: isize = 242;

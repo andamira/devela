@@ -4,6 +4,9 @@
 //!
 //! [`termios`]: https://man7.org/linux/man-pages/man3/termios.3.html
 //
+// - https://man7.org/linux/man-pages/man0/termios.h.0p.html
+// - https://man7.org/linux/man-pages/man1/stty.1.html
+//
 
 #![allow(non_camel_case_types, clippy::zero_prefixed_literal)]
 
@@ -400,6 +403,6 @@ impl LINUX_TERMIOS_LFLAG {
     /// to be effective.
     pub const IEXTEN: c_uint = 0100000;
 
-    //
+    /// enable "LINEMODE"; useful with high latency links
     pub const EXTPROC: c_uint = 0200000;
 }
