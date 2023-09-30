@@ -56,13 +56,6 @@ macro_rules! cdbg {
     };
 }
 pub use cdbg;
-#[doc(hidden)]
-#[macro_export]
-#[deprecated(since = "0.12.0", note = "please use `cdbg`")]
-macro_rules! bdbg { ($($val:expr)? $(,)?) => { $crate::fmt::cdbg![$($val)?]; } }
-#[allow(deprecated)]
-#[doc(hidden)]
-pub use bdbg;
 
 /// *`s`kip `f`ormatting* macro.
 ///
