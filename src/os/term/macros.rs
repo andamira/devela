@@ -124,13 +124,13 @@ pub use ansi;
             target_arch = "riscv32",
             target_arch = "riscv64"
         ),
-        feature = "unsafe_os",
+        feature = "unsafe_linux",
         not(miri),
     )
 ))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(any(all(feature = "linux", feature = "unsafe_os"), feature = "std")))
+    doc(cfg(any(feature = "std", feature = "linux_unsafe")))
 )]
 #[macro_export]
 macro_rules! ansip {
@@ -149,7 +149,7 @@ macro_rules! ansip {
             target_arch = "riscv32",
             target_arch = "riscv64"
         ),
-        feature = "unsafe_os",
+        feature = "unsafe_linux",
         not(miri),
     )
 ))]

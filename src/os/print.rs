@@ -98,7 +98,7 @@ macro_rules! generate_os_print_std_macros {
             #[cfg(feature = "std")]
             #[cfg_attr(
                 feature = "nightly",
-                doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_os"))))
+                doc(cfg(any(feature = "std", feature = "linux_unsafe")))
             )]
             macro_rules! [<os_ $name>] {
                 // 1) print a newline (or nothing)
@@ -164,7 +164,7 @@ generate_os_print_std_macros![];
         target_arch = "riscv64"
     ),
     feature = "linux",
-    feature = "unsafe_os",
+    feature = "unsafe_linux",
     not(feature = "std"),
     not(miri),
 ))]
@@ -261,12 +261,12 @@ macro_rules! generate_os_print_linux_macros {
                     target_arch = "aarch64", target_arch = "riscv32", target_arch = "riscv64"
                 ),
                 feature = "linux",
-                feature = "unsafe_os",
+                feature = "unsafe_linux",
                 not(miri),
             ))]
             #[cfg_attr(
                 feature = "nightly",
-                doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_os"))))
+                doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_linux"))))
             )]
             macro_rules! [<os_ $name>] {
                 // 1) print a newline (or nothing)
@@ -324,7 +324,7 @@ macro_rules! generate_os_print_linux_macros {
                     target_arch = "aarch64", target_arch = "riscv32", target_arch = "riscv64"
                 ),
                 feature = "linux",
-                feature = "unsafe_os",
+                feature = "unsafe_linux",
                 not(miri),
             ))]
             pub use [<os_ $name>];
@@ -341,7 +341,7 @@ macro_rules! generate_os_print_linux_macros {
         target_arch = "riscv64"
     ),
     feature = "linux",
-    feature = "unsafe_os",
+    feature = "unsafe_linux",
     not(feature = "std"),
     not(miri),
 ))]

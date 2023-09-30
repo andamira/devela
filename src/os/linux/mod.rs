@@ -19,12 +19,13 @@
 // This is so both for syscalls and safe syscall wrappers. And when more
 // platforms are supported they will all need to be updated accordingly.
 
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
 mod consts;
-#[cfg(all(feature = "unsafe_os", not(miri)))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_os")))]
+#[cfg(all(feature = "unsafe_linux", not(miri)))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux_unsafe")))]
 mod fns;
-#[cfg(all(feature = "unsafe_os", not(miri)))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_os")))]
+// #[cfg(all(feature = "unsafe_linux", not(miri)))]
+// #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux_unsafe")))]
 mod structs;
 
 pub use all::*;
@@ -33,14 +34,14 @@ pub(super) mod all {
     pub use super::{consts::all::*, io::*, process::*, thread::*};
 
     #[doc(inline)]
-    #[cfg(all(feature = "unsafe_os", not(miri)))]
+    #[cfg(all(feature = "unsafe_linux", not(miri)))]
     pub use super::terminal::*;
 }
 
 /* public modules */
 
-#[cfg(all(feature = "unsafe_os", not(miri)))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_os")))]
+#[cfg(all(feature = "unsafe_linux", not(miri)))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux_unsafe")))]
 pub mod terminal;
 
 /// Linux-specific extensions to [`std::io`].
@@ -54,7 +55,7 @@ pub mod io {
             target_arch = "riscv32",
             target_arch = "riscv64"
         ),
-        feature = "unsafe_os",
+        feature = "unsafe_linux",
         not(miri),
     ))]
     pub use super::{
@@ -80,7 +81,7 @@ pub mod process {
             target_arch = "riscv32",
             target_arch = "riscv64"
         ),
-        feature = "unsafe_os",
+        feature = "unsafe_linux",
         not(miri),
     ))]
     pub use super::{
@@ -98,7 +99,7 @@ pub mod thread {
             target_arch = "arm",
             target_arch = "aarch64",
         ),
-        feature = "unsafe_os",
+        feature = "unsafe_linux",
         not(miri),
     ))]
     pub use super::{

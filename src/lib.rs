@@ -20,10 +20,17 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(
         feature = "unsafe",
+        feature = "unsafe_ascii",
+        feature = "unsafe_char",
         feature = "unsafe_cmp",
         feature = "unsafe_convert",
+        feature = "unsafe_fmt",
+        feature = "unsafe_mem",
         feature = "unsafe_num",
-        feature = "unsafe_fmt"
+        feature = "unsafe_os",
+        feature = "unsafe_linux",
+        feature = "unsafe_str",
+        feature = "unsafe_string",
     )
 ))]
 compile_error!("You can't enable the `safe` and `unsafe*` features at the same time.");
@@ -118,7 +125,7 @@ pub mod prelude {
     pub use crate::string::StringExt;
 }
 
-/// General documentation.
+/// Documentation on features.
 pub mod _doc {
     #![doc = include_str!("./Doc.md")]
 }

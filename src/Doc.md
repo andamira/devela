@@ -33,7 +33,8 @@ Single modules:
 - `fmt`, `fmt_unsafe`: enables the [`fmt`] module.
 - `mem`, `mem_unsafe`: enables the [`mem`] module.
 - `num`, `num_unsafe`: enables the [`num`] module.
-- `os`, `os_unsafe`: enables the [`os`] module.
+- `os`, `os_unsafe`: enables the [`os`] module
+  (but does not enable feature-gated submodules)
 - `str`, `str_unsafe`: enables the [`mod@str`] module.
 - `string`, `string_unsafe`: enables the [`string`] module.
 
@@ -52,8 +53,9 @@ A gradient of safety. By default nothing is enabled.
     in [`mem`].
   - `unsafe_num`: enables `new_unchecked` constructors and implements `bytemuck`
     traits.
-  - `unsafe_os`: provides functionality that depends on linux syscalls and
-    implements `bytemuck` traits.
+  - `unsafe_os`: 
+    - `unsafe_linux`: provides functionality that depends on linux syscalls and
+       implements `bytemuck` traits.
   - `unsafe_str`: enables unsafe use in [`str`][mod@str].
   - `unsafe_string`: enables unsafe use in [`string`].
 - `safe`: forbids unsafe at the crate level.

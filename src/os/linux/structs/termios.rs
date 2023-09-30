@@ -3,9 +3,12 @@
 //!
 //
 
-use super::super::{linux_sys_ioctl, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG};
-use crate::codegen::iif;
 use core::ffi::c_uint;
+#[cfg(all(feature = "unsafe_linux", not(miri)))]
+use {
+    super::super::{linux_sys_ioctl, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG},
+    crate::codegen::iif,
+};
 
 /// Represents the [`termios`] structure from libc,
 /// used to control terminal I/O.
@@ -36,6 +39,7 @@ pub struct LinuxTermios {
     pub c_cc: [u8; 19],
 }
 
+#[cfg(feature = "unsafe_linux")]
 unsafe impl bytemuck::NoUninit for LinuxTermios {}
 
 impl LinuxTermios {
@@ -71,7 +75,7 @@ impl LinuxTermios {
         target_arch = "riscv32",
         target_arch = "riscv64"
     ),
-    feature = "unsafe_os",
+    feature = "unsafe_linux",
     not(miri),
 ))]
 impl LinuxTermios {
@@ -79,6 +83,8 @@ impl LinuxTermios {
     ///
     /// # Errors
     /// In case of an error returns the [`LINUX_ERRNO`] value from [`linux_sys_ioctl`].
+    #[cfg(all(feature = "unsafe_linux", not(miri)))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux_unsafe")))]
     pub fn get_state() -> Result<LinuxTermios, isize> {
         let mut state = LinuxTermios::new();
         let res = unsafe {
@@ -94,6 +100,8 @@ impl LinuxTermios {
     /// Sets the current termios `state`.
     ///
     /// Returns the [`LINUX_ERRNO`] value from [`linux_sys_ioctl`].
+    #[cfg(all(feature = "unsafe_linux", not(miri)))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux_unsafe")))]
     pub fn set_state(mut state: LinuxTermios) -> Result<(), isize> {
         let res = unsafe {
             linux_sys_ioctl(
@@ -130,6 +138,8 @@ impl LinuxTermios {
     }
 
     /// Returns the size of the window, in cells and pixels.
+    #[cfg(all(feature = "unsafe_linux", not(miri)))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux_unsafe")))]
     pub fn get_winsize() -> Result<LinuxTerminalSize, isize> {
         let mut winsize = LinuxTerminalSize::default();
         let res = unsafe {

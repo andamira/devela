@@ -25,7 +25,7 @@ pub use {
         target_arch = "riscv32",
         target_arch = "riscv64"
     ),
-    feature = "unsafe_os",
+    feature = "unsafe_linux",
     not(miri),
 ))]
 pub use macros::ansip;

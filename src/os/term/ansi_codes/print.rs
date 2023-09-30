@@ -18,13 +18,13 @@ use std::io::{stdout, Write};
             target_arch = "riscv64"
         ),
         feature = "linux",
-        feature = "unsafe_os",
+        feature = "unsafe_linux",
         not(miri),
     )
 ))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_os"))))
+    doc(cfg(any(feature = "std", all(feature = "linux", feature = "unsafe_linux"))))
 )]
 /// # Print method
 impl super::Ansi {
@@ -50,7 +50,7 @@ impl super::Ansi {
         #[cfg(all(
             not(feature = "std"),
             feature = "linux",
-            feature = "unsafe_os",
+            feature = "unsafe_linux",
             any(
                 target_arch = "x86_64",
                 target_arch = "x86",
