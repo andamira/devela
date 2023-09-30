@@ -19,7 +19,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 #[cfg(all(
     feature = "safe",
     any(
-        feature = "unsafe",
+        feature = "unsafe", // includes all below
         feature = "unsafe_ascii",
         feature = "unsafe_char",
         feature = "unsafe_cmp",
@@ -27,7 +27,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         feature = "unsafe_fmt",
         feature = "unsafe_mem",
         feature = "unsafe_num",
-        feature = "unsafe_os",
+        feature = "unsafe_os", // includes: unsafe_{linux}
         feature = "unsafe_linux",
         feature = "unsafe_str",
         feature = "unsafe_string",

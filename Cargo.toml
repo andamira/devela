@@ -43,26 +43,27 @@ linux_unsafe = ["linux", "unsafe_linux"]
 # wasm = []
 
 #* modules features *#
-fullest = ["full"] # enables full recursively (unused)
+fullest = ["full"] # enables `full` recursively (unused)
 full = [ # enables all the modules.
-	"chars", "strings",
-	"cmp", "convert", "fmt", "mem", "num", "os"]
+	"texts",
+	"cmp", "convert", "mem", "num", "os"]
 	full_unsafe = ["full", "unsafe"]
 lean = [ # enables a lean selection of modules
 	"ascii", "fmt", "str"]
 	lean_unsafe = ["lean", "unsafe"]
-leanest = ["lean"] # enables lean recursively (unused)
+leanest = ["lean"] # enables `lean` recursively (unused)
 
 # multiple related modules:
 chars = [ # enables all *char* related sub-modules
 	"ascii", "char"]
-chars_unsafe = [ # enables all *char* related sub-modules
-	"ascii_unsafe", "char_unsafe"]
-strings = [ # enables all string related sub-modules
+	chars_unsafe = ["ascii_unsafe", "char_unsafe"]
+strings = [ # enables all *string* related sub-modules
 	"str", "string"]
-strings_unsafe = [
-	"str_unsafe", "string_unsafe"
-]
+	strings_unsafe = ["str_unsafe", "string_unsafe"]
+texts = [ # enables all *text* related sub-modules
+	"chars", "strings", "fmt"]
+	texts_unsafe = ["chars_unsafe", "strings_unsafe", "fmt_unsafe"]
+
 # single modules:
 ascii = []
 char = []
@@ -88,11 +89,10 @@ string_unsafe = ["string", "unsafe_string"]
 
 
 #* safety features *#
-unsafest = ["unsafe"] # enables unsafe recursively (unused)
+unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
 unsafe = [ # enables unsafe features in this crate
 	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_convert", "unsafe_fmt",
-	"unsafe_mem", "unsafe_num", "unsafe_os", "unsafe_str", "unsafe_string",
-] # sub-features:
+	"unsafe_mem", "unsafe_num", "unsafe_os", "unsafe_str", "unsafe_string"]
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
 	unsafe_cmp = [] # enables const floating-point comparisons
@@ -101,13 +101,12 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
 	unsafe_num = [] # enables unsafe constructors and bytemuck's traits
 	unsafe_os = [ # enables unsafe OS functionality
-		"unsafe_linux"
-	] # sub-features:
+		"unsafe_linux"]
 		unsafe_linux = [] # enables linux syscalls
 	unsafe_str = [] # enables unsafe use in `str`
 	unsafe_string = [] # enables unsafe use in `string`
 safe = [] # forbids unsafe in this crate
-safest = ["safe"] # forbids unsafe recursively (unused)
+safest = ["safe"] # forbids `unsafe` recursively (unused)
 
 
 #* nightly features *#
