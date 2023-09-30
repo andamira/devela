@@ -38,7 +38,12 @@ pub mod ascii;
 #[cfg(not(feature = "ascii"))]
 pub(crate) mod ascii; // the "ascii" feature is disabled
 
+#[cfg(feature = "char")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
 pub mod char;
+// #[cfg(not(feature = "char"))]
+// pub(crate) mod char; // the "char" feature is disabled
+
 pub mod cmp;
 pub mod codegen;
 pub mod convert;
@@ -65,8 +70,11 @@ pub mod all {
     pub use super::ascii::*;
 
     #[doc(inline)]
+    #[cfg(feature = "char")]
+    pub use super::char::*;
+
+    #[doc(inline)]
     pub use super::{
-        char::*,
         cmp::*,
         codegen::all::*,
         convert::{collection::*, primitive::*},
