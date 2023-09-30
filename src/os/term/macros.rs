@@ -71,10 +71,6 @@ pub use ansib;
 ///
 /// [0]: super::Ansi#ansi-escape-codes
 #[macro_export]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(any(feature = "", feature = "unsafe_str")))
-)]
 macro_rules! ansi {
     ($($arg:tt)*) => {
         if cfg!(feature = "unsafe_str") {
