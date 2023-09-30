@@ -23,23 +23,69 @@ publish = true
 # ------------------------------------------------------------------------------
 
 [features]
-
-#* capability features *#
 default = []
-full = [
-	"linux",
-]
-linux = [] # enables os::linux functionality
 
 #* environment features *#
-std = ["alloc", # disables `no_std` compatibility and enables `std` functionality
+std = [ # disables `no_std` compatibility and enables `std` functionality
+	"alloc",
 	"atomic/std",
-	"bytemuck/extern_crate_std",
-]
+	"bytemuck/extern_crate_std"]
 alloc = [ # enables `alloc` functionality
-	"bytemuck/extern_crate_alloc",
-]
+	"bytemuck/extern_crate_alloc"]
 no_std = [] # enables functionality incompatible with `std` (unused)
+
+#* platform specific features *#
+linux = ["os"] # enables os::linux functionality
+linux_unsafe = ["linux", "unsafe_os"]
+# windows = []
+# macos = []
+# esp32 = []
+# wasm = []
+
+#* modules features *#
+fullest = ["full"] # enables full recursively (unused)
+full = [ # enables all the modules.
+	"chars", "strings",
+	"cmp", "convert", "fmt", "mem", "num", "os"]
+	full_unsafe = ["full", "unsafe"]
+lean = [ # enables a lean selection of modules
+	"ascii", "fmt", "str"]
+	lean_unsafe = ["lean", "unsafe"]
+leanest = ["lean"] # enables lean recursively (unused)
+
+# multiple related modules:
+chars = [ # enables all *char* related sub-modules
+	"ascii", "char"]
+chars_unsafe = [ # enables all *char* related sub-modules
+	"ascii_unsafe", "char_unsafe"]
+strings = [ # enables all string related sub-modules
+	"str", "string"]
+strings_unsafe = [
+	"str_unsafe", "string_unsafe"
+]
+# single modules:
+ascii = []
+char = []
+cmp = []
+convert = []
+fmt = []
+mem = []
+num = []
+os = []
+str = []
+string = []
+# single modules with unsafe support:
+ascii_unsafe = ["ascii", "unsafe_ascii"]
+char_unsafe = ["char", "unsafe_char"]
+cmp_unsafe = ["cmp", "unsafe_cmp"]
+convert_unsafe = ["convert", "unsafe_convert"]
+fmt_unsafe = ["fmt", "unsafe_fmt"]
+mem_unsafe = ["mem", "unsafe_mem"]
+num_unsafe = ["num", "unsafe_num"]
+os_unsafe = ["os", "unsafe_os"]
+str_unsafe = ["str", "unsafe_str"]
+string_unsafe = ["string", "unsafe_string"]
+
 
 #* safety features *#
 unsafest = ["unsafe"] # enables unsafe recursively (unused)
@@ -60,21 +106,22 @@ unsafe = [ # enables unsafe features in this crate
 safe = [] # forbids unsafe in this crate
 safest = ["safe"] # forbids unsafe recursively (unused)
 
+
 #* nightly features *#
 nightly = [] # enables nightly features
 nightly_docs = [ # enables features for docs.rs
 	"nightly", "full", "std", "unsafe", "linux",
 ]
 
+
 # ------------------------------------------------------------------------------
 
 [dependencies]
 devela_macros = "0.6.1"
-paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 #
+paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 az = { version = "1.2.1", default-features = false }
 bytemuck = { version = "1.13.1", default-features = false }
-#
 const-str = { version = "0.5.6", default-features = false }
 #
 [dependencies.atomic]
@@ -85,6 +132,7 @@ features = ["fallback"]
 version = "1.4.3"
 default-features = false
 features = ["fallback", "float"]
+
 
 # ------------------------------------------------------------------------------
 

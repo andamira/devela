@@ -1,6 +1,7 @@
 // devela::ascii::char::char8
 
 use super::*;
+#[cfg(feature = "ascii")]
 use crate::ascii::AsciiChar;
 
 impl Char32 {
@@ -16,6 +17,8 @@ impl Char32 {
 
     /// Converts an `AsciiChar` to `Char32`.
     #[inline]
+    #[cfg(feature = "ascii")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     pub const fn from_ascii_char(c: AsciiChar) -> Char32 {
         Char32(c.as_char())
     }
@@ -50,6 +53,8 @@ impl Char32 {
 
     /// Tries to convert this `Char32` to `AsciiChar`.
     #[inline]
+    #[cfg(feature = "ascii")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
         if char_is_7bit(self.to_u32()) {
             #[cfg(not(feature = "unsafe_char"))]

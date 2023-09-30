@@ -3,8 +3,11 @@
 //! ANSI codes related to color.
 //
 
-use super::{ascii_1digit, Ansi};
-use crate::{ascii::ascii_u8_digits, cmp::min_u8};
+use super::Ansi;
+use crate::{
+    ascii::{ascii_1digit, ascii_u8_digits},
+    cmp::min_u8,
+};
 
 /// ANSI 3-bit color codes, 8 colors.
 #[repr(u8)]

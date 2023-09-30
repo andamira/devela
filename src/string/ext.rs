@@ -4,10 +4,10 @@
 //
 
 #[cfg(feature = "alloc")]
-use {
-    crate::ascii::AsciiChar,
-    alloc::string::{String, ToString},
-};
+use alloc::string::{String, ToString};
+
+#[cfg(all(feature = "ascii", feature = "alloc"))]
+use crate::ascii::AsciiChar;
 
 // Marker trait to prevent downstream implementations of the `StringExt` trait.
 impl private::Sealed for str {}
@@ -32,11 +32,14 @@ pub trait StringExt {
     /// assert_eq!("_3_5_7_9_12_15_", String::new_counter(15, AsciiChar::LowLine));
     /// ```
     /// [0]: https://www.satisfice.com/blog/archives/22
+    #[cfg(feature = "ascii")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     fn new_counter(length: usize, separator: AsciiChar) -> String;
 }
 
 #[cfg(feature = "alloc")]
 impl StringExt for String {
+    #[cfg(feature = "ascii")]
     fn new_counter(mut length: usize, separator: AsciiChar) -> String {
         let mut cstr = String::new();
 

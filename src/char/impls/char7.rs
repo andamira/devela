@@ -1,6 +1,7 @@
 // devela::ascii::char::char7
 
 use super::*;
+#[cfg(feature = "ascii")]
 use crate::ascii::AsciiChar;
 
 impl Char7 {
@@ -38,6 +39,8 @@ impl Char7 {
 
     /// Converts an `AsciiChar` to `Char7`.
     #[inline]
+    #[cfg(feature = "ascii")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     pub const fn from_ascii_char(c: AsciiChar) -> Char7 {
         Char7::new_unchecked(c as u8)
     }
@@ -93,6 +96,8 @@ impl Char7 {
 
     /// Converts a `Char7` to `AsciiChar`.
     #[inline]
+    #[cfg(feature = "ascii")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     pub const fn to_ascii_char(c: Char7) -> AsciiChar {
         #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_ascii")))]
         if let Some(c) = AsciiChar::from_u8(c.0.get()) {

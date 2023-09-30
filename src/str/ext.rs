@@ -3,17 +3,17 @@
 //!
 //
 
-use crate::{ascii::AsciiChar, codegen::iif};
-
 #[cfg(not(feature = "unsafe_str"))]
 use core::str::from_utf8;
 #[cfg(feature = "unsafe_str")]
 use core::str::from_utf8_unchecked;
 
-#[cfg(feature = "unsafe_fmt")]
+#[cfg(all(feature = "ascii", feature = "unsafe_fmt"))]
 use crate::fmt::IntBuf;
-#[cfg(not(feature = "unsafe_fmt"))]
+#[cfg(all(feature = "ascii", not(feature = "unsafe_fmt")))]
 use crate::{ascii::ascii_usize_digits, slice::slice_trim_leading_bytes};
+#[cfg(feature = "ascii")]
+use crate::{ascii::AsciiChar, codegen::iif};
 
 // Marker trait to prevent downstream implementations of the `StrExt` trait.
 impl private::Sealed for str {}
@@ -64,6 +64,8 @@ pub trait StrExt {
     /// Makes use of the `unsafe_str` and `unsafe_fmt` features if enabled.
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
+    #[cfg(feature = "ascii")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str;
 }
 
@@ -95,6 +97,7 @@ impl StrExt for str {
         from_utf8(&buffer[..index]).unwrap()
     }
 
+    #[cfg(feature = "ascii")]
     fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str {
         assert![buffer.len() >= length];
         if length == 0 {
@@ -157,6 +160,7 @@ impl StrExt for str {
 // the cold path that returns an empty string slice
 #[cold]
 #[inline]
+#[cfg(feature = "ascii")]
 fn cold_empty_string() -> &'static str {
     ""
 }

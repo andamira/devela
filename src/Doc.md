@@ -1,16 +1,41 @@
 ## Features
-Features from different groups (*Capability, Environment, Safety* and *Nightly*)
+Features from different groups (*Environment*, *Platform*, *Modules*, *Safety* and *Nightly*)
 are mostly independent from each other.
 
-### Capability features
-- `default`: no features.
-- `full`: enables full capabilities (unused).
+- `default`: no features (no environment, no platform, no modules, no unsafe, no nightly).
 
 ### Environment features
 By default the crate is `no_std` compatible.
 - `std`: disables `no_std` compatibility and enables `std` functionality.
 - `alloc`: enables `alloc` functionality.
 - `no_std`: enables functionality incompatible with `std` (unused).
+
+### Platform features
+- `linux`, `linux_unsafe`: enables [`os::linux`] functionality.
+
+### Modules features
+Modules can be enabled independently of *environment*, *platform* or *safety*, unless specified.
+
+- `fullest`: enables all the modules, recursively (unused).
+- `full`, `full_unsafe`: enables all the modules.
+- `lean`, `lean_unsafe`: enables a lean selection of modules.
+- `leanest`: enables a lean selection of modules, recursively (unused).
+
+Multiple modules:
+- `strings`, `strings_unsafe`: enables [`mod@str`] and [`string`] modules.
+- `chars`, `chars_unsafe:` enables [`ascii`] and [`mod@char`] modules.
+
+Single modules:
+- `ascii`, `ascii_unsafe:` enables the [`ascii`] module.
+- `char`, `char_unsafe`: enables the [`mod@char`] module.
+- `cmp`, `cmp_unsafe`: enables the [`cmp`] module.
+- `convert`, `convert_unsafe`: enables the [`convert`] module.
+- `fmt`, `fmt_unsafe`: enables the [`fmt`] module.
+- `mem`, `mem_unsafe`: enables the [`mem`] module.
+- `num`, `num_unsafe`: enables the [`num`] module.
+- `os`, `os_unsafe`: enables the [`os`] module.
+- `str`, `str_unsafe`: enables the [`mod@str`] module.
+- `string`, `string_unsafe`: enables the [`string`] module.
 
 ### Safety features
 A gradient of safety. By default nothing is enabled.

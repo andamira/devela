@@ -30,7 +30,14 @@ compile_error!("You can't enable the `safe` and `unsafe*` features at the same t
 
 extern crate devela_macros;
 
+/* sub-modules */
+
+#[cfg(feature = "ascii")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
 pub mod ascii;
+#[cfg(not(feature = "ascii"))]
+pub(crate) mod ascii; // the "ascii" feature is disabled
+
 pub mod char;
 pub mod cmp;
 pub mod codegen;
@@ -54,8 +61,11 @@ pub mod thread;
 /// All items are reexported here.
 pub mod all {
     #[doc(inline)]
+    #[cfg(feature = "ascii")]
+    pub use super::ascii::*;
+
+    #[doc(inline)]
     pub use super::{
-        ascii::*,
         char::*,
         cmp::*,
         codegen::all::*,
