@@ -81,6 +81,7 @@ pub fn linux_random_bytes(buffer: &mut [u8]) {
 // the cold path for trying again
 #[cold]
 #[inline]
+#[must_use]
 fn getrandom_try_again(attempts: &mut usize) -> bool {
     // if *attempts >= MAX_ATTEMPTS { getrandom_failed(); }
     *attempts += 1;

@@ -59,6 +59,7 @@ macro_rules! impl_non_range {
             ///
             /// Returns `None` if `value` is between `RMIN` and `RMAX`, inclusive,
             /// or if `RMIN > RMAX`.
+            #[must_use]
             pub const fn new(value: [<$s:lower $b>]) -> Option<Self> {
                 if RMIN <= RMAX && (value < RMIN || value > RMAX) {
                     match [<NonZero $s:upper $b>]::new(value ^ RMIN) {
@@ -78,6 +79,7 @@ macro_rules! impl_non_range {
             /// inclusive, or if `RMIN > RMAX`.
             /// # Safety
             /// The given `value` must never be between `RMIN` and `RMAX`, inclusive.
+            #[must_use]
             #[cfg(feature = "unsafe_num")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_num")))]
             pub const unsafe fn new_unchecked(value: [<$s:lower $b>]) -> Self {
@@ -93,6 +95,7 @@ macro_rules! impl_non_range {
             }
 
             /// Returns the value as a primitive type.
+            #[must_use]
             #[inline]
             pub const fn get(&self) -> [<$s:lower $b>] {
                 self.0.get() ^ RMIN
@@ -205,6 +208,7 @@ macro_rules! impl_non_range {
         impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             From<[<$name $s:upper $b>]<RMIN, RMAX>> for [<$s:lower $b>] {
             #[inline]
+            #[must_use]
             fn from(value: [<$name $s:upper $b>]<RMIN, RMAX>) -> [<$s:lower $b>] {
                 value.get()
             }

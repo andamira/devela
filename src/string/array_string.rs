@@ -41,6 +41,7 @@ macro_rules! generate_array_string {
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
             #[inline]
+            #[must_use]
             pub const fn new() -> Self {
                 assert![CAP <= $t::MAX as usize];
                 Self {
@@ -56,6 +57,7 @@ macro_rules! generate_array_string {
             ///
             #[doc = "Will never panic if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
+            #[must_use]
             #[cfg(feature = "char")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char7(c: Char7) -> Self {
@@ -73,6 +75,7 @@ macro_rules! generate_array_string {
             ///
             #[doc = "Will never panic if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
+            #[must_use]
             #[cfg(feature = "char")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char8(c: Char8) -> Self {
@@ -96,6 +99,7 @@ macro_rules! generate_array_string {
             ///
             #[doc = "Will never panic if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
+            #[must_use]
             #[cfg(feature = "char")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char16(c: Char16) -> Self {
@@ -122,6 +126,7 @@ macro_rules! generate_array_string {
             ///
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
+            #[must_use]
             #[cfg(feature = "char")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char24(c: Char24) -> Self {
@@ -151,6 +156,7 @@ macro_rules! generate_array_string {
             ///
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
+            #[must_use]
             #[cfg(feature = "char")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char32(c: Char32) -> Self {
@@ -180,6 +186,7 @@ macro_rules! generate_array_string {
             ///
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
+            #[must_use]
             #[cfg(feature = "char")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char(c: char) -> Self {
@@ -190,30 +197,35 @@ macro_rules! generate_array_string {
 
             /// Returns the total capacity in bytes.
             #[inline]
+            #[must_use]
             pub const fn capacity() -> usize {
                 CAP
             }
 
             /// Returns the remaining capacity.
             #[inline]
+            #[must_use]
             pub const fn remaining_capacity(&self) -> usize {
                 CAP - self.len as usize
             }
 
             /// Returns the current length.
             #[inline]
+            #[must_use]
             pub const fn len(&self) -> usize {
                 self.len as usize
             }
 
             /// Returns `true` if the current length is 0.
             #[inline]
+            #[must_use]
             pub const fn is_empty(&self) -> bool {
                 self.len == 0
             }
 
             /// Returns `true` if the current remaining capacity is 0.
             #[inline]
+            #[must_use]
             pub const fn is_full(&self) -> bool {
                 self.len == CAP as $t
             }
@@ -235,6 +247,7 @@ macro_rules! generate_array_string {
 
             /// Returns a byte slice of the inner string slice.
             #[inline]
+            #[must_use]
             pub fn as_bytes(&self) -> &[u8] {
                 #[cfg(feature = "unsafe_string")]
                 unsafe {
@@ -252,6 +265,7 @@ macro_rules! generate_array_string {
             /// # Safety
             /// TODO
             #[inline]
+            #[must_use]
             #[cfg(feature = "unsafe_string")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_string")))]
             pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
@@ -262,6 +276,7 @@ macro_rules! generate_array_string {
             ///
             /// The array contains all the bytes, including those outside the current length.
             #[inline]
+            #[must_use]
             pub const fn as_array(&self) -> [u8; CAP] {
                 self.arr
             }
@@ -270,11 +285,14 @@ macro_rules! generate_array_string {
             ///
             /// The array contains all the bytes, including those outside the current length.
             #[inline]
+            #[must_use]
             pub const fn into_array(self) -> [u8; CAP] {
                 self.arr
             }
 
             /// Returns the inner string slice.
+            #[inline]
+            #[must_use]
             pub fn as_str(&self) -> &str {
                 #[cfg(feature = "unsafe_string")]
                 unsafe {
@@ -297,6 +315,7 @@ macro_rules! generate_array_string {
             ///
             /// # Safety
             /// TODO
+            #[must_use]
             #[cfg(feature = "unsafe_string")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_string")))]
             pub fn as_str_mut(&mut self) -> &mut str {
@@ -304,6 +323,7 @@ macro_rules! generate_array_string {
             }
 
             /// Returns an iterator over the `chars` of this grapheme cluster.
+            #[inline]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
             pub fn chars(&self) -> Chars {
@@ -312,6 +332,7 @@ macro_rules! generate_array_string {
 
             /// Returns a new allocated C-compatible, nul-terminanted string.
             #[inline]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
             pub fn to_cstring(&self) -> CString {
@@ -323,6 +344,7 @@ macro_rules! generate_array_string {
             /// Removes the last character and returns it, or `None` if
             /// the string is empty.
             #[inline]
+            #[must_use]
             pub fn pop(&mut self) -> Option<char> {
                 self.as_str().chars().last().map(|c| {
                     self.len -= c.len_utf8() as $t;
@@ -396,12 +418,14 @@ macro_rules! generate_array_string {
             /// # Panics
             /// Panics if `CAP` > 255.
             #[inline]
+            #[must_use]
             fn default() -> Self {
                 Self::new()
             }
         }
 
         impl<const CAP: usize> fmt::Display for [<Array $t:upper String>]<CAP> {
+            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(f, "{}", self.as_str())
             }
@@ -416,18 +440,24 @@ macro_rules! generate_array_string {
 
         impl<const CAP: usize> Deref for [<Array $t:upper String>]<CAP> {
             type Target = str;
+            #[inline]
+            #[must_use]
             fn deref(&self) -> &Self::Target {
                 self.as_str()
             }
         }
 
         impl<const CAP: usize> AsRef<str> for [<Array $t:upper String>]<CAP> {
+            #[inline]
+            #[must_use]
             fn as_ref(&self) -> &str {
                 self.as_str()
             }
         }
 
         impl<const CAP: usize> AsRef<[u8]> for [<Array $t:upper String>]<CAP> {
+            #[inline]
+            #[must_use]
             fn as_ref(&self) -> &[u8] {
                 self.as_bytes()
             }
@@ -447,6 +477,7 @@ macro_rules! generate_array_string {
                 all(feature = "std", any(unix, target_os = "wasi"))
             )))]
             impl<const CAP: usize> AsRef<OsStr> for [<Array $t:upper String>]<CAP> {
+            #[must_use]
                 fn as_ref(&self) -> &OsStr {
                     OsStr::from_bytes(self.as_bytes())
                 }

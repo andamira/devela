@@ -32,6 +32,7 @@ pub trait StringExt {
     /// assert_eq!("_3_5_7_9_12_15_", String::new_counter(15, AsciiChar::LowLine));
     /// ```
     /// [0]: https://www.satisfice.com/blog/archives/22
+    #[must_use]
     #[cfg(feature = "ascii")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     fn new_counter(length: usize, separator: AsciiChar) -> String;

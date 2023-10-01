@@ -17,6 +17,7 @@ impl Char32 {
 
     /// Converts an `AsciiChar` to `Char32`.
     #[inline]
+    #[must_use]
     #[cfg(feature = "ascii")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     pub const fn from_ascii_char(c: AsciiChar) -> Char32 {
@@ -25,26 +26,31 @@ impl Char32 {
 
     /// Converts a `Char7` to `Char32`.
     #[inline]
+    #[must_use]
     pub const fn from_char7(c: Char7) -> Char32 {
         Char32(c.to_char())
     }
     /// Converts a `Char8` to `Char32`.
     #[inline]
+    #[must_use]
     pub const fn from_char8(c: Char8) -> Char32 {
         Char32(c.to_char())
     }
     /// Converts a `Char16` to `Char32`.
     #[inline]
+    #[must_use]
     pub const fn from_char16(c: Char16) -> Char32 {
         Char32(c.to_char())
     }
     /// Converts a `Char24` to `Char32`.
     #[inline]
+    #[must_use]
     pub const fn from_char24(c: Char24) -> Char32 {
         Char32(c.to_char())
     }
     /// Converts a `char` to `Char32`.
     #[inline]
+    #[must_use]
     pub const fn from_char(c: char) -> Char32 {
         Char32(c)
     }
@@ -89,16 +95,19 @@ impl Char32 {
     }
     /// Converts this `Char32` to `Char24`.
     #[inline]
+    #[must_use]
     pub const fn to_char24(self) -> Char24 {
         Char24::from_char32(self)
     }
     /// Converts this `Char32` to `char`.
     #[inline]
+    #[must_use]
     pub const fn to_char(self) -> char {
         self.0
     }
     /// Converts this `Char32` to `u32`.
     #[inline]
+    #[must_use]
     pub const fn to_u32(self) -> u32 {
         self.0 as u32
     }
@@ -110,6 +119,7 @@ impl Char32 {
     //
     // https://en.wikipedia.org/wiki/UTF-8#Encoding
     #[inline]
+    #[must_use]
     #[allow(clippy::unusual_byte_groupings)]
     pub const fn to_utf8_bytes(self) -> [u8; 4] {
         let c = self.0 as u32;
@@ -155,6 +165,7 @@ impl Char32 {
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn to_ascii_uppercase(self) -> Char32 {
         Char32(char::to_ascii_uppercase(&self.0))
@@ -164,6 +175,7 @@ impl Char32 {
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn to_ascii_lowercase(self) -> Char32 {
         Char32(char::to_ascii_lowercase(&self.0))
@@ -175,6 +187,7 @@ impl Char32 {
     ///
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[inline]
+    #[must_use]
     pub const fn is_noncharacter(self) -> bool {
         char_is_noncharacter(self.0 as u32)
     }
@@ -183,12 +196,14 @@ impl Char32 {
     ///
     /// [0]: https://www.unicode.org/glossary/#abstract_character
     #[inline]
+    #[must_use]
     pub const fn is_character(self) -> bool {
         !self.is_noncharacter()
     }
 
     /// Checks if the value is within the ASCII range.
     #[inline]
+    #[must_use]
     pub const fn is_ascii(self) -> bool {
         char::is_ascii(&self.0)
     }

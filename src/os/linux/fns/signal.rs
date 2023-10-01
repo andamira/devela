@@ -40,7 +40,6 @@ use core::{mem::transmute, ptr::null_mut};
 /// complex too low level task.
 ///
 /// [`SA_RESTORER`]: SA::SA_RESTORER
-#[inline]
 pub fn linux_sig_handler_no_return(handler: fn(i32) -> !, signals: &[i32]) {
     // We store the given `handler` function in a static to be able to call it
     // from the new extern function which can't capture its environment.
@@ -66,7 +65,7 @@ pub fn linux_sig_handler_no_return(handler: fn(i32) -> !, signals: &[i32]) {
         // make sure the signal is a valid number
         if (1..=36).contains(s) {
             unsafe {
-                linux_sys_rt_sigaction(*s, &sigaction, null_mut(), LinuxSigset::size());
+                let _ = linux_sys_rt_sigaction(*s, &sigaction, null_mut(), LinuxSigset::size());
             }
         }
     }

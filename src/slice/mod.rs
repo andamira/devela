@@ -20,6 +20,7 @@ pub trait SliceExt<T>: private::Sealed {
     /// If `left_len > slice.len()` it returns the full slice.
     ///
     /// See also [`slice_lsplit`] for the standalone `const` version.
+    #[must_use]
     fn lsplit(&self, len: usize) -> &[T];
 
     /// Returns a right subslice of `slice` with the given maximum `len`.
@@ -27,6 +28,7 @@ pub trait SliceExt<T>: private::Sealed {
     /// If `left_len > slice.len()` it returns the full slice.
     ///
     /// See also [`slice_rsplit`] for the standalone `const` version.
+    #[must_use]
     fn rsplit(&self, len: usize) -> &[T];
 
     /// Returns a middle subslice of `slice` with the given maximum `len`
@@ -38,6 +40,7 @@ pub trait SliceExt<T>: private::Sealed {
     /// If `len > slice.len()` returns the full `slice`.
     ///
     /// See also [`slice_msplit_left`] for the standalone `const` version.
+    #[must_use]
     fn msplit_left(&self, len: usize) -> &[T];
 
     /// Returns a middle subslice of `slice` with the given maximum `len`
@@ -49,6 +52,7 @@ pub trait SliceExt<T>: private::Sealed {
     /// If `len > slice.len()` returns the full `slice`.
     ///
     /// See also [`slice_msplit_right`] for the standalone `const` version.
+    #[must_use]
     fn msplit_right(&self, len: usize) -> &[T];
 }
 
@@ -59,11 +63,13 @@ pub trait SliceExtMut<T>: private::Sealed + SliceExt<T> {
     /// Returns a mutable left subslice of `slice` with the given maximum `len`.
     ///
     /// If `left_len > slice.len()` it returns the full slice.
+    #[must_use]
     fn lsplit_mut(&mut self, len: usize) -> &mut [T];
 
     /// Returns a mutable right subslice of `slice` with the given maximum `len`.
     ///
     /// If `left_len > slice.len()` it returns the full slice.
+    #[must_use]
     fn rsplit_mut(&mut self, len: usize) -> &mut [T];
 
     /// Returns a mutable middle subslice of `slice` with the given maximum `len`
@@ -73,6 +79,7 @@ pub trait SliceExtMut<T>: private::Sealed + SliceExt<T> {
     /// on the left.
     ///
     /// If `len > slice.len()` returns the full `slice`.
+    #[must_use]
     fn msplit_left_mut(&mut self, len: usize) -> &mut [T];
 
     /// Returns a mutable middle subslice of `slice` with the given maximum `len`
@@ -82,6 +89,7 @@ pub trait SliceExtMut<T>: private::Sealed + SliceExt<T> {
     /// on the right.
     ///
     /// If `len > slice.len()` returns the full `slice`.
+    #[must_use]
     fn msplit_right_mut(&mut self, len: usize) -> &mut [T];
 }
 

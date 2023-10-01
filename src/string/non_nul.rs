@@ -44,6 +44,7 @@ impl_sized_alias![
 impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     /// Creates a new empty `ArrayU8NonNulString`.
     #[inline]
+    #[must_use]
     pub const fn new() -> Self {
         Self { arr: [0; CAP] }
     }
@@ -57,6 +58,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     ///
     /// Will never panic if `CAP` >= 1.
     #[inline]
+    #[must_use]
     #[cfg(feature = "char")]
     pub const fn from_char7(c: Char7) -> Self {
         let mut new = Self::new();
@@ -75,6 +77,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     ///
     /// Will never panic if `CAP` >= 2.
     #[inline]
+    #[must_use]
     #[cfg(feature = "char")]
     pub const fn from_char8(c: Char8) -> Self {
         let mut new = Self::new();
@@ -99,6 +102,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     ///
     /// Will never panic if `CAP` >= 3.
     #[inline]
+    #[must_use]
     #[cfg(feature = "char")]
     pub const fn from_char16(c: Char16) -> Self {
         let mut new = Self::new();
@@ -126,6 +130,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     ///
     /// Will never panic if `CAP` >= 4.
     #[inline]
+    #[must_use]
     #[cfg(feature = "char")]
     pub const fn from_char24(c: Char24) -> Self {
         let mut new = Self::new();
@@ -156,6 +161,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     ///
     /// Will never panic if `CAP` is >= 4.
     #[inline]
+    #[must_use]
     #[cfg(feature = "char")]
     pub const fn from_char32(c: Char32) -> Self {
         let mut new = Self::new();
@@ -186,6 +192,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     ///
     /// Will never panic if `CAP` is >= 4.
     #[inline]
+    #[must_use]
     #[cfg(feature = "char")]
     pub const fn from_char(c: char) -> Self {
         Self::from_char32(Char32(c))
@@ -195,18 +202,21 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
 
     /// Returns the total capacity in bytes.
     #[inline]
+    #[must_use]
     pub const fn capacity() -> usize {
         CAP
     }
 
     /// Returns the remaining capacity.
     #[inline]
+    #[must_use]
     pub fn remaining_capacity(&self) -> usize {
         CAP - self.len()
     }
 
     /// Returns the current length.
     #[inline]
+    #[must_use]
     pub fn len(&self) -> usize {
         self.arr
             .iter()
@@ -216,12 +226,14 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
 
     /// Returns `true` if the current length is 0.
     #[inline]
+    #[must_use]
     pub fn is_empty(&self) -> bool {
         self.len() == 0
     }
 
     /// Returns `true` if the current remaining capacity is 0.
     #[inline]
+    #[must_use]
     pub fn is_full(&self) -> bool {
         self.len() == CAP
     }
@@ -236,6 +248,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
 
     /// Returns a byte slice of the inner string slice.
     #[inline]
+    #[must_use]
     pub fn as_bytes(&self) -> &[u8] {
         #[cfg(not(feature = "unsafe_string"))]
         return self.arr.get(0..self.len()).unwrap();
@@ -249,6 +262,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     /// # Safety
     /// TODO
     #[inline]
+    #[must_use]
     #[cfg(feature = "unsafe_string")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_string")))]
     pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
@@ -260,6 +274,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     ///
     /// The array contains all the bytes, including those outside the current length.
     #[inline]
+    #[must_use]
     pub const fn as_array(&self) -> [u8; CAP] {
         self.arr
     }
@@ -268,12 +283,14 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     ///
     /// The array contains all the bytes, including those outside the current length.
     #[inline]
+    #[must_use]
     pub const fn into_array(self) -> [u8; CAP] {
         self.arr
     }
 
     /// Returns the inner string slice.
     #[inline]
+    #[must_use]
     pub fn as_str(&self) -> &str {
         #[cfg(not(feature = "unsafe_string"))]
         return core::str::from_utf8(self.arr.get(0..self.len()).unwrap())
@@ -290,6 +307,8 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     ///
     /// # Safety
     /// TODO
+    #[inline]
+    #[must_use]
     #[cfg(feature = "unsafe_string")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_string")))]
     pub unsafe fn as_str_mut(&mut self) -> &mut str {
@@ -297,6 +316,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
+    #[inline]
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
     pub fn chars(&self) -> Chars {
@@ -305,6 +325,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
 
     /// Returns a new allocated C-compatible, nul-terminanted string.
     #[inline]
+    #[must_use]
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
     pub fn to_cstring(&self) -> CString {
@@ -316,6 +337,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     /// Removes the last character and returns it, or `None` if
     /// the string is empty.
     #[inline]
+    #[must_use]
     pub fn pop(&mut self) -> Option<char> {
         if self.is_empty() {
             None
@@ -342,6 +364,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     /// # Panics
     /// Panics if the string is empty.
     #[inline]
+    #[must_use]
     pub fn pop_unchecked(&mut self) -> char {
         let len = self.len();
         let mut idx_last_char = len - 1;
@@ -472,6 +495,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
 impl<const CAP: usize> Default for ArrayU8NonNulString<CAP> {
     /// Returns an empty string.
     #[inline]
+    #[must_use]
     fn default() -> Self {
         Self::new()
     }
@@ -501,6 +525,8 @@ macro_rules! impl_from_char {
     };
     ( @$char:ty => $for_name:ident: $for_bit:expr ) => { $crate::codegen::paste! {
         impl From<$char> for [< $for_name $for_bit >] {
+            #[inline]
+            #[must_use]
             fn from(c: $char) -> [< $for_name $for_bit >] {
                 let mut s = Self::default();
                 let _ = s.push(c.into());
@@ -514,6 +540,7 @@ macro_rules! impl_from_char {
     ( @try $char:ty => $for_name:ident: $for_bit:expr ) => { $crate::codegen::paste! {
         impl TryFrom<$char> for [< $for_name $for_bit >] {
             type Error = $crate::string::ArrayStringError;
+            #[inline]
             fn try_from(c: $char) -> $crate::string::Result<[< $for_name $for_bit >]> {
                 let mut s = Self::default();
                 s.try_push(c.into())?;

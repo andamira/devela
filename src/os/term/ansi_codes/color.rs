@@ -35,6 +35,7 @@ pub enum AnsiColor3 {
 impl AnsiColor3 {
     /// Returns the ASCII byte representation of the 8-bit color number, with padding zeros.
     #[inline]
+    #[must_use]
     pub const fn to_ascii(&self) -> u8 {
         ascii_1digit(*self as u8)
     }
@@ -42,6 +43,7 @@ impl AnsiColor3 {
     /// Returns an `AnsiColor3` from an `u8` value.
     /// If `value` > 7 then returns Black.
     #[inline]
+    #[must_use]
     pub const fn from_u8(value: u8) -> Self {
         match value {
             1 => Self::Red,
@@ -57,6 +59,7 @@ impl AnsiColor3 {
 }
 impl From<u8> for AnsiColor3 {
     #[inline]
+    #[must_use]
     fn from(value: u8) -> Self {
         Self::from_u8(value)
     }
@@ -69,12 +72,14 @@ pub struct AnsiColor8(pub u8);
 impl AnsiColor8 {
     /// Creates a new `AnsiColor8` from an `AnsiColor3`.
     #[inline]
+    #[must_use]
     pub const fn new(color: AnsiColor3) -> Self {
         Self(color as u8)
     }
 
     /// Creates a new `AnsiColor8` from an `AnsiColor3` treated as *bright*.
     #[inline]
+    #[must_use]
     pub const fn bright(color: AnsiColor3) -> Self {
         Self(color as u8 + 8)
     }
@@ -84,6 +89,7 @@ impl AnsiColor8 {
     ///
     /// Returns `None` if any parameter is `> 5`.
     #[inline]
+    #[must_use]
     pub const fn cube(r: u8, g: u8, b: u8) -> Option<Self> {
         match (r, g, b) {
             (0..=5, 0..=5, 0..=5) => Some(Self(16 + 36 * r + 6 * g + b)),
@@ -96,6 +102,7 @@ impl AnsiColor8 {
     ///
     /// Returns the `default` color if any parameter is `> 5`.
     #[inline]
+    #[must_use]
     pub const fn cube_or(r: u8, g: u8, b: u8, default: Self) -> Self {
         match (r, g, b) {
             (0..=5, 0..=5, 0..=5) => Self(16 + 36 * r + 6 * g + b),
@@ -109,6 +116,7 @@ impl AnsiColor8 {
     /// # Panics
     /// Panics in debug if any parameter is `> 5`.
     #[inline]
+    #[must_use]
     pub const fn cube_unchecked(r: u8, g: u8, b: u8) -> Self {
         assert!(r < 6 && g < 6 && b < 6);
         Self(16 + 36 * r + 6 * g + b)
@@ -119,6 +127,7 @@ impl AnsiColor8 {
     ///
     /// Returns `None` if `value > 23`.
     #[inline]
+    #[must_use]
     pub const fn gray(value: u8) -> Option<Self> {
         match value {
             0..=23 => Some(Self(value + 232)),
@@ -131,6 +140,7 @@ impl AnsiColor8 {
     ///
     /// Returns the `default` color if `value > 23`.
     #[inline]
+    #[must_use]
     pub const fn gray_or(value: u8, default: Self) -> Self {
         match value {
             0..=23 => Self(value + 232),
@@ -144,6 +154,7 @@ impl AnsiColor8 {
     /// # Panics
     /// Panics in debug if `value > 23`.
     #[inline]
+    #[must_use]
     pub const fn gray_unchecked(value: u8) -> Self {
         debug_assert!(value < 24);
         Self(value + 232)
@@ -154,6 +165,7 @@ impl AnsiColor8 {
     ///
     /// Returns `None` if `value > 23`.
     #[inline]
+    #[must_use]
     pub const fn bw(value: u8) -> Option<Self> {
         match value {
             0 => Some(Self::new(AnsiColor3::Black)),
@@ -168,6 +180,7 @@ impl AnsiColor8 {
     ///
     /// Returns the `default` color if `value > 25`.
     #[inline]
+    #[must_use]
     pub const fn bw_or(value: u8, default: Self) -> Self {
         match value {
             0 => Self::new(AnsiColor3::Black),
@@ -183,6 +196,7 @@ impl AnsiColor8 {
     /// # Panics
     /// Panics in debug if `value > 25`.
     #[inline]
+    #[must_use]
     pub const fn bw_unchecked(value: u8) -> Self {
         debug_assert!(value < 26);
         match value {
@@ -194,16 +208,19 @@ impl AnsiColor8 {
 
     /// Returns the ASCII byte representation of the 8-bit color number, with leading zeros.
     #[inline]
+    #[must_use]
     pub const fn to_ascii(&self) -> [u8; 3] {
         ascii_u8_digits(self.0)
     }
 }
 impl From<AnsiColor3> for AnsiColor8 {
+    #[must_use]
     fn from(value: AnsiColor3) -> Self {
         Self::new(value)
     }
 }
 impl From<u8> for AnsiColor8 {
+    #[must_use]
     fn from(value: u8) -> Self {
         Self(value)
     }
@@ -262,6 +279,7 @@ mod C {
 impl Ansi {
     /// Code to set the foreground color to `fg` and the background to `bg`.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn COLORS(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 8] {
         [ b'\x1b', b'[', C::FG, fg.to_ascii(), b';', C::BG, bg.to_ascii(), b'm' ]
@@ -269,6 +287,7 @@ impl Ansi {
 
     /// Code to set the foreground color to bright `fg` and the background to bright `bg`.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn COLORS_BRIGHT(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 9] {
         [
@@ -280,6 +299,7 @@ impl Ansi {
 
     /// Code to set the foreground color to bright `fg` and the background to `bg`.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn COLORS_BRIGHT_FG(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 8] {
         [ b'\x1b', b'[', C::BRI_FG, fg.to_ascii(), b';', C::BG, bg.to_ascii(), b'm' ]
@@ -287,6 +307,7 @@ impl Ansi {
 
     /// Code to set the foreground color to `fg` and the background to bright `bg`.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn COLORS_BRIGHT_BG(fg: AnsiColor3, bg: AnsiColor3) -> [u8; 9] {
         [
@@ -397,6 +418,7 @@ impl Ansi {
 impl Ansi {
     /// Code to set the foreground color to `fg` and the background to `bg`.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn COLORS8(fg: AnsiColor8, bg: AnsiColor8) -> [u8; 19] {
         const X: [u8; 4] = C::C8;
@@ -412,6 +434,7 @@ impl Ansi {
 
     /// Code to set the foreground color to `fg`.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn COLOR8_FG(fg: AnsiColor8) -> [u8; 11] {
         const X: [u8; 4] = C::C8;
@@ -421,6 +444,7 @@ impl Ansi {
 
     /// Code to set the background color to `bg`.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn COLOR8_BG(bg: AnsiColor8) -> [u8; 11] {
         const X: [u8; 4] = C::C8;
@@ -432,6 +456,7 @@ impl Ansi {
     ///
     /// A value of 0 is almost black, and 24 (or more) is almost white.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn GRAY(fg: u8, bg: u8) -> [u8; 19] {
         const X: [u8; 4] = C::C8;
@@ -549,6 +574,7 @@ impl Ansi {
     /// Code to set the foreground color to `fg: [r, g, b]` values,
     /// and the background to `bg: [r, g, b]`.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn RGB(fg: [u8; 3], bg: [u8; 3]) -> [u8; 35] {
         const X: [u8; 4] = C::RGB;
@@ -568,6 +594,7 @@ impl Ansi {
 
     /// Code to set the foreground color to `fg: [r, g, b]` values.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn RGB_FG(fg: [u8; 3]) -> [u8; 19] {
         const X: [u8; 4] = C::RGB;
@@ -583,6 +610,7 @@ impl Ansi {
 
     /// Code to set the background color to `bg: [r, g, b]` values.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn RGB_BG(bg: [u8; 3]) -> [u8; 19] {
         const X: [u8; 4] = C::RGB;

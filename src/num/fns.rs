@@ -13,6 +13,7 @@
 /// assert_eq![10, count_digits(u32::MAX as usize)];
 /// ```
 #[inline]
+#[must_use]
 pub const fn count_digits(n: usize) -> usize {
     if n == 0 {
         1
@@ -33,6 +34,7 @@ pub const fn count_digits(n: usize) -> usize {
 /// assert_eq![10, count_digits_unchecked(u32::MAX as usize)];
 /// ```
 #[inline]
+#[must_use]
 pub const fn count_digits_unchecked(n: usize) -> usize {
     n.ilog10() as usize + 1
 }

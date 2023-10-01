@@ -323,6 +323,7 @@ impl AsciiChar {
     /// Creates an ascii character from the byte `b`,
     /// or returns `None` if it's too large.
     #[inline]
+    #[must_use]
     pub const fn from_u8(b: u8) -> Option<Self> {
         match b {
             0 => Some(Self::Null),
@@ -463,6 +464,7 @@ impl AsciiChar {
     /// # Safety
     /// `b` must be in `0..=127`, or else this is UB.
     #[inline]
+    #[must_use]
     #[cfg(feature = "unsafe_ascii")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_ascii")))]
     pub const unsafe fn from_u8_unchecked(b: u8) -> Self {
@@ -475,6 +477,7 @@ impl AsciiChar {
     ///
     /// If `d >= 10`, returns `None`.
     #[inline]
+    #[must_use]
     pub const fn digit(d: u8) -> Option<Self> {
         if d < 10 {
             Self::from_u8(b'0' + d)
@@ -498,6 +501,7 @@ impl AsciiChar {
     /// need something really specific, not to make those other arguments do
     /// something useful. It might be tightened before stabilization.)
     #[inline]
+    #[must_use]
     #[cfg(feature = "unsafe_ascii")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_ascii")))]
     pub const unsafe fn digit_unchecked(d: u8) -> Self {
@@ -516,18 +520,21 @@ impl AsciiChar {
 
     /// Gets this ASCII character as a byte.
     #[inline]
+    #[must_use]
     pub const fn as_u8(self) -> u8 {
         self as u8
     }
 
     /// Gets this ASCII character as a `char` Unicode Scalar Value.
     #[inline]
+    #[must_use]
     pub const fn as_char(self) -> char {
         self as u8 as char
     }
 
     /// Views this ASCII character as a one-code-unit UTF-8 `str`.
     #[inline]
+    #[must_use]
     #[cfg(feature = "unsafe_ascii")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_ascii")))]
     pub const fn as_str(&self) -> &str {
@@ -538,6 +545,7 @@ impl AsciiChar {
 impl AsciiChar {
     /// Views a slice of ASCII characters as a UTF-8 `str`.
     #[inline]
+    #[must_use]
     #[cfg(feature = "unsafe_ascii")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_ascii")))]
     pub const fn slice_as_str(slice: &[AsciiChar]) -> &str {
@@ -550,6 +558,7 @@ impl AsciiChar {
 
     /// Views a slice of ASCII characters as a slice of `u8` bytes.
     #[inline]
+    #[must_use]
     #[cfg(feature = "unsafe_ascii")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_ascii")))]
     pub const fn slice_as_bytes(slice: &[AsciiChar]) -> &[u8] {
@@ -559,6 +568,7 @@ impl AsciiChar {
 // impl [AsciiChar] {
 //     /// Views this slice of ASCII characters as a UTF-8 `str`.
 //     #[inline]
+//     #[must_use]
 //     pub const fn as_str(&self) -> &str {
 //         let ascii_ptr: *const Self = self;
 //         let str_ptr = ascii_ptr as *const str;
@@ -569,6 +579,7 @@ impl AsciiChar {
 //
 //     /// Views this slice of ASCII characters as a slice of `u8` bytes.
 //     #[inline]
+//     #[must_use]
 //     pub const fn as_bytes(&self) -> &[u8] {
 //         self.as_str().as_bytes()
 //     }

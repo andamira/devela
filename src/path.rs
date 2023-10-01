@@ -61,6 +61,7 @@ pub fn crate_root<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
 ///
 /// In case of an error the returned string will be empty.
 #[inline]
+#[must_use]
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 pub fn crate_root_string<P: AsRef<Path>>(path: P) -> String {

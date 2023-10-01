@@ -33,6 +33,7 @@ impl Ansi {
     /* helper functions */
 
     // Writes an ansi code with a dynamic number of digits as an argument.
+    #[must_use]
     fn write_ansi_code_n(buffer: &mut [u8], n: u32, final_byte: u8) -> &[u8] {
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
@@ -100,6 +101,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if either `row` or `col` > 9.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn CURSOR_MOVE1(row: u8, col: u8) -> [u8; 6] {
         [ b'\x1b', b'[', ascii_1digit(row), b';', ascii_1digit(col), b'H' ]
@@ -108,6 +110,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if either `row` or `col` > 99.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_MOVE2(row: u8, col: u8) -> [u8; 8] {
         let r: [u8; 2] = ascii_2digit(row);
         let c: [u8; 2] = ascii_2digit(col);
@@ -117,6 +120,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if either `row` or `col` > 999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_MOVE3(row: u16, col: u16) -> [u8; 10] {
         let r: [u8; 3] = ascii_3digit(row);
         let c: [u8; 3] = ascii_3digit(col);
@@ -128,6 +132,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if either `row` or `col` > 9999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_MOVE4(row: u16, col: u16) -> [u8; 12] {
         let r: [u8; 4] = ascii_4digit(row);
         let c: [u8; 4] = ascii_4digit(col);
@@ -141,6 +146,8 @@ impl Ansi {
     ///
     /// # Panics
     /// Panics if the buffer is not big enough.
+    #[inline]
+    #[must_use]
     pub fn CURSOR_MOVE_N(buffer: &mut [u8], row: u32, col: u32) -> &[u8] {
         buffer[0] = b'\x1b';
         buffer[1] = b'[';
@@ -179,6 +186,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 9.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_UP1(n: u8) -> [u8; 4] {
         [b'\x1b', b'[', ascii_1digit(n), b'A']
     }
@@ -186,6 +194,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_UP2(n: u8) -> [u8; 5] {
         let n: [u8; 2] = ascii_2digit(n);
         [b'\x1b', b'[', n[0], n[1], b'A']
@@ -194,6 +203,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_UP3(n: u16) -> [u8; 6] {
         let n: [u8; 3] = ascii_3digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], b'A']
@@ -202,6 +212,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 9999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_UP4(n: u16) -> [u8; 7] {
         let n: [u8; 4] = ascii_4digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'A']
@@ -213,6 +224,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[inline]
+    #[must_use]
     pub fn CURSOR_UP_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'A')
     }
@@ -223,6 +235,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 9.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_DOWN1(n: u8) -> [u8; 4] {
         [b'\x1b', b'[', ascii_1digit(n), b'B']
     }
@@ -230,6 +243,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_DOWN2(n: u8) -> [u8; 5] {
         let n: [u8; 2] = ascii_2digit(n);
         [b'\x1b', b'[', n[0], n[1], b'B']
@@ -238,6 +252,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_DOWN3(n: u16) -> [u8; 6] {
         let n: [u8; 3] = ascii_3digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], b'B']
@@ -246,6 +261,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_DOWN4(n: u16) -> [u8; 7] {
         let n: [u8; 4] = ascii_4digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'B']
@@ -257,6 +273,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[inline]
+    #[must_use]
     pub fn CURSOR_DOWN_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'B')
     }
@@ -267,6 +284,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 9.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_RIGHT1(n: u8) -> [u8; 4] {
         [b'\x1b', b'[', ascii_1digit(n), b'C']
     }
@@ -274,6 +292,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_RIGHT2(n: u8) -> [u8; 5] {
         let n: [u8; 2] = ascii_2digit(n);
         [b'\x1b', b'[', n[0], n[1], b'C']
@@ -282,6 +301,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_RIGHT3(n: u16) -> [u8; 6] {
         let n: [u8; 3] = ascii_3digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], b'C']
@@ -290,6 +310,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 9999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_RIGHT4(n: u16) -> [u8; 7] {
         let n: [u8; 4] = ascii_4digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'C']
@@ -301,6 +322,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[inline]
+    #[must_use]
     pub fn CURSOR_RIGHT_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'C')
     }
@@ -311,6 +333,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 9.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_LEFT1(n: u8) -> [u8; 4] {
         [b'\x1b', b'[', ascii_1digit(n), b'D']
     }
@@ -318,6 +341,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_LEFT2(n: u8) -> [u8; 5] {
         let n: [u8; 2] = ascii_2digit(n);
         [b'\x1b', b'[', n[0], n[1], b'D']
@@ -326,6 +350,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_LEFT3(n: u16) -> [u8; 6] {
         let n: [u8; 3] = ascii_3digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], b'D']
@@ -334,6 +359,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 9999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_LEFT4(n: u16) -> [u8; 7] {
         let n: [u8; 4] = ascii_4digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'D']
@@ -345,6 +371,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[inline]
+    #[must_use]
     pub fn CURSOR_LEFT_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'D')
     }
@@ -355,6 +382,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 9.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_NEXT_LINE1(n: u8) -> [u8; 4] {
         [b'\x1b', b'[', ascii_1digit(n), b'E']
     }
@@ -362,6 +390,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_NEXT_LINE2(n: u8) -> [u8; 5] {
         let n: [u8; 2] = ascii_2digit(n);
         [b'\x1b', b'[', n[0], n[1], b'E']
@@ -370,6 +399,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_NEXT_LINE3(n: u16) -> [u8; 6] {
         let n: [u8; 3] = ascii_3digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], b'E']
@@ -378,6 +408,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_NEXT_LINE4(n: u16) -> [u8; 7] {
         let n: [u8; 4] = ascii_4digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'E']
@@ -389,6 +420,7 @@ impl Ansi {
     /// # Panics
     /// Panics if the buffer is not big enough.
     #[inline]
+    #[must_use]
     pub fn CURSOR_NEXT_LINE_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'F')
     }
@@ -399,6 +431,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 9.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_PREV_LINE1(n: u8) -> [u8; 4] {
         [b'\x1b', b'[', ascii_1digit(n), b'E']
     }
@@ -406,6 +439,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 99.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_PREV_LINE2(n: u8) -> [u8; 5] {
         let n: [u8; 2] = ascii_2digit(n);
         [b'\x1b', b'[', n[0], n[1], b'E']
@@ -414,6 +448,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_PREV_LINE3(n: u16) -> [u8; 6] {
         let n: [u8; 3] = ascii_3digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], b'E']
@@ -422,6 +457,7 @@ impl Ansi {
     /// # Panics
     /// Panics in debug if `n` > 999.
     #[inline]
+    #[must_use]
     pub const fn CURSOR_PREV_LINE4(n: u16) -> [u8; 7] {
         let n: [u8; 4] = ascii_4digit(n);
         [b'\x1b', b'[', n[0], n[1], n[2], n[3], b'E']
@@ -432,6 +468,8 @@ impl Ansi {
     ///
     /// # Panics
     /// Panics if the buffer is not big enough.
+    #[inline]
+    #[must_use]
     pub fn CURSOR_PREV_LINE_N(buffer: &mut [u8], n: u32) -> &[u8] {
         Self::write_ansi_code_n(buffer, n, b'E')
     }

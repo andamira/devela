@@ -44,6 +44,8 @@ unsafe impl bytemuck::NoUninit for LinuxTermios {}
 
 impl LinuxTermios {
     /// Returns a new empty struct.
+    #[inline]
+    #[must_use]
     pub const fn new() -> Self {
         Self {
             c_iflag: 0,
@@ -56,11 +58,15 @@ impl LinuxTermios {
     }
 
     /// Returns a raw byte pointer to self.
+    #[inline]
+    #[must_use]
     pub const fn as_bytes_ptr(&self) -> *const u8 {
         self as *const Self as *const u8
     }
 
     /// Returns a raw mutable byte pointer to self.
+    #[inline]
+    #[must_use]
     pub fn as_mut_bytes_ptr(&mut self) -> *mut u8 {
         self as *mut Self as *mut u8
     }
@@ -114,6 +120,8 @@ impl LinuxTermios {
     }
 
     /// Returns `true` if we're in a terminal context.
+    #[inline]
+    #[must_use]
     pub fn is_terminal() -> bool {
         match Self::get_state() {
             Ok(_) => true,
@@ -172,10 +180,14 @@ pub struct LinuxTerminalSize {
 
 impl LinuxTerminalSize {
     /// Returns a tuple of (x, y) pixels.
+    #[inline]
+    #[must_use]
     pub const fn pixels(&self) -> (u16, u16) {
         (self.x, self.y)
     }
     /// Returns a tuple of (columns, rows) cells.
+    #[inline]
+    #[must_use]
     pub const fn cells(&self) -> (u16, u16) {
         (self.rows, self.cols)
     }

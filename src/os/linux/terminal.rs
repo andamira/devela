@@ -61,17 +61,20 @@ impl LinuxTerminal {
     }
 
     /// Restores the current terminal state into [`LINUX_TERMINAL_STATE`].
+    #[inline]
     pub fn restore_saved_state() -> Result<(), isize> {
         LinuxTermios::set_state(LINUX_TERMINAL_STATE.load(AtomicOrdering::Relaxed))
     }
 
     /// Returns `true` if we are in a terminal context.
     #[inline]
+    #[must_use]
     pub fn is_terminal(&self) -> bool {
         LinuxTermios::is_terminal()
     }
 
     /// Returns the terminal dimensions.
+    #[inline]
     pub fn size(&self) -> Result<LinuxTerminalSize, isize> {
         LinuxTermios::get_winsize()
     }

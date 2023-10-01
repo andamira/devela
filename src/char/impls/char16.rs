@@ -10,12 +10,14 @@ impl Char16 {
     // SAFETY: this is not marked as unsafe because it's only used privately
     // by this module for a few selected operations.
     #[inline]
+    #[must_use]
     const fn from_char_unchecked(c: char) -> Char16 {
         Char16::new_unchecked(c as u32 as u16)
     }
 
     // useful because Option::<T>::unwrap is not yet stable as const fn
     #[inline]
+    #[must_use]
     const fn new_unchecked(value: u16) -> Char16 {
         #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_num")))]
         if let Some(c) = NonSurrogateU16::new(value) {
@@ -46,17 +48,20 @@ impl Char16 {
     #[inline]
     #[cfg(feature = "ascii")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
+    #[must_use]
     pub const fn from_ascii_char(c: AsciiChar) -> Char16 {
         Char16::new_unchecked(c as u8 as u16)
     }
 
     /// Converts a `Char7` to `Char16`.
     #[inline]
+    #[must_use]
     pub const fn from_char7(c: Char7) -> Char16 {
         Char16::new_unchecked(c.0.get() as u16)
     }
     /// Converts a `Char8` to `Char16`.
     #[inline]
+    #[must_use]
     pub const fn from_char8(c: Char8) -> Char16 {
         Char16::new_unchecked(c.0 as u16)
     }
@@ -120,16 +125,19 @@ impl Char16 {
     }
     /// Converts this `Char16` to `Char24`.
     #[inline]
+    #[must_use]
     pub const fn to_char24(self) -> Char24 {
         Char24::from_char16(self)
     }
     /// Converts this `Char16` to `Char32`.
     #[inline]
+    #[must_use]
     pub const fn to_char32(self) -> Char32 {
         Char32::from_char16(self)
     }
     /// Converts this `Char16` to `char`.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn to_char(self) -> char {
         // #[cfg(not(feature = "unsafe_char"))]
@@ -142,6 +150,7 @@ impl Char16 {
     }
     /// Converts this `Char16` to `u32`.
     #[inline]
+    #[must_use]
     pub const fn to_u32(self) -> u32 {
         self.0.get() as u32
     }
@@ -153,6 +162,7 @@ impl Char16 {
     //
     // https://en.wikipedia.org/wiki/UTF-8#Encoding
     #[inline]
+    #[must_use]
     #[allow(clippy::unusual_byte_groupings)]
     pub const fn to_utf8_bytes(self) -> [u8; 3] {
         let c = self.0.get();
@@ -188,6 +198,7 @@ impl Char16 {
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn to_ascii_uppercase(self) -> Char16 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
@@ -198,6 +209,7 @@ impl Char16 {
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn to_ascii_lowercase(self) -> Char16 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
@@ -209,6 +221,7 @@ impl Char16 {
     ///
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[inline]
+    #[must_use]
     pub const fn is_noncharacter(self) -> bool {
         char_is_noncharacter(self.0.get() as u32)
     }
@@ -217,12 +230,14 @@ impl Char16 {
     ///
     /// [0]: https://www.unicode.org/glossary/#abstract_character
     #[inline]
+    #[must_use]
     pub const fn is_character(self) -> bool {
         !self.is_noncharacter()
     }
 
     /// Checks if the value is within the ASCII range.
     #[inline]
+    #[must_use]
     pub const fn is_ascii(self) -> bool {
         self.0.get() <= 0x7F
     }

@@ -20,6 +20,7 @@ use crate::cmp::{clamp_usize, min_usize};
 /// assert_eq!(slice_lsplit(&v, 10), &[1, 2, 3, 4, 5, 6]);
 /// ```
 #[inline]
+#[must_use]
 pub const fn slice_lsplit<T>(slice: &[T], len: usize) -> &[T] {
     let end_idx = clamp_usize(len, 0, slice.len());
     let (left, _) = slice.split_at(end_idx);
@@ -41,6 +42,7 @@ pub const fn slice_lsplit<T>(slice: &[T], len: usize) -> &[T] {
 /// assert_eq!(slice_lsplit_mut(&mut v, 10), &mut [1, 2, 3, 4, 5, 6]);
 /// ```
 #[inline]
+#[must_use]
 pub fn slice_lsplit_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
     let end_idx = clamp_usize(len, 0, slice.len());
     let (left, _) = slice.split_at_mut(end_idx);
@@ -62,6 +64,7 @@ pub fn slice_lsplit_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
 /// assert_eq!(slice_rsplit(&v, 10), &[1, 2, 3, 4, 5, 6]);
 /// ```
 #[inline]
+#[must_use]
 pub const fn slice_rsplit<T>(slice: &[T], len: usize) -> &[T] {
     let start_idx = slice.len().saturating_sub(len);
     let (_, right) = slice.split_at(start_idx);
@@ -83,6 +86,7 @@ pub const fn slice_rsplit<T>(slice: &[T], len: usize) -> &[T] {
 /// assert_eq!(slice_rsplit_mut(&mut v, 10), &mut [1, 2, 3, 4, 5, 6]);
 /// ```
 #[inline]
+#[must_use]
 pub fn slice_rsplit_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
     let start_idx = slice.len().saturating_sub(len);
     let (_, right) = slice.split_at_mut(start_idx);
@@ -114,6 +118,7 @@ pub fn slice_rsplit_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
 ///
 /// See also [`slice_msplit_left`].
 #[inline]
+#[must_use]
 pub const fn slice_msplit_right<T>(slice: &[T], len: usize) -> &[T] {
     let mid_idx = slice.len() / 2;
     let half_len = len / 2;
@@ -149,6 +154,7 @@ pub const fn slice_msplit_right<T>(slice: &[T], len: usize) -> &[T] {
 ///
 /// See also [`slice_msplit_left_mut`].
 #[inline]
+#[must_use]
 pub fn slice_msplit_right_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
     let mid_idx = slice.len() / 2;
     let half_len = len / 2;
@@ -183,6 +189,7 @@ pub fn slice_msplit_right_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
 /// ```
 ///
 /// See also [`slice_msplit_right`].
+#[must_use]
 pub const fn slice_msplit_left<T>(slice: &[T], len: usize) -> &[T] {
     let mid_idx = slice.len() / 2;
     let half_len = len / 2;
@@ -217,6 +224,7 @@ pub const fn slice_msplit_left<T>(slice: &[T], len: usize) -> &[T] {
 /// ```
 ///
 /// See also [`slice_msplit_right`].
+#[must_use]
 pub fn slice_msplit_left_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
     let mid_idx = slice.len() / 2;
     let half_len = len / 2;
@@ -229,6 +237,7 @@ pub fn slice_msplit_left_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
 
 /// Returns a subslice without the given leading `byte`s.
 #[inline]
+#[must_use]
 pub fn slice_trim_leading_bytes(slice: &[u8], byte: u8) -> &[u8] {
     let mut start = 0;
     while start < slice.len() && slice[start] == byte {

@@ -40,6 +40,7 @@ mod fns {
     /// }
     /// ```
     #[inline(always)]
+    #[must_use]
     #[cfg(feature = "unsafe_mem")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
     pub fn as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
@@ -69,6 +70,7 @@ mod fns {
     /// }
     /// ```
     #[inline(always)]
+    #[must_use]
     #[cfg(feature = "unsafe_mem")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
     pub fn as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
@@ -93,6 +95,7 @@ mod fns {
     /// }
     /// ```
     #[inline(always)]
+    #[must_use]
     #[cfg(feature = "unsafe_mem")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
     pub const fn as_bytes_sized<T: Sync + Unpin>(v: &T) -> &[u8] {

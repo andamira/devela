@@ -53,6 +53,7 @@ macro_rules! impl_non_specific {
 
         impl Default for [<NonMax $s:upper $b>] {
             #[inline]
+            #[must_use]
             fn default() -> Self {
                 #[cfg(not(feature = "unsafe_num"))]
                 return [<NonMax $s:upper $b>]::new([<$s:lower $b>]::default()).unwrap();
@@ -73,6 +74,7 @@ macro_rules! impl_non_specific {
         impl<const V: [<$s:lower $b>]> [<$name $s:upper $b>]<V> {
             #[doc = "Returns a `" [<$name $s:upper $b>] "` with the given `value`,"
                 " if it is not equal to `V`."]
+            #[must_use]
             pub const fn new(value: [<$s:lower $b>]) -> Option<Self> {
                 // [<NonZero $s:upper $b>]::new(value ^ V).map(Self) // non-const
                 match [<NonZero $s:upper $b>]::new(value ^ V) {
@@ -88,6 +90,7 @@ macro_rules! impl_non_specific {
             /// Panics in debug if the given `value` is equal to `V`.
             /// # Safety
             /// The given `value` must never be equal to `V`.
+            #[must_use]
             #[cfg(feature = "unsafe_num")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_num")))]
             pub const unsafe fn new_unchecked(value: [<$s:lower $b>]) -> Self {
@@ -100,6 +103,7 @@ macro_rules! impl_non_specific {
 
             /// Returns the value as a primitive type.
             #[inline]
+            #[must_use]
             pub const fn get(&self) -> [<$s:lower $b>] {
                 self.0.get() ^ V
             }
@@ -162,6 +166,7 @@ macro_rules! impl_non_specific {
 
         impl<const V: [<$s:lower $b>]> From<[<$name $s:upper $b>]<V>> for [<$s:lower $b>] {
             #[inline]
+            #[must_use]
             fn from(value: [<$name $s:upper $b>]<V>) -> [<$s:lower $b>] {
                 value.get()
             }

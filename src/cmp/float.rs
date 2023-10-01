@@ -25,6 +25,7 @@ macro_rules! primitive_float_const_cmp {
         /// # Features
         /// This function will only be `const` if the `unsafe_cmp` feature is enabled.
         #[inline]
+        #[must_use]
         #[cfg(feature = "unsafe_cmp")]
         pub const fn [<total_cmp_f $b>](a: [<f$b>], b: [<f$b>]) -> Ordering {
             // WAIT:const_float_bits_conv https://github.com/rust-lang/rust/issues/72447
@@ -48,6 +49,7 @@ macro_rules! primitive_float_const_cmp {
         }
         // safe, non-const version (undocumented)
         #[inline]
+        #[must_use]
         #[allow(missing_docs)]
         #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<total_cmp_f $b>](a: [<f$b>], b: [<f$b>]) -> Ordering {
@@ -81,12 +83,14 @@ macro_rules! primitive_float_const_cmp {
         ///
         #[doc = "[total ordered]: total_cmp_f" $b]
         #[inline]
+        #[must_use]
         #[cfg(feature = "unsafe_cmp")]
         pub const fn [<clamp_f $b>](value: [<f $b>], min: [<f $b>], max: [<f $b>]) -> [<f $b>] {
             [<min_f $b>]([<max_f $b>](value, min), max)
         }
         // safe, non-const version (undocumented)
         #[inline]
+        #[must_use]
         #[allow(missing_docs)]
         #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<clamp_f $b>](value: [<f $b>], min: [<f $b>], max: [<f $b>]) -> [<f $b>] {
@@ -110,6 +114,7 @@ macro_rules! primitive_float_const_cmp {
             "(f" $b "::INFINITY, f" $b "::NEG_INFINITY)];"]
         /// ```
         #[inline]
+        #[must_use]
         #[cfg(feature = "unsafe_cmp")]
         pub const fn [<max_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match [<total_cmp_f $b>](a, b) {
@@ -119,6 +124,7 @@ macro_rules! primitive_float_const_cmp {
         }
         // safe, non-const version (undocumented)
         #[inline]
+        #[must_use]
         #[allow(missing_docs)]
         #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<max_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
@@ -145,6 +151,7 @@ macro_rules! primitive_float_const_cmp {
             "(f" $b "::INFINITY, f" $b "::NEG_INFINITY)];"]
         /// ```
         #[inline]
+        #[must_use]
         #[cfg(feature = "unsafe_cmp")]
         pub const fn [<min_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match [<total_cmp_f $b>](a, b) {
@@ -154,6 +161,7 @@ macro_rules! primitive_float_const_cmp {
         }
         // safe, non-const version (undocumented)
         #[inline]
+        #[must_use]
         #[allow(missing_docs)]
         #[cfg(not(feature = "unsafe_cmp"))]
         pub fn [<min_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {

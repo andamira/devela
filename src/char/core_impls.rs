@@ -19,6 +19,7 @@ macro_rules! core_impls {
         /// Returns the default value of `\x00` (nul character).
         impl Default for [<$name $bits>] {
             #[inline]
+            #[must_use]
             fn default() -> Self { $default }
         }
         impl fmt::Display for [<$name $bits>] {
@@ -71,30 +72,35 @@ core_impls![Char:
 
 impl From<Char7> for Char8 {
     #[inline]
+    #[must_use]
     fn from(c: Char7) -> Char8 {
         c.to_char8()
     }
 }
 impl From<Char7> for Char16 {
     #[inline]
+    #[must_use]
     fn from(c: Char7) -> Char16 {
         c.to_char16()
     }
 }
 impl From<Char7> for Char24 {
     #[inline]
+    #[must_use]
     fn from(c: Char7) -> Char24 {
         c.to_char24()
     }
 }
 impl From<Char7> for Char32 {
     #[inline]
+    #[must_use]
     fn from(c: Char7) -> Char32 {
         c.to_char32()
     }
 }
 impl From<Char7> for char {
     #[inline]
+    #[must_use]
     fn from(c: Char7) -> char {
         c.to_char()
     }
@@ -111,24 +117,28 @@ impl TryFrom<Char8> for Char7 {
 }
 impl From<Char8> for Char16 {
     #[inline]
+    #[must_use]
     fn from(c: Char8) -> Char16 {
         c.to_char16()
     }
 }
 impl From<Char8> for Char24 {
     #[inline]
+    #[must_use]
     fn from(c: Char8) -> Char24 {
         c.to_char24()
     }
 }
 impl From<Char8> for Char32 {
     #[inline]
+    #[must_use]
     fn from(c: Char8) -> Char32 {
         c.to_char32()
     }
 }
 impl From<Char8> for char {
     #[inline]
+    #[must_use]
     fn from(c: Char8) -> char {
         c.to_char()
     }
@@ -152,12 +162,14 @@ impl TryFrom<Char16> for Char8 {
 }
 impl From<Char16> for Char24 {
     #[inline]
+    #[must_use]
     fn from(c: Char16) -> Char24 {
         c.to_char24()
     }
 }
 impl From<Char16> for Char32 {
     #[inline]
+    #[must_use]
     fn from(c: Char16) -> Char32 {
         #[cfg(not(feature = "unsafe_char"))]
         return c.to_char32();
@@ -169,6 +181,7 @@ impl From<Char16> for Char32 {
 }
 impl From<Char16> for char {
     #[inline]
+    #[must_use]
     fn from(c: Char16) -> char {
         c.to_char()
     }
@@ -199,6 +212,7 @@ impl TryFrom<Char24> for Char16 {
 }
 impl From<Char24> for Char32 {
     #[inline]
+    #[must_use]
     fn from(c: Char24) -> Char32 {
         #[cfg(not(feature = "unsafe_char"))]
         return c.to_char32();
@@ -210,6 +224,7 @@ impl From<Char24> for Char32 {
 }
 impl From<Char24> for char {
     #[inline]
+    #[must_use]
     fn from(c: Char24) -> char {
         c.to_char()
     }
@@ -240,12 +255,14 @@ impl TryFrom<Char32> for Char16 {
 }
 impl From<Char32> for Char24 {
     #[inline]
+    #[must_use]
     fn from(c: Char32) -> Char24 {
         c.to_char24()
     }
 }
 impl From<Char32> for char {
     #[inline]
+    #[must_use]
     fn from(c: Char32) -> char {
         c.to_char()
     }
@@ -276,12 +293,14 @@ impl TryFrom<char> for Char16 {
 }
 impl From<char> for Char24 {
     #[inline]
+    #[must_use]
     fn from(c: char) -> Char24 {
         Char24::from_char(c)
     }
 }
 impl From<char> for Char32 {
     #[inline]
+    #[must_use]
     fn from(c: char) -> Char32 {
         Char32::from_char(c)
     }

@@ -37,6 +37,7 @@ pub trait StrExt {
     ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
+    #[must_use]
     fn repeat_into<'input, const CAP: usize>(
         &self,
         n: usize,
@@ -64,6 +65,7 @@ pub trait StrExt {
     /// Makes use of the `unsafe_str` and `unsafe_fmt` features if enabled.
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
+    #[must_use]
     #[cfg(feature = "ascii")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str;

@@ -76,6 +76,7 @@ impl IntBuf {
     /// This is a cheap operation; you don't need to worry about reusing buffers
     /// for efficiency.
     // #[inline]
+    #[must_use]
     pub fn new() -> IntBuf {
         let bytes = [MaybeUninit::<u8>::uninit(); I128_MAX_LEN];
         IntBuf { bytes }
@@ -89,6 +90,7 @@ impl IntBuf {
     /// ```
     /// assert_eq!("1234", devela::fmt::IntBuf::new().to_str(1234));
     /// ```
+    #[must_use]
     pub fn to_str<I: IntBufAble>(&mut self, i: I) -> &str {
         i.write(unsafe {
             &mut *(&mut self.bytes as *mut [MaybeUninit<u8>; I128_MAX_LEN]
@@ -104,6 +106,7 @@ impl IntBuf {
     /// ```
     /// assert_eq!(&[49, 50, 51, 52], devela::fmt::IntBuf::new().to_bytes(1234));
     /// ```
+    #[must_use]
     pub fn to_bytes<I: IntBufAble>(&mut self, i: I) -> &[u8] {
         i.write_bytes(unsafe {
             &mut *(&mut self.bytes as *mut [MaybeUninit<u8>; I128_MAX_LEN]

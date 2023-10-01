@@ -101,14 +101,18 @@ macro_rules! impls {
             /* encode */
 
             /// Returns the number of bytes needed to represent the scalar value.
+            #[inline]
+            #[must_use]
             pub const fn byte_len(self) -> usize { char_byte_len(self.to_u32()) }
 
             /// Returns the number of bytes needed to encode in UTF-8.
             #[inline]
+            #[must_use]
             pub const fn len_utf8(self) -> usize { self.to_char().len_utf8() }
 
             /// Returns the number of bytes needed to encode in UTF-16.
             #[inline]
+            #[must_use]
             pub const fn len_utf16(self) -> usize { self.to_char().len_utf16() }
 
             /// Converts the scalar to a digit in the given radix.
@@ -122,6 +126,7 @@ macro_rules! impls {
             /// # Panics
             /// Panics if given a radix larger than 36.
             #[inline]
+            #[must_use]
             pub const fn to_digit(self, radix: u32) -> Option<u32> {
                 self.to_char().to_digit(radix)
             }
@@ -130,12 +135,14 @@ macro_rules! impls {
 
             /// Returns `true` if this is the nul character (`0x00`).
             #[inline]
+            #[must_use]
             pub const fn is_nul(self) -> bool { self.to_u32() == 0 }
 
             /// Checks if the unicode scalar is a digit in the given radix.
             ///
             /// See also [`to_digit`][Self#method.to_digit].
             #[inline]
+            #[must_use]
             pub const fn is_digit(self, radix: u32) -> bool {
                 if let Some(_) = self.to_digit(radix) { true } else { false }
             }

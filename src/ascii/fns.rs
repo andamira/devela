@@ -8,6 +8,7 @@ use crate::num::count_digits;
 
 /// Converts a `u16` into a byte array of `5` ascii digits, padded with zeros.
 #[inline]
+#[must_use]
 pub const fn ascii_u16_digits(n: u16) -> [u8; 5] {
     [
         //                           54321
@@ -22,6 +23,7 @@ pub const fn ascii_u16_digits(n: u16) -> [u8; 5] {
 
 /// Converts a `u32` into a byte array of `10` ascii digits, padded with zeros.
 #[inline]
+#[must_use]
 pub const fn ascii_u32_digits(n: u32) -> [u8; 10] {
     [
         //                      0987654321
@@ -40,6 +42,7 @@ pub const fn ascii_u32_digits(n: u32) -> [u8; 10] {
 }
 
 /// Converts a `u64` into a byte array of `20` ascii digits, padded with zeros.
+#[must_use]
 pub const fn ascii_u64_digits(n: u64) -> [u8; 20] {
     [
         //                      0987654321_987654321
@@ -68,6 +71,7 @@ pub const fn ascii_u64_digits(n: u64) -> [u8; 20] {
 }
 
 /// Converts a `u128` into a byte array of `39` ascii digits, padded with zeros.
+#[must_use]
 pub const fn ascii_u128_digits(n: u128) -> [u8; 39] {
     [
         //                       987654321_987654321_987654321_987654321
@@ -119,6 +123,7 @@ pub const fn ascii_u128_digits(n: u128) -> [u8; 39] {
 ///
 /// The actual array length depends on the target platform's pointer size.
 #[inline]
+#[must_use]
 #[cfg(target_pointer_width = "16")]
 pub const fn ascii_usize_digits(n: usize) -> [u8; count_digits(usize::MAX)] {
     ascii_u16_digits(n as u16)
@@ -127,6 +132,7 @@ pub const fn ascii_usize_digits(n: usize) -> [u8; count_digits(usize::MAX)] {
 ///
 /// The actual array length depends on the target platform's pointer size.
 #[inline]
+#[must_use]
 #[cfg(target_pointer_width = "32")]
 pub const fn ascii_usize_digits(n: usize) -> [u8; count_digits(usize::MAX)] {
     ascii_u32_digits(n as u32)
@@ -136,6 +142,7 @@ pub const fn ascii_usize_digits(n: usize) -> [u8; count_digits(usize::MAX)] {
 ///
 /// The actual array length depends on the target platform's pointer size.
 #[inline]
+#[must_use]
 #[cfg(target_pointer_width = "64")]
 pub const fn ascii_usize_digits(n: usize) -> [u8; count_digits(usize::MAX)] {
     ascii_u64_digits(n as u64)

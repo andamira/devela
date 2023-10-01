@@ -66,6 +66,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// assert_eq!(None.reduce(None, i32::add), None);
     /// ```
+    #[must_use]
     fn reduce<F>(self, other: Option<T>, f: F) -> Option<T>
     where
         F: FnOnce(T, T) -> T;
@@ -82,6 +83,7 @@ pub trait OptionExt<T>: private::Sealed {
     /// assert_eq!("0x42", format!("{:#x}", foo.fmt_or_empty()));
     /// assert_eq!("", format!("{:#x}", bar.fmt_or_empty()));
     /// ```
+    #[must_use]
     fn fmt_or_empty(&self) -> OptionFmt<T>;
 
     /// Format some value, or an alternative if it's `None`.
@@ -99,6 +101,7 @@ pub trait OptionExt<T>: private::Sealed {
     /// assert_eq!("42", format!("{}", foo.fmt_or("Nothing")));
     /// assert_eq!("Nothing", format!("{}", bar.fmt_or("Nothing")));
     /// ```
+    #[must_use]
     fn fmt_or<U>(&self, u: U) -> OptionFmtOr<T, U>
     where
         U: Display;
@@ -122,6 +125,7 @@ pub trait OptionExt<T>: private::Sealed {
     /// assert_eq!("42", format!("{}", foo.fmt_or_else(|| "Nothing")));
     /// assert_eq!("Nothing", format!("{}", bar.fmt_or_else(|| "Nothing")));
     /// ```
+    #[must_use]
     fn fmt_or_else<U, F>(&self, f: F) -> OptionFmtOrElse<T, F>
     where
         U: Display,

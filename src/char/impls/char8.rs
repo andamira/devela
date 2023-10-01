@@ -10,6 +10,7 @@ impl Char8 {
     // SAFETY: this is not marked as unsafe because it's only used privately
     // by this module for a few selected operations.
     #[inline]
+    #[must_use]
     const fn from_char_unchecked(c: char) -> Char8 {
         Char8(c as u32 as u8)
     }
@@ -23,6 +24,7 @@ impl Char8 {
 
     /// Converts an `AsciiChar` to `Char8`.
     #[inline]
+    #[must_use]
     #[cfg(feature = "ascii")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     pub const fn from_ascii_char(c: AsciiChar) -> Char8 {
@@ -31,6 +33,7 @@ impl Char8 {
 
     /// Converts a `Char7` to `Char8`.
     #[inline]
+    #[must_use]
     pub const fn from_char7(c: Char7) -> Char8 {
         Char8(c.0.get())
     }
@@ -102,27 +105,32 @@ impl Char8 {
     }
     /// Converts this `Char8` to `Char16`.
     #[inline]
+    #[must_use]
     pub const fn to_char16(self) -> Char16 {
         Char16::from_char8(self)
     }
     /// Converts this `Char8` to `Char24`.
     #[inline]
+    #[must_use]
     pub const fn to_char24(self) -> Char24 {
         Char24::from_char8(self)
     }
     /// Converts this `Char8` to `Char32`.
     #[inline]
+    #[must_use]
     pub const fn to_char32(self) -> Char32 {
         Char32::from_char8(self)
     }
     /// Converts this `Char8` to `char`.
     #[inline]
     #[rustfmt::skip]
+    #[must_use]
     pub const fn to_char(self) -> char {
         self.0 as char
     }
     /// Converts this `Char8` to `u32`.
     #[inline]
+    #[must_use]
     pub const fn to_u32(self) -> u32 {
         self.0 as u32
     }
@@ -134,6 +142,7 @@ impl Char8 {
     //
     // https://en.wikipedia.org/wiki/UTF-8#Encoding
     #[inline]
+    #[must_use]
     #[allow(clippy::unusual_byte_groupings)]
     pub const fn to_utf8_bytes(self) -> [u8; 2] {
         let c = self.0;
@@ -161,6 +170,7 @@ impl Char8 {
     ///
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[inline]
+    #[must_use]
     pub const fn is_noncharacter(self) -> bool {
         char_is_noncharacter(self.0 as u32)
     }
@@ -169,12 +179,14 @@ impl Char8 {
     ///
     /// [0]: https://www.unicode.org/glossary/#abstract_character
     #[inline]
+    #[must_use]
     pub const fn is_character(self) -> bool {
         !self.is_noncharacter()
     }
 
     /// Checks if the value is within the ASCII range.
     #[inline]
+    #[must_use]
     pub const fn is_ascii(self) -> bool {
         self.0 <= 0x7F
     }
@@ -184,6 +196,7 @@ impl Char8 {
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn to_ascii_uppercase(self) -> Char8 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
@@ -194,6 +207,7 @@ impl Char8 {
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
     #[inline]
+    #[must_use]
     #[rustfmt::skip]
     pub const fn to_ascii_lowercase(self) -> Char8 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))

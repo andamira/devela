@@ -15,6 +15,8 @@ pub struct LinuxTimespec {
 
 impl LinuxTimespec {
     /// Returns a new `LinuxTimespec` with the given `seconds` and `nanoseconds`.
+    #[inline]
+    #[must_use]
     pub const fn new(seconds: isize, nanoseconds: isize) -> Self {
         Self {
             tv_sec: seconds,
@@ -23,6 +25,8 @@ impl LinuxTimespec {
     }
 
     /// Returns a new `LinuxTimespec` with the given `duration`.
+    #[inline]
+    #[must_use]
     pub const fn with(duration: Duration) -> Self {
         Self {
             tv_sec: duration.as_secs() as isize,
@@ -31,17 +35,23 @@ impl LinuxTimespec {
     }
 
     /// Returns a raw pointer to self.
+    #[inline]
+    #[must_use]
     pub const fn as_ptr(&self) -> *const Self {
         self as *const Self
     }
 
     /// Returns a raw mutable pointer to self.
+    #[inline]
+    #[must_use]
     pub fn as_mut_ptr(&mut self) -> *mut Self {
         self as *mut Self
     }
 }
 
 impl From<Duration> for LinuxTimespec {
+    #[inline]
+    #[must_use]
     fn from(duration: Duration) -> Self {
         Self::with(duration)
     }
