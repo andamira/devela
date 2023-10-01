@@ -7,6 +7,30 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- new single module features: `ascii`, `char`, `cmp`, `convert`, `fmt`, `mem`, `num`, `os`, `str`, `string`, `ascii_unsafe`, `char_unsafe`, `cmp_unsafe`, `convert_unsafe`, `fmt_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `str_unsafe`, `string_unsafe`.
+- new multiple module features: `fullest`, `full_unsafe`, `lean`, `lean_unsafe`, `leanest`, `strings`, `chars`, `strings_unsafe`, `chars_unsafe`, `texts`, `texts_unsafe`.
+- new features: `ascii`, `char`, `cmp`, `convert`, `fmt`, `mem`, `num`, `os`, `str`, `string`,
+- new features: `ascii_unsafe`, `char_unsafe`, `cmp_unsafe`, `convert_unsafe`, `fmt_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `str_unsafe`, `string_unsafe`.
+- new platform features: `linux`, `linux_unsafe`
+- new safety features: `unsafe_linux`.
+
+### Removed
+- remove deprecated macro `bdbg`.
+
+### Changed
+- make `StrExt` and `StringExt` `new_counter` method depend on `ascii`.
+- update modules to depend on their homonymous features: `ascii`, `char`.
+- do not require `unsafe` for `linux` structs, just for the unsafe methods.
+
+### Fixed
+- make private the `Range*::XOR_VALUE` constant.
+- add missing must_use and inline attributes.
+- add missing unsafe safeguarded features.
+- simplify documentation on features.
+- add global warning `missing_docs`.
+- update some docs.
+
 ## [0.13.0] - 2023-09-29
 
 ### Added
