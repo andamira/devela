@@ -37,7 +37,7 @@ compile_error!("You can't enable the `safe` and `unsafe*` features at the same t
 
 extern crate devela_macros;
 
-/* sub-modules */
+/* root modules */
 
 #[cfg(not(feature = "ascii"))]
 pub(crate) mod ascii; // the "ascii" feature is disabled
@@ -58,7 +58,13 @@ pub(crate) mod cmp; // the "cmp" feature is disabled
 pub mod cmp;
 
 pub mod codegen;
+
+// #[cfg(not(feature = "convert"))]
+// pub(crate) mod convert; // the "convert" feature is disabled
+#[cfg(feature = "convert")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
 pub mod convert;
+
 pub mod fmt;
 pub mod mem;
 pub mod num;
@@ -90,21 +96,15 @@ pub mod all {
     pub use super::cmp::*;
 
     #[doc(inline)]
+    #[cfg(feature = "convert")]
+    pub use super::convert::{collection::*, primitive::*};
+    #[cfg(feature = "az")]
+    pub use ::az;
+
+    #[doc(inline)]
     pub use super::{
-        codegen::all::*,
-        convert::{collection::*, primitive::*},
-        fmt::*,
-        mem::all::*,
-        num::*,
-        ops::*,
-        option::*,
-        os::all::*,
-        path::*,
-        result::*,
-        slice::*,
-        str::*,
-        string::all::*,
-        sync::all::*,
+        codegen::all::*, fmt::*, mem::all::*, num::*, ops::*, option::*, os::all::*, path::*,
+        result::*, slice::*, str::*, string::all::*, sync::all::*,
     };
 
     #[doc(inline)]
@@ -114,14 +114,15 @@ pub mod all {
     #[doc(inline)]
     pub use devela_macros::{cif, compile, compile_attr};
 
-    pub use ::az;
     pub use ::bytemuck;
 }
 
 /// The common prelude.
 pub mod prelude {
+    #[cfg(feature = "convert")]
+    pub use crate::convert::{FromPrimitives, IntoPrimitives};
+
     pub use crate::{
-        convert::{FromPrimitives, IntoPrimitives},
         ops::{Also, Apply},
         option::OptionExt,
         result::ResultExt,

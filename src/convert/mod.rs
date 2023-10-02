@@ -14,4 +14,5 @@ pub use {collection::*, primitive::*};
 // Reexported [`az`](https://docs.rs/az) crate.
 // Provides casts and checked casts.
 #[doc(no_inline)]
+#[cfg(feature = "az")]
 pub use ::az;

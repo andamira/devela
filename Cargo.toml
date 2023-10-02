@@ -49,7 +49,7 @@ full = [ # enables all the modules.
 	"cmp", "convert", "mem", "num", "os"]
 	full_unsafe = ["full", "unsafe"]
 lean = [ # enables a lean selection of modules
-	"ascii", "fmt", "str"]
+	"ascii", "convert", "fmt", "str"]
 	lean_unsafe = ["lean", "unsafe"]
 leanest = ["lean"] # enables `lean` recursively (unused)
 
@@ -68,7 +68,7 @@ texts = [ # enables all *text* related sub-modules
 ascii = []
 char = []
 cmp = []
-convert = []
+convert = ["az"]
 fmt = []
 mem = []
 num = []
@@ -122,7 +122,7 @@ nightly_docs = [ # enables features for docs.rs
 devela_macros = "0.6.1"
 #
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
-az = { version = "1.2.1", default-features = false }
+az = { version = "1.2.1", default-features = false, optional = true }
 bytemuck = { version = "1.13.1", default-features = false }
 const-str = { version = "0.5.6", default-features = false }
 #
