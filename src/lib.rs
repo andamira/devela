@@ -42,19 +42,19 @@ extern crate devela_macros;
 #[cfg(not(feature = "ascii"))]
 pub(crate) mod ascii; // the "ascii" feature is disabled
 #[cfg(feature = "ascii")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))] // IMPROVE
 pub mod ascii;
 
 // #[cfg(not(feature = "char"))]
 // pub(crate) mod char; // the "char" feature is disabled
 #[cfg(feature = "char")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))] // IMPROVE
 pub mod char;
 
 #[cfg(not(feature = "cmp"))]
 pub(crate) mod cmp; // the "cmp" feature is disabled
 #[cfg(feature = "cmp")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "cmp")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "cmp")))] // IMPROVE
 pub mod cmp;
 
 pub mod codegen;
@@ -62,10 +62,14 @@ pub mod codegen;
 // #[cfg(not(feature = "convert"))]
 // pub(crate) mod convert; // the "convert" feature is disabled
 #[cfg(feature = "convert")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))] // IMPROVE
 pub mod convert;
 
+// #[cfg(not(feature = "fmt"))]
+// pub(crate) mod fmt; // the "fmt" feature is disabled
+#[cfg(feature = "fmt")]
 pub mod fmt;
+
 pub mod mem;
 pub mod num;
 pub mod ops;
@@ -102,9 +106,13 @@ pub mod all {
     pub use ::az;
 
     #[doc(inline)]
+    #[cfg(feature = "fmt")]
+    pub use super::fmt::*;
+
+    #[doc(inline)]
     pub use super::{
-        codegen::all::*, fmt::*, mem::all::*, num::*, ops::*, option::*, os::all::*, path::*,
-        result::*, slice::*, str::*, string::all::*, sync::all::*,
+        codegen::all::*, mem::all::*, num::*, ops::*, option::*, os::all::*, path::*, result::*,
+        slice::*, str::*, string::all::*, sync::all::*,
     };
 
     #[doc(inline)]
