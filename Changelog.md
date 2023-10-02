@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - make `StrExt` and `StringExt` `new_counter` method depend on `ascii`.
 - update modules to depend on their homonymous features: `ascii`, `char`.
 - do not require `unsafe` for `linux` structs, just for the unsafe methods.
+- replace the shell script tools with a more powerful rust script.
 
 ### Fixed
 - make private the `Range*::XOR_VALUE` constant.

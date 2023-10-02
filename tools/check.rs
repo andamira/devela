@@ -1,0 +1,344 @@
+#!/usr/bin/env -S rust-script -c
+//! ```cargo
+//! [dependencies]
+//! toml_edit = "0.20"
+//! itertools = "0.11"
+//! lexopt = "0.3"
+//! devela = { version = "0.13", features = ["std"] }
+//! ```
+//!
+// This script needs [rusts-cript](https://crates.io/crates/rust-script) to run.
+//
+// TODO:
+// - cargo remarks
+// - environment: std, no_std
+// - safety: unsafe
+// - oses (linux, …)
+
+// #![allow(dead_code)]
+
+use devela::all::{crate_root, iif, sf};
+use itertools::Itertools;
+use std::{
+    env,
+    fs::File,
+    io::{BufRead, BufReader, Read},
+    path::PathBuf,
+    process::{exit, Command, Stdio},
+    thread,
+};
+use toml_edit::Document;
+
+/* global configuration */
+
+const ROOT_MODULES: &[&str] = &[
+    "ascii", "char", "cmp", "convert", "fmt", "mem", "num", "os", "str", "string",
+];
+
+const STD_ARCHES: &[&str] = &[
+    // Linux 64-bit
+    "x86_64-unknown-linux-gnu",
+    // Windows Cygwin 64-bit
+    "x86_64-pc-windows-msvc",
+    // MacOs 64-bit
+    "x86_64-apple-darwin",
+    // Linux i686, 32-bit, std, little-endian, (kernel 3.2+, glibc 2.17+)
+    // may need to install `libc6-dev-amd64-i386-cross` for testing
+    "i686-unknown-linux-gnu",
+];
+const NO_STD_ARCHES: &[&str] = &[
+    // Bare x86_64, softfloat, 64-bit, no_std
+    // https://doc.rust-lang.org/nightly/rustc/platform-support/x86_64-unknown-none.html
+    "x86_64-unknown-none",
+    // Bare ARM64, hardfloat, 64-bit, no_std, little-endian, A64 set, (M1, M2 processors)
+    "aarch64-unknown-none",
+    // Bare ARMv7-M, 32-bit, no_std, little-endian, Thumb set, (Cortex-M processors)
+    "thumbv7m-none-eabi",
+];
+
+type Result<T> = core::result::Result<T, Box<dyn std::error::Error>>;
+
+fn main() -> Result<()> {
+    let args = get_args()?;
+    let msrv = iif![args.no_msrv; "".into(); get_msrv().unwrap_or("".into())];
+
+    // println!("MSRV = {msrv}");
+    // println!("ARGS = {args:?}");
+
+    let cmd = "check";
+
+    /* tests */
+
+    if args.tests {
+        let cmd = "test";
+        sf! { headline(0, &format!["`full` test checking std+[safe|unsafe]):"]); }
+
+        // WAITING: https://github.com/rust-lang/cargo/issues/1983 (colored output)
+        run_cargo(&msrv, cmd, &["-F full,std,safe", "--", "--color=always"])?;
+        run_cargo(&msrv, cmd, &["-F full,std,unsafe", "--", "--color=always"])?;
+        // run_cargo(&msrv, cmd, &["-F full,no_std,safe"])?;
+        // run_cargo(&msrv, cmd, &["-F full,no_std,unsafe"])?;
+    }
+
+    /* docs */
+
+    if args.docs {
+        headline(0, &format!["`full` docs compilation:"]);
+        run_cargo("", "+nightly", &["doc", "-F full,std,unsafe,nightly"])?;
+    }
+
+    /* arches */
+
+    if args.arches {
+        let cmd = "clippy";
+
+        let arch_total: usize = STD_ARCHES.len() + NO_STD_ARCHES.len();
+        let mut arch_count = 1_usize;
+
+        sf! { headline(0, &format!["`full` checking in each architecture ({arch_total}):"]); }
+
+        for arch in STD_ARCHES {
+            headline(1, &format!("target arch {arch_count}/{arch_total}"));
+            run_cargo(&msrv, cmd, &["--target", arch, "-F full,std,unsafe"])?;
+            arch_count += 1;
+        }
+        for arch in NO_STD_ARCHES {
+            headline(1, &format!("target arch {arch_count}/{arch_total}"));
+            run_cargo(&msrv, cmd, &["--target", arch, "-F full,no_std,unsafe"])?;
+            arch_count += 1;
+        }
+    }
+
+    /* miri */
+
+    if args.miri {
+        let arch_total: usize = STD_ARCHES.len() + NO_STD_ARCHES.len();
+        let mut arch_count = 1_usize;
+
+        sf! { headline(0, &format!["miri testing in each architecture ({arch_total}):"]); }
+
+        // std
+        env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
+        for arch in STD_ARCHES {
+            headline(1, &format!("target arch {arch_count}/{arch_total}"));
+            sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
+            "-F full,std,unsafe,nightly"])?; }
+            arch_count += 1;
+        }
+
+        // no_std
+        env::remove_var("MIRIFLAGS");
+        for arch in STD_ARCHES {
+            headline(1, &format!("target arch {arch_count}/{arch_total}"));
+            sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
+            "-F full,no_std,unsafe,nightly"])?; }
+            arch_count += 1;
+        }
+        // WAITING for FIX: https://github.com/rust-lang/wg-cargo-std-aware/issues/69
+        // for arch in NO_STD_ARCHES {}
+    }
+
+    /* modules */
+
+    // check individual modules
+    if args.modules {
+        // let cmd = "clippy";
+
+        let mod_total: usize = ROOT_MODULES.len();
+        let mut mod_count = 1_usize;
+
+        headline(0, &format!["Checking individual modules ({mod_total}):"]);
+
+        for module in ROOT_MODULES {
+            headline(1, &format!("module {mod_count}/{mod_total}"));
+            run_cargo(&msrv, cmd, &["-F", &module])?;
+            mod_count += 1;
+        }
+
+        // check all the combinations of individual modules
+        if args.modules_combinations {
+            // (exclude single modules and 0 modules from the count)
+            let mod_comb_total: usize = 2_usize.pow(mod_total as u32) - mod_total - 1;
+            let mut comb_count = 1_usize;
+
+            sf! { headline(0,
+                "Checking all the remaining modules combinations ({mod_comb_total}):"); }
+
+            for i in 2..=ROOT_MODULES.len() {
+                for combination in ROOT_MODULES.iter().combinations(i) {
+                    sf! { headline(1,
+                        &format!("modules combination {comb_count}/{mod_comb_total}")); }
+                    let deref_combination: Vec<_> = combination.into_iter().map(|&s| s).collect();
+                    let combined = deref_combination.join(",");
+                    run_cargo(&msrv, cmd, &["-F", &combined])?;
+                    comb_count += 1;
+                }
+            }
+        }
+    }
+    Ok(())
+}
+
+/// The CLI arguments.
+#[derive(Debug, Default, Clone, Copy, Eq, PartialEq)]
+struct Args {
+    no_msrv: bool,
+    tests: bool,
+    docs: bool,
+    arches: bool,
+    modules: bool,
+    modules_combinations: bool,
+    miri: bool,
+}
+
+/// The CLI argument parser.
+fn get_args() -> Result<Args> {
+    use lexopt::prelude::*;
+
+    let mut no_msrv = false;
+    let mut tests = false;
+    let mut docs = false;
+    let mut arches = false;
+    let mut modules = false;
+    let mut modules_combinations = false;
+    let mut miri = false;
+
+    let mut parser = lexopt::Parser::from_env();
+
+    // if there are no arguments, print help an exit
+    iif![env::args_os().len() == 1; {print_help(&parser); exit(0); }];
+
+    sf! { while let Some(arg) = parser.next()? {
+        match arg {
+            Long("help") | Short('h') => { print_help(&parser); exit(0); }
+            Long("no-msrv") => { no_msrv = true; }
+            Long("tests") | Short('t') => { tests = true; }
+            Long("docs") | Short('d') => { docs = true; }
+            Long("arches") | Short('a') => { arches = true; }
+            Long("modules") | Short('m') => { modules = true; }
+            Long("modules-combinations") => { modules = true; modules_combinations = true; }
+            Long("miri") => { miri = true; }
+            _ => { let err = arg.unexpected(); print_help(&parser); return Err(Box::new(err)); }
+        }
+    }}
+
+    Ok(Args {
+        no_msrv,
+        tests,
+        docs,
+        arches,
+        modules,
+        modules_combinations,
+        miri,
+        ..Default::default()
+    })
+}
+
+/// Prints the help.
+fn print_help(parser: &lexopt::Parser) {
+    let msrv = get_msrv().unwrap_or("".into());
+    let mods: usize = ROOT_MODULES.len();
+    let mods_combs: usize = 2_usize.pow(mods as u32) - 1;
+    let arches: usize = STD_ARCHES.len() + NO_STD_ARCHES.len();
+
+    println!(
+        "Usage: {} [OPTIONS]
+
+  -t, --tests                 run the tests
+  -d, --docs                  compile the documentation
+  -a, --arches                check each architecture ({arches})
+      --miri                  use `miri` to check each architecture
+  -m, --modules               check the root modules separately ({mods})
+      --modules_combinations  check all the modules combinations ({mods_combs})
+      --no-msrv               do not enforce using the configured MSRV ({msrv})
+  -h, --help                  display this help and exit
+",
+        parser.bin_name().unwrap_or("check.rs")
+    );
+}
+
+/// Returns the `rust-version` field from Cargo.toml
+fn get_msrv() -> Result<String> {
+    // read the Cargo.toml file
+    let cargo = PathBuf::from(crate_root("Cargo.toml")?);
+    let mut file = File::open(cargo)?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+
+    // Parse the contents as TOML and return the `rust`-version field
+    let cargo_toml: Document = contents.parse()?;
+    cargo_toml
+        .as_table()
+        .get("package")
+        .and_then(|package| package.as_table())
+        .and_then(|package| package.get("rust-version"))
+        .map(|msrv| msrv.as_str().unwrap().to_owned())
+        .ok_or("error".into())
+}
+
+/// Runs the given cargo `command` with `arguments`, using the `msrv` rust version.
+///
+/// If `msrv` is empty then it will be ignored.
+fn run_cargo(msrv: &str, command: &str, arguments: &[&str]) -> Result<()> {
+    let mut child = if msrv.is_empty() {
+        println!("$ cargo {command} {}", arguments.join(" "));
+
+        Command::new("cargo")
+            .arg(command)
+            .args(["--color", "always"])
+            .args(arguments)
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()?
+    } else {
+        sf! { println!("$ rustup run {msrv} cargo {command} {}", arguments.join(" ")); }
+        Command::new("rustup")
+            // .arg("--verbose")
+            .arg("run")
+            .arg(msrv)
+            .arg("cargo")
+            .args(["--color", "always"])
+            .arg(command)
+            .args(arguments)
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()?
+    };
+
+    let stdout = child.stdout.take().unwrap();
+    let stderr = child.stderr.take().unwrap();
+
+    let stdout_handle = thread::spawn(move || {
+        let reader = BufReader::new(stdout);
+        for line in reader.lines() {
+            println!("{}", line.unwrap());
+        }
+    });
+
+    let stderr_handle = thread::spawn(move || {
+        let reader = BufReader::new(stderr);
+        for line in reader.lines() {
+            eprintln!("{}", line.unwrap());
+        }
+    });
+
+    stdout_handle.join().unwrap();
+    stderr_handle.join().unwrap();
+
+    let status = child.wait()?;
+
+    if !status.success() {
+        Err("ERROR".into())
+    } else {
+        Ok(())
+    }
+}
+
+/// Prints a headline
+fn headline(level: usize, text: &str) {
+    match level {
+        0 => println!("\n{text}\n{}", "-".repeat(80)),
+        1 => println!["\n> {text}"],
+        _ => println!("\nUNKNOWN HEADLINE LEVEL\n{text}\n"),
+    }
+}
