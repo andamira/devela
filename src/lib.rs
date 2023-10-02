@@ -39,19 +39,24 @@ extern crate devela_macros;
 
 /* sub-modules */
 
+#[cfg(not(feature = "ascii"))]
+pub(crate) mod ascii; // the "ascii" feature is disabled
 #[cfg(feature = "ascii")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
 pub mod ascii;
-#[cfg(not(feature = "ascii"))]
-pub(crate) mod ascii; // the "ascii" feature is disabled
 
+// #[cfg(not(feature = "char"))]
+// pub(crate) mod char; // the "char" feature is disabled
 #[cfg(feature = "char")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
 pub mod char;
-// #[cfg(not(feature = "char"))]
-// pub(crate) mod char; // the "char" feature is disabled
 
+#[cfg(not(feature = "cmp"))]
+pub(crate) mod cmp; // the "cmp" feature is disabled
+#[cfg(feature = "cmp")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "cmp")))]
 pub mod cmp;
+
 pub mod codegen;
 pub mod convert;
 pub mod fmt;
@@ -81,8 +86,11 @@ pub mod all {
     pub use super::char::*;
 
     #[doc(inline)]
+    #[cfg(feature = "cmp")]
+    pub use super::cmp::*;
+
+    #[doc(inline)]
     pub use super::{
-        cmp::*,
         codegen::all::*,
         convert::{collection::*, primitive::*},
         fmt::*,

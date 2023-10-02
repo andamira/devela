@@ -71,7 +71,7 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "Compares and returns a clamped [total ordered] `f" $b "` between `min` and `max`."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp` is enabled.
+        /// This function will only be `const` if the `unsafe_cmp` feature is enabled.
         ///
         /// # Examples
         /// ```
@@ -101,7 +101,7 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "using [total ordering][total_cmp_f" $b "]."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp` is enabled.
+        /// This function will only be `const` if the `unsafe_cmp` feature is enabled.
         ///
         /// # Examples
         /// ```
@@ -138,7 +138,7 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "using [total ordering][total_cmp_f" $b "]."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp` is enabled.
+        /// This function will only be `const` if the `unsafe_cmp` feature is enabled.
         ///
         /// # Examples
         /// ```

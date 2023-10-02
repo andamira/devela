@@ -6,7 +6,7 @@
 //! directly related to ASCII, prefixed with `ascii_`, and a new description.
 //
 
-/* always compiled, for internal use */
+/* always compiled for internal use */
 
 mod always_fns;
 #[cfg(not(feature = "ascii"))]
