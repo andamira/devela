@@ -39,52 +39,52 @@ extern crate devela_macros;
 
 /* root modules */
 
-#[cfg(not(feature = "ascii"))]
-pub(crate) mod ascii; // the "ascii" feature is disabled
-#[cfg(feature = "ascii")]
+#[cfg(any(feature = "ascii", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
 pub mod ascii;
+#[cfg(all(not(feature = "ascii"), not(test)))]
+pub(crate) mod ascii; // the "ascii" feature is disabled
 
-#[cfg(not(feature = "char"))]
-pub(crate) mod char; // the "char" feature is disabled
-#[cfg(feature = "char")]
+#[cfg(any(feature = "char", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
 pub mod char;
+#[cfg(all(not(feature = "char"), not(test)))]
+pub(crate) mod char; // the "char" feature is disabled
 
-#[cfg(not(feature = "cmp"))]
-pub(crate) mod cmp; // the "cmp" feature is disabled
-#[cfg(feature = "cmp")]
+#[cfg(any(feature = "cmp", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "cmp")))]
 pub mod cmp;
+#[cfg(all(not(feature = "cmp"), not(test)))]
+pub(crate) mod cmp; // the "cmp" feature is disabled
 
 pub mod codegen;
 
-#[cfg(not(feature = "convert"))]
-pub(crate) mod convert; // the "convert" feature is disabled
-#[cfg(feature = "convert")]
+#[cfg(any(feature = "convert", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
 pub mod convert;
+#[cfg(all(not(feature = "convert"), not(test)))]
+pub(crate) mod convert; // the "convert" feature is disabled
 
-// #[cfg(not(feature = "fmt"))]
-// pub(crate) mod fmt; // the "fmt" feature is disabled
+#[cfg(any(feature = "fmt", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "fmt")))]
-#[cfg(feature = "fmt")]
 pub mod fmt;
+// #[cfg(all(not(feature = "fmt"), not(test)))]
+// pub(crate) mod fmt; // the "fmt" feature is disabled
 
-#[cfg(not(feature = "mem"))]
-pub(crate) mod mem; // the "mem" feature is disabled
+#[cfg(any(feature = "mem", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
-#[cfg(feature = "mem")]
 pub mod mem;
+#[cfg(all(not(feature = "mem"), not(test)))]
+pub(crate) mod mem; // the "mem" feature is disabled
 
-#[cfg(not(feature = "num"))]
-pub(crate) mod num; // the "num" feature is disabled
+#[cfg(any(feature = "num", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
-#[cfg(feature = "num")]
 pub mod num;
+#[cfg(all(not(feature = "num"), not(test)))]
+pub(crate) mod num; // the "num" feature is disabled
 
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "ops")))]
 #[cfg(any(feature = "ops", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "ops")))]
 pub mod ops;
 #[cfg(all(not(feature = "ops"), not(test)))]
 pub(crate) mod ops; // the "ops" feature is disabled
