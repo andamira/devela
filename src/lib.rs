@@ -45,8 +45,8 @@ pub(crate) mod ascii; // the "ascii" feature is disabled
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
 pub mod ascii;
 
-// #[cfg(not(feature = "char"))]
-// pub(crate) mod char; // the "char" feature is disabled
+#[cfg(not(feature = "char"))]
+pub(crate) mod char; // the "char" feature is disabled
 #[cfg(feature = "char")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
 pub mod char;
@@ -59,8 +59,8 @@ pub mod cmp;
 
 pub mod codegen;
 
-// #[cfg(not(feature = "convert"))]
-// pub(crate) mod convert; // the "convert" feature is disabled
+#[cfg(not(feature = "convert"))]
+pub(crate) mod convert; // the "convert" feature is disabled
 #[cfg(feature = "convert")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
 pub mod convert;
@@ -95,25 +95,25 @@ pub mod thread;
 pub mod all {
     #[doc(inline)]
     #[cfg(feature = "ascii")]
-    pub use super::ascii::*;
+    pub use super::ascii::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "char")]
-    pub use super::char::*;
+    pub use super::char::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "cmp")]
-    pub use super::cmp::*;
+    pub use super::cmp::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "convert")]
-    pub use super::convert::{collection::*, primitive::*};
+    pub use super::convert::all::*;
     #[cfg(feature = "az")]
     pub use ::az;
 
     #[doc(inline)]
     #[cfg(feature = "fmt")]
-    pub use super::fmt::*;
+    pub use super::fmt::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "mem")]

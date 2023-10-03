@@ -2,6 +2,7 @@
 //
 //!
 //
+// SAFETY: unsafe blocks are ported verbatim from the throughly tested `itoa` crate.
 
 use core::{
     mem::{self, MaybeUninit},

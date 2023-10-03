@@ -3,13 +3,24 @@
 //! Formatting, extends [`alloc::fmt`].
 //
 
-mod misc;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "fmt")))]
-pub use misc::*;
+/* always compiled for internal use */
 
-// SAFETY: unsafe blocks are ported verbatim from the throughly tested `itoa` crate.
+/* only compiled with the `char` feature */
+
+mod misc;
+
 #[cfg(feature = "unsafe_fmt")]
 mod int_buf;
-#[cfg(feature = "unsafe_fmt")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "fmt_unsafe")))]
-pub use int_buf::{IntBuf, IntBufAble};
+
+/* re-exports */
+
+#[cfg(feature = "fmt")]
+pub use all::*;
+#[cfg(feature = "fmt")]
+pub(crate) mod all {
+    pub use super::misc::*;
+
+    #[cfg(feature = "unsafe_fmt")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "fmt_unsafe")))]
+    pub use super::int_buf::{IntBuf, IntBufAble};
+}

@@ -18,11 +18,14 @@ pub(crate) use always_fns::*;
 mod char;
 #[cfg(feature = "ascii")]
 mod fns;
-
-#[cfg(feature = "ascii")]
-pub use {always_fns::*, char::AsciiChar, fns::*};
-
 #[cfg(feature = "ascii")]
 mod reexport_const_str;
+
+/* re-exports */
+
 #[cfg(feature = "ascii")]
-pub use reexport_const_str::*;
+pub use all::*;
+#[cfg(feature = "ascii")]
+pub(crate) mod all {
+    pub use super::{always_fns::*, char::AsciiChar, fns::*, reexport_const_str::*};
+}

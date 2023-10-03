@@ -13,6 +13,8 @@ pub use always_fns::*;
 
 /* only compiled with the `mem` feature */
 
+/* re-exports */
+
 #[cfg(feature = "mem")]
 pub use all::*;
 #[cfg(feature = "mem")]

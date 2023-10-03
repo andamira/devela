@@ -19,5 +19,11 @@ mod float;
 #[cfg(feature = "cmp")]
 mod fns;
 
+/* re-exports */
+
 #[cfg(feature = "cmp")]
-pub use {always_fns::*, float::*, fns::*};
+pub use all::*;
+#[cfg(feature = "cmp")]
+pub(crate) mod all {
+    pub use super::{always_fns::*, float::*, fns::*};
+}
