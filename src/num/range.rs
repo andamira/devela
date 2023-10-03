@@ -6,7 +6,7 @@
 use crate::codegen::{iif, paste};
 use core::{fmt, num::*, str::FromStr};
 
-#[cfg(all(feature = "mem", feature = "unsafe_num"))]
+#[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
 use crate::mem::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
 macro_rules! impl_range {
@@ -224,23 +224,23 @@ macro_rules! impl_range {
 
         /* external impls*/
 
-        #[cfg(all(feature = "mem", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "mem", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             ZeroableInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-        #[cfg(all(feature = "mem", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "mem", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             PodInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-        #[cfg(all(feature = "mem", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "mem", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             NoUninit for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-        #[cfg(all(feature = "mem", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "mem", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             CheckedBitPattern for [<$name $s:upper $b>]<RMIN, RMAX> {
             type Bits = [<$s:lower $b>];

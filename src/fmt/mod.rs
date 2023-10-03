@@ -10,6 +10,7 @@
 mod misc;
 
 #[cfg(feature = "unsafe_fmt")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_fmt")))]
 mod int_buf;
 
 /* re-exports */
@@ -21,6 +22,6 @@ pub(crate) mod all {
     pub use super::misc::*;
 
     #[cfg(feature = "unsafe_fmt")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "fmt_unsafe")))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_fmt")))]
     pub use super::int_buf::{IntBuf, IntBufAble};
 }

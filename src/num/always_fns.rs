@@ -1,7 +1,11 @@
-// devela::num::fns
+// devela::num::always_fns
 //
+//! `num` standalone functions.
 //!
+//! Always available for internal use.
 //
+
+#![allow(unused)]
 
 /// Counts the number of decimal digits in `n`.
 ///

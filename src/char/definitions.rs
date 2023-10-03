@@ -7,7 +7,6 @@
 // - UnicodeScalar trait definition
 // - CharConversionError
 
-use crate::num::NonSpecificU16;
 use core::fmt;
 
 /* private types */
@@ -16,7 +15,8 @@ pub(super) type Result<T> = core::result::Result<T, CharConversionError>;
 
 // This is a surrogate UTF-16 code point that can't ever be a unicode scalar.
 pub(super) type NonSurrogateU16 = NonSpecificU16<0xDFFF>;
-pub(super) use crate::num::NonMaxU8;
+
+pub(super) use crate::num::{NonMaxU8, NonSpecificU16};
 
 /* public types */
 

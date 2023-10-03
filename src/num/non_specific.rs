@@ -1,12 +1,16 @@
 // devela::num::non_specific
 //
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
+//!
+//! Always available for internal use.
 //
+
+#![allow(unused)]
 
 use crate::codegen::paste;
 use core::{fmt, num::*, str::FromStr};
 
-#[cfg(all(feature = "mem", feature = "unsafe_num"))]
+#[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
 use bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
 macro_rules! impl_non_specific {
@@ -188,20 +192,20 @@ macro_rules! impl_non_specific {
 
         /* external impls*/
 
-        #[cfg(all(feature = "mem", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "mem", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
         unsafe impl<const V: [<$s:lower $b>]> ZeroableInOption for [<$name $s:upper $b>]<V> {}
 
-        #[cfg(all(feature = "mem", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "mem", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
         unsafe impl<const V: [<$s:lower $b>]> PodInOption for [<$name $s:upper $b>]<V> {}
 
-        #[cfg(all(feature = "mem", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "mem", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
         unsafe impl<const V: [<$s:lower $b>]> NoUninit for [<$name $s:upper $b>]<V> {}
 
-        #[cfg(all(feature = "mem", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "mem", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
         unsafe impl<const V: [<$s:lower $b>]> CheckedBitPattern for [<$name $s:upper $b>]<V> {
             type Bits = [<$s:lower $b>];
 

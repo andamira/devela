@@ -2,7 +2,7 @@
 //
 //! ASCII standalone functions.
 //!
-//! Always available for internal use
+//! Always available for internal use.
 //
 
 #![allow(unused)]

@@ -5,15 +5,31 @@
 //! It also reexports the `NonZero*` types from `libcore`.
 //
 
-#[cfg(test)]
-mod tests;
+/* always compiled for internal use */
 
-mod fns;
-mod non_range;
+mod always_fns;
 mod non_specific;
+#[cfg(not(feature = "num"))]
+pub use {always_fns::*, non_specific::*};
+
+/* only compiled with the `mem` feature */
+
+#[cfg(feature = "num")]
+mod non_range;
+#[cfg(feature = "num")]
 mod range;
 
-pub use {fns::*, non_range::*, non_specific::*, range::*};
+#[cfg(all(feature = "num", test))]
+mod tests;
+
+/* re-exports */
+
+#[cfg(feature = "num")]
+pub use all::*;
+#[cfg(feature = "num")]
+pub(crate) mod all {
+    pub use super::{always_fns::*, non_range::*, non_specific::*, range::*};
+}
 
 #[doc = "A signed integer that is known not to equal zero.\n\n"]
 #[doc = "*Reexported from"]

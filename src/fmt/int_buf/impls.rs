@@ -4,13 +4,17 @@
 //
 
 use super::*;
+#[cfg(feature = "num")]
 use crate::num::{
     NonRangeI128, NonRangeI16, NonRangeI32, NonRangeI64, NonRangeI8, NonRangeIsize, NonRangeU128,
-    NonRangeU16, NonRangeU32, NonRangeU64, NonRangeU8, NonRangeUsize, NonSpecificI128,
-    NonSpecificI16, NonSpecificI32, NonSpecificI64, NonSpecificI8, NonSpecificIsize,
-    NonSpecificU128, NonSpecificU16, NonSpecificU32, NonSpecificU64, NonSpecificU8,
-    NonSpecificUsize, RangeI128, RangeI16, RangeI32, RangeI64, RangeI8, RangeIsize, RangeU128,
-    RangeU16, RangeU32, RangeU64, RangeU8, RangeUsize,
+    NonRangeU16, NonRangeU32, NonRangeU64, NonRangeU8, NonRangeUsize, RangeI128, RangeI16,
+    RangeI32, RangeI64, RangeI8, RangeIsize, RangeU128, RangeU16, RangeU32, RangeU64, RangeU8,
+    RangeUsize,
+};
+use crate::num::{
+    NonSpecificI128, NonSpecificI16, NonSpecificI32, NonSpecificI64, NonSpecificI8,
+    NonSpecificIsize, NonSpecificU128, NonSpecificU16, NonSpecificU32, NonSpecificU64,
+    NonSpecificU8, NonSpecificUsize,
 };
 use core::num::{
     NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
@@ -306,8 +310,9 @@ impl_IntBufAble!(non_specific:
     U64_MAX_LEN => NonSpecificUsize(usize),
 );
 
-/* impl for NonRange* */
+/* impl for (Non)Range* */
 
+#[cfg(feature = "num")]
 impl_IntBufAble!(ranges:
     I8_MAX_LEN => NonRangeI8(i8),
     U8_MAX_LEN => NonRangeU8(u8),
@@ -330,21 +335,21 @@ impl_IntBufAble!(ranges:
     I128_MAX_LEN => RangeI128(i128),
     U128_MAX_LEN => RangeU128(u128),
 );
-#[cfg(target_pointer_width = "16")]
+#[cfg(all(feature = "num", target_pointer_width = "16"))]
 impl_IntBufAble!(ranges:
     I16_MAX_LEN => NonRangeIsize(isize),
     U16_MAX_LEN => NonRangeUsize(usize),
     I16_MAX_LEN => RangeIsize(isize),
     U16_MAX_LEN => RangeUsize(usize),
 );
-#[cfg(target_pointer_width = "32")]
+#[cfg(all(feature = "num", target_pointer_width = "32"))]
 impl_IntBufAble!(ranges:
     I32_MAX_LEN => NonRangeIsize(isize),
     U32_MAX_LEN => NonRangeUsize(usize),
     I32_MAX_LEN => RangeIsize(isize),
     U32_MAX_LEN => RangeUsize(usize),
 );
-#[cfg(target_pointer_width = "64")]
+#[cfg(all(feature = "num", target_pointer_width = "64"))]
 impl_IntBufAble!(ranges:
     I64_MAX_LEN => NonRangeIsize(isize),
     U64_MAX_LEN => NonRangeUsize(usize),

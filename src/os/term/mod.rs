@@ -16,16 +16,20 @@ pub use {
     macros::{ansi, ansib},
 };
 
-#[cfg(all(
-    any(
-        target_arch = "x86_64",
-        target_arch = "x86",
-        target_arch = "arm",
-        target_arch = "aarch64",
-        target_arch = "riscv32",
-        target_arch = "riscv64"
-    ),
-    feature = "unsafe_linux",
-    not(miri),
+#[cfg(any(
+    all(feature = "std", not(miri)),
+    all(
+        any(
+            target_arch = "x86_64",
+            target_arch = "x86",
+            target_arch = "arm",
+            target_arch = "aarch64",
+            target_arch = "riscv32",
+            target_arch = "riscv64"
+        ),
+        feature = "linux",
+        feature = "unsafe_linux",
+        not(miri),
+    )
 ))]
 pub use macros::ansip;

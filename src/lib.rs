@@ -77,7 +77,12 @@ pub(crate) mod mem; // the "mem" feature is disabled
 #[cfg(feature = "mem")]
 pub mod mem;
 
+#[cfg(not(feature = "num"))]
+pub(crate) mod num; // the "num" feature is disabled
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg(feature = "num")]
 pub mod num;
+
 pub mod ops;
 pub mod option;
 pub mod os;
@@ -122,9 +127,13 @@ pub mod all {
     pub use ::bytemuck;
 
     #[doc(inline)]
+    #[cfg(feature = "num")]
+    pub use super::num::all::*;
+
+    #[doc(inline)]
     pub use super::{
-        codegen::all::*, num::*, ops::*, option::*, os::all::*, path::*, result::*, slice::*,
-        str::*, string::all::*, sync::all::*,
+        codegen::all::*, ops::*, option::*, os::all::*, path::*, result::*, slice::*, str::*,
+        string::all::*, sync::all::*,
     };
 
     #[doc(inline)]

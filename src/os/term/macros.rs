@@ -120,6 +120,7 @@ pub use ansi;
             target_arch = "riscv32",
             target_arch = "riscv64"
         ),
+        feature = "linux",
         feature = "unsafe_linux",
         not(miri),
     )
@@ -145,6 +146,7 @@ macro_rules! ansip {
             target_arch = "riscv32",
             target_arch = "riscv64"
         ),
+        feature = "linux",
         feature = "unsafe_linux",
         not(miri),
     )
