@@ -40,7 +40,9 @@ alloc = [ # enables `alloc` functionality
 	"bytemuck?/extern_crate_alloc"]
 no_std = [] # enables functionality incompatible with `std` (unused)
 
+
 #* platform specific features *#
+
 linux = ["os"] # enables os::linux functionality
 linux_unsafe = ["linux", "unsafe_linux"]
 # wasm = []
@@ -51,7 +53,6 @@ linux_unsafe = ["linux", "unsafe_linux"]
 
 #* modules features *#
 
-fullest = ["full"] # enables `full` recursively (unused)
 full = [ # enables all the modules.
 	"texts", "cmp", "convert", "mem", "num", "ops", "os", "slice", "sync" ]
 	full_unsafe = ["full", "unsafe"]
@@ -62,6 +63,7 @@ lean = [ # enables a lean selection of modules
 		"slice_unsafe", "str_unsafe",
 	]
 leanest = ["lean"] # enables `lean` recursively (unused)
+fullest = ["full"] # enables `full` recursively (unused)
 
 # multiple related modules:
 chars = [ # enables all *char* related sub-modules
@@ -107,7 +109,6 @@ sync_unsafe = ["sync", "unsafe_sync"]
 
 #* safety features *#
 
-unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
 unsafe = [ # enables unsafe features in this crate
 	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_convert", "unsafe_fmt",
 	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_slice",
@@ -130,6 +131,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_sync = [] # (unused)
 safe = [] # forbids unsafe in this crate
 safest = ["safe"] # forbids `unsafe` recursively (unused)
+unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
 
 
 #* nightly features *#
@@ -145,6 +147,7 @@ nightly_docs = [ # enables features for docs.rs
 [dependencies]
 
 devela_macros = "0.6.1"
+#devela_macros = { path = "./macros" }
 #
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 az = { version = "1.2.1", default-features = false, optional = true }
@@ -165,7 +168,7 @@ features = ["fallback", "float"]
 
 [dev-dependencies]
 
-devela = { path = ".", features = ["full", "std"] }
+devela = { path = ".", features = ["full", "std", "unsafe"] }
 
 # ------------------------------------------------------------------------------
 
