@@ -7,7 +7,7 @@
 // - trait impls
 // - conversions
 
-use super::{impl_sized_alias, ArrayStringError, Result};
+use super::{macros::impl_sized_alias, ArrayStringError, Result};
 use core::fmt;
 
 #[cfg(feature = "alloc")]
