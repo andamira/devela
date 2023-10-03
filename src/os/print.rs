@@ -132,8 +132,9 @@ macro_rules! generate_os_print_std_macros {
                     [<os_ $name>]![$buf, $d($d args)*]; // call 5th arm
                 };
 
+                /* these two must be the last ones to avoid conflicts */
+
                 // 7) print an expression that returns a string slice
-                // (this must be the last arm to avoid conflicts)
                 ($expr:expr) => {
                     $name!["{}", $expr];
                 };

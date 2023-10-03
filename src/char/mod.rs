@@ -100,6 +100,8 @@ pub struct Char24 {
 pub struct Char32(pub char);
 
 /// Common trait for unicode scalars.
+///
+/// It's implemented for: [`Char7`], [`Char8`], [`Char16`], [`Char24`], [`Char32`] and [`char`].
 pub trait UnicodeScalar {
     /// The highest unicode scalar that can be represented by this type.
     const MAX: Self;
