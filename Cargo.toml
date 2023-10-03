@@ -46,11 +46,13 @@ linux_unsafe = ["linux", "unsafe_linux"]
 fullest = ["full"] # enables `full` recursively (unused)
 full = [ # enables all the modules.
 	"texts",
-	"cmp", "convert", "mem", "num", "os"]
+	"cmp", "convert", "mem", "num", "ops", "os"]
 	full_unsafe = ["full", "unsafe"]
 lean = [ # enables a lean selection of modules
-	"ascii", "convert", "fmt", "str"]
-	lean_unsafe = ["lean", "unsafe"]
+	"ascii", "convert", "fmt", "ops", "str"]
+	lean_unsafe = [
+		"ascii_unsafe", "convert_unsafe", "fmt_unsafe", "ops_unsafe", "str_unsafe",
+	]
 leanest = ["lean"] # enables `lean` recursively (unused)
 
 # multiple related modules:
@@ -72,6 +74,7 @@ convert = ["az"]
 fmt = []
 mem = ["bytemuck"]
 num = []
+ops = []
 os = []
 str = []
 string = []
@@ -83,6 +86,7 @@ convert_unsafe = ["convert", "unsafe_convert"]
 fmt_unsafe = ["fmt", "unsafe_fmt"]
 mem_unsafe = ["mem", "unsafe_mem"]
 num_unsafe = ["num", "unsafe_num"]
+ops_unsafe = ["ops", "unsafe_ops"]
 os_unsafe = ["os", "unsafe_os"]
 str_unsafe = ["str", "unsafe_str"]
 string_unsafe = ["string", "unsafe_string"]
@@ -92,7 +96,8 @@ string_unsafe = ["string", "unsafe_string"]
 unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
 unsafe = [ # enables unsafe features in this crate
 	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_convert", "unsafe_fmt",
-	"unsafe_mem", "unsafe_num", "unsafe_os", "unsafe_str", "unsafe_string"]
+	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_str", "unsafe_string"
+	]
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
 	unsafe_cmp = [] # enables const floating-point comparisons
@@ -100,6 +105,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
 	unsafe_num = [] # enables unsafe constructors and bytemuck's traits
+	unsafe_ops = [] # (unused)
 	unsafe_os = [ # enables unsafe OS functionality
 		"unsafe_linux"]
 		unsafe_linux = [] # enables linux syscalls

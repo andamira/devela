@@ -83,7 +83,12 @@ pub(crate) mod num; // the "num" feature is disabled
 #[cfg(feature = "num")]
 pub mod num;
 
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "ops")))]
+#[cfg(any(feature = "ops", test))]
 pub mod ops;
+#[cfg(all(not(feature = "ops"), not(test)))]
+pub(crate) mod ops; // the "ops" feature is disabled
+
 pub mod option;
 pub mod os;
 pub mod path;
@@ -131,8 +136,12 @@ pub mod all {
     pub use super::num::all::*;
 
     #[doc(inline)]
+    #[cfg(feature = "ops")]
+    pub use super::ops::all::*;
+
+    #[doc(inline)]
     pub use super::{
-        codegen::all::*, ops::*, option::*, os::all::*, path::*, result::*, slice::*, str::*,
+        codegen::all::*, option::*, os::all::*, path::*, result::*, slice::*, str::*,
         string::all::*, sync::all::*,
     };
 
@@ -147,10 +156,12 @@ pub mod all {
 /// The common prelude.
 pub mod prelude {
     #[cfg(feature = "convert")]
-    pub use crate::convert::{FromPrimitives, IntoPrimitives};
+    pub use crate::convert::all::{FromPrimitives, IntoPrimitives};
+
+    #[cfg(feature = "ops")]
+    pub use crate::ops::all::{Also, Apply};
 
     pub use crate::{
-        ops::{Also, Apply},
         option::OptionExt,
         result::ResultExt,
         slice::{SliceExt, SliceExtMut},
