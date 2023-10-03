@@ -94,7 +94,13 @@ pub mod os;
 pub mod path;
 pub mod result;
 pub mod slice;
+
+#[cfg(any(feature = "str", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "str")))]
 pub mod str;
+#[cfg(all(not(feature = "str"), not(test)))]
+pub(crate) mod str; // the "str" feature is disabled
+
 pub mod string;
 pub mod sync;
 #[cfg(feature = "std")]
@@ -140,9 +146,13 @@ pub mod all {
     pub use super::ops::all::*;
 
     #[doc(inline)]
+    #[cfg(feature = "str")]
+    pub use super::str::all::*;
+
+    #[doc(inline)]
     pub use super::{
-        codegen::all::*, option::*, os::all::*, path::*, result::*, slice::*, str::*,
-        string::all::*, sync::all::*,
+        codegen::all::*, option::*, os::all::*, path::*, result::*, slice::*, string::all::*,
+        sync::all::*,
     };
 
     #[doc(inline)]
@@ -161,11 +171,13 @@ pub mod prelude {
     #[cfg(feature = "ops")]
     pub use crate::ops::all::{Also, Apply};
 
+    #[cfg(feature = "str")]
+    pub use crate::str::all::StrExt;
+
     pub use crate::{
         option::OptionExt,
         result::ResultExt,
         slice::{SliceExt, SliceExtMut},
-        str::StrExt,
     };
 
     #[cfg(feature = "alloc")]

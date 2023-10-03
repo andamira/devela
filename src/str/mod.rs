@@ -6,8 +6,21 @@
 //! directly related to [`&str`], prefixed with `str_`, and a new description.
 //
 
-mod ext;
-pub use ext::StrExt;
+/* always compiled for internal use */
 
+/* only compiled with the `ops` feature */
+
+#[cfg(feature = "str")]
+mod ext;
+
+#[cfg(feature = "str")]
 mod reexport_const_str;
-pub use reexport_const_str::*;
+
+/* re-exports */
+
+#[cfg(feature = "str")]
+pub use all::*;
+#[cfg(feature = "str")]
+pub(crate) mod all {
+    pub use super::{ext::StrExt, reexport_const_str::*};
+}
