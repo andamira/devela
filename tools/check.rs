@@ -6,16 +6,7 @@
 //! lexopt = "0.3"
 //! devela = { version = "0.13", features = ["std"] }
 //! ```
-//!
 // This script needs [rusts-cript](https://crates.io/crates/rust-script) to run.
-//
-// TODO:
-// - cargo remarks
-// - environment: std, no_std
-// - safety: unsafe
-// - oses (linux, …)
-
-// #![allow(dead_code)]
 
 use devela::all::{crate_root, iif, sf};
 use itertools::Itertools;
@@ -146,7 +137,7 @@ fn main() -> Result<()> {
         let mut mod_count = 1_usize;
 
         sf! { headline(0,
-        &format!["Checking individual modules both in presence and absence ({mod_total}):"]); }
+        &format!["Checking the presence and absence of individual modules ({mod_total}):"]); }
 
         for module in ROOT_MODULES {
             headline(1, &format!("module `{module}` {mod_count}/{mod_total}"));
