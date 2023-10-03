@@ -4,6 +4,8 @@
 //
 
 use super::{LinuxTerminalSize, LinuxTermios};
+
+#[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
 use crate::sync::atomic::{Atomic, AtomicOrdering};
 
 /// State of the terminal saved globally, that can be restored from anywhere.
@@ -16,12 +18,26 @@ use crate::sync::atomic::{Atomic, AtomicOrdering};
 ///     LinuxTerminal::restore_saved_state().unwrap();
 /// }
 /// ```
+#[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(feature = "sync", feature = "bytemuck")))
+)]
 pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios::new());
 
 /// Linux terminal manager.
+///
+/// # Features
+/// With `sync` and `bytemuck` enabled, the terminal state is saved in
+/// [`LINUX_TERMINAL_STATE`] and restored on drop.
 #[derive(Debug, Default)]
 pub struct LinuxTerminal;
 
+#[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(feature = "sync", feature = "bytemuck")))
+)]
 impl Drop for LinuxTerminal {
     fn drop(&mut self) {
         // If we are here, this should work
@@ -32,9 +48,12 @@ impl Drop for LinuxTerminal {
 impl LinuxTerminal {
     /// Returns a new linux terminal configured in canonical (cooked) mode.
     ///
-    /// It saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
+    /// # Features
+    /// With `sync` and `bytemuck` enabled,
+    /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
     #[inline]
     pub fn new() -> Result<Self, isize> {
+        #[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
         Self::save_state()?;
         Ok(Self)
     }
@@ -44,9 +63,12 @@ impl LinuxTerminal {
     /// *Raw* mode is a mode where the terminal's input is processed character
     /// by character, rather than line by line.
     ///
-    /// It saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
+    /// # Features
+    /// With `sync` and `bytemuck` enabled,
+    /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
     #[inline]
     pub fn new_raw() -> Result<Self, isize> {
+        #[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
         Self::save_state()?;
 
         let new = Self::new()?;
@@ -55,6 +77,11 @@ impl LinuxTerminal {
     }
 
     /// Saves the current terminal state into [`LINUX_TERMINAL_STATE`].
+    #[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(feature = "sync", feature = "bytemuck")))
+    )]
     pub fn save_state() -> Result<(), isize> {
         LINUX_TERMINAL_STATE.store(LinuxTermios::get_state()?, AtomicOrdering::Relaxed);
         Ok(())
@@ -62,6 +89,11 @@ impl LinuxTerminal {
 
     /// Restores the current terminal state into [`LINUX_TERMINAL_STATE`].
     #[inline]
+    #[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+    #[cfg_attr(
+        feature = "nightly",
+        doc(cfg(all(feature = "sync", feature = "bytemuck")))
+    )]
     pub fn restore_saved_state() -> Result<(), isize> {
         LinuxTermios::set_state(LINUX_TERMINAL_STATE.load(AtomicOrdering::Relaxed))
     }

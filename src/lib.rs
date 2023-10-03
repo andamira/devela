@@ -134,9 +134,6 @@ pub(crate) mod sync; // the "sync" feature is disabled
 pub mod thread;
 
 /// All items are reexported here.
-///
-/// All items are tagged with their required features, except for the
-/// re-exported items from external crates, because of rustdoc limitations.
 pub mod all {
     #[doc(inline)]
     #[cfg(feature = "ascii")]

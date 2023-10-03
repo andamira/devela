@@ -39,7 +39,7 @@ pub struct LinuxTermios {
     pub c_cc: [u8; 19],
 }
 
-#[cfg(feature = "unsafe_linux")]
+#[cfg(all(feature = "unsafe_linux", feature = "bytemuck"))]
 unsafe impl bytemuck::NoUninit for LinuxTermios {}
 
 impl LinuxTermios {
