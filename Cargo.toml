@@ -53,12 +53,13 @@ linux_unsafe = ["linux", "unsafe_linux"]
 
 fullest = ["full"] # enables `full` recursively (unused)
 full = [ # enables all the modules.
-	"texts", "cmp", "convert", "mem", "num", "ops", "os" ]
+	"texts", "cmp", "convert", "mem", "num", "ops", "os", "slice" ]
 	full_unsafe = ["full", "unsafe"]
 lean = [ # enables a lean selection of modules
-	"ascii", "convert", "fmt", "ops", "str" ]
+	"ascii", "convert", "fmt", "ops", "slice", "str" ]
 	lean_unsafe = [
-		"ascii_unsafe", "convert_unsafe", "fmt_unsafe", "ops_unsafe", "str_unsafe",
+		"ascii_unsafe", "convert_unsafe", "fmt_unsafe", "ops_unsafe",
+		"slice_unsafe", "str_unsafe",
 	]
 leanest = ["lean"] # enables `lean` recursively (unused)
 
@@ -83,6 +84,7 @@ mem = ["bytemuck"]
 num = []
 ops = []
 os = []
+slice = []
 str = []
 string = []
 
@@ -96,6 +98,7 @@ mem_unsafe = ["mem", "unsafe_mem"]
 num_unsafe = ["num", "unsafe_num"]
 ops_unsafe = ["ops", "unsafe_ops"]
 os_unsafe = ["os", "unsafe_os"]
+slice_unsafe = ["slice", "unsafe_slice"]
 str_unsafe = ["str", "unsafe_str"]
 string_unsafe = ["string", "unsafe_string"]
 
@@ -105,7 +108,8 @@ string_unsafe = ["string", "unsafe_string"]
 unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
 unsafe = [ # enables unsafe features in this crate
 	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_convert", "unsafe_fmt",
-	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_str", "unsafe_string"
+	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_slice",
+	"unsafe_str", "unsafe_string"
 	]
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
@@ -118,6 +122,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_os = [ # enables unsafe OS functionality
 		"unsafe_linux"]
 		unsafe_linux = [] # enables linux syscalls
+	unsafe_slice = [] # (unused)
 	unsafe_str = [] # enables unsafe use in `str`
 	unsafe_string = [] # enables unsafe use in `string`
 safe = [] # forbids unsafe in this crate

@@ -24,7 +24,7 @@ use toml_edit::Document;
 /* global configuration */
 
 const ROOT_MODULES: &[&str] = &[
-    "ascii", "char", "cmp", "convert", "fmt", "mem", "num", "ops", "os", "str", "string",
+    "ascii", "char", "cmp", "convert", "fmt", "mem", "num", "ops", "os", "slice", "str", "string",
 ];
 
 const STD_ARCHES: &[&str] = &[

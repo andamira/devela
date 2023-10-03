@@ -29,7 +29,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         feature = "unsafe_num",
         feature = "unsafe_ops",
         feature = "unsafe_os", // includes: unsafe_{linux}
-        feature = "unsafe_linux",
+        feature = "unsafe_linux", //
         feature = "unsafe_str",
         feature = "unsafe_string",
     )
@@ -94,7 +94,12 @@ pub mod option;
 pub mod os;
 pub mod path;
 pub mod result;
+
+#[cfg(any(feature = "slice", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "slice")))]
 pub mod slice;
+#[cfg(all(not(feature = "slice"), not(test)))]
+pub(crate) mod slice; // the "slice" feature is disabled
 
 #[cfg(any(feature = "str", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "str")))]
@@ -152,6 +157,10 @@ pub mod all {
     pub use super::ops::all::*;
 
     #[doc(inline)]
+    #[cfg(feature = "slice")]
+    pub use super::slice::all::*;
+
+    #[doc(inline)]
     #[cfg(feature = "str")]
     pub use super::str::all::*;
 
@@ -160,9 +169,7 @@ pub mod all {
     pub use super::string::all::*;
 
     #[doc(inline)]
-    pub use super::{
-        codegen::all::*, option::*, os::all::*, path::*, result::*, slice::*, sync::all::*,
-    };
+    pub use super::{codegen::all::*, option::*, os::all::*, path::*, result::*, sync::all::*};
 
     #[doc(inline)]
     #[cfg(feature = "std")]
@@ -180,14 +187,13 @@ pub mod prelude {
     #[cfg(feature = "ops")]
     pub use crate::ops::all::{Also, Apply};
 
+    #[cfg(feature = "slice")]
+    pub use crate::slice::all::{SliceExt, SliceExtMut};
+
     #[cfg(feature = "str")]
     pub use crate::str::all::StrExt;
 
-    pub use crate::{
-        option::OptionExt,
-        result::ResultExt,
-        slice::{SliceExt, SliceExtMut},
-    };
+    pub use crate::{option::OptionExt, result::ResultExt};
 
     #[cfg(all(feature = "string", feature = "alloc"))]
     pub use crate::string::StringExt;
