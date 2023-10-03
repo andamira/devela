@@ -10,7 +10,6 @@ mod sigaction;
 mod termios;
 mod timespec;
 
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
 pub use {
     sigaction::{LinuxSigaction, LinuxSigset},
     termios::{LinuxTerminalSize, LinuxTermios},

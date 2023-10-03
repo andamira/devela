@@ -42,19 +42,19 @@ extern crate devela_macros;
 #[cfg(not(feature = "ascii"))]
 pub(crate) mod ascii; // the "ascii" feature is disabled
 #[cfg(feature = "ascii")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))] // IMPROVE
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
 pub mod ascii;
 
 // #[cfg(not(feature = "char"))]
 // pub(crate) mod char; // the "char" feature is disabled
 #[cfg(feature = "char")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))] // IMPROVE
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
 pub mod char;
 
 #[cfg(not(feature = "cmp"))]
 pub(crate) mod cmp; // the "cmp" feature is disabled
 #[cfg(feature = "cmp")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "cmp")))] // IMPROVE
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "cmp")))]
 pub mod cmp;
 
 pub mod codegen;
@@ -62,11 +62,12 @@ pub mod codegen;
 // #[cfg(not(feature = "convert"))]
 // pub(crate) mod convert; // the "convert" feature is disabled
 #[cfg(feature = "convert")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))] // IMPROVE
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
 pub mod convert;
 
 // #[cfg(not(feature = "fmt"))]
 // pub(crate) mod fmt; // the "fmt" feature is disabled
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "fmt")))]
 #[cfg(feature = "fmt")]
 pub mod fmt;
 

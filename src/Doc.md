@@ -10,9 +10,6 @@ By default the crate is `no_std` compatible.
 - `alloc`: enables `alloc` functionality.
 - `no_std`: enables functionality incompatible with `std` (unused).
 
-### Platform features
-- `linux`, `linux_unsafe`: enables [`os::linux`] functionality.
-
 ### Modules features
 Modules can be enabled independently of *environment*, *platform* or *safety*, unless specified.
 
@@ -34,9 +31,13 @@ Single modules:
 - `mem`, `mem_unsafe`: enables the [`mem`] module.
 - `num`, `num_unsafe`: enables the [`num`] module.
 - `os`, `os_unsafe`: enables the [`os`] module
-  (but does not enable feature-gated submodules)
+  (but does not enable *platform* submodules)
 - `str`, `str_unsafe`: enables the [`mod@str`] module.
 - `string`, `string_unsafe`: enables the [`string`] module.
+
+### Platform features
+Despite being `os` submodules they have to be explicitly enabled.
+- `linux`, `linux_unsafe`: enables [`os::linux`] functionality.
 
 ### Safety features
 A gradient of safety. By default nothing is enabled.

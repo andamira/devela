@@ -19,13 +19,10 @@
 // This is so both for syscalls and safe syscall wrappers. And when more
 // platforms are supported they will all need to be updated accordingly.
 
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
 mod consts;
 #[cfg(all(feature = "unsafe_linux", not(miri)))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux_unsafe")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_linux")))]
 mod fns;
-// #[cfg(all(feature = "unsafe_linux", not(miri)))]
-// #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux_unsafe")))]
 mod structs;
 
 pub use all::*;
@@ -41,7 +38,7 @@ pub(super) mod all {
 /* public modules */
 
 #[cfg(all(feature = "unsafe_linux", not(miri)))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux_unsafe")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_linux")))]
 pub mod terminal;
 
 /// Linux-specific extensions to [`std::io`].
