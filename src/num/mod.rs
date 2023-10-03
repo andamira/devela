@@ -9,6 +9,7 @@
 
 mod always_fns;
 mod non_specific;
+#[allow(unused)]
 #[cfg(not(feature = "num"))]
 pub use {always_fns::*, non_specific::*};
 

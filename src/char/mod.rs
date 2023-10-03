@@ -5,6 +5,11 @@
 
 /* always compiled for internal use */
 
+mod always_fns;
+#[allow(unused)]
+#[cfg(not(feature = "char"))]
+pub(crate) use always_fns::*;
+
 /* only compiled with the `char` feature */
 
 #[cfg(feature = "char")]
@@ -25,5 +30,5 @@ mod tests;
 pub use all::*;
 #[cfg(feature = "char")]
 pub(crate) mod all {
-    pub use super::{definitions::*, fns::*};
+    pub use super::{always_fns::*, definitions::*, fns::*};
 }

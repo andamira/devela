@@ -1,6 +1,6 @@
 // devela::ascii::always_fns
 //
-//! ASCII standalone functions.
+//! `ascii` standalone functions.
 //!
 //! Always available for internal use.
 //

@@ -6,7 +6,7 @@
 // warnings
 #![warn(missing_docs, clippy::all)]
 #![allow(clippy::wrong_self_convention)] // allow `is_` methods with owned self
-// environment
+// environment, safety, nightly
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
@@ -27,6 +27,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         feature = "unsafe_fmt",
         feature = "unsafe_mem",
         feature = "unsafe_num",
+        feature = "unsafe_ops",
         feature = "unsafe_os", // includes: unsafe_{linux}
         feature = "unsafe_linux",
         feature = "unsafe_str",

@@ -8,6 +8,7 @@
 /* always compiled for internal use */
 
 mod always_fns;
+#[allow(unused)]
 #[cfg(not(feature = "mem"))]
 pub use always_fns::*;
 

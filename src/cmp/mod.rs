@@ -9,6 +9,7 @@
 /* always compiled for internal use */
 
 mod always_fns;
+#[allow(unused)]
 #[cfg(not(feature = "cmp"))]
 pub(crate) use always_fns::*;
 

@@ -12,7 +12,6 @@
 
 #[cfg(feature = "str")]
 mod ext;
-
 #[cfg(feature = "str")]
 mod reexport_const_str;
 
