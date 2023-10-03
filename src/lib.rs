@@ -71,7 +71,12 @@ pub mod convert;
 #[cfg(feature = "fmt")]
 pub mod fmt;
 
+#[cfg(not(feature = "mem"))]
+pub(crate) mod mem; // the "mem" feature is disabled
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg(feature = "mem")]
 pub mod mem;
+
 pub mod num;
 pub mod ops;
 pub mod option;
@@ -111,9 +116,15 @@ pub mod all {
     pub use super::fmt::*;
 
     #[doc(inline)]
+    #[cfg(feature = "mem")]
+    pub use super::mem::all::*;
+    #[cfg(feature = "bytemuck")]
+    pub use ::bytemuck;
+
+    #[doc(inline)]
     pub use super::{
-        codegen::all::*, mem::all::*, num::*, ops::*, option::*, os::all::*, path::*, result::*,
-        slice::*, str::*, string::all::*, sync::all::*,
+        codegen::all::*, num::*, ops::*, option::*, os::all::*, path::*, result::*, slice::*,
+        str::*, string::all::*, sync::all::*,
     };
 
     #[doc(inline)]
@@ -122,8 +133,6 @@ pub mod all {
 
     #[doc(inline)]
     pub use devela_macros::{cif, compile, compile_attr};
-
-    pub use ::bytemuck;
 }
 
 /// The common prelude.

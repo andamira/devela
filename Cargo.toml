@@ -29,9 +29,9 @@ default = []
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
 	"atomic/std",
-	"bytemuck/extern_crate_std"]
+	"bytemuck?/extern_crate_std"]
 alloc = [ # enables `alloc` functionality
-	"bytemuck/extern_crate_alloc"]
+	"bytemuck?/extern_crate_alloc"]
 no_std = [] # enables functionality incompatible with `std` (unused)
 
 #* platform specific features *#
@@ -70,7 +70,7 @@ char = []
 cmp = []
 convert = ["az"]
 fmt = []
-mem = []
+mem = ["bytemuck"]
 num = []
 os = []
 str = []
@@ -123,7 +123,7 @@ devela_macros = "0.6.1"
 #
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 az = { version = "1.2.1", default-features = false, optional = true }
-bytemuck = { version = "1.13.1", default-features = false }
+bytemuck = { version = "1.13.1", default-features = false, optional = true }
 const-str = { version = "0.5.6", default-features = false }
 #
 [dependencies.atomic]
