@@ -34,7 +34,7 @@ default = []
 
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
-	"atomic/std",
+	"atomic?/std",
 	"bytemuck?/extern_crate_std"]
 alloc = [ # enables `alloc` functionality
 	"bytemuck?/extern_crate_alloc"]
@@ -53,7 +53,7 @@ linux_unsafe = ["linux", "unsafe_linux"]
 
 fullest = ["full"] # enables `full` recursively (unused)
 full = [ # enables all the modules.
-	"texts", "cmp", "convert", "mem", "num", "ops", "os", "slice" ]
+	"texts", "cmp", "convert", "mem", "num", "ops", "os", "slice", "sync" ]
 	full_unsafe = ["full", "unsafe"]
 lean = [ # enables a lean selection of modules
 	"ascii", "convert", "fmt", "ops", "slice", "str" ]
@@ -87,6 +87,7 @@ os = []
 slice = []
 str = []
 string = []
+sync = ["atomic", "portable-atomic"]
 
 # single modules with unsafe support:
 ascii_unsafe = ["ascii", "unsafe_ascii"]
@@ -101,6 +102,7 @@ os_unsafe = ["os", "unsafe_os"]
 slice_unsafe = ["slice", "unsafe_slice"]
 str_unsafe = ["str", "unsafe_str"]
 string_unsafe = ["string", "unsafe_string"]
+sync_unsafe = ["sync", "unsafe_sync"]
 
 
 #* safety features *#
@@ -125,6 +127,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_slice = [] # (unused)
 	unsafe_str = [] # enables unsafe use in `str`
 	unsafe_string = [] # enables unsafe use in `string`
+	unsafe_sync = [] # (unused)
 safe = [] # forbids unsafe in this crate
 safest = ["safe"] # forbids `unsafe` recursively (unused)
 
@@ -151,10 +154,12 @@ const-str = { version = "0.5.6", default-features = false }
 [dependencies.atomic]
 version = "0.6.0"
 default-features = false
+optional = true
 features = ["fallback"]
 [dependencies.portable-atomic]
 version = "1.4.3"
 default-features = false
+optional = true
 features = ["fallback", "float"]
 
 

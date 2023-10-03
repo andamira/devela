@@ -113,7 +113,12 @@ pub mod string;
 #[cfg(all(not(feature = "string"), not(test)))]
 pub(crate) mod string; // the "string" feature is disabled
 
+#[cfg(any(feature = "sync", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
 pub mod sync;
+#[cfg(all(not(feature = "sync"), not(test)))]
+pub(crate) mod sync; // the "sync" feature is disabled
+
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 pub mod thread;
@@ -169,7 +174,11 @@ pub mod all {
     pub use super::string::all::*;
 
     #[doc(inline)]
-    pub use super::{codegen::all::*, option::*, os::all::*, path::*, result::*, sync::all::*};
+    #[cfg(feature = "sync")]
+    pub use super::sync::all::*;
+
+    #[doc(inline)]
+    pub use super::{codegen::all::*, option::*, os::all::*, path::*, result::*};
 
     #[doc(inline)]
     #[cfg(feature = "std")]

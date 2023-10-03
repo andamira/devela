@@ -12,25 +12,32 @@
 #[doc = "A generic atomic wrapper type.\n\n"]
 #[doc = "*Reexported from the [`atomic`](https://docs.rs/atomic)* crate.\n\n---"]
 #[doc(inline)]
+#[cfg(feature = "atomic")]
 pub use ::atomic::Atomic;
 
 /* reexport from the `portable-atomic` crate */
 
+#[cfg(feature = "atomic")]
 #[doc = "A signed integer type which can be safely shared between threads.\n\n"]
 #[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 pub use portable_atomic::{AtomicI128, AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
+
+#[cfg(feature = "atomic")]
 #[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
 #[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 pub use portable_atomic::{AtomicU128, AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
 
+#[cfg(feature = "atomic")]
 #[doc = "A floating point type which can be safely shared between threads..\n\n"]
 #[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 pub use portable_atomic::{AtomicF32, AtomicF64};
 
+#[cfg(feature = "atomic")]
 #[doc = "A boolean type which can be safely shared between threads.\n\n"]
 #[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 pub use portable_atomic::AtomicBool;
 
+#[cfg(feature = "atomic")]
 #[doc = "A raw pointer type which can be safely shared between threads.\n\n"]
 #[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 pub use portable_atomic::AtomicPtr;
