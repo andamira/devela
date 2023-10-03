@@ -90,10 +90,20 @@ pub mod ops;
 #[cfg(all(not(feature = "ops"), not(test)))]
 pub(crate) mod ops; // the "ops" feature is disabled
 
+#[cfg(any(feature = "option", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "option")))]
 pub mod option;
+#[cfg(all(not(feature = "option"), not(test)))]
+pub(crate) mod option; // the "option" feature is disabled
+
 pub mod os;
 pub mod path;
+
+#[cfg(any(feature = "result", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
 pub mod result;
+#[cfg(all(not(feature = "result"), not(test)))]
+pub(crate) mod result; // the "result" feature is disabled
 
 #[cfg(any(feature = "slice", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "slice")))]
@@ -124,6 +134,9 @@ pub(crate) mod sync; // the "sync" feature is disabled
 pub mod thread;
 
 /// All items are reexported here.
+///
+/// All items are tagged with their required features, except for the
+/// re-exported items from external crates, because of rustdoc limitations.
 pub mod all {
     #[doc(inline)]
     #[cfg(feature = "ascii")]
@@ -162,6 +175,14 @@ pub mod all {
     pub use super::ops::all::*;
 
     #[doc(inline)]
+    #[cfg(feature = "option")]
+    pub use super::option::all::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "result")]
+    pub use super::result::all::*;
+
+    #[doc(inline)]
     #[cfg(feature = "slice")]
     pub use super::slice::all::*;
 
@@ -178,14 +199,14 @@ pub mod all {
     pub use super::sync::all::*;
 
     #[doc(inline)]
-    pub use super::{codegen::all::*, option::*, os::all::*, path::*, result::*};
-
-    #[doc(inline)]
     #[cfg(feature = "std")]
     pub use super::thread::*;
 
     #[doc(inline)]
     pub use devela_macros::{cif, compile, compile_attr};
+
+    #[doc(inline)]
+    pub use super::{codegen::all::*, os::all::*, path::*};
 }
 
 /// The common prelude.
@@ -202,7 +223,11 @@ pub mod prelude {
     #[cfg(feature = "str")]
     pub use crate::str::all::StrExt;
 
-    pub use crate::{option::OptionExt, result::ResultExt};
+    #[cfg(feature = "option")]
+    pub use crate::option::OptionExt;
+
+    #[cfg(feature = "result")]
+    pub use crate::result::ResultExt;
 
     #[cfg(all(feature = "string", feature = "alloc"))]
     pub use crate::string::StringExt;

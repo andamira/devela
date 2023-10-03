@@ -3,30 +3,20 @@
 //! Result, extends [`core::result`].
 //
 
-use core::fmt;
+/* always compiled for internal use */
 
+/* only compiled with the `result` feature */
+
+#[cfg(feature = "result")]
 mod ext;
-pub use ext::ResultExt;
+#[cfg(feature = "result")]
+mod never;
 
-/// The type intended for a [`Result::Err`] variant that can never happen.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum NeverErr {}
+/* re-exports */
 
-/// The type intended for a [`Result::Ok`] variant that can never happen.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum NeverOk {}
-
-#[cfg(feature = "std")]
-impl std::error::Error for NeverErr {}
-
-impl fmt::Display for NeverErr {
-    fn fmt(&self, _: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match *self {}
-    }
-}
-
-impl fmt::Display for NeverOk {
-    fn fmt(&self, _: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match *self {}
-    }
+#[cfg(feature = "result")]
+pub use all::*;
+#[cfg(feature = "result")]
+pub(crate) mod all {
+    pub use super::ext::ResultExt;
 }

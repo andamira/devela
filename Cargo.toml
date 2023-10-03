@@ -54,13 +54,14 @@ linux_unsafe = ["linux", "unsafe_linux"]
 #* modules features *#
 
 full = [ # enables all the modules.
-	"texts", "cmp", "convert", "mem", "num", "ops", "os", "slice", "sync" ]
+	"texts", "cmp", "convert", "mem", "num", "ops",
+	"option", "os", "result", "slice", "sync" ]
 	full_unsafe = ["full", "unsafe"]
 lean = [ # enables a lean selection of modules
-	"ascii", "convert", "fmt", "ops", "slice", "str" ]
+	"ascii", "convert", "fmt", "ops", "option", "result", "slice", "str" ]
 	lean_unsafe = [
 		"ascii_unsafe", "convert_unsafe", "fmt_unsafe", "ops_unsafe",
-		"slice_unsafe", "str_unsafe",
+		"option_unsafe", "result_unsafe", "slice_unsafe", "str_unsafe",
 	]
 leanest = ["lean"] # enables `lean` recursively (unused)
 fullest = ["full"] # enables `full` recursively (unused)
@@ -85,7 +86,9 @@ fmt = []
 mem = ["bytemuck"]
 num = []
 ops = []
+option = []
 os = []
+result = []
 slice = []
 str = ["const-str"]
 string = []
@@ -100,7 +103,9 @@ fmt_unsafe = ["fmt", "unsafe_fmt"]
 mem_unsafe = ["mem", "unsafe_mem"]
 num_unsafe = ["num", "unsafe_num"]
 ops_unsafe = ["ops", "unsafe_ops"]
+option_unsafe = ["option", "unsafe_option"]
 os_unsafe = ["os", "unsafe_os"]
+result_unsafe = ["result", "unsafe_result"]
 slice_unsafe = ["slice", "unsafe_slice"]
 str_unsafe = ["str", "unsafe_str"]
 string_unsafe = ["string", "unsafe_string"]
@@ -111,8 +116,8 @@ sync_unsafe = ["sync", "unsafe_sync"]
 
 unsafe = [ # enables unsafe features in this crate
 	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_convert", "unsafe_fmt",
-	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_slice",
-	"unsafe_str", "unsafe_string"
+	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_option",
+	"unsafe_slice", "unsafe_str", "unsafe_string"
 	]
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
@@ -122,9 +127,11 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
 	unsafe_num = [] # enables unsafe constructors and bytemuck's traits
 	unsafe_ops = [] # (unused)
+	unsafe_option = [] # (unused)
 	unsafe_os = [ # enables unsafe OS functionality
 		"unsafe_linux"]
 		unsafe_linux = [] # enables linux syscalls
+	unsafe_result = [] # (unused)
 	unsafe_slice = [] # (unused)
 	unsafe_str = [] # enables unsafe use in `str`
 	unsafe_string = [] # enables unsafe use in `string`

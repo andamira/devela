@@ -7,10 +7,10 @@ use super::{OptionFmt, OptionFmtOr, OptionFmtOrElse};
 use core::fmt::Display;
 
 // Marker trait to prevent downstream implementations of the `OptionExt` trait.
-impl<T> private::Sealed for Option<T> {}
 mod private {
     pub trait Sealed {}
 }
+impl<T> private::Sealed for Option<T> {}
 
 /// Extension trait providing additional methods for [`Option`].
 ///
