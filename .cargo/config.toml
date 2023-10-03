@@ -3,15 +3,6 @@
 
 
 [alias]
-# additional targets:
-# 1: x86_64-unknown-linux-gnu (std)
-# 2: x86_64-pc-windows-msvc (std)
-# 3: x86_64-apple-darwin (std)
-#
-# 5: x86_64-unknown-none
-# 6: i686-unknown-linux-gnu (std)
-# 7: thumbv7m-none-eabi
-# 8: aarch64-unknown-none
 
 # CHECK
 c = "check"
@@ -21,29 +12,6 @@ cr = "check --release"
 cu = "check -F=std"
 cn = "check -F=no_std,safe"
 cnu = "check -F=unsafe"
-# additional targets:
-cT1 = "check --target x86_64-unknown-linux-gnu"
-cuT1 = "check --target x86_64-unknown-linux-gnu -F=std,unsafe"
-cnT1 = "check --target x86_64-unknown-linux-gnu -F=no_std,safe"
-cnuT1 = "check --target x86_64-unknown-linux-gnu -F=no_std,unsafe"
-cT2 = "check --target x86_64-pc-windows-msvc"
-cuT2 = "check --target x86_64-pc-windows-msvc -F=std,unsafe"
-cnT2 = "check --target x86_64-pc-windows-msvc -F=no_std,safe"
-cnuT2 = "check --target x86_64-pc-windows-msvc -F=no_std,unsafe"
-cT3 = "check --target x86_64-apple-darwin"
-cuT3 = "check --target x86_64-apple-darwin -F=std,unsafe"
-cnT3 = "check --target x86_64-apple-darwin -F=no_std,safe"
-cnuT3 = "check --target x86_64-apple-darwin -F=no_std,unsafe"
-cnT5 = "check --target x86_64-unknown-none -F=no_std,safe"
-cnuT5 = "check --target x86_64-unknown-none -F=no_std,unsafe"
-cT6 = "check --target i686-unknown-linux-gnu"
-cuT6 = "check --target i686-unknown-linux-gnu -F=std,unsafe"
-cnT6 = "check --target i686-unknown-linux-gnu -F=no_std,safe"
-cnuT6 = "check --target i686-unknown-linux-gnu -F=no_std,unsafe"
-cnT7 = "check --target aarch64-unknown-none -F=no_std,safe"
-cnuT7 = "check --target aarch64-unknown-none -F=no_std,unsafe"
-cnT8 = "check --target thumbv7m-none-eabi -F=no_std,safe"
-cnuT8 = "check --target thumbv7m-none-eabi -F=no_std,unsafe"
 
 # CLIPPY
 cl = "clippy"
@@ -64,24 +32,6 @@ bre = "build --release --example"
 bu = "build -F=std,unsafe"
 bn = "build -F=no_std"
 bnu = "build -F=no_std,unsafe"
-# additional targets:
-bT1 = "build --target i686-unknown-linux-gnu"
-buT1 = "build --target i686-unknown-linux-gnu -F=unsafe"
-bt2 = "build --target i686-unknown-linux-gnu"
-buT2 = "build --target i686-unknown-linux-gnu -F=unsafe"
-bT3 = "build --target i686-unknown-linux-gnu"
-buT3 = "build --target i686-unknown-linux-gnu -F=unsafe"
-#
-bnT5 = "build --target x86_64-unknown-none -F=no_std,safe"
-bnuT5 = "build --target x86_64-unknown-none -F=no_std,unsafe"
-bT6 = "build --target i686-unknown-linux-gnu"
-buT6 = "build --target i686-unknown-linux-gnu -F=unsafe"
-bnT6 = "build --target i686-unknown-linux-gnu -F=no_std,safe"
-bnuT6 = "build --target i686-unknown-linux-gnu -F=no_std,unsafe"
-bnT7 = "build --target aarch64-unknown-none -F=no_std,safe"
-bnuT7 = "build --target aarch64-unknown-none -F=no_std,unsafe"
-bnT8 = "build --target thumbv7m-none-eabi -F=no_std,safe"
-bnuT8 = "build --target thumbv7m-none-eabi -F=no_std,unsafe"
 
 # RUN
 r = "run"
@@ -97,8 +47,6 @@ rn = "run -F=no_std"
 rnb = "run -F=no_std --bin"
 rne = "run -F=no_std --example"
 rnu = "run -F=no_std,unsafe"
-rN = "run --target thumbv7m-none-eabi -F=no_std,safe"
-rNu = "run --target thumbv7m-none-eabi -F=no_std,unsafe"
 
 # TEST
 t = "test"
@@ -117,29 +65,6 @@ m = "miri test"
 mu = "miri test -F=std,unsafe"
 mn = "miri test -F=no_std"
 mnu = "miri test -F=no_std,unsafe"
-# additional targets:
-mT1 = "miri test --target x86_64-unknown-linux-gnu"
-muT1 = "miri test --target x86_64-unknown-linux-gnu -F=std,unsafe"
-mnT1 = "miri test --target x86_64-unknown-linux-gnu -F=no_std,safe"
-mnuT1 = "miri test --target x86_64-unknown-linux-gnu -F=no_std,unsafe"
-mT2 = "miri test --target x86_64-pc-windows-msvc"
-muT2 = "miri test --target x86_64-pc-windows-msvc -F=std,unsafe"
-mnT2 = "miri test --target x86_64-pc-windows-msvc -F=no_std,safe"
-mnuT2 = "miri test --target x86_64-pc-windows-msvc -F=no_std,unsafe"
-mT3 = "miri test --target x86_64-apple-darwin"
-muT3 = "miri test --target x86_64-apple-darwin -F=std,unsafe"
-mnT3 = "miri test --target x86_64-apple-darwin -F=no_std,safe"
-mnuT3 = "miri test --target x86_64-apple-darwin -F=no_std,unsafe"
-# mnT5 = "miri test --target x86_64-unknown-none -F=no_std,safe"
-# mnuT5 = "miri test --target x86_64-unknown-none -F=no_std,unsafe"
-mT6 = "miri test --target i686-unknown-linux-gnu"
-muT6 = "miri test --target i686-unknown-linux-gnu -F=std,unsafe"
-mnT6 = "miri test --target i686-unknown-linux-gnu -F=no_std,safe"
-mnuT6 = "miri test --target i686-unknown-linux-gnu -F=no_std,unsafe"
-# mnT7 = "miri test --target aarch64-unknown-none -F=no_std,safe"
-# mnuT7 = "miri test --target aarch64-unknown-none -F=no_std,unsafe"
-# mnT8 = "miri test --target thumbv7m-none-eabi -F=no_std,safe"
-# mnuT8 = "miri test --target thumbv7m-none-eabi -F=no_std,unsafe"
 
 # PUBLISH
 p = "publish --dry-run"
@@ -207,20 +132,21 @@ AeT3 = "asm --simplify -p devela --target x86_64-apple-darwin --features=std,saf
 AueT3 = "asm --simplify -p devela --target x86_64-apple-darwin --features=std,unsafe --example"
 AlT3 = "asm --simplify -p devela --target x86_64-apple-darwin --features=std,safe --lib"
 AulT3 = "asm --simplify -p devela --target x86_64-apple-darwin --features=std,unsafe --lib"
-# 5: x86_64 (no_std):
-AnbT5 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,safe --bin"
-AnubT5 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,unsafe --bin"
-AneT5 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,safe --example"
-AnueT5 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,unsafe --example"
-AnlT5 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,safe --lib"
-AnulT5 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,unsafe --lib"
-# 6: i686 (std)
-AbT6 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,safe --bin"
-AubT6 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,unsafe --bin"
-AeT6 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,safe --example"
-AueT6 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,unsafe --example"
-AlT6 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,safe --lib"
-AulT6 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,unsafe --lib"
+# 4: i686-unknown-linu-gnu (std)
+AbT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,safe --bin"
+AubT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,unsafe --bin"
+AeT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,safe --example"
+AueT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,unsafe --example"
+AlT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,safe --lib"
+AulT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,unsafe --lib"
+#
+# 6: x86_64 (no_std):
+AnbT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,safe --bin"
+AnubT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,unsafe --bin"
+AneT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,safe --example"
+AnueT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,unsafe --example"
+AnlT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,safe --lib"
+AnulT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,unsafe --lib"
 # 7: thumbv7m-none-eabi (no_std)
 AnbT7 = "asm --simplify -p devela --target aarch64-unknown-none --features=no_std,safe --bin"
 AnubT7 = "asm --simplify -p devela --target aarch64-unknown-none --features=no_std,unsafe --bin"
