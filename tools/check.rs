@@ -20,6 +20,7 @@
 use devela::all::{crate_root, iif, sf};
 use itertools::Itertools;
 use std::{
+    collections::HashSet,
     env,
     fs::File,
     io::{BufRead, BufReader, Read},
@@ -32,7 +33,7 @@ use toml_edit::Document;
 /* global configuration */
 
 const ROOT_MODULES: &[&str] = &[
-    "ascii", "char", "cmp", "convert", "fmt", "mem", "num", "os", "str", "string",
+    "ascii", "char", "cmp", "convert", "fmt", "mem", "num", "ops", "os", "str", "string",
 ];
 
 const STD_ARCHES: &[&str] = &[
@@ -62,9 +63,6 @@ fn main() -> Result<()> {
     let args = get_args()?;
     let msrv = iif![args.no_msrv; "".into(); get_msrv().unwrap_or("".into())];
 
-    // println!("MSRV = {msrv}");
-    // println!("ARGS = {args:?}");
-
     let cmd = "check";
 
     /* tests */
@@ -84,7 +82,7 @@ fn main() -> Result<()> {
 
     if args.docs {
         headline(0, &format!["`full` docs compilation:"]);
-        run_cargo("", "+nightly", &["doc", "-F full,std,unsafe,nightly"])?;
+        run_cargo("", "+nightly", &["doc", "-F full,std,unsafe,nightly,linux"])?;
     }
 
     /* arches */
@@ -141,57 +139,91 @@ fn main() -> Result<()> {
     /* modules */
 
     // check individual modules
-    if args.modules {
+    if args.single_modules {
         // let cmd = "clippy";
 
-        let mod_total: usize = ROOT_MODULES.len();
+        let mod_total: usize = ROOT_MODULES.len() * 2;
         let mut mod_count = 1_usize;
 
-        headline(0, &format!["Checking individual modules ({mod_total}):"]);
+        sf! { headline(0,
+        &format!["Checking individual modules both in presence and absence ({mod_total}):"]); }
 
         for module in ROOT_MODULES {
-            headline(1, &format!("module {mod_count}/{mod_total}"));
+            headline(1, &format!("module `{module}` {mod_count}/{mod_total}"));
             run_cargo(&msrv, cmd, &["-F", &module])?;
             mod_count += 1;
         }
 
-        // check all the combinations of individual modules
-        if args.modules_combinations {
-            // (exclude single modules and 0 modules from the count)
-            let mod_comb_total: usize = 2_usize.pow(mod_total as u32) - mod_total - 1;
-            let mut comb_count = 1_usize;
+        for module_to_filter in ROOT_MODULES {
+            sf! { headline(1,
+            &format!("all modules except `{module_to_filter}` {mod_count}/{mod_total}")); }
 
-            sf! { headline(0,
-                "Checking all the remaining modules combinations ({mod_comb_total}):"); }
+            let modules = ROOT_MODULES
+                .iter()
+                .filter(|&m| m != module_to_filter)
+                .copied()
+                .collect::<Vec<_>>()
+                .join(",");
+            run_cargo(&msrv, cmd, &["-F", &modules])?;
+            mod_count += 1;
+        }
+    }
 
-            for i in 2..=ROOT_MODULES.len() {
-                for combination in ROOT_MODULES.iter().combinations(i) {
-                    sf! { headline(1,
-                        &format!("modules combination {comb_count}/{mod_comb_total}")); }
-                    let deref_combination: Vec<_> = combination.into_iter().map(|&s| s).collect();
-                    let combined = deref_combination.join(",");
-                    run_cargo(&msrv, cmd, &["-F", &combined])?;
-                    comb_count += 1;
-                }
+    // check all modules except the given list of exceptions
+    if args.all_modules_except.is_some() {
+        let exceptions = args.all_modules_except.unwrap();
+
+        sf! { headline(0,
+        &format!["Checking all the modules except `{exceptions}`:"]); }
+
+        let exceptions: HashSet<&str> = exceptions.split(',').collect();
+
+        let modules = ROOT_MODULES
+            .iter()
+            .filter(|&m| !exceptions.contains(m))
+            .copied()
+            .collect::<Vec<_>>()
+            .join(",");
+        run_cargo(&msrv, cmd, &["-F", &modules])?;
+    }
+
+    // check all the combinations of individual modules
+    if args.all_modules_combinations {
+        // (exclude 0 modules from the count)
+        let mod_comb_total: usize = 2_usize.pow(ROOT_MODULES.len() as u32) - 1;
+        let mut comb_count = 1_usize;
+
+        sf! { headline(0, "Checking all the modules combinations ({mod_comb_total}):"); }
+
+        for i in 1..=ROOT_MODULES.len() {
+            for combination in ROOT_MODULES.iter().combinations(i) {
+                sf! { headline(1,
+                &format!("modules combination {comb_count}/{mod_comb_total}")); }
+                let deref_combination: Vec<_> = combination.into_iter().map(|&s| s).collect();
+                let combined = deref_combination.join(",");
+                run_cargo(&msrv, cmd, &["-F", &combined])?;
+                comb_count += 1;
             }
         }
     }
+
     Ok(())
 }
 
-/// The CLI arguments.
-#[derive(Debug, Default, Clone, Copy, Eq, PartialEq)]
+/// CLI arguments state.
+#[derive(Debug, Default, Clone, Eq, PartialEq)]
 struct Args {
     no_msrv: bool,
     tests: bool,
     docs: bool,
     arches: bool,
-    modules: bool,
-    modules_combinations: bool,
+    single_modules: bool,
+    all_modules_combinations: bool,
+    all_modules_except: Option<String>,
     miri: bool,
 }
 
-/// The CLI argument parser.
+/// CLI arguments parser.
 fn get_args() -> Result<Args> {
     use lexopt::prelude::*;
 
@@ -199,8 +231,9 @@ fn get_args() -> Result<Args> {
     let mut tests = false;
     let mut docs = false;
     let mut arches = false;
-    let mut modules = false;
-    let mut modules_combinations = false;
+    let mut single_modules = false;
+    let mut all_modules_combinations = false;
+    let mut all_modules_except = None;
     let mut miri = false;
 
     let mut parser = lexopt::Parser::from_env();
@@ -210,14 +243,18 @@ fn get_args() -> Result<Args> {
 
     sf! { while let Some(arg) = parser.next()? {
         match arg {
-            Long("help") | Short('h') => { print_help(&parser); exit(0); }
-            Long("no-msrv") => { no_msrv = true; }
-            Long("tests") | Short('t') => { tests = true; }
-            Long("docs") | Short('d') => { docs = true; }
-            Long("arches") | Short('a') => { arches = true; }
-            Long("modules") | Short('m') => { modules = true; }
-            Long("modules-combinations") => { modules = true; modules_combinations = true; }
+            Short('h') | Long("help") => { print_help(&parser); exit(0); }
+            Short('t') | Long("tests") => { tests = true; }
+            Short('d') | Long("docs") => { docs = true; }
+            Short('a') | Long("arches") => { arches = true; }
+            Short('m') | Long("single-modules") => { single_modules = true; }
+            Long("all-modules-except") => {
+                let exceptions: String = parser.value()?.parse()?;
+                all_modules_except = Some(exceptions);
+            }
+            Long("all-modules-combinations") => { all_modules_combinations = true; }
             Long("miri") => { miri = true; }
+            Long("no-msrv") => { no_msrv = true; }
             _ => { let err = arg.unexpected(); print_help(&parser); return Err(Box::new(err)); }
         }
     }}
@@ -227,8 +264,9 @@ fn get_args() -> Result<Args> {
         tests,
         docs,
         arches,
-        modules,
-        modules_combinations,
+        single_modules,
+        all_modules_combinations,
+        all_modules_except,
         miri,
         ..Default::default()
     })
@@ -244,14 +282,16 @@ fn print_help(parser: &lexopt::Parser) {
     println!(
         "Usage: {} [OPTIONS]
 
-  -t, --tests                 run the tests
-  -d, --docs                  compile the documentation
-  -a, --arches                check each architecture ({arches})
-      --miri                  use `miri` to check each architecture
-  -m, --modules               check the root modules separately ({mods})
-      --modules_combinations  check all the modules combinations ({mods_combs})
-      --no-msrv               do not enforce using the configured MSRV ({msrv})
-  -h, --help                  display this help and exit
+  -t, --tests                      run the tests
+  -d, --docs                       compile the documentation
+  -a, --arches                     check each architecture ({arches})
+      --miri                       use `miri` to check each architecture
+  -m, --single-modules             check root modules both individually and
+                                   removed from the full module set ({mods} × 2).
+      --all-modules_combinations   check all the modules combinations ({mods_combs})
+      --all-modules_except m1,…    check all the modules together except the given list
+      --no-msrv                    do not enforce using the configured MSRV ({msrv})
+  -h, --help                       display this help and exit
 ",
         parser.bin_name().unwrap_or("check.rs")
     );
