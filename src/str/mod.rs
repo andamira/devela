@@ -12,8 +12,6 @@
 
 #[cfg(feature = "str")]
 mod ext;
-#[cfg(feature = "str")]
-mod reexport_const_str;
 
 /* re-exports */
 
@@ -21,5 +19,11 @@ mod reexport_const_str;
 pub use all::*;
 #[cfg(feature = "str")]
 pub(crate) mod all {
-    pub use super::{ext::StrExt, reexport_const_str::*};
+    pub use super::ext::StrExt;
+
+    #[cfg(feature = "const-str")]
+    pub use super::reexport_const_str::*;
 }
+
+#[cfg(all(feature = "str", feature = "const-str"))]
+mod reexport_const_str;

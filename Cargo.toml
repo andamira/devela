@@ -85,7 +85,7 @@ num = []
 ops = []
 os = []
 slice = []
-str = []
+str = ["const-str"]
 string = []
 sync = ["atomic", "portable-atomic"]
 
@@ -149,7 +149,7 @@ devela_macros = "0.6.1"
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 az = { version = "1.2.1", default-features = false, optional = true }
 bytemuck = { version = "1.13.1", default-features = false, optional = true }
-const-str = { version = "0.5.6", default-features = false }
+const-str = { version = "0.5.6", default-features = false, optional = true }
 #
 [dependencies.atomic]
 version = "0.6.0"
