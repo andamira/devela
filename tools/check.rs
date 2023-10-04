@@ -280,8 +280,8 @@ fn print_help(parser: &lexopt::Parser) {
       --miri                       use `miri` to check each architecture
   -m, --single-modules             check root modules both individually and
                                    removed from the full module set ({mods} × 2).
-      --all-modules_combinations   check all the modules combinations ({mods_combs})
-      --all-modules_except m1,…    check all the modules together except the given list
+      --all-modules-combinations   check all the modules combinations ({mods_combs})
+      --all-modules-except m1,…    check all the modules together except the given list
       --no-msrv                    do not enforce using the configured MSRV ({msrv})
   -h, --help                       display this help and exit
 ",

@@ -229,6 +229,7 @@ pub mod all {
     #[cfg(feature = "sync")]
     pub use super::sync::all::*;
 
+    #[allow(unused)] // only contains "std" for now
     #[doc(inline)]
     #[cfg(feature = "thread")]
     pub use super::thread::*;
