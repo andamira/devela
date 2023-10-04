@@ -53,7 +53,7 @@ macro_rules! generate_array_string {
 
             /// Creates a new `Array $t:upper String>]` from a `Char7`.
             ///
-            /// # Panic
+            /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]` || CAP < 1`."]
             ///
             #[doc = "Will never panic if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
@@ -70,7 +70,7 @@ macro_rules! generate_array_string {
 
             /// Creates a new `Array $t:upper String>]` from a `Char8`.
             ///
-            /// # Panic
+            /// # Panics
             #[doc = "Panics if `CAP > `[`" $t
                 "::MAX`]` || CAP < c.`[`len_utf8()`][Char8#method.len_utf8]."]
             ///
@@ -94,7 +94,7 @@ macro_rules! generate_array_string {
 
             /// Creates a new `Array $t:upper String>]` from a `Char16`.
             ///
-            /// # Panic
+            /// # Panics
             #[doc = "Panics if `CAP > `[`" $t
                 "::MAX`]` || CAP < c.`[`len_utf8()`][Char16#method.len_utf8]."]
             ///
@@ -121,7 +121,7 @@ macro_rules! generate_array_string {
 
             /// Creates a new `Array $t:upper String>]` from a `Char24`.
             ///
-            /// # Panic
+            /// # Panics
             #[doc = "Panics if `CAP > `[`" $t
                 "::MAX`]` || CAP < c.`[`len_utf8()`][Char24#method.len_utf8]."]
             ///
@@ -151,7 +151,7 @@ macro_rules! generate_array_string {
 
             /// Creates a new `Array $t:upper String>]` from a `Char32`.
             ///
-            /// # Panic
+            /// # Panics
             #[doc = "Panics if `CAP > `[`" $t
                 "::MAX`]` || CAP < c.`[`len_utf8()`][Char32#method.len_utf8]."]
             ///
@@ -166,7 +166,7 @@ macro_rules! generate_array_string {
 
             /// Creates a new `Array $t:upper String>]` from a `char`.
             ///
-            /// # Panic
+            /// # Panics
             #[doc = "Panics if `CAP > `[`" $t
                 "::MAX`]` || CAP < c.`[`len_utf8()`][UnicodeScalar#method.len_utf8]."]
             ///

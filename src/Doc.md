@@ -56,7 +56,7 @@ Convenience module groups:
 A gradient of safety. By default nothing is enabled.
 
 - `unsafest`: enables unsafe recursively (unused).
-- `unsafe`: enables unsafe features:
+- `unsafe`: enables all the unsafe sub-features:
   - `unsafe_ascii`: enables unchecked conversions in [`ascii`],
   - `unsafe_char`: enables unchecked conversions in [`mod@char`],
   - `unsafe_cmp`: enables const floating-point comparison in [`cmp`],
@@ -70,7 +70,7 @@ A gradient of safety. By default nothing is enabled.
   - `unsafe_num`: enables `new_unchecked` constructors and implements `bytemuck` traits.
   - `unsafe_ops`: *(unused)*.
   - `unsafe_option`: *(unused)*.
-  - `unsafe_os`: enables *unsafe* for all the *platform* sub-features:
+  - `unsafe_os`: enables all the unsafe *platform* sub-features:
     - `unsafe_linux`: provides functionality depending on linux syscalls and
          implements `bytemuck` traits.
   - `unsafe_path`: *(unused)*.

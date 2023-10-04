@@ -53,7 +53,7 @@ random_fns![u8:1, u16:2, u32:4, u64:8, u128:16];
 /// source is not ready, instead of blocking it may return less secure data in linux >= 5.6
 /// or retry it a certain number of times, or even return 0 in some cases.
 ///
-/// # Panic
+/// # Panics
 /// Panics in debug if `buffer.len() > `[`isize::MAX`]
 pub fn linux_random_bytes(buffer: &mut [u8]) {
     debug_assert![buffer.len() <= isize::MAX as usize];
