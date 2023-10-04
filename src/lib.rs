@@ -6,10 +6,10 @@
 // warnings
 #![warn(missing_docs, clippy::all)]
 #![allow(clippy::wrong_self_convention)] // allow `is_` methods with owned self
-// environment, safety, nightly
-#![cfg_attr(not(feature = "std"), no_std)]
-#![cfg_attr(feature = "safe", forbid(unsafe_code))]
+// nightly, safety, environment
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
+#![cfg_attr(feature = "safe", forbid(unsafe_code))]
+#![cfg_attr(not(feature = "std"), no_std)]
 #[cfg(feature = "alloc")]
 extern crate alloc;
 

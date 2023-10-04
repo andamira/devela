@@ -185,8 +185,8 @@ features = ["fallback", "float"]
 
 
 [dev-dependencies]
+devela = { path = ".", features = ["full"] }
 
-devela = { path = ".", features = ["full", "std", "unsafe"] }
 
 # ------------------------------------------------------------------------------
 
