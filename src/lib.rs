@@ -146,9 +146,11 @@ pub mod sync;
 #[cfg(all(not(feature = "sync"), not(test)))]
 pub(crate) mod sync; // the "sync" feature is disabled
 
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
+#[cfg(any(feature = "thread", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "thread")))]
 pub mod thread;
+// #[cfg(all(not(feature = "thread"), not(test)))]
+// pub(crate) mod thread; // the "thread" feature is disabled
 
 /// All items are reexported here.
 pub mod all {
@@ -228,7 +230,7 @@ pub mod all {
     pub use super::sync::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "std")]
+    #[cfg(feature = "thread")]
     pub use super::thread::*;
 }
 

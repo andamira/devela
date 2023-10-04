@@ -1,6 +1,6 @@
 // devela::thread
 //
-//! Native threads, extends [`std::thread`].
+//!
 //
 
 /// Briefer `std::thread::`[`sleep`][std::thread::sleep].
@@ -15,6 +15,8 @@
 /// sleep4![millis / 1000, 0, 100 * 5]; // sleeps for 1 second + 500 microseconds
 /// ```
 #[macro_export]
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 macro_rules! sleep4 {
     ($s:expr) => {
         std::thread::sleep(std::time::Duration::from_secs($s));
@@ -33,4 +35,5 @@ macro_rules! sleep4 {
         ));
     };
 }
+#[cfg(feature = "std")]
 pub use sleep4;

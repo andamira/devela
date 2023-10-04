@@ -54,11 +54,13 @@ linux_unsafe = ["linux", "unsafe_linux"]
 #* modules features *#
 
 full = [ # enables all the modules.
-	"texts", "cmp", "codegen", "convert", "mem", "num", "ops",
-	"option", "os", "path", "result", "slice", "sync" ]
+	"ascii", "char", "cmp", "codegen", "convert", "fmt", "mem", "num", "ops",
+	"option", "os", "path", "result", "slice", "str", "string", "sync", "thread",
+	]
 	full_unsafe = ["full", "unsafe"]
 lean = [ # enables a lean selection of modules
-	"ascii", "codegen", "convert", "fmt", "ops", "option", "result", "slice", "str" ]
+	"ascii", "codegen", "convert", "fmt", "ops", "option", "result", "slice", "str"
+	]
 	lean_unsafe = [
 		"ascii_unsafe", "convert_unsafe", "fmt_unsafe", "ops_unsafe",
 		"option_unsafe", "result_unsafe", "slice_unsafe", "str_unsafe",
@@ -66,16 +68,16 @@ lean = [ # enables a lean selection of modules
 leanest = ["lean"] # enables `lean` recursively (unused)
 fullest = ["full"] # enables `full` recursively (unused)
 
-# multiple related modules:
+# grouped modules for convenience:
+texts = [ # enables all *text* related sub-modules
+	"chars", "strings", "fmt"]
+	texts_unsafe = ["chars_unsafe", "strings_unsafe", "fmt_unsafe"]
 chars = [ # enables all *char* related sub-modules
 	"ascii", "char"]
 	chars_unsafe = ["ascii_unsafe", "char_unsafe"]
 strings = [ # enables all *string* related sub-modules
 	"str", "string"]
 	strings_unsafe = ["str_unsafe", "string_unsafe"]
-texts = [ # enables all *text* related sub-modules
-	"chars", "strings", "fmt"]
-	texts_unsafe = ["chars_unsafe", "strings_unsafe", "fmt_unsafe"]
 
 # single modules:
 ascii = []
@@ -95,6 +97,7 @@ slice = []
 str = ["const-str"]
 string = []
 sync = ["atomic", "portable-atomic"]
+thread = []
 
 # single modules with unsafe support:
 ascii_unsafe = ["ascii", "unsafe_ascii"]
@@ -114,14 +117,15 @@ slice_unsafe = ["slice", "unsafe_slice"]
 str_unsafe = ["str", "unsafe_str"]
 string_unsafe = ["string", "unsafe_string"]
 sync_unsafe = ["sync", "unsafe_sync"]
+thread_unsafe = ["thread", "unsafe_thread"]
 
 
 #* safety features *#
 
 unsafe = [ # enables unsafe features in this crate
-	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_convert", "unsafe_fmt",
-	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_option",
-	"unsafe_slice", "unsafe_str", "unsafe_string"
+	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_codegen", "unsafe_convert", "unsafe_fmt",
+	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_option", "unsafe_path",
+	"unsafe_result", "unsafe_slice", "unsafe_str", "unsafe_string", "unsafe_sync", "unsafe_thread",
 	]
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
@@ -142,6 +146,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_str = [] # enables unsafe use in `str`
 	unsafe_string = [] # enables unsafe use in `string`
 	unsafe_sync = [] # (unused)
+	unsafe_thread = [] # (unused)
 safe = [] # forbids unsafe in this crate
 safest = ["safe"] # forbids `unsafe` recursively (unused)
 unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
