@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.14.0] - 2023-10-04
+
 ### Added
 - new single module features: `ascii`, `char`, `cmp`, `convert`, `fmt`, `mem`, `num`, `ops`, `os`, `str`, `string`, `sync`, `option`, `result`, `path`, `ascii_unsafe`, `char_unsafe`, `cmp_unsafe`, `convert_unsafe`, `fmt_unsafe`, `mem_unsafe`, `num_unsafe`, `ops_unsafe`, `os_unsafe`, `str_unsafe`, `string_unsafe`, `sync_unsafe`,  `option_unsafe`, `result_unsafe`, `path_unsafe`, `unsafe_linux`, `unsafe_ops`, `unsafe_sync`, `unsafe_option`, `unsafe_result`, `unsafe_path`, `linux`, `linux_unsafe`, `codegen`, `codegen_unsafe`, `unsafe_codegen`, `thread`, `unsafe_thread`, `thread_unsafe`.
 - new multiple module features: `fullest`, `full_unsafe`, `lean`, `lean_unsafe`, `leanest`, `strings`, `chars`, `strings_unsafe`, `chars_unsafe`, `texts`, `texts_unsafe`.
@@ -421,7 +423,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.13.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.14.0...HEAD
+[0.14.0]: https://github.com/andamira/devela/releases/tag/v0.14.0
 [0.13.0]: https://github.com/andamira/devela/releases/tag/v0.13.0
 [0.12.0]: https://github.com/andamira/devela/releases/tag/v0.12.0
 [0.11.0]: https://github.com/andamira/devela/releases/tag/v0.11.0
