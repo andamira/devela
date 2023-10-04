@@ -21,7 +21,7 @@ mod private {
     pub trait Sealed {}
 }
 
-/// Extension trait providing additional methods for `str`.
+/// Extension trait providing additional methods for [`&str`].
 pub trait StrExt {
     /// Repeats a string a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.

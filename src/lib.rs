@@ -234,24 +234,31 @@ pub mod all {
 
 /// The common prelude.
 pub mod prelude {
+    #[doc(inline)]
     #[cfg(feature = "convert")]
     pub use crate::convert::all::{FromPrimitives, IntoPrimitives};
 
+    #[doc(inline)]
     #[cfg(feature = "ops")]
     pub use crate::ops::all::{Also, Apply};
 
+    #[doc(inline)]
     #[cfg(feature = "slice")]
     pub use crate::slice::all::{SliceExt, SliceExtMut};
 
+    #[doc(inline)]
     #[cfg(feature = "str")]
     pub use crate::str::all::StrExt;
 
+    #[doc(inline)]
     #[cfg(feature = "option")]
     pub use crate::option::OptionExt;
 
+    #[doc(inline)]
     #[cfg(feature = "result")]
     pub use crate::result::ResultExt;
 
+    #[doc(inline)]
     #[cfg(all(feature = "string", feature = "alloc"))]
     pub use crate::string::StringExt;
 }

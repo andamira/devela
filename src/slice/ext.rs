@@ -19,7 +19,7 @@ impl<T, const LEN: usize> private::Sealed for [T; LEN] {}
 #[cfg(feature = "alloc")]
 impl<T> private::Sealed for Vec<T> {}
 
-/// Extension trait providing additional methods for slices [`[T]`][slice].
+/// Extension trait providing additional methods for slices [`&[T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 pub trait SliceExt<T>: private::Sealed {
@@ -64,7 +64,7 @@ pub trait SliceExt<T>: private::Sealed {
     fn msplit_right(&self, len: usize) -> &[T];
 }
 
-/// Extension trait providing additional exclusive methods for slices [`[T]`][slice].
+/// Extension trait providing additional methods for exclusive slices [`&mut [T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 pub trait SliceExtMut<T>: private::Sealed + SliceExt<T> {
