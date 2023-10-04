@@ -51,14 +51,15 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           components: clippy
 
-      - name: "cargo clippy"
-        uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: "cargo clippy -F full,std,unsafe"
+        run: cargo clippy -F full,std,unsafe,linux
+
+      - name: "cargo clippy -F full,safe"
+        run: cargo clippy -F full,safe,linux
 
   # 3. documentation
   doc:
-    name: "nightly / doc"
+    name: "nightly docs"
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
@@ -69,8 +70,8 @@ jobs:
       - name: "Install nightly"
         uses: dtolnay/rust-toolchain@nightly
 
-      - name: "cargo doc"
-        run: cargo doc --features=nightly_docs
+      - name: "cargo +nightly doc -F nightly_docs"
+        run: cargo doc -F nightly_docs
         env:
           RUSTDOCFLAGS: --cfg docsrs
 
@@ -94,5 +95,8 @@ jobs:
         with:
           toolchain: ${{ matrix.msrv }}
 
-      - name: "cargo +${{ matrix.msrv }} check"
-        run: cargo check
+      - name: "cargo +${{ matrix.msrv }} check -F full,std,unsafe"
+        run: cargo check -F full,std,unsafe,linux
+
+      - name: "cargo +${{ matrix.msrv }} check -F full,safe"
+        run: cargo check -F full,safe

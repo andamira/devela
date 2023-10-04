@@ -27,9 +27,11 @@ jobs:
       - name: "rustup target add ${{ matrix.target }}"
         run: rustup target add ${{ matrix.target }}
 
-      - name: "cargo check"
-        # NOTE: custom
-        run: cargo check --target ${{ matrix.target }} --no-default-features
+      - name: "cargo check -F full,no_std,unsafe"
+        run: cargo check --target ${{ matrix.target }} -F full,no_std,unsafe
+
+      - name: "cargo check -F full,no_std,safe"
+        run: cargo check --target ${{ matrix.target }} -F full,no_std,safe
 
   #
   alloc:
@@ -50,6 +52,8 @@ jobs:
       - name: "rustup target add ${{ matrix.target }}"
         run: rustup target add ${{ matrix.target }}
 
-      - name: "cargo check `alloc`"
-        # NOTE: custom
-        run: cargo check --target ${{ matrix.target }} --no-default-features --features=alloc
+      - name: "cargo check alloc -F full,alloc,unsafe"
+        run: cargo check --target ${{ matrix.target }} -F full,alloc,unsafe
+
+      - name: "cargo check alloc -F full,alloc,safe"
+        run: cargo check --target ${{ matrix.target }} -F full,alloc,safe

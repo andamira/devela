@@ -34,9 +34,11 @@ jobs:
         run: cargo generate-lockfile
 
       # https://twitter.com/jonhoo/status/1571290371124260865
-      - name: "cargo test --locked"
-        # NOTE: custom
-        run: cargo test --locked --all-targets
+      - name: "cargo test --locked -F full,std,unsafe"
+        run: cargo test --locked -F full,std,unsafe,linux
+
+      - name: "cargo test --locked -F full,safe"
+        run: cargo test --locked -F full,safe,linux
 
   # 2.
   minimal:
@@ -60,9 +62,11 @@ jobs:
       - name: "cargo update -Zminimal-versions"
         run: cargo +nightly update -Zminimal-versions
 
-      - name: "cargo test"
-        # NOTE: custom
-        run: cargo test --locked --all-targets
+      - name: "cargo test --locked -F full,std,unsafe"
+        run: cargo test --locked -F full,std,unsafe,linux
+
+      - name: "cargo test --locked -F full,safe"
+        run: cargo test --locked -F full,safe,linux
 
   # 3.
   os-check:
@@ -85,9 +89,11 @@ jobs:
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
 
-      - name: "cargo test"
-        # NOTE: custom
-        run: cargo test --locked --all-targets
+      - name: "cargo test --locked -F full,std,unsafe"
+        run: cargo test --locked -F full,std,unsafe
+
+      - name: "cargo test --locked -F full,safe"
+        run: cargo test --locked -F full,safe
 
   # 4.
   # coverage:
