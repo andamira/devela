@@ -8,13 +8,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [Unreleased]
 
 ### Added
-- new single module features: `ascii`, `char`, `cmp`, `convert`, `fmt`, `mem`, `num`, `os`, `str`, `string`, `ascii_unsafe`, `char_unsafe`, `cmp_unsafe`, `convert_unsafe`, `fmt_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `str_unsafe`, `string_unsafe`.
+- new single module features: `ascii`, `char`, `cmp`, `convert`, `fmt`, `mem`, `num`, `ops`, `os`, `str`, `string`, `sync`, `option`, `result`, `path`, `ascii_unsafe`, `char_unsafe`, `cmp_unsafe`, `convert_unsafe`, `fmt_unsafe`, `mem_unsafe`, `num_unsafe`, `ops_unsafe`, `os_unsafe`, `str_unsafe`, `string_unsafe`, `sync_unsafe`,  `option_unsafe`, `result_unsafe`, `path_unsafe`, `unsafe_linux`, `unsafe_ops`, `unsafe_sync`, `unsafe_option`, `unsafe_result`, `unsafe_path`, `linux`, `linux_unsafe`, `codegen`, `codegen_unsafe`, `unsafe_codegen`, `thread`, `unsafe_thread`, `thread_unsafe`.
 - new multiple module features: `fullest`, `full_unsafe`, `lean`, `lean_unsafe`, `leanest`, `strings`, `chars`, `strings_unsafe`, `chars_unsafe`, `texts`, `texts_unsafe`.
-- new features: `ascii`, `char`, `cmp`, `convert`, `fmt`, `mem`, `num`, `ops`, `os`, `str`, `string`,
-- new features: `ascii_unsafe`, `char_unsafe`, `cmp_unsafe`, `convert_unsafe`, `fmt_unsafe`, `mem_unsafe`, `num_unsafe`, `ops_unsafe`, `os_unsafe`, `str_unsafe`, `string_unsafe`, `sync`, `sync_unsafe`,  `option`, `result`, `option_unsafe`, `result_unsafe`.
 - new functions `char_utf8_2bytes_len`, `char_utf8_3bytes_len`, `char_utf8_4bytes_len`.
-- new platform features: `linux`, `linux_unsafe`
-- new safety features: `unsafe_linux`, `unsafe_ops`, `unsafe_sync`, `unsafe_option`, `unsafe_result`.
 
 ### Removed
 - remove deprecated macro `bdbg`.
