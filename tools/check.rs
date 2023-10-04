@@ -23,7 +23,7 @@ use toml_edit::Document;
 
 /* global configuration */
 
-const ROOT_MODULES: &[&str] = &[
+const ROOT_MODULES: [&str; 18] = [
     "ascii", "char", "cmp", "codegen", "convert", "fmt", "mem", "num", "ops", "option", "os",
     "path", "result", "slice", "str", "string", "sync", "thread",
 ];
@@ -152,7 +152,7 @@ fn main() -> Result<()> {
 
             let modules = ROOT_MODULES
                 .iter()
-                .filter(|&m| m != module_to_filter)
+                .filter(|&m| m != &module_to_filter)
                 .copied()
                 .collect::<Vec<_>>()
                 .join(",");

@@ -79,7 +79,7 @@ strings = [ # enables all *string* related sub-modules
 	"str", "string"]
 	strings_unsafe = ["str_unsafe", "string_unsafe"]
 
-# single modules:
+# single modules (18):
 ascii = []
 char = []
 cmp = []
