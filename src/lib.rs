@@ -23,20 +23,24 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         feature = "unsafe_ascii",
         feature = "unsafe_char",
         feature = "unsafe_cmp",
+        feature = "unsafe_codegen",
         feature = "unsafe_convert",
         feature = "unsafe_fmt",
         feature = "unsafe_mem",
         feature = "unsafe_num",
         feature = "unsafe_ops",
+        feature = "unsafe_option",
         feature = "unsafe_os", // includes: unsafe_{linux}
         feature = "unsafe_linux", //
+        feature = "unsafe_path",
+        feature = "unsafe_result",
+        feature = "unsafe_slice",
         feature = "unsafe_str",
         feature = "unsafe_string",
+        feature = "unsafe_sync",
     )
 ))]
 compile_error!("You can't enable the `safe` and `unsafe*` features at the same time.");
-
-extern crate devela_macros;
 
 /* root modules */
 
@@ -58,7 +62,11 @@ pub mod cmp;
 #[cfg(all(not(feature = "cmp"), not(test)))]
 pub(crate) mod cmp; // the "cmp" feature is disabled
 
+#[cfg(any(feature = "codegen", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "codegen")))]
 pub mod codegen;
+#[cfg(all(not(feature = "codegen"), not(test)))]
+pub(crate) mod codegen; // the "codegen" feature is disabled
 
 #[cfg(any(feature = "convert", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
@@ -153,7 +161,9 @@ pub mod all {
     pub use super::cmp::all::*;
 
     #[doc(inline)]
+    #[cfg(feature = "codegen")]
     pub use super::codegen::all::*;
+    #[cfg(feature = "devela_macros")]
     #[doc(inline)]
     pub use devela_macros::{cif, compile, compile_attr};
 

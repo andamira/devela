@@ -54,11 +54,11 @@ linux_unsafe = ["linux", "unsafe_linux"]
 #* modules features *#
 
 full = [ # enables all the modules.
-	"texts", "cmp", "convert", "mem", "num", "ops",
+	"texts", "cmp", "codegen", "convert", "mem", "num", "ops",
 	"option", "os", "path", "result", "slice", "sync" ]
 	full_unsafe = ["full", "unsafe"]
 lean = [ # enables a lean selection of modules
-	"ascii", "convert", "fmt", "ops", "option", "result", "slice", "str" ]
+	"ascii", "codegen", "convert", "fmt", "ops", "option", "result", "slice", "str" ]
 	lean_unsafe = [
 		"ascii_unsafe", "convert_unsafe", "fmt_unsafe", "ops_unsafe",
 		"option_unsafe", "result_unsafe", "slice_unsafe", "str_unsafe",
@@ -81,6 +81,7 @@ texts = [ # enables all *text* related sub-modules
 ascii = []
 char = []
 cmp = []
+codegen = ["devela_macros"]
 convert = ["az"]
 fmt = []
 mem = ["bytemuck"]
@@ -99,6 +100,7 @@ sync = ["atomic", "portable-atomic"]
 ascii_unsafe = ["ascii", "unsafe_ascii"]
 char_unsafe = ["char", "unsafe_char"]
 cmp_unsafe = ["cmp", "unsafe_cmp"]
+codegen_unsafe = ["codegen", "unsafe_codegen"]
 convert_unsafe = ["convert", "unsafe_convert"]
 fmt_unsafe = ["fmt", "unsafe_fmt"]
 mem_unsafe = ["mem", "unsafe_mem"]
@@ -124,6 +126,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
 	unsafe_cmp = [] # enables const floating-point comparisons
+	unsafe_codegen = [] # (unused)
 	unsafe_convert = [] # enables using `MaybeUninit` for array initalization
 	unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
@@ -156,8 +159,8 @@ nightly_docs = [ # enables features for docs.rs
 
 [dependencies]
 
-devela_macros = "0.6.1"
-#devela_macros = { path = "./macros" }
+devela_macros = { version  = "0.6.1", optional = true }
+#devela_macros = { path = "./macros", optional = true }
 #
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 az = { version = "1.2.1", default-features = false, optional = true }
