@@ -55,7 +55,7 @@ linux_unsafe = ["linux", "unsafe_linux"]
 
 full = [ # enables all the modules.
 	"texts", "cmp", "convert", "mem", "num", "ops",
-	"option", "os", "result", "slice", "sync" ]
+	"option", "os", "path", "result", "slice", "sync" ]
 	full_unsafe = ["full", "unsafe"]
 lean = [ # enables a lean selection of modules
 	"ascii", "convert", "fmt", "ops", "option", "result", "slice", "str" ]
@@ -88,6 +88,7 @@ num = []
 ops = []
 option = []
 os = []
+path = []
 result = []
 slice = []
 str = ["const-str"]
@@ -105,6 +106,7 @@ num_unsafe = ["num", "unsafe_num"]
 ops_unsafe = ["ops", "unsafe_ops"]
 option_unsafe = ["option", "unsafe_option"]
 os_unsafe = ["os", "unsafe_os"]
+path_unsafe = ["path", "unsafe_path"]
 result_unsafe = ["result", "unsafe_result"]
 slice_unsafe = ["slice", "unsafe_slice"]
 str_unsafe = ["str", "unsafe_str"]
@@ -131,6 +133,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_os = [ # enables unsafe OS functionality
 		"unsafe_linux"]
 		unsafe_linux = [] # enables linux syscalls
+	unsafe_path = [] # (unused)
 	unsafe_result = [] # (unused)
 	unsafe_slice = [] # (unused)
 	unsafe_str = [] # enables unsafe use in `str`

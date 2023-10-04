@@ -97,7 +97,12 @@ pub mod option;
 pub(crate) mod option; // the "option" feature is disabled
 
 pub mod os;
+
+#[cfg(any(feature = "path", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "path")))]
 pub mod path;
+#[cfg(all(not(feature = "path"), not(test)))]
+pub(crate) mod path; // the "path" feature is disabled
 
 #[cfg(any(feature = "result", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
@@ -148,6 +153,11 @@ pub mod all {
     pub use super::cmp::all::*;
 
     #[doc(inline)]
+    pub use super::codegen::all::*;
+    #[doc(inline)]
+    pub use devela_macros::{cif, compile, compile_attr};
+
+    #[doc(inline)]
     #[cfg(feature = "convert")]
     pub use super::convert::all::*;
     #[cfg(feature = "az")]
@@ -176,6 +186,10 @@ pub mod all {
     pub use super::option::all::*;
 
     #[doc(inline)]
+    #[cfg(feature = "path")]
+    pub use super::path::all::*;
+
+    #[doc(inline)]
     #[cfg(feature = "result")]
     pub use super::result::all::*;
 
@@ -200,10 +214,7 @@ pub mod all {
     pub use super::thread::*;
 
     #[doc(inline)]
-    pub use devela_macros::{cif, compile, compile_attr};
-
-    #[doc(inline)]
-    pub use super::{codegen::all::*, os::all::*, path::*};
+    pub use super::os::all::*;
 }
 
 /// The common prelude.
