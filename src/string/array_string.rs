@@ -16,6 +16,7 @@ use alloc::{ffi::CString, str::Chars, string::ToString};
 
 #[cfg(feature = "char")]
 use crate::char::*;
+use crate::char::{char_to_utf8_bytes, char_utf8_4bytes_len};
 
 macro_rules! generate_array_string {
     ($($t:ty),+ $(,)?) => {
@@ -160,9 +161,22 @@ macro_rules! generate_array_string {
             #[cfg(feature = "char")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char32(c: Char32) -> Self {
+                Char32(Self::from_char(c))
+            }
+
+            /// Creates a new `Array $t:upper String>]` from a `char`.
+            ///
+            /// # Panic
+            #[doc = "Panics if `CAP > `[`" $t
+                "::MAX`]` || CAP < c.`[`len_utf8()`][UnicodeScalar#method.len_utf8]."]
+            ///
+            #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
+            #[inline]
+            #[must_use]
+            pub const fn from_char(c: char) -> Self {
                 let mut new = Self::new();
 
-                let bytes = c.to_utf8_bytes();
+                let bytes = char_to_utf8_bytes(c);
                 new.len = char_utf8_4bytes_len(bytes) as $t;
 
                 new.arr[0] = bytes[0];
@@ -176,21 +190,6 @@ macro_rules! generate_array_string {
                     new.arr[3] = bytes[3];
                 }
                 new
-            }
-
-            /// Creates a new `Array $t:upper String>]` from a `char`.
-            ///
-            /// # Panic
-            #[doc = "Panics if `CAP > `[`" $t
-                "::MAX`]` || CAP < c.`[`len_utf8()`][UnicodeScalar#method.len_utf8]."]
-            ///
-            #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            #[inline]
-            #[must_use]
-            #[cfg(feature = "char")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
-            pub const fn from_char(c: char) -> Self {
-                Self::from_char32(Char32(c))
             }
 
             //

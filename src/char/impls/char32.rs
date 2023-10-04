@@ -120,42 +120,8 @@ impl Char32 {
     // https://en.wikipedia.org/wiki/UTF-8#Encoding
     #[inline]
     #[must_use]
-    #[allow(clippy::unusual_byte_groupings)]
     pub const fn to_utf8_bytes(self) -> [u8; 4] {
-        let c = self.0 as u32;
-        match c {
-            // From 0x0000 to 0x007F:
-            // the UTF-8 encoding is the same as the scalar value.
-            0x0000..=0x007F => [c as u8, 0, 0, 0],
-
-            // from 0x0080 to 0x07FF:
-            // the UTF-8 encoding is 110xxxxx 10xxxxxx,
-            // where xxxxx and xxxxxx are the bits of the scalar value.
-            0x0080..=0x07FF => {
-                let y = 0b10_000000 | (0b0011_1111 & (c as u8));
-                let x = 0b110_00000 | ((c >> 6) as u8);
-                [x, y, 0, 0]
-            }
-
-            // From from 0x0800 to 0xFFFF:
-            // the UTF-8 encoding is 1110xxxx 10xxxxxx 10xxxxxx.
-            0x0800..=0xFFFF => {
-                let z = 0b10_000000 | (0b0011_1111 & (c as u8));
-                let y = 0b10_000000 | ((c >> 6) & 0b0011_1111) as u8;
-                let x = 0b1110_0000 | ((c >> 12) as u8);
-                [x, y, z, 0]
-            }
-
-            // From 0x10000 to 0x10FFFF:
-            // the UTF-8 encoding is 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx.
-            _ => {
-                let w = 0b10_000000 | (0b0011_1111 & (c as u8));
-                let z = 0b10_000000 | ((c >> 6) & 0b0011_1111) as u8;
-                let y = 0b10_000000 | ((c >> 12) & 0b0011_1111) as u8;
-                let x = 0b11110_000 | ((c >> 18) as u8);
-                [x, y, z, w]
-            }
-        }
+        char_to_utf8_bytes(self.0)
     }
 
     //

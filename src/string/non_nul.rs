@@ -15,6 +15,7 @@ use alloc::{ffi::CString, str::Chars, string::ToString};
 
 #[cfg(feature = "char")]
 use crate::char::*;
+use crate::char::{char_to_utf8_bytes, char_utf8_4bytes_len};
 
 /* definitions */
 
@@ -53,13 +54,14 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     ///
     /// If `c`.[`is_nul()`][Char7#method.is_nul] an empty string will be returned.
     ///
-    /// # Panic
+    /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < 1
     ///
     /// Will never panic if `CAP` >= 1.
     #[inline]
     #[must_use]
     #[cfg(feature = "char")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char7(c: Char7) -> Self {
         let mut new = Self::new();
         if !c.is_nul() {
@@ -68,17 +70,18 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
         new
     }
 
-    /// Creates a new `ArrayU8String` from a `Char8`.
+    /// Creates a new `ArrayU8NonNulString` from a `Char8`.
     ///
     /// If `c`.[`is_nul()`][Char8#method.is_nul] an empty string will be returned.
     ///
-    /// # Panic
+    /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
     ///
     /// Will never panic if `CAP` >= 2.
     #[inline]
     #[must_use]
     #[cfg(feature = "char")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char8(c: Char8) -> Self {
         let mut new = Self::new();
         if !c.is_nul() {
@@ -93,17 +96,18 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
         new
     }
 
-    /// Creates a new `ArrayU8String` from a `Char16`.
+    /// Creates a new `ArrayU8NonNulString` from a `Char16`.
     ///
     /// If `c`.[`is_nul()`][Char16#method.is_nul] an empty string will be returned.
     ///
-    /// # Panic
+    /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
     ///
     /// Will never panic if `CAP` >= 3.
     #[inline]
     #[must_use]
     #[cfg(feature = "char")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char16(c: Char16) -> Self {
         let mut new = Self::new();
         if !c.is_nul() {
@@ -121,17 +125,18 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
         new
     }
 
-    /// Creates a new `ArrayU8String` from a `Char24`.
+    /// Creates a new `ArrayU8NonNulString` from a `Char24`.
     ///
     /// If `c`.[`is_nul()`][Char24#method.is_nul] an empty string will be returned.
     ///
-    /// # Panic
+    /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
     ///
     /// Will never panic if `CAP` >= 4.
     #[inline]
     #[must_use]
     #[cfg(feature = "char")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char24(c: Char24) -> Self {
         let mut new = Self::new();
         if !c.is_nul() {
@@ -152,21 +157,37 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
         new
     }
 
-    /// Creates a new `ArrayU8String` from a `Char32`.
+    /// Creates a new `ArrayU8NonNulString` from a `Char32`.
     ///
     /// If `c`.[`is_nul()`][Char32#method.is_nul] an empty string will be returned.
     ///
-    /// # Panic
+    /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
     ///
     /// Will never panic if `CAP` is >= 4.
     #[inline]
     #[must_use]
     #[cfg(feature = "char")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char32(c: Char32) -> Self {
+        Char32(Self::from_char(c))
+    }
+
+    /// Creates a new `ArrayU8NonNulString` from a `char`.
+    ///
+    /// If `c` is NUL an empty string will be returned.
+    ///
+    /// # Panics
+    /// Panics if `c != NUL` and `CAP` < `c` lenght.
+    ///
+    /// Will never panic if `CAP` is >= 4.
+    #[inline]
+    #[must_use]
+    pub const fn from_char(c: char) -> Self {
         let mut new = Self::new();
-        if !c.is_nul() {
-            let bytes = c.to_utf8_bytes();
+
+        if c as u32 != 0 {
+            let bytes = char_to_utf8_bytes(c);
             let len = char_utf8_4bytes_len(bytes);
 
             new.arr[0] = bytes[0];
@@ -181,21 +202,6 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
             }
         }
         new
-    }
-
-    /// Creates a new `ArrayU8String` from a `char`.
-    ///
-    /// If `c`.[`is_nul()`][Chars#method.is_nul] an empty string will be returned.
-    ///
-    /// # Panic
-    /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Chars#method.len_utf8].
-    ///
-    /// Will never panic if `CAP` is >= 4.
-    #[inline]
-    #[must_use]
-    #[cfg(feature = "char")]
-    pub const fn from_char(c: char) -> Self {
-        Self::from_char32(Char32(c))
     }
 
     //
