@@ -7,6 +7,21 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- add optional dependency: `unicode-segmentation`.
+- new trait `Egc`.
+- new structs: `StringEgc`, `ArrayU8Egc`, `ArrayU8NonNulEgc`.
+- new type aliases: `Egc16`, `Egc32`, `Egc64`, `Egc128`, `NonNulEgc8`, `NonNulEgc16`, `NonNulEgc32`, `NonNulEgc64`, `NonNulEgc128`.
+- new optional dependency: `unicode-segmentation`.
+
+### Removed
+- remove features: `lean`, `leanest`, `chars`, `strings`.
+- remove unneded conversion impls from chars to strings.
+
+### Fixed
+- do not enable the empty `default` feature.
+- improve CIs.
+
 ## [0.14.0] - 2023-10-04
 
 ### Added
