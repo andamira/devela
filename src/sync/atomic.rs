@@ -19,67 +19,8 @@
 )]
 pub use ::atomic::Atomic;
 
-/* reexport from the `portable-atomic` crate if available or `core` otherwise */
+/* only in `portable-atomic` */
 
-// only in portable-atomic
-#[doc = "A signed integer type which can be safely shared between threads.\n\n"]
-#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "portable-atomic")))
-)]
-pub use portable_atomic::AtomicI128;
-
-// in either portable-atomic or core
-#[doc = "A signed integer type which can be safely shared between threads.\n\n"]
-#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(feature = "portable-atomic")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-pub use portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
-
-#[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
-#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(feature = "portable-atomic")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "portable-atomic")))
-)]
-pub use portable_atomic::{AtomicU128, AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
-
-#[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "16"))]
-pub use core::sync::atomic::{AtomicI16, AtomicU16};
-#[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "32"))]
-pub use core::sync::atomic::{AtomicI32, AtomicU32};
-#[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "64"))]
-pub use core::sync::atomic::{AtomicI64, AtomicU64};
-#[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "8"))]
-pub use core::sync::atomic::{AtomicI8, AtomicU8};
-#[cfg(not(feature = "portable-atomic"))]
-pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
-
-#[cfg(not(feature = "portable-atomic"))]
-pub use core::sync::atomic::AtomicBool;
-#[doc = "A boolean type which can be safely shared between threads.\n\n"]
-#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(feature = "portable-atomic")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "portable-atomic")))
-)]
-pub use portable_atomic::AtomicBool;
-
-#[cfg(not(feature = "portable-atomic"))]
-pub use core::sync::atomic::AtomicPtr;
-#[doc = "A raw pointer type which can be safely shared between threads.\n\n"]
-#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(feature = "portable-atomic")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "portable-atomic")))
-)]
-pub use portable_atomic::AtomicPtr;
-
-// only in portable-atomic
 #[doc = "A floating point type which can be safely shared between threads..\n\n"]
 #[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(feature = "portable-atomic")]
@@ -89,7 +30,64 @@ pub use portable_atomic::AtomicPtr;
 )]
 pub use portable_atomic::{AtomicF32, AtomicF64};
 
-/* reexport from `libcore` */
+#[doc = "A signed integer type which can be safely shared between threads.\n\n"]
+#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(feature = "sync", feature = "portable-atomic")))
+)]
+pub use portable_atomic::AtomicI128;
+
+#[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
+#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(feature = "sync", feature = "portable-atomic")))
+)]
+pub use portable_atomic::AtomicU128;
+
+/* in either `portable-atomic` or `core` */
+
+#[doc = "A signed integer type which can be safely shared between threads.\n\n"]
+#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
+#[cfg(feature = "portable-atomic")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
+pub use portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
+
+#[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
+#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
+#[cfg(feature = "portable-atomic")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
+pub use portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
+
+#[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "16"))]
+pub use core::sync::atomic::{AtomicI16, AtomicU16};
+#[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "32"))]
+pub use core::sync::atomic::{AtomicI32, AtomicU32};
+#[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "64"))]
+pub use core::sync::atomic::{AtomicI64, AtomicU64};
+#[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "8"))]
+pub use core::sync::atomic::{AtomicI8, AtomicU8};
+#[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "ptr"))]
+pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
+
+#[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "ptr"))]
+pub use core::sync::atomic::AtomicPtr;
+#[doc = "A raw pointer type which can be safely shared between threads.\n\n"]
+#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
+#[cfg(feature = "portable-atomic")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
+pub use portable_atomic::AtomicPtr;
+
+#[cfg(not(feature = "portable-atomic"))]
+pub use core::sync::atomic::AtomicBool;
+#[doc = "A boolean type which can be safely shared between threads.\n\n"]
+#[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
+#[cfg(feature = "portable-atomic")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
+pub use portable_atomic::AtomicBool;
+
+/* in `core` */
 
 #[doc = "An atomic fence.\n\n"]
 #[doc = "*Reexported from"]
