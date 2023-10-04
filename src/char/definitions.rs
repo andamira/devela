@@ -98,7 +98,7 @@ pub struct Char24 {
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char32(pub char);
 
-/// Common trait for unicode scalars.
+/// Common trait for unicode scalar types.
 ///
 /// It's implemented for: [`Char7`], [`Char8`], [`Char16`], [`Char24`], [`Char32`] and [`char`].
 pub trait UnicodeScalar {

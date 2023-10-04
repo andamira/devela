@@ -13,6 +13,8 @@ mod macros; // private
 #[cfg(feature = "string")]
 mod array_string;
 #[cfg(feature = "string")]
+mod egc;
+#[cfg(feature = "string")]
 mod error;
 #[cfg(feature = "string")]
 mod ext;
@@ -26,5 +28,5 @@ pub use all::*;
 #[cfg(feature = "string")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{array_string::*, error::*, ext::*, non_nul::*};
+    pub use super::{array_string::*, egc::all::*, error::*, ext::*, non_nul::*};
 }

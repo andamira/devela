@@ -44,6 +44,7 @@ Single modules:
 - `str`, `str_unsafe`: enables the [`mod@str`] module
   and the [`const_str`] dependency.
 - `string`, `string_unsafe`: enables the [`string`] module.
+  and the [`unicode_segmentation`] dependency.
 - `sync`, `sync_unsafe`: enables the [`sync`] module
   and the [`atomic`] and [`portable_atomic`] dependencies.
 - `thread`, `thread_unsafe`: enables the [`thread`] module

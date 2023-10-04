@@ -5,7 +5,6 @@
 // TOC
 // - definitions
 // - trait impls
-// - conversions
 
 use super::{macros::impl_sized_alias, ArrayStringError, Result};
 use core::fmt;
@@ -170,7 +169,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     #[cfg(feature = "char")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char32(c: Char32) -> Self {
-        Char32(Self::from_char(c))
+        Self::from_char(c.0)
     }
 
     /// Creates a new `ArrayU8NonNulString` from a `char`.
@@ -518,60 +517,4 @@ impl<const CAP: usize> fmt::Debug for ArrayU8NonNulString<CAP> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{:?}", self.as_str())
     }
-}
-
-/* conversions */
-
-macro_rules! impl_from_char {
-    // $char:ty char type
-    // $for_name: `for` type name prefix
-    // $bit: size in bits.
-    ( $char:ty => $for_name:ident: $( $for_bit:expr ),+ ) => {
-        $( impl_from_char![@$char => $for_name: $for_bit]; )+
-    };
-    ( @$char:ty => $for_name:ident: $for_bit:expr ) => { $crate::codegen::paste! {
-        impl From<$char> for [< $for_name $for_bit >] {
-            #[inline]
-            #[must_use]
-            fn from(c: $char) -> [< $for_name $for_bit >] {
-                let mut s = Self::default();
-                let _ = s.push(c.into());
-                s
-            }
-        }
-    }};
-    ( try $char:ty => $for_name:ident: $( $for_bit:expr ),+ ) => {
-        $( impl_from_char![@try $char => $for_name: $for_bit]; )+
-    };
-    ( @try $char:ty => $for_name:ident: $for_bit:expr ) => { $crate::codegen::paste! {
-        impl TryFrom<$char> for [< $for_name $for_bit >] {
-            type Error = $crate::string::ArrayStringError;
-            #[inline]
-            fn try_from(c: $char) -> $crate::string::Result<[< $for_name $for_bit >]> {
-                let mut s = Self::default();
-                s.try_push(c.into())?;
-                Ok(s)
-            }
-        }
-    }};
-}
-use impl_from_char;
-impl_from_char![char => NonNulString: 32, 64, 128];
-impl_from_char![try char => NonNulString: 8, 16];
-
-#[cfg(feature = "char")]
-mod impl_from_chars {
-    use super::{
-        impl_from_char, Char16, Char24, Char32, Char7, Char8, NonNulString128, NonNulString16,
-        NonNulString32, NonNulString64, NonNulString8,
-    };
-    impl_from_char![Char7 => NonNulString: 8, 16, 32, 64, 128];
-    impl_from_char![Char8 => NonNulString: 16, 32, 64, 128];
-    impl_from_char![try Char8 => NonNulString: 8];
-    impl_from_char![Char16 => NonNulString: 32, 64, 128];
-    impl_from_char![try Char16 => NonNulString: 8, 16];
-    impl_from_char![Char24 => NonNulString: 32, 64, 128];
-    impl_from_char![try Char24 => NonNulString: 8, 16];
-    impl_from_char![Char32 => NonNulString: 32, 64, 128];
-    impl_from_char![try Char32 => NonNulString: 8, 16];
 }

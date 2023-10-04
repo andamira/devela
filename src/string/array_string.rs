@@ -161,7 +161,7 @@ macro_rules! generate_array_string {
             #[cfg(feature = "char")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char32(c: Char32) -> Self {
-                Char32(Self::from_char(c))
+                Self::from_char(c.0)
             }
 
             /// Creates a new `Array $t:upper String>]` from a `char`.
