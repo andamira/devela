@@ -7,7 +7,6 @@
 
 /* only compiled with the `os` feature */
 
-// use a feature instead of OS detection, so it can be used from `no_std`.
 #[cfg(all(feature = "linux", feature = "os"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
 pub mod linux;

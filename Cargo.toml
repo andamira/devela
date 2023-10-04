@@ -58,26 +58,15 @@ full = [ # enables all the modules.
 	"option", "os", "path", "result", "slice", "str", "string", "sync", "thread",
 	]
 	full_unsafe = ["full", "unsafe"]
-lean = [ # enables a lean selection of modules
-	"ascii", "codegen", "convert", "fmt", "ops", "option", "result", "slice", "str"
-	]
-	lean_unsafe = [
-		"ascii_unsafe", "convert_unsafe", "fmt_unsafe", "ops_unsafe",
-		"option_unsafe", "result_unsafe", "slice_unsafe", "str_unsafe",
-	]
-leanest = ["lean"] # enables `lean` recursively (unused)
 fullest = ["full"] # enables `full` recursively (unused)
 
 # grouped modules for convenience:
 texts = [ # enables all *text* related sub-modules
-	"chars", "strings", "fmt"]
-	texts_unsafe = ["chars_unsafe", "strings_unsafe", "fmt_unsafe"]
-chars = [ # enables all *char* related sub-modules
-	"ascii", "char"]
-	chars_unsafe = ["ascii_unsafe", "char_unsafe"]
-strings = [ # enables all *string* related sub-modules
-	"str", "string"]
-	strings_unsafe = ["str_unsafe", "string_unsafe"]
+	"ascii", "char", "fmt", "str", "string"
+	]
+	texts_unsafe = [
+		"ascii_unsafe", "char_unsafe", "fmt_unsafe", "str_unsafe", "string_unsafe"
+		]
 
 # single modules (18):
 ascii = []

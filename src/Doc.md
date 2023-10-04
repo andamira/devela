@@ -10,46 +10,51 @@ By default the crate is `no_std` compatible.
 - `alloc`: enables `alloc` functionality.
 - `no_std`: enables functionality incompatible with `std` (unused).
 
+### Platform features
+Platform-specific functionality is not automatically enabled since *OS* detection
+depends on `std`, and we want to use it also from `no_std`.
+
+They have to be explicitly enabled, despite being `os` sub-modules:
+- `linux`, `linux_unsafe`: enables [`os::linux`] functionality.
+
 ### Modules features
 Modules can be enabled independently of *environment*, *platform* or *safety*, unless specified.
 
+- `full`, `full_unsafe`: enables all the modules (except the *platform* sub-modules)
 - `fullest`: enables all the modules, recursively (unused).
-- `full`, `full_unsafe`: enables all the modules.
-- `lean`, `lean_unsafe`: enables a lean selection of modules.
-- `leanest`: enables a lean selection of modules, recursively (unused).
-
-Multiple modules:
-- `texts`, `texts_unsafe`: enables `strings` and `chars`.
-- `strings`, `strings_unsafe`: enables [`mod@str`] and [`string`] modules.
-- `chars`, `chars_unsafe:` enables [`ascii`] and [`mod@char`] modules.
 
 Single modules:
 - `ascii`, `ascii_unsafe:` enables the [`ascii`] module.
 - `char`, `char_unsafe`: enables the [`mod@char`] module.
 - `cmp`, `cmp_unsafe`: enables the [`cmp`] module.
 - `codegen`, `codegen_unsafe`: enables the [`codegen`] module
+  and the [`devela_macros`] dependency.
 - `convert`, `convert_unsafe`: enables the [`convert`] module.
 - `fmt`, `fmt_unsafe`: enables the [`fmt`] module.
-- `mem`, `mem_unsafe`: enables the [`mem`] module.
+- `mem`, `mem_unsafe`: enables the [`mem`] module
+  and the [`bytemuck`] dependency.
 - `num`, `num_unsafe`: enables the [`num`] module.
 - `ops`, `ops_unsafe`: enables the [`ops`] module
 - `option`, `option_unsafe`: enables the [`option`] module
 - `os`, `os_unsafe`: enables the [`os`] module
-  (but does not enable *platform* submodules)
+  (but does not enable *platform* sub-modules)
 - `path`, `path_unsafe`: enables the [`path`] module
 - `result`, `result_unsafe`: enables the [`result`] module
 - `slice`, `slice_unsafe`: enables the [`mod@slice`] module
-- `str`, `str_unsafe`: enables the [`mod@str`] module.
+- `str`, `str_unsafe`: enables the [`mod@str`] module
+  and the [`const_str`] dependency.
 - `string`, `string_unsafe`: enables the [`string`] module.
 - `sync`, `sync_unsafe`: enables the [`sync`] module
+  and the [`atomic`] and [`portable_atomic`] dependencies.
 - `thread`, `thread_unsafe`: enables the [`thread`] module
 
-### Platform features
-Despite being `os` submodules they have to be explicitly enabled.
-- `linux`, `linux_unsafe`: enables [`os::linux`] functionality.
+Convenience module groups:
+- `texts`, `texts_unsafe`: enables [`ascii`], [`mod@char`], [`fmt`], [`mod@str`]
+  and [`string`] modules.
 
 ### Safety features
 A gradient of safety. By default nothing is enabled.
+
 - `unsafest`: enables unsafe recursively (unused).
 - `unsafe`: enables unsafe features:
   - `unsafe_ascii`: enables unchecked conversions in [`ascii`],
@@ -65,7 +70,7 @@ A gradient of safety. By default nothing is enabled.
   - `unsafe_num`: enables `new_unchecked` constructors and implements `bytemuck` traits.
   - `unsafe_ops`: *(unused)*.
   - `unsafe_option`: *(unused)*.
-  - `unsafe_os`: 
+  - `unsafe_os`: enables *unsafe* for all the *platform* sub-features:
     - `unsafe_linux`: provides functionality depending on linux syscalls and
          implements `bytemuck` traits.
   - `unsafe_path`: *(unused)*.
