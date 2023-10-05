@@ -1,6 +1,6 @@
-// devela::task
+// devela::task::reexports
 //
-//! Reexported items re-exported from `core`.
+//! Reexported items.
 //
 
 /// <span class="stab portability" title="re-exported from `core`">`core`</span>
@@ -53,6 +53,6 @@ pub use core::task::ready as task_ready;
 #[cfg(all(feature = "alloc", target_has_atomic = "ptr"))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "alloc", target_has_atomic = "ptr")))
+    doc(cfg(all(feature = "task", feature = "alloc", target_has_atomic = "ptr")))
 )]
 pub use alloc::task::Wake as TaskWake;

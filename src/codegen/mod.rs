@@ -12,10 +12,6 @@ mod paste;
 #[cfg(not(feature = "codegen"))]
 pub(crate) use {iif::iif, paste::paste};
 
-#[doc(hidden)]
-#[allow(unused)]
-pub use paste::__paste;
-
 /* only compiled with the `codegen` feature */
 
 #[cfg(feature = "codegen")]
@@ -28,6 +24,13 @@ mod skip_format;
 /* re-exports */
 
 #[cfg(feature = "codegen")]
+mod reexports;
+
+#[doc(hidden)]
+#[allow(unused)]
+pub use paste::__paste;
+
+#[cfg(feature = "codegen")]
 pub use all::*;
 #[cfg(feature = "codegen")]
 pub(crate) mod all {
@@ -36,13 +39,7 @@ pub(crate) mod all {
         const_for::const_for,
         deprecate::deprecate_feature,
         iif::iif,
-        paste::paste,
+        reexports::{cif, compile, compile_attr, paste},
         skip_format::{sf, sfb},
     };
-
-    #[cfg_attr(
-        feature = "nightly",
-        doc(cfg(all(feature = "codegen", feature = "devela_macros")))
-    )]
-    pub use ::devela_macros::{cif, compile, compile_attr};
 }

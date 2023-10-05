@@ -1,6 +1,6 @@
-// devela::future
+// devela::future::reexports
 //
-//! Reexported items re-exported from `core`.
+//! Reexported items.
 //
 
 /// <span class="stab portability" title="re-exported from `core`">`core`</span>

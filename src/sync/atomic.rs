@@ -14,43 +14,31 @@
 #[doc = "*Reexported from the [`atomic`](https://docs.rs/atomic)* crate.\n\n---"]
 #[doc(inline)]
 #[cfg(feature = "atomic")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "atomic")))
-)]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
 pub use ::atomic::Atomic;
 
 /* only in `portable-atomic` */
 
 /// <span class="stab portability" title="re-exported from the `portable-atomic`
 /// crate">`portable-atomic`</span>
-#[doc = "A floating point type which can be safely shared between threads..\n\n"]
+#[doc = "A floating point type which can be safely shared between threads.\n\n"]
 #[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(feature = "portable-atomic")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "portable-atomic")))
-)]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
 pub use portable_atomic::{AtomicF32, AtomicF64};
 
 /// <span class="stab portability" title="re-exported from the `portable-atomic`
 /// crate">`portable-atomic`</span>
 #[doc = "A signed integer type which can be safely shared between threads.\n\n"]
 #[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "portable-atomic")))
-)]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
 pub use portable_atomic::AtomicI128;
 
 /// <span class="stab portability" title="re-exported from the `portable-atomic`
 /// crate">`portable-atomic`</span>
 #[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
 #[doc = "*Reexported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "portable-atomic")))
-)]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
 pub use portable_atomic::AtomicU128;
 
 /* in either `portable-atomic` or `core` */

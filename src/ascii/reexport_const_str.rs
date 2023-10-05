@@ -13,7 +13,7 @@
 #[cfg(feature = "const-str")]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "const-str")))
+    doc(cfg(all(feature = "ascii", feature = "const-str")))
 )]
 pub use const_str::is_ascii as ascii_check;
 
@@ -24,7 +24,7 @@ pub use const_str::is_ascii as ascii_check;
 #[cfg(feature = "const-str")]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "const-str")))
+    doc(cfg(all(feature = "ascii", feature = "const-str")))
 )]
 pub use const_str::convert_ascii_case as ascii_convert_case;
 
@@ -34,7 +34,7 @@ pub use const_str::convert_ascii_case as ascii_convert_case;
 #[cfg(feature = "const-str")]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "const-str")))
+    doc(cfg(all(feature = "ascii", feature = "const-str")))
 )]
 pub use const_str::eq_ignore_ascii_case as ascii_eq_ignore_case;
 
@@ -45,6 +45,6 @@ pub use const_str::eq_ignore_ascii_case as ascii_eq_ignore_case;
 #[cfg(feature = "const-str")]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "const-str")))
+    doc(cfg(all(feature = "ascii", feature = "const-str")))
 )]
 pub use const_str::squish as ascii_squish;
