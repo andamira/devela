@@ -18,7 +18,7 @@ use core::{
 #[cfg(feature = "alloc")]
 use alloc::{format, string::String};
 
-/// *`c`ompact [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
+/// A more *`c`ompact [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
 ///
 /// # Examples
 /// ```

@@ -1,6 +1,6 @@
 // devela::os::term
 //
-//! Definitions for terminal control and manipulation.
+//! Terminal control and manipulation definitions.
 //!
 //! Reexports terminal related functions from [`os::linux`][super::linux].
 //!

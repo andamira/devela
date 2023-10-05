@@ -3,7 +3,7 @@
 //! inline if macro.
 //
 
-/// *`i`nline `if`*.
+/// A more compact *`i`nline `if`*.
 ///
 /// A inline alternative for `if` and `if let`.
 ///

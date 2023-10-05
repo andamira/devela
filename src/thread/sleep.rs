@@ -3,7 +3,7 @@
 //!
 //
 
-/// Briefer `std::thread::`[`sleep`][std::thread::sleep].
+/// A more compact `std::thread::`[`sleep`][std::thread::sleep].
 ///
 /// Sleeps for `$ns` seconds + `$ms` milliseconds + `$us` microseconds + `$ns` nanoseconds
 ///
