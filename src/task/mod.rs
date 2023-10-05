@@ -9,7 +9,7 @@
 
 /* re-exports */
 
-#[cfg(feature = "num")]
+#[cfg(feature = "task")]
 mod reexports;
 
 #[cfg(feature = "task")]
