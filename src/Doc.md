@@ -16,6 +16,7 @@ depends on `std`, and we want to use it also from `no_std`.
 
 They have to be explicitly enabled, despite being `os` sub-modules:
 - `linux`, `linux_unsafe`: enables [`os::linux`] functionality.
+- `term`, `term_unsafe:` enables [`os::term`] functionality.
 
 ### Modules features
 Modules can be enabled independently of *environment*, *platform* or *safety*, unless specified.
@@ -31,12 +32,12 @@ Single modules:
   and the [`devela_macros`] dependency.
 - `convert`, `convert_unsafe`: enables the [`convert`] module.
 - `fmt`, `fmt_unsafe`: enables the [`fmt`] module.
+- `future`, `fmt_unsafe`: enables the [`future`] module.
 - `mem`, `mem_unsafe`: enables the [`mem`] module
   and the [`bytemuck`] dependency.
 - `num`, `num_unsafe`: enables the [`num`] module.
 - `ops`, `ops_unsafe`: enables the [`ops`] module
 - `option`, `option_unsafe`: enables the [`option`] module
-- `os`, `os_unsafe`: enables the [`os`] module
   (but does not enable *platform* sub-modules)
 - `path`, `path_unsafe`: enables the [`path`] module
 - `result`, `result_unsafe`: enables the [`result`] module
@@ -47,9 +48,11 @@ Single modules:
   and the [`unicode_segmentation`] dependency.
 - `sync`, `sync_unsafe`: enables the [`sync`] module
   and the [`atomic`] and [`portable_atomic`] dependencies.
+- `task`, `task_unsafe`: enables the [`task`] module
 - `thread`, `thread_unsafe`: enables the [`thread`] module
 
 Convenience module groups:
+- `async`, `async_unsafe`: enables [`future`] and [`task`] modules.
 - `texts`, `texts_unsafe`: enables [`ascii`], [`mod@char`], [`fmt`], [`mod@str`]
   and [`string`] modules.
 
@@ -66,6 +69,7 @@ A gradient of safety. By default nothing is enabled.
   - `unsafe_convert`: enables using [`MaybeUninit`] for [`slice_into_array`]
       initialization in [`convert`].
   - `unsafe_fmt`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
+  - `unsafe_future`: *(unused)*.
   - `unsafe_mem`: provides [`as_bytes`], [`as_bytes_mut`] and [`as_bytes_sized`]
       in [`mem`].
   - `unsafe_num`: enables `new_unchecked` constructors and implements `bytemuck` traits.
@@ -74,12 +78,14 @@ A gradient of safety. By default nothing is enabled.
   - `unsafe_os`: enables all the unsafe *platform* sub-features:
     - `unsafe_linux`: provides functionality depending on linux syscalls and
          implements `bytemuck` traits.
+    - `unsafe_term`: *(unused)*.
   - `unsafe_path`: *(unused)*.
   - `unsafe_result`: *(unused)*.
   - `unsafe_slice`: *(unused)*.
   - `unsafe_str`: enables unsafe use in [`str`][mod@str].
   - `unsafe_string`: enables unsafe use in [`string`].
   - `unsafe_sync`: *(unused)*.
+  - `unsafe_task`: provides an implementation of [coroutines][task::coroutine].
   - `unsafe_thread`: *(unused)*.
 - `safe`: forbids unsafe at the crate level.
 - `safest`: forbids unsafe recursively (unused).

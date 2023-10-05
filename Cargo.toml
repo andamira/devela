@@ -43,8 +43,10 @@ no_std = [] # enables functionality incompatible with `std` (unused)
 
 #* platform specific features *#
 
-linux = ["os"] # enables os::linux functionality
+linux = [] # enables os::linux functionality
 linux_unsafe = ["linux", "unsafe_linux"]
+term = []
+term_unsafe = ["term", "unsafe_term"]
 # wasm = []
 # windows = []
 # macos = []
@@ -53,10 +55,12 @@ linux_unsafe = ["linux", "unsafe_linux"]
 
 #* modules features *#
 
-full = [ # enables all the modules (except the platform-specific ones above)
+full = [ # enables all the modules
 	"ascii", "char", "cmp", "codegen", "convert", "fmt", "future", "mem", "num",
-	"ops", "option", "os", "path", "result", "slice", "str", "string", "sync",
+	"ops", "option", "path", "result", "slice", "str", "string", "sync",
 	"task", "thread",
+	# os sub-modules:
+	"linux", "term",
 	]
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
@@ -83,7 +87,6 @@ mem = ["bytemuck"]
 num = []
 ops = []
 option = []
-os = []
 path = []
 result = []
 slice = []
@@ -105,7 +108,6 @@ mem_unsafe = ["mem", "unsafe_mem"]
 num_unsafe = ["num", "unsafe_num"]
 ops_unsafe = ["ops", "unsafe_ops"]
 option_unsafe = ["option", "unsafe_option"]
-os_unsafe = ["os", "unsafe_os"]
 path_unsafe = ["path", "unsafe_path"]
 result_unsafe = ["result", "unsafe_result"]
 slice_unsafe = ["slice", "unsafe_slice"]
@@ -119,10 +121,10 @@ thread_unsafe = ["thread", "unsafe_thread"]
 #* safety features *#
 
 unsafe = [ # enables unsafe features in this crate
-	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_codegen", "unsafe_convert", "unsafe_fmt",
-	"unsafe_future", "unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_option",
-	"unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_str", "unsafe_string", "unsafe_sync",
-	"unsafe_task", "unsafe_thread",
+	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_codegen", "unsafe_convert",
+	"unsafe_fmt", "unsafe_future", "unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_option",
+	"unsafe_os", "unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_str", "unsafe_string",
+	"unsafe_sync", "unsafe_task", "unsafe_thread",
 	]
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
@@ -135,16 +137,18 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_num = [] # enables unsafe constructors and bytemuck's traits
 	unsafe_ops = [] # (unused)
 	unsafe_option = [] # (unused)
-	unsafe_os = [ # enables unsafe OS functionality
-		"unsafe_linux"]
+	unsafe_os = [ # enables unsafe OS functionality:
+		"unsafe_linux", "unsafe_term",
+		]
 		unsafe_linux = [] # enables linux syscalls
+		unsafe_term = [] # (unused)
 	unsafe_path = [] # (unused)
 	unsafe_result = [] # (unused)
 	unsafe_slice = [] # (unused)
 	unsafe_str = [] # enables unsafe use in `str`
 	unsafe_string = [] # enables unsafe use in `string`
 	unsafe_sync = [] # (unused)
-	unsafe_task = [] # (unused)
+	unsafe_task = [] # enables a coroutines implementation.
 	unsafe_thread = [] # (unused)
 safe = [] # forbids unsafe in this crate
 safest = ["safe"] # forbids `unsafe` recursively (unused)

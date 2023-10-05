@@ -3,29 +3,28 @@
 //! OS-specific, extends [`std::os`].
 //
 
-/* always compiled for internal use */
+mod print;
 
-/* only compiled with the `os` feature */
-
-#[cfg(all(feature = "linux", feature = "os"))]
+#[cfg(feature = "linux")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
 pub mod linux;
 
-#[cfg(feature = "os")]
-mod print;
-#[cfg(feature = "os")]
+#[cfg(feature = "term")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "term")))]
 pub mod term;
 
 /* re-exports */
 
-#[cfg(feature = "os")]
 pub use all::*;
-#[cfg(feature = "os")]
 pub(crate) mod all {
+    #[doc(inline)]
+    pub use super::print::*;
+
     #[cfg(feature = "linux")]
     #[doc(inline)]
     pub use super::linux::all::*;
 
+    #[cfg(feature = "term")]
     #[doc(inline)]
-    pub use super::{print::*, term::*};
+    pub use super::term::*;
 }

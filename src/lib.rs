@@ -115,11 +115,7 @@ pub mod option;
 #[cfg(all(not(feature = "option"), not(test)))]
 pub(crate) mod option; // the "option" feature is disabled
 
-#[cfg(any(feature = "os", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "os")))]
 pub mod os;
-#[cfg(all(not(feature = "os"), not(test)))]
-pub(crate) mod os; // the "os" feature is disabled
 
 #[cfg(any(feature = "path", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "path")))]
@@ -223,7 +219,6 @@ pub mod all {
     pub use super::option::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "os")]
     pub use super::os::all::*;
 
     #[doc(inline)]

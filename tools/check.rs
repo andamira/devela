@@ -24,9 +24,11 @@ use toml_edit::Document;
 
 /* global configuration */
 
-const ROOT_MODULES: [&str; 20] = [
+const ROOT_MODULES: [&str; 21] = [
     "ascii", "char", "cmp", "codegen", "convert", "fmt", "future", "mem", "num", "ops", "option",
-    "os", "path", "result", "slice", "str", "string", "sync", "task", "thread",
+    "path", "result", "slice", "str", "string", "sync", "task", "thread",
+    // os sub-modules:
+    "linux", "term",
 ];
 
 const STD_ARCHES: &[&str] = &[
