@@ -7,10 +7,10 @@
 
 /* only compiled with the `task` feature */
 
-#[cfg(all(feature = "task", feature = "alloc"))]
+#[cfg(all(feature = "task", feature = "unsafe_task", feature = "alloc"))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "char", feature = "alloc")))
+    doc(cfg(all(feature = "unsafe_task", feature = "alloc")))
 )]
 pub mod coroutine;
 
@@ -27,6 +27,6 @@ pub(crate) mod all {
     pub use super::reexports::*;
 
     #[doc(inline)]
-    #[cfg(feature = "alloc")]
+    #[cfg(all(feature = "unsafe_task", feature = "alloc"))]
     pub use super::coroutine::*;
 }
