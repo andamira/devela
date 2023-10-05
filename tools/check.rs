@@ -4,8 +4,9 @@
 //! toml_edit = "0.20"
 //! itertools = "0.11"
 //! lexopt = "0.3"
-//! devela = { version = "0.13", features = ["std"] }
+//! devela = { version = "0.14", features = ["std", "path", "codegen"] }
 //! ```
+//!
 // This script needs [rusts-cript](https://crates.io/crates/rust-script) to run.
 
 use devela::all::{crate_root, iif, sf};
@@ -23,9 +24,9 @@ use toml_edit::Document;
 
 /* global configuration */
 
-const ROOT_MODULES: [&str; 18] = [
-    "ascii", "char", "cmp", "codegen", "convert", "fmt", "mem", "num", "ops", "option", "os",
-    "path", "result", "slice", "str", "string", "sync", "thread",
+const ROOT_MODULES: [&str; 20] = [
+    "ascii", "char", "cmp", "codegen", "convert", "fmt", "future", "mem", "num", "ops", "option",
+    "os", "path", "result", "slice", "str", "string", "sync", "task", "thread",
 ];
 
 const STD_ARCHES: &[&str] = &[

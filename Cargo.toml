@@ -53,9 +53,10 @@ linux_unsafe = ["linux", "unsafe_linux"]
 
 #* modules features *#
 
-full = [ # enables all the modules.
-	"ascii", "char", "cmp", "codegen", "convert", "fmt", "mem", "num", "ops",
-	"option", "os", "path", "result", "slice", "str", "string", "sync", "thread",
+full = [ # enables all the modules (except the platform-specific ones above)
+	"ascii", "char", "cmp", "codegen", "convert", "fmt", "future", "mem", "num",
+	"ops", "option", "os", "path", "result", "slice", "str", "string", "sync",
+	"task", "thread",
 	]
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
@@ -67,6 +68,8 @@ texts = [ # enables all *text* related sub-modules
 	texts_unsafe = [
 		"ascii_unsafe", "char_unsafe", "fmt_unsafe", "str_unsafe", "string_unsafe"
 		]
+async = ["future", "task"]
+	async_unsafe = ["future_unsafe", "task_unsafe"]
 
 # single modules (18):
 ascii = []
@@ -75,6 +78,7 @@ cmp = []
 codegen = ["devela_macros"]
 convert = ["az"]
 fmt = []
+future = []
 mem = ["bytemuck"]
 num = []
 ops = []
@@ -86,6 +90,7 @@ slice = []
 str = ["const-str"]
 string = ["unicode-segmentation"]
 sync = ["atomic", "portable-atomic"]
+task = []
 thread = []
 
 # single modules with unsafe support:
@@ -95,6 +100,7 @@ cmp_unsafe = ["cmp", "unsafe_cmp"]
 codegen_unsafe = ["codegen", "unsafe_codegen"]
 convert_unsafe = ["convert", "unsafe_convert"]
 fmt_unsafe = ["fmt", "unsafe_fmt"]
+future_unsafe = ["future", "unsafe_future"]
 mem_unsafe = ["mem", "unsafe_mem"]
 num_unsafe = ["num", "unsafe_num"]
 ops_unsafe = ["ops", "unsafe_ops"]
@@ -106,6 +112,7 @@ slice_unsafe = ["slice", "unsafe_slice"]
 str_unsafe = ["str", "unsafe_str"]
 string_unsafe = ["string", "unsafe_string"]
 sync_unsafe = ["sync", "unsafe_sync"]
+task_unsafe = ["task", "unsafe_task"]
 thread_unsafe = ["thread", "unsafe_thread"]
 
 
@@ -113,8 +120,9 @@ thread_unsafe = ["thread", "unsafe_thread"]
 
 unsafe = [ # enables unsafe features in this crate
 	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_codegen", "unsafe_convert", "unsafe_fmt",
-	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_option", "unsafe_path",
-	"unsafe_result", "unsafe_slice", "unsafe_str", "unsafe_string", "unsafe_sync", "unsafe_thread",
+	"unsafe_future", "unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_os", "unsafe_option",
+	"unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_str", "unsafe_string", "unsafe_sync",
+	"unsafe_task", "unsafe_thread",
 	]
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
@@ -122,6 +130,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_codegen = [] # (unused)
 	unsafe_convert = [] # enables using `MaybeUninit` for array initalization
 	unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait
+	unsafe_future = [] # (unused)
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
 	unsafe_num = [] # enables unsafe constructors and bytemuck's traits
 	unsafe_ops = [] # (unused)
@@ -135,6 +144,7 @@ unsafe = [ # enables unsafe features in this crate
 	unsafe_str = [] # enables unsafe use in `str`
 	unsafe_string = [] # enables unsafe use in `string`
 	unsafe_sync = [] # (unused)
+	unsafe_task = [] # (unused)
 	unsafe_thread = [] # (unused)
 safe = [] # forbids unsafe in this crate
 safest = ["safe"] # forbids `unsafe` recursively (unused)

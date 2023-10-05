@@ -26,21 +26,26 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         feature = "unsafe_codegen",
         feature = "unsafe_convert",
         feature = "unsafe_fmt",
+        feature = "unsafe_future",
         feature = "unsafe_mem",
         feature = "unsafe_num",
         feature = "unsafe_ops",
         feature = "unsafe_option",
+        //
         feature = "unsafe_os", // includes: unsafe_{linux}
-        feature = "unsafe_linux", //
+        feature = "unsafe_linux",
+        //
         feature = "unsafe_path",
         feature = "unsafe_result",
         feature = "unsafe_slice",
         feature = "unsafe_str",
         feature = "unsafe_string",
         feature = "unsafe_sync",
+        feature = "unsafe_task",
+        feature = "unsafe_thread",
     )
 ))]
-compile_error!("You can't enable the `safe` and `unsafe*` features at the same time.");
+compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
 
 /* root modules */
 
@@ -79,6 +84,12 @@ pub(crate) mod convert; // the "convert" feature is disabled
 pub mod fmt;
 // #[cfg(all(not(feature = "fmt"), not(test)))]
 // pub(crate) mod fmt; // the "fmt" feature is disabled
+
+#[cfg(any(feature = "future", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "future")))]
+pub mod future;
+#[cfg(all(not(feature = "future"), not(test)))]
+pub(crate) mod future; // the "future" feature is disabled
 
 #[cfg(any(feature = "mem", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
@@ -146,6 +157,12 @@ pub mod sync;
 #[cfg(all(not(feature = "sync"), not(test)))]
 pub(crate) mod sync; // the "sync" feature is disabled
 
+#[cfg(any(feature = "task", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "task")))]
+pub mod task;
+#[cfg(all(not(feature = "task"), not(test)))]
+pub(crate) mod task; // the "task" feature is disabled
+
 #[cfg(any(feature = "thread", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "thread")))]
 pub mod thread;
@@ -182,6 +199,10 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "fmt")]
     pub use super::fmt::all::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "future")]
+    pub use super::future::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "mem")]
@@ -228,6 +249,10 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "sync")]
     pub use super::sync::all::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "task")]
+    pub use super::task::all::*;
 
     #[allow(unused)] // only contains "std" for now
     #[doc(inline)]

@@ -26,17 +26,11 @@ mod tests;
 /* re-exports */
 
 #[cfg(feature = "num")]
+mod reexports;
+
+#[cfg(feature = "num")]
 pub use all::*;
 #[cfg(feature = "num")]
 pub(crate) mod all {
-    pub use super::{always_fns::*, non_range::*, non_specific::*, range::*};
+    pub use super::{always_fns::*, non_range::*, non_specific::*, range::*, reexports::*};
 }
-
-#[doc = "A signed integer that is known not to equal zero.\n\n"]
-#[doc = "*Reexported from"]
-#[doc = "`core::`[`num`](https://doc.rust-lang.org/core/num)*.\n\n---"]
-pub use core::num::{NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize};
-#[doc = "An unsigned integer that is known not to equal zero.\n\n"]
-#[doc = "*Reexported from"]
-#[doc = "`core::`[`num`](https://doc.rust-lang.org/core/num)*.\n\n---"]
-pub use core::num::{NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize};
