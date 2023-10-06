@@ -4,7 +4,7 @@
 //!
 //! It also reexports the [`Atomic`] type from the
 //! [`atomic`](https://docs.rs/atomic) crate,
-//! and some useful definitions from `libcore`.
+//! and some useful definitions from `core`.
 //
 
 /* reexport from the `atomic` crate */

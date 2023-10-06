@@ -5,7 +5,10 @@
 
 // warnings
 #![warn(missing_docs, clippy::all)]
-#![allow(clippy::wrong_self_convention)] // allow `is_` methods with owned self
+#![allow(
+    clippy::module_inception, // allow modules with the same name as its parent
+    clippy::wrong_self_convention, // allow `is_` methods having an owned self
+)]
 // nightly, safety, environment
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
@@ -34,6 +37,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         //
         feature = "unsafe_os", // includes: unsafe_{linux}
         feature = "unsafe_linux",
+        feature = "unsafe_term",
         //
         feature = "unsafe_path",
         feature = "unsafe_result",
@@ -219,6 +223,7 @@ pub mod all {
     pub use super::option::all::*;
 
     #[doc(inline)]
+    // no `os` feature, just for platform sub-modules
     pub use super::os::all::*;
 
     #[doc(inline)]
@@ -260,6 +265,10 @@ pub mod prelude {
     #[doc(inline)]
     #[cfg(feature = "convert")]
     pub use crate::convert::all::{FromPrimitives, IntoPrimitives};
+
+    #[doc(inline)]
+    #[cfg(feature = "num")]
+    pub use crate::num::all::Num;
 
     #[doc(inline)]
     #[cfg(feature = "ops")]

@@ -8,18 +8,26 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [Unreleased]
 
 ### Added
-- add optional dependency: `unicode-segmentation`.
-- new trait `Egc`.
-- new structs: `StringEgc`, `ArrayU8Egc`, `ArrayU8NonNulEgc`.
+- new modules: `future`, `task`.
+- new features: `future`, `future_unsafe`, `unsafe_future`, `task`, `task_unsafe`, `unsafe_task`, `async`, `async_unsafe`, `term`, `term_unsafe`, `unsafe_term`.
 - new type aliases: `Egc16`, `Egc32`, `Egc64`, `Egc128`, `NonNulEgc8`, `NonNulEgc16`, `NonNulEgc32`, `NonNulEgc64`, `NonNulEgc128`.
+- new structs: `StringEgc`, `ArrayU8Egc`, `ArrayU8NonNulEgc`, `LiteCoroutine`, `LiteCoroutineExecutor`, `LiteCoroutineWaiter`, `LiteCoroutineWaker`.
 - new optional dependency: `unicode-segmentation`.
+- re-export std's items from `future` and `task`.
+- new traits `Egc`, `Num`.
 
 ### Removed
-- remove features: `lean`, `leanest`, `chars`, `strings`.
+- remove macro: `manifest_dir`.
+- remove features: `lean`, `leanest`, `chars`, `strings`, `os`, `os_unsafe`.
 - remove unneded conversion impls from chars to strings.
+
+### Changed
+- add features `linux`, `term` to `full`.
 
 ### Fixed
 - do not enable the empty `default` feature.
+- improve re-exports rustdoc tags.
+- fix `core::num` re-exports.
 - improve CIs.
 
 ## [0.14.0] - 2023-10-04

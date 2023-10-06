@@ -1,6 +1,6 @@
 // devela::num::trait
 //
-//! A common numeric trait for 
+//!
 //
 
 use super::*;

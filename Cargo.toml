@@ -9,7 +9,7 @@ name = "devela"
 description = "rust development helper & extension utilities"
 version = "0.14.0"
 edition = "2021"
-rust-version = "1.72.1" # sync with readme, tools/check* & .github/*/check.yml
+rust-version = "1.72.1" # sync with readme & .github/*/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
@@ -59,7 +59,7 @@ full = [ # enables all the modules
 	"ascii", "char", "cmp", "codegen", "convert", "fmt", "future", "mem", "num",
 	"ops", "option", "path", "result", "slice", "str", "string", "sync",
 	"task", "thread",
-	# os sub-modules:
+	# os platform sub-modules:
 	"linux", "term",
 	]
 	full_unsafe = ["full", "unsafe"]
@@ -75,7 +75,7 @@ texts = [ # enables all *text* related sub-modules
 async = ["future", "task"]
 	async_unsafe = ["future_unsafe", "task_unsafe"]
 
-# single modules (18):
+# single modules (19):
 ascii = []
 char = []
 cmp = []
@@ -96,7 +96,7 @@ sync = ["atomic", "portable-atomic"]
 task = []
 thread = []
 
-# single modules with unsafe support:
+# single modules with unsafe support (19):
 ascii_unsafe = ["ascii", "unsafe_ascii"]
 char_unsafe = ["char", "unsafe_char"]
 cmp_unsafe = ["cmp", "unsafe_cmp"]
@@ -120,11 +120,12 @@ thread_unsafe = ["thread", "unsafe_thread"]
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate
-	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_codegen", "unsafe_convert",
-	"unsafe_fmt", "unsafe_future", "unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_option",
-	"unsafe_os", "unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_str", "unsafe_string",
-	"unsafe_sync", "unsafe_task", "unsafe_thread",
+unsafe = [ # enables unsafe features in this crate (20)
+	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_codegen",
+	"unsafe_convert", "unsafe_fmt", "unsafe_future", "unsafe_mem",
+	"unsafe_num", "unsafe_ops", "unsafe_option", "unsafe_os",
+	"unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_str",
+	"unsafe_string", "unsafe_sync", "unsafe_task", "unsafe_thread",
 	]
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
