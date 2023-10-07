@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Changed
+- update MSRV to `1.72.1`.
+
+### Fixed
+- update intra-doc links.
+- refactor manifest.
+- update keywords.
+- update docs.
+
 ## [0.6.1] - 2023-09-02
 
 ### Added
