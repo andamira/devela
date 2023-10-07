@@ -28,9 +28,9 @@ pub use all::*;
 pub(crate) mod all {
     pub use super::{always_fns::*, char::AsciiChar, fns::*};
 
-    #[cfg(feature = "const-str")]
+    #[cfg(feature = "depend")]
     pub use super::reexport_const_str::*;
 }
 
-#[cfg(all(feature = "ascii", feature = "const-str"))]
+#[cfg(all(feature = "ascii", feature = "depend"))]
 mod reexport_const_str;

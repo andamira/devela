@@ -30,6 +30,8 @@
 ///
 /// [0]: super::Ansi#ansi-escape-codes
 #[macro_export]
+#[cfg(feature = "depend")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "depend")))]
 macro_rules! ansib {
     ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::codegen::paste! {
         $crate::str::str_concat_bytes!(
@@ -38,6 +40,7 @@ macro_rules! ansib {
     }};
 }
 #[doc(inline)]
+#[cfg(feature = "depend")]
 pub use ansib;
 
 /// Concatenates [`Ansi` escape codes][0], and returns a [`&str`].
@@ -71,6 +74,8 @@ pub use ansib;
 ///
 /// [0]: super::Ansi#ansi-escape-codes
 #[macro_export]
+#[cfg(feature = "depend")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "depend")))]
 macro_rules! ansi {
     ($($arg:tt)*) => {
         if cfg!(feature = "unsafe_str") {
@@ -88,6 +93,7 @@ macro_rules! ansi {
     };
 }
 #[doc(inline)]
+#[cfg(feature = "depend")]
 pub use ansi;
 
 /// Prints concatenated [`Ansi` escape codes][0]
@@ -110,7 +116,7 @@ pub use ansi;
 ///
 /// [0]: super::Ansi#ansi-escape-codes
 #[cfg(any(
-    all(feature = "std", not(miri)),
+    all(feature = "std", feature = "depend", not(miri)),
     all(
         any(
             target_arch = "x86_64",
@@ -120,6 +126,7 @@ pub use ansi;
             target_arch = "riscv32",
             target_arch = "riscv64"
         ),
+        feature = "depend",
         feature = "linux",
         feature = "unsafe_linux",
         not(miri),
@@ -127,7 +134,7 @@ pub use ansi;
 ))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(any(feature = "std", feature = "linux_unsafe")))
+    doc(cfg(all(feature = "depend", any(feature = "std", feature = "linux_unsafe"))))
 )]
 #[macro_export]
 macro_rules! ansip {
@@ -146,10 +153,12 @@ macro_rules! ansip {
             target_arch = "riscv32",
             target_arch = "riscv64"
         ),
+        feature = "depend",
         feature = "linux",
         feature = "unsafe_linux",
         not(miri),
     )
 ))]
 #[doc(inline)]
+#[cfg(feature = "depend")]
 pub use ansip;

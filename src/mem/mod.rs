@@ -23,8 +23,8 @@ pub(crate) mod all {
     pub use super::always_fns::*;
 }
 
+#[cfg(all(feature = "mem", feature = "depend"))]
 // Reexported [`bytemuck`](https://docs.rs/bytemuck)'s crate.
 // Gives small utilities for casting between plain data types.
 #[doc(no_inline)]
-#[cfg(feature = "bytemuck")]
-pub use ::bytemuck;
+pub use depend::bytemuck;

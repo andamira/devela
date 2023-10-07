@@ -1,12 +1,12 @@
 [workspace]
 
-members = [".", "macros"]
+members = [".", "macros", "depend"]
 
 
 [package]
 
 name = "devela"
-description = "rust development helper & extension utilities"
+description = "Development extensions for the Rust Standard Library"
 version = "0.14.0"
 edition = "2021"
 rust-version = "1.72.1" # sync with readme & .github/*/check.yml
@@ -33,11 +33,9 @@ publish = true
 #* environment features *#
 
 std = [ # disables `no_std` compatibility and enables `std` functionality
-	"alloc",
-	"atomic?/std",
-	"bytemuck?/extern_crate_std"]
+	"alloc", "depend?/std" ]
 alloc = [ # enables `alloc` functionality
-	"bytemuck?/extern_crate_alloc"]
+	"depend?/alloc" ]
 no_std = [] # enables functionality incompatible with `std` (unused)
 
 
@@ -76,23 +74,23 @@ async = ["future", "task"]
 	async_unsafe = ["future_unsafe", "task_unsafe"]
 
 # single modules (19):
-ascii = []
+ascii = ["depend?/const-str"]
 char = []
 cmp = []
-codegen = ["devela_macros"]
-convert = ["az"]
+codegen = ["depend?/devela_macros"]
+convert = ["depend?/az"]
 fmt = []
 future = []
-mem = ["bytemuck"]
+mem = ["depend?/bytemuck"]
 num = []
 ops = []
-option = []
+option = ["depend?/const-str"]
 path = []
 result = []
 slice = []
-str = ["const-str"]
-string = ["unicode-segmentation"]
-sync = ["atomic", "portable-atomic"]
+str = ["depend?/const-str"]
+string = ["depend?/unicode-segmentation"]
+sync = ["depend?/atomic", "depend?/portable-atomic"]
 task = []
 thread = []
 
@@ -151,16 +149,19 @@ unsafe = [ # enables unsafe features in this crate (20)
 	unsafe_sync = [] # (unused)
 	unsafe_task = [] # enables a coroutines implementation.
 	unsafe_thread = [] # (unused)
-safe = [] # forbids unsafe in this crate
+safe = [] # forbids `unsafe` in this crate
 safest = ["safe"] # forbids `unsafe` recursively (unused)
 unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
 
 
 #* nightly features *#
 
-nightly = [] # enables nightly features
+nightly = [ # enables nightly features
+	"depend?/nightly",
+	]
 nightly_docs = [ # enables features for docs.rs
-	"nightly", "full", "std", "unsafe", "linux",
+	"nightly", "full", "std", "unsafe", "depend",
+	"depend?/nightly_docs",
 ]
 
 
@@ -168,30 +169,17 @@ nightly_docs = [ # enables features for docs.rs
 
 [dependencies]
 
+# the only mandatory external dependency
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 
-#* optional dependencies*#
-
-devela_macros = { version  = "0.6.1", optional = true }
-#devela_macros = { path = "./macros", optional = true }
-az = { version = "1.2.1", default-features = false, optional = true }
-bytemuck = { version = "1.13.1", default-features = false, optional = true }
-const-str = { version = "0.5.6", default-features = false, optional = true }
-unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
-[dependencies.atomic]
-version = "0.6.0"
-default-features = false
-optional = true
-features = ["fallback"]
-[dependencies.portable-atomic]
-version = "1.4.3"
-default-features = false
-optional = true
-features = ["fallback", "float"]
+# all the optional external dependencies
+depend = { package = "devela_depend", version = "0.1.0", optional = true }
+#depend = { package = "devela_depend", path = "./depend", optional = true }
 
 
 [dev-dependencies]
-devela = { path = ".", features = ["full"] }
+
+devela = { path = ".", features = ["full", "depend"] }
 
 
 # ------------------------------------------------------------------------------

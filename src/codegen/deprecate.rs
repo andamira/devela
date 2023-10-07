@@ -3,7 +3,7 @@
 //!
 //
 
-/// Set a deprecated feature in order to display a warning if it's enabled.
+/// Set a deprecated feature in order to display a warning when it's enabled.
 ///
 /// You can only call this macro once per deprecated feature.
 ///

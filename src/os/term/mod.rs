@@ -10,14 +10,13 @@
 
 mod ansi_codes;
 mod macros;
-pub use {
-    // ansi_codes::Ansi,
-    ansi_codes::{Ansi, AnsiColor3, AnsiColor8},
-    macros::{ansi, ansib},
-};
+
+pub use ansi_codes::{Ansi, AnsiColor3, AnsiColor8};
+#[cfg(feature = "depend")]
+pub use macros::{ansi, ansib};
 
 #[cfg(any(
-    all(feature = "std", not(miri)),
+    all(feature = "std", feature = "depend", not(miri)),
     all(
         any(
             target_arch = "x86_64",
@@ -27,6 +26,7 @@ pub use {
             target_arch = "riscv32",
             target_arch = "riscv64"
         ),
+        feature = "depend",
         feature = "linux",
         feature = "unsafe_linux",
         not(miri),

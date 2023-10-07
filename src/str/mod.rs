@@ -21,9 +21,9 @@ pub use all::*;
 pub(crate) mod all {
     pub use super::ext::StrExt;
 
-    #[cfg(feature = "const-str")]
+    #[cfg(feature = "depend")]
     pub use super::reexport_const_str::*;
 }
 
-#[cfg(all(feature = "str", feature = "const-str"))]
+#[cfg(all(feature = "str", feature = "depend"))]
 mod reexport_const_str;

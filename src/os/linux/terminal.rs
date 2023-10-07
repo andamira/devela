@@ -5,7 +5,7 @@
 
 use super::{LinuxTerminalSize, LinuxTermios};
 
-#[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+#[cfg(all(feature = "sync", feature = "depend"))]
 use crate::sync::atomic::{Atomic, AtomicOrdering};
 
 /// State of the terminal saved globally, that can be restored from anywhere.
@@ -18,25 +18,29 @@ use crate::sync::atomic::{Atomic, AtomicOrdering};
 ///     LinuxTerminal::restore_saved_state().unwrap();
 /// }
 /// ```
-#[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+///
+/// # Features
+/// Makes use of `depend::{atomic, bytemuck}` dependencies to save the terminal
+/// state in an [`Atomic`].
+#[cfg(all(feature = "sync", feature = "depend"))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "bytemuck")))
+    doc(cfg(all(feature = "sync", feature = "depend")))
 )]
 pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios::new());
 
 /// Linux terminal manager.
 ///
 /// # Features
-/// With `sync` and `bytemuck` enabled, the terminal state is saved in
+/// With `sync` and `depend` enabled, the terminal state is saved in
 /// [`LINUX_TERMINAL_STATE`] and restored on drop.
 #[derive(Debug, Default)]
 pub struct LinuxTerminal;
 
-#[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+#[cfg(all(feature = "sync", feature = "depend"))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "bytemuck")))
+    doc(cfg(all(feature = "sync", feature = "depend")))
 )]
 impl Drop for LinuxTerminal {
     fn drop(&mut self) {
@@ -49,11 +53,11 @@ impl LinuxTerminal {
     /// Returns a new linux terminal configured in canonical (cooked) mode.
     ///
     /// # Features
-    /// With `sync` and `bytemuck` enabled,
+    /// With `sync` and `depend` enabled,
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
     #[inline]
     pub fn new() -> Result<Self, isize> {
-        #[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+        #[cfg(all(feature = "sync", feature = "depend"))]
         Self::save_state()?;
         Ok(Self)
     }
@@ -64,11 +68,11 @@ impl LinuxTerminal {
     /// by character, rather than line by line.
     ///
     /// # Features
-    /// With `sync` and `bytemuck` enabled,
+    /// With `sync` and `depend` enabled,
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
     #[inline]
     pub fn new_raw() -> Result<Self, isize> {
-        #[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+        #[cfg(all(feature = "sync", feature = "depend"))]
         Self::save_state()?;
 
         let new = Self::new()?;
@@ -77,10 +81,10 @@ impl LinuxTerminal {
     }
 
     /// Saves the current terminal state into [`LINUX_TERMINAL_STATE`].
-    #[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+    #[cfg(all(feature = "sync", feature = "mem", feature = "depend"))]
     #[cfg_attr(
         feature = "nightly",
-        doc(cfg(all(feature = "sync", feature = "bytemuck")))
+        doc(cfg(all(feature = "sync", feature = "mem", feature = "depend")))
     )]
     pub fn save_state() -> Result<(), isize> {
         LINUX_TERMINAL_STATE.store(LinuxTermios::get_state()?, AtomicOrdering::Relaxed);
@@ -89,10 +93,10 @@ impl LinuxTerminal {
 
     /// Restores the current terminal state into [`LINUX_TERMINAL_STATE`].
     #[inline]
-    #[cfg(all(feature = "sync", feature = "atomic", feature = "bytemuck"))]
+    #[cfg(all(feature = "sync", feature = "mem", feature = "depend"))]
     #[cfg_attr(
         feature = "nightly",
-        doc(cfg(all(feature = "sync", feature = "bytemuck")))
+        doc(cfg(all(feature = "sync", feature = "mem", feature = "depend")))
     )]
     pub fn restore_saved_state() -> Result<(), isize> {
         LinuxTermios::set_state(LINUX_TERMINAL_STATE.load(AtomicOrdering::Relaxed))

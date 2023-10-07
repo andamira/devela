@@ -29,12 +29,12 @@ Single modules:
 - `char`, `char_unsafe`: enables the [`mod@char`] module.
 - `cmp`, `cmp_unsafe`: enables the [`cmp`] module.
 - `codegen`, `codegen_unsafe`: enables the [`codegen`] module
-  and the [`devela_macros`] dependency.
+  and leverages the [`devela_macros`] dependency.
 - `convert`, `convert_unsafe`: enables the [`convert`] module.
 - `fmt`, `fmt_unsafe`: enables the [`fmt`] module.
 - `future`, `fmt_unsafe`: enables the [`future`] module.
 - `mem`, `mem_unsafe`: enables the [`mem`] module
-  and the [`bytemuck`] dependency.
+  and leverages the [`bytemuck`] dependency.
 - `num`, `num_unsafe`: enables the [`num`] module.
 - `ops`, `ops_unsafe`: enables the [`ops`] module
 - `option`, `option_unsafe`: enables the [`option`] module
@@ -43,11 +43,11 @@ Single modules:
 - `result`, `result_unsafe`: enables the [`result`] module
 - `slice`, `slice_unsafe`: enables the [`mod@slice`] module
 - `str`, `str_unsafe`: enables the [`mod@str`] module
-  and the [`const_str`] dependency.
+  and leverages the [`const-str`] external dependency.
 - `string`, `string_unsafe`: enables the [`string`] module.
-  and the [`unicode_segmentation`] dependency.
+  and leverages the [`unicode-segmentation`] external dependency.
 - `sync`, `sync_unsafe`: enables the [`sync`] module
-  and the [`atomic`] and [`portable_atomic`] dependencies.
+  and leverages the [`atomic`] and [`portable_atomic`] external dependencies.
 - `task`, `task_unsafe`: enables the [`task`] module
 - `thread`, `thread_unsafe`: enables the [`thread`] module
 
@@ -103,3 +103,10 @@ Currently only used for improved documentation.
 [`as_bytes`]: mem::as_bytes
 [`as_bytes_mut`]: mem::as_bytes_mut
 [`as_bytes_sized`]: mem::as_bytes_sized
+
+[`atomic`]: depend::atomic
+[`bytemuck`]: depend::bytemuck
+[`devela_macros`]: depend::devela_macros
+[`const-str`]: depend::const_str
+[`portable_atomic`]: depend::portable_atomic
+[`unicode-segmentation`]: depend::unicode_segmentation

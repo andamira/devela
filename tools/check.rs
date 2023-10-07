@@ -67,17 +67,29 @@ fn main() -> Result<()> {
         sf! { headline(0, &format!["`full` test checking std+[safe|unsafe]):"]); }
 
         // WAITING: https://github.com/rust-lang/cargo/issues/1983 (colored output)
+
+        // std (un)safe
         run_cargo(&msrv, cmd, &["-F full,std,safe", "--", "--color=always"])?;
         run_cargo(&msrv, cmd, &["-F full,std,unsafe", "--", "--color=always"])?;
+
+        // std (un)safe + depend
+        sf! { run_cargo(&msrv, cmd, &["-F full,std,safe,depend", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F full,std,unsafe,depend", "--", "--color=always"])?; }
+
+        // no_std (un)safe
         // run_cargo(&msrv, cmd, &["-F full,no_std,safe"])?;
         // run_cargo(&msrv, cmd, &["-F full,no_std,unsafe"])?;
+
+        // no_std (un)safe + depend
+        // run_cargo(&msrv, cmd, &["-F full,no_std,safe,depend"])?;
+        // run_cargo(&msrv, cmd, &["-F full,no_std,unsafe,depend"])?;
     }
 
     /* docs */
 
     if args.docs {
         headline(0, &format!["`full` docs compilation:"]);
-        run_cargo("", "+nightly", &["doc", "-F full,std,unsafe,nightly,linux"])?;
+        run_cargo("", "+nightly", &["doc", "-F nightly_docs"])?;
     }
 
     /* arches */
@@ -90,13 +102,21 @@ fn main() -> Result<()> {
 
         sf! { headline(0, &format!["`full` checking in each architecture ({arch_total}):"]); }
 
+        rust_setup_arches(&msrv)?;
+
         for arch in STD_ARCHES {
-            headline(1, &format!("target arch {arch_count}/{arch_total}"));
+            sf! { headline(1, &format!("std,unsafe: arch {arch_count}/{arch_total}")); }
             run_cargo(&msrv, cmd, &["--target", arch, "-F full,std,unsafe"])?;
             arch_count += 1;
         }
+        for arch in STD_ARCHES {
+            sf! { headline(1, &format!("std,unsafe,depend: arch {arch_count}/{arch_total}")); }
+            run_cargo(&msrv, cmd, &["--target", arch, "-F full,std,unsafe,depend"])?;
+            arch_count += 1;
+        }
+
         for arch in NO_STD_ARCHES {
-            headline(1, &format!("target arch {arch_count}/{arch_total}"));
+            sf! { headline(1, &format!("no_std,unsafe: arch {arch_count}/{arch_total}")); }
             run_cargo(&msrv, cmd, &["--target", arch, "-F full,no_std,unsafe"])?;
             arch_count += 1;
         }
@@ -110,19 +130,30 @@ fn main() -> Result<()> {
 
         sf! { headline(0, &format!["miri testing in each architecture ({arch_total}):"]); }
 
+        rust_setup_arches(&msrv)?;
+
         // std
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
-            headline(1, &format!("target arch {arch_count}/{arch_total}"));
+            sf! { headline(1, &format!("std,unsafe: arch {arch_count}/{arch_total}")); }
             sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
             "-F full,std,unsafe,nightly"])?; }
+            arch_count += 1;
+        }
+
+        // std + depend
+        env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
+        for arch in STD_ARCHES {
+            sf! { headline(1, &format!("std,unsafe,depend: arch {arch_count}/{arch_total}")); }
+            sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
+            "-F full,std,unsafe,nightly,depend"])?; }
             arch_count += 1;
         }
 
         // no_std
         env::remove_var("MIRIFLAGS");
         for arch in STD_ARCHES {
-            headline(1, &format!("target arch {arch_count}/{arch_total}"));
+            sf! { headline(1, &format!("no_std,unsafe: arch {arch_count}/{arch_total}")); }
             sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
             "-F full,no_std,unsafe,nightly"])?; }
             arch_count += 1;
@@ -367,6 +398,20 @@ fn run_cargo(msrv: &str, command: &str, arguments: &[&str]) -> Result<()> {
     } else {
         Ok(())
     }
+}
+
+/// Makes sure to install all the architectures for the current MSRV.
+fn rust_setup_arches(msrv: &str) -> Result<()> {
+    if !msrv.is_empty() {
+        println!("rustup override set {msrv}");
+        sf! { let _ = Command::new("rustup").args(["override", "set", msrv]).status()?; }
+    }
+
+    for ref arch in STD_ARCHES.into_iter().chain(NO_STD_ARCHES.into_iter()) {
+        println!("rustup target add {arch}");
+        sf! { let _ = Command::new("rustup").args(["target", "add", arch]).status()?; }
+    }
+    Ok(())
 }
 
 /// Prints a headline

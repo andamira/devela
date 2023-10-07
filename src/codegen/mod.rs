@@ -39,7 +39,13 @@ pub(crate) mod all {
         const_for::const_for,
         deprecate::deprecate_feature,
         iif::iif,
-        reexports::{cif, compile, compile_attr, paste},
         skip_format::{sf, sfb},
     };
+
+    #[doc(inline)]
+    pub use super::paste::paste;
+
+    #[doc(inline)]
+    #[cfg(feature = "depend")]
+    pub use super::reexports::{cif, compile, compile_attr};
 }
