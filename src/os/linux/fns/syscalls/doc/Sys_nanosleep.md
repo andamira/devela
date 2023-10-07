@@ -18,6 +18,7 @@ use core::time::Duration;
 
 let mut req = LinuxTimespec::from(Duration::from_millis(99));
 let mut rem = LinuxTimespec::default();
+# #[cfg(target_os = "linux")]
 assert_eq![0, unsafe { linux_sys_nanosleep(&mut req, &mut rem) }];
 ```
 

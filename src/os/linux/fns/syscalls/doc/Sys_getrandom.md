@@ -10,6 +10,7 @@ obtain a series of random bytes
 use devela::os::linux::{linux_sys_getrandom};
 
 let mut r = 0u8;
+# #[cfg(target_os = "linux")]
 unsafe { linux_sys_getrandom(&mut r as *mut u8, 1, 0) };
 ```
 

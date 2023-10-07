@@ -9,6 +9,7 @@ Terminates the process with an exit status.
 ```
 use devela::os::linux::linux_sys_exit;
 
+# #[cfg(target_os = "linux")]
 unsafe { linux_sys_exit(0) };
 ```
 

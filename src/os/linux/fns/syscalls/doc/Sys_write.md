@@ -11,11 +11,14 @@ Returns the syscall return value.
 ```
 use devela::os::linux::{LINUX_FILENO, linux_sys_write};
 
+# #[cfg(target_os = "linux")]
+# {
 let buf = "Hello\n".as_bytes();
 let bytes_written: isize = unsafe {
     linux_sys_write(LINUX_FILENO::STDOUT, buf.as_ptr(), buf.len())
 };
 assert![bytes_written > 0];
+# }
 ```
 
 # Safety

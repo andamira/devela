@@ -9,6 +9,7 @@ get process identification
 ```ignore
 use devela::os::linux::{linux_sys_getpid};
 
+# #[cfg(target_os = "linux")]
 let pid: i32 = unsafe { linux_sys_getpid() };
 ```
 
