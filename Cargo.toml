@@ -17,29 +17,39 @@ include = [
 	"/LICENSE-*",
 ]
 categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]
-keywords = ["dev", "helper", "helpers", "extension", "extensions"]
+keywords = ["dev", "helper", "helpers", "extension", "code-generation"]
 publish = true
 
 [lib]
 proc-macro = true
 
+
+# ------------------------------------------------------------------------------
+
 [features]
+
 default = ["alloc", "safe"]
 
-# environment features
+#* environment features *#
+
 std = ["alloc"]
 alloc = []
 
-# safety features
-safe = [] # forbid unsafe at the crate level
-safest = ["safe"] # forbid unsafe recursively
-unsafe = [] # enable the unsafe features (unused)
-unsafest = ["unsafe"] # enable unsafe features recursively
+#* safety features *#
 
-# nightly features
-nightly = [] # used only for enhanced documentation (unused)
-nightly_docs = ["nightly", "alloc"] # features for docs.rs
+unsafe = [] # enables unsafe features in this crate (unused)
+safe = [] # forbids `unsafe` in this crate
+safest = ["safe"] # forbids `unsafe` recursively (unused)
+unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
 
+#* nightly features *#
+
+nightly = [] # enables nightly features
+nightly_docs = [ # enables features for docs.rs
+	"nightly", "std", "unsafe"
+]
+
+# ------------------------------------------------------------------------------
 
 [package.metadata.docs.rs]
 no-default-features = true
