@@ -96,31 +96,6 @@ struct WriteTo<'a> {
     len: usize,
 }
 
-impl<'a> WriteTo<'a> {
-    fn new(buf: &'a mut [u8]) -> Self {
-        WriteTo { buf, len: 0 }
-    }
-
-    #[cfg(not(feature = "unsafe_fmt"))]
-    #[allow(clippy::wrong_self_convention)]
-    fn as_str(self) -> Option<&'a str> {
-        if self.len <= self.buf.len() {
-            Some(from_utf8(&self.buf[..self.len]).expect("invalid utf-8"))
-        } else {
-            None
-        }
-    }
-    #[cfg(feature = "unsafe_fmt")]
-    #[allow(clippy::wrong_self_convention)]
-    fn as_str(self) -> Option<&'a str> {
-        if self.len <= self.buf.len() {
-            Some(unsafe { from_utf8_unchecked(&self.buf[..self.len]) })
-        } else {
-            None
-        }
-    }
-}
-
 impl<'a> fmt::Write for WriteTo<'a> {
     fn write_str(&mut self, s: &str) -> fmt::Result {
         if self.len > self.buf.len() {
@@ -138,6 +113,30 @@ impl<'a> fmt::Write for WriteTo<'a> {
             Err(fmt::Error)
         } else {
             Ok(())
+        }
+    }
+}
+
+impl<'a> WriteTo<'a> {
+    fn new(buf: &'a mut [u8]) -> Self {
+        WriteTo { buf, len: 0 }
+    }
+
+    #[cfg(not(feature = "unsafe_fmt"))]
+    fn as_str(self) -> Option<&'a str> {
+        if self.len <= self.buf.len() {
+            Some(from_utf8(&self.buf[..self.len]).expect("invalid utf-8"))
+        } else {
+            None
+        }
+    }
+    #[cfg(feature = "unsafe_fmt")]
+    fn as_str(self) -> Option<&'a str> {
+        if self.len <= self.buf.len() {
+            // SAFETY: the buffer is always filled from a previous &str
+            Some(unsafe { from_utf8_unchecked(&self.buf[..self.len]) })
+        } else {
+            None
         }
     }
 }
