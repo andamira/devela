@@ -24,7 +24,7 @@ mod skip_format;
 /* re-exports */
 
 #[cfg(feature = "codegen")]
-mod reexports;
+mod reexport;
 
 #[doc(hidden)]
 #[allow(unused)]
@@ -46,6 +46,5 @@ pub(crate) mod all {
     pub use super::paste::paste;
 
     #[doc(inline)]
-    #[cfg(feature = "depend")]
-    pub use super::reexports::{cif, compile, compile_attr};
+    pub use super::reexport::*;
 }

@@ -3,12 +3,12 @@
 //! Linux related constants.
 //
 
-mod errno;
-mod fd;
-mod ioctl;
-mod signal;
-mod syscall;
-mod termios;
+pub(super) mod errno;
+pub(super) mod fd;
+pub(super) mod ioctl;
+pub(super) mod signal;
+pub(super) mod syscall;
+pub(super) mod termios;
 
 pub use all::*;
 pub(crate) mod all {

@@ -25,16 +25,6 @@ mod consts;
 mod fns;
 mod structs;
 
-pub use all::*;
-pub(super) mod all {
-    #[doc(inline)]
-    pub use super::{consts::all::*, io::*, process::*, thread::*};
-
-    #[doc(inline)]
-    #[cfg(all(feature = "unsafe_linux", not(miri)))]
-    pub use super::terminal::*;
-}
-
 /* public modules */
 
 #[cfg(all(feature = "unsafe_linux", not(miri)))]
@@ -56,6 +46,7 @@ pub mod io {
         not(miri),
     ))]
     pub use super::{
+        consts::termios::*,
         fns::{
             linux_eprint, linux_eprintln, linux_get_byte, linux_get_char, linux_get_dirty_char,
             linux_get_line, linux_get_str, linux_get_utf8_bytes, linux_pause_until_char,
@@ -82,6 +73,7 @@ pub mod process {
         not(miri),
     ))]
     pub use super::{
+        consts::signal::*,
         fns::{linux_sig_handler_no_return, linux_sys_exit, linux_sys_rt_sigaction},
         structs::{LinuxSigaction, LinuxSigset},
     };
@@ -103,4 +95,23 @@ pub mod thread {
         fns::{linux_getpid, linux_sleep, linux_sys_getpid, linux_sys_nanosleep},
         structs::LinuxTimespec,
     };
+}
+
+/* re-exports */
+
+// reexport the const structs not-specific to any submodule
+pub use consts::{errno::*, fd::*, ioctl::*, syscall::*};
+
+pub use {io::*, process::*, thread::*};
+
+#[cfg(all(feature = "unsafe_linux", not(miri)))]
+pub use terminal::*;
+
+pub(super) mod all {
+    #[doc(inline)]
+    pub use super::{consts::all::*, io::*, process::*, thread::*};
+
+    #[doc(inline)]
+    #[cfg(all(feature = "unsafe_linux", not(miri)))]
+    pub use super::terminal::*;
 }

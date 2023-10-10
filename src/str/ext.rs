@@ -8,9 +8,9 @@ use core::str::from_utf8;
 #[cfg(feature = "unsafe_str")]
 use core::str::from_utf8_unchecked;
 
-#[cfg(all(feature = "ascii", feature = "unsafe_fmt"))]
+#[cfg(all(feature = "ascii", feature = "fmt", feature = "unsafe_fmt"))]
 use crate::fmt::IntBuf;
-#[cfg(all(feature = "ascii", not(feature = "unsafe_fmt")))]
+#[cfg(all(feature = "ascii", not(all(feature = "fmt", feature = "unsafe_fmt"))))]
 use crate::{ascii::ascii_usize_digits, slice::slice_trim_leading_bytes};
 #[cfg(feature = "ascii")]
 use crate::{ascii::AsciiChar, codegen::iif};
@@ -111,15 +111,15 @@ impl StrExt for str {
             let mut separator_turn = true; // start writing the separator
 
             // safe:
-            #[cfg(not(feature = "unsafe_fmt"))]
+            #[cfg(not(all(feature = "fmt", feature = "unsafe_fmt")))]
             let mut num_buf = ascii_usize_digits(num);
-            #[cfg(not(feature = "unsafe_fmt"))]
+            #[cfg(not(all(feature = "fmt", feature = "unsafe_fmt")))]
             let mut num_bytes = slice_trim_leading_bytes(&num_buf, b'0');
 
             // unsafe:
-            #[cfg(feature = "unsafe_fmt")]
+            #[cfg(all(feature = "fmt", feature = "unsafe_fmt"))]
             let mut num_buf = IntBuf::new();
-            #[cfg(feature = "unsafe_fmt")]
+            #[cfg(all(feature = "fmt", feature = "unsafe_fmt"))]
             let mut num_bytes = num_buf.to_bytes(num);
 
             let mut num_len = num_bytes.len();
@@ -134,13 +134,13 @@ impl StrExt for str {
                     num = index;
 
                     // safe
-                    #[cfg(not(feature = "unsafe_fmt"))]
+                    #[cfg(not(all(feature = "fmt", feature = "unsafe_fmt")))]
                     {
                         num_buf = ascii_usize_digits(num);
                         num_bytes = slice_trim_leading_bytes(&num_buf, b'0');
                     }
                     // unsafe
-                    #[cfg(feature = "unsafe_fmt")]
+                    #[cfg(all(feature = "fmt", feature = "unsafe_fmt"))]
                     {
                         num_bytes = num_buf.to_bytes(num);
                     }

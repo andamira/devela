@@ -13,9 +13,9 @@ use core::ops::{Add, Div, Mul, Neg, Sub};
 /// to support, otherwise they will return `None`.
 ///
 /// Binary operations offer two alternative methods, one for when you want to
-/// transfer ownership of the second element, and and another for when you don't.
-/// Transferring ownership is more efficient for `Copy` types, and a reference
-/// is more appropriate for non-copy types.
+/// transfer ownership of the second element, and another one for when you don't.
+/// Transferring ownership is more efficient for `Copy` types, and using a
+/// reference is more appropriate for non-copy types.
 ///
 /// For the default implementations we try to always offer a meaningful result,
 /// even if the concrete type doesn't support it directly, we do the operation
@@ -70,6 +70,13 @@ pub trait Num {
     /// Computes the absolute value of `self`.
     #[must_use]
     fn abs(&self) -> Option<Self> where Self: Sized { None }
+
+    // /// Computes the exponentiation of `self`.
+    // #[must_use]
+    // fn pow(&self, exp: Self) -> Option<Self> where Self: Sized + Copy { None }
+    // // THINK: type of exp
+    // // THINK: _ref version?
+    // fn pow(&self, exp: Self) -> Option<Self> where Self: Sized + Copy { None }
 }
 
 macro_rules! impl_num {

@@ -30,17 +30,20 @@
 ///
 /// [0]: super::Ansi#ansi-escape-codes
 #[macro_export]
-#[cfg(feature = "depend")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "depend")))]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(feature = "depend", feature = "str")))
+)]
+#[cfg(any(all(feature = "depend", feature = "str"), feature = "const-str"))]
 macro_rules! ansib {
     ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::codegen::paste! {
-        $crate::str::str_concat_bytes!(
+        $crate::depend::const_str::concat_bytes!(
             $($crate::os::term::Ansi::[<$command:upper>] $( ($($arg),*) )? ,)+
         )
     }};
 }
 #[doc(inline)]
-#[cfg(feature = "depend")]
+#[cfg(any(all(feature = "depend", feature = "str"), feature = "const-str"))]
 pub use ansib;
 
 /// Concatenates [`Ansi` escape codes][0], and returns a [`&str`].
@@ -74,8 +77,11 @@ pub use ansib;
 ///
 /// [0]: super::Ansi#ansi-escape-codes
 #[macro_export]
-#[cfg(feature = "depend")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "depend")))]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(feature = "depend", feature = "str")))
+)]
+#[cfg(any(all(feature = "depend", feature = "str"), feature = "const-str"))]
 macro_rules! ansi {
     ($($arg:tt)*) => {
         if cfg!(feature = "unsafe_str") {
@@ -93,7 +99,7 @@ macro_rules! ansi {
     };
 }
 #[doc(inline)]
-#[cfg(feature = "depend")]
+#[cfg(any(all(feature = "depend", feature = "str"), feature = "const-str"))]
 pub use ansi;
 
 /// Prints concatenated [`Ansi` escape codes][0]
@@ -115,50 +121,58 @@ pub use ansi;
 /// See [`ansi!`] and [`ansib`] for the non-printing versions.
 ///
 /// [0]: super::Ansi#ansi-escape-codes
-#[cfg(any(
-    all(feature = "std", feature = "depend", not(miri)),
-    all(
-        any(
-            target_arch = "x86_64",
-            target_arch = "x86",
-            target_arch = "arm",
-            target_arch = "aarch64",
-            target_arch = "riscv32",
-            target_arch = "riscv64"
-        ),
-        feature = "depend",
-        feature = "linux",
-        feature = "unsafe_linux",
-        not(miri),
-    )
-))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "depend", any(feature = "std", feature = "linux_unsafe"))))
+    doc(cfg(all(
+        feature = "depend",
+        feature = "str",
+        any(feature = "std", feature = "linux_unsafe"),
+    )))
 )]
+#[cfg(all(
+    not(miri),
+    any(feature = "const-str", all(feature = "depend", feature = "str"),),
+    any(
+        feature = "std",
+        all(
+            feature = "linux",
+            feature = "unsafe_linux",
+            any(
+                target_arch = "x86_64",
+                target_arch = "x86",
+                target_arch = "arm",
+                target_arch = "aarch64",
+                target_arch = "riscv32",
+                target_arch = "riscv64"
+            )
+        )
+    )
+))]
 #[macro_export]
 macro_rules! ansip {
     ($($arg:tt)*) => {
         $crate::os::term::Ansi::print( $crate::os::term::ansib![ $($arg)* ] );
     };
 }
-#[cfg(any(
-    all(feature = "std", not(miri)),
-    all(
-        any(
-            target_arch = "x86_64",
-            target_arch = "x86",
-            target_arch = "arm",
-            target_arch = "aarch64",
-            target_arch = "riscv32",
-            target_arch = "riscv64"
-        ),
-        feature = "depend",
-        feature = "linux",
-        feature = "unsafe_linux",
-        not(miri),
+
+#[cfg(all(
+    not(miri),
+    any(feature = "const-str", all(feature = "depend", feature = "str"),),
+    any(
+        feature = "std",
+        all(
+            feature = "linux",
+            feature = "unsafe_linux",
+            any(
+                target_arch = "x86_64",
+                target_arch = "x86",
+                target_arch = "arm",
+                target_arch = "aarch64",
+                target_arch = "riscv32",
+                target_arch = "riscv64"
+            )
+        )
     )
 ))]
 #[doc(inline)]
-#[cfg(feature = "depend")]
 pub use ansip;

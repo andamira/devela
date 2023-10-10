@@ -23,14 +23,13 @@ mod fns;
 /* re-exports */
 
 #[cfg(feature = "ascii")]
+mod reexport;
+
+#[cfg(feature = "ascii")]
 pub use all::*;
 #[cfg(feature = "ascii")]
 pub(crate) mod all {
     pub use super::{always_fns::*, char::AsciiChar, fns::*};
 
-    #[cfg(feature = "depend")]
-    pub use super::reexport_const_str::*;
+    pub use super::reexport::*;
 }
-
-#[cfg(all(feature = "ascii", feature = "depend"))]
-mod reexport_const_str;

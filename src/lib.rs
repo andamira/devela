@@ -16,37 +16,24 @@
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
-// safeguards
+// safeguarding: environment, safety
 #[cfg(all(feature = "std", feature = "no_std"))]
 compile_error!("You can't enable the `std` and `no_std` features at the same time.");
 #[cfg(all(
     feature = "safe",
     any(
         feature = "unsafe", // includes all below
-        feature = "unsafe_ascii",
-        feature = "unsafe_char",
-        feature = "unsafe_cmp",
-        feature = "unsafe_codegen",
-        feature = "unsafe_convert",
-        feature = "unsafe_fmt",
-        feature = "unsafe_future",
-        feature = "unsafe_mem",
-        feature = "unsafe_num",
-        feature = "unsafe_ops",
-        feature = "unsafe_option",
+        feature = "unsafe_ascii", feature = "unsafe_char", feature = "unsafe_cmp",
+        feature = "unsafe_codegen", feature = "unsafe_convert", feature = "unsafe_fmt",
+        feature = "unsafe_future", feature = "unsafe_mem", feature = "unsafe_num",
+        feature = "unsafe_ops", feature = "unsafe_option",
         //
         feature = "unsafe_os", // includes: unsafe_{linux, term}
-        feature = "unsafe_linux",
-        feature = "unsafe_term",
+            feature = "unsafe_linux", feature = "unsafe_term",
         //
-        feature = "unsafe_path",
-        feature = "unsafe_result",
-        feature = "unsafe_slice",
-        feature = "unsafe_str",
-        feature = "unsafe_string",
-        feature = "unsafe_sync",
-        feature = "unsafe_task",
-        feature = "unsafe_thread",
+        feature = "unsafe_path", feature = "unsafe_result", feature = "unsafe_slice",
+        feature = "unsafe_str", feature = "unsafe_string", feature = "unsafe_sync",
+        feature = "unsafe_task", feature = "unsafe_thread",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
@@ -170,6 +157,9 @@ pub mod thread;
 // pub(crate) mod thread; // the "thread" feature is disabled
 
 /// All items are re-exported here.
+///
+/// Note that any item tagged with [`depend`] can also be enabled by
+/// manually enabling the associated optional dependency.
 pub mod all {
     #[doc(inline)]
     #[cfg(feature = "ascii")]
@@ -186,17 +176,10 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "codegen")]
     pub use super::codegen::all::*;
-    #[cfg(feature = "devela_macros")]
-    #[doc(inline)]
-    pub use devela_macros::{cif, compile, compile_attr};
 
     #[doc(inline)]
     #[cfg(feature = "convert")]
     pub use super::convert::all::*;
-
-    #[doc(no_inline)]
-    #[cfg(feature = "depend")]
-    pub use super::depend::*;
 
     #[doc(inline)]
     #[cfg(feature = "fmt")]
@@ -223,7 +206,7 @@ pub mod all {
     pub use super::option::all::*;
 
     #[doc(inline)]
-    // no `os` feature, just for platform sub-modules
+    // no `os` feature, just for each platform submodule
     pub use super::os::all::*;
 
     #[doc(inline)]
@@ -296,73 +279,7 @@ pub mod prelude {
 }
 
 /// Optional external dependencies.
-///
-/// Enabling `depend` automatically enables and re-exports optional dependencies
-/// associated to enabled modules.
-///
-/// For example, enabling `depend` and `sync` enables the `atomic` dependency.
-#[cfg(feature = "depend")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "depend")))]
-pub mod depend {
-    /// <span class="stab portability" title="re-exported `atomic` crate">`atomic`</span>
-    #[doc = "A generic atomic wrapper type.\n\n"]
-    #[doc = "*Re-exported [`atomic`](https://docs.rs/atomic)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "sync")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-    pub use depend::atomic;
-
-    /// <span class="stab portability" title="re-exported `az` crate">`az`</span>
-    #[doc = "Casts and checked casts.\n\n"]
-    #[doc = "*Re-exported [`az`](https://docs.rs/az)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "convert")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
-    pub use depend::az;
-
-    /// <span class="stab portability" title="re-exported `bytemuck` crate">`bytemuck`</span>
-    #[doc = "Small utilities for casting between plain data types.\n\n"]
-    #[doc = "*Re-exported [`bytemuck`](https://docs.rs/bytemuck)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "mem")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
-    pub use depend::bytemuck;
-
-    /// <span class="stab portability" title="re-exported `const-str` crate">`const-str`</span>
-    #[doc = "Compile-time string operations.\n\n"]
-    #[doc = "*Re-exported [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "str")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "str")))]
-    pub use depend::const_str;
-
-    /// <span class="stab portability" title="re-exported `devela_macros` crate">`devela_macros`</span>
-    #[doc = "Procedural macros for `devela`.\n\n"]
-    #[doc = "*Re-exported [`devela_macros`](https://docs.rs/devela_macros)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "codegen")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "codegen")))]
-    pub use depend::devela_macros;
-
-    /// <span class="stab portability" title="re-exported `portable-atomic`
-    /// crate">`portable-atomic`</span>
-    #[doc = "Portable atomic types including 128-bit atomics, floats, etc.\n\n"]
-    #[doc = "*Re-exported [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "sync")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-    pub use depend::portable_atomic;
-
-    /// <span class="stab portability" title="re-exported `unicode-segmentation`
-    /// crate">`unicode-segmentation`</span>
-    #[doc = "Split strings on Grapheme Cluster, Word or Sentence boundaries.\n\n"]
-    #[doc = "*Re-exported [`unicode-segmentation`](https://docs.rs/unicode-segmentation)*
-    crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "string")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "string")))]
-    pub use depend::unicode_segmentation;
-}
+pub mod depend;
 
 /// Documentation on features.
 pub mod _doc {

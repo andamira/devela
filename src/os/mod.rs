@@ -5,6 +5,8 @@
 
 mod print;
 
+/* public modules */
+
 #[cfg(feature = "linux")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
 pub mod linux;
@@ -15,16 +17,23 @@ pub mod term;
 
 /* re-exports */
 
-pub use all::*;
+#[doc(inline)]
+pub use print::*;
+
+#[doc(no_inline)]
+#[cfg(feature = "linux")]
+pub use linux::all::*;
+
+#[doc(no_inline)]
+#[cfg(feature = "term")]
+pub use term::all::*;
+
 pub(crate) mod all {
-    #[doc(inline)]
     pub use super::print::*;
 
     #[cfg(feature = "linux")]
-    #[doc(inline)]
     pub use super::linux::all::*;
 
     #[cfg(feature = "term")]
-    #[doc(inline)]
-    pub use super::term::*;
+    pub use super::term::all::*;
 }
