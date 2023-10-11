@@ -53,7 +53,7 @@ pub use crate::depend::portable_atomic::AtomicI128;
     feature = "nightly",
     doc(cfg(all(feature = "sync", feature = "depend")))
 )]
-pub use depend::portable_atomic::AtomicU128;
+pub use crate::depend::portable_atomic::AtomicU128;
 
 /* in either `portable-atomic` or `core` */
 
@@ -63,7 +63,7 @@ pub use depend::portable_atomic::AtomicU128;
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(any(feature = "depend", feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-pub use depend::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
+pub use crate::depend::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
 
 /// <span class="stab portability" title="re-exported either from `core` or from the
 /// `portable-atomic` crate">`*`</span>
@@ -71,7 +71,7 @@ pub use depend::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, Ato
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(any(feature = "depend", feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-pub use depend::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
+pub use crate::depend::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
 
 #[cfg(all(
     not(any(feature = "depend", feature = "portable-atomic")),
@@ -105,7 +105,7 @@ pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(any(feature = "depend", feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-pub use depend::portable_atomic::AtomicPtr;
+pub use crate::depend::portable_atomic::AtomicPtr;
 
 #[cfg(all(
     not(any(feature = "depend", feature = "portable-atomic")),
@@ -119,7 +119,7 @@ pub use core::sync::atomic::AtomicPtr;
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(any(feature = "depend", feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-pub use depend::portable_atomic::AtomicBool;
+pub use crate::depend::portable_atomic::AtomicBool;
 
 #[cfg(not(any(feature = "depend", feature = "portable-atomic")))]
 pub use core::sync::atomic::AtomicBool;
