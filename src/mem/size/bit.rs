@@ -54,29 +54,49 @@ use alloc::{
 use crate::depend::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
 #[cfg(feature = "sync")]
 use crate::sync::atomic::{AtomicBool, AtomicOrdering};
-#[cfg(any(
-    target_has_atomic = "16",
-    any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+#[cfg(all(
+    feature = "sync",
+    any(
+        feature = "depend",
+        feature = "portable-atomic",
+        target_has_atomic = "16"
+    ),
 ))]
 use crate::sync::atomic::{AtomicI16, AtomicU16};
-#[cfg(any(
-    target_has_atomic = "32",
-    any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+#[cfg(all(
+    feature = "sync",
+    any(
+        feature = "depend",
+        feature = "portable-atomic",
+        target_has_atomic = "32"
+    ),
 ))]
 use crate::sync::atomic::{AtomicI32, AtomicU32};
-#[cfg(any(
-    target_has_atomic = "64",
-    any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+#[cfg(all(
+    feature = "sync",
+    any(
+        feature = "depend",
+        feature = "portable-atomic",
+        target_has_atomic = "64"
+    ),
 ))]
 use crate::sync::atomic::{AtomicI64, AtomicU64};
-#[cfg(any(
-    target_has_atomic = "8",
-    any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+#[cfg(all(
+    feature = "sync",
+    any(
+        feature = "depend",
+        feature = "portable-atomic",
+        target_has_atomic = "8"
+    ),
 ))]
 use crate::sync::atomic::{AtomicI8, AtomicU8};
-#[cfg(any(
-    target_has_atomic = "ptr",
-    any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+#[cfg(all(
+    feature = "sync",
+    any(
+        feature = "depend",
+        feature = "portable-atomic",
+        target_has_atomic = "ptr"
+    ),
 ))]
 use crate::sync::atomic::{AtomicIsize, AtomicPtr, AtomicUsize};
 
@@ -166,14 +186,22 @@ macro_rules! bit_size {
         #[cfg(feature = "num")]
         bit_size![<const RMIN: usize, const RMAX: usize> = 8; for RangeUsize<RMIN, RMAX>];
 
-        #[cfg(any(
-            target_has_atomic = "ptr",
-            any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+        #[cfg(all(
+            feature = "sync",
+            any(
+                feature = "depend",
+                feature = "portable-atomic",
+                target_has_atomic = "ptr"
+            ),
         ))]
         bit_size![= $PTR_BITS; for AtomicIsize, AtomicUsize];
-        #[cfg(any(
-            target_has_atomic = "ptr",
-            any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+        #[cfg(all(
+            feature = "sync",
+            any(
+                feature = "depend",
+                feature = "portable-atomic",
+                target_has_atomic = "ptr"
+            ),
         ))]
         bit_size![<T> = $PTR_BITS; for AtomicPtr<T>];
 
@@ -311,24 +339,40 @@ bit_size![<const RMIN: u128, const RMAX:u128> = 128; for RangeU128<RMIN, RMAX>];
 bit_size![= 1; for AtomicBool];
 #[cfg(feature = "sync")]
 bit_size![= 8; for AtomicOrdering];
-#[cfg(any(
-    target_has_atomic = "8",
-    any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+#[cfg(all(
+    feature = "sync",
+    any(
+        feature = "depend",
+        feature = "portable-atomic",
+        target_has_atomic = "8"
+    ),
 ))]
 bit_size![= 8; for AtomicI8, AtomicU8];
-#[cfg(any(
-    target_has_atomic = "16",
-    any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+#[cfg(all(
+    feature = "sync",
+    any(
+        feature = "depend",
+        feature = "portable-atomic",
+        target_has_atomic = "16"
+    ),
 ))]
 bit_size![= 16; for AtomicI16, AtomicU16];
-#[cfg(any(
-    target_has_atomic = "32",
-    any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+#[cfg(all(
+    feature = "sync",
+    any(
+        feature = "depend",
+        feature = "portable-atomic",
+        target_has_atomic = "32"
+    ),
 ))]
 bit_size![= 32; for AtomicI32, AtomicU32];
-#[cfg(any(
-    target_has_atomic = "64",
-    any(all(feature = "sync", feature = "depend"), feature = "portable-atomic")
+#[cfg(all(
+    feature = "sync",
+    any(
+        feature = "depend",
+        feature = "portable-atomic",
+        target_has_atomic = "64"
+    ),
 ))]
 bit_size![= 64; for AtomicI64, AtomicU64];
 #[cfg(any(all(feature = "sync", feature = "depend"), feature = "portable-atomic"))]
