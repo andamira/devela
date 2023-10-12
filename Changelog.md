@@ -11,25 +11,28 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new modules: `future`, `task`.
 - new features: `depend`, `future`, `future_unsafe`, `unsafe_future`, `task`, `task_unsafe`, `unsafe_task`, `async`, `async_unsafe`, `term`, `term_unsafe`, `unsafe_term`.
 - new type aliases: `Egc16`, `Egc32`, `Egc64`, `Egc128`, `NonNulEgc8`, `NonNulEgc16`, `NonNulEgc32`, `NonNulEgc64`, `NonNulEgc128`.
-- new structs: `StringEgc`, `ArrayU8Egc`, `ArrayU8NonNulEgc`, `LiteCoroutine`, `LiteCoroutineExecutor`, `LiteCoroutineWaiter`, `LiteCoroutineWaker`.
-- re-export std's items from `future` and `task`.
-- new traits `Egc`, `Num`.
+- new structs: `StringEgc`, `ArrayU8Egc`, `ArrayU8NonNulEgc`, `LiteCoroutine`, `LiteCoroutineExecutor`, `LiteCoroutineWaiter`, `LiteCoroutineWaker`, `Direct`, `Boxed`.
+- re-export std's items from `future` and `task`, and `core::mem` items from `mem`.
+- new traits `Egc`, `Num`, `Mem`, `Size`, `BitSize`, `Storage`.
 - add new optional dependency `devela_depend`.
+- new fns: `mem_ptr_ratio`.
 
 ### Removed
 - remove macro: `manifest_dir`.
 - remove features: `lean`, `leanest`, `chars`, `strings`, `os`, `os_unsafe`.
 - remove unneded conversion impls from chars to strings.
-- remove previous optional dependencies.
 
 ### Changed
 - add features `linux`, `term` to `full`.
-- re-export removed dependencies from `devela_depend`.
+- optional dependencies can be enabled directly or via `depend`.
+- rename `mem` fns by prefixing them with `mem_`: `mem_as_bytes`, `mem_as_bytes_mut`, `mem_as_bytes_sized`.
+- rename `Num` trait fns with the `num_` prefix; rename fn `get` to `num_into`; add fn `num_from`.
 
 ### Fixed
 - do not enable the empty `default` feature.
 - improve re-exports rustdoc tags.
 - fix `core::num` re-exports.
+- improve many docs.
 - improve CIs.
 
 ## [0.14.0] - 2023-10-04
