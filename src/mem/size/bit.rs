@@ -110,33 +110,59 @@ use crate::os::term::{Ansi, AnsiColor3, AnsiColor8};
 /// E.g. a `bool` has a BitSize of 1 bit.
 pub trait BitSize<const LEN: usize>: Size {
     /// The bit size of this type (only the relevant data part, without padding).
-    const BIT_SIZE: usize = LEN;
+    ///
+    /// # Panics
+    /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][Size::BYTE_SIZE],
+    const BIT_SIZE: usize = {
+        let min_byte_size = if let Some(t) = LEN.checked_add(8 - 1) {
+            t / 8
+        } else {
+            usize::MAX / 8
+        };
+        if min_byte_size > Self::BYTE_SIZE {
+            panic!["BitSize::MIN_BYTE_SIZE > Size::BYTE_SIZE"];
+        }
+        LEN
+    };
 
     /// The rounded up byte size for this type.
     ///
     /// This is the minimum number of full bytes needed to represent this type.
+    /// Basically `(LEN + 7) / 8`.
     ///
     /// # Panics
-    /// Panics if `BYTES_CEIL != <Self as Size>::BYTE_SIZE` or if `LEN > usize::MAX - 7`.
-    const BYTE_CEIL: usize = {
-        let byte_ceil = (LEN + (8 - 1)) / 8;
-        if Self::BYTE_SIZE != byte_ceil {
-            panic!["BitSize::BYTE_CEIL != Size::BYTE_SIZE"];
+    /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][Size::BYTE_SIZE],
+    const MIN_BYTE_SIZE: usize = {
+        let min_byte_size = if let Some(t) = LEN.checked_add(8 - 1) {
+            t / 8
+        } else {
+            usize::MAX / 8
+        };
+        if min_byte_size > Self::BYTE_SIZE {
+            panic!["BitSize::MIN_BYTE_SIZE > Size::BYTE_SIZE"];
         }
-        byte_ceil
+        min_byte_size
     };
 
     /// Returns the bit size of this type (only the relevant data part, without padding).
+    ///
+    /// # Panics
+    /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][Size::BYTE_SIZE],
+    #[inline]
     fn bit_size(&self) -> usize {
         Self::BIT_SIZE
     }
 
     /// Returns the rounded up byte size for this type.
     ///
+    /// This is the minimum number of full bytes needed to represent this type.
+    /// Basically `(LEN + 7) / 8`.
+    ///
     /// # Panics
-    /// Panics if `BYTE_CEIL != Self::BYTE_SIZE` or if `LEN > usize::MAX - 7`.
-    fn byte_ceil(&self) -> usize {
-        Self::BYTE_CEIL
+    /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][Size::BYTE_SIZE],
+    #[inline]
+    fn min_byte_size(&self) -> usize {
+        Self::MIN_BYTE_SIZE
     }
 }
 

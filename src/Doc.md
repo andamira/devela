@@ -108,8 +108,8 @@ They offer a gradient of safety.
       initialization in [`convert`].
   - `unsafe_fmt`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
   - `unsafe_future`: *(unused)*.
-  - `unsafe_mem`: provides [`as_bytes`], [`as_bytes_mut`] and [`as_bytes_sized`]
-      in [`mem`].
+  - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and
+    [`mem_as_bytes_sized`] in [`mem`].
   - `unsafe_num`: enables `new_unchecked` constructors and implements `bytemuck` traits.
   - `unsafe_ops`: *(unused)*.
   - `unsafe_option`: *(unused)*.
@@ -142,9 +142,9 @@ They are currently only used for generating improved documentation.
 [`slice_into_array`]: convert::collection::slice_into_array
 [`MaybeUninit`]: core::mem::MaybeUninit
 [`transmute`]: core::mem::transmute
-[`as_bytes`]: mem::as_bytes
-[`as_bytes_mut`]: mem::as_bytes_mut
-[`as_bytes_sized`]: mem::as_bytes_sized
+[`mem_as_bytes`]: mem::mem_as_bytes
+[`mem_as_bytes_mut`]: mem::mem_as_bytes_mut
+[`mem_as_bytes_sized`]: mem::mem_as_bytes_sized
 
 [`atomic`]: depend::atomic
 [`az`]: depend::az

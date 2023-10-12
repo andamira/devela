@@ -29,11 +29,14 @@ pub use crate::depend::bytemuck;
 mod reexports;
 
 #[cfg(feature = "mem")]
+mod r#trait;
+
+#[cfg(feature = "mem")]
 pub use all::*;
 #[cfg(feature = "mem")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{always_fns::*, size::*};
+    pub use super::{always_fns::*, r#trait::*, size::*};
 
     #[doc(inline)]
     pub use super::reexports::*;

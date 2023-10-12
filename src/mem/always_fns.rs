@@ -16,13 +16,13 @@ use core::{mem, slice};
 ///
 /// # Examples
 /// ```
-/// use devela::mem::as_bytes;
+/// use devela::mem::mem_as_bytes;
 ///
 /// #[repr(C)]
 /// struct Data(u32);
 ///
 /// let data = Data(1234);
-/// let bytes = as_bytes(&data);
+/// let bytes = mem_as_bytes(&data);
 ///
 /// if cfg!(target_endian = "little") {
 ///     assert!(bytes == &[210, 4, 0, 0]);
@@ -34,7 +34,7 @@ use core::{mem, slice};
 #[must_use]
 #[cfg(feature = "unsafe_mem")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
-pub fn as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
+pub fn mem_as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
     unsafe { slice::from_raw_parts(v as *const _ as *const u8, mem::size_of_val(v)) }
 }
 
@@ -44,13 +44,13 @@ pub fn as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
 ///
 /// # Examples
 /// ```
-/// use devela::mem::as_bytes_mut;
+/// use devela::mem::mem_as_bytes_mut;
 ///
 /// #[repr(C)]
 /// struct Data(u32);
 ///
 /// let mut data = Data(1234);
-/// let bytes = as_bytes_mut(&mut data);
+/// let bytes = mem_as_bytes_mut(&mut data);
 ///
 /// if cfg!(target_endian = "little") {
 ///     bytes[1] = 0;
@@ -64,7 +64,7 @@ pub fn as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
 #[must_use]
 #[cfg(feature = "unsafe_mem")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
-pub fn as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
+pub fn mem_as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
     unsafe { slice::from_raw_parts_mut(v as *mut _ as *mut u8, mem::size_of_val(v)) }
 }
 
@@ -74,10 +74,10 @@ pub fn as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8
 ///
 /// # Examples
 /// ```
-/// use devela::mem::as_bytes_sized;
+/// use devela::mem::mem_as_bytes_sized;
 ///
 /// const DATA: u32 = 1234;
-/// const BYTES: &[u8] = as_bytes_sized(&DATA);
+/// const BYTES: &[u8] = mem_as_bytes_sized(&DATA);
 ///
 /// if cfg!(target_endian = "little") {
 ///     assert_eq!(BYTES, &[210, 4, 0, 0]);
@@ -89,6 +89,6 @@ pub fn as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8
 #[must_use]
 #[cfg(feature = "unsafe_mem")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
-pub const fn as_bytes_sized<T: Sync + Unpin>(v: &T) -> &[u8] {
+pub const fn mem_as_bytes_sized<T: Sync + Unpin>(v: &T) -> &[u8] {
     unsafe { slice::from_raw_parts(v as *const T as *const u8, mem::size_of::<T>()) }
 }

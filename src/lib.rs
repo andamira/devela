@@ -250,6 +250,10 @@ pub mod prelude {
     pub use crate::convert::all::{FromPrimitives, IntoPrimitives};
 
     #[doc(inline)]
+    #[cfg(feature = "mem")]
+    pub use crate::mem::all::{BitSize, Mem, Size};
+
+    #[doc(inline)]
     #[cfg(feature = "num")]
     pub use crate::num::all::Num;
 
