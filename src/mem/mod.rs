@@ -32,11 +32,14 @@ mod reexports;
 mod r#trait;
 
 #[cfg(feature = "mem")]
+mod storage;
+
+#[cfg(feature = "mem")]
 pub use all::*;
 #[cfg(feature = "mem")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{always_fns::*, r#trait::*, size::*};
+    pub use super::{always_fns::*, r#trait::*, size::*, storage::*};
 
     #[doc(inline)]
     pub use super::reexports::*;

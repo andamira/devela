@@ -3,7 +3,7 @@
 //! Traits related to stack memory bit size.
 //
 
-use super::Size;
+use super::{super::Direct, Size};
 
 use core::{
     cmp,
@@ -264,6 +264,8 @@ macro_rules! bit_size {
 }
 
 /* impl BitSize */
+
+impl<T: BitSize<LEN>, const LEN: usize> BitSize<LEN> for Direct<T> {}
 
 bit_size![<T> = 0; for PhantomData<T>];
 bit_size![= 0; for (), Infallible, PhantomPinned];
