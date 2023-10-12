@@ -34,49 +34,46 @@ pub trait Num {
 
     /// Returns the value in the form of the associated `Primitive` type.
     #[must_use]
-    fn get(&self) -> Self::Primitive;
+    fn num_into(&self) -> Self::Primitive;
+
+    /// Returns `Self` when given a valid `value`.
+    #[must_use]
+    fn num_from(value: Self::Primitive) -> Option<Self> where Self: Sized;
 
     /* Operations */
 
     /// Computes `self` + `other` for `Copy` types.
     #[must_use]
-    fn add(&self, other: Self) -> Option<Self> where Self: Sized + Copy { None }
+    fn num_add(&self, other: Self) -> Option<Self> where Self: Sized + Copy { None }
     /// Computes `self` + `other` for non-copy types.
     #[must_use]
-    fn add_ref(&self, other: &Self) -> Option<Self> where Self: Sized { None }
+    fn num_add_ref(&self, other: &Self) -> Option<Self> where Self: Sized { None }
     /// Computes `self` - `other` for `Copy` types.
     #[must_use]
-    fn sub(&self, other: Self) -> Option<Self> where Self: Sized + Copy { None }
+    fn num_sub(&self, other: Self) -> Option<Self> where Self: Sized + Copy { None }
     /// Computes `self` - `other` for non-copy types.
     #[must_use]
-    fn sub_ref(&self, other: &Self) -> Option<Self> where Self: Sized { None }
+    fn num_sub_ref(&self, other: &Self) -> Option<Self> where Self: Sized { None }
     /// Computes `self` * `other` for `Copy` types.
     #[must_use]
-    fn mul(&self, other: Self) -> Option<Self> where Self: Sized + Copy { None }
+    fn num_mul(&self, other: Self) -> Option<Self> where Self: Sized + Copy { None }
     /// Computes `self` * `other` for non-copy types.
     #[must_use]
-    fn mul_ref(&self, other: &Self) -> Option<Self> where Self: Sized { None }
+    fn num_mul_ref(&self, other: &Self) -> Option<Self> where Self: Sized { None }
     /// Computes `self` / `other` for `Copy` types.
     #[must_use]
-    fn div(&self, other: Self) -> Option<Self> where Self: Sized + Copy { None }
+    fn num_div(&self, other: Self) -> Option<Self> where Self: Sized + Copy { None }
     /// Computes `self` / `other` for `Copy` types.
     #[must_use]
-    fn div_ref(&self, other: &Self) -> Option<Self> where Self: Sized { None }
+    fn num_div_ref(&self, other: &Self) -> Option<Self> where Self: Sized { None }
 
     /// Computes `-self`.
     #[must_use]
-    fn neg(&self) -> Option<Self> where Self: Sized { None }
+    fn num_neg(&self) -> Option<Self> where Self: Sized { None }
 
     /// Computes the absolute value of `self`.
     #[must_use]
-    fn abs(&self) -> Option<Self> where Self: Sized { None }
-
-    // /// Computes the exponentiation of `self`.
-    // #[must_use]
-    // fn pow(&self, exp: Self) -> Option<Self> where Self: Sized + Copy { None }
-    // // THINK: type of exp
-    // // THINK: _ref version?
-    // fn pow(&self, exp: Self) -> Option<Self> where Self: Sized + Copy { None }
+    fn num_abs(&self) -> Option<Self> where Self: Sized { None }
 }
 
 macro_rules! impl_num {
@@ -93,44 +90,48 @@ macro_rules! impl_num {
         impl Num for $p {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { *self }
+            fn num_into(&self) -> Self::Primitive { *self }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Some(from) }
 
             #[inline]
-            fn add(&self, other: Self) -> Option<Self> { self.checked_add(other) }
+            fn num_add(&self, other: Self) -> Option<Self> { self.checked_add(other) }
             #[inline]
-            fn add_ref(&self, other: &$p) -> Option<Self> { self.checked_add(*other) }
+            fn num_add_ref(&self, other: &$p) -> Option<Self> { self.checked_add(*other) }
             #[inline]
-            fn sub(&self, other: Self) -> Option<Self> { self.checked_sub(other) }
+            fn num_sub(&self, other: Self) -> Option<Self> { self.checked_sub(other) }
             #[inline]
-            fn sub_ref(&self, other: &$p) -> Option<Self> { self.checked_sub(*other) }
+            fn num_sub_ref(&self, other: &$p) -> Option<Self> { self.checked_sub(*other) }
             #[inline]
-            fn mul(&self, other: Self) -> Option<Self> { self.checked_mul(other) }
+            fn num_mul(&self, other: Self) -> Option<Self> { self.checked_mul(other) }
             #[inline]
-            fn mul_ref(&self, other: &$p) -> Option<Self> { self.checked_mul(*other) }
+            fn num_mul_ref(&self, other: &$p) -> Option<Self> { self.checked_mul(*other) }
             #[inline]
-            fn div(&self, other: Self) -> Option<Self> { self.checked_div(other) }
+            fn num_div(&self, other: Self) -> Option<Self> { self.checked_div(other) }
             #[inline]
-            fn div_ref(&self, other: &$p) -> Option<Self> { self.checked_div(*other) }
+            fn num_div_ref(&self, other: &$p) -> Option<Self> { self.checked_div(*other) }
 
             #[inline]
-            fn neg(&self) -> Option<Self> { self.checked_neg() }
+            fn num_neg(&self) -> Option<Self> { self.checked_neg() }
             #[inline]
-            fn abs(&self) -> Option<Self> { self.checked_abs() }
+            fn num_abs(&self) -> Option<Self> { self.checked_abs() }
         }
 
         // NonZeroI*
         impl Num for [<NonZero $p:camel>] {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { [< NonZero $p:camel >]::get(*self) }
+            fn num_into(&self) -> Self::Primitive { [< NonZero $p:camel >]::get(*self) }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Self::new(from) }
 
             // supported in core
             #[inline]
-            fn mul(&self, other: Self) -> Option<Self> { self.checked_mul(other) }
+            fn num_mul(&self, other: Self) -> Option<Self> { self.checked_mul(other) }
             #[inline]
-            fn mul_ref(&self, other: &Self) -> Option<Self> { self.checked_mul(*other) }
+            fn num_mul_ref(&self, other: &Self) -> Option<Self> { self.checked_mul(*other) }
             #[inline]
-            fn neg(&self) -> Option<Self> { self.checked_neg() }
+            fn num_neg(&self) -> Option<Self> { self.checked_neg() }
 
             impl_num![op2 add];
             impl_num![op2 sub];
@@ -142,7 +143,9 @@ macro_rules! impl_num {
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { self.get() }
+            fn num_into(&self) -> Self::Primitive { self.get() }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Self::new(from) }
 
             impl_num![op2 add];
             impl_num![op2 mul];
@@ -156,7 +159,9 @@ macro_rules! impl_num {
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { self.get() }
+            fn num_into(&self) -> Self::Primitive { self.get() }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Self::new(from) }
 
             impl_num![op2 add];
             impl_num![op2 mul];
@@ -170,7 +175,9 @@ macro_rules! impl_num {
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { self.get() }
+            fn num_into(&self) -> Self::Primitive { self.get() }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Self::new(from) }
 
             impl_num![op2 add];
             impl_num![op2 mul];
@@ -188,60 +195,66 @@ macro_rules! impl_num {
         impl Num for $p {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { *self }
+            fn num_into(&self) -> Self::Primitive { *self }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Some(from) }
 
             #[inline]
-            fn add(&self, other: Self) -> Option<Self> { self.checked_add(other) }
+            fn num_add(&self, other: Self) -> Option<Self> { self.checked_add(other) }
             #[inline]
-            fn add_ref(&self, other: &$p) -> Option<Self> { self.checked_add(*other) }
+            fn num_add_ref(&self, other: &$p) -> Option<Self> { self.checked_add(*other) }
             #[inline]
-            fn sub(&self, other: Self) -> Option<Self> { self.checked_sub(other) }
+            fn num_sub(&self, other: Self) -> Option<Self> { self.checked_sub(other) }
             #[inline]
-            fn sub_ref(&self, other: &$p) -> Option<Self> { self.checked_sub(*other) }
+            fn num_sub_ref(&self, other: &$p) -> Option<Self> { self.checked_sub(*other) }
             #[inline]
-            fn mul(&self, other: Self) -> Option<Self> { self.checked_mul(other) }
+            fn num_mul(&self, other: Self) -> Option<Self> { self.checked_mul(other) }
             #[inline]
-            fn mul_ref(&self, other: &$p) -> Option<Self> { self.checked_mul(*other) }
+            fn num_mul_ref(&self, other: &$p) -> Option<Self> { self.checked_mul(*other) }
             #[inline]
-            fn div(&self, other: Self) -> Option<Self> { self.checked_div(other) }
+            fn num_div(&self, other: Self) -> Option<Self> { self.checked_div(other) }
             #[inline]
-            fn div_ref(&self, other: &$p) -> Option<Self> { self.checked_div(*other) }
+            fn num_div_ref(&self, other: &$p) -> Option<Self> { self.checked_div(*other) }
 
             #[inline]
-            fn neg(&self) -> Option<Self> { self.checked_neg() }
+            fn num_neg(&self) -> Option<Self> { self.checked_neg() }
             #[inline]
-            fn abs(&self) -> Option<Self> { Some(*self) }
+            fn num_abs(&self) -> Option<Self> { Some(*self) }
         }
 
         // NonZeroU*
         impl Num for [<NonZero $p:camel>] {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { [< NonZero $p:camel >]::get(*self) }
+            fn num_into(&self) -> Self::Primitive { [< NonZero $p:camel >]::get(*self) }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Self::new(from) }
 
             // supported in core
             #[inline]
-            fn add(&self, other: Self) -> Option<Self> { self.checked_add(other.get()) }
+            fn num_add(&self, other: Self) -> Option<Self> { self.checked_add(other.get()) }
             #[inline]
-            fn add_ref(&self, other: &Self) -> Option<Self> { self.checked_add(other.get()) }
+            fn num_add_ref(&self, other: &Self) -> Option<Self> { self.checked_add(other.get()) }
             #[inline]
-            fn mul(&self, other: Self) -> Option<Self> { self.checked_mul(other) }
+            fn num_mul(&self, other: Self) -> Option<Self> { self.checked_mul(other) }
             #[inline]
-            fn mul_ref(&self, other: &Self) -> Option<Self> { self.checked_mul(*other) }
+            fn num_mul_ref(&self, other: &Self) -> Option<Self> { self.checked_mul(*other) }
 
             impl_num![op2 sub];
             impl_num![op2 div];
             // neg is always None
 
             #[inline]
-            fn abs(&self) -> Option<Self> { Some(*self) }
+            fn num_abs(&self) -> Option<Self> { Some(*self) }
         }
 
         // NonSpecificU*
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { self.get() }
+            fn num_into(&self) -> Self::Primitive { self.get() }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Self::new(from) }
 
             impl_num![op2 add];
             impl_num![op2 mul];
@@ -250,14 +263,16 @@ macro_rules! impl_num {
             impl_num![op1 neg];
 
             #[inline]
-            fn abs(&self) -> Option<Self> { Some(*self) }
+            fn num_abs(&self) -> Option<Self> { Some(*self) }
         }
 
         // NonRangeU*
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { self.get() }
+            fn num_into(&self) -> Self::Primitive { self.get() }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Self::new(from) }
 
             impl_num![op2 add];
             impl_num![op2 mul];
@@ -266,13 +281,15 @@ macro_rules! impl_num {
             impl_num![op1 neg];
 
             #[inline]
-            fn abs(&self) -> Option<Self> { Some(*self) }
+            fn num_abs(&self) -> Option<Self> { Some(*self) }
         }
 
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { self.get() }
+            fn num_into(&self) -> Self::Primitive { self.get() }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Self::new(from) }
 
             impl_num![op2 add];
             impl_num![op2 mul];
@@ -281,7 +298,7 @@ macro_rules! impl_num {
             impl_num![op1 neg];
 
             #[inline]
-            fn abs(&self) -> Option<Self> { Some(*self) }
+            fn num_abs(&self) -> Option<Self> { Some(*self) }
         }
     }};
 
@@ -292,30 +309,32 @@ macro_rules! impl_num {
         impl Num for $p {
             type Primitive = $p;
             #[inline]
-            fn get(&self) -> Self::Primitive { *self }
+            fn num_into(&self) -> Self::Primitive { *self }
+            #[inline]
+            fn num_from(from: Self::Primitive) -> Option<Self> { Some(from) }
 
             #[inline]
-            fn add(&self, other: Self) -> Option<Self> { Some(Add::add(self, other)) }
+            fn num_add(&self, other: Self) -> Option<Self> { Some(Add::add(self, other)) }
             #[inline]
-            fn add_ref(&self, other: &$p) -> Option<Self> { Some(Add::add(self, other)) }
+            fn num_add_ref(&self, other: &$p) -> Option<Self> { Some(Add::add(self, other)) }
             #[inline]
-            fn sub(&self, other: Self) -> Option<Self> { Some(Sub::sub(self, other)) }
+            fn num_sub(&self, other: Self) -> Option<Self> { Some(Sub::sub(self, other)) }
             #[inline]
-            fn sub_ref(&self, other: &$p) -> Option<Self> { Some(Sub::sub(self, other)) }
+            fn num_sub_ref(&self, other: &$p) -> Option<Self> { Some(Sub::sub(self, other)) }
             #[inline]
-            fn mul(&self, other: Self) -> Option<Self> { Some(Mul::mul(self, other)) }
+            fn num_mul(&self, other: Self) -> Option<Self> { Some(Mul::mul(self, other)) }
             #[inline]
-            fn mul_ref(&self, other: &$p) -> Option<Self> { Some(Mul::mul(self, other)) }
+            fn num_mul_ref(&self, other: &$p) -> Option<Self> { Some(Mul::mul(self, other)) }
             #[inline]
-            fn div(&self, other: Self) -> Option<Self> { Some(Div::div(self, other)) }
+            fn num_div(&self, other: Self) -> Option<Self> { Some(Div::div(self, other)) }
             #[inline]
-            fn div_ref(&self, other: &$p) -> Option<Self> { Some(Div::div(self, other)) }
+            fn num_div_ref(&self, other: &$p) -> Option<Self> { Some(Div::div(self, other)) }
 
             #[inline]
-            fn neg(&self) -> Option<Self> { Some(Neg::neg(self)) }
+            fn num_neg(&self) -> Option<Self> { Some(Neg::neg(self)) }
 
             #[inline]
-            fn abs(&self) -> Option<Self> {
+            fn num_abs(&self) -> Option<Self> {
                 #[cfg(feature = "std")]
                 return Some($p::abs(*self));
                 #[cfg(not(feature = "std"))]
@@ -332,7 +351,7 @@ macro_rules! impl_num {
     // Implements a custom unary numeric operation,
     (op1 $op:ident) => { paste! {
         #[inline]
-        fn $op(&self) -> Option<Self> {
+        fn [<num_ $op>](&self) -> Option<Self> {
             iif![let Some(n) = self.get().[<checked_ $op>](); Self::new(n); None]
         }
     }};
@@ -340,11 +359,11 @@ macro_rules! impl_num {
     // Implements a custom binary numeric operation.
     (op2 $op:ident) => { paste! {
         #[inline]
-        fn $op(&self, other: Self) -> Option<Self> {
+        fn [<num_ $op>](&self, other: Self) -> Option<Self> {
             iif![let Some(n) = self.get().[<checked_ $op>](other.get()); Self::new(n); None]
         }
         #[inline]
-        fn [<$op _ref>](&self, other: &Self) -> Option<Self> { self.$op(*other) }
+        fn [<num_ $op _ref>](&self, other: &Self) -> Option<Self> { self.[<num_ $op>](*other) }
     }};
 }
 impl_num![];
