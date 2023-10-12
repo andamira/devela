@@ -14,6 +14,9 @@ pub use always_fns::*;
 
 /* only compiled with the `mem` feature */
 
+#[cfg(feature = "mem")]
+mod size;
+
 /* re-exports */
 
 // Reexported [`bytemuck`](https://docs.rs/bytemuck)'s crate.
@@ -29,5 +32,9 @@ mod reexports;
 pub use all::*;
 #[cfg(feature = "mem")]
 pub(crate) mod all {
-    pub use super::always_fns::*;
+    #[doc(inline)]
+    pub use super::{always_fns::*, size::*};
+
+    #[doc(inline)]
+    pub use super::reexports::*;
 }
