@@ -3,7 +3,7 @@
 //! Trait for stack memory byte size.
 //
 
-use super::{super::size_of_val, ptr_ratio, size_of};
+use super::{super::mem_size_of_val, mem_ptr_ratio, mem_size_of};
 
 impl<T> Size for T {}
 
@@ -12,16 +12,16 @@ impl<T> Size for T {}
 /// This trait is automatically implemented for every `Sized` type.
 pub trait Size: Sized {
     /// The size of this type in bytes, in the stack.
-    const BYTE_SIZE: usize = size_of::<Self>();
+    const BYTE_SIZE: usize = mem_size_of::<Self>();
 
     /// The size of a pointer in bytes, for the current platform.
-    const PTR_SIZE: usize = size_of::<usize>();
+    const PTR_SIZE: usize = mem_size_of::<usize>();
 
     /// Returns the size of this type in bytes, in the stack.
     ///
     /// Ignores any allocated resources in the heap.
     fn byte_size(&self) -> usize {
-        size_of_val(self)
+        mem_size_of_val(self)
     }
 
     /// Returns the size ratio between [`PTR_SIZE`][Self#constant.PTR_SIZE] and
@@ -53,6 +53,6 @@ pub trait Size: Sized {
     /// ```
     #[inline]
     fn ptr_ratio(&self) -> (usize, usize) {
-        ptr_ratio(Self::BYTE_SIZE)
+        mem_ptr_ratio(Self::BYTE_SIZE)
     }
 }
