@@ -34,7 +34,24 @@ mod reexports;
 pub use all::*;
 #[cfg(feature = "num")]
 pub(crate) mod all {
+    #[doc(inline)]
     pub use super::{
-        always_fns::*, non_range::*, non_specific::*, r#trait::*, range::*, reexports::*,
+        always_fns::*, non_range::*, non_specific::*, r#trait::*, range::*, reexports::*, fsize,
     };
 }
+
+/* misc */
+
+/// An alias for a pointer-sized floating-point primitive.
+#[cfg(target_pointer_width = "32")]
+#[allow(non_camel_case_types)]
+pub type fsize = f32;
+
+/// An alias for a pointer-sized floating-point primitive.
+#[cfg(target_pointer_width = "64")]
+#[allow(non_camel_case_types)]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(any(target_pointer_width = "32", target_pointer_width = "64")))
+)]
+pub type fsize = f64;
