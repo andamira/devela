@@ -20,7 +20,7 @@ mod non_range;
 #[cfg(feature = "num")]
 mod range;
 #[cfg(feature = "num")]
-mod r#trait;
+mod traits;
 
 #[cfg(all(feature = "num", test))]
 mod tests;
@@ -36,7 +36,7 @@ pub use all::*;
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        always_fns::*, non_range::*, non_specific::*, r#trait::*, range::*, reexports::*, fsize,
+        always_fns::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*, fsize,
     };
 }
 
