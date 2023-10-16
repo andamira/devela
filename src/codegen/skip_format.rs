@@ -21,21 +21,3 @@
 #[macro_export]
 macro_rules! sf { ( $($line:tt)+ ) => { $($line)+ }; }
 pub use sf;
-
-/// *`s`kip `f`ormatting `b`lock* macro.
-///
-/// Surrounds with brackets the provided code, and preserves its formatting.
-///
-/// It can be used as an alternative to the `#[rustfmt::skip]` attribute,
-/// specially where it can't be applied yet on stable rust.
-///
-/// # Examples
-/// ```
-/// use devela::codegen::sfb;
-///
-/// // rustfmt has no powers here
-/// sfb! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
-/// ```
-#[macro_export]
-macro_rules! sfb { ( $($line:tt)+ ) => { { $($line)+ } }; }
-pub use sfb;

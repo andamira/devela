@@ -7,10 +7,11 @@
 
 mod iif;
 mod paste;
+mod skip_format;
 
 #[allow(unused)]
 #[cfg(not(feature = "codegen"))]
-pub(crate) use {iif::iif, paste::paste};
+pub(crate) use {iif::iif, paste::paste, skip_format::sf};
 
 /* only compiled with the `codegen` feature */
 
@@ -18,8 +19,6 @@ pub(crate) use {iif::iif, paste::paste};
 mod const_for;
 #[cfg(feature = "codegen")]
 mod deprecate;
-#[cfg(feature = "codegen")]
-mod skip_format;
 
 /* re-exports */
 
@@ -36,10 +35,7 @@ pub use all::*;
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        const_for::const_for,
-        deprecate::deprecate_feature,
-        iif::iif,
-        skip_format::{sf, sfb},
+        const_for::const_for, deprecate::deprecate_feature, iif::iif, skip_format::sf,
     };
 
     #[doc(inline)]
