@@ -3,6 +3,8 @@
 //!
 //
 
+use core::ops::{Deref, DerefMut};
+
 mod impls;
 pub use impls::NoNum;
 
@@ -160,6 +162,13 @@ pub trait Num: PartialEq {
     fn num_ref_abs(&self) -> Option<Self> where Self: Sized { None }
 }
 
+impl<'a, T: Num> NumRef<'a> for &T {
+    type Own = T;
+}
+impl<'a, T: Num> NumRef<'a> for &mut T {
+    type Own = T;
+}
+
 /// Common trait for referenced numeric types.
 ///
 /// Not that mutable operations can only be implemented when `NumRef` is
@@ -168,85 +177,108 @@ pub trait Num: PartialEq {
 /// See also [`Num`] which is intended to be implemented for the owned type.
 #[rustfmt::skip]
 #[allow(unused_variables)]
-pub trait NumRef<'a> {
+pub trait NumRef<'a> where Self: Deref<Target = Self::Own> {
     /// The owned version of this numeric type.
     type Own: Num;
 
-    /// Returns the owned version `self`.
+    /// Returns the owned version of `self`, if it can be cloned.
     #[must_use]
-    fn num_to_owned(&self) -> Option<Self::Own> { None }
+    fn num_to_owned(&self) -> Option<Self::Own> where Self::Own: Clone { Some((*self).clone()) }
 
     /// Sets `self` to a valid `value`.
-    #[must_use]
-    fn num_set(&mut self, value: Self::Own) -> Option<()> { None }
+    fn num_set(&mut self, value: <Self::Own as Num>::Inner) -> Option<()>
+        where Self: DerefMut<Target = Self::Own> { self.deref_mut().num_set(value) }
+
     /// Sets `self` to a valid `&value`.
-    #[must_use]
-    fn num_set_ref(&mut self, value: &Self::Own) -> Option<()> { None }
+    fn num_set_ref(&mut self, value: &<Self::Own as Num>::Inner) -> Option<()>
+        where Self: DerefMut<Target = Self::Own> { self.deref_mut().num_set_ref(value) }
 
     /* Identities */
 
     /// Returns `true` if `self` is zero.
     #[must_use]
-    fn num_is_zero(&self) -> Option<bool> { None }
+    fn num_is_zero(&self) -> Option<bool> { self.deref().num_is_zero() }
     /// Returns the number zero.
     #[must_use]
     fn num_get_zero() -> Option<Self::Own> { Self::Own::num_get_zero() }
     /// Sets `self` to zero.
     #[must_use]
-    fn num_set_zero(&mut self) -> Option<()> { None }
+    fn num_set_zero(&mut self) -> Option<()>
+        where Self: DerefMut<Target = Self::Own> { self.deref_mut().num_set_zero() }
 
     /// Returns `true` if `self` is one.
     #[must_use]
-    fn num_is_one(&self) -> Option<bool> { None }
+    fn num_is_one(&self) -> Option<bool> { self.deref().num_is_one() }
     /// Returns the number one.
     #[must_use]
     fn num_get_one() -> Option<Self::Own> { Self::Own::num_get_one() }
     /// Sets the number to one.
     #[must_use]
-    fn num_set_one(&mut self) -> Option<()> { None }
+    fn num_set_one(&mut self) -> Option<()>
+        where Self: DerefMut<Target = Self::Own> { self.deref_mut().num_set_one() }
 
     /* Operations */
 
     /// Computes `&self` + `other`.
     #[must_use]
-    fn num_ref_add(&self, other: Self::Own) -> Option<Self::Own> { None }
+    fn num_ref_add(&self, other: Self::Own) -> Option<Self::Own> {
+        self.deref().num_ref_add(other)
+    }
     /// Computes `&self` + `&other`.
     #[must_use]
-    fn num_ref_add_ref(&self, other: &Self::Own) -> Option<Self::Own> { None }
+    fn num_ref_add_ref(&self, other: &Self::Own) -> Option<Self::Own> {
+        self.deref().num_ref_add_ref(other)
+    }
 
     /// Computes `&self` - `other`.
     #[must_use]
-    fn num_ref_sub(&self, other: Self::Own) -> Option<Self::Own> { None }
+    fn num_ref_sub(&self, other: Self::Own) -> Option<Self::Own> {
+        self.deref().num_ref_sub(other)
+    }
     /// Computes `&self` - `&other`.
     #[must_use]
-    fn num_ref_sub_ref(&self, other: &Self::Own) -> Option<Self::Own> { None }
+    fn num_ref_sub_ref(&self, other: &Self::Own) -> Option<Self::Own> {
+        self.deref().num_ref_sub_ref(other)
+    }
 
     /// Computes `&self` * `other`.
     #[must_use]
-    fn num_ref_mul(&self, other: Self::Own) -> Option<Self::Own> { None }
+    fn num_ref_mul(&self, other: Self::Own) -> Option<Self::Own> {
+        self.deref().num_ref_mul(other)
+    }
     /// Computes `&self` * `&other`.
     #[must_use]
-    fn num_ref_mul_ref(&self, other: &Self::Own) -> Option<Self::Own> { None }
+    fn num_ref_mul_ref(&self, other: &Self::Own) -> Option<Self::Own> {
+        self.deref().num_ref_mul_ref(other)
+    }
 
     /// Computes `&self` / `other`.
     #[must_use]
-    fn num_ref_div(&self, other: Self::Own) -> Option<Self::Own> { None }
+    fn num_ref_div(&self, other: Self::Own) -> Option<Self::Own> {
+        self.deref().num_ref_div(other)
+    }
     /// Computes `&self` / `&other`.
     #[must_use]
-    fn num_ref_div_ref(&self, other: &Self::Own) -> Option<Self::Own> { None }
+    fn num_ref_div_ref(&self, other: &Self::Own) -> Option<Self::Own> {
+        self.deref().num_ref_div_ref(other)
+    }
 
     /// Computes `&self` % `other`.
     #[must_use]
-    fn num_ref_rem(&self, other: Self::Own) -> Option<Self::Own> { None }
+    fn num_ref_rem(&self, other: Self::Own) -> Option<Self::Own> {
+        self.deref().num_ref_rem(other)
+    }
     /// Computes `self` % `&other`.
     #[must_use]
-    fn num_ref_rem_ref(&self, other: &Self::Own) -> Option<Self::Own> { None }
+    fn num_ref_rem_ref(&self, other: &Self::Own) -> Option<Self::Own> {
+        self.deref().num_ref_rem_ref(other)
+    }
 
     /// Computes `- &self`.
     #[must_use]
-    fn num_ref_neg(&self) -> Option<Self::Own> { None }
+    fn num_ref_neg(&self) -> Option<Self::Own> { self.deref().num_ref_neg() }
 
     /// Computes the absolute value of `&self`.
     #[must_use]
-    fn num_ref_abs(&self) -> Option<Self::Own> { None }
+    fn num_ref_abs(&self) -> Option<Self::Own> { self.deref().num_ref_abs() }
 }
