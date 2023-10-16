@@ -6,7 +6,14 @@
 use core::ops::{Deref, DerefMut};
 
 mod impls;
-pub use impls::NoNum;
+
+/// Represents the absence of a number.
+///
+/// This can be used anywhere an implementation of [`Num`] is expected,
+/// because it implements all the numeric traits, while doing nothing.
+pub type NoNum = ();
+#[rustfmt::skip]
+impl Num for NoNum { type Inner = (); fn num_into(self) -> Self::Inner {} }
 
 /// Common trait for numeric types.
 ///
@@ -143,7 +150,7 @@ pub trait Num: PartialEq {
     /// Computes `&self` % `other`.
     #[must_use]
     fn num_ref_rem(&self, other: Self) -> Option<Self> where Self: Sized { None }
-    /// Computes `self` % `&other`.
+    /// Computes `&self` % `&other`.
     #[must_use]
     fn num_ref_rem_ref(&self, other: &Self) -> Option<Self> where Self:Sized { None }
 
@@ -268,7 +275,7 @@ pub trait NumRef<'a> where Self: Deref<Target = Self::Own> {
     fn num_ref_rem(&self, other: Self::Own) -> Option<Self::Own> {
         self.deref().num_ref_rem(other)
     }
-    /// Computes `self` % `&other`.
+    /// Computes `&self` % `&other`.
     #[must_use]
     fn num_ref_rem_ref(&self, other: &Self::Own) -> Option<Self::Own> {
         self.deref().num_ref_rem_ref(other)

@@ -15,7 +15,6 @@ macro_rules! impl_num {
         impl_num![i i8, i16, i32, i64, i128, isize];
         impl_num![u u8, u16, u32, u64, u128, usize];
         impl_num![f f32, f64];
-        impl_num![NoNum];
     };
 
     // Implements `Num` for signed integer types
@@ -289,22 +288,6 @@ macro_rules! impl_num {
                 Some(iif![*self >= 0.0; *self; -*self])
             }
         }}
-    };
-
-    // Defines `NoNum` and implements `Num` for it;
-    // --------------------------------------------------------------------------------------------
-    (NoNum) => {
-        /// Represents the absence of a number.
-        ///
-        /// The unit type can be used anywhere any kind of [`Num`] is expected,
-        /// since it implements all the numeric traits, but does nothing,
-        /// always returning `None`.
-        pub type NoNum = ();
-
-        impl Num for NoNum {
-            type Inner = ();
-            fn num_into(self) -> Self::Inner {}
-        }
     };
 
     // Inner helpers for the identical body of NonSpecific, NonRange, Range

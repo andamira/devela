@@ -43,15 +43,25 @@ pub(crate) mod all {
 /* misc */
 
 /// An alias for a pointer-sized floating-point primitive.
-#[cfg(target_pointer_width = "32")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(
+        feature = "num",
+        any(target_pointer_width = "32", target_pointer_width = "64")
+    )))
+)]
+#[cfg(all(feature = "num", target_pointer_width = "32"))]
 #[allow(non_camel_case_types)]
 pub type fsize = f32;
 
 /// An alias for a pointer-sized floating-point primitive.
-#[cfg(target_pointer_width = "64")]
-#[allow(non_camel_case_types)]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(any(target_pointer_width = "32", target_pointer_width = "64")))
+    doc(cfg(all(
+        feature = "num",
+        any(target_pointer_width = "32", target_pointer_width = "64")
+    )))
 )]
+#[cfg(all(feature = "num", target_pointer_width = "64"))]
+#[allow(non_camel_case_types)]
 pub type fsize = f64;

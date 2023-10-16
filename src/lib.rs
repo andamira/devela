@@ -255,7 +255,7 @@ pub mod prelude {
 
     #[doc(inline)]
     #[cfg(feature = "num")]
-    pub use crate::num::all::Num;
+    pub use crate::num::all::{Num, NumRef};
 
     #[doc(inline)]
     #[cfg(feature = "ops")]
