@@ -35,6 +35,7 @@ optional dependencies.
 - `fullest`: enables all the modules, recursively (unused).
 
 Single modules: 
+- `any`, `any_unsafe:` enables the [`any`] module.
 - `ascii`, `ascii_unsafe:` enables the [`ascii`] module.
 - `char`, `char_unsafe`: enables the [`mod@char`] module.
 - `cmp`, `cmp_unsafe`: enables the [`cmp`] module.
@@ -99,6 +100,7 @@ They offer a gradient of safety.
 
 - `unsafest`: enables unsafe recursively (unused).
 - `unsafe`: enables all the unsafe sub-features:
+  - `unsafe_any`: *(unused)*.
   - `unsafe_ascii`: enables unchecked conversions in [`ascii`],
   - `unsafe_char`: enables unchecked conversions in [`mod@char`],
   - `unsafe_cmp`: enables const floating-point comparison in [`cmp`],

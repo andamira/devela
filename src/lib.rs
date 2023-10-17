@@ -23,10 +23,10 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(
         feature = "unsafe", // includes all below
-        feature = "unsafe_ascii", feature = "unsafe_char", feature = "unsafe_cmp",
-        feature = "unsafe_codegen", feature = "unsafe_convert", feature = "unsafe_fmt",
-        feature = "unsafe_future", feature = "unsafe_mem", feature = "unsafe_num",
-        feature = "unsafe_ops", feature = "unsafe_option",
+        feature = "unsafe_any", feature = "unsafe_ascii", feature = "unsafe_char",
+        feature = "unsafe_cmp", feature = "unsafe_codegen", feature = "unsafe_convert",
+        feature = "unsafe_fmt", feature = "unsafe_future", feature = "unsafe_mem",
+        feature = "unsafe_num", feature = "unsafe_ops", feature = "unsafe_option",
         //
         feature = "unsafe_os", // includes: unsafe_{linux, term}
             feature = "unsafe_linux", feature = "unsafe_term",
@@ -39,6 +39,12 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
 
 /* root modules */
+
+#[cfg(any(feature = "any", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "any")))]
+pub mod any;
+#[cfg(all(not(feature = "any"), not(test)))]
+pub(crate) mod any; // the "any" feature is disabled
 
 #[cfg(any(feature = "ascii", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
@@ -162,6 +168,10 @@ pub mod thread;
 /// manually enabling the associated optional dependency.
 pub mod all {
     #[doc(inline)]
+    #[cfg(feature = "any")]
+    pub use super::any::all::*;
+
+    #[doc(inline)]
     #[cfg(feature = "ascii")]
     pub use super::ascii::all::*;
 
@@ -245,6 +255,10 @@ pub mod all {
 
 /// The common prelude.
 pub mod prelude {
+    #[doc(inline)]
+    #[cfg(feature = "any")]
+    pub use crate::any::AnyExt;
+
     #[doc(inline)]
     #[cfg(feature = "convert")]
     pub use crate::convert::all::{FromPrimitives, IntoPrimitives};

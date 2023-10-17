@@ -66,8 +66,8 @@ term_unsafe = ["term", "unsafe_term"]
 #* module features *#
 
 full = [ # enables all the modules
-	"ascii", "char", "cmp", "codegen", "convert", "fmt", "future", "mem", "num",
-	"ops", "option", "path", "result", "slice", "str", "string", "sync",
+	"any", "ascii", "char", "cmp", "codegen", "convert", "fmt", "future", "mem",
+	"num", "ops", "option", "path", "result", "slice", "str", "string", "sync",
 	"task", "thread",
 	# os platform sub-modules:
 	"linux", "term",
@@ -82,8 +82,9 @@ texts = [ # enables all *text* related sub-modules
 async = ["future", "task"]
 	async_unsafe = ["future_unsafe", "task_unsafe"]
 
-# individual modules (19)
+# individual modules (20)
 # (modules enable their own dependencies if the `depend` feature is enabled)
+any = []
 ascii = []
 char = []
 cmp = []
@@ -104,7 +105,8 @@ sync = ["depend?/atomic", "depend?/portable-atomic"]
 task = []
 thread = []
 
-# individual modules with unsafe enabled (19):
+# individual modules with unsafe enabled (20):
+any_unsafe = ["any", "unsafe_any"]
 ascii_unsafe = ["ascii", "unsafe_ascii"]
 char_unsafe = ["char", "unsafe_char"]
 cmp_unsafe = ["cmp", "unsafe_cmp"]
@@ -128,13 +130,15 @@ thread_unsafe = ["thread", "unsafe_thread"]
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate (20)
-	"unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_codegen",
-	"unsafe_convert", "unsafe_fmt", "unsafe_future", "unsafe_mem",
-	"unsafe_num", "unsafe_ops", "unsafe_option", "unsafe_os",
-	"unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_str",
-	"unsafe_string", "unsafe_sync", "unsafe_task", "unsafe_thread",
+unsafe = [ # enables unsafe features in this crate (21)
+	"unsafe_any", "unsafe_ascii", "unsafe_char", "unsafe_cmp",
+	"unsafe_codegen", "unsafe_convert", "unsafe_fmt", "unsafe_future",
+	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_option",
+	"unsafe_os", "unsafe_path", "unsafe_result", "unsafe_slice",
+	"unsafe_str", "unsafe_string", "unsafe_sync", "unsafe_task",
+	"unsafe_thread",
 	]
+	unsafe_any = [] # (unused)
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
 	unsafe_cmp = [] # enables const floating-point comparisons
