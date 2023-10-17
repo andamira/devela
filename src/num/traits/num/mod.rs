@@ -43,7 +43,7 @@ impl Num for NoNum { type Inner = (); fn num_into(self) -> Self::Inner {} }
 /// See also [`NumRef`] that is intended to be implemented for `Num` references.
 #[rustfmt::skip]
 #[allow(unused_variables)]
-pub trait Num: PartialEq {
+pub trait Num {
     /// The internal representation of this numeric type.
     type Inner;
 
