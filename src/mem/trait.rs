@@ -7,7 +7,7 @@ use super::{mem_needs_drop, mem_swap, *};
 
 impl<T: ?Sized> Mem for T {}
 
-/// General memory information.
+/// A trait for type memory information and manipulation.
 ///
 /// This trait is automatically implemented for every `?Sized` type,
 /// although most methods are only available where `Self: Sized`.

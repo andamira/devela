@@ -5,7 +5,7 @@
 
 use crate::cmp::{clamp_usize, min_usize};
 
-/// Returns a left subslice of `slice` with the given maximum `len`.
+/// Returns the leftmost sub-`slice` with the given maximum `len`.
 ///
 /// If `left_len > slice.len()` it returns the full slice.
 ///
@@ -27,7 +27,7 @@ pub const fn slice_lsplit<T>(slice: &[T], len: usize) -> &[T] {
     left
 }
 
-/// Returns a mutable left subslice of `slice` with the given maximum `len`.
+/// Returns the leftmost exclusive subslice with the given maximum `len`.
 ///
 /// If `left_len > slice.len()` it returns the full slice.
 ///
@@ -49,7 +49,7 @@ pub fn slice_lsplit_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
     left
 }
 
-/// Returns a right subslice of `slice` with the given maximum `len`.
+/// Returns the rightmost sub-`slice` with the given maximum `len`.
 ///
 /// If `left_len > slice.len()` it returns the full slice.
 ///
@@ -71,7 +71,7 @@ pub const fn slice_rsplit<T>(slice: &[T], len: usize) -> &[T] {
     right
 }
 
-/// Returns a mutable right subslice of `slice` with the given maximum `len`.
+/// Returns the rightmost mutable sub-`slice` with the given maximum `len`.
 ///
 /// If `left_len > slice.len()` it returns the full slice.
 ///
@@ -93,8 +93,7 @@ pub fn slice_rsplit_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
     right
 }
 
-/// Returns a middle subslice of `slice` with the given maximum `len`
-/// and a right bias.
+/// Returns the middle sub-`slice` with the given maximum `len` and a right bias.
 ///
 /// In case of a non-perfect middle split, it will have one character more
 /// on the right.
@@ -129,8 +128,8 @@ pub const fn slice_msplit_right<T>(slice: &[T], len: usize) -> &[T] {
     middle
 }
 
-/// Returns a mutable middle subslice of `slice` with the given maximum `len`
-/// and a right bias.
+/// Returns the middle exclusive sub-`slice` with the given maximum `len` and a
+/// right bias.
 ///
 /// In case of a non-perfect middle split, it will have one character more
 /// on the right.
@@ -165,8 +164,7 @@ pub fn slice_msplit_right_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
     middle
 }
 
-/// Returns a middle subslice of `slice` with the given maximum `len`
-/// and a left bias.
+/// Returns the middle sub-`slice` with the given maximum `len` and a left bias.
 ///
 /// In case of a non-perfect middle split, it will have one character more
 /// on the left.
@@ -200,8 +198,8 @@ pub const fn slice_msplit_left<T>(slice: &[T], len: usize) -> &[T] {
     middle
 }
 
-/// Returns a mutable middle subslice of `slice` with the given maximum `len`
-/// and a left bias.
+/// Returns the middle exclusive sub-`slice` with the given maximum `len` and a
+/// left bias.
 ///
 /// In case of a non-perfect middle split, it will have one character more
 /// on the left.

@@ -106,15 +106,15 @@ macro_rules! impl_num {
 
         // NonSpecificI*
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
-            type Inner = $p; impl_num![custom_i_body_owned]; }
+            type Inner = $p; impl_num![custom_i_body]; }
 
         // NonRangeI*
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
-            type Inner = $p; impl_num![custom_i_body_owned]; }
+            type Inner = $p; impl_num![custom_i_body]; }
 
         // RangeI*
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
-            type Inner = $p; impl_num![custom_i_body_owned]; }
+            type Inner = $p; impl_num![custom_i_body]; }
     }};
 
     // Implements `Num` for unsigned integer types
@@ -214,17 +214,17 @@ macro_rules! impl_num {
 
         // NonSpecificU*
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
-            type Inner = $p; impl_num![custom_u_body_owned]; }
+            type Inner = $p; impl_num![custom_u_body]; }
 
         // NonRangeU*
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
-            impl_num![custom_u_body_owned];
+            impl_num![custom_u_body];
         }
 
         // RangeU*
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
-            type Inner = $p; impl_num![custom_u_body_owned]; }
+            type Inner = $p; impl_num![custom_u_body]; }
     }};
 
     // Implements `Num` for the floating-point types
@@ -291,17 +291,16 @@ macro_rules! impl_num {
     };
 
     // Inner helpers for the identical body of NonSpecific, NonRange, Range
-    // separated by own, ref, and mut implementations, with a common body
-    // and different ops for signed and unsigned
+    // with a common body and different ops for signed and unsigned
     // ============================================================================================
-    (custom_i_body_owned) => {
-        impl_num![custom_body_owned];
+    (custom_i_body) => {
+        impl_num![custom_body];
         // ops
         impl_num![op2_get_checked Self => add, mul, sub, div, rem];
         impl_num![op1_get_checked Self => neg, abs];
     };
-    (custom_u_body_owned) => {
-        impl_num![custom_body_owned];
+    (custom_u_body) => {
+        impl_num![custom_body];
         // ops
         impl_num![op2_get_checked Self => add, mul, sub, div, rem];
         impl_num![op1_get_checked Self => neg];
@@ -310,7 +309,7 @@ macro_rules! impl_num {
         #[inline]
         fn num_ref_abs(&self) -> Option<Self> { Some(*self) }
     };
-    (custom_body_owned) => {
+    (custom_body) => {
         // base
         #[inline]
         fn num_into(self) -> Self::Inner { self.get() }
@@ -373,7 +372,6 @@ macro_rules! impl_num {
 
     /* ops that call .checked() for i*, u*, and few for NonZero* */
 
-    // for both Self and &Self:
     (op1_checked $Self:ty => $($op:ident),+) => {
         $( impl_num![@op1_checked $Self => $op]; )+ };
     (@op1_checked $Self:ty => $op:ident) => { paste! {
@@ -399,7 +397,6 @@ macro_rules! impl_num {
 
     /* ops that call .get().checked() for: NonZero*, NonSpecific*, (Non)Range* */
 
-    // for both Self and &Self:
     (op1_get_checked $Self:ty => $($op:ident),+) => {
         $( impl_num![@op1_get_checked $Self => $op]; )+ };
     (@op1_get_checked $Self:ty => $op:ident) => { paste! {

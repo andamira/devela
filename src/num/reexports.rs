@@ -1,4 +1,4 @@
-// devela::num
+// devela::num::reexports
 //
 //! Reexported items from `core`.
 //

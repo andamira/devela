@@ -36,7 +36,7 @@ pub use all::*;
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        always_fns::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*, fsize,
+        always_fns::*, fsize, non_range::*, non_specific::*, range::*, reexports::*, traits::*,
     };
 }
 
