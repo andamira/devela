@@ -101,7 +101,7 @@ result = []
 slice = []
 str = ["depend?/const-str"]
 string = ["depend?/unicode-segmentation"]
-sync = ["depend?/atomic", "depend?/portable-atomic"]
+sync = ["depend?/atomic", "depend?/portable-atomic", "bytemuck?/zeroable_atomics"]
 task = []
 thread = []
 
@@ -205,11 +205,15 @@ depend = { package = "devela_depend", version = "0.1.0", optional = true }
 # option B) Otherwise optional features can be manually enabled:
 atomic = { version = "0.6.0", default-features = false, optional = true, features = ["fallback"] }
 az = { version = "1.2.1", default-features = false, optional = true }
-bytemuck = { version = "1.13.1", default-features = false, optional = true }
 const-str = { version = "0.5.6", default-features = false, optional = true }
 devela_macros = { version  = "0.7.0", optional = true }
 #devela_macros = { path = "../macros", optional = true }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
+[dependencies.bytemuck]
+version = "1.14.0"
+default-features = false
+optional = true
+features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
 [dependencies.portable-atomic]
 version = "1.4.3"
 default-features = false
