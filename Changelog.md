@@ -13,20 +13,23 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new type aliases: `Egc16`, `Egc32`, `Egc64`, `Egc128`, `NonNulEgc8`, `NonNulEgc16`, `NonNulEgc32`, `NonNulEgc64`, `NonNulEgc128`.
 - new structs: `StringEgc`, `ArrayU8Egc`, `ArrayU8NonNulEgc`, `LiteCoroutine`, `LiteCoroutineExecutor`, `LiteCoroutineWaiter`, `LiteCoroutineWaker`, `Direct`, `Boxed`.
 - re-export std's items from `future` and `task`, and `core::mem` items from `mem`.
-- new traits `Egc`, `Num`, `Mem`, `Size`, `BitSize`, `Storage`.
+- new traits `AnyExt`, `Egc`, `Num`, `NumRef`, `Mem`, `Size`, `BitSize`, `Storage`.
 - add new optional dependency `devela_depend`.
 - new fns: `mem_ptr_ratio`.
+- new type aliases: `fsize`, `NoNum`.
 
 ### Removed
-- remove macro: `manifest_dir`.
+- remove macros: `manifest_dir`, `sfb`.
 - remove features: `lean`, `leanest`, `chars`, `strings`, `os`, `os_unsafe`.
 - remove unneded conversion impls from chars to strings.
 
 ### Changed
+- bump MSRV to `1.73.0`.
 - add features `linux`, `term` to `full`.
 - optional dependencies can be enabled directly or via `depend`.
 - rename `mem` fns by prefixing them with `mem_`: `mem_as_bytes`, `mem_as_bytes_mut`, `mem_as_bytes_sized`.
 - rename `Num` trait fns with the `num_` prefix; rename fn `get` to `num_into`; add fn `num_from`.
+- update `bytemuck`, enable more features.
 
 ### Fixed
 - do not enable the empty `default` feature.
