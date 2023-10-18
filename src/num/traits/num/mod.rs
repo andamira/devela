@@ -13,6 +13,7 @@ mod auto_impls {
     impl Num for NoNum {
         type Inner = ();
         type OpOut = ();
+        type OpRhs = ();
 
         fn num_into(self) -> Self::Inner {}
     }
@@ -65,6 +66,9 @@ pub trait Num {
     /// The output type for operations.
     type OpOut;
 
+    /// The right hand side type for operations.
+    type OpRhs;
+
     /// Returns the inner `self` representation.
     #[must_use]
     fn num_into(self) -> Self::Inner;
@@ -100,7 +104,7 @@ pub trait Num {
     fn num_is_one(&self) -> Option<bool> { None }
     /// Returns the number one.
     #[must_use]
-    fn num_get_one() -> Option<Self> where Self:Sized { None }
+    fn num_get_one() -> Option<Self> where Self: Sized { None }
     /// Sets the number to one.
     #[must_use]
     fn num_set_one(&mut self) -> Option<()> { None }
@@ -109,68 +113,68 @@ pub trait Num {
 
     /// Computes `self` + `other`.
     #[must_use]
-    fn num_add(self, other: Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_add(self, rhs: Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `self` + `&other`.
     #[must_use]
-    fn num_add_ref(self, other: &Self) -> Option<Self::OpOut> where Self:Sized { None }
+    fn num_add_ref(self, rhs: &Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `&self` + `other`.
     #[must_use]
-    fn num_ref_add(&self, other: Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_ref_add(&self, rhs: Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `&self` + `&other`.
     #[must_use]
-    fn num_ref_add_ref(&self, other: &Self) -> Option<Self::OpOut> where Self:Sized { None }
+    fn num_ref_add_ref(&self, rhs: &Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
 
     /// Computes `self` - `other`.
     #[must_use]
-    fn num_sub(self, other: Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_sub(self, rhs: Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `self` - `&other`.
     #[must_use]
-    fn num_sub_ref(self, other: &Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_sub_ref(self, rhs: &Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `&self` - `other`.
     #[must_use]
-    fn num_ref_sub(&self, other: Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_ref_sub(&self, rhs: Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `&self` - `&other`.
     #[must_use]
-    fn num_ref_sub_ref(&self, other: &Self) -> Option<Self::OpOut> where Self:Sized { None }
+    fn num_ref_sub_ref(&self, rhs: &Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
 
     /// Computes `self` * `other`.
     #[must_use]
-    fn num_mul(self, other: Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_mul(self, rhs: Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `self` * `&other`.
     #[must_use]
-    fn num_mul_ref(self, other: &Self) -> Option<Self::OpOut> where Self:Sized { None }
+    fn num_mul_ref(self, rhs: &Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `&self` * `other`.
     #[must_use]
-    fn num_ref_mul(&self, other: Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_ref_mul(&self, rhs: Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `&self` * `&other`.
     #[must_use]
-    fn num_ref_mul_ref(&self, other: &Self) -> Option<Self::OpOut> where Self:Sized { None }
+    fn num_ref_mul_ref(&self, rhs: &Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
 
     /// Computes `self` / `other`.
     #[must_use]
-    fn num_div(self, other: Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_div(self, rhs: Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `self` / `&other`.
     #[must_use]
-    fn num_div_ref(self, other: &Self) -> Option<Self::OpOut> where Self:Sized { None }
+    fn num_div_ref(self, rhs: &Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `&self` / `other`.
     #[must_use]
-    fn num_ref_div(&self, other: Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_ref_div(&self, rhs: Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `&self` / `&other`.
     #[must_use]
-    fn num_ref_div_ref(&self, other: &Self) -> Option<Self::OpOut> where Self:Sized { None }
+    fn num_ref_div_ref(&self, rhs: &Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
 
     /// Computes `self` % `other`.
     #[must_use]
-    fn num_rem(self, other: Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_rem(self, rhs: Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `self` % `&other`.
     #[must_use]
-    fn num_rem_ref(self, other: &Self) -> Option<Self::OpOut> where Self:Sized { None }
+    fn num_rem_ref(self, rhs: &Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `&self` % `other`.
     #[must_use]
-    fn num_ref_rem(&self, other: Self) -> Option<Self::OpOut> where Self: Sized { None }
+    fn num_ref_rem(&self, rhs: Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
     /// Computes `&self` % `&other`.
     #[must_use]
-    fn num_ref_rem_ref(&self, other: &Self) -> Option<Self::OpOut> where Self:Sized { None }
+    fn num_ref_rem_ref(&self, rhs: &Self::OpRhs) -> Option<Self::OpOut> where Self: Sized { None }
 
     /// Computes `- self`.
     #[must_use]
@@ -237,59 +241,69 @@ pub trait NumRef<'a> where Self: Deref<Target = Self::Own> {
 
     /* Operations */
 
-    /// Computes `&self` + `other`.
+    /// Computes `&self` + `rhs`.
     #[must_use]
-    fn num_ref_add(&self, other: Self::Own) -> Option<<Self::Own as Num>::OpOut> {
-        self.deref().num_ref_add(other)
+    fn num_ref_add(&self, rhs: <Self::Own as Num>::OpRhs)
+        -> Option<<Self::Own as Num>::OpOut> {
+        self.deref().num_ref_add(rhs)
     }
-    /// Computes `&self` + `&other`.
+    /// Computes `&self` + `&rhs`.
     #[must_use]
-    fn num_ref_add_ref(&self, other: &Self::Own) -> Option<<Self::Own as Num>::OpOut> {
-        self.deref().num_ref_add_ref(other)
-    }
-
-    /// Computes `&self` - `other`.
-    #[must_use]
-    fn num_ref_sub(&self, other: Self::Own) -> Option<<Self::Own as Num>::OpOut> {
-        self.deref().num_ref_sub(other)
-    }
-    /// Computes `&self` - `&other`.
-    #[must_use]
-    fn num_ref_sub_ref(&self, other: &Self::Own) -> Option<<Self::Own as Num>::OpOut> {
-        self.deref().num_ref_sub_ref(other)
+    fn num_ref_add_ref(&self, rhs: &<Self::Own as Num>::OpRhs)
+        -> Option<<Self::Own as Num>::OpOut> {
+        self.deref().num_ref_add_ref(rhs)
     }
 
-    /// Computes `&self` * `other`.
+    /// Computes `&self` - `rhs`.
     #[must_use]
-    fn num_ref_mul(&self, other: Self::Own) -> Option<<Self::Own as Num>::OpOut> {
-        self.deref().num_ref_mul(other)
+    fn num_ref_sub(&self, rhs: <Self::Own as Num>::OpRhs)
+        -> Option<<Self::Own as Num>::OpOut> {
+        self.deref().num_ref_sub(rhs)
     }
-    /// Computes `&self` * `&other`.
+    /// Computes `&self` - `&rhs`.
     #[must_use]
-    fn num_ref_mul_ref(&self, other: &Self::Own) -> Option<<Self::Own as Num>::OpOut> {
-        self.deref().num_ref_mul_ref(other)
-    }
-
-    /// Computes `&self` / `other`.
-    #[must_use]
-    fn num_ref_div(&self, other: Self::Own) -> Option<<Self::Own as Num>::OpOut> {
-        self.deref().num_ref_div(other)
-    }
-    /// Computes `&self` / `&other`.
-    #[must_use]
-    fn num_ref_div_ref(&self, other: &Self::Own) -> Option<<Self::Own as Num>::OpOut> {
-        self.deref().num_ref_div_ref(other)
+    fn num_ref_sub_ref(&self, rhs: &<Self::Own as Num>::OpRhs)
+        -> Option<<Self::Own as Num>::OpOut> {
+        self.deref().num_ref_sub_ref(rhs)
     }
 
-    /// Computes `&self` % `other`.
+    /// Computes `&self` * `rhs`.
     #[must_use]
-    fn num_ref_rem(&self, other: Self::Own) -> Option<<Self::Own as Num>::OpOut> {
-        self.deref().num_ref_rem(other)
+    fn num_ref_mul(&self, rhs: <Self::Own as Num>::OpRhs)
+        -> Option<<Self::Own as Num>::OpOut> {
+        self.deref().num_ref_mul(rhs)
     }
-    /// Computes `&self` % `&other`.
+    /// Computes `&self` * `&rhs`.
     #[must_use]
-    fn num_ref_rem_ref(&self, other: &Self::Own) -> Option<<Self::Own as Num>::OpOut> {
-        self.deref().num_ref_rem_ref(other)
+    fn num_ref_mul_ref(&self, rhs: &<Self::Own as Num>::OpRhs)
+        -> Option<<Self::Own as Num>::OpOut> {
+        self.deref().num_ref_mul_ref(rhs)
+    }
+
+    /// Computes `&self` / `rhs`.
+    #[must_use]
+    fn num_ref_div(&self, rhs: <Self::Own as Num>::OpRhs)
+        -> Option<<Self::Own as Num>::OpOut> {
+        self.deref().num_ref_div(rhs)
+    }
+    /// Computes `&self` / `&rhs`.
+    #[must_use]
+    fn num_ref_div_ref(&self, rhs: &<Self::Own as Num>::OpRhs)
+        -> Option<<Self::Own as Num>::OpOut> {
+        self.deref().num_ref_div_ref(rhs)
+    }
+
+    /// Computes `&self` % `rhs`.
+    #[must_use]
+    fn num_ref_rem(&self, rhs: <Self::Own as Num>::OpRhs)
+        -> Option<<Self::Own as Num>::OpOut> {
+        self.deref().num_ref_rem(rhs)
+    }
+    /// Computes `&self` % `&rhs`.
+    #[must_use]
+    fn num_ref_rem_ref(&self, rhs: &<Self::Own as Num>::OpRhs)
+        -> Option<<Self::Own as Num>::OpOut> {
+        self.deref().num_ref_rem_ref(rhs)
     }
 
     /// Computes `- &self`.

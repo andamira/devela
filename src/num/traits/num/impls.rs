@@ -25,6 +25,7 @@ macro_rules! impl_num {
         impl Num for $p {
             type Inner = $p;
             type OpOut = $p;
+            type OpRhs = $p;
 
             // base
             #[inline]
@@ -63,6 +64,7 @@ macro_rules! impl_num {
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
             type OpOut = [<NonZero $p:camel>];
+            type OpRhs = [<NonZero $p:camel>];
 
             // base
             #[inline]
@@ -110,6 +112,7 @@ macro_rules! impl_num {
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
             type Inner = $p;
             type OpOut =  [<NonSpecific $p:camel>]<V>;
+            type OpRhs =  [<NonSpecific $p:camel>]<V>;
             impl_num![custom_i_body];
         }
 
@@ -117,6 +120,7 @@ macro_rules! impl_num {
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
             type OpOut = [<NonRange $p:camel>]<RMIN, RMAX>;
+            type OpRhs = [<NonRange $p:camel>]<RMIN, RMAX>;
             impl_num![custom_i_body];
         }
 
@@ -124,6 +128,7 @@ macro_rules! impl_num {
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
             type OpOut = [<Range $p:camel>]<RMIN, RMAX>;
+            type OpRhs = [<Range $p:camel>]<RMIN, RMAX>;
             impl_num![custom_i_body];
         }
     }};
@@ -136,6 +141,7 @@ macro_rules! impl_num {
         impl Num for $p {
             type Inner = $p;
             type OpOut = $p;
+            type OpRhs = $p;
 
             // base
             #[inline]
@@ -178,6 +184,7 @@ macro_rules! impl_num {
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
             type OpOut = [<NonZero $p:camel>];
+            type OpRhs = [<NonZero $p:camel>];
 
             // base
             #[inline]
@@ -229,12 +236,14 @@ macro_rules! impl_num {
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
             type Inner = $p;
             type OpOut = [<NonSpecific $p:camel>]<V>;
+            type OpRhs = [<NonSpecific $p:camel>]<V>;
             impl_num![custom_u_body]; }
 
         // NonRangeU*
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
             type OpOut = [<NonRange $p:camel>]<RMIN, RMAX>;
+            type OpRhs = [<NonRange $p:camel>]<RMIN, RMAX>;
             impl_num![custom_u_body];
         }
 
@@ -242,6 +251,7 @@ macro_rules! impl_num {
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
             type OpOut = [<Range $p:camel>]<RMIN, RMAX>;
+            type OpRhs = [<Range $p:camel>]<RMIN, RMAX>;
             impl_num![custom_u_body]; }
     }};
 
@@ -253,6 +263,7 @@ macro_rules! impl_num {
         impl Num for $p { paste! {
             type Inner = $p;
             type OpOut = $p;
+            type OpRhs = $p;
 
             // base
             #[inline]
