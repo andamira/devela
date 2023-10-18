@@ -24,6 +24,7 @@ macro_rules! impl_num {
         // i*
         impl Num for $p {
             type Inner = $p;
+            type OpOut = $p;
 
             // base
             #[inline]
@@ -61,6 +62,7 @@ macro_rules! impl_num {
         // NonZeroI*
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
+            type OpOut = [<NonZero $p:camel>];
 
             // base
             #[inline]
@@ -106,15 +108,24 @@ macro_rules! impl_num {
 
         // NonSpecificI*
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
-            type Inner = $p; impl_num![custom_i_body]; }
+            type Inner = $p;
+            type OpOut =  [<NonSpecific $p:camel>]<V>;
+            impl_num![custom_i_body];
+        }
 
         // NonRangeI*
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
-            type Inner = $p; impl_num![custom_i_body]; }
+            type Inner = $p;
+            type OpOut = [<NonRange $p:camel>]<RMIN, RMAX>;
+            impl_num![custom_i_body];
+        }
 
         // RangeI*
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
-            type Inner = $p; impl_num![custom_i_body]; }
+            type Inner = $p;
+            type OpOut = [<Range $p:camel>]<RMIN, RMAX>;
+            impl_num![custom_i_body];
+        }
     }};
 
     // Implements `Num` for unsigned integer types
@@ -124,6 +135,7 @@ macro_rules! impl_num {
         // u*
         impl Num for $p {
             type Inner = $p;
+            type OpOut = $p;
 
             // base
             #[inline]
@@ -165,6 +177,7 @@ macro_rules! impl_num {
         // NonZeroU*
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
+            type OpOut = [<NonZero $p:camel>];
 
             // base
             #[inline]
@@ -214,17 +227,22 @@ macro_rules! impl_num {
 
         // NonSpecificU*
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
-            type Inner = $p; impl_num![custom_u_body]; }
+            type Inner = $p;
+            type OpOut = [<NonSpecific $p:camel>]<V>;
+            impl_num![custom_u_body]; }
 
         // NonRangeU*
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
+            type OpOut = [<NonRange $p:camel>]<RMIN, RMAX>;
             impl_num![custom_u_body];
         }
 
         // RangeU*
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
-            type Inner = $p; impl_num![custom_u_body]; }
+            type Inner = $p;
+            type OpOut = [<Range $p:camel>]<RMIN, RMAX>;
+            impl_num![custom_u_body]; }
     }};
 
     // Implements `Num` for the floating-point types
@@ -234,6 +252,7 @@ macro_rules! impl_num {
         // f*
         impl Num for $p { paste! {
             type Inner = $p;
+            type OpOut = $p;
 
             // base
             #[inline]
@@ -353,21 +372,21 @@ macro_rules! impl_num {
         $( impl_num![@op1_none $Self => $op]; )+ };
     (@op1_none $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Option<$Self> { None }
+        fn [<num_ $op>](self) -> Option<$Self::OpOut> { None }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Option<$Self> { None }
+        fn [<num_ref_ $op>](&self) -> Option<$Self::OpOut> { None }
     }};
     (op2_none $Self:ty => $($op:ident),+) => {
         $( impl_num![@op2_none $Self => $op]; )+ };
     (@op2_none $Self:ty => $op:ident) => {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Option<$Self> { None }
+        fn [<num_ $op>](self, other: $Self) -> Option<$Self::OpOut> { None }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self> { None }
+        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self::OpOut> { None }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self> { None }
+        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self::OpOut> { None }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self> { None }
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self::OpOut> { None }
     };
 
     /* ops that call .checked() for i*, u*, and few for NonZero* */
@@ -376,21 +395,21 @@ macro_rules! impl_num {
         $( impl_num![@op1_checked $Self => $op]; )+ };
     (@op1_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Option<$Self> { self.[<checked_$op>]() }
+        fn [<num_ $op>](self) -> Option<$Self::OpOut> { self.[<checked_$op>]() }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Option<$Self> { self.[<checked_$op>]() }
+        fn [<num_ref_ $op>](&self) -> Option<$Self::OpOut> { self.[<checked_$op>]() }
     }};
     (op2_checked $Self:ty => $($op:ident),+) => {
         $( impl_num![@op2_checked $Self => $op]; )+ };
     (@op2_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Option<$Self> { self.[<checked_ $op>](other) }
+        fn [<num_ $op>](self, other: $Self) -> Option<$Self::OpOut> { self.[<checked_ $op>](other) }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self> { self.[<checked_ $op>](*other) }
+        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self::OpOut> { self.[<checked_ $op>](*other) }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self> { self.[<checked_ $op>](other) }
+        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self::OpOut> { self.[<checked_ $op>](other) }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self> {
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self::OpOut> {
             self.[<checked_ $op>](*other)
         }
     }};
@@ -401,27 +420,27 @@ macro_rules! impl_num {
         $( impl_num![@op1_get_checked $Self => $op]; )+ };
     (@op1_get_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Option<$Self> { $Self::new(self.get().[<checked_ $op>]()?) }
+        fn [<num_ $op>](self) -> Option<$Self::OpOut> { $Self::new(self.get().[<checked_ $op>]()?) }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Option<$Self> { $Self::new(self.get().[<checked_ $op>]()?) }
+        fn [<num_ref_ $op>](&self) -> Option<$Self::OpOut> { $Self::new(self.get().[<checked_ $op>]()?) }
     }};
     (op2_get_checked $Self:ty => $($op:ident),+) => {
         $( impl_num![@op2_get_checked $Self => $op]; )+ };
     (@op2_get_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Option<$Self> {
+        fn [<num_ $op>](self, other: $Self) -> Option<$Self::OpOut> {
             $Self::new(self.get().[<checked_ $op>](other.get())?)
         }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self> {
+        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self::OpOut> {
             $Self::new(self.get().[<checked_ $op>](other.get())?)
         }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self> {
+        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self::OpOut> {
             $Self::new(self.get().[<checked_ $op>](other.get())?)
         }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self> {
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self::OpOut> {
             $Self::new(self.get().[<checked_ $op>](other.get())?)
         }
     }};
@@ -431,26 +450,26 @@ macro_rules! impl_num {
     (op1_float $Self:ty => $($op:ident),+) => { $( impl_num![@op1_float $Self => $op]; )+ };
     (@op1_float $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Option<$Self> { Some([<$op:camel>]::[<$op>](self)) }
+        fn [<num_ $op>](self) -> Option<$Self::OpOut> { Some([<$op:camel>]::[<$op>](self)) }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Option<$Self> { Some([<$op:camel>]::[<$op>](self)) }
+        fn [<num_ref_ $op>](&self) -> Option<$Self::OpOut> { Some([<$op:camel>]::[<$op>](self)) }
     }};
     (op2_float $Self:ty => $($op:ident),+) => { $( impl_num![@op2_float $Self => $op]; )+ };
     (@op2_float $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Option<$Self> {
+        fn [<num_ $op>](self, other: $Self) -> Option<$Self::OpOut> {
             Some([<$op:camel>]::[<$op>](self, other))
         }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self> {
+        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self::OpOut> {
             Some([<$op:camel>]::[<$op>](self, *other))
         }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self> {
+        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self::OpOut> {
             Some([<$op:camel>]::[<$op>](self, other))
         }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self> {
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self::OpOut> {
             Some([<$op:camel>]::[<$op>](self, *other))
         }
     }};
