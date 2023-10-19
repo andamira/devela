@@ -66,9 +66,9 @@ term_unsafe = ["term", "unsafe_term"]
 #* module features *#
 
 full = [ # enables all the modules
-	"any", "ascii", "char", "cmp", "codegen", "convert", "fmt", "future", "mem",
-	"num", "ops", "option", "path", "result", "slice", "str", "string", "sync",
-	"task", "thread",
+	"any", "ascii", "char", "cmp", "codegen", "collections", "convert", "fmt",
+	"future", "mem", "num", "ops", "option", "path", "result", "slice", "str",
+	"string", "sync", "task", "thread",
 	# os platform sub-modules:
 	"linux", "term",
 	]
@@ -82,13 +82,14 @@ texts = [ # enables all *text* related sub-modules
 async = ["future", "task"]
 	async_unsafe = ["future_unsafe", "task_unsafe"]
 
-# individual modules (20)
+# individual modules (21)
 # (modules enable their own dependencies if the `depend` feature is enabled)
 any = []
 ascii = []
 char = []
 cmp = []
 codegen = ["depend?/devela_macros"]
+collections = ["depend?/hashbrown"]
 convert = ["depend?/az"]
 fmt = []
 future = []
@@ -105,12 +106,13 @@ sync = ["depend?/atomic", "depend?/portable-atomic", "bytemuck?/zeroable_atomics
 task = []
 thread = []
 
-# individual modules with unsafe enabled (20):
+# individual modules with unsafe enabled (21):
 any_unsafe = ["any", "unsafe_any"]
 ascii_unsafe = ["ascii", "unsafe_ascii"]
 char_unsafe = ["char", "unsafe_char"]
 cmp_unsafe = ["cmp", "unsafe_cmp"]
 codegen_unsafe = ["codegen", "unsafe_codegen"]
+collections_unsafe = ["collections", "unsafe_collections"]
 convert_unsafe = ["convert", "unsafe_convert"]
 fmt_unsafe = ["fmt", "unsafe_fmt"]
 future_unsafe = ["future", "unsafe_future"]
@@ -130,19 +132,19 @@ thread_unsafe = ["thread", "unsafe_thread"]
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate (21)
-	"unsafe_any", "unsafe_ascii", "unsafe_char", "unsafe_cmp",
-	"unsafe_codegen", "unsafe_convert", "unsafe_fmt", "unsafe_future",
-	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_option",
-	"unsafe_os", "unsafe_path", "unsafe_result", "unsafe_slice",
-	"unsafe_str", "unsafe_string", "unsafe_sync", "unsafe_task",
-	"unsafe_thread",
+unsafe = [ # enables unsafe features in this crate (22)
+	"unsafe_any", "unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_codegen",
+	"unsafe_convert", "unsafe_collections", "unsafe_fmt", "unsafe_future",
+	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_option", "unsafe_os",
+	"unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_str", "unsafe_string",
+	"unsafe_sync", "unsafe_task", "unsafe_thread",
 	]
 	unsafe_any = [] # (unused)
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_char = [] # enables unchecked conversions in `char`
 	unsafe_cmp = [] # enables const floating-point comparisons
 	unsafe_codegen = [] # (unused)
+	unsafe_collections = [] # (unused)
 	unsafe_convert = [] # enables using `MaybeUninit` for array initalization
 	unsafe_fmt = [] # enables `IntBuf` struct and `IntBufable` trait
 	unsafe_future = [] # (unused)
@@ -183,8 +185,9 @@ depend = ["dep:depend"] # module features enables their dependencies as defined.
 atomic = ["dep:atomic"]
 az = ["dep:az"]
 bytemuck = ["dep:bytemuck"]
-devela_macros = ["dep:devela_macros"]
 const-str = ["dep:const-str"]
+devela_macros = ["dep:devela_macros"]
+hashbrown = ["dep:hashbrown"]
 portable-atomic = ["dep:portable-atomic"]
 unicode-segmentation = ["dep:unicode-segmentation"]
 
@@ -192,34 +195,42 @@ unicode-segmentation = ["dep:unicode-segmentation"]
 
 [dependencies]
 
-# only one mandatory external dependency
+# only one non-optional dependency
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 
 # There are two options for enabling optional dependencies:
-
+#
 # option A) When the `depend` feature is enabled each optional dependency will
 # be automatically enabled by some individual module feature, as defined above:
-depend = { package = "devela_depend", version = "0.1.0", optional = true }
-#depend = { package = "devela_depend", path = "../depend", optional = true }
-
+depend = { package = "devela_depend", version = "0.1.1", optional = true }
+#depend = { package = "devela_depend", path = "./depend", optional = true }
+#
 # option B) Otherwise optional features can be manually enabled:
-atomic = { version = "0.6.0", default-features = false, optional = true, features = ["fallback"] }
 az = { version = "1.2.1", default-features = false, optional = true }
 const-str = { version = "0.5.6", default-features = false, optional = true }
 devela_macros = { version  = "0.7.0", optional = true }
-#devela_macros = { path = "../macros", optional = true }
+#devela_macros = { path = "./macros", optional = true }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
+[dependencies.atomic]
+version = "0.6.0"
+default-features = false
+optional = true
+features = ["fallback"]
 [dependencies.bytemuck]
 version = "1.14.0"
 default-features = false
 optional = true
 features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
+[dependencies.hashbrown]
+version = "0.14.1"
+default-features = false
+optional = true
+features = ["ahash", "inline-more"]
 [dependencies.portable-atomic]
 version = "1.4.3"
 default-features = false
 optional = true
 features = ["fallback", "float"]
-
 
 [dev-dependencies]
 

@@ -48,6 +48,9 @@ mod depend {
     #[cfg(feature = "devela_macros")]
     pub use ::devela_macros;
 
+    #[cfg(all(feature = "hashbrown", feature = "alloc"))]
+    pub use ::hashbrown;
+
     #[cfg(feature = "portable-atomic")]
     pub use ::portable_atomic;
 
@@ -59,79 +62,36 @@ mod depend {
 // and the enabled modules will enable their associated optional dependencies.
 //
 // Any independently enabled optional dependency will also be enabled.
+//
+// This is also used for documentation.
 #[cfg(feature = "depend")]
 mod depend {
-    #[cfg(all(feature = "atomic", not(feature = "sync")))]
-    pub use ::atomic;
-    /// <span class="stab portability" title="re-exported `atomic` crate">`atomic`</span>
-    #[doc = "A generic atomic wrapper type.\n\n"]
-    #[doc = "*Re-exported [`atomic`](https://docs.rs/atomic)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "sync")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-    pub use depend::atomic;
+    use crate::codegen::reexport;
 
-    #[cfg(all(feature = "az", not(feature = "convert")))]
-    pub use ::az;
-    /// <span class="stab portability" title="re-exported `az` crate">`az`</span>
-    #[doc = "Casts and checked casts.\n\n"]
-    #[doc = "*Re-exported [`az`](https://docs.rs/az)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "convert")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
-    pub use depend::az;
+    reexport! { depend feature: "sync",
+    dep: "atomic", atomic, "A generic atomic wrapper type." }
 
-    #[cfg(all(feature = "bytemuck", not(feature = "mem")))]
-    pub use ::bytemuck;
-    /// <span class="stab portability" title="re-exported `bytemuck` crate">`bytemuck`</span>
-    #[doc = "Small utilities for casting between plain data types.\n\n"]
-    #[doc = "*Re-exported [`bytemuck`](https://docs.rs/bytemuck)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "mem")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
-    pub use depend::bytemuck;
+    reexport! { depend feature: "convert",
+    dep: "az", az, "Casts and checked casts." }
 
-    #[cfg(all(feature = "const-str", not(feature = "str")))]
-    pub use ::const_str;
-    /// <span class="stab portability" title="re-exported `const-str` crate">`const-str`</span>
-    #[doc = "Compile-time string operations.\n\n"]
-    #[doc = "*Re-exported [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "str")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "str")))]
-    pub use depend::const_str;
+    reexport! { depend feature: "mem",
+    dep: "bytemuck", bytemuck, "Small utilities for casting between plain data types." }
 
-    #[cfg(all(feature = "devela_macros", not(feature = "codegen")))]
-    pub use ::devela_macros;
-    /// <span class="stab portability" title="re-exported `devela_macros`
-    /// crate">`devela_macros`</span>
-    #[doc = "Procedural macros for `devela`.\n\n"]
-    #[doc = "*Re-exported [`devela_macros`](https://docs.rs/devela_macros)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "codegen")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "codegen")))]
-    pub use depend::devela_macros;
+    reexport! { depend feature: "str",
+    dep: "const-str", const_str, "Compile-time string operations." }
 
-    #[cfg(all(feature = "portable-atomic", not(feature = "sync")))]
-    pub use ::portable_atomic;
-    /// <span class="stab portability" title="re-exported `portable-atomic`
-    /// crate">`portable-atomic`</span>
-    #[doc = "Portable atomic types including 128-bit atomics, floats, etc.\n\n"]
-    #[doc = "*Re-exported [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "sync")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-    pub use depend::portable_atomic;
+    reexport! { depend feature: "codegen",
+    dep: "devela_macros", devela_macros, "Procedural macros for `devela`." }
 
-    #[cfg(all(feature = "unicode_segmentation", not(feature = "string")))]
-    pub use ::unicode_segmentation;
-    /// <span class="stab portability" title="re-exported `unicode-segmentation`
-    /// crate">`unicode-segmentation`</span>
-    #[doc = "Split strings on Grapheme Cluster, Word or Sentence boundaries.\n\n"]
-    #[doc = "*Re-exported [`unicode-segmentation`](https://docs.rs/unicode-segmentation)*
-    crate.\n\n---"]
-    #[doc(inline)]
-    #[cfg(feature = "string")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "string")))]
-    pub use depend::unicode_segmentation;
+    reexport! { depend feature: "collections", also: "alloc",
+    dep: "hashbrown", hashbrown,
+    "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`." }
+
+    reexport! { depend feature: "sync",
+    dep: "portable-atomic", portable_atomic,
+    "Portable atomic types including 128-bit atomics, floats, etc." }
+
+    reexport! { depend feature: "string",
+    dep: "unicode-segmentation", unicode_segmentation,
+    "Split strings on Grapheme Cluster, Word or Sentence boundaries." }
 }

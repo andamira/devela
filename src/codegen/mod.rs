@@ -5,13 +5,22 @@
 
 /* always compiled for internal use */
 
+// just private:
+mod _private;
+#[allow(unused)]
+pub(crate) use _private::reexport;
+
+// both private and public:
 mod iif;
 mod paste;
 mod skip_format;
-
 #[allow(unused)]
 #[cfg(not(feature = "codegen"))]
 pub(crate) use {iif::iif, paste::paste, skip_format::sf};
+
+#[doc(hidden)]
+#[allow(unused)]
+pub use paste::__paste;
 
 /* only compiled with the `codegen` feature */
 
@@ -24,10 +33,6 @@ mod deprecate;
 
 #[cfg(feature = "codegen")]
 mod reexport;
-
-#[doc(hidden)]
-#[allow(unused)]
-pub use paste::__paste;
 
 #[cfg(feature = "codegen")]
 pub use all::*;

@@ -24,9 +24,10 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     any(
         feature = "unsafe", // includes all below
         feature = "unsafe_any", feature = "unsafe_ascii", feature = "unsafe_char",
-        feature = "unsafe_cmp", feature = "unsafe_codegen", feature = "unsafe_convert",
-        feature = "unsafe_fmt", feature = "unsafe_future", feature = "unsafe_mem",
-        feature = "unsafe_num", feature = "unsafe_ops", feature = "unsafe_option",
+        feature = "unsafe_cmp", feature = "unsafe_codegen", feature = "unsafe_collections",
+        feature = "unsafe_convert", feature = "unsafe_fmt", feature = "unsafe_future",
+        feature = "unsafe_mem", feature = "unsafe_num", feature = "unsafe_ops",
+        feature = "unsafe_option",
         //
         feature = "unsafe_os", // includes: unsafe_{linux, term}
             feature = "unsafe_linux", feature = "unsafe_term",
@@ -69,6 +70,12 @@ pub(crate) mod cmp; // the "cmp" feature is disabled
 pub mod codegen;
 #[cfg(all(not(feature = "codegen"), not(test)))]
 pub(crate) mod codegen; // the "codegen" feature is disabled
+
+#[cfg(any(feature = "collections", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "collections")))]
+pub mod collections;
+#[cfg(all(not(feature = "collections"), not(test)))]
+pub(crate) mod collections; // the "collections" feature is disabled
 
 #[cfg(any(feature = "convert", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
@@ -186,6 +193,10 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "codegen")]
     pub use super::codegen::all::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "collections")]
+    pub use super::collections::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "convert")]
