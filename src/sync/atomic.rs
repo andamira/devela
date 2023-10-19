@@ -7,55 +7,33 @@
 //! and some useful definitions from `core`.
 //
 
+use crate::codegen::reexport;
+
 /* reexport from the `atomic` crate */
 
-/// <span class="stab portability" title="re-exported from the `atomic` crate">`atomic`</span>
-#[doc = "A generic atomic wrapper type.\n\n"]
-#[doc = "*Re-exported from the [`atomic`](https://docs.rs/atomic)* crate.\n\n---"]
-#[doc(inline)]
-#[cfg(any(feature = "depend", feature = "atomic"))]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "depend")))
-)]
-pub use crate::depend::atomic::Atomic;
+reexport! { "atomic" | atomic, features: "sync",
+    doc: "A generic atomic wrapper type.",
+    Atomic
+}
 
-/* only in `portable-atomic` */
+/* from `portable-atomic` */
 
-/// <span class="stab portability" title="re-exported from the `portable-atomic`
-/// crate">`portable-atomic`</span>
-#[doc = "A floating point type which can be safely shared between threads.\n\n"]
-#[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(any(feature = "depend", feature = "portable-atomic"))]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "depend")))
-)]
-pub use crate::depend::portable_atomic::{AtomicF32, AtomicF64};
+reexport! { "portable-atomic" | portable_atomic, features: "sync",
+    doc: "A floating point type which can be safely shared between threads.",
+    AtomicF32, AtomicF64
+}
+reexport! { "portable-atomic" | portable_atomic, features: "sync",
+    doc: "A signed integer type which can be safely shared between threads.",
+    AtomicI128
+}
+reexport! { "portable-atomic" | portable_atomic, features: "sync",
+    doc: "An unsigned integer type which can be safely shared between threads.",
+    AtomicU128
+}
 
-/// <span class="stab portability" title="re-exported from the `portable-atomic`
-/// crate">`portable-atomic`</span>
-#[doc = "A signed integer type which can be safely shared between threads.\n\n"]
-#[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(any(feature = "depend", feature = "portable-atomic"))]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "depend")))
-)]
-pub use crate::depend::portable_atomic::AtomicI128;
+/* from either `portable-atomic` or `core` */
 
-/// <span class="stab portability" title="re-exported from the `portable-atomic`
-/// crate">`portable-atomic`</span>
-#[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
-#[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(any(feature = "depend", feature = "portable-atomic"))]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "depend")))
-)]
-pub use crate::depend::portable_atomic::AtomicU128;
-
-/* in either `portable-atomic` or `core` */
+// TODO: IMPROVE create new arm in `reexport` to deal with this case:
 
 /// <span class="stab portability" title="re-exported either from `core` or from the
 /// `portable-atomic` crate">`*`</span>
@@ -106,7 +84,7 @@ pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
 #[cfg(any(feature = "depend", feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
 pub use crate::depend::portable_atomic::AtomicPtr;
-
+//
 #[cfg(all(
     not(any(feature = "depend", feature = "portable-atomic")),
     target_has_atomic = "ptr"
@@ -120,29 +98,21 @@ pub use core::sync::atomic::AtomicPtr;
 #[cfg(any(feature = "depend", feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
 pub use crate::depend::portable_atomic::AtomicBool;
-
+//
 #[cfg(not(any(feature = "depend", feature = "portable-atomic")))]
 pub use core::sync::atomic::AtomicBool;
 
-/* in `core` */
+/* from `core` */
 
-/// <span class="stab portability" title="re-exported from `core`">`core`</span>
-#[doc = "An atomic fence.\n\n"]
-#[doc = "*Re-exported from"]
-#[doc = "`core::sync::`[`atomic`](https://doc.rust-lang.org/core/sync/atomic)*.\n\n---"]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-pub use core::sync::atomic::fence;
-
-/// <span class="stab portability" title="re-exported from `core`">`core`</span>
-#[doc = "A compiler memory fence.\n\n"]
-#[doc = "*Re-exported from"]
-#[doc = "`core::sync::`[`atomic`](https://doc.rust-lang.org/core/sync/atomic)*.\n\n---"]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-pub use core::sync::atomic::compiler_fence;
-
-/// <span class="stab portability" title="re-exported from `core`">`core`</span>
-#[doc = "Atomic memory ordering.\n\n"]
-#[doc = "*Re-exported from"]
-#[doc = "`core::sync::`[`atomic`](https://doc.rust-lang.org/core/sync/atomic)*.\n\n---"]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-pub use core::sync::atomic::Ordering as AtomicOrdering;
+reexport! { rust: core::sync::atomic, local_module: "sync",
+    doc: "An atomic fence.",
+    fence
+}
+reexport! { rust: core::sync::atomic, local_module: "sync",
+    doc: "A compiler memory fence.",
+    compiler_fence
+}
+reexport! { rust: core::sync::atomic, local_module: "sync",
+    doc: "Atomic memory ordering.",
+    @Ordering as AtomicOrdering
+}

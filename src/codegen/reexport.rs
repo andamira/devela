@@ -4,8 +4,8 @@
 //
 
 #[cfg(any(feature = "depend", feature = "devela_macros"))]
-/// <span class="stab portability" title="re-exported from the `devela_macros`
-/// crate">`devela_macros`</span>
+/// <span class="stab portability" title="re-exported from `devela_macros`
+/// (which can be enabled instead of `depend`">`devela_macros`</span>
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(feature = "codegen", feature = "depend")))

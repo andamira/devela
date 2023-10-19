@@ -25,14 +25,8 @@ pub(crate) mod all {
         fmt::{OptionFmt, OptionFmtOr, OptionFmtOrElse},
     };
 
-    /// <span class="stab portability" title="re-exported from the `const-str`
-    /// crate">`const-str`</span>
-    #[cfg(any(all(feature = "depend", feature = "str"), feature = "const-str"))]
-    #[doc = "Returns an unwrapped [`Option<T: Copy>`] in compile-time.\n\n"]
-    #[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-    #[cfg_attr(
-        feature = "nightly",
-        doc(cfg(all(feature = "option", feature = "depend", feature = "str")))
-    )]
-    pub use crate::depend::const_str::unwrap as option_unwrap;
+    crate::codegen::reexport! { "const-str" | const_str , features: "option", "str",
+        doc: "Returns an unwrapped [`Option<T: Copy>`] in compile-time.",
+        @unwrap as option_unwrap
+    }
 }

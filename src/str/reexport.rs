@@ -4,240 +4,103 @@
 //! prefixed with `str_` and with a new first line of documentation.
 //
 
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Compares two [`&str`] lexicographically.\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::compare as str_compare;
+use crate::codegen::reexport;
 
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Concatenates ([`&str`] | [`char`] | [`bool`] | `u*` | `i*`)"]
-#[doc = " into a [`&str`].\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::concat as str_concat;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Concatenates ([`&str`] | [`u8`] | [`&[u8]`](slice) | [`[u8; N]`](array)"]
-#[doc = " | [`&[u8; N]`](array)) to [`&[u8; _]`](array).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::concat_bytes as str_concat_bytes;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Returns [`true`] if the given pattern ([`&str`] | [`char`])"]
-#[doc = " matches a sub-[`&str`].\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::contains as str_contains;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Converts a [`&str`] to [`&CStr`](core::ffi::CStr).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::cstr as str_cstr;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Encodes a [`&str`] with an encoding (`utf8` | `utf16`).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::encode as str_encode;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Encodes a [`&str`] with an encoding (`utf8` | `utf16`)"]
-#[doc = " and appends a NUL char.\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::encode_z as str_encode_z;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = " matches a suffix of this [`&str`].\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::ends_with as str_ends_with;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Returns [`true`] if two [`&str`] are equal.\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::equal as str_equal;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Returns a [`&str`] from a [`&[u8]`](slice).\n\n"]
-#[doc = "#Panics\nPanics if it's not valid utf8.\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::from_utf8 as str_from_utf8;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Converts a [`&str`] with hexadecimals (`0-9` | `A-F` | `a-f`)"]
-#[doc = " into a [`[u8; _]`](array).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::hex as str_hex;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Parses a [`&str`] into a value ([`&str`] | [`char`] | [`bool`] | `u*` | `i*`).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::parse as str_parse;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Converts a [`&str`] into a [`*const c_char`](core::ffi::c_char).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::raw_cstr as str_raw_cstr;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Creates a [`&str`] by repeating a [`&str`] n times.\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::repeat as str_repeat;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Replaces all matches of a pattern ([`&str`] | [`char`]) with another [`&str`].\n\n"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::replace as str_replace;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Sorts multiple ([`&[&str]`](slice) | [`[&str; N]`](array) |"]
-#[doc = " [`&[&str; N]`](array)) into a [`[&str; _]`](array).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::sorted as str_sorted;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Splits a [`&str`] by a separator pattern ([`&str`] | [`char`])"]
-#[doc = " returning [`[&str; _]`](array).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::split as str_split;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Returns [`true`] if the given pattern ([`&str`] | [`char`]) matches"]
-#[doc = " a prefix of [`&str`].\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::starts_with as str_starts_with;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Returns a [`&str`] with the prefix removed.\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::strip_prefix as str_strip_prefix;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Returns a [`&str`] with the suffix removed.\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::strip_suffix as str_strip_suffix;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Converts a [`&str`] or [`&[u8]`](slice) into a [`[u8; _]`](array).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::to_byte_array as str_to_byte_array;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Converts a [`&str`] into a [`[char; _]`](array).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::to_char_array as str_to_char_array;
-
-/// <span class="stab portability" title="re-exported from `const-str`">`const-str`</span>
-#[doc = "Returns a [`&str`] from a value ([`&str`] | [`char`] | [`bool`] | `u*` | `i*`).\n\n"]
-#[doc = "*Reexported from the [`const-str`](https://docs.rs/const-str)* crate.\n\n---"]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "str", feature = "depend")))
-)]
-#[cfg(any(feature = "const-str", feature = "depend"))]
-pub use crate::depend::const_str::to_str as str_from;
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Compares two [`&str`] lexicographically.",
+    @compare as str_compare
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Concatenates ([`&str`] | [`char`] | [`bool`] | `u*` | `i*`) into a [`&str`].",
+    @concat as str_concat
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Concatenates ([`&str`] | [`u8`] | [`&[u8]`](slice) | [`[u8; N]`](array)
+        | [`&[u8; N]`](array)) to [`&[u8; _]`](array).",
+    @concat_bytes as str_concat_bytes
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Returns [`true`] if the given pattern ([`&str`] | [`char`]) matches a sub-[`&str`].",
+    @contains as str_contains
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Converts a [`&str`] to [`&CStr`](core::ffi::CStr).",
+    @cstr as str_cstr
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Encodes a [`&str`] with an encoding (`utf8` | `utf16`).",
+    @encode as str_encode
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Encodes a [`&str`] with an encoding (`utf8` | `utf16`) and append a NUL char.",
+    @encode_z as str_encode_z
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Returns `true` if the given pattern matches a suffix of this [`&str`].",
+    @ends_with as str_ends_with
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Returns [`true`] if two [`&str`] are equal.",
+    @equal as str_equal
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Returns a [`&str`] from a [`&[u8]`](slice).\n\n#Panics
+        Panics if it's not valid utf8",
+    @from_utf8 as str_from_utf8
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Converts a [`&str`] with hexadecimals (`0-9` | `A-F` | `a-f`)
+        into a [`[u8; _]`](array).",
+    @hex as str_hex
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Parses a [`&str`] into a value ([`&str`] | [`char`] | [`bool`] | `u*` | `i*`).",
+    @parse as str_parse
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Converts a [`&str`] into a [`*const c_char`](core::ffi::c_char).",
+    @raw_cstr as str_raw_cstr
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Creates a [`&str`] by repeating a [`&str`] n times.",
+    @repeat as str_repeat
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Replaces all matches of a pattern ([`&str`] | [`char`]) with another [`&str`].",
+    @replace as str_replace
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Sorts multiple ([`&[&str]`](slice) | [`[&str; N]`](array) |
+        [`&[&str; N]`](array)) into a [`[&str; _]`](array).",
+    @sorted as str_sorted
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Splits a [`&str`] by a separator pattern ([`&str`] |
+        [`char`]) returning [`[&str; _]`](array).",
+    @split as str_split
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Returns [`true`] if the given pattern ([`&str`] | [`char`])
+        matches a prefix of [`&str`].",
+    @starts_with as str_starts_with
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Returns a [`&str`] with the prefix removed.",
+    @strip_prefix as str_strip_prefix
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Returns a [`&str`] with the suffix removed.",
+    @strip_suffix as str_strip_suffix
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Converts a [`&str`] or [`&[u8]`](slice) into a [`[u8; _]`](array).",
+    @to_byte_array as str_to_byte_array
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Converts a [`&str`] into a [`[char; _]`](array).",
+    @to_char_array as str_to_char_array
+}
+reexport! { "const-str" | const_str , features: "str",
+    doc: "Returns a [`&str`] from a value ([`&str`] | [`char`] | [`bool`] | `u*` | `i*`).",
+    @to_str as str_from
+}
