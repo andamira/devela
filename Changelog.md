@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.15.0] - 2023-10-19
+
 ### Added
 - new modules: `collections`, `future`, `task`.
 - new features: `collections`, `depend`, `future`, `future_unsafe`, `unsafe_future`, `task`, `task_unsafe`, `unsafe_task`, `async`, `async_unsafe`, `term`, `term_unsafe`, `unsafe_term`, `collections_unsafe`, `unsafe_collections`.
@@ -455,7 +457,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.14.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/andamira/devela/releases/tag/v0.15.0
 [0.14.0]: https://github.com/andamira/devela/releases/tag/v0.14.0
 [0.13.0]: https://github.com/andamira/devela/releases/tag/v0.13.0
 [0.12.0]: https://github.com/andamira/devela/releases/tag/v0.12.0
