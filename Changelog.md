@@ -8,13 +8,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [Unreleased]
 
 ### Added
-- new modules: `future`, `task`.
-- new features: `depend`, `future`, `future_unsafe`, `unsafe_future`, `task`, `task_unsafe`, `unsafe_task`, `async`, `async_unsafe`, `term`, `term_unsafe`, `unsafe_term`.
+- new modules: `collections`, `future`, `task`.
+- new features: `collections`, `depend`, `future`, `future_unsafe`, `unsafe_future`, `task`, `task_unsafe`, `unsafe_task`, `async`, `async_unsafe`, `term`, `term_unsafe`, `unsafe_term`, `collections_unsafe`, `unsafe_collections`.
 - new type aliases: `Egc16`, `Egc32`, `Egc64`, `Egc128`, `NonNulEgc8`, `NonNulEgc16`, `NonNulEgc32`, `NonNulEgc64`, `NonNulEgc128`.
 - new structs: `StringEgc`, `ArrayU8Egc`, `ArrayU8NonNulEgc`, `LiteCoroutine`, `LiteCoroutineExecutor`, `LiteCoroutineWaiter`, `LiteCoroutineWaker`, `Direct`, `Boxed`.
-- re-export std's items from `future` and `task`, and `core::mem` items from `mem`.
+- re-export std's items from `collections`, `future`, `mem`, `task`, `vec`.
 - new traits `AnyExt`, `Egc`, `Num`, `NumRef`, `Mem`, `Size`, `BitSize`, `Storage`.
-- add new optional dependency `devela_depend`.
+- add new optional dependencies `devela_depend`, `hashbrown`.
 - new fns: `mem_ptr_ratio`.
 - new type aliases: `fsize`, `NoNum`.
 
@@ -32,6 +32,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - update `bytemuck`, enable more features.
 
 ### Fixed
+- new private helper macro `reexport` for reexported items.
 - do not enable the empty `default` feature.
 - improve re-exports rustdoc tags.
 - fix `core::num` re-exports.
