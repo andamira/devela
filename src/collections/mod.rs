@@ -1,6 +1,6 @@
 // devela::collections
 //
-//! Collections, extends [`alloc::collections`]`/`[`vec`][mod@alloc::vec].
+//! Collections, extends [`std::collections`]`/`[`vec`][mod@std::vec].
 //
 
 /* always compiled for internal use */

@@ -25,7 +25,8 @@ macro_rules! reexport {
 
         #[doc(inline)]
         #[doc = concat!("<span class='stab portability' title='re-exported `",
-            $dep_name, "` crate'>`", $dep_name, "`</span>")]
+            $dep_name, "` crate (independently or via the `depend` feature)'>`",
+            $dep_name, "`</span>")]
         #[doc = $dep_description]
         #[doc = concat!("\n\n*Re-exported [`", $dep_name,
             "`](https://docs.rs/", $dep_name, ")* crate.\n\n---")]
@@ -54,7 +55,8 @@ macro_rules! reexport {
 
         #[doc(inline)]
         #[doc = concat!("<span class='stab portability' title='re-exported `",
-            $dep_name, "` crate'>`", $dep_name, "`</span>")]
+            $dep_name, "` crate (independently or via the `depend` feature)'>`",
+            $dep_name, "`</span>")]
         #[doc = $dep_description]
         #[doc = concat!("\n\n*Re-exported [`", $dep_name,
             "`](https://docs.rs/", $dep_name, ")* crate.\n\n---")]

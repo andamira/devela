@@ -1,6 +1,6 @@
 // devela::sync
 //
-//! Synchronization, extends [`core::sync`].
+//! Synchronization, extends [`std::sync`].
 //
 
 /* always compiled for internal use */

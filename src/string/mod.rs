@@ -1,6 +1,6 @@
 // devela::string
 //
-//! Owned strings, extends [`alloc::string`].
+//! Owned strings, extends [`std::string`].
 //
 
 /* always compiled for internal use */

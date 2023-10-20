@@ -1,6 +1,6 @@
 // devela::str
 //
-//! String slices, extends [`core::str`].
+//! String slices, extends [`std::str`].
 //!
 //! It also reexports most [`const-str`](https://docs.rs/const-str) macros
 //! directly related to [`&str`], prefixed with `str_`.

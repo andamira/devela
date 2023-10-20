@@ -1,6 +1,6 @@
 // devela::char
 //
-//! Unicode scalars, extends [`core::char`].
+//! Unicode scalars, extends [`std::char`].
 //
 
 /* always compiled for internal use */

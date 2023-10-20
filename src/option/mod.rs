@@ -1,8 +1,6 @@
 // devela::option
 //
-//! Option, extends [`core::option`].
-//!
-//! It also reexports the [`const-str`](https://docs.rs/const-str) `unwrap` macro.
+//! Option, extends [`std::option`].
 //
 
 /* always compiled for internal use */

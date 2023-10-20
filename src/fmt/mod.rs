@@ -1,6 +1,6 @@
 // devela::fmt
 //
-//! Formatting, extends [`alloc::fmt`].
+//! Formatting, extends [`std::fmt`].
 //
 
 /* always compiled for internal use */

@@ -1,6 +1,6 @@
 // devela::slice
 //
-//! Slice, extends [`alloc::slice`].
+//! Slice, extends [`std::slice`].
 //
 
 /* always compiled for internal use */

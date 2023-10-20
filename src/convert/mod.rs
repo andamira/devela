@@ -1,8 +1,6 @@
 // devela::convert
 //
-//! Conversion, extends [`core::convert`].
-//!
-//! It also reexports the [`az`](https://docs.rs/az) crate.
+//! Conversion, extends [`std::convert`].
 //
 
 /* always compiled for internal use */
@@ -20,7 +18,7 @@ pub mod primitive;
 // Provides casts and checked casts.
 #[doc(no_inline)]
 #[cfg(any(feature = "az", all(feature = "convert", feature = "depend")))]
-pub use crate::depend::az;
+pub use ::depend::az;
 
 #[cfg(feature = "convert")]
 pub use all::*;

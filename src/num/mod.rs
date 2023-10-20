@@ -1,8 +1,6 @@
 // devela::num
 //
-//! Numeric types, extends [`core::num`].
-//!
-//! It also reexports the `NonZero*` types from `core`.
+//! Numeric types, extends [`std::num`].
 //
 
 /* always compiled for internal use */

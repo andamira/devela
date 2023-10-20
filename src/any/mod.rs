@@ -1,8 +1,6 @@
 // devela::any
 //
-//! Dynamic typing and reflection, extends [`core::any`].
-//!
-//! It also reexports items from `core::any`.
+//! Dynamic typing and reflection, extends [`std::any`].
 //
 
 /* always compiled for internal use */

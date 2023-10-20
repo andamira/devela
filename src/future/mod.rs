@@ -1,6 +1,6 @@
 // devela::future
 //
-//! Asynchronous functionality, extends [`core::future`].
+//! Asynchrony, extends [`std::future`].
 //!
 //! See also the fundamental [`async`] and [`await`] keywords and the
 //! [async book](https://rust-lang.github.io/async-book/).

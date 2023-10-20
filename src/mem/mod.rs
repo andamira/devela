@@ -1,8 +1,6 @@
 // devela::mem
 //
-//! Memory, extends [`core::mem`].
-//!
-//! It also reexports the [`bytemuck`](https://docs.rs/bytemuck) crate.
+//! Memory, extends [`std::mem`].
 //
 
 /* always compiled for internal use */
@@ -23,7 +21,7 @@ mod size;
 // Gives small utilities for casting between plain data types.
 #[doc(no_inline)]
 #[cfg(any(feature = "bytemuck", all(feature = "mem", feature = "depend")))]
-pub use crate::depend::bytemuck;
+pub use ::depend::bytemuck;
 
 #[cfg(feature = "mem")]
 mod reexports;

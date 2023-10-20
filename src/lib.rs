@@ -169,7 +169,7 @@ pub mod thread;
 // #[cfg(all(not(feature = "thread"), not(test)))]
 // pub(crate) mod thread; // the "thread" feature is disabled
 
-/// All items are re-exported here.
+/// All items are flat re-exported here.
 ///
 /// Note that any item tagged with [`depend`] can also be enabled by
 /// manually enabling the associated optional dependency.
@@ -311,6 +311,21 @@ pub mod prelude {
 pub mod depend;
 
 /// Documentation on features.
-pub mod _doc {
+pub mod __doc {
     #![doc = include_str!("./Doc.md")]
 }
+
+/// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
+/// *Re-exported Rust `alloc` library environment.*
+#[cfg(feature = "alloc")]
+#[doc(inline)]
+pub use ::alloc as _alloc;
+/// <span class='stab portability' title='re-exported `core`'>`core`</span>
+/// *Re-exported Rust `core` library environment.*
+#[doc(inline)]
+pub use ::core as _core;
+/// <span class='stab portability' title='re-exported `std`'>`std`</span>
+/// *Re-exported Rust `std` library environment.*
+#[cfg(feature = "std")]
+#[doc(inline)]
+pub use ::std as _std;

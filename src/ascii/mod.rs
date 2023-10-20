@@ -1,9 +1,6 @@
 // devela::ascii
 //
-//! ASCII strings and characters, extends [`core::ascii`].
-//!
-//! It also reexports some [`const-str`](https://docs.rs/const-str) macros
-//! directly related to ASCII, prefixed with `ascii_`, and a new description.
+//! ASCII strings and characters, extends [`std::ascii`].
 //
 
 /* always compiled for internal use */

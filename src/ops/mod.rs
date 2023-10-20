@@ -1,6 +1,6 @@
 // devela::ops
 //
-//! Operators, extends [`core::ops`].
+//! Operators, extends [`std::ops`].
 //
 
 /* always compiled for internal use */
