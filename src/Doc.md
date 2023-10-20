@@ -2,11 +2,11 @@
 
 Features are grouped in 6 categories, mostly independent from each other:
 - *Environment*
-- *Modules*
 - *Platform*
-- *Dependency*
+- *Module*
 - *Safety* 
 - *Nightly*
+- *Dependency*
 
 All features are disabled by default.
 
@@ -18,6 +18,16 @@ By default the crate is `no_std` compatible without allocation.
 - `std`: disables `no_std` compatibility and enables `std` functionality.
 - `alloc`: enables `alloc` functionality.
 - `no_std`: enables functionality incompatible with `std` (unused).
+
+
+### Platform specific features
+
+Platform-specific functionality is not automatically enabled since *OS* detection
+depends on `std`, and we want to use it from `no_std`.
+
+Platform features are `os` submodules that have to be explicitly enabled:
+- `linux`, `linux_unsafe`: enables [`os::linux`] functionality.
+- `term`, `term_unsafe:` enables [`os::term`] functionality.
 
 
 ### Module features
@@ -68,30 +78,6 @@ Module groups:
   and [`string`] modules.
 
 
-### Platform features
-
-Platform-specific functionality is not automatically enabled since *OS* detection
-depends on `std`, and we want to use it also from `no_std`.
-
-Platform features are `os` submodules that have to be explicitly enabled:
-- `linux`, `linux_unsafe`: enables [`os::linux`] functionality.
-- `term`, `term_unsafe:` enables [`os::term`] functionality.
-
-
-### Dependency features
-
-- `depend`: allows modules to automatically enable their defined dependencies.
-
-Dependencies can also be enabled individually:
-- `atomic` is used in `sync`.
-- `az` is used in `convert`.
-- `bytemuck` is used in `mem`, `linux`, `num`.
-- `devela_macros` is used in `codegen`.
-- `const-str` is used in `str`, `ascii`, `option`, `os`, `linux`.
-- `portable-atomic` is used in `sync`.
-- `unicode-segmentation` is used in `string`.
-
-
 ### Safety features
 
 By default the crate doesn't use unsafe.
@@ -138,6 +124,20 @@ They are currently only used for generating improved documentation.
 
 - `nightly`: enables nightly features.
 - `nightly_docs`: enables features for docs.rs
+
+
+### Dependency features
+
+- `depend`: allows modules to automatically enable their defined dependencies.
+
+Dependencies can also be enabled individually:
+- `atomic` is used in `sync`.
+- `az` is used in `convert`.
+- `bytemuck` is used in `mem`, `linux`, `num`.
+- `devela_macros` is used in `codegen`.
+- `const-str` is used in `str`, `ascii`, `option`, `os`, `linux`.
+- `portable-atomic` is used in `sync`.
+- `unicode-segmentation` is used in `string`.
 
 [`IntBuf`]: fmt::IntBuf
 [`IntBufable`]: fmt::IntBufAble

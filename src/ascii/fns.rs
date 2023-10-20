@@ -7,6 +7,9 @@ use super::always_fns::*;
 use crate::num::count_digits;
 
 /// Converts a `u16` into a byte array of `5` ascii digits, padded with zeros.
+///
+/// You can trim the leading zeros with
+/// [`slice_trim_leading_bytes`][crate::slice::slice_trim_leading_bytes].
 #[inline]
 #[must_use]
 pub const fn ascii_u16_digits(n: u16) -> [u8; 5] {
@@ -22,6 +25,9 @@ pub const fn ascii_u16_digits(n: u16) -> [u8; 5] {
 }
 
 /// Converts a `u32` into a byte array of `10` ascii digits, padded with zeros.
+///
+/// You can trim the leading zeros with
+/// [`slice_trim_leading_bytes`][crate::slice::slice_trim_leading_bytes].
 #[inline]
 #[must_use]
 pub const fn ascii_u32_digits(n: u32) -> [u8; 10] {
@@ -42,6 +48,9 @@ pub const fn ascii_u32_digits(n: u32) -> [u8; 10] {
 }
 
 /// Converts a `u64` into a byte array of `20` ascii digits, padded with zeros.
+///
+/// You can trim the leading zeros with
+/// [`slice_trim_leading_bytes`][crate::slice::slice_trim_leading_bytes].
 #[must_use]
 pub const fn ascii_u64_digits(n: u64) -> [u8; 20] {
     [
@@ -71,6 +80,9 @@ pub const fn ascii_u64_digits(n: u64) -> [u8; 20] {
 }
 
 /// Converts a `u128` into a byte array of `39` ascii digits, padded with zeros.
+///
+/// You can trim the leading zeros with
+/// [`slice_trim_leading_bytes`][crate::slice::slice_trim_leading_bytes].
 #[must_use]
 pub const fn ascii_u128_digits(n: u128) -> [u8; 39] {
     [
@@ -122,6 +134,9 @@ pub const fn ascii_u128_digits(n: u128) -> [u8; 39] {
 /// digits, padded with zeros.
 ///
 /// The actual array length depends on the target platform's pointer size.
+///
+/// You can trim the leading zeros with
+/// [`slice_trim_leading_bytes`][crate::slice::slice_trim_leading_bytes].
 #[inline]
 #[must_use]
 #[cfg(target_pointer_width = "16")]
@@ -131,6 +146,9 @@ pub const fn ascii_usize_digits(n: usize) -> [u8; count_digits(usize::MAX)] {
 /// Converts a `usize` into a byte array of `10` ascii digits, padded with zeros.
 ///
 /// The actual array length depends on the target platform's pointer size.
+///
+/// You can trim the leading zeros with
+/// [`slice_trim_leading_bytes`][crate::slice::slice_trim_leading_bytes].
 #[inline]
 #[must_use]
 #[cfg(target_pointer_width = "32")]
@@ -141,6 +159,9 @@ pub const fn ascii_usize_digits(n: usize) -> [u8; count_digits(usize::MAX)] {
 /// digits, padded with zeros.
 ///
 /// The actual array length depends on the target platform's pointer size.
+///
+/// You can trim the leading zeros with
+/// [`slice_trim_leading_bytes`][crate::slice::slice_trim_leading_bytes].
 #[inline]
 #[must_use]
 #[cfg(target_pointer_width = "64")]

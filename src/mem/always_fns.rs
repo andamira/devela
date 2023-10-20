@@ -30,10 +30,10 @@ use core::{mem, slice};
 ///     assert!(bytes == &[0, 0, 4, 210]);
 /// }
 /// ```
-#[inline(always)]
 #[must_use]
-#[cfg(feature = "unsafe_mem")]
+#[inline(always)]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
+#[cfg(feature = "unsafe_mem")]
 pub fn mem_as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
     unsafe { slice::from_raw_parts(v as *const _ as *const u8, mem::size_of_val(v)) }
 }
@@ -60,10 +60,10 @@ pub fn mem_as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
 ///     assert!(bytes == &[0, 0, 0, 210] && data.0 == 210);
 /// }
 /// ```
-#[inline(always)]
 #[must_use]
-#[cfg(feature = "unsafe_mem")]
+#[inline(always)]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
+#[cfg(feature = "unsafe_mem")]
 pub fn mem_as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
     unsafe { slice::from_raw_parts_mut(v as *mut _ as *mut u8, mem::size_of_val(v)) }
 }
@@ -85,10 +85,10 @@ pub fn mem_as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut
 ///     assert_eq!(BYTES, &[0, 0, 4, 210]);
 /// }
 /// ```
-#[inline(always)]
 #[must_use]
-#[cfg(feature = "unsafe_mem")]
+#[inline(always)]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
+#[cfg(feature = "unsafe_mem")]
 pub const fn mem_as_bytes_sized<T: Sync + Unpin>(v: &T) -> &[u8] {
     unsafe { slice::from_raw_parts(v as *const T as *const u8, mem::size_of::<T>()) }
 }

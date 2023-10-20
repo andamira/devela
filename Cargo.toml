@@ -178,6 +178,7 @@ nightly_docs = [ # enables features for docs.rs
 	"nightly", "full", "std", "unsafe", "depend",
 ]
 
+
 #* dependency features *#
 
 depend = ["dep:depend"] # module features enables their dependencies as defined.
