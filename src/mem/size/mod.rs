@@ -4,5 +4,6 @@
 //
 
 mod bit;
+mod expr;
 mod size;
-pub use {bit::*, size::*};
+pub use {bit::*, expr::*, size::*};

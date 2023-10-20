@@ -16,6 +16,8 @@ This project includes the following derived works:
   into the [`as_bytes`] and [`as_bytes_mut`] functions.
 - Integration of [const_for] by Joachim Enggård Nebel, licensed as MIT,
   as the [`const_for`] macro.
+- Integration of [size_of_trait] by Joshua Nelson, licensed as BSD-3,
+ as the [`mem_size_of_expr`] macro.
 
 [0]: https://github.com/andamira/devela/blob/main/src/fmt/int_buf/MODIFICATIONS.md
 [itoa]: https://crates.io/crates/itoa/1.0.9
@@ -35,3 +37,5 @@ This project includes the following derived works:
 [`as_bytes_mut`]: https://docs.rs/devela/latest/devela/mem/fn.as_bytes_mut.html
 [const_for]: https://crates.io/crates/const_for
 [`const_for`]: https://docs.rs/devela/latest/devela/codegen/macro.const_for.html
+[size_of_trait]: https://crates.io/crates/size-of-trait
+[`size_of_expr`]: https://docs.rs/devela/latest/devela/mem/macro.mem_size_of_expr.html
