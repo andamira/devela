@@ -18,5 +18,5 @@ mod never;
 pub use all::*;
 #[cfg(feature = "result")]
 pub(crate) mod all {
-    pub use super::ext::ResultExt;
+    pub use super::{ext::ResultExt, never::*};
 }
