@@ -7,7 +7,9 @@
 use crate::codegen::iif;
 use crate::codegen::paste;
 use crate::num::all::*;
+use crate::num::{NumError as Error, NumResult as Result};
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
+use Error::{Invalid, Unspecified};
 
 impl_num![];
 macro_rules! impl_num {
@@ -31,29 +33,29 @@ macro_rules! impl_num {
             #[inline]
             fn num_into(self) -> Self::Inner { self }
             #[inline]
-            fn num_from(from: Self::Inner) -> Option<Self> { Some(from) }
+            fn num_from(from: Self::Inner) -> Result<Self> { Ok(from) }
             #[inline]
-            fn num_from_ref(from: &Self::Inner) -> Option<Self> { Some(*from) }
+            fn num_from_ref(from: &Self::Inner) -> Result<Self> { Ok(*from) }
             #[inline]
-            fn num_set(&mut self, value: Self::Inner) -> Option<()> { *self = value; Some(()) }
+            fn num_set(&mut self, value: Self::Inner) -> Result<()> { *self = value; Ok(()) }
             #[inline]
-            fn num_set_ref(&mut self, value: &Self::Inner) -> Option<()> {
-                *self = *value; Some(())
+            fn num_set_ref(&mut self, value: &Self::Inner) -> Result<()> {
+                *self = *value; Ok(())
             }
 
             // ident
             #[inline]
-            fn num_is_zero(&self) -> Option<bool> { Some(*self == 0) }
+            fn num_is_zero(&self) -> Result<bool> { Ok(*self == 0) }
             #[inline]
-            fn num_is_one(&self) -> Option<bool> { Some(*self == 1) }
+            fn num_is_one(&self) -> Result<bool> { Ok(*self == 1) }
             #[inline]
-            fn num_get_zero() -> Option<Self> { Self::num_from(0) }
+            fn num_get_zero() -> Result<Self> { Self::num_from(0) }
             #[inline]
-            fn num_get_one() -> Option<Self> { Self::num_from(1) }
+            fn num_get_one() -> Result<Self> { Self::num_from(1) }
             #[inline]
-            fn num_set_zero(&mut self) -> Option<()> { *self = 0; Some(()) }
+            fn num_set_zero(&mut self) -> Result<()> { *self = 0; Ok(()) }
             #[inline]
-            fn num_set_one(&mut self) -> Option<()> { *self = 1; Some(()) }
+            fn num_set_one(&mut self) -> Result<()> { *self = 1; Ok(()) }
 
             // ops
             impl_num![op2_checked Self => add, mul, sub, div, rem];
@@ -70,36 +72,36 @@ macro_rules! impl_num {
             #[inline]
             fn num_into(self) -> Self::Inner { [< NonZero $p:camel >]::get(self) }
             #[inline]
-            fn num_from(from: Self::Inner) -> Option<Self> { Self::new(from) }
+            fn num_from(from: Self::Inner) -> Result<Self> { Self::new(from).ok_or(Invalid) }
             #[inline]
-            fn num_from_ref(from: &Self::Inner) -> Option<Self> { Self::new(*from) }
+            fn num_from_ref(from: &Self::Inner) -> Result<Self> { Self::new(*from).ok_or(Invalid) }
             #[inline]
-            fn num_set(&mut self, value: Self::Inner) -> Option<()> {
-                *self = Self::new(value)?; Some(())
+            fn num_set(&mut self, value: Self::Inner) -> Result<()> {
+                *self = Self::new(value).ok_or(Invalid)?; Ok(())
             }
             #[inline]
-            fn num_set_ref(&mut self, value: &Self::Inner) -> Option<()> {
-                *self = Self::new(*value)?; Some(())
+            fn num_set_ref(&mut self, value: &Self::Inner) -> Result<()> {
+                *self = Self::new(*value).ok_or(Invalid)?; Ok(())
             }
 
             // ident
             #[inline]
-            fn num_is_zero(&self) -> Option<bool> { Some(false) }
+            fn num_is_zero(&self) -> Result<bool> { Ok(false) }
             #[inline]
-            fn num_is_one(&self) -> Option<bool> { self.get().num_is_one() }
+            fn num_is_one(&self) -> Result<bool> { self.get().num_is_one() }
             #[inline]
-            fn num_get_zero() -> Option<Self> { None }
+            fn num_get_zero() -> Result<Self> { NumError::notimpl() }
             #[inline]
-            fn num_get_one() -> Option<Self> { Self::new(1) }
+            fn num_get_one() -> Result<Self> { Ok(Self::new(1).unwrap()) }
             #[inline]
-            fn num_set_zero(&mut self) -> Option<()> { None }
+            fn num_set_zero(&mut self) -> Result<()> { NumError::notimpl() }
             #[inline]
-            fn num_set_one(&mut self) -> Option<()> {
+            fn num_set_one(&mut self) -> Result<()> {
                 #[cfg(not(feature = "unsafe_num"))]
-                { *self = Self::new(1)?; Some(()) }
+                { *self = Self::new(1).unwrap(); Ok(()) }
                 #[cfg(feature = "unsafe_num")]
                 // SAFETY: we are using a constant
-                { *self = unsafe { Self::new_unchecked(1) }; Some(()) }
+                { *self = unsafe { Self::new_unchecked(1) }; Ok(()) }
             }
 
             // ops
@@ -147,37 +149,37 @@ macro_rules! impl_num {
             #[inline]
             fn num_into(self) -> Self::Inner { self }
             #[inline]
-            fn num_from(from: Self::Inner) -> Option<Self> { Some(from) }
+            fn num_from(from: Self::Inner) -> Result<Self> { Ok(from) }
             #[inline]
-            fn num_from_ref(from: &Self::Inner) -> Option<Self> { Some(*from) }
+            fn num_from_ref(from: &Self::Inner) -> Result<Self> { Ok(*from) }
             #[inline]
-            fn num_set(&mut self, value: Self::Inner) -> Option<()> { *self = value; Some(()) }
+            fn num_set(&mut self, value: Self::Inner) -> Result<()> { *self = value; Ok(()) }
             #[inline]
-            fn num_set_ref(&mut self, value: &Self::Inner) -> Option<()> {
-                *self = *value; Some(())
+            fn num_set_ref(&mut self, value: &Self::Inner) -> Result<()> {
+                *self = *value; Ok(())
             }
 
             // ident
             #[inline]
-            fn num_is_zero(&self) -> Option<bool> { Some(*self == 0) }
+            fn num_is_zero(&self) -> Result<bool> { Ok(*self == 0) }
             #[inline]
-            fn num_is_one(&self) -> Option<bool> { Some(*self == 1) }
+            fn num_is_one(&self) -> Result<bool> { Ok(*self == 1) }
             #[inline]
-            fn num_get_zero() -> Option<Self> { Self::num_from(0) }
+            fn num_get_zero() -> Result<Self> { Self::num_from(0) }
             #[inline]
-            fn num_get_one() -> Option<Self> { Self::num_from(1) }
+            fn num_get_one() -> Result<Self> { Self::num_from(1) }
             #[inline]
-            fn num_set_zero(&mut self) -> Option<()> { *self = 0; Some(()) }
+            fn num_set_zero(&mut self) -> Result<()> { *self = 0; Ok(()) }
             #[inline]
-            fn num_set_one(&mut self) -> Option<()> { *self = 1; Some(()) }
+            fn num_set_one(&mut self) -> Result<()> { *self = 1; Ok(()) }
 
             // ops
             impl_num![op2_checked Self => add, mul, sub, div, rem];
             impl_num![op1_checked Self => neg];
             #[inline]
-            fn num_abs(self) -> Option<Self> { Some(self) }
+            fn num_abs(self) -> Result<Self> { Ok(self) }
             #[inline]
-            fn num_ref_abs(&self) -> Option<Self> { Some(*self) }
+            fn num_ref_abs(&self) -> Result<Self> { Ok(*self) }
         }
 
         // NonZeroU*
@@ -190,36 +192,36 @@ macro_rules! impl_num {
             #[inline]
             fn num_into(self) -> Self::Inner { [< NonZero $p:camel >]::get(self) }
             #[inline]
-            fn num_from(from: Self::Inner) -> Option<Self> { Self::new(from) }
+            fn num_from(from: Self::Inner) -> Result<Self> { Self::new(from).ok_or(Invalid) }
             #[inline]
-            fn num_from_ref(from: &Self::Inner) -> Option<Self> { Self::new(*from) }
+            fn num_from_ref(from: &Self::Inner) -> Result<Self> { Self::new(*from).ok_or(Invalid) }
             #[inline]
-            fn num_set(&mut self, value: Self::Inner) -> Option<()> {
-                *self = Self::new(value)?; Some(())
+            fn num_set(&mut self, value: Self::Inner) -> Result<()> {
+                *self = Self::new(value).ok_or(Invalid)?; Ok(())
             }
             #[inline]
-            fn num_set_ref(&mut self, value: &Self::Inner) -> Option<()> {
-                *self = Self::new(*value)?; Some(())
+            fn num_set_ref(&mut self, value: &Self::Inner) -> Result<()> {
+                *self = Self::new(*value).ok_or(Invalid)?; Ok(())
             }
 
             // ident
             #[inline]
-            fn num_is_zero(&self) -> Option<bool> { Some(false) }
+            fn num_is_zero(&self) -> Result<bool> { Ok(false) }
             #[inline]
-            fn num_is_one(&self) -> Option<bool> { Some(self.get() == 1) }
+            fn num_is_one(&self) -> Result<bool> { Ok(self.get() == 1) }
             #[inline]
-            fn num_get_zero() -> Option<Self> { None }
+            fn num_get_zero() -> Result<Self> { NumError::notimpl() }
             #[inline]
-            fn num_get_one() -> Option<Self> { Self::new(1) }
+            fn num_get_one() -> Result<Self> { Ok(Self::new(1).unwrap()) }
             #[inline]
-            fn num_set_zero(&mut self) -> Option<()> { None }
+            fn num_set_zero(&mut self) -> Result<()> { NumError::notimpl() }
             #[inline]
-            fn num_set_one(&mut self) -> Option<()> {
+            fn num_set_one(&mut self) -> Result<()> {
                 #[cfg(not(feature = "unsafe_num"))]
-                { *self = Self::new(1)?; Some(()) }
+                { *self = Self::new(1).unwrap(); Ok(()) }
                 #[cfg(feature = "unsafe_num")]
                 // SAFETY: we are using a constant
-                { *self = unsafe { Self::new_unchecked(1) }; Some(()) }
+                { *self = unsafe { Self::new_unchecked(1) }; Ok(()) }
             }
 
             // ops
@@ -227,9 +229,9 @@ macro_rules! impl_num {
             impl_num![op2_get_checked Self => add, sub, div, rem];
             impl_num![op1_none Self => neg]; // no neg for NonZeroU*
             #[inline]
-            fn num_abs(self) -> Option<Self> { Some(self) }
+            fn num_abs(self) -> Result<Self> { Ok(self) }
             #[inline]
-            fn num_ref_abs(&self) -> Option<Self> { Some(*self) }
+            fn num_ref_abs(&self) -> Result<Self> { Ok(*self) }
         }
 
         // NonSpecificU*
@@ -269,53 +271,53 @@ macro_rules! impl_num {
             #[inline]
             fn num_into(self) -> Self::Inner { self }
             #[inline]
-            fn num_from(from: Self::Inner) -> Option<Self> { Some(from) }
+            fn num_from(from: Self::Inner) -> Result<Self> { Ok(from) }
             #[inline]
-            fn num_from_ref(from: &Self::Inner) -> Option<Self> { Some(*from) }
+            fn num_from_ref(from: &Self::Inner) -> Result<Self> { Ok(*from) }
             #[inline]
-            fn num_set(&mut self, value: Self::Inner) -> Option<()> { *self = value; Some(()) }
+            fn num_set(&mut self, value: Self::Inner) -> Result<()> { *self = value; Ok(()) }
             #[inline]
-            fn num_set_ref(&mut self, value: &Self::Inner) -> Option<()> {
-                *self = *value; Some(())
+            fn num_set_ref(&mut self, value: &Self::Inner) -> Result<()> {
+                *self = *value; Ok(())
             }
 
             // ident
             #[doc = "This implementation has a tolerance of 5 × [`EPSILON`][core::" $p "::EPSILON]"]
             #[inline]
-            fn num_is_zero(&self) -> Option<bool> {
-                Some(self.num_ref_abs()? < 5.0 * core::$p::EPSILON)
+            fn num_is_zero(&self) -> Result<bool> {
+                Ok(self.num_ref_abs()? < 5.0 * core::$p::EPSILON)
             }
             #[doc = "This implementation has a tolerance of 5 × [`EPSILON`][core::" $p "::EPSILON]"]
             #[inline]
-            fn num_is_one(&self) -> Option<bool> {
-                Some(self.num_sub(1.0)?.num_ref_abs()? < 5.0 * core::$p::EPSILON)
+            fn num_is_one(&self) -> Result<bool> {
+                Ok(self.num_sub(1.0)?.num_ref_abs()? < 5.0 * core::$p::EPSILON)
             }
             #[inline]
-            fn num_get_zero() -> Option<Self> { Self::num_from(0.0) }
+            fn num_get_zero() -> Result<Self> { Self::num_from(0.0) }
             #[inline]
-            fn num_get_one() -> Option<Self> { Self::num_from(1.0) }
+            fn num_get_one() -> Result<Self> { Self::num_from(1.0) }
             #[inline]
-            fn num_set_zero(&mut self) -> Option<()> { *self = Self::num_from(0.0)?; Some(()) }
+            fn num_set_zero(&mut self) -> Result<()> { *self = Self::num_from(0.0)?; Ok(()) }
             #[inline]
-            fn num_set_one(&mut self) -> Option<()> { *self = Self::num_from(1.0)?; Some(()) }
+            fn num_set_one(&mut self) -> Result<()> { *self = Self::num_from(1.0)?; Ok(()) }
 
             // ops
             impl_num![op2_float Self => add, mul, sub, div, rem];
             impl_num![op1_float Self => neg];
 
             #[inline]
-            fn num_abs(self) -> Option<Self> {
+            fn num_abs(self) -> Result<Self> {
                 #[cfg(feature = "std")]
-                return Some($p::abs(self));
+                return Ok($p::abs(self));
                 #[cfg(not(feature = "std"))]
-                Some(iif![self >= 0.0; self; -self])
+                Ok(iif![self >= 0.0; self; -self])
             }
             #[inline]
-            fn num_ref_abs(&self) -> Option<Self> {
+            fn num_ref_abs(&self) -> Result<Self> {
                 #[cfg(feature = "std")]
-                return Some($p::abs(*self));
+                return Ok($p::abs(*self));
                 #[cfg(not(feature = "std"))]
-                Some(iif![*self >= 0.0; *self; -*self])
+                Ok(iif![*self >= 0.0; *self; -*self])
             }
         }}
     };
@@ -335,46 +337,46 @@ macro_rules! impl_num {
         impl_num![op2_get_checked Self => add, mul, sub, div, rem];
         impl_num![op1_get_checked Self => neg];
         #[inline]
-        fn num_abs(self) -> Option<Self> { Some(self) }
+        fn num_abs(self) -> Result<Self> { Ok(self) }
         #[inline]
-        fn num_ref_abs(&self) -> Option<Self> { Some(*self) }
+        fn num_ref_abs(&self) -> Result<Self> { Ok(*self) }
     };
     (custom_body) => {
         // base
         #[inline]
         fn num_into(self) -> Self::Inner { self.get() }
         #[inline]
-        fn num_from(from: Self::Inner) -> Option<Self> { Self::new(from) }
+        fn num_from(from: Self::Inner) -> Result<Self> { Self::new(from).ok_or(Invalid) }
         #[inline]
-        fn num_from_ref(from: &Self::Inner) -> Option<Self> { Self::new(*from) }
+        fn num_from_ref(from: &Self::Inner) -> Result<Self> { Self::new(*from).ok_or(Invalid) }
         #[inline]
-        fn num_set(&mut self, value: Self::Inner) -> Option<()> {
-            *self = Self::num_from(value)?; Some(())
+        fn num_set(&mut self, value: Self::Inner) -> Result<()> {
+            *self = Self::num_from(value)?; Ok(())
         }
         #[inline]
-        fn num_set_ref(&mut self, value: &Self::Inner) -> Option<()> {
-            *self = Self::num_from(*value)?; Some(())
+        fn num_set_ref(&mut self, value: &Self::Inner) -> Result<()> {
+            *self = Self::num_from(*value)?; Ok(())
         }
 
         // ident
         #[inline]
-        fn num_is_zero(&self) -> Option<bool> { Some(self.get() == 0) }
+        fn num_is_zero(&self) -> Result<bool> { Ok(self.get() == 0) }
         #[inline]
-        fn num_is_one(&self) -> Option<bool> { Some(self.get() == 1) }
+        fn num_is_one(&self) -> Result<bool> { Ok(self.get() == 1) }
         #[inline]
-        fn num_get_zero() -> Option<Self> { Self::num_from(0) }
+        fn num_get_zero() -> Result<Self> { Self::num_from(0) }
         #[inline]
-        fn num_get_one() -> Option<Self> { Self::num_from(1) }
+        fn num_get_one() -> Result<Self> { Self::num_from(1) }
         #[inline]
-        fn num_set_zero(&mut self) -> Option<()> { *self = Self::num_from(0)?; Some(()) }
+        fn num_set_zero(&mut self) -> Result<()> { *self = Self::num_from(0)?; Ok(()) }
         #[inline]
-        fn num_set_one(&mut self) -> Option<()> { *self = Self::num_from(1)?; Some(()) }
+        fn num_set_one(&mut self) -> Result<()> { *self = Self::num_from(1)?; Ok(()) }
     };
 
     // Inner helpers for unary and binary ops
     // ============================================================================================
 
-    /* ops that returns `None` */
+    /* ops that returns `NotImplemented` */
 
     // (this could be regarded as unnecessary since it's the same as the default implementantion,
     // but it allows us to debug missing implementations while swithing the commented out blocks
@@ -383,21 +385,21 @@ macro_rules! impl_num {
         $( impl_num![@op1_none $Self => $op]; )+ };
     (@op1_none $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Option<$Self::OpOut> { None }
+        fn [<num_ $op>](self) -> Result<$Self::OpOut> { NumError::notimpl() }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Option<$Self::OpOut> { None }
+        fn [<num_ref_ $op>](&self) -> Result<$Self::OpOut> { NumError::notimpl() }
     }};
     (op2_none $Self:ty => $($op:ident),+) => {
         $( impl_num![@op2_none $Self => $op]; )+ };
     (@op2_none $Self:ty => $op:ident) => {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Option<$Self::OpOut> { None }
+        fn [<num_ $op>](self, other: $Self) -> Result<$Self::OpOut> { NumError::notimpl() }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self::OpOut> { None }
+        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::OpOut> { NumError::notimpl() }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self::OpOut> { None }
+        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::OpOut> { NumError::notimpl() }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self::OpOut> { None }
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::OpOut> { NumError::notimpl() }
     };
 
     /* ops that call .checked() for i*, u*, and few for NonZero* */
@@ -406,22 +408,32 @@ macro_rules! impl_num {
         $( impl_num![@op1_checked $Self => $op]; )+ };
     (@op1_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Option<$Self::OpOut> { self.[<checked_$op>]() }
+        fn [<num_ $op>](self) -> Result<$Self::OpOut> {
+            self.[<checked_$op>]().ok_or(Unspecified)
+        }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Option<$Self::OpOut> { self.[<checked_$op>]() }
+        fn [<num_ref_ $op>](&self) -> Result<$Self::OpOut> {
+            self.[<checked_$op>]().ok_or(Unspecified)
+        }
     }};
     (op2_checked $Self:ty => $($op:ident),+) => {
         $( impl_num![@op2_checked $Self => $op]; )+ };
     (@op2_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Option<$Self::OpOut> { self.[<checked_ $op>](other) }
+        fn [<num_ $op>](self, other: $Self) -> Result<$Self::OpOut> {
+            self.[<checked_ $op>](other).ok_or(Unspecified)
+        }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self::OpOut> { self.[<checked_ $op>](*other) }
+        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::OpOut> {
+            self.[<checked_ $op>](*other).ok_or(Unspecified)
+        }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self::OpOut> { self.[<checked_ $op>](other) }
+        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::OpOut> {
+            self.[<checked_ $op>](other).ok_or(Unspecified)
+        }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self::OpOut> {
-            self.[<checked_ $op>](*other)
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::OpOut> {
+            self.[<checked_ $op>](*other).ok_or(Unspecified)
         }
     }};
 
@@ -431,28 +443,32 @@ macro_rules! impl_num {
         $( impl_num![@op1_get_checked $Self => $op]; )+ };
     (@op1_get_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Option<$Self::OpOut> { $Self::new(self.get().[<checked_ $op>]()?) }
+        fn [<num_ $op>](self) -> Result<$Self::OpOut> {
+            $Self::new(self.get().[<checked_ $op>]().ok_or(Unspecified)?).ok_or(Unspecified)
+        }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Option<$Self::OpOut> { $Self::new(self.get().[<checked_ $op>]()?) }
+        fn [<num_ref_ $op>](&self) -> Result<$Self::OpOut> {
+            $Self::new(self.get().[<checked_ $op>]().ok_or(Unspecified)?).ok_or(Unspecified)
+        }
     }};
     (op2_get_checked $Self:ty => $($op:ident),+) => {
         $( impl_num![@op2_get_checked $Self => $op]; )+ };
     (@op2_get_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Option<$Self::OpOut> {
-            $Self::new(self.get().[<checked_ $op>](other.get())?)
+        fn [<num_ $op>](self, other: $Self) -> Result<$Self::OpOut> {
+            $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self::OpOut> {
-            $Self::new(self.get().[<checked_ $op>](other.get())?)
+        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::OpOut> {
+            $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self::OpOut> {
-            $Self::new(self.get().[<checked_ $op>](other.get())?)
+        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::OpOut> {
+            $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self::OpOut> {
-            $Self::new(self.get().[<checked_ $op>](other.get())?)
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::OpOut> {
+            $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
         }
     }};
 
@@ -461,27 +477,27 @@ macro_rules! impl_num {
     (op1_float $Self:ty => $($op:ident),+) => { $( impl_num![@op1_float $Self => $op]; )+ };
     (@op1_float $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Option<$Self::OpOut> { Some([<$op:camel>]::[<$op>](self)) }
+        fn [<num_ $op>](self) -> Result<$Self::OpOut> { Ok([<$op:camel>]::[<$op>](self)) }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Option<$Self::OpOut> { Some([<$op:camel>]::[<$op>](self)) }
+        fn [<num_ref_ $op>](&self) -> Result<$Self::OpOut> { Ok([<$op:camel>]::[<$op>](self)) }
     }};
     (op2_float $Self:ty => $($op:ident),+) => { $( impl_num![@op2_float $Self => $op]; )+ };
     (@op2_float $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Option<$Self::OpOut> {
-            Some([<$op:camel>]::[<$op>](self, other))
+        fn [<num_ $op>](self, other: $Self) -> Result<$Self::OpOut> {
+            Ok([<$op:camel>]::[<$op>](self, other))
         }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Option<$Self::OpOut> {
-            Some([<$op:camel>]::[<$op>](self, *other))
+        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::OpOut> {
+            Ok([<$op:camel>]::[<$op>](self, *other))
         }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Option<$Self::OpOut> {
-            Some([<$op:camel>]::[<$op>](self, other))
+        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::OpOut> {
+            Ok([<$op:camel>]::[<$op>](self, other))
         }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Option<$Self::OpOut> {
-            Some([<$op:camel>]::[<$op>](self, *other))
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::OpOut> {
+            Ok([<$op:camel>]::[<$op>](self, *other))
         }
     }};
 

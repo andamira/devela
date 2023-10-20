@@ -14,6 +14,8 @@ pub use {always_fns::*, non_specific::*};
 /* only compiled with the `mem` feature */
 
 #[cfg(feature = "num")]
+mod error;
+#[cfg(feature = "num")]
 mod non_range;
 #[cfg(feature = "num")]
 mod range;
@@ -34,7 +36,8 @@ pub use all::*;
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        always_fns::*, fsize, non_range::*, non_specific::*, range::*, reexports::*, traits::*,
+        always_fns::*, error::*, fsize, non_range::*, non_specific::*, range::*, reexports::*,
+        traits::*,
     };
 }
 
