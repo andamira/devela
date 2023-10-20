@@ -64,7 +64,7 @@ fn main() -> Result<()> {
 
     if args.tests {
         let cmd = "test";
-        sf! { headline(0, &format!["`full` test checking std+[safe|unsafe]):"]); }
+        sf! { headline(0, &format!["`full` test checking [alloc|std]+[safe|unsafe]):"]); }
 
         // WAITING: https://github.com/rust-lang/cargo/issues/1983 (colored output)
 
@@ -75,6 +75,14 @@ fn main() -> Result<()> {
         // std (un)safe + depend
         sf! { run_cargo(&msrv, cmd, &["-F full,std,safe,depend", "--", "--color=always"])?; }
         sf! { run_cargo(&msrv, cmd, &["-F full,std,unsafe,depend", "--", "--color=always"])?; }
+
+        // alloc (un)safe
+        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,safe", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,unsafe", "--", "--color=always"])?; }
+
+        // alloc (un)safe + depend
+        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,safe,depend", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,unsafe,depend", "--", "--color=always"])?; }
 
         // no_std (un)safe
         // run_cargo(&msrv, cmd, &["-F full,no_std,safe"])?;
