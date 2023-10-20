@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- add `mem_size_of_expr` macro.
+- reexport `BinaryHeap` as `collections::PriorityQueue`.
+
+### Changed
+- rename `HashMap`, `HashSet` as `UnorderedMap`, `UnorderedSet`.
+- rename `BTreeMap`, `BTreeSet` as `OrderedMap`, `OrderedSet`.
+
 ## [0.15.0] - 2023-10-19
 
 ### Added
