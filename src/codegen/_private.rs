@@ -93,8 +93,8 @@ macro_rules! reexport {
       $(,)?
     ) => { $crate::codegen::paste! {
         #[doc(inline)]
-        #[doc = "<span class='stab portability' title='re-exported from
-            `core`'>`core`</span>"]
+        #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
+        "`core`'>`core`</span>"]
         #[doc = $description]
         #[doc = "\n\n*Re-exported from`core::`[`" $( $core_path "::" )+
             "`](https://doc.rust-lang.org/core/" $( $core_path "/" )+ ")*.\n\n---"]
@@ -117,7 +117,7 @@ macro_rules! reexport {
     //     "A double-ended queue implemented with a growable ring buffer.",
     //     VecDeque }
     // ```
-    ( rust : $env_str:literal | $env:ident $( :: $env_path:ident )::*,
+    ( rust : $env_str:literal | $env_module:ident $( :: $env_path:ident )::*,
       local_module: $module_feature:literal,
       doc: $description:literal,
       $( $item:ident ),*
@@ -125,16 +125,16 @@ macro_rules! reexport {
       $(,)?
     ) => { $crate::codegen::paste! {
         #[doc(inline)]
-        #[doc = "<span class='stab portability' title='re-exported from `"
-            $env "`'>`" $env "`</span>"]
+        #[doc = "<span class='stab portability' title='re-exported from rust&#39;s `"
+            $env_str "`'>`" $env_str "`</span>"]
         #[doc = $description]
-        #[doc = "\n\n*Re-exported from`" $env "::`[`" $( $env_path "::" )*
-            "`](https://doc.rust-lang.org/" $env "/" $( $env_path "/" )* ")*.\n\n---"]
+        #[doc = "\n\n*Re-exported from rust's `" $env_str "::`[`" $( $env_path "::" )*
+            "`](https://doc.rust-lang.org/" $env_str "/" $( $env_path "/" )* ")*.\n\n---"]
         #[cfg_attr(feature = "nightly",
             doc(cfg(all(feature = $module_feature, feature = $env_str))))]
 
         #[cfg(feature = $env_str)]
-        pub use $env $( :: $env_path )::* :: { // CHECK `::` are ok
+        pub use $env_module $( :: $env_path )::* :: { // CHECK `::` are ok
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
         };

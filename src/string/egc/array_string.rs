@@ -11,7 +11,7 @@ use super::Egc;
 use crate::char::*;
 use crate::string::{macros::impl_sized_alias, ArrayU8String};
 #[cfg(feature = "alloc")]
-use alloc::{ffi::CString, str::Chars};
+use _alloc::{ffi::CString, str::Chars};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */

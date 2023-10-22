@@ -16,7 +16,7 @@ use core::{
 };
 
 #[cfg(feature = "alloc")]
-use alloc::{format, string::String};
+use _alloc::{format, string::String};
 
 /// A more *`c`ompact [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
 ///

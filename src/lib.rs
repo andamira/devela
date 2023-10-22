@@ -13,8 +13,21 @@
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(not(feature = "std"), no_std)]
+
+/// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
+/// *Re-exported Rust `alloc` library environment.*
+#[doc(inline)]
 #[cfg(feature = "alloc")]
-extern crate alloc;
+pub extern crate alloc as _alloc;
+/// <span class='stab portability' title='re-exported `core`'>`core`</span>
+/// *Re-exported Rust `core` library environment.*
+#[doc(inline)]
+pub use ::core as _core;
+/// <span class='stab portability' title='re-exported `std`'>`std`</span>
+/// *Re-exported Rust `std` library environment.*
+#[cfg(feature = "std")]
+#[doc(inline)]
+pub use ::std as _std;
 
 // safeguarding: environment, safety
 #[cfg(all(feature = "std", feature = "no_std"))]
@@ -314,18 +327,3 @@ pub mod depend;
 pub mod __doc {
     #![doc = include_str!("./Doc.md")]
 }
-
-/// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
-/// *Re-exported Rust `alloc` library environment.*
-#[cfg(feature = "alloc")]
-#[doc(inline)]
-pub use ::alloc as _alloc;
-/// <span class='stab portability' title='re-exported `core`'>`core`</span>
-/// *Re-exported Rust `core` library environment.*
-#[doc(inline)]
-pub use ::core as _core;
-/// <span class='stab portability' title='re-exported `std`'>`std`</span>
-/// *Re-exported Rust `std` library environment.*
-#[cfg(feature = "std")]
-#[doc(inline)]
-pub use ::std as _std;

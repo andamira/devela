@@ -13,7 +13,7 @@
 //
 
 use super::{TaskContext, TaskPoll, TaskRawWaker, TaskRawWakerVTable, TaskWaker};
-use alloc::{boxed::Box, collections::VecDeque};
+use _alloc::{boxed::Box, collections::VecDeque};
 use core::{future::Future, pin::Pin};
 
 /// Represents a single-threaded coroutine.

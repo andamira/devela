@@ -4,10 +4,10 @@
 //
 
 #[cfg(feature = "alloc")]
-use alloc::string::String;
+use _alloc::string::String;
 
 #[cfg(all(feature = "ascii", feature = "alloc"))]
-use {crate::ascii::AsciiChar, alloc::string::ToString};
+use {crate::ascii::AsciiChar, _alloc::string::ToString};
 
 // Marker trait to prevent downstream implementations of the `StringExt` trait.
 impl private::Sealed for str {}

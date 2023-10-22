@@ -12,8 +12,10 @@ pub mod atomic;
 
 /* re-exports */
 
+#[doc(no_inline)]
 #[cfg(feature = "sync")]
-pub use all::*;
+pub use atomic::*;
+
 #[cfg(feature = "sync")]
 pub(crate) mod all {
     #[doc(inline)]

@@ -12,7 +12,7 @@ use crate::char::*;
 #[cfg(any(feature = "depend", feature = "unicode-segmentation"))]
 use crate::depend::unicode_segmentation::UnicodeSegmentation;
 #[allow(unused_imports)]
-use alloc::{
+use _alloc::{
     str::{self, Chars as CharIterator},
     string::String,
 };

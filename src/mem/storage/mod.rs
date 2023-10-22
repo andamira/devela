@@ -71,7 +71,7 @@ pub struct Boxed;
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 impl Storage for Boxed {
-    type Stored<T> = alloc::boxed::Box<T>;
+    type Stored<T> = _alloc::boxed::Box<T>;
 
     fn name() -> &'static str {
         "Boxed"

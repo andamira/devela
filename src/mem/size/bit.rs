@@ -44,7 +44,7 @@ use crate::string::StringEgc;
 #[cfg(feature = "string")]
 use crate::string::{ArrayU8NonNulEgc, ArrayU8NonNulString};
 #[cfg(feature = "alloc")]
-use alloc::{
+use _alloc::{
     collections::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, VecDeque},
     string::String,
     vec::Vec,

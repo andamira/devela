@@ -11,7 +11,7 @@ mod non_specific;
 #[cfg(not(feature = "num"))]
 pub use {always_fns::*, non_specific::*};
 
-/* only compiled with the `mem` feature */
+/* only compiled with the `num` feature */
 
 #[cfg(feature = "num")]
 mod error;

@@ -10,7 +10,7 @@ use super::{macros::impl_sized_alias, ArrayStringError, Result};
 use core::fmt;
 
 #[cfg(feature = "alloc")]
-use alloc::{ffi::CString, str::Chars, string::ToString};
+use _alloc::{ffi::CString, str::Chars, string::ToString};
 
 #[cfg(feature = "char")]
 use crate::char::*;

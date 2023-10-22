@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "alloc")]
-use alloc::vec::Vec;
+use _alloc::vec::Vec;
 
 use super::fns::*;
 

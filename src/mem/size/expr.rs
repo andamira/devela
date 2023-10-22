@@ -54,12 +54,10 @@ mod tests {
     impl<'a> Foo<'a, 'static> for () {}
     impl<'a, 'b> Foo<'a, 'b> for usize {}
 
-    fn g() -> impl for<'a> Foo<'a, 'static> {}
-
     async fn f() {
-        let x = 1;
+        let _x = 1;
         core::future::ready(()).await;
-        let y = 2;
+        let _y = 2;
     }
 
     #[test]
