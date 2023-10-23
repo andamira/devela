@@ -1,4 +1,4 @@
-// devela::ascii::char
+// devela::string::ascii::char
 //
 //!
 //
@@ -7,7 +7,7 @@
 // - WAITING: https://github.com/rust-lang/rust/issues/110998
 
 use core::fmt;
-#[cfg(feature = "unsafe_ascii")]
+#[cfg(feature = "unsafe_string")]
 use core::mem::transmute;
 
 /// One of the 128 Unicode characters from U+0000 through U+007F,
@@ -465,8 +465,8 @@ impl AsciiChar {
     /// `b` must be in `0..=127`, or else this is UB.
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_ascii")))]
+    #[cfg(feature = "unsafe_string")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_string")))]
     pub const unsafe fn from_u8_unchecked(b: u8) -> Self {
         // SAFETY: Our safety precondition is that `b` is in-range.
         unsafe { transmute(b) }
@@ -502,8 +502,8 @@ impl AsciiChar {
     /// something useful. It might be tightened before stabilization.)
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_ascii")))]
+    #[cfg(feature = "unsafe_string")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_string")))]
     pub const unsafe fn digit_unchecked(d: u8) -> Self {
         debug_assert!(d < 10);
 
@@ -535,8 +535,8 @@ impl AsciiChar {
     /// Views this ASCII character as a one-code-unit UTF-8 `str`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_ascii")))]
+    #[cfg(feature = "unsafe_string")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_string")))]
     pub const fn as_str(&self) -> &str {
         Self::slice_as_str(core::slice::from_ref(self))
     }
@@ -546,8 +546,8 @@ impl AsciiChar {
     /// Views a slice of ASCII characters as a UTF-8 `str`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_ascii")))]
+    #[cfg(feature = "unsafe_string")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_string")))]
     pub const fn slice_as_str(slice: &[AsciiChar]) -> &str {
         let ascii_ptr: *const [AsciiChar] = slice;
         let str_ptr = ascii_ptr as *const str;
@@ -559,8 +559,8 @@ impl AsciiChar {
     /// Views a slice of ASCII characters as a slice of `u8` bytes.
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_ascii")))]
+    #[cfg(feature = "unsafe_string")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_string")))]
     pub const fn slice_as_bytes(slice: &[AsciiChar]) -> &[u8] {
         AsciiChar::slice_as_str(slice).as_bytes()
     }

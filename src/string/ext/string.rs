@@ -4,10 +4,9 @@
 //
 
 #[cfg(feature = "alloc")]
-use _alloc::string::String;
-
-#[cfg(all(feature = "ascii", feature = "alloc"))]
-use {crate::ascii::AsciiChar, _alloc::string::ToString};
+use crate::_alloc::string::{String, ToString};
+#[allow(unused)] // IMPROVE: impl for ArrayString, …
+use crate::string::AsciiChar;
 
 // Marker trait to prevent downstream implementations of the `StringExt` trait.
 #[cfg(feature = "alloc")]
@@ -27,21 +26,18 @@ pub trait StringExt: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::{ascii::AsciiChar, string::StringExt};
+    /// use devela::string::{AsciiChar, StringExt};
     ///
     /// assert_eq!("2*4*6*8*11*14*", String::new_counter(14, AsciiChar::Asterisk));
     /// assert_eq!("_3_5_7_9_12_15_", String::new_counter(15, AsciiChar::LowLine));
     /// ```
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]
-    #[cfg(feature = "ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     fn new_counter(length: usize, separator: AsciiChar) -> String;
 }
 
 #[cfg(feature = "alloc")]
 impl StringExt for String {
-    #[cfg(feature = "ascii")]
     fn new_counter(mut length: usize, separator: AsciiChar) -> String {
         let mut cstr = String::new();
 

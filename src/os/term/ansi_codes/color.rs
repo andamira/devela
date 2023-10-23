@@ -5,8 +5,8 @@
 
 use super::Ansi;
 use crate::{
-    ascii::{ascii_1digit, ascii_u8_digits},
     cmp::min_u8,
+    string::{ascii_1digit, ascii_u8_digits},
 };
 
 /// ANSI 3-bit color codes, 8 colors.

@@ -46,7 +46,6 @@ optional dependencies.
 
 Single modules: 
 - `any`, `any_unsafe:` enables the [`any`] module.
-- `ascii`, `ascii_unsafe:` enables the [`ascii`] module.
 - `cmp`, `cmp_unsafe`: enables the [`cmp`] module.
 - `codegen`, `codegen_unsafe`: enables the [`codegen`] module,
   and the [`devela_macros`] optional dependency.
@@ -83,7 +82,6 @@ They offer a gradient of safety.
 - `unsafest`: enables unsafe recursively (unused).
 - `unsafe`: enables all the unsafe sub-features:
   - `unsafe_any`: *(unused)*.
-  - `unsafe_ascii`: enables unchecked conversions in [`ascii`],
   - `unsafe_cmp`: enables const floating-point comparison in [`cmp`],
        using [`transmute`] for constant access to the bits.
   - `unsafe_codegen`: *(unused)*.
@@ -130,7 +128,7 @@ Dependencies can also be enabled individually:
 - `az` is used in `convert`.
 - `bytemuck` is used in `mem`, `linux`, `num`.
 - `devela_macros` is used in `codegen`.
-- `const-str` is used in `string`, `ascii`, `option`, `os`, `linux`.
+- `const-str` is used in `string`, `option`, `os`, `linux`.
 - `portable-atomic` is used in `sync`.
 - `unicode-segmentation` is used in `string`.
 

@@ -1,8 +1,7 @@
 // devela::string::char::impls::char7
 
 use super::*;
-#[cfg(feature = "ascii")]
-use crate::ascii::AsciiChar;
+use crate::string::AsciiChar;
 
 impl Char7 {
     /* private helper fns */
@@ -20,13 +19,13 @@ impl Char7 {
     #[inline]
     #[must_use]
     const fn new_unchecked(value: u8) -> Char7 {
-        #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_num")))]
+        #[cfg(not(all(feature = "unsafe_string", feature = "unsafe_num")))]
         if let Some(c) = NonMaxU8::new(value) {
             Char7(c)
         } else {
             unreachable![]
         }
-        #[cfg(all(feature = "unsafe_char", feature = "unsafe_num"))]
+        #[cfg(all(feature = "unsafe_string", feature = "unsafe_num"))]
         unsafe {
             Char7(NonMaxU8::new_unchecked(value))
         }
@@ -42,8 +41,6 @@ impl Char7 {
     /// Converts an `AsciiChar` to `Char7`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     pub const fn from_ascii_char(c: AsciiChar) -> Char7 {
         Char7::new_unchecked(c as u8)
     }
@@ -100,17 +97,15 @@ impl Char7 {
     /// Converts a `Char7` to `AsciiChar`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     pub const fn to_ascii_char(c: Char7) -> AsciiChar {
-        #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_ascii")))]
+        #[cfg(not(all(feature = "unsafe_string", feature = "unsafe_ascii")))]
         if let Some(c) = AsciiChar::from_u8(c.0.get()) {
             c
         } else {
             unreachable!()
         }
 
-        #[cfg(all(feature = "unsafe_char", feature = "unsafe_ascii"))]
+        #[cfg(all(feature = "unsafe_string", feature = "unsafe_ascii"))]
         unsafe {
             AsciiChar::from_u8_unchecked(c.0.get())
         }

@@ -8,12 +8,12 @@ use core::str::from_utf8;
 #[cfg(feature = "unsafe_string")]
 use core::str::from_utf8_unchecked;
 
-#[cfg(all(feature = "ascii", feature = "fmt", feature = "unsafe_fmt"))]
+#[cfg(all(feature = "fmt", feature = "unsafe_fmt"))]
 use crate::fmt::IntBuf;
-#[cfg(all(feature = "ascii", not(all(feature = "fmt", feature = "unsafe_fmt"))))]
-use crate::{ascii::ascii_usize_digits, slice::slice_trim_leading_bytes};
-#[cfg(feature = "ascii")]
-use crate::{ascii::AsciiChar, codegen::iif};
+
+use crate::{codegen::iif, string::AsciiChar};
+#[cfg(not(all(feature = "fmt", feature = "unsafe_fmt")))]
+use crate::{slice::slice_trim_leading_bytes, string::ascii_usize_digits};
 
 // Marker trait to prevent downstream implementations of the `StrExt` trait.
 impl private::Sealed for str {}
@@ -52,7 +52,7 @@ pub trait StrExt: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::{ascii::AsciiChar, string::StrExt};
+    /// use devela::string::{AsciiChar, StrExt};
     ///
     /// let mut buf = [0; 15];
     /// assert_eq!("2*4*6*8*11*14*", str::new_counter(&mut buf, 14, AsciiChar::Asterisk));
@@ -66,8 +66,6 @@ pub trait StrExt: private::Sealed {
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]
-    #[cfg(feature = "ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str;
 }
 
@@ -99,7 +97,6 @@ impl StrExt for str {
         from_utf8(&buffer[..index]).unwrap()
     }
 
-    #[cfg(feature = "ascii")]
     fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str {
         assert![buffer.len() >= length];
         if length == 0 {
@@ -162,7 +159,6 @@ impl StrExt for str {
 // the cold path that returns an empty string slice
 #[cold]
 #[inline]
-#[cfg(feature = "ascii")]
 fn cold_empty_string() -> &'static str {
     ""
 }

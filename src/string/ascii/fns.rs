@@ -1,4 +1,4 @@
-// devela::ascii::fns
+// devela::string::ascii::fns
 //
 //! ASCII standalone functions.
 //

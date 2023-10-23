@@ -103,12 +103,12 @@ impl StringEgc {
     )]
     pub fn from_char(c: char) -> StringEgc {
         #[cfg(not(feature = "unsafe_string"))]
-        return str::from_utf8(&crate::char::char_to_utf8_bytes(c))
+        return str::from_utf8(&crate::string::char_to_utf8_bytes(c))
             .unwrap()
             .into();
         #[cfg(feature = "unsafe_string")]
         unsafe {
-            str::from_utf8_unchecked(&crate::char::char_to_utf8_bytes(c)).into()
+            str::from_utf8_unchecked(&crate::string::char_to_utf8_bytes(c)).into()
         }
     }
 

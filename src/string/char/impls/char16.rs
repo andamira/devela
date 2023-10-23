@@ -1,8 +1,7 @@
 // devela::string::char::impls::char16
 
 use super::*;
-#[cfg(feature = "ascii")]
-use crate::ascii::AsciiChar;
+use crate::string::AsciiChar;
 
 impl Char16 {
     /* private helper fns */
@@ -19,13 +18,13 @@ impl Char16 {
     #[inline]
     #[must_use]
     const fn new_unchecked(value: u16) -> Char16 {
-        #[cfg(not(all(feature = "unsafe_char", feature = "unsafe_num")))]
+        #[cfg(not(all(feature = "unsafe_string", feature = "unsafe_num")))]
         if let Some(c) = NonSurrogateU16::new(value) {
             Char16(c)
         } else {
             unreachable![]
         }
-        #[cfg(all(feature = "unsafe_char", feature = "unsafe_num"))]
+        #[cfg(all(feature = "unsafe_string", feature = "unsafe_num"))]
         unsafe {
             Char16(NonSurrogateU16::new_unchecked(value))
         }
@@ -46,8 +45,6 @@ impl Char16 {
 
     /// Converts an `AsciiChar` to `Char16`.
     #[inline]
-    #[cfg(feature = "ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     #[must_use]
     pub const fn from_ascii_char(c: AsciiChar) -> Char16 {
         Char16::new_unchecked(c as u8 as u16)
@@ -94,18 +91,16 @@ impl Char16 {
 
     /// Tries to convert this `Char16` to `AsciiChar`.
     #[inline]
-    #[cfg(feature = "ascii")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "ascii")))]
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
         if char_is_7bit(self.to_u32()) {
-            #[cfg(not(feature = "unsafe_char"))]
+            #[cfg(not(feature = "unsafe_string"))]
             if let Some(c) = AsciiChar::from_u8(self.0.get() as u8) {
                 Ok(c)
             } else {
                 unreachable![]
             }
 
-            #[cfg(feature = "unsafe_char")]
+            #[cfg(feature = "unsafe_string")]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0.get() as u8) });
         } else {
@@ -140,12 +135,12 @@ impl Char16 {
     #[must_use]
     #[rustfmt::skip]
     pub const fn to_char(self) -> char {
-        // #[cfg(not(feature = "unsafe_char"))]
+        // #[cfg(not(feature = "unsafe_string"))]
         if let Some(c) = char::from_u32(self.0.get() as u32) { c } else { unreachable![] }
 
         // WAITING for stable const: https://github.com/rust-lang/rust/issues/89259
         // SAFETY: we've already checked we contain a valid char.
-        // #[cfg(feature = "unsafe_char")]
+        // #[cfg(feature = "unsafe_string")]
         // return unsafe { char::from_u32_unchecked(self.0 as u32) };
     }
     /// Converts this `Char16` to `u32`.

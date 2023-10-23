@@ -31,10 +31,10 @@ use crate::num::{
     RangeUsize,
 };
 
-#[cfg(feature = "ascii")]
-use crate::ascii::AsciiChar;
 #[cfg(feature = "string")]
 use crate::string::char::{Char16, Char24, Char32, Char7, Char8};
+#[cfg(feature = "string")]
+use crate::string::AsciiChar;
 
 // TODO WAITING for: https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275
 // #[cfg(feature = "string")]
@@ -278,7 +278,7 @@ bit_size![= 128; for i128, u128, Duration];
 #[cfg(feature = "std")]
 bit_size![= 128; for Instant, SystemTime];
 
-#[cfg(feature = "ascii")]
+#[cfg(feature = "string")]
 bit_size![= 7; for AsciiChar];
 
 #[cfg(feature = "string")]

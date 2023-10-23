@@ -23,6 +23,7 @@ categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "helpers", "extension", "extensions"]
 publish = true
 
+
 # ------------------------------------------------------------------------------
 # Features are grouped in 6 (mostly) independent categories:
 # - Environment
@@ -66,7 +67,7 @@ term_unsafe = ["term", "unsafe_term"]
 #* module features *#
 
 full = [ # enables all the modules
-	"any", "ascii", "cmp", "codegen", "collections", "convert", "fmt",
+	"any", "cmp", "codegen", "collections", "convert", "fmt",
 	"future", "mem", "num", "ops", "option", "path", "result", "slice",
 	"string", "sync", "task", "thread", "time",
 	# os platform sub-modules:
@@ -81,7 +82,6 @@ async = ["future", "task"]
 # individual modules (20)
 # (modules enable their own dependencies if the `depend` feature is enabled)
 any = []
-ascii = []
 cmp = []
 codegen = ["depend?/devela_macros"]
 collections = ["depend?/hashbrown"]
@@ -103,7 +103,6 @@ time = []
 
 # individual modules with unsafe enabled (20):
 any_unsafe = ["any", "unsafe_any"]
-ascii_unsafe = ["ascii", "unsafe_ascii"]
 cmp_unsafe = ["cmp", "unsafe_cmp"]
 codegen_unsafe = ["codegen", "unsafe_codegen"]
 collections_unsafe = ["collections", "unsafe_collections"]
@@ -127,14 +126,13 @@ time_unsafe = ["time", "unsafe_time"]
 #* safety features *#
 
 unsafe = [ # enables unsafe features in this crate (23)
-	"unsafe_any", "unsafe_ascii", "unsafe_cmp", "unsafe_codegen",
+	"unsafe_any", "unsafe_cmp", "unsafe_codegen",
 	"unsafe_convert", "unsafe_collections", "unsafe_fmt", "unsafe_future",
 	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_option", "unsafe_os",
 	"unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_string",
 	"unsafe_sync", "unsafe_task", "unsafe_thread", "unsafe_time",
 	]
 	unsafe_any = [] # (unused)
-	unsafe_ascii = [] # enables unchecked conversions in `ascii`
 	unsafe_cmp = [] # enables const floating-point comparisons
 	unsafe_codegen = [] # (unused)
 	unsafe_collections = [] # (unused)
@@ -184,6 +182,7 @@ devela_macros = ["dep:devela_macros"]
 hashbrown = ["dep:hashbrown"]
 portable-atomic = ["dep:portable-atomic"]
 unicode-segmentation = ["dep:unicode-segmentation"]
+
 
 # ------------------------------------------------------------------------------
 
