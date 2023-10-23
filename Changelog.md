@@ -5,15 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
-## [Unreleased]
+## [0.16.0-wip]
 
 ### Added
 - add `mem_size_of_expr` macro.
 - reexport `BinaryHeap` as `collections::PriorityQueue`.
+- new type `NumErr`, new type alias `NumResult`.
+- new time module, and features: `time`, `time_unsafe`, `unsafe_time`.
+- new trait `Collection`.
+- new type `Array`.
 
 ### Changed
 - rename `HashMap`, `HashSet` as `UnorderedMap`, `UnorderedSet`.
 - rename `BTreeMap`, `BTreeSet` as `OrderedMap`, `OrderedSet`.
+- change the result type of Num methods from `Option` to `Result`.
+- make `Storage` always compiled.
+
+### Fixed
+- reexport missing `result::{NeverOk, NeverErr} types.
 
 ## [0.15.0] - 2023-10-19
 
