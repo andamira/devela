@@ -6,9 +6,11 @@
 /* always compiled for internal use */
 
 mod always_fns;
+mod storage;
+
 #[allow(unused)]
 #[cfg(not(feature = "mem"))]
-pub use always_fns::*;
+pub use {always_fns::*, storage::*};
 
 /* only compiled with the `mem` feature */
 
@@ -28,9 +30,6 @@ mod reexports;
 
 #[cfg(feature = "mem")]
 mod r#trait;
-
-#[cfg(feature = "mem")]
-mod storage;
 
 #[cfg(feature = "mem")]
 pub use all::*;
