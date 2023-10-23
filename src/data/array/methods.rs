@@ -1,4 +1,4 @@
-// devela::collections::array::methods
+// devela::data::array::methods
 //
 //! Arrays.
 //
@@ -33,7 +33,7 @@ impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
     ///
     /// # Examples
     /// ```
-    /// use devela::collections::Array;
+    /// use devela::data::Array;
     ///
     /// let s = Array::<_, (), 16>::with(0);
     /// ```
@@ -71,7 +71,7 @@ impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
     ///
     /// # Examples
     /// ```
-    /// use devela::collections::BoxedArray;
+    /// use devela::data::BoxedArray;
     ///
     /// let mut s = BoxedArray::<_, 1_000>::with(0);
     /// ```

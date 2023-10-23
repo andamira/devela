@@ -83,7 +83,7 @@ mod depend {
     reexport! { depend feature: "codegen",
     dep: "devela_macros", devela_macros, "Procedural macros for `devela`." }
 
-    reexport! { depend feature: "collections", also: "alloc",
+    reexport! { depend feature: "data", also: "alloc",
     dep: "hashbrown", hashbrown,
     "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`." }
 

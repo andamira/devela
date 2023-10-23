@@ -101,7 +101,7 @@ pub(crate) const fn ascii_calc_digit_u128(n: u128, divisor: u128) -> u8 {
 /// Converts a `u8` into a byte array of `3` ascii digits, padded with zeros.
 ///
 /// You can trim the leading zeros with
-/// [`slice_trim_leading_bytes`][crate::collections::slice_trim_leading_bytes].
+/// [`slice_trim_leading_bytes`][crate::data::slice_trim_leading_bytes].
 #[inline]
 #[must_use]
 pub const fn ascii_u8_digits(n: u8) -> [u8; 3] {

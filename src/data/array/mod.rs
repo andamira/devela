@@ -1,4 +1,4 @@
-// devela::collections::array
+// devela::data::array
 //
 //! Arrays are random-access, sequentially allocated, statically sized,
 //! homogeneous data structures.

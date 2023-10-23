@@ -113,7 +113,7 @@ macro_rules! reexport {
     //
     // # Examples
     // ```
-    // reexport! { rust:"alloc"|alloc::collections, local_module: "collections",
+    // reexport! { rust:"alloc"|alloc::collections, local_module: "data",
     //     "A double-ended queue implemented with a growable ring buffer.",
     //     VecDeque }
     // ```

@@ -1,4 +1,4 @@
-// devela::collections::array::core_impls
+// devela::data::array::core_impls
 //
 //!
 //
@@ -106,7 +106,7 @@ impl<T: Default, const LEN: usize> Default for Array<T, Boxed, LEN> {
     ///
     /// # Examples
     /// ```
-    /// use devela::collections::BoxedArray;
+    /// use devela::data::BoxedArray;
     ///
     /// let mut s = BoxedArray::<i32, 100>::default();
     /// ```
@@ -167,7 +167,7 @@ where
     ///
     /// # Examples
     /// ```
-    /// use devela::collections::DirectArray;
+    /// use devela::data::DirectArray;
     ///
     /// let s: DirectArray<_, 4> = [1, 2, 3].into();
     ///
@@ -214,7 +214,7 @@ where
     ///
     /// # Examples
     /// ```
-    /// use devela::collections::BoxedArray;
+    /// use devela::data::BoxedArray;
     ///
     /// let s: BoxedArray<_, 4> = [1, 2, 3].into();
     ///

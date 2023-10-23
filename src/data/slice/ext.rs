@@ -1,4 +1,4 @@
-// devela::collections::slice::ext
+// devela::data::slice::ext
 //
 //!
 //

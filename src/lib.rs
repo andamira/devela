@@ -37,7 +37,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     any(
         feature = "unsafe", // includes all below
         feature = "unsafe_any", feature = "unsafe_cmp", feature = "unsafe_codegen",
-        feature = "unsafe_collections", feature = "unsafe_convert",
+        feature = "unsafe_data", feature = "unsafe_convert",
         feature = "unsafe_future", feature = "unsafe_mem", feature = "unsafe_num",
         feature = "unsafe_ops", feature = "unsafe_option",
         //
@@ -71,11 +71,11 @@ pub mod codegen;
 #[cfg(all(not(feature = "codegen"), not(test)))]
 pub(crate) mod codegen; // the "codegen" feature is disabled
 
-#[cfg(any(feature = "collections", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "collections")))]
-pub mod collections;
-#[cfg(all(not(feature = "collections"), not(test)))]
-pub(crate) mod collections; // the "collections" feature is disabled
+#[cfg(any(feature = "data", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
+pub mod data;
+#[cfg(all(not(feature = "data"), not(test)))]
+pub(crate) mod data; // the "data" feature is disabled
 
 #[cfg(any(feature = "convert", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
@@ -175,8 +175,8 @@ pub mod all {
     pub use super::codegen::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "collections")]
-    pub use super::collections::all::*;
+    #[cfg(feature = "data")]
+    pub use super::data::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "convert")]
@@ -243,8 +243,8 @@ pub mod prelude {
     pub use crate::any::AnyExt;
 
     #[doc(inline)]
-    #[cfg(feature = "collections")]
-    pub use crate::collections::all::{Collection, SliceExt, SliceExtMut};
+    #[cfg(feature = "data")]
+    pub use crate::data::all::{Collection, SliceExt, SliceExtMut};
 
     #[doc(inline)]
     #[cfg(feature = "convert")]

@@ -67,7 +67,7 @@ term_unsafe = ["term", "unsafe_term"]
 #* module features *#
 
 full = [ # enables all the modules
-	"any", "cmp", "codegen", "collections", "convert",
+	"any", "cmp", "codegen", "convert", "data",
 	"future", "mem", "num", "ops", "option", "path", "result",
 	"string", "sync", "task", "thread", "time",
 	# os platform sub-modules:
@@ -84,8 +84,8 @@ async = ["future", "task"]
 any = []
 cmp = []
 codegen = ["depend?/devela_macros"]
-collections = ["depend?/hashbrown"]
 convert = ["depend?/az"]
+data = ["depend?/hashbrown"]
 future = []
 mem = ["depend?/bytemuck"]
 num = []
@@ -103,8 +103,8 @@ time = []
 any_unsafe = ["any", "unsafe_any"]
 cmp_unsafe = ["cmp", "unsafe_cmp"]
 codegen_unsafe = ["codegen", "unsafe_codegen"]
-collections_unsafe = ["collections", "unsafe_collections"]
 convert_unsafe = ["convert", "unsafe_convert"]
+data_unsafe = ["data", "unsafe_data"]
 future_unsafe = ["future", "unsafe_future"]
 mem_unsafe = ["mem", "unsafe_mem"]
 num_unsafe = ["num", "unsafe_num"]
@@ -123,7 +123,7 @@ time_unsafe = ["time", "unsafe_time"]
 
 unsafe = [ # enables unsafe features in this crate (23)
 	"unsafe_any", "unsafe_cmp", "unsafe_codegen",
-	"unsafe_convert", "unsafe_collections", "unsafe_future",
+	"unsafe_convert", "unsafe_data", "unsafe_future",
 	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_option", "unsafe_os",
 	"unsafe_path", "unsafe_result", "unsafe_string",
 	"unsafe_sync", "unsafe_task", "unsafe_thread", "unsafe_time",
@@ -131,8 +131,8 @@ unsafe = [ # enables unsafe features in this crate (23)
 	unsafe_any = [] # (unused)
 	unsafe_cmp = [] # enables const floating-point comparisons
 	unsafe_codegen = [] # (unused)
-	unsafe_collections = [] # (unused)
 	unsafe_convert = [] # enables using `MaybeUninit` for array initalization
+	unsafe_data = [] # (unused)
 	unsafe_future = [] # (unused)
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
 	unsafe_num = [] # enables unsafe constructors and bytemuck's traits

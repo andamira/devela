@@ -1,6 +1,6 @@
-// devela::collections
+// devela::data
 //
-//! Collections, extends
+//! Data structures, extends
 //! `std::{`[`array`][mod@std::array],
 //! [`collections`][std::collections],
 //! [`slice`][std::slice],
@@ -9,30 +9,32 @@
 
 /* always compiled for internal use */
 
-#[cfg(not(feature = "collections"))]
+#[cfg(not(feature = "data"))]
 mod slice;
-#[cfg(not(feature = "collections"))]
+#[allow(unused)]
+#[cfg(not(feature = "data"))]
 pub(crate) use slice::*;
 
-/* only compiled with the `collections` feature */
+/* only compiled with the `data` feature */
 
 // public modules
-#[cfg(feature = "collections")]
+#[cfg(feature = "data")]
 pub mod slice;
-#[cfg(feature = "collections")]
+#[doc(no_inline)]
+#[cfg(feature = "data")]
 pub use slice::all::*;
 
 // private modules
-#[cfg(feature = "collections")]
+#[cfg(feature = "data")]
 mod array;
-#[cfg(feature = "collections")]
+#[cfg(feature = "data")]
 mod reexports;
-#[cfg(feature = "collections")]
+#[cfg(feature = "data")]
 mod r#trait;
-#[cfg(feature = "collections")]
+#[cfg(feature = "data")]
 pub use {array::*, r#trait::*, reexports::*};
 
-#[cfg(feature = "collections")]
+#[cfg(feature = "data")]
 pub(crate) mod all {
     // public
     pub use super::slice::all::*;

@@ -1,4 +1,4 @@
-// devela::collections::trait
+// devela::data::trait
 //
 //!
 //
@@ -22,15 +22,3 @@ pub trait Collection {
     /// Returns the number of elements in the collection.
     fn collection_len(&self) -> usize;
 }
-
-// MAYBE
-// /// An abstract dynamically-sized Collection.
-// pub trait DynDataCollection: DataCollection {
-//     fn collection_with_capacity(capacity: usize) -> Self;
-//     fn collection_capacity(&self) -> usize;
-//     fn collection_set_capacity(&mut self, capacity: usize) -> Result<()>;
-//     //
-//     fn collection_remaining_capacity(&self) -> usize {
-//         self.collection_capacity() - self.collection_len()
-//     }
-// }
