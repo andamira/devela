@@ -1,4 +1,4 @@
-// devela::fmt::int_buf
+// devela::string::fmt::int_buf
 //
 //!
 //
@@ -89,7 +89,7 @@ impl IntBuf {
     /// # Example
     ///
     /// ```
-    /// assert_eq!("1234", devela::fmt::IntBuf::new().to_str(1234));
+    /// assert_eq!("1234", devela::string::IntBuf::new().to_str(1234));
     /// ```
     #[must_use]
     pub fn to_str<I: IntBufAble>(&mut self, i: I) -> &str {
@@ -105,7 +105,7 @@ impl IntBuf {
     /// # Example
     ///
     /// ```
-    /// assert_eq!(&[49, 50, 51, 52], devela::fmt::IntBuf::new().to_bytes(1234));
+    /// assert_eq!(&[49, 50, 51, 52], devela::string::IntBuf::new().to_bytes(1234));
     /// ```
     #[must_use]
     pub fn to_bytes<I: IntBufAble>(&mut self, i: I) -> &[u8] {

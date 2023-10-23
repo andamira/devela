@@ -8,11 +8,11 @@ use core::str::from_utf8;
 #[cfg(feature = "unsafe_string")]
 use core::str::from_utf8_unchecked;
 
-#[cfg(all(feature = "fmt", feature = "unsafe_fmt"))]
-use crate::fmt::IntBuf;
-
 use crate::{codegen::iif, string::AsciiChar};
-#[cfg(not(all(feature = "fmt", feature = "unsafe_fmt")))]
+
+#[cfg(feature = "unsafe_string")]
+use crate::string::IntBuf;
+#[cfg(not(feature = "unsafe_string"))]
 use crate::{slice::slice_trim_leading_bytes, string::ascii_usize_digits};
 
 // Marker trait to prevent downstream implementations of the `StrExt` trait.
@@ -62,7 +62,7 @@ pub trait StrExt: private::Sealed {
     /// Panics if `buffer.len() < length`
     ///
     /// # Features
-    /// Makes use of the `unsafe_string` and `unsafe_fmt` features if enabled.
+    /// Makes use of the `unsafe_string` feature if enabled.
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]
@@ -108,15 +108,15 @@ impl StrExt for str {
             let mut separator_turn = true; // start writing the separator
 
             // safe:
-            #[cfg(not(all(feature = "fmt", feature = "unsafe_fmt")))]
+            #[cfg(not(feature = "unsafe_string"))]
             let mut num_buf = ascii_usize_digits(num);
-            #[cfg(not(all(feature = "fmt", feature = "unsafe_fmt")))]
+            #[cfg(not(feature = "unsafe_string"))]
             let mut num_bytes = slice_trim_leading_bytes(&num_buf, b'0');
 
             // unsafe:
-            #[cfg(all(feature = "fmt", feature = "unsafe_fmt"))]
+            #[cfg(feature = "unsafe_string")]
             let mut num_buf = IntBuf::new();
-            #[cfg(all(feature = "fmt", feature = "unsafe_fmt"))]
+            #[cfg(feature = "unsafe_string")]
             let mut num_bytes = num_buf.to_bytes(num);
 
             let mut num_len = num_bytes.len();
@@ -131,13 +131,13 @@ impl StrExt for str {
                     num = index;
 
                     // safe
-                    #[cfg(not(all(feature = "fmt", feature = "unsafe_fmt")))]
+                    #[cfg(not(feature = "unsafe_string"))]
                     {
                         num_buf = ascii_usize_digits(num);
                         num_bytes = slice_trim_leading_bytes(&num_buf, b'0');
                     }
                     // unsafe
-                    #[cfg(all(feature = "fmt", feature = "unsafe_fmt"))]
+                    #[cfg(feature = "unsafe_string")]
                     {
                         num_bytes = num_buf.to_bytes(num);
                     }

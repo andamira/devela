@@ -1,6 +1,6 @@
 // devela::os
 //
-//! OS-specific, extends [`std::os`].
+//! OS-specific, extends `std::`[`os`][std::os].
 //
 
 mod print;

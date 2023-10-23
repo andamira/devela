@@ -1,4 +1,4 @@
-// devela::fmt::misc
+// devela::string::fmt::misc
 //
 //! Miscellaneous formatting functionality.
 //
@@ -22,7 +22,7 @@ use _alloc::{format, string::String};
 ///
 /// # Examples
 /// ```
-/// use devela::fmt::cdbg;
+/// use devela::string::cdbg;
 ///
 /// let a = vec![1, 2, 3];
 /// let _b = cdbg![a];
@@ -55,7 +55,7 @@ pub use cdbg;
 ///
 /// # Examples
 /// ```
-/// use devela::fmt::format_buf_args;
+/// use devela::string::format_buf_args;
 ///
 /// let mut buf = [0u8; 64];
 /// let s = format_buf_args(&mut buf, format_args!["Test: {} {}", "foo", 42]);
@@ -85,7 +85,7 @@ pub fn format_buf_args<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a
 #[macro_export]
 macro_rules! format_buf {
     ($buf:expr, $($args:tt)*) => {
-        $crate::fmt::format_buf_args($buf, format_args![$($args)*])
+        $crate::string::fmt::format_buf_args($buf, format_args![$($args)*])
     };
 }
 pub use format_buf;
@@ -122,7 +122,7 @@ impl<'a> WriteTo<'a> {
         WriteTo { buf, len: 0 }
     }
 
-    #[cfg(not(feature = "unsafe_fmt"))]
+    #[cfg(not(feature = "unsafe_string"))]
     fn as_str(self) -> Option<&'a str> {
         if self.len <= self.buf.len() {
             Some(from_utf8(&self.buf[..self.len]).expect("invalid utf-8"))
@@ -130,7 +130,7 @@ impl<'a> WriteTo<'a> {
             None
         }
     }
-    #[cfg(feature = "unsafe_fmt")]
+    #[cfg(feature = "unsafe_string")]
     fn as_str(self) -> Option<&'a str> {
         if self.len <= self.buf.len() {
             // SAFETY: the buffer is always filled from a previous &str
@@ -147,7 +147,7 @@ impl<'a> WriteTo<'a> {
 ///
 /// Basic usage:
 /// ```
-/// use devela::fmt::AltDebug;
+/// use devela::string::AltDebug;
 ///
 /// #[derive(Debug)]
 /// struct Example(bool, i32, String);
@@ -160,7 +160,7 @@ impl<'a> WriteTo<'a> {
 ///
 /// Custom usage:
 /// ```
-/// use devela::fmt::AltDebug;
+/// use devela::string::AltDebug;
 ///
 /// #[derive(Debug)]
 /// struct Example(bool, i32, String);

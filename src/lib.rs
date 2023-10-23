@@ -37,7 +37,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     any(
         feature = "unsafe", // includes all below
         feature = "unsafe_any", feature = "unsafe_cmp", feature = "unsafe_codegen",
-        feature = "unsafe_collections", feature = "unsafe_convert", feature = "unsafe_fmt",
+        feature = "unsafe_collections", feature = "unsafe_convert",
         feature = "unsafe_future", feature = "unsafe_mem", feature = "unsafe_num",
         feature = "unsafe_ops", feature = "unsafe_option",
         //
@@ -82,12 +82,6 @@ pub(crate) mod collections; // the "collections" feature is disabled
 pub mod convert;
 #[cfg(all(not(feature = "convert"), not(test)))]
 pub(crate) mod convert; // the "convert" feature is disabled
-
-#[cfg(any(feature = "fmt", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "fmt")))]
-pub mod fmt;
-// #[cfg(all(not(feature = "fmt"), not(test)))]
-// pub(crate) mod fmt; // the "fmt" feature is disabled
 
 #[cfg(any(feature = "future", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "future")))]
@@ -193,10 +187,6 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "convert")]
     pub use super::convert::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "fmt")]
-    pub use super::fmt::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "future")]

@@ -51,8 +51,7 @@ Single modules:
   and the [`devela_macros`] optional dependency.
 - `convert`, `convert_unsafe`: enables the [`convert`] module,
   and the [`az`] optional dependency.
-- `fmt`, `fmt_unsafe`: enables the [`fmt`] module.
-- `future`, `fmt_unsafe`: enables the [`future`] module.
+- `future`, `future_unsafe`: enables the [`future`] module.
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
 - `num`, `num_unsafe`: enables the [`num`] module.
@@ -87,7 +86,6 @@ They offer a gradient of safety.
   - `unsafe_codegen`: *(unused)*.
   - `unsafe_convert`: enables using [`MaybeUninit`] for [`slice_into_array`]
       initialization in [`convert`].
-  - `unsafe_fmt`: provides [`IntBuf`] and [`IntBufable`] in [`fmt`].
   - `unsafe_future`: *(unused)*.
   - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and
     [`mem_as_bytes_sized`] in [`mem`].
@@ -132,8 +130,8 @@ Dependencies can also be enabled individually:
 - `portable-atomic` is used in `sync`.
 - `unicode-segmentation` is used in `string`.
 
-[`IntBuf`]: fmt::IntBuf
-[`IntBufable`]: fmt::IntBufAble
+[`IntBuf`]: string::IntBuf
+[`IntBufable`]: string::IntBufAble
 [`slice_into_array`]: convert::collection::slice_into_array
 [`MaybeUninit`]: core::mem::MaybeUninit
 [`transmute`]: core::mem::transmute

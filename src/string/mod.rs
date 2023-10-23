@@ -1,12 +1,13 @@
 // devela::string
 //
-//! Strings, extends `std::`[`string`][std::string] +
-//! [`ascii`][std::ascii] +
-//! [`char`][std::char] +
-//! [`str`][std::str].
+//! Strings, extends `std::{`[`ascii`][std::ascii],
+//! [`char`][std::char],
+//! [`fmt`][std::fmt],
+//! [`str`][std::str],
+//! [`string`][std::string]`}`.
 //
 
-/* always compiled for internal use */
+/* contains always compiled items for internal use */
 
 #[cfg(not(feature = "string"))]
 mod ascii;
@@ -25,10 +26,11 @@ pub mod ascii;
 pub mod char;
 #[cfg(feature = "string")]
 pub mod egc;
-
+#[cfg(feature = "string")]
+pub mod fmt;
 #[doc(no_inline)]
 #[cfg(feature = "string")]
-pub use {ascii::all::*, char::all::*, egc::all::*};
+pub use {ascii::all::*, char::all::*, egc::all::*, fmt::all::*};
 
 // private modules
 #[cfg(feature = "string")]
@@ -41,22 +43,19 @@ mod ext;
 mod helpers;
 #[cfg(feature = "string")]
 mod non_nul;
-
 #[cfg(feature = "string")]
 pub use {array_string::*, error::*, ext::*, non_nul::*};
 
-/* re-exports */
-
+// reexported items
 #[cfg(feature = "string")]
 mod reexports;
-
 #[cfg(feature = "string")]
 pub use reexports::*;
 
 #[cfg(feature = "string")]
 pub(crate) mod all {
     // public
-    pub use super::{ascii::all::*, char::all::*, egc::all::*};
+    pub use super::{ascii::all::*, char::all::*, egc::all::*, fmt::all::*};
     // private
     pub use super::{array_string::*, error::*, ext::*, non_nul::*};
     // reexported

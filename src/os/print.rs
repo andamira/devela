@@ -61,7 +61,7 @@ macro_rules! generate_os_print_std_macros {
         $crate::codegen::paste! {
             #[doc = $doc]
             #[doc = "\n\nLeverages [`" [<linux_ $name>] "`][super::linux::" [<linux_ $name>] "]"]
-            #[doc = ", [`format_buf`][crate::fmt::format_buf]"]
+            #[doc = ", [`format_buf`][crate::string::format_buf]"]
             #[doc = "and [`str_concat`][crate::string::str_concat]."]
             ///
             #[doc = "Usage is similar but not equal to `std::`[`" $name "!`]."]
@@ -132,7 +132,7 @@ macro_rules! generate_os_print_std_macros {
 
                 // 5) print formatted args using an existing buffer
                 ($buf:ident, $d($d args:tt)*) => {
-                    $name!["{}", $crate::fmt::format_buf![&mut $buf, $d($d args)*].unwrap()];
+                    $name!["{}", $crate::string::format_buf![&mut $buf, $d($d args)*].unwrap()];
                 };
 
                 // 6) create a buffer of the given lenght and print formatted args
@@ -232,7 +232,7 @@ macro_rules! generate_os_print_linux_macros {
         $crate::codegen::paste! {
             #[doc = $doc]
             #[doc = "\n\nLeverages [`" [<linux_ $name>] "`][super::linux::" [<linux_ $name>] "]"]
-            #[doc = ", [`format_buf`][crate::fmt::format_buf]"]
+            #[doc = ", [`format_buf`][crate::string::format_buf]"]
             #[doc = "and [`str_concat`][crate::string::str_concat]."]
             ///
             #[doc = "Usage is similar but not equal to `std::`[`" $name "!`]."]
@@ -305,7 +305,7 @@ macro_rules! generate_os_print_linux_macros {
                 // 5) print formatted args using an existing buffer
                 ($buf:ident, $d($d args:tt)*) => {
                     $crate::os::linux::[<linux_ $name>](
-                        $crate::fmt::format_buf![&mut $buf, $d($d args)*].unwrap()
+                        $crate::string::format_buf![&mut $buf, $d($d args)*].unwrap()
                     );
                 };
 
