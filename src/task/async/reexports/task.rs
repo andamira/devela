@@ -1,4 +1,4 @@
-// devela::task::reexports
+// devela::task::reexports::task
 //
 //! Reexported items.
 //

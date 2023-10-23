@@ -1,4 +1,4 @@
-// devela::thread
+// devela::task::thread
 //
 //! Native threads, extends `std::`[`thread`][std::thread].
 //
@@ -7,14 +7,14 @@
 
 /* only compiled with the `thread` feature */
 
-#[cfg(feature = "thread")]
+#[cfg(feature = "task")]
 mod sleep;
 
 /* re-exports */
 
-#[cfg(feature = "thread")]
+#[cfg(feature = "task")]
 pub use all::*;
-#[cfg(feature = "thread")]
+#[cfg(feature = "task")]
 pub(crate) mod all {
     pub use super::sleep::*;
 }

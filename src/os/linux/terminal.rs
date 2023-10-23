@@ -6,7 +6,7 @@
 use super::{LinuxTerminalSize, LinuxTermios};
 
 #[cfg(all(
-    any(feature = "atomic", all(feature = "sync", feature = "depend")),
+    any(feature = "atomic", all(feature = "task", feature = "depend")),
     any(feature = "bytemuck", all(feature = "mem", feature = "depend")),
 ))]
 use crate::depend::atomic::{Atomic, Ordering as AtomicOrdering};
@@ -28,12 +28,12 @@ use crate::depend::atomic::{Atomic, Ordering as AtomicOrdering};
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(any(
-        all(feature = "depend", feature = "mem", feature = "sync"),
+        all(feature = "depend", feature = "mem", feature = "task"),
         all(feature = "bytemuck", feature = "atomic"),
     )))
 )]
 #[cfg(all(
-    any(feature = "atomic", all(feature = "sync", feature = "depend")),
+    any(feature = "atomic", all(feature = "task", feature = "depend")),
     any(feature = "bytemuck", all(feature = "mem", feature = "depend")),
 ))]
 pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios::new());
@@ -41,15 +41,15 @@ pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios
 /// Linux terminal manager.
 ///
 /// # Features
-/// With `depend`, `mem` and `sync` enabled,
+/// With `depend`, `mem` and `task` enabled,
 /// the terminal state is saved in [`LINUX_TERMINAL_STATE`] and restored on drop.
 #[derive(Debug, Default)]
 pub struct LinuxTerminal;
 
-#[cfg(all(feature = "sync", feature = "depend"))]
+#[cfg(all(feature = "task", feature = "depend"))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "sync", feature = "depend")))
+    doc(cfg(all(feature = "task", feature = "depend")))
 )]
 impl Drop for LinuxTerminal {
     fn drop(&mut self) {
@@ -62,11 +62,11 @@ impl LinuxTerminal {
     /// Returns a new linux terminal configured in canonical (cooked) mode.
     ///
     /// # Features
-    /// With `depend`, `mem` and `sync` enabled,
+    /// With `depend`, `mem` and `task` enabled,
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
     #[inline]
     pub fn new() -> Result<Self, isize> {
-        #[cfg(all(feature = "sync", feature = "depend"))]
+        #[cfg(all(feature = "task", feature = "depend"))]
         Self::save_state()?;
         Ok(Self)
     }
@@ -77,11 +77,11 @@ impl LinuxTerminal {
     /// by character, rather than line by line.
     ///
     /// # Features
-    /// With `depend`, `mem` and `sync` enabled,
+    /// With `depend`, `mem` and `task` enabled,
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
     #[inline]
     pub fn new_raw() -> Result<Self, isize> {
-        #[cfg(all(feature = "sync", feature = "depend"))]
+        #[cfg(all(feature = "task", feature = "depend"))]
         Self::save_state()?;
 
         let new = Self::new()?;
@@ -93,12 +93,12 @@ impl LinuxTerminal {
     #[cfg_attr(
         feature = "nightly",
         doc(cfg(any(
-            all(feature = "depend", feature = "mem", feature = "sync"),
+            all(feature = "depend", feature = "mem", feature = "task"),
             all(feature = "bytemuck", feature = "atomic"),
         )))
     )]
     #[cfg(all(
-        any(feature = "atomic", all(feature = "sync", feature = "depend")),
+        any(feature = "atomic", all(feature = "task", feature = "depend")),
         any(feature = "bytemuck", all(feature = "mem", feature = "depend")),
     ))]
     pub fn save_state() -> Result<(), isize> {
@@ -111,12 +111,12 @@ impl LinuxTerminal {
     #[cfg_attr(
         feature = "nightly",
         doc(cfg(any(
-            all(feature = "depend", feature = "mem", feature = "sync"),
+            all(feature = "depend", feature = "mem", feature = "task"),
             all(feature = "bytemuck", feature = "atomic"),
         )))
     )]
     #[cfg(all(
-        any(feature = "atomic", all(feature = "sync", feature = "depend")),
+        any(feature = "atomic", all(feature = "task", feature = "depend")),
         any(feature = "bytemuck", all(feature = "mem", feature = "depend")),
     ))]
     pub fn restore_saved_state() -> Result<(), isize> {

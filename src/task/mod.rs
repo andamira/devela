@@ -1,32 +1,29 @@
 // devela::task
 //
-//! Asynchronous tasks, extends `std::`[`task`][std::task].
+//! Tasking, extends
+//! `std::{`[`future`][std::future],
+//! [`sync`][std::sync],
+//! [`task`][std::task],
+//! [`thread`][std::thread]`}`.
 //
 
 /* always compiled for internal use */
 
 /* only compiled with the `task` feature */
 
-#[cfg(all(feature = "task", feature = "unsafe_task", feature = "alloc"))]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "unsafe_task", feature = "alloc")))
-)]
-pub mod coroutine;
+#[cfg(feature = "task")]
+pub mod r#async;
+#[cfg(feature = "task")]
+pub mod sync;
+#[cfg(feature = "task")]
+pub mod thread;
+#[doc(no_inline)]
+#[cfg(feature = "task")]
+pub use {r#async::all::*, sync::all::*, thread::all::*};
 
 /* re-exports */
 
 #[cfg(feature = "task")]
-mod reexports;
-
-#[cfg(feature = "task")]
-pub use all::*;
-#[cfg(feature = "task")]
 pub(crate) mod all {
-    #[doc(inline)]
-    pub use super::reexports::*;
-
-    #[doc(inline)]
-    #[cfg(all(feature = "unsafe_task", feature = "alloc"))]
-    pub use super::coroutine::*;
+    pub use super::{r#async::all::*, sync::all::*, thread::all::*};
 }

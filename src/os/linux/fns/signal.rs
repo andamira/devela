@@ -6,10 +6,10 @@
 use super::super::{linux_sys_rt_sigaction, LinuxSigaction, LinuxSigset, LINUX_SIGACTION as SA};
 use core::{mem::transmute, ptr::null_mut};
 
-#[cfg(feature = "sync")]
-use crate::sync::{AtomicOrdering, AtomicPtr};
-#[cfg(not(feature = "sync"))]
-use core::sync::atomic::{AtomicPtr, Ordering as AtomicOrdering};
+#[cfg(feature = "task")]
+use crate::task::{AtomicOrdering, AtomicPtr};
+#[cfg(not(feature = "task"))]
+use core::task::atomic::{AtomicPtr, Ordering as AtomicOrdering};
 
 /// Registers multiple signals using a handler function that never returns.
 ///

@@ -51,7 +51,6 @@ Single modules:
   and the [`devela_macros`] optional dependency.
 - `convert`, `convert_unsafe`: enables the [`convert`] module,
   and the [`az`] optional dependency.
-- `future`, `future_unsafe`: enables the [`future`] module.
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
 - `num`, `num_unsafe`: enables the [`num`] module.
@@ -59,14 +58,9 @@ Single modules:
 - `result`, `result_unsafe`: enables the [`result`] module.
 - `text`, `text_unsafe`: enables the [`text`] module.
   and the [`const-str`] and [`unicode-segmentation`] optional dependencies.
-- `sync`, `sync_unsafe`: enables the [`sync`] module,
   and the [`atomic`] and [`portable_atomic`] optional dependencies.
 - `task`, `task_unsafe`: enables the [`task`] module.
-- `thread`, `thread_unsafe`: enables the [`thread`] module.
 - `time`, `time_unsafe`: enables the [`time`] module.
-
-Module groups:
-- `async`, `async_unsafe`: enables [`future`] and [`task`] modules.
 
 
 ### Safety features
@@ -83,7 +77,6 @@ They offer a gradient of safety.
   - `unsafe_codegen`: *(unused)*.
   - `unsafe_convert`: enables using [`MaybeUninit`] for [`slice_into_array`]
       initialization in [`convert`].
-  - `unsafe_future`: *(unused)*.
   - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and
     [`mem_as_bytes_sized`] in [`mem`].
   - `unsafe_num`: enables `new_unchecked` constructors and implements `bytemuck` traits.
@@ -94,10 +87,8 @@ They offer a gradient of safety.
   - `unsafe_path`: *(unused)*.
   - `unsafe_result`: *(unused)*.
   - `unsafe_text`: enables unsafe use in [`text`].
-  - `unsafe_sync`: *(unused)*.
   - `unsafe_task`: provides a minimal implementation of stackless
-    [coroutines][task::coroutine].
-  - `unsafe_thread`: *(unused)*.
+    [coroutines][task::async::coroutine].
   - `unsafe_time`: *(unused)*.
 - `safe`: forbids unsafe at the crate level.
 - `safest`: forbids unsafe recursively (unused).
@@ -116,12 +107,12 @@ They are currently only used for generating improved documentation.
 - `depend`: allows modules to automatically enable their defined dependencies.
 
 Dependencies can also be enabled individually:
-- `atomic` is used in `sync`.
+- `atomic` is used in `task`.
 - `az` is used in `convert`.
 - `bytemuck` is used in `mem`, `linux`, `num`.
 - `devela_macros` is used in `codegen`.
 - `const-str` is used in `text`, `result`, `os`, `linux`.
-- `portable-atomic` is used in `sync`.
+- `portable-atomic` is used in `task`.
 - `unicode-segmentation` is used in `text`.
 
 [`IntBuf`]: text::IntBuf

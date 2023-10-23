@@ -11,9 +11,9 @@
 //! Enabling the `depend` feature will automatically enable
 //! the optional dependencies associated to any enabled root modules.
 //!
-//! For example, enabling `depend` and [`sync`], will automatically enable
+//! For example, enabling `depend` and [`task`], will automatically enable
 //! the `atomic` and `portable-atomic` dependencies; while by leaving `depend`
-//! disabled, you could enable just the `sync` and `atomic` dependencies.
+//! disabled, you could enable just the `task` and `atomic` dependencies.
 //!
 //! In any case, manually enabled optional dependency will remain enabled.
 //!
@@ -68,7 +68,7 @@ mod depend {
 mod depend {
     use crate::codegen::reexport;
 
-    reexport! { depend feature: "sync",
+    reexport! { depend feature: "task",
     dep: "atomic", atomic, "A generic atomic wrapper type." }
 
     reexport! { depend feature: "convert",
@@ -87,7 +87,7 @@ mod depend {
     dep: "hashbrown", hashbrown,
     "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`." }
 
-    reexport! { depend feature: "sync",
+    reexport! { depend feature: "task",
     dep: "portable-atomic", portable_atomic,
     "Portable atomic types including 128-bit atomics, floats, etc." }
 

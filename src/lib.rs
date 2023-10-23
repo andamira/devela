@@ -38,13 +38,13 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         feature = "unsafe", // includes all below
         feature = "unsafe_any", feature = "unsafe_cmp", feature = "unsafe_codegen",
         feature = "unsafe_data", feature = "unsafe_convert",
-        feature = "unsafe_future", feature = "unsafe_mem", feature = "unsafe_num",
+        feature = "unsafe_mem", feature = "unsafe_num",
         //
         feature = "unsafe_os", // includes: unsafe_{linux, term}
             feature = "unsafe_linux", feature = "unsafe_term",
         //
-        feature = "unsafe_path", feature = "unsafe_result", feature = "unsafe_sync",
-        feature = "unsafe_task", feature = "unsafe_text", feature = "unsafe_thread",
+        feature = "unsafe_path", feature = "unsafe_result",
+        feature = "unsafe_task", feature = "unsafe_text",
         feature = "unsafe_time",
     )
 ))]
@@ -82,12 +82,6 @@ pub mod convert;
 #[cfg(all(not(feature = "convert"), not(test)))]
 pub(crate) mod convert; // the "convert" feature is disabled
 
-#[cfg(any(feature = "future", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "future")))]
-pub mod future;
-#[cfg(all(not(feature = "future"), not(test)))]
-pub(crate) mod future; // the "future" feature is disabled
-
 #[cfg(any(feature = "mem", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub mod mem;
@@ -114,12 +108,6 @@ pub mod result;
 #[cfg(all(not(feature = "result"), not(test)))]
 pub(crate) mod result; // the "result" feature is disabled
 
-#[cfg(any(feature = "sync", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
-pub mod sync;
-#[cfg(all(not(feature = "sync"), not(test)))]
-pub(crate) mod sync; // the "sync" feature is disabled
-
 #[cfg(any(feature = "task", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "task")))]
 pub mod task;
@@ -131,12 +119,6 @@ pub(crate) mod task; // the "task" feature is disabled
 pub mod text;
 #[cfg(all(not(feature = "text"), not(test)))]
 pub(crate) mod text; // the "text" feature is disabled
-
-#[cfg(any(feature = "thread", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "thread")))]
-pub mod thread;
-// #[cfg(all(not(feature = "thread"), not(test)))]
-// pub(crate) mod thread; // the "thread" feature is disabled
 
 #[cfg(any(feature = "time", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "time")))]
@@ -170,10 +152,6 @@ pub mod all {
     pub use super::convert::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "future")]
-    pub use super::future::all::*;
-
-    #[doc(inline)]
     #[cfg(feature = "mem")]
     pub use super::mem::all::*;
 
@@ -194,21 +172,12 @@ pub mod all {
     pub use super::result::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "sync")]
-    pub use super::sync::all::*;
-
-    #[doc(inline)]
     #[cfg(feature = "task")]
     pub use super::task::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "text")]
     pub use super::text::all::*;
-
-    #[allow(unused)] // only contains "std" for now
-    #[doc(inline)]
-    #[cfg(feature = "thread")]
-    pub use super::thread::*;
 
     #[doc(inline)]
     #[cfg(feature = "time")]
