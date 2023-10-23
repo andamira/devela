@@ -6,15 +6,13 @@
 // - definitions
 // - trait impls
 
-use super::{macros::impl_sized_alias, ArrayStringError, Result};
+use super::{helpers::impl_sized_alias, ArrayStringError, Result};
 use core::fmt;
 
 #[cfg(feature = "alloc")]
 use _alloc::{ffi::CString, str::Chars, string::ToString};
 
-#[cfg(feature = "char")]
-use crate::char::*;
-use crate::char::{char_to_utf8_bytes, char_utf8_4bytes_len};
+use super::char::*;
 
 /* definitions */
 
@@ -59,8 +57,6 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     /// Will never panic if `CAP` >= 1.
     #[inline]
     #[must_use]
-    #[cfg(feature = "char")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char7(c: Char7) -> Self {
         let mut new = Self::new();
         if !c.is_nul() {
@@ -79,8 +75,6 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     /// Will never panic if `CAP` >= 2.
     #[inline]
     #[must_use]
-    #[cfg(feature = "char")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char8(c: Char8) -> Self {
         let mut new = Self::new();
         if !c.is_nul() {
@@ -105,8 +99,6 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     /// Will never panic if `CAP` >= 3.
     #[inline]
     #[must_use]
-    #[cfg(feature = "char")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char16(c: Char16) -> Self {
         let mut new = Self::new();
         if !c.is_nul() {
@@ -134,8 +126,6 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     /// Will never panic if `CAP` >= 4.
     #[inline]
     #[must_use]
-    #[cfg(feature = "char")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char24(c: Char24) -> Self {
         let mut new = Self::new();
         if !c.is_nul() {
@@ -166,8 +156,6 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     /// Will never panic if `CAP` is >= 4.
     #[inline]
     #[must_use]
-    #[cfg(feature = "char")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char32(c: Char32) -> Self {
         Self::from_char(c.0)
     }

@@ -36,7 +36,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(
         feature = "unsafe", // includes all below
-        feature = "unsafe_any", feature = "unsafe_ascii", feature = "unsafe_char",
+        feature = "unsafe_any", feature = "unsafe_ascii",
         feature = "unsafe_cmp", feature = "unsafe_codegen", feature = "unsafe_collections",
         feature = "unsafe_convert", feature = "unsafe_fmt", feature = "unsafe_future",
         feature = "unsafe_mem", feature = "unsafe_num", feature = "unsafe_ops",
@@ -65,12 +65,6 @@ pub(crate) mod any; // the "any" feature is disabled
 pub mod ascii;
 #[cfg(all(not(feature = "ascii"), not(test)))]
 pub(crate) mod ascii; // the "ascii" feature is disabled
-
-#[cfg(any(feature = "char", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
-pub mod char;
-#[cfg(all(not(feature = "char"), not(test)))]
-pub(crate) mod char; // the "char" feature is disabled
 
 #[cfg(any(feature = "cmp", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "cmp")))]
@@ -194,10 +188,6 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "ascii")]
     pub use super::ascii::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "char")]
-    pub use super::char::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "cmp")]

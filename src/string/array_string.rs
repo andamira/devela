@@ -8,15 +8,13 @@
 //   - trait impls
 // - tests
 
-use super::{macros::impl_sized_alias, ArrayStringError, Result};
+use super::{helpers::impl_sized_alias, ArrayStringError, Result};
 use core::{fmt, ops::Deref};
 
 #[cfg(feature = "alloc")]
 use _alloc::{ffi::CString, str::Chars, string::ToString};
 
-#[cfg(feature = "char")]
-use crate::char::*;
-use crate::char::{char_to_utf8_bytes, char_utf8_4bytes_len};
+use super::char::*;
 
 macro_rules! generate_array_string {
     ($($t:ty),+ $(,)?) => {
@@ -59,8 +57,6 @@ macro_rules! generate_array_string {
             #[doc = "Will never panic if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
             #[must_use]
-            #[cfg(feature = "char")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char7(c: Char7) -> Self {
                 let mut new = Self::new();
                 new.arr[0] = c.to_utf8_bytes()[0];
@@ -77,8 +73,6 @@ macro_rules! generate_array_string {
             #[doc = "Will never panic if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
             #[must_use]
-            #[cfg(feature = "char")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char8(c: Char8) -> Self {
                 let mut new = Self::new();
 
@@ -101,8 +95,6 @@ macro_rules! generate_array_string {
             #[doc = "Will never panic if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
             #[must_use]
-            #[cfg(feature = "char")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char16(c: Char16) -> Self {
                 let mut new = Self::new();
 
@@ -128,8 +120,6 @@ macro_rules! generate_array_string {
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
             #[must_use]
-            #[cfg(feature = "char")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char24(c: Char24) -> Self {
                 let mut new = Self::new();
 
@@ -158,8 +148,6 @@ macro_rules! generate_array_string {
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
             #[must_use]
-            #[cfg(feature = "char")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
             pub const fn from_char32(c: Char32) -> Self {
                 Self::from_char(c.0)
             }

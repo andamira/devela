@@ -1,4 +1,4 @@
-// devela::char
+// devela::string::char::definitions
 //
 //! unicode scalar definitions
 //

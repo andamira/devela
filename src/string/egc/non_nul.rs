@@ -8,9 +8,10 @@
 // - conversions
 
 use super::Egc;
-#[cfg(feature = "char")]
-use crate::char::*;
-use crate::string::{macros::impl_sized_alias, ArrayU8NonNulString};
+use crate::string::{
+    char::*,
+    {helpers::impl_sized_alias, ArrayU8NonNulString},
+};
 #[cfg(feature = "alloc")]
 use _alloc::{ffi::CString, str::Chars};
 // use unicode_segmentation::UnicodeSegmentation;
@@ -53,8 +54,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Will never panic if `CAP` >= 1.
     #[inline]
     #[must_use]
-    #[cfg(feature = "char")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char7(c: Char7) -> Self {
         Self(ArrayU8NonNulString::from_char7(c))
     }
@@ -69,8 +68,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Will never panic if `CAP` >= 2.
     #[inline]
     #[must_use]
-    #[cfg(feature = "char")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char8(c: Char8) -> Self {
         Self(ArrayU8NonNulString::from_char8(c))
     }
@@ -85,8 +82,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Will never panic if `CAP` >= 3
     #[inline]
     #[must_use]
-    #[cfg(feature = "char")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char16(c: Char16) -> Self {
         Self(ArrayU8NonNulString::from_char16(c))
     }
@@ -101,8 +96,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Will never panic if `CAP` >= 4.
     #[inline]
     #[must_use]
-    #[cfg(feature = "char")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char24(c: Char24) -> Self {
         Self(ArrayU8NonNulString::from_char24(c))
     }
@@ -117,8 +110,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Will never panic if `CAP` >= 4.
     #[inline]
     #[must_use]
-    #[cfg(feature = "char")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "char")))]
     pub const fn from_char32(c: Char32) -> Self {
         Self(ArrayU8NonNulString::from_char32(c))
     }

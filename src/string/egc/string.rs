@@ -4,13 +4,10 @@
 //
 
 use super::Egc;
-#[cfg(all(
-    feature = "char",
-    any(feature = "depend", feature = "unicode-segmentation")
-))]
-use crate::char::*;
 #[cfg(any(feature = "depend", feature = "unicode-segmentation"))]
 use crate::depend::unicode_segmentation::UnicodeSegmentation;
+#[cfg(any(feature = "depend", feature = "unicode-segmentation"))]
+use crate::string::char::*;
 #[allow(unused_imports)]
 use _alloc::{
     str::{self, Chars as CharIterator},
@@ -34,16 +31,10 @@ impl StringEgc {
     /// Creates a new `StringEgc` from a `Char7`.
     #[inline]
     #[must_use]
-    #[cfg(all(
-        feature = "char",
-        any(feature = "depend", feature = "unicode-segmentation")
-    ))]
+    #[cfg(any(feature = "depend", feature = "unicode-segmentation"))]
     #[cfg_attr(
         feature = "nightly",
-        doc(cfg(all(
-            feature = "char",
-            any(feature = "depend", feature = "unicode-segmentation")
-        )))
+        doc(cfg(any(feature = "depend", feature = "unicode-segmentation")))
     )]
     pub fn from_char7(c: Char7) -> StringEgc {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
@@ -52,16 +43,10 @@ impl StringEgc {
     /// Creates a new `StringEgc` from a `Char8`.
     #[inline]
     #[must_use]
-    #[cfg(all(
-        feature = "char",
-        any(feature = "depend", feature = "unicode-segmentation")
-    ))]
+    #[cfg(any(feature = "depend", feature = "unicode-segmentation"))]
     #[cfg_attr(
         feature = "nightly",
-        doc(cfg(all(
-            feature = "char",
-            any(feature = "depend", feature = "unicode-segmentation")
-        )))
+        doc(cfg(any(feature = "depend", feature = "unicode-segmentation")))
     )]
     pub fn from_char8(c: Char8) -> StringEgc {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
@@ -70,16 +55,10 @@ impl StringEgc {
     /// Creates a new `StringEgc` from a `Char16`.
     #[inline]
     #[must_use]
-    #[cfg(all(
-        feature = "char",
-        any(feature = "depend", feature = "unicode-segmentation")
-    ))]
+    #[cfg(any(feature = "depend", feature = "unicode-segmentation"))]
     #[cfg_attr(
         feature = "nightly",
-        doc(cfg(all(
-            feature = "char",
-            any(feature = "depend", feature = "unicode-segmentation")
-        )))
+        doc(cfg(any(feature = "depend", feature = "unicode-segmentation")))
     )]
     pub fn from_char16(c: Char16) -> StringEgc {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
@@ -88,16 +67,10 @@ impl StringEgc {
     /// Creates a new `StringEgc` from a `Char24`.
     #[inline]
     #[must_use]
-    #[cfg(all(
-        feature = "char",
-        any(feature = "depend", feature = "unicode-segmentation")
-    ))]
+    #[cfg(any(feature = "depend", feature = "unicode-segmentation"))]
     #[cfg_attr(
         feature = "nightly",
-        doc(cfg(all(
-            feature = "char",
-            any(feature = "depend", feature = "unicode-segmentation")
-        )))
+        doc(cfg(any(feature = "depend", feature = "unicode-segmentation")))
     )]
     pub fn from_char24(c: Char24) -> StringEgc {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
@@ -106,16 +79,10 @@ impl StringEgc {
     /// Creates a new `StringEgc` from a `Char32`.
     #[inline]
     #[must_use]
-    #[cfg(all(
-        feature = "char",
-        any(feature = "depend", feature = "unicode-segmentation")
-    ))]
+    #[cfg(any(feature = "depend", feature = "unicode-segmentation"))]
     #[cfg_attr(
         feature = "nightly",
-        doc(cfg(all(
-            feature = "char",
-            any(feature = "depend", feature = "unicode-segmentation")
-        )))
+        doc(cfg(all(any(feature = "depend", feature = "unicode-segmentation"))))
     )]
     pub fn from_char32(c: Char32) -> StringEgc {
         #[cfg(not(feature = "unsafe_string"))]

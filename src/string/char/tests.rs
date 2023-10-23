@@ -1,4 +1,4 @@
-// devela::char::tests
+// devela::string::char::tests
 
 use super::*;
 use core::mem::size_of_val as size;

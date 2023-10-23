@@ -1,4 +1,4 @@
-// devela::char::always_fns
+// devela::string::char::always_fns
 //
 //! `char` standalone functions.
 //!

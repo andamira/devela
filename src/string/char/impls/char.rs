@@ -1,4 +1,4 @@
-// devela::ascii::char::char
+// devela::string::char::impls::char
 //
 // `char` can only implement the trait, not the associated const methods,
 // (and that's the main reason we have the Char32 wrapper type).

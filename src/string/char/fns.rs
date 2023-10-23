@@ -1,4 +1,4 @@
-// devela::char::fns
+// devela::string::char::fns
 
 /// Returns `true` if the given unicode scalar `code` is a 7bit ASCII code.
 #[inline]

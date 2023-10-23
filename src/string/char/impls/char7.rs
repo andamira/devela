@@ -1,4 +1,4 @@
-// devela::ascii::char::char7
+// devela::string::char::impls::char7
 
 use super::*;
 #[cfg(feature = "ascii")]
