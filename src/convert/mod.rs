@@ -1,6 +1,6 @@
 // devela::convert
 //
-//! Conversion, extends [`std::convert`].
+//! Conversion, extends `std::`[`convert`][std::convert].
 //
 
 /* always compiled for internal use */

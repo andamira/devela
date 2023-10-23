@@ -1,6 +1,6 @@
 // devela::path
 //
-//! Paths, extends [`std::path`].
+//! Paths, extends `std::`[`path`][std::path].
 //
 
 /* always compiled for internal use */

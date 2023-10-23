@@ -1,6 +1,6 @@
 // devela::any
 //
-//! Dynamic typing and reflection, extends [`std::any`].
+//! Dynamic typing and reflection, extends `std::`[`any`][std::any].
 //
 
 /* always compiled for internal use */

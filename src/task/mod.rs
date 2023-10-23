@@ -1,6 +1,6 @@
 // devela::task
 //
-//! Asynchronous tasks, extends [`std::task`].
+//! Asynchronous tasks, extends `std::`[`task`][std::task].
 //
 
 /* always compiled for internal use */

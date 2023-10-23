@@ -1,6 +1,6 @@
 // devela::thread
 //
-//! Native threads, extends [`std::thread`].
+//! Native threads, extends `std::`[`thread`][std::thread].
 //
 
 /* always compiled for internal use */

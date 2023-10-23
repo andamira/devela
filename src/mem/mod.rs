@@ -1,6 +1,6 @@
 // devela::mem
 //
-//! Memory, extends [`std::mem`].
+//! Memory, extends `std::`[`mem`][std::mem].
 //
 
 /* always compiled for internal use */

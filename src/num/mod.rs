@@ -1,6 +1,6 @@
 // devela::num
 //
-//! Numeric types, extends [`std::num`].
+//! Numeric types, extends `std::`[`num`][std::num].
 //
 
 /* always compiled for internal use */

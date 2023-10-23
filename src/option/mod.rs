@@ -1,6 +1,6 @@
 // devela::option
 //
-//! Option, extends [`std::option`].
+//! Option, extends `std::`[`option`][std::option].
 //
 
 /* always compiled for internal use */

@@ -1,6 +1,6 @@
 // devela::time
 //
-//! timeeric types, extends [`std::time`].
+//! Temporal quantification, extends [`std::time`].
 //
 
 /* always compiled for internal use */

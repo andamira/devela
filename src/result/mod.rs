@@ -1,6 +1,6 @@
 // devela::result
 //
-//! Result, extends [`std::result`].
+//! Result, extends `std::`[`result`][std::result].
 //
 
 /* always compiled for internal use */
