@@ -32,9 +32,9 @@
 #[macro_export]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "depend", feature = "str")))
+    doc(cfg(all(feature = "depend", feature = "string")))
 )]
-#[cfg(any(all(feature = "depend", feature = "str"), feature = "const-str"))]
+#[cfg(any(all(feature = "depend", feature = "string"), feature = "const-str"))]
 macro_rules! ansib {
     ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::codegen::paste! {
         $crate::depend::const_str::concat_bytes!(
@@ -43,7 +43,7 @@ macro_rules! ansib {
     }};
 }
 #[doc(inline)]
-#[cfg(any(all(feature = "depend", feature = "str"), feature = "const-str"))]
+#[cfg(any(all(feature = "depend", feature = "string"), feature = "const-str"))]
 pub use ansib;
 
 /// Concatenates [`Ansi` escape codes][0], and returns a [`&str`].
@@ -79,9 +79,9 @@ pub use ansib;
 #[macro_export]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "depend", feature = "str")))
+    doc(cfg(all(feature = "depend", feature = "string")))
 )]
-#[cfg(any(all(feature = "depend", feature = "str"), feature = "const-str"))]
+#[cfg(any(all(feature = "depend", feature = "string"), feature = "const-str"))]
 macro_rules! ansi {
     ($($arg:tt)*) => {
         if cfg!(feature = "unsafe_str") {
@@ -99,7 +99,7 @@ macro_rules! ansi {
     };
 }
 #[doc(inline)]
-#[cfg(any(all(feature = "depend", feature = "str"), feature = "const-str"))]
+#[cfg(any(all(feature = "depend", feature = "string"), feature = "const-str"))]
 pub use ansi;
 
 /// Prints concatenated [`Ansi` escape codes][0]
@@ -125,13 +125,13 @@ pub use ansi;
     feature = "nightly",
     doc(cfg(all(
         feature = "depend",
-        feature = "str",
+        feature = "string",
         any(feature = "std", feature = "linux_unsafe"),
     )))
 )]
 #[cfg(all(
     not(miri),
-    any(feature = "const-str", all(feature = "depend", feature = "str"),),
+    any(feature = "const-str", all(feature = "depend", feature = "string"),),
     any(
         feature = "std",
         all(
@@ -157,7 +157,7 @@ macro_rules! ansip {
 
 #[cfg(all(
     not(miri),
-    any(feature = "const-str", all(feature = "depend", feature = "str"),),
+    any(feature = "const-str", all(feature = "depend", feature = "string"),),
     any(
         feature = "std",
         all(

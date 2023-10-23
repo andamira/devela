@@ -1,4 +1,4 @@
-// devela::string::ext
+// devela::string::ext::string
 //
 //!
 //
@@ -10,7 +10,8 @@ use _alloc::string::String;
 use {crate::ascii::AsciiChar, _alloc::string::ToString};
 
 // Marker trait to prevent downstream implementations of the `StringExt` trait.
-impl private::Sealed for str {}
+#[cfg(feature = "alloc")]
+impl private::Sealed for String {}
 mod private {
     pub trait Sealed {}
 }
@@ -18,7 +19,7 @@ mod private {
 /// Extension trait providing additional methods for owned strings.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub trait StringExt {
+pub trait StringExt: private::Sealed {
     /// Returns a [`String`] where you always know each character's position.
     ///
     /// A [*counter string*][0] is a graduated string of arbitrary `length`,

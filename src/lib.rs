@@ -46,7 +46,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
             feature = "unsafe_linux", feature = "unsafe_term",
         //
         feature = "unsafe_path", feature = "unsafe_result", feature = "unsafe_slice",
-        feature = "unsafe_str", feature = "unsafe_string", feature = "unsafe_sync",
+        feature = "unsafe_string", feature = "unsafe_sync",
         feature = "unsafe_task", feature = "unsafe_thread", feature = "unsafe_time",
     )
 ))]
@@ -152,12 +152,6 @@ pub mod slice;
 #[cfg(all(not(feature = "slice"), not(test)))]
 pub(crate) mod slice; // the "slice" feature is disabled
 
-#[cfg(any(feature = "str", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "str")))]
-pub mod str;
-#[cfg(all(not(feature = "str"), not(test)))]
-pub(crate) mod str; // the "str" feature is disabled
-
 #[cfg(any(feature = "string", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "string")))]
 pub mod string;
@@ -262,10 +256,6 @@ pub mod all {
     pub use super::slice::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "str")]
-    pub use super::str::all::*;
-
-    #[doc(inline)]
     #[cfg(feature = "string")]
     pub use super::string::all::*;
 
@@ -314,10 +304,6 @@ pub mod prelude {
     pub use crate::slice::all::{SliceExt, SliceExtMut};
 
     #[doc(inline)]
-    #[cfg(feature = "str")]
-    pub use crate::str::all::StrExt;
-
-    #[doc(inline)]
     #[cfg(feature = "option")]
     pub use crate::option::OptionExt;
 
@@ -327,7 +313,7 @@ pub mod prelude {
 
     #[doc(inline)]
     #[cfg(all(feature = "string", feature = "alloc"))]
-    pub use crate::string::StringExt;
+    pub use crate::string::{StrExt, StringExt};
 }
 
 /// Optional external dependencies.

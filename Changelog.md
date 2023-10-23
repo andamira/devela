@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new trait `Collection`.
 - new type `Array`.
 
+### Removed
+- remove `str` module.
+- remove features: `str`, `str_unsafe`, `unsafe_str`, `text`, `texts_unsafe`.
+
 ### Changed
 - rename `HashMap`, `HashSet` as `UnorderedMap`, `UnorderedSet`.
 - rename `BTreeMap`, `BTreeSet` as `OrderedMap`, `OrderedSet`.

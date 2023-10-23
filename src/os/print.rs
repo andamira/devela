@@ -9,7 +9,7 @@
 
 #[cfg(all(
     feature = "std",
-    any(feature = "const-str", all(feature = "depend", feature = "str")),
+    any(feature = "const-str", all(feature = "depend", feature = "string")),
 ))]
 macro_rules! generate_os_print_std_macros {
     () => {
@@ -62,7 +62,7 @@ macro_rules! generate_os_print_std_macros {
             #[doc = $doc]
             #[doc = "\n\nLeverages [`" [<linux_ $name>] "`][super::linux::" [<linux_ $name>] "]"]
             #[doc = ", [`format_buf`][crate::fmt::format_buf]"]
-            #[doc = "and [`str_concat`][crate::str::str_concat]."]
+            #[doc = "and [`str_concat`][crate::string::str_concat]."]
             ///
             #[doc = "Usage is similar but not equal to `std::`[`" $name "!`]."]
             ///
@@ -103,11 +103,11 @@ macro_rules! generate_os_print_std_macros {
                 doc(cfg(all(
                     any(feature = "std", feature = "linux_unsafe"),
                     feature = "depend",
-                    feature = "str",
+                    feature = "string",
             ))))]
             #[cfg(all(
                     feature = "std",
-                    any(feature = "const-str", all(feature = "depend", feature = "str"))
+                    any(feature = "const-str", all(feature = "depend", feature = "string"))
             ))]
             macro_rules! [<os_ $name>] {
                 // 1) print a newline (or nothing)
@@ -163,7 +163,7 @@ macro_rules! generate_os_print_std_macros {
 }
 #[cfg(all(
     feature = "std",
-    any(feature = "const-str", all(feature = "depend", feature = "str")),
+    any(feature = "const-str", all(feature = "depend", feature = "string")),
 ))]
 generate_os_print_std_macros![];
 
@@ -233,7 +233,7 @@ macro_rules! generate_os_print_linux_macros {
             #[doc = $doc]
             #[doc = "\n\nLeverages [`" [<linux_ $name>] "`][super::linux::" [<linux_ $name>] "]"]
             #[doc = ", [`format_buf`][crate::fmt::format_buf]"]
-            #[doc = "and [`str_concat`][crate::str::str_concat]."]
+            #[doc = "and [`str_concat`][crate::string::str_concat]."]
             ///
             #[doc = "Usage is similar but not equal to `std::`[`" $name "!`]."]
             ///
@@ -273,7 +273,7 @@ macro_rules! generate_os_print_linux_macros {
                 not(miri),
                 feature = "linux",
                 feature = "unsafe_linux",
-                any(feature = "const-str", all(feature = "depend", feature = "str")),
+                any(feature = "const-str", all(feature = "depend", feature = "string")),
                 any(
                     target_arch = "x86_64", target_arch = "x86", target_arch = "arm",
                     target_arch = "aarch64", target_arch = "riscv32", target_arch = "riscv64",
@@ -355,6 +355,6 @@ macro_rules! generate_os_print_linux_macros {
         target_arch = "riscv32",
         target_arch = "riscv64"
     ),
-    any(feature = "const-str", all(feature = "depend", feature = "str")),
+    any(feature = "const-str", all(feature = "depend", feature = "string")),
 ))]
 generate_os_print_linux_macros![];

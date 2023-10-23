@@ -23,8 +23,8 @@
 //!
 //! For example, enabling `depend` and [`option`][crate::option] will not enable
 //! the [`option_unwrap`][crate::option::option_unwrap] function unless the
-//! [`str`][mod@str] module is also enabled; or if the `const-str` dependency
-//! is enabled independently of the `str` module.
+//! [`string`] module is also enabled; or if the `const-str` dependency
+//! is enabled independently of the `string` module.
 //
 
 pub use depend::*;
@@ -77,7 +77,7 @@ mod depend {
     reexport! { depend feature: "mem",
     dep: "bytemuck", bytemuck, "Small utilities for casting between plain data types." }
 
-    reexport! { depend feature: "str",
+    reexport! { depend feature: "string",
     dep: "const-str", const_str, "Compile-time string operations." }
 
     reexport! { depend feature: "codegen",

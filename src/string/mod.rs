@@ -1,6 +1,7 @@
 // devela::string
 //
-//! Owned strings, extends [`std::string`].
+//! Strings, extends [`std::string`] /
+//! [`str`][std::str].
 //
 
 /* always compiled for internal use */
@@ -24,9 +25,14 @@ mod non_nul;
 /* re-exports */
 
 #[cfg(feature = "string")]
+mod reexports;
+
+#[cfg(feature = "string")]
 pub use all::*;
 #[cfg(feature = "string")]
 pub(crate) mod all {
-    #[doc(inline)]
+    // #[doc(inline)]
     pub use super::{array_string::*, egc::all::*, error::*, ext::*, non_nul::*};
+
+    pub use super::reexports::*;
 }

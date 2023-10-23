@@ -1,7 +1,8 @@
 // devela::collections
 //
-//! Collections, extends [`std::collections`]`/`
-//! [`array`][mod@std::array]`/`[`vec`][mod@std::vec].
+//! Collections, extends [`std::collections`] /
+//! [`array`][mod@std::array] /
+//! [`vec`][mod@std::vec].
 //
 
 /* always compiled for internal use */

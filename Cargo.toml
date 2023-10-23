@@ -67,7 +67,7 @@ term_unsafe = ["term", "unsafe_term"]
 
 full = [ # enables all the modules
 	"any", "ascii", "char", "cmp", "codegen", "collections", "convert", "fmt",
-	"future", "mem", "num", "ops", "option", "path", "result", "slice", "str",
+	"future", "mem", "num", "ops", "option", "path", "result", "slice",
 	"string", "sync", "task", "thread", "time",
 	# os platform sub-modules:
 	"linux", "term",
@@ -75,10 +75,6 @@ full = [ # enables all the modules
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
 
-# grouped modules for convenience:
-texts = [ # enables all *text* related sub-modules
-	"ascii", "char", "fmt", "str", "string" ]
-	texts_unsafe = ["ascii_unsafe", "char_unsafe", "fmt_unsafe", "str_unsafe", "string_unsafe"]
 async = ["future", "task"]
 	async_unsafe = ["future_unsafe", "task_unsafe"]
 
@@ -100,8 +96,7 @@ option = []
 path = []
 result = []
 slice = []
-str = ["depend?/const-str"]
-string = ["depend?/unicode-segmentation"]
+string = ["depend?/const-str", "depend?/unicode-segmentation"]
 sync = ["depend?/atomic", "depend?/portable-atomic", "bytemuck?/zeroable_atomics"]
 task = []
 thread = []
@@ -124,7 +119,6 @@ option_unsafe = ["option", "unsafe_option"]
 path_unsafe = ["path", "unsafe_path"]
 result_unsafe = ["result", "unsafe_result"]
 slice_unsafe = ["slice", "unsafe_slice"]
-str_unsafe = ["str", "unsafe_str"]
 string_unsafe = ["string", "unsafe_string"]
 sync_unsafe = ["sync", "unsafe_sync"]
 task_unsafe = ["task", "unsafe_task"]
@@ -138,7 +132,7 @@ unsafe = [ # enables unsafe features in this crate (23)
 	"unsafe_any", "unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_codegen",
 	"unsafe_convert", "unsafe_collections", "unsafe_fmt", "unsafe_future",
 	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_option", "unsafe_os",
-	"unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_str", "unsafe_string",
+	"unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_string",
 	"unsafe_sync", "unsafe_task", "unsafe_thread", "unsafe_time",
 	]
 	unsafe_any = [] # (unused)
@@ -162,7 +156,6 @@ unsafe = [ # enables unsafe features in this crate (23)
 	unsafe_path = [] # (unused)
 	unsafe_result = [] # (unused)
 	unsafe_slice = [] # (unused)
-	unsafe_str = [] # enables unsafe use in `str`
 	unsafe_string = [] # enables unsafe use in `string`
 	unsafe_sync = [] # (unused)
 	unsafe_task = [] # enables a coroutines implementation.

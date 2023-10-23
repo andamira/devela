@@ -1,11 +1,11 @@
-// devela::str::ext
+// devela::string::ext::str
 //
 //!
 //
 
-#[cfg(not(feature = "unsafe_str"))]
+#[cfg(not(feature = "unsafe_string"))]
 use core::str::from_utf8;
-#[cfg(feature = "unsafe_str")]
+#[cfg(feature = "unsafe_string")]
 use core::str::from_utf8_unchecked;
 
 #[cfg(all(feature = "ascii", feature = "fmt", feature = "unsafe_fmt"))]
@@ -22,13 +22,13 @@ mod private {
 }
 
 /// Extension trait providing additional methods for [`&str`].
-pub trait StrExt {
+pub trait StrExt: private::Sealed {
     /// Repeats a string a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.
     ///
     /// # Examples
     /// ```
-    /// use devela::str::StrExt;
+    /// use devela::string::StrExt;
     ///
     /// let mut buf = [0_u8; 12];
     /// let repeated = "ay".repeat_into(3, &mut buf);
@@ -36,7 +36,7 @@ pub trait StrExt {
     /// ```
     ///
     /// # Features
-    /// Makes use of the `unsafe_str` feature if enabled.
+    /// Makes use of the `unsafe_string` feature if enabled.
     #[must_use]
     fn repeat_into<'input, const CAP: usize>(
         &self,
@@ -52,7 +52,7 @@ pub trait StrExt {
     ///
     /// # Examples
     /// ```
-    /// use devela::{ascii::AsciiChar, str::StrExt};
+    /// use devela::{ascii::AsciiChar, string::StrExt};
     ///
     /// let mut buf = [0; 15];
     /// assert_eq!("2*4*6*8*11*14*", str::new_counter(&mut buf, 14, AsciiChar::Asterisk));
@@ -62,7 +62,7 @@ pub trait StrExt {
     /// Panics if `buffer.len() < length`
     ///
     /// # Features
-    /// Makes use of the `unsafe_str` and `unsafe_fmt` features if enabled.
+    /// Makes use of the `unsafe_string` and `unsafe_fmt` features if enabled.
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]
@@ -91,11 +91,11 @@ impl StrExt for str {
         }
 
         // SAFETY: since self is a valid &str, checks are unneeded.
-        #[cfg(feature = "unsafe_str")]
+        #[cfg(feature = "unsafe_string")]
         unsafe {
             from_utf8_unchecked(&buffer[..index])
         }
-        #[cfg(not(feature = "unsafe_str"))]
+        #[cfg(not(feature = "unsafe_string"))]
         from_utf8(&buffer[..index]).unwrap()
     }
 

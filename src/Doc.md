@@ -63,10 +63,8 @@ Single modules:
 - `path`, `path_unsafe`: enables the [`path`] module.
 - `result`, `result_unsafe`: enables the [`result`] module.
 - `slice`, `slice_unsafe`: enables the [`mod@slice`] module.
-- `str`, `str_unsafe`: enables the [`mod@str`] module,
-  and the [`const-str`] optional dependency.
 - `string`, `string_unsafe`: enables the [`string`] module.
-  and the [`unicode-segmentation`] optional dependency.
+  and the [`const-str`] and [`unicode-segmentation`] optional dependencies.
 - `sync`, `sync_unsafe`: enables the [`sync`] module,
   and the [`atomic`] and [`portable_atomic`] optional dependencies.
 - `task`, `task_unsafe`: enables the [`task`] module.
@@ -75,8 +73,6 @@ Single modules:
 
 Module groups:
 - `async`, `async_unsafe`: enables [`future`] and [`task`] modules.
-- `texts`, `texts_unsafe`: enables [`ascii`], [`mod@char`], [`fmt`], [`mod@str`]
-  and [`string`] modules.
 
 
 ### Safety features
@@ -109,7 +105,6 @@ They offer a gradient of safety.
   - `unsafe_path`: *(unused)*.
   - `unsafe_result`: *(unused)*.
   - `unsafe_slice`: *(unused)*.
-  - `unsafe_str`: enables unsafe use in [`str`][mod@str].
   - `unsafe_string`: enables unsafe use in [`string`].
   - `unsafe_sync`: *(unused)*.
   - `unsafe_task`: provides a minimal implementation of stackless
@@ -137,7 +132,7 @@ Dependencies can also be enabled individually:
 - `az` is used in `convert`.
 - `bytemuck` is used in `mem`, `linux`, `num`.
 - `devela_macros` is used in `codegen`.
-- `const-str` is used in `str`, `ascii`, `option`, `os`, `linux`.
+- `const-str` is used in `string`, `ascii`, `option`, `os`, `linux`.
 - `portable-atomic` is used in `sync`.
 - `unicode-segmentation` is used in `string`.
 
