@@ -59,7 +59,6 @@ Single modules:
 - `option`, `option_unsafe`: enables the [`option`] module.
 - `path`, `path_unsafe`: enables the [`path`] module.
 - `result`, `result_unsafe`: enables the [`result`] module.
-- `slice`, `slice_unsafe`: enables the [`mod@slice`] module.
 - `string`, `string_unsafe`: enables the [`string`] module.
   and the [`const-str`] and [`unicode-segmentation`] optional dependencies.
 - `sync`, `sync_unsafe`: enables the [`sync`] module,
@@ -98,7 +97,6 @@ They offer a gradient of safety.
     - `unsafe_term`: *(unused)*.
   - `unsafe_path`: *(unused)*.
   - `unsafe_result`: *(unused)*.
-  - `unsafe_slice`: *(unused)*.
   - `unsafe_string`: enables unsafe use in [`string`].
   - `unsafe_sync`: *(unused)*.
   - `unsafe_task`: provides a minimal implementation of stackless

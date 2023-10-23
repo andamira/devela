@@ -1,6 +1,7 @@
 // devela::string
 //
-//! Strings, extends `std::{`[`ascii`][std::ascii],
+//! Strings, extends
+//! `std::{`[`ascii`][std::ascii],
 //! [`char`][std::char],
 //! [`fmt`][std::fmt],
 //! [`str`][std::str],
@@ -57,7 +58,5 @@ pub(crate) mod all {
     // public
     pub use super::{ascii::all::*, char::all::*, egc::all::*, fmt::all::*};
     // private
-    pub use super::{array_string::*, error::*, ext::*, non_nul::*};
-    // reexported
-    pub use super::reexports::*;
+    pub use super::{array_string::*, error::*, ext::*, non_nul::*, reexports::*};
 }

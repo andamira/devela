@@ -1,4 +1,4 @@
-// devela::slice
+// devela::collections::slice
 //
 //! Slice, extends `std::`[`slice`][std::slice].
 //
@@ -7,21 +7,21 @@
 
 mod always_fns;
 #[allow(unused)]
-#[cfg(not(feature = "slice"))]
+#[cfg(not(feature = "collections"))]
 pub(crate) use always_fns::*;
 
 /* only compiled with the `char` feature */
 
-#[cfg(feature = "slice")]
+#[cfg(feature = "collections")]
 mod ext;
-#[cfg(feature = "slice")]
+#[cfg(feature = "collections")]
 mod fns;
 
 /* re-exports */
 
-#[cfg(feature = "slice")]
+#[cfg(feature = "collections")]
 pub use all::*;
-#[cfg(feature = "slice")]
+#[cfg(feature = "collections")]
 pub(crate) mod all {
     pub use super::{always_fns::*, ext::*, fns::*};
 }

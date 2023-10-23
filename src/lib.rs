@@ -44,7 +44,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         feature = "unsafe_os", // includes: unsafe_{linux, term}
             feature = "unsafe_linux", feature = "unsafe_term",
         //
-        feature = "unsafe_path", feature = "unsafe_result", feature = "unsafe_slice",
+        feature = "unsafe_path", feature = "unsafe_result",
         feature = "unsafe_string", feature = "unsafe_sync",
         feature = "unsafe_task", feature = "unsafe_thread", feature = "unsafe_time",
     )
@@ -126,12 +126,6 @@ pub(crate) mod path; // the "path" feature is disabled
 pub mod result;
 #[cfg(all(not(feature = "result"), not(test)))]
 pub(crate) mod result; // the "result" feature is disabled
-
-#[cfg(any(feature = "slice", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "slice")))]
-pub mod slice;
-#[cfg(all(not(feature = "slice"), not(test)))]
-pub(crate) mod slice; // the "slice" feature is disabled
 
 #[cfg(any(feature = "string", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "string")))]
@@ -221,10 +215,6 @@ pub mod all {
     pub use super::result::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "slice")]
-    pub use super::slice::all::*;
-
-    #[doc(inline)]
     #[cfg(feature = "string")]
     pub use super::string::all::*;
 
@@ -253,6 +243,10 @@ pub mod prelude {
     pub use crate::any::AnyExt;
 
     #[doc(inline)]
+    #[cfg(feature = "collections")]
+    pub use crate::collections::all::{Collection, SliceExt, SliceExtMut};
+
+    #[doc(inline)]
     #[cfg(feature = "convert")]
     pub use crate::convert::all::{FromPrimitives, IntoPrimitives};
 
@@ -269,10 +263,6 @@ pub mod prelude {
     pub use crate::ops::all::{Also, Apply};
 
     #[doc(inline)]
-    #[cfg(feature = "slice")]
-    pub use crate::slice::all::{SliceExt, SliceExtMut};
-
-    #[doc(inline)]
     #[cfg(feature = "option")]
     pub use crate::option::OptionExt;
 
@@ -281,8 +271,11 @@ pub mod prelude {
     pub use crate::result::ResultExt;
 
     #[doc(inline)]
-    #[cfg(all(feature = "string", feature = "alloc"))]
-    pub use crate::string::{StrExt, StringExt};
+    #[cfg(feature = "string")]
+    pub use crate::string::StrExt;
+    #[doc(inline)]
+    #[cfg(all(feature = "string", feature = "alloc"))] // IMPROVE
+    pub use crate::string::StringExt;
 }
 
 /// Optional external dependencies.

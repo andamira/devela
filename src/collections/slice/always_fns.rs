@@ -1,4 +1,4 @@
-// devela::slice::always_fns
+// devela::collections::slice::always_fns
 //
 //! `slice` standalone functions.
 //!
