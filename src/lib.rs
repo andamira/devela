@@ -44,9 +44,9 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         feature = "unsafe_os", // includes: unsafe_{linux, term}
             feature = "unsafe_linux", feature = "unsafe_term",
         //
-        feature = "unsafe_path", feature = "unsafe_result",
-        feature = "unsafe_string", feature = "unsafe_sync",
-        feature = "unsafe_task", feature = "unsafe_thread", feature = "unsafe_time",
+        feature = "unsafe_path", feature = "unsafe_result", feature = "unsafe_sync",
+        feature = "unsafe_task", feature = "unsafe_text", feature = "unsafe_thread",
+        feature = "unsafe_time",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
@@ -127,12 +127,6 @@ pub mod result;
 #[cfg(all(not(feature = "result"), not(test)))]
 pub(crate) mod result; // the "result" feature is disabled
 
-#[cfg(any(feature = "string", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "string")))]
-pub mod string;
-#[cfg(all(not(feature = "string"), not(test)))]
-pub(crate) mod string; // the "string" feature is disabled
-
 #[cfg(any(feature = "sync", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "sync")))]
 pub mod sync;
@@ -144,6 +138,12 @@ pub(crate) mod sync; // the "sync" feature is disabled
 pub mod task;
 #[cfg(all(not(feature = "task"), not(test)))]
 pub(crate) mod task; // the "task" feature is disabled
+
+#[cfg(any(feature = "text", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+pub mod text;
+#[cfg(all(not(feature = "text"), not(test)))]
+pub(crate) mod text; // the "text" feature is disabled
 
 #[cfg(any(feature = "thread", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "thread")))]
@@ -215,16 +215,16 @@ pub mod all {
     pub use super::result::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "string")]
-    pub use super::string::all::*;
-
-    #[doc(inline)]
     #[cfg(feature = "sync")]
     pub use super::sync::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "task")]
     pub use super::task::all::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "text")]
+    pub use super::text::all::*;
 
     #[allow(unused)] // only contains "std" for now
     #[doc(inline)]
@@ -271,11 +271,11 @@ pub mod prelude {
     pub use crate::result::ResultExt;
 
     #[doc(inline)]
-    #[cfg(feature = "string")]
-    pub use crate::string::StrExt;
+    #[cfg(feature = "text")]
+    pub use crate::text::StrExt;
     #[doc(inline)]
-    #[cfg(all(feature = "string", feature = "alloc"))] // IMPROVE
-    pub use crate::string::StringExt;
+    #[cfg(all(feature = "text", feature = "alloc"))] // IMPROVE
+    pub use crate::text::StringExt;
 }
 
 /// Optional external dependencies.

@@ -18,6 +18,7 @@ impl<T> Direct<T> {
     /// New `Direct` storage.
     #[inline]
     #[must_use]
+    #[allow(unused)]
     pub const fn new(t: T) -> Self {
         Direct(t)
     }

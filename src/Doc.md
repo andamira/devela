@@ -59,7 +59,7 @@ Single modules:
 - `option`, `option_unsafe`: enables the [`option`] module.
 - `path`, `path_unsafe`: enables the [`path`] module.
 - `result`, `result_unsafe`: enables the [`result`] module.
-- `string`, `string_unsafe`: enables the [`string`] module.
+- `text`, `text_unsafe`: enables the [`text`] module.
   and the [`const-str`] and [`unicode-segmentation`] optional dependencies.
 - `sync`, `sync_unsafe`: enables the [`sync`] module,
   and the [`atomic`] and [`portable_atomic`] optional dependencies.
@@ -97,7 +97,7 @@ They offer a gradient of safety.
     - `unsafe_term`: *(unused)*.
   - `unsafe_path`: *(unused)*.
   - `unsafe_result`: *(unused)*.
-  - `unsafe_string`: enables unsafe use in [`string`].
+  - `unsafe_text`: enables unsafe use in [`text`].
   - `unsafe_sync`: *(unused)*.
   - `unsafe_task`: provides a minimal implementation of stackless
     [coroutines][task::coroutine].
@@ -124,12 +124,12 @@ Dependencies can also be enabled individually:
 - `az` is used in `convert`.
 - `bytemuck` is used in `mem`, `linux`, `num`.
 - `devela_macros` is used in `codegen`.
-- `const-str` is used in `string`, `option`, `os`, `linux`.
+- `const-str` is used in `text`, `option`, `os`, `linux`.
 - `portable-atomic` is used in `sync`.
-- `unicode-segmentation` is used in `string`.
+- `unicode-segmentation` is used in `text`.
 
-[`IntBuf`]: string::IntBuf
-[`IntBufable`]: string::IntBufAble
+[`IntBuf`]: text::IntBuf
+[`IntBufable`]: text::IntBufAble
 [`slice_into_array`]: convert::collection::slice_into_array
 [`MaybeUninit`]: core::mem::MaybeUninit
 [`transmute`]: core::mem::transmute

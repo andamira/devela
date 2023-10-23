@@ -4,7 +4,7 @@
 //
 #![allow(non_snake_case)]
 
-use crate::string::{ascii_1digit, ascii_2digit, ascii_3digit, ascii_4digit, ascii_calc_digit_u32};
+use crate::text::{ascii_1digit, ascii_2digit, ascii_3digit, ascii_4digit, ascii_calc_digit_u32};
 
 mod color;
 pub use color::{AnsiColor3, AnsiColor8};

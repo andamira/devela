@@ -69,7 +69,7 @@ term_unsafe = ["term", "unsafe_term"]
 full = [ # enables all the modules
 	"any", "cmp", "codegen", "convert", "data",
 	"future", "mem", "num", "ops", "option", "path", "result",
-	"string", "sync", "task", "thread", "time",
+	"sync", "task", "text", "thread", "time",
 	# os platform sub-modules:
 	"linux", "term",
 	]
@@ -93,9 +93,9 @@ ops = []
 option = []
 path = []
 result = []
-string = ["depend?/const-str", "depend?/unicode-segmentation"]
 sync = ["depend?/atomic", "depend?/portable-atomic", "bytemuck?/zeroable_atomics"]
 task = []
+text = ["depend?/const-str", "depend?/unicode-segmentation"]
 thread = []
 time = []
 
@@ -112,21 +112,21 @@ ops_unsafe = ["ops", "unsafe_ops"]
 option_unsafe = ["option", "unsafe_option"]
 path_unsafe = ["path", "unsafe_path"]
 result_unsafe = ["result", "unsafe_result"]
-string_unsafe = ["string", "unsafe_string"]
 sync_unsafe = ["sync", "unsafe_sync"]
 task_unsafe = ["task", "unsafe_task"]
+text_unsafe = ["text", "unsafe_text"]
 thread_unsafe = ["thread", "unsafe_thread"]
 time_unsafe = ["time", "unsafe_time"]
 
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate (23)
-	"unsafe_any", "unsafe_cmp", "unsafe_codegen",
-	"unsafe_convert", "unsafe_data", "unsafe_future",
-	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_option", "unsafe_os",
-	"unsafe_path", "unsafe_result", "unsafe_string",
-	"unsafe_sync", "unsafe_task", "unsafe_thread", "unsafe_time",
+unsafe = [ # enables unsafe features in this crate (18)
+	"unsafe_any", "unsafe_cmp", "unsafe_codegen", "unsafe_convert",
+	"unsafe_data", "unsafe_future", "unsafe_mem", "unsafe_num",
+	"unsafe_ops", "unsafe_option", "unsafe_os", "unsafe_path",
+	"unsafe_result", "unsafe_sync", "unsafe_task", "unsafe_text",
+	"unsafe_thread", "unsafe_time",
 	]
 	unsafe_any = [] # (unused)
 	unsafe_cmp = [] # enables const floating-point comparisons
@@ -145,9 +145,9 @@ unsafe = [ # enables unsafe features in this crate (23)
 		unsafe_term = [] # (unused)
 	unsafe_path = [] # (unused)
 	unsafe_result = [] # (unused)
-	unsafe_string = [] # enables unsafe use in `string`
 	unsafe_sync = [] # (unused)
 	unsafe_task = [] # enables a coroutines implementation.
+	unsafe_text = [] # enables unsafe use in `text`
 	unsafe_thread = [] # (unused)
 	unsafe_time = [] # (unused)
 safe = [] # forbids `unsafe` in this crate

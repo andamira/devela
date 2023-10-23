@@ -23,7 +23,7 @@ pub(crate) mod all {
         fmt::{OptionFmt, OptionFmtOr, OptionFmtOrElse},
     };
 
-    crate::codegen::reexport! { "const-str" | const_str , features: "option", "string",
+    crate::codegen::reexport! { "const-str" | const_str , features: "option", "text",
         doc: "Returns an unwrapped [`Option<T: Copy>`] in compile-time.",
         @unwrap as option_unwrap
     }

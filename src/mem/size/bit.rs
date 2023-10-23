@@ -31,18 +31,18 @@ use crate::num::{
     RangeUsize,
 };
 
-#[cfg(feature = "string")]
-use crate::string::char::{Char16, Char24, Char32, Char7, Char8};
-#[cfg(feature = "string")]
-use crate::string::AsciiChar;
+#[cfg(feature = "text")]
+use crate::text::char::{Char16, Char24, Char32, Char7, Char8};
+#[cfg(feature = "text")]
+use crate::text::AsciiChar;
 
 // TODO WAITING for: https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275
-// #[cfg(feature = "string")]
-// use crate::string::{ArrayU16String, ArrayU32String, ArrayU8Egc, ArrayU8String};
-#[cfg(all(feature = "alloc", feature = "string"))]
-use crate::string::StringEgc;
-#[cfg(feature = "string")]
-use crate::string::{ArrayU8NonNulEgc, ArrayU8NonNulString};
+// #[cfg(feature = "text")]
+// use crate::text::{ArrayU16String, ArrayU32String, ArrayU8Egc, ArrayU8String};
+#[cfg(all(feature = "alloc", feature = "text"))]
+use crate::text::StringEgc;
+#[cfg(feature = "text")]
+use crate::text::{ArrayU8NonNulEgc, ArrayU8NonNulString};
 #[cfg(feature = "alloc")]
 use _alloc::{
     collections::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, VecDeque},
@@ -240,7 +240,7 @@ macro_rules! bit_size {
         #[cfg(feature = "alloc")]
         bit_size![= {$PTR_BITS * 3}; for String];
 
-        #[cfg(all(feature = "alloc", feature = "string"))]
+        #[cfg(all(feature = "alloc", feature = "text"))]
         bit_size![= {$PTR_BITS * 3}; for StringEgc];
 
         #[cfg(feature = "alloc")]
@@ -278,18 +278,18 @@ bit_size![= 128; for i128, u128, Duration];
 #[cfg(feature = "std")]
 bit_size![= 128; for Instant, SystemTime];
 
-#[cfg(feature = "string")]
+#[cfg(feature = "text")]
 bit_size![= 7; for AsciiChar];
 
-#[cfg(feature = "string")]
+#[cfg(feature = "text")]
 bit_size![= 7; for Char7];
-#[cfg(feature = "string")]
+#[cfg(feature = "text")]
 bit_size![= 8; for Char8];
-#[cfg(feature = "string")]
+#[cfg(feature = "text")]
 bit_size![= 16; for Char16];
-#[cfg(feature = "string")]
+#[cfg(feature = "text")]
 bit_size![= 24; for Char24];
-#[cfg(feature = "string")]
+#[cfg(feature = "text")]
 bit_size![= 32; for Char32];
 
 #[cfg(feature = "num")]
@@ -417,14 +417,14 @@ bit_size![= 3; for AnsiColor3];
 #[cfg(feature = "term")]
 bit_size![= 8; for AnsiColor8];
 
-#[cfg(feature = "string")]
+#[cfg(feature = "text")]
 bit_size![<const LEN: usize> = LEN; for ArrayU8NonNulString<LEN>, ArrayU8NonNulEgc<LEN>];
 // TODO WAITING for: https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275
-// #[cfg(feature = "string")]
+// #[cfg(feature = "text")]
 // bit_size![<const LEN: usize> = { LEN + 8 }; for ArrayU8String<LEN>, ArrayU8Egc<LEN>];
-// #[cfg(feature = "string")]
+// #[cfg(feature = "text")]
 // bit_size![<const LEN: usize> = { LEN + 16 }; for ArrayU16String<LEN>];
-// #[cfg(feature = "string")]
+// #[cfg(feature = "text")]
 // bit_size![<const LEN: usize> = { LEN + 32 }; for ArrayU32String<LEN>];
 
 #[cfg(target_pointer_width = "8")]

@@ -26,7 +26,7 @@ use toml_edit::Document;
 
 const ROOT_MODULES: [&str; 19] = [
     "any", "cmp", "codegen", "convert", "data", "future", "mem", "num", "ops",
-    "option", "path", "result", "string", "sync", "task", "thread", "time",
+    "option", "path", "result", "sync", "task", "text", "thread", "time",
     // os sub-modules:
     "linux", "term",
 ];
