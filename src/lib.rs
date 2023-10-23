@@ -47,7 +47,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         //
         feature = "unsafe_path", feature = "unsafe_result", feature = "unsafe_slice",
         feature = "unsafe_str", feature = "unsafe_string", feature = "unsafe_sync",
-        feature = "unsafe_task", feature = "unsafe_thread",
+        feature = "unsafe_task", feature = "unsafe_thread", feature = "unsafe_time",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
@@ -182,6 +182,12 @@ pub mod thread;
 // #[cfg(all(not(feature = "thread"), not(test)))]
 // pub(crate) mod thread; // the "thread" feature is disabled
 
+#[cfg(any(feature = "time", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "time")))]
+pub mod time;
+#[cfg(all(not(feature = "time"), not(test)))]
+pub(crate) mod time; // the "time" feature is disabled
+
 /// All items are flat re-exported here.
 ///
 /// Note that any item tagged with [`depend`] can also be enabled by
@@ -275,6 +281,10 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "thread")]
     pub use super::thread::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "time")]
+    pub use super::time::all::*;
 }
 
 /// The common prelude.

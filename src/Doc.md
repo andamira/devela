@@ -71,6 +71,7 @@ Single modules:
   and the [`atomic`] and [`portable_atomic`] optional dependencies.
 - `task`, `task_unsafe`: enables the [`task`] module.
 - `thread`, `thread_unsafe`: enables the [`thread`] module.
+- `time`, `time_unsafe`: enables the [`time`] module.
 
 Module groups:
 - `async`, `async_unsafe`: enables [`future`] and [`task`] modules.
@@ -114,6 +115,7 @@ They offer a gradient of safety.
   - `unsafe_task`: provides a minimal implementation of stackless
     [coroutines][task::coroutine].
   - `unsafe_thread`: *(unused)*.
+  - `unsafe_time`: *(unused)*.
 - `safe`: forbids unsafe at the crate level.
 - `safest`: forbids unsafe recursively (unused).
 

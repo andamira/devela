@@ -68,7 +68,7 @@ term_unsafe = ["term", "unsafe_term"]
 full = [ # enables all the modules
 	"any", "ascii", "char", "cmp", "codegen", "collections", "convert", "fmt",
 	"future", "mem", "num", "ops", "option", "path", "result", "slice", "str",
-	"string", "sync", "task", "thread",
+	"string", "sync", "task", "thread", "time",
 	# os platform sub-modules:
 	"linux", "term",
 	]
@@ -82,7 +82,7 @@ texts = [ # enables all *text* related sub-modules
 async = ["future", "task"]
 	async_unsafe = ["future_unsafe", "task_unsafe"]
 
-# individual modules (21)
+# individual modules (22)
 # (modules enable their own dependencies if the `depend` feature is enabled)
 any = []
 ascii = []
@@ -105,8 +105,9 @@ string = ["depend?/unicode-segmentation"]
 sync = ["depend?/atomic", "depend?/portable-atomic", "bytemuck?/zeroable_atomics"]
 task = []
 thread = []
+time = []
 
-# individual modules with unsafe enabled (21):
+# individual modules with unsafe enabled (22):
 any_unsafe = ["any", "unsafe_any"]
 ascii_unsafe = ["ascii", "unsafe_ascii"]
 char_unsafe = ["char", "unsafe_char"]
@@ -128,16 +129,17 @@ string_unsafe = ["string", "unsafe_string"]
 sync_unsafe = ["sync", "unsafe_sync"]
 task_unsafe = ["task", "unsafe_task"]
 thread_unsafe = ["thread", "unsafe_thread"]
+time_unsafe = ["time", "unsafe_time"]
 
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate (22)
+unsafe = [ # enables unsafe features in this crate (23)
 	"unsafe_any", "unsafe_ascii", "unsafe_char", "unsafe_cmp", "unsafe_codegen",
 	"unsafe_convert", "unsafe_collections", "unsafe_fmt", "unsafe_future",
 	"unsafe_mem", "unsafe_num", "unsafe_ops", "unsafe_option", "unsafe_os",
 	"unsafe_path", "unsafe_result", "unsafe_slice", "unsafe_str", "unsafe_string",
-	"unsafe_sync", "unsafe_task", "unsafe_thread",
+	"unsafe_sync", "unsafe_task", "unsafe_thread", "unsafe_time",
 	]
 	unsafe_any = [] # (unused)
 	unsafe_ascii = [] # enables unchecked conversions in `ascii`
@@ -165,6 +167,7 @@ unsafe = [ # enables unsafe features in this crate (22)
 	unsafe_sync = [] # (unused)
 	unsafe_task = [] # enables a coroutines implementation.
 	unsafe_thread = [] # (unused)
+	unsafe_time = [] # (unused)
 safe = [] # forbids `unsafe` in this crate
 safest = ["safe"] # forbids `unsafe` recursively (unused)
 unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
