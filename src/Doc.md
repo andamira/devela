@@ -55,8 +55,6 @@ Single modules:
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
 - `num`, `num_unsafe`: enables the [`num`] module.
-- `ops`, `ops_unsafe`: enables the [`ops`] module,
-- `option`, `option_unsafe`: enables the [`option`] module.
 - `path`, `path_unsafe`: enables the [`path`] module.
 - `result`, `result_unsafe`: enables the [`result`] module.
 - `text`, `text_unsafe`: enables the [`text`] module.
@@ -89,8 +87,6 @@ They offer a gradient of safety.
   - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and
     [`mem_as_bytes_sized`] in [`mem`].
   - `unsafe_num`: enables `new_unchecked` constructors and implements `bytemuck` traits.
-  - `unsafe_ops`: *(unused)*.
-  - `unsafe_option`: *(unused)*.
   - `unsafe_os`: enables all the unsafe *platform* sub-features:
     - `unsafe_linux`: provides functionality depending on linux syscalls and
          implements `bytemuck` traits.
@@ -124,7 +120,7 @@ Dependencies can also be enabled individually:
 - `az` is used in `convert`.
 - `bytemuck` is used in `mem`, `linux`, `num`.
 - `devela_macros` is used in `codegen`.
-- `const-str` is used in `text`, `option`, `os`, `linux`.
+- `const-str` is used in `text`, `result`, `os`, `linux`.
 - `portable-atomic` is used in `sync`.
 - `unicode-segmentation` is used in `text`.
 

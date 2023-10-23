@@ -21,8 +21,8 @@
 //! `devela` crate with the `depend` feature enabled, will also enable the
 //! optional dependencies associated to any enabled modules.
 //!
-//! For example, enabling `depend` and [`option`][crate::option] will not enable
-//! the [`option_unwrap`][crate::option::option_unwrap] function unless the
+//! For example, enabling `depend` and [`result`][crate::result] will not enable
+//! the [`option_unwrap`][crate::result::option_unwrap] function unless the
 //! [`text`] module is also enabled; or if the `const-str` dependency
 //! is enabled independently of the `text` module.
 //

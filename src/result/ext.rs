@@ -13,7 +13,7 @@ mod private {
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`OptionExt`][crate::option::OptionExt].
+/// See also [`OptionExt`][crate::result::OptionExt].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).

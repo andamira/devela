@@ -1,4 +1,4 @@
-// devela::option
+// devela::result::option
 //
 //! Option, extends `std::`[`option`][std::option].
 //
@@ -7,23 +7,23 @@
 
 /* only compiled with the `option` feature */
 
-#[cfg(feature = "option")]
+#[cfg(feature = "result")]
 mod ext;
-#[cfg(feature = "option")]
+#[cfg(feature = "result")]
 mod fmt;
 
 /* re-exports */
 
-#[cfg(feature = "option")]
+#[cfg(feature = "result")]
 pub use all::*;
-#[cfg(feature = "option")]
+#[cfg(feature = "result")]
 pub(crate) mod all {
     pub use super::{
         ext::OptionExt,
         fmt::{OptionFmt, OptionFmtOr, OptionFmtOrElse},
     };
 
-    crate::codegen::reexport! { "const-str" | const_str , features: "option", "text",
+    crate::codegen::reexport! { "const-str" | const_str , features: "result", "text",
         doc: "Returns an unwrapped [`Option<T: Copy>`] in compile-time.",
         @unwrap as option_unwrap
     }

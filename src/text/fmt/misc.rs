@@ -15,9 +15,6 @@ use core::{
     str::{from_utf8, from_utf8_unchecked},
 };
 
-#[cfg(feature = "alloc")]
-use _alloc::{format, string::String};
-
 /// A more *`c`ompact [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
 ///
 /// # Examples

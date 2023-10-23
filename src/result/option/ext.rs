@@ -1,4 +1,4 @@
-// devela::option::ext
+// devela::result::option::ext
 //
 //!
 //
@@ -27,7 +27,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::option::OptionExt;
+    /// use devela::result::OptionExt;
     ///
     /// let x: Option<u32> = Some(2);
     /// assert_eq!(x.contains(&2), true);
@@ -52,7 +52,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::option::OptionExt;
+    /// use devela::result::OptionExt;
     /// use core::{cmp::min, ops::Add};
     ///
     /// let x = Some(2);
@@ -75,7 +75,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::option::OptionExt;
+    /// use devela::result::OptionExt;
     ///
     /// let foo: Option<u32> = Some(0x42);
     /// let bar: Option<u32> = None;
@@ -93,7 +93,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::option::OptionExt;
+    /// use devela::result::OptionExt;
     ///
     /// let foo: Option<Box<u32>> = Some(Box::new(42));
     /// let bar: Option<Box<u32>> = None;
@@ -117,7 +117,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::option::OptionExt;
+    /// use devela::result::OptionExt;
     ///
     /// let foo: Option<u32> = Some(42);
     /// let bar: Option<u32> = None;
