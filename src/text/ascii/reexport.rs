@@ -6,7 +6,7 @@
 //! prefixed with `ascii_` and with a new first line of documentation.
 //
 
-use crate::codegen::reexport;
+use crate::meta::reexport;
 
 reexport! { "const-str" | const_str , features: "text",
     doc: "Returns [`true`] if all codes in this

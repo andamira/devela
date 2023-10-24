@@ -3,7 +3,7 @@
 //! Helpers for converting between primitives.
 //
 
-use crate::codegen::paste;
+use crate::meta::paste;
 
 #[cfg(test)]
 mod tests;

@@ -8,7 +8,7 @@ mod ext;
 mod fmt;
 
 mod reexports {
-    crate::codegen::reexport! { "const-str" | const_str , features: "result", "text",
+    crate::meta::reexport! { "const-str" | const_str , features: "result", "text",
         doc: "Returns an unwrapped [`Option<T: Copy>`] in compile-time.",
         @unwrap as option_unwrap
     }

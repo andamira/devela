@@ -58,7 +58,7 @@ macro_rules! generate_os_print_std_macros {
     (
         $d:tt $name:ident + $name2:ident, $doc:literal, $doc_ln:literal, $newline:literal $(,)?
     ) => {
-        $crate::codegen::paste! {
+        $crate::meta::paste! {
             #[doc = $doc]
             #[doc = "\n\nLeverages [`" [<linux_ $name>] "`][super::linux::" [<linux_ $name>] "]"]
             #[doc = ", [`format_buf`][crate::text::format_buf]"]
@@ -229,7 +229,7 @@ macro_rules! generate_os_print_linux_macros {
     (
         $d:tt $name:ident + $name2:ident, $doc:literal, $doc_ln:literal, $newline:literal $(,)?
     ) => {
-        $crate::codegen::paste! {
+        $crate::meta::paste! {
             #[doc = $doc]
             #[doc = "\n\nLeverages [`" [<linux_ $name>] "`][super::linux::" [<linux_ $name>] "]"]
             #[doc = ", [`format_buf`][crate::text::format_buf]"]

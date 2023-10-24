@@ -1,4 +1,4 @@
-// devela::codegen::paste
+// devela::meta::paste
 //
 
 /// Allows to paste identifiers together.
@@ -66,7 +66,7 @@
 #[macro_export]
 macro_rules! paste {
     ($($tt:tt)*) => {
-        $crate::codegen::__paste!{ $($tt)* }
+        $crate::meta::__paste!{ $($tt)* }
     }
 }
 #[doc(inline)]

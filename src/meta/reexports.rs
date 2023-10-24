@@ -1,4 +1,4 @@
-// devela::codegen::reexport
+// devela::meta::reexport
 //
 //! Reexported items.
 //
@@ -8,7 +8,7 @@
 /// (which can be enabled instead of `depend`">`devela_macros`</span>
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "codegen", feature = "depend")))
+    doc(cfg(all(feature = "meta", feature = "depend")))
 )]
 pub use crate::depend::devela_macros::{cif, compile, compile_attr};
 

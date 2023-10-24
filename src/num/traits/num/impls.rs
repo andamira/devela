@@ -4,8 +4,8 @@
 //
 
 #[cfg(not(feature = "std"))]
-use crate::codegen::iif;
-use crate::codegen::paste;
+use crate::meta::iif;
+use crate::meta::paste;
 use crate::num::all::*;
 use crate::num::{NumError as Error, NumResult as Result};
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};

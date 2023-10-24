@@ -5,7 +5,7 @@
 // - https://www.man7.org/linux/man-pages/man2/getrandom.2.html
 // - https://www.gnu.org/software/libc/manual/html_node/Unpredictable-Bytes.html
 
-use crate::codegen::{iif, paste};
+use crate::meta::{iif, paste};
 use crate::os::linux::{linux_print, linux_sys_exit, linux_sys_getrandom, LINUX_ERRNO as ERRNO};
 use core::ffi::c_uint;
 

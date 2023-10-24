@@ -1,6 +1,6 @@
-// devela::codegen::_private
+// devela::meta::_private
 //
-//! private codegen helpers
+//! private meta helpers
 //
 
 #![allow(unused)]
@@ -91,7 +91,7 @@ macro_rules! reexport {
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
-    ) => { $crate::codegen::paste! {
+    ) => { $crate::meta::paste! {
         #[doc(inline)]
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`core`'>`core`</span>"]
@@ -123,7 +123,7 @@ macro_rules! reexport {
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
-    ) => { $crate::codegen::paste! {
+    ) => { $crate::meta::paste! {
         #[doc(inline)]
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s `"
             $env_str "`'>`" $env_str "`</span>"]
@@ -151,7 +151,7 @@ macro_rules! reexport {
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
-    ) => { $crate::codegen::paste! {
+    ) => { $crate::meta::paste! {
         #[doc(inline)]
         #[doc = "<span class='stab portability' title='re-exported from `" $dep_str
         "` (which can be enabled instead of `depend`)'>`" $dep_str "`</span>"]

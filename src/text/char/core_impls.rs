@@ -6,7 +6,7 @@
 use super::{
     Char16, Char24, Char32, Char7, Char8, CharConversionError, NonMaxU8, NonSurrogateU16, Result,
 };
-use crate::codegen::paste;
+use crate::meta::paste;
 use core::fmt;
 
 /* Default, Display, Debug */

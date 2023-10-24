@@ -7,7 +7,7 @@
 
 #![allow(unused)]
 
-use crate::codegen::paste;
+use crate::meta::paste;
 use core::{fmt, num::*, str::FromStr};
 
 #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]

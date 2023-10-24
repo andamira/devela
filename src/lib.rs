@@ -36,16 +36,15 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(
         feature = "unsafe", // includes all below
-        feature = "unsafe_any", feature = "unsafe_cmp", feature = "unsafe_codegen",
-        feature = "unsafe_data", feature = "unsafe_convert",
-        feature = "unsafe_mem", feature = "unsafe_num",
+        feature = "unsafe_any", feature = "unsafe_cmp", feature = "unsafe_data",
+        feature = "unsafe_convert", feature = "unsafe_mem", feature = "unsafe_meta",
+        feature = "unsafe_num",
         //
         feature = "unsafe_os", // includes: unsafe_{linux, term}
             feature = "unsafe_linux", feature = "unsafe_term",
         //
-        feature = "unsafe_path", feature = "unsafe_result",
-        feature = "unsafe_task", feature = "unsafe_text",
-        feature = "unsafe_time",
+        feature = "unsafe_path", feature = "unsafe_result", feature = "unsafe_task",
+        feature = "unsafe_text", feature = "unsafe_time",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
@@ -64,12 +63,6 @@ pub mod cmp;
 #[cfg(all(not(feature = "cmp"), not(test)))]
 pub(crate) mod cmp; // the "cmp" feature is disabled
 
-#[cfg(any(feature = "codegen", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "codegen")))]
-pub mod codegen;
-#[cfg(all(not(feature = "codegen"), not(test)))]
-pub(crate) mod codegen; // the "codegen" feature is disabled
-
 #[cfg(any(feature = "data", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod data;
@@ -87,6 +80,12 @@ pub(crate) mod convert; // the "convert" feature is disabled
 pub mod mem;
 #[cfg(all(not(feature = "mem"), not(test)))]
 pub(crate) mod mem; // the "mem" feature is disabled
+
+#[cfg(any(feature = "meta", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "meta")))]
+pub mod meta;
+#[cfg(all(not(feature = "meta"), not(test)))]
+pub(crate) mod meta; // the "meta" feature is disabled
 
 #[cfg(any(feature = "num", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
@@ -140,10 +139,6 @@ pub mod all {
     pub use super::cmp::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "codegen")]
-    pub use super::codegen::all::*;
-
-    #[doc(inline)]
     #[cfg(feature = "data")]
     pub use super::data::all::*;
 
@@ -154,6 +149,10 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "mem")]
     pub use super::mem::all::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "meta")]
+    pub use super::meta::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "num")]

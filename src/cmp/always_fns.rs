@@ -7,7 +7,7 @@
 
 #![allow(unused)]
 
-use crate::codegen::paste;
+use crate::meta::paste;
 
 // generate the const fns for primitive comparison
 macro_rules! primitive_const_cmp {

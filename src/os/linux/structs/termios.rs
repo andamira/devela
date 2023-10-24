@@ -7,7 +7,7 @@ use core::ffi::c_uint;
 #[cfg(all(feature = "unsafe_linux", not(miri)))]
 use {
     super::super::{linux_sys_ioctl, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG},
-    crate::codegen::iif,
+    crate::meta::iif,
 };
 
 /// Represents the [`termios`] structure from libc,

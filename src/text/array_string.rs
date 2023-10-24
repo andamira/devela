@@ -20,7 +20,7 @@ macro_rules! generate_array_string {
     ($($t:ty),+ $(,)?) => {
         $( generate_array_string![@$t]; )+
     };
-    (@$t:ty) => { $crate::codegen::paste! {
+    (@$t:ty) => { $crate::meta::paste! {
 
         /* definitions */
 

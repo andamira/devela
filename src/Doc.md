@@ -47,12 +47,12 @@ optional dependencies.
 Single modules: 
 - `any`, `any_unsafe:` enables the [`any`] module.
 - `cmp`, `cmp_unsafe`: enables the [`cmp`] module.
-- `codegen`, `codegen_unsafe`: enables the [`codegen`] module,
-  and the [`devela_macros`] optional dependency.
 - `convert`, `convert_unsafe`: enables the [`convert`] module,
   and the [`az`] optional dependency.
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
+- `meta`, `meta_unsafe`: enables the [`meta`] module,
+  and the [`devela_macros`] optional dependency.
 - `num`, `num_unsafe`: enables the [`num`] module.
 - `path`, `path_unsafe`: enables the [`path`] module.
 - `result`, `result_unsafe`: enables the [`result`] module.
@@ -74,11 +74,11 @@ They offer a gradient of safety.
   - `unsafe_any`: *(unused)*.
   - `unsafe_cmp`: enables const floating-point comparison in [`cmp`],
        using [`transmute`] for constant access to the bits.
-  - `unsafe_codegen`: *(unused)*.
   - `unsafe_convert`: enables using [`MaybeUninit`] for [`slice_into_array`]
       initialization in [`convert`].
   - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and
     [`mem_as_bytes_sized`] in [`mem`].
+  - `unsafe_meta`: *(unused)*.
   - `unsafe_num`: enables `new_unchecked` constructors and implements `bytemuck` traits.
   - `unsafe_os`: enables all the unsafe *platform* sub-features:
     - `unsafe_linux`: provides functionality depending on linux syscalls and
@@ -110,7 +110,7 @@ Dependencies can also be enabled individually:
 - `atomic` is used in `task`.
 - `az` is used in `convert`.
 - `bytemuck` is used in `mem`, `linux`, `num`.
-- `devela_macros` is used in `codegen`.
+- `devela_macros` is used in `meta`.
 - `const-str` is used in `text`, `result`, `os`, `linux`.
 - `portable-atomic` is used in `task`.
 - `unicode-segmentation` is used in `text`.

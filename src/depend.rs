@@ -66,7 +66,7 @@ mod depend {
 // This is also used for documentation.
 #[cfg(feature = "depend")]
 mod depend {
-    use crate::codegen::reexport;
+    use crate::meta::reexport;
 
     reexport! { depend feature: "task",
     dep: "atomic", atomic, "A generic atomic wrapper type." }
@@ -80,7 +80,7 @@ mod depend {
     reexport! { depend feature: "text",
     dep: "const-str", const_str, "Compile-time string operations." }
 
-    reexport! { depend feature: "codegen",
+    reexport! { depend feature: "meta",
     dep: "devela_macros", devela_macros, "Procedural macros for `devela`." }
 
     reexport! { depend feature: "data", also: "alloc",

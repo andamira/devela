@@ -3,7 +3,7 @@
 //! Reexported items.
 //
 
-use crate::codegen::reexport;
+use crate::meta::reexport;
 
 reexport! { rust: core::task, local_module: "task",
     doc: "The context of an asynchronous task.",

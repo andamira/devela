@@ -36,7 +36,7 @@
 )]
 #[cfg(any(all(feature = "depend", feature = "text"), feature = "const-str"))]
 macro_rules! ansib {
-    ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::codegen::paste! {
+    ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::meta::paste! {
         $crate::depend::const_str::concat_bytes!(
             $($crate::os::term::Ansi::[<$command:upper>] $( ($($arg),*) )? ,)+
         )
