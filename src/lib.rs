@@ -189,7 +189,7 @@ pub mod prelude {
     pub use crate::any::AnyExt;
 
     #[cfg(feature = "data")]
-    pub use crate::data::{Collection, SliceExt, SliceExtMut};
+    pub use crate::data::{DataCollection, SliceExt, SliceExtMut};
 
     #[cfg(feature = "convert")]
     pub use crate::convert::{FromPrimitives, IntoPrimitives};

@@ -20,13 +20,13 @@ pub(crate) use slice::*;
 #[cfg(feature = "data")]
 mod array;
 #[cfg(feature = "data")]
-mod reexports;
+mod collection;
 #[cfg(feature = "data")]
-mod r#trait;
+mod reexports;
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {array::*, r#trait::*, reexports::*};
+pub use {array::*, collection::DataCollection, reexports::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
@@ -36,5 +36,5 @@ pub use slice::all::*;
 #[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{array::*, r#trait::*, reexports::*, slice::all::*};
+    pub use super::{array::*, collection::DataCollection, reexports::*, slice::all::*};
 }
