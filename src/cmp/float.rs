@@ -3,13 +3,16 @@
 //! Generate the (const) fns for floating-point primitive comparison.
 //
 
-use crate::codegen::paste;
+use crate::meta::{iif, paste};
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+use crate::num::fsize;
 use core::cmp::Ordering::{self, *};
 
+primitive_float_const_cmp![32 >> 31, 64 >> 63];
 macro_rules! primitive_float_const_cmp {
     // multiple impls
     //
-    // $b: the bits of the floating-point primitives
+    // $b:  the bits of the floating-point primitives
     // $sh: the shift amount for the given bits ($b - 1)
     ($($b:literal >> $sh:literal),+ $(,)?) => { paste! {
         $( primitive_float_const_cmp![@$b >> $sh]; )+
@@ -17,7 +20,7 @@ macro_rules! primitive_float_const_cmp {
 
     // single impl
     //
-    // $b: the bits of the floating-point primitive
+    // $b:  the bits of the floating-point primitive
     // $sh: the shift amount for the given bits ($b - 1)
     (@$b:literal >> $sh:literal) => { paste! {
         #[doc = "A (`const`) port of `f" $b "::`[`total_cmp`][f" $b "#method.total_cmp]."]
@@ -39,13 +42,7 @@ macro_rules! primitive_float_const_cmp {
             left ^= (((left >> $sh) as [<u $b>]) >> 1) as [<i $b>];
             right ^= (((right >> $sh) as [<u $b>]) >> 1) as [<i $b>];
 
-            if left < right {
-                Less
-            } else if left > right {
-                Greater
-            } else {
-                Equal
-            }
+            iif![left < right; Less; iif![left > right; Greater; Equal]]
         }
         // safe, non-const version (undocumented)
         #[inline]
@@ -59,13 +56,7 @@ macro_rules! primitive_float_const_cmp {
             left ^= (((left >> $sh) as [<u $b>]) >> 1) as [<i $b>];
             right ^= (((right >> $sh) as [<u $b>]) >> 1) as [<i $b>];
 
-            if left < right {
-                Less
-            } else if left > right {
-                Greater
-            } else {
-                Equal
-            }
+            iif![left < right; Less; iif![left > right; Greater; Equal]]
         }
 
         #[doc = "Compares and returns a clamped [total ordered] `f" $b "` between `min` and `max`."]
@@ -172,4 +163,142 @@ macro_rules! primitive_float_const_cmp {
         }
     }};
 }
-primitive_float_const_cmp![32 >> 31, 64 >> 63];
+use primitive_float_const_cmp;
+
+/* ptr-size aliases */
+
+/// A pointer-sized redirect to `total_cmp_f[32|64]`.
+///
+/// # Features
+/// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(any(target_pointer_width = "32", target_pointer_width = "64")))
+)]
+#[cfg(all(
+    feature = "unsafe_cmp",
+    any(target_pointer_width = "32", target_pointer_width = "64")
+))]
+#[inline]
+#[must_use]
+pub const fn total_cmp_fsize(a: fsize, b: fsize) -> Ordering {
+    #[cfg(target_pointer_width = "32")]
+    return total_cmp_f32(a, b);
+    #[cfg(target_pointer_width = "64")]
+    return total_cmp_f64(a, b);
+}
+#[cfg(all(
+    not(feature = "unsafe_cmp"),
+    any(target_pointer_width = "32", target_pointer_width = "64")
+))]
+#[inline]
+#[must_use]
+#[allow(missing_docs)]
+pub fn total_cmp_fsize(a: fsize, b: fsize) -> Ordering {
+    #[cfg(target_pointer_width = "32")]
+    return total_cmp_f32(a, b);
+    #[cfg(target_pointer_width = "64")]
+    return total_cmp_f64(a, b);
+}
+
+/// Compares and returns a clamped total ordered [`fsize`] between `min` and `max`.
+///
+/// # Features
+/// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(any(target_pointer_width = "32", target_pointer_width = "64")))
+)]
+#[cfg(all(
+    feature = "unsafe_cmp",
+    any(target_pointer_width = "32", target_pointer_width = "64")
+))]
+#[inline]
+#[must_use]
+pub const fn clamp_fsize(value: fsize, min: fsize, max: fsize) -> fsize {
+    #[cfg(target_pointer_width = "32")]
+    return clamp_f32(value, min, max);
+    #[cfg(target_pointer_width = "64")]
+    return clamp_f64(value, min, max);
+}
+#[cfg(all(
+    not(feature = "unsafe_cmp"),
+    any(target_pointer_width = "32", target_pointer_width = "64")
+))]
+#[inline]
+#[must_use]
+#[allow(missing_docs)]
+pub fn clamp_fsize(value: fsize, min: fsize, max: fsize) -> fsize {
+    #[cfg(target_pointer_width = "32")]
+    return clamp_f32(value, min, max);
+    #[cfg(target_pointer_width = "64")]
+    return clamp_f64(value, min, max);
+}
+
+/// Compares and returns the maximum of two [`fsize`] values using total ordering.
+///
+/// # Features
+/// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(any(target_pointer_width = "32", target_pointer_width = "64"))))
+)]
+#[cfg(all(
+    feature = "unsafe_cmp",
+    any(target_pointer_width = "32", target_pointer_width = "64")
+))]
+#[inline]
+#[must_use]
+pub const fn max_fsize(a: fsize, b: fsize) -> fsize {
+    #[cfg(target_pointer_width = "32")]
+    return max_f32(a, b);
+    #[cfg(target_pointer_width = "64")]
+    return max_f64(a, b);
+}
+#[cfg(all(
+    not(feature = "unsafe_cmp"),
+    any(target_pointer_width = "32", target_pointer_width = "64")
+))]
+#[inline]
+#[must_use]
+#[allow(missing_docs)]
+pub fn max_fsize(a: fsize, b: fsize) -> fsize {
+    #[cfg(target_pointer_width = "32")]
+    return max_f32(a, b);
+    #[cfg(target_pointer_width = "64")]
+    return max_f64(a, b);
+}
+
+/// Compares and returns the minimum of two [`fsize`] values using total ordering.
+///
+/// # Features
+/// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(any(target_pointer_width = "32", target_pointer_width = "64")))
+)]
+#[cfg(all(
+    feature = "unsafe_cmp",
+    any(target_pointer_width = "32", target_pointer_width = "64")
+))]
+#[inline]
+#[must_use]
+pub const fn min_fsize(a: fsize, b: fsize) -> fsize {
+    #[cfg(target_pointer_width = "32")]
+    return min_f32(a, b);
+    #[cfg(target_pointer_width = "64")]
+    return min_f64(a, b);
+}
+#[cfg(all(
+    not(feature = "unsafe_cmp"),
+    any(target_pointer_width = "32", target_pointer_width = "64")
+))]
+#[inline]
+#[must_use]
+#[allow(missing_docs)]
+pub fn min_fsize(a: fsize, b: fsize) -> fsize {
+    #[cfg(target_pointer_width = "32")]
+    return min_f32(a, b);
+    #[cfg(target_pointer_width = "64")]
+    return min_f64(a, b);
+}
