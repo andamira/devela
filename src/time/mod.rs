@@ -1,19 +1,22 @@
 // devela::time
 //
-//! Temporal quantification, extends [`std::time`].
+//! Temporal quantification, extends
+//! `std::`[`time`][std::time].
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
-/* only compiled with the `time` feature */
+// ...
 
-/* re-exports */
+/* feature-gated */
 
 #[cfg(feature = "time")]
 mod reexports;
 
+// re-exports private sub-modules
 #[cfg(feature = "time")]
-pub use all::*;
+pub use reexports::*;
+
 #[cfg(feature = "time")]
 pub(crate) mod all {
     #[doc(inline)]

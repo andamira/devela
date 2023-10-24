@@ -5,10 +5,13 @@
 //! [`result`][std::result]`}`.
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
-/* only compiled with the `result` feature */
+// ...
 
+/* feature-gated */
+
+// private sub-modules
 #[cfg(feature = "result")]
 mod chain;
 #[cfg(feature = "result")]
@@ -16,18 +19,23 @@ mod ext;
 #[cfg(feature = "result")]
 mod never;
 #[cfg(feature = "result")]
-pub use {chain::*, ext::ResultExt, never::*};
+mod option;
 
+// re-export private sub-modules
 #[cfg(feature = "result")]
-pub mod option;
-#[doc(no_inline)]
-#[cfg(feature = "result")]
-pub use option::all::*;
-
-/* re-exports */
+pub use {
+    chain::{Also, Apply},
+    ext::ResultExt,
+    never::*,
+    option::all::*,
+};
 
 #[cfg(feature = "result")]
 pub(crate) mod all {
-    pub use super::option::all::*;
-    pub use super::{chain::*, ext::ResultExt, never::*};
+    pub use super::{
+        chain::{Also, Apply},
+        ext::ResultExt,
+        never::*,
+        option::all::*,
+    };
 }

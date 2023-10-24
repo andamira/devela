@@ -186,34 +186,26 @@ pub mod all {
 
 /// The common prelude.
 pub mod prelude {
-    #[doc(inline)]
     #[cfg(feature = "any")]
     pub use crate::any::AnyExt;
 
-    #[doc(inline)]
     #[cfg(feature = "data")]
-    pub use crate::data::all::{Collection, SliceExt, SliceExtMut};
+    pub use crate::data::{Collection, SliceExt, SliceExtMut};
 
-    #[doc(inline)]
     #[cfg(feature = "convert")]
-    pub use crate::convert::all::{FromPrimitives, IntoPrimitives};
+    pub use crate::convert::{FromPrimitives, IntoPrimitives};
 
-    #[doc(inline)]
     #[cfg(feature = "mem")]
-    pub use crate::mem::all::{BitSize, Mem, Size};
+    pub use crate::mem::{BitSize, Mem, Size};
 
-    #[doc(inline)]
     #[cfg(feature = "num")]
-    pub use crate::num::all::{Num, NumRef};
+    pub use crate::num::{Num, NumRef};
 
-    #[doc(inline)]
     #[cfg(feature = "result")]
-    pub use crate::result::all::{Also, Apply, OptionExt, ResultExt};
+    pub use crate::result::{Also, Apply, OptionExt, ResultExt};
 
-    #[doc(inline)]
     #[cfg(feature = "text")]
     pub use crate::text::StrExt;
-    #[doc(inline)]
     #[cfg(all(feature = "text", feature = "alloc"))] // IMPROVE
     pub use crate::text::StringExt;
 }

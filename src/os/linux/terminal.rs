@@ -23,14 +23,14 @@ use crate::depend::atomic::{Atomic, Ordering as AtomicOrdering};
 /// ```
 ///
 /// # Features
-/// Makes use of `depend::{atomic, bytemuck}` dependencies to save the terminal
-/// state in an [`Atomic`].
+/// Makes use of `depend::{`[`atomic`], [`bytemuck`]`}` dependencies to save the
+/// terminal state in an [`Atomic`].
+///
+/// [`atomic`]: crate::depend::atomic
+/// [`bytemuck`]: crate::depend::bytemuck
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(any(
-        all(feature = "depend", feature = "mem", feature = "task"),
-        all(feature = "bytemuck", feature = "atomic"),
-    )))
+    doc(cfg(all(feature = "depend", feature = "mem", feature = "task"),))
 )]
 #[cfg(all(
     any(feature = "atomic", all(feature = "task", feature = "depend")),

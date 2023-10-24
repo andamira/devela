@@ -97,8 +97,6 @@ pub mod thread {
     };
 }
 
-/* re-exports */
-
 // reexport the const structs not-specific to any submodule
 pub use consts::{errno::*, fd::*, ioctl::*, syscall::*};
 

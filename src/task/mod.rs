@@ -7,23 +7,27 @@
 //! [`thread`][std::thread]`}`.
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
-/* only compiled with the `task` feature */
+// ...
 
+/* feature-gated */
+
+// public sub-modules
 #[cfg(feature = "task")]
 pub mod r#async;
 #[cfg(feature = "task")]
 pub mod sync;
 #[cfg(feature = "task")]
 pub mod thread;
+
+// re-export public sub-modules
 #[doc(no_inline)]
 #[cfg(feature = "task")]
 pub use {r#async::all::*, sync::all::*, thread::all::*};
 
-/* re-exports */
-
 #[cfg(feature = "task")]
 pub(crate) mod all {
+    #[doc(inline)]
     pub use super::{r#async::all::*, sync::all::*, thread::all::*};
 }

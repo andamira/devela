@@ -7,37 +7,34 @@
 //! [`vec`][mod@std::vec]`}`.
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
-#[cfg(not(feature = "data"))]
-mod slice;
+pub mod slice;
+
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
 pub(crate) use slice::*;
 
-/* only compiled with the `data` feature */
+/* feature-gated */
 
-// public modules
-#[cfg(feature = "data")]
-pub mod slice;
-#[doc(no_inline)]
-#[cfg(feature = "data")]
-pub use slice::all::*;
-
-// private modules
 #[cfg(feature = "data")]
 mod array;
 #[cfg(feature = "data")]
 mod reexports;
 #[cfg(feature = "data")]
 mod r#trait;
+
+// re-export private sub-modules
 #[cfg(feature = "data")]
 pub use {array::*, r#trait::*, reexports::*};
 
+// re-export public sub-modules
+#[doc(no_inline)]
+#[cfg(feature = "data")]
+pub use slice::all::*;
+
 #[cfg(feature = "data")]
 pub(crate) mod all {
-    // public
-    pub use super::slice::all::*;
-    // private
-    pub use super::{array::*, r#trait::*, reexports::*};
+    #[doc(inline)]
+    pub use super::{array::*, r#trait::*, reexports::*, slice::all::*};
 }

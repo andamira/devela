@@ -1,4 +1,4 @@
-// devela::cmp::primitives
+// devela::cmp::float
 //
 //! Generate the (const) fns for floating-point primitive comparison.
 //

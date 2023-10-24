@@ -1,20 +1,24 @@
 // devela::task::thread
 //
-//! Native threads, extends `std::`[`thread`][std::thread].
+//! Native threads, extends
+//! `std::`[`thread`][std::thread].
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
-/* only compiled with the `thread` feature */
+// ...
+
+/* feature-gated */
 
 #[cfg(feature = "task")]
 mod sleep;
 
-/* re-exports */
+// re-export private sub-modules
+#[cfg(feature = "task")]
+pub use sleep::*;
 
 #[cfg(feature = "task")]
-pub use all::*;
-#[cfg(feature = "task")]
 pub(crate) mod all {
+    #[doc(inline)]
     pub use super::sleep::*;
 }

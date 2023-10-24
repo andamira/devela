@@ -1,27 +1,30 @@
 // devela::convert
 //
-//! Conversion, extends `std::`[`convert`][std::convert].
+//! Conversion, extends
+//! `std::`[`convert`][std::convert].
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
-/* only compiled with the `convert` feature */
+// ...
+
+/* feature-gated */
 
 #[cfg(feature = "convert")]
 pub mod collection;
 #[cfg(feature = "convert")]
 pub mod primitive;
 
-/* re-exports */
+// re-export public sub-modules
+#[doc(no_inline)]
+#[cfg(feature = "convert")]
+pub use {collection::*, primitive::*};
 
-// Reexported [`az`](https://docs.rs/az) crate.
-// Provides casts and checked casts.
+// re-export external dependencies
 #[doc(no_inline)]
 #[cfg(any(feature = "az", all(feature = "convert", feature = "depend")))]
 pub use ::depend::az;
 
-#[cfg(feature = "convert")]
-pub use all::*;
 #[cfg(feature = "convert")]
 pub(crate) mod all {
     #[doc(inline)]

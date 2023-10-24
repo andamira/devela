@@ -1,20 +1,24 @@
 // devela::path
 //
-//! Paths, extends `std::`[`path`][std::path].
+//! Paths, extends
+//! `std::`[`path`][std::path].
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
-/* only compiled with the `path` feature */
+// ...
+
+/* feature-gated */
 
 #[cfg(feature = "path")]
 mod project;
 
-/* re-exports */
+// re-export private sub-modules
+#[cfg(feature = "path")]
+pub use project::*;
 
 #[cfg(feature = "path")]
-pub use all::*;
-#[cfg(feature = "path")]
 pub(crate) mod all {
+    #[doc(inline)]
     pub use super::project::*;
 }

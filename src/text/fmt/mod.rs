@@ -3,20 +3,21 @@
 //! Formatting, extends `std::` [`fmt`][std::fmt].
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
-/* only compiled with the `char` feature */
-
-mod misc;
+/* feature-gated */
 
 #[cfg(feature = "unsafe_text")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
 mod int_buf;
+mod misc;
 
-/* re-exports */
-
+// re-exports private sub-modules
+#[cfg(feature = "unsafe_text")]
+pub use int_buf::{IntBuf, IntBufAble};
 #[cfg(feature = "text")]
-pub use all::*;
+pub use misc::*;
+
 #[cfg(feature = "text")]
 pub(crate) mod all {
     pub use super::misc::*;

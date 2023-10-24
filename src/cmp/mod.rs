@@ -1,30 +1,33 @@
 // devela::cmp
 //
-//! Comparing and ordering, extends `std::`[`cmp`][std::cmp].
+//! Comparing and ordering, extends
+//! `std::`[`cmp`][std::cmp].
 //!
 //! This module defines many constant functions for comparing primitives, and the
 //! [`pclamp`], [`pmax`] and [`pmin`] functions for comparing partially ordered values.
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
 mod always_fns;
+
 #[allow(unused)]
 #[cfg(not(feature = "cmp"))]
 pub(crate) use always_fns::*;
 
-/* only compiled with the `cmp` feature */
+/* feature-gated */
 
 #[cfg(feature = "cmp")]
 mod float;
 #[cfg(feature = "cmp")]
 mod fns;
 
-/* re-exports */
+// re-export private sub-modules
+#[cfg(feature = "cmp")]
+pub use {always_fns::*, float::*, fns::*};
 
 #[cfg(feature = "cmp")]
-pub use all::*;
-#[cfg(feature = "cmp")]
 pub(crate) mod all {
+    #[doc(inline)]
     pub use super::{always_fns::*, float::*, fns::*};
 }

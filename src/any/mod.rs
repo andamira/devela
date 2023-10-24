@@ -1,23 +1,27 @@
 // devela::any
 //
-//! Dynamic typing and reflection, extends `std::`[`any`][std::any].
+//! Dynamic typing and reflection, extends
+//! `std::`[`any`][std::any].
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
-/* only compiled with the `any` feature */
+// ...
 
+/* feature-gated */
+
+// private sub-modules
 #[cfg(feature = "any")]
 mod ext;
-
-/* re-exports */
 #[cfg(feature = "any")]
 mod reexports;
 
+// re-export private sub-modules
 #[cfg(feature = "any")]
-pub use all::*;
+pub use {ext::*, reexports::*};
+
 #[cfg(feature = "any")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{ext::AnyExt, reexports::*};
+    pub use super::{ext::*, reexports::*};
 }

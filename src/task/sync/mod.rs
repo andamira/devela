@@ -4,15 +4,16 @@
 //! `std::`[`sync`][std::sync].
 //
 
-/* always compiled for internal use */
+/* contains always compiled items */
 
-/* only compiled with the `convert` feature */
+// ...
+
+/* feature-gated */
 
 #[cfg(feature = "task")]
 pub mod atomic;
 
-/* re-exports */
-
+// re-exports public sub-modules
 #[doc(no_inline)]
 #[cfg(feature = "task")]
 pub use atomic::*;
