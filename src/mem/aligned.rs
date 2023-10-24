@@ -1,5 +1,7 @@
-// devela::aligned
+// devela::mem::aligned
 //
+//! Alignment
+//!
 //! Always available for internal use.
 //
 

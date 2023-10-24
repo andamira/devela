@@ -2,6 +2,8 @@ This project includes the following derived works:
 
 - A [modified][0] version of [itoa] by David Tolnay, licensed as MIT OR Apache-2.0,
   in [`IntBuf`] and [`IntBufAble`].
+- A [modified][0] version of [stack_dst] by John Hodge, licensed as MIT OR Apache-2.0,
+  in the [`data::dst`][crate::data::dst] module.
 - Adaptation of [opt_reduce] by Waffle Lapkin, licensed as MIT,
   as part of the [`OptionExt`] trait.
 - Adaptation of [fmtor] by Tyler Ruckinger, licensed as MIT OR Apache-2.0,
@@ -23,6 +25,7 @@ This project includes the following derived works:
 [itoa]: https://crates.io/crates/itoa/1.0.9
 [`IntBuf`]: https://docs.rs/devela/latest/devela/fmt/struct.IntBuf.html
 [`IntBufAble`]: https://docs.rs/devela/latest/devela/fmt/trait.IntBufAble.html
+[stack_dst]: https://crates.io/crates/stack_dst/0.8.1
 [opt_reduce]: https://crates.io/crates/opt_reduce/1.0.0
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
 [option-ext]: https://crates.io/crates/option-ext/0.2.0

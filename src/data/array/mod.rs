@@ -14,7 +14,7 @@ mod methods;
 
 /// An array, backed by the core [`array`] primitive.
 pub struct Array<T, S: Storage, const LEN: usize> {
-    array: S::Stored<[T; LEN]>,
+    pub(crate) array: S::Stored<[T; LEN]>,
 }
 
 /// An [`Array`] stored in the heap.

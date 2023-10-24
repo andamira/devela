@@ -17,6 +17,17 @@ pub(crate) use slice::*;
 
 /* feature-gated */
 
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(feature = "unsafe_data", feature = "depend")))
+)]
+#[cfg(all(
+    feature = "data",
+    feature = "unsafe_data",
+    any(feature = "bytemuck", feature = "depend")
+))]
+pub mod dst;
+
 #[cfg(feature = "data")]
 mod array;
 #[cfg(feature = "data")]
@@ -30,6 +41,13 @@ pub use {array::*, collection::DataCollection, reexports::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
+#[cfg(all(
+    feature = "data",
+    feature = "unsafe_data",
+    any(feature = "bytemuck", feature = "depend")
+))]
+pub use dst::*;
+#[doc(no_inline)]
 #[cfg(feature = "data")]
 pub use slice::all::*;
 
@@ -37,4 +55,8 @@ pub use slice::all::*;
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{array::*, collection::DataCollection, reexports::*, slice::all::*};
+
+    #[doc(inline)]
+    #[cfg(all(feature = "unsafe_data", any(feature = "bytemuck", feature = "depend")))]
+    pub use super::dst::*;
 }
