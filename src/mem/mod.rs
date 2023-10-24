@@ -28,7 +28,7 @@ pub use {aligned::*, always_fns::*, r#trait::*, reexports_core::*, size::*, stor
 // re-export external dependencies
 #[doc(no_inline)]
 #[cfg(any(feature = "bytemuck", all(feature = "mem", feature = "depend")))]
-pub use ::depend::bytemuck;
+pub use crate::depend::bytemuck;
 
 #[cfg(feature = "mem")]
 pub(crate) mod all {
