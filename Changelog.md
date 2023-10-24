@@ -7,6 +7,16 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [0.17.0-wip]
 
+### Added
+- new types: `DstArray`, `DstValue`, `DstStack`, `DstQueue`.
+- new trait: `DstBuf`.
+
+### Removed
+
+### Changed
+- rename `Collection` to `DataCollection`.
+- make `Array` private field public to the crate.
+
 ## [0.16.0] 2023-10-24
 
 ### Added
