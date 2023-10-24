@@ -3,7 +3,21 @@
 //! Functionality related to memory size.
 //
 
-mod bit;
-mod expr;
+/* contains always compiled items */
+
 mod size;
+
+#[allow(unused)]
+#[cfg(not(feature = "mem"))]
+pub(crate) use size::*;
+
+/* feature-gated */
+
+#[cfg(feature = "mem")]
+mod bit;
+#[cfg(feature = "mem")]
+mod expr;
+
+// re-export private sub-modules
+#[cfg(feature = "mem")]
 pub use {bit::*, expr::*, size::*};

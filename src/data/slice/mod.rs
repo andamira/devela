@@ -1,6 +1,6 @@
 // devela::data::slice
 //
-//! Slice, extends
+//! Slices, extends
 //! `std::`[`slice`][std::slice].
 //
 

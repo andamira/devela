@@ -93,6 +93,7 @@ pub trait Size: Mem + Sized {
 /// Note that when `other_size == 0` it returns `(1, 0)` which is an invalid ratio.
 ///
 #[inline]
+#[allow(dead_code)]
 pub const fn mem_ptr_ratio(other_size: usize) -> (usize, usize) {
     #[inline]
     const fn gcd(m: usize, n: usize) -> usize {

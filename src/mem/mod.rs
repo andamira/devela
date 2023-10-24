@@ -6,26 +6,26 @@
 
 /* contains always compiled items */
 
+mod aligned;
 mod always_fns;
+mod reexports_core;
+mod size;
 mod storage;
+mod r#trait;
+
 #[allow(unused)]
 #[cfg(not(feature = "mem"))]
-pub(crate) use {always_fns::*, storage::*};
+pub(crate) use {aligned::*, always_fns::*, r#trait::*, reexports_core::*, size::*, storage::*};
 
 /* feature-gated */
 
-#[cfg(feature = "mem")]
-mod reexports;
-#[cfg(feature = "mem")]
-mod size;
-#[cfg(feature = "mem")]
-mod r#trait;
+// ...
 
-// private sub-modules
+// re-export private sub-modules
 #[cfg(feature = "mem")]
-pub use {always_fns::*, r#trait::*, reexports::*, size::*, storage::*};
+pub use {aligned::*, always_fns::*, r#trait::*, reexports_core::*, size::*, storage::*};
 
-// external dependencies
+// re-export external dependencies
 #[doc(no_inline)]
 #[cfg(any(feature = "bytemuck", all(feature = "mem", feature = "depend")))]
 pub use ::depend::bytemuck;
@@ -33,5 +33,7 @@ pub use ::depend::bytemuck;
 #[cfg(feature = "mem")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{always_fns::*, r#trait::*, reexports::*, size::*, storage::*};
+    pub use super::{
+        aligned::*, always_fns::*, r#trait::*, reexports_core::*, size::*, storage::*,
+    };
 }
