@@ -9,20 +9,28 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - add `mem_size_of_expr` macro.
-- reexport `BinaryHeap` as `collections::PriorityQueue`.
 - new type `NumErr`, new type alias `NumResult`.
+- reexport `BinaryHeap` from `data::PriorityQueue`.
 - new time module, and features: `time`, `time_unsafe`, `unsafe_time`.
+- add `min_fsize`, `max_fsize`, `clamp_fsize` `total_cmp_fsize`.
+- new struct `Array`, and aliases `BoxedArray`, `DirectArray`.
 - new trait `Collection`.
-- new type `Array`.
 
 ### Removed
-- remove `str` module.
-- remove features: `str`, `str_unsafe`, `unsafe_str`, `text`, `texts_unsafe`.
+- remove features: `ascii`, `ascii_unsafe`, `unsafe_ascii`, `char`, `char_unsafe`, `unsafe_char`, `fmt`, `fmt_unsafe`, `unsafe_fmt`, `future`, `future_unsafe`, `unsafe_future`, `option`, `option_unsafe`, `unsafe_option`, `slice`, `slice_unsafe`, `unsafe_slice`, `str`, `str_unsafe`, `unsafe_str`, `sync`, `sync_unsafe`, `unsafe_sync`, `texts`, `texts_unsafe`, `thread`, `thread_unsafe`, `unsafe_thread`.
+- remove trait `AltDebug`.
 
 ### Changed
 - rename `HashMap`, `HashSet` as `UnorderedMap`, `UnorderedSet`.
 - rename `BTreeMap`, `BTreeSet` as `OrderedMap`, `OrderedSet`.
 - change the result type of Num methods from `Option` to `Result`.
+- move to `text` the root modules: `ascii`, `char`, `fmt` `str`.
+- move to `task` the root modules: `future`, `sync`, `thread`.
+- move the traits `Also`, `Apply` to `result`.
+- move to `data` the root module: `slice`.
+- rename `collections` module to `data`.
+- rename `codegen` module to `meta`.
+- rename `string` module to `text`.
 - make `Storage` always compiled.
 
 ### Fixed
