@@ -10,15 +10,16 @@ use core::{fmt, num::*, str::FromStr};
 #[cfg(all(all(feature = "bytemuck", feature = "dep"), feature = "unsafe_num"))]
 use crate::mem::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
+impl_range![Range];
 macro_rules! impl_range {
     // Entry point, generates Range structures for each sign and size.
     ($name:ident) => {
-        impl_range![Range, "A signed", i, 8, 16, 32, 64, 128, size];
-        impl_range![Range, "An unsigned", u, 8, 16, 32, 64, 128, size];
+        impl_range![$name, "A signed", i, 8, 16, 32, 64, 128, size];
+        impl_range![$name, "An unsigned", u, 8, 16, 32, 64, 128, size];
 
     };
     ($name:ident, $doc:literal, $s:ident, $( $b:expr ),+) => {
-        $( impl_range![@Range, $doc, $s, $b]; )+
+        $( impl_range![@$name, $doc, $s, $b]; )+
     };
 
     // $name: the base name of the new type. E.g. Range.
@@ -255,4 +256,4 @@ macro_rules! impl_range {
         }
     }};
 }
-impl_range![Range];
+use impl_range;

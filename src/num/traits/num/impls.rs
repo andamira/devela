@@ -26,8 +26,8 @@ macro_rules! impl_num {
         // i*
         impl Num for $p {
             type Inner = $p;
-            type OpOut = $p;
-            type OpRhs = $p;
+            type Out = $p;
+            type Rhs = $p;
 
             // base
             #[inline]
@@ -65,8 +65,8 @@ macro_rules! impl_num {
         // NonZeroI*
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
-            type OpOut = [<NonZero $p:camel>];
-            type OpRhs = [<NonZero $p:camel>];
+            type Out = [<NonZero $p:camel>];
+            type Rhs = [<NonZero $p:camel>];
 
             // base
             #[inline]
@@ -113,24 +113,24 @@ macro_rules! impl_num {
         // NonSpecificI*
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
             type Inner = $p;
-            type OpOut =  [<NonSpecific $p:camel>]<V>;
-            type OpRhs =  [<NonSpecific $p:camel>]<V>;
+            type Out =  [<NonSpecific $p:camel>]<V>;
+            type Rhs =  [<NonSpecific $p:camel>]<V>;
             impl_num![custom_i_body];
         }
 
         // NonRangeI*
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
-            type OpOut = [<NonRange $p:camel>]<RMIN, RMAX>;
-            type OpRhs = [<NonRange $p:camel>]<RMIN, RMAX>;
+            type Out = [<NonRange $p:camel>]<RMIN, RMAX>;
+            type Rhs = [<NonRange $p:camel>]<RMIN, RMAX>;
             impl_num![custom_i_body];
         }
 
         // RangeI*
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
-            type OpOut = [<Range $p:camel>]<RMIN, RMAX>;
-            type OpRhs = [<Range $p:camel>]<RMIN, RMAX>;
+            type Out = [<Range $p:camel>]<RMIN, RMAX>;
+            type Rhs = [<Range $p:camel>]<RMIN, RMAX>;
             impl_num![custom_i_body];
         }
     }};
@@ -142,8 +142,8 @@ macro_rules! impl_num {
         // u*
         impl Num for $p {
             type Inner = $p;
-            type OpOut = $p;
-            type OpRhs = $p;
+            type Out = $p;
+            type Rhs = $p;
 
             // base
             #[inline]
@@ -185,8 +185,8 @@ macro_rules! impl_num {
         // NonZeroU*
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
-            type OpOut = [<NonZero $p:camel>];
-            type OpRhs = [<NonZero $p:camel>];
+            type Out = [<NonZero $p:camel>];
+            type Rhs = [<NonZero $p:camel>];
 
             // base
             #[inline]
@@ -237,23 +237,23 @@ macro_rules! impl_num {
         // NonSpecificU*
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
             type Inner = $p;
-            type OpOut = [<NonSpecific $p:camel>]<V>;
-            type OpRhs = [<NonSpecific $p:camel>]<V>;
+            type Out = [<NonSpecific $p:camel>]<V>;
+            type Rhs = [<NonSpecific $p:camel>]<V>;
             impl_num![custom_u_body]; }
 
         // NonRangeU*
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
-            type OpOut = [<NonRange $p:camel>]<RMIN, RMAX>;
-            type OpRhs = [<NonRange $p:camel>]<RMIN, RMAX>;
+            type Out = [<NonRange $p:camel>]<RMIN, RMAX>;
+            type Rhs = [<NonRange $p:camel>]<RMIN, RMAX>;
             impl_num![custom_u_body];
         }
 
         // RangeU*
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
-            type OpOut = [<Range $p:camel>]<RMIN, RMAX>;
-            type OpRhs = [<Range $p:camel>]<RMIN, RMAX>;
+            type Out = [<Range $p:camel>]<RMIN, RMAX>;
+            type Rhs = [<Range $p:camel>]<RMIN, RMAX>;
             impl_num![custom_u_body]; }
     }};
 
@@ -264,8 +264,8 @@ macro_rules! impl_num {
         // f*
         impl Num for $p { paste! {
             type Inner = $p;
-            type OpOut = $p;
-            type OpRhs = $p;
+            type Out = $p;
+            type Rhs = $p;
 
             // base
             #[inline]
@@ -385,21 +385,21 @@ macro_rules! impl_num {
         $( impl_num![@op1_none $Self => $op]; )+ };
     (@op1_none $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Result<$Self::OpOut> { NumError::notimpl() }
+        fn [<num_ $op>](self) -> Result<$Self::Out> { NumError::notimpl() }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Result<$Self::OpOut> { NumError::notimpl() }
+        fn [<num_ref_ $op>](&self) -> Result<$Self::Out> { NumError::notimpl() }
     }};
     (op2_none $Self:ty => $($op:ident),+) => {
         $( impl_num![@op2_none $Self => $op]; )+ };
     (@op2_none $Self:ty => $op:ident) => {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Result<$Self::OpOut> { NumError::notimpl() }
+        fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> { NumError::notimpl() }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::OpOut> { NumError::notimpl() }
+        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::Out> { NumError::notimpl() }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::OpOut> { NumError::notimpl() }
+        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::Out> { NumError::notimpl() }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::OpOut> { NumError::notimpl() }
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::Out> { NumError::notimpl() }
     };
 
     /* ops that call .checked() for i*, u*, and few for NonZero* */
@@ -408,11 +408,11 @@ macro_rules! impl_num {
         $( impl_num![@op1_checked $Self => $op]; )+ };
     (@op1_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Result<$Self::OpOut> {
+        fn [<num_ $op>](self) -> Result<$Self::Out> {
             self.[<checked_$op>]().ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Result<$Self::OpOut> {
+        fn [<num_ref_ $op>](&self) -> Result<$Self::Out> {
             self.[<checked_$op>]().ok_or(Unspecified)
         }
     }};
@@ -420,19 +420,19 @@ macro_rules! impl_num {
         $( impl_num![@op2_checked $Self => $op]; )+ };
     (@op2_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Result<$Self::OpOut> {
+        fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> {
             self.[<checked_ $op>](other).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::OpOut> {
+        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::Out> {
             self.[<checked_ $op>](*other).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::OpOut> {
+        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::Out> {
             self.[<checked_ $op>](other).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::OpOut> {
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::Out> {
             self.[<checked_ $op>](*other).ok_or(Unspecified)
         }
     }};
@@ -443,11 +443,11 @@ macro_rules! impl_num {
         $( impl_num![@op1_get_checked $Self => $op]; )+ };
     (@op1_get_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Result<$Self::OpOut> {
+        fn [<num_ $op>](self) -> Result<$Self::Out> {
             $Self::new(self.get().[<checked_ $op>]().ok_or(Unspecified)?).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Result<$Self::OpOut> {
+        fn [<num_ref_ $op>](&self) -> Result<$Self::Out> {
             $Self::new(self.get().[<checked_ $op>]().ok_or(Unspecified)?).ok_or(Unspecified)
         }
     }};
@@ -455,19 +455,19 @@ macro_rules! impl_num {
         $( impl_num![@op2_get_checked $Self => $op]; )+ };
     (@op2_get_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Result<$Self::OpOut> {
+        fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> {
             $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::OpOut> {
+        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::Out> {
             $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::OpOut> {
+        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::Out> {
             $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::OpOut> {
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::Out> {
             $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
         }
     }};
@@ -477,26 +477,26 @@ macro_rules! impl_num {
     (op1_float $Self:ty => $($op:ident),+) => { $( impl_num![@op1_float $Self => $op]; )+ };
     (@op1_float $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Result<$Self::OpOut> { Ok([<$op:camel>]::[<$op>](self)) }
+        fn [<num_ $op>](self) -> Result<$Self::Out> { Ok([<$op:camel>]::[<$op>](self)) }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Result<$Self::OpOut> { Ok([<$op:camel>]::[<$op>](self)) }
+        fn [<num_ref_ $op>](&self) -> Result<$Self::Out> { Ok([<$op:camel>]::[<$op>](self)) }
     }};
     (op2_float $Self:ty => $($op:ident),+) => { $( impl_num![@op2_float $Self => $op]; )+ };
     (@op2_float $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Result<$Self::OpOut> {
+        fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> {
             Ok([<$op:camel>]::[<$op>](self, other))
         }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::OpOut> {
+        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::Out> {
             Ok([<$op:camel>]::[<$op>](self, *other))
         }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::OpOut> {
+        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::Out> {
             Ok([<$op:camel>]::[<$op>](self, other))
         }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::OpOut> {
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::Out> {
             Ok([<$op:camel>]::[<$op>](self, *other))
         }
     }};

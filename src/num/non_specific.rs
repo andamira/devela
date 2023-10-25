@@ -13,14 +13,15 @@ use core::{fmt, num::*, str::FromStr};
 #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
 use bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
+impl_non_specific![NonSpecific];
 macro_rules! impl_non_specific {
     // Entry point, generates NonSpecific structures for each sign and size.
     ($name:ident) => {
-        impl_non_specific![NonSpecific, "A signed", i, 8, 16, 32, 64, 128, size];
-        impl_non_specific![NonSpecific, "An unsigned", u, 8, 16, 32, 64, 128, size];
+        impl_non_specific![$name, "A signed", i, 8, 16, 32, 64, 128, size];
+        impl_non_specific![$name, "An unsigned", u, 8, 16, 32, 64, 128, size];
     };
     ($name:ident, $doc:literal, $s:ident, $( $b:expr ),+) => {
-        $( impl_non_specific![@NonSpecific, $doc, $s, $b]; )+
+        $( impl_non_specific![@$name, $doc, $s, $b]; )+
     };
 
     // $name: the base name of the new type. E.g. NonSpecific.
@@ -217,4 +218,4 @@ macro_rules! impl_non_specific {
         }
     }};
 }
-impl_non_specific![NonSpecific];
+use impl_non_specific;

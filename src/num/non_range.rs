@@ -9,14 +9,15 @@ use core::{fmt, num::*, str::FromStr};
 #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
 use bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
+impl_non_range![NonRange];
 macro_rules! impl_non_range {
     // Entry point, generates NonRange structures for each sign and size.
     ($name:ident) => {
-        impl_non_range![NonRange, "A signed", i, 8, 16, 32, 64, 128, size];
-        impl_non_range![NonRange, "An unsigned", u, 8, 16, 32, 64, 128, size];
+        impl_non_range![$name, "A signed", i, 8, 16, 32, 64, 128, size];
+        impl_non_range![$name, "An unsigned", u, 8, 16, 32, 64, 128, size];
     };
     ($name:ident, $doc:literal, $s:ident, $( $b:expr ),+) => {
-        $( impl_non_range![@NonRange, $doc, $s, $b]; )+
+        $( impl_non_range![@$name, $doc, $s, $b]; )+
     };
 
     // $name: the base name of the new type. E.g. NonRange.
@@ -267,4 +268,4 @@ macro_rules! impl_non_range {
         }
     }};
 }
-impl_non_range![NonRange];
+use impl_non_range;
