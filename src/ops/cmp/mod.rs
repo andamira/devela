@@ -1,4 +1,4 @@
-// devela::cmp
+// devela::ops::cmp
 //
 //! Comparing and ordering, extends
 //! `std::`[`cmp`][std::cmp].
@@ -12,21 +12,21 @@
 mod always_fns;
 
 #[allow(unused)]
-#[cfg(not(feature = "cmp"))]
+#[cfg(not(feature = "ops"))]
 pub(crate) use always_fns::*;
 
 /* feature-gated */
 
-#[cfg(feature = "cmp")]
+#[cfg(feature = "ops")]
 mod float;
-#[cfg(feature = "cmp")]
+#[cfg(feature = "ops")]
 mod fns;
 
 // re-export private sub-modules
-#[cfg(feature = "cmp")]
+#[cfg(feature = "ops")]
 pub use {always_fns::*, float::*, fns::*};
 
-#[cfg(feature = "cmp")]
+#[cfg(feature = "ops")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{always_fns::*, float::*, fns::*};

@@ -1,4 +1,4 @@
-// devela::cmp::float
+// devela::ops::cmp::float
 //
 //! Generate the (const) fns for floating-point primitive comparison.
 //
@@ -26,10 +26,10 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "A (`const`) port of `f" $b "::`[`total_cmp`][f" $b "#method.total_cmp]."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+        /// This function will only be `const` if the `unsafe_ops` feature is enabled.
         #[inline]
         #[must_use]
-        #[cfg(feature = "unsafe_cmp")]
+        #[cfg(feature = "unsafe_ops")]
         pub const fn [<total_cmp_f $b>](a: [<f$b>], b: [<f$b>]) -> Ordering {
             // WAIT:const_float_bits_conv https://github.com/rust-lang/rust/issues/72447
             // let mut left = a.to_bits() as [<i $b>];
@@ -48,7 +48,7 @@ macro_rules! primitive_float_const_cmp {
         #[inline]
         #[must_use]
         #[allow(missing_docs)]
-        #[cfg(not(feature = "unsafe_cmp"))]
+        #[cfg(not(feature = "unsafe_ops"))]
         pub fn [<total_cmp_f $b>](a: [<f$b>], b: [<f$b>]) -> Ordering {
             let mut left = a.to_bits() as [<i $b>];
             let mut right = b.to_bits() as [<i $b>];
@@ -62,11 +62,11 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "Compares and returns a clamped [total ordered] `f" $b "` between `min` and `max`."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+        /// This function will only be `const` if the `unsafe_ops` feature is enabled.
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::cmp::clamp_f" $b ";"]
+        #[doc = "use devela::ops::clamp_f" $b ";"]
         ///
         #[doc = "assert_eq![2.0, clamp_f" $b "(5.0, -1.0, 2.0)];"]
         #[doc = "assert_eq![-1.0, clamp_f" $b "(-5.0, -1.0, 2.0)];"]
@@ -75,7 +75,7 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "[total ordered]: total_cmp_f" $b]
         #[inline]
         #[must_use]
-        #[cfg(feature = "unsafe_cmp")]
+        #[cfg(feature = "unsafe_ops")]
         pub const fn [<clamp_f $b>](value: [<f $b>], min: [<f $b>], max: [<f $b>]) -> [<f $b>] {
             [<min_f $b>]([<max_f $b>](value, min), max)
         }
@@ -83,7 +83,7 @@ macro_rules! primitive_float_const_cmp {
         #[inline]
         #[must_use]
         #[allow(missing_docs)]
-        #[cfg(not(feature = "unsafe_cmp"))]
+        #[cfg(not(feature = "unsafe_ops"))]
         pub fn [<clamp_f $b>](value: [<f $b>], min: [<f $b>], max: [<f $b>]) -> [<f $b>] {
             [<min_f $b>]([<max_f $b>](value, min), max)
         }
@@ -92,11 +92,11 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "using [total ordering][total_cmp_f" $b "]."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+        /// This function will only be `const` if the `unsafe_ops` feature is enabled.
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::cmp::max_f" $b ";"]
+        #[doc = "use devela::ops::max_f" $b ";"]
         ///
         #[doc = "assert_eq![2.0, max_f" $b "(2.0, -1.0)];"]
         #[doc = "assert_eq![2.0, max_f" $b "(1.0, 2.0)];"]
@@ -106,7 +106,7 @@ macro_rules! primitive_float_const_cmp {
         /// ```
         #[inline]
         #[must_use]
-        #[cfg(feature = "unsafe_cmp")]
+        #[cfg(feature = "unsafe_ops")]
         pub const fn [<max_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match [<total_cmp_f $b>](a, b) {
                 Greater | Equal => a,
@@ -117,7 +117,7 @@ macro_rules! primitive_float_const_cmp {
         #[inline]
         #[must_use]
         #[allow(missing_docs)]
-        #[cfg(not(feature = "unsafe_cmp"))]
+        #[cfg(not(feature = "unsafe_ops"))]
         pub fn [<max_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match a.[<total_cmp>](&b) {
                 Greater | Equal => a,
@@ -129,11 +129,11 @@ macro_rules! primitive_float_const_cmp {
         #[doc = "using [total ordering][total_cmp_f" $b "]."]
         ///
         /// # Features
-        /// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+        /// This function will only be `const` if the `unsafe_ops` feature is enabled.
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::cmp::min_f" $b ";"]
+        #[doc = "use devela::ops::min_f" $b ";"]
         ///
         #[doc = "assert_eq![-1.0, min_f" $b "(2.0, -1.0)];"]
         #[doc = "assert_eq![1.0, min_f" $b "(1.0, 2.0)];"]
@@ -143,7 +143,7 @@ macro_rules! primitive_float_const_cmp {
         /// ```
         #[inline]
         #[must_use]
-        #[cfg(feature = "unsafe_cmp")]
+        #[cfg(feature = "unsafe_ops")]
         pub const fn [<min_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match [<total_cmp_f $b>](a, b) {
                 Greater | Equal => b,
@@ -154,7 +154,7 @@ macro_rules! primitive_float_const_cmp {
         #[inline]
         #[must_use]
         #[allow(missing_docs)]
-        #[cfg(not(feature = "unsafe_cmp"))]
+        #[cfg(not(feature = "unsafe_ops"))]
         pub fn [<min_f $b>](a: [<f $b>], b: [<f $b>]) -> [<f $b>] {
             match a.[<total_cmp>](&b) {
                 Greater | Equal => b,
@@ -170,13 +170,13 @@ use primitive_float_const_cmp;
 /// A pointer-sized redirect to `total_cmp_f[32|64]`.
 ///
 /// # Features
-/// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+/// This function will only be `const` if the `unsafe_ops` feature is enabled.
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(any(target_pointer_width = "32", target_pointer_width = "64")))
 )]
 #[cfg(all(
-    feature = "unsafe_cmp",
+    feature = "unsafe_ops",
     any(target_pointer_width = "32", target_pointer_width = "64")
 ))]
 #[inline]
@@ -188,7 +188,7 @@ pub const fn total_cmp_fsize(a: fsize, b: fsize) -> Ordering {
     return total_cmp_f64(a, b);
 }
 #[cfg(all(
-    not(feature = "unsafe_cmp"),
+    not(feature = "unsafe_ops"),
     any(target_pointer_width = "32", target_pointer_width = "64")
 ))]
 #[inline]
@@ -204,13 +204,13 @@ pub fn total_cmp_fsize(a: fsize, b: fsize) -> Ordering {
 /// Compares and returns a clamped total ordered [`fsize`] between `min` and `max`.
 ///
 /// # Features
-/// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+/// This function will only be `const` if the `unsafe_ops` feature is enabled.
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(any(target_pointer_width = "32", target_pointer_width = "64")))
 )]
 #[cfg(all(
-    feature = "unsafe_cmp",
+    feature = "unsafe_ops",
     any(target_pointer_width = "32", target_pointer_width = "64")
 ))]
 #[inline]
@@ -222,7 +222,7 @@ pub const fn clamp_fsize(value: fsize, min: fsize, max: fsize) -> fsize {
     return clamp_f64(value, min, max);
 }
 #[cfg(all(
-    not(feature = "unsafe_cmp"),
+    not(feature = "unsafe_ops"),
     any(target_pointer_width = "32", target_pointer_width = "64")
 ))]
 #[inline]
@@ -238,13 +238,13 @@ pub fn clamp_fsize(value: fsize, min: fsize, max: fsize) -> fsize {
 /// Compares and returns the maximum of two [`fsize`] values using total ordering.
 ///
 /// # Features
-/// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+/// This function will only be `const` if the `unsafe_ops` feature is enabled.
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(any(target_pointer_width = "32", target_pointer_width = "64"))))
 )]
 #[cfg(all(
-    feature = "unsafe_cmp",
+    feature = "unsafe_ops",
     any(target_pointer_width = "32", target_pointer_width = "64")
 ))]
 #[inline]
@@ -256,7 +256,7 @@ pub const fn max_fsize(a: fsize, b: fsize) -> fsize {
     return max_f64(a, b);
 }
 #[cfg(all(
-    not(feature = "unsafe_cmp"),
+    not(feature = "unsafe_ops"),
     any(target_pointer_width = "32", target_pointer_width = "64")
 ))]
 #[inline]
@@ -272,13 +272,13 @@ pub fn max_fsize(a: fsize, b: fsize) -> fsize {
 /// Compares and returns the minimum of two [`fsize`] values using total ordering.
 ///
 /// # Features
-/// This function will only be `const` if the `unsafe_cmp` feature is enabled.
+/// This function will only be `const` if the `unsafe_ops` feature is enabled.
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(any(target_pointer_width = "32", target_pointer_width = "64")))
 )]
 #[cfg(all(
-    feature = "unsafe_cmp",
+    feature = "unsafe_ops",
     any(target_pointer_width = "32", target_pointer_width = "64")
 ))]
 #[inline]
@@ -290,7 +290,7 @@ pub const fn min_fsize(a: fsize, b: fsize) -> fsize {
     return min_f64(a, b);
 }
 #[cfg(all(
-    not(feature = "unsafe_cmp"),
+    not(feature = "unsafe_ops"),
     any(target_pointer_width = "32", target_pointer_width = "64")
 ))]
 #[inline]

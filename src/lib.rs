@@ -37,9 +37,8 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(
         feature = "unsafe", // includes all below
-        feature = "unsafe_any", feature = "unsafe_cmp", feature = "unsafe_data",
-        feature = "unsafe_convert", feature = "unsafe_mem", feature = "unsafe_meta",
-        feature = "unsafe_num",
+        feature = "unsafe_any", feature = "unsafe_data", feature = "unsafe_mem",
+        feature = "unsafe_meta", feature = "unsafe_num", feature = "unsafe_ops",
         //
         feature = "unsafe_os", // includes: unsafe_{linux, term}
             feature = "unsafe_linux", feature = "unsafe_term",
@@ -58,12 +57,6 @@ pub mod any;
 #[cfg(all(not(feature = "any"), not(test)))]
 pub(crate) mod any; // the "any" feature is disabled
 
-#[cfg(any(feature = "cmp", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "cmp")))]
-pub mod cmp;
-#[cfg(all(not(feature = "cmp"), not(test)))]
-pub(crate) mod cmp; // the "cmp" feature is disabled
-
 #[cfg(any(feature = "color", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "color")))]
 pub mod color;
@@ -75,12 +68,6 @@ pub(crate) mod color; // the "color" feature is disabled
 pub mod data;
 #[cfg(all(not(feature = "data"), not(test)))]
 pub(crate) mod data; // the "data" feature is disabled
-
-#[cfg(any(feature = "convert", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "convert")))]
-pub mod convert;
-#[cfg(all(not(feature = "convert"), not(test)))]
-pub(crate) mod convert; // the "convert" feature is disabled
 
 #[cfg(any(feature = "mem", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
@@ -99,6 +86,12 @@ pub(crate) mod meta; // the "meta" feature is disabled
 pub mod num;
 #[cfg(all(not(feature = "num"), not(test)))]
 pub(crate) mod num; // the "num" feature is disabled
+
+#[cfg(any(feature = "ops", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "ops")))]
+pub mod ops;
+#[cfg(all(not(feature = "ops"), not(test)))]
+pub(crate) mod ops; // the "ops" feature is disabled
 
 pub mod os;
 
@@ -142,20 +135,12 @@ pub mod all {
     pub use super::any::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "cmp")]
-    pub use super::cmp::all::*;
-
-    #[doc(inline)]
     #[cfg(feature = "color")]
     pub use super::color::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "data")]
     pub use super::data::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "convert")]
-    pub use super::convert::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "mem")]
@@ -168,6 +153,10 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "num")]
     pub use super::num::all::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "ops")]
+    pub use super::ops::all::*;
 
     #[doc(inline)]
     // no `os` feature, just for each platform submodule
@@ -202,14 +191,14 @@ pub mod prelude {
     #[cfg(feature = "data")]
     pub use crate::data::{DataCollection, SliceExt, SliceExtMut};
 
-    #[cfg(feature = "convert")]
-    pub use crate::convert::{FromPrimitives, IntoPrimitives};
-
     #[cfg(feature = "mem")]
     pub use crate::mem::{BitSize, Mem, Size};
 
     #[cfg(feature = "num")]
     pub use crate::num::{Num, NumRef};
+
+    #[cfg(feature = "ops")]
+    pub use crate::ops::convert::primitive::{FromPrimitives, IntoPrimitives};
 
     #[cfg(feature = "result")]
     pub use crate::result::{Also, Apply, OptionExt, ResultExt};

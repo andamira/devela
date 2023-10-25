@@ -5,7 +5,7 @@
 
 use super::Ansi;
 use crate::{
-    cmp::min_u8,
+    ops::min_u8,
     text::{ascii_1digit, ascii_u8_digits},
 };
 
