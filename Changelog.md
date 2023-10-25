@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.17.0-wip]
 
 ### Added
-- new types: `DstArray`, `DstValue`, `DstStack`, `DstQueue`.
+- new types: `DstArray`, `DstValue`, `DstStack`, `DstQueue`, `DstQueueIter`, `DstQueueIterMut`, `DstQueuePopHandle`, `DstStackIter`, `DstStackIterMut`.
+- new aliases: `DstQueueU`, `DstStackU`, `DstValueU`, `DstVecU`.
 - new trait: `DstBuf`.
 
 ### Removed
@@ -16,6 +17,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Changed
 - rename `Collection` to `DataCollection`.
 - make `Array` private field public to the crate.
+- rename `depend` feature to `dep` and `depend` module to `_dep`.
 
 ## [0.16.0] 2023-10-24
 
