@@ -5,6 +5,7 @@
 
 // warnings
 #![warn(missing_docs, clippy::all)]
+#![cfg_attr(not(feature = "deps"), allow(rustdoc::broken_intra_doc_links))]
 #![allow(
     clippy::module_inception, // allow modules with the same name as its parent
     clippy::wrong_self_convention, // allow `is_` methods having an owned self

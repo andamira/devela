@@ -83,7 +83,9 @@ dd = "doc"
 ddo = "doc --open"
 # +nightly
 nd = "doc --no-deps -F=nightly_docs"
+ndf = "doc --no-deps -F=nightly_docs_fast"
 ndo = "doc --open --no-deps -F=nightly_docs"
+ndfo = "doc --open --no-deps -F=nightly_docs_fast"
 ndd = "doc -F=nightly_docs"
 nddo = "doc --open -F=nightly_docs"
 

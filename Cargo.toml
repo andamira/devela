@@ -145,6 +145,9 @@ nightly = [ # enables nightly features
 nightly_docs = [ # enables features for docs.rs
 	"nightly", "full", "std", "unsafe", "dep",
 ]
+nightly_docs_fast = [ # faster doc compilation without deps (-10s in my system)
+	"nightly", "full", "std", "unsafe",
+]
 
 
 #* dependency features *#
