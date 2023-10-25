@@ -8,7 +8,11 @@ use crate::mem::{Direct, Storage};
 #[cfg(feature = "unsafe_init")]
 use core::mem::{self, MaybeUninit};
 use core::{
+    borrow::{Borrow, BorrowMut},
+    cmp::Ordering,
+    convert::{AsMut, AsRef},
     fmt,
+    hash::{Hash, Hasher},
     ops::{Deref, DerefMut},
 };
 
@@ -30,6 +34,30 @@ impl<T, S: Storage, const LEN: usize> Deref for Array<T, S, LEN> {
 impl<T, S: Storage, const LEN: usize> DerefMut for Array<T, S, LEN> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.array.deref_mut()
+    }
+}
+// AsRef
+impl<T, S: Storage, const LEN: usize> AsRef<[T; LEN]> for Array<T, S, LEN> {
+    fn as_ref(&self) -> &[T; LEN] {
+        &self.array
+    }
+}
+// AsMut
+impl<T, S: Storage, const LEN: usize> AsMut<[T; LEN]> for Array<T, S, LEN> {
+    fn as_mut(&mut self) -> &mut [T; LEN] {
+        &mut self.array
+    }
+}
+// Borrow
+impl<T, S: Storage, const LEN: usize> Borrow<[T; LEN]> for Array<T, S, LEN> {
+    fn borrow(&self) -> &[T; LEN] {
+        &self.array
+    }
+}
+// BorrowMut
+impl<T, S: Storage, const LEN: usize> BorrowMut<[T; LEN]> for Array<T, S, LEN> {
+    fn borrow_mut(&mut self) -> &mut [T; LEN] {
+        &mut self.array
     }
 }
 
@@ -61,7 +89,6 @@ where
         debug.finish()
     }
 }
-
 // T:PartialEq
 impl<T: PartialEq, S: Storage, const LEN: usize> PartialEq for Array<T, S, LEN>
 where
@@ -73,6 +100,33 @@ where
 }
 // T:Eq
 impl<T: Eq, S: Storage, const LEN: usize> Eq for Array<T, S, LEN> where S::Stored<[T; LEN]>: Eq {}
+// T:PartialOrd
+impl<T: PartialOrd, S: Storage, const LEN: usize> PartialOrd for Array<T, S, LEN>
+where
+    S::Stored<[T; LEN]>: PartialOrd,
+{
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.array.partial_cmp(&other.array)
+    }
+}
+// T:Ord
+impl<T: Ord, S: Storage, const LEN: usize> Ord for Array<T, S, LEN>
+where
+    S::Stored<[T; LEN]>: Ord,
+{
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.array.cmp(&other.array)
+    }
+}
+// T:Hash
+impl<T: Hash, S: Storage, const LEN: usize> Hash for Array<T, S, LEN>
+where
+    S::Stored<[T; LEN]>: Hash,
+{
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.array.hash(state)
+    }
+}
 
 // S:() + T:Default
 impl<T: Default, const LEN: usize> Default for Array<T, (), LEN> {
