@@ -99,7 +99,7 @@ fn main() -> Result<()> {
 
     if args.docs {
         headline(0, &format!["`full` docs compilation:"]);
-        run_cargo("", "+nightly", &["doc", "-F nightly_docs"])?;
+        run_cargo("", "+nightly", &["doc", "-F std,full,unsafe,nightly,dep"])?;
     }
 
     /* arches */

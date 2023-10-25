@@ -143,12 +143,6 @@ unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
 #* nightly features *#
 
 nightly = [ # enables nightly features
-	]
-nightly_docs = [ # enables features for docs.rs
-	"nightly", "full", "std", "unsafe", "dep",
-]
-nightly_docs_fast = [ # faster doc compilation without deps (-10s in my system)
-	"nightly", "full", "std", "unsafe",
 ]
 
 
@@ -218,7 +212,7 @@ devela = { path = ".", features = ["full", "dep"] }
 
 [package.metadata.docs.rs]
 no-default-features = true
-features = ["nightly_docs"]
+features = ["std", "full", "unsafe", "nightly", "dep"]
 
 [badges]
 maintenance = { status = "experimental" }

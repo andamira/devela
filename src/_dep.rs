@@ -27,6 +27,8 @@
 //! is enabled independently of the `text` module.
 //
 
+#![cfg_attr(not(feature = "full"), allow(rustdoc::private_intra_doc_links))]
+
 pub use _dep::*;
 
 // When the `dep` feature is disabled, any optional dependency can be

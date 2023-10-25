@@ -99,7 +99,6 @@ They offer a gradient of safety.
 They are currently only used for generating improved documentation.
 
 - `nightly`: enables nightly features.
-- `nightly_docs`: enables features for docs.rs
 
 
 ### Dependency features

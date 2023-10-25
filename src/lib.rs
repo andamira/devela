@@ -225,5 +225,6 @@ pub mod _dep;
 
 /// Documentation on features.
 pub mod __doc {
+    #![cfg_attr(not(feature = "full"), allow(rustdoc::private_intra_doc_links))]
     #![doc = include_str!("./Doc.md")]
 }
