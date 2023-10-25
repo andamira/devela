@@ -70,8 +70,8 @@ jobs:
       - name: "Install nightly"
         uses: dtolnay/rust-toolchain@nightly
 
-      - name: "cargo +nightly doc -F nightly_docs"
-        run: cargo doc -F nightly_docs
+      - name: "cargo +nightly doc -F std,full,unsafe,nightly,dep"
+        run: cargo doc -F std,full,unsafe,nightly,dep
         env:
           RUSTDOCFLAGS: --cfg docsrs
 
