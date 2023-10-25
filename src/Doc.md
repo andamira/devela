@@ -47,12 +47,12 @@ optional dependencies.
 
 Single modules: 
 - `any`, `any_unsafe:` enables the [`any`] module.
-  and the [`az`] optional dependency.
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
 - `meta`, `meta_unsafe`: enables the [`meta`] module,
   and the [`devela_macros`] optional dependency.
 - `num`, `num_unsafe`: enables the [`num`] module.
+- `ops`, `ops_unsafe`: enables the [`ops`] module.
 - `path`, `path_unsafe`: enables the [`path`] module.
 - `result`, `result_unsafe`: enables the [`result`] module.
 - `text`, `text_unsafe`: enables the [`text`] module.
@@ -103,7 +103,6 @@ They are currently only used for generating improved documentation.
 
 Dependencies can also be enabled individually:
 - `atomic` is used in `task`.
-- `az`
 - `bytemuck` is used in `mem`, `linux`, `num`.
 - `const-str` is used in `text`, `result`, `os`, `linux`.
 - `devela_macros` is used in `meta`.
@@ -121,7 +120,6 @@ Dependencies can also be enabled individually:
 [`mem_as_bytes_sized`]: mem::mem_as_bytes_sized
 
 [`atomic`]: dep::atomic
-[`az`]: dep::az
 [`bytemuck`]: dep::bytemuck
 [`devela_macros`]: dep::devela_macros
 [`const-str`]: dep::const_str

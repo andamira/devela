@@ -38,8 +38,8 @@ mod _dep {
     #[cfg(feature = "atomic")]
     pub use ::atomic;
 
-    #[cfg(feature = "az")]
-    pub use ::az;
+    // #[cfg(feature = "az")]
+    // pub use ::az;
 
     #[cfg(feature = "bytemuck")]
     pub use ::bytemuck;
@@ -76,8 +76,8 @@ mod _dep {
     reexport! { depend feature: "task",
     dep: "atomic", atomic, "A generic atomic wrapper type." }
 
-    reexport! { depend feature: "convert",
-    dep: "az", az, "Casts and checked casts." }
+    // reexport! { depend feature: "convert",
+    // dep: "az", az, "Casts and checked casts." }
 
     reexport! { depend feature: "mem",
     dep: "bytemuck", bytemuck, "Small utilities for casting between plain data types." }

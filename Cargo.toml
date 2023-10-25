@@ -85,7 +85,7 @@ data = ["dep?/hashbrown"]
 mem = ["dep?/bytemuck"]
 meta = ["dep?/devela_macros"]
 num = []
-ops = ["dep?/az"]
+ops = []
 path = []
 result = []
 task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
@@ -148,7 +148,7 @@ nightly = [ # enables nightly features
 dep = ["dep:dep"] # module features enables their dependencies as defined.
 
 atomic = ["dep:atomic"]
-az = ["dep:az"]
+#az = ["dep:az"]
 bytemuck = ["dep:bytemuck"]
 const-str = ["dep:const-str"]
 devela_macros = ["dep:devela_macros"]
@@ -173,7 +173,7 @@ dep = { package = "devela_depend", version = "0.1.2", optional = true }
 #dep = { package = "devela_depend", path = "./depend", optional = true }
 #
 # option B) Otherwise optional features can be manually enabled:
-az = { version = "1.2.1", default-features = false, optional = true }
+#az = { version = "1.2.1", default-features = false, optional = true }
 const-str = { version = "0.5.6", default-features = false, optional = true }
 devela_macros = { version  = "0.7.0", optional = true }
 #devela_macros = { path = "./macros", optional = true }
