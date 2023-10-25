@@ -49,6 +49,7 @@ pub const fn __mem_size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T;
 #[cfg(test)]
 mod tests {
     use super::mem_size_of_expr;
+    use crate::mem::mem_size_of;
 
     trait Foo<'a, 'b> {}
     impl<'a> Foo<'a, 'static> for () {}
@@ -70,7 +71,7 @@ mod tests {
         assert_eq!(C, 2);
         assert_eq!(D, 1);
         assert_eq!(E, 0);
-        assert_eq!(F, 8);
+        assert_eq!(F, mem_size_of::<usize>());
     }
 
     #[test]
