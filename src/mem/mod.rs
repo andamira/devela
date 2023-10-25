@@ -25,11 +25,6 @@ pub(crate) use {aligned::*, always_fns::*, r#trait::*, reexports_core::*, size::
 #[cfg(feature = "mem")]
 pub use {aligned::*, always_fns::*, r#trait::*, reexports_core::*, size::*, storage::*};
 
-// re-export external dependencies
-#[doc(no_inline)]
-#[cfg(any(feature = "bytemuck", all(feature = "mem", feature = "dep")))]
-pub use crate::_dep::bytemuck;
-
 #[cfg(feature = "mem")]
 pub(crate) mod all {
     #[doc(inline)]
