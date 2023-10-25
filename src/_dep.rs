@@ -51,6 +51,9 @@ mod _dep {
     #[cfg(all(feature = "hashbrown", feature = "alloc"))]
     pub use ::hashbrown;
 
+    #[cfg(feature = "libm")]
+    pub use ::libm;
+
     #[cfg(feature = "portable-atomic")]
     pub use ::portable_atomic;
 
@@ -82,6 +85,9 @@ mod _dep {
 
     reexport! { depend feature: "meta",
     dep: "devela_macros", devela_macros, "Procedural macros for `devela`." }
+
+    reexport! { depend feature: "no_std",
+    dep: "libm", libm, "A port of [`MUSL`](https://musl.libc.org/)'s libm to Rust." }
 
     reexport! { depend feature: "data", also: "alloc",
     dep: "hashbrown", hashbrown,
