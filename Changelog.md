@@ -11,13 +11,28 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new types: `DstArray`, `DstValue`, `DstStack`, `DstQueue`, `DstQueueIter`, `DstQueueIterMut`, `DstQueuePopHandle`, `DstStackIter`, `DstStackIterMut`.
 - new aliases: `DstQueueU`, `DstStackU`, `DstValueU`, `DstVecU`.
 - new trait: `DstBuf`.
+- impl more traits for `Array:` `PartialOrd`, `Ord`, `AsRef`, `AsMut`, `Borrow`, `BorrowMut`, `Hash`.
+- new optional dependency: `libm`.
+- new features: `color`, `color_unsafe`, `unsafe_color`, `ops`, `ops_unsafe`, `unsafe_ops`.
+- new modules: `color`, `ops`.
 
 ### Removed
+- remove features: `nightly_docs`, `cmp`, `cmp_unsafe`, `unsafe_cmp`, `convert`, `convert_unsafe`, `unsafe_convert`.
+- remove `az` optional dependency.
 
 ### Changed
 - rename `Collection` to `DataCollection`.
 - make `Array` private field public to the crate.
 - rename `depend` feature to `dep` and `depend` module to `_dep`.
+- allow warnings for broken intra-doc links when `dep` is disabled.
+- move to `ops` the modules: `cmp`, `convert`.
+- update cargo aliases for docs.
+- bump `devela_depend`.
+
+### Fixed
+- fix test for `mem_size_of_expr`.
+- remove redundant re-exports of optional dependencies.
+
 
 ## [0.16.0] 2023-10-24
 
