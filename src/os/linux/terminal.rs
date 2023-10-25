@@ -6,10 +6,10 @@
 use super::{LinuxTerminalSize, LinuxTermios};
 
 #[cfg(all(
-    any(feature = "atomic", all(feature = "task", feature = "depend")),
-    any(feature = "bytemuck", all(feature = "mem", feature = "depend")),
+    any(feature = "atomic", all(feature = "task", feature = "dep")),
+    any(feature = "bytemuck", all(feature = "mem", feature = "dep")),
 ))]
-use crate::depend::atomic::{Atomic, Ordering as AtomicOrdering};
+use crate::_dep::atomic::{Atomic, Ordering as AtomicOrdering};
 
 /// State of the terminal saved globally, that can be restored from anywhere.
 ///
@@ -26,15 +26,15 @@ use crate::depend::atomic::{Atomic, Ordering as AtomicOrdering};
 /// Makes use of `depend::{`[`atomic`], [`bytemuck`]`}` dependencies to save the
 /// terminal state in an [`Atomic`].
 ///
-/// [`atomic`]: crate::depend::atomic
-/// [`bytemuck`]: crate::depend::bytemuck
+/// [`atomic`]: crate::_dep::atomic
+/// [`bytemuck`]: crate::_dep::bytemuck
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "depend", feature = "mem", feature = "task"),))
+    doc(cfg(all(feature = "dep", feature = "mem", feature = "task"),))
 )]
 #[cfg(all(
-    any(feature = "atomic", all(feature = "task", feature = "depend")),
-    any(feature = "bytemuck", all(feature = "mem", feature = "depend")),
+    any(feature = "atomic", all(feature = "task", feature = "dep")),
+    any(feature = "bytemuck", all(feature = "mem", feature = "dep")),
 ))]
 pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios::new());
 
@@ -46,11 +46,8 @@ pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios
 #[derive(Debug, Default)]
 pub struct LinuxTerminal;
 
-#[cfg(all(feature = "task", feature = "depend"))]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "task", feature = "depend")))
-)]
+#[cfg(all(feature = "task", feature = "dep"))]
+#[cfg_attr(feature = "nightly", doc(cfg(all(feature = "task", feature = "dep"))))]
 impl Drop for LinuxTerminal {
     fn drop(&mut self) {
         // If we are here, this should work
@@ -66,7 +63,7 @@ impl LinuxTerminal {
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
     #[inline]
     pub fn new() -> Result<Self, isize> {
-        #[cfg(all(feature = "task", feature = "depend"))]
+        #[cfg(all(feature = "task", feature = "dep"))]
         Self::save_state()?;
         Ok(Self)
     }
@@ -81,7 +78,7 @@ impl LinuxTerminal {
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
     #[inline]
     pub fn new_raw() -> Result<Self, isize> {
-        #[cfg(all(feature = "task", feature = "depend"))]
+        #[cfg(all(feature = "task", feature = "dep"))]
         Self::save_state()?;
 
         let new = Self::new()?;
@@ -93,13 +90,13 @@ impl LinuxTerminal {
     #[cfg_attr(
         feature = "nightly",
         doc(cfg(any(
-            all(feature = "depend", feature = "mem", feature = "task"),
+            all(feature = "dep", feature = "mem", feature = "task"),
             all(feature = "bytemuck", feature = "atomic"),
         )))
     )]
     #[cfg(all(
-        any(feature = "atomic", all(feature = "task", feature = "depend")),
-        any(feature = "bytemuck", all(feature = "mem", feature = "depend")),
+        any(feature = "atomic", all(feature = "task", feature = "dep")),
+        any(feature = "bytemuck", all(feature = "mem", feature = "dep")),
     ))]
     pub fn save_state() -> Result<(), isize> {
         LINUX_TERMINAL_STATE.store(LinuxTermios::get_state()?, AtomicOrdering::Relaxed);
@@ -111,13 +108,13 @@ impl LinuxTerminal {
     #[cfg_attr(
         feature = "nightly",
         doc(cfg(any(
-            all(feature = "depend", feature = "mem", feature = "task"),
+            all(feature = "dep", feature = "mem", feature = "task"),
             all(feature = "bytemuck", feature = "atomic"),
         )))
     )]
     #[cfg(all(
-        any(feature = "atomic", all(feature = "task", feature = "depend")),
-        any(feature = "bytemuck", all(feature = "mem", feature = "depend")),
+        any(feature = "atomic", all(feature = "task", feature = "dep")),
+        any(feature = "bytemuck", all(feature = "mem", feature = "dep")),
     ))]
     pub fn restore_saved_state() -> Result<(), isize> {
         LinuxTermios::set_state(LINUX_TERMINAL_STATE.load(AtomicOrdering::Relaxed))

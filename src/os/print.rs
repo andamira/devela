@@ -9,7 +9,7 @@
 
 #[cfg(all(
     feature = "std",
-    any(feature = "const-str", all(feature = "depend", feature = "text")),
+    any(feature = "const-str", all(feature = "dep", feature = "text")),
 ))]
 macro_rules! generate_os_print_std_macros {
     () => {
@@ -102,12 +102,12 @@ macro_rules! generate_os_print_std_macros {
                 feature = "nightly",
                 doc(cfg(all(
                     any(feature = "std", feature = "linux_unsafe"),
-                    feature = "depend",
+                    feature = "dep",
                     feature = "text",
             ))))]
             #[cfg(all(
                     feature = "std",
-                    any(feature = "const-str", all(feature = "depend", feature = "text"))
+                    any(feature = "const-str", all(feature = "dep", feature = "text"))
             ))]
             macro_rules! [<os_ $name>] {
                 // 1) print a newline (or nothing)
@@ -122,7 +122,7 @@ macro_rules! generate_os_print_std_macros {
 
                 // 3) print concatenated literals
                 ($d($d str:literal),+ $d(,)?) => {
-                    $name!["{}", $crate::depend::const_str::concat!($d($d str,)+) ];
+                    $name!["{}", $crate::_dep::const_str::concat!($d($d str,)+) ];
                 };
 
                 // 4) create a buffer of the given length
@@ -163,7 +163,7 @@ macro_rules! generate_os_print_std_macros {
 }
 #[cfg(all(
     feature = "std",
-    any(feature = "const-str", all(feature = "depend", feature = "text")),
+    any(feature = "const-str", all(feature = "dep", feature = "text")),
 ))]
 generate_os_print_std_macros![];
 
@@ -178,7 +178,7 @@ generate_os_print_std_macros![];
         target_arch = "riscv32",
         target_arch = "riscv64"
     ),
-    feature = "depend",
+    feature = "dep",
     feature = "linux",
     feature = "unsafe_linux",
 ))]
@@ -273,7 +273,7 @@ macro_rules! generate_os_print_linux_macros {
                 not(miri),
                 feature = "linux",
                 feature = "unsafe_linux",
-                any(feature = "const-str", all(feature = "depend", feature = "text")),
+                any(feature = "const-str", all(feature = "dep", feature = "text")),
                 any(
                     target_arch = "x86_64", target_arch = "x86", target_arch = "arm",
                     target_arch = "aarch64", target_arch = "riscv32", target_arch = "riscv64",
@@ -293,7 +293,7 @@ macro_rules! generate_os_print_linux_macros {
                 // 3) print concatenated literals
                 ($d($d str:literal),+ $d(,)?) => {
                     $crate::os::linux::[<linux_ $name>](
-                        $crate::depend::const_str::concat!($d($d str,)+)
+                        $crate::_dep::const_str::concat!($d($d str,)+)
                     );
                 };
 
@@ -355,6 +355,6 @@ macro_rules! generate_os_print_linux_macros {
         target_arch = "riscv32",
         target_arch = "riscv64"
     ),
-    any(feature = "const-str", all(feature = "depend", feature = "text")),
+    any(feature = "const-str", all(feature = "dep", feature = "text")),
 ))]
 generate_os_print_linux_macros![];

@@ -50,50 +50,34 @@ use _alloc::{
     vec::Vec,
 };
 
-#[cfg(any(all(feature = "task", feature = "depend"), feature = "portable-atomic"))]
-use crate::depend::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
+#[cfg(any(all(feature = "task", feature = "dep"), feature = "portable-atomic"))]
+use crate::_dep::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
 #[cfg(feature = "task")]
 use crate::task::sync::atomic::{AtomicBool, AtomicOrdering};
 #[cfg(all(
     feature = "task",
-    any(
-        feature = "depend",
-        feature = "portable-atomic",
-        target_has_atomic = "16"
-    ),
+    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "16"),
 ))]
 use crate::task::sync::atomic::{AtomicI16, AtomicU16};
 #[cfg(all(
     feature = "task",
-    any(
-        feature = "depend",
-        feature = "portable-atomic",
-        target_has_atomic = "32"
-    ),
+    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "32"),
 ))]
 use crate::task::sync::atomic::{AtomicI32, AtomicU32};
 #[cfg(all(
     feature = "task",
-    any(
-        feature = "depend",
-        feature = "portable-atomic",
-        target_has_atomic = "64"
-    ),
+    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "64"),
 ))]
 use crate::task::sync::atomic::{AtomicI64, AtomicU64};
 #[cfg(all(
     feature = "task",
-    any(
-        feature = "depend",
-        feature = "portable-atomic",
-        target_has_atomic = "8"
-    ),
+    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "8"),
 ))]
 use crate::task::sync::atomic::{AtomicI8, AtomicU8};
 #[cfg(all(
     feature = "task",
     any(
-        feature = "depend",
+        feature = "dep",
         feature = "portable-atomic",
         target_has_atomic = "ptr"
     ),
@@ -215,7 +199,7 @@ macro_rules! bit_size {
         #[cfg(all(
             feature = "task",
             any(
-                feature = "depend",
+                feature = "dep",
                 feature = "portable-atomic",
                 target_has_atomic = "ptr"
             ),
@@ -224,7 +208,7 @@ macro_rules! bit_size {
         #[cfg(all(
             feature = "task",
             any(
-                feature = "depend",
+                feature = "dep",
                 feature = "portable-atomic",
                 target_has_atomic = "ptr"
             ),
@@ -369,45 +353,29 @@ bit_size![= 1; for AtomicBool];
 bit_size![= 8; for AtomicOrdering];
 #[cfg(all(
     feature = "task",
-    any(
-        feature = "depend",
-        feature = "portable-atomic",
-        target_has_atomic = "8"
-    ),
+    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "8"),
 ))]
 bit_size![= 8; for AtomicI8, AtomicU8];
 #[cfg(all(
     feature = "task",
-    any(
-        feature = "depend",
-        feature = "portable-atomic",
-        target_has_atomic = "16"
-    ),
+    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "16"),
 ))]
 bit_size![= 16; for AtomicI16, AtomicU16];
 #[cfg(all(
     feature = "task",
-    any(
-        feature = "depend",
-        feature = "portable-atomic",
-        target_has_atomic = "32"
-    ),
+    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "32"),
 ))]
 bit_size![= 32; for AtomicI32, AtomicU32];
 #[cfg(all(
     feature = "task",
-    any(
-        feature = "depend",
-        feature = "portable-atomic",
-        target_has_atomic = "64"
-    ),
+    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "64"),
 ))]
 bit_size![= 64; for AtomicI64, AtomicU64];
-#[cfg(any(all(feature = "task", feature = "depend"), feature = "portable-atomic"))]
+#[cfg(any(all(feature = "task", feature = "dep"), feature = "portable-atomic"))]
 bit_size![= 32; for AtomicF32];
-#[cfg(any(all(feature = "task", feature = "depend"), feature = "portable-atomic"))]
+#[cfg(any(all(feature = "task", feature = "dep"), feature = "portable-atomic"))]
 bit_size![= 64; for AtomicF64];
-#[cfg(any(all(feature = "task", feature = "depend"), feature = "portable-atomic"))]
+#[cfg(any(all(feature = "task", feature = "dep"), feature = "portable-atomic"))]
 bit_size![= 128; for AtomicI128, AtomicU128];
 
 #[cfg(feature = "term")]

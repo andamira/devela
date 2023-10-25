@@ -1,7 +1,7 @@
 // devela::data::dst
 
+use crate::_dep::bytemuck::Pod;
 use crate::data::Array;
-use crate::depend::bytemuck::Pod;
 use core::{
     mem::MaybeUninit,
     ops::{Deref, DerefMut},

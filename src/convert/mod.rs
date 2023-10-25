@@ -22,8 +22,8 @@ pub use {collection::*, primitive::*};
 
 // re-export external dependencies
 #[doc(no_inline)]
-#[cfg(any(feature = "az", all(feature = "convert", feature = "depend")))]
-pub use ::depend::az;
+#[cfg(any(feature = "az", all(feature = "convert", feature = "dep")))]
+pub use crate::_dep::az;
 
 #[cfg(feature = "convert")]
 pub(crate) mod all {

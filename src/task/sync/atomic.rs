@@ -39,40 +39,40 @@ reexport! { "portable-atomic" | portable_atomic, features: "task",
 /// `portable-atomic` crate">`*`</span>
 #[doc = "A signed integer type which can be safely shared between threads.\n\n"]
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(any(feature = "depend", feature = "portable-atomic"))]
+#[cfg(any(feature = "dep", feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "task")))]
-pub use crate::depend::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
+pub use crate::_dep::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
 
 /// <span class="stab portability" title="re-exported either from `core` or from the
 /// `portable-atomic` crate">`*`</span>
 #[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(any(feature = "depend", feature = "portable-atomic"))]
+#[cfg(any(feature = "dep", feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "task")))]
-pub use crate::depend::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
+pub use crate::_dep::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
 
 #[cfg(all(
-    not(any(feature = "depend", feature = "portable-atomic")),
+    not(any(feature = "dep", feature = "portable-atomic")),
     target_has_atomic = "16"
 ))]
 pub use core::sync::atomic::{AtomicI16, AtomicU16};
 #[cfg(all(
-    not(any(feature = "depend", feature = "portable-atomic")),
+    not(any(feature = "dep", feature = "portable-atomic")),
     target_has_atomic = "32"
 ))]
 pub use core::sync::atomic::{AtomicI32, AtomicU32};
 #[cfg(all(
-    not(any(feature = "depend", feature = "portable-atomic")),
+    not(any(feature = "dep", feature = "portable-atomic")),
     target_has_atomic = "64"
 ))]
 pub use core::sync::atomic::{AtomicI64, AtomicU64};
 #[cfg(all(
-    not(any(feature = "depend", feature = "portable-atomic")),
+    not(any(feature = "dep", feature = "portable-atomic")),
     target_has_atomic = "8"
 ))]
 pub use core::sync::atomic::{AtomicI8, AtomicU8};
 #[cfg(all(
-    not(any(feature = "depend", feature = "portable-atomic")),
+    not(any(feature = "dep", feature = "portable-atomic")),
     target_has_atomic = "ptr"
 ))]
 pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
@@ -81,12 +81,12 @@ pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
 /// `portable-atomic` crate">`*`</span>
 #[doc = "A raw pointer type which can be safely shared between threads.\n\n"]
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(any(feature = "depend", feature = "portable-atomic"))]
+#[cfg(any(feature = "dep", feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "task")))]
-pub use crate::depend::portable_atomic::AtomicPtr;
+pub use crate::_dep::portable_atomic::AtomicPtr;
 //
 #[cfg(all(
-    not(any(feature = "depend", feature = "portable-atomic")),
+    not(any(feature = "dep", feature = "portable-atomic")),
     target_has_atomic = "ptr"
 ))]
 pub use core::sync::atomic::AtomicPtr;
@@ -95,11 +95,11 @@ pub use core::sync::atomic::AtomicPtr;
 /// `portable-atomic` crate">`*`</span>
 #[doc = "A boolean type which can be safely shared between threads.\n\n"]
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
-#[cfg(any(feature = "depend", feature = "portable-atomic"))]
+#[cfg(any(feature = "dep", feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "task")))]
-pub use crate::depend::portable_atomic::AtomicBool;
+pub use crate::_dep::portable_atomic::AtomicBool;
 //
-#[cfg(not(any(feature = "depend", feature = "portable-atomic")))]
+#[cfg(not(any(feature = "dep", feature = "portable-atomic")))]
 pub use core::sync::atomic::AtomicBool;
 
 /* from `core` */

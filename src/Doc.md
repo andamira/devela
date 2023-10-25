@@ -104,7 +104,7 @@ They are currently only used for generating improved documentation.
 
 ### Dependency features
 
-- `depend`: allows modules to automatically enable their defined dependencies.
+- `dep`: allows modules to automatically enable their defined dependencies.
 
 Dependencies can also be enabled individually:
 - `atomic` is used in `task`.
@@ -124,10 +124,10 @@ Dependencies can also be enabled individually:
 [`mem_as_bytes_mut`]: mem::mem_as_bytes_mut
 [`mem_as_bytes_sized`]: mem::mem_as_bytes_sized
 
-[`atomic`]: depend::atomic
-[`az`]: depend::az
-[`bytemuck`]: depend::bytemuck
-[`devela_macros`]: depend::devela_macros
-[`const-str`]: depend::const_str
-[`portable_atomic`]: depend::portable_atomic
-[`unicode-segmentation`]: depend::unicode_segmentation
+[`atomic`]: dep::atomic
+[`az`]: dep::az
+[`bytemuck`]: dep::bytemuck
+[`devela_macros`]: dep::devela_macros
+[`const-str`]: dep::const_str
+[`portable_atomic`]: dep::portable_atomic
+[`unicode-segmentation`]: dep::unicode_segmentation

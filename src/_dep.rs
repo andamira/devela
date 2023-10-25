@@ -1,4 +1,4 @@
-// devela::depend
+// devela::dep
 //
 //!
 //! # Dependencies
@@ -8,31 +8,31 @@
 //!
 //! # Features
 //!
-//! Enabling the `depend` feature will automatically enable
+//! Enabling the `dep` feature will automatically enable
 //! the optional dependencies associated to any enabled root modules.
 //!
-//! For example, enabling `depend` and [`task`], will automatically enable
-//! the `atomic` and `portable-atomic` dependencies; while by leaving `depend`
+//! For example, enabling `dep` and [`task`], will automatically enable
+//! the `atomic` and `portable-atomic` dependencies; while by leaving `dep`
 //! disabled, you could enable just the `task` and `atomic` dependencies.
 //!
 //! In any case, manually enabled optional dependency will remain enabled.
 //!
-//! The `depend` feature takes precedence, so any dependency that imports the
-//! `devela` crate with the `depend` feature enabled, will also enable the
+//! The `dep` feature takes precedence, so any dependency that imports the
+//! `devela` crate with the `dep` feature enabled, will also enable the
 //! optional dependencies associated to any enabled modules.
 //!
-//! For example, enabling `depend` and [`result`][crate::result] will not enable
+//! For example, enabling `dep` and [`result`][crate::result] will not enable
 //! the [`option_unwrap`][crate::result::option_unwrap] function unless the
 //! [`text`] module is also enabled; or if the `const-str` dependency
 //! is enabled independently of the `text` module.
 //
 
-pub use depend::*;
+pub use _dep::*;
 
-// When the `depend` feature is disabled, any optional dependency can be
+// When the `dep` feature is disabled, any optional dependency can be
 // enabled manually and independently of any other enabled module.
-#[cfg(not(feature = "depend"))]
-mod depend {
+#[cfg(not(feature = "dep"))]
+mod _dep {
     #[cfg(feature = "atomic")]
     pub use ::atomic;
 
@@ -58,14 +58,14 @@ mod depend {
     pub use ::unicode_segmentation;
 }
 
-// When the `depend` feature is enabled, the `devela_depend` crate is enabled,
+// When the `dep` feature is enabled, the `devela_depend` crate is enabled,
 // and the enabled modules will enable their associated optional dependencies.
 //
 // Any independently enabled optional dependency will also be enabled.
 //
 // This is also used for documentation.
-#[cfg(feature = "depend")]
-mod depend {
+#[cfg(feature = "dep")]
+mod _dep {
     use crate::meta::reexport;
 
     reexport! { depend feature: "task",

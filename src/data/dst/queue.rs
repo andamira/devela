@@ -239,10 +239,10 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
             let words = Self::meta_words() + BUF::round_to_words(mem::size_of_val(v));
             if cb(v) {
                 if writeback_pos != ofs {
-                    let BUF = self.data.as_mut();
+                    let d = self.data.as_mut();
                     // writeback is always before `ofs`, so this ordering is correct.
                     for i in 0..words {
-                        let (a, b) = BUF.split_at_mut(ofs + i);
+                        let (a, b) = d.split_at_mut(ofs + i);
                         a[writeback_pos + i] = b[0];
                     }
                 }

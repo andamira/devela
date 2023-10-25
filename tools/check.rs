@@ -74,25 +74,25 @@ fn main() -> Result<()> {
         run_cargo(&msrv, cmd, &["-F full,std,safe", "--", "--color=always"])?;
         run_cargo(&msrv, cmd, &["-F full,std,unsafe", "--", "--color=always"])?;
 
-        // std (un)safe + depend
-        sf! { run_cargo(&msrv, cmd, &["-F full,std,safe,depend", "--", "--color=always"])?; }
-        sf! { run_cargo(&msrv, cmd, &["-F full,std,unsafe,depend", "--", "--color=always"])?; }
+        // std (un)safe + dep
+        sf! { run_cargo(&msrv, cmd, &["-F full,std,safe,dep", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F full,std,unsafe,dep", "--", "--color=always"])?; }
 
         // alloc (un)safe
         sf! { run_cargo(&msrv, cmd, &["-F full,alloc,safe", "--", "--color=always"])?; }
         sf! { run_cargo(&msrv, cmd, &["-F full,alloc,unsafe", "--", "--color=always"])?; }
 
-        // alloc (un)safe + depend
-        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,safe,depend", "--", "--color=always"])?; }
-        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,unsafe,depend", "--", "--color=always"])?; }
+        // alloc (un)safe + dep
+        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,safe,dep", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,unsafe,dep", "--", "--color=always"])?; }
 
         // no_std (un)safe
         // run_cargo(&msrv, cmd, &["-F full,no_std,safe"])?;
         // run_cargo(&msrv, cmd, &["-F full,no_std,unsafe"])?;
 
-        // no_std (un)safe + depend
-        // run_cargo(&msrv, cmd, &["-F full,no_std,safe,depend"])?;
-        // run_cargo(&msrv, cmd, &["-F full,no_std,unsafe,depend"])?;
+        // no_std (un)safe + dep
+        // run_cargo(&msrv, cmd, &["-F full,no_std,safe,dep"])?;
+        // run_cargo(&msrv, cmd, &["-F full,no_std,unsafe,dep"])?;
     }
 
     /* docs */
@@ -120,8 +120,8 @@ fn main() -> Result<()> {
             arch_count += 1;
         }
         for arch in STD_ARCHES {
-            sf! { headline(1, &format!("std,unsafe,depend: arch {arch_count}/{arch_total}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F full,std,unsafe,depend"])?;
+            sf! { headline(1, &format!("std,unsafe,dep: arch {arch_count}/{arch_total}")); }
+            run_cargo(&msrv, cmd, &["--target", arch, "-F full,std,unsafe,dep"])?;
             arch_count += 1;
         }
 
@@ -151,12 +151,12 @@ fn main() -> Result<()> {
             arch_count += 1;
         }
 
-        // std + depend
+        // std + dep
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
-            sf! { headline(1, &format!("std,unsafe,depend: arch {arch_count}/{arch_total}")); }
+            sf! { headline(1, &format!("std,unsafe,dep: arch {arch_count}/{arch_total}")); }
             sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
-            "-F full,std,unsafe,nightly,depend"])?; }
+            "-F full,std,unsafe,nightly,dep"])?; }
             arch_count += 1;
         }
 

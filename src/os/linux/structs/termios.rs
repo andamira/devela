@@ -43,14 +43,14 @@ pub struct LinuxTermios {
     feature = "nightly",
     doc(cfg(all(
         feature = "unsafe_linux",
-        any(feature = "bytemuck", all(feature = "mem", feature = "depend"))
+        any(feature = "bytemuck", all(feature = "mem", feature = "dep"))
     )))
 )]
 #[cfg(all(
     feature = "unsafe_linux",
-    any(feature = "bytemuck", all(feature = "mem", feature = "depend"))
+    any(feature = "bytemuck", all(feature = "mem", feature = "dep"))
 ))]
-unsafe impl crate::depend::bytemuck::NoUninit for LinuxTermios {}
+unsafe impl crate::_dep::bytemuck::NoUninit for LinuxTermios {}
 
 impl LinuxTermios {
     /// Returns a new empty struct.

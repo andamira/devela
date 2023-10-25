@@ -19,12 +19,12 @@ pub(crate) use slice::*;
 
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "unsafe_data", feature = "depend")))
+    doc(cfg(all(feature = "unsafe_data", feature = "dep")))
 )]
 #[cfg(all(
     feature = "data",
     feature = "unsafe_data",
-    any(feature = "bytemuck", feature = "depend")
+    any(feature = "bytemuck", feature = "dep")
 ))]
 pub mod dst;
 
@@ -44,7 +44,7 @@ pub use {array::*, collection::DataCollection, reexports::*};
 #[cfg(all(
     feature = "data",
     feature = "unsafe_data",
-    any(feature = "bytemuck", feature = "depend")
+    any(feature = "bytemuck", feature = "dep")
 ))]
 pub use dst::*;
 #[doc(no_inline)]
@@ -57,6 +57,6 @@ pub(crate) mod all {
     pub use super::{array::*, collection::DataCollection, reexports::*, slice::all::*};
 
     #[doc(inline)]
-    #[cfg(all(feature = "unsafe_data", any(feature = "bytemuck", feature = "depend")))]
+    #[cfg(all(feature = "unsafe_data", any(feature = "bytemuck", feature = "dep")))]
     pub use super::dst::*;
 }

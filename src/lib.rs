@@ -127,7 +127,7 @@ pub(crate) mod time; // the "time" feature is disabled
 
 /// All items are flat re-exported here.
 ///
-/// Note that any item tagged with [`depend`] can also be enabled by
+/// Note that any item tagged with [`dep`] can also be enabled by
 /// manually enabling the associated optional dependency.
 pub mod all {
     #[doc(inline)]
@@ -210,7 +210,7 @@ pub mod prelude {
 }
 
 /// Optional external dependencies.
-pub mod depend;
+pub mod _dep;
 
 /// Documentation on features.
 pub mod __doc {

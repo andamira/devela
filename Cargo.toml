@@ -42,11 +42,11 @@ publish = true
 
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
-	"depend?/std",
+	"dep?/std",
 	"atomic?/std", "bytemuck?/extern_crate_std"
 ]
 alloc = [ # enables `alloc` functionality
-	"depend?/alloc",
+	"dep?/alloc",
 	"bytemuck?/extern_crate_alloc",
 ]
 no_std = [] # enables functionality incompatible with `std` (unused)
@@ -76,18 +76,18 @@ full = [ # enables all the modules
 fullest = ["full"] # enables `full` recursively (unused)
 
 # individual modules (12)
-# (modules enable their own dependencies if the `depend` feature is enabled)
+# (modules enable their own dependencies if the `dep` feature is enabled)
 any = []
 cmp = []
-convert = ["depend?/az"]
-data = ["depend?/hashbrown"]
-mem = ["depend?/bytemuck"]
-meta = ["depend?/devela_macros"]
+convert = ["dep?/az"]
+data = ["dep?/hashbrown"]
+mem = ["dep?/bytemuck"]
+meta = ["dep?/devela_macros"]
 num = []
 path = []
 result = []
-task = ["depend?/atomic", "depend?/portable-atomic", "bytemuck?/zeroable_atomics"]
-text = ["depend?/const-str", "depend?/unicode-segmentation"]
+task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
+text = ["dep?/const-str", "dep?/unicode-segmentation"]
 time = []
 
 # individual modules with unsafe enabled (12):
@@ -141,13 +141,13 @@ unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
 nightly = [ # enables nightly features
 	]
 nightly_docs = [ # enables features for docs.rs
-	"nightly", "full", "std", "unsafe", "depend",
+	"nightly", "full", "std", "unsafe", "dep",
 ]
 
 
 #* dependency features *#
 
-depend = ["dep:depend"] # module features enables their dependencies as defined.
+dep = ["dep:dep"] # module features enables their dependencies as defined.
 
 atomic = ["dep:atomic"]
 az = ["dep:az"]
@@ -170,7 +170,7 @@ paste_crate = { package = "paste", version = "1.0.14", default-features = false 
 #
 # option A) When the `depend` feature is enabled each optional dependency will
 # be automatically enabled by some individual module feature, as defined above:
-depend = { package = "devela_depend", version = "0.1.1", optional = true }
+dep = { package = "devela_depend", version = "0.1.1", optional = true }
 #depend = { package = "devela_depend", path = "./depend", optional = true }
 #
 # option B) Otherwise optional features can be manually enabled:
@@ -202,7 +202,7 @@ features = ["fallback", "float"]
 
 [dev-dependencies]
 
-devela = { path = ".", features = ["full", "depend"] }
+devela = { path = ".", features = ["full", "dep"] }
 
 
 # ------------------------------------------------------------------------------

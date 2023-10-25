@@ -33,7 +33,7 @@ macro_rules! reexport {
         #[cfg_attr(feature = "nightly", doc(cfg(feature = $f)))]
 
         #[cfg(feature = $f)]
-        pub use depend::$dep_module;
+        pub use dep::$dep_module;
     };
 
     // reexports an optional dependency from the `depend` features,
@@ -70,7 +70,7 @@ macro_rules! reexport {
             feature = $f,
             feature = $another_feature)
         )]
-        pub use depend::$dep_module;
+        pub use dep::$dep_module;
     };
 
     /* reexports from normal modules */
@@ -165,14 +165,14 @@ macro_rules! reexport {
         // Also, the part of negated features and target_has_atomic
         // would require a different branch
         #[cfg_attr(feature = "nightly", doc(cfg(
-            all(feature = "depend" $( , feature = $f )+ ),
+            all(feature = "dep" $( , feature = $f )+ ),
         )))]
 
         #[cfg(any(
-            all(feature = "depend" $( , feature = $f )+ ),
+            all(feature = "dep" $( , feature = $f )+ ),
             feature = $dep_str
         ))]
-        pub use crate::depend::$dep $( ::$dep_path )? :: {
+        pub use crate::_dep::$dep $( ::$dep_path )? :: {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
         };

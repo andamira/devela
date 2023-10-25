@@ -1,6 +1,6 @@
 // helper functions
 
-use crate::depend::bytemuck::Pod;
+use crate::_dep::bytemuck::Pod;
 use core::{mem, ptr, slice};
 
 type BufSlice<T> = [mem::MaybeUninit<T>];
