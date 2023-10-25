@@ -64,6 +64,12 @@ pub mod cmp;
 #[cfg(all(not(feature = "cmp"), not(test)))]
 pub(crate) mod cmp; // the "cmp" feature is disabled
 
+#[cfg(any(feature = "color", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "color")))]
+pub mod color;
+#[cfg(all(not(feature = "color"), not(test)))]
+pub(crate) mod color; // the "color" feature is disabled
+
 #[cfg(any(feature = "data", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod data;
@@ -138,6 +144,10 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "cmp")]
     pub use super::cmp::all::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "color")]
+    pub use super::color::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "data")]

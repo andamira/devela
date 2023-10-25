@@ -69,19 +69,20 @@ term_unsafe = ["term", "unsafe_term"]
 #* module features *#
 
 full = [ # enables all the modules
-	"any", "cmp", "convert", "data", "mem", "meta", "num", "path", "result",
-	"task", "text", "time",
+	"any", "cmp", "color", "convert", "data", "mem", "meta", "num", "path",
+	"result", "task", "text", "time",
 	# os platform sub-modules:
 	"linux", "term",
 	]
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
 
-# individual modules (12)
+# individual modules (13)
 # (modules enable their own dependencies if the `dep` feature is enabled)
 any = []
 cmp = []
 convert = ["dep?/az"]
+color = []
 data = ["dep?/hashbrown"]
 mem = ["dep?/bytemuck"]
 meta = ["dep?/devela_macros"]
@@ -92,9 +93,10 @@ task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 text = ["dep?/const-str", "dep?/unicode-segmentation"]
 time = []
 
-# individual modules with unsafe enabled (12):
+# individual modules with unsafe enabled (13):
 any_unsafe = ["any", "unsafe_any"]
 cmp_unsafe = ["cmp", "unsafe_cmp"]
+color_unsafe = ["color", "unsafe_color"]
 convert_unsafe = ["convert", "unsafe_convert"]
 data_unsafe = ["data", "unsafe_data"]
 mem_unsafe = ["mem", "unsafe_mem"]
@@ -109,15 +111,15 @@ time_unsafe = ["time", "unsafe_time"]
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate (13)
-	"unsafe_any", "unsafe_cmp", "unsafe_convert",
-	"unsafe_data", "unsafe_mem", "unsafe_meta",
-	"unsafe_num", "unsafe_os", "unsafe_path",
-	"unsafe_result", "unsafe_task", "unsafe_text",
-	"unsafe_time",
+unsafe = [ # enables unsafe features in this crate (13+1)
+	"unsafe_any", "unsafe_cmp", "unsafe_color", "unsafe_convert",
+	"unsafe_data", "unsafe_mem", "unsafe_meta", "unsafe_num",
+	"unsafe_os", "unsafe_path", "unsafe_result", "unsafe_task",
+	"unsafe_text", "unsafe_time",
 	]
 	unsafe_any = [] # (unused)
 	unsafe_cmp = [] # enables const floating-point comparisons
+	unsafe_color = [] # (unused)
 	unsafe_convert = [] # enables using `MaybeUninit` for array initalization
 	unsafe_data = [] # (unused)
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
