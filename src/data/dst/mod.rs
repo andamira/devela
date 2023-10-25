@@ -9,11 +9,6 @@
 //
 #![allow(clippy::result_unit_err)] // IMPROVE
 
-use core::mem;
-
-/// Internal helper
-type BufSlice<T> = [mem::MaybeUninit<T>];
-
 mod helpers;
 use helpers::{
     check_fat_pointer, decompose_pointer, list_push_gen, make_fat_ptr, round_to_words,
@@ -29,6 +24,6 @@ mod stack;
 mod value;
 
 pub use buffer::*;
-pub use queue::{DstQueue, DstQueueU};
-pub use stack::{DstStack, DstStackU};
+pub use queue::{DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopHandle, DstQueueU};
+pub use stack::{DstStack, DstStackIter, DstStackIterMut, DstStackU};
 pub use value::{DstValue, DstValueU};

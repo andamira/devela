@@ -7,10 +7,7 @@ use core::{
     ops::{Deref, DerefMut},
 };
 
-/// Trait used to represent a plain-old-data buffer for storing dynamically sized types.
-///
-/// Typically you'll pass a `[usize; N]` array.
-/// Can also provide a `Vec<T>` which will grow as-needed.
+/// Represents a buffer for storing dynamically sized types.
 ///
 /// # Safety
 /// Must conform to the following rules:
@@ -107,7 +104,7 @@ unsafe impl<T: Pod> DstBuf for ::_alloc::vec::Vec<MaybeUninit<T>> {
     }
 }
 
-/// A buffer backing onto an array using constant generics.
+/// A statically allocated buffer for storing DSTs.
 pub struct DstArray<T, const N: usize> {
     inner: Array<MaybeUninit<T>, (), N>,
 }
@@ -141,6 +138,13 @@ unsafe impl<T: Pod, const N: usize> DstBuf for DstArray<T, N> {
     }
 }
 
+/// Statically allocated buffer with pointer alignment.
+pub type DstArrayU<const N: usize> = DstArray<usize, N>;
+
+/// Dynamically allocated buffer with pointer alignment.
+#[cfg(feature = "alloc")]
+pub type DstVecU = ::_alloc::vec::Vec<MaybeUninit<usize>>;
+
 // MAYBE
 // /// A DST buffer backing onto a Vec.
 // #[cfg(feature = "alloc")]
@@ -157,7 +161,3 @@ unsafe impl<T: Pod, const N: usize> DstBuf for DstArray<T, N> {
 //         &mut self.0
 //     }
 // }
-
-/// Dynamically allocated buffer with pointer alignment.
-#[cfg(feature = "alloc")]
-pub type DstVecUsize = ::_alloc::vec::Vec<MaybeUninit<usize>>;

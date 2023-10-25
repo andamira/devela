@@ -1,8 +1,9 @@
 // helper functions
 
-use super::BufSlice;
 use crate::depend::bytemuck::Pod;
 use core::{mem, ptr, slice};
+
+type BufSlice<T> = [mem::MaybeUninit<T>];
 
 pub(crate) fn decompose_pointer<T: ?Sized>(mut ptr: *const T) -> (*const (), usize, [usize; 3]) {
     let addr = ptr as *const ();
@@ -20,7 +21,7 @@ pub(crate) fn mem_as_slice<T>(ptr: &mut T) -> &mut [usize] {
     assert!(mem::size_of::<T>() % mem::size_of::<usize>() == 0);
     assert!(mem::align_of::<T>() % mem::align_of::<usize>() == 0);
     let words = mem::size_of::<T>() / mem::size_of::<usize>();
-    // SAFE: Points to valid memory (a raw pointer)
+    // SAFETY: Points to valid memory (a raw pointer)
     unsafe { slice::from_raw_parts_mut(ptr as *mut _ as *mut usize, words) }
 }
 

@@ -1,8 +1,8 @@
 use crate::data::{DstArray, DstValue};
 use core::{cell::Cell, fmt};
 
-type DstValue2w<T /*: ?Sized*/> = DstValue<T, DstArray<usize, 2>>;
-type DstValue8w<T /*: ?Sized*/> = DstValue<T, DstArray<usize, 8>>;
+type DstValue2w<DST /*: ?Sized*/> = DstValue<DST, DstArray<usize, 2>>;
+type DstValue8w<DST /*: ?Sized*/> = DstValue<DST, DstArray<usize, 8>>;
 
 // A trivial check that ensures that methods are correctly called
 #[test]

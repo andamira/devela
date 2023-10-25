@@ -1,19 +1,19 @@
 // devela::data::dst::stack
 //
-//! Implementation of the LIFO stack structure
+//! Implementation of the LIFO stack structure.
 
-use super::{check_fat_pointer, decompose_pointer, list_push_gen, BufSlice, DstArray, DstBuf};
+use super::{check_fat_pointer, decompose_pointer, list_push_gen, DstArray, DstBuf};
 use crate::mem::MemAligned;
 use core::{iter, marker, mem, ops, ptr};
 
-/// A single LIFO stack of DSTs using a `usize` aligned buffer.
+/// Statically allocated LIFO stack of DSTs with pointer alignment.
 ///
 /// # Examples
 /// ```
 /// let mut stack = devela::data::DstStackU::<[u8], 16>::new();
 /// stack.push_copied(&[1]);
 /// ```
-pub type DstStackU<T /*: ?Sized*/, const N: usize /* = 16*/> = DstStack<T, DstArray<usize, N>>;
+pub type DstStackU<DST /*: ?Sized*/, const N: usize> = DstStack<DST, DstArray<usize, N>>;
 
 // Implementation Notes
 // -----
@@ -23,78 +23,79 @@ pub type DstStackU<T /*: ?Sized*/, const N: usize /* = 16*/> = DstStack<T, DstAr
 // single integer to track the position (using size_of_val when popping items,
 // and the known size when pushing).
 
-/// A fixed-capacity stack that can contain dynamically-sized types
+/// A LIFO stack of DSTs.
 ///
 /// Uses an array of usize as a backing store for a First-In, Last-Out stack
-/// of items that can unsize to `T`.
+/// of items that can unsize to `DST`.
 ///
 /// Note: Each item in the stack takes at least one slot in the buffer
 /// (to store the metadata)
-pub struct DstStack<T: ?Sized, D: DstBuf> {
-    _pd: marker::PhantomData<*const T>,
+pub struct DstStack<DST: ?Sized, BUF: DstBuf> {
+    _pd: marker::PhantomData<*const DST>,
     // Offset from the _back_ of `data` to the next free position.
     // I.e. data[data.len() - cur_ofs] is the first metadata word
     next_ofs: usize,
-    data: D,
+    data: BUF,
 }
 
-impl<T: ?Sized, D: DstBuf> ops::Drop for DstStack<T, D> {
+impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstStack<DST, BUF> {
     fn drop(&mut self) {
         while !self.is_empty() {
             self.pop();
         }
     }
 }
-impl<T: ?Sized, D: DstBuf + Default> Default for DstStack<T, D> {
+impl<DST: ?Sized, BUF: DstBuf + Default> Default for DstStack<DST, BUF> {
     fn default() -> Self {
         DstStack::new()
     }
 }
 
-impl<T: ?Sized, D: DstBuf> DstStack<T, D> {
-    /// Construct a new (empty) stack
+impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
+    /// Constructs a new (empty) stack.
     pub fn new() -> Self
     where
-        D: Default,
+        BUF: Default,
     {
-        Self::with_buffer(D::default())
+        Self::with_buffer(BUF::default())
     }
-    /// Construct a new (empty) stack using the provided buffer
-    pub fn with_buffer(data: D) -> Self {
+
+    /// Constructs a new (empty) stack using the given `buffer`.
+    pub fn with_buffer(buffer: BUF) -> Self {
         DstStack {
             _pd: marker::PhantomData,
             next_ofs: 0,
-            data,
+            data: buffer,
         }
     }
 
-    /// Tests if the stack is empty
+    /// Returns `true` if the stack is empty.
     pub fn is_empty(&self) -> bool {
         self.next_ofs == 0
     }
 
     fn meta_words() -> usize {
-        D::round_to_words(mem::size_of::<&T>() - mem::size_of::<usize>())
+        BUF::round_to_words(mem::size_of::<&DST>() - mem::size_of::<usize>())
     }
 
-    /// Push a value at the top of the stack (without using `Unsize`)
+    /// Pushes a value at the top of the stack.
     ///
     /// ```
     /// # use devela::data::{DstArray, DstStack};
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
-    /// stack.push_stable([1, 2,3], |v| v);
+    /// stack.push([1, 2,3], |v| v);
     /// ```
-    pub fn push_stable<U, F: FnOnce(&U) -> &T>(&mut self, v: U, f: F) -> Result<(), U>
+    pub fn push<VAL, F: FnOnce(&VAL) -> &DST>(&mut self, v: VAL, f: F) -> Result<(), VAL>
     where
-        (U, D::Inner): MemAligned,
+        (VAL, BUF::Inner): MemAligned,
     {
-        <(U, D::Inner) as MemAligned>::check();
+        <(VAL, BUF::Inner) as MemAligned>::check();
 
-        // SAFE: Destination address is valid
+        // SAFETY: Destination address is valid.
         unsafe {
             match self.push_inner(check_fat_pointer(&v, f)) {
                 Ok(pii) => {
-                    ptr::write(pii.data.as_mut_ptr() as *mut U, v);
+                    ptr::write(pii.data.as_mut_ptr() as *mut VAL, v);
                     Ok(())
                 }
                 Err(_) => Err(v),
@@ -102,14 +103,14 @@ impl<T: ?Sized, D: DstBuf> DstStack<T, D> {
         }
     }
 
-    unsafe fn raw_at(&self, ofs: usize) -> *mut T {
+    unsafe fn raw_at(&self, ofs: usize) -> *mut DST {
         let dar = self.data.as_ref();
         let meta = &dar[dar.len() - ofs..];
         let mw = Self::meta_words();
         let (meta, data) = meta.split_at(mw);
         super::make_fat_ptr(data.as_ptr() as *mut (), meta)
     }
-    unsafe fn raw_at_mut(&mut self, ofs: usize) -> *mut T {
+    unsafe fn raw_at_mut(&mut self, ofs: usize) -> *mut DST {
         let dar = self.data.as_mut();
         let ofs = dar.len() - ofs;
         let meta = &mut dar[ofs..];
@@ -117,48 +118,50 @@ impl<T: ?Sized, D: DstBuf> DstStack<T, D> {
         let (meta, data) = meta.split_at_mut(mw);
         super::make_fat_ptr(data.as_mut_ptr() as *mut (), meta)
     }
-    // Get a raw pointer to the top of the stack
-    fn top_raw(&self) -> Option<*mut T> {
+    // Get a raw pointer to the top of the stack.
+    fn top_raw(&self) -> Option<*mut DST> {
         if self.next_ofs == 0 {
             None
         } else {
-            // SAFE: Internal consistency maintains the metadata validity
+            // SAFETY: Internal consistency maintains the metadata validity.
             Some(unsafe { self.raw_at(self.next_ofs) })
         }
     }
     // Get a raw pointer to the top of the stack
-    fn top_raw_mut(&mut self) -> Option<*mut T> {
+    fn top_raw_mut(&mut self) -> Option<*mut DST> {
         if self.next_ofs == 0 {
             None
         } else {
-            // SAFE: Internal consistency maintains the metadata validity
+            // SAFETY: Internal consistency maintains the metadata validity.
             Some(unsafe { self.raw_at_mut(self.next_ofs) })
         }
     }
-    /// Returns a pointer to the top item on the stack
-    pub fn top(&self) -> Option<&T> {
+    /// Returns a shared refrence to the top item on the stack.
+    pub fn top(&self) -> Option<&DST> {
         self.top_raw().map(|x| unsafe { &*x })
     }
-    /// Returns a pointer to the top item on the stack (unique/mutable)
-    pub fn top_mut(&mut self) -> Option<&mut T> {
+
+    /// Returns an exclusive reference to the top item on the stack.
+    pub fn top_mut(&mut self) -> Option<&mut DST> {
         self.top_raw_mut().map(|x| unsafe { &mut *x })
     }
-    /// Pop the top item off the stack
+
+    /// Pops the top item off the stack.
     pub fn pop(&mut self) {
         if let Some(ptr) = self.top_raw_mut() {
             assert!(self.next_ofs > 0);
-            // SAFE: Pointer is valid, and will never be accessed after this point
+            // SAFETY: Pointer is valid, and will never be accessed after this point.
             let words = unsafe {
                 let size = mem::size_of_val(&*ptr);
                 ptr::drop_in_place(ptr);
-                D::round_to_words(size)
+                BUF::round_to_words(size)
             };
             self.next_ofs -= words + Self::meta_words();
         }
     }
 
-    /// Obtain an immutable iterator
-    /// (yields references to items, in the order they would be popped)
+    /// Returns an immutable iterator
+    /// (yields references to items, in the order they would be popped).
     ///
     /// # Examples
     /// ```
@@ -171,10 +174,11 @@ impl<T: ?Sized, D: DstBuf> DstStack<T, D> {
     /// assert_eq!(it.next(), Some("Hello"));
     /// assert_eq!(it.next(), None);
     /// ```
-    pub fn iter(&self) -> Iter<T, D> {
-        Iter(self, self.next_ofs)
+    pub fn iter(&self) -> DstStackIter<DST, BUF> {
+        DstStackIter(self, self.next_ofs)
     }
-    /// Obtain unique/mutable iterator
+
+    /// Returns a mutable iterator.
     ///
     /// # Examples
     /// ```
@@ -190,42 +194,44 @@ impl<T: ?Sized, D: DstBuf> DstStack<T, D> {
     /// assert_eq!(it.next(), Some(&[0,2,3][..]));
     /// assert_eq!(it.next(), None);
     /// ```
-    pub fn iter_mut(&mut self) -> IterMut<T, D> {
-        IterMut(self, self.next_ofs)
+    pub fn iter_mut(&mut self) -> DstStackIterMut<DST, BUF> {
+        DstStackIterMut(self, self.next_ofs)
     }
 }
 
 struct PushInnerInfo<'a, DInner> {
-    /// Buffer for value data
-    data: &'a mut BufSlice<DInner>,
-    /// Buffer for metadata (length/vtable)
-    meta: &'a mut BufSlice<DInner>,
-    /// Memory location for resetting the push
+    // Buffer for value data
+    data: &'a mut [mem::MaybeUninit<DInner>],
+
+    // Buffer for metadata (length/vtable)
+    meta: &'a mut [mem::MaybeUninit<DInner>],
+
+    // Memory location for resetting the push
     reset_slot: &'a mut usize,
     reset_value: usize,
 }
-impl<T: ?Sized, D: DstBuf> DstStack<T, D> {
-    /// See `push_inner_raw`
-    unsafe fn push_inner(&mut self, fat_ptr: &T) -> Result<PushInnerInfo<D::Inner>, ()> {
+impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
+    // See `push_inner_raw`.
+    unsafe fn push_inner(&mut self, fat_ptr: &DST) -> Result<PushInnerInfo<BUF::Inner>, ()> {
         let bytes = mem::size_of_val(fat_ptr);
         let (_data_ptr, len, v) = decompose_pointer(fat_ptr);
         self.push_inner_raw(bytes, &v[..len])
     }
 
-    /// Returns:
-    /// - metadata slot
-    /// - data slot
-    /// - Total words used
+    // Returns:
+    // - metadata slot
+    // - data slot
+    // - Total words used
     unsafe fn push_inner_raw(
         &mut self,
         bytes: usize,
         metadata: &[usize],
-    ) -> Result<PushInnerInfo<D::Inner>, ()> {
-        assert!(D::round_to_words(mem::size_of_val(metadata)) == Self::meta_words());
-        let words = D::round_to_words(bytes) + Self::meta_words();
+    ) -> Result<PushInnerInfo<BUF::Inner>, ()> {
+        assert!(BUF::round_to_words(mem::size_of_val(metadata)) == Self::meta_words());
+        let words = BUF::round_to_words(bytes) + Self::meta_words();
 
         let req_space = self.next_ofs + words;
-        // Attempt resize (if the underlying buffer allows it)
+        // Attempt to resize (if the underlying buffer allows it).
         if req_space > self.data.as_ref().len() {
             let old_len = self.data.as_ref().len();
             if self.data.extend(req_space).is_ok() {
@@ -234,7 +240,7 @@ impl<T: ?Sized, D: DstBuf> DstStack<T, D> {
             }
         }
 
-        // Check if there is sufficient space for the new item
+        // Check if there is sufficient space for the new item.
         if req_space <= self.data.as_ref().len() {
             // Get the base pointer for the new item
             let prev_next_ofs = self.next_ofs;
@@ -243,10 +249,10 @@ impl<T: ?Sized, D: DstBuf> DstStack<T, D> {
             let slot = &mut self.data.as_mut()[len - self.next_ofs..][..words];
             let (meta, rv) = slot.split_at_mut(Self::meta_words());
 
-            // Populate the metadata
+            // Populate the metadata.
             super::store_metadata(meta, metadata);
 
-            // Increment offset and return
+            // Increment offset and return.
             Ok(PushInnerInfo {
                 meta,
                 data: rv,
@@ -259,8 +265,8 @@ impl<T: ?Sized, D: DstBuf> DstStack<T, D> {
     }
 }
 
-impl<D: DstBuf> DstStack<str, D> {
-    /// Push the contents of a string slice as an item onto the stack
+impl<BUF: DstBuf> DstStack<str, BUF> {
+    /// Pushes the contents of a `string` slice as an item onto the stack.
     ///
     /// # Examples
     /// ```
@@ -268,23 +274,23 @@ impl<D: DstBuf> DstStack<str, D> {
     /// let mut stack = DstStack::<str, DstArray<u8, 32>>::new();
     /// stack.push_str("Hello!");
     /// ```
-    pub fn push_str(&mut self, v: &str) -> Result<(), ()> {
+    pub fn push_str(&mut self, string: &str) -> Result<(), ()> {
         unsafe {
-            self.push_inner(v).map(|pii| {
+            self.push_inner(string).map(|pii| {
                 ptr::copy(
-                    v.as_bytes().as_ptr(),
+                    string.as_bytes().as_ptr(),
                     pii.data.as_mut_ptr() as *mut u8,
-                    v.len(),
+                    string.len(),
                 )
             })
         }
     }
 }
-impl<D: DstBuf, T: Clone> DstStack<[T], D>
+impl<BUF: DstBuf, DST: Clone> DstStack<[DST], BUF>
 where
-    (T, D::Inner): MemAligned,
+    (DST, BUF::Inner): MemAligned,
 {
-    /// Pushes a set of items (cloning out of the input slice)
+    /// Pushes a set of items (cloning out of the input `slice`).
     ///
     /// # Examples
     /// ```
@@ -292,11 +298,11 @@ where
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push_cloned(&[1, 2, 3]);
     /// ```
-    pub fn push_cloned(&mut self, v: &[T]) -> Result<(), ()> {
-        <(T, D::Inner) as MemAligned>::check();
-        self.push_from_iter(v.iter().cloned())
+    pub fn push_cloned(&mut self, slice: &[DST]) -> Result<(), ()> {
+        <(DST, BUF::Inner) as MemAligned>::check();
+        self.push_from_iter(slice.iter().cloned())
     }
-    /// Pushes a set of items (copying out of the input slice)
+    /// Pushes a set of items (copying out of the input `slice`).
     ///
     /// # Examples
     /// ```
@@ -304,28 +310,28 @@ where
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push_copied(&[1, 2, 3]);
     /// ```
-    pub fn push_copied(&mut self, v: &[T]) -> Result<(), ()>
+    pub fn push_copied(&mut self, slice: &[DST]) -> Result<(), ()>
     where
-        T: Copy,
+        DST: Copy,
     {
-        <(T, D::Inner) as MemAligned>::check();
-        // SAFE: Carefully constructed to maintain consistency
+        <(DST, BUF::Inner) as MemAligned>::check();
+        // SAFETY: Carefully constructed to maintain consistency.
         unsafe {
-            self.push_inner(v).map(|pii| {
+            self.push_inner(slice).map(|pii| {
                 ptr::copy(
-                    v.as_ptr() as *const u8,
+                    slice.as_ptr() as *const u8,
                     pii.data.as_mut_ptr() as *mut u8,
-                    mem::size_of_val(v),
+                    mem::size_of_val(slice),
                 )
             })
         }
     }
 }
-impl<D: DstBuf, T> DstStack<[T], D>
+impl<BUF: DstBuf, DST> DstStack<[DST], BUF>
 where
-    (T, D::Inner): MemAligned,
+    (DST, BUF::Inner): MemAligned,
 {
-    /// Push an item, populated from an exact-sized iterator
+    /// Pushes an item, populated from an exact-sized iterator.
     ///
     /// # Examples
     /// ```
@@ -336,11 +342,14 @@ where
     /// stack.push_from_iter(0..10);
     /// assert_eq!(stack.top().unwrap(), &[0,1,2,3,4,5,6,7,8,9]);
     /// ```
-    pub fn push_from_iter(&mut self, mut iter: impl ExactSizeIterator<Item = T>) -> Result<(), ()> {
-        <(T, D::Inner) as MemAligned>::check();
-        // SAFE: API used correctly
+    pub fn push_from_iter(
+        &mut self,
+        mut iter: impl ExactSizeIterator<Item = DST>,
+    ) -> Result<(), ()> {
+        <(DST, BUF::Inner) as MemAligned>::check();
+        // SAFETY: API used correctly.
         unsafe {
-            let pii = self.push_inner_raw(iter.len() * mem::size_of::<T>(), &[0])?;
+            let pii = self.push_inner_raw(iter.len() * mem::size_of::<DST>(), &[0])?;
             list_push_gen(
                 pii.meta,
                 pii.data,
@@ -354,33 +363,38 @@ where
     }
 }
 
-/// DST DstStack iterator (immutable)
-pub struct Iter<'a, T: 'a + ?Sized, D: 'a + DstBuf>(&'a DstStack<T, D>, usize);
-impl<'a, T: 'a + ?Sized, D: 'a + DstBuf> iter::Iterator for Iter<'a, T, D> {
-    type Item = &'a T;
-    fn next(&mut self) -> Option<&'a T> {
+/// An iterator over the elements of a [`DstStack`].
+pub struct DstStackIter<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(&'a DstStack<DST, BUF>, usize);
+impl<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> iter::Iterator for DstStackIter<'a, DST, BUF> {
+    type Item = &'a DST;
+    fn next(&mut self) -> Option<&'a DST> {
         if self.1 == 0 {
             None
         } else {
-            // SAFE: Bounds checked, aliasing enforced by API
+            // SAFETY: Bounds checked, aliasing enforced by API.
             let rv = unsafe { &*self.0.raw_at(self.1) };
-            self.1 -= DstStack::<T, D>::meta_words() + D::round_to_words(mem::size_of_val(rv));
+            self.1 -=
+                DstStack::<DST, BUF>::meta_words() + BUF::round_to_words(mem::size_of_val(rv));
             Some(rv)
         }
     }
 }
 
-/// DstStack iterator (immutable)
-pub struct IterMut<'a, T: 'a + ?Sized, D: 'a + DstBuf>(&'a mut DstStack<T, D>, usize);
-impl<'a, T: 'a + ?Sized, D: 'a + DstBuf> iter::Iterator for IterMut<'a, T, D> {
-    type Item = &'a mut T;
-    fn next(&mut self) -> Option<&'a mut T> {
+/// A mutable iterator over the elements of a [`DstStack`].
+pub struct DstStackIterMut<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(
+    &'a mut DstStack<DST, BUF>,
+    usize,
+);
+impl<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> iter::Iterator for DstStackIterMut<'a, DST, BUF> {
+    type Item = &'a mut DST;
+    fn next(&mut self) -> Option<&'a mut DST> {
         if self.1 == 0 {
             None
         } else {
-            // SAFE: Bounds checked, aliasing enforced by API
+            // SAFETY: Bounds checked, aliasing enforced by API.
             let rv = unsafe { &mut *self.0.raw_at_mut(self.1) };
-            self.1 -= DstStack::<T, D>::meta_words() + D::round_to_words(mem::size_of_val(rv));
+            self.1 -=
+                DstStack::<DST, BUF>::meta_words() + BUF::round_to_words(mem::size_of_val(rv));
             Some(rv)
         }
     }
@@ -392,8 +406,8 @@ mod impls {
 
     macro_rules! d {
         ( $t:path; $($body:tt)* ) => {
-            impl<D: DstBuf, T: ?Sized> $t for super::DstStack<T, D>
-            where T: $t { $( $body )* }
+            impl<BUF: DstBuf, DST: ?Sized> $t for super::DstStack<DST, BUF>
+            where DST: $t { $( $body )* }
         }
     }
 

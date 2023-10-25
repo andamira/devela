@@ -4,18 +4,18 @@ use super::{check_fat_pointer, decompose_pointer, store_metadata, DstArray, DstB
 use crate::mem::MemAligned;
 use core::{marker, mem, ops, ptr};
 
-/// A single dynamically-sized value stored in a `usize` aligned buffer
+/// Statically allocated DST value with pointer alignment.
 ///
 /// # Examples
 /// ```
 /// let v = devela::data::DstValueU::<[u8], 16>::new([1,2,3], |v| v);
 /// ```
-pub type DstValueU<T /*: ?Sized*/, const N: usize /* = {8+1}*/> = DstValue<T, DstArray<usize, N>>;
+pub type DstValueU<DST /*: ?Sized*/, const N: usize> = DstValue<DST, DstArray<usize, N>>;
 
-/// Stack-allocated dynamically sized type
+/// A stack-allocated DST value.
 ///
-/// `T` is the unsized type contained.
-/// `D` is the buffer used to hold the unsized type (both data and metadata).
+/// `DST` is the unsized type contained.
+/// `BUF` is the buffer used to hold the unsized type (both data and metadata).
 ///
 /// # Examples
 /// ```
@@ -26,19 +26,19 @@ pub type DstValueU<T /*: ?Sized*/, const N: usize /* = {8+1}*/> = DstValue<T, Ds
 ///     .expect("Insufficient size");
 /// assert_eq!( format!("{}", val), "123456" );
 /// ```
-pub struct DstValue<T: ?Sized, D: DstBuf> {
-    _pd: marker::PhantomData<T>,
+pub struct DstValue<DST: ?Sized, BUF: DstBuf> {
+    _pd: marker::PhantomData<DST>,
     // Data contains the object data first, then padding, then the pointer information
-    data: D,
+    data: BUF,
 }
 
-impl<T: ?Sized, D: DstBuf> DstValue<T, D> {
-    /// Construct a stack-based DST (without needing `Unsize`).
+impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
+    /// Construct a stack-based DST.
     ///
-    /// The closure `get_ref` must just convert `&U` to `&U`
-    /// (if the pointers don't match, an assertion triggers)
+    /// The closure `get_ref` must just convert `&VAL` to `&VAL`
+    /// (if the pointers don't match, an assertion triggers).
     ///
-    /// Returns `Ok(dst)` if the allocation was successful, or `Err(val)` if it failed
+    /// Returns `Ok(dst)` if the allocation was successful, or `Err(val)` if it failed.
     ///
     /// # Examples
     /// ```
@@ -49,18 +49,22 @@ impl<T: ?Sized, D: DstBuf> DstValue<T, D> {
     ///     .expect("Insufficient size");
     /// assert_eq!( format!("{}", val), "1234" );
     /// ```
-    pub fn new<U, F: FnOnce(&U) -> &T>(val: U, get_ref: F) -> Result<DstValue<T, D>, U>
+    pub fn new<VAL, F: FnOnce(&VAL) -> &DST>(
+        val: VAL,
+        get_ref: F,
+    ) -> Result<DstValue<DST, BUF>, VAL>
     where
-        (U, D::Inner): MemAligned,
-        D: Default,
+        (VAL, BUF::Inner): MemAligned,
+        BUF: Default,
     {
-        Self::in_buffer(D::default(), val, get_ref)
+        Self::in_buffer(BUF::default(), val, get_ref)
     }
 
-    /// Construct a stack-based DST (without needing `Unsize`) using a provided buffer.
+    /// Construct a stack-based DST using the given `buffer`.
+    ///
     /// See `new` for requirements on the `get_ref` closure.
     ///
-    /// Returns `Ok(dst)` if the allocation was successful, or `Err(val)` if it failed
+    /// Returns `Ok(dst)` if the allocation was successful, or `Err(val)` if it failed.
     ///
     /// # Examples
     /// ```
@@ -71,15 +75,15 @@ impl<T: ?Sized, D: DstBuf> DstValue<T, D> {
     ///     .expect("Insufficient size");
     /// assert_eq!( format!("{}", val), "1234" );
     /// ```
-    pub fn in_buffer<U, F: FnOnce(&U) -> &T>(
-        buffer: D,
-        val: U,
+    pub fn in_buffer<VAL, F: FnOnce(&VAL) -> &DST>(
+        buffer: BUF,
+        val: VAL,
         get_ref: F,
-    ) -> Result<DstValue<T, D>, U>
+    ) -> Result<DstValue<DST, BUF>, VAL>
     where
-        (U, D::Inner): MemAligned,
+        (VAL, BUF::Inner): MemAligned,
     {
-        <(U, D::Inner) as MemAligned>::check();
+        <(VAL, BUF::Inner) as MemAligned>::check();
 
         let rv = unsafe {
             let ptr: *const _ = check_fat_pointer(&val, get_ref);
@@ -88,7 +92,7 @@ impl<T: ?Sized, D: DstBuf> DstValue<T, D> {
             DstValue::new_raw(
                 &meta[..meta_len],
                 raw_ptr as *mut _,
-                mem::size_of::<U>(),
+                mem::size_of::<VAL>(),
                 buffer,
             )
         };
@@ -110,14 +114,14 @@ impl<T: ?Sized, D: DstBuf> DstValue<T, D> {
         info: &[usize],
         data: *mut (),
         size: usize,
-        mut buffer: D,
-    ) -> Option<DstValue<T, D>> {
-        let req_words = D::round_to_words(mem::size_of_val(info)) + D::round_to_words(size);
+        mut buffer: BUF,
+    ) -> Option<DstValue<DST, BUF>> {
+        let req_words = BUF::round_to_words(mem::size_of_val(info)) + BUF::round_to_words(size);
         if buffer.extend(req_words).is_err() {
             return None;
         }
 
-        let mut rv = mem::ManuallyDrop::new(DstValue::<T, D> {
+        let mut rv = mem::ManuallyDrop::new(DstValue::<DST, BUF> {
             _pd: marker::PhantomData,
             data: buffer,
         });
@@ -126,8 +130,8 @@ impl<T: ?Sized, D: DstBuf> DstValue<T, D> {
     }
 
     unsafe fn write_value(&mut self, data: *const (), size: usize, info: &[usize]) {
-        let info_words = D::round_to_words(mem::size_of_val(info));
-        let req_words = info_words + D::round_to_words(size);
+        let info_words = BUF::round_to_words(mem::size_of_val(info));
+        let req_words = info_words + BUF::round_to_words(size);
         let buf = self.data.as_mut();
         assert!(req_words <= buf.len());
 
@@ -155,58 +159,58 @@ impl<T: ?Sized, D: DstBuf> DstValue<T, D> {
     /// value.replace(1.234, |v| v).unwrap();
     /// assert_eq!(format!("{}", value), "1.234");
     /// ```
-    pub fn replace<U>(&mut self, val: U, get_ref: impl Fn(&U) -> &T) -> Result<(), U>
+    pub fn replace<VAL>(&mut self, val: VAL, get_ref: impl Fn(&VAL) -> &DST) -> Result<(), VAL>
     where
-        (U, D::Inner): MemAligned,
+        (VAL, BUF::Inner): MemAligned,
     {
-        <(U, D::Inner) as MemAligned>::check();
+        <(VAL, BUF::Inner) as MemAligned>::check();
 
-        let size = mem::size_of::<U>();
+        let size = mem::size_of::<VAL>();
         let (raw_ptr, meta_len, meta) = decompose_pointer(check_fat_pointer(&val, get_ref));
         let info = &meta[..meta_len];
 
         // Check size requirements (allow resizing)
-        let req_words = D::round_to_words(mem::size_of_val(info)) + D::round_to_words(size);
+        let req_words = BUF::round_to_words(mem::size_of_val(info)) + BUF::round_to_words(size);
         if self.data.extend(req_words).is_err() {
             return Err(val);
         }
         // If met, drop the existing item and move in the new item
         unsafe {
-            ptr::drop_in_place::<T>(&mut **self);
-            self.write_value(raw_ptr, mem::size_of::<U>(), info);
+            ptr::drop_in_place::<DST>(&mut **self);
+            self.write_value(raw_ptr, mem::size_of::<VAL>(), info);
         }
         Ok(())
     }
 
     // Obtain raw pointer to the contained data
-    unsafe fn as_ptr(&self) -> *mut T {
+    unsafe fn as_ptr(&self) -> *mut DST {
         let data = self.data.as_ref();
-        let info_size = mem::size_of::<*mut T>() / mem::size_of::<usize>() - 1;
-        let info_ofs = data.len() - D::round_to_words(info_size * mem::size_of::<usize>());
+        let info_size = mem::size_of::<*mut DST>() / mem::size_of::<usize>() - 1;
+        let info_ofs = data.len() - BUF::round_to_words(info_size * mem::size_of::<usize>());
         let (data, meta) = data.split_at(info_ofs);
         super::make_fat_ptr(data.as_ptr() as *mut (), meta)
     }
 
     // Obtain raw pointer to the contained data
-    unsafe fn as_ptr_mut(&mut self) -> *mut T {
+    unsafe fn as_ptr_mut(&mut self) -> *mut DST {
         let data = self.data.as_mut();
-        let info_size = mem::size_of::<*mut T>() / mem::size_of::<usize>() - 1;
-        let info_ofs = data.len() - D::round_to_words(info_size * mem::size_of::<usize>());
+        let info_size = mem::size_of::<*mut DST>() / mem::size_of::<usize>() - 1;
+        let info_ofs = data.len() - BUF::round_to_words(info_size * mem::size_of::<usize>());
         let (data, meta) = data.split_at_mut(info_ofs);
         super::make_fat_ptr(data.as_mut_ptr() as *mut (), meta)
     }
 }
 
 /// Specialisations for `str` (allowing storage of strings with single-byte alignment)
-impl<D: DstBuf> DstValue<str, D> {
+impl<BUF: DstBuf> DstValue<str, BUF> {
     /// Create a new empty string with a default buffer
     #[rustfmt::skip]
-    pub fn empty_str() -> Result<Self, ()> where D: Default {
+    pub fn empty_str() -> Result<Self, ()> where BUF: Default {
         Self::empty_str_in_buffer(Default::default())
     }
 
     /// Create a new empty string with a provided buffer
-    pub fn empty_str_in_buffer(buffer: D) -> Result<Self, ()> {
+    pub fn empty_str_in_buffer(buffer: BUF) -> Result<Self, ()> {
         let rv = unsafe {
             let (raw_ptr, meta_len, meta) = decompose_pointer("");
 
@@ -229,7 +233,7 @@ impl<D: DstBuf> DstValue<str, D> {
     /// assert_eq!( &val[..], "Hello, World" );
     /// ```
     #[rustfmt::skip]
-    pub fn new_str(v: &str) -> Result<Self, &str> where D: Default {
+    pub fn new_str(v: &str) -> Result<Self, &str> where BUF: Default {
         Self::new_str_in_buffer(Default::default(), v)
     }
 
@@ -244,7 +248,7 @@ impl<D: DstBuf> DstValue<str, D> {
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );
     /// ```
-    pub fn new_str_in_buffer(buffer: D, val: &str) -> Result<Self, &str> {
+    pub fn new_str_in_buffer(buffer: BUF, val: &str) -> Result<Self, &str> {
         let rv = unsafe {
             let (raw_ptr, meta_len, meta) = decompose_pointer(val);
 
@@ -271,12 +275,12 @@ impl<D: DstBuf> DstValue<str, D> {
     /// assert_eq!(&s[..], "FooBar");
     /// ```
     pub fn append_str(&mut self, val: &str) -> Result<(), ()> {
-        let info_words = D::round_to_words(mem::size_of::<usize>());
+        let info_words = BUF::round_to_words(mem::size_of::<usize>());
 
         let ofs = self.len();
 
         // Check/expand sufficient space
-        let req_words = D::round_to_words(ofs + val.len()) + info_words;
+        let req_words = BUF::round_to_words(ofs + val.len()) + info_words;
         if self.data.extend(req_words).is_err() {
             return Err(());
         }
@@ -310,7 +314,7 @@ impl<D: DstBuf> DstValue<str, D> {
         if len < self.len() {
             let _ = &self[..][len..]; // Index to force a panic if the index isn't char-aligned
 
-            let info_words = D::round_to_words(mem::size_of::<usize>());
+            let info_words = BUF::round_to_words(mem::size_of::<usize>());
             let data = self.data.as_mut();
             let info_ofs = data.len() - info_words;
             store_metadata(&mut data[info_ofs..], &[len]);
@@ -319,22 +323,22 @@ impl<D: DstBuf> DstValue<str, D> {
 }
 
 /// Specialisation for slices (acting like an `ArrayVec`)
-impl<I, D: DstBuf> DstValue<[I], D>
+impl<I, BUF: DstBuf> DstValue<[I], BUF>
 where
-    (I, D::Inner): MemAligned,
+    (I, BUF::Inner): MemAligned,
 {
     /// Create a new zero-sized slice (will error only if the metadata doesn't fit)
     pub fn empty_slice() -> Result<Self, ()>
     where
-        D: Default,
+        BUF: Default,
     {
         Self::empty_slice_with_buffer(Default::default())
     }
     /// Create a new zero-sized slice in the provided buffer (will error only if the metadata doesn't fit)
-    pub fn empty_slice_with_buffer(mut buffer: D) -> Result<Self, ()> {
-        <(I, D::Inner) as MemAligned>::check();
+    pub fn empty_slice_with_buffer(mut buffer: BUF) -> Result<Self, ()> {
+        <(I, BUF::Inner) as MemAligned>::check();
 
-        let info_words = D::round_to_words(mem::size_of::<usize>());
+        let info_words = BUF::round_to_words(mem::size_of::<usize>());
         let req_words = info_words;
         if buffer.extend(req_words).is_err() {
             return Err(());
@@ -356,19 +360,19 @@ where
 
     /// Append an item to the end of the slice (similar to `Vec::push`)
     pub fn append(&mut self, v: I) -> Result<(), I> {
-        let info_words = D::round_to_words(mem::size_of::<usize>());
+        let info_words = BUF::round_to_words(mem::size_of::<usize>());
 
         let ofs = self.len();
 
         // Check/expand sufficient space
-        let req_words = D::round_to_words((ofs + 1) * mem::size_of::<I>()) + info_words;
+        let req_words = BUF::round_to_words((ofs + 1) * mem::size_of::<I>()) + info_words;
         if self.data.extend(req_words).is_err() {
             return Err(v);
         }
         let data = self.data.as_mut();
         assert!(req_words <= data.len());
         // Write the new value
-        // SAFE: Alignment is checked, pointer is in-bounds
+        // SAFETY: Alignment is checked, pointer is in-bounds.
         unsafe {
             let data_ptr = (data.as_ptr() as *mut I).add(ofs);
             ptr::write(data_ptr, v);
@@ -411,7 +415,7 @@ where
         if self.len() > 0 {
             let ofs = self.len() - 1;
             let data = self.data.as_mut();
-            let info_words = D::round_to_words(mem::size_of::<usize>());
+            let info_words = BUF::round_to_words(mem::size_of::<usize>());
             let info_ofs = data.len() - info_words;
             unsafe {
                 store_metadata(&mut data[info_ofs..], &[ofs]);
@@ -422,18 +426,18 @@ where
         }
     }
 }
-impl<T: ?Sized, D: DstBuf> ops::Deref for DstValue<T, D> {
-    type Target = T;
-    fn deref(&self) -> &T {
+impl<DST: ?Sized, BUF: DstBuf> ops::Deref for DstValue<DST, BUF> {
+    type Target = DST;
+    fn deref(&self) -> &DST {
         unsafe { &*self.as_ptr() }
     }
 }
-impl<T: ?Sized, D: DstBuf> ops::DerefMut for DstValue<T, D> {
-    fn deref_mut(&mut self) -> &mut T {
+impl<DST: ?Sized, BUF: DstBuf> ops::DerefMut for DstValue<DST, BUF> {
+    fn deref_mut(&mut self) -> &mut DST {
         unsafe { &mut *self.as_ptr_mut() }
     }
 }
-impl<T: ?Sized, D: DstBuf> ops::Drop for DstValue<T, D> {
+impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstValue<DST, BUF> {
     fn drop(&mut self) {
         unsafe { ptr::drop_in_place(&mut **self) }
     }
@@ -445,18 +449,18 @@ mod trait_impls {
 
     macro_rules! d {
         ( $t:path; $($body:tt)* ) => {
-            impl<D:DstBuf, T: ?Sized> $t for super::DstValue<T, D> where T: $t { $( $body )* }
+            impl<BUF: DstBuf, DST: ?Sized> $t for super::DstValue<DST, BUF> where DST: $t { $( $body )* }
         }
     }
 
     d! { future::Future;
-        type Output = T::Output;
+        type Output = DST::Output;
         fn poll(self: pin::Pin<&mut Self>, cx: &mut task::Context) -> task::Poll<Self::Output> {
             unsafe { pin::Pin::new_unchecked(&mut **self.get_unchecked_mut()).poll(cx) }
         }
     }
     d! { iter::Iterator;
-        type Item = T::Item;
+        type Item = DST::Item;
         fn next(&mut self) -> Option<Self::Item> {
             (**self).next()
         }
