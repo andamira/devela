@@ -210,6 +210,7 @@ devela = { path = ".", features = ["full", "dep"] }
 [package.metadata.docs.rs]
 no-default-features = true
 features = ["std", "full", "unsafe", "nightly", "dep"]
+rustdoc-args = [ "--html-in-header", "./res/rustdoc-header.html" ]
 
 [badges]
 maintenance = { status = "experimental" }
