@@ -19,6 +19,13 @@ pub(crate) use cmp::*;
 #[cfg(feature = "ops")]
 pub mod convert;
 
+#[cfg(feature = "ops")]
+mod fns;
+
+// re-export private sub-modules
+#[cfg(feature = "ops")]
+pub use fns::*;
+
 // re-export public sub-modules
 #[doc(no_inline)]
 #[cfg(feature = "ops")]
@@ -27,5 +34,5 @@ pub use {cmp::all::*, convert::all::*};
 #[cfg(feature = "ops")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{cmp::all::*, convert::all::*};
+    pub use super::{cmp::all::*, convert::all::*, fns::*};
 }
