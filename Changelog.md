@@ -9,11 +9,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - new types: `DstArray`, `DstValue`, `DstStack`, `DstQueue`, `DstQueueIter`, `DstQueueIterMut`, `DstQueuePopHandle`, `DstStackIter`, `DstStackIterMut`.
+- new `ops` fns: `div_rem_*`, `div_ceil_*`, `div_floor_*`, `div_half_away_*`, `div_half_towards_*`, `div_half_even_*`, `div_half_odd_*`, `sqrt_*`, `sqrt_ceil_*`, `sqrt_floor_*`, `scale_*`, `lerp_*`.
 - new aliases: `DstQueueU`, `DstStackU`, `DstValueU`, `DstVecU`.
 - new trait: `DstBuf`.
 - impl more traits for `Array:` `PartialOrd`, `Ord`, `AsRef`, `AsMut`, `Borrow`, `BorrowMut`, `Hash`.
-- new optional dependency: `libm`.
 - new features: `color`, `color_unsafe`, `unsafe_color`, `ops`, `ops_unsafe`, `unsafe_ops`.
+- add katex docs header to support mathematical notation.
+- new optional dependency: `libm`.
 - new modules: `color`, `ops`.
 
 ### Removed
@@ -32,6 +34,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Fixed
 - fix test for `mem_size_of_expr`.
 - remove redundant re-exports of optional dependencies.
+- update cargo aliases.
 
 
 ## [0.16.0] 2023-10-24
