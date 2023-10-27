@@ -50,15 +50,10 @@ rnu = "run -F=no_std,unsafe"
 
 # TEST
 t = "test"
-t_ = "test -- --nocapture"
-t_1 = "test -- --test-threads 1 --nocapture"
-tu = "test -F=std,unsafe"
-tn = "test -F=no_std"
-tnu = "test -F=no_std,unsafe"
+tl = "test --lib"
+tl_ = "test --lib -- --nocapture"
+tl_1 = "test --lib -- --test-threads 1 --nocapture"
 td = "test --doc"
-tdu = "test --doc -F=std,unsafe"
-tdn = "test --doc -F=no_std"
-tdnu = "test --doc -F=no_std,unsafe"
 
 # MIRI
 m = "miri test"
