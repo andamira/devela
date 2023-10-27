@@ -16,22 +16,25 @@
 //   - sqrt_ceil
 //   - sqrt_round
 //   - scale
+//   - lerp
 //
 // - floating-point
 //   - scale
+//   - lerp
 
 use crate::meta::{iif, paste};
 
 // signed|unsigned
-// $t:   the integer type
+// $t:   the input/output type
 // $ut:  the upcasted type to do the operations on (the ones that can overflow)
+// $ft:  the floating-point type to do the operations on (for lerp)
 macro_rules! impl_ops {
-    (signed $( ($t:ty, $up:ty) ),+) => { $( impl_ops![@signed($t, $up)]; )+ };
-    (unsigned $( ($t:ty, $up:ty) ),+) => { $( impl_ops![@unsigned($t, $up)]; )+ };
+    (signed $( ($t:ty, $up:ty, $ft:ty) ),+) => { $( impl_ops![@signed($t, $up, $ft)]; )+ };
+    (unsigned $( ($t:ty, $up:ty, $ft:ty) ),+) => { $( impl_ops![@unsigned($t, $up, $ft)]; )+ };
     (float $($t:ty ),+) => { $( impl_ops![@float($t)]; )+ };
 
     // implements signed ops
-    (@signed($t:ty, $up:ty) ) => { paste! {
+    (@signed($t:ty, $up:ty, $ft:ty) ) => { paste! {
         /* signed div */
 
         #[doc = "Returns an [` " $t " `] truncated quotient, and the remainder."]
@@ -402,7 +405,8 @@ macro_rules! impl_ops {
 
         /* scale */
 
-        #[doc = "Scales an [`" $t "`] `v`alue between `[min..=max]` to a new range `[a..=b]`.\n\n"]
+        #[doc = "Returns a scaled [`" $t
+            "`] `v`alue between `[min..=max]` to a new range `[a..=b]`.\n\n"]
         #[doc = "It upcasts internally to [`" $up "`] for the intermediate operations."]
         ///
         /// # Formula
@@ -418,10 +422,28 @@ macro_rules! impl_ops {
             let (v, min, max, a, b) = (v as $up, min as $up, max as $up, a as $up, b as $up);
             ((b - a) * (v - min) / (max - min) + a) as $t
         }
+
+        #[doc = "Returns an interpolated [`" $t "`] value between `[a..=b]` with an [`" $ft
+            "`] `p`ercentage between `[0..=1]`.\n\n"]
+        ///
+        #[doc ="You can also use [`scale_" $t "`] for the same purpose."]
+        /// Integer operations can have more precision for very large values.
+        ///
+        /// # Examples
+        /// ```
+        #[doc ="use devela::ops::{lerp_" $t ", scale_" $t "};\n\n"]
+        #[doc = "assert_eq![lerp_" $t "(0.5, 40, 80), 60];"]
+        ///
+        /// // equivalence using integer scaling:
+        #[doc = "assert_eq![scale_" $t "(50, 0, 100, 40, 80), 60];"]
+        /// ```
+        pub fn [<lerp_ $t>](p: $ft, a: $t, b: $t) -> $t {
+            ((1.0 - p) * (a as $ft) + p * (b as $ft)) as $t
+        }
     }};
 
     // implements unsigned ops
-    (@unsigned($t:ty, $up:ty) ) => { paste! {
+    (@unsigned($t:ty, $up:ty, $ft:ty) ) => { paste! {
         /* unsigned div */
 
         #[doc = "Returns a [` " $t " `] truncated quotient, and the remainder."]
@@ -718,7 +740,8 @@ macro_rules! impl_ops {
 
         /* scale */
 
-        #[doc = "Scales a [`" $t "`] `v`alue between `[min..=max]` to a new range `[a..=b]`.\n\n"]
+        #[doc = "Returns a scaled [`" $t
+            "`] `v`alue between `[min..=max]` to a new range `[a..=b]`.\n\n"]
         #[doc = "It upcasts internally to [`" $up "`] for the intermediate operations."]
         ///
         /// # Formula
@@ -733,12 +756,31 @@ macro_rules! impl_ops {
             let (v, min, max, a, b) = (v as $up, min as $up, max as $up, a as $up, b as $up);
             ((b - a) * (v - min) / (max - min) + a) as $t
         }
+
+        #[doc = "Returns an interpolated [`" $t "`] value between `[a..=b]` with an [`" $ft
+            "`] `p`ercentage between `[0..=1]`.\n\n"]
+        ///
+        #[doc ="You can also use the [`scale_" $t "`] function for the same purpose,"]
+        /// which can have more precision for large values.
+        ///
+        /// # Examples
+        /// ```
+        #[doc ="use devela::ops::{lerp_" $t ", scale_" $t "};\n\n"]
+        #[doc = "assert_eq![lerp_" $t "(0.5, 40, 80), 60];"]
+        ///
+        /// // equivalence using integer scaling:
+        #[doc = "assert_eq![scale_" $t "(50, 0, 100, 40, 80), 60];"]
+        /// ```
+        pub fn [<lerp_ $t>](p: $ft, a: $t, b: $t) -> $t {
+            ((1.0 - p) * (a as $ft) + p * (b as $ft)) as $t
+        }
     }};
 
     (@float($t:ty) ) => { paste! {
         /* scale */
 
-        #[doc = "Scales an [` " $t " `] `v`alue between `[min..=max]` to a new range `[a..=b]`."]
+        #[doc = "Returns a scaled [` " $t
+            " `] `v`alue between `[min..=max]` to a new range `[a..=b]`."]
         ///
         /// # Formula
         /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
@@ -757,24 +799,36 @@ macro_rules! impl_ops {
         pub fn [<scale_ $t>](v: $t, min: $t, max: $t, a: $t, b: $t) -> $t {
             (b - a) * (v - min) / (max - min) + a
         }
+
+        #[doc = "Returns an interpolated [`" $t
+            "`] value between `[a..=b]` with a `p`ercentage between `[0..=1]`.\n\n"]
+        ///
+        /// # Examples
+        /// ```
+        #[doc ="use devela::ops::lerp_" $t ";\n\n"]
+        #[doc = "assert_eq![lerp_" $t "(0.5, 40., 80.), 60.];"]
+        /// ```
+        pub fn [<lerp_ $t>](p: $t, a: $t, b: $t) -> $t {
+            (1.0 - p) * a + p * b
+        }
     }};
 
 }
 impl_ops![
-    signed(i8, i16),
-    (i16, i32),
-    (i32, i64),
-    (i64, i128),
-    (i128, i128),
-    (isize, isize)
+    signed(i8, i16, f32),
+    (i16, i32, f32),
+    (i32, i64, f32),
+    (i64, i128, f64),
+    (i128, i128, f64),
+    (isize, isize, fsize)
 ];
 impl_ops![
-    unsigned(u8, u16),
-    (u16, u32),
-    (u32, u64),
-    (u64, u128),
-    (u128, u128),
-    (usize, usize)
+    unsigned(u8, u16, f32),
+    (u16, u32, f32),
+    (u32, u64, f32),
+    (u64, u128, f64),
+    (u128, u128, f64),
+    (usize, usize, fsize)
 ];
 impl_ops![float f32, f64];
 
