@@ -4,6 +4,8 @@
 //
 // TOC
 // - sint & uint
+//   - gcd
+//   - lcm
 //   - div_rem
 //   - div_ceil
 //   - div_floor
@@ -35,6 +37,45 @@ macro_rules! impl_ops {
 
     // implements signed ops
     (@signed($t:ty, $up:ty, $ft:ty) ) => { paste! {
+        /* signed gcd, lcm */
+
+        #[doc=r#"Returns the <abbr title="Greatest Common Divisor">GCD</abbr> of two [`"# $t "`]."]
+        ///
+        /// # Examples
+        /// ```
+        #[doc ="use devela::ops::gcd_" $t ";\n\n"]
+        #[doc = "assert_eq![gcd_" $t "(64, 36), 4];"]
+        #[doc ="assert_eq![gcd_" $t "(-64, 36), 4];"]
+        #[doc ="assert_eq![gcd_" $t "(64, -36), 4];"]
+        /// ```
+        #[inline]
+        #[must_use]
+        pub const fn [<gcd_ $t >](a: $t, b: $t) -> $t {
+            let (mut a, mut b) = (a.abs(), b.abs());
+            while a != b { iif![a > b; a -= b; b -= a] }
+            a
+        }
+
+        #[doc = r#"Returns the <abbr title="Least Common Multiple">LCM</abbr> of two [`"# $t "`]."]
+        ///
+        /// Returns `None` if the result would overflow.
+        ///
+        #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+        /// # Examples
+        /// ```
+        #[doc ="use devela::ops::lcm_" $t ";\n\n"]
+        #[doc = "assert_eq![lcm_" $t "(12, 15), Some(60)];"]
+        #[doc = "assert_eq![lcm_" $t "(-12, 15), Some(60)];"]
+        #[doc = "assert_eq![lcm_" $t "(12, -15), Some(60)];"]
+        /// ```
+        #[inline]
+        #[must_use]
+        pub const fn [<lcm_ $t >](a: $t, b: $t) -> Option<$t> {
+            let (aup, bup) = (a as $up, b as $up);
+            let res = (aup * bup).abs() / [<gcd_ $t>](a, b) as $up;
+            iif![res <= $t::MAX as $up; Some(res as $t); None]
+        }
+
         /* signed div */
 
         #[doc = "Returns an [` " $t " `] truncated quotient, and the remainder."]
@@ -262,16 +303,12 @@ macro_rules! impl_ops {
         #[inline]
         #[must_use]
         pub const fn [<square_is_ $t>](a: $t) -> bool {
-            if let Some(sqrt) = [<sqrt_floor_ $t>](a) {
-                sqrt * sqrt == a
-            } else {
-                false
-            }
+            iif![let Some(sqrt) = [<sqrt_floor_ $t>](a); sqrt * sqrt == a; false]
         }
 
         #[doc = "Returns an [`" $t "`] floored integer square root."]
         ///
-        /// Returns `None` if self is negative.
+        /// Returns `None` if `a` is negative.
         ///
         /// # Algorithm
         /// $$ \large \left\lfloor \sqrt{x} \right\rfloor = n_{k} $$
@@ -326,7 +363,7 @@ macro_rules! impl_ops {
 
         #[doc = "Returns an [`" $t "`] ceiled integer square root."]
         ///
-        /// Returns `None` if self is negative.
+        /// Returns `None` if `a` is negative.
         ///
         /// # Algorithm
         /// $$ \large
@@ -361,7 +398,7 @@ macro_rules! impl_ops {
 
         #[doc = "Returns an [`" $t "`] rounded integer square root."]
         ///
-        /// Returns `None` if self is negative.
+        /// Returns `None` if `a` is negative.
         ///
         /// # Algorithm
         /// $$ \large
@@ -403,7 +440,7 @@ macro_rules! impl_ops {
             }
         }
 
-        /* scale */
+        /* signed scale */
 
         #[doc = "Returns a scaled [`" $t
             "`] `v`alue between `[min..=max]` to a new range `[a..=b]`.\n\n"]
@@ -423,8 +460,8 @@ macro_rules! impl_ops {
             ((b - a) * (v - min) / (max - min) + a) as $t
         }
 
-        #[doc = "Returns an interpolated [`" $t "`] value between `[a..=b]` with an [`" $ft
-            "`] `p`ercentage between `[0..=1]`.\n\n"]
+        #[doc = "Returns an interpolated [`" $t "`] between `[a..=b]` with an [`" $ft
+            "`] `pct` between `[0..=1]`.\n\n"]
         ///
         #[doc ="You can also use [`scale_" $t "`] for the same purpose."]
         /// Integer operations can have more precision for very large values.
@@ -437,13 +474,45 @@ macro_rules! impl_ops {
         /// // equivalence using integer scaling:
         #[doc = "assert_eq![scale_" $t "(50, 0, 100, 40, 80), 60];"]
         /// ```
-        pub fn [<lerp_ $t>](p: $ft, a: $t, b: $t) -> $t {
-            ((1.0 - p) * (a as $ft) + p * (b as $ft)) as $t
+        pub fn [<lerp_ $t>](pct: $ft, a: $t, b: $t) -> $t {
+            ((1.0 - pct) * (a as $ft) + pct * (b as $ft)) as $t
         }
     }};
 
     // implements unsigned ops
     (@unsigned($t:ty, $up:ty, $ft:ty) ) => { paste! {
+        /* unsigned gcd, lcm */
+
+        #[doc=r#"Returns the <abbr title="Greatest Common Divisor">GCD</abbr> of two [`"# $t "`]."]
+        ///
+        /// # Examples
+        /// ```
+        #[doc ="use devela::ops::gcd_" $t ";\n\n"]
+        #[doc = "assert_eq![gcd_" $t "(64, 36), 4];"]
+        /// ```
+        #[inline]
+        #[must_use]
+        pub const fn [<gcd_ $t >](mut a: $t, mut b: $t) -> $t {
+            while a != b { iif![a > b; a -= b; b -= a] }
+            a
+        }
+
+        #[doc = r#"Returns the <abbr title="Least Common Multiple">LCM</abbr> of two [`"# $t "`]."]
+        ///
+        #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+        /// # Examples
+        /// ```
+        #[doc ="use devela::ops::lcm_" $t ";\n\n"]
+        #[doc = "assert_eq![lcm_" $t "(12, 15), Some(60)];"]
+        /// ```
+        #[inline]
+        #[must_use]
+        pub const fn [<lcm_ $t >](a: $t, b: $t) -> Option<$t> {
+            let (aup, bup) = (a as $up, b as $up);
+            let res = aup * bup / [<gcd_ $t>](a, b) as $up;
+            iif![res <= $t::MAX as $up; Some(res as $t); None]
+        }
+
         /* unsigned div */
 
         #[doc = "Returns a [` " $t " `] truncated quotient, and the remainder."]
@@ -738,7 +807,7 @@ macro_rules! impl_ops {
             }
         }
 
-        /* scale */
+        /* unsigned scale */
 
         #[doc = "Returns a scaled [`" $t
             "`] `v`alue between `[min..=max]` to a new range `[a..=b]`.\n\n"]
@@ -757,8 +826,8 @@ macro_rules! impl_ops {
             ((b - a) * (v - min) / (max - min) + a) as $t
         }
 
-        #[doc = "Returns an interpolated [`" $t "`] value between `[a..=b]` with an [`" $ft
-            "`] `p`ercentage between `[0..=1]`.\n\n"]
+        #[doc = "Returns an interpolated [`" $t "`] between `[a..=b]` with an [`" $ft
+            "`] `pct` between `[0..=1]`.\n\n"]
         ///
         #[doc ="You can also use the [`scale_" $t "`] function for the same purpose,"]
         /// which can have more precision for large values.
@@ -771,13 +840,28 @@ macro_rules! impl_ops {
         /// // equivalence using integer scaling:
         #[doc = "assert_eq![scale_" $t "(50, 0, 100, 40, 80), 60];"]
         /// ```
-        pub fn [<lerp_ $t>](p: $ft, a: $t, b: $t) -> $t {
-            ((1.0 - p) * (a as $ft) + p * (b as $ft)) as $t
+        pub fn [<lerp_ $t>](pct: $ft, a: $t, b: $t) -> $t {
+            ((1.0 - pct) * (a as $ft) + pct * (b as $ft)) as $t
+        }
+
+        /* unsigned ratios */ // TODO:
+
+        #[doc = r#"Returns the reduced [`"# $t "`] `r`atio."]
+        /// # Examples
+        /// ```
+        #[doc ="use devela::ops::ratio_reduce_" $t ";\n\n"]
+        #[doc = "assert_eq![ratio_reduce_" $t "(120, 42), [20, 7]];"]
+        /// ```
+        #[inline]
+        #[must_use]
+        pub const fn [<ratio_reduce_ $t >](a: $t, b: $t) -> [$t; 2] {
+            let divisor = [<gcd_ $t>](a, b);
+            [a / divisor, b / divisor]
         }
     }};
 
     (@float($t:ty) ) => { paste! {
-        /* scale */
+        /* floating-point scale */
 
         #[doc = "Returns a scaled [` " $t
             " `] `v`alue between `[min..=max]` to a new range `[a..=b]`."]
@@ -801,15 +885,15 @@ macro_rules! impl_ops {
         }
 
         #[doc = "Returns an interpolated [`" $t
-            "`] value between `[a..=b]` with a `p`ercentage between `[0..=1]`.\n\n"]
+            "`] between `[a..=b]` with a `pct` between `[0..=1]`.\n\n"]
         ///
         /// # Examples
         /// ```
         #[doc ="use devela::ops::lerp_" $t ";\n\n"]
         #[doc = "assert_eq![lerp_" $t "(0.5, 40., 80.), 60.];"]
         /// ```
-        pub fn [<lerp_ $t>](p: $t, a: $t, b: $t) -> $t {
-            (1.0 - p) * a + p * b
+        pub fn [<lerp_ $t>](pct: $t, a: $t, b: $t) -> $t {
+            (1.0 - pct) * a + pct * b
         }
     }};
 
