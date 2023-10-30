@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
+## [0.18.0-wip]
+
+### Added
+- add new fn to `LinuxTerminal` size: `pixels_per_cell`.
+- new `ops` fns: `gcd_*`, `gcd_ext_*` and `gcd_ext_euc_*`, `lcm_*`.
+
+### Changed
+- changed result of `LinuxTerminalSize` fns: `cells` and `pixels` to `[u16; 2]`.
+
+### Fixed
+- add missing rustdoc header file.
+- fix reversed order of `LinuxTerminalSize::cells`.
+
 ## [0.17.0] 2023-10-27
 
 ### Added
