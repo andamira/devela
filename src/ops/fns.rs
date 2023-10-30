@@ -41,19 +41,39 @@ macro_rules! impl_ops {
 
         #[doc=r#"Returns the <abbr title="Greatest Common Divisor">GCD</abbr> of two [`"# $t "`]."]
         ///
+        /// Uses Stein's algorithm which is much more efficient to compute than Euclid's.
+        ///
         /// # Examples
         /// ```
         #[doc ="use devela::ops::gcd_" $t ";\n\n"]
         #[doc = "assert_eq![gcd_" $t "(64, 36), 4];"]
         #[doc ="assert_eq![gcd_" $t "(-64, 36), 4];"]
         #[doc ="assert_eq![gcd_" $t "(64, -36), 4];"]
+        #[doc ="assert_eq![gcd_" $t "(-64, -36), 4];"]
+        #[doc = "assert_eq![gcd_" $t "(0, 36), 36];"]
+        #[doc = "assert_eq![gcd_" $t "(64, 0), 64];"]
         /// ```
         #[inline]
         #[must_use]
         pub const fn [<gcd_ $t >](a: $t, b: $t) -> $t {
-            let (mut a, mut b) = (a.abs(), b.abs());
-            while a != b { iif![a > b; a -= b; b -= a] }
-            a
+            let [mut a, mut b] = [a.abs(), b.abs()];
+            iif![a == 0; return b];
+            iif![b == 0; return a];
+            // Let k be the greatest power of 2 dividing both a and b:
+            let k = (a | b).trailing_zeros();
+            // Divide a and b by 2 until they become odd:
+            a >>= a.trailing_zeros();
+            b >>= b.trailing_zeros();
+            // Break when a == GCD of a / 2^k:
+            while b != 0 {
+                b >>= b.trailing_zeros();
+                // ensure b >= a before substraction:
+                iif![a > b; {let swp = a; a = b; b = swp }; b -= a];
+            }
+            a << k
+
+            // Euclid's algorithm:
+            // while a != b { iif![a > b; a -= b; b -= a] }; a
         }
 
         #[doc = r#"Returns the <abbr title="Least Common Multiple">LCM</abbr> of two [`"# $t "`]."]
@@ -485,16 +505,35 @@ macro_rules! impl_ops {
 
         #[doc=r#"Returns the <abbr title="Greatest Common Divisor">GCD</abbr> of two [`"# $t "`]."]
         ///
+        /// Uses Stein's algorithm which is much more efficient to compute than Euclid's.
+        ///
         /// # Examples
         /// ```
         #[doc ="use devela::ops::gcd_" $t ";\n\n"]
         #[doc = "assert_eq![gcd_" $t "(64, 36), 4];"]
+        #[doc = "assert_eq![gcd_" $t "(0, 36), 36];"]
+        #[doc = "assert_eq![gcd_" $t "(64, 0), 64];"]
         /// ```
         #[inline]
         #[must_use]
         pub const fn [<gcd_ $t >](mut a: $t, mut b: $t) -> $t {
-            while a != b { iif![a > b; a -= b; b -= a] }
-            a
+            iif![a == 0; return b];
+            iif![b == 0; return a];
+            // Let k be the greatest power of 2 dividing both a and b:
+            let k = (a | b).trailing_zeros();
+            // Divide a and b by 2 until they become odd:
+            a >>= a.trailing_zeros();
+            b >>= b.trailing_zeros();
+            // Break when a == GCD of a / 2^k:
+            while b != 0 {
+                b >>= b.trailing_zeros();
+                // ensure b >= a before substraction:
+                iif![a > b; {let swp = a; a = b; b = swp }; b -= a];
+            }
+            a << k
+
+            // Euclid's algorithm:
+            // while a != b { iif![a > b; a -= b; b -= a] }; a
         }
 
         #[doc = r#"Returns the <abbr title="Least Common Multiple">LCM</abbr> of two [`"# $t "`]."]
