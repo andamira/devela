@@ -5,6 +5,8 @@
 // TOC
 // - sint & uint
 //   - gcd
+//   - gcd_ext
+//   - gcd_ext_euc
 //   - lcm
 //   - div_rem
 //   - div_ceil
@@ -74,6 +76,106 @@ macro_rules! impl_ops {
 
             // Euclid's algorithm:
             // while a != b { iif![a > b; a -= b; b -= a] }; a
+        }
+
+        #[doc=r#"Returns the <abbr title="Greatest Common Divisor">GCD</abbr> of two
+            [`"# $t "`], and the Bézout coeficients."]
+        ///
+        /// This version uses the extended Stein's algorithm which is much more
+        /// efficient to compute than Euclid's. It uses only simple arithmetic
+        /// operations and works by dividing the inputs by 2 until they are odd,
+        /// and then subtracting the smaller number from the larger one.
+        ///
+        /// There's no unsigned version of this function, since the coeficients can be negative.
+        ///
+        /// The Bézout's coefficients are not unique, and different algorithms
+        /// can yield different coefficients that all satisfy Bézout's identity.
+        ///
+        /// Bézout's identity states that for any two integers a and b,
+        /// there exist integers x and y such that $ax + by = gcd(a, b)$.
+        ///
+        /// # Examples
+        /// ```
+        #[doc ="use devela::ops::gcd_ext_" $t ";\n\n"]
+        #[doc = "let [gcd, x, y] = gcd_ext_" $t "(32, 36);"]
+        #[doc = "assert_eq!(gcd, 4);"]
+        #[doc = "assert_eq!(x * 32 + y * 36, gcd);"]
+        /// ```
+        #[inline]
+        #[must_use]
+        pub const fn [<gcd_ext_ $t>](a: $t, b: $t) -> [$t; 3] {
+            let [mut a, mut b] = [a.abs(), b.abs()];
+            if a == 0 { return [b, 0, 1]; }
+            if b == 0 { return [a, 1, 0]; }
+
+            let mut k = 0;
+            while ((a | b) & 1) == 0 {
+                a >>= 1;
+                b >>= 1;
+                k += 1;
+            }
+            let (a0, b0, mut sa, mut sb, mut ta, mut tb) = (a, b, 1, 0, 0, 1);
+
+            while (a & 1) == 0 {
+                if (sa & 1) != 0 || (sb & 1) != 0 {
+                    sa -= b0;
+                    sb += a0;
+                }
+                a >>= 1;
+                sa >>= 1;
+                sb >>= 1;
+            }
+            while b != 0 {
+                while (b & 1) == 0 {
+                    if (ta & 1) != 0 || (tb & 1) != 0 {
+                        ta -= b0;
+                        tb += a0;
+                    }
+                    b >>= 1;
+                    ta >>= 1;
+                    tb >>= 1;
+                }
+                if a > b {
+                    let swp = a; a = b; b = swp;
+                    let swp = sa; sa = ta; ta = swp;
+                    let swp = sb; sb = tb; tb = swp;
+                }
+                b -= a;
+                ta -= sa;
+                tb -= sb;
+            }
+
+            [a << k, sa, sb]
+        }
+
+        #[doc=r#"Returns the <abbr title="Greatest Common Divisor">GCD</abbr> of two
+            [`"# $t "`], and the Bézout coeficients."]
+        ///
+        /// This version uses the extended Euclids's algorithm, which uses a
+        /// series of euclidean divisions and works by subtracting multiples
+        /// of the smaller number from the larger one.
+        ///
+        /// There's no unsigned version of this function, since the coeficients can be negative.
+        ///
+        /// The Bézout's coefficients are not unique, and different algorithms
+        /// can yield different coefficients that all satisfy Bézout's identity.
+        ///
+        /// # Examples
+        /// ```
+        #[doc ="use devela::ops::gcd_ext_euc_" $t ";\n\n"]
+        #[doc = "let [gcd, x, y] = gcd_ext_euc_" $t "(32, 36);"]
+        #[doc = "assert_eq!(gcd, 4);"]
+        #[doc = "assert_eq!(x * 32 + y * 36, gcd);"]
+        /// ```
+        #[inline]
+        #[must_use]
+        pub const fn [<gcd_ext_euc_ $t>](a: $t, b: $t) -> [$t; 3] {
+            if a == 0 {
+                [b, 0, 1]
+            } else {
+                let [g, x, y] = [<gcd_ext_euc_ $t>](b % a, a);
+                [g, y - (b / a) * x, x]
+            }
         }
 
         #[doc = r#"Returns the <abbr title="Least Common Multiple">LCM</abbr> of two [`"# $t "`]."]
