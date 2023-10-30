@@ -26,7 +26,7 @@ macro_rules! impl_ops {
         /* signed scale */
 
         #[doc = "Returns a scaled [`" $t
-            "`] `v`alue between `[min..=max]` to a new range `[a..=b]`.\n\n"]
+            "`] `v`alue in `[min..=max]` to a new range `[a..=b]`.\n\n"]
         #[doc = "It upcasts internally to [`" $up "`] for the intermediate operations."]
         ///
         /// # Formula
@@ -43,8 +43,8 @@ macro_rules! impl_ops {
             ((b - a) * (v - min) / (max - min) + a) as $t
         }
 
-        #[doc = "Returns an interpolated [`" $t "`] between `[a..=b]` with an [`" $ft
-            "`] `pct` between `[0..=1]`.\n\n"]
+        #[doc = "Returns an interpolated [`" $t "`] in `[a..=b]` with an [`" $ft
+            "`] `pct` in `[0..=1]`.\n\n"]
         ///
         #[doc ="You can also use [`scale_" $t "`] for the same purpose."]
         /// Integer operations can have more precision for very large values.
@@ -67,7 +67,7 @@ macro_rules! impl_ops {
         /* unsigned scale */
 
         #[doc = "Returns a scaled [`" $t
-            "`] `v`alue between `[min..=max]` to a new range `[a..=b]`.\n\n"]
+            "`] `v`alue in `[min..=max]` to a new range `[a..=b]`.\n\n"]
         #[doc = "It upcasts internally to [`" $up "`] for the intermediate operations."]
         ///
         /// # Formula
@@ -83,8 +83,8 @@ macro_rules! impl_ops {
             ((b - a) * (v - min) / (max - min) + a) as $t
         }
 
-        #[doc = "Returns an interpolated [`" $t "`] between `[a..=b]` with an [`" $ft
-            "`] `pct` between `[0..=1]`.\n\n"]
+        #[doc = "Returns an interpolated [`" $t "`] in `[a..=b]` with an [`" $ft
+            "`] `pct` in `[0..=1]`.\n\n"]
         ///
         #[doc ="You can also use the [`scale_" $t "`] function for the same purpose,"]
         /// which can have more precision for large values.
@@ -106,7 +106,7 @@ macro_rules! impl_ops {
         /* scale, lerp */
 
         #[doc = "Returns a scaled [` " $t
-            " `] `v`alue between `[min..=max]` to a new range `[a..=b]`."]
+            " `] `v`alue in `[min..=max]` to a new range `[a..=b]`."]
         ///
         /// # Formula
         /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
@@ -127,7 +127,7 @@ macro_rules! impl_ops {
         }
 
         #[doc = "Returns an interpolated [`" $t
-            "`] between `[a..=b]` with a `pct` between `[0..=1]`.\n\n"]
+            "`] in `[a..=b]` with a `pct` in `[0..=1]`.\n\n"]
         ///
         /// # Examples
         /// ```
