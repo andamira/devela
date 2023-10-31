@@ -5,6 +5,8 @@
 // TOC
 // - generic:
 //   - sort_bubble
+//   - sort_counting
+//   - sort_counting_buf
 //   - sort_insertion
 //   - sort_merge
 //   - sort_quick_lomuto
@@ -23,7 +25,8 @@ use crate::{
     meta::{cfor, iif, paste, sf},
 };
 #[cfg(feature = "alloc")]
-use ::_alloc::vec::Vec;
+use ::_alloc::{collections::BTreeMap, vec::Vec};
+use core::cmp::Ordering;
 
 /* generic sort */
 
@@ -43,6 +46,97 @@ pub fn sort_bubble<T: Ord>(slice: &mut [T]) {
             iif![slice[j] > slice[j + 1]; slice.swap(j, j + 1)];
         }
     }
+}
+
+/// Sorts a `slice` using counting sort, and returns the ordered frequencies.
+///
+/// Counting sort is particularly efficient when the range of input values is
+/// small compared to the number of elements to be sorted.
+///
+/// # Examples
+/// ```
+/// use devela::ops::sort_counting;
+///
+/// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
+/// let freq = sort_counting(&mut data);
+/// assert_eq![&data, &[2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 64, 64]];
+/// assert_eq![&freq, &[3, 7, 5, 2]];
+/// ```
+#[inline]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+pub fn sort_counting<T: Ord + Clone>(slice: &mut [T]) -> Vec<usize> {
+    let mut counts = BTreeMap::new();
+    // Calculate the frequencies and save them
+    for item in slice.iter() {
+        let count = counts.entry(item.clone()).or_insert(0);
+        *count += 1;
+    }
+    let freq: Vec<usize> = counts.values().cloned().collect();
+    // Reconstruct the sorted slice
+    let mut i = 0;
+    for (item, &count) in counts.iter() {
+        for _ in 0..count {
+            slice[i] = item.clone();
+            i += 1;
+        }
+    }
+    freq
+}
+
+/// Sorts a `slice` using counting sort, and writes the frequencies, without allocating.
+///
+/// Counting sort is particularly efficient when the range of input values is
+/// small compared to the number of elements to be sorted.
+///
+/// This implementation makes the following assumptions:
+/// - `values` contains all distinct values present in `slice`.
+/// - `freq` and `values` are of the same length.
+/// - `freq` only contains zeros.
+///
+/// Returns `None` if `values` does not contain a value present in the slice,
+/// or if `slice` has more elements than `freq` can accommodate.
+///
+/// Note that the frequencies in `freq` will be in the order of the sorted
+/// distinct elements in `values`.
+///
+/// # Examples
+/// ```
+/// use devela::ops::sort_counting_buf;
+///
+/// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
+/// let values = [64, 4, 2, 8];
+/// let mut freq = [0; 4];
+/// sort_counting_buf(&mut data, &mut freq, &values);
+/// assert_eq![&data, &[64, 64, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 8, 8, 8, 8, 8]];
+/// assert_eq![&freq, &[2, 7, 3, 5]];
+/// ```
+/// # Panics
+/// Panics in debug if the length of `freq` and `values` is not the same.
+#[inline]
+pub fn sort_counting_buf<T>(slice: &mut [T], freq: &mut [T], values: &[T]) -> Option<()>
+where
+    T: Ord + Clone + TryInto<usize> + TryFrom<usize>,
+{
+    debug_assert_eq![freq.len(), values.len()];
+    // Calculate the frequencies
+    for item in slice.iter() {
+        let index = values.iter().position(|x| x == item)?;
+        let count: usize = freq[index].clone().try_into().ok()?;
+        freq[index] = T::try_from(count + 1).ok()?;
+    }
+    // Reconstruct the sorted slice
+    let mut i = 0;
+    for (index, count) in freq.iter().enumerate() {
+        for _ in 0_usize..(*count).clone().try_into().ok()? {
+            if i >= slice.len() {
+                return None; // Out of bounds
+            }
+            slice[i] = values[index].clone();
+            i += 1;
+        }
+    }
+    Some(())
 }
 
 /// Sorts a `slice` using insertion sort.
