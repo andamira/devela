@@ -3,7 +3,7 @@
 //! Functions for numeric operations.
 //
 // TOC
-// - sint & uint
+// - sint|uint:
 //   - count_digits
 //   - count_digits_sign (only signed)
 //   - count_digits_base
@@ -13,16 +13,13 @@
 
 use crate::meta::{iif, paste};
 
-// signed|unsigned
 // $t:   the input/output type
-// $ut:  the upcasted type to do the operations on (the ones that can overflow)
-// $ft:  the floating-point type to do the operations on (for lerp)
 macro_rules! impl_ops {
-    (signed $( ($t:ty, $up:ty) ),+) => { $( impl_ops![@signed($t, $up)]; )+ };
-    (unsigned $( ($t:ty, $up:ty) ),+) => { $( impl_ops![@unsigned($t, $up)]; )+ };
+    (signed $( $t:ty ),+) => { $( impl_ops![@signed $t]; )+ };
+    (unsigned $( $t:ty ),+) => { $( impl_ops![@unsigned $t]; )+ };
 
     // implements signed ops
-    (@signed($t:ty, $up:ty) ) => { paste! {
+    (@signed $t:ty) => { paste! {
         /* signed count_digits */
 
         #[doc = "Returns the number of digits of an [`" $t "`] in base 10."]
@@ -161,7 +158,7 @@ macro_rules! impl_ops {
     }};
 
     // implements unsigned ops
-    (@unsigned($t:ty, $up:ty) ) => { paste! {
+    (@unsigned $t:ty) => { paste! {
         /* signed count_digits */
 
         #[doc = "Returns the number of digits of a [`" $t "`] in base 10."]
@@ -240,19 +237,5 @@ macro_rules! impl_ops {
         }
     }};
 }
-impl_ops![
-    signed(i8, i16),
-    (i16, i32),
-    (i32, i64),
-    (i64, i128),
-    (i128, i128),
-    (isize, isize)
-];
-impl_ops![
-    unsigned(u8, u16),
-    (u16, u32),
-    (u32, u64),
-    (u64, u128),
-    (u128, u128),
-    (usize, usize)
-];
+impl_ops![signed i8, i16, i32, i64, i128, isize];
+impl_ops![unsigned u8, u16, u32, u64, u128, usize];

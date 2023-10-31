@@ -3,7 +3,7 @@
 //! Functions for numeric operations.
 //
 // TOC
-// - sint & uint & float
+// - sint|uint|float:
 //   - scale
 //   - lerp
 
@@ -12,9 +12,8 @@ use crate::meta::paste;
 #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
 use crate::num::fsize;
 
-// signed|unsigned|float
 // $t:   the input/output type
-// $ut:  the upcasted type to do the operations on (the ones that can overflow)
+// $up:  the upcasted type to do the operations on (the ones that can overflow)
 // $ft:  the floating-point type to do the operations on
 macro_rules! impl_ops {
     (signed $( ($t:ty, $up:ty, $ft:ty) ),+) => { $( impl_ops![@signed($t, $up, $ft)]; )+ };
