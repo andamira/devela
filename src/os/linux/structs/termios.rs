@@ -173,12 +173,12 @@ impl LinuxTermios {
 
 /// The size of the terminal.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-#[repr(C)]
+#[repr(C)] // field order matters!
 pub struct LinuxTerminalSize {
-    /// Rows.
+    /// Rows of cells.
     pub rows: u16,
 
-    /// Columns.
+    /// Columns of cells.
     pub cols: u16,
 
     /// Horizontal pixels.
@@ -189,16 +189,23 @@ pub struct LinuxTerminalSize {
 }
 
 impl LinuxTerminalSize {
-    /// Returns a tuple of (x, y) pixels.
+    /// Returns the number of `[horizontal, vertical]` pixels.
     #[inline]
     #[must_use]
-    pub const fn pixels(&self) -> (u16, u16) {
-        (self.x, self.y)
+    pub const fn pixels(&self) -> [u16; 2] {
+        [self.x, self.y]
     }
-    /// Returns a tuple of (columns, rows) cells.
+    /// Returns the number of `[columns, rows]` of cells.
     #[inline]
     #[must_use]
-    pub const fn cells(&self) -> (u16, u16) {
-        (self.rows, self.cols)
+    pub const fn cells(&self) -> [u16; 2] {
+        [self.cols, self.rows]
+    }
+
+    /// Returns the number of pixels per cell `[horizontal, vertical]`.
+    #[inline]
+    #[must_use]
+    pub const fn pixels_per_cell(&self) -> [u16; 2] {
+        [self.x / self.cols, self.y / self.rows]
     }
 }

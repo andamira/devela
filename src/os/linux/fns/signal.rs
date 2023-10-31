@@ -7,9 +7,9 @@ use super::super::{linux_sys_rt_sigaction, LinuxSigaction, LinuxSigset, LINUX_SI
 use core::{mem::transmute, ptr::null_mut};
 
 #[cfg(feature = "task")]
-use crate::task::{AtomicOrdering, AtomicPtr};
+use crate::task::sync::{AtomicOrdering, AtomicPtr};
 #[cfg(not(feature = "task"))]
-use core::task::atomic::{AtomicPtr, Ordering as AtomicOrdering};
+use core::task::sync::{AtomicPtr, Ordering as AtomicOrdering};
 
 /// Registers multiple signals using a handler function that never returns.
 ///
