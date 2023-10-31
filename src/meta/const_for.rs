@@ -15,9 +15,9 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::meta::const_for;
+/// # use devela::meta::cfor;
 /// let mut a = 0;
-/// const_for!(i in 0..5 => {
+/// cfor!(i in 0..5 => {
 ///     a += i
 /// });
 /// assert!(a == 10)
@@ -36,9 +36,9 @@
 ///
 /// A custom step size can be set:
 /// ```
-/// # use devela::meta::const_for;
+/// # use devela::meta::cfor;
 /// let mut v = Vec::new();
-/// const_for!(i in (0..5).step_by(2) {
+/// cfor!(i in (0..5).step_by(2) {
 ///     v.push(i)
 /// });
 /// assert!(v == vec![0, 2, 4])
@@ -49,9 +49,9 @@
 ///
 /// Iteration can be reversed:
 /// ```
-/// # use devela::meta::const_for;
+/// # use devela::meta::cfor;
 /// let mut v = Vec::new();
-/// const_for!(i in (0..5).rev() => {
+/// cfor!(i in (0..5).rev() => {
 ///     v.push(i)
 /// });
 /// assert!(v == vec![4, 3, 2, 1, 0])
@@ -63,23 +63,23 @@
 /// It is possible to combine rev and step_by, but each can only be appended once.
 /// So the following two examples are the only legal combinations.
 /// ```
-/// # use devela::meta::const_for;
+/// # use devela::meta::cfor;
 /// // Reverse, then change step size
 /// let mut v = Vec::new();
-/// const_for!(i in (0..10).rev().step_by(4) {
+/// cfor!(i in (0..10).rev().step_by(4) {
 ///     v.push(i)
 /// });
 /// assert!(v == vec![9, 5, 1]);
 ///
 /// // Change step size, then reverse
 /// let mut v = Vec::new();
-/// const_for!(i in (0..10).step_by(4).rev() {
+/// cfor!(i in (0..10).step_by(4).rev() {
 ///     v.push(i)
 /// });
 /// assert!(v == vec![8, 4, 0])
 /// ```
 #[macro_export]
-macro_rules! const_for {
+macro_rules! cfor {
     ($var:ident in ($range:expr).step_by($step:expr) $body:block) => {
         {
             let _: usize = $step;
@@ -125,16 +125,16 @@ macro_rules! const_for {
     };
 
     ($var:ident in ($range:expr).rev() => $body:block) => {
-        const_for!($var in ($range).rev().step_by(1) $body)
+        cfor!($var in ($range).rev().step_by(1) $body)
     };
 
     ($var:ident in ($range:expr).step_by($step:expr).rev() $body:block) => {
         // A little janky, but imitates the chained functions
-        const_for!($var in ($range.start..$range.end - ($range.end - $range.start - 1) % $step).rev().step_by($step) $body)
+        cfor!($var in ($range.start..$range.end - ($range.end - $range.start - 1) % $step).rev().step_by($step) $body)
     };
 
     ($var:ident in $range:expr => $body:block) => {
-        const_for!($var in ($range).step_by(1) $body)
+        cfor!($var in ($range).step_by(1) $body)
     };
 }
-pub use const_for;
+pub use cfor;
