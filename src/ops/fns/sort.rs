@@ -37,7 +37,6 @@ use ::_alloc::vec::Vec;
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
 /// ```
 #[inline]
-#[must_use]
 pub fn sort_bubble<T: Ord>(slice: &mut [T]) {
     for i in 0..slice.len() {
         for j in 0..slice.len() - i - 1 {
@@ -56,7 +55,6 @@ pub fn sort_bubble<T: Ord>(slice: &mut [T]) {
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
 /// ```
 #[inline]
-#[must_use]
 pub fn sort_insertion<T: Ord>(slice: &mut [T]) {
     for i in 1..slice.len() {
         let mut j = i;
@@ -171,10 +169,17 @@ fn sort_quick_3way_partition<T: Ord + Clone>(slice: &mut [T]) -> (usize, usize) 
     let pivot = slice[ipivot].clone();
     let (mut lt, mut gt, mut i) = (0, len, 0);
     while i < gt {
-        sf! {
-            if slice[i] < pivot { slice.swap(lt, i); lt += 1; i += 1 }
-            else if slice[i] > pivot { gt -= 1; slice.swap(i, gt) }
-            else { i += 1 }
+        match slice[i].cmp(&pivot) {
+            Ordering::Less => {
+                slice.swap(lt, i);
+                lt += 1;
+                i += 1
+            }
+            Ordering::Greater => {
+                gt -= 1;
+                slice.swap(i, gt)
+            }
+            Ordering::Equal => i += 1,
         }
     }
     (lt, gt)
@@ -225,7 +230,6 @@ fn sort_quick_hoare_partition<T: Ord + Clone>(slice: &mut [T]) -> usize {
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
 /// ```
 #[inline]
-#[must_use]
 pub fn sort_selection<T: Ord>(slice: &mut [T]) {
     let len = slice.len();
     for i in 0..len - 1 {
@@ -249,7 +253,6 @@ pub fn sort_selection<T: Ord>(slice: &mut [T]) {
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
 /// ```
 #[inline]
-#[must_use]
 pub fn sort_shaker<T: Ord + Clone>(slice: &mut [T]) {
     let (mut swapped, mut start, mut end) = (true, 0, slice.len());
     while swapped {

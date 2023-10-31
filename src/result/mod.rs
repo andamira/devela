@@ -8,6 +8,7 @@
 /* contains always compiled items */
 
 mod chain;
+#[allow(unused)]
 #[cfg(not(feature = "result"))]
 pub(crate) use chain::*;
 
