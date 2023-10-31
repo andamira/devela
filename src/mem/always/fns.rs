@@ -1,8 +1,6 @@
-// devela::mem::always_fns
+// devela::mem::always::fns
 //
-//! `mem` standalone functions.
 //!
-//! Always available for internal use.
 //
 
 #![allow(unused)]
