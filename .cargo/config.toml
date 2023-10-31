@@ -37,12 +37,25 @@ bnu = "build -F=no_std,unsafe"
 r = "run"
 rb = "run --bin"
 re = "run --example"
+#
 rr = "run --release"
 rrb = "run --release --bin"
 rre = "run --release --example"
-ru = "run -F=std,unsafe"
-rub = "run -F=std,unsafe --bin"
-rue = "run -F=std,unsafe --example"
+rrue = "run --release -F unsafe --example"
+#
+rrs = "run --release -F std"
+rrsb = "run --release -F std --bin"
+rrse = "run --release -F std --example"
+rrsue = "run --release -F std,unsafe --example"
+#
+ru = "run -F=unsafe"
+rub = "run -F=unsafe --bin"
+rue = "run -F=unsafe --example"
+#
+rsu = "run -F=std,unsafe"
+rsub = "run -F=std,unsafe --bin"
+rsue = "run -F=std,unsafe --example"
+#
 rn = "run -F=no_std"
 rnb = "run -F=no_std --bin"
 rne = "run -F=no_std --example"
