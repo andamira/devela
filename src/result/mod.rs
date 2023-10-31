@@ -7,13 +7,13 @@
 
 /* contains always compiled items */
 
-// ...
+mod chain;
+#[cfg(not(feature = "result"))]
+pub(crate) use chain::*;
 
 /* feature-gated */
 
 // private sub-modules
-#[cfg(feature = "result")]
-mod chain;
 #[cfg(feature = "result")]
 mod ext;
 #[cfg(feature = "result")]
