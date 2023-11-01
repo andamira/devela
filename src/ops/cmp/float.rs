@@ -3,6 +3,8 @@
 //! Generate the (const) fns for floating-point primitive comparison.
 //
 
+#![cfg_attr(not(feature = "ops"), allow(unused))]
+
 use crate::meta::{iif, paste};
 #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
 use crate::num::fsize;

@@ -10,15 +10,14 @@
 /* contains always compiled items */
 
 mod always_fns;
+mod float;
 
 #[allow(unused)]
 #[cfg(not(feature = "ops"))]
-pub(crate) use always_fns::*;
+pub(crate) use {always_fns::*, float::*};
 
 /* feature-gated */
 
-#[cfg(feature = "ops")]
-mod float;
 #[cfg(feature = "ops")]
 mod fns;
 
