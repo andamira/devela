@@ -8,13 +8,21 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.18.0-wip]
 
 ### Added
+- new `ops` gcd fns: `gcd_*`, `gcd_ext_*` and `gcd_ext_euc_*`, `lcm_*`.
+- new `ops` base fns: `count_digits`, `count_digits_sign`, `count_digits_base`, `count_digits_base_sign`, `digital_root`, `digital_root_base`.
+- new `ops` factor fns: `factors_*`, `factors_proper_*`, `factors_prime_*`, `factors_prime_unique_*`, `factors_prime_buf_*`, `factors_prime_unique_buf_*`, `factors_prime_unique_plus_buf_*`.
+- new `ops` sort fns: `sort_bubble`, `sort_insertion`, `sort_merge`, `sort_quick_lomuto`, `sort_quick_hoare`, `sort_quick_3way`, `sort_selection`, `sort_shaker`, `sort_counting`, `sort_counting_buf`.
+- new `mem` macro: `cswap`.
 - add new fn to `LinuxTerminal` size: `pixels_per_cell`.
-- new `ops` fns: `gcd_*`, `gcd_ext_*` and `gcd_ext_euc_*`, `lcm_*`.
+- new struct `Fp` for floating-point operations wrapper.
 
 ### Changed
 - changed result of `LinuxTerminalSize` fns: `cells` and `pixels` to `[u16; 2]`.
+- rename `const_for` to `cfor` and make it always available.
+- make `ops::cmp` float fns always available.
+- add `libm` feature to docs.rs compilation.
 
-### Fixed
+#### Fixed
 - add missing rustdoc header file.
 - fix reversed order of `LinuxTerminalSize::cells`.
 
@@ -48,7 +56,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 - fix test for `mem_size_of_expr`.
 - remove redundant re-exports of optional dependencies.
 - update cargo aliases.
-
 
 ## [0.16.0] 2023-10-24
 
@@ -322,7 +329,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 - fix cargo aliases.
 - fix external reexports.
 
-
 ## [0.7.1] - 2023-08-23
 
 ### Changed
@@ -418,7 +424,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - new `NonSpecific*` wrappers over the `NonZero*` primitives.
 - new `unsafe` feature.
-
 
 ## [0.5.0] - 2023-06-09
 
