@@ -9,10 +9,11 @@
 /* contains always compiled items */
 
 pub mod cmp;
+mod fp;
 
 #[allow(unused)]
 #[cfg(not(feature = "ops"))]
-pub(crate) use cmp::*;
+pub(crate) use {cmp::*, fp::*};
 
 /* feature-gated */
 
@@ -24,7 +25,7 @@ mod fns;
 
 // re-export private sub-modules
 #[cfg(feature = "ops")]
-pub use fns::*;
+pub use {fns::*, fp::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
@@ -34,5 +35,5 @@ pub use {cmp::all::*, convert::all::*};
 #[cfg(feature = "ops")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{cmp::all::*, convert::all::*, fns::*};
+    pub use super::{cmp::all::*, convert::all::*, fns::*, fp::*};
 }
