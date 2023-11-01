@@ -10,12 +10,12 @@ pub type NumResult<T> = core::result::Result<T, NumError>;
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum NumError {
-    /// The functionality is not implemented.
+    /// The requested functionality is not implemented.
     ///
     /// This is the default result of every auto-implemented `Num` method.
     NotImplemented,
 
-    /// The functionality is explicity not supported.
+    /// The requested functionality is not supported by this number type.
     NotSupported,
 
     /// Unspecified error.

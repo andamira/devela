@@ -68,6 +68,7 @@ macro_rules! impl_fp {
         }
     };
 }
+#[cfg(any(feature = "std", feature = "libm"))]
 use impl_fp;
 
 #[cfg(all(not(feature = "libm"), feature = "std"))]

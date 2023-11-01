@@ -28,7 +28,5 @@ pub use {aligned::*, always::*, r#trait::*, reexports_core::*, size::*, storage:
 #[cfg(feature = "mem")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{
-        aligned::*, always::*, r#trait::*, reexports_core::*, size::*, storage::*,
-    };
+    pub use super::{aligned::*, always::*, r#trait::*, reexports_core::*, size::*, storage::*};
 }

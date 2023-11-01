@@ -171,7 +171,6 @@ pub fn sort_insertion<T: Ord>(slice: &mut [T]) {
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
 /// ```
 #[inline]
-#[must_use]
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 pub fn sort_merge<T: Ord + Copy>(slice: &mut [T]) {
