@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
-## [0.18.0-wip]
+## [0.19.0-wip]
+
+## [0.18.0] 2023-11-03
 
 ### Added
 - new `ops` gcd fns: `gcd_*`, `gcd_ext_*` and `gcd_ext_euc_*`, `lcm_*`.
@@ -14,7 +16,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `ops` sort fns: `sort_bubble`, `sort_insertion`, `sort_merge`, `sort_quick_lomuto`, `sort_quick_hoare`, `sort_quick_3way`, `sort_selection`, `sort_shaker`, `sort_counting`, `sort_counting_buf`.
 - new `mem` macro: `cswap`.
 - add new fn to `LinuxTerminal` size: `pixels_per_cell`.
-- new struct `Fp` for floating-point operations wrapper.
+- new trait `FloatExt` and struct `Fp`.
 
 ### Changed
 - changed result of `LinuxTerminalSize` fns: `cells` and `pixels` to `[u16; 2]`.
@@ -536,7 +538,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.17.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.18.0...HEAD
+[0.18.0]: https://github.com/andamira/devela/releases/tag/v0.18.0
 [0.17.0]: https://github.com/andamira/devela/releases/tag/v0.17.0
 [0.16.0]: https://github.com/andamira/devela/releases/tag/v0.16.0
 [0.15.0]: https://github.com/andamira/devela/releases/tag/v0.15.0
