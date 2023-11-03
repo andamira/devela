@@ -2,8 +2,8 @@ This project includes the following derived works:
 
 - A [modified][0] version of [itoa] by David Tolnay, licensed as MIT OR Apache-2.0,
   in [`IntBuf`] and [`IntBufAble`].
-- A [modified][0] version of [stack_dst] by John Hodge, licensed as MIT OR Apache-2.0,
-  in the [`data::dst`][crate::data::dst] module.
+- A [modified][1] version of [stack_dst] by John Hodge, licensed as MIT OR Apache-2.0,
+  in the [`data::dst`] module.
 - Adaptation of [opt_reduce] by Waffle Lapkin, licensed as MIT,
   as part of the [`OptionExt`] trait.
 - Adaptation of [fmtor] by Tyler Ruckinger, licensed as MIT OR Apache-2.0,
@@ -25,7 +25,9 @@ This project includes the following derived works:
 [itoa]: https://crates.io/crates/itoa/1.0.9
 [`IntBuf`]: https://docs.rs/devela/latest/devela/fmt/struct.IntBuf.html
 [`IntBufAble`]: https://docs.rs/devela/latest/devela/fmt/trait.IntBufAble.html
+[1]: https://github.com/andamira/devela/blob/main/src/data/dst/MODIFICATIONS.md
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
+[`data::dst`]: https://docs.rs/devela/latest/devela/data/dst/index.html
 [opt_reduce]: https://crates.io/crates/opt_reduce/1.0.0
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
 [option-ext]: https://crates.io/crates/option-ext/0.2.0
@@ -41,4 +43,4 @@ This project includes the following derived works:
 [const_for]: https://crates.io/crates/const_for
 [`const_for`]: https://docs.rs/devela/latest/devela/codegen/macro.const_for.html
 [size_of_trait]: https://crates.io/crates/size-of-trait
-[`size_of_expr`]: https://docs.rs/devela/latest/devela/mem/macro.mem_size_of_expr.html
+[`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/mem/macro.mem_size_of_expr.html
