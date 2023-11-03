@@ -200,6 +200,9 @@ pub mod prelude {
     #[cfg(feature = "ops")]
     pub use crate::ops::convert::primitive::{FromPrimitives, IntoPrimitives};
 
+    #[cfg(any(feature = "std", feature = "libm"))]
+    pub use crate::ops::FloatExt;
+
     #[cfg(feature = "result")]
     pub use crate::result::{Also, Apply, OptionExt, ResultExt};
 
