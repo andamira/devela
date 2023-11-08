@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [0.19.0-wip]
 
+## [0.18.1] 2023-11-08
+
+#### Fixed
+- fix `FloatExt` reexport.
+- fix `DERIVED.md` links.
+
 ## [0.18.0] 2023-11-03
 
 ### Added
@@ -538,7 +544,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.18.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.18.1...HEAD
+[0.18.1]: https://github.com/andamira/devela/releases/tag/v0.18.1
 [0.18.0]: https://github.com/andamira/devela/releases/tag/v0.18.0
 [0.17.0]: https://github.com/andamira/devela/releases/tag/v0.17.0
 [0.16.0]: https://github.com/andamira/devela/releases/tag/v0.16.0
