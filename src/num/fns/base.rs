@@ -1,4 +1,4 @@
-// devela::ops::fns::base
+// devela::num::fns::base
 //
 //! Functions for numeric operations.
 //
@@ -26,7 +26,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::count_digits_" $t ";\n\n"]
+        #[doc ="use devela::num::count_digits_" $t ";\n\n"]
         #[doc = "assert_eq![count_digits_" $t "(0), 1];"]
         #[doc = "assert_eq![count_digits_" $t "(-1), 1];"]
         #[doc = "assert_eq![count_digits_" $t "(127), 3];"]
@@ -44,7 +44,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::count_digits_sign_" $t ";\n\n"]
+        #[doc ="use devela::num::count_digits_sign_" $t ";\n\n"]
         #[doc = "assert_eq![count_digits_sign_" $t "(0), 1];"]
         #[doc = "assert_eq![count_digits_sign_" $t "(-1), 2];"]
         #[doc = "assert_eq![count_digits_sign_" $t "(127), 3];"]
@@ -65,7 +65,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::count_digits_base_" $t ";\n\n"]
+        #[doc ="use devela::num::count_digits_base_" $t ";\n\n"]
         #[doc = "assert_eq![count_digits_base_" $t "(3, 2), 2];"]
         #[doc = "assert_eq![count_digits_base_" $t "(127, 16), 2];"]
         #[doc = "assert_eq![count_digits_base_" $t "(-128, 16), 2];"]
@@ -89,7 +89,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::count_digits_base_sign_" $t ";\n\n"]
+        #[doc ="use devela::num::count_digits_base_sign_" $t ";\n\n"]
         #[doc = "assert_eq![count_digits_base_sign_" $t "(3, 2), 2];"]
         #[doc = "assert_eq![count_digits_base_sign_" $t "(127, 16), 2];"]
         #[doc = "assert_eq![count_digits_base_sign_" $t "(-128, 16), 3];"]
@@ -114,7 +114,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::digital_root_" $t ";\n\n"]
+        #[doc ="use devela::num::digital_root_" $t ";\n\n"]
         #[doc = "assert_eq![digital_root_" $t "(127), 1];"]
         #[doc = "assert_eq![digital_root_" $t "(-127), 1];"]
         #[doc = "assert_eq![digital_root_" $t "(-126), 9];"]
@@ -136,7 +136,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::digital_root_base_" $t ";\n\n"]
+        #[doc ="use devela::num::digital_root_base_" $t ";\n\n"]
         #[doc = "assert_eq![digital_root_base_" $t "(127, 10), 1];"]
         #[doc = "assert_eq![digital_root_base_" $t "(127, -10), 1];"]
         #[doc = "assert_eq![digital_root_base_" $t "(-127, -10), 1];"]
@@ -165,7 +165,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::count_digits_" $t ";\n\n"]
+        #[doc ="use devela::num::count_digits_" $t ";\n\n"]
         #[doc = "assert_eq![count_digits_" $t "(0), 1];"]
         #[doc = "assert_eq![count_digits_" $t "(127), 3];"]
         /// ```
@@ -181,7 +181,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::count_digits_base_" $t ";\n\n"]
+        #[doc ="use devela::num::count_digits_base_" $t ";\n\n"]
         #[doc = "assert_eq![count_digits_base_" $t "(3, 2), 2];"]
         #[doc = "assert_eq![count_digits_base_" $t "(127, 16), 2];"]
         #[doc = "assert_eq![count_digits_base_" $t "(100, 0), 0];"]
@@ -200,7 +200,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::digital_root_" $t ";\n\n"]
+        #[doc ="use devela::num::digital_root_" $t ";\n\n"]
         #[doc = "assert_eq![digital_root_" $t "(127), 1];"]
         #[doc = "assert_eq![digital_root_" $t "(126), 9];"]
         /// ```
@@ -220,7 +220,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::digital_root_base_" $t ";\n\n"]
+        #[doc ="use devela::num::digital_root_base_" $t ";\n\n"]
         #[doc = "assert_eq![digital_root_base_" $t "(127, 10), 1];"]
         #[doc = "assert_eq![digital_root_base_" $t "(33, 16), 3];"]
         /// ```

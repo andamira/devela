@@ -52,7 +52,6 @@ Single modules:
 - `meta`, `meta_unsafe`: enables the [`meta`] module,
   and the [`devela_macros`] optional dependency.
 - `num`, `num_unsafe`: enables the [`num`] module.
-- `ops`, `ops_unsafe`: enables the [`ops`] module.
 - `path`, `path_unsafe`: enables the [`path`] module.
 - `result`, `result_unsafe`: enables the [`result`] module.
 - `text`, `text_unsafe`: enables the [`text`] module.
@@ -73,9 +72,9 @@ They offer a gradient of safety.
   - `unsafe_any`: *(unused)*.
   - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and [`mem_as_bytes_sized`].
   - `unsafe_meta`: *(unused)*.
-  - `unsafe_num`: enables `new_unchecked` constructors and implements `bytemuck` traits.
-  - `unsafe_ops`: enables using [`MaybeUninit`] for [`slice_into_array`] initialization,
-    and const floating-point comparison  using [`transmute`] for constant access to the bits.
+  - `unsafe_num`: enables `new_unchecked` constructors, implements `bytemuck` traits,
+    enables using [`MaybeUninit`] for [`slice_into_array`] initialization and
+    const floating-point comparison  using [`transmute`] for constant access to the bits.
   - `unsafe_os`: enables all the unsafe *platform* sub-features:
     - `unsafe_linux`: provides functionality depending on linux syscalls and
          implements `bytemuck` traits.
@@ -112,7 +111,7 @@ Dependencies can also be enabled individually:
 
 [`IntBuf`]: text::IntBuf
 [`IntBufable`]: text::IntBufAble
-[`slice_into_array`]: ops::convert::collection::slice_into_array
+[`slice_into_array`]: num::convert::collection::slice_into_array
 [`MaybeUninit`]: core::mem::MaybeUninit
 [`transmute`]: core::mem::transmute
 [`mem_as_bytes`]: mem::mem_as_bytes

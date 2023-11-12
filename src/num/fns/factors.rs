@@ -1,4 +1,4 @@
-// devela::ops::fns::factors
+// devela::num::fns::factors
 //
 //! Functions for numeric operations.
 //
@@ -36,7 +36,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_" $t ";\n\n"]
+        #[doc ="use devela::num::factors_" $t ";\n\n"]
         #[doc = "assert_eq![factors_" $t "(24), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
         #[doc = "assert_eq![factors_" $t "(-24), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
         #[doc = "assert_eq![factors_" $t "(0), vec![]];"]
@@ -71,7 +71,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_proper_" $t ";\n\n"]
+        #[doc ="use devela::num::factors_proper_" $t ";\n\n"]
         #[doc = "assert_eq![factors_proper_" $t "(24), vec![2, 3, 4, 6, 8, 12]];"]
         #[doc = "assert_eq![factors_proper_" $t "(-24), vec![2, 3, 4, 6, 8, 12]];"]
         #[doc = "assert_eq![factors_proper_" $t "(0), vec![]];"]
@@ -109,7 +109,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_prime_" $t ";\n\n"]
+        #[doc ="use devela::num::factors_prime_" $t ";\n\n"]
         #[doc = "assert_eq![factors_prime_" $t "(24), vec![2, 2, 2, 3]];"]
         #[doc = "assert_eq![factors_prime_" $t "(-24), vec![2, 2, 2, 3]];"]
         #[doc = "assert_eq![factors_prime_" $t "(0), vec![]];"]
@@ -147,7 +147,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_prime_unique_" $t ";\n\n"]
+        #[doc ="use devela::num::factors_prime_unique_" $t ";\n\n"]
         #[doc = "assert_eq![factors_prime_unique_" $t "(24), vec![2, 3]];"]
         /// ```
         #[inline]
@@ -169,7 +169,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_" $t "_buf;\n\n"]
+        #[doc ="use devela::num::factors_" $t "_buf;\n\n"]
         /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
         #[doc = "assert_eq![factors_" $t "_buf(24, &mut fbuf, &mut upbuf), Some((8, 2))];"]
         ///
@@ -207,7 +207,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_proper_" $t "_buf;\n\n"]
+        #[doc ="use devela::num::factors_proper_" $t "_buf;\n\n"]
         /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
         #[doc = "assert_eq![factors_proper_" $t "_buf(24, &mut fbuf, &mut upbuf), Some((6, 2))];"]
         ///
@@ -246,7 +246,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_prime_" $t "_buf;\n\n"]
+        #[doc ="use devela::num::factors_prime_" $t "_buf;\n\n"]
         /// let mut buf = [0; 5];
         #[doc = "assert_eq![factors_prime_" $t "_buf(24, &mut buf), Some(4)];"]
         ///
@@ -291,7 +291,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_prime_unique_" $t "_buf;\n\n"]
+        #[doc ="use devela::num::factors_prime_unique_" $t "_buf;\n\n"]
         /// let mut uniq = [0; 5];
         #[doc = "assert_eq![factors_prime_unique_" $t "_buf(24, &mut uniq), Some(2)];"]
         /// assert_eq![uniq, [2, 3, 2, 3, 0]];
@@ -324,7 +324,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_prime_unique_plus_" $t "_buf;\n\n"]
+        #[doc ="use devela::num::factors_prime_unique_plus_" $t "_buf;\n\n"]
         /// let (mut fac, mut uniq) = ([0; 5], [0; 5]);
         #[doc = "assert_eq![factors_prime_unique_plus_" $t
             "_buf(24, &mut fac, &mut uniq), Some((4, 2))];"]
@@ -369,7 +369,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_" $t ";\n\n"]
+        #[doc ="use devela::num::factors_" $t ";\n\n"]
         #[doc = "assert_eq![factors_" $t "(24), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
         #[doc = "assert_eq![factors_" $t "(0), vec![]];"]
         #[doc = "assert_eq![factors_" $t "(1), vec![1]];"]
@@ -403,7 +403,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_proper_" $t ";\n\n"]
+        #[doc ="use devela::num::factors_proper_" $t ";\n\n"]
         #[doc = "assert_eq![factors_proper_" $t "(24), vec![2, 3, 4, 6, 8, 12]];"]
         #[doc = "assert_eq![factors_proper_" $t "(0), vec![]];"]
         #[doc = "assert_eq![factors_proper_" $t "(1), vec![]];"]
@@ -439,7 +439,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_prime_" $t ";\n\n"]
+        #[doc ="use devela::num::factors_prime_" $t ";\n\n"]
         #[doc = "assert_eq![factors_prime_" $t "(24), vec![2, 2, 2, 3]];"]
         #[doc = "assert_eq![factors_prime_" $t "(0), vec![]];"]
         #[doc = "assert_eq![factors_prime_" $t "(1), vec![]];"]
@@ -475,7 +475,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_prime_unique_" $t ";\n\n"]
+        #[doc ="use devela::num::factors_prime_unique_" $t ";\n\n"]
         #[doc = "assert_eq![factors_prime_unique_" $t "(24), vec![2, 3]];"]
         /// ```
         #[inline]
@@ -497,7 +497,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_" $t "_buf;\n\n"]
+        #[doc ="use devela::num::factors_" $t "_buf;\n\n"]
         /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
         #[doc = "assert_eq![factors_" $t "_buf(24, &mut fbuf, &mut upbuf), Some((8, 2))];"]
         ///
@@ -534,7 +534,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_proper_" $t "_buf;\n\n"]
+        #[doc ="use devela::num::factors_proper_" $t "_buf;\n\n"]
         /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
         #[doc = "assert_eq![factors_proper_" $t "_buf(24, &mut fbuf, &mut upbuf), Some((6, 2))];"]
         ///
@@ -573,7 +573,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_prime_" $t "_buf;\n\n"]
+        #[doc ="use devela::num::factors_prime_" $t "_buf;\n\n"]
         /// let mut buf = [0; 5];
         #[doc = "assert_eq![factors_prime_" $t "_buf(24, &mut buf), Some(4)];"]
         ///
@@ -618,7 +618,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_prime_unique_" $t "_buf;\n\n"]
+        #[doc ="use devela::num::factors_prime_unique_" $t "_buf;\n\n"]
         /// let mut uniq = [0; 5];
         #[doc = "assert_eq![factors_prime_unique_" $t "_buf(24, &mut uniq), Some(2)];"]
         /// assert_eq![uniq, [2, 3, 2, 3, 0]];
@@ -651,7 +651,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::factors_prime_unique_plus_" $t "_buf;\n\n"]
+        #[doc ="use devela::num::factors_prime_unique_plus_" $t "_buf;\n\n"]
         /// let (mut fac, mut uniq) = ([0; 5], [0; 5]);
         #[doc = "assert_eq![factors_prime_unique_plus_" $t
             "_buf(24, &mut fac, &mut uniq), Some((4, 2))];"]

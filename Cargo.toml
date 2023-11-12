@@ -70,7 +70,7 @@ term_unsafe = ["term", "unsafe_term"]
 #* module features *#
 
 full = [ # enables all the modules
-	"any", "color", "data", "mem", "meta", "num", "path", "ops", "result",
+	"any", "color", "data", "mem", "meta", "num", "path", "result",
 	"task", "text", "time",
 	# os platform sub-modules:
 	"linux", "term",
@@ -78,7 +78,7 @@ full = [ # enables all the modules
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
 
-# individual modules (12)
+# individual modules (11)
 # (modules enable their own dependencies if the `dep` feature is enabled)
 any = []
 color = []
@@ -86,21 +86,19 @@ data = ["dep?/hashbrown"]
 mem = ["dep?/bytemuck"]
 meta = ["dep?/devela_macros"]
 num = []
-ops = []
 path = []
 result = []
 task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 text = ["dep?/const-str", "dep?/unicode-segmentation"]
 time = []
 
-# individual modules with unsafe enabled (12):
+# individual modules with unsafe enabled (11):
 any_unsafe = ["any", "unsafe_any"]
 color_unsafe = ["color", "unsafe_color"]
 data_unsafe = ["data", "unsafe_data"]
 mem_unsafe = ["mem", "unsafe_mem"]
 meta_unsafe = ["meta", "unsafe_meta"]
 num_unsafe = ["num", "unsafe_num"]
-ops_unsafe = ["ops", "unsafe_ops"]
 path_unsafe = ["path", "unsafe_path"]
 result_unsafe = ["result", "unsafe_result"]
 task_unsafe = ["task", "unsafe_task"]
@@ -110,19 +108,17 @@ time_unsafe = ["time", "unsafe_time"]
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate (12+1)
+unsafe = [ # enables unsafe features in this crate (11+1)
 	"unsafe_any", "unsafe_color", "unsafe_data", "unsafe_mem",
-	"unsafe_meta", "unsafe_num", "unsafe_ops", "unsafe_os",
-	"unsafe_path", "unsafe_result", "unsafe_task", "unsafe_text",
-	"unsafe_time",
+	"unsafe_meta", "unsafe_num", "unsafe_os", "unsafe_path",
+	"unsafe_result", "unsafe_task", "unsafe_text", "unsafe_time",
 	]
 	unsafe_any = [] # (unused)
 	unsafe_color = [] # (unused)
 	unsafe_data = [] # (unused)
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
 	unsafe_meta = [] # (unused)
-	unsafe_num = [] # enables unsafe constructors and bytemuck's traits
-	unsafe_ops = [] # enables const fp-fns and `MaybeUninit` for array initalization
+	unsafe_num = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
 	unsafe_os = [ # enables unsafe functionality for OS platforms:
 		"unsafe_linux", "unsafe_term",
 		]

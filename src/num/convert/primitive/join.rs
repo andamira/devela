@@ -1,4 +1,4 @@
-// devela::ops::conversion::primitive::join
+// devela::num::conversion::primitive::join
 //
 //! construct an unsigned primitive by joining an array of smaller unsigned primitives.
 //

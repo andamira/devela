@@ -1,4 +1,4 @@
-// devela::ops::conversion::primitive
+// devela::num::conversion::primitive
 //
 //! Helpers for converting between primitives.
 //

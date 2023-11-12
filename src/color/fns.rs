@@ -2,7 +2,7 @@
 //
 
 #[cfg(feature = "libm")]
-use crate::ops::FloatExt;
+use crate::num::FloatExt;
 
 /// Applies the `gamma` to an `f32` channel.
 #[inline]

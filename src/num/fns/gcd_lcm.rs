@@ -1,4 +1,4 @@
-// devela::ops::fns::gcd_lcm
+// devela::num::fns::gcd_lcm
 //
 //! Functions for numeric operations.
 //
@@ -28,7 +28,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::gcd_" $t ";\n\n"]
+        #[doc ="use devela::num::gcd_" $t ";\n\n"]
         #[doc = "assert_eq![gcd_" $t "(64, 36), 4];"]
         #[doc ="assert_eq![gcd_" $t "(-64, 36), 4];"]
         #[doc ="assert_eq![gcd_" $t "(64, -36), 4];"]
@@ -77,7 +77,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::gcd_ext_" $t ";\n\n"]
+        #[doc ="use devela::num::gcd_ext_" $t ";\n\n"]
         #[doc = "let [gcd, x, y] = gcd_ext_" $t "(32, 36);"]
         #[doc = "assert_eq!(gcd, 4);"]
         #[doc = "assert_eq!(x * 32 + y * 36, gcd);"]
@@ -143,7 +143,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::gcd_ext_euc_" $t ";\n\n"]
+        #[doc ="use devela::num::gcd_ext_euc_" $t ";\n\n"]
         #[doc = "let [gcd, x, y] = gcd_ext_euc_" $t "(32, 36);"]
         #[doc = "assert_eq!(gcd, 4);"]
         #[doc = "assert_eq!(x * 32 + y * 36, gcd);"]
@@ -166,7 +166,7 @@ macro_rules! impl_ops {
         #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::lcm_" $t ";\n\n"]
+        #[doc ="use devela::num::lcm_" $t ";\n\n"]
         #[doc = "assert_eq![lcm_" $t "(12, 15), Some(60)];"]
         #[doc = "assert_eq![lcm_" $t "(-12, 15), Some(60)];"]
         #[doc = "assert_eq![lcm_" $t "(12, -15), Some(60)];"]
@@ -190,7 +190,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::gcd_" $t ";\n\n"]
+        #[doc ="use devela::num::gcd_" $t ";\n\n"]
         #[doc = "assert_eq![gcd_" $t "(64, 36), 4];"]
         #[doc = "assert_eq![gcd_" $t "(0, 36), 36];"]
         #[doc = "assert_eq![gcd_" $t "(64, 0), 64];"]
@@ -222,7 +222,7 @@ macro_rules! impl_ops {
         #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
         /// # Examples
         /// ```
-        #[doc ="use devela::ops::lcm_" $t ";\n\n"]
+        #[doc ="use devela::num::lcm_" $t ";\n\n"]
         #[doc = "assert_eq![lcm_" $t "(12, 15), Some(60)];"]
         /// ```
         #[inline]
