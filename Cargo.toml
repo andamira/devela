@@ -138,7 +138,7 @@ unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
 
 nightly = [ # enables nightly features
 ]
-
+docsrs = ["std", "full", "unsafe", "nightly", "dep", "libm"]
 
 #* dependency features *#
 
@@ -206,7 +206,7 @@ devela = { path = ".", features = ["full"] }
 
 [package.metadata.docs.rs]
 no-default-features = true
-features = ["std", "full", "unsafe", "nightly", "dep", "libm"]
+features = ["docsrs"]
 rustdoc-args = [ "--html-in-header", "./res/rustdoc-header.html" ]
 
 [badges]
