@@ -1,5 +1,6 @@
 /target
 /Cargo.lock
 /macros
+/depend
 /tools/*.rs
 /tools/*.txt
