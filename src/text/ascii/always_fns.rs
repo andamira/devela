@@ -64,35 +64,111 @@ pub const fn ascii_4digit(n: u16) -> [u8; 4] {
 
 // -----------------------------------------------------------------------------
 
-/// Calculates the ASCII byte of a digit.
+/// Returns the ASCII byte of a specific digit in a `usize` number.
+///
+/// # Arguments
+/// * `n`: The usize number from which a digit will be extracted.
+/// * `divisor`: A power of 10 used to determine which digit to extract.
+///
+/// # Examples
+/// ```
+/// # use devela::text::ascii_calc_digit;
+/// assert_eq!(ascii_calc_digit(12345, 10), b'4');
+/// assert_eq!(ascii_calc_digit(12345, 1000), b'2');
+/// ```
 #[inline]
 #[must_use]
 pub const fn ascii_calc_digit(n: usize, divisor: usize) -> u8 {
     (n / divisor % 10) as u8 + b'0'
 }
+
+/// Returns the ASCII byte of a specific digit in a `usize` number.
+///
+/// # Arguments
+/// * `n`: The usize number from which a digit will be extracted.
+/// * `divisor`: A power of 10 used to determine which digit to extract.
+///
+/// # Examples
+/// ```
+/// # use devela::text::ascii_calc_digit_u8;
+/// assert_eq!(ascii_calc_digit_u8(123, 10), b'2');
+/// assert_eq!(ascii_calc_digit_u8(123, 100), b'1');
+/// ```
 #[inline]
 #[must_use]
-pub(crate) const fn ascii_calc_digit_u8(n: u8, divisor: u8) -> u8 {
+pub const fn ascii_calc_digit_u8(n: u8, divisor: u8) -> u8 {
     (n / divisor % 10) + b'0'
 }
+
+/// Returns the ASCII byte of a specific digit in a `usize` number.
+///
+/// # Arguments
+/// * `n`: The usize number from which a digit will be extracted.
+/// * `divisor`: A power of 10 used to determine which digit to extract.
+///
+/// # Examples
+/// ```
+/// # use devela::text::ascii_calc_digit_u16;
+/// assert_eq!(ascii_calc_digit_u16(12345, 10), b'4');
+/// assert_eq!(ascii_calc_digit_u16(12345, 1000), b'2');
+/// ```
 #[inline]
 #[must_use]
-pub(crate) const fn ascii_calc_digit_u16(n: u16, divisor: u16) -> u8 {
+pub const fn ascii_calc_digit_u16(n: u16, divisor: u16) -> u8 {
     (n / divisor % 10) as u8 + b'0'
 }
+
+/// Returns the ASCII byte of a specific digit in a `usize` number.
+///
+/// # Arguments
+/// * `n`: The usize number from which a digit will be extracted.
+/// * `divisor`: A power of 10 used to determine which digit to extract.
+///
+/// # Examples
+/// ```
+/// # use devela::text::ascii_calc_digit_u32;
+/// assert_eq!(ascii_calc_digit_u32(12345, 10), b'4');
+/// assert_eq!(ascii_calc_digit_u32(12345, 1000), b'2');
+/// ```
 #[inline]
 #[must_use]
-pub(crate) const fn ascii_calc_digit_u32(n: u32, divisor: u32) -> u8 {
+pub const fn ascii_calc_digit_u32(n: u32, divisor: u32) -> u8 {
     (n / divisor % 10) as u8 + b'0'
 }
+
+/// Returns the ASCII byte of a specific digit in a `64` number.
+///
+/// # Arguments
+/// * `n`: The usize number from which a digit will be extracted.
+/// * `divisor`: A power of 10 used to determine which digit to extract.
+///
+/// # Examples
+/// ```
+/// # use devela::text::ascii_calc_digit_u64;
+/// assert_eq!(ascii_calc_digit_u64(12345, 10), b'4');
+/// assert_eq!(ascii_calc_digit_u64(12345, 1000), b'2');
+/// ```
 #[inline]
 #[must_use]
-pub(crate) const fn ascii_calc_digit_u64(n: u64, divisor: u64) -> u8 {
+pub const fn ascii_calc_digit_u64(n: u64, divisor: u64) -> u8 {
     (n / divisor % 10) as u8 + b'0'
 }
+
+/// Returns the ASCII byte of a specific digit in a `u128` number.
+///
+/// # Arguments
+/// * `n`: The usize number from which a digit will be extracted.
+/// * `divisor`: A power of 10 used to determine which digit to extract.
+///
+/// # Examples
+/// ```
+/// # use devela::text::ascii_calc_digit_u128;
+/// assert_eq!(ascii_calc_digit_u128(12345, 10), b'4');
+/// assert_eq!(ascii_calc_digit_u128(12345, 1000), b'2');
+/// ```
 #[inline]
 #[must_use]
-pub(crate) const fn ascii_calc_digit_u128(n: u128, divisor: u128) -> u8 {
+pub const fn ascii_calc_digit_u128(n: u128, divisor: u128) -> u8 {
     (n / divisor % 10) as u8 + b'0'
 }
 
