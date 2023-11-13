@@ -59,12 +59,6 @@ no_std = [ # enables functionality incompatible with `std`
 
 linux = [] # enables os::linux functionality
 linux_unsafe = ["linux", "unsafe_linux"]
-term = []
-term_unsafe = ["term", "unsafe_term"]
-# wasm = []
-# windows = []
-# macos = []
-# esp32 = []
 
 
 #* module features *#
@@ -73,7 +67,7 @@ full = [ # enables all the modules
 	"any", "color", "data", "mem", "meta", "num", "path", "result",
 	"task", "text", "time",
 	# os platform sub-modules:
-	"linux", "term",
+	"linux",
 	]
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
@@ -120,10 +114,9 @@ unsafe = [ # enables unsafe features in this crate (11+1)
 	unsafe_meta = [] # (unused)
 	unsafe_num = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
 	unsafe_os = [ # enables unsafe functionality for OS platforms:
-		"unsafe_linux", "unsafe_term",
+		"unsafe_linux",
 		]
 		unsafe_linux = [] # enables linux syscalls
-		unsafe_term = [] # (unused)
 	unsafe_path = [] # (unused)
 	unsafe_result = [] # (unused)
 	unsafe_task = [] # enables a coroutines implementation.

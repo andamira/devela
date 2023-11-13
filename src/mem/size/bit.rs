@@ -84,9 +84,6 @@ use crate::task::sync::atomic::{AtomicI8, AtomicU8};
 ))]
 use crate::task::sync::atomic::{AtomicIsize, AtomicPtr, AtomicUsize};
 
-#[cfg(feature = "term")]
-use crate::os::term::{Ansi, AnsiColor3, AnsiColor8};
-
 /* definitions */
 
 /// Indicates a size of exactly `LEN` bits for the relevant data part of this type.
@@ -377,13 +374,6 @@ bit_size![= 32; for AtomicF32];
 bit_size![= 64; for AtomicF64];
 #[cfg(any(all(feature = "task", feature = "dep"), feature = "portable-atomic"))]
 bit_size![= 128; for AtomicI128, AtomicU128];
-
-#[cfg(feature = "term")]
-bit_size![= 0; for Ansi];
-#[cfg(feature = "term")]
-bit_size![= 3; for AnsiColor3];
-#[cfg(feature = "term")]
-bit_size![= 8; for AnsiColor8];
 
 #[cfg(feature = "text")]
 bit_size![<const LEN: usize> = LEN; for ArrayU8NonNulString<LEN>, ArrayU8NonNulEgc<LEN>];

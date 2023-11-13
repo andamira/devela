@@ -28,7 +28,6 @@ depends on `std`, and we want to use it from `no_std`.
 
 Platform features are `os` submodules that have to be explicitly enabled:
 - `linux`, `linux_unsafe`: enables [`os::linux`] functionality.
-- `term`, `term_unsafe:` enables [`os::term`] functionality.
 
 
 ### Module features
@@ -78,7 +77,6 @@ They offer a gradient of safety.
   - `unsafe_os`: enables all the unsafe *platform* sub-features:
     - `unsafe_linux`: provides functionality depending on linux syscalls and
          implements `bytemuck` traits.
-    - `unsafe_term`: *(unused)*.
   - `unsafe_path`: *(unused)*.
   - `unsafe_result`: *(unused)*.
   - `unsafe_text`: enables use of unsafe in [`text`].

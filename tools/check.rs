@@ -31,7 +31,7 @@ const ROOT_MODULES: [&str; 13] = [
     "task", "text", "time",
 
     // os sub-modules:
-    "linux", "term",
+    "linux",
 ];
 
 const STD_ARCHES: &[&str] = &[
