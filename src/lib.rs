@@ -38,13 +38,9 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     any(
         feature = "unsafe", // includes all below
         feature = "unsafe_any", feature = "unsafe_data", feature = "unsafe_mem",
-        feature = "unsafe_meta", feature = "unsafe_num",
-        //
-        feature = "unsafe_os", // includes: unsafe_{linux, term}
-            feature = "unsafe_linux", feature = "unsafe_term",
-        //
-        feature = "unsafe_path", feature = "unsafe_result", feature = "unsafe_task",
-        feature = "unsafe_text", feature = "unsafe_time",
+        feature = "unsafe_meta", feature = "unsafe_num", feature = "unsafe_path",
+        feature = "unsafe_result", feature = "unsafe_task", feature = "unsafe_text",
+        feature = "unsafe_time",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
@@ -86,8 +82,6 @@ pub(crate) mod meta; // the "meta" feature is disabled
 pub mod num;
 #[cfg(all(not(feature = "num"), not(test)))]
 pub(crate) mod num; // the "num" feature is disabled
-
-pub mod os;
 
 #[cfg(any(feature = "path", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "path")))]
@@ -147,10 +141,6 @@ pub mod all {
     #[doc(inline)]
     #[cfg(feature = "num")]
     pub use super::num::all::*;
-
-    #[doc(inline)]
-    // no `os` feature, just for each platform submodule
-    pub use super::os::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "path")]

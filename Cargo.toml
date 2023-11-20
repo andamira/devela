@@ -28,7 +28,6 @@ publish = true
 # ------------------------------------------------------------------------------
 # Features are grouped in 6 (mostly) independent categories:
 # - Environment
-# - Platform
 # - Module
 # - Safety
 # - Nightly
@@ -55,19 +54,11 @@ no_std = [ # enables functionality incompatible with `std`
 ]
 
 
-#* platform specific features *#
-
-linux = [] # enables os::linux functionality
-linux_unsafe = ["linux", "unsafe_linux"]
-
-
 #* module features *#
 
 full = [ # enables all the modules
 	"any", "color", "data", "mem", "meta", "num", "path", "result",
 	"task", "text", "time",
-	# os platform sub-modules:
-	"linux",
 	]
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
@@ -102,10 +93,10 @@ time_unsafe = ["time", "unsafe_time"]
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate (11+1)
+unsafe = [ # enables unsafe features in this crate (11)
 	"unsafe_any", "unsafe_color", "unsafe_data", "unsafe_mem",
-	"unsafe_meta", "unsafe_num", "unsafe_os", "unsafe_path",
-	"unsafe_result", "unsafe_task", "unsafe_text", "unsafe_time",
+	"unsafe_meta", "unsafe_num", "unsafe_path", "unsafe_result",
+	"unsafe_task", "unsafe_text", "unsafe_time",
 	]
 	unsafe_any = [] # (unused)
 	unsafe_color = [] # (unused)
@@ -113,10 +104,6 @@ unsafe = [ # enables unsafe features in this crate (11+1)
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
 	unsafe_meta = [] # (unused)
 	unsafe_num = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
-	unsafe_os = [ # enables unsafe functionality for OS platforms:
-		"unsafe_linux",
-		]
-		unsafe_linux = [] # enables linux syscalls
 	unsafe_path = [] # (unused)
 	unsafe_result = [] # (unused)
 	unsafe_task = [] # enables a coroutines implementation.

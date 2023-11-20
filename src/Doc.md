@@ -2,7 +2,6 @@
 
 Features are grouped in 6 categories, mostly independent from each other:
 - *Environment*
-- *Platform*
 - *Module*
 - *Safety* 
 - *Nightly*
@@ -21,19 +20,10 @@ By default the crate is `no_std` compatible without allocation.
   - enables the `libm` optional dependency.
 
 
-### Platform specific features
-
-Platform-specific functionality is not automatically enabled since *OS* detection
-depends on `std`, and we want to use it from `no_std`.
-
-Platform features are `os` submodules that have to be explicitly enabled:
-- `linux`, `linux_unsafe`: enables [`os::linux`] functionality.
-
-
 ### Module features
 
-Modules can be enabled independently of *environment*, *platform* *dependency*
-or *safety*, unless specified.
+Modules can be enabled independently of *environment*, *dependency* or *safety*,
+unless specified.
 
 For example, the `_unsafe` suffix also enables the corresponding unsafe feature
 for that module.
@@ -41,7 +31,7 @@ for that module.
 When the `depend` feature is enabled, modules will also enable their associated
 optional dependencies.
 
-- `full`, `full_unsafe`: enables all the modules, and the **platforms**.
+- `full`, `full_unsafe`: enables all the modules.
 - `fullest`: enables all the modules, recursively (unused).
 
 Single modules: 
@@ -74,9 +64,6 @@ They offer a gradient of safety.
   - `unsafe_num`: enables `new_unchecked` constructors, implements `bytemuck` traits,
     enables using [`MaybeUninit`] for [`slice_into_array`] initialization and
     const floating-point comparison  using [`transmute`] for constant access to the bits.
-  - `unsafe_os`: enables all the unsafe *platform* sub-features:
-    - `unsafe_linux`: provides functionality depending on linux syscalls and
-         implements `bytemuck` traits.
   - `unsafe_path`: *(unused)*.
   - `unsafe_result`: *(unused)*.
   - `unsafe_text`: enables use of unsafe in [`text`].
@@ -100,8 +87,8 @@ They are currently only used for generating improved documentation.
 
 Dependencies can also be enabled individually:
 - `atomic` is used in `task`.
-- `bytemuck` is used in `mem`, `linux`, `num`.
-- `const-str` is used in `text`, `result`, `os`, `linux`.
+- `bytemuck` is used in `mem`, `num`.
+- `const-str` is used in `text`, `result`.
 - `devela_macros` is used in `meta`.
 - `libm` is used in `color`, `num`.
 - `portable-atomic` is used in `task`.
