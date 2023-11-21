@@ -1,4 +1,4 @@
-// devela::num::convert::collection
+// devela::data::convert::collection
 //
 //! Helpers for converting between collections.
 //
@@ -10,7 +10,7 @@ use _alloc::vec::Vec;
 ///
 /// # Examples
 /// ```
-/// use devela::num::vec_into_vec;
+/// use devela::data::vec_into_vec;
 ///
 /// let a: Vec<u32> = vec_into_vec(vec![1_u8, 2, 3]);
 /// assert_eq![a, vec![1_u32, 2, 3]];
@@ -31,7 +31,7 @@ pub fn vec_into_vec<T, U: From<T>>(vec: Vec<T>) -> Vec<U> {
 ///
 /// # Examples
 /// ```
-/// use devela::num::slice_into_vec;
+/// use devela::data::slice_into_vec;
 ///
 /// let a: Vec<u32> = slice_into_vec(&[1_u8, 2, 3]);
 /// assert_eq![a, vec![1_u32, 2, 3]];
@@ -56,14 +56,14 @@ pub fn slice_into_vec<T: Clone, U: From<T>>(slice: &[T]) -> Vec<U> {
 ///
 /// # Examples
 /// ```
-/// use devela::num::slice_into_array;
+/// use devela::data::slice_into_array;
 ///
 /// let a: [u32; 3] = slice_into_array(&[1_u8, 2, 3, 4, 5]);
 /// assert_eq![a, [1_u32, 2, 3]];
 /// ```
 ///
 /// # Features
-/// It makes use of the `unsafe_num` feature if enabled.
+/// It makes use of the `unsafe_data` feature if enabled.
 ///
 // IMPROVE make a try_slice_into_array version:
 // WAITING https://doc.rust-lang.org/nightly/core/array/fn.try_from_fn.html
@@ -71,7 +71,7 @@ pub fn slice_into_vec<T: Clone, U: From<T>>(slice: &[T]) -> Vec<U> {
 #[must_use]
 pub fn slice_into_array<T: Clone, U: From<T>, const N: usize>(slice: &[T]) -> [U; N] {
     if slice.len() >= N {
-        #[cfg(not(feature = "unsafe_num"))]
+        #[cfg(not(feature = "unsafe_data"))]
         {
             let mut array: [U; N] = core::array::from_fn(|i| U::from(slice[i].clone()));
 
@@ -82,7 +82,7 @@ pub fn slice_into_array<T: Clone, U: From<T>, const N: usize>(slice: &[T]) -> [U
         }
 
         // SAFETY: we make sure of initializing every array element
-        #[cfg(feature = "unsafe_num")]
+        #[cfg(feature = "unsafe_data")]
         {
             use core::mem::MaybeUninit;
 
@@ -101,7 +101,7 @@ pub fn slice_into_array<T: Clone, U: From<T>, const N: usize>(slice: &[T]) -> [U
 ///
 /// # Examples
 /// ```
-/// use devela::num::try_vec_into_vec;
+/// use devela::data::try_vec_into_vec;
 ///
 /// let a: Result<Vec<u32>, _> = try_vec_into_vec(vec![1_u64, 2, 3]);
 /// assert_eq![a, Ok(vec![1_u32, 2, 3])];
@@ -123,7 +123,7 @@ pub fn try_vec_into_vec<T, E, U: TryFrom<T, Error = E>>(vec: Vec<T>) -> Result<V
 ///
 /// # Examples
 /// ```
-/// use devela::num::try_slice_into_vec;
+/// use devela::data::try_slice_into_vec;
 ///
 /// let a: Result<Vec<u32>, _> = try_slice_into_vec(&[1_u64, 2, 3]);
 /// assert_eq![a, Ok(vec![1_u32, 2, 3])];

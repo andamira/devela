@@ -1,4 +1,4 @@
-// devela::num::convert
+// devela::data::convert
 //
 //! Conversion, extends
 //! `std::`[`convert`][std::convert].
@@ -10,17 +10,17 @@
 
 /* feature-gated */
 
-#[cfg(feature = "num")]
+#[cfg(feature = "data")]
 pub mod collection;
-#[cfg(feature = "num")]
+#[cfg(feature = "data")]
 pub mod primitive;
 
 // re-export public sub-modules
 #[doc(no_inline)]
-#[cfg(feature = "num")]
+#[cfg(feature = "data")]
 pub use {collection::*, primitive::*};
 
-#[cfg(feature = "num")]
+#[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{collection::*, primitive::*};

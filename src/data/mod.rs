@@ -3,6 +3,7 @@
 //! Data structures, extends
 //! `std::{`[`array`][mod@std::array],
 //! [`collections`][std::collections],
+//! [`convert`][std::convert],
 //! [`slice`][std::slice],
 //! [`vec`][mod@std::vec]`}`.
 //
@@ -33,6 +34,8 @@ mod array;
 #[cfg(feature = "data")]
 mod collection;
 #[cfg(feature = "data")]
+pub mod convert;
+#[cfg(feature = "data")]
 mod reexports;
 
 // re-export private sub-modules
@@ -49,12 +52,14 @@ pub use {array::*, collection::DataCollection, reexports::*};
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use slice::all::*;
+pub use {convert::all::*, slice::all::*};
 
 #[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{array::*, collection::DataCollection, reexports::*, slice::all::*};
+    pub use super::{
+        array::*, collection::DataCollection, convert::all::*, reexports::*, slice::all::*,
+    };
 
     #[doc(inline)]
     #[cfg(all(feature = "unsafe_data", any(feature = "bytemuck", feature = "dep")))]

@@ -1,4 +1,4 @@
-// devela::num::conversion::primitive::split
+// devela::data::conversion::primitive::split
 //
 //! fns to split a primitive into an array of smaller primitives.
 //

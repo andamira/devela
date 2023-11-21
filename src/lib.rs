@@ -167,8 +167,8 @@ pub mod prelude {
     #[cfg(feature = "num")]
     pub use crate::num::{Num, NumRef};
 
-    #[cfg(feature = "num")]
-    pub use crate::num::convert::primitive::{FromPrimitives, IntoPrimitives};
+    #[cfg(feature = "data")]
+    pub use crate::data::convert::primitive::{FromPrimitives, IntoPrimitives};
 
     #[cfg(all(feature = "num", any(feature = "std", feature = "libm")))]
     pub use crate::num::FloatExt;
