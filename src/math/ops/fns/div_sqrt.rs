@@ -1,4 +1,4 @@
-// devela::math::fns::div_sqrt
+// devela::math::ops::fns::div_sqrt
 //
 //! Functions for numeric operations.
 //

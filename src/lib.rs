@@ -171,7 +171,7 @@ pub mod prelude {
     pub use crate::data::convert::primitive::{FromPrimitives, IntoPrimitives};
 
     #[cfg(all(feature = "math", any(feature = "std", feature = "libm")))]
-    pub use crate::math::num::FloatExt;
+    pub use crate::math::ops::FloatExt;
 
     #[cfg(feature = "result")]
     pub use crate::result::{Also, Apply, OptionExt, ResultExt};

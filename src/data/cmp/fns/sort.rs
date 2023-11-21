@@ -34,7 +34,8 @@ use core::cmp::Ordering;
 ///
 /// # Examples
 /// ```
-/// use devela::math::sort_bubble;
+/// use devela::data::cmp::sort_bubble;
+///
 /// let mut arr = [4, 7, -5, 1, -13, 0];
 /// sort_bubble(&mut arr);
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -55,7 +56,7 @@ pub fn sort_bubble<T: Ord>(slice: &mut [T]) {
 ///
 /// # Examples
 /// ```
-/// use devela::math::sort_counting;
+/// use devela::data::cmp::sort_counting;
 ///
 /// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
 /// let freq = sort_counting(&mut data);
@@ -102,7 +103,7 @@ pub fn sort_counting<T: Ord + Clone>(slice: &mut [T]) -> Vec<usize> {
 ///
 /// # Examples
 /// ```
-/// use devela::math::sort_counting_buf;
+/// use devela::data::cmp::sort_counting_buf;
 ///
 /// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
 /// let values = [64, 4, 2, 8];
@@ -143,7 +144,8 @@ where
 ///
 /// # Examples
 /// ```
-/// use devela::math::sort_insertion;
+/// use devela::data::cmp::sort_insertion;
+///
 /// let mut arr = [4, 7, -5, 1, -13, 0];
 /// sort_insertion(&mut arr);
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -165,7 +167,8 @@ pub fn sort_insertion<T: Ord>(slice: &mut [T]) {
 ///
 /// # Examples
 /// ```
-/// use devela::math::sort_merge;
+/// use devela::data::cmp::sort_merge;
+///
 /// let mut arr = [4, 7, -5, 1, -13, 0];
 /// sort_merge(&mut arr);
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -211,7 +214,8 @@ fn sort_merge_merge<T: Ord + Copy>(left: &[T], right: &[T], slice: &mut [T]) {
 ///
 /// # Examples
 /// ```
-/// use devela::math::sort_quick_lomuto;
+/// use devela::data::cmp::sort_quick_lomuto;
+///
 /// let mut arr = [4, 7, -5, 1, -13, 0];
 /// sort_quick_lomuto(&mut arr);
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -242,7 +246,8 @@ fn sort_quick_lomuto_partition<T: Ord>(slice: &mut [T]) -> usize {
 ///
 /// # Examples
 /// ```
-/// use devela::math::sort_quick_3way;
+/// use devela::data::cmp::sort_quick_3way;
+///
 /// let mut arr = [4, 7, -5, 1, -13, 0];
 /// sort_quick_3way(&mut arr);
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -284,7 +289,8 @@ fn sort_quick_3way_partition<T: Ord + Clone>(slice: &mut [T]) -> (usize, usize) 
 ///
 /// # Examples
 /// ```
-/// use devela::math::sort_quick_hoare;
+/// use devela::data::cmp::sort_quick_hoare;
+///
 /// let mut arr = [4, 7, -5, 1, -13, 0];
 /// sort_quick_hoare(&mut arr);
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -317,7 +323,8 @@ fn sort_quick_hoare_partition<T: Ord + Clone>(slice: &mut [T]) -> usize {
 ///
 /// # Examples
 /// ```
-/// use devela::math::sort_selection;
+/// use devela::data::cmp::sort_selection;
+///
 /// let mut arr = [4, 7, -5, 1, -13, 0];
 /// sort_selection(&mut arr);
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -340,7 +347,8 @@ pub fn sort_selection<T: Ord>(slice: &mut [T]) {
 ///
 /// # Examples
 /// ```
-/// use devela::math::sort_shaker;
+/// use devela::data::cmp::sort_shaker;
+///
 /// let mut arr = [4, 7, -5, 1, -13, 0];
 /// sort_shaker(&mut arr);
 /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -377,7 +385,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::sort_bubble_" $t ";\n\n"]
+        #[doc = "use devela::data::cmp::sort_bubble_" $t ";\n\n"]
         /// let mut arr = [4, 7, -5, 1, -13, 0];
         #[doc = "assert_eq![sort_bubble_" $t "(arr), [-13, -5, 0, 1, 4, 7]];"]
         /// ```
@@ -397,7 +405,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::sort_insertion_" $t ";\n\n"]
+        #[doc = "use devela::data::cmp::sort_insertion_" $t ";\n\n"]
         /// let mut arr = [4, 7, -5, 1, -13, 0];
         #[doc = "assert_eq![sort_insertion_" $t "(arr), [-13, -5, 0, 1, 4, 7]];"]
         /// ```
@@ -419,7 +427,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::sort_selection_" $t ";\n\n"]
+        #[doc = "use devela::data::cmp::sort_selection_" $t ";\n\n"]
         /// let mut arr = [4, 7, -5, 1, -13, 0];
         #[doc = "assert_eq![sort_selection_" $t "(arr), [-13, -5, 0, 1, 4, 7]];"]
         /// ```
@@ -446,7 +454,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::sort_bubble_" $t ";\n\n"]
+        #[doc = "use devela::data::cmp::sort_bubble_" $t ";\n\n"]
         /// let mut arr = [4, 7, 5, 1, 13, 0];
         #[doc = "assert_eq![sort_bubble_" $t "(arr), [0, 1, 4, 5, 7, 13]];"]
         /// ```
@@ -466,7 +474,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::sort_insertion_" $t ";\n\n"]
+        #[doc = "use devela::data::cmp::sort_insertion_" $t ";\n\n"]
         /// let mut arr = [4, 7, 5, 1, 13, 0];
         #[doc = "assert_eq![sort_insertion_" $t "(arr), [0, 1, 4, 5, 7, 13]];"]
         /// ```
@@ -488,7 +496,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::sort_selection_" $t ";\n\n"]
+        #[doc = "use devela::data::cmp::sort_selection_" $t ";\n\n"]
         /// let mut arr = [4, 7, 5, 1, 13, 0];
         #[doc = "assert_eq![sort_selection_" $t "(arr), [0, 1, 4, 5, 7, 13]];"]
         /// ```
