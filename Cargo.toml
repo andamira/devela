@@ -57,7 +57,7 @@ no_std = [ # enables functionality incompatible with `std`
 #* module features *#
 
 full = [ # enables all the modules
-	"any", "data", "mem", "meta", "num", "path", "result",
+	"any", "data", "math", "mem", "meta", "path", "result",
 	"task", "text", "time",
 	]
 	full_unsafe = ["full", "unsafe"]
@@ -67,9 +67,9 @@ fullest = ["full"] # enables `full` recursively (unused)
 # (modules enable their own dependencies if the `dep` feature is enabled)
 any = []
 data = ["dep?/hashbrown"]
+math = []
 mem = ["dep?/bytemuck"]
 meta = ["dep?/devela_macros"]
-num = []
 path = []
 result = []
 task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
@@ -79,9 +79,9 @@ time = []
 # individual modules with unsafe enabled (11):
 any_unsafe = ["any", "unsafe_any"]
 data_unsafe = ["data", "unsafe_data"]
+math_unsafe = ["math", "unsafe_math"]
 mem_unsafe = ["mem", "unsafe_mem"]
 meta_unsafe = ["meta", "unsafe_meta"]
-num_unsafe = ["num", "unsafe_num"]
 path_unsafe = ["path", "unsafe_path"]
 result_unsafe = ["result", "unsafe_result"]
 task_unsafe = ["task", "unsafe_task"]
@@ -92,14 +92,14 @@ time_unsafe = ["time", "unsafe_time"]
 #* safety features *#
 
 unsafe = [ # enables unsafe features in this crate (11)
-	"unsafe_any", "unsafe_data", "unsafe_mem", "unsafe_meta", "unsafe_num",
+	"unsafe_any", "unsafe_data",  "unsafe_math","unsafe_mem", "unsafe_meta",
 	"unsafe_path", "unsafe_result", "unsafe_task", "unsafe_text", "unsafe_time",
 	]
 	unsafe_any = [] # (unused)
 	unsafe_data = [] # (unused)
+	unsafe_math = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
 	unsafe_meta = [] # (unused)
-	unsafe_num = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
 	unsafe_path = [] # (unused)
 	unsafe_result = [] # (unused)
 	unsafe_task = [] # enables a coroutines implementation.

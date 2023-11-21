@@ -1,4 +1,4 @@
-// devela::num::tests
+// devela::math::num::tests
 //
 //!
 //
@@ -64,7 +64,7 @@ fn non_range() {
 }
 
 #[test]
-#[cfg(all(feature = "unsafe_num", feature = "bytemuck"))]
+#[cfg(all(feature = "unsafe_math", feature = "bytemuck"))]
 fn non_range_bytemuck() {
     use bytemuck::CheckedBitPattern;
 
@@ -145,7 +145,7 @@ fn range() {
 }
 
 #[test]
-#[cfg(all(feature = "unsafe_num", feature = "bytemuck"))]
+#[cfg(all(feature = "unsafe_math", feature = "bytemuck"))]
 fn range_bytemuck() {
     use bytemuck::CheckedBitPattern;
 

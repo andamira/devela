@@ -1,4 +1,4 @@
-// devela::num::error
+// devela::math::num::error
 //
 //!
 //

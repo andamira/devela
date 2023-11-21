@@ -1,9 +1,9 @@
-// devela::num::traits::num
+// devela::math::num::traits::num
 //
 //!
 //
 
-use crate::num::{NumError as Error, NumResult as Result};
+use crate::math::num::{NumError as Error, NumResult as Result};
 use core::ops::{Deref, DerefMut};
 
 mod impls;

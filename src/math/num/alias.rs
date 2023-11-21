@@ -1,4 +1,4 @@
-// devela::num::alias
+// devela::math::num::alias
 
 /// An alias for a pointer-sized floating-point primitive.
 #[cfg_attr(

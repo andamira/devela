@@ -1,4 +1,4 @@
-// devela::num
+// devela::math::num
 //
 //! Numeric types, operations, comparison, extends
 //! `std::{`[`cmp`][std::cmp],
@@ -16,39 +16,39 @@ mod always_fns;
 mod non_specific;
 
 #[allow(unused)]
-#[cfg(not(feature = "num"))]
+#[cfg(not(feature = "math"))]
 pub(crate) use {alias::*, always_fns::*, cmp::*, non_specific::*, ops::*};
 
 /* feature-gated */
 
-#[cfg(feature = "num")]
+#[cfg(feature = "math")]
 mod error;
-#[cfg(feature = "num")]
+#[cfg(feature = "math")]
 mod fns;
-#[cfg(feature = "num")]
+#[cfg(feature = "math")]
 mod non_range;
-#[cfg(feature = "num")]
+#[cfg(feature = "math")]
 mod range;
-#[cfg(feature = "num")]
+#[cfg(feature = "math")]
 mod reexports;
-#[cfg(all(feature = "num", test))]
+#[cfg(all(feature = "math", test))]
 mod tests;
-#[cfg(feature = "num")]
+#[cfg(feature = "math")]
 mod traits;
 
 // re-export public sub-modules
 #[doc(no_inline)]
-#[cfg(feature = "num")]
+#[cfg(feature = "math")]
 pub use {cmp::all::*, ops::all::*};
 
 // re-export private sub-modules
-#[cfg(feature = "num")]
+#[cfg(feature = "math")]
 pub use {
     alias::*, always_fns::*, error::*, fns::*, non_range::*, non_specific::*, range::*,
     reexports::*, traits::*,
 };
 
-#[cfg(feature = "num")]
+#[cfg(feature = "math")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{

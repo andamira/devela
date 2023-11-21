@@ -1,4 +1,4 @@
-// devela::num::ext::float
+// devela::math::num::ext::float
 //
 //! Floating point wrapper.
 //
@@ -6,14 +6,14 @@
 // - FloatExt trait
 // - Fp wrapper
 
-#![cfg_attr(not(feature = "num"), allow(unused))]
+#![cfg_attr(not(feature = "math"), allow(unused))]
 
 /// Extension trait for floating-point types.
 ///
 /// This trait is normally more convenient to use than the [`Fp`] struct.
 ///
 /// `Fp` has a few more methods implemented if the `libm` feature is enabled,
-/// and some of the methods are const if the `unsafe_num` feature is enabled.
+/// and some of the methods are const if the `unsafe_math` feature is enabled.
 #[rustfmt::skip]
 pub trait FloatExt: Sized {
     /// The largest integer less than or equal to `self`.
@@ -579,7 +579,7 @@ mod _either {
         (@$f:ty, $e:ty) => { $crate::meta::paste! {
             /// *Common implementations for either `libm` or `std`*.
             ///
-            /// Const fns will only be `const` if the `unsafe_num` feature is enabled.
+            /// Const fns will only be `const` if the `unsafe_math` feature is enabled.
             impl Fp<$f> {
                 /// Returns the clamped value, ignoring `NaN`.
                 #[inline(always)]
@@ -589,31 +589,31 @@ mod _either {
 
                 /// Returns the clamped value, using total order.
                 #[inline(always)]
-                #[cfg(feature = "unsafe_num")]
+                #[cfg(feature = "unsafe_math")]
                 pub const fn clamp_total(value: $f, min: $f, max: $f) -> $f {
-                    $crate::num::[<clamp_ $f>](value, min, max)
+                    $crate::math::num::[<clamp_ $f>](value, min, max)
                 }
                 #[inline(always)]
-                #[cfg(not(feature = "unsafe_num"))]
+                #[cfg(not(feature = "unsafe_math"))]
                 pub fn clamp_total(value: $f, min: $f, max: $f) -> $f {
-                    $crate::num::[<clamp_ $f>](value, min, max)
+                    $crate::math::num::[<clamp_ $f>](value, min, max)
                 }
 
                 /// Returns the maximum of two numbers using total order.
                 #[inline(always)]
-                #[cfg(feature = "unsafe_num")]
-                pub const fn max_total(a: $f, b: $f) -> $f { $crate::num::[<max_ $f>](a, b) }
+                #[cfg(feature = "unsafe_math")]
+                pub const fn max_total(a: $f, b: $f) -> $f { $crate::math::num::[<max_ $f>](a, b) }
                 #[inline(always)]
-                #[cfg(not(feature = "unsafe_num"))]
-                pub fn max_total(a: $f, b: $f) -> $f { $crate::num::[<max_ $f>](a, b) }
+                #[cfg(not(feature = "unsafe_math"))]
+                pub fn max_total(a: $f, b: $f) -> $f { $crate::math::num::[<max_ $f>](a, b) }
 
                 /// Returns the minimum of two numbers using total order.
                 #[inline(always)]
-                #[cfg(feature = "unsafe_num")]
-                pub const fn min_total(a: $f, b: $f) -> $f { $crate::num::[<min_ $f>](a, b) }
+                #[cfg(feature = "unsafe_math")]
+                pub const fn min_total(a: $f, b: $f) -> $f { $crate::math::num::[<min_ $f>](a, b) }
                 #[inline(always)]
-                #[cfg(not(feature = "unsafe_num"))]
-                pub fn min_total(a: $f, b: $f) -> $f { $crate::num::[<min_ $f>](a, b) }
+                #[cfg(not(feature = "unsafe_math"))]
+                pub fn min_total(a: $f, b: $f) -> $f { $crate::math::num::[<min_ $f>](a, b) }
             }
         }};
     }

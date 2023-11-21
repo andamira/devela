@@ -37,8 +37,8 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(
         feature = "unsafe", // includes all below
-        feature = "unsafe_any", feature = "unsafe_data", feature = "unsafe_mem",
-        feature = "unsafe_meta", feature = "unsafe_num", feature = "unsafe_path",
+        feature = "unsafe_any", feature = "unsafe_data", feature = "unsafe_math",
+        feature = "unsafe_mem", feature = "unsafe_meta", feature = "unsafe_path",
         feature = "unsafe_result", feature = "unsafe_task", feature = "unsafe_text",
         feature = "unsafe_time",
     )
@@ -59,6 +59,12 @@ pub mod data;
 #[cfg(all(not(feature = "data"), not(test)))]
 pub(crate) mod data; // the "data" feature is disabled
 
+#[cfg(any(feature = "math", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "math")))]
+pub mod math;
+#[cfg(all(not(feature = "math"), not(test)))]
+pub(crate) mod math; // the "math" feature is disabled
+
 #[cfg(any(feature = "mem", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub mod mem;
@@ -70,12 +76,6 @@ pub(crate) mod mem; // the "mem" feature is disabled
 pub mod meta;
 #[cfg(all(not(feature = "meta"), not(test)))]
 pub(crate) mod meta; // the "meta" feature is disabled
-
-#[cfg(any(feature = "num", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
-pub mod num;
-#[cfg(all(not(feature = "num"), not(test)))]
-pub(crate) mod num; // the "num" feature is disabled
 
 #[cfg(any(feature = "path", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "path")))]
@@ -121,16 +121,16 @@ pub mod all {
     pub use super::data::all::*;
 
     #[doc(inline)]
+    #[cfg(feature = "math")]
+    pub use super::math::all::*;
+
+    #[doc(inline)]
     #[cfg(feature = "mem")]
     pub use super::mem::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "meta")]
     pub use super::meta::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "num")]
-    pub use super::num::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "path")]
@@ -164,14 +164,14 @@ pub mod prelude {
     #[cfg(feature = "mem")]
     pub use crate::mem::{BitSize, Mem, Size};
 
-    #[cfg(feature = "num")]
-    pub use crate::num::{Num, NumRef};
+    #[cfg(feature = "math")]
+    pub use crate::math::num::{Num, NumRef};
 
     #[cfg(feature = "data")]
     pub use crate::data::convert::primitive::{FromPrimitives, IntoPrimitives};
 
-    #[cfg(all(feature = "num", any(feature = "std", feature = "libm")))]
-    pub use crate::num::FloatExt;
+    #[cfg(all(feature = "math", any(feature = "std", feature = "libm")))]
+    pub use crate::math::num::FloatExt;
 
     #[cfg(feature = "result")]
     pub use crate::result::{Also, Apply, OptionExt, ResultExt};

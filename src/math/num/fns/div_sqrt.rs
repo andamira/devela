@@ -1,4 +1,4 @@
-// devela::num::fns::div_sqrt
+// devela::math::fns::div_sqrt
 //
 //! Functions for numeric operations.
 //
@@ -41,7 +41,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_ceil_" $t ";"]
+        #[doc = "use devela::math::div_ceil_" $t ";"]
         #[doc = "assert_eq![div_ceil_" $t "(7, 3), 3]; // 2.33…"]
         #[doc = "assert_eq![div_ceil_" $t "(7, -3), -2];"]
         #[doc = "assert_eq![div_ceil_" $t "(-7, 3), -2];"]
@@ -78,7 +78,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_floor_" $t ";"]
+        #[doc = "use devela::math::div_floor_" $t ";"]
         #[doc = "assert_eq![div_floor_" $t "(7, 3), 2]; // 2.33…"]
         #[doc = "assert_eq![div_floor_" $t "(7, -3), -3];"]
         #[doc = "assert_eq![div_floor_" $t "(-7, 3), -3];"]
@@ -108,7 +108,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_half_away_" $t ";"]
+        #[doc = "use devela::math::div_half_away_" $t ";"]
         #[doc = "assert_eq![div_half_away_" $t "(7, 3), 2]; // 2.33…"]
         #[doc = "assert_eq![div_half_away_" $t "(7, -3), -2];"]
         #[doc = "assert_eq![div_half_away_" $t "(-7, 3), -2];"]
@@ -134,7 +134,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_half_towards_" $t ";"]
+        #[doc = "use devela::math::div_half_towards_" $t ";"]
         #[doc = "assert_eq![div_half_towards_" $t "(7, 3), 2]; // 2.33…"]
         #[doc = "assert_eq![div_half_towards_" $t "(7, -3), -2];"]
         #[doc = "assert_eq![div_half_towards_" $t "(-7, 3), -2];"]
@@ -160,7 +160,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_half_even_" $t ";"]
+        #[doc = "use devela::math::div_half_even_" $t ";"]
         #[doc = "assert_eq![div_half_even_" $t "(7, 3), 2]; // 2.33…"]
         #[doc = "assert_eq![div_half_even_" $t "(7, -3), -2];"]
         #[doc = "assert_eq![div_half_even_" $t "(-7, 3), -2];"]
@@ -194,7 +194,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_half_odd_" $t ";"]
+        #[doc = "use devela::math::div_half_odd_" $t ";"]
         #[doc = "assert_eq![div_half_odd_" $t "(7, 3), 2]; // 2.33…"]
         #[doc = "assert_eq![div_half_odd_" $t "(7, -3), -2];"]
         #[doc = "assert_eq![div_half_odd_" $t "(-7, 3), -2];"]
@@ -240,7 +240,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc="use devela::num::square_is_" $t ";"]
+        #[doc="use devela::math::square_is_" $t ";"]
         ///
         #[doc="assert_eq![square_is_" $t "(12), false];"]
         #[doc="assert_eq![square_is_" $t "(13), false];"]
@@ -284,7 +284,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc="use devela::num::sqrt_floor_" $t ";"]
+        #[doc="use devela::math::sqrt_floor_" $t ";"]
         ///
         #[doc="assert_eq![sqrt_floor_" $t "(12), Some(3)];"]
         #[doc="assert_eq![sqrt_floor_" $t "(13), Some(3)];"]
@@ -326,7 +326,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc="use devela::num::sqrt_ceil_" $t ";"]
+        #[doc="use devela::math::sqrt_ceil_" $t ";"]
         ///
         #[doc="assert_eq![sqrt_ceil_" $t "(12), Some(4)];"]
         #[doc="assert_eq![sqrt_ceil_" $t "(13), Some(4)];"]
@@ -361,7 +361,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc="use devela::num::sqrt_round_" $t ";"]
+        #[doc="use devela::math::sqrt_round_" $t ";"]
         ///
         #[doc="assert_eq![sqrt_round_" $t "(12), Some(3)];"]
         #[doc="assert_eq![sqrt_round_" $t "(13), Some(4)];"]
@@ -409,7 +409,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_ceil_" $t ";"]
+        #[doc = "use devela::math::div_ceil_" $t ";"]
         #[doc = "assert_eq![div_ceil_" $t "(7, 3), 3]; // 2.33…"]
         ///
         #[doc = "assert_eq![div_ceil_" $t "(7, 5), 2]; // 1.4"]
@@ -441,7 +441,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_floor_" $t ";"]
+        #[doc = "use devela::math::div_floor_" $t ";"]
         #[doc = "assert_eq![div_floor_" $t "(7, 3), 2]; // 2.33…"]
         ///
         #[doc = "assert_eq![div_floor_" $t "(7, 5), 1]; // 1.4"]
@@ -460,7 +460,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_half_away_" $t ";"]
+        #[doc = "use devela::math::div_half_away_" $t ";"]
         #[doc = "assert_eq![div_half_away_" $t "(7, 3), 2]; // 2.33…"]
         ///
         #[doc = "assert_eq![div_half_away_" $t "(7, 5), 1]; // 1.4"]
@@ -479,7 +479,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_half_towards_" $t ";"]
+        #[doc = "use devela::math::div_half_towards_" $t ";"]
         #[doc = "assert_eq![div_half_towards_" $t "(7, 3), 2]; // 2.33…"]
         ///
         #[doc = "assert_eq![div_half_towards_" $t "(7, 5), 1]; // 1.4"]
@@ -498,7 +498,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_half_even_" $t ";"]
+        #[doc = "use devela::math::div_half_even_" $t ";"]
         #[doc = "assert_eq![div_half_even_" $t "(7, 3), 2]; // 2.33…"]
         ///
         #[doc = "assert_eq![div_half_even_" $t "(7, 5), 1]; // 1.4"]
@@ -520,7 +520,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::div_half_odd_" $t ";"]
+        #[doc = "use devela::math::div_half_odd_" $t ";"]
         #[doc = "assert_eq![div_half_odd_" $t "(7, 3), 2]; // 2.33…"]
         ///
         #[doc = "assert_eq![div_half_odd_" $t "(7, 5), 1]; // 1.4"]
@@ -554,7 +554,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc="use devela::num::square_is_" $t ";"]
+        #[doc="use devela::math::square_is_" $t ";"]
         ///
         #[doc="assert_eq![square_is_" $t "(12), false];"]
         #[doc="assert_eq![square_is_" $t "(13), false];"]
@@ -596,7 +596,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc="use devela::num::sqrt_floor_" $t ";"]
+        #[doc="use devela::math::sqrt_floor_" $t ";"]
         ///
         #[doc="assert_eq![sqrt_floor_" $t "(12), 3];"]
         #[doc="assert_eq![sqrt_floor_" $t "(13), 3];"]
@@ -633,7 +633,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc="use devela::num::sqrt_ceil_" $t ";"]
+        #[doc="use devela::math::sqrt_ceil_" $t ";"]
         ///
         #[doc="assert_eq![sqrt_ceil_" $t "(12), 4];"]
         #[doc="assert_eq![sqrt_ceil_" $t "(13), 4];"]
@@ -662,7 +662,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc="use devela::num::sqrt_round_" $t ";"]
+        #[doc="use devela::math::sqrt_round_" $t ";"]
         ///
         #[doc="assert_eq![sqrt_round_" $t "(12), 3];"]
         #[doc="assert_eq![sqrt_round_" $t "(13), 4];"]

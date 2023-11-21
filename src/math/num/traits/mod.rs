@@ -1,4 +1,4 @@
-// devela::num::traits::mod
+// devela::math::num::traits::mod
 //
 //! Numeric traits.
 //

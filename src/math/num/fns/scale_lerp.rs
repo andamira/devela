@@ -1,4 +1,4 @@
-// devela::num::fns::scale_lerp
+// devela::math::num::fns::scale_lerp
 //
 //! Functions for numeric operations.
 //
@@ -10,7 +10,7 @@
 use crate::meta::paste;
 
 #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
-use crate::num::fsize;
+use crate::math::num::fsize;
 
 // $t:   the input/output type
 // $up:  the upcasted type to do the operations on (the ones that can overflow)
@@ -33,7 +33,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::num::scale_" $t ";\n\n"]
+        #[doc ="use devela::math::num::scale_" $t ";\n\n"]
         #[doc = "assert_eq![scale_" $t "(60, 0, 120, 30, 50), 40];"]
         #[doc = "assert_eq![scale_" $t "(60, 0, 120, 30, 50), 40];"]
         /// ```
@@ -50,7 +50,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::num::{lerp_" $t ", scale_" $t "};\n\n"]
+        #[doc ="use devela::math::num::{lerp_" $t ", scale_" $t "};\n\n"]
         #[doc = "assert_eq![lerp_" $t "(0.5, 40, 80), 60];"]
         ///
         /// // equivalence using integer scaling:
@@ -74,7 +74,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::num::scale_" $t ";\n\n"]
+        #[doc ="use devela::math::num::scale_" $t ";\n\n"]
         #[doc = "assert_eq![scale_" $t "(60, 0, 120, 30, 50), 40];"]
         /// ```
         pub const fn [<scale_ $t>](v: $t, min: $t, max: $t, a: $t, b: $t) -> $t {
@@ -90,7 +90,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::num::{lerp_" $t ", scale_" $t "};\n\n"]
+        #[doc ="use devela::math::num::{lerp_" $t ", scale_" $t "};\n\n"]
         #[doc = "assert_eq![lerp_" $t "(0.5, 40, 80), 60];"]
         ///
         /// // equivalence using integer scaling:
@@ -112,7 +112,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::scale_" $t ";\n\n"]
+        #[doc = "use devela::math::num::scale_" $t ";\n\n"]
         #[doc = "assert_eq![scale_" $t "(45., 0., 360., 0., 1.), 0.125];"]
         #[doc = "assert_eq![scale_" $t "(45., 0., 360., -1., 1.), -0.75];"]
         ///
@@ -130,7 +130,7 @@ macro_rules! impl_ops {
         ///
         /// # Examples
         /// ```
-        #[doc ="use devela::num::lerp_" $t ";\n\n"]
+        #[doc ="use devela::math::num::lerp_" $t ";\n\n"]
         #[doc = "assert_eq![lerp_" $t "(0.5, 40., 80.), 60.];"]
         /// ```
         pub fn [<lerp_ $t>](pct: $t, a: $t, b: $t) -> $t {

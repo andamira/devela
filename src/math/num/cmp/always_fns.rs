@@ -1,4 +1,4 @@
-// devela::num::cmp::always_fns
+// devela::math::num::cmp::always_fns
 //
 //! Comparison standalone functions.
 //!

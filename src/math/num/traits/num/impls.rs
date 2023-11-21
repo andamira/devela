@@ -1,13 +1,13 @@
-// devela::num::traits::num::impls
+// devela::math::num::traits::num::impls
 //
 //!
 //
 
+use crate::math::num::all::*;
+use crate::math::num::{NumError as Error, NumResult as Result};
 #[cfg(not(feature = "std"))]
 use crate::meta::iif;
 use crate::meta::paste;
-use crate::num::all::*;
-use crate::num::{NumError as Error, NumResult as Result};
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
 use Error::{Invalid, Unspecified};
 
@@ -97,9 +97,9 @@ macro_rules! impl_num {
             fn num_set_zero(&mut self) -> Result<()> { NumError::notimpl() }
             #[inline]
             fn num_set_one(&mut self) -> Result<()> {
-                #[cfg(not(feature = "unsafe_num"))]
+                #[cfg(not(feature = "unsafe_math"))]
                 { *self = Self::new(1).unwrap(); Ok(()) }
-                #[cfg(feature = "unsafe_num")]
+                #[cfg(feature = "unsafe_math")]
                 // SAFETY: we are using a constant
                 { *self = unsafe { Self::new_unchecked(1) }; Ok(()) }
             }
@@ -217,9 +217,9 @@ macro_rules! impl_num {
             fn num_set_zero(&mut self) -> Result<()> { NumError::notimpl() }
             #[inline]
             fn num_set_one(&mut self) -> Result<()> {
-                #[cfg(not(feature = "unsafe_num"))]
+                #[cfg(not(feature = "unsafe_math"))]
                 { *self = Self::new(1).unwrap(); Ok(()) }
-                #[cfg(feature = "unsafe_num")]
+                #[cfg(feature = "unsafe_math")]
                 // SAFETY: we are using a constant
                 { *self = unsafe { Self::new_unchecked(1) }; Ok(()) }
             }

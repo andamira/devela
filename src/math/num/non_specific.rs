@@ -1,4 +1,4 @@
-// devela::num::non_specific
+// devela::math::num::non_specific
 //
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //!
@@ -10,7 +10,7 @@
 use crate::meta::paste;
 use core::{fmt, num::*, str::FromStr};
 
-#[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
+#[cfg(all(feature = "bytemuck", feature = "unsafe_math"))]
 use bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
 impl_non_specific![NonSpecific];
@@ -39,7 +39,7 @@ macro_rules! impl_non_specific {
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::" [<$name $s:upper $b>] ";"]
+        #[doc = "use devela::math::num::" [<$name $s:upper $b>] ";"]
         ///
         #[doc = "assert![" [<$name $s:upper $b>] "::<13>::new(13).is_none()];"]
         #[doc = "assert![" [<$name $s:upper $b>] "::<13>::new(12).unwrap().get() == 12];"]
@@ -60,10 +60,10 @@ macro_rules! impl_non_specific {
             #[inline]
             #[must_use]
             fn default() -> Self {
-                #[cfg(not(feature = "unsafe_num"))]
+                #[cfg(not(feature = "unsafe_math"))]
                 return [<NonMax $s:upper $b>]::new([<$s:lower $b>]::default()).unwrap();
 
-                #[cfg(feature = "unsafe_num")]
+                #[cfg(feature = "unsafe_math")]
                 // SAFETY: the default numeric primitive values is always 0,
                 // and their maximum value is never 0.
                 unsafe { return [<NonMax $s:upper $b>]::new_unchecked([<$s:lower $b>]::default()); }
@@ -96,8 +96,8 @@ macro_rules! impl_non_specific {
             /// # Safety
             /// The given `value` must never be equal to `V`.
             #[must_use]
-            #[cfg(feature = "unsafe_num")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_num")))]
+            #[cfg(feature = "unsafe_math")]
+            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_math")))]
             pub const unsafe fn new_unchecked(value: [<$s:lower $b>]) -> Self {
                 // debug_assert_ne![value, V]; // non-const
                 #[cfg(debug_assertions)]
@@ -183,9 +183,9 @@ macro_rules! impl_non_specific {
             #[inline]
             fn try_from(value: [<$s:lower $b>]) -> Result<Self, Self::Error> {
                 // We generate a TryFromIntError by intentionally causing a failed conversion.
-                #[cfg(not(feature = "unsafe_num"))]
+                #[cfg(not(feature = "unsafe_math"))]
                 return Self::new(value).ok_or_else(|| i8::try_from(255_u8).unwrap_err());
-                #[cfg(feature = "unsafe_num")]
+                #[cfg(feature = "unsafe_math")]
                 return Self::new(value)
                     .ok_or_else(|| unsafe { i8::try_from(255_u8).unwrap_err_unchecked() });
             }
@@ -193,20 +193,20 @@ macro_rules! impl_non_specific {
 
         /* external impls*/
 
-        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_math"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_math"))))]
         unsafe impl<const V: [<$s:lower $b>]> ZeroableInOption for [<$name $s:upper $b>]<V> {}
 
-        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_math"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_math"))))]
         unsafe impl<const V: [<$s:lower $b>]> PodInOption for [<$name $s:upper $b>]<V> {}
 
-        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_math"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_math"))))]
         unsafe impl<const V: [<$s:lower $b>]> NoUninit for [<$name $s:upper $b>]<V> {}
 
-        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
+        #[cfg(all(feature = "bytemuck", feature = "unsafe_math"))]
+        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_math"))))]
         unsafe impl<const V: [<$s:lower $b>]> CheckedBitPattern for [<$name $s:upper $b>]<V> {
             type Bits = [<$s:lower $b>];
 
