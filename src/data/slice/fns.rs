@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::math::num::{clamp_usize, min_usize};
+use crate::data::{clamp_usize, min_usize};
 
 /// Returns the leftmost sub-`slice` with the given maximum `len`.
 ///

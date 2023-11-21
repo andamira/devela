@@ -1,14 +1,12 @@
 // devela::math::num
 //
 //! Numeric types, operations, comparison, extends
-//! `std::{`[`cmp`][std::cmp],
-//! [`num`][std::num],
+//! `std::{`[`num`][std::num],
 //! [`ops`][std::ops]`}`.
 //
 
 /* contains always compiled items */
 
-pub mod cmp;
 pub mod ops;
 
 mod alias;
@@ -17,7 +15,7 @@ mod non_specific;
 
 #[allow(unused)]
 #[cfg(not(feature = "math"))]
-pub(crate) use {alias::*, always_fns::*, cmp::*, non_specific::*, ops::*};
+pub(crate) use {alias::*, always_fns::*, non_specific::*, ops::*};
 
 /* feature-gated */
 
@@ -39,7 +37,7 @@ mod traits;
 // re-export public sub-modules
 #[doc(no_inline)]
 #[cfg(feature = "math")]
-pub use {cmp::all::*, ops::all::*};
+pub use ops::all::*;
 
 // re-export private sub-modules
 #[cfg(feature = "math")]
@@ -52,7 +50,7 @@ pub use {
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        alias::*, always_fns::*, cmp::all::*, error::*, fns::*, non_range::*, non_specific::*,
-        ops::*, range::*, reexports::*, traits::*,
+        alias::*, always_fns::*, error::*, fns::*, non_range::*, non_specific::*, ops::*, range::*,
+        reexports::*, traits::*,
     };
 }

@@ -1,4 +1,4 @@
-// devela::math::fns::sort
+// devela::data::cmp::fns::sort
 //
 //! sorting algorithms
 //

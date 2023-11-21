@@ -591,29 +591,29 @@ mod _either {
                 #[inline(always)]
                 #[cfg(feature = "unsafe_math")]
                 pub const fn clamp_total(value: $f, min: $f, max: $f) -> $f {
-                    $crate::math::num::[<clamp_ $f>](value, min, max)
+                    $crate::data::cmp::[<clamp_ $f>](value, min, max)
                 }
                 #[inline(always)]
                 #[cfg(not(feature = "unsafe_math"))]
                 pub fn clamp_total(value: $f, min: $f, max: $f) -> $f {
-                    $crate::math::num::[<clamp_ $f>](value, min, max)
+                    $crate::data::cmp::[<clamp_ $f>](value, min, max)
                 }
 
                 /// Returns the maximum of two numbers using total order.
                 #[inline(always)]
                 #[cfg(feature = "unsafe_math")]
-                pub const fn max_total(a: $f, b: $f) -> $f { $crate::math::num::[<max_ $f>](a, b) }
+                pub const fn max_total(a: $f, b: $f) -> $f { $crate::data::cmp::[<max_ $f>](a, b) }
                 #[inline(always)]
                 #[cfg(not(feature = "unsafe_math"))]
-                pub fn max_total(a: $f, b: $f) -> $f { $crate::math::num::[<max_ $f>](a, b) }
+                pub fn max_total(a: $f, b: $f) -> $f { $crate::data::cmp::[<max_ $f>](a, b) }
 
                 /// Returns the minimum of two numbers using total order.
                 #[inline(always)]
                 #[cfg(feature = "unsafe_math")]
-                pub const fn min_total(a: $f, b: $f) -> $f { $crate::math::num::[<min_ $f>](a, b) }
+                pub const fn min_total(a: $f, b: $f) -> $f { $crate::data::cmp::[<min_ $f>](a, b) }
                 #[inline(always)]
                 #[cfg(not(feature = "unsafe_math"))]
-                pub fn min_total(a: $f, b: $f) -> $f { $crate::math::num::[<min_ $f>](a, b) }
+                pub fn min_total(a: $f, b: $f) -> $f { $crate::data::cmp::[<min_ $f>](a, b) }
             }
         }};
     }

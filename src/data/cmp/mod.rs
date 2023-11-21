@@ -1,6 +1,6 @@
-// devela::math::num::cmp
+// devela::data::cmp
 //
-//! Comparing and ordering, extends
+//! Comparing, ordering and sorting, extends
 //! `std::`[`cmp`][std::cmp].
 //!
 //! This module defines many constant functions for comparing primitives, and the
@@ -13,19 +13,19 @@ mod always_fns;
 mod float;
 
 #[allow(unused)]
-#[cfg(not(feature = "math"))]
+#[cfg(not(feature = "data"))]
 pub(crate) use {always_fns::*, float::*};
 
 /* feature-gated */
 
-#[cfg(feature = "math")]
+#[cfg(feature = "data")]
 mod fns;
 
 // re-export private sub-modules
-#[cfg(feature = "math")]
+#[cfg(feature = "data")]
 pub use {always_fns::*, float::*, fns::*};
 
-#[cfg(feature = "math")]
+#[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{always_fns::*, float::*, fns::*};
