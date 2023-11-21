@@ -1,7 +1,8 @@
 // devela::data
 //
 //! Data structures, extends
-//! `std::{`[`array`][mod@std::array],
+//! `std::{`[`any`][std::any],
+//! [`array`][mod@std::array],
 //! [`cmp`][std::cmp],
 //! [`collections`][std::collections],
 //! [`convert`][std::convert],
@@ -32,6 +33,8 @@ pub(crate) use {cmp::*, slice::*};
 pub mod dst;
 
 #[cfg(feature = "data")]
+pub mod any;
+#[cfg(feature = "data")]
 mod array;
 #[cfg(feature = "data")]
 mod collection;
@@ -54,14 +57,14 @@ pub use {array::*, collection::DataCollection, reexports::*};
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use {cmp::all::*, convert::all::*, slice::all::*};
+pub use {any::all::*, cmp::all::*, convert::all::*, slice::all::*};
 
 #[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        array::*, cmp::all::*, collection::DataCollection, convert::all::*, reexports::*,
-        slice::all::*,
+        any::all::*, array::*, cmp::all::*, collection::DataCollection, convert::all::*,
+        reexports::*, slice::all::*,
     };
 
     #[doc(inline)]

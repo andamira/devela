@@ -12,7 +12,7 @@ mod core_impls;
 mod methods;
 // mod traits;
 
-/// An array, backed by the core [`array`] primitive.
+/// A generic array backed by the core [`array`] primitive.
 pub struct Array<T, S: Storage, const LEN: usize> {
     pub(crate) array: S::Stored<[T; LEN]>,
 }

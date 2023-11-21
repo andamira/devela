@@ -37,21 +37,14 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(
         feature = "unsafe", // includes all below
-        feature = "unsafe_any", feature = "unsafe_data", feature = "unsafe_math",
-        feature = "unsafe_mem", feature = "unsafe_meta", feature = "unsafe_path",
-        feature = "unsafe_result", feature = "unsafe_task", feature = "unsafe_text",
-        feature = "unsafe_time",
+        feature = "unsafe_data", feature = "unsafe_math", feature = "unsafe_mem",
+        feature = "unsafe_meta", feature = "unsafe_path", feature = "unsafe_result",
+        feature = "unsafe_task", feature = "unsafe_text", feature = "unsafe_time",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
 
 /* root modules */
-
-#[cfg(any(feature = "any", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "any")))]
-pub mod any;
-#[cfg(all(not(feature = "any"), not(test)))]
-pub(crate) mod any; // the "any" feature is disabled
 
 #[cfg(any(feature = "data", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
@@ -113,10 +106,6 @@ pub(crate) mod time; // the "time" feature is disabled
 /// manually enabling the associated optional dependency.
 pub mod all {
     #[doc(inline)]
-    #[cfg(feature = "any")]
-    pub use super::any::all::*;
-
-    #[doc(inline)]
     #[cfg(feature = "data")]
     pub use super::data::all::*;
 
@@ -155,11 +144,8 @@ pub mod all {
 
 /// The common prelude.
 pub mod prelude {
-    #[cfg(feature = "any")]
-    pub use crate::any::AnyExt;
-
     #[cfg(feature = "data")]
-    pub use crate::data::{DataCollection, SliceExt, SliceExtMut};
+    pub use crate::data::{AnyExt, DataCollection, SliceExt, SliceExtMut};
 
     #[cfg(feature = "mem")]
     pub use crate::mem::{BitSize, Mem, Size};
