@@ -57,7 +57,7 @@ no_std = [ # enables functionality incompatible with `std`
 #* module features *#
 
 full = [ # enables all the modules
-	"any", "color", "data", "mem", "meta", "num", "path", "result",
+	"any", "data", "mem", "meta", "num", "path", "result",
 	"task", "text", "time",
 	]
 	full_unsafe = ["full", "unsafe"]
@@ -66,7 +66,6 @@ fullest = ["full"] # enables `full` recursively (unused)
 # individual modules (11)
 # (modules enable their own dependencies if the `dep` feature is enabled)
 any = []
-color = []
 data = ["dep?/hashbrown"]
 mem = ["dep?/bytemuck"]
 meta = ["dep?/devela_macros"]
@@ -79,7 +78,6 @@ time = []
 
 # individual modules with unsafe enabled (11):
 any_unsafe = ["any", "unsafe_any"]
-color_unsafe = ["color", "unsafe_color"]
 data_unsafe = ["data", "unsafe_data"]
 mem_unsafe = ["mem", "unsafe_mem"]
 meta_unsafe = ["meta", "unsafe_meta"]
@@ -94,12 +92,10 @@ time_unsafe = ["time", "unsafe_time"]
 #* safety features *#
 
 unsafe = [ # enables unsafe features in this crate (11)
-	"unsafe_any", "unsafe_color", "unsafe_data", "unsafe_mem",
-	"unsafe_meta", "unsafe_num", "unsafe_path", "unsafe_result",
-	"unsafe_task", "unsafe_text", "unsafe_time",
+	"unsafe_any", "unsafe_data", "unsafe_mem", "unsafe_meta", "unsafe_num",
+	"unsafe_path", "unsafe_result", "unsafe_task", "unsafe_text", "unsafe_time",
 	]
 	unsafe_any = [] # (unused)
-	unsafe_color = [] # (unused)
 	unsafe_data = [] # (unused)
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
 	unsafe_meta = [] # (unused)
