@@ -1,36 +1,35 @@
 // devela::data::array
 //
+//! Arrays, extends
+//! `std::`[`array`][mod@std::array].
+//!
 //! Arrays are random-access, sequentially allocated, statically sized,
 //! homogeneous data structures.
 //
 
-#[cfg(feature = "alloc")]
-use crate::mem::Boxed;
-use crate::mem::Storage;
+/* contains always compiled items */
 
+mod always;
+#[allow(unused)]
+#[cfg(not(feature = "data"))]
+pub(crate) use always::*;
+
+/* feature-gated */
+
+// private sub-modules
+#[cfg(feature = "data")]
 mod core_impls;
+#[cfg(feature = "data")]
 mod methods;
-// mod traits;
+#[cfg(feature = "data")]
+mod types;
 
-/// A generic array backed by the core [`array`] primitive.
-pub struct Array<T, S: Storage, const LEN: usize> {
-    pub(crate) array: S::Stored<[T; LEN]>,
-}
+// re-export private sub-modules
+#[cfg(feature = "data")]
+pub use {always::*, types::*};
 
-/// An [`Array`] stored in the heap.
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub type BoxedArray<T, const LEN: usize> = Array<T, Boxed, LEN>;
-
-/// An [`Array`] stored in the stack.
-pub type DirectArray<T, const LEN: usize> = Array<T, (), LEN>;
-
-pub use all::*;
+#[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
-    #[cfg(feature = "alloc")]
-    pub use super::BoxedArray;
-
-    #[doc(inline)]
-    pub use super::{Array, DirectArray};
+    pub use super::{always::*, types::*};
 }

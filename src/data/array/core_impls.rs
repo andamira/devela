@@ -3,10 +3,8 @@
 //!
 //
 
-use super::Array;
+use super::{array_init, Array};
 use crate::mem::{Direct, Storage};
-#[cfg(feature = "unsafe_init")]
-use core::mem::{self, MaybeUninit};
 use core::{
     borrow::{Borrow, BorrowMut},
     cmp::Ordering,
@@ -133,21 +131,8 @@ impl<T: Default, const LEN: usize> Default for Array<T, (), LEN> {
     /// Returns an empty array, allocated in the stack,
     /// using the default value to fill the remaining free data.
     fn default() -> Self {
-        #[cfg(feature = "unsafe_init")]
-        let data = {
-            let mut arr: [MaybeUninit<T>; LEN] = unsafe { MaybeUninit::uninit().assume_init() };
-            for i in &mut arr[..] {
-                let _ = i.write(T::default());
-            }
-            unsafe { mem::transmute_copy::<_, [T; LEN]>(&arr) }
-        };
-
-        #[cfg(not(feature = "unsafe_init"))]
-        let data = core::array::from_fn(|_| T::default());
-
-        Array {
-            array: Direct::new(data),
-        }
+        let array = Direct::new(array_init!(default [T; LEN], "unsafe_data"));
+        Array { array }
     }
 }
 
@@ -165,35 +150,8 @@ impl<T: Default, const LEN: usize> Default for Array<T, Boxed, LEN> {
     /// let mut s = BoxedArray::<i32, 100>::default();
     /// ```
     fn default() -> Self {
-        #[cfg(not(feature = "unsafe_init"))]
-        let data = {
-            let mut v = Vec::<T>::with_capacity(LEN);
-
-            for _ in 0..LEN {
-                v.push(T::default());
-            }
-
-            let Ok(array) = v.into_boxed_slice().try_into() else {
-                panic!("Can't turn the boxed slice into a boxed array");
-            };
-            array
-        };
-
-        #[cfg(feature = "unsafe_init")]
-        let data = {
-            let mut v = Vec::<T>::with_capacity(LEN);
-
-            for _ in 0..LEN {
-                v.push(T::default());
-            }
-
-            let slice = v.into_boxed_slice();
-            let raw_slice = Box::into_raw(slice);
-            // SAFETY: pointer comes from using `into_raw`, and capacity is right.
-            unsafe { Box::from_raw(raw_slice as *mut [T; LEN]) }
-        };
-
-        Array { array: data }
+        let array = array_init!(boxed_default [T; LEN], "unsafe_data");
+        Array { array }
     }
 }
 
@@ -228,33 +186,8 @@ where
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
     fn from(iterator: I) -> Array<T, (), LEN> {
-        let mut iterator = iterator.into_iter();
-
-        #[cfg(feature = "unsafe_init")]
-        let data = {
-            let mut arr: [MaybeUninit<T>; LEN] = unsafe { MaybeUninit::uninit().assume_init() };
-            for i in &mut arr[..] {
-                if let Some(e) = iterator.next() {
-                    let _ = i.write(e);
-                } else {
-                    let _ = i.write(T::default());
-                }
-            }
-            unsafe { mem::transmute_copy::<_, [T; LEN]>(&arr) }
-        };
-
-        #[cfg(not(feature = "unsafe_init"))]
-        let data = core::array::from_fn(|_| {
-            if let Some(e) = iterator.next() {
-                e
-            } else {
-                T::default()
-            }
-        });
-
-        Array {
-            array: Direct::new(data),
-        }
+        let array = Direct::new(array_init!(iter [T; LEN], "unsafe_data", iterator));
+        Array { array }
     }
 }
 
@@ -275,42 +208,7 @@ where
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
     fn from(iterator: I) -> Array<T, Boxed, LEN> {
-        let mut iterator = iterator.into_iter();
-
-        #[cfg(not(feature = "unsafe_init"))]
-        let data = {
-            let mut v = Vec::<T>::with_capacity(LEN);
-
-            for _ in 0..LEN {
-                if let Some(e) = iterator.next() {
-                    v.push(e);
-                } else {
-                    v.push(T::default());
-                }
-            }
-            let Ok(array) = v.into_boxed_slice().try_into() else {
-                panic!("Can't turn the boxed slice into a boxed array");
-            };
-            array
-        };
-
-        #[cfg(feature = "unsafe_init")]
-        let data = {
-            let mut v = Vec::<T>::with_capacity(LEN);
-
-            for _ in 0..LEN {
-                if let Some(e) = iterator.next() {
-                    v.push(e);
-                } else {
-                    v.push(T::default());
-                }
-            }
-            let slice = v.into_boxed_slice();
-            let raw_slice = Box::into_raw(slice);
-            // SAFETY: pointer comes from using `into_raw`, and capacity is right.
-            unsafe { Box::from_raw(raw_slice as *mut [T; LEN]) }
-        };
-
-        Array { array: data }
+        let array = array_init!(boxed_iter [T; LEN], "unsafe_data", iterator);
+        Array { array }
     }
 }

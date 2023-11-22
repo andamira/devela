@@ -3,10 +3,7 @@
 //! Arrays.
 //
 
-#[cfg(feature = "unsafe_init")]
-use core::mem::{self, MaybeUninit};
-
-use super::Array;
+use super::{array_init, Array};
 use crate::mem::{Direct, Storage};
 
 #[allow(unused)]
@@ -38,27 +35,8 @@ impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
     /// let s = Array::<_, (), 16>::with(0);
     /// ```
     pub fn with(element: T) -> Self {
-        #[cfg(feature = "unsafe_init")]
-        let data = Direct::new({
-            let mut arr: [MaybeUninit<T>; LEN] = unsafe { MaybeUninit::uninit().assume_init() };
-
-            for i in &mut arr[..] {
-                let _ = i.write(element.clone());
-            }
-
-            // TEMP:FIX: can't use transmute for now:
-            // - https://github.com/rust-lang/rust/issues/62875
-            // - https://github.com/rust-lang/rust/issues/61956
-            // mem::transmute::<_, [T; LEN]>(&arr)
-            //
-            // SAFETY: we've initialized all the elements
-            unsafe { mem::transmute_copy::<_, [T; LEN]>(&arr) }
-        });
-
-        #[cfg(not(feature = "unsafe_init"))]
-        let data = Direct::new(core::array::from_fn(|_| element.clone()));
-
-        Self { array: data }
+        let array = Direct::new(array_init!(clone [T; LEN], "unsafe_data", element));
+        Self { array }
     }
 }
 
@@ -76,35 +54,8 @@ impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
     /// let mut s = BoxedArray::<_, 1_000>::with(0);
     /// ```
     pub fn with(element: T) -> Self {
-        #[cfg(not(feature = "unsafe_init"))]
-        let data = {
-            let mut v = Vec::<T>::with_capacity(LEN);
-
-            for _ in 0..LEN {
-                v.push(element.clone());
-            }
-
-            let Ok(array) = v.into_boxed_slice().try_into() else {
-                panic!("Can't turn the boxed slice into a boxed array");
-            };
-            array
-        };
-
-        #[cfg(feature = "unsafe_init")]
-        let data = {
-            let mut v = Vec::<T>::with_capacity(LEN);
-
-            for _ in 0..LEN {
-                v.push(element.clone());
-            }
-
-            let slice = v.into_boxed_slice();
-            let raw_slice = Box::into_raw(slice);
-            // SAFETY: pointer comes from using `into_raw`, and capacity is right.
-            unsafe { Box::from_raw(raw_slice as *mut [T; LEN]) }
-        };
-
-        Self { array: data }
+        let array = array_init!(boxed_clone [T; LEN], "unsafe_data", element);
+        Self { array }
     }
 }
 

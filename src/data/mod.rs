@@ -12,12 +12,13 @@
 
 /* contains always compiled items */
 
+mod array;
 pub mod cmp;
 pub mod slice;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {cmp::*, slice::*};
+pub(crate) use {array::*, cmp::*, slice::*};
 
 /* feature-gated */
 
@@ -34,8 +35,6 @@ pub mod dst;
 
 #[cfg(feature = "data")]
 pub mod any;
-#[cfg(feature = "data")]
-mod array;
 #[cfg(feature = "data")]
 mod collection;
 #[cfg(feature = "data")]
