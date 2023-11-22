@@ -16,6 +16,13 @@ pub(crate) use {num::*, ops::*};
 
 /* feature-gated */
 
+#[cfg(feature = "math")]
+mod error;
+
+// re-export private sub-modules
+#[cfg(feature = "math")]
+pub use error::*;
+
 // re-export public sub-modules
 #[doc(no_inline)]
 #[cfg(feature = "math")]
@@ -24,5 +31,5 @@ pub use {num::all::*, ops::all::*};
 #[cfg(feature = "math")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{num::all::*, ops::all::*};
+    pub use super::{error::*, num::all::*, ops::all::*};
 }

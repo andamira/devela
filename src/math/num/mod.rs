@@ -16,8 +16,6 @@ pub(crate) use {alias::*, non_specific::*};
 /* feature-gated */
 
 #[cfg(feature = "math")]
-mod error;
-#[cfg(feature = "math")]
 mod non_range;
 #[cfg(feature = "math")]
 mod range;
@@ -30,12 +28,12 @@ mod traits;
 
 // re-export private sub-modules
 #[cfg(feature = "math")]
-pub use {alias::*, error::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*};
+pub use {alias::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*};
 
 #[cfg(feature = "math")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        alias::*, error::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*,
+        alias::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*,
     };
 }
