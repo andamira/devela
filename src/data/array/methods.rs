@@ -54,7 +54,7 @@ impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
     /// let mut s = BoxedArray::<_, 1_000>::with(0);
     /// ```
     pub fn with(element: T) -> Self {
-        let array = array_init!(boxed_clone [T; LEN], "unsafe_data", element);
+        let array = array_init!(clone_heap [T; LEN], "unsafe_data", element);
         Self { array }
     }
 }

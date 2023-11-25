@@ -6,7 +6,7 @@
 /// A mathematical result.
 pub type MathResult<T> = core::result::Result<T, MathError>;
 
-/// A numeric error.
+/// A mathematical error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum MathError {
