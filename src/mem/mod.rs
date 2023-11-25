@@ -19,11 +19,12 @@ pub(crate) use {aligned::*, always::*, r#trait::*, reexports_core::*, size::*, s
 
 /* feature-gated */
 
-// ...
+#[cfg(feature = "mem")]
+mod fns;
 
 // re-export private sub-modules
 #[cfg(feature = "mem")]
-pub use {aligned::*, always::*, r#trait::*, reexports_core::*, size::*, storage::*};
+pub use {aligned::*, always::*, fns::*, r#trait::*, reexports_core::*, size::*, storage::*};
 
 #[cfg(feature = "mem")]
 pub(crate) mod all {
