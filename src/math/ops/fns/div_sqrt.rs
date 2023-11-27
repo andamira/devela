@@ -1,6 +1,6 @@
 // devela::math::ops::fns::div_sqrt
 //
-//! Functions for numeric operations.
+//! division and square root
 //
 // TOC
 // - sint|uint:

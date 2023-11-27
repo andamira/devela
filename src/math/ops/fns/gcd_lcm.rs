@@ -1,6 +1,6 @@
 // devela::math::fns::gcd_lcm
 //
-//! Functions for numeric operations.
+//! greatest common divisor and least common multiple functions
 //
 // TOC
 // - sint|uint

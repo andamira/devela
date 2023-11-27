@@ -1,6 +1,6 @@
 // devela::math::ops::fns::scale_lerp
 //
-//! Functions for numeric operations.
+//! scaling and linearly interpolation functions
 //
 // TOC
 // - sint|uint|float:

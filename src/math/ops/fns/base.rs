@@ -1,6 +1,6 @@
 // devela::math::ops::fns::base
 //
-//! Functions for numeric operations.
+//! base related functions
 //
 // TOC
 // - sint|uint:

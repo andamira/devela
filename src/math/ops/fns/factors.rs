@@ -1,6 +1,6 @@
 // devela::math::fns::factors
 //
-//! Functions for numeric operations.
+//! factorization funcions
 //
 // TOC
 // - sint|uint:
