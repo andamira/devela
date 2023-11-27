@@ -14,15 +14,12 @@ pub(crate) use always_fns::*;
 
 /* feature-gated */
 
-#[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-#[cfg(any(feature = "std", feature = "libm"))]
 mod float;
 
 #[cfg(feature = "math")]
 mod fns;
 
 #[doc(inline)]
-#[cfg(any(feature = "std", feature = "libm"))]
 pub use float::*;
 
 // re-export private sub-modules
