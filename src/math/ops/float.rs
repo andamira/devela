@@ -60,9 +60,12 @@ pub trait FloatExt: Sized {
     /// The smallest integer greater than or equal to `self`.
     #[must_use]
     fn ceil(self) -> Self;
-    /// The nearest integer to `self`, half away from `0.0`.
+    /// Returns the nearest integer to `self`, rounding ties away from `0.0`.
     #[must_use]
-    fn round(self) -> Self;
+    fn round_ties_away(self) -> Self;
+    /// Returns the nearest integer to `self`, rounding ties to the nearest even integer.
+    #[must_use]
+    fn round_ties_even(self) -> Self;
     /// The integral part.
     #[must_use]
     fn trunc(self) -> Self;
@@ -114,7 +117,8 @@ pub trait FloatExt: Sized {
     fn powi(self, p: i32) -> Self;
     /// The square root.
     ///
-    /// When neither `std` or `libm` features are enabled it's equal to [`sqrt_nr`][Self::sqrt_nr].
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`sqrt_nr`][Self::sqrt_nr].
     #[must_use]
     fn sqrt(self) -> Self;
     /// The square root calculated using the fast inverse square root algorithm.
@@ -292,7 +296,9 @@ macro_rules! impl_float_ext {
             #[inline(always)]
             fn ceil(self) -> Self { Fp::<$t>::ceil(self) }
             #[inline(always)]
-            fn round(self) -> Self { Fp::<$t>::round(self) }
+            fn round_ties_away(self) -> Self { Fp::<$t>::round_ties_away(self) }
+            #[inline(always)]
+            fn round_ties_even(self) -> Self { Fp::<$t>::round_ties_even(self) }
             #[inline(always)]
             fn trunc(self) -> Self { Fp::<$t>::trunc(self) }
             #[inline(always)]
@@ -529,8 +535,8 @@ mod _std {
         floor = floor: a;
         "The smallest integer greater than or equal to `a`."
         ceil = ceil: a;
-        "The nearest integer to `a`, half away from `0.0`."
-        round = round: a;
+        "Returns the nearest integer to `a`, rounding ties away from `0.0`."
+        round = round_ties_away: a;
         "The integral part."
         trunc = trunc: a;
         "The fractional part."
@@ -644,8 +650,8 @@ mod _libm {
         floor = floor: a;
         "The smallest integer greater than or equal to `a`."
         ceil = ceil: a;
-        "The nearest integer to `a`, half away from `0.0`."
-        round = round: a;
+        "Returns the nearest integer to `a`, rounding ties away from `0.0`."
+        round = round_ties_away: a;
         "The integral part."
         trunc = trunc: a;
         // fract
@@ -841,6 +847,19 @@ mod _either {
             ///
             /// Total order const fns will only be `const` if the `unsafe_math` feature is enabled.
             impl Fp<$f> {
+                /// Returns the nearest integer to `a`, rounding ties to the nearest even integer.
+                // WAIT: https://github.com/rust-lang/rust/issues/96710
+                #[must_use]
+                #[inline]
+                pub fn round_ties_even(a: $f) -> $f {
+                    let rounded = Fp::<$f>::round_ties_away(a);
+                    if rounded % 2.0 == 0.0 || Fp::<$f>::abs(rounded - a) > 0.5 {
+                        rounded
+                    } else {
+                        rounded - Fp::<$f>::signum(a)
+                    }
+                }
+
                 /// Returns `true` if `a` is positive.
                 #[must_use]
                 #[inline]
@@ -1006,10 +1025,10 @@ mod _no_std_no_libm {
                     result
                 }
 
-                /// The nearest integer to `self`, half away from `0.0`.
+                /// Returns the nearest integer to `self`, rounding ties away from `0.0`.
                 #[must_use]
                 #[inline]
-                pub fn round(a: $f) -> $f {
+                pub fn round_ties_away(a: $f) -> $f {
                     Fp::<$f>::trunc(a + Fp::<$f>::copysign(0.5 - 0.25 * <$f>::EPSILON, a))
                 }
 
