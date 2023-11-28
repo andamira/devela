@@ -46,6 +46,12 @@ compile_error!("You can't enable `safe` and `unsafe*` features at the same time.
 
 /* root modules */
 
+#[cfg(any(feature = "color", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "color")))]
+pub mod color;
+#[cfg(all(not(feature = "color"), not(test)))]
+pub(crate) mod color; // the "color" feature is disabled
+
 #[cfg(any(feature = "data", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod data;
@@ -105,6 +111,10 @@ pub(crate) mod time; // the "time" feature is disabled
 /// Note that any item tagged with [`dep`] can also be enabled by
 /// manually enabling the associated optional dependency.
 pub mod all {
+    #[doc(inline)]
+    #[cfg(feature = "color")]
+    pub use super::color::all::*;
+
     #[doc(inline)]
     #[cfg(feature = "data")]
     pub use super::data::all::*;
