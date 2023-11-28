@@ -4,12 +4,12 @@
 //
 
 /// A mathematical result.
-pub type MathResult<T> = core::result::Result<T, MathError>;
+pub type MathResult<T> = core::result::Result<T, MathErrors>;
 
 /// A mathematical error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum MathError {
+pub enum MathErrors {
     /// The requested mathematical functionality is not implemented.
     ///
     /// This is the default implementation of every `Num` method.
@@ -35,30 +35,30 @@ pub enum MathError {
     Underflow,
 }
 
-impl MathError {
+impl MathErrors {
     pub(crate) fn notimpl<T>() -> MathResult<T> {
-        Err(MathError::NotImplemented)
+        Err(MathErrors::NotImplemented)
     }
 }
 
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 // WAIT: error_in_core https://github.com/rust-lang/rust/issues/103765
-impl std::error::Error for MathError {}
+impl std::error::Error for MathErrors {}
 
 mod core_impls {
-    use super::MathError;
+    use super::MathErrors;
     use core::fmt;
 
-    impl fmt::Display for MathError {
+    impl fmt::Display for MathErrors {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             match self {
-                MathError::NotImplemented => write!(f, "Not implemented."),
-                MathError::NotSupported => write!(f, "Not supported."),
-                MathError::Unspecified => write!(f, "Unspecified."),
-                MathError::Invalid => write!(f, "Invalid."),
-                MathError::Overflow => write!(f, "Overflow."),
-                MathError::Underflow => write!(f, "Underflow"),
+                MathErrors::NotImplemented => write!(f, "Not implemented."),
+                MathErrors::NotSupported => write!(f, "Not supported."),
+                MathErrors::Unspecified => write!(f, "Unspecified."),
+                MathErrors::Invalid => write!(f, "Invalid."),
+                MathErrors::Overflow => write!(f, "Overflow."),
+                MathErrors::Underflow => write!(f, "Underflow"),
             }
         }
     }

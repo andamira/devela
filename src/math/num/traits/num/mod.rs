@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::math::{MathError as Error, MathResult as Result};
+use crate::math::{MathErrors as Error, MathResult as Result};
 use core::ops::{Deref, DerefMut};
 
 mod impls;

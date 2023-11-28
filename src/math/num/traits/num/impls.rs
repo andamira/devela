@@ -4,12 +4,12 @@
 //
 
 use crate::math::num::all::*;
-use crate::math::{MathError, MathResult as Result};
+use crate::math::{MathErrors, MathResult as Result};
 #[cfg(not(feature = "std"))]
 use crate::meta::iif;
 use crate::meta::paste;
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
-use MathError::{Invalid, Unspecified};
+use MathErrors::{Invalid, Unspecified};
 
 impl_num![];
 macro_rules! impl_num {
@@ -90,11 +90,11 @@ macro_rules! impl_num {
             #[inline]
             fn num_is_one(&self) -> Result<bool> { self.get().num_is_one() }
             #[inline]
-            fn num_get_zero() -> Result<Self> { MathError::notimpl() }
+            fn num_get_zero() -> Result<Self> { MathErrors::notimpl() }
             #[inline]
             fn num_get_one() -> Result<Self> { Ok(Self::new(1).unwrap()) }
             #[inline]
-            fn num_set_zero(&mut self) -> Result<()> { MathError::notimpl() }
+            fn num_set_zero(&mut self) -> Result<()> { MathErrors::notimpl() }
             #[inline]
             fn num_set_one(&mut self) -> Result<()> {
                 #[cfg(not(feature = "unsafe_math"))]
@@ -210,11 +210,11 @@ macro_rules! impl_num {
             #[inline]
             fn num_is_one(&self) -> Result<bool> { Ok(self.get() == 1) }
             #[inline]
-            fn num_get_zero() -> Result<Self> { MathError::notimpl() }
+            fn num_get_zero() -> Result<Self> { MathErrors::notimpl() }
             #[inline]
             fn num_get_one() -> Result<Self> { Ok(Self::new(1).unwrap()) }
             #[inline]
-            fn num_set_zero(&mut self) -> Result<()> { MathError::notimpl() }
+            fn num_set_zero(&mut self) -> Result<()> { MathErrors::notimpl() }
             #[inline]
             fn num_set_one(&mut self) -> Result<()> {
                 #[cfg(not(feature = "unsafe_math"))]
@@ -385,21 +385,21 @@ macro_rules! impl_num {
         $( impl_num![@op1_none $Self => $op]; )+ };
     (@op1_none $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Result<$Self::Out> { MathError::notimpl() }
+        fn [<num_ $op>](self) -> Result<$Self::Out> { MathErrors::notimpl() }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Result<$Self::Out> { MathError::notimpl() }
+        fn [<num_ref_ $op>](&self) -> Result<$Self::Out> { MathErrors::notimpl() }
     }};
     (op2_none $Self:ty => $($op:ident),+) => {
         $( impl_num![@op2_none $Self => $op]; )+ };
     (@op2_none $Self:ty => $op:ident) => {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> { MathError::notimpl() }
+        fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> { MathErrors::notimpl() }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::Out> { MathError::notimpl() }
+        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::Out> { MathErrors::notimpl() }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::Out> { MathError::notimpl() }
+        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::Out> { MathErrors::notimpl() }
         #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::Out> { MathError::notimpl() }
+        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::Out> { MathErrors::notimpl() }
     };
 
     /* ops that call .checked() for i*, u*, and few for NonZero* */

@@ -11,7 +11,7 @@
 //   - totient
 
 use crate::{
-    math::{fsize, FloatExt, MathError, MathResult as Result},
+    math::{fsize, FloatExt, MathErrors, MathResult as Result},
     meta::{iif, paste},
 };
 
@@ -106,7 +106,7 @@ macro_rules! impl_ops {
         /// value. For example, a value of `-3` will be treated as `3`, and the
         /// function will return the 3rd prime number.
         ///
-        #[doc = "Returns [`MathError::Overflow`] if the result would not fit in an `" $t "`."]
+        #[doc = "Returns [`MathErrors::Overflow`] if the result would not fit in an `" $t "`."]
         ///
         /// # Examples
         /// ```
@@ -126,7 +126,7 @@ macro_rules! impl_ops {
                     iif![count - 1 == nth; return Ok(i)];
                     count += 1;
                 }
-                i = i.checked_add(1).ok_or(MathError::Overflow)?;
+                i = i.checked_add(1).ok_or(MathErrors::Overflow)?;
             }
         }
 
@@ -234,7 +234,7 @@ macro_rules! impl_ops {
 
         /// Finds the 0-indexed `nth` prime number.
         ///
-        #[doc = "Returns [`MathError::Overflow`] if the result would not fit in a `" $t "`."]
+        #[doc = "Returns [`MathErrors::Overflow`] if the result would not fit in a `" $t "`."]
         ///
         /// # Examples
         /// ```
@@ -253,7 +253,7 @@ macro_rules! impl_ops {
                     iif![count - 1 == nth; return Ok(i)];
                     count += 1;
                 }
-                i = i.checked_add(1).ok_or(MathError::Overflow)?;
+                i = i.checked_add(1).ok_or(MathErrors::Overflow)?;
             }
         }
 
