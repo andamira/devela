@@ -117,7 +117,6 @@ macro_rules! impl_ops {
         #[doc = "assert_eq![Ok(127), prime_nth_" $t "(-30)];"]
         /// assert![devela::math::prime_nth_i8(121).is_err()];
         /// ```
-        #[must_use]
         #[inline]
         pub fn [<prime_nth_ $t>](nth: $t) -> Result<$t> {
             let (nth, mut count, mut i) = (nth.abs(), 1, 2);
@@ -244,7 +243,6 @@ macro_rules! impl_ops {
         #[doc = "assert_eq![Ok(251), prime_nth_" $t "(53)];"]
         /// assert![devela::math::prime_nth_u8(253).is_err()];
         /// ```
-        #[must_use]
         #[inline]
         pub fn [<prime_nth_ $t>](nth: $t) -> Result<$t> {
             let (mut count, mut i) = (1, 2);

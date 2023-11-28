@@ -481,11 +481,14 @@ impl_float_ext![f32, f64];
 #[derive(Debug, Clone, Copy)]
 pub struct Fp<T>(core::marker::PhantomData<T>);
 
+// macro helper for implementing methods for `Fp`, from `libm` or `std`.
+//
 // $lib: the library to use.
 // $f: the floating-point type to support.
 // $doc: an optional documentation string.
 // $opfn: the original operation function name.
 // $op: the new operation function name in Fp.
+#[cfg(any(feature = "libm", feature = "std"))]
 macro_rules! impl_fp {
     // Matches a wildcard floating-point type (f*).
     // Expands to specific floating-point types (f32, f64).
@@ -524,6 +527,7 @@ macro_rules! impl_fp {
         }
     };
 }
+#[cfg(any(feature = "libm", feature = "std"))]
 use impl_fp;
 
 #[cfg(all(not(feature = "libm"), feature = "std"))]

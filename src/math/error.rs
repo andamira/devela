@@ -36,7 +36,7 @@ pub enum MathErrors {
 }
 
 impl MathErrors {
-    pub(crate) fn notimpl<T>() -> MathResult<T> {
+    pub(crate) const fn ni<T>() -> MathResult<T> {
         Err(MathErrors::NotImplemented)
     }
 }

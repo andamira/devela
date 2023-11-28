@@ -77,114 +77,114 @@ pub trait Num {
 
     /// Returns `Self` if given a valid `value`.
     fn num_from(value: Self::Inner) -> Result<Self>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Returns `Self` if given a valid `&value`.
     fn num_from_ref(value: &Self::Inner) -> Result<Self>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
 
     /// Sets `self` to the given valid `value`.
-    fn num_set(&mut self, value: Self::Inner) -> Result<()> { Error::notimpl() }
+    fn num_set(&mut self, value: Self::Inner) -> Result<()> { Error::ni() }
     /// Sets `self` to the given valid `&value`.
-    fn num_set_ref(&mut self, value: &Self::Inner) -> Result<()> { Error::notimpl() }
+    fn num_set_ref(&mut self, value: &Self::Inner) -> Result<()> { Error::ni() }
 
     /* Identities */
 
     /// Returns `true` if `self` is zero.
-    fn num_is_zero(&self) -> Result<bool> { Error::notimpl() }
+    fn num_is_zero(&self) -> Result<bool> { Error::ni() }
     /// Returns the number zero.
     fn num_get_zero() -> Result<Self>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Sets `self` to `0`.
-    fn num_set_zero(&mut self) -> Result<()> { Error::notimpl() }
+    fn num_set_zero(&mut self) -> Result<()> { Error::ni() }
 
     /// Returns `true` if `self` is one.
-    fn num_is_one(&self) -> Result<bool> { Error::notimpl() }
+    fn num_is_one(&self) -> Result<bool> { Error::ni() }
     /// Returns the number one.
     fn num_get_one() -> Result<Self>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Sets the number to one.
-    fn num_set_one(&mut self) -> Result<()> { Error::notimpl() }
+    fn num_set_one(&mut self) -> Result<()> { Error::ni() }
 
     /* Operations */
 
     /// Computes `self` + `other`.
     fn num_add(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `self` + `&other`.
     fn num_add_ref(self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `&self` + `other`.
     fn num_ref_add(&self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `&self` + `&other`.
     fn num_ref_add_ref(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
 
     /// Computes `self` - `other`.
     fn num_sub(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `self` - `&other`.
     fn num_sub_ref(self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `&self` - `other`.
     fn num_ref_sub(&self, rhs: Self::Rhs) -> Result<Self::Out> 
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `&self` - `&other`.
     fn num_ref_sub_ref(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
 
     /// Computes `self` * `other`.
     fn num_mul(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `self` * `&other`.
     fn num_mul_ref(self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `&self` * `other`.
     fn num_ref_mul(&self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `&self` * `&other`.
     fn num_ref_mul_ref(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
 
     /// Computes `self` / `other`.
     fn num_div(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `self` / `&other`.
     fn num_div_ref(self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `&self` / `other`.
     fn num_ref_div(&self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `&self` / `&other`.
     fn num_ref_div_ref(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
 
     /// Computes `self` % `other`.
     fn num_rem(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `self` % `&other`.
     fn num_rem_ref(self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `&self` % `other`.
     fn num_ref_rem(&self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `&self` % `&other`.
     fn num_ref_rem_ref(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
 
     /// Computes `- self`.
     fn num_neg(self) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes `- &self`.
     fn num_ref_neg(&self) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
 
     /// Computes the absolute value of `self`.
     fn num_abs(self) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
     /// Computes the absolute value of `&self`.
     fn num_ref_abs(&self) -> Result<Self::Out>
-        where Self: Sized { Error::notimpl() }
+        where Self: Sized { Error::ni() }
 }
 
 /// Common trait for referenced numeric types.
