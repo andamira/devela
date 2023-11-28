@@ -7,10 +7,10 @@
 //   - div_rem
 //   - div_ceil
 //   - div_floor
-//   - div_half_away
-//   - div_half_towards
-//   - div_half_even
-//   - div_half_odd
+//   - div_ties_away
+//   - div_ties_towards
+//   - div_ties_even
+//   - div_ties_odd
 //   - square_is
 //   - sqrt_floor
 //   - sqrt_ceil
@@ -102,82 +102,82 @@ macro_rules! impl_ops {
             iif![(r > 0 && b < 0) || (r < 0 && b > 0); d - 1; d]
         }
 
-        /* div_half_away */
+        /* div_ties_away */
 
-        #[doc = "Returns an [`" $t "`] quotient, rounding half away from zero."]
+        #[doc = "Returns an [`" $t "`] quotient, rounding ties away from zero."]
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::div_half_away_" $t ";"]
-        #[doc = "assert_eq![div_half_away_" $t "(7, 3), 2]; // 2.33…"]
-        #[doc = "assert_eq![div_half_away_" $t "(7, -3), -2];"]
-        #[doc = "assert_eq![div_half_away_" $t "(-7, 3), -2];"]
-        #[doc = "assert_eq![div_half_away_" $t "(-7, -3), 2];"]
+        #[doc = "use devela::math::div_ties_away_" $t ";"]
+        #[doc = "assert_eq![div_ties_away_" $t "(7, 3), 2]; // 2.33…"]
+        #[doc = "assert_eq![div_ties_away_" $t "(7, -3), -2];"]
+        #[doc = "assert_eq![div_ties_away_" $t "(-7, 3), -2];"]
+        #[doc = "assert_eq![div_ties_away_" $t "(-7, -3), 2];"]
         ///
-        #[doc = "assert_eq![div_half_away_" $t "(7, 5), 1]; // 1.4"]
-        #[doc = "assert_eq![div_half_away_" $t "(6, 4), 2]; // 1.5"]
-        #[doc = "assert_eq![div_half_away_" $t "(8, 5), 2]; // 1.6"]
-        #[doc = "assert_eq![div_half_away_" $t "(5, 2), 3]; // 2.5"]
-        #[doc = "assert_eq![div_half_away_" $t "(-7, 5), -1]; // -1.4"]
-        #[doc = "assert_eq![div_half_away_" $t "(-6, 4), -2]; // -1.5"]
-        #[doc = "assert_eq![div_half_away_" $t "(-8, 5), -2]; // -1.6"]
-        #[doc = "assert_eq![div_half_away_" $t "(-5, 2), -3]; // -2.5"]
+        #[doc = "assert_eq![div_ties_away_" $t "(7, 5), 1]; // 1.4"]
+        #[doc = "assert_eq![div_ties_away_" $t "(6, 4), 2]; // 1.5"]
+        #[doc = "assert_eq![div_ties_away_" $t "(8, 5), 2]; // 1.6"]
+        #[doc = "assert_eq![div_ties_away_" $t "(5, 2), 3]; // 2.5"]
+        #[doc = "assert_eq![div_ties_away_" $t "(-7, 5), -1]; // -1.4"]
+        #[doc = "assert_eq![div_ties_away_" $t "(-6, 4), -2]; // -1.5"]
+        #[doc = "assert_eq![div_ties_away_" $t "(-8, 5), -2]; // -1.6"]
+        #[doc = "assert_eq![div_ties_away_" $t "(-5, 2), -3]; // -2.5"]
         /// ```
         #[inline]
         #[must_use]
-        pub const fn [<div_half_away_ $t >](a: $t, b: $t) -> $t {
+        pub const fn [<div_ties_away_ $t >](a: $t, b: $t) -> $t {
             let (d, r) = (a / b, a % b);
             iif![2 * r.abs() >= b.abs(); iif![(a > 0) == (b > 0); d + 1; d - 1]; d]
         }
 
-        #[doc = "Returns an [`" $t "`] quotient, rounding half towards zero."]
+        #[doc = "Returns an [`" $t "`] quotient, rounding ties towards zero."]
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::div_half_towards_" $t ";"]
-        #[doc = "assert_eq![div_half_towards_" $t "(7, 3), 2]; // 2.33…"]
-        #[doc = "assert_eq![div_half_towards_" $t "(7, -3), -2];"]
-        #[doc = "assert_eq![div_half_towards_" $t "(-7, 3), -2];"]
-        #[doc = "assert_eq![div_half_towards_" $t "(-7, -3), 2];"]
+        #[doc = "use devela::math::div_ties_towards_" $t ";"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(7, 3), 2]; // 2.33…"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(7, -3), -2];"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(-7, 3), -2];"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(-7, -3), 2];"]
         ///
-        #[doc = "assert_eq![div_half_towards_" $t "(7, 5), 1]; // 1.4"]
-        #[doc = "assert_eq![div_half_towards_" $t "(6, 4), 1]; // 1.5"]
-        #[doc = "assert_eq![div_half_towards_" $t "(8, 5), 2]; // 1.6"]
-        #[doc = "assert_eq![div_half_towards_" $t "(5, 2), 2]; // 2.5"]
-        #[doc = "assert_eq![div_half_towards_" $t "(-7, 5), -1]; // -1.4"]
-        #[doc = "assert_eq![div_half_towards_" $t "(-6, 4), -1]; // -1.5"]
-        #[doc = "assert_eq![div_half_towards_" $t "(-8, 5), -2]; // -1.6"]
-        #[doc = "assert_eq![div_half_towards_" $t "(-5, 2), -2]; // -2.5"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(7, 5), 1]; // 1.4"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(6, 4), 1]; // 1.5"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(8, 5), 2]; // 1.6"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(5, 2), 2]; // 2.5"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(-7, 5), -1]; // -1.4"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(-6, 4), -1]; // -1.5"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(-8, 5), -2]; // -1.6"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(-5, 2), -2]; // -2.5"]
         /// ```
         #[inline]
         #[must_use]
-        pub const fn [<div_half_towards_ $t >](a: $t, b: $t) -> $t {
+        pub const fn [<div_ties_towards_ $t >](a: $t, b: $t) -> $t {
             let (d, r) = (a / b, a % b);
             iif![2 * r.abs() > b.abs(); iif![(a > 0) == (b > 0); d + 1; d - 1]; d]
         }
 
-        #[doc = "Returns an [`" $t "`] quotient, rounding half to the nearest odd number."]
+        #[doc = "Returns an [`" $t "`] quotient, rounding ties to the nearest odd number."]
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::div_half_even_" $t ";"]
-        #[doc = "assert_eq![div_half_even_" $t "(7, 3), 2]; // 2.33…"]
-        #[doc = "assert_eq![div_half_even_" $t "(7, -3), -2];"]
-        #[doc = "assert_eq![div_half_even_" $t "(-7, 3), -2];"]
-        #[doc = "assert_eq![div_half_even_" $t "(-7, -3), 2];"]
+        #[doc = "use devela::math::div_ties_even_" $t ";"]
+        #[doc = "assert_eq![div_ties_even_" $t "(7, 3), 2]; // 2.33…"]
+        #[doc = "assert_eq![div_ties_even_" $t "(7, -3), -2];"]
+        #[doc = "assert_eq![div_ties_even_" $t "(-7, 3), -2];"]
+        #[doc = "assert_eq![div_ties_even_" $t "(-7, -3), 2];"]
         ///
-        #[doc = "assert_eq![div_half_even_" $t "(7, 5), 1]; // 1.4"]
-        #[doc = "assert_eq![div_half_even_" $t "(6, 4), 2]; // 1.5"]
-        #[doc = "assert_eq![div_half_even_" $t "(8, 5), 2]; // 1.6"]
-        #[doc = "assert_eq![div_half_even_" $t "(5, 2), 2]; // 2.5"]
-        #[doc = "assert_eq![div_half_even_" $t "(-7, 5), -1]; // -1.4"]
-        #[doc = "assert_eq![div_half_even_" $t "(-6, 4), -2]; // -1.5"]
-        #[doc = "assert_eq![div_half_even_" $t "(-8, 5), -2]; // -1.6"]
-        #[doc = "assert_eq![div_half_even_" $t "(-6, 4), -2]; // -2.5"]
+        #[doc = "assert_eq![div_ties_even_" $t "(7, 5), 1]; // 1.4"]
+        #[doc = "assert_eq![div_ties_even_" $t "(6, 4), 2]; // 1.5"]
+        #[doc = "assert_eq![div_ties_even_" $t "(8, 5), 2]; // 1.6"]
+        #[doc = "assert_eq![div_ties_even_" $t "(5, 2), 2]; // 2.5"]
+        #[doc = "assert_eq![div_ties_even_" $t "(-7, 5), -1]; // -1.4"]
+        #[doc = "assert_eq![div_ties_even_" $t "(-6, 4), -2]; // -1.5"]
+        #[doc = "assert_eq![div_ties_even_" $t "(-8, 5), -2]; // -1.6"]
+        #[doc = "assert_eq![div_ties_even_" $t "(-6, 4), -2]; // -2.5"]
         /// ```
         #[inline]
         #[must_use]
-        pub const fn [<div_half_even_ $t >](a: $t, b: $t) -> $t {
+        pub const fn [<div_ties_even_ $t >](a: $t, b: $t) -> $t {
             let (d, r) = (a / b, a % b);
             // If the remainder is zero or the |remainder| is less than half of
             // |b|, return the quotient.
@@ -190,28 +190,28 @@ macro_rules! impl_ops {
                     iif![d % 2 == 0; d; d + a.signum() * b.signum()] ] ]
         }
 
-        #[doc = "Returns an [`" $t "`] quotient, rounding half to the nearest odd number."]
+        #[doc = "Returns an [`" $t "`] quotient, rounding ties to the nearest odd number."]
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::div_half_odd_" $t ";"]
-        #[doc = "assert_eq![div_half_odd_" $t "(7, 3), 2]; // 2.33…"]
-        #[doc = "assert_eq![div_half_odd_" $t "(7, -3), -2];"]
-        #[doc = "assert_eq![div_half_odd_" $t "(-7, 3), -2];"]
-        #[doc = "assert_eq![div_half_odd_" $t "(-7, -3), 2];"]
+        #[doc = "use devela::math::div_ties_odd_" $t ";"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(7, 3), 2]; // 2.33…"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(7, -3), -2];"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(-7, 3), -2];"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(-7, -3), 2];"]
         ///
-        #[doc = "assert_eq![div_half_odd_" $t "(7, 5), 1]; // 1.4"]
-        #[doc = "assert_eq![div_half_odd_" $t "(6, 4), 1]; // 1.5"]
-        #[doc = "assert_eq![div_half_odd_" $t "(8, 5), 2]; // 1.6"]
-        #[doc = "assert_eq![div_half_odd_" $t "(5, 2), 3]; // 2.5"]
-        #[doc = "assert_eq![div_half_odd_" $t "(-7, 5), -1]; // -1.4"]
-        #[doc = "assert_eq![div_half_odd_" $t "(-6, 4), -1]; // -1.5"]
-        #[doc = "assert_eq![div_half_odd_" $t "(-8, 5), -2]; // -1.6"]
-        #[doc = "assert_eq![div_half_odd_" $t "(-5, 2), -3]; // -2.5"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(7, 5), 1]; // 1.4"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(6, 4), 1]; // 1.5"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(8, 5), 2]; // 1.6"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(5, 2), 3]; // 2.5"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(-7, 5), -1]; // -1.4"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(-6, 4), -1]; // -1.5"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(-8, 5), -2]; // -1.6"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(-5, 2), -3]; // -2.5"]
         /// ```
         #[inline]
         #[must_use]
-        pub const fn [<div_half_odd_ $t >](a: $t, b: $t) -> $t {
+        pub const fn [<div_ties_odd_ $t >](a: $t, b: $t) -> $t {
             let (d, r) = (a / b, a % b);
             // If the remainder is zero or the |remainder| is less than half of
             // |b|, return the quotient.
@@ -456,59 +456,59 @@ macro_rules! impl_ops {
             a / b
         }
 
-        #[doc = "Returns a [`" $t "`] quotient, rounding half away from zero."]
+        #[doc = "Returns a [`" $t "`] quotient, rounding ties away from zero."]
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::div_half_away_" $t ";"]
-        #[doc = "assert_eq![div_half_away_" $t "(7, 3), 2]; // 2.33…"]
+        #[doc = "use devela::math::div_ties_away_" $t ";"]
+        #[doc = "assert_eq![div_ties_away_" $t "(7, 3), 2]; // 2.33…"]
         ///
-        #[doc = "assert_eq![div_half_away_" $t "(7, 5), 1]; // 1.4"]
-        #[doc = "assert_eq![div_half_away_" $t "(6, 4), 2]; // 1.5"]
-        #[doc = "assert_eq![div_half_away_" $t "(8, 5), 2]; // 1.6"]
-        #[doc = "assert_eq![div_half_away_" $t "(5, 2), 3]; // 2.5"]
+        #[doc = "assert_eq![div_ties_away_" $t "(7, 5), 1]; // 1.4"]
+        #[doc = "assert_eq![div_ties_away_" $t "(6, 4), 2]; // 1.5"]
+        #[doc = "assert_eq![div_ties_away_" $t "(8, 5), 2]; // 1.6"]
+        #[doc = "assert_eq![div_ties_away_" $t "(5, 2), 3]; // 2.5"]
         /// ```
         #[inline]
         #[must_use]
-        pub const fn [<div_half_away_ $t >](a: $t, b: $t) -> $t {
+        pub const fn [<div_ties_away_ $t >](a: $t, b: $t) -> $t {
             let (d, r) = (a / b, a % b);
             iif![2 * r >= b; iif![a > b; d + 1; d - 1]; d]
         }
 
-        #[doc = "Returns a [`" $t "`] quotient, rounding half towards from zero."]
+        #[doc = "Returns a [`" $t "`] quotient, rounding ties towards from zero."]
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::div_half_towards_" $t ";"]
-        #[doc = "assert_eq![div_half_towards_" $t "(7, 3), 2]; // 2.33…"]
+        #[doc = "use devela::math::div_ties_towards_" $t ";"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(7, 3), 2]; // 2.33…"]
         ///
-        #[doc = "assert_eq![div_half_towards_" $t "(7, 5), 1]; // 1.4"]
-        #[doc = "assert_eq![div_half_towards_" $t "(6, 4), 1]; // 1.5"]
-        #[doc = "assert_eq![div_half_towards_" $t "(8, 5), 2]; // 1.6"]
-        #[doc = "assert_eq![div_half_towards_" $t "(5, 2), 2]; // 2.5"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(7, 5), 1]; // 1.4"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(6, 4), 1]; // 1.5"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(8, 5), 2]; // 1.6"]
+        #[doc = "assert_eq![div_ties_towards_" $t "(5, 2), 2]; // 2.5"]
         /// ```
         #[inline]
         #[must_use]
-        pub const fn [<div_half_towards_ $t >](a: $t, b: $t) -> $t {
+        pub const fn [<div_ties_towards_ $t >](a: $t, b: $t) -> $t {
             let (d, r) = (a / b, a % b);
             iif![2 * r > b; d + 1; d]
         }
 
-        #[doc = "Returns a [`" $t "`] quotient, rounding half to the nearest even number."]
+        #[doc = "Returns a [`" $t "`] quotient, rounding ties to the nearest even number."]
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::div_half_even_" $t ";"]
-        #[doc = "assert_eq![div_half_even_" $t "(7, 3), 2]; // 2.33…"]
+        #[doc = "use devela::math::div_ties_even_" $t ";"]
+        #[doc = "assert_eq![div_ties_even_" $t "(7, 3), 2]; // 2.33…"]
         ///
-        #[doc = "assert_eq![div_half_even_" $t "(7, 5), 1]; // 1.4"]
-        #[doc = "assert_eq![div_half_even_" $t "(6, 4), 2]; // 1.5"]
-        #[doc = "assert_eq![div_half_even_" $t "(8, 5), 2]; // 1.6"]
-        #[doc = "assert_eq![div_half_even_" $t "(5, 2), 2]; // 2.5"]
+        #[doc = "assert_eq![div_ties_even_" $t "(7, 5), 1]; // 1.4"]
+        #[doc = "assert_eq![div_ties_even_" $t "(6, 4), 2]; // 1.5"]
+        #[doc = "assert_eq![div_ties_even_" $t "(8, 5), 2]; // 1.6"]
+        #[doc = "assert_eq![div_ties_even_" $t "(5, 2), 2]; // 2.5"]
         /// ```
         #[inline]
         #[must_use]
-        pub const fn [<div_half_even_ $t >](a: $t, b: $t) -> $t {
+        pub const fn [<div_ties_even_ $t >](a: $t, b: $t) -> $t {
             let (d, r) = (a / b, a % b);
             // 1. If the remainder is zero or less than half of b, return the quotient.
             // 2. If the remainder is greater than half of b, return the quotient + 1.
@@ -516,21 +516,21 @@ macro_rules! impl_ops {
             iif![r == 0 || 2 * r < b; d; iif![2 * r > b; d + 1; iif![d % 2 == 0; d; d + 1]]]
         }
 
-        #[doc = "Returns a [`" $t "`] quotient, rounding half to the nearest odd number."]
+        #[doc = "Returns a [`" $t "`] quotient, rounding ties to the nearest odd number."]
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::math::div_half_odd_" $t ";"]
-        #[doc = "assert_eq![div_half_odd_" $t "(7, 3), 2]; // 2.33…"]
+        #[doc = "use devela::math::div_ties_odd_" $t ";"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(7, 3), 2]; // 2.33…"]
         ///
-        #[doc = "assert_eq![div_half_odd_" $t "(7, 5), 1]; // 1.4"]
-        #[doc = "assert_eq![div_half_odd_" $t "(6, 4), 1]; // 1.5"]
-        #[doc = "assert_eq![div_half_odd_" $t "(8, 5), 2]; // 1.6"]
-        #[doc = "assert_eq![div_half_odd_" $t "(5, 2), 3]; // 2.5"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(7, 5), 1]; // 1.4"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(6, 4), 1]; // 1.5"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(8, 5), 2]; // 1.6"]
+        #[doc = "assert_eq![div_ties_odd_" $t "(5, 2), 3]; // 2.5"]
         /// ```
         #[inline]
         #[must_use]
-        pub const fn [<div_half_odd_ $t >](a: $t, b: $t) -> $t {
+        pub const fn [<div_ties_odd_ $t >](a: $t, b: $t) -> $t {
             let (d, r) = (a / b, a % b);
             // 1. If the remainder is zero or less than half of b, return the quotient.
             // 2. If the remainder is greater than half of b, return the quotient + 1.
