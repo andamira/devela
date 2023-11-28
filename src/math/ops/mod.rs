@@ -33,6 +33,5 @@ pub(crate) mod all {
     pub use super::{always_fns::*, fns::*};
 
     #[doc(inline)]
-    #[cfg(any(feature = "std", feature = "libm"))]
     pub use super::float::*;
 }

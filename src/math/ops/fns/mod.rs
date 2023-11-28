@@ -1,4 +1,4 @@
-// devela::math::fns
+// devela::math::ops::fns
 //
 //! Functions for numeric operations.
 //

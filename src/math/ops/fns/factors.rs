@@ -1,4 +1,4 @@
-// devela::math::fns::factors
+// devela::math::ops::fns::factors
 //
 //! factorization funcions
 //
