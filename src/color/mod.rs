@@ -1,6 +1,6 @@
 // devela::color
 //
-//! Colors.
+//! Chromatic functionality.
 //
 
 /* contains always compiled items */
@@ -9,6 +9,8 @@
 
 /* feature-gated */
 
+#[cfg(feature = "color")]
+mod error;
 #[cfg(feature = "color")]
 mod fns;
 
@@ -19,10 +21,10 @@ mod r#trait;
 
 // re-export private sub-modules
 #[cfg(feature = "color")]
-pub use {fns::*, r#trait::*};
+pub use {error::*, fns::*, r#trait::*};
 
 #[cfg(feature = "color")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{fns::*, r#trait::*};
+    pub use super::{error::*, fns::*, r#trait::*};
 }
