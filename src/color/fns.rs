@@ -1,8 +1,25 @@
 // devela::color::fns
+//
+//! Standalone color functions and constants.
 
 #[cfg(any(feature = "std", feature = "libm"))]
 use crate::math::FloatExt;
-use crate::meta::{iif, paste};
+use crate::meta::{iif, paste, sf};
+
+/// The coefficient used for calculating the red luminance.
+pub const COLOR_LUMINANCE_RED: f32 = LUMINANCE_RED![];
+sf! { macro_rules! LUMINANCE_RED { () => { 0.212639 }; } }
+pub(crate) use LUMINANCE_RED;
+
+/// The coefficient used for calculating the green luminance.
+pub const COLOR_LUMINANCE_GREEN: f32 = LUMINANCE_GREEN![];
+sf! { macro_rules! LUMINANCE_GREEN { () => { 0.715169 }; } }
+pub(crate) use LUMINANCE_GREEN;
+
+/// The coefficient used for calculating the blue luminance.
+pub const COLOR_LUMINANCE_BLUE: f32 = LUMINANCE_BLUE![];
+sf! { macro_rules! LUMINANCE_BLUE { () => { 0.072192 }; } }
+pub(crate) use LUMINANCE_BLUE;
 
 macro_rules! color_gamma_fns {
     ($($t:ty),+) => { $( color_gamma_fns![@$t]; )+ };
