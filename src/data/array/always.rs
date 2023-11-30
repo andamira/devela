@@ -5,12 +5,9 @@
 
 #![allow(unused)]
 
-/// Initializes a `[$T; $LEN]` array.
-///
-/// It expects the name of a feature that enables using unsafe functionality.
+/// Initializes a `[$T; $LEN]` array safely or unsafely.
 ///
 /// # Macro arms
-///
 /// - `safe_init`: safe array initialization in the stack with an `$init` expression.
 /// - `safe_init_heap`: safe array initialization in the heap with an `$init` expression.
 /// - `unsafe_init`: unsafe array initialization in the stack with an `$init` expression.
@@ -27,6 +24,14 @@
 /// ---
 /// - `preop`: initialize an array in the stack by applying `$op` (in safe it
 ///   first clones `$pre`) propagating any errors from `$pre` or `$op`.
+///
+/// # Arguments
+/// - `[$T; $LEN]`: the array's elements' type and length.
+/// - `$init`: a function without arguments that returns `$T`.
+/// - `$unsafe_feature`: the name of a feature that enables the use of `unsafe`.
+/// - `$element`: a clonable element of type `$T`.
+/// - `$intoiter`: an item that implements [`IntoIterator`].
+/// - `$element`: a clonable element of type `$T`.
 ///
 /// # Examples
 /// ```
@@ -52,6 +57,7 @@
 macro_rules! array_init {
     // Safe array initialization in the stack
     (safe_init [$T:ty; $LEN:expr], $init:expr) => {{
+        #[allow(clippy::redundant_closure_call)]
         core::array::from_fn(|_| $init())
     }};
     // safe array initialization in the heap
