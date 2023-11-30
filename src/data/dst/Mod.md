@@ -14,7 +14,8 @@ As a quick example - The following wraps a 64-bit integer up in an inline DST
 using the `Any` trait.
 
 ```rust
-# use devela::all::{Any, DstArray, DstValue};
+use devela::all::{Any, DstArray, DstValue};
+
 let dst = DstValue::<dyn Any, DstArray<usize, 2>>::new(1234u64, |p| p)
     .ok().expect("Integer did not fit in allocation");
 println!("dst as u64 = {:?}", dst.downcast_ref::<u64>());
@@ -26,7 +27,8 @@ The following snippet shows how small (`'static`) closures can be returned using
 this crate
 
 ```rust
-# use devela::all::{DstArray, DstValue};
+use devela::all::{DstArray, DstValue};
+
 fn make_closure(value: u64) -> DstValue<dyn FnMut()->String, DstArray<u64, 2>> {
     DstValue::new(move || format!("Hello there! value={}", value), |p| p as _)
         .ok().expect("Closure doesn't fit")
@@ -41,14 +43,16 @@ If you need larger alignment, you can use a different type for the backing array
 
 This code panics, because i128 requires 8/16 byte alignment (usually)
 ```should_panic
-# use devela::all::{Any, DstArray, DstValue};
+use devela::all::{Any, DstArray, DstValue};
+
 let v: DstValue<dyn Any, DstArray<u8, 32>> =
     DstValue::new(123i128, |p| p as _).unwrap();
 ```
 
 This works, because the backing buffer has sufficient alignment
 ```rust
-# use devela::all::{Any, DstArray, DstValue};
+use devela::all::{Any, DstArray, DstValue};
+
 let v: DstValue<dyn Any, DstArray<u128, 2>> =
     DstValue::new(123i128, |p| p as _).unwrap();
 ```

@@ -6,11 +6,13 @@ use super::{check_fat_pointer, decompose_pointer, list_push_gen, DstArray, DstBu
 use crate::mem::MemAligned;
 use core::{iter, marker, mem, ops, ptr};
 
-/// Statically allocated FIFO queue of DSTs with pointer alignment.
+/// A statically allocated FIFO queue of <abbr title="Dynamically sized
+/// type">DST</abbr>s with pointer alignment.
 ///
 /// # Examples
 /// ```
-/// # use devela::data::{DstQueueU};
+/// use devela::data::{DstQueueU};
+///
 /// let mut queue = DstQueueU::<[u8], 16>::new();
 /// queue.push_copied(&[1]);
 /// ```
@@ -19,11 +21,12 @@ pub type DstQueueU<DST /*: ?Sized*/, const N: usize> = DstQueue<DST, DstArray<us
 // Implementation Notes
 // -----
 //
-/// A FIFO queue of DSTs backed by an array.
+/// A statically allocated FIFO queue of <abbr title="Dynamically sized type">DST</abbr>s.
 ///
 /// # Examples
 /// ```
-/// # use devela::data::{DstArray, DstQueue};
+/// use devela::data::{DstArray, DstQueue};
+///
 /// let mut queue = DstQueue::<str, DstArray<usize, 8>>::new();
 /// queue.push_back_str("Hello");
 /// queue.push_back_str("World");
@@ -89,7 +92,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     }
 
     /// Returns `true` if the queue is empty.
-    pub fn empty(&self) -> bool {
+    pub const fn empty(&self) -> bool {
         self.read_pos == self.write_pos
     }
 
@@ -123,7 +126,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
+    /// use devela::data::{DstArray, DstQueue};
+    ///
     /// let mut list = DstQueue::<str, DstArray<usize, 8>>::new();
     /// list.push_back_str("Hello");
     /// list.push_back_str("world");
@@ -132,7 +136,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     /// assert_eq!(it.next(), Some("world"));
     /// assert_eq!(it.next(), None);
     /// ```
-    pub fn iter(&self) -> DstQueueIter<DST, BUF> {
+    pub const fn iter(&self) -> DstQueueIter<DST, BUF> {
         DstQueueIter(self, self.read_pos)
     }
 
@@ -140,7 +144,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
+    /// use devela::data::{DstArray, DstQueue};
+    ///
     /// let mut list = DstQueue::<[u8], DstArray<usize, 8>>::new();
     /// list.push_copied(&[1,2,3]);
     /// list.push_copied(&[9]);
@@ -203,8 +208,9 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
-    /// # use core::{any::Any, fmt::Debug};
+    /// use devela::data::{DstArray, DstQueue};
+    /// use core::{any::Any, fmt::Debug};
+    ///
     /// trait DebugAny: 'static + Any + Debug { fn as_any(&self) -> &dyn Any; }
     /// impl<DST: Debug + Any + 'static> DebugAny for DST { fn as_any(&self) -> &dyn Any { self } }
     /// let mut list = {
@@ -347,7 +353,8 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
+    /// use devela::data::{DstArray, DstQueue};
+    ///
     /// let mut queue = DstQueue::<[String], DstArray<usize, 8>>::new();
     /// queue.push_cloned(&["1".to_owned()]);
     /// ```
@@ -360,7 +367,8 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
+    /// use devela::data::{DstArray, DstQueue};
+    ///
     /// let mut queue = DstQueue::<[usize], DstArray<usize, 8>>::new();
     /// queue.push_copied(&[1]);
     /// ```
@@ -389,8 +397,8 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
-    /// # use core::fmt::Display;
+    /// use devela::data::{DstArray, DstQueue};
+    ///
     /// let mut stack = DstQueue::<[u8], DstArray<usize, 8>>::new();
     /// stack.push_from_iter(0..10);
     /// assert_eq!(stack.front().unwrap(), &[0,1,2,3,4,5,6,7,8,9]);

@@ -4,7 +4,8 @@ use super::{check_fat_pointer, decompose_pointer, store_metadata, DstArray, DstB
 use crate::mem::MemAligned;
 use core::{marker, mem, ops, ptr};
 
-/// Statically allocated DST value with pointer alignment.
+/// A statically allocated <abbr title="Dynamically sized type">DST</abbr>
+/// value with pointer alignment.
 ///
 /// # Examples
 /// ```
@@ -12,16 +13,16 @@ use core::{marker, mem, ops, ptr};
 /// ```
 pub type DstValueU<DST /*: ?Sized*/, const N: usize> = DstValue<DST, DstArray<usize, N>>;
 
-/// A stack-allocated DST value.
+/// A statically allocated <abbr title="Dynamically sized type">DST</abbr> value.
 ///
 /// `DST` is the unsized type contained.
 /// `BUF` is the buffer used to hold the unsized type (both data and metadata).
 ///
 /// # Examples
 /// ```
-/// # extern crate core;
-/// # use devela::data::{DstArray, DstValue};
-/// # use core::fmt::Display;
+/// use devela::data::{DstArray, DstValue};
+/// use core::fmt::Display;
+///
 /// let val = DstValue::<dyn Display, DstArray<usize, 2>>::new(123456, |v| v as _)
 ///     .expect("Insufficient size");
 /// assert_eq!( format!("{}", val), "123456" );
@@ -42,9 +43,9 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # extern crate core;
-    /// # use devela::data::{DstArray, DstValue};
-    /// # use core::fmt::Display;
+    /// use devela::data::{DstArray, DstValue};
+    /// use core::fmt::Display;
+    ///
     /// let val = DstValue::<dyn Display, DstArray<usize, 2>>::new(1234, |v| v as _)
     ///     .expect("Insufficient size");
     /// assert_eq!( format!("{}", val), "1234" );
@@ -68,9 +69,9 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # extern crate core;
-    /// # use devela::data::DstValue;
-    /// # use core::{fmt::Display, mem::MaybeUninit};
+    /// use devela::data::DstValue;
+    /// use core::{fmt::Display, mem::MaybeUninit};
+    ///
     /// let val = DstValue::<dyn Display, _>::in_buffer([MaybeUninit::new(0u64); 2], 1234, |v| v)
     ///     .expect("Insufficient size");
     /// assert_eq!( format!("{}", val), "1234" );
@@ -150,9 +151,9 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # extern crate core;
-    /// # use devela::data::{DstArray, DstValue};
-    /// # use core::fmt::Display;
+    /// use devela::data::{DstArray, DstValue};
+    /// use core::fmt::Display;
+    ///
     /// let mut value = DstValue::<dyn Display, DstArray<usize, 2>>::new(1234, |v| v)
     ///     .unwrap();
     /// assert_eq!(format!("{}", value), "1234");
@@ -201,7 +202,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     }
 }
 
-/// Specialisations for `str` (allowing storage of strings with single-byte alignment)
+/// # Specialisations for `str` (allowing storage of strings with single-byte alignment)
 impl<BUF: DstBuf> DstValue<str, BUF> {
     /// Create a new empty string with a default buffer
     #[rustfmt::skip]
@@ -225,9 +226,9 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     /// Construct from a `str` using a default-constructed buffer
     /// # Examples
     /// ```
-    /// # extern crate core;
-    /// # use devela::data::{DstArray, DstValue};
-    /// # use core::fmt::Display;
+    /// use devela::data::{DstArray, DstValue};
+    /// use core::fmt::Display;
+    ///
     /// let val = DstValue::<str, DstArray<u8, 32>>::new_str("Hello, World")
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );
@@ -241,9 +242,9 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # extern crate core;
-    /// # use devela::data::DstValue;
-    /// # use core::{fmt::Display, mem::MaybeUninit};
+    /// use devela::data::DstValue;
+    /// use core::{fmt::Display, mem::MaybeUninit};
+    ///
     /// let val = DstValue::new_str_in_buffer([MaybeUninit::new(0u8); 32], "Hello, World")
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );
@@ -269,7 +270,8 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstValue};
+    /// use devela::data::{DstArray, DstValue};
+    ///
     /// let mut s = DstValue::<str, DstArray<usize, 8>>::new_str("Foo").unwrap();
     /// s.append_str("Bar").unwrap();
     /// assert_eq!(&s[..], "FooBar");
@@ -305,7 +307,8 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstValue};
+    /// use devela::data::{DstArray, DstValue};
+    ///
     /// let mut s = DstValue::<str, DstArray<usize, 8>>::new_str("FooBar").unwrap();
     /// s.truncate(3);
     /// assert_eq!(&s[..], "Foo");
@@ -322,7 +325,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     }
 }
 
-/// Specialisation for slices (acting like an `ArrayVec`)
+/// # Specialisation for slices (acting like an `ArrayVec`)
 impl<I, BUF: DstBuf> DstValue<[I], BUF>
 where
     (I, BUF::Inner): MemAligned,

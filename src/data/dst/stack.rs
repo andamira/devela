@@ -6,7 +6,8 @@ use super::{check_fat_pointer, decompose_pointer, list_push_gen, DstArray, DstBu
 use crate::mem::MemAligned;
 use core::{iter, marker, mem, ops, ptr};
 
-/// Statically allocated LIFO stack of DSTs with pointer alignment.
+/// A statically allocated LIFO stack of <abbr title="Dynamically sized
+/// type">DST</abbr>s with pointer alignment.
 ///
 /// # Examples
 /// ```
@@ -23,10 +24,8 @@ pub type DstStackU<DST /*: ?Sized*/, const N: usize> = DstStack<DST, DstArray<us
 // single integer to track the position (using size_of_val when popping items,
 // and the known size when pushing).
 
-/// A LIFO stack of DSTs.
-///
-/// Uses an array of usize as a backing store for a First-In, Last-Out stack
-/// of items that can unsize to `DST`.
+/// A statically allocated LIFO stack of <abbr title="Dynamically sized
+/// type">DST</abbr>s.
 ///
 /// Note: Each item in the stack takes at least one slot in the buffer
 /// (to store the metadata)
@@ -70,7 +69,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     }
 
     /// Returns `true` if the stack is empty.
-    pub fn is_empty(&self) -> bool {
+    pub const fn is_empty(&self) -> bool {
         self.next_ofs == 0
     }
 
@@ -81,7 +80,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     /// Pushes a value at the top of the stack.
     ///
     /// ```
-    /// # use devela::data::{DstArray, DstStack};
+    /// use devela::data::{DstArray, DstStack};
+    ///
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push([1, 2,3], |v| v);
     /// ```
@@ -165,7 +165,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstStack};
+    /// use devela::data::{DstArray, DstStack};
+    ///
     /// let mut list = DstStack::<str, DstArray<usize, 8>>::new();
     /// list.push_str("Hello");
     /// list.push_str("world");
@@ -174,7 +175,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     /// assert_eq!(it.next(), Some("Hello"));
     /// assert_eq!(it.next(), None);
     /// ```
-    pub fn iter(&self) -> DstStackIter<DST, BUF> {
+    pub const fn iter(&self) -> DstStackIter<DST, BUF> {
         DstStackIter(self, self.next_ofs)
     }
 
@@ -182,7 +183,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstStack};
+    /// use devela::data::{DstArray, DstStack};
+    ///
     /// let mut list = DstStack::<[u8], DstArray<usize, 8>>::new();
     /// list.push_copied(&[1,2,3]);
     /// list.push_copied(&[9]);
@@ -270,7 +272,8 @@ impl<BUF: DstBuf> DstStack<str, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstStack};
+    /// use devela::data::{DstArray, DstStack};
+    ///
     /// let mut stack = DstStack::<str, DstArray<u8, 32>>::new();
     /// stack.push_str("Hello!");
     /// ```
@@ -294,7 +297,8 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstStack};
+    /// use devela::data::{DstArray, DstStack};
+    ///
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push_cloned(&[1, 2, 3]);
     /// ```
@@ -306,7 +310,8 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstStack};
+    /// use devela::data::{DstArray, DstStack};
+    ///
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push_copied(&[1, 2, 3]);
     /// ```
@@ -335,9 +340,8 @@ where
     ///
     /// # Examples
     /// ```
-    /// # extern crate core;
-    /// # use devela::data::{DstArray, DstStack};
-    /// # use core::fmt::Display;
+    /// use devela::data::{DstArray, DstStack};
+    ///
     /// let mut stack = DstStack::<[u8], DstArray<usize, 8>>::new();
     /// stack.push_from_iter(0..10);
     /// assert_eq!(stack.top().unwrap(), &[0,1,2,3,4,5,6,7,8,9]);

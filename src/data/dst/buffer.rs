@@ -7,7 +7,7 @@ use core::{
     ops::{Deref, DerefMut},
 };
 
-/// Represents a buffer for storing dynamically sized types.
+/// Represents the backing buffer for storing dynamically sized types.
 ///
 /// # Safety
 /// Must conform to the following rules:
@@ -75,8 +75,9 @@ unsafe impl<T: Pod, const N: usize> DstBuf for [MaybeUninit<T>; N] {
 ///
 /// # Examples
 /// ```
-/// # use devela::data::DstQueue;
-/// # use core::mem::MaybeUninit;
+/// use devela::data::DstQueue;
+/// use core::mem::MaybeUninit;
+///
 /// let mut buf = DstQueue::<str, Vec<MaybeUninit<u8>>>::new();
 /// buf.push_back_str("Hello world!");
 /// buf.push_back_str("This is a very long string");
@@ -86,6 +87,7 @@ unsafe impl<T: Pod, const N: usize> DstBuf for [MaybeUninit<T>; N] {
 /// }
 /// ```
 #[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 unsafe impl<T: Pod> DstBuf for ::_alloc::vec::Vec<MaybeUninit<T>> {
     type Inner = T;
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
@@ -104,7 +106,8 @@ unsafe impl<T: Pod> DstBuf for ::_alloc::vec::Vec<MaybeUninit<T>> {
     }
 }
 
-/// A statically allocated buffer for storing DSTs.
+/// A statically allocated buffer for storing <abbr title="Dynamically sized
+/// type">DST</abbr>s.
 pub struct DstArray<T, const N: usize> {
     inner: Array<MaybeUninit<T>, (), N>,
 }
@@ -138,16 +141,20 @@ unsafe impl<T: Pod, const N: usize> DstBuf for DstArray<T, N> {
     }
 }
 
-/// Statically allocated buffer with pointer alignment.
+/// A statically allocated buffer for storing <abbr title="Dynamically sized
+/// type">DST</abbr>s with pointer alignment.
 pub type DstArrayU<const N: usize> = DstArray<usize, N>;
 
-/// Dynamically allocated buffer with pointer alignment.
+/// A dynamically allocated buffer for storing <abbr title="Dynamically sized
+/// type">DST</abbr>s with pointer alignment.
 #[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 pub type DstVecU = ::_alloc::vec::Vec<MaybeUninit<usize>>;
 
 // MAYBE
 // /// A DST buffer backing onto a Vec.
 // #[cfg(feature = "alloc")]
+// #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 // pub struct DstVec<T: Pod>(::_alloc::vec::Vec<MaybeUninit<T>>);
 // impl<T: Pod> Deref for DstVec<T> {
 //     type Target = Vec<MaybeUninit<T>>;
