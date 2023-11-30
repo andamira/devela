@@ -8,7 +8,7 @@ pub type ColorResult<T> = core::result::Result<T, ColorErrors>;
 
 /// A chromatic error.
 #[non_exhaustive]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ColorErrors {
     /// The requested chromatic functionality is not implemented.
     ///
@@ -22,6 +22,9 @@ pub enum ColorErrors {
 impl ColorErrors {
     pub(crate) const fn ni<T>() -> ColorResult<T> {
         Err(ColorErrors::NotImplemented)
+    }
+    pub(crate) const fn ns<T>() -> ColorResult<T> {
+        Err(ColorErrors::NotSupported)
     }
 }
 

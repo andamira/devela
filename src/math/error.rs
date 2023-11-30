@@ -8,7 +8,7 @@ pub type MathResult<T> = core::result::Result<T, MathErrors>;
 
 /// A mathematical error.
 #[non_exhaustive]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum MathErrors {
     /// The requested mathematical functionality is not implemented.
     ///
@@ -24,7 +24,7 @@ pub enum MathErrors {
     // RETHINK
     Unspecified,
 
-    /// An invalid value for the given type.
+    /// An invalid value was received for the given type or operation.
     Invalid,
 
     ///
@@ -38,6 +38,9 @@ pub enum MathErrors {
 impl MathErrors {
     pub(crate) const fn ni<T>() -> MathResult<T> {
         Err(MathErrors::NotImplemented)
+    }
+    pub(crate) const fn ns<T>() -> MathResult<T> {
+        Err(MathErrors::NotSupported)
     }
 }
 
