@@ -22,19 +22,23 @@ println!("dst as u64 = {:?}", dst.downcast_ref::<u64>());
 println!("dst as i8 = {:?}", dst.downcast_ref::<i8>());
 ```
 
-## Stack-allocated closure!
+## Stack-allocated closures
 The following snippet shows how small (`'static`) closures can be returned using
 this crate
 
 ```rust
-use devela::all::{DstArray, DstValue};
+use devela::all::{DstArrayU, DstQueue, DstValue};
 
-fn make_closure(value: u64) -> DstValue<dyn FnMut()->String, DstArray<u64, 2>> {
-    DstValue::new(move || format!("Hello there! value={}", value), |p| p as _)
-        .ok().expect("Closure doesn't fit")
-}
-let mut closure = make_closure(666);
-assert_eq!( (&mut *closure)(), "Hello there! value=666" );
+let c = DstValue::<dyn Fn(i32) -> i32, DstArrayU<1>>::new(|n| n * 3, |v| v)
+    .ok().expect("Not enough size!");
+assert_eq!(c(6), 18);
+
+let mut q = DstQueue::<dyn Fn(i32) -> i32, DstArrayU<8>>::new();
+assert![q.push_back(|n| n * 3, |v| v).is_ok()];
+assert![q.push_back(|n| n - 3, |v| v).is_ok()];
+assert_eq![18, q.front().unwrap()(6)];
+assert_eq![21, q.pop_front().unwrap()(7)];
+assert_eq![5, q.pop_front().unwrap()(8)];
 ```
 
 ## Custom allocation sizes/types
