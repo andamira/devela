@@ -1,8 +1,15 @@
 //! Implementation of the single-value structure
+//
+// TOC
+// - public API
+// - private API
+// - core_impls
 
 use super::{check_fat_pointer, decompose_pointer, store_metadata, DstArray, DstBuf};
 use crate::mem::MemAligned;
-use core::{marker, mem, ops, ptr};
+use core::{marker, mem, ptr};
+
+/* public API */
 
 /// A statically allocated <abbr title="Dynamically sized type">DST</abbr>
 /// value with pointer alignment.
@@ -50,11 +57,10 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///     .expect("Insufficient size");
     /// assert_eq!( format!("{}", val), "1234" );
     /// ```
-    pub fn new<VAL, F: FnOnce(&VAL) -> &DST>(
-        val: VAL,
-        get_ref: F,
-    ) -> Result<DstValue<DST, BUF>, VAL>
+    #[inline(always)]
+    pub fn new<VAL, F>(val: VAL, get_ref: F) -> Result<DstValue<DST, BUF>, VAL>
     where
+        F: FnOnce(&VAL) -> &DST,
         (VAL, BUF::Inner): MemAligned,
         BUF: Default,
     {
@@ -111,6 +117,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///
     /// # Safety
     /// `data` must point to `size` bytes, which shouldn't be freed if `Some` is returned.
+    #[inline]
     pub unsafe fn new_raw(
         info: &[usize],
         data: *mut (),
@@ -128,23 +135,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
         });
         rv.write_value(data, size, info);
         Some(mem::ManuallyDrop::into_inner(rv))
-    }
-
-    unsafe fn write_value(&mut self, data: *const (), size: usize, info: &[usize]) {
-        let info_words = BUF::round_to_words(mem::size_of_val(info));
-        let req_words = info_words + BUF::round_to_words(size);
-        let buf = self.data.as_mut();
-        assert!(req_words <= buf.len());
-
-        // Place pointer information at the end of the region
-        // - Allows the data to be at the start for alignment purposes
-        {
-            let info_ofs = buf.len() - info_words;
-            let info_dst = &mut buf[info_ofs..];
-            store_metadata(info_dst, info);
-        }
-
-        ptr::copy_nonoverlapping(data as *const u8, buf.as_mut_ptr() as *mut u8, size);
     }
 
     /// Replace the contents without dropping the backing allocation
@@ -182,35 +172,21 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
         }
         Ok(())
     }
-
-    // Obtain raw pointer to the contained data
-    unsafe fn as_ptr(&self) -> *mut DST {
-        let data = self.data.as_ref();
-        let info_size = mem::size_of::<*mut DST>() / mem::size_of::<usize>() - 1;
-        let info_ofs = data.len() - BUF::round_to_words(info_size * mem::size_of::<usize>());
-        let (data, meta) = data.split_at(info_ofs);
-        super::make_fat_ptr(data.as_ptr() as *mut (), meta)
-    }
-
-    // Obtain raw pointer to the contained data
-    unsafe fn as_ptr_mut(&mut self) -> *mut DST {
-        let data = self.data.as_mut();
-        let info_size = mem::size_of::<*mut DST>() / mem::size_of::<usize>() - 1;
-        let info_ofs = data.len() - BUF::round_to_words(info_size * mem::size_of::<usize>());
-        let (data, meta) = data.split_at_mut(info_ofs);
-        super::make_fat_ptr(data.as_mut_ptr() as *mut (), meta)
-    }
 }
 
 /// # Specialisations for `str` (allowing storage of strings with single-byte alignment)
 impl<BUF: DstBuf> DstValue<str, BUF> {
     /// Create a new empty string with a default buffer
-    #[rustfmt::skip]
-    pub fn empty_str() -> Result<Self, ()> where BUF: Default {
+    #[inline(always)]
+    pub fn empty_str() -> Result<Self, ()>
+    where
+        BUF: Default,
+    {
         Self::empty_str_in_buffer(Default::default())
     }
 
     /// Create a new empty string with a provided buffer
+    #[inline]
     pub fn empty_str_in_buffer(buffer: BUF) -> Result<Self, ()> {
         let rv = unsafe {
             let (raw_ptr, meta_len, meta) = decompose_pointer("");
@@ -233,8 +209,11 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );
     /// ```
-    #[rustfmt::skip]
-    pub fn new_str(v: &str) -> Result<Self, &str> where BUF: Default {
+    #[inline(always)]
+    pub fn new_str(v: &str) -> Result<Self, &str>
+    where
+        BUF: Default,
+    {
         Self::new_str_in_buffer(Default::default(), v)
     }
 
@@ -249,6 +228,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );
     /// ```
+    #[inline]
     pub fn new_str_in_buffer(buffer: BUF, val: &str) -> Result<Self, &str> {
         let rv = unsafe {
             let (raw_ptr, meta_len, meta) = decompose_pointer(val);
@@ -313,6 +293,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     /// s.truncate(3);
     /// assert_eq!(&s[..], "Foo");
     /// ```
+    #[inline]
     pub fn truncate(&mut self, len: usize) {
         if len < self.len() {
             let _ = &self[..][len..]; // Index to force a panic if the index isn't char-aligned
@@ -331,6 +312,7 @@ where
     (I, BUF::Inner): MemAligned,
 {
     /// Create a new zero-sized slice (will error only if the metadata doesn't fit)
+    #[inline(always)]
     pub fn empty_slice() -> Result<Self, ()>
     where
         BUF: Default,
@@ -396,6 +378,7 @@ where
     }
 
     /// Extend a slice with an iterator
+    #[inline]
     pub fn extend<It: Iterator<Item = I>>(&mut self, mut iter: It) -> Result<(), (I, It)> {
         while let Some(v) = iter.next() {
             match self.append(v) {
@@ -406,6 +389,7 @@ where
         Ok(())
     }
     /// Helper to extend during construction (see Self::extend)
+    #[inline(always)]
     pub fn extended<It: Iterator<Item = I>>(mut self, iter: It) -> Result<Self, (Self, I, It)> {
         match self.extend(iter) {
             Ok(_) => Ok(self),
@@ -429,57 +413,106 @@ where
         }
     }
 }
-impl<DST: ?Sized, BUF: DstBuf> ops::Deref for DstValue<DST, BUF> {
-    type Target = DST;
-    fn deref(&self) -> &DST {
-        unsafe { &*self.as_ptr() }
+
+/* private API */
+
+impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
+    unsafe fn write_value(&mut self, data: *const (), size: usize, info: &[usize]) {
+        let info_words = BUF::round_to_words(mem::size_of_val(info));
+        let req_words = info_words + BUF::round_to_words(size);
+        let buf = self.data.as_mut();
+        assert!(req_words <= buf.len());
+
+        // Place pointer information at the end of the region
+        // - Allows the data to be at the start for alignment purposes
+        {
+            let info_ofs = buf.len() - info_words;
+            let info_dst = &mut buf[info_ofs..];
+            store_metadata(info_dst, info);
+        }
+
+        ptr::copy_nonoverlapping(data as *const u8, buf.as_mut_ptr() as *mut u8, size);
     }
-}
-impl<DST: ?Sized, BUF: DstBuf> ops::DerefMut for DstValue<DST, BUF> {
-    fn deref_mut(&mut self) -> &mut DST {
-        unsafe { &mut *self.as_ptr_mut() }
+
+    // Obtain raw pointer to the contained data
+    unsafe fn as_ptr(&self) -> *mut DST {
+        let data = self.data.as_ref();
+        let info_size = mem::size_of::<*mut DST>() / mem::size_of::<usize>() - 1;
+        let info_ofs = data.len() - BUF::round_to_words(info_size * mem::size_of::<usize>());
+        let (data, meta) = data.split_at(info_ofs);
+        super::make_fat_ptr(data.as_ptr() as *mut (), meta)
     }
-}
-impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstValue<DST, BUF> {
-    fn drop(&mut self) {
-        unsafe { ptr::drop_in_place(&mut **self) }
+
+    // Obtain raw pointer to the contained data
+    unsafe fn as_ptr_mut(&mut self) -> *mut DST {
+        let data = self.data.as_mut();
+        let info_size = mem::size_of::<*mut DST>() / mem::size_of::<usize>() - 1;
+        let info_ofs = data.len() - BUF::round_to_words(info_size * mem::size_of::<usize>());
+        let (data, meta) = data.split_at_mut(info_ofs);
+        super::make_fat_ptr(data.as_mut_ptr() as *mut (), meta)
     }
 }
 
-mod trait_impls {
-    use super::DstBuf;
-    use core::{fmt, future, iter, pin, task};
+mod core_impls {
+    use super::{DstBuf, DstValue};
+    use core::{fmt, future, iter, ops, pin, ptr, task};
 
-    macro_rules! d {
-        ( $t:path; $($body:tt)* ) => {
-            impl<BUF: DstBuf, DST: ?Sized> $t for super::DstValue<DST, BUF> where DST: $t { $( $body )* }
+    impl<DST: ?Sized, BUF: DstBuf> ops::Deref for DstValue<DST, BUF> {
+        type Target = DST;
+        #[must_use]
+        #[inline(always)]
+        fn deref(&self) -> &DST {
+            unsafe { &*self.as_ptr() }
+        }
+    }
+    impl<DST: ?Sized, BUF: DstBuf> ops::DerefMut for DstValue<DST, BUF> {
+        #[must_use]
+        #[inline(always)]
+        fn deref_mut(&mut self) -> &mut DST {
+            unsafe { &mut *self.as_ptr_mut() }
+        }
+    }
+    impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstValue<DST, BUF> {
+        #[inline(always)]
+        fn drop(&mut self) {
+            unsafe { ptr::drop_in_place(&mut **self) }
         }
     }
 
-    d! { future::Future;
+    macro_rules! impl_trait {
+        ( $t:path; $($body:tt)* ) => {
+            impl<BUF: DstBuf, DST: ?Sized> $t for DstValue<DST, BUF> where DST: $t { $( $body )* }
+        }
+    }
+
+    impl_trait! { future::Future;
         type Output = DST::Output;
+        #[inline]
         fn poll(self: pin::Pin<&mut Self>, cx: &mut task::Context) -> task::Poll<Self::Output> {
             unsafe { pin::Pin::new_unchecked(&mut **self.get_unchecked_mut()).poll(cx) }
         }
     }
-    d! { iter::Iterator;
+    impl_trait! { iter::Iterator;
         type Item = DST::Item;
+        #[must_use]
+        #[inline(always)]
         fn next(&mut self) -> Option<Self::Item> {
             (**self).next()
         }
     }
-    d! { iter::DoubleEndedIterator;
+    impl_trait! { iter::DoubleEndedIterator;
+        #[must_use]
+        #[inline(always)]
         fn next_back(&mut self) -> Option<Self::Item> {
             (**self).next_back()
         }
     }
-    d! { iter::ExactSizeIterator;
-    }
+    impl_trait! { iter::ExactSizeIterator; }
 
     macro_rules! impl_fmt {
         ( $( $t:ident )* ) => {
             $(
-                d!{ fmt::$t;
+                impl_trait!{ fmt::$t;
                     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                         (**self).fmt(f)
                     }
