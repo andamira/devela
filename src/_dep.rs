@@ -79,7 +79,7 @@ mod _dep {
     // reexport! { depend feature: "convert",
     // dep: "az", az, "Casts and checked casts." }
 
-    reexport! { depend feature: "mem",
+    reexport! { depend
     dep: "bytemuck", bytemuck, "Small utilities for casting between plain data types." }
 
     reexport! { depend feature: "text",

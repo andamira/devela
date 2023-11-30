@@ -9,7 +9,24 @@
 macro_rules! reexport {
     /* reexports from the `depend` module */
 
-    // reexports an optional dependency from the `depend` features:
+    // reexports an optional dependency from the `depend` features.
+    ( depend
+      dep: $dep_name:literal, $dep_module:ident, $dep_description:literal
+      $(,)?
+    ) => {
+        #[doc(inline)]
+        #[doc = concat!("<span class='stab portability' title='re-exported `",
+            $dep_name, "` crate (independently or via the `depend` feature)'>`",
+            $dep_name, "`</span>")]
+        #[doc = $dep_description]
+        #[doc = concat!("\n\n*Re-exported [`", $dep_name,
+            "`](https://docs.rs/", $dep_name, ")* crate.\n\n---")]
+        pub use dep::$dep_module;
+    };
+
+
+    // reexports an optional dependency from the `depend` features,
+    // which depends on feature `$f`.
     ( depend
       feature: $f:literal,
       dep: $dep_name:literal, $dep_module:ident, $dep_description:literal
@@ -37,7 +54,7 @@ macro_rules! reexport {
     };
 
     // reexports an optional dependency from the `depend` features,
-    // which also depends on another feature, e.g. "alloc":
+    // which depends on feature `$f` and also on `$another_feature`, e.g. "alloc":
     ( depend
       feature: $f:literal,
       also: $another_feature:literal,
