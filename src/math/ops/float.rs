@@ -171,6 +171,9 @@ pub trait FloatExt: Sized {
     #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn log10(self) -> Self;
+    /// The factorial.
+    #[must_use]
+    fn factorial(n: u32) -> Self;
     /// The cubic root.
     #[must_use]
     #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
@@ -284,183 +287,188 @@ pub trait FloatExt: Sized {
 }
 
 macro_rules! impl_float_ext {
-    ($($t:ty),+) => { $( impl_float_ext![@$t]; )+ };
-    (@$t:ty) => {
-        impl FloatExt for $t { $crate::meta::paste! {
-            const BIAS: u32 = [<BIAS_ $t:upper>];
-            const EXPONENT_BITS: u32 = [<EXPONENT_BITS_ $t:upper>];
-            const SIGNIFICAND_BITS: u32 = [<SIGNIFICAND_BITS_ $t:upper>];
+    // $f: the floating-point type.
+    // $ue: unsigned int type with the same bit-size.
+    // $ie: the integer type for integer exponentiation.
+    ($( ($f:ty, $ue:ty|$ie:ty) ),+) => { $( impl_float_ext![@$f, $ue|$ie]; )+ };
+    (@$f:ty, $ue:ty|$ie:ty) => {
+        impl FloatExt for $f { $crate::meta::paste! {
+            const BIAS: u32 = [<BIAS_ $f:upper>];
+            const EXPONENT_BITS: u32 = [<EXPONENT_BITS_ $f:upper>];
+            const SIGNIFICAND_BITS: u32 = [<SIGNIFICAND_BITS_ $f:upper>];
 
             #[inline(always)]
-            fn floor(self) -> Self { Fp::<$t>::floor(self) }
+            fn floor(self) -> Self { Fp::<$f>::floor(self) }
             #[inline(always)]
-            fn ceil(self) -> Self { Fp::<$t>::ceil(self) }
+            fn ceil(self) -> Self { Fp::<$f>::ceil(self) }
             #[inline(always)]
-            fn round_ties_away(self) -> Self { Fp::<$t>::round_ties_away(self) }
+            fn round_ties_away(self) -> Self { Fp::<$f>::round_ties_away(self) }
             #[inline(always)]
-            fn round_ties_even(self) -> Self { Fp::<$t>::round_ties_even(self) }
+            fn round_ties_even(self) -> Self { Fp::<$f>::round_ties_even(self) }
             #[inline(always)]
-            fn trunc(self) -> Self { Fp::<$t>::trunc(self) }
+            fn trunc(self) -> Self { Fp::<$f>::trunc(self) }
             #[inline(always)]
-            fn fract(self) -> Self { Fp::<$t>::fract(self) }
+            fn fract(self) -> Self { Fp::<$f>::fract(self) }
             #[inline(always)]
-            fn split(self) -> (Self, Self) { Fp::<$t>::split(self) }
+            fn split(self) -> (Self, Self) { Fp::<$f>::split(self) }
             #[inline(always)]
-            fn abs(self) -> Self { Fp::<$t>::abs(self) }
+            fn abs(self) -> Self { Fp::<$f>::abs(self) }
             #[inline(always)]
-            fn is_sign_positive(self) -> bool { <$t>::is_sign_positive(self) }
+            fn is_sign_positive(self) -> bool { <$f>::is_sign_positive(self) }
             #[inline(always)]
-            fn is_sign_negative(self) -> bool { <$t>::is_sign_negative(self) }
+            fn is_sign_negative(self) -> bool { <$f>::is_sign_negative(self) }
             #[inline(always)]
-            fn signum(self) -> Self { Fp::<$t>::signum(self) }
+            fn signum(self) -> Self { Fp::<$f>::signum(self) }
             #[inline(always)]
-            fn copysign(self, sign: Self) -> Self { Fp::<$t>::copysign(self, sign) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn mul_add(self, mul: Self, add: Self) -> Self { Fp::<$t>::mul_add(self, mul, add) }
+            fn copysign(self, sign: Self) -> Self { Fp::<$f>::copysign(self, sign) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn div_euclid(self, rhs: Self) -> Self { Fp::<$t>::div_euclid(self, rhs) }
+            fn mul_add(self, mul: Self, add: Self) -> Self { Fp::<$f>::mul_add(self, mul, add) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn rem_euclid(self, rhs: Self) -> Self { Fp::<$t>::rem_euclid(self, rhs) }
+            fn div_euclid(self, rhs: Self) -> Self { Fp::<$f>::div_euclid(self, rhs) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn powf(self, p: Self) -> Self { Fp::<$t>::powf(self, p) }
+            fn rem_euclid(self, rhs: Self) -> Self { Fp::<$f>::rem_euclid(self, rhs) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn powi(self, p: i32) -> Self { Fp::<$t>::powi(self, p) }
-            #[inline(always)]
-            fn sqrt(self) -> Self { Fp::<$t>::sqrt(self) }
-            #[inline(always)]
-            fn sqrt_fisr(self) -> Self { Fp::<$t>::sqrt_fisr(self) }
-            #[inline(always)]
-            fn sqrt_nr(self) -> Self { Fp::<$t>::sqrt_nr(self) }
+            fn powf(self, p: Self) -> Self { Fp::<$f>::powf(self, p) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn exp(self) -> Self { Fp::<$t>::exp(self) }
+            fn powi(self, p: $ie) -> Self { Fp::<$f>::powi(self, p) }
+            #[inline(always)]
+            fn sqrt(self) -> Self { Fp::<$f>::sqrt(self) }
+            #[inline(always)]
+            fn sqrt_fisr(self) -> Self { Fp::<$f>::sqrt_fisr(self) }
+            #[inline(always)]
+            fn sqrt_nr(self) -> Self { Fp::<$f>::sqrt_nr(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn exp2(self) -> Self { Fp::<$t>::exp2(self) }
+            fn exp(self) -> Self { Fp::<$f>::exp(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn exp_m1(self) -> Self { Fp::<$t>::exp_m1(self) }
+            fn exp2(self) -> Self { Fp::<$f>::exp2(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn ln(self) -> Self { Fp::<$t>::ln(self) }
+            fn exp_m1(self) -> Self { Fp::<$f>::exp_m1(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn ln_1p(self) -> Self { Fp::<$t>::ln_1p(self) }
+            fn ln(self) -> Self { Fp::<$f>::ln(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn log(self, base: Self) -> Self { Fp::<$t>::log(self, base) }
+            fn ln_1p(self) -> Self { Fp::<$f>::ln_1p(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn log2(self) -> Self { Fp::<$t>::log2(self) }
+            fn log(self, base: Self) -> Self { Fp::<$f>::log(self, base) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn log10(self) -> Self { Fp::<$t>::log10(self) }
+            fn log2(self) -> Self { Fp::<$f>::log2(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn cbrt(self) -> Self { Fp::<$t>::cbrt(self) }
+            fn log10(self) -> Self { Fp::<$f>::log10(self) }
+            #[inline(always)]
+            fn factorial(a: $ue) -> Self { Fp::<$f>::factorial(a) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn hypot(self, rhs: Self) -> Self { Fp::<$t>::hypot(self, rhs) }
+            fn cbrt(self) -> Self { Fp::<$f>::cbrt(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn sin(self) -> Self { Fp::<$t>::sin(self) }
+            fn hypot(self, rhs: Self) -> Self { Fp::<$f>::hypot(self, rhs) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn cos(self) -> Self { Fp::<$t>::cos(self) }
+            fn sin(self) -> Self { Fp::<$f>::sin(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn tan(self) -> Self { Fp::<$t>::tan(self) }
+            fn cos(self) -> Self { Fp::<$f>::cos(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn asin(self) -> Self { Fp::<$t>::asin(self) }
+            fn tan(self) -> Self { Fp::<$f>::tan(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn acos(self) -> Self { Fp::<$t>::acos(self) }
+            fn asin(self) -> Self { Fp::<$f>::asin(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn atan(self) -> Self { Fp::<$t>::atan(self) }
+            fn acos(self) -> Self { Fp::<$f>::acos(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn atan2(self, other: Self) -> Self { Fp::<$t>::atan2(self, other) }
+            fn atan(self) -> Self { Fp::<$f>::atan(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn sin_cos(self) -> (Self, Self) { Fp::<$t>::sin_cos(self) }
+            fn atan2(self, other: Self) -> Self { Fp::<$f>::atan2(self, other) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn sinh(self) -> Self { Fp::<$t>::sinh(self) }
+            fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn cosh(self) -> Self { Fp::<$t>::cosh(self) }
+            fn sinh(self) -> Self { Fp::<$f>::sinh(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn tanh(self) -> Self { Fp::<$t>::tanh(self) }
+            fn cosh(self) -> Self { Fp::<$f>::cosh(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn asinh(self) -> Self { Fp::<$t>::asinh(self) }
+            fn tanh(self) -> Self { Fp::<$f>::tanh(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn acosh(self) -> Self { Fp::<$t>::acosh(self) }
+            fn asinh(self) -> Self { Fp::<$f>::asinh(self) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn atanh(self) -> Self { Fp::<$t>::atanh(self) }
+            fn acosh(self) -> Self { Fp::<$f>::acosh(self) }
             #[inline(always)]
-            fn clamp(self, min: Self, max: Self) -> Self { Fp::<$t>::clamp(self, min, max) }
+            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            fn atanh(self) -> Self { Fp::<$f>::atanh(self) }
             #[inline(always)]
-            fn max(self, other: Self) -> Self { Fp::<$t>::max(self, other) }
+            fn clamp(self, min: Self, max: Self) -> Self { Fp::<$f>::clamp(self, min, max) }
             #[inline(always)]
-            fn min(self, other: Self) -> Self { Fp::<$t>::min(self, other) }
+            fn max(self, other: Self) -> Self { Fp::<$f>::max(self, other) }
             #[inline(always)]
-            fn clamp_nan(self, min: Self, max: Self) -> Self { Fp::<$t>::clamp_nan(self, min, max) }
+            fn min(self, other: Self) -> Self { Fp::<$f>::min(self, other) }
             #[inline(always)]
-            fn max_nan(self, other: Self) -> Self { Fp::<$t>::max_nan(self, other) }
+            fn clamp_nan(self, min: Self, max: Self) -> Self { Fp::<$f>::clamp_nan(self, min, max) }
             #[inline(always)]
-            fn min_nan(self, other: Self) -> Self { Fp::<$t>::min_nan(self, other) }
+            fn max_nan(self, other: Self) -> Self { Fp::<$f>::max_nan(self, other) }
             #[inline(always)]
-            fn max_total(self, other: Self) -> Self { Fp::<$t>::max_total(self, other) }
+            fn min_nan(self, other: Self) -> Self { Fp::<$f>::min_nan(self, other) }
             #[inline(always)]
-            fn min_total(self, other: Self) -> Self { Fp::<$t>::min_total(self, other) }
+            fn max_total(self, other: Self) -> Self { Fp::<$f>::max_total(self, other) }
+            #[inline(always)]
+            fn min_total(self, other: Self) -> Self { Fp::<$f>::min_total(self, other) }
             #[inline(always)]
             fn clamp_total(self, min: Self, max: Self) -> Self {
-                Fp::<$t>::clamp_total(self, min, max)
+                Fp::<$f>::clamp_total(self, min, max)
             }
         }}
     }
 }
-impl_float_ext![f32, f64];
+impl_float_ext![(f32, u32 | i32), (f64, u32 | i32)];
 
 /// Floating-point operations wrapper that can leverage `std` or `libm`.
 ///
@@ -843,10 +851,11 @@ mod _either {
     use super::*;
 
     // $f: the floating-point type.
-    // $e: the integer type for integer exponentiation.
+    // $ue: unsigned int type with the same bit-size.
+    // $ie: the integer type for integer exponentiation.
     macro_rules! custom_impls {
-        ($( ($f:ty, $e:ty) ),+) => { $( custom_impls![@$f, $e]; )+ };
-        (@$f:ty, $e:ty) => { $crate::meta::paste! {
+        ($( ($f:ty, $ue:ty, $ie:ty) ),+) => { $( custom_impls![@$f, $ue, $ie]; )+ };
+        (@$f:ty, $ue:ty, $ie:ty) => { $crate::meta::paste! {
             /// # *Common implementations with or without `std` or `libm`*.
             ///
             /// Total order const fns will only be `const` if the `unsafe_math` feature is enabled.
@@ -908,6 +917,21 @@ mod _either {
                     }
 
                     x_next
+                }
+
+                /// The factorial of the integer value `a`.
+                ///
+                /// These are the maximum numbers whose factorials can fit within
+                /// standard floating-point types:
+                ///
+                /// 34 for `f32` and 170 `f64`.
+                ///
+                pub fn factorial(a: $ue) -> $f {
+                    let mut result = 1.0;
+                    for i in 1..=a {
+                        result *= i as $f;
+                    }
+                    result
                 }
 
                 /// Returns the clamped value, ignoring `NaN`.
@@ -991,7 +1015,7 @@ mod _either {
             }
         }};
     }
-    custom_impls![(f32, i32), (f64, i32)];
+    custom_impls![(f32, u32, i32), (f64, u32, i32)];
 }
 
 #[cfg(all(not(feature = "libm"), not(feature = "std")))]
@@ -1000,11 +1024,11 @@ mod _no_std_no_libm {
     use crate::meta::iif;
 
     // $f: the floating-point type.
-    // $u: unsigned int type with the same bit-size.
-    // $e: the integer type for integer exponentiation.
+    // $ub: unsigned int type with the same bit-size.
+    // $ie: the integer type for integer exponentiation.
     macro_rules! custom_impls {
-        ($( ($f:ty, $u:ty, $e:ty) ),+) => { $( custom_impls![@$f, $u, $e]; )+ };
-        (@$f:ty, $u:ty, $e:ty) => { $crate::meta::paste! {
+        ($( ($f:ty, $ub:ty, $ie:ty) ),+) => { $( custom_impls![@$f, $ub, $ie]; )+ };
+        (@$f:ty, $ub:ty, $ie:ty) => { $crate::meta::paste! {
             /// # *Implementations without `std` or `libm`*.
             impl Fp<$f> {
                 /// The largest integer less than or equal to `a`.
@@ -1047,16 +1071,16 @@ mod _no_std_no_libm {
                 #[inline]
                 pub fn trunc(a: $f) -> $f {
                     let bits = a.to_bits();
-                    const BIAS: $e = [<BIAS_ $f:upper>] as $e;
-                    const SIG_BITS: $e = [<SIGNIFICAND_BITS_ $f:upper>] as $e;
-                    const EXP_MASK: $u = 1 << [<EXPONENT_BITS_ $f:upper>] as $u - 1;
+                    const BIAS: $ie = [<BIAS_ $f:upper>] as $ie;
+                    const SIG_BITS: $ie = [<SIGNIFICAND_BITS_ $f:upper>] as $ie;
+                    const EXP_MASK: $ub = 1 << [<EXPONENT_BITS_ $f:upper>] as $ub - 1;
 
                     #[allow(clippy::cast_possible_wrap)]
-                    let exponent = ((bits >> SIG_BITS) & EXP_MASK) as $e - BIAS;
+                    let exponent = ((bits >> SIG_BITS) & EXP_MASK) as $ie - BIAS;
                     if exponent < 0 {
                         iif![a.is_sign_positive(); 0.0; -0.0]
                     } else if exponent < SIG_BITS {
-                        let mask = !(([<1_ $u>] << (SIG_BITS - exponent)) - 1);
+                        let mask = !(([<1_ $ub>] << (SIG_BITS - exponent)) - 1);
                         let new_bits = bits & mask;
                         <$f>::from_bits(new_bits)
                     } else {
@@ -1078,8 +1102,8 @@ mod _no_std_no_libm {
                 #[must_use]
                 #[inline]
                 pub fn abs(a: $f) -> $f {
-                    let mask = <$u>::MAX / 2;
-                    let bits: $u = a.to_bits() & mask;
+                    let mask = <$ub>::MAX / 2;
+                    let bits: $ub = a.to_bits() & mask;
                     <$f>::from_bits(bits)
                 }
 
@@ -1092,8 +1116,8 @@ mod _no_std_no_libm {
                 #[must_use]
                 #[inline(always)]
                 pub fn copysign(a: $f, sign: $f) -> $f {
-                    const SIGN_MASK: $u = <$u>::MAX / 2 + 1;
-                    const VALUE_MASK: $u = <$u>::MAX / 2;
+                    const SIGN_MASK: $ub = <$ub>::MAX / 2 + 1;
+                    const VALUE_MASK: $ub = <$ub>::MAX / 2;
                     let sign_bit = sign.to_bits() & SIGN_MASK;
                     let value_bits = a.to_bits() & VALUE_MASK;
                     <$f>::from_bits(value_bits | sign_bit)
@@ -1116,7 +1140,7 @@ mod _no_std_no_libm {
                 /// Raises `a` to the `p` integer power.
                 #[must_use]
                 #[inline]
-                pub fn powi(a: $f, p: $e) -> $f {
+                pub fn powi(a: $f, p: $ie) -> $f {
                     match p {
                         0 => 1.0,
                         1.. => {
