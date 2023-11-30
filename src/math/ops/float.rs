@@ -112,8 +112,6 @@ pub trait FloatExt: Sized {
     fn powf(self, p: Self) -> Self;
     /// Raises `self` to the `p` integer power.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn powi(self, p: i32) -> Self;
     /// The square root.
     ///
@@ -338,8 +336,6 @@ macro_rules! impl_float_ext {
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn powf(self, p: Self) -> Self { Fp::<$f>::powf(self, p) }
             #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn powi(self, p: $ie) -> Self { Fp::<$f>::powi(self, p) }
             #[inline(always)]
             fn sqrt(self) -> Self { Fp::<$f>::sqrt(self) }

@@ -167,7 +167,7 @@ macro_rules! impl_ops {
         /// means `n` has a prime factor greater than its square root, and the
         /// function adjusts result for this last factor.
         ///
-        /// $$ \varphi(n) =n \prod_{p\mid |n|} \left(1-\frac{1}{p}\right) $$
+        /// $$\large\varphi(n) =n \prod_{p\mid |n|} \left(1-\frac{1}{p}\right)$$
         ///
         /// # Examples
         /// ```
@@ -263,7 +263,7 @@ macro_rules! impl_ops {
         /// means `n` has a prime factor greater than its square root, and the
         /// function adjusts result for this last factor.
         ///
-        /// $$ \varphi(n) =n \prod_{p\mid n} \left(1-\frac{1}{p}\right) $$
+        /// $$\large\varphi(n) =n \prod_{p\mid n} \left(1-\frac{1}{p}\right)$$
         ///
         /// # Examples
         /// ```
