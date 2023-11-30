@@ -27,7 +27,7 @@
 ///
 /// # Arguments
 /// - `[$T; $LEN]`: the array's elements' type and length.
-/// - `$init`: a function without arguments that returns `$T`.
+/// - `$init`: a function with an `usize` argument that returns `$T`.
 /// - `$unsafe_feature`: the name of a feature that enables the use of `unsafe`.
 /// - `$element`: a clonable element of type `$T`.
 /// - `$intoiter`: an item that implements [`IntoIterator`].
@@ -37,9 +37,9 @@
 /// ```
 /// use devela::data::array_init;
 ///
-/// assert_eq![[7,7,7], array_init![safe_init [i32; 3], || 7]];
+/// assert_eq![[7,7,7], array_init![safe_init [i32; 3], |_| 7]];
 /// #[cfg(feature = "unsafe_feat")]
-/// assert_eq![[7,7,7], array_init![unsafe_init [i32; 3], || 7]];
+/// assert_eq![[7,7,7], array_init![unsafe_init [i32; 3], |_| 7]];
 ///
 /// assert_eq![[7,7,7], array_init![clone [i32; 3], "unsafe_feat",  7]];
 /// assert_eq![[0,0,0], array_init![default [i32; 3], "unsafe_feat"]];
@@ -58,13 +58,14 @@ macro_rules! array_init {
     // Safe array initialization in the stack
     (safe_init [$T:ty; $LEN:expr], $init:expr) => {{
         #[allow(clippy::redundant_closure_call)]
-        core::array::from_fn(|_| $init())
+        core::array::from_fn(|i| $init(i))
     }};
     // safe array initialization in the heap
     (safe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
         let mut v = Vec::<$T>::with_capacity($LEN);
-        for _ in 0..$LEN {
-            v.push($init());
+        for i in 0..$LEN {
+            #[allow(clippy::redundant_closure_call)]
+            v.push($init(i));
         }
         v.into_boxed_slice().try_into().unwrap_or_else(|_| {
             panic!("Can't turn the boxed slice into a boxed array")
@@ -76,7 +77,7 @@ macro_rules! array_init {
         let mut arr: [core::mem::MaybeUninit<$T>; $LEN] =
             unsafe { core::mem::MaybeUninit::uninit().assume_init() };
         for i in &mut arr[..] {
-            let _ = i.write($init());
+            let _ = i.write($init(i));
         }
         // WAIT: can't use transmute for now, have to use transmute_copy:
         // - https://github.com/rust-lang/rust/issues/62875
@@ -88,7 +89,7 @@ macro_rules! array_init {
     // unsafe array initialization in the heap
     (unsafe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
         let mut v = Vec::<$T>::with_capacity($LEN);
-        for _ in 0..$LEN { v.push($init()); }
+        for i in 0..$LEN { v.push($init(i)); }
         let slice = v.into_boxed_slice();
         let raw_slice = Box::into_raw(slice);
         // SAFETY: pointer comes from using `into_raw`, and capacity is right.
@@ -100,38 +101,38 @@ macro_rules! array_init {
     // initialize an array in the stack by cloning $element
     (clone [$T:ty; $LEN:expr], $unsafe_feature:literal, $element:expr) => {{
         #[cfg(not(feature = $unsafe_feature))]
-        { array_init!(safe_init [$T; $LEN], || $element.clone()) }
+        { array_init!(safe_init [$T; $LEN], |_| $element.clone()) }
         #[cfg(feature = $unsafe_feature)]
-        { array_init!(unsafe_init [$T; $LEN], || $element.clone()) }
+        { array_init!(unsafe_init [$T; $LEN], |_| $element.clone()) }
     }};
     // initialize an array in the heap, by cloning $element
     (clone_heap [$T:ty; $LEN:expr], $unsafe_feature:literal, $element:expr) => {{
         #[cfg(not(feature = $unsafe_feature))]
-        { array_init!(safe_init_heap [$T; $LEN], || $element.clone()) }
+        { array_init!(safe_init_heap [$T; $LEN], |_| $element.clone()) }
         #[cfg(feature = $unsafe_feature)]
-        { array_init!(unsafe_init_heap [$T; $LEN], || $element.clone()) }
+        { array_init!(unsafe_init_heap [$T; $LEN], |_| $element.clone()) }
     }};
 
     // initialize an array in the stack with $T::default()
     (default [$T:ty; $LEN:expr], $unsafe_feature:literal) => {{
         #[cfg(not(feature = $unsafe_feature))]
-        { array_init!(safe_init [$T; $LEN], || <$T>::default()) }
+        { array_init!(safe_init [$T; $LEN], |_| <$T>::default()) }
         #[cfg(feature = $unsafe_feature)]
-        { array_init!(unsafe_init [$T; $LEN], || <$T>::default()) }
+        { array_init!(unsafe_init [$T; $LEN], |_| <$T>::default()) }
     }};
     // initialize an array in the heap, with $T::default()
     (default_heap [$T:ty; $LEN:expr], $unsafe_feature:literal) => {{
         #[cfg(not(feature = $unsafe_feature))]
-        { array_init!(safe_init_heap [$T; $LEN], || <$T>::default()) }
+        { array_init!(safe_init_heap [$T; $LEN], |_| <$T>::default()) }
         #[cfg(feature = $unsafe_feature)]
-        { array_init!(unsafe_init_heap [$T; $LEN], || <$T>::default()) }
+        { array_init!(unsafe_init_heap [$T; $LEN], |_| <$T>::default()) }
     }};
 
     // initialize an array in the stack with an IntoIterator<Item = $T> and with
     // $T::default() in case the iterator length is < $LEN, for the remaining elements.
     (iter [$T:ty; $LEN:expr], $unsafe_feature:literal, $intoiter:expr) => {{
         let mut iterator = $intoiter.into_iter();
-        let mut init_closure = || {
+        let mut init_closure = |_| {
             if let Some(e) = iterator.next() { e } else { <$T>::default() }
         };
         #[cfg(not(feature = $unsafe_feature))]
@@ -144,7 +145,7 @@ macro_rules! array_init {
     // $T::default() in case the iterator length is < $LEN, for the remaining elements.
     (iter_heap [$T:ty; $LEN:expr], $unsafe_feature:literal, $intoiter:expr) => {{
         let mut iterator = $intoiter.into_iter();
-        let mut init_closure = || {
+        let mut init_closure = |_| {
             if let Some(e) = iterator.next() { e } else { <$T>::default() }
         };
         #[cfg(not(feature = $unsafe_feature))]
