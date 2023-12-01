@@ -7,6 +7,43 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [0.19.0-wip]
 
+### Added
+- new `math` root module.
+- new `docsrs` feature.
+- new function `mem::ptr_in_stack`.
+- new functions: `factorial_*.
+- new `Fp` and `FloatExt` methods: `is_sign_positive` and `is_sign_negative`, `sqrt_fisr`, `sqrt_nr`, `round_ties_even`, `factorial`.
+- new `FloatExt` associated constants: `BIAS`, `EXPONENT_BITS`, `SIGNIFICAND_BITS`.
+- new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
+- new macro `init_array`.
+- new `DataErrors` type.
+- new `CastPrimitives` trait and fns: `checked_cast_*`, `saturating_cast_*`.
+- new `MathErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
+
+### Removed
+- remove `os::linux` and `os::term` functionality.
+- remove features: `term`, `term_unsafe`, `unsafe_term`, `linux`, `linux_unsafe`, `unsafe_linux`, `os`, `unsafe_os`.
+- remove linux specific tools and github actions.
+
+### Changed
+- bump rust version to `1.74.0`.
+- move `any` module to `data`.
+- move `num` and `ops` modules to `math`.
+- move `num::convert` module to `data::convert`.
+- remove features: `ops`, `ops_unsafe`, `unsafe_ops`.
+- improve `Fp` type and `FloatExt` trait to be partially available without `std` or `libm` features, and add missing attributes.
+- rename `NumError` and `NumResult` to `MathErrors` and `MathResult`, respectively, and move them to the math module.
+- rename fns: `div_half_*` to `div_ties_*`.
+- rename `Fp` and `FloatExt` method: `round` to `round_ties_away`.
+- rename `num` features to `math` features.
+- impl `Error` and `Display` for `MathErrors`.
+- make public `ascii_calc_digit_*` functions.
+- update color gamma fns, rename to `color_gamma_[apply|remove]_f*`, add `f64` versions.
+- update `Collection` trait.
+
+### Fixed
+- fix `bytemuck` dependency when `data` is enabled.
+
 ## [0.18.1] 2023-11-08
 
 #### Fixed
