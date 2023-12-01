@@ -27,6 +27,9 @@ pub enum MathErrors {
     /// An invalid value was received for the given type or operation.
     Invalid,
 
+    /// The provided values are not compatible in size.
+    MismatchedSizes,
+
     /// A non-negative value is required.
     NonNegativeRequired,
 
@@ -67,6 +70,9 @@ mod core_impls {
                 MathErrors::NotSupported => write!(f, "Not supported."),
                 MathErrors::Unspecified => write!(f, "Unspecified."),
                 MathErrors::Invalid => write!(f, "Invalid."),
+                MathErrors::MismatchedSizes => {
+                    write!(f, "The provided values are not compatible in size.")
+                }
                 MathErrors::NonNegativeRequired => write!(f, "A non-negative value is required."),
                 MathErrors::PositiveRequired => write!(f, "A positive value is required.."),
                 MathErrors::Overflow => write!(f, "Overflow."),
