@@ -182,6 +182,18 @@ macro_rules! impl_casts {
                 Ok(p as $t)
             }
         }
+        #[doc = "Saturating casts `" $f "` to `" $t "` clamping at the numeric bounds."]
+        #[must_use]
+        #[inline]
+        pub const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
+            if p < <$t>::MIN as $f {
+                <$t>::MIN
+            } else if p > $t::MAX as $f {
+                <$t>::MAX
+            } else {
+                p as $t
+            }
+        }
     }};
     (can_overflow $( $f:ty:$t:ty ),+) => { $( impl_casts![@can_overflow $f:$t]; )+ };
     (@can_overflow $f:ty:$t:ty) => { paste! {
@@ -192,6 +204,12 @@ macro_rules! impl_casts {
         #[inline]
         pub const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
             iif![p > <$t>::MAX as $f; Err(E::Overflow); Ok(p as $t)]
+        }
+        #[doc = "Saturating casts `" $f "` to `" $t "` clamping at the numeric bounds."]
+        #[must_use]
+        #[inline]
+        pub const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
+            iif![p > <$t>::MAX as $f; <$t>::MAX; p as $t]
         }
     }};
     (can_underflow $( $f:ty:$t:ty ),+) => { $( impl_casts![@can_underflow $f:$t]; )+ };
@@ -204,6 +222,12 @@ macro_rules! impl_casts {
         pub const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
             iif![p < 0; Err(E::Underflow); Ok(p as $t)]
         }
+        #[doc = "Saturating casts `" $f "` to `" $t "` clamping at the numeric bounds."]
+        #[must_use]
+        #[inline]
+        pub const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
+            iif![p < 0; 0; p as $t]
+        }
     }};
     (cant_fail $( $f:ty:$t:ty ),+) => { $( impl_casts![@cant_fail $f:$t]; )+ };
     (@cant_fail $f:ty:$t:ty) => { paste! {
@@ -214,6 +238,12 @@ macro_rules! impl_casts {
         #[inline(always)]
         pub const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
             Ok(p as $t)
+        }
+        #[doc = "Saturating casts `" $f "` to `" $t "` *(never clamps)*."]
+        #[must_use]
+        #[inline]
+        pub const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
+            p as $t
         }
     }};
     (cant_fail ptr:$ptr:literal $( $f:ty:$t:ty ),+) => {
@@ -227,6 +257,12 @@ macro_rules! impl_casts {
         #[inline(always)]
         pub const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
             Ok(p as $t)
+        }
+        #[doc = "Saturating casts `" $f "` to `" $t "` *(never clamps in " $ptr "-bit)*."]
+        #[must_use]
+        #[inline]
+        pub const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
+            p as $t
         }
     }};
 }

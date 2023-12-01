@@ -16,7 +16,7 @@ pub use {cast::*, join::*, split::*};
 
 /* define traits */
 
-/// Offers methods for checked casting between `T` and `U` primitives.
+/// Offers methods for casting between primitives.
 pub trait CastPrimitives {
     /// Safely casts `self` to `u8` with range check.
     fn checked_cast_to_u8(self) -> Result<u8>;
@@ -38,6 +38,26 @@ pub trait CastPrimitives {
     fn checked_cast_to_i64(self) -> Result<i64>;
     /// Safely casts `self` to `i128` with range check.
     fn checked_cast_to_i128(self) -> Result<i128>;
+    /// Saturating casts `self` to `u8` clamping at the numeric bounds.
+    fn saturating_cast_to_u8(self) -> u8;
+    /// Saturating casts `self` to `u16` clamping at the numeric bounds.
+    fn saturating_cast_to_u16(self) -> u16;
+    /// Saturating casts `self` to `u32` clamping at the numeric bounds.
+    fn saturating_cast_to_u32(self) -> u32;
+    /// Saturating casts `self` to `u64` clamping at the numeric bounds.
+    fn saturating_cast_to_u64(self) -> u64;
+    /// Saturating casts `self` to `u128` clamping at the numeric bounds.
+    fn saturating_cast_to_u128(self) -> u128;
+    /// Saturating casts `self` to `i8` clamping at the numeric bounds.
+    fn saturating_cast_to_i8(self) -> i8;
+    /// Saturating casts `self` to `i16` clamping at the numeric bounds.
+    fn saturating_cast_to_i16(self) -> i16;
+    /// Saturating casts `self` to `i32` clamping at the numeric bounds.
+    fn saturating_cast_to_i32(self) -> i32;
+    /// Saturating casts `self` to `i64` clamping at the numeric bounds.
+    fn saturating_cast_to_i64(self) -> i64;
+    /// Saturating casts `self` to `i128` clamping at the numeric bounds.
+    fn saturating_cast_to_i128(self) -> i128;
 }
 
 /// Offers methods to construct a primitive `T` from a slice of `U` primitives.
@@ -129,10 +149,40 @@ macro_rules! impl_cast_primitives {
             fn checked_cast_to_i128(self) -> Result<i128> {
                 [<checked_cast_ $t _ to_ i128>](self)
             }
+            fn saturating_cast_to_u8(self) -> u8 {
+                [<saturating_cast_ $t _ to_ u8>](self)
+            }
+            fn saturating_cast_to_u16(self) -> u16 {
+                [<saturating_cast_ $t _ to_ u16>](self)
+            }
+            fn saturating_cast_to_u32(self) -> u32 {
+                [<saturating_cast_ $t _ to_ u32>](self)
+            }
+            fn saturating_cast_to_u64(self) -> u64 {
+                [<saturating_cast_ $t _ to_ u64>](self)
+            }
+            fn saturating_cast_to_u128(self) -> u128 {
+                [<saturating_cast_ $t _ to_ u128>](self)
+            }
+            fn saturating_cast_to_i8(self) -> i8 {
+                [<saturating_cast_ $t _ to_ i8>](self)
+            }
+            fn saturating_cast_to_i16(self) -> i16 {
+                [<saturating_cast_ $t _ to_ i16>](self)
+            }
+            fn saturating_cast_to_i32(self) -> i32 {
+                [<saturating_cast_ $t _ to_ i32>](self)
+            }
+            fn saturating_cast_to_i64(self) -> i64 {
+                [<saturating_cast_ $t _ to_ i64>](self)
+            }
+            fn saturating_cast_to_i128(self) -> i128 {
+                [<saturating_cast_ $t _ to_ i128>](self)
+            }
         }
     }};
 }
-impl_cast_primitives![u8, u16, u32, u64, u128, i8, i16, i32, i64, i128];
+impl_cast_primitives![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
 
 macro_rules! impl_from_primitives {
     ( $( $T:ident, $U:ident, $LEN:literal );+ $(;)? ) => {
