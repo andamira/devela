@@ -25,7 +25,9 @@ macro_rules! impl_ops {
 
     // implements signed ops
     (@signed($t:ty, $up:ty, $ft:ty) ) => { paste! {
-        /// Returns the factorial of `n` $n!$.
+        /// Returns the factorial of `n`.
+        ///
+        /// $$ n! $$.
         ///
         /// These are the maximum numbers whose factorials can fit within
         /// standard signed integer types:
@@ -68,7 +70,7 @@ macro_rules! impl_ops {
         ///
         /// # Errors
         /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0 \lor r<0$,
-        /// [`Invalid`][E::Invalid] if $|r| > |n|$, and
+        /// [`MismatchedSizes`][E::MismatchedSizes] if $|r| > |n|$, and
         /// [`Overflow`][E::Overflow] if the result cant't fit the type.
         ///
         /// # Examples
@@ -83,7 +85,7 @@ macro_rules! impl_ops {
         #[inline]
         pub const fn [<permute_ $t>](n: $t, r: $t) -> Result<$t> {
             iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
-            iif![r > n; return Err(E::Invalid)];
+            iif![r > n; return Err(E::MismatchedSizes)];
             let mut result: $t = 1;
             cfor![i in 0..r => {
                 result = if let Some(res) = result.checked_mul(n - i) {
@@ -115,7 +117,6 @@ macro_rules! impl_ops {
         #[inline]
         pub const fn [<permute_rep_ $t>](n: $t, r: $t) -> Result<$t> {
             iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
-            iif![r > n; return Err(E::Invalid)];
             let r_u32 = if let Ok(res) = [<checked_cast_ $t _to_u32>](r) {
                 res
             } else {
@@ -128,15 +129,13 @@ macro_rules! impl_ops {
             }
         }
 
-        /// Combinations of `n` items taken `r` at a time, ordered ${n \choose r}$.
+        /// Combinations of `n` items taken `r` at a time, ordered.
         ///
-        /// Negative values of `n` and `r` will be treated as positive.
-        ///
-        /// $$ \large C(n,r) = \frac{n!}{(n−r)!r!} $$
+        /// $$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$
         ///
         /// # Errors
         /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0 \lor r<0$,
-        /// [`Invalid`][E::Invalid] if $r > n$, and
+        /// [`MismatchedSizes`][E::MismatchedSizes] if $r > n$, and
         /// [`Overflow`][E::Overflow] if the result cant't fit the type.
         ///
         /// # Examples
@@ -151,7 +150,7 @@ macro_rules! impl_ops {
         #[inline]
         pub const fn [<combine_ $t>](n: $t, r: $t) -> Result<$t> {
             iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
-            iif![r > n; return Err(E::Invalid)];
+            iif![r > n; return Err(E::MismatchedSizes)];
             let (mut num, mut den): ($t, $t) = (1, 1);
             cfor![i in 0..r => {
                 num = if let Some(res) = num.checked_mul(n - i) {
@@ -168,18 +167,14 @@ macro_rules! impl_ops {
             Ok(num / den)
         }
 
-        /// Combinations of `n` items taken `r` at a time with repetitions,
-        /// unordered ${n+k-1 \choose r}$.
+        /// Combinations of `n` items taken `r` at a time with repetitions, unordered.
         ///
         /// Also known as *multichoose*.
         ///
-        /// Negative values of `n` and `r` will be treated as positive.
-        ///
-        /// $$ \large C(n+r-1,r) = \frac{(n+r-1)!}{(n−1)!r!} $$
+        /// $$ \large C(n+r-1,r) = ${n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
         ///
         /// # Errors
         /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0 \lor r<0$,
-        /// [`Invalid`][E::Invalid] if $r > n$, and
         /// [`Overflow`][E::Overflow] if the result cant't fit the type.
         ///
         /// # Examples
@@ -194,7 +189,6 @@ macro_rules! impl_ops {
         #[inline]
         pub const fn [<combine_rep_ $t>](n: $t, r: $t) -> Result<$t> {
             iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
-            iif![r > n; return Err(E::Invalid)];
             let (mut num, mut den): ($t, $t) = (1, 1);
             cfor![i in 0..r => {
                 let factor = if let Some(res) = n.checked_add(r - 1 - i) {
@@ -219,7 +213,9 @@ macro_rules! impl_ops {
 
     // implements unsigned ops
     (@unsigned($t:ty, $up:ty, $ft:ty) ) => { paste! {
-        /// Returns the factorial of `n` $n!$.
+        /// Returns the factorial of `n`.
+        ///
+        /// $$ n! $$
         ///
         /// Permutations of *n* items, ordered, where $n = r$.
         ///
@@ -257,7 +253,7 @@ macro_rules! impl_ops {
         /// $$ \large P(n,r) = \frac{n!}{(n−r)!} $$
         ///
         /// # Errors
-        /// Returns [`Invalid`][E::Invalid] if $r > n$ and
+        /// Returns [`MismatchedSizes`][E::MismatchedSizes] if $r > n$ and
         /// [`Overflow`][E::Overflow] if the result cant't fit the type.
         ///
         /// # Examples
@@ -269,8 +265,7 @@ macro_rules! impl_ops {
         /// ```
         #[inline]
         pub const fn [<permute_ $t>](n: $t, r: $t) -> Result<$t> {
-            iif![r > n; return Err(E::Invalid)];
-
+            iif![r > n; return Err(E::MismatchedSizes)];
             let mut result: $t = 1;
             cfor![i in 0..r => {
                 result = if let Some(res) = result.checked_mul(n - i) {
@@ -298,7 +293,6 @@ macro_rules! impl_ops {
         /// ```
         #[inline]
         pub const fn [<permute_rep_ $t>](n: $t, r: $t) -> Result<$t> {
-            iif![r > n; return Err(E::Invalid)];
             let r_u32 = if let Ok(res) = [<checked_cast_ $t _to_u32>](r) {
                 res
             } else {
@@ -311,13 +305,12 @@ macro_rules! impl_ops {
             }
         }
 
-        /// Combinations of `n` items taken `r` at a time, unordered
-        /// ${n \choose r}$.
+        /// Combinations of `n` items taken `r` at a time, unordered.
         ///
-        /// $$ \large C(n,r) = \frac{n!}{(n−r)!r!} $$
+        /// $$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$
         ///
         /// # Errors
-        /// Returns [`Invalid`][E::Invalid] if $r > n$ and
+        /// Returns [`MismatchedSizes`][E::MismatchedSizes] if $r > n$ and
         /// [`Overflow`][E::Overflow] if the result cant't fit the type.
         ///
         /// # Examples
@@ -329,8 +322,7 @@ macro_rules! impl_ops {
         /// ```
         #[inline]
         pub const fn [<combine_ $t>](n: $t, r: $t) -> Result<$t> {
-            iif![r > n; return Err(E::Invalid)];
-
+            iif![r > n; return Err(E::MismatchedSizes)];
             let (mut num, mut den): ($t, $t) = (1, 1);
             cfor![i in 0..r => {
                 num = if let Some(res) = num.checked_mul(n - i) {
@@ -347,16 +339,14 @@ macro_rules! impl_ops {
             Ok(num / den)
         }
 
-        /// Combinations of `n` items taken `r` at a time with repetitions,
-        /// unordered ${n+k-1 \choose r}$.
+        /// Combinations of `n` items taken `r` at a time with repetitions, unordered.
         ///
         /// Also known as *multichoose*.
         ///
-        /// $$ \large C(n+r-1,r) = \frac{(n+r-1)!}{(n−1)!r!} $$
+        /// $$ \large C(n+r-1,r) =  {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
         ///
         /// # Errors
-        /// Returns [`Invalid`][E::Invalid] if $r > n$ and
-        /// [`Overflow`][E::Overflow] if the result cant't fit the type.
+        /// Returns [`Overflow`][E::Overflow] if the result cant't fit the type.
         ///
         /// # Examples
         /// ```
@@ -367,8 +357,6 @@ macro_rules! impl_ops {
         /// ```
         #[inline]
         pub const fn [<combine_rep_ $t>](n: $t, r: $t) -> Result<$t> {
-            iif![r > n; return Err(E::Invalid)];
-
             let (mut num, mut den): ($t, $t) = (1, 1);
             cfor![i in 0..r => {
                 let factor = if let Some(res) = n.checked_add(r - 1 - i) {
