@@ -15,11 +15,12 @@
 mod array;
 pub mod cmp;
 pub mod convert;
+pub mod error;
 pub mod slice;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {array::*, cmp::*, convert::*, slice::*};
+pub(crate) use {array::*, cmp::*, convert::*, error::*, slice::*};
 
 /* feature-gated */
 
@@ -55,13 +56,13 @@ pub use {array::*, collection::DataCollection, reexports::*};
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use {any::all::*, cmp::all::*, convert::all::*, slice::all::*};
+pub use {any::all::*, cmp::all::*, convert::all::*, error::*, slice::all::*};
 
 #[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        any::all::*, array::*, cmp::all::*, collection::DataCollection, convert::all::*,
+        any::all::*, array::*, cmp::all::*, collection::DataCollection, convert::all::*, error::*,
         reexports::*, slice::all::*,
     };
 
