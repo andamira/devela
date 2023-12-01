@@ -3,7 +3,7 @@
 //!
 //
 
-/// A color result.
+/// A chromatic result.
 pub type ColorResult<T> = core::result::Result<T, ColorErrors>;
 
 /// A chromatic error.

@@ -17,8 +17,6 @@ mod fns;
 #[cfg(feature = "color")]
 mod r#trait;
 
-// ...
-
 // re-export private sub-modules
 #[cfg(feature = "color")]
 pub use {error::*, fns::*, r#trait::*};

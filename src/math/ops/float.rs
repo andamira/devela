@@ -920,8 +920,9 @@ mod _either {
                 /// These are the maximum numbers whose factorials can fit within
                 /// standard floating-point types:
                 ///
-                /// 34 for `f32` and 170 `f64`.
+                /// 34 for `f32` and 170 for `f64`.
                 ///
+                /// Note that precision is poor for large values.
                 pub fn factorial(a: $ue) -> $f {
                     let mut result = 1.0;
                     for i in 1..=a {
