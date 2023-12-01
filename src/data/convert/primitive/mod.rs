@@ -3,17 +3,42 @@
 //! Helpers for converting between primitives.
 //
 
-use crate::meta::paste;
+use crate::{data::DataResult as Result, meta::paste};
 
 #[cfg(test)]
 mod tests;
 
+mod cast;
 mod join;
 mod split;
 
-pub use {join::*, split::*};
+pub use {cast::*, join::*, split::*};
 
 /* define traits */
+
+/// Offers methods for checked casting between `T` and `U` primitives.
+pub trait CastPrimitives {
+    /// Safely casts `self` to `u8` with range check.
+    fn checked_cast_to_u8(self) -> Result<u8>;
+    /// Safely casts `self` to `u16` with range check.
+    fn checked_cast_to_u16(self) -> Result<u16>;
+    /// Safely casts `self` to `u32` with range check.
+    fn checked_cast_to_u32(self) -> Result<u32>;
+    /// Safely casts `self` to `u64` with range check.
+    fn checked_cast_to_u64(self) -> Result<u64>;
+    /// Safely casts `self` to `u128` with range check.
+    fn checked_cast_to_u128(self) -> Result<u128>;
+    /// Safely casts `self` to `i8` with range check.
+    fn checked_cast_to_i8(self) -> Result<i8>;
+    /// Safely casts `self` to `i16` with range check.
+    fn checked_cast_to_i16(self) -> Result<i16>;
+    /// Safely casts `self` to `i32` with range check.
+    fn checked_cast_to_i32(self) -> Result<i32>;
+    /// Safely casts `self` to `i64` with range check.
+    fn checked_cast_to_i64(self) -> Result<i64>;
+    /// Safely casts `self` to `i128` with range check.
+    fn checked_cast_to_i128(self) -> Result<i128>;
+}
 
 /// Offers methods to construct a primitive `T` from a slice of `U` primitives.
 ///
@@ -69,6 +94,45 @@ pub trait IntoPrimitives<T, U, const LEN: usize> {
 }
 
 /* implement traits */
+
+macro_rules! impl_cast_primitives {
+    ($($t:ty),+) => { $( impl_cast_primitives![@$t]; )+ };
+    (@$t:ty) => { paste! {
+        impl CastPrimitives for $t {
+            fn checked_cast_to_u8(self) -> Result<u8> {
+                [<checked_cast_ $t _ to_ u8>](self)
+            }
+            fn checked_cast_to_u16(self) -> Result<u16> {
+                [<checked_cast_ $t _ to_ u16>](self)
+            }
+            fn checked_cast_to_u32(self) -> Result<u32> {
+                [<checked_cast_ $t _ to_ u32>](self)
+            }
+            fn checked_cast_to_u64(self) -> Result<u64> {
+                [<checked_cast_ $t _ to_ u64>](self)
+            }
+            fn checked_cast_to_u128(self) -> Result<u128> {
+                [<checked_cast_ $t _ to_ u128>](self)
+            }
+            fn checked_cast_to_i8(self) -> Result<i8> {
+                [<checked_cast_ $t _ to_ i8>](self)
+            }
+            fn checked_cast_to_i16(self) -> Result<i16> {
+                [<checked_cast_ $t _ to_ i16>](self)
+            }
+            fn checked_cast_to_i32(self) -> Result<i32> {
+                [<checked_cast_ $t _ to_ i32>](self)
+            }
+            fn checked_cast_to_i64(self) -> Result<i64> {
+                [<checked_cast_ $t _ to_ i64>](self)
+            }
+            fn checked_cast_to_i128(self) -> Result<i128> {
+                [<checked_cast_ $t _ to_ i128>](self)
+            }
+        }
+    }};
+}
+impl_cast_primitives![u8, u16, u32, u64, u128, i8, i16, i32, i64, i128];
 
 macro_rules! impl_from_primitives {
     ( $( $T:ident, $U:ident, $LEN:literal );+ $(;)? ) => {
