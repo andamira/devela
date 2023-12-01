@@ -3,6 +3,8 @@
 //! Helpers for converting between primitives.
 //
 
+#![cfg_attr(not(feature = "data"), allow(unused))]
+
 use crate::{data::DataResult as Result, meta::paste};
 
 #[cfg(test)]

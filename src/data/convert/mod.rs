@@ -6,14 +6,16 @@
 
 /* contains always compiled items */
 
-// ...
+pub mod primitive;
+
+#[allow(unused)]
+#[cfg(not(feature = "data"))]
+pub(crate) use primitive::*;
 
 /* feature-gated */
 
 #[cfg(feature = "data")]
 pub mod collection;
-#[cfg(feature = "data")]
-pub mod primitive;
 
 // re-export public sub-modules
 #[doc(no_inline)]
