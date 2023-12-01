@@ -27,6 +27,12 @@ pub enum MathErrors {
     /// An invalid value was received for the given type or operation.
     Invalid,
 
+    /// A non-negative value is required.
+    NonNegativeRequired,
+
+    /// A positive value is required.
+    PositiveRequired,
+
     ///
     Overflow,
 
@@ -35,6 +41,7 @@ pub enum MathErrors {
     Underflow,
 }
 
+#[allow(dead_code)]
 impl MathErrors {
     pub(crate) const fn ni<T>() -> MathResult<T> {
         Err(MathErrors::NotImplemented)
@@ -60,6 +67,8 @@ mod core_impls {
                 MathErrors::NotSupported => write!(f, "Not supported."),
                 MathErrors::Unspecified => write!(f, "Unspecified."),
                 MathErrors::Invalid => write!(f, "Invalid."),
+                MathErrors::NonNegativeRequired => write!(f, "A non-negative value is required."),
+                MathErrors::PositiveRequired => write!(f, "A positive value is required.."),
                 MathErrors::Overflow => write!(f, "Overflow."),
                 MathErrors::Underflow => write!(f, "Underflow"),
             }
