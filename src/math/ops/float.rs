@@ -3,14 +3,21 @@
 //! Floating point wrapper.
 //
 // TOC
-// - FloatExt trait
-// - Fp wrapper
+// - define FloatExt trait
+// - implement FloatExt
+// - define Fp struct
+// - implement Fp methods
+//   - when std is enabled
+//   - when libm is enabled
+//   - independently of std or libm
+//   - when neither std or libm are enabled
+// - define Fp constants
 
 #![cfg_attr(not(feature = "math"), allow(unused))]
 
 use crate::meta::iif;
 
-/* floating-point constants */
+/* private constants */
 
 const BIAS_F32: u32 = 127;
 const BIAS_F64: u32 = 1023;
@@ -192,33 +199,36 @@ pub trait FloatExt: Sized {
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn hypot(self, rhs: Self) -> Self;
     /// The sine.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`sin_taylor`][Fp#method.sin_taylor] with 8 terms.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn sin(self) -> Self;
     /// The cosine.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`cos_taylor`][Fp#method.cos_taylor] with 8 terms.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn cos(self) -> Self;
     /// The tangent.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`tan_taylor`][Fp#method.tan_taylor] with 8 terms.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn tan(self) -> Self;
     /// The arc sine.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+    #[cfg(any(feature = "std", feature = "libm"))]
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn asin(self) -> Self;
     /// The arc cosine.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+    #[cfg(any(feature = "std", feature = "libm"))]
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn acos(self) -> Self;
     /// The arc tangent.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+    #[cfg(any(feature = "std", feature = "libm"))]
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn atan(self) -> Self;
     /// The arc tangent of two variables.
@@ -398,60 +408,49 @@ macro_rules! impl_float_ext {
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn hypot(self, rhs: Self) -> Self { Fp::<$f>::hypot(self, rhs) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn sin(self) -> Self { Fp::<$f>::sin(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn sin(self) -> Self { Fp::<$f>::sin_taylor(self, 8) }
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn cos(self) -> Self { Fp::<$f>::cos(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn cos(self) -> Self { Fp::<$f>::cos_taylor(self, 8) }
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn tan(self) -> Self { Fp::<$f>::tan(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn tan(self) -> Self { Fp::<$f>::tan_taylor(self, 8) }
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn asin(self) -> Self { Fp::<$f>::asin(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn acos(self) -> Self { Fp::<$f>::acos(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn atan(self) -> Self { Fp::<$f>::atan(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn atan2(self, other: Self) -> Self { Fp::<$f>::atan2(self, other) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn sinh(self) -> Self { Fp::<$f>::sinh(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn cosh(self) -> Self { Fp::<$f>::cosh(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn tanh(self) -> Self { Fp::<$f>::tanh(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn asinh(self) -> Self { Fp::<$f>::asinh(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn acosh(self) -> Self { Fp::<$f>::acosh(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn atanh(self) -> Self { Fp::<$f>::atanh(self) }
             #[inline(always)]
@@ -856,7 +855,7 @@ mod _libm {
     custom_impls![(f32, i32), (f64, i32)];
 }
 
-mod _either {
+mod _independently {
     #![allow(missing_docs)]
 
     use super::*;
@@ -927,20 +926,16 @@ mod _either {
                     const TOLERANCE: $f = [<NR_TOLERANCE_ $f:upper>];
                     let mut x = a;
                     let mut x_next = 0.5 * (x + a / x);
-
                     while Self::abs(x - x_next) > TOLERANCE {
                         x = x_next;
                         x_next = 0.5 * (x + a / x);
                     }
-
                     x_next
                 }
 
                 /// The factorial of the integer value `a`.
                 ///
-                /// These are the maximum numbers whose factorials can fit within
-                /// standard floating-point types:
-                ///
+                /// The maximum values with a representable result are:
                 /// 34 for `f32` and 170 for `f64`.
                 ///
                 /// Note that precision is poor for large values.
@@ -952,6 +947,208 @@ mod _either {
                         result *= i as $f;
                     }
                     result
+                }
+
+                /// The sine calculated using Taylor series expansion.
+                ///
+                /// $$
+                /// \sin(a) = a - \frac{a^3}{3!} + \frac{a^5}{5!} - \frac{a^7}{7!} + \cdots
+                /// $$
+                ///
+                /// This Taylor series converges relatively quickly and uniformly
+                /// over the entire domain.
+                ///
+                /// The following table shows the required number of `terms` needed
+                /// to reach the most precise result for both `f32` and `f64`:
+                /// ```txt
+                ///   value     t_f32  t_f64
+                /// -------------------------
+                /// ± 0.001 →      3      4
+                /// ± 0.100 →      4      6
+                /// ± 0.300 →      5      7
+                /// ± 0.500 →      5      8
+                /// ± 0.700 →      6      9
+                /// ± 0.900 →      6     10
+                /// ± 0.990 →      6     10
+                /// ± 0.999 →      6     10
+                /// ```
+                #[must_use]
+                pub fn sin_taylor(a: $f, terms: $ue) -> $f {
+                    let a = Self::clamp(a, -Self::PI, Self::PI);
+                    let (mut sin_approx, mut num, mut den) = (0.0, a, 1.0);
+                    for i in 0..terms {
+                        if i > 0 {
+                            num *= -a * a;
+                            den *= ((2 * i + 1) * (2 * i)) as $f;
+                        }
+                        sin_approx += num / den;
+                    }
+                    sin_approx
+                }
+
+                /// Computes the cosine using taylor series expansion.
+                ///
+                /// $$
+                /// \cos(a) = 1 - \frac{a^2}{2!} + \frac{a^4}{4!} - \frac{a^6}{6!} + \cdots
+                /// $$
+                ///
+                /// This Taylor series converges relatively quickly and uniformly
+                /// over the entire domain.
+                ///
+                /// The following table shows the required number of `terms` needed
+                /// to reach the most precise result for both `f32` and `f64`:
+                /// ```txt
+                ///   value     t_f32  t_f64
+                /// -------------------------
+                /// ± 0.001 →      3      4
+                /// ± 0.100 →      4      6
+                /// ± 0.300 →      5      8
+                /// ± 0.500 →      6      9
+                /// ± 0.700 →      6     10
+                /// ± 0.900 →      7     10
+                /// ± 0.990 →      7     11
+                /// ± 0.999 →      7     11
+                /// ```
+                #[must_use]
+                pub fn cos_taylor(a: $f, terms: $ue) -> $f {
+                    let a = Self::clamp(a, -Self::PI, Self::PI);
+                    let (mut cos_approx, mut num, mut den) = (0.0, 1.0, 1.0);
+                    for i in 0..terms {
+                        if i > 0 {
+                            num *= -a * a;
+                            den *= ((2 * i) * (2 * i - 1)) as $f;
+                        }
+                        cos_approx += num / den;
+                    }
+                    cos_approx
+                }
+
+                /// Computes the tangent using Taylor series expansion of sine and cosine.
+                ///
+                /// The tangent function has singularities and is not defined for
+                /// `cos(a) = 0`. This function clamps `a` within an appropriate range
+                /// to avoid such issues.
+                ///
+                /// The Taylor series for sine and cosine converge relatively quickly
+                /// and uniformly over the entire domain.
+                ///
+                /// The following table shows the required number of `terms` needed
+                /// to reach the most precise result for both `f32` and `f64`:
+                /// ```txt
+                ///   value     t_f32  t_f64
+                /// -------------------------
+                /// ± 0.001 →      3      4
+                /// ± 0.100 →      4      6
+                /// ± 0.300 →      5      8
+                /// ± 0.500 →      6      9
+                /// ± 0.700 →      6     10
+                /// ± 0.900 →      7     10
+                /// ± 0.990 →      7     11
+                /// ± 0.999 →      7     11
+                /// ```
+                #[must_use]
+                pub fn tan_taylor(a: $f, terms: $ue) -> $f {
+                    let a = Self::clamp(a, -Self::PI / 2.0 + 0.0001, Self::PI / 2.0 - 0.0001);
+                    let sin_approx = Self::sin_taylor(a, terms);
+                    let cos_approx = Self::cos_taylor(a, terms);
+                    iif![cos_approx.abs() < 0.0001; return $f::MAX];
+                    sin_approx / cos_approx
+                }
+
+                /// Computes the arcsine using Taylor series expansion.
+                ///
+                /// $$
+                /// \arcsin(a) = a + \left( \frac{1}{2} \right) \frac{a^3}{3} +
+                /// \left( \frac{1}{2} \cdot \frac{3}{4} \right) \frac{a^5}{5} +
+                /// \left( \frac{1}{2} \cdot \frac{3}{4} \cdot \frac{5}{6} \right) \frac{a^7}{7} +
+                /// \cdots
+                /// $$
+                ///
+                /// asin is undefined for $ |a| > 1 $ and in that case returns `NaN`.
+                ///
+                /// The series converges more slowly near the edges of the domain
+                /// (i.e., as `a` approaches -1 or 1). For more accurate results,
+                /// especially near these boundary values, a higher number of terms
+                /// may be necessary.
+                ///
+                /// The following table shows the required number of `terms` needed
+                /// to reach the most precise result for both `f32` and `f64`:
+                /// ```txt
+                ///   value     t_f32  t_f64
+                /// -------------------------
+                /// ± 0.001 →      3      4
+                /// ± 0.100 →      5      9
+                /// ± 0.300 →      7     15
+                /// ± 0.500 →     10     24
+                /// ± 0.700 →     18     44
+                /// ± 0.900 →     47    134
+                /// ± 0.990 →    333   1235
+                /// ± 0.999 →   1989  10768
+                /// ```
+                #[must_use]
+                pub fn asin_taylor(a: $f, terms: $ue) -> $f {
+                    iif![Self::abs(a) > 1.0; return $f::NAN];
+                    let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, a);
+                    for i in 0..terms {
+                        if i != 0 {
+                            multiplier *= (2 * i - 1) as $f / (2 * i) as $f;
+                            power_x *= a * a;
+                        }
+                        asin_approx += multiplier * power_x / (2 * i + 1) as $f;
+                    }
+                    asin_approx
+                }
+
+                /// Computes the arccosine using the Taylor expansion of arcsine.
+                ///
+                /// $$
+                /// arccos(a)=2π-arcsin(a)
+                /// $$
+                ///
+                /// See the [`asin_taylor`][Self#method.asin_taylor] table for
+                /// information about the number of `terms` needed.
+                #[must_use]
+                pub fn acos_taylor(a: $f, terms: $ue) -> $f {
+                    iif![a.abs() > 1.0; return $f::NAN];
+                    Self::FRAC_PI_2 - Self::asin_taylor(a, terms)
+                }
+
+                /// Computes the arctangent using Taylor series expansion.
+                ///
+                /// $$
+                /// \arctan(a) = a - \frac{a^3}{3} + \frac{a^5}{5} - \frac{a^7}{7} + \cdots
+                /// $$
+                ///
+                /// The series converges more slowly near the edges of the domain
+                /// (i.e., as `a` approaches -1 or 1). For more accurate results,
+                /// especially near these boundary values, a higher number of terms
+                /// may be necessary.
+                ///
+                /// The following table shows the required number of `terms` needed
+                /// to reach the most precise result for both `f32` and `f64`:
+                /// ```txt
+                ///   value     t_f32  t_f64
+                /// -------------------------
+                /// ± 0.001 →      3      4
+                /// ± 0.100 →      5      9
+                /// ± 0.300 →      7     15
+                /// ± 0.500 →     12     26
+                /// ± 0.700 →     20     47
+                /// ± 0.900 →     61    152
+                /// ± 0.990 →    518   1466
+                /// ± 0.999 →   4151  13604
+                /// ```
+                #[must_use]
+                pub fn atan_taylor(a: $f, terms: $ue) -> $f {
+                    let (mut atan_approx, mut num, mut sign) = (0.0, a, 1.0);
+                    for i in 0..terms {
+                        if i > 0 {
+                            num *= a * a;
+                            sign = -sign;
+                        }
+                        atan_approx += sign * num / (2 * i + 1) as $f;
+                    }
+                    atan_approx
                 }
 
                 /// Returns the clamped value, ignoring `NaN`.
