@@ -792,23 +792,23 @@ mod _libm {
                 #[must_use]
                 #[inline(always)]
                 pub fn div_euclid(a: $f, b: $f) -> $f {
-                    let q = Fp::<$f>::trunc(a / b);
+                    let q = Self::trunc(a / b);
                     iif![a % b < 0.0; return iif![b > 0.0; q - 1.0; q + 1.0]]; q
                 }
                 /// The least nonnegative remainder of `a` % `b`.
                 #[must_use]
                 #[inline(always)]
                 pub fn rem_euclid(a: $f, b: $f) -> $f {
-                    let r = a % b; iif![r < 0.0; r + Fp::<$f>::abs(b); r]
+                    let r = a % b; iif![r < 0.0; r + Self::abs(b); r]
                 }
                 /// Raises `a` to the `p` integer power.
                 #[must_use]
                 #[inline(always)]
-                pub fn powi(a: $f, p: $e) -> $f { Fp::<$f>::powf(a, p as $f) }
+                pub fn powi(a: $f, p: $e) -> $f { Self::powf(a, p as $f) }
                 /// The logarithm of the number with respect to an arbitrary base.
                 #[must_use]
                 #[inline(always)]
-                pub fn log(value: $f, base: $f) -> $f { Fp::<$f>::ln(base) / Fp::<$f>::ln(value) }
+                pub fn log(value: $f, base: $f) -> $f { Self::ln(base) / Self::ln(value) }
                 /// The sine and cosine.
                 #[must_use]
                 #[inline(always)]
@@ -820,7 +820,7 @@ mod _libm {
                 // #[must_use]
                 // #[inline(always)]
                 // pub fn clamp_nan(value: $f, min: $f, max: $f) -> $f {
-                //     Fp::<$f>::min_nan(Fp::<$f>::max_nan(value, min), max)
+                //     Self::min_nan(Self::max_nan(value, min), max)
                 // }
                 // /// Returns the maximum of two numbers, propagating `NaN`.
                 // #[must_use]
@@ -876,18 +876,18 @@ mod _either {
                 #[must_use]
                 #[inline]
                 pub fn round_ties_even(a: $f) -> $f {
-                    let r = Fp::<$f>::round_ties_away(a);
+                    let r = Self::round_ties_away(a);
                     iif![r % 2.0 == 0.0; r ;
-                        iif![Fp::<$f>::abs(a - r) == 0.5; r - Fp::<$f>::signum(a); r]]
+                        iif![Self::abs(a - r) == 0.5; r - Self::signum(a); r]]
                 }
 
                 /// Returns the nearest integer to `a`, rounding ties to the nearest odd integer.
                 #[must_use]
                 #[inline]
                 pub fn round_ties_odd(a: $f) -> $f {
-                    let r = Fp::<$f>::round_ties_away(a);
+                    let r = Self::round_ties_away(a);
                     iif![r % 2.0 != 0.0; r ;
-                        iif![Fp::<$f>::abs(a - r) == 0.5; r + Fp::<$f>::signum(a); r]]
+                        iif![Self::abs(a - r) == 0.5; r + Self::signum(a); r]]
                 }
 
                 /// Returns `true` if `a` is positive.
@@ -928,7 +928,7 @@ mod _either {
                     let mut x = a;
                     let mut x_next = 0.5 * (x + a / x);
 
-                    while Fp::<$f>::abs(x - x_next) > TOLERANCE {
+                    while Self::abs(x - x_next) > TOLERANCE {
                         x = x_next;
                         x_next = 0.5 * (x + a / x);
                     }
@@ -958,7 +958,7 @@ mod _either {
                 #[must_use]
                 #[inline(always)]
                 pub fn clamp(value: $f, min: $f, max: $f) -> $f {
-                    Fp::<$f>::min(Fp::<$f>::max(value, min), max)
+                    Self::min(Self::max(value, min), max)
                 }
 
                 /// Returns the clamped value, using total order.
@@ -999,7 +999,7 @@ mod _either {
                 #[must_use]
                 #[inline(always)]
                 pub fn clamp_nan(value: $f, min: $f, max: $f) -> $f {
-                    Fp::<$f>::min_nan(Fp::<$f>::max_nan(value, min), max)
+                    Self::min_nan(Self::max_nan(value, min), max)
                 }
                 /// Returns the maximum of two numbers, propagating `NaN`.
                 // WAIT: https://github.com/rust-lang/rust/issues/91079
@@ -1055,8 +1055,8 @@ mod _no_std_no_libm {
                 #[must_use]
                 #[inline]
                 pub fn floor(a: $f) -> $f {
-                    let mut result = Fp::<$f>::trunc(a);
-                    if a.is_sign_negative() && Fp::<$f>::abs(a - result) > <$f>::EPSILON {
+                    let mut result = Self::trunc(a);
+                    if a.is_sign_negative() && Self::abs(a - result) > <$f>::EPSILON {
                         result -= 1.0;
                     }
                     result
@@ -1066,8 +1066,8 @@ mod _no_std_no_libm {
                 #[must_use]
                 #[inline]
                 pub fn ceil(a: $f) -> $f {
-                    let mut result = Fp::<$f>::trunc(a);
-                    if a.is_sign_positive() && Fp::<$f>::abs(a - result) > <$f>::EPSILON {
+                    let mut result = Self::trunc(a);
+                    if a.is_sign_positive() && Self::abs(a - result) > <$f>::EPSILON {
                         result += 1.0;
                     }
                     result
@@ -1079,7 +1079,7 @@ mod _no_std_no_libm {
                 #[must_use]
                 #[inline]
                 pub fn round(a: $f) -> $f {
-                    Fp::<$f>::trunc(a + Fp::<$f>::copysign(0.5 - 0.25 * <$f>::EPSILON, a))
+                    Self::trunc(a + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, a))
                 }
 
                 /// Returns the nearest integer to `self`, rounding ties away from `0.0`.
@@ -1088,7 +1088,7 @@ mod _no_std_no_libm {
                 #[must_use]
                 #[inline]
                 pub fn round_ties_away(a: $f) -> $f {
-                    Fp::<$f>::trunc(a + Fp::<$f>::copysign(0.5 - 0.25 * <$f>::EPSILON, a))
+                    Self::trunc(a + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, a))
                 }
 
                 /// The integral part.
@@ -1122,12 +1122,12 @@ mod _no_std_no_libm {
                 /// The fractional part.
                 #[must_use]
                 #[inline(always)]
-                pub fn fract(a: $f) -> $f { a - Fp::<$f>::trunc(a) }
+                pub fn fract(a: $f) -> $f { a - Self::trunc(a) }
 
                 /// Returns the integral and fractional parts.
                 #[must_use]
                 #[inline(always)]
-                pub fn split(a: $f) -> ($f, $f) { (Fp::<$f>::trunc(a), Fp::<$f>::fract(a)) }
+                pub fn split(a: $f) -> ($f, $f) { (Self::trunc(a), Self::fract(a)) }
 
                 /// The absolute value.
                 #[must_use]
@@ -1142,7 +1142,7 @@ mod _no_std_no_libm {
                 #[must_use]
                 #[inline(always)]
                 pub fn signum(a: $f) -> $f {
-                    iif![a.is_nan(); <$f>::NAN; Fp::<$f>::copysign(1.0, a)]
+                    iif![a.is_nan(); <$f>::NAN; Self::copysign(1.0, a)]
                 }
 
                 /// A number composed of a magnitude of `a` and the sign of `sign`.
@@ -1198,7 +1198,7 @@ mod _no_std_no_libm {
                 /// It uses `Fp::`[`sqrt_nr`][Self::sqrt_nr].
                 #[must_use]
                 #[inline(always)]
-                pub fn sqrt(a: $f) -> $f {Fp::<$f>::sqrt_nr(a) }
+                pub fn sqrt(a: $f) -> $f {Self::sqrt_nr(a) }
 
             }
         }};
