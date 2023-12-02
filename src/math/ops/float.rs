@@ -1205,3 +1205,222 @@ mod _no_std_no_libm {
     }
     custom_impls![(f32, u32, i32), (f64, u64, i32)];
 }
+
+// https://en.wikipedia.org/wiki/List_of_mathematical_constants
+mod _consts {
+    use super::*;
+    use crate::meta::iif;
+
+    // $f: the floating-point type.
+    macro_rules! custom_impls {
+        ($( $f:ty),+) => { $( custom_impls![@$f]; )+ };
+        (@$f:ty) => { $crate::meta::paste! {
+            /// # *Implementations of mathematical constants.
+            #[allow(clippy::excessive_precision)] // 36 decimal points
+            impl Fp<$f> {
+                /* π related */
+
+                /// $ π $ the ratio of the circumference to the diameter
+                /// ([A000796](https://oeis.org/A000796))
+                pub const PI: $f = 3.14159265358979323846264338327950288;
+
+                /// $ \sqrt{π} $
+                /// ([A002161](https://oeis.org/A002161))
+                pub const SQRT_PI: $f = 1.77245385090551602729816748334114518;
+
+                /// $ π/2 $
+                /// ([A019669](https://oeis.org/A019669))
+                pub const FRAC_PI_2: $f = 1.57079632679489661923132169163975144;
+
+                /// $ π/3 $
+                /// ([A019670](https://oeis.org/A019670))
+                pub const FRAC_PI_3: $f = 1.04719755119659774615421446109316763;
+
+                /// $ π/4 $
+                /// ([A003881](https://oeis.org/A003881))
+                pub const FRAC_PI_4: $f = 0.785398163397448309615660845819875721;
+
+                /// $ π/6 $
+                /// ([A019673](https://oeis.org/A019673))
+                pub const FRAC_PI_6: $f = 0.52359877559829887307710723054658381;
+
+                /// $ π/8 $
+                /// ([A019675](https://oeis.org/A019675))
+                pub const FRAC_PI_8: $f = 0.39269908169872415480783042290993786;
+
+                /// $ 1/π $
+                /// ([A049541](https://oeis.org/A049541))
+                pub const FRAC_1_PI: $f = 0.318309886183790671537767526745028724;
+
+                /// $ 1/\sqrt{π} $
+                /// ([A087197](https://oeis.org/A087197))
+                // WAIT: https://github.com/rust-lang/rust/issues/103883
+                pub const FRAC_1_SQRT_PI: $f = 0.564189583547756286948079451560772586;
+
+                /// $ 2/π $
+                /// ([A060294](https://oeis.org/A060294))
+                pub const FRAC_2_PI: $f = 0.636619772367581343075535053490057448;
+
+                /// $ 2/\sqrt{π} $
+                /// ([A190732](https://oeis.org/A190732))
+                pub const FRAC_2_SQRT_PI: $f = 1.12837916709551257389615890312154517;
+
+                /* τ related */
+
+                /// $ τ = 2π $ the ratio of the circumference to the radius
+                /// ([A019692](https://oeis.org/A019692))
+                pub const TAU: $f = 6.28318530717958647692528676655900577;
+
+                /// $ \sqrt{τ} $
+                /// ([A019727](https://oeis.org/A019727))
+                pub const SQRT_TAU: $f = 2.50662827463100050241576528481104525;
+
+                /// $ τ/2 = π $
+                /// ([A000796](https://oeis.org/A000796))
+                pub const FRAC_TAU_2: $f = Self::PI;
+
+                /// $ τ/3  = 2π/3 $
+                /// ([A019693](https://oeis.org/A019693))
+                pub const FRAC_TAU_3: $f = 2.09439510239319549230842892218633526;
+
+                /// $ τ/4 = π/2 $
+                /// ([A019693](https://oeis.org/A019693))
+                pub const FRAC_TAU_4: $f = Self::FRAC_PI_2;
+
+                /// $ τ/5 $
+                /// ([A019694](https://oeis.org/A019694))
+                pub const FRAC_TAU_5: $f = 1.25663706143591729538505735331180115;
+
+                /// $ τ/6 = π/3 $
+                /// ([A019670](https://oeis.org/A019670))
+                pub const FRAC_TAU_6: $f = Self::FRAC_PI_3;
+
+                /// $ τ/8 = π/4 $
+                /// ([A003881](https://oeis.org/A003881))
+                pub const FRAC_TAU_8: $f = Self::FRAC_PI_4;
+
+                /// $ τ/12 = π/6 $
+                /// ([A019673](https://oeis.org/A019673))
+                pub const FRAC_TAU_12: $f = Self::FRAC_PI_6;
+
+                /// $ τ/16 = 2π/8 $
+                /// ([A019675](https://oeis.org/A019675))
+                pub const FRAC_TAU_16: $f = Self::FRAC_PI_8;
+
+                /// $ 1/τ = 1/2π $
+                /// ([A086201](https://oeis.org/A086201))
+                pub const FRAC_1_TAU: $f = 0.159154943091895335768883763372514362;
+
+                /// $ 1/\sqrt{τ} = 1/sqrt{2π}$
+                /// ([A231863](https://oeis.org/A231863))
+                pub const FRAC_1_SQRT_TAU: $f = 0.398942280401432677939946059934381868;
+
+                /// $ 2/τ = 1/π $
+                /// ([A049541](https://oeis.org/A049541))
+                pub const FRAC_2_TAU: $f = Self::FRAC_1_PI;
+
+                /// $ 2/\sqrt{τ} = \sqrt{2/π} $
+                /// ([A231863](https://oeis.org/A231863))
+                pub const FRAC_2_SQRT_TAU: $f = 0.797884560802865355879892119868763737;
+
+                /* φ related */
+
+                /// $ φ $ the golden ratio $\frac{1+\sqrt{5}}{2}$
+                /// ([A001622](https://oeis.org/A001622))
+                // WAIT: https://github.com/rust-lang/rust/issues/103883
+                pub const PHI: $f = 1.618033988749894848204586834365638118;
+
+                /// sqrt{φ} $
+                /// ([A139339](https://oeis.org/A139339))
+                pub const SQRT_PHI: $f = 1.27201964951406896425242246173749149;
+
+                /// The tribonacci constant.
+                /// ([A058265](https://oeis.org/A058265))
+                pub const TRIBONACCI: $f = 1.83928675521416113255185256465328660;
+
+                /// The tetranacci constant.
+                /// ([A086088](https://oeis.org/A086088))
+                pub const TETRANACCI: $f = 1.92756197548292530426190586173662217;
+
+                /// The pentanacci constant.
+                /// ([A103814](http://oeis.org/A103814))
+                pub const PENTANACCI: $f = 1.96594823664548533718993737593440139;
+
+                /* integer sqrts */
+
+                /// $ \sqrt{2} $
+                /// ([A002193](https://oeis.org/A002193),
+                /// [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_2))
+                pub const SQRT_2: $f = 1.41421356237309504880168872420969808;
+
+                /// $ 1/\sqrt{2} $
+                /// ([A010503](https://oeis.org/A010503),
+                /// [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_2#Multiplicative_inverse))
+                pub const FRAC_1_SQRT_2: $f = 0.707106781186547524400844362104849039;
+
+                /// $ \sqrt{3} $
+                /// ([A002194](https://oeis.org/A002194),
+                /// [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_3))
+                // WAIT: https://github.com/rust-lang/rust/issues/103883
+                pub const SQRT_3: $f = 1.732050807568877293527446341505872367;
+
+                /// $ 1/\sqrt{3} $
+                // WAIT: https://github.com/rust-lang/rust/issues/103883
+                pub const FRAC_1_SQRT_3: $f = 0.577350269189625764509148780501957456;
+
+                /// $ \sqrt{5} $
+                /// ([A002163](https://oeis.org/A002163),
+                /// [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_5))
+                pub const SQRT_5: $f = 2.236067977499789696409173668731276235;
+
+                /// $ \sqrt{7} $
+                /// ([A010465](https://oeis.org/A010465))
+                pub const SQRT_7: $f = 2.645751311064590590501615753639260426;
+
+                /* integer cbrts */
+
+                /// $ \sqrt[\small 3]{2} $
+                /// ([A002580](https://oeis.org/A002580),
+                /// [wikipedia](https://en.wikipedia.org/wiki/Doubling_the_cube))
+                pub const CBRT_2: $f = 1.259921049894873164767210607278228350;
+
+                /// $ \sqrt[\small 3]{3} $
+                /// ([A002581](https://oeis.org/A002581))
+                pub const CBRT_3: $f = 1.442249570307408382321638310780109588;
+
+                /// $ 1/\sqrt[\small 3]{3} = (\normalsize\frac{1}{3})^{\small\frac{1}{3}} $
+                /// ([A072365](https://oeis.org/A072365))
+                pub const FRAC_1_CBRT_3: $f = 0.693361274350634704843352274785961795;
+
+                /* other */
+
+                /// $ e $ Euler's number
+                pub const E: $f = 2.71828182845904523536028747135266250;
+
+                /// $ γ $ The Euler-Mascheroni constant
+                /// ([A001620](https://oeis.org/A001620))
+                // WAIT: https://github.com/rust-lang/rust/issues/103883
+                pub const EGAMMA: $f = 0.577215664901532860606512090082402431;
+
+                /// log<sub>2</sub>(e)
+                pub const LOG2_E: $f = 1.44269504088896340735992468100189214;
+
+                /// log<sub>2</sub>(10)
+                pub const LOG2_10: $f = 3.32192809488736234787031942948939018;
+
+                /// log<sub>10</sub>(e)
+                pub const LOG10_E: $f = 0.434294481903251827651128918916605082;
+
+                /// log<sub>10</sub>(2)
+                pub const LOG10_2: $f = 0.301029995663981195213738894724493027;
+
+                /// ln(2)
+                pub const LN_2: $f = 0.693147180559945309417232121458176568;
+
+                /// ln(10)
+                pub const LN_10: $f = 2.30258509299404568401799145468436421;
+            }
+        }};
+    }
+    custom_impls![f32, f64];
+}
