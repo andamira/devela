@@ -8,6 +8,8 @@
 
 #![cfg_attr(not(feature = "math"), allow(unused))]
 
+use crate::meta::iif;
+
 /* floating-point constants */
 
 const BIAS_F32: u32 = 127;
@@ -60,12 +62,19 @@ pub trait FloatExt: Sized {
     /// The smallest integer greater than or equal to `self`.
     #[must_use]
     fn ceil(self) -> Self;
+    /// Returns the nearest integer to `self`, default rounding, same as
+    /// [`round_ties_away`][FloatExt::round_ties_away]
+    #[must_use]
+    fn round(self) -> Self;
     /// Returns the nearest integer to `self`, rounding ties away from `0.0`.
     #[must_use]
     fn round_ties_away(self) -> Self;
     /// Returns the nearest integer to `self`, rounding ties to the nearest even integer.
     #[must_use]
     fn round_ties_even(self) -> Self;
+    /// Returns the nearest integer to `self`, rounding ties to the nearest odd integer.
+    #[must_use]
+    fn round_ties_odd(self) -> Self;
     /// The integral part.
     #[must_use]
     fn trunc(self) -> Self;
@@ -300,9 +309,13 @@ macro_rules! impl_float_ext {
             #[inline(always)]
             fn ceil(self) -> Self { Fp::<$f>::ceil(self) }
             #[inline(always)]
+            fn round(self) -> Self { Fp::<$f>::round_ties_away(self) }
+            #[inline(always)]
             fn round_ties_away(self) -> Self { Fp::<$f>::round_ties_away(self) }
             #[inline(always)]
             fn round_ties_even(self) -> Self { Fp::<$f>::round_ties_even(self) }
+            #[inline(always)]
+            fn round_ties_odd(self) -> Self { Fp::<$f>::round_ties_odd(self) }
             #[inline(always)]
             fn trunc(self) -> Self { Fp::<$f>::trunc(self) }
             #[inline(always)]
@@ -769,10 +782,12 @@ mod _libm {
                 #[must_use]
                 #[inline(always)]
                 pub fn split(value: $f) -> ($f, $f) { Libm::<$f>::modf(value) }
-                /// A number that represents the sign of `a`.
+                /// A number that represents the sign of `a`, propagating `NaN`.
                 #[must_use]
                 #[inline(always)]
-                pub fn signum(a: $f) -> $f { a - Libm::<$f>::copysign(1.0 as $f, a) }
+                pub fn signum(a: $f) -> $f {
+                    iif![a.is_nan(); <$f>::NAN; Libm::<$f>::copysign(1.0, a)]
+                }
                 /// The euclidean division.
                 #[must_use]
                 #[inline(always)]
@@ -861,12 +876,18 @@ mod _either {
                 #[must_use]
                 #[inline]
                 pub fn round_ties_even(a: $f) -> $f {
-                    let rounded = Fp::<$f>::round_ties_away(a);
-                    if rounded % 2.0 == 0.0 || Fp::<$f>::abs(rounded - a) > 0.5 {
-                        rounded
-                    } else {
-                        rounded - Fp::<$f>::signum(a)
-                    }
+                    let r = Fp::<$f>::round_ties_away(a);
+                    iif![r % 2.0 == 0.0; r ;
+                        iif![Fp::<$f>::abs(a - r) == 0.5; r - Fp::<$f>::signum(a); r]]
+                }
+
+                /// Returns the nearest integer to `a`, rounding ties to the nearest odd integer.
+                #[must_use]
+                #[inline]
+                pub fn round_ties_odd(a: $f) -> $f {
+                    let r = Fp::<$f>::round_ties_away(a);
+                    iif![r % 2.0 != 0.0; r ;
+                        iif![Fp::<$f>::abs(a - r) == 0.5; r + Fp::<$f>::signum(a); r]]
                 }
 
                 /// Returns `true` if `a` is positive.
@@ -923,6 +944,8 @@ mod _either {
                 /// 34 for `f32` and 170 for `f64`.
                 ///
                 /// Note that precision is poor for large values.
+                #[must_use]
+                #[inline]
                 pub fn factorial(a: $ue) -> $f {
                     let mut result = 1.0;
                     for i in 1..=a {
@@ -1050,7 +1073,18 @@ mod _no_std_no_libm {
                     result
                 }
 
+                /// Returns the nearest integer to `self`, default rounding
+                ///
+                /// This is the default [`round_ties_away`] implementation.
+                #[must_use]
+                #[inline]
+                pub fn round(a: $f) -> $f {
+                    Fp::<$f>::trunc(a + Fp::<$f>::copysign(0.5 - 0.25 * <$f>::EPSILON, a))
+                }
+
                 /// Returns the nearest integer to `self`, rounding ties away from `0.0`.
+                ///
+                /// This is the default [`round`] implementation.
                 #[must_use]
                 #[inline]
                 pub fn round_ties_away(a: $f) -> $f {
@@ -1104,10 +1138,12 @@ mod _no_std_no_libm {
                     <$f>::from_bits(bits)
                 }
 
-                /// A number that represents the sign of `a`.
+                /// A number that represents the sign of `a`, propagating `NaN`.
                 #[must_use]
                 #[inline(always)]
-                pub fn signum(a: $f) -> $f { a - Fp::<$f>::copysign(1.0, a) }
+                pub fn signum(a: $f) -> $f {
+                    iif![a.is_nan(); <$f>::NAN; Fp::<$f>::copysign(1.0, a)]
+                }
 
                 /// A number composed of a magnitude of `a` and the sign of `sign`.
                 #[must_use]
