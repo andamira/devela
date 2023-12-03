@@ -156,7 +156,7 @@ pub trait FloatExt: Sized {
     /// number of terms based on the given table.
     #[must_use]
     fn exp(self) -> Self;
-    /// Returns `2^a`.
+    /// Returns $2^a$.
     #[must_use]
     #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
@@ -194,6 +194,9 @@ pub trait FloatExt: Sized {
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn log10(self) -> Self;
     /// The factorial.
+    ///
+    /// The maximum values with a representable result are:
+    /// 34 for `f32` and 170 for `f64`.
     #[must_use]
     fn factorial(n: u32) -> Self;
     /// The cubic root.
@@ -1040,9 +1043,7 @@ mod _whenever {
 
                 /// The sine calculated using Taylor series expansion.
                 ///
-                /// $$
-                /// \sin(a) = a - \frac{a^3}{3!} + \frac{a^5}{5!} - \frac{a^7}{7!} + \cdots
-                /// $$
+                /// $$ \sin(a) = a - \frac{a^3}{3!} + \frac{a^5}{5!} - \frac{a^7}{7!} + \cdots $$
                 ///
                 /// This Taylor series converges relatively quickly and uniformly
                 /// over the entire domain.
@@ -1058,7 +1059,6 @@ mod _whenever {
                 /// ± 0.500 →      5      8
                 /// ± 0.700 →      6      9
                 /// ± 0.900 →      6     10
-                /// ± 0.990 →      6     10
                 /// ± 0.999 →      6     10
                 /// ```
                 #[must_use]
@@ -1078,9 +1078,7 @@ mod _whenever {
 
                 /// Computes the cosine using taylor series expansion.
                 ///
-                /// $$
-                /// \cos(a) = 1 - \frac{a^2}{2!} + \frac{a^4}{4!} - \frac{a^6}{6!} + \cdots
-                /// $$
+                /// $$ \cos(a) = 1 - \frac{a^2}{2!} + \frac{a^4}{4!} - \frac{a^6}{6!} + \cdots $$
                 ///
                 /// This Taylor series converges relatively quickly and uniformly
                 /// over the entire domain.
@@ -1096,7 +1094,6 @@ mod _whenever {
                 /// ± 0.500 →      6      9
                 /// ± 0.700 →      6     10
                 /// ± 0.900 →      7     10
-                /// ± 0.990 →      7     11
                 /// ± 0.999 →      7     11
                 /// ```
                 #[must_use]
@@ -1134,7 +1131,6 @@ mod _whenever {
                 /// ± 0.500 →      6      9
                 /// ± 0.700 →      6     10
                 /// ± 0.900 →      7     10
-                /// ± 0.990 →      7     11
                 /// ± 0.999 →      7     11
                 /// ```
                 #[must_use]
@@ -1202,11 +1198,9 @@ mod _whenever {
 
                 /// Computes the arccosine using the Taylor expansion of arcsine.
                 ///
-                /// $$
-                /// arccos(a)=2π-arcsin(a)
-                /// $$
+                /// $$ arccos(a)=2π-arcsin(a) $$
                 ///
-                /// See the [`asin_taylor`][Self#method.asin_taylor] table for
+                /// See the [`asin_taylor_terms`][Self#method.asin_taylor_terms] table for
                 /// information about the number of `terms` needed.
                 #[must_use]
                 #[inline]
@@ -1224,14 +1218,10 @@ mod _whenever {
 
                 /// Computes the arctangent using Taylor series expansion.
                 ///
-                /// $$
-                /// \arctan(a) = a - \frac{a^3}{3} + \frac{a^5}{5} - \frac{a^7}{7} + \cdots
-                /// $$
+                /// $$ \arctan(a) = a - \frac{a^3}{3} + \frac{a^5}{5} - \frac{a^7}{7} + \cdots $$
                 ///
                 /// For values $ |a| > 1 $ it uses the identity:
-                /// $$
-                /// \arctan(a) = \frac{\pi}{2} - \arctan(\frac{1}{x})
-                /// $$
+                /// $$ \arctan(a) = \frac{\pi}{2} - \arctan(\frac{1}{x}) $$
                 ///
                 /// The series converges more slowly near the edges of the domain
                 /// (i.e., as `a` approaches -1 or 1). For more accurate results,
