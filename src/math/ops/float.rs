@@ -146,10 +146,15 @@ pub trait FloatExt: Sized {
     /// - <https://en.wikipedia.org/wiki/Newton%27s_method>.
     #[must_use]
     fn sqrt_nr(self) -> Self;
-    /// Returns `e^a` (the exponential function).
+    /// Returns $e^a$ (the exponential function).
+    ///
+    /// The maximum values with a representable result are:
+    /// 88.722… for `f32` and 709.782… for `f64`.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`exp_taylor`][Fp#method.exp_taylor] with the
+    /// number of terms based on the given table.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn exp(self) -> Self;
     /// Returns `2^a`.
     #[must_use]
@@ -157,9 +162,11 @@ pub trait FloatExt: Sized {
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn exp2(self) -> Self;
     /// The exponential minus 1, more accurately.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`exp_m1_taylor`][Fp#method.exp_m1_taylor] with the
+    /// number of terms based on the given table.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn exp_m1(self) -> Self;
     /// The natural logarithm.
     #[must_use]
@@ -375,18 +382,20 @@ macro_rules! impl_float_ext {
             fn sqrt_fisr(self) -> Self { Fp::<$f>::sqrt_fisr(self) }
             #[inline(always)]
             fn sqrt_nr(self) -> Self { Fp::<$f>::sqrt_nr(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn exp(self) -> Self { Fp::<$f>::exp(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
+            fn exp(self) -> Self { Fp::<$f>::exp_taylor(self, Fp::<$f>::exp_taylor_terms(self)) }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn exp2(self) -> Self { Fp::<$f>::exp2(self) }
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn exp_m1(self) -> Self { Fp::<$f>::exp_m1(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
+            fn exp_m1(self) -> Self {
+                Fp::<$f>::exp_m1_taylor(self, Fp::<$f>::exp_taylor_terms(self))
+            }
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
@@ -948,6 +957,71 @@ mod _whenever {
                     x_next
                 }
 
+                /// Computes the exponential function $e^x$ using Taylor series expansion.
+                ///
+                /// $$ e^x = 1 + a + \frac{a^2}{2!} + \frac{a^3}{3!} + \frac{a^4}{4!} + \cdots $$
+                /// For values $ a < 0 $ it uses the identity: $$ e^x = \frac{1}{e^-x} $$
+                ///
+                /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
+                #[must_use]
+                #[inline]
+                pub fn exp_taylor(a: $f, terms: u32) -> $f {
+                    iif![a < 0.0; return 1.0 / Self::exp_taylor(-a, terms)];
+                    let (mut result, mut term) = (1.0, 1.0);
+                    for i in 1..=terms {
+                        term *= a / i as $f;
+                        result += term;
+                    }
+                    result
+                }
+                /// Determines the number of terms needed for [`exp_taylor`][Self::exp_taylor]
+                /// to reach a stable result based on the input value.
+                ///
+                /// The following table shows the required number of `terms` needed
+                /// to reach the most precise result for both `f32` and `f64`:
+                /// ```txt
+                ///   value     t_f32  t_f64
+                /// -------------------------
+                /// ± 0.100 →       6     10
+                /// ± 1.000 →      11     18
+                /// ± 10.000 →     32     46
+                /// ± 20.000 →     49     68
+                /// ± 50.000 →     92    119
+                /// ± 88.722 →    143    177  (max for f32)
+                /// ± 150.000 →   ---    261
+                /// ± 300.000 →   ---    453
+                /// ± 500.000 →   ---    692
+                /// ± 709.782 →   ---    938  (max for f64)
+                /// ```
+                #[must_use]
+                #[inline(always)]
+                pub fn exp_taylor_terms(a: $f) -> $ue { Self::[<exp_taylor_terms_ $f>](a) }
+
+                /// Calculates $ e^a - 1 $ using the Taylor series expansion.
+                ///
+                /// $$ e^a -1 = a + \frac{a^2}{2!} + \frac{a^3}{3!} + \frac{a^4}{4!} + \cdots $$
+                /// For values $ a < 0 $ it uses the identity: $$ e^a -1 = -\frac{1}{e^{-a}+1} $$
+                /// For values $ a > 0.01 $ it uses [`exp_taylor`][Self::exp_taylor].
+                ///
+                /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
+                #[must_use]
+                #[inline]
+                pub fn exp_m1_taylor(a: $f, terms: u32) -> $f {
+                    if a < 0.0 {
+                        1.0 / Self::exp_m1_taylor(-a, terms)
+                    } else if a > 0.01 {
+                        Self::exp_taylor(a, terms) - 1.0
+                    } else {
+                        let (mut result, mut term, mut factorial) = (0.0, a, 1.0);
+                        for i in 1..=terms {
+                            result += term;
+                            factorial *= (i + 1) as $f;
+                            term *= a / factorial;
+                        }
+                        result
+                    }
+                }
+
                 /// The factorial of the integer value `a`.
                 ///
                 /// The maximum values with a representable result are:
@@ -1346,6 +1420,21 @@ mod _whenever {
             } else { 4151 // computed for 0.999
             }
         }
+        // Determines the number of terms needed for a Taylor series approximation
+        // of atan to reach a stable result based on the f32 input value.
+        #[must_use]
+        #[inline]
+        pub(super) fn exp_taylor_terms_f32(a: f32) -> u32 {
+            let abs_a = Self::abs(a);
+            if abs_a <= 0.1 { 6
+            } else if abs_a <= 1.0 { 11
+            } else if abs_a <= 10.0 { 32
+            } else if abs_a <= 20.0 { 49
+            } else if abs_a <= 50.0 { 92
+            } else { 143 // computed for max computable value 88.722
+            }
+        }
+
     }
     #[rustfmt::skip]
     impl Fp<f64> {
@@ -1375,6 +1464,24 @@ mod _whenever {
             } else if abs_a <= 0.9 { 152
             } else if abs_a <= 0.99 { 1466
             } else { 13604 // computed for 0.999
+            }
+        }
+        // Determines the number of terms needed for a Taylor series approximation
+        // of atan to reach a stable result based on the f64 input value.
+        #[must_use]
+        #[inline]
+        pub(super) fn exp_taylor_terms_f64(a: f64) -> u32 {
+            let abs_a = Self::abs(a);
+            if abs_a <= 0.1 { 10
+            } else if abs_a <= 1.0 { 18
+            } else if abs_a <= 10.0 { 46
+            } else if abs_a <= 20.0 { 68
+            } else if abs_a <= 50.0 { 119
+            } else if abs_a <= 89.0 { 177
+            } else if abs_a <= 150.0 { 261
+            } else if abs_a <= 300.0 { 453
+            } else if abs_a <= 500.0 { 692
+            } else { 938 // computed for max computable value 709.782
             }
         }
     }
