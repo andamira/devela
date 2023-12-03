@@ -136,14 +136,12 @@ pub trait FloatExt: Sized {
     /// otherwise it's equal to [`sqrt_nr`][Self::sqrt_nr].
     #[must_use]
     fn sqrt(self) -> Self;
-    /// The square root calculated using the fast inverse square root algorithm.
-    ///
-    /// - <https://en.wikipedia.org/wiki/Fast_inverse_square_root>.
+    /// The square root calculated using the
+    /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
     #[must_use]
     fn sqrt_fisr(self) -> Self;
-    /// The square root calculated using the Newton-Raphson method.
-    ///
-    /// - <https://en.wikipedia.org/wiki/Newton%27s_method>.
+    /// The square root calculated using the
+    /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
     #[must_use]
     fn sqrt_nr(self) -> Self;
     /// Returns $e^a$ (the exponential function).
@@ -151,21 +149,20 @@ pub trait FloatExt: Sized {
     /// The maximum values with a representable result are:
     /// 88.722… for `f32` and 709.782… for `f64`.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`exp_taylor`][Fp#method.exp_taylor] with the
-    /// number of terms based on the given table.
+    /// With both `std` and `libm` disabled it leverages [`exp_taylor`][Fp#method.exp_taylor]
+    /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
     #[must_use]
     fn exp(self) -> Self;
     /// Returns $2^a$.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`exp2_taylor`][Fp#method.exp2_taylor]
+    /// with [`exp2_taylor_terms`][Fp#method.exp2_taylor_terms].
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn exp2(self) -> Self;
     /// The exponential minus 1, more accurately.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`exp_m1_taylor`][Fp#method.exp_m1_taylor] with the
-    /// number of terms based on the given table.
+    /// With both `std` and `libm` disabled it leverages [`exp_m1_taylor`][Fp#method.exp_m1_taylor]
+    /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
     #[must_use]
     fn exp_m1(self) -> Self;
     /// The natural logarithm.
@@ -211,48 +208,44 @@ pub trait FloatExt: Sized {
     fn hypot(self, rhs: Self) -> Self;
     /// The sine.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`sin_taylor`][Fp#method.sin_taylor] with 8 terms.
+    /// With both `std` and `libm` disabled it leverages [`sin_taylor`][Fp#method.sin_taylor]
+    /// with 8 terms.
     #[must_use]
     fn sin(self) -> Self;
     /// The cosine.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`cos_taylor`][Fp#method.cos_taylor] with 8 terms.
+    /// With both `std` and `libm` disabled it leverages [`cos_taylor`][Fp#method.cos_taylor]
+    /// with 8 terms.
     #[must_use]
     fn cos(self) -> Self;
     /// The tangent.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`tan_taylor`][Fp#method.tan_taylor] with 8 terms.
+    /// With both `std` and `libm` disabled it leverages [`tan_taylor`][Fp#method.tan_taylor]
+    /// with 8 terms.
     #[must_use]
     fn tan(self) -> Self;
     /// The arc sine.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`asin_taylor`][Fp#method.asin_taylor] with the
-    /// number of terms based on the given table.
+    /// With both `std` and `libm` disabled it leverages [`asin_taylor`][Fp#method.asin_taylor]
+    /// with [`asin_taylor_terms`][Fp#method.asin_taylor_terms].
     #[must_use]
     fn asin(self) -> Self;
     /// The arc cosine.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`acos_taylor`][Fp#method.acos_taylor] with the
-    /// number of terms based on the given table.
+    /// With both `std` and `libm` disabled it leverages [`acos_taylor`][Fp#method.acos_taylor]
+    /// with [`acos_taylor_terms`][Fp#method.acos_taylor_terms].
     #[must_use]
     fn acos(self) -> Self;
     /// The arc tangent.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`atan_taylor`][Fp#method.atan_taylor] with the
-    /// number of terms based on the given table.
+    /// With both `std` and `libm` disabled it leverages [`atan_taylor`][Fp#method.atan_taylor]
+    /// with [`atan_taylor_terms`][Fp#method.atan_taylor_terms].
     #[must_use]
     fn atan(self) -> Self;
     /// The arc tangent of two variables.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`atan2_taylor`][Fp#method.atan2_taylor] with the
-    /// number of terms based on the given table.
+    /// With both `std` and `libm` disabled it leverages [`atan2_taylor`][Fp#method.atan2_taylor]
+    /// with [`atan2_taylor_terms`][Fp#method.atan2_taylor_terms].
     #[must_use]
     fn atan2(self, other: Self) -> Self;
     /// Returns both the sine and cosine.
@@ -261,19 +254,22 @@ pub trait FloatExt: Sized {
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn sin_cos(self) -> (Self, Self);
     /// The hyperbolic sine.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`sinh_taylor`][Fp#method.sinh_taylor]
+    /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn sinh(self) -> Self;
     /// The hyperbolic cosine.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`cosh_taylor`][Fp#method.cosh_taylor]
+    /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn cosh(self) -> Self;
     /// The hyperbolic tangent.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`cosh_taylor`][Fp#method.cosh_taylor]
+    /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn tanh(self) -> Self;
     /// The inverse hyperbolic sine.
     #[must_use]
@@ -390,9 +386,10 @@ macro_rules! impl_float_ext {
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
             fn exp(self) -> Self { Fp::<$f>::exp_taylor(self, Fp::<$f>::exp_taylor_terms(self)) }
             #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn exp2(self) -> Self { Fp::<$f>::exp2(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
+            fn exp2(self) -> Self { Fp::<$f>::exp2_taylor(self, Fp::<$f>::exp2_taylor_terms(self)) }
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn exp_m1(self) -> Self { Fp::<$f>::exp_m1(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
@@ -462,15 +459,18 @@ macro_rules! impl_float_ext {
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos(self) }
-            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn sinh(self) -> Self { Fp::<$f>::sinh(self) }
-            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
+            fn sinh(self) -> Self { Fp::<$f>::sinh_taylor(self, Fp::<$f>::exp_taylor_terms(self)) }
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn cosh(self) -> Self { Fp::<$f>::cosh(self) }
-            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
+            fn cosh(self) -> Self { Fp::<$f>::cosh_taylor(self, Fp::<$f>::exp_taylor_terms(self)) }
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn tanh(self) -> Self { Fp::<$f>::tanh(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
+            fn tanh(self) -> Self { Fp::<$f>::tanh_taylor(self, Fp::<$f>::exp_taylor_terms(self)) }
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn asinh(self) -> Self { Fp::<$f>::asinh(self) }
@@ -926,15 +926,12 @@ mod _whenever {
                 #[inline]
                 pub fn is_sign_negative(a: $f) -> bool { <$f>::is_sign_negative(a) }
 
-                /// The square root calculated using the fast inverse square root algorithm.
-                ///
-                /// - <https://en.wikipedia.org/wiki/Fast_inverse_square_root>.
+                /// The square root calculated using the
+                /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
                 #[must_use]
                 #[inline]
                 pub fn sqrt_fisr(a: $f) -> $f {
-                    let mut i = a.to_bits();
-                    let three_halfs: $f = 1.5;
-                    let x2 = a * 0.5;
+                    let (mut i, three_halfs, x2) = (a.to_bits(), 1.5, a * 0.5);
                     let mut y: $f;
 
                     i = [< FISR_MAGIC_ $f:upper >] - (i >> 1);
@@ -944,9 +941,8 @@ mod _whenever {
                     1.0 / y
                 }
 
-                /// The square root calculated using the Newton-Raphson method.
-                ///
-                /// - <https://en.wikipedia.org/wiki/Newton%27s_method>.
+                /// The square root calculated using the
+                /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
                 #[must_use]
                 #[inline]
                 pub fn sqrt_nr(a: $f) -> $f {
@@ -968,7 +964,7 @@ mod _whenever {
                 /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
                 #[must_use]
                 #[inline]
-                pub fn exp_taylor(a: $f, terms: u32) -> $f {
+                pub fn exp_taylor(a: $f, terms: $ue) -> $f {
                     iif![a < 0.0; return 1.0 / Self::exp_taylor(-a, terms)];
                     let (mut result, mut term) = (1.0, 1.0);
                     for i in 1..=terms {
@@ -1010,7 +1006,7 @@ mod _whenever {
                 /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
                 #[must_use]
                 #[inline]
-                pub fn exp_m1_taylor(a: $f, terms: u32) -> $f {
+                pub fn exp_m1_taylor(a: $f, terms: $ue) -> $f {
                     if a < 0.0 {
                         1.0 / Self::exp_m1_taylor(-a, terms)
                     } else if a > 0.001 {
@@ -1025,6 +1021,47 @@ mod _whenever {
                         result
                     }
                 }
+
+                /// Calculates $ 2^a $ using the Taylor series expansion.
+                ///
+                /// The series based on the formula $ 2^x = e^{x \ln(2)} $ is:
+                /// $$
+                /// 2^x = 1 + x \ln(2) + \frac{(x \ln(2))^2}{2!} +
+                /// \frac{(x \ln(2))^3}{3!} + \frac{(x \ln(2))^4}{4!} + \cdots
+                /// $$
+                ///
+                /// The maximum values with a representable result are:
+                /// 127 for `f32` and 1023 for `f64`.
+                pub fn exp2_taylor(x: $f, terms: $ue) -> $f {
+                    let (mut result, mut term) = (1.0, x * Self::LN_2);
+                    for n in 1..terms {
+                        result += term;
+                        term *= x * Self::LN_2 / (n as $f + 1.0);
+                    }
+                    result
+                }
+                /// Determines the number of terms needed for [`exp2_taylor`][Self::exp2_taylor]
+                /// to reach a stable result based on the input value.
+                ///
+                /// The following table shows the required number of `terms` needed
+                /// to reach the most precise result for both `f32` and `f64`:
+                /// ```txt
+                ///   value     t_f32  t_f64
+                /// -------------------------
+                /// ± 0.3 →        8     13
+                /// ± 3.0 →       15     25
+                /// ± 7.0 →       22     34
+                /// ± 15.0 →      34     49
+                /// ± 31.0 →      52     71
+                /// ± 63.0 →      84    110
+                /// ± 127.999 →  144    178 (max for f32)
+                /// ± 255.0 →    ---    298
+                /// ± 511.0 →    ---    520
+                /// ± 1023.999 → ---    939 (max for f64)
+                /// ```
+                #[must_use]
+                #[inline(always)]
+                pub fn exp2_taylor_terms(a: $f) -> $ue { Self::[<exp2_taylor_terms_ $f>](a) }
 
                 /// The factorial of the integer value `a`.
                 ///
@@ -1113,6 +1150,8 @@ mod _whenever {
                 }
 
                 /// Computes the tangent using Taylor series expansion of sine and cosine.
+                ///
+                /// $$ \tan(a) = \frac{\sin(a)}{\cos(a)} $$
                 ///
                 /// The tangent function has singularities and is not defined for
                 /// `cos(a) = 0`. This function clamps `a` within an appropriate range
@@ -1294,6 +1333,47 @@ mod _whenever {
                     }
                 }
 
+                /// The hyperbolic sine calculated using Taylor series expansion
+                /// via the exponent formula.
+                ///
+                /// $$ \sinh(a) = \frac{e^x - e^{-x}}{2} $$
+                ///
+                /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
+                /// information about the number of `terms` needed.
+                #[must_use]
+                #[inline]
+                pub fn sinh_taylor(a: $f, terms: $ue) -> $f {
+                    (Self::exp_taylor(a, terms) - Self::exp_taylor(-a, terms)) / 2.0
+                }
+
+                /// The hyperbolic cosine calculated using Taylor series expansion
+                /// via the exponent formula.
+                ///
+                /// $$ \cosh(a) = \frac{e^x + e^{-x}}{2} $$
+                ///
+                /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
+                /// information about the number of `terms` needed.
+                #[must_use]
+                #[inline]
+                pub fn cosh_taylor(a: $f, terms: $ue) -> $f {
+                    (Self::exp_taylor(a, terms) + Self::exp_taylor(-a, terms)) / 2.0
+                }
+
+                /// Computes the hyperbolic tangent using Taylor series expansion of
+                /// hyperbolic sine and cosine.
+                ///
+                /// $$ \tanh(a) = \frac{\sinh(a)}{\cosh(a)} $$
+                ///
+                /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
+                /// information about the number of `terms` needed.
+                #[must_use]
+                #[inline]
+                pub fn tanh_taylor(a: $f, terms: $ue) -> $f {
+                    let sinh_approx = Self::sinh_taylor(a, terms);
+                    let cosh_approx = Self::cosh_taylor(a, terms);
+                    sinh_approx / cosh_approx
+                }
+
                 /// Returns the clamped value, ignoring `NaN`.
                 #[must_use]
                 #[inline(always)]
@@ -1381,8 +1461,6 @@ mod _whenever {
 
     #[rustfmt::skip]
     impl Fp<f32> {
-        // Determines the number of terms needed for a Taylor series approximation
-        // of asin & acos to reach a stable result based on the f32 input value.
         #[must_use]
         #[inline]
         pub(super) fn asin_acos_taylor_terms_f32(a: f32) -> u32 {
@@ -1396,8 +1474,6 @@ mod _whenever {
             } else { 1989 // computed for 0.999
             }
         }
-        // Determines the number of terms needed for a Taylor series approximation
-        // of atan to reach a stable result based on the f32 input value.
         #[must_use]
         #[inline]
         pub(super) fn atan_taylor_terms_f32(a: f32) -> u32 {
@@ -1411,8 +1487,6 @@ mod _whenever {
             } else { 4151 // computed for 0.999
             }
         }
-        // Determines the number of terms needed for a Taylor series approximation
-        // of atan to reach a stable result based on the f32 input value.
         #[must_use]
         #[inline]
         pub(super) fn exp_taylor_terms_f32(a: f32) -> u32 {
@@ -1426,7 +1500,19 @@ mod _whenever {
             } else { 143 // computed for max computable value 88.722
             }
         }
-
+        #[must_use]
+        #[inline]
+        pub(super) fn exp2_taylor_terms_f32(a: f32) -> u32 {
+            let abs_a = Self::abs(a);
+            if abs_a <= 0.3 { 8
+            } else if abs_a <= 3.0 { 15
+            } else if abs_a <= 7.0 { 22
+            } else if abs_a <= 15.0 { 34
+            } else if abs_a <= 31.0 { 52
+            } else if abs_a <= 63.0 { 84
+            } else { 144 // computed for max computable value 127.999
+            }
+        }
     }
     #[rustfmt::skip]
     impl Fp<f64> {
@@ -1443,8 +1529,6 @@ mod _whenever {
             } else { 10768 // computed for 0.999
             }
         }
-        // Determines the number of terms needed for a Taylor series approximation
-        // of atan to reach a stable result based on the f64 input value.
         #[must_use]
         #[inline]
         pub(super) fn atan_taylor_terms_f64(a: f64) -> u32 {
@@ -1458,8 +1542,6 @@ mod _whenever {
             } else { 13604 // computed for 0.999
             }
         }
-        // Determines the number of terms needed for a Taylor series approximation
-        // of atan to reach a stable result based on the f64 input value.
         #[must_use]
         #[inline]
         pub(super) fn exp_taylor_terms_f64(a: f64) -> u32 {
@@ -1475,6 +1557,22 @@ mod _whenever {
             } else if abs_a <= 300.0 { 453
             } else if abs_a <= 500.0 { 692
             } else { 938 // computed for max computable value 709.782
+            }
+        }
+        #[must_use]
+        #[inline]
+        pub(super) fn exp2_taylor_terms_f64(a: f64) -> u32 {
+            let abs_a = Self::abs(a);
+            if abs_a <= 0.3 { 13
+            } else if abs_a <= 3.0 { 25
+            } else if abs_a <= 7.0 { 34
+            } else if abs_a <= 15.0 { 49
+            } else if abs_a <= 31.0 { 71
+            } else if abs_a <= 63.0 { 110
+            } else if abs_a <= 128.0 { 178
+            } else if abs_a <= 255.0 { 298
+            } else if abs_a <= 511.0 { 520
+            } else { 939 // computed for max computable value 1023.999
             }
         }
     }
