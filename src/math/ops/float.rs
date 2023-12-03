@@ -144,7 +144,7 @@ pub trait FloatExt: Sized {
     /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
     #[must_use]
     fn sqrt_nr(self) -> Self;
-    /// Returns $e^a$ (the exponential function).
+    /// Returns $e^x$ (the exponential function).
     ///
     /// The maximum values with a representable result are:
     /// 88.722… for `f32` and 709.782… for `f64`.
@@ -153,7 +153,7 @@ pub trait FloatExt: Sized {
     /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
     #[must_use]
     fn exp(self) -> Self;
-    /// Returns $2^a$.
+    /// Returns $2^x$.
     ///
     /// With both `std` and `libm` disabled it leverages [`exp2_taylor`][Fp#method.exp2_taylor]
     /// with [`exp2_taylor_terms`][Fp#method.exp2_taylor_terms].
@@ -385,7 +385,6 @@ macro_rules! impl_float_ext {
             fn exp(self) -> Self { Fp::<$f>::exp(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
             fn exp(self) -> Self { Fp::<$f>::exp_taylor(self, Fp::<$f>::exp_taylor_terms(self)) }
-            #[inline(always)]
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn exp2(self) -> Self { Fp::<$f>::exp2(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
@@ -578,86 +577,86 @@ mod _std {
     use super::{impl_fp, Fp};
     // custom implementations are commented out:
     impl_fp![std:f*:
-       "The largest integer less than or equal to `a`."
-        floor = floor: a;
-        "The smallest integer greater than or equal to `a`."
-        ceil = ceil: a;
-        "Returns the nearest integer to `a`, rounding ties away from `0.0`."
-        round = round_ties_away: a;
+       "The largest integer less than or equal to `x`."
+        floor = floor: x;
+        "The smallest integer greater than or equal to `x`."
+        ceil = ceil: x;
+        "Returns the nearest integer to `x`, rounding ties away from `0.0`."
+        round = round_ties_away: x;
         "The integral part."
-        trunc = trunc: a;
+        trunc = trunc: x;
         "The fractional part."
-        fract = fract: a;
+        fract = fract: x;
         // split == modf
         "The absolute value."
-        abs = abs: a;
-        "A number that represents the sign of `a`."
-        signum = signum: a;
+        abs = abs: x;
+        "A number that represents the sign of `x`."
+        signum = signum: x;
         "A number composed of a `magnitude` and a `sign`."
         copysign = copysign: magnitude, sign;
-        "Fused multiply-add. Computes (a * b) + c with only one rounding error."
-        mul_add = mul_add: a, b, c;
+        "Fused multiply-add. Computes (x * y) + z with only one rounding error."
+        mul_add = mul_add: x, y, z;
         "The euclidean division."
-        div_euclid = div_euclid: a, b;
-        "The least nonnegative remainder of `a` % `b`."
-        rem_euclid = rem_euclid: a, b;
-        "Raises `a` to the `p` floating point power."
-        powf = powf: a, p;
+        div_euclid = div_euclid: x, y;
+        "The least nonnegative remainder of `x` % `y`."
+        rem_euclid = rem_euclid: x, y;
+        "Raises `x` to the `p` floating point power."
+        powf = powf: x, p;
         // powi
         "The square root."
-        sqrt = sqrt: a;
-        "Returns `e^a` (the exponential function)."
-        exp = exp: a;
-        "Returns `2^a`."
-        exp2 = exp2: a;
-        "The exponential minus 1, more accurately."
-        exp_m1 = exp_m1: a;
+        sqrt = sqrt: x;
+        "Returns $e^x$ (the exponential function)."
+        exp = exp: x;
+        "Returns $2^x$."
+        exp2 = exp2: x;
+        "Returns $e^x -1$, more accurately for small values of `x`."
+        exp_m1 = exp_m1: x;
         "The natural logarithm."
-        ln = ln: a;
+        ln = ln: x;
         "The natural logarithm plus 1, more accurately."
-        ln_1p = ln_1p: a;
+        ln_1p = ln_1p: x;
         "The logarithm of the number with respect to an arbitrary base."
-        log = log: a, b;
+        log = log: x, y;
         "The base 2 logarithm."
-        log2 = log2: a;
+        log2 = log2: x;
         "The base 10 logarithm."
-        log10 = log10: a;
+        log10 = log10: x;
         "The cubic root."
-        cbrt = cbrt: a;
+        cbrt = cbrt: x;
         "The hypothenuse (the euclidean distance)."
-        hypot = hypot: a, b;
+        hypot = hypot: x, y;
         "The sine."
-        sin = sin: a;
+        sin = sin: x;
         "The cosine."
-        cos = cos: a;
+        cos = cos: x;
         "The tangent."
-        tan = tan: a;
+        tan = tan: x;
         "The arc sine."
-        asin = asin: a;
+        asin = asin: x;
         "The arc cosine."
-        acos = acos: a;
+        acos = acos: x;
         "The arc tangent."
-        atan = atan: a;
+        atan = atan: x;
         "The arc tangent of two variables."
-        atan2 = atan2: a, b;
+        atan2 = atan2: x, y;
         // sin_cos
         "The hyperbolic sine."
-        sinh = sinh: a;
+        sinh = sinh: x;
         "The hyperbolic cosine."
-        cosh = cosh: a;
+        cosh = cosh: x;
         "The hyperbolic tangent."
-        tanh = tanh: a;
+        tanh = tanh: x;
         "The inverse hyperbolic sine."
-        asinh = asinh: a;
+        asinh = asinh: x;
         "The inverse hyperbolic cosine."
-        acosh = acosh: a;
+        acosh = acosh: x;
         "The inverse hyperbolic tangent."
-        atanh = atanh: a;
+        atanh = atanh: x;
 
         "Returns the maximum of two numbers, ignoring `NaN`."
-        max = max: a, b;
+        max = max: x, y;
         "Returns the minimum of two numbers, ignoring `NaN`."
-        min = min: a, b
+        min = min: x, y
 
         /* not implemented */
         // exp10: https://internals.rust-lang.org/t/enh-add-exp10-and-expf-base-x-f64-f32-methods-to-stdlib-to-symmetrize-api
@@ -672,12 +671,12 @@ mod _std {
         (@$f:ty, $e:ty) => {
             /// # *Implementations using the `std` feature*.
             impl Fp<$f> {
-                /// Raises `a` to the `p` integer power.
+                /// Raises `x` to the `p` integer power.
                 #[inline(always)]
-                pub fn powi(a: $f, p: $e) -> $f { <$f>::powi(a, p) }
+                pub fn powi(x: $f, p: $e) -> $f { <$f>::powi(x, p) }
                 /// Both the sine and cosine.
                 #[inline(always)]
-                pub fn sin_cos(a: $f) -> ($f, $f) { <$f>::sin_cos(a) }
+                pub fn sin_cos(x: $f) -> ($f, $f) { <$f>::sin_cos(x) }
                 /// Returns the integral and fractional parts.
                 #[inline(always)]
                 pub fn split(value: $f) -> ($f, $f) { (value.trunc(), value.fract()) }
@@ -693,104 +692,104 @@ mod _libm {
     use crate::{_dep::libm::Libm, meta::iif};
     // custom implementations are commented out
     impl_fp![libm:f*:
-        "The largest integer less than or equal to `a`."
-        floor = floor: a;
-        "The smallest integer greater than or equal to `a`."
-        ceil = ceil: a;
-        "Returns the nearest integer to `a`, rounding ties away from `0.0`."
-        round = round_ties_away: a;
+        "The largest integer less than or equal to `x`."
+        floor = floor: x;
+        "The smallest integer greater than or equal to `x`."
+        ceil = ceil: x;
+        "Returns the nearest integer to `x`, rounding ties away from `0.0`."
+        round = round_ties_away: x;
         "The integral part."
-        trunc = trunc: a;
+        trunc = trunc: x;
         // fract
         // split == modf
         "The absolute value."
-        fabs = abs: a;
+        fabs = abs: x;
         // signum
         "Returns a number composed of a `magnitude` and a `sign`."
-        copysign = copysign: a, b;
-        "Fused multiply-add. Computes (a * b) + c with only one rounding error."
-        fma = mul_add: a, b, c;
+        copysign = copysign: magnitude, sign;
+        "Fused multiply-add. Computes (x * y) + z with only one rounding error."
+        fma = mul_add: x, y, z;
         // div_euclid
         // rem_euclid
-        "Raises `a` to the `p` floating point power."
-        pow = powf: a, p;
+        "Raises `x` to the `p` floating point power."
+        pow = powf: x, p;
         // powi
         "Square root."
-        sqrt = sqrt: a;
-        "Returns `e^a` (the exponential function)."
-        exp = exp: a;
-        "Returns `2^a`."
-        exp2 = exp2: a;
-        "The exponential minus 1, more accurately."
-        expm1 = exp_m1: a;
-        // ln = ln: a;
+        sqrt = sqrt: x;
+        "Returns $e^x$ (the exponential function)."
+        exp = exp: x;
+        "Returns $2^x$."
+        exp2 = exp2: x;
+        "Returns $e^x -1$, more accurately for small values of `x`."
+        expm1 = exp_m1: x;
+        // ln = ln: x;
         "The natural logarithm."
-        log = ln: a;
+        log = ln: x;
         "The natural logarithm plus 1, more accurately."
-        log1p = ln_1p: a;
+        log1p = ln_1p: x;
         // log
         "The base 2 logarithm."
-        log2 = log2: a;
+        log2 = log2: x;
         "The base 10 logarithm."
-        log10 = log10: a;
+        log10 = log10: x;
         "The cubic root."
-        cbrt = cbrt: a;
+        cbrt = cbrt: x;
         "The hypothenuse (the euclidean distance)."
-        hypot = hypot: a, b;
+        hypot = hypot: x, y;
         "The sine."
-        sin = sin: a;
+        sin = sin: x;
         "The cosine."
-        cos = cos: a;
+        cos = cos: x;
         "The tangent."
-        tan = tan: a;
+        tan = tan: x;
         "The arc sine."
-        asin = asin: a;
+        asin = asin: x;
         "The arc cosine."
-        acos = acos: a;
+        acos = acos: x;
         "The arc tangent."
-        atan = atan: a;
+        atan = atan: x;
         "The arc tangent of two variables."
-        atan2 = atan2: a, b;
+        atan2 = atan2: x, y;
         // sin_cos
         "The hyperbolic sine."
-        sinh = sinh: a;
+        sinh = sinh: x;
         "The hyperbolic cosine."
-        cosh = cosh: a;
+        cosh = cosh: x;
         "The hyperbolic tangent."
-        tanh = tanh: a;
+        tanh = tanh: x;
         "The inverse hyperbolic sine."
-        asinh = asinh: a;
+        asinh = asinh: x;
         "The inverse hyperbolic cosine."
-        acosh = acosh: a;
+        acosh = acosh: x;
         "The inverse hyperbolic tangent."
-        atanh = atanh: a;
+        atanh = atanh: x;
 
         "Returns the minimum of two numbers, ignoring `NaN`."
-        fmax = max: a, b;
+        fmax = max: x, y;
         "Returns the minimum of two numbers, ignoring `NaN`."
-        fmin = min: a, b;
+        fmin = min: x, y;
 
         /* only in libm */
 
-        "Returns `10^a`."
-        exp10 = exp10: a;
+        "Returns `10^x`."
+        exp10 = exp10: x;
         "The gamma function. Generalizes the factorial function to complex numbers."
-        tgamma = gamma : a;
+        tgamma = gamma : x;
         "The natural logarithm of the absolute value of the gamma function."
-        lgamma = lgamma : a;
+        lgamma = lgamma : x;
         "The error function."
-        erf = erf: a;
+        erf = erf: x;
         "The complementary error function (1 - erf)."
-        erfc = erfc: a;
+        erfc = erfc: x;
         "The bessel function of the first kind, of order 0."
-        j0 = j0: a;
+        j0 = j0: x;
         "The bessel function of the first kind, of order 1."
-        j1 = j1: a;
+        j1 = j1: x;
         // jn
         "The bessel function of the second kind, of order 0."
-        y0 = y0: a;
+        y0 = y0: x;
         "The bessel function of the second kind, of order 1."
-        y1 = y1: a
+        y1 = y1: x
         // yn
     ];
     // $f: the floating-point type.
@@ -803,34 +802,34 @@ mod _libm {
                 /// Returns the fractional part.
                 #[must_use]
                 #[inline(always)]
-                pub fn fract(a: $f) -> $f { a - Libm::<$f>::trunc(a) }
+                pub fn fract(x: $f) -> $f { x - Libm::<$f>::trunc(x) }
                 /// The integral and fractional parts.
                 #[must_use]
                 #[inline(always)]
                 pub fn split(value: $f) -> ($f, $f) { Libm::<$f>::modf(value) }
-                /// A number that represents the sign of `a`, propagating `NaN`.
+                /// A number that represents the sign of `x`, propagating `NaN`.
                 #[must_use]
                 #[inline(always)]
-                pub fn signum(a: $f) -> $f {
-                    iif![a.is_nan(); <$f>::NAN; Libm::<$f>::copysign(1.0, a)]
+                pub fn signum(x: $f) -> $f {
+                    iif![x.is_nan(); <$f>::NAN; Libm::<$f>::copysign(1.0, x)]
                 }
                 /// The euclidean division.
                 #[must_use]
                 #[inline(always)]
-                pub fn div_euclid(a: $f, b: $f) -> $f {
-                    let q = Self::trunc(a / b);
-                    iif![a % b < 0.0; return iif![b > 0.0; q - 1.0; q + 1.0]]; q
+                pub fn div_euclid(x: $f, y: $f) -> $f {
+                    let q = Self::trunc(x / y);
+                    iif![x % y < 0.0; return iif![y > 0.0; q - 1.0; q + 1.0]]; q
                 }
-                /// The least nonnegative remainder of `a` % `b`.
+                /// The least nonnegative remainder of `x` % `y`.
                 #[must_use]
                 #[inline(always)]
-                pub fn rem_euclid(a: $f, b: $f) -> $f {
-                    let r = a % b; iif![r < 0.0; r + Self::abs(b); r]
+                pub fn rem_euclid(x: $f, y: $f) -> $f {
+                    let r = x % y; iif![r < 0.0; r + Self::abs(y); r]
                 }
-                /// Raises `a` to the `p` integer power.
+                /// Raises `x` to the `p` integer power.
                 #[must_use]
                 #[inline(always)]
-                pub fn powi(a: $f, p: $e) -> $f { Self::powf(a, p as $f) }
+                pub fn powi(x: $f, p: $e) -> $f { Self::powf(x, p as $f) }
                 /// The logarithm of the number with respect to an arbitrary base.
                 #[must_use]
                 #[inline(always)]
@@ -838,11 +837,11 @@ mod _libm {
                 /// The sine and cosine.
                 #[must_use]
                 #[inline(always)]
-                pub fn sin_cos(a: $f) -> ($f, $f) { Libm::<$f>::sincos(a) }
+                pub fn sin_cos(x: $f) -> ($f, $f) { Libm::<$f>::sincos(x) }
 
                 // NOTE: implemented manually in _either
                 //
-                // /// Returns the clamped a value, propagating `NaN`.
+                // /// Returns the clamped `x` value, propagating `NaN`.
                 // #[must_use]
                 // #[inline(always)]
                 // pub fn clamp_nan(value: $f, min: $f, max: $f) -> $f {
@@ -851,14 +850,14 @@ mod _libm {
                 // /// Returns the maximum of two numbers, propagating `NaN`.
                 // #[must_use]
                 // #[inline(always)]
-                // pub fn max_nan(a: $f, b: $f) -> $f {
-                //     iif![a.is_nan() || b.is_nan(); <$f>::NAN; Libm::<$f>::fmax(a, b)]
+                // pub fn max_nan(x: $f, y: $f) -> $f {
+                //     iif![x.is_nan() || y.is_nan(); <$f>::NAN; Libm::<$f>::fmax(x, y)]
                 // }
                 // /// Returns the minimum of two numbers, propagating `NaN`.
                 // #[must_use]
                 // #[inline(always)]
-                // pub fn min_nan(a: $f, b: $f) -> $f {
-                //     iif![a.is_nan() || b.is_nan(); <$f>::NAN; Libm::<$f>::fmin(a, b)]
+                // pub fn min_nan(x: $f, y: $f) -> $f {
+                //     iif![x.is_nan() || y.is_nan(); <$f>::NAN; Libm::<$f>::fmin(x, y)]
                 // }
 
                 /* only in libm */
@@ -867,15 +866,15 @@ mod _libm {
                 /// plus its sign.
                 #[must_use]
                 #[inline(always)]
-                pub fn lgamma_r(a: $f) -> ($f, $e) { Libm::<$f>::lgamma_r(a) }
+                pub fn lgamma_r(x: $f) -> ($f, $e) { Libm::<$f>::lgamma_r(x) }
                 /// Bessel function of the first kind, of order `n`.
                 #[must_use]
                 #[inline(always)]
-                pub fn jn(n: $e, a: $f) -> $f { Libm::<$f>::jn(n, a) }
+                pub fn jn(n: $e, x: $f) -> $f { Libm::<$f>::jn(n, x) }
                 /// Bessel function of the second kind, of order `n`.
                 #[must_use]
                 #[inline(always)]
-                pub fn yn(n: $e, a: $f) -> $f { Libm::<$f>::yn(n, a) }
+                pub fn yn(n: $e, x: $f) -> $f { Libm::<$f>::yn(n, x) }
             }
         };
     }
@@ -897,41 +896,41 @@ mod _whenever {
             ///
             /// Total order const fns will only be `const` if the `unsafe_math` feature is enabled.
             impl Fp<$f> {
-                /// Returns the nearest integer to `a`, rounding ties to the nearest even integer.
+                /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
                 // WAIT: https://github.com/rust-lang/rust/issues/96710
                 #[must_use]
                 #[inline]
-                pub fn round_ties_even(a: $f) -> $f {
-                    let r = Self::round_ties_away(a);
+                pub fn round_ties_even(x: $f) -> $f {
+                    let r = Self::round_ties_away(x);
                     iif![r % 2.0 == 0.0; r ;
-                        iif![Self::abs(a - r) == 0.5; r - Self::signum(a); r]]
+                        iif![Self::abs(x - r) == 0.5; r - Self::signum(x); r]]
                 }
 
-                /// Returns the nearest integer to `a`, rounding ties to the nearest odd integer.
+                /// Returns the nearest integer to `x`, rounding ties to the nearest odd integer.
                 #[must_use]
                 #[inline]
-                pub fn round_ties_odd(a: $f) -> $f {
-                    let r = Self::round_ties_away(a);
+                pub fn round_ties_odd(x: $f) -> $f {
+                    let r = Self::round_ties_away(x);
                     iif![r % 2.0 != 0.0; r ;
-                        iif![Self::abs(a - r) == 0.5; r + Self::signum(a); r]]
+                        iif![Self::abs(x - r) == 0.5; r + Self::signum(x); r]]
                 }
 
-                /// Returns `true` if `a` is positive.
+                /// Returns `true` if `x` is positive.
                 #[must_use]
                 #[inline]
-                pub fn is_sign_positive(a: $f) -> bool { <$f>::is_sign_positive(a) }
+                pub fn is_sign_positive(x: $f) -> bool { <$f>::is_sign_positive(x) }
 
-                /// Returns `true` if `a` is negative.
+                /// Returns `true` if `x` is negative.
                 #[must_use]
                 #[inline]
-                pub fn is_sign_negative(a: $f) -> bool { <$f>::is_sign_negative(a) }
+                pub fn is_sign_negative(x: $f) -> bool { <$f>::is_sign_negative(x) }
 
                 /// The square root calculated using the
                 /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
                 #[must_use]
                 #[inline]
-                pub fn sqrt_fisr(a: $f) -> $f {
-                    let (mut i, three_halfs, x2) = (a.to_bits(), 1.5, a * 0.5);
+                pub fn sqrt_fisr(x: $f) -> $f {
+                    let (mut i, three_halfs, x2) = (x.to_bits(), 1.5, x * 0.5);
                     let mut y: $f;
 
                     i = [< FISR_MAGIC_ $f:upper >] - (i >> 1);
@@ -945,30 +944,30 @@ mod _whenever {
                 /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
                 #[must_use]
                 #[inline]
-                pub fn sqrt_nr(a: $f) -> $f {
+                pub fn sqrt_nr(x: $f) -> $f {
                     const TOLERANCE: $f = [<NR_TOLERANCE_ $f:upper>];
-                    let mut x = a;
-                    let mut x_next = 0.5 * (x + a / x);
-                    while Self::abs(x - x_next) > TOLERANCE {
-                        x = x_next;
-                        x_next = 0.5 * (x + a / x);
+                    let mut y = x;
+                    let mut y_next = 0.5 * (y + x / y);
+                    while Self::abs(y - y_next) > TOLERANCE {
+                        y = y_next;
+                        y_next = 0.5 * (y + x / y);
                     }
-                    x_next
+                    y_next
                 }
 
                 /// Computes the exponential function $e^x$ using Taylor series expansion.
                 ///
-                /// $$ e^x = 1 + a + \frac{a^2}{2!} + \frac{a^3}{3!} + \frac{a^4}{4!} + \cdots $$
-                /// For values $ a < 0 $ it uses the identity: $$ e^x = \frac{1}{e^-x} $$
+                /// $$ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots $$
+                /// For values $ x < 0 $ it uses the identity: $$ e^x = \frac{1}{e^-x} $$
                 ///
                 /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
                 #[must_use]
                 #[inline]
-                pub fn exp_taylor(a: $f, terms: $ue) -> $f {
-                    iif![a < 0.0; return 1.0 / Self::exp_taylor(-a, terms)];
+                pub fn exp_taylor(x: $f, terms: $ue) -> $f {
+                    iif![x < 0.0; return 1.0 / Self::exp_taylor(-x, terms)];
                     let (mut result, mut term) = (1.0, 1.0);
                     for i in 1..=terms {
-                        term *= a / i as $f;
+                        term *= x / i as $f;
                         result += term;
                     }
                     result
@@ -995,34 +994,34 @@ mod _whenever {
                 /// ```
                 #[must_use]
                 #[inline(always)]
-                pub fn exp_taylor_terms(a: $f) -> $ue { Self::[<exp_taylor_terms_ $f>](a) }
+                pub fn exp_taylor_terms(x: $f) -> $ue { Self::[<exp_taylor_terms_ $f>](x) }
 
-                /// Calculates $ e^a - 1 $ using the Taylor series expansion.
+                /// Calculates $ e^x - 1 $ using the Taylor series expansion.
                 ///
-                /// $$ e^a -1 = a + \frac{a^2}{2!} + \frac{a^3}{3!} + \frac{a^4}{4!} + \cdots $$
-                /// For values $ a < 0 $ it uses the identity: $$ e^a -1 = -\frac{1}{e^{-a}+1} $$
-                /// For values $ a > 0.001 $ it uses [`exp_taylor`][Self::exp_taylor].
+                /// $$ e^x -1 = x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots $$
+                /// For values $ x < 0 $ it uses the identity: $$ e^x -1 = -\frac{1}{e^{-x}+1} $$
+                /// For values $ x > 0.001 $ it uses [`exp_taylor`][Self::exp_taylor].
                 ///
                 /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
                 #[must_use]
                 #[inline]
-                pub fn exp_m1_taylor(a: $f, terms: $ue) -> $f {
-                    if a < 0.0 {
-                        1.0 / Self::exp_m1_taylor(-a, terms)
-                    } else if a > 0.001 {
-                        Self::exp_taylor(a, terms) - 1.0
+                pub fn exp_m1_taylor(x: $f, terms: $ue) -> $f {
+                    if x < 0.0 {
+                        1.0 / Self::exp_m1_taylor(-x, terms)
+                    } else if x > 0.001 {
+                        Self::exp_taylor(x, terms) - 1.0
                     } else {
-                        let (mut result, mut term, mut factorial) = (0.0, a, 1.0);
+                        let (mut result, mut term, mut factorial) = (0.0, x, 1.0);
                         for i in 1..=terms {
                             result += term;
                             factorial *= (i + 1) as $f;
-                            term *= a / factorial;
+                            term *= x / factorial;
                         }
                         result
                     }
                 }
 
-                /// Calculates $ 2^a $ using the Taylor series expansion.
+                /// Calculates $ 2^x $ using the Taylor series expansion.
                 ///
                 /// The series based on the formula $ 2^x = e^{x \ln(2)} $ is:
                 /// $$
@@ -1061,9 +1060,9 @@ mod _whenever {
                 /// ```
                 #[must_use]
                 #[inline(always)]
-                pub fn exp2_taylor_terms(a: $f) -> $ue { Self::[<exp2_taylor_terms_ $f>](a) }
+                pub fn exp2_taylor_terms(x: $f) -> $ue { Self::[<exp2_taylor_terms_ $f>](x) }
 
-                /// The factorial of the integer value `a`.
+                /// The factorial of the integer value `x`.
                 ///
                 /// The maximum values with a representable result are:
                 /// 34 for `f32` and 170 for `f64`.
@@ -1071,9 +1070,9 @@ mod _whenever {
                 /// Note that precision is poor for large values.
                 #[must_use]
                 #[inline]
-                pub fn factorial(a: $ue) -> $f {
+                pub fn factorial(x: $ue) -> $f {
                     let mut result = 1.0;
-                    for i in 1..=a {
+                    for i in 1..=x {
                         result *= i as $f;
                     }
                     result
@@ -1081,7 +1080,7 @@ mod _whenever {
 
                 /// The sine calculated using Taylor series expansion.
                 ///
-                /// $$ \sin(a) = a - \frac{a^3}{3!} + \frac{a^5}{5!} - \frac{a^7}{7!} + \cdots $$
+                /// $$ \sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots $$
                 ///
                 /// This Taylor series converges relatively quickly and uniformly
                 /// over the entire domain.
@@ -1101,12 +1100,12 @@ mod _whenever {
                 /// ```
                 #[must_use]
                 #[inline]
-                pub fn sin_taylor(a: $f, terms: $ue) -> $f {
-                    let a = Self::clamp(a, -Self::PI, Self::PI);
-                    let (mut sin_approx, mut num, mut den) = (0.0, a, 1.0);
+                pub fn sin_taylor(x: $f, terms: $ue) -> $f {
+                    let x = Self::clamp(x, -Self::PI, Self::PI);
+                    let (mut sin_approx, mut num, mut den) = (0.0, x, 1.0);
                     for i in 0..terms {
                         if i > 0 {
-                            num *= -a * a;
+                            num *= -x * x;
                             den *= ((2 * i + 1) * (2 * i)) as $f;
                         }
                         sin_approx += num / den;
@@ -1116,7 +1115,7 @@ mod _whenever {
 
                 /// Computes the cosine using taylor series expansion.
                 ///
-                /// $$ \cos(a) = 1 - \frac{a^2}{2!} + \frac{a^4}{4!} - \frac{a^6}{6!} + \cdots $$
+                /// $$ \cos(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots $$
                 ///
                 /// This Taylor series converges relatively quickly and uniformly
                 /// over the entire domain.
@@ -1136,12 +1135,12 @@ mod _whenever {
                 /// ```
                 #[must_use]
                 #[inline]
-                pub fn cos_taylor(a: $f, terms: $ue) -> $f {
-                    let a = Self::clamp(a, -Self::PI, Self::PI);
+                pub fn cos_taylor(x: $f, terms: $ue) -> $f {
+                    let x = Self::clamp(x, -Self::PI, Self::PI);
                     let (mut cos_approx, mut num, mut den) = (0.0, 1.0, 1.0);
                     for i in 0..terms {
                         if i > 0 {
-                            num *= -a * a;
+                            num *= -x * x;
                             den *= ((2 * i) * (2 * i - 1)) as $f;
                         }
                         cos_approx += num / den;
@@ -1151,10 +1150,10 @@ mod _whenever {
 
                 /// Computes the tangent using Taylor series expansion of sine and cosine.
                 ///
-                /// $$ \tan(a) = \frac{\sin(a)}{\cos(a)} $$
+                /// $$ \tan(x) = \frac{\sin(x)}{\cos(x)} $$
                 ///
                 /// The tangent function has singularities and is not defined for
-                /// `cos(a) = 0`. This function clamps `a` within an appropriate range
+                /// `cos(x) = 0`. This function clamps `x` within an appropriate range
                 /// to avoid such issues.
                 ///
                 /// The Taylor series for sine and cosine converge relatively quickly
@@ -1175,10 +1174,10 @@ mod _whenever {
                 /// ```
                 #[must_use]
                 #[inline]
-                pub fn tan_taylor(a: $f, terms: $ue) -> $f {
-                    let a = Self::clamp(a, -Self::PI / 2.0 + 0.0001, Self::PI / 2.0 - 0.0001);
-                    let sin_approx = Self::sin_taylor(a, terms);
-                    let cos_approx = Self::cos_taylor(a, terms);
+                pub fn tan_taylor(x: $f, terms: $ue) -> $f {
+                    let x = Self::clamp(x, -Self::PI / 2.0 + 0.0001, Self::PI / 2.0 - 0.0001);
+                    let sin_approx = Self::sin_taylor(x, terms);
+                    let cos_approx = Self::cos_taylor(x, terms);
                     iif![cos_approx.abs() < 0.0001; return $f::MAX];
                     sin_approx / cos_approx
                 }
@@ -1186,29 +1185,29 @@ mod _whenever {
                 /// Computes the arcsine using Taylor series expansion.
                 ///
                 /// $$
-                /// \arcsin(a) = a + \left( \frac{1}{2} \right) \frac{a^3}{3} +
-                /// \left( \frac{1}{2} \cdot \frac{3}{4} \right) \frac{a^5}{5} +
-                /// \left( \frac{1}{2} \cdot \frac{3}{4} \cdot \frac{5}{6} \right) \frac{a^7}{7} +
+                /// \arcsin(x) = x + \left( \frac{1}{2} \right) \frac{x^3}{3} +
+                /// \left( \frac{1}{2} \cdot \frac{3}{4} \right) \frac{x^5}{5} +
+                /// \left( \frac{1}{2} \cdot \frac{3}{4} \cdot \frac{5}{6} \right) \frac{x^7}{7} +
                 /// \cdots
                 /// $$
                 ///
-                /// asin is undefined for $ |a| > 1 $ and in that case returns `NaN`.
+                /// asin is undefined for $ |x| > 1 $ and in that case returns `NaN`.
                 ///
                 /// The series converges more slowly near the edges of the domain
-                /// (i.e., as `a` approaches -1 or 1). For more accurate results,
+                /// (i.e., as `x` approaches -1 or 1). For more accurate results,
                 /// especially near these boundary values, a higher number of terms
                 /// may be necessary.
                 ///
                 /// See also [`asin_taylor_terms`][Self::asin_taylor_terms].
                 #[must_use]
                 #[inline]
-                pub fn asin_taylor(a: $f, terms: $ue) -> $f {
-                    iif![Self::abs(a) > 1.0; return $f::NAN];
-                    let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, a);
+                pub fn asin_taylor(x: $f, terms: $ue) -> $f {
+                    iif![Self::abs(x) > 1.0; return $f::NAN];
+                    let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, x);
                     for i in 0..terms {
                         if i != 0 {
                             multiplier *= (2 * i - 1) as $f / (2 * i) as $f;
-                            power_x *= a * a;
+                            power_x *= x * x;
                         }
                         asin_approx += multiplier * power_x / (2 * i + 1) as $f;
                     }
@@ -1234,19 +1233,19 @@ mod _whenever {
                 /// ```
                 #[must_use]
                 #[inline(always)]
-                pub fn asin_taylor_terms(a: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](a) }
+                pub fn asin_taylor_terms(x: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](x) }
 
                 /// Computes the arccosine using the Taylor expansion of arcsine.
                 ///
-                /// $$ arccos(a)=2π-arcsin(a) $$
+                /// $$ arccos(x)=2π-arcsin(x) $$
                 ///
                 /// See the [`asin_taylor_terms`][Self#method.asin_taylor_terms] table for
                 /// information about the number of `terms` needed.
                 #[must_use]
                 #[inline]
-                pub fn acos_taylor(a: $f, terms: $ue) -> $f {
-                    iif![a.abs() > 1.0; return $f::NAN];
-                    Self::FRAC_PI_2 - Self::asin_taylor(a, terms)
+                pub fn acos_taylor(x: $f, terms: $ue) -> $f {
+                    iif![x.abs() > 1.0; return $f::NAN];
+                    Self::FRAC_PI_2 - Self::asin_taylor(x, terms)
                 }
                 /// Determines the number of terms needed for [`acos_taylor`][Self::acos_taylor]
                 /// to reach a stable result based on the input value.
@@ -1254,35 +1253,35 @@ mod _whenever {
                 /// The table is the same as [`asin_taylor_terms`][Self::asin_taylor_terms].
                 #[must_use]
                 #[inline(always)]
-                pub fn acos_taylor_terms(a: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](a) }
+                pub fn acos_taylor_terms(x: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](x) }
 
                 /// Computes the arctangent using Taylor series expansion.
                 ///
-                /// $$ \arctan(a) = a - \frac{a^3}{3} + \frac{a^5}{5} - \frac{a^7}{7} + \cdots $$
+                /// $$ \arctan(x) = x - \frac{x^3}{3} + \frac{x^5}{5} - \frac{x^7}{7} + \cdots $$
                 ///
-                /// For values $ |a| > 1 $ it uses the identity:
-                /// $$ \arctan(a) = \frac{\pi}{2} - \arctan(\frac{1}{x}) $$
+                /// For values $ |x| > 1 $ it uses the identity:
+                /// $$ \arctan(x) = \frac{\pi}{2} - \arctan(\frac{1}{x}) $$
                 ///
                 /// The series converges more slowly near the edges of the domain
-                /// (i.e., as `a` approaches -1 or 1). For more accurate results,
+                /// (i.e., as `x` approaches -1 or 1). For more accurate results,
                 /// especially near these boundary values, a higher number of terms
                 /// may be necessary.
                 ///
                 /// See also [`atan_taylor_terms`][Self::atan_taylor_terms].
                 #[must_use]
                 #[inline]
-                pub fn atan_taylor(a: $f, terms: $ue) -> $f {
-                    if Self::abs(a) > 1.0 {
-                        if a > 0.0 {
-                            Self::FRAC_PI_2 - Self::atan_taylor(1.0 / a, terms)
+                pub fn atan_taylor(x: $f, terms: $ue) -> $f {
+                    if Self::abs(x) > 1.0 {
+                        if x > 0.0 {
+                            Self::FRAC_PI_2 - Self::atan_taylor(1.0 / x, terms)
                         } else {
-                            -Self::FRAC_PI_2 - Self::atan_taylor(1.0 / a, terms)
+                            -Self::FRAC_PI_2 - Self::atan_taylor(1.0 / x, terms)
                         }
                     } else {
-                        let (mut atan_approx, mut num, mut sign) = (0.0, a, 1.0);
+                        let (mut atan_approx, mut num, mut sign) = (0.0, x, 1.0);
                         for i in 0..terms {
                             if i > 0 {
-                                num *= a * a;
+                                num *= x * x;
                                 sign = -sign;
                             }
                             atan_approx += sign * num / (2 * i + 1) as $f;
@@ -1309,26 +1308,26 @@ mod _whenever {
                 /// ```
                 #[must_use]
                 #[inline(always)]
-                pub fn atan_taylor_terms(a: $f) -> $ue { Self::[<atan_taylor_terms_ $f>](a) }
+                pub fn atan_taylor_terms(x: $f) -> $ue { Self::[<atan_taylor_terms_ $f>](x) }
 
-                /// Computes the four quadrant arctangent of `a` and `b` using Taylor series expansion.
+                /// Computes the four quadrant arctangent of `x` and `y` using Taylor series expansion.
                 ///
                 /// See also [`atan_taylor_terms`][Self::atan_taylor_terms].
                 #[must_use]
                 #[inline]
-                pub fn atan2_taylor(a: $f, b: $f, terms: $ue) -> $f {
-                    if b > 0.0 {
-                        Self::atan_taylor(a / b, terms)
-                    } else if a >= 0.0 && b < 0.0 {
-                        Self::atan_taylor(a / b, terms) + Self::PI
-                    } else if a < 0.0 && b < 0.0 {
-                        Self::atan_taylor(a / b, terms) - Self::PI
-                    } else if a > 0.0 && b == 0.0 {
+                pub fn atan2_taylor(x: $f, y: $f, terms: $ue) -> $f {
+                    if y > 0.0 {
+                        Self::atan_taylor(x / y, terms)
+                    } else if x >= 0.0 && y < 0.0 {
+                        Self::atan_taylor(x / y, terms) + Self::PI
+                    } else if x < 0.0 && y < 0.0 {
+                        Self::atan_taylor(x / y, terms) - Self::PI
+                    } else if x > 0.0 && y == 0.0 {
                         Self::PI / 2.0
-                    } else if a < 0.0 && b == 0.0 {
+                    } else if x < 0.0 && y == 0.0 {
                         -Self::PI / 2.0
                     } else {
-                        // a and b are both zero, undefined behavior
+                        // x and y are both zero, undefined behavior
                         $f::NAN
                     }
                 }
@@ -1336,41 +1335,41 @@ mod _whenever {
                 /// The hyperbolic sine calculated using Taylor series expansion
                 /// via the exponent formula.
                 ///
-                /// $$ \sinh(a) = \frac{e^x - e^{-x}}{2} $$
+                /// $$ \sinh(x) = \frac{e^x - e^{-x}}{2} $$
                 ///
                 /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
                 /// information about the number of `terms` needed.
                 #[must_use]
                 #[inline]
-                pub fn sinh_taylor(a: $f, terms: $ue) -> $f {
-                    (Self::exp_taylor(a, terms) - Self::exp_taylor(-a, terms)) / 2.0
+                pub fn sinh_taylor(x: $f, terms: $ue) -> $f {
+                    (Self::exp_taylor(x, terms) - Self::exp_taylor(-x, terms)) / 2.0
                 }
 
                 /// The hyperbolic cosine calculated using Taylor series expansion
                 /// via the exponent formula.
                 ///
-                /// $$ \cosh(a) = \frac{e^x + e^{-x}}{2} $$
+                /// $$ \cosh(x) = \frac{e^x + e^{-x}}{2} $$
                 ///
                 /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
                 /// information about the number of `terms` needed.
                 #[must_use]
                 #[inline]
-                pub fn cosh_taylor(a: $f, terms: $ue) -> $f {
-                    (Self::exp_taylor(a, terms) + Self::exp_taylor(-a, terms)) / 2.0
+                pub fn cosh_taylor(x: $f, terms: $ue) -> $f {
+                    (Self::exp_taylor(x, terms) + Self::exp_taylor(-x, terms)) / 2.0
                 }
 
                 /// Computes the hyperbolic tangent using Taylor series expansion of
                 /// hyperbolic sine and cosine.
                 ///
-                /// $$ \tanh(a) = \frac{\sinh(a)}{\cosh(a)} $$
+                /// $$ \tanh(x) = \frac{\sinh(x)}{\cosh(x)} $$
                 ///
                 /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
                 /// information about the number of `terms` needed.
                 #[must_use]
                 #[inline]
-                pub fn tanh_taylor(a: $f, terms: $ue) -> $f {
-                    let sinh_approx = Self::sinh_taylor(a, terms);
-                    let cosh_approx = Self::cosh_taylor(a, terms);
+                pub fn tanh_taylor(x: $f, terms: $ue) -> $f {
+                    let sinh_approx = Self::sinh_taylor(x, terms);
+                    let cosh_approx = Self::cosh_taylor(x, terms);
                     sinh_approx / cosh_approx
                 }
 
@@ -1399,23 +1398,23 @@ mod _whenever {
                 #[must_use]
                 #[inline(always)]
                 #[cfg(feature = "unsafe_math")]
-                pub const fn max_total(a: $f, b: $f) -> $f { $crate::data::cmp::[<max_ $f>](a, b) }
+                pub const fn max_total(x: $f, y: $f) -> $f { $crate::data::cmp::[<max_ $f>](x, y) }
                 #[must_use]
                 #[inline(always)]
                 #[cfg(not(feature = "unsafe_math"))]
-                pub fn max_total(a: $f, b: $f) -> $f { $crate::data::cmp::[<max_ $f>](a, b) }
+                pub fn max_total(x: $f, y: $f) -> $f { $crate::data::cmp::[<max_ $f>](x, y) }
 
                 /// Returns the minimum of two numbers using total order.
                 #[must_use]
                 #[inline(always)]
                 #[cfg(feature = "unsafe_math")]
-                pub const fn min_total(a: $f, b: $f) -> $f { $crate::data::cmp::[<min_ $f>](a, b) }
+                pub const fn min_total(x: $f, y: $f) -> $f { $crate::data::cmp::[<min_ $f>](x, y) }
                 #[must_use]
                 #[inline(always)]
                 #[cfg(not(feature = "unsafe_math"))]
-                pub fn min_total(a: $f, b: $f) -> $f { $crate::data::cmp::[<min_ $f>](a, b) }
+                pub fn min_total(x: $f, y: $f) -> $f { $crate::data::cmp::[<min_ $f>](x, y) }
 
-                /// Returns the clamped a value, propagating `NaN`.
+                /// Returns the clamped `x` value, propagating `NaN`.
                 #[must_use]
                 #[inline(always)]
                 pub fn clamp_nan(value: $f, min: $f, max: $f) -> $f {
@@ -1425,31 +1424,31 @@ mod _whenever {
                 // WAIT: https://github.com/rust-lang/rust/issues/91079
                 #[must_use]
                 #[inline(always)]
-                pub fn max_nan(a: $f, b: $f) -> $f {
-                    if a > b {
-                        a
-                    } else if b > a {
-                        b
-                    } else if a == b {
-                        if a.is_sign_positive() && b.is_sign_negative() { a } else { b }
+                pub fn max_nan(x: $f, y: $f) -> $f {
+                    if x > y {
+                        x
+                    } else if y > x {
+                        y
+                    } else if x == y {
+                        if x.is_sign_positive() && y.is_sign_negative() { x } else { y }
                     } else {
-                        a + b
+                        x + y
                     }
                 }
                 /// Returns the minimum of two numbers, propagating `NaN`.
                 #[must_use]
                 #[inline(always)]
                 // WAIT: https://github.com/rust-lang/rust/issues/91079
-                pub fn min_nan(a: $f, b: $f) -> $f {
-                    if a < b {
-                        a
-                    } else if b < a {
-                        b
-                    } else if a == b {
-                        if a.is_sign_negative() && b.is_sign_positive() { a } else { b }
+                pub fn min_nan(x: $f, y: $f) -> $f {
+                    if x < y {
+                        x
+                    } else if y < x {
+                        y
+                    } else if x == y {
+                        if x.is_sign_negative() && y.is_sign_positive() { x } else { y }
                     } else {
                         // At least one input is NaN. Use `+` to perform NaN propagation and quieting.
-                        a + b
+                        x + y
                     }
                 }
             }
@@ -1463,8 +1462,8 @@ mod _whenever {
     impl Fp<f32> {
         #[must_use]
         #[inline]
-        pub(super) fn asin_acos_taylor_terms_f32(a: f32) -> u32 {
-            let abs_a = Self::abs(a);
+        pub(super) fn asin_acos_taylor_terms_f32(x: f32) -> u32 {
+            let abs_a = Self::abs(x);
             if abs_a <= 0.1 { 5
             } else if abs_a <= 0.3 { 7
             } else if abs_a <= 0.5 { 10
@@ -1476,8 +1475,8 @@ mod _whenever {
         }
         #[must_use]
         #[inline]
-        pub(super) fn atan_taylor_terms_f32(a: f32) -> u32 {
-            let abs_a = Self::abs(a);
+        pub(super) fn atan_taylor_terms_f32(x: f32) -> u32 {
+            let abs_a = Self::abs(x);
             if abs_a <= 0.1 { 5
             } else if abs_a <= 0.3 { 7
             } else if abs_a <= 0.5 { 12
@@ -1489,8 +1488,8 @@ mod _whenever {
         }
         #[must_use]
         #[inline]
-        pub(super) fn exp_taylor_terms_f32(a: f32) -> u32 {
-            let abs_a = Self::abs(a);
+        pub(super) fn exp_taylor_terms_f32(x: f32) -> u32 {
+            let abs_a = Self::abs(x);
             if abs_a <= 0.001 { 3
             } else if abs_a <= 0.1 { 6
             } else if abs_a <= 1.0 { 11
@@ -1502,8 +1501,8 @@ mod _whenever {
         }
         #[must_use]
         #[inline]
-        pub(super) fn exp2_taylor_terms_f32(a: f32) -> u32 {
-            let abs_a = Self::abs(a);
+        pub(super) fn exp2_taylor_terms_f32(x: f32) -> u32 {
+            let abs_a = Self::abs(x);
             if abs_a <= 0.3 { 8
             } else if abs_a <= 3.0 { 15
             } else if abs_a <= 7.0 { 22
@@ -1518,8 +1517,8 @@ mod _whenever {
     impl Fp<f64> {
         #[must_use]
         #[inline]
-        pub(super) fn asin_acos_taylor_terms_f64(a: f64) -> u32 {
-            let abs_a = Self::abs(a);
+        pub(super) fn asin_acos_taylor_terms_f64(x: f64) -> u32 {
+            let abs_a = Self::abs(x);
             if abs_a <= 0.1 { 9
             } else if abs_a <= 0.3 { 15
             } else if abs_a <= 0.5 { 24
@@ -1531,8 +1530,8 @@ mod _whenever {
         }
         #[must_use]
         #[inline]
-        pub(super) fn atan_taylor_terms_f64(a: f64) -> u32 {
-            let abs_a = Self::abs(a);
+        pub(super) fn atan_taylor_terms_f64(x: f64) -> u32 {
+            let abs_a = Self::abs(x);
             if abs_a <= 0.1 { 9
             } else if abs_a <= 0.3 { 15
             } else if abs_a <= 0.5 { 26
@@ -1544,8 +1543,8 @@ mod _whenever {
         }
         #[must_use]
         #[inline]
-        pub(super) fn exp_taylor_terms_f64(a: f64) -> u32 {
-            let abs_a = Self::abs(a);
+        pub(super) fn exp_taylor_terms_f64(x: f64) -> u32 {
+            let abs_a = Self::abs(x);
             if abs_a <= 0.001 { 5
             } else if abs_a <= 0.1 { 10
             } else if abs_a <= 1.0 { 18
@@ -1561,8 +1560,8 @@ mod _whenever {
         }
         #[must_use]
         #[inline]
-        pub(super) fn exp2_taylor_terms_f64(a: f64) -> u32 {
-            let abs_a = Self::abs(a);
+        pub(super) fn exp2_taylor_terms_f64(x: f64) -> u32 {
+            let abs_a = Self::abs(x);
             if abs_a <= 0.3 { 13
             } else if abs_a <= 3.0 { 25
             } else if abs_a <= 7.0 { 34
@@ -1591,23 +1590,23 @@ mod _no_std_no_libm {
         (@$f:ty, $ub:ty, $ie:ty) => { $crate::meta::paste! {
             /// # *Implementations without `std` or `libm`*.
             impl Fp<$f> {
-                /// The largest integer less than or equal to `a`.
+                /// The largest integer less than or equal to `x`.
                 #[must_use]
                 #[inline]
-                pub fn floor(a: $f) -> $f {
-                    let mut result = Self::trunc(a);
-                    if a.is_sign_negative() && Self::abs(a - result) > <$f>::EPSILON {
+                pub fn floor(x: $f) -> $f {
+                    let mut result = Self::trunc(x);
+                    if x.is_sign_negative() && Self::abs(x - result) > <$f>::EPSILON {
                         result -= 1.0;
                     }
                     result
                 }
 
-                /// The smallest integer greater than or equal to `a`.
+                /// The smallest integer greater than or equal to `x`.
                 #[must_use]
                 #[inline]
-                pub fn ceil(a: $f) -> $f {
-                    let mut result = Self::trunc(a);
-                    if a.is_sign_positive() && Self::abs(a - result) > <$f>::EPSILON {
+                pub fn ceil(x: $f) -> $f {
+                    let mut result = Self::trunc(x);
+                    if x.is_sign_positive() && Self::abs(x - result) > <$f>::EPSILON {
                         result += 1.0;
                     }
                     result
@@ -1618,8 +1617,8 @@ mod _no_std_no_libm {
                 /// This is the default [`round_ties_away`] implementation.
                 #[must_use]
                 #[inline]
-                pub fn round(a: $f) -> $f {
-                    Self::trunc(a + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, a))
+                pub fn round(x: $f) -> $f {
+                    Self::trunc(x + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, x))
                 }
 
                 /// Returns the nearest integer to `self`, rounding ties away from `0.0`.
@@ -1627,8 +1626,8 @@ mod _no_std_no_libm {
                 /// This is the default [`round`] implementation.
                 #[must_use]
                 #[inline]
-                pub fn round_ties_away(a: $f) -> $f {
-                    Self::trunc(a + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, a))
+                pub fn round_ties_away(x: $f) -> $f {
+                    Self::trunc(x + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, x))
                 }
 
                 /// The integral part.
@@ -1640,8 +1639,8 @@ mod _no_std_no_libm {
                 /// the truncated floating-point number.
                 #[must_use]
                 #[inline]
-                pub fn trunc(a: $f) -> $f {
-                    let bits = a.to_bits();
+                pub fn trunc(x: $f) -> $f {
+                    let bits = x.to_bits();
                     const BIAS: $ie = [<BIAS_ $f:upper>] as $ie;
                     const SIG_BITS: $ie = [<SIGNIFICAND_BITS_ $f:upper>] as $ie;
                     const EXP_MASK: $ub = 1 << [<EXPONENT_BITS_ $f:upper>] as $ub - 1;
@@ -1649,84 +1648,84 @@ mod _no_std_no_libm {
                     #[allow(clippy::cast_possible_wrap)]
                     let exponent = ((bits >> SIG_BITS) & EXP_MASK) as $ie - BIAS;
                     if exponent < 0 {
-                        iif![a.is_sign_positive(); 0.0; -0.0]
+                        iif![x.is_sign_positive(); 0.0; -0.0]
                     } else if exponent < SIG_BITS {
                         let mask = !(([<1_ $ub>] << (SIG_BITS - exponent)) - 1);
                         let new_bits = bits & mask;
                         <$f>::from_bits(new_bits)
                     } else {
-                        a
+                        x
                     }
                 }
 
                 /// The fractional part.
                 #[must_use]
                 #[inline(always)]
-                pub fn fract(a: $f) -> $f { a - Self::trunc(a) }
+                pub fn fract(x: $f) -> $f { x - Self::trunc(x) }
 
                 /// Returns the integral and fractional parts.
                 #[must_use]
                 #[inline(always)]
-                pub fn split(a: $f) -> ($f, $f) { (Self::trunc(a), Self::fract(a)) }
+                pub fn split(x: $f) -> ($f, $f) { (Self::trunc(x), Self::fract(x)) }
 
                 /// The absolute value.
                 #[must_use]
                 #[inline]
-                pub fn abs(a: $f) -> $f {
+                pub fn abs(x: $f) -> $f {
                     let mask = <$ub>::MAX / 2;
-                    let bits: $ub = a.to_bits() & mask;
+                    let bits: $ub = x.to_bits() & mask;
                     <$f>::from_bits(bits)
                 }
 
-                /// A number that represents the sign of `a`, propagating `NaN`.
+                /// A number that represents the sign of `x`, propagating `NaN`.
                 #[must_use]
                 #[inline(always)]
-                pub fn signum(a: $f) -> $f {
-                    iif![a.is_nan(); <$f>::NAN; Self::copysign(1.0, a)]
+                pub fn signum(x: $f) -> $f {
+                    iif![x.is_nan(); <$f>::NAN; Self::copysign(1.0, x)]
                 }
 
-                /// A number composed of a magnitude of `a` and the sign of `sign`.
+                /// A number composed of a `magnitude` and a `sign`.
                 #[must_use]
                 #[inline(always)]
-                pub fn copysign(a: $f, sign: $f) -> $f {
+                pub fn copysign(magnitude: $f, sign: $f) -> $f {
                     const SIGN_MASK: $ub = <$ub>::MAX / 2 + 1;
                     const VALUE_MASK: $ub = <$ub>::MAX / 2;
                     let sign_bit = sign.to_bits() & SIGN_MASK;
-                    let value_bits = a.to_bits() & VALUE_MASK;
+                    let value_bits = magnitude.to_bits() & VALUE_MASK;
                     <$f>::from_bits(value_bits | sign_bit)
                 }
 
                 /// Returns the maximum of two numbers, ignoring `NaN`.
                 #[must_use]
                 #[inline]
-                pub fn max(a: $f, b: $f) -> $f {
-                    (if a.is_nan() || a < b { b } else { a }) * 1.0
+                pub fn max(x: $f, y: $f) -> $f {
+                    (if x.is_nan() || x < y { y } else { x }) * 1.0
                 }
 
                 /// Returns the minimum of two numbers, ignoring `NaN`.
                 #[must_use]
                 #[inline]
-                pub fn min(a: $f, b: $f) -> $f {
-                    (iif![b.is_nan() || a < b; a; b]) * 1.0
+                pub fn min(x: $f, y: $f) -> $f {
+                    (iif![y.is_nan() || x < y; x; y]) * 1.0
                 }
 
-                /// Raises `a` to the `p` integer power.
+                /// Raises `x` to the `p` integer power.
                 #[must_use]
                 #[inline]
-                pub fn powi(a: $f, p: $ie) -> $f {
+                pub fn powi(x: $f, p: $ie) -> $f {
                     match p {
                         0 => 1.0,
                         1.. => {
-                            let mut result = a;
+                            let mut result = x;
                             for _i in 1..p {
-                                result *= a;
+                                result *= x;
                             }
                             result
                         }
                         _ => {
-                            let mut result = a;
+                            let mut result = x;
                             for _i in 1..p.abs() {
-                                result /= a;
+                                result /= x;
                             }
                             result
                         }
@@ -1738,7 +1737,7 @@ mod _no_std_no_libm {
                 /// It uses `Fp::`[`sqrt_nr`][Self::sqrt_nr].
                 #[must_use]
                 #[inline(always)]
-                pub fn sqrt(a: $f) -> $f {Self::sqrt_nr(a) }
+                pub fn sqrt(x: $f) -> $f {Self::sqrt_nr(x) }
 
             }
         }};
