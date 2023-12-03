@@ -985,6 +985,7 @@ mod _whenever {
                 /// ```txt
                 ///   value     t_f32  t_f64
                 /// -------------------------
+                /// ± 0.001 →       3     5
                 /// ± 0.100 →       6     10
                 /// ± 1.000 →      11     18
                 /// ± 10.000 →     32     46
@@ -1004,7 +1005,7 @@ mod _whenever {
                 ///
                 /// $$ e^a -1 = a + \frac{a^2}{2!} + \frac{a^3}{3!} + \frac{a^4}{4!} + \cdots $$
                 /// For values $ a < 0 $ it uses the identity: $$ e^a -1 = -\frac{1}{e^{-a}+1} $$
-                /// For values $ a > 0.01 $ it uses [`exp_taylor`][Self::exp_taylor].
+                /// For values $ a > 0.001 $ it uses [`exp_taylor`][Self::exp_taylor].
                 ///
                 /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
                 #[must_use]
@@ -1012,7 +1013,7 @@ mod _whenever {
                 pub fn exp_m1_taylor(a: $f, terms: u32) -> $f {
                     if a < 0.0 {
                         1.0 / Self::exp_m1_taylor(-a, terms)
-                    } else if a > 0.01 {
+                    } else if a > 0.001 {
                         Self::exp_taylor(a, terms) - 1.0
                     } else {
                         let (mut result, mut term, mut factorial) = (0.0, a, 1.0);
@@ -1416,7 +1417,8 @@ mod _whenever {
         #[inline]
         pub(super) fn exp_taylor_terms_f32(a: f32) -> u32 {
             let abs_a = Self::abs(a);
-            if abs_a <= 0.1 { 6
+            if abs_a <= 0.001 { 3
+            } else if abs_a <= 0.1 { 6
             } else if abs_a <= 1.0 { 11
             } else if abs_a <= 10.0 { 32
             } else if abs_a <= 20.0 { 49
@@ -1462,7 +1464,8 @@ mod _whenever {
         #[inline]
         pub(super) fn exp_taylor_terms_f64(a: f64) -> u32 {
             let abs_a = Self::abs(a);
-            if abs_a <= 0.1 { 10
+            if abs_a <= 0.001 { 5
+            } else if abs_a <= 0.1 { 10
             } else if abs_a <= 1.0 { 18
             } else if abs_a <= 10.0 { 46
             } else if abs_a <= 20.0 { 68
