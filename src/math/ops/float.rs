@@ -227,21 +227,23 @@ pub trait FloatExt: Sized {
     /// The arc cosine.
     ///
     /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`asin_taylor`][Fp#method.asin_taylor] with the
+    /// otherwise it's equal to [`acos_taylor`][Fp#method.acos_taylor] with the
     /// number of terms based on the given table.
     #[must_use]
     fn acos(self) -> Self;
     /// The arc tangent.
     ///
     /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`asin_taylor`][Fp#method.asin_taylor] with the
+    /// otherwise it's equal to [`atan_taylor`][Fp#method.atan_taylor] with the
     /// number of terms based on the given table.
     #[must_use]
     fn atan(self) -> Self;
     /// The arc tangent of two variables.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`atan2_taylor`][Fp#method.atan2_taylor] with the
+    /// number of terms based on the given table.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn atan2(self, other: Self) -> Self;
     /// Returns both the sine and cosine.
     #[must_use]
@@ -439,9 +441,12 @@ macro_rules! impl_float_ext {
             fn atan(self) -> Self { Fp::<$f>::atan(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
             fn atan(self) -> Self { Fp::<$f>::atan_taylor(self, Fp::<$f>::atan_taylor_terms(self)) }
-            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn atan2(self, other: Self) -> Self { Fp::<$f>::atan2(self, other) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
+            fn atan2(self, other: Self) -> Self {
+                Fp::<$f>::atan2_taylor(self, other, Fp::<$f>::atan_taylor_terms(self))
+            }
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos(self) }
@@ -983,6 +988,7 @@ mod _whenever {
                 /// ± 0.999 →      6     10
                 /// ```
                 #[must_use]
+                #[inline]
                 pub fn sin_taylor(a: $f, terms: $ue) -> $f {
                     let a = Self::clamp(a, -Self::PI, Self::PI);
                     let (mut sin_approx, mut num, mut den) = (0.0, a, 1.0);
@@ -1020,6 +1026,7 @@ mod _whenever {
                 /// ± 0.999 →      7     11
                 /// ```
                 #[must_use]
+                #[inline]
                 pub fn cos_taylor(a: $f, terms: $ue) -> $f {
                     let a = Self::clamp(a, -Self::PI, Self::PI);
                     let (mut cos_approx, mut num, mut den) = (0.0, 1.0, 1.0);
@@ -1057,6 +1064,7 @@ mod _whenever {
                 /// ± 0.999 →      7     11
                 /// ```
                 #[must_use]
+                #[inline]
                 pub fn tan_taylor(a: $f, terms: $ue) -> $f {
                     let a = Self::clamp(a, -Self::PI / 2.0 + 0.0001, Self::PI / 2.0 - 0.0001);
                     let sin_approx = Self::sin_taylor(a, terms);
@@ -1081,8 +1089,9 @@ mod _whenever {
                 /// especially near these boundary values, a higher number of terms
                 /// may be necessary.
                 ///
-                /// See also [`asin_taylor_terms`].
+                /// See also [`asin_taylor_terms`][Self::asin_taylor_terms].
                 #[must_use]
+                #[inline]
                 pub fn asin_taylor(a: $f, terms: $ue) -> $f {
                     iif![Self::abs(a) > 1.0; return $f::NAN];
                     let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, a);
@@ -1126,6 +1135,7 @@ mod _whenever {
                 /// See the [`asin_taylor`][Self#method.asin_taylor] table for
                 /// information about the number of `terms` needed.
                 #[must_use]
+                #[inline]
                 pub fn acos_taylor(a: $f, terms: $ue) -> $f {
                     iif![a.abs() > 1.0; return $f::NAN];
                     Self::FRAC_PI_2 - Self::asin_taylor(a, terms)
@@ -1133,7 +1143,7 @@ mod _whenever {
                 /// Determines the number of terms needed for [`acos_taylor`][Self::acos_taylor]
                 /// to reach a stable result based on the input value.
                 ///
-                /// The table is the same as for [`asin_taylor`][Self::asin_taylor].
+                /// The table is the same as [`asin_taylor_terms`][Self::asin_taylor_terms].
                 #[must_use]
                 #[inline(always)]
                 pub fn acos_taylor_terms(a: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](a) }
@@ -1144,23 +1154,37 @@ mod _whenever {
                 /// \arctan(a) = a - \frac{a^3}{3} + \frac{a^5}{5} - \frac{a^7}{7} + \cdots
                 /// $$
                 ///
+                /// For values $ |a| > 1 $ it uses the identity:
+                /// $$
+                /// \arctan(a) = \frac{\pi}{2} - \arctan(\frac{1}{x})
+                /// $$
+                ///
                 /// The series converges more slowly near the edges of the domain
                 /// (i.e., as `a` approaches -1 or 1). For more accurate results,
                 /// especially near these boundary values, a higher number of terms
                 /// may be necessary.
                 ///
-                /// See also [`atan_taylor_terms`].
+                /// See also [`atan_taylor_terms`][Self::atan_taylor_terms].
                 #[must_use]
+                #[inline]
                 pub fn atan_taylor(a: $f, terms: $ue) -> $f {
-                    let (mut atan_approx, mut num, mut sign) = (0.0, a, 1.0);
-                    for i in 0..terms {
-                        if i > 0 {
-                            num *= a * a;
-                            sign = -sign;
+                    if Self::abs(a) > 1.0 {
+                        if a > 0.0 {
+                            Self::FRAC_PI_2 - Self::atan_taylor(1.0 / a, terms)
+                        } else {
+                            -Self::FRAC_PI_2 - Self::atan_taylor(1.0 / a, terms)
                         }
-                        atan_approx += sign * num / (2 * i + 1) as $f;
+                    } else {
+                        let (mut atan_approx, mut num, mut sign) = (0.0, a, 1.0);
+                        for i in 0..terms {
+                            if i > 0 {
+                                num *= a * a;
+                                sign = -sign;
+                            }
+                            atan_approx += sign * num / (2 * i + 1) as $f;
+                        }
+                        atan_approx
                     }
-                    atan_approx
                 }
                 /// Determines the number of terms needed for [`atan_taylor`][Self::atan_taylor]
                 /// to reach a stable result based on the input value.
@@ -1182,6 +1206,28 @@ mod _whenever {
                 #[must_use]
                 #[inline(always)]
                 pub fn atan_taylor_terms(a: $f) -> $ue { Self::[<atan_taylor_terms_ $f>](a) }
+
+                /// Computes the four quadrant arctangent of `a` and `b` using Taylor series expansion.
+                ///
+                /// See also [`atan_taylor_terms`][Self::atan_taylor_terms].
+                #[must_use]
+                #[inline]
+                pub fn atan2_taylor(a: $f, b: $f, terms: $ue) -> $f {
+                    if b > 0.0 {
+                        Self::atan_taylor(a / b, terms)
+                    } else if a >= 0.0 && b < 0.0 {
+                        Self::atan_taylor(a / b, terms) + Self::PI
+                    } else if a < 0.0 && b < 0.0 {
+                        Self::atan_taylor(a / b, terms) - Self::PI
+                    } else if a > 0.0 && b == 0.0 {
+                        Self::PI / 2.0
+                    } else if a < 0.0 && b == 0.0 {
+                        -Self::PI / 2.0
+                    } else {
+                        // a and b are both zero, undefined behavior
+                        $f::NAN
+                    }
+                }
 
                 /// Returns the clamped value, ignoring `NaN`.
                 #[must_use]
