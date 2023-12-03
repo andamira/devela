@@ -9,7 +9,8 @@
 // - implement Fp methods
 //   - when std is enabled
 //   - when libm is enabled
-//   - independently of std or libm
+//   - whenever
+//      - private helpers
 //   - when neither std or libm are enabled
 // - define Fp constants
 
@@ -217,19 +218,25 @@ pub trait FloatExt: Sized {
     #[must_use]
     fn tan(self) -> Self;
     /// The arc sine.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`asin_taylor`][Fp#method.asin_taylor] with the
+    /// number of terms based on the given table.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn asin(self) -> Self;
     /// The arc cosine.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`asin_taylor`][Fp#method.asin_taylor] with the
+    /// number of terms based on the given table.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn acos(self) -> Self;
     /// The arc tangent.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`asin_taylor`][Fp#method.asin_taylor] with the
+    /// number of terms based on the given table.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn atan(self) -> Self;
     /// The arc tangent of two variables.
     #[must_use]
@@ -410,25 +417,28 @@ macro_rules! impl_float_ext {
             fn hypot(self, rhs: Self) -> Self { Fp::<$f>::hypot(self, rhs) }
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn sin(self) -> Self { Fp::<$f>::sin(self) }
-            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
             fn sin(self) -> Self { Fp::<$f>::sin_taylor(self, 8) }
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn cos(self) -> Self { Fp::<$f>::cos(self) }
-            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
             fn cos(self) -> Self { Fp::<$f>::cos_taylor(self, 8) }
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn tan(self) -> Self { Fp::<$f>::tan(self) }
-            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
             fn tan(self) -> Self { Fp::<$f>::tan_taylor(self, 8) }
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn asin(self) -> Self { Fp::<$f>::asin(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
+            fn asin(self) -> Self { Fp::<$f>::asin_taylor(self, Fp::<$f>::asin_taylor_terms(self)) }
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn acos(self) -> Self { Fp::<$f>::acos(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
+            fn acos(self) -> Self { Fp::<$f>::acos_taylor(self, Fp::<$f>::acos_taylor_terms(self)) }
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn atan(self) -> Self { Fp::<$f>::atan(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))] // alternative
+            fn atan(self) -> Self { Fp::<$f>::atan_taylor(self, Fp::<$f>::atan_taylor_terms(self)) }
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn atan2(self, other: Self) -> Self { Fp::<$f>::atan2(self, other) }
@@ -855,7 +865,7 @@ mod _libm {
     custom_impls![(f32, i32), (f64, i32)];
 }
 
-mod _independently {
+mod _whenever {
     #![allow(missing_docs)]
 
     use super::*;
@@ -1071,6 +1081,24 @@ mod _independently {
                 /// especially near these boundary values, a higher number of terms
                 /// may be necessary.
                 ///
+                /// See also [`asin_taylor_terms`].
+                #[must_use]
+                pub fn asin_taylor(a: $f, terms: $ue) -> $f {
+                    iif![Self::abs(a) > 1.0; return $f::NAN];
+                    let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, a);
+                    for i in 0..terms {
+                        if i != 0 {
+                            multiplier *= (2 * i - 1) as $f / (2 * i) as $f;
+                            power_x *= a * a;
+                        }
+                        asin_approx += multiplier * power_x / (2 * i + 1) as $f;
+                    }
+                    asin_approx
+                }
+
+                /// Determines the number of terms needed for [`asin_taylor`][Self::asin_taylor]
+                /// to reach a stable result based on the input value.
+                ///
                 /// The following table shows the required number of `terms` needed
                 /// to reach the most precise result for both `f32` and `f64`:
                 /// ```txt
@@ -1086,18 +1114,8 @@ mod _independently {
                 /// ± 0.999 →   1989  10768
                 /// ```
                 #[must_use]
-                pub fn asin_taylor(a: $f, terms: $ue) -> $f {
-                    iif![Self::abs(a) > 1.0; return $f::NAN];
-                    let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, a);
-                    for i in 0..terms {
-                        if i != 0 {
-                            multiplier *= (2 * i - 1) as $f / (2 * i) as $f;
-                            power_x *= a * a;
-                        }
-                        asin_approx += multiplier * power_x / (2 * i + 1) as $f;
-                    }
-                    asin_approx
-                }
+                #[inline(always)]
+                pub fn asin_taylor_terms(a: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](a) }
 
                 /// Computes the arccosine using the Taylor expansion of arcsine.
                 ///
@@ -1112,6 +1130,13 @@ mod _independently {
                     iif![a.abs() > 1.0; return $f::NAN];
                     Self::FRAC_PI_2 - Self::asin_taylor(a, terms)
                 }
+                /// Determines the number of terms needed for [`acos_taylor`][Self::acos_taylor]
+                /// to reach a stable result based on the input value.
+                ///
+                /// The table is the same as for [`asin_taylor`][Self::asin_taylor].
+                #[must_use]
+                #[inline(always)]
+                pub fn acos_taylor_terms(a: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](a) }
 
                 /// Computes the arctangent using Taylor series expansion.
                 ///
@@ -1123,6 +1148,22 @@ mod _independently {
                 /// (i.e., as `a` approaches -1 or 1). For more accurate results,
                 /// especially near these boundary values, a higher number of terms
                 /// may be necessary.
+                ///
+                /// See also [`atan_taylor_terms`].
+                #[must_use]
+                pub fn atan_taylor(a: $f, terms: $ue) -> $f {
+                    let (mut atan_approx, mut num, mut sign) = (0.0, a, 1.0);
+                    for i in 0..terms {
+                        if i > 0 {
+                            num *= a * a;
+                            sign = -sign;
+                        }
+                        atan_approx += sign * num / (2 * i + 1) as $f;
+                    }
+                    atan_approx
+                }
+                /// Determines the number of terms needed for [`atan_taylor`][Self::atan_taylor]
+                /// to reach a stable result based on the input value.
                 ///
                 /// The following table shows the required number of `terms` needed
                 /// to reach the most precise result for both `f32` and `f64`:
@@ -1139,17 +1180,8 @@ mod _independently {
                 /// ± 0.999 →   4151  13604
                 /// ```
                 #[must_use]
-                pub fn atan_taylor(a: $f, terms: $ue) -> $f {
-                    let (mut atan_approx, mut num, mut sign) = (0.0, a, 1.0);
-                    for i in 0..terms {
-                        if i > 0 {
-                            num *= a * a;
-                            sign = -sign;
-                        }
-                        atan_approx += sign * num / (2 * i + 1) as $f;
-                    }
-                    atan_approx
-                }
+                #[inline(always)]
+                pub fn atan_taylor_terms(a: $f) -> $ue { Self::[<atan_taylor_terms_ $f>](a) }
 
                 /// Returns the clamped value, ignoring `NaN`.
                 #[must_use]
@@ -1233,6 +1265,73 @@ mod _independently {
         }};
     }
     custom_impls![(f32, u32, i32), (f64, u32, i32)];
+
+    /* private helpers */
+
+    #[rustfmt::skip]
+    impl Fp<f32> {
+        // Determines the number of terms needed for a Taylor series approximation
+        // of asin & acos to reach a stable result based on the f32 input value.
+        #[must_use]
+        #[inline]
+        pub(super) fn asin_acos_taylor_terms_f32(a: f32) -> u32 {
+            let abs_a = Self::abs(a);
+            if abs_a <= 0.1 { 5
+            } else if abs_a <= 0.3 { 7
+            } else if abs_a <= 0.5 { 10
+            } else if abs_a <= 0.7 { 18
+            } else if abs_a <= 0.9 { 47
+            } else if abs_a <= 0.99 { 333
+            } else { 1989 // computed for 0.999
+            }
+        }
+        // Determines the number of terms needed for a Taylor series approximation
+        // of atan to reach a stable result based on the f32 input value.
+        #[must_use]
+        #[inline]
+        pub(super) fn atan_taylor_terms_f32(a: f32) -> u32 {
+            let abs_a = Self::abs(a);
+            if abs_a <= 0.1 { 5
+            } else if abs_a <= 0.3 { 7
+            } else if abs_a <= 0.5 { 12
+            } else if abs_a <= 0.7 { 20
+            } else if abs_a <= 0.9 { 61
+            } else if abs_a <= 0.99 { 518
+            } else { 4151 // computed for 0.999
+            }
+        }
+    }
+    #[rustfmt::skip]
+    impl Fp<f64> {
+        #[must_use]
+        #[inline]
+        pub(super) fn asin_acos_taylor_terms_f64(a: f64) -> u32 {
+            let abs_a = Self::abs(a);
+            if abs_a <= 0.1 { 9
+            } else if abs_a <= 0.3 { 15
+            } else if abs_a <= 0.5 { 24
+            } else if abs_a <= 0.7 { 44
+            } else if abs_a <= 0.9 { 134
+            } else if abs_a <= 0.99 { 1235
+            } else { 10768 // computed for 0.999
+            }
+        }
+        // Determines the number of terms needed for a Taylor series approximation
+        // of atan to reach a stable result based on the f64 input value.
+        #[must_use]
+        #[inline]
+        pub(super) fn atan_taylor_terms_f64(a: f64) -> u32 {
+            let abs_a = Self::abs(a);
+            if abs_a <= 0.1 { 9
+            } else if abs_a <= 0.3 { 15
+            } else if abs_a <= 0.5 { 26
+            } else if abs_a <= 0.7 { 47
+            } else if abs_a <= 0.9 { 152
+            } else if abs_a <= 0.99 { 1466
+            } else { 13604 // computed for 0.999
+            }
+        }
+    }
 }
 
 #[cfg(all(not(feature = "libm"), not(feature = "std")))]
