@@ -76,8 +76,9 @@ macro_rules! array_init {
         // SAFETY: array will be fully initialized in the subsequent loop
         let mut arr: [core::mem::MaybeUninit<$T>; $LEN] =
             unsafe { core::mem::MaybeUninit::uninit().assume_init() };
-        for i in &mut arr[..] {
-            let _ = i.write($init(i));
+        for (i, e) in &mut arr[..].iter_mut().enumerate() {
+            #[allow(clippy::redundant_closure_call)]
+            let _ = e.write($init(i));
         }
         // WAIT: can't use transmute for now, have to use transmute_copy:
         // - https://github.com/rust-lang/rust/issues/62875
