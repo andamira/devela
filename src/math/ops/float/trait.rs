@@ -109,10 +109,24 @@ pub trait FloatExt: Sized {
     #[must_use]
     fn sqrt_fisr(self) -> Self;
 
-    /// The square root calculated using the
-    /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
+    /// $ 1 / \sqrt{x} $ the
+    /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
     #[must_use]
-    fn sqrt_nr(self) -> Self;
+    fn fisr(self) -> Self;
+
+    /// The cubic root.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`cbrt_nr`][Self::cbrt_nr].
+    #[must_use]
+    fn cbrt(self) -> Self;
+
+    /// The hypothenuse (the euclidean distance).
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`hypot_nr`][Self::hypot_nr].
+    #[must_use]
+    fn hypot(self, rhs: Self) -> Self;
 
     /// Returns $e^x$ (the exponential function).
     ///
@@ -175,36 +189,31 @@ pub trait FloatExt: Sized {
     #[must_use]
     fn factorial(n: u32) -> Self;
 
-    /// The cubic root.
-    #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-    fn cbrt(self) -> Self;
-
-    /// The hypothenuse (the euclidean distance).
-    #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-    fn hypot(self, rhs: Self) -> Self;
-
     /// The sine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`sin_taylor`][Fp#method.sin_taylor]
-    /// with 8 terms.
+    /// With both `std` and `libm` disabled it leverages
+    /// [`sin_taylor`][Fp#method.sin_taylor] with 8 terms.
     #[must_use]
     fn sin(self) -> Self;
 
     /// The cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`cos_taylor`][Fp#method.cos_taylor]
-    /// with 8 terms.
+    /// With both `std` and `libm` disabled it leverages
+    /// [`cos_taylor`][Fp#method.cos_taylor] with 8 terms.
     #[must_use]
     fn cos(self) -> Self;
 
+    /// Returns both the sine and cosine.
+    ///
+    /// With both `std` and `libm` disabled it leverages
+    /// [`sin_cos_taylor`][Fp#method.sin_cos_taylor] with 8 terms.
+    #[must_use]
+    fn sin_cos(self) -> (Self, Self);
+
     /// The tangent.
     ///
-    /// With both `std` and `libm` disabled it leverages [`tan_taylor`][Fp#method.tan_taylor]
-    /// with 8 terms.
+    /// With both `std` and `libm` disabled it leverages
+    /// [`tan_taylor`][Fp#method.tan_taylor] with 8 terms.
     #[must_use]
     fn tan(self) -> Self;
 
@@ -235,12 +244,6 @@ pub trait FloatExt: Sized {
     /// with [`atan2_taylor_terms`][Fp#method.atan2_taylor_terms].
     #[must_use]
     fn atan2(self, other: Self) -> Self;
-
-    /// Returns both the sine and cosine.
-    #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-    fn sin_cos(self) -> (Self, Self);
 
     /// The hyperbolic sine.
     ///
@@ -394,14 +397,16 @@ macro_rules! impl_float_ext {
             #[inline(always)]
             fn powi(self, p: $ie) -> Self { Fp::<$f>::powi(self, p) }
 
-            #[inline(always)]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn sqrt(self) -> Self { Fp::<$f>::sqrt(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn sqrt(self) -> Self { Fp::<$f>::sqrt_nr(self) }
 
             #[inline(always)]
             fn sqrt_fisr(self) -> Self { Fp::<$f>::sqrt_fisr(self) }
 
             #[inline(always)]
-            fn sqrt_nr(self) -> Self { Fp::<$f>::sqrt_nr(self) }
+            fn fisr(self) -> Self { Fp::<$f>::fisr(self) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn exp(self) -> Self { Fp::<$f>::exp(self) }
@@ -448,15 +453,15 @@ macro_rules! impl_float_ext {
             #[inline(always)]
             fn factorial(a: $ue) -> Self { Fp::<$f>::factorial(a) }
 
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn cbrt(self) -> Self { Fp::<$f>::cbrt(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn cbrt(self) -> Self { Fp::<$f>::cbrt_nr(self) }
 
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn hypot(self, rhs: Self) -> Self { Fp::<$f>::hypot(self, rhs) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn hypot(self, rhs: Self) -> Self { Fp::<$f>::hypot_nr(self, rhs) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn sin(self) -> Self { Fp::<$f>::sin(self) }
@@ -467,6 +472,11 @@ macro_rules! impl_float_ext {
             fn cos(self) -> Self { Fp::<$f>::cos(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
             fn cos(self) -> Self { Fp::<$f>::cos_taylor(self, 8) }
+
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
+            fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos_taylor(self, 8) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn tan(self) -> Self { Fp::<$f>::tan(self) }
@@ -494,10 +504,6 @@ macro_rules! impl_float_ext {
             fn atan2(self, other: Self) -> Self {
                 Fp::<$f>::atan2_taylor(self, other, Fp::<$f>::atan_taylor_terms(self))
             }
-
-            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos(self) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn sinh(self) -> Self { Fp::<$f>::sinh(self) }

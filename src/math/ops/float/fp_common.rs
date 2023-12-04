@@ -42,34 +42,72 @@ macro_rules! custom_impls {
             #[inline]
             pub fn is_sign_negative(x: $f) -> bool { <$f>::is_sign_negative(x) }
 
-            /// The square root calculated using the
-            /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
-            #[must_use]
-            #[inline]
-            pub fn sqrt_fisr(x: $f) -> $f {
-                let (mut i, three_halfs, x2) = (x.to_bits(), 1.5, x * 0.5);
-                let mut y: $f;
-
-                i = Self::FISR_MAGIC - (i >> 1);
-                y = <$f>::from_bits(i);
-                y = y * (three_halfs - (x2 * y * y));
-
-                1.0 / y
-            }
-
-            /// The square root calculated using the
+            /// $ \sqrt{x} $ The square root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             #[must_use]
             #[inline]
             pub fn sqrt_nr(x: $f) -> $f {
-                let mut y = x;
-                let mut y_next = 0.5 * (y + x / y);
-                while Self::abs(y - y_next) > Self::NR_TOLERANCE {
-                    y = y_next;
-                    y_next = 0.5 * (y + x / y);
+                let mut guess = x;
+                let mut guess_next = 0.5 * (guess + x / guess);
+                while Self::abs(guess - guess_next) > Self::NR_TOLERANCE {
+                    guess = guess_next;
+                    guess_next = 0.5 * (guess + x / guess);
                 }
-                y_next
+                guess_next
             }
+
+            /// $ \sqrt{x} $ the square root calculated using the
+            /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
+            ///
+            /// $$ 1 / \sqrt{x} $$
+            #[must_use]
+            #[inline]
+            pub fn sqrt_fisr(x: $f) -> $f {
+                1.0 / Self::fisr(x)
+            }
+
+            /// $ 1 / \sqrt{x} $ the
+            /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
+            #[must_use]
+            #[inline]
+            pub fn fisr(x: $f) -> $f {
+                let (mut i, three_halfs, x2) = (x.to_bits(), 1.5, x * 0.5);
+                i = Self::FISR_MAGIC - (i >> 1);
+                let y = <$f>::from_bits(i);
+                y * (three_halfs - (x2 * y * y))
+            }
+
+            /// $ \sqrt[3]{x} $ The cubic root calculated using the
+            /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
+            #[must_use]
+            #[inline]
+            pub fn cbrt_nr(x: $f) -> $f {
+                iif![x == 0.0; return 0.0];
+                let mut guess = x;
+                loop {
+                    let next_guess = (2.0 * guess + x / (guess * guess)) / 3.0;
+                    if Self::abs(next_guess - guess) < Self::NR_TOLERANCE {
+                        break next_guess;
+                    }
+                    guess = next_guess;
+                }
+            }
+
+            /// The hypothenuse (the euclidean distance) using the
+            /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
+            ///
+            /// $$ \hypot(x, y) = \sqrt{x^2 + y^2} $$
+            #[must_use]
+            #[inline]
+            pub fn hypot_nr(x: $f, y: $f) -> $f { Self::sqrt_nr(x * x + y * y) }
+
+            /// The hypothenuse (the euclidean distance) using the
+            /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
+            ///
+            /// $$ \hypot(x, y) = \sqrt{x^2 + y^2} $$
+            #[must_use]
+            #[inline]
+            pub fn hypot_fisr(x: $f, y: $f) -> $f { Self::sqrt_fisr(x * x + y * y) }
 
             /// Computes the exponential function $e^x$ using Taylor series expansion.
             ///
@@ -148,6 +186,8 @@ macro_rules! custom_impls {
             ///
             /// The maximum values with a representable result are:
             /// 127 for `f32` and 1023 for `f64`.
+            #[must_use]
+            #[inline]
             pub fn exp2_taylor(x: $f, terms: $ue) -> $f {
                 let (mut result, mut term) = (1.0, x * Self::LN_2);
                 for n in 1..terms {
@@ -220,15 +260,13 @@ macro_rules! custom_impls {
             #[inline]
             pub fn sin_taylor(x: $f, terms: $ue) -> $f {
                 let x = Self::clamp(x, -Self::PI, Self::PI);
-                let (mut sin_approx, mut num, mut den) = (0.0, x, 1.0);
-                for i in 0..terms {
-                    if i > 0 {
-                        num *= -x * x;
-                        den *= ((2 * i + 1) * (2 * i)) as $f;
-                    }
-                    sin_approx += num / den;
+                let (mut sin, mut term, mut factorial) = (x, x, 1.0);
+                for i in 1..terms {
+                    term *= -x * x;
+                    factorial *= ((2 * i + 1) * (2 * i)) as $f;
+                    sin += term / factorial;
                 }
-                sin_approx
+                sin
             }
 
             /// Computes the cosine using taylor series expansion.
@@ -255,15 +293,20 @@ macro_rules! custom_impls {
             #[inline]
             pub fn cos_taylor(x: $f, terms: $ue) -> $f {
                 let x = Self::clamp(x, -Self::PI, Self::PI);
-                let (mut cos_approx, mut num, mut den) = (0.0, 1.0, 1.0);
-                for i in 0..terms {
-                    if i > 0 {
-                        num *= -x * x;
-                        den *= ((2 * i) * (2 * i - 1)) as $f;
-                    }
-                    cos_approx += num / den;
+                let (mut cos, mut term, mut factorial) = (1.0, 1.0, 1.0);
+                for i in 1..terms {
+                    term *= -x * x;
+                    factorial *= ((2 * i - 1) * (2 * i)) as $f;
+                    cos += term / factorial;
                 }
-                cos_approx
+                cos
+            }
+
+            /// Computes the sine and the cosine using Taylor series expansion.
+            #[must_use]
+            #[inline]
+            pub fn sin_cos_taylor(x: $f, terms: $ue) -> ($f, $f) {
+                (Self::sin_taylor(x, terms), Self::cos_taylor(x, terms))
             }
 
             /// Computes the tangent using Taylor series expansion of sine and cosine.
@@ -294,10 +337,9 @@ macro_rules! custom_impls {
             #[inline]
             pub fn tan_taylor(x: $f, terms: $ue) -> $f {
                 let x = Self::clamp(x, -Self::PI / 2.0 + 0.0001, Self::PI / 2.0 - 0.0001);
-                let sin_approx = Self::sin_taylor(x, terms);
-                let cos_approx = Self::cos_taylor(x, terms);
-                iif![Self::abs(cos_approx) < 0.0001; return $f::MAX];
-                sin_approx / cos_approx
+                let (sin, cos) = Self::sin_cos_taylor(x, terms);
+                iif![Self::abs(cos) < 0.0001; return $f::MAX];
+                sin / cos
             }
 
             /// Computes the arcsine using Taylor series expansion.

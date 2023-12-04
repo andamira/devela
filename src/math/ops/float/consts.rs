@@ -38,11 +38,11 @@ macro_rules! technical_const_impls {
 }
 technical_const_impls![
     // Uses Lomont's single precision magic number for fisqrt
-    f32:u32[127, 8, 23, 0x5f37_59df, 1e-7],
+    f32:u32[127, 8, 23, 0x5f37_59df, 1e-6],
     // Uses Lomont's double precision magic number for fisqrt
     // f64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-15],
     // Uses Matthew Robertson's double precision magic number
-    f64:u64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-15]
+    f64:u64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-14]
     // Matthew Robertson's quadruple precision magic number
     // f128:u128[, , , 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf, ]
 ];

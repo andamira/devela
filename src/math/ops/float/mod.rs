@@ -548,14 +548,6 @@ mod _no_std_no_libm {
                         }
                     }
                 }
-
-                /// The square root.
-                ///
-                /// It uses `Fp::`[`sqrt_nr`][Self::sqrt_nr].
-                #[must_use]
-                #[inline(always)]
-                pub fn sqrt(x: $f) -> $f {Self::sqrt_nr(x) }
-
             }
         }};
     }
