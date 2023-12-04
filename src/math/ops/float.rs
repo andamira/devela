@@ -18,30 +18,6 @@
 
 use crate::meta::iif;
 
-/* private constants */
-
-const BIAS_F32: u32 = 127;
-const BIAS_F64: u32 = 1023;
-const EXPONENT_BITS_F32: u32 = 8;
-const EXPONENT_BITS_F64: u32 = 11;
-const SIGNIFICAND_BITS_F32: u32 = 23;
-const SIGNIFICAND_BITS_F64: u32 = 52;
-
-// Magic numbers for the fast inverse square root calculation:
-// Lomont's single precision magic number
-const FISR_MAGIC_F32: u32 = 0x5f37_59df;
-// Lomont's double precision magic number
-// const FISQRT_MAGIC_NUMBER_F64: u64 = 0x5fe6_ec85_e7de_30da;
-// Matthew Robertson's double precision magic number
-const FISR_MAGIC_F64: u64 = 0x5fe6_eb50_c7b5_37a9;
-// Matthew Robertson's quadruple precision magic number
-// const FISR_MAGIC_F128: u128 = 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf;
-
-// Tolerances for the difference between successive guesses using the
-// Newton-Raphson method for square root calculation:
-const NR_TOLERANCE_F32: f32 = 1e-7;
-const NR_TOLERANCE_F64: f64 = 1e-15;
-
 /// Extension trait for floating-point types.
 ///
 /// This trait is normally more convenient to use than the [`Fp`] struct.
@@ -52,18 +28,6 @@ const NR_TOLERANCE_F64: f64 = 1e-15;
 /// Many methods are only available if either the `std` or `libm` features are enabled.
 #[rustfmt::skip]
 pub trait FloatExt: Sized {
-    /// Bias value used in the exponent to allow representation of both positive
-    /// and negative exponents.
-    const BIAS: u32;
-    /// Number of bits used to represent the exponent.
-    const EXPONENT_BITS: u32;
-    /// Number of explicit bits used to represent the significand (or mantissa).
-    ///
-    /// Note that std's `MANTISSA_DIGITS` floating-point constant equals
-    /// `SIGNIFICAND_BITS + 1` since it accounts for an additional implicit leading bit,
-    /// which is not stored but assumed in the standard floating-point representation.
-    const SIGNIFICAND_BITS: u32;
-
     /// The largest integer less than or equal to `self`.
     #[must_use]
     fn floor(self) -> Self;
@@ -325,9 +289,9 @@ macro_rules! impl_float_ext {
     ($( ($f:ty, $ue:ty|$ie:ty) ),+) => { $( impl_float_ext![@$f, $ue|$ie]; )+ };
     (@$f:ty, $ue:ty|$ie:ty) => {
         impl FloatExt for $f { $crate::meta::paste! {
-            const BIAS: u32 = [<BIAS_ $f:upper>];
-            const EXPONENT_BITS: u32 = [<EXPONENT_BITS_ $f:upper>];
-            const SIGNIFICAND_BITS: u32 = [<SIGNIFICAND_BITS_ $f:upper>];
+            // const BIAS: u32 = [<BIAS_ $f:upper>];
+            // const EXPONENT_BITS: u32 = [<EXPONENT_BITS_ $f:upper>];
+            // const SIGNIFICAND_BITS: u32 = [<SIGNIFICAND_BITS_ $f:upper>];
 
             #[inline(always)]
             fn floor(self) -> Self { Fp::<$f>::floor(self) }
@@ -933,7 +897,7 @@ mod _whenever {
                     let (mut i, three_halfs, x2) = (x.to_bits(), 1.5, x * 0.5);
                     let mut y: $f;
 
-                    i = [< FISR_MAGIC_ $f:upper >] - (i >> 1);
+                    i = Self::FISR_MAGIC - (i >> 1);
                     y = <$f>::from_bits(i);
                     y = y * (three_halfs - (x2 * y * y));
 
@@ -945,10 +909,9 @@ mod _whenever {
                 #[must_use]
                 #[inline]
                 pub fn sqrt_nr(x: $f) -> $f {
-                    const TOLERANCE: $f = [<NR_TOLERANCE_ $f:upper>];
                     let mut y = x;
                     let mut y_next = 0.5 * (y + x / y);
-                    while Self::abs(y - y_next) > TOLERANCE {
+                    while Self::abs(y - y_next) > Self::NR_TOLERANCE {
                         y = y_next;
                         y_next = 0.5 * (y + x / y);
                     }
@@ -1641,9 +1604,9 @@ mod _no_std_no_libm {
                 #[inline]
                 pub fn trunc(x: $f) -> $f {
                     let bits = x.to_bits();
-                    const BIAS: $ie = [<BIAS_ $f:upper>] as $ie;
-                    const SIG_BITS: $ie = [<SIGNIFICAND_BITS_ $f:upper>] as $ie;
-                    const EXP_MASK: $ub = 1 << [<EXPONENT_BITS_ $f:upper>] as $ub - 1;
+                    const BIAS: $ie = Fp::<$f>::BIAS as $ie;
+                    const SIG_BITS: $ie = Fp::<$f>::SIGNIFICAND_BITS as $ie;
+                    const EXP_MASK: $ub = 1 << Fp::<$f>::EXPONENT_BITS as $ub - 1;
 
                     #[allow(clippy::cast_possible_wrap)]
                     let exponent = ((bits >> SIG_BITS) & EXP_MASK) as $ie - BIAS;
@@ -1749,9 +1712,53 @@ mod _no_std_no_libm {
 mod _consts {
     use super::Fp;
 
+    // impl technical constants
+    //
     // $f: the floating-point type.
-    macro_rules! custom_impls {
-        ($( $f:ty),+) => { $( custom_impls![@$f]; )+ };
+    // $u: unsigned integer type with the same bit-size.
+    macro_rules! technical_const_impls {
+        ($( $f:ty:$u:ty
+            [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal] ),+) => {
+            $( technical_const_impls![@$f:$u[$bias, $exp, $sig, $fisr, $nrt]]; )+
+        };
+        (@$f:ty:$u:ty
+         [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal]
+         ) => { $crate::meta::paste! {
+            impl Fp<$f> {
+                // Bias value used in the exponent to allow representation of both positive
+                // and negative exponents.
+                pub(super) const BIAS: u32 = $bias;
+                // Number of bits used to represent the exponent.
+                pub(super) const EXPONENT_BITS: u32 = $exp;
+                // Number of explicit bits used to represent the significand (or mantissa).
+                //
+                // Note that std's `MANTISSA_DIGITS` floating-point constant equals
+                // `SIGNIFICAND_BITS + 1` since it accounts for an additional implicit leading bit,
+                // which is not stored but assumed in the standard floating-point representation.
+                pub(super) const SIGNIFICAND_BITS: u32 = $sig;
+                pub(super) const FISR_MAGIC: $u = $fisr;
+                // Tolerances for the difference between successive guesses using the
+                // Newton-Raphson method for square root calculation:
+                pub(super) const NR_TOLERANCE: $f = $nrt;
+            }
+        }};
+    }
+    technical_const_impls![
+        // Uses Lomont's single precision magic number for fisqrt
+        f32:u32[127, 8, 23, 0x5f37_59df, 1e-7],
+        // Uses Lomont's double precision magic number for fisqrt
+        // f64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-15],
+        // Uses Matthew Robertson's double precision magic number
+        f64:u64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-15]
+        // Matthew Robertson's quadruple precision magic number
+        // f128:u128[, , , 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf, ]
+    ];
+
+    // impl mathematical constants
+    //
+    // $f: the floating-point type.
+    macro_rules! math_const_impls {
+        ($( $f:ty),+) => { $( math_const_impls![@$f]; )+ };
         (@$f:ty) => { $crate::meta::paste! {
             /// # *Implementations of mathematical constants.
             #[allow(clippy::excessive_precision)] // 36 decimal points
@@ -2000,5 +2007,5 @@ mod _consts {
             }
         }};
     }
-    custom_impls![f32, f64];
+    math_const_impls![f32, f64];
 }
