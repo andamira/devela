@@ -313,62 +313,58 @@ mod _libm {
             /// # *Implementations using the `libm` feature*.
             impl Fp<$f> {
                 /// Returns the fractional part.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn fract(x: $f) -> $f { x - Libm::<$f>::trunc(x) }
+
                 /// The integral and fractional parts.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn split(value: $f) -> ($f, $f) { Libm::<$f>::modf(value) }
+
                 /// A number that represents the sign of `x`, propagating `NaN`.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline]
                 pub fn signum(x: $f) -> $f {
                     iif![x.is_nan(); <$f>::NAN; Libm::<$f>::copysign(1.0, x)]
                 }
+
                 /// The euclidean division.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline]
                 pub fn div_euclid(x: $f, y: $f) -> $f {
                     let q = Self::trunc(x / y);
                     iif![x % y < 0.0; return iif![y > 0.0; q - 1.0; q + 1.0]]; q
                 }
+
                 /// The least nonnegative remainder of `x` % `y`.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline]
                 pub fn rem_euclid(x: $f, y: $f) -> $f {
                     let r = x % y; iif![r < 0.0; r + Self::abs(y); r]
                 }
+
                 /// Raises `x` to the `p` integer power.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn powi(x: $f, p: $e) -> $f { Self::powf(x, p as $f) }
+
                 /// The logarithm of the number with respect to an arbitrary base.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn log(value: $f, base: $f) -> $f { Self::ln(base) / Self::ln(value) }
+
                 /// The sine and cosine.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn sin_cos(x: $f) -> ($f, $f) { Libm::<$f>::sincos(x) }
 
                 // NOTE: implemented manually in _either
                 //
                 // /// Returns the clamped `x` value, propagating `NaN`.
-                // #[must_use]
-                // #[inline(always)]
+                // #[must_use] #[inline(always)]
                 // pub fn clamp_nan(value: $f, min: $f, max: $f) -> $f {
                 //     Self::min_nan(Self::max_nan(value, min), max)
                 // }
                 // /// Returns the maximum of two numbers, propagating `NaN`.
-                // #[must_use]
-                // #[inline(always)]
+                // #[must_use] #[inline(always)]
                 // pub fn max_nan(x: $f, y: $f) -> $f {
                 //     iif![x.is_nan() || y.is_nan(); <$f>::NAN; Libm::<$f>::fmax(x, y)]
                 // }
                 // /// Returns the minimum of two numbers, propagating `NaN`.
-                // #[must_use]
-                // #[inline(always)]
+                // #[must_use] #[inline(always)]
                 // pub fn min_nan(x: $f, y: $f) -> $f {
                 //     iif![x.is_nan() || y.is_nan(); <$f>::NAN; Libm::<$f>::fmin(x, y)]
                 // }
@@ -377,16 +373,13 @@ mod _libm {
 
                 /// The natural logarithm of the absolute value of the gamma function,
                 /// plus its sign.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn lgamma_r(x: $f) -> ($f, $e) { Libm::<$f>::lgamma_r(x) }
                 /// Bessel function of the first kind, of order `n`.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn jn(n: $e, x: $f) -> $f { Libm::<$f>::jn(n, x) }
                 /// Bessel function of the second kind, of order `n`.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn yn(n: $e, x: $f) -> $f { Libm::<$f>::yn(n, x) }
             }
         };
@@ -408,8 +401,7 @@ mod _no_std_no_libm {
             /// # *Implementations without `std` or `libm`*.
             impl Fp<$f> {
                 /// The largest integer less than or equal to `x`.
-                #[must_use]
-                #[inline]
+                #[must_use] #[inline]
                 pub fn floor(x: $f) -> $f {
                     let mut result = Self::trunc(x);
                     if x.is_sign_negative() && Self::abs(x - result) > <$f>::EPSILON {
@@ -419,8 +411,7 @@ mod _no_std_no_libm {
                 }
 
                 /// The smallest integer greater than or equal to `x`.
-                #[must_use]
-                #[inline]
+                #[must_use] #[inline]
                 pub fn ceil(x: $f) -> $f {
                     let mut result = Self::trunc(x);
                     if x.is_sign_positive() && Self::abs(x - result) > <$f>::EPSILON {
@@ -432,8 +423,7 @@ mod _no_std_no_libm {
                 /// Returns the nearest integer to `self`, default rounding
                 ///
                 /// This is the default [`round_ties_away`] implementation.
-                #[must_use]
-                #[inline]
+                #[must_use] #[inline]
                 pub fn round(x: $f) -> $f {
                     Self::trunc(x + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, x))
                 }
@@ -441,8 +431,7 @@ mod _no_std_no_libm {
                 /// Returns the nearest integer to `self`, rounding ties away from `0.0`.
                 ///
                 /// This is the default [`round`] implementation.
-                #[must_use]
-                #[inline]
+                #[must_use] #[inline]
                 pub fn round_ties_away(x: $f) -> $f {
                     Self::trunc(x + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, x))
                 }
@@ -454,8 +443,7 @@ mod _no_std_no_libm {
                 /// of the floating-point number. The exponent is extracted, and a mask is
                 /// created to remove the fractional part. The new bits are then used to create
                 /// the truncated floating-point number.
-                #[must_use]
-                #[inline]
+                #[must_use] #[inline]
                 pub fn trunc(x: $f) -> $f {
                     let bits = x.to_bits();
                     const BIAS: $ie = Fp::<$f>::BIAS as $ie;
@@ -476,18 +464,15 @@ mod _no_std_no_libm {
                 }
 
                 /// The fractional part.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn fract(x: $f) -> $f { x - Self::trunc(x) }
 
                 /// Returns the integral and fractional parts.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn split(x: $f) -> ($f, $f) { (Self::trunc(x), Self::fract(x)) }
 
                 /// The absolute value.
-                #[must_use]
-                #[inline]
+                #[must_use] #[inline]
                 pub fn abs(x: $f) -> $f {
                     let mask = <$ub>::MAX / 2;
                     let bits: $ub = x.to_bits() & mask;
@@ -495,15 +480,13 @@ mod _no_std_no_libm {
                 }
 
                 /// A number that represents the sign of `x`, propagating `NaN`.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline]
                 pub fn signum(x: $f) -> $f {
                     iif![x.is_nan(); <$f>::NAN; Self::copysign(1.0, x)]
                 }
 
                 /// A number composed of a `magnitude` and a `sign`.
-                #[must_use]
-                #[inline(always)]
+                #[must_use] #[inline(always)]
                 pub fn copysign(magnitude: $f, sign: $f) -> $f {
                     const SIGN_MASK: $ub = <$ub>::MAX / 2 + 1;
                     const VALUE_MASK: $ub = <$ub>::MAX / 2;
@@ -513,22 +496,19 @@ mod _no_std_no_libm {
                 }
 
                 /// Returns the maximum of two numbers, ignoring `NaN`.
-                #[must_use]
-                #[inline]
+                #[must_use] #[inline]
                 pub fn max(x: $f, y: $f) -> $f {
                     (if x.is_nan() || x < y { y } else { x }) * 1.0
                 }
 
                 /// Returns the minimum of two numbers, ignoring `NaN`.
-                #[must_use]
-                #[inline]
+                #[must_use] #[inline]
                 pub fn min(x: $f, y: $f) -> $f {
                     (iif![y.is_nan() || x < y; x; y]) * 1.0
                 }
 
                 /// Raises `x` to the `p` integer power.
-                #[must_use]
-                #[inline]
+                #[must_use] #[inline]
                 pub fn powi(x: $f, p: $ie) -> $f {
                     match p {
                         0 => 1.0,

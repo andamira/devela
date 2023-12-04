@@ -15,8 +15,7 @@ macro_rules! custom_impls {
         impl Fp<$f> {
             /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
             // WAIT: https://github.com/rust-lang/rust/issues/96710
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn round_ties_even(x: $f) -> $f {
                 let r = Self::round_ties_away(x);
                 iif![r % 2.0 == 0.0; r ;
@@ -24,8 +23,7 @@ macro_rules! custom_impls {
             }
 
             /// Returns the nearest integer to `x`, rounding ties to the nearest odd integer.
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn round_ties_odd(x: $f) -> $f {
                 let r = Self::round_ties_away(x);
                 iif![r % 2.0 != 0.0; r ;
@@ -33,19 +31,16 @@ macro_rules! custom_impls {
             }
 
             /// Returns `true` if `x` is positive.
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn is_sign_positive(x: $f) -> bool { <$f>::is_sign_positive(x) }
 
             /// Returns `true` if `x` is negative.
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn is_sign_negative(x: $f) -> bool { <$f>::is_sign_negative(x) }
 
             /// $ \sqrt{x} $ The square root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn sqrt_nr(x: $f) -> $f {
                 let mut guess = x;
                 let mut guess_next = 0.5 * (guess + x / guess);
@@ -60,16 +55,14 @@ macro_rules! custom_impls {
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
             ///
             /// $$ 1 / \sqrt{x} $$
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn sqrt_fisr(x: $f) -> $f {
                 1.0 / Self::fisr(x)
             }
 
             /// $ 1 / \sqrt{x} $ the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn fisr(x: $f) -> $f {
                 let (mut i, three_halfs, x2) = (x.to_bits(), 1.5, x * 0.5);
                 i = Self::FISR_MAGIC - (i >> 1);
@@ -79,8 +72,7 @@ macro_rules! custom_impls {
 
             /// $ \sqrt[3]{x} $ The cubic root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn cbrt_nr(x: $f) -> $f {
                 iif![x == 0.0; return 0.0];
                 let mut guess = x;
@@ -97,16 +89,14 @@ macro_rules! custom_impls {
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             ///
             /// $$ \hypot(x, y) = \sqrt{x^2 + y^2} $$
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn hypot_nr(x: $f, y: $f) -> $f { Self::sqrt_nr(x * x + y * y) }
 
             /// The hypothenuse (the euclidean distance) using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
             ///
             /// $$ \hypot(x, y) = \sqrt{x^2 + y^2} $$
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn hypot_fisr(x: $f, y: $f) -> $f { Self::sqrt_fisr(x * x + y * y) }
 
             /// Computes the exponential function $e^x$ using Taylor series expansion.
@@ -115,8 +105,7 @@ macro_rules! custom_impls {
             /// For values $ x < 0 $ it uses the identity: $$ e^x = \frac{1}{e^-x} $$
             ///
             /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn exp_taylor(x: $f, terms: $ue) -> $f {
                 iif![x < 0.0; return 1.0 / Self::exp_taylor(-x, terms)];
                 let (mut result, mut term) = (1.0, 1.0);
@@ -147,8 +136,7 @@ macro_rules! custom_impls {
             /// ± 500.000 →   ---    692
             /// ± 709.782 →   ---    938  (max for f64)
             /// ```
-            #[must_use]
-            #[inline(always)]
+            #[must_use] #[inline(always)]
             pub fn exp_taylor_terms(x: $f) -> $ue { Self::[<exp_taylor_terms_ $f>](x) }
 
             /// Calculates $ e^x - 1 $ using the Taylor series expansion.
@@ -158,8 +146,7 @@ macro_rules! custom_impls {
             /// For values $ x > 0.001 $ it uses [`exp_taylor`][Self::exp_taylor].
             ///
             /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn exp_m1_taylor(x: $f, terms: $ue) -> $f {
                 if x < 0.0 {
                     1.0 / Self::exp_m1_taylor(-x, terms)
@@ -186,8 +173,7 @@ macro_rules! custom_impls {
             ///
             /// The maximum values with a representable result are:
             /// 127 for `f32` and 1023 for `f64`.
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn exp2_taylor(x: $f, terms: $ue) -> $f {
                 let (mut result, mut term) = (1.0, x * Self::LN_2);
                 for n in 1..terms {
@@ -216,8 +202,7 @@ macro_rules! custom_impls {
             /// ± 511.0 →    ---    520
             /// ± 1023.999 → ---    939 (max for f64)
             /// ```
-            #[must_use]
-            #[inline(always)]
+            #[must_use] #[inline(always)]
             pub fn exp2_taylor_terms(x: $f) -> $ue { Self::[<exp2_taylor_terms_ $f>](x) }
 
             /// The factorial of the integer value `x`.
@@ -226,8 +211,7 @@ macro_rules! custom_impls {
             /// 34 for `f32` and 170 for `f64`.
             ///
             /// Note that precision is poor for large values.
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn factorial(x: $ue) -> $f {
                 let mut result = 1.0;
                 for i in 1..=x {
@@ -256,8 +240,7 @@ macro_rules! custom_impls {
             /// ± 0.900 →      6     10
             /// ± 0.999 →      6     10
             /// ```
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn sin_taylor(x: $f, terms: $ue) -> $f {
                 let x = Self::clamp(x, -Self::PI, Self::PI);
                 let (mut sin, mut term, mut factorial) = (x, x, 1.0);
@@ -289,8 +272,7 @@ macro_rules! custom_impls {
             /// ± 0.900 →      7     10
             /// ± 0.999 →      7     11
             /// ```
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn cos_taylor(x: $f, terms: $ue) -> $f {
                 let x = Self::clamp(x, -Self::PI, Self::PI);
                 let (mut cos, mut term, mut factorial) = (1.0, 1.0, 1.0);
@@ -303,8 +285,7 @@ macro_rules! custom_impls {
             }
 
             /// Computes the sine and the cosine using Taylor series expansion.
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn sin_cos_taylor(x: $f, terms: $ue) -> ($f, $f) {
                 (Self::sin_taylor(x, terms), Self::cos_taylor(x, terms))
             }
@@ -333,8 +314,7 @@ macro_rules! custom_impls {
             /// ± 0.900 →      7     10
             /// ± 0.999 →      7     11
             /// ```
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn tan_taylor(x: $f, terms: $ue) -> $f {
                 let x = Self::clamp(x, -Self::PI / 2.0 + 0.0001, Self::PI / 2.0 - 0.0001);
                 let (sin, cos) = Self::sin_cos_taylor(x, terms);
@@ -359,8 +339,7 @@ macro_rules! custom_impls {
             /// may be necessary.
             ///
             /// See also [`asin_taylor_terms`][Self::asin_taylor_terms].
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn asin_taylor(x: $f, terms: $ue) -> $f {
                 iif![Self::abs(x) > 1.0; return $f::NAN];
                 let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, x);
@@ -391,8 +370,7 @@ macro_rules! custom_impls {
             /// ± 0.990 →    333   1235
             /// ± 0.999 →   1989  10768
             /// ```
-            #[must_use]
-            #[inline(always)]
+            #[must_use] #[inline(always)]
             pub fn asin_taylor_terms(x: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](x) }
 
             /// Computes the arccosine using the Taylor expansion of arcsine.
@@ -401,8 +379,7 @@ macro_rules! custom_impls {
             ///
             /// See the [`asin_taylor_terms`][Self#method.asin_taylor_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn acos_taylor(x: $f, terms: $ue) -> $f {
                 iif![Self::abs(x) > 1.0; return $f::NAN];
                 Self::FRAC_PI_2 - Self::asin_taylor(x, terms)
@@ -412,8 +389,7 @@ macro_rules! custom_impls {
             /// to reach a stable result based on the input value.
             ///
             /// The table is the same as [`asin_taylor_terms`][Self::asin_taylor_terms].
-            #[must_use]
-            #[inline(always)]
+            #[must_use] #[inline(always)]
             pub fn acos_taylor_terms(x: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](x) }
 
             /// Computes the arctangent using Taylor series expansion.
@@ -429,8 +405,7 @@ macro_rules! custom_impls {
             /// may be necessary.
             ///
             /// See also [`atan_taylor_terms`][Self::atan_taylor_terms].
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn atan_taylor(x: $f, terms: $ue) -> $f {
                 if Self::abs(x) > 1.0 {
                     if x > 0.0 {
@@ -468,15 +443,13 @@ macro_rules! custom_impls {
             /// ± 0.990 →    518   1466
             /// ± 0.999 →   4151  13604
             /// ```
-            #[must_use]
-            #[inline(always)]
+            #[must_use] #[inline(always)]
             pub fn atan_taylor_terms(x: $f) -> $ue { Self::[<atan_taylor_terms_ $f>](x) }
 
             /// Computes the four quadrant arctangent of `x` and `y` using Taylor series expansion.
             ///
             /// See also [`atan_taylor_terms`][Self::atan_taylor_terms].
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn atan2_taylor(x: $f, y: $f, terms: $ue) -> $f {
                 if y > 0.0 {
                     Self::atan_taylor(x / y, terms)
@@ -501,8 +474,7 @@ macro_rules! custom_impls {
             ///
             /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn sinh_taylor(x: $f, terms: $ue) -> $f {
                 (Self::exp_taylor(x, terms) - Self::exp_taylor(-x, terms)) / 2.0
             }
@@ -514,8 +486,7 @@ macro_rules! custom_impls {
             ///
             /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn cosh_taylor(x: $f, terms: $ue) -> $f {
                 (Self::exp_taylor(x, terms) + Self::exp_taylor(-x, terms)) / 2.0
             }
@@ -527,8 +498,7 @@ macro_rules! custom_impls {
             ///
             /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use]
-            #[inline]
+            #[must_use] #[inline]
             pub fn tanh_taylor(x: $f, terms: $ue) -> $f {
                 let sinh_approx = Self::sinh_taylor(x, terms);
                 let cosh_approx = Self::cosh_taylor(x, terms);
@@ -536,8 +506,7 @@ macro_rules! custom_impls {
             }
 
             /// Returns the clamped value, ignoring `NaN`.
-            #[must_use]
-            #[inline(always)]
+            #[must_use] #[inline(always)]
             pub fn clamp(value: $f, min: $f, max: $f) -> $f {
                 Self::min(Self::max(value, min), max)
             }
@@ -555,8 +524,7 @@ macro_rules! custom_impls {
             }
 
             /// Returns the maximum of two numbers using total order.
-            #[must_use]
-            #[inline(always)]
+            #[must_use] #[inline(always)]
             #[cfg(feature = "unsafe_math")]
             pub const fn max_total(x: $f, y: $f) -> $f { $crate::data::cmp::[<max_ $f>](x, y) }
             #[must_use] #[inline(always)] #[allow(missing_docs)]
@@ -572,16 +540,14 @@ macro_rules! custom_impls {
             pub fn min_total(x: $f, y: $f) -> $f { $crate::data::cmp::[<min_ $f>](x, y) }
 
             /// Returns the clamped `x` value, propagating `NaN`.
-            #[must_use]
-            #[inline(always)]
+            #[must_use] #[inline(always)]
             pub fn clamp_nan(value: $f, min: $f, max: $f) -> $f {
                 Self::min_nan(Self::max_nan(value, min), max)
             }
 
             /// Returns the maximum of two numbers, propagating `NaN`.
             // WAIT: https://github.com/rust-lang/rust/issues/91079
-            #[must_use]
-            #[inline(always)]
+            #[must_use] #[inline(always)]
             pub fn max_nan(x: $f, y: $f) -> $f {
                 if x > y {
                     x
@@ -594,8 +560,7 @@ macro_rules! custom_impls {
                 }
             }
             /// Returns the minimum of two numbers, propagating `NaN`.
-            #[must_use]
-            #[inline(always)]
+            #[must_use] #[inline(always)]
             // WAIT: https://github.com/rust-lang/rust/issues/91079
             pub fn min_nan(x: $f, y: $f) -> $f {
                 if x < y {
@@ -618,8 +583,7 @@ custom_impls![(f32, u32, i32), (f64, u32, i32)];
 
 #[rustfmt::skip]
 impl Fp<f32> {
-    #[must_use]
-    #[inline]
+    #[must_use] #[inline]
     pub(super) fn asin_acos_taylor_terms_f32(x: f32) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.1 { 5
@@ -631,8 +595,7 @@ impl Fp<f32> {
         } else { 1989 // computed for 0.999
         }
     }
-    #[must_use]
-    #[inline]
+    #[must_use] #[inline]
     pub(super) fn atan_taylor_terms_f32(x: f32) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.1 { 5
@@ -644,8 +607,7 @@ impl Fp<f32> {
         } else { 4151 // computed for 0.999
         }
     }
-    #[must_use]
-    #[inline]
+    #[must_use] #[inline]
     pub(super) fn exp_taylor_terms_f32(x: f32) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.001 { 3
@@ -657,8 +619,7 @@ impl Fp<f32> {
         } else { 143 // computed for max computable value 88.722
         }
     }
-    #[must_use]
-    #[inline]
+    #[must_use] #[inline]
     pub(super) fn exp2_taylor_terms_f32(x: f32) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.3 { 8
@@ -673,8 +634,7 @@ impl Fp<f32> {
 }
 #[rustfmt::skip]
 impl Fp<f64> {
-    #[must_use]
-    #[inline]
+    #[must_use] #[inline]
     pub(super) fn asin_acos_taylor_terms_f64(x: f64) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.1 { 9
@@ -686,8 +646,7 @@ impl Fp<f64> {
         } else { 10768 // computed for 0.999
         }
     }
-    #[must_use]
-    #[inline]
+    #[must_use] #[inline]
     pub(super) fn atan_taylor_terms_f64(x: f64) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.1 { 9
@@ -699,8 +658,7 @@ impl Fp<f64> {
         } else { 13604 // computed for 0.999
         }
     }
-    #[must_use]
-    #[inline]
+    #[must_use] #[inline]
     pub(super) fn exp_taylor_terms_f64(x: f64) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.001 { 5
@@ -716,8 +674,7 @@ impl Fp<f64> {
         } else { 938 // computed for max computable value 709.782
         }
     }
-    #[must_use]
-    #[inline]
+    #[must_use] #[inline]
     pub(super) fn exp2_taylor_terms_f64(x: f64) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.3 { 13

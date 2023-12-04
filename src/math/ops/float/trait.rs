@@ -100,7 +100,7 @@ pub trait FloatExt: Sized {
     /// The square root.
     ///
     /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`sqrt_nr`][Self::sqrt_nr].
+    /// otherwise it's equal to [`sqrt_nr`][Fp::sqrt_nr].
     #[must_use]
     fn sqrt(self) -> Self;
 
@@ -117,14 +117,14 @@ pub trait FloatExt: Sized {
     /// The cubic root.
     ///
     /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`cbrt_nr`][Self::cbrt_nr].
+    /// otherwise it's equal to [`cbrt_nr`][Fp::cbrt_nr].
     #[must_use]
     fn cbrt(self) -> Self;
 
     /// The hypothenuse (the euclidean distance).
     ///
     /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`hypot_nr`][Self::hypot_nr].
+    /// otherwise it's equal to [`hypot_nr`][Fp::hypot_nr].
     #[must_use]
     fn hypot(self, rhs: Self) -> Self;
 
@@ -133,22 +133,22 @@ pub trait FloatExt: Sized {
     /// The maximum values with a representable result are:
     /// 88.722… for `f32` and 709.782… for `f64`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp_taylor`][Fp#method.exp_taylor]
-    /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`exp_taylor`][Fp::exp_taylor]
+    /// with [`exp_taylor_terms`][Fp::exp_taylor_terms].
     #[must_use]
     fn exp(self) -> Self;
 
     /// Returns $2^x$.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp2_taylor`][Fp#method.exp2_taylor]
-    /// with [`exp2_taylor_terms`][Fp#method.exp2_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`exp2_taylor`][Fp::exp2_taylor]
+    /// with [`exp2_taylor_terms`][Fp::exp2_taylor_terms].
     #[must_use]
     fn exp2(self) -> Self;
 
     /// The exponential minus 1, more accurately.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp_m1_taylor`][Fp#method.exp_m1_taylor]
-    /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`exp_m1_taylor`][Fp::exp_m1_taylor]
+    /// with [`exp_taylor_terms`][Fp::exp_taylor_terms].
     #[must_use]
     fn exp_m1(self) -> Self;
 
@@ -192,77 +192,77 @@ pub trait FloatExt: Sized {
     /// The sine.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`sin_taylor`][Fp#method.sin_taylor] with 8 terms.
+    /// [`sin_taylor`][Fp::sin_taylor] with 8 terms.
     #[must_use]
     fn sin(self) -> Self;
 
     /// The cosine.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`cos_taylor`][Fp#method.cos_taylor] with 8 terms.
+    /// [`cos_taylor`][Fp::cos_taylor] with 8 terms.
     #[must_use]
     fn cos(self) -> Self;
 
     /// Returns both the sine and cosine.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`sin_cos_taylor`][Fp#method.sin_cos_taylor] with 8 terms.
+    /// [`sin_cos_taylor`][Fp::sin_cos_taylor] with 8 terms.
     #[must_use]
     fn sin_cos(self) -> (Self, Self);
 
     /// The tangent.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`tan_taylor`][Fp#method.tan_taylor] with 8 terms.
+    /// [`tan_taylor`][Fp::tan_taylor] with 8 terms.
     #[must_use]
     fn tan(self) -> Self;
 
     /// The arc sine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`asin_taylor`][Fp#method.asin_taylor]
-    /// with [`asin_taylor_terms`][Fp#method.asin_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`asin_taylor`][Fp::asin_taylor]
+    /// with [`asin_taylor_terms`][Fp::asin_taylor_terms].
     #[must_use]
     fn asin(self) -> Self;
 
     /// The arc cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`acos_taylor`][Fp#method.acos_taylor]
-    /// with [`acos_taylor_terms`][Fp#method.acos_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`acos_taylor`][Fp::acos_taylor]
+    /// with [`acos_taylor_terms`][Fp::acos_taylor_terms].
     #[must_use]
     fn acos(self) -> Self;
 
     /// The arc tangent.
     ///
-    /// With both `std` and `libm` disabled it leverages [`atan_taylor`][Fp#method.atan_taylor]
-    /// with [`atan_taylor_terms`][Fp#method.atan_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`atan_taylor`][Fp::atan_taylor]
+    /// with [`atan_taylor_terms`][Fp::atan_taylor_terms].
     #[must_use]
     fn atan(self) -> Self;
 
     /// The arc tangent of two variables.
     ///
-    /// With both `std` and `libm` disabled it leverages [`atan2_taylor`][Fp#method.atan2_taylor]
-    /// with [`atan2_taylor_terms`][Fp#method.atan2_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`atan2_taylor`][Fp::atan2_taylor]
+    /// with [`atan2_taylor_terms`][Fp::atan2_taylor_terms].
     #[must_use]
     fn atan2(self, other: Self) -> Self;
 
     /// The hyperbolic sine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`sinh_taylor`][Fp#method.sinh_taylor]
-    /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`sinh_taylor`][Fp::sinh_taylor]
+    /// with [`exp_taylor_terms`][Fp::exp_taylor_terms].
     #[must_use]
     fn sinh(self) -> Self;
 
     /// The hyperbolic cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`cosh_taylor`][Fp#method.cosh_taylor]
-    /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`cosh_taylor`][Fp::cosh_taylor]
+    /// with [`exp_taylor_terms`][Fp::exp_taylor_terms].
     #[must_use]
     fn cosh(self) -> Self;
 
     /// The hyperbolic tangent.
     ///
-    /// With both `std` and `libm` disabled it leverages [`cosh_taylor`][Fp#method.cosh_taylor]
-    /// with [`exp_taylor_terms`][Fp#method.exp_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`cosh_taylor`][Fp::cosh_taylor]
+    /// with [`exp_taylor_terms`][Fp::exp_taylor_terms].
     #[must_use]
     fn tanh(self) -> Self;
 
