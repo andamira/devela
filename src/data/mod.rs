@@ -10,9 +10,13 @@
 //! [`vec`][mod@std::vec]`}`.
 //
 
+#![cfg_attr(not(feature = "data"), allow(unused))]
+
 /* contains always compiled items */
 
 mod array;
+mod collection;
+
 pub mod cmp;
 pub mod convert;
 pub mod error;
@@ -20,7 +24,7 @@ pub mod slice;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {array::*, cmp::*, convert::*, error::*, slice::*};
+pub(crate) use {array::*, cmp::*, collection::*, convert::*, error::*, slice::*};
 
 /* feature-gated */
 
@@ -38,13 +42,11 @@ pub mod dst;
 #[cfg(feature = "data")]
 pub mod any;
 #[cfg(feature = "data")]
-mod collection;
-#[cfg(feature = "data")]
 mod reexports;
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {array::*, collection::DataCollection, reexports::*};
+pub use {array::*, collection::*, reexports::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
@@ -62,8 +64,8 @@ pub use {any::all::*, cmp::all::*, convert::all::*, error::*, slice::all::*};
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        any::all::*, array::*, cmp::all::*, collection::DataCollection, convert::all::*, error::*,
-        reexports::*, slice::all::*,
+        any::all::*, array::*, cmp::all::*, collection::*, convert::all::*, error::*, reexports::*,
+        slice::all::*,
     };
 
     #[doc(inline)]
