@@ -21,6 +21,15 @@ pub enum DataErrors {
 
     /// Value below minimum representable.
     Underflow,
+
+    /// The given `index` is out of bounds.
+    IndexOutOfBounds(Option<usize>),
+
+    /// The given indices does not match the expected order.
+    MismatchedIndices,
+
+    /// The dimensions given did not match the elements provided
+    DimensionMismatch,
 }
 
 #[allow(dead_code)]
@@ -49,6 +58,17 @@ mod core_impls {
                 E::NotSupported => write!(f, "Not supported."),
                 E::Overflow => write!(f, "Value above maximum representable."),
                 E::Underflow => write!(f, "Value aboce minimum representable."),
+                E::MismatchedIndices => {
+                    write!(f, "The given indices does not match the expected order.")
+                }
+                E::IndexOutOfBounds(i) => {
+                    if let Some(i) = i {
+                        write!(f, "The given index {i} is out of bounds.")
+                    } else {
+                        write!(f, "The given index is out of bounds.")
+                    }
+                }
+                E::DimensionMismatch => write!(f, "Dimension Mismatch."),
             }
         }
     }
