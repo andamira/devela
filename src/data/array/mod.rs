@@ -11,22 +11,20 @@
 
 mod always;
 mod core_impls;
+mod definitions;
 mod methods;
-mod types;
 
 #[cfg(not(feature = "data"))]
-pub(crate) use {always::*, core_impls::*, methods::*, types::*};
+pub(crate) use {always::*, core_impls::*, definitions::*, methods::*};
 
 /* feature-gated */
 
-// private sub-modules
-
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {always::*, types::*};
+pub use {always::*, definitions::*};
 
 #[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{always::*, types::*};
+    pub use super::{always::*, definitions::*};
 }

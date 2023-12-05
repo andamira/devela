@@ -1,4 +1,7 @@
-// devela::data::array::types
+// devela::data::array::definitions
+//
+//! types and traits definitions
+//
 
 #[cfg(feature = "alloc")]
 use crate::mem::Boxed;
