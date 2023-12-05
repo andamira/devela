@@ -30,6 +30,16 @@ pub enum DataErrors {
 
     /// The dimensions given did not match the elements provided
     DimensionMismatch,
+
+    /// There are not enough elements for the operation.
+    ///
+    /// Optionally contains the minimum number of elements needed.
+    NotEnoughElements(Option<usize>),
+
+    /// There is not enough free space for the operation.
+    ///
+    /// Optionally contains the number of free spaces needed.
+    NotEnoughSpace(Option<usize>),
 }
 
 #[allow(dead_code)]
@@ -69,6 +79,22 @@ mod core_impls {
                     }
                 }
                 E::DimensionMismatch => write!(f, "Dimension Mismatch."),
+                E::NotEnoughElements(n) => {
+                    if let Some(n) = n {
+                        write!(f, "Not enough elements. Needs at least `{n}` elements.")
+                    } else {
+                        write!(f, "Not enough elements.")
+                    }
+                }
+                E::NotEnoughSpace(n) => {
+                    if let Some(n) = n {
+                        write!( f,
+                            "Not enough space. Needs at least `{n}` free space for elements."
+                        )
+                    } else {
+                        write!(f, "Not enough space.")
+                    }
+                }
             }
         }
     }
