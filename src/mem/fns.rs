@@ -3,6 +3,8 @@
 //!
 //
 
+use crate::meta::iif;
+
 /// Returns `true` if it's probable the given `address` is in the stack, for a
 /// given `stack_size`.
 ///
@@ -27,16 +29,23 @@
 /// assert_eq!(true, ptr_in_stack(in_stack.as_ptr(), STACK_SIZE));
 /// assert_eq!(false, ptr_in_stack(in_heap.as_ptr(), STACK_SIZE));
 /// ```
+#[must_use]
+#[inline]
 pub fn ptr_in_stack<T>(address: *const T, stack_size: usize) -> bool {
-    let stack_var = 0;
-    let stack_var_address = &stack_var as *const _ as usize;
-    let object_address = address as *const _ as usize;
+    let local_var = 0;
+    let local_addr = &local_var as *const _ as usize;
+    let obj_addr = address as *const _ as usize;
+    let addr_diff = iif![local_addr > obj_addr; local_addr - obj_addr; obj_addr - local_addr];
+    addr_diff < stack_size
+}
 
-    let address_difference = if stack_var_address > object_address {
-        stack_var_address - object_address
+/// Returns the rounded up size in bytes from a size in bits.
+#[must_use]
+#[inline]
+pub const fn bytes_from_bits(bit_size: usize) -> usize {
+    if let Some(t) = bit_size.checked_add(8 - 1) {
+        t / 8
     } else {
-        object_address - stack_var_address
-    };
-
-    address_difference < stack_size
+        usize::MAX / 8
+    }
 }

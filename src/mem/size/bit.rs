@@ -3,7 +3,7 @@
 //! Traits related to stack memory bit size.
 //
 
-use super::{super::Direct, Size};
+use crate::mem::{bytes_from_bits, Direct, Size};
 
 use core::{
     cmp,
@@ -95,11 +95,7 @@ pub trait BitSize<const LEN: usize>: Size {
     /// # Panics
     /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][Size::BYTE_SIZE],
     const BIT_SIZE: usize = {
-        let min_byte_size = if let Some(t) = LEN.checked_add(8 - 1) {
-            t / 8
-        } else {
-            usize::MAX / 8
-        };
+        let min_byte_size = bytes_from_bits(LEN);
         if min_byte_size > Self::BYTE_SIZE {
             panic!["BitSize::MIN_BYTE_SIZE > Size::BYTE_SIZE"];
         }
@@ -114,11 +110,7 @@ pub trait BitSize<const LEN: usize>: Size {
     /// # Panics
     /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][Size::BYTE_SIZE],
     const MIN_BYTE_SIZE: usize = {
-        let min_byte_size = if let Some(t) = LEN.checked_add(8 - 1) {
-            t / 8
-        } else {
-            usize::MAX / 8
-        };
+        let min_byte_size = bytes_from_bits(LEN);
         if min_byte_size > Self::BYTE_SIZE {
             panic!["BitSize::MIN_BYTE_SIZE > Size::BYTE_SIZE"];
         }
@@ -129,6 +121,7 @@ pub trait BitSize<const LEN: usize>: Size {
     ///
     /// # Panics
     /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][Size::BYTE_SIZE],
+    #[must_use]
     #[inline]
     fn bit_size(&self) -> usize {
         Self::BIT_SIZE
@@ -141,6 +134,7 @@ pub trait BitSize<const LEN: usize>: Size {
     ///
     /// # Panics
     /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][Size::BYTE_SIZE],
+    #[must_use]
     #[inline]
     fn min_byte_size(&self) -> usize {
         Self::MIN_BYTE_SIZE

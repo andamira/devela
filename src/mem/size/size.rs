@@ -47,27 +47,27 @@ pub trait Size: Mem + Sized {
     /// ```
     /// use devela::mem::Size;
     ///
-    /// assert_eq![().ptr_ratio(), (1, 0)];
-    /// assert_eq![1_usize.ptr_ratio(), (1, 1)];
-    /// assert_eq!["slice".ptr_ratio(), (1, 2)];
-    /// assert_eq![String::from("hello").ptr_ratio(), (1, 3)];
+    /// assert_eq![().ptr_size_ratio(), [1, 0]];
+    /// assert_eq![1_usize.ptr_size_ratio(), [1, 1]];
+    /// assert_eq!["slice".ptr_size_ratio(), [1, 2]];
+    /// assert_eq![String::from("hello").ptr_size_ratio(), [1, 3]];
     ///
     /// #[cfg(target_pointer_width = "64")]
     /// {
-    ///     assert_eq![0_u8.ptr_ratio(), (8, 1)];
-    ///     assert_eq![0_u16.ptr_ratio(), (4, 1)];
-    ///     assert_eq![0_u32.ptr_ratio(), (2, 1)];
-    ///     assert_eq![0_u64.ptr_ratio(), (1, 1)];
-    ///     assert_eq![0_u128.ptr_ratio(), (1, 2)];
-    ///     assert_eq!['c'.ptr_ratio(), (2, 1)];
-    ///     assert_eq!["slice".ptr_ratio(), (1, 2)];
+    ///     assert_eq![0_u8.ptr_size_ratio(), [8, 1]];
+    ///     assert_eq![0_u16.ptr_size_ratio(), [4, 1]];
+    ///     assert_eq![0_u32.ptr_size_ratio(), [2, 1]];
+    ///     assert_eq![0_u64.ptr_size_ratio(), [1, 1]];
+    ///     assert_eq![0_u128.ptr_size_ratio(), [1, 2]];
+    ///     assert_eq!['c'.ptr_size_ratio(), [2, 1]];
+    ///     assert_eq!["slice".ptr_size_ratio(), [1, 2]];
     /// }
     /// ```
     ///
-    /// For the `const` version see [`mem_ptr_ratio`].
+    /// For the `const` version see [`ptr_size_ratio`].
     #[inline]
-    fn ptr_ratio(&self) -> (usize, usize) {
-        mem_ptr_ratio(Self::BYTE_SIZE)
+    fn ptr_size_ratio(&self) -> [usize; 2] {
+        ptr_size_ratio(Self::BYTE_SIZE)
     }
 }
 
@@ -79,26 +79,26 @@ pub trait Size: Mem + Sized {
 ///
 /// # Examples
 /// ```
-/// use devela::mem::{mem_ptr_ratio, mem_size_of};
+/// use devela::mem::{ptr_size_ratio, mem_size_of};
 ///
-/// assert_eq![mem_ptr_ratio(0), (1, 0)];
-/// assert_eq![mem_ptr_ratio(mem_size_of::<usize>()), (1, 1)];
-/// assert_eq![mem_ptr_ratio(mem_size_of::<&str>()), (1, 2)];
-/// assert_eq![mem_ptr_ratio(mem_size_of::<String>()), (1, 3)];
+/// assert_eq![ptr_size_ratio(0), [1, 0]];
+/// assert_eq![ptr_size_ratio(mem_size_of::<usize>()), [1, 1]];
+/// assert_eq![ptr_size_ratio(mem_size_of::<&str>()), [1, 2]];
+/// assert_eq![ptr_size_ratio(mem_size_of::<String>()), [1, 3]];
 ///
 /// #[cfg(target_pointer_width = "64")]
-/// assert_eq![mem_ptr_ratio(mem_size_of::<char>()), (2,1)];
+/// assert_eq![ptr_size_ratio(mem_size_of::<char>()), [2,1]];
 /// ```
 ///
 /// Note that when `other_size == 0` it returns `(1, 0)` which is an invalid ratio.
 ///
 #[inline]
 #[allow(dead_code)]
-pub const fn mem_ptr_ratio(other_size: usize) -> (usize, usize) {
+pub const fn ptr_size_ratio(other_size: usize) -> [usize; 2] {
     #[inline]
     const fn gcd(m: usize, n: usize) -> usize {
         iif![n == 0; m; gcd(n, m % n)]
     }
     let g = gcd(mem_size_of::<usize>(), other_size);
-    (mem_size_of::<usize>() / g, other_size / g)
+    [mem_size_of::<usize>() / g, other_size / g]
 }
