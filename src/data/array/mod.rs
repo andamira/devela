@@ -10,19 +10,16 @@
 /* contains always compiled items */
 
 mod always;
-#[allow(unused)]
+mod core_impls;
+mod methods;
+mod types;
+
 #[cfg(not(feature = "data"))]
-pub(crate) use always::*;
+pub(crate) use {always::*, core_impls::*, methods::*, types::*};
 
 /* feature-gated */
 
 // private sub-modules
-#[cfg(feature = "data")]
-mod core_impls;
-#[cfg(feature = "data")]
-mod methods;
-#[cfg(feature = "data")]
-mod types;
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
