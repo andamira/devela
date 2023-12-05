@@ -23,7 +23,7 @@ pub enum DataErrors {
     Underflow,
 
     /// The given `index` is out of bounds.
-    IndexOutOfBounds(Option<usize>),
+    OutOfBounds(Option<usize>),
 
     /// The given indices does not match the expected order.
     MismatchedIndices,
@@ -71,7 +71,7 @@ mod core_impls {
                 E::MismatchedIndices => {
                     write!(f, "The given indices does not match the expected order.")
                 }
-                E::IndexOutOfBounds(i) => {
+                E::OutOfBounds(i) => {
                     if let Some(i) = i {
                         write!(f, "The given index {i} is out of bounds.")
                     } else {

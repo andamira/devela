@@ -5,8 +5,6 @@
 //! Always available for internal use.
 //
 
-#![allow(unused)]
-
 /// Returns a subslice without the given leading `byte`s.
 #[inline]
 #[must_use]
