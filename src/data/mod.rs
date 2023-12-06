@@ -20,11 +20,12 @@ mod collection;
 pub mod cmp;
 pub mod convert;
 pub mod error;
+mod reexports;
 pub mod slice;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {array::*, cmp::*, collection::*, convert::*, error::*, slice::*};
+pub(crate) use {array::*, cmp::*, collection::*, convert::*, error::*, reexports::*, slice::*};
 
 /* feature-gated */
 
@@ -41,8 +42,6 @@ pub mod dst;
 
 #[cfg(feature = "data")]
 pub mod any;
-#[cfg(feature = "data")]
-mod reexports;
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
