@@ -4,9 +4,8 @@
 //! toml_edit = "0.20"
 //! itertools = "0.11"
 //! lexopt = "0.3"
-//! devela = { version = "0.16", features = ["std", "meta", "path"] }
+//! devela = { version = "0.18.1", features = ["std", "meta", "path"] }
 //! ```
-//!
 // This script needs [rusts-cript](https://crates.io/crates/rust-script) to run.
 
 use devela::all::{crate_root, iif, sf};
@@ -95,8 +94,9 @@ fn main() -> Result<()> {
     /* docs */
 
     if args.docs {
+        rust_setup_nightly()?;
         headline(0, &format!["`full` docs compilation:"]);
-        run_cargo("", "+nightly", &["doc", "-F std,full,unsafe,nightly,dep"])?;
+        run_cargo("", "+nightly", &["doc", "--no-deps", "-F docsrs"])?;
     }
 
     /* arches */
@@ -138,6 +138,7 @@ fn main() -> Result<()> {
         sf! { headline(0, &format!["miri testing in each architecture ({arch_total}):"]); }
 
         rust_setup_arches(&msrv)?;
+        rust_setup_nightly()?;
 
         // std
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
@@ -407,17 +408,30 @@ fn run_cargo(msrv: &str, command: &str, arguments: &[&str]) -> Result<()> {
     }
 }
 
-/// Makes sure to install all the architectures for the current MSRV.
+/// Makes sure to install all the architectures and components for the current MSRV.
 fn rust_setup_arches(msrv: &str) -> Result<()> {
     if !msrv.is_empty() {
         println!("rustup override set {msrv}");
         sf! { let _ = Command::new("rustup").args(["override", "set", msrv]).status()?; }
+        println!("rustup component add clippy");
+        sf! { let _ = Command::new("rustup").args(["component", "add", "clippy"]).status()?; }
     }
 
     for ref arch in STD_ARCHES.into_iter().chain(NO_STD_ARCHES.into_iter()) {
         println!("rustup target add {arch}");
         sf! { let _ = Command::new("rustup").args(["target", "add", arch]).status()?; }
     }
+    Ok(())
+}
+
+/// Setups nightly, and adds the miri component.
+fn rust_setup_nightly() -> Result<()> {
+    println!("rustup toolchain install nightly");
+    sf! { let _ = Command::new("rustup").args(["toolchain", "install", "nightly"]).status()?; }
+    println!("rustup component add miri --toolchain nightly");
+    let _ = Command::new("rustup")
+        .args(["component", "add", "miri", "--toolchain", "nightly"])
+        .status()?;
     Ok(())
 }
 
