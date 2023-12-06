@@ -90,18 +90,25 @@ mod _std {
     use super::{impl_fp, Fp};
     // custom implementations are commented out:
     impl_fp![std:f*:
-       "The largest integer less than or equal to `x`."
+       r"The largest integer less than or equal to `x`.
+        $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$ "
         floor = floor: x;
-        "The smallest integer greater than or equal to `x`."
+        r"The smallest integer greater than or equal to `x`.
+        $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$"
         ceil = ceil: x;
-        "Returns the nearest integer to `x`, rounding ties away from `0.0`."
+        "The nearest integer to `x`, rounding ties away from `0.0`."
         round = round_ties_away: x;
-        "The integral part."
+        r"The integral part.
+        $$ \text{trunc}(x) = \begin{cases}
+        \lfloor x \rfloor, & \text{if } x \geq 0 \\
+        \lceil x \rceil, & \text{if } x < 0
+        \end{cases} $$"
         trunc = trunc: x;
-        "The fractional part."
+        r"The fractional part.
+        $$ \text{fract}(x) = x - \text{trunc}(x) $$"
         fract = fract: x;
         // split == modf
-        "The absolute value."
+        "The absolute value of `x`."
         abs = abs: x;
         "A number that represents the sign of `x`."
         signum = signum: x;
@@ -118,11 +125,11 @@ mod _std {
         // powi
         "The square root."
         sqrt = sqrt: x;
-        "Returns $e^x$ (the exponential function)."
+        "$e^x$ (the exponential function)."
         exp = exp: x;
-        "Returns $2^x$."
+        "$2^x$."
         exp2 = exp2: x;
-        "Returns $e^x -1$, more accurately for small values of `x`."
+        "$e^x -1$, more accurately for small values of `x`."
         exp_m1 = exp_m1: x;
         "The natural logarithm."
         ln = ln: x;
@@ -166,9 +173,9 @@ mod _std {
         "The inverse hyperbolic tangent."
         atanh = atanh: x;
 
-        "Returns the maximum of two numbers, ignoring `NaN`."
+        "The maximum of two numbers, ignoring `NaN`."
         max = max: x, y;
-        "Returns the minimum of two numbers, ignoring `NaN`."
+        "The minimum of two numbers, ignoring `NaN`."
         min = min: x, y
 
         /* not implemented */
@@ -190,9 +197,14 @@ mod _std {
                 /// Both the sine and cosine.
                 #[inline(always)]
                 pub fn sin_cos(x: $f) -> ($f, $f) { <$f>::sin_cos(x) }
-                /// Returns the integral and fractional parts.
+                /// The integral and fractional parts of `x`.
+                ///
+                /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
                 #[inline(always)]
-                pub fn split(value: $f) -> ($f, $f) { (value.trunc(), value.fract()) }
+                pub fn split(x: $f) -> ($f, $f) {
+                    let trunc = Self::trunc(x);
+                    (trunc, x - trunc)
+                }
             }
         };
     }
@@ -205,20 +217,22 @@ mod _libm {
     use crate::{_dep::libm::Libm, meta::iif};
     // custom implementations are commented out
     impl_fp![libm:f*:
-        "The largest integer less than or equal to `x`."
+       r"The largest integer less than or equal to `x`.
+        $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$ "
         floor = floor: x;
-        "The smallest integer greater than or equal to `x`."
+        r"The smallest integer greater than or equal to `x`.
+        $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$"
         ceil = ceil: x;
-        "Returns the nearest integer to `x`, rounding ties away from `0.0`."
+        "The nearest integer to `x`, rounding ties away from `0.0`."
         round = round_ties_away: x;
         "The integral part."
         trunc = trunc: x;
         // fract
         // split == modf
-        "The absolute value."
+        "The absolute value of `x`."
         fabs = abs: x;
         // signum
-        "Returns a number composed of a `magnitude` and a `sign`."
+        "A number composed of a `magnitude` and a `sign`."
         copysign = copysign: magnitude, sign;
         "Fused multiply-add. Computes (x * y) + z with only one rounding error."
         fma = mul_add: x, y, z;
@@ -229,11 +243,11 @@ mod _libm {
         // powi
         "Square root."
         sqrt = sqrt: x;
-        "Returns $e^x$ (the exponential function)."
+        "$e^x$ (the exponential function)."
         exp = exp: x;
-        "Returns $2^x$."
+        "$2^x$."
         exp2 = exp2: x;
-        "Returns $e^x -1$, more accurately for small values of `x`."
+        "$e^x -1$, more accurately for small values of `x`."
         expm1 = exp_m1: x;
         // ln = ln: x;
         "The natural logarithm."
@@ -277,14 +291,14 @@ mod _libm {
         "The inverse hyperbolic tangent."
         atanh = atanh: x;
 
-        "Returns the minimum of two numbers, ignoring `NaN`."
+        "The minimum of two numbers, ignoring `NaN`."
         fmax = max: x, y;
-        "Returns the minimum of two numbers, ignoring `NaN`."
+        "The minimum of two numbers, ignoring `NaN`."
         fmin = min: x, y;
 
         /* only in libm */
 
-        "Returns `10^x`."
+        "`10^x`."
         exp10 = exp10: x;
         "The gamma function. Generalizes the factorial function to complex numbers."
         tgamma = gamma : x;
@@ -312,13 +326,17 @@ mod _libm {
         (@$f:ty, $e:ty) => {
             /// # *Implementations using the `libm` feature*.
             impl Fp<$f> {
-                /// Returns the fractional part.
+                /// The fractional part of `x`.
+                ///
+                /// $$ \text{fract}(x) = x - \lfloor x \rfloor $$
                 #[must_use] #[inline(always)]
                 pub fn fract(x: $f) -> $f { x - Libm::<$f>::trunc(x) }
 
-                /// The integral and fractional parts.
+                /// The integral and fractional parts of `x`.
+                ///
+                /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
                 #[must_use] #[inline(always)]
-                pub fn split(value: $f) -> ($f, $f) { Libm::<$f>::modf(value) }
+                pub fn split(x: $f) -> ($f, $f) { Libm::<$f>::modf(x) }
 
                 /// A number that represents the sign of `x`, propagating `NaN`.
                 #[must_use] #[inline]
@@ -345,7 +363,7 @@ mod _libm {
 
                 /// The logarithm of the number with respect to an arbitrary base.
                 #[must_use] #[inline(always)]
-                pub fn log(value: $f, base: $f) -> $f { Self::ln(base) / Self::ln(value) }
+                pub fn log(x: $f, base: $f) -> $f { Self::ln(base) / Self::ln(x) }
 
                 /// The sine and cosine.
                 #[must_use] #[inline(always)]
@@ -353,17 +371,17 @@ mod _libm {
 
                 // NOTE: implemented manually in _either
                 //
-                // /// Returns the clamped `x` value, propagating `NaN`.
+                // /// The clamped `x` value, propagating `NaN`.
                 // #[must_use] #[inline(always)]
-                // pub fn clamp_nan(value: $f, min: $f, max: $f) -> $f {
-                //     Self::min_nan(Self::max_nan(value, min), max)
+                // pub fn clamp_nan(x: $f, min: $f, max: $f) -> $f {
+                //     Self::min_nan(Self::max_nan(x, min), max)
                 // }
-                // /// Returns the maximum of two numbers, propagating `NaN`.
+                // /// The maximum of two numbers, propagating `NaN`.
                 // #[must_use] #[inline(always)]
                 // pub fn max_nan(x: $f, y: $f) -> $f {
                 //     iif![x.is_nan() || y.is_nan(); <$f>::NAN; Libm::<$f>::fmax(x, y)]
                 // }
-                // /// Returns the minimum of two numbers, propagating `NaN`.
+                // /// The minimum of two numbers, propagating `NaN`.
                 // #[must_use] #[inline(always)]
                 // pub fn min_nan(x: $f, y: $f) -> $f {
                 //     iif![x.is_nan() || y.is_nan(); <$f>::NAN; Libm::<$f>::fmin(x, y)]
@@ -401,6 +419,8 @@ mod _no_std_no_libm {
             /// # *Implementations without `std` or `libm`*.
             impl Fp<$f> {
                 /// The largest integer less than or equal to `x`.
+                ///
+                /// $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$
                 #[must_use] #[inline]
                 pub fn floor(x: $f) -> $f {
                     let mut result = Self::trunc(x);
@@ -411,6 +431,8 @@ mod _no_std_no_libm {
                 }
 
                 /// The smallest integer greater than or equal to `x`.
+                ///
+                /// $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$
                 #[must_use] #[inline]
                 pub fn ceil(x: $f) -> $f {
                     let mut result = Self::trunc(x);
@@ -420,7 +442,7 @@ mod _no_std_no_libm {
                     result
                 }
 
-                /// Returns the nearest integer to `self`, default rounding
+                /// The nearest integer to `self`, default rounding
                 ///
                 /// This is the default [`round_ties_away`] implementation.
                 #[must_use] #[inline]
@@ -428,9 +450,18 @@ mod _no_std_no_libm {
                     Self::trunc(x + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, x))
                 }
 
-                /// Returns the nearest integer to `self`, rounding ties away from `0.0`.
+                /// The nearest integer to `self`, rounding ties away from `0.0`.
                 ///
                 /// This is the default [`round`] implementation.
+                ///
+                /// $$
+                /// \text{round\\_ties\\_away}(x) = \begin{cases}
+                /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \text{ or }
+                ///     (x - \lfloor x \rfloor = 0.5 \text{ and } x > 0) \cr
+                /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor < 0.5 \text{ or }
+                ///     (x - \lfloor x \rfloor = 0.5 \text{ and } x < 0)
+                /// \end{cases}
+                /// $$
                 #[must_use] #[inline]
                 pub fn round_ties_away(x: $f) -> $f {
                     Self::trunc(x + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, x))
@@ -438,6 +469,13 @@ mod _no_std_no_libm {
 
                 /// The integral part.
                 /// This means that non-integer numbers are always truncated towards zero.
+                ///
+                /// $$
+                /// \text{trunc}(x) = \begin{cases}
+                /// \lfloor x \rfloor, & \text{if } x \geq 0 \cr
+                /// \lceil x \rceil, & \text{if } x < 0
+                /// \end{cases}
+                /// $$
                 ///
                 /// This implementation uses bitwise manipulation to remove the fractional part
                 /// of the floating-point number. The exponent is extracted, and a mask is
@@ -464,12 +502,19 @@ mod _no_std_no_libm {
                 }
 
                 /// The fractional part.
+                ///
+                /// $$ \text{fract}(x) = x - \text{trunc}(x) $$
                 #[must_use] #[inline(always)]
                 pub fn fract(x: $f) -> $f { x - Self::trunc(x) }
 
-                /// Returns the integral and fractional parts.
+                /// The integral and fractional parts.
+                ///
+                /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
                 #[must_use] #[inline(always)]
-                pub fn split(x: $f) -> ($f, $f) { (Self::trunc(x), Self::fract(x)) }
+                pub fn split(x: $f) -> ($f, $f) {
+                    let trunc = Self::trunc(x);
+                    (trunc, x - trunc)
+                }
 
                 /// The absolute value.
                 #[must_use] #[inline]
@@ -495,13 +540,13 @@ mod _no_std_no_libm {
                     <$f>::from_bits(value_bits | sign_bit)
                 }
 
-                /// Returns the maximum of two numbers, ignoring `NaN`.
+                /// The maximum of two numbers, ignoring `NaN`.
                 #[must_use] #[inline]
                 pub fn max(x: $f, y: $f) -> $f {
                     (if x.is_nan() || x < y { y } else { x }) * 1.0
                 }
 
-                /// Returns the minimum of two numbers, ignoring `NaN`.
+                /// The minimum of two numbers, ignoring `NaN`.
                 #[must_use] #[inline]
                 pub fn min(x: $f, y: $f) -> $f {
                     (iif![y.is_nan() || x < y; x; y]) * 1.0

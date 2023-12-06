@@ -13,39 +13,81 @@ use super::Fp;
 #[rustfmt::skip]
 pub trait FloatExt: Sized {
     /// The largest integer less than or equal to `self`.
+    ///
+    /// $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$
     #[must_use]
     fn floor(self) -> Self;
 
     /// The smallest integer greater than or equal to `self`.
+    ///
+    /// $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$
     #[must_use]
     fn ceil(self) -> Self;
 
-    /// Returns the nearest integer to `self`, default rounding, same as
+    /// The nearest integer to `self`, default rounding, same as
     /// [`round_ties_away`][FloatExt::round_ties_away]
     #[must_use]
     fn round(self) -> Self;
 
-    /// Returns the nearest integer to `self`, rounding ties away from `0.0`.
+    /// The nearest integer to `self`, rounding ties away from `0.0`.
+    ///
+    /// $$
+    /// \text{round\\_ties\\_away}(x) = \begin{cases}
+    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \text{ or }
+    ///     (x - \lfloor x \rfloor = 0.5 \text{ and } x > 0) \cr
+    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor < 0.5 \text{ or }
+    ///     (x - \lfloor x \rfloor = 0.5 \text{ and } x < 0)
+    /// \end{cases}
+    /// $$
     #[must_use]
     fn round_ties_away(self) -> Self;
 
-    /// Returns the nearest integer to `self`, rounding ties to the nearest even integer.
+    /// The nearest integer to `self`, rounding ties to the nearest even integer.
+    ///
+    /// $$
+    /// \text{round\\_ties\\_even}(x) = \begin{cases}
+    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \cr
+    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor < 0.5 \cr
+    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and } \lfloor x \rfloor \text{ is even} \cr
+    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and } \lfloor x \rfloor \text{ is odd}
+    /// \end{cases}
+    /// $$
     #[must_use]
     fn round_ties_even(self) -> Self;
 
-    /// Returns the nearest integer to `self`, rounding ties to the nearest odd integer.
+    /// The nearest integer to `self`, rounding ties to the nearest odd integer.
+    ///
+    /// $$
+    /// \text{round\\_ties\\_odd}(x) = \begin{cases}
+    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \cr
+    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor < 0.5 \cr
+    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and } \lfloor x \rfloor \text{ is odd} \cr
+    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and } \lfloor x \rfloor \text{ is even}
+    /// \end{cases}
+    /// $$
     #[must_use]
     fn round_ties_odd(self) -> Self;
 
-    /// The integral part.
+    /// The integral part of `self`.
+    ///
+    /// $$
+    /// \text{trunc}(x) = \begin{cases}
+    /// \lfloor x \rfloor, & \text{if } x \geq 0 \\
+    /// \lceil x \rceil, & \text{if } x < 0
+    /// \end{cases}
+    /// $$
     #[must_use]
     fn trunc(self) -> Self;
 
-    /// The fractional part.
+    /// The fractional part of `self`.
+    ///
+    /// $$ \text{fract}(x) = x - \text{trunc}(x) $$
     #[must_use]
     fn fract(self) -> Self;
 
-    /// Returns the integral and fractional parts.
+    /// The integral and fractional parts ox `self`.
+    ///
+    /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
     #[must_use]
     fn split(self) -> (Self, Self);
 
@@ -53,11 +95,11 @@ pub trait FloatExt: Sized {
     #[must_use]
     fn abs(self) -> Self;
 
-    /// Returns `true` if self has a positive sign.
+    /// Returns `true` if `self` has a positive sign.
     #[must_use]
     fn is_sign_positive(self) -> bool;
 
-    /// Returns `true` if self has a negative sign.
+    /// Returns `true` if `self` has a negative sign.
     #[must_use]
     fn is_sign_negative(self) -> bool;
 
@@ -128,7 +170,7 @@ pub trait FloatExt: Sized {
     #[must_use]
     fn hypot(self, rhs: Self) -> Self;
 
-    /// Returns $e^x$ (the exponential function).
+    /// $e^x$ (the exponential function).
     ///
     /// The maximum values with a representable result are:
     /// 88.722… for `f32` and 709.782… for `f64`.
@@ -138,7 +180,7 @@ pub trait FloatExt: Sized {
     #[must_use]
     fn exp(self) -> Self;
 
-    /// Returns $2^x$.
+    /// $2^x$.
     ///
     /// With both `std` and `libm` disabled it leverages [`exp2_taylor`][Fp::exp2_taylor]
     /// with [`exp2_taylor_terms`][Fp::exp2_taylor_terms].
@@ -203,7 +245,7 @@ pub trait FloatExt: Sized {
     #[must_use]
     fn cos(self) -> Self;
 
-    /// Returns both the sine and cosine.
+    /// Both the sine and cosine.
     ///
     /// With both `std` and `libm` disabled it leverages
     /// [`sin_cos_taylor`][Fp::sin_cos_taylor] with 8 terms.
@@ -284,39 +326,39 @@ pub trait FloatExt: Sized {
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn atanh(self) -> Self;
 
-    /// Returns the clamped value, ignoring `NaN`.
+    /// The clamped value, ignoring `NaN`.
     #[must_use]
     fn clamp(self, min: Self, max: Self) -> Self;
 
-    /// Returns the maximum of two numbers, ignoring `NaN`.
+    /// The maximum of two numbers, ignoring `NaN`.
     #[must_use]
     fn max(self, other: Self) -> Self;
 
-    /// Returns the minimum of two numbers, ignoring `NaN`.
+    /// The minimum of two numbers, ignoring `NaN`.
     #[must_use]
     fn min(self, other: Self) -> Self;
 
-    /// Returns the clamped value, propagating `NaN`.
+    /// The clamped value, propagating `NaN`.
     #[must_use]
     fn clamp_nan(self, min: Self, max: Self) -> Self;
 
-    /// Returns the maximum of two numbers, propagating `NaN`.
+    /// The maximum of two numbers, propagating `NaN`.
     #[must_use]
     fn max_nan(self, other: Self) -> Self;
 
-    /// Returns the minimum of two numbers, propagating `NaN`.
+    /// The minimum of two numbers, propagating `NaN`.
     #[must_use]
     fn min_nan(self, other: Self) -> Self;
 
-    /// Returns the clamped value, using total order.
+    /// The clamped value, using total order.
     #[must_use]
     fn clamp_total(self, min: Self, max: Self) -> Self;
 
-    /// Returns the maximum of two numbers using total order.
+    /// The maximum of two numbers using total order.
     #[must_use]
     fn max_total(self, other: Self) -> Self;
 
-    /// Returns the minimum of two numbers using total order.
+    /// The minimum of two numbers using total order.
     #[must_use]
     fn min_total(self, other: Self) -> Self;
 }
