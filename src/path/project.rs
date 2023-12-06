@@ -28,6 +28,7 @@ use std::{
 ///     Err(e) => println!("Error obtaining crate root {:?}", e)
 /// };
 /// ```
+#[cfg(not(miri))] // unsupported operation: `getcwd` not available when isolation is enabled
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 pub fn crate_root<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
@@ -51,8 +52,9 @@ pub fn crate_root<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
 /// Like [`crate_root`] but returns a [`String`].
 ///
 /// In case of an error the returned string will be empty.
-#[inline]
+#[cfg(not(miri))]
 #[must_use]
+#[inline]
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 pub fn crate_root_string<P: AsRef<Path>>(path: P) -> String {

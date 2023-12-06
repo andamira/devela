@@ -29,6 +29,7 @@ use crate::meta::iif;
 /// assert_eq!(true, ptr_in_stack(in_stack.as_ptr(), STACK_SIZE));
 /// assert_eq!(false, ptr_in_stack(in_heap.as_ptr(), STACK_SIZE));
 /// ```
+#[cfg(not(miri))] // The addresses in Miri are not real addresses
 #[must_use]
 #[inline]
 pub fn ptr_in_stack<T>(address: *const T, stack_size: usize) -> bool {
