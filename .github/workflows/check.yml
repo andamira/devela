@@ -52,10 +52,10 @@ jobs:
           components: clippy
 
       - name: "cargo clippy -F full,std,unsafe"
-        run: cargo clippy -F full,std,unsafe,linux
+        run: cargo clippy -F full,std,unsafe
 
       - name: "cargo clippy -F full,safe"
-        run: cargo clippy -F full,safe,linux
+        run: cargo clippy -F full,safe
 
   # 3. documentation
   doc:
@@ -96,7 +96,7 @@ jobs:
           toolchain: ${{ matrix.msrv }}
 
       - name: "cargo +${{ matrix.msrv }} check -F full,std,unsafe"
-        run: cargo check -F full,std,unsafe,linux
+        run: cargo check -F full,std,unsafe
 
       - name: "cargo +${{ matrix.msrv }} check -F full,safe"
         run: cargo check -F full,safe

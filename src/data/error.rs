@@ -88,7 +88,8 @@ mod core_impls {
                 }
                 E::NotEnoughSpace(n) => {
                     if let Some(n) = n {
-                        write!( f,
+                        write!(
+                            f,
                             "Not enough space. Needs at least `{n}` free space for elements."
                         )
                     } else {

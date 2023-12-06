@@ -33,12 +33,19 @@ jobs:
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
 
-      # https://twitter.com/jonhoo/status/1571290371124260865
-      - name: "cargo test --locked -F full,std,unsafe"
-        run: cargo test --locked -F full,std,unsafe,linux
+      - name: "install rust-script"
+        run: cargo install rust-script;
 
-      - name: "cargo test --locked -F full,safe"
-        run: cargo test --locked -F full,safe,linux
+      # https://twitter.com/jonhoo/status/1571290371124260865
+
+      - name: "./tools/check.rs --arches"
+        run: ./tools/check.rs --arches
+
+      - name: "./tools/check.rs --arches --miri"
+        run: ./tools/check.rs --arches --miri
+
+      - name: "./tools/check.rs --tests"
+        run: ./tools/check.rs --tests
 
   # 2.
   minimal:
@@ -63,10 +70,10 @@ jobs:
         run: cargo +nightly update -Zminimal-versions
 
       - name: "cargo test --locked -F full,std,unsafe"
-        run: cargo test --locked -F full,std,unsafe,linux
+        run: cargo test --locked -F full,std,unsafe
 
       - name: "cargo test --locked -F full,safe"
-        run: cargo test --locked -F full,safe,linux
+        run: cargo test --locked -F full,safe
 
   # 3.
   os-check:

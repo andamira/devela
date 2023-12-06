@@ -90,6 +90,7 @@ macro_rules! array_init {
     // unsafe array initialization in the heap
     (unsafe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
         let mut v = Vec::<$T>::with_capacity($LEN);
+        #[allow(clippy::redundant_closure_call)]
         for i in 0..$LEN { v.push($init(i)); }
         let slice = v.into_boxed_slice();
         let raw_slice = Box::into_raw(slice);
