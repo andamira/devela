@@ -38,12 +38,6 @@ jobs:
 
       # https://twitter.com/jonhoo/status/1571290371124260865
 
-      - name: "./tools/check.rs --arches"
-        run: ./tools/check.rs --arches
-
-      - name: "./tools/check.rs --arches --miri"
-        run: ./tools/check.rs --arches --miri
-
       - name: "./tools/check.rs --tests"
         run: ./tools/check.rs --tests
 

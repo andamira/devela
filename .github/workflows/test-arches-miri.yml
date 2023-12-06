@@ -1,0 +1,45 @@
+permissions:
+  contents: read
+
+# runs on push to the main branch, and PRs
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+name: "test"
+jobs:
+
+  # 1.
+  required:
+    name: "ubuntu / ${{ matrix.toolchain }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain: [stable]
+        # toolchain: [stable, beta]
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v3
+        with:
+            submodules: true
+
+      - name: "Install ${{ matrix.toolchain }}"
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+
+      - name: "cargo generate-lockfile"
+        if: hashFiles('Cargo.lock') == ''
+        run: cargo generate-lockfile
+
+      - name: "install rust-script"
+        run: cargo install rust-script;
+
+      # https://twitter.com/jonhoo/status/1571290371124260865
+
+      - name: "./tools/check.rs --arches"
+        run: ./tools/check.rs --arches
+
+      - name: "./tools/check.rs --miri"
+        run: ./tools/check.rs --miri
