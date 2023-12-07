@@ -33,16 +33,30 @@ where
     #[doc = include_str!("./Benchmarks_bit_mask_unchecked.md")]
     #[must_use]
     fn bit_mask_range_unchecked(start: u32, end: u32) -> Self;
+
+    /// Gets the bits in `self`, from `start` to `end`, inclusive.
+    fn bit_get_range(self, start: u32, end: u32) -> Result<Self>;
+    /// Sets the bits in `self`, from `start` to `end`, inclusive, unchecked version.
+    #[must_use]
+    fn bit_get_range_unchecked(self, start: u32, end: u32) -> Self;
+    /// Gets the shifted bits in `self`, from `start` to `end`, inclusive.
+    fn bit_get_shift_range(self, start: u32, end: u32) -> Result<Self>;
+    /// Sets the shifted bits in `self`, from `start` to `end`, inclusive, unchecked version.
+    #[must_use]
+    fn bit_get_shift_range_unchecked(self, start: u32, end: u32) -> Self;
+
     /// Sets the bits in `self` to 1, from `start` to `end`, inclusive.
     fn bit_set_range(self, start: u32, end: u32) -> Result<Self>;
     /// Sets the bits in `self` to 1, from `start` to `end`, inclusive, unchecked version.
     #[must_use]
     fn bit_set_range_unchecked(self, start: u32, end: u32) -> Self;
+
     /// Unsets the bits in `self` to 0, from `start` to `end`, inclusive.
     fn bit_unset_range(self, start: u32, end: u32) -> Result<Self>;
     /// Unsets the bits in `self` to 0, from `start` to `end`, inclusive, unchecked version.
     #[must_use]
     fn bit_unset_range_unchecked(self, start: u32, end: u32) -> Self;
+
     /// Flips the bits in `self`, from `start` to `end`, inclusive.
     fn bit_flip_range(self, start: u32, end: u32) -> Result<Self>;
     /// Flips the bits in `self` from `start` to `end`, inclusive, unchecked version.
@@ -158,6 +172,18 @@ macro_rules! impl_bitwise_primitives {
             }
             fn bit_mask_range_unchecked(start: u32, end: u32) -> Self {
                 [<bit_mask_range_unchecked_ $t>](start, end)
+            }
+            fn bit_get_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_get_range_ $t>](self, start, end)
+            }
+            fn bit_get_range_unchecked(self, start: u32, end: u32) -> Self {
+                [<bit_get_range_unchecked_ $t>](self, start, end)
+            }
+            fn bit_get_shift_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_get_shift_range_ $t>](self, start, end)
+            }
+            fn bit_get_shift_range_unchecked(self, start: u32, end: u32) -> Self {
+                [<bit_get_shift_range_unchecked_ $t>](self, start, end)
             }
             fn bit_set_range(self, start: u32, end: u32) -> Result<Self> {
                 [<bit_set_range_ $t>](self, start, end)

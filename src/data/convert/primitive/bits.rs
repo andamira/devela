@@ -70,6 +70,52 @@ macro_rules! impl_bits {
             // mask
         }
 
+        /// Gets the bits in `bits` from `start` to `end`, inclusive.
+        ///
+        /// # Errors
+        #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
+            $t "::BITS`]` || end >= `[`" $t "::BITS`] and
+            [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
+        #[inline]
+        pub const fn [<bit_get_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
+            match [< bit_mask_range_ $t>](start, end) {
+                Ok(mask) => Ok(bits & mask),
+                Err(e) => Err(e),
+            }
+        }
+        /// Gets the bits in `bits` from `start` to `end`, inclusive, unchecked version.
+        ///
+        /// # Panics
+        #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
+            $t "::BITS`]` || start > end`."]
+        #[must_use] #[inline]
+        pub const fn [<bit_get_range_unchecked_ $t>](bits: $t, start: u32, end: u32) -> $t {
+            (bits & [< bit_mask_range_unchecked_ $t>](start, end))
+        }
+
+        /// Gets the shifted bits in `bits` from `start` to `end`, inclusive.
+        ///
+        /// # Errors
+        #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
+            $t "::BITS`]` || end >= `[`" $t "::BITS`] and
+            [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
+        #[inline]
+        pub const fn [<bit_get_shift_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
+            match [< bit_mask_range_ $t>](start, end) {
+                Ok(mask) => Ok((bits & mask) >> start),
+                Err(e) => Err(e),
+            }
+        }
+        /// Gets the shifted bits in `bits` from `start` to `end`, inclusive, unchecked version.
+        ///
+        /// # Panics
+        #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
+            $t "::BITS`]` || start > end`."]
+        #[must_use] #[inline]
+        pub const fn [<bit_get_shift_range_unchecked_ $t>](bits: $t, start: u32, end: u32) -> $t {
+            (bits & [< bit_mask_range_unchecked_ $t>](start, end)) >> start
+        }
+
         /// Sets the bits in `bits` to 1, from `start` to `end`, inclusive.
         ///
         /// # Errors
@@ -172,8 +218,10 @@ mod tests {
     }
     #[test]
     #[rustfmt::skip]
-    fn bit_ops() { // ALL
+    fn bit_ops() {
         let bits = 0b_1111_0000;
+        assert_eq![0b_0011_0000, bit_get_range_u8(bits, 2, 5).unwrap()];
+        assert_eq![0b_0000_1100, bit_get_shift_range_u8(bits, 2, 5).unwrap()];
         assert_eq![0b_1111_1100, bit_set_range_u8(bits, 2, 5).unwrap()];
         assert_eq![0b_1100_0000, bit_unset_range_u8(bits, 2, 5).unwrap()];
         assert_eq![0b_1100_1100, bit_flip_range_u8(bits, 2, 5).unwrap()];
