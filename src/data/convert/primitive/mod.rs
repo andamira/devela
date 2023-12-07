@@ -3,20 +3,52 @@
 //! Helpers for converting between primitives.
 //
 
-#![cfg_attr(not(feature = "data"), allow(unused))]
-
 use crate::{data::DataResult as Result, meta::paste};
 
 #[cfg(test)]
 mod tests;
 
+mod bits;
 mod cast;
 mod join;
 mod split;
 
-pub use {cast::*, join::*, split::*};
+pub use {bits::*, cast::*, join::*, split::*};
 
 /* define traits */
+
+/// Offers methods for bitwise operations on primitives.
+pub trait BitwisePrimitives
+where
+    Self: Sized,
+{
+    /// Returns a bitmask set from the `start` to the `end` bit, inclusive.
+    ///
+    /// This function underlies all the bit range operations.
+    #[doc = include_str!("./Benchmarks_bit_mask_checked.md")]
+    fn bit_mask_range(start: u32, end: u32) -> Result<Self>;
+    /// Returns a bitmask set from the `start` to the `end` bit, inclusive, unchecked version.
+    ///
+    /// This function underlies all the unchecked bit range operations.
+    #[doc = include_str!("./Benchmarks_bit_mask_unchecked.md")]
+    #[must_use]
+    fn bit_mask_range_unchecked(start: u32, end: u32) -> Self;
+    /// Sets the bits in `self` to 1, from `start` to `end`, inclusive.
+    fn bit_set_range(self, start: u32, end: u32) -> Result<Self>;
+    /// Sets the bits in `self` to 1, from `start` to `end`, inclusive, unchecked version.
+    #[must_use]
+    fn bit_set_range_unchecked(self, start: u32, end: u32) -> Self;
+    /// Unsets the bits in `self` to 0, from `start` to `end`, inclusive.
+    fn bit_unset_range(self, start: u32, end: u32) -> Result<Self>;
+    /// Unsets the bits in `self` to 0, from `start` to `end`, inclusive, unchecked version.
+    #[must_use]
+    fn bit_unset_range_unchecked(self, start: u32, end: u32) -> Self;
+    /// Flips the bits in `self`, from `start` to `end`, inclusive.
+    fn bit_flip_range(self, start: u32, end: u32) -> Result<Self>;
+    /// Flips the bits in `self` from `start` to `end`, inclusive, unchecked version.
+    #[must_use]
+    fn bit_flip_range_unchecked(self, start: u32, end: u32) -> Self;
+}
 
 /// Offers methods for casting between primitives.
 pub trait CastPrimitives {
@@ -116,6 +148,39 @@ pub trait IntoPrimitives<T, U, const LEN: usize> {
 }
 
 /* implement traits */
+
+macro_rules! impl_bitwise_primitives {
+    ($($t:ty),+) => { $( impl_bitwise_primitives![@$t]; )+ };
+    (@$t:ty) => { paste! {
+        impl BitwisePrimitives for $t {
+            fn bit_mask_range(start: u32, end: u32) -> Result<Self> {
+                [<bit_mask_range_ $t>](start, end)
+            }
+            fn bit_mask_range_unchecked(start: u32, end: u32) -> Self {
+                [<bit_mask_range_unchecked_ $t>](start, end)
+            }
+            fn bit_set_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_set_range_ $t>](self, start, end)
+            }
+            fn bit_set_range_unchecked(self, start: u32, end: u32) -> Self {
+                [<bit_set_range_unchecked_ $t>](self, start, end)
+            }
+            fn bit_unset_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_unset_range_ $t>](self, start, end)
+            }
+            fn bit_unset_range_unchecked(self, start: u32, end: u32) -> Self {
+                [<bit_unset_range_unchecked_ $t>](self, start, end)
+            }
+            fn bit_flip_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_flip_range_ $t>](self, start, end)
+            }
+            fn bit_flip_range_unchecked(self, start: u32, end: u32) -> Self {
+                [<bit_flip_range_unchecked_ $t>](self, start, end)
+            }
+        }
+    }};
+}
+impl_bitwise_primitives![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
 
 macro_rules! impl_cast_primitives {
     ($($t:ty),+) => { $( impl_cast_primitives![@$t]; )+ };

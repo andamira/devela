@@ -164,7 +164,9 @@ pub mod prelude {
     pub use crate::math::num::{Num, NumRef};
 
     #[cfg(feature = "data")]
-    pub use crate::data::convert::primitive::{FromPrimitives, IntoPrimitives};
+    pub use crate::data::convert::primitive::{
+        BitwisePrimitives, CastPrimitives, FromPrimitives, IntoPrimitives,
+    };
 
     #[cfg(all(feature = "math", any(feature = "std", feature = "libm")))]
     pub use crate::math::ops::FloatExt;
