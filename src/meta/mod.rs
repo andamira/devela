@@ -16,10 +16,11 @@ mod const_for;
 mod iif;
 mod paste;
 mod skip_format;
+mod reexports;
 
 #[allow(unused)]
 #[cfg(not(feature = "meta"))]
-pub(crate) use {const_for::cfor, iif::iif, paste::paste, skip_format::sf};
+pub(crate) use {const_for::cfor, iif::iif, paste::paste, reexports::*, skip_format::sf};
 
 #[doc(hidden)]
 #[allow(unused)]
@@ -29,8 +30,6 @@ pub use paste::__paste;
 
 #[cfg(feature = "meta")]
 mod deprecate;
-#[cfg(feature = "meta")]
-mod reexports;
 
 // re-export private sub-modules
 #[cfg(feature = "meta")]

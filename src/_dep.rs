@@ -47,9 +47,6 @@ mod _dep {
     #[cfg(feature = "const-str")]
     pub use ::const_str;
 
-    #[cfg(feature = "devela_macros")]
-    pub use ::devela_macros;
-
     #[cfg(all(feature = "hashbrown", feature = "alloc"))]
     pub use ::hashbrown;
 
@@ -84,9 +81,6 @@ mod _dep {
 
     reexport! { depend feature: "text",
     dep: "const-str", const_str, "Compile-time string operations." }
-
-    reexport! { depend feature: "meta",
-    dep: "devela_macros", devela_macros, "Procedural macros for `devela`." }
 
     reexport! { depend feature: "no_std",
     dep: "libm", libm, "A port of [`MUSL`](https://musl.libc.org/)'s libm to Rust." }

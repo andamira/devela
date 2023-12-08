@@ -69,7 +69,7 @@ color = []
 data = ["dep?/bytemuck", "dep?/hashbrown"]
 math = []
 mem = ["dep?/bytemuck"]
-meta = ["dep?/devela_macros"]
+meta = []
 path = []
 result = []
 task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
@@ -124,7 +124,6 @@ atomic = ["dep:atomic"]
 #az = ["dep:az"]
 bytemuck = ["dep:bytemuck"]
 const-str = ["dep:const-str"]
-devela_macros = ["dep:devela_macros"]
 libm = ["dep:libm"]
 hashbrown = ["dep:hashbrown"]
 portable-atomic = ["dep:portable-atomic"]
@@ -134,8 +133,8 @@ unicode-segmentation = ["dep:unicode-segmentation"]
 # ------------------------------------------------------------------------------
 
 [dependencies]
-
-# only one non-optional dependency
+devela_macros = { version  = "0.7.0" }
+#devela_macros = { path = "./macros", optional = true }
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 
 # There are two options for enabling optional dependencies:
@@ -148,8 +147,6 @@ dep = { package = "devela_depend", version = "0.1.2", optional = true }
 # option B) Otherwise optional features can be manually enabled:
 #az = { version = "1.2.1", default-features = false, optional = true }
 const-str = { version = "0.5.6", default-features = false, optional = true }
-devela_macros = { version  = "0.7.0", optional = true }
-#devela_macros = { path = "./macros", optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
 [dependencies.atomic]
