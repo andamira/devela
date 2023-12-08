@@ -95,7 +95,7 @@ pub fn sort_counting<T: Ord + Clone>(slice: &mut [T]) -> Vec<usize> {
 /// - `freq` and `values` are of the same length.
 /// - `freq` only contains zeros.
 ///
-/// Returns `None` if `values` does not contain a value present in the slice,
+/// Returns `None` if `values` does not contain a value present in `slice`,
 /// or if `slice` has more elements than `freq` can accommodate.
 ///
 /// Note that the frequencies in `freq` will be in the order of the sorted
