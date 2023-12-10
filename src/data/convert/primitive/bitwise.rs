@@ -492,8 +492,9 @@ macro_rules! impl_bitwise_fns {
             $t "::BITS`]` || start > end`."]
         #[must_use] #[inline]
         pub const fn [<bit_count_zeros_range_ $t>](bits: $t, start: u32, end: u32) -> u32 {
-            let masked_bits = bits & [<bit_mask_range_ $t>](start, end);
-            masked_bits.count_zeros()
+            let mask = [<bit_mask_range_ $t>](start, end);
+            let masked_bits = bits & mask;
+            (!masked_bits & mask).count_ones()
         }
 
         /// Counts the number of unset bits (zeros) in `bits` from `start` to `end` inclusive, checked.
@@ -504,7 +505,10 @@ macro_rules! impl_bitwise_fns {
         #[inline]
         pub const fn [<bit_count_zeros_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<u32> {
             match [<bit_mask_checked_range_ $t>](start, end) {
-                Ok(mask) => Ok((bits & mask).count_zeros()),
+                Ok(mask) => {
+                    let masked_bits = bits & mask;
+                    Ok((!masked_bits & mask).count_ones())
+                },
                 Err(e) => Err(e),
             }
         }

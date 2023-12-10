@@ -6,9 +6,9 @@
 #[cfg(test)]
 mod tests;
 
-mod bits;
+mod bitwise;
 mod cast;
 mod join;
 mod split;
 
-pub use {bits::*, cast::*, join::*, split::*};
+pub use {bitwise::*, cast::*, join::*, split::*};
