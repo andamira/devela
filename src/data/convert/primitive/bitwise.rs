@@ -189,6 +189,54 @@ where
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
     fn bit_find_first_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
+
+    /* find last */
+
+    /// Finds the index of the last set bit (one) in `bits` from `start` to `end` inclusive.
+    ///
+    /// Returns `None` if there are no bits set.
+    ///
+    /// The index is relative to the entire sequence of `bits`, not to the given `start`.
+    /// You can always substract `start` from the result afterwards for that.
+    /// # Panics
+    /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
+    #[must_use]
+    fn bit_find_last_one_range(self, start: u32, end: u32) -> Option<u32>;
+
+    /// Finds the index of the last set bit (one) in `bits` from `start` to `end` inclusive,
+    /// checked.
+    ///
+    /// Returns `None` if there are no bits set.
+    ///
+    /// The index is relative to the entire sequence of `bits`, not to the given `start`.
+    /// You can always substract `start` from the result afterwards for that.
+    /// # Errors
+    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    fn bit_find_last_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
+
+    /// Finds the index of the last unset bit (zero) in `bits` from `start` to `end` inclusive.
+    ///
+    /// Returns `None` if there are no bits unset.
+    ///
+    /// The index is relative to the entire sequence of `bits`, not to the given `start`.
+    /// You can always substract `start` from the result afterwards for that.
+    /// # Panics
+    /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
+    #[must_use]
+    fn bit_find_last_zero_range(self, start: u32, end: u32) -> Option<u32>;
+
+    /// Finds the index of the last unset bit (zero) in `bits` from `start` to `end` inclusive,
+    /// checked.
+    ///
+    /// Returns `None` if there are no bits unset.
+    ///
+    /// The index is relative to the entire sequence of `bits`, not to the given `start`.
+    /// You can always substract `start` from the result afterwards for that.
+    /// # Errors
+    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    fn bit_find_last_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
 }
 
 macro_rules! impl_bitwise_trait {
@@ -262,6 +310,19 @@ macro_rules! impl_bitwise_trait {
             }
             fn bit_find_first_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
                 [<bit_find_first_zero_checked_range_ $t>](self, start, end)
+            }
+            // find last
+            fn bit_find_last_one_range(self, start: u32, end: u32) -> Option<u32> {
+                [<bit_find_last_one_range_ $t>](self, start, end)
+            }
+            fn bit_find_last_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
+                [<bit_find_last_one_checked_range_ $t>](self, start, end)
+            }
+            fn bit_find_last_zero_range(self, start: u32, end: u32) -> Option<u32> {
+                [<bit_find_last_zero_range_ $t>](self, start, end)
+            }
+            fn bit_find_last_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
+                [<bit_find_last_zero_checked_range_ $t>](self, start, end)
             }
         }
     }};
@@ -606,6 +667,105 @@ macro_rules! impl_bitwise_fns {
                     while idx <= end {
                         iif![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
                         idx += 1;
+                    }
+                    Ok(None)
+                },
+                Err(e) => Err(e),
+            }
+        }
+
+        /* find last */
+
+        /// Finds the index of the last set bit (one) in `bits` from `start` to `end` inclusive.
+        ///
+        /// Returns `None` if there are no bits set.
+        ///
+        /// The index is relative to the entire sequence of `bits`, not to the given `start`.
+        /// You can always substract `start` from the result afterwards for that.
+        /// # Panics
+        #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
+            $t "::BITS`]` || start > end`."]
+        #[must_use] #[inline]
+        pub const fn [<bit_find_last_one_range_ $t>](bits: $t, start: u32, end: u32) -> Option<u32> {
+            let masked_bits = bits & [<bit_mask_range_ $t>](start, end);
+            let mut idx = end;
+            loop {
+                iif![(masked_bits & (1 << idx)) != 0; return Some(idx)];
+                iif![idx == start; break];
+                idx -= 1;
+            }
+            None
+        }
+
+        /// Finds the index of the last set bit (one) in `bits` from `start` to `end` inclusive,
+        /// checked.
+        ///
+        /// Returns `None` if there are no bits set.
+        ///
+        /// The index is relative to the entire sequence of `bits`, not to the given `start`.
+        /// You can always substract `start` from the result afterwards for that.
+        /// # Errors
+        #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
+            $t "::BITS`]` || end >= `[`" $t "::BITS`] and
+            [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
+        #[inline]
+        pub const fn [<bit_find_last_one_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<Option<u32>> {
+            match [<bit_mask_checked_range_ $t>](start, end) {
+                Ok(mask) => {
+                    let masked_bits = bits & mask;
+                    let mut idx = end;
+                    loop {
+                        iif![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
+                        iif![idx == start; break];
+                        idx -= 1;
+                    }
+                    Ok(None)
+                },
+                Err(e) => Err(e),
+            }
+        }
+
+        /// Finds the index of the last unset bit (zero) in `bits` from `start` to `end` inclusive.
+        ///
+        /// Returns `None` if there are no bits set.
+        ///
+        /// The index is relative to the entire sequence of `bits`, not to the given `start`.
+        /// You can always substract `start` from the result afterwards for that.
+        /// # Panics
+        #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
+            $t "::BITS`]` || start > end`."]
+        #[must_use] #[inline]
+        pub const fn [<bit_find_last_zero_range_ $t>](bits: $t, start: u32, end: u32) -> Option<u32> {
+            let masked_bits = !(bits & [<bit_mask_range_ $t>](start, end));
+            let mut idx = end;
+            loop {
+                iif![(masked_bits & (1 << idx)) != 0; return Some(idx)];
+                iif![idx == start; break];
+                idx -= 1;
+            }
+            None
+        }
+
+        /// Finds the index of the last unset bit (zero) in `bits` from `start` to `end` inclusive, checked.
+        ///
+        /// Returns `None` if there are no bits set.
+        ///
+        /// The index is relative to the entire sequence of `bits`, not to the given `start`.
+        /// You can always substract `start` from the result afterwards for that.
+        /// # Errors
+        #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
+            $t "::BITS`]` || end >= `[`" $t "::BITS`] and
+            [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
+        #[inline]
+        pub const fn [<bit_find_last_zero_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<Option<u32>> {
+            match [<bit_mask_checked_range_ $t>](start, end) {
+                Ok(mask) => {
+                    let masked_bits = !(bits & mask);
+                    let mut idx = end;
+                    loop {
+                        iif![(masked_bits & (1 << idx)) != 0; return Ok(Some(idx))];
+                        iif![idx == start; break];
+                        idx -= 1;
                     }
                     Ok(None)
                 },
