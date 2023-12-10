@@ -19,7 +19,9 @@ where
 {
     /* new mask */
 
-    /// Returns a bitmask of ones from the `start` to the `end` bit inclusive.
+    /// Returns a bitmask of ones from the `[start..=end]` range.
+    ///
+    /// Sets the rest of the bits to 0.
     ///
     /// This is the base of the rest of the mask related functionality.
     /// # Panics
@@ -28,7 +30,9 @@ where
     #[must_use]
     fn bit_mask_range(start: u32, end: u32) -> Self;
 
-    /// Returns a bitmask of ones from the `start` to the `end` bit inclusive, checked.
+    /// Returns a bitmask of ones from the `[start..=end]` checked range.
+    ///
+    /// Sets the rest of the bits to 0.
     ///
     /// This is the base of the rest of the mask related functionality.
     /// # Errors
@@ -39,13 +43,17 @@ where
 
     /* get */
 
-    /// Gets the bits in `self`, from `start` to `end` inclusive.
+    /// Gets the bits in `self` from the `[start..=end]` range.
+    ///
+    /// Sets the rest of the bits to 0.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
     fn bit_get_range(self, start: u32, end: u32) -> Self;
 
-    /// Gets the bits in `self`, from `start` to `end` inclusive, checked.
+    /// Gets the bits in `self` from the `[start..=end]` checked range.
+    ///
+    /// Sets the rest of the bits to 0.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
@@ -53,22 +61,19 @@ where
 
     /* get shift */
 
-    /// Gets the rightwards shifted bits in `self`, from `start` to `end` inclusive.
+    /// Gets the rightwards shifted bits in `self` from the `[start..=end]` range.
     ///
-    /// Extracts the bits from the range specified by `start` and `end` (inclusive),
-    /// and shifts them rightwards so that the least significant bit (LSB) of the extracted
-    /// segment aligns with the units place. The rest of the bits are filled with zeros.
+    /// Like [`bit_get_range`][Self:bit_get_range] and then shifting rightwards
+    /// so that the least significant bit (LSB) of the range aligns with the units place.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
     fn bit_get_shifted_range(self, start: u32, end: u32) -> Self;
 
-    /// Gets the rightwards shifted bits in `self`, from `start` to `end` inclusive, checked.
+    /// Gets the rightwards shifted bits in `self` from the `[start..=end]` checked range.
     ///
-    /// Extracts the bits from the range specified by `start` and `end` (inclusive),
-    /// and shifts them rightwards so that the least significant bit (LSB) of the extracted
-    /// segment aligns with the units place. The rest of the bits are filled with zeros.
-    ///
+    /// Like [`bit_get_checked_range`][Self:bit_get_cheked_range] and then shifting rightwards
+    /// so that the least significant bit (LSB) of the range aligns with the units place.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
@@ -76,13 +81,17 @@ where
 
     /* set */
 
-    /// Sets the bits in `self` to 1, from `start` to `end` inclusive.
+    /// Sets the bits in `self` to 1 from the `[start..=end]` range.
+    ///
+    /// Leaves the rest of the bits untouched.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
     fn bit_set_range(self, start: u32, end: u32) -> Self;
 
-    /// Sets the bits in `self` to 1, from `start` to `end` inclusive, checked.
+    /// Sets the bits in `self` to 1 from the `[start..=end]` checked range.
+    ///
+    /// Leaves the rest of the bits untouched.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
@@ -90,13 +99,17 @@ where
 
     /* unset */
 
-    /// Unsets the bits in `self` to 0, from `start` to `end` inclusive.
+    /// Unsets the bits in `self` to 0 from the `[start..=end]` range.
+    ///
+    /// Leaves the rest of the bits untouched.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
     fn bit_unset_range(self, start: u32, end: u32) -> Self;
 
-    /// Unsets the bits in `self` to 0, from `start` to `end` inclusive, checked.
+    /// Unsets the bits in `self` to 0 from the `[start..=end]` checked range.
+    ///
+    /// Leaves the rest of the bits untouched.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
@@ -104,13 +117,17 @@ where
 
     /* flip */
 
-    /// Flips the bits in `self` from `start` to `end` inclusive.
+    /// Flips the bits in `self` from the `[start..=end]` range.
+    ///
+    /// Leaves the rest of the bits untouched.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
     fn bit_flip_range(self, start: u32, end: u32) -> Self;
 
-    /// Flips the bits in `self`, from `start` to `end` inclusive, checked.
+    /// Flips the bits in `self` from the `[start..=end]` checked range.
+    ///
+    /// Leaves the rest of the bits untouched.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
@@ -118,13 +135,17 @@ where
 
     /* reverse */
 
-    /// Reverses the order of the bits in `self` from `start` to `end` inclusive.
+    /// Reverses the order of the bits in `self` from the `[start..=end]` range.
+    ///
+    /// Leaves the rest of the bits untouched.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
     fn bit_reverse_range(self, start: u32, end: u32) -> Self;
 
-    /// Reverses the order of the bits in `self`, from `start` to `end` inclusive, checked.
+    /// Reverses the order of the bits in `self` from the `[start..=end]` checked range.
+    ///
+    /// Leaves the rest of the bits untouched.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
@@ -132,25 +153,25 @@ where
 
     /* count */
 
-    /// Counts the number of set bits (ones) in `bits` from `start` to `end` inclusive.
+    /// Counts the number of 1s in `bits` from the `[start..=end]` range.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
     fn bit_count_ones_range(self, start: u32, end: u32) -> u32;
 
-    /// Counts the number of set bits (ones) in `bits` from `start` to `end` inclusive, checked.
+    /// Counts the number of 1s in `bits` from the `[start..=end]` checked range.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
     fn bit_count_ones_checked_range(self, start: u32, end: u32) -> Result<u32>;
 
-    /// Counts the number of unset bits (zeros) in `bits` from `start` to `end` inclusive.
+    /// Counts the number of 0s in `bits` from the `[start..=end]` range.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
     fn bit_count_zeros_range(self, start: u32, end: u32) -> u32;
 
-    /// Counts the number of unset bits (zeros) in `bits` from `start` to `end` inclusive, checked.
+    /// Counts the number of 0s in `bits` from the `[start..=end]` checked range.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
@@ -158,7 +179,7 @@ where
 
     /* find first */
 
-    /// Finds the index of the first set bit (one) in `bits` from `start` to `end` inclusive.
+    /// Finds the index of the first 1 in `bits` from the `[start..=end]` range.
     ///
     /// Returns `None` if there are no bits set.
     ///
@@ -169,8 +190,7 @@ where
     #[must_use]
     fn bit_find_first_one_range(self, start: u32, end: u32) -> Option<u32>;
 
-    /// Finds the index of the first set bit (one) in `bits` from `start` to `end` inclusive,
-    /// checked.
+    /// Finds the index of the first 1 in `bits` from the `[start..=end]` checked range.
     ///
     /// Returns `None` if there are no bits set.
     ///
@@ -181,7 +201,7 @@ where
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
     fn bit_find_first_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
 
-    /// Finds the index of the first unset bit (zero) in `bits` from `start` to `end` inclusive.
+    /// Finds the index of the first 0 in `bits` from the `[start..=end]` range.
     ///
     /// Returns `None` if there are no bits unset.
     ///
@@ -192,8 +212,7 @@ where
     #[must_use]
     fn bit_find_first_zero_range(self, start: u32, end: u32) -> Option<u32>;
 
-    /// Finds the index of the first unset bit (zero) in `bits` from `start` to `end` inclusive,
-    /// checked.
+    /// Finds the index of the first 0 in `bits` from the `[start..=end]` checked range.
     ///
     /// Returns `None` if there are no bits unset.
     ///
@@ -206,7 +225,7 @@ where
 
     /* find last */
 
-    /// Finds the index of the last set bit (one) in `bits` from `start` to `end` inclusive.
+    /// Finds the index of the last 1 in `bits` from the `[start..=end]` range.
     ///
     /// Returns `None` if there are no bits set.
     ///
@@ -217,8 +236,7 @@ where
     #[must_use]
     fn bit_find_last_one_range(self, start: u32, end: u32) -> Option<u32>;
 
-    /// Finds the index of the last set bit (one) in `bits` from `start` to `end` inclusive,
-    /// checked.
+    /// Finds the index of the last 1 in `bits` from the `[start..=end]` checked range.
     ///
     /// Returns `None` if there are no bits set.
     ///
@@ -229,7 +247,7 @@ where
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
     fn bit_find_last_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
 
-    /// Finds the index of the last unset bit (zero) in `bits` from `start` to `end` inclusive.
+    /// Finds the index of the last 0 in `bits` from the `[start..=end]` range.
     ///
     /// Returns `None` if there are no bits unset.
     ///
@@ -240,8 +258,7 @@ where
     #[must_use]
     fn bit_find_last_zero_range(self, start: u32, end: u32) -> Option<u32>;
 
-    /// Finds the index of the last unset bit (zero) in `bits` from `start` to `end` inclusive,
-    /// checked.
+    /// Finds the index of the last 0 in `bits` from the `[start..=end]` checked range.
     ///
     /// Returns `None` if there are no bits unset.
     ///
@@ -367,9 +384,11 @@ macro_rules! impl_bitwise_fns {
     (@$t:ty) => { paste! {
         /* new mask */
 
-        /// Returns a new bitmask of ones from the `start` to the `end` bit inclusive.
+        /// Returns a new bitmask of 1s from the `[start..=end]` range.
         ///
-        /// This is the base of the rest of the mask related functionality.
+        /// Sets the rest of the bits to 0.
+        ///
+        /// This is the base of most of the related bitwise functionality.
         /// # Panics
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
@@ -391,9 +410,11 @@ macro_rules! impl_bitwise_fns {
             // }
             // mask
         }
-        /// Returns a new bitmask of ones from the `start` to the `end` bit inclusive, checked.
+        /// Returns a new bitmask of ones from the `[start..=end]` checked range.
         ///
-        /// This is the base of the rest of the mask related functionality.
+        /// Sets the rest of the bits to 0.
+        ///
+        /// This is the base of most of the related bitwise functionality.
         /// # Errors
         #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
@@ -418,7 +439,9 @@ macro_rules! impl_bitwise_fns {
 
         /* get */
 
-        /// Gets the bits in `bits` from `start` to `end` inclusive.
+        /// Gets the bits in `bits` from the `[start..=end]` range.
+        ///
+        /// Sets the rest of the bits to 0.
         /// # Panics
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
@@ -427,7 +450,9 @@ macro_rules! impl_bitwise_fns {
             (bits & [< bit_mask_range_ $t>](start, end))
         }
 
-        /// Gets the bits in `bits` from `start` to `end` inclusive, checked.
+        /// Gets the bits in `bits` from the `[start..=end]` checked range.
+        ///
+        /// Sets the rest of the bits to 0.
         /// # Errors
         #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
@@ -442,11 +467,10 @@ macro_rules! impl_bitwise_fns {
 
         /* get shifted */
 
-        /// Gets the shifted bits in `bits` from `start` to `end` inclusive.
+        /// Gets the shifted bits in `bits` from the `[start..=end]` range.
         ///
-        /// Extracts the bits from the range specified by `start` and `end` (inclusive),
-        /// and shifts them rightwards so that the least significant bit (LSB) of the extracted
-        /// segment aligns with the units place. The rest of the bits are filled with zeros.
+        #[doc = "Like [`bit_get_range_ " $t "`] and then shifting rightwards"]
+        /// so that the least significant bit (LSB) of the range aligns with the units place.
         /// # Panics
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
@@ -455,11 +479,10 @@ macro_rules! impl_bitwise_fns {
             (bits & [< bit_mask_range_ $t>](start, end)) >> start
         }
 
-        /// Gets the shifted bits in `bits` from `start` to `end` inclusive, checked.
+        /// Gets the shifted bits in `bits` from the `[start..=end]` checked range.
         ///
-        /// Extracts the bits from the range specified by `start` and `end` (inclusive),
-        /// and shifts them rightwards so that the least significant bit (LSB) of the extracted
-        /// segment aligns with the units place. The rest of the bits are filled with zeros.
+        #[doc = "Like [`bit_get_checked_range_ " $t "`] and then shifting rightwards"]
+        /// so that the least significant bit (LSB) of the range aligns with the units place.
         /// # Errors
         #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
@@ -474,7 +497,9 @@ macro_rules! impl_bitwise_fns {
 
         /* set */
 
-        /// Sets the bits in `bits` to 1, from `start` to `end` inclusive.
+        /// Sets the bits in `bits` to 1, from the `[start..=end]` range.
+        ///
+        /// Leaves the rest of the bits untouched.
         /// # Panics
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
@@ -483,7 +508,9 @@ macro_rules! impl_bitwise_fns {
             bits | [< bit_mask_range_ $t>](start, end)
         }
 
-        /// Sets the bits in `bits` to 1, from `start` to `end` inclusive, checked.
+        /// Sets the bits in `bits` to 1, from the `[start..=end]` checked range.
+        ///
+        /// Leaves the rest of the bits untouched.
         /// # Errors
         #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
@@ -498,7 +525,9 @@ macro_rules! impl_bitwise_fns {
 
         /* unset */
 
-        /// Unsets the bits in `bits` to 0, from `start` to `end` inclusive.
+        /// Unsets the bits in `bits` to 0, from the `[start..=end]` range.
+        ///
+        /// Leaves the rest of the bits untouched.
         /// # Panics
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
@@ -507,7 +536,9 @@ macro_rules! impl_bitwise_fns {
             bits & ![< bit_mask_range_ $t>](start, end)
         }
 
-        /// Unsets the bits in `bits` to 0, from `start` to `end` inclusive, checked.
+        /// Unsets the bits in `bits` to 0, from the `[start..=end]` checked range.
+        ///
+        /// Leaves the rest of the bits untouched.
         /// # Errors
         #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
@@ -522,7 +553,9 @@ macro_rules! impl_bitwise_fns {
 
         /* flip */
 
-        /// Flips the bits in `bits` from `start` to `end` inclusive.
+        /// Flips the bits in `bits` from the `[start..=end]` range.
+        ///
+        /// Leaves the rest of the bits untouched.
         /// # Panics
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
@@ -531,7 +564,9 @@ macro_rules! impl_bitwise_fns {
             bits ^ [< bit_mask_range_ $t>](start, end)
         }
 
-        /// Flips the bits in `bits` from `start` to `end` inclusive, checked.
+        /// Flips the bits in `bits` from the `[start..=end]` checked range.
+        ///
+        /// Leaves the rest of the bits untouched.
         /// # Errors
         #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
@@ -546,9 +581,9 @@ macro_rules! impl_bitwise_fns {
 
         /* reverse */
 
-        /// Reverses the order of the bits in `bits` from `start` to `end` inclusive.
+        /// Reverses the order of the bits in `bits` from the `[start..=end]` range.
         ///
-        /// Leaves the rest of the bits as they were.
+        /// Leaves the rest of the bits untouched.
         /// # Panics
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
@@ -568,9 +603,9 @@ macro_rules! impl_bitwise_fns {
             (bits & !mask) | rev_shifted
         }
 
-        /// Reverses the order of the bits in `bits` from `start` to `end` inclusive, checked.
+        /// Reverses the order of the bits in `bits` from the `[start..=end]` checked range.
         ///
-        /// Leaves the rest of the bits as they were.
+        /// Leaves the rest of the bits untouched.
         /// # Errors
         #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
@@ -600,7 +635,7 @@ macro_rules! impl_bitwise_fns {
 
         /* count */
 
-        /// Counts the number of set bits (ones) in `bits` from `start` to `end` inclusive.
+        /// Counts the number of 1s in `bits` from the `[start..=end]` range.
         /// # Panics
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
@@ -609,7 +644,7 @@ macro_rules! impl_bitwise_fns {
             let masked_bits = bits & [<bit_mask_range_ $t>](start, end);
             masked_bits.count_ones()
         }
-        /// Counts the number of set bits (ones) in `bits` from `start` to `end` inclusive, checked.
+        /// Counts the number of 1s in `bits` from the `[start..=end]` checked range.
         /// # Errors
         #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
@@ -622,7 +657,7 @@ macro_rules! impl_bitwise_fns {
             }
         }
 
-        /// Counts the number of unset bits (zeros) in `bits` from `start` to `end` inclusive.
+        /// Counts the number of 0s in `bits` from the `[start..=end]` range.
         /// # Panics
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
@@ -633,7 +668,7 @@ macro_rules! impl_bitwise_fns {
             (!masked_bits & mask).count_ones()
         }
 
-        /// Counts the number of unset bits (zeros) in `bits` from `start` to `end` inclusive, checked.
+        /// Counts the number of 0s in `bits` from the `[start..=end]` checked range.
         /// # Errors
         #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
@@ -651,7 +686,7 @@ macro_rules! impl_bitwise_fns {
 
         /* find first */
 
-        /// Finds the index of the first set bit (one) in `bits` from `start` to `end` inclusive.
+        /// Finds the index of the first 1 in `bits` from the `[start..=end]` range.
         ///
         /// Returns `None` if there are no bits set.
         ///
@@ -672,8 +707,7 @@ macro_rules! impl_bitwise_fns {
             None
         }
 
-        /// Finds the index of the first set bit (one) in `bits` from `start` to `end` inclusive,
-        /// checked.
+        /// Finds the index of the first 1 in `bits` from the `[start..=end]` checked range.
         ///
         /// Returns `None` if there are no bits set.
         ///
@@ -700,7 +734,7 @@ macro_rules! impl_bitwise_fns {
             }
         }
 
-        /// Finds the index of the first unset bit (zero) in `bits` from `start` to `end` inclusive.
+        /// Finds the index of the first 0 in `bits` from the `[start..=end]` range.
         ///
         /// Returns `None` if there are no bits unset.
         ///
@@ -721,8 +755,7 @@ macro_rules! impl_bitwise_fns {
             None
         }
 
-        /// Finds the index of the first unset bit (zero) in `bits` from `start` to `end` inclusive,
-        /// checked.
+        /// Finds the index of the first 0 in `bits` from the `[start..=end]` checked range.
         ///
         /// Returns `None` if there are no bits unset.
         ///
@@ -751,7 +784,7 @@ macro_rules! impl_bitwise_fns {
 
         /* find last */
 
-        /// Finds the index of the last set bit (one) in `bits` from `start` to `end` inclusive.
+        /// Finds the index of the last 1 in `bits` from the `[start..=end]` range.
         ///
         /// Returns `None` if there are no bits set.
         ///
@@ -772,8 +805,7 @@ macro_rules! impl_bitwise_fns {
             None
         }
 
-        /// Finds the index of the last set bit (one) in `bits` from `start` to `end` inclusive,
-        /// checked.
+        /// Finds the index of the last 1 in `bits` from the `[start..=end]` checked range.
         ///
         /// Returns `None` if there are no bits set.
         ///
@@ -800,7 +832,7 @@ macro_rules! impl_bitwise_fns {
             }
         }
 
-        /// Finds the index of the last unset bit (zero) in `bits` from `start` to `end` inclusive.
+        /// Finds the index of the last 0 in `bits` from the `[start..=end]` range.
         ///
         /// Returns `None` if there are no bits set.
         ///
@@ -821,7 +853,7 @@ macro_rules! impl_bitwise_fns {
             None
         }
 
-        /// Finds the index of the last unset bit (zero) in `bits` from `start` to `end` inclusive, checked.
+        /// Finds the index of the last 0 in `bits` from the `[start..=end]` checked range.
         ///
         /// Returns `None` if there are no bits set.
         ///
