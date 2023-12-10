@@ -165,7 +165,7 @@ pub mod prelude {
 
     #[cfg(feature = "data")]
     pub use crate::data::convert::primitive::{
-        BitwisePrimitives, CastPrimitives, FromPrimitives, IntoPrimitives,
+        BitsPrimitives, CastPrimitives, FromPrimitives, IntoPrimitives,
     };
 
     #[cfg(all(feature = "math", any(feature = "std", feature = "libm")))]
