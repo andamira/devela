@@ -164,8 +164,9 @@ pub mod prelude {
     pub use crate::math::num::{Num, NumRef};
 
     #[cfg(feature = "data")]
-    pub use crate::data::convert::primitive::{
-        BitwisePrimitives, CastPrimitives, FromPrimitives, IntoPrimitives,
+    pub use crate::data::{
+        convert::primitive::{CastPrimitives, FromPrimitives, IntoPrimitives},
+        Bitwise,
     };
 
     #[cfg(all(feature = "math", any(feature = "std", feature = "libm")))]

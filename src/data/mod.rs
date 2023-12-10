@@ -15,6 +15,7 @@
 /* contains always compiled items */
 
 mod array;
+mod bit;
 mod collection;
 
 pub mod cmp;
@@ -25,7 +26,9 @@ pub mod slice;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {array::*, cmp::*, collection::*, convert::*, error::*, reexports::*, slice::*};
+pub(crate) use {
+    array::*, bit::*, cmp::*, collection::*, convert::*, error::*, reexports::*, slice::*,
+};
 
 /* feature-gated */
 
@@ -45,7 +48,7 @@ pub mod any;
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {array::*, collection::*, reexports::*};
+pub use {array::*, bit::*, collection::*, reexports::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
@@ -63,8 +66,8 @@ pub use {any::all::*, cmp::all::*, convert::all::*, error::*, slice::all::*};
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        any::all::*, array::*, cmp::all::*, collection::*, convert::all::*, error::*, reexports::*,
-        slice::all::*,
+        any::all::*, array::*, bit::*, cmp::all::*, collection::*, convert::all::*, error::*,
+        reexports::*, slice::all::*,
     };
 
     #[doc(inline)]
