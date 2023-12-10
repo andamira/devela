@@ -13,7 +13,7 @@ use crate::{
 };
 
 /// Offers methods for bitwise operations on primitives.
-pub trait BitsPrimitives
+pub trait BitwisePrimitives
 where
     Self: Sized,
 {
@@ -24,9 +24,9 @@ where
     /// This is the base of the rest of the mask related functionality.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
-    #[doc = include_str!("./Benchmarks_bits_mask_range.md")]
+    #[doc = include_str!("./Benchmarks_bit_mask_range.md")]
     #[must_use]
-    fn bits_mask_range(start: u32, end: u32) -> Self;
+    fn bit_mask_range(start: u32, end: u32) -> Self;
 
     /// Returns a bitmask of ones from the `start` to the `end` bit inclusive, checked.
     ///
@@ -34,8 +34,8 @@ where
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    #[doc = include_str!("./Benchmarks_bits_mask_checked_range.md")]
-    fn bits_mask_checked_range(start: u32, end: u32) -> Result<Self>;
+    #[doc = include_str!("./Benchmarks_bit_mask_checked_range.md")]
+    fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self>;
 
     /* get */
 
@@ -43,13 +43,13 @@ where
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
-    fn bits_get_range(self, start: u32, end: u32) -> Self;
+    fn bit_get_range(self, start: u32, end: u32) -> Self;
 
     /// Gets the bits in `self`, from `start` to `end` inclusive, checked.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    fn bits_get_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_get_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* get shift */
 
@@ -61,7 +61,7 @@ where
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
-    fn bits_get_shift_range(self, start: u32, end: u32) -> Self;
+    fn bit_get_shifted_range(self, start: u32, end: u32) -> Self;
 
     /// Gets the rightwards shifted bits in `self`, from `start` to `end` inclusive, checked.
     ///
@@ -72,7 +72,7 @@ where
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    fn bits_get_shift_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_get_shifted_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* set */
 
@@ -80,13 +80,13 @@ where
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
-    fn bits_set_range(self, start: u32, end: u32) -> Self;
+    fn bit_set_range(self, start: u32, end: u32) -> Self;
 
     /// Sets the bits in `self` to 1, from `start` to `end` inclusive, checked.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    fn bits_set_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_set_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* unset */
 
@@ -94,13 +94,13 @@ where
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
-    fn bits_unset_range(self, start: u32, end: u32) -> Self;
+    fn bit_unset_range(self, start: u32, end: u32) -> Self;
 
     /// Unsets the bits in `self` to 0, from `start` to `end` inclusive, checked.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    fn bits_unset_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_unset_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* flip */
 
@@ -108,13 +108,13 @@ where
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
-    fn bits_flip_range(self, start: u32, end: u32) -> Self;
+    fn bit_flip_range(self, start: u32, end: u32) -> Self;
 
     /// Flips the bits in `self`, from `start` to `end` inclusive, checked.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    fn bits_flip_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_flip_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* count */
 
@@ -122,25 +122,25 @@ where
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
-    fn bits_count_ones_range(self, start: u32, end: u32) -> u32;
+    fn bit_count_ones_range(self, start: u32, end: u32) -> u32;
 
     /// Counts the number of set bits (ones) in `bits` from `start` to `end` inclusive, checked.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    fn bits_count_ones_checked_range(self, start: u32, end: u32) -> Result<u32>;
+    fn bit_count_ones_checked_range(self, start: u32, end: u32) -> Result<u32>;
 
     /// Counts the number of unset bits (zeros) in `bits` from `start` to `end` inclusive.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
-    fn bits_count_zeros_range(self, start: u32, end: u32) -> u32;
+    fn bit_count_zeros_range(self, start: u32, end: u32) -> u32;
 
     /// Counts the number of unset bits (zeros) in `bits` from `start` to `end` inclusive, checked.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    fn bits_count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32>;
+    fn bit_count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32>;
 
     /* find first */
 
@@ -153,7 +153,7 @@ where
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
-    fn bits_find_first_one_range(self, start: u32, end: u32) -> Option<u32>;
+    fn bit_find_first_one_range(self, start: u32, end: u32) -> Option<u32>;
 
     /// Finds the index of the first set bit (one) in `bits` from `start` to `end` inclusive,
     /// checked.
@@ -165,7 +165,7 @@ where
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    fn bits_find_first_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
+    fn bit_find_first_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
 
     /// Finds the index of the first unset bit (zero) in `bits` from `start` to `end` inclusive.
     ///
@@ -176,7 +176,7 @@ where
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
-    fn bits_find_first_zero_range(self, start: u32, end: u32) -> Option<u32>;
+    fn bit_find_first_zero_range(self, start: u32, end: u32) -> Option<u32>;
 
     /// Finds the index of the first unset bit (zero) in `bits` from `start` to `end` inclusive,
     /// checked.
@@ -188,100 +188,100 @@ where
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    fn bits_find_first_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
+    fn bit_find_first_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
 }
 
-macro_rules! impl_bits_trait {
-    ($($t:ty),+) => { $( impl_bits_trait![@$t]; )+ };
+macro_rules! impl_bitwise_trait {
+    ($($t:ty),+) => { $( impl_bitwise_trait![@$t]; )+ };
     (@$t:ty) => { paste! {
-        impl BitsPrimitives for $t {
+        impl BitwisePrimitives for $t {
             // new mask
-            fn bits_mask_range(start: u32, end: u32) -> Self {
-                [<bits_mask_range_ $t>](start, end)
+            fn bit_mask_range(start: u32, end: u32) -> Self {
+                [<bit_mask_range_ $t>](start, end)
             }
-            fn bits_mask_checked_range(start: u32, end: u32) -> Result<Self> {
-                [<bits_mask_checked_range_ $t>](start, end)
+            fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self> {
+                [<bit_mask_checked_range_ $t>](start, end)
             }
             // get
-            fn bits_get_range(self, start: u32, end: u32) -> Self {
-                [<bits_get_range_ $t>](self, start, end)
+            fn bit_get_range(self, start: u32, end: u32) -> Self {
+                [<bit_get_range_ $t>](self, start, end)
             }
-            fn bits_get_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                [<bits_get_checked_range_ $t>](self, start, end)
+            fn bit_get_checked_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_get_checked_range_ $t>](self, start, end)
             }
-            // get shift
-            fn bits_get_shift_range(self, start: u32, end: u32) -> Self {
-                [<bits_get_shift_range_ $t>](self, start, end)
+            // get shifted
+            fn bit_get_shifted_range(self, start: u32, end: u32) -> Self {
+                [<bit_get_shifted_range_ $t>](self, start, end)
             }
-            fn bits_get_shift_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                [<bits_get_shift_checked_range_ $t>](self, start, end)
+            fn bit_get_shifted_checked_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_get_shifted_checked_range_ $t>](self, start, end)
             }
             // set
-            fn bits_set_range(self, start: u32, end: u32) -> Self {
-                [<bits_set_range_ $t>](self, start, end)
+            fn bit_set_range(self, start: u32, end: u32) -> Self {
+                [<bit_set_range_ $t>](self, start, end)
             }
-            fn bits_set_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                [<bits_set_checked_range_ $t>](self, start, end)
+            fn bit_set_checked_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_set_checked_range_ $t>](self, start, end)
             }
             // unset
-            fn bits_unset_range(self, start: u32, end: u32) -> Self {
-                [<bits_unset_range_ $t>](self, start, end)
+            fn bit_unset_range(self, start: u32, end: u32) -> Self {
+                [<bit_unset_range_ $t>](self, start, end)
             }
-            fn bits_unset_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                [<bits_unset_checked_range_ $t>](self, start, end)
+            fn bit_unset_checked_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_unset_checked_range_ $t>](self, start, end)
             }
             // flip
-            fn bits_flip_range(self, start: u32, end: u32) -> Self {
-                [<bits_flip_range_ $t>](self, start, end)
+            fn bit_flip_range(self, start: u32, end: u32) -> Self {
+                [<bit_flip_range_ $t>](self, start, end)
             }
-            fn bits_flip_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                [<bits_flip_checked_range_ $t>](self, start, end)
+            fn bit_flip_checked_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_flip_checked_range_ $t>](self, start, end)
             }
             // count
-            fn bits_count_ones_range(self, start: u32, end: u32) -> u32 {
-                [<bits_count_ones_range_ $t>](self, start, end)
+            fn bit_count_ones_range(self, start: u32, end: u32) -> u32 {
+                [<bit_count_ones_range_ $t>](self, start, end)
             }
-            fn bits_count_ones_checked_range(self, start: u32, end: u32) -> Result<u32> {
-                [<bits_count_ones_checked_range_ $t>](self, start, end)
+            fn bit_count_ones_checked_range(self, start: u32, end: u32) -> Result<u32> {
+                [<bit_count_ones_checked_range_ $t>](self, start, end)
             }
-            fn bits_count_zeros_range(self, start: u32, end: u32) -> u32 {
-                [<bits_count_zeros_range_ $t>](self, start, end)
+            fn bit_count_zeros_range(self, start: u32, end: u32) -> u32 {
+                [<bit_count_zeros_range_ $t>](self, start, end)
             }
-            fn bits_count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32> {
-                [<bits_count_zeros_checked_range_ $t>](self, start, end)
+            fn bit_count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32> {
+                [<bit_count_zeros_checked_range_ $t>](self, start, end)
             }
             // find first
-            fn bits_find_first_one_range(self, start: u32, end: u32) -> Option<u32> {
-                [<bits_find_first_one_range_ $t>](self, start, end)
+            fn bit_find_first_one_range(self, start: u32, end: u32) -> Option<u32> {
+                [<bit_find_first_one_range_ $t>](self, start, end)
             }
-            fn bits_find_first_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
-                [<bits_find_first_one_checked_range_ $t>](self, start, end)
+            fn bit_find_first_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
+                [<bit_find_first_one_checked_range_ $t>](self, start, end)
             }
-            fn bits_find_first_zero_range(self, start: u32, end: u32) -> Option<u32> {
-                [<bits_find_first_zero_range_ $t>](self, start, end)
+            fn bit_find_first_zero_range(self, start: u32, end: u32) -> Option<u32> {
+                [<bit_find_first_zero_range_ $t>](self, start, end)
             }
-            fn bits_find_first_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
-                [<bits_find_first_zero_checked_range_ $t>](self, start, end)
+            fn bit_find_first_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
+                [<bit_find_first_zero_checked_range_ $t>](self, start, end)
             }
         }
     }};
 }
-impl_bits_trait![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+impl_bitwise_trait![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
 
 /* functions */
 
 // Implements bit operations for primitives
 //
 // `$t`: the type
-macro_rules! impl_bits_fns {
+macro_rules! impl_bitwise_fns {
     () => {
         /* independent of pointer width */
-        impl_bits_fns![
+        impl_bitwise_fns![
             i8, i16, i32, i64, i128, isize,
             u8, u16, u32, u64, u128, usize
         ];
     };
-    ( $( $t:ty ),+ ) => { $( impl_bits_fns![@$t]; )+ };
+    ( $( $t:ty ),+ ) => { $( impl_bitwise_fns![@$t]; )+ };
     (@$t:ty) => { paste! {
         /* new mask */
 
@@ -291,9 +291,9 @@ macro_rules! impl_bits_fns {
         /// # Panics
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
-        #[doc = include_str!("./Benchmarks_bits_mask_range.md")]
+        #[doc = include_str!("./Benchmarks_bit_mask_range.md")]
         #[must_use] #[inline]
-        pub const fn [<bits_mask_range_ $t>](start: u32, end: u32) -> $t {
+        pub const fn [<bit_mask_range_ $t>](start: u32, end: u32) -> $t {
             debug_assert![start <= end];
             // a mask with all bits set, from 0 to end:
             let mask_end = iif![end == <$t>::BITS -1; !0; (1 << (end + 1)) - 1];
@@ -316,9 +316,9 @@ macro_rules! impl_bits_fns {
         #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
             [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
-        #[doc = include_str!("./Benchmarks_bits_mask_checked_range.md")]
+        #[doc = include_str!("./Benchmarks_bit_mask_checked_range.md")]
         #[inline]
-        pub const fn [<bits_mask_checked_range_ $t>](start: u32, end: u32) -> Result<$t> {
+        pub const fn [<bit_mask_checked_range_ $t>](start: u32, end: u32) -> Result<$t> {
             if start >= <$t>::BITS {
                 Err(E::OutOfBounds(Some(start as usize)))
             } else if end >= <$t>::BITS {
@@ -341,8 +341,8 @@ macro_rules! impl_bits_fns {
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
         #[must_use] #[inline]
-        pub const fn [<bits_get_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
-            (bits & [< bits_mask_range_ $t>](start, end))
+        pub const fn [<bit_get_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
+            (bits & [< bit_mask_range_ $t>](start, end))
         }
 
         /// Gets the bits in `bits` from `start` to `end` inclusive, checked.
@@ -351,14 +351,14 @@ macro_rules! impl_bits_fns {
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
             [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
         #[inline]
-        pub const fn [<bits_get_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
-            match [< bits_mask_checked_range_ $t>](start, end) {
+        pub const fn [<bit_get_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
+            match [< bit_mask_checked_range_ $t>](start, end) {
                 Ok(mask) => Ok(bits & mask),
                 Err(e) => Err(e),
             }
         }
 
-        /* get shift */
+        /* get shifted */
 
         /// Gets the shifted bits in `bits` from `start` to `end` inclusive.
         ///
@@ -369,8 +369,8 @@ macro_rules! impl_bits_fns {
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
         #[must_use] #[inline]
-        pub const fn [<bits_get_shift_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
-            (bits & [< bits_mask_range_ $t>](start, end)) >> start
+        pub const fn [<bit_get_shifted_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
+            (bits & [< bit_mask_range_ $t>](start, end)) >> start
         }
 
         /// Gets the shifted bits in `bits` from `start` to `end` inclusive, checked.
@@ -383,8 +383,8 @@ macro_rules! impl_bits_fns {
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
             [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
         #[inline]
-        pub const fn [<bits_get_shift_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
-            match [< bits_mask_checked_range_ $t>](start, end) {
+        pub const fn [<bit_get_shifted_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
+            match [< bit_mask_checked_range_ $t>](start, end) {
                 Ok(mask) => Ok((bits & mask) >> start),
                 Err(e) => Err(e),
             }
@@ -397,8 +397,8 @@ macro_rules! impl_bits_fns {
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
         #[must_use] #[inline]
-        pub const fn [<bits_set_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
-            bits | [< bits_mask_range_ $t>](start, end)
+        pub const fn [<bit_set_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
+            bits | [< bit_mask_range_ $t>](start, end)
         }
 
         /// Sets the bits in `bits` to 1, from `start` to `end` inclusive, checked.
@@ -407,8 +407,8 @@ macro_rules! impl_bits_fns {
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
             [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
         #[inline]
-        pub const fn [<bits_set_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
-            match [< bits_mask_checked_range_ $t>](start, end) {
+        pub const fn [<bit_set_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
+            match [< bit_mask_checked_range_ $t>](start, end) {
                 Ok(mask) => Ok(bits | mask),
                 Err(e) => Err(e),
             }
@@ -421,8 +421,8 @@ macro_rules! impl_bits_fns {
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
         #[must_use] #[inline]
-        pub const fn [<bits_unset_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
-            bits & ![< bits_mask_range_ $t>](start, end)
+        pub const fn [<bit_unset_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
+            bits & ![< bit_mask_range_ $t>](start, end)
         }
 
         /// Unsets the bits in `bits` to 0, from `start` to `end` inclusive, checked.
@@ -431,8 +431,8 @@ macro_rules! impl_bits_fns {
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
             [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
         #[inline]
-        pub const fn [<bits_unset_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
-            match [< bits_mask_checked_range_ $t>](start, end) {
+        pub const fn [<bit_unset_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
+            match [< bit_mask_checked_range_ $t>](start, end) {
                 Ok(mask) => Ok(bits & !mask),
                 Err(e) => Err(e),
             }
@@ -445,8 +445,8 @@ macro_rules! impl_bits_fns {
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
         #[must_use] #[inline]
-        pub const fn [<bits_flip_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
-            bits ^ [< bits_mask_range_ $t>](start, end)
+        pub const fn [<bit_flip_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
+            bits ^ [< bit_mask_range_ $t>](start, end)
         }
 
         /// Flips the bits in `bits` from `start` to `end` inclusive, checked.
@@ -455,8 +455,8 @@ macro_rules! impl_bits_fns {
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
             [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
         #[inline]
-        pub const fn [<bits_flip_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
-            match [< bits_mask_checked_range_ $t>](start, end) {
+        pub const fn [<bit_flip_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
+            match [< bit_mask_checked_range_ $t>](start, end) {
                 Ok(mask) => Ok(bits ^ mask),
                 Err(e) => Err(e),
             }
@@ -469,8 +469,8 @@ macro_rules! impl_bits_fns {
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
         #[must_use] #[inline]
-        pub const fn [<bits_count_ones_range_ $t>](bits: $t, start: u32, end: u32) -> u32 {
-            let masked_bits = bits & [<bits_mask_range_ $t>](start, end);
+        pub const fn [<bit_count_ones_range_ $t>](bits: $t, start: u32, end: u32) -> u32 {
+            let masked_bits = bits & [<bit_mask_range_ $t>](start, end);
             masked_bits.count_ones()
         }
         /// Counts the number of set bits (ones) in `bits` from `start` to `end` inclusive, checked.
@@ -479,8 +479,8 @@ macro_rules! impl_bits_fns {
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
             [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
         #[inline]
-        pub const fn [<bits_count_ones_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<u32> {
-            match [<bits_mask_checked_range_ $t>](start, end) {
+        pub const fn [<bit_count_ones_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<u32> {
+            match [<bit_mask_checked_range_ $t>](start, end) {
                 Ok(mask) => Ok((bits & mask).count_ones()),
                 Err(e) => Err(e),
             }
@@ -491,8 +491,8 @@ macro_rules! impl_bits_fns {
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
         #[must_use] #[inline]
-        pub const fn [<bits_count_zeros_range_ $t>](bits: $t, start: u32, end: u32) -> u32 {
-            let masked_bits = bits & [<bits_mask_range_ $t>](start, end);
+        pub const fn [<bit_count_zeros_range_ $t>](bits: $t, start: u32, end: u32) -> u32 {
+            let masked_bits = bits & [<bit_mask_range_ $t>](start, end);
             masked_bits.count_zeros()
         }
 
@@ -502,8 +502,8 @@ macro_rules! impl_bits_fns {
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
             [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
         #[inline]
-        pub const fn [<bits_count_zeros_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<u32> {
-            match [<bits_mask_checked_range_ $t>](start, end) {
+        pub const fn [<bit_count_zeros_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<u32> {
+            match [<bit_mask_checked_range_ $t>](start, end) {
                 Ok(mask) => Ok((bits & mask).count_zeros()),
                 Err(e) => Err(e),
             }
@@ -521,9 +521,9 @@ macro_rules! impl_bits_fns {
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
         #[must_use] #[inline]
-        pub const fn [<bits_find_first_one_range_ $t>](bits: $t, start: u32, end: u32)
+        pub const fn [<bit_find_first_one_range_ $t>](bits: $t, start: u32, end: u32)
             -> Option<u32> {
-            let masked_bits = bits & [<bits_mask_range_ $t>](start, end);
+            let masked_bits = bits & [<bit_mask_range_ $t>](start, end);
             let mut idx = start;
             while idx <= end {
                 iif![(masked_bits & (1 << idx)) != 0; return Some(idx)];
@@ -544,9 +544,9 @@ macro_rules! impl_bits_fns {
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
             [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
         #[inline]
-        pub const fn [<bits_find_first_one_checked_range_ $t>](bits: $t, start: u32, end: u32)
+        pub const fn [<bit_find_first_one_checked_range_ $t>](bits: $t, start: u32, end: u32)
             -> Result<Option<u32>> {
-            match [<bits_mask_checked_range_ $t>](start, end) {
+            match [<bit_mask_checked_range_ $t>](start, end) {
                 Ok(mask) => {
                     let masked_bits = bits & mask;
                     let mut idx = start;
@@ -570,9 +570,9 @@ macro_rules! impl_bits_fns {
         #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
             $t "::BITS`]` || start > end`."]
         #[must_use] #[inline]
-        pub const fn [<bits_find_first_zero_range_ $t>](bits: $t, start: u32, end: u32)
+        pub const fn [<bit_find_first_zero_range_ $t>](bits: $t, start: u32, end: u32)
             -> Option<u32> {
-            let masked_bits = !(bits & [<bits_mask_range_ $t>](start, end));
+            let masked_bits = !(bits & [<bit_mask_range_ $t>](start, end));
             let mut idx = start;
             while idx <= end {
                 iif![(masked_bits & (1 << idx)) != 0; return Some(idx)];
@@ -593,9 +593,9 @@ macro_rules! impl_bits_fns {
             $t "::BITS`]` || end >= `[`" $t "::BITS`] and
             [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
         #[inline]
-        pub const fn [<bits_find_first_zero_checked_range_ $t>](bits: $t, start: u32, end: u32)
+        pub const fn [<bit_find_first_zero_checked_range_ $t>](bits: $t, start: u32, end: u32)
             -> Result<Option<u32>> {
-            match [<bits_mask_checked_range_ $t>](start, end) {
+            match [<bit_mask_checked_range_ $t>](start, end) {
                 Ok(mask) => {
                     let masked_bits = !(bits & mask);
                     let mut idx = start;
@@ -610,4 +610,4 @@ macro_rules! impl_bits_fns {
         }
     }};
 }
-impl_bits_fns![];
+impl_bitwise_fns![];
