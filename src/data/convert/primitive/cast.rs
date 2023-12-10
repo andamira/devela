@@ -2,21 +2,138 @@
 //
 //! fns to cast between primitives in a checked manner.
 //
+// TOC
+// - trait definition
+// - trait implementation
+// - functions definitions
 
 use crate::{
     data::{DataErrors as E, DataResult as Result},
     meta::{iif, paste},
 };
 
+/// Offers methods for casting between primitives.
+pub trait CastPrimitives {
+    /// Safely casts `self` to `u8` with range check.
+    fn checked_cast_to_u8(self) -> Result<u8>;
+    /// Safely casts `self` to `u16` with range check.
+    fn checked_cast_to_u16(self) -> Result<u16>;
+    /// Safely casts `self` to `u32` with range check.
+    fn checked_cast_to_u32(self) -> Result<u32>;
+    /// Safely casts `self` to `u64` with range check.
+    fn checked_cast_to_u64(self) -> Result<u64>;
+    /// Safely casts `self` to `u128` with range check.
+    fn checked_cast_to_u128(self) -> Result<u128>;
+    /// Safely casts `self` to `i8` with range check.
+    fn checked_cast_to_i8(self) -> Result<i8>;
+    /// Safely casts `self` to `i16` with range check.
+    fn checked_cast_to_i16(self) -> Result<i16>;
+    /// Safely casts `self` to `i32` with range check.
+    fn checked_cast_to_i32(self) -> Result<i32>;
+    /// Safely casts `self` to `i64` with range check.
+    fn checked_cast_to_i64(self) -> Result<i64>;
+    /// Safely casts `self` to `i128` with range check.
+    fn checked_cast_to_i128(self) -> Result<i128>;
+    /// Saturating casts `self` to `u8` clamping at the numeric bounds.
+    fn saturating_cast_to_u8(self) -> u8;
+    /// Saturating casts `self` to `u16` clamping at the numeric bounds.
+    fn saturating_cast_to_u16(self) -> u16;
+    /// Saturating casts `self` to `u32` clamping at the numeric bounds.
+    fn saturating_cast_to_u32(self) -> u32;
+    /// Saturating casts `self` to `u64` clamping at the numeric bounds.
+    fn saturating_cast_to_u64(self) -> u64;
+    /// Saturating casts `self` to `u128` clamping at the numeric bounds.
+    fn saturating_cast_to_u128(self) -> u128;
+    /// Saturating casts `self` to `i8` clamping at the numeric bounds.
+    fn saturating_cast_to_i8(self) -> i8;
+    /// Saturating casts `self` to `i16` clamping at the numeric bounds.
+    fn saturating_cast_to_i16(self) -> i16;
+    /// Saturating casts `self` to `i32` clamping at the numeric bounds.
+    fn saturating_cast_to_i32(self) -> i32;
+    /// Saturating casts `self` to `i64` clamping at the numeric bounds.
+    fn saturating_cast_to_i64(self) -> i64;
+    /// Saturating casts `self` to `i128` clamping at the numeric bounds.
+    fn saturating_cast_to_i128(self) -> i128;
+}
+
+macro_rules! impl_cast_trait {
+    ($($t:ty),+) => { $( impl_cast_trait![@$t]; )+ };
+    (@$t:ty) => { paste! {
+        impl CastPrimitives for $t {
+            fn checked_cast_to_u8(self) -> Result<u8> {
+                [<checked_cast_ $t _ to_ u8>](self)
+            }
+            fn checked_cast_to_u16(self) -> Result<u16> {
+                [<checked_cast_ $t _ to_ u16>](self)
+            }
+            fn checked_cast_to_u32(self) -> Result<u32> {
+                [<checked_cast_ $t _ to_ u32>](self)
+            }
+            fn checked_cast_to_u64(self) -> Result<u64> {
+                [<checked_cast_ $t _ to_ u64>](self)
+            }
+            fn checked_cast_to_u128(self) -> Result<u128> {
+                [<checked_cast_ $t _ to_ u128>](self)
+            }
+            fn checked_cast_to_i8(self) -> Result<i8> {
+                [<checked_cast_ $t _ to_ i8>](self)
+            }
+            fn checked_cast_to_i16(self) -> Result<i16> {
+                [<checked_cast_ $t _ to_ i16>](self)
+            }
+            fn checked_cast_to_i32(self) -> Result<i32> {
+                [<checked_cast_ $t _ to_ i32>](self)
+            }
+            fn checked_cast_to_i64(self) -> Result<i64> {
+                [<checked_cast_ $t _ to_ i64>](self)
+            }
+            fn checked_cast_to_i128(self) -> Result<i128> {
+                [<checked_cast_ $t _ to_ i128>](self)
+            }
+            fn saturating_cast_to_u8(self) -> u8 {
+                [<saturating_cast_ $t _ to_ u8>](self)
+            }
+            fn saturating_cast_to_u16(self) -> u16 {
+                [<saturating_cast_ $t _ to_ u16>](self)
+            }
+            fn saturating_cast_to_u32(self) -> u32 {
+                [<saturating_cast_ $t _ to_ u32>](self)
+            }
+            fn saturating_cast_to_u64(self) -> u64 {
+                [<saturating_cast_ $t _ to_ u64>](self)
+            }
+            fn saturating_cast_to_u128(self) -> u128 {
+                [<saturating_cast_ $t _ to_ u128>](self)
+            }
+            fn saturating_cast_to_i8(self) -> i8 {
+                [<saturating_cast_ $t _ to_ i8>](self)
+            }
+            fn saturating_cast_to_i16(self) -> i16 {
+                [<saturating_cast_ $t _ to_ i16>](self)
+            }
+            fn saturating_cast_to_i32(self) -> i32 {
+                [<saturating_cast_ $t _ to_ i32>](self)
+            }
+            fn saturating_cast_to_i64(self) -> i64 {
+                [<saturating_cast_ $t _ to_ i64>](self)
+            }
+            fn saturating_cast_to_i128(self) -> i128 {
+                [<saturating_cast_ $t _ to_ i128>](self)
+            }
+        }
+    }};
+}
+impl_cast_trait![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+
 // Implements casting functions between primitives
 //
 // `$f`: the type to cast from
 // `$t`: the type to cast to
-macro_rules! impl_casts {
+macro_rules! impl_cast_fns {
     () => {
         /* independent of pointer width */
 
-        impl_casts![can_overunderflow
+        impl_cast_fns![can_overunderflow
             // from bigger signed to unsigned
             i16:u8, i32:u8, i64:u8, i128:u8,
             i32:u16, i64:u16, i128:u16,
@@ -28,7 +145,7 @@ macro_rules! impl_casts {
             i64:i32, i128:i32,
             i128:i64
         ];
-        impl_casts![can_overflow
+        impl_cast_fns![can_overflow
             // from bigger unsigned to unsigned
             u16:u8, u32:u8, u64:u8, u128:u8,
             u32:u16, u64:u16, u128:u16,
@@ -42,7 +159,7 @@ macro_rules! impl_casts {
             // from equalsized unsigned to signed
             u8:i8, u16:i16, u32:i32, u64:i64, u128:i128, usize:isize
         ];
-        impl_casts![can_underflow
+        impl_cast_fns![can_underflow
             // from smaller signed to unsigned
             i8:u16, i8:u32, i8:u64, i8:u128,
             i16:u32, i16:u64, i16:u128,
@@ -51,7 +168,7 @@ macro_rules! impl_casts {
             // from equalsized signed to unsigned
             i8:u8, i16:u16, i32:u32, i64:u64, i128:u128, isize:usize
         ];
-        impl_casts![cant_fail
+        impl_cast_fns![cant_fail
             // from smaller unsigned to unsigned
             u8:u16, u8:u32, u8:u64, u8:u128,
             u16:u32, u16:u64, u16:u128,
@@ -76,7 +193,7 @@ macro_rules! impl_casts {
         /* dependent on pointer width */
 
         #[cfg(target_pointer_width = "32")]
-        impl_casts![can_overunderflow
+        impl_cast_fns![can_overunderflow
             // from bigger signed to unsigned
             isize:u8, isize:u16,
             i64:usize, i128:usize,
@@ -85,7 +202,7 @@ macro_rules! impl_casts {
             i64:isize, i128:isize
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_casts![can_overflow
+        impl_cast_fns![can_overflow
             // from bigger unsigned to unsigned
             usize:u8, usize:u16,
             u64:usize, u128:usize,
@@ -96,7 +213,7 @@ macro_rules! impl_casts {
             u32:isize, usize:i32
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_casts![can_underflow
+        impl_cast_fns![can_underflow
             // from smaller signed to unsigned
             isize:u64, isize:u128,
             i8:usize, i16:usize,
@@ -104,7 +221,7 @@ macro_rules! impl_casts {
             i32:usize, isize:u32
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_casts![cant_fail ptr:32
+        impl_cast_fns![cant_fail ptr:32
             // from smaller unsigned to unsigned
             usize:u64, usize:u128,
             u8:usize, u16:usize,
@@ -121,7 +238,7 @@ macro_rules! impl_casts {
         ];
 
         #[cfg(target_pointer_width = "64")]
-        impl_casts![can_overunderflow
+        impl_cast_fns![can_overunderflow
             // from bigger signed to unsigned
             isize:u8, isize:u16, isize:u32,
             i128:usize,
@@ -130,7 +247,7 @@ macro_rules! impl_casts {
             i128:isize
         ];
         #[cfg(target_pointer_width = "64")]
-        impl_casts![can_overflow
+        impl_cast_fns![can_overflow
             // from bigger unsigned to unsigned
             usize:u8, usize:u16, usize:u32,
             u128:usize,
@@ -141,7 +258,7 @@ macro_rules! impl_casts {
             u64:isize, usize:i64
         ];
         #[cfg(target_pointer_width = "64")]
-        impl_casts![can_underflow
+        impl_cast_fns![can_underflow
             // from smaller signed to unsigned
             isize:u128,
             i8:usize, i16:usize, i32:usize,
@@ -149,7 +266,7 @@ macro_rules! impl_casts {
             i64:usize, isize:u64
         ];
         #[cfg(target_pointer_width = "64")]
-        impl_casts![cant_fail ptr:64
+        impl_cast_fns![cant_fail ptr:64
             // from smaller unsigned to unsigned
             usize:u128,
             u8:usize, u16:usize, u32:usize,
@@ -165,7 +282,7 @@ macro_rules! impl_casts {
             isize:i64, i64:isize
         ];
     };
-    (can_overunderflow $( $f:ty:$t:ty ),+) => { $( impl_casts![@can_overunderflow $f:$t]; )+ };
+    (can_overunderflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_overunderflow $f:$t]; )+ };
     (@can_overunderflow $f:ty:$t:ty) => { paste! {
         #[doc = "Safely casts `" $f "` to `" $t "` with range check."]
         ///
@@ -195,7 +312,7 @@ macro_rules! impl_casts {
             }
         }
     }};
-    (can_overflow $( $f:ty:$t:ty ),+) => { $( impl_casts![@can_overflow $f:$t]; )+ };
+    (can_overflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_overflow $f:$t]; )+ };
     (@can_overflow $f:ty:$t:ty) => { paste! {
         #[doc = "Safely casts `" $f "` to `" $t "` with range check."]
         ///
@@ -212,7 +329,7 @@ macro_rules! impl_casts {
             iif![p > <$t>::MAX as $f; <$t>::MAX; p as $t]
         }
     }};
-    (can_underflow $( $f:ty:$t:ty ),+) => { $( impl_casts![@can_underflow $f:$t]; )+ };
+    (can_underflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_underflow $f:$t]; )+ };
     (@can_underflow $f:ty:$t:ty) => { paste! {
         #[doc = "Safely casts `" $f "` to `" $t "` with range check."]
         ///
@@ -229,7 +346,7 @@ macro_rules! impl_casts {
             iif![p < 0; 0; p as $t]
         }
     }};
-    (cant_fail $( $f:ty:$t:ty ),+) => { $( impl_casts![@cant_fail $f:$t]; )+ };
+    (cant_fail $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@cant_fail $f:$t]; )+ };
     (@cant_fail $f:ty:$t:ty) => { paste! {
         #[doc = "Safely casts `" $f "` to `" $t "` *(never fails)*."]
         ///
@@ -247,7 +364,7 @@ macro_rules! impl_casts {
         }
     }};
     (cant_fail ptr:$ptr:literal $( $f:ty:$t:ty ),+) => {
-        $( impl_casts![@cant_fail ptr:$ptr $f:$t]; )+
+        $( impl_cast_fns![@cant_fail ptr:$ptr $f:$t]; )+
     };
     (@cant_fail ptr:$ptr:literal $f:ty:$t:ty) => { paste! {
         #[doc = "Safely casts `" $f "` to `" $t "` *(never fails in " $ptr "-bit)*."]
@@ -266,4 +383,4 @@ macro_rules! impl_casts {
         }
     }};
 }
-impl_casts![];
+impl_cast_fns![];

@@ -2,6 +2,61 @@
 //
 //! fns to split a primitive into an array of smaller primitives.
 //
+// TOC
+// - trait definition
+// - trait implementation
+// - functions definitions
+
+use crate::meta::paste;
+
+/// Offers methods to split a primitive `T` into a slice of `U` primitives.
+///
+/// Slices of different lengths will be handled as follows:
+/// - If the slice contains fewer elements than required, the method will
+///   fill in the missing values with zeros.
+/// - If the slice contains more elements than required, the method will
+///   ignore the extra elements.
+///
+/// See also [`FromPrimitives`].
+pub trait IntoPrimitives<T, U, const LEN: usize> {
+    /// Splits a primitive `T` from a slice of `U` in big-endian order.
+    #[must_use]
+    fn into_array_be(value: T) -> [U; LEN];
+    /// Splits a primitive `T` into a slice of `U` in little-endian order.
+    #[must_use]
+    fn into_array_le(value: T) -> [U; LEN];
+    /// Splits a primitive `T` into an array of `U` in native-endian order.
+    #[must_use]
+    fn into_array_ne(value: T) -> [U; LEN];
+}
+
+macro_rules! impl_into_trait {
+    ( $( $T:ident, $U:ident, $LEN:literal );+ $(;)? ) => {
+        $( impl_into_trait![@$T, $U, $LEN]; )+
+    };
+    (@$T:ident, $U:ident, $LEN:literal) => { paste! {
+        impl IntoPrimitives<$T, $U, $LEN> for $T {
+            #[inline]
+            fn into_array_be(value: $T) -> [$U; $LEN] {
+                [<$T _into_ $U _be>](value)
+            }
+            #[inline]
+            fn into_array_le(value: $T) -> [$U; $LEN] {
+                [<$T _into_ $U _le>](value)
+            }
+            #[inline]
+            fn into_array_ne(value: $T) -> [$U; $LEN] {
+                [<$T _into_ $U _ne>](value)
+            }
+        }
+    }};
+}
+impl_into_trait![
+    u128, u64, 2; u128, u32, 4; u128, u16, 8; u128, u8, 16;
+    u64, u32, 2; u64, u16, 4; u64, u8, 8;
+    u32, u16, 2; u32, u8, 4;
+    u16, u8, 2;
+];
 
 /* u16 */
 

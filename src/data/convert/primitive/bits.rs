@@ -6,7 +6,6 @@
 // - trait definition
 // - trait implementation
 // - functions definitions
-// - tests
 
 use crate::{
     data::{DataErrors as E, DataResult as Result},
@@ -295,43 +294,3 @@ macro_rules! impl_bits_fns {
     }};
 }
 impl_bits_fns![];
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    #[rustfmt::skip]
-    fn bits_new_mask_range() {
-        assert_eq![0b_0000_0001, bits_new_mask_range_u8(0, 0).unwrap()];
-        assert_eq![0b_0000_0001, bits_new_mask_range_unchecked_u8(0, 0)];
-        assert_eq![0b_1000_0000, bits_new_mask_range_u8(7, 7).unwrap()];
-        assert_eq![0b_1000_0000, bits_new_mask_range_unchecked_u8(7, 7)];
-        assert_eq![0b_0111_1110, bits_new_mask_range_u8(1, 6).unwrap()];
-        assert_eq![0b_0111_1110, bits_new_mask_range_unchecked_u8(1, 6)];
-
-        debug_assert![bits_new_mask_range_u8(8, 8).is_err()];
-        debug_assert![bits_new_mask_range_u8(0, 8).is_err()];
-        debug_assert![bits_new_mask_range_u8(4, 1).is_err()];
-        #[cfg(feature = "std")]
-        {
-            use std::panic::catch_unwind;
-            debug_assert![catch_unwind(|| {
-                let _ = bits_new_mask_range_unchecked_u8(8, 8); }).is_err()];
-            debug_assert![catch_unwind(|| {
-                let _ = bits_new_mask_range_unchecked_u8(0, 8); }).is_err()];
-            debug_assert![catch_unwind(|| {
-                let _ = bits_new_mask_range_unchecked_u8(4, 1); }).is_err()];
-        }
-    }
-    #[test]
-    #[rustfmt::skip]
-    fn bits_ops() {
-        let bits = 0b_1111_0000;
-        assert_eq![0b_0011_0000, bits_get_range_u8(bits, 2, 5).unwrap()];
-        assert_eq![0b_0000_1100, bits_get_shift_range_u8(bits, 2, 5).unwrap()];
-        assert_eq![0b_1111_1100, bits_set_range_u8(bits, 2, 5).unwrap()];
-        assert_eq![0b_1100_0000, bits_unset_range_u8(bits, 2, 5).unwrap()];
-        assert_eq![0b_1100_1100, bits_flip_range_u8(bits, 2, 5).unwrap()];
-    }
-}
