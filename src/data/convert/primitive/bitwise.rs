@@ -116,6 +116,20 @@ where
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
     fn bit_flip_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
+    /* reverse */
+
+    /// Reverses the order of the bits in `self` from `start` to `end` inclusive.
+    /// # Panics
+    /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
+    #[must_use]
+    fn bit_reverse_range(self, start: u32, end: u32) -> Self;
+
+    /// Reverses the order of the bits in `self`, from `start` to `end` inclusive, checked.
+    /// # Errors
+    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    fn bit_reverse_checked_range(self, start: u32, end: u32) -> Result<Self>;
+
     /* count */
 
     /// Counts the number of set bits (ones) in `bits` from `start` to `end` inclusive.
@@ -284,6 +298,13 @@ macro_rules! impl_bitwise_trait {
             }
             fn bit_flip_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 [<bit_flip_checked_range_ $t>](self, start, end)
+            }
+            // reverse
+            fn bit_reverse_range(self, start: u32, end: u32) -> Self {
+                [<bit_reverse_range_ $t>](self, start, end)
+            }
+            fn bit_reverse_checked_range(self, start: u32, end: u32) -> Result<Self> {
+                [<bit_reverse_checked_range_ $t>](self, start, end)
             }
             // count
             fn bit_count_ones_range(self, start: u32, end: u32) -> u32 {
@@ -520,6 +541,60 @@ macro_rules! impl_bitwise_fns {
             match [< bit_mask_checked_range_ $t>](start, end) {
                 Ok(mask) => Ok(bits ^ mask),
                 Err(e) => Err(e),
+            }
+        }
+
+        /* reverse */
+
+        /// Reverses the order of the bits in `bits` from `start` to `end` inclusive.
+        ///
+        /// Leaves the rest of the bits as they were.
+        /// # Panics
+        #[doc = "Panics in debug if `start >= `[`" $t "::BITS`]` || end >= `[`"
+            $t "::BITS`]` || start > end`."]
+        #[must_use ] #[inline]
+        pub const fn [<bit_reverse_range_ $t>](bits: $t, start: u32, end: u32) -> $t {
+            debug_assert![start <= end];
+            // If the entire range of bits is selected, simply reverse all bits
+            let range_bits = end - start + 1;
+            iif![range_bits == <$t>::BITS; return bits.reverse_bits()];
+            // Create the mask for the range and reverse its bits
+            let mask = (((1 as $t) << range_bits) - 1) << start;
+            let bits_to_rev = (bits & mask) >> start;
+            let rev = bits_to_rev.reverse_bits();
+            // Shift the reversed bits back to their original position
+            let rev_shifted = (rev >> (<$t>::BITS - range_bits)) << start;
+            // Combine with the original number, preserving bits outside the range
+            (bits & !mask) | rev_shifted
+        }
+
+        /// Reverses the order of the bits in `bits` from `start` to `end` inclusive, checked.
+        ///
+        /// Leaves the rest of the bits as they were.
+        /// # Errors
+        #[doc = "Returns [`OutOfBounds`][E::OutOfBounds] if `start >= `[`"
+            $t "::BITS`]` || end >= `[`" $t "::BITS`] and
+            [`MismatchedIndices`][E::MismatchedIndices] if `start > end`."]
+        #[inline]
+        pub const fn [<bit_reverse_checked_range_ $t>](bits: $t, start: u32, end: u32) -> Result<$t> {
+            if start >= <$t>::BITS {
+                Err(E::OutOfBounds(Some(start as usize)))
+            } else if end >= <$t>::BITS {
+                Err(E::OutOfBounds(Some(end as usize)))
+            } else if start > end {
+                Err(E::MismatchedIndices)
+            } else {
+                // If the entire range of bits is selected, simply reverse all bits
+                let range_bits = end - start + 1;
+                iif![range_bits == <$t>::BITS; return Ok(bits.reverse_bits())];
+                // Create the mask for the range and reverse its bits
+                let mask = (((1 as $t) << range_bits) - 1) << start;
+                let bits_to_rev = (bits & mask) >> start;
+                let rev = bits_to_rev.reverse_bits();
+                // Shift the reversed bits back to their original position
+                let rev_shifted = (rev >> (<$t>::BITS - range_bits)) << start;
+                // Combine with the original number, preserving bits outside the range
+                Ok((bits & !mask) | rev_shifted)
             }
         }
 

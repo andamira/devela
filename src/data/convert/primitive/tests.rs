@@ -36,6 +36,16 @@ fn bit_ops() {
     assert_eq![0b_1111_1100, bit_set_checked_range_u8(bits, 2, 5).unwrap()];
     assert_eq![0b_1100_0000, bit_unset_checked_range_u8(bits, 2, 5).unwrap()];
     assert_eq![0b_1100_1100, bit_flip_checked_range_u8(bits, 2, 5).unwrap()];
+
+    // reverse
+    let bits = 0b__1010__1010;
+    assert_eq!(0b__0101__1010, bit_reverse_range_u8(bits, 4, 7));
+    let bits = 0b_00__1100__01;
+    assert_eq!(0b_00__0011__01, bit_reverse_range_u8(bits, 2, 5));
+    let bits = 0b_1000__1110__;
+    assert_eq!(0b_1000__0111__, bit_reverse_range_u8(bits, 0, 3));
+
+    let bits = 0b_1111_0000;
     // count
     assert_eq![2, bit_count_ones_checked_range_u8(bits, 3, 5).unwrap()];
     assert_eq![1, bit_count_zeros_checked_range_u8(bits, 3, 5).unwrap()];
