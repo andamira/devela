@@ -61,6 +61,8 @@ fn main() -> Result<()> {
     /* tests */
 
     if args.tests {
+        rust_setup_arches(&msrv)?;
+
         let cmd = "test";
         sf! { headline(0, &format!["`full` test checking [alloc|std]+[safe|unsafe]):"]); }
 

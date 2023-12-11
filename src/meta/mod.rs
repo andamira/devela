@@ -15,8 +15,8 @@ pub(crate) use _private::reexport;
 mod const_for;
 mod iif;
 mod paste;
-mod skip_format;
 mod reexports;
+mod skip_format;
 
 #[allow(unused)]
 #[cfg(not(feature = "meta"))]

@@ -3,7 +3,5 @@
 //!
 //
 
-// mod array;
-// mod field;
 mod wise;
-pub use {/* array::*, field::*, */ wise::*};
+pub use wise::*;
