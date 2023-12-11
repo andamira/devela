@@ -2,7 +2,7 @@
 
 use super::Bits;
 #[cfg(doc)]
-use crate::data::DataErrors as E;
+use crate::data::DataErrors::{MismatchedIndices, OutOfBounds, Overflow};
 use crate::data::DataResult as Result;
 
 /// Provides bitwise operations.
@@ -30,8 +30,8 @@ where
     /// Sets the rest of the bits to 0.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     #[doc = include_str!("./Benchmarks_bit_mask_checked_range.md")]
     fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self>;
 
@@ -49,8 +49,8 @@ where
     ///
     /// Sets the rest of the bits to 0.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_get_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* get value */
@@ -73,8 +73,8 @@ where
     /// The bits in the specified range are shifted rightwards so that the least
     /// significant bit (LSB) aligns with the units place, forming the integer value.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_get_value_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* set */
@@ -91,8 +91,8 @@ where
     ///
     /// Leaves the rest of the bits untouched.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_set_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* set value */
@@ -112,9 +112,23 @@ where
     ///
     /// Leaves the rest of the bits unchanged.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::Ou, cmp, hashtOfBounds] if `start >= BITS || end >= BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_set_value_checked_range(self, value: Self::Inner, start: u32, end: u32) -> Result<Self>;
+
+    /// Sets the given checked `value` into the bits from the `[start..=end]` checked range.
+    ///
+    /// Leaves the rest of the bits unchanged.
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`,
+    /// [`MismatchedIndices`] if `start > end` and
+    /// [`Overflow`] if `value` does not fit within the specified bit range.
+    fn bit_set_checked_value_checked_range(
+        self,
+        value: Self::Inner,
+        start: u32,
+        end: u32,
+    ) -> Result<Self>;
 
     /* unset */
 
@@ -130,8 +144,8 @@ where
     ///
     /// Leaves the rest of the bits untouched.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_unset_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* flip */
@@ -148,8 +162,8 @@ where
     ///
     /// Leaves the rest of the bits untouched.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_flip_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* reverse */
@@ -166,8 +180,8 @@ where
     ///
     /// Leaves the rest of the bits untouched.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_reverse_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* count */
@@ -180,8 +194,8 @@ where
 
     /// Counts the number of 1s in `bits` from the `[start..=end]` checked range.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_count_ones_checked_range(self, start: u32, end: u32) -> Result<u32>;
 
     /// Counts the number of 0s in `bits` from the `[start..=end]` range.
@@ -192,8 +206,8 @@ where
 
     /// Counts the number of 0s in `bits` from the `[start..=end]` checked range.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32>;
 
     /* find first */
@@ -214,8 +228,8 @@ where
     ///
     /// The index is relative to the entire sequence of `bits`, not to the given `start`.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_find_first_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
 
     /// Finds the index of the first 0 in `bits` from the `[start..=end]` range.
@@ -234,8 +248,8 @@ where
     ///
     /// The index is relative to the entire sequence of `bits`, not to the given `start`.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_find_first_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
 
     /* find last */
@@ -256,8 +270,8 @@ where
     ///
     /// The index is relative to the entire sequence of `bits`, not to the given `start`.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_find_last_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
 
     /// Finds the index of the last 0 in `bits` from the `[start..=end]` range.
@@ -276,8 +290,8 @@ where
     ///
     /// The index is relative to the entire sequence of `bits`, not to the given `start`.
     /// # Errors
-    /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
-    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    /// Returns [`OutOfBounds`] if `start >= Self::BITS` || `end >= Self::BITS`
+    /// and [`MismatchedIndices`] if `start > end`.
     fn bit_find_last_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
 }
 
@@ -322,6 +336,10 @@ macro_rules! impl_bit_ops {
             fn bit_set_value_checked_range(self, value: Self::Inner, start: u32, end: u32)
                 -> Result<Self> {
                 Ok(Bits(self).set_value_checked_range(value, start, end)?.0)
+            }
+            fn bit_set_checked_value_checked_range(self, value: Self::Inner, start: u32, end: u32)
+                -> Result<Self> {
+                Ok(Bits(self).set_checked_value_checked_range(value, start, end)?.0)
             }
             // unset
             fn bit_unset_range(self, start: u32, end: u32) -> Self {
