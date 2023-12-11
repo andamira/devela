@@ -133,3 +133,32 @@ pub fn cif(input: TokenStream) -> TokenStream {
     let result = compile_eval(input);
     result.to_string().parse().unwrap()
 }
+
+/// Returns the first non-empty argument.
+///
+/// If all arguments are empty, the macro returns nothing.
+///
+/// This macro is inspired by the SQL `COALESCE` function, which returns the
+/// first non-null value from a list of arguments, or null if they're all null.
+///
+/// # Examples
+/// ```
+#[doc = include_str!("../examples/coalesce.rs")]
+/// ```
+#[proc_macro]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+pub fn coalesce(input: TokenStream) -> TokenStream {
+    let input = input.to_string();
+    let args = split_args(&input);
+
+    let first_non_empty_arg = args
+        .into_iter()
+        .find(|arg| !arg.is_empty())
+        .unwrap_or_else(|| "".to_string());
+    // .expect("No non-empty arguments found");
+
+    first_non_empty_arg
+        .parse()
+        .expect("Failed to parse TokenStream")
+}
