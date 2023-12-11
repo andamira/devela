@@ -73,7 +73,7 @@ meta = []
 path = []
 result = []
 task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
-text = ["dep?/const-str", "dep?/unicode-segmentation"]
+text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
 
 # individual modules with unsafe enabled (10):
@@ -128,6 +128,7 @@ libm = ["dep:libm"]
 hashbrown = ["dep:hashbrown"]
 portable-atomic = ["dep:portable-atomic"]
 unicode-segmentation = ["dep:unicode-segmentation"]
+unicode-width = ["dep:unicode-width"]
 
 
 # ------------------------------------------------------------------------------
@@ -149,6 +150,7 @@ dep = { package = "devela_depend", version = "0.2.0", optional = true }
 const-str = { version = "0.5.6", default-features = false, optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
+unicode-width = { version = "0.1.11", default-features = false, optional = true }
 [dependencies.atomic]
 version = "0.6.0"
 default-features = false
