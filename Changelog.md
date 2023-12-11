@@ -13,12 +13,19 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new function `mem::ptr_in_stack`.
 - new functions: `factorial_*.
 - new `Fp` and `FloatExt` methods: `is_sign_positive` and `is_sign_negative`, `sqrt_fisr`, `sqrt_nr`, `round_ties_even`, `factorial`.
-- new `FloatExt` associated constants: `BIAS`, `EXPONENT_BITS`, `SIGNIFICAND_BITS`.
+- new `Fp` trig methods: `asin_taylor`, `asin_taylor_terms`, `acos_taylor`, `acos_taylor_terms`, `atan_taylor`, `atan_taylor_terms`, ``, `exp_taylor`, `exp_taylor_terms`, `exp2_taylor`, `exp2_taylor_terms`, ``, `sinh_taylor`, `cosh_taylor`, `tanh_taylor`.
+- new `Fp` associated mathematical constants.
+- new `FloatExt` associated constants: `BIAS`, `EXPONENT_BITS`, `SIGNIFICAND_BITS`
 - new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
-- new macro `init_array`.
-- new `DataErrors` type.
-- new `CastPrimitives` trait and fns: `checked_cast_*`, `saturating_cast_*`.
+- new macros: `init_array`, `bitfield`.
+- new fn `bytes_from_bits`.
+- new type `DataErrors`.
+- new trait `DataArray`.
+- new trait `CastPrimitives` and fns: `checked_cast_*`, `saturating_cast_*`.
+- new trait `BitOps`, and wrapper struct `Bits`.
 - new `MathErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
+- add sorting methods from `data::cmp` to `SliceExtMut`.
+- add optional dependency `unicode-width`.
 
 ### Removed
 - remove `os::linux` and `os::term` functionality.
@@ -26,23 +33,33 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove linux specific tools and github actions.
 
 ### Changed
-- bump rust version to `1.74.0`.
+- bump rust version to `1.74.1`.
 - move `any` module to `data`.
 - move `num` and `ops` modules to `math`.
 - move `num::convert` module to `data::convert`.
 - remove features: `ops`, `ops_unsafe`, `unsafe_ops`.
-- improve `Fp` type and `FloatExt` trait to be partially available without `std` or `libm` features, and add missing attributes.
+- improve `Fp` type and `FloatExt` trait to be partially available without `std` or `libm` features, reverting to the taylor versions when there's no better option.
+- rename `Fp` and `FloatExp` float parameters to `x`, `y` `z`.
 - rename `NumError` and `NumResult` to `MathErrors` and `MathResult`, respectively, and move them to the math module.
 - rename fns: `div_half_*` to `div_ties_*`.
 - rename `Fp` and `FloatExt` method: `round` to `round_ties_away`.
 - rename `num` features to `math` features.
+- rename fn `mem_ptr_ratio` and method `Size::ptr_ratio` to `ptr_size_ratio`.
 - impl `Error` and `Display` for `MathErrors`.
 - make public `ascii_calc_digit_*` functions.
+- update `DataCollection` methods to return `DataResult`; add new methods `collection_contains`, `collection_count`.
+- implement `DataCollection` for `array`, `Vec`, `VecDeque`, `OrderedMap`, `OrderedSet`, `UnorderedMap`, `UnorderedSet`.
+- make `DataCollection` always available.
 - update color gamma fns, rename to `color_gamma_[apply|remove]_f*`, add `f64` versions.
+- reexport `BitwisePrimitives` and `CastPrimitives` traits from `prelude`.
 - update `Collection` trait.
+- make `devela_macros` a non-optional dependency, and update it.
+- update `devela_depend`.
 
 ### Fixed
 - fix `bytemuck` dependency when `data` is enabled.
+- update and improve CI tests.
+- add missing attributes.
 
 ## [0.18.1] 2023-11-08
 
