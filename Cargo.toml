@@ -133,8 +133,8 @@ unicode-segmentation = ["dep:unicode-segmentation"]
 # ------------------------------------------------------------------------------
 
 [dependencies]
-devela_macros = { version  = "0.7.0" }
-#devela_macros = { path = "./macros", optional = true }
+devela_macros = { version  = "0.7.1" }
+#devela_macros = { path = "./macros" }
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 
 # There are two options for enabling optional dependencies:
