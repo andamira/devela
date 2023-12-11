@@ -185,28 +185,32 @@ macro_rules! impl_bits_wrapper {
                 }
             }
 
-            /* get shifted */
+            /* get value */
 
-            /// Gets the shifted bits in `self` from the `[start..=end]` range.
+            /// Gets the value of the bits in `self` from the `[start..=end]` range.
             ///
-            /// Like [`get_range`][Self::get_range] and then shifting rightwards
-            /// so that the least significant bit (LSB) of the range aligns with the units place.
+            /// Sets the rest of the bits to 0.
+            ///
+            /// The bits in the specified range are shifted rightwards so that the least
+            /// significant bit (LSB) aligns with the units place, forming the integer value.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
             #[must_use] #[inline]
-            pub const fn get_shifted_range(self, start: u32, end: u32) -> Self {
+            pub const fn get_value_range(self, start: u32, end: u32) -> Self {
                 Self((self.0 & Self::mask_range(start, end).0) >> start)
             }
 
-            /// Gets the shifted bits in `self` from the `[start..=end]` checked range.
+            /// Gets the value of the bits in `self` from the `[start..=end]` checked range.
             ///
-            /// Like [`get_checked_range`][Self::get_checked_range] and then shifting rightwards
-            /// so that the least significant bit (LSB) of the range aligns with the units place.
+            /// Sets the rest of the bits to 0.
+            ///
+            /// The bits in the specified range are shifted rightwards so that the least
+            /// significant bit (LSB) aligns with the units place, forming the integer value.
             /// # Errors
             /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
             #[inline]
-            pub const fn get_shifted_checked_range(self, start: u32, end: u32) -> Result<Self> {
+            pub const fn get_value_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self((self.0 & mask.0) >> start)),
                     Err(e) => Err(e),
@@ -217,7 +221,7 @@ macro_rules! impl_bits_wrapper {
 
             /// Sets the bits in `self` to 1, from the `[start..=end]` range.
             ///
-            /// Leaves the rest of the bits untouched.
+            /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
             #[must_use] #[inline]
@@ -227,10 +231,10 @@ macro_rules! impl_bits_wrapper {
 
             /// Sets the bits in `self` to 1, from the `[start..=end]` checked range.
             ///
-            /// Leaves the rest of the bits untouched.
+            /// Leaves the rest of the bits unchanged.
             /// # Errors
-            /// Returns [`OutOfBounds`][E::Ou, cmp, hashtOfBounds] if `start >= BITS || end >= BITS` and
-            /// [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+            /// Returns [`OutOfBounds`][E::Ou, cmp, hashtOfBounds] if `start >= BITS || end >= BITS`
+            /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
             #[inline]
             pub const fn set_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
@@ -239,11 +243,67 @@ macro_rules! impl_bits_wrapper {
                 }
             }
 
+            /* set value */
+
+            /// Sets the given `value` into the bits from the `[start..=end]` range.
+            ///
+            /// Leaves the rest of the bits unchanged.
+            ///
+            /// The value is first masked to fit the size of the range, and then
+            /// it is inserted into the specified bit range of `self`, replacing
+            /// the existing bits in that range. The rest of the bits in `self` remain unchanged.
+            /// # Panics
+            /// Panics if `start >= BITS || end >= BITS || start > end`.
+            #[must_use] #[inline]
+            pub const fn set_value_range(self, value: $t, start: u32, end: u32) -> Self {
+                let mask = Self::mask_range(start, end).0;
+                let value_shifted = (value << start) & mask;
+                Self((self.0 & !mask) | value_shifted)
+            }
+
+            /// Sets the given `value` into the bits from the `[start..=end]` checked range.
+            ///
+            /// Leaves the rest of the bits unchanged.
+            /// # Errors
+            /// Returns [`OutOfBounds`][E::Ou, cmp, hashtOfBounds] if `start >= BITS || end >= BITS`
+            /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+            #[inline]
+            pub const fn set_value_checked_range(self, value: $t, start: u32, end: u32)
+                -> Result<Self> {
+                match Self::mask_checked_range(start, end) {
+                    Ok(mask) => {
+                        let value_shifted = (value << start) & mask.0;
+                        Ok(Self((self.0 & !mask.0) | value_shifted))
+                    },
+                    Err(e) => Err(e),
+                }
+            }
+
+            /// Sets the given checked `value` into the bits from the `[start..=end]` checked range.
+            ///
+            /// Leaves the rest of the bits unchanged.
+            /// # Errors
+            /// Returns [`OutOfBounds`][E::Ou, cmp, hashtOfBounds] if `start >= BITS || end >= BITS`,
+            /// [`MismatchedIndices`][E::MismatchedIndices] if `start > end` and
+            /// [`Overflow`][E::Overflow] if `value` does not fit within the specified bit range.
+            #[inline]
+            pub const fn set_checked_value_checked_range(self, value: $t, start: u32, end: u32)
+                -> Result<Self> {
+                match Self::mask_checked_range(start, end) {
+                    Ok(mask) => {
+                        iif![value >= (1 << (end - start)); return Err(E::Overflow)];
+                        let value_shifted = (value << start) & mask.0;
+                        Ok(Self((self.0 & !mask.0) | value_shifted))
+                    },
+                    Err(e) => Err(e),
+                }
+            }
+
             /* unset */
 
             /// Unsets the bits in `self` to 0, from the `[start..=end]` range.
             ///
-            /// Leaves the rest of the bits untouched.
+            /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
             #[must_use] #[inline]
@@ -253,7 +313,7 @@ macro_rules! impl_bits_wrapper {
 
             /// Unsets the bits in `self` to 0, from the `[start..=end]` checked range.
             ///
-            /// Leaves the rest of the bits untouched.
+            /// Leaves the rest of the bits unchanged.
             /// # Errors
             /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
@@ -269,7 +329,7 @@ macro_rules! impl_bits_wrapper {
 
             /// Flips the bits in `self` from the `[start..=end]` range.
             ///
-            /// Leaves the rest of the bits untouched.
+            /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
             #[must_use] #[inline]
@@ -279,7 +339,7 @@ macro_rules! impl_bits_wrapper {
 
             /// Flips the bits in `self` from the `[start..=end]` checked range.
             ///
-            /// Leaves the rest of the bits untouched.
+            /// Leaves the rest of the bits unchanged.
             /// # Errors
             /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
@@ -295,7 +355,7 @@ macro_rules! impl_bits_wrapper {
 
             /// Reverses the order of the bits in `self` from the `[start..=end]` range.
             ///
-            /// Leaves the rest of the bits untouched.
+            /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
             #[must_use ] #[inline]
@@ -316,7 +376,7 @@ macro_rules! impl_bits_wrapper {
 
             /// Reverses the order of the bits in `self` from the `[start..=end]` checked range.
             ///
-            /// Leaves the rest of the bits untouched.
+            /// Leaves the rest of the bits unchanged.
             /// # Errors
             /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.

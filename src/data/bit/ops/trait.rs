@@ -5,11 +5,14 @@ use super::Bits;
 use crate::data::DataErrors as E;
 use crate::data::DataResult as Result;
 
-/// Provides bitwise operations on primitives.
+/// Provides bitwise operations.
 pub trait BitOps
 where
     Self: Sized,
 {
+    /// The inner type for the bit representation.
+    type Inner;
+
     /* new mask */
 
     /// Returns a bitmask of ones from the `[start..=end]` range.
@@ -50,25 +53,29 @@ where
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
     fn bit_get_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
-    /* get shift */
+    /* get value */
 
     /// Gets the rightwards shifted bits in `self` from the `[start..=end]` range.
     ///
-    /// Like [`bit_get_range`][Self:bit_get_range] and then shifting rightwards
-    /// so that the least significant bit (LSB) of the range aligns with the units place.
+    /// Sets the rest of the bits to 0.
+    ///
+    /// The bits in the specified range are shifted rightwards so that the least
+    /// significant bit (LSB) aligns with the units place, forming the integer value.
     /// # Panics
     /// Panics in debug if `start >= Self::BITS` || `end >= Self::BITS` || `start > end`.
     #[must_use]
-    fn bit_get_shifted_range(self, start: u32, end: u32) -> Self;
+    fn bit_get_value_range(self, start: u32, end: u32) -> Self;
 
     /// Gets the rightwards shifted bits in `self` from the `[start..=end]` checked range.
     ///
-    /// Like [`bit_get_checked_range`][Self:bit_get_cheked_range] and then shifting rightwards
-    /// so that the least significant bit (LSB) of the range aligns with the units place.
+    /// Sets the rest of the bits to 0.
+    ///
+    /// The bits in the specified range are shifted rightwards so that the least
+    /// significant bit (LSB) aligns with the units place, forming the integer value.
     /// # Errors
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
-    fn bit_get_shifted_checked_range(self, start: u32, end: u32) -> Result<Self>;
+    fn bit_get_value_checked_range(self, start: u32, end: u32) -> Result<Self>;
 
     /* set */
 
@@ -87,6 +94,27 @@ where
     /// Returns [`OutOfBounds`][E::OutOfBounds] if `start >= Self::BITS` || `end >= Self::BITS`
     /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
     fn bit_set_checked_range(self, start: u32, end: u32) -> Result<Self>;
+
+    /* set value */
+
+    /// Sets the given `value` into the bits from the `[start..=end]` range.
+    ///
+    /// Leaves the rest of the bits unchanged.
+    ///
+    /// The value is first masked to fit the size of the range, and then
+    /// it is inserted into the specified bit range of `self`, replacing
+    /// the existing bits in that range. The rest of the bits in `self` remain unchanged.
+    /// # Panics
+    /// Panics if `start >= BITS || end >= BITS || start > end`.
+    fn bit_set_value_range(self, value: Self::Inner, start: u32, end: u32) -> Self;
+
+    /// Sets the given `value` into the bits from the `[start..=end]` checked range.
+    ///
+    /// Leaves the rest of the bits unchanged.
+    /// # Errors
+    /// Returns [`OutOfBounds`][E::Ou, cmp, hashtOfBounds] if `start >= BITS || end >= BITS`
+    /// and [`MismatchedIndices`][E::MismatchedIndices] if `start > end`.
+    fn bit_set_value_checked_range(self, value: Self::Inner, start: u32, end: u32) -> Result<Self>;
 
     /* unset */
 
@@ -257,6 +285,8 @@ macro_rules! impl_bit_ops {
     ($($t:ty),+) => { $( impl_bit_ops![@$t]; )+ };
     (@$t:ty) => {
         impl BitOps for $t {
+            type Inner = $t;
+
             // new mask
             fn bit_mask_range(start: u32, end: u32) -> Self {
                 Bits::<$t>::mask_range(start, end).0
@@ -271,12 +301,12 @@ macro_rules! impl_bit_ops {
             fn bit_get_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 Ok(Bits(self).get_checked_range(start, end)?.0)
             }
-            // get shifted
-            fn bit_get_shifted_range(self, start: u32, end: u32) -> Self {
-                Bits(self).get_shifted_range(start, end).0
+            // get value
+            fn bit_get_value_range(self, start: u32, end: u32) -> Self {
+                Bits(self).get_value_range(start, end).0
             }
-            fn bit_get_shifted_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                Ok(Bits(self).get_shifted_checked_range(start, end)?.0)
+            fn bit_get_value_checked_range(self, start: u32, end: u32) -> Result<Self> {
+                Ok(Bits(self).get_value_checked_range(start, end)?.0)
             }
             // set
             fn bit_set_range(self, start: u32, end: u32) -> Self {
@@ -284,6 +314,14 @@ macro_rules! impl_bit_ops {
             }
             fn bit_set_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 Ok(Bits(self).set_checked_range(start, end)?.0)
+            }
+            // set value
+            fn bit_set_value_range(self, value: Self::Inner, start: u32, end: u32) -> Self {
+                Bits(self).set_value_range(value, start, end).0
+            }
+            fn bit_set_value_checked_range(self, value: Self::Inner, start: u32, end: u32)
+                -> Result<Self> {
+                Ok(Bits(self).set_value_checked_range(value, start, end)?.0)
             }
             // unset
             fn bit_unset_range(self, start: u32, end: u32) -> Self {
