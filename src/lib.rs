@@ -123,17 +123,7 @@ pub fn compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
 ///
 /// # Examples
 /// ```
-/// use devela_macros::cif;
-///
-/// let the_answer_is = if cif!(none(some)) {
-///   "one"
-/// } else if cif!(any(false, diff(this, that))) {
-///   "two"
-/// } else {
-///   "three"
-/// };
-///
-/// assert_eq!(the_answer_is, "two");
+#[doc = include_str!("../examples/cif.rs")]
 /// ```
 #[proc_macro]
 #[cfg(feature = "alloc")]
