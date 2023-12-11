@@ -58,6 +58,9 @@ mod _dep {
 
     #[cfg(feature = "unicode-segmentation")]
     pub use ::unicode_segmentation;
+
+    #[cfg(feature = "unicode-width")]
+    pub use ::unicode_width;
 }
 
 // When the `dep` feature is enabled, the `devela_depend` crate is enabled,
@@ -95,5 +98,9 @@ mod _dep {
 
     reexport! { depend feature: "text",
     dep: "unicode-segmentation", unicode_segmentation,
-    "Split strings on Grapheme Cluster, Word or Sentence boundaries." }
+    "Split strings on Grapheme Clusters, Words or Sentences." }
+
+    reexport! { depend feature: "text",
+    dep: "unicode-width", unicode_width,
+    "Determine displayed width of `char` and `str` types." }
 }

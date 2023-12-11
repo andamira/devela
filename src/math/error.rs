@@ -69,7 +69,7 @@ mod core_impls {
                 MathErrors::NotImplemented => write!(f, "Not implemented."),
                 MathErrors::NotSupported => write!(f, "Not supported."),
                 MathErrors::Unspecified => write!(f, "Unspecified."),
-                MathErrors::Invalid => write!(f, "Invalid."),
+                MathErrors::Invalid => write!(f, "Invalid value."),
                 MathErrors::MismatchedSizes => {
                     write!(f, "The provided values are not compatible in size.")
                 }
