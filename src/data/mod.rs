@@ -60,13 +60,13 @@ pub use {array::*, collection::*, error::*, reexports::*};
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use {any::all::*, bit::*, cmp::all::*, convert::all::*, slice::all::*};
+pub use {any::all::*, bit::all::*, cmp::all::*, convert::all::*, slice::all::*};
 
 #[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        any::all::*, array::*, bit::*, cmp::all::*, collection::*, convert::all::*, error::*,
+        any::all::*, array::*, bit::all::*, cmp::all::*, collection::*, convert::all::*, error::*,
         reexports::*, slice::all::*,
     };
 

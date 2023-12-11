@@ -286,7 +286,7 @@ macro_rules! impl_bits_wrapper {
             /// Leaves the rest of the bits unchanged.
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`,
-            /// [`MismatchedIndices`] if `start > end` and
+            /// [`MismatchedIndices`] if `start > end`, and
             /// [`Overflow`] if `value` does not fit within the specified bit range.
             #[inline]
             pub const fn set_checked_value_checked_range(self, value: $t, start: u32, end: u32)
@@ -571,7 +571,8 @@ macro_rules! impl_bits_wrapper {
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
             #[inline]
-            pub const fn find_last_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
+            pub const fn find_last_one_checked_range(self, start: u32, end: u32)
+                -> Result<Option<u32>> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => {
                         let masked_bits = self.0 & mask.0;
@@ -615,7 +616,8 @@ macro_rules! impl_bits_wrapper {
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
             #[inline]
-            pub const fn find_last_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
+            pub const fn find_last_zero_checked_range(self, start: u32, end: u32)
+                -> Result<Option<u32>> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => {
                         let masked_bits = !(self.0 & mask.0);
