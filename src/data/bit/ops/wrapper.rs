@@ -1,4 +1,4 @@
-// devela::data::bit::wise::wrapper
+// devela::data::bit::ops::wrapper
 
 use crate::{
     data::{DataErrors as E, DataResult as Result},

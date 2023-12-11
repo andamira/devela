@@ -1,4 +1,4 @@
-// devela::data::bit::wise::trait
+// devela::data::bit::ops::trait
 
 use super::Bits;
 #[cfg(doc)]
@@ -6,7 +6,7 @@ use crate::data::DataErrors as E;
 use crate::data::DataResult as Result;
 
 /// Provides bitwise operations on primitives.
-pub trait Bitwise
+pub trait BitOps
 where
     Self: Sized,
 {
@@ -253,10 +253,10 @@ where
     fn bit_find_last_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>>;
 }
 
-macro_rules! impl_bitwise_trait {
-    ($($t:ty),+) => { $( impl_bitwise_trait![@$t]; )+ };
+macro_rules! impl_bit_ops {
+    ($($t:ty),+) => { $( impl_bit_ops![@$t]; )+ };
     (@$t:ty) => {
-        impl Bitwise for $t {
+        impl BitOps for $t {
             // new mask
             fn bit_mask_range(start: u32, end: u32) -> Self {
                 Bits::<$t>::mask_range(start, end).0
@@ -348,4 +348,4 @@ macro_rules! impl_bitwise_trait {
         }
     };
 }
-impl_bitwise_trait![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+impl_bit_ops![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
