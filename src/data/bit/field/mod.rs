@@ -12,7 +12,7 @@ pub use examples::*;
 #[cfg(test)]
 mod tests;
 
-/// Creates a new bit field struct with the given `$name` and inner type.
+/// Creates a custom bit field struct.
 ///
 /// The inner type must be an integer primitive.
 ///
