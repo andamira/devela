@@ -4,7 +4,7 @@
 [![API](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
 [![MSRV: 1.74.1](https://flat.badgen.net/badge/MSRV/1.74.1/purple)](https://releases.rs/docs/1.74.1/)
 
-Development extensions for the [Rust Standard Library](https://doc.rust-lang.org/std).
+A highly integrated layer for Rust development.
 
 See [the documentation](https://docs.rs/devela/) for more information.
 

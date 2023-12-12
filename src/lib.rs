@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! Development extensions for the Rust Standard Library.
+//! A highly integrated layer for Rust development.
 //
 
 // warnings
