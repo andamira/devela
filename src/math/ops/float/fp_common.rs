@@ -104,10 +104,10 @@ macro_rules! custom_impls {
             /// $$ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots $$
             /// For values $ x < 0 $ it uses the identity: $$ e^x = \frac{1}{e^-x} $$
             ///
-            /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
+            /// See also [`exp_series_terms`][Self::exp_series_terms].
             #[must_use] #[inline]
-            pub fn exp_taylor(x: $f, terms: $ue) -> $f {
-                iif![x < 0.0; return 1.0 / Self::exp_taylor(-x, terms)];
+            pub fn exp_series(x: $f, terms: $ue) -> $f {
+                iif![x < 0.0; return 1.0 / Self::exp_series(-x, terms)];
                 let (mut result, mut term) = (1.0, 1.0);
                 for i in 1..=terms {
                     term *= x / i as $f;
@@ -116,7 +116,7 @@ macro_rules! custom_impls {
                 result
             }
 
-            /// Determines the number of terms needed for [`exp_taylor`][Self::exp_taylor]
+            /// Determines the number of terms needed for [`exp_series`][Self::exp_series]
             /// to reach a stable result based on the input value.
             ///
             /// The following table shows the required number of `terms` needed
@@ -137,21 +137,21 @@ macro_rules! custom_impls {
             /// ± 709.782 →   ---    938  (max for f64)
             /// ```
             #[must_use] #[inline(always)]
-            pub fn exp_taylor_terms(x: $f) -> $ue { Self::[<exp_taylor_terms_ $f>](x) }
+            pub fn exp_series_terms(x: $f) -> $ue { Self::[<exp_series_terms_ $f>](x) }
 
             /// Calculates $ e^x - 1 $ using the Taylor series expansion.
             ///
             /// $$ e^x -1 = x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots $$
             /// For values $ x < 0 $ it uses the identity: $$ e^x -1 = -\frac{1}{e^{-x}+1} $$
-            /// For values $ x > 0.001 $ it uses [`exp_taylor`][Self::exp_taylor].
+            /// For values $ x > 0.001 $ it uses [`exp_series`][Self::exp_series].
             ///
-            /// See also [`exp_taylor_terms`][Self::exp_taylor_terms].
+            /// See also [`exp_series_terms`][Self::exp_series_terms].
             #[must_use] #[inline]
-            pub fn exp_m1_taylor(x: $f, terms: $ue) -> $f {
+            pub fn exp_m1_series(x: $f, terms: $ue) -> $f {
                 if x < 0.0 {
-                    1.0 / Self::exp_m1_taylor(-x, terms)
+                    1.0 / Self::exp_m1_series(-x, terms)
                 } else if x > 0.001 {
-                    Self::exp_taylor(x, terms) - 1.0
+                    Self::exp_series(x, terms) - 1.0
                 } else {
                     let (mut result, mut term, mut factorial) = (0.0, x, 1.0);
                     for i in 1..=terms {
@@ -174,7 +174,7 @@ macro_rules! custom_impls {
             /// The maximum values with a representable result are:
             /// 127 for `f32` and 1023 for `f64`.
             #[must_use] #[inline]
-            pub fn exp2_taylor(x: $f, terms: $ue) -> $f {
+            pub fn exp2_series(x: $f, terms: $ue) -> $f {
                 let (mut result, mut term) = (1.0, x * Self::LN_2);
                 for n in 1..terms {
                     result += term;
@@ -183,7 +183,7 @@ macro_rules! custom_impls {
                 result
             }
 
-            /// Determines the number of terms needed for [`exp2_taylor`][Self::exp2_taylor]
+            /// Determines the number of terms needed for [`exp2_series`][Self::exp2_series]
             /// to reach a stable result based on the input value.
             ///
             /// The following table shows the required number of `terms` needed
@@ -203,7 +203,7 @@ macro_rules! custom_impls {
             /// ± 1023.999 → ---    939 (max for f64)
             /// ```
             #[must_use] #[inline(always)]
-            pub fn exp2_taylor_terms(x: $f) -> $ue { Self::[<exp2_taylor_terms_ $f>](x) }
+            pub fn exp2_series_terms(x: $f) -> $ue { Self::[<exp2_series_terms_ $f>](x) }
 
             /// The factorial of the integer value `x`.
             ///
@@ -241,7 +241,7 @@ macro_rules! custom_impls {
             /// ± 0.999 →      6     10
             /// ```
             #[must_use] #[inline]
-            pub fn sin_taylor(x: $f, terms: $ue) -> $f {
+            pub fn sin_series(x: $f, terms: $ue) -> $f {
                 let x = Self::clamp(x, -Self::PI, Self::PI);
                 let (mut sin, mut term, mut factorial) = (x, x, 1.0);
                 for i in 1..terms {
@@ -273,7 +273,7 @@ macro_rules! custom_impls {
             /// ± 0.999 →      7     11
             /// ```
             #[must_use] #[inline]
-            pub fn cos_taylor(x: $f, terms: $ue) -> $f {
+            pub fn cos_series(x: $f, terms: $ue) -> $f {
                 let x = Self::clamp(x, -Self::PI, Self::PI);
                 let (mut cos, mut term, mut factorial) = (1.0, 1.0, 1.0);
                 for i in 1..terms {
@@ -286,8 +286,8 @@ macro_rules! custom_impls {
 
             /// Computes the sine and the cosine using Taylor series expansion.
             #[must_use] #[inline]
-            pub fn sin_cos_taylor(x: $f, terms: $ue) -> ($f, $f) {
-                (Self::sin_taylor(x, terms), Self::cos_taylor(x, terms))
+            pub fn sin_cos_series(x: $f, terms: $ue) -> ($f, $f) {
+                (Self::sin_series(x, terms), Self::cos_series(x, terms))
             }
 
             /// Computes the tangent using Taylor series expansion of sine and cosine.
@@ -315,9 +315,9 @@ macro_rules! custom_impls {
             /// ± 0.999 →      7     11
             /// ```
             #[must_use] #[inline]
-            pub fn tan_taylor(x: $f, terms: $ue) -> $f {
+            pub fn tan_series(x: $f, terms: $ue) -> $f {
                 let x = Self::clamp(x, -Self::PI / 2.0 + 0.0001, Self::PI / 2.0 - 0.0001);
-                let (sin, cos) = Self::sin_cos_taylor(x, terms);
+                let (sin, cos) = Self::sin_cos_series(x, terms);
                 iif![Self::abs(cos) < 0.0001; return $f::MAX];
                 sin / cos
             }
@@ -338,9 +338,9 @@ macro_rules! custom_impls {
             /// especially near these boundary values, a higher number of terms
             /// may be necessary.
             ///
-            /// See also [`asin_taylor_terms`][Self::asin_taylor_terms].
+            /// See also [`asin_series_terms`][Self::asin_series_terms].
             #[must_use] #[inline]
-            pub fn asin_taylor(x: $f, terms: $ue) -> $f {
+            pub fn asin_series(x: $f, terms: $ue) -> $f {
                 iif![Self::abs(x) > 1.0; return $f::NAN];
                 let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, x);
                 for i in 0..terms {
@@ -353,7 +353,7 @@ macro_rules! custom_impls {
                 asin_approx
             }
 
-            /// Determines the number of terms needed for [`asin_taylor`][Self::asin_taylor]
+            /// Determines the number of terms needed for [`asin_series`][Self::asin_series]
             /// to reach a stable result based on the input value.
             ///
             /// The following table shows the required number of `terms` needed
@@ -371,26 +371,26 @@ macro_rules! custom_impls {
             /// ± 0.999 →   1989  10768
             /// ```
             #[must_use] #[inline(always)]
-            pub fn asin_taylor_terms(x: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](x) }
+            pub fn asin_series_terms(x: $f) -> $ue { Self::[<asin_acos_series_terms_ $f>](x) }
 
             /// Computes the arccosine using the Taylor expansion of arcsine.
             ///
             /// $$ arccos(x)=2π-arcsin(x) $$
             ///
-            /// See the [`asin_taylor_terms`][Self#method.asin_taylor_terms] table for
+            /// See the [`asin_series_terms`][Self#method.asin_series_terms] table for
             /// information about the number of `terms` needed.
             #[must_use] #[inline]
-            pub fn acos_taylor(x: $f, terms: $ue) -> $f {
+            pub fn acos_series(x: $f, terms: $ue) -> $f {
                 iif![Self::abs(x) > 1.0; return $f::NAN];
-                Self::FRAC_PI_2 - Self::asin_taylor(x, terms)
+                Self::FRAC_PI_2 - Self::asin_series(x, terms)
             }
 
-            /// Determines the number of terms needed for [`acos_taylor`][Self::acos_taylor]
+            /// Determines the number of terms needed for [`acos_series`][Self::acos_series]
             /// to reach a stable result based on the input value.
             ///
-            /// The table is the same as [`asin_taylor_terms`][Self::asin_taylor_terms].
+            /// The table is the same as [`asin_series_terms`][Self::asin_series_terms].
             #[must_use] #[inline(always)]
-            pub fn acos_taylor_terms(x: $f) -> $ue { Self::[<asin_acos_taylor_terms_ $f>](x) }
+            pub fn acos_series_terms(x: $f) -> $ue { Self::[<asin_acos_series_terms_ $f>](x) }
 
             /// Computes the arctangent using Taylor series expansion.
             ///
@@ -404,14 +404,14 @@ macro_rules! custom_impls {
             /// especially near these boundary values, a higher number of terms
             /// may be necessary.
             ///
-            /// See also [`atan_taylor_terms`][Self::atan_taylor_terms].
+            /// See also [`atan_series_terms`][Self::atan_series_terms].
             #[must_use] #[inline]
-            pub fn atan_taylor(x: $f, terms: $ue) -> $f {
+            pub fn atan_series(x: $f, terms: $ue) -> $f {
                 if Self::abs(x) > 1.0 {
                     if x > 0.0 {
-                        Self::FRAC_PI_2 - Self::atan_taylor(1.0 / x, terms)
+                        Self::FRAC_PI_2 - Self::atan_series(1.0 / x, terms)
                     } else {
-                        -Self::FRAC_PI_2 - Self::atan_taylor(1.0 / x, terms)
+                        -Self::FRAC_PI_2 - Self::atan_series(1.0 / x, terms)
                     }
                 } else {
                     let (mut atan_approx, mut num, mut sign) = (0.0, x, 1.0);
@@ -426,7 +426,7 @@ macro_rules! custom_impls {
                 }
             }
 
-            /// Determines the number of terms needed for [`atan_taylor`][Self::atan_taylor]
+            /// Determines the number of terms needed for [`atan_series`][Self::atan_series]
             /// to reach a stable result based on the input value.
             ///
             /// The following table shows the required number of `terms` needed
@@ -444,19 +444,19 @@ macro_rules! custom_impls {
             /// ± 0.999 →   4151  13604
             /// ```
             #[must_use] #[inline(always)]
-            pub fn atan_taylor_terms(x: $f) -> $ue { Self::[<atan_taylor_terms_ $f>](x) }
+            pub fn atan_series_terms(x: $f) -> $ue { Self::[<atan_series_terms_ $f>](x) }
 
             /// Computes the four quadrant arctangent of `x` and `y` using Taylor series expansion.
             ///
-            /// See also [`atan_taylor_terms`][Self::atan_taylor_terms].
+            /// See also [`atan_series_terms`][Self::atan_series_terms].
             #[must_use] #[inline]
-            pub fn atan2_taylor(x: $f, y: $f, terms: $ue) -> $f {
+            pub fn atan2_series(x: $f, y: $f, terms: $ue) -> $f {
                 if y > 0.0 {
-                    Self::atan_taylor(x / y, terms)
+                    Self::atan_series(x / y, terms)
                 } else if x >= 0.0 && y < 0.0 {
-                    Self::atan_taylor(x / y, terms) + Self::PI
+                    Self::atan_series(x / y, terms) + Self::PI
                 } else if x < 0.0 && y < 0.0 {
-                    Self::atan_taylor(x / y, terms) - Self::PI
+                    Self::atan_series(x / y, terms) - Self::PI
                 } else if x > 0.0 && y == 0.0 {
                     Self::PI / 2.0
                 } else if x < 0.0 && y == 0.0 {
@@ -472,11 +472,11 @@ macro_rules! custom_impls {
             ///
             /// $$ \sinh(x) = \frac{e^x - e^{-x}}{2} $$
             ///
-            /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
+            /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
             #[must_use] #[inline]
-            pub fn sinh_taylor(x: $f, terms: $ue) -> $f {
-                (Self::exp_taylor(x, terms) - Self::exp_taylor(-x, terms)) / 2.0
+            pub fn sinh_series(x: $f, terms: $ue) -> $f {
+                (Self::exp_series(x, terms) - Self::exp_series(-x, terms)) / 2.0
             }
 
             /// The hyperbolic cosine calculated using Taylor series expansion
@@ -484,11 +484,11 @@ macro_rules! custom_impls {
             ///
             /// $$ \cosh(x) = \frac{e^x + e^{-x}}{2} $$
             ///
-            /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
+            /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
             #[must_use] #[inline]
-            pub fn cosh_taylor(x: $f, terms: $ue) -> $f {
-                (Self::exp_taylor(x, terms) + Self::exp_taylor(-x, terms)) / 2.0
+            pub fn cosh_series(x: $f, terms: $ue) -> $f {
+                (Self::exp_series(x, terms) + Self::exp_series(-x, terms)) / 2.0
             }
 
             /// Computes the hyperbolic tangent using Taylor series expansion of
@@ -496,12 +496,12 @@ macro_rules! custom_impls {
             ///
             /// $$ \tanh(x) = \frac{\sinh(x)}{\cosh(x)} $$
             ///
-            /// See the [`exp_taylor_terms`][Self#method.exp_taylor_terms] table for
+            /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
             #[must_use] #[inline]
-            pub fn tanh_taylor(x: $f, terms: $ue) -> $f {
-                let sinh_approx = Self::sinh_taylor(x, terms);
-                let cosh_approx = Self::cosh_taylor(x, terms);
+            pub fn tanh_series(x: $f, terms: $ue) -> $f {
+                let sinh_approx = Self::sinh_series(x, terms);
+                let cosh_approx = Self::cosh_series(x, terms);
                 sinh_approx / cosh_approx
             }
 
@@ -584,7 +584,7 @@ custom_impls![(f32, u32, i32), (f64, u32, i32)];
 #[rustfmt::skip]
 impl Fp<f32> {
     #[must_use] #[inline]
-    pub(super) fn asin_acos_taylor_terms_f32(x: f32) -> u32 {
+    pub(super) fn asin_acos_series_terms_f32(x: f32) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.1 { 5
         } else if abs_a <= 0.3 { 7
@@ -596,7 +596,7 @@ impl Fp<f32> {
         }
     }
     #[must_use] #[inline]
-    pub(super) fn atan_taylor_terms_f32(x: f32) -> u32 {
+    pub(super) fn atan_series_terms_f32(x: f32) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.1 { 5
         } else if abs_a <= 0.3 { 7
@@ -608,7 +608,7 @@ impl Fp<f32> {
         }
     }
     #[must_use] #[inline]
-    pub(super) fn exp_taylor_terms_f32(x: f32) -> u32 {
+    pub(super) fn exp_series_terms_f32(x: f32) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.001 { 3
         } else if abs_a <= 0.1 { 6
@@ -620,7 +620,7 @@ impl Fp<f32> {
         }
     }
     #[must_use] #[inline]
-    pub(super) fn exp2_taylor_terms_f32(x: f32) -> u32 {
+    pub(super) fn exp2_series_terms_f32(x: f32) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.3 { 8
         } else if abs_a <= 3.0 { 15
@@ -635,7 +635,7 @@ impl Fp<f32> {
 #[rustfmt::skip]
 impl Fp<f64> {
     #[must_use] #[inline]
-    pub(super) fn asin_acos_taylor_terms_f64(x: f64) -> u32 {
+    pub(super) fn asin_acos_series_terms_f64(x: f64) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.1 { 9
         } else if abs_a <= 0.3 { 15
@@ -647,7 +647,7 @@ impl Fp<f64> {
         }
     }
     #[must_use] #[inline]
-    pub(super) fn atan_taylor_terms_f64(x: f64) -> u32 {
+    pub(super) fn atan_series_terms_f64(x: f64) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.1 { 9
         } else if abs_a <= 0.3 { 15
@@ -659,7 +659,7 @@ impl Fp<f64> {
         }
     }
     #[must_use] #[inline]
-    pub(super) fn exp_taylor_terms_f64(x: f64) -> u32 {
+    pub(super) fn exp_series_terms_f64(x: f64) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.001 { 5
         } else if abs_a <= 0.1 { 10
@@ -675,7 +675,7 @@ impl Fp<f64> {
         }
     }
     #[must_use] #[inline]
-    pub(super) fn exp2_taylor_terms_f64(x: f64) -> u32 {
+    pub(super) fn exp2_series_terms_f64(x: f64) -> u32 {
         let abs_a = Self::abs(x);
         if abs_a <= 0.3 { 13
         } else if abs_a <= 3.0 { 25

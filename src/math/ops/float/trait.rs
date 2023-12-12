@@ -175,22 +175,22 @@ pub trait FloatExt: Sized {
     /// The maximum values with a representable result are:
     /// 88.722… for `f32` and 709.782… for `f64`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp_taylor`][Fp::exp_taylor]
-    /// with [`exp_taylor_terms`][Fp::exp_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`exp_series`][Fp::exp_series]
+    /// with [`exp_series_terms`][Fp::exp_series_terms].
     #[must_use]
     fn exp(self) -> Self;
 
     /// $2^x$.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp2_taylor`][Fp::exp2_taylor]
-    /// with [`exp2_taylor_terms`][Fp::exp2_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`exp2_series`][Fp::exp2_series]
+    /// with [`exp2_series_terms`][Fp::exp2_series_terms].
     #[must_use]
     fn exp2(self) -> Self;
 
     /// The exponential minus 1, more accurately.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp_m1_taylor`][Fp::exp_m1_taylor]
-    /// with [`exp_taylor_terms`][Fp::exp_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`exp_m1_series`][Fp::exp_m1_series]
+    /// with [`exp_series_terms`][Fp::exp_series_terms].
     #[must_use]
     fn exp_m1(self) -> Self;
 
@@ -234,77 +234,77 @@ pub trait FloatExt: Sized {
     /// The sine.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`sin_taylor`][Fp::sin_taylor] with 8 terms.
+    /// [`sin_series`][Fp::sin_series] with 8 terms.
     #[must_use]
     fn sin(self) -> Self;
 
     /// The cosine.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`cos_taylor`][Fp::cos_taylor] with 8 terms.
+    /// [`cos_series`][Fp::cos_series] with 8 terms.
     #[must_use]
     fn cos(self) -> Self;
 
     /// Both the sine and cosine.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`sin_cos_taylor`][Fp::sin_cos_taylor] with 8 terms.
+    /// [`sin_cos_series`][Fp::sin_cos_series] with 8 terms.
     #[must_use]
     fn sin_cos(self) -> (Self, Self);
 
     /// The tangent.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`tan_taylor`][Fp::tan_taylor] with 8 terms.
+    /// [`tan_series`][Fp::tan_series] with 8 terms.
     #[must_use]
     fn tan(self) -> Self;
 
     /// The arc sine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`asin_taylor`][Fp::asin_taylor]
-    /// with [`asin_taylor_terms`][Fp::asin_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`asin_series`][Fp::asin_series]
+    /// with [`asin_series_terms`][Fp::asin_series_terms].
     #[must_use]
     fn asin(self) -> Self;
 
     /// The arc cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`acos_taylor`][Fp::acos_taylor]
-    /// with [`acos_taylor_terms`][Fp::acos_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`acos_series`][Fp::acos_series]
+    /// with [`acos_series_terms`][Fp::acos_series_terms].
     #[must_use]
     fn acos(self) -> Self;
 
     /// The arc tangent.
     ///
-    /// With both `std` and `libm` disabled it leverages [`atan_taylor`][Fp::atan_taylor]
-    /// with [`atan_taylor_terms`][Fp::atan_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`atan_series`][Fp::atan_series]
+    /// with [`atan_series_terms`][Fp::atan_series_terms].
     #[must_use]
     fn atan(self) -> Self;
 
     /// The arc tangent of two variables.
     ///
-    /// With both `std` and `libm` disabled it leverages [`atan2_taylor`][Fp::atan2_taylor]
-    /// with [`atan2_taylor_terms`][Fp::atan2_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`atan2_series`][Fp::atan2_series]
+    /// with [`atan2_series_terms`][Fp::atan2_series_terms].
     #[must_use]
     fn atan2(self, other: Self) -> Self;
 
     /// The hyperbolic sine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`sinh_taylor`][Fp::sinh_taylor]
-    /// with [`exp_taylor_terms`][Fp::exp_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`sinh_series`][Fp::sinh_series]
+    /// with [`exp_series_terms`][Fp::exp_series_terms].
     #[must_use]
     fn sinh(self) -> Self;
 
     /// The hyperbolic cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`cosh_taylor`][Fp::cosh_taylor]
-    /// with [`exp_taylor_terms`][Fp::exp_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`cosh_series`][Fp::cosh_series]
+    /// with [`exp_series_terms`][Fp::exp_series_terms].
     #[must_use]
     fn cosh(self) -> Self;
 
     /// The hyperbolic tangent.
     ///
-    /// With both `std` and `libm` disabled it leverages [`cosh_taylor`][Fp::cosh_taylor]
-    /// with [`exp_taylor_terms`][Fp::exp_taylor_terms].
+    /// With both `std` and `libm` disabled it leverages [`cosh_series`][Fp::cosh_series]
+    /// with [`exp_series_terms`][Fp::exp_series_terms].
     #[must_use]
     fn tanh(self) -> Self;
 
@@ -453,18 +453,18 @@ macro_rules! impl_float_ext {
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn exp(self) -> Self { Fp::<$f>::exp(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn exp(self) -> Self { Fp::<$f>::exp_taylor(self, Fp::<$f>::exp_taylor_terms(self)) }
+            fn exp(self) -> Self { Fp::<$f>::exp_series(self, Fp::<$f>::exp_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn exp2(self) -> Self { Fp::<$f>::exp2(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn exp2(self) -> Self { Fp::<$f>::exp2_taylor(self, Fp::<$f>::exp2_taylor_terms(self)) }
+            fn exp2(self) -> Self { Fp::<$f>::exp2_series(self, Fp::<$f>::exp2_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn exp_m1(self) -> Self { Fp::<$f>::exp_m1(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
             fn exp_m1(self) -> Self {
-                Fp::<$f>::exp_m1_taylor(self, Fp::<$f>::exp_taylor_terms(self))
+                Fp::<$f>::exp_m1_series(self, Fp::<$f>::exp_series_terms(self))
             }
 
             #[inline(always)]
@@ -508,59 +508,59 @@ macro_rules! impl_float_ext {
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn sin(self) -> Self { Fp::<$f>::sin(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn sin(self) -> Self { Fp::<$f>::sin_taylor(self, 8) }
+            fn sin(self) -> Self { Fp::<$f>::sin_series(self, 8) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn cos(self) -> Self { Fp::<$f>::cos(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn cos(self) -> Self { Fp::<$f>::cos_taylor(self, 8) }
+            fn cos(self) -> Self { Fp::<$f>::cos_series(self, 8) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos_taylor(self, 8) }
+            fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos_series(self, 8) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn tan(self) -> Self { Fp::<$f>::tan(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn tan(self) -> Self { Fp::<$f>::tan_taylor(self, 8) }
+            fn tan(self) -> Self { Fp::<$f>::tan_series(self, 8) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn asin(self) -> Self { Fp::<$f>::asin(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn asin(self) -> Self { Fp::<$f>::asin_taylor(self, Fp::<$f>::asin_taylor_terms(self)) }
+            fn asin(self) -> Self { Fp::<$f>::asin_series(self, Fp::<$f>::asin_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn acos(self) -> Self { Fp::<$f>::acos(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn acos(self) -> Self { Fp::<$f>::acos_taylor(self, Fp::<$f>::acos_taylor_terms(self)) }
+            fn acos(self) -> Self { Fp::<$f>::acos_series(self, Fp::<$f>::acos_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn atan(self) -> Self { Fp::<$f>::atan(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn atan(self) -> Self { Fp::<$f>::atan_taylor(self, Fp::<$f>::atan_taylor_terms(self)) }
+            fn atan(self) -> Self { Fp::<$f>::atan_series(self, Fp::<$f>::atan_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn atan2(self, other: Self) -> Self { Fp::<$f>::atan2(self, other) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
             fn atan2(self, other: Self) -> Self {
-                Fp::<$f>::atan2_taylor(self, other, Fp::<$f>::atan_taylor_terms(self))
+                Fp::<$f>::atan2_series(self, other, Fp::<$f>::atan_series_terms(self))
             }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn sinh(self) -> Self { Fp::<$f>::sinh(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn sinh(self) -> Self { Fp::<$f>::sinh_taylor(self, Fp::<$f>::exp_taylor_terms(self)) }
+            fn sinh(self) -> Self { Fp::<$f>::sinh_series(self, Fp::<$f>::exp_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn cosh(self) -> Self { Fp::<$f>::cosh(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn cosh(self) -> Self { Fp::<$f>::cosh_taylor(self, Fp::<$f>::exp_taylor_terms(self)) }
+            fn cosh(self) -> Self { Fp::<$f>::cosh_series(self, Fp::<$f>::exp_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn tanh(self) -> Self { Fp::<$f>::tanh(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn tanh(self) -> Self { Fp::<$f>::tanh_taylor(self, Fp::<$f>::exp_taylor_terms(self)) }
+            fn tanh(self) -> Self { Fp::<$f>::tanh_series(self, Fp::<$f>::exp_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
