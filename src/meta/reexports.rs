@@ -3,10 +3,8 @@
 //! Reexported items.
 //
 
-// #[cfg(any(feature = "dep", feature = "devela_macros"))]
 /// <span class="stab portability" title="re-exported from `devela_macros`
-// /// (which can be enabled instead of `depend`">`devela_macros`</span>
-// #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "meta", feature = "dep"))))]
+/// crate">`devela_macros`</span>
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "meta")))]
 pub use devela_macros::{cif, coalesce, compile, compile_attr};
 
