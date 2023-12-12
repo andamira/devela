@@ -30,7 +30,11 @@ mod tests;
 #[cfg(feature = "text")]
 pub use {always_fns::*, definitions::*, fns::*};
 
-#[cfg(feature = "text")]
 pub(crate) mod all {
-    pub use super::{always_fns::*, definitions::*, fns::*};
+    #[doc(inline)]
+    pub use super::always_fns::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "text")]
+    pub use super::{definitions::*, fns::*};
 }

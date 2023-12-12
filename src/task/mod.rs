@@ -26,8 +26,8 @@ pub mod thread;
 #[cfg(feature = "task")]
 pub use {r#async::all::*, sync::all::*, thread::all::*};
 
-#[cfg(feature = "task")]
 pub(crate) mod all {
     #[doc(inline)]
+    #[cfg(feature = "task")]
     pub use super::{r#async::all::*, sync::all::*, thread::all::*};
 }

@@ -22,8 +22,11 @@ pub mod collection;
 #[cfg(feature = "data")]
 pub use {collection::*, primitive::*};
 
-#[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{collection::*, primitive::*};
+    pub use super::primitive::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "data")]
+    pub use super::collection::*;
 }

@@ -10,10 +10,8 @@
 
 /* contains always compiled items */
 
-#[cfg(not(feature = "text"))]
-mod ascii;
-#[cfg(not(feature = "text"))]
-mod char;
+pub mod ascii;
+pub mod char;
 
 #[allow(unused)]
 #[cfg(not(feature = "text"))]
@@ -22,10 +20,6 @@ pub(crate) use {ascii::*, char::*};
 /* feature-gated */
 
 // public modules
-#[cfg(feature = "text")]
-pub mod ascii;
-#[cfg(feature = "text")]
-pub mod char;
 #[cfg(feature = "text")]
 pub mod egc;
 #[cfg(feature = "text")]
@@ -54,10 +48,13 @@ pub use {ascii::all::*, char::all::*, egc::all::*, fmt::all::*};
 #[cfg(feature = "text")]
 pub use {array_string::*, error::*, ext::*, non_nul::*, reexports::*};
 
-#[cfg(feature = "text")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{array_string::*, error::*, ext::*, non_nul::*, reexports::*};
+    pub use super::{ascii::all::*, char::all::*};
+
     #[doc(inline)]
-    pub use super::{ascii::all::*, char::all::*, egc::all::*, fmt::all::*};
+    #[cfg(feature = "text")]
+    pub use super::{
+        array_string::*, egc::all::*, error::*, ext::*, fmt::all::*, non_nul::*, reexports::*,
+    };
 }

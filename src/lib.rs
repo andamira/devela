@@ -112,44 +112,10 @@ pub(crate) mod time; // the "time" feature is disabled
 /// manually enabling the associated optional dependency.
 pub mod all {
     #[doc(inline)]
-    #[cfg(feature = "color")]
-    pub use super::color::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "data")]
-    pub use super::data::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "math")]
-    pub use super::math::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "mem")]
-    pub use super::mem::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "meta")]
-    pub use super::meta::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "path")]
-    pub use super::path::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "result")]
-    pub use super::result::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "task")]
-    pub use super::task::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "text")]
-    pub use super::text::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "time")]
-    pub use super::time::all::*;
+    pub use super::{
+        color::all::*, data::all::*, math::all::*, mem::all::*, meta::all::*, path::all::*,
+        result::all::*, task::all::*, text::all::*, time::all::*,
+    };
 }
 
 /// The common prelude.

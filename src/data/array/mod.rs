@@ -9,10 +9,12 @@
 
 /* contains always compiled items */
 
-mod always;
+// no new definitions
 mod core_impls;
-mod definitions;
 mod methods;
+
+mod always;
+mod definitions;
 
 #[cfg(not(feature = "data"))]
 pub(crate) use {always::*, core_impls::*, definitions::*, methods::*};
@@ -23,7 +25,6 @@ pub(crate) use {always::*, core_impls::*, definitions::*, methods::*};
 #[cfg(feature = "data")]
 pub use {always::*, definitions::*};
 
-#[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{always::*, definitions::*};

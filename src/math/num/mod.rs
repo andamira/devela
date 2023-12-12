@@ -30,8 +30,11 @@ mod traits;
 #[cfg(feature = "math")]
 pub use {alias::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*};
 
-#[cfg(feature = "math")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{alias::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*};
+    #[cfg(feature = "math")]
+    pub use super::{non_range::*, range::*, reexports::*, traits::*};
+
+    #[doc(inline)]
+    pub use super::{alias::*, non_specific::*};
 }

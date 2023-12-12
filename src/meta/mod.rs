@@ -5,7 +5,7 @@
 
 /* contains always compiled items */
 
-// internal use only
+// crate internal use only
 mod _private;
 
 #[allow(unused)]
@@ -38,10 +38,11 @@ pub use {
     skip_format::sf,
 };
 
-#[cfg(feature = "meta")]
 pub(crate) mod all {
-    pub use super::{
-        const_for::cfor, deprecate::deprecate_feature, iif::iif, paste::paste, reexports::*,
-        skip_format::sf,
-    };
+    #[doc(inline)]
+    pub use super::{const_for::cfor, iif::iif, paste::paste, reexports::*, skip_format::sf};
+
+    #[doc(inline)]
+    #[cfg(feature = "meta")]
+    pub use super::deprecate::deprecate_feature;
 }

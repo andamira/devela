@@ -21,8 +21,8 @@ mod r#trait;
 #[cfg(feature = "color")]
 pub use {error::*, fns::*, r#trait::*};
 
-#[cfg(feature = "color")]
 pub(crate) mod all {
     #[doc(inline)]
+    #[cfg(feature = "color")]
     pub use super::{error::*, fns::*, r#trait::*};
 }

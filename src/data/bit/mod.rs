@@ -19,7 +19,6 @@ pub use {field::*, r#trait::BitOps, wrapper::Bits};
 #[cfg(feature = "data")]
 pub use {field::*, r#trait::BitOps, wrapper::Bits};
 
-#[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{field::*, r#trait::BitOps, wrapper::Bits};

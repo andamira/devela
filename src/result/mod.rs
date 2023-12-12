@@ -31,12 +31,11 @@ pub use {
     option::all::*,
 };
 
-#[cfg(feature = "result")]
 pub(crate) mod all {
-    pub use super::{
-        chain::{Also, Apply},
-        ext::ResultExt,
-        never::*,
-        option::all::*,
-    };
+    #[doc(inline)]
+    pub use super::chain::{Also, Apply};
+
+    #[doc(inline)]
+    #[cfg(feature = "result")]
+    pub use super::{ext::ResultExt, never::*, option::all::*};
 }

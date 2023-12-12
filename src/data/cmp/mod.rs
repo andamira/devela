@@ -25,8 +25,11 @@ mod fns;
 #[cfg(feature = "data")]
 pub use {always_fns::*, float::*, fns::*};
 
-#[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{always_fns::*, float::*, fns::*};
+    pub use super::{always_fns::*, float::*};
+
+    #[doc(inline)]
+    #[cfg(feature = "data")]
+    pub use super::fns::*;
 }

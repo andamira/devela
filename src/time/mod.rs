@@ -17,8 +17,8 @@ mod reexports;
 #[cfg(feature = "time")]
 pub use reexports::*;
 
-#[cfg(feature = "time")]
 pub(crate) mod all {
     #[doc(inline)]
+    #[cfg(feature = "time")]
     pub use super::reexports::*;
 }

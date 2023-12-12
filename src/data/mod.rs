@@ -16,12 +16,12 @@
 
 mod collection;
 mod error;
+mod reexports;
 
 pub mod array;
 pub mod bit;
 pub mod cmp;
 pub mod convert;
-mod reexports;
 pub mod slice;
 
 #[allow(unused)]
@@ -62,13 +62,16 @@ pub use dst::*;
 #[cfg(feature = "data")]
 pub use {any::all::*, array::all::*, bit::all::*, cmp::all::*, convert::all::*, slice::all::*};
 
-#[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        any::all::*, array::all::*, bit::all::*, cmp::all::*, collection::*, convert::all::*,
-        error::*, reexports::*, slice::all::*,
+        array::all::*, bit::all::*, cmp::all::*, collection::*, convert::all::*, error::*,
+        reexports::*, slice::all::*,
     };
+
+    #[doc(inline)]
+    #[cfg(feature = "data")]
+    pub use super::any::all::*;
 
     #[doc(inline)]
     #[cfg(all(feature = "unsafe_data", any(feature = "bytemuck", feature = "dep")))]

@@ -26,8 +26,11 @@ mod fns;
 #[cfg(feature = "mem")]
 pub use {aligned::*, always::*, fns::*, r#trait::*, reexports_core::*, size::*, storage::*};
 
-#[cfg(feature = "mem")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{aligned::*, always::*, r#trait::*, reexports_core::*, size::*, storage::*};
+
+    #[doc(inline)]
+    #[cfg(feature = "mem")]
+    pub use super::fns::*;
 }

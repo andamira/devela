@@ -28,8 +28,11 @@ pub use error::*;
 #[cfg(feature = "math")]
 pub use {num::all::*, ops::all::*};
 
-#[cfg(feature = "math")]
 pub(crate) mod all {
     #[doc(inline)]
+    pub use super::{num::all::*, ops::all::*};
+
+    #[doc(inline)]
+    #[cfg(feature = "math")]
     pub use super::{error::*, num::all::*, ops::all::*};
 }

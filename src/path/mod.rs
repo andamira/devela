@@ -17,8 +17,8 @@ mod project;
 #[cfg(feature = "path")]
 pub use project::*;
 
-#[cfg(feature = "path")]
 pub(crate) mod all {
     #[doc(inline)]
+    #[cfg(feature = "path")]
     pub use super::project::*;
 }

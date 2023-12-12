@@ -7,31 +7,27 @@
 /* contains always compiled items */
 
 mod always_fns;
+mod float;
 
 #[allow(unused)]
 #[cfg(not(feature = "math"))]
-pub(crate) use always_fns::*;
+pub(crate) use {always_fns::*, float::*};
 
 /* feature-gated */
-
-mod float;
 
 #[cfg(feature = "math")]
 mod fns;
 
-#[doc(inline)]
-pub use float::*;
-
 // re-export private sub-modules
 pub use always_fns::*;
 #[cfg(feature = "math")]
-pub use fns::*;
+pub use {float::*, fns::*};
 
-#[cfg(feature = "math")]
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{always_fns::*, fns::*};
+    pub use super::{always_fns::*, float::*};
 
     #[doc(inline)]
-    pub use super::float::*;
+    #[cfg(feature = "math")]
+    pub use super::fns::*;
 }

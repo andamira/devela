@@ -5,8 +5,8 @@
 
 #![cfg_attr(not(feature = "data"), allow(unused))]
 
-#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
-use crate::math::num::fsize;
+#[cfg(any(doc, target_pointer_width = "32", target_pointer_width = "64"))]
+use crate::math::all::fsize;
 use crate::meta::{iif, paste};
 use core::cmp::Ordering::{self, *};
 

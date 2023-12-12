@@ -25,7 +25,11 @@ mod reexport;
 #[cfg(feature = "text")]
 pub use {always_fns::*, char::AsciiChar, fns::*, reexport::*};
 
-#[cfg(feature = "text")]
 pub(crate) mod all {
+    #[doc(inline)]
+    pub use super::always_fns::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "text")]
     pub use super::{always_fns::*, char::AsciiChar, fns::*, reexport::*};
 }
