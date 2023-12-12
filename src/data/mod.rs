@@ -14,10 +14,10 @@
 
 /* contains always compiled items */
 
-mod array;
 mod collection;
 mod error;
 
+pub mod array;
 pub mod bit;
 pub mod cmp;
 pub mod convert;
@@ -48,7 +48,7 @@ pub mod any;
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {array::*, collection::*, error::*, reexports::*};
+pub use {collection::*, error::*, reexports::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
@@ -60,14 +60,14 @@ pub use {array::*, collection::*, error::*, reexports::*};
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use {any::all::*, bit::all::*, cmp::all::*, convert::all::*, slice::all::*};
+pub use {any::all::*, array::all::*, bit::all::*, cmp::all::*, convert::all::*, slice::all::*};
 
 #[cfg(feature = "data")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        any::all::*, array::*, bit::all::*, cmp::all::*, collection::*, convert::all::*, error::*,
-        reexports::*, slice::all::*,
+        any::all::*, array::all::*, bit::all::*, cmp::all::*, collection::*, convert::all::*,
+        error::*, reexports::*, slice::all::*,
     };
 
     #[doc(inline)]
