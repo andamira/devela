@@ -21,3 +21,12 @@ mod expr;
 // re-export private sub-modules
 #[cfg(feature = "mem")]
 pub use {bit::*, expr::*, size::*};
+
+pub(crate) mod all {
+    #[doc(inline)]
+    pub use super::size::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "mem")]
+    pub use super::{bit::*, expr::*};
+}

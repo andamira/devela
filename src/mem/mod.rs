@@ -15,7 +15,7 @@ mod r#trait;
 
 #[allow(unused)]
 #[cfg(not(feature = "mem"))]
-pub(crate) use {aligned::*, always::*, r#trait::*, reexports_core::*, size::*, storage::*};
+pub(crate) use {aligned::*, always::*, r#trait::*, reexports_core::*, size::all::*, storage::*};
 
 /* feature-gated */
 
@@ -24,11 +24,13 @@ mod fns;
 
 // re-export private sub-modules
 #[cfg(feature = "mem")]
-pub use {aligned::*, always::*, fns::*, r#trait::*, reexports_core::*, size::*, storage::*};
+pub use {aligned::*, always::*, fns::*, r#trait::*, reexports_core::*, size::all::*, storage::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{aligned::*, always::*, r#trait::*, reexports_core::*, size::*, storage::*};
+    pub use super::{
+        aligned::*, always::*, r#trait::*, reexports_core::*, size::all::*, storage::*,
+    };
 
     #[doc(inline)]
     #[cfg(feature = "mem")]
