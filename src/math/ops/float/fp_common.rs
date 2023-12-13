@@ -53,12 +53,8 @@ macro_rules! custom_impls {
 
             /// $ \sqrt{x} $ the square root calculated using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
-            ///
-            /// $$ 1 / \sqrt{x} $$
             #[must_use] #[inline]
-            pub fn sqrt_fisr(x: $f) -> $f {
-                1.0 / Self::fisr(x)
-            }
+            pub fn sqrt_fisr(x: $f) -> $f { 1.0 / Self::fisr(x) }
 
             /// $ 1 / \sqrt{x} $ the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
@@ -88,14 +84,14 @@ macro_rules! custom_impls {
             /// The hypothenuse (the euclidean distance) using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             ///
-            /// $$ \hypot(x, y) = \sqrt{x^2 + y^2} $$
+            /// $$ \text{hypot}(x, y) = \sqrt{x^2 + y^2} $$
             #[must_use] #[inline]
             pub fn hypot_nr(x: $f, y: $f) -> $f { Self::sqrt_nr(x * x + y * y) }
 
             /// The hypothenuse (the euclidean distance) using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
             ///
-            /// $$ \hypot(x, y) = \sqrt{x^2 + y^2} $$
+            /// $$ \text{hypot}(x, y) = \sqrt{x^2 + y^2} $$
             #[must_use] #[inline]
             pub fn hypot_fisr(x: $f, y: $f) -> $f { Self::sqrt_fisr(x * x + y * y) }
 
@@ -130,11 +126,11 @@ macro_rules! custom_impls {
             /// ± 10.000 →     32     46
             /// ± 20.000 →     49     68
             /// ± 50.000 →     92    119
-            /// ± 88.722 →    143    177  (max for f32)
+            /// ± 88.722 →    143    177  (max for f32 == f32::MAX.ln())
             /// ± 150.000 →   ---    261
             /// ± 300.000 →   ---    453
             /// ± 500.000 →   ---    692
-            /// ± 709.782 →   ---    938  (max for f64)
+            /// ± 709.782 →   ---    938  (max for f64 == f64:MAX.ln())
             /// ```
             #[must_use] #[inline(always)]
             pub fn exp_series_terms(x: $f) -> $ue { Self::[<exp_series_terms_ $f>](x) }
@@ -221,7 +217,6 @@ macro_rules! custom_impls {
                 } else if x < 0.0 {
                     return 1.0 / Self::ln_series(-x, terms);
                 }
-
                 let mut sum = 0.0;
                 let y = (x - 1.0) / (x + 1.0);
                 let mut y_pow = y;
@@ -429,7 +424,7 @@ macro_rules! custom_impls {
 
             /// Computes the arccosine using the Taylor expansion of arcsine.
             ///
-            /// $$ arccos(x)=2π-arcsin(x) $$
+            /// $$ \arccos(x)=2π-arcsin(x) $$
             ///
             /// See the [`asin_series_terms`][Self#method.asin_series_terms] table for
             /// information about the number of `terms` needed.
@@ -670,7 +665,7 @@ impl Fp<f32> {
         } else if abs_a <= 10.0 { 32
         } else if abs_a <= 20.0 { 49
         } else if abs_a <= 50.0 { 92
-        } else { 143 // computed for max computable value 88.722
+        } else { 143 // computed for max computable value f32::MAX.ln()
         }
     }
     #[must_use] #[inline]
@@ -682,7 +677,7 @@ impl Fp<f32> {
         } else if abs_a <= 15.0 { 34
         } else if abs_a <= 31.0 { 52
         } else if abs_a <= 63.0 { 84
-        } else { 144 // computed for max computable value 127.999
+        } else { 144 // computed for max computable value f64::MAX.ln()
         }
     }
     #[must_use] #[inline]

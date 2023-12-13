@@ -58,35 +58,35 @@ macro_rules! math_const_impls {
         impl Fp<$f> {
             /* π related */
 
-            /// $ π $ the ratio of the circumference to the diameter
+            /// $ π $ the ratio of the circumference to the diameter $ = \frac{1}{2} τ = 180º $
             /// ([A000796](https://oeis.org/A000796))
             pub const PI: $f = 3.14159265358979323846264338327950288;
 
-            /// $ π/2 $
+            /// $ π/2 = τ/4 = 90º $
             /// ([A019669](https://oeis.org/A019669))
             pub const FRAC_PI_2: $f = 1.57079632679489661923132169163975144;
 
-            /// $ π/3 $
+            /// $ π/3 = τ/6 = 60º $
             /// ([A019670](https://oeis.org/A019670))
             pub const FRAC_PI_3: $f = 1.04719755119659774615421446109316763;
 
-            /// $ π/4 $
+            /// $ π/4 = τ/8 = 45º $
             /// ([A003881](https://oeis.org/A003881))
             pub const FRAC_PI_4: $f = 0.785398163397448309615660845819875721;
 
-            /// $ π/6 $
+            /// $ π/6 = τ/12 = 30º $
             /// ([A019673](https://oeis.org/A019673))
             pub const FRAC_PI_6: $f = 0.52359877559829887307710723054658381;
 
-            /// $ π/8 $
+            /// $ π/8 = τ/16 = 22.5º $
             /// ([A019675](https://oeis.org/A019675))
             pub const FRAC_PI_8: $f = 0.39269908169872415480783042290993786;
 
-            /// $ \sqrt{π} $
+            /// $ \sqrt{π} = \sqrt{\frac{1}{2} τ} $
             /// ([A002161](https://oeis.org/A002161))
             pub const SQRT_PI: $f = 1.77245385090551602729816748334114518;
 
-            /// $ 1/π $
+            /// $ 1/π = 2/τ $
             /// ([A049541](https://oeis.org/A049541))
             pub const FRAC_1_PI: $f = 0.318309886183790671537767526745028724;
 
@@ -105,7 +105,7 @@ macro_rules! math_const_impls {
 
             /* τ related */
 
-            /// $ τ = 2π = 360º $ the ratio of the circumference to the radius
+            /// $ τ $ the ratio of the circumference to the radius $ = 2π = 360º $
             /// ([A019692](https://oeis.org/A019692))
             pub const TAU: $f = 6.28318530717958647692528676655900577;
 
@@ -169,7 +169,7 @@ macro_rules! math_const_impls {
             /// ([wikipedia](https://en.wikipedia.org/wiki/Minute_and_second_of_arc))
             pub const FRAC_TAU_ARCSECONDS: $f = 0.00000484813681109535993589914102358;
 
-            /// $ \sqrt{τ} $
+            /// $ \sqrt{τ} = \sqrt{2π} $
             /// ([A019727](https://oeis.org/A019727))
             pub const SQRT_TAU: $f = 2.50662827463100050241576528481104525;
 
@@ -191,12 +191,12 @@ macro_rules! math_const_impls {
 
             /* φ related */
 
-            /// $ φ $ the golden ratio $\frac{1+\sqrt{5}}{2}$
+            /// $ φ $ the golden ratio $\large \frac{1+\sqrt{5}}{2}$
             /// ([A001622](https://oeis.org/A001622))
             // WAIT: https://github.com/rust-lang/rust/issues/103883
             pub const PHI: $f = 1.618033988749894848204586834365638118;
 
-            /// sqrt{φ} $
+            /// $ \sqrt{φ} $
             /// ([A139339](https://oeis.org/A139339))
             pub const SQRT_PHI: $f = 1.27201964951406896425242246173749149;
 
