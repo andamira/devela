@@ -205,6 +205,60 @@ macro_rules! custom_impls {
             #[must_use] #[inline(always)]
             pub fn exp2_series_terms(x: $f) -> $ue { Self::[<exp2_series_terms_ $f>](x) }
 
+            /// Computes the natural logarithm of `x` using a Taylor-Mercator series expansion.
+            ///
+            /// This method is more efficient for values of `x` near 1. Values too
+            /// small or too big could be impractical to calculate with precision.
+            ///
+            /// \ln(x) = 2 \left( \frac{x-1}{x+1} + \frac{1}{3} \left( \frac{x-1}{x+1} \right)^3 +
+            /// \frac{1}{5} \left( \frac{x-1}{x+1} \right)^5 + \cdots \right)
+            #[must_use] #[inline]
+            pub fn ln_series(x: $f, terms: $ue) -> $f {
+                if x == 0.0 {
+                    return $f::NEG_INFINITY;
+                } else if x == -0.0 {
+                    return $f::INFINITY;
+                } else if x < 0.0 {
+                    return 1.0 / Self::ln_series(-x, terms);
+                }
+
+                let mut sum = 0.0;
+                let y = (x - 1.0) / (x + 1.0);
+                let mut y_pow = y;
+                for i in 0..terms {
+                    sum += y_pow / (2 * i + 1) as $f;
+                    y_pow *= y * y;
+                }
+                2.0 * sum
+            }
+
+            /// Determines the number of terms needed for [`exp2_series`][Self::exp2_series]
+            /// to reach a stable result based on the input value.
+            ///
+            /// The following table shows the required number of `terms` needed
+            /// to reach the most precise result for both `f32` and `f64`:
+            /// ```txt
+            ///   value      t_f32  t_f64
+            /// --------------------------
+            /// ± 0.00001 →  81181 536609
+            /// ± 0.0001 →   12578  59174
+            /// ± 0.001 →     1923   6639
+            /// ± 0.01. →      245    720
+            /// ± 0.1 →         32     80
+            /// ± 0.5 →          8     17
+            /// ± 1. →           1      1
+            /// ± 2. →           8     17
+            /// ± 10. →         32     80
+            /// ± 100. →       245    720
+            /// ± 1000. →     1923   6639
+            /// ± 10000. →   12578  59174
+            /// ± 100000. →  81181 536609
+            /// ```
+            #[must_use] #[inline(always)]
+            pub fn ln_series_terms(x: $f) -> $ue {
+                Self::[<ln_series_terms_ $f>](x)
+            }
+
             /// The factorial of the integer value `x`.
             ///
             /// The maximum values with a representable result are:
@@ -631,6 +685,32 @@ impl Fp<f32> {
         } else { 144 // computed for max computable value 127.999
         }
     }
+    #[must_use] #[inline]
+    pub(super) fn ln_series_terms_f32(x: f32) -> u32 {
+        let x = Self::abs(x);
+        let x = if x == 0.0 { return 0;
+        } else if x <= 1. { 1. / x } else { x };
+
+        if x <= 10. { 32
+        } else if x <= 100. { 245
+        } else if x <= 1_000. { 1_923
+        } else if x <= 10_000. { 12_578
+        } else if x <= 100_000. { 81_181
+        } else if x <= 1_000_000. { 568_267 // from now one prev * 7 …
+        } else if x <= 10_000_000. { 3_977_869
+        } else if x <= 100_000_000. { 27_845_083
+        // } else if x <= 1_000_000_000. { 194_915_581
+        } else { 194_915_581 }
+        // 32 * 8 = 256
+        // 245 * 8 = 1960
+        // 1923 * 8 = 15384
+        // 12578 * 8 = 100624
+        //
+        // 32 * 7 = 224
+        // 245 * 7 = 1715
+        // 1923 * 7 = 13461
+        // 12578 * 7 = 88046
+    }
 }
 #[rustfmt::skip]
 impl Fp<f64> {
@@ -688,5 +768,26 @@ impl Fp<f64> {
         } else if abs_a <= 511.0 { 520
         } else { 939 // computed for max computable value 1023.999
         }
+    }
+    #[must_use] #[inline]
+    pub(super) fn ln_series_terms_f64(x: f64) -> u32 {
+        let x = Self::abs(x);
+        let x = if x == 0.0 { return 0;
+        } else if x <= 1. { 1. / x } else { x };
+
+        if x <= 10. { 80
+        } else if x <= 100. { 720
+        } else if x <= 1_000. { 6_639
+        } else if x <= 10_000. { 59_174
+        } else if x <= 100_000. { 536_609
+        } else if x <= 1_000_000. { 4_829_481 // from now on prev * 9
+        } else if x <= 10_000_000. { 43_465_329
+        } else if x <= 100_000_000. { 391_187_961
+        // } else if x <= 1_000_000_000. { 3_520_691_649
+        } else { 3_520_691_649 }
+        // 80 * 9 = 720
+        // 720 * 9 = 6480
+        // 6639 * 9 = 59751
+        // 59174 * 9 = 532566
     }
 }

@@ -196,8 +196,6 @@ pub trait FloatExt: Sized {
 
     /// The natural logarithm.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn ln(self) -> Self;
 
     /// The natural logarithm plus 1, more accurately.
@@ -467,10 +465,10 @@ macro_rules! impl_float_ext {
                 Fp::<$f>::exp_m1_series(self, Fp::<$f>::exp_series_terms(self))
             }
 
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn ln(self) -> Self { Fp::<$f>::ln(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn ln(self) -> Self { Fp::<$f>::ln_series(self, Fp::<$f>::ln_series_terms(self)) }
 
             #[inline(always)]
             #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
