@@ -38,6 +38,29 @@ macro_rules! custom_impls {
             #[must_use] #[inline]
             pub fn is_sign_negative(x: $f) -> bool { <$f>::is_sign_negative(x) }
 
+            /// Raises `x` to the `y` floating point power using the Taylor series via the
+            /// `exp` and `ln` functins.
+            ///
+            /// $$ \large x^y = e^{y \cdot \ln(x)} $$
+            ///
+            /// See also [`ln_series_terms`][Self::ln_series_terms].
+            ///
+            /// The terms for the exponential function are calculated using
+            /// [`exp_series_terms`][Self::exp_series_terms] using $y\cdot\ln(x)$.
+            #[must_use] #[inline]
+            pub fn powf_series(x: $f, y: $f, ln_x_terms: $ue) -> $f {
+                let xabs = Self::abs(x);
+                if xabs == 0.0 {
+                    iif![Self::abs(y) == 0.0; 1.0; 0.0]
+                } else {
+                    let ln_x = Self::ln_series(xabs, ln_x_terms);
+                    let power = y * ln_x;
+                    let exp_y_terms = Self::exp_series_terms(power);
+                    let result = Self::exp_series(power, exp_y_terms);
+                    iif![x.is_sign_negative(); -result; result]
+                }
+            }
+
             /// $ \sqrt{x} $ The square root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             #[must_use] #[inline]

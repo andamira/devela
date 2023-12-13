@@ -129,11 +129,9 @@ pub trait FloatExt: Sized {
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn rem_euclid(self, rhs: Self) -> Self;
 
-    /// Raises `self` to the `p` floating point power.
+    /// Raises `self` to the `y` floating point power.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-    fn powf(self, p: Self) -> Self;
+    fn powf(self, y: Self) -> Self;
 
     /// Raises `self` to the `p` integer power.
     #[must_use]
@@ -429,10 +427,12 @@ macro_rules! impl_float_ext {
             #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn rem_euclid(self, rhs: Self) -> Self { Fp::<$f>::rem_euclid(self, rhs) }
 
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
-            fn powf(self, p: Self) -> Self { Fp::<$f>::powf(self, p) }
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
+            fn powf(self, y: Self) -> Self { Fp::<$f>::powf(self, y) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn powf(self, y: Self) -> Self {
+                Fp::<$f>::powf_series(self, y, Fp::<$f>::ln_series_terms(self))
+            }
 
             #[inline(always)]
             fn powi(self, p: $ie) -> Self { Fp::<$f>::powi(self, p) }

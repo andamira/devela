@@ -2,7 +2,6 @@
 //
 //! Standalone color functions and constants.
 
-#[cfg(any(feature = "std", feature = "libm"))]
 use crate::math::FloatExt;
 use crate::meta::{iif, paste, sf};
 
@@ -37,8 +36,6 @@ macro_rules! color_gamma_fns {
         /// \end{align}
         /// $$
         #[inline]
-        #[cfg(any(feature = "std", feature = "libm"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
         pub fn [<color_gamma_apply_ $t>](c: $t, gamma: $t) -> $t {
             iif![c <= 0.0031308; 12.92 * c; 1.055 * c.powf(1.0 / gamma) - 0.055]
         }
@@ -56,8 +53,6 @@ macro_rules! color_gamma_fns {
         /// \end{align}
         /// $$
         #[inline]
-        #[cfg(any(feature = "std", feature = "libm"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
         pub fn [<color_gamma_remove_ $t>](c: $t, gamma: $t) -> $t {
             iif![c <= 0.04045; c / 12.92; ((c + 0.055) / (1.055)).powf(gamma)]
         }
