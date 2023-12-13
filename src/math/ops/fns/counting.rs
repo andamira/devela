@@ -17,14 +17,13 @@ use crate::{
 };
 
 // $t:   the input/output type
-// $up:  the upcasted type to do the operations on (the ones that can overflow)
-// $ft:  the floating-point type to do some operations on
+// $up:  the upcasted type to do the operations on (the ones that can overflow) (not used)
 macro_rules! impl_ops {
-    (signed $( ($t:ty, $up:ty, $ft:ty) ),+) => { $( impl_ops![@signed($t, $up, $ft)]; )+ };
-    (unsigned $( ($t:ty, $up:ty, $ft:ty) ),+) => { $( impl_ops![@unsigned($t, $up, $ft)]; )+ };
+    (signed $( ($t:ty, $up:ty) ),+) => { $( impl_ops![@signed($t, $up)]; )+ };
+    (unsigned $( ($t:ty, $up:ty) ),+) => { $( impl_ops![@unsigned($t, $up)]; )+ };
 
     // implements signed ops
-    (@signed($t:ty, $up:ty, $ft:ty) ) => { paste! {
+    (@signed($t:ty, $up:ty) ) => { paste! {
         /// Returns the factorial of `n`.
         ///
         /// $$ n! $$.
@@ -212,7 +211,7 @@ macro_rules! impl_ops {
     }};
 
     // implements unsigned ops
-    (@unsigned($t:ty, $up:ty, $ft:ty) ) => { paste! {
+    (@unsigned($t:ty, $up:ty) ) => { paste! {
         /// Returns the factorial of `n`.
         ///
         /// $$ n! $$
@@ -380,18 +379,18 @@ macro_rules! impl_ops {
     }};
 }
 impl_ops![
-    signed(i8, i16, f32),
-    (i16, i32, f32),
-    (i32, i64, f32),
-    (i64, i128, f64),
-    (i128, i128, f64),
-    (isize, isize, fsize)
+    signed(i8, i16),
+    (i16, i32),
+    (i32, i64),
+    (i64, i128),
+    (i128, i128),
+    (isize, isize)
 ];
 impl_ops![
-    unsigned(u8, u16, f32),
-    (u16, u32, f32),
-    (u32, u64, f32),
-    (u64, u128, f64),
-    (u128, u128, f64),
-    (usize, usize, fsize)
+    unsigned(u8, u16),
+    (u16, u32),
+    (u32, u64),
+    (u64, u128),
+    (u128, u128),
+    (usize, usize)
 ];
