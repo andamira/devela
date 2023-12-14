@@ -5,18 +5,17 @@
 
 /* contains always compiled items */
 
+mod expr;
 mod size;
 
 #[allow(unused)]
 #[cfg(not(feature = "mem"))]
-pub(crate) use size::*;
+pub use {expr::*, size::*};
 
 /* feature-gated */
 
 #[cfg(feature = "mem")]
 mod bit;
-#[cfg(feature = "mem")]
-mod expr;
 
 // re-export private sub-modules
 #[cfg(feature = "mem")]
@@ -28,5 +27,5 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(feature = "mem")]
-    pub use super::{bit::*, expr::*};
+    pub use super::{bit::*, expr::mem_size_of_expr};
 }

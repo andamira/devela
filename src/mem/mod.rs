@@ -30,7 +30,7 @@ pub mod slice;
 #[allow(unused)]
 #[cfg(not(feature = "mem"))]
 pub(crate) use {
-    aligned::*, always::*, r#trait::*, reexports_core::*, size::all::*, slice::*, storage::*,
+    aligned::*, always::*, r#trait::*, reexports_core::*, size::*, slice::*, storage::*,
 };
 
 /* feature-gated */
