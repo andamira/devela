@@ -1,10 +1,12 @@
 // devela::task
 //
 //! Tasking, extends
-//! `std::{`[`future`][std::future],
-//! [`sync`][std::sync],
-//! [`task`][std::task],
-//! [`thread`][std::thread]`}`.
+//! `std::{`[`future`], [`sync`], [`task`], [`thread`]`}`.
+//!
+//! [`future`]: core::future
+//! [`sync`]: std::sync
+//! [`task`]: core::task
+//! [`thread`]: std::thread
 //
 
 /* contains always compiled items */

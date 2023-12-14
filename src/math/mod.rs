@@ -1,8 +1,10 @@
 // devela::math
 //
 //! Mathematics, numbers, operations, extends
-//! `std::{`[`num`][std::num],
-//! [`ops`][std::ops]`}`.
+//! `std::{`[`num`], [`ops`]`}`.
+//!
+//! [`num`]: core::num
+//! [`ops`]: core::ops
 //
 
 /* contains always compiled items */

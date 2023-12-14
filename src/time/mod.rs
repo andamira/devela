@@ -1,7 +1,9 @@
 // devela::time
 //
 //! Temporal quantification, extends
-//! `std::`[`time`][std::time].
+//! `std::`[`time`].
+//!
+//! [`time`]: std::time
 //
 
 /* contains always compiled items */

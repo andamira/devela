@@ -1,13 +1,15 @@
 // devela::mem
 //
 //! Memory management, extends
-//! `std::`[`alloc`], [`borrow`], [`boxed`], [`cell`], [`mem`], [`ptr`], [`rc`], [`slice`].
+//! `std::{`[`alloc`], [`borrow`], [`boxed`], [`cell`], [`mem`], [`pin`],
+//! [`ptr`], [`rc`], [`slice`]`}`.
 //!
 //! [`alloc`]: core::alloc
 //! [`borrow`]: core::borrow
 //! [`boxed`]: std::boxed
 //! [`cell`]: core::cell
 //! [`mem`]: core::mem
+//! [`pin`]: core::pin
 //! [`ptr`]: core::ptr
 //! [`rc`]: std::rc
 //! [`slice`]: core::slice

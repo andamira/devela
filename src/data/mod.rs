@@ -1,12 +1,14 @@
 // devela::data
 //
 //! Data structures, extends
-//! `std::{`[`any`][std::any],
-//! [`array`][mod@std::array],
-//! [`cmp`][std::cmp],
-//! [`collections`][std::collections],
-//! [`convert`][std::convert],
-//! [`vec`][mod@std::vec]`}`.
+//! `std::{`[`any`], [`array`], [`cmp`], [`collections`], [`convert`], [`vec`]`}`.
+//!
+//! [`any`]: core::any
+//! [`array`]: mod@core::array
+//! [`cmp`]: core::cmp
+//! [`collections`]: alloc::collections
+//! [`convert`]: core::convert
+//! [`vec`]: mod@alloc::vec
 //
 
 #![cfg_attr(not(feature = "data"), allow(unused))]

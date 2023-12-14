@@ -1,8 +1,11 @@
 // devela::result
 //
 //! Result, extends
-//! `std::{`[`option`][std::option],
-//! [`result`][std::result]`}`.
+//! `std::{`[`error`], [`option`], [`result`]`}`.
+//!
+//! [`error`]: std::error
+//! [`option`]: core::option
+//! [`result`]: core::result
 //
 
 /* contains always compiled items */

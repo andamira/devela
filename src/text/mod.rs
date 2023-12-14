@@ -1,11 +1,13 @@
 // devela::text
 //
 //! Text manipulation, extends
-//! `std::{`[`ascii`][std::ascii],
-//! [`char`][std::char],
-//! [`fmt`][std::fmt],
-//! [`str`][std::str],
-//! [`string`][std::string]`}`.
+//! `std::{`[`ascii`], [`char`], [`fmt`], [`str`], [`string`]`}`.
+//!
+//! [`ascii`]: core::ascii
+//! [`char`]: core::char
+//! [`fmt`]: std::fmt
+//! [`str`]: core::str
+//! [`string`]: std::string
 //
 
 /* contains always compiled items */
