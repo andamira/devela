@@ -121,20 +121,20 @@ pub mod all {
 /// The common prelude.
 pub mod prelude {
     #[cfg(feature = "data")]
-    pub use crate::data::{AnyExt, DataCollection, SliceExt, SliceExtMut};
-
-    #[cfg(feature = "mem")]
-    pub use crate::mem::{BitSize, Mem, Size};
-
-    #[cfg(feature = "math")]
-    pub use crate::math::num::{Num, NumRef};
-
-    #[cfg(feature = "data")]
     pub use crate::data::{
         bit::BitOps,
         convert::primitive::{CastPrimitives, FromPrimitives, IntoPrimitives},
+        AnyExt, DataCollection,
     };
 
+    #[cfg(feature = "mem")]
+    pub use crate::mem::{
+        slice::{SliceExt, SliceExtMut},
+        {BitSize, Mem, Size},
+    };
+
+    #[cfg(feature = "math")]
+    pub use crate::math::num::{Num, NumRef};
     #[cfg(all(feature = "math", any(feature = "std", feature = "libm")))]
     pub use crate::math::ops::FloatExt;
 

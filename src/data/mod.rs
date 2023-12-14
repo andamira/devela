@@ -6,7 +6,6 @@
 //! [`cmp`][std::cmp],
 //! [`collections`][std::collections],
 //! [`convert`][std::convert],
-//! [`slice`][std::slice],
 //! [`vec`][mod@std::vec]`}`.
 //
 
@@ -22,13 +21,10 @@ pub mod array;
 pub mod bit;
 pub mod cmp;
 pub mod convert;
-pub mod slice;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {
-    array::*, bit::*, cmp::*, collection::*, convert::*, error::*, reexports::*, slice::*,
-};
+pub(crate) use {array::*, bit::*, cmp::*, collection::*, convert::*, error::*, reexports::*};
 
 /* feature-gated */
 
@@ -60,13 +56,13 @@ pub use {collection::*, error::*, reexports::*};
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use {any::all::*, array::all::*, bit::all::*, cmp::all::*, convert::all::*, slice::all::*};
+pub use {any::all::*, array::all::*, bit::all::*, cmp::all::*, convert::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
         array::all::*, bit::all::*, cmp::all::*, collection::*, convert::all::*, error::*,
-        reexports::*, slice::all::*,
+        reexports::*,
     };
 
     #[doc(inline)]

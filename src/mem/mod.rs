@@ -1,7 +1,17 @@
 // devela::mem
 //
 //! Memory management, extends
-//! `std::`[`mem`][std::mem].
+//! `std::`[`alloc`], [`borrow`], [`boxed`], [`cell`], [`mem`], [`ptr`], [`rc`], [`slice`].
+//!
+//! [`alloc`]: core::alloc
+//! [`borrow`]: core::borrow
+//! [`boxed`]: std::boxed
+//! [`cell`]: core::cell
+//! [`mem`]: core::mem
+//! [`ptr`]: core::ptr
+//! [`rc`]: std::rc
+//! [`slice`]: core::slice
+
 //
 
 /* contains always compiled items */
@@ -13,9 +23,13 @@ mod size;
 mod storage;
 mod r#trait;
 
+pub mod slice;
+
 #[allow(unused)]
 #[cfg(not(feature = "mem"))]
-pub(crate) use {aligned::*, always::*, r#trait::*, reexports_core::*, size::all::*, storage::*};
+pub(crate) use {
+    aligned::*, always::*, r#trait::*, reexports_core::*, size::all::*, slice::*, storage::*,
+};
 
 /* feature-gated */
 
@@ -26,10 +40,15 @@ mod fns;
 #[cfg(feature = "mem")]
 pub use {aligned::*, always::*, fns::*, r#trait::*, reexports_core::*, size::all::*, storage::*};
 
+// re-export public sub-modules
+#[cfg(feature = "mem")]
+pub use slice::all::*;
+
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        aligned::*, always::*, r#trait::*, reexports_core::*, size::all::*, storage::*,
+        aligned::*, always::*, r#trait::*, reexports_core::*, size::all::*, slice::all::*,
+        storage::*,
     };
 
     #[doc(inline)]

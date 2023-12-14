@@ -1,4 +1,4 @@
-// devela::data::slice
+// devela::mem::slice
 //
 //! Slices, extends
 //! `std::`[`slice`][std::slice].
@@ -8,19 +8,19 @@
 
 mod always_fns;
 #[allow(unused)]
-#[cfg(not(feature = "data"))]
+#[cfg(not(feature = "mem"))]
 pub(crate) use always_fns::*;
 
 /* feature-gated */
 
 // private sub-modules
-#[cfg(feature = "data")]
+#[cfg(feature = "mem")]
 mod ext;
-#[cfg(feature = "data")]
+#[cfg(feature = "mem")]
 mod fns;
 
 // re-export private sub-modules
-#[cfg(feature = "data")]
+#[cfg(feature = "mem")]
 pub use {always_fns::*, ext::*, fns::*};
 
 pub(crate) mod all {
@@ -28,6 +28,6 @@ pub(crate) mod all {
     pub use super::always_fns::*;
 
     #[doc(inline)]
-    #[cfg(feature = "data")]
+    #[cfg(feature = "mem")]
     pub use super::{ext::*, fns::*};
 }

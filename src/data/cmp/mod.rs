@@ -9,27 +9,18 @@
 
 /* contains always compiled items */
 
-mod always_fns;
 mod float;
+mod fns;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {always_fns::*, float::*};
-
-/* feature-gated */
-
-#[cfg(feature = "data")]
-mod fns;
+pub(crate) use {float::*, fns::*};
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {always_fns::*, float::*, fns::*};
+pub use {float::*, fns::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{always_fns::*, float::*};
-
-    #[doc(inline)]
-    #[cfg(feature = "data")]
-    pub use super::fns::*;
+    pub use super::{float::*, fns::*};
 }

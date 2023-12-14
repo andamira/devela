@@ -13,7 +13,7 @@ use crate::{meta::iif, text::AsciiChar};
 #[cfg(feature = "unsafe_text")]
 use crate::text::IntBuf;
 #[cfg(not(feature = "unsafe_text"))]
-use crate::{data::slice_trim_leading_bytes, text::ascii_usize_digits};
+use crate::{mem::slice::slice_trim_leading_bytes, text::ascii_usize_digits};
 
 // Marker trait to prevent downstream implementations of the `StrExt` trait.
 impl private::Sealed for str {}

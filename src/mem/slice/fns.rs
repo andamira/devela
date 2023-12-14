@@ -1,4 +1,4 @@
-// revela::data::fns
+// revela::mem::fns
 //
 //!
 //
@@ -11,7 +11,7 @@ use crate::data::{clamp_usize, min_usize};
 ///
 /// # Examples
 /// ```
-/// use devela::data::slice_lsplit;
+/// use devela::mem::slice_lsplit;
 ///
 /// let v = [1, 2, 3, 4, 5, 6];
 ///
@@ -33,7 +33,7 @@ pub const fn slice_lsplit<T>(slice: &[T], len: usize) -> &[T] {
 ///
 /// # Examples
 /// ```
-/// use devela::data::slice_lsplit_mut;
+/// use devela::mem::slice_lsplit_mut;
 ///
 /// let mut v = [1, 2, 3, 4, 5, 6];
 ///
@@ -55,7 +55,7 @@ pub fn slice_lsplit_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
 ///
 /// # Examples
 /// ```
-/// use devela::data::slice_rsplit;
+/// use devela::mem::slice_rsplit;
 ///
 /// let v = [1, 2, 3, 4, 5, 6];
 ///
@@ -77,7 +77,7 @@ pub const fn slice_rsplit<T>(slice: &[T], len: usize) -> &[T] {
 ///
 /// # Examples
 /// ```
-/// use devela::data::slice_rsplit_mut;
+/// use devela::mem::slice_rsplit_mut;
 ///
 /// let mut v = [1, 2, 3, 4, 5, 6];
 ///
@@ -102,7 +102,7 @@ pub fn slice_rsplit_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
 ///
 /// # Examples
 /// ```
-/// use devela::data::slice_msplit_right;
+/// use devela::mem::slice_msplit_right;
 ///
 /// let v = [1, 2, 3, 4, 5, 6];
 ///
@@ -138,7 +138,7 @@ pub const fn slice_msplit_right<T>(slice: &[T], len: usize) -> &[T] {
 ///
 /// # Examples
 /// ```
-/// use devela::data::slice_msplit_right_mut;
+/// use devela::mem::slice_msplit_right_mut;
 ///
 /// let mut v = [1, 2, 3, 4, 5, 6];
 ///
@@ -173,7 +173,7 @@ pub fn slice_msplit_right_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
 ///
 /// # Examples
 /// ```
-/// use devela::data::slice_msplit_left;
+/// use devela::mem::slice_msplit_left;
 ///
 /// let v = [1, 2, 3, 4, 5, 6];
 ///
@@ -208,7 +208,7 @@ pub const fn slice_msplit_left<T>(slice: &[T], len: usize) -> &[T] {
 ///
 /// # Examples
 /// ```
-/// use devela::data::slice_msplit_left_mut;
+/// use devela::mem::slice_msplit_left_mut;
 ///
 /// let mut v = [1, 2, 3, 4, 5, 6];
 ///

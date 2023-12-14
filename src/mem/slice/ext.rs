@@ -1,4 +1,4 @@
-// devela::data::slice::ext
+// devela::mem::slice::ext
 //
 //!
 //
