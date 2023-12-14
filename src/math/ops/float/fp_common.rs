@@ -229,8 +229,10 @@ macro_rules! custom_impls {
             /// This method is more efficient for values of `x` near 1. Values too
             /// small or too big could be impractical to calculate with precision.
             ///
+            /// $$
             /// \ln(x) = 2 \left( \frac{x-1}{x+1} + \frac{1}{3} \left( \frac{x-1}{x+1} \right)^3 +
             /// \frac{1}{5} \left( \frac{x-1}{x+1} \right)^5 + \cdots \right)
+            /// $$
             #[must_use] #[inline]
             pub fn ln_series(x: $f, terms: $ue) -> $f {
                 if x == 0.0 {

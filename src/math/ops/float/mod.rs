@@ -11,9 +11,10 @@
 
 #![cfg_attr(not(feature = "math"), allow(unused))]
 
-mod consts;
 mod fp_common;
 mod r#trait;
+
+mod consts;
 
 pub use r#trait::FloatExt;
 

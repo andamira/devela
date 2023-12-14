@@ -279,7 +279,7 @@ pub trait FloatExt: Sized {
     /// The arc tangent of two variables.
     ///
     /// With both `std` and `libm` disabled it leverages [`atan2_series`][Fp::atan2_series]
-    /// with [`atan2_series_terms`][Fp::atan2_series_terms].
+    /// with [`atan_series_terms`][Fp::atan_series_terms].
     #[must_use]
     fn atan2(self, other: Self) -> Self;
 
