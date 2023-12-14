@@ -1,7 +1,8 @@
 // devela::math::num
 //
-//! Numeric types, extends
-//! `std::`[`num`][std::num].
+//! Numeric types, extends `std::`[`num`].
+//!
+//! [`num`]: std::num
 //
 
 /* contains always compiled items */

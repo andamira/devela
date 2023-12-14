@@ -43,6 +43,7 @@ mod fns;
 pub use {aligned::*, always::*, fns::*, r#trait::*, reexports_core::*, size::all::*, storage::*};
 
 // re-export public sub-modules
+#[doc(no_inline)]
 #[cfg(feature = "mem")]
 pub use slice::all::*;
 

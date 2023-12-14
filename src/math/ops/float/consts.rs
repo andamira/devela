@@ -53,7 +53,7 @@ technical_const_impls![
 macro_rules! math_const_impls {
     ($( $f:ty),+) => { $( math_const_impls![@$f]; )+ };
     (@$f:ty) => { $crate::meta::paste! {
-        /// # *Implementations of mathematical constants.
+        /// # *Mathematical constants*.
         #[allow(clippy::excessive_precision)] // 36 decimal points
         impl Fp<$f> {
             /* π related */

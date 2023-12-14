@@ -1,7 +1,8 @@
 // devela::text::ascii
 //
-//! ASCII strings and characters, extends
-//! `std::`[`ascii`][std::ascii].
+//! ASCII strings and characters, extends `std::`[`ascii`].
+//!
+//! [`ascii`]: std::ascii
 //
 
 /* contains always compiled items */

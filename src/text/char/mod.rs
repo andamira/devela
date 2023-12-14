@@ -1,7 +1,8 @@
 // devela::text::char
 //
-//! Unicode scalars, extends
-//! `std::`[`char`][std::char].
+//! Unicode scalars, extends `std::`[`char`].
+//!
+//! [`char`]: std::char
 //
 
 /* contains always compiled items */

@@ -1,7 +1,8 @@
 // devela::task::sync
 //
-//! Synchronization, extends
-//! `std::`[`sync`][std::sync].
+//! Synchronization, extends `std::`[`sync`].
+//!
+//! [`sync`]: std::sync
 //
 
 /* contains always compiled items */
@@ -13,7 +14,7 @@
 #[cfg(feature = "task")]
 pub mod atomic;
 
-// re-exports public sub-modules
+// re-export public sub-modules
 #[doc(no_inline)]
 #[cfg(feature = "task")]
 pub use atomic::*;

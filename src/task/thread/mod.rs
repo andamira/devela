@@ -1,7 +1,8 @@
 // devela::task::thread
 //
-//! Native threads, extends
-//! `std::`[`thread`][std::thread].
+//! Native threads, extends `std::`[`thread`].
+//!
+//! [`thread`]: std::thread
 //
 
 /* contains always compiled items */

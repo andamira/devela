@@ -1,6 +1,8 @@
 // devela::text::fmt
 //
-//! Formatting, extends `std::` [`fmt`][std::fmt].
+//! Formatting, extends `std::`[`fmt`].
+//!
+//! [`fmt`]: std::fmt
 //
 
 /* contains always compiled items */

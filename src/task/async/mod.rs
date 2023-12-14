@@ -1,8 +1,9 @@
 // devela::task::async
 //
-//! Asynchrony, extends
-//! `std::{`[`future`][std::future],
-//! [`task`][std::task]`}`.
+//! Asynchrony, extends `std::{`[`future`], [`task`]`}`.
+//!
+//! [`future`]: std::future
+//! [`task`]: std::task
 //!
 //! See also the fundamental [`async`] and [`await`] keywords and the
 //! [async book](https://rust-lang.github.io/async-book/).
@@ -13,20 +14,16 @@
 
 /* contains always compiled items */
 
-// ...
+mod reexports;
 
 /* feature-gated */
 
-// public sub-modules
 #[cfg(all(feature = "unsafe_task", feature = "alloc"))]
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(feature = "unsafe_task", feature = "alloc")))
 )]
 pub mod coroutine;
-
-// private sub-modules
-mod reexports;
 
 // re-export public sub-modules
 #[doc(no_inline)]

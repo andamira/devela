@@ -1,7 +1,8 @@
 // devela::data::any
 //
-//! Dynamic typing and reflection, extends
-//! `std::`[`any`][std::any].
+//! Dynamic typing and reflection, extends `std::`[`any`].
+//!
+//! [`any`]: std::any
 //
 
 /* contains always compiled items */

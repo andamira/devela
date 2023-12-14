@@ -1,7 +1,8 @@
 // devela::mem::slice
 //
-//! Slices, extends
-//! `std::`[`slice`][std::slice].
+//! Slices, extends `std::`[`slice`].
+//!
+//! [`slice`]: std::slice
 //
 
 /* contains always compiled items */

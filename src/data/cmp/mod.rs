@@ -1,7 +1,8 @@
 // devela::data::cmp
 //
-//! Comparing, ordering and sorting, extends
-//! `std::`[`cmp`][std::cmp].
+//! Comparing, ordering and sorting, extends `std::`[`cmp`].
+//!
+//! [`cmp`]: std::cmp
 //!
 //! This module defines many constant functions for comparing primitives, and the
 //! [`pclamp`], [`pmax`] and [`pmin`] functions for comparing partially ordered values.

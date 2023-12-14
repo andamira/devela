@@ -1,7 +1,8 @@
 // devela::data::convert
 //
-//! Conversion, extends
-//! `std::`[`convert`][std::convert].
+//! Conversion, extends `std::`[`convert`].
+//!
+//! [`convert`]: std::convert
 //
 
 /* contains always compiled items */

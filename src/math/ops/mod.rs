@@ -1,7 +1,9 @@
 // devela::math::ops
 //
 //! Operations, extends
-//! `std::`[`ops`][std::ops].
+//! `std::`[`ops`].
+//!
+//! [`ops`]: std::ops
 //
 
 /* contains always compiled items */

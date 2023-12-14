@@ -1,7 +1,8 @@
 // devela::data::array
 //
-//! Arrays, extends
-//! `std::`[`array`][mod@std::array].
+//! Arrays, extends `std::`[`array`].
+//!
+//! [`array`]: mod@std::array
 //!
 //! Arrays are random-access, sequentially allocated, statically sized,
 //! homogeneous data structures.
