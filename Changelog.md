@@ -21,7 +21,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new fn `bytes_from_bits`.
 - new type `DataErrors`.
 - new trait `DataArray`.
-- new trait `CastPrimitives` and fns: `checked_cast_*`, `saturating_cast_*`.
+- new trait `CastPrimitives` and wrapper struct `Cast`.
 - new trait `BitOps`, and wrapper struct `Bits`.
 - new `MathErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
 - add sorting methods from `data::cmp` to `SliceExtMut`.
@@ -52,14 +52,20 @@ The format is based on [Keep a Changelog], and this project adheres to
 - make `DataCollection` always available.
 - update color gamma fns, rename to `color_gamma_[apply|remove]_f*`, add `f64` versions.
 - reexport `BitwisePrimitives` and `CastPrimitives` traits from `prelude`.
+- update `IntoPrimitives` related method to take `self`, remove one generic argument.
+- update `CastPrimitives` with missing `usize` and `isize` methods.
 - update `Collection` trait.
 - make `devela_macros` a non-optional dependency, and update it.
+- move `data::slice` to `mem::slice`.
+- move `data::array` to `data::list::array`.
 - update `devela_depend`.
+- update crate description.
 
 ### Fixed
 - fix `bytemuck` dependency when `data` is enabled.
 - update and improve CI tests.
 - add missing attributes.
+- fix and update docs.
 
 ## [0.18.1] 2023-11-08
 
