@@ -19,14 +19,16 @@ mod collection;
 mod error;
 mod reexports;
 
-pub mod array;
 pub mod bit;
 pub mod cmp;
 pub mod convert;
+pub mod list;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {array::*, bit::*, cmp::*, collection::*, convert::*, error::*, reexports::*};
+pub(crate) use {
+    bit::*, cmp::*, collection::*, convert::*, error::*, list::*, reexports::*,
+};
 
 /* feature-gated */
 
@@ -58,13 +60,13 @@ pub use {collection::*, error::*, reexports::*};
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use {any::all::*, array::all::*, bit::all::*, cmp::all::*, convert::all::*};
+pub use {any::all::*, bit::all::*, cmp::all::*, convert::all::*, list::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        array::all::*, bit::all::*, cmp::all::*, collection::*, convert::all::*, error::*,
-        reexports::*,
+        bit::all::*, cmp::all::*, collection::*, convert::all::*, error::*,
+        list::all::*, reexports::*,
     };
 
     #[doc(inline)]

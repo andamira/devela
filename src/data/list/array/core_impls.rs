@@ -11,7 +11,7 @@ use core::{
     convert::{AsMut, AsRef},
     fmt,
     hash::{Hash, Hasher},
-    ops::{Deref, DerefMut},
+    ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Deref, DerefMut, Not},
 };
 
 #[cfg(feature = "alloc")]
@@ -210,5 +210,105 @@ where
     fn from(iterator: I) -> Array<T, Boxed, LEN> {
         let array = array_init!(iter_heap [T; LEN], "unsafe_data", iterator);
         Array { array }
+    }
+}
+
+/* impl bitwise ops */
+
+impl<T, S: Storage, const LEN: usize> BitAnd for Array<T, S, LEN>
+where
+    S::Stored<[T; LEN]>: Copy,
+    T: BitAnd<Output = T> + Copy,
+{
+    type Output = Self;
+
+    fn bitand(self, rhs: Self) -> Self::Output {
+        let mut result = self;
+        for i in 0..LEN {
+            result.array[i] = result.array[i] & rhs.array[i];
+        }
+        result
+    }
+}
+impl<T, S: Storage, const LEN: usize> BitOr for Array<T, S, LEN>
+where
+    S::Stored<[T; LEN]>: Copy,
+    T: BitOr<Output = T> + Copy,
+{
+    type Output = Self;
+
+    fn bitor(self, rhs: Self) -> Self::Output {
+        let mut result = self;
+        for i in 0..LEN {
+            result.array[i] = result.array[i] | rhs.array[i];
+        }
+        result
+    }
+}
+impl<T, S: Storage, const LEN: usize> BitXor for Array<T, S, LEN>
+where
+    S::Stored<[T; LEN]>: Copy,
+    T: BitXor<Output = T> + Copy,
+{
+    type Output = Self;
+
+    fn bitxor(self, rhs: Self) -> Self::Output {
+        let mut result = self;
+        for i in 0..LEN {
+            result.array[i] = result.array[i] ^ rhs.array[i];
+        }
+        result
+    }
+}
+
+impl<T, S: Storage, const LEN: usize> BitAndAssign for Array<T, S, LEN>
+where
+    S::Stored<[T; LEN]>: Copy,
+    T: BitAndAssign + Copy,
+{
+    fn bitand_assign(&mut self, rhs: Self) {
+        for i in 0..LEN {
+            self.array[i] &= rhs.array[i];
+        }
+    }
+}
+
+impl<T, S: Storage, const LEN: usize> BitOrAssign for Array<T, S, LEN>
+where
+    S::Stored<[T; LEN]>: Copy,
+    T: BitOrAssign + Copy,
+{
+    fn bitor_assign(&mut self, rhs: Self) {
+        for i in 0..LEN {
+            self.array[i] |= rhs.array[i];
+        }
+    }
+}
+
+impl<T, S: Storage, const LEN: usize> BitXorAssign for Array<T, S, LEN>
+where
+    S::Stored<[T; LEN]>: Copy,
+    T: BitXorAssign + Copy,
+{
+    fn bitxor_assign(&mut self, rhs: Self) {
+        for i in 0..LEN {
+            self.array[i] ^= rhs.array[i];
+        }
+    }
+}
+
+impl<T, S: Storage, const LEN: usize> Not for Array<T, S, LEN>
+where
+    S::Stored<[T; LEN]>: Clone,
+    T: Not<Output = T> + Copy,
+{
+    type Output = Self;
+
+    fn not(self) -> Self::Output {
+        let mut result = self;
+        for i in 0..LEN {
+            result.array[i] = !result.array[i];
+        }
+        result
     }
 }

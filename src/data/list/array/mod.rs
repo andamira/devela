@@ -17,6 +17,7 @@ mod methods;
 mod always;
 mod definitions;
 
+#[allow(unused)]
 #[cfg(not(feature = "data"))]
 pub(crate) use {always::*, core_impls::*, definitions::*, methods::*};
 
