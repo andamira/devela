@@ -39,14 +39,3 @@ pub fn ptr_in_stack<T>(address: *const T, stack_size: usize) -> bool {
     let addr_diff = iif![local_addr > obj_addr; local_addr - obj_addr; obj_addr - local_addr];
     addr_diff < stack_size
 }
-
-/// Returns the rounded up size in bytes from a size in bits.
-#[must_use]
-#[inline]
-pub const fn bytes_from_bits(bit_size: usize) -> usize {
-    if let Some(t) = bit_size.checked_add(8 - 1) {
-        t / 8
-    } else {
-        usize::MAX / 8
-    }
-}

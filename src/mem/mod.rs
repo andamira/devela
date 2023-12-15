@@ -20,16 +20,16 @@
 
 mod aligned;
 mod always;
-mod reexports_core;
-mod size;
+mod reexports;
 mod storage;
 mod r#trait;
 
+pub mod size;
 pub mod slice;
 
 #[allow(unused)]
 #[cfg(not(feature = "mem"))]
-pub use {aligned::*, always::*, r#trait::*, reexports_core::*, size::*, slice::*, storage::*};
+pub use {aligned::*, always::*, r#trait::*, reexports::*, size::*, slice::*, storage::*};
 
 /* feature-gated */
 
@@ -38,18 +38,17 @@ mod fns;
 
 // re-export private sub-modules
 #[cfg(feature = "mem")]
-pub use {aligned::*, always::*, fns::*, r#trait::*, reexports_core::*, size::all::*, storage::*};
+pub use {aligned::*, always::*, fns::*, r#trait::*, reexports::*, storage::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
 #[cfg(feature = "mem")]
-pub use slice::all::*;
+pub use {size::all::*, slice::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        aligned::*, always::*, r#trait::*, reexports_core::*, size::all::*, slice::all::*,
-        storage::*,
+        aligned::*, always::*, r#trait::*, reexports::*, size::all::*, slice::all::*, storage::*,
     };
 
     #[doc(inline)]

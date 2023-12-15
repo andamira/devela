@@ -5,10 +5,6 @@
 
 use crate::meta::reexport;
 
-reexport! { rust: core::marker, local_module: "mem",
-    doc: "Types with a constant size known at compile time.",
-    Sized
-}
 reexport! { rust: core::mem, local_module: "mem",
     doc: "A wrapper to inhibit compiler from automatically calling `T`’s destructor.",
     ManuallyDrop
@@ -48,14 +44,6 @@ reexport! { rust: core::mem, local_module: "mem",
 reexport! { rust: core::mem, local_module: "mem",
     doc: "Moves `src` into `dest`, returning the previous `dest` value.",
     @replace as mem_replace
-}
-reexport! { rust: core::mem, local_module: "mem",
-    doc: "Returns the size of a type in bytes.",
-    @size_of as mem_size_of
-}
-reexport! { rust: core::mem, local_module: "mem",
-    doc: "Returns the size of the pointed-to value in bytes.",
-    @size_of_val as mem_size_of_val
 }
 reexport! { rust: core::mem, local_module: "mem",
     doc: "Swaps the values at two locations, without deinitializing either one.",

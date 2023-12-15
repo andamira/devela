@@ -22,7 +22,7 @@
 #[macro_export]
 macro_rules! mem_size_of_expr {
     ($expr: expr) => {
-        $crate::mem::__mem_size_of_expr(
+        $crate::mem::size::__mem_size_of_expr(
             // The array of function pointers is created in an unreachable branch
             // of an if-else block to avoid evaluating it.
             if true {

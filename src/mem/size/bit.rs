@@ -1,9 +1,14 @@
 // devela::mem::size::bit
 //
-//! Traits related to stack memory bit size.
+//! Functionality related to memory bit size.
 //
+// TOC
+// - imports
+// - fn definitions
+// - trait definition
+// - trait impls
 
-use crate::mem::{bytes_from_bits, Direct, Size};
+use crate::mem::{Direct, Size};
 
 use core::{
     cmp,
@@ -84,7 +89,20 @@ use crate::task::sync::atomic::{AtomicI8, AtomicU8};
 ))]
 use crate::task::sync::atomic::{AtomicIsize, AtomicPtr, AtomicUsize};
 
-/* definitions */
+/* fn definitions */
+
+/// Returns the rounded up size in bytes from a size in bits.
+#[must_use]
+#[inline]
+pub const fn bytes_from_bits(bit_size: usize) -> usize {
+    if let Some(t) = bit_size.checked_add(8 - 1) {
+        t / 8
+    } else {
+        usize::MAX / 8
+    }
+}
+
+/* trait definition */
 
 /// Indicates a size of exactly `LEN` bits for the relevant data part of this type.
 ///
@@ -141,6 +159,7 @@ pub trait BitSize<const LEN: usize>: Size {
     }
 }
 
+// Implement BitSize
 macro_rules! bit_size {
     /* primitives */
 
