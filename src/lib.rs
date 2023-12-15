@@ -123,7 +123,7 @@ pub mod prelude {
     #[cfg(feature = "data")]
     pub use crate::data::{
         bit::BitOps,
-        convert::primitive::{CastPrimitives, FromPrimitives, IntoPrimitives},
+        convert::{CastPrimitives, FromPrimitives, IntoPrimitives},
         AnyExt, DataCollection,
     };
 

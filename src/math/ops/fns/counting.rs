@@ -116,7 +116,7 @@ macro_rules! impl_ops {
         #[inline]
         pub const fn [<permute_rep_ $t>](n: $t, r: $t) -> Result<$t> {
             iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
-            let r_u32 = if let Ok(res) = [<checked_cast_ $t _to_u32>](r) {
+            let r_u32 = if let Ok(res) = Cast(r).checked_cast_to_u32() {
                 res
             } else {
                 return Err(E::Overflow);
@@ -292,7 +292,7 @@ macro_rules! impl_ops {
         /// ```
         #[inline]
         pub const fn [<permute_rep_ $t>](n: $t, r: $t) -> Result<$t> {
-            let r_u32 = if let Ok(res) = [<checked_cast_ $t _to_u32>](r) {
+            let r_u32 = if let Ok(res) = Cast(r).checked_cast_to_u32() {
                 res
             } else {
                 return Err(E::Overflow);

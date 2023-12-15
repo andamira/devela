@@ -7,25 +7,24 @@
 
 /* contains always compiled items */
 
-pub mod primitive;
+mod cast;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub use primitive::*;
+pub use cast::*;
 
 /* feature-gated */
 
 #[cfg(feature = "data")]
-pub mod collection;
+mod collection;
 
-// re-export public sub-modules
-#[doc(no_inline)]
+// re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {collection::*, primitive::*};
+pub use {cast::*, collection::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::primitive::*;
+    pub use super::cast::*;
 
     #[doc(inline)]
     #[cfg(feature = "data")]
