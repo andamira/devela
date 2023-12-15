@@ -7,7 +7,6 @@
 
 // crate internal use only
 mod _private;
-
 #[allow(unused)]
 pub(crate) use _private::reexport;
 
@@ -17,10 +16,9 @@ mod iif;
 mod paste;
 mod reexports;
 mod skip_format;
-
 #[allow(unused)]
 #[cfg(not(feature = "meta"))]
-pub(crate) use {const_for::cfor, iif::iif, paste::paste, reexports::*, skip_format::sf};
+pub use {const_for::cfor, iif::iif, paste::paste, reexports::*, skip_format::sf};
 
 #[doc(hidden)]
 #[allow(unused)]

@@ -26,9 +26,7 @@ pub mod list;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {
-    bit::*, cmp::*, collection::*, convert::*, error::*, list::*, reexports::*,
-};
+pub use {bit::*, cmp::*, collection::*, convert::*, error::*, list::*, reexports::*};
 
 /* feature-gated */
 
@@ -65,8 +63,8 @@ pub use {any::all::*, bit::all::*, cmp::all::*, convert::all::*, list::all::*};
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        bit::all::*, cmp::all::*, collection::*, convert::all::*, error::*,
-        list::all::*, reexports::*,
+        bit::all::*, cmp::all::*, collection::*, convert::all::*, error::*, list::all::*,
+        reexports::*,
     };
 
     #[doc(inline)]

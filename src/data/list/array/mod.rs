@@ -19,7 +19,7 @@ mod definitions;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {always::*, core_impls::*, definitions::*, methods::*};
+pub use {always::*, core_impls::*, definitions::*, methods::*};
 
 /* feature-gated */
 

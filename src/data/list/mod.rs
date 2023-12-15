@@ -9,7 +9,7 @@ mod array;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use array::*;
+pub use array::*;
 
 /* feature-gated */
 

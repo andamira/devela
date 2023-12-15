@@ -13,7 +13,7 @@
 mod chain;
 #[allow(unused)]
 #[cfg(not(feature = "result"))]
-pub(crate) use chain::*;
+pub use chain::*;
 
 /* feature-gated */
 

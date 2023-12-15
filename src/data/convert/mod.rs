@@ -11,7 +11,7 @@ pub mod primitive;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use primitive::*;
+pub use primitive::*;
 
 /* feature-gated */
 

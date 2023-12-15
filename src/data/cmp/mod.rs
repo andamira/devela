@@ -15,7 +15,7 @@ mod fns;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub(crate) use {float::*, fns::*};
+pub use {float::*, fns::*};
 
 // re-export private sub-modules
 #[cfg(feature = "data")]

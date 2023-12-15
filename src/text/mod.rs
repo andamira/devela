@@ -17,7 +17,7 @@ pub mod char;
 
 #[allow(unused)]
 #[cfg(not(feature = "text"))]
-pub(crate) use {ascii::*, char::*};
+pub use {ascii::*, char::*};
 
 /* feature-gated */
 

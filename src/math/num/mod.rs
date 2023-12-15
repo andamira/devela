@@ -12,7 +12,7 @@ mod non_specific;
 
 #[allow(unused)]
 #[cfg(not(feature = "math"))]
-pub(crate) use {alias::*, non_specific::*};
+pub use {alias::*, non_specific::*};
 
 /* feature-gated */
 

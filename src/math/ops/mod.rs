@@ -13,7 +13,7 @@ mod float;
 
 #[allow(unused)]
 #[cfg(not(feature = "math"))]
-pub(crate) use {always_fns::*, float::*};
+pub use {always_fns::*, float::*};
 
 /* feature-gated */
 

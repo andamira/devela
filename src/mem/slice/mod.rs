@@ -10,7 +10,7 @@
 mod always_fns;
 #[allow(unused)]
 #[cfg(not(feature = "mem"))]
-pub(crate) use always_fns::*;
+pub use always_fns::*;
 
 /* feature-gated */
 

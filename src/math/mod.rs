@@ -14,7 +14,7 @@ pub mod ops;
 
 #[allow(unused)]
 #[cfg(not(feature = "math"))]
-pub(crate) use {num::*, ops::*};
+pub use {num::*, ops::*};
 
 /* feature-gated */
 
