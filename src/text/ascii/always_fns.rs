@@ -7,8 +7,6 @@
 
 #![allow(unused)]
 
-use crate::math::ops::count_digits;
-
 /// Converts a one-digit number to the corresponding `1` ASCII digit.
 ///
 /// # Panics

@@ -5,7 +5,7 @@
 //! Always available for internal use.
 //
 
-#![allow(unused)]
+use crate::meta::iif;
 
 /// Counts the number of decimal digits in `n`.
 ///
@@ -19,11 +19,7 @@
 #[inline]
 #[must_use]
 pub const fn count_digits(n: usize) -> usize {
-    if n == 0 {
-        1
-    } else {
-        n.ilog10() as usize + 1
-    }
+    iif![n == 0; 1; n.ilog10() as usize + 1]
 }
 
 /// Counts the number of decimal digits in `n`.
