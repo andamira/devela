@@ -65,13 +65,19 @@ macro_rules! custom_impls {
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             #[must_use] #[inline]
             pub fn sqrt_nr(x: $f) -> $f {
-                let mut guess = x;
-                let mut guess_next = 0.5 * (guess + x / guess);
-                while Self::abs(guess - guess_next) > Self::NR_TOLERANCE {
-                    guess = guess_next;
-                    guess_next = 0.5 * (guess + x / guess);
+                if x < 0.0 {
+                    $f::NAN
+                } else if x == 0.0 {
+                    0.0
+                } else {
+                    let mut guess = x;
+                    let mut guess_next = 0.5 * (guess + x / guess);
+                    while Self::abs(guess - guess_next) > Self::NR_TOLERANCE {
+                        guess = guess_next;
+                        guess_next = 0.5 * (guess + x / guess);
+                    }
+                    guess_next
                 }
-                guess_next
             }
 
             /// $ \sqrt{x} $ the square root calculated using the
@@ -641,6 +647,48 @@ macro_rules! custom_impls {
                 let sinh_approx = Self::sinh_series(x, terms);
                 let cosh_approx = Self::cosh_series(x, terms);
                 sinh_approx / cosh_approx
+            }
+
+            /// Computes the inverse hyperbolic sine using the natural logarithm definition.
+            ///
+            /// $$ \text{asinh}(x) = \ln(x + \sqrt{x^2 + 1}) $$
+            ///
+            /// See also [`ln_series_terms`][Self::ln_series_terms].
+            #[must_use] #[inline]
+            pub fn asinh_series(x: $f, terms: $ue) -> $f {
+                let sqrt = Self::sqrt_nr(x * x + 1.0);
+                Self::ln_series(x + sqrt, terms)
+            }
+
+            /// Computes the inverse hyperbolic cosine using the natural logarithm definition.
+            ///
+            /// $$ \text{acosh}(x) = \ln(x + \sqrt{x^2 - 1}) $$
+            ///
+            /// See also [`ln_series_terms`][Self::ln_series_terms].
+            #[must_use] #[inline]
+            pub fn acosh_series(x: $f, terms: $ue) -> $f {
+                if x < 1.0 {
+                    $f::NAN
+                } else {
+                    let sqrt = Self::sqrt_nr(x * x - 1.0);
+                    Self::ln_series(x + sqrt, terms)
+                }
+            }
+
+            /// Computes the inverse hyperbolic tangent using the natural logarithm definition.
+            ///
+            /// $$ \text{atanh}(x) = \frac{1}{2} \ln\left(\frac{1 + x}{1 - x}\right) $$
+            ///
+            /// See also [`ln_series_terms`][Self::ln_series_terms].
+            #[must_use] #[inline]
+            pub fn atanh_series(x: $f, terms: $ue) -> $f {
+                if x >= 1.0 {
+                    $f::INFINITY
+                } else if x <= -1.0 {
+                    $f::NEG_INFINITY
+                } else {
+                    0.5 * Self::ln_series((1.0 + x) / (1.0 - x), terms)
+                }
             }
 
             /// Returns the clamped value, ignoring `NaN`.

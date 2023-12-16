@@ -193,22 +193,37 @@ pub trait FloatExt: Sized {
     fn exp_m1(self) -> Self;
 
     /// The natural logarithm of `self`.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`ln_series`][Fp::ln_series]
+    /// with [`ln_series_terms`][Fp::ln_series_terms].
     #[must_use]
     fn ln(self) -> Self;
 
     /// The natural logarithm of `self` plus 1, more accurately.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`ln_1p_series`][Fp::ln_1p_series]
+    /// with [`ln_series_terms`][Fp::ln_series_terms].
     #[must_use]
     fn ln_1p(self) -> Self;
 
     /// The logarithm of `self` with respect to an arbitrary `base`.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`log_series`][Fp::log_series]
+    /// with [`ln_series_terms`][Fp::ln_series_terms].
     #[must_use]
     fn log(self, base: Self) -> Self;
 
     /// The base 2 logarithm of `self`.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`log2_series`][Fp::log2_series]
+    /// with [`ln_series_terms`][Fp::ln_series_terms].
     #[must_use]
     fn log2(self) -> Self;
 
     /// The base 10 logarithm of `self`.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`log10_series`][Fp::log10_series]
+    /// with [`ln_series_terms`][Fp::ln_series_terms].
     #[must_use]
     fn log10(self) -> Self;
 
@@ -296,22 +311,25 @@ pub trait FloatExt: Sized {
     #[must_use]
     fn tanh(self) -> Self;
 
-    /// The inverse hyperbolic sine.
+    /// The inverse hyperbolic sine of `self`.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`asinh_series`][Fp::asinh_series]
+    /// with [`ln_series_terms`][Fp::ln_series_terms].
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn asinh(self) -> Self;
 
-    /// The inverse hyperbolic cosine.
+    /// The inverse hyperbolic cosine of `self`.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`acosh_series`][Fp::acosh_series]
+    /// with [`ln_series_terms`][Fp::ln_series_terms].
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn acosh(self) -> Self;
 
-    /// The inverse hyperbolic tangent.
+    /// The inverse hyperbolic tangent of `self`.
+    ///
+    /// With both `std` and `libm` disabled it leverages [`atanh_series`][Fp::atanh_series]
+    /// with [`ln_series_terms`][Fp::ln_series_terms].
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn atanh(self) -> Self;
 
     /// The clamped value, ignoring `NaN`.
@@ -554,17 +572,20 @@ macro_rules! impl_float_ext {
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
             fn tanh(self) -> Self { Fp::<$f>::tanh_series(self, Fp::<$f>::exp_series_terms(self)) }
 
-            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn asinh(self) -> Self { Fp::<$f>::asinh(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn asinh(self) -> Self { Fp::<$f>::asinh_series(self, Fp::<$f>::exp_series_terms(self)) }
 
-            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn acosh(self) -> Self { Fp::<$f>::acosh(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn acosh(self) -> Self { Fp::<$f>::acosh_series(self, Fp::<$f>::exp_series_terms(self)) }
 
-            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn atanh(self) -> Self { Fp::<$f>::atanh(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn atanh(self) -> Self { Fp::<$f>::atanh_series(self, Fp::<$f>::exp_series_terms(self)) }
 
             #[inline(always)]
             fn clamp(self, min: Self, max: Self) -> Self { Fp::<$f>::clamp(self, min, max) }
