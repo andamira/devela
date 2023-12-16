@@ -1,8 +1,10 @@
-// devela::math::ops::float::fp_any
+// devela::math::ops::float::fp_common
 
 use super::Fp;
 use crate::meta::iif;
 
+// Implements methods independently of any features
+//
 // $f: the floating-point type.
 // $ue: unsigned int type with the same bit-size.
 // $ie: the integer type for integer exponentiation.
@@ -37,6 +39,23 @@ macro_rules! custom_impls {
             /// Returns `true` if `x` is negative.
             #[must_use] #[inline]
             pub fn is_sign_negative(x: $f) -> bool { <$f>::is_sign_negative(x) }
+
+            /// Computes `(x * mul + add)` normally.
+            #[must_use] #[inline]
+            pub fn mul_add_fallback(x: $f, mul: $f, add: $f) -> $f { x * mul + add }
+
+            /// The euclidean division.
+            #[must_use] #[inline]
+            pub fn div_euclid(x: $f, y: $f) -> $f {
+                let q = Self::trunc(x / y);
+                iif![x % y < 0.0; return iif![y > 0.0; q - 1.0; q + 1.0]]; q
+            }
+
+            /// The least nonnegative remainder of `x` % `y`.
+            #[must_use] #[inline]
+            pub fn rem_euclid(x: $f, y: $f) -> $f {
+                let r = x % y; iif![r < 0.0; r + Self::abs(y); r]
+            }
 
             /// Raises `x` to the `y` floating point power using the Taylor series via the
             /// `exp` and `ln` functins.

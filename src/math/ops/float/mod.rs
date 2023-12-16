@@ -117,10 +117,9 @@ mod _std {
         copysign = copysign: magnitude, sign;
         "Fused multiply-add. Computes (x * y) + z with only one rounding error."
         mul_add = mul_add: x, y, z;
-        "The euclidean division."
-        div_euclid = div_euclid: x, y;
-        "The least nonnegative remainder of `x` % `y`."
-        rem_euclid = rem_euclid: x, y;
+        // implemented manually for all:
+        // div_euclid = div_euclid: x, y;
+        // rem_euclid = rem_euclid: x, y;
         "Raises `x` to the `p` floating point power."
         powf = powf: x, p;
         // powi
@@ -343,19 +342,6 @@ mod _libm {
                 #[must_use] #[inline]
                 pub fn signum(x: $f) -> $f {
                     iif![x.is_nan(); <$f>::NAN; Libm::<$f>::copysign(1.0, x)]
-                }
-
-                /// The euclidean division.
-                #[must_use] #[inline]
-                pub fn div_euclid(x: $f, y: $f) -> $f {
-                    let q = Self::trunc(x / y);
-                    iif![x % y < 0.0; return iif![y > 0.0; q - 1.0; q + 1.0]]; q
-                }
-
-                /// The least nonnegative remainder of `x` % `y`.
-                #[must_use] #[inline]
-                pub fn rem_euclid(x: $f, y: $f) -> $f {
-                    let r = x % y; iif![r < 0.0; r + Self::abs(y); r]
                 }
 
                 /// Raises `x` to the `p` integer power.

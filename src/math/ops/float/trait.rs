@@ -48,8 +48,10 @@ pub trait FloatExt: Sized {
     /// \text{round\\_ties\\_even}(x) = \begin{cases}
     /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \cr
     /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor < 0.5 \cr
-    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and } \lfloor x \rfloor \text{ is even} \cr
-    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and } \lfloor x \rfloor \text{ is odd}
+    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and }
+    ///     \lfloor x \rfloor \text{ is even} \cr
+    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and }
+    ///     \lfloor x \rfloor \text{ is odd}
     /// \end{cases}
     /// $$
     #[must_use]
@@ -61,8 +63,10 @@ pub trait FloatExt: Sized {
     /// \text{round\\_ties\\_odd}(x) = \begin{cases}
     /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \cr
     /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor < 0.5 \cr
-    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and } \lfloor x \rfloor \text{ is odd} \cr
-    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and } \lfloor x \rfloor \text{ is even}
+    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and }
+    ///     \lfloor x \rfloor \text{ is odd} \cr
+    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and }
+    ///     \lfloor x \rfloor \text{ is even}
     /// \end{cases}
     /// $$
     #[must_use]
@@ -112,21 +116,18 @@ pub trait FloatExt: Sized {
     fn copysign(self, sign: Self) -> Self;
 
     /// Fused multiply-add. Computes `(self * mul) + add` with only one rounding error.
+    ///
+    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// otherwise it uses [`mul_add_fallback`][Fp::mul_add_fallback].
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn mul_add(self, mul: Self, add: Self) -> Self;
 
     /// The euclidean division.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn div_euclid(self, rhs: Self) -> Self;
 
     /// The least nonnegative remainder of `self % rhs`.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn rem_euclid(self, rhs: Self) -> Self;
 
     /// Raises `self` to the `y` floating point power.
@@ -422,19 +423,17 @@ macro_rules! impl_float_ext {
             #[inline(always)]
             fn copysign(self, sign: Self) -> Self { Fp::<$f>::copysign(self, sign) }
 
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn mul_add(self, mul: Self, add: Self) -> Self { Fp::<$f>::mul_add(self, mul, add) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn mul_add(self, mul: Self, add: Self) -> Self {
+                Fp::<$f>::mul_add_fallback(self, mul, add)
+            }
 
             #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn div_euclid(self, rhs: Self) -> Self { Fp::<$f>::div_euclid(self, rhs) }
 
             #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
             fn rem_euclid(self, rhs: Self) -> Self { Fp::<$f>::rem_euclid(self, rhs) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
