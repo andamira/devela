@@ -192,32 +192,24 @@ pub trait FloatExt: Sized {
     #[must_use]
     fn exp_m1(self) -> Self;
 
-    /// The natural logarithm.
+    /// The natural logarithm of `self`.
     #[must_use]
     fn ln(self) -> Self;
 
-    /// The natural logarithm plus 1, more accurately.
+    /// The natural logarithm of `self` plus 1, more accurately.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn ln_1p(self) -> Self;
 
-    /// The logarithm of the number with respect to an arbitrary `base`.
+    /// The logarithm of `self` with respect to an arbitrary `base`.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn log(self, base: Self) -> Self;
 
-    /// The base 2 logarithm.
+    /// The base 2 logarithm of `self`.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn log2(self) -> Self;
 
-    /// The base 10 logarithm.
+    /// The base 10 logarithm of `self`.
     #[must_use]
-    #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
     fn log10(self) -> Self;
 
     /// The factorial.
@@ -470,25 +462,27 @@ macro_rules! impl_float_ext {
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
             fn ln(self) -> Self { Fp::<$f>::ln_series(self, Fp::<$f>::ln_series_terms(self)) }
 
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn ln_1p(self) -> Self { Fp::<$f>::ln_1p(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn ln_1p(self) -> Self { Fp::<$f>::ln_1p_series(self, Fp::<$f>::ln_series_terms(self)) }
 
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn log(self, base: Self) -> Self { Fp::<$f>::log(self, base) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn log(self, base: Self) -> Self {
+                Fp::<$f>::log_series(self, base, Fp::<$f>::ln_series_terms(self))
+            }
 
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn log2(self) -> Self { Fp::<$f>::log2(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn log2(self) -> Self { Fp::<$f>::log2_series(self, Fp::<$f>::ln_series_terms(self)) }
 
-            #[inline(always)]
-            #[cfg(any(feature = "std", feature = "libm"))] // IMPROVE
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "std", feature = "libm"))))]
+            #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn log10(self) -> Self { Fp::<$f>::log10(self) }
+            #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
+            fn log10(self) -> Self { Fp::<$f>::log10_series(self, Fp::<$f>::ln_series_terms(self)) }
 
             #[inline(always)]
             fn factorial(a: $ue) -> Self { Fp::<$f>::factorial(a) }

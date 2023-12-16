@@ -233,23 +233,87 @@ macro_rules! custom_impls {
             /// \ln(x) = 2 \left( \frac{x-1}{x+1} + \frac{1}{3} \left( \frac{x-1}{x+1} \right)^3 +
             /// \frac{1}{5} \left( \frac{x-1}{x+1} \right)^5 + \cdots \right)
             /// $$
+            ///
+            /// See also [`ln_series_terms`][Self::ln_series_terms].
             #[must_use] #[inline]
             pub fn ln_series(x: $f, terms: $ue) -> $f {
-                if x == 0.0 {
-                    return $f::NEG_INFINITY;
-                } else if x == -0.0 {
-                    return $f::INFINITY;
-                } else if x < 0.0 {
-                    return 1.0 / Self::ln_series(-x, terms);
+                if x < 0.0 {
+                    $f::NAN
+                } else if x > 0.0 {
+                    let mut sum = 0.0;
+                    let y = (x - 1.0) / (x + 1.0);
+                    let mut y_pow = y;
+                    for i in 0..terms {
+                        sum += y_pow / (2 * i + 1) as $f;
+                        y_pow *= y * y;
+                    }
+                    2.0 * sum
+                } else {
+                    $f::NEG_INFINITY
                 }
-                let mut sum = 0.0;
-                let y = (x - 1.0) / (x + 1.0);
-                let mut y_pow = y;
-                for i in 0..terms {
-                    sum += y_pow / (2 * i + 1) as $f;
-                    y_pow *= y * y;
+            }
+
+            /// Computes the natural logarithm of `1 + x` using a Taylor-Mercator series expansion.
+            ///
+            /// This method is more efficient for values of `x` near 0. Values too
+            /// small or too big could be impractical to calculate with precision.
+            ///
+            /// Returns `ln(1+x)` more accurately than if the operations were performed separately.
+            ///
+            /// See also [`ln_series_terms`][Self::ln_series_terms].
+            #[must_use] #[inline]
+            pub fn ln_1p_series(x: $f, terms: $ue) -> $f {
+                if x < -1.0 {
+                    $f::NAN
+                } else if x > -1.0 {
+                    let x1 = x + 1.0;
+                    let mut sum = 0.0;
+                    let y = (x1 - 1.0) / (x1 + 1.0);
+                    let mut y_pow = y;
+                    for i in 0..terms {
+                        sum += y_pow / (2 * i + 1) as $f;
+                        y_pow *= y * y;
+                    }
+                    2.0 * sum
+                } else {
+                    $f::NEG_INFINITY
                 }
-                2.0 * sum
+            }
+
+            /// Computes the logarithm of `x` to the given `base` using the change of base formula.
+            ///
+            /// $$ \log_{\text{base}}(x) = \frac{\ln(x)}{\ln(\text{base})} $$
+            ///
+            /// See also [`ln_series_terms`][Self::ln_series_terms].
+            #[must_use] #[inline]
+            pub fn log_series(x: $f, base: $f, terms: $ue) -> $f {
+                if base <= 0.0 {
+                    $f::NAN
+                } else if base == 1.0 {
+                    iif![x == 1.0; $f::NAN; $f::NEG_INFINITY]
+                } else {
+                    Self::ln_series(x, terms) / Self::ln_series(base, terms)
+                }
+            }
+
+            /// Computes the base-2 logarithm of `x` using the change of base formula.
+            ///
+            /// $$ \log_{2}(x) = \frac{\ln(x)}{\ln(2)} $$
+            ///
+            /// See also [`ln_series_terms`][Self::ln_series_terms].
+            #[must_use] #[inline]
+            pub fn log2_series(x: $f, terms: $ue) -> $f {
+                Self::ln_series(x, terms) / Self::ln_series(2.0, terms)
+            }
+
+            /// Computes the base-10 logarithm of `x` using the change of base formula.
+            ///
+            /// $$ \log_{10}(x) = \frac{\ln(x)}{\ln(10)} $$
+            ///
+            /// See also [`ln_series_terms`][Self::ln_series_terms].
+            #[must_use] #[inline]
+            pub fn log10_series(x: $f, terms: $ue) -> $f {
+                Self::ln_series(x, terms) / Self::ln_series(10.0, terms)
             }
 
             /// Determines the number of terms needed for [`exp2_series`][Self::exp2_series]
@@ -716,11 +780,12 @@ impl Fp<f32> {
         } else if x <= 1_000. { 1_923
         } else if x <= 10_000. { 12_578
         } else if x <= 100_000. { 81_181
-        } else if x <= 1_000_000. { 568_267 // from now one prev * 7 …
-        } else if x <= 10_000_000. { 3_977_869
-        } else if x <= 100_000_000. { 27_845_083
-        // } else if x <= 1_000_000_000. { 194_915_581
-        } else { 194_915_581 }
+        } else if x <= 1_000_000. { 405_464
+        } else if x <= 10_000_000. { 2_027_320 // from now one prev * 5 …
+        } else if x <= 100_000_000. { 10_136_600
+        } else if x <= 1_000_000_000. { 50_683_000
+        } else { 253_415_000 }
+
         // 32 * 8 = 256
         // 245 * 8 = 1960
         // 1923 * 8 = 15384
@@ -730,6 +795,7 @@ impl Fp<f32> {
         // 245 * 7 = 1715
         // 1923 * 7 = 13461
         // 12578 * 7 = 88046
+        // 81181 * 5 = 405905
     }
 }
 #[rustfmt::skip]
