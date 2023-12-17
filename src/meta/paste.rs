@@ -63,6 +63,7 @@
 /// ```
 /// ---
 /// ---
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "meta")))]
 #[macro_export]
 macro_rules! paste {
     ($($tt:tt)*) => {

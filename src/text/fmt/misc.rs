@@ -15,7 +15,7 @@ use core::{
     str::{from_utf8, from_utf8_unchecked},
 };
 
-/// A more *`c`ompact [`dbg!`]*. Uses `{:?}` instead of `{:#?}` for formatting.
+/// A more *`c`ompact [`dbg!`]* using `{:?}` instead of `{:#?}` for formatting.
 ///
 /// # Examples
 /// ```

@@ -59,6 +59,7 @@ pub type NoNum = ();
 /// result when a result is possible.
 ///
 /// See also [`NumRef`] that is intended to be implemented for `Num` references.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "math")))]
 #[rustfmt::skip]
 #[allow(unused_variables)]
 pub trait Num {
@@ -193,6 +194,7 @@ pub trait Num {
 /// implemented for exclusive references (&mut).
 ///
 /// See also [`Num`] which is intended to be implemented for the owned type.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "math")))]
 #[rustfmt::skip]
 #[allow(unused_variables)]
 pub trait NumRef<'a> where Self: Deref<Target = Self::Own> {

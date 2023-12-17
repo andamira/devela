@@ -22,6 +22,7 @@ impl<T> private::Sealed for Option<T> {}
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
 // - https://crates.io/crates/option-ext/0.2.0 by Simon Ochsenreither.
 // - https://crates.io/crates/opt_reduce/1.0.0 by Waffle Lapkin.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
 pub trait OptionExt<T>: private::Sealed {
     /// Returns `true` if the option is a [`Some`] value containing the given value.
     ///

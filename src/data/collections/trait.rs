@@ -19,6 +19,7 @@ use crate::data::{DataErrors as E, DataResult as Result};
 ///
 /// By default returns [`NotImplemented`][E::NotImplemented] for every method.
 #[rustfmt::skip] #[allow(unused_variables)]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub trait DataCollection {
     /// The element type of the collection.
     type Element;

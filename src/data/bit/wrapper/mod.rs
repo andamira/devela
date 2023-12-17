@@ -12,6 +12,7 @@ mod tests;
 ///
 /// See also [`BitOps`][super::BitOps] for the equivalent trait.
 #[repr(transparent)]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub struct Biting<T>(pub T);
 
 #[rustfmt::skip]

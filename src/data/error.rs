@@ -4,11 +4,13 @@
 //
 
 /// A data-related result.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub type DataResult<T> = core::result::Result<T, DataErrors>;
 
 /// A data-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub enum DataErrors {
     /// The requested data-related functionality is not implemented.
     NotImplemented,

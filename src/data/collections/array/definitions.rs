@@ -19,6 +19,7 @@ use crate::mem::Boxed;
 /* types */
 
 /// A generic array backed by the core [`array`] primitive.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub struct Array<T, S: Storage, const LEN: usize> {
     pub(crate) array: S::Stored<[T; LEN]>,
 }
@@ -26,9 +27,11 @@ pub struct Array<T, S: Storage, const LEN: usize> {
 /// An [`Array`] stored in the heap.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub type BoxedArray<T, const LEN: usize> = Array<T, Boxed, LEN>;
 
 /// An [`Array`] stored in the stack.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub type DirectArray<T, const LEN: usize> = Array<T, (), LEN>;
 
 /* trait */
@@ -36,6 +39,7 @@ pub type DirectArray<T, const LEN: usize> = Array<T, (), LEN>;
 /// An abstract Array.
 ///
 /// - <https://en.wikipedia.org/wiki/Array_(data_type)#Abstract_arrays>
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub trait DataArray: DataCollection {
     /// Returns an immutable reference to the element at the specified `index`.
     fn array_ref_get(&self, index: usize) -> Result<&<Self as DataCollection>::Element>;

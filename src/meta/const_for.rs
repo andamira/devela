@@ -78,6 +78,7 @@
 /// });
 /// assert!(v == vec![8, 4, 0])
 /// ```
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "meta")))]
 #[macro_export]
 macro_rules! cfor {
     ($var:ident in ($range:expr).step_by($step:expr) $body:block) => {

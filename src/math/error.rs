@@ -4,9 +4,11 @@
 //
 
 /// A mathematical result.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "math")))]
 pub type MathResult<T> = core::result::Result<T, MathErrors>;
 
 /// A mathematical error.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "math")))]
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum MathErrors {

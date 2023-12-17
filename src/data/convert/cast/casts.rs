@@ -20,6 +20,7 @@ use E::{Overflow, Underflow};
 /// # Errors
 /// Checked methods will return [`Overflow`] or [`Underflow`] if `self` value can't fit
 /// in the returned type.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub trait CastPrimitives {
     /// Casts `self` to `u8` with range check.
     fn checked_cast_to_u8(self) -> Result<u8>;

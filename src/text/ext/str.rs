@@ -22,6 +22,7 @@ mod private {
 }
 
 /// Extension trait providing additional methods for [`&str`].
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
 pub trait StrExt: private::Sealed {
     /// Repeats a string a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.

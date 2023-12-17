@@ -13,6 +13,7 @@ use crate::meta::paste;
 /// Offers methods to split a primitive into an array of smaller primitives.
 ///
 /// See also [`FromPrimitives`][super::FromPrimitives].
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub trait IntoPrimitives<T, const LEN: usize> {
     /// Splits `self` into an array of `T` in big-endian order.
     #[must_use]

@@ -37,6 +37,7 @@ pub use {alias::*, r#trait::*};
 ///
 /// See also the [`FloatOps`] trait.
 #[derive(Debug, Clone, Copy)]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "math")))]
 pub struct Floating<T>(core::marker::PhantomData<T>);
 
 // macro helper for implementing methods for `Floating`, from either `libm` or `std`.

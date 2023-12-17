@@ -20,6 +20,7 @@ use crate::meta::paste;
 ///   ignore the extra elements.
 ///
 /// See also [`IntoPrimitives`][super::IntoPrimitives].
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub trait FromPrimitives<T, U, const LEN: usize> {
     /// Constructs a primitive `T` from an array of `U` in big-endian order.
     #[must_use]

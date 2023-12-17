@@ -23,6 +23,7 @@ impl<T> private::Sealed for Vec<T> {}
 /// Extension trait providing additional methods for [`&[T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub trait SliceExt<T>: private::Sealed {
     /* split */
 
@@ -70,6 +71,7 @@ pub trait SliceExt<T>: private::Sealed {
 /// Extension trait providing additional methods for [`&mut [T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub trait SliceExtMut<T>: private::Sealed + SliceExt<T> {
     /* split */
 

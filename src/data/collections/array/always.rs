@@ -5,7 +5,7 @@
 
 #![allow(unused)]
 
-/// Initializes a `[$T; $LEN]` array safely or unsafely.
+/// Initializes a `[$T; $LEN]` array in multiple ways.
 ///
 /// # Macro arms
 /// - `safe_init`: safe array initialization in the stack with an `$init` expression.
@@ -53,6 +53,7 @@
 ///
 /// For `clone`, `default` and `iter` versions, uf the given `$unsafe_feature`
 /// is enabled it will use unsafe initialization.
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 #[macro_export]
 macro_rules! array_init {
     // Safe array initialization in the stack

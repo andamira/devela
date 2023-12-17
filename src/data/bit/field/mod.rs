@@ -40,6 +40,7 @@ mod tests;
 /// let b = MyBf::new_zeroed();
 /// assert![b.is_empty()];
 /// ```
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 #[macro_export]
 macro_rules! bitfield {
     { // with explicit visibility qualifiers

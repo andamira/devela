@@ -12,6 +12,7 @@
 ///
 /// let byte = Direct::new(0_u8);
 /// ```
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub struct Direct<T>(pub T);
 
 impl<T> Direct<T> {
