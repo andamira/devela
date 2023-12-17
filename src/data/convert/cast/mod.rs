@@ -17,4 +17,4 @@ pub use {casts::*, join::*, split::*};
 /// It implements the same methods as the [`CastPrimitives`], [`FromPrimitives`],
 /// and [`IntoPrimitives`] traits.
 #[repr(transparent)]
-pub struct Cast<T>(pub T);
+pub struct Casting<T>(pub T);

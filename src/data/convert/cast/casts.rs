@@ -7,7 +7,7 @@
 // - trait and wrapper implementation
 // - functions definitions
 
-use super::Cast;
+use super::Casting;
 use crate::{
     data::{DataErrors as E, DataResult as Result},
     meta::{iif, paste},
@@ -83,7 +83,7 @@ pub trait CastPrimitives {
     fn saturating_cast_to_isize(self) -> isize;
 }
 
-// Implements the public casting methods for the trait and Cast wrapper
+// Implements the public casting methods for the trait and Casting wrapper
 macro_rules! impl_cast_methods {
     ($($t:ty),+) => { $( impl_cast_methods![@$t]; )+ };
     (@$t:ty) => { paste! {
@@ -143,7 +143,7 @@ macro_rules! impl_cast_methods {
         /// # Errors
         /// Checked methods will return [`Overflow`] or [`Underflow`] if `self` value can't fit
         /// in the returned type.
-        impl Cast<$t> {
+        impl Casting<$t> {
             #[doc = "Casts from `" $t "` to `u8` with range check."]
             #[inline(always)]
             pub const fn checked_cast_to_u8(self) -> Result<u8> {
