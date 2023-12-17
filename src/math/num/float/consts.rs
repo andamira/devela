@@ -2,7 +2,7 @@
 //
 // - https://en.wikipedia.org/wiki/List_of_mathematical_constants
 
-use super::Fp;
+use super::Floating;
 
 // impl technical constants
 //
@@ -17,7 +17,7 @@ macro_rules! technical_const_impls {
      [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal]
      ) => { $crate::meta::paste! {
         #[allow(unused)]
-        impl Fp<$f> {
+        impl Floating<$f> {
             // Bias value used in the exponent to allow representation of both positive
             // and negative exponents.
             pub(super) const BIAS: u32 = $bias;
@@ -55,7 +55,7 @@ macro_rules! math_const_impls {
     (@$f:ty) => { $crate::meta::paste! {
         /// # *Mathematical constants*.
         #[allow(clippy::excessive_precision)] // 36 decimal points
-        impl Fp<$f> {
+        impl Floating<$f> {
             /* π related */
 
             /// $ π $ the ratio of the circumference to the diameter $ = \frac{1}{2} τ = 180º $

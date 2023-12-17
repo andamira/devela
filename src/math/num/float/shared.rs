@@ -1,6 +1,6 @@
-// devela::math::ops::float::fp_common
+// devela::math::ops::float::shared
 
-use super::Fp;
+use super::Floating;
 use crate::meta::iif;
 
 // Implements methods independently of any features
@@ -14,7 +14,7 @@ macro_rules! custom_impls {
         /// # *Common implementations with or without `std` or `libm`*.
         ///
         /// Total order const fns will only be `const` if the `unsafe_math` feature is enabled.
-        impl Fp<$f> {
+        impl Floating<$f> {
             /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
             // WAIT: https://github.com/rust-lang/rust/issues/96710
             #[must_use] #[inline]
@@ -787,7 +787,7 @@ custom_impls![(f32, u32, i32), (f64, u32, i32)];
 /* private helpers */
 
 #[rustfmt::skip]
-impl Fp<f32> {
+impl Floating<f32> {
     #[must_use] #[inline]
     pub(super) fn asin_acos_series_terms_f32(x: f32) -> u32 {
         let abs_a = Self::abs(x);
@@ -861,7 +861,7 @@ impl Fp<f32> {
     }
 }
 #[rustfmt::skip]
-impl Fp<f64> {
+impl Floating<f64> {
     #[must_use] #[inline]
     pub(super) fn asin_acos_series_terms_f64(x: f64) -> u32 {
         let abs_a = Self::abs(x);

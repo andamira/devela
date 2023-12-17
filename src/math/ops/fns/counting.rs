@@ -11,7 +11,7 @@
 //   - permute_rep
 
 use crate::{
-    data::convert::*,
+    data::convert::Casting,
     math::{MathErrors as E, MathResult as Result},
     meta::{cfor, iif, paste},
 };
@@ -116,7 +116,7 @@ macro_rules! impl_ops {
         #[inline]
         pub const fn [<permute_rep_ $t>](n: $t, r: $t) -> Result<$t> {
             iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
-            let r_u32 = if let Ok(res) = Cast(r).checked_cast_to_u32() {
+            let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
                 res
             } else {
                 return Err(E::Overflow);
@@ -292,7 +292,7 @@ macro_rules! impl_ops {
         /// ```
         #[inline]
         pub const fn [<permute_rep_ $t>](n: $t, r: $t) -> Result<$t> {
-            let r_u32 = if let Ok(res) = Cast(r).checked_cast_to_u32() {
+            let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
                 res
             } else {
                 return Err(E::Overflow);

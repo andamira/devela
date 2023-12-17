@@ -3,8 +3,8 @@
 //! Floating point wrapper.
 //
 // TOC
-// - define Fp struct
-// - implement Fp methods
+// - define Floating struct
+// - implement Floating methods
 //   - when std is enabled
 //   - when libm is enabled
 //   - when neither std or libm are enabled
@@ -12,39 +12,40 @@
 #![cfg_attr(not(feature = "math"), allow(unused))]
 
 mod alias;
-mod fp_common;
+mod shared;
 mod r#trait;
 
 mod consts;
 
 pub use {alias::*, r#trait::*};
 
-/// Floating-point operations wrapper that can leverage `std` or `libm`.
+/// Provides floating-point operations for `T`.
 ///
-/// It favors `std` style for method's names, but changes a few like `minimum`
-/// for `min_nan` and `maximum` for `max_nan`.
+/// It leverages `std` or `libm` if enabled, otherwise uses fallbacks implementations.
+/// It also favors `std` style for method's names, but changes a few like `minimum`
+/// for `min_nan` and `maximum` for `max_nan`, for consistency.
 ///
 /// If both the `libm` and `std` features are enabled the `libm` functions will
 /// be used, since it contains more functions, namely:
-/// - Gamma functions: [`gamma`][Fp#method.gamma], [`lgamma`][Fp#method.lgamma],
-///   [`lgamma_r`][Fp#method.lgamma_r].
+/// - Gamma functions: [`gamma`][Floating#method.gamma], [`lgamma`][Floating#method.lgamma],
+///   [`lgamma_r`][Floating#method.lgamma_r].
 /// - Bessel functions:
-///   [`j0`][Fp#method.j0], [`j1`][Fp#method.j1], [`jn`][Fp#method.jn],
-///   [`y0`][Fp#method.y0], [`y1`][Fp#method.y1], [`yn`][Fp#method.yn].
-/// - Error functions: [`erf`][Fp#method.erf], [`erfc`][Fp#method.erfc].
-/// - [`exp10`][Fp#method.exp10].
+///   [`j0`][Floating#method.j0], [`j1`][Floating#method.j1], [`jn`][Floating#method.jn],
+///   [`y0`][Floating#method.y0], [`y1`][Floating#method.y1], [`yn`][Floating#method.yn].
+/// - Error functions: [`erf`][Floating#method.erf], [`erfc`][Floating#method.erfc].
+/// - [`exp10`][Floating#method.exp10].
 ///
 /// See also the [`FloatExt`] trait.
 #[derive(Debug, Clone, Copy)]
-pub struct Fp<T>(core::marker::PhantomData<T>);
+pub struct Floating<T>(core::marker::PhantomData<T>);
 
-// macro helper for implementing methods for `Fp`, from either `libm` or `std`.
+// macro helper for implementing methods for `Floating`, from either `libm` or `std`.
 //
 // $lib: the library to use.
 // $f: the floating-point type to support.
 // $doc: an optional documentation string.
 // $opfn: the original operation function name.
-// $op: the new operation function name in Fp.
+// $op: the new operation function name in Floating.
 #[cfg(any(feature = "libm", feature = "std"))]
 macro_rules! impl_fp {
     // Matches a wildcard floating-point type (f*).
@@ -54,10 +55,10 @@ macro_rules! impl_fp {
         impl_fp![$lib : f64 : $($ops)*];
     };
     // Matches a specific floating-point type and any number of operations.
-    // Generates the impl block for Fp<$f> and calls the matching implementation.
+    // Generates the impl block for Floating<$f> and calls the matching implementation.
     ($lib:ident : $f:ty : $($ops:tt)*) => { $crate::meta::paste! {
         #[doc = "# *This implementation block leverages the `" $lib "` feature.*"]
-        impl Fp<$f> {
+        impl Floating<$f> {
             impl_fp![@$lib : $f : $($ops)*];
         }
     }};
@@ -89,7 +90,7 @@ use impl_fp;
 
 #[cfg(all(not(feature = "libm"), feature = "std"))]
 mod _std {
-    use super::{impl_fp, Fp};
+    use super::{impl_fp, Floating};
     // custom implementations are commented out:
     impl_fp![std:f*:
        r"The largest integer less than or equal to `x`.
@@ -191,7 +192,7 @@ mod _std {
         ($( ($f:ty, $e:ty) ),+) => { $( custom_impls![@$f, $e]; )+ };
         (@$f:ty, $e:ty) => {
             /// # *Implementations using the `std` feature*.
-            impl Fp<$f> {
+            impl Floating<$f> {
                 /// Raises `x` to the `p` integer power.
                 #[inline(always)]
                 pub fn powi(x: $f, p: $e) -> $f { <$f>::powi(x, p) }
@@ -214,7 +215,7 @@ mod _std {
 
 #[cfg(feature = "libm")]
 mod _libm {
-    use super::{impl_fp, Fp};
+    use super::{impl_fp, Floating};
     use crate::{_dep::libm::Libm, meta::iif};
     // custom implementations are commented out
     impl_fp![libm:f*:
@@ -326,7 +327,7 @@ mod _libm {
         ($( ($f:ty, $e:ty) ),+) => { $( custom_impls![@$f, $e]; )+ };
         (@$f:ty, $e:ty) => {
             /// # *Implementations using the `libm` feature*.
-            impl Fp<$f> {
+            impl Floating<$f> {
                 /// The fractional part of `x`.
                 ///
                 /// $$ \text{fract}(x) = x - \lfloor x \rfloor $$
@@ -395,7 +396,7 @@ mod _libm {
 
 #[cfg(all(not(feature = "libm"), not(feature = "std")))]
 mod _no_std_no_libm {
-    use super::Fp;
+    use super::Floating;
     use crate::meta::iif;
 
     // $f: the floating-point type.
@@ -405,7 +406,7 @@ mod _no_std_no_libm {
         ($( ($f:ty, $ub:ty, $ie:ty) ),+) => { $( custom_impls![@$f, $ub, $ie]; )+ };
         (@$f:ty, $ub:ty, $ie:ty) => { $crate::meta::paste! {
             /// # *Implementations without `std` or `libm`*.
-            impl Fp<$f> {
+            impl Floating<$f> {
                 /// The largest integer less than or equal to `x`.
                 ///
                 /// $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$
@@ -472,9 +473,9 @@ mod _no_std_no_libm {
                 #[must_use] #[inline]
                 pub fn trunc(x: $f) -> $f {
                     let bits = x.to_bits();
-                    const BIAS: $ie = Fp::<$f>::BIAS as $ie;
-                    const SIG_BITS: $ie = Fp::<$f>::SIGNIFICAND_BITS as $ie;
-                    const EXP_MASK: $ub = (1 << Fp::<$f>::EXPONENT_BITS) - 1;
+                    const BIAS: $ie = Floating::<$f>::BIAS as $ie;
+                    const SIG_BITS: $ie = Floating::<$f>::SIGNIFICAND_BITS as $ie;
+                    const EXP_MASK: $ub = (1 << Floating::<$f>::EXPONENT_BITS) - 1;
 
                     #[allow(clippy::cast_possible_wrap)]
                     let exponent = (((bits >> SIG_BITS) & EXP_MASK) as $ie) - BIAS;

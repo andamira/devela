@@ -1,12 +1,12 @@
 // devela::math::ops::float::trait
 
-use super::Fp;
+use super::Floating;
 
 /// Extension trait for floating-point types.
 ///
-/// This trait is normally more convenient to use than the [`Fp`] struct.
+/// This trait is normally more convenient to use than the [`Floating`] struct.
 ///
-/// `Fp` has a few more methods implemented if the `libm` feature is enabled,
+/// `Floating` has a few more methods implemented if the `libm` feature is enabled,
 /// and some of the methods are const if the `unsafe_math` feature is enabled.
 ///
 /// Many methods are only available if either the `std` or `libm` features are enabled.
@@ -118,7 +118,7 @@ pub trait FloatExt: Sized {
     /// Fused multiply-add. Computes `(self * mul) + add` with only one rounding error.
     ///
     /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it uses [`mul_add_fallback`][Fp::mul_add_fallback].
+    /// otherwise it uses [`mul_add_fallback`][Floating::mul_add_fallback].
     #[must_use]
     fn mul_add(self, mul: Self, add: Self) -> Self;
 
@@ -141,7 +141,7 @@ pub trait FloatExt: Sized {
     /// The square root.
     ///
     /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`sqrt_nr`][Fp::sqrt_nr].
+    /// otherwise it's equal to [`sqrt_nr`][Floating::sqrt_nr].
     #[must_use]
     fn sqrt(self) -> Self;
 
@@ -158,14 +158,14 @@ pub trait FloatExt: Sized {
     /// The cubic root.
     ///
     /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`cbrt_nr`][Fp::cbrt_nr].
+    /// otherwise it's equal to [`cbrt_nr`][Floating::cbrt_nr].
     #[must_use]
     fn cbrt(self) -> Self;
 
     /// The hypothenuse (the euclidean distance).
     ///
     /// With either `std` or `libm` enabled it leverages compiler intrinsics,
-    /// otherwise it's equal to [`hypot_nr`][Fp::hypot_nr].
+    /// otherwise it's equal to [`hypot_nr`][Floating::hypot_nr].
     #[must_use]
     fn hypot(self, rhs: Self) -> Self;
 
@@ -174,57 +174,57 @@ pub trait FloatExt: Sized {
     /// The maximum values with a representable result are:
     /// 88.722… for `f32` and 709.782… for `f64`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp_series`][Fp::exp_series]
-    /// with [`exp_series_terms`][Fp::exp_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`exp_series`][Floating::exp_series]
+    /// with [`exp_series_terms`][Floating::exp_series_terms].
     #[must_use]
     fn exp(self) -> Self;
 
     /// $2^x$.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp2_series`][Fp::exp2_series]
-    /// with [`exp2_series_terms`][Fp::exp2_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`exp2_series`][Floating::exp2_series]
+    /// with [`exp2_series_terms`][Floating::exp2_series_terms].
     #[must_use]
     fn exp2(self) -> Self;
 
     /// The exponential minus 1, more accurately.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp_m1_series`][Fp::exp_m1_series]
-    /// with [`exp_series_terms`][Fp::exp_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`exp_m1_series`][Floating::exp_m1_series]
+    /// with [`exp_series_terms`][Floating::exp_series_terms].
     #[must_use]
     fn exp_m1(self) -> Self;
 
     /// The natural logarithm of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`ln_series`][Fp::ln_series]
-    /// with [`ln_series_terms`][Fp::ln_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`ln_series`][Floating::ln_series]
+    /// with [`ln_series_terms`][Floating::ln_series_terms].
     #[must_use]
     fn ln(self) -> Self;
 
     /// The natural logarithm of `self` plus 1, more accurately.
     ///
-    /// With both `std` and `libm` disabled it leverages [`ln_1p_series`][Fp::ln_1p_series]
-    /// with [`ln_series_terms`][Fp::ln_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`ln_1p_series`][Floating::ln_1p_series]
+    /// with [`ln_series_terms`][Floating::ln_series_terms].
     #[must_use]
     fn ln_1p(self) -> Self;
 
     /// The logarithm of `self` with respect to an arbitrary `base`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`log_series`][Fp::log_series]
-    /// with [`ln_series_terms`][Fp::ln_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`log_series`][Floating::log_series]
+    /// with [`ln_series_terms`][Floating::ln_series_terms].
     #[must_use]
     fn log(self, base: Self) -> Self;
 
     /// The base 2 logarithm of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`log2_series`][Fp::log2_series]
-    /// with [`ln_series_terms`][Fp::ln_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`log2_series`][Floating::log2_series]
+    /// with [`ln_series_terms`][Floating::ln_series_terms].
     #[must_use]
     fn log2(self) -> Self;
 
     /// The base 10 logarithm of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`log10_series`][Fp::log10_series]
-    /// with [`ln_series_terms`][Fp::ln_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`log10_series`][Floating::log10_series]
+    /// with [`ln_series_terms`][Floating::ln_series_terms].
     #[must_use]
     fn log10(self) -> Self;
 
@@ -238,98 +238,98 @@ pub trait FloatExt: Sized {
     /// The sine.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`sin_series`][Fp::sin_series] with 8 terms.
+    /// [`sin_series`][Floating::sin_series] with 8 terms.
     #[must_use]
     fn sin(self) -> Self;
 
     /// The cosine.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`cos_series`][Fp::cos_series] with 8 terms.
+    /// [`cos_series`][Floating::cos_series] with 8 terms.
     #[must_use]
     fn cos(self) -> Self;
 
     /// Both the sine and cosine.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`sin_cos_series`][Fp::sin_cos_series] with 8 terms.
+    /// [`sin_cos_series`][Floating::sin_cos_series] with 8 terms.
     #[must_use]
     fn sin_cos(self) -> (Self, Self);
 
     /// The tangent.
     ///
     /// With both `std` and `libm` disabled it leverages
-    /// [`tan_series`][Fp::tan_series] with 8 terms.
+    /// [`tan_series`][Floating::tan_series] with 8 terms.
     #[must_use]
     fn tan(self) -> Self;
 
     /// The arc sine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`asin_series`][Fp::asin_series]
-    /// with [`asin_series_terms`][Fp::asin_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`asin_series`][Floating::asin_series]
+    /// with [`asin_series_terms`][Floating::asin_series_terms].
     #[must_use]
     fn asin(self) -> Self;
 
     /// The arc cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`acos_series`][Fp::acos_series]
-    /// with [`acos_series_terms`][Fp::acos_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`acos_series`][Floating::acos_series]
+    /// with [`acos_series_terms`][Floating::acos_series_terms].
     #[must_use]
     fn acos(self) -> Self;
 
     /// The arc tangent.
     ///
-    /// With both `std` and `libm` disabled it leverages [`atan_series`][Fp::atan_series]
-    /// with [`atan_series_terms`][Fp::atan_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`atan_series`][Floating::atan_series]
+    /// with [`atan_series_terms`][Floating::atan_series_terms].
     #[must_use]
     fn atan(self) -> Self;
 
     /// The arc tangent of two variables.
     ///
-    /// With both `std` and `libm` disabled it leverages [`atan2_series`][Fp::atan2_series]
-    /// with [`atan_series_terms`][Fp::atan_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`atan2_series`][Floating::atan2_series]
+    /// with [`atan_series_terms`][Floating::atan_series_terms].
     #[must_use]
     fn atan2(self, other: Self) -> Self;
 
     /// The hyperbolic sine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`sinh_series`][Fp::sinh_series]
-    /// with [`exp_series_terms`][Fp::exp_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`sinh_series`][Floating::sinh_series]
+    /// with [`exp_series_terms`][Floating::exp_series_terms].
     #[must_use]
     fn sinh(self) -> Self;
 
     /// The hyperbolic cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`cosh_series`][Fp::cosh_series]
-    /// with [`exp_series_terms`][Fp::exp_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`cosh_series`][Floating::cosh_series]
+    /// with [`exp_series_terms`][Floating::exp_series_terms].
     #[must_use]
     fn cosh(self) -> Self;
 
     /// The hyperbolic tangent.
     ///
-    /// With both `std` and `libm` disabled it leverages [`cosh_series`][Fp::cosh_series]
-    /// with [`exp_series_terms`][Fp::exp_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`cosh_series`][Floating::cosh_series]
+    /// with [`exp_series_terms`][Floating::exp_series_terms].
     #[must_use]
     fn tanh(self) -> Self;
 
     /// The inverse hyperbolic sine of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`asinh_series`][Fp::asinh_series]
-    /// with [`ln_series_terms`][Fp::ln_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`asinh_series`][Floating::asinh_series]
+    /// with [`ln_series_terms`][Floating::ln_series_terms].
     #[must_use]
     fn asinh(self) -> Self;
 
     /// The inverse hyperbolic cosine of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`acosh_series`][Fp::acosh_series]
-    /// with [`ln_series_terms`][Fp::ln_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`acosh_series`][Floating::acosh_series]
+    /// with [`ln_series_terms`][Floating::ln_series_terms].
     #[must_use]
     fn acosh(self) -> Self;
 
     /// The inverse hyperbolic tangent of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`atanh_series`][Fp::atanh_series]
-    /// with [`ln_series_terms`][Fp::ln_series_terms].
+    /// With both `std` and `libm` disabled it leverages [`atanh_series`][Floating::atanh_series]
+    /// with [`ln_series_terms`][Floating::ln_series_terms].
     #[must_use]
     fn atanh(self) -> Self;
 
@@ -382,34 +382,34 @@ macro_rules! impl_float_ext {
             // const SIGNIFICAND_BITS: u32 = [<SIGNIFICAND_BITS_ $f:upper>];
 
             #[inline(always)]
-            fn floor(self) -> Self { Fp::<$f>::floor(self) }
+            fn floor(self) -> Self { Floating::<$f>::floor(self) }
 
             #[inline(always)]
-            fn ceil(self) -> Self { Fp::<$f>::ceil(self) }
+            fn ceil(self) -> Self { Floating::<$f>::ceil(self) }
 
             #[inline(always)]
-            fn round(self) -> Self { Fp::<$f>::round_ties_away(self) }
+            fn round(self) -> Self { Floating::<$f>::round_ties_away(self) }
 
             #[inline(always)]
-            fn round_ties_away(self) -> Self { Fp::<$f>::round_ties_away(self) }
+            fn round_ties_away(self) -> Self { Floating::<$f>::round_ties_away(self) }
 
             #[inline(always)]
-            fn round_ties_even(self) -> Self { Fp::<$f>::round_ties_even(self) }
+            fn round_ties_even(self) -> Self { Floating::<$f>::round_ties_even(self) }
 
             #[inline(always)]
-            fn round_ties_odd(self) -> Self { Fp::<$f>::round_ties_odd(self) }
+            fn round_ties_odd(self) -> Self { Floating::<$f>::round_ties_odd(self) }
 
             #[inline(always)]
-            fn trunc(self) -> Self { Fp::<$f>::trunc(self) }
+            fn trunc(self) -> Self { Floating::<$f>::trunc(self) }
 
             #[inline(always)]
-            fn fract(self) -> Self { Fp::<$f>::fract(self) }
+            fn fract(self) -> Self { Floating::<$f>::fract(self) }
 
             #[inline(always)]
-            fn split(self) -> (Self, Self) { Fp::<$f>::split(self) }
+            fn split(self) -> (Self, Self) { Floating::<$f>::split(self) }
 
             #[inline(always)]
-            fn abs(self) -> Self { Fp::<$f>::abs(self) }
+            fn abs(self) -> Self { Floating::<$f>::abs(self) }
 
             #[inline(always)]
             fn is_sign_positive(self) -> bool { <$f>::is_sign_positive(self) }
@@ -418,201 +418,216 @@ macro_rules! impl_float_ext {
             fn is_sign_negative(self) -> bool { <$f>::is_sign_negative(self) }
 
             #[inline(always)]
-            fn signum(self) -> Self { Fp::<$f>::signum(self) }
+            fn signum(self) -> Self { Floating::<$f>::signum(self) }
 
             #[inline(always)]
-            fn copysign(self, sign: Self) -> Self { Fp::<$f>::copysign(self, sign) }
+            fn copysign(self, sign: Self) -> Self { Floating::<$f>::copysign(self, sign) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn mul_add(self, mul: Self, add: Self) -> Self { Fp::<$f>::mul_add(self, mul, add) }
+            fn mul_add(self, mul: Self, add: Self) -> Self {
+                Floating::<$f>::mul_add(self, mul, add) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
             fn mul_add(self, mul: Self, add: Self) -> Self {
-                Fp::<$f>::mul_add_fallback(self, mul, add)
+                Floating::<$f>::mul_add_fallback(self, mul, add)
             }
 
             #[inline(always)]
-            fn div_euclid(self, rhs: Self) -> Self { Fp::<$f>::div_euclid(self, rhs) }
+            fn div_euclid(self, rhs: Self) -> Self { Floating::<$f>::div_euclid(self, rhs) }
 
             #[inline(always)]
-            fn rem_euclid(self, rhs: Self) -> Self { Fp::<$f>::rem_euclid(self, rhs) }
+            fn rem_euclid(self, rhs: Self) -> Self { Floating::<$f>::rem_euclid(self, rhs) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn powf(self, y: Self) -> Self { Fp::<$f>::powf(self, y) }
+            fn powf(self, y: Self) -> Self { Floating::<$f>::powf(self, y) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
             fn powf(self, y: Self) -> Self {
-                Fp::<$f>::powf_series(self, y, Fp::<$f>::ln_series_terms(self))
+                Floating::<$f>::powf_series(self, y, Floating::<$f>::ln_series_terms(self))
             }
 
             #[inline(always)]
-            fn powi(self, p: $ie) -> Self { Fp::<$f>::powi(self, p) }
+            fn powi(self, p: $ie) -> Self { Floating::<$f>::powi(self, p) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn sqrt(self) -> Self { Fp::<$f>::sqrt(self) }
+            fn sqrt(self) -> Self { Floating::<$f>::sqrt(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn sqrt(self) -> Self { Fp::<$f>::sqrt_nr(self) }
+            fn sqrt(self) -> Self { Floating::<$f>::sqrt_nr(self) }
 
             #[inline(always)]
-            fn sqrt_fisr(self) -> Self { Fp::<$f>::sqrt_fisr(self) }
+            fn sqrt_fisr(self) -> Self { Floating::<$f>::sqrt_fisr(self) }
 
             #[inline(always)]
-            fn fisr(self) -> Self { Fp::<$f>::fisr(self) }
+            fn fisr(self) -> Self { Floating::<$f>::fisr(self) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn exp(self) -> Self { Fp::<$f>::exp(self) }
+            fn exp(self) -> Self { Floating::<$f>::exp(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn exp(self) -> Self { Fp::<$f>::exp_series(self, Fp::<$f>::exp_series_terms(self)) }
+            fn exp(self) -> Self {
+                Floating::<$f>::exp_series(self, Floating::<$f>::exp_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn exp2(self) -> Self { Fp::<$f>::exp2(self) }
+            fn exp2(self) -> Self { Floating::<$f>::exp2(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn exp2(self) -> Self { Fp::<$f>::exp2_series(self, Fp::<$f>::exp2_series_terms(self)) }
+            fn exp2(self) -> Self {
+                Floating::<$f>::exp2_series(self, Floating::<$f>::exp2_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn exp_m1(self) -> Self { Fp::<$f>::exp_m1(self) }
+            fn exp_m1(self) -> Self { Floating::<$f>::exp_m1(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
             fn exp_m1(self) -> Self {
-                Fp::<$f>::exp_m1_series(self, Fp::<$f>::exp_series_terms(self))
+                Floating::<$f>::exp_m1_series(self, Floating::<$f>::exp_series_terms(self))
             }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn ln(self) -> Self { Fp::<$f>::ln(self) }
+            fn ln(self) -> Self { Floating::<$f>::ln(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn ln(self) -> Self { Fp::<$f>::ln_series(self, Fp::<$f>::ln_series_terms(self)) }
+            fn ln(self) -> Self {
+                Floating::<$f>::ln_series(self, Floating::<$f>::ln_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn ln_1p(self) -> Self { Fp::<$f>::ln_1p(self) }
+            fn ln_1p(self) -> Self { Floating::<$f>::ln_1p(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn ln_1p(self) -> Self { Fp::<$f>::ln_1p_series(self, Fp::<$f>::ln_series_terms(self)) }
+            fn ln_1p(self) -> Self {
+                Floating::<$f>::ln_1p_series(self, Floating::<$f>::ln_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn log(self, base: Self) -> Self { Fp::<$f>::log(self, base) }
+            fn log(self, base: Self) -> Self { Floating::<$f>::log(self, base) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
             fn log(self, base: Self) -> Self {
-                Fp::<$f>::log_series(self, base, Fp::<$f>::ln_series_terms(self))
-            }
+                Floating::<$f>::log_series(self, base, Floating::<$f>::ln_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn log2(self) -> Self { Fp::<$f>::log2(self) }
+            fn log2(self) -> Self { Floating::<$f>::log2(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn log2(self) -> Self { Fp::<$f>::log2_series(self, Fp::<$f>::ln_series_terms(self)) }
+            fn log2(self) -> Self {
+                Floating::<$f>::log2_series(self, Floating::<$f>::ln_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn log10(self) -> Self { Fp::<$f>::log10(self) }
+            fn log10(self) -> Self { Floating::<$f>::log10(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn log10(self) -> Self { Fp::<$f>::log10_series(self, Fp::<$f>::ln_series_terms(self)) }
+            fn log10(self) -> Self {
+                Floating::<$f>::log10_series(self, Floating::<$f>::ln_series_terms(self)) }
 
             #[inline(always)]
-            fn factorial(a: $ue) -> Self { Fp::<$f>::factorial(a) }
+            fn factorial(a: $ue) -> Self { Floating::<$f>::factorial(a) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn cbrt(self) -> Self { Fp::<$f>::cbrt(self) }
+            fn cbrt(self) -> Self { Floating::<$f>::cbrt(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn cbrt(self) -> Self { Fp::<$f>::cbrt_nr(self) }
+            fn cbrt(self) -> Self { Floating::<$f>::cbrt_nr(self) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn hypot(self, rhs: Self) -> Self { Fp::<$f>::hypot(self, rhs) }
+            fn hypot(self, rhs: Self) -> Self { Floating::<$f>::hypot(self, rhs) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn hypot(self, rhs: Self) -> Self { Fp::<$f>::hypot_nr(self, rhs) }
+            fn hypot(self, rhs: Self) -> Self { Floating::<$f>::hypot_nr(self, rhs) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn sin(self) -> Self { Fp::<$f>::sin(self) }
+            fn sin(self) -> Self { Floating::<$f>::sin(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn sin(self) -> Self { Fp::<$f>::sin_series(self, 8) }
+            fn sin(self) -> Self { Floating::<$f>::sin_series(self, 8) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn cos(self) -> Self { Fp::<$f>::cos(self) }
+            fn cos(self) -> Self { Floating::<$f>::cos(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn cos(self) -> Self { Fp::<$f>::cos_series(self, 8) }
+            fn cos(self) -> Self { Floating::<$f>::cos_series(self, 8) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos(self) }
+            fn sin_cos(self) -> (Self, Self) { Floating::<$f>::sin_cos(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn sin_cos(self) -> (Self, Self) { Fp::<$f>::sin_cos_series(self, 8) }
+            fn sin_cos(self) -> (Self, Self) { Floating::<$f>::sin_cos_series(self, 8) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn tan(self) -> Self { Fp::<$f>::tan(self) }
+            fn tan(self) -> Self { Floating::<$f>::tan(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn tan(self) -> Self { Fp::<$f>::tan_series(self, 8) }
+            fn tan(self) -> Self { Floating::<$f>::tan_series(self, 8) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn asin(self) -> Self { Fp::<$f>::asin(self) }
+            fn asin(self) -> Self { Floating::<$f>::asin(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn asin(self) -> Self { Fp::<$f>::asin_series(self, Fp::<$f>::asin_series_terms(self)) }
+            fn asin(self) -> Self {
+                Floating::<$f>::asin_series(self, Floating::<$f>::asin_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn acos(self) -> Self { Fp::<$f>::acos(self) }
+            fn acos(self) -> Self { Floating::<$f>::acos(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn acos(self) -> Self { Fp::<$f>::acos_series(self, Fp::<$f>::acos_series_terms(self)) }
+            fn acos(self) -> Self {
+                Floating::<$f>::acos_series(self, Floating::<$f>::acos_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn atan(self) -> Self { Fp::<$f>::atan(self) }
+            fn atan(self) -> Self { Floating::<$f>::atan(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn atan(self) -> Self { Fp::<$f>::atan_series(self, Fp::<$f>::atan_series_terms(self)) }
+            fn atan(self) -> Self {
+                Floating::<$f>::atan_series(self, Floating::<$f>::atan_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn atan2(self, other: Self) -> Self { Fp::<$f>::atan2(self, other) }
+            fn atan2(self, other: Self) -> Self { Floating::<$f>::atan2(self, other) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
             fn atan2(self, other: Self) -> Self {
-                Fp::<$f>::atan2_series(self, other, Fp::<$f>::atan_series_terms(self))
-            }
+                Floating::<$f>::atan2_series(self, other, Floating::<$f>::atan_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn sinh(self) -> Self { Fp::<$f>::sinh(self) }
+            fn sinh(self) -> Self { Floating::<$f>::sinh(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn sinh(self) -> Self { Fp::<$f>::sinh_series(self, Fp::<$f>::exp_series_terms(self)) }
+            fn sinh(self) -> Self {
+                Floating::<$f>::sinh_series(self, Floating::<$f>::exp_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn cosh(self) -> Self { Fp::<$f>::cosh(self) }
+            fn cosh(self) -> Self { Floating::<$f>::cosh(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn cosh(self) -> Self { Fp::<$f>::cosh_series(self, Fp::<$f>::exp_series_terms(self)) }
+            fn cosh(self) -> Self {
+                Floating::<$f>::cosh_series(self, Floating::<$f>::exp_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn tanh(self) -> Self { Fp::<$f>::tanh(self) }
+            fn tanh(self) -> Self { Floating::<$f>::tanh(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn tanh(self) -> Self { Fp::<$f>::tanh_series(self, Fp::<$f>::exp_series_terms(self)) }
+            fn tanh(self) -> Self {
+                Floating::<$f>::tanh_series(self, Floating::<$f>::exp_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn asinh(self) -> Self { Fp::<$f>::asinh(self) }
+            fn asinh(self) -> Self { Floating::<$f>::asinh(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn asinh(self) -> Self { Fp::<$f>::asinh_series(self, Fp::<$f>::exp_series_terms(self)) }
+            fn asinh(self) -> Self {
+                Floating::<$f>::asinh_series(self, Floating::<$f>::exp_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn acosh(self) -> Self { Fp::<$f>::acosh(self) }
+            fn acosh(self) -> Self { Floating::<$f>::acosh(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn acosh(self) -> Self { Fp::<$f>::acosh_series(self, Fp::<$f>::exp_series_terms(self)) }
+            fn acosh(self) -> Self {
+                Floating::<$f>::acosh_series(self, Floating::<$f>::exp_series_terms(self)) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
-            fn atanh(self) -> Self { Fp::<$f>::atanh(self) }
+            fn atanh(self) -> Self { Floating::<$f>::atanh(self) }
             #[inline(always)] #[cfg(not(any(feature = "std", feature = "libm")))]
-            fn atanh(self) -> Self { Fp::<$f>::atanh_series(self, Fp::<$f>::exp_series_terms(self)) }
+            fn atanh(self) -> Self {
+                Floating::<$f>::atanh_series(self, Floating::<$f>::exp_series_terms(self)) }
 
             #[inline(always)]
-            fn clamp(self, min: Self, max: Self) -> Self { Fp::<$f>::clamp(self, min, max) }
+            fn clamp(self, min: Self, max: Self) -> Self { Floating::<$f>::clamp(self, min, max) }
 
             #[inline(always)]
-            fn max(self, other: Self) -> Self { Fp::<$f>::max(self, other) }
+            fn max(self, other: Self) -> Self { Floating::<$f>::max(self, other) }
 
             #[inline(always)]
-            fn min(self, other: Self) -> Self { Fp::<$f>::min(self, other) }
+            fn min(self, other: Self) -> Self { Floating::<$f>::min(self, other) }
 
             #[inline(always)]
-            fn clamp_nan(self, min: Self, max: Self) -> Self { Fp::<$f>::clamp_nan(self, min, max) }
+            fn clamp_nan(self, min: Self, max: Self) -> Self {
+                Floating::<$f>::clamp_nan(self, min, max) }
 
             #[inline(always)]
-            fn max_nan(self, other: Self) -> Self { Fp::<$f>::max_nan(self, other) }
+            fn max_nan(self, other: Self) -> Self { Floating::<$f>::max_nan(self, other) }
 
             #[inline(always)]
-            fn min_nan(self, other: Self) -> Self { Fp::<$f>::min_nan(self, other) }
+            fn min_nan(self, other: Self) -> Self { Floating::<$f>::min_nan(self, other) }
 
             #[inline(always)]
-            fn max_total(self, other: Self) -> Self { Fp::<$f>::max_total(self, other) }
+            fn max_total(self, other: Self) -> Self { Floating::<$f>::max_total(self, other) }
 
             #[inline(always)]
-            fn min_total(self, other: Self) -> Self { Fp::<$f>::min_total(self, other) }
+            fn min_total(self, other: Self) -> Self { Floating::<$f>::min_total(self, other) }
 
             #[inline(always)]
             fn clamp_total(self, min: Self, max: Self) -> Self {
-                Fp::<$f>::clamp_total(self, min, max)
+                Floating::<$f>::clamp_total(self, min, max)
             }
         }}
     }
