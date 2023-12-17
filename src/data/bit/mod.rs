@@ -11,15 +11,15 @@ mod wrapper;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub use {field::*, r#trait::BitOps, wrapper::Bits};
+pub use {field::*, r#trait::BitOps, wrapper::Biting};
 
 /* feature-gated */
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {field::*, r#trait::BitOps, wrapper::Bits};
+pub use {field::*, r#trait::BitOps, wrapper::Biting};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{field::*, r#trait::BitOps, wrapper::Bits};
+    pub use super::{field::*, r#trait::BitOps, wrapper::Biting};
 }

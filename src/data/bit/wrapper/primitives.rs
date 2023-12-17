@@ -1,9 +1,9 @@
 // devela::data::bit::ops::wrapper::primitives
 //
-//! implement Bits for integer primitives
+//! Implements `Biting` for the integer primitives
 //
 
-use super::Bits;
+use super::Biting;
 
 #[cfg(doc)]
 use crate::data::DataErrors::{MismatchedIndices, OutOfBounds, Overflow};
@@ -12,9 +12,6 @@ use crate::{
     meta::iif,
 };
 
-// Implements the `Bits` wrapper for the primitives
-//
-// `$t`: the type
 macro_rules! impl_bits_wrapper {
     () => {
         impl_bits_wrapper![
@@ -23,10 +20,12 @@ macro_rules! impl_bits_wrapper {
         ];
     };
     ( $( $t:ty ),+ ) => { $( impl_bits_wrapper![@$t]; )+ };
+
+    // `$t`: the primitive type
     (@$t:ty) => {
         /* impl traits */
 
-        impl Bits::<$t> {
+        impl Biting::<$t> {
             /* constants */
 
             /// The size in bits.
