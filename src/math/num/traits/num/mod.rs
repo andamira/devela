@@ -31,7 +31,7 @@ mod auto_impls {
 /// Represents the absence of a number.
 ///
 /// This can be used anywhere an implementation of [`Num`] is expected,
-/// because it implements all the numeric traits, while doing nothing.
+/// since it implements all the numeric traits, but does nothing.
 pub type NoNum = ();
 
 /// Common trait for numeric types.
@@ -107,68 +107,68 @@ pub trait Num {
 
     /* Operations */
 
-    /// Computes `self` + `other`.
+    /// Computes `self + other`.
     fn num_add(self, rhs: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `self` + `&other`.
+    /// Computes `self + &other`.
     fn num_add_ref(self, rhs: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `&self` + `other`.
+    /// Computes `&self + other`.
     fn num_ref_add(&self, rhs: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `&self` + `&other`.
+    /// Computes `&self + &other`.
     fn num_ref_add_ref(&self, rhs: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
 
-    /// Computes `self` - `other`.
+    /// Computes `self - other`.
     fn num_sub(self, rhs: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `self` - `&other`.
+    /// Computes `self - &other`.
     fn num_sub_ref(self, rhs: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `&self` - `other`.
-    fn num_ref_sub(&self, rhs: Self::Rhs) -> Result<Self::Out> 
+    /// Computes `&self - other`.
+    fn num_ref_sub(&self, rhs: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `&self` - `&other`.
+    /// Computes `&self - &other`.
     fn num_ref_sub_ref(&self, rhs: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
 
-    /// Computes `self` * `other`.
+    /// Computes `self * other`.
     fn num_mul(self, rhs: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `self` * `&other`.
+    /// Computes `self * &other`.
     fn num_mul_ref(self, rhs: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `&self` * `other`.
+    /// Computes `&self * other`.
     fn num_ref_mul(&self, rhs: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `&self` * `&other`.
+    /// Computes `&self * &other`.
     fn num_ref_mul_ref(&self, rhs: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
 
-    /// Computes `self` / `other`.
+    /// Computes `self / other`.
     fn num_div(self, rhs: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `self` / `&other`.
+    /// Computes `self / &other`.
     fn num_div_ref(self, rhs: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `&self` / `other`.
+    /// Computes `&self / other`.
     fn num_ref_div(&self, rhs: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `&self` / `&other`.
+    /// Computes `&self / &other`.
     fn num_ref_div_ref(&self, rhs: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
 
-    /// Computes `self` % `other`.
+    /// Computes `self % other`.
     fn num_rem(self, rhs: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `self` % `&other`.
+    /// Computes `self % &other`.
     fn num_rem_ref(self, rhs: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `&self` % `other`.
+    /// Computes `&self % other`.
     fn num_ref_rem(&self, rhs: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
-    /// Computes `&self` % `&other`.
+    /// Computes `&self % &other`.
     fn num_ref_rem_ref(&self, rhs: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized { Error::ni() }
 
@@ -231,56 +231,56 @@ pub trait NumRef<'a> where Self: Deref<Target = Self::Own> {
 
     /* Operations */
 
-    /// Computes `&self` + `rhs`.
+    /// Computes `&self + rhs`.
     fn num_ref_add(&self, rhs: <Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_add(rhs)
     }
-    /// Computes `&self` + `&rhs`.
+    /// Computes `&self + &rhs`.
     fn num_ref_add_ref(&self, rhs: &<Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_add_ref(rhs)
     }
 
-    /// Computes `&self` - `rhs`.
+    /// Computes `&self - rhs`.
     fn num_ref_sub(&self, rhs: <Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_sub(rhs)
     }
-    /// Computes `&self` - `&rhs`.
+    /// Computes `&self - &rhs`.
     fn num_ref_sub_ref(&self, rhs: &<Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_sub_ref(rhs)
     }
 
-    /// Computes `&self` * `rhs`.
+    /// Computes `&self * rhs`.
     fn num_ref_mul(&self, rhs: <Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_mul(rhs)
     }
-    /// Computes `&self` * `&rhs`.
+    /// Computes `&self * &rhs`.
     fn num_ref_mul_ref(&self, rhs: &<Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_mul_ref(rhs)
     }
 
-    /// Computes `&self` / `rhs`.
+    /// Computes `&self / rhs`.
     fn num_ref_div(&self, rhs: <Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_div(rhs)
     }
-    /// Computes `&self` / `&rhs`.
+    /// Computes `&self / &rhs`.
     fn num_ref_div_ref(&self, rhs: &<Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_div_ref(rhs)
     }
 
-    /// Computes `&self` % `rhs`.
+    /// Computes `&self % rhs`.
     fn num_ref_rem(&self, rhs: <Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_rem(rhs)
     }
-    /// Computes `&self` % `&rhs`.
+    /// Computes `&self % &rhs`.
     fn num_ref_rem_ref(&self, rhs: &<Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_rem_ref(rhs)
