@@ -1,4 +1,4 @@
-// devela::data::array::core_impls
+// devela::data::collections:array::core_impls
 //
 //!
 //

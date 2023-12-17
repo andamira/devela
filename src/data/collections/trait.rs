@@ -1,4 +1,4 @@
-// devela::data::collection
+// devela::data::collections::trait
 //
 //!
 //
@@ -13,7 +13,7 @@
 // - impl for UnorderedMap
 // - impl for UnorderedSet
 
-use super::{DataErrors as E, DataResult as Result};
+use crate::data::{DataErrors as E, DataResult as Result};
 
 /// An abstract data collection.
 ///

@@ -1,4 +1,4 @@
-// devela::data::array::always
+// devela::data::collections::array::always
 //
 //! Array functionality always available for internal use.
 //

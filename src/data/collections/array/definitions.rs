@@ -1,4 +1,4 @@
-// devela::data::array::definitions
+// devela::data::collections::array::definitions
 //
 //! types and traits definitions
 //

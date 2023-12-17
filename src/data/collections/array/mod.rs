@@ -1,4 +1,4 @@
-// devela::data::array
+// devela::data::collections::array
 //
 //! Arrays, extends `std::`[`array`].
 //!

@@ -15,18 +15,16 @@
 
 /* contains always compiled items */
 
-mod collection;
 mod error;
-mod reexports;
 
 pub mod bit;
 pub mod cmp;
+pub mod collections;
 pub mod convert;
-pub mod list;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub use {bit::*, cmp::*, collection::*, convert::*, error::*, list::*, reexports::*};
+pub use {bit::*, cmp::*, collections::*, convert::*, error::*};
 
 /* feature-gated */
 
@@ -46,7 +44,7 @@ pub mod any;
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {collection::*, error::*, reexports::*};
+pub use error::*;
 
 // re-export public sub-modules
 #[doc(no_inline)]
@@ -58,13 +56,12 @@ pub use {collection::*, error::*, reexports::*};
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use {any::all::*, bit::all::*, cmp::all::*, convert::all::*, list::all::*};
+pub use {any::all::*, bit::all::*, cmp::all::*, collections::*, convert::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        bit::all::*, cmp::all::*, collection::*, convert::all::*, error::*, list::all::*,
-        reexports::*,
+        bit::all::*, cmp::all::*, collections::*, convert::all::*, error::*,
     };
 
     #[doc(inline)]

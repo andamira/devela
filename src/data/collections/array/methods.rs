@@ -1,4 +1,4 @@
-// devela::data::array::methods
+// devela::data::collections::array::methods
 //
 //! Arrays.
 //
