@@ -35,7 +35,7 @@ pub use {alias::*, r#trait::*};
 /// - Error functions: [`erf`][Floating#method.erf], [`erfc`][Floating#method.erfc].
 /// - [`exp10`][Floating#method.exp10].
 ///
-/// See also the [`FloatExt`] trait.
+/// See also the [`FloatOps`] trait.
 #[derive(Debug, Clone, Copy)]
 pub struct Floating<T>(core::marker::PhantomData<T>);
 

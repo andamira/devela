@@ -11,7 +11,7 @@ use super::Floating;
 ///
 /// Many methods are only available if either the `std` or `libm` features are enabled.
 #[rustfmt::skip]
-pub trait FloatExt: Sized {
+pub trait FloatOps: Sized {
     /// The largest integer less than or equal to `self`.
     ///
     /// $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$
@@ -25,7 +25,7 @@ pub trait FloatExt: Sized {
     fn ceil(self) -> Self;
 
     /// The nearest integer to `self`, default rounding, same as
-    /// [`round_ties_away`][FloatExt::round_ties_away]
+    /// [`round_ties_away`][FloatOps::round_ties_away]
     #[must_use]
     fn round(self) -> Self;
 
@@ -376,7 +376,7 @@ macro_rules! impl_float_ext {
     // $ie: the integer type for integer exponentiation.
     ($( ($f:ty, $ue:ty|$ie:ty) ),+) => { $( impl_float_ext![@$f, $ue|$ie]; )+ };
     (@$f:ty, $ue:ty|$ie:ty) => {
-        impl FloatExt for $f { $crate::meta::paste! {
+        impl FloatOps for $f { $crate::meta::paste! {
             // const BIAS: u32 = [<BIAS_ $f:upper>];
             // const EXPONENT_BITS: u32 = [<EXPONENT_BITS_ $f:upper>];
             // const SIGNIFICAND_BITS: u32 = [<SIGNIFICAND_BITS_ $f:upper>];
