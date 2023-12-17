@@ -11,12 +11,13 @@
 
 #![cfg_attr(not(feature = "math"), allow(unused))]
 
+mod alias;
 mod fp_common;
 mod r#trait;
 
 mod consts;
 
-pub use r#trait::FloatExt;
+pub use {alias::*, r#trait::*};
 
 /// Floating-point operations wrapper that can leverage `std` or `libm`.
 ///

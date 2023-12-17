@@ -7,12 +7,12 @@
 
 /* contains always compiled items */
 
-mod alias;
+mod float;
 mod non_specific;
 
 #[allow(unused)]
 #[cfg(not(feature = "math"))]
-pub use {alias::*, non_specific::*};
+pub use {float::*, non_specific::*};
 
 /* feature-gated */
 
@@ -29,7 +29,7 @@ mod traits;
 
 // re-export private sub-modules
 #[cfg(feature = "math")]
-pub use {alias::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*};
+pub use {float::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*};
 
 pub(crate) mod all {
     #[doc(inline)]
@@ -37,5 +37,5 @@ pub(crate) mod all {
     pub use super::{non_range::*, range::*, reexports::*, traits::*};
 
     #[doc(inline)]
-    pub use super::{alias::*, non_specific::*};
+    pub use super::{float::*, non_specific::*};
 }

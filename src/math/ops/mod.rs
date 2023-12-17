@@ -9,11 +9,10 @@
 /* contains always compiled items */
 
 mod always_fns;
-mod float;
 
 #[allow(unused)]
 #[cfg(not(feature = "math"))]
-pub use {always_fns::*, float::*};
+pub use always_fns::*;
 
 /* feature-gated */
 
@@ -23,11 +22,11 @@ mod fns;
 // re-export private sub-modules
 pub use always_fns::*;
 #[cfg(feature = "math")]
-pub use {float::*, fns::*};
+pub use fns::*;
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{always_fns::*, float::*};
+    pub use super::always_fns::*;
 
     #[doc(inline)]
     #[cfg(feature = "math")]

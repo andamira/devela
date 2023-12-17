@@ -134,10 +134,7 @@ pub mod prelude {
     };
 
     #[cfg(feature = "math")]
-    pub use crate::math::{
-        num::{Num, NumRef},
-        ops::FloatExt,
-    };
+    pub use crate::math::num::{FloatExt, Num, NumRef};
 
     #[cfg(feature = "result")]
     pub use crate::result::{Also, Apply, OptionExt, ResultExt};

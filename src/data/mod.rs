@@ -60,9 +60,7 @@ pub use {any::all::*, bit::all::*, cmp::all::*, collections::*, convert::all::*}
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{
-        bit::all::*, cmp::all::*, collections::*, convert::all::*, error::*,
-    };
+    pub use super::{bit::all::*, cmp::all::*, collections::*, convert::all::*, error::*};
 
     #[doc(inline)]
     #[cfg(feature = "data")]
