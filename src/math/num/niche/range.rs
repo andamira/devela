@@ -1,4 +1,4 @@
-// devela::math::num::range
+// devela::math::num::niche::range
 //
 //! Creates const generic customizable wrappers over the `NonZero` numbers,
 //! that represents a numeric range.

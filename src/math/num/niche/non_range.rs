@@ -1,4 +1,4 @@
-// devela::math::num::non_range
+// devela::math::num::niche::non_range
 //
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //

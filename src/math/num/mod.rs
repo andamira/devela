@@ -8,20 +8,15 @@
 /* contains always compiled items */
 
 mod float;
-mod non_specific;
+
+pub mod niche;
 
 #[allow(unused)]
 #[cfg(not(feature = "math"))]
-pub use {float::*, non_specific::*};
+pub use {float::*, niche::*};
 
 /* feature-gated */
 
-#[cfg(feature = "math")]
-mod non_range;
-#[cfg(feature = "math")]
-mod range;
-#[cfg(feature = "math")]
-mod reexports;
 #[cfg(all(feature = "math", test))]
 mod tests;
 #[cfg(feature = "math")]
@@ -29,13 +24,18 @@ mod traits;
 
 // re-export private sub-modules
 #[cfg(feature = "math")]
-pub use {float::*, non_range::*, non_specific::*, range::*, reexports::*, traits::*};
+pub use {float::*, traits::*};
+
+// re-export public sub-modules
+#[doc(no_inline)]
+#[cfg(feature = "math")]
+pub use niche::all::*;
 
 pub(crate) mod all {
     #[doc(inline)]
     #[cfg(feature = "math")]
-    pub use super::{non_range::*, range::*, reexports::*, traits::*};
+    pub use super::traits::*;
 
     #[doc(inline)]
-    pub use super::{float::*, non_specific::*};
+    pub use super::{float::*, niche::all::*};
 }
