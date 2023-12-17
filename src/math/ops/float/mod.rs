@@ -473,10 +473,10 @@ mod _no_std_no_libm {
                     let bits = x.to_bits();
                     const BIAS: $ie = Fp::<$f>::BIAS as $ie;
                     const SIG_BITS: $ie = Fp::<$f>::SIGNIFICAND_BITS as $ie;
-                    const EXP_MASK: $ub = 1 << Fp::<$f>::EXPONENT_BITS as $ub - 1;
+                    const EXP_MASK: $ub = (1 << Fp::<$f>::EXPONENT_BITS) - 1;
 
                     #[allow(clippy::cast_possible_wrap)]
-                    let exponent = ((bits >> SIG_BITS) & EXP_MASK) as $ie - BIAS;
+                    let exponent = (((bits >> SIG_BITS) & EXP_MASK) as $ie) - BIAS;
                     if exponent < 0 {
                         iif![x.is_sign_positive(); 0.0; -0.0]
                     } else if exponent < SIG_BITS {
