@@ -21,7 +21,9 @@ pub use {alias::*, r#trait::*};
 
 /// Provides floating-point operations for `T`.
 ///
-/// It leverages `std` or `libm` if enabled, otherwise uses fallbacks implementations.
+/// Note that every operation returns the inner type `T` instead of `Self`.
+///
+/// The wrapper leverages `std` or `libm` if enabled, otherwise implements fallbacks.
 /// It also favors `std` style for method's names, but changes a few like `minimum`
 /// for `min_nan` and `maximum` for `max_nan`, for consistency.
 ///

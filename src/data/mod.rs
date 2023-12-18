@@ -56,11 +56,11 @@ pub use error::*;
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use {any::all::*, bit::all::*, cmp::all::*, collections::*, convert::all::*};
+pub use {any::all::*, bit::all::*, cmp::all::*, collections::all::*, convert::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{bit::all::*, cmp::all::*, collections::*, convert::all::*, error::*};
+    pub use super::{bit::all::*, cmp::all::*, collections::all::*, convert::all::*, error::*};
 
     #[doc(inline)]
     #[cfg(feature = "data")]
