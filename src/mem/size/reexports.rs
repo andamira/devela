@@ -3,7 +3,7 @@
 //! Reexported items from `core`.
 //
 
-use crate::meta::reexport;
+use crate::code::reexport;
 
 reexport! { rust: core::marker, local_module: "mem",
     doc: "Types with a constant size known at compile time.",

@@ -16,7 +16,7 @@
 //     - factors_prime_unique_buf
 //     - factors_prime_unique_plus_buf
 
-use crate::meta::{iif, paste};
+use crate::code::{iif, paste};
 
 #[cfg(feature = "alloc")]
 use crate::result::Also;

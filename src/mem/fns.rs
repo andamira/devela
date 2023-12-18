@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::meta::iif;
+use crate::code::iif;
 
 /// Returns `true` if it's probable the given `address` is in the stack, for a
 /// given `stack_size`.

@@ -1,4 +1,4 @@
-// devela::meta::skip_format
+// devela::code::skip_format
 //
 //! skip formatting macros
 //
@@ -13,7 +13,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::meta::sf;
+/// use devela::code::sf;
 ///
 /// // rustfmt has no powers here
 /// sf! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }

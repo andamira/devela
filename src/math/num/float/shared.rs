@@ -1,7 +1,7 @@
 // devela::math::ops::float::shared
 
 use super::Floating;
-use crate::meta::iif;
+use crate::code::iif;
 
 // Implements methods independently of any features
 //
@@ -10,7 +10,7 @@ use crate::meta::iif;
 // $ie: the integer type for integer exponentiation.
 macro_rules! custom_impls {
     ($( ($f:ty, $ue:ty, $ie:ty) ),+) => { $( custom_impls![@$f, $ue, $ie]; )+ };
-    (@$f:ty, $ue:ty, $ie:ty) => { $crate::meta::paste! {
+    (@$f:ty, $ue:ty, $ie:ty) => { $crate::code::paste! {
         /// # *Common implementations with or without `std` or `libm`*.
         ///
         /// Total order const fns will only be `const` if the `unsafe_math` feature is enabled.

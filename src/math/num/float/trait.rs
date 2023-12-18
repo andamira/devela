@@ -377,7 +377,7 @@ macro_rules! impl_float_ext {
     // $ie: the integer type for integer exponentiation.
     ($( ($f:ty, $ue:ty|$ie:ty) ),+) => { $( impl_float_ext![@$f, $ue|$ie]; )+ };
     (@$f:ty, $ue:ty|$ie:ty) => {
-        impl FloatOps for $f { $crate::meta::paste! {
+        impl FloatOps for $f { $crate::code::paste! {
             // const BIAS: u32 = [<BIAS_ $f:upper>];
             // const EXPONENT_BITS: u32 = [<EXPONENT_BITS_ $f:upper>];
             // const SIGNIFICAND_BITS: u32 = [<SIGNIFICAND_BITS_ $f:upper>];

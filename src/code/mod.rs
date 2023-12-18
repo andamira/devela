@@ -1,6 +1,6 @@
 // devela::meta
 //
-//! Meta-programming and code generation.
+//! Code generation and meta-programming.
 //
 
 /* contains always compiled items */

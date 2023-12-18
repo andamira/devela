@@ -38,7 +38,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     any(
         feature = "unsafe", // includes all below
         feature = "unsafe_data", feature = "unsafe_math", feature = "unsafe_mem",
-        feature = "unsafe_meta", feature = "unsafe_path", feature = "unsafe_result",
+        feature = "unsafe_code", feature = "unsafe_path", feature = "unsafe_result",
         feature = "unsafe_task", feature = "unsafe_text", feature = "unsafe_time",
     )
 ))]
@@ -70,11 +70,11 @@ pub mod mem;
 #[cfg(all(not(feature = "mem"), not(test)))]
 pub(crate) mod mem; // the "mem" feature is disabled
 
-#[cfg(any(feature = "meta", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "meta")))]
-pub mod meta;
-#[cfg(all(not(feature = "meta"), not(test)))]
-pub(crate) mod meta; // the "meta" feature is disabled
+#[cfg(any(feature = "code", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+pub mod code;
+#[cfg(all(not(feature = "code"), not(test)))]
+pub(crate) mod code; // the "code" feature is disabled
 
 #[cfg(any(feature = "path", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "path")))]
@@ -113,7 +113,7 @@ pub(crate) mod time; // the "time" feature is disabled
 pub mod all {
     #[doc(inline)]
     pub use super::{
-        color::all::*, data::all::*, math::all::*, mem::all::*, meta::all::*, path::all::*,
+        code::all::*, color::all::*, data::all::*, math::all::*, mem::all::*, path::all::*,
         result::all::*, task::all::*, text::all::*, time::all::*,
     };
 }

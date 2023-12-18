@@ -59,7 +59,7 @@ macro_rules! bitfield {
                 $field:ident: $field_start:expr, $field_end:expr; // NAME: from, to;
             )*
         }
-    } => { $crate::meta::paste! {
+    } => { $crate::code::paste! {
 
         $( #[$struct_attributes] )*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -960,14 +960,14 @@ macro_rules! bitfield {
             $vis struct $name($T) {
                 $(
                     $( #[$field_attributes] )*
-                    $field: $field_start, $crate::meta::coalesce![$($field_end)?, $field_start];
+                    $field: $field_start, $crate::code::coalesce![$($field_end)?, $field_start];
                     // alternative macroless implementation:
                     // ({
                     //     // if there's no $field_end replace it with $field_start
-                    //     #[$crate::meta::compile(none($($field_end)?))]
+                    //     #[$crate::code::compile(none($($field_end)?))]
                     //     const END: u32 = $field_start;
                     //     $(
-                    //         #[$crate::meta::compile(some($field_end))]
+                    //         #[$crate::code::compile(some($field_end))]
                     //         const END: u32 = $field_end;
                     //     )?
                     //     END

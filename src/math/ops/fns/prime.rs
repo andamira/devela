@@ -11,8 +11,8 @@
 //   - totient
 
 use crate::{
+    code::{iif, paste},
     math::{fsize, FloatOps, MathErrors, MathResult as Result},
-    meta::{iif, paste},
 };
 
 // MAYBE

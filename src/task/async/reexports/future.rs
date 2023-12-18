@@ -3,7 +3,7 @@
 //! Reexported items.
 //
 
-use crate::meta::reexport;
+use crate::code::reexport;
 
 reexport! { rust: core::future, local_module: "task",
     doc: "A future which never resolves, representing a computation that never finishes.",

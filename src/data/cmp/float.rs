@@ -5,9 +5,9 @@
 
 #![cfg_attr(not(feature = "data"), allow(unused))]
 
+use crate::code::{iif, paste};
 #[cfg(any(doc, target_pointer_width = "32", target_pointer_width = "64"))]
 use crate::math::all::fsize;
-use crate::meta::{iif, paste};
 use core::cmp::Ordering::{self, *};
 
 primitive_float_const_cmp![32 >> 31, 64 >> 63];

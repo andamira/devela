@@ -9,7 +9,7 @@
 //   - gcd_ext_euc
 //   - lcm
 
-use crate::meta::{iif, paste};
+use crate::code::{iif, paste};
 
 // signed|unsigned
 // $t:   the input/output type

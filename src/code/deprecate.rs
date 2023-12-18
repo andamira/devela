@@ -1,4 +1,4 @@
-// devela::meta::deprecate
+// devela::code::deprecate
 //
 //!
 //
@@ -23,28 +23,28 @@ macro_rules! deprecate_feature {
     ) => {
         $crate::paste! {
             // old, !new, !since
-            #[$crate::meta::compile_attr(
+            #[$crate::code::compile_attr(
                 all( none($($new_feature)?), none($($since)?) ),
                 deprecated(note = "\nWARNING. `" $old_feature
                 "` feature deprecated." )
             )]
 
             // old, !new, since
-            #[$crate::meta::compile_attr(
+            #[$crate::code::compile_attr(
                 all( none($($new_feature)?), some($($since)?) ),
                 deprecated( $(since = $since,)? note = "\nWARNING. `" $old_feature
                 "` feature deprecated since version " $($since)? "." )
             )]
 
             // old, new, !since
-            #[$crate::meta::compile_attr(
+            #[$crate::code::compile_attr(
                 all( some($($new_feature)?), none($($since)?) ),
                 deprecated(note = "\nWARNING. `" $old_feature
                 "` feature deprecated, use `" $($new_feature)? "` instead." )
             )]
 
             // old, new, since
-            #[$crate::meta::compile_attr(
+            #[$crate::code::compile_attr(
                 all( some($($new_feature)?), some($($since)?) ),
                 deprecated( $(since = $since,)? note = "\nWARNING. `" $old_feature
                 "` feature deprecated since version " $($since)?

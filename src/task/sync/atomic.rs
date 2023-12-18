@@ -7,7 +7,7 @@
 //! and some useful definitions from `core`.
 //
 
-use crate::meta::reexport;
+use crate::code::reexport;
 
 /* reexport from the `atomic` crate */
 

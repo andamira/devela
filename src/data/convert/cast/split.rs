@@ -8,7 +8,7 @@
 // - wrapper implementations
 
 use super::Casting;
-use crate::meta::paste;
+use crate::code::paste;
 
 /// Offers methods to split a primitive into an array of smaller primitives.
 ///

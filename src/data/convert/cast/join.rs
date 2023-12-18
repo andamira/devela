@@ -8,7 +8,7 @@
 // - wrapper implementations
 
 use super::Casting;
-use crate::meta::paste;
+use crate::code::paste;
 
 /// Offers methods to construct a primitive from an array or slice of smaller primitives.
 ///

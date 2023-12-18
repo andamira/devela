@@ -71,7 +71,7 @@ mod _dep {
 // This is also used for documentation.
 #[cfg(feature = "dep")]
 mod _dep {
-    use crate::meta::reexport;
+    use crate::code::reexport;
 
     reexport! { depend feature: "task",
     dep: "atomic", atomic, "A generic atomic wrapper type." }

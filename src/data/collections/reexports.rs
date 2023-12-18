@@ -3,7 +3,7 @@
 //! Reexported items.
 //
 
-use crate::meta::reexport;
+use crate::code::reexport;
 
 /* from `alloc` */
 

@@ -4,7 +4,7 @@
 //
 
 use super::super::{mem_align_of, mem_align_of_val, mem_size_of, mem_size_of_val, Mem};
-use crate::meta::iif;
+use crate::code::iif;
 
 impl<T> Size for T {}
 

@@ -3,11 +3,11 @@
 //!
 //
 
+#[cfg(not(feature = "std"))]
+use crate::code::iif;
+use crate::code::paste;
 use crate::math::num::all::*;
 use crate::math::{MathErrors as Error, MathResult as Result};
-#[cfg(not(feature = "std"))]
-use crate::meta::iif;
-use crate::meta::paste;
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
 //
 use Error::{Invalid, Unspecified};

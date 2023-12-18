@@ -19,6 +19,7 @@ pub enum ColorErrors {
     NotSupported,
 }
 
+#[allow(dead_code)]
 impl ColorErrors {
     pub(crate) const fn ni<T>() -> ColorResult<T> {
         Err(ColorErrors::NotImplemented)

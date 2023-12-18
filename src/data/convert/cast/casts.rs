@@ -9,8 +9,8 @@
 
 use super::Casting;
 use crate::{
+    code::{iif, paste},
     data::{DataErrors as E, DataResult as Result},
-    meta::{iif, paste},
 };
 #[cfg(doc)]
 use E::{Overflow, Underflow};

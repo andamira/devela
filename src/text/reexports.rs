@@ -4,7 +4,7 @@
 //! prefixed with `str_` and with a new first line of documentation.
 //
 
-use crate::meta::reexport;
+use crate::code::reexport;
 
 reexport! { "const-str" | const_str , features: "text",
     doc: "Compares two [`&str`] lexicographically.",

@@ -35,17 +35,18 @@ optional dependencies.
 - `fullest`: enables all the modules, recursively (unused).
 
 Single modules:
+- `code`, `code_unsafe`: enables the [`code`] module,
+- `color`, `color_unsafe`: enables the [`color`] module,
 - `math`, `math_unsafe`: enables the [`math`] module.
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
-- `meta`, `meta_unsafe`: enables the [`meta`] module,
   and the [`devela_macros`] optional dependency.
 - `path`, `path_unsafe`: enables the [`path`] module.
 - `result`, `result_unsafe`: enables the [`result`] module.
-- `text`, `text_unsafe`: enables the [`text`] module.
-  and the [`const-str`] and [`unicode-segmentation`] optional dependencies.
-  and the [`atomic`] and [`portable_atomic`] optional dependencies.
 - `task`, `task_unsafe`: enables the [`task`] module.
+- `text`, `text_unsafe`: enables the [`text`] module,
+  and the [`const-str`], [`unicode-segmentation`] and [`unicode-width`] optional dependencies.
+  and the [`atomic`] and [`portable_atomic`] optional dependencies.
 - `time`, `time_unsafe`: enables the [`time`] module.
 
 
@@ -57,11 +58,12 @@ They offer a gradient of safety.
 
 - `unsafest`: enables unsafe recursively (unused).
 - `unsafe`: enables all the unsafe sub-features:
+  - `unsafe_code`: *(unused)*.
+  - `unsafe_color`: *(unused)*.
   - `unsafe_math`: enables `new_unchecked` constructors, implements `bytemuck` traits,
     enables using [`MaybeUninit`] for [`slice_into_array`] initialization and
     const floating-point comparison  using [`transmute`] for constant access to the bits.
   - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and [`mem_as_bytes_sized`].
-  - `unsafe_meta`: *(unused)*.
   - `unsafe_path`: *(unused)*.
   - `unsafe_result`: *(unused)*.
   - `unsafe_task`: provides a minimal implementation of stackless
@@ -91,6 +93,7 @@ Dependencies can also be enabled individually:
 - `libm` is used in `math`.
 - `portable-atomic` is used in `task`.
 - `unicode-segmentation` is used in `text`.
+- `unicode-width` is used in `text`.
 
 [`IntBuf`]: text::IntBuf
 [`IntBufable`]: text::IntBufAble
@@ -107,3 +110,4 @@ Dependencies can also be enabled individually:
 [`const-str`]: dep::const_str
 [`portable_atomic`]: dep::portable_atomic
 [`unicode-segmentation`]: dep::unicode_segmentation
+[`unicode-width`]: dep::unicode_width

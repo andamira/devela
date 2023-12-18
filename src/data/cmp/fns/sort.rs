@@ -21,8 +21,8 @@
 //   - sort_selection
 
 use crate::{
+    code::{cfor, iif, paste, sf},
     mem::cswap,
-    meta::{cfor, iif, paste, sf},
 };
 #[cfg(feature = "alloc")]
 use ::_alloc::{collections::BTreeMap, vec::Vec};

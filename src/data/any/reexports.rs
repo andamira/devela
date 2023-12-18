@@ -3,7 +3,7 @@
 //! Reexported items from `core`.
 //
 
-use crate::meta::reexport;
+use crate::code::reexport;
 
 reexport! { rust: core::any, local_module: "any",
     doc: "A trait to emulate dynamic typing.",

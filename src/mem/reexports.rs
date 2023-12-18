@@ -3,7 +3,7 @@
 //! Reexported items from `core`.
 //
 
-use crate::meta::reexport;
+use crate::code::reexport;
 
 reexport! { rust: core::mem, local_module: "mem",
     doc: "A wrapper to inhibit compiler from automatically calling `T`’s destructor.",

@@ -7,7 +7,7 @@
 //   - scale
 //   - lerp
 
-use crate::meta::paste;
+use crate::code::paste;
 
 #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
 use crate::math::num::fsize;

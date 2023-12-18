@@ -3,7 +3,7 @@
 //! Reexported items from `core`.
 //
 
-use crate::meta::reexport;
+use crate::code::reexport;
 
 reexport! { rust: core::time, local_module: "time",
     doc: "Represents a span of time, with `u64` seconds plus and `u32` nanoseconds",

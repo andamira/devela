@@ -11,9 +11,9 @@
 //   - permute_rep
 
 use crate::{
+    code::{cfor, iif, paste},
     data::convert::Casting,
     math::{MathErrors as E, MathResult as Result},
-    meta::{cfor, iif, paste},
 };
 
 // $t:   the input/output type

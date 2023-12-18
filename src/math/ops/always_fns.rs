@@ -5,7 +5,7 @@
 //! Always available for internal use.
 //
 
-use crate::meta::iif;
+use crate::code::iif;
 
 /// Counts the number of decimal digits in `n`.
 ///

@@ -1,4 +1,4 @@
-// devela::meta::const_for
+// devela::code::const_for
 //
 // Original source code by Joachim Enggård Nebel, licensed as MIT,
 // https://crates.io/crates/const_for/0.1.2
@@ -15,7 +15,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::meta::cfor;
+/// # use devela::code::cfor;
 /// let mut a = 0;
 /// cfor!(i in 0..5 => {
 ///     a += i
@@ -36,7 +36,7 @@
 ///
 /// A custom step size can be set:
 /// ```
-/// # use devela::meta::cfor;
+/// # use devela::code::cfor;
 /// let mut v = Vec::new();
 /// cfor!(i in (0..5).step_by(2) {
 ///     v.push(i)
@@ -49,7 +49,7 @@
 ///
 /// Iteration can be reversed:
 /// ```
-/// # use devela::meta::cfor;
+/// # use devela::code::cfor;
 /// let mut v = Vec::new();
 /// cfor!(i in (0..5).rev() => {
 ///     v.push(i)
@@ -63,7 +63,7 @@
 /// It is possible to combine rev and step_by, but each can only be appended once.
 /// So the following two examples are the only legal combinations.
 /// ```
-/// # use devela::meta::cfor;
+/// # use devela::code::cfor;
 /// // Reverse, then change step size
 /// let mut v = Vec::new();
 /// cfor!(i in (0..10).rev().step_by(4) {

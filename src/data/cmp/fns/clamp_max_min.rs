@@ -9,7 +9,7 @@
 
 #![allow(unused)]
 
-use crate::meta::paste;
+use crate::code::paste;
 
 // generate the const fns for primitive comparison
 macro_rules! primitive_const_cmp {

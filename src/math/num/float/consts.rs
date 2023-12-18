@@ -15,7 +15,7 @@ macro_rules! technical_const_impls {
     };
     (@$f:ty:$u:ty
      [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal]
-     ) => { $crate::meta::paste! {
+     ) => { $crate::code::paste! {
         #[allow(unused)]
         impl Floating<$f> {
             // Bias value used in the exponent to allow representation of both positive
@@ -52,7 +52,7 @@ technical_const_impls![
 // $f: the floating-point type.
 macro_rules! math_const_impls {
     ($( $f:ty),+) => { $( math_const_impls![@$f]; )+ };
-    (@$f:ty) => { $crate::meta::paste! {
+    (@$f:ty) => { $crate::code::paste! {
         /// # *Mathematical constants*.
         #[allow(clippy::excessive_precision)] // 36 decimal points
         impl Floating<$f> {

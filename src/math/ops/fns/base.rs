@@ -11,7 +11,7 @@
 //   - digital_root
 //   - digital_root_base
 
-use crate::meta::{iif, paste};
+use crate::code::{iif, paste};
 
 // $t:   the input/output type
 macro_rules! impl_ops {

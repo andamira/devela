@@ -16,7 +16,7 @@
 //   - sqrt_ceil
 //   - sqrt_round
 
-use crate::meta::{iif, paste};
+use crate::code::{iif, paste};
 
 // $t:   the input/output type
 macro_rules! impl_ops {

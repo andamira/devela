@@ -4,7 +4,7 @@
 //! that represents a numeric range.
 //
 
-use crate::meta::{iif, paste};
+use crate::code::{iif, paste};
 use core::{fmt, num::*, str::FromStr};
 
 #[cfg(all(all(feature = "bytemuck", feature = "dep"), feature = "unsafe_math"))]

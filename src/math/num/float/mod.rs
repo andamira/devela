@@ -57,7 +57,7 @@ macro_rules! impl_fp {
     };
     // Matches a specific floating-point type and any number of operations.
     // Generates the impl block for Floating<$f> and calls the matching implementation.
-    ($lib:ident : $f:ty : $($ops:tt)*) => { $crate::meta::paste! {
+    ($lib:ident : $f:ty : $($ops:tt)*) => { $crate::code::paste! {
         #[doc = "# *This implementation block leverages the `" $lib "` feature.*"]
         impl Floating<$f> {
             impl_fp![@$lib : $f : $($ops)*];
@@ -217,7 +217,7 @@ mod _std {
 #[cfg(feature = "libm")]
 mod _libm {
     use super::{impl_fp, Floating};
-    use crate::{_dep::libm::Libm, meta::iif};
+    use crate::{_dep::libm::Libm, code::iif};
     // custom implementations are commented out
     impl_fp![libm:f*:
        r"The largest integer less than or equal to `x`.
@@ -398,14 +398,14 @@ mod _libm {
 #[cfg(all(not(feature = "libm"), not(feature = "std")))]
 mod _no_std_no_libm {
     use super::Floating;
-    use crate::meta::iif;
+    use crate::code::iif;
 
     // $f: the floating-point type.
     // $ub: unsigned int type with the same bit-size.
     // $ie: the integer type for integer exponentiation.
     macro_rules! custom_impls {
         ($( ($f:ty, $ub:ty, $ie:ty) ),+) => { $( custom_impls![@$f, $ub, $ie]; )+ };
-        (@$f:ty, $ub:ty, $ie:ty) => { $crate::meta::paste! {
+        (@$f:ty, $ub:ty, $ie:ty) => { $crate::code::paste! {
             /// # *Implementations without `std` or `libm`*.
             impl Floating<$f> {
                 /// The largest integer less than or equal to `x`.

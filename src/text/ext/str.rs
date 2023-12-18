@@ -8,7 +8,7 @@ use core::str::from_utf8;
 #[cfg(feature = "unsafe_text")]
 use core::str::from_utf8_unchecked;
 
-use crate::{meta::iif, text::AsciiChar};
+use crate::{code::iif, text::AsciiChar};
 
 #[cfg(feature = "unsafe_text")]
 use crate::text::IntBuf;
