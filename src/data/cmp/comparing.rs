@@ -3,9 +3,10 @@
 //! Helper wrapper for comparing.
 //
 // TOC
-// - wrapper definition
-// - impl for T: PartialOrd
-// - impl for primitives
+// - Comparing definition
+// - impl PartialEq and PartialOrd
+// - impl Comparing for T: PartialOrd
+// - impl Comparing for primitives
 //   - int
 //   - float
 // - tests
@@ -15,8 +16,9 @@ use core::cmp::Ordering::{self, *};
 
 /// Provides comparing methods for `T`.
 ///
-/// It implements the *const* methods `clamp`, `max`, `min` for comparing
-/// primitives. For the floating-point types it uses total ordering and the
+/// It implements the following *const* methods for comparing primitives:
+/// `clamp`, `max`, `min`, `eq`, `ne`, `lt`, `le`, `gt`, `ge`.
+/// In the case of floating-point primitives it uses total ordering and the
 /// methods will only be const if the `unsafe_data` feature is enabled.
 ///
 /// It additionally provides the non-const methods `pclamp`, `pmax`, `pmin`
@@ -24,6 +26,29 @@ use core::cmp::Ordering::{self, *};
 #[repr(transparent)]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub struct Comparing<T>(pub T);
+
+impl<T: PartialEq> PartialEq for Comparing<T> {
+    #[inline]
+    #[must_use]
+    fn eq(&self, other: &Self) -> bool {
+        self.0.eq(&other.0)
+    }
+}
+impl<T: Eq> Eq for Comparing<T> {}
+impl<T: PartialOrd> PartialOrd for Comparing<T> {
+    #[inline]
+    #[must_use]
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.0.partial_cmp(&other.0)
+    }
+}
+impl<T: Ord> Ord for Comparing<T> {
+    #[inline]
+    #[must_use]
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.0.cmp(&other.0)
+    }
+}
 
 #[rustfmt::skip]
 impl<T: PartialOrd> Comparing<T> {
@@ -82,6 +107,25 @@ macro_rules! impl_comparing {
             /// Compares and returns the minimum between `self` and `other`.
             #[inline] #[must_use]
             pub const fn min(self, other: $p) -> $p { if self.0 < other { self.0 } else { other } }
+
+            /// Returns `true` if `self == other`.
+            #[inline] #[must_use]
+            pub const fn eq(self, other: $p) -> bool { self.0 == other }
+            /// Returns `true` if `self != other`.
+            #[inline] #[must_use]
+            pub const fn ne(self, other: $p) -> bool { self.0 != other }
+            /// Returns `true` if `self < other`.
+            #[inline] #[must_use]
+            pub const fn lt(self, other: $p) -> bool { self.0 < other }
+            /// Returns `true` if `self <= other`.
+            #[inline] #[must_use]
+            pub const fn le(self, other: $p) -> bool { self.0 <= other }
+            /// Returns `true` if `self > other`.
+            #[inline] #[must_use]
+            pub const fn gt(self, other: $p) -> bool { self.0 > other }
+            /// Returns `true` if `self >= other`.
+            #[inline] #[must_use]
+            pub const fn ge(self, other: $p) -> bool { self.0 >= other }
         }
     };
 
@@ -186,6 +230,44 @@ macro_rules! impl_comparing {
             pub fn min(self, other: $f) -> $f {
                 match self.0.total_cmp(&other) { Greater | Equal => other, Less => self.0 }
             }
+
+            /// Returns `true` if `self == other` using total order.
+            #[inline] #[must_use] #[cfg(feature = "unsafe_data")]
+            pub const fn eq(self, other: $f) -> bool { matches!(self.total_cmp(other), Equal) }
+            #[inline] #[must_use] #[allow(missing_docs)] #[cfg(not(feature = "unsafe_data"))]
+            pub fn eq(self, other: $f) -> bool { matches!(self.total_cmp(other), Equal) }
+
+            /// Returns `true` if `self != other` using total order.
+            #[inline] #[must_use] #[cfg(feature = "unsafe_data")]
+            pub const fn ne(self, other: $f) -> bool { !matches!(self.total_cmp(other), Equal) }
+            #[inline] #[must_use] #[allow(missing_docs)] #[cfg(not(feature = "unsafe_data"))]
+            pub fn ne(self, other: $f) -> bool { !matches!(self.total_cmp(other), Equal) }
+
+            /// Returns `true` if `self < other` using total order.
+            #[inline] #[must_use] #[cfg(feature = "unsafe_data")]
+            pub const fn lt(self, other: $f) -> bool { matches!(self.total_cmp(other), Less) }
+            #[inline] #[must_use] #[allow(missing_docs)] #[cfg(not(feature = "unsafe_data"))]
+            pub fn lt(self, other: $f) -> bool { matches!(self.total_cmp(other), Less) }
+
+            /// Returns `true` if `self <= other` using total order.
+            #[inline] #[must_use] #[cfg(feature = "unsafe_data")]
+            pub const fn le(self, other: $f) -> bool {
+                matches!(self.total_cmp(other), Less | Equal) }
+            #[inline] #[must_use] #[allow(missing_docs)] #[cfg(not(feature = "unsafe_data"))]
+            pub fn le(self, other: $f) -> bool { matches!(self.total_cmp(other), Less | Equal) }
+
+            /// Returns `true` if `self > other` using total order.
+            #[inline] #[must_use] #[cfg(feature = "unsafe_data")]
+            pub const fn gt(self, other: $f) -> bool { matches!(self.total_cmp(other), Greater) }
+            #[inline] #[must_use] #[allow(missing_docs)] #[cfg(not(feature = "unsafe_data"))]
+            pub fn gt(self, other: $f) -> bool { matches!(self.total_cmp(other), Greater) }
+
+            /// Returns `true` if `self >= other` using total order.
+            #[inline] #[must_use] #[cfg(feature = "unsafe_data")]
+            pub const fn ge(self, other: $f) -> bool {
+                matches!(self.total_cmp(other), Greater | Equal) }
+            #[inline] #[must_use] #[allow(missing_docs)] #[cfg(not(feature = "unsafe_data"))]
+            pub fn ge(self, other: $f) -> bool { matches!(self.total_cmp(other), Greater | Equal) }
         }
     }};
 }
