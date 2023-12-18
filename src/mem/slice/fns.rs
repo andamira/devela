@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::data::{clamp_usize, min_usize};
+use crate::data::Comparing;
 
 /// Returns the leftmost sub-`slice` with the given maximum `len`.
 ///
@@ -22,7 +22,7 @@ use crate::data::{clamp_usize, min_usize};
 #[inline]
 #[must_use]
 pub const fn slice_lsplit<T>(slice: &[T], len: usize) -> &[T] {
-    let end_idx = clamp_usize(len, 0, slice.len());
+    let end_idx = Comparing(len).clamp(0, slice.len());
     let (left, _) = slice.split_at(end_idx);
     left
 }
@@ -44,7 +44,7 @@ pub const fn slice_lsplit<T>(slice: &[T], len: usize) -> &[T] {
 #[inline]
 #[must_use]
 pub fn slice_lsplit_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
-    let end_idx = clamp_usize(len, 0, slice.len());
+    let end_idx = Comparing(len).clamp(0, slice.len());
     let (left, _) = slice.split_at_mut(end_idx);
     left
 }
@@ -122,7 +122,7 @@ pub const fn slice_msplit_right<T>(slice: &[T], len: usize) -> &[T] {
     let mid_idx = slice.len() / 2;
     let half_len = len / 2;
     let start_idx = mid_idx.saturating_sub(half_len);
-    let end_idx = min_usize(mid_idx + half_len + (len % 2), slice.len());
+    let end_idx = Comparing(mid_idx + half_len + (len % 2)).min(slice.len());
     let (_, right) = slice.split_at(start_idx);
     let (middle, _) = right.split_at(end_idx - start_idx);
     middle
@@ -158,7 +158,7 @@ pub fn slice_msplit_right_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
     let mid_idx = slice.len() / 2;
     let half_len = len / 2;
     let start_idx = mid_idx.saturating_sub(half_len);
-    let end_idx = min_usize(mid_idx + half_len + (len % 2), slice.len());
+    let end_idx = Comparing(mid_idx + half_len + (len % 2)).min(slice.len());
     let (_, right) = slice.split_at_mut(start_idx);
     let (middle, _) = right.split_at_mut(end_idx - start_idx);
     middle
@@ -192,7 +192,7 @@ pub const fn slice_msplit_left<T>(slice: &[T], len: usize) -> &[T] {
     let mid_idx = slice.len() / 2;
     let half_len = len / 2;
     let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-    let end_idx = min_usize(mid_idx + half_len, slice.len());
+    let end_idx = Comparing(mid_idx + half_len).min(slice.len());
     let (_, right) = slice.split_at(start_idx);
     let (middle, _) = right.split_at(end_idx - start_idx);
     middle
@@ -227,7 +227,7 @@ pub fn slice_msplit_left_mut<T>(slice: &mut [T], len: usize) -> &mut [T] {
     let mid_idx = slice.len() / 2;
     let half_len = len / 2;
     let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-    let end_idx = min_usize(mid_idx + half_len, slice.len());
+    let end_idx = Comparing(mid_idx + half_len).min(slice.len());
     let (_, right) = slice.split_at_mut(start_idx);
     let (middle, _) = right.split_at_mut(end_idx - start_idx);
     middle

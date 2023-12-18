@@ -10,18 +10,18 @@
 
 /* contains always compiled items */
 
-mod float;
+mod comparing;
 mod fns;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub use {float::*, fns::*};
+pub use {comparing::*, fns::*};
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {float::*, fns::*};
+pub use {comparing::*, fns::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{float::*, fns::*};
+    pub use super::{comparing::*, fns::*};
 }

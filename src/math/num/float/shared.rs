@@ -720,29 +720,29 @@ macro_rules! custom_impls {
             #[must_use] #[inline(always)]
             #[cfg(feature = "unsafe_math")]
             pub const fn clamp_total(value: $f, min: $f, max: $f) -> $f {
-                $crate::data::cmp::[<clamp_ $f>](value, min, max)
+                $crate::data::Comparing(value).clamp(min, max)
             }
             #[must_use] #[inline(always)] #[allow(missing_docs)]
             #[cfg(not(feature = "unsafe_math"))]
             pub fn clamp_total(value: $f, min: $f, max: $f) -> $f {
-                $crate::data::cmp::[<clamp_ $f>](value, min, max)
+                $crate::data::Comparing(value).clamp(min, max)
             }
 
             /// Returns the maximum of two numbers using total order.
             #[must_use] #[inline(always)]
             #[cfg(feature = "unsafe_math")]
-            pub const fn max_total(x: $f, y: $f) -> $f { $crate::data::cmp::[<max_ $f>](x, y) }
+            pub const fn max_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).max(y) }
             #[must_use] #[inline(always)] #[allow(missing_docs)]
             #[cfg(not(feature = "unsafe_math"))]
-            pub fn max_total(x: $f, y: $f) -> $f { $crate::data::cmp::[<max_ $f>](x, y) }
+            pub fn max_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).max(y) }
 
             /// Returns the minimum of two numbers using total order.
             #[must_use] #[inline(always)]
             #[cfg(feature = "unsafe_math")]
-            pub const fn min_total(x: $f, y: $f) -> $f { $crate::data::cmp::[<min_ $f>](x, y) }
+            pub const fn min_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).min(y) }
             #[must_use] #[inline(always)] #[allow(missing_docs)]
             #[cfg(not(feature = "unsafe_math"))]
-            pub fn min_total(x: $f, y: $f) -> $f { $crate::data::cmp::[<min_ $f>](x, y) }
+            pub fn min_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).min(y) }
 
             /// Returns the clamped `x` value, propagating `NaN`.
             #[must_use] #[inline(always)]
