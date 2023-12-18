@@ -11,17 +11,17 @@
 /* contains always compiled items */
 
 mod comparing;
-mod fns;
+mod sorting;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub use {comparing::*, fns::*};
+pub use {comparing::*, sorting::*};
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {comparing::*, fns::*};
+pub use {comparing::*, sorting::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{comparing::*, fns::*};
+    pub use super::{comparing::*, sorting::*};
 }
