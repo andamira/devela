@@ -96,9 +96,13 @@ pub trait FloatOps: Sized {
     #[must_use]
     fn split(self) -> (Self, Self);
 
-    /// The absolute value.
+    /// The absolute value of `self`.
     #[must_use]
     fn abs(self) -> Self;
+
+    /// Flips the sign of `self`.
+    #[must_use]
+    fn flip_sign(self) -> Self;
 
     /// Returns `true` if `self` has a positive sign.
     #[must_use]
@@ -411,6 +415,9 @@ macro_rules! impl_float_ext {
 
             #[inline(always)]
             fn abs(self) -> Self { Floating::<$f>::abs(self) }
+
+            #[inline(always)]
+            fn flip_sign(self) -> Self { Floating::<$f>::flip_sign(self) }
 
             #[inline(always)]
             fn is_sign_positive(self) -> bool { <$f>::is_sign_positive(self) }

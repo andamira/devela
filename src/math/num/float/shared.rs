@@ -6,14 +6,15 @@ use crate::code::iif;
 // Implements methods independently of any features
 //
 // $f: the floating-point type.
-// $ue: unsigned int type with the same bit-size.
-// $ie: the integer type for integer exponentiation.
+// $uf: unsigned int type with the same bit-size.
+// $ue: unsigned int type used for integer exponentiation and number of terms (u32).
 macro_rules! custom_impls {
-    ($( ($f:ty, $ue:ty, $ie:ty) ),+) => { $( custom_impls![@$f, $ue, $ie]; )+ };
-    (@$f:ty, $ue:ty, $ie:ty) => { $crate::code::paste! {
+    ($( ($f:ty:$uf:ty, $ue:ty) ),+) => { $( custom_impls![@$f:$uf, $ue]; )+ };
+    (@$f:ty:$uf:ty, $ue:ty) => { $crate::code::paste! {
         /// # *Common implementations with or without `std` or `libm`*.
-        ///
-        /// Total order const fns will only be `const` if the `unsafe_math` feature is enabled.
+        /// # Features
+        /// There are a few functions that can be *const* but only if either the
+        /// `unsafe_math` or `unsafe_data` feature is enabled.
         impl Floating<$f> {
             /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
             // WAIT: https://github.com/rust-lang/rust/issues/96710
@@ -710,6 +711,40 @@ macro_rules! custom_impls {
                 }
             }
 
+            /// The absolute value of `x` in constant-time.
+            ///
+            /// This is a separate function from [`abs`][Self::abs] because we also want to have
+            /// the possibly more efficient `std` and `libm` implementations.
+            #[cfg_attr(feature = "nightly",
+                doc(cfg(any(feature = "unsafe_data", feature = "unsafe_math"))))]
+            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_math"))]
+            pub const fn const_abs(x: $f) -> $f {
+                let mask = <$uf>::MAX / 2;
+                unsafe {
+                    let bits: $uf = core::mem::transmute(x);
+                    core::mem::transmute(bits & mask)
+                }
+            }
+
+            /// Flips the sign of `x`.
+            /// # Features
+            /// This function will only be `const` if either the `unsafe_data`
+            /// or `unsafe_math` feature is enabled.
+            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_math"))]
+            pub const fn flip_sign(x: $f) -> $f {
+                let mask = <$uf>::MAX / 2 + 1;
+                unsafe {
+                    let bits: $uf = core::mem::transmute(x);
+                    core::mem::transmute(bits ^ mask)
+                }
+            }
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_math")))]
+            pub fn flip_sign(x: $f) -> $f {
+                let mask = <$uf>::MAX / 2 + 1;
+                <$f>::from_bits(x.to_bits() ^ mask)
+            }
+
             /// Returns the clamped value, ignoring `NaN`.
             #[must_use] #[inline(always)]
             pub fn clamp(value: $f, min: $f, max: $f) -> $f {
@@ -717,31 +752,31 @@ macro_rules! custom_impls {
             }
 
             /// Returns the clamped value, using total order.
-            #[must_use] #[inline(always)]
-            #[cfg(feature = "unsafe_math")]
+            /// # Features
+            /// This function will only be `const` if either the `unsafe_data`
+            /// or `unsafe_math` feature is enabled.
+            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_math"))]
             pub const fn clamp_total(value: $f, min: $f, max: $f) -> $f {
                 $crate::data::Comparing(value).clamp(min, max)
             }
-            #[must_use] #[inline(always)] #[allow(missing_docs)]
-            #[cfg(not(feature = "unsafe_math"))]
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_math")))]
             pub fn clamp_total(value: $f, min: $f, max: $f) -> $f {
                 $crate::data::Comparing(value).clamp(min, max)
             }
 
             /// Returns the maximum of two numbers using total order.
-            #[must_use] #[inline(always)]
-            #[cfg(feature = "unsafe_math")]
+            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_math"))]
             pub const fn max_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).max(y) }
-            #[must_use] #[inline(always)] #[allow(missing_docs)]
-            #[cfg(not(feature = "unsafe_math"))]
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_math")))]
             pub fn max_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).max(y) }
 
             /// Returns the minimum of two numbers using total order.
-            #[must_use] #[inline(always)]
-            #[cfg(feature = "unsafe_math")]
+            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_math"))]
             pub const fn min_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).min(y) }
-            #[must_use] #[inline(always)] #[allow(missing_docs)]
-            #[cfg(not(feature = "unsafe_math"))]
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_math")))]
             pub fn min_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).min(y) }
 
             /// Returns the clamped `x` value, propagating `NaN`.
@@ -782,7 +817,7 @@ macro_rules! custom_impls {
         }
     }};
 }
-custom_impls![(f32, u32, i32), (f64, u32, i32)];
+custom_impls![(f32:u32, u32), (f64:u64, u32)];
 
 /* private helpers */
 
