@@ -4,12 +4,16 @@
 //
 // TOC
 // - Comparing definition
-// - impl PartialEq and PartialOrd
+// - impl core traits
 // - impl Comparing for T: PartialOrd
 // - impl Comparing for primitives
 //   - int
 //   - float
 // - tests
+//
+// - WAIT:[const_float_classify](https://github.com/rust-lang/rust/issues/72505)
+// - WAIT:[const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
+// - WAIT:[const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/issues/57241)
 
 use crate::code::{iif, paste};
 use core::cmp::Ordering::{self, *};
@@ -27,26 +31,36 @@ use core::cmp::Ordering::{self, *};
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub struct Comparing<T>(pub T);
 
-impl<T: PartialEq> PartialEq for Comparing<T> {
-    #[inline]
-    #[must_use]
-    fn eq(&self, other: &Self) -> bool {
-        self.0.eq(&other.0)
+#[rustfmt::skip]
+mod core_impls {
+    use {super::{Comparing, Ordering}, core::fmt};
+
+    impl<T: Clone> Clone for Comparing<T> { fn clone(&self) -> Self { Self(self.0.clone()) } }
+    impl<T: Copy> Copy for Comparing<T> {}
+
+    impl<T: PartialEq> PartialEq for Comparing<T> {
+        #[inline] #[must_use]
+        fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
-}
-impl<T: Eq> Eq for Comparing<T> {}
-impl<T: PartialOrd> PartialOrd for Comparing<T> {
-    #[inline]
-    #[must_use]
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.0.partial_cmp(&other.0)
+    impl<T: Eq> Eq for Comparing<T> {}
+    impl<T: PartialOrd> PartialOrd for Comparing<T> {
+        #[inline] #[must_use]
+        fn partial_cmp(&self, other: &Self) -> Option<Ordering> { self.0.partial_cmp(&other.0) }
     }
-}
-impl<T: Ord> Ord for Comparing<T> {
-    #[inline]
-    #[must_use]
-    fn cmp(&self, other: &Self) -> Ordering {
-        self.0.cmp(&other.0)
+    impl<T: Ord> Ord for Comparing<T> {
+        #[inline] #[must_use]
+        fn cmp(&self, other: &Self) -> Ordering { self.0.cmp(&other.0) }
+    }
+
+    impl<T: fmt::Display> fmt::Display for Comparing<T> {
+        #[inline]
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Display::fmt(&self.0, f) }
+    }
+    impl<T: fmt::Debug> fmt::Debug for Comparing<T> {
+        #[inline]
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            f.debug_tuple("Comparing").field(&self.0).finish()
+        }
     }
 }
 
