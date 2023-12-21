@@ -8,23 +8,20 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.19.0-wip]
 
 ### Added
-- new `math` root module.
+- new root modules: `io`, `math`.
 - new `docsrs` feature.
 - new function `mem::ptr_in_stack`.
 - new functions: `factorial_*.
-- new `Fp` and `FloatExt` methods: `is_sign_positive` and `is_sign_negative`, `sqrt_fisr`, `sqrt_nr`, `round_ties_even`, `factorial`.
-- new `Fp` trig methods: `asin_taylor`, `asin_taylor_terms`, `acos_taylor`, `acos_taylor_terms`, `atan_taylor`, `atan_taylor_terms`, ``, `exp_taylor`, `exp_taylor_terms`, `exp2_taylor`, `exp2_taylor_terms`, ``, `sinh_taylor`, `cosh_taylor`, `tanh_taylor`.
-- new `Fp` associated mathematical constants.
-- new `FloatExt` associated constants: `BIAS`, `EXPONENT_BITS`, `SIGNIFICAND_BITS`
+- complete `Floating` and `FloatOps` methods and constants.
 - new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
 - new macros: `init_array`, `bitfield`.
 - new fn `bytes_from_bits`.
 - new type `DataErrors`.
 - new trait `DataArray`.
-- new trait `CastPrimitives` and wrapper struct `Cast`.
-- new trait `BitOps`, and wrapper struct `Bits`.
+- new trait `CastPrimitives` and type `Casting` wrapper.
+- new `Comparing` and `Sorting` wrapper type.
+- new trait `BitOps`, and wrapper struct `Biting`.
 - new `MathErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
-- add sorting methods from `data::cmp` to `SliceExtMut`.
 - add optional dependency `unicode-width`.
 
 ### Removed
@@ -34,22 +31,26 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Changed
 - bump rust version to `1.74.1`.
+- rename `meta` module to `code.
 - move `any` module to `data`.
 - move `num` and `ops` modules to `math`.
 - move `num::convert` module to `data::convert`.
 - remove features: `ops`, `ops_unsafe`, `unsafe_ops`.
-- improve `Fp` type and `FloatExt` trait to be partially available without `std` or `libm` features, reverting to the taylor versions when there's no better option.
-- rename `Fp` and `FloatExp` float parameters to `x`, `y` `z`.
+- rename `Fp` to `Floating` and `FloatExt` to `FloatOps`.
+- improve `Floating` type and `FloatOps` trait to be partially available without `std` or `libm` features, reverting to the taylor versions when there's no better option.
+- rename `Floating` and `FloatExp` float parameters to `x`, `y` `z`.
 - rename `NumError` and `NumResult` to `MathErrors` and `MathResult`, respectively, and move them to the math module.
 - rename fns: `div_half_*` to `div_ties_*`.
-- rename `Fp` and `FloatExt` method: `round` to `round_ties_away`.
+- rename `Floating` and `FloatOps` method: `round` to `round_ties_away`.
 - rename `num` features to `math` features.
 - rename fn `mem_ptr_ratio` and method `Size::ptr_ratio` to `ptr_size_ratio`.
 - impl `Error` and `Display` for `MathErrors`.
 - make public `ascii_calc_digit_*` functions.
 - update `DataCollection` methods to return `DataResult`; add new methods `collection_contains`, `collection_count`.
+- move cmp fns to Compari`ng` methods: `clamp*`, `max*`, `min*`, `pclamp`, `pmax`, `pmin`.
 - implement `DataCollection` for `array`, `Vec`, `VecDeque`, `OrderedMap`, `OrderedSet`, `UnorderedMap`, `UnorderedSet`.
 - make `DataCollection` always available.
+- make `prime_number_theorem` compilable without `libm` nor `std`.
 - update color gamma fns, rename to `color_gamma_[apply|remove]_f*`, add `f64` versions.
 - reexport `BitwisePrimitives` and `CastPrimitives` traits from `prelude`.
 - update `IntoPrimitives` related method to take `self`, remove one generic argument.
@@ -57,7 +58,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - update `Collection` trait.
 - make `devela_macros` a non-optional dependency, and update it.
 - move `data::slice` to `mem::slice`.
-- move `data::array` to `data::list::array`.
+- move `data::array` to `data::collections::array`.
+- move niche number types to `math::num::niche`.
+- move corresponding standalone fns to `Sorting`, `Comparing` and `Casting`.
 - update `devela_depend`.
 - update crate description.
 
