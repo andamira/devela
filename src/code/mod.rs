@@ -1,6 +1,9 @@
 // devela::meta
 //
-//! Code generation and meta-programming.
+//! Code generation and meta-programming, extends
+//! `std::`[`hint`].
+//!
+//! [`hint`]: core::hint
 //
 
 /* contains always compiled items */

@@ -101,6 +101,10 @@ impl StrExt for str {
     fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str {
         assert![buffer.len() >= length];
         if length == 0 {
+            // the cold path that returns an empty string slice
+            #[cold] #[inline] #[rustfmt::skip]
+            fn cold_empty_string() -> &'static str { "" }
+
             cold_empty_string()
         } else {
             let separator = separator.as_u8();
@@ -155,11 +159,4 @@ impl StrExt for str {
             return from_utf8(&buffer[..length]).unwrap();
         }
     }
-}
-
-// the cold path that returns an empty string slice
-#[cold]
-#[inline]
-fn cold_empty_string() -> &'static str {
-    ""
 }
