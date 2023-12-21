@@ -114,8 +114,8 @@ pub(crate) mod time; // the "time" feature is disabled
 pub mod all {
     #[doc(inline)]
     pub use super::{
-        code::all::*, color::all::*, data::all::*, io::all::*, math::all::*,
-        mem::all::*, result::all::*, task::all::*, text::all::*, time::all::*,
+        code::all::*, color::all::*, data::all::*, io::all::*, math::all::*, mem::all::*,
+        result::all::*, task::all::*, text::all::*, time::all::*,
     };
 }
 

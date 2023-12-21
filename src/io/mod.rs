@@ -3,11 +3,7 @@
 //! I/O functionality, extends
 //! `std::{`[`env`], [`fs`], [`io`], [`net`], [`path`]`}`.
 //!
-// FIXME: intra-links works for every module except for env:
-// //! [`env`]: std::env
-// //! [`env`]: crate::_std::env
-//! [`env`]: https://doc.rust-lang.org/std/env/
-//
+//! [`env`]: mod@std::env
 //! [`fs`]: std::fs
 //! [`io`]: std::io
 //! [`net`]: std::net

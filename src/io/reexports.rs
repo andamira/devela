@@ -5,7 +5,7 @@
 
 use crate::code::reexport;
 
-/* traits */
+/* io traits */
 
 reexport! { rust: "std"|std::io, local_module: "io",
     doc: "A type of `Read`er which has an internal buffer.",
@@ -24,7 +24,7 @@ reexport! { rust: "std"|std::io, local_module: "io",
     Write
 }
 
-/* structs */
+/* io structs */
 
 reexport! { rust: "std"|std::io, local_module: "io",
     doc: "Wraps an in-memory buffer and provides it with a [`Seek`] implementation.",
