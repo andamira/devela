@@ -37,9 +37,10 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(
         feature = "unsafe", // includes all below
-        feature = "unsafe_data", feature = "unsafe_math", feature = "unsafe_mem",
-        feature = "unsafe_code", feature = "unsafe_path", feature = "unsafe_result",
-        feature = "unsafe_task", feature = "unsafe_text", feature = "unsafe_time",
+        feature = "unsafe_code", feature = "unsafe_color", feature = "unsafe_data",
+        feature = "unsafe_io", feature = "unsafe_math", feature = "unsafe_mem",
+        feature = "unsafe_result", feature = "unsafe_task", feature = "unsafe_text",
+        feature = "unsafe_time",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
@@ -58,6 +59,12 @@ pub mod data;
 #[cfg(all(not(feature = "data"), not(test)))]
 pub(crate) mod data; // the "data" feature is disabled
 
+#[cfg(any(feature = "io", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "io")))]
+pub mod io;
+#[cfg(all(not(feature = "io"), not(test)))]
+pub(crate) mod io; // the "io" feature is disabled
+
 #[cfg(any(feature = "math", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "math")))]
 pub mod math;
@@ -75,12 +82,6 @@ pub(crate) mod mem; // the "mem" feature is disabled
 pub mod code;
 #[cfg(all(not(feature = "code"), not(test)))]
 pub(crate) mod code; // the "code" feature is disabled
-
-#[cfg(any(feature = "path", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "path")))]
-pub mod path;
-#[cfg(all(not(feature = "path"), not(test)))]
-pub(crate) mod path; // the "path" feature is disabled
 
 #[cfg(any(feature = "result", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
@@ -113,8 +114,8 @@ pub(crate) mod time; // the "time" feature is disabled
 pub mod all {
     #[doc(inline)]
     pub use super::{
-        code::all::*, color::all::*, data::all::*, math::all::*, mem::all::*, path::all::*,
-        result::all::*, task::all::*, text::all::*, time::all::*,
+        code::all::*, color::all::*, data::all::*, io::all::*, math::all::*,
+        mem::all::*, result::all::*, task::all::*, text::all::*, time::all::*,
     };
 }
 
@@ -126,6 +127,10 @@ pub mod prelude {
         convert::{CastPrimitives, FromPrimitives, IntoPrimitives},
         AnyExt, DataCollection,
     };
+
+    #[doc(no_inline)]
+    #[cfg(all(feature = "io", feature = "std"))] // IMPROVE: no_std
+    pub use crate::io::{BufRead, Read, Seek, Write};
 
     #[cfg(feature = "mem")]
     pub use crate::mem::{
@@ -141,7 +146,7 @@ pub mod prelude {
 
     #[cfg(feature = "text")]
     pub use crate::text::StrExt;
-    #[cfg(all(feature = "text", feature = "alloc"))] // IMPROVE
+    #[cfg(all(feature = "text", feature = "alloc"))] // IMPROVE: no_alloc
     pub use crate::text::StringExt;
 }
 

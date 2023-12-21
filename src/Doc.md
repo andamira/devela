@@ -37,11 +37,11 @@ optional dependencies.
 Single modules:
 - `code`, `code_unsafe`: enables the [`code`] module,
 - `color`, `color_unsafe`: enables the [`color`] module,
+- `io`, `io_unsafe`: enables the [`io`] module.
 - `math`, `math_unsafe`: enables the [`math`] module.
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
   and the [`devela_macros`] optional dependency.
-- `path`, `path_unsafe`: enables the [`path`] module.
 - `result`, `result_unsafe`: enables the [`result`] module.
 - `task`, `task_unsafe`: enables the [`task`] module.
 - `text`, `text_unsafe`: enables the [`text`] module,
@@ -60,11 +60,11 @@ They offer a gradient of safety.
 - `unsafe`: enables all the unsafe sub-features:
   - `unsafe_code`: *(unused)*.
   - `unsafe_color`: *(unused)*.
+  - `unsafe_io`: *(unused)*.
   - `unsafe_math`: enables `new_unchecked` constructors, implements `bytemuck` traits,
     enables using [`MaybeUninit`] for [`slice_into_array`] initialization and
     const floating-point comparison  using [`transmute`] for constant access to the bits.
   - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and [`mem_as_bytes_sized`].
-  - `unsafe_path`: *(unused)*.
   - `unsafe_result`: *(unused)*.
   - `unsafe_task`: provides a minimal implementation of stackless
     [coroutines][task::async::coroutine].

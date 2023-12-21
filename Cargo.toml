@@ -57,8 +57,8 @@ no_std = [ # enables functionality incompatible with `std`
 #* module features *#
 
 full = [ # enables all the modules
-	"code", "color", "data", "math", "mem",
-	"path", "result", "task", "text", "time",
+	"code", "color", "data", "io", "math", "mem",
+	"result", "task", "text", "time",
 	]
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
@@ -68,9 +68,9 @@ fullest = ["full"] # enables `full` recursively (unused)
 code = []
 color = []
 data = ["dep?/bytemuck", "dep?/hashbrown"]
+io = []
 math = []
 mem = ["dep?/bytemuck"]
-path = []
 result = []
 task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
@@ -80,9 +80,9 @@ time = []
 code_unsafe = ["code", "unsafe_code"]
 color_unsafe = ["color", "unsafe_color"]
 data_unsafe = ["data", "unsafe_data"]
+io_unsafe = ["io", "unsafe_io"]
 math_unsafe = ["math", "unsafe_math"]
 mem_unsafe = ["mem", "unsafe_mem"]
-path_unsafe = ["path", "unsafe_path"]
 result_unsafe = ["result", "unsafe_result"]
 task_unsafe = ["task", "unsafe_task"]
 text_unsafe = ["text", "unsafe_text"]
@@ -92,15 +92,15 @@ time_unsafe = ["time", "unsafe_time"]
 #* safety features *#
 
 unsafe = [ # enables unsafe features in this crate (10)
-	"unsafe_code", "unsafe_color", "unsafe_data",  "unsafe_math","unsafe_mem",
-	"unsafe_path", "unsafe_result", "unsafe_task", "unsafe_text", "unsafe_time",
+	"unsafe_code", "unsafe_color", "unsafe_data", "unsafe_io", "unsafe_math",
+	"unsafe_mem", "unsafe_result", "unsafe_task", "unsafe_text", "unsafe_time",
 	]
 	unsafe_code = [] # (unused)
 	unsafe_color = [] # (unused)
 	unsafe_data = [] # (unused)
+	unsafe_io = [] # (unused)
 	unsafe_math = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
-	unsafe_path = [] # (unused)
 	unsafe_result = [] # (unused)
 	unsafe_task = [] # enables a coroutines implementation.
 	unsafe_text = [] # enables unsafe use in `text`

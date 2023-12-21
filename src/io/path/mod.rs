@@ -1,4 +1,4 @@
-// devela::path
+// devela::io::path
 //
 //! Paths, extends
 //! `std::`[`path`][std::path].
@@ -10,15 +10,15 @@
 
 /* feature-gated */
 
-#[cfg(feature = "path")]
+#[cfg(feature = "io")]
 mod project;
 
 // re-export private sub-modules
-#[cfg(feature = "path")]
+#[cfg(feature = "io")]
 pub use project::*;
 
 pub(crate) mod all {
     #[doc(inline)]
-    #[cfg(feature = "path")]
+    #[cfg(feature = "io")]
     pub use super::project::*;
 }

@@ -25,8 +25,8 @@ use toml_edit::Document;
 
 #[rustfmt::skip]
 const ROOT_MODULES: [&str; 10] = [
-    "code", "color", "data", "math", "mem",
-    "path", "result", "task", "text", "time",
+    "code", "color", "data", "io", "math",
+    "mem", "result", "task", "text", "time",
 ];
 
 const STD_ARCHES: &[&str] = &[
