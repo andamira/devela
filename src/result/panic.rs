@@ -66,4 +66,12 @@ mod reexports {
         registering the default hook in its place",
         @take_hook as panic_unset_hook
     }
+
+    /* macros */
+
+    reexport! { rust: core, local_module: "code", doc: "Panics the current thread.", panic }
+    reexport! { rust: core, local_module: "code", doc: "Indicates unfinished code.", todo }
+    reexport! { rust: core, local_module: "code", doc: "Indicates unreachable code.", unreachable }
+    reexport! { rust: core, local_module: "code",
+    doc: "Indicates unimplemented code.", unimplemented }
 }

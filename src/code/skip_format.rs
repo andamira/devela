@@ -18,7 +18,7 @@
 /// // rustfmt has no powers here
 /// sf! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
 /// ```
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "meta")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
 #[macro_export]
 macro_rules! sf { ( $($line:tt)+ ) => { $($line)+ }; }
 pub use sf;

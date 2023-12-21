@@ -102,7 +102,7 @@ macro_rules! reexport {
     // reexport! { rust: core::any, local_module: "any",
     //     "Represents a globally unique identifier for a type.", TypeId }
     // ```
-    ( rust : core :: $( $core_path:ident )::+,
+    ( rust : core $( :: $( $core_path:ident )::+)?,
       local_module: $module_feature:literal,
       doc: $description:literal,
       $( $item:ident ),*
@@ -113,11 +113,11 @@ macro_rules! reexport {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`core`'>`core`</span>"]
         #[doc = $description]
-        #[doc = "\n\n*Re-exported from`core::`[`" $( $core_path "::" )+
-            "`](https://doc.rust-lang.org/core/" $( $core_path "/" )+ ")*.\n\n---"]
+        #[doc = "\n\n*Re-exported from`core::`[`" $($( $core_path "::" )+)?
+            "`](https://doc.rust-lang.org/core/" $($( $core_path "/" )+)? ")*.\n\n---"]
         #[cfg_attr(feature = "nightly", doc(cfg(feature = $module_feature)))]
 
-        pub use core :: $( $core_path :: )+ {
+        pub use core :: $($( $core_path :: )+)? {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
         };

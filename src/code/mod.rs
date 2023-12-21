@@ -1,9 +1,10 @@
-// devela::meta
+// devela::code
 //
 //! Code generation and meta-programming, extends
-//! `std::`[`hint`].
+//! `std::{`[`hint`], [`marker`]`}`.
 //!
 //! [`hint`]: core::hint
+//! [`marker`]: core::marker
 //
 
 /* contains always compiled items */
@@ -20,7 +21,7 @@ mod paste;
 mod reexports;
 mod skip_format;
 #[allow(unused)]
-#[cfg(not(feature = "meta"))]
+#[cfg(not(feature = "code"))]
 pub use {const_for::cfor, iif::iif, paste::paste, reexports::*, skip_format::sf};
 
 #[doc(hidden)]
@@ -29,11 +30,11 @@ pub use paste::__paste;
 
 /* feature-gated */
 
-#[cfg(feature = "meta")]
+#[cfg(feature = "code")]
 mod deprecate;
 
 // re-export private sub-modules
-#[cfg(feature = "meta")]
+#[cfg(feature = "code")]
 pub use {
     const_for::cfor, deprecate::deprecate_feature, iif::iif, paste::paste, reexports::*,
     skip_format::sf,
@@ -44,6 +45,6 @@ pub(crate) mod all {
     pub use super::{const_for::cfor, iif::iif, paste::paste, reexports::*, skip_format::sf};
 
     #[doc(inline)]
-    #[cfg(feature = "meta")]
+    #[cfg(feature = "code")]
     pub use super::deprecate::deprecate_feature;
 }

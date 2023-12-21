@@ -59,7 +59,7 @@
 /// }
 /// ```
 #[macro_export]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "meta")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
 macro_rules! iif {
     ($if:expr; $true:expr) => {
         if $if {
