@@ -7,14 +7,25 @@
 /// # Examples
 /// ```
 /// # use devela::code::ident_const_index;
-/// ident_const_index![pub(crate), 3; first, second, third];
-/// assert_eq![0, first];
-/// assert_eq![1, second];
-/// assert_eq![2, third];
+/// ident_const_index![pub, 3; first, second, third]; // with commas
+/// assert![0 == first && 1 == second && 2 == third];
+///
+/// ident_const_index![pub(crate), 2; fourth fifth]; // without commas
+/// assert![0 == fourth && 1 == fifth];
 /// ```
 #[macro_export]
 macro_rules! ident_const_index {
-    (
+    ( // without commas:
+        // $vis: the visibility of the constants (pub, pub(super), …).
+        // $total: the total number of identifiers.
+        // $ident, $($rest),*: the list of identifiers.
+        $vis:vis, $total:expr; $ident:ident $($rest:ident)*
+    ) => { $crate::code::paste! {
+        #[allow(non_upper_case_globals)]
+        $vis const $ident: usize = $total - $crate::code::ident_total_count!($($rest)*) - 1;
+        $( $crate::code::ident_const_index!($vis, $total; $rest); )*
+    }};
+    ( // with commas:
         // $vis: the visibility of the constants (pub, pub(super), …).
         // $total: the total number of identifiers.
         // $ident, $($rest),*: the list of identifiers.
@@ -28,14 +39,14 @@ macro_rules! ident_const_index {
 pub use ident_const_index;
 
 /// Counts the total number of given identifiers as a `usize`.
+///
+/// Supports optional commas for separators.
 /// # Examples
 /// ```
 /// # use devela::code::ident_total_count;
-/// assert_eq![5, ident_total_count!(one, two, three, four, five,)]; // with commas
-/// # assert_eq![4, ident_total_count!(one, two, three, four)]; // no trailing comma
+/// assert_eq![5, ident_total_count!(one, two, three, four, five)]; // with commas
 /// assert_eq![4, ident_total_count!(one two three four)]; // without commas
-/// # assert_eq![3, ident_total_count!(one, two three)]; // only the first
-/// # assert_eq![3, ident_total_count!(one two, three,)]; // all but first
+/// # assert_eq![3, ident_total_count!(one, two three)]; // only some commas (not encouraged)
 /// ```
 #[macro_export]
 macro_rules! ident_total_count {
