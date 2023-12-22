@@ -16,6 +16,7 @@ pub(crate) use _private::reexport;
 
 // internal and external use
 mod const_for;
+mod enumset;
 mod ident;
 mod iif;
 mod paste;
@@ -23,7 +24,7 @@ mod reexports;
 mod skip_format;
 #[allow(unused)]
 #[cfg(not(feature = "code"))]
-pub use {const_for::*, ident::*, iif::*, paste::*, reexports::*, skip_format::*};
+pub use {const_for::*, enumset::*, ident::*, iif::*, paste::*, reexports::*, skip_format::*};
 
 #[doc(hidden)]
 #[allow(unused)]
@@ -36,11 +37,16 @@ mod deprecate;
 
 // re-export private sub-modules
 #[cfg(feature = "code")]
-pub use {const_for::*, deprecate::*, ident::*, iif::*, paste::*, reexports::*, skip_format::sf};
+pub use {
+    const_for::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, reexports::*,
+    skip_format::*,
+};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{const_for::*, ident::*, iif::*, paste::*, reexports::*, skip_format::*};
+    pub use super::{
+        const_for::*, enumset::*, ident::*, iif::*, paste::*, reexports::*, skip_format::*,
+    };
 
     #[doc(inline)]
     #[cfg(feature = "code")]
