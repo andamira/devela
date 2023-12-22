@@ -113,7 +113,7 @@ macro_rules! reexport {
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`core`'>`core`</span>"]
         #[doc = $description]
-        #[doc = "\n\n*Re-exported from`core::`[`" $($( $core_path "::" )+)?
+        #[doc = "\n\n*Re-exported from [`core" $( "`]::[`" $( $core_path "::" )+ )?
             "`](https://doc.rust-lang.org/core/" $($( $core_path "/" )+)? ")*.\n\n---"]
         #[cfg_attr(feature = "nightly", doc(cfg(feature = $module_feature)))]
 

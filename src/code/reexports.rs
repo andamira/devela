@@ -54,11 +54,8 @@ doc: "Includes a UTF-8 encoded file as a string.", include_str }
 /* `core::hint` reexports */
 
 reexport! { rust: core::hint, local_module: "code",
-doc: "An identity function that hints to the compiler to be maximally
-    pessimistic about what black_box could do.", black_box }
+doc: "Hints the compiler to be maximally pessimistic about what black_box could do.", black_box }
 reexport! { rust: core::hint, local_module: "code",
-doc: "Emits a machine instruction to signal the processor that
-    it is running in a busy-wait spin-loop (“spin lock”).", spin_loop }
+doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_loop }
 reexport! { rust: core::hint, local_module: "code",
-doc: "Informs the compiler that the site which is calling this function
-    is not reachable, possibly enabling further optimizations.", unreachable_unchecked }
+doc: "Informs the compiler that the current calling site is not reachable.", unreachable_unchecked }
