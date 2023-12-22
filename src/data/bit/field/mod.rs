@@ -62,10 +62,50 @@ macro_rules! bitfield {
     } => { $crate::code::paste! {
 
         $( #[$struct_attributes] )*
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         $vis struct $name { bits: $T }
 
-        impl Default for $name { fn default() -> Self { $name { bits: Default::default() } } }
+        /* core impls */
+
+        impl Default for $name {
+            #[inline]
+            fn default() -> Self { $name { bits: Default::default() } }
+        }
+        impl core::fmt::Display for $name {
+            #[inline]
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                core::fmt::Display::fmt(&self.bits, f)
+            }}
+        impl core::fmt::Binary for $name {
+            #[inline]
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                core::fmt::Binary::fmt(&self.bits, f)
+            }}
+        impl core::fmt::Octal for $name {
+            #[inline]
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                core::fmt::Octal::fmt(&self.bits, f)
+            }}
+        impl core::fmt::LowerHex for $name {
+            #[inline]
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                core::fmt::LowerHex::fmt(&self.bits, f)
+            }}
+        impl core::fmt::UpperHex for $name {
+            #[inline]
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                core::fmt::UpperHex::fmt(&self.bits, f)
+            }}
+        impl core::fmt::UpperExp for $name {
+            #[inline]
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                core::fmt::UpperExp::fmt(&self.bits, f)
+        }}
+        impl core::fmt::LowerExp for $name {
+            #[inline]
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                core::fmt::LowerExp::fmt(&self.bits, f)
+        }}
 
         // /// # Custom fields constants
         #[allow(dead_code)]
@@ -74,8 +114,10 @@ macro_rules! bitfield {
                 // The field bit mask
                 $( #[$field_attributes] )*
                 $vis_custom const $field: Self = {
-                    assert![$field_start <= $field_end];
-                    assert![$field_end < <$T>::BITS];
+                    assert![$field_start <= $field_end,
+                        "The field_start bit is bigger than the field_end bit."];
+                    assert![$field_end < <$T>::BITS,
+                        "There are more fields than available bits in the inner primitive type."];
                     Self {
                         bits: $crate::data::Biting::<$T>::mask_range($field_start, $field_end).0
                     }
@@ -951,7 +993,7 @@ macro_rules! bitfield {
             )*
         }
     } => {
-        bitfield!{
+        $crate::data::bitfield!{
             (
                 custom: $vis_custom,
                 extra: $vis_extra
@@ -961,17 +1003,6 @@ macro_rules! bitfield {
                 $(
                     $( #[$field_attributes] )*
                     $field: $field_start, $crate::code::coalesce![$($field_end)?, $field_start];
-                    // alternative macroless implementation:
-                    // ({
-                    //     // if there's no $field_end replace it with $field_start
-                    //     #[$crate::code::compile(none($($field_end)?))]
-                    //     const END: u32 = $field_start;
-                    //     $(
-                    //         #[$crate::code::compile(some($field_end))]
-                    //         const END: u32 = $field_end;
-                    //     )?
-                    //     END
-                    // });
                 )*
             }
         }
@@ -979,15 +1010,15 @@ macro_rules! bitfield {
 
     { (custom) // preset with only custom fields public
         $($tt:tt)+ } => {
-        bitfield![ (custom:pub, extra:pub(crate)) $($tt)+ ];
+        $crate::data::bitfield![ (custom:pub, extra:pub(crate)) $($tt)+ ];
     };
     { (extra) // preset with only extra functionality public
         $($tt:tt)+ } => {
-        bitfield![ (custom:pub(crate), extra:pub) $($tt)+ ];
+        $crate::data::bitfield![ (custom:pub(crate), extra:pub) $($tt)+ ];
     };
     { // preset with everything public by default
         $($tt:tt)+ } => {
-        bitfield![ (custom:pub, extra:pub) $($tt)+ ];
+        $crate::data::bitfield![ (custom:pub, extra:pub) $($tt)+ ];
     };
 }
 pub use bitfield;
