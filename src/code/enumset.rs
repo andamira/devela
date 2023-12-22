@@ -30,12 +30,16 @@
 #[macro_export]
 macro_rules! enumset {
     (
+        // $enum_vis: the visibility for the enum and the set
         // $enum_name: the name of the new enum.
-        // $enum_vis: the visibility for the enum and the set (pub, pub(crate), …).
         // $set_name: the name of the associated set
-        // $T: the inner integer primitive type for the bitfield (u8, i32, …).
+        // $set_ty: the inner integer primitive type for the bitfield (u8, i32, …).
         $( #[$enum_attr:meta] )*
-        $enum_vis:vis enum $enum_name:ident $( < $($life:lifetime),* > )? ($set_name:ident: $T:ty) {
+        $enum_vis:vis enum $enum_name:ident
+            $( < $($gen:tt),* $(,)? > )? // optional generics and lifetimes
+            ($set_name:ident: $set_ty:ty) // name and inner type of the set, between ()
+            $([where $($where:tt)+ $(,)? ] $(,)? )? // optional where clauses, between []
+        {
             $(
                 $( #[$variant_attr:meta] )*
                 $variant_name:ident
@@ -50,7 +54,7 @@ macro_rules! enumset {
 
         $( #[$enum_attr] )*
         #[doc = "\n\nSee also the associated type set of variants [`" $set_name "`]."]
-        $enum_vis enum $enum_name $( < $($life),* > )? {
+        $enum_vis enum $enum_name $( < $($gen),* > )? $(where $($where)+)? {
             $(
                 $( #[$variant_attr] )*
                 $variant_name
@@ -69,8 +73,8 @@ macro_rules! enumset {
             $crate::code::ident_const_index!(pub(super), TOTAL_VARIANTS; $($variant_name)*);
         }
 
-        /// # `enumset`
-        impl $( < $($life),* > )? $enum_name $( < $($life),* > )? {
+        /// # `enumset` methods
+        impl $( < $($gen),* > )? $enum_name $( < $($gen),* > )? $( where $($where)* )? {
             /// Returns the total number of variants.
             pub const LEN: usize = [<_$enum_name _private>]::TOTAL_VARIANTS;
 
@@ -86,7 +90,7 @@ macro_rules! enumset {
 
         $crate::data::bitfield! {
             #[doc = "Represents a set of [`" $enum_name "`] variants."]
-            $enum_vis struct $set_name($T) {
+            $enum_vis struct $set_name($set_ty) {
                 $(
                     #[doc = "The bit index that corresponds to `" $enum_name "::`[`"
                         $variant_name "`][" $enum_name "::" $variant_name "]."]
@@ -107,63 +111,70 @@ enumset! {
     /// # Examples
     /// ```
     /// # use devela::code::enumset;
-    /// # #[cfg(feature = "alloc")]
-    /// # crate::_alloc::boxed::Box;
     /// enumset! {
     ///     /// An example created with [`enumset!`].
     ///     #[allow(dead_code)]
     ///     #[derive(Clone, Default)]
     ///     #[repr(u64)]
-    ///     pub enum _ExampleEnum<'a, 'b>(_ExampleEnumSet: u8) {
-    ///         /// A default unit variant.
+    ///     pub enum _ExampleEnum<'a, 'b, T>(_ExampleEnumSet: u8)
+    ///         [where T: Clone] // supports where clauses (between [])
+    ///     {
     ///         #[default]
-    ///         Variant0,
-    ///         /// An unit variant with discriminant.
-    ///         Variant1 = 4,
+    ///         Variant0 = 1,
     ///         /// A tuple variant.
-    ///         Variant2(Option<u16>),
-    ///         /// A tuple variant.
-    ///         Variant3([u8; 3]),
+    ///         Variant1([u8; 3]),
     ///         /// A self-referential tuple variant.
-    ///         #[cfg(feature = "alloc")]
-    ///         Variant4(Box<Self>),
-    ///         /// A struct variant.
-    ///         Variant5 {
+    ///         #[cfg(feature = "std")]
+    ///         Variant2(Box<Self>),
+    ///         /// A struct variant with discriminant.
+    ///         Variant3 {
     ///             /// field1 docs.
     ///             some: [u8; 2],
     ///             /// field2 docs.
     ///             other: u32
-    ///         },
-    ///         /// Supports lifetimes.
-    ///         Variant6(&'a str, &'b u32),
+    ///         } = 30,
+    ///         /// Supports generics and lifetimes.
+    ///         Variant4(T, &'a str, &'b u32),
     ///     }
     /// }
-    /// assert_eq![7, _ExampleEnum::LEN];
+    /// assert_eq![5, _ExampleEnum::<String>::LEN];
     /// ```
     #[allow(dead_code)]
     #[derive(Clone, Default)]
     #[repr(u64)]
-    pub enum _ExampleEnum<'a, 'b>(_ExampleEnumSet: u8) {
+    pub enum _ExampleEnum<'a, 'b, T>(_ExampleEnumSet: u8)
+        [where T: Clone] // supports where clauses (between [])
+    {
         /// A default unit variant.
         #[default]
-        Variant0,
-        /// An unit variant with discriminant.
-        Variant1 = 4,
+        Variant0 = 1,
         /// A tuple variant.
-        Variant2(Option<u16>),
-        /// A tuple variant.
-        Variant3([u8; 3]),
+        Variant1([u8; 3]),
         /// A self-referential tuple variant.
-        #[cfg(feature = "alloc")]
-        Variant4(crate::_alloc::boxed::Box<Self>),
-        /// A struct variant.
-        Variant5 {
+        #[cfg(feature = "std")]
+        Variant2(Box<Self>),
+        /// A struct variant with discriminant.
+        Variant3 {
             /// field1 docs.
             some: [u8; 2],
             /// field2 docs.
             other: u32
-        },
+        } = 30,
+        /// Supports generics and lifetimes.
+        Variant4(T, &'a str, &'b u32),
+    }
+}
+
+enumset! {
+    ///
+    pub enum _ExampleEnum2<'a, 'b, T>(_ExampleEnumSet2: u8) [where T: Clone] {
+        /// A default unit variant.
+        Variant0,
+        /// A tuple variant.
+        Variant1([u8; 3]),
         /// Supports lifetimes.
-        Variant6(&'a str, &'b u32),
+        Variant2(&'a str, &'b u32),
+        /// Supports generics
+        Variant3(T),
     }
 }
