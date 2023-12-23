@@ -5,7 +5,7 @@
 
 /// Defines an enum and an associated type set of its variants.
 ///
-/// It uses the [`bitfield`] macro to create the associated set.
+/// It uses the [`bitfield!`][crate::data::bitfield] macro to create the associated set.
 ///
 /// You have to give unique names for the enum and for the set.
 ///

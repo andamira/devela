@@ -69,9 +69,9 @@ mod reexports {
 
     /* macros */
 
-    reexport! { rust: core, local_module: "code", doc: "Panics the current thread.", panic }
-    reexport! { rust: core, local_module: "code", doc: "Indicates unfinished code.", todo }
-    reexport! { rust: core, local_module: "code", doc: "Indicates unreachable code.", unreachable }
-    reexport! { rust: core, local_module: "code",
+    reexport! { rust: core, local_module: "result", doc: "Panics the current thread.", panic }
+    reexport! { rust: core, local_module: "result", doc: "Indicates unfinished code.", todo }
+    reexport! { rust: core, local_module: "result", doc: "Indicates unreachable code.", unreachable }
+    reexport! { rust: core, local_module: "result",
     doc: "Indicates unimplemented code.", unimplemented }
 }

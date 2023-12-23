@@ -36,7 +36,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 #[cfg(all(
     feature = "safe",
     any(
-        feature = "unsafe", // includes all below
+        feature = "unsafe", // includes all below:
         feature = "unsafe_code", feature = "unsafe_color", feature = "unsafe_data",
         feature = "unsafe_io", feature = "unsafe_math", feature = "unsafe_mem",
         feature = "unsafe_result", feature = "unsafe_task", feature = "unsafe_text",
@@ -50,61 +50,61 @@ compile_error!("You can't enable `safe` and `unsafe*` features at the same time.
 #[cfg(any(feature = "color", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "color")))]
 pub mod color;
-#[cfg(all(not(feature = "color"), not(test)))]
+#[cfg(not(any(feature = "color", test)))]
 pub(crate) mod color; // the "color" feature is disabled
+
+#[cfg(any(feature = "code", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+pub mod code;
+#[cfg(not(any(feature = "code", test)))]
+pub(crate) mod code; // the "code" feature is disabled
 
 #[cfg(any(feature = "data", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod data;
-#[cfg(all(not(feature = "data"), not(test)))]
+#[cfg(not(any(feature = "data", test)))]
 pub(crate) mod data; // the "data" feature is disabled
 
 #[cfg(any(feature = "io", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "io")))]
 pub mod io;
-#[cfg(all(not(feature = "io"), not(test)))]
+#[cfg(not(any(feature = "io", test)))]
 pub(crate) mod io; // the "io" feature is disabled
 
 #[cfg(any(feature = "math", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "math")))]
 pub mod math;
-#[cfg(all(not(feature = "math"), not(test)))]
+#[cfg(not(any(feature = "math", test)))]
 pub(crate) mod math; // the "math" feature is disabled
 
 #[cfg(any(feature = "mem", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub mod mem;
-#[cfg(all(not(feature = "mem"), not(test)))]
+#[cfg(not(any(feature = "mem", test)))]
 pub(crate) mod mem; // the "mem" feature is disabled
-
-#[cfg(any(feature = "code", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
-pub mod code;
-#[cfg(all(not(feature = "code"), not(test)))]
-pub(crate) mod code; // the "code" feature is disabled
 
 #[cfg(any(feature = "result", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
 pub mod result;
-#[cfg(all(not(feature = "result"), not(test)))]
+#[cfg(not(any(feature = "result", test)))]
 pub(crate) mod result; // the "result" feature is disabled
 
 #[cfg(any(feature = "task", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "task")))]
 pub mod task;
-#[cfg(all(not(feature = "task"), not(test)))]
+#[cfg(not(any(feature = "task", test)))]
 pub(crate) mod task; // the "task" feature is disabled
 
 #[cfg(any(feature = "text", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
 pub mod text;
-#[cfg(all(not(feature = "text"), not(test)))]
+#[cfg(not(any(feature = "text", test)))]
 pub(crate) mod text; // the "text" feature is disabled
 
 #[cfg(any(feature = "time", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "time")))]
 pub mod time;
-#[cfg(all(not(feature = "time"), not(test)))]
+#[cfg(not(any(feature = "time", test)))]
 pub(crate) mod time; // the "time" feature is disabled
 
 /// All items are flat re-exported here.
