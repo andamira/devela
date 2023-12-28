@@ -38,9 +38,6 @@ mod _dep {
     #[cfg(feature = "atomic")]
     pub use ::atomic;
 
-    // #[cfg(feature = "az")]
-    // pub use ::az;
-
     #[cfg(feature = "bytemuck")]
     pub use ::bytemuck;
 
@@ -73,34 +70,31 @@ mod _dep {
 mod _dep {
     use crate::code::reexport;
 
-    reexport! { depend feature: "task",
+    reexport! { depend any_features: "task",
     dep: "atomic", atomic, "A generic atomic wrapper type." }
 
-    // reexport! { depend feature: "convert",
-    // dep: "az", az, "Casts and checked casts." }
-
-    reexport! { depend
+    reexport! { depend any_features: "data", "mem",
     dep: "bytemuck", bytemuck, "Small utilities for casting between plain data types." }
 
-    reexport! { depend feature: "text",
+    reexport! { depend any_features: "os_term", "text",
     dep: "const-str", const_str, "Compile-time string operations." }
 
-    reexport! { depend feature: "no_std",
+    reexport! { depend any_features: "no_std",
     dep: "libm", libm, "A port of [`MUSL`](https://musl.libc.org/)'s libm to Rust." }
 
-    reexport! { depend feature: "data", also: "alloc",
+    reexport! { depend any_features: "data", all_features: "alloc",
     dep: "hashbrown", hashbrown,
     "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`." }
 
-    reexport! { depend feature: "task",
+    reexport! { depend any_features: "task",
     dep: "portable-atomic", portable_atomic,
     "Portable atomic types including 128-bit atomics, floats, etc." }
 
-    reexport! { depend feature: "text",
+    reexport! { depend any_features: "text",
     dep: "unicode-segmentation", unicode_segmentation,
     "Split strings on Grapheme Clusters, Words or Sentences." }
 
-    reexport! { depend feature: "text",
+    reexport! { depend any_features: "text",
     dep: "unicode-width", unicode_width,
     "Determine displayed width of `char` and `str` types." }
 }
