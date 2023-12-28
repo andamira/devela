@@ -8,41 +8,38 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.19.0-wip]
 
 ### Added
+- new features: `docsrs`.
 - new root modules: `io`, `math`.
-- new `docsrs` feature.
-- new function `mem::ptr_in_stack`.
-- new functions: `factorial_*.
-- complete `Floating` and `FloatOps` methods and constants.
-- new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
-- new macros: `init_array`, `bitfield`.
-- new fn `bytes_from_bits`.
-- new type `DataErrors`.
-- new trait `DataArray`.
-- new trait `CastPrimitives` and type `Casting` wrapper.
-- new `Comparing` and `Sorting` wrapper type.
-- new trait `BitOps`, and wrapper struct `Biting`.
-- new `MathErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
 - add optional dependency `unicode-width`.
+- new traits: `DataArray`, `CastPrimitives`, `BitOps`
+- new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
+- new fns `mem::ptr_in_stack`, `factorial_*`, `bytes_from_bits`.
+- new types: `DataErrors`, `Casting`, `Comparing`, `Sorting`, `Biting`.
+- new macros: `bitfield`, `enumset`, `ident_const_index`, `ident_total_count`, `init_array`.
+- new `MathErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
+- complete `Floating` and `FloatOps` methods and constants.
+- reexport `panic` from `result` and `hint` from `code`.
 
 ### Removed
-- remove `os::linux` and `os::term` functionality.
-- remove features: `term`, `term_unsafe`, `unsafe_term`, `linux`, `linux_unsafe`, `unsafe_linux`, `os`, `unsafe_os`.
+- remove `os::linux` functionality.
+- remove features: `linux`, `linux_unsafe`, `unsafe_linux`, `unsafe_os`, `ops`, `ops_unsafe`, `unsafe_ops`, `unsafe_code`, `unsafe_color`, `unsafe_result`, `unsafe_time`, `code_usafe`, `color_unsafe`, `result_unsafe`, `time_unsafe`.
 - remove linux specific tools and github actions.
 
 ### Changed
-- bump rust version to `1.74.1`.
+- bump rust version to `1.75.0`.
 - rename `meta` module to `code.
 - move `any` module to `data`.
 - move `num` and `ops` modules to `math`.
 - move `num::convert` module to `data::convert`.
-- remove features: `ops`, `ops_unsafe`, `unsafe_ops`.
 - rename `Fp` to `Floating` and `FloatExt` to `FloatOps`.
 - improve `Floating` type and `FloatOps` trait to be partially available without `std` or `libm` features, reverting to the taylor versions when there's no better option.
 - rename `Floating` and `FloatExp` float parameters to `x`, `y` `z`.
 - rename `NumError` and `NumResult` to `MathErrors` and `MathResult`, respectively, and move them to the math module.
+- rename `AnsiColor3` to `AnsiColor3b` and `AnsiColor8` to `AnsiColor8b`.
 - rename fns: `div_half_*` to `div_ties_*`.
 - rename `Floating` and `FloatOps` method: `round` to `round_ties_away`.
 - rename `num` features to `math` features.
+- rename `term` features to `os_term` features.
 - rename fn `mem_ptr_ratio` and method `Size::ptr_ratio` to `ptr_size_ratio`.
 - impl `Error` and `Display` for `MathErrors`.
 - make public `ascii_calc_digit_*` functions.
@@ -61,14 +58,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move `data::array` to `data::collections::array`.
 - move niche number types to `math::num::niche`.
 - move corresponding standalone fns to `Sorting`, `Comparing` and `Casting`.
-- update `devela_depend`.
+- change `Ansi::print` method and `ansip` macro to depend on `std`.
 - update crate description.
+- update `devela_depend`.
 
 ### Fixed
 - fix `bytemuck` dependency when `data` is enabled.
 - update and improve CI tests.
-- add missing attributes.
-- fix and update docs.
+- add many missing attributes.
+- fix and update many docs.
 
 ## [0.18.1] 2023-11-08
 
