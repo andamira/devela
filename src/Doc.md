@@ -58,18 +58,13 @@ They offer a gradient of safety.
 
 - `unsafest`: enables unsafe recursively (unused).
 - `unsafe`: enables all the unsafe sub-features:
-  - `unsafe_code`: *(unused)*.
-  - `unsafe_color`: *(unused)*.
-  - `unsafe_io`: *(unused)*.
   - `unsafe_math`: enables `new_unchecked` constructors, implements `bytemuck` traits,
     enables using [`MaybeUninit`] for [`slice_into_array`] initialization and
     const floating-point comparison  using [`transmute`] for constant access to the bits.
   - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and [`mem_as_bytes_sized`].
-  - `unsafe_result`: *(unused)*.
   - `unsafe_task`: provides a minimal implementation of stackless
     [coroutines][task::async::coroutine].
   - `unsafe_text`: enables use of unsafe in [`text`].
-  - `unsafe_time`: *(unused)*.
 - `safe`: forbids unsafe at the crate level.
 - `safest`: forbids unsafe recursively (unused).
 

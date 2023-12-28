@@ -37,10 +37,8 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(
         feature = "unsafe", // includes all below:
-        feature = "unsafe_code", feature = "unsafe_color", feature = "unsafe_data",
-        feature = "unsafe_io", feature = "unsafe_math", feature = "unsafe_mem",
-        feature = "unsafe_result", feature = "unsafe_task", feature = "unsafe_text",
-        feature = "unsafe_time",
+            feature = "unsafe_data", feature = "unsafe_math", feature = "unsafe_mem",
+            feature = "unsafe_task", feature = "unsafe_text",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");

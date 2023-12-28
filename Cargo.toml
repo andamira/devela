@@ -76,35 +76,24 @@ task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
 
-# individual modules with unsafe enabled (10):
-code_unsafe = ["code", "unsafe_code"]
-color_unsafe = ["color", "unsafe_color"]
+# individual modules with unsafe enabled (5):
 data_unsafe = ["data", "unsafe_data"]
-io_unsafe = ["io", "unsafe_io"]
 math_unsafe = ["math", "unsafe_math"]
 mem_unsafe = ["mem", "unsafe_mem"]
-result_unsafe = ["result", "unsafe_result"]
 task_unsafe = ["task", "unsafe_task"]
 text_unsafe = ["text", "unsafe_text"]
-time_unsafe = ["time", "unsafe_time"]
 
 
 #* safety features *#
 
 unsafe = [ # enables unsafe features in this crate (10)
-	"unsafe_code", "unsafe_color", "unsafe_data", "unsafe_io", "unsafe_math",
-	"unsafe_mem", "unsafe_result", "unsafe_task", "unsafe_text", "unsafe_time",
+	"unsafe_data", "unsafe_math", "unsafe_mem", "unsafe_task", "unsafe_text",
 	]
-	unsafe_code = [] # (unused)
-	unsafe_color = [] # (unused)
-	unsafe_data = [] # (unused)
-	unsafe_io = [] # (unused)
+	unsafe_data = []
 	unsafe_math = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
-	unsafe_result = [] # (unused)
 	unsafe_task = [] # enables a coroutines implementation.
 	unsafe_text = [] # enables unsafe use in `text`
-	unsafe_time = [] # (unused)
 safe = [] # forbids `unsafe` in this crate
 safest = ["safe"] # forbids `unsafe` recursively (unused)
 unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
