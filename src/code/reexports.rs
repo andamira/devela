@@ -3,6 +3,8 @@
 //! Reexported items.
 //
 
+#![allow(unused)]
+
 use super::reexport;
 
 /// <span class="stab portability" title="re-exported from `devela_macros`

@@ -18,6 +18,7 @@ pub mod term;
 // re-export public sub-modules
 
 #[doc(no_inline)]
+#[allow(unused)]
 pub use {arch::all::*, ffi::all::*};
 
 #[doc(no_inline)]
@@ -25,6 +26,9 @@ pub use {arch::all::*, ffi::all::*};
 pub use term::all::*;
 
 pub(crate) mod all {
+    #[doc(inline)]
+    pub use super::{arch::all::*, ffi::all::*};
+
     #[doc(inline)]
     #[cfg(feature = "os_term")]
     pub use super::term::all::*;

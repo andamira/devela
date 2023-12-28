@@ -68,6 +68,10 @@ pub(crate) mod all {
     pub use super::any::all::*;
 
     #[doc(inline)]
-    #[cfg(all(feature = "unsafe_data", any(feature = "bytemuck", feature = "dep")))]
+    #[cfg(all(
+        feature = "data",
+        feature = "unsafe_data",
+        any(feature = "bytemuck", feature = "dep")
+    ))]
     pub use super::dst::*;
 }

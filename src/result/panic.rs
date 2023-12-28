@@ -5,6 +5,7 @@
 //
 
 // re-export private sub-modules
+#[allow(unused)]
 pub use reexports::*;
 
 pub(crate) mod all {

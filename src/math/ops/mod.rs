@@ -20,6 +20,7 @@ pub use always_fns::*;
 mod fns;
 
 // re-export private sub-modules
+#[allow(unused)]
 pub use always_fns::*;
 #[cfg(feature = "math")]
 pub use fns::*;

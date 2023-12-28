@@ -117,6 +117,7 @@ pub(crate) mod time; // the "time" feature is disabled
 /// Note that any item tagged with [`dep`] can also be enabled by
 /// manually enabling the associated optional dependency.
 pub mod all {
+    #[allow(unused)]
     #[doc(inline)]
     pub use super::{
         code::all::*, color::all::*, data::all::*, io::all::*, math::all::*, mem::all::*,

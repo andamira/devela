@@ -29,6 +29,7 @@
 
 #![cfg_attr(not(feature = "full"), allow(rustdoc::private_intra_doc_links))]
 
+#[allow(unused)]
 pub use _dep::*;
 
 // When the `dep` feature is disabled, any optional dependency can be
