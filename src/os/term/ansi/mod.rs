@@ -7,8 +7,15 @@
 
 mod codes;
 mod color;
+mod macros;
 
-pub use {
-    codes::Ansi,
-    color::{AnsiColor3b, AnsiColor8b},
-};
+#[cfg(feature = "std")]
+mod print;
+
+// re-export private sub-modules
+pub use {codes::*, color::*, macros::*};
+
+pub(crate) mod all {
+    #[doc(inline)]
+    pub use super::{codes::*, color::*, macros::*};
+}

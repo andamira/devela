@@ -43,7 +43,8 @@ Single modules:
   and the [`bytemuck`] optional dependency.
   and the [`devela_macros`] optional dependency.
 - `os`: enables all the [`os`] specific functionality.
-  - `os_term`: enables the terminal functionality.
+  - `os_term`: enables the terminal functionality
+    and the [`const-str`] optional dependency.
 - `result`: enables the [`result`] module.
 - `task`, `task_unsafe`: enables the [`task`] module.
 - `text`, `text_unsafe`: enables the [`text`] module,
@@ -85,7 +86,7 @@ They are currently only used for generating improved documentation.
 Dependencies can also be enabled individually:
 - `atomic` is used in `task`.
 - `bytemuck` is used in `math`, `mem`.
-- `const-str` is used in `text`, `result`.
+- `const-str` is used in `os_term`, `text`, `result`.
 - `devela_macros` is used in `meta`.
 - `libm` is used in `math`.
 - `portable-atomic` is used in `task`.

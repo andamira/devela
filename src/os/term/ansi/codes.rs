@@ -15,6 +15,7 @@ use crate::text::{ascii_1digit, ascii_2digit, ascii_3digit, ascii_4digit, ascii_
 /// - [Color (3-bit)][Self#3-bit-color-escape-codes]
 /// - [Color (8-bit)][Self#8-bit-color-escape-codes]
 /// - [Color (rgb)][Self#rgb-color-escape-codes]
+/// - [Print method][Self#print-method]
 pub struct Ansi;
 
 impl Ansi {
