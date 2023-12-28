@@ -35,20 +35,21 @@ optional dependencies.
 - `fullest`: enables all the modules, recursively (unused).
 
 Single modules:
-- `code`, `code_unsafe`: enables the [`code`] module,
-- `color`, `color_unsafe`: enables the [`color`] module,
-- `io`, `io_unsafe`: enables the [`io`] module.
+- `code`: enables the [`code`] module,
+- `color`: enables the [`color`] module,
+- `io`: enables the [`io`] module.
 - `math`, `math_unsafe`: enables the [`math`] module.
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
   and the [`devela_macros`] optional dependency.
-- `os`, `os_unsafe`:
-- `result`, `result_unsafe`: enables the [`result`] module.
+- `os`: enables all the [`os`] specific functionality.
+  - `os_term`: enables the terminal functionality.
+- `result`: enables the [`result`] module.
 - `task`, `task_unsafe`: enables the [`task`] module.
 - `text`, `text_unsafe`: enables the [`text`] module,
   and the [`const-str`], [`unicode-segmentation`] and [`unicode-width`] optional dependencies.
   and the [`atomic`] and [`portable_atomic`] optional dependencies.
-- `time`, `time_unsafe`: enables the [`time`] module.
+- `time`: enables the [`time`] module.
 
 
 ### Safety features

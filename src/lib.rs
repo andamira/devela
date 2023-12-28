@@ -82,10 +82,10 @@ pub mod mem;
 #[cfg(not(any(feature = "mem", test)))]
 pub(crate) mod mem; // the "mem" feature is disabled
 
-#[cfg(any(feature = "os", test))]
+#[cfg(any(feature = "os", feature = "os_term", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "os")))]
 pub mod os;
-#[cfg(not(any(feature = "os", test)))]
+#[cfg(not(any(feature = "os", feature = "os_term", test)))]
 pub(crate) mod os; // the "os" features are disabled
 
 #[cfg(any(feature = "result", test))]

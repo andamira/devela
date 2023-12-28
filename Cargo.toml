@@ -56,14 +56,14 @@ no_std = [ # enables functionality incompatible with `std`
 
 #* module features *#
 
-full = [ # enables all the modules
+full = [ # enables all the modules (11)
 	"code", "color", "data", "io", "math", "mem",
 	"os", "result", "task", "text", "time",
 	]
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
 
-# individual modules (11)
+# individual modules (11…)
 # (modules enable their own dependencies if the `dep` feature is enabled)
 code = []
 color = []
@@ -78,7 +78,7 @@ task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
 
-# individual modules with unsafe enabled (5…):
+# individual modules with unsafe enabled (5):
 data_unsafe = ["data", "unsafe_data"]
 math_unsafe = ["math", "unsafe_math"]
 mem_unsafe = ["mem", "unsafe_mem"]
@@ -88,7 +88,7 @@ text_unsafe = ["text", "unsafe_text"]
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate (10)
+unsafe = [ # enables unsafe features in this crate (5)
 	"unsafe_data", "unsafe_math", "unsafe_mem", "unsafe_task", "unsafe_text",
 	]
 	unsafe_data = []
