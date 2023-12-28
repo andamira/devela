@@ -39,6 +39,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
         feature = "unsafe", // includes all below:
             feature = "unsafe_data", feature = "unsafe_math", feature = "unsafe_mem",
             feature = "unsafe_task", feature = "unsafe_text",
+            feature = "unsafe_os",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
@@ -81,6 +82,12 @@ pub mod mem;
 #[cfg(not(any(feature = "mem", test)))]
 pub(crate) mod mem; // the "mem" feature is disabled
 
+#[cfg(any(feature = "os", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "os")))]
+pub mod os;
+#[cfg(not(any(feature = "os", test)))]
+pub(crate) mod os; // the "os" features are disabled
+
 #[cfg(any(feature = "result", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
 pub mod result;
@@ -113,7 +120,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         code::all::*, color::all::*, data::all::*, io::all::*, math::all::*, mem::all::*,
-        result::all::*, task::all::*, text::all::*, time::all::*,
+        os::all::*, result::all::*, task::all::*, text::all::*, time::all::*,
     };
 }
 

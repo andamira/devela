@@ -42,6 +42,7 @@ Single modules:
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
   and the [`devela_macros`] optional dependency.
+- `os`, `os_unsafe`:
 - `result`, `result_unsafe`: enables the [`result`] module.
 - `task`, `task_unsafe`: enables the [`task`] module.
 - `text`, `text_unsafe`: enables the [`text`] module,
