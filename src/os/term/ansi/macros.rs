@@ -70,7 +70,7 @@ pub use ansib;
 /// See [`ansib!`] for the `&[u8]` version and [`ansip!`] for the printing version.
 ///
 /// # Features
-/// The `unsafe_str` feature allows the unchecked conversion to `&str`
+/// The `unsafe_term` feature allows the unchecked conversion to `&str`
 /// of the already valid ASCII encoding from [`ansib`].
 ///
 /// [0]: super::Ansi#ansi-escape-codes
@@ -79,7 +79,7 @@ pub use ansib;
 #[cfg(any(feature = "dep", feature = "const-str"))]
 macro_rules! ansi {
     ($($arg:tt)*) => {
-        if cfg!(feature = "unsafe_str") {
+        if cfg!(feature = "unsafe_term") {
             // SAFETY: ANSI escape codes are always ASCII and therefore utf-8 compatible
             unsafe {
                 core::str::from_utf8_unchecked($crate::os::term::ansib![ $($arg)* ])

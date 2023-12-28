@@ -35,11 +35,11 @@ pub use ::std as _std;
 compile_error!("You can't enable the `std` and `no_std` features at the same time.");
 #[cfg(all(
     feature = "safe",
-    any(
-        feature = "unsafe", // includes all below:
-            feature = "unsafe_data", feature = "unsafe_math", feature = "unsafe_mem",
-            feature = "unsafe_task", feature = "unsafe_text",
-            feature = "unsafe_os",
+    any(feature = "unsafe", // includes all below:
+        feature = "unsafe_data", feature = "unsafe_math", feature = "unsafe_mem",
+        feature = "unsafe_task", feature = "unsafe_text",
+        feature = "unsafe_os", // includes all below:
+            feature = "unsafe_os_term",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");

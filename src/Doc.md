@@ -42,8 +42,8 @@ Single modules:
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
   and the [`devela_macros`] optional dependency.
-- `os`: enables all the [`os`] specific functionality.
-  - `os_term`: enables the terminal functionality
+- `os`, `os_unsafe`: enables all the [`os`] specific functionality.
+  - `os_term`, `os_term_unsafe`: enables the terminal functionality
     and the [`const-str`] optional dependency.
 - `result`: enables the [`result`] module.
 - `task`, `task_unsafe`: enables the [`task`] module.
