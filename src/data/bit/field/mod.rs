@@ -43,20 +43,25 @@ mod tests;
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 #[macro_export]
 macro_rules! bitfield {
-    { // with explicit visibility qualifiers
-        (
+    {
+        /* full syntax */
+
+        ( // visibility qualifiers:
           custom:$vis_custom:vis,   // custom fields
           extra:$vis_extra:vis      // extra functionality
         )
+        // $vis:  the visibility of the struct.
         // $name: the name of the new struct.
-        // $vis:  the visibility of the struct (pub, pub(crate), …).
         // $T: the inner integer primitive type (u8, i32, …).
-        $( #[$struct_attributes:meta] )*
+        $(#[$struct_attributes:meta])*
         $vis:vis struct $name:ident($T:ty) {
-            // Custom fields (will panic if $field_start > $field_end || field_end >= $T::BITS)
+            // Custom fields (panics if $field_start > $field_end || field_end >= $T::BITS):
+            // $field: the name of the field
+            // $field_start: the starting bit index.
+            // $field_end: the ending bit index (optional).
             $(
-                $( #[$field_attributes:meta] )*
-                $field:ident: $field_start:expr, $field_end:expr; // NAME: from, to;
+                $(#[$field_attrs:meta])*
+                $field:ident: $field_start:expr, $field_end:expr; // NAME: from_bit, to_bit;
             )*
         }
     } => { $crate::code::paste! {
@@ -112,7 +117,7 @@ macro_rules! bitfield {
         impl $name {
             $(
                 // The field bit mask
-                $( #[$field_attributes] )*
+                $( #[$field_attrs] )*
                 $vis_custom const $field: Self = {
                     assert![$field_start <= $field_end,
                         "The field_start bit is bigger than the field_end bit."];
@@ -979,46 +984,34 @@ macro_rules! bitfield {
             }
         }
     }};
+    {
+        /* optional syntax */
 
-    { // with optional $field_end
-        (
-            custom:$vis_custom:vis,
-            extra:$vis_extra:vis $(,)?
-        )
-        $( #[$struct_attributes:meta] )*
+        (custom:$vis_custom:vis, extra:$vis_extra:vis $(,)?) // optional trailing comma
+        $(#[$struct_attributes:meta])*
         $vis:vis struct $name:ident($T:ty) {
             $(
-                $( #[$field_attributes:meta] )*
-                $field:ident: $field_start:expr $(, $field_end:expr )?; // NAME: bit;
+                $(#[$field_attrs:meta])*
+                $field:ident: $field_start:expr $(,$field_end:expr)?; // NAME: bit;
             )*
         }
     } => {
         $crate::data::bitfield!{
-            (
-                custom: $vis_custom,
-                extra: $vis_extra
-            )
+            (custom: $vis_custom, extra: $vis_extra)
             $( #[$struct_attributes] )*
             $vis struct $name($T) {
                 $(
-                    $( #[$field_attributes] )*
+                    $( #[$field_attrs] )*
                     $field: $field_start, $crate::code::coalesce![$($field_end)?, $field_start];
                 )*
             }
         }
     };
-
-    { (custom) // preset with only custom fields public
-        $($tt:tt)+ } => {
-        $crate::data::bitfield![ (custom:pub, extra:pub(crate)) $($tt)+ ];
-    };
-    { (extra) // preset with only extra functionality public
-        $($tt:tt)+ } => {
-        $crate::data::bitfield![ (custom:pub(crate), extra:pub) $($tt)+ ];
-    };
-    { // preset with everything public by default
-        $($tt:tt)+ } => {
-        $crate::data::bitfield![ (custom:pub, extra:pub) $($tt)+ ];
-    };
+    { (custom) // only public custom fields
+        $($tt:tt)+ } => { $crate::data::bitfield![ (custom:pub, extra:pub(crate)) $($tt)+ ]; };
+    { (extra) // only public extra methods
+        $($tt:tt)+ } => { $crate::data::bitfield![ (custom:pub(crate), extra:pub) $($tt)+ ]; };
+    { // everything public
+        $($tt:tt)+ } => { $crate::data::bitfield![ (custom:pub, extra:pub) $($tt)+ ]; };
 }
 pub use bitfield;

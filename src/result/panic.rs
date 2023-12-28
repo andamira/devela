@@ -69,9 +69,18 @@ mod reexports {
 
     /* macros */
 
-    reexport! { rust: core, local_module: "result", doc: "Panics the current thread.", panic }
     reexport! { rust: core, local_module: "result", doc: "Indicates unfinished code.", todo }
     reexport! { rust: core, local_module: "result", doc: "Indicates unreachable code.", unreachable }
     reexport! { rust: core, local_module: "result",
     doc: "Indicates unimplemented code.", unimplemented }
+
+    /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+    /// Panics the current thread.
+    ///
+    #[doc = "*Re-exported from [`core::panic`][macro@panic]*."]
+    #[doc = "\n\n---"]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
+    #[macro_export]
+    macro_rules! panic { ($($tt:tt)*) => { core::panic![$($tt)*] } }
+    pub use panic;
 }

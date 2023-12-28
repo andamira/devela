@@ -1,4 +1,4 @@
-// devela::math::ops::float
+// devela::math::num::float
 //
 //! Floating point wrapper.
 //
