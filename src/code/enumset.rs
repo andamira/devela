@@ -164,17 +164,3 @@ enumset! {
         Variant4(T, &'a str, &'b u32),
     }
 }
-
-enumset! {
-    ///
-    pub enum _ExampleEnum2<'a, 'b, T>(_ExampleEnumSet2: u8) [where T: Clone] {
-        /// A default unit variant.
-        Variant0,
-        /// A tuple variant.
-        Variant1([u8; 3]),
-        /// Supports lifetimes.
-        Variant2(&'a str, &'b u32),
-        /// Supports generics
-        Variant3(T),
-    }
-}

@@ -10,7 +10,24 @@ mod tests;
 
 /// Provides constant bitwise operations on `T`.
 ///
-/// See also [`BitOps`][super::BitOps] for the equivalent trait.
+/// It's implemented for:
+/// [`i8`], [`i16`], [`i32`], [`i64`], [`i128`], [`isize`],
+/// [`u8`], [`u16`], [`u32`], [`u64`], [`u128`] and [`usize`].
+///
+/// See also [`BitOps`][super::BitOps] for the corresponding trait.
+///
+/// [`i8`]: Self#implementation-for-i8
+/// [`i16`]: Self#implementation-for-i16
+/// [`i32`]: Self#implementation-for-i32
+/// [`i64`]: Self#implementation-for-i64
+/// [`i128`]: Self#implementation-for-i128
+/// [`isize`]: Self#implementation-for-isize
+/// [`u8`]: Self#implementation-for-u8
+/// [`u16`]: Self#implementation-for-u16
+/// [`u32`]: Self#implementation-for-u32
+/// [`u64`]: Self#implementation-for-u64
+/// [`u128`]: Self#implementation-for-u128
+/// [`usize`]: Self#implementation-for-usize
 #[repr(transparent)]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub struct Biting<T>(pub T);

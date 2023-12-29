@@ -270,7 +270,7 @@ macro_rules! impl_cast_methods {
 }
 impl_cast_methods![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
 
-// Implements the private, standalone, base casting functions between primitives
+// Implements private, standalone casting functions between integer primitives
 //
 // `$f`: the type to cast from
 // `$t`: the type to cast to

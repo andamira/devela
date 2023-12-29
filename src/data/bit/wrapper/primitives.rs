@@ -25,6 +25,7 @@ macro_rules! impl_bits_wrapper {
     (@$t:ty) => {
         /* impl traits */
 
+        #[doc = concat!["# Implementation for `", stringify!($t), "`."]]
         impl Biting::<$t> {
             /* constants */
 

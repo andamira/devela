@@ -8,8 +8,6 @@
 
 /* contains always compiled items */
 
-// ...
-
 /* feature-gated */
 
 #[cfg(feature = "time")]
