@@ -9,16 +9,16 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - new features: `docsrs`.
-- new root modules: `io`, `math`.
 - add optional dependency `unicode-width`.
+- new root modules: `io`, `math`, `render`, `ui`.
 - new traits: `DataArray`, `CastPrimitives`, `BitOps`
-- new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
 - new fns `mem::ptr_in_stack`, `factorial_*`, `bytes_from_bits`.
 - new types: `DataErrors`, `Casting`, `Comparing`, `Sorting`, `Biting`.
 - new macros: `bitfield`, `enumset`, `ident_const_index`, `ident_total_count`, `init_array`.
 - new `MathErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
+- new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
 - complete `Floating` and `FloatOps` methods and constants.
-- reexport `panic` from `result` and `hint` from `code`.
+- reexport `panic` from `error`, and `hint` from `code`.
 
 ### Removed
 - remove `os::linux` functionality.
@@ -27,38 +27,43 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Changed
 - bump rust version to `1.75.0`.
-- rename `meta` module to `code.
+- move `term` module to `ui`.
 - move `any` module to `data`.
+- move `color` module to `render`.
 - move `num` and `ops` modules to `math`.
+- move `data::slice` to `mem::slice`.
+- move `error::{Also, Apply}` to `code`.
 - move `num::convert` module to `data::convert`.
-- rename `Fp` to `Floating` and `FloatExt` to `FloatOps`.
-- improve `Floating` type and `FloatOps` trait to be partially available without `std` or `libm` features, reverting to the taylor versions when there's no better option.
+- move niche number types to `math::num::niche`.
+- move `data::array` to `data::collections::array`.
+- move corresponding standalone fns to `Sorting`, `Comparing` and `Casting`.
+- move cmp fns to Compari`ng` methods: `clamp*`, `max*`, `min*`, `pclamp`, `pmax`, `pmin`.
+- rename `meta` module to `code.
+- rename `result` module to `error`.
 - rename `Floating` and `FloatExp` float parameters to `x`, `y` `z`.
 - rename `NumError` and `NumResult` to `MathErrors` and `MathResult`, respectively, and move them to the math module.
 - rename `AnsiColor3` to `AnsiColor3b` and `AnsiColor8` to `AnsiColor8b`.
-- rename fns: `div_half_*` to `div_ties_*`.
 - rename `Floating` and `FloatOps` method: `round` to `round_ties_away`.
+- rename fns: `div_half_*` to `div_ties_*`.
 - rename `num` features to `math` features.
-- rename `term` features to `os_term` features.
+- rename `term` features to `ui_term` features.
+- rename `Fp` to `Floating` and `FloatExt` to `FloatOps`.
 - rename fn `mem_ptr_ratio` and method `Size::ptr_ratio` to `ptr_size_ratio`.
+- rename reexported time types: `Duration` to `SystemDuration`, `Instant` to `SystemInstant`.
+- reexport `BitwisePrimitives` and `CastPrimitives` traits from `prelude`.
+- change `Ansi::print` method and `ansip` macro to depend on `std`.
+- improve `Floating` type and `FloatOps` trait to be partially available without `std` or `libm` features, reverting to the taylor versions when there's no better option.
+- impl `DataCollection` for `array`, `Vec`, `VecDeque`, `OrderedMap`, `OrderedSet`, `UnorderedMap`, `UnorderedSet`.
 - impl `Error` and `Display` for `MathErrors`.
-- make public `ascii_calc_digit_*` functions.
-- update `DataCollection` methods to return `DataResult`; add new methods `collection_contains`, `collection_count`.
-- move cmp fns to Compari`ng` methods: `clamp*`, `max*`, `min*`, `pclamp`, `pmax`, `pmin`.
-- implement `DataCollection` for `array`, `Vec`, `VecDeque`, `OrderedMap`, `OrderedSet`, `UnorderedMap`, `UnorderedSet`.
+- make `ascii_calc_digit_*` functions public.
 - make `DataCollection` always available.
 - make `prime_number_theorem` compilable without `libm` nor `std`.
+- make `devela_macros` a non-optional dependency, and update it.
 - update color gamma fns, rename to `color_gamma_[apply|remove]_f*`, add `f64` versions.
-- reexport `BitwisePrimitives` and `CastPrimitives` traits from `prelude`.
+- update `DataCollection` methods to return `DataResult`; add new methods `collection_contains`, `collection_count`.
 - update `IntoPrimitives` related method to take `self`, remove one generic argument.
 - update `CastPrimitives` with missing `usize` and `isize` methods.
 - update `Collection` trait.
-- make `devela_macros` a non-optional dependency, and update it.
-- move `data::slice` to `mem::slice`.
-- move `data::array` to `data::collections::array`.
-- move niche number types to `math::num::niche`.
-- move corresponding standalone fns to `Sorting`, `Comparing` and `Casting`.
-- change `Ansi::print` method and `ansip` macro to depend on `std`.
 - update crate description.
 - update `devela_depend`.
 
