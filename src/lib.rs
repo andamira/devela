@@ -46,12 +46,6 @@ compile_error!("You can't enable `safe` and `unsafe*` features at the same time.
 
 /* root modules */
 
-#[cfg(any(feature = "color", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "color")))]
-pub mod color;
-#[cfg(not(any(feature = "color", test)))]
-pub(crate) mod color; // the "color" feature is disabled
-
 #[cfg(any(feature = "code", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
 pub mod code;
@@ -94,6 +88,12 @@ pub mod os;
 #[cfg(not(any(feature = "os", feature = "os_term", test)))]
 pub(crate) mod os; // the "os" features are disabled
 
+#[cfg(any(feature = "render", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "render")))]
+pub mod render;
+#[cfg(not(any(feature = "render", test)))]
+pub(crate) mod render; // the "render" feature is disabled
+
 #[cfg(any(feature = "task", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "task")))]
 pub mod task;
@@ -120,8 +120,8 @@ pub mod all {
     #[allow(unused)]
     #[doc(inline)]
     pub use super::{
-        code::all::*, color::all::*, data::all::*, error::all::*, io::all::*, math::all::*,
-        mem::all::*, os::all::*, task::all::*, text::all::*, time::all::*,
+        code::all::*, data::all::*, error::all::*, io::all::*, math::all::*, mem::all::*,
+        os::all::*, render::all::*, task::all::*, text::all::*, time::all::*,
     };
 }
 

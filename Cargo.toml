@@ -57,8 +57,8 @@ no_std = [ # enables functionality incompatible with `std`
 #* module features *#
 
 full = [ # enables all the modules (11)
-	"code", "color", "data", "error", "io", "math", "mem",
-	"os", "task", "text", "time",
+	"code", "data", "error", "io", "math", "mem",
+	"os", "render", "task", "text", "time",
 	]
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
@@ -66,7 +66,6 @@ fullest = ["full"] # enables `full` recursively (unused)
 # individual modules (11…)
 # (modules enable their own dependencies if the `dep` feature is enabled)
 code = []
-color = []
 data = ["dep?/bytemuck", "dep?/hashbrown"]
 error = []
 io = []
@@ -74,6 +73,7 @@ math = []
 mem = ["dep?/bytemuck"]
 os = ["os_term"]
 	os_term = ["dep?/const-str"]
+render = []
 task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []

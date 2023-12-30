@@ -36,7 +36,7 @@ optional dependencies.
 
 Single modules:
 - `code`: enables the [`code`] module,
-- `color`: enables the [`color`] module,
+- `error`: enables the [`error`] module.
 - `io`: enables the [`io`] module.
 - `math`, `math_unsafe`: enables the [`math`] module.
 - `mem`, `mem_unsafe`: enables the [`mem`] module,
@@ -45,7 +45,7 @@ Single modules:
 - `os`, `os_unsafe`: enables all the [`os`] specific functionality.
   - `os_term`, `os_term_unsafe`: enables the terminal functionality
     and the [`const-str`] optional dependency.
-- `result`: enables the [`result`] module.
+- `render`: enables the [`render`] module.
 - `task`, `task_unsafe`: enables the [`task`] module.
 - `text`, `text_unsafe`: enables the [`text`] module,
   and the [`const-str`], [`unicode-segmentation`] and [`unicode-width`] optional dependencies.

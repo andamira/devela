@@ -1,4 +1,4 @@
-// devela::color
+// devela::render::color
 //
 //! Chromatic functionality.
 //
@@ -9,20 +9,19 @@
 
 /* feature-gated */
 
-#[cfg(feature = "color")]
+#[cfg(feature = "render")]
 mod error;
-#[cfg(feature = "color")]
+#[cfg(feature = "render")]
 mod fns;
-
-#[cfg(feature = "color")]
+#[cfg(feature = "render")]
 mod r#trait;
 
 // re-export private sub-modules
-#[cfg(feature = "color")]
+#[cfg(feature = "render")]
 pub use {error::*, fns::*, r#trait::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    #[cfg(feature = "color")]
+    #[cfg(feature = "render")]
     pub use super::{error::*, fns::*, r#trait::*};
 }
