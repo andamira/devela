@@ -57,8 +57,8 @@ no_std = [ # enables functionality incompatible with `std`
 #* module features *#
 
 full = [ # enables all the modules (11)
-	"code", "color", "data", "io", "math", "mem",
-	"os", "result", "task", "text", "time",
+	"code", "color", "data", "error", "io", "math", "mem",
+	"os", "task", "text", "time",
 	]
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
@@ -68,12 +68,12 @@ fullest = ["full"] # enables `full` recursively (unused)
 code = []
 color = []
 data = ["dep?/bytemuck", "dep?/hashbrown"]
+error = []
 io = []
 math = []
 mem = ["dep?/bytemuck"]
 os = ["os_term"]
 	os_term = ["dep?/const-str"]
-result = []
 task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []

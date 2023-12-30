@@ -64,6 +64,12 @@ pub mod data;
 #[cfg(not(any(feature = "data", test)))]
 pub(crate) mod data; // the "data" feature is disabled
 
+#[cfg(any(feature = "error", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
+pub mod error;
+#[cfg(not(any(feature = "error", test)))]
+pub(crate) mod error; // the "error" feature is disabled
+
 #[cfg(any(feature = "io", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "io")))]
 pub mod io;
@@ -87,12 +93,6 @@ pub(crate) mod mem; // the "mem" feature is disabled
 pub mod os;
 #[cfg(not(any(feature = "os", feature = "os_term", test)))]
 pub(crate) mod os; // the "os" features are disabled
-
-#[cfg(any(feature = "result", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
-pub mod result;
-#[cfg(not(any(feature = "result", test)))]
-pub(crate) mod result; // the "result" feature is disabled
 
 #[cfg(any(feature = "task", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "task")))]
@@ -120,19 +120,25 @@ pub mod all {
     #[allow(unused)]
     #[doc(inline)]
     pub use super::{
-        code::all::*, color::all::*, data::all::*, io::all::*, math::all::*, mem::all::*,
-        os::all::*, result::all::*, task::all::*, text::all::*, time::all::*,
+        code::all::*, color::all::*, data::all::*, error::all::*, io::all::*, math::all::*,
+        mem::all::*, os::all::*, task::all::*, text::all::*, time::all::*,
     };
 }
 
 /// The common prelude.
 pub mod prelude {
+    #[cfg(feature = "code")]
+    pub use crate::code::{Also, Apply};
+
     #[cfg(feature = "data")]
     pub use crate::data::{
         bit::BitOps,
         convert::{CastPrimitives, FromPrimitives, IntoPrimitives},
         AnyExt, DataCollection,
     };
+
+    #[cfg(feature = "error")]
+    pub use crate::error::{OptionExt, ResultExt};
 
     #[doc(no_inline)]
     #[cfg(all(feature = "io", feature = "std"))] // IMPROVE: no_std
@@ -146,9 +152,6 @@ pub mod prelude {
 
     #[cfg(feature = "math")]
     pub use crate::math::num::{FloatOps, Num, NumRef};
-
-    #[cfg(feature = "result")]
-    pub use crate::result::{Also, Apply, OptionExt, ResultExt};
 
     #[cfg(feature = "text")]
     pub use crate::text::StrExt;

@@ -1,4 +1,4 @@
-// devela::result::ext
+// devela::error::ext
 //
 //!
 //
@@ -13,18 +13,18 @@ mod private {
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`OptionExt`][crate::result::OptionExt].
+/// See also [`OptionExt`][crate::error::OptionExt].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
 // - https://crates.io/crates/result-ext/0.2.0 by Simon Ochsenreither
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
 pub trait ResultExt<T, E>: private::Sealed {
     /// Returns `true` if the result is an [`Ok`] value containing the given value.
     ///
     /// # Examples
     /// ```
-    /// use devela::result::ResultExt;
+    /// use devela::error::ResultExt;
     ///
     /// let x: Result<u32, &str> = Ok(2);
     /// assert_eq!(x.contains(&2), true);
@@ -44,7 +44,7 @@ pub trait ResultExt<T, E>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::result::ResultExt;
+    /// use devela::error::ResultExt;
     ///
     /// let x: Result<u32, &str> = Ok(2);
     /// assert_eq!(x.contains_err(&"Some error message"), false);
@@ -69,7 +69,7 @@ pub trait ResultExt<T, E>: private::Sealed {
     // ///
     // /// # Examples
     // /// ```
-    // /// use devela::result::OptionExt;
+    // /// use devela::error::OptionExt;
     // /// use core::{cmp::min, ops::Add};
     // ///
     // /// let x = Some(2);

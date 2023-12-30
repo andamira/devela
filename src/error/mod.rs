@@ -1,6 +1,6 @@
-// devela::result
+// devela::error
 //
-//! Result, extends
+//! Error related functionality, extends
 //! `std::{`[`error`], [`option`], [`panic`], [`result`]`}`.
 //!
 //! [`error`]: std::error
@@ -11,36 +11,35 @@
 
 /* contains always compiled items */
 
-mod chain;
 pub mod panic;
 
 #[allow(unused)]
-#[cfg(not(feature = "result"))]
-pub use {chain::*, panic::*};
+#[cfg(not(feature = "error"))]
+pub use panic::*;
 
 /* feature-gated */
 
-#[cfg(feature = "result")]
+#[cfg(feature = "error")]
 mod ext;
-#[cfg(feature = "result")]
+#[cfg(feature = "error")]
 mod never;
-#[cfg(feature = "result")]
+#[cfg(feature = "error")]
 mod option;
 
 // re-export private sub-modules
-#[cfg(feature = "result")]
-pub use {chain::*, ext::*, never::*, option::all::*};
+#[cfg(feature = "error")]
+pub use {ext::*, never::*, option::all::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
-#[cfg(feature = "result")]
+#[cfg(feature = "error")]
 pub use panic::all::*;
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{chain::*, panic::all::*};
+    pub use super::panic::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "result")]
+    #[cfg(feature = "error")]
     pub use super::{ext::*, never::*, option::all::*};
 }

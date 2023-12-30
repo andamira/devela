@@ -1,4 +1,4 @@
-// devela::code::const_for
+// devela::code::for
 //
 // Original source code by Joachim Enggård Nebel, licensed as MIT,
 // https://crates.io/crates/const_for/0.1.2

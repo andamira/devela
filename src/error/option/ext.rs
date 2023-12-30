@@ -1,4 +1,4 @@
-// devela::result::option::ext
+// devela::error::option::ext
 //
 //!
 //
@@ -16,19 +16,19 @@ impl<T> private::Sealed for Option<T> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ResultExt`][crate::result::ResultExt].
+/// See also [`ResultExt`][crate::error::ResultExt].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
 // - https://crates.io/crates/option-ext/0.2.0 by Simon Ochsenreither.
 // - https://crates.io/crates/opt_reduce/1.0.0 by Waffle Lapkin.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
 pub trait OptionExt<T>: private::Sealed {
     /// Returns `true` if the option is a [`Some`] value containing the given value.
     ///
     /// # Examples
     /// ```
-    /// use devela::result::OptionExt;
+    /// use devela::error::OptionExt;
     ///
     /// let x: Option<u32> = Some(2);
     /// assert_eq!(x.contains(&2), true);
@@ -53,7 +53,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::result::OptionExt;
+    /// use devela::error::OptionExt;
     /// use core::{cmp::min, ops::Add};
     ///
     /// let x = Some(2);
@@ -76,7 +76,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::result::OptionExt;
+    /// use devela::error::OptionExt;
     ///
     /// let foo: Option<u32> = Some(0x42);
     /// let bar: Option<u32> = None;
@@ -94,7 +94,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::result::OptionExt;
+    /// use devela::error::OptionExt;
     ///
     /// let foo: Option<Box<u32>> = Some(Box::new(42));
     /// let bar: Option<Box<u32>> = None;
@@ -118,7 +118,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::result::OptionExt;
+    /// use devela::error::OptionExt;
     ///
     /// let foo: Option<u32> = Some(42);
     /// let bar: Option<u32> = None;

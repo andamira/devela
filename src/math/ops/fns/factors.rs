@@ -19,7 +19,7 @@
 use crate::code::{iif, paste};
 
 #[cfg(feature = "alloc")]
-use crate::result::Also;
+use crate::code::Also;
 #[cfg(feature = "alloc")]
 use ::_alloc::{collections::BTreeSet, vec, vec::Vec};
 

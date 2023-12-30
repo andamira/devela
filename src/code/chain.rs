@@ -1,4 +1,4 @@
-// devela::result::chain
+// devela::code::chain
 //
 //! Free function chaining traits.
 //
@@ -9,7 +9,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::result::Apply;
+/// use devela::code::Apply;
 ///
 /// let s = 1
 ///     .apply(|s| s * 2)
@@ -19,12 +19,12 @@
 /// ```
 ///
 /// ```compile_fail
-/// use devela::result::Apply;
+/// use devela::code::Apply;
 ///
 /// // We can sort it, but we don't receive the new vec.
 /// let v: Vec<i32> = vec![3, 2, 1, 5].apply_mut(|it| it.sort());
 /// ```
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
 pub trait Apply<Res> {
     /// Apply a function which takes the parameter by value.
     #[inline]
@@ -62,7 +62,7 @@ impl<T: ?Sized, Res> Apply<Res> for T {}
 /// reference and returns the modified value.
 ///
 /// ```
-/// use devela::result::Also;
+/// use devela::code::Also;
 ///
 /// let v = vec![3, 2, 1, 5]
 ///     .also_mut(|v| v.sort())
@@ -71,7 +71,7 @@ impl<T: ?Sized, Res> Apply<Res> for T {}
 /// assert_eq![v, vec![1, 2, 3, 5, 7]];
 /// ```
 ///
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "result")))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
 pub trait Also: Sized {
     /// Applies a function which takes the parameter by exclusive reference,
     /// and then returns the (possibly) modified owned value.
