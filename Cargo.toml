@@ -63,7 +63,7 @@ full = [ # enables all the modules (11)
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)
 
-# individual modules (11…)
+# individual modules (12…)
 # (modules enable their own dependencies if the `dep` feature is enabled)
 code = []
 data = ["dep?/bytemuck", "dep?/hashbrown"]
@@ -71,35 +71,39 @@ error = []
 io = []
 math = []
 mem = ["dep?/bytemuck"]
-os = ["os_term"]
-	os_term = ["dep?/const-str"]
+os = []
 render = []
 task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
+ui = ["ui_term"]
+	ui_term = ["dep?/const-str"]
 
-# individual modules with unsafe enabled (6…):
+# individual modules with unsafe enabled (7…):
 data_unsafe = ["data", "unsafe_data"]
 math_unsafe = ["math", "unsafe_math"]
 mem_unsafe = ["mem", "unsafe_mem"]
 os_unsafe = ["os", "unsafe_os"]
-	os_term_unsafe = ["os_term", "unsafe_os_term"]
 task_unsafe = ["task", "unsafe_task"]
 text_unsafe = ["text", "unsafe_text"]
+ui_unsafe = ["ui", "unsafe_ui"]
+	ui_term_unsafe = ["ui_term", "unsafe_ui_term"]
 
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate (6…)
-	"unsafe_data", "unsafe_math", "unsafe_mem", "unsafe_os", "unsafe_task", "unsafe_text",
+unsafe = [ # enables unsafe features in this crate (7…)
+	"unsafe_data", "unsafe_math", "unsafe_mem", "unsafe_os",
+	"unsafe_task", "unsafe_text", "unsafe_ui",
 	]
 	unsafe_data = []
 	unsafe_math = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
-	unsafe_os = ["unsafe_os_term"]
-		unsafe_os_term = []
+	unsafe_os = []
 	unsafe_task = [] # enables a coroutines implementation.
 	unsafe_text = [] # enables unsafe use in `text`
+	unsafe_ui = ["unsafe_ui_term"]
+		unsafe_ui_term = []
 safe = [] # forbids `unsafe` in this crate
 safest = ["safe"] # forbids `unsafe` recursively (unused)
 unsafest = ["unsafe"] # enables `unsafe` recursively (unused)

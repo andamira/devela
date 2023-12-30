@@ -1,4 +1,4 @@
-// devela::os::term
+// devela::ui::term
 //
 //! Terminal functionality.
 //
@@ -6,7 +6,7 @@
 mod ansi;
 
 // re-export private sub-modules
-#[cfg(feature = "os_term")]
+#[cfg(feature = "ui_term")]
 pub use ansi::*;
 
 pub(crate) mod all {

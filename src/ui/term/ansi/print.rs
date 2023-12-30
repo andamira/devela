@@ -1,4 +1,4 @@
-// devela::os::term::ansi::print
+// devela::ui::term::ansi::print
 //
 //! ANSI print method.
 //
@@ -14,7 +14,7 @@ impl super::Ansi {
     ///
     /// # Example
     /// ```
-    /// use devela::os::term::{Ansi, AnsiColor3b};
+    /// use devela::ui::term::{Ansi, AnsiColor3b};
     ///
     /// Ansi::print(&Ansi::ERASE_SCREEN);
     /// Ansi::print(&Ansi::CURSOR_MOVE3(120, 80));

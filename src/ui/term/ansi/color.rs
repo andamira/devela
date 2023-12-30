@@ -1,4 +1,4 @@
-// devela::os::term::ansi::color
+// devela::ui::term::ansi::color
 //
 //! ANSI codes related to color.
 //

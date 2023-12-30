@@ -1,4 +1,4 @@
-// devela::os::term::ansi::codes
+// devela::ui::term::ansi::codes
 //
 //! ANSI codes.
 //

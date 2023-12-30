@@ -1,4 +1,4 @@
-// devela::os::term::ansi::macros
+// devela::ui::term::ansi::macros
 //
 //! ANSI macros.
 //
@@ -12,7 +12,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::os::term::ansib;
+/// use devela::ui::term::ansib;
 ///
 /// assert_eq![&[27, 91, 49, 109], ansib![bold]];
 /// assert_eq![&[27, 91, 49, 109, 27, 91, 51, 109], ansib![bold, ITALIC]];
@@ -35,7 +35,7 @@
 macro_rules! ansib {
     ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::meta::paste! {
         $crate::_dep::const_str::concat_bytes!(
-            $($crate::os::term::Ansi::[<$command:upper>] $( ($($arg),*) )? ,)+
+            $($crate::ui::term::Ansi::[<$command:upper>] $( ($($arg),*) )? ,)+
         )
     }};
 }
@@ -53,7 +53,7 @@ pub use ansib;
 ///
 /// # Examples
 /// ```
-/// use devela::os::term::ansi;
+/// use devela::ui::term::ansi;
 ///
 /// assert_eq!["\u{1b}[1m", ansi![bold]];
 /// assert_eq!["\u{1b}[1m\u{1b}[3m", ansi![bold, ITALIC]];
@@ -82,10 +82,10 @@ macro_rules! ansi {
         if cfg!(feature = "unsafe_term") {
             // SAFETY: ANSI escape codes are always ASCII and therefore utf-8 compatible
             unsafe {
-                core::str::from_utf8_unchecked($crate::os::term::ansib![ $($arg)* ])
+                core::str::from_utf8_unchecked($crate::ui::term::ansib![ $($arg)* ])
             }
         } else {
-            if let Ok(s) = core::str::from_utf8($crate::os::term::ansib![ $($arg)* ]) {
+            if let Ok(s) = core::str::from_utf8($crate::ui::term::ansib![ $($arg)* ]) {
                 s
             } else {
                 unreachable![]
@@ -108,7 +108,7 @@ pub use ansi;
 ///
 /// # Examples
 /// ```
-/// use devela::os::term::ansip;
+/// use devela::ui::term::ansip;
 ///
 /// // prints the codes to `stdout`
 /// ansip![bold, ITALIC, cursor_move1(2, 3)];
@@ -125,7 +125,7 @@ pub use ansi;
 ))]
 #[macro_export]
 macro_rules! ansip {
-    ($($arg:tt)*) => { $crate::os::term::Ansi::print( $crate::os::term::ansib![ $($arg)* ] ); };
+    ($($arg:tt)*) => { $crate::ui::term::Ansi::print( $crate::ui::term::ansib![ $($arg)* ] ); };
 }
 
 #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "dep", feature = "std",))))]
