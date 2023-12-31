@@ -3,7 +3,7 @@
 //! Standalone color functions and constants.
 
 use crate::code::{iif, paste, sf};
-use crate::math::FloatOps;
+use crate::num::FloatOps;
 
 /// The coefficient used for calculating the red luminance.
 pub const COLOR_LUMINANCE_RED: f32 = LUMINANCE_RED![];

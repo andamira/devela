@@ -57,7 +57,7 @@ no_std = [ # enables functionality incompatible with `std`
 #* module features *#
 
 full = [ # enables all the modules (11)
-	"code", "data", "error", "io", "math", "mem",
+	"code", "data", "error", "io", "mem", "num",
 	"os", "render", "task", "text", "time", "ui",
 	]
 	full_unsafe = ["full", "unsafe"]
@@ -69,8 +69,8 @@ code = []
 data = ["dep?/bytemuck", "dep?/hashbrown"]
 error = []
 io = []
-math = []
 mem = ["dep?/bytemuck"]
+num = []
 os = []
 render = []
 task = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
@@ -81,7 +81,7 @@ ui = ["ui_term"]
 
 # individual modules with unsafe enabled (7…):
 data_unsafe = ["data", "unsafe_data"]
-math_unsafe = ["math", "unsafe_math"]
+num_unsafe = ["num", "unsafe_num"]
 mem_unsafe = ["mem", "unsafe_mem"]
 os_unsafe = ["os", "unsafe_os"]
 task_unsafe = ["task", "unsafe_task"]
@@ -93,12 +93,12 @@ ui_unsafe = ["ui", "unsafe_ui"]
 #* safety features *#
 
 unsafe = [ # enables unsafe features in this crate (7…)
-	"unsafe_data", "unsafe_math", "unsafe_mem", "unsafe_os",
+	"unsafe_data", "unsafe_mem", "unsafe_num", "unsafe_os",
 	"unsafe_task", "unsafe_text", "unsafe_ui",
 	]
 	unsafe_data = []
-	unsafe_math = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
+	unsafe_num = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
 	unsafe_os = []
 	unsafe_task = [] # enables a coroutines implementation.
 	unsafe_text = [] # enables unsafe use in `text`

@@ -5,13 +5,13 @@
 
 use super::*;
 #[cfg(feature = "num")]
-use crate::math::num::{
+use crate::num::{
     NonRangeI128, NonRangeI16, NonRangeI32, NonRangeI64, NonRangeI8, NonRangeIsize, NonRangeU128,
     NonRangeU16, NonRangeU32, NonRangeU64, NonRangeU8, NonRangeUsize, RangeI128, RangeI16,
     RangeI32, RangeI64, RangeI8, RangeIsize, RangeU128, RangeU16, RangeU32, RangeU64, RangeU8,
     RangeUsize,
 };
-use crate::math::num::{
+use crate::num::{
     NonSpecificI128, NonSpecificI16, NonSpecificI32, NonSpecificI64, NonSpecificI8,
     NonSpecificIsize, NonSpecificU128, NonSpecificU16, NonSpecificU32, NonSpecificU64,
     NonSpecificU8, NonSpecificUsize,

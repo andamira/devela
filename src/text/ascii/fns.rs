@@ -4,7 +4,7 @@
 //
 
 use super::always_fns::*;
-use crate::math::ops::count_digits;
+use crate::num::count_digits;
 
 /// Converts a `u16` into a byte array of `5` ascii digits, padded with zeros.
 ///

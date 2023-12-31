@@ -25,7 +25,7 @@ use std::{
 };
 
 #[cfg(feature = "num")]
-use crate::math::num::{
+use crate::num::{
     NonRangeI128, NonRangeI16, NonRangeI32, NonRangeI64, NonRangeI8, NonRangeIsize, NonRangeU128,
     NonRangeU16, NonRangeU32, NonRangeU64, NonRangeU8, NonRangeUsize, NonSpecificI128,
     NonSpecificI16, NonSpecificI32, NonSpecificI64, NonSpecificI8, NonSpecificIsize,

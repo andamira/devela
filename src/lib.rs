@@ -36,7 +36,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 #[cfg(all(
     feature = "safe",
     any(feature = "unsafe", // includes all below:
-        feature = "unsafe_data", feature = "unsafe_math", feature = "unsafe_mem",
+        feature = "unsafe_data", feature = "unsafe_mem", feature = "unsafe_num",
         feature = "unsafe_task", feature = "unsafe_text",
         feature = "unsafe_os",
         feature = "unsafe_ui", // includes all below:
@@ -71,17 +71,17 @@ pub mod io;
 #[cfg(not(any(feature = "io", test)))]
 pub(crate) mod io; // the "io" feature is disabled
 
-#[cfg(any(feature = "math", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "math")))]
-pub mod math;
-#[cfg(not(any(feature = "math", test)))]
-pub(crate) mod math; // the "math" feature is disabled
-
 #[cfg(any(feature = "mem", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub mod mem;
 #[cfg(not(any(feature = "mem", test)))]
 pub(crate) mod mem; // the "mem" feature is disabled
+
+#[cfg(any(feature = "num", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+pub mod num;
+#[cfg(not(any(feature = "num", test)))]
+pub(crate) mod num; // the "num" feature is disabled
 
 #[cfg(any(feature = "os", feature = "os_term", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "os")))]
@@ -127,7 +127,7 @@ pub mod all {
     #[allow(unused)]
     #[doc(inline)]
     pub use super::{
-        code::all::*, data::all::*, error::all::*, io::all::*, math::all::*, mem::all::*,
+        code::all::*, data::all::*, error::all::*, io::all::*, mem::all::*, num::all::*,
         os::all::*, render::all::*, task::all::*, text::all::*, time::all::*, ui::all::*,
     };
 }
@@ -157,8 +157,8 @@ pub mod prelude {
         {BitSize, Mem, Size},
     };
 
-    #[cfg(feature = "math")]
-    pub use crate::math::num::{FloatOps, Num, NumRef};
+    #[cfg(feature = "num")]
+    pub use crate::num::{FloatOps, Num, NumRef};
 
     #[cfg(feature = "text")]
     pub use crate::text::StrExt;
