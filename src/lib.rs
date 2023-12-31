@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A highly integrated layer for Rust development.
+//! An all-encompassing, highly integrated layer for Rust development.
 //
 
 // warnings
