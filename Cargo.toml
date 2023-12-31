@@ -58,7 +58,7 @@ no_std = [ # enables functionality incompatible with `std`
 
 full = [ # enables all the modules (11)
 	"code", "data", "error", "io", "math", "mem",
-	"os", "render", "task", "text", "time",
+	"os", "render", "task", "text", "time", "ui",
 	]
 	full_unsafe = ["full", "unsafe"]
 fullest = ["full"] # enables `full` recursively (unused)

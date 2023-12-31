@@ -38,8 +38,9 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     any(feature = "unsafe", // includes all below:
         feature = "unsafe_data", feature = "unsafe_math", feature = "unsafe_mem",
         feature = "unsafe_task", feature = "unsafe_text",
-        feature = "unsafe_os", // includes all below:
-            feature = "unsafe_os_term",
+        feature = "unsafe_os",
+        feature = "unsafe_ui", // includes all below:
+            feature = "unsafe_ui_term",
     )
 ))]
 compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
@@ -112,6 +113,12 @@ pub mod time;
 #[cfg(not(any(feature = "time", test)))]
 pub(crate) mod time; // the "time" feature is disabled
 
+#[cfg(any(feature = "ui", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "ui")))]
+pub mod ui;
+#[cfg(not(any(feature = "ui", test)))]
+pub(crate) mod ui; // the "ui" feature is disabled
+
 /// All items are flat re-exported here.
 ///
 /// Note that any item tagged with [`dep`] can also be enabled by
@@ -121,7 +128,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         code::all::*, data::all::*, error::all::*, io::all::*, math::all::*, mem::all::*,
-        os::all::*, render::all::*, task::all::*, text::all::*, time::all::*,
+        os::all::*, render::all::*, task::all::*, text::all::*, time::all::*, ui::all::*,
     };
 }
 
