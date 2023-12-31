@@ -132,40 +132,6 @@ pub mod all {
     };
 }
 
-/// The common prelude.
-pub mod prelude {
-    #[cfg(feature = "code")]
-    pub use crate::code::{Also, Apply};
-
-    #[cfg(feature = "data")]
-    pub use crate::data::{
-        bit::BitOps,
-        convert::{CastPrimitives, FromPrimitives, IntoPrimitives},
-        AnyExt, DataCollection,
-    };
-
-    #[cfg(feature = "error")]
-    pub use crate::error::{OptionExt, ResultExt};
-
-    #[doc(no_inline)]
-    #[cfg(all(feature = "io", feature = "std"))] // IMPROVE: no_std
-    pub use crate::io::{BufRead, Read, Seek, Write};
-
-    #[cfg(feature = "mem")]
-    pub use crate::mem::{
-        slice::{SliceExt, SliceExtMut},
-        {BitSize, Mem, Size},
-    };
-
-    #[cfg(feature = "num")]
-    pub use crate::num::{FloatOps, Num, NumRef};
-
-    #[cfg(feature = "text")]
-    pub use crate::text::StrExt;
-    #[cfg(all(feature = "text", feature = "alloc"))] // IMPROVE: no_alloc
-    pub use crate::text::StringExt;
-}
-
 /// Optional external dependencies.
 pub mod _dep;
 
