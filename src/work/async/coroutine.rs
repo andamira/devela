@@ -1,4 +1,4 @@
-// devela::task::async::coroutine
+// devela::work::async::coroutine
 //
 //! A minimal single-threaded coroutine implementation.
 //!

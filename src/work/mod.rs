@@ -1,6 +1,6 @@
-// devela::task
+// devela::work
 //
-//! Tasking, extends
+//! Work management, extends
 //! `std::{`[`future`], [`sync`], [`task`], [`thread`]`}`.
 //!
 //! [`future`]: core::future
@@ -16,20 +16,20 @@
 /* feature-gated */
 
 // public sub-modules
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 pub mod r#async;
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 pub mod sync;
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 pub mod thread;
 
 // re-export public sub-modules
 #[doc(no_inline)]
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 pub use {r#async::all::*, sync::all::*, thread::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    #[cfg(feature = "task")]
+    #[cfg(feature = "work")]
     pub use super::{r#async::all::*, sync::all::*, thread::all::*};
 }

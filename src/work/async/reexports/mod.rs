@@ -1,4 +1,4 @@
-// devela::task::async::reexports
+// devela::work::async::reexports
 //
 
 mod future;

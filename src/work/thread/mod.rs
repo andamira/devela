@@ -1,4 +1,4 @@
-// devela::task::thread
+// devela::work::thread
 //
 //! Native threads, extends `std::`[`thread`].
 //!
@@ -11,14 +11,14 @@
 
 /* feature-gated */
 
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 mod sleep;
 
 // re-export private sub-modules
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 pub use sleep::*;
 
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::sleep::*;

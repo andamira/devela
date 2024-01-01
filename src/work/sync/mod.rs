@@ -1,4 +1,4 @@
-// devela::task::sync
+// devela::work::sync
 //
 //! Synchronization, extends `std::`[`sync`].
 //!
@@ -11,15 +11,15 @@
 
 /* feature-gated */
 
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 pub mod atomic;
 
 // re-export public sub-modules
 #[doc(no_inline)]
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 pub use atomic::*;
 
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::atomic::*;

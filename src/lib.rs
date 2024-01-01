@@ -37,7 +37,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(feature = "unsafe", // includes all below:
         feature = "unsafe_data", feature = "unsafe_mem", feature = "unsafe_num",
-        feature = "unsafe_task", feature = "unsafe_text",
+        feature = "unsafe_text", feature = "unsafe_work",
         feature = "unsafe_os",
         feature = "unsafe_ui", // includes all below:
             feature = "unsafe_ui_term",
@@ -95,12 +95,6 @@ pub mod render;
 #[cfg(not(any(feature = "render", test)))]
 pub(crate) mod render; // the "render" feature is disabled
 
-#[cfg(any(feature = "task", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "task")))]
-pub mod task;
-#[cfg(not(any(feature = "task", test)))]
-pub(crate) mod task; // the "task" feature is disabled
-
 #[cfg(any(feature = "text", test))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
 pub mod text;
@@ -119,6 +113,12 @@ pub mod ui;
 #[cfg(not(any(feature = "ui", test)))]
 pub(crate) mod ui; // the "ui" feature is disabled
 
+#[cfg(any(feature = "work", test))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
+pub mod work;
+#[cfg(not(any(feature = "work", test)))]
+pub(crate) mod work; // the "work" feature is disabled
+
 /// All items are flat re-exported here.
 ///
 /// Note that any item tagged with [`dep`] can also be enabled by
@@ -128,7 +128,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         code::all::*, data::all::*, error::all::*, io::all::*, mem::all::*, num::all::*,
-        os::all::*, render::all::*, task::all::*, text::all::*, time::all::*, ui::all::*,
+        os::all::*, render::all::*, text::all::*, time::all::*, ui::all::*, work::all::*,
     };
 }
 

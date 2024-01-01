@@ -11,9 +11,9 @@
 //! Enabling the `dep` feature will automatically enable
 //! the optional dependencies associated to any enabled root modules.
 //!
-//! For example, enabling `dep` and [`task`], will automatically enable
+//! For example, enabling `dep` and [`work`], will automatically enable
 //! the `atomic` and `portable-atomic` dependencies; while by leaving `dep`
-//! disabled, you could enable just the `task` and `atomic` dependencies.
+//! disabled, you could enable just the `work` and `atomic` dependencies.
 //!
 //! In any case, manually enabled optional dependency will remain enabled.
 //!
@@ -71,7 +71,7 @@ mod _dep {
 mod _dep {
     use crate::code::reexport;
 
-    reexport! { depend any_features: "task",
+    reexport! { depend any_features: "work",
     dep: "atomic", atomic, "A generic atomic wrapper type." }
 
     reexport! { depend any_features: "data", "mem",
@@ -87,7 +87,7 @@ mod _dep {
     dep: "hashbrown", hashbrown,
     "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`." }
 
-    reexport! { depend any_features: "task",
+    reexport! { depend any_features: "work",
     dep: "portable-atomic", portable_atomic,
     "Portable atomic types including 128-bit atomics, floats, etc." }
 

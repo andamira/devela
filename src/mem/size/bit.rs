@@ -55,39 +55,39 @@ use _alloc::{
     vec::Vec,
 };
 
-#[cfg(any(all(feature = "task", feature = "dep"), feature = "portable-atomic"))]
+#[cfg(any(all(feature = "work", feature = "dep"), feature = "portable-atomic"))]
 use crate::_dep::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
-#[cfg(feature = "task")]
-use crate::task::sync::atomic::{AtomicBool, AtomicOrdering};
+#[cfg(feature = "work")]
+use crate::work::sync::atomic::{AtomicBool, AtomicOrdering};
 #[cfg(all(
-    feature = "task",
+    feature = "work",
     any(feature = "dep", feature = "portable-atomic", target_has_atomic = "16"),
 ))]
-use crate::task::sync::atomic::{AtomicI16, AtomicU16};
+use crate::work::sync::atomic::{AtomicI16, AtomicU16};
 #[cfg(all(
-    feature = "task",
+    feature = "work",
     any(feature = "dep", feature = "portable-atomic", target_has_atomic = "32"),
 ))]
-use crate::task::sync::atomic::{AtomicI32, AtomicU32};
+use crate::work::sync::atomic::{AtomicI32, AtomicU32};
 #[cfg(all(
-    feature = "task",
+    feature = "work",
     any(feature = "dep", feature = "portable-atomic", target_has_atomic = "64"),
 ))]
-use crate::task::sync::atomic::{AtomicI64, AtomicU64};
+use crate::work::sync::atomic::{AtomicI64, AtomicU64};
 #[cfg(all(
-    feature = "task",
+    feature = "work",
     any(feature = "dep", feature = "portable-atomic", target_has_atomic = "8"),
 ))]
-use crate::task::sync::atomic::{AtomicI8, AtomicU8};
+use crate::work::sync::atomic::{AtomicI8, AtomicU8};
 #[cfg(all(
-    feature = "task",
+    feature = "work",
     any(
         feature = "dep",
         feature = "portable-atomic",
         target_has_atomic = "ptr"
     ),
 ))]
-use crate::task::sync::atomic::{AtomicIsize, AtomicPtr, AtomicUsize};
+use crate::work::sync::atomic::{AtomicIsize, AtomicPtr, AtomicUsize};
 
 /* fn definitions */
 
@@ -208,7 +208,7 @@ macro_rules! bit_size {
         bit_size![<const RMIN: usize, const RMAX: usize> = 8; for RangeUsize<RMIN, RMAX>];
 
         #[cfg(all(
-            feature = "task",
+            feature = "work",
             any(
                 feature = "dep",
                 feature = "portable-atomic",
@@ -217,7 +217,7 @@ macro_rules! bit_size {
         ))]
         bit_size![= $PTR_BITS; for AtomicIsize, AtomicUsize];
         #[cfg(all(
-            feature = "task",
+            feature = "work",
             any(
                 feature = "dep",
                 feature = "portable-atomic",
@@ -358,35 +358,35 @@ bit_size![<const RMIN: i128, const RMAX:i128> = 128; for RangeI128<RMIN, RMAX>];
 #[cfg(feature = "num")]
 bit_size![<const RMIN: u128, const RMAX:u128> = 128; for RangeU128<RMIN, RMAX>];
 
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 bit_size![= 1; for AtomicBool];
-#[cfg(feature = "task")]
+#[cfg(feature = "work")]
 bit_size![= 8; for AtomicOrdering];
 #[cfg(all(
-    feature = "task",
+    feature = "work",
     any(feature = "dep", feature = "portable-atomic", target_has_atomic = "8"),
 ))]
 bit_size![= 8; for AtomicI8, AtomicU8];
 #[cfg(all(
-    feature = "task",
+    feature = "work",
     any(feature = "dep", feature = "portable-atomic", target_has_atomic = "16"),
 ))]
 bit_size![= 16; for AtomicI16, AtomicU16];
 #[cfg(all(
-    feature = "task",
+    feature = "work",
     any(feature = "dep", feature = "portable-atomic", target_has_atomic = "32"),
 ))]
 bit_size![= 32; for AtomicI32, AtomicU32];
 #[cfg(all(
-    feature = "task",
+    feature = "work",
     any(feature = "dep", feature = "portable-atomic", target_has_atomic = "64"),
 ))]
 bit_size![= 64; for AtomicI64, AtomicU64];
-#[cfg(any(all(feature = "task", feature = "dep"), feature = "portable-atomic"))]
+#[cfg(any(all(feature = "work", feature = "dep"), feature = "portable-atomic"))]
 bit_size![= 32; for AtomicF32];
-#[cfg(any(all(feature = "task", feature = "dep"), feature = "portable-atomic"))]
+#[cfg(any(all(feature = "work", feature = "dep"), feature = "portable-atomic"))]
 bit_size![= 64; for AtomicF64];
-#[cfg(any(all(feature = "task", feature = "dep"), feature = "portable-atomic"))]
+#[cfg(any(all(feature = "work", feature = "dep"), feature = "portable-atomic"))]
 bit_size![= 128; for AtomicI128, AtomicU128];
 
 #[cfg(feature = "text")]

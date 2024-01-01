@@ -44,7 +44,6 @@ Single modules:
 - `num`, `num_unsafe`: enables the [`num`] module.
 - `os`, `os_unsafe`: enables all the [`os`] specific functionality.
 - `render`: enables the [`render`] module.
-- `task`, `task_unsafe`: enables the [`task`] module.
 - `text`, `text_unsafe`: enables the [`text`] module,
   and the [`const-str`], [`unicode-segmentation`] and [`unicode-width`] optional dependencies.
   and the [`atomic`] and [`portable_atomic`] optional dependencies.
@@ -52,6 +51,7 @@ Single modules:
 - `ui`, `ui_unsafe`: enables the [`ui`] module.
   - `ui_term`, `ui_term_unsafe`: enables the terminal functionality,
     and the [`const-str`] optional dependency.
+- `work`, `work_unsafe`: enables the [`work`] module.
 
 
 ### Safety features
@@ -66,8 +66,8 @@ They offer a gradient of safety.
   - `unsafe_num`: enables `new_unchecked` constructors, implements `bytemuck` traits,
     enables using [`MaybeUninit`] for [`slice_into_array`] initialization and
     const floating-point comparison  using [`transmute`] for constant access to the bits.
-  - `unsafe_task`: provides a minimal implementation of stackless
-    [coroutines][task::async::coroutine].
+  - `unsafe_work`: provides a minimal implementation of stackless
+    [coroutines][work::async::coroutine].
   - `unsafe_text`: enables use of unsafe in [`text`].
 - `safe`: forbids unsafe at the crate level.
 - `safest`: forbids unsafe recursively (unused).
@@ -85,12 +85,12 @@ They are currently only used for generating improved documentation.
 - `dep`: allows modules to automatically enable their defined dependencies.
 
 Dependencies can also be enabled individually:
-- `atomic` is used in `task`.
+- `atomic` is used in `work`.
 - `bytemuck` is used in `mem`, `num`.
 - `const-str` is used in `error`, `text`, `ui_term`.
 - `devela_macros` is used in `meta`.
 - `libm` is used in `num`.
-- `portable-atomic` is used in `task`.
+- `portable-atomic` is used in `work`.
 - `unicode-segmentation` is used in `text`.
 - `unicode-width` is used in `text`.
 

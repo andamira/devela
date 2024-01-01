@@ -1,4 +1,4 @@
-// devela::task::thread::sleep
+// devela::work::thread::sleep
 //
 //!
 //

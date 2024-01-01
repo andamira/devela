@@ -1,4 +1,4 @@
-// devela::task::async
+// devela::work::async
 //
 //! Asynchrony, extends `std::{`[`future`], [`task`]`}`.
 //!
@@ -18,16 +18,16 @@ mod reexports;
 
 /* feature-gated */
 
-#[cfg(all(feature = "unsafe_task", feature = "alloc"))]
+#[cfg(all(feature = "unsafe_work", feature = "alloc"))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "unsafe_task", feature = "alloc")))
+    doc(cfg(all(feature = "unsafe_work", feature = "alloc")))
 )]
 pub mod coroutine;
 
 // re-export public sub-modules
 #[doc(no_inline)]
-#[cfg(all(feature = "unsafe_task", feature = "alloc"))]
+#[cfg(all(feature = "unsafe_work", feature = "alloc"))]
 pub use coroutine::*;
 
 // re-export private sub-modules
@@ -38,6 +38,6 @@ pub(crate) mod all {
     pub use super::reexports::*;
 
     #[doc(inline)]
-    #[cfg(all(feature = "unsafe_task", feature = "alloc"))]
+    #[cfg(all(feature = "unsafe_work", feature = "alloc"))]
     pub use super::coroutine::*;
 }
