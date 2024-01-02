@@ -16,6 +16,8 @@
 // - WAIT:[const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/issues/57241)
 
 use crate::code::{iif, paste};
+#[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+use crate::num::Floating;
 use core::cmp::Ordering::{self, *};
 
 /// Provides comparing methods for `T`.
@@ -344,6 +346,32 @@ macro_rules! impl_comparing {
             #[inline] #[must_use] #[allow(missing_docs)]
             #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
             pub fn is_nan(self) -> bool { self.0.is_nan() }
+
+            /// Returns `true` if `self` is subnormal.
+            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            pub const fn is_subnormal(self) -> bool {
+                // check whether it's between 0 and the smallest finite value
+                (matches![self.total_cmp($f::MIN_POSITIVE), Less] &&
+                 matches![self.total_cmp(0.0), Greater]) ||
+                (matches![self.total_cmp(Floating::<$f>::flip_sign($f::MIN_POSITIVE)), Greater] &&
+                 matches![self.total_cmp(-0.0), Less])
+            }
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            pub fn is_subnormal(self) -> bool { self.0.is_subnormal() }
+
+            /// Returns `true` if `self` is neither zero, infinite, subnormal, or NaN.
+            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            pub const fn is_normal(self) -> bool {
+                (matches![self.total_cmp($f::MIN_POSITIVE), Greater | Equal]  &&
+                matches![self.total_cmp($f::INFINITY), Less]) ||
+                (matches![self.total_cmp(
+                        Floating::<$f>::flip_sign($f::MIN_POSITIVE)), Less | Equal] &&
+                matches![self.total_cmp($f::NEG_INFINITY), Greater])
+            }
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            pub fn is_normal(self) -> bool { self.0.is_normal() }
         }
     }};
 }
@@ -352,21 +380,53 @@ impl_comparing![float: f32:32:31, f64:64:63];
 
 #[cfg(test)]
 mod test_min_max_clamp {
-    use super::Comparing;
+    use super::Comparing as C;
 
     #[test]
     fn min_max_clamp() {
-        assert_eq![2, Comparing(2).pmin(5)];
-        assert_eq![2, Comparing(5).pmin(2)];
-        assert_eq![2., Comparing(2.).pmin(5.)];
+        assert_eq![2, C(2).pmin(5)];
+        assert_eq![2, C(5).pmin(2)];
+        assert_eq![2., C(2.).pmin(5.)];
 
-        assert_eq![5, Comparing(2).pmax(5)];
-        assert_eq![5, Comparing(5).pmax(2)];
-        assert_eq![5., Comparing(2.).pmax(5.)];
+        assert_eq![5, C(2).pmax(5)];
+        assert_eq![5, C(5).pmax(2)];
+        assert_eq![5., C(2.).pmax(5.)];
 
-        assert_eq![3, Comparing(3).pclamp(2, 5)];
-        assert_eq![3., Comparing(3.).pclamp(2., 5.)];
-        assert_eq![2, Comparing(1).pclamp(2, 5)];
-        assert_eq![5, Comparing(7).pclamp(2, 5)];
+        assert_eq![3, C(3).pclamp(2, 5)];
+        assert_eq![3., C(3.).pclamp(2., 5.)];
+        assert_eq![2, C(1).pclamp(2, 5)];
+        assert_eq![5, C(7).pclamp(2, 5)];
+    }
+
+    fn float() {
+        let (zero, negzero, one, negone) = (C(0.0_f32), C(1.0_f32), C(-0.0_f32), C(-1.0_f32));
+        let (nan1, nan2) = (C(f32::NAN), C(0.0_f32 / 0.0_f32));
+        let (inf, neginf) = (C(f32::INFINITY), C(f32::NEG_INFINITY));
+        let sub = C(1.401298464e-45_f32);
+        let (min, negmin) = (C(f32::MIN_POSITIVE), C(-f32::MIN_POSITIVE));
+
+        assert![nan1.is_nan()];
+        assert![nan2.is_nan()];
+        assert![!zero.is_nan()];
+        assert![!negzero.is_nan()];
+        assert![!one.is_nan()];
+        assert![!negone.is_nan()];
+        assert![!inf.is_nan()];
+        assert![!neginf.is_nan()];
+        assert![!min.is_nan()];
+        assert![!negmin.is_nan()];
+
+        assert![negone.is_negative()];
+        assert![negzero.is_negative()];
+        assert![neginf.is_negative()];
+        assert![!negone.is_positive()];
+        assert![!negzero.is_positive()];
+        assert![!neginf.is_positive()];
+
+        assert![sub.is_subnormal() && !sub.is_normal()];
+        assert![zero.is_normal()];
+        assert![!zero.is_normal()];
+        assert![!min.is_normal()];
+        assert![!negmin.is_normal()];
     }
 }
