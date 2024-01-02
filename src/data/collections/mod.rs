@@ -8,13 +8,14 @@
 //! [`vec`]: std::vec
 //
 
+#![allow(unused_imports)]
+
 /* contains always compiled items */
 
 mod array;
 mod reexports;
 mod r#trait;
 
-#[allow(unused)]
 #[cfg(not(feature = "data"))]
 pub use {array::*, r#trait::*, reexports::*};
 

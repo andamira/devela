@@ -1,13 +1,15 @@
 // devela::data
 //
 //! Data structures, extends
-//! `std::{`[`any`], [`array`], [`cmp`], [`collections`], [`convert`], [`iter`], [`vec`]`}`.
+//! `std::{`[`any`], [`array`], [`cmp`], [`collections`], [`convert`], [`hash`],
+//! [`iter`], [`vec`]`}`.
 //!
 //! [`any`]: core::any
 //! [`array`]: mod@core::array
 //! [`cmp`]: core::cmp
 //! [`collections`]: alloc::collections
 //! [`convert`]: core::convert
+//! [`hash`]: std::hash
 //! [`iter`]: core::iter
 //! [`vec`]: mod@alloc::vec
 //
@@ -22,10 +24,11 @@ pub mod bit;
 pub mod cmp;
 pub mod collections;
 pub mod convert;
+pub mod hash;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub use {bit::*, cmp::*, collections::*, convert::*, error::*};
+pub use {bit::*, cmp::*, collections::*, convert::*, error::*, hash::*};
 
 /* feature-gated */
 
@@ -57,11 +60,15 @@ pub use error::*;
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use {any::all::*, bit::all::*, cmp::all::*, collections::all::*, convert::all::*};
+pub use {
+    any::all::*, bit::all::*, cmp::all::*, collections::all::*, convert::all::*, hash::all::*,
+};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{bit::all::*, cmp::all::*, collections::all::*, convert::all::*, error::*};
+    pub use super::{
+        bit::all::*, cmp::all::*, collections::all::*, convert::all::*, error::*, hash::all::*,
+    };
 
     #[doc(inline)]
     #[cfg(feature = "data")]
