@@ -1,4 +1,4 @@
-// devela::num::float::consts
+// devela::num::float::wrapper::consts
 //
 // - https://en.wikipedia.org/wiki/List_of_mathematical_constants
 
