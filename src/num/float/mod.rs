@@ -1,6 +1,6 @@
 // devela::num::float
 //
-//! Floating point wrapper.
+//! Floating point functionality.
 //
 
 #![cfg_attr(not(feature = "num"), allow(unused))]

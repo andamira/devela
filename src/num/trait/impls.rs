@@ -1,4 +1,4 @@
-// devela::num::num::impls
+// devela::num::trait::impls
 //
 //!
 //

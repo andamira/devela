@@ -1,4 +1,4 @@
-// devela::num::num
+// devela::num::trait
 //
 //!
 //
@@ -7,30 +7,11 @@ use crate::num::{NumErrors as Error, NumResult as Result};
 use core::ops::{Deref, DerefMut};
 
 mod impls;
-mod auto_impls {
-    use super::{NoNum, Num, NumRef};
 
-    #[rustfmt::skip]
-    impl Num for NoNum {
-        type Inner = ();
-        type Out = ();
-        type Rhs = ();
-
-        fn num_into(self) -> Self::Inner {}
-    }
-
-    #[rustfmt::skip]
-    impl<'a, T: Num> NumRef<'a> for &T { type Own = T; }
-
-    #[rustfmt::skip]
-    impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
-}
-
-/// Represents the absence of a number.
-///
-/// This can be used anywhere an implementation of [`Num`] is expected,
-/// since it implements all the numeric traits, but does nothing.
-pub type NoNum = ();
+#[rustfmt::skip]
+impl<'a, T: Num> NumRef<'a> for &T { type Own = T; }
+#[rustfmt::skip]
+impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
 
 /// Common trait for numeric types.
 ///
@@ -188,10 +169,8 @@ pub trait Num {
 
 /// Common trait for referenced numeric types.
 ///
-/// Not that mutable operations can only be implemented when `NumRef` is
-/// implemented for exclusive references (&mut).
-///
-/// See also [`Num`] which is intended to be implemented for the owned type.
+/// It is automatically implemented for references of types implementing [`Num`].
+/// Mutable operations are only available for exclusive (`&mut`) references.
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[rustfmt::skip]
 #[allow(unused_variables)]

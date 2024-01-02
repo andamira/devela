@@ -24,11 +24,13 @@ pub use {error::*, float::*, niche::*, ops::*};
 #[cfg(feature = "num")]
 mod int;
 #[cfg(feature = "num")]
-mod num;
+mod no;
+#[cfg(feature = "num")]
+mod r#trait;
 
 // re-export private sub-modules
 #[cfg(feature = "num")]
-pub use {error::*, float::*, int::*, num::*};
+pub use {error::*, float::*, int::*, no::*, r#trait::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
@@ -41,5 +43,5 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(feature = "num")]
-    pub use super::{int::*, num::*};
+    pub use super::{int::*, no::*, r#trait::*};
 }

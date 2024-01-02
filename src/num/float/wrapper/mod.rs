@@ -1,6 +1,6 @@
 // devela::num::flat::wrapper
 //
-//!
+//! Floating point wrapper struct.
 //
 // TOC
 // - define Floating struct
