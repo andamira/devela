@@ -75,6 +75,8 @@ mod reexports {
     reexport! { rust: core, local_module: "error",
     doc: "Indicates unimplemented code.", unimplemented }
 
+    // NOTE: the macro and the module have the same name :(
+    //
     /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
     /// Panics the current thread.
     ///
