@@ -16,10 +16,12 @@ mod sleep;
 
 // re-export private sub-modules
 #[cfg(feature = "work")]
+#[allow(unused_imports)]
 pub use sleep::*;
 
 #[cfg(feature = "work")]
 pub(crate) mod all {
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::sleep::*;
 }

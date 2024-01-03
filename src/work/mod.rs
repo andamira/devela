@@ -26,10 +26,12 @@ pub mod thread;
 // re-export public sub-modules
 #[doc(no_inline)]
 #[cfg(feature = "work")]
+#[allow(unused_imports)]
 pub use {r#async::all::*, sync::all::*, thread::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[cfg(feature = "work")]
+    #[allow(unused_imports)]
     pub use super::{r#async::all::*, sync::all::*, thread::all::*};
 }

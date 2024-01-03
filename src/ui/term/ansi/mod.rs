@@ -13,9 +13,11 @@ mod macros;
 mod print;
 
 // re-export private sub-modules
+#[allow(unused_imports)]
 pub use {codes::*, color::*, macros::*};
 
 pub(crate) mod all {
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{codes::*, color::*, macros::*};
 }

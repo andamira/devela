@@ -24,10 +24,12 @@ mod reexports;
 
 // re-exports private sub-modules
 #[cfg(feature = "io")]
+#[allow(unused_imports)]
 pub use {path::all::*, reexports::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[cfg(feature = "io")]
+    #[allow(unused_imports)]
     pub use super::{path::all::*, reexports::*};
 }

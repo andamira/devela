@@ -24,6 +24,7 @@ mod reexport;
 
 // re-export private sub-modules
 #[cfg(feature = "text")]
+#[allow(unused_imports)]
 pub use {always_fns::*, char::AsciiChar, fns::*, reexport::*};
 
 pub(crate) mod all {
@@ -32,5 +33,6 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(feature = "text")]
+    #[allow(unused_imports)]
     pub use super::{always_fns::*, char::AsciiChar, fns::*, reexport::*};
 }

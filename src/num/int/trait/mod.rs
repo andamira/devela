@@ -3,10 +3,12 @@
 //!
 //
 
+#![allow(unused_imports)] // TEMP
+
 use crate::num::{Num, NumErrors as Error, NumRef, NumResult as Result};
 use core::ops::{Deref, DerefMut};
 
-mod impls;
+// mod impls; // TEMP
 
 mod auto_impls {
     use super::{NumInt, NumRefInt};

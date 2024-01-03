@@ -3,6 +3,7 @@
 //! Standalone color functions and constants.
 
 use crate::code::{iif, paste, sf};
+#[allow(unused_imports)]
 use crate::num::FloatOps;
 
 /// The coefficient used for calculating the red luminance.

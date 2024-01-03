@@ -398,8 +398,9 @@ mod test_min_max_clamp {
         assert_eq![5, C(7).pclamp(2, 5)];
     }
 
+    #[test]
     fn float() {
-        let (zero, negzero, one, negone) = (C(0.0_f32), C(1.0_f32), C(-0.0_f32), C(-1.0_f32));
+        let (zero, negzero, one, negone) = (C(0.0_f32), C(-0.0_f32), C(1.0_f32), C(-1.0_f32));
         let (nan1, nan2) = (C(f32::NAN), C(0.0_f32 / 0.0_f32));
         let (inf, neginf) = (C(f32::INFINITY), C(f32::NEG_INFINITY));
         let sub = C(1.401298464e-45_f32);
@@ -424,9 +425,9 @@ mod test_min_max_clamp {
         assert![!neginf.is_positive()];
 
         assert![sub.is_subnormal() && !sub.is_normal()];
-        assert![zero.is_normal()];
-        assert![!zero.is_normal()];
-        assert![!min.is_normal()];
-        assert![!negmin.is_normal()];
+        assert![!zero.is_subnormal() && !zero.is_normal()];
+        assert![one.is_normal() && !one.is_subnormal()];
+        assert![min.is_normal() && !min.is_subnormal()];
+        assert![negmin.is_normal() && !negmin.is_subnormal()];
     }
 }

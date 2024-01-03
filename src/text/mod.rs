@@ -48,6 +48,7 @@ pub use {ascii::all::*, char::all::*, egc::all::*, fmt::all::*};
 
 // re-export private sub-modules
 #[cfg(feature = "text")]
+#[allow(unused_imports)]
 pub use {array_string::*, error::*, ext::*, non_nul::*, reexports::*};
 
 pub(crate) mod all {
@@ -56,6 +57,7 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(feature = "text")]
+    #[allow(unused_imports)]
     pub use super::{
         array_string::*, egc::all::*, error::*, ext::*, fmt::all::*, non_nul::*, reexports::*,
     };
