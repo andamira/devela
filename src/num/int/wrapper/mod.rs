@@ -7,6 +7,7 @@
 // - implement core traits
 
 mod impl_base;
+mod impl_count;
 
 /// Provides constant integer operations on `T`.
 ///
@@ -16,12 +17,15 @@ mod impl_base;
 ///
 /// The documentation is the same for all bit sizes.
 /// - Methods for `i32` related to:
-/// [base][Self#numeric-base-related-methods-for-i32].
+/// [base][Self#numeric-base-related-methods-for-i32],
+/// [counting][Self#numeric-counting-related-methods-for-i32].
 /// - Methods for `u32` related to:
-/// [base][Self#numeric-base-related-methods-for-u32].
+/// [base][Self#numeric-base-related-methods-for-u32],
+/// [counting][Self#numeric-counting-related-methods-for-u32].
 ///
 /// See also the related traits:
 /// [`NumOpsBase`][crate::num::NumOpsBase],
+/// [`NumOpsCounting`][crate::num::NumOpsCounting],
 /// [`NumInt`][super::NumInt].
 pub struct Int<T>(pub T);
 
