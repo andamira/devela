@@ -5,10 +5,10 @@
 
 use crate::num::Int;
 
-/// Base-related functionality.
+/// Numeric base-related functionality.
 ///
 /// These methods are implemented as const in the [`Int`][crate::num::Int] wrapper.
-pub trait BaseOps {
+pub trait NumOpsBase {
     /// Returns the number of digits in base 10.
     #[must_use]
     fn count_digits(&self) -> Self;
@@ -38,7 +38,7 @@ macro_rules! impl_base {
     () => { impl_base![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize]; };
     ($($t:ty),+) => { $( impl_base![@$t]; )+ };
     (@$t:ty) => {
-        impl BaseOps for $t {
+        impl NumOpsBase for $t {
             #[inline]
             fn count_digits(&self) -> Self {
                 Int(*self).count_digits()

@@ -5,9 +5,9 @@
 // TOC
 // - sint|uint:
 //   - count_digits
-//   - count_digits_sign (only signed)
+//   - count_digits_sign
 //   - count_digits_base
-//   - count_digits_base_sign (only signed)
+//   - count_digits_base_sign
 //   - digital_root
 //   - digital_root_base
 
@@ -23,13 +23,15 @@ macro_rules! impl_base {
     (@signed $t:ty) => { paste! {
         /* signed count_digits */
 
-        /// # Integer base related methods
+        #[doc = "# Numeric base related methods for `" $t "`.\n\n"]
         /// - count_digits
         /// - count_digits_sign
         /// - count_digits_base
         /// - count_digits_base_sign
         /// - digital_root
         /// - digital_root_base
+        ///
+        /// See the related trait [`NumOpsBase`][crate::num::NumOpsBase].
         impl Int<$t> {
             /// Returns the number of digits in base 10.
             /// # Examples
@@ -156,13 +158,14 @@ macro_rules! impl_base {
 
     // implements unsigned ops
     (@unsigned $t:ty) => { paste! {
-        /// # Integer base related methods
+        #[doc = "# Numeric base related methods for `" $t "`.\n\n"]
         /// - count_digits
         /// - count_digits_base
         /// - digital_root
         /// - digital_root_base
+        ///
+        /// See the related trait [`NumOpsBase`][crate::num::NumOpsBase].
         impl Int<$t> {
-
             /* unsigned count_digits */
 
             /// Returns the number of digits in base 10.
