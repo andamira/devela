@@ -26,4 +26,5 @@ reexport! { rust: core::hash, local_module: "data",
 //     Hash
 // }
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub use core::hash::Hash;

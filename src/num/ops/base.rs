@@ -7,7 +7,7 @@ use crate::num::Int;
 
 /// Numeric base-related functionality.
 ///
-/// These methods are implemented as const in the [`Int`][crate::num::Int] wrapper.
+/// These methods are implemented as *const* in the [`Int`][crate::num::Int] wrapper.
 pub trait NumOpsBase {
     /// Returns the number of digits in base 10.
     #[must_use]

@@ -183,7 +183,7 @@ macro_rules! impl_count {
             /// Also known as *multichoose*.
             ///
             /// # Formula
-            /// $$ \large C(n+r-1,r) = ${n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
+            /// $$ \large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0 \lor r<0$,
@@ -375,7 +375,7 @@ macro_rules! impl_count {
             /// Also known as *multichoose*.
             ///
             /// # Formula
-            /// $$ \large C(n+r-1,r) =  {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
+            /// $$ \large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
             ///
             /// # Errors
             /// Returns [`Overflow`][E::Overflow] if the result cant't fit the type.
