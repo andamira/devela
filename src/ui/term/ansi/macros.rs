@@ -33,7 +33,7 @@
 #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "dep", feature = "text"))))]
 #[cfg(any(all(feature = "dep", feature = "text"), feature = "const-str"))]
 macro_rules! ansib {
-    ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::meta::paste! {
+    ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::code::paste! {
         $crate::_dep::const_str::concat_bytes!(
             $($crate::ui::term::Ansi::[<$command:upper>] $( ($($arg),*) )? ,)+
         )
