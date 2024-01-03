@@ -191,12 +191,12 @@ macro_rules! impl_count {
             ///
             /// # Examples
             /// ```
-            #[doc ="use devela::num::combine_rep_" $t ";\n\n"]
-            #[doc = "assert_eq![Ok(10), combine_rep_" $t "(3, 3)];"]
-            #[doc = "assert_eq![Ok(6), combine_rep_" $t "(3, 2)];"]
-            #[doc = "assert_eq![Ok(3), combine_rep_" $t "(3, 1)];"]
-            #[doc = "assert![combine_rep_" $t "(-3, 3).is_err()];"]
-            #[doc = "assert![combine_rep_" $t "(3, -2).is_err()];"]
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Ok(10), Int(3_" $t ").combine_rep(3)];"]
+            #[doc = "assert_eq![Ok(6), Int(3_" $t ").combine_rep(2)];"]
+            #[doc = "assert_eq![Ok(3), Int(3_" $t ").combine_rep(1)];"]
+            #[doc = "assert![Int(-3_" $t ").combine_rep(3).is_err()];"]
+            #[doc = "assert![Int(3_" $t ").combine_rep(-2).is_err()];"]
             /// ```
             #[inline]
             pub const fn combine_rep(self, r: $t) -> Result<$t> {
@@ -382,10 +382,10 @@ macro_rules! impl_count {
             ///
             /// # Examples
             /// ```
-            #[doc ="use devela::num::combine_rep_" $t ";\n\n"]
-            #[doc = "assert_eq![Ok(10), combine_rep_" $t "(3, 3)];"]
-            #[doc = "assert_eq![Ok(6), combine_rep_" $t "(3, 2)];"]
-            #[doc = "assert_eq![Ok(3), combine_rep_" $t "(3, 1)];"]
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Ok(10), Int(3_" $t ").combine_rep(3)];"]
+            #[doc = "assert_eq![Ok(6), Int(3_" $t ").combine_rep(2)];"]
+            #[doc = "assert_eq![Ok(3), Int(3_" $t ").combine_rep(1)];"]
             #[doc = "assert![Int(" $t "::MAX).combine_rep(" $t "::MAX).is_err()];"]
             /// ```
             #[inline]
