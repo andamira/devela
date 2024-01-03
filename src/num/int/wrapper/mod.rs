@@ -14,7 +14,15 @@ mod impl_base;
 /// [`i8`], [`i16`], [`i32`], [`i64`], [`i128`], [`isize`],
 /// [`u8`], [`u16`], [`u32`], [`u64`], [`u128`] and [`usize`].
 ///
-/// See also [`NumInt`][super::NumInt] for the corresponding trait.
+/// The documentation is the same for all bit sizes.
+/// - Methods for `i32` related to:
+/// [base][Self#numeric-base-related-methods-for-i32].
+/// - Methods for `u32` related to:
+/// [base][Self#numeric-base-related-methods-for-u32].
+///
+/// See also the related traits:
+/// [`NumOpsBase`][crate::num::NumOpsBase],
+/// [`NumInt`][super::NumInt].
 pub struct Int<T>(pub T);
 
 #[rustfmt::skip]

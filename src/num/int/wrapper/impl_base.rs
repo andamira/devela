@@ -15,21 +15,22 @@ use super::Int;
 use crate::code::{iif, paste};
 
 // $t:   the input/output type
+// $dl:  the doclink suffix for the method name
 macro_rules! impl_base {
-    (signed $( $t:ty ),+) => { $( impl_base![@signed $t]; )+ };
-    (unsigned $( $t:ty ),+) => { $( impl_base![@unsigned $t]; )+ };
+    (signed $( $t:ty : $dl:literal ),+) => { $( impl_base![@signed $t:$dl]; )+ };
+    (unsigned $( $t:ty : $dl:literal ),+) => { $( impl_base![@unsigned $t:$dl]; )+ };
 
     // implements signed ops
-    (@signed $t:ty) => { paste! {
+    (@signed $t:ty : $dl:literal) => { paste! {
         /* signed count_digits */
 
-        #[doc = "# Numeric base related methods for `" $t "`.\n\n"]
-        /// - count_digits
-        /// - count_digits_sign
-        /// - count_digits_base
-        /// - count_digits_base_sign
-        /// - digital_root
-        /// - digital_root_base
+        #[doc = "# Numeric base related methods for `" $t "`\n\n"]
+        #[doc = "- [count_digits](#method.count_digits" $dl ")"]
+        #[doc = "- [count_digits_sign](#method.count_digits_sign" $dl ")"]
+        #[doc = "- [count_digits_base](#method.count_digits_base" $dl ")"]
+        #[doc = "- [count_digits_base_sign](#method.count_digits_base_sign" $dl ")"]
+        #[doc = "- [digital_root](#method.digital_root" $dl ")"]
+        #[doc = "- [digital_root_base](#method.digital_root_base" $dl ")"]
         ///
         /// See the related trait [`NumOpsBase`][crate::num::NumOpsBase].
         impl Int<$t> {
@@ -157,12 +158,14 @@ macro_rules! impl_base {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty) => { paste! {
-        #[doc = "# Numeric base related methods for `" $t "`.\n\n"]
-        /// - count_digits
-        /// - count_digits_base
-        /// - digital_root
-        /// - digital_root_base
+    (@unsigned $t:ty : $dl:literal) => { paste! {
+        #[doc = "# Numeric base related methods for `" $t "`\n\n"]
+        #[doc = "- [count_digits](#method.count_digits" $dl ")"]
+        #[doc = "- [count_digits_sign](#method.count_digits_sign" $dl ")"]
+        #[doc = "- [count_digits_base](#method.count_digits_base" $dl ")"]
+        #[doc = "- [count_digits_base_sign](#method.count_digits_base_sign" $dl ")"]
+        #[doc = "- [digital_root](#method.digital_root" $dl ")"]
+        #[doc = "- [digital_root_base](#method.digital_root_base" $dl ")"]
         ///
         /// See the related trait [`NumOpsBase`][crate::num::NumOpsBase].
         impl Int<$t> {
@@ -249,5 +252,5 @@ macro_rules! impl_base {
         }
     }};
 }
-impl_base![signed i8, i16, i32, i64, i128, isize];
-impl_base![unsigned u8, u16, u32, u64, u128, usize];
+impl_base![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
+impl_base![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
