@@ -21,13 +21,15 @@ mod base;
 #[cfg(feature = "num")]
 mod counting;
 #[cfg(feature = "num")]
+mod factors;
+#[cfg(feature = "num")]
 mod fns;
 
 // re-export private sub-modules
 #[allow(unused)]
 pub use always_fns::*;
 #[cfg(feature = "num")]
-pub use {base::*, counting::*, fns::*};
+pub use {base::*, counting::*, factors::*, fns::*};
 
 pub(crate) mod all {
     #[doc(inline)]
@@ -35,5 +37,5 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(feature = "num")]
-    pub use super::{base::*, counting::*, fns::*};
+    pub use super::{base::*, counting::*, factors::*, fns::*};
 }
