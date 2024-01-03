@@ -3,7 +3,7 @@
 //! implements counting related functions
 //
 // TOC
-// - sint|uint:
+// - signed|unsigned:
 //   - factorial
 //   - combine
 //   - combine_rep

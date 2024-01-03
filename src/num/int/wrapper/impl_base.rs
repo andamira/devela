@@ -3,7 +3,7 @@
 //! implements base related functions
 //
 // TOC
-// - sint|uint:
+// - signed|unsigned:
 //   - count_digits
 //   - count_digits_sign
 //   - count_digits_base

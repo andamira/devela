@@ -3,7 +3,7 @@
 //! implements base related functions
 //
 // TOC
-// - sint|uint:
+// - signed|unsigned:
 //   - allocating:
 //     - factors
 //     - factors_proper
