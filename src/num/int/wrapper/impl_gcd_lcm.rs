@@ -187,7 +187,6 @@ macro_rules! impl_gcd_lcm {
             #[doc = "assert_eq![Int(-12_" $t ").lcm(15), Some(60)];"]
             #[doc = "assert_eq![Int(12_" $t ").lcm(-15), Some(60)];"]
             /// ```
-            // TODO:CHECK overflow for i128
             #[inline] #[must_use]
             pub const fn lcm(self, b: $t) -> Option<$t> {
                 let (aup, bup) = (self.0 as $up, b as $up);
@@ -250,7 +249,6 @@ macro_rules! impl_gcd_lcm {
             /// # use devela::num::Int;
             #[doc = "assert_eq![Int(12_" $t ").lcm(15), Some(60)];"]
             /// ```
-            // TODO:CHECK overflow for u128
             #[inline] #[must_use]
             pub const fn lcm(self, b: $t) -> Option<$t> {
                 let (aup, bup) = (self.0 as $up, b as $up);

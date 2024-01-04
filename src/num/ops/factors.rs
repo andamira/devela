@@ -10,6 +10,19 @@ use ::_alloc::vec::Vec;
 
 /// Numeric factors-related functionality.
 ///
+/// The following methods are only available if the `alloc` feature is enabled,
+/// and they all return a `Vec`:
+/// - [`factors`][Self::factors]
+/// - [`factors_proper`][Self::factors_proper]
+/// - [`factors_prime`][Self::factors_prime]
+/// - [`factors_prime_unique`][Self::factors_prime_unique]
+///
+/// There following methods doesn't depend on `alloc`, instead writing to buffers.
+/// - [`factors_buf`][Self::factors_buf]
+/// - [`factors_proper_buf`][Self::factors_proper_buf]
+/// - [`factors_prime_buf`][Self::factors_prime_buf]
+/// - [`factors_prime_unique_buf`][Self::factors_prime_unique_buf]
+///
 /// These methods are also implemented in the [`Int`][crate::num::Int] wrapper.
 pub trait NumOpsFactors: Sized {
     /* allocating */

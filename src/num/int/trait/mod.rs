@@ -3,12 +3,10 @@
 //!
 //
 
-#![allow(unused_imports)] // TEMP
-
 use crate::num::{Num, NumErrors as Error, NumRef, NumResult as Result};
 use core::ops::{Deref, DerefMut};
 
-// mod impls; // TEMP
+mod impls;
 
 mod auto_impls {
     use super::{NumInt, NumRefInt};
@@ -45,15 +43,78 @@ mod auto_impls {
 ///
 /// See also [`NumRefInt`] that is intended to be implemented for `Int` references.
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
-#[rustfmt::skip]
-#[allow(unused_variables)]
-pub trait NumInt: Num {}
+#[rustfmt::skip] #[allow(unused_variables)]
+pub trait NumInt: Num {
+    /* gcd & lcm */
+
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
+    fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ Error::ni() }
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
+    fn int_gcd_ref(self, other: &Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ Error::ni() }
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
+    fn int_ref_gcd(&self, other: Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ Error::ni() }
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
+    fn int_ref_gcd_ref(&self, other: &Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ Error::ni() }
+
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
+    fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]>
+        where Self: Sized{ Error::ni() }
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
+    fn int_gcd_ext_ref(self, other: &Self::Rhs) -> Result<[Self::Out; 3]>
+        where Self: Sized{ Error::ni() }
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
+    fn int_ref_gcd_ext(&self, other: Self::Rhs) -> Result<[Self::Out; 3]>
+        where Self: Sized{ Error::ni() }
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
+    fn int_ref_gcd_ext_ref(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]>
+        where Self: Sized{ Error::ni() }
+
+    /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
+    fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ Error::ni() }
+    /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
+    fn int_lcm_ref(self, other: &Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ Error::ni() }
+    /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
+    fn int_ref_lcm(&self, other: Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ Error::ni() }
+    /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
+    fn int_ref_lcm_ref(&self, other: &Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ Error::ni() }
+}
 
 /// Common trait for referenced integer types.
 ///
 /// It is automatically implemented for references of types implementing [`NumInt`].
 /// Mutable operations are only available for exclusive (`&mut`) references.
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
-#[rustfmt::skip]
-#[allow(unused_variables)]
-pub trait NumRefInt<'a>: NumRef<'a> where Self: Deref<Target = <Self as NumRef<'a>>::Own> {}
+#[rustfmt::skip] #[allow(unused_variables)]
+pub trait NumRefInt<'a>: NumRef<'a>
+where
+    Self: Deref<Target = <Self as NumRef<'a>>::Own>,
+    <Self as NumRef<'a>>::Own: NumInt
+{
+    /* gcd & lcm */
+
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
+    fn int_ref_gcd(&self, other: <Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
+        self.deref().int_ref_gcd(other) }
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
+    fn int_ref_gcd_ref(&self, other: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
+        self.deref().int_ref_gcd_ref(other) }
+
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
+    fn int_ref_gcd_ext(&self, other: <Self::Own as Num>::Rhs)
+        -> Result<[<Self::Own as Num>::Out; 3]> {
+        self.deref().int_ref_gcd_ext(other) }
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
+    fn int_ref_gcd_ext_ref(&self, other: &<Self::Own as Num>::Rhs)
+        -> Result<[<Self::Own as Num>::Out; 3]> {
+        self.deref().int_ref_gcd_ext_ref(other) }
+}

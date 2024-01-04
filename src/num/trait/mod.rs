@@ -39,8 +39,7 @@ impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
 ///
 /// See also [`NumRef`] that is intended to be implemented for `Num` references.
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
-#[rustfmt::skip]
-#[allow(unused_variables)]
+#[rustfmt::skip] #[allow(unused_variables)]
 pub trait Num {
     /// The internal representation of this numeric type.
     type Inner;
@@ -172,9 +171,11 @@ pub trait Num {
 /// It is automatically implemented for references of types implementing [`Num`].
 /// Mutable operations are only available for exclusive (`&mut`) references.
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
-#[rustfmt::skip]
-#[allow(unused_variables)]
-pub trait NumRef<'a> where Self: Deref<Target = Self::Own> {
+#[rustfmt::skip] #[allow(unused_variables)]
+pub trait NumRef<'a>
+where
+    Self: Deref<Target = Self::Own>,
+{
     /// The owned version of this numeric type.
     type Own: Num;
 
@@ -211,59 +212,39 @@ pub trait NumRef<'a> where Self: Deref<Target = Self::Own> {
     /* Operations */
 
     /// Computes `&self + rhs`.
-    fn num_ref_add(&self, rhs: <Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().num_ref_add(rhs)
-    }
+    fn num_ref_add(&self, rhs: <Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+        self.deref().num_ref_add(rhs) }
     /// Computes `&self + &rhs`.
-    fn num_ref_add_ref(&self, rhs: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().num_ref_add_ref(rhs)
-    }
+    fn num_ref_add_ref(&self, rhs: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+        self.deref().num_ref_add_ref(rhs) }
 
     /// Computes `&self - rhs`.
-    fn num_ref_sub(&self, rhs: <Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().num_ref_sub(rhs)
-    }
+    fn num_ref_sub(&self, rhs: <Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+        self.deref().num_ref_sub(rhs) }
     /// Computes `&self - &rhs`.
-    fn num_ref_sub_ref(&self, rhs: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().num_ref_sub_ref(rhs)
-    }
+    fn num_ref_sub_ref(&self, rhs: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+        self.deref().num_ref_sub_ref(rhs) }
 
     /// Computes `&self * rhs`.
-    fn num_ref_mul(&self, rhs: <Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().num_ref_mul(rhs)
-    }
+    fn num_ref_mul(&self, rhs: <Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+        self.deref().num_ref_mul(rhs) }
     /// Computes `&self * &rhs`.
-    fn num_ref_mul_ref(&self, rhs: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().num_ref_mul_ref(rhs)
-    }
+    fn num_ref_mul_ref(&self, rhs: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+        self.deref().num_ref_mul_ref(rhs) }
 
     /// Computes `&self / rhs`.
-    fn num_ref_div(&self, rhs: <Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().num_ref_div(rhs)
-    }
+    fn num_ref_div(&self, rhs: <Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+        self.deref().num_ref_div(rhs) }
     /// Computes `&self / &rhs`.
-    fn num_ref_div_ref(&self, rhs: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().num_ref_div_ref(rhs)
-    }
+    fn num_ref_div_ref(&self, rhs: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+        self.deref().num_ref_div_ref(rhs) }
 
     /// Computes `&self % rhs`.
-    fn num_ref_rem(&self, rhs: <Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().num_ref_rem(rhs)
-    }
+    fn num_ref_rem(&self, rhs: <Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+        self.deref().num_ref_rem(rhs) }
     /// Computes `&self % &rhs`.
-    fn num_ref_rem_ref(&self, rhs: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().num_ref_rem_ref(rhs)
-    }
+    fn num_ref_rem_ref(&self, rhs: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+        self.deref().num_ref_rem_ref(rhs) }
 
     /// Computes `- &self`.
     fn num_ref_neg(&self) -> Result<<Self::Own as Num>::Out> { self.deref().num_ref_neg() }
