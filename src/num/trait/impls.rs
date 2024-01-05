@@ -395,11 +395,7 @@ macro_rules! impl_num {
         #[inline]
         fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> { Error::ni() }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::Out> { Error::ni() }
-        #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::Out> { Error::ni() }
-        #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::Out> { Error::ni() }
+        fn [<num_ref_ $op>](&self, other: &$Self) -> Result<$Self::Out> { Error::ni() }
     };
 
     /* ops that call .checked() for i*, u*, and few for NonZero* */
@@ -424,15 +420,7 @@ macro_rules! impl_num {
             self.[<checked_ $op>](other).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::Out> {
-            self.[<checked_ $op>](*other).ok_or(Unspecified)
-        }
-        #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::Out> {
-            self.[<checked_ $op>](other).ok_or(Unspecified)
-        }
-        #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::Out> {
+        fn [<num_ref_ $op>](&self, other: &$Self) -> Result<$Self::Out> {
             self.[<checked_ $op>](*other).ok_or(Unspecified)
         }
     }};
@@ -459,15 +447,7 @@ macro_rules! impl_num {
             $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
         }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::Out> {
-            $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
-        }
-        #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::Out> {
-            $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
-        }
-        #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::Out> {
+        fn [<num_ref_ $op>](&self, other: &$Self) -> Result<$Self::Out> {
             $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
         }
     }};
@@ -488,15 +468,7 @@ macro_rules! impl_num {
             Ok([<$op:camel>]::[<$op>](self, other))
         }
         #[inline]
-        fn [<num_ $op _ref>](self, other: &$Self) -> Result<$Self::Out> {
-            Ok([<$op:camel>]::[<$op>](self, *other))
-        }
-        #[inline]
-        fn [<num_ref_ $op>](&self, other: $Self) -> Result<$Self::Out> {
-            Ok([<$op:camel>]::[<$op>](self, other))
-        }
-        #[inline]
-        fn [<num_ref_ $op _ref>](&self, other: &$Self) -> Result<$Self::Out> {
+        fn [<num_ref_ $op>](&self, other: &$Self) -> Result<$Self::Out> {
             Ok([<$op:camel>]::[<$op>](self, *other))
         }
     }};

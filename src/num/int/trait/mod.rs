@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::num::{Num, NumErrors as Error, NumRef, NumResult as Result};
+use crate::num::{Num, NumErrors as E, NumRef, NumResult as Result};
 use core::ops::{Deref, DerefMut};
 
 mod impls;
@@ -20,19 +20,16 @@ mod auto_impls {
 /// Common trait for integer types.
 ///
 /// This trait doesn't depend on having any operations implemented, and it
-/// offers a common numeric API that returns [`NotImplemented`][Error::NotImplemented]
+/// offers a common numeric API that returns [`NotImplemented`][E::NotImplemented]
 /// by default unless the methods are overriden.
 ///
 /// Any concrete implementation must manually implement the operations it wants.
 ///
-/// You could also ask for additional bounds like e.g. [`Add`][core::ops::Add].
+/// Most methods come in two variants. The one that starts with:
+/// - `int_*`: takes the arguments by value.
+/// - `int_ref_*`: takes the arguments by reference.
 ///
-/// Binary operations offer two alternative methods, one for when you want to
-/// transfer ownership of the second element, and another one for when you don't.
-/// Transferring ownership is more efficient for `Copy` types, and using a
-/// reference is more appropriate for non-copy types.
-///
-/// For the default implementations we try to always offer a meaningful result,
+/// For all default implementations we try to always offer a meaningful result,
 /// even if the concrete type doesn't support it directly, we do the operation
 /// on the underlying primitive and try to construct the new type again.
 ///
@@ -41,38 +38,33 @@ mod auto_impls {
 /// This trait try to offer the same methods everywhere and give a
 /// result when a result is possible.
 ///
-/// See also [`NumRefInt`] that is intended to be implemented for `Int` references.
+/// See also [`NumRefInt`] that is automatically implemented for `NumInt` references.
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait NumInt: Num {
     /* gcd & lcm */
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ Error::ni() }
+    /// - Takes arguments by value.
+    fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_gcd_ref(self, other: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ Error::ni() }
-    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ Error::ni() }
-    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ Error::ni() }
+    /// - Takes arguments by reference.
+    fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
-    fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]>
-        where Self: Sized{ Error::ni() }
+    /// - Takes arguments by value.
+    fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> where Self: Sized{ E::ni() }
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
+    /// - Takes arguments by reference.
     fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]>
-        where Self: Sized{ Error::ni() }
+        where Self: Sized{ E::ni() }
 
     /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
-    fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ Error::ni() }
+    /// - Takes arguments by value.
+    fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
     /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
-    fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ Error::ni() }
+    /// - Takes arguments by reference.
+    fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
 }
 
 /// Common trait for referenced integer types.
@@ -89,12 +81,12 @@ where
     /* gcd & lcm */
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_ref_gcd(&self, other: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_gcd(other) }
-
+    fn int_ref_gcd(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_gcd(other)
+    }
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
     fn int_ref_gcd_ext(&self, other: &<Self::Own as Num>::Rhs)
         -> Result<[<Self::Own as Num>::Out; 3]> {
-        self.deref().int_ref_gcd_ext(other) }
+            self.deref().int_ref_gcd_ext(other)
+    }
 }
