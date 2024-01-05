@@ -3,8 +3,10 @@
 //!
 //
 
-use crate::num::{NumErrors as Error, NumResult as Result};
+use crate::num::{NumErrors as E, NumResult as Result};
 use core::ops::{Deref, DerefMut};
+#[cfg(doc)]
+use E::{NotImplemented, NotSupported};
 
 mod impls;
 
@@ -15,27 +17,20 @@ impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
 
 /// Common trait for numeric types.
 ///
-/// This trait doesn't depend on having any operations implemented, and it
-/// offers a common numeric API that returns [`NotImplemented`][Error::NotImplemented]
-/// by default unless the methods are overriden.
+/// # Notes
+/// - Every method in this trait returns [`NotImplemented`] by default.
+/// - Any concrete implementation must implement the operations it wants to support.
+/// - Any operations specifically not supported should ideally return [`NotSupported`].
 ///
-/// Any concrete implementation must manually implement the operations it wants.
+/// - Most methods come in two variants, starting with different prefixes:
+///   - `num_*` methods take the arguments by value.
+///   - `num_ref_*` methods take the arguments by reference.
 ///
-/// You could also ask for additional bounds like e.g. [`Add`][core::ops::Add].
+/// - This trait tries to offer the same methods everywhere, giving a result when possible.
+/// - Operations are generally supported if they can be valid for some values.
+/// E.g. `num_abs` for unsigned types is only valid for `0`.
 ///
-/// Most methods come in two variants, starting with different prefixes:
-/// and the other one takes the arguments by reference.
-///
-/// For all default implementations we try to always offer a meaningful result,
-/// even if the concrete type doesn't support it directly, we do the operation
-/// on the underlying primitive and try to construct the new type again.
-///
-/// The standard library offers different methods for signed and unsigned types,
-/// (e.g. abs, neg), and some are lacking for non-zero types (div, sub).
-/// This trait try to offer the same methods everywhere and give a
-/// result when a result is possible.
-///
-/// See also [`NumRef`] that is automatically implemented for `Num` references.
+/// See also [`NumRef`] which is automatically implemented for `Num` references.
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait Num {
@@ -53,106 +48,85 @@ pub trait Num {
     fn num_into(self) -> Self::Inner;
 
     /// Returns `Self` if given a valid `value`.
-    /// - Takes arguments by value.
     fn num_from(value: Self::Inner) -> Result<Self>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
     /// Returns `Self` if given a valid `&value`.
-    /// - Takes arguments by reference.
     fn num_from_ref(value: &Self::Inner) -> Result<Self>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
 
     /// Sets `self` to the given valid `value`.
-    /// - Takes arguments by value.
-    fn num_set(&mut self, value: Self::Inner) -> Result<()> { Error::ni() }
+    fn num_set(&mut self, value: Self::Inner) -> Result<()> { E::ni() }
     /// Sets `self` to the given valid `&value`.
-    /// - Takes arguments by reference.
-    fn num_set_ref(&mut self, value: &Self::Inner) -> Result<()> { Error::ni() }
+    fn num_set_ref(&mut self, value: &Self::Inner) -> Result<()> { E::ni() }
 
     /* Identities */
 
     /// Returns `true` if `self` is zero.
-    fn num_is_zero(&self) -> Result<bool> { Error::ni() }
+    fn num_is_zero(&self) -> Result<bool> { E::ni() }
     /// Returns the number zero.
     fn num_get_zero() -> Result<Self>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
     /// Sets `self` to `0`.
-    /// - Takes arguments by reference.
-    fn num_set_zero(&mut self) -> Result<()> { Error::ni() }
+    fn num_set_zero(&mut self) -> Result<()> { E::ni() }
 
     /// Returns `true` if `self` is one.
-    /// - Takes arguments by reference.
-    fn num_is_one(&self) -> Result<bool> { Error::ni() }
+    fn num_is_one(&self) -> Result<bool> { E::ni() }
     /// Returns the number one.
     fn num_get_one() -> Result<Self>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
     /// Sets the number to one.
-    /// - Takes arguments by reference.
-    fn num_set_one(&mut self) -> Result<()> { Error::ni() }
+    fn num_set_one(&mut self) -> Result<()> { E::ni() }
 
     /* Operations */
 
-    /// Computes `self + other`.
-    /// - Takes arguments by value.
+    /// Computes `self + rhs` (addition).
     fn num_add(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
-    /// Computes `&self + &other`.
-    /// - Takes arguments by reference.
+        where Self: Sized { E::ni() }
+    /// *Like [`num_add`][Self::num_add] but takes the arguments by reference.*
     fn num_ref_add(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
 
-    /// Computes `self - other`.
-    /// - Takes arguments by value.
+    /// Computes `self - rhs` (subtraction).
     fn num_sub(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
-    /// Computes `&self - &other`.
-    /// - Takes arguments by reference.
+        where Self: Sized { E::ni() }
+    /// *Like [`num_sub`][Self::num_sub] but takes the arguments by reference.*
     fn num_ref_sub(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
 
-    /// Computes `self * other`.
-    /// - Takes arguments by value.
+    /// Computes `self * rhs` (multiplication).
     fn num_mul(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
-    /// Computes `&self * &other`.
-    /// - Takes arguments by reference.
+        where Self: Sized { E::ni() }
+    /// *Like [`num_mul`][Self::num_mul] but takes the arguments by reference.*
     fn num_ref_mul(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
 
-    /// Computes `self / other`.
-    /// - Takes arguments by value.
+    /// Computes `self / rhs` (division).
     fn num_div(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
-    /// Computes `&self / &other`.
-    /// - Takes arguments by reference.
+        where Self: Sized { E::ni() }
+    /// *Like [`num_div`][Self::num_div] but takes the arguments by reference.*
     fn num_ref_div(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
 
-    /// Computes `self % other`.
-    /// - Takes arguments by value.
+    /// Computes `self % rhs` (remainder).
     fn num_rem(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
-    /// Computes `&self % &other`.
-    /// - Takes arguments by reference.
+        where Self: Sized { E::ni() }
+    /// *Like [`num_rem`][Self::num_rem] but takes the arguments by reference.*
     fn num_ref_rem(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
 
-    /// Computes `- self`.
-    /// - Takes arguments by value.
+    /// Computes `-self` (additive inverse).
     fn num_neg(self) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
-    /// Computes `- &self`.
-    /// - Takes arguments by reference.
+        where Self: Sized { E::ni() }
+    /// *Like [`num_neg`][Self::num_neg] but takes the arguments by reference.*
     fn num_ref_neg(&self) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
 
-    /// Computes the absolute value of `self`.
-    /// - Takes arguments by value.
+    /// Computes `|self|` (absolute value).
     fn num_abs(self) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
-    /// Computes the absolute value of `&self`.
-    /// - Takes arguments by reference.
+        where Self: Sized { E::ni() }
+    /// *Like [`num_abs`][Self::num_abs] but takes the arguments by reference.*
     fn num_ref_abs(&self) -> Result<Self::Out>
-        where Self: Sized { Error::ni() }
+        where Self: Sized { E::ni() }
 }
 
 /// Common trait for referenced numeric types.
