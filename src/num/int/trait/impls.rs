@@ -26,39 +26,21 @@ macro_rules! impl_int {
             fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(self).gcd(other)) }
             #[inline]
-            fn int_gcd_ref(self, other: &Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(self).gcd(*other)) }
-            #[inline]
-            fn int_ref_gcd(&self, other: Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(*self).gcd(other)) }
-            #[inline]
-            fn int_ref_gcd_ref(&self, other: &Self::Rhs) -> Result<Self::Out> {
+            fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(*self).gcd(*other)) }
 
             #[inline]
             fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> {
                 Ok(Int(self).gcd_ext(other)) }
             #[inline]
-            fn int_gcd_ext_ref(self, other: &Self::Rhs) -> Result<[Self::Out; 3]> {
-                Ok(Int(self).gcd_ext(*other)) }
-            #[inline]
-            fn int_ref_gcd_ext(&self, other: Self::Rhs) -> Result<[Self::Out; 3]> {
-                Ok(Int(*self).gcd_ext(other)) }
-            #[inline]
-            fn int_ref_gcd_ext_ref(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]> {
+            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]> {
                 Ok(Int(*self).gcd_ext(*other)) }
 
             #[inline]
             fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> {
                 if let Some(res) = Int(self).lcm(other) { Ok(res) } else { Err(E::Overflow) } }
             #[inline]
-            fn int_lcm_ref(self, other: &Self::Rhs) -> Result<Self::Out> {
-                if let Some(res) = Int(self).lcm(*other) { Ok(res) } else { Err(E::Overflow) } }
-            #[inline]
-            fn int_ref_lcm(&self, other: Self::Rhs) -> Result<Self::Out> {
-                if let Some(res) = Int(*self).lcm(other) { Ok(res) } else { Err(E::Overflow) } }
-            #[inline]
-            fn int_ref_lcm_ref(&self, other: &Self::Rhs) -> Result<Self::Out> {
+            fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> {
                 if let Some(res) = Int(*self).lcm(*other) { Ok(res) } else { Err(E::Overflow) } }
         }
     }};
@@ -73,35 +55,19 @@ macro_rules! impl_int {
             fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(self).gcd(other)) }
             #[inline]
-            fn int_gcd_ref(self, other: &Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(self).gcd(*other)) }
-            #[inline]
-            fn int_ref_gcd(&self, other: Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(*self).gcd(other)) }
-            #[inline]
-            fn int_ref_gcd_ref(&self, other: &Self::Rhs) -> Result<Self::Out> {
+            fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(*self).gcd(*other)) }
 
             #[inline]
             fn int_gcd_ext(self, _: Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
             #[inline]
-            fn int_gcd_ext_ref(self, _: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
-            #[inline]
-            fn int_ref_gcd_ext(&self, _: Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
-            #[inline]
-            fn int_ref_gcd_ext_ref(&self, _: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
+            fn int_ref_gcd_ext(&self, _: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
 
             #[inline]
             fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> {
                 if let Some(res) = Int(self).lcm(other) { Ok(res) } else { Err(E::Overflow) } }
             #[inline]
-            fn int_lcm_ref(self, other: &Self::Rhs) -> Result<Self::Out> {
-                if let Some(res) = Int(self).lcm(*other) { Ok(res) } else { Err(E::Overflow) } }
-            #[inline]
-            fn int_ref_lcm(&self, other: Self::Rhs) -> Result<Self::Out> {
-                if let Some(res) = Int(*self).lcm(other) { Ok(res) } else { Err(E::Overflow) } }
-            #[inline]
-            fn int_ref_lcm_ref(&self, other: &Self::Rhs) -> Result<Self::Out> {
+            fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> {
                 if let Some(res) = Int(*self).lcm(*other) { Ok(res) } else { Err(E::Overflow) } }
         }
     }};

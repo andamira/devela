@@ -54,36 +54,24 @@ pub trait NumInt: Num {
     fn int_gcd_ref(self, other: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized{ Error::ni() }
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_ref_gcd(&self, other: Self::Rhs) -> Result<Self::Out>
+    fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out>
         where Self: Sized{ Error::ni() }
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_ref_gcd_ref(&self, other: &Self::Rhs) -> Result<Self::Out>
+    fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized{ Error::ni() }
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
     fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]>
         where Self: Sized{ Error::ni() }
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
-    fn int_gcd_ext_ref(self, other: &Self::Rhs) -> Result<[Self::Out; 3]>
-        where Self: Sized{ Error::ni() }
-    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
-    fn int_ref_gcd_ext(&self, other: Self::Rhs) -> Result<[Self::Out; 3]>
-        where Self: Sized{ Error::ni() }
-    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
-    fn int_ref_gcd_ext_ref(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]>
+    fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]>
         where Self: Sized{ Error::ni() }
 
     /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
     fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out>
         where Self: Sized{ Error::ni() }
     /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
-    fn int_lcm_ref(self, other: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ Error::ni() }
-    /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
-    fn int_ref_lcm(&self, other: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ Error::ni() }
-    /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
-    fn int_ref_lcm_ref(&self, other: &Self::Rhs) -> Result<Self::Out>
+    fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out>
         where Self: Sized{ Error::ni() }
 }
 
@@ -101,20 +89,12 @@ where
     /* gcd & lcm */
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_ref_gcd(&self, other: <Self::Own as Num>::Rhs)
+    fn int_ref_gcd(&self, other: &<Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().int_ref_gcd(other) }
-    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_ref_gcd_ref(&self, other: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_gcd_ref(other) }
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
-    fn int_ref_gcd_ext(&self, other: <Self::Own as Num>::Rhs)
+    fn int_ref_gcd_ext(&self, other: &<Self::Own as Num>::Rhs)
         -> Result<[<Self::Own as Num>::Out; 3]> {
         self.deref().int_ref_gcd_ext(other) }
-    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
-    fn int_ref_gcd_ext_ref(&self, other: &<Self::Own as Num>::Rhs)
-        -> Result<[<Self::Own as Num>::Out; 3]> {
-        self.deref().int_ref_gcd_ext_ref(other) }
 }
