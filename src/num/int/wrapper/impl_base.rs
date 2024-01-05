@@ -4,10 +4,10 @@
 //
 // TOC
 // - signed|unsigned:
-//   - count_digits
-//   - count_digits_sign
-//   - count_digits_base
-//   - count_digits_base_sign
+//   - digits
+//   - digits_sign
+//   - digits_base
+//   - digits_base_sign
 //   - digital_root
 //   - digital_root_base
 
@@ -22,13 +22,13 @@ macro_rules! impl_base {
 
     // implements signed ops
     (@signed $t:ty : $dl:literal) => { paste! {
-        /* signed count_digits */
+        /* signed digits */
 
         #[doc = "# Numeric base related methods for `" $t "`\n\n"]
-        #[doc = "- [count_digits](#method.count_digits" $dl ")"]
-        #[doc = "- [count_digits_sign](#method.count_digits_sign" $dl ")"]
-        #[doc = "- [count_digits_base](#method.count_digits_base" $dl ")"]
-        #[doc = "- [count_digits_base_sign](#method.count_digits_base_sign" $dl ")"]
+        #[doc = "- [digits](#method.digits" $dl ")"]
+        #[doc = "- [digits_sign](#method.digits_sign" $dl ")"]
+        #[doc = "- [digits_base](#method.digits_base" $dl ")"]
+        #[doc = "- [digits_base_sign](#method.digits_base_sign" $dl ")"]
         #[doc = "- [digital_root](#method.digital_root" $dl ")"]
         #[doc = "- [digital_root_base](#method.digital_root_base" $dl ")"]
         ///
@@ -38,13 +38,13 @@ macro_rules! impl_base {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![1, Int(0_" $t ").count_digits()];"]
-            #[doc = "assert_eq![1, Int(-1_" $t ").count_digits()];"]
-            #[doc = "assert_eq![3, Int(127_" $t ").count_digits()];"]
-            #[doc = "assert_eq![3, Int(-128_" $t ").count_digits()];"]
+            #[doc = "assert_eq![1, Int(0_" $t ").digits()];"]
+            #[doc = "assert_eq![1, Int(-1_" $t ").digits()];"]
+            #[doc = "assert_eq![3, Int(127_" $t ").digits()];"]
+            #[doc = "assert_eq![3, Int(-128_" $t ").digits()];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn count_digits(self) -> $t {
+            pub const fn digits(self) -> $t {
                 let n = iif![self.0 == $t::MIN; $t::MAX; self.0.abs()];
                 iif![let Some(c) = n.checked_ilog10(); c as $t + 1; 1]
             }
@@ -53,13 +53,13 @@ macro_rules! impl_base {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![1, Int(0_" $t ").count_digits_sign()];"]
-            #[doc = "assert_eq![2, Int(-1_" $t ").count_digits_sign()];"]
-            #[doc = "assert_eq![3, Int(127_" $t ").count_digits_sign()];"]
-            #[doc = "assert_eq![4, Int(-128_" $t ").count_digits_sign()];"]
+            #[doc = "assert_eq![1, Int(0_" $t ").digits_sign()];"]
+            #[doc = "assert_eq![2, Int(-1_" $t ").digits_sign()];"]
+            #[doc = "assert_eq![3, Int(127_" $t ").digits_sign()];"]
+            #[doc = "assert_eq![4, Int(-128_" $t ").digits_sign()];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn count_digits_sign(self) -> $t {
+            pub const fn digits_sign(self) -> $t {
                 let mut res = (self.0 < 0) as $t;
                 let n = iif![self.0 == $t::MIN; $t::MAX; self.0.abs()];
                 res += iif![let Some(c) = n.checked_ilog10(); c as $t + 1; 1];
@@ -72,15 +72,15 @@ macro_rules! impl_base {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![2, Int(3_" $t ").count_digits_base(2)];"]
-            #[doc = "assert_eq![2, Int(127_" $t ").count_digits_base(16)];"]
-            #[doc = "assert_eq![2, Int(-128_" $t ").count_digits_base(16)];"]
-            #[doc = "assert_eq![2, Int(-128_" $t ").count_digits_base(-16)];"]
-            #[doc = "assert_eq![0, Int(100_" $t ").count_digits_base(0)];"]
-            #[doc = "assert_eq![1, Int(0_" $t ").count_digits_base(100)];"]
+            #[doc = "assert_eq![2, Int(3_" $t ").digits_base(2)];"]
+            #[doc = "assert_eq![2, Int(127_" $t ").digits_base(16)];"]
+            #[doc = "assert_eq![2, Int(-128_" $t ").digits_base(16)];"]
+            #[doc = "assert_eq![2, Int(-128_" $t ").digits_base(-16)];"]
+            #[doc = "assert_eq![0, Int(100_" $t ").digits_base(0)];"]
+            #[doc = "assert_eq![1, Int(0_" $t ").digits_base(100)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn count_digits_base(mut self, mut base: $t) -> $t {
+            pub const fn digits_base(mut self, mut base: $t) -> $t {
                 iif![base == 0; return 0];
                 base = base.abs();
                 self.0 = iif![self.0 == $t::MIN; $t::MAX; self.0.abs()];
@@ -94,15 +94,15 @@ macro_rules! impl_base {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![2, Int(3_" $t ").count_digits_base_sign(2)];"]
-            #[doc = "assert_eq![2, Int(127_" $t ").count_digits_base_sign(16)];"]
-            #[doc = "assert_eq![3, Int(-128_" $t ").count_digits_base_sign(16)];"]
-            #[doc = "assert_eq![3, Int(-128_" $t ").count_digits_base_sign(-16)];"]
-            #[doc = "assert_eq![0, Int(100_" $t ").count_digits_base_sign(0)];"]
-            #[doc = "assert_eq![1, Int(0_" $t ").count_digits_base_sign(100)];"]
+            #[doc = "assert_eq![2, Int(3_" $t ").digits_base_sign(2)];"]
+            #[doc = "assert_eq![2, Int(127_" $t ").digits_base_sign(16)];"]
+            #[doc = "assert_eq![3, Int(-128_" $t ").digits_base_sign(16)];"]
+            #[doc = "assert_eq![3, Int(-128_" $t ").digits_base_sign(-16)];"]
+            #[doc = "assert_eq![0, Int(100_" $t ").digits_base_sign(0)];"]
+            #[doc = "assert_eq![1, Int(0_" $t ").digits_base_sign(100)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn count_digits_base_sign(mut self, mut base: $t) -> $t {
+            pub const fn digits_base_sign(mut self, mut base: $t) -> $t {
                 iif![base == 0; return 0];
                 base = base.abs();
                 let mut res = (self.0 < 0) as $t;
@@ -160,33 +160,33 @@ macro_rules! impl_base {
     // implements unsigned ops
     (@unsigned $t:ty : $dl:literal) => { paste! {
         #[doc = "# Numeric base related methods for `" $t "`\n\n"]
-        #[doc = "- [count_digits](#method.count_digits" $dl ")"]
-        #[doc = "- [count_digits_sign](#method.count_digits_sign" $dl ")"]
-        #[doc = "- [count_digits_base](#method.count_digits_base" $dl ")"]
-        #[doc = "- [count_digits_base_sign](#method.count_digits_base_sign" $dl ")"]
+        #[doc = "- [digits](#method.digits" $dl ")"]
+        #[doc = "- [digits_sign](#method.digits_sign" $dl ")"]
+        #[doc = "- [digits_base](#method.digits_base" $dl ")"]
+        #[doc = "- [digits_base_sign](#method.digits_base_sign" $dl ")"]
         #[doc = "- [digital_root](#method.digital_root" $dl ")"]
         #[doc = "- [digital_root_base](#method.digital_root_base" $dl ")"]
         ///
         /// See the related trait [`NumOpsBase`][crate::num::NumOpsBase].
         impl Int<$t> {
-            /* unsigned count_digits */
+            /* unsigned digits */
 
             /// Returns the number of digits in base 10.
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![1, Int(0_" $t ").count_digits()];"]
-            #[doc = "assert_eq![3, Int(127_" $t ").count_digits()];"]
+            #[doc = "assert_eq![1, Int(0_" $t ").digits()];"]
+            #[doc = "assert_eq![3, Int(127_" $t ").digits()];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn count_digits(self) -> $t {
+            pub const fn digits(self) -> $t {
                 iif![let Some(c) = self.0.checked_ilog10(); c as $t + 1; 1]
             }
 
-            /// An alias of [`count_digits`][Self#count_digits].
+            /// An alias of [`digits`][Self#digits].
             #[inline] #[must_use]
-            pub const fn count_digits_sign(self) -> $t {
-                self.count_digits()
+            pub const fn digits_sign(self) -> $t {
+                self.digits()
             }
 
             /// Returns the number of digits in the given `base`.
@@ -195,21 +195,21 @@ macro_rules! impl_base {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![2, Int(3_" $t ").count_digits_base(2)];"]
-            #[doc = "assert_eq![2, Int(127_" $t ").count_digits_base(16)];"]
-            #[doc = "assert_eq![0, Int(100_" $t ").count_digits_base(0)];"]
-            #[doc = "assert_eq![1, Int(0_" $t ").count_digits_base(100)];"]
+            #[doc = "assert_eq![2, Int(3_" $t ").digits_base(2)];"]
+            #[doc = "assert_eq![2, Int(127_" $t ").digits_base(16)];"]
+            #[doc = "assert_eq![0, Int(100_" $t ").digits_base(0)];"]
+            #[doc = "assert_eq![1, Int(0_" $t ").digits_base(100)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn count_digits_base(self, base: $t) -> $t {
+            pub const fn digits_base(self, base: $t) -> $t {
                 iif![base == 0; return 0];
                 iif![let Some(c) = self.0.checked_ilog(base); c as $t + 1; 1]
             }
 
-            /// An alias of [`count_digits_base`][Self#count_digits_base].
+            /// An alias of [`digits_base`][Self#digits_base].
             #[inline] #[must_use]
-            pub const fn count_digits_base_sign(self, base: $t) -> $t {
-                self.count_digits_base(base)
+            pub const fn digits_base_sign(self, base: $t) -> $t {
+                self.digits_base(base)
             }
 
             /* unsigned digital_root */

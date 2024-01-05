@@ -25,7 +25,7 @@ mod auto_impls {
 ///
 /// Any concrete implementation must manually implement the operations it wants.
 ///
-/// Most methods come in two variants. The one that starts with:
+/// Most methods come in two variants, starting with different prefixes:
 /// - `int_*`: takes the arguments by value.
 /// - `int_ref_*`: takes the arguments by reference.
 ///
@@ -42,6 +42,56 @@ mod auto_impls {
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait NumInt: Num {
+    /* digital root */
+
+    /// Returns the digital root in base 10.
+    /// - Takes arguments by value.
+    fn int_digital_root(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// Returns the digital root in base 10.
+    /// - Takes arguments by reference.
+    fn int_ref_digital_root(&self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
+    /// Returns the digital root in the given `base`.
+    /// - Takes arguments by value.
+    fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ E::ni() }
+    /// Returns the digital root in the given `base`.
+    /// - Takes arguments by reference.
+    fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ E::ni() }
+
+    /* digits */
+
+    /// Returns the number of digits in base 10.
+    /// - Takes arguments by value.
+    fn int_digits(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// Returns the number of digits in base 10.
+    /// - Takes arguments by reference.
+    fn int_ref_digits(&self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
+    /// Returns the number of digits in base 10 including the negative sign.
+    /// - Takes arguments by value.
+    fn int_digits_sign(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// Returns the number of digits in base 10 including the negative sign.
+    /// - Takes arguments by reference.
+    fn int_ref_digits_sign(&self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
+    /// Returns the number of digits in the given `base`.
+    /// - Takes arguments by value.
+    fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// Returns the number of digits in the given `base`.
+    /// - Takes arguments by reference.
+    fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ E::ni() }
+
+    /// Returns the number of digits in the given `base`.
+    /// - Takes arguments by value.
+    fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// Returns the number of digits in the given `base`.
+    /// - Takes arguments by reference.
+    fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out>
+        where Self: Sized{ E::ni() }
+
     /* gcd & lcm */
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
@@ -78,6 +128,40 @@ where
     Self: Deref<Target = <Self as NumRef<'a>>::Own>,
     <Self as NumRef<'a>>::Own: NumInt
 {
+
+    /* digital root */
+
+    /// Returns the digital root in base 10.
+    fn int_ref_digital_root(&self) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_digital_root()
+    }
+    /// Returns the digital root in the given `base`.
+    fn int_ref_digital_root_base(&self, base: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_digital_root_base(base)
+    }
+
+    /* digits */
+
+    /// Returns the number of digits in base 10.
+    fn int_ref_digits(&self) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_digits()
+    }
+    /// Returns the number of digits in base 10 including the negative sign.
+    fn int_ref_digits_sign(&self) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_digits_sign()
+    }
+    /// Returns the number of digits in the given `base`.
+    fn int_ref_digits_base(&self, base: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_digits_base(base)
+    }
+    /// Returns the number of digits in the given `base`.
+    fn int_ref_digits_base_sign(&self, base: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_digits_base_sign(base)
+    }
+
     /* gcd & lcm */
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.

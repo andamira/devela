@@ -3,7 +3,6 @@
 //!
 //
 
-#[cfg(not(feature = "std"))]
 use crate::code::paste;
 use crate::num::{Int, NumErrors as E, NumInt, NumResult as Result};
 
@@ -20,6 +19,48 @@ macro_rules! impl_int {
     (@i $p:ident) => { paste! {
         // i*
         impl NumInt for $p {
+            /* digital root */
+
+            #[inline]
+            fn int_digital_root(self) -> Result<Self::Out> {
+                Ok(Int(self).digital_root()) }
+            #[inline]
+            fn int_ref_digital_root(&self) -> Result<Self::Out> {
+                Ok(Int(*self).digital_root()) }
+            #[inline]
+            fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(self).digital_root_base(base)) }
+            #[inline]
+            fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(*self).digital_root_base(*base)) }
+
+            /* digits */
+
+            #[inline]
+            fn int_digits(self) -> Result<Self::Out> {
+                Ok(Int(self).digits()) }
+            #[inline]
+            fn int_ref_digits(&self) -> Result<Self::Out> {
+                Ok(Int(*self).digits()) }
+            #[inline]
+            fn int_digits_sign(self) -> Result<Self::Out> {
+                Ok(Int(self).digits_sign()) }
+            #[inline]
+            fn int_ref_digits_sign(&self) -> Result<Self::Out> {
+                Ok(Int(*self).digits_sign()) }
+            #[inline]
+            fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(self).digits_base(base)) }
+            #[inline]
+            fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(*self).digits_base(*base)) }
+            #[inline]
+            fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(self).digits_base_sign(base)) }
+            #[inline]
+            fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(*self).digits_base_sign(*base)) }
+
             /* gcd & lcm */
 
             #[inline]
@@ -51,6 +92,50 @@ macro_rules! impl_int {
     (@u $p:ident) => { paste! {
         // u*
         impl NumInt for $p {
+            /* digital root */
+
+            #[inline]
+            fn int_digital_root(self) -> Result<Self::Out> {
+                Ok(Int(self).digital_root()) }
+            #[inline]
+            fn int_ref_digital_root(&self) -> Result<Self::Out> {
+                Ok(Int(*self).digital_root()) }
+            #[inline]
+            fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(self).digital_root_base(base)) }
+            #[inline]
+            fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(*self).digital_root_base(*base)) }
+
+            /* digits */
+
+            #[inline]
+            fn int_digits(self) -> Result<Self::Out> {
+                Ok(Int(self).digits()) }
+            #[inline]
+            fn int_ref_digits(&self) -> Result<Self::Out> {
+                Ok(Int(*self).digits()) }
+            #[inline]
+            fn int_digits_sign(self) -> Result<Self::Out> {
+                Ok(Int(self).digits_sign()) }
+            #[inline]
+            fn int_ref_digits_sign(&self) -> Result<Self::Out> {
+                Ok(Int(*self).digits_sign()) }
+            #[inline]
+            fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(self).digits_base(base)) }
+            #[inline]
+            fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(*self).digits_base(*base)) }
+            #[inline]
+            fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(self).digits_base_sign(base)) }
+            #[inline]
+            fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(*self).digits_base_sign(*base)) }
+
+            /* gcd & lcm */
+
             #[inline]
             fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(self).gcd(other)) }

@@ -23,7 +23,7 @@ impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
 ///
 /// You could also ask for additional bounds like e.g. [`Add`][core::ops::Add].
 ///
-/// Most methods come in two variants: One takes the arguments by value
+/// Most methods come in two variants, starting with different prefixes:
 /// and the other one takes the arguments by reference.
 ///
 /// For all default implementations we try to always offer a meaningful result,

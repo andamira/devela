@@ -17,8 +17,6 @@ pub use always_fns::*;
 /* feature-gated */
 
 #[cfg(feature = "num")]
-mod base;
-#[cfg(feature = "num")]
 mod counting;
 #[cfg(feature = "num")]
 mod factors;
@@ -29,7 +27,7 @@ mod fns;
 #[allow(unused)]
 pub use always_fns::*;
 #[cfg(feature = "num")]
-pub use {base::*, counting::*, factors::*, fns::*};
+pub use {counting::*, factors::*, fns::*};
 
 pub(crate) mod all {
     #[doc(inline)]
@@ -37,5 +35,5 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(feature = "num")]
-    pub use super::{base::*, counting::*, factors::*, fns::*};
+    pub use super::{counting::*, factors::*, fns::*};
 }
