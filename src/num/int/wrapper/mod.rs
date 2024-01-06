@@ -8,6 +8,7 @@
 
 mod impl_base;
 mod impl_count;
+mod impl_div;
 mod impl_factors;
 mod impl_gcd_lcm;
 
@@ -21,11 +22,13 @@ mod impl_gcd_lcm;
 /// - Methods for `i32` related to:
 /// [base][Self#numeric-base-related-methods-for-i32],
 /// [counting][Self#numeric-counting-related-methods-for-i32],
+/// [division][Self#numeric-division-related-methods-for-i32],
 /// [factors][Self#numeric-factors-related-methods-for-i32],
 /// [gcd and lcm][Self#numeric-gcd-and-lcm-related-methods-for-i32].
 /// - Methods for `u32` related to:
 /// [base][Self#numeric-base-related-methods-for-u32],
 /// [counting][Self#numeric-counting-related-methods-for-u32],
+/// [division][Self#numeric-division-related-methods-for-u32],
 /// [factors][Self#numeric-factors-related-methods-for-u32],
 /// [gcd and lcm][Self#numeric-gcd-and-lcm-related-methods-for-u32].
 ///
