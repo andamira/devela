@@ -63,7 +63,8 @@ pub fn slice_into_vec<T: Clone, U: From<T>>(slice: &[T]) -> Vec<U> {
 /// ```
 ///
 /// # Features
-/// It makes use of the `unsafe_data` feature if enabled.
+/// When either the `unsafe_data` or `unsafe_mem` features are enabled it uses
+/// `MaybeUninit` to improve performance.
 ///
 // IMPROVE make a try_slice_into_array version:
 // WAITING https://doc.rust-lang.org/nightly/core/array/fn.try_from_fn.html
