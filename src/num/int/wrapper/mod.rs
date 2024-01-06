@@ -11,6 +11,7 @@ mod impl_count;
 mod impl_div;
 mod impl_factors;
 mod impl_gcd_lcm;
+mod impl_sqrt;
 
 /// Provides integer operations on `T`, most of them *const*.
 ///

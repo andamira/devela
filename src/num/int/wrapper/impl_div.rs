@@ -23,7 +23,7 @@ macro_rules! impl_div {
 
     // implements signed ops
     (@signed $t:ty : $dl:literal) => { paste! {
-        /* signed div */
+        /* signed division */
 
         #[doc = "# Numeric division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $dl ")"]
@@ -231,6 +231,8 @@ macro_rules! impl_div {
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
+            /* unsigned division */
+
             /// Returns the truncated quotient and the remainder.
             #[inline] #[must_use]
             pub const fn div_rem(self, b: $t) -> [Int<$t>; 2] {
