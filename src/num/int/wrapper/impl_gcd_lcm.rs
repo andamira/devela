@@ -48,18 +48,18 @@ macro_rules! impl_gcd_lcm {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![4, Int(64_" $t ").gcd(36)];"]
-            #[doc = "assert_eq![4, Int(-64_" $t ").gcd(36)];"]
-            #[doc = "assert_eq![4, Int(64_" $t ").gcd(-36)];"]
-            #[doc = "assert_eq![4, Int(-64_" $t ").gcd(-36)];"]
-            #[doc = "assert_eq![36, Int(0_" $t ").gcd(36)];"]
-            #[doc = "assert_eq![64, Int(64_" $t ").gcd(0)];"]
+            #[doc = "assert_eq![Int(4), Int(64_" $t ").gcd(36)];"]
+            #[doc = "assert_eq![Int(4), Int(-64_" $t ").gcd(36)];"]
+            #[doc = "assert_eq![Int(4), Int(64_" $t ").gcd(-36)];"]
+            #[doc = "assert_eq![Int(4), Int(-64_" $t ").gcd(-36)];"]
+            #[doc = "assert_eq![Int(36), Int(0_" $t ").gcd(36)];"]
+            #[doc = "assert_eq![Int(64), Int(64_" $t ").gcd(0)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn gcd(self, b: $t) -> $t {
+            pub const fn gcd(self, b: $t) -> Self {
                 let [mut a, mut b] = [self.0.abs(), b.abs()];
-                iif![a == 0; return b];
-                iif![b == 0; return a];
+                iif![a == 0; return Self(b)];
+                iif![b == 0; return Self(a)];
                 // Let k be the greatest power of 2 dividing both a and b:
                 let k = (a | b).trailing_zeros();
                 // Divide a and b by 2 until they become odd:
@@ -71,7 +71,7 @@ macro_rules! impl_gcd_lcm {
                     // ensure b >= a before substraction:
                     iif![a > b; {let swp = a; a = b; b = swp }; b -= a];
                 }
-                a << k
+                Self(a << k)
 
                 // Euclid's algorithm:
                 // while a != b { iif![a > b; a -= b; b -= a] }; a
@@ -97,14 +97,14 @@ macro_rules! impl_gcd_lcm {
             /// ```
             /// # use devela::num::Int;
             #[doc = "let [gcd, x, y] = Int(32_" $t ").gcd_ext(36);"]
-            /// assert_eq!(gcd, 4);
-            /// assert_eq!(x * 32 + y * 36, gcd);
+            /// assert_eq!(gcd.0, 4);
+            /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
             #[inline] #[must_use]
-            pub const fn gcd_ext(self, b: $t) -> [$t; 3] {
+            pub const fn gcd_ext(self, b: $t) -> [Self; 3] {
                 let [mut a, mut b] = [self.0.abs(), b.abs()];
-                if a == 0 { return [b, 0, 1]; }
-                if b == 0 { return [a, 1, 0]; }
+                if a == 0 { return [Self(b), Self(0), Self(1)]; }
+                if b == 0 { return [Self(a), Self(1), Self(0)]; }
 
                 let mut k = 0;
                 while ((a | b) & 1) == 0 {
@@ -143,7 +143,7 @@ macro_rules! impl_gcd_lcm {
                     tb -= sb;
                 }
 
-                [a << k, sa, sb]
+                [Self(a << k), Self(sa), Self(sb)]
             }
 
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
@@ -162,16 +162,16 @@ macro_rules! impl_gcd_lcm {
             /// ```
             /// # use devela::num::Int;
             #[doc = "let [gcd, x, y] = Int(32_" $t ").gcd_ext_euc(36);"]
-            /// assert_eq!(gcd, 4);
-            /// assert_eq!(x * 32 + y * 36, gcd);
+            /// assert_eq!(gcd.0, 4);
+            /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
             #[inline] #[must_use]
-            pub const fn gcd_ext_euc(self, b: $t) -> [$t; 3] {
+            pub const fn gcd_ext_euc(self, b: $t) -> [Self; 3] {
                 if self.0 == 0 {
-                    [b, 0, 1]
+                    [Self(b), Self(0), Self(1)]
                 } else {
                     let [g, x, y] = Int(b % self.0).gcd_ext_euc(self.0);
-                    [g, y - (b / self.0) * x, x]
+                    [g, Self(y.0 - (b / self.0) * x.0), x] // IMPROVE impl ops
                 }
             }
 
@@ -183,15 +183,15 @@ macro_rules! impl_gcd_lcm {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Int(12_" $t ").lcm(15), Some(60)];"]
-            #[doc = "assert_eq![Int(-12_" $t ").lcm(15), Some(60)];"]
-            #[doc = "assert_eq![Int(12_" $t ").lcm(-15), Some(60)];"]
+            #[doc = "assert_eq![Int(12_" $t ").lcm(15), Some(Int(60))];"]
+            #[doc = "assert_eq![Int(-12_" $t ").lcm(15), Some(Int(60))];"]
+            #[doc = "assert_eq![Int(12_" $t ").lcm(-15), Some(Int(60))];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn lcm(self, b: $t) -> Option<$t> {
+            pub const fn lcm(self, b: $t) -> Option<Self> {
                 let (aup, bup) = (self.0 as $up, b as $up);
-                let res = (aup * bup).abs() / self.gcd(b) as $up;
-                iif![res <= $t::MAX as $up; Some(res as $t); None]
+                let res = (aup * bup).abs() / self.gcd(b).0 as $up;
+                iif![res <= $t::MAX as $up; Some(Self(res as $t)); None]
             }
         }
     }};
@@ -216,14 +216,14 @@ macro_rules! impl_gcd_lcm {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![4, Int(64_" $t ").gcd(36)];"]
-            #[doc = "assert_eq![36, Int(0_" $t ").gcd(36)];"]
-            #[doc = "assert_eq![64, Int(64_" $t ").gcd(0)];"]
+            #[doc = "assert_eq![Int(4), Int(64_" $t ").gcd(36)];"]
+            #[doc = "assert_eq![Int(36), Int(0_" $t ").gcd(36)];"]
+            #[doc = "assert_eq![Int(64), Int(64_" $t ").gcd(0)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn gcd(mut self, mut b: $t) -> $t {
-                iif![self.0 == 0; return b];
-                iif![b == 0; return self.0];
+            pub const fn gcd(mut self, mut b: $t) -> Self {
+                iif![self.0 == 0; return Self(b)];
+                iif![b == 0; return self];
                 // Let k be the greatest power of 2 dividing both self.0 and b:
                 let k = (self.0 | b).trailing_zeros();
                 // Divide a and b by 2 until they become odd:
@@ -235,7 +235,7 @@ macro_rules! impl_gcd_lcm {
                     // ensure b >= self.0 before substraction:
                     iif![self.0 > b; {let swp = self.0; self.0 = b; b = swp }; b -= self.0];
                 }
-                self.0 << k
+                Self(self.0 << k)
 
                 // Euclid's algorithm:
                 // while a != b { iif![a > b; a -= b; b -= a] }; a
@@ -247,13 +247,13 @@ macro_rules! impl_gcd_lcm {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Int(12_" $t ").lcm(15), Some(60)];"]
+            #[doc = "assert_eq![Int(12_" $t ").lcm(15), Some(Int(60))];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn lcm(self, b: $t) -> Option<$t> {
+            pub const fn lcm(self, b: $t) -> Option<Self> {
                 let (aup, bup) = (self.0 as $up, b as $up);
-                let res = aup * bup / self.gcd(b) as $up;
-                iif![res <= $t::MAX as $up; Some(res as $t); None]
+                let res = aup * bup / self.gcd(b).0 as $up;
+                iif![res <= $t::MAX as $up; Some(Self(res as $t)); None]
             }
         }
     }};

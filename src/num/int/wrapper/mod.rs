@@ -34,6 +34,7 @@ mod impl_gcd_lcm;
 /// [`NumOpsCounting`][crate::num::NumOpsCounting],
 /// [`NumOpsFactors`][crate::num::NumOpsFactors],
 /// [`NumInt`][super::NumInt].
+#[repr(transparent)]
 pub struct Int<T>(pub T);
 
 #[rustfmt::skip]

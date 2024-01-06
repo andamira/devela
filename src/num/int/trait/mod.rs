@@ -176,28 +176,23 @@ where
     /* combinatorics */
 
     /// *Calls `NumInt::`[`int_ref_factorial`][NumInt::int_ref_factorial]*.
-    fn int_ref_factorial(&self)
-        -> Result<<Self::Own as Num>::Out> {
+    fn int_ref_factorial(&self) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_factorial()
     }
     /// *Calls `NumInt::`[`int_ref_permute`][NumInt::int_ref_permute]*.
-    fn int_ref_permute(&self, r: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
+    fn int_ref_permute(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_permute(r)
     }
     /// *Calls `NumInt::`[`int_ref_permute_rep`][NumInt::int_ref_permute_rep]*.
-    fn int_ref_permute_rep(&self, r: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
+    fn int_ref_permute_rep(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_permute_rep(r)
     }
     /// *Calls `NumInt::`[`int_ref_combine`][NumInt::int_ref_combine]*.
-    fn int_ref_combine(&self, r: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
+    fn int_ref_combine(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_combine(r)
     }
     /// *Calls `NumInt::`[`int_ref_combine_rep`][NumInt::int_ref_combine_rep]*.
-    fn int_ref_combine_rep(&self, r: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
+    fn int_ref_combine_rep(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_combine_rep(r)
     }
 

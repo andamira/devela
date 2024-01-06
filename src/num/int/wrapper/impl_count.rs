@@ -49,14 +49,14 @@ macro_rules! impl_count {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(120), Int(5_" $t ").factorial()];"]
-            #[doc = "assert_eq![Ok(6), Int(3_" $t ").factorial()];"]
-            #[doc = "assert_eq![Ok(1), Int(0_" $t ").factorial()];"]
+            #[doc = "assert_eq![Ok(Int(120)), Int(5_" $t ").factorial()];"]
+            #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").factorial()];"]
+            #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
             #[doc = "assert![Int(-3_" $t ").factorial().is_err()];"]
             #[doc = "assert![Int(" $t "::MAX).factorial().is_err()];"]
             /// ```
             #[inline]
-            pub const fn factorial(self) -> Result<$t> {
+            pub const fn factorial(self) -> Result<Self> {
                 iif![self.0 < 0; return Err(E::NonNegativeRequired)];
                 let (mut n, mut result): ($t, $t) = (self.0.abs(), 1);
                 while n > 1 {
@@ -67,7 +67,7 @@ macro_rules! impl_count {
                     };
                     n -= 1;
                 }
-                Ok(result)
+                Ok(Self(result))
             }
 
             /// Permutations of `n` items taken `r` at a time, ordered.
@@ -85,14 +85,14 @@ macro_rules! impl_count {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(6), Int(3_" $t ").permute(3)];"]
-            #[doc = "assert_eq![Ok(6), Int(3_" $t ").permute(2)];"]
-            #[doc = "assert_eq![Ok(3), Int(3_" $t ").permute(1)];"]
+            #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(3)];"]
+            #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(2)];"]
+            #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute(1)];"]
             #[doc = "assert![Int(-3_" $t ").permute(3).is_err()];"]
             #[doc = "assert![Int(3_" $t ").permute(-2).is_err()];"]
             /// ```
             #[inline]
-            pub const fn permute(self, r: $t) -> Result<$t> {
+            pub const fn permute(self, r: $t) -> Result<Self> {
                 iif![self.0 < 0 || r < 0; return Err(E::NonNegativeRequired)];
                 iif![r > self.0; return Err(E::MismatchedSizes)];
                 let mut result: $t = 1;
@@ -103,7 +103,7 @@ macro_rules! impl_count {
                         return Err(E::Overflow)
                     }
                 }];
-                Ok(result)
+                Ok(Self(result))
             }
 
             /// Permutations of `n` items taken `r` at a time with repetitions, ordered.
@@ -117,15 +117,15 @@ macro_rules! impl_count {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(27), Int(3_" $t ").permute_rep(3)];"]
-            #[doc = "assert_eq![Ok(9), Int(3_" $t ").permute_rep(2)];"]
-            #[doc = "assert_eq![Ok(3), Int(3_" $t ").permute_rep(1)];"]
+            /// # use devela::num::{Int, Num};
+            #[doc = "assert_eq![Ok(Int(27)), Int(3_" $t ").permute_rep(3)];"]
+            #[doc = "assert_eq![Ok(Int(9)), Int(3_" $t ").permute_rep(2)];"]
+            #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute_rep(1)];"]
             #[doc = "assert![Int(-3_" $t ").permute_rep(3).is_err()];"]
             #[doc = "assert![Int(3_" $t ").permute_rep(-2).is_err()];"]
             /// ```
             #[inline]
-            pub const fn permute_rep(self, r: $t) -> Result<$t> {
+            pub const fn permute_rep(self, r: $t) -> Result<Self> {
                 iif![self.0 < 0 || r < 0; return Err(E::NonNegativeRequired)];
                 let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
                     res
@@ -133,7 +133,7 @@ macro_rules! impl_count {
                     return Err(E::Overflow);
                 };
                 if let Some(res) = self.0.checked_pow(r_u32) {
-                    Ok(res)
+                    Ok(Self(res))
                 } else {
                     Err(E::Overflow)
                 }
@@ -152,14 +152,14 @@ macro_rules! impl_count {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(1), Int(3_" $t ").combine(3)];"]
-            #[doc = "assert_eq![Ok(3), Int(3_" $t ").combine(2)];"]
-            #[doc = "assert_eq![Ok(3), Int(3_" $t ").combine(1)];"]
+            #[doc = "assert_eq![Ok(Int(1)), Int(3_" $t ").combine(3)];"]
+            #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(2)];"]
+            #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(1)];"]
             #[doc = "assert![Int(-3_" $t ").combine(3).is_err()];"]
             #[doc = "assert![Int(3_" $t ").combine(-2).is_err()];"]
             /// ```
             #[inline]
-            pub const fn combine(self, r: $t) -> Result<$t> {
+            pub const fn combine(self, r: $t) -> Result<Self> {
                 iif![self.0 < 0 || r < 0; return Err(E::NonNegativeRequired)];
                 iif![r > self.0; return Err(E::MismatchedSizes)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
@@ -175,7 +175,7 @@ macro_rules! impl_count {
                         return Err(E::Overflow)
                     };
                 }];
-                Ok(num / den)
+                Ok(Self(num / den))
             }
 
             /// Combinations of `n` items taken `r` at a time with repetitions, unordered.
@@ -192,14 +192,14 @@ macro_rules! impl_count {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(10), Int(3_" $t ").combine_rep(3)];"]
-            #[doc = "assert_eq![Ok(6), Int(3_" $t ").combine_rep(2)];"]
-            #[doc = "assert_eq![Ok(3), Int(3_" $t ").combine_rep(1)];"]
+            #[doc = "assert_eq![Ok(Int(10)), Int(3_" $t ").combine_rep(3)];"]
+            #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").combine_rep(2)];"]
+            #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine_rep(1)];"]
             #[doc = "assert![Int(-3_" $t ").combine_rep(3).is_err()];"]
             #[doc = "assert![Int(3_" $t ").combine_rep(-2).is_err()];"]
             /// ```
             #[inline]
-            pub const fn combine_rep(self, r: $t) -> Result<$t> {
+            pub const fn combine_rep(self, r: $t) -> Result<Self> {
                 iif![self.0 < 0 || r < 0; return Err(E::NonNegativeRequired)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 cfor![i in 0..r => {
@@ -219,7 +219,7 @@ macro_rules! impl_count {
                         return Err(E::Overflow)
                     };
                 }];
-                Ok(num / den)
+                Ok(Self(num / den))
             }
         }
     }};
@@ -251,13 +251,13 @@ macro_rules! impl_count {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(120), Int(5_" $t ").factorial()];"]
-            #[doc = "assert_eq![Ok(6), Int(3_" $t ").factorial()];"]
-            #[doc = "assert_eq![Ok(1), Int(0_" $t ").factorial()];"]
+            #[doc = "assert_eq![Ok(Int(120)), Int(5_" $t ").factorial()];"]
+            #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").factorial()];"]
+            #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
             #[doc = "assert![Int(" $t "::MAX).factorial().is_err()];"]
             /// ```
             #[inline]
-            pub const fn factorial(mut self) -> Result<$t> {
+            pub const fn factorial(mut self) -> Result<Self> {
                 let mut result: $t = 1;
                 while self.0 > 1 {
                     result = if let Some(res) = result.checked_mul(self.0) {
@@ -267,7 +267,7 @@ macro_rules! impl_count {
                     };
                     self.0 -= 1;
                 }
-                Ok(result)
+                Ok(Self(result))
             }
 
             /// Permutations of `n` items taken `r` at a time, ordered.
@@ -284,14 +284,14 @@ macro_rules! impl_count {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(6), Int(3_" $t ").permute(3)];"]
-            #[doc = "assert_eq![Ok(6), Int(3_" $t ").permute(2)];"]
-            #[doc = "assert_eq![Ok(3), Int(3_" $t ").permute(1)];"]
+            #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(3)];"]
+            #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(2)];"]
+            #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute(1)];"]
             #[doc = "assert![Int(3_" $t ").permute(4_" $t ").is_err()];"]
             #[doc = "assert![Int(" $t "::MAX).permute(" $t "::MAX).is_err()];"]
             /// ```
             #[inline]
-            pub const fn permute(self, r: $t) -> Result<$t> {
+            pub const fn permute(self, r: $t) -> Result<Self> {
                 iif![r > self.0; return Err(E::MismatchedSizes)];
                 let mut result: $t = 1;
                 cfor![i in 0..r => {
@@ -301,7 +301,7 @@ macro_rules! impl_count {
                         return Err(E::Overflow)
                     }
                 }];
-                Ok(result)
+                Ok(Self(result))
             }
 
             /// Permutations of `n` items taken `r` at a time with repetitions, ordered.
@@ -315,20 +315,20 @@ macro_rules! impl_count {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(27), Int(3_" $t ").permute_rep(3)];"]
-            #[doc = "assert_eq![Ok(9), Int(3_" $t ").permute_rep(2)];"]
-            #[doc = "assert_eq![Ok(3), Int(3_" $t ").permute_rep(1)];"]
+            #[doc = "assert_eq![Ok(Int(27)), Int(3_" $t ").permute_rep(3)];"]
+            #[doc = "assert_eq![Ok(Int(9)), Int(3_" $t ").permute_rep(2)];"]
+            #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute_rep(1)];"]
             #[doc = "assert![Int(" $t "::MAX).permute_rep(" $t "::MAX).is_err()];"]
             /// ```
             #[inline]
-            pub const fn permute_rep(self, r: $t) -> Result<$t> {
+            pub const fn permute_rep(self, r: $t) -> Result<Self> {
                 let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
                     res
                 } else {
                     return Err(E::Overflow);
                 };
                 if let Some(res) = self.0.checked_pow(r_u32) {
-                    Ok(res)
+                    Ok(Self(res))
                 } else {
                     Err(E::Overflow)
                 }
@@ -346,13 +346,13 @@ macro_rules! impl_count {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(1), Int(3_" $t ").combine(3)];"]
-            #[doc = "assert_eq![Ok(3), Int(3_" $t ").combine(2)];"]
-            #[doc = "assert_eq![Ok(3), Int(3_" $t ").combine(1)];"]
+            #[doc = "assert_eq![Ok(Int(1)), Int(3_" $t ").combine(3)];"]
+            #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(2)];"]
+            #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(1)];"]
             #[doc = "assert![Int(" $t "::MAX).combine(" $t "::MAX).is_err()];"]
             /// ```
             #[inline]
-            pub const fn combine(self, r: $t) -> Result<$t> {
+            pub const fn combine(self, r: $t) -> Result<Self> {
                 iif![r > self.0; return Err(E::MismatchedSizes)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 cfor![i in 0..r => {
@@ -367,7 +367,7 @@ macro_rules! impl_count {
                         return Err(E::Overflow)
                     };
                 }];
-                Ok(num / den)
+                Ok(Self(num / den))
             }
 
             /// Combinations of `n` items taken `r` at a time with repetitions, unordered.
@@ -383,13 +383,13 @@ macro_rules! impl_count {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(10), Int(3_" $t ").combine_rep(3)];"]
-            #[doc = "assert_eq![Ok(6), Int(3_" $t ").combine_rep(2)];"]
-            #[doc = "assert_eq![Ok(3), Int(3_" $t ").combine_rep(1)];"]
+            #[doc = "assert_eq![Ok(Int(10)), Int(3_" $t ").combine_rep(3)];"]
+            #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").combine_rep(2)];"]
+            #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine_rep(1)];"]
             #[doc = "assert![Int(" $t "::MAX).combine_rep(" $t "::MAX).is_err()];"]
             /// ```
             #[inline]
-            pub const fn combine_rep(self, r: $t) -> Result<$t> {
+            pub const fn combine_rep(self, r: $t) -> Result<Self> {
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 cfor![i in 0..r => {
                     let factor = if let Some(res) = self.0.checked_add(r - 1 - i) {
@@ -408,7 +408,7 @@ macro_rules! impl_count {
                         return Err(E::Overflow)
                     };
                 }];
-                Ok(num / den)
+                Ok(Self(num / den))
             }
         }
     }};

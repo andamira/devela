@@ -23,66 +23,67 @@ macro_rules! impl_int {
 
             #[inline]
             fn int_digital_root(self) -> Result<Self::Out> {
-                Ok(Int(self).digital_root()) }
+                Ok(Int(self).digital_root().0) }
             #[inline]
             fn int_ref_digital_root(&self) -> Result<Self::Out> {
-                Ok(Int(*self).digital_root()) }
+                Ok(Int(*self).digital_root().0) }
             #[inline]
             fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(self).digital_root_base(base)) }
+                Ok(Int(self).digital_root_base(base).0) }
             #[inline]
             fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(*self).digital_root_base(*base)) }
+                Ok(Int(*self).digital_root_base(*base).0) }
 
             /* digits */
 
             #[inline]
             fn int_digits(self) -> Result<Self::Out> {
-                Ok(Int(self).digits()) }
+                Ok(Int(self).digits().0) }
             #[inline]
             fn int_ref_digits(&self) -> Result<Self::Out> {
-                Ok(Int(*self).digits()) }
+                Ok(Int(*self).digits().0) }
             #[inline]
             fn int_digits_sign(self) -> Result<Self::Out> {
-                Ok(Int(self).digits_sign()) }
+                Ok(Int(self).digits_sign().0) }
             #[inline]
             fn int_ref_digits_sign(&self) -> Result<Self::Out> {
-                Ok(Int(*self).digits_sign()) }
+                Ok(Int(*self).digits_sign().0) }
             #[inline]
             fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(self).digits_base(base)) }
+                Ok(Int(self).digits_base(base).0) }
             #[inline]
             fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(*self).digits_base(*base)) }
+                Ok(Int(*self).digits_base(*base).0) }
             #[inline]
             fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(self).digits_base_sign(base)) }
+                Ok(Int(self).digits_base_sign(base).0) }
             #[inline]
             fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(*self).digits_base_sign(*base)) }
+                Ok(Int(*self).digits_base_sign(*base).0) }
 
             /* gcd & lcm */
 
             #[inline]
             fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(self).gcd(other)) }
+                Ok(Int(self).gcd(other).0) }
             #[inline]
             fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(*self).gcd(*other)) }
+                Ok(Int(*self).gcd(*other).0) }
 
             #[inline]
             fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> {
-                Ok(Int(self).gcd_ext(other)) }
+                let [gcd, b1, b2] = Int(self).gcd_ext(other);
+                Ok([gcd.0, b1.0, b2.0]) }
             #[inline]
             fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]> {
-                Ok(Int(*self).gcd_ext(*other)) }
-
+                let [gcd, b1, b2] = Int(*self).gcd_ext(*other);
+                Ok([gcd.0, b1.0, b2.0]) }
             #[inline]
             fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> {
-                if let Some(res) = Int(self).lcm(other) { Ok(res) } else { Err(E::Overflow) } }
+                if let Some(res) = Int(self).lcm(other) { Ok(res.0) } else { Err(E::Overflow) } }
             #[inline]
             fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> {
-                if let Some(res) = Int(*self).lcm(*other) { Ok(res) } else { Err(E::Overflow) } }
+                if let Some(res) = Int(*self).lcm(*other) { Ok(res.0) } else { Err(E::Overflow) } }
         }
     }};
 
@@ -96,52 +97,52 @@ macro_rules! impl_int {
 
             #[inline]
             fn int_digital_root(self) -> Result<Self::Out> {
-                Ok(Int(self).digital_root()) }
+                Ok(Int(self).digital_root().0) }
             #[inline]
             fn int_ref_digital_root(&self) -> Result<Self::Out> {
-                Ok(Int(*self).digital_root()) }
+                Ok(Int(*self).digital_root().0) }
             #[inline]
             fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(self).digital_root_base(base)) }
+                Ok(Int(self).digital_root_base(base).0) }
             #[inline]
             fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(*self).digital_root_base(*base)) }
+                Ok(Int(*self).digital_root_base(*base).0) }
 
             /* digits */
 
             #[inline]
             fn int_digits(self) -> Result<Self::Out> {
-                Ok(Int(self).digits()) }
+                Ok(Int(self).digits().0) }
             #[inline]
             fn int_ref_digits(&self) -> Result<Self::Out> {
-                Ok(Int(*self).digits()) }
+                Ok(Int(*self).digits().0) }
             #[inline]
             fn int_digits_sign(self) -> Result<Self::Out> {
-                Ok(Int(self).digits_sign()) }
+                Ok(Int(self).digits_sign().0) }
             #[inline]
             fn int_ref_digits_sign(&self) -> Result<Self::Out> {
-                Ok(Int(*self).digits_sign()) }
+                Ok(Int(*self).digits_sign().0) }
             #[inline]
             fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(self).digits_base(base)) }
+                Ok(Int(self).digits_base(base).0) }
             #[inline]
             fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(*self).digits_base(*base)) }
+                Ok(Int(*self).digits_base(*base).0) }
             #[inline]
             fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(self).digits_base_sign(base)) }
+                Ok(Int(self).digits_base_sign(base).0) }
             #[inline]
             fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(*self).digits_base_sign(*base)) }
+                Ok(Int(*self).digits_base_sign(*base).0) }
 
             /* gcd & lcm */
 
             #[inline]
             fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(self).gcd(other)) }
+                Ok(Int(self).gcd(other).0) }
             #[inline]
             fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> {
-                Ok(Int(*self).gcd(*other)) }
+                Ok(Int(*self).gcd(*other).0) }
 
             #[inline]
             fn int_gcd_ext(self, _: Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
@@ -150,10 +151,10 @@ macro_rules! impl_int {
 
             #[inline]
             fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> {
-                if let Some(res) = Int(self).lcm(other) { Ok(res) } else { Err(E::Overflow) } }
+                if let Some(res) = Int(self).lcm(other) { Ok(res.0) } else { Err(E::Overflow) } }
             #[inline]
             fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> {
-                if let Some(res) = Int(*self).lcm(*other) { Ok(res) } else { Err(E::Overflow) } }
+                if let Some(res) = Int(*self).lcm(*other) { Ok(res.0) } else { Err(E::Overflow) } }
         }
     }};
 }
