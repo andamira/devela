@@ -14,7 +14,9 @@ mod shared; // implement Floating shared methods
 
 /// Provides floating-point operations for `T`.
 ///
-/// Note that every operation returns the inner type `T` instead of `Self`.
+/// Every operation returns the inner type `T` instead of `Self`.
+/// It is designed as a utility namespace and does not hold or wrap data itself.
+/// Instead, it operates on slices provided directly as arguments to its static methods.
 ///
 /// The wrapper leverages `std` or `libm` if enabled, otherwise implements fallbacks.
 /// It also favors `std` style for method's names, but changes a few like `minimum`

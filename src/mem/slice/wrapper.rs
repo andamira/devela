@@ -5,7 +5,7 @@
 
 use crate::data::Comparing;
 
-/// Provides slicing operations on `&[T]`, most of them *const*.
+/// Provides slicing operations on `&[T]`, many of them *const*.
 ///
 /// It is designed as a utility namespace and does not hold or wrap data itself.
 /// Instead, it operates on slices provided directly as arguments to its static methods.

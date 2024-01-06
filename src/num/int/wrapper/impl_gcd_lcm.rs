@@ -201,8 +201,6 @@ macro_rules! impl_gcd_lcm {
         #[doc = "# Numeric <abbr title='Greatest Common Divisor'>GCD</abbr> and "
         "<abbr title='Least Common Multiple'>LCM</abbr> related methods for `" $t "`\n\n"]
         #[doc = "- [gcd](#method.gcd" $dl ")"]
-        #[doc = "- [gcd_ext](#method.gcd_ext" $dl ")"]
-        #[doc = "- [gcd_ext_euc](#method.gcd_ext_euc" $dl ")"]
         #[doc = "- [lcm](#method.lcm" $dl ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
