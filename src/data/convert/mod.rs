@@ -8,19 +8,18 @@
 /* contains always compiled items */
 
 mod cast;
-mod collection;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub use {cast::*, collection::*};
+pub use cast::*;
 
 /* feature-gated */
 
 // re-export private sub-modules
 #[cfg(feature = "data")]
-pub use {cast::*, collection::*};
+pub use cast::*;
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{cast::*, collection::*};
+    pub use super::cast::*;
 }
