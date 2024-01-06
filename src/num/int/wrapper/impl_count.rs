@@ -56,9 +56,10 @@ macro_rules! impl_count {
             #[doc = "assert![Int(" $t "::MAX).factorial().is_err()];"]
             /// ```
             #[inline]
-            pub const fn factorial(self) -> Result<Self> {
-                iif![self.0 < 0; return Err(E::NonNegativeRequired)];
-                let (mut n, mut result): ($t, $t) = (self.0.abs(), 1);
+            pub const fn factorial(self) -> Result<Int<$t>> {
+                let n = self.0;
+                iif![n < 0; return Err(E::NonNegativeRequired)];
+                let (mut n, mut result): ($t, $t) = (n.abs(), 1);
                 while n > 1 {
                     result = if let Some(res) = result.checked_mul(n) {
                         res
@@ -67,7 +68,7 @@ macro_rules! impl_count {
                     };
                     n -= 1;
                 }
-                Ok(Self(result))
+                Ok(Int(result))
             }
 
             /// Permutations of `n` items taken `r` at a time, ordered.
@@ -92,18 +93,19 @@ macro_rules! impl_count {
             #[doc = "assert![Int(3_" $t ").permute(-2).is_err()];"]
             /// ```
             #[inline]
-            pub const fn permute(self, r: $t) -> Result<Self> {
-                iif![self.0 < 0 || r < 0; return Err(E::NonNegativeRequired)];
-                iif![r > self.0; return Err(E::MismatchedSizes)];
+            pub const fn permute(self, r: $t) -> Result<Int<$t>> {
+                let n = self.0;
+                iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
+                iif![r > n; return Err(E::MismatchedSizes)];
                 let mut result: $t = 1;
                 cfor![i in 0..r => {
-                    result = if let Some(res) = result.checked_mul(self.0 - i) {
+                    result = if let Some(res) = result.checked_mul(n - i) {
                         res
                     } else {
                         return Err(E::Overflow)
                     }
                 }];
-                Ok(Self(result))
+                Ok(Int(result))
             }
 
             /// Permutations of `n` items taken `r` at a time with repetitions, ordered.
@@ -125,15 +127,16 @@ macro_rules! impl_count {
             #[doc = "assert![Int(3_" $t ").permute_rep(-2).is_err()];"]
             /// ```
             #[inline]
-            pub const fn permute_rep(self, r: $t) -> Result<Self> {
-                iif![self.0 < 0 || r < 0; return Err(E::NonNegativeRequired)];
+            pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
+                let n = self.0;
+                iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
                 let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
                     res
                 } else {
                     return Err(E::Overflow);
                 };
-                if let Some(res) = self.0.checked_pow(r_u32) {
-                    Ok(Self(res))
+                if let Some(res) = n.checked_pow(r_u32) {
+                    Ok(Int(res))
                 } else {
                     Err(E::Overflow)
                 }
@@ -159,12 +162,13 @@ macro_rules! impl_count {
             #[doc = "assert![Int(3_" $t ").combine(-2).is_err()];"]
             /// ```
             #[inline]
-            pub const fn combine(self, r: $t) -> Result<Self> {
-                iif![self.0 < 0 || r < 0; return Err(E::NonNegativeRequired)];
-                iif![r > self.0; return Err(E::MismatchedSizes)];
+            pub const fn combine(self, r: $t) -> Result<Int<$t>> {
+                let n = self.0;
+                iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
+                iif![r > n; return Err(E::MismatchedSizes)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 cfor![i in 0..r => {
-                    num = if let Some(res) = num.checked_mul(self.0 - i) {
+                    num = if let Some(res) = num.checked_mul(n - i) {
                         res
                     } else {
                         return Err(E::Overflow)
@@ -175,7 +179,7 @@ macro_rules! impl_count {
                         return Err(E::Overflow)
                     };
                 }];
-                Ok(Self(num / den))
+                Ok(Int(num / den))
             }
 
             /// Combinations of `n` items taken `r` at a time with repetitions, unordered.
@@ -199,11 +203,12 @@ macro_rules! impl_count {
             #[doc = "assert![Int(3_" $t ").combine_rep(-2).is_err()];"]
             /// ```
             #[inline]
-            pub const fn combine_rep(self, r: $t) -> Result<Self> {
-                iif![self.0 < 0 || r < 0; return Err(E::NonNegativeRequired)];
+            pub const fn combine_rep(self, r: $t) -> Result<Int<$t>> {
+                let n = self.0;
+                iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 cfor![i in 0..r => {
-                    let factor = if let Some(res) = self.0.checked_add(r - 1 - i) {
+                    let factor = if let Some(res) = n.checked_add(r - 1 - i) {
                         res
                     } else {
                         return Err(E::Overflow)
@@ -219,7 +224,7 @@ macro_rules! impl_count {
                         return Err(E::Overflow)
                     };
                 }];
-                Ok(Self(num / den))
+                Ok(Int(num / den))
             }
         }
     }};
@@ -257,17 +262,17 @@ macro_rules! impl_count {
             #[doc = "assert![Int(" $t "::MAX).factorial().is_err()];"]
             /// ```
             #[inline]
-            pub const fn factorial(mut self) -> Result<Self> {
-                let mut result: $t = 1;
-                while self.0 > 1 {
-                    result = if let Some(res) = result.checked_mul(self.0) {
+            pub const fn factorial(self) -> Result<Int<$t>> {
+                let [mut n, mut result] = [self.0, 1];
+                while n > 1 {
+                    result = if let Some(res) = result.checked_mul(n) {
                         res
                     } else {
                         return Err(E::Overflow);
                     };
-                    self.0 -= 1;
+                    n -= 1;
                 }
-                Ok(Self(result))
+                Ok(Int(result))
             }
 
             /// Permutations of `n` items taken `r` at a time, ordered.
@@ -291,17 +296,18 @@ macro_rules! impl_count {
             #[doc = "assert![Int(" $t "::MAX).permute(" $t "::MAX).is_err()];"]
             /// ```
             #[inline]
-            pub const fn permute(self, r: $t) -> Result<Self> {
-                iif![r > self.0; return Err(E::MismatchedSizes)];
+            pub const fn permute(self, r: $t) -> Result<Int<$t>> {
+                let n = self.0;
+                iif![r > n; return Err(E::MismatchedSizes)];
                 let mut result: $t = 1;
                 cfor![i in 0..r => {
-                    result = if let Some(res) = result.checked_mul(self.0 - i) {
+                    result = if let Some(res) = result.checked_mul(n - i) {
                         res
                     } else {
                         return Err(E::Overflow)
                     }
                 }];
-                Ok(Self(result))
+                Ok(Int(result))
             }
 
             /// Permutations of `n` items taken `r` at a time with repetitions, ordered.
@@ -321,14 +327,15 @@ macro_rules! impl_count {
             #[doc = "assert![Int(" $t "::MAX).permute_rep(" $t "::MAX).is_err()];"]
             /// ```
             #[inline]
-            pub const fn permute_rep(self, r: $t) -> Result<Self> {
+            pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
+                let n = self.0;
                 let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
                     res
                 } else {
                     return Err(E::Overflow);
                 };
-                if let Some(res) = self.0.checked_pow(r_u32) {
-                    Ok(Self(res))
+                if let Some(res) = n.checked_pow(r_u32) {
+                    Ok(Int(res))
                 } else {
                     Err(E::Overflow)
                 }
@@ -352,11 +359,12 @@ macro_rules! impl_count {
             #[doc = "assert![Int(" $t "::MAX).combine(" $t "::MAX).is_err()];"]
             /// ```
             #[inline]
-            pub const fn combine(self, r: $t) -> Result<Self> {
-                iif![r > self.0; return Err(E::MismatchedSizes)];
+            pub const fn combine(self, r: $t) -> Result<Int<$t>> {
+                let n = self.0;
+                iif![r > n; return Err(E::MismatchedSizes)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 cfor![i in 0..r => {
-                    num = if let Some(res) = num.checked_mul(self.0 - i) {
+                    num = if let Some(res) = num.checked_mul(n - i) {
                         res
                     } else {
                         return Err(E::Overflow)
@@ -367,7 +375,7 @@ macro_rules! impl_count {
                         return Err(E::Overflow)
                     };
                 }];
-                Ok(Self(num / den))
+                Ok(Int(num / den))
             }
 
             /// Combinations of `n` items taken `r` at a time with repetitions, unordered.
@@ -389,10 +397,10 @@ macro_rules! impl_count {
             #[doc = "assert![Int(" $t "::MAX).combine_rep(" $t "::MAX).is_err()];"]
             /// ```
             #[inline]
-            pub const fn combine_rep(self, r: $t) -> Result<Self> {
-                let (mut num, mut den): ($t, $t) = (1, 1);
+            pub const fn combine_rep(self, r: $t) -> Result<Int<$t>> {
+                let [n, mut num, mut den] = [self.0, 1, 1];
                 cfor![i in 0..r => {
-                    let factor = if let Some(res) = self.0.checked_add(r - 1 - i) {
+                    let factor = if let Some(res) = n.checked_add(r - 1 - i) {
                         res
                     } else {
                         return Err(E::Overflow)
@@ -408,7 +416,7 @@ macro_rules! impl_count {
                         return Err(E::Overflow)
                     };
                 }];
-                Ok(Self(num / den))
+                Ok(Int(num / den))
             }
         }
     }};

@@ -44,9 +44,9 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(3), Int(-128_" $t ").digits()];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn digits(self) -> Self {
-                let n = iif![self.0 == $t::MIN; $t::MAX; self.0.abs()];
-                iif![let Some(c) = n.checked_ilog10(); Self(c as $t + 1); Self(1)]
+            pub const fn digits(self) -> Int<$t> {
+                let a = self.0; let n = iif![a == $t::MIN; $t::MAX; a.abs()];
+                iif![let Some(c) = n.checked_ilog10(); Int(c as $t + 1); Int(1)]
             }
 
             /// Returns the number of digits in base 10, including the negative sign.
@@ -59,11 +59,11 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(4), Int(-128_" $t ").digits_sign()];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn digits_sign(self) -> Self {
-                let mut res = (self.0 < 0) as $t;
-                let n = iif![self.0 == $t::MIN; $t::MAX; self.0.abs()];
+            pub const fn digits_sign(self) -> Int<$t> {
+                let a = self.0; let mut res = (a < 0) as $t;
+                let n = iif![a == $t::MIN; $t::MAX; a.abs()];
                 res += iif![let Some(c) = n.checked_ilog10(); c as $t + 1; 1];
-                Self(res)
+                Int(res)
             }
 
             /// Returns the number of digits in the given positive `base`.
@@ -80,11 +80,12 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_base(100)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn digits_base(mut self, mut base: $t) -> Self {
+            pub const fn digits_base(self, mut base: $t) -> Int<$t> {
+                let mut a = self.0;
                 iif![base == 0; return Int(0)];
                 base = base.abs();
-                self.0 = iif![self.0 == $t::MIN; $t::MAX; self.0.abs()];
-                iif![let Some(c) = self.0.checked_ilog(base); Self(c as $t + 1); Self(1)]
+                a = iif![a == $t::MIN; $t::MAX; a.abs()];
+                iif![let Some(c) = a.checked_ilog(base); Int(c as $t + 1); Int(1)]
             }
 
             /// Returns the number of digits in the given positive `base`,
@@ -102,13 +103,14 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_base_sign(100)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn digits_base_sign(mut self, mut base: $t) -> Self {
+            pub const fn digits_base_sign(self, mut base: $t) -> Int<$t> {
+                let mut a = self.0;
                 iif![base == 0; return Int(0)];
                 base = base.abs();
-                let mut res = (self.0 < 0) as $t;
-                self.0 = iif![self.0 == $t::MIN; $t::MAX; self.0.abs()];
-                res += iif![let Some(c) = self.0.checked_ilog(base); c as $t + 1; 1];
-                Self(res)
+                let mut res = (a < 0) as $t;
+                a = iif![a == $t::MIN; $t::MAX; a.abs()];
+                res += iif![let Some(c) = a.checked_ilog(base); c as $t + 1; 1];
+                Int(res)
             }
 
             /* signed digital_root */
@@ -122,7 +124,7 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(9), Int(126_" $t ").digital_root()];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn digital_root(self) -> Self {
+            pub const fn digital_root(self) -> Int<$t> {
                 let mut n = self.0.abs();
                 let mut sum = 0;
                 while n > 0 {
@@ -130,7 +132,7 @@ macro_rules! impl_base {
                     n /= 10;
                     iif![n == 0 && sum >= 10; { n = sum; sum = 0; }];
                 }
-                Self(sum)
+                Int(sum)
             }
 
             /// Returns the digital root in in the given `positive` base.
@@ -144,7 +146,7 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(3), Int(-33_" $t ").digital_root_base(16)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn digital_root_base(self, base: $t) -> Self {
+            pub const fn digital_root_base(self, base: $t) -> Int<$t> {
                 let (mut n, base) = (self.0.abs(), base.abs());
                 let mut sum = 0;
                 while n > 0 {
@@ -152,7 +154,7 @@ macro_rules! impl_base {
                     n /= base;
                     iif![n == 0 && sum >= base; { n = sum; sum = 0; }];
                 }
-                Self(sum)
+                Int(sum)
             }
         }
     }};
@@ -179,15 +181,13 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(3), Int(127_" $t ").digits()];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn digits(self) -> Self {
-                iif![let Some(c) = self.0.checked_ilog10(); Self(c as $t + 1); Self(1)]
+            pub const fn digits(self) -> Int<$t> {
+                iif![let Some(c) = self.0.checked_ilog10(); Int(c as $t + 1); Int(1)]
             }
 
             /// An alias of [`digits`][Self#digits].
             #[inline] #[must_use]
-            pub const fn digits_sign(self) -> Self {
-                self.digits()
-            }
+            pub const fn digits_sign(self) -> Int<$t> { self.digits() }
 
             /// Returns the number of digits in the given `base`.
             ///
@@ -201,16 +201,14 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(1), Int(0_" $t ").digits_base(100)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn digits_base(self, base: $t) -> Self {
-                iif![base == 0; return Int(0)];
-                iif![let Some(c) = self.0.checked_ilog(base); Self(c as $t + 1); Self(1)]
+            pub const fn digits_base(self, base: $t) -> Int<$t> {
+                let a = self.0; iif![base == 0; return Int(0)];
+                iif![let Some(c) = a.checked_ilog(base); Int(c as $t + 1); Int(1)]
             }
 
             /// An alias of [`digits_base`][Self#digits_base].
             #[inline] #[must_use]
-            pub const fn digits_base_sign(self, base: $t) -> Self {
-                self.digits_base(base)
-            }
+            pub const fn digits_base_sign(self, base: $t) -> Int<$t> { self.digits_base(base) }
 
             /* unsigned digital_root */
 
@@ -222,14 +220,14 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(9), Int(126_" $t ").digital_root()];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn digital_root(mut self) -> Self {
-                let mut sum = 0;
-                while self.0 > 0 {
-                    sum += self.0 % 10;
-                    self.0 /= 10;
-                    iif![self.0 == 0 && sum >= 10; { self.0 = sum; sum = 0; }];
+            pub const fn digital_root(self) -> Int<$t> {
+                let [mut a, mut sum] = [self.0, 0];
+                while a > 0 {
+                    sum += a % 10;
+                    a /= 10;
+                    iif![a == 0 && sum >= 10; { a = sum; sum = 0; }];
                 }
-                Self(sum)
+                Int(sum)
             }
 
             /// Returns the digital root in in the given `positive` base.
@@ -240,14 +238,14 @@ macro_rules! impl_base {
             #[doc = "assert_eq![Int(3), Int(33_" $t ").digital_root_base(16)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn digital_root_base(mut self, base: $t) -> Self {
-                let mut sum = 0;
-                while self.0 > 0 {
-                    sum += self.0 % base;
-                    self.0 /= base;
-                    iif![self.0 == 0 && sum >= base; { self.0 = sum; sum = 0; }];
+            pub const fn digital_root_base(self, base: $t) -> Int<$t> {
+                let [mut a, mut sum] = [self.0, 0];
+                while a > 0 {
+                    sum += a % base;
+                    a /= base;
+                    iif![a == 0 && sum >= base; { a = sum; sum = 0; }];
                 }
-                Self(sum)
+                Int(sum)
             }
         }
     }};

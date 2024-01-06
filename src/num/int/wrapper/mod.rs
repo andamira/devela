@@ -18,7 +18,7 @@ mod impl_gcd_lcm;
 /// [`i8`], [`i16`], [`i32`], [`i64`], [`i128`], [`isize`],
 /// [`u8`], [`u16`], [`u32`], [`u64`], [`u128`] and [`usize`].
 ///
-/// The documentation is the same for all bit sizes.
+/// The documentation is the same for all bit sizes. For example, for 32 bits:
 /// - Methods for `i32` related to:
 /// [base][Self#numeric-base-related-methods-for-i32],
 /// [counting][Self#numeric-counting-related-methods-for-i32],

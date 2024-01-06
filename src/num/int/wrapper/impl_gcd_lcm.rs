@@ -56,10 +56,10 @@ macro_rules! impl_gcd_lcm {
             #[doc = "assert_eq![Int(64), Int(64_" $t ").gcd(0)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn gcd(self, b: $t) -> Self {
+            pub const fn gcd(self, b: $t) -> Int<$t> {
                 let [mut a, mut b] = [self.0.abs(), b.abs()];
-                iif![a == 0; return Self(b)];
-                iif![b == 0; return Self(a)];
+                iif![a == 0; return Int(b)];
+                iif![b == 0; return Int(a)];
                 // Let k be the greatest power of 2 dividing both a and b:
                 let k = (a | b).trailing_zeros();
                 // Divide a and b by 2 until they become odd:
@@ -71,7 +71,7 @@ macro_rules! impl_gcd_lcm {
                     // ensure b >= a before substraction:
                     iif![a > b; {let swp = a; a = b; b = swp }; b -= a];
                 }
-                Self(a << k)
+                Int(a << k)
 
                 // Euclid's algorithm:
                 // while a != b { iif![a > b; a -= b; b -= a] }; a
@@ -101,10 +101,10 @@ macro_rules! impl_gcd_lcm {
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
             #[inline] #[must_use]
-            pub const fn gcd_ext(self, b: $t) -> [Self; 3] {
+            pub const fn gcd_ext(self, b: $t) -> [Int<$t>; 3] {
                 let [mut a, mut b] = [self.0.abs(), b.abs()];
-                if a == 0 { return [Self(b), Self(0), Self(1)]; }
-                if b == 0 { return [Self(a), Self(1), Self(0)]; }
+                if a == 0 { return [Int(b), Int(0), Int(1)]; }
+                if b == 0 { return [Int(a), Int(1), Int(0)]; }
 
                 let mut k = 0;
                 while ((a | b) & 1) == 0 {
@@ -142,8 +142,7 @@ macro_rules! impl_gcd_lcm {
                     ta -= sa;
                     tb -= sb;
                 }
-
-                [Self(a << k), Self(sa), Self(sb)]
+                [Int(a << k), Int(sa), Int(sb)]
             }
 
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
@@ -166,12 +165,13 @@ macro_rules! impl_gcd_lcm {
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
             #[inline] #[must_use]
-            pub const fn gcd_ext_euc(self, b: $t) -> [Self; 3] {
-                if self.0 == 0 {
-                    [Self(b), Self(0), Self(1)]
+            pub const fn gcd_ext_euc(self, b: $t) -> [Int<$t>; 3] {
+                let a = self.0;
+                if a == 0 {
+                    [Int(b), Int(0), Int(1)]
                 } else {
-                    let [g, x, y] = Int(b % self.0).gcd_ext_euc(self.0);
-                    [g, Self(y.0 - (b / self.0) * x.0), x] // IMPROVE impl ops
+                    let [g, x, y] = Int(b % a).gcd_ext_euc(a);
+                    [g, Int(y.0 - (b / a) * x.0), x] // IMPROVE impl ops
                 }
             }
 
@@ -188,10 +188,10 @@ macro_rules! impl_gcd_lcm {
             #[doc = "assert_eq![Int(12_" $t ").lcm(-15), Some(Int(60))];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn lcm(self, b: $t) -> Option<Self> {
+            pub const fn lcm(self, b: $t) -> Option<Int<$t>> {
                 let (aup, bup) = (self.0 as $up, b as $up);
                 let res = (aup * bup).abs() / self.gcd(b).0 as $up;
-                iif![res <= $t::MAX as $up; Some(Self(res as $t)); None]
+                iif![res <= $t::MAX as $up; Some(Int(res as $t)); None]
             }
         }
     }};
@@ -219,21 +219,22 @@ macro_rules! impl_gcd_lcm {
             #[doc = "assert_eq![Int(64), Int(64_" $t ").gcd(0)];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn gcd(mut self, mut b: $t) -> Self {
-                iif![self.0 == 0; return Self(b)];
+            pub const fn gcd(self, mut b: $t) -> Int<$t> {
+                let mut a = self.0;
+                iif![a == 0; return Int(b)];
                 iif![b == 0; return self];
-                // Let k be the greatest power of 2 dividing both self.0 and b:
-                let k = (self.0 | b).trailing_zeros();
+                // Let k be the greatest power of 2 dividing both a and b:
+                let k = (a | b).trailing_zeros();
                 // Divide a and b by 2 until they become odd:
-                self.0 >>= self.0.trailing_zeros();
+                a >>= a.trailing_zeros();
                 b >>= b.trailing_zeros();
-                // Break when self.0 == GCD of self.0 / 2^k:
+                // Break when a == GCD of a / 2^k:
                 while b != 0 {
                     b >>= b.trailing_zeros();
-                    // ensure b >= self.0 before substraction:
-                    iif![self.0 > b; {let swp = self.0; self.0 = b; b = swp }; b -= self.0];
+                    // ensure b >= a before substraction:
+                    iif![a > b; {let swp = a; a = b; b = swp }; b -= a];
                 }
-                Self(self.0 << k)
+                Int(a << k)
 
                 // Euclid's algorithm:
                 // while a != b { iif![a > b; a -= b; b -= a] }; a
@@ -248,10 +249,10 @@ macro_rules! impl_gcd_lcm {
             #[doc = "assert_eq![Int(12_" $t ").lcm(15), Some(Int(60))];"]
             /// ```
             #[inline] #[must_use]
-            pub const fn lcm(self, b: $t) -> Option<Self> {
+            pub const fn lcm(self, b: $t) -> Option<Int<$t>> {
                 let (aup, bup) = (self.0 as $up, b as $up);
                 let res = aup * bup / self.gcd(b).0 as $up;
-                iif![res <= $t::MAX as $up; Some(Self(res as $t)); None]
+                iif![res <= $t::MAX as $up; Some(Int(res as $t)); None]
             }
         }
     }};

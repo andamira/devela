@@ -38,7 +38,7 @@ macro_rules! impl_div {
         impl Int<$t> {
             /// Returns the truncated quotient and the remainder.
             #[inline] #[must_use]
-            pub const fn div_rem(self, b: $t) -> [Self; 2] {
+            pub const fn div_rem(self, b: $t) -> [Int<$t>; 2] {
                 let a = self.0; [Int(a / b), Int(a % b)]
             }
 
@@ -65,7 +65,7 @@ macro_rules! impl_div {
             // unstable rust implementation for signed integers:
             // WAITING: https://github.com/rust-lang/rust/issues/88581
             #[inline] #[must_use]
-            pub const fn div_ceil(self, b: $t) -> Self {
+            pub const fn div_ceil(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 iif![(r > 0 && b > 0) || (r < 0 && b < 0); Int(d + 1); Int(d)]
             }
@@ -97,7 +97,7 @@ macro_rules! impl_div {
             // unstable rust implementation for signed integers:
             // WAITING: https://github.com/rust-lang/rust/issues/88581
             #[inline] #[must_use]
-            pub const fn div_floor(self, b: $t) -> Self {
+            pub const fn div_floor(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 iif![(r > 0 && b < 0) || (r < 0 && b > 0); Int(d - 1); Int(d)]
             }
@@ -121,7 +121,7 @@ macro_rules! impl_div {
             #[doc = "assert_eq![Int(-5_" $t ").div_ties_away(2), Int(-3)]; // == -2.5"]
             /// ```
             #[inline] #[must_use]
-            pub const fn div_ties_away(self, b: $t) -> Self {
+            pub const fn div_ties_away(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 iif![2 * r.abs() >= b.abs();
                     iif![(a > 0) == (b > 0); Int(d + 1); Int(d - 1)]; Int(d)]
@@ -146,7 +146,7 @@ macro_rules! impl_div {
             #[doc = "assert_eq![Int(-5_" $t ").div_ties_towards(2), Int(-2)]; // == -2.5"]
             /// ```
             #[inline] #[must_use]
-            pub const fn div_ties_towards(self, b: $t) -> Self {
+            pub const fn div_ties_towards(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 iif![2 * r.abs() > b.abs();
                     iif![(a > 0) == (b > 0); Int(d + 1); Int(d - 1)]; Int(d)]
@@ -171,7 +171,7 @@ macro_rules! impl_div {
             #[doc = "assert_eq![Int(-5_" $t ").div_ties_even(2), Int(-2)]; // == -2.5"]
             /// ```
             #[inline] #[must_use]
-            pub const fn div_ties_even(self, b: $t) -> Self {
+            pub const fn div_ties_even(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 // If the remainder is zero or the |remainder| is less than half of
                 // |b|, return the quotient.
@@ -203,7 +203,7 @@ macro_rules! impl_div {
             #[doc = "assert_eq![Int(-5_" $t ").div_ties_odd(2), Int(-3)]; // == -2.5"]
             /// ```
             #[inline] #[must_use]
-            pub const fn div_ties_odd(self, b: $t) -> Self {
+            pub const fn div_ties_odd(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 // If the remainder is zero or the |remainder| is less than half of
                 // |b|, return the quotient.
@@ -233,7 +233,7 @@ macro_rules! impl_div {
         impl Int<$t> {
             /// Returns the truncated quotient and the remainder.
             #[inline] #[must_use]
-            pub const fn div_rem(self, b: $t) -> [Self; 2] {
+            pub const fn div_rem(self, b: $t) -> [Int<$t>; 2] {
                 let a = self.0; [Int(a / b), Int(a % b)]
             }
 
@@ -253,7 +253,7 @@ macro_rules! impl_div {
             // unstable rust implementation for signed integers:
             // WAITING: https://github.com/rust-lang/rust/issues/88581
             #[inline] #[must_use]
-            pub const fn div_ceil(self, b: $t) -> Self {
+            pub const fn div_ceil(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 iif![r > 0 && b > 0; Int(d + 1); Int(d)]
             }
@@ -278,7 +278,7 @@ macro_rules! impl_div {
             // unstable rust implementation for signed integers:
             // WAITING: https://github.com/rust-lang/rust/issues/88581
             #[inline] #[must_use]
-            pub const fn div_floor(self, b: $t) -> Self {
+            pub const fn div_floor(self, b: $t) -> Int<$t> {
                 Int(self.0 / b)
             }
 
@@ -294,7 +294,7 @@ macro_rules! impl_div {
             #[doc = "assert_eq![Int(5_" $t ").div_ties_away(2), Int(3)]; // == 2.5"]
             /// ```
             #[inline] #[must_use]
-            pub const fn div_ties_away(self, b: $t) -> Self {
+            pub const fn div_ties_away(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 iif![2 * r >= b; iif![a > b; Int(d + 1); Int(d - 1)]; Int(d)]
             }
@@ -311,7 +311,7 @@ macro_rules! impl_div {
             #[doc = "assert_eq![Int(5_" $t ").div_ties_towards(2), Int(2)]; // == 2.5"]
             /// ```
             #[inline] #[must_use]
-            pub const fn div_ties_towards(self, b: $t) -> Self {
+            pub const fn div_ties_towards(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 iif![2 * r > b; Int(d + 1); Int(d)]
             }
@@ -328,7 +328,7 @@ macro_rules! impl_div {
             #[doc = "assert_eq![Int(5_" $t ").div_ties_even(2), Int(2)]; // == 2.5"]
             /// ```
             #[inline] #[must_use]
-            pub const fn div_ties_even(self, b: $t) -> Self {
+            pub const fn div_ties_even(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 // 1. If the remainder is zero or less than half of b, return the quotient.
                 // 2. If the remainder is greater than half of b, return the quotient + 1.
@@ -351,7 +351,7 @@ macro_rules! impl_div {
             /// ```
             #[inline]
             #[must_use]
-            pub const fn div_ties_odd(self, b: $t) -> Self {
+            pub const fn div_ties_odd(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
                 // 1. If the remainder is zero or less than half of b, return the quotient.
                 // 2. If the remainder is greater than half of b, return the quotient + 1.
