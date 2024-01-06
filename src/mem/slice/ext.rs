@@ -31,7 +31,7 @@ pub trait SliceExt<T>: private::Sealed {
     ///
     /// See also [`slice_lsplit`] for the standalone `const` version.
     #[must_use]
-    fn lsplit(&self, len: usize) -> &[T];
+    fn slice_lsplit(&self, len: usize) -> &[T];
 
     /// Returns a right subslice of `slice` with the given maximum `len`.
     ///
@@ -39,7 +39,7 @@ pub trait SliceExt<T>: private::Sealed {
     ///
     /// See also [`slice_rsplit`] for the standalone `const` version.
     #[must_use]
-    fn rsplit(&self, len: usize) -> &[T];
+    fn slice_rsplit(&self, len: usize) -> &[T];
 
     /// Returns a middle subslice of `slice` with the given maximum `len`
     /// and a left bias.
@@ -51,7 +51,7 @@ pub trait SliceExt<T>: private::Sealed {
     ///
     /// See also [`slice_msplit_left`] for the standalone `const` version.
     #[must_use]
-    fn msplit_left(&self, len: usize) -> &[T];
+    fn slice_msplit_left(&self, len: usize) -> &[T];
 
     /// Returns a middle subslice of `slice` with the given maximum `len`
     /// and a right bias.
@@ -63,7 +63,7 @@ pub trait SliceExt<T>: private::Sealed {
     ///
     /// See also [`slice_msplit_right`] for the standalone `const` version.
     #[must_use]
-    fn msplit_right(&self, len: usize) -> &[T];
+    fn slice_msplit_right(&self, len: usize) -> &[T];
 
     /* convert */
 
@@ -74,15 +74,15 @@ pub trait SliceExt<T>: private::Sealed {
     /// # Examples
     /// ```
     /// # use devela::mem::SliceExt;
-    /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].into_array()];
-    /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].into_array::<u16, 3>()];
+    /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array()];
+    /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array::<u16, 3>()];
     /// ```
     /// # Features
     /// If the `unsafe_mem` feature is enabled it uses `MaybeUninit` to improve performance.
     #[must_use]
     // IMPROVE make a try_slice_into_array version:
     // WAITING https://doc.rust-lang.org/nightly/core/array/fn.try_from_fn.html
-    fn into_array<U, const N: usize>(&self) -> [U; N]
+    fn slice_into_array<U, const N: usize>(&self) -> [U; N]
     where
         T: Clone,
         U: From<T>;
@@ -91,13 +91,13 @@ pub trait SliceExt<T>: private::Sealed {
     /// # Examples
     /// ```
     /// # use devela::mem::SliceExt;
-    /// assert_eq![vec![1_i16, 2, 3], [1_u8, 2, 3].into_vec()];
-    /// assert_eq![vec![1_i16, 2, 3], [1_u8, 2, 3].into_vec::<i16>()];
+    /// assert_eq![vec![1_i16, 2, 3], [1_u8, 2, 3].slice_into_vec()];
+    /// assert_eq![vec![1_i16, 2, 3], [1_u8, 2, 3].slice_into_vec::<i16>()];
     /// ```
     #[must_use]
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-    fn into_vec<U>(&self) -> Vec<U>
+    fn slice_into_vec<U>(&self) -> Vec<U>
     where
         T: Clone,
         U: From<T>;
@@ -106,13 +106,13 @@ pub trait SliceExt<T>: private::Sealed {
     /// # Examples
     /// ```
     /// # use devela::mem::SliceExt;
-    /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].try_into_vec()];
-    /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].try_into_vec::<_, i32>()];
+    /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec()];
+    /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec::<_, i32>()];
     /// ```
     #[must_use]
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-    fn try_into_vec<E, U>(&self) -> Result<Vec<U>, E>
+    fn slice_try_into_vec<E, U>(&self) -> Result<Vec<U>, E>
     where
         T: Clone,
         U: TryFrom<T, Error = E>;
@@ -129,13 +129,13 @@ pub trait SliceExtMut<T>: private::Sealed + SliceExt<T> {
     ///
     /// If `left_len > slice.len()` it returns the full slice.
     #[must_use]
-    fn lsplit_mut(&mut self, len: usize) -> &mut [T];
+    fn slice_lsplit_mut(&mut self, len: usize) -> &mut [T];
 
     /// Returns a mutable right subslice of `slice` with the given maximum `len`.
     ///
     /// If `left_len > slice.len()` it returns the full slice.
     #[must_use]
-    fn rsplit_mut(&mut self, len: usize) -> &mut [T];
+    fn slice_rsplit_mut(&mut self, len: usize) -> &mut [T];
 
     /// Returns a mutable middle subslice of `slice` with the given maximum `len`
     /// and a left bias.
@@ -145,7 +145,7 @@ pub trait SliceExtMut<T>: private::Sealed + SliceExt<T> {
     ///
     /// If `len > slice.len()` returns the full `slice`.
     #[must_use]
-    fn msplit_left_mut(&mut self, len: usize) -> &mut [T];
+    fn slice_msplit_left_mut(&mut self, len: usize) -> &mut [T];
 
     /// Returns a mutable middle subslice of `slice` with the given maximum `len`
     /// and a right bias.
@@ -155,7 +155,7 @@ pub trait SliceExtMut<T>: private::Sealed + SliceExt<T> {
     ///
     /// If `len > slice.len()` returns the full `slice`.
     #[must_use]
-    fn msplit_right_mut(&mut self, len: usize) -> &mut [T];
+    fn slice_msplit_right_mut(&mut self, len: usize) -> &mut [T];
 }
 
 macro_rules! slice_ext_impl {
@@ -164,18 +164,18 @@ macro_rules! slice_ext_impl {
             /* split */
 
             #[inline]
-            fn lsplit(&self, len: usize) -> &[T] { slice_lsplit(self, len) }
+            fn slice_lsplit(&self, len: usize) -> &[T] { slice_lsplit(self, len) }
             #[inline]
-            fn rsplit(&self, len: usize) -> &[T] { slice_rsplit(self, len) }
+            fn slice_rsplit(&self, len: usize) -> &[T] { slice_rsplit(self, len) }
             #[inline]
-            fn msplit_left(&self, len: usize) -> &[T] { slice_msplit_left(self, len) }
+            fn slice_msplit_left(&self, len: usize) -> &[T] { slice_msplit_left(self, len) }
             #[inline]
-            fn msplit_right(&self, len: usize) -> &[T] { slice_msplit_right(self, len) }
+            fn slice_msplit_right(&self, len: usize) -> &[T] { slice_msplit_right(self, len) }
 
             /* collection */
 
             #[inline]
-            fn into_array<U, const N: usize>(&self) -> [U; N] where T: Clone, U: From<T> {
+            fn slice_into_array<U, const N: usize>(&self) -> [U; N] where T: Clone, U: From<T> {
                 if self.len() >= N {
                     #[cfg(not(feature = "unsafe_mem"))]
                     {
@@ -199,11 +199,11 @@ macro_rules! slice_ext_impl {
                 }
             }
             #[inline] #[cfg(feature = "alloc")]
-            fn into_vec<U>(&self) -> Vec<U> where T: Clone, U: From<T> {
+            fn slice_into_vec<U>(&self) -> Vec<U> where T: Clone, U: From<T> {
                 self.iter().map(|t| U::from(t.clone())).collect::<Vec<_>>().into_iter().collect()
             }
             #[inline] #[cfg(feature = "alloc")]
-            fn try_into_vec<E, U>(&self) -> Result<Vec<U>, E>
+            fn slice_try_into_vec<E, U>(&self) -> Result<Vec<U>, E>
                 where T: Clone, U: TryFrom<T, Error = E> {
                     self
                         // 1. Vec<Result<_>>:
@@ -223,14 +223,14 @@ macro_rules! slice_ext_impl {
             /* split */
 
             #[inline]
-            fn lsplit_mut(&mut self, len: usize) -> &mut [T] { slice_lsplit_mut(self, len) }
+            fn slice_lsplit_mut(&mut self, len: usize) -> &mut [T] { slice_lsplit_mut(self, len) }
             #[inline]
-            fn rsplit_mut(&mut self, len: usize) -> &mut [T] { slice_rsplit_mut(self, len) }
+            fn slice_rsplit_mut(&mut self, len: usize) -> &mut [T] { slice_rsplit_mut(self, len) }
             #[inline]
-            fn msplit_left_mut(&mut self, len: usize) -> &mut [T] {
+            fn slice_msplit_left_mut(&mut self, len: usize) -> &mut [T] {
                 slice_msplit_left_mut(self, len) }
             #[inline]
-            fn msplit_right_mut(&mut self, len: usize) -> &mut [T] {
+            fn slice_msplit_right_mut(&mut self, len: usize) -> &mut [T] {
                 slice_msplit_right_mut(self, len) }
         }
     };
