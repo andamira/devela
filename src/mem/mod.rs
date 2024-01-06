@@ -21,11 +21,11 @@
 mod aligned;
 mod always;
 mod reexports;
+mod slice;
 mod storage;
 mod r#trait;
 
 pub mod size;
-pub mod slice;
 
 #[allow(unused)]
 #[cfg(not(feature = "mem"))]
@@ -38,12 +38,12 @@ mod fns;
 
 // re-export private sub-modules
 #[cfg(feature = "mem")]
-pub use {aligned::*, always::*, fns::*, r#trait::*, reexports::*, storage::*};
+pub use {aligned::*, always::*, fns::*, r#trait::*, reexports::*, slice::all::*, storage::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
 #[cfg(feature = "mem")]
-pub use {size::all::*, slice::all::*};
+pub use size::all::*;
 
 pub(crate) mod all {
     #[doc(inline)]

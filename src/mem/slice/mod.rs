@@ -22,6 +22,7 @@ mod wrapper;
 
 // re-export private sub-modules
 #[cfg(feature = "mem")]
+#[allow(unused_imports)]
 pub use {always_fns::*, ext::*, wrapper::*};
 
 pub(crate) mod all {
