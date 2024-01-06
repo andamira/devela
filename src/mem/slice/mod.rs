@@ -18,11 +18,11 @@ pub use always_fns::*;
 #[cfg(feature = "mem")]
 mod ext;
 #[cfg(feature = "mem")]
-mod fns;
+mod wrapper;
 
 // re-export private sub-modules
 #[cfg(feature = "mem")]
-pub use {always_fns::*, ext::*, fns::*};
+pub use {always_fns::*, ext::*, wrapper::*};
 
 pub(crate) mod all {
     #[doc(inline)]
@@ -30,5 +30,5 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(feature = "mem")]
-    pub use super::{ext::*, fns::*};
+    pub use super::{ext::*, wrapper::*};
 }

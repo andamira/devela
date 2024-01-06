@@ -3,7 +3,7 @@
 //!
 //
 
-use super::fns::*;
+use super::Slicing;
 #[cfg(feature = "alloc")]
 use _alloc::vec::Vec;
 
@@ -164,13 +164,13 @@ macro_rules! slice_ext_impl {
             /* split */
 
             #[inline]
-            fn slice_lsplit(&self, len: usize) -> &[T] { slice_lsplit(self, len) }
+            fn slice_lsplit(&self, len: usize) -> &[T] { Slicing::lsplit(self, len) }
             #[inline]
-            fn slice_rsplit(&self, len: usize) -> &[T] { slice_rsplit(self, len) }
+            fn slice_rsplit(&self, len: usize) -> &[T] { Slicing::rsplit(self, len) }
             #[inline]
-            fn slice_msplit_left(&self, len: usize) -> &[T] { slice_msplit_left(self, len) }
+            fn slice_msplit_left(&self, len: usize) -> &[T] { Slicing::msplit_left(self, len) }
             #[inline]
-            fn slice_msplit_right(&self, len: usize) -> &[T] { slice_msplit_right(self, len) }
+            fn slice_msplit_right(&self, len: usize) -> &[T] { Slicing::msplit_right(self, len) }
 
             /* collection */
 
@@ -223,15 +223,15 @@ macro_rules! slice_ext_impl {
             /* split */
 
             #[inline]
-            fn slice_lsplit_mut(&mut self, len: usize) -> &mut [T] { slice_lsplit_mut(self, len) }
+            fn slice_lsplit_mut(&mut self, len: usize) -> &mut [T] { Slicing::lsplit_mut(self, len) }
             #[inline]
-            fn slice_rsplit_mut(&mut self, len: usize) -> &mut [T] { slice_rsplit_mut(self, len) }
+            fn slice_rsplit_mut(&mut self, len: usize) -> &mut [T] { Slicing::rsplit_mut(self, len) }
             #[inline]
             fn slice_msplit_left_mut(&mut self, len: usize) -> &mut [T] {
-                slice_msplit_left_mut(self, len) }
+                Slicing::msplit_left_mut(self, len) }
             #[inline]
             fn slice_msplit_right_mut(&mut self, len: usize) -> &mut [T] {
-                slice_msplit_right_mut(self, len) }
+                Slicing::msplit_right_mut(self, len) }
         }
     };
 }
