@@ -21,23 +21,23 @@ mod impl_sqrt;
 ///
 /// The documentation is the same for all bit sizes. For example, for 32 bits:
 /// - Methods for `i32` related to:
-/// [base][Self#numeric-base-related-methods-for-i32],
-/// [counting][Self#numeric-counting-related-methods-for-i32],
-/// [division][Self#numeric-division-related-methods-for-i32],
-/// [factors][Self#numeric-factors-related-methods-for-i32],
-/// [gcd and lcm][Self#numeric-gcd-and-lcm-related-methods-for-i32].
+/// [base][Self#integer-base-related-methods-for-i32],
+/// [counting][Self#integer-counting-related-methods-for-i32],
+/// [division][Self#integer-division-related-methods-for-i32],
+/// [factors][Self#integer-factors-related-methods-for-i32],
+/// [gcd and lcm][Self#integer-gcd-and-lcm-related-methods-for-i32],
+/// [square root][Self#integer-square-root-related-methods-for-i32].
 /// - Methods for `u32` related to:
-/// [base][Self#numeric-base-related-methods-for-u32],
-/// [counting][Self#numeric-counting-related-methods-for-u32],
-/// [division][Self#numeric-division-related-methods-for-u32],
-/// [factors][Self#numeric-factors-related-methods-for-u32],
-/// [gcd and lcm][Self#numeric-gcd-and-lcm-related-methods-for-u32].
+/// [base][Self#integer-base-related-methods-for-u32],
+/// [counting][Self#integer-counting-related-methods-for-u32],
+/// [division][Self#integer-division-related-methods-for-u32],
+/// [factors][Self#integer-factors-related-methods-for-u32],
+/// [gcd and lcm][Self#integer-gcd-and-lcm-related-methods-for-u32],
+/// [square root][Self#integer-square-root-related-methods-for-u32].
 ///
 /// See also the related traits:
-/// [`NumOpsBase`][crate::num::NumOpsBase],
-/// [`NumOpsCounting`][crate::num::NumOpsCounting],
-/// [`NumOpsFactors`][crate::num::NumOpsFactors],
-/// [`NumInt`][super::NumInt].
+/// [`NumInt`][super::NumInt],
+/// [`NumOpsFactors`][crate::num::NumOpsFactors].
 #[repr(transparent)]
 pub struct Int<T>(pub T);
 

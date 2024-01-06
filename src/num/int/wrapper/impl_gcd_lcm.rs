@@ -30,7 +30,7 @@ macro_rules! impl_gcd_lcm {
     (@signed $t:ty : $up:ty : $dl:literal) => { paste! {
         /* signed count_digits */
 
-        #[doc = "# Numeric <abbr title='Greatest Common Divisor'>GCD</abbr> and "
+        #[doc = "# Integer <abbr title='Greatest Common Divisor'>GCD</abbr> and "
         "<abbr title='Least Common Multiple'>LCM</abbr> related methods for `" $t "`\n\n"]
         #[doc = "- [gcd](#method.gcd" $dl ")"]
         #[doc = "- [gcd_ext](#method.gcd_ext" $dl ")"]
@@ -198,7 +198,7 @@ macro_rules! impl_gcd_lcm {
 
     // implements unsigned ops
     (@unsigned $t:ty : $up:ty : $dl:literal) => { paste! {
-        #[doc = "# Numeric <abbr title='Greatest Common Divisor'>GCD</abbr> and "
+        #[doc = "# Integer <abbr title='Greatest Common Divisor'>GCD</abbr> and "
         "<abbr title='Least Common Multiple'>LCM</abbr> related methods for `" $t "`\n\n"]
         #[doc = "- [gcd](#method.gcd" $dl ")"]
         #[doc = "- [lcm](#method.lcm" $dl ")"]

@@ -31,7 +31,7 @@ macro_rules! impl_factors {
 
     // implements signed ops
     (@signed $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Numeric factors-related methods for `" $t "`\n\n"]
+        #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
         #[doc = "   - [factors](#method.factors" $dl ")"]
         #[doc = "   - [factors_proper](#method.factors_proper" $dl ")"]
@@ -356,7 +356,7 @@ macro_rules! impl_factors {
 
     // implements unsigned ops
     (@unsigned $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Numeric factors-related methods for `" $t "`\n\n"]
+        #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
         #[doc = "   - [factors](#method.factors" $dl ")"]
         #[doc = "   - [factors_proper](#method.factors_proper" $dl ")"]

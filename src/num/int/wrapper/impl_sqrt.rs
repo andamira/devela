@@ -18,7 +18,7 @@ macro_rules! impl_sqrt {
     (@signed $t:ty : $dl:literal) => { paste! {
         /* signed sqrt */
 
-        #[doc = "# Numeric square root related methods for `" $t "`\n\n"]
+        #[doc = "# Integer square root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $dl ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $dl ")"]
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $dl ")"]
@@ -31,9 +31,9 @@ macro_rules! impl_sqrt {
             /// Returns `false` otherwise, which includes all negative values.
             /// # Algorithm
             /// $$ \large
-            /// \text{is\textunderscore square}(n) = \begin{cases}
-            /// \text{true} & \text{if } \left(\lfloor \sqrt{n} \rfloor\right)^2 = n \cr
-            /// \text{false} & \text{if } \left(\lfloor \sqrt{n} \rfloor\right)^2 \neq n
+            /// \text{is\textunderscore square}(a) = \begin{cases}
+            /// \text{true} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 = a \cr
+            /// \text{false} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 \neq a
             /// \end{cases}
             /// $$
             /// # Examples
@@ -56,27 +56,27 @@ macro_rules! impl_sqrt {
             ///
             /// Returns `None` if `a` is negative.
             /// # Algorithm
-            /// $$ \large \left\lfloor \sqrt{x} \right\rfloor = n_{k} $$
+            /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
             ///
             /// Where $n_{k}$ is the result of a sequence of estimates that
-            /// starts with an initial $n_{0} = x/2$ which is updated using
+            /// starts with an initial $n_{0} = a/2$ which is updated using
             /// [*Heron's method*](
             /// https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method):
             ///
             /// $$ \large
-            /// n_{i+1} = n_{i} - ( n_{i}^{2} - x) / 2n_{i},
+            /// n_{i+1} = n_{i} - ( n_{i}^{2} - a) / 2n_{i},
             /// \quad \small\text{for} \quad i = 0, 1, \ldots, k,
             /// $$
             ///
             /// Where $n_{i}$ is the current estimate, $n_{i+1}$ is the next
-            /// estimate, $x$ is self, and $k$ is the number of iterations
+            /// estimate, $a$ is self, and $k$ is the number of iterations
             /// needed to converge to a solution, on the order of the number of
             /// bits of self, about $O(\log_2 b)$, which for e.g. 128 bits would
             /// be $ ±7 $ iterations.
             ///
             /// Hence, the function continues updating the estimate until
             /// reaching $n_{k}$, which provides the largest integer less than
-            /// or equal to the square root of `x`.
+            /// or equal to the square root of `a`.
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -110,10 +110,10 @@ macro_rules! impl_sqrt {
             /// # Algorithm
             /// $$ \large
             /// \begin{align}
-            /// \notag \left\lceil \sqrt{x} \thinspace\right\rceil = \begin{cases}
-            /// n & \text{if } n^2 = x \cr
-            /// n+1 & \text{if } n^2 < x \end{cases} \cr
-            /// \notag \normalsize\text{where } n = \lfloor \sqrt{x} \rfloor &
+            /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
+            /// n & \text{if } n^2 = a \cr
+            /// n+1 & \text{if } n^2 < a \end{cases} \cr
+            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
             /// \end{align}
             /// $$
             /// # Examples
@@ -142,10 +142,10 @@ macro_rules! impl_sqrt {
             /// # Algorithm
             /// $$ \large
             /// \begin{align}
-            /// \notag \left\lfloor\sqrt{x} \thinspace\right\rceil = \begin{cases}
-            /// n & \text{if } x - n^2 < (n+1)^2 - x \cr
-            /// n+1 & \text{if } x - n^2 \geq (n+1)^2 - x \end{cases} \cr
-            /// \notag \normalsize\text{where } n = \lfloor \sqrt{x} \rfloor &
+            /// \notag \left\lfloor\sqrt{a} \thinspace\right\rceil = \begin{cases}
+            /// n & \text{if } a - n^2 < (n+1)^2 - a \cr
+            /// n+1 & \text{if } a - n^2 \geq (n+1)^2 - a \end{cases} \cr
+            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
             /// \end{align}
             /// $$
             /// # Examples
@@ -181,7 +181,7 @@ macro_rules! impl_sqrt {
 
     // implements unsigned ops
     (@unsigned $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Numeric square root related methods for `" $t "`\n\n"]
+        #[doc = "# Integer square root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $dl ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $dl ")"]
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $dl ")"]
@@ -195,9 +195,9 @@ macro_rules! impl_sqrt {
             ///
             /// # Algorithm
             /// $$ \large
-            /// \text{is\textunderscore square}(n) = \begin{cases}
-            /// \text{true} & \text{if } \left(\lfloor \sqrt{n} \rfloor\right)^2 = n \cr
-            /// \text{false} & \text{if } \left(\lfloor \sqrt{n} \rfloor\right)^2 \neq n
+            /// \text{is\textunderscore square}(a) = \begin{cases}
+            /// \text{true} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 = a \cr
+            /// \text{false} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 \neq a
             /// \end{cases}
             /// $$
             ///
@@ -219,27 +219,27 @@ macro_rules! impl_sqrt {
 
             /// Returns the floored integer square root.
             /// # Algorithm
-            /// $$ \large \left\lfloor \sqrt{x} \right\rfloor = n_{k} $$
+            /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
             ///
             /// Where $n_{k}$ is the result of a sequence of estimates that
-            /// starts with an initial $n_{0} = x/2$ which is updated using
+            /// starts with an initial $n_{0} = a/2$ which is updated using
             /// [*Heron's method*](
             /// https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method):
             ///
             /// $$ \large
-            /// n_{i+1} = n_{i} - ( n_{i}^{2} - x) / 2n_{i},
+            /// n_{i+1} = n_{i} - ( n_{i}^{2} - a) / 2n_{i},
             /// \quad \small\text{for} \quad i = 0, 1, \ldots, k,
             /// $$
             ///
             /// Where $n_{i}$ is the current estimate, $n_{i+1}$ is the next
-            /// estimate, $x$ is `a`, and $k$ is the number of iterations
+            /// estimate, $a$ is `a`, and $k$ is the number of iterations
             /// needed to converge to a solution, on the order of the number of
             /// bits of `a`, about $O(\log_2 b)$, which for e.g. 128 bits would
             /// be $ ±7 $ iterations.
             ///
             /// Hence, the function continues updating the estimate until
             /// reaching $n_{k}$, which provides the largest integer less than
-            /// or equal to the square root of `x`.
+            /// or equal to the square root of `a`.
             ///
             /// # Examples
             /// ```
@@ -269,10 +269,10 @@ macro_rules! impl_sqrt {
             /// # Algorithm
             /// $$ \large
             /// \begin{align}
-            /// \notag \left\lceil \sqrt{x} \thinspace\right\rceil = \begin{cases}
-            /// n & \text{if } n^2 = x \cr
-            /// n+1 & \text{if } n^2 < x \end{cases} \cr
-            /// \notag \normalsize\text{where } n = \lfloor \sqrt{x} \rfloor &
+            /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
+            /// n & \text{if } n^2 = a \cr
+            /// n+1 & \text{if } n^2 < a \end{cases} \cr
+            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
             /// \end{align}
             /// $$
             /// # Examples
@@ -294,10 +294,10 @@ macro_rules! impl_sqrt {
             /// # Algorithm
             /// $$ \large
             /// \begin{align}
-            /// \notag \left\lfloor\sqrt{x} \thinspace\right\rceil = \begin{cases}
-            /// n & \text{if } x - n^2 < (n+1)^2 - x \cr
-            /// n+1 & \text{if } x - n^2 \geq (n+1)^2 - x \end{cases} \cr
-            /// \notag \normalsize\text{where } n = \lfloor \sqrt{x} \rfloor &
+            /// \notag \left\lfloor\sqrt{a} \thinspace\right\rceil = \begin{cases}
+            /// n & \text{if } a - n^2 < (n+1)^2 - a \cr
+            /// n+1 & \text{if } a - n^2 \geq (n+1)^2 - a \end{cases} \cr
+            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
             /// \end{align}
             /// $$
             /// # Examples

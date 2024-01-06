@@ -23,7 +23,7 @@ macro_rules! impl_count {
 
     // implements signed ops
     (@signed $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Numeric counting related methods for `" $t "`\n\n"]
+        #[doc = "# Integer counting related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $dl ")"]
         #[doc = "- [combine](#method.combine" $dl ")"]
         #[doc = "- [combine_rep](#method.combine_rep" $dl ")"]
@@ -231,7 +231,7 @@ macro_rules! impl_count {
 
     // implements unsigned ops
     (@unsigned $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Numeric counting related methods for `" $t "`\n\n"]
+        #[doc = "# Integer counting related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $dl ")"]
         #[doc = "- [combine](#method.combine" $dl ")"]
         #[doc = "- [combine_rep](#method.combine_rep" $dl ")"]

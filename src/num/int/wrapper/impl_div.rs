@@ -25,7 +25,7 @@ macro_rules! impl_div {
     (@signed $t:ty : $dl:literal) => { paste! {
         /* signed division */
 
-        #[doc = "# Numeric division related methods for `" $t "`\n\n"]
+        #[doc = "# Integer division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $dl ")"]
         #[doc = "- [div_ceil](#method.div_ceil" $dl ")"]
         #[doc = "- [div_floor](#method.div_floor" $dl ")"]
@@ -220,7 +220,7 @@ macro_rules! impl_div {
 
     // implements unsigned ops
     (@unsigned $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Numeric division related methods for `" $t "`\n\n"]
+        #[doc = "# Integer division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $dl ")"]
         #[doc = "- [div_ceil](#method.div_ceil" $dl ")"]
         #[doc = "- [div_floor](#method.div_floor" $dl ")"]

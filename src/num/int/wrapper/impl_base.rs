@@ -24,7 +24,7 @@ macro_rules! impl_base {
     (@signed $t:ty : $dl:literal) => { paste! {
         /* signed digits */
 
-        #[doc = "# Numeric base related methods for `" $t "`\n\n"]
+        #[doc = "# Integer base related methods for `" $t "`\n\n"]
         #[doc = "- [digits](#method.digits" $dl ")"]
         #[doc = "- [digits_sign](#method.digits_sign" $dl ")"]
         #[doc = "- [digits_base](#method.digits_base" $dl ")"]
@@ -161,7 +161,7 @@ macro_rules! impl_base {
 
     // implements unsigned ops
     (@unsigned $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Numeric base related methods for `" $t "`\n\n"]
+        #[doc = "# Integer base related methods for `" $t "`\n\n"]
         #[doc = "- [digits](#method.digits" $dl ")"]
         #[doc = "- [digits_sign](#method.digits_sign" $dl ")"]
         #[doc = "- [digits_base](#method.digits_base" $dl ")"]
