@@ -4,12 +4,8 @@
 //
 
 use super::fns::*;
-use crate::data::convert::slice_into_array;
 #[cfg(feature = "alloc")]
-use {
-    crate::data::convert::{slice_into_vec, try_slice_into_vec},
-    _alloc::vec::Vec,
-};
+use _alloc::vec::Vec;
 
 // Marker trait to prevent downstream implementations of the `SliceExt` trait.
 mod private {
@@ -81,7 +77,11 @@ pub trait SliceExt<T>: private::Sealed {
     /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].into_array()];
     /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].into_array::<u16, 3>()];
     /// ```
+    /// # Features
+    /// If the `unsafe_mem` feature is enabled it uses `MaybeUninit` to improve performance.
     #[must_use]
+    // IMPROVE make a try_slice_into_array version:
+    // WAITING https://doc.rust-lang.org/nightly/core/array/fn.try_from_fn.html
     fn into_array<U, const N: usize>(&self) -> [U; N]
     where
         T: Clone,
@@ -96,6 +96,7 @@ pub trait SliceExt<T>: private::Sealed {
     /// ```
     #[must_use]
     #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
     fn into_vec<U>(&self) -> Vec<U>
     where
         T: Clone,
@@ -110,6 +111,7 @@ pub trait SliceExt<T>: private::Sealed {
     /// ```
     #[must_use]
     #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
     fn try_into_vec<E, U>(&self) -> Result<Vec<U>, E>
     where
         T: Clone,
@@ -174,13 +176,44 @@ macro_rules! slice_ext_impl {
 
             #[inline]
             fn into_array<U, const N: usize>(&self) -> [U; N] where T: Clone, U: From<T> {
-                slice_into_array(self)
+                if self.len() >= N {
+                    #[cfg(not(feature = "unsafe_mem"))]
+                    {
+                        let mut array: [U; N] = core::array::from_fn(|i| U::from(self[i].clone()));
+                        for (i, item) in self.iter().take(N).enumerate() {
+                            array[i] = U::from(item.clone());
+                        }
+                        array
+                    }
+                    // SAFETY: we make sure of initializing every array element
+                    #[cfg(feature = "unsafe_mem")]
+                    {
+                        use core::mem::MaybeUninit;
+                        let mut array: [MaybeUninit<U>; N] =
+                            unsafe { MaybeUninit::uninit().assume_init() };
+                        for i in 0..N { array[i] = MaybeUninit::new(U::from(self[i].clone())); }
+                        array.map(|x| unsafe { x.assume_init() })
+                    }
+                } else {
+                    panic!("Slice length is less than the requested array size")
+                }
             }
             #[inline] #[cfg(feature = "alloc")]
-            fn into_vec<U>(&self) -> Vec<U> where T: Clone, U: From<T> { slice_into_vec(self) }
+            fn into_vec<U>(&self) -> Vec<U> where T: Clone, U: From<T> {
+                self.iter().map(|t| U::from(t.clone())).collect::<Vec<_>>().into_iter().collect()
+            }
             #[inline] #[cfg(feature = "alloc")]
             fn try_into_vec<E, U>(&self) -> Result<Vec<U>, E>
-                where T: Clone, U: TryFrom<T, Error = E> { try_slice_into_vec(self) }
+                where T: Clone, U: TryFrom<T, Error = E> {
+                    self
+                        // 1. Vec<Result<_>>:
+                        .iter()
+                        .map(|t| U::try_from(t.clone()))
+                        .collect::<Vec<_>>()
+                        // 2. Result<Vec<_>>:
+                        .into_iter()
+                        .collect::<Result<Vec<_>, _>>()
+            }
         }
     };
     (mut: $t:ty, for $for:ty, impl: $($impl:tt)*) => {
