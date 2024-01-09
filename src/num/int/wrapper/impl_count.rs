@@ -71,6 +71,67 @@ macro_rules! impl_count {
                 Ok(Int(result))
             }
 
+            /// Returns the subfactorial, or the number of derangements.
+            ///
+            /// Permutations of *n* items which no element appears in its original position.
+            ///
+            /// # Algorithm
+            /// The current implementation uses following recursive algorithm:
+            /// $$ !n = (n - 1) * (!(n - 1) + !(n - 2)) $$
+            //
+            // Other possible formulas are:
+            // $$
+            // \begin{alignat}{1}
+            // !n & = n! \times \sum_{k=0}^{n} \frac{(-1)^k}{k!} \newline
+            // !n & = \left\lfloor \frac{n!}{e} + \frac{1}{2} \right\rfloor =
+            //     \left\lfloor n! \times \left(\frac{1}{e}\right) + \frac{1}{2} \right\rfloor
+            // \end{alignat}
+            // $$
+            //
+            /// These are the maximum numbers whose subfactorials can fit within
+            /// standard signed integer types:
+            ///
+            /// 5 for `i8`, 8 for `i16`, 12 for `i32`, 20 for `i64` and 35 for `i128`.
+            ///
+            /// # Errors
+            /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0$,
+            /// and [`Overflow`][E::Overflow] if the result can't fit the type.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").factorial()];"]
+            #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").factorial()];"]
+            #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
+            #[doc = "assert![Int(-3_" $t ").factorial().is_err()];"]
+            #[doc = "assert![Int(" $t "::MAX).factorial().is_err()];"]
+            /// ```
+            /// # Links
+            /// - The list of subfactorials is available in <https://oeis.org/A000166>.
+            #[inline]
+            pub const fn subfactorial(self) -> Result<Int<$t>> {
+                let n = self.0;
+                iif![n < 0; return Err(E::NonNegativeRequired)];
+                match n {
+                    0 => Ok(Int(1)),
+                    1 => Ok(Int(0)),
+                    _ => {
+                        let a = match Self::subfactorial(Int(n - 1)) {
+                            Ok(a) => a.0, Err(e) => return Err(e),
+                        };
+                        let b = match Self::subfactorial(Int(n - 2)) {
+                            Ok(b) => b.0, Err(e) => return Err(e),
+                        };
+                        let sum = a + b; // can't overflow
+                        if let Some(res) = (n - 1).checked_mul(sum) {
+                            Ok(Int(res))
+                        } else {
+                            return Err(E::Overflow);
+                        }
+                    }
+                }
+            }
+
             /// Permutations of `n` items taken `r` at a time, ordered.
             ///
             /// When $n=r$ or $n=r-1$ the result is the same as calculating the factorial $n!$.
@@ -273,6 +334,64 @@ macro_rules! impl_count {
                     n -= 1;
                 }
                 Ok(Int(result))
+            }
+
+            /// Returns the subfactorial, or the number of derangements.
+            ///
+            /// Permutations of *n* items which no element appears in its original position.
+            ///
+            /// # Algorithm
+            /// The current implementation uses following recursive algorithm:
+            /// $$ !n = (n - 1) * (!(n - 1) + !(n - 2)) $$
+            //
+            // Other possible formulas are:
+            // $$
+            // \begin{alignat}{1}
+            // !n & = n! \times \sum_{k=0}^{n} \frac{(-1)^k}{k!} \newline
+            // !n & = \left\lfloor \frac{n!}{e} + \frac{1}{2} \right\rfloor =
+            //     \left\lfloor n! \times \left(\frac{1}{e}\right) + \frac{1}{2} \right\rfloor
+            // \end{alignat}
+            // $$
+            //
+            /// These are the maximum numbers whose subfactorials can fit within
+            /// standard signed integer types:
+            ///
+            /// 5 for `u8`, 8 for `u16`, 13 for `u32`, 20 for `u64` and 35 for `u128`.
+            ///
+            /// # Errors
+            /// Returns [`Overflow`][E::Overflow] if the result can't fit the type.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").factorial()];"]
+            #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").factorial()];"]
+            #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
+            #[doc = "assert![Int(" $t "::MAX).factorial().is_err()];"]
+            /// ```
+            /// # Links
+            /// - The list of subfactorials is available in <https://oeis.org/A000166>.
+            #[inline]
+            pub const fn subfactorial(self) -> Result<Int<$t>> {
+                let n = self.0;
+                match n {
+                    0 => Ok(Int(1)),
+                    1 => Ok(Int(0)),
+                    _ => {
+                        let a = match Self::subfactorial(Int(n - 1)) {
+                            Ok(a) => a.0, Err(e) => return Err(e),
+                        };
+                        let b = match Self::subfactorial(Int(n - 2)) {
+                            Ok(b) => b.0, Err(e) => return Err(e),
+                        };
+                        let sum = a + b; // can't overflow
+                        if let Some(res) = (n - 1).checked_mul(sum) {
+                            Ok(Int(res))
+                        } else {
+                            return Err(E::Overflow);
+                        }
+                    }
+                }
             }
 
             /// Permutations of `n` items taken `r` at a time, ordered.

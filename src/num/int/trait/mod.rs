@@ -58,6 +58,37 @@ pub trait NumInt: Num {
     /// *Like [`int_factorial`][Self::int_factorial] but takes the arguments by reference.*
     fn int_ref_factorial(&self) -> Result<Self::Out> where Self: Sized{ E::ni() }
 
+    /// Returns the subfactorial, or the number of derangements.
+    ///
+    /// Permutations of *n* items which no element appears in its original position.
+    ///
+    /// # Algorithm
+    /// The current implementation uses following recursive algorithm:
+    /// $$ !n = (n - 1) * (!(n - 1) + !(n - 2)) $$
+    ///
+    /// Other possible formulas are:
+    /// $$
+    /// \begin{alignat}{1}
+    /// !n & = n! \times \sum_{k=0}^{n} \frac{(-1)^k}{k!} \newline
+    /// !n & = \left\lfloor \frac{n!}{e} + \frac{1}{2} \right\rfloor =
+    ///     \left\lfloor n! \times \left(\frac{1}{e}\right) + \frac{1}{2} \right\rfloor
+    /// \end{alignat}
+    /// $$
+    ///
+    /// These are the maximum numbers whose subfactorials can fit within
+    /// standard signed integer types:
+    /// - 5 for `i8`, 8 for `i16`, 12 for `i32`, 20 for `i64` and 35 for `i128`.
+    /// - 5 for `u8`, 8 for `u16`, 13 for `u32`, 20 for `u64` and 35 for `u128`.
+    ///
+    /// # Errors
+    /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0$,
+    /// and [`Overflow`][E::Overflow] if the result can't fit the type.
+    /// # Links
+    /// - The list of subfactorials is available in <https://oeis.org/A000166>.
+    fn int_subfactorial(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// *Like [`int_subfactorial`][Self::int_subfactorial] but takes the arguments by reference.*
+    fn int_ref_subfactorial(&self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
     /// Returns the number of permutations of `n` items taken `r` at a time, ordered.
     ///
     /// When $n=r$ or $n=r-1$ the result is the same as calculating the factorial $n!$.
@@ -178,6 +209,10 @@ where
     /// *Calls `NumInt::`[`int_ref_factorial`][NumInt::int_ref_factorial]*.
     fn int_ref_factorial(&self) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_factorial()
+    }
+    /// *Calls `NumInt::`[`int_ref_subfactorial`][NumInt::int_ref_subfactorial]*.
+    fn int_ref_subfactorial(&self) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_subfactorial()
     }
     /// *Calls `NumInt::`[`int_ref_permute`][NumInt::int_ref_permute]*.
     fn int_ref_permute(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
