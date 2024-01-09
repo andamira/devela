@@ -4,9 +4,15 @@
 //
 // TOC
 // - signed|unsigned:
+// - is_square
+// - sqrt_floor
+// - sqrt_ceil
+// - sqrt_round
 
 use super::Int;
 use crate::code::{iif, paste};
+use crate::num::{NumErrors as E, NumResult as Result};
+use E::NonNegativeRequired;
 
 // $t:   the input/output type
 // $dl:  the doclink suffix for the method name
@@ -20,8 +26,8 @@ macro_rules! impl_sqrt {
 
         #[doc = "# Integer square root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $dl ")"]
-        #[doc = "- [sqrt_floor](#method.sqrt_floor" $dl ")"]
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $dl ")"]
+        #[doc = "- [sqrt_floor](#method.sqrt_floor" $dl ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $dl ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
@@ -49,12 +55,48 @@ macro_rules! impl_sqrt {
             #[inline] #[must_use]
             pub const fn is_square(self) -> bool {
                 let a = self.0;
-                iif![let Some(sqrt) = self.sqrt_floor(); sqrt.0 * sqrt.0 == a; false]
+                iif![let Ok(sqrt) = self.sqrt_floor(); sqrt.0 * sqrt.0 == a; false]
+            }
+
+            /// Returns the ceiled integer square root.
+            ///
+            /// # Errors
+            /// Returns [`NonNegativeRequired`] if `self` is negative.
+            ///
+            /// # Algorithm
+            /// $$ \large
+            /// \begin{align}
+            /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
+            /// n & \text{if } n^2 = a \cr
+            /// n+1 & \text{if } n^2 < a \end{cases} \cr
+            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
+            /// \end{align}
+            /// $$
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumErrors::NonNegativeRequired};
+            #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(20_" $t ").sqrt_ceil(), Ok(Int(5))];"]
+            #[doc="assert_eq![Int(21_" $t ").sqrt_ceil(), Ok(Int(5))];"]
+            #[doc="assert_eq![Int(-4_" $t ").sqrt_ceil(), Err(NonNegativeRequired)];"]
+            /// ```
+            #[inline]
+            pub const fn sqrt_ceil(self) -> Result<Int<$t>> {
+                let a = self.0;
+                if let Ok(floor) = self.sqrt_floor() {
+                    iif![floor.0 * floor.0 == a; Ok(floor); Ok(Int(floor.0 + 1))] // IMPROVE ops
+                } else {
+                    Err(NonNegativeRequired)
+                }
             }
 
             /// Returns the floored integer square root.
             ///
-            /// Returns `None` if `a` is negative.
+            /// # Errors
+            /// Returns [`NonNegativeRequired`] if `self` is negative.
+            ///
             /// # Algorithm
             /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
             ///
@@ -79,66 +121,36 @@ macro_rules! impl_sqrt {
             /// or equal to the square root of `a`.
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
-            #[doc="assert_eq![Int(12_" $t ").sqrt_floor(), Some(Int(3))];"]
-            #[doc="assert_eq![Int(13_" $t ").sqrt_floor(), Some(Int(3))];"]
-            #[doc="assert_eq![Int(16_" $t ").sqrt_floor(), Some(Int(4))];"]
-            #[doc="assert_eq![Int(20_" $t ").sqrt_floor(), Some(Int(4))];"]
-            #[doc="assert_eq![Int(21_" $t ").sqrt_floor(), Some(Int(4))];"]
-            #[doc="assert_eq![Int(-4_" $t ").sqrt_floor(), None];"]
+            /// # use devela::num::{Int, NumErrors::NonNegativeRequired};
+            #[doc="assert_eq![Int(12_" $t ").sqrt_floor(), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(13_" $t ").sqrt_floor(), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(16_" $t ").sqrt_floor(), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(20_" $t ").sqrt_floor(), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(21_" $t ").sqrt_floor(), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(-4_" $t ").sqrt_floor(), Err(NonNegativeRequired)];"]
             /// ```
-            #[inline] #[must_use]
-            pub const fn sqrt_floor(self) -> Option<Int<$t>> {
+            #[inline]
+            pub const fn sqrt_floor(self) -> Result<Int<$t>> {
                 let a = self.0;
                 if a.is_negative() {
-                    None
+                    Err(NonNegativeRequired)
                 } else if a < 2 {
-                    Some(self)
+                    Ok(self)
                 } else {
                     let (mut x, mut y) = (a, (a + a / a) / 2);
                     while y < x {
                         x = y;
                         y = (x + a / x) / 2;
                     }
-                    Some(Int(x))
-                }
-            }
-
-            /// Returns the ceiled integer square root.
-            ///
-            /// Returns `None` if `a` is negative.
-            /// # Algorithm
-            /// $$ \large
-            /// \begin{align}
-            /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
-            /// n & \text{if } n^2 = a \cr
-            /// n+1 & \text{if } n^2 < a \end{cases} \cr
-            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
-            /// \end{align}
-            /// $$
-            /// # Examples
-            /// ```
-            /// # use devela::num::Int;
-            #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Some(Int(4))];"]
-            #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Some(Int(4))];"]
-            #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Some(Int(4))];"]
-            #[doc="assert_eq![Int(20_" $t ").sqrt_ceil(), Some(Int(5))];"]
-            #[doc="assert_eq![Int(21_" $t ").sqrt_ceil(), Some(Int(5))];"]
-            #[doc="assert_eq![Int(-4_" $t ").sqrt_ceil(), None];"]
-            /// ```
-            #[inline] #[must_use]
-            pub const fn sqrt_ceil(self) -> Option<Int<$t>> {
-                let a = self.0;
-                if let Some(floor) = self.sqrt_floor() {
-                    iif![floor.0 * floor.0 == a; Some(floor); Some(Int(floor.0 + 1))] // IMPROVE ops
-                } else {
-                    None
+                    Ok(Int(x))
                 }
             }
 
             /// Returns the rounded integer square root.
             ///
-            /// Returns `None` if `a` is negative.
+            /// # Errors
+            /// Returns [`NonNegativeRequired`] if `self` is negative.
+            ///
             /// # Algorithm
             /// $$ \large
             /// \begin{align}
@@ -150,21 +162,21 @@ macro_rules! impl_sqrt {
             /// $$
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
-            #[doc="assert_eq![Int(12_" $t ").sqrt_round(), Some(Int(3))];"]
-            #[doc="assert_eq![Int(13_" $t ").sqrt_round(), Some(Int(4))];"]
-            #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Some(Int(4))];"]
-            #[doc="assert_eq![Int(20_" $t ").sqrt_round(), Some(Int(4))];"]
-            #[doc="assert_eq![Int(21_" $t ").sqrt_round(), Some(Int(5))];"]
-            #[doc="assert_eq![Int(-4_" $t ").sqrt_round(), None];"]
+            /// # use devela::num::{Int, NumErrors::NonNegativeRequired};
+            #[doc="assert_eq![Int(12_" $t ").sqrt_round(), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(13_" $t ").sqrt_round(), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(20_" $t ").sqrt_round(), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(21_" $t ").sqrt_round(), Ok(Int(5))];"]
+            #[doc="assert_eq![Int(-4_" $t ").sqrt_round(), Err(NonNegativeRequired)];"]
             /// ```
-            #[inline] #[must_use]
-            pub const fn sqrt_round(self) -> Option<Int<$t>> {
+            #[inline]
+            pub const fn sqrt_round(self) -> Result<Int<$t>> {
                 let a = self.0;
                 if a.is_negative() {
-                    None
+                    Err(NonNegativeRequired)
                 } else if a < 2 {
-                    Some(self)
+                    Ok(self)
                 } else {
                     // sqrt_floor
                     let (mut x, mut y) = (a, (a + a / a) / 2);
@@ -173,7 +185,7 @@ macro_rules! impl_sqrt {
                         y = (x + a / x) / 2;
                     }
                     // do we have to round up?
-                    iif![a - x * x >= (x + 1) * (x + 1) - a; Some(Int(x + 1)); Some(Int(x))]
+                    iif![a - x * x >= (x + 1) * (x + 1) - a; Ok(Int(x + 1)); Ok(Int(x))]
                 }
             }
         }
@@ -183,8 +195,8 @@ macro_rules! impl_sqrt {
     (@unsigned $t:ty : $dl:literal) => { paste! {
         #[doc = "# Integer square root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $dl ")"]
-        #[doc = "- [sqrt_floor](#method.sqrt_floor" $dl ")"]
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $dl ")"]
+        #[doc = "- [sqrt_floor](#method.sqrt_floor" $dl ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $dl ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
@@ -215,6 +227,31 @@ macro_rules! impl_sqrt {
                 let a = self.0;
                 let sqrt = self.sqrt_floor();
                 sqrt.0 * sqrt.0 == a // IMPROVE ops
+            }
+
+            /// Returns the ceiled integer square root.
+            /// # Algorithm
+            /// $$ \large
+            /// \begin{align}
+            /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
+            /// n & \text{if } n^2 = a \cr
+            /// n+1 & \text{if } n^2 < a \end{cases} \cr
+            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
+            /// \end{align}
+            /// $$
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Int(4)];"]
+            #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Int(4)];"]
+            #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Int(4)];"]
+            #[doc="assert_eq![Int(20_" $t ").sqrt_ceil(), Int(5)];"]
+            #[doc="assert_eq![Int(21_" $t ").sqrt_ceil(), Int(5)];"]
+            /// ```
+            #[inline] #[must_use]
+            pub const fn sqrt_ceil(self) -> Int<$t> {
+                let a = self.0; let floor = self.sqrt_floor();
+                iif![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)] // IMPROVE ops
             }
 
             /// Returns the floored integer square root.
@@ -263,31 +300,6 @@ macro_rules! impl_sqrt {
                     }
                     Int(x)
                 }
-            }
-
-            /// Returns the ceiled integer square root.
-            /// # Algorithm
-            /// $$ \large
-            /// \begin{align}
-            /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
-            /// n & \text{if } n^2 = a \cr
-            /// n+1 & \text{if } n^2 < a \end{cases} \cr
-            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
-            /// \end{align}
-            /// $$
-            /// # Examples
-            /// ```
-            /// # use devela::num::Int;
-            #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Int(4)];"]
-            #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Int(4)];"]
-            #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Int(4)];"]
-            #[doc="assert_eq![Int(20_" $t ").sqrt_ceil(), Int(5)];"]
-            #[doc="assert_eq![Int(21_" $t ").sqrt_ceil(), Int(5)];"]
-            /// ```
-            #[inline] #[must_use]
-            pub const fn sqrt_ceil(self) -> Int<$t> {
-                let a = self.0; let floor = self.sqrt_floor();
-                iif![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)] // IMPROVE ops
             }
 
             /// Returns the rounded integer square root.

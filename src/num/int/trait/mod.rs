@@ -80,6 +80,74 @@ pub trait NumInt: Num {
     /// *Like [`int_div_ties_odd`][Self::int_div_ties_odd] but takes the arguments by reference.*
     fn int_ref_div_ties_odd(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
 
+    /* square root */
+
+    /// Returns `true` if it's a perfect square.
+    ///
+    /// Returns `false` otherwise, which includes all possible negative values.
+    /// # Algorithm
+    /// $$ \large
+    /// \text{is\textunderscore square}(a) = \begin{cases}
+    /// \text{true} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 = a \cr
+    /// \text{false} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 \neq a
+    /// \end{cases}
+    /// $$
+    /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
+    fn int_is_square(self) -> Result<bool> where Self: Sized{ E::ni() }
+
+    /// Returns the ceiled integer square root.
+    ///
+    /// Returns `None` if `a` is negative.
+    /// # Algorithm
+    /// $$ \large
+    /// \begin{align}
+    /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
+    /// n & \text{if } n^2 = a \cr
+    /// n+1 & \text{if } n^2 < a \end{cases} \cr
+    /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
+    /// \end{align}
+    /// $$
+    fn int_sqrt_ceil(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
+    /// Returns the floored integer square root.
+    ///
+    /// Returns `None` if `a` is negative.
+    /// # Algorithm
+    /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
+    ///
+    /// Where $n_{k}$ is the result of a sequence of estimates that
+    /// starts with an initial $n_{0} = a/2$ which is updated using
+    /// [*Heron's method*](
+    /// https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method):
+    ///
+    /// $$ \large
+    /// n_{i+1} = n_{i} - ( n_{i}^{2} - a) / 2n_{i},
+    /// \quad \small\text{for} \quad i = 0, 1, \ldots, k,
+    /// $$
+    ///
+    /// Where $n_{i}$ is the current estimate, $n_{i+1}$ is the next
+    /// estimate, $a$ is self, and $k$ is the number of iterations
+    /// needed to converge to a solution, on the order of the number of
+    /// bits of self, about $O(\log_2 b)$, which for e.g. 128 bits would
+    /// be $ ±7 $ iterations.
+    ///
+    /// Hence, the function continues updating the estimate until
+    /// reaching $n_{k}$, which provides the largest integer less than
+    /// or equal to the square root of `a`.
+    fn int_sqrt_floor(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
+    /// Returns the rounded integer square root.
+    /// # Algorithm
+    /// $$ \large
+    /// \begin{align}
+    /// \notag \left\lfloor\sqrt{a} \thinspace\right\rceil = \begin{cases}
+    /// n & \text{if } a - n^2 < (n+1)^2 - a \cr
+    /// n+1 & \text{if } a - n^2 \geq (n+1)^2 - a \end{cases} \cr
+    /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
+    /// \end{align}
+    /// $$
+    fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
     /* combinatorics */
 
     /// Returns the factorial.

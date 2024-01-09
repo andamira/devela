@@ -21,6 +21,15 @@ macro_rules! impl_int {
         impl NumInt for $p {
             impl_int![common_body_iu];
 
+            /* square root */
+
+            #[inline]
+            fn int_sqrt_ceil(self) -> Result<Self::Out> { Int(self).sqrt_ceil().map(|n|n.0) }
+            #[inline]
+            fn int_sqrt_floor(self) -> Result<Self::Out> { Int(self).sqrt_floor().map(|n|n.0) }
+            #[inline]
+            fn int_sqrt_round(self) -> Result<Self::Out> { Int(self).sqrt_round().map(|n|n.0) }
+
             /* gcd & lcm */
 
             #[inline]
@@ -41,6 +50,15 @@ macro_rules! impl_int {
         // u*
         impl NumInt for $p {
             impl_int![common_body_iu];
+
+            /* square root */
+
+            #[inline]
+            fn int_sqrt_ceil(self) -> Result<Self::Out> { Ok(Int(self).sqrt_ceil().0) }
+            #[inline]
+            fn int_sqrt_floor(self) -> Result<Self::Out> { Ok(Int(self).sqrt_floor().0) }
+            #[inline]
+            fn int_sqrt_round(self) -> Result<Self::Out> { Ok(Int(self).sqrt_round().0) }
 
             /* gcd & lcm */
 
@@ -77,6 +95,11 @@ macro_rules! impl_int {
         #[inline]
         fn int_div_ties_odd(self, b: Self) -> Result<Self::Out> {
             Ok(Int(self).div_ties_odd(b).0) }
+
+        /* square root */
+
+        #[inline]
+        fn int_is_square(self) -> Result<bool> { Ok(Int(self).is_square()) }
 
         /* combinatorics */
 
