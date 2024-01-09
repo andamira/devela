@@ -14,6 +14,7 @@ use super::Int;
 use crate::code::{cfor, iif, paste};
 use crate::data::Casting;
 use crate::num::{NumErrors as E, NumResult as Result};
+use E::{MismatchedSizes, NonNegativeRequired, Overflow};
 
 // $t:   the input/output type
 // $dl:  the doclink suffix for the method name
@@ -43,8 +44,8 @@ macro_rules! impl_count {
             /// 5 for `i8`, 7 for `i16`, 12 for `i32`, 20 for `i64` and 33 for `i128`.
             ///
             /// # Errors
-            /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0$,
-            /// and [`Overflow`][E::Overflow] if the result can't fit the type.
+            /// Returns [`NonNegativeRequired`] if $n<0$,
+            /// and [`Overflow`] if the result can't fit the type.
             ///
             /// # Examples
             /// ```
@@ -58,13 +59,13 @@ macro_rules! impl_count {
             #[inline]
             pub const fn factorial(self) -> Result<Int<$t>> {
                 let n = self.0;
-                iif![n < 0; return Err(E::NonNegativeRequired)];
+                iif![n < 0; return Err(NonNegativeRequired)];
                 let (mut n, mut result): ($t, $t) = (n.abs(), 1);
                 while n > 1 {
                     result = if let Some(res) = result.checked_mul(n) {
                         res
                     } else {
-                        return Err(E::Overflow);
+                        return Err(Overflow);
                     };
                     n -= 1;
                 }
@@ -94,24 +95,27 @@ macro_rules! impl_count {
             /// 5 for `i8`, 8 for `i16`, 12 for `i32`, 20 for `i64` and 35 for `i128`.
             ///
             /// # Errors
-            /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0$,
-            /// and [`Overflow`][E::Overflow] if the result can't fit the type.
+            /// Returns [`NonNegativeRequired`] if $n<0$,
+            /// and [`Overflow`] if the result can't fit the type.
+            ///
+            /// # Panics
+            /// For very large values (e.g. `i32:MAX`) the stack can overflow.
             ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").factorial()];"]
-            #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").factorial()];"]
-            #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
-            #[doc = "assert![Int(-3_" $t ").factorial().is_err()];"]
-            #[doc = "assert![Int(" $t "::MAX).factorial().is_err()];"]
+            #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").subfactorial()];"]
+            #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").subfactorial()];"]
+            #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").subfactorial()];"]
+            #[doc = "assert![Int(-3_" $t ").subfactorial().is_err()];"]
+            #[doc = "assert![Int(127_" $t ").subfactorial().is_err()];"]
             /// ```
             /// # Links
             /// - The list of subfactorials is available in <https://oeis.org/A000166>.
             #[inline]
             pub const fn subfactorial(self) -> Result<Int<$t>> {
                 let n = self.0;
-                iif![n < 0; return Err(E::NonNegativeRequired)];
+                iif![n < 0; return Err(NonNegativeRequired)];
                 match n {
                     0 => Ok(Int(1)),
                     1 => Ok(Int(0)),
@@ -126,7 +130,7 @@ macro_rules! impl_count {
                         if let Some(res) = (n - 1).checked_mul(sum) {
                             Ok(Int(res))
                         } else {
-                            return Err(E::Overflow);
+                            return Err(Overflow);
                         }
                     }
                 }
@@ -140,9 +144,9 @@ macro_rules! impl_count {
             /// $$ \large P(n,r) = \frac{|n|!}{(|n|−|r|)!} $$
             ///
             /// # Errors
-            /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0 \lor r<0$,
-            /// [`MismatchedSizes`][E::MismatchedSizes] if $|r| > |n|$, and
-            /// [`Overflow`][E::Overflow] if the result cant't fit the type.
+            /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
+            /// [`MismatchedSizes`] if $|r| > |n|$, and
+            /// [`Overflow`] if the result cant't fit the type.
             ///
             /// # Examples
             /// ```
@@ -156,14 +160,14 @@ macro_rules! impl_count {
             #[inline]
             pub const fn permute(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
-                iif![r > n; return Err(E::MismatchedSizes)];
+                iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
+                iif![r > n; return Err(MismatchedSizes)];
                 let mut result: $t = 1;
                 cfor![i in 0..r => {
                     result = if let Some(res) = result.checked_mul(n - i) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     }
                 }];
                 Ok(Int(result))
@@ -175,8 +179,8 @@ macro_rules! impl_count {
             /// $$ \large P_\text{rep}(n,r) = n_r $$
             ///
             /// # Errors
-            /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0 \lor r<0$,
-            /// and [`Overflow`][E::Overflow] if the result cant't fit the type.
+            /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
+            /// and [`Overflow`] if the result cant't fit the type.
             ///
             /// # Examples
             /// ```
@@ -190,16 +194,16 @@ macro_rules! impl_count {
             #[inline]
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
+                iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
                 let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
                     res
                 } else {
-                    return Err(E::Overflow);
+                    return Err(Overflow);
                 };
                 if let Some(res) = n.checked_pow(r_u32) {
                     Ok(Int(res))
                 } else {
-                    Err(E::Overflow)
+                    Err(Overflow)
                 }
             }
 
@@ -209,9 +213,9 @@ macro_rules! impl_count {
             /// $$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$
             ///
             /// # Errors
-            /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0 \lor r<0$,
-            /// [`MismatchedSizes`][E::MismatchedSizes] if $r > n$, and
-            /// [`Overflow`][E::Overflow] if the result cant't fit the type.
+            /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
+            /// [`MismatchedSizes`] if $r > n$, and
+            /// [`Overflow`] if the result cant't fit the type.
             ///
             /// # Examples
             /// ```
@@ -225,19 +229,19 @@ macro_rules! impl_count {
             #[inline]
             pub const fn combine(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
-                iif![r > n; return Err(E::MismatchedSizes)];
+                iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
+                iif![r > n; return Err(MismatchedSizes)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 cfor![i in 0..r => {
                     num = if let Some(res) = num.checked_mul(n - i) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     };
                     den = if let Some(res) = den.checked_mul(i + 1) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     };
                 }];
                 Ok(Int(num / den))
@@ -251,8 +255,8 @@ macro_rules! impl_count {
             /// $$ \large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
             ///
             /// # Errors
-            /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0 \lor r<0$,
-            /// [`Overflow`][E::Overflow] if the result cant't fit the type.
+            /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
+            /// [`Overflow`] if the result cant't fit the type.
             ///
             /// # Examples
             /// ```
@@ -266,23 +270,23 @@ macro_rules! impl_count {
             #[inline]
             pub const fn combine_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                iif![n < 0 || r < 0; return Err(E::NonNegativeRequired)];
+                iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 cfor![i in 0..r => {
                     let factor = if let Some(res) = n.checked_add(r - 1 - i) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     };
                     num = if let Some(res) = num.checked_mul(factor) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     };
                     den = if let Some(res) = den.checked_mul(i + 1) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     };
                 }];
                 Ok(Int(num / den))
@@ -312,7 +316,7 @@ macro_rules! impl_count {
             /// 5 for `u8`, 8 for `u16`, 12 for `u32`, 20 for `u64` and 34 for `u128`.
             ///
             /// # Errors
-            /// Returns [`Overflow`][E::Overflow] if the result can't fit the type.
+            /// Returns [`Overflow`] if the result can't fit the type.
             ///
             /// # Examples
             /// ```
@@ -329,7 +333,7 @@ macro_rules! impl_count {
                     result = if let Some(res) = result.checked_mul(n) {
                         res
                     } else {
-                        return Err(E::Overflow);
+                        return Err(Overflow);
                     };
                     n -= 1;
                 }
@@ -359,15 +363,18 @@ macro_rules! impl_count {
             /// 5 for `u8`, 8 for `u16`, 13 for `u32`, 20 for `u64` and 35 for `u128`.
             ///
             /// # Errors
-            /// Returns [`Overflow`][E::Overflow] if the result can't fit the type.
+            /// Returns [`Overflow`] if the result can't fit the type.
+            ///
+            /// # Panics
+            /// For very large values (e.g. `u32:MAX`) the stack can overflow.
             ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").factorial()];"]
-            #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").factorial()];"]
-            #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
-            #[doc = "assert![Int(" $t "::MAX).factorial().is_err()];"]
+            #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").subfactorial()];"]
+            #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").subfactorial()];"]
+            #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").subfactorial()];"]
+            #[doc = "assert![Int(255_" $t ").subfactorial().is_err()];"]
             /// ```
             /// # Links
             /// - The list of subfactorials is available in <https://oeis.org/A000166>.
@@ -388,7 +395,7 @@ macro_rules! impl_count {
                         if let Some(res) = (n - 1).checked_mul(sum) {
                             Ok(Int(res))
                         } else {
-                            return Err(E::Overflow);
+                            return Err(Overflow);
                         }
                     }
                 }
@@ -402,8 +409,8 @@ macro_rules! impl_count {
             /// $$ \large P(n,r) = \frac{n!}{(n−r)!} $$
             ///
             /// # Errors
-            /// Returns [`MismatchedSizes`][E::MismatchedSizes] if $r > n$ and
-            /// [`Overflow`][E::Overflow] if the result cant't fit the type.
+            /// Returns [`MismatchedSizes`] if $r > n$ and
+            /// [`Overflow`] if the result cant't fit the type.
             ///
             /// # Examples
             /// ```
@@ -417,13 +424,13 @@ macro_rules! impl_count {
             #[inline]
             pub const fn permute(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                iif![r > n; return Err(E::MismatchedSizes)];
+                iif![r > n; return Err(MismatchedSizes)];
                 let mut result: $t = 1;
                 cfor![i in 0..r => {
                     result = if let Some(res) = result.checked_mul(n - i) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     }
                 }];
                 Ok(Int(result))
@@ -435,7 +442,7 @@ macro_rules! impl_count {
             /// $$ \large P_\text{rep}(n,r) = n_r $$
             ///
             /// # Errors
-            /// Returns [`Overflow`][E::Overflow] if the result cant't fit the type.
+            /// Returns [`Overflow`] if the result cant't fit the type.
             ///
             /// # Examples
             /// ```
@@ -451,12 +458,12 @@ macro_rules! impl_count {
                 let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
                     res
                 } else {
-                    return Err(E::Overflow);
+                    return Err(Overflow);
                 };
                 if let Some(res) = n.checked_pow(r_u32) {
                     Ok(Int(res))
                 } else {
-                    Err(E::Overflow)
+                    Err(Overflow)
                 }
             }
 
@@ -466,8 +473,8 @@ macro_rules! impl_count {
             /// $$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$
             ///
             /// # Errors
-            /// Returns [`MismatchedSizes`][E::MismatchedSizes] if $r > n$ and
-            /// [`Overflow`][E::Overflow] if the result cant't fit the type.
+            /// Returns [`MismatchedSizes`] if $r > n$ and
+            /// [`Overflow`] if the result cant't fit the type.
             ///
             /// # Examples
             /// ```
@@ -480,18 +487,18 @@ macro_rules! impl_count {
             #[inline]
             pub const fn combine(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                iif![r > n; return Err(E::MismatchedSizes)];
+                iif![r > n; return Err(MismatchedSizes)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 cfor![i in 0..r => {
                     num = if let Some(res) = num.checked_mul(n - i) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     };
                     den = if let Some(res) = den.checked_mul(i + 1) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     };
                 }];
                 Ok(Int(num / den))
@@ -505,7 +512,7 @@ macro_rules! impl_count {
             /// $$ \large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
             ///
             /// # Errors
-            /// Returns [`Overflow`][E::Overflow] if the result cant't fit the type.
+            /// Returns [`Overflow`] if the result cant't fit the type.
             ///
             /// # Examples
             /// ```
@@ -522,17 +529,17 @@ macro_rules! impl_count {
                     let factor = if let Some(res) = n.checked_add(r - 1 - i) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     };
                     num = if let Some(res) = num.checked_mul(factor) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     };
                     den = if let Some(res) = den.checked_mul(i + 1) {
                         res
                     } else {
-                        return Err(E::Overflow)
+                        return Err(Overflow)
                     };
                 }];
                 Ok(Int(num / den))
