@@ -45,15 +45,39 @@ macro_rules! impl_int {
             /* gcd & lcm */
 
             #[inline]
-            fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
+            fn int_gcd_ext(self, _: Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
             #[inline]
-            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
+            fn int_ref_gcd_ext(&self, _: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
         }
     }};
 
     // Inner helpers for repeated common bodies for signed and unsigned
     // ============================================================================================
     (common_body_iu) => {
+        /* division */
+
+        #[inline]
+        fn int_div_rem(self, b: Self::Rhs) -> Result<[Self::Out; 2]> {
+            let [d, r] = Int(self).div_rem(b); Ok([d.0, r.0]) }
+        #[inline]
+        fn int_div_ceil(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_ceil(b).0) }
+        #[inline]
+        fn int_div_floor(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_floor(b).0) }
+        #[inline]
+        fn int_div_ties_away(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_ties_away(b).0) }
+        #[inline]
+        fn int_div_ties_towards(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_ties_towards(b).0) }
+        #[inline]
+        fn int_div_ties_even(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_ties_even(b).0) }
+        #[inline]
+        fn int_div_ties_odd(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_ties_odd(b).0) }
+
         /* combinatorics */
 
         #[inline]

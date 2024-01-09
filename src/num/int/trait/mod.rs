@@ -4,7 +4,7 @@
 //
 
 use crate::num::{Num, NumErrors as E, NumRef, NumResult as Result};
-use core::ops::{Deref, DerefMut};
+use core::ops::Deref;
 #[cfg(doc)]
 use E::{MismatchedSizes, NonNegativeRequired, NotImplemented, NotSupported, Overflow};
 
@@ -39,6 +39,47 @@ mod auto_impls {
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait NumInt: Num {
+    /* division */
+
+    /// Returns the truncated quotient and the remainder.
+    fn int_div_rem(self, b: Self::Rhs) -> Result<[Self::Out; 2]> where Self: Sized{ E::ni() }
+    /// *Like [`int_div_rem`][Self::int_div_rem] but takes the arguments by reference.*
+    fn int_ref_div_rem(&self, b: &Self::Rhs) -> Result<[Self::Out; 2]> where Self: Sized{ E::ni() }
+
+    /// Returns the quotient, rounding the result towards positive infinity.
+    /// # Notation
+    /// $$ \large \left\lceil \frac{x}{y} \right\rceil $$
+    fn int_div_ceil(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// *Like [`int_div_ceil`][Self::int_div_ceil] but takes the arguments by reference.*
+    fn int_ref_div_ceil(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
+    /// Returns the quotient, rounding the result towards negative infinity.
+    /// # Notation
+    /// $$ \large \left\lfloor \frac{x}{y} \right\rfloor $$
+    fn int_div_floor(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// *Like [`int_div_floor`][Self::int_div_floor] but takes the arguments by reference.*
+    fn int_ref_div_floor(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
+    /// Returns the quotient, rounding ties away from zero.
+    fn int_div_ties_away(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// *Like [`int_div_ties_away`][Self::int_div_ties_away] but takes the arguments by reference.*
+    fn int_ref_div_ties_away(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
+    /// Returns the quotient, rounding ties towards from zero.
+    fn int_div_ties_towards(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// *Like [`int_div_ties_towards`][Self::int_div_ties_towards] but takes the arguments by reference.*
+    fn int_ref_div_ties_towards(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
+    /// Returns the quotient, rounding ties to the nearest even number.
+    fn int_div_ties_even(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// *Like [`int_div_ties_even`][Self::int_div_ties_even] but takes the arguments by reference.*
+    fn int_ref_div_ties_even(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
+    /// Returns the quotient, rounding ties to the nearest odd number.
+    fn int_div_ties_odd(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    /// *Like [`int_div_ties_odd`][Self::int_div_ties_odd] but takes the arguments by reference.*
+    fn int_ref_div_ties_odd(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+
     /* combinatorics */
 
     /// Returns the factorial.
@@ -204,6 +245,37 @@ where
     Self: Deref<Target = <Self as NumRef<'a>>::Own>,
     <Self as NumRef<'a>>::Own: NumInt
 {
+    /* division */
+
+    /// *Calls `NumInt::`[`int_ref_div_rem`][NumInt::int_ref_div_rem]*.
+    fn int_ref_div_rem(&self, b: &<Self::Own as Num>::Rhs) -> Result<[<Self::Own as Num>::Out; 2]> {
+            self.deref().int_ref_div_rem(b)
+    }
+    /// *Calls `NumInt::`[`int_ref_div_ceil`][NumInt::int_ref_div_ceil]*.
+    fn int_ref_div_ceil(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_div_ceil(b)
+    }
+    /// *Calls `NumInt::`[`int_ref_div_floor`][NumInt::int_ref_div_floor]*.
+    fn int_ref_div_floor(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_div_floor(b)
+    }
+    /// *Calls `NumInt::`[`int_ref_div_ties_away`][NumInt::int_ref_div_ties_away]*.
+    fn int_ref_div_ties_away(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_div_ties_away(b)
+    }
+    /// *Calls `NumInt::`[`int_ref_div_ties_towards`][NumInt::int_ref_div_ties_towards]*.
+    fn int_ref_div_ties_towards(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_div_ties_towards(b)
+    }
+    /// *Calls `NumInt::`[`int_ref_div_ties_even`][NumInt::int_ref_div_ties_even]*.
+    fn int_ref_div_ties_even(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_div_ties_even(b)
+    }
+    /// *Calls `NumInt::`[`int_ref_div_ties_odd`][NumInt::int_ref_div_ties_odd]*.
+    fn int_ref_div_ties_odd(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_div_ties_odd(b)
+    }
+
     /* combinatorics */
 
     /// *Calls `NumInt::`[`int_ref_factorial`][NumInt::int_ref_factorial]*.
