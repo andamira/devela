@@ -42,43 +42,43 @@ pub trait NumInt: Num {
     /* division */
 
     /// Returns the truncated quotient and the remainder.
-    fn int_div_rem(self, b: Self::Rhs) -> Result<[Self::Out; 2]> where Self: Sized{ E::ni() }
+    fn int_div_rem(self, b: Self::Rhs) -> Result<[Self::Out; 2]> where Self: Sized { E::ni() }
     /// *Like [`int_div_rem`][Self::int_div_rem] but takes the arguments by reference.*
-    fn int_ref_div_rem(&self, b: &Self::Rhs) -> Result<[Self::Out; 2]> where Self: Sized{ E::ni() }
+    fn int_ref_div_rem(&self, b: &Self::Rhs) -> Result<[Self::Out; 2]> { E::ni() }
 
     /// Returns the quotient, rounding the result towards positive infinity.
     /// # Notation
     /// $$ \large \left\lceil \frac{x}{y} \right\rceil $$
-    fn int_div_ceil(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_div_ceil(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_div_ceil`][Self::int_div_ceil] but takes the arguments by reference.*
-    fn int_ref_div_ceil(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_div_ceil(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding the result towards negative infinity.
     /// # Notation
     /// $$ \large \left\lfloor \frac{x}{y} \right\rfloor $$
-    fn int_div_floor(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_div_floor(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_div_floor`][Self::int_div_floor] but takes the arguments by reference.*
-    fn int_ref_div_floor(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_div_floor(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding ties away from zero.
-    fn int_div_ties_away(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_div_ties_away(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_div_ties_away`][Self::int_div_ties_away] but takes the arguments by reference.*
-    fn int_ref_div_ties_away(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_div_ties_away(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding ties towards from zero.
-    fn int_div_ties_towards(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_div_ties_towards(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_div_ties_towards`][Self::int_div_ties_towards] but takes the arguments by reference.*
-    fn int_ref_div_ties_towards(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_div_ties_towards(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding ties to the nearest even number.
-    fn int_div_ties_even(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_div_ties_even(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_div_ties_even`][Self::int_div_ties_even] but takes the arguments by reference.*
-    fn int_ref_div_ties_even(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_div_ties_even(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding ties to the nearest odd number.
-    fn int_div_ties_odd(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_div_ties_odd(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_div_ties_odd`][Self::int_div_ties_odd] but takes the arguments by reference.*
-    fn int_ref_div_ties_odd(&self, b: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_div_ties_odd(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /* square root */
 
@@ -93,7 +93,7 @@ pub trait NumInt: Num {
     /// \end{cases}
     /// $$
     /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
-    fn int_is_square(self) -> Result<bool> where Self: Sized{ E::ni() }
+    fn int_is_square(self) -> Result<bool> where Self: Sized { E::ni() }
 
     /// Returns the ceiled integer square root.
     ///
@@ -107,7 +107,7 @@ pub trait NumInt: Num {
     /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
     /// \end{align}
     /// $$
-    fn int_sqrt_ceil(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_sqrt_ceil(self) -> Result<Self::Out> where Self: Sized { E::ni() }
 
     /// Returns the floored integer square root.
     ///
@@ -134,7 +134,7 @@ pub trait NumInt: Num {
     /// Hence, the function continues updating the estimate until
     /// reaching $n_{k}$, which provides the largest integer less than
     /// or equal to the square root of `a`.
-    fn int_sqrt_floor(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_sqrt_floor(self) -> Result<Self::Out> where Self: Sized { E::ni() }
 
     /// Returns the rounded integer square root.
     /// # Algorithm
@@ -146,7 +146,7 @@ pub trait NumInt: Num {
     /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
     /// \end{align}
     /// $$
-    fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized { E::ni() }
 
     /* combinatorics */
 
@@ -163,9 +163,9 @@ pub trait NumInt: Num {
     /// - 5 for `u8`, 8 for `u16`, 12 for `u32`, 20 for `u64` and 34 for `u128`.
     /// # Errors
     /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
-    fn int_factorial(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_factorial(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_factorial`][Self::int_factorial] but takes the arguments by reference.*
-    fn int_ref_factorial(&self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_factorial(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the subfactorial, or the number of derangements.
     ///
@@ -194,9 +194,9 @@ pub trait NumInt: Num {
     /// and [`Overflow`][E::Overflow] if the result can't fit the type.
     /// # Links
     /// - The list of subfactorials is available in <https://oeis.org/A000166>.
-    fn int_subfactorial(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_subfactorial(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_subfactorial`][Self::int_subfactorial] but takes the arguments by reference.*
-    fn int_ref_subfactorial(&self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_subfactorial(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of permutations of `n` items taken `r` at a time, ordered.
     ///
@@ -206,9 +206,9 @@ pub trait NumInt: Num {
     /// $$ \large P(n,r) = \frac{n!}{(n−r)!} $$
     /// # Errors
     /// Returns [`MismatchedSizes`] if $r > n$ and [`Overflow`] if the result cant't fit the type.
-    fn int_permute(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_permute(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_permute`][Self::int_permute] but takes the arguments by reference.*
-    fn int_ref_permute(&self, r: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_permute(&self, r: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of permutations of n` items taken `r` at a time with repetitions,
     /// ordered.
@@ -217,9 +217,9 @@ pub trait NumInt: Num {
     /// $$ \large P_\text{rep}(n,r) = n_r $$
     /// # Errors
     /// Returns [`Overflow`] if the result cant't fit the type.
-    fn int_permute_rep(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_permute_rep(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_permute_rep`][Self::int_permute_rep] but takes the arguments by reference.*
-    fn int_ref_permute_rep(&self, r: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_permute_rep(&self, r: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of combinations of `n` items taken `r` at a time, unordered.
     ///
@@ -227,9 +227,9 @@ pub trait NumInt: Num {
     /// $$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$
     /// # Errors
     /// Returns [`MismatchedSizes`] if $r > n$ and [`Overflow`] if the result cant't fit the type.
-    fn int_combine(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_combine(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_combine`][Self::int_combine] but takes the arguments by reference.*
-    fn int_ref_combine(&self, r: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_combine(&self, r: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of permutations of `n` items taken `r` at a time with repetitions,
     /// unordered.
@@ -240,65 +240,61 @@ pub trait NumInt: Num {
     /// $$ \large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
     /// # Errors
     /// Returns [`Overflow`][E::Overflow] if the result cant't fit the type.
-    fn int_combine_rep(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_combine_rep(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_combine_rep`][Self::int_combine_rep] but takes the arguments by reference.*
-    fn int_ref_combine_rep(&self, r: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_combine_rep(&self, r: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /* digital root */
 
     /// Returns the digital root in base 10.
-    fn int_digital_root(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_digital_root(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_digital_root`][Self::int_digital_root] but takes the arguments by reference.*
-    fn int_ref_digital_root(&self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_digital_root(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the digital root in the given `base`.
     fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ E::ni() }
+        where Self: Sized { E::ni() }
     /// *Like [`int_digital_root_base`][Self::int_digital_root_base] but takes the arguments by reference.*
-    fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ E::ni() }
+    fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /* digits */
 
     /// Returns the number of digits in base 10.
-    fn int_digits(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_digits(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_digits`][Self::int_digits] but takes the arguments by reference.*
-    fn int_ref_digits(&self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_digits(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of digits in base 10 including the negative sign.
-    fn int_digits_sign(self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_digits_sign(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_digits_sign`][Self::int_digits_sign] but takes the arguments by reference.*
-    fn int_ref_digits_sign(&self) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_digits_sign(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of digits in the given `base`.
-    fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_digits_base`][Self::int_digits_base] but takes the arguments by reference.*
-    fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ E::ni() }
+    fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of digits in the given `base`.
-    fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_digits_base_sign`][Self::int_digits_base_sign] but takes the arguments by reference.*
-    fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized{ E::ni() }
+    fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /* gcd & lcm */
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_gcd`][Self::int_gcd] but takes the arguments by reference.*
-    fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
-    fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> where Self: Sized{ E::ni() }
+    fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> where Self: Sized { E::ni() }
     /// *Like [`int_gcd_ext`][Self::int_gcd_ext] but takes the arguments by reference.*
-    fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]>
-        where Self: Sized{ E::ni() }
+    fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ni() }
 
     /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
-    fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_lcm`][Self::int_lcm] but takes the arguments by reference.*
-    fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> where Self: Sized{ E::ni() }
+    fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 }
 
 /// Common trait for referenced integer types.

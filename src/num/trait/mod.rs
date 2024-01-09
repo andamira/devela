@@ -64,69 +64,53 @@ pub trait Num {
     /// Returns `true` if `self` is zero.
     fn num_is_zero(&self) -> Result<bool> { E::ni() }
     /// Returns the number zero.
-    fn num_get_zero() -> Result<Self>
-        where Self: Sized { E::ni() }
+    fn num_get_zero() -> Result<Self> where Self: Sized { E::ni() }
     /// Sets `self` to `0`.
     fn num_set_zero(&mut self) -> Result<()> { E::ni() }
 
     /// Returns `true` if `self` is one.
     fn num_is_one(&self) -> Result<bool> { E::ni() }
     /// Returns the number one.
-    fn num_get_one() -> Result<Self>
-        where Self: Sized { E::ni() }
+    fn num_get_one() -> Result<Self> where Self: Sized { E::ni() }
     /// Sets the number to one.
     fn num_set_one(&mut self) -> Result<()> { E::ni() }
 
     /* Operations */
 
     /// Computes `self + rhs` (addition).
-    fn num_add(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_add(self, rhs: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_add`][Self::num_add] but takes the arguments by reference.*
-    fn num_ref_add(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_ref_add(&self, rhs: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Computes `self - rhs` (subtraction).
-    fn num_sub(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_sub(self, rhs: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_sub`][Self::num_sub] but takes the arguments by reference.*
-    fn num_ref_sub(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_ref_sub(&self, rhs: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Computes `self * rhs` (multiplication).
-    fn num_mul(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_mul(self, rhs: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_mul`][Self::num_mul] but takes the arguments by reference.*
-    fn num_ref_mul(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_ref_mul(&self, rhs: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Computes `self / rhs` (division).
-    fn num_div(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_div(self, rhs: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_div`][Self::num_div] but takes the arguments by reference.*
-    fn num_ref_div(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_ref_div(&self, rhs: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Computes `self % rhs` (remainder).
-    fn num_rem(self, rhs: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_rem(self, rhs: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_rem`][Self::num_rem] but takes the arguments by reference.*
-    fn num_ref_rem(&self, rhs: &Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_ref_rem(&self, rhs: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Computes `-self` (additive inverse).
-    fn num_neg(self) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_neg(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_neg`][Self::num_neg] but takes the arguments by reference.*
-    fn num_ref_neg(&self) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_ref_neg(&self) -> Result<Self::Out> { E::ni() }
 
     /// Computes `|self|` (absolute value).
-    fn num_abs(self) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_abs(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_abs`][Self::num_abs] but takes the arguments by reference.*
-    fn num_ref_abs(&self) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
+    fn num_ref_abs(&self) -> Result<Self::Out> { E::ni() }
 }
 
 /// Common trait for referenced numeric types.
@@ -143,8 +127,7 @@ where
     type Own: Num;
 
     /// Returns the owned version of `self`, if it can be cloned.
-    fn num_to_owned(&self) -> Result<Self::Own>
-        where Self::Own: Clone { Ok((*self).clone()) }
+    fn num_to_owned(&self) -> Result<Self::Own> where Self::Own: Clone { Ok((*self).clone()) }
 
     /// Sets `self` to a valid `value`.
     fn num_set(&mut self, value: <Self::Own as Num>::Inner) -> Result<()>
