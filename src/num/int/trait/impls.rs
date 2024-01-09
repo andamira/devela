@@ -19,6 +19,47 @@ macro_rules! impl_int {
     (@i $p:ident) => { paste! {
         // i*
         impl NumInt for $p {
+            /* combinatorics */
+
+            #[inline]
+            fn int_factorial(self) -> Result<Self::Out> {
+                Int(self).factorial().map(|n|n.0) }
+            #[inline]
+            fn int_ref_factorial(&self) -> Result<Self::Out> {
+                Int(*self).factorial().map(|n|n.0) }
+            #[inline]
+            fn int_subfactorial(self) -> Result<Self::Out> {
+                Int(self).subfactorial().map(|n|n.0) }
+            #[inline]
+            fn int_ref_subfactorial(&self) -> Result<Self::Out> {
+                Int(*self).subfactorial().map(|n|n.0) }
+
+            #[inline]
+            fn int_permute(self, r: Self) -> Result<Self::Out> {
+                Int(self).permute(r).map(|n|n.0) }
+            #[inline]
+            fn int_ref_permute(&self, r: &Self) -> Result<Self::Out> {
+                Int(*self).permute(*r).map(|n|n.0) }
+            #[inline]
+            fn int_permute_rep(self, r: Self) -> Result<Self::Out> {
+                Int(self).permute_rep(r).map(|n|n.0) }
+            #[inline]
+            fn int_ref_permute_rep(&self, r: &Self) -> Result<Self::Out> {
+                Int(*self).permute_rep(*r).map(|n|n.0) }
+
+            #[inline]
+            fn int_combine(self, r: Self) -> Result<Self::Out> {
+                Int(self).combine(r).map(|n|n.0) }
+            #[inline]
+            fn int_ref_combine(&self, r: &Self) -> Result<Self::Out> {
+                Int(*self).combine(*r).map(|n|n.0) }
+            #[inline]
+            fn int_combine_rep(self, r: Self) -> Result<Self::Out> {
+                Int(self).combine_rep(r).map(|n|n.0) }
+            #[inline]
+            fn int_ref_combine_rep(&self, r: &Self) -> Result<Self::Out> {
+                Int(*self).combine_rep(*r).map(|n|n.0) }
+
             /* digital root */
 
             #[inline]
@@ -93,6 +134,47 @@ macro_rules! impl_int {
     (@u $p:ident) => { paste! {
         // u*
         impl NumInt for $p {
+            /* combinatorics */
+
+            #[inline]
+            fn int_factorial(self) -> Result<Self::Out> {
+                Int(self).factorial().map(|n|n.0) }
+            #[inline]
+            fn int_ref_factorial(&self) -> Result<Self::Out> {
+                Int(*self).factorial().map(|n|n.0) }
+            #[inline]
+            fn int_subfactorial(self) -> Result<Self::Out> {
+                Int(self).subfactorial().map(|n|n.0) }
+            #[inline]
+            fn int_ref_subfactorial(&self) -> Result<Self::Out> {
+                Int(*self).subfactorial().map(|n|n.0) }
+
+            #[inline]
+            fn int_permute(self, r: Self) -> Result<Self::Out> {
+                Int(self).permute(r).map(|n|n.0) }
+            #[inline]
+            fn int_ref_permute(&self, r: &Self) -> Result<Self::Out> {
+                Int(*self).permute(*r).map(|n|n.0) }
+            #[inline]
+            fn int_permute_rep(self, r: Self) -> Result<Self::Out> {
+                Int(self).permute_rep(r).map(|n|n.0) }
+            #[inline]
+            fn int_ref_permute_rep(&self, r: &Self) -> Result<Self::Out> {
+                Int(*self).permute_rep(*r).map(|n|n.0) }
+
+            #[inline]
+            fn int_combine(self, r: Self) -> Result<Self::Out> {
+                Int(self).combine(r).map(|n|n.0) }
+            #[inline]
+            fn int_ref_combine(&self, r: &Self) -> Result<Self::Out> {
+                Int(*self).combine(*r).map(|n|n.0) }
+            #[inline]
+            fn int_combine_rep(self, r: Self) -> Result<Self::Out> {
+                Int(self).combine_rep(r).map(|n|n.0) }
+            #[inline]
+            fn int_ref_combine_rep(&self, r: &Self) -> Result<Self::Out> {
+                Int(*self).combine_rep(*r).map(|n|n.0) }
+
             /* digital root */
 
             #[inline]
