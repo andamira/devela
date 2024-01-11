@@ -2,6 +2,9 @@
 //
 //!
 //
+// TOC
+// - trait NumInt
+// - trait NumIntRef
 
 use crate::num::{Num, NumErrors as E, NumRef, NumResult as Result};
 use core::ops::Deref;
@@ -94,6 +97,8 @@ pub trait NumInt: Num {
     /// $$
     /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
     fn int_is_square(self) -> Result<bool> where Self: Sized { E::ni() }
+    /// *Like [`int_is_square`][Self::int_is_square] but takes the arguments by reference.*
+    fn int_ref_is_square(&self) -> Result<bool> { E::ni() }
 
     /// Returns the ceiled integer square root.
     ///
@@ -108,6 +113,8 @@ pub trait NumInt: Num {
     /// \end{align}
     /// $$
     fn int_sqrt_ceil(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_sqrt_ceil`][Self::int_sqrt_ceil] but takes the arguments by reference.*
+    fn int_ref_sqrt_ceil(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the floored integer square root.
     ///
@@ -135,6 +142,8 @@ pub trait NumInt: Num {
     /// reaching $n_{k}$, which provides the largest integer less than
     /// or equal to the square root of `a`.
     fn int_sqrt_floor(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_sqrt_floor`][Self::int_sqrt_floor] but takes the arguments by reference.*
+    fn int_ref_sqrt_floor(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the rounded integer square root.
     /// # Algorithm
@@ -147,6 +156,8 @@ pub trait NumInt: Num {
     /// \end{align}
     /// $$
     fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_sqrt_round`][Self::int_sqrt_round] but takes the arguments by reference.*
+    fn int_ref_sqrt_round(&self) -> Result<Self::Out> { E::ni() }
 
     /* combinatorics */
 
@@ -254,7 +265,8 @@ pub trait NumInt: Num {
     /// Returns the digital root in the given `base`.
     fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { E::ni() }
-    /// *Like [`int_digital_root_base`][Self::int_digital_root_base] but takes the arguments by reference.*
+    /// *Like [`int_digital_root_base`][Self::int_digital_root_base]
+    /// but takes the arguments by reference.*
     fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /* digits */
@@ -276,7 +288,8 @@ pub trait NumInt: Num {
 
     /// Returns the number of digits in the given `base`.
     fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_digits_base_sign`][Self::int_digits_base_sign] but takes the arguments by reference.*
+    /// *Like [`int_digits_base_sign`][Self::int_digits_base_sign]
+    /// but takes the arguments by reference.*
     fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /* gcd & lcm */
@@ -313,106 +326,101 @@ where
 
     /// *Calls `NumInt::`[`int_ref_div_rem`][NumInt::int_ref_div_rem]*.
     fn int_ref_div_rem(&self, b: &<Self::Own as Num>::Rhs) -> Result<[<Self::Own as Num>::Out; 2]> {
-            self.deref().int_ref_div_rem(b)
-    }
+            self.deref().int_ref_div_rem(b) }
     /// *Calls `NumInt::`[`int_ref_div_ceil`][NumInt::int_ref_div_ceil]*.
     fn int_ref_div_ceil(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ceil(b)
-    }
+            self.deref().int_ref_div_ceil(b) }
     /// *Calls `NumInt::`[`int_ref_div_floor`][NumInt::int_ref_div_floor]*.
     fn int_ref_div_floor(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_floor(b)
-    }
+            self.deref().int_ref_div_floor(b) }
     /// *Calls `NumInt::`[`int_ref_div_ties_away`][NumInt::int_ref_div_ties_away]*.
-    fn int_ref_div_ties_away(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_away(b)
-    }
+    fn int_ref_div_ties_away(&self, b: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_div_ties_away(b) }
     /// *Calls `NumInt::`[`int_ref_div_ties_towards`][NumInt::int_ref_div_ties_towards]*.
-    fn int_ref_div_ties_towards(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_towards(b)
-    }
+    fn int_ref_div_ties_towards(&self, b: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_div_ties_towards(b) }
     /// *Calls `NumInt::`[`int_ref_div_ties_even`][NumInt::int_ref_div_ties_even]*.
     fn int_ref_div_ties_even(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_even(b)
-    }
+            self.deref().int_ref_div_ties_even(b) }
     /// *Calls `NumInt::`[`int_ref_div_ties_odd`][NumInt::int_ref_div_ties_odd]*.
     fn int_ref_div_ties_odd(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_odd(b)
-    }
+            self.deref().int_ref_div_ties_odd(b) }
+
+    /* square root */
+
+    /// *Calls `NumInt::`[`int_ref_is_square`][NumInt::int_ref_is_square]*.
+    fn int_ref_is_square(&self) -> Result<bool> {
+            self.deref().int_ref_is_square() }
+    /// *Calls `NumInt::`[`int_ref_sqrt_ceil`][NumInt::int_ref_sqrt_ceil]*.
+    fn int_ref_sqrt_ceil(&self) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_sqrt_ceil() }
+    /// *Calls `NumInt::`[`int_ref_sqrt_floor`][NumInt::int_ref_sqrt_floor]*.
+    fn int_ref_sqrt_floor(&self) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_sqrt_floor() }
+    /// *Calls `NumInt::`[`int_ref_sqrt_round`][NumInt::int_ref_sqrt_round]*.
+    fn int_ref_sqrt_round(&self) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_sqrt_round() }
 
     /* combinatorics */
 
     /// *Calls `NumInt::`[`int_ref_factorial`][NumInt::int_ref_factorial]*.
     fn int_ref_factorial(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_factorial()
-    }
+            self.deref().int_ref_factorial() }
     /// *Calls `NumInt::`[`int_ref_subfactorial`][NumInt::int_ref_subfactorial]*.
     fn int_ref_subfactorial(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_subfactorial()
-    }
+            self.deref().int_ref_subfactorial() }
     /// *Calls `NumInt::`[`int_ref_permute`][NumInt::int_ref_permute]*.
     fn int_ref_permute(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_permute(r)
-    }
+            self.deref().int_ref_permute(r) }
     /// *Calls `NumInt::`[`int_ref_permute_rep`][NumInt::int_ref_permute_rep]*.
     fn int_ref_permute_rep(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_permute_rep(r)
-    }
+            self.deref().int_ref_permute_rep(r) }
     /// *Calls `NumInt::`[`int_ref_combine`][NumInt::int_ref_combine]*.
     fn int_ref_combine(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_combine(r)
-    }
+            self.deref().int_ref_combine(r) }
     /// *Calls `NumInt::`[`int_ref_combine_rep`][NumInt::int_ref_combine_rep]*.
     fn int_ref_combine_rep(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_combine_rep(r)
-    }
+            self.deref().int_ref_combine_rep(r) }
 
     /* digital root */
 
     /// *Calls `NumInt::`[`int_ref_digital_root`][NumInt::int_ref_digital_root].
     fn int_ref_digital_root(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digital_root()
-    }
+            self.deref().int_ref_digital_root() }
     /// *Calls `NumInt::`[`int_ref_digital_root_base`][NumInt::int_ref_digital_root_base]*.
     fn int_ref_digital_root_base(&self, base: &<Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digital_root_base(base)
-    }
+            self.deref().int_ref_digital_root_base(base) }
 
     /* digits */
 
     /// *Calls `NumInt::`[`int_ref_digits`][NumInt::int_ref_digits]*.
     fn int_ref_digits(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits()
-    }
+            self.deref().int_ref_digits() }
     /// *Calls `NumInt::`[`int_ref_digits_sign`][NumInt::int_ref_digits_sign]*.
     fn int_ref_digits_sign(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits_sign()
-    }
+            self.deref().int_ref_digits_sign() }
     /// *Calls `NumInt::`[`int_ref_digits_base`][NumInt::int_ref_digits_base]*.
     fn int_ref_digits_base(&self, base: &<Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits_base(base)
-    }
+            self.deref().int_ref_digits_base(base) }
     /// *Calls `NumInt::`[`int_ref_digits_base_sign`][NumInt::int_ref_digits_base_sign]*.
     fn int_ref_digits_base_sign(&self, base: &<Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits_base_sign(base)
-    }
+            self.deref().int_ref_digits_base_sign(base) }
 
     /* gcd & lcm */
 
     /// *Calls `NumInt::`[`int_ref_gcd`][NumInt::int_ref_gcd]*.
     fn int_ref_gcd(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_gcd(other)
-    }
+            self.deref().int_ref_gcd(other) }
     /// *Calls `NumInt::`[`int_ref_gcd_ext`][NumInt::int_ref_gcd_ext]*.
     fn int_ref_gcd_ext(&self, other: &<Self::Own as Num>::Rhs)
         -> Result<[<Self::Own as Num>::Out; 3]> {
-            self.deref().int_ref_gcd_ext(other)
-    }
+            self.deref().int_ref_gcd_ext(other) }
     /// *Calls `NumInt::`[`int_ref_lcm`][NumInt::int_ref_lcm]*.
     fn int_ref_lcm(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_lcm(other)
-    }
+            self.deref().int_ref_lcm(other) }
 }
