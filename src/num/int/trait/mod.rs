@@ -311,6 +311,11 @@ pub trait NumInt: Num {
 
     /* miscellaneous */
 
+    /// Returns the absolute value.
+    fn int_abs(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_abs`][Self::int_abs] but takes the arguments by reference.*
+    fn int_ref_abs(&self) -> Result<Self::Out> { E::ni() }
+
     /// Returns `true` if `self` is even.
     fn int_is_even(self) -> Result<bool> where Self: Sized { E::ni() }
     /// *Like [`int_is_even`][Self::int_is_even] but takes the arguments by reference.*
@@ -437,6 +442,9 @@ where
             self.deref().int_ref_lcm(other) }
 
     /* miscellaneous */
+
+    /// *Calls `NumInt::`[`int_ref_abs`][NumInt::int_ref_abs]*.
+    fn int_ref_abs(&self) -> Result<<Self::Own as Num>::Out> { self.deref().int_ref_abs() }
 
     /// *Calls `NumInt::`[`int_ref_is_even`][NumInt::int_ref_is_even]*.
     fn int_ref_is_even(&self) -> Result<bool> { self.deref().int_ref_is_even() }

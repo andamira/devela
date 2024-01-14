@@ -4,6 +4,7 @@
 //
 // TOC
 // - signed|unsigned:
+//   - abs
 //   - is_even
 //   - is_odd
 
@@ -19,11 +20,16 @@ macro_rules! impl_base {
     // implements signed ops
     (@signed $t:ty : $dl:literal) => { paste! {
         #[doc = "# Integer miscellaneous methods for `" $t "`\n\n"]
+        #[doc = "- [abs](#method.abs" $dl ")"]
         #[doc = "- [is_even](#method.is_even" $dl ")"]
         #[doc = "- [is_odd](#method.is_odd" $dl ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
+            /// Returns the absolute value of `self`.
+            #[inline] #[must_use]
+            pub const fn abs(self) -> $t { self.0.abs() }
+
             /// Returns `true` if `self` is an even number.
             /// # Examples
             /// ```
@@ -53,11 +59,16 @@ macro_rules! impl_base {
     // implements unsigned ops
     (@unsigned $t:ty : $dl:literal) => { paste! {
         #[doc = "# Integer miscellaneous methods for `" $t "`\n\n"]
+        #[doc = "- [abs](#method.abs" $dl ")"]
         #[doc = "- [is_even](#method.is_even" $dl ")"]
         #[doc = "- [is_odd](#method.is_odd" $dl ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
+            /// Returns the absolute value of `self` (no-op).
+            #[inline] #[must_use]
+            pub const fn abs(self) -> $t { self.0 }
+
             /// Returns `true` if `self` is an even number.
             /// # Examples
             /// ```
