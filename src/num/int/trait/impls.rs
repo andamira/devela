@@ -100,6 +100,8 @@ macro_rules! impl_int {
 
         #[inline]
         fn int_is_square(self) -> Result<bool> { Ok(Int(self).is_square()) }
+        #[inline]
+        fn int_ref_is_square(&self) -> Result<bool> { Ok(Int(*self).is_square()) }
 
         /* combinatorics */
 
@@ -199,6 +201,17 @@ macro_rules! impl_int {
         #[inline]
         fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> {
             if let Some(res) = Int(*self).lcm(*other) { Ok(res.0) } else { Err(E::Overflow) } }
+
+        /* miscellaneous */
+
+        #[inline]
+        fn int_is_even(self) -> Result<bool> { Ok(Int(self).is_even()) }
+        #[inline]
+        fn int_ref_is_even(&self) -> Result<bool> { Ok(Int(*self).is_even()) }
+        #[inline]
+        fn int_is_odd(self) -> Result<bool> { Ok(Int(self).is_odd()) }
+        #[inline]
+        fn int_ref_is_odd(&self) -> Result<bool> { Ok(Int(*self).is_odd()) }
     };
 }
 use impl_int;

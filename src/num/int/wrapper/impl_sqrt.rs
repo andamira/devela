@@ -5,8 +5,8 @@
 // TOC
 // - signed|unsigned:
 // - is_square
-// - sqrt_floor
 // - sqrt_ceil
+// - sqrt_floor
 // - sqrt_round
 
 use super::Int;
@@ -22,7 +22,7 @@ macro_rules! impl_sqrt {
 
     // implements signed ops
     (@signed $t:ty : $dl:literal) => { paste! {
-        /* signed sqrt */
+        /* signed square root */
 
         #[doc = "# Integer square root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $dl ")"]

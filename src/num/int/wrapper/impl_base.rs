@@ -32,7 +32,7 @@ macro_rules! impl_base {
         #[doc = "- [digital_root](#method.digital_root" $dl ")"]
         #[doc = "- [digital_root_base](#method.digital_root_base" $dl ")"]
         ///
-        /// See the related trait [`NumOpsBase`][crate::num::NumOpsBase].
+        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /// Returns the number of digits in base 10.
             /// # Examples
@@ -169,7 +169,7 @@ macro_rules! impl_base {
         #[doc = "- [digital_root](#method.digital_root" $dl ")"]
         #[doc = "- [digital_root_base](#method.digital_root_base" $dl ")"]
         ///
-        /// See the related trait [`NumOpsBase`][crate::num::NumOpsBase].
+        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /* unsigned digits */
 

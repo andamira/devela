@@ -308,6 +308,18 @@ pub trait NumInt: Num {
     fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_lcm`][Self::int_lcm] but takes the arguments by reference.*
     fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+
+    /* miscellaneous */
+
+    /// Returns `true` if `self` is even.
+    fn int_is_even(self) -> Result<bool> where Self: Sized { E::ni() }
+    /// *Like [`int_is_even`][Self::int_is_even] but takes the arguments by reference.*
+    fn int_ref_is_even(&self) -> Result<bool> { E::ni() }
+
+    /// Returns `true` if `self` is odd.
+    fn int_is_odd(self) -> Result<bool> where Self: Sized { E::ni() }
+    /// *Like [`int_is_odd`][Self::int_is_odd] but takes the arguments by reference.*
+    fn int_ref_is_odd(&self) -> Result<bool> { E::ni() }
 }
 
 /// Common trait for referenced integer types.
@@ -423,4 +435,11 @@ where
     /// *Calls `NumInt::`[`int_ref_lcm`][NumInt::int_ref_lcm]*.
     fn int_ref_lcm(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_lcm(other) }
+
+    /* miscellaneous */
+
+    /// *Calls `NumInt::`[`int_ref_is_even`][NumInt::int_ref_is_even]*.
+    fn int_ref_is_even(&self) -> Result<bool> { self.deref().int_ref_is_even() }
+    /// *Calls `NumInt::`[`int_ref_is_odd`][NumInt::int_ref_is_odd]*.
+    fn int_ref_is_odd(&self) -> Result<bool> { self.deref().int_ref_is_odd() }
 }
