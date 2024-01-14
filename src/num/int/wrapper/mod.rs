@@ -11,6 +11,7 @@ mod impl_count;
 mod impl_div;
 mod impl_factors;
 mod impl_gcd_lcm;
+mod impl_misc;
 mod impl_sqrt;
 
 /// Provides integer operations on `T`, most of them *const*.
@@ -26,6 +27,7 @@ mod impl_sqrt;
 /// [division][Self#integer-division-related-methods-for-i32],
 /// [factors][Self#integer-factors-related-methods-for-i32],
 /// [gcd and lcm][Self#integer-gcd-and-lcm-related-methods-for-i32],
+/// [misc.][Self#integer-miscellaneous-methods-for-i32],
 /// [square root][Self#integer-square-root-related-methods-for-i32].
 /// - Methods for `u32` related to:
 /// [base][Self#integer-base-related-methods-for-u32],
@@ -33,6 +35,7 @@ mod impl_sqrt;
 /// [division][Self#integer-division-related-methods-for-u32],
 /// [factors][Self#integer-factors-related-methods-for-u32],
 /// [gcd and lcm][Self#integer-gcd-and-lcm-related-methods-for-u32],
+/// [misc.][Self#integer-miscellaneous-methods-for-u32],
 /// [square root][Self#integer-square-root-related-methods-for-u32].
 ///
 /// See also the related traits:
