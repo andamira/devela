@@ -7,9 +7,18 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.8.0] - 2024-01-15
+
 ### Added
 - new `compile_doc` attribute macro.
 - new `compile_doc` example.
+- new `eq` and `ne` predicates compare numeric literals.
+
+### Removed
+- remove the old `ne` predicate, use `not(equal)` instead.
+
+### Changed
+- rename the old `eq` predicate to `equal`.
 
 ### Fixed
 - fixed warnings.
