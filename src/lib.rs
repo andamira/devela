@@ -76,7 +76,7 @@ mod tests;
 
 mod common;
 #[cfg(feature = "alloc")]
-use common::{compile_eval, split_args, split_compile_doc_tuple};
+use common::{compile_eval, deindent, split_args, split_compile_doc_tuple};
 
 /// Conditionally compiles the thing it is attached to based on the
 /// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
@@ -146,7 +146,7 @@ pub fn compile_doc(args: TokenStream, input: TokenStream) -> TokenStream {
         }
         let (condition, comment) = split_compile_doc_tuple(&doc_condition);
         if compile_eval(condition) {
-            result.push_str(&format!("#[doc = \"{}\n\"]", comment));
+            result.push_str(&format!("#[doc = \"{}\n\"]", deindent(&comment)));
         }
     }
     // Append the original item

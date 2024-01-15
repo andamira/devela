@@ -77,9 +77,38 @@ pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
     (condition.to_string(), comment.to_string())
 }
 
-// Evaluator of compilation predicates
-#[rustfmt::skip]
+// de-indents a string
+//
+// calculates the minimum indentation across all non-empty lines
+// and then removes that amount of leading whitespace from each line.
+//
+// should support spaces and tabs
 #[cfg(feature = "alloc")]
+pub(crate) fn deindent(s: &str) -> String {
+    let lines: Vec<&str> = s.lines().collect();
+    let min_indent = lines
+        .iter()
+        .filter(|line| !line.trim().is_empty())
+        .map(|line| line.len() - line.trim_start_matches(|c| c == ' ' || c == '\t').len())
+        .min()
+        .unwrap_or(0);
+
+    lines
+        .iter()
+        .map(|line| {
+            if line.len() > min_indent {
+                &line[min_indent..]
+            } else {
+                &line[..]
+            }
+        })
+        .map(|line| line.trim_end())
+        .collect::<Vec<&str>>()
+        .join("\n")
+}
+
+// Evaluator of compilation predicates
+#[rustfmt::skip] #[cfg(feature = "alloc")]
 pub(crate) fn compile_eval(arg: String) -> bool {
     /* unary */
 
