@@ -197,10 +197,10 @@ macro_rules! impl_int {
 
         #[inline]
         fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> {
-            if let Some(res) = Int(self).lcm(other) { Ok(res.0) } else { Err(E::Overflow) } }
+            match Int(self).lcm(other) { Ok(res) => Ok(res.0), Err(e) => Err(e) } }
         #[inline]
         fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> {
-            if let Some(res) = Int(*self).lcm(*other) { Ok(res.0) } else { Err(E::Overflow) } }
+            match Int(*self).lcm(*other) { Ok(res) => Ok(res.0), Err(e) => Err(e) } }
 
         /* miscellaneous */
 

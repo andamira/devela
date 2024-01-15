@@ -14,6 +14,8 @@
 
 use super::Int;
 use crate::code::{iif, paste};
+use crate::num::{NumErrors, NumResult as Result};
+use NumErrors::Overflow;
 
 // $t:   the input/output type
 // $up:  the upcasted type to do the operations on (for lcm)
@@ -177,21 +179,21 @@ macro_rules! impl_gcd_lcm {
 
             /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
             ///
-            /// Returns `None` if the result would overflow.
-            ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            /// # Errors
+            /// Can [`Overflow`].
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Int(12_" $t ").lcm(15), Some(Int(60))];"]
-            #[doc = "assert_eq![Int(-12_" $t ").lcm(15), Some(Int(60))];"]
-            #[doc = "assert_eq![Int(12_" $t ").lcm(-15), Some(Int(60))];"]
+            #[doc = "assert_eq![Int(12_" $t ").lcm(15), Ok(Int(60))];"]
+            #[doc = "assert_eq![Int(-12_" $t ").lcm(15), Ok(Int(60))];"]
+            #[doc = "assert_eq![Int(12_" $t ").lcm(-15), Ok(Int(60))];"]
             /// ```
-            #[inline] #[must_use]
-            pub const fn lcm(self, b: $t) -> Option<Int<$t>> {
+            #[inline]
+            pub const fn lcm(self, b: $t) -> Result<Int<$t>> {
                 let (aup, bup) = (self.0 as $up, b as $up);
                 let res = (aup * bup).abs() / self.gcd(b).0 as $up;
-                iif![res <= $t::MAX as $up; Some(Int(res as $t)); None]
+                iif![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow)]
             }
         }
     }};
@@ -243,16 +245,18 @@ macro_rules! impl_gcd_lcm {
             /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            /// # Errors
+            /// Can [`Overflow`].
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Int(12_" $t ").lcm(15), Some(Int(60))];"]
+            #[doc = "assert_eq![Int(12_" $t ").lcm(15), Ok(Int(60))];"]
             /// ```
-            #[inline] #[must_use]
-            pub const fn lcm(self, b: $t) -> Option<Int<$t>> {
+            #[inline]
+            pub const fn lcm(self, b: $t) -> Result<Int<$t>> {
                 let (aup, bup) = (self.0 as $up, b as $up);
                 let res = aup * bup / self.gcd(b).0 as $up;
-                iif![res <= $t::MAX as $up; Some(Int(res as $t)); None]
+                iif![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow)]
             }
         }
     }};
