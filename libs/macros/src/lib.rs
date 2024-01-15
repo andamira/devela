@@ -57,7 +57,10 @@
 extern crate alloc;
 
 #[cfg(feature = "alloc")]
-use alloc::{format, string::ToString};
+use alloc::{
+    format,
+    string::{String, ToString},
+};
 
 extern crate proc_macro;
 use proc_macro::TokenStream;
@@ -68,7 +71,7 @@ mod tests;
 
 mod common;
 #[cfg(feature = "alloc")]
-use common::{compile_eval, split_args};
+use common::{compile_eval, split_args, split_compile_doc_tuple};
 
 /// Conditionally compiles the thing it is attached to based on the
 /// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
@@ -116,6 +119,34 @@ pub fn compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
     } else {
         input
     }
+}
+
+/// Conditionally compiles each doc comment based on the
+/// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
+/// # Examples
+/// ```
+#[doc = include_str!("../examples/compile_doc.rs")]
+/// ```
+#[proc_macro_attribute]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+pub fn compile_doc(args: TokenStream, input: TokenStream) -> TokenStream {
+    let args = args.to_string();
+    let doc_conditions = split_args(&args);
+    let mut result = String::new();
+
+    for doc_condition in doc_conditions {
+        if doc_condition.is_empty() {
+            break;
+        }
+        let (condition, comment) = split_compile_doc_tuple(&doc_condition);
+        if compile_eval(condition) {
+            result.push_str(&format!("#[doc = \"{}\n\"]", comment));
+        }
+    }
+    // Append the original item
+    result.push_str(&input.to_string());
+    result.parse().unwrap()
 }
 
 /// Evaluates to either a `true` of `false` literal based on the

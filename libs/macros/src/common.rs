@@ -31,6 +31,52 @@ pub(crate) fn split_args(arg: &str) -> Vec<String> {
     args
 }
 
+// splits a tuple of two elements; used for the `compile_doc` macro
+pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
+    let tuple = tuple.trim();
+    if !tuple.starts_with('(') {
+        panic!(
+            "Tuple must start with '(', but starts with {:?})",
+            tuple.chars().next()
+        );
+    } else if !tuple.ends_with(')') {
+        panic!(
+            "Tuple must end with ')', but ends with {:?})",
+            tuple.chars().last()
+        );
+    }
+
+    let mut level = 0;
+    let mut in_quotes = false;
+    let mut split_index = None;
+
+    for (i, ch) in tuple.chars().enumerate().skip(1) {
+        match ch {
+            '"' => in_quotes = !in_quotes,
+            '(' if !in_quotes => level += 1,
+            ')' if !in_quotes => level -= 1,
+            ',' if level == 0 && !in_quotes => {
+                split_index = Some(i);
+                break;
+            }
+            _ => {}
+        }
+    }
+
+    let split_index = split_index.expect("Could not find split point in tuple");
+
+    let condition = &tuple[1..split_index].trim();
+    let comment = &tuple[split_index + 1..tuple.len() - 1]
+        .trim()
+        .trim_matches('"');
+
+    if condition.is_empty() || comment.is_empty() {
+        panic!("Both condition and comment must be present in the tuple");
+    }
+
+    (condition.to_string(), comment.to_string())
+}
+
 // Evaluator of compilation predicates
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
