@@ -21,24 +21,34 @@ fn test_compile_eval() {
 
     /* binary */
 
-    // eq()
-    assert_eq!(compile_eval("eq(true, true)".into()), true);
-    assert_eq!(compile_eval("eq(false, false)".into()), true);
-    assert_eq!(compile_eval("eq(X, X)".into()), true); // both are `false`
-    assert_eq!(compile_eval("eq(AA, BB)".into()), true); // both are `false`
-    assert_eq!(compile_eval("eq(true, false)".into()), false);
+    // equal()
+    assert_eq!(compile_eval("equal(true, true)".into()), true);
+    assert_eq!(compile_eval("equal(false, false)".into()), true);
+    assert_eq!(compile_eval("equal(X, X)".into()), true); // both are `false`
+    assert_eq!(compile_eval("equal(AA, BB)".into()), true); // both are `false`
+    assert_eq!(compile_eval("equal(true, false)".into()), false);
 
-    // ne()
-    assert_eq!(compile_eval("ne(true, true)".into()), false);
-    assert_eq!(compile_eval("ne(false, false)".into()), false);
-    assert_eq!(compile_eval("ne(X, X)".into()), false); // both are `false`
-    assert_eq!(compile_eval("ne(AA, BB)".into()), false); // both are `false`
-    assert_eq!(compile_eval("ne(true, false)".into()), true);
+    // not(equal())
+    assert_eq!(compile_eval("not(equal(true, true))".into()), false);
+    assert_eq!(compile_eval("not(equal(false, false))".into()), false);
+    assert_eq!(compile_eval("not(equal(X, X))".into()), false); // both are `false`
+    assert_eq!(compile_eval("not(equal(AA, BB))".into()), false); // both are `false`
+    assert_eq!(compile_eval("not(equal(true, false))".into()), true);
 
     // xor()
     assert_eq!(compile_eval("xor(true, false)".into()), true);
     assert_eq!(compile_eval("xor(false, true)".into()), true);
     assert_eq!(compile_eval("xor(true, true)".into()), false);
+
+    /* numeric */
+
+    // eq()
+    assert_eq!(compile_eval("eq(2, 2)".into()), true);
+    assert_eq!(compile_eval("all(eq(2, 1), eq(1, 2))".into()), false);
+
+    // ne()
+    assert_eq!(compile_eval("all(ne(2, 1), ne(1, 2))".into()), true);
+    assert_eq!(compile_eval("ne(2, 2)".into()), false);
 
     // ge()
     assert_eq!(compile_eval("all(ge(2, 1), ge(2, 2))".into()), true);

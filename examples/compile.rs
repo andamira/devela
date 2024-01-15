@@ -15,23 +15,35 @@ fn not_compiled_not() {}
 
 /* binary */
 
-// eq()
-#[compile(eq(true, true))]
-fn compiled_eq() {}
-#[compile(eq(true, false))]
-fn not_compiled_eq() {}
+// equal()
+#[compile(true)]
+fn compiled_equal() {}
+#[compile(equal(true, false))]
+fn not_compiled_equal() {}
 
-// ne()
-#[compile(ne(true, false))]
-fn compiled_ne() {}
-#[compile(ne(true, true))]
-fn not_compiled_ne() {}
+// not(equal())
+#[compile(not(equal(true, false)))]
+fn compiled_not_equal() {}
+#[compile(not(equal(true, true)))]
+fn not_compiled_not_equal() {}
 
 // xor()
 #[compile(xor(true, false))]
 fn compiled_xor() {}
 #[compile(xor(true, true))]
 fn not_compiled_xor() {}
+
+// eq()
+#[compile(eq(5, 5))]
+fn compiled_eq() {}
+#[compile(eq(6, 5))]
+fn not_compiled_eq() {}
+
+// ne()
+#[compile(ne(6, 5))]
+fn compiled_ne() {}
+#[compile(ne(5, 5))]
+fn not_compiled_ne() {}
 
 // ge()
 #[compile(ge(5, 5))]
@@ -129,16 +141,22 @@ fn main() {
 
     /* binary */
 
+    compiled_equal();
+    compiled_not_equal();
+    compiled_xor();
+    //
     compiled_eq();
     compiled_ne();
-    compiled_xor();
     compiled_gt();
     compiled_ge();
     compiled_lt();
     compiled_le();
+    // not_compiled_equal();
+    // not_compiled_not_equal();
+    // not_compiled_xor();
+    //
     // not_compiled_eq();
     // not_compiled_ne();
-    // not_compiled_xor();
     // not_compiled_gt();
     // not_compiled_ge();
     // not_compiled_lt();

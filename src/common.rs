@@ -92,23 +92,37 @@ pub(crate) fn compile_eval(arg: String) -> bool {
 
     /* binary */
 
-    } else if arg.starts_with("eq(") && arg.ends_with(')') {
-        let inner_args = &arg[3..arg.len() - 1];
+    } else if arg.starts_with("equal(") && arg.ends_with(')') {
+        let inner_args = &arg[6..arg.len() - 1];
         let args = split_args(inner_args);
         args.len() == 2
             && compile_eval(args[0].clone()) == compile_eval(args[1].clone())
-
-    } else if arg.starts_with("ne(") && arg.ends_with(')') {
-        let inner_args = &arg[3..arg.len() - 1];
-        let args = split_args(inner_args);
-        args.len() == 2
-            && compile_eval(args[0].clone()) != compile_eval(args[1].clone())
 
     } else if arg.starts_with("xor(") && arg.ends_with(')') {
         let inner_args = &arg[4..arg.len() - 1];
         let args = split_args(inner_args);
         args.len() == 2
             && (compile_eval(args[0].clone()) ^ compile_eval(args[1].clone()))
+
+    /* numeric */
+
+    } else if arg.starts_with("eq(") && arg.ends_with(')') {
+        let inner_args = &arg[3..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && args[0].parse::<i128>().ok()
+            .zip(args[1].parse::<i128>().ok())
+            .filter(|(first_num, second_num)| first_num == second_num)
+            .is_some()
+
+    } else if arg.starts_with("ne(") && arg.ends_with(')') {
+        let inner_args = &arg[3..arg.len() - 1];
+        let args = split_args(inner_args);
+        args.len() == 2
+            && args[0].parse::<i128>().ok()
+            .zip(args[1].parse::<i128>().ok())
+            .filter(|(first_num, second_num)| first_num != second_num)
+            .is_some()
 
     } else if arg.starts_with("ge(") && arg.ends_with(')') {
         let inner_args = &arg[3..arg.len() - 1];
