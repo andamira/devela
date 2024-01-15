@@ -7,6 +7,21 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+- new `compile_doc` attribute macro.
+- new `compile_doc` example.
+
+### Fixed
+- fixed warnings.
+
+## [0.7.1] - 2023-12-11
+
+### Added
+- new `coalesce` macro.
+
+### Changed
+- make `cif` example standalone.
+
 ## [0.7.0] - 2023-10-07
 
 ### Changed
