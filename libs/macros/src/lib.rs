@@ -155,7 +155,8 @@ pub fn coalesce(input: TokenStream) -> TokenStream {
     let first_non_empty_arg = args
         .into_iter()
         .find(|arg| !arg.is_empty())
-        .unwrap_or_else(|| "".to_string());
+        .unwrap_or_default();
+    // .unwrap_or_else(|| "".to_string());
     // .expect("No non-empty arguments found");
 
     first_non_empty_arg
