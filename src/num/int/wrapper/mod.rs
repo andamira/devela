@@ -17,16 +17,15 @@ mod impl_sqrt;
 /// Provides integer operations on `T`, most of them *const*.
 ///
 /// It's implemented for:
-/// [`i8`], [`i16`], [`i32`], [`i64`], [`i128`], [`isize`],
-/// [`u8`], [`u16`], [`u32`], [`u64`], [`u128`] and [`usize`].
+/// `i8`, …, `i128`, `u8`, …, `u128`.
 ///
-/// The documentation is the same for all bit sizes. For example, for 32 bits:
+/// The documentation is the same for all bit sizes. For example these are:
 /// - Methods for `i32` related to:
 /// [base][Self#integer-base-related-methods-for-i32],
 /// [counting][Self#integer-counting-related-methods-for-i32],
 /// [division][Self#integer-division-related-methods-for-i32],
 /// [factors][Self#integer-factors-related-methods-for-i32],
-/// [gcd and lcm][Self#integer-gcd-and-lcm-related-methods-for-i32],
+/// [gcd/lcm][Self#integer-gcd--lcm-related-methods-for-i32],
 /// [misc.][Self#integer-miscellaneous-methods-for-i32],
 /// [square root][Self#integer-square-root-related-methods-for-i32].
 /// - Methods for `u32` related to:
@@ -34,7 +33,7 @@ mod impl_sqrt;
 /// [counting][Self#integer-counting-related-methods-for-u32],
 /// [division][Self#integer-division-related-methods-for-u32],
 /// [factors][Self#integer-factors-related-methods-for-u32],
-/// [gcd and lcm][Self#integer-gcd-and-lcm-related-methods-for-u32],
+/// [gcd/lcm][Self#integer-gcd--lcm-related-methods-for-u32],
 /// [misc.][Self#integer-miscellaneous-methods-for-u32],
 /// [square root][Self#integer-square-root-related-methods-for-u32].
 ///

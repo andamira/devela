@@ -59,10 +59,8 @@ macro_rules! impl_sqrt {
             }
 
             /// Returns the ceiled integer square root.
-            ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative.
-            ///
             /// # Algorithm
             /// $$ \large
             /// \begin{align}
@@ -93,10 +91,8 @@ macro_rules! impl_sqrt {
             }
 
             /// Returns the floored integer square root.
-            ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative.
-            ///
             /// # Algorithm
             /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
             ///
@@ -147,10 +143,8 @@ macro_rules! impl_sqrt {
             }
 
             /// Returns the rounded integer square root.
-            ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative.
-            ///
             /// # Algorithm
             /// $$ \large
             /// \begin{align}
