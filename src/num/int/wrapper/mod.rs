@@ -7,11 +7,11 @@
 // - implement core traits
 
 mod impl_base;
+mod impl_core;
 mod impl_count;
 mod impl_div;
 mod impl_factors;
 mod impl_gcd_lcm;
-mod impl_misc;
 mod impl_sqrt;
 
 /// Provides integer operations on `T`, most of them *const*.
@@ -22,19 +22,19 @@ mod impl_sqrt;
 /// The documentation is the same for all bit sizes. For example these are:
 /// - Methods for `i32` related to:
 /// [base][Self#integer-base-related-methods-for-i32],
+/// [core][Self#integer-core-methods-for-i32],
 /// [counting][Self#integer-counting-related-methods-for-i32],
 /// [division][Self#integer-division-related-methods-for-i32],
 /// [factors][Self#integer-factors-related-methods-for-i32],
 /// [gcd/lcm][Self#integer-gcd--lcm-related-methods-for-i32],
-/// [misc.][Self#integer-miscellaneous-methods-for-i32],
 /// [square root][Self#integer-square-root-related-methods-for-i32].
 /// - Methods for `u32` related to:
 /// [base][Self#integer-base-related-methods-for-u32],
+/// [core][Self#integer-core-methods-for-u32],
 /// [counting][Self#integer-counting-related-methods-for-u32],
 /// [division][Self#integer-division-related-methods-for-u32],
 /// [factors][Self#integer-factors-related-methods-for-u32],
 /// [gcd/lcm][Self#integer-gcd--lcm-related-methods-for-u32],
-/// [misc.][Self#integer-miscellaneous-methods-for-u32],
 /// [square root][Self#integer-square-root-related-methods-for-u32].
 ///
 /// See also the related traits:

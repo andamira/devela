@@ -1,6 +1,6 @@
-// devela::num::int::wrapper::impl_misc
+// devela::num::int::wrapper::impl_core
 //
-//! implements miscellaneous functions
+//! implements core integer methods
 //
 // TOC
 // - signed|unsigned:
@@ -19,7 +19,7 @@ macro_rules! impl_base {
 
     // implements signed ops
     (@signed $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Integer miscellaneous methods for `" $t "`\n\n"]
+        #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $dl ")"]
         #[doc = "- [is_even](#method.is_even" $dl ")"]
         #[doc = "- [is_odd](#method.is_odd" $dl ")"]
@@ -58,7 +58,7 @@ macro_rules! impl_base {
 
     // implements unsigned ops
     (@unsigned $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Integer miscellaneous methods for `" $t "`\n\n"]
+        #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $dl ")"]
         #[doc = "- [is_even](#method.is_even" $dl ")"]
         #[doc = "- [is_odd](#method.is_odd" $dl ")"]
