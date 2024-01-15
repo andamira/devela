@@ -12,6 +12,9 @@
 //! They are similar to the [`#[cfg]`][1] and [`#[cfg_attr]`][2] attributes and
 //! the [`cfg!`][3] macro, except they use *compilation predicates*.
 //!
+//! There is also the [`#[compile_doc]`][compile_doc()] macro to conditionally
+//! compile documentation blocks depending on predicates.
+//!
 //! ### Compilation predicates
 //!
 //! The following compilation predicates are supported:
@@ -169,8 +172,8 @@ pub fn cif(input: TokenStream) -> TokenStream {
 ///
 /// If all arguments are empty, the macro returns nothing.
 ///
-/// This macro is inspired by the SQL `COALESCE` function, which returns the
-/// first non-null value from a list of arguments, or null if they're all null.
+/// This macro is inspired by the SQL `COALESCE` function, which returns the first
+/// non-null value from a list of arguments, or null if all the arguments are null.
 ///
 /// # Examples
 /// ```
