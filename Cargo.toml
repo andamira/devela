@@ -133,7 +133,7 @@ unicode-width = ["dep:unicode-width"]
 # ------------------------------------------------------------------------------
 
 [dependencies]
-devela_macros = { version  = "0.7.1" }
+devela_macros = { version  = "0.8.0" }
 #devela_macros = { path = "./macros" }
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 

@@ -10,7 +10,7 @@ use super::reexport;
 /// <span class="stab portability" title="re-exported from `devela_macros`
 /// crate">`devela_macros`</span>
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
-pub use devela_macros::{cif, coalesce, compile, compile_attr};
+pub use devela_macros::{cif, coalesce, compile, compile_attr, compile_doc};
 
 /// <span class="stab portability" title="re-exported from the `paste crate`">`paste`</span>
 pub use super::paste::paste;
