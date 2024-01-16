@@ -11,9 +11,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new features: `docsrs`.
 - add optional dependency `unicode-width`.
 - new root modules: `io`, `render`, `ui`.
-- new traits: `DataArray`, `CastPrimitives`, `BitOps`, `BaseOps`, `NumInt`, `NumRefInt`.
+- new traits: `DataArray`, `CastPrimitives`, `BitOps`, `NumInt`, `NumRefInt`, `VecExt`.
 - new fns `mem::ptr_in_stack`, `factorial_*`, `bytes_from_bits`.
-- new types: `DataErrors`, `Casting`, `Comparing`, `Sorting`, `Biting`, `Int`.
+- new types: `DataErrors`, `Casting`, `Comparing`, `Slicing`, `Sorting`, `Biting`, `Int`, `Frac`.
 - new macros: `bitfield`, `enumset`, `ident_const_index`, `ident_total_count`, `init_array`.
 - new `NumErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
 - new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
@@ -23,7 +23,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Removed
 - remove `os::linux` functionality.
 - remove features: `linux`, `linux_unsafe`, `unsafe_linux`, `unsafe_os`, `ops`, `ops_unsafe`, `unsafe_ops`, `unsafe_code`, `unsafe_color`, `unsafe_result`, `unsafe_time`, `code_usafe`, `color_unsafe`, `result_unsafe`, `time_unsafe`.
-- remove standalone `num::ops` base fns.
+- remove standalone fns from: `num::ops`, `mem::slice`, `data::convert::collection`.
 - remove linux specific tools and github actions.
 - remove the prelude.
 
@@ -44,13 +44,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `meta` module to `code`.
 - rename `task` module to `work`.
 - rename `result` module to `error`.
-- rename `Floating` and `FloatExp` float parameters to `x`, `y` `z`.
 - rename `NumError` and `NumResult` to `NumErrors` and `NumResult`, respectively, and move them to the num module.
 - rename `AnsiColor3` to `AnsiColor3b` and `AnsiColor8` to `AnsiColor8b`.
-- rename `Floating` and `FloatOps` method: `round` to `round_ties_away`.
 - rename fns: `div_half_*` to `div_ties_*`.
 - rename `term` features to `ui_term` features.
 - rename `Fp` to `Floating` and `FloatExt` to `FloatOps`.
+- rename `Floating` and `FloatOps` float parameters to `x`, `y` `z`.
+- rename `Floating` and `FloatOps` method: `round` to `round_ties_away`.
 - rename fn `mem_ptr_ratio` and method `Size::ptr_ratio` to `ptr_size_ratio`.
 - rename reexported time types: `Duration` to `SystemDuration`, `Instant` to `SystemInstant`.
 - reexport `BitwisePrimitives` and `CastPrimitives` traits from `prelude`.
