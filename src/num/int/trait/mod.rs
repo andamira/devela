@@ -7,6 +7,8 @@
 // - trait NumIntRef
 
 use crate::num::{Num, NumErrors as E, NumRef, NumResult as Result};
+#[cfg(feature = "alloc")]
+use ::_alloc::vec::Vec;
 use core::ops::Deref;
 #[cfg(doc)]
 use E::{MismatchedSizes, NonNegativeRequired, NotImplemented, NotSupported, Overflow};
@@ -291,6 +293,193 @@ pub trait NumInt: Num {
     /// *Like [`int_digits_base_sign`][Self::int_digits_base_sign]
     /// but takes the arguments by reference.*
     fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+
+    /* factors (allocating) */
+
+    /// Returns the factors (including 1 and self).
+    ///
+    /// This is the allocating version of [`int_factors_buf`][Self::int_factors_buf].
+    /// # Examples
+    /// ```
+    /// # use devela::num::NumInt;
+    /// assert_eq![24_i32.int_factors(), Ok(vec![1, 2, 3, 4, 6, 8, 12, 24])];
+    /// assert_eq![(-24_i32).int_factors(), Ok(vec![1, 2, 3, 4, 6, 8, 12, 24])];
+    /// assert_eq![0_i32.int_factors(), Ok(vec![])];
+    /// assert_eq![1_i32.int_factors(), Ok(vec![1])];
+    /// assert_eq![7_i32.int_factors(), Ok(vec![1, 7])];
+    /// ```
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    fn int_factors(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
+    /// *Like [`int_factors`][Self::int_factors]
+    /// but takes the arguments by reference.*
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    fn int_ref_factors(&self) -> Result<Vec<Self::Out>> { E::ni() }
+
+    /// Returns the proper factors.
+    ///
+    /// This is the allocating version of [`int_factors_proper_buf`][Self::int_factors_proper_buf].
+    /// # Examples
+    /// ```
+    /// # use devela::num::NumInt;
+    /// assert_eq![24_i32.int_factors_proper(), Ok(vec![2, 3, 4, 6, 8, 12])];
+    /// assert_eq![(-24_i32).int_factors_proper(), Ok(vec![2, 3, 4, 6, 8, 12])];
+    /// assert_eq![0_i32.int_factors_proper(), Ok(vec![])];
+    /// assert_eq![1_i32.int_factors_proper(), Ok(vec![])];
+    /// assert_eq![7_i32.int_factors_proper(), Ok(vec![])];
+    /// ```
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    fn int_factors_proper(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
+    /// *Like [`int_factors_proper`][Self::int_factors_proper]
+    /// but takes the arguments by reference.*
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    fn int_ref_factors_proper(&self) -> Result<Vec<Self::Out>> { E::ni() }
+
+    /// Returns the prime factors.
+    ///
+    /// This is the allocating version of [`int_factors_prime_buf`][Self::int_factors_prime_buf].
+    /// # Examples
+    /// ```
+    /// # use devela::num::NumInt;
+    /// assert_eq![24_i32.int_factors_prime(), Ok(vec![2, 2, 2, 3])];
+    /// assert_eq![(-24_i32).int_factors_prime(), Ok(vec![2, 2, 2, 3])];
+    /// assert_eq![0_i32.int_factors_prime(), Ok(vec![])];
+    /// assert_eq![1_i32.int_factors_prime(), Ok(vec![])];
+    /// assert_eq![7_i32.int_factors_prime(), Ok(vec![7])];
+    /// ```
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    fn int_factors_prime(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
+    /// *Like [`int_factors_prime`][Self::int_factors_prime]
+    /// but takes the arguments by reference.*
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    fn int_ref_factors_prime(&self) -> Result<Vec<Self::Out>> { E::ni() }
+
+    /// Returns the unique prime factors.
+    ///
+    /// This is the allocating version of
+    /// [`int_factors_prime_unique_buf`][Self::int_factors_prime_unique_buf].
+    /// # Examples
+    /// ```
+    /// # use devela::num::NumInt;
+    /// assert_eq![24_i32.int_factors_prime_unique(), Ok(vec![2, 3])];
+    /// ```
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    fn int_factors_prime_unique(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
+    /// *Like [`int_factors_prime_unique`][Self::int_factors_prime_unique]
+    /// but takes the arguments by reference.*
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    fn int_ref_factors_prime_unique(&self) -> Result<Vec<Self::Out>> { E::ni() }
+
+    /* factors (non-allocating) */
+
+    /// Writes the factors in `fbuf`, and the unique prime factors in `upfbuf`.
+    ///
+    /// This is the non-allocating version of [`int_factors`][Self::int_factors].
+    ///
+    /// Returns a tuple with the number of factors and unique prime factors found.
+    /// # Errors
+    /// Returns [`MismatchedSizes`] if the total number of factors is greater
+    /// than the length of any buffer.
+    /// # Examples
+    /// ```
+    /// # use devela::num::NumInt;
+    /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
+    /// assert_eq![24_i32.int_factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];
+    ///
+    /// assert_eq![fbuf[..8], [1, 2, 3, 4, 6, 8, 12, 24]];
+    /// assert_eq![upbuf[..2], [2, 3]];
+    /// ```
+    fn int_factors_buf(self, fbuf: &mut [Self::Out], upfbuf: &mut [Self::Out])
+        -> Result<(usize, usize)> where Self: Sized { E::ni() }
+    /// *Like [`int_factors_buf`][Self::int_factors_buf] but takes the arguments by reference.*
+    fn int_ref_factors_buf(&self, fbuf: &mut [Self::Out], upfbuf: &mut [Self::Out])
+        -> Result<(usize, usize)> { E::ni() }
+
+    /// Writes the proper factors in `fbuf`, and the unique prime factors in `upfbuf`.
+    ///
+    /// This is the non-allocating version of [`int_factors_proper`][Self::int_factors_proper].
+    ///
+    /// Returns a tuple with the number of factors and unique prime factors found.
+    /// # Errors
+    /// Returns [`MismatchedSizes`] if the total number of factors is greater
+    /// than the length of any buffer.
+    /// # Examples
+    /// ```
+    /// # use devela::num::NumInt;
+    /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
+    /// assert_eq![24_i32.int_factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];
+    ///
+    /// assert_eq![fbuf[..6], [2, 3, 4, 6, 8, 12,]];
+    /// assert_eq![upbuf[..2], [2, 3]];
+    /// ```
+    fn int_factors_proper_buf(self, fbuf: &mut [Self], upfbuf: &mut [Self])
+        -> Result<(usize, usize)> where Self: Sized { E::ni() }
+    /// *Like [`int_factors_proper_buf`][Self::int_factors_proper_buf]
+    /// but takes the arguments by reference.*
+    fn int_ref_factors_proper_buf(&self, fbuf: &mut [Self::Out], upfbuf: &mut [Self::Out])
+        -> Result<(usize, usize)> { E::ni() }
+
+    /// Writes the prime factors in the given `buffer`.
+    ///
+    /// This is the non-allocating version of [`int_factors_prime`][Self::int_factors_prime].
+    ///
+    /// Returns the number of factors found.
+    /// # Errors
+    /// Returns [`MismatchedSizes`] if the total number of factors is greater
+    /// than the length of the `buffer`.
+    ///
+    /// # Examples
+    /// ```
+    /// # use devela::num::NumInt;
+    /// let mut buf = [0; 5];
+    /// assert_eq![24_i32.int_factors_prime_buf(&mut buf), Ok(4)];
+    ///
+    /// assert_eq![buf[..4], [2, 2, 2, 3]];
+    /// assert![(24_i32 * 4).int_factors_prime_buf(&mut buf).is_err()];
+    /// assert_eq![buf, [2, 2, 2, 2, 2]]; // the 3 didn't fit
+    ///
+    /// assert_eq![0_i32.int_factors_prime_buf(&mut buf), Ok(0)];
+    /// assert_eq![1_i32.int_factors_prime_buf(&mut buf), Ok(0)];
+    /// assert_eq![7_i32.int_factors_prime_buf(&mut buf), Ok(1)];
+    /// assert_eq![buf[..1], [7]];
+    /// ```
+    fn int_factors_prime_buf(self, buffer: &mut [Self]) -> Result<usize> where Self: Sized { E::ni() }
+    /// *Like [`int_factors_prime_buf`][Self::int_factors_prime_buf]
+    /// but takes the arguments by reference.*
+    fn int_ref_factors_prime_buf(&self, buffer: &mut [Self::Out]) -> Result<usize> { E::ni() }
+
+    /// Writes the prime factors in the given `buffer`.
+    ///
+    /// This is the non-allocating version of
+    /// [`int_factors_prime_unique`][Self::int_factors_prime_unique].
+    ///
+    /// The buffer must be large enough to hold all the non-unique factors of `n`.
+    /// In that case the function will return the number of unique factors found.
+    /// # Errors
+    /// Returns [`MismatchedSizes`] if the unique number of factors is greater
+    /// than the length of the `buffer`. In that case the buffer will only contain the
+    /// non-unique factors that can fit, like [`factors_prime_buf`][Self::factors_prime_buf].
+    ///
+    /// # Examples
+    /// ```
+    /// # use devela::num::NumInt;
+    /// let mut uniq = [0; 5];
+    /// assert_eq![24_i32.int_factors_prime_unique_buf(&mut uniq), Ok(2)];
+    /// assert_eq![uniq, [2, 3, 2, 3, 0]];
+    /// ```
+    fn int_factors_prime_unique_buf(self, buffer: &mut [Self])
+        -> Result<usize> where Self: Sized { E::ni() }
+    /// *Like [`int_factors_prime_unique_buf`][Self::int_factors_prime_unique_buf]
+    /// but takes the arguments by reference.*
+    fn int_ref_factors_prime_unique_buf(&self, buffer: &mut [Self::Out])
+        -> Result<usize> { E::ni() }
 
     /* gcd & lcm */
 

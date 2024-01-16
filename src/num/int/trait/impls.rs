@@ -3,8 +3,12 @@
 //!
 //
 
-use crate::code::paste;
-use crate::num::{Int, NumErrors as E, NumInt, NumResult as Result};
+use crate::{
+    code::paste,
+    num::{Int, NumErrors as E, NumInt, NumResult as Result},
+};
+#[cfg(feature = "alloc")]
+use ::_alloc::vec::Vec;
 
 impl_int![];
 macro_rules! impl_int {
@@ -185,6 +189,59 @@ macro_rules! impl_int {
         #[inline]
         fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> {
             Ok(Int(*self).digits_base_sign(*base).0) }
+
+        /* factors (allocating) */
+
+        #[inline] #[cfg(feature = "alloc")]
+        fn int_factors(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors()) }
+        #[inline] #[cfg(feature = "alloc")]
+        fn int_ref_factors(&self) -> Result<Vec<Self::Out>> { Ok(Int(*self).factors()) }
+        #[inline] #[cfg(feature = "alloc")]
+        fn int_factors_proper(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors_proper()) }
+        #[inline] #[cfg(feature = "alloc")]
+        fn int_ref_factors_proper(&self) -> Result<Vec<Self::Out>> {
+            Ok(Int(*self).factors_proper()) }
+        #[inline] #[cfg(feature = "alloc")]
+        fn int_factors_prime(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors_prime()) }
+        #[inline] #[cfg(feature = "alloc")]
+        fn int_ref_factors_prime(&self) -> Result<Vec<Self::Out>> {
+            Ok(Int(*self).factors_prime()) }
+        #[inline] #[cfg(feature = "alloc")]
+        fn int_factors_prime_unique(self) -> Result<Vec<Self::Out>> {
+            Ok(Int(self).factors_prime_unique()) }
+        #[inline] #[cfg(feature = "alloc")]
+        fn int_ref_factors_prime_unique(&self) -> Result<Vec<Self::Out>> {
+            Ok(Int(*self).factors_prime_unique()) }
+
+        /* factors (non-allocating) */
+
+        #[inline]
+        fn int_factors_buf(self, fbuf: &mut [Self::Out], upfbuf: &mut [Self::Out])
+            -> Result<(usize, usize)> { Int(self).factors_buf(fbuf, upfbuf) }
+        #[inline]
+        fn int_ref_factors_buf(&self, fbuf: &mut [Self::Out], upfbuf: &mut [Self::Out])
+            -> Result<(usize, usize)> { Int(*self).factors_buf(fbuf, upfbuf) }
+
+        #[inline]
+        fn int_factors_proper_buf(self, fbuf: &mut [Self], upfbuf: &mut [Self])
+            -> Result<(usize, usize)> { Int(self).factors_proper_buf(fbuf, upfbuf) }
+        #[inline]
+        fn int_ref_factors_proper_buf(&self, fbuf: &mut [Self::Out], upfbuf: &mut [Self::Out])
+            -> Result<(usize, usize)> { Int(*self).factors_proper_buf(fbuf, upfbuf) }
+
+        #[inline]
+        fn int_factors_prime_buf(self, buffer: &mut [Self])
+            -> Result<usize> { Int(self).factors_prime_buf(buffer) }
+        #[inline]
+        fn int_ref_factors_prime_buf(&self, buffer: &mut [Self::Out])
+         -> Result<usize> { Int(*self).factors_prime_buf(buffer) }
+
+        #[inline]
+        fn int_factors_prime_unique_buf(self, buffer: &mut [Self])
+            -> Result<usize> { Int(self).factors_prime_unique_buf(buffer) }
+        #[inline]
+        fn int_ref_factors_prime_unique_buf(&self, buffer: &mut [Self::Out])
+         -> Result<usize> { Int(*self).factors_prime_unique_buf(buffer) }
 
         /* gcd & lcm */
 

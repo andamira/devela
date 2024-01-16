@@ -17,15 +17,13 @@ pub use always_fns::*;
 /* feature-gated */
 
 #[cfg(feature = "num")]
-mod factors;
-#[cfg(feature = "num")]
 mod fns;
 
 // re-export private sub-modules
 #[allow(unused)]
 pub use always_fns::*;
 #[cfg(feature = "num")]
-pub use {factors::*, fns::*};
+pub use fns::*;
 
 pub(crate) mod all {
     #[doc(inline)]
@@ -33,5 +31,5 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(feature = "num")]
-    pub use super::{factors::*, fns::*};
+    pub use super::fns::*;
 }
