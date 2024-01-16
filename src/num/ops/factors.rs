@@ -3,7 +3,9 @@
 //!
 //
 
-use crate::num::Int;
+#[cfg(doc)]
+use crate::num::NumErrors::MismatchedSizes;
+use crate::num::{Int, NumResult as Result};
 
 #[cfg(feature = "alloc")]
 use ::_alloc::vec::Vec;
@@ -85,77 +87,75 @@ pub trait NumOpsFactors: Sized {
     ///
     /// Returns a tuple with the number of factors and unique prime factors found.
     ///
-    /// Or `None` if the total number of factors is greater than the length of any buffer.
+    /// Or [`MismatchedSizes`] if the total number of factors is greater
+    /// than the length of any buffer.
     /// # Examples
     /// ```
     /// # use devela::num::NumOpsFactors;
     /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
-    /// assert_eq![24_i32.factors_buf(&mut fbuf, &mut upbuf), Some((8, 2))];
+    /// assert_eq![24_i32.factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];
     ///
     /// assert_eq![fbuf[..8], [1, 2, 3, 4, 6, 8, 12, 24]];
     /// assert_eq![upbuf[..2], [2, 3]];
     /// ```
-    #[must_use]
-    fn factors_buf(&self, fbuf: &mut [Self], upfbuf: &mut [Self]) -> Option<(usize, usize)>;
+    fn factors_buf(&self, fbuf: &mut [Self], upfbuf: &mut [Self]) -> Result<(usize, usize)>;
 
     /// Writes the proper factors in `fbuf`, and the unique prime factors in `upfbuf`.
     ///
     /// Returns a tuple with the number of factors and unique prime factors found.
     ///
-    /// Or `None` if the total number of factors is greater than the length of any buffer.
+    /// Or [`MismatchedSizes`] if the total number of factors is greater
+    /// than the length of any buffer.
     ///
     /// # Examples
     /// ```
     /// # use devela::num::NumOpsFactors;
     /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
-    /// assert_eq![24_i32.factors_proper_buf(&mut fbuf, &mut upbuf), Some((6, 2))];
+    /// assert_eq![24_i32.factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];
     ///
     /// assert_eq![fbuf[..6], [2, 3, 4, 6, 8, 12,]];
     /// assert_eq![upbuf[..2], [2, 3]];
     /// ```
-    #[must_use]
-    fn factors_proper_buf(&self, fbuf: &mut [Self], upfbuf: &mut [Self]) -> Option<(usize, usize)>;
+    fn factors_proper_buf(&self, fbuf: &mut [Self], upfbuf: &mut [Self]) -> Result<(usize, usize)>;
 
     /// Writes the prime factors in the given `buffer`.
     ///
-    /// Returns the number of factors found, or `None` if the total number
+    /// Returns the number of factors found, or [`MismatchedSizes`] if the total number
     /// of factors is greater than the length of the `buffer`.
     ///
     /// # Examples
     /// ```
     /// # use devela::num::NumOpsFactors;
     /// let mut buf = [0; 5];
-    /// assert_eq![24_i32.factors_prime_buf(&mut buf), Some(4)];
+    /// assert_eq![24_i32.factors_prime_buf(&mut buf), Ok(4)];
     ///
     /// assert_eq![buf[..4], [2, 2, 2, 3]];
-    /// assert_eq![(24_i32 * 4).factors_prime_buf(&mut buf), None];
+    /// assert![(24_i32 * 4).factors_prime_buf(&mut buf).is_err()];
     /// assert_eq![buf, [2, 2, 2, 2, 2]]; // the 3 didn't fit
     ///
-    /// assert_eq![0_i32.factors_prime_buf(&mut buf), Some(0)];
-    /// assert_eq![1_i32.factors_prime_buf(&mut buf), Some(0)];
-    /// assert_eq![7_i32.factors_prime_buf(&mut buf), Some(1)];
+    /// assert_eq![0_i32.factors_prime_buf(&mut buf), Ok(0)];
+    /// assert_eq![1_i32.factors_prime_buf(&mut buf), Ok(0)];
+    /// assert_eq![7_i32.factors_prime_buf(&mut buf), Ok(1)];
     /// assert_eq![buf[..1], [7]];
     /// ```
-    #[must_use]
-    fn factors_prime_buf(&self, buffer: &mut [Self]) -> Option<usize>;
+    fn factors_prime_buf(&self, buffer: &mut [Self]) -> Result<usize>;
 
     /// Writes the prime factors in the given `buffer`.
     ///
     /// The buffer must be large enough to hold all the non-unique factors of `n`.
     /// In that case the function will return the number of unique factors found.
     ///
-    /// Otherwise it will return `None`, and the buffer will only contain the
+    /// Otherwise it will return [`MismatchedSizes`], and the buffer will only contain the
     /// non-unique factors that could fit, like [`factors_prime_buf`][Self::factors_prime_buf].
     ///
     /// # Examples
     /// ```
     /// # use devela::num::NumOpsFactors;
     /// let mut uniq = [0; 5];
-    /// assert_eq![24_i32.factors_prime_unique_buf(&mut uniq), Some(2)];
+    /// assert_eq![24_i32.factors_prime_unique_buf(&mut uniq), Ok(2)];
     /// assert_eq![uniq, [2, 3, 2, 3, 0]];
     /// ```
-    #[must_use]
-    fn factors_prime_unique_buf(&self, buffer: &mut [Self]) -> Option<usize>;
+    fn factors_prime_unique_buf(&self, buffer: &mut [Self]) -> Result<usize>;
 }
 
 macro_rules! impl_base {
@@ -177,22 +177,17 @@ macro_rules! impl_base {
             /* non-allocating */
 
             #[inline]
-            fn factors_buf(&self, fbuf: &mut[Self], upbuf: &mut[Self]) -> Option<(usize, usize)> {
-                Int(*self).factors_buf(fbuf, upbuf)
-            }
+            fn factors_buf(&self, fbuf: &mut[Self], upbuf: &mut[Self]) -> Result<(usize, usize)> {
+                Int(*self).factors_buf(fbuf, upbuf) }
             #[inline]
-            fn factors_proper_buf(&self, fbuf: &mut[Self], upbuf: &mut[Self]
-                ) -> Option<(usize, usize)> {
-                Int(*self).factors_proper_buf(fbuf, upbuf)
-            }
+            fn factors_proper_buf(&self, fbuf: &mut[Self], upbuf: &mut[Self])
+                -> Result<(usize, usize)> { Int(*self).factors_proper_buf(fbuf, upbuf) }
             #[inline]
-            fn factors_prime_buf(&self, buffer: &mut[Self]) -> Option<usize> {
-                Int(*self).factors_prime_buf(buffer)
-            }
+            fn factors_prime_buf(&self, buffer: &mut[Self]) -> Result<usize> {
+                Int(*self).factors_prime_buf(buffer) }
             #[inline]
-            fn factors_prime_unique_buf(&self, buffer: &mut[Self]) -> Option<usize> {
-                Int(*self).factors_prime_unique_buf(buffer)
-            }
+            fn factors_prime_unique_buf(&self, buffer: &mut[Self]) -> Result<usize> {
+                Int(*self).factors_prime_unique_buf(buffer) }
         }
     };
 }
