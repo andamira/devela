@@ -62,7 +62,7 @@ macro_rules! impl_int {
             #[inline]
             fn int_sqrt_floor(self) -> Result<Self::Out> { Ok(Int(self).sqrt_floor().0) }
             #[inline]
-            fn int_sqrt_round(self) -> Result<Self::Out> { Ok(Int(self).sqrt_round().0) }
+            fn int_sqrt_round(self) -> Result<Self::Out> { Int(self).sqrt_round().map(|n|n.0) }
 
             /* gcd & lcm */
 
