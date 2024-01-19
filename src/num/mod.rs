@@ -9,12 +9,15 @@
 
 /* contains always compiled items */
 
+mod _private;
 mod error;
 mod float;
 
 pub mod niche;
 pub mod ops;
 
+#[allow(unused)]
+pub(crate) use _private::*;
 #[allow(unused)]
 #[cfg(not(feature = "num"))]
 pub use {error::*, float::*, niche::*, ops::*};
