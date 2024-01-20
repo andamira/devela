@@ -59,7 +59,8 @@ mod auto_impls {
 ///     [`is_odd`][Self::int_is_odd],
 ///     [`gcd`][Self::int_gcd],
 ///     [`gcd_ext`][Self::int_gcd_ext],
-///     [`lcm`][Self::int_lcm].
+///     [`lcm`][Self::int_lcm],
+///     [`scale`][Self::int_scale].
 /// - combinatorics:
 ///     [`factorial`][Self::int_factorial],
 ///     [`subfactorial`][Self::int_subfactorial],
@@ -165,6 +166,15 @@ pub trait NumInt: Num {
     fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_lcm`][Self::int_lcm] but takes the arguments by reference.*
     fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+
+    /// Returns a scaled value in `[min..=max]` to a new range `[a..=b]`.
+    /// # Formula
+    /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+    fn int_scale(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
+        -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_scale`][Self::int_scale] but takes the arguments by reference.*
+    fn int_ref_scale(&self, min: &Self::Rhs, max: &Self::Rhs, a: &Self::Rhs, b: &Self::Rhs)
+        -> Result<Self::Out> { E::ni() }
 
     /* combinatorics */
 

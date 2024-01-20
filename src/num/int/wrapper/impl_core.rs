@@ -9,13 +9,14 @@
 //   - is_odd
 //   - gcd
 //   - lcm
+//   - scale
 // - signed only:
 //   - gcd_ext
 //   - gcd_ext_euc
 
 use super::Int;
 use crate::code::{iif, paste};
-use crate::num::{NumErrors, NumResult as Result};
+use crate::num::{isize_up, usize_up, NumErrors, NumResult as Result};
 use NumErrors::Overflow;
 
 // $t:   the input/output type
@@ -35,6 +36,7 @@ macro_rules! impl_core {
         #[doc = "- [gcd_ext](#method.gcd_ext" $dl ")"]
         #[doc = "- [gcd_ext_euc](#method.gcd_ext_euc" $dl ")"]
         #[doc = "- [lcm](#method.lcm" $dl ")"]
+        #[doc = "- [scale](#method.scale" $dl ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
@@ -220,6 +222,24 @@ macro_rules! impl_core {
                 let res = (aup * bup).abs() / self.gcd(b).0 as $up;
                 iif![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow)]
             }
+
+            /// Returns a scaled value in `[min..=max]` to a new range `[a..=b]`.
+            ///
+            #[doc = "It upcasts internally to [`" $up "`] for the intermediate operations."]
+            /// # Panics
+            /// Could panic for large values of `i128` or `u128`.
+            /// # Formula
+            /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Int(40), Int(60_" $t ").scale(0, 120, 30, 50)];"]
+            /// ```
+            pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Int<$t> {
+                let v = self.0 as $up;
+                let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
+                Int(((b - a) * (v - min) / (max - min) + a) as $t)
+            }
         }
     }};
 
@@ -231,6 +251,7 @@ macro_rules! impl_core {
         #[doc = "- [is_odd](#method.is_odd" $dl ")"]
         #[doc = "- [gcd](#method.gcd" $dl ")"]
         #[doc = "- [lcm](#method.lcm" $dl ")"]
+        #[doc = "- [scale](#method.scale" $dl ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
@@ -311,10 +332,28 @@ macro_rules! impl_core {
                 let res = aup * bup / self.gcd(b).0 as $up;
                 iif![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow)]
             }
+
+            /// Returns a scaled value in `[min..=max]` to a new range `[a..=b]`.
+            ///
+            #[doc = "It upcasts internally to [`" $up "`] for the intermediate operations."]
+            /// # Panics
+            /// Could panic for large values of `i128` or `u128`.
+            /// # Formula
+            /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Int(40), Int(60_" $t ").scale(0, 120, 30, 50)];"]
+            /// ```
+            pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Int<$t> {
+                let v = self.0 as $up;
+                let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
+                Int(((b - a) * (v - min) / (max - min) + a) as $t)
+            }
         }
     }};
 }
 impl_core![signed
-i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128:"-4", isize:isize:"-5"];
+i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128:"-4", isize:isize_up:"-5"];
 impl_core![unsigned
-u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10", usize:usize:"-11"];
+u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10", usize:usize_up:"-11"];

@@ -74,6 +74,12 @@ where
     /// *Calls `NumInt::`[`int_ref_lcm`][NumInt::int_ref_lcm]*.
     fn int_ref_lcm(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_lcm(other) }
+    /// *Calls `NumInt::`[`int_ref_scale`][NumInt::int_ref_scale]*.
+    fn int_ref_scale(&self,
+        min: &<Self::Own as Num>::Rhs, max: &<Self::Own as Num>::Rhs,
+        a: &<Self::Own as Num>::Rhs, b: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
+        self.deref().int_ref_scale(min, max, a, b) }
 
     /* combinatorics */
 
