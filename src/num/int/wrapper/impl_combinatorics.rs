@@ -65,7 +65,7 @@ macro_rules! impl_combinatorics {
                     result = if let Some(res) = result.checked_mul(n) {
                         res
                     } else {
-                        return Err(Overflow);
+                        return Err(Overflow(None));
                     };
                     n -= 1;
                 }
@@ -130,7 +130,7 @@ macro_rules! impl_combinatorics {
                         if let Some(res) = (n - 1).checked_mul(sum) {
                             Ok(Int(res))
                         } else {
-                            return Err(Overflow);
+                            return Err(Overflow(None));
                         }
                     }
                 }
@@ -167,7 +167,7 @@ macro_rules! impl_combinatorics {
                     result = if let Some(res) = result.checked_mul(n - i) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     }
                 }];
                 Ok(Int(result))
@@ -198,12 +198,12 @@ macro_rules! impl_combinatorics {
                 let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
                     res
                 } else {
-                    return Err(Overflow);
+                    return Err(Overflow(None));
                 };
                 if let Some(res) = n.checked_pow(r_u32) {
                     Ok(Int(res))
                 } else {
-                    Err(Overflow)
+                    Err(Overflow(None))
                 }
             }
 
@@ -236,12 +236,12 @@ macro_rules! impl_combinatorics {
                     num = if let Some(res) = num.checked_mul(n - i) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     };
                     den = if let Some(res) = den.checked_mul(i + 1) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     };
                 }];
                 Ok(Int(num / den))
@@ -276,17 +276,17 @@ macro_rules! impl_combinatorics {
                     let factor = if let Some(res) = n.checked_add(r - 1 - i) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     };
                     num = if let Some(res) = num.checked_mul(factor) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     };
                     den = if let Some(res) = den.checked_mul(i + 1) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     };
                 }];
                 Ok(Int(num / den))
@@ -333,7 +333,7 @@ macro_rules! impl_combinatorics {
                     result = if let Some(res) = result.checked_mul(n) {
                         res
                     } else {
-                        return Err(Overflow);
+                        return Err(Overflow(None));
                     };
                     n -= 1;
                 }
@@ -395,7 +395,7 @@ macro_rules! impl_combinatorics {
                         if let Some(res) = (n - 1).checked_mul(sum) {
                             Ok(Int(res))
                         } else {
-                            return Err(Overflow);
+                            return Err(Overflow(None));
                         }
                     }
                 }
@@ -430,7 +430,7 @@ macro_rules! impl_combinatorics {
                     result = if let Some(res) = result.checked_mul(n - i) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     }
                 }];
                 Ok(Int(result))
@@ -458,12 +458,12 @@ macro_rules! impl_combinatorics {
                 let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
                     res
                 } else {
-                    return Err(Overflow);
+                    return Err(Overflow(None));
                 };
                 if let Some(res) = n.checked_pow(r_u32) {
                     Ok(Int(res))
                 } else {
-                    Err(Overflow)
+                    Err(Overflow(None))
                 }
             }
 
@@ -493,12 +493,12 @@ macro_rules! impl_combinatorics {
                     num = if let Some(res) = num.checked_mul(n - i) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     };
                     den = if let Some(res) = den.checked_mul(i + 1) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     };
                 }];
                 Ok(Int(num / den))
@@ -529,17 +529,17 @@ macro_rules! impl_combinatorics {
                     let factor = if let Some(res) = n.checked_add(r - 1 - i) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     };
                     num = if let Some(res) = num.checked_mul(factor) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     };
                     den = if let Some(res) = den.checked_mul(i + 1) {
                         res
                     } else {
-                        return Err(Overflow)
+                        return Err(Overflow(None))
                     };
                 }];
                 Ok(Int(num / den))

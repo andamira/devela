@@ -3,6 +3,8 @@
 //!
 //
 
+use super::Sign;
+
 /// A numerical result.
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 pub type NumResult<T> = core::result::Result<T, NumErrors>;
@@ -38,8 +40,8 @@ pub enum NumErrors {
     /// A positive value is required.
     PositiveRequired,
 
-    /// An arithmetic overflow error.
-    Overflow,
+    /// An arithmetic overflow error, with an optional associated sign.
+    Overflow(Option<Sign>),
 }
 
 #[allow(dead_code)]
@@ -58,7 +60,7 @@ impl NumErrors {
 impl std::error::Error for NumErrors {}
 
 mod core_impls {
-    use super::NumErrors;
+    use super::{NumErrors, Sign};
     use core::fmt;
 
     impl fmt::Display for NumErrors {
@@ -73,7 +75,16 @@ mod core_impls {
                 }
                 NumErrors::NonNegativeRequired => write!(f, "A non-negative value is required."),
                 NumErrors::PositiveRequired => write!(f, "A positive value is required.."),
-                NumErrors::Overflow => write!(f, "Overflow."),
+                NumErrors::Overflow(sign) => {
+                    if let Some(sign) = sign {
+                        match sign {
+                            Sign::Positive => write!(f, "Positive overflow."),
+                            Sign::Negative => write!(f, "Negative overflow."),
+                        }
+                    } else {
+                        write!(f, "Overflow.")
+                    }
+                }
             }
         }
     }

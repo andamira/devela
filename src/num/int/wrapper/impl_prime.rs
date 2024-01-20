@@ -72,12 +72,12 @@ macro_rules! impl_base {
             /// Returns [`Overflow`] if the result can't fit the type.
             /// # Examples
             /// ```
-            /// # use {devela::num::{Int, NumErrors as E}, E::Overflow};
+            /// # use devela::num::Int;
             #[doc = "assert_eq![Ok(Int(2)), Int(0_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(1_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(127)), Int(30_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(127)), Int(-30_" $t ").prime_nth()];"]
-            /// assert_eq![Err(Overflow), Int(31_i8).prime_nth()];
+            /// assert![Int(31_i8).prime_nth().is_err()];
             /// ```
             #[inline]
             pub const fn prime_nth(self) -> Result<Int<$t>> {
@@ -87,7 +87,7 @@ macro_rules! impl_base {
                         iif![count - 1 == nth; return Ok(Int(i))];
                         count += 1;
                     }
-                    i = iif![let Some(i) = i.checked_add(1); i; return Err(Overflow)];
+                    i = iif![let Some(i) = i.checked_add(1); i; return Err(Overflow(None))];
                 }
             }
 
@@ -203,11 +203,11 @@ macro_rules! impl_base {
             /// Returns [`Overflow`] if the result can't fit the type.
             /// # Examples
             /// ```
-            /// # use {devela::num::{Int, NumErrors as E}, E::Overflow};
+            /// # use devela::num::Int;
             #[doc = "assert_eq![Ok(Int(2)), Int(0_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(1_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(251)), Int(53_" $t ").prime_nth()];"]
-            /// assert_eq![Err(Overflow), Int(54_u8).prime_nth()];
+            /// assert![Int(54_u8).prime_nth().is_err()];
             /// ```
             #[inline]
             pub const fn prime_nth(self) -> Result<Int<$t>> {
@@ -217,7 +217,7 @@ macro_rules! impl_base {
                         iif![count - 1 == nth; return Ok(Int(i))];
                         count += 1;
                     }
-                    i = iif![let Some(i) = i.checked_add(1); i; return Err(Overflow)];
+                    i = iif![let Some(i) = i.checked_add(1); i; return Err(Overflow(None))];
                 }
             }
 

@@ -220,7 +220,7 @@ macro_rules! impl_core {
             pub const fn lcm(self, b: $t) -> Result<Int<$t>> {
                 let (aup, bup) = (self.0 as $up, b as $up);
                 let res = (aup * bup).abs() / self.gcd(b).0 as $up;
-                iif![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow)]
+                iif![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow(None))]
             }
 
             /// Returns a scaled value in `[min..=max]` to a new range `[a..=b]`.
@@ -330,7 +330,7 @@ macro_rules! impl_core {
             pub const fn lcm(self, b: $t) -> Result<Int<$t>> {
                 let (aup, bup) = (self.0 as $up, b as $up);
                 let res = aup * bup / self.gcd(b).0 as $up;
-                iif![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow)]
+                iif![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow(None))]
             }
 
             /// Returns a scaled value in `[min..=max]` to a new range `[a..=b]`.

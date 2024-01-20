@@ -33,7 +33,7 @@ macro_rules! upcasted_op {
             if let Some(sum) = $lhs.checked_add($rhs) {
                 sum
             } else {
-                return Err(E::Overflow);
+                return Err(E::Overflow(None));
             }
         }
     };
@@ -44,7 +44,7 @@ macro_rules! upcasted_op {
             if let Some(product) = $lhs.checked_mul($rhs) {
                 product
             } else {
-                return Err(E::Overflow);
+                return Err(E::Overflow(None));
             }
         }
     };
@@ -60,7 +60,7 @@ macro_rules! upcasted_op {
             if let Some(sum) = ($lhs % $modulus).checked_add($rhs % $modulus) {
                 sum
             } else {
-                return Err(E::Overflow);
+                return Err(E::Overflow(None));
             }
         }
     };
@@ -81,7 +81,7 @@ macro_rules! upcasted_op {
             if let Some(product) = ($lhs % $modulus).checked_mul($rhs % $modulus) {
                 product
             } else {
-                return Err(E::Overflow);
+                return Err(E::Overflow(None));
             }
         }
     };
