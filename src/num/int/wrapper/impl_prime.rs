@@ -249,14 +249,14 @@ macro_rules! impl_base {
                 prime_count
             }
 
-            /// Counts the number of integers $<|n|$ that are relatively prime to `n`.
+            /// Counts the number of integers $<n$ that are relatively prime to `n`.
             /// # Algorithm
             /// This function iterates through all numbers from 2 up to the square
-            /// root of $|n|$. If it finds a divisor, it reduces `n` by its factors
+            /// root of $n$. If it finds a divisor, it reduces `n` by its factors
             /// and adjusts result accordingly. If after the loop, $n > 1$, it
             /// means `n` has a prime factor greater than its square root, and the
             /// function adjusts result for this last factor.
-            /// $$\large\varphi(n) =n \prod_{p\mid |n|} \left(1-\frac{1}{p}\right)$$
+            /// $$\large\varphi(n) =n \prod_{p\mid n} \left(1-\frac{1}{p}\right)$$
             /// # Examples
             /// ```
             /// # use devela::num::Int;

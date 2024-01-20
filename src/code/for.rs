@@ -2,6 +2,9 @@
 //
 // Original source code by Joachim Enggård Nebel, licensed as MIT,
 // https://crates.io/crates/const_for/0.1.2
+//
+// WAIT: https://github.com/rust-lang/rust/issues/87575
+// IMPROVE: doesn't work in certain circumstances.
 
 /// A for loop that is usable in const expressions.
 ///

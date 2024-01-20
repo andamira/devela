@@ -36,7 +36,6 @@ pub trait VecExt<T>: private::Sealed {
     /// assert_eq![Ok(vec![1_i32, 2, 3]), vec![1_i64, 2, 3].vec_try_into_vec()];
     /// assert_eq![Ok(vec![1_i32, 2, 3]), vec![1_i64, 2, 3].vec_try_into_vec::<_, i32>()];
     /// ```
-    #[must_use]
     fn vec_try_into_vec<E, U>(self) -> Result<Vec<U>, E>
     where
         U: TryFrom<T, Error = E>;
