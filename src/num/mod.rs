@@ -10,6 +10,7 @@
 /* contains always compiled items */
 
 mod _private;
+mod alias;
 mod error;
 mod float;
 
@@ -20,7 +21,7 @@ pub mod ops;
 pub(crate) use _private::*;
 #[allow(unused)]
 #[cfg(not(feature = "num"))]
-pub use {error::*, float::*, niche::*, ops::*};
+pub use {alias::*, error::*, float::*, niche::*, ops::*};
 
 /* feature-gated */
 
@@ -35,7 +36,7 @@ mod r#trait;
 
 // re-export private sub-modules
 #[cfg(feature = "num")]
-pub use {error::*, float::*, frac::*, int::*, no::*, r#trait::*};
+pub use {alias::*, error::*, float::*, frac::*, int::*, no::*, r#trait::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
@@ -44,7 +45,7 @@ pub use {niche::all::*, ops::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{error::*, float::*, niche::all::*, ops::all::*};
+    pub use super::{alias::*, error::*, float::*, niche::all::*, ops::all::*};
 
     #[doc(inline)]
     #[cfg(feature = "num")]

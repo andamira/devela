@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
 - complete `Floating` and `FloatOps` methods and constants.
 - reexport `panic` from `error`, and `hint` from `code`.
+- new type aliases: `isize_up`, `usize_up`.
 
 ### Removed
 - remove `os::linux` functionality.

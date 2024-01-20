@@ -3,30 +3,7 @@
 //! private numeric helpers
 //
 
-#![allow(unused)]
-
-/* upcasted isize|usize aliases */
-
-#[cfg(target_pointer_width = "8")]
-pub(crate) type UpcastedIsize = i16;
-#[cfg(target_pointer_width = "16")]
-pub(crate) type UpcastedIsize = i32;
-#[cfg(target_pointer_width = "32")]
-pub(crate) type UpcastedIsize = i64;
-#[cfg(target_pointer_width = "64")]
-pub(crate) type UpcastedIsize = i128;
-#[cfg(target_pointer_width = "128")]
-pub(crate) type UpcastedIsize = isize;
-#[cfg(target_pointer_width = "8")]
-pub(crate) type UpcastedUsize = u16;
-#[cfg(target_pointer_width = "16")]
-pub(crate) type UpcastedUsize = u32;
-#[cfg(target_pointer_width = "32")]
-pub(crate) type UpcastedUsize = u64;
-#[cfg(target_pointer_width = "64")]
-pub(crate) type UpcastedUsize = u128;
-#[cfg(target_pointer_width = "128")]
-pub(crate) type UpcastedUsize = usize;
+#![allow(unused, non_camel_case_types)]
 
 /// helper macro to only do checked operations when we can't upcast (i.e. for 128-bits).
 ///

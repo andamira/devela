@@ -12,7 +12,7 @@
 use crate::{
     code::{iif, paste},
     data::Comparing,
-    num::{upcasted_op, Int, NumErrors as E, NumResult as Result, UpcastedIsize, UpcastedUsize},
+    num::{isize_up, upcasted_op, usize_up, Int, NumErrors as E, NumResult as Result},
 };
 use E::{NonNegativeRequired, Overflow};
 
@@ -348,6 +348,6 @@ macro_rules! impl_sqrt {
     }};
 }
 impl_sqrt![signed i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128:"-4",
-    isize:UpcastedIsize:"-5"];
+    isize:isize_up:"-5"];
 impl_sqrt![unsigned u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10",
-    usize:UpcastedUsize:"-11"];
+    usize:usize_up:"-11"];
