@@ -3,7 +3,7 @@
 //! Functions for numeric operations.
 //
 
-mod prime;
+// mod prime;
 mod scale_lerp;
 
-pub use {prime::*, scale_lerp::*};
+pub use scale_lerp::*;

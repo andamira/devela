@@ -12,6 +12,7 @@ mod impl_count;
 mod impl_div;
 mod impl_factors;
 mod impl_gcd_lcm;
+mod impl_prime;
 mod impl_sqrt;
 
 /// Provides integer operations on `T`, most of them *const*.
@@ -27,6 +28,7 @@ mod impl_sqrt;
 /// [division][Self#integer-division-related-methods-for-i32],
 /// [factors][Self#integer-factors-related-methods-for-i32],
 /// [gcd/lcm][Self#integer-gcd--lcm-related-methods-for-i32],
+/// [primes][Self#integer-prime-related-methods-for-i32],
 /// [square root][Self#integer-square-root-related-methods-for-i32].
 /// - Methods for `u32` related to:
 /// [base][Self#integer-base-related-methods-for-u32],
@@ -35,11 +37,10 @@ mod impl_sqrt;
 /// [division][Self#integer-division-related-methods-for-u32],
 /// [factors][Self#integer-factors-related-methods-for-u32],
 /// [gcd/lcm][Self#integer-gcd--lcm-related-methods-for-u32],
+/// [primes][Self#integer-prime-related-methods-for-u32],
 /// [square root][Self#integer-square-root-related-methods-for-u32].
 ///
-/// See also the related traits:
-/// [`NumInt`][super::NumInt],
-/// [`NumOpsFactors`][crate::num::NumOpsFactors].
+/// See also the related trait [`NumInt`][super::NumInt].
 #[repr(transparent)]
 pub struct Int<T>(pub T);
 
