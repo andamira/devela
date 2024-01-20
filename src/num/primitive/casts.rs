@@ -7,21 +7,23 @@
 // - trait and wrapper implementation
 // - functions definitions
 
-use super::Casting;
 use crate::{
     code::{iif, paste},
-    data::{DataErrors as E, DataResult as Result},
+    num::{NumErrors, NumResult as Result, Primiting, Sign},
 };
-#[cfg(doc)]
-use E::{Overflow, Underflow};
+use {
+    NumErrors::Overflow,
+    Sign::{Negative, Positive},
+};
 
 /// Offers methods for casting between primitives.
 ///
+/// See also the [`Primiting`] type for the equivalent *const* methods.
 /// # Errors
-/// Checked methods will return [`Overflow`] or [`Underflow`] if `self` value can't fit
-/// in the returned type.
+/// Checked methods will return [`Overflow`]
+/// if the original value can't fit in the returned type.
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
-pub trait CastPrimitives {
+pub trait PrimitiveCast {
     /// Casts `self` to `u8` with range check.
     fn checked_cast_to_u8(self) -> Result<u8>;
     /// Casts `self` to `u16` with range check.
@@ -84,11 +86,11 @@ pub trait CastPrimitives {
     fn saturating_cast_to_isize(self) -> isize;
 }
 
-// Implements the public casting methods for the trait and Casting wrapper
+// Implements the public casting methods for the trait and Primiting wrapper
 macro_rules! impl_cast_methods {
     ($($t:ty),+) => { $( impl_cast_methods![@$t]; )+ };
     (@$t:ty) => { paste! {
-        impl CastPrimitives for $t {
+        impl PrimitiveCast for $t {
             #[inline(always)]
             fn checked_cast_to_u8(self) -> Result<u8> { [<checked_cast_ $t _to_u8>](self) }
             #[inline(always)]
@@ -142,9 +144,8 @@ macro_rules! impl_cast_methods {
         /// Checked casts and saturating casts.
         ///
         /// # Errors
-        /// Checked methods will return [`Overflow`] or [`Underflow`] if `self` value can't fit
-        /// in the returned type.
-        impl Casting<$t> {
+        /// Checked methods will return [`Overflow`] if `self` can't fit in the returned type.
+        impl Primiting<$t> {
             #[doc = "Casts from `" $t "` to `u8` with range check."]
             #[inline(always)]
             pub const fn checked_cast_to_u8(self) -> Result<u8> {
@@ -432,9 +433,9 @@ macro_rules! impl_cast_fns {
         #[inline]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
             if p < <$t>::MIN as $f {
-                Err(E::Underflow)
+                Err(Overflow(Some(Negative)))
             } else if p > $t::MAX as $f {
-                Err(E::Overflow)
+                Err(Overflow(Some(Positive)))
             } else {
                 Ok(p as $t)
             }
@@ -454,7 +455,7 @@ macro_rules! impl_cast_fns {
     (@can_overflow $f:ty:$t:ty) => { paste! {
         #[inline]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
-            iif![p > <$t>::MAX as $f; Err(E::Overflow); Ok(p as $t)]
+            iif![p > <$t>::MAX as $f; Err(Overflow(Some(Positive))); Ok(p as $t)]
         }
         #[must_use] #[inline]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
@@ -465,7 +466,7 @@ macro_rules! impl_cast_fns {
     (@can_underflow $f:ty:$t:ty) => { paste! {
         #[inline]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
-            iif![p < 0; Err(E::Underflow); Ok(p as $t)]
+            iif![p < 0; Err(Overflow(Some(Negative))); Ok(p as $t)]
         }
         #[must_use] #[inline]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {

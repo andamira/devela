@@ -13,6 +13,7 @@ mod _private;
 mod alias;
 mod error;
 mod float;
+mod primitive;
 mod sign;
 
 pub mod niche;
@@ -22,7 +23,7 @@ pub mod ops;
 pub(crate) use _private::*;
 #[allow(unused)]
 #[cfg(not(feature = "num"))]
-pub use {alias::*, error::*, float::*, niche::*, ops::*, sign::*};
+pub use {alias::*, error::*, float::*, niche::*, ops::*, primitive::*, sign::*};
 
 /* feature-gated */
 
@@ -37,7 +38,7 @@ mod r#trait;
 
 // re-export private sub-modules
 #[cfg(feature = "num")]
-pub use {alias::*, error::*, float::*, frac::*, int::*, no::*, r#trait::*, sign::*};
+pub use {alias::*, error::*, float::*, frac::*, int::*, no::*, primitive::*, r#trait::*, sign::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
@@ -46,7 +47,9 @@ pub use {niche::all::*, ops::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{alias::*, error::*, float::*, niche::all::*, ops::all::*, sign::*};
+    pub use super::{
+        alias::*, error::*, float::*, niche::all::*, ops::all::*, primitive::*, sign::*,
+    };
 
     #[doc(inline)]
     #[cfg(feature = "num")]

@@ -15,8 +15,10 @@
 //   - gcd_ext_euc
 
 use super::Int;
-use crate::code::{iif, paste};
-use crate::num::{isize_up, usize_up, NumErrors, NumResult as Result};
+use crate::{
+    code::{iif, paste},
+    num::{isize_up, usize_up, NumErrors, NumResult as Result, Primiting},
+};
 use NumErrors::Overflow;
 
 // $t:   the input/output type

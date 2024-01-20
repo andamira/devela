@@ -23,12 +23,11 @@ mod error;
 pub mod bit;
 pub mod cmp;
 pub mod collections;
-pub mod convert;
 pub mod hash;
 
 #[allow(unused)]
 #[cfg(not(feature = "data"))]
-pub use {bit::*, cmp::*, collections::*, convert::*, error::*, hash::*};
+pub use {bit::*, cmp::*, collections::*, error::*, hash::*};
 
 /* feature-gated */
 
@@ -60,15 +59,11 @@ pub use error::*;
 pub use dst::*;
 #[doc(no_inline)]
 #[cfg(feature = "data")]
-pub use {
-    any::all::*, bit::all::*, cmp::all::*, collections::all::*, convert::all::*, hash::all::*,
-};
+pub use {any::all::*, bit::all::*, cmp::all::*, collections::all::*, hash::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{
-        bit::all::*, cmp::all::*, collections::all::*, convert::all::*, error::*, hash::all::*,
-    };
+    pub use super::{bit::all::*, cmp::all::*, collections::all::*, error::*, hash::all::*};
 
     #[doc(inline)]
     #[cfg(feature = "data")]

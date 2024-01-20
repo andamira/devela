@@ -10,10 +10,10 @@
 //   - permute
 //   - permute_rep
 
-use super::Int;
-use crate::code::{cfor, iif, paste};
-use crate::data::Casting;
-use crate::num::{NumErrors as E, NumResult as Result};
+use crate::{
+    code::{cfor, iif, paste},
+    num::{Int, NumErrors as E, NumResult as Result, Primiting},
+};
 use E::{MismatchedSizes, NonNegativeRequired, Overflow};
 
 // $t:   the input/output type
@@ -195,7 +195,7 @@ macro_rules! impl_combinatorics {
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
-                let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
+                let r_u32 = if let Ok(res) = Primiting(r).checked_cast_to_u32() {
                     res
                 } else {
                     return Err(Overflow(None));
@@ -455,7 +455,7 @@ macro_rules! impl_combinatorics {
             #[inline]
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                let r_u32 = if let Ok(res) = Casting(r).checked_cast_to_u32() {
+                let r_u32 = if let Ok(res) = Primiting(r).checked_cast_to_u32() {
                     res
                 } else {
                     return Err(Overflow(None));
