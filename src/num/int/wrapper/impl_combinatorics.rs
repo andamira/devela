@@ -1,6 +1,6 @@
-// devela::num::int::wrapper::impl_count
+// devela::num::int::wrapper::impl_combinatorics
 //
-//! implements counting related functions
+//! implements combinatorics related functions
 //
 // TOC
 // - signed|unsigned:
@@ -18,13 +18,13 @@ use E::{MismatchedSizes, NonNegativeRequired, Overflow};
 
 // $t:   the input/output type
 // $dl:  the doclink suffix for the method name
-macro_rules! impl_count {
-    (signed $( $t:ty : $dl:literal ),+) => { $( impl_count![@signed $t:$dl]; )+ };
-    (unsigned $( $t:ty : $dl:literal ),+) => { $( impl_count![@unsigned $t:$dl]; )+ };
+macro_rules! impl_combinatorics {
+    (signed $( $t:ty : $dl:literal ),+) => { $( impl_combinatorics![@signed $t:$dl]; )+ };
+    (unsigned $( $t:ty : $dl:literal ),+) => { $( impl_combinatorics![@unsigned $t:$dl]; )+ };
 
     // implements signed ops
     (@signed $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Integer counting related methods for `" $t "`\n\n"]
+        #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $dl ")"]
         #[doc = "- [combine](#method.combine" $dl ")"]
         #[doc = "- [combine_rep](#method.combine_rep" $dl ")"]
@@ -296,7 +296,7 @@ macro_rules! impl_count {
 
     // implements unsigned ops
     (@unsigned $t:ty : $dl:literal) => { paste! {
-        #[doc = "# Integer counting related methods for `" $t "`\n\n"]
+        #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $dl ")"]
         #[doc = "- [combine](#method.combine" $dl ")"]
         #[doc = "- [combine_rep](#method.combine_rep" $dl ")"]
@@ -547,5 +547,5 @@ macro_rules! impl_count {
         }
     }};
 }
-impl_count![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
-impl_count![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
+impl_combinatorics![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
+impl_combinatorics![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];

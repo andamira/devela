@@ -4,16 +4,24 @@
 //
 // TOC
 // - trait NumInt
+//   - base
+//   - core
+//   - combinatorics
+//   - division
+//   - factors
+//   - prime
+//   - sqrt
 // - trait NumIntRef
 
-use crate::num::{Num, NumErrors as E, NumRef, NumResult as Result};
+use crate::num::{Num, NumErrors as E, NumResult as Result};
 #[cfg(feature = "alloc")]
 use ::_alloc::vec::Vec;
-use core::ops::Deref;
 #[cfg(doc)]
 use E::{MismatchedSizes, NonNegativeRequired, NotImplemented, NotSupported, Overflow};
 
 mod impls;
+mod r#ref;
+pub use r#ref::NumRefInt;
 
 mod auto_impls {
     use super::{NumInt, NumRefInt};
@@ -32,134 +40,131 @@ mod auto_impls {
 /// - Every method in this trait returns [`NotImplemented`] by default.
 /// - Any concrete implementation must implement the operations it wants to support.
 /// - Any operations specifically not supported should ideally return [`NotSupported`].
-///
+/// - This trait tries to offer the same methods everywhere, giving a result when possible.
+/// - Operations are generally supported if they can be valid for some, not necessarily all, values.
 /// - Most methods come in two variants, starting with different prefixes:
 ///   - `int_*` methods take the arguments by value.
 ///   - `int_ref_*` methods take the arguments by reference.
 ///
-/// - This trait tries to offer the same methods everywhere, giving a result when possible.
-/// - Operations are generally supported if they can be valid for some values,
+/// - base:
+///     [`digital_root`][Self::int_digital_root],
+///     [`digital_root_base`][Self::int_digital_root_base],
+///     [`digits`][Self::int_digits],
+///     [`digits_sign`][Self::int_digits_sign],
+///     [`digits_base`][Self::int_digits_base],
+///     [`digits_base_sign`][Self::int_digits_base_sign].
+/// - core:
+///     [`abs`][Self::int_abs],
+///     [`is_even`][Self::int_is_even],
+///     [`is_odd`][Self::int_is_odd],
+///     [`gcd`][Self::int_gcd],
+///     [`gcd_ext`][Self::int_gcd_ext],
+///     [`lcm`][Self::int_lcm].
+/// - combinatorics:
+///     [`factorial`][Self::int_factorial],
+///     [`subfactorial`][Self::int_subfactorial],
+///     [`permute`][Self::int_permute],
+///     [`permute_rep`][Self::int_permute_rep],
+///     [`combine`][Self::int_combine],
+///     [`combine_rep`][Self::int_combine_rep].
+/// - division:
+///     [`div_rem`][Self::int_div_rem],
+///     [`div_ceil`][Self::int_div_ceil],
+///     [`div_floor`][Self::int_div_floor],
+///     [`div_ties_away`][Self::int_div_ties_away],
+///     [`div_ties_towards`][Self::int_div_ties_towards]
+///     [`div_ties_even`][Self::int_div_ties_even],
+///     [`div_ties_odd`][Self::int_div_ties_odd].
+/// - factors:
+///     [`factors`][Self::int_factors],
+///     [`factors_proper`][Self::int_factors_proper],
+///     [`factors_prime`][Self::int_factors_prime],
+///     [`factors_prime_unique`][Self::int_factors_prime_unique],
+///     [`factors_buf`][Self::int_factors_buf`],
+///     [`factors_proper_buf`][Self::int_factors_proper_buf`],
+///     [`factors_prime_buf`][Self::int_factors_prime_buf`],
+///     [`factors_prime_unique_buf`][Self::int_factors_prime_unique_buf`],
+/// - primes:
+///     [`is_prime`][Self::int_is_prime],
+///     [`prime_nth`][Self::int_prime_nth],
+///     [`prime_pi`][Self::int_prime_pi],
+///     [`totient`][Self::int_totient],
+/// - square root:
+///     [`is_square`][Self::int_is_square],
+///     [`sqrt_floor`][Self::int_sqrt_floor],
+///     [`sqrt_ceil`][Self::int_sqrt_ceil],
+///     [`sqrt_round`][Self::int_sqrt_round],
 ///
 /// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait NumInt: Num {
-    /* division */
+    /* base */
 
-    /// Returns the truncated quotient and the remainder.
-    fn int_div_rem(self, b: Self::Rhs) -> Result<[Self::Out; 2]> where Self: Sized { E::ni() }
-    /// *Like [`int_div_rem`][Self::int_div_rem] but takes the arguments by reference.*
-    fn int_ref_div_rem(&self, b: &Self::Rhs) -> Result<[Self::Out; 2]> { E::ni() }
+    /// Returns the digital root in base 10.
+    fn int_digital_root(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_digital_root`][Self::int_digital_root] but takes the arguments by reference.*
+    fn int_ref_digital_root(&self) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the quotient, rounding the result towards positive infinity.
-    /// # Notation
-    /// $$ \large \left\lceil \frac{x}{y} \right\rceil $$
-    fn int_div_ceil(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ceil`][Self::int_div_ceil] but takes the arguments by reference.*
-    fn int_ref_div_ceil(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Returns the digital root in the given `base`.
+    fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out>
+        where Self: Sized { E::ni() }
+    /// *Like [`int_digital_root_base`][Self::int_digital_root_base]
+    /// but takes the arguments by reference.*
+    fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the quotient, rounding the result towards negative infinity.
-    /// # Notation
-    /// $$ \large \left\lfloor \frac{x}{y} \right\rfloor $$
-    fn int_div_floor(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_floor`][Self::int_div_floor] but takes the arguments by reference.*
-    fn int_ref_div_floor(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Returns the number of digits in base 10.
+    fn int_digits(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_digits`][Self::int_digits] but takes the arguments by reference.*
+    fn int_ref_digits(&self) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the quotient, rounding ties away from zero.
-    fn int_div_ties_away(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ties_away`][Self::int_div_ties_away] but takes the arguments by reference.*
-    fn int_ref_div_ties_away(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Returns the number of digits in base 10 including the negative sign.
+    fn int_digits_sign(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_digits_sign`][Self::int_digits_sign] but takes the arguments by reference.*
+    fn int_ref_digits_sign(&self) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the quotient, rounding ties towards from zero.
-    fn int_div_ties_towards(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ties_towards`][Self::int_div_ties_towards] but takes the arguments by reference.*
-    fn int_ref_div_ties_towards(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Returns the number of digits in the given `base`.
+    fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_digits_base`][Self::int_digits_base] but takes the arguments by reference.*
+    fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the quotient, rounding ties to the nearest even number.
-    fn int_div_ties_even(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ties_even`][Self::int_div_ties_even] but takes the arguments by reference.*
-    fn int_ref_div_ties_even(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Returns the number of digits in the given `base`.
+    fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_digits_base_sign`][Self::int_digits_base_sign]
+    /// but takes the arguments by reference.*
+    fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the quotient, rounding ties to the nearest odd number.
-    fn int_div_ties_odd(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ties_odd`][Self::int_div_ties_odd] but takes the arguments by reference.*
-    fn int_ref_div_ties_odd(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /* core */
 
-    /* square root */
+    /// Returns the absolute value.
+    fn int_abs(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_abs`][Self::int_abs] but takes the arguments by reference.*
+    fn int_ref_abs(&self) -> Result<Self::Out> { E::ni() }
 
-    /// Returns `true` if it's a perfect square.
-    ///
-    /// Returns `false` otherwise, which includes all possible negative values.
-    /// # Algorithm
-    /// $$ \large
-    /// \text{is\textunderscore square}(a) = \begin{cases}
-    /// \text{true} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 = a \cr
-    /// \text{false} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 \neq a
-    /// \end{cases}
-    /// $$
-    /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
-    fn int_is_square(self) -> Result<bool> where Self: Sized { E::ni() }
-    /// *Like [`int_is_square`][Self::int_is_square] but takes the arguments by reference.*
-    fn int_ref_is_square(&self) -> Result<bool> { E::ni() }
+    /// Returns `true` if `self` is even.
+    fn int_is_even(self) -> Result<bool> where Self: Sized { E::ni() }
+    /// *Like [`int_is_even`][Self::int_is_even] but takes the arguments by reference.*
+    fn int_ref_is_even(&self) -> Result<bool> { E::ni() }
 
-    /// Returns the ceiled integer square root.
-    ///
-    /// Returns `None` if `a` is negative.
-    /// # Algorithm
-    /// $$ \large
-    /// \begin{align}
-    /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
-    /// n & \text{if } n^2 = a \cr
-    /// n+1 & \text{if } n^2 < a \end{cases} \cr
-    /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
-    /// \end{align}
-    /// $$
-    fn int_sqrt_ceil(self) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_sqrt_ceil`][Self::int_sqrt_ceil] but takes the arguments by reference.*
-    fn int_ref_sqrt_ceil(&self) -> Result<Self::Out> { E::ni() }
+    /// Returns `true` if `self` is odd.
+    fn int_is_odd(self) -> Result<bool> where Self: Sized { E::ni() }
+    /// *Like [`int_is_odd`][Self::int_is_odd] but takes the arguments by reference.*
+    fn int_ref_is_odd(&self) -> Result<bool> { E::ni() }
 
-    /// Returns the floored integer square root.
-    ///
-    /// Returns `None` if `a` is negative.
-    /// # Algorithm
-    /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
-    ///
-    /// Where $n_{k}$ is the result of a sequence of estimates that
-    /// starts with an initial $n_{0} = a/2$ which is updated using
-    /// [*Heron's method*](
-    /// https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method):
-    ///
-    /// $$ \large
-    /// n_{i+1} = n_{i} - ( n_{i}^{2} - a) / 2n_{i},
-    /// \quad \small\text{for} \quad i = 0, 1, \ldots, k,
-    /// $$
-    ///
-    /// Where $n_{i}$ is the current estimate, $n_{i+1}$ is the next
-    /// estimate, $a$ is self, and $k$ is the number of iterations
-    /// needed to converge to a solution, on the order of the number of
-    /// bits of self, about $O(\log_2 b)$, which for e.g. 128 bits would
-    /// be $ ±7 $ iterations.
-    ///
-    /// Hence, the function continues updating the estimate until
-    /// reaching $n_{k}$, which provides the largest integer less than
-    /// or equal to the square root of `a`.
-    fn int_sqrt_floor(self) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_sqrt_floor`][Self::int_sqrt_floor] but takes the arguments by reference.*
-    fn int_ref_sqrt_floor(&self) -> Result<Self::Out> { E::ni() }
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
+    fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_gcd`][Self::int_gcd] but takes the arguments by reference.*
+    fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the rounded integer square root.
-    /// # Algorithm
-    /// $$ \large
-    /// \begin{align}
-    /// \notag \left\lfloor\sqrt{a} \thinspace\right\rceil = \begin{cases}
-    /// n & \text{if } a - n^2 < (n+1)^2 - a \cr
-    /// n+1 & \text{if } a - n^2 \geq (n+1)^2 - a \end{cases} \cr
-    /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
-    /// \end{align}
-    /// $$
-    fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_sqrt_round`][Self::int_sqrt_round] but takes the arguments by reference.*
-    fn int_ref_sqrt_round(&self) -> Result<Self::Out> { E::ni() }
+    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
+    fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> where Self: Sized { E::ni() }
+    /// *Like [`int_gcd_ext`][Self::int_gcd_ext] but takes the arguments by reference.*
+    fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ni() }
+
+    /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
+    fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_lcm`][Self::int_lcm] but takes the arguments by reference.*
+    fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /* combinatorics */
 
@@ -257,42 +262,46 @@ pub trait NumInt: Num {
     /// *Like [`int_combine_rep`][Self::int_combine_rep] but takes the arguments by reference.*
     fn int_ref_combine_rep(&self, r: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
-    /* digital root */
+    /* division */
 
-    /// Returns the digital root in base 10.
-    fn int_digital_root(self) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_digital_root`][Self::int_digital_root] but takes the arguments by reference.*
-    fn int_ref_digital_root(&self) -> Result<Self::Out> { E::ni() }
+    /// Returns the truncated quotient and the remainder.
+    fn int_div_rem(self, b: Self::Rhs) -> Result<[Self::Out; 2]> where Self: Sized { E::ni() }
+    /// *Like [`int_div_rem`][Self::int_div_rem] but takes the arguments by reference.*
+    fn int_ref_div_rem(&self, b: &Self::Rhs) -> Result<[Self::Out; 2]> { E::ni() }
 
-    /// Returns the digital root in the given `base`.
-    fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out>
-        where Self: Sized { E::ni() }
-    /// *Like [`int_digital_root_base`][Self::int_digital_root_base]
-    /// but takes the arguments by reference.*
-    fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Returns the quotient, rounding the result towards positive infinity.
+    /// # Notation
+    /// $$ \large \left\lceil \frac{x}{y} \right\rceil $$
+    fn int_div_ceil(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_div_ceil`][Self::int_div_ceil] but takes the arguments by reference.*
+    fn int_ref_div_ceil(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
-    /* digits */
+    /// Returns the quotient, rounding the result towards negative infinity.
+    /// # Notation
+    /// $$ \large \left\lfloor \frac{x}{y} \right\rfloor $$
+    fn int_div_floor(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_div_floor`][Self::int_div_floor] but takes the arguments by reference.*
+    fn int_ref_div_floor(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the number of digits in base 10.
-    fn int_digits(self) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_digits`][Self::int_digits] but takes the arguments by reference.*
-    fn int_ref_digits(&self) -> Result<Self::Out> { E::ni() }
+    /// Returns the quotient, rounding ties away from zero.
+    fn int_div_ties_away(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_div_ties_away`][Self::int_div_ties_away] but takes the arguments by reference.*
+    fn int_ref_div_ties_away(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the number of digits in base 10 including the negative sign.
-    fn int_digits_sign(self) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_digits_sign`][Self::int_digits_sign] but takes the arguments by reference.*
-    fn int_ref_digits_sign(&self) -> Result<Self::Out> { E::ni() }
+    /// Returns the quotient, rounding ties towards from zero.
+    fn int_div_ties_towards(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_div_ties_towards`][Self::int_div_ties_towards] but takes the arguments by reference.*
+    fn int_ref_div_ties_towards(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the number of digits in the given `base`.
-    fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_digits_base`][Self::int_digits_base] but takes the arguments by reference.*
-    fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Returns the quotient, rounding ties to the nearest even number.
+    fn int_div_ties_even(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_div_ties_even`][Self::int_div_ties_even] but takes the arguments by reference.*
+    fn int_ref_div_ties_even(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the number of digits in the given `base`.
-    fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_digits_base_sign`][Self::int_digits_base_sign]
-    /// but takes the arguments by reference.*
-    fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Returns the quotient, rounding ties to the nearest odd number.
+    fn int_div_ties_odd(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_div_ties_odd`][Self::int_div_ties_odd] but takes the arguments by reference.*
+    fn int_ref_div_ties_odd(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /* factors (allocating) */
 
@@ -481,162 +490,107 @@ pub trait NumInt: Num {
     fn int_ref_factors_prime_unique_buf(&self, buffer: &mut [Self::Out])
         -> Result<usize> { E::ni() }
 
-    /* gcd & lcm */
+    /* primes */
 
-    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
-    fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_gcd`][Self::int_gcd] but takes the arguments by reference.*
-    fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Returns `true` if `n` is prime.
+    fn int_is_prime(self) -> Result<bool> where Self: Sized { E::ni() }
+    /// *Like [`int_is_prime`][Self::int_is_prime] but takes the arguments by reference.*
+    fn int_ref_is_prime(&self) -> Result<bool> { E::ni() }
 
-    /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
-    fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> where Self: Sized { E::ni() }
-    /// *Like [`int_gcd_ext`][Self::int_gcd_ext] but takes the arguments by reference.*
-    fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ni() }
+    /// Finds the 0-indexed `nth` prime number.
+    ///
+    /// Note: If `nth` is negative, this function should treat it as its absolute value.
+    /// # Errors
+    /// Returns [`Overflow`] if the result can't fit the type.
+    fn int_prime_nth(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_is_prime`][Self::int_is_prime] but takes the arguments by reference.*
+    fn int_ref_prime_nth(&self) -> Result<Self::Out> { E::ni() }
 
-    /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
-    fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_lcm`][Self::int_lcm] but takes the arguments by reference.*
-    fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Counts the number of primes upto and including `n`.
+    fn int_prime_pi(self) -> Result<usize> where Self: Sized { E::ni() }
+    /// *Like [`int_prime_pi`][Self::int_prime_pi] but takes the arguments by reference.*
+    fn int_ref_prime_pi(&self) -> Result<usize> { E::ni() }
 
-    /* miscellaneous */
-
-    /// Returns the absolute value.
-    fn int_abs(self) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_abs`][Self::int_abs] but takes the arguments by reference.*
-    fn int_ref_abs(&self) -> Result<Self::Out> { E::ni() }
-
-    /// Returns `true` if `self` is even.
-    fn int_is_even(self) -> Result<bool> where Self: Sized { E::ni() }
-    /// *Like [`int_is_even`][Self::int_is_even] but takes the arguments by reference.*
-    fn int_ref_is_even(&self) -> Result<bool> { E::ni() }
-
-    /// Returns `true` if `self` is odd.
-    fn int_is_odd(self) -> Result<bool> where Self: Sized { E::ni() }
-    /// *Like [`int_is_odd`][Self::int_is_odd] but takes the arguments by reference.*
-    fn int_ref_is_odd(&self) -> Result<bool> { E::ni() }
-}
-
-/// Common trait for referenced integer types.
-///
-/// # Notes
-/// - It is automatically implemented for references of types implementing [`NumInt`].
-/// - Mutable operations are only available for exclusive (`&mut`) references.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
-#[rustfmt::skip] #[allow(unused_variables)]
-pub trait NumRefInt<'a>: NumRef<'a>
-where
-    Self: Deref<Target = <Self as NumRef<'a>>::Own>,
-    <Self as NumRef<'a>>::Own: NumInt
-{
-    /* division */
-
-    /// *Calls `NumInt::`[`int_ref_div_rem`][NumInt::int_ref_div_rem]*.
-    fn int_ref_div_rem(&self, b: &<Self::Own as Num>::Rhs) -> Result<[<Self::Own as Num>::Out; 2]> {
-            self.deref().int_ref_div_rem(b) }
-    /// *Calls `NumInt::`[`int_ref_div_ceil`][NumInt::int_ref_div_ceil]*.
-    fn int_ref_div_ceil(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ceil(b) }
-    /// *Calls `NumInt::`[`int_ref_div_floor`][NumInt::int_ref_div_floor]*.
-    fn int_ref_div_floor(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_floor(b) }
-    /// *Calls `NumInt::`[`int_ref_div_ties_away`][NumInt::int_ref_div_ties_away]*.
-    fn int_ref_div_ties_away(&self, b: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_away(b) }
-    /// *Calls `NumInt::`[`int_ref_div_ties_towards`][NumInt::int_ref_div_ties_towards]*.
-    fn int_ref_div_ties_towards(&self, b: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_towards(b) }
-    /// *Calls `NumInt::`[`int_ref_div_ties_even`][NumInt::int_ref_div_ties_even]*.
-    fn int_ref_div_ties_even(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_even(b) }
-    /// *Calls `NumInt::`[`int_ref_div_ties_odd`][NumInt::int_ref_div_ties_odd]*.
-    fn int_ref_div_ties_odd(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_odd(b) }
+    /// Counts the number of integers $<|n|$ that are relatively prime to `n`.
+    ///
+    /// Note: If `n` is negative, this function should treat it as its absolute value.
+    fn int_totient(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_totient`][Self::int_totient] but takes the arguments by reference.*
+    fn int_ref_totient(&self) -> Result<Self::Out> { E::ni() }
 
     /* square root */
 
-    /// *Calls `NumInt::`[`int_ref_is_square`][NumInt::int_ref_is_square]*.
-    fn int_ref_is_square(&self) -> Result<bool> {
-            self.deref().int_ref_is_square() }
-    /// *Calls `NumInt::`[`int_ref_sqrt_ceil`][NumInt::int_ref_sqrt_ceil]*.
-    fn int_ref_sqrt_ceil(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_sqrt_ceil() }
-    /// *Calls `NumInt::`[`int_ref_sqrt_floor`][NumInt::int_ref_sqrt_floor]*.
-    fn int_ref_sqrt_floor(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_sqrt_floor() }
-    /// *Calls `NumInt::`[`int_ref_sqrt_round`][NumInt::int_ref_sqrt_round]*.
-    fn int_ref_sqrt_round(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_sqrt_round() }
+    /// Returns `true` if it's a perfect square.
+    ///
+    /// Returns `false` otherwise, which includes all possible negative values.
+    /// # Algorithm
+    /// $$ \large
+    /// \text{is\textunderscore square}(a) = \begin{cases}
+    /// \text{true} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 = a \cr
+    /// \text{false} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 \neq a
+    /// \end{cases}
+    /// $$
+    /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
+    fn int_is_square(self) -> Result<bool> where Self: Sized { E::ni() }
+    /// *Like [`int_is_square`][Self::int_is_square] but takes the arguments by reference.*
+    fn int_ref_is_square(&self) -> Result<bool> { E::ni() }
 
-    /* combinatorics */
+    /// Returns the ceiled integer square root.
+    ///
+    /// Returns `None` if `a` is negative.
+    /// # Algorithm
+    /// $$ \large
+    /// \begin{align}
+    /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
+    /// n & \text{if } n^2 = a \cr
+    /// n+1 & \text{if } n^2 < a \end{cases} \cr
+    /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
+    /// \end{align}
+    /// $$
+    fn int_sqrt_ceil(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_sqrt_ceil`][Self::int_sqrt_ceil] but takes the arguments by reference.*
+    fn int_ref_sqrt_ceil(&self) -> Result<Self::Out> { E::ni() }
 
-    /// *Calls `NumInt::`[`int_ref_factorial`][NumInt::int_ref_factorial]*.
-    fn int_ref_factorial(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_factorial() }
-    /// *Calls `NumInt::`[`int_ref_subfactorial`][NumInt::int_ref_subfactorial]*.
-    fn int_ref_subfactorial(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_subfactorial() }
-    /// *Calls `NumInt::`[`int_ref_permute`][NumInt::int_ref_permute]*.
-    fn int_ref_permute(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_permute(r) }
-    /// *Calls `NumInt::`[`int_ref_permute_rep`][NumInt::int_ref_permute_rep]*.
-    fn int_ref_permute_rep(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_permute_rep(r) }
-    /// *Calls `NumInt::`[`int_ref_combine`][NumInt::int_ref_combine]*.
-    fn int_ref_combine(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_combine(r) }
-    /// *Calls `NumInt::`[`int_ref_combine_rep`][NumInt::int_ref_combine_rep]*.
-    fn int_ref_combine_rep(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_combine_rep(r) }
+    /// Returns the floored integer square root.
+    ///
+    /// Returns `None` if `a` is negative.
+    /// # Algorithm
+    /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
+    ///
+    /// Where $n_{k}$ is the result of a sequence of estimates that
+    /// starts with an initial $n_{0} = a/2$ which is updated using
+    /// [*Heron's method*](
+    /// https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method):
+    ///
+    /// $$ \large
+    /// n_{i+1} = n_{i} - ( n_{i}^{2} - a) / 2n_{i},
+    /// \quad \small\text{for} \quad i = 0, 1, \ldots, k,
+    /// $$
+    ///
+    /// Where $n_{i}$ is the current estimate, $n_{i+1}$ is the next
+    /// estimate, $a$ is self, and $k$ is the number of iterations
+    /// needed to converge to a solution, on the order of the number of
+    /// bits of self, about $O(\log_2 b)$, which for e.g. 128 bits would
+    /// be $ ±7 $ iterations.
+    ///
+    /// Hence, the function continues updating the estimate until
+    /// reaching $n_{k}$, which provides the largest integer less than
+    /// or equal to the square root of `a`.
+    fn int_sqrt_floor(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_sqrt_floor`][Self::int_sqrt_floor] but takes the arguments by reference.*
+    fn int_ref_sqrt_floor(&self) -> Result<Self::Out> { E::ni() }
 
-    /* digital root */
-
-    /// *Calls `NumInt::`[`int_ref_digital_root`][NumInt::int_ref_digital_root].
-    fn int_ref_digital_root(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digital_root() }
-    /// *Calls `NumInt::`[`int_ref_digital_root_base`][NumInt::int_ref_digital_root_base]*.
-    fn int_ref_digital_root_base(&self, base: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digital_root_base(base) }
-
-    /* digits */
-
-    /// *Calls `NumInt::`[`int_ref_digits`][NumInt::int_ref_digits]*.
-    fn int_ref_digits(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits() }
-    /// *Calls `NumInt::`[`int_ref_digits_sign`][NumInt::int_ref_digits_sign]*.
-    fn int_ref_digits_sign(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits_sign() }
-    /// *Calls `NumInt::`[`int_ref_digits_base`][NumInt::int_ref_digits_base]*.
-    fn int_ref_digits_base(&self, base: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits_base(base) }
-    /// *Calls `NumInt::`[`int_ref_digits_base_sign`][NumInt::int_ref_digits_base_sign]*.
-    fn int_ref_digits_base_sign(&self, base: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits_base_sign(base) }
-
-    /* gcd & lcm */
-
-    /// *Calls `NumInt::`[`int_ref_gcd`][NumInt::int_ref_gcd]*.
-    fn int_ref_gcd(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_gcd(other) }
-    /// *Calls `NumInt::`[`int_ref_gcd_ext`][NumInt::int_ref_gcd_ext]*.
-    fn int_ref_gcd_ext(&self, other: &<Self::Own as Num>::Rhs)
-        -> Result<[<Self::Own as Num>::Out; 3]> {
-            self.deref().int_ref_gcd_ext(other) }
-    /// *Calls `NumInt::`[`int_ref_lcm`][NumInt::int_ref_lcm]*.
-    fn int_ref_lcm(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_lcm(other) }
-
-    /* miscellaneous */
-
-    /// *Calls `NumInt::`[`int_ref_abs`][NumInt::int_ref_abs]*.
-    fn int_ref_abs(&self) -> Result<<Self::Own as Num>::Out> { self.deref().int_ref_abs() }
-
-    /// *Calls `NumInt::`[`int_ref_is_even`][NumInt::int_ref_is_even]*.
-    fn int_ref_is_even(&self) -> Result<bool> { self.deref().int_ref_is_even() }
-    /// *Calls `NumInt::`[`int_ref_is_odd`][NumInt::int_ref_is_odd]*.
-    fn int_ref_is_odd(&self) -> Result<bool> { self.deref().int_ref_is_odd() }
+    /// Returns the rounded integer square root.
+    /// # Algorithm
+    /// $$ \large
+    /// \begin{align}
+    /// \notag \left\lfloor\sqrt{a} \thinspace\right\rceil = \begin{cases}
+    /// n & \text{if } a - n^2 < (n+1)^2 - a \cr
+    /// n+1 & \text{if } a - n^2 \geq (n+1)^2 - a \end{cases} \cr
+    /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
+    /// \end{align}
+    /// $$
+    fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_sqrt_round`][Self::int_sqrt_round] but takes the arguments by reference.*
+    fn int_ref_sqrt_round(&self) -> Result<Self::Out> { E::ni() }
 }

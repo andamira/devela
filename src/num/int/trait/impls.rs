@@ -25,16 +25,7 @@ macro_rules! impl_int {
         impl NumInt for $p {
             impl_int![common_body_iu];
 
-            /* square root */
-
-            #[inline]
-            fn int_sqrt_ceil(self) -> Result<Self::Out> { Int(self).sqrt_ceil().map(|n|n.0) }
-            #[inline]
-            fn int_sqrt_floor(self) -> Result<Self::Out> { Int(self).sqrt_floor().map(|n|n.0) }
-            #[inline]
-            fn int_sqrt_round(self) -> Result<Self::Out> { Int(self).sqrt_round().map(|n|n.0) }
-
-            /* gcd & lcm */
+            /* core */
 
             #[inline]
             fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> {
@@ -44,6 +35,15 @@ macro_rules! impl_int {
             fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]> {
                 let [gcd, b1, b2] = Int(*self).gcd_ext(*other);
                 Ok([gcd.0, b1.0, b2.0]) }
+
+            /* roots */
+
+            #[inline]
+            fn int_sqrt_ceil(self) -> Result<Self::Out> { Int(self).sqrt_ceil().map(|n|n.0) }
+            #[inline]
+            fn int_sqrt_floor(self) -> Result<Self::Out> { Int(self).sqrt_floor().map(|n|n.0) }
+            #[inline]
+            fn int_sqrt_round(self) -> Result<Self::Out> { Int(self).sqrt_round().map(|n|n.0) }
         }
     }};
 
@@ -55,7 +55,14 @@ macro_rules! impl_int {
         impl NumInt for $p {
             impl_int![common_body_iu];
 
-            /* square root */
+            /* core */
+
+            #[inline]
+            fn int_gcd_ext(self, _: Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
+            #[inline]
+            fn int_ref_gcd_ext(&self, _: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
+
+            /* roots */
 
             #[inline]
             fn int_sqrt_ceil(self) -> Result<Self::Out> { Ok(Int(self).sqrt_ceil().0) }
@@ -63,49 +70,82 @@ macro_rules! impl_int {
             fn int_sqrt_floor(self) -> Result<Self::Out> { Ok(Int(self).sqrt_floor().0) }
             #[inline]
             fn int_sqrt_round(self) -> Result<Self::Out> { Int(self).sqrt_round().map(|n|n.0) }
-
-            /* gcd & lcm */
-
-            #[inline]
-            fn int_gcd_ext(self, _: Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
-            #[inline]
-            fn int_ref_gcd_ext(&self, _: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
         }
     }};
 
     // Inner helpers for repeated common bodies for signed and unsigned
     // ============================================================================================
     (common_body_iu) => {
-        /* division */
+        /* base */
 
         #[inline]
-        fn int_div_rem(self, b: Self::Rhs) -> Result<[Self::Out; 2]> {
-            let [d, r] = Int(self).div_rem(b); Ok([d.0, r.0]) }
+        fn int_digital_root(self) -> Result<Self::Out> {
+            Ok(Int(self).digital_root().0) }
         #[inline]
-        fn int_div_ceil(self, b: Self) -> Result<Self::Out> {
-            Ok(Int(self).div_ceil(b).0) }
+        fn int_ref_digital_root(&self) -> Result<Self::Out> {
+            Ok(Int(*self).digital_root().0) }
         #[inline]
-        fn int_div_floor(self, b: Self) -> Result<Self::Out> {
-            Ok(Int(self).div_floor(b).0) }
+        fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out> {
+            Ok(Int(self).digital_root_base(base).0) }
         #[inline]
-        fn int_div_ties_away(self, b: Self) -> Result<Self::Out> {
-            Ok(Int(self).div_ties_away(b).0) }
-        #[inline]
-        fn int_div_ties_towards(self, b: Self) -> Result<Self::Out> {
-            Ok(Int(self).div_ties_towards(b).0) }
-        #[inline]
-        fn int_div_ties_even(self, b: Self) -> Result<Self::Out> {
-            Ok(Int(self).div_ties_even(b).0) }
-        #[inline]
-        fn int_div_ties_odd(self, b: Self) -> Result<Self::Out> {
-            Ok(Int(self).div_ties_odd(b).0) }
-
-        /* square root */
+        fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
+            Ok(Int(*self).digital_root_base(*base).0) }
 
         #[inline]
-        fn int_is_square(self) -> Result<bool> { Ok(Int(self).is_square()) }
+        fn int_digits(self) -> Result<Self::Out> {
+            Ok(Int(self).digits().0) }
         #[inline]
-        fn int_ref_is_square(&self) -> Result<bool> { Ok(Int(*self).is_square()) }
+        fn int_ref_digits(&self) -> Result<Self::Out> {
+            Ok(Int(*self).digits().0) }
+        #[inline]
+        fn int_digits_sign(self) -> Result<Self::Out> {
+            Ok(Int(self).digits_sign().0) }
+        #[inline]
+        fn int_ref_digits_sign(&self) -> Result<Self::Out> {
+            Ok(Int(*self).digits_sign().0) }
+        #[inline]
+        fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> {
+            Ok(Int(self).digits_base(base).0) }
+        #[inline]
+        fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
+            Ok(Int(*self).digits_base(*base).0) }
+        #[inline]
+        fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> {
+            Ok(Int(self).digits_base_sign(base).0) }
+        #[inline]
+        fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> {
+            Ok(Int(*self).digits_base_sign(*base).0) }
+
+        /* core */
+
+        #[inline]
+        fn int_abs(self) -> Result<Self::Out> { Ok(Int(self).abs()) }
+        #[inline]
+        fn int_ref_abs(&self) -> Result<Self::Out> { Ok(Int(*self).abs()) }
+
+        #[inline]
+        fn int_is_even(self) -> Result<bool> { Ok(Int(self).is_even()) }
+        #[inline]
+        fn int_ref_is_even(&self) -> Result<bool> { Ok(Int(*self).is_even()) }
+        #[inline]
+        fn int_is_odd(self) -> Result<bool> { Ok(Int(self).is_odd()) }
+        #[inline]
+        fn int_ref_is_odd(&self) -> Result<bool> { Ok(Int(*self).is_odd()) }
+
+        #[inline]
+        fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> {
+            Ok(Int(self).gcd(other).0) }
+        #[inline]
+        fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> {
+            Ok(Int(*self).gcd(*other).0) }
+        // NOTE: the rest are sign-specific
+
+        #[inline]
+        fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> {
+            match Int(self).lcm(other) { Ok(res) => Ok(res.0), Err(e) => Err(e) } }
+        #[inline]
+        fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> {
+            match Int(*self).lcm(*other) { Ok(res) => Ok(res.0), Err(e) => Err(e) } }
 
         /* combinatorics */
 
@@ -148,47 +188,29 @@ macro_rules! impl_int {
         fn int_ref_combine_rep(&self, r: &Self) -> Result<Self::Out> {
             Int(*self).combine_rep(*r).map(|n|n.0) }
 
-        /* digital root */
+        /* division */
 
         #[inline]
-        fn int_digital_root(self) -> Result<Self::Out> {
-            Ok(Int(self).digital_root().0) }
+        fn int_div_rem(self, b: Self::Rhs) -> Result<[Self::Out; 2]> {
+            let [d, r] = Int(self).div_rem(b); Ok([d.0, r.0]) }
         #[inline]
-        fn int_ref_digital_root(&self) -> Result<Self::Out> {
-            Ok(Int(*self).digital_root().0) }
+        fn int_div_ceil(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_ceil(b).0) }
         #[inline]
-        fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out> {
-            Ok(Int(self).digital_root_base(base).0) }
+        fn int_div_floor(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_floor(b).0) }
         #[inline]
-        fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
-            Ok(Int(*self).digital_root_base(*base).0) }
-
-        /* digits */
-
+        fn int_div_ties_away(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_ties_away(b).0) }
         #[inline]
-        fn int_digits(self) -> Result<Self::Out> {
-            Ok(Int(self).digits().0) }
+        fn int_div_ties_towards(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_ties_towards(b).0) }
         #[inline]
-        fn int_ref_digits(&self) -> Result<Self::Out> {
-            Ok(Int(*self).digits().0) }
+        fn int_div_ties_even(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_ties_even(b).0) }
         #[inline]
-        fn int_digits_sign(self) -> Result<Self::Out> {
-            Ok(Int(self).digits_sign().0) }
-        #[inline]
-        fn int_ref_digits_sign(&self) -> Result<Self::Out> {
-            Ok(Int(*self).digits_sign().0) }
-        #[inline]
-        fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> {
-            Ok(Int(self).digits_base(base).0) }
-        #[inline]
-        fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> {
-            Ok(Int(*self).digits_base(*base).0) }
-        #[inline]
-        fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> {
-            Ok(Int(self).digits_base_sign(base).0) }
-        #[inline]
-        fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> {
-            Ok(Int(*self).digits_base_sign(*base).0) }
+        fn int_div_ties_odd(self, b: Self) -> Result<Self::Out> {
+            Ok(Int(self).div_ties_odd(b).0) }
 
         /* factors (allocating) */
 
@@ -243,37 +265,35 @@ macro_rules! impl_int {
         fn int_ref_factors_prime_unique_buf(&self, buffer: &mut [Self::Out])
          -> Result<usize> { Int(*self).factors_prime_unique_buf(buffer) }
 
-        /* gcd & lcm */
+        /* primes */
 
         #[inline]
-        fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> {
-            Ok(Int(self).gcd(other).0) }
+        fn int_is_prime(self) -> Result<bool> { Ok(Int(self).is_prime()) }
         #[inline]
-        fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> {
-            Ok(Int(*self).gcd(*other).0) }
+        fn int_ref_is_prime(&self) -> Result<bool> { Ok(Int(*self).is_prime()) }
 
         #[inline]
-        fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> {
-            match Int(self).lcm(other) { Ok(res) => Ok(res.0), Err(e) => Err(e) } }
+        fn int_prime_nth(self) -> Result<Self::Out> { Int(self).prime_nth().map(|n|n.0) }
         #[inline]
-        fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> {
-            match Int(*self).lcm(*other) { Ok(res) => Ok(res.0), Err(e) => Err(e) } }
-
-        /* miscellaneous */
+        fn int_ref_prime_nth(&self) -> Result<Self::Out> { Int(*self).prime_nth().map(|n|n.0) }
 
         #[inline]
-        fn int_abs(self) -> Result<Self::Out> { Ok(Int(self).abs()) }
+        fn int_prime_pi(self) -> Result<usize> { Ok(Int(self).prime_pi()) }
         #[inline]
-        fn int_ref_abs(&self) -> Result<Self::Out> { Ok(Int(*self).abs()) }
+        fn int_ref_prime_pi(&self) -> Result<usize> { Ok(Int(*self).prime_pi()) }
 
         #[inline]
-        fn int_is_even(self) -> Result<bool> { Ok(Int(self).is_even()) }
+        fn int_totient(self) -> Result<Self::Out> { Ok(Int(self).totient().0) }
         #[inline]
-        fn int_ref_is_even(&self) -> Result<bool> { Ok(Int(*self).is_even()) }
+        fn int_ref_totient(&self) -> Result<Self::Out> { Ok(Int(*self).totient().0) }
+
+        /* roots */
+
         #[inline]
-        fn int_is_odd(self) -> Result<bool> { Ok(Int(self).is_odd()) }
+        fn int_is_square(self) -> Result<bool> { Ok(Int(self).is_square()) }
         #[inline]
-        fn int_ref_is_odd(&self) -> Result<bool> { Ok(Int(*self).is_odd()) }
+        fn int_ref_is_square(&self) -> Result<bool> { Ok(Int(*self).is_square()) }
+        // NOTE: the rest are sign-specific
     };
 }
 use impl_int;
