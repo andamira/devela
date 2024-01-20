@@ -11,7 +11,6 @@ mod impl_core;
 mod impl_count;
 mod impl_div;
 mod impl_factors;
-mod impl_gcd_lcm;
 mod impl_prime;
 mod impl_sqrt;
 
@@ -27,7 +26,6 @@ mod impl_sqrt;
 /// [counting][Self#integer-counting-related-methods-for-i32],
 /// [division][Self#integer-division-related-methods-for-i32],
 /// [factors][Self#integer-factors-related-methods-for-i32],
-/// [gcd/lcm][Self#integer-gcd--lcm-related-methods-for-i32],
 /// [primes][Self#integer-prime-related-methods-for-i32],
 /// [square root][Self#integer-square-root-related-methods-for-i32].
 /// - Methods for `u32` related to:
@@ -36,7 +34,6 @@ mod impl_sqrt;
 /// [counting][Self#integer-counting-related-methods-for-u32],
 /// [division][Self#integer-division-related-methods-for-u32],
 /// [factors][Self#integer-factors-related-methods-for-u32],
-/// [gcd/lcm][Self#integer-gcd--lcm-related-methods-for-u32],
 /// [primes][Self#integer-prime-related-methods-for-u32],
 /// [square root][Self#integer-square-root-related-methods-for-u32].
 ///
