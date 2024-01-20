@@ -38,12 +38,8 @@ pub enum NumErrors {
     /// A positive value is required.
     PositiveRequired,
 
-    ///
+    /// An arithmetic overflow error.
     Overflow,
-
-    ///
-    // RETHINK
-    Underflow,
 }
 
 #[allow(dead_code)]
@@ -78,7 +74,6 @@ mod core_impls {
                 NumErrors::NonNegativeRequired => write!(f, "A non-negative value is required."),
                 NumErrors::PositiveRequired => write!(f, "A positive value is required.."),
                 NumErrors::Overflow => write!(f, "Overflow."),
-                NumErrors::Underflow => write!(f, "Underflow"),
             }
         }
     }
