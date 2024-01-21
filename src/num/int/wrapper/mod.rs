@@ -17,7 +17,7 @@ mod impl_sqrt;
 /// Provides integer operations on `T`, most of them *const*.
 ///
 /// It's implemented for:
-/// `i8`, …, `i128`, `u8`, …, `u128`.
+/// `i8`, …, `i128`, `u8`, …, `u128` and all of the [`niche`][crate::num::niche] types.
 ///
 /// The documentation is the same for all bit sizes. For example these are:
 /// - Methods for `i32` related to:
