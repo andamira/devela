@@ -109,26 +109,43 @@ pub(crate) use upcasted_op;
 // $self: the self value we're operating on (i.e. self)
 // $($arg)*: an optional list of arguments (e.g. min, max, a, b)
 macro_rules! impl_niche {
-    // implement an Int method by calling a method that returns Int<$t>
+    /* leveraged primitive implementation returns the type without a Result */
     ( Int
       $n:ident : $t:ident : $dt:literal <$($g:ident),*>,
-      $(+$const:tt)? $method:ident, $self:expr $(, $aname:ident : $atype:ty),*
+      $(+$const:tt)? $fn:ident, $self:expr $(, $arg:ident : $atype:ty),*
     ) => { paste! {
-        #[doc = "*See the documentation of the [`" $method "`](#method."
-            $method $dt ") implementation for `" $t "`*."]
+        #[doc = "*See the [`" $fn "`](#fn." $fn $dt ") implementation for `" $t "`*."]
         #[inline]
-        pub $($const)? fn $method($self $(, $aname:$atype),* )
-            -> Result<Int<[<$n $t:camel>]<$($g,)*>>> {
-            impl_niche![Int@body $n:$t<$($g),*>, $method, $self.0 $(, $aname),*]
+        pub $($const)? fn $fn($self $(,$arg:$atype),*) -> Result<Int<[<$n$t:camel>]<$($g,)*>>> {
+            let val = Int($self.0.get()).$fn($($arg),*);
+            if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(val.0) {
+                Ok(Int(res))
+            } else {
+                Err(Invalid)
+            }
         }
     }};
-    ( Int@body
-      $n:ident:$t:ident<$($g:ident),*>, $method:ident, $value:expr $(, $arg:expr)*
-    ) => { paste! {
-        if let Some(res) =
-            [<$n $t:camel>]::< $($g),* >::new( Int($value.get()).$method( $($arg),* ).0)
-            { Ok(Int(res)) } else { Err(Invalid) }
-    }};
 
+    /* leveraged primitive implementation returns the type inside a Result */
+    ( Int=>res
+      $n:ident : $t:ident : $dt:literal <$($g:ident),*>,
+      $(+$const:tt)? $fn:ident, $self:expr $(, $arg:ident : $atype:ty),*
+    ) => { paste! {
+        #[doc = "*See the [`" $fn "`](#fn." $fn $dt ") implementation for `" $t "`*."]
+        #[inline]
+        pub $($const)? fn $fn($self $(,$arg:$atype),*) -> Result<Int<[<$n$t:camel>]<$($g,)*>>> {
+            let fn_res = Int($self.0.get()).$fn($($arg),*);
+            match fn_res {
+                Err(e) => Err(e),
+                Ok(val) => {
+                    if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(val.0) {
+                        Ok(Int(res))
+                    } else {
+                        Err(Invalid)
+                    }
+                },
+            }
+        }
+    }};
 }
 pub(crate) use impl_niche;
