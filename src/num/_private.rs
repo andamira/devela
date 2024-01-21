@@ -2,6 +2,9 @@
 //
 //! private numeric helpers
 //
+// TOC
+// - upcasted_op
+// - impl_niche
 
 #![allow(unused, non_camel_case_types)]
 
@@ -95,3 +98,37 @@ macro_rules! upcasted_op {
     };
 }
 pub(crate) use upcasted_op;
+
+/// helper macro to implement methods from a wrapper for niche types
+//
+// $n: the niche name prefix (e.g. NonRange)
+// $t: the integer primitive and niche name suffix (e.g. u8)
+// $dt: the doclink suffix for the associated method name implemented for the inner primitive
+// $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
+// $method: the name of the method being implemented
+// $self: the self value we're operating on (i.e. self)
+// $($arg)*: an optional list of arguments (e.g. min, max, a, b)
+macro_rules! impl_niche {
+    // implement an Int method by calling a method that returns Int<$t>
+    ( Int
+      $n:ident : $t:ident : $dt:literal <$($g:ident),*>,
+      $(+$const:tt)? $method:ident, $self:expr $(, $aname:ident : $atype:ty),*
+    ) => { paste! {
+        #[doc = "*See the documentation of the [`" $method "`](#method."
+            $method $dt ") implementation for `" $t "`*."]
+        #[inline]
+        pub $($const)? fn $method($self $(, $aname:$atype),* )
+            -> Result<Int<[<$n $t:camel>]<$($g,)*>>> {
+            impl_niche![Int@body $n:$t<$($g),*>, $method, $self.0 $(, $aname),*]
+        }
+    }};
+    ( Int@body
+      $n:ident:$t:ident<$($g:ident),*>, $method:ident, $value:expr $(, $arg:expr)*
+    ) => { paste! {
+        if let Some(res) =
+            [<$n $t:camel>]::< $($g),* >::new( Int($value.get()).$method( $($arg),* ).0)
+            { Ok(Int(res)) } else { Err(Invalid) }
+    }};
+
+}
+pub(crate) use impl_niche;
