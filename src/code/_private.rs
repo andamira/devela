@@ -79,7 +79,10 @@ macro_rules! reexport {
         "`core`'>`core`</span>"]
         #[doc = $description]
         #[doc = "\n\n*Re-exported from [`core" $( "`]::[`" $( $core_path "::" )+ )?
-            "`](https://doc.rust-lang.org/core/" $($( $core_path "/" )+)? ")*.\n\n---"]
+            "`](https://doc.rust-lang.org/core/" $($( $core_path "/" )+)? ")*"]
+
+        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
+
         #[cfg_attr(feature = "nightly", doc(cfg(feature = $module_feature)))]
 
         pub use core :: $($( $core_path :: )+)? {
@@ -111,7 +114,10 @@ macro_rules! reexport {
             $env_str "`'>`" $env_str "`</span>"]
         #[doc = $description]
         #[doc = "\n\n*Re-exported from rust's `" $env_str "::`[`" $( $env_path "::" )*
-            "`](https://doc.rust-lang.org/" $env_str "/" $( $env_path "/" )* ")*.\n\n---"]
+            "`](https://doc.rust-lang.org/" $env_str "/" $( $env_path "/" )* ")*"]
+
+        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
+
         #[cfg_attr(feature = "nightly",
             doc(cfg(all(feature = $module_feature, feature = $env_str))))]
 
@@ -126,7 +132,6 @@ macro_rules! reexport {
     //
     // - Supports multiple reexported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
-    //
     ( $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
       features: $( $f:literal ),+ ,
       doc: $description:literal,
@@ -138,8 +143,10 @@ macro_rules! reexport {
         #[doc = "<span class='stab portability' title='re-exported from `" $dep_str
         "` (which can be enabled instead of `depend`)'>`" $dep_str "`</span>"]
         #[doc = $description]
-        #[doc = "\n\n*Reexported from the [`" $dep_str
-            "`](https://docs.rs/" $dep_str " ) crate*.\n\n---"]
+        #[doc = "\n\n*Re-exported from the [`" $dep_str
+            "`](https://docs.rs/" $dep_str " ) crate*"]
+
+        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
         // IMPROVE: can't use like this for portable-atomic | core::atomic,
         // should remove depend from here for the portable-atomic part,
