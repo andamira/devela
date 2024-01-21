@@ -1,14 +1,13 @@
 // devela::data
 //
 //! Data structures, extends
-//! `std::{`[`any`], [`array`], [`cmp`], [`collections`], [`convert`], [`hash`],
+//! `std::{`[`any`], [`array`], [`cmp`], [`collections`], [`hash`],
 //! [`iter`], [`vec`]`}`.
 //!
 //! [`any`]: core::any
 //! [`array`]: mod@core::array
 //! [`cmp`]: core::cmp
 //! [`collections`]: alloc::collections
-//! [`convert`]: core::convert
 //! [`hash`]: std::hash
 //! [`iter`]: core::iter
 //! [`vec`]: mod@alloc::vec
