@@ -53,6 +53,27 @@ doc: "Includes a file as a reference to a byte array.", include_bytes }
 reexport! { rust: core, local_module: "code",
 doc: "Includes a UTF-8 encoded file as a string.", include_str }
 
+/* `core::convert` reexports */
+
+// traits
+reexport! { rust: core::convert, local_module: "code",
+doc: "Used to do a cheap mutable-to-mutable reference conversion.", AsMut }
+reexport! { rust: core::convert, local_module: "code",
+doc: "Used to do a cheap reference-to-reference conversion.", AsRef }
+reexport! { rust: core::convert, local_module: "code",
+doc: "Used to do value-to-value conversions while consuming the input value.", From }
+reexport! { rust: core::convert, local_module: "code",
+doc: "A value-to-value conversion that consumes the input value.", Into }
+reexport! { rust: core::convert, local_module: "code",
+doc: "Simple and safe type conversions that may fail in a controlled way under some circumstances",
+TryFrom }
+reexport! { rust: core::convert, local_module: "code",
+doc: "An attempted conversion that consumes self, which may or may not be expensive.", TryInto }
+
+// functions
+reexport! { rust: core::convert, local_module: "code",
+doc: "The identity function.", identity }
+
 /* `core::hint` reexports */
 
 reexport! { rust: core::hint, local_module: "code",

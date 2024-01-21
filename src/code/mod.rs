@@ -1,8 +1,9 @@
 // devela::code
 //
 //! Code generation and meta-programming, extends
-//! `std::{`[`hint`], [`marker`]`}`.
+//! `std::{`[`convert`], [`hint`], [`marker`]`}`.
 //!
+//! [`convert`]: core::convert
 //! [`hint`]: core::hint
 //! [`marker`]: core::marker
 //
