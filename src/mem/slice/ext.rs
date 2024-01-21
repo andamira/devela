@@ -109,7 +109,6 @@ pub trait SliceExt<T>: private::Sealed {
     /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec()];
     /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec::<_, i32>()];
     /// ```
-    #[must_use]
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
     fn slice_try_into_vec<E, U>(&self) -> Result<Vec<U>, E>
