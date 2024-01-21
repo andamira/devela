@@ -17,7 +17,7 @@ use crate::{
 #[cfg(feature = "alloc")]
 use ::_alloc::{collections::BTreeMap, vec::Vec};
 
-/// Provides sorting methods for `T`.
+/// Provides sorting methods for arrays and slices of `T`.
 ///
 /// It implements the following *const* methods for sorting copied arrays of primitives:
 /// `bubble_array`, `insertion_array`, `selection_array`.

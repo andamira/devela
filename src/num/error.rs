@@ -16,7 +16,7 @@ pub type NumResult<T> = core::result::Result<T, NumErrors>;
 pub enum NumErrors {
     /// The requested numerical functionality is not implemented.
     ///
-    /// This is the default implementation of every `Num` method.
+    /// This is the default implementation of every numeric trait method.
     NotImplemented,
 
     /// The requested numerical functionality is not supported by this number type.
