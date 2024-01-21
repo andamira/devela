@@ -372,9 +372,44 @@ macro_rules! impl_core {
                 iif![res <= $t::MAX as $up; Ok(Int(res as $t)); Err(Overflow(None))]
             }
 
-            /// Returns a scaled value in `[min..=max]` to a new range `[a..=b]`.
+            /// Returns a scaled value between `[min..=max]` to a new range `[a..=b]`.
+            ///
+            #[doc = "It upcasts internally to [`" $up "`] for the checked operations."]
+            ///
+            /// If the value lies outside of `[min..=max]` it will result in extrapolation.
+            /// # Errors
+            /// Can [`Overflow`] for extrapolated values that can't fit the type,
+            /// and for overflowing arithmetic operations in the following formula:
+            /// # Formula
+            /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
+            #[doc = "assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
+            /// assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow"]
+            /// ```
+            pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
+                let v = self.0 as $up;
+                let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
+                let b_a = iif![let Some(n) = b.checked_sub(a); n; return Err(Overflow(None))];
+                let v_min = iif![let Some(n) = v.checked_sub(min); n; return Err(Overflow(None))];
+                let mul = iif![let Some(n) = b_a.checked_mul(v_min); n; return Err(Overflow(None))];
+                let max_min = iif![let Some(n) = max.checked_sub(min); n; return Err(Overflow(None))];
+                let div = iif![let Some(n) = mul.checked_div(max_min); n; return Err(Overflow(None))];
+                let sum = iif![let Some(n) = div.checked_add(a); n; return Err(Overflow(None))];
+                match Primiting(sum).[<checked_cast_to_ $t>]() {
+                    Ok(n) => Ok(Int(n)),
+                    Err(e) => Err(e),
+                }
+            }
+
+            /// Returns a scaled value between `[min..=max]` to a new range `[a..=b]`.
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the intermediate operations."]
+            ///
+            /// If the value lies outside of `[min..=max]` it will result in extrapolation, and
+            /// if the value doesn't fit in the type it will wrap around its boundaries.
             /// # Panics
             /// Could panic for large values of `i128` or `u128`.
             /// # Formula
@@ -382,9 +417,11 @@ macro_rules! impl_core {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "assert_eq![Int(40), Int(60_" $t ").scale(0, 120, 30, 50)];"]
+            #[doc = "assert_eq![Int(40), Int(60_" $t ").scale_wrap(0, 120, 30, 50)]; // interpolate"]
+            #[doc = "assert_eq![Int(112), Int(100_" $t ").scale_wrap(0, 80, 0, 90)]; // extrapolate"]
+            /// assert_eq![Int(104), Int(200_u8).scale_wrap(0, 50, 0, 90)]; // extrapolate and wrap"]
             /// ```
-            pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Int<$t> {
+            pub const fn scale_wrap(self, min: $t, max: $t, a: $t, b: $t) -> Int<$t> {
                 let v = self.0 as $up;
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
                 Int(((b - a) * (v - min) / (max - min) + a) as $t)

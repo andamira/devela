@@ -135,6 +135,23 @@ pub trait FloatOps: Sized {
     #[must_use]
     fn rem_euclid(self, rhs: Self) -> Self;
 
+    /// Returns `self` between `[min..=max]` scaled to a new range `[u..=v]`.
+    ///
+    /// Values of `self` outside `[min..=max]` are not clamped and will result in extrapolation.
+    /// # Formula
+    /// $$ \large \text{scale}(x, min, max, u, v) = (v - u) \frac{x - min}{max - min} + u $$
+    #[must_use]
+    fn scale(self, min: Self, max: Self, u: Self, v: Self) -> Self;
+
+    /// Calculates a linearly interpolated value between `u..=v`
+    /// based on the percentage `self` between `[0..=1]`.
+    ///
+    /// Values of `self` outside `[0..=1]` are not clamped and will result in extrapolation.
+    /// # Formula
+    /// $$ \large \text{lerp}(x, u, v) = (1 - x) \cdot u + x \cdot v $$
+    #[must_use]
+    fn lerp(self, u: Self, v: Self) -> Self;
+
     /// Raises `self` to the `y` floating point power.
     #[must_use]
     fn powf(self, y: Self) -> Self;
@@ -444,6 +461,12 @@ macro_rules! impl_float_ext {
 
             #[inline(always)]
             fn rem_euclid(self, rhs: Self) -> Self { Floating::<$f>::rem_euclid(self, rhs) }
+
+            #[inline(always)]
+            fn scale(self, min: Self, max: Self, u: Self, v: Self) -> Self {
+                Floating::<$f>::scale(self, min, max, u, v) }
+            #[inline(always)]
+            fn lerp(self, u: Self, v: Self) -> Self { Floating::<$f>::lerp(self, u, v) }
 
             #[inline(always)] #[cfg(any(feature = "std", feature = "libm"))]
             fn powf(self, y: Self) -> Self { Floating::<$f>::powf(self, y) }

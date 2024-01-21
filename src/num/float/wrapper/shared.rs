@@ -60,6 +60,38 @@ macro_rules! custom_impls {
                 let r = x % y; iif![r < 0.0; r + Self::abs(y); r]
             }
 
+            /// Returns the value `x` between `[min..=max]` scaled to a new range `[u..=v]`.
+            ///
+            /// Values of `x` outside `[min..=max]` are not clamped and will result in extrapolation.
+            /// # Formula
+            /// $$ \large \text{scale}(x, min, max, u, v) = (v - u) \frac{x - min}{max - min} + u $$
+            /// # Examples
+            /// ```
+            /// # use devela::num::Floating;
+            #[doc = "assert_eq![0.125, Floating::<" $f ">::scale(45., 0., 360., 0., 1.)];"]
+            #[doc = "assert_eq![-0.75, Floating::<" $f ">::scale(45., 0., 360., -1., 1.)];"]
+            #[doc = "assert_eq![45., Floating::<" $f ">::scale(0.125, 0., 1., 0., 360.)];"]
+            #[doc = "assert_eq![45., Floating::<" $f ">::scale(-0.75, -1., 1., 0., 360.)];"]
+            /// ```
+            #[must_use] #[inline]
+            pub fn scale(x: $f, min: $f, max: $f, u: $f, v: $f) -> $f {
+                (v - u) * (x - min) / (max - min) + u
+            }
+
+            /// Calculates a linearly interpolated value between `u..=v`
+            /// based on the percentage `x` between `[0..=1]`.
+            ///
+            /// Values of `x` outside `[0..=1]` are not clamped and will result in extrapolation.
+            /// # Formula
+            /// $$ \large \text{lerp}(x, u, v) = (1 - x) \cdot u + x \cdot v $$
+            /// # Examples
+            /// ```
+            /// # use devela::num::Floating;
+            #[doc = "assert_eq![60., Floating::<" $f ">::lerp(0.5, 40., 80.)];"]
+            /// ```
+            #[must_use] #[inline]
+            pub fn lerp(x: $f, u: $f, v: $f) -> $f { (1.0 - x) * u + x * v }
+
             /// Raises `x` to the `y` floating point power using the Taylor series via the
             /// `exp` and `ln` functins.
             ///
