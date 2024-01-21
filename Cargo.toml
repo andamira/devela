@@ -71,11 +71,14 @@ error = []
 io = []
 mem = ["dep?/bytemuck"]
 num = []
+	# optional module features:
+	num_int_niche = [] # enables Int implementations for niche types
 os = []
 render = []
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
 ui = ["ui_term"]
+	# optional module features:
 	ui_term = ["dep?/const-str"]
 work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 
@@ -86,6 +89,7 @@ mem_unsafe = ["mem", "unsafe_mem"]
 os_unsafe = ["os", "unsafe_os"]
 text_unsafe = ["text", "unsafe_text"]
 ui_unsafe = ["ui", "unsafe_ui"]
+	# optional module features:
 	ui_term_unsafe = ["ui_term", "unsafe_ui_term"]
 work_unsafe = ["work", "unsafe_work"]
 
