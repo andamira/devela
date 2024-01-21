@@ -21,9 +21,6 @@ pub enum DataErrors {
     /// Value above maximum representable.
     Overflow,
 
-    /// Value below minimum representable.
-    Underflow,
-
     /// The given `index` is out of bounds.
     OutOfBounds(Option<usize>),
 
@@ -42,6 +39,12 @@ pub enum DataErrors {
     ///
     /// Optionally contains the number of free spaces needed.
     NotEnoughSpace(Option<usize>),
+
+    /// The key already exists.
+    KeyAlreadyExists,
+
+    /// The node is empty.
+    EmptyNode,
 }
 
 #[allow(dead_code)]
@@ -69,7 +72,6 @@ mod core_impls {
                 E::NotImplemented => write!(f, "Not implemented."),
                 E::NotSupported => write!(f, "Not supported."),
                 E::Overflow => write!(f, "Value above maximum representable."),
-                E::Underflow => write!(f, "Value aboce minimum representable."),
                 E::MismatchedIndices => {
                     write!(f, "The given indices does not match the expected order.")
                 }
@@ -98,6 +100,8 @@ mod core_impls {
                         write!(f, "Not enough space.")
                     }
                 }
+                E::KeyAlreadyExists => write!(f, "The key already exists."),
+                E::EmptyNode => write!(f, "The node is empty."),
             }
         }
     }
