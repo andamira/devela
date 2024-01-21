@@ -11,21 +11,23 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new features: `docsrs`.
 - add optional dependency `unicode-width`.
 - new root modules: `io`, `render`, `ui`.
-- new traits: `DataArray`, `CastPrimitives`, `BitOps`, `NumInt`, `NumRefInt`, `VecExt`.
 - new fns `mem::ptr_in_stack`, `factorial_*`, `bytes_from_bits`.
-- new types: `DataErrors`, `Casting`, `Comparing`, `Slicing`, `Sorting`, `Biting`, `Int`, `Frac`.
+- new structs `Priming`, `Comparing`, `Slicing`, `Sorting`, `Biting`, `Int`, `Frac`.
+- new traits: `DataArray`, `PrimitiveCast`, `BitOps`, `NumInt`, `NumRefInt`, `VecExt`.
 - new macros: `bitfield`, `enumset`, `ident_const_index`, `ident_total_count`, `init_array`.
 - new `NumErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
 - new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
 - complete `Floating` and `FloatOps` methods and constants.
 - reexport `panic` from `error`, and `hint` from `code`.
 - new type aliases: `isize_up`, `usize_up`.
+- new enums: `DataErrors`, `Sign`.
 
 ### Removed
 - remove `os::linux` functionality.
 - remove features: `linux`, `linux_unsafe`, `unsafe_linux`, `unsafe_os`, `ops`, `ops_unsafe`, `unsafe_ops`, `unsafe_code`, `unsafe_color`, `unsafe_result`, `unsafe_time`, `code_usafe`, `color_unsafe`, `result_unsafe`, `time_unsafe`.
 - remove standalone fns from: `num::ops`, `mem::slice`, `data::convert::collection`.
 - remove linux specific tools and github actions.
+- remove the `Underflow` variant from `NumErrors`.
 - remove the prelude.
 
 ### Changed
@@ -36,12 +38,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move `num` and `ops` modules to `num`.
 - move `data::slice` to `mem::slice`.
 - move `error::{Also, Apply}` to `code`.
-- move `num::convert` module to `data::convert`.
+- move `num::convert` module to `code`.
 - move niche number types to `num::niche`.
 - move `data::array` to `data::collections::array`.
 - move corresponding standalone fns to `Sorting`, `Comparing` and `Casting`.
 - move `cmp` fns to `Comparing` methods: `clamp*`, `max*`, `min*`, `pclamp`, `pmax`, `pmin`.
-- rename `text` module to `str`.
 - rename `meta` module to `code`.
 - rename `task` module to `work`.
 - rename `result` module to `error`.
@@ -52,6 +53,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `Fp` to `Floating` and `FloatExt` to `FloatOps`.
 - rename `Floating` and `FloatOps` float parameters to `x`, `y` `z`.
 - rename `Floating` and `FloatOps` method: `round` to `round_ties_away`.
+- rename `FromPrimitives` to `PrimitiveJoin` and `IntoPrimitives` to `PrimitiveSplit`.
 - rename fn `mem_ptr_ratio` and method `Size::ptr_ratio` to `ptr_size_ratio`.
 - rename reexported time types: `Duration` to `SystemDuration`, `Instant` to `SystemInstant`.
 - reexport `BitwisePrimitives` and `CastPrimitives` traits from `prelude`.
