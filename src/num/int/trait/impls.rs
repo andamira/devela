@@ -147,6 +147,20 @@ macro_rules! impl_int {
         fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> {
             match Int(*self).lcm(*other) { Ok(res) => Ok(res.0), Err(e) => Err(e) } }
 
+        #[inline]
+        fn int_scale(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
+            -> Result<Self::Out> where Self: Sized { Int(self).scale(min, max, a, b).map(|n|n.0) }
+        #[inline]
+        fn int_ref_scale(&self, min: &Self::Rhs, max: &Self::Rhs, a: &Self::Rhs, b: &Self::Rhs)
+            -> Result<Self::Out> { Int(*self).scale(*min, *max, *a, *b).map(|n|n.0) }
+
+        #[inline]
+        fn int_scale_wrap(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
+            -> Result<Self::Out> where Self: Sized { Ok(Int(self).scale_wrap(min, max, a, b).0) }
+        #[inline]
+        fn int_ref_scale_wrap(&self, min: &Self::Rhs, max: &Self::Rhs, a: &Self::Rhs, b: &Self::Rhs)
+            -> Result<Self::Out> { Ok(Int(*self).scale_wrap(*min, *max, *a, *b).0) }
+
         /* combinatorics */
 
         #[inline]

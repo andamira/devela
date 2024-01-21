@@ -80,6 +80,12 @@ where
         a: &<Self::Own as Num>::Rhs, b: &<Self::Own as Num>::Rhs)
         -> Result<<Self::Own as Num>::Out> {
         self.deref().int_ref_scale(min, max, a, b) }
+    /// *Calls `NumInt::`[`int_ref_scale_wrap`][NumInt::int_ref_scale_wrap]*.
+    fn int_ref_scale_wrap(&self,
+        min: &<Self::Own as Num>::Rhs, max: &<Self::Own as Num>::Rhs,
+        a: &<Self::Own as Num>::Rhs, b: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
+        self.deref().int_ref_scale_wrap(min, max, a, b) }
 
     /* combinatorics */
 

@@ -168,12 +168,30 @@ pub trait NumInt: Num {
     fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns a scaled value in `[min..=max]` to a new range `[a..=b]`.
+    /// If the value lies outside of `[min..=max]` it will result in extrapolation.
+    /// # Errors
+    /// Can [`Overflow`] for extrapolated values that can't fit the type,
+    /// and for overflowing arithmetic operations in the following formula:
     /// # Formula
     /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
     fn int_scale(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_scale`][Self::int_scale] but takes the arguments by reference.*
     fn int_ref_scale(&self, min: &Self::Rhs, max: &Self::Rhs, a: &Self::Rhs, b: &Self::Rhs)
+        -> Result<Self::Out> { E::ni() }
+
+    /// Returns a scaled value between `[min..=max]` to a new range `[a..=b]`.
+    ///
+    /// If the value lies outside of `[min..=max]` it will result in extrapolation, and
+    /// if the value doesn't fit in the type it will wrap around its boundaries.
+    /// # Panics
+    /// Could panic for very large values on some implementations.
+    /// # Formula
+    /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+    fn int_scale_wrap(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
+        -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_scale_wrap`][Self::int_scale_wrap] but takes the arguments by reference.*
+    fn int_ref_scale_wrap(&self, min: &Self::Rhs, max: &Self::Rhs, a: &Self::Rhs, b: &Self::Rhs)
         -> Result<Self::Out> { E::ni() }
 
     /* combinatorics */
