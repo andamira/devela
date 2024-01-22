@@ -112,11 +112,11 @@ macro_rules! impl_niche {
     /* leveraged primitive implementation returns the type without a Result */
     ( Int
       $n:ident : $t:ident : $dt:literal <$($g:ident),*>,
-      $(+$const:tt)? $fn:ident, $self:expr $(, $arg:ident : $atype:ty),*
+     $(+$const:tt)? $fn:ident, $self:ident $(,)? $($arg:ident : $atype:ty),*
     ) => { paste! {
         #[doc = "*See the [`" $fn "`](#fn." $fn $dt ") implementation for `" $t "`*."]
         #[inline]
-        pub $($const)? fn $fn($self $(,$arg:$atype),*) -> Result<Int<[<$n$t:camel>]<$($g,)*>>> {
+        pub $($const)? fn $fn($self, $($arg:$atype),*) -> Result<Int<[<$n$t:camel>]<$($g,)*>>> {
             let val = Int($self.0.get()).$fn($($arg),*);
             if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(val.0) {
                 Ok(Int(res))
@@ -127,13 +127,13 @@ macro_rules! impl_niche {
     }};
 
     /* leveraged primitive implementation returns the type inside a Result */
-    ( Int=>res
+    ( Int => res
       $n:ident : $t:ident : $dt:literal <$($g:ident),*>,
-      $(+$const:tt)? $fn:ident, $self:expr $(, $arg:ident : $atype:ty),*
+      $(+$const:tt)? $fn:ident, $self:ident $(,)? $($arg:ident : $atype:ty),*
     ) => { paste! {
         #[doc = "*See the [`" $fn "`](#fn." $fn $dt ") implementation for `" $t "`*."]
         #[inline]
-        pub $($const)? fn $fn($self $(,$arg:$atype),*) -> Result<Int<[<$n$t:camel>]<$($g,)*>>> {
+        pub $($const)? fn $fn($self, $($arg:$atype),*) -> Result<Int<[<$n$t:camel>]<$($g,)*>>> {
             let fn_res = Int($self.0.get()).$fn($($arg),*);
             match fn_res {
                 Err(e) => Err(e),
@@ -147,5 +147,18 @@ macro_rules! impl_niche {
             }
         }
     }};
+
+    /* leveraged primitive implementation returns a custom return type without Result */
+    ( Int => $ret:ty:
+      $n:ident : $t:ident : $dt:literal <$($g:ident),*>,
+      $(+$const:tt)? $fn:ident, $self:ident $(,)? $($arg:ident : $atype:ty),*
+    ) => { paste! {
+        #[doc = "*See the [`" $fn "`](#fn." $fn $dt ") implementation for `" $t "`*."]
+        #[inline]
+        pub $($const)? fn $fn($self, $($arg:$atype),*) -> $ret {
+            Int($self.0.get()).$fn($($arg),*)
+        }
+    }};
+
 }
 pub(crate) use impl_niche;
