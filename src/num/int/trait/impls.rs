@@ -119,9 +119,9 @@ macro_rules! impl_int {
         /* core */
 
         #[inline]
-        fn int_abs(self) -> Result<Self::Out> { Ok(Int(self).abs()) }
+        fn int_abs(self) -> Result<Self::Out> { Ok(Int(self).abs().0) }
         #[inline]
-        fn int_ref_abs(&self) -> Result<Self::Out> { Ok(Int(*self).abs()) }
+        fn int_ref_abs(&self) -> Result<Self::Out> { Ok(Int(*self).abs().0) }
 
         #[inline]
         fn int_is_even(self) -> Result<bool> { Ok(Int(self).is_even()) }

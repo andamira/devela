@@ -44,7 +44,7 @@ macro_rules! impl_core {
         impl Int<$t> {
             /// Returns the absolute value of `self`.
             #[inline] #[must_use]
-            pub const fn abs(self) -> $t { self.0.abs() }
+            pub const fn abs(self) -> Int<$t> { Int(self.0.abs()) }
 
             /// Returns `true` if `self` is an even number.
             /// # Examples
@@ -296,7 +296,7 @@ macro_rules! impl_core {
         impl Int<$t> {
             /// Returns the absolute value of `self` (no-op).
             #[inline] #[must_use]
-            pub const fn abs(self) -> $t { self.0 }
+            pub const fn abs(self) -> Int<$t> { self }
 
             /// Returns `true` if `self` is an even number.
             /// # Examples
