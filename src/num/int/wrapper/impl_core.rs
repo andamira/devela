@@ -23,22 +23,22 @@ use NumErrors::Overflow;
 
 // $t:   the input/output type
 // $up:  the upcasted type to do the operations on (for lcm)
-// $dl:  the doclink suffix for the method name
+// $d:  the doclink suffix for the method name
 macro_rules! impl_core {
-    (signed $( $t:ty : $up:ty : $dl:literal ),+) => { $( impl_core![@signed $t:$up:$dl]; )+ };
-    (unsigned $( $t:ty : $up:ty : $dl:literal ),+) => { $( impl_core![@unsigned $t:$up:$dl]; )+ };
+    (signed $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_core![@signed $t:$up:$d]; )+ };
+    (unsigned $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_core![@unsigned $t:$up:$d]; )+ };
 
     // implements signed ops
-    (@signed $t:ty : $up:ty : $dl:literal) => { paste! {
+    (@signed $t:ty : $up:ty : $d:literal) => { paste! {
         #[doc = "# Integer core methods for `" $t "`\n\n"]
-        #[doc = "- [abs](#method.abs" $dl ")"]
-        #[doc = "- [is_even](#method.is_even" $dl ")"]
-        #[doc = "- [is_odd](#method.is_odd" $dl ")"]
-        #[doc = "- [gcd](#method.gcd" $dl ")"]
-        #[doc = "- [gcd_ext](#method.gcd_ext" $dl ")"]
-        #[doc = "- [gcd_ext_euc](#method.gcd_ext_euc" $dl ")"]
-        #[doc = "- [lcm](#method.lcm" $dl ")"]
-        #[doc = "- [scale](#method.scale" $dl ")"]
+        #[doc = "- [abs](#method.abs" $d ")"]
+        #[doc = "- [is_even](#method.is_even" $d ")"]
+        #[doc = "- [is_odd](#method.is_odd" $d ")"]
+        #[doc = "- [gcd](#method.gcd" $d ")"]
+        #[doc = "- [gcd_ext](#method.gcd_ext" $d ")"]
+        #[doc = "- [gcd_ext_euc](#method.gcd_ext_euc" $d ")"]
+        #[doc = "- [lcm](#method.lcm" $d ")"]
+        #[doc = "- [scale](#method.scale" $d ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
@@ -283,14 +283,14 @@ macro_rules! impl_core {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $up:ty : $dl:literal) => { paste! {
+    (@unsigned $t:ty : $up:ty : $d:literal) => { paste! {
         #[doc = "# Integer core methods for `" $t "`\n\n"]
-        #[doc = "- [abs](#method.abs" $dl ")"]
-        #[doc = "- [is_even](#method.is_even" $dl ")"]
-        #[doc = "- [is_odd](#method.is_odd" $dl ")"]
-        #[doc = "- [gcd](#method.gcd" $dl ")"]
-        #[doc = "- [lcm](#method.lcm" $dl ")"]
-        #[doc = "- [scale](#method.scale" $dl ")"]
+        #[doc = "- [abs](#method.abs" $d ")"]
+        #[doc = "- [is_even](#method.is_even" $d ")"]
+        #[doc = "- [is_odd](#method.is_odd" $d ")"]
+        #[doc = "- [gcd](#method.gcd" $d ")"]
+        #[doc = "- [lcm](#method.lcm" $d ")"]
+        #[doc = "- [scale](#method.scale" $d ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {

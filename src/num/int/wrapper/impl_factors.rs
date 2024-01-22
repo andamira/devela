@@ -28,24 +28,24 @@ use {
 };
 
 // $t:   the input/output type
-// $dl:  the doclink suffix for the method name
+// $d:  the doclink suffix for the method name
 macro_rules! impl_factors {
-    (signed $( $t:ty : $dl:literal ),+) => { $( impl_factors![@signed $t:$dl]; )+ };
-    (unsigned $( $t:ty : $dl:literal ),+) => { $( impl_factors![@unsigned $t:$dl]; )+ };
+    (signed $( $t:ty : $d:literal ),+) => { $( impl_factors![@signed $t:$d]; )+ };
+    (unsigned $( $t:ty : $d:literal ),+) => { $( impl_factors![@unsigned $t:$d]; )+ };
 
     // implements signed ops
-    (@signed $t:ty : $dl:literal) => { paste! {
+    (@signed $t:ty : $d:literal) => { paste! {
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
-        #[doc = "   - [factors](#method.factors" $dl ")"]
-        #[doc = "   - [factors_proper](#method.factors_proper" $dl ")"]
-        #[doc = "   - [factors_prime](#method.factors_prime" $dl ")"]
-        #[doc = "   - [factors_prime_unique](#method.factors_prime_unique" $dl ")"]
+        #[doc = "   - [factors](#method.factors" $d ")"]
+        #[doc = "   - [factors_proper](#method.factors_proper" $d ")"]
+        #[doc = "   - [factors_prime](#method.factors_prime" $d ")"]
+        #[doc = "   - [factors_prime_unique](#method.factors_prime_unique" $d ")"]
         /// - Not allocating:
-        #[doc = "   - [factors_buf](#method.factors_buf" $dl ")"]
-        #[doc = "   - [factors_proper_buf](#method.factors_proper_buf" $dl ")"]
-        #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $dl ")"]
-        #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $dl ")"]
+        #[doc = "   - [factors_buf](#method.factors_buf" $d ")"]
+        #[doc = "   - [factors_proper_buf](#method.factors_proper_buf" $d ")"]
+        #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $d ")"]
+        #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
         ///
         /// See the related trait [`NumOpsFactors`][crate::num::NumOpsFactors].
         impl Int<$t> {
@@ -306,7 +306,7 @@ macro_rules! impl_factors {
             ///
             /// Otherwise it will return `MismatchedSizes`, and the buffer will only contain
             /// the non-unique factors that could fit, like
-            #[doc = "[`factors_prime_buf`](#method.factors_prime_buf" $dl ")."]
+            #[doc = "[`factors_prime_buf`](#method.factors_prime_buf" $d ")."]
             ///
             /// # Examples
             /// ```
@@ -376,18 +376,18 @@ macro_rules! impl_factors {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $dl:literal) => { paste! {
+    (@unsigned $t:ty : $d:literal) => { paste! {
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
-        #[doc = "   - [factors](#method.factors" $dl ")"]
-        #[doc = "   - [factors_proper](#method.factors_proper" $dl ")"]
-        #[doc = "   - [factors_prime](#method.factors_prime" $dl ")"]
-        #[doc = "   - [factors_prime_unique](#method.factors_prime_unique" $dl ")"]
+        #[doc = "   - [factors](#method.factors" $d ")"]
+        #[doc = "   - [factors_proper](#method.factors_proper" $d ")"]
+        #[doc = "   - [factors_prime](#method.factors_prime" $d ")"]
+        #[doc = "   - [factors_prime_unique](#method.factors_prime_unique" $d ")"]
         /// - Not allocating:
-        #[doc = "   - [factors_buf](#method.factors_buf" $dl ")"]
-        #[doc = "   - [factors_proper_buf](#method.factors_proper_buf" $dl ")"]
-        #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $dl ")"]
-        #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $dl ")"]
+        #[doc = "   - [factors_buf](#method.factors_buf" $d ")"]
+        #[doc = "   - [factors_proper_buf](#method.factors_proper_buf" $d ")"]
+        #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $d ")"]
+        #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
         ///
         /// See the related trait [`NumOpsFactors`][crate::num::NumOpsFactors].
         impl Int<$t> {
@@ -641,9 +641,8 @@ macro_rules! impl_factors {
             /// In that case the function will return the number of unique factors found.
             ///
             /// Otherwise it will return [`MismatchedSizes`], and the buffer will only contain
-            /// the non-unique factors that could fit. Same as calling the function
-            #[doc = "[`factors_prime_" $t "_buf`]."]
-            ///
+            /// the non-unique factors that could fit. Same as calling the method
+            #[doc = "[`factors_prime_buf`](#method.factors_prime_buf" $d ")."]
             /// # Examples
             /// ```
             /// # use devela::num::Int;

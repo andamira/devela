@@ -16,23 +16,23 @@ use super::Int;
 use crate::code::{iif, paste};
 
 // $t:   the input/output type
-// $dl:  the doclink suffix for the method name
+// $d:  the doclink suffix for the method name
 macro_rules! impl_div {
-    (signed $( $t:ty : $dl:literal ),+) => { $( impl_div![@signed $t:$dl]; )+ };
-    (unsigned $( $t:ty : $dl:literal ),+) => { $( impl_div![@unsigned $t:$dl]; )+ };
+    (signed $( $t:ty : $d:literal ),+) => { $( impl_div![@signed $t:$d]; )+ };
+    (unsigned $( $t:ty : $d:literal ),+) => { $( impl_div![@unsigned $t:$d]; )+ };
 
     // implements signed ops
-    (@signed $t:ty : $dl:literal) => { paste! {
+    (@signed $t:ty : $d:literal) => { paste! {
         /* signed division */
 
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
-        #[doc = "- [div_rem](#method.div_rem" $dl ")"]
-        #[doc = "- [div_ceil](#method.div_ceil" $dl ")"]
-        #[doc = "- [div_floor](#method.div_floor" $dl ")"]
-        #[doc = "- [div_ties_away](#method.div_ties_away" $dl ")"]
-        #[doc = "- [div_ties_towards](#method.div_ties_towards" $dl ")"]
-        #[doc = "- [div_ties_even](#method.div_ties_even" $dl ")"]
-        #[doc = "- [div_ties_odd](#method.div_ties_odd" $dl ")"]
+        #[doc = "- [div_rem](#method.div_rem" $d ")"]
+        #[doc = "- [div_ceil](#method.div_ceil" $d ")"]
+        #[doc = "- [div_floor](#method.div_floor" $d ")"]
+        #[doc = "- [div_ties_away](#method.div_ties_away" $d ")"]
+        #[doc = "- [div_ties_towards](#method.div_ties_towards" $d ")"]
+        #[doc = "- [div_ties_even](#method.div_ties_even" $d ")"]
+        #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
@@ -219,15 +219,15 @@ macro_rules! impl_div {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $dl:literal) => { paste! {
+    (@unsigned $t:ty : $d:literal) => { paste! {
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
-        #[doc = "- [div_rem](#method.div_rem" $dl ")"]
-        #[doc = "- [div_ceil](#method.div_ceil" $dl ")"]
-        #[doc = "- [div_floor](#method.div_floor" $dl ")"]
-        #[doc = "- [div_ties_away](#method.div_ties_away" $dl ")"]
-        #[doc = "- [div_ties_towards](#method.div_ties_towards" $dl ")"]
-        #[doc = "- [div_ties_even](#method.div_ties_even" $dl ")"]
-        #[doc = "- [div_ties_odd](#method.div_ties_odd" $dl ")"]
+        #[doc = "- [div_rem](#method.div_rem" $d ")"]
+        #[doc = "- [div_ceil](#method.div_ceil" $d ")"]
+        #[doc = "- [div_floor](#method.div_floor" $d ")"]
+        #[doc = "- [div_ties_away](#method.div_ties_away" $d ")"]
+        #[doc = "- [div_ties_towards](#method.div_ties_towards" $d ")"]
+        #[doc = "- [div_ties_even](#method.div_ties_even" $d ")"]
+        #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {

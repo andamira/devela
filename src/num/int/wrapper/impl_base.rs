@@ -266,7 +266,7 @@ macro_rules! impl_base {
         $( impl_base![@niche $n:$t <$($g),*> : $d:$dt ]; )+
     };
     (@niche $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal) => { paste! {
-        #[doc = "# Integer base related methods for `" [<$n $t:camel>] "`\n\n"]
+        #[doc = "# Integer base related methods for `" [<$n$t:camel>] "`\n\n"]
         #[doc = "- [digits](#method.digits" $d ")"]
         #[doc = "- [digits_sign](#method.digits_sign" $d ")"]
         #[doc = "- [digits_base](#method.digits_base" $d ")"]
@@ -277,7 +277,7 @@ macro_rules! impl_base {
         /// Each method calls its specific inner primitive implementation.
         /// # Errors
         /// Every method can return [`Invalid`] if the result is invalid for the niche type.
-        impl< $(const $g:$t, )* > Int<[<$n $t:camel>]< $($g,)*> > {
+        impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             impl_niche![Int $n:$t:$dt<$($g),*>, +const digits, self];
             impl_niche![Int $n:$t:$dt<$($g),*>, +const digits_sign, self];
             impl_niche![Int $n:$t:$dt<$($g),*>, +const digits_base, self, base:$t];

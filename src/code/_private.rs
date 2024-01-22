@@ -2,10 +2,12 @@
 //
 //! private meta helpers
 //
+// TOC
+// - reexport!
 
 #![allow(unused)]
 
-// Macro helper for documentation of re-exported items.
+/// Macro helper for documentation of re-exported items.
 macro_rules! reexport {
     /* reexports from the `depend` module */
 

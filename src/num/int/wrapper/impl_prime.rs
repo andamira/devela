@@ -17,18 +17,18 @@ use NumErrors::Overflow;
 
 // $t:   the input/output type
 // $up:  the upcasted type to do the operations on (for prime_pi)
-// $dl:  the doclink suffix for the method name
+// $d:  the doclink suffix for the method name
 macro_rules! impl_base {
-    (signed $( $t:ty : $up:ty : $dl:literal ),+) => { $( impl_base![@signed $t:$up:$dl]; )+ };
-    (unsigned $( $t:ty : $up:ty : $dl:literal ),+) => { $( impl_base![@unsigned $t:$up:$dl]; )+ };
+    (signed $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_base![@signed $t:$up:$d]; )+ };
+    (unsigned $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_base![@unsigned $t:$up:$d]; )+ };
 
     // implements signed ops
-    (@signed $t:ty : $up: ty : $dl:literal) => { paste! {
+    (@signed $t:ty : $up: ty : $d:literal) => { paste! {
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
-        #[doc = "- [is_prime](#method.is_prime" $dl ")"]
-        #[doc = "- [prime_nth](#method.prime_nth" $dl ")"]
-        #[doc = "- [prime_pi](#method.prime_pi" $dl ")"]
-        #[doc = "- [totient](#method.totient" $dl ")"]
+        #[doc = "- [is_prime](#method.is_prime" $d ")"]
+        #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
+        #[doc = "- [prime_pi](#method.prime_pi" $d ")"]
+        #[doc = "- [totient](#method.totient" $d ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
@@ -159,12 +159,12 @@ macro_rules! impl_base {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $up:ty : $dl:literal) => { paste! {
+    (@unsigned $t:ty : $up:ty : $d:literal) => { paste! {
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
-        #[doc = "- [is_prime](#method.is_prime" $dl ")"]
-        #[doc = "- [prime_nth](#method.prime_nth" $dl ")"]
-        #[doc = "- [prime_pi](#method.prime_pi" $dl ")"]
-        #[doc = "- [totient](#method.totient" $dl ")"]
+        #[doc = "- [is_prime](#method.is_prime" $d ")"]
+        #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
+        #[doc = "- [prime_pi](#method.prime_pi" $d ")"]
+        #[doc = "- [totient](#method.totient" $d ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {

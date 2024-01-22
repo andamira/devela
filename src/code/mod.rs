@@ -13,7 +13,7 @@
 // crate internal use only
 mod _private;
 #[allow(unused)]
-pub(crate) use _private::reexport;
+pub(crate) use _private::*;
 
 // internal and external use
 mod chain;

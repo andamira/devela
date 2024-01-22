@@ -17,20 +17,20 @@ use crate::{
 use E::{NonNegativeRequired, Overflow};
 
 // $t:   the input/output type
-// $dl:  the doclink suffix for the method name
+// $d:  the doclink suffix for the method name
 macro_rules! impl_sqrt {
-    (signed $( $t:ty : $up:ty : $dl:literal ),+) => { $( impl_sqrt![@signed $t:$up:$dl]; )+ };
-    (unsigned $( $t:ty : $up:ty : $dl:literal ),+) => { $( impl_sqrt![@unsigned $t:$up:$dl]; )+ };
+    (signed $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_sqrt![@signed $t:$up:$d]; )+ };
+    (unsigned $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_sqrt![@unsigned $t:$up:$d]; )+ };
 
     // implements signed ops
-    (@signed $t:ty : $up:ty : $dl:literal) => { paste! {
+    (@signed $t:ty : $up:ty : $d:literal) => { paste! {
         /* signed square root */
 
         #[doc = "# Integer square root related methods for `" $t "`\n\n"]
-        #[doc = "- [is_square](#method.is_square" $dl ")"]
-        #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $dl ")"]
-        #[doc = "- [sqrt_floor](#method.sqrt_floor" $dl ")"]
-        #[doc = "- [sqrt_round](#method.sqrt_round" $dl ")"]
+        #[doc = "- [is_square](#method.is_square" $d ")"]
+        #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
+        #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
+        #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
@@ -194,12 +194,12 @@ macro_rules! impl_sqrt {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $up:ty : $dl:literal) => { paste! {
+    (@unsigned $t:ty : $up:ty : $d:literal) => { paste! {
         #[doc = "# Integer square root related methods for `" $t "`\n\n"]
-        #[doc = "- [is_square](#method.is_square" $dl ")"]
-        #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $dl ")"]
-        #[doc = "- [sqrt_floor](#method.sqrt_floor" $dl ")"]
-        #[doc = "- [sqrt_round](#method.sqrt_round" $dl ")"]
+        #[doc = "- [is_square](#method.is_square" $d ")"]
+        #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
+        #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
+        #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
