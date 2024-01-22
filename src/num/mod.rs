@@ -28,8 +28,6 @@ pub use {alias::*, error::*, float::*, niche::*, ops::*, primitive::*, sign::*};
 /* feature-gated */
 
 #[cfg(feature = "num")]
-mod frac;
-#[cfg(feature = "num")]
 mod int;
 #[cfg(feature = "num")]
 mod no;
@@ -38,7 +36,7 @@ mod r#trait;
 
 // re-export private sub-modules
 #[cfg(feature = "num")]
-pub use {alias::*, error::*, float::*, frac::*, int::*, no::*, primitive::*, r#trait::*, sign::*};
+pub use {alias::*, error::*, float::*, int::*, no::*, primitive::*, r#trait::*, sign::*};
 
 // re-export public sub-modules
 #[doc(no_inline)]
@@ -53,5 +51,5 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(feature = "num")]
-    pub use super::{frac::*, int::*, no::*, r#trait::*};
+    pub use super::{int::*, no::*, r#trait::*};
 }
