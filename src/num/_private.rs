@@ -115,13 +115,17 @@ macro_rules! impl_niche {
      $(+$const:tt)? $fn:ident, $self:ident $(,)? $($arg:ident : $atype:ty),*
     ) => { paste! {
         #[doc = "*See the [`" $fn "`](#fn." $fn $dt ") implementation for `" $t "`*."]
+        /// # Errors
+        /// It will return [`Invalid`][crate::num::NumErrors::Invalid]
+        /// if the result is invalid for this type.
         #[inline]
-        pub $($const)? fn $fn($self, $($arg:$atype),*) -> Result<Int<[<$n$t:camel>]<$($g,)*>>> {
+        pub $($const)? fn $fn($self, $($arg:$atype),*)
+            -> $crate::num::NumResult<Int<[<$n$t:camel>]<$($g,)*>>> {
             let val = Int($self.0.get()).$fn($($arg),*);
             if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(val.0) {
                 Ok(Int(res))
             } else {
-                Err(Invalid)
+                Err($crate::num::NumErrors::Invalid)
             }
         }
     }};
@@ -132,8 +136,12 @@ macro_rules! impl_niche {
       $(+$const:tt)? $fn:ident, $self:ident $(,)? $($arg:ident : $atype:ty),*
     ) => { paste! {
         #[doc = "*See the [`" $fn "`](#fn." $fn $dt ") implementation for `" $t "`*."]
+        /// # Errors
+        /// It will return [`Invalid`][crate::num::NumErrors::Invalid]
+        /// if the result is invalid for this type.
         #[inline]
-        pub $($const)? fn $fn($self, $($arg:$atype),*) -> Result<Int<[<$n$t:camel>]<$($g,)*>>> {
+        pub $($const)? fn $fn($self, $($arg:$atype),*)
+            -> $crate::num::NumResult<Int<[<$n$t:camel>]<$($g,)*>>> {
             let fn_res = Int($self.0.get()).$fn($($arg),*);
             match fn_res {
                 Err(e) => Err(e),
@@ -141,14 +149,14 @@ macro_rules! impl_niche {
                     if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(val.0) {
                         Ok(Int(res))
                     } else {
-                        Err(Invalid)
+                        Err($crate::num::NumErrors::Invalid)
                     }
                 },
             }
         }
     }};
 
-    /* leveraged primitive implementation returns a custom return type without Result */
+    /* leveraged primitive implementation returns a custom return type directly */
     ( Int => $ret:ty:
       $n:ident : $t:ident : $dt:literal <$($g:ident),*>,
       $(+$const:tt)? $fn:ident, $self:ident $(,)? $($arg:ident : $atype:ty),*

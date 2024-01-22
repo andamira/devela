@@ -10,16 +10,13 @@
 //   - permute
 //   - permute_rep
 
+#[cfg(feature = "num_int_niche")]
+use crate::num::{impl_niche, niche::*};
 use crate::{
     code::{cfor, iif, paste},
     num::{Int, NumErrors, NumResult as Result, Primiting},
 };
 use NumErrors::{MismatchedSizes, NonNegativeRequired, Overflow};
-#[cfg(feature = "num_int_niche")]
-use {
-    crate::num::{impl_niche, niche::*},
-    NumErrors::Invalid,
-};
 
 // $t:   the input/output type
 // $d:  the doclink suffix for the method name
@@ -570,10 +567,6 @@ macro_rules! impl_combinatorics {
         #[doc = "- [combine_rep](#method.combine_rep" $d ")"]
         #[doc = "- [permute](#method.permute" $d ")"]
         #[doc = "- [permute_rep](#method.permute_rep" $d ")"]
-        ///
-        /// Each method calls its specific inner primitive implementation.
-        /// # Errors
-        /// Every method can return [`Invalid`] if the result is invalid for the niche type.
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const factorial, self];
             impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const subfactorial, self];

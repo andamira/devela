@@ -15,10 +15,7 @@
 //   - gcd_ext_euc
 
 #[cfg(feature = "num_int_niche")]
-use {
-    crate::num::{impl_niche, niche::*},
-    NumErrors::Invalid,
-};
+use crate::num::{impl_niche, niche::*};
 use {
     crate::{
         code::{iif, paste},
@@ -457,10 +454,6 @@ macro_rules! impl_core {
         #[doc = "- [lcm](#method.lcm" $d ")"]
         #[doc = "- [scale](#method.scale" $d ")"]
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
-        ///
-        /// Each method calls its specific inner primitive implementation.
-        /// # Errors
-        /// Every method can return [`Invalid`] if the result is invalid for the niche type.
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             impl_niche![Int $n:$t:$dt<$($g),*>, +const abs, self];
             impl_niche![Int=>bool: $n:$t:$dt<$($g),*>, +const is_even, self];

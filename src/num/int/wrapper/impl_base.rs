@@ -11,14 +11,11 @@
 //   - digital_root
 //   - digital_root_base
 
+#[cfg(feature = "num_int_niche")]
+use crate::num::{impl_niche, niche::*};
 use crate::{
     code::{iif, paste},
     num::Int,
-};
-#[cfg(feature = "num_int_niche")]
-use {
-    crate::num::{impl_niche, niche::*, NumErrors, NumResult as Result},
-    NumErrors::Invalid,
 };
 
 // $t:  the integer primitive input/output type, and the niche inner type
@@ -273,10 +270,6 @@ macro_rules! impl_base {
         #[doc = "- [digits_base_sign](#method.digits_base_sign" $d ")"]
         #[doc = "- [digital_root](#method.digital_root" $d ")"]
         #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
-        ///
-        /// Each method calls its specific inner primitive implementation.
-        /// # Errors
-        /// Every method can return [`Invalid`] if the result is invalid for the niche type.
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             impl_niche![Int $n:$t:$dt<$($g),*>, +const digits, self];
             impl_niche![Int $n:$t:$dt<$($g),*>, +const digits_sign, self];
