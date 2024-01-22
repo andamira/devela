@@ -270,6 +270,8 @@ macro_rules! impl_base {
         #[doc = "- [digits_base_sign](#method.digits_base_sign" $d ")"]
         #[doc = "- [digital_root](#method.digital_root" $d ")"]
         #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
+        ///
+        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             impl_niche![Int $n:$t:$dt<$($g),*>, +const digits, self];
             impl_niche![Int $n:$t:$dt<$($g),*>, +const digits_sign, self];

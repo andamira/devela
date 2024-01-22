@@ -454,6 +454,8 @@ macro_rules! impl_core {
         #[doc = "- [lcm](#method.lcm" $d ")"]
         #[doc = "- [scale](#method.scale" $d ")"]
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
+        ///
+        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             impl_niche![Int $n:$t:$dt<$($g),*>, +const abs, self];
             impl_niche![Int=>bool: $n:$t:$dt<$($g),*>, +const is_even, self];

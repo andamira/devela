@@ -33,6 +33,8 @@ macro_rules! impl_combinatorics {
         #[doc = "- [permute_rep](#method.permute_rep" $d ")"]
         #[doc = "- [combine](#method.combine" $d ")"]
         #[doc = "- [combine_rep](#method.combine_rep" $d ")"]
+        ///
+        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /// Returns the factorial.
             ///
@@ -306,6 +308,8 @@ macro_rules! impl_combinatorics {
         #[doc = "- [combine_rep](#method.combine_rep" $d ")"]
         #[doc = "- [permute](#method.permute" $d ")"]
         #[doc = "- [permute_rep](#method.permute_rep" $d ")"]
+        ///
+        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /// Returns the factorial.
             ///
@@ -567,6 +571,8 @@ macro_rules! impl_combinatorics {
         #[doc = "- [combine_rep](#method.combine_rep" $d ")"]
         #[doc = "- [permute](#method.permute" $d ")"]
         #[doc = "- [permute_rep](#method.permute_rep" $d ")"]
+        ///
+        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const factorial, self];
             impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const subfactorial, self];
