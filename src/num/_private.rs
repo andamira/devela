@@ -156,7 +156,29 @@ macro_rules! impl_niche {
         }
     }};
 
-    /* leveraged primitive implementation returns a custom return type directly */
+    // leveraged primitive implementation returns an array of 2 elements
+    //
+    // used in: div_rem
+    ( Int => array2
+      $n:ident : $t:ident : $dt:literal <$($g:ident),*>,
+      $(+$const:tt)? $fn:ident, $self:ident $(,)? $($arg:ident : $atype:ty),*
+    ) => { paste! {
+        #[doc = "*See the [`" $fn "`](#fn." $fn $dt ") implementation for `" $t "`*."]
+        #[inline]
+        pub $($const)? fn $fn($self, $($arg:$atype),*)
+            -> $crate::num::NumResult<[Int<[<$n$t:camel>]<$($g,)*>>; 2]> {
+            let array = Int($self.0.get()).$fn($($arg),*);
+            let a = if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(array[0].0) {
+                Int(res) } else { return Err($crate::num::NumErrors::Invalid); };
+            let b = if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(array[1].0) {
+                Int(res) } else { return Err($crate::num::NumErrors::Invalid); };
+            Ok([a, b])
+        }
+    }};
+
+    // leveraged primitive implementation returns a custom return type directly
+    //
+    // used in: is_even, is_odd
     ( Int => $ret:ty:
       $n:ident : $t:ident : $dt:literal <$($g:ident),*>,
       $(+$const:tt)? $fn:ident, $self:ident $(,)? $($arg:ident : $atype:ty),*
@@ -167,6 +189,5 @@ macro_rules! impl_niche {
             Int($self.0.get()).$fn($($arg),*)
         }
     }};
-
 }
 pub(crate) use impl_niche;
