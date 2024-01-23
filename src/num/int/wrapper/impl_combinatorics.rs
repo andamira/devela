@@ -20,9 +20,9 @@ use NumErrors::{MismatchedSizes, NonNegativeRequired, Overflow};
 
 // $t:   the input/output type
 // $d:  the doclink suffix for the method name
-macro_rules! impl_combinatorics {
-    (signed $( $t:ty : $d:literal ),+) => { $( impl_combinatorics![@signed $t:$d]; )+ };
-    (unsigned $( $t:ty : $d:literal ),+) => { $( impl_combinatorics![@unsigned $t:$d]; )+ };
+macro_rules! impl_int {
+    (signed $( $t:ty : $d:literal ),+) => { $( impl_int![@signed $t:$d]; )+ };
+    (unsigned $( $t:ty : $d:literal ),+) => { $( impl_int![@unsigned $t:$d]; )+ };
 
     // implements signed ops
     (@signed $t:ty : $d:literal) => { paste! {
@@ -561,7 +561,7 @@ macro_rules! impl_combinatorics {
     // $d:  the doclink suffix for the method name
     // $dt: the doclink suffix for the associated method name implemented for the inner primitive
     (niche $( $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal),+ $(,)? ) => {
-        $( impl_combinatorics![@niche $n:$t <$($g),*> : $d:$dt ]; )+
+        $( impl_int![@niche $n:$t <$($g),*> : $d:$dt ]; )+
     };
     (@niche $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal) => { paste! {
         #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
@@ -583,35 +583,7 @@ macro_rules! impl_combinatorics {
         }
     }};
 }
-impl_combinatorics![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
-impl_combinatorics![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
+impl_int![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
+impl_int![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
 #[cfg(feature = "num_int_niche")]
-impl_combinatorics![niche
-    NonZero:i8<>:"-18":"", NonZero:i16<>:"-19":"-1",
-    NonZero:i32<>:"-20":"-2", NonZero:i64<>:"-21":"-3",
-    NonZero:i128<>:"-22":"-4", NonZero:isize<>:"-23":"-5",
-    NonZero:u8<>:"-12":"-6", NonZero:u16<>:"-13":"-7",
-    NonZero:u32<>:"-14":"-8", NonZero:u64<>:"-15":"-9",
-    NonZero:u128<>:"-16":"-10", NonZero:usize<>:"-17":"-11",
-    //
-    NonSpecific:i8<V>:"-30":"", NonSpecific:i16<V>:"-31":"-1",
-    NonSpecific:i32<V>:"-32":"-2", NonSpecific:i64<V>:"-33":"-3",
-    NonSpecific:i128<V>:"-34":"-4", NonSpecific:isize<V>:"-35":"-5",
-    NonSpecific:u8<V>:"-24":"-6", NonSpecific:u16<V>:"-25":"-7",
-    NonSpecific:u32<V>:"-26":"-8", NonSpecific:u64<V>:"-27":"-9",
-    NonSpecific:u128<V>:"-28":"-10", NonSpecific:usize<V>:"-29":"-11",
-    //
-    NonRange:i8<RMIN,RMAX>:"-42":"", NonRange:i16<RMIN,RMAX>:"-43":"-1",
-    NonRange:i32<RMIN,RMAX>:"-44":"-2", NonRange:i64<RMIN,RMAX>:"-45":"-3",
-    NonRange:i128<RMIN,RMAX>:"-46":"-4", NonRange:isize<RMIN,RMAX>:"-47":"-5",
-    NonRange:u8<RMIN,RMAX>:"-36":"-6", NonRange:u16<RMIN,RMAX>:"-37":"-7",
-    NonRange:u32<RMIN,RMAX>:"-38":"-8", NonRange:u64<RMIN,RMAX>:"-39":"-9",
-    NonRange:u128<RMIN,RMAX>:"-40":"-10", NonRange:usize<RMIN,RMAX>:"-41":"11",
-    //
-    Range:i8<RMIN,RMAX>:"-54":"", Range:i16<RMIN,RMAX>:"-55":"-1",
-    Range:i32<RMIN,RMAX>:"-56":"-2", Range:i64<RMIN,RMAX>:"-57":"-3",
-    Range:i128<RMIN,RMAX>:"-58":"-4", Range:isize<RMIN,RMAX>:"-59":"-5",
-    Range:u8<RMIN,RMAX>:"-48":"-6", Range:u16<RMIN,RMAX>:"-49":"-7",
-    Range:u32<RMIN,RMAX>:"-50":"-8", Range:u64<RMIN,RMAX>:"-51":"-9",
-    Range:u128<RMIN,RMAX>:"-52":"-10", Range:usize<RMIN,RMAX>:"-53":"-11",
-];
+impl_niche![impl_int];

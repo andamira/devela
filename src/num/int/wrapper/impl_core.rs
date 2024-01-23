@@ -27,9 +27,9 @@ use {
 // $t:   the input/output type
 // $up:  the upcasted type to do the operations on (for lcm)
 // $d:  the doclink suffix for the method name
-macro_rules! impl_core {
-    (signed $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_core![@signed $t:$up:$d]; )+ };
-    (unsigned $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_core![@unsigned $t:$up:$d]; )+ };
+macro_rules! impl_int {
+    (signed $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_int![@signed $t:$up:$d]; )+ };
+    (unsigned $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_int![@unsigned $t:$up:$d]; )+ };
 
     // implements signed ops
     (@signed $t:ty : $up:ty : $d:literal) => { paste! {
@@ -440,7 +440,7 @@ macro_rules! impl_core {
     // $d:  the doclink suffix for the method name
     // $dt: the doclink suffix for the associated method name implemented for the inner primitive
     (niche $( $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal),+ $(,)? ) => {
-        $( impl_core![@niche $n:$t <$($g),*> : $d:$dt ]; )+
+        $( impl_int![@niche $n:$t <$($g),*> : $d:$dt ]; )+
     };
     (@niche $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal) => { paste! {
         #[doc = "# Integer core methods for `" $t "`\n\n"]
@@ -470,37 +470,9 @@ macro_rules! impl_core {
         }
     }};
 }
-impl_core![signed
+impl_int![signed
 i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128:"-4", isize:isize_up:"-5"];
-impl_core![unsigned
+impl_int![unsigned
 u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10", usize:usize_up:"-11"];
 #[cfg(feature = "num_int_niche")]
-impl_core![niche
-    NonZero:i8<>:"-18":"", NonZero:i16<>:"-19":"-1",
-    NonZero:i32<>:"-20":"-2", NonZero:i64<>:"-21":"-3",
-    NonZero:i128<>:"-22":"-4", NonZero:isize<>:"-23":"-5",
-    NonZero:u8<>:"-12":"-6", NonZero:u16<>:"-13":"-7",
-    NonZero:u32<>:"-14":"-8", NonZero:u64<>:"-15":"-9",
-    NonZero:u128<>:"-16":"-10", NonZero:usize<>:"-17":"-11",
-    //
-    NonSpecific:i8<V>:"-30":"", NonSpecific:i16<V>:"-31":"-1",
-    NonSpecific:i32<V>:"-32":"-2", NonSpecific:i64<V>:"-33":"-3",
-    NonSpecific:i128<V>:"-34":"-4", NonSpecific:isize<V>:"-35":"-5",
-    NonSpecific:u8<V>:"-24":"-6", NonSpecific:u16<V>:"-25":"-7",
-    NonSpecific:u32<V>:"-26":"-8", NonSpecific:u64<V>:"-27":"-9",
-    NonSpecific:u128<V>:"-28":"-10", NonSpecific:usize<V>:"-29":"-11",
-    //
-    NonRange:i8<RMIN,RMAX>:"-42":"", NonRange:i16<RMIN,RMAX>:"-43":"-1",
-    NonRange:i32<RMIN,RMAX>:"-44":"-2", NonRange:i64<RMIN,RMAX>:"-45":"-3",
-    NonRange:i128<RMIN,RMAX>:"-46":"-4", NonRange:isize<RMIN,RMAX>:"-47":"-5",
-    NonRange:u8<RMIN,RMAX>:"-36":"-6", NonRange:u16<RMIN,RMAX>:"-37":"-7",
-    NonRange:u32<RMIN,RMAX>:"-38":"-8", NonRange:u64<RMIN,RMAX>:"-39":"-9",
-    NonRange:u128<RMIN,RMAX>:"-40":"-10", NonRange:usize<RMIN,RMAX>:"-41":"11",
-    //
-    Range:i8<RMIN,RMAX>:"-54":"", Range:i16<RMIN,RMAX>:"-55":"-1",
-    Range:i32<RMIN,RMAX>:"-56":"-2", Range:i64<RMIN,RMAX>:"-57":"-3",
-    Range:i128<RMIN,RMAX>:"-58":"-4", Range:isize<RMIN,RMAX>:"-59":"-5",
-    Range:u8<RMIN,RMAX>:"-48":"-6", Range:u16<RMIN,RMAX>:"-49":"-7",
-    Range:u32<RMIN,RMAX>:"-50":"-8", Range:u64<RMIN,RMAX>:"-51":"-9",
-    Range:u128<RMIN,RMAX>:"-52":"-10", Range:usize<RMIN,RMAX>:"-53":"-11",
-];
+impl_niche![impl_int];

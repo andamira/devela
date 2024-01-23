@@ -29,9 +29,9 @@ use {
 
 // $t:   the input/output type
 // $d:  the doclink suffix for the method name
-macro_rules! impl_factors {
-    (signed $( $t:ty : $d:literal ),+) => { $( impl_factors![@signed $t:$d]; )+ };
-    (unsigned $( $t:ty : $d:literal ),+) => { $( impl_factors![@unsigned $t:$d]; )+ };
+macro_rules! impl_int {
+    (signed $( $t:ty : $d:literal ),+) => { $( impl_int![@signed $t:$d]; )+ };
+    (unsigned $( $t:ty : $d:literal ),+) => { $( impl_int![@unsigned $t:$d]; )+ };
 
     // implements signed ops
     (@signed $t:ty : $d:literal) => { paste! {
@@ -710,5 +710,5 @@ macro_rules! impl_factors {
         }
     }};
 }
-impl_factors![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
-impl_factors![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
+impl_int![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
+impl_int![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
