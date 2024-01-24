@@ -6,8 +6,8 @@ members = [".", "macros", "depend"]
 [package]
 
 name = "devela"
-description = "An all-encompassing, highly integrated layer for Rust development"
-version = "0.19.0"
+description = "A highly integrated foundational layer for multidisciplinary Rust development"
+version = "0.20.0-wip"
 edition = "2021"
 rust-version = "1.75.0" # sync with readme & .github/*/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
