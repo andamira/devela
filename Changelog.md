@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
-## [0.19.0-wip]
+## [Unreleased]
+
+## [0.19.0] 2024-01-24
 
 ### Added
 - new features: `docsrs`, `num_int_niche`.
@@ -616,7 +618,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.18.1...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.19.0...HEAD
+[0.19.0]: https://github.com/andamira/devela/releases/tag/v0.19.0
 [0.18.1]: https://github.com/andamira/devela/releases/tag/v0.18.1
 [0.18.0]: https://github.com/andamira/devela/releases/tag/v0.18.0
 [0.17.0]: https://github.com/andamira/devela/releases/tag/v0.17.0
