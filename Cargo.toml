@@ -84,8 +84,8 @@ work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 
 # individual modules with unsafe enabled (7…):
 data_unsafe = ["data", "unsafe_data"]
-num_unsafe = ["num", "unsafe_num"]
 mem_unsafe = ["mem", "unsafe_mem"]
+num_unsafe = ["num", "unsafe_num"]
 os_unsafe = ["os", "unsafe_os"]
 text_unsafe = ["text", "unsafe_text"]
 ui_unsafe = ["ui", "unsafe_ui"]

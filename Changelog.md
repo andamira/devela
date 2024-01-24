@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.19.0-wip]
 
 ### Added
-- new features: `docsrs`.
+- new features: `docsrs`, `num_int_niche`.
 - add optional dependency `unicode-width`.
 - new root modules: `io`, `render`, `ui`.
 - new fns `mem::ptr_in_stack`, `factorial_*`, `bytes_from_bits`.
