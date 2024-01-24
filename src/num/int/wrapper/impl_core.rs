@@ -14,8 +14,6 @@
 //   - gcd_ext
 //   - gcd_ext_euc
 
-#[cfg(feature = "num_int_niche")]
-use crate::num::{impl_niche, niche::*};
 use {
     crate::{
         code::{iif, paste},
@@ -474,5 +472,8 @@ impl_int![signed
 i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128:"-4", isize:isize_up:"-5"];
 impl_int![unsigned
 u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10", usize:usize_up:"-11"];
+
 #[cfg(feature = "num_int_niche")]
-impl_niche![impl_int];
+use crate::num::{impl_niche, niche::*};
+#[cfg(feature = "num_int_niche")]
+impl_niche![impl_int niche];

@@ -281,8 +281,37 @@ macro_rules! impl_int {
             }
         }
     }};
+
+    // $n:  the niche type name prefix (e.g. NonRange)
+    // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
+    // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
+    // $d:  the doclink suffix for the method name
+    // $dt: the doclink suffix for the associated method name implemented for the inner primitive
+    (niche $( $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal),+ $(,)? ) => {
+        $( impl_int![@niche $n:$t <$($g),*> : $d:$dt ]; )+
+    };
+    (@niche $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal) => { paste! {
+        #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
+        #[doc = "- [is_prime](#method.is_prime" $d ")"]
+        #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
+        #[doc = "- [prime_pi](#method.prime_pi" $d ")"]
+        #[doc = "- [totient](#method.totient" $d ")"]
+        ///
+        /// See the related trait [`NumInt`][crate::num::NumInt].
+        impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
+            impl_niche![Int=>bool: $n:$t:$dt<$($g),*>, +const is_prime, self];
+            impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const prime_nth, self, b: $t];
+            impl_niche![Int=>usize: $n:$t:$dt<$($g),*>, +const prime_pi, self];
+            impl_niche![Int $n:$t:$dt<$($g),*>, +const totient, self, b: $t];
+        }
+    }};
 }
 impl_int![signed
     i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128:"-4", isize:isize_up:"-5"];
 impl_int![unsigned
     u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10", usize:usize_up:"-11"];
+
+#[cfg(feature = "num_int_niche")]
+use crate::num::{impl_niche, niche::*};
+#[cfg(feature = "num_int_niche")]
+impl_niche![impl_int niche];

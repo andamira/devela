@@ -17,10 +17,12 @@ mod impl_sqrt;
 /// Provides integer operations on `T`, most of them *const*.
 ///
 /// It's implemented for:
-/// `i8`, …, `i128`, `u8`, …, `u128` and all of the [`niche`][crate::num::niche] types.
+/// - all the integer primitives: `i8`, …, `i128`, `u8`, …, `u128`.
+/// - all the [`niche`][crate::num::niche] numeric types (with the `num_int_nich` feature enabled).
 ///
-/// The documentation is the same for all bit sizes. For example these are:
-/// - Methods for `i32` related to:
+/// Specific implementations can vary between signed and signed numeric types,
+/// but documentation is the same for all bit sizes:
+/// - `i32` methods documentation related to:
 /// [base][Self#integer-base-related-methods-for-i32],
 /// [core][Self#integer-core-methods-for-i32],
 /// [combinatorics][Self#integer-combinatorics-related-methods-for-i32],
@@ -28,7 +30,7 @@ mod impl_sqrt;
 /// [factors][Self#integer-factors-related-methods-for-i32],
 /// [primes][Self#integer-prime-related-methods-for-i32],
 /// [square root][Self#integer-square-root-related-methods-for-i32].
-/// - Methods for `u32` related to:
+/// - `u32` methods documentation related to:
 /// [base][Self#integer-base-related-methods-for-u32],
 /// [core][Self#integer-core-methods-for-u32],
 /// [combinatorics][Self#integer-combinatorics-related-methods-for-u32],

@@ -11,8 +11,6 @@
 //   - digital_root
 //   - digital_root_base
 
-#[cfg(feature = "num_int_niche")]
-use crate::num::{impl_niche, niche::*};
 use crate::{
     code::{iif, paste},
     num::Int,
@@ -284,5 +282,8 @@ macro_rules! impl_int {
 }
 impl_int![prim_signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
 impl_int![prim_unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
+
 #[cfg(feature = "num_int_niche")]
-impl_niche![impl_int];
+use crate::num::{impl_niche, niche::*};
+#[cfg(feature = "num_int_niche")]
+impl_niche![impl_int niche];
