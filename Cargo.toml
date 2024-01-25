@@ -56,12 +56,10 @@ no_std = [ # enables functionality incompatible with `std`
 
 #* module features *#
 
-full = [ # enables all the modules (11)
+full = [ # enables all the modules (12)
 	"code", "data", "error", "io", "mem", "num",
 	"os", "render", "text", "time", "ui", "work",
 	]
-	full_unsafe = ["full", "unsafe"]
-fullest = ["full"] # enables `full` recursively (unused)
 
 # individual modules (12…)
 # (modules enable their own dependencies if the `dep` feature is enabled)
@@ -96,7 +94,8 @@ work_unsafe = ["work", "unsafe_work"]
 
 #* safety features *#
 
-unsafe = [ # enables unsafe features in this crate (7…)
+safe = [] # forbids `unsafe` in this crate
+unsafe = [ # enables all unsafe features in this crate:
 	"unsafe_data", "unsafe_mem", "unsafe_num", "unsafe_os",
 	"unsafe_text", "unsafe_ui", "unsafe_work",
 	]
@@ -107,10 +106,7 @@ unsafe = [ # enables unsafe features in this crate (7…)
 	unsafe_text = [] # enables unsafe use in `text`
 	unsafe_ui = ["unsafe_ui_term"]
 		unsafe_ui_term = []
-	unsafe_work = [] # enables a coroutines implementation.
-safe = [] # forbids `unsafe` in this crate
-safest = ["safe"] # forbids `unsafe` recursively (unused)
-unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
+	unsafe_work = [] # enables a coroutines implementation
 
 
 #* nightly features *#

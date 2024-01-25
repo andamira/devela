@@ -31,8 +31,7 @@ for that module.
 When the `depend` feature is enabled, modules will also enable their associated
 optional dependencies.
 
-- `full`, `full_unsafe`: enables all the modules.
-- `fullest`: enables all the modules, recursively (unused).
+- `full`: enables every root module:
 
 Single modules:
 - `code`: enables the [`code`] module,
@@ -60,7 +59,7 @@ By default the crate doesn't use unsafe.
 
 They offer a gradient of safety.
 
-- `unsafest`: enables unsafe recursively (unused).
+- `safe`: forbids unsafe at the crate level.
 - `unsafe`: enables all the unsafe sub-features:
   - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and [`mem_as_bytes_sized`].
   - `unsafe_num`: enables `new_unchecked` constructors, implements `bytemuck` traits,
@@ -69,15 +68,12 @@ They offer a gradient of safety.
   - `unsafe_work`: provides a minimal implementation of stackless
     [coroutines][work::async::coroutine].
   - `unsafe_text`: enables use of unsafe in [`text`].
-- `safe`: forbids unsafe at the crate level.
-- `safest`: forbids unsafe recursively (unused).
 
 
 ### Nightly features
 
-They are currently only used for generating improved documentation.
-
 - `nightly`: enables nightly features.
+- `docsrs`: enables compiling the complete documentation.
 
 
 ### Dependency features
