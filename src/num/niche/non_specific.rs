@@ -13,22 +13,22 @@ use core::{fmt, num::*, str::FromStr};
 #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
 use bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
-impl_non_specific![NonSpecific];
 macro_rules! impl_non_specific {
     // Entry point, generates NonSpecific structures for each sign and size.
     ($name:ident) => {
-        impl_non_specific![$name, "A signed", i, 8, 16, 32, 64, 128, size];
-        impl_non_specific![$name, "An unsigned", u, 8, 16, 32, 64, 128, size];
+        impl_non_specific![$name, MIN, "A signed", i, 8, 16, 32, 64, 128, size];
+        impl_non_specific![$name, MAX, "An unsigned", u, 8, 16, 32, 64, 128, size];
     };
-    ($name:ident, $doc:literal, $s:ident, $( $b:expr ),+) => {
-        $( impl_non_specific![@$name, $doc, $s, $b]; )+
+    ($name:ident, $abs:ident, $doc:literal, $s:ident, $( $b:expr ),+) => {
+        $( impl_non_specific![@$name, $abs, $doc, $s, $b]; )+
     };
 
     // $name: the base name of the new type. E.g. NonSpecific.
+    // $abs:  the absolute maximum value constant for this type
     // $doc:  the specific beginning of the documentation.
     // $s:    the sign identifier: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
-    (@$name:ident, $doc:literal, $s:ident, $b:expr) => { paste! {
+    (@$name:ident, $abs:ident, $doc:literal, $s:ident, $b:expr) => { paste! {
         /* definition */
 
         #[doc = $doc " integer that is known not to equal some specific value." ]
@@ -45,34 +45,29 @@ macro_rules! impl_non_specific {
         #[doc = "assert![" [<$name $s:upper $b>] "::<13>::new(12).unwrap().get() == 12];"]
         /// ```
         ///
-        #[doc = "See also [`NonMax" $s:upper $b "`] and [`NonMin" $s:upper $b "`]."]
+        #[doc = "See also [`NonEdge" $s:upper $b "`]."]
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[repr(C)]
         pub struct [<$name $s:upper $b>]<const V: [<$s:lower $b>]>([<NonZero $s:upper $b>]);
 
         /* aliases */
 
-        #[doc = $doc " integer that is known not to equal its maximum value [`"
-        [< $s:lower $b >] "::MAX`]."]
-        pub type [<NonMax $s:upper $b>] = [<$name $s:upper $b>]<{[<$s:lower $b>]::MAX}>;
+        #[doc = $doc " integer that is known not to equal its edge value away from 0 ([`"
+            [<$s:lower $b>] "::" $abs "`])."]
+        pub type [<NonEdge $s:upper $b>] = [<$name $s:upper $b>]<{[<$s:lower $b>]::$abs}>;
 
-        impl Default for [<NonMax $s:upper $b>] {
-            #[inline]
-            #[must_use]
+        impl Default for [<NonEdge $s:upper $b>] {
+            #[inline] #[must_use]
             fn default() -> Self {
                 #[cfg(not(feature = "unsafe_num"))]
-                return [<NonMax $s:upper $b>]::new([<$s:lower $b>]::default()).unwrap();
+                return [<NonEdge $s:upper $b>]::new([<$s:lower $b>]::default()).unwrap();
 
                 #[cfg(feature = "unsafe_num")]
                 // SAFETY: the default numeric primitive values is always 0,
                 // and their maximum value is never 0.
-                unsafe { return [<NonMax $s:upper $b>]::new_unchecked([<$s:lower $b>]::default()); }
+                unsafe { return [<NonEdge $s:upper $b>]::new_unchecked([<$s:lower $b>]::default()); }
             }
         }
-
-        #[doc = $doc " integer that is known not to equal its minimum value [`"
-        [< $s:lower $b >] "::MIN`]."]
-        pub type [<NonMin $s:upper $b>] = [<$name $s:upper $b>]<{[<$s:lower $b>]::MIN}>;
 
         /* methods */
 
@@ -218,4 +213,4 @@ macro_rules! impl_non_specific {
         }
     }};
 }
-use impl_non_specific;
+impl_non_specific![NonSpecific];

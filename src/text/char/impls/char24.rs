@@ -10,16 +10,16 @@ impl Char24 {
     // by this module for a few selected operations.
     #[inline]
     #[must_use]
-    const fn new_unchecked_hi(value: u8) -> NonMaxU8 {
+    const fn new_unchecked_hi(value: u8) -> NonEdgeU8 {
         #[cfg(not(all(feature = "unsafe_text", feature = "unsafe_num")))]
-        if let Some(c) = NonMaxU8::new(value) {
+        if let Some(c) = NonEdgeU8::new(value) {
             c
         } else {
             unreachable![]
         }
         #[cfg(all(feature = "unsafe_text", feature = "unsafe_num"))]
         unsafe {
-            NonMaxU8::new_unchecked(value)
+            NonEdgeU8::new_unchecked(value)
         }
     }
 

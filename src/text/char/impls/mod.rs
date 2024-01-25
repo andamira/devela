@@ -8,7 +8,7 @@
 
 use super::{
     char_byte_len, char_is_7bit, char_is_noncharacter, char_to_utf8_bytes, Char16, Char24, Char32,
-    Char7, Char8, CharConversionError, NonMaxU8, NonSurrogateU16, Result, UnicodeScalar,
+    Char7, Char8, CharConversionError, NonEdgeU8, NonSurrogateU16, Result, UnicodeScalar,
 };
 use crate::code::paste;
 

@@ -4,7 +4,7 @@
 //
 
 use super::{
-    Char16, Char24, Char32, Char7, Char8, CharConversionError, NonMaxU8, NonSurrogateU16, Result,
+    Char16, Char24, Char32, Char7, Char8, CharConversionError, NonEdgeU8, NonSurrogateU16, Result,
 };
 use crate::code::paste;
 use core::fmt;
@@ -61,10 +61,10 @@ macro_rules! core_impls {
     }};
 }
 core_impls![Char:
-    7+Self(NonMaxU8::new(0).unwrap()),
+    7+Self(NonEdgeU8::new(0).unwrap()),
     8+Self(0),
     16+Self(NonSurrogateU16::new(0).unwrap()),
-    24+Self{ hi: NonMaxU8::new(0).unwrap(), mi: 0, lo: 0 },
+    24+Self{ hi: NonEdgeU8::new(0).unwrap(), mi: 0, lo: 0 },
     32+Self('\x00')
 ];
 

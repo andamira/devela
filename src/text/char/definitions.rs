@@ -16,7 +16,7 @@ pub(super) type Result<T> = core::result::Result<T, CharConversionError>;
 // This is a surrogate UTF-16 code point that can't ever be a unicode scalar.
 pub(super) type NonSurrogateU16 = NonSpecificU16<0xDFFF>;
 
-pub(super) use crate::num::{NonMaxU8, NonSpecificU16};
+pub(super) use crate::num::{NonEdgeU8, NonSpecificU16};
 
 /* public types */
 
@@ -31,7 +31,7 @@ pub(super) use crate::num::{NonMaxU8, NonSpecificU16};
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
 #[repr(transparent)]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Char7(pub(super) NonMaxU8);
+pub struct Char7(pub(super) NonEdgeU8);
 
 /// An 8-bit [unicode scalar value][scalar], limited to [basic latin][0w]
 /// and [latin-1][1w] subsets.
@@ -78,9 +78,9 @@ pub struct Char16(pub(super) NonSurrogateU16);
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char24 {
-    pub(super) hi: NonMaxU8, // highest byte
-    pub(super) mi: u8,       // middle byte
-    pub(super) lo: u8,       // lowest byte
+    pub(super) hi: NonEdgeU8, // highest byte
+    pub(super) mi: u8,        // middle byte
+    pub(super) lo: u8,        // lowest byte
 }
 
 /// A 32-bit [unicode scalar value][scalar], unlimited value representation,
