@@ -4,7 +4,7 @@
 //! toml_edit = "0.20"
 //! itertools = "0.11"
 //! lexopt = "0.3"
-//! devela = { version = "0.19.0", features = ["std", "code", "path"] }
+//! devela = { version = "0.19.0", features = ["std", "code", "io"] }
 //! ```
 // This script needs [rusts-cript](https://crates.io/crates/rust-script) to run.
 
