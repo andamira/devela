@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [0.20.0-wip]
 
+### Added
+- add type aliases: `NonEdge*`.
+
+### Removed
+- remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
+- remove type aliases: `NonMax*` `NonMin*.
+
+### Fixed
+- refactor root modules, simplify and dissassociate root-level feature-gating.
 
 ## [0.19.0] 2024-01-24
 
