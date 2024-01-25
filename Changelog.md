@@ -14,6 +14,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
 - remove type aliases: `NonMax*` `NonMin*.
 
+### Changed
+- move docs html header to `src/_doc`.
+- move `src/Doc.md` to `src/_doc/features.md`.
+- rename the `__doc` module to `_docs`.
+- rename de `_dep` module to `_deps`.
+- move `::{_alloc, _core, _std}` to `::_deps::{alloc, core, std}`.
+
 ### Fixed
 - refactor root modules, simplify and dissassociate root-level feature-gating.
 
