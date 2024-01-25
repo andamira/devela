@@ -4,15 +4,15 @@
 //
 
 use super::Egc;
-#[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
-use crate::_dep::unicode_segmentation::UnicodeSegmentation;
-#[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
-use crate::text::char::*;
 #[allow(unused_imports)]
-use _alloc::{
+use crate::_deps::alloc::{
     str::{self, Chars as CharIterator},
     string::String,
 };
+#[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
+use crate::_deps::unicode_segmentation::UnicodeSegmentation;
+#[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
+use crate::text::char::*;
 
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]

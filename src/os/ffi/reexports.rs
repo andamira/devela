@@ -15,7 +15,7 @@ reexport! { rust: core::ffi, local_module: "os",
     c_uchar, c_uint, c_ulong, c_ulonglong, c_ushort, c_void
 }
 
-reexport! { rust: "alloc"|_alloc::ffi, local_module: "os",
+reexport! { rust: alloc::ffi, local_module: "os",
     doc: "An owned, C-compatible, nul-terminated string with no nul bytes in the middle.",
     CString
 }

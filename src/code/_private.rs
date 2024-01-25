@@ -59,7 +59,8 @@ macro_rules! reexport {
 
     /* reexports from normal modules */
 
-    // reexports items from `core`, from any normal module.
+    // the following 3 arms allows reexporting items from `core`, `alloc` or `std`,
+    // from any normal module.
     //
     // - Supports multiple reexported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
@@ -93,18 +94,7 @@ macro_rules! reexport {
         };
     }};
 
-    // reexports items from `alloc` or `std`, from any normal module.
-    //
-    // - Supports multiple reexported items.
-    // - Renamed items must be all at the end, and each one prefixed with @.
-    //
-    // # Examples
-    // ```
-    // reexport! { rust:"alloc"|_alloc::collections, local_module: "data",
-    //     "A double-ended queue implemented with a growable ring buffer.",
-    //     VecDeque }
-    // ```
-    ( rust : $env_str:literal | $env_module:ident $( :: $env_path:ident )::*,
+    ( rust : alloc $( :: $( $alloc_path:ident )::+)?,
       local_module: $module_feature:literal,
       doc: $description:literal,
       $( $item:ident ),*
@@ -112,19 +102,43 @@ macro_rules! reexport {
       $(,)?
     ) => { $crate::code::paste! {
         #[doc(inline)]
-        #[doc = "<span class='stab portability' title='re-exported from rust&#39;s `"
-            $env_str "`'>`" $env_str "`</span>"]
+        #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
+        "`alloc`'>`alloc`</span>"]
         #[doc = $description]
-        #[doc = "\n\n*Re-exported from rust's `" $env_str "::`[`" $( $env_path "::" )*
-            "`](https://doc.rust-lang.org/" $env_str "/" $( $env_path "/" )* ")*"]
+        #[doc = "\n\n*Re-exported from [`alloc" $( "`]::[`" $( $alloc_path "::" )+ )?
+            "`](https://doc.rust-lang.org/alloc/" $($( $alloc_path "/" )+)? ")*"]
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
-        #[cfg_attr(feature = "nightly",
-            doc(cfg(all(feature = $module_feature, feature = $env_str))))]
+        #[cfg_attr(feature = "nightly", doc(cfg(feature = $module_feature)))]
 
-        #[cfg(feature = $env_str)]
-        pub use $env_module $( :: $env_path )::* :: { // CHECK `::` are ok
+        #[cfg(feature = "alloc")]
+        pub use crate::_deps::alloc :: $($( $alloc_path :: )+)? {
+            $( $item ),*
+            $( $item_to_rename as $item_renamed ),*
+        };
+    }};
+
+    ( rust : std $( :: $( $std_path:ident )::+)?,
+      local_module: $module_feature:literal,
+      doc: $description:literal,
+      $( $item:ident ),*
+      $(@ $item_to_rename:ident as $item_renamed:ident),*
+      $(,)?
+    ) => { $crate::code::paste! {
+        #[doc(inline)]
+        #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
+        "`std`'>`std`</span>"]
+        #[doc = $description]
+        #[doc = "\n\n*Re-exported from [`std" $( "`]::[`" $( $std_path "::" )+ )?
+            "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
+
+        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
+
+        #[cfg_attr(feature = "nightly", doc(cfg(feature = $module_feature)))]
+
+        #[cfg(feature = "std")]
+        pub use std :: $($( $std_path :: )+)? {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
         };
@@ -163,7 +177,7 @@ macro_rules! reexport {
             all(feature = "dep" $( , feature = $f )+ ),
             feature = $dep_str
         ))]
-        pub use crate::_dep::$dep $( ::$dep_path )? :: {
+        pub use crate::_deps::$dep $( ::$dep_path )? :: {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
         };

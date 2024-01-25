@@ -71,7 +71,7 @@ macro_rules! impl_fp {
         $(#[doc = $doc])?
         #[inline(always)]
         pub fn $op($($arg: $f),*) -> $f {
-            $crate::_dep::libm::Libm::<$f>::$opfn($($arg),*)
+            $crate::_deps::libm::Libm::<$f>::$opfn($($arg),*)
         }
     };
     // Matches a single operation and implements it using the `std` library.
@@ -214,7 +214,7 @@ mod _std {
 #[cfg(feature = "libm")]
 mod _libm {
     use super::{impl_fp, Floating};
-    use crate::{_dep::libm::Libm, code::iif};
+    use crate::{_deps::libm::Libm, code::iif};
     // custom implementations are commented out
     impl_fp![libm:f*:
        r"The largest integer less than or equal to `x`.

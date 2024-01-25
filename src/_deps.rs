@@ -1,4 +1,4 @@
-// devela::dep
+// devela::_deps
 //
 //!
 //! # Dependencies
@@ -28,6 +28,21 @@
 //
 
 #![cfg_attr(not(feature = "full"), allow(rustdoc::private_intra_doc_links))]
+
+/// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
+/// *Re-exported Rust `alloc` library environment.*
+#[doc(inline)]
+#[cfg(feature = "alloc")]
+pub extern crate alloc;
+/// <span class='stab portability' title='re-exported `core`'>`core`</span>
+/// *Re-exported Rust `core` library environment.*
+#[doc(inline)]
+pub use ::core;
+/// <span class='stab portability' title='re-exported `std`'>`std`</span>
+/// *Re-exported Rust `std` library environment.*
+#[cfg(feature = "std")]
+#[doc(inline)]
+pub use ::std;
 
 #[allow(unused)]
 pub use _dep::*;

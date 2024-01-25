@@ -70,7 +70,7 @@ fn many_instances() {
 #[test]
 #[cfg(feature = "alloc")]
 fn closure() {
-    use ::_alloc::{format, string::String};
+    use crate::_deps::alloc::{format, string::String};
 
     let v1 = 1234u64;
     let c: DstValue8w<dyn Fn() -> String> = DstValue8w::new(|| format!("{}", v1), |p| p as _)

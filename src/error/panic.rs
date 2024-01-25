@@ -46,23 +46,23 @@ mod reexports {
 
     /* functions */
 
-    reexport! { rust: "std"|std::panic, local_module: "error",
+    reexport! { rust: std::panic, local_module: "error",
         doc: "Invokes a closure, capturing the cause of an unwinding panic if one occurs.",
         @catch_unwind as panic_catch
     }
-    reexport! { rust: "std"|std::panic, local_module: "error",
+    reexport! { rust: std::panic, local_module: "error",
         doc: "Panic the current thread with the given message as the panic payload.",
         panic_any
     }
-    reexport! { rust: "std"|std::panic, local_module: "error",
+    reexport! { rust: std::panic, local_module: "error",
         doc: "Triggers a panic without invoking the panic hook.",
         @resume_unwind as panic_resume
     }
-    reexport! { rust: "std"|std::panic, local_module: "error",
+    reexport! { rust: std::panic, local_module: "error",
         doc: "Registers a custom panic hook, replacing the previously registered hook.",
         @set_hook as panic_set_hook
     }
-    reexport! { rust: "std"|std::panic, local_module: "error",
+    reexport! { rust: std::panic, local_module: "error",
         doc: "Unregisters the current panic hook and returns it,
         registering the default hook in its place",
         @take_hook as panic_unset_hook

@@ -7,12 +7,12 @@
 // - trait impls
 
 use super::Egc;
+#[cfg(feature = "alloc")]
+use crate::_deps::alloc::{ffi::CString, str::Chars};
 use crate::text::{
     char::*,
     {helpers::impl_sized_alias, ArrayU8String},
 };
-#[cfg(feature = "alloc")]
-use _alloc::{ffi::CString, str::Chars};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */

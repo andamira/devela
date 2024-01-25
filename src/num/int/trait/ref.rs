@@ -12,9 +12,9 @@
 //   - prime
 //   - sqrt
 
-use crate::num::{Num, NumInt, NumRef, NumResult as Result};
 #[cfg(feature = "alloc")]
-use ::_alloc::vec::Vec;
+use crate::_deps::alloc::vec::Vec;
+use crate::num::{Num, NumInt, NumRef, NumResult as Result};
 use core::ops::Deref;
 
 /// Common trait for referenced integer types.

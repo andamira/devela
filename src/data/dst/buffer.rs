@@ -1,6 +1,6 @@
 // devela::data::dst
 
-use crate::_dep::bytemuck::Pod;
+use crate::_deps::bytemuck::Pod;
 use crate::data::Array;
 use core::{
     mem::MaybeUninit,
@@ -88,7 +88,7 @@ unsafe impl<T: Pod, const N: usize> DstBuf for [MaybeUninit<T>; N] {
 /// ```
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-unsafe impl<T: Pod> DstBuf for ::_alloc::vec::Vec<MaybeUninit<T>> {
+unsafe impl<T: Pod> DstBuf for crate::_deps::alloc::vec::Vec<MaybeUninit<T>> {
     type Inner = T;
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
         self
@@ -149,13 +149,13 @@ pub type DstArrayU<const N: usize> = DstArray<usize, N>;
 /// type">DST</abbr>s with pointer alignment.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub type DstVecU = ::_alloc::vec::Vec<MaybeUninit<usize>>;
+pub type DstVecU = crate::_deps::alloc::vec::Vec<MaybeUninit<usize>>;
 
 // MAYBE
 // /// A DST buffer backing onto a Vec.
 // #[cfg(feature = "alloc")]
 // #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-// pub struct DstVec<T: Pod>(::_alloc::vec::Vec<MaybeUninit<T>>);
+// pub struct DstVec<T: Pod>(crate::_deps::alloc::vec::Vec<MaybeUninit<T>>);
 // impl<T: Pod> Deref for DstVec<T> {
 //     type Target = Vec<MaybeUninit<T>>;
 //

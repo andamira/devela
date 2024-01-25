@@ -30,7 +30,7 @@ reexport! { rust: core::task, local_module: "work",
     doc: "Extracts the successful type of a [`TaskPoll<T>`].",
     @ready as task_ready
 }
-reexport! { rust: "alloc"|_alloc::task, local_module: "work",
+reexport! { rust: alloc::task, local_module: "work",
     doc: "The implementation of waking a task on an executor.",
     @Wake as TaskWake
 }

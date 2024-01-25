@@ -3,12 +3,12 @@
 //!
 //
 
+#[cfg(feature = "alloc")]
+use crate::_deps::alloc::vec::Vec;
 use crate::{
     code::paste,
     num::{Int, NumErrors as E, NumInt, NumResult as Result},
 };
-#[cfg(feature = "alloc")]
-use ::_alloc::vec::Vec;
 
 impl_int![];
 macro_rules! impl_int {

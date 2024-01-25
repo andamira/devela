@@ -3,7 +3,7 @@
 //!
 //
 
-use _alloc::vec::Vec;
+use crate::_deps::alloc::vec::Vec;
 
 // Marker trait to prevent downstream implementations of the `VecExt` trait.
 mod private {

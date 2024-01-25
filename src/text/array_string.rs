@@ -12,7 +12,7 @@ use super::{helpers::impl_sized_alias, ArrayStringError, Result};
 use core::{fmt, ops::Deref};
 
 #[cfg(feature = "alloc")]
-use _alloc::{ffi::CString, str::Chars, string::ToString};
+use crate::_deps::alloc::{ffi::CString, str::Chars, string::ToString};
 
 use super::char::*;
 

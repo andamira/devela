@@ -44,19 +44,19 @@ use crate::text::AsciiChar;
 // TODO WAITING for: https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275
 // #[cfg(feature = "text")]
 // use crate::text::{ArrayU16String, ArrayU32String, ArrayU8Egc, ArrayU8String};
-#[cfg(all(feature = "alloc", feature = "text"))]
-use crate::text::StringEgc;
-#[cfg(feature = "text")]
-use crate::text::{ArrayU8NonNulEgc, ArrayU8NonNulString};
 #[cfg(feature = "alloc")]
-use _alloc::{
+use crate::_deps::alloc::{
     collections::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, VecDeque},
     string::String,
     vec::Vec,
 };
+#[cfg(all(feature = "alloc", feature = "text"))]
+use crate::text::StringEgc;
+#[cfg(feature = "text")]
+use crate::text::{ArrayU8NonNulEgc, ArrayU8NonNulString};
 
 #[cfg(any(all(feature = "work", feature = "dep"), feature = "portable-atomic"))]
-use crate::_dep::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
+use crate::_deps::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
 #[cfg(feature = "work")]
 use crate::work::sync::atomic::{AtomicBool, AtomicOrdering};
 #[cfg(all(

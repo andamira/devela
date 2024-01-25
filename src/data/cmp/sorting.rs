@@ -9,13 +9,13 @@
 // - helper fns
 // - impl Sorting for primitives
 
+#[cfg(feature = "alloc")]
+use crate::_deps::alloc::{collections::BTreeMap, vec::Vec};
 use crate::{
     code::{cfor, iif, paste},
     data::Comparing,
     mem::cswap,
 };
-#[cfg(feature = "alloc")]
-use ::_alloc::{collections::BTreeMap, vec::Vec};
 
 /// Provides sorting methods for arrays and slices of `T`.
 ///

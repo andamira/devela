@@ -13,9 +13,9 @@
 //   - sqrt
 // - trait NumIntRef
 
-use crate::num::{Num, NumErrors as E, NumResult as Result};
 #[cfg(feature = "alloc")]
-use ::_alloc::vec::Vec;
+use crate::_deps::alloc::vec::Vec;
+use crate::num::{Num, NumErrors as E, NumResult as Result};
 #[cfg(doc)]
 use E::{MismatchedSizes, NonNegativeRequired, NotImplemented, NotSupported, Overflow};
 

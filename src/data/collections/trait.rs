@@ -69,7 +69,7 @@ impl<T, const N: usize> DataCollection for [T; N] {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataCollection for super::Vec<T> {
+impl<T> DataCollection for super::reexports::Vec<T> {
     type Element = T;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -85,7 +85,7 @@ impl<T> DataCollection for super::Vec<T> {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataCollection for super::VecDeque<T> {
+impl<T> DataCollection for super::reexports::VecDeque<T> {
     type Element = T;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }

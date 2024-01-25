@@ -6,10 +6,7 @@
 use core::any::{type_name, Any, TypeId};
 
 #[cfg(feature = "alloc")]
-extern crate alloc;
-
-#[cfg(feature = "alloc")]
-use _alloc::boxed::Box;
+use crate::_deps::alloc::boxed::Box;
 
 // Marker trait to prevent downstream implementations of the `AnyExt` trait.
 mod private {

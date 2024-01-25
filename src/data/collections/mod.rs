@@ -10,33 +10,33 @@
 
 #![allow(unused_imports)]
 
-/* contains always compiled items */
+/* modules */
 
+// always compiled, non-public
 mod array;
 mod reexports;
 mod r#trait;
 
-#[cfg(not(feature = "data"))]
-pub use {array::*, r#trait::*, reexports::*};
-
-/* feature-gated */
-
+// feature-gated, non-public
 #[cfg(feature = "alloc")]
 mod vec_ext;
 
-// private sub-modules
+/* re-exports */
 
-// re-export private sub-modules
-#[cfg(feature = "data")]
+// always compiled, non-public
+#[doc(no_inline)]
 pub use {array::all::*, r#trait::*, reexports::*};
 
+// feature-gated, non-public
 #[cfg(feature = "alloc")]
 pub use vec_ext::*;
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     pub use super::{array::all::*, r#trait::*, reexports::*};
 
+    // feature-gated
     #[cfg(feature = "alloc")]
     pub use super::vec_ext::*;
 }

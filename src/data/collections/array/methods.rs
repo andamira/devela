@@ -8,9 +8,9 @@ use crate::mem::{Direct, Storage};
 
 #[allow(unused)]
 #[cfg(feature = "alloc")]
-use {
-    crate::mem::Boxed,
-    _alloc::{boxed::Box, vec::Vec},
+use crate::{
+    _deps::alloc::{boxed::Box, vec::Vec},
+    mem::Boxed,
 };
 
 // ``

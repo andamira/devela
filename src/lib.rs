@@ -15,21 +15,6 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(not(feature = "std"), no_std)]
 
-/// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
-/// *Re-exported Rust `alloc` library environment.*
-#[doc(inline)]
-#[cfg(feature = "alloc")]
-pub extern crate alloc as _alloc;
-/// <span class='stab portability' title='re-exported `core`'>`core`</span>
-/// *Re-exported Rust `core` library environment.*
-#[doc(inline)]
-pub use ::core as _core;
-/// <span class='stab portability' title='re-exported `std`'>`std`</span>
-/// *Re-exported Rust `std` library environment.*
-#[cfg(feature = "std")]
-#[doc(inline)]
-pub use ::std as _std;
-
 // safeguarding: environment, safety
 #[cfg(all(feature = "std", feature = "no_std"))]
 compile_error!("You can't enable the `std` and `no_std` features at the same time.");
@@ -120,10 +105,10 @@ pub mod all {
     };
 }
 
-/// Optional external dependencies.
-pub mod _dep;
+/// Dependencies.
+pub mod _deps;
 
-/// Additional documentation.
+/// Documentation.
 pub mod _docs {
     #![cfg_attr(not(feature = "full"), allow(rustdoc::private_intra_doc_links))]
     #![doc = include_str!("./_docs/features.md")]
