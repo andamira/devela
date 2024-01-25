@@ -123,8 +123,8 @@ pub mod all {
 /// Optional external dependencies.
 pub mod _dep;
 
-/// Documentation on features.
-pub mod __doc {
+/// Additional documentation.
+pub mod _docs {
     #![cfg_attr(not(feature = "full"), allow(rustdoc::private_intra_doc_links))]
-    #![doc = include_str!("./Doc.md")]
+    #![doc = include_str!("./_docs/features.md")]
 }
