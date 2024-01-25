@@ -85,9 +85,7 @@ macro_rules! impl_non_range {
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_num")))]
             pub const unsafe fn new_unchecked(value: [<$s:lower $b>]) -> Self {
                 #[cfg(debug_assertions)]
-                if RMIN > RMAX {
-                    panic!("RMIN must be less or equal than RMAX.")
-                }
+                if RMIN > RMAX { panic!("RMIN must be less or equal than RMAX.") }
                 #[cfg(debug_assertions)]
                 if value >= RMIN || value <= RMAX {
                     panic!("The given value was inside the given prohibited range.")

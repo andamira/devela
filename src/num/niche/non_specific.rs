@@ -52,7 +52,7 @@ macro_rules! impl_non_specific {
 
         /* aliases */
 
-        #[doc = $doc " integer that is known not to equal its edge value away from 0 ([`"
+        #[doc = $doc " integer that is known not to equal its edge value ([`"
             [<$s:lower $b>] "::" $abs "`])."]
         pub type [<NonEdge $s:upper $b>] = [<$name $s:upper $b>]<{[<$s:lower $b>]::$abs}>;
 

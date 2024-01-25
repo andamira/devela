@@ -116,6 +116,7 @@ macro_rules! impl_int {
             /// # Links
             /// - The list of subfactorials is available in <https://oeis.org/A000166>.
             #[inline]
+            #[cfg(all(not(miri)))] // Int<i128>::subfactorial has been running for over 60 seconds
             pub const fn subfactorial(self) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0; return Err(NonNegativeRequired)];
@@ -385,6 +386,7 @@ macro_rules! impl_int {
             /// # Links
             /// - The list of subfactorials is available in <https://oeis.org/A000166>.
             #[inline]
+            #[cfg(all(not(miri)))] // Int<u128>::subfactorial has been running for over 60 seconds
             pub const fn subfactorial(self) -> Result<Int<$t>> {
                 let n = self.0;
                 match n {
