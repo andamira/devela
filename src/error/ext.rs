@@ -18,7 +18,6 @@ mod private {
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
 // - https://crates.io/crates/result-ext/0.2.0 by Simon Ochsenreither
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
 pub trait ResultExt<T, E>: private::Sealed {
     /// Returns `true` if the result is an [`Ok`] value containing the given value.
     ///

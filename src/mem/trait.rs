@@ -11,7 +11,6 @@ impl<T: ?Sized> Mem for T {}
 ///
 /// This trait is automatically implemented for every `?Sized` type,
 /// although most methods are only available where `Self: Sized`.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub trait Mem {
     /// Whether dropping values of this type matters.
     const NEEDS_DROP: bool = mem_needs_drop::<Self>();

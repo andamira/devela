@@ -46,7 +46,6 @@ macro_rules! impl_non_specific {
         /// ```
         ///
         #[doc = "See also [`NonMax" $s:upper $b "`] and [`NonMin" $s:upper $b "`]."]
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[repr(C)]
         pub struct [<$name $s:upper $b>]<const V: [<$s:lower $b>]>([<NonZero $s:upper $b>]);
@@ -55,7 +54,6 @@ macro_rules! impl_non_specific {
 
         #[doc = $doc " integer that is known not to equal its maximum value [`"
         [< $s:lower $b >] "::MAX`]."]
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
         pub type [<NonMax $s:upper $b>] = [<$name $s:upper $b>]<{[<$s:lower $b>]::MAX}>;
 
         impl Default for [<NonMax $s:upper $b>] {
@@ -74,7 +72,6 @@ macro_rules! impl_non_specific {
 
         #[doc = $doc " integer that is known not to equal its minimum value [`"
         [< $s:lower $b >] "::MIN`]."]
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
         pub type [<NonMin $s:upper $b>] = [<$name $s:upper $b>]<{[<$s:lower $b>]::MIN}>;
 
         /* methods */

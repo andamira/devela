@@ -5,22 +5,23 @@
 //! [`sync`]: std::sync
 //
 
-/* contains always compiled items */
+/* modules */
 
-// ...
-
-/* feature-gated */
-
+// feature-gated, public
 #[cfg(feature = "work")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
 pub mod atomic;
 
-// re-export public sub-modules
+/* re-exports */
+
+// feature-gated, public
 #[doc(no_inline)]
 #[cfg(feature = "work")]
 pub use atomic::*;
 
-#[cfg(feature = "work")]
 pub(crate) mod all {
+    // feature-gated
     #[doc(inline)]
+    #[cfg(feature = "work")]
     pub use super::atomic::*;
 }

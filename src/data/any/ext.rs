@@ -21,7 +21,6 @@ impl<T: Any> AnyExt for T {}
 /// Extension trait providing convenience methods for `T: Any`.
 ///
 /// This trait is sealed and cannot be implemented manually.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 #[rustfmt::skip]
 pub trait AnyExt: Any + private::Sealed {
 

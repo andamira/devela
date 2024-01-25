@@ -22,7 +22,6 @@ use {
 /// # Errors
 /// Checked methods will return [`Overflow`]
 /// if the original value can't fit in the returned type.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub trait PrimitiveCast {
     /// Casts `self` to `u8` with range check.
     fn checked_cast_to_u8(self) -> Result<u8>;

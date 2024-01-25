@@ -107,7 +107,6 @@ pub const fn bytes_from_bits(bit_size: usize) -> usize {
 /// Indicates a size of exactly `LEN` bits for the relevant data part of this type.
 ///
 /// E.g. a `bool` has a BitSize of 1 bit.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub trait BitSize<const LEN: usize>: Size {
     /// The bit size of this type (only the relevant data part, without padding).
     ///

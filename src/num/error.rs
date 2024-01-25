@@ -6,11 +6,9 @@
 use super::Sign;
 
 /// A numerical result.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 pub type NumResult<T> = core::result::Result<T, NumErrors>;
 
 /// A numerical error.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum NumErrors {

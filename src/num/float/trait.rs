@@ -10,7 +10,6 @@ use super::Floating;
 /// and some of the methods are const if the `unsafe_num` feature is enabled.
 ///
 /// Many methods are only available if either the `std` or `libm` features are enabled.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[rustfmt::skip]
 pub trait FloatOps: Sized {
     /// The largest integer less than or equal to `self`.

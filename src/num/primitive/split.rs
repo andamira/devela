@@ -14,7 +14,6 @@ use crate::code::paste;
 ///
 /// See also the [`Primiting`] type for the equivalent *const* methods, and the
 /// [`PrimitiveJoin`][super::PrimitiveJoin] trait for the opposite operations.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub trait PrimitiveSplit<T, const LEN: usize> {
     /// Splits `self` into an array of `T` in big-endian order.
     #[must_use]

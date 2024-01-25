@@ -24,7 +24,6 @@
 /// // We can sort it, but we don't receive the new vec.
 /// let v: Vec<i32> = vec![3, 2, 1, 5].apply_mut(|it| it.sort());
 /// ```
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
 pub trait Apply<Res> {
     /// Apply a function which takes the parameter by value.
     #[inline]
@@ -71,7 +70,6 @@ impl<T: ?Sized, Res> Apply<Res> for T {}
 /// assert_eq![v, vec![1, 2, 3, 5, 7]];
 /// ```
 ///
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
 pub trait Also: Sized {
     /// Applies a function which takes the parameter by exclusive reference,
     /// and then returns the (possibly) modified owned value.

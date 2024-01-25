@@ -14,7 +14,6 @@ mod private {
 impl<S, L> private::Sealed for (S, L) {}
 
 /// Marker trait used to check the memory alignment between two types.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub trait MemAligned: private::Sealed {
     #[doc(hidden)]
     fn check();
