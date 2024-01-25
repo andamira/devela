@@ -3,7 +3,7 @@
 //! Reexported items.
 //
 
-#![allow(unused)]
+#![allow(unused_imports)]
 
 use super::reexport;
 

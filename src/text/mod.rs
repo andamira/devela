@@ -10,55 +10,71 @@
 //! [`string`]: std::string
 //
 
-/* contains always compiled items */
+/* modules */
 
+// always compiled, public
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
 pub mod ascii;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
 pub mod char;
 
-#[allow(unused)]
-#[cfg(not(feature = "text"))]
-pub use {ascii::*, char::*};
-
-/* feature-gated */
-
-// public modules
-#[cfg(feature = "text")]
-pub mod egc;
-#[cfg(feature = "text")]
-pub mod fmt;
-
-// private modules
-#[cfg(feature = "text")]
-mod array_string;
-#[cfg(feature = "text")]
-mod error;
-#[cfg(feature = "text")]
-mod ext;
-#[cfg(feature = "text")]
-mod helpers;
-#[cfg(feature = "text")]
-mod non_nul;
-#[cfg(feature = "text")]
+// always compiled, non-public
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
 mod reexports;
 
-// re-export public sub-modules
+// feature-gated, public
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+pub mod egc;
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+pub mod fmt;
+
+// feature-gated, non-public
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+mod array_string;
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+mod error;
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+mod ext;
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+mod helpers;
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+mod non_nul;
+
+/* re-exports */
+
+// always compiled, public
+#[doc(no_inline)]
+#[allow(unused_imports)]
+pub use {ascii::all::*, char::all::*};
+
+// always compiled, non-public
+#[allow(unused_imports)]
+pub use reexports::*;
+
+// feature-gated, public
 #[doc(no_inline)]
 #[cfg(feature = "text")]
-pub use {ascii::all::*, char::all::*, egc::all::*, fmt::all::*};
+pub use {egc::all::*, fmt::all::*};
 
-// re-export private sub-modules
+// feature-gated, private
 #[cfg(feature = "text")]
-#[allow(unused_imports)]
-pub use {array_string::*, error::*, ext::*, non_nul::*, reexports::*};
+pub use {array_string::*, error::*, ext::*, non_nul::*};
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
-    pub use super::{ascii::all::*, char::all::*};
+    #[allow(unused_imports)]
+    pub use super::{ascii::all::*, char::all::*, reexports::*};
 
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "text")]
-    #[allow(unused_imports)]
-    pub use super::{
-        array_string::*, egc::all::*, error::*, ext::*, fmt::all::*, non_nul::*, reexports::*,
-    };
+    pub use super::{array_string::*, egc::all::*, error::*, ext::*, fmt::all::*, non_nul::*};
 }

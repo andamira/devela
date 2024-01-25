@@ -48,73 +48,61 @@ compile_error!("You can't enable `safe` and `unsafe*` features at the same time.
 /* root modules */
 
 #[cfg(any(feature = "code", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
 pub mod code;
 #[cfg(not(any(feature = "code", test)))]
 pub(crate) mod code; // the "code" feature is disabled
 
 #[cfg(any(feature = "data", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod data;
 #[cfg(not(any(feature = "data", test)))]
 pub(crate) mod data; // the "data" feature is disabled
 
 #[cfg(any(feature = "error", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
 pub mod error;
 #[cfg(not(any(feature = "error", test)))]
 pub(crate) mod error; // the "error" feature is disabled
 
 #[cfg(any(feature = "io", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "io")))]
 pub mod io;
 #[cfg(not(any(feature = "io", test)))]
 pub(crate) mod io; // the "io" feature is disabled
 
 #[cfg(any(feature = "mem", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub mod mem;
 #[cfg(not(any(feature = "mem", test)))]
 pub(crate) mod mem; // the "mem" feature is disabled
 
 #[cfg(any(feature = "num", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 pub mod num;
 #[cfg(not(any(feature = "num", test)))]
 pub(crate) mod num; // the "num" feature is disabled
 
 #[cfg(any(feature = "os", feature = "os_term", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "os")))]
 pub mod os;
 #[cfg(not(any(feature = "os", feature = "os_term", test)))]
 pub(crate) mod os; // the "os" features are disabled
 
 #[cfg(any(feature = "render", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "render")))]
 pub mod render;
 #[cfg(not(any(feature = "render", test)))]
 pub(crate) mod render; // the "render" feature is disabled
 
 #[cfg(any(feature = "text", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
 pub mod text;
 #[cfg(not(any(feature = "text", test)))]
 pub(crate) mod text; // the "text" feature is disabled
 
 #[cfg(any(feature = "time", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "time")))]
 pub mod time;
 #[cfg(not(any(feature = "time", test)))]
 pub(crate) mod time; // the "time" feature is disabled
 
 #[cfg(any(feature = "ui", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "ui")))]
 pub mod ui;
 #[cfg(not(any(feature = "ui", test)))]
 pub(crate) mod ui; // the "ui" feature is disabled
 
 #[cfg(any(feature = "work", test))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
 pub mod work;
 #[cfg(not(any(feature = "work", test)))]
 pub(crate) mod work; // the "work" feature is disabled
@@ -124,7 +112,7 @@ pub(crate) mod work; // the "work" feature is disabled
 /// Note that any item tagged with [`dep`] can also be enabled by
 /// manually enabling the associated optional dependency.
 pub mod all {
-    #[allow(unused)]
+    #[allow(unused_imports)]
     #[doc(inline)]
     pub use super::{
         code::all::*, data::all::*, error::all::*, io::all::*, mem::all::*, num::all::*,

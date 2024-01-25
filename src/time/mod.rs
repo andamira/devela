@@ -6,18 +6,21 @@
 //! [`time`]: std::time
 //
 
-/* contains always compiled items */
+/* modules */
 
-/* feature-gated */
-
+// feature-gated, private
 #[cfg(feature = "time")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "time")))]
 mod reexports;
 
-// re-exports private sub-modules
+/* re-exports */
+
+// feature-gated, private
 #[cfg(feature = "time")]
 pub use reexports::*;
 
 pub(crate) mod all {
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "time")]
     pub use super::reexports::*;

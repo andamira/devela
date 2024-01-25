@@ -9,27 +9,29 @@
 //! [`thread`]: std::thread
 //
 
-/* contains always compiled items */
+/* modules */
 
-// ...
-
-/* feature-gated */
-
-// public sub-modules
+// feature-gated, public
 #[cfg(feature = "work")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
 pub mod r#async;
 #[cfg(feature = "work")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
 pub mod sync;
 #[cfg(feature = "work")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
 pub mod thread;
 
-// re-export public sub-modules
+/* re-exports */
+
+// feature-gated, public
 #[doc(no_inline)]
 #[cfg(feature = "work")]
 #[allow(unused_imports)]
 pub use {r#async::all::*, sync::all::*, thread::all::*};
 
 pub(crate) mod all {
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "work")]
     #[allow(unused_imports)]

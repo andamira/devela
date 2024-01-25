@@ -8,16 +8,24 @@
 //! [`os`]: std::os
 //
 
+#![cfg_attr(not(feature = "os"), allow(unused_imports))]
+
+/* modules */
+
+// always compiled, public
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "os")))]
 pub mod arch;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "os")))]
 pub mod ffi;
 
-// re-export public sub-modules
+/* re-exports */
 
+// always compiled, public
 #[doc(no_inline)]
-#[allow(unused)]
 pub use {arch::all::*, ffi::all::*};
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     pub use super::{arch::all::*, ffi::all::*};
 }

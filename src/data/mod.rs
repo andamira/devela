@@ -13,23 +13,28 @@
 //! [`vec`]: mod@alloc::vec
 //
 
-#![cfg_attr(not(feature = "data"), allow(unused))]
+#![cfg_attr(not(feature = "data"), allow(unused_imports))]
 
-/* contains always compiled items */
+/* modules */
 
+// always compiled, non-public
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 mod error;
 
+// always compiled, public
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod bit;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod cmp;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod collections;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod hash;
 
-#[allow(unused)]
-#[cfg(not(feature = "data"))]
-pub use {bit::*, cmp::*, collections::*, error::*, hash::*};
-
-/* feature-gated */
-
+// feature-gated, public
+#[cfg(feature = "data")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
+pub mod any;
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(feature = "unsafe_data", feature = "dep")))
@@ -39,16 +44,22 @@ pub use {bit::*, cmp::*, collections::*, error::*, hash::*};
     feature = "unsafe_data",
     any(feature = "bytemuck", feature = "dep")
 ))]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod dst;
 
-#[cfg(feature = "data")]
-pub mod any;
+/* re-exports */
 
-// re-export private sub-modules
-#[cfg(feature = "data")]
+// always,compiled, non-public
 pub use error::*;
 
-// re-export public sub-modules
+// always compiled, public
+#[doc(no_inline)]
+pub use {bit::all::*, cmp::all::*, collections::all::*, hash::all::*};
+
+// feature-gated, public
+#[doc(no_inline)]
+#[cfg(feature = "data")]
+pub use any::all::*;
 #[doc(no_inline)]
 #[cfg(all(
     feature = "data",
@@ -56,18 +67,16 @@ pub use error::*;
     any(feature = "bytemuck", feature = "dep")
 ))]
 pub use dst::*;
-#[doc(no_inline)]
-#[cfg(feature = "data")]
-pub use {any::all::*, bit::all::*, cmp::all::*, collections::all::*, hash::all::*};
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     pub use super::{bit::all::*, cmp::all::*, collections::all::*, error::*, hash::all::*};
 
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "data")]
     pub use super::any::all::*;
-
     #[doc(inline)]
     #[cfg(all(
         feature = "data",

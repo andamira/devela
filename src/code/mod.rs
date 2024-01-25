@@ -8,51 +8,53 @@
 //! [`marker`]: core::marker
 //
 
-/* contains always compiled items */
+#![cfg_attr(not(feature = "code"), allow(unused_imports))]
 
-// crate internal use only
+/* modules */
+
+// always compiled, crate-private
 mod _private;
-#[allow(unused)]
+
+// always compiled, non-public
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+mod chain;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+mod deprecate;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+mod enumset;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+mod r#for;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+mod ident;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+mod iif;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+mod paste;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+mod reexports;
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+mod skip_format;
+
+/* re-exports */
+
+// always compiled, crate-private
 pub(crate) use _private::*;
 
-// internal and external use
-mod chain;
-mod enumset;
-mod r#for;
-mod ident;
-mod iif;
-mod paste;
-mod reexports;
-mod skip_format;
-#[allow(unused)]
-#[cfg(not(feature = "code"))]
-pub use {
-    chain::*, enumset::*, ident::*, iif::*, paste::*, r#for::*, reexports::*, skip_format::*,
-};
-
+// always compiled, hidden public
 #[doc(hidden)]
-#[allow(unused)]
 pub use paste::__paste;
 
-/* feature-gated */
-
-#[cfg(feature = "code")]
-mod deprecate;
-
-// re-export private sub-modules
-#[cfg(feature = "code")]
+// always compied, non-public
 pub use {
     chain::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, r#for::*, reexports::*,
     skip_format::*,
 };
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     pub use super::{
-        chain::*, enumset::*, ident::*, iif::*, paste::*, r#for::*, reexports::*, skip_format::*,
+        chain::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, r#for::*, reexports::*,
+        skip_format::*,
     };
-
-    #[doc(inline)]
-    #[cfg(feature = "code")]
-    pub use super::deprecate::*;
 }

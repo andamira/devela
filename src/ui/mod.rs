@@ -3,20 +3,22 @@
 //! User interface functionality.
 //
 
-/* contains always compiled items */
+/* modules */
 
+// feature-gated, public
 #[cfg(feature = "ui_term")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "ui_term")))]
 pub mod term;
 
 /* re-exports */
 
-// re-export public sub-modules
+// feature-gated, public
 #[doc(no_inline)]
 #[cfg(feature = "ui_term")]
 pub use term::all::*;
 
 pub(crate) mod all {
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "ui_term")]
     pub use super::term::all::*;

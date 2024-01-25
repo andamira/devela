@@ -15,11 +15,13 @@
 // ...
 
 #[cfg(feature = "io")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "io")))]
 mod path;
 
 /* re-exports */
 
 #[cfg(feature = "io")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "io")))]
 mod reexports;
 
 // re-exports private sub-modules
