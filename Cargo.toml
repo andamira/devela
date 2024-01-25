@@ -80,18 +80,6 @@ ui = ["ui_term"]
 	ui_term = ["dep?/const-str"]
 work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 
-# individual modules with unsafe enabled (7…):
-data_unsafe = ["data", "unsafe_data"]
-mem_unsafe = ["mem", "unsafe_mem"]
-num_unsafe = ["num", "unsafe_num"]
-os_unsafe = ["os", "unsafe_os"]
-text_unsafe = ["text", "unsafe_text"]
-ui_unsafe = ["ui", "unsafe_ui"]
-	# optional module features:
-	ui_term_unsafe = ["ui_term", "unsafe_ui_term"]
-work_unsafe = ["work", "unsafe_work"]
-
-
 #* safety features *#
 
 safe = [] # forbids `unsafe` in this crate

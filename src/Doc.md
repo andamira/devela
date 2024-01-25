@@ -22,13 +22,9 @@ By default the crate is `no_std` compatible without allocation.
 
 ### Module features
 
-Modules can be enabled independently of *environment*, *dependency* or *safety*,
-unless specified.
+Modules can be enabled independently of *environment*, *dependency* or *safety*.
 
-For example, the `_unsafe` suffix also enables the corresponding unsafe feature
-for that module.
-
-When the `depend` feature is enabled, modules will also enable their associated
+When the `dep` feature is enabled, modules will also enable their associated
 optional dependencies.
 
 - `full`: enables every root module:
@@ -37,20 +33,20 @@ Single modules:
 - `code`: enables the [`code`] module,
 - `error`: enables the [`error`] module.
 - `io`: enables the [`io`] module.
-- `mem`, `mem_unsafe`: enables the [`mem`] module,
+- `mem`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
   and the [`devela_macros`] optional dependency.
-- `num`, `num_unsafe`: enables the [`num`] module.
-- `os`, `os_unsafe`: enables all the [`os`] specific functionality.
+- `num`: enables the [`num`] module.
+- `os`: enables all the [`os`] specific functionality.
 - `render`: enables the [`render`] module.
-- `text`, `text_unsafe`: enables the [`text`] module,
+- `text`: enables the [`text`] module,
   and the [`const-str`], [`unicode-segmentation`] and [`unicode-width`] optional dependencies.
   and the [`atomic`] and [`portable_atomic`] optional dependencies.
 - `time`: enables the [`time`] module.
-- `ui`, `ui_unsafe`: enables the [`ui`] module.
-  - `ui_term`, `ui_term_unsafe`: enables the terminal functionality,
+- `ui`: enables the [`ui`] module.
+  - `ui_term`: enables the terminal functionality,
     and the [`const-str`] optional dependency.
-- `work`, `work_unsafe`: enables the [`work`] module.
+- `work`: enables the [`work`] module.
 
 
 ### Safety features
