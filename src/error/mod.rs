@@ -29,10 +29,6 @@ mod never;
 mod option;
 //
 #[cfg(feature = "std")]
-#[cfg_attr(
-    feature = "nightly",
-    doc(cfg(all(feature = "error", any(feature = "no_std", feature = "std"))))
-)]
 mod reexport_std;
 #[cfg(feature = "no_std")]
 #[cfg_attr(

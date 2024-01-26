@@ -59,8 +59,8 @@ macro_rules! reexport {
 
     /* reexports from normal modules */
 
-    // the following 3 arms allows reexporting items from `core`, `alloc` or `std`,
-    // from any normal module.
+    // the following 4 arms allows reexporting items from:
+    // `core`, `alloc`, `std` or `no_std`|`std`.
     //
     // - Supports multiple reexported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
@@ -70,6 +70,8 @@ macro_rules! reexport {
     // reexport! { rust: core::any, local_module: "any",
     //     "Represents a globally unique identifier for a type.", TypeId }
     // ```
+    //
+    // when the item is available in `core`
     ( rust : core $( :: $( $core_path:ident )::+)?,
       local_module: $module_feature:literal,
       doc: $description:literal,
@@ -93,7 +95,7 @@ macro_rules! reexport {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
-
+    // when the item is available in `alloc`
     ( rust : alloc $( :: $( $alloc_path:ident )::+)?,
       local_module: $module_feature:literal,
       doc: $description:literal,
@@ -118,7 +120,7 @@ macro_rules! reexport {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
-
+    // when the item is available in `std`
     ( rust : std $( :: $( $std_path:ident )::+)?,
       local_module: $module_feature:literal,
       doc: $description:literal,
@@ -136,6 +138,34 @@ macro_rules! reexport {
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
         #[cfg_attr(feature = "nightly", doc(cfg(feature = $module_feature)))]
+
+        #[cfg(feature = "std")]
+        pub use std :: $($( $std_path :: )+)? {
+            $( $item ),*
+            $( $item_to_rename as $item_renamed ),*
+        };
+    }};
+    // when the item is available in either `no_std` or `std`
+    ( rust : no_std|std $( :: $( $std_path:ident )::+)?,
+      local_module: $module_feature:literal,
+      doc: $description:literal,
+      $( $item:ident ),*
+      $(@ $item_to_rename:ident as $item_renamed:ident),*
+      $(,)?
+    ) => { $crate::code::paste! {
+        #[doc(inline)]
+        #[doc = "<span class='stab portability' title='re-created for no_std "
+            "or re-exported from rust&#39;s `std`'>`no_std|std`</span>"]
+        #[doc = $description]
+        #[doc = "\n\n*Re-exported from [`std" $( "`]::[`" $( $std_path "::" )+ )?
+            "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
+
+        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
+
+        #[cfg_attr(
+            feature = "nightly",
+            doc(cfg(all(feature = $module_feature, any(feature = "no_std", feature = "std"))))
+        )]
 
         #[cfg(feature = "std")]
         pub use std :: $($( $std_path :: )+)? {
