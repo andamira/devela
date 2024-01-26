@@ -54,62 +54,15 @@ pub mod all {
 
 /* root modules */
 
-#[cfg(any(feature = "code", test))]
 pub mod code;
-#[cfg(not(any(feature = "code", test)))]
-pub(crate) mod code; // the "code" feature is disabled
-
-#[cfg(any(feature = "data", test))]
 pub mod data;
-#[cfg(not(any(feature = "data", test)))]
-pub(crate) mod data; // the "data" feature is disabled
-
-#[cfg(any(feature = "error", test))]
 pub mod error;
-#[cfg(not(any(feature = "error", test)))]
-pub(crate) mod error; // the "error" feature is disabled
-
-#[cfg(any(feature = "io", test))]
 pub mod io;
-#[cfg(not(any(feature = "io", test)))]
-pub(crate) mod io; // the "io" feature is disabled
-
-#[cfg(any(feature = "mem", test))]
 pub mod mem;
-#[cfg(not(any(feature = "mem", test)))]
-pub(crate) mod mem; // the "mem" feature is disabled
-
-#[cfg(any(feature = "num", test))]
 pub mod num;
-#[cfg(not(any(feature = "num", test)))]
-pub(crate) mod num; // the "num" feature is disabled
-
-#[cfg(any(feature = "os", feature = "os_term", test))]
 pub mod os;
-#[cfg(not(any(feature = "os", feature = "os_term", test)))]
-pub(crate) mod os; // the "os" features are disabled
-
-#[cfg(any(feature = "render", test))]
 pub mod render;
-#[cfg(not(any(feature = "render", test)))]
-pub(crate) mod render; // the "render" feature is disabled
-
-#[cfg(any(feature = "text", test))]
 pub mod text;
-#[cfg(not(any(feature = "text", test)))]
-pub(crate) mod text; // the "text" feature is disabled
-
-#[cfg(any(feature = "time", test))]
 pub mod time;
-#[cfg(not(any(feature = "time", test)))]
-pub(crate) mod time; // the "time" feature is disabled
-
-#[cfg(any(feature = "ui", test))]
 pub mod ui;
-#[cfg(not(any(feature = "ui", test)))]
-pub(crate) mod ui; // the "ui" feature is disabled
-
-#[cfg(any(feature = "work", test))]
 pub mod work;
-#[cfg(not(any(feature = "work", test)))]
-pub(crate) mod work; // the "work" feature is disabled
