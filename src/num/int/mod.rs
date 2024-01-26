@@ -8,7 +8,8 @@ mod wrapper;
 
 pub use {r#trait::*, wrapper::*};
 
-use crate::num::FloatOps;
+#[allow(unused_imports)]
+use crate::num::ExtFloat;
 
 /// The prime number theorem formula.
 ///

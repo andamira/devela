@@ -32,7 +32,7 @@ mod shared; // implement Floating shared methods
 /// - Error functions: [`erf`][Floating#method.erf], [`erfc`][Floating#method.erfc].
 /// - [`exp10`][Floating#method.exp10].
 ///
-/// See also the [`FloatOps`] trait.
+/// See also the [`ExtFloat`] trait.
 #[derive(Debug, Clone, Copy)]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 pub struct Floating<T>(core::marker::PhantomData<T>);

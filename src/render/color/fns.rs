@@ -4,7 +4,7 @@
 
 use crate::code::{iif, paste, sf};
 #[allow(unused_imports)]
-use crate::num::FloatOps;
+use crate::num::ExtFloat;
 
 /// The coefficient used for calculating the red luminance.
 pub const COLOR_LUMINANCE_RED: f32 = LUMINANCE_RED![];
