@@ -107,16 +107,17 @@ macro_rules! impl_int {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
+            /// # #[cfg(not(miri))] { // too slow for miri
             #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").subfactorial()];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").subfactorial()];"]
             #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").subfactorial()];"]
             #[doc = "assert![Int(-3_" $t ").subfactorial().is_err()];"]
             #[doc = "assert![Int(127_" $t ").subfactorial().is_err()];"]
+            /// # }
             /// ```
             /// # Links
             /// - The list of subfactorials is available in <https://oeis.org/A000166>.
             #[inline]
-            #[cfg(all(not(miri)))] // Int<i128>::subfactorial has been running for over 60 seconds
             pub const fn subfactorial(self) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0; return Err(NonNegativeRequired)];
@@ -378,15 +379,16 @@ macro_rules! impl_int {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
+            /// # #[cfg(not(miri))] { // too slow for miri
             #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").subfactorial()];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").subfactorial()];"]
             #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").subfactorial()];"]
             #[doc = "assert![Int(255_" $t ").subfactorial().is_err()];"]
+            /// # }
             /// ```
             /// # Links
             /// - The list of subfactorials is available in <https://oeis.org/A000166>.
             #[inline]
-            #[cfg(all(not(miri)))] // Int<u128>::subfactorial has been running for over 60 seconds
             pub const fn subfactorial(self) -> Result<Int<$t>> {
                 let n = self.0;
                 match n {
