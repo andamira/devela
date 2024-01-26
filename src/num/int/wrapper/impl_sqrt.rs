@@ -364,14 +364,14 @@ macro_rules! impl_int {
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
-            impl_niche![Int=>bool: $n:$t:$dt<$($g),*>, +const is_square, self];
+            num_niche_impls![Int=>bool: $n:$t:$dt<$($g),*>, +const is_square, self];
 
-            // impl_niche![Int $n:$t:$dt<$($g),*>, +const sqrt_ceil, self, b: $t];
-            // impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_ceil, self, b: $t];
-            // impl_niche![Int $n:$t:$dt<$($g),*>, +const sqrt_floor, self, b: $t];
-            // impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_floor, self, b: $t];
+            // num_niche_impls![Int $n:$t:$dt<$($g),*>, +const sqrt_ceil, self, b: $t];
+            // num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_ceil, self, b: $t];
+            // num_niche_impls![Int $n:$t:$dt<$($g),*>, +const sqrt_floor, self, b: $t];
+            // num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_floor, self, b: $t];
 
-            impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_round, self, b: $t];
+            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_round, self, b: $t];
         }
     }};
 }
@@ -380,9 +380,9 @@ impl_int![signed i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128
 impl_int![unsigned u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10",
     usize:usize_up:"-11"];
 
-// #[cfg(feature = "num_int_niche")]
-// use crate::num::{impl_niche, niche::*};
-// #[cfg(feature = "num_int_niche")]
-// impl_niche![impl_int_signed niche_signed];
-// #[cfg(feature = "num_int_niche")]
-// impl_niche![impl_int_unsigned niche_unsigned];
+// #[cfg(feature = "num_niche_impls")]
+// use crate::num::{niche::*, num_niche_impls};
+// #[cfg(feature = "num_niche_impls")]
+// num_niche_impls![impl_int_signed niche_signed];
+// #[cfg(feature = "num_niche_impls")]
+// num_niche_impls![impl_int_unsigned niche_unsigned];

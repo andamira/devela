@@ -576,19 +576,19 @@ macro_rules! impl_int {
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
-            impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const factorial, self];
-            impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const subfactorial, self];
-            impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const combine, self, r: $t];
-            impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const combine_rep, self, r: $t];
-            impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const permute, self, r: $t];
-            impl_niche![Int=>res $n:$t:$dt<$($g),*>, +const permute_rep, self, r: $t];
+            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const factorial, self];
+            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const subfactorial, self];
+            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const combine, self, r: $t];
+            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const combine_rep, self, r: $t];
+            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const permute, self, r: $t];
+            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const permute_rep, self, r: $t];
         }
     }};
 }
 impl_int![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
 impl_int![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
 
-#[cfg(feature = "num_int_niche")]
-use crate::num::{impl_niche, niche::*};
-#[cfg(feature = "num_int_niche")]
-impl_niche![impl_int niche];
+#[cfg(feature = "num_niche_impls")]
+use crate::num::{niche::*, num_niche_impls};
+#[cfg(feature = "num_niche_impls")]
+num_niche_impls![impl_int niche];

@@ -4,7 +4,7 @@
 //
 // TOC
 // - upcasted_op
-// - impl_niche
+// - num_niche_impls
 
 #![allow(unused, non_camel_case_types)]
 
@@ -108,7 +108,7 @@ pub(crate) use upcasted_op;
 // $method: the name of the method being implemented
 // $self: the self value we're operating on (i.e. self)
 // $($arg)*: an optional list of arguments (e.g. min, max, a, b)
-macro_rules! impl_niche {
+macro_rules! num_niche_impls {
     /* leveraged primitive implementation returns the type without a Result */
     ( Int
       $n:ident : $t:ident : $dt:literal <$($g:ident),*>,
@@ -194,8 +194,8 @@ macro_rules! impl_niche {
 
     // implements locally defined Int methods for all niche types.
     (impl_int $arm:ident) => {
-        impl_niche![impl_int_signed $arm];
-        impl_niche![impl_int_unsigned $arm];
+        num_niche_impls![impl_int_signed $arm];
+        num_niche_impls![impl_int_unsigned $arm];
     };
     (impl_int_signed $arm:ident) => {
         impl_int![$arm
@@ -231,4 +231,4 @@ macro_rules! impl_niche {
         ];
     };
 }
-pub(crate) use impl_niche;
+pub(crate) use num_niche_impls;

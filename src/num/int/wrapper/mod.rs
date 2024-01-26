@@ -18,7 +18,8 @@ mod impl_sqrt;
 ///
 /// It's implemented for:
 /// - all the integer primitives: `i8`, …, `i128`, `u8`, …, `u128`.
-/// - all the [`niche`][crate::num::niche] numeric types (with the `num_int_niche` feature enabled).
+/// - all the [`niche`][crate::num::niche] numeric types
+/// (with the `num_niche_impls` feature enabled).
 ///
 /// Specific implementations can vary between signed and signed numeric types,
 /// but documentation is the same for all bit sizes:

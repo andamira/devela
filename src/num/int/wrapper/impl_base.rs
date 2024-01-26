@@ -271,19 +271,19 @@ macro_rules! impl_int {
         ///
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
-            impl_niche![Int $n:$t:$dt<$($g),*>, +const digits, self];
-            impl_niche![Int $n:$t:$dt<$($g),*>, +const digits_sign, self];
-            impl_niche![Int $n:$t:$dt<$($g),*>, +const digits_base, self, base:$t];
-            impl_niche![Int $n:$t:$dt<$($g),*>, +const digits_base_sign, self, base:$t];
-            impl_niche![Int $n:$t:$dt<$($g),*>, +const digital_root, self];
-            impl_niche![Int $n:$t:$dt<$($g),*>, +const digital_root_base, self, base:$t];
+            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digits, self];
+            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digits_sign, self];
+            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digits_base, self, base:$t];
+            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digits_base_sign, self, base:$t];
+            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digital_root, self];
+            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digital_root_base, self, base:$t];
         }
     }};
 }
 impl_int![prim_signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
 impl_int![prim_unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
 
-#[cfg(feature = "num_int_niche")]
-use crate::num::{impl_niche, niche::*};
-#[cfg(feature = "num_int_niche")]
-impl_niche![impl_int niche];
+#[cfg(feature = "num_niche_impls")]
+use crate::num::{niche::*, num_niche_impls};
+#[cfg(feature = "num_niche_impls")]
+num_niche_impls![impl_int niche];

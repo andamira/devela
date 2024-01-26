@@ -70,7 +70,7 @@ io = []
 mem = ["dep?/bytemuck"]
 num = []
 	# optional module features:
-	num_int_niche = [] # enables Int implementations for niche types
+	num_niche_impls = [] # enables extra implementations for niche types
 os = []
 render = []
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
@@ -79,6 +79,7 @@ ui = ["ui_term"]
 	# optional module features:
 	ui_term = ["dep?/const-str"]
 work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
+
 
 #* safety features *#
 
