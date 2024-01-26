@@ -8,7 +8,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.20.0-wip]
 
 ### Added
-- add type aliases: `NonEdge*`.
+- add trait: `NumToStr`.
+- add niche number aliases: `NonEdge*`.
+- add `no_std` replacements for `std::error` and `std::io` and types.
 
 ### Removed
 - remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
@@ -16,10 +18,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Changed
 - move docs html header to `src/_doc`.
-- move `src/Doc.md` to `src/_doc/features.md`.
-- rename the `__doc` module to `_docs`.
-- rename de `_dep` module to `_deps`.
 - move `::{_alloc, _core, _std}` to `::_deps::{alloc, core, std}`.
+- move and rename `src/Doc.md` to `src/_doc/features.md`.
+- rename `num_int_niche` feature to `num_niche_impls`.
+- rename the `__doc` module to `_docs` and the `_dep` module to `_deps`.
+- rename `AnyExt`, `OptionExt`, `ResultExt`, `SliceExt`, `SliceExtMut`, `StrExt` and `StringExt` to `ExtAny`, `ExtOption`, `ExtResult`, `ExtSlice`, `ExtSliceMut`, `ExtStr` and `ExtString` and `ExtVec` respectively.
+- rename `FloatOps` to `ExtFloat`.
 
 ### Fixed
 - refactor root modules, simplify and dissassociate root-level feature-gating.
