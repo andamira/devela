@@ -51,19 +51,21 @@ Single modules:
 
 ### Safety features
 
-By default the crate doesn't use unsafe.
+Unsafe use must be explicitly enabled.
 
-They offer a gradient of safety.
-
-- `safe`: forbids unsafe at the crate level.
+- `safe`: explicitly forbids any unsafe use at the crate level.
 - `unsafe`: enables all the unsafe sub-features:
+  - `unsafe_data`:….
+  - `unsafe_error`enables `no_std` `Error` impls related to `dyn` downcasting.
   - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and [`mem_as_bytes_sized`].
   - `unsafe_num`: enables `new_unchecked` constructors, implements `bytemuck` traits,
     enables using [`MaybeUninit`] for [`slice_into_array`] initialization and
     const floating-point comparison  using [`transmute`] for constant access to the bits.
-  - `unsafe_work`: provides a minimal implementation of stackless
-    [coroutines][work::async::coroutine].
+  - `unsafe_os`:….
   - `unsafe_text`: enables use of unsafe in [`text`].
+  - `unsafe_ui`:….
+  - `unsafe_work`: enables a minimal implementation of stackless
+    [coroutines][work::async::coroutine].
 
 
 ### Nightly features

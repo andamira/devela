@@ -10,28 +10,47 @@
 //! [`path`]: std::path
 //
 
-/* contains always compiled items */
+#![allow(unused_imports)]
 
-// ...
+/* modules */
 
+// feature-gated, non-public
 #[cfg(feature = "io")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "io")))]
 mod path;
+//
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(feature = "error", any(feature = "no_std", feature = "std"))))
+)]
+mod reexport_std;
+// #[cfg_attr(
+//     feature = "nightly",
+//     doc(cfg(all(feature = "error", any(feature = "no_std", feature = "std"))))
+// )]
+// mod reimplement_no_std;
 
 /* re-exports */
 
+// feature-gated, non-public
 #[cfg(feature = "io")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "io")))]
-mod reexports;
-
-// re-exports private sub-modules
-#[cfg(feature = "io")]
-#[allow(unused_imports)]
-pub use {path::all::*, reexports::*};
+pub use path::all::*;
+//
+#[cfg(feature = "std")]
+pub use reexport_std::*;
+// #[cfg(feature = "no_std")]
+// pub use reimplement_no_std::*;
 
 pub(crate) mod all {
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "io")]
-    #[allow(unused_imports)]
-    pub use super::{path::all::*, reexports::*};
+    pub use super::path::all::*;
+    //
+    #[doc(inline)]
+    #[cfg(feature = "std")]
+    pub use super::reexport_std::*;
+    // #[doc(inline)]
+    // #[cfg(feature = "no_std")]
+    // pub use super::reimplement_no_std::*;
 }

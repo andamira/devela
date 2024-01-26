@@ -20,13 +20,26 @@ pub mod panic;
 // feature-gated, non-public
 #[cfg(feature = "error")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
-mod ext;
+mod ext_result;
 #[cfg(feature = "error")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
 mod never;
 #[cfg(feature = "error")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
 mod option;
+//
+#[cfg(feature = "std")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(feature = "error", any(feature = "no_std", feature = "std"))))
+)]
+mod reexport_std;
+#[cfg(feature = "no_std")]
+#[cfg_attr(
+    feature = "nightly",
+    doc(cfg(all(feature = "error", any(feature = "no_std", feature = "std"))))
+)]
+mod reimplement_no_std;
 
 /* re-exports */
 
@@ -36,7 +49,12 @@ pub use panic::all::*;
 
 // feature-gated, private
 #[cfg(feature = "error")]
-pub use {ext::*, never::*, option::all::*};
+pub use {ext_result::*, never::*, option::all::*};
+//
+#[cfg(feature = "std")]
+pub use reexport_std::*;
+#[cfg(feature = "no_std")]
+pub use reimplement_no_std::*;
 
 pub(crate) mod all {
     // always compiled
@@ -46,5 +64,12 @@ pub(crate) mod all {
     // feature-gated
     #[doc(inline)]
     #[cfg(feature = "error")]
-    pub use super::{ext::*, never::*, option::all::*};
+    pub use super::{ext_result::*, never::*, option::all::*};
+    //
+    #[doc(inline)]
+    #[cfg(feature = "std")]
+    pub use super::reexport_std::*;
+    #[doc(inline)]
+    #[cfg(feature = "no_std")]
+    pub use super::reimplement_no_std::*;
 }

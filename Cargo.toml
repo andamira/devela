@@ -84,10 +84,11 @@ work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 
 safe = [] # forbids `unsafe` in this crate
 unsafe = [ # enables all unsafe features in this crate:
-	"unsafe_data", "unsafe_mem", "unsafe_num", "unsafe_os",
-	"unsafe_text", "unsafe_ui", "unsafe_work",
+	"unsafe_data", "unsafe_error", "unsafe_mem", "unsafe_num", "unsafe_os",
+	"unsafe_phys", "unsafe_text", "unsafe_ui", "unsafe_work",
 	]
 	unsafe_data = []
+	unsafe_error = [] # enables no_std `Error` impls for downcasting.
 	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
 	unsafe_num = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
 	unsafe_os = []

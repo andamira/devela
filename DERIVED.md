@@ -18,6 +18,8 @@ This project includes the following derived works:
   into the [`mem_as_bytes`] and [`mem_as_bytes_mut`] functions.
 - Integration of [const_for] by Joachim Enggård Nebel, licensed as MIT,
   as the [`cfor`] macro.
+- Integration of [no_std_io]|[core2] by Brendan Molloy, licensed as MIT OR Apache-2.0,
+  as part of the [`io`] module.
 - Integration of [size_of_trait] by Joshua Nelson, licensed as BSD-3,
  as the [`mem_size_of_expr`] macro.
 
@@ -42,5 +44,8 @@ This project includes the following derived works:
 [`mem_as_bytes_mut`]: https://docs.rs/devela/latest/devela/mem/fn.mem_as_bytes_mut.html
 [const_for]: https://crates.io/crates/const_for
 [`cfor`]: https://docs.rs/devela/latest/devela/code/macro.cfor.html
+[no_std_io]: https://crates.io/crates/no_std_io
+[core2]: https://crates.io/crates/core2
+[`io`]: https://docs.rs/devela/latest/devela/io/
 [size_of_trait]: https://crates.io/crates/size-of-trait
 [`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/mem/size/macro.mem_size_of_expr.html
