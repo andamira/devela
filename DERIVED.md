@@ -20,6 +20,8 @@ This project includes the following derived works:
   as the [`cfor`] macro.
 - Integration of [no_std_io]|[core2] by Brendan Molloy, licensed as MIT OR Apache-2.0,
   as part of the [`io`] module.
+- Integration of [numtoa] by Michael Murphy, licensed as MIT OR Apache-2.0,
+  as the [`NumToStr`] trait.
 - Integration of [size_of_trait] by Joshua Nelson, licensed as BSD-3,
  as the [`mem_size_of_expr`] macro.
 
@@ -47,5 +49,6 @@ This project includes the following derived works:
 [no_std_io]: https://crates.io/crates/no_std_io
 [core2]: https://crates.io/crates/core2
 [`io`]: https://docs.rs/devela/latest/devela/io/
+[numtoa]: https://crates.io/crates/numtoa/0.2.4
 [size_of_trait]: https://crates.io/crates/size-of-trait
 [`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/mem/size/macro.mem_size_of_expr.html
