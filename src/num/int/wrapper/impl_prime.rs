@@ -300,9 +300,9 @@ macro_rules! impl_int {
         /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             num_niche_impls![Int=>bool: $n:$t:$dt<$($g),*>, +const is_prime, self];
-            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const prime_nth, self, b: $t];
+            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const prime_nth, self];
             num_niche_impls![Int=>usize: $n:$t:$dt<$($g),*>, +const prime_pi, self];
-            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const totient, self, b: $t];
+            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const totient, self];
         }
     }};
 }

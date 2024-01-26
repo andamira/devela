@@ -1,7 +1,7 @@
 // devela::mem::size::expr
 //
 // Original source code by Joshua Nelson, licensed as BSD-3,
-// https://crates.io/crates/size-of-trait
+// https://crates.io/crates/size-of-trait/1.1.2
 
 /// Returns the size of an expression in bytes.
 ///

@@ -23,7 +23,7 @@ This project includes the following derived works:
 - Integration of [numtoa] by Michael Murphy, licensed as MIT OR Apache-2.0,
   as the [`NumToStr`] trait.
 - Integration of [size_of_trait] by Joshua Nelson, licensed as BSD-3,
- as the [`mem_size_of_expr`] macro.
+  as the [`mem_size_of_expr`] macro.
 
 [0]: https://github.com/andamira/devela/blob/main/src/fmt/int_buf/MODIFICATIONS.md
 [itoa]: https://crates.io/crates/itoa/1.0.9
@@ -44,11 +44,11 @@ This project includes the following derived works:
 [rawbytes]: https://crates.io/crates/rawbytes/1.0.0
 [`mem_as_bytes`]: https://docs.rs/devela/latest/devela/mem/fn.mem_as_bytes.html
 [`mem_as_bytes_mut`]: https://docs.rs/devela/latest/devela/mem/fn.mem_as_bytes_mut.html
-[const_for]: https://crates.io/crates/const_for
+[const_for]: https://crates.io/crates/const_for/0.1.3
 [`cfor`]: https://docs.rs/devela/latest/devela/code/macro.cfor.html
-[no_std_io]: https://crates.io/crates/no_std_io
-[core2]: https://crates.io/crates/core2
+[no_std_io]: https://crates.io/crates/no_std_io/0.6.0
+[core2]: https://crates.io/crates/core2/0.4.0
 [`io`]: https://docs.rs/devela/latest/devela/io/
 [numtoa]: https://crates.io/crates/numtoa/0.2.4
-[size_of_trait]: https://crates.io/crates/size-of-trait
+[size_of_trait]: https://crates.io/crates/size-of-trait/1.1.2
 [`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/mem/size/macro.mem_size_of_expr.html

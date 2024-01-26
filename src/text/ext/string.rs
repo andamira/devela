@@ -15,7 +15,7 @@ mod private {
     pub trait Sealed {}
 }
 
-/// Extension trait providing additional methods for owned strings.
+/// Extension trait providing additional methods for [`String`].
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 pub trait ExtString: private::Sealed {
