@@ -4,6 +4,6 @@
 mod str;
 mod string;
 
-pub use str::StrExt;
+pub use str::ExtStr;
 #[cfg(feature = "alloc")]
-pub use string::StringExt;
+pub use string::ExtString;

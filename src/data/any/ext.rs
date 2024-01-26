@@ -8,18 +8,18 @@ use core::any::{type_name, Any, TypeId};
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::boxed::Box;
 
-// Marker trait to prevent downstream implementations of the `AnyExt` trait.
+// Marker trait to prevent downstream implementations of the `ExtAny` trait.
 mod private {
     pub trait Sealed {}
 }
 impl<T: Any> private::Sealed for T {}
-impl<T: Any> AnyExt for T {}
+impl<T: Any> ExtAny for T {}
 
 /// Extension trait providing convenience methods for `T: Any`.
 ///
 /// This trait is sealed and cannot be implemented manually.
 #[rustfmt::skip]
-pub trait AnyExt: Any + private::Sealed {
+pub trait ExtAny: Any + private::Sealed {
 
     /* type */
 
@@ -27,7 +27,7 @@ pub trait AnyExt: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::{AnyExt, TypeId};
+    /// use devela::data::any::{ExtAny, TypeId};
     ///
     ///  let x = 5;
     ///  assert_eq!(x.type_of(), TypeId::of::<i32>());
@@ -40,7 +40,7 @@ pub trait AnyExt: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::AnyExt;
+    /// use devela::data::any::ExtAny;
     ///
     /// let x = 5;
     /// assert_eq!(x.type_name(), "i32");
@@ -59,7 +59,7 @@ pub trait AnyExt: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::AnyExt;
+    /// use devela::data::any::ExtAny;
     ///
     /// let val = 5;
     /// assert!(val.type_is::<i32>());
@@ -81,7 +81,7 @@ pub trait AnyExt: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::{Any, AnyExt};
+    /// use devela::data::any::{Any, ExtAny};
     ///
     /// let val = 5;
     /// let any: &dyn Any = &val as &dyn Any;
@@ -95,7 +95,7 @@ pub trait AnyExt: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::{Any, AnyExt};
+    /// use devela::data::any::{Any, ExtAny};
     ///
     /// let mut x = 5;
     /// let any: &mut dyn Any = x.as_any_mut();
@@ -109,7 +109,7 @@ pub trait AnyExt: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::{Any, AnyExt};
+    /// use devela::data::any::{Any, ExtAny};
     ///
     /// let x = Box::new(5);
     /// let any: Box<dyn Any> = x.as_any_box();

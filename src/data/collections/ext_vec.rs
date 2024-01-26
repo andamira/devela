@@ -1,11 +1,11 @@
-// devela::data::collections::vec_ext
+// devela::data::collections::ext_vec
 //
 //!
 //
 
 use crate::_deps::alloc::vec::Vec;
 
-// Marker trait to prevent downstream implementations of the `VecExt` trait.
+// Marker trait to prevent downstream implementations of the `ExtVec` trait.
 mod private {
     pub trait Sealed {}
 }
@@ -14,13 +14,13 @@ impl<T> private::Sealed for Vec<T> {}
 /// Extension trait providing additional methods for [`Vec`].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-pub trait VecExt<T>: private::Sealed {
+pub trait ExtVec<T>: private::Sealed {
     /* convert */
 
     /// Converts `Vec<T>` to `Vec<U>` when `U` implements `From<T>`.
     /// # Examples
     /// ```
-    /// # use devela::data::VecExt;
+    /// # use devela::data::ExtVec;
     /// assert_eq![vec![1_u16, 2, 3], vec![1_u8, 2, 3].vec_into_vec()];
     /// assert_eq![vec![1_u16, 2, 3], vec![1_u8, 2, 3].vec_into_vec::<u16>()];
     /// ```
@@ -32,7 +32,7 @@ pub trait VecExt<T>: private::Sealed {
     /// Tries to convert `Vec<T>` to `Vec<U>` when `U` implements `TryFrom<T>`.
     /// # Examples
     /// ```
-    /// # use devela::data::VecExt;
+    /// # use devela::data::ExtVec;
     /// assert_eq![Ok(vec![1_i32, 2, 3]), vec![1_i64, 2, 3].vec_try_into_vec()];
     /// assert_eq![Ok(vec![1_i32, 2, 3]), vec![1_i64, 2, 3].vec_try_into_vec::<_, i32>()];
     /// ```
@@ -41,7 +41,7 @@ pub trait VecExt<T>: private::Sealed {
         U: TryFrom<T, Error = E>;
 }
 
-impl<T> VecExt<T> for Vec<T> {
+impl<T> ExtVec<T> for Vec<T> {
     /* convert */
 
     #[inline] #[rustfmt::skip]

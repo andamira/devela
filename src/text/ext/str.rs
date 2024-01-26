@@ -15,20 +15,20 @@ use crate::text::IntBuf;
 #[cfg(not(feature = "unsafe_text"))]
 use crate::{mem::slice_trim_leading_bytes, text::ascii_usize_digits};
 
-// Marker trait to prevent downstream implementations of the `StrExt` trait.
+// Marker trait to prevent downstream implementations of the `ExtStr` trait.
 impl private::Sealed for str {}
 mod private {
     pub trait Sealed {}
 }
 
 /// Extension trait providing additional methods for [`&str`].
-pub trait StrExt: private::Sealed {
+pub trait ExtStr: private::Sealed {
     /// Repeats a string a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.
     ///
     /// # Examples
     /// ```
-    /// use devela::text::StrExt;
+    /// use devela::text::ExtStr;
     ///
     /// let mut buf = [0_u8; 12];
     /// let repeated = "ay".repeat_into(3, &mut buf);
@@ -52,7 +52,7 @@ pub trait StrExt: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::text::{AsciiChar, StrExt};
+    /// use devela::text::{AsciiChar, ExtStr};
     ///
     /// let mut buf = [0; 15];
     /// assert_eq!("2*4*6*8*11*14*", str::new_counter(&mut buf, 14, AsciiChar::Asterisk));
@@ -69,7 +69,7 @@ pub trait StrExt: private::Sealed {
     fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str;
 }
 
-impl StrExt for str {
+impl ExtStr for str {
     fn repeat_into<'input, const CAP: usize>(
         &self,
         n: usize,

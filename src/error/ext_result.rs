@@ -3,7 +3,7 @@
 //!
 //
 
-// Marker trait to prevent downstream implementations of the `ResultExt` trait.
+// Marker trait to prevent downstream implementations of the `ExtResult` trait.
 impl<T, E> private::Sealed for Result<T, E> {}
 mod private {
     pub trait Sealed {}
@@ -13,17 +13,17 @@ mod private {
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`OptionExt`][crate::error::OptionExt].
+/// See also [`ExtOption`][crate::error::ExtOption].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
 // - https://crates.io/crates/result-ext/0.2.0 by Simon Ochsenreither
-pub trait ResultExt<T, E>: private::Sealed {
+pub trait ExtResult<T, E>: private::Sealed {
     /// Returns `true` if the result is an [`Ok`] value containing the given value.
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ResultExt;
+    /// use devela::error::ExtResult;
     ///
     /// let x: Result<u32, &str> = Ok(2);
     /// assert_eq!(x.contains(&2), true);
@@ -43,7 +43,7 @@ pub trait ResultExt<T, E>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ResultExt;
+    /// use devela::error::ExtResult;
     ///
     /// let x: Result<u32, &str> = Ok(2);
     /// assert_eq!(x.contains_err(&"Some error message"), false);
@@ -68,7 +68,7 @@ pub trait ResultExt<T, E>: private::Sealed {
     // ///
     // /// # Examples
     // /// ```
-    // /// use devela::error::OptionExt;
+    // /// use devela::error::ExtOption;
     // /// use core::{cmp::min, ops::Add};
     // ///
     // /// let x = Some(2);
@@ -87,7 +87,7 @@ pub trait ResultExt<T, E>: private::Sealed {
     //     F: FnOnce(T, T) -> T;
 }
 
-impl<T, E> ResultExt<T, E> for Result<T, E> {
+impl<T, E> ExtResult<T, E> for Result<T, E> {
     #[inline]
     fn contains<U>(&self, x: &U) -> bool
     where

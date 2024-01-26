@@ -19,7 +19,7 @@ mod r#trait;
 
 // feature-gated, non-public
 #[cfg(feature = "alloc")]
-mod vec_ext;
+mod ext_vec;
 
 /* re-exports */
 
@@ -29,7 +29,7 @@ pub use {array::all::*, r#trait::*, reexports::*};
 
 // feature-gated, non-public
 #[cfg(feature = "alloc")]
-pub use vec_ext::*;
+pub use ext_vec::*;
 
 pub(crate) mod all {
     // always compiled
@@ -38,5 +38,5 @@ pub(crate) mod all {
 
     // feature-gated
     #[cfg(feature = "alloc")]
-    pub use super::vec_ext::*;
+    pub use super::ext_vec::*;
 }

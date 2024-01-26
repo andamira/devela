@@ -3,20 +3,20 @@
 //!
 //
 
-use super::OptionExt;
+use super::ExtOption;
 use core::fmt::{
     Binary, Debug, Display, Formatter, LowerExp, LowerHex, Octal, Pointer, Result, UpperExp,
     UpperHex,
 };
 
-/// The type returned from [`OptionExt::fmt_or_empty`][OptionExt#method.fmt_or_empty]
+/// The type returned from [`ExtOption::fmt_or_empty`].
 #[derive(Eq, PartialEq)]
 pub struct OptionFmt<'t, T>(pub(super) &'t Option<T>);
 
-/// The type returned from [`OptionExt::fmt_or`][OptionExt#method.fmt_or]
+/// The type returned from [`ExtOption::fmt_or`].
 pub struct OptionFmtOr<'t, T, U>(pub(super) &'t Option<T>, pub(super) U);
 
-/// The type returned from [`OptionExt::fmt_or_else`][OptionExt#method.fmt_or_else]
+/// The type returned from [`ExtOption::fmt_or_else`].
 pub struct OptionFmtOrElse<'t, T, F>(pub(super) &'t Option<T>, pub(super) F);
 
 impl<'t, T> Copy for OptionFmt<'t, T> {}

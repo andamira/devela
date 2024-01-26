@@ -6,7 +6,7 @@
 use super::{OptionFmt, OptionFmtOr, OptionFmtOrElse};
 use core::fmt::Display;
 
-// Marker trait to prevent downstream implementations of the `OptionExt` trait.
+// Marker trait to prevent downstream implementations of the `ExtOption` trait.
 mod private {
     pub trait Sealed {}
 }
@@ -16,18 +16,18 @@ impl<T> private::Sealed for Option<T> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ResultExt`][crate::error::ResultExt].
+/// See also [`ExtResult`][crate::error::ExtResult].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
 // - https://crates.io/crates/option-ext/0.2.0 by Simon Ochsenreither.
 // - https://crates.io/crates/opt_reduce/1.0.0 by Waffle Lapkin.
-pub trait OptionExt<T>: private::Sealed {
+pub trait ExtOption<T>: private::Sealed {
     /// Returns `true` if the option is a [`Some`] value containing the given value.
     ///
     /// # Examples
     /// ```
-    /// use devela::error::OptionExt;
+    /// use devela::error::ExtOption;
     ///
     /// let x: Option<u32> = Some(2);
     /// assert_eq!(x.contains(&2), true);
@@ -52,7 +52,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::OptionExt;
+    /// use devela::error::ExtOption;
     /// use core::{cmp::min, ops::Add};
     ///
     /// let x = Some(2);
@@ -75,7 +75,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::OptionExt;
+    /// use devela::error::ExtOption;
     ///
     /// let foo: Option<u32> = Some(0x42);
     /// let bar: Option<u32> = None;
@@ -93,7 +93,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::OptionExt;
+    /// use devela::error::ExtOption;
     ///
     /// let foo: Option<Box<u32>> = Some(Box::new(42));
     /// let bar: Option<Box<u32>> = None;
@@ -117,7 +117,7 @@ pub trait OptionExt<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::OptionExt;
+    /// use devela::error::ExtOption;
     ///
     /// let foo: Option<u32> = Some(42);
     /// let bar: Option<u32> = None;
@@ -132,7 +132,7 @@ pub trait OptionExt<T>: private::Sealed {
         F: Fn() -> U;
 }
 
-impl<T> OptionExt<T> for Option<T> {
+impl<T> ExtOption<T> for Option<T> {
     #[inline]
     fn contains<U>(&self, x: &U) -> bool
     where

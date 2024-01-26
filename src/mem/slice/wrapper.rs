@@ -10,7 +10,7 @@ use crate::data::Comparing;
 /// It is designed as a utility namespace and does not hold or wrap data itself.
 /// Instead, it operates on slices provided directly as arguments to its static methods.
 ///
-/// See also the related trait: [`SliceExt`][super::SliceExt].
+/// See also the related trait: [`ExtSlice`][super::ExtSlice].
 #[repr(transparent)]
 pub struct Slicing<T>(core::marker::PhantomData<T>);
 

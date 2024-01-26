@@ -17,7 +17,7 @@ mod reexports {
 // re-export private sub-modules
 #[allow(unused_imports)]
 pub use {
-    ext::OptionExt,
+    ext::ExtOption,
     fmt::{OptionFmt, OptionFmtOr, OptionFmtOrElse},
     reexports::*,
 };

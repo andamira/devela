@@ -7,7 +7,7 @@ use super::Slicing;
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::vec::Vec;
 
-// Marker trait to prevent downstream implementations of the `SliceExt` trait.
+// Marker trait to prevent downstream implementations of the `ExtSlice` trait.
 mod private {
     pub trait Sealed {}
 }
@@ -21,7 +21,7 @@ impl<T> private::Sealed for Vec<T> {}
 /// Extension trait providing additional methods for [`&[T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-pub trait SliceExt<T>: private::Sealed {
+pub trait ExtSlice<T>: private::Sealed {
     /* split */
 
     /// Returns a left subslice of `slice` with the given maximum `len`.
@@ -72,7 +72,7 @@ pub trait SliceExt<T>: private::Sealed {
     /// Panics if the length of the slice is less than the length of the array.
     /// # Examples
     /// ```
-    /// # use devela::mem::SliceExt;
+    /// # use devela::mem::ExtSlice;
     /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array()];
     /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array::<u16, 3>()];
     /// ```
@@ -89,7 +89,7 @@ pub trait SliceExt<T>: private::Sealed {
     /// Converts `&[T]` to `Vec<U>` when `U` implements `From<T>`.
     /// # Examples
     /// ```
-    /// # use devela::mem::SliceExt;
+    /// # use devela::mem::ExtSlice;
     /// assert_eq![vec![1_i16, 2, 3], [1_u8, 2, 3].slice_into_vec()];
     /// assert_eq![vec![1_i16, 2, 3], [1_u8, 2, 3].slice_into_vec::<i16>()];
     /// ```
@@ -104,7 +104,7 @@ pub trait SliceExt<T>: private::Sealed {
     /// Tries to convert `&[T]` to `Vec<U>` when `U` implements `TryFrom<T>`.
     /// # Examples
     /// ```
-    /// # use devela::mem::SliceExt;
+    /// # use devela::mem::ExtSlice;
     /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec()];
     /// assert_eq![Ok(vec![1_i32, 2, 3]), [1_i64, 2, 3].slice_try_into_vec::<_, i32>()];
     /// ```
@@ -119,7 +119,7 @@ pub trait SliceExt<T>: private::Sealed {
 /// Extension trait providing additional methods for [`&mut [T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-pub trait SliceExtMut<T>: private::Sealed + SliceExt<T> {
+pub trait ExtSliceMut<T>: private::Sealed + ExtSlice<T> {
     /* split */
 
     /// Returns a mutable left subslice of `slice` with the given maximum `len`.
@@ -155,9 +155,9 @@ pub trait SliceExtMut<T>: private::Sealed + SliceExt<T> {
     fn slice_msplit_right_mut(&mut self, len: usize) -> &mut [T];
 }
 
-macro_rules! slice_ext_impl {
+macro_rules! impl_ext_slice {
     ($t:ty, for $for:ty, impl: $($impl:tt)*) => {
-        impl<$($impl)*> SliceExt<$t> for $for {
+        impl<$($impl)*> ExtSlice<$t> for $for {
             /* split */
 
             #[inline]
@@ -214,9 +214,9 @@ macro_rules! slice_ext_impl {
         }
     };
     (mut: $t:ty, for $for:ty, impl: $($impl:tt)*) => {
-        slice_ext_impl![$t, for $for, impl: $($impl)*];
+        impl_ext_slice![$t, for $for, impl: $($impl)*];
 
-        impl<$($impl)*> SliceExtMut<$t> for $for {
+        impl<$($impl)*> ExtSliceMut<$t> for $for {
             /* split */
 
             #[inline]
@@ -232,9 +232,9 @@ macro_rules! slice_ext_impl {
         }
     };
 }
-slice_ext_impl![mut: T, for [T], impl: T];
-slice_ext_impl![T, for &[T], impl: T];
-slice_ext_impl![mut: T, for &mut [T], impl: T];
-slice_ext_impl![mut: T, for [T; LEN], impl: T, const LEN: usize];
+impl_ext_slice![mut: T, for [T], impl: T];
+impl_ext_slice![T, for &[T], impl: T];
+impl_ext_slice![mut: T, for &mut [T], impl: T];
+impl_ext_slice![mut: T, for [T; LEN], impl: T, const LEN: usize];
 #[cfg(feature = "alloc")]
-slice_ext_impl![mut: T, for Vec<T>, impl: T];
+impl_ext_slice![mut: T, for Vec<T>, impl: T];

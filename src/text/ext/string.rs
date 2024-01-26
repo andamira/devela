@@ -8,7 +8,7 @@ use crate::_deps::alloc::string::{String, ToString};
 #[allow(unused)] // IMPROVE: impl for ArrayString, …
 use crate::text::AsciiChar;
 
-// Marker trait to prevent downstream implementations of the `StringExt` trait.
+// Marker trait to prevent downstream implementations of the `ExtString` trait.
 #[cfg(feature = "alloc")]
 impl private::Sealed for String {}
 mod private {
@@ -18,7 +18,7 @@ mod private {
 /// Extension trait providing additional methods for owned strings.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub trait StringExt: private::Sealed {
+pub trait ExtString: private::Sealed {
     /// Returns a [`String`] where you always know each character's position.
     ///
     /// A [*counter string*][0] is a graduated string of arbitrary `length`,
@@ -26,7 +26,7 @@ pub trait StringExt: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::text::{AsciiChar, StringExt};
+    /// use devela::text::{AsciiChar, ExtString};
     ///
     /// assert_eq!("2*4*6*8*11*14*", String::new_counter(14, AsciiChar::Asterisk));
     /// assert_eq!("_3_5_7_9_12_15_", String::new_counter(15, AsciiChar::LowLine));
@@ -37,7 +37,7 @@ pub trait StringExt: private::Sealed {
 }
 
 #[cfg(feature = "alloc")]
-impl StringExt for String {
+impl ExtString for String {
     fn new_counter(mut length: usize, separator: AsciiChar) -> String {
         let mut cstr = String::new();
 
