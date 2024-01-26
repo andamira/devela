@@ -112,7 +112,10 @@ macro_rules! reexport {
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = $module_feature)))]
+        #[cfg_attr(
+            feature = "nightly",
+            doc(cfg(all(feature = $module_feature, feature = "alloc")))
+        )]
 
         #[cfg(feature = "alloc")]
         pub use crate::_deps::alloc :: $($( $alloc_path :: )+)? {
@@ -137,7 +140,10 @@ macro_rules! reexport {
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = $module_feature)))]
+        #[cfg_attr(
+            feature = "nightly",
+            doc(cfg(all(feature = $module_feature, feature = "std")))
+        )]
 
         #[cfg(feature = "std")]
         pub use std :: $($( $std_path :: )+)? {
@@ -154,8 +160,8 @@ macro_rules! reexport {
       $(,)?
     ) => { $crate::code::paste! {
         #[doc(inline)]
-        #[doc = "<span class='stab portability' title='re-created for no_std "
-            "or re-exported from rust&#39;s `std`'>`no_std|std`</span>"]
+        /// <span class='stab portability' title='re-exported from rust&#39;s `std`
+        /// or re-created for `no_std`'>`[no_]std`</span>
         #[doc = $description]
         #[doc = "\n\n*Re-exported from [`std" $( "`]::[`" $( $std_path "::" )+ )?
             "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
@@ -164,7 +170,7 @@ macro_rules! reexport {
 
         #[cfg_attr(
             feature = "nightly",
-            doc(cfg(all(feature = $module_feature, any(feature = "no_std", feature = "std"))))
+            doc(cfg(all(feature = $module_feature, any(feature = "std", feature = "no_std"))))
         )]
 
         #[cfg(feature = "std")]

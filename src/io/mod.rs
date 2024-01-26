@@ -19,16 +19,14 @@
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "io")))]
 mod path;
 //
+#[cfg(feature = "std")]
+mod reexport_std;
 #[cfg_attr(
     feature = "nightly",
     doc(cfg(all(feature = "error", any(feature = "no_std", feature = "std"))))
 )]
-mod reexport_std;
-// #[cfg_attr(
-//     feature = "nightly",
-//     doc(cfg(all(feature = "error", any(feature = "no_std", feature = "std"))))
-// )]
-// mod reimplement_no_std;
+#[cfg(feature = "no_std")]
+mod reimplement_no_std;
 
 /* re-exports */
 
@@ -38,8 +36,8 @@ pub use path::all::*;
 //
 #[cfg(feature = "std")]
 pub use reexport_std::*;
-// #[cfg(feature = "no_std")]
-// pub use reimplement_no_std::*;
+#[cfg(feature = "no_std")]
+pub use reimplement_no_std::*;
 
 pub(crate) mod all {
     // feature-gated
@@ -50,7 +48,7 @@ pub(crate) mod all {
     #[doc(inline)]
     #[cfg(feature = "std")]
     pub use super::reexport_std::*;
-    // #[doc(inline)]
-    // #[cfg(feature = "no_std")]
-    // pub use super::reimplement_no_std::*;
+    #[doc(inline)]
+    #[cfg(feature = "no_std")]
+    pub use super::reimplement_no_std::*;
 }

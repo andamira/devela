@@ -15,8 +15,9 @@ mod private {
     pub struct Sealed;
 }
 
-/// <span class='stab portability' title='re-created for `no_std` or re-exported
-/// from rust&#39;s `std`'>`no_std|std`</span>
+/// <span class='stab portability' title='re-exported from rust&#39;s `std`
+/// or re-created for `no_std`'>`std|no_std`</span>
+//
 /// A trait representing the basic expectations for error values.
 ///
 /// I.e., values of type `E` in [`Result<T, E>`].
