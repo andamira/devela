@@ -7,21 +7,24 @@
 
 /* modules */
 
-// feature-gated, public
-#[cfg(feature = "work")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
+// non-public
+mod reexports;
+
+// public
 pub mod atomic;
 
 /* re-exports */
 
-// feature-gated, public
+// non-public
+#[allow(unused_imports)]
+pub use reexports::*;
+
+// public
 #[doc(no_inline)]
-#[cfg(feature = "work")]
 pub use atomic::*;
 
 pub(crate) mod all {
-    // feature-gated
     #[doc(inline)]
-    #[cfg(feature = "work")]
-    pub use super::atomic::*;
+    #[allow(unused_imports)]
+    pub use super::{atomic::*, reexports::*};
 }
