@@ -7,22 +7,17 @@
 
 /* modules */
 
-// feature-gated, private
-#[cfg(feature = "work")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
+// non-public
+mod reexports;
 mod sleep;
 
 /* re-exports */
 
-// feature-gated, private
-#[cfg(feature = "work")]
-#[allow(unused_imports)]
-pub use sleep::*;
+// non-public
+pub use {reexports::*, sleep::*};
 
 #[cfg(feature = "work")]
 pub(crate) mod all {
-    // feature-gated
     #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::sleep::*;
+    pub use super::{reexports::*, sleep::*};
 }
