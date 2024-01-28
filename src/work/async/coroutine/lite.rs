@@ -119,18 +119,24 @@ impl LiteCoroutineExecutor {
 // single-threaded executor, the waker is not actually needed.
 pub struct LiteCoroutineWaker;
 impl LiteCoroutineWaker {
+    /// Creates a new `Waker` that does nothing when `wake` is called.
+    // WAIT: [task::Waker::noop](https://github.com/rust-lang/rust/pull/96875)
+    // (it will be const and returned as a &'static)
+    #[inline]
+    #[must_use]
     fn new_waker() -> TaskWaker {
+        const RAW_WAKER: TaskRawWaker = TaskRawWaker::new(core::ptr::null(), &VTABLE);
+        const VTABLE: TaskRawWakerVTable = TaskRawWakerVTable::new(
+            // Cloning just returns a new no-op raw waker
+            |_| RAW_WAKER,
+            // `wake` does nothing
+            |_| {},
+            // `wake_by_ref` does nothing
+            |_| {},
+            // Dropping does nothing as we don't allocate anything
+            |_| {},
+        );
         // SAFETY: The waker points to a vtable with functions that do nothing.
-        unsafe { TaskWaker::from_raw(Self::RAW_WAKER) }
+        unsafe { TaskWaker::from_raw(RAW_WAKER) }
     }
-    const RAW_WAKER: TaskRawWaker = TaskRawWaker::new(core::ptr::null(), &Self::VTABLE);
-    const VTABLE: TaskRawWakerVTable =
-        TaskRawWakerVTable::new(Self::clone, Self::wake, Self::wake_by_ref, Self::drop);
-
-    unsafe fn clone(_: *const ()) -> TaskRawWaker {
-        Self::RAW_WAKER
-    }
-    unsafe fn wake(_: *const ()) {}
-    unsafe fn wake_by_ref(_: *const ()) {}
-    unsafe fn drop(_: *const ()) {}
 }
