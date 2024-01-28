@@ -36,6 +36,7 @@ publish = true
 [features]
 
 # default = []
+docsrs = ["std", "full", "unsafe", "nightly", "dep", "libm"]
 
 
 #* environment features *#
@@ -116,27 +117,25 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	"unsafe_array", "unsafe_async", "unsafe_const", "unsafe_dyn",
 	"unsafe_niche", "unsafe_slice", "unsafe_str",
 ] # for specific purposes:
-	unsafe_array = [] # enables: faster array initialization.
-	unsafe_async = [] # enables: custom task waker, coroutine impls.
-	unsafe_const = [] # enables: extra const methods.
-	unsafe_dyn = [] # enables: DSTs in the stack, no_std Error dyn impls.
-	unsafe_niche = [] # enables: unchecked niche constructors.
-	unsafe_slice = [] # enables: extra slice methods, avoid bound checks.
-	unsafe_str = [] # enables: unchecked utf-8 char and &str conversions.
+	unsafe_array = [] # faster array initialization.
+	unsafe_async = [] # custom task waker, coroutine impls.
+	unsafe_const = [] # extra const methods.
+	unsafe_dyn = [] # DSTs in the stack, no_std Error dyn impls.
+	unsafe_niche = [] # unchecked niche constructors.
+	unsafe_slice = [] # extra slice methods, avoid bound checks.
+	unsafe_str = [] # unchecked utf-8 char and &str conversions.
 
 
 #* nightly features *#
 
 nightly = [ # enables nightly features
 ]
-docsrs = ["std", "full", "unsafe", "nightly", "dep", "libm"]
 
 #* dependency features *#
 
 dep = ["dep:dep"] # module features enables their dependencies as defined.
 
 atomic = ["dep:atomic"]
-#az = ["dep:az"]
 bytemuck = ["dep:bytemuck"]
 const-str = ["dep:const-str"]
 libm = ["dep:libm"]
@@ -161,7 +160,6 @@ dep = { package = "devela_depend", version = "0.2.0", optional = true }
 #dep = { package = "devela_depend", path = "./depend", optional = true }
 #
 # option B) Otherwise optional features can be manually enabled:
-#az = { version = "1.2.1", default-features = false, optional = true }
 const-str = { version = "0.5.6", default-features = false, optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
