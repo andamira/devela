@@ -4,13 +4,13 @@
 //! `std::{`[`any`], [`array`], [`cmp`], [`collections`], [`hash`],
 //! [`iter`], [`vec`]`}`.
 //!
-//! [`any`]: core::any
-//! [`array`]: mod@core::array
-//! [`cmp`]: core::cmp
-//! [`collections`]: alloc::collections
+//! [`any`]: std::any
+//! [`array`]: mod@std::array
+//! [`cmp`]: std::cmp
+//! [`collections`]: std::collections
 //! [`hash`]: std::hash
-//! [`iter`]: core::iter
-//! [`vec`]: mod@alloc::vec
+//! [`iter`]: std::iter
+//! [`vec`]: mod@std::vec
 //
 
 #![cfg_attr(not(feature = "data"), allow(unused_imports))]

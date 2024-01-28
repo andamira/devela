@@ -3,9 +3,9 @@
 //! Code generation and meta-programming, extends
 //! `std::{`[`convert`], [`hint`], [`marker`]`}`.
 //!
-//! [`convert`]: core::convert
-//! [`hint`]: core::hint
-//! [`marker`]: core::marker
+//! [`convert`]: std::convert
+//! [`hint`]: std::hint
+//! [`marker`]: std::marker
 //
 
 #![cfg_attr(not(feature = "code"), allow(unused_imports))]

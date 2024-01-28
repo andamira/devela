@@ -3,9 +3,9 @@
 //! Work management, extends
 //! `std::{`[`future`], [`sync`], [`task`], [`thread`]`}`.
 //!
-//! [`future`]: core::future
+//! [`future`]: std::future
 //! [`sync`]: std::sync
-//! [`task`]: core::task
+//! [`task`]: std::task
 //! [`thread`]: std::thread
 //
 

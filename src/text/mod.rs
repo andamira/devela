@@ -3,10 +3,10 @@
 //! Text manipulation, extends
 //! `std::{`[`ascii`], [`char`], [`fmt`], [`str`], [`string`]`}`.
 //!
-//! [`ascii`]: core::ascii
-//! [`char`]: core::char
+//! [`ascii`]: std::ascii
+//! [`char`]: std::char
 //! [`fmt`]: std::fmt
-//! [`str`]: core::str
+//! [`str`]: std::str
 //! [`string`]: std::string
 //
 

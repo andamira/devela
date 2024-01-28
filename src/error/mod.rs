@@ -4,9 +4,9 @@
 //! `std::{`[`error`], [`option`], [`panic`], [`result`]`}`.
 //!
 //! [`error`]: std::error
-//! [`option`]: core::option
+//! [`option`]: std::option
 //! [`panic`]: mod@std::panic
-//! [`result`]: core::result
+//! [`result`]: std::result
 //
 
 #![cfg_attr(not(feature = "error"), allow(unused_imports))]

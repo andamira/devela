@@ -4,15 +4,15 @@
 //! `std::{`[`alloc`], [`borrow`], [`boxed`], [`cell`], [`mem`], [`pin`],
 //! [`ptr`], [`rc`], [`slice`]`}`.
 //!
-//! [`alloc`]: core::alloc
-//! [`borrow`]: core::borrow
+//! [`alloc`]: std::alloc
+//! [`borrow`]: std::borrow
 //! [`boxed`]: std::boxed
-//! [`cell`]: core::cell
-//! [`mem`]: core::mem
-//! [`pin`]: core::pin
-//! [`ptr`]: core::ptr
+//! [`cell`]: std::cell
+//! [`mem`]: std::mem
+//! [`pin`]: std::pin
+//! [`ptr`]: std::ptr
 //! [`rc`]: std::rc
-//! [`slice`]: core::slice
+//! [`slice`]: std::slice
 
 /* modules */
 

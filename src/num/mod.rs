@@ -3,8 +3,8 @@
 //! Numeric types and operations, extends
 //! `std::{`[`num`], [`ops`]`}`.
 //!
-//! [`num`]: core::num
-//! [`ops`]: core::ops
+//! [`num`]: std::num
+//! [`ops`]: std::ops
 //
 
 #![cfg_attr(not(feature = "num"), allow(unused_imports))]
