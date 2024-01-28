@@ -16,7 +16,7 @@
 // - WAIT:[const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/issues/57241)
 
 use crate::code::{iif, paste};
-#[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
 use crate::num::Floating;
 use core::cmp::Ordering::{self, *};
 
@@ -28,11 +28,11 @@ use core::cmp::Ordering::{self, *};
 /// It provides the following *const* methods for comparing primitives:
 /// `clamp`, `max`, `min`, `eq`, `ne`, `lt`, `le`, `gt`, `ge`.
 ///
-/// In the case of floating-point primitives it uses total ordering and the
-/// corresponding methods will only be *const* when either the `unsafe_data` or
-/// `unsafe_num` feature is enabled.
-/// They additionally implements the following methods:
-/// `is_positive`, `is_negative`, `is_finite`, `is_infinite`, `is_nan`.
+/// In the case of floating-point primitives:
+/// - they use total ordering.
+/// - they implement aditional methods:
+///  `is_positive`, `is_negative`, `is_finite`, `is_infinite`, `is_nan`.
+/// - methods will only be *const* with the `unsafe_const` feature enabled.
 #[repr(transparent)]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub struct Comparing<T>(pub T);
@@ -73,7 +73,6 @@ mod core_impls {
 #[rustfmt::skip]
 impl<T: PartialOrd> Comparing<T> {
     /// Compares and returns a [`PartialOrd`]ered `value` clamped between `min` and `max`.
-    ///
     /// # Examples
     /// ```
     /// # use devela::data::Comparing;
@@ -85,9 +84,7 @@ impl<T: PartialOrd> Comparing<T> {
 
     /// Compares and returns the maximum of two [`PartialOrd`]ered values.
     ///
-    /// Complements `core::cmp::`[`max`][`core::cmp::max] which requires
-    /// [`Ord`]
-    ///
+    /// Complements `core::cmp::`[`max`][`core::cmp::max] which requires [`Ord`]
     /// # Examples
     /// ```
     /// # use devela::data::Comparing;
@@ -98,9 +95,7 @@ impl<T: PartialOrd> Comparing<T> {
 
     /// Compares and returns the minimum of two [`PartialOrd`]ered values.
     ///
-    /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires
-    /// [`Ord`]
-    ///
+    /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires [`Ord`]
     /// # Example
     /// ```
     /// # use devela::data::Comparing;
@@ -156,11 +151,10 @@ macro_rules! impl_comparing {
     (@float: $f:ty:$b:literal:$sh:literal) => { paste! {
         impl Comparing<$f> {
             #[doc = "A (`const`) port of `" $f "::`[`total_cmp`][" $f "#method.total_cmp]."]
-            ///
             /// # Features
-            /// This function will only be `const` if either the `unsafe_data` or `unsafe_num`
-            /// feature is enabled.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn total_cmp(self, other: $f) -> Ordering {
                 // WAIT:const_float_bits_conv https://github.com/rust-lang/rust/issues/72447
                 // let mut left = self.0.to_bits() as [<i $b>];
@@ -177,7 +171,7 @@ macro_rules! impl_comparing {
             }
             // safe, non-const version (undocumented)
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn total_cmp(self, other: $f) -> Ordering {
                 let mut left = self.0.to_bits() as [<i $b>];
                 let mut right = other.to_bits() as [<i $b>];
@@ -189,30 +183,25 @@ macro_rules! impl_comparing {
             }
 
             /// Compares and returns a clamped *total ordered* `self` between `min` and `max`.
-            ///
             /// # Features
-            /// This function will only be `const` if either the `unsafe_data` or `unsafe_num`
-            /// feature is enabled.
-            ///
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
             /// # Examples
             /// ```
             /// # use devela::data::Comparing;
             #[doc = "assert_eq![2.0, Comparing(5.0" $f ").clamp(-1.0, 2.0)];"]
             #[doc = "assert_eq![-1.0, Comparing(-5.0" $f ").clamp(-1.0, 2.0)];"]
             /// ```
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn clamp(self, min: $f, max: $f) -> $f { Self(self.max(min)).min(max) }
             // safe, non-const version (undocumented)
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn clamp(self, min: $f, max: $f) -> $f { Self(self.max(min)).min(max) }
 
             /// Compares and returns the *total ordered* maximum between `self` and `other`.
-            ///
             /// # Features
-            /// This function will only be `const` if either the `unsafe_data` or `unsafe_num`
-            /// feature is enabled.
-            ///
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
             /// # Examples
             /// ```
             /// # use devela::data::Comparing;
@@ -222,23 +211,21 @@ macro_rules! impl_comparing {
             #[doc = "assert_eq![" $f "::INFINITY, Comparing(" $f "::INFINITY).max("
                 $f "::NEG_INFINITY)];"]
             /// ```
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn max(self, other: $f) -> $f {
                 match Self(self.0).total_cmp(other) { Greater | Equal => self.0, Less => other }
             }
             // safe, non-const version (undocumented)
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn max(self, other: $f) -> $f {
                 match self.0.total_cmp(&other) { Greater | Equal => self.0, Less => other }
             }
 
             /// Compares and returns the *total ordered* minimum between `self` and `other`.
-            ///
             /// # Features
-            /// This function will only be `const` if either `unsafe_data` or `unsafe_num`
-            /// feature is enabled.
-            ///
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
             /// # Examples
             /// ```
             /// # use devela::data::Comparing;
@@ -248,107 +235,120 @@ macro_rules! impl_comparing {
             #[doc = "assert_eq![" $f "::NEG_INFINITY, Comparing(" $f "::INFINITY).min("
                 $f "::NEG_INFINITY)];"]
             /// ```
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn min(self, other: $f) -> $f {
                 match Self(self.0).total_cmp(other) { Greater | Equal => other, Less => self.0 }
             }
             // safe, non-const version (undocumented)
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn min(self, other: $f) -> $f {
                 match self.0.total_cmp(&other) { Greater | Equal => other, Less => self.0 }
             }
 
             /// Returns `true` if `self == other` using total order.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn eq(self, other: $f) -> bool { matches!(self.total_cmp(other), Equal) }
             #[allow(clippy::should_implement_trait)]
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn eq(self, other: $f) -> bool { matches!(self.total_cmp(other), Equal) }
 
             /// Returns `true` if `self != other` using total order.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn ne(self, other: $f) -> bool { !matches!(self.total_cmp(other), Equal) }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn ne(self, other: $f) -> bool { !matches!(self.total_cmp(other), Equal) }
 
             /// Returns `true` if `self < other` using total order.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn lt(self, other: $f) -> bool { matches!(self.total_cmp(other), Less) }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn lt(self, other: $f) -> bool { matches!(self.total_cmp(other), Less) }
 
             /// Returns `true` if `self <= other` using total order.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn le(self, other: $f) -> bool { matches!(self.total_cmp(other), Less | Equal) }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn le(self, other: $f) -> bool { matches!(self.total_cmp(other), Less | Equal) }
 
             /// Returns `true` if `self > other` using total order.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn gt(self, other: $f) -> bool { matches!(self.total_cmp(other), Greater) }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn gt(self, other: $f) -> bool { matches!(self.total_cmp(other), Greater) }
 
             /// Returns `true` if `self >= other` using total order.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn ge(self, other: $f) -> bool {
                 matches!(self.total_cmp(other), Greater | Equal) }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn ge(self, other: $f) -> bool { matches!(self.total_cmp(other), Greater | Equal) }
 
             /// Returns `true` if `self` is sign positive.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn is_positive(self) -> bool { matches![self.total_cmp(-0.0), Greater] }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn is_positive(self) -> bool { self.0.is_sign_positive() }
 
             /// Returns `true` if `self` is sign negative.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn is_negative(self) -> bool { matches![self.total_cmp(0.0), Less] }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn is_negative(self) -> bool { self.0.is_sign_negative() }
 
             /// Returns `true` if `self` is infinite (either negative or positive).
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn is_infinite(self) -> bool {
                 matches![self.total_cmp($f::INFINITY), Equal] ||
                 matches![self.total_cmp($f::NEG_INFINITY), Equal]
             }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn is_infinite(self) -> bool { self.0.is_infinite() }
 
             /// Returns `true` if `self` is nether infinite nor NaN.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn is_finite(self) -> bool {
                 matches![self.total_cmp($f::INFINITY), Less] &&
                 matches![self.total_cmp($f::NEG_INFINITY), Greater]
             }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn is_finite(self) -> bool { self.0.is_finite() }
 
             /// Returns `true` if `self` is NaN.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn is_nan(self) -> bool {
                 matches![self.total_cmp($f::INFINITY), Greater] ||
                 matches![self.total_cmp($f::NEG_INFINITY), Less]
             }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn is_nan(self) -> bool { self.0.is_nan() }
 
             /// Returns `true` if `self` is subnormal.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn is_subnormal(self) -> bool {
                 // check whether it's between 0 and the smallest finite value
                 (matches![self.total_cmp($f::MIN_POSITIVE), Less] &&
@@ -357,11 +357,12 @@ macro_rules! impl_comparing {
                  matches![self.total_cmp(-0.0), Less])
             }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn is_subnormal(self) -> bool { self.0.is_subnormal() }
 
             /// Returns `true` if `self` is neither zero, infinite, subnormal, or NaN.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn is_normal(self) -> bool {
                 (matches![self.total_cmp($f::MIN_POSITIVE), Greater | Equal]  &&
                 matches![self.total_cmp($f::INFINITY), Less]) ||
@@ -370,7 +371,7 @@ macro_rules! impl_comparing {
                 matches![self.total_cmp($f::NEG_INFINITY), Greater])
             }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn is_normal(self) -> bool { self.0.is_normal() }
         }
     }};

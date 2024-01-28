@@ -168,14 +168,16 @@ impl From<Char16> for Char24 {
     }
 }
 impl From<Char16> for Char32 {
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
     #[must_use]
     fn from(c: Char16) -> Char32 {
-        #[cfg(not(feature = "unsafe_text"))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return c.to_char32();
 
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: we've already checked we contain a valid char.
-        #[cfg(feature = "unsafe_text")]
         return unsafe { Char32(char::from_u32_unchecked(c.0.get() as u32)) };
     }
 }
@@ -211,14 +213,16 @@ impl TryFrom<Char24> for Char16 {
     }
 }
 impl From<Char24> for Char32 {
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
     #[must_use]
     fn from(c: Char24) -> Char32 {
-        #[cfg(not(feature = "unsafe_text"))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return c.to_char32();
 
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: we've already checked we contain a valid char.
-        #[cfg(feature = "unsafe_text")]
         return unsafe { Char32(char::from_u32_unchecked(c.to_u32())) };
     }
 }

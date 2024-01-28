@@ -6,8 +6,12 @@
 use crate::code::{iif, paste};
 use core::{fmt, num::*, str::FromStr};
 
-#[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
-use bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
+#[cfg(all(
+    any(feature = "bytemuck", feature = "dep"),
+    feature = "unsafe_niche",
+    not(feature = "safe_num")
+))]
+use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
 impl_non_range![NonRange];
 macro_rules! impl_non_range {
@@ -81,8 +85,8 @@ macro_rules! impl_non_range {
             /// # Safety
             /// The given `value` must never be between `RMIN` and `RMAX`, inclusive.
             #[must_use]
-            #[cfg(feature = "unsafe_num")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_num")))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
+            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_niche")))]
             pub const unsafe fn new_unchecked(value: [<$s:lower $b>]) -> Self {
                 #[cfg(debug_assertions)]
                 if RMIN > RMAX { panic!("RMIN must be less or equal than RMAX.") }
@@ -217,12 +221,15 @@ macro_rules! impl_non_range {
             TryFrom<[<$s:lower $b>]> for [<$name $s:upper $b>]<RMIN, RMAX> {
             type Error = core::num::TryFromIntError;
 
+            /// # Features
+            /// Makes use of the `unsafe_niche` feature if enabled.
             #[inline]
             fn try_from(value: [<$s:lower $b>]) -> Result<Self, Self::Error> {
                 // We generate a TryFromIntError by intentionally causing a failed conversion.
-                #[cfg(not(feature = "unsafe_num"))]
+                #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
                 return Self::new(value).ok_or_else(|| i8::try_from(255_u8).unwrap_err());
-                #[cfg(feature = "unsafe_num")]
+
+                #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                 return Self::new(value)
                     .ok_or_else(|| unsafe { i8::try_from(255_u8).unwrap_err_unchecked() });
             }
@@ -230,24 +237,31 @@ macro_rules! impl_non_range {
 
         /* external impls*/
 
-
-        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
+        #[cfg(all(any(feature = "bytemuck", feature = "dep"),
+            feature = "unsafe_niche", not(feature = "safe_num")))]
+        #[cfg_attr(feature = "nightly",
+            doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             ZeroableInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
+        #[cfg(all(any(feature = "bytemuck", feature = "dep"),
+            feature = "unsafe_niche", not(feature = "safe_num")))]
+        #[cfg_attr(feature = "nightly",
+            doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             PodInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
+        #[cfg(all(any(feature = "bytemuck", feature = "dep"),
+            feature = "unsafe_niche", not(feature = "safe_num")))]
+        #[cfg_attr(feature = "nightly",
+            doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             NoUninit for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-        #[cfg(all(feature = "bytemuck", feature = "unsafe_num"))]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(feature = "bytemuck", feature = "unsafe_num"))))]
+        #[cfg(all(any(feature = "bytemuck", feature = "dep"),
+            feature = "unsafe_niche", not(feature = "safe_num")))]
+        #[cfg_attr(feature = "nightly",
+            doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             CheckedBitPattern for [<$name $s:upper $b>]<RMIN, RMAX> {
             type Bits = [<$s:lower $b>];

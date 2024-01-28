@@ -233,28 +233,29 @@ macro_rules! generate_array_string {
             //
 
             /// Returns a byte slice of the inner string slice.
+            /// # Features
+            /// Makes use of the `unsafe_slice` feature if enabled.
             #[inline]
             #[must_use]
             pub fn as_bytes(&self) -> &[u8] {
-                #[cfg(feature = "unsafe_text")]
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
+                return self.arr
+                    .get(0..self.len as usize)
+                    .expect("len must be <= arr.len()");
+
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
                 unsafe {
                     self.arr.get_unchecked(0..self.len as usize)
                 }
-
-                #[cfg(not(feature = "unsafe_text"))]
-                self.arr
-                    .get(0..self.len as usize)
-                    .expect("len must be <= arr.len()")
             }
 
             /// Returns a mutable byte slice of the inner string slice.
-            ///
             /// # Safety
             /// TODO
             #[inline]
             #[must_use]
-            #[cfg(feature = "unsafe_text")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
+            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_slice")))]
             pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
                 self.arr.get_unchecked_mut(0..self.len as usize)
             }
@@ -278,10 +279,21 @@ macro_rules! generate_array_string {
             }
 
             /// Returns the inner string slice.
+            /// # Features
+            /// Makes use of the `unsafe_slice` feature if enabled.
             #[inline]
             #[must_use]
             pub fn as_str(&self) -> &str {
-                #[cfg(feature = "unsafe_text")]
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
+                return core::str::from_utf8(
+                    self.arr
+                        .get(0..self.len as usize)
+                        .expect("len must be <= arr.len()"),
+                )
+                .expect("must be valid utf-8");
+
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+                // SAFETY: TODO
                 unsafe {
                     core::str::from_utf8_unchecked(
                         self.arr
@@ -289,22 +301,14 @@ macro_rules! generate_array_string {
                             .expect("len must be <= arr.len()"),
                     )
                 }
-                #[cfg(not(feature = "unsafe_text"))]
-                core::str::from_utf8(
-                    self.arr
-                        .get(0..self.len as usize)
-                        .expect("len must be <= arr.len()"),
-                )
-                .expect("must be valid utf-8")
             }
 
             /// Returns the mutable inner string slice.
-            ///
             /// # Safety
             /// TODO
             #[must_use]
-            #[cfg(feature = "unsafe_text")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_slice")))]
             pub fn as_str_mut(&mut self) -> &mut str {
                 unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
             }

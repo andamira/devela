@@ -12,9 +12,9 @@ mod misc;
 mod num_to_str;
 
 // feature-gated, private
-#[cfg(feature = "unsafe_text")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
-mod int_buf;
+// #[cfg(feature = "unsafe_text")]
+// #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+// mod int_buf;
 
 /* re-exports */
 
@@ -22,8 +22,8 @@ mod int_buf;
 pub use {misc::*, num_to_str::*};
 
 // feature-gated, private
-#[cfg(feature = "unsafe_text")]
-pub use int_buf::{IntBuf, IntBufAble};
+// #[cfg(feature = "unsafe_text")]
+// pub use int_buf::{IntBuf, IntBufAble};
 
 pub(crate) mod all {
     // always compiled
@@ -31,8 +31,8 @@ pub(crate) mod all {
     pub use super::{misc::*, num_to_str::*};
 
     // feature-gated
-    #[doc(inline)]
-    #[cfg(feature = "unsafe_text")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
-    pub use super::int_buf::{IntBuf, IntBufAble};
+    // #[doc(inline)]
+    // #[cfg(feature = "unsafe_text")]
+    // #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+    // pub use super::int_buf::{IntBuf, IntBufAble};
 }

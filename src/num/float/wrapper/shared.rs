@@ -15,8 +15,7 @@ macro_rules! custom_impls {
     (@$f:ty:$uf:ty, $ue:ty) => { $crate::code::paste! {
         /// # *Common implementations with or without `std` or `libm`*.
         /// # Features
-        /// There are a few functions that can be *const* but only if either the
-        /// `unsafe_num` or `unsafe_data` feature is enabled.
+        /// Several methods will only be *const* with the `unsafe_const` feature enabled.
         impl Floating<$f> {
             /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
             // WAIT: https://github.com/rust-lang/rust/issues/96710
@@ -749,9 +748,9 @@ macro_rules! custom_impls {
             ///
             /// This is a separate function from [`abs`][Self::abs] because we also want to have
             /// the possibly more efficient `std` and `libm` implementations.
-            #[cfg_attr(feature = "nightly",
-                doc(cfg(any(feature = "unsafe_data", feature = "unsafe_num"))))]
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_const")))]
             pub const fn const_abs(x: $f) -> $f {
                 let mask = <$uf>::MAX / 2;
                 unsafe {
@@ -762,9 +761,9 @@ macro_rules! custom_impls {
 
             /// Flips the sign of `x`.
             /// # Features
-            /// This function will only be `const` if either the `unsafe_data`
-            /// or `unsafe_num` feature is enabled.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn flip_sign(x: $f) -> $f {
                 let mask = <$uf>::MAX / 2 + 1;
                 unsafe {
@@ -773,7 +772,7 @@ macro_rules! custom_impls {
                 }
             }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn flip_sign(x: $f) -> $f {
                 let mask = <$uf>::MAX / 2 + 1;
                 <$f>::from_bits(x.to_bits() ^ mask)
@@ -787,30 +786,36 @@ macro_rules! custom_impls {
 
             /// Returns the clamped value, using total order.
             /// # Features
-            /// This function will only be `const` if either the `unsafe_data`
-            /// or `unsafe_num` feature is enabled.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn clamp_total(value: $f, min: $f, max: $f) -> $f {
                 $crate::data::Comparing(value).clamp(min, max)
             }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn clamp_total(value: $f, min: $f, max: $f) -> $f {
                 $crate::data::Comparing(value).clamp(min, max)
             }
 
             /// Returns the maximum of two numbers using total order.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn max_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).max(y) }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn max_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).max(y) }
 
             /// Returns the minimum of two numbers using total order.
-            #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn min_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).min(y) }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn min_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).min(y) }
 
             /// Returns the clamped `x` value, propagating `NaN`.

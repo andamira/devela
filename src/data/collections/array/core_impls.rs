@@ -131,7 +131,7 @@ impl<T: Default, const LEN: usize> Default for Array<T, (), LEN> {
     /// Returns an empty array, allocated in the stack,
     /// using the default value to fill the remaining free data.
     fn default() -> Self {
-        let array = Direct::new(array_init!(default [T; LEN], "unsafe_data"));
+        let array = Direct::new(array_init!(default [T; LEN], "unsafe_array"));
         Array { array }
     }
 }
@@ -150,7 +150,7 @@ impl<T: Default, const LEN: usize> Default for Array<T, Boxed, LEN> {
     /// let mut s = BoxedArray::<i32, 100>::default();
     /// ```
     fn default() -> Self {
-        let array = array_init!(default_heap [T; LEN], "unsafe_data");
+        let array = array_init!(default_heap [T; LEN], "unsafe_array");
         Array { array }
     }
 }
@@ -186,7 +186,7 @@ where
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
     fn from(iterator: I) -> Array<T, (), LEN> {
-        let array = Direct::new(array_init!(iter [T; LEN], "unsafe_data", iterator));
+        let array = Direct::new(array_init!(iter [T; LEN], "unsafe_array", iterator));
         Array { array }
     }
 }
@@ -208,7 +208,7 @@ where
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
     fn from(iterator: I) -> Array<T, Boxed, LEN> {
-        let array = array_init!(iter_heap [T; LEN], "unsafe_data", iterator);
+        let array = array_init!(iter_heap [T; LEN], "unsafe_array", iterator);
         Array { array }
     }
 }

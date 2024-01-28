@@ -12,7 +12,7 @@ fn trivial_type() {
     val.push_back(1233, |p| p).unwrap();
     assert!(*val.front().unwrap() == 1234);
     assert!(*val.front().unwrap() != 1233);
-    val.pop_front();
+    let _ = val.pop_front();
     assert!(*val.front().unwrap() != 1234);
     assert!(*val.front().unwrap() == 1233);
 }

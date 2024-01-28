@@ -3,16 +3,14 @@
 //!
 //
 
-#[cfg(not(feature = "unsafe_text"))]
+#[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
 use core::str::from_utf8;
-#[cfg(feature = "unsafe_text")]
+#[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
 use core::str::from_utf8_unchecked;
 
 use crate::{code::iif, text::AsciiChar};
 
-#[cfg(feature = "unsafe_text")]
-use crate::text::IntBuf;
-#[cfg(not(feature = "unsafe_text"))]
+// IMPROVE: use NumToStr
 use crate::{mem::slice_trim_leading_bytes, text::ascii_usize_digits};
 
 // Marker trait to prevent downstream implementations of the `ExtStr` trait.
@@ -25,7 +23,6 @@ mod private {
 pub trait ExtStr: private::Sealed {
     /// Repeats a string a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.
-    ///
     /// # Examples
     /// ```
     /// use devela::text::ExtStr;
@@ -34,9 +31,8 @@ pub trait ExtStr: private::Sealed {
     /// let repeated = "ay".repeat_into(3, &mut buf);
     /// assert_eq![repeated, "ayayay"];
     /// ```
-    ///
     /// # Features
-    /// Makes use of the `unsafe_text` feature if enabled.
+    /// Makes use of the `unsafe_str` feature if enabled.
     #[must_use]
     fn repeat_into<'input, const CAP: usize>(
         &self,
@@ -49,7 +45,6 @@ pub trait ExtStr: private::Sealed {
     ///
     /// A [*counter string*][0] is a graduated string of arbitrary `length`,
     /// with a `separator` positioned after the immediately preceding number.
-    ///
     /// # Examples
     /// ```
     /// use devela::text::{AsciiChar, ExtStr};
@@ -60,9 +55,8 @@ pub trait ExtStr: private::Sealed {
     /// ```
     /// # Panics
     /// Panics if `buffer.len() < length`
-    ///
     /// # Features
-    /// Makes use of the `unsafe_text` feature if enabled.
+    /// Makes use of the `unsafe_str` feature if enabled.
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]
@@ -88,13 +82,13 @@ impl ExtStr for str {
             }
         }
 
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+        return from_utf8(&buffer[..index]).unwrap();
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: since self is a valid &str, checks are unneeded.
-        #[cfg(feature = "unsafe_text")]
         unsafe {
             from_utf8_unchecked(&buffer[..index])
         }
-        #[cfg(not(feature = "unsafe_text"))]
-        from_utf8(&buffer[..index]).unwrap()
     }
 
     fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str {
@@ -111,17 +105,11 @@ impl ExtStr for str {
             let mut num = length; // the first number to write is the length
             let mut separator_turn = true; // start writing the separator
 
-            // safe:
-            #[cfg(not(feature = "unsafe_text"))]
             let mut num_buf = ascii_usize_digits(num);
-            #[cfg(not(feature = "unsafe_text"))]
             let mut num_bytes = slice_trim_leading_bytes(&num_buf, b'0');
-
-            // unsafe:
-            #[cfg(feature = "unsafe_text")]
-            let mut num_buf = IntBuf::new();
-            #[cfg(feature = "unsafe_text")]
-            let mut num_bytes = num_buf.to_bytes(num);
+            // IMPROVE: use NumToStr
+            // let mut num_buf = [0u8; 22];
+            // let mut num_bytes = num.to_bytes_base(10, &mut num_buf);
 
             let mut num_len = num_bytes.len();
 
@@ -134,17 +122,10 @@ impl ExtStr for str {
 
                     num = index;
 
-                    // safe
-                    #[cfg(not(feature = "unsafe_text"))]
-                    {
-                        num_buf = ascii_usize_digits(num);
-                        num_bytes = slice_trim_leading_bytes(&num_buf, b'0');
-                    }
-                    // unsafe
-                    #[cfg(feature = "unsafe_text")]
-                    {
-                        num_bytes = num_buf.to_bytes(num);
-                    }
+                    num_buf = ascii_usize_digits(num);
+                    num_bytes = slice_trim_leading_bytes(&num_buf, b'0');
+                    // IMPROVE: use NumToStr
+                    // num_bytes = num.to_bytes_base(10, &mut num_buf);
 
                     num_len = num_bytes.len();
                 }
@@ -152,10 +133,11 @@ impl ExtStr for str {
                 separator_turn = !separator_turn;
             }
 
-            #[cfg(feature = "unsafe_text")]
-            return unsafe { from_utf8_unchecked(&buffer[..length]) };
-            #[cfg(not(feature = "unsafe_text"))]
+            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             return from_utf8(&buffer[..length]).unwrap();
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+            // SAFETY: TODO
+            return unsafe { from_utf8_unchecked(&buffer[..length]) };
         }
     }
 }

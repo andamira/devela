@@ -56,47 +56,73 @@ no_std = [ # enables functionality incompatible with `std`
 
 #* module features *#
 
-full = [ # enables all the modules (12)
-	"code", "data", "error", "io", "mem", "num",
-	"os", "render", "text", "time", "ui", "work",
+full = [ # enables all the modules and submodules
+	"code",
+	"data",
+	"error",
+	"io",
+	"mem",
+	"num", "num_all",
+	"os", # "os_all",
+	"render",
+	"text",
+	"time",
+	"ui", "ui_all",
+	"work", # "work_all",
 	]
 
-# individual modules (12…)
-# (modules enable their own dependencies if the `dep` feature is enabled)
+# individual modules
 code = []
 data = ["dep?/bytemuck", "dep?/hashbrown"]
 error = []
 io = []
 mem = ["dep?/bytemuck"]
 num = []
-	# optional module features:
+	num_all = [
+		"num_niche_impls" ]
 	num_niche_impls = [] # enables extra implementations for niche types
 os = []
 render = []
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
-ui = ["ui_term"]
-	# optional module features:
+ui = []
+	ui_all = [
+		"ui_term" ]
 	ui_term = ["dep?/const-str"]
 work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 
 
 #* safety features *#
 
-safe = [] # forbids `unsafe` in this crate
-unsafe = [ # enables all unsafe features in this crate:
-	"unsafe_data", "unsafe_error", "unsafe_mem", "unsafe_num",
-	"unsafe_os", "unsafe_text", "unsafe_ui", "unsafe_work",
-	]
-	unsafe_data = []
-	unsafe_error = [] # enables no_std `Error` impls for downcasting.
-	unsafe_mem = [] # enables `as_bytes*` functions and bytemuck's traits
-	unsafe_num = [] # enables unsafe constructors, bytemuck's traits, MaybeUninit
-	unsafe_os = []
-	unsafe_text = [] # enables unsafe use in `text`
-	unsafe_ui = ["unsafe_ui_term"]
-		unsafe_ui_term = []
-	unsafe_work = [] # enables a coroutines implementation
+# In order to use any unsafe functionality:
+# 1. enable the corresponding `unsafe` feature.
+# 2. don't enable `safe` feature in the module.
+
+safe = [ # forbids `unsafe` (and overrides unsafe features)
+	"safe_data", "safe_error", "safe_mem", "safe_num",
+	"safe_os", "safe_text", "safe_ui", "safe_work",
+] # in specific modules:
+	safe_data = []
+	safe_error = []
+	safe_mem = []
+	safe_num = []
+	safe_os = []
+	safe_text = []
+	safe_ui = ["safe_ui_term"]
+		safe_ui_term = []
+	safe_work = []
+
+unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
+	"unsafe_array", "unsafe_async", "unsafe_const", "unsafe_dyn",
+	"unsafe_niche", "unsafe_slice", "unsafe_str",
+] # for specific purposes:
+	unsafe_array = [] # enables: faster array initialization.
+	unsafe_async = [] # enables: custom task waker, coroutine impls.
+	unsafe_const = [] # enables: extra const methods.
+	unsafe_dyn = [] # enables: DSTs in the stack, no_std Error dyn impls.
+	unsafe_niche = [] # enables: unchecked niche constructors.
+	unsafe_slice = [] # enables: extra slice methods, avoid bound checks.
+	unsafe_str = [] # enables: unchecked utf-8 char and &str conversions.
 
 
 #* nightly features *#

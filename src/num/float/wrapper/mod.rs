@@ -506,15 +506,15 @@ mod _no_std_no_libm {
                 /// The absolute value of `x`.
                 ///
                 /// # Features
-                /// This function will only be `const` if either the `unsafe_data`
-                /// or `unsafe_num` feature is enabled,
-                /// and the `std` and `libm` features are disabled.
+                /// This function will only be `const` with the `unsafe_const` feature enabled,
+                /// and the `std` and `libm` features disabled.
                 ///
                 /// See also [`const_abs`][Self::const_abs].
-                #[inline] #[must_use] #[cfg(any(feature = "unsafe_data", feature = "unsafe_num"))]
+                #[inline] #[must_use]
+                #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
                 pub const fn abs(x: $f) -> $f { Self::const_abs(x) }
                 #[inline] #[must_use] #[allow(missing_docs)]
-                #[cfg(not(any(feature = "unsafe_data", feature = "unsafe_num")))]
+                #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
                 pub fn abs(x: $f) -> $f {
                     let mask = <$ub>::MAX / 2;
                     let bits: $ub = x.to_bits() & mask;

@@ -240,24 +240,26 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     //
 
     /// Returns a byte slice of the inner string slice.
+    /// # Features
+    /// Makes use of the `unsafe_slice` feature if enabled.
     #[inline]
     #[must_use]
     pub fn as_bytes(&self) -> &[u8] {
-        #[cfg(not(feature = "unsafe_text"))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
         return self.arr.get(0..self.len()).unwrap();
 
-        #[cfg(feature = "unsafe_text")]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+        // SAFETY: TODO
         return unsafe { self.arr.get_unchecked(0..self.len()) };
     }
 
     /// Returns a mutable byte slice of the inner string slice.
-    ///
     /// # Safety
     /// TODO
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_text")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         let len = self.len();
         self.arr.get_unchecked_mut(0..len)
@@ -282,28 +284,29 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     }
 
     /// Returns the inner string slice.
+    /// # Features
+    /// Makes use of the `unsafe_slice` feature if enabled.
     #[inline]
     #[must_use]
     pub fn as_str(&self) -> &str {
-        #[cfg(not(feature = "unsafe_text"))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
         return core::str::from_utf8(self.arr.get(0..self.len()).unwrap())
             .expect("must be valid utf-8");
 
-        // SAFETY
-        #[cfg(feature = "unsafe_text")]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+        // SAFETY: TODO
         unsafe {
             return core::str::from_utf8_unchecked(self.arr.get_unchecked(0..self.len()));
         }
     }
 
     /// Returns the mutable inner string slice.
-    ///
     /// # Safety
     /// TODO
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_text")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_str_mut(&mut self) -> &mut str {
         &mut *(self.as_bytes_mut() as *mut [u8] as *mut str)
     }

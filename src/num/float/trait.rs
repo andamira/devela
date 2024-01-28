@@ -7,7 +7,7 @@ use super::Floating;
 /// This trait is normally more convenient to use than the [`Floating`] struct.
 ///
 /// `Floating` has a few more methods implemented if the `libm` feature is enabled,
-/// and some of the methods are const if the `unsafe_num` feature is enabled.
+/// and some of the methods are const if the `unsafe_const` feature is enabled.
 ///
 /// Many methods are only available if either the `std` or `libm` features are enabled.
 #[rustfmt::skip]

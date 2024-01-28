@@ -22,7 +22,8 @@ use crate::{
 /// It implements the following *const* methods for sorting copied arrays of primitives:
 /// `bubble_array`, `insertion_array`, `selection_array`.
 /// In the case of floating-point primitives it uses total ordering and the
-/// methods will only be const if the `unsafe_data` feature is enabled.
+/// methods will only be const if the `unsafe_const` feature is enabled.
+// They depend on the required `Comparing` methods being const.
 ///
 /// It also implements the following methods for sorting generic exclusive slices,
 /// depending on at least the [`Ord`] bound and for some on `alloc`:
@@ -530,7 +531,8 @@ macro_rules! impl_sorting {
     (@float $t:ty) => { paste! {
         impl<const N: usize> Sorting<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
-            #[inline] #[must_use] #[cfg(feature = "unsafe_data")]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn bubble_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 0..N => {
@@ -541,7 +543,8 @@ macro_rules! impl_sorting {
                 arr
             }
             // safe, non-const version (undocumented)
-            #[inline] #[must_use] #[allow(missing_docs)] #[cfg(not(feature = "unsafe_data"))]
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn bubble_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 0..N => {
@@ -553,7 +556,8 @@ macro_rules! impl_sorting {
             }
 
             /// Returns a copied sorted array using insertion sort.
-            #[inline] #[must_use] #[cfg(feature = "unsafe_data")]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn insertion_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 1..N => {
@@ -566,7 +570,8 @@ macro_rules! impl_sorting {
                 arr
             }
             // safe, non-const version (undocumented)
-            #[inline] #[must_use] #[allow(missing_docs)] #[cfg(not(feature = "unsafe_data"))]
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn insertion_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 1..N => {
@@ -580,7 +585,8 @@ macro_rules! impl_sorting {
             }
 
             /// Returns a copied sorted array using selection sort.
-            #[inline] #[must_use] #[cfg(feature = "unsafe_data")]
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn selection_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 0..N-1 => {
@@ -593,7 +599,8 @@ macro_rules! impl_sorting {
                 arr
             }
             // safe, non-const version (undocumented)
-            #[inline] #[must_use] #[allow(missing_docs)] #[cfg(not(feature = "unsafe_data"))]
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn selection_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 0..N-1 => {

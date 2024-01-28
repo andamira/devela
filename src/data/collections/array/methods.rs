@@ -27,15 +27,13 @@ impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
 impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
     /// Returns an array, allocated in the stack,
     /// filled with `element`, cloned.
-    ///
     /// # Examples
     /// ```
-    /// use devela::data::Array;
-    ///
+    /// # use devela::data::Array;
     /// let s = Array::<_, (), 16>::with(0);
     /// ```
     pub fn with(element: T) -> Self {
-        let array = Direct::new(array_init!(clone [T; LEN], "unsafe_data", element));
+        let array = Direct::new(array_init!(clone [T; LEN], "unsafe_array", element));
         Self { array }
     }
 }
@@ -46,15 +44,13 @@ impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
 impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
     /// Returns an empty stack, allocated in the heap,
     /// using `element` to fill the remaining free data.
-    ///
     /// # Examples
     /// ```
-    /// use devela::data::BoxedArray;
-    ///
+    /// # use devela::data::BoxedArray;
     /// let mut s = BoxedArray::<_, 1_000>::with(0);
     /// ```
     pub fn with(element: T) -> Self {
-        let array = array_init!(clone_heap [T; LEN], "unsafe_data", element);
+        let array = array_init!(clone_heap [T; LEN], "unsafe_array", element);
         Self { array }
     }
 }
@@ -62,13 +58,10 @@ impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
 // `T: PartialEq`
 impl<T: PartialEq, S: Storage, const CAP: usize> Array<T, S, CAP> {
     /// Returns true if the array contains `element`.
-    ///
     /// # Examples
     /// ```
-    /// use devela::all::Array;
-    ///
+    /// # use devela::all::Array;
     /// let a = Array::<_, (), 5>::new([5, 78, 42, 33, 9]);
-    ///
     /// assert![a.contains(&9)];
     /// assert![!a.contains(&8)];
     /// ```

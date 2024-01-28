@@ -51,21 +51,28 @@ Single modules:
 
 ### Safety features
 
-Unsafe use must be explicitly enabled.
+In order to use any unsafe functionality:
+1. enable the corresponding `unsafe` feature.
+2. don't enable `safe` feature in the module.
 
-- `safe`: explicitly forbids any unsafe use at the crate level.
-- `unsafe`: enables all the unsafe sub-features:
-  - `unsafe_data`:….
-  - `unsafe_error`enables `no_std` `Error` impls related to `dyn` downcasting.
-  - `unsafe_mem`: provides [`mem_as_bytes`], [`mem_as_bytes_mut`] and [`mem_as_bytes_sized`].
-  - `unsafe_num`: enables `new_unchecked` constructors, implements `bytemuck` traits,
-    enables using [`MaybeUninit`] for [`slice_into_array`] initialization and
-    const floating-point comparison  using [`transmute`] for constant access to the bits.
-  - `unsafe_os`:….
-  - `unsafe_text`: enables use of unsafe in [`text`].
-  - `unsafe_ui`:….
-  - `unsafe_work`: enables a minimal implementation of stackless
-    [coroutines][work::async::coroutine].
+- `safe`: forbids `unsafe` (and overrides unsafe features)
+  - `safe_data`
+  - `safe_error`
+  - `safe_mem`
+  - `safe_num`
+  - `safe_os`
+  - `safe_text`
+  - `safe_ui`
+  - `safe_work`
+
+- `unsafe`: enables unsafe (as long as it isn't forbidden in the module)
+	- `unsafe_array` enables: faster array initialization.
+	- `unsafe_async` enables: custom task waker, coroutine impls.
+	- `unsafe_const` enables: extra const methods.
+	- `unsafe_dyn` enables: DSTs in the stack, `no_std` Error dyn impls.
+	- `unsafe_niche` enables: unchecked niche constructors.
+	- `unsafe_slice` enables: extra slice methods, avoid bound checks.
+	- `unsafe_str` enables: unchecked utf-8 char and &str conversions.
 
 
 ### Nightly features

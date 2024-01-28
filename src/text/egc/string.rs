@@ -77,6 +77,8 @@ impl StringEgc {
     }
 
     /// Creates a new `StringEgc` from a `Char32`.
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
     #[must_use]
     #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
@@ -85,15 +87,17 @@ impl StringEgc {
         doc(cfg(all(any(feature = "dep", feature = "unicode-segmentation"))))
     )]
     pub fn from_char32(c: Char32) -> StringEgc {
-        #[cfg(not(feature = "unsafe_text"))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return str::from_utf8(&c.to_utf8_bytes()).unwrap().into();
-        #[cfg(feature = "unsafe_text")]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         unsafe {
             str::from_utf8_unchecked(&c.to_utf8_bytes()).into()
         }
     }
 
     /// Creates a new `StringEgc` from a `char`.
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
     #[must_use]
     #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
@@ -102,11 +106,11 @@ impl StringEgc {
         doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
     )]
     pub fn from_char(c: char) -> StringEgc {
-        #[cfg(not(feature = "unsafe_text"))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return str::from_utf8(&crate::text::char_to_utf8_bytes(c))
             .unwrap()
             .into();
-        #[cfg(feature = "unsafe_text")]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         unsafe {
             str::from_utf8_unchecked(&crate::text::char_to_utf8_bytes(c)).into()
         }

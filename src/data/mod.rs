@@ -37,12 +37,13 @@ pub mod hash;
 pub mod any;
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "unsafe_data", feature = "dep")))
+    doc(cfg(all(feature = "unsafe_dyn", feature = "dep")))
 )]
 #[cfg(all(
     feature = "data",
-    feature = "unsafe_data",
-    any(feature = "bytemuck", feature = "dep")
+    feature = "unsafe_dyn",
+    any(feature = "bytemuck", feature = "dep"),
+    not(feature = "safe_data")
 ))]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub mod dst;
@@ -63,8 +64,9 @@ pub use any::all::*;
 #[doc(no_inline)]
 #[cfg(all(
     feature = "data",
-    feature = "unsafe_data",
-    any(feature = "bytemuck", feature = "dep")
+    feature = "unsafe_dyn",
+    any(feature = "bytemuck", feature = "dep"),
+    not(feature = "safe_data"),
 ))]
 pub use dst::*;
 
@@ -80,8 +82,9 @@ pub(crate) mod all {
     #[doc(inline)]
     #[cfg(all(
         feature = "data",
-        feature = "unsafe_data",
-        any(feature = "bytemuck", feature = "dep")
+        feature = "unsafe_dyn",
+        any(feature = "bytemuck", feature = "dep"),
+        not(feature = "safe_data"),
     ))]
     pub use super::dst::*;
 }

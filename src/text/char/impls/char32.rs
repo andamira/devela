@@ -55,17 +55,19 @@ impl Char32 {
     //
 
     /// Tries to convert this `Char32` to `AsciiChar`.
+    /// # Features
+    /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
         if char_is_7bit(self.to_u32()) {
-            #[cfg(not(feature = "unsafe_text"))]
+            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             if let Some(c) = AsciiChar::from_u8(self.0 as u8) {
                 Ok(c)
             } else {
                 unreachable![]
             }
 
-            #[cfg(feature = "unsafe_text")]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0 as u8) });
         } else {

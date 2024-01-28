@@ -95,11 +95,15 @@ macro_rules! impl_num {
             fn num_get_one() -> Result<Self> { Ok(Self::new(1).unwrap()) }
             #[inline]
             fn num_set_zero(&mut self) -> Result<()> { Error::ni() }
+
+            /// # Features
+            /// Makes use of the `unsafe_niche` feature if enabled.
             #[inline]
             fn num_set_one(&mut self) -> Result<()> {
-                #[cfg(not(feature = "unsafe_num"))]
+                #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
                 { *self = Self::new(1).unwrap(); Ok(()) }
-                #[cfg(feature = "unsafe_num")]
+
+                #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                 // SAFETY: we are using a constant
                 { *self = unsafe { Self::new_unchecked(1) }; Ok(()) }
             }
@@ -215,11 +219,14 @@ macro_rules! impl_num {
             fn num_get_one() -> Result<Self> { Ok(Self::new(1).unwrap()) }
             #[inline]
             fn num_set_zero(&mut self) -> Result<()> { Error::ni() }
+            /// # Features
+            /// Makes use of the `unsafe_niche` feature if enabled.
             #[inline]
             fn num_set_one(&mut self) -> Result<()> {
-                #[cfg(not(feature = "unsafe_num"))]
+                #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
                 { *self = Self::new(1).unwrap(); Ok(()) }
-                #[cfg(feature = "unsafe_num")]
+
+                #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                 // SAFETY: we are using a constant
                 { *self = unsafe { Self::new_unchecked(1) }; Ok(()) }
             }

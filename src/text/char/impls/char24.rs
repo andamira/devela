@@ -11,13 +11,13 @@ impl Char24 {
     #[inline]
     #[must_use]
     const fn new_unchecked_hi(value: u8) -> NonEdgeU8 {
-        #[cfg(not(all(feature = "unsafe_text", feature = "unsafe_num")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
         if let Some(c) = NonEdgeU8::new(value) {
             c
         } else {
             unreachable![]
         }
-        #[cfg(all(feature = "unsafe_text", feature = "unsafe_num"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
         unsafe {
             NonEdgeU8::new_unchecked(value)
         }
@@ -102,14 +102,14 @@ impl Char24 {
     #[inline]
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
         if char_is_7bit(self.to_u32()) {
-            #[cfg(not(feature = "unsafe_text"))]
+            #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             if let Some(c) = AsciiChar::from_u8(self.lo) {
                 Ok(c)
             } else {
                 unreachable![]
             }
 
-            #[cfg(feature = "unsafe_text")]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.lo) });
         } else {
@@ -149,12 +149,12 @@ impl Char24 {
     #[must_use]
     #[rustfmt::skip]
     pub const fn to_char(self) -> char {
-        // #[cfg(not(feature = "unsafe_text"))]
+        // #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         if let Some(c) = char::from_u32(self.to_u32()) { c } else { unreachable![] }
 
         // WAITING for stable const: https://github.com/rust-lang/rust/issues/89259
+        // #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: we've already checked we contain a valid char.
-        // #[cfg(feature = "unsafe_text")]
         // return unsafe { char::from_u32_unchecked(code_point) };
     }
 

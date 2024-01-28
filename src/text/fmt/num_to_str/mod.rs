@@ -9,7 +9,7 @@ use core::{mem::size_of, str};
 /// a mutable byte slice.
 ///
 /// # Features
-/// It makes use of the `unsafe_text` feature for faster unchecked conversion of
+/// It makes use of the `unsafe_str` feature for faster unchecked conversion of
 /// the resulting bytes to a string slice.
 pub trait NumToStr<T> {
     /// Given a base for encoding and a mutable byte slice, write the number
@@ -153,9 +153,10 @@ macro_rules! impl_primitive {
                 &string[index.wrapping_add(1)..]
             }
             fn to_str_base(self, base: $t, buf: &mut [u8]) -> &str {
-                #[cfg(not(feature = "unsafe_text"))]
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
                 return str::from_utf8(self.to_bytes_base(base, buf)).unwrap();
-                #[cfg(feature = "unsafe_text")]
+
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
                 // SAFETY: the bytes are valid utf-8
                 unsafe { str::from_utf8_unchecked(self.to_bytes_base(base, buf)) }
             }
@@ -197,9 +198,10 @@ macro_rules! impl_primitive {
                 &string[index.wrapping_add(1)..]
             }
             fn to_str_base(self, base: $t, buf: &mut [u8]) -> &str {
-                #[cfg(not(feature = "unsafe_text"))]
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
                 return str::from_utf8(self.to_bytes_base(base, buf)).unwrap();
-                #[cfg(feature = "unsafe_text")]
+
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
                 // SAFETY: the bytes are valid utf-8
                 unsafe { str::from_utf8_unchecked(self.to_bytes_base(base, buf)) }
             }
@@ -264,9 +266,10 @@ impl NumToStr<i8> for i8 {
     }
 
     fn to_str_base(self, base: Self, buf: &mut [u8]) -> &str {
-        #[cfg(not(feature = "unsafe_text"))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return str::from_utf8(self.to_bytes_base(base, buf)).unwrap();
-        #[cfg(feature = "unsafe_text")]
+
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
             str::from_utf8_unchecked(self.to_bytes_base(base, buf))
@@ -312,9 +315,9 @@ impl NumToStr<u8> for u8 {
     }
 
     fn to_str_base(self, base: Self, buf: &mut [u8]) -> &str {
-        #[cfg(not(feature = "unsafe_text"))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return str::from_utf8(self.to_bytes_base(base, buf)).unwrap();
-        #[cfg(feature = "unsafe_text")]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
             str::from_utf8_unchecked(self.to_bytes_base(base, buf))

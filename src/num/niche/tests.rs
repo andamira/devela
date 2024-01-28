@@ -64,9 +64,13 @@ fn non_range() {
 }
 
 #[test]
-#[cfg(all(feature = "unsafe_num", feature = "bytemuck"))]
+#[cfg(all(
+    any(feature = "bytemuck", feature = "dep"),
+    feature = "unsafe_niche",
+    not(feature = "safe_num")
+))]
 fn non_range_bytemuck() {
-    use bytemuck::CheckedBitPattern;
+    use crate::_deps::bytemuck::CheckedBitPattern;
 
     // a range that doesn't wrap around
     type R1 = NonRangeI8<-10, 10>;
@@ -145,9 +149,13 @@ fn range() {
 }
 
 #[test]
-#[cfg(all(feature = "unsafe_num", feature = "bytemuck"))]
+#[cfg(all(
+    any(feature = "bytemuck", feature = "dep"),
+    feature = "unsafe_niche",
+    not(feature = "safe_num")
+))]
 fn range_bytemuck() {
-    use bytemuck::CheckedBitPattern;
+    use crate::_deps::bytemuck::CheckedBitPattern;
 
     // a positive range
     type R1 = RangeI8<1, 10>;

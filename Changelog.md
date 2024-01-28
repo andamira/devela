@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add trait: `NumToStr`.
 - add niche number aliases: `NonEdge*`.
 - add `no_std` replacements for `std::error` and `std::io` and types.
+- add features: `num_all`, `safe_data`, `safe_error`, `safe_mem`, `safe_num`, `safe_os`, `safe_text`, `safeui`, `safe_ui_term`, `safe_work`.
 
 ### Removed
 - remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.

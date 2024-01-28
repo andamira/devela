@@ -63,8 +63,8 @@ pub trait Mem {
     /// View a `Sync + Unpin` `self` as `&[u8]`.
     ///
     /// For the `const` version for sized types see [`mem_as_bytes_sized`].
-    #[cfg(feature = "unsafe_mem")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_slice")))]
     fn mem_as_bytes(&self) -> &[u8]
     where
         Self: Sync + Unpin,
@@ -73,8 +73,8 @@ pub trait Mem {
     }
 
     /// View a `Sync + Unpin` `self` as `&mut [u8]`.
-    #[cfg(feature = "unsafe_mem")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_mem")))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_slice")))]
     fn mem_as_bytes_mut(&mut self) -> &mut [u8]
     where
         Self: Sync + Unpin,

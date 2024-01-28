@@ -19,13 +19,13 @@ impl Char7 {
     #[inline]
     #[must_use]
     const fn new_unchecked(value: u8) -> Char7 {
-        #[cfg(not(all(feature = "unsafe_text", feature = "unsafe_num")))]
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
         if let Some(c) = NonEdgeU8::new(value) {
             Char7(c)
         } else {
             unreachable![]
         }
-        #[cfg(all(feature = "unsafe_text", feature = "unsafe_num"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
         unsafe {
             Char7(NonEdgeU8::new_unchecked(value))
         }
@@ -98,14 +98,14 @@ impl Char7 {
     #[inline]
     #[must_use]
     pub const fn to_ascii_char(c: Char7) -> AsciiChar {
-        #[cfg(not(all(feature = "unsafe_text", feature = "unsafe_ascii")))]
-        if let Some(c) = AsciiChar::from_u8(c.0.get()) {
+        #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
+        return if let Some(c) = AsciiChar::from_u8(c.0.get()) {
             c
         } else {
             unreachable!()
-        }
+        };
 
-        #[cfg(all(feature = "unsafe_text", feature = "unsafe_ascii"))]
+        #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
         unsafe {
             AsciiChar::from_u8_unchecked(c.0.get())
         }

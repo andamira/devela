@@ -8,7 +8,6 @@
 use crate::code::iif;
 
 /// Counts the number of decimal digits in `n`.
-///
 /// # Examples
 /// ```
 /// # use devela::num::count_digits;
@@ -23,10 +22,8 @@ pub const fn count_digits(n: usize) -> usize {
 }
 
 /// Counts the number of decimal digits in `n`.
-///
 /// # Panics
 /// Panics if `n == 0`
-///
 /// # Examples
 /// ```
 /// # use devela::num::count_digits_unchecked;

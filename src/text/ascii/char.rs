@@ -4,10 +4,10 @@
 //
 // Ported from:
 // - https://doc.rust-lang.org/stable/core/ascii/enum.Char.html
-// - WAITING: https://github.com/rust-lang/rust/issues/110998
+// - WAIT: [ascii::Char](https://github.com/rust-lang/rust/issues/110998)
 
 use core::fmt;
-#[cfg(feature = "unsafe_text")]
+#[cfg(feature = "unsafe_niche")]
 use core::mem::transmute;
 
 /// One of the 128 Unicode characters from U+0000 through U+007F,
@@ -20,7 +20,6 @@ use core::mem::transmute;
 /// ANSI X3.4-1977, ISO 646-1973, and [NIST FIPS 1-2].
 ///
 /// # When to use this
-///
 /// The main advantage of this subset is that it's always valid UTF-8.  As such,
 /// the `&[ascii::AsciiChar]` -> `&str` conversion function (as well as other related
 /// ones) are O(1): *no* runtime checks are needed.
@@ -41,11 +40,9 @@ use core::mem::transmute;
 /// were provided as a `[u8; 36]`.
 ///
 /// # Layout
-///
 /// This type is guaranteed to have a size and alignment of 1 byte.
 ///
 /// # Names
-///
 /// The variants on this type are [Unicode names][NamesList] of the characters
 /// in upper camel case, with a few tweaks:
 /// - For `<control>` characters, the primary alias name is used.
@@ -460,13 +457,12 @@ impl AsciiChar {
 
     /// Creates an ASCII character from the byte `b`,
     /// without checking whether it's valid.
-    ///
     /// # Safety
     /// `b` must be in `0..=127`, or else this is UB.
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_text")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_niche")))]
     pub const unsafe fn from_u8_unchecked(b: u8) -> Self {
         // SAFETY: Our safety precondition is that `b` is in-range.
         unsafe { transmute(b) }
@@ -502,8 +498,8 @@ impl AsciiChar {
     /// something useful. It might be tightened before stabilization.)
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_text")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn digit_unchecked(d: u8) -> Self {
         debug_assert!(d < 10);
 
@@ -535,8 +531,8 @@ impl AsciiChar {
     /// Views this ASCII character as a one-code-unit UTF-8 `str`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_text")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_str")))]
     pub const fn as_str(&self) -> &str {
         Self::slice_as_str(core::slice::from_ref(self))
     }
@@ -546,8 +542,8 @@ impl AsciiChar {
     /// Views a slice of ASCII characters as a UTF-8 `str`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_text")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_str")))]
     pub const fn slice_as_str(slice: &[AsciiChar]) -> &str {
         let ascii_ptr: *const [AsciiChar] = slice;
         let str_ptr = ascii_ptr as *const str;
@@ -559,8 +555,8 @@ impl AsciiChar {
     /// Views a slice of ASCII characters as a slice of `u8` bytes.
     #[inline]
     #[must_use]
-    #[cfg(feature = "unsafe_text")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_str")))]
     pub const fn slice_as_bytes(slice: &[AsciiChar]) -> &[u8] {
         AsciiChar::slice_as_str(slice).as_bytes()
     }

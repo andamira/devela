@@ -12,32 +12,48 @@
 //! [`await`]: https://doc.rust-lang.org/std/keyword.await.html
 //
 
-/* contains always compiled items */
+/* modules */
 
+// always compiled, non public
 mod reexports;
 
-/* feature-gated */
-
-#[cfg(all(feature = "unsafe_work", feature = "alloc"))]
+// feature gated, public
+#[cfg(all(
+    not(feature = "safe_work"),
+    feature = "unsafe_async",
+    feature = "alloc"
+))]
 #[cfg_attr(
     feature = "nightly",
-    doc(cfg(all(feature = "unsafe_work", feature = "alloc")))
+    doc(cfg(all(feature = "unsafe_async", feature = "alloc")))
 )]
 pub mod coroutine;
 
-// re-export public sub-modules
-#[doc(no_inline)]
-#[cfg(all(feature = "unsafe_work", feature = "alloc"))]
-pub use coroutine::*;
+/* re-exports */
 
-// re-export private sub-modules
+// always compiled, non-public
 pub use reexports::*;
 
+// feature-gated, public
+#[doc(no_inline)]
+#[cfg(all(
+    not(feature = "safe_work"),
+    feature = "unsafe_async",
+    feature = "alloc"
+))]
+pub use coroutine::*;
+
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     pub use super::reexports::*;
 
+    // feature-gated
     #[doc(inline)]
-    #[cfg(all(feature = "unsafe_work", feature = "alloc"))]
+    #[cfg(all(
+        not(feature = "safe_work"),
+        feature = "unsafe_async",
+        feature = "alloc"
+    ))]
     pub use super::coroutine::*;
 }
