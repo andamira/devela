@@ -17,7 +17,7 @@ use crate::text::char::*;
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 #[repr(transparent)]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub struct StringEgc(String);
 
 impl StringEgc {
@@ -33,7 +33,7 @@ impl StringEgc {
     #[must_use]
     #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
     #[cfg_attr(
-        feature = "nightly",
+        feature = "nightly_doc",
         doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
     )]
     pub fn from_char7(c: Char7) -> StringEgc {
@@ -45,7 +45,7 @@ impl StringEgc {
     #[must_use]
     #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
     #[cfg_attr(
-        feature = "nightly",
+        feature = "nightly_doc",
         doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
     )]
     pub fn from_char8(c: Char8) -> StringEgc {
@@ -57,7 +57,7 @@ impl StringEgc {
     #[must_use]
     #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
     #[cfg_attr(
-        feature = "nightly",
+        feature = "nightly_doc",
         doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
     )]
     pub fn from_char16(c: Char16) -> StringEgc {
@@ -69,7 +69,7 @@ impl StringEgc {
     #[must_use]
     #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
     #[cfg_attr(
-        feature = "nightly",
+        feature = "nightly_doc",
         doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
     )]
     pub fn from_char24(c: Char24) -> StringEgc {
@@ -83,7 +83,7 @@ impl StringEgc {
     #[must_use]
     #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
     #[cfg_attr(
-        feature = "nightly",
+        feature = "nightly_doc",
         doc(cfg(all(any(feature = "dep", feature = "unicode-segmentation"))))
     )]
     pub fn from_char32(c: Char32) -> StringEgc {
@@ -102,7 +102,7 @@ impl StringEgc {
     #[must_use]
     #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
     #[cfg_attr(
-        feature = "nightly",
+        feature = "nightly_doc",
         doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
     )]
     pub fn from_char(c: char) -> StringEgc {
@@ -176,7 +176,7 @@ mod core_impls {
 
     #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
     #[cfg_attr(
-        feature = "nightly",
+        feature = "nightly_doc",
         doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
     )]
     impl From<String> for StringEgc {
@@ -187,7 +187,7 @@ mod core_impls {
     }
     #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
     #[cfg_attr(
-        feature = "nightly",
+        feature = "nightly_doc",
         doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
     )]
     impl From<&str> for StringEgc {

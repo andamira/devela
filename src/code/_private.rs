@@ -27,7 +27,7 @@ macro_rules! reexport {
         #[doc = $dep_description]
         #[doc = concat!("\n\n*Re-exported [`", $dep_name,
             "`](https://docs.rs/", $dep_name, ")* crate.\n\n---")]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(all(
             any( $( $(feature = $anyf),+ )? )
             $(, $(feature = $anyf),+ )?
         ))))]
@@ -46,7 +46,7 @@ macro_rules! reexport {
         #[doc = $dep_description]
         #[doc = concat!("\n\n*Re-exported [`", $dep_name,
             "`](https://docs.rs/", $dep_name, ")* crate.\n\n---")]
-        #[cfg_attr(feature = "nightly", doc(cfg(all(
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(all(
             any( $($(feature = $anyf),+)? )
             $(, all($(feature = $allf),+) )?
         ))))]
@@ -88,7 +88,7 @@ macro_rules! reexport {
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = $module_feature)))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $module_feature)))]
 
         pub use core :: $($( $core_path :: )+)? {
             $( $item ),*
@@ -113,7 +113,7 @@ macro_rules! reexport {
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
         #[cfg_attr(
-            feature = "nightly",
+            feature = "nightly_doc",
             doc(cfg(all(feature = $module_feature, feature = "alloc")))
         )]
 
@@ -141,7 +141,7 @@ macro_rules! reexport {
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
         #[cfg_attr(
-            feature = "nightly",
+            feature = "nightly_doc",
             doc(cfg(all(feature = $module_feature, feature = "std")))
         )]
 
@@ -169,7 +169,7 @@ macro_rules! reexport {
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
         #[cfg_attr(
-            feature = "nightly",
+            feature = "nightly_doc",
             doc(cfg(all(feature = $module_feature, any(feature = "std", feature = "no_std"))))
         )]
 
@@ -205,7 +205,7 @@ macro_rules! reexport {
         // but leave it in the following cfg attribute.
         // Also, the part of negated features and target_has_atomic
         // would require a different branch
-        #[cfg_attr(feature = "nightly", doc(cfg(
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(
             all(feature = "dep" $( , feature = $f )+ ),
         )))]
 

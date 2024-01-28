@@ -13,7 +13,7 @@ mod num_to_str;
 
 // feature-gated, private
 // #[cfg(feature = "unsafe_text")]
-// #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_text")))]
 // mod int_buf;
 
 /* re-exports */
@@ -33,6 +33,6 @@ pub(crate) mod all {
     // feature-gated
     // #[doc(inline)]
     // #[cfg(feature = "unsafe_text")]
-    // #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_text")))]
+    // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_text")))]
     // pub use super::int_buf::{IntBuf, IntBufAble};
 }

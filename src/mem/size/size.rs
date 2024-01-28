@@ -12,7 +12,6 @@ impl<T> Size for T {}
 ///
 /// This trait is automatically implemented for every `Sized` type.
 // (this allows use to have associated constants depending on Self)
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
 pub trait Size: Mem + Sized {
     /// The alignment of this type in bytes.
     const BYTE_ALIGN: usize = mem_align_of::<Self>();

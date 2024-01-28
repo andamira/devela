@@ -29,7 +29,6 @@ mod tests;
 /// [`u128`]: Self#implementation-for-u128
 /// [`usize`]: Self#implementation-for-usize
 #[repr(transparent)]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub struct Biting<T>(pub T);
 
 #[rustfmt::skip]

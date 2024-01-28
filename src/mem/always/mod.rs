@@ -10,7 +10,7 @@ pub use fns::*;
 
 /// Swaps two mutable references in compilation time, using a temporary variable.
 #[macro_export]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 macro_rules! cswap {
     ($a:expr, $b:expr) => {{
         let tmp = $a;

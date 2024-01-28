@@ -30,7 +30,10 @@
 ///
 /// [0]: super::Ansi#ansi-escape-codes
 #[macro_export]
-#[cfg_attr(feature = "nightly", doc(cfg(all(feature = "dep", feature = "text"))))]
+#[cfg_attr(
+    feature = "nightly_doc",
+    doc(cfg(all(feature = "dep", feature = "text")))
+)]
 #[cfg(any(all(feature = "dep", feature = "text"), feature = "const-str"))]
 macro_rules! ansib {
     ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::code::paste! {
@@ -40,7 +43,7 @@ macro_rules! ansib {
     }};
 }
 #[doc(inline)]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "dep")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep")))]
 #[cfg(any(feature = "dep", feature = "const-str"))]
 pub use ansib;
 
@@ -75,7 +78,7 @@ pub use ansib;
 ///
 /// [0]: super::Ansi#ansi-escape-codes
 #[macro_export]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "dep")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep")))]
 #[cfg(any(feature = "dep", feature = "const-str"))]
 macro_rules! ansi {
     ($($arg:tt)*) => {
@@ -94,7 +97,7 @@ macro_rules! ansi {
     };
 }
 #[doc(inline)]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "dep")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep")))]
 #[cfg(any(feature = "dep", feature = "const-str"))]
 pub use ansi;
 
@@ -117,7 +120,10 @@ pub use ansi;
 /// See [`ansi!`] and [`ansib!`] for the non-printing versions.
 ///
 /// [0]: super::Ansi#ansi-escape-codes
-#[cfg_attr(feature = "nightly", doc(cfg(all(feature = "dep", feature = "std",))))]
+#[cfg_attr(
+    feature = "nightly_doc",
+    doc(cfg(all(feature = "dep", feature = "std",)))
+)]
 #[cfg(all(
     not(miri),
     feature = "std",
@@ -128,7 +134,10 @@ macro_rules! ansip {
     ($($arg:tt)*) => { $crate::ui::term::Ansi::print( $crate::ui::term::ansib![ $($arg)* ] ); };
 }
 
-#[cfg_attr(feature = "nightly", doc(cfg(all(feature = "dep", feature = "std",))))]
+#[cfg_attr(
+    feature = "nightly_doc",
+    doc(cfg(all(feature = "dep", feature = "std",)))
+)]
 #[cfg(all(
     not(miri),
     feature = "std",

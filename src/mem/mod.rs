@@ -17,26 +17,26 @@
 /* modules */
 
 // always compiled, non-public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod aligned;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod always;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod reexports;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod slice;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod storage;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod r#trait;
 
 // always compiled, public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 pub mod size;
 
 // feature-gated, non-public
 #[cfg(feature = "mem")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod fns;
 
 /* re-exports */

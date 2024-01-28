@@ -63,7 +63,7 @@ macro_rules! impl_int {
             /// ```
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors(mut self) -> Vec<$t> {
                 self.0 = self.0.abs();
                 iif![self.0 == 0; return vec![];
@@ -97,7 +97,7 @@ macro_rules! impl_int {
             /// ```
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_proper(mut self) -> Vec<$t> {
                 self.0 = self.0.abs();
                 iif![self.0 == 0; return vec![]];
@@ -133,7 +133,7 @@ macro_rules! impl_int {
             /// ```
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime(self) -> Vec<$t> {
                 let mut factors = Vec::new();
                 iif![self.0 == 0; return factors];
@@ -165,7 +165,7 @@ macro_rules! impl_int {
             /// ```
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique(self) -> Vec<$t> {
                 self.factors_prime().also_mut(|v| v.dedup())
             }
@@ -405,7 +405,7 @@ macro_rules! impl_int {
             /// ```
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors(self) -> Vec<$t> {
                 iif![self.0 == 0; return vec![]; iif![self.0 == 1; return vec![1]]];
                 let mut set = BTreeSet::new();
@@ -438,7 +438,7 @@ macro_rules! impl_int {
             /// ```
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_proper(self) -> Vec<$t> {
                 iif![self.0 == 0; return vec![]];
                 let mut set = BTreeSet::new();
@@ -473,7 +473,7 @@ macro_rules! impl_int {
             /// ```
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime(mut self) -> Vec<$t> {
                 let mut factors = Vec::new();
                 iif![self.0 == 0; return factors];
@@ -505,7 +505,7 @@ macro_rules! impl_int {
             /// ```
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique(self) -> Vec<$t> {
                 self.factors_prime().also_mut(|v| v.dedup())
             }

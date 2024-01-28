@@ -3,21 +3,27 @@
 //! An all-encompassing, highly integrated layer for Rust development.
 //
 
-// warnings
+// warnings:
 #![warn(missing_docs, clippy::all)]
 #![cfg_attr(not(feature = "deps"), allow(rustdoc::broken_intra_doc_links))]
 #![allow(
     clippy::module_inception, // allow modules with the same name as its parent
     clippy::wrong_self_convention, // allow `is_` methods having an owned self
 )]
-// nightly, safety, environment
-#![cfg_attr(feature = "nightly", feature(doc_cfg))]
-#![cfg_attr(feature = "safe", forbid(unsafe_code))]
+// nightly:
+// WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
+#![cfg_attr(feature = "nightly_doc", feature(doc_cfg))]
+//
+// environment:
 #![cfg_attr(not(feature = "std"), no_std)]
+// safety:
+#![cfg_attr(feature = "safe", forbid(unsafe_code))]
 
-// safeguarding: environment, safety
+// safeguard environment:
 #[cfg(all(feature = "std", feature = "no_std"))]
 compile_error!("You can't enable the `std` and `no_std` features at the same time.");
+//
+// safeguard safety:
 #[cfg(all(
     feature = "safe",
     any(feature = "unsafe", // includes all below:
@@ -28,7 +34,8 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
             feature = "unsafe_ui_term",
     )
 ))]
-compile_error!("You can't enable `safe` and `unsafe*` features at the same time.");
+compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
+// but you can enable `safe_*` features to prevent `unsafe` use in the specific module.
 
 /// Dependencies.
 pub mod _deps;

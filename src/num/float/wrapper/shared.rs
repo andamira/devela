@@ -750,7 +750,7 @@ macro_rules! custom_impls {
             /// the possibly more efficient `std` and `libm` implementations.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_const")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_const")))]
             pub const fn const_abs(x: $f) -> $f {
                 let mask = <$uf>::MAX / 2;
                 unsafe {

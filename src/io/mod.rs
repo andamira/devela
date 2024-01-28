@@ -16,13 +16,13 @@
 
 // feature-gated, non-public
 #[cfg(feature = "io")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "io")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
 mod path;
 //
 #[cfg(feature = "std")]
 mod reexport_std;
 #[cfg_attr(
-    feature = "nightly",
+    feature = "nightly_doc",
     doc(cfg(all(feature = "error", any(feature = "no_std", feature = "std"))))
 )]
 #[cfg(feature = "no_std")]

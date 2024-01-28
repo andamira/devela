@@ -9,7 +9,7 @@
 
 // feature-gated, public
 #[cfg(feature = "render")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "render")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "render")))]
 pub mod color;
 
 /* re-exports */

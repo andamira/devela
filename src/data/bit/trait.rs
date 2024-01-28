@@ -8,7 +8,6 @@ use crate::data::DataResult as Result;
 /// Provides bitwise operations on `T`.
 ///
 /// See also [`Biting`] for the equivalent const wrapper.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub trait BitOps
 where
     Self: Sized,

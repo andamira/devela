@@ -16,23 +16,23 @@
 mod _private;
 
 // always compiled, non-public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod cfor;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod chain;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod deprecate;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod enumset;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod ident;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod iif;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod paste;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod reexports;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "code")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod skip_format;
 
 /* re-exports */

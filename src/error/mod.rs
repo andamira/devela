@@ -14,25 +14,25 @@
 /* modules */
 
 // always compiled, public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
 pub mod panic;
 
 // feature-gated, non-public
 #[cfg(feature = "error")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
 mod ext_result;
 #[cfg(feature = "error")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
 mod never;
 #[cfg(feature = "error")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
 mod option;
 //
 #[cfg(feature = "std")]
 mod reexport_std;
 #[cfg(feature = "no_std")]
 #[cfg_attr(
-    feature = "nightly",
+    feature = "nightly_doc",
     doc(cfg(all(feature = "error", any(feature = "no_std", feature = "std"))))
 )]
 mod reimplement_no_std;

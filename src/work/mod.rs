@@ -13,13 +13,13 @@
 
 // feature-gated, public
 #[cfg(feature = "work")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub mod r#async;
 #[cfg(feature = "work")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub mod sync;
 #[cfg(feature = "work")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "work")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub mod thread;
 
 /* re-exports */

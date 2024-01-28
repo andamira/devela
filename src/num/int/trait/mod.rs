@@ -97,7 +97,6 @@ mod auto_impls {
 ///     [`sqrt_round`][Self::int_sqrt_round],
 ///
 /// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait NumInt: Num {
     /* base */
@@ -346,12 +345,12 @@ pub trait NumInt: Num {
     /// assert_eq![7_i32.int_factors(), Ok(vec![1, 7])];
     /// ```
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_factors(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
     /// *Like [`int_factors`][Self::int_factors]
     /// but takes the arguments by reference.*
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors(&self) -> Result<Vec<Self::Out>> { E::ni() }
 
     /// Returns the proper factors.
@@ -367,12 +366,12 @@ pub trait NumInt: Num {
     /// assert_eq![7_i32.int_factors_proper(), Ok(vec![])];
     /// ```
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_factors_proper(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
     /// *Like [`int_factors_proper`][Self::int_factors_proper]
     /// but takes the arguments by reference.*
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors_proper(&self) -> Result<Vec<Self::Out>> { E::ni() }
 
     /// Returns the prime factors.
@@ -388,12 +387,12 @@ pub trait NumInt: Num {
     /// assert_eq![7_i32.int_factors_prime(), Ok(vec![7])];
     /// ```
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_factors_prime(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
     /// *Like [`int_factors_prime`][Self::int_factors_prime]
     /// but takes the arguments by reference.*
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors_prime(&self) -> Result<Vec<Self::Out>> { E::ni() }
 
     /// Returns the unique prime factors.
@@ -406,12 +405,12 @@ pub trait NumInt: Num {
     /// assert_eq![24_i32.int_factors_prime_unique(), Ok(vec![2, 3])];
     /// ```
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_factors_prime_unique(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
     /// *Like [`int_factors_prime_unique`][Self::int_factors_prime_unique]
     /// but takes the arguments by reference.*
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors_prime_unique(&self) -> Result<Vec<Self::Out>> { E::ni() }
 
     /* factors (non-allocating) */

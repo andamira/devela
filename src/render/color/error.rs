@@ -30,8 +30,8 @@ impl ColorErrors {
 }
 
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
-// WAIT: error_in_core https://github.com/rust-lang/rust/issues/103765
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+// WAIT: [error_in_core](https://github.com/rust-lang/rust/issues/103765)
 impl std::error::Error for ColorErrors {}
 
 mod core_impls {

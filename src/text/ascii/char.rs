@@ -462,7 +462,7 @@ impl AsciiChar {
     #[inline]
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_niche")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
     pub const unsafe fn from_u8_unchecked(b: u8) -> Self {
         // SAFETY: Our safety precondition is that `b` is in-range.
         unsafe { transmute(b) }
@@ -499,7 +499,7 @@ impl AsciiChar {
     #[inline]
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_str")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn digit_unchecked(d: u8) -> Self {
         debug_assert!(d < 10);
 
@@ -532,7 +532,7 @@ impl AsciiChar {
     #[inline]
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_str")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
     pub const fn as_str(&self) -> &str {
         Self::slice_as_str(core::slice::from_ref(self))
     }
@@ -543,7 +543,7 @@ impl AsciiChar {
     #[inline]
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_str")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
     pub const fn slice_as_str(slice: &[AsciiChar]) -> &str {
         let ascii_ptr: *const [AsciiChar] = slice;
         let str_ptr = ascii_ptr as *const str;
@@ -556,7 +556,7 @@ impl AsciiChar {
     #[inline]
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_str")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
     pub const fn slice_as_bytes(slice: &[AsciiChar]) -> &[u8] {
         AsciiChar::slice_as_str(slice).as_bytes()
     }

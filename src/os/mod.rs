@@ -13,9 +13,9 @@
 /* modules */
 
 // always compiled, public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "os")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "os")))]
 pub mod arch;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "os")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "os")))]
 pub mod ffi;
 
 /* re-exports */

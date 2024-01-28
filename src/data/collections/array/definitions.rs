@@ -25,7 +25,7 @@ pub struct Array<T, S: Storage, const LEN: usize> {
 
 /// An [`Array`] stored in the heap.
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub type BoxedArray<T, const LEN: usize> = Array<T, Boxed, LEN>;
 
 /// An [`Array`] stored in the stack.

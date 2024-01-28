@@ -34,7 +34,6 @@ use core::cmp::Ordering::{self, *};
 ///  `is_positive`, `is_negative`, `is_finite`, `is_infinite`, `is_nan`.
 /// - methods will only be *const* with the `unsafe_const` feature enabled.
 #[repr(transparent)]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub struct Comparing<T>(pub T);
 
 #[rustfmt::skip]

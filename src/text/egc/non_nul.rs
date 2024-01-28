@@ -47,7 +47,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Creates a new `ArrayU8NonNulEgc` from a `Char7`.
     ///
     /// If `c`.[`is_nul()`][Char7#method.is_nul] an empty egc will be returned.
-    ///
     /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < 1.
     ///
@@ -61,7 +60,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Creates a new `ArrayU8NonNulEgc` from a `Char8`.
     ///
     /// If `c`.[`is_nul()`][Char8#method.is_nul] an empty egc will be returned.
-    ///
     /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Chars#method.len_utf8].
     ///
@@ -75,7 +73,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Creates a new `ArrayU8NonNulEgc` from a `Char16`.
     ///
     /// If `c`.[`is_nul()`][Char16#method.is_nul] an empty egc will be returned.
-    ///
     /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Chars#method.len_utf8].
     ///
@@ -89,7 +86,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Creates a new `ArrayU8NonNulEgc` from a `Char24`.
     ///
     /// If `c`.[`is_nul()`][Char24#method.is_nul] an empty egc will be returned.
-    ///
     /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Chars#method.len_utf8].
     ///
@@ -103,7 +99,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Creates a new `ArrayU8NonNulEgc` from a `Char32`.
     ///
     /// If `c`.[`is_nul()`][Char32#method.is_nul] an empty egc will be returned.
-    ///
     /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Chars#method.len_utf8].
     ///
@@ -117,7 +112,6 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Creates a new `ArrayU8NonNulEgc` from a `char`.
     ///
     /// If `c`.[`is_nul()`][Chars#method.is_nul] an empty egc will be returned.
-    ///
     /// # Panics
     /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Chars#method.len_utf8].
     ///
@@ -173,12 +167,11 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     }
 
     /// Returns a mutable byte slice of the inner string slice.
-    ///
     /// # Safety
     /// TODO
     #[inline]
-    #[cfg(feature = "unsafe")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         self.0.as_bytes_mut()
     }
@@ -206,18 +199,17 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     }
 
     /// Returns the mutable inner string slice.
-    ///
     /// # Safety
     /// TODO
-    #[cfg(feature = "unsafe")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_str_mut(&mut self) -> &mut str {
         self.0.as_str_mut()
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn chars(&self) -> Chars {
         self.0.chars()
     }
@@ -225,7 +217,7 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     /// Returns a new allocated C-compatible, nul-terminanted string.
     #[inline]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn to_cstring(&self) -> CString {
         self.0.to_cstring()
     }

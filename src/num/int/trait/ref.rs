@@ -136,19 +136,19 @@ where
     /* factors (allocating) */
 
     /// *Calls `NumInt::`[`int_ref_factors`][NumInt::int_ref_factors]*.
-    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors(&self) -> Result<Vec<<Self::Own as Num>::Out>> { 
             self.deref().int_ref_factors() }
     /// *Calls `NumInt::`[`int_ref_factors_proper`][NumInt::int_ref_factors_proper]*.
-    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors_proper(&self) -> Result<Vec<<Self::Own as Num>::Out>> { 
             self.deref().int_ref_factors_proper() }
     /// *Calls `NumInt::`[`int_ref_factors_prime`][NumInt::int_ref_factors_prime]*.
-    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors_prime(&self) -> Result<Vec<<Self::Own as Num>::Out>> { 
             self.deref().int_ref_factors_prime() }
     /// *Calls `NumInt::`[`int_ref_factors_prime_unique`][NumInt::int_ref_factors_prime_unique]*.
-    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors_prime_unique(&self) -> Result<Vec<<Self::Own as Num>::Out>> { 
             self.deref().int_ref_factors_prime_unique() }
 

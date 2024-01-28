@@ -254,8 +254,8 @@ macro_rules! generate_array_string {
             /// TODO
             #[inline]
             #[must_use]
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_slice")))]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
             pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
                 self.arr.get_unchecked_mut(0..self.len as usize)
             }
@@ -308,7 +308,7 @@ macro_rules! generate_array_string {
             /// TODO
             #[must_use]
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_slice")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
             pub fn as_str_mut(&mut self) -> &mut str {
                 unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
             }
@@ -316,7 +316,7 @@ macro_rules! generate_array_string {
             /// Returns an iterator over the `chars` of this grapheme cluster.
             #[inline]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn chars(&self) -> Chars {
                 self.as_str().chars()
             }
@@ -325,7 +325,7 @@ macro_rules! generate_array_string {
             #[inline]
             #[must_use]
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn to_cstring(&self) -> CString {
                 CString::new(self.to_string()).unwrap()
             }
@@ -464,7 +464,7 @@ macro_rules! generate_array_string {
             #[cfg(target_os = "wasi")]
             use std::os::wasi::ffi::OsStrExt;
 
-            #[cfg_attr(feature = "nightly", doc(cfg(
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(
                 all(feature = "std", any(unix, target_os = "wasi"))
             )))]
             impl<const CAP: usize> AsRef<OsStr> for [<Array $t:upper String>]<CAP> {

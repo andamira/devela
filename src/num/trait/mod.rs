@@ -31,7 +31,6 @@ impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
 /// E.g. `num_abs` for unsigned types is only valid for `0`.
 ///
 /// See also [`NumRef`] which is automatically implemented for `Num` references.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait Num {
     /// The internal representation of this numeric type.
@@ -117,7 +116,6 @@ pub trait Num {
 ///
 /// It is automatically implemented for references of types implementing [`Num`].
 /// Mutable operations are only available for exclusive (`&mut`) references.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait NumRef<'a>
 where

@@ -5,8 +5,8 @@
 
 use std::io::{stdout, Write};
 
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
 /// # Print method
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 impl super::Ansi {
     /// Convenience method to print an ANSI escape `sequence` of bytes to `stdout`.
     ///

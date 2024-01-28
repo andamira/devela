@@ -79,17 +79,15 @@ error = []
 io = []
 mem = ["dep?/bytemuck"]
 num = []
-	num_all = [
-		"num_niche_impls" ]
-	num_niche_impls = [] # enables extra implementations for niche types
+	num_all = [ "num_niche_impls" ]
+	num_niche_impls = [] # extra impls for niche types
 os = []
 render = []
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
 ui = []
-	ui_all = [
-		"ui_term" ]
-	ui_term = ["dep?/const-str"]
+	ui_all = [ "ui_term" ]
+	ui_term = ["dep?/const-str"] # terminal support
 work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 
 
@@ -129,7 +127,10 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 #* nightly features *#
 
 nightly = [ # enables nightly features
-]
+	"nightly_doc",
+] # specific unstable features:
+	nightly_doc = [] # doc_cfg
+
 
 #* dependency features *#
 

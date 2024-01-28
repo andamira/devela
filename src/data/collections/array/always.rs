@@ -53,7 +53,6 @@
 ///
 /// For `clone`, `default` and `iter` versions, uf the given `$unsafe_feature`
 /// is enabled it will use unsafe initialization.
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 #[macro_export]
 macro_rules! array_init {
     // Safe array initialization in the stack

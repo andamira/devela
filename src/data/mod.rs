@@ -18,25 +18,25 @@
 /* modules */
 
 // always compiled, non-public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 mod error;
 
 // always compiled, public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod bit;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod cmp;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod collections;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod hash;
 
 // feature-gated, public
 #[cfg(feature = "data")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod any;
 #[cfg_attr(
-    feature = "nightly",
+    feature = "nightly_doc",
     doc(cfg(all(feature = "unsafe_dyn", feature = "dep")))
 )]
 #[cfg(all(
@@ -45,7 +45,7 @@ pub mod any;
     any(feature = "bytemuck", feature = "dep"),
     not(feature = "safe_data")
 ))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod dst;
 
 /* re-exports */

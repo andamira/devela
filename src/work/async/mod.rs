@@ -24,7 +24,7 @@ mod reexports;
     feature = "alloc"
 ))]
 #[cfg_attr(
-    feature = "nightly",
+    feature = "nightly_doc",
     doc(cfg(all(feature = "unsafe_async", feature = "alloc")))
 )]
 pub mod coroutine;

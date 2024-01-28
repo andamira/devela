@@ -15,35 +15,35 @@
 mod _private;
 
 // always compiled, non-public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod alias;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod error;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod float;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod primitive;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod sign;
 
 // always compiled, public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 pub mod niche;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 pub mod ops;
 
 // feature gated, private
 #[cfg(feature = "num")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod frac;
 #[cfg(feature = "num")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod int;
 #[cfg(feature = "num")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod no;
 #[cfg(feature = "num")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod r#trait;
 
 /* re-exports */

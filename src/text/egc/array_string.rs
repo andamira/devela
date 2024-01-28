@@ -35,7 +35,6 @@ impl_sized_alias![
 
 impl<const CAP: usize> ArrayU8Egc<CAP> {
     /// Creates a new empty `ArrayU8Egc`.
-    ///
     /// # Panics
     /// Panics if `CAP` > 255.
     #[inline]
@@ -45,7 +44,6 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     }
 
     /// Creates a new `ArrayU8Egc` from a `Char7`.
-    ///
     /// # Panics
     /// Panics if `CAP` > 255 or < 1.
     ///
@@ -57,7 +55,6 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     }
 
     /// Creates a new `ArrayU8Egc` from a `Char8`.
-    ///
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char8#method.len_utf8].
     ///
@@ -69,7 +66,6 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     }
 
     /// Creates a new `ArrayU8Egc` from a `Char16`.
-    ///
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char16#method.len_utf8].
     ///
@@ -81,7 +77,6 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     }
 
     /// Creates a new `ArrayU8Egc` from a `Char24`.
-    ///
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char24#method.len_utf8].
     ///
@@ -93,7 +88,6 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     }
 
     /// Creates a new `ArrayU8Egc` from a `Char32`.
-    ///
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char32#method.len_utf8].
     ///
@@ -105,7 +99,6 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     }
 
     /// Creates a new `ArrayU8Egc` from a `char`.
-    ///
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Chars#method.len_utf8].
     ///
@@ -161,12 +154,11 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     }
 
     /// Returns a mutable byte slice of the inner string slice.
-    ///
     /// # Safety
     /// TODO
     #[inline]
-    #[cfg(feature = "unsafe")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         self.0.as_bytes_mut()
     }
@@ -194,18 +186,17 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     }
 
     /// Returns the mutable inner string slice.
-    ///
     /// # Safety
     /// TODO
-    #[cfg(feature = "unsafe")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_str_mut(&mut self) -> &mut str {
         self.0.as_str_mut()
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn chars(&self) -> Chars {
         self.0.chars()
     }
@@ -213,7 +204,7 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     /// Returns a new allocated C-compatible, nul-terminanted string.
     #[inline]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn to_cstring(&self) -> CString {
         self.0.to_cstring()
     }

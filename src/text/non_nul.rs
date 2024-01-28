@@ -259,7 +259,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     #[inline]
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         let len = self.len();
         self.arr.get_unchecked_mut(0..len)
@@ -306,7 +306,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     #[inline]
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_str_mut(&mut self) -> &mut str {
         &mut *(self.as_bytes_mut() as *mut [u8] as *mut str)
     }
@@ -314,7 +314,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[inline]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn chars(&self) -> Chars {
         self.as_str().chars()
     }
@@ -323,7 +323,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
     #[inline]
     #[must_use]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn to_cstring(&self) -> CString {
         CString::new(self.to_string()).unwrap()
     }

@@ -6,7 +6,7 @@
 ///
 /// On a 32 bit target, this is 4 bytes and on a 64 bit target, 8 bytes.
 #[cfg_attr(
-    feature = "nightly",
+    feature = "nightly_doc",
     doc(cfg(any(target_pointer_width = "32", target_pointer_width = "64")))
 )]
 #[cfg(target_pointer_width = "32")]
@@ -16,7 +16,7 @@ pub type fsize = f32;
 ///
 /// On a 32 bit target, this is 4 bytes and on a 64 bit target, 8 bytes.
 #[cfg_attr(
-    feature = "nightly",
+    feature = "nightly_doc",
     doc(cfg(any(target_pointer_width = "32", target_pointer_width = "64")))
 )]
 #[cfg(target_pointer_width = "64")]

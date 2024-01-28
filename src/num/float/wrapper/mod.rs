@@ -34,7 +34,6 @@ mod shared; // implement Floating shared methods
 ///
 /// See also the [`ExtFloat`] trait.
 #[derive(Debug, Clone, Copy)]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "num")))]
 pub struct Floating<T>(core::marker::PhantomData<T>);
 
 // macro helper for implementing methods for `Floating`, from either `libm` or `std`.

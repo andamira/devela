@@ -17,7 +17,7 @@ mod private {
 
 /// Extension trait providing additional methods for [`String`].
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub trait ExtString: private::Sealed {
     /// Returns a [`String`] where you always know each character's position.
     ///

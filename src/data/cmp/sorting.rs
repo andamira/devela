@@ -50,7 +50,6 @@ use crate::{
 /// assert_eq![Sorting(arr).selection_array(), [-5.4, -0.0, 0.0, 1.0, 4.01, 7.9]];
 /// ```
 #[repr(transparent)]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data")))]
 pub struct Sorting<T>(pub T);
 
 impl<T: Ord> Sorting<&mut [T]> {
@@ -87,7 +86,7 @@ impl<T: Ord> Sorting<&mut [T]> {
     /// ```
     #[inline]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn counting(self) -> Vec<usize>
     where
         T: Clone,
@@ -197,7 +196,7 @@ impl<T: Ord> Sorting<&mut [T]> {
     /// ```
     #[inline]
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn merge(self)
     where
         T: Copy,

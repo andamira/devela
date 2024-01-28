@@ -82,7 +82,7 @@ mod reexports {
     ///
     #[doc = "*Re-exported from [`core::panic`][macro@panic]*."]
     #[doc = "\n\n---"]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "error")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
     #[macro_export]
     macro_rules! panic { ($($tt:tt)*) => { core::panic![$($tt)*] } }
     pub use panic;

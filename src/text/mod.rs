@@ -13,38 +13,38 @@
 /* modules */
 
 // always compiled, public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod ascii;
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod char;
 
 // always compiled, non-public
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod reexports;
 
 // feature-gated, public
 #[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod egc;
 #[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod fmt;
 
 // feature-gated, non-public
 #[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod array_string;
 #[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod error;
 #[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod ext;
 #[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod helpers;
 #[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod non_nul;
 
 /* re-exports */

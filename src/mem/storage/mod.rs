@@ -47,7 +47,7 @@ pub use direct::*;
 /// assert_eq![8, size_of::<MyStructure::<u8, devela::mem::Boxed, 100>>()];
 ///
 /// ```
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 pub trait Storage {
     /// The stored associated type.
     ///
@@ -66,12 +66,12 @@ pub trait Storage {
 
 /// A storage type that wraps its data in a [`Box`].
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "mem")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 pub struct Boxed;
 
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl Storage for Boxed {
     type Stored<T> = crate::_deps::alloc::boxed::Box<T>;
 

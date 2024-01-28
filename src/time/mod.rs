@@ -10,7 +10,7 @@
 
 // feature-gated, private
 #[cfg(feature = "time")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "time")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
 mod reexports;
 
 /* re-exports */

@@ -40,7 +40,7 @@ impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
 
 // `S:Boxed + T:Clone`
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
     /// Returns an empty stack, allocated in the heap,
     /// using `element` to fill the remaining free data.
@@ -97,7 +97,7 @@ impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
 
 // `S: Boxed`
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T, const LEN: usize> Array<T, Boxed, LEN> {
     /// Returns the inner boxed primitive array.
     pub fn into_array(self) -> Box<[T; LEN]> {

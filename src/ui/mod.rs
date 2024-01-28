@@ -7,7 +7,7 @@
 
 // feature-gated, public
 #[cfg(feature = "ui_term")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "ui_term")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ui_term")))]
 pub mod term;
 
 /* re-exports */
