@@ -44,7 +44,7 @@ This project includes the following derived works:
 [rawbytes]: https://crates.io/crates/rawbytes/1.0.0
 [`mem_as_bytes`]: https://docs.rs/devela/latest/devela/mem/fn.mem_as_bytes.html
 [`mem_as_bytes_mut`]: https://docs.rs/devela/latest/devela/mem/fn.mem_as_bytes_mut.html
-[const_for]: https://crates.io/crates/const_for/0.1.3
+[const_for]: https://crates.io/crates/const_for/0.1.4
 [`cfor`]: https://docs.rs/devela/latest/devela/code/macro.cfor.html
 [no_std_io]: https://crates.io/crates/no_std_io/0.6.0
 [core2]: https://crates.io/crates/core2/0.4.0
