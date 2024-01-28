@@ -15,45 +15,16 @@
 /* modules */
 
 // always compiled, non public
+mod coroutine;
 mod reexports;
-
-// feature gated, public
-#[cfg(all(
-    not(feature = "safe_work"),
-    feature = "unsafe_async",
-    feature = "alloc"
-))]
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(all(feature = "unsafe_async", feature = "alloc")))
-)]
-pub mod coroutine;
 
 /* re-exports */
 
 // always compiled, non-public
-pub use reexports::*;
-
-// feature-gated, public
-#[doc(no_inline)]
-#[cfg(all(
-    not(feature = "safe_work"),
-    feature = "unsafe_async",
-    feature = "alloc"
-))]
-pub use coroutine::*;
+pub use {coroutine::*, reexports::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::reexports::*;
-
-    // feature-gated
-    #[doc(inline)]
-    #[cfg(all(
-        not(feature = "safe_work"),
-        feature = "unsafe_async",
-        feature = "alloc"
-    ))]
-    pub use super::coroutine::*;
+    pub use super::{coroutine::*, reexports::*};
 }

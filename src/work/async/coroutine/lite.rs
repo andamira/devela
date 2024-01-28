@@ -12,8 +12,10 @@
 //! - <https://www.reddit.com/r/rust/comments/etqwhx/a_stackless_rust_coroutine_library_under_100_loc/>
 //
 
-use super::{TaskContext, TaskPoll, TaskRawWaker, TaskRawWakerVTable, TaskWaker};
-use crate::_deps::alloc::{boxed::Box, collections::VecDeque};
+use crate::{
+    _deps::alloc::{boxed::Box, collections::VecDeque},
+    work::{TaskContext, TaskPoll, TaskRawWaker, TaskRawWakerVTable, TaskWaker},
+};
 use core::{future::Future, pin::Pin};
 
 /// Represents a single-threaded coroutine.

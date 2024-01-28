@@ -29,7 +29,7 @@ macro_rules! reexport {
             "`](https://docs.rs/", $dep_name, ")* crate.\n\n---")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(all(
             any( $( $(feature = $anyf),+ )? )
-            $(, $(feature = $anyf),+ )?
+            $(, all($(feature = $allf),+) )?
         ))))]
         #[cfg(all(
             feature = $dep_name
@@ -74,6 +74,7 @@ macro_rules! reexport {
     // when the item is available in `core`
     ( rust : core $( :: $( $core_path:ident )::+)?,
       local_module: $module_feature:literal,
+      $( doc_extra_features: $($extraf:literal),+ $(,)? )? // not enforced, only shown
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
@@ -88,8 +89,10 @@ macro_rules! reexport {
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $module_feature)))]
-
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(all(
+            feature = $module_feature,
+            $(all($(feature = $extraf),+) )?
+        ))))]
         pub use core :: $($( $core_path :: )+)? {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
