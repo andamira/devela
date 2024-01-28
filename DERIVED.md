@@ -50,5 +50,5 @@ This project includes the following derived works:
 [core2]: https://crates.io/crates/core2/0.4.0
 [`io`]: https://docs.rs/devela/latest/devela/io/
 [numtoa]: https://crates.io/crates/numtoa/0.2.4
-[size_of_trait]: https://crates.io/crates/size-of-trait/1.1.2
+[size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3
 [`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/mem/size/macro.mem_size_of_expr.html

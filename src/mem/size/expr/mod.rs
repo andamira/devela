@@ -1,7 +1,7 @@
 // devela::mem::size::expr
 //
 // Original source code by Joshua Nelson, licensed as BSD-3,
-// https://crates.io/crates/size-of-trait/1.1.2
+// https://crates.io/crates/size-of-trait/1.1.3
 
 /// Returns the size of an expression in bytes.
 ///
@@ -43,15 +43,21 @@ pub use mem_size_of_expr;
 // A helper macro used to bridge the gap between compile-time and runtime.
 #[doc(hidden)]
 pub const fn __mem_size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0]; 0]) -> usize {
-    ::core::mem::size_of::<T>()
+    crate::mem::mem_size_of::<T>()
 }
+
+/* tests */
+
+// has to be a separate file because of experimental syntax
+#[cfg(all(test, feature = "nightly_coro", feature = "alloc"))]
+mod test_coro;
 
 #[cfg(test)]
 mod tests {
     use super::mem_size_of_expr;
     use crate::mem::mem_size_of;
 
-    trait Foo<'a, 'b> {}
+    pub(super) trait Foo<'a, 'b> {}
     impl<'a> Foo<'a, 'static> for () {}
     impl<'a, 'b> Foo<'a, 'b> for usize {}
 
@@ -62,7 +68,7 @@ mod tests {
     }
 
     #[test]
-    fn new_api() {
+    fn api() {
         const C: usize = mem_size_of_expr!(f());
         const D: usize = mem_size_of_expr!(0_u8);
         const E: usize = mem_size_of_expr!(());
@@ -76,15 +82,14 @@ mod tests {
 
     #[test]
     fn edge_cases() {
-        use ::core::mem::size_of;
-
         // 1. works with references:
-        const _: [(); mem_size_of_expr!(&Some(42))] = [(); size_of::<*const ()>()];
+        const _: [(); mem_size_of_expr!(&Some(42))] = [(); mem_size_of::<*const ()>()];
         let _ = mem_size_of_expr!(&Some(42));
 
         // 2. works with temporaries:
         #[allow(dropping_copy_types)]
-        const _: [(); mem_size_of_expr!(Some(drop(())).as_ref())] = [(); size_of::<*const ()>()];
+        const _: [(); mem_size_of_expr!(Some(drop(())).as_ref())] =
+            [(); mem_size_of::<*const ()>()];
         #[allow(dropping_copy_types)]
         let _ = mem_size_of_expr!(Some(drop(())).as_ref());
 
