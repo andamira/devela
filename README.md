@@ -4,7 +4,7 @@
 [![API](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
 [![MSRV: 1.75.0](https://flat.badgen.net/badge/MSRV/1.75.0/purple)](https://releases.rs/docs/1.75.0/)
 
-A handy foundation for developing applications.
+A cohesive development foundation.
 
 ## Status
 This project is currently in an experimental stage of development.

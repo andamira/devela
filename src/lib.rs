@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A handy foundation for developing applications.
+//! A cohesive development base.
 //
 
 // warnings:
