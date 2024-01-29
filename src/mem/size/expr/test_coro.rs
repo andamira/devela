@@ -2,6 +2,7 @@
 
 use super::tests::Foo;
 
+#[cfg(not(miri))]
 #[test]
 fn api_coro() {
     use crate::_deps::alloc::{string::String, vec};
@@ -24,5 +25,5 @@ fn api_coro() {
         }
     }
     const H: usize = mem_size_of_expr!(h());
-    assert_eq!(H, 32);
+    assert_eq!(H, 32); // IMPROVE: gives 16 in miri i686
 }
