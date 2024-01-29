@@ -107,7 +107,7 @@ impl ExtStr for str {
 
             let mut num_buf = ascii_usize_digits(num);
             let mut num_bytes = slice_trim_leading_bytes(&num_buf, b'0');
-            // IMPROVE: use NumToStr
+            // IMPROVE:BENCH use NumToStr
             // let mut num_buf = [0u8; 22];
             // let mut num_bytes = num.to_bytes_base(10, &mut num_buf);
 

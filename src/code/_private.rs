@@ -196,7 +196,7 @@ macro_rules! reexport {
     ) => { $crate::code::paste! {
         #[doc(inline)]
         #[doc = "<span class='stab portability' title='re-exported from `" $dep_str
-        "` (which can be enabled instead of `dep`)'>`" $dep_str "`</span>"]
+        "` (also enabled via `dep`)'>`" $dep_str "`</span>"]
         #[doc = $description]
         #[doc = "\n\n*Re-exported from the [`" $dep_str
             "`](https://docs.rs/" $dep_str " ) crate*"]

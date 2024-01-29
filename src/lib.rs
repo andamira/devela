@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! An all-encompassing, highly integrated layer for Rust development.
+//! A handy foundation for developing applications.
 //
 
 // warnings:
@@ -39,6 +39,19 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
 // but you can enable `safe_*` features to prevent `unsafe` use in the specific module.
 
+pub mod code;
+pub mod data;
+pub mod error;
+pub mod io;
+pub mod mem;
+pub mod num;
+pub mod os;
+pub mod render;
+pub mod text;
+pub mod time;
+pub mod ui;
+pub mod work;
+
 /// Dependencies.
 pub mod _deps;
 
@@ -60,18 +73,3 @@ pub mod all {
         os::all::*, render::all::*, text::all::*, time::all::*, ui::all::*, work::all::*,
     };
 }
-
-/* root modules */
-
-pub mod code;
-pub mod data;
-pub mod error;
-pub mod io;
-pub mod mem;
-pub mod num;
-pub mod os;
-pub mod render;
-pub mod text;
-pub mod time;
-pub mod ui;
-pub mod work;
