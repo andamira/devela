@@ -6,7 +6,7 @@ members = [".", "macros", "depend"]
 [package]
 
 name = "devela"
-description = "A highly integrated foundational layer for multidisciplinary Rust development"
+description = "A handy foundation for developing applications."
 version = "0.20.0-wip"
 edition = "2021"
 rust-version = "1.75.0" # sync with readme & .github/*/check.yml
@@ -16,9 +16,8 @@ documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
 include = [
 	"/Cargo.toml",
-	"/src/**/*.rs", "/src/**/*.md",
-	"/README.md", "/DERIVED.md", "/LICENSE-*",
-	"res/*.html",
+	"/DOCS/*.md",
+	"/src/**/*.rs", "/src/**/*.md", "src/**/*.html",
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "helpers", "extension", "extensions"]
@@ -188,7 +187,6 @@ optional = true
 features = ["fallback", "float"]
 
 [dev-dependencies]
-
 devela = { path = ".", features = ["full"] }
 
 
