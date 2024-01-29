@@ -1,6 +1,6 @@
-// devela::data::collections::trait
+// devela::data::collections::adt
 //
-//!
+//! DataCollection abstract data type
 //
 // TOC
 // - define trait DataCollection
@@ -68,7 +68,7 @@ impl<T, const N: usize> DataCollection for [T; N] {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataCollection for super::reexports::Vec<T> {
+impl<T> DataCollection for super::reexports::AllocArray<T> {
     type Element = T;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -84,7 +84,7 @@ impl<T> DataCollection for super::reexports::Vec<T> {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataCollection for super::reexports::VecDeque<T> {
+impl<T> DataCollection for super::reexports::AllocDeque<T> {
     type Element = T;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -100,7 +100,7 @@ impl<T> DataCollection for super::reexports::VecDeque<T> {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataCollection for super::PriorityQueue<T> {
+impl<T> DataCollection for super::AllocPrioQueue<T> {
     type Element = T;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -112,7 +112,7 @@ impl<T> DataCollection for super::PriorityQueue<T> {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<K, V> DataCollection for super::OrderedMap<K, V> {
+impl<K, V> DataCollection for super::AllocOrdMap<K, V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -127,17 +127,17 @@ impl<K, V> DataCollection for super::OrderedMap<K, V> {
 }
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<V> DataCollection for super::OrderedSet<V> {
+impl<V> DataCollection for super::AllocOrdSet<V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
     fn collection_is_full(&self) -> Result<bool> { E::ns() }
-    /// This is less efficent than [`OrderedSet::contains`] since not having [`Ord`].
+    /// This is less efficent than [`AllocOrdSet::contains`] for not having [`Ord`].
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where V: PartialEq {
         Ok(self.iter().any(|value| *value == element))
     }
-    /// This is less efficent than [`OrderedSet::contains`] since not having [`Ord`].
+    /// This is less efficent than [`AllocOrdSet::contains`] for not having [`Ord`].
     fn collection_count(&self, element: &Self::Element) -> Result<usize> where V: PartialEq {
         Ok(if self.iter().any(|e| e == element) { 1 } else { 0 })
     }
@@ -145,7 +145,7 @@ impl<V> DataCollection for super::OrderedSet<V> {
 
 #[rustfmt::skip]
 #[cfg(feature = "hashbrown")]
-impl<K, V> DataCollection for super::UnorderedMap<K, V> {
+impl<K, V> DataCollection for super::AllocMap<K, V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -160,17 +160,17 @@ impl<K, V> DataCollection for super::UnorderedMap<K, V> {
 }
 #[rustfmt::skip]
 #[cfg(feature = "hashbrown")]
-impl<V> DataCollection for super::UnorderedSet<V> {
+impl<V> DataCollection for super::AllocSet<V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
     fn collection_is_full(&self) -> Result<bool> { E::ns() }
-    /// This is less efficent than [`UnorderedSet::contains`] since not having [`Hash`] and [`Eq`].
+    /// This is less efficent than [`AllocSet::contains`] for not having [`Hash`] and [`Eq`].
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where V: PartialEq {
         Ok(self.iter().any(|value| *value == element))
     }
-    /// This is less efficent than [`UnorderedSet::contains`] since not having [`Hash`] and [`Eq`].
+    /// This is less efficent than [`AllocSet::contains`] for not having [`Hash`] and [`Eq`].
     fn collection_count(&self, element: &Self::Element) -> Result<usize> where V: PartialEq {
         Ok(if self.iter().any(|e| e == element) { 1 } else { 0 })
     }

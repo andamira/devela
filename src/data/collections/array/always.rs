@@ -71,6 +71,7 @@ macro_rules! array_init {
             panic!("Can't turn the boxed slice into a boxed array")
         })
     }};
+
     // unsafe array initialization in the stack
     (unsafe_init [$T:ty; $LEN:expr], $init:expr) => {{
         // SAFETY: array will be fully initialized in the subsequent loop
@@ -172,8 +173,8 @@ macro_rules! array_init {
         }
         #[cfg(feature = $unsafe_feature)]
         {
-            // SAFETY: array will be fully initialized in the subsequent loop
             let mut arr: [core::mem::MaybeUninit<$T>; $LEN] =
+                // SAFETY: array will be fully initialized in the subsequent loop
                 unsafe { core::mem::MaybeUninit::uninit().assume_init() };
             for (i, data) in $op.enumerate() {
                 arr[i].write(data?);
