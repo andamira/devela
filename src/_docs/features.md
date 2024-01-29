@@ -66,13 +66,14 @@ In order to use any unsafe functionality:
   - `safe_work`
 
 - `unsafe`: enables unsafe (as long as it isn't forbidden in the module)
-	- `unsafe_array` enables: faster array initialization.
-	- `unsafe_async` enables: custom task waker, coroutine impls.
-	- `unsafe_const` enables: extra const methods.
-	- `unsafe_dyn` enables: DSTs in the stack, `no_std` Error dyn impls.
-	- `unsafe_niche` enables: unchecked niche constructors.
-	- `unsafe_slice` enables: extra slice methods, avoid bound checks.
-	- `unsafe_str` enables: unchecked utf-8 char and &str conversions.
+	- `unsafe_array` faster array initialization.
+	- `unsafe_async` custom task waker, coroutine impls.
+	- `unsafe_const` extra const methods.
+	- `unsafe_dyn` DSTs in the stack, `no_std` Error dyn impls.
+	- `unsafe_niche` unchecked niche constructors.
+	- `unsafe_ptr` pop methods without `Clone`.
+	- `unsafe_slice` extra slice methods, avoid bound checks.
+	- `unsafe_str` unchecked utf-8 char and &str conversions.
 
 
 ### Nightly features
