@@ -11,9 +11,9 @@
 //   - float
 // - tests
 //
-// - WAIT:[const_float_classify](https://github.com/rust-lang/rust/issues/72505)
-// - WAIT:[const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
-// - WAIT:[const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/issues/57241)
+// - WAIT: [const_float_classify](https://github.com/rust-lang/rust/issues/72505)
+// - WAIT: [const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
+// - WAIT: [const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/issues/57241)
 
 use crate::code::{iif, paste};
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
@@ -155,10 +155,10 @@ macro_rules! impl_comparing {
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn total_cmp(self, other: $f) -> Ordering {
-                // WAIT:const_float_bits_conv https://github.com/rust-lang/rust/issues/72447
+                // WAIT: [const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
                 // let mut left = self.0.to_bits() as [<i $b>];
                 // let mut right = other.to_bits() as [<i $b>];
-                //
+
                 // SAFETY: transmuting from f32 to i32 or f64 to i64 is safe.
                 let mut left = unsafe { core::mem::transmute::<$f, [<i$b>]>(self.0) };
                 let mut right = unsafe { core::mem::transmute::<$f, [<i$b>]>(other) };

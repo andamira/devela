@@ -24,7 +24,6 @@ mod ext_vec;
 /* re-exports */
 
 // always compiled, non-public
-#[doc(no_inline)]
 pub use {array::all::*, r#trait::*, reexports::*};
 
 // feature-gated, non-public

@@ -179,8 +179,8 @@ mod _std {
 
         /* not implemented */
         // exp10: https://internals.rust-lang.org/t/enh-add-exp10-and-expf-base-x-f64-f32-methods-to-stdlib-to-symmetrize-api
-        // gamma, ln_gamma: WAIT: https://github.com/rust-lang/rust/issues/99842
-        // next_up, next_down: WAIT: https://github.com/rust-lang/rust/issues/91399
+        // WAIT: (next_up, next_down) [float_next_up_down](https://github.com/rust-lang/rust/issues/91399)
+        // WAIT: (gamma, ln_gamma) [float_gamma](https://github.com/rust-lang/rust/issues/99842)
     ];
 
     // $f: the floating-point type.

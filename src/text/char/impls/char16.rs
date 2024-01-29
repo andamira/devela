@@ -140,7 +140,7 @@ impl Char16 {
         // #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
         if let Some(c) = char::from_u32(self.0.get() as u32) { c } else { unreachable![] }
 
-        // WAITING for stable const: https://github.com/rust-lang/rust/issues/89259
+        // WAIT: [stable const](https://github.com/rust-lang/rust/issues/89259)
         // #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
         // SAFETY: we've already checked we contain a valid char.
         // return unsafe { char::from_u32_unchecked(self.0 as u32) };

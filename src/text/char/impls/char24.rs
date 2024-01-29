@@ -152,7 +152,7 @@ impl Char24 {
         // #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         if let Some(c) = char::from_u32(self.to_u32()) { c } else { unreachable![] }
 
-        // WAITING for stable const: https://github.com/rust-lang/rust/issues/89259
+        // WAIT: [stable const](https://github.com/rust-lang/rust/issues/89259)
         // #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: we've already checked we contain a valid char.
         // return unsafe { char::from_u32_unchecked(code_point) };

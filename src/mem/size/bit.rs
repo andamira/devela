@@ -41,7 +41,7 @@ use crate::text::char::{Char16, Char24, Char32, Char7, Char8};
 #[cfg(feature = "text")]
 use crate::text::AsciiChar;
 
-// TODO WAITING for: https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275
+// WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // #[cfg(feature = "text")]
 // use crate::text::{ArrayU16String, ArrayU32String, ArrayU8Egc, ArrayU8String};
 #[cfg(feature = "alloc")]
@@ -390,7 +390,7 @@ bit_size![= 128; for AtomicI128, AtomicU128];
 
 #[cfg(feature = "text")]
 bit_size![<const LEN: usize> = LEN; for ArrayU8NonNulString<LEN>, ArrayU8NonNulEgc<LEN>];
-// TODO WAITING for: https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275
+// WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // #[cfg(feature = "text")]
 // bit_size![<const LEN: usize> = { LEN + 8 }; for ArrayU8String<LEN>, ArrayU8Egc<LEN>];
 // #[cfg(feature = "text")]

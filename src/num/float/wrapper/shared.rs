@@ -18,7 +18,7 @@ macro_rules! custom_impls {
         /// Several methods will only be *const* with the `unsafe_const` feature enabled.
         impl Floating<$f> {
             /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
-            // WAIT: https://github.com/rust-lang/rust/issues/96710
+            // WAIT: [round_ties_even](https://github.com/rust-lang/rust/issues/96710)
             #[must_use] #[inline]
             pub fn round_ties_even(x: $f) -> $f {
                 let r = Self::round_ties_away(x);
@@ -825,7 +825,7 @@ macro_rules! custom_impls {
             }
 
             /// Returns the maximum of two numbers, propagating `NaN`.
-            // WAIT: https://github.com/rust-lang/rust/issues/91079
+            // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
             #[must_use] #[inline(always)]
             pub fn max_nan(x: $f, y: $f) -> $f {
                 if x > y {
@@ -840,7 +840,7 @@ macro_rules! custom_impls {
             }
             /// Returns the minimum of two numbers, propagating `NaN`.
             #[must_use] #[inline(always)]
-            // WAIT: https://github.com/rust-lang/rust/issues/91079
+            // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
             pub fn min_nan(x: $f, y: $f) -> $f {
                 if x < y {
                     x

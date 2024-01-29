@@ -80,7 +80,8 @@ pub trait ExtSlice<T>: private::Sealed {
     /// If the `unsafe_mem` feature is enabled it uses `MaybeUninit` to improve performance.
     #[must_use]
     // IMPROVE make a try_slice_into_array version:
-    // WAITING https://doc.rust-lang.org/nightly/core/array/fn.try_from_fn.html
+    // WAIT: [try_array_from_fn](https://github.com/rust-lang/rust/issues/89379)
+    // - https://doc.rust-lang.org/nightly/core/array/fn.try_from_fn.html
     fn slice_into_array<U, const N: usize>(&self) -> [U; N]
     where
         T: Clone,

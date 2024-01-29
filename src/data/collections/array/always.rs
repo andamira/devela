@@ -80,9 +80,9 @@ macro_rules! array_init {
             #[allow(clippy::redundant_closure_call)]
             let _ = e.write($init(i));
         }
-        // WAIT: can't use transmute for now, have to use transmute_copy:
-        // - https://github.com/rust-lang/rust/issues/62875
-        // - https://github.com/rust-lang/rust/issues/61956
+        // Can't use transmute for now, have to use transmute_copy:
+        // - WAIT: [const generics transmute](https://github.com/rust-lang/rust/issues/61956)
+        //   - https://github.com/rust-lang/rust/issues/62875 (duplicate)
         // unsafe { core::mem::transmute::<_, [T; LEN]>(&arr) }
         // SAFETY: we've initialized all the elements
         unsafe { core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }

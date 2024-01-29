@@ -65,7 +65,7 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(-5_" $t ").div_ceil(2), Int(-2)]; // == -2.5"]
             /// ```
             // unstable rust implementation for signed integers:
-            // WAITING: https://github.com/rust-lang/rust/issues/88581
+            // WAIT: [int_roundings](https://github.com/rust-lang/rust/issues/88581)
             #[inline] #[must_use]
             pub const fn div_ceil(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
@@ -97,7 +97,7 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(-5_" $t ").div_floor(2), Int(-3)]; // == -2.5"]
             /// ```
             // unstable rust implementation for signed integers:
-            // WAITING: https://github.com/rust-lang/rust/issues/88581
+            // WAIT: [int_roundings](https://github.com/rust-lang/rust/issues/88581)
             #[inline] #[must_use]
             pub const fn div_floor(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
@@ -255,7 +255,7 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(5_" $t ").div_ceil(2), Int(3)]; // == 2.5"]
             /// ```
             // unstable rust implementation for signed integers:
-            // WAITING: https://github.com/rust-lang/rust/issues/88581
+            // WAIT: [int_roundings](https://github.com/rust-lang/rust/issues/88581)
             #[inline] #[must_use]
             pub const fn div_ceil(self, b: $t) -> Int<$t> {
                 let a = self.0; let (d, r) = (a / b, a % b);
@@ -280,7 +280,7 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(5_" $t ").div_floor(2), Int(2)]; // == 2.5"]
             /// ```
             // unstable rust implementation for signed integers:
-            // WAITING: https://github.com/rust-lang/rust/issues/88581
+            // WAIT: [int_roundings](https://github.com/rust-lang/rust/issues/88581)
             #[inline] #[must_use]
             pub const fn div_floor(self, b: $t) -> Int<$t> {
                 Int(self.0 / b)

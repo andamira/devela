@@ -507,7 +507,7 @@ impl AsciiChar {
         // so because `d` must be 64 or less the addition can return at most
         // 112 (0x70), which doesn't overflow and is within the ASCII range.
         unsafe {
-            // WAITING: https://github.com/rust-lang/rust/issues/85122
+            // WAIT: [const unchecked integer ops](https://github.com/rust-lang/rust/issues/85122)
             // let byte = b'0'.unchecked_add(d);
             let byte = b'0' + d;
             Self::from_u8_unchecked(byte)

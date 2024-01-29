@@ -46,11 +46,11 @@ pub trait ExtAny: Any + private::Sealed {
     /// assert_eq!(x.type_name(), "i32");
     /// ```
     //
-    // IMPROVE: make associated const; WAITING FOR:
-    //   - https://github.com/rust-lang/rust/issues/63084 (const)
-    //     - https://github.com/rust-lang/rust/issues/97156
-    // IMPROVE: make this use the value; WAITING FOR:
-    // - https://github.com/rust-lang/rust/issues/66359
+    // IMPROVE: make associated const;
+    // - WAIT: (const) [type_name](https://github.com/rust-lang/rust/issues/63084)
+    // - WAIT: [TypeId equality unsoundness](https://github.com/rust-lang/rust/issues/97156)
+    // IMPROVE: make this use the value;
+    // - WAIT: [type_name_of_val](https://github.com/rust-lang/rust/issues/66359)
     #[inline]
     #[must_use]
     fn type_name(&self) -> &'static str { type_name::<Self>() }

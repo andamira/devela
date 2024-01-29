@@ -60,7 +60,7 @@ pub trait Storage {
     /// This can be useful for debugging.
     fn name() -> &'static str;
 
-    // WAITING https://github.com/rust-lang/rust/issues/80437
+    // WAIT: [box_into_inner](https://github.com/rust-lang/rust/issues/80437)
     // fn unstore(self) -> T;
 }
 
