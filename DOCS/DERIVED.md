@@ -1,7 +1,5 @@
 This project includes the following derived works:
 
-- A [modified][0] version of [itoa] by David Tolnay, licensed as MIT OR Apache-2.0,
-  in [`IntBuf`] and [`IntBufAble`].
 - A [modified][1] version of [stack_dst] by John Hodge, licensed as MIT OR Apache-2.0,
   in the [`data::dst`] module.
 - Adaptation of [opt_reduce] by Waffle Lapkin, licensed as MIT,
@@ -27,8 +25,6 @@ This project includes the following derived works:
 
 [0]: https://github.com/andamira/devela/blob/main/src/fmt/int_buf/MODIFICATIONS.md
 [itoa]: https://crates.io/crates/itoa/1.0.9
-[`IntBuf`]: https://docs.rs/devela/latest/devela/text/fmt/struct.IntBuf.html
-[`IntBufAble`]: https://docs.rs/devela/latest/devela/text/fmt/trait.IntBufAble.html
 [1]: https://github.com/andamira/devela/blob/main/src/data/dst/MODIFICATIONS.md
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
 [`data::dst`]: https://docs.rs/devela/latest/devela/data/dst/index.html

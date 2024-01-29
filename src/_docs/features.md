@@ -95,8 +95,6 @@ Dependencies can also be enabled individually:
 - `unicode-segmentation` is used in `text`.
 - `unicode-width` is used in `text`.
 
-[`IntBuf`]: text::IntBuf
-[`IntBufable`]: text::IntBufAble
 [`slice_into_array`]: data::convert::collection::slice_into_array
 [`MaybeUninit`]: core::mem::MaybeUninit
 [`transmute`]: core::mem::transmute
