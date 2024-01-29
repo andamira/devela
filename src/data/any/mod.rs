@@ -5,23 +5,22 @@
 //! [`any`]: std::any
 //
 
-/* contains always compiled items */
+/* modules */
 
-// ...
-
-/* feature-gated */
-
-// private sub-modules
+// feature-gated, non-public
 #[cfg(feature = "data")]
 mod ext;
 #[cfg(feature = "data")]
 mod reexports;
 
-// re-export private sub-modules
+/* re-exports */
+
+// feature-gated, non-public
 #[cfg(feature = "data")]
 pub use {ext::*, reexports::*};
 
 pub(crate) mod all {
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "data")]
     pub use super::{ext::*, reexports::*};

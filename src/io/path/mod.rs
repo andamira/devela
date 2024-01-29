@@ -4,23 +4,21 @@
 //! `std::`[`path`][std::path].
 //
 
-/* contains always compiled items */
+/* modules */
 
-// ...
-
-/* feature-gated */
-
+// feature-gated, non-public
 #[cfg(feature = "io")]
 mod project;
 
-// re-export private sub-modules
+/* re-exports */
+
+// feature-gated, non-public
 #[cfg(feature = "io")]
-#[allow(unused_imports)]
 pub use project::*;
 
 pub(crate) mod all {
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "io")]
-    #[allow(unused_imports)]
     pub use super::project::*;
 }

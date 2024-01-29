@@ -5,24 +5,21 @@
 //! [`hash`]: std::hash
 //
 
-/* contains always compiled items */
+/* modules */
 
-// ...
-
-/* feature-gated */
-
-// private sub-modules
+// feature-gated, non-public
 #[cfg(feature = "data")]
 mod reexports;
 
-// re-export private sub-modules
-#[allow(unused_imports)]
+/* re-exports */
+
+// feature-gated, non-public
 #[cfg(feature = "data")]
 pub use reexports::*;
 
 pub(crate) mod all {
+    // feature-gated
     #[doc(inline)]
-    #[allow(unused_imports)]
     #[cfg(feature = "data")]
     pub use super::reexports::*;
 }

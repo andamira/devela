@@ -5,30 +5,33 @@
 //! [`slice`]: std::slice
 //
 
-/* contains always compiled items */
+/* modules */
 
+// always compiled, non-public
 mod always_fns;
-#[allow(unused)]
-#[cfg(not(feature = "mem"))]
-pub use always_fns::*;
 
-/* feature-gated */
-
-// private sub-modules
+// feature-gated, non-public
 #[cfg(feature = "mem")]
 mod ext;
 #[cfg(feature = "mem")]
 mod wrapper;
 
-// re-export private sub-modules
-#[cfg(feature = "mem")]
+/* re-exported */
+
+// always compiled, non-public
+pub use always_fns::*;
+
+// feature-gated, non-public
 #[allow(unused_imports)]
-pub use {always_fns::*, ext::*, wrapper::*};
+#[cfg(feature = "mem")]
+pub use {ext::*, wrapper::*};
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     pub use super::always_fns::*;
 
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "mem")]
     pub use super::{ext::*, wrapper::*};

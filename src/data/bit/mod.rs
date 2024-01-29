@@ -3,23 +3,20 @@
 //! Bit-focused types and traits.
 //
 
-/* contains always compiled items */
+/* modules */
 
+// always compiled, non-public
 mod field;
 mod r#trait;
 mod wrapper;
 
-#[allow(unused)]
-#[cfg(not(feature = "data"))]
-pub use {field::*, r#trait::BitOps, wrapper::Biting};
+/* re-exports */
 
-/* feature-gated */
-
-// re-export private sub-modules
-#[cfg(feature = "data")]
+// always compiled, non-public
 pub use {field::*, r#trait::BitOps, wrapper::Biting};
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     pub use super::{field::*, r#trait::BitOps, wrapper::Biting};
 }

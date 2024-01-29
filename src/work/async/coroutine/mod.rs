@@ -5,7 +5,7 @@
 
 /* modules */
 
-// feature-gated, non public
+// feature-gated, non-public
 #[cfg(feature = "nightly_coro")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_coro")))]
 mod reexports;

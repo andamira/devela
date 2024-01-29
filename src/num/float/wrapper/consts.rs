@@ -92,7 +92,7 @@ macro_rules! math_const_impls {
 
             /// $ 1/\sqrt{π} $
             /// ([A087197](https://oeis.org/A087197))
-            // WAIT: https://github.com/rust-lang/rust/issues/103883
+            // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
             pub const FRAC_1_SQRT_PI: $f = 0.564189583547756286948079451560772586;
 
             /// $ 2/π $
@@ -193,7 +193,7 @@ macro_rules! math_const_impls {
 
             /// $ φ $ the golden ratio $\large \frac{1+\sqrt{5}}{2}$
             /// ([A001622](https://oeis.org/A001622))
-            // WAIT: https://github.com/rust-lang/rust/issues/103883
+            // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
             pub const PHI: $f = 1.618033988749894848204586834365638118;
 
             /// $ \sqrt{φ} $
@@ -219,11 +219,11 @@ macro_rules! math_const_impls {
             /// $ \sqrt{3} $
             /// ([A002194](https://oeis.org/A002194),
             /// [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_3))
-            // WAIT: https://github.com/rust-lang/rust/issues/103883
+            // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
             pub const SQRT_3: $f = 1.732050807568877293527446341505872367;
 
             /// $ 1/\sqrt{3} = \sqrt{1/3} $
-            // WAIT: https://github.com/rust-lang/rust/issues/103883
+            // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
             pub const FRAC_1_SQRT_3: $f = 0.577350269189625764509148780501957456;
 
             /// $ \sqrt{5} $
@@ -277,7 +277,7 @@ macro_rules! math_const_impls {
 
             /// $ γ $ The Euler-Mascheroni constant
             /// ([A001620](https://oeis.org/A001620))
-            // WAIT: https://github.com/rust-lang/rust/issues/103883
+            // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
             pub const EGAMMA: $f = 0.577215664901532860606512090082402431;
 
             /// log<sub>2</sub>(e)

@@ -3,29 +3,32 @@
 //! Memory size functionality.
 //
 
-/* contains always compiled items */
+/* modules */
 
+// always compiled, non-public
 mod bit;
 mod reexports;
 mod size;
 
-#[allow(unused)]
-#[cfg(not(feature = "mem"))]
-pub use {bit::*, reexports::*, size::*};
-
-/* feature-gated */
-
+// feature-gated, non-public
 #[cfg(feature = "mem")]
 mod expr;
 
-// re-export private sub-modules
+/* re-exports */
+
+// always compiled, non-public
+pub use {bit::*, reexports::*, size::*};
+
+// feature-gated, non-public
 #[cfg(feature = "mem")]
-pub use {bit::*, expr::*, reexports::*, size::*};
+pub use expr::*;
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     pub use super::{bit::*, reexports::*, size::*};
 
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "mem")]
     pub use super::expr::mem_size_of_expr;

@@ -5,16 +5,12 @@
 //! [`ascii`]: std::ascii
 //
 
-/* contains always compiled items */
+/* modules */
 
+// always compiled, non-public
 mod always_fns;
-#[allow(unused)]
-#[cfg(not(feature = "text"))]
-pub use always_fns::*;
 
-/* feature-gated */
-
-// private sub-modules
+// feature-gated, non-public
 #[cfg(feature = "text")]
 mod char;
 #[cfg(feature = "text")]
@@ -22,17 +18,24 @@ mod fns;
 #[cfg(feature = "text")]
 mod reexport;
 
-// re-export private sub-modules
+/* re-exports */
+
+// always compiled, non-public
+pub use always_fns::*;
+
+// feature-gated, non-public
 #[cfg(feature = "text")]
-#[allow(unused_imports)]
-pub use {always_fns::*, char::AsciiChar, fns::*, reexport::*};
+#[allow(unused_imports)] // reexport
+pub use {char::AsciiChar, fns::*, reexport::*};
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     pub use super::always_fns::*;
 
+    // feature-gated
     #[doc(inline)]
+    #[allow(unused_imports)] // always_fns, reexport
     #[cfg(feature = "text")]
-    #[allow(unused_imports)]
     pub use super::{always_fns::*, char::AsciiChar, fns::*, reexport::*};
 }

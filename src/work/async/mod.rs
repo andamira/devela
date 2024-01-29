@@ -14,17 +14,19 @@
 
 /* modules */
 
-// always compiled, non public
+// always compiled, non-public
 mod coroutine;
 mod reexports;
 
 /* re-exports */
 
 // always compiled, non-public
+#[allow(unused_imports)] // coroutine
 pub use {coroutine::*, reexports::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
+    #[allow(unused_imports)] // coroutine
     pub use super::{coroutine::*, reexports::*};
 }

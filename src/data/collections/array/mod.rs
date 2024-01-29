@@ -8,26 +8,23 @@
 //! homogeneous data structures.
 //
 
-/* contains always compiled items */
+/* modules */
 
-// no new definitions
-mod core_impls;
-mod methods;
-
+// always compiled, non-public
 mod always;
 mod definitions;
 
-#[allow(unused)]
-#[cfg(not(feature = "data"))]
-pub use {always::*, core_impls::*, definitions::*, methods::*};
+// always compiled, non-public, nothing to re-export
+mod core_impls;
+mod methods;
 
-/* feature-gated */
+/* re-export */
 
-// re-export private sub-modules
-#[cfg(feature = "data")]
+// always compiled, non-public
 pub use {always::*, definitions::*};
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     pub use super::{always::*, definitions::*};
 }

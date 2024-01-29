@@ -3,34 +3,37 @@
 //! Numeric types with niche memory layout optimization.
 //
 
-/* contains always compiled items */
+/* modules */
 
+// always compiled, non-public
 mod non_specific;
 mod reexports;
 
-#[allow(unused)]
-#[cfg(not(feature = "num"))]
-pub use {non_specific::*, reexports::*};
-
-/* feature-gated */
-
+// feature-gated, non-public
 #[cfg(all(feature = "num", test))]
 mod tests;
-
+//
 #[cfg(feature = "num")]
 mod non_range;
 #[cfg(feature = "num")]
 mod range;
 
-// re-export private sub-modules
+/* re-exports */
+
+// always compiled, non-public
+pub use {non_specific::*, reexports::*};
+
+// feature-gated, non-public
 #[cfg(feature = "num")]
-pub use {non_range::*, non_specific::*, range::*, reexports::*};
+pub use {non_range::*, range::*};
 
 pub(crate) mod all {
+    // always compiled
+    #[doc(inline)]
+    pub use super::{non_specific::*, reexports::*};
+
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "num")]
     pub use super::{non_range::*, range::*};
-
-    #[doc(inline)]
-    pub use super::{non_specific::*, reexports::*};
 }

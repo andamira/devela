@@ -14,7 +14,9 @@ use crate::{
     data::Comparing,
     num::{isize_up, upcasted_op, usize_up, Int, NumErrors as E, NumResult as Result},
 };
-use E::{NonNegativeRequired, Overflow};
+use E::NonNegativeRequired;
+#[cfg(doc)]
+use E::Overflow;
 
 // $t:   the input/output type
 // $d:  the doclink suffix for the method name
