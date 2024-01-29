@@ -27,7 +27,7 @@ Modules can be enabled independently of *environment*, *dependency* or *safety*.
 When the `dep` feature is enabled, modules will also enable their associated
 optional dependencies.
 
-- `full`: enables every root module:
+- `all`: enables all the root modules:
 
 Single modules:
 - `code`: enables the [`code`] module,

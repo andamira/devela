@@ -51,11 +51,11 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           components: clippy
 
-      - name: "cargo clippy -F full,std,unsafe"
-        run: cargo clippy -F full,std,unsafe
+      - name: "cargo clippy -F all,std,unsafe"
+        run: cargo clippy -F all,std,unsafe
 
-      - name: "cargo clippy -F full,safe"
-        run: cargo clippy -F full,safe
+      - name: "cargo clippy -F all,safe"
+        run: cargo clippy -F all,safe
 
   # 3. documentation
   doc:
@@ -95,8 +95,8 @@ jobs:
         with:
           toolchain: ${{ matrix.msrv }}
 
-      - name: "cargo +${{ matrix.msrv }} check -F full,std,unsafe"
-        run: cargo check -F full,std,unsafe
+      - name: "cargo +${{ matrix.msrv }} check -F all,std,unsafe"
+        run: cargo check -F all,std,unsafe
 
-      - name: "cargo +${{ matrix.msrv }} check -F full,safe"
-        run: cargo check -F full,safe
+      - name: "cargo +${{ matrix.msrv }} check -F all,safe"
+        run: cargo check -F all,safe

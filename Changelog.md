@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `num_int_niche` feature to `num_niche_impls`.
 - rename the `__doc` module to `_docs` and the `_dep` module to `_deps`.
 - rename `AnyExt`, `OptionExt`, `ResultExt`, `SliceExt`, `SliceExtMut`, `StrExt` and `StringExt` to `ExtAny`, `ExtOption`, `ExtResult`, `ExtSlice`, `ExtSliceMut`, `ExtStr` and `ExtString` and `ExtVec` respectively.
+- rename the feature `full` to `all`.
 - rename `FloatOps` to `ExtFloat`.
 
 ### Fixed

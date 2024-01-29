@@ -27,7 +27,7 @@
 //! is enabled independently of the `text` module.
 //
 
-#![cfg_attr(not(feature = "full"), allow(rustdoc::private_intra_doc_links))]
+#![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
 
 /// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
 /// *Re-exported Rust `alloc` library environment.*

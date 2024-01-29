@@ -25,7 +25,7 @@ publish = true
 
 
 # ------------------------------------------------------------------------------
-# Features are grouped in 6 (mostly) independent categories:
+# Features are grouped in 5 (mostly) independent categories:
 # - Environment
 # - Module
 # - Safety
@@ -35,7 +35,7 @@ publish = true
 [features]
 
 # default = []
-docsrs = ["std", "full", "unsafe", "nightly", "dep", "libm"]
+docsrs = ["all", "std", "unsafe", "nightly", "dep", "libm"]
 
 
 #* environment features *#
@@ -56,7 +56,7 @@ no_std = [ # enables functionality incompatible with `std`
 
 #* module features *#
 
-full = [ # enables all the modules and submodules
+all = [ # enables all the modules and submodules
 	"code",
 	"data",
 	"error",
@@ -187,7 +187,7 @@ optional = true
 features = ["fallback", "float"]
 
 [dev-dependencies]
-devela = { path = ".", features = ["full"] }
+devela = { path = ".", features = ["all"] }
 
 
 # ------------------------------------------------------------------------------

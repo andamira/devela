@@ -44,7 +44,7 @@ pub mod _deps;
 
 /// Documentation.
 pub mod _docs {
-    #![cfg_attr(not(feature = "full"), allow(rustdoc::private_intra_doc_links))]
+    #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
     #![doc = include_str!("./_docs/features.md")]
 }
 

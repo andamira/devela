@@ -64,40 +64,40 @@ fn main() -> Result<()> {
         rust_setup_arches(&msrv)?;
 
         let cmd = "test";
-        sf! { headline(0, &format!["`full` test checking [alloc|std]+[safe|unsafe]):"]); }
+        sf! { headline(0, &format!["`all` test checking [alloc|std] + [safe|unsafe]):"]); }
 
         // WAITING: https://github.com/rust-lang/cargo/issues/1983 (colored output)
 
         // std (un)safe
-        run_cargo(&msrv, cmd, &["-F full,std,safe", "--", "--color=always"])?;
-        run_cargo(&msrv, cmd, &["-F full,std,unsafe", "--", "--color=always"])?;
+        run_cargo(&msrv, cmd, &["-F all,std,safe", "--", "--color=always"])?;
+        run_cargo(&msrv, cmd, &["-F all,std,unsafe", "--", "--color=always"])?;
 
         // std (un)safe + dep
-        sf! { run_cargo(&msrv, cmd, &["-F full,std,safe,dep", "--", "--color=always"])?; }
-        sf! { run_cargo(&msrv, cmd, &["-F full,std,unsafe,dep", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F all,std,safe,dep", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F all,std,unsafe,dep", "--", "--color=always"])?; }
 
         // alloc (un)safe
-        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,safe", "--", "--color=always"])?; }
-        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,unsafe", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F all,alloc,safe", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F all,alloc,unsafe", "--", "--color=always"])?; }
 
         // alloc (un)safe + dep
-        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,safe,dep", "--", "--color=always"])?; }
-        sf! { run_cargo(&msrv, cmd, &["-F full,alloc,unsafe,dep", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F all,alloc,safe,dep", "--", "--color=always"])?; }
+        sf! { run_cargo(&msrv, cmd, &["-F all,alloc,unsafe,dep", "--", "--color=always"])?; }
 
         // no_std (un)safe
-        // run_cargo(&msrv, cmd, &["-F full,no_std,safe"])?;
-        // run_cargo(&msrv, cmd, &["-F full,no_std,unsafe"])?;
+        // run_cargo(&msrv, cmd, &["-F all,no_std,safe"])?;
+        // run_cargo(&msrv, cmd, &["-F all,no_std,unsafe"])?;
 
         // no_std (un)safe + dep
-        // run_cargo(&msrv, cmd, &["-F full,no_std,safe,dep"])?;
-        // run_cargo(&msrv, cmd, &["-F full,no_std,unsafe,dep"])?;
+        // run_cargo(&msrv, cmd, &["-F all,no_std,safe,dep"])?;
+        // run_cargo(&msrv, cmd, &["-F all,no_std,unsafe,dep"])?;
     }
 
     /* docs */
 
     if args.docs {
         rust_setup_nightly()?;
-        headline(0, &format!["`full` docs compilation:"]);
+        headline(0, &format!["`all` docs compilation:"]);
         run_cargo("", "+nightly", &["doc", "--no-deps", "-F docsrs"])?;
     }
 
@@ -109,24 +109,24 @@ fn main() -> Result<()> {
         let arch_total: usize = STD_ARCHES.len() + NO_STD_ARCHES.len();
         let mut arch_count = 1_usize;
 
-        sf! { headline(0, &format!["`full` checking in each architecture ({arch_total}):"]); }
+        sf! { headline(0, &format!["`all` checking in each architecture ({arch_total}):"]); }
 
         rust_setup_arches(&msrv)?;
 
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe: arch {arch_count}/{arch_total}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F full,std,unsafe"])?;
+            run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe"])?;
             arch_count += 1;
         }
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe,dep: arch {arch_count}/{arch_total}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F full,std,unsafe,dep"])?;
+            run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe,dep"])?;
             arch_count += 1;
         }
 
         for arch in NO_STD_ARCHES {
             sf! { headline(1, &format!("no_std,unsafe: arch {arch_count}/{arch_total}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F full,no_std,unsafe"])?;
+            run_cargo(&msrv, cmd, &["--target", arch, "-F all,no_std,unsafe"])?;
             arch_count += 1;
         }
     }
@@ -147,7 +147,7 @@ fn main() -> Result<()> {
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe: arch {arch_count}/{arch_total}")); }
             sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
-            "-F full,std,unsafe,nightly"])?; }
+            "-F all,std,unsafe,nightly"])?; }
             arch_count += 1;
         }
 
@@ -156,7 +156,7 @@ fn main() -> Result<()> {
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe,dep: arch {arch_count}/{arch_total}")); }
             sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
-            "-F full,std,unsafe,nightly,dep"])?; }
+            "-F all,std,unsafe,nightly,dep"])?; }
             arch_count += 1;
         }
 
@@ -165,7 +165,7 @@ fn main() -> Result<()> {
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("no_std,unsafe: arch {arch_count}/{arch_total}")); }
             sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
-            "-F full,no_std,unsafe,nightly"])?; }
+            "-F all,no_std,unsafe,nightly"])?; }
             arch_count += 1;
         }
         // WAITING for FIX: https://github.com/rust-lang/wg-cargo-std-aware/issues/69
