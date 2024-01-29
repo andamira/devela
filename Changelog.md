@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `AnyExt`, `OptionExt`, `ResultExt`, `SliceExt`, `SliceExtMut`, `StrExt` and `StringExt` to `ExtAny`, `ExtOption`, `ExtResult`, `ExtSlice`, `ExtSliceMut`, `ExtStr` and `ExtString` and `ExtVec` respectively.
 - rename the feature `full` to `all`.
 - rename `FloatOps` to `ExtFloat`.
+- rename `*fence` functions to `atomic_*fence`.
 
 ### Fixed
 - refactor root modules, simplify and dissassociate root-level feature-gating.

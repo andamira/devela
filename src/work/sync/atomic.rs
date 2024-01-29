@@ -111,15 +111,18 @@ pub use core::sync::atomic::AtomicBool;
 
 /* from `core` */
 
-reexport! { rust: core::sync::atomic, local_module: "work",
-    doc: "An atomic fence.",
-    fence
-}
-reexport! { rust: core::sync::atomic, local_module: "work",
-    doc: "A compiler memory fence.",
-    compiler_fence
-}
+// enums
 reexport! { rust: core::sync::atomic, local_module: "work",
     doc: "Atomic memory ordering.",
     @Ordering as AtomicOrdering
+}
+
+// functions
+reexport! { rust: core::sync::atomic, local_module: "work",
+    doc: "An atomic fence.",
+    @fence as atomic_fence
+}
+reexport! { rust: core::sync::atomic, local_module: "work",
+    doc: "A compiler memory fence.",
+    @compiler_fence as atomic_compiler_fence
 }
