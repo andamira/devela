@@ -6,7 +6,10 @@
 // - define traits DataQueue, DataDeque
 // - impl for VecDeque
 
-use crate::data::{DataCollection, DataErrors as E, DataResult as Result};
+use crate::{
+    data::{DataCollection, DataErrors as E, DataResult as Result},
+    mem::Storage,
+};
 
 /// An abstract `Queue` data type.
 pub trait DataQueue: DataCollection {

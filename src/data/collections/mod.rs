@@ -14,7 +14,6 @@
 
 // always compiled, non-public
 mod array;
-mod destaque;
 mod reexports;
 mod traits;
 
@@ -25,7 +24,7 @@ mod ext_vec;
 /* re-exports */
 
 // always compiled, non-public
-pub use {array::all::*, destaque::all::*, reexports::*, traits::*};
+pub use {array::all::*, reexports::*, traits::*};
 
 // feature-gated, non-public
 #[cfg(feature = "alloc")]
@@ -34,7 +33,7 @@ pub use ext_vec::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{array::all::*, destaque::all::*, reexports::*, traits::*};
+    pub use super::{array::all::*, reexports::*, traits::*};
 
     // feature-gated
     #[cfg(feature = "alloc")]

@@ -3,17 +3,23 @@
 //! DataCollection abstract data type
 //
 // TOC
-// - define trait DataCollection
-// - impl for array
-// - impl for Vec
-// - impl for VecDeque
-// - impl for PriorityQueue
-// - impl for OrderedMap
-// - impl for OrderedSet
-// - impl for UnorderedMap
-// - impl for UnorderedSet
+// - define DataCollection
+// - impl for devela types:
+//   - Array
+// - impl for reexported types:
+//   - array
+//   - Vec
+//   - VecDeque
+//   - PriorityQueue
+//   - OrderedMap
+//   - OrderedSet
+//   - UnorderedMap
+//   - UnorderedSet
 
-use crate::data::{DataErrors as E, DataResult as Result};
+use crate::{
+    data::{DataErrors as E, DataResult as Result},
+    mem::Storage,
+};
 
 /// An abstract data collection.
 ///
@@ -45,7 +51,41 @@ pub trait DataCollection {
     // fn iter_mut(&mut self) -> Result<impl Iterator<&mut Self::Element>> { E::ni() }
 }
 
-/* impls */
+/* impl for devela types */
+
+#[rustfmt::skip]
+impl<T, S: Storage, const LEN: usize> DataCollection for crate::data::Array<T, S, LEN> {
+    type Element = T;
+    /// The capacity of a fixed-size array is always equal to its length.
+    fn collection_capacity(&self) -> Result<usize> { Ok(LEN) }
+    fn collection_len(&self) -> Result<usize> { Ok(LEN) }
+    /// Returns [`NotSupported`][E::NotSupported] since a fixed-size array is never empty or full.
+    fn collection_is_empty(&self) -> Result<bool> { E::ns() }
+    /// Returns [`NotSupported`][E::NotSupported] since a fixed-size array is never empty or full.
+    fn collection_is_full(&self) -> Result<bool> { E::ns() }
+    fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
+        Ok(self.contains(&element))
+    }
+    fn collection_count(&self, element: &Self::Element) -> Result<usize> where T: PartialEq {
+        Ok(self.iter().filter(|&e| e == element).count())
+    }
+}
+
+#[rustfmt::skip]
+impl<T, S: Storage, const LEN: usize> DataCollection for crate::data::Destaque<T, S, LEN> {
+    type Element = T;
+    fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
+    fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
+    fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
+    fn collection_is_full(&self) -> Result<bool> { Ok(self.is_full()) }
+    fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
+        Ok(self.contains(&element))
+    }
+    fn collection_count(&self, element: &Self::Element) -> Result<usize> where T: PartialEq {
+        Ok(self.iter().filter(|&e| e == element).count())
+    }
+}
+/* impl for reexported types */
 
 // Array
 #[rustfmt::skip]
