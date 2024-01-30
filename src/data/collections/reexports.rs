@@ -28,13 +28,9 @@ reexport! { rust: alloc::vec, local_module: "data",
     Vec
 }
 reexport! { rust: alloc::collections, local_module: "data",
-    doc: "A double-ended queue implemented with a growable ring buffer.",
-    @VecDeque as AllocDeque
+    doc: "A double-ended growable queue.",
+    VecDeque
 }
-
-/// A contiguos growable array.
-#[cfg(feature = "alloc")]
-pub type AllocArray<T> = Vec<T>;
 
 /* from `hashbrown` */
 
