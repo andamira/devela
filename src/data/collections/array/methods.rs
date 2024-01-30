@@ -3,8 +3,10 @@
 //! Arrays.
 //
 
-use super::{array_init, Array};
-use crate::mem::{Direct, Storage};
+use crate::{
+    data::{array_init, Array},
+    mem::{Direct, Storage},
+};
 
 #[allow(unused)]
 #[cfg(feature = "alloc")]
@@ -33,7 +35,7 @@ impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
     /// let s = Array::<_, (), 16>::with(0);
     /// ```
     pub fn with(element: T) -> Self {
-        let array = Direct::new(array_init!(clone [T; LEN], "unsafe_array", element));
+        let array = Direct::new(array_init!(clone [T; LEN], "safe_data", "unsafe_array", element));
         Self { array }
     }
 }
@@ -50,7 +52,7 @@ impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
     /// let mut s = BoxedArray::<_, 1_000>::with(0);
     /// ```
     pub fn with(element: T) -> Self {
-        let array = array_init!(clone_heap [T; LEN], "unsafe_array", element);
+        let array = array_init!(clone_heap [T; LEN], "safe_data", "unsafe_array", element);
         Self { array }
     }
 }

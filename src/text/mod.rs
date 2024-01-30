@@ -10,6 +10,9 @@
 //! [`string`]: std::string
 //
 
+// safety:
+#![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
+
 /* modules */
 
 // always compiled, public

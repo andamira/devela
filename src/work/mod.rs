@@ -9,6 +9,9 @@
 //! [`thread`]: std::thread
 //
 
+// safety:
+#![cfg_attr(feature = "safe_work", forbid(unsafe_code))]
+
 /* modules */
 
 // feature-gated, public

@@ -9,7 +9,10 @@
 //! [`result`]: std::result
 //
 
+// warnings:
 #![cfg_attr(not(feature = "error"), allow(unused_imports))]
+// safety:
+#![cfg_attr(feature = "safe_error", forbid(unsafe_code))]
 
 /* modules */
 

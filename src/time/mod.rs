@@ -6,6 +6,9 @@
 //! [`time`]: std::time
 //
 
+// safety:
+#![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
+
 /* modules */
 
 // feature-gated, private

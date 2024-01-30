@@ -14,6 +14,9 @@
 //! [`rc`]: std::rc
 //! [`slice`]: std::slice
 
+// safety:
+#![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]
+
 /* modules */
 
 // always compiled, non-public

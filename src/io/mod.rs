@@ -10,7 +10,10 @@
 //! [`path`]: std::path
 //
 
+// warnings:
 #![allow(unused_imports)]
+// safety:
+#![cfg_attr(feature = "safe_io", forbid(unsafe_code))]
 
 /* modules */
 

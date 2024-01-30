@@ -13,7 +13,10 @@
 //! [`vec`]: mod@std::vec
 //
 
+// warnings:
 #![cfg_attr(not(feature = "data"), allow(unused_imports))]
+// safety:
+#![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
 /* modules */
 

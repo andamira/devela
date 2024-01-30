@@ -8,7 +8,10 @@
 //! [`os`]: std::os
 //
 
+// warnings
 #![cfg_attr(not(feature = "os"), allow(unused_imports))]
+// safety:
+#![cfg_attr(feature = "safe_os", forbid(unsafe_code))]
 
 /* modules */
 

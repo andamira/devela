@@ -8,7 +8,10 @@
 //! [`marker`]: std::marker
 //
 
+// warnings:
 #![cfg_attr(not(feature = "code"), allow(unused_imports))]
+// safety:
+#![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 
 /* modules */
 

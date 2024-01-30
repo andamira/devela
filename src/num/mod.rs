@@ -7,7 +7,10 @@
 //! [`ops`]: std::ops
 //
 
+// warnings:
 #![cfg_attr(not(feature = "num"), allow(unused_imports))]
+// safety:
+#![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
 /* modules */
 

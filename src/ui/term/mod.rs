@@ -3,6 +3,9 @@
 //! Terminal functionality.
 //
 
+// safety:
+#![cfg_attr(feature = "safe_ui_term", forbid(unsafe_code))]
+
 mod ansi;
 
 // re-export private sub-modules
