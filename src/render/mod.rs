@@ -14,9 +14,9 @@
 #[cfg(feature = "render")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "render")))]
 pub mod color;
-#[cfg(feature = "render")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "render")))]
-pub mod img;
+// #[cfg(feature = "render")]
+// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "render")))]
+// pub mod img;
 
 /* re-exports */
 
