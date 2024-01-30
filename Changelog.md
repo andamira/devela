@@ -11,11 +11,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add trait: `NumToStr`.
 - add niche number aliases: `NonEdge*`.
 - add `no_std` replacements for `std::error` and `std::io` and types.
-- add features: `num_all`, `safe_data`, `safe_error`, `safe_mem`, `safe_num`, `safe_os`, `safe_text`, `safeui`, `safe_ui_term`, `safe_work`.
+- add features: `num_all`, `safe_data`, `safe_error`, `safe_mem`, `safe_num`, `safe_os`, `safe_text`, `safeui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`.
 - add features: `nightly_coro`, `nightly_doc`.
 
 ### Removed
 - remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
+- remove `IntBuf` type and `IntBufAble` trait.
 - remove type aliases: `NonMax*` `NonMin*.
 
 ### Changed
@@ -25,13 +26,16 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `num_int_niche` feature to `num_niche_impls`.
 - rename the `__doc` module to `_docs` and the `_dep` module to `_deps`.
 - rename `AnyExt`, `OptionExt`, `ResultExt`, `SliceExt`, `SliceExtMut`, `StrExt` and `StringExt` to `ExtAny`, `ExtOption`, `ExtResult`, `ExtSlice`, `ExtSliceMut`, `ExtStr` and `ExtString` and `ExtVec` respectively.
+- rename `*fence` functions to `atomic_*fence`.
+- rename allocated collections with `Alloc`.
 - rename the feature `full` to `all`.
 - rename `FloatOps` to `ExtFloat`.
-- rename `*fence` functions to `atomic_*fence`.
+- update the `array_init` macro syntax.
 
 ### Fixed
 - refactor root modules, simplify and dissassociate root-level feature-gating.
 - update and add more tests for macros: `cfor`, `mem_size_of_expr`.
+- allow to forbid unsafe at the individual module level.
 
 ## [0.19.0] 2024-01-24
 
