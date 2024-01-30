@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.20.0-wip]
 
 ### Added
-- add trait: `NumToStr`.
+- add traits: `NumToStr`, `DataQueue`, `DataDeque`.
+- add types: `Destaque`, `DestaqueIter`, `BoxedDestaque`, `DirectDestaque`.
 - add niche number aliases: `NonEdge*`.
 - add `no_std` replacements for `std::error` and `std::io` and types.
 - add features: `num_all`, `safe_data`, `safe_error`, `safe_mem`, `safe_num`, `safe_os`, `safe_text`, `safeui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`.

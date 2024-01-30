@@ -38,6 +38,49 @@ pub trait DataDeque: DataCollection + DataQueue {
 
 /* impls */
 
+// safe alternative with T: Clone
+#[rustfmt::skip]
+#[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
+impl<T: Clone, S: Storage, const CAP: usize> DataQueue for crate::data::collections::Destaque<T, S, CAP> {
+    fn queue_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
+        self.pop_front()
+    }
+    fn queue_push(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
+        self.push_back(element)
+    }
+}
+#[rustfmt::skip]
+#[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
+impl<T: Clone, S: Storage, const CAP: usize> DataDeque for crate::data::collections::Destaque<T, S, CAP> {
+    fn queue_pop_back(&mut self) -> Result<<Self as DataCollection>::Element> {
+        self.pop_back()
+    }
+    fn queue_push_front(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
+        self.push_front(element)
+    }
+}
+// unsafe alternative without T: Clone
+#[rustfmt::skip]
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
+impl<T, S: Storage, const CAP: usize> DataQueue for crate::data::collections::Destaque<T, S, CAP> {
+    fn queue_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
+        self.pop_front()
+    }
+    fn queue_push(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
+        self.push_back(element)
+    }
+}
+#[rustfmt::skip]
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
+impl<T, S: Storage, const CAP: usize> DataDeque for crate::data::collections::Destaque<T, S, CAP> {
+    fn queue_pop_back(&mut self) -> Result<<Self as DataCollection>::Element> {
+        self.pop_back()
+    }
+    fn queue_push_front(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
+        self.push_front(element)
+    }
+}
+
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
 impl<T> DataQueue for crate::data::collections::reexports::VecDeque<T> {
