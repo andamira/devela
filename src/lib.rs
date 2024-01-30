@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A cohesive development base.
+//! A cohesive development foundation.
 //
 
 // warnings:
@@ -11,11 +11,10 @@
     clippy::wrong_self_convention, // allow `is_` methods having an owned self
 )]
 // nightly:
-// WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
+// - WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg))]
-// WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
+// - WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait))]
-//
 // environment:
 #![cfg_attr(not(feature = "std"), no_std)]
 // safety:
@@ -29,15 +28,13 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 #[cfg(all(
     feature = "safe",
     any(feature = "unsafe", // includes all below:
-        feature = "unsafe_data", feature = "unsafe_error", feature = "unsafe_mem",
-        feature = "unsafe_num", feature = "unsafe_text", feature = "unsafe_work",
-        feature = "unsafe_os",
-        feature = "unsafe_ui", // includes all below:
-            feature = "unsafe_ui_term",
+        feature = "unsafe_array", feature = "unsafe_async", feature = "unsafe_const",
+        feature = "unsafe_dyn", feature = "unsafe_niche", feature = "unsafe_ptr",
+        feature = "unsafe_slice", feature = "unsafe_str",
     )
 ))]
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
-// but you can enable `safe_*` features to prevent `unsafe` use in the specific module.
+// but you can enable `safe_*` features to prevent `unsafe` use in specific modules.
 
 pub mod code;
 pub mod data;
@@ -73,3 +70,6 @@ pub mod all {
         os::all::*, render::all::*, text::all::*, time::all::*, ui::all::*, work::all::*,
     };
 }
+// and from the root
+#[doc(no_inline)]
+pub use all::*;
