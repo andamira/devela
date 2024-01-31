@@ -65,12 +65,12 @@ impl<T: Clone, const CAP: usize> Destaque<T, Boxed, CAP> {
 // ``
 impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     // Returns the `nth` element's index counting from the back.
-    #[inline(always)]
+    #[inline]
     pub(super) const fn idx_back(&self, nth: usize) -> usize {
         (self.back + CAP - nth - 1) % CAP
     }
     // Returns the `nth` element's index counting from the front.
-    #[inline(always)]
+    #[inline]
     pub(super) const fn idx_front(&self, nth: usize) -> usize {
         (self.front + nth) % CAP
     }
@@ -256,6 +256,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Pushes a new element to the back of the destaque.
     ///
+    /// This is the habitual *[`enqueue`]* operation for a single-ended **queue**.
+    ///
     /// `( 1 2 -- 1 2 3 )`
     /// # Errors
     /// Errors if the destaque is full.
@@ -283,8 +285,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     }
     /// Alias of [`push_back`][Self::push_back].
     ///
-    /// The habitual enqueue operation for a single-ended queue.
-    #[inline(always)]
+    /// This is the habitual *enqueue* operation for a single-ended **queue**.
+    #[inline]
     pub fn enqueue(&mut self, element: T) -> Result<()> {
         self.push_back(element)
     }
@@ -300,90 +302,6 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     }
 
     /* peek */
-
-    /// Returns a shared reference to the front element.
-    /// # Errors
-    /// Errors if the queue is empty.
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectDestaque;
-    /// # fn main() -> devela::data::DataResult<()> {
-    /// let q = DirectDestaque::<_, 8>::from([1, 2, 3]);
-    /// assert_eq![&1, q.peek_front()?];
-    /// # Ok(()) }
-    /// ```
-    #[inline]
-    pub fn peek_front(&self) -> Result<&T> {
-        if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
-        } else {
-            let fi = self.idx_front(0);
-            Ok(&self.array[fi])
-        }
-    }
-
-    /// Returns an exclusive reference to the front element.
-    /// # Errors
-    /// Errors if the queue is empty.
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectDestaque;
-    /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3]);
-    /// assert_eq![&mut 1, q.peek_front_mut()?];
-    /// # Ok(()) }
-    /// ```
-    #[inline]
-    pub fn peek_front_mut(&mut self) -> Result<&mut T> {
-        if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
-        } else {
-            let fi = self.idx_front(0);
-            Ok(&mut self.array[fi])
-        }
-    }
-
-    /// Returns a shared reference to the `nth` front element.
-    /// # Errors
-    /// Errors if the queue doesn't have at least `nth` elements.
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectDestaque;
-    /// # fn main() -> devela::data::DataResult<()> {
-    /// let q = DirectDestaque::<_, 8>::from([1, 2, 3, 4]);
-    /// assert_eq![&3, q.peek_nth_front(2)?];
-    /// # Ok(()) }
-    /// ```
-    #[inline]
-    pub fn peek_nth_front(&self, nth: usize) -> Result<&T> {
-        if self.len() <= nth {
-            Err(Error::NotEnoughElements(Some(nth)))
-        } else {
-            let bi = self.idx_front(nth);
-            Ok(&self.array[bi])
-        }
-    }
-
-    /// Returns an exclusive reference to the `nth` front element.
-    /// # Errors
-    /// Errors if the queue doesn't have at least `nth` elements.
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectDestaque;
-    /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3, 4]);
-    /// assert_eq![&mut 3, q.peek_nth_front_mut(2)?];
-    /// # Ok(()) }
-    /// ```
-    #[inline]
-    pub fn peek_nth_front_mut(&mut self, nth: usize) -> Result<&mut T> {
-        if self.len() <= nth {
-            Err(Error::NotEnoughElements(Some(nth)))
-        } else {
-            let bi = self.idx_front(nth);
-            Ok(&mut self.array[bi])
-        }
-    }
 
     /// Returns a shared reference to the back element.
     /// # Errors
@@ -469,9 +387,95 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         }
     }
 
+    /// Returns a shared reference to the front element.
+    /// # Errors
+    /// Errors if the queue is empty.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectDestaque;
+    /// # fn main() -> devela::data::DataResult<()> {
+    /// let q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// assert_eq![&1, q.peek_front()?];
+    /// # Ok(()) }
+    /// ```
+    #[inline]
+    pub fn peek_front(&self) -> Result<&T> {
+        if self.is_empty() {
+            Err(Error::NotEnoughElements(Some(1)))
+        } else {
+            let fi = self.idx_front(0);
+            Ok(&self.array[fi])
+        }
+    }
+
+    /// Returns an exclusive reference to the front element.
+    /// # Errors
+    /// Errors if the queue is empty.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectDestaque;
+    /// # fn main() -> devela::data::DataResult<()> {
+    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// assert_eq![&mut 1, q.peek_front_mut()?];
+    /// # Ok(()) }
+    /// ```
+    #[inline]
+    pub fn peek_front_mut(&mut self) -> Result<&mut T> {
+        if self.is_empty() {
+            Err(Error::NotEnoughElements(Some(1)))
+        } else {
+            let fi = self.idx_front(0);
+            Ok(&mut self.array[fi])
+        }
+    }
+
+    /// Returns a shared reference to the `nth` front element.
+    /// # Errors
+    /// Errors if the queue doesn't have at least `nth` elements.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectDestaque;
+    /// # fn main() -> devela::data::DataResult<()> {
+    /// let q = DirectDestaque::<_, 8>::from([1, 2, 3, 4]);
+    /// assert_eq![&3, q.peek_nth_front(2)?];
+    /// # Ok(()) }
+    /// ```
+    #[inline]
+    pub fn peek_nth_front(&self, nth: usize) -> Result<&T> {
+        if self.len() <= nth {
+            Err(Error::NotEnoughElements(Some(nth)))
+        } else {
+            let bi = self.idx_front(nth);
+            Ok(&self.array[bi])
+        }
+    }
+
+    /// Returns an exclusive reference to the `nth` front element.
+    /// # Errors
+    /// Errors if the queue doesn't have at least `nth` elements.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectDestaque;
+    /// # fn main() -> devela::data::DataResult<()> {
+    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3, 4]);
+    /// assert_eq![&mut 3, q.peek_nth_front_mut(2)?];
+    /// # Ok(()) }
+    /// ```
+    #[inline]
+    pub fn peek_nth_front_mut(&mut self, nth: usize) -> Result<&mut T> {
+        if self.len() <= nth {
+            Err(Error::NotEnoughElements(Some(nth)))
+        } else {
+            let bi = self.idx_front(nth);
+            Ok(&mut self.array[bi])
+        }
+    }
+
     /* pop */
 
     /// Pops the front element.
+    ///
+    /// This is the habitual *dequeue* operation for a signle-ended **queue**.
     ///
     /// `( 1 2 -- 2 )`
     /// # Errors
@@ -488,8 +492,11 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// assert![q.is_empty()];
     /// # Ok(()) }
     /// ```
+    /// # Features
+    /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
     #[inline]
     #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
     pub fn pop_front(&mut self) -> Result<T> {
         if self.is_empty() {
             Err(Error::NotEnoughElements(Some(1)))
@@ -503,11 +510,13 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
             Ok(e)
         }
     }
+
     /// Alias of [`pop_front`][Self::pop_front].
     ///
-    /// The habitual dequeue operation for a single-ended queue.
-    #[inline(always)]
+    /// This is the habitual *dequeue* operation for a single-ended **queue**.
+    #[inline]
     #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
     pub fn dequeue(&mut self) -> Result<T> {
         self.pop_front()
     }
@@ -528,8 +537,11 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// assert![q.is_empty()];
     /// # Ok(()) }
     /// ```
+    /// # Features
+    /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
     #[inline]
     #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
     pub fn pop_back(&mut self) -> Result<T> {
         if self.is_empty() {
             Err(Error::NotEnoughElements(Some(1)))
@@ -661,39 +673,6 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /* swap */
 
-    /// Swaps the first two elements at the front of the queue.
-    ///
-    /// `( 1 2 3 4 -- 2 1 3 4 )`
-    /// # Errors
-    /// Errors if the queue doesn't contain at least 2 elements.
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 4>::from([1, 2, 3, 4]);
-    /// q.swap_front();
-    /// assert_eq![q.to_array(), Some([2, 1, 3, 4])];
-    /// ```
-    #[inline]
-    pub fn swap_front(&mut self) -> Result<()> {
-        if self.len() < 2 {
-            Err(Error::NotEnoughElements(Some(2)))
-        } else {
-            let fi0 = self.idx_front(0);
-            let fi1 = self.idx_front(1);
-            self.array.swap(fi0, fi1);
-            Ok(())
-        }
-    }
-    /// Unchecked version of [`swap_front`][Self::swap_front].
-    /// # Panics
-    /// Panics if the queue doesn't contain at least 2 elements.
-    #[inline]
-    pub fn swap_front_unchecked(&mut self) {
-        let fi0 = self.idx_front(0);
-        let fi1 = self.idx_front(1);
-        self.array.swap(fi0, fi1);
-    }
-
     /// Swaps the last two elements at the back of the queue.
     ///
     /// `( 1 2 3 4 -- 1 2 4 3 )`
@@ -727,66 +706,37 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         self.array.swap(bi0, bi1);
     }
 
-    /// Swaps the front and back elements.
+    /// Swaps the first two elements at the front of the queue.
     ///
-    /// `( 1 2 3 4 -- 4 2 3 1 )`
+    /// `( 1 2 3 4 -- 2 1 3 4 )`
     /// # Errors
     /// Errors if the queue doesn't contain at least 2 elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 6>::from([1, 2, 3, 4, 5]);
-    /// q.swap_ends();
-    /// assert_eq![q.to_array(), Some([5, 2, 3, 4, 1])];
+    /// let mut q = DirectDestaque::<_, 4>::from([1, 2, 3, 4]);
+    /// q.swap_front();
+    /// assert_eq![q.to_array(), Some([2, 1, 3, 4])];
     /// ```
     #[inline]
-    pub fn swap_ends(&mut self) -> Result<()> {
+    pub fn swap_front(&mut self) -> Result<()> {
         if self.len() < 2 {
             Err(Error::NotEnoughElements(Some(2)))
         } else {
-            let bi0 = self.idx_back(0);
-            let fi0 = self.idx_front(0);
-            self.array.swap(bi0, fi0);
-            Ok(())
-        }
-    }
-
-    /// Swaps the first two pairs of elements at the front of the queue.
-    /// `( 1 2 3 4 5 6 7 8 -- 3 4 1 2 5 6 7 8 )`
-    /// # Errors
-    /// Errors if the queue doesn't contain at least 4 elements.
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);
-    /// q.swap2_front();
-    /// assert_eq![q.to_array(), Some([3, 4, 1, 2, 5, 6, 7, 8])];
-    /// ```
-    #[inline]
-    pub fn swap2_front(&mut self) -> Result<()> {
-        if self.len() < 4 {
-            Err(Error::NotEnoughElements(Some(4)))
-        } else {
             let fi0 = self.idx_front(0);
             let fi1 = self.idx_front(1);
-            let fi2 = self.idx_front(2);
-            let fi3 = self.idx_front(3);
-            self.array.swap(fi1, fi3);
-            self.array.swap(fi0, fi2);
+            self.array.swap(fi0, fi1);
             Ok(())
         }
     }
-    /// Unchecked version of [`swap2_back`][Self::swap2_back].
+    /// Unchecked version of [`swap_front`][Self::swap_front].
     /// # Panics
     /// Panics if the queue doesn't contain at least 2 elements.
     #[inline]
-    pub fn swap2_front_unchecked(&mut self) {
+    pub fn swap_front_unchecked(&mut self) {
         let fi0 = self.idx_front(0);
         let fi1 = self.idx_front(1);
-        let fi2 = self.idx_front(2);
-        let fi3 = self.idx_front(3);
-        self.array.swap(fi1, fi3);
-        self.array.swap(fi0, fi2);
+        self.array.swap(fi0, fi1);
     }
 
     /// Swaps the last two pairs of elements at the back of the queue.
@@ -827,6 +777,67 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         self.array.swap(bi0, bi2);
     }
 
+    /// Swaps the first two pairs of elements at the front of the queue.
+    /// `( 1 2 3 4 5 6 7 8 -- 3 4 1 2 5 6 7 8 )`
+    /// # Errors
+    /// Errors if the queue doesn't contain at least 4 elements.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectDestaque;
+    /// let mut q = DirectDestaque::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);
+    /// q.swap2_front();
+    /// assert_eq![q.to_array(), Some([3, 4, 1, 2, 5, 6, 7, 8])];
+    /// ```
+    #[inline]
+    pub fn swap2_front(&mut self) -> Result<()> {
+        if self.len() < 4 {
+            Err(Error::NotEnoughElements(Some(4)))
+        } else {
+            let fi0 = self.idx_front(0);
+            let fi1 = self.idx_front(1);
+            let fi2 = self.idx_front(2);
+            let fi3 = self.idx_front(3);
+            self.array.swap(fi1, fi3);
+            self.array.swap(fi0, fi2);
+            Ok(())
+        }
+    }
+    /// Unchecked version of [`swap2_back`][Self::swap2_back].
+    /// # Panics
+    /// Panics if the queue doesn't contain at least 2 elements.
+    #[inline]
+    pub fn swap2_front_unchecked(&mut self) {
+        let fi0 = self.idx_front(0);
+        let fi1 = self.idx_front(1);
+        let fi2 = self.idx_front(2);
+        let fi3 = self.idx_front(3);
+        self.array.swap(fi1, fi3);
+        self.array.swap(fi0, fi2);
+    }
+
+    /// Swaps the front and back elements.
+    ///
+    /// `( 1 2 3 4 -- 4 2 3 1 )`
+    /// # Errors
+    /// Errors if the queue doesn't contain at least 2 elements.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectDestaque;
+    /// let mut q = DirectDestaque::<_, 6>::from([1, 2, 3, 4, 5]);
+    /// q.swap_ends();
+    /// assert_eq![q.to_array(), Some([5, 2, 3, 4, 1])];
+    /// ```
+    #[inline]
+    pub fn swap_ends(&mut self) -> Result<()> {
+        if self.len() < 2 {
+            Err(Error::NotEnoughElements(Some(2)))
+        } else {
+            let bi0 = self.idx_back(0);
+            let fi0 = self.idx_front(0);
+            self.array.swap(bi0, fi0);
+            Ok(())
+        }
+    }
     /// Swaps the front and back pairs of elements.
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 7 8 3 4 5 6 1 2 )`
@@ -987,8 +998,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     }
     /// Alias of [`pop_front`][Self::pop_front].
     ///
-    /// The habitual dequeue operation for a single-ended queue.
-    #[inline(always)]
+    /// This is the habitual *dequeue* operation for a single-ended **queue**.
+    #[inline]
     #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
     pub fn dequeue(&mut self) -> Result<T> {
         self.pop_front()

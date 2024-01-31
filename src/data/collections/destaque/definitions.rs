@@ -16,11 +16,68 @@ use crate::mem::Boxed;
 
 /// A double-ended queue and stack backed by an [`Array`].
 ///
-/// It has the queue and stack methods implemented for both
-/// the front and the back sides.
+/// It implements methods that operate from both the front and the back.
+/// Rememeber that a single-ended *stack* operates only from the back, while a
+/// single-ended *queue* pushes to the back and pops from the front.
 ///
-/// [`Queue`]: crate::data::Queue
-/// [`Stack`]: crate::data::Stack
+/// - General methods:
+///   - [`new`][Self::new],
+/// [`len`][Self::len], [`is_empty`][Self::is_empty], [`is_full`][Self::is_full],
+/// [`clear`][Self::clear], [`contains`][Self::contains],
+/// [`capacity`][Self::capacity], [`remaining_capacity`][Self::remaining_capacity].
+///   - [`iter`][Self::iter],
+/// [`extend_back`][Self::extend_back], [`extend_front`][Self::extend_front],
+/// [`from_array`][Self::from_array], [`to_array`][Self::to_array],
+/// [`to_vec`][Self::to_vec].
+///
+/// - Queue and stack methods:
+///   - push:
+/// [`push_back`][Self::push_back]*([uc][Self::push_back_unchecked])*
+///   **/** [`push`][Self::push]
+///   **/** [`enqueue`][Self::enqueue],
+/// [`push_front`][Self::push_front]*([uc][Self::push_front_unchecked])*.
+///   - pop:
+/// [`pop_front`][Self::pop_front]
+///   **/** [`dequeue`][Self::dequeue],
+/// [`pop_back`][Self::pop_back]
+///   **/** [`pop`][Self::pop].
+///   - peek:
+/// [`peek_back`][Self::peek_back]*([mut][Self::peek_back_mut])*
+/// [`peek_nth_back`][Self::peek_nth_back]*([mut][Self::peek_nth_back_mut])*,
+/// [`peek_front`][Self::peek_front]*([mut][Self::peek_front_mut])*,
+/// [`peek_nth_front`][Self::peek_nth_front]*([mut][Self::peek_nth_front_mut])*.
+///   - drop:
+/// [`drop_back`][Self::drop_back],
+/// [`drop_front`][Self::drop_front],
+/// [`drop_n_back`][Self::drop_n_back],
+/// [`drop_n_front`][Self::drop_n_front].
+///   - swap:
+/// [`swap_back`][Self::swap_back]*([uc][Self::swap_back_unchecked])*,
+/// [`swap_front`][Self::swap_front]*([uc][Self::swap_front_unchecked])*,
+/// [`swap2_back`][Self::swap2_back]*([uc][Self::swap2_back_unchecked])*,
+/// [`swap2_front`][Self::swap2_front]*([uc][Self::swap2_front_unchecked])*,
+/// [`swap_ends`][Self::swap_ends], [`swap2_ends`][Self::swap2_ends].
+///   - rot:
+/// [`rot_right`][Self::rot_right],
+/// [`rot_right_n`][Self::rot_right_n],
+/// [`rot_left`][Self::rot_left],
+/// [`rot_left_n`][Self::rot_left_n].
+///   - dup:
+/// [`dup_back`][Self::dup_back],
+/// [`dup_front`][Self::dup_front],
+/// [`dup2_back`][Self::dup2_back],
+/// [`dup2_front`][Self::dup2_front].
+///   - over:
+/// [`over_back`][Self::over_back],
+/// [`over_front`][Self::over_front],
+/// [`over2_back`][Self::over2_back],
+/// [`over2_front`][Self::over2_front].
+///   - tuck:
+/// [`tuck_back`][Self::tuck_back],
+/// [`tuck_front`][Self::tuck_front],
+/// [`tuck2_back`][Self::tuck2_back],
+/// [`tuck2_front`][Self::tuck2_front].
+///
 // TODO:IMPROVE docs
 pub struct Destaque<T, S: Storage, const CAP: usize> {
     pub(crate) array: Array<T, S, CAP>,
