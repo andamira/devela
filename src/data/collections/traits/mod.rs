@@ -6,5 +6,6 @@
 mod array;
 mod collection;
 mod queues;
+mod stacks;
 
-pub use {array::*, collection::*, queues::*};
+pub use {array::*, collection::*, queues::*, stacks::*};

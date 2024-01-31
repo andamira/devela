@@ -45,10 +45,6 @@ pub trait DataCollection {
     /// Counts the number of times a given `element` appears in the collection.
     fn collection_count(&self, element: &Self::Element) -> Result<usize>
     where Self::Element: PartialEq { E::ni() }
-
-    // WAIT:1.75.0 [impl Trait in trait](https://github.com/rust-lang/rust/pull/115822)
-    // fn iter(&self) -> Result<impl Iterator<&Self::Element>> { E::ni() }
-    // fn iter_mut(&mut self) -> Result<impl Iterator<&mut Self::Element>> { E::ni() }
 }
 
 /* impl for devela types */
