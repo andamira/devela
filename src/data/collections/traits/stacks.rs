@@ -4,8 +4,9 @@
 //
 // TOC
 // - define traits DataStack, DataDestack
-// - impl for Destaque
-// - impl for VecDeque
+// - impl for
+//   - Destaque
+//   - VecDeque
 
 use crate::{
     data::{DataCollection, DataErrors as E, DataResult as Result},

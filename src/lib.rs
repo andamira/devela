@@ -58,7 +58,7 @@ pub mod _docs {
     #![doc = include_str!("./_docs/features.md")]
 }
 
-/// All items are flat re-exported here.
+/// All items re-exported.
 ///
 /// Note that any item tagged with [`dep`] can also be enabled by
 /// manually enabling the associated optional dependency.

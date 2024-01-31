@@ -4,14 +4,16 @@
 //
 // TOC
 // - define traits DataQueue, DataDeque
-// - impl for VecDeque
+// - impl for:
+//   - Destaque
+//   - VecDeque
 
 use crate::{
     data::{DataCollection, DataErrors as E, DataResult as Result},
     mem::Storage,
 };
 
-/// An abstract `Queue` data type.
+/// An abstract *queue* data type.
 pub trait DataQueue: DataCollection {
     /// Remove an element from the (front of the) queue.
     fn queue_pop(&mut self) -> Result<<Self as DataCollection>::Element>;
@@ -19,7 +21,7 @@ pub trait DataQueue: DataCollection {
     fn queue_push(&mut self, element: <Self as DataCollection>::Element) -> Result<()>;
 }
 
-/// An abstract `Deque` data type.
+/// An abstract *double-ended queue* data type.
 pub trait DataDeque: DataCollection + DataQueue {
     /// Remove an element from the back of the queue.
     fn queue_pop_back(&mut self) -> Result<<Self as DataCollection>::Element>;
@@ -36,7 +38,7 @@ pub trait DataDeque: DataCollection + DataQueue {
     }
 }
 
-/* impls */
+/* impl for Destaque */
 
 // safe alternative with T: Clone
 #[rustfmt::skip]

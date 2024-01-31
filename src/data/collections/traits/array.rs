@@ -4,7 +4,7 @@
 //
 // TOC
 // - define trait DataArray
-// - impl for devela types:
+// - impl for:
 //   - Array
 
 use crate::{
@@ -12,7 +12,7 @@ use crate::{
     mem::Storage,
 };
 
-/// An abstract Array.
+/// An abstract array data type.
 ///
 /// - <https://en.wikipedia.org/wiki/Array_(data_type)#Abstract_arrays>
 pub trait DataArray: DataCollection {
@@ -35,7 +35,7 @@ pub trait DataArray: DataCollection {
         Self::Element: Clone;
 }
 
-/* impls */
+/* impl for Array */
 
 impl<T, S: Storage, const LEN: usize> DataArray for crate::data::Array<T, S, LEN> {
     fn array_ref_get(&self, idx: usize) -> Result<&<Self as DataCollection>::Element> {
