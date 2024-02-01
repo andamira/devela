@@ -6,6 +6,8 @@
 // - define DataCollection
 // - impl for devela types:
 //   - Array
+//   - Stack
+//   - Destaque
 // - impl for reexported types:
 //   - array
 //   - Vec
@@ -17,7 +19,7 @@
 //   - UnorderedSet
 
 use crate::{
-    data::{DataErrors as E, DataResult as Result},
+    data::{Array, DataErrors as E, DataResult as Result, Destaque, Stack},
     mem::Storage,
 };
 
@@ -50,7 +52,7 @@ pub trait DataCollection {
 /* impl for devela types */
 
 #[rustfmt::skip]
-impl<T, S: Storage, const LEN: usize> DataCollection for crate::data::Array<T, S, LEN> {
+impl<T, S: Storage, const LEN: usize> DataCollection for Array<T, S, LEN> {
     type Element = T;
     /// The capacity of a fixed-size array is always equal to its length.
     fn collection_capacity(&self) -> Result<usize> { Ok(LEN) }
@@ -68,7 +70,7 @@ impl<T, S: Storage, const LEN: usize> DataCollection for crate::data::Array<T, S
 }
 
 #[rustfmt::skip]
-impl<T, S: Storage, const LEN: usize> DataCollection for crate::data::Destaque<T, S, LEN> {
+impl<T, S: Storage, const LEN: usize> DataCollection for Stack<T, S, LEN> {
     type Element = T;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -81,9 +83,25 @@ impl<T, S: Storage, const LEN: usize> DataCollection for crate::data::Destaque<T
         Ok(self.iter().filter(|&e| e == element).count())
     }
 }
+
+#[rustfmt::skip]
+impl<T, S: Storage, const LEN: usize> DataCollection for Destaque<T, S, LEN> {
+    type Element = T;
+    fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
+    fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
+    fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
+    fn collection_is_full(&self) -> Result<bool> { Ok(self.is_full()) }
+    fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
+        Ok(self.contains(&element))
+    }
+    fn collection_count(&self, element: &Self::Element) -> Result<usize> where T: PartialEq {
+        Ok(self.iter().filter(|&e| e == element).count())
+    }
+}
+
 /* impl for reexported types */
 
-// Array
+// array
 #[rustfmt::skip]
 impl<T, const N: usize> DataCollection for [T; N] {
     type Element = T;

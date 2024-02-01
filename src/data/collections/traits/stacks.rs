@@ -5,11 +5,12 @@
 // TOC
 // - define traits DataStack, DataDestack
 // - impl for
+//   - Stack
 //   - Destaque
 //   - VecDeque
 
 use crate::{
-    data::{DataCollection, DataErrors as E, DataResult as Result},
+    data::{DataCollection, DataErrors as E, DataResult as Result, Destaque, Stack},
     mem::Storage,
 };
 
@@ -38,12 +39,37 @@ pub trait DataDestack: DataStack {
     }
 }
 
+/* impl for Stack */
+
+// safe alternative with T: Clone
+#[rustfmt::skip]
+#[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
+impl<T: Clone, S: Storage, const CAP: usize> DataStack for Stack<T, S, CAP> {
+    fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
+        self.pop()
+    }
+    fn stack_push(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
+        self.push(element)
+    }
+}
+// unsafe alternative without T: Clone
+#[rustfmt::skip]
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
+impl<T, S: Storage, const CAP: usize> DataStack for Stack<T, S, CAP> {
+    fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
+        self.pop()
+    }
+    fn stack_push(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
+        self.push(element)
+    }
+}
+
 /* impl for Destaque */
 
 // safe alternative with T: Clone
 #[rustfmt::skip]
 #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-impl<T: Clone, S: Storage, const CAP: usize> DataStack for crate::data::collections::Destaque<T, S, CAP> {
+impl<T: Clone, S: Storage, const CAP: usize> DataStack for Destaque<T, S, CAP> {
     fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
         self.pop_back()
     }
@@ -53,7 +79,7 @@ impl<T: Clone, S: Storage, const CAP: usize> DataStack for crate::data::collecti
 }
 #[rustfmt::skip]
 #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-impl<T: Clone, S: Storage, const CAP: usize> DataDestack for crate::data::collections::Destaque<T, S, CAP> {
+impl<T: Clone, S: Storage, const CAP: usize> DataDestack for Destaque<T, S, CAP> {
     fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element> {
         self.pop_front()
     }
@@ -64,7 +90,7 @@ impl<T: Clone, S: Storage, const CAP: usize> DataDestack for crate::data::collec
 // unsafe alternative without T: Clone
 #[rustfmt::skip]
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-impl<T, S: Storage, const CAP: usize> DataStack for crate::data::collections::Destaque<T, S, CAP> {
+impl<T, S: Storage, const CAP: usize> DataStack for Destaque<T, S, CAP> {
     fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
         self.pop_back()
     }
@@ -74,7 +100,7 @@ impl<T, S: Storage, const CAP: usize> DataStack for crate::data::collections::De
 }
 #[rustfmt::skip]
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-impl<T, S: Storage, const CAP: usize> DataDestack for crate::data::collections::Destaque<T, S, CAP> {
+impl<T, S: Storage, const CAP: usize> DataDestack for Destaque<T, S, CAP> {
     fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element> {
         self.pop_front()
     }
