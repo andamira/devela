@@ -22,7 +22,7 @@ pub trait DataStack: DataCollection {
 }
 
 /// An abstract *double-ended stack* data type.
-pub trait DataDestack: DataCollection + DataStack {
+pub trait DataDestack: DataStack {
     /// Remove an element from the front of the stack.
     fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element>;
     /// Add an element to the front of the stack.

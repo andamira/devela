@@ -4,13 +4,12 @@
 //! either end.
 //
 
-use crate::{
-    data::{Array, DataCollection, DataQueue, DataResult as Result},
-    mem::Storage,
-};
-
 #[cfg(feature = "alloc")]
 use crate::mem::Boxed;
+use crate::{
+    data::{Array, DataCollection, DataResult as Result},
+    mem::Storage,
+};
 
 /* types */
 
@@ -33,14 +32,12 @@ use crate::mem::Boxed;
 /// - Queue and stack methods:
 ///   - push:
 /// [`push_back`][Self::push_back]*([uc][Self::push_back_unchecked])*
-///   **/** [`push`][Self::push]
-///   **/** [`enqueue`][Self::enqueue],
+///   **=** [`enqueue`][Self::enqueue],
 /// [`push_front`][Self::push_front]*([uc][Self::push_front_unchecked])*.
 ///   - pop:
 /// [`pop_front`][Self::pop_front]
-///   **/** [`dequeue`][Self::dequeue],
-/// [`pop_back`][Self::pop_back]
-///   **/** [`pop`][Self::pop].
+///   **=** [`dequeue`][Self::dequeue],
+/// [`pop_back`][Self::pop_back].
 ///   - peek:
 /// [`peek_back`][Self::peek_back]*([mut][Self::peek_back_mut])*
 /// [`peek_nth_back`][Self::peek_nth_back]*([mut][Self::peek_nth_back_mut])*,
@@ -78,12 +75,14 @@ use crate::mem::Boxed;
 /// [`tuck2_back`][Self::tuck2_back],
 /// [`tuck2_front`][Self::tuck2_front].
 ///
-// TODO:IMPROVE docs
+/// See also the related traits:
+/// [`DataQueue`][crate::DataQueue], [`DataDeque`][crate::DataDeque],
+/// [`DataStack`][crate::DataStack], [`DataDestack`][crate::DataDestack].
 pub struct Destaque<T, S: Storage, const CAP: usize> {
-    pub(crate) array: Array<T, S, CAP>,
-    pub(crate) len: usize,
-    pub(crate) front: usize,
-    pub(crate) back: usize,
+    pub(super) array: Array<T, S, CAP>,
+    pub(super) len: usize,
+    pub(super) front: usize,
+    pub(super) back: usize,
 }
 
 /// A [`Destaque`] stored in the stack.

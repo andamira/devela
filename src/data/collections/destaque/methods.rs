@@ -10,17 +10,15 @@ use crate::{
 };
 use crate::{
     data::{
-        error::{DataErrors as Error, DataResult as Result},
+        error::{DataErrors, DataResult as Result},
         {array_init, Array, Destaque, DestaqueIter},
     },
     mem::Storage,
 };
-// TODO:IMPROVE use array_init
+use DataErrors::{NotEnoughElements, NotEnoughSpace};
+// IMPROVE use array_init
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
-use core::{
-    mem::{self, MaybeUninit},
-    ptr,
-};
+use core::mem::{transmute_copy, MaybeUninit};
 
 // `S:() + T:Clone`
 impl<T: Clone, const CAP: usize> Destaque<T, (), CAP> {
@@ -164,7 +162,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 1 2 3 4 5 6)` for `[3 4 5 6]`
     /// # Errors
-    /// Errors if the deque becomes full before the iterator finishes.
+    /// Returns [`NotEnoughSpace`] if the deque becomes full before the iterator finishes.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -184,14 +182,14 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
                 return Ok(());
             }
         }
-        Err(Error::NotEnoughSpace(None))
+        Err(NotEnoughSpace(None))
     }
 
     /// Extends the front of the destaque from an iterator.
     ///
     /// `( 1 2 -- 6 5 4 3 1 2 )` for `[3 4 5 6]`
     /// # Errors
-    /// Errors if the destaque becomes full before the iterator finishes.
+    /// Returns [`NotEnoughSpace`] if the destaque becomes full before the iterator finishes.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -211,7 +209,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
                 return Ok(());
             }
         }
-        Err(Error::NotEnoughSpace(None))
+        Err(NotEnoughSpace(None))
     }
 
     /* push */
@@ -220,7 +218,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 3 1 2 )`
     /// # Errors
-    /// Errors if the destaque is full.
+    /// Returns [`NotEnoughSpace`] if the destaque is full.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -235,7 +233,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn push_front(&mut self, element: T) -> Result<()> {
         if self.is_full() {
-            Err(Error::NotEnoughSpace(Some(1)))
+            Err(NotEnoughSpace(Some(1)))
         } else {
             self.front = (self.front + CAP - 1) % CAP;
             self.array[self.front] = element;
@@ -260,7 +258,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 1 2 3 )`
     /// # Errors
-    /// Errors if the destaque is full.
+    /// Returns [`NotEnoughSpace`] if the destaque is full.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -275,7 +273,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn push_back(&mut self, element: T) -> Result<()> {
         if self.is_full() {
-            Err(Error::NotEnoughSpace(Some(1)))
+            Err(NotEnoughSpace(Some(1)))
         } else {
             self.array[self.back] = element;
             self.back = (self.back + 1) % CAP;
@@ -305,7 +303,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns a shared reference to the back element.
     /// # Errors
-    /// Errors if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -317,7 +315,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn peek_back(&self) -> Result<&T> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else {
             let bi = self.idx_back(0);
             Ok(&self.array[bi])
@@ -326,7 +324,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns an exclusive reference to the back element.
     /// # Errors
-    /// Errors if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -338,7 +336,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn peek_back_mut(&mut self) -> Result<&mut T> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else {
             let bi = self.idx_back(0);
             Ok(&mut self.array[bi])
@@ -347,7 +345,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns a shared reference to the `nth` back element.
     /// # Errors
-    /// Errors if the queue doesn't have at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -359,7 +357,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn peek_nth_back(&self, nth: usize) -> Result<&T> {
         if self.len() <= nth {
-            Err(Error::NotEnoughElements(Some(nth)))
+            Err(NotEnoughElements(Some(nth)))
         } else {
             let bi = self.idx_back(nth);
             Ok(&self.array[bi])
@@ -368,7 +366,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns an exclusive reference to the `nth` back element.
     /// # Errors
-    /// Errors if the queue doesn't have at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -380,7 +378,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn peek_nth_back_mut(&mut self, nth: usize) -> Result<&mut T> {
         if self.len() <= nth {
-            Err(Error::NotEnoughElements(Some(nth)))
+            Err(NotEnoughElements(Some(nth)))
         } else {
             let bi = self.idx_back(nth);
             Ok(&mut self.array[bi])
@@ -389,7 +387,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns a shared reference to the front element.
     /// # Errors
-    /// Errors if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -401,7 +399,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn peek_front(&self) -> Result<&T> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else {
             let fi = self.idx_front(0);
             Ok(&self.array[fi])
@@ -410,7 +408,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns an exclusive reference to the front element.
     /// # Errors
-    /// Errors if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -422,7 +420,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn peek_front_mut(&mut self) -> Result<&mut T> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else {
             let fi = self.idx_front(0);
             Ok(&mut self.array[fi])
@@ -431,7 +429,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns a shared reference to the `nth` front element.
     /// # Errors
-    /// Errors if the queue doesn't have at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -443,7 +441,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn peek_nth_front(&self, nth: usize) -> Result<&T> {
         if self.len() <= nth {
-            Err(Error::NotEnoughElements(Some(nth)))
+            Err(NotEnoughElements(Some(nth)))
         } else {
             let bi = self.idx_front(nth);
             Ok(&self.array[bi])
@@ -452,7 +450,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns an exclusive reference to the `nth` front element.
     /// # Errors
-    /// Errors if the queue doesn't have at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -464,7 +462,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn peek_nth_front_mut(&mut self, nth: usize) -> Result<&mut T> {
         if self.len() <= nth {
-            Err(Error::NotEnoughElements(Some(nth)))
+            Err(NotEnoughElements(Some(nth)))
         } else {
             let bi = self.idx_front(nth);
             Ok(&mut self.array[bi])
@@ -479,7 +477,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 2 )`
     /// # Errors
-    /// Errors if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -499,11 +497,11 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
     pub fn pop_front(&mut self) -> Result<T> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else {
-            // SAFETY: we're not gonna access the value, but move it out
             // MOTIVATION: to not depend on T: Clone
-            let e = unsafe { ptr::read((self.array.get_unchecked(self.front)) as *const T) };
+            // SAFETY: we're not gonna access the value, but move it out
+            let e = unsafe { core::ptr::read((self.array.get_unchecked(self.front)) as *const T) };
 
             self.front = (self.front + 1) % CAP;
             self.len -= 1;
@@ -525,7 +523,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2-- 1 )`
     /// # Errors
-    /// Errors if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -544,12 +542,12 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
     pub fn pop_back(&mut self) -> Result<T> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else {
             self.back = (self.back + CAP - 1) % CAP;
-            // SAFETY: we're not gonna access the value, but move it out
             // MOTIVATION: to not depend on T: Clone
-            let e = unsafe { ptr::read((self.array.get_unchecked(self.back)) as *const T) };
+            // SAFETY: we're not gonna access the value, but move it out
+            let e = unsafe { core::ptr::read((self.array.get_unchecked(self.back)) as *const T) };
             self.len -= 1;
             Ok(e)
         }
@@ -579,7 +577,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 1 )`
     /// # Errors
-    /// Errors if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -591,7 +589,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// ```
     pub fn drop_back(&mut self) -> Result<()> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else {
             self.back = (self.back + CAP - 1) % CAP;
             self.len -= 1;
@@ -603,7 +601,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 2 )`
     /// # Errors
-    /// Errors if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -615,7 +613,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// ```
     pub fn drop_front(&mut self) -> Result<()> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else {
             self.front = (self.front + 1) % CAP;
             self.len -= 1;
@@ -627,7 +625,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 )` for `n = 3`
     /// # Errors
-    /// Errors if the queue doesn't contain at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -639,7 +637,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// ```
     pub fn drop_n_back(&mut self, nth: usize) -> Result<()> {
         if self.len() <= nth {
-            Err(Error::NotEnoughElements(Some(nth)))
+            Err(NotEnoughElements(Some(nth)))
         } else {
             self.back = (self.back + CAP - nth) % CAP;
             self.len -= nth;
@@ -651,7 +649,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 4 )` for `n = 3`
     /// # Errors
-    /// Errors if the queue doesn't contain at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -663,7 +661,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// ```
     pub fn drop_n_front(&mut self, nth: usize) -> Result<()> {
         if self.len() <= nth {
-            Err(Error::NotEnoughElements(Some(nth)))
+            Err(NotEnoughElements(Some(nth)))
         } else {
             self.front = (self.front + nth) % CAP;
             self.len -= nth;
@@ -677,7 +675,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 4 3 )`
     /// # Errors
-    /// Errors if the queue doesn't contain at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -688,7 +686,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn swap_back(&mut self) -> Result<()> {
         if self.len() < 2 {
-            Err(Error::NotEnoughElements(Some(2)))
+            Err(NotEnoughElements(Some(2)))
         } else {
             let bi0 = self.idx_back(0);
             let bi1 = self.idx_back(1);
@@ -710,7 +708,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 2 1 3 4 )`
     /// # Errors
-    /// Errors if the queue doesn't contain at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -721,7 +719,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn swap_front(&mut self) -> Result<()> {
         if self.len() < 2 {
-            Err(Error::NotEnoughElements(Some(2)))
+            Err(NotEnoughElements(Some(2)))
         } else {
             let fi0 = self.idx_front(0);
             let fi1 = self.idx_front(1);
@@ -743,7 +741,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 1 2 3 4 7 8 5 6 )`
     /// # Errors
-    /// Errors if the queue doesn't contain at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -754,7 +752,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn swap2_back(&mut self) -> Result<()> {
         if self.len() < 4 {
-            Err(Error::NotEnoughElements(Some(4)))
+            Err(NotEnoughElements(Some(4)))
         } else {
             let bi0 = self.idx_back(0);
             let bi1 = self.idx_back(1);
@@ -780,7 +778,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Swaps the first two pairs of elements at the front of the queue.
     /// `( 1 2 3 4 5 6 7 8 -- 3 4 1 2 5 6 7 8 )`
     /// # Errors
-    /// Errors if the queue doesn't contain at least 4 elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 4 elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -791,7 +789,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn swap2_front(&mut self) -> Result<()> {
         if self.len() < 4 {
-            Err(Error::NotEnoughElements(Some(4)))
+            Err(NotEnoughElements(Some(4)))
         } else {
             let fi0 = self.idx_front(0);
             let fi1 = self.idx_front(1);
@@ -819,7 +817,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 4 2 3 1 )`
     /// # Errors
-    /// Errors if the queue doesn't contain at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -830,7 +828,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn swap_ends(&mut self) -> Result<()> {
         if self.len() < 2 {
-            Err(Error::NotEnoughElements(Some(2)))
+            Err(NotEnoughElements(Some(2)))
         } else {
             let bi0 = self.idx_back(0);
             let fi0 = self.idx_front(0);
@@ -842,7 +840,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 7 8 3 4 5 6 1 2 )`
     /// # Errors
-    /// Errors if the queue doesn't contain at least 4 elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 4 elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -853,7 +851,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn swap2_ends(&mut self) -> Result<()> {
         if self.len() < 4 {
-            Err(Error::NotEnoughElements(Some(4)))
+            Err(NotEnoughElements(Some(4)))
         } else {
             let bi0 = self.idx_back(0);
             let bi1 = self.idx_back(1);
@@ -972,7 +970,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 2 )`
     /// # Errors
-    /// Errors if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -988,7 +986,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
     pub fn pop_front(&mut self) -> Result<T> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else {
             let e = self.array[self.front].clone();
             self.front = (self.front + 1) % CAP;
@@ -1009,7 +1007,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 1 )`
     /// # Errors
-    /// Errors if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1026,7 +1024,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     // safe-only version that depends on T: Clone
     pub fn pop_back(&mut self) -> Result<T> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else {
             self.back = (self.back + CAP - 1) % CAP;
             let e = self.array[self.back].clone();
@@ -1075,7 +1073,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// This is a non `alloc` alternative method to [`to_vec`][Self::to_vec].
     /// # Panics
-    /// Panics if the new LEN sized array can't be allocated.
+    /// Panics if the new `LEN` sized array can't be allocated.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1087,8 +1085,10 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// assert_eq![q.to_array::<5>(), Some([1, 2, 3, 4, 5])];
     /// # Ok(()) }
     /// ```
+    /// # Features
+    /// Makes use of the `unsafe_array` feature if enabled.
     pub fn to_array<const LEN: usize>(&self) -> Option<[T; LEN]> {
-        // TODO: IMPROVE: use array_init
+        // IMPROVE: use array_init
         // MAYBE return not option
         // TODO: improve from_iter
         // Some(Array::<T, S, LEN>::new())
@@ -1100,19 +1100,12 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
             let arr = {
                 let mut unarr: [MaybeUninit<T>; LEN] =
                     unsafe { MaybeUninit::uninit().assume_init() };
-
                 for (n, i) in unarr.iter_mut().enumerate().take(LEN) {
                     let index = (self.front + n) % CAP;
                     let _ = i.write(self.array[index].clone());
                 }
-
-                // TEMP:FIX: can't use transmute for now:
-                // - https://github.com/rust-lang/rust/issues/62875
-                // - https://github.com/rust-lang/rust/issues/61956
-                // mem::transmute::<_, [T; LEN]>(&arr)
-                //
                 // SAFETY: we've initialized all the elements
-                unsafe { mem::transmute_copy::<_, [T; LEN]>(&unarr) }
+                unsafe { transmute_copy::<_, [T; LEN]>(&unarr) }
             };
 
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_array")))]
@@ -1131,7 +1124,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 1 2 2 )`
     /// # Errors
-    /// Errors if the queue is either empty or full.
+    /// Returns [`NotEnoughElements`] if the queue is empty
+    /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1144,9 +1138,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn dup_back(&mut self) -> Result<()> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else if self.is_full() {
-            Err(Error::NotEnoughSpace(Some(1)))
+            Err(NotEnoughSpace(Some(1)))
         } else {
             self.push_back_unchecked(self.peek_back()?.clone());
             Ok(())
@@ -1157,7 +1151,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 1 1 2 )`
     /// # Errors
-    /// Errors if the queue is either empty or full.
+    /// Returns [`NotEnoughElements`] if the queue is empty
+    /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1170,9 +1165,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn dup_front(&mut self) -> Result<()> {
         if self.is_empty() {
-            Err(Error::NotEnoughElements(Some(1)))
+            Err(NotEnoughElements(Some(1)))
         } else if self.is_full() {
-            Err(Error::NotEnoughSpace(Some(1)))
+            Err(NotEnoughSpace(Some(1)))
         } else {
             self.push_front_unchecked(self.peek_front()?.clone());
             Ok(())
@@ -1183,8 +1178,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 3 4 3 4)`
     /// # Errors
-    /// Errors if the queue doesn't have at least 2 elements,
-    /// or if it doesn't have space for 2 additional elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1197,9 +1192,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn dup2_back(&mut self) -> Result<()> {
         if self.len() < 2 {
-            Err(Error::NotEnoughElements(Some(2)))
+            Err(NotEnoughElements(Some(2)))
         } else if self.remaining_capacity() < 2 {
-            Err(Error::NotEnoughSpace(Some(2)))
+            Err(NotEnoughSpace(Some(2)))
         } else {
             let b0 = self.peek_back()?.clone();
             let b1 = self.peek_nth_back(1)?.clone();
@@ -1213,8 +1208,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 1 2 3 4)`
     /// # Errors
-    /// Errors if the queue doesn't have at least 2 elements,
-    /// or if it doesn't have space for 2 additional elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1227,9 +1222,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn dup2_front(&mut self) -> Result<()> {
         if self.len() < 2 {
-            Err(Error::NotEnoughElements(Some(2)))
+            Err(NotEnoughElements(Some(2)))
         } else if self.remaining_capacity() < 2 {
-            Err(Error::NotEnoughSpace(Some(2)))
+            Err(NotEnoughSpace(Some(2)))
         } else {
             let f0 = self.peek_front()?.clone();
             let f1 = self.peek_nth_front(1)?.clone();
@@ -1245,7 +1240,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 3 4 3 )`
     /// # Errors
-    /// Errors if the queue is full, or doesn't have at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1258,9 +1254,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn over_back(&mut self) -> Result<()> {
         if self.len() < 2 {
-            Err(Error::NotEnoughElements(Some(2)))
+            Err(NotEnoughElements(Some(2)))
         } else if self.is_full() {
-            Err(Error::NotEnoughSpace(Some(1)))
+            Err(NotEnoughSpace(Some(1)))
         } else {
             self.push_back_unchecked(self.peek_nth_back(1)?.clone());
             Ok(())
@@ -1271,7 +1267,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 2 1 2 3 4 )`
     /// # Errors
-    /// Errors if the queue is full, or doesn't have at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1284,9 +1281,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn over_front(&mut self) -> Result<()> {
         if self.len() < 2 {
-            Err(Error::NotEnoughElements(Some(2)))
+            Err(NotEnoughElements(Some(2)))
         } else if self.is_full() {
-            Err(Error::NotEnoughSpace(Some(1)))
+            Err(NotEnoughSpace(Some(1)))
         } else {
             self.push_front_unchecked(self.peek_nth_front(1)?.clone());
             Ok(())
@@ -1297,8 +1294,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 1 2 3 4 5 6 7 8 5 6 )`
     /// # Errors
-    /// Errors if the queue doesn't have at least 4 elements,
-    /// or if it doesn't have space for 2 additional elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 4 elements,
+    /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1311,9 +1308,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn over2_back(&mut self) -> Result<()> {
         if self.len() < 4 {
-            Err(Error::NotEnoughElements(Some(4)))
+            Err(NotEnoughElements(Some(4)))
         } else if self.remaining_capacity() < 2 {
-            Err(Error::NotEnoughSpace(Some(2)))
+            Err(NotEnoughSpace(Some(2)))
         } else {
             let b2 = self.peek_nth_back(2)?.clone();
             let b3 = self.peek_nth_back(3)?.clone();
@@ -1327,8 +1324,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 3 4 1 2 3 4 5 6 7 8 )`
     /// # Errors
-    /// Errors if the queue doesn't have at least 4 elements,
-    /// or if it doesn't have space for 2 additional elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 4 elements,
+    /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1341,9 +1338,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn over2_front(&mut self) -> Result<()> {
         if self.len() < 4 {
-            Err(Error::NotEnoughElements(Some(4)))
+            Err(NotEnoughElements(Some(4)))
         } else if self.remaining_capacity() < 2 {
-            Err(Error::NotEnoughSpace(Some(2)))
+            Err(NotEnoughSpace(Some(2)))
         } else {
             let f2 = self.peek_nth_front(2)?.clone();
             let f3 = self.peek_nth_front(3)?.clone();
@@ -1359,7 +1356,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 4 3 4 )`
     /// # Errors
-    /// Errors if the queue is full, or doesn't have at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1373,9 +1371,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn tuck_back(&mut self) -> Result<()> {
         if self.len() < 2 {
-            Err(Error::NotEnoughElements(Some(2)))
+            Err(NotEnoughElements(Some(2)))
         } else if self.is_full() {
-            Err(Error::NotEnoughSpace(Some(1)))
+            Err(NotEnoughSpace(Some(1)))
         } else {
             let b0 = self.peek_back()?.clone();
             self.swap_back_unchecked();
@@ -1388,7 +1386,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 1 3 4 )`
     /// # Errors
-    /// Errors if the queue is full, or doesn't have at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1401,9 +1400,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn tuck_front(&mut self) -> Result<()> {
         if self.len() < 2 {
-            Err(Error::NotEnoughElements(Some(2)))
+            Err(NotEnoughElements(Some(2)))
         } else if self.is_full() {
-            Err(Error::NotEnoughSpace(Some(1)))
+            Err(NotEnoughSpace(Some(1)))
         } else {
             let f0 = self.peek_front()?.clone();
             self.swap_front_unchecked();
@@ -1417,8 +1416,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 1 2 3 4 7 8 5 6 7 8 )`
     /// # Errors
-    /// Errors if the queue doesn't have at least 4 elements,
-    /// or doesn't have space for 2 additional elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 4 elements,
+    /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1431,9 +1430,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn tuck2_back(&mut self) -> Result<()> {
         if self.len() < 4 {
-            Err(Error::NotEnoughElements(Some(4)))
+            Err(NotEnoughElements(Some(4)))
         } else if self.len() < 2 {
-            Err(Error::NotEnoughSpace(Some(2)))
+            Err(NotEnoughSpace(Some(2)))
         } else {
             let b0 = self.peek_nth_back(0)?.clone();
             let b1 = self.peek_nth_back(1)?.clone();
@@ -1449,8 +1448,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 1 2 3 4 1 2 5 6 7 8 )`
     /// # Errors
-    /// Errors if the queue doesn't have at least 4 elements,
-    /// or doesn't have space for 2 additional elements.
+    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 4 elements,
+    /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectDestaque;
@@ -1463,9 +1462,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     #[inline]
     pub fn tuck2_front(&mut self) -> Result<()> {
         if self.len() < 4 {
-            Err(Error::NotEnoughElements(Some(4)))
+            Err(NotEnoughElements(Some(4)))
         } else if self.len() < 2 {
-            Err(Error::NotEnoughSpace(Some(2)))
+            Err(NotEnoughSpace(Some(2)))
         } else {
             let f0 = self.peek_nth_front(0)?.clone();
             let f1 = self.peek_nth_front(1)?.clone();

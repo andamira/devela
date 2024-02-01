@@ -22,7 +22,7 @@ pub trait DataQueue: DataCollection {
 }
 
 /// An abstract *double-ended queue* data type.
-pub trait DataDeque: DataCollection + DataQueue {
+pub trait DataDeque: DataQueue {
     /// Remove an element from the back of the queue.
     fn queue_pop_back(&mut self) -> Result<<Self as DataCollection>::Element>;
     /// Add an element to the front of the queue.
