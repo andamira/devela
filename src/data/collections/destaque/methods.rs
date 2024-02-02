@@ -23,7 +23,7 @@ use core::mem::{transmute_copy, MaybeUninit};
 // `S:() + T:Clone`
 impl<T: Clone, const CAP: usize> Destaque<T, (), CAP> {
     /// Returns an empty deque, allocated in the stack,
-    /// using `element` to fill the remaining free data.
+    /// cloning `element` to fill the remaining free data.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -39,12 +39,32 @@ impl<T: Clone, const CAP: usize> Destaque<T, (), CAP> {
     }
 }
 
+// `S:() + T:Copy`
+impl<T: Copy, const LEN: usize> Destaque<T, (), LEN> {
+    /// Returns an empty queue, allocated in the stack,
+    /// copying `element` to fill the remaining free data, in compilation time.
+    /// # Examples
+    /// ```
+    /// # use devela::data::Destaque;
+    /// const Q: Destaque<i32, (), 16> = Destaque::new_copied(0);
+    /// ```
+    pub const fn new_copied(element: T) -> Self {
+        let array = Array::with_copied(element);
+        Self {
+            array,
+            front: 0,
+            back: 0,
+            len: 0,
+        }
+    }
+}
+
 // `S:Boxed + T:Clone`
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const CAP: usize> Destaque<T, Boxed, CAP> {
     /// Returns an empty deque, allocated in the heap,
-    /// using `element` to fill the remaining free data.
+    /// cloning `element` to fill the remaining free data.
     /// # Examples
     /// ```
     /// # use devela::data::BoxedDestaque;
@@ -60,15 +80,35 @@ impl<T: Clone, const CAP: usize> Destaque<T, Boxed, CAP> {
     }
 }
 
+// `S: ()`
+impl<T, const CAP: usize> Destaque<T, (), CAP> {
+    /// Converts an array into a [`full`][Self::is_full] stack.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectDestaque;
+    /// let s = DirectDestaque::<_, 3>::from_array([1, 2, 3]);
+    /// ```
+    pub const fn from_array_const(arr: [T; CAP]) -> Destaque<T, (), CAP> {
+        Self {
+            array: Array::new_const(arr),
+            front: 0,
+            back: 0,
+            len: CAP,
+        }
+    }
+}
+
 // ``
 impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     // Returns the `nth` element's index counting from the back.
     #[inline]
+    #[must_use]
     pub(super) const fn idx_back(&self, nth: usize) -> usize {
         (self.back + CAP - nth - 1) % CAP
     }
     // Returns the `nth` element's index counting from the front.
     #[inline]
+    #[must_use]
     pub(super) const fn idx_front(&self, nth: usize) -> usize {
         (self.front + nth) % CAP
     }
@@ -149,7 +189,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /* iter */
 
     /// Returns an iterator.
-    pub fn iter(&self) -> DestaqueIter<'_, T, S, CAP> {
+    pub const fn iter(&self) -> DestaqueIter<'_, T, S, CAP> {
         DestaqueIter {
             deque: self,
             idx: 0,

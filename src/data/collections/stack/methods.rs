@@ -23,7 +23,7 @@ use core::mem::{transmute_copy, MaybeUninit};
 // `S:() + T:Clone`
 impl<T: Clone, const CAP: usize> Stack<T, (), CAP> {
     /// Returns an empty stack, allocated in the stack,
-    /// using `element` to fill the remaining free data.
+    /// cloning `element` to fill the remaining free data.
     /// # Examples
     /// ```
     /// # use devela::data::DirectStack;
@@ -37,12 +37,27 @@ impl<T: Clone, const CAP: usize> Stack<T, (), CAP> {
     }
 }
 
+// `S:() + T:Copy`
+impl<T: Copy, const LEN: usize> Stack<T, (), LEN> {
+    /// Returns an empty stack, allocated in the stack,
+    /// copying `element` to fill the remaining free data, in compilation time.
+    /// # Examples
+    /// ```
+    /// # use devela::data::Stack;
+    /// const S: Stack<i32, (), 16> = Stack::new_copied(0);
+    /// ```
+    pub const fn new_copied(element: T) -> Self {
+        let array = Array::with_copied(element);
+        Self { array, len: 0 }
+    }
+}
+
 // `S:Boxed + T:Clone`
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const CAP: usize> Stack<T, Boxed, CAP> {
     /// Returns an empty stack, allocated in the heap,
-    /// using `element` to fill the remaining free data.
+    /// cloning `element` to fill the remaining free data.
     /// # Examples
     /// ```
     /// # use devela::data::BoxedStack;
@@ -868,8 +883,6 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
     /// # use devela::data::DirectStack;
     /// let s = DirectStack::<_, 3>::from_array([1, 2, 3]);
     /// ```
-    // IMPROVE?
-    // - MAYBE arr: impl Into<[T; CAP]?> Even None…
     pub fn from_array(arr: [T; CAP]) -> Stack<T, S, CAP> {
         Self {
             array: Array::new(arr),
@@ -878,10 +891,26 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
     }
 
     /// Returns a interator.
-    pub fn iter(&self) -> StackIter<'_, T, S, CAP> {
+    pub const fn iter(&self) -> StackIter<'_, T, S, CAP> {
         StackIter {
             stack: self,
             idx: 0,
+        }
+    }
+}
+
+// `S: ()`
+impl<T, const CAP: usize> Stack<T, (), CAP> {
+    /// Converts an array into a [`full`][Self::is_full] stack.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectStack;
+    /// let s = DirectStack::<_, 3>::from_array([1, 2, 3]);
+    /// ```
+    pub const fn from_array_const(arr: [T; CAP]) -> Stack<T, (), CAP> {
+        Self {
+            array: Array::new_const(arr),
+            len: CAP,
         }
     }
 }
