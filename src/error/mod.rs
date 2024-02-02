@@ -18,6 +18,8 @@
 
 // always compiled, public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
+pub mod chain;
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
 pub mod panic;
 
 // feature-gated, non-public
@@ -44,7 +46,7 @@ mod reimplement_no_std;
 
 // always compiled, public
 #[doc(no_inline)]
-pub use panic::all::*;
+pub use {chain::*, panic::all::*};
 
 // feature-gated, private
 #[cfg(feature = "error")]
@@ -58,7 +60,7 @@ pub use reimplement_no_std::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::panic::all::*;
+    pub use super::{chain::*, panic::all::*};
 
     // feature-gated
     #[doc(inline)]
