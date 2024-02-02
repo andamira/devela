@@ -17,7 +17,7 @@ use crate::{
 
 // ``
 impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
-    /// Returns an new `Array` from the given primitive `array`.
+    /// Returns a new `Array` from the given primitive `array`.
     pub fn new(array: [T; LEN]) -> Self {
         Self {
             array: array.into(),
@@ -25,17 +25,41 @@ impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
     }
 }
 
+// S:()
+impl<T, const LEN: usize> Array<T, (), LEN> {
+    /// Returns a new [`DirectArray`] from the given primitive `array` in compilation time.
+    pub const fn new_const(array: [T; LEN]) -> Self {
+        Self {
+            array: Direct::new(array),
+        }
+    }
+}
+
 // `S:() + T:Clone`
 impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
-    /// Returns an array, allocated in the stack,
-    /// filled with `element`, cloned.
+    /// Returns an array, allocated in the stack, filled with `element`, cloned.
     /// # Examples
     /// ```
     /// # use devela::data::Array;
-    /// let s = Array::<_, (), 16>::with(0);
+    /// let a = Array::<_, (), 16>::with_cloned(0);
     /// ```
-    pub fn with(element: T) -> Self {
+    pub fn with_cloned(element: T) -> Self {
         let array = Direct::new(array_init!(clone [T; LEN], "safe_data", "unsafe_array", element));
+        Self { array }
+    }
+}
+
+// `S:() + T:Copy`
+impl<T: Copy, const LEN: usize> Array<T, (), LEN> {
+    /// Returns an array, allocated in the stack, filled with `element`, copied,
+    /// in compilation time.
+    /// # Examples
+    /// ```
+    /// # use devela::data::Array;
+    /// const A: Array<i32, (), 16> = Array::with_copied(0);
+    /// ```
+    pub const fn with_copied(element: T) -> Self {
+        let array = Direct::new([element; LEN]);
         Self { array }
     }
 }
@@ -44,14 +68,13 @@ impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
-    /// Returns an empty stack, allocated in the heap,
-    /// using `element` to fill the remaining free data.
+    /// Returns an array, allocated in the heap, filled with `element`, cloned.
     /// # Examples
     /// ```
     /// # use devela::data::BoxedArray;
-    /// let mut s = BoxedArray::<_, 1_000>::with(0);
+    /// let mut a = BoxedArray::<_, 1_000>::with_cloned(0);
     /// ```
-    pub fn with(element: T) -> Self {
+    pub fn with_cloned(element: T) -> Self {
         let array = array_init!(clone_heap [T; LEN], "safe_data", "unsafe_array", element);
         Self { array }
     }
@@ -110,6 +133,13 @@ impl<T, const LEN: usize> Array<T, Boxed, LEN> {
 impl<T, const LEN: usize> Array<T, (), LEN> {
     /// Returns the inner boxed primitive array.
     pub fn into_array(self) -> [T; LEN] {
+        self.array.0
+    }
+}
+// `S: (), T:Copy`
+impl<T: Copy, const LEN: usize> Array<T, (), LEN> {
+    /// Returns the inner boxed primitive array in compilation time.
+    pub const fn into_array_const(self) -> [T; LEN] {
         self.array.0
     }
 }

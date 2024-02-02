@@ -31,7 +31,7 @@ impl<T: Clone, const CAP: usize> Stack<T, (), CAP> {
     /// ```
     pub fn new(element: T) -> Self {
         Self {
-            array: Array::<T, (), CAP>::with(element),
+            array: Array::<T, (), CAP>::with_cloned(element),
             len: 0,
         }
     }
@@ -50,7 +50,7 @@ impl<T: Clone, const CAP: usize> Stack<T, Boxed, CAP> {
     /// ```
     pub fn new(element: T) -> Self {
         Self {
-            array: Array::<T, Boxed, CAP>::with(element),
+            array: Array::<T, Boxed, CAP>::with_cloned(element),
             len: 0,
         }
     }
