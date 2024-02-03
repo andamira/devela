@@ -6,7 +6,7 @@
 use crate::code::reexport;
 use core::fmt;
 
-reexport! { rust: core::convert, local_module: "error",
+reexport! { rust: core::convert, local_module: "result",
 doc: "The type intended for a [`Result::Err`] variant that can never happen.",
 @Infallible as NeverErr}
 

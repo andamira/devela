@@ -1,6 +1,6 @@
 // devela::result
 //
-//! Error related functionality, extends
+//! Result related functionality, extends
 //! `std::{`[`error`], [`option`], [`panic`], [`result`]`}`.
 //!
 //! [`error`]: std::error

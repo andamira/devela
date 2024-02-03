@@ -5,7 +5,7 @@
 
 use crate::code::reexport;
 
-reexport! { rust: no_std|std::error, local_module: "error",
+reexport! { rust: no_std|std::error, local_module: "result",
     doc: "A trait representing the basic expectations for error values.",
     Error
 }
