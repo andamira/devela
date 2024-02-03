@@ -1,15 +1,13 @@
-// devela::code::chain
+// devela::traits::chain
 //
-//! Free function chaining traits.
+//! Free function chaining traits helpers.
 //
-// Based on the code by George Burton, Unlicense licensed.
-// https://crates.io/crates/apply/0.3.0
 
 /// Allows to chain free functions into method call chains.
 ///
 /// # Examples
 /// ```
-/// use devela::code::Apply;
+/// use devela::error::Apply;
 ///
 /// let s = 1
 ///     .apply(|s| s * 2)
@@ -19,11 +17,13 @@
 /// ```
 ///
 /// ```compile_fail
-/// use devela::code::Apply;
+/// use devela::error::Apply;
 ///
 /// // We can sort it, but we don't receive the new vec.
 /// let v: Vec<i32> = vec![3, 2, 1, 5].apply_mut(|it| it.sort());
 /// ```
+// Based on the code by George Burton, Unlicense licensed.
+// https://crates.io/crates/apply/0.3.0
 pub trait Apply<Res> {
     /// Apply a function which takes the parameter by value.
     #[inline]
@@ -60,8 +60,9 @@ impl<T: ?Sized, Res> Apply<Res> for T {}
 /// It assumes that each function in the chain modifies the value by exclusive
 /// reference and returns the modified value.
 ///
+/// # Examples
 /// ```
-/// use devela::code::Also;
+/// use devela::error::Also;
 ///
 /// let v = vec![3, 2, 1, 5]
 ///     .also_mut(|v| v.sort())
@@ -70,6 +71,8 @@ impl<T: ?Sized, Res> Apply<Res> for T {}
 /// assert_eq![v, vec![1, 2, 3, 5, 7]];
 /// ```
 ///
+// Based on the code by George Burton, Unlicense licensed.
+// https://crates.io/crates/apply/0.3.0
 pub trait Also: Sized {
     /// Applies a function which takes the parameter by exclusive reference,
     /// and then returns the (possibly) modified owned value.
@@ -99,5 +102,4 @@ pub trait Also: Sized {
         self
     }
 }
-
 impl<T: Sized> Also for T {}

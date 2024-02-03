@@ -16,9 +16,10 @@
 
 /* modules */
 
-// always compiled, public
+// always compiled, non-public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
-pub mod chain;
+mod chain;
+// always compiled, public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
 pub mod panic;
 
@@ -44,9 +45,11 @@ mod reimplement_no_std;
 
 /* re-exports */
 
+// always compiled, non-public
+pub use chain::*;
 // always compiled, public
 #[doc(no_inline)]
-pub use {chain::*, panic::all::*};
+pub use panic::all::*;
 
 // feature-gated, private
 #[cfg(feature = "error")]

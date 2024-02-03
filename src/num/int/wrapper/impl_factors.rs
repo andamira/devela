@@ -24,7 +24,7 @@ use E::MismatchedSizes;
 #[cfg(feature = "alloc")]
 use {
     crate::_deps::alloc::{collections::BTreeSet, vec, vec::Vec},
-    crate::code::Also,
+    crate::error::Also,
 };
 
 // $t:   the input/output type
