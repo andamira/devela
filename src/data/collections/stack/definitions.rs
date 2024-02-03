@@ -16,39 +16,52 @@ use crate::{
 
 /// A stack backed by an [`Array`].
 ///
-/// It implements methods that operate from the back.
+/// All the methods operate from the back.
 ///
-/// - General methods:
-///   - [`new`][Self::new],
-/// [`len`][Self::len], [`is_empty`][Self::is_empty], [`is_full`][Self::is_full],
-/// [`clear`][Self::clear], [`contains`][Self::contains],
-/// [`capacity`][Self::capacity], [`remaining_capacity`][Self::remaining_capacity].
-///   - [`iter`][Self::iter],
-/// [`extend`][Self::extend],
-/// [`from_array`][Self::from_array], [`to_array`][Self::to_array],
-/// [`to_vec`][Self::to_vec].
+/// See also the related trait: [`DataStack`][crate::DataStack].
 ///
-/// - Stack methods:
+/// ## Methods
+/// - Constructors:
+///   [`new`][Self::new],
+///   [`new_copied`][Self::new_copied],
+///   [`new`][Self#method.new-1](alloc),
+///   [`from_array`][Self::from_array].
+/// - Deconstructors:
+///   [`to_array`][Self::to_array],
+///   [`to_vec`][Self::to_vec](alloc).
+/// - Queries:
+///   [`len`][Self::len], [`is_empty`][Self::is_empty], [`is_full`][Self::is_full],
+///   [`capacity`][Self::capacity], [`remaining_capacity`][Self::remaining_capacity],
+///   [`contains`][Self::contains].
+/// - Iterator related:
+///   [`iter`][Self::iter],
+///   [`extend`][Self::extend],
+///
+/// - Stack operations:
+///   - clear: [`clear`][Self::clear].
 ///   - push: [`push`][Self::push].
 ///   - pop: [`pop`][Self::pop].
 ///   - peek:
-/// [`peek`][Self::peek]*([mut][Self::peek_mut])*,
-/// [`peek_nth`][Self::peek_nth]*([mut][Self::peek_nth_mut])*,
+///     [`peek`][Self::peek]*([mut][Self::peek_mut])*,
+///     [`peek_nth`][Self::peek_nth]*([mut][Self::peek_nth_mut])*,
 ///   - drop:
-/// [`drop`][Self::drop], [`drop_n`][Self::drop_n],
-/// [`drop_replace_default`][Self::drop_replace_default].
+///     [`drop`][Self::drop], [`drop_n`][Self::drop_n],
+///     [`drop_replace_default`][Self::drop_replace_default].
 ///   - swap: [`swap`][Self::swap], [`swap2`][Self::swap2],
 ///   - rot:
-/// [`rot`][Self::rot], [`rot_cc`][Self::rot_cc],
-/// [`rot2`][Self::rot2], [`rot2_cc`][Self::rot2_cc].
-///   - dup:
-/// [`dup`][Self::dup], [`dup2`][Self::dup2].
-///   - over:
-/// [`over`][Self::over], [`over2`][Self::over2].
-///   - tuck:
-/// [`tuck`][Self::tuck], [`tuck2`][Self::tuck2].
+///     [`rot`][Self::rot], [`rot_cc`][Self::rot_cc],
+///     [`rot2`][Self::rot2], [`rot2_cc`][Self::rot2_cc].
+///   - dup: [`dup`][Self::dup], [`dup2`][Self::dup2].
+///   - over: [`over`][Self::over], [`over2`][Self::over2].
+///   - tuck: [`tuck`][Self::tuck], [`tuck2`][Self::tuck2].
 ///
-/// See also the related trait: [`DataStack`][crate::DataStack].
+/// - Stack owning *const* operations that returns `Self`:
+///   - clear: [`own_clear`][Self::own_clear].
+///   - push: [`own_push`][Self::push]*([uc][Self::own_push_uc])*,
+///   - pop: [`own_pop`][Self::pop]*([uc][Self::own_pop_uc])*.
+///   - drop:
+///     [`own_drop`][Self::own_drop]*([uc][Self::own_drop_uc])*,
+///     [`own_drop_n`][Self::own_drop_n]*([uc][Self::own_drop_n_uc])*.
 pub struct Stack<T, S: Storage, const CAP: usize> {
     pub(crate) array: Array<T, S, CAP>,
     pub(crate) len: usize,

@@ -1,4 +1,4 @@
-// devela::data::methods
+// devela::data::collections::stack::methods
 //
 //! Stacks.
 //
@@ -40,7 +40,7 @@ impl<T: Clone, const CAP: usize> Stack<T, (), CAP> {
 // `S:() + T:Copy`
 impl<T: Copy, const LEN: usize> Stack<T, (), LEN> {
     /// Returns an empty stack, allocated in the stack,
-    /// copying `element` to fill the remaining free data, in compilation time.
+    /// copying `element` to fill the remaining free data, in compile time.
     /// # Examples
     /// ```
     /// # use devela::data::Stack;
@@ -368,7 +368,7 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 )` for `n == 3`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the stack doesn't contain at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the stack doesn't contain at least `n` elements.
     /// # Examples
     /// ```
     /// # use devela::data::DirectStack;
@@ -377,11 +377,11 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
     /// assert_eq![s.as_slice(), &[1]];
     /// ```
     #[inline]
-    pub fn drop_n(&mut self, nth: usize) -> Result<()> {
-        if self.len() < nth {
-            Err(NotEnoughElements(Some(nth)))
+    pub fn drop_n(&mut self, n: usize) -> Result<()> {
+        if self.len() < n {
+            Err(NotEnoughElements(Some(n)))
         } else {
-            self.len -= nth;
+            self.len -= n;
             Ok(())
         }
     }
@@ -905,7 +905,7 @@ impl<T, const CAP: usize> Stack<T, (), CAP> {
     /// # Examples
     /// ```
     /// # use devela::data::DirectStack;
-    /// let s = DirectStack::<_, 3>::from_array([1, 2, 3]);
+    /// let s = DirectStack::<_, 3>::from_array_const([1, 2, 3]);
     /// ```
     pub const fn from_array_const(arr: [T; CAP]) -> Stack<T, (), CAP> {
         Self {
