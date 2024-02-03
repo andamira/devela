@@ -16,16 +16,16 @@
 //     - factors_prime_unique_buf
 //     - factors_prime_unique_plus_buf
 
+#[cfg(feature = "alloc")]
+use crate::{
+    _deps::alloc::{collections::BTreeSet, vec, vec::Vec},
+    result::Also,
+};
 use crate::{
     code::{iif, paste},
     num::{Int, NumErrors as E, NumResult as Result},
 };
 use E::MismatchedSizes;
-#[cfg(feature = "alloc")]
-use {
-    crate::_deps::alloc::{collections::BTreeSet, vec, vec::Vec},
-    crate::error::Also,
-};
 
 // $t:   the input/output type
 // $d:  the doclink suffix for the method name

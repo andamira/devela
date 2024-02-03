@@ -31,7 +31,6 @@ optional dependencies.
 
 Single modules:
 - `code`: enables the [`code`] module,
-- `error`: enables the [`error`] module.
 - `io`: enables the [`io`] module.
 - `mem`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
@@ -39,6 +38,7 @@ Single modules:
 - `num`: enables the [`num`] module.
 - `os`: enables all the [`os`] specific functionality.
 - `render`: enables the [`render`] module.
+- `result`: enables the [`result`] module.
 - `text`: enables the [`text`] module,
   and the [`const-str`], [`unicode-segmentation`] and [`unicode-width`] optional dependencies.
   and the [`atomic`] and [`portable_atomic`] optional dependencies.
@@ -57,10 +57,10 @@ In order to use any unsafe functionality:
 
 - `safe`: forbids `unsafe` (and overrides unsafe features)
   - `safe_data`
-  - `safe_error`
   - `safe_mem`
   - `safe_num`
   - `safe_os`
+  - `safe_result`
   - `safe_text`
   - `safe_ui`
   - `safe_work`
@@ -89,7 +89,7 @@ In order to use any unsafe functionality:
 Dependencies can also be enabled individually:
 - `atomic` is used in `work`.
 - `bytemuck` is used in `mem`, `num`.
-- `const-str` is used in `error`, `text`, `ui_term`.
+- `const-str` is used in `result`, `text`, `ui_term`.
 - `devela_macros` is used in `meta`.
 - `libm` is used in `num`.
 - `portable-atomic` is used in `work`.

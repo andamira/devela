@@ -1,4 +1,4 @@
-// devela::error
+// devela::result
 //
 //! Error related functionality, extends
 //! `std::{`[`error`], [`option`], [`panic`], [`result`]`}`.
@@ -10,28 +10,28 @@
 //
 
 // warnings:
-#![cfg_attr(not(feature = "error"), allow(unused_imports))]
+#![cfg_attr(not(feature = "result"), allow(unused_imports))]
 // safety:
 #![cfg_attr(feature = "safe_error", forbid(unsafe_code))]
 
 /* modules */
 
 // always compiled, non-public
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 mod chain;
 // always compiled, public
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 pub mod panic;
 
 // feature-gated, non-public
-#[cfg(feature = "error")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
+#[cfg(feature = "result")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 mod ext_result;
-#[cfg(feature = "error")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
+#[cfg(feature = "result")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 mod never;
-#[cfg(feature = "error")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "error")))]
+#[cfg(feature = "result")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 mod option;
 //
 #[cfg(feature = "std")]
@@ -39,7 +39,7 @@ mod reexport_std;
 #[cfg(feature = "no_std")]
 #[cfg_attr(
     feature = "nightly_doc",
-    doc(cfg(all(feature = "error", any(feature = "no_std", feature = "std"))))
+    doc(cfg(all(feature = "result", any(feature = "no_std", feature = "std"))))
 )]
 mod reimplement_no_std;
 
@@ -52,7 +52,7 @@ pub use chain::*;
 pub use panic::all::*;
 
 // feature-gated, private
-#[cfg(feature = "error")]
+#[cfg(feature = "result")]
 pub use {ext_result::*, never::*, option::all::*};
 //
 #[cfg(feature = "std")]
@@ -67,7 +67,7 @@ pub(crate) mod all {
 
     // feature-gated
     #[doc(inline)]
-    #[cfg(feature = "error")]
+    #[cfg(feature = "result")]
     pub use super::{ext_result::*, never::*, option::all::*};
     //
     #[doc(inline)]

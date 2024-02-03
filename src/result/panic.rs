@@ -1,4 +1,4 @@
-// devela::error::panic
+// devela::result::panic
 //
 //! Panic support, extends
 //! `std::`[`panic`][mod@std::panic].

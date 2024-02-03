@@ -1,4 +1,4 @@
-// devela::error::never
+// devela::result::never
 //
 //! `never` types.
 //

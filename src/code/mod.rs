@@ -22,8 +22,6 @@ mod _private;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod cfor;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod chain;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod deprecate;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod enumset;
@@ -49,15 +47,13 @@ pub use paste::__paste;
 
 // always compied, non-public
 pub use {
-    cfor::*, chain::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, reexports::*,
-    skip_format::*,
+    cfor::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, reexports::*, skip_format::*,
 };
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        cfor::*, chain::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, reexports::*,
-        skip_format::*,
+        cfor::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, reexports::*, skip_format::*,
     };
 }

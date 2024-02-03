@@ -15,7 +15,7 @@ pub struct IoError {
     repr: Repr,
 }
 
-impl crate::error::Error for IoError {}
+impl crate::result::Error for IoError {}
 
 impl fmt::Debug for IoError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

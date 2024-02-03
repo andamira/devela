@@ -59,12 +59,12 @@ no_std = [ # enables functionality incompatible with `std`
 all = [ # enables all the modules and submodules
 	"code",
 	"data",
-	"error",
 	"io",
 	"mem",
 	"num", "num_all",
 	"os", # "os_all",
 	"render",
+	"result",
 	"text",
 	"time",
 	"ui", "ui_all",
@@ -74,7 +74,6 @@ all = [ # enables all the modules and submodules
 # individual modules
 code = []
 data = ["dep?/bytemuck", "dep?/hashbrown"]
-error = []
 io = []
 mem = ["dep?/bytemuck"]
 num = []
@@ -82,6 +81,7 @@ num = []
 	num_niche_impls = [] # extra impls for niche types
 os = []
 render = []
+result = []
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
 ui = []
@@ -97,14 +97,14 @@ work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 # 2. don't enable `safe` feature in the module.
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_data", "safe_error", "safe_mem", "safe_num",
-	"safe_os", "safe_text", "safe_ui", "safe_work",
+	"safe_data", "safe_mem", "safe_num", "safe_os",
+	"safe_result", "safe_text", "safe_ui", "safe_work",
 ] # in specific modules:
 	safe_data = []
-	safe_error = []
 	safe_mem = []
 	safe_num = []
 	safe_os = []
+	safe_result = []
 	safe_text = []
 	safe_ui = ["safe_ui_term"]
 		safe_ui_term = []

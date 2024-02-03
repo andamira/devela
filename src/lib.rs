@@ -38,12 +38,12 @@ compile_error!("You can't enable `safe` and any `unsafe*` features at the same t
 
 pub mod code;
 pub mod data;
-pub mod error;
 pub mod io;
 pub mod mem;
 pub mod num;
 pub mod os;
 pub mod render;
+pub mod result;
 pub mod text;
 pub mod time;
 pub mod ui;
@@ -66,8 +66,8 @@ pub mod all {
     #[allow(unused_imports)]
     #[doc(inline)]
     pub use super::{
-        code::all::*, data::all::*, error::all::*, io::all::*, mem::all::*, num::all::*,
-        os::all::*, render::all::*, text::all::*, time::all::*, ui::all::*, work::all::*,
+        code::all::*, data::all::*, io::all::*, mem::all::*, num::all::*, os::all::*,
+        render::all::*, result::all::*, text::all::*, time::all::*, ui::all::*, work::all::*,
     };
 }
 // and from the root

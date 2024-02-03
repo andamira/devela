@@ -1,4 +1,4 @@
-// devela::error::ext
+// devela::result::ext
 //
 //!
 //
@@ -13,7 +13,7 @@ mod private {
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ExtOption`][crate::error::ExtOption].
+/// See also [`ExtOption`][crate::result::ExtOption].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
@@ -23,7 +23,7 @@ pub trait ExtResult<T, E>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ExtResult;
+    /// use devela::result::ExtResult;
     ///
     /// let x: Result<u32, &str> = Ok(2);
     /// assert_eq!(x.contains(&2), true);
@@ -43,7 +43,7 @@ pub trait ExtResult<T, E>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ExtResult;
+    /// use devela::result::ExtResult;
     ///
     /// let x: Result<u32, &str> = Ok(2);
     /// assert_eq!(x.contains_err(&"Some error message"), false);
@@ -68,7 +68,7 @@ pub trait ExtResult<T, E>: private::Sealed {
     // ///
     // /// # Examples
     // /// ```
-    // /// use devela::error::ExtOption;
+    // /// use devela::result::ExtOption;
     // /// use core::{cmp::min, ops::Add};
     // ///
     // /// let x = Some(2);

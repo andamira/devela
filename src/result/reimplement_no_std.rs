@@ -1,4 +1,4 @@
-// devela::error::no_std
+// devela::result::no_std
 //
 //! Interfaces for working with Errors.
 //
