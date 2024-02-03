@@ -29,19 +29,19 @@ impl<SELF, T> Owning<SELF, T> {
         Owning { owned, value }
     }
 
-    /// Destructures the struct into a tuple.
+    /// Destructures itself into a tuple.
     #[inline]
     #[must_use]
     pub fn into_tuple(self) -> (SELF, T) {
         (self.owned, self.value)
     }
-    /// Destructures the struct into a tuple.
+    /// Destructures itself returning its `owned` field
     #[inline]
     #[must_use]
     pub fn into_owned(self) -> SELF {
         self.owned
     }
-    /// Destructures the struct into a tuple.
+    /// Destructures itself returning its `value` field
     #[inline]
     #[must_use]
     pub fn into_value(self) -> T {
@@ -51,13 +51,13 @@ impl<SELF, T> Owning<SELF, T> {
     /// Returns a reference to the `owned` field without consuming the `Owning` instance.
     #[inline]
     #[must_use]
-    pub const fn owned(&self) -> &SELF {
+    pub const fn ref_owned(&self) -> &SELF {
         &self.owned
     }
     /// Returns a reference to the `value` field without consuming the `Owning` instance.
     #[inline]
     #[must_use]
-    pub const fn value(&self) -> &T {
+    pub const fn ref_value(&self) -> &T {
         &self.value
     }
 
@@ -81,8 +81,13 @@ impl<SELF, T> Owning<SELF, T> {
     pub fn replace_value(self, new_value: T) -> Self {
         Self::new(self.owned, new_value)
     }
+    /// Replaces the `owned` self with a `new_self` and the `value` with a `new_value`.
+    #[inline]
+    pub fn replace_both(self, new_self: SELF, new_value: T) -> Self {
+        Self::new(new_self, new_value)
+    }
 
-    /// Applies a function to the `owned` field, transforming it into a new type.
+    /// Applies a mapping function `f` to the `owned` field.
     #[inline]
     pub fn map_owned<F, NewSelf>(self, f: F) -> Owning<NewSelf, T>
     where
@@ -93,7 +98,7 @@ impl<SELF, T> Owning<SELF, T> {
             value: self.value,
         }
     }
-    /// Applies a function to the `value` field, transforming it into a new type.
+    /// Applies a mapping function `f` to the `value` field.
     #[inline]
     pub fn map_value<F, NewT>(self, f: F) -> Owning<SELF, NewT>
     where
@@ -104,23 +109,34 @@ impl<SELF, T> Owning<SELF, T> {
             value: f(self.value),
         }
     }
+    /// Applies the mapping functions `f_*` to the respective `owned` and `value` fields.
+    pub fn map_both<F, G, NewSelf, NewT>(self, f_owned: F, f_value: G) -> Owning<NewSelf, NewT>
+    where
+        F: FnOnce(SELF) -> NewSelf,
+        G: FnOnce(T) -> NewT,
+    {
+        Owning {
+            owned: f_owned(self.owned),
+            value: f_value(self.value),
+        }
+    }
 }
 
 /// # Additional *const* methods for when everything is `Copy`.
 impl<SELF: Copy, T: Copy> Owning<SELF, T> {
-    /// Destructures the struct into a tuple.
+    /// Destructures itself into a tuple.
     #[inline]
     #[must_use]
     pub const fn into_tuple_const(self) -> (SELF, T) {
         (self.owned, self.value)
     }
-    /// Destructures the struct into a tuple.
+    /// Destructures itself returning its `owned` field
     #[inline]
     #[must_use]
     pub const fn into_owned_const(self) -> SELF {
         self.owned
     }
-    /// Destructures the struct into a tuple.
+    /// Destructures itself returning its `value` field
     #[inline]
     #[must_use]
     pub const fn into_value_const(self) -> T {
@@ -136,6 +152,11 @@ impl<SELF: Copy, T: Copy> Owning<SELF, T> {
     #[inline]
     pub const fn replace_value_const(self, new_value: T) -> Self {
         Self::new(self.owned, new_value)
+    }
+    /// Replaces the `owned` self with a `new_self` and the `value` with a `new_value`.
+    #[inline]
+    pub const fn replace_both_const(self, new_self: SELF, new_value: T) -> Self {
+        Self::new(new_self, new_value)
     }
 }
 
@@ -155,7 +176,7 @@ mod core_impls {
 
     impl<SELF: fmt::Debug, T: fmt::Debug> fmt::Debug for Owning<SELF, T> {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            let mut debug = f.debug_struct(stringify![Stack]);
+            let mut debug = f.debug_struct("Owning");
             debug
                 .field("owned", &self.owned)
                 .field("value", &self.value)
