@@ -1,4 +1,4 @@
-// devela::render::color::trait
+// devela::gfx::color::trait
 //
 //!
 //

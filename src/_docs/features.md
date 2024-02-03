@@ -1,6 +1,6 @@
 ## Features
 
-Features are grouped in 6 categories, mostly independent from each other:
+Features are grouped in 5 categories, mostly independent from each other:
 - *Environment*
 - *Module*
 - *Safety*
@@ -31,13 +31,14 @@ optional dependencies.
 
 Single modules:
 - `code`: enables the [`code`] module,
+- `data`: enables the [`data`] module,
+- `gfx`: enables the [`gfx`] module.
 - `io`: enables the [`io`] module.
 - `mem`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
   and the [`devela_macros`] optional dependency.
 - `num`: enables the [`num`] module.
 - `os`: enables all the [`os`] specific functionality.
-- `render`: enables the [`render`] module.
 - `result`: enables the [`result`] module.
 - `text`: enables the [`text`] module,
   and the [`const-str`], [`unicode-segmentation`] and [`unicode-width`] optional dependencies.
@@ -56,12 +57,16 @@ In order to use any unsafe functionality:
 2. don't enable `safe` feature in the module.
 
 - `safe`: forbids `unsafe` (and overrides unsafe features)
+  - `safe_code`
   - `safe_data`
+  - `safe_gfx`
+  - `safe_io`
   - `safe_mem`
   - `safe_num`
   - `safe_os`
   - `safe_result`
   - `safe_text`
+  - `safe_time`
   - `safe_ui`
   - `safe_work`
 
@@ -79,7 +84,10 @@ In order to use any unsafe functionality:
 ### Nightly features
 
 - `nightly`: enables nightly features.
-- `docsrs`: enables compiling the complete documentation.
+  - `nightly_coro`: enables `coroutines`, `coroutine_trait`.
+  - `nightly_doc`: enables `doc_cfg`.
+
+- `docsrs`: enables compiling the complete documentation for [docs.rs](https://docs.rs).
 
 
 ### Dependency features

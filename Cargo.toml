@@ -35,7 +35,6 @@ publish = true
 [features]
 
 # default = []
-docsrs = ["all", "std", "unsafe", "nightly", "dep", "libm"]
 
 
 #* environment features *#
@@ -59,11 +58,11 @@ no_std = [ # enables functionality incompatible with `std`
 all = [ # enables all the modules and submodules
 	"code",
 	"data",
+	"gfx",
 	"io",
 	"mem",
 	"num", "num_all",
 	"os", # "os_all",
-	"render",
 	"result",
 	"text",
 	"time",
@@ -74,13 +73,13 @@ all = [ # enables all the modules and submodules
 # individual modules
 code = []
 data = ["dep?/bytemuck", "dep?/hashbrown"]
+gfx = []
 io = []
 mem = ["dep?/bytemuck"]
 num = []
 	num_all = [ "num_niche_impls" ]
 	num_niche_impls = [] # extra impls for niche types
 os = []
-render = []
 result = []
 text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
@@ -97,15 +96,19 @@ work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 # 2. don't enable `safe` feature in the module.
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_data", "safe_mem", "safe_num", "safe_os",
-	"safe_result", "safe_text", "safe_ui", "safe_work",
+	"safe_code", "safe_data", "safe_gfx", "safe_io", "safe_mem", "safe_num",
+	"safe_os", "safe_result", "safe_text", "safe_time", "safe_ui", "safe_work",
 ] # in specific modules:
+	safe_code = []
 	safe_data = []
+	safe_gfx = []
+	safe_io = []
 	safe_mem = []
 	safe_num = []
 	safe_os = []
 	safe_result = []
 	safe_text = []
+	safe_time = []
 	safe_ui = ["safe_ui_term"]
 		safe_ui_term = []
 	safe_work = []
@@ -131,6 +134,10 @@ nightly = [ # enables nightly features
 ] # specific unstable features:
 	nightly_coro= [] # coroutines, coroutine_trait
 	nightly_doc = [] # doc_cfg
+
+# enables compiling the full documentation for docs.rs
+docsrs = ["nightly", "all", "std", "unsafe", "dep", "libm"]
+
 
 
 #* dependency features *#

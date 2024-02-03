@@ -1,4 +1,4 @@
-// devela::render::color::fns
+// devela::gfx::color::fns
 //
 //! Standalone color functions and constants.
 
