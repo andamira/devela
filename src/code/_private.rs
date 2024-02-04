@@ -186,7 +186,9 @@ macro_rules! reexport {
         };
     }};
 
-    // reexports items from an external dependency, from any normal module.
+    /* external dependencies */
+
+    // reexports items from an external optional dependency, from any normal module.
     //
     // - Supports multiple reexported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
@@ -199,7 +201,7 @@ macro_rules! reexport {
     ) => { $crate::code::paste! {
         #[doc(inline)]
         #[doc = "<span class='stab portability' title='re-exported from `" $dep_str
-        "` (also enabled via `dep`)'>`" $dep_str "`</span>"]
+            "` (also enabled via `dep`)'>`" $dep_str "`</span>"]
         #[doc = $description]
         #[doc = "\n\n*Re-exported from the [`" $dep_str
             "`](https://docs.rs/" $dep_str " ) crate*"]
@@ -220,6 +222,37 @@ macro_rules! reexport {
             feature = $dep_str
         ))]
         pub use crate::_deps::$dep $( ::$dep_path )? :: {
+            $( $item ),*
+            $( $item_to_rename as $item_renamed ),*
+        };
+    }};
+
+    // reexports items from an external non-optional dependency, from any normal module.
+    //
+    // - Supports multiple reexported items.
+    // - Renamed items must be all at the end, and each one prefixed with @.
+    //
+    // used for: result::Either
+    (non-optional $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
+      $( features: $( $f:literal ),+ ,)?
+      doc: $description:literal,
+      $( $item:ident ),*
+      $(@ $item_to_rename:ident as $item_renamed:ident),*
+      $(,)?
+    ) => { $crate::code::paste! {
+        #[doc(inline)]
+        #[doc = "<span class='stab portability' title='re-exported from `" $dep_str
+            "`'>`" $dep_str "`</span>"]
+        #[doc = $description]
+        #[doc = "\n\n*Re-exported from the [`" $dep_str
+            "`](https://docs.rs/" $dep_str " ) crate*"]
+
+        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
+
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(all( $($( feature = $f ),+)? ))))]
+        #[cfg(all( $($( feature = $f )+)? ))]
+
+        pub use ::$dep $( ::$dep_path )? :: {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
         };

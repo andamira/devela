@@ -40,13 +40,11 @@ publish = true
 #* environment features *#
 
 std = [ # disables `no_std` compatibility and enables `std` functionality
-	"alloc",
-	"dep?/std",
-	"atomic?/std", "bytemuck?/extern_crate_std"
+	"alloc", "either/use_std",
+	"dep?/std", "atomic?/std", "bytemuck?/extern_crate_std"
 ]
 alloc = [ # enables `alloc` functionality
-	"dep?/alloc",
-	"bytemuck?/extern_crate_alloc",
+	"dep?/alloc", "bytemuck?/extern_crate_alloc",
 ]
 no_std = [ # enables functionality incompatible with `std`
 	"dep?/libm",
@@ -173,6 +171,7 @@ const-str = { version = "0.5.6", default-features = false, optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
 unicode-width = { version = "0.1.11", default-features = false, optional = true }
+either = { version = "1.9.0", default-features = false }
 [dependencies.atomic]
 version = "0.6.0"
 default-features = false

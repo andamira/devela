@@ -21,6 +21,7 @@
 mod chain;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 mod mismatch;
+mod reexport;
 // always compiled, public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 pub mod panic;
@@ -36,8 +37,6 @@ mod never;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 mod option;
 //
-#[cfg(feature = "std")]
-mod reexport_std;
 #[cfg(feature = "no_std")]
 #[cfg_attr(
     feature = "nightly_doc",
@@ -48,7 +47,7 @@ mod reimplement_no_std;
 /* re-exports */
 
 // always compiled, non-public
-pub use {chain::*, mismatch::*};
+pub use {chain::*, mismatch::*, reexport::*};
 // always compiled, public
 #[doc(no_inline)]
 pub use panic::all::*;
@@ -57,24 +56,19 @@ pub use panic::all::*;
 #[cfg(feature = "result")]
 pub use {ext_result::*, never::*, option::all::*};
 //
-#[cfg(feature = "std")]
-pub use reexport_std::*;
 #[cfg(feature = "no_std")]
 pub use reimplement_no_std::*;
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{chain::*, mismatch::*, panic::all::*};
+    pub use super::{chain::*, mismatch::*, panic::all::*, reexport::*};
 
     // feature-gated
     #[doc(inline)]
     #[cfg(feature = "result")]
     pub use super::{ext_result::*, never::*, option::all::*};
     //
-    #[doc(inline)]
-    #[cfg(feature = "std")]
-    pub use super::reexport_std::*;
     #[doc(inline)]
     #[cfg(feature = "no_std")]
     pub use super::reimplement_no_std::*;
