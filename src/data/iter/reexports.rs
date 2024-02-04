@@ -173,7 +173,7 @@ reexport! { rust: core::iter, local_module: "data",
 /* functions */
 
 reexport! { rust: core::iter, local_module: "data",
-    doc_extra_features: "nightly_coro",
+    extra_features: "nightly_coro",
     doc: "Creates an iterator where each iteration calls the provided coroutine.",
     @from_coroutine as iter_from_coroutine
 }

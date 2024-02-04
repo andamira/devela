@@ -74,7 +74,7 @@ macro_rules! reexport {
     // when the item is available in `core`
     ( rust : core $( :: $( $core_path:ident )::+)?,
       local_module: $module_feature:literal,
-      $( doc_extra_features: $($extraf:literal),+ $(,)? )? // not enforced, only shown
+      $( extra_features: $($extraf:literal),+ $(,)? )?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
@@ -91,8 +91,11 @@ macro_rules! reexport {
 
         #[cfg_attr(feature = "nightly_doc", doc(cfg(all(
             feature = $module_feature,
-            $(all($(feature = $extraf),+) )?
+            $( all($(feature = $extraf),+) )?
         ))))]
+        #[cfg(all(
+            $( $(feature = $extraf),+ )?
+        ))]
         pub use core :: $($( $core_path :: )+)? {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
