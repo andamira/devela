@@ -33,6 +33,8 @@ pub mod cmp;
 pub mod collections;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod hash;
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
+pub mod iter;
 
 // feature-gated, public
 #[cfg(feature = "data")]
@@ -58,7 +60,7 @@ pub use error::*;
 
 // always compiled, public
 #[doc(no_inline)]
-pub use {bit::all::*, cmp::all::*, collections::all::*, hash::all::*};
+pub use {bit::all::*, cmp::all::*, collections::all::*, hash::all::*, iter::all::*};
 
 // feature-gated, public
 #[doc(no_inline)]
@@ -76,7 +78,9 @@ pub use dst::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{bit::all::*, cmp::all::*, collections::all::*, error::*, hash::all::*};
+    pub use super::{
+        bit::all::*, cmp::all::*, collections::all::*, error::*, hash::all::*, iter::all::*,
+    };
 
     // feature-gated
     #[doc(inline)]
