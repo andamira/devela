@@ -9,11 +9,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - add traits: `NumToStr`, `DataQueue`, `DataDeque`, `DataStack`, `DataDestack`.
-- add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `BoxedDestaque`, `DirectDestaque`, `BoxedStack`, `DirectStack`.
+- add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `BoxedDestaque`, `DirectDestaque`, `BoxedStack`, `DirectStack`, `Mismatch`.
 - add niche number aliases: `NonEdge*`.
+- add non-optional dependency `either` and reexport `Either`.
 - add `no_std` replacements for `std::error` and `std::io` and types.
-- add features: `num_all`, `safe_data`, `safe_error`, `safe_mem`, `safe_num`, `safe_os`, `safe_text`, `safeui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`.
+- add features: `num_all`, `safe_code`, `safe_data`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`.
 - add features: `nightly_coro`, `nightly_doc`.
+- re-export core types from `data::iter`.
 
 ### Removed
 - remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
@@ -24,14 +26,17 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move docs html header to `src/_doc`.
 - move `::{_alloc, _core, _std}` to `::_deps::{alloc, core, std}`.
 - move and rename `src/Doc.md` to `src/_doc/features.md`.
+- move the `Apply` and `Also` traits to the `error` module.
 - rename `num_int_niche` feature to `num_niche_impls`.
 - rename the `__doc` module to `_docs` and the `_dep` module to `_deps`.
+- rename the `error` module to `result`, and the `render` module to `gfx`.
 - rename `AnyExt`, `OptionExt`, `ResultExt`, `SliceExt`, `SliceExtMut`, `StrExt` and `StringExt` to `ExtAny`, `ExtOption`, `ExtResult`, `ExtSlice`, `ExtSliceMut`, `ExtStr` and `ExtString` and `ExtVec` respectively.
 - rename `*fence` functions to `atomic_*fence`.
 - rename allocated collections with `Alloc`.
 - rename the feature `full` to `all`.
 - rename `FloatOps` to `ExtFloat`.
 - update the `array_init` macro syntax.
+- update the `cdbg` macro with column number.
 
 ### Fixed
 - refactor root modules, simplify and dissassociate root-level feature-gating.
