@@ -25,17 +25,20 @@ use core::{
 /// let _b = cdbg![a];
 /// //       ^-- prints: [src/main.rs:5] a = [1, 2, 3]
 /// ```
-// Source code based on the original `dbg!` implementation.
+// Source code based on Rust 1.76 core implementation of `dbg!`
 #[macro_export]
 macro_rules! cdbg {
     () => {
-        eprintln!("[{}:{}]", file!(), line!())
+        eprintln!("[{}:{}:{}]", file!(), line!(), column!())
     };
     ($val:expr $(,)?) => {
+        // TRICK: match extends the lifetime of temporaries and evaluates args only once:
+        // - https://stackoverflow.com/a/48732525/1063961
+        // - https://github.com/rust-lang/rust/commit/d3c831ba4a4
         match $val {
             tmp => {
-                eprintln!("[{}:{}] {} = {:?}", // <- KEY CHANGE
-                    file!(), line!(), stringify!($val), &tmp);
+                eprintln!("[{}:{}:{}] {} = {:?}", // <- KEY CHANGE
+                    file!(), line!(), column!(), stringify!($val), &tmp);
                 tmp
             }
         }
