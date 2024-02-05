@@ -7,6 +7,23 @@ use super::Own;
 
 /// # Additional methods for when the `value` field is a `Result`.
 impl<S, V, E> Own<S, Result<V, E>> {
+    /// A constructor with the given `state` and `Ok(value)`.
+    #[inline]
+    pub const fn new_ok(state: S, value: V) -> Own<S, Result<V, E>> {
+        Own {
+            state,
+            value: Ok(value),
+        }
+    }
+    /// A constructor with the given `state` and `Err(error)`.
+    #[inline]
+    pub const fn new_err(state: S, error: E) -> Own<S, Result<V, E>> {
+        Own {
+            state,
+            value: Err(error),
+        }
+    }
+
     /* is */
 
     /// Returns [`true`] if the `value` is [`Ok`].

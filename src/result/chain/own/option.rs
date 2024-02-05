@@ -7,6 +7,21 @@ use super::Own;
 
 /// # Additional methods for when the `value` field is an `Option`.
 impl<S, V> Own<S, Option<V>> {
+    /// A constructor with the given `state` and `Ok(value)`.
+    #[inline]
+    pub const fn new_ok(state: S, value: V) -> Own<S, Option<V>> {
+        Own {
+            state,
+            value: Some(value),
+        }
+    }
+
+    /// A constructor with the given `state` and no value.
+    #[inline]
+    pub const fn new_none(state: S) -> Own<S, Option<V>> {
+        Own { state, value: None }
+    }
+
     /* is */
 
     /// Returns [`true`] if the `value` is [`Some`].

@@ -5,6 +5,14 @@
 
 use super::Own;
 
+impl<S> Own<S, ()> {
+    /// A constructor with the given `state` and an empty value.
+    #[inline]
+    pub const fn empty(state: S) -> Own<S, ()> {
+        Own { state, value: () }
+    }
+}
+
 /// # General methods.
 impl<S, V> Own<S, V> {
     /// A constructor with the given `state` and `value`.
@@ -12,6 +20,8 @@ impl<S, V> Own<S, V> {
     pub const fn new(state: S, value: V) -> Self {
         Own { state, value }
     }
+
+    /* deconstructors */
 
     /// Destructures itself returning the `state` field.
     #[inline]
@@ -31,6 +41,8 @@ impl<S, V> Own<S, V> {
     pub fn into_tuple(self) -> (S, V) {
         (self.state, self.value)
     }
+
+    /* references */
 
     /// Returns a shared reference to the `state` field.
     #[inline]
@@ -70,6 +82,8 @@ impl<S, V> Own<S, V> {
         (&mut self.state, &mut self.value)
     }
 
+    /* equality test */
+
     /// Returns `true` if the current `state` equals the given `expected` state.
     #[inline]
     #[must_use]
@@ -99,6 +113,8 @@ impl<S, V> Own<S, V> {
         self.state == *expected_state && self.value == *expected_value
     }
 
+    /* replace */
+
     /// Replaces the existing `state` with a `new_state`.
     #[inline]
     pub fn replace_state(self, new_state: S) -> Self {
@@ -114,6 +130,8 @@ impl<S, V> Own<S, V> {
     pub fn replace_both(self, new_state: S, new_value: V) -> Self {
         Self::new(new_state, new_value)
     }
+
+    /* map */
 
     /// Applies a mapping function `f` to the `state` field.
     #[inline]
