@@ -14,7 +14,10 @@
 // - WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg))]
 // - WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
-#![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait))]
+#![cfg_attr(
+    feature = "nightly_coro",
+    feature(coroutines, coroutine_trait, iter_from_coroutine)
+)]
 // environment:
 #![cfg_attr(not(feature = "std"), no_std)]
 // safety:

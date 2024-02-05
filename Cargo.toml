@@ -130,7 +130,7 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 nightly = [ # enables nightly features
 	"nightly_coro", "nightly_doc",
 ] # specific unstable features:
-	nightly_coro= [] # coroutines, coroutine_trait
+	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	nightly_doc = [] # doc_cfg
 
 # enables compiling the full documentation for docs.rs

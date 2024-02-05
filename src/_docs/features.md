@@ -84,7 +84,7 @@ In order to use any unsafe functionality:
 ### Nightly features
 
 - `nightly`: enables nightly features.
-  - `nightly_coro`: enables `coroutines`, `coroutine_trait`.
+  - `nightly_coro`: enables `coroutines`, `coroutine_trait`, `iter_from_coroutine`.
   - `nightly_doc`: enables `doc_cfg`.
 
 - `docsrs`: enables compiling the complete documentation for [docs.rs](https://docs.rs).
