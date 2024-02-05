@@ -23,13 +23,13 @@ impl<S, V> Own<S, V> {
         Own { state, value }
     }
 
-    /// Destructures itself returning the `state` field
+    /// Destructures itself returning the `state` field.
     #[inline]
     #[must_use]
     pub fn into_state(self) -> S {
         self.state
     }
-    /// Destructures itself returning the `value` field
+    /// Destructures itself returning the `value` field.
     #[inline]
     #[must_use]
     pub fn into_value(self) -> V {
@@ -162,23 +162,23 @@ impl<S, V> Own<S, V> {
 
 /// # Additional *const* methods for when everything is `Copy`.
 impl<S: Copy, V: Copy> Own<S, V> {
-    /// Destructures itself into a tuple.
-    #[inline]
-    #[must_use]
-    pub const fn into_tuple_const(self) -> (S, V) {
-        (self.state, self.value)
-    }
-    /// Destructures itself returning its `state` field
+    /// Destructures itself returning its `state` field.
     #[inline]
     #[must_use]
     pub const fn into_state_const(self) -> S {
         self.state
     }
-    /// Destructures itself returning its `value` field
+    /// Destructures itself returning its `value` field.
     #[inline]
     #[must_use]
     pub const fn into_value_const(self) -> V {
         self.value
+    }
+    /// Destructures itself into a tuple.
+    #[inline]
+    #[must_use]
+    pub const fn into_tuple_const(self) -> (S, V) {
+        (self.state, self.value)
     }
 
     /// Replaces the `state` self with a `new_state`.
@@ -199,8 +199,34 @@ impl<S: Copy, V: Copy> Own<S, V> {
 }
 
 mod core_impls {
-    use super::Own;
-    use core::fmt;
+    use {
+        super::Own,
+        core::{cmp::Ordering, fmt},
+    };
+
+    impl<S: Default, V: Default> Default for Own<S, V> {
+        fn default() -> Self {
+            Self {
+                state: S::default(),
+                value: V::default(),
+            }
+        }
+    }
+
+    impl<S: fmt::Debug, V: fmt::Debug> fmt::Debug for Own<S, V> {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            let mut debug = f.debug_struct("Own");
+            debug
+                .field("state", &self.state)
+                .field("value", &self.value)
+                .finish()
+        }
+    }
+    impl<S: fmt::Display, V: fmt::Display> fmt::Display for Own<S, V> {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "State: {}, Value: {}", self.state, self.value)
+        }
+    }
 
     impl<S: Clone, V: Clone> Clone for Own<S, V> {
         fn clone(&self) -> Self {
@@ -212,15 +238,6 @@ mod core_impls {
     }
     impl<S: Copy, V: Copy> Copy for Own<S, V> {}
 
-    impl<S: fmt::Debug, V: fmt::Debug> fmt::Debug for Own<S, V> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            let mut debug = f.debug_struct("Own");
-            debug
-                .field("state", &self.state)
-                .field("value", &self.value)
-                .finish()
-        }
-    }
     impl<S: PartialEq, V: PartialEq> PartialEq for Own<S, V> {
         fn eq(&self, other: &Self) -> bool {
             self.state == other.state && self.value == other.value
@@ -228,11 +245,21 @@ mod core_impls {
     }
     impl<S: Eq, V: Eq> Eq for Own<S, V> {}
 
-    impl<S: Default, V: Default> Default for Own<S, V> {
-        fn default() -> Self {
-            Self {
-                state: S::default(),
-                value: V::default(),
+    impl<S: PartialOrd, V: PartialOrd> PartialOrd for Own<S, V> {
+        /// State's ordering takes precedence over value's ordering.
+        fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+            match self.state.partial_cmp(&other.state) {
+                Some(Ordering::Equal) => self.value.partial_cmp(&other.value),
+                other => other,
+            }
+        }
+    }
+    impl<S: Ord, V: Ord> Ord for Own<S, V> {
+        /// State's ordering takes precedence over value's ordering.
+        fn cmp(&self, other: &Self) -> Ordering {
+            match self.state.cmp(&other.state) {
+                Ordering::Equal => self.value.cmp(&other.value),
+                other => other,
             }
         }
     }
