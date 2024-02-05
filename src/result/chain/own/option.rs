@@ -29,6 +29,46 @@ impl<S, V> Own<S, Option<V>> {
         self.value.is_none()
     }
 
+    /* assert */
+
+    /// Asserts the value is [`Some`] and returns `self`, otherwise panics.
+    #[inline]
+    pub const fn assert_some(self) -> Self {
+        match self.value {
+            Some(_) => (),
+            None => panic![],
+        }
+        self
+    }
+
+    /// Asserts the value is [`Some`] and returns `self`, otherwise panics with `message`.
+    #[inline]
+    pub const fn assert_some_or(self, message: &'static str) -> Self {
+        match self.value {
+            Some(_) => (),
+            None => panic!["{}", message],
+        }
+        self
+    }
+
+    /// Asserts the value is [`Err`] and returns `self`, otherwise panics.
+    #[inline]
+    pub const fn assert_none(self) -> Self {
+        match self.value {
+            None => self,
+            Some(_) => panic![],
+        }
+    }
+
+    /// Asserts the value is [`None`] and returns `self`, otherwise panics with `message`.
+    #[inline]
+    pub const fn assert_none_or(self, message: &'static str) -> Self {
+        match self.value {
+            None => self,
+            Some(_) => panic!["{}", message],
+        }
+    }
+
     /* map */
 
     /// Maps an `Option<V>` to an `Option<W>` by applying the `op` function
@@ -99,6 +139,58 @@ impl<S, V> Own<S, Option<V>> {
 
 /// # *const* methods for when everything is `Copy` and the `value` is an `Option`.
 impl<S: Copy, V: Copy> Own<S, Option<V>> {
+    /* assert and deconstruct */
+
+    /// Asserts the value is [`Some`] and returns the `state` field, otherwise panics.
+    #[inline]
+    pub const fn state_some(self) -> S {
+        match self.value {
+            Some(_) => self.state,
+            None => panic![],
+        }
+    }
+    /// Asserts the value is [`Some`] and returns the `state` field, otherwise panics.
+    #[inline]
+    pub const fn state_some_or(self, message: &'static str) -> S {
+        match self.value {
+            Some(_) => self.state,
+            None => panic!["{}", message],
+        }
+    }
+    /// Asserts the value is [`Some`] and returns the `value` field, otherwise panics.
+    #[inline]
+    pub const fn value_some(self) -> V {
+        match self.value {
+            Some(v) => v,
+            None => panic![],
+        }
+    }
+    /// Asserts the value is [`Some`] and returns the `value` field, otherwise panics.
+    #[inline]
+    pub const fn value_some_or(self, message: &'static str) -> V {
+        match self.value {
+            Some(v) => v,
+            None => panic!["{}", message],
+        }
+    }
+
+    /// Asserts the value is [`None`] and returns the `state` field, otherwise panics.
+    #[inline]
+    pub const fn state_none(self) -> S {
+        match self.value {
+            None => self.state,
+            Some(_) => panic![],
+        }
+    }
+    /// Asserts the value is [`None`] and returns the `state` field, otherwise panics.
+    #[inline]
+    pub const fn state_none_or(self, message: &'static str) -> S {
+        match self.value {
+            None => self.state,
+            Some(_) => panic!["{}", message],
+        }
+    }
+
     /* unwrap */
 
     /// Unwraps the contained `Some(value)` or panics.
