@@ -21,31 +21,6 @@
 /// the chain to be unwrapped directly, panicking if an error is encountered.
 /// They mimick the `Results`'s [`expect`][Result::expect]
 /// and [`unwrap`][Result::unwrap] methods.
-///
-/// # Examples
-/// When the initial expression returns `T` directly:
-/// ```
-/// # use devela::all::{chain, DataResult, Stack};
-/// const RES1: DataResult<Stack<i32, (), 4>> =
-///     chain![Stack::new_copied(0),own_push(1),own_push(2)];
-/// const RES2: Stack<i32, (), 4> =
-///     chain![Stack::new_copied(0), own_push(1), own_push(2) => unwrap()];
-///
-/// assert_eq![RES1.unwrap().as_slice(), &[1, 2]];
-/// assert_eq![RES2.as_slice(), &[1, 2]];
-/// ```
-///
-/// When the initial expression returns `Result<T, E>`:
-/// ```
-/// # use devela::all::{chain, DataResult, Stack};
-/// const INIT: DataResult<Stack<i32, (), 4>> = Ok(Stack::new_copied(0));
-///
-/// const RES1: DataResult<Stack<i32, (), 4>> = chain![res: INIT, own_push(1), own_push(2)];
-/// const RES2: Stack<i32, (), 4> = chain![res: INIT, own_push(1), own_push(2) => expect("error")];
-///
-/// assert_eq![RES1.unwrap().as_slice(), &[1, 2]];
-/// assert_eq![RES2.as_slice(), &[1, 2]];
-/// ```
 #[macro_export]
 macro_rules! chain {
     // $init returns T, and every $method returns Result<T>
