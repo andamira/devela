@@ -57,11 +57,11 @@ use crate::{
 ///
 /// - Stack [chainable *const* operations](#chainable-const-operations).
 ///   - clear: [`own_clear`][Self::own_clear].
-///   - push: [`own_push`][Self::push]*([uc][Self::own_push_uc])*,
-///   - pop: [`own_pop`][Self::pop]*([uc][Self::own_pop_uc])*.
+///   - push: [`own_push`][Self::push]*([uc][Self::own_push_unchecked])*,
+///   - pop: [`own_pop`][Self::pop]*([uc][Self::own_pop_unchecked])*.
 ///   - drop:
-///     [`own_drop`][Self::own_drop]*([uc][Self::own_drop_uc])*,
-///     [`own_drop_n`][Self::own_drop_n]*([uc][Self::own_drop_n_uc])*.
+///     [`own_drop`][Self::own_drop]*([uc][Self::own_drop_unchecked])*,
+///     [`own_drop_n`][Self::own_drop_n]*([uc][Self::own_drop_n_unchecked])*.
 pub struct Stack<T, S: Storage, const CAP: usize> {
     pub(crate) array: Array<T, S, CAP>,
     pub(crate) len: usize,

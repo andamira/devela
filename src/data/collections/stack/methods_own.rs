@@ -36,6 +36,106 @@ impl<T: Copy, const CAP: usize> Stack<T, (), CAP> {
         sta
     }
 
+    /* push */
+
+    /// Pushes a new element to the top of the stack in compile-time.
+    ///
+    /// `( 1 -- 1 2 )`
+    /// # Errors
+    /// Returns `Own<S,`[`NotEnoughSpace`]`>` if the stack is full.
+    /// # Examples
+    /// ```
+    /// # use devela::all::{DataResult, DataErrors, Own, Stack};
+    /// const S: Stack<i32, (), 2> = Stack::new_copied(0)
+    ///     .own_push(1).state_ok()
+    ///     .own_push(2).state_ok()
+    ///     .own_push(3).state_err();
+    /// assert_eq![S.as_slice(), &[1, 2]];
+    /// assert![S.own_push(3).value.is_err_and(|e| matches![e, DataErrors::NotEnoughSpace(_)])];
+    /// ```
+    #[inline]
+    pub const fn own_push(self, e: T) -> Own<Self, Result<()>> {
+        let len = self.len;
+        if len == CAP {
+            Own::new(self, Err(NotEnoughSpace(Some(1))))
+        } else {
+            let mut arr = self.array.into_array_const();
+            arr[len] = e;
+            let mut sta = Self::from_array_const(arr);
+            sta.len = len + 1;
+            Own::new(sta, Ok(()))
+        }
+    }
+
+    /// Pushes a new element to the top of the stack in compile-time, unchecked version.
+    ///
+    /// `( 1 -- 1 2 )`
+    /// # Panics
+    /// Panics if the stack is full.
+    /// # Examples
+    /// ```
+    /// # use devela::all::{DataResult, Stack};
+    /// const S: Stack<i32, (), 2> =
+    ///     Stack::new_copied(0).own_push_unchecked(1).own_push_unchecked(2).state;
+    /// assert_eq![S.as_slice(), &[1, 2]];
+    /// ```
+    #[inline]
+    pub const fn own_push_unchecked(self, e: T) -> Own<Self, ()> {
+        let len = self.len;
+        let mut arr = self.array.into_array_const();
+        arr[len] = e;
+        let mut sta = Self::from_array_const(arr);
+        sta.len = len + 1;
+        Own::empty(sta)
+    }
+
+    /* pop */
+
+    /// Pops the top stack element in compile-time.
+    ///
+    /// `( 1 2 3 -- 1 2 )`
+    /// # Errors
+    /// Returns `Own<S,`[`NotEnoughElements`]`>` if the stack is empty.
+    /// # Examples
+    /// ```
+    /// # use devela::all::{DataResult, Own, Stack};
+    /// const S: Own<Stack<i32, (), 3>, DataResult<i32>> = Stack::from_array_const([1, 2, 3]).own_pop();
+    /// S.assert_state(|s| s.as_slice() == &[1, 2]).assert_eq_value(&Ok(3));
+    /// ```
+    #[inline]
+    pub const fn own_pop(self) -> Own<Self, Result<T>> {
+        if self.len == 0 {
+            Own::new(self, Err(NotEnoughElements(Some(1))))
+        } else {
+            let arr = self.array.into_array_const();
+            let e = arr[self.len - 1];
+            let mut sta = Self::from_array_const(arr);
+            sta.len = self.len - 1;
+            Own::new(sta, Ok(e))
+        }
+    }
+
+    /// Pops the top stack element in compile-time, unchecked version.
+    ///
+    /// `( 1 2 3 -- 1 2 )`
+    /// # Panics
+    /// Panics if the stack is empty.
+    /// # Examples
+    /// ```
+    /// # use devela::all::{DataResult, Own, Stack};
+    /// const S: Own<Stack<i32, (), 3>, i32> = Stack::from_array_const([1, 2, 3]).own_pop_unchecked();
+    /// assert_eq![S.state.as_slice(), &[1, 2]];
+    /// assert_eq![S.value, 3];
+    /// ```
+    #[inline]
+    pub const fn own_pop_unchecked(self) -> Own<Self, T> {
+        let arr = self.array.into_array_const();
+        let e = arr[self.len - 1];
+        let mut sta = Self::from_array_const(arr);
+        sta.len = self.len - 1;
+        Own::new(sta, e)
+    }
+
     /* swap */
 
     /// Swaps the top two stack elements in compile-time.
@@ -71,11 +171,11 @@ impl<T: Copy, const CAP: usize> Stack<T, (), CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_swap_uc().state;
+    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_swap_unchecked().state;
     /// assert_eq![S.as_slice(), &[2, 1]];
     /// ```
     #[inline]
-    pub const fn own_swap_uc(self) -> Own<Self, ()> {
+    pub const fn own_swap_unchecked(self) -> Own<Self, ()> {
         let mut arr = self.array.into_array_const();
         cswap![arr[self.len - 2], arr[self.len - 1]];
         Own::empty(Self::from_array_const(arr))
@@ -115,11 +215,12 @@ impl<T: Copy, const CAP: usize> Stack<T, (), CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_swap2_uc().state;
+    /// const S: Stack<i32, (), 4> =
+    ///     Stack::from_array_const([1, 2, 3, 4]).own_swap2_unchecked().state;
     /// assert_eq![S.as_slice(), &[3, 4, 1, 2]];
     /// ```
     #[inline]
-    pub const fn own_swap2_uc(self) -> Own<Self, ()> {
+    pub const fn own_swap2_unchecked(self) -> Own<Self, ()> {
         let mut arr = self.array.into_array_const();
         cswap![arr[self.len - 4], arr[self.len - 2]];
         cswap![arr[self.len - 3], arr[self.len - 1]];
@@ -160,11 +261,11 @@ impl<T: Copy, const CAP: usize> Stack<T, (), CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::Stack;
-    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_drop_uc().state;
+    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_drop_unchecked().state;
     /// assert_eq![S.as_slice(), &[1]];
     /// ```
     #[inline]
-    pub const fn own_drop_uc(self) -> Own<Self, ()> {
+    pub const fn own_drop_unchecked(self) -> Own<Self, ()> {
         let mut sta = self;
         sta.len -= 1;
         Own::empty(sta)
@@ -200,11 +301,12 @@ impl<T: Copy, const CAP: usize> Stack<T, (), CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_drop_n_uc(3).state;
+    /// const S: Stack<i32, (), 4> =
+    ///     Stack::from_array_const([1, 2, 3, 4]).own_drop_n_unchecked(3).state;
     /// assert_eq![S.as_slice(), &[1]];
     /// ```
     #[inline]
-    pub const fn own_drop_n_uc(self, n: usize) -> Own<Self, ()> {
+    pub const fn own_drop_n_unchecked(self, n: usize) -> Own<Self, ()> {
         let mut sta = self;
         sta.len -= n;
         Own::empty(sta)
@@ -248,114 +350,15 @@ impl<T: Copy, const CAP: usize> Stack<T, (), CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_nip_uc().state;
+    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_nip_unchecked().state;
     /// assert_eq![S.as_slice(), &[2]];
     /// ```
     #[inline]
-    pub const fn own_nip_uc(self) -> Own<Self, ()> {
+    pub const fn own_nip_unchecked(self) -> Own<Self, ()> {
         let mut arr = self.array.into_array_const();
         cswap![arr[self.len - 2], arr[self.len - 1]];
         let mut sta = Self::from_array_const(arr);
         sta.len -= 1;
         Own::empty(sta)
-    }
-
-    /* push */
-
-    /// Pushes a new element to the top of the stack in compile-time.
-    ///
-    /// `( 1 -- 1 2 )`
-    /// # Errors
-    /// Returns `Own<S,`[`NotEnoughSpace`]`>` if the stack is full.
-    /// # Examples
-    /// ```
-    /// # use devela::all::{DataResult, DataErrors, Own, Stack};
-    /// const S: Stack<i32, (), 2> = Stack::new_copied(0)
-    ///     .own_push(1).state_ok()
-    ///     .own_push(2).state_ok()
-    ///     .own_push(3).state_err();
-    /// assert_eq![S.as_slice(), &[1, 2]];
-    /// assert![S.own_push(3).value.is_err_and(|e| matches![e, DataErrors::NotEnoughSpace(_)])];
-    /// ```
-    #[inline]
-    pub const fn own_push(self, e: T) -> Own<Self, Result<()>> {
-        let len = self.len;
-        if len == CAP {
-            Own::new(self, Err(NotEnoughSpace(Some(1))))
-        } else {
-            let mut arr = self.array.into_array_const();
-            arr[len] = e;
-            let mut sta = Self::from_array_const(arr);
-            sta.len = len + 1;
-            Own::new(sta, Ok(()))
-        }
-    }
-
-    /// Pushes a new element to the top of the stack in compile-time, unchecked version.
-    ///
-    /// `( 1 -- 1 2 )`
-    /// # Panics
-    /// Panics if the stack is full.
-    /// # Examples
-    /// ```
-    /// # use devela::all::{DataResult, Stack};
-    /// const S: Stack<i32, (), 2> = Stack::new_copied(0).own_push_uc(1).own_push_uc(2).state;
-    /// assert_eq![S.as_slice(), &[1, 2]];
-    /// ```
-    #[inline]
-    pub const fn own_push_uc(self, e: T) -> Own<Self, ()> {
-        let len = self.len;
-        let mut arr = self.array.into_array_const();
-        arr[len] = e;
-        let mut sta = Self::from_array_const(arr);
-        sta.len = len + 1;
-        Own::empty(sta)
-    }
-
-    /* pop */
-
-    /// Pops the top stack element in compile-time.
-    ///
-    /// `( 1 2 3 -- 1 2 )`
-    /// # Errors
-    /// Returns `Own<S,`[`NotEnoughElements`]`>` if the stack is empty.
-    /// # Examples
-    /// ```
-    /// # use devela::all::{DataResult, Own, Stack};
-    /// const S: Own<Stack<i32, (), 3>, DataResult<i32>> = Stack::from_array_const([1, 2, 3]).own_pop();
-    /// S.assert_state(|s| s.as_slice() == &[1, 2]).assert_eq_value(&Ok(3));
-    /// ```
-    #[inline]
-    pub const fn own_pop(self) -> Own<Self, Result<T>> {
-        if self.len == 0 {
-            Own::new(self, Err(NotEnoughElements(Some(1))))
-        } else {
-            let arr = self.array.into_array_const();
-            let e = arr[self.len - 1];
-            let mut sta = Self::from_array_const(arr);
-            sta.len = self.len - 1;
-            Own::new(sta, Ok(e))
-        }
-    }
-
-    /// Pops the top stack element in compile-time, unchecked version.
-    ///
-    /// `( 1 2 3 -- 1 2 )`
-    /// # Panics
-    /// Panics if the stack is empty.
-    /// # Examples
-    /// ```
-    /// # use devela::all::{DataResult, Own, Stack};
-    /// const S: Own<Stack<i32, (), 3>, i32> = Stack::from_array_const([1, 2, 3]).own_pop_uc();
-    /// assert_eq![S.state.as_slice(), &[1, 2]];
-    /// assert_eq![S.value, 3];
-    /// ```
-    #[inline]
-    pub const fn own_pop_uc(self) -> Own<Self, T> {
-        let arr = self.array.into_array_const();
-        let e = arr[self.len - 1];
-        let mut sta = Self::from_array_const(arr);
-        sta.len = self.len - 1;
-        Own::new(sta, e)
     }
 }
