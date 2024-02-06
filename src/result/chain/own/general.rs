@@ -22,13 +22,29 @@ impl<S, V> Own<S, V> {
         Own { state, value }
     }
 
-    /// Casts itself as a tuple.
+    /// Transforms itself into a tuple.
     ///
-    /// See also [`as_tuple_const`][Self::as_tuple_const] for `Copy` values.
+    /// See also [`into_tuple_const`][Self::into_tuple_const] for `Copy` values.
     #[inline]
     #[must_use]
-    pub fn as_tuple(self) -> (S, V) {
+    pub fn into_tuple(self) -> (S, V) {
         (self.state, self.value)
+    }
+
+    /// Wraps the `value` field into an [`Option`].
+    ///
+    /// See also [`into_tuple_const`][Self::into_tuple_const] for `Copy` values.
+    #[inline]
+    pub fn into_option(self) -> Own<S, Option<V>> {
+        Own::new_some(self.state, self.value)
+    }
+
+    /// Wraps the `value` field into a [`Result`].
+    ///
+    /// See also [`into_tuple_const`][Self::into_tuple_const] for `Copy` values.
+    #[inline]
+    pub fn into_result<E>(self) -> Own<S, Result<V, E>> {
+        Own::new_ok(self.state, self.value)
     }
 
     /* references */
@@ -323,24 +339,41 @@ impl<S, V> Own<S, V> {
 
 /// # Additional *const* methods for when everything is `Copy`.
 impl<S: Copy, V: Copy> Own<S, V> {
-    /// Casts itself as a tuple.
+    /// Transforms itself into a tuple, in compile-time.
     #[inline]
     #[must_use]
-    pub const fn as_tuple_const(self) -> (S, V) {
+    pub const fn into_tuple_const(self) -> (S, V) {
         (self.state, self.value)
     }
 
-    /// Replaces the `state` self with a `new_state`.
+    /// Wraps the `value` field into an [`Option`], in compile-time.
+    ///
+    /// See also [`into_tuple_const`][Self::into_tuple_const] for `Copy` values.
+    #[inline]
+    pub const fn into_option_const(self) -> Own<S, Option<V>> {
+        Own::new_some(self.state, self.value)
+    }
+
+    /// Wraps the `value` field into a [`Result`], in compile-time.
+    ///
+    /// See also [`into_tuple_const`][Self::into_tuple_const] for `Copy` values.
+    #[inline]
+    pub const fn into_result_const<E>(self) -> Own<S, Result<V, E>> {
+        Own::new_ok(self.state, self.value)
+    }
+
+    /// Replaces the `state` self with a `new_state`, in compile-time.
     #[inline]
     pub const fn replace_state_const(self, new_state: S) -> Self {
         Self::new(new_state, self.value)
     }
-    /// Replaces the `value` with a `new_value`.
+    /// Replaces the `value` with a `new_value`, in compile-time.
     #[inline]
     pub const fn replace_value_const(self, new_value: V) -> Self {
         Self::new(self.state, new_value)
     }
-    /// Replaces the `state` self with a `new_state` and the `value` with a `new_value`.
+    /// Replaces the `state` self with a `new_state` and the `value` with a `new_value`,
+    /// in compile-time.
     #[inline]
     pub const fn replace_both_const(self, new_state: S, new_value: V) -> Self {
         Self::new(new_state, new_value)
