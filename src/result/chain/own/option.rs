@@ -125,6 +125,8 @@ impl<S, V> Own<S, Option<V>> {
     /* unwrap */
 
     /// Unwraps the contained `Some(value)` or panics.
+    ///
+    /// See also [`unwrap_const`][Self::unwrap_const] for `Copy` types.
     #[inline]
     pub fn unwrap(self) -> Own<S, V> {
         Own {
@@ -134,6 +136,8 @@ impl<S, V> Own<S, Option<V>> {
     }
 
     /// Unwraps the contained `Some(value)` or provides a `default`.
+    ///
+    /// See also [`unwrap_const_or`][Self::unwrap_const_or] for `Copy` types.
     #[inline]
     pub fn unwrap_or(self, default: V) -> Own<S, V> {
         Own {
@@ -143,11 +147,36 @@ impl<S, V> Own<S, Option<V>> {
     }
 
     /// Unwraps the contained `Some(value)` or panics with the given `message`.
+    ///
+    /// See also [`expect_const`][Self::expect_const] for `Copy` types.
     #[inline]
     pub fn expect(self, message: &str) -> Own<S, V> {
         Own {
             state: self.state,
             value: self.value.expect(message),
+        }
+    }
+
+    /* convert to result */
+
+    /// Converts from `Option<V>` to `Result<V, E>`.
+    #[inline]
+    pub fn ok_or<E>(self, err: E) -> Own<S, Result<V, E>> {
+        Own {
+            state: self.state,
+            value: self.value.ok_or(err),
+        }
+    }
+    /// Transforms the `Option<V>` into a Result<V, E>,
+    /// mapping `Some(v)` to `Ok(v)` and `None` to `Err(err())`.
+    #[inline]
+    pub fn ok_or_else<E, F>(self, err: F) -> Own<S, Result<V, E>>
+    where
+        F: FnOnce() -> E,
+    {
+        Own {
+            state: self.state,
+            value: self.value.ok_or_else(err),
         }
     }
 }

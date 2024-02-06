@@ -12,8 +12,8 @@ mod option;
 
 /// A return type encapsulating an owned `state` alongside a return `value`.
 ///
-/// It is designed to be returned by methods that take ownership of `self`,
-/// and return the new state alongside the operation-specific result.
+/// It is designed to be used by methods that take ownership of `self`,
+/// and return it alongside the operation-specific result.
 #[must_use]
 pub struct Own<S, V> {
     /// The new state after the operation.

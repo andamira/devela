@@ -141,6 +141,8 @@ impl<S, V, E> Own<S, Result<V, E>> {
     /* unwrap */
 
     /// Unwraps the contained `Ok(value)` or panics.
+    ///
+    /// See also [`unwrap_const`][Self::unwrap_const] for `Copy` types.
     #[inline]
     pub fn unwrap(self) -> Own<S, V> {
         if let Ok(value) = self.value {
@@ -154,6 +156,8 @@ impl<S, V, E> Own<S, Result<V, E>> {
     }
 
     /// Unwraps the contained `Ok(value)` or provides a `default`.
+    ///
+    /// See also [`unwrap_or_const`][Self::unwrap_or_const] for `Copy` types.
     #[inline]
     pub fn unwrap_or(self, default: V) -> Own<S, V> {
         Own {
@@ -163,6 +167,8 @@ impl<S, V, E> Own<S, Result<V, E>> {
     }
 
     /// Unwraps the contained `Ok(value)` or panics with a `message`.
+    ///
+    /// See also [`expect_const`][Self::expect_const] for `Copy` types.
     #[inline]
     pub fn expect(self, message: &str) -> Own<S, V>
     where
@@ -171,6 +177,28 @@ impl<S, V, E> Own<S, Result<V, E>> {
         Own {
             state: self.state,
             value: self.value.expect(message),
+        }
+    }
+
+    /* convert to option */
+
+    /// Converts from `Result<V, E>` to `Option<V>`.
+    #[inline]
+    pub fn ok(self) -> Own<S, Option<V>> {
+        Own {
+            state: self.state,
+            value: self.value.ok(),
+        }
+    }
+
+    /// Converts from `Result<V, E>` to `Option<E>`.
+    ///
+    /// Converts `value` field into an `Option<E>`, and discarding the success value, if any.
+    #[inline]
+    pub fn err(self) -> Own<S, Option<E>> {
+        Own {
+            state: self.state,
+            value: self.value.err(),
         }
     }
 }
@@ -236,7 +264,7 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
             Ok(_) => panic![],
         }
     }
-    /// Asserts the value is [`Err`] and returns the `state` field, otherwise panics.
+    /// Asserts the value is [`Err`] and returns the `value` field, otherwise panics.
     #[inline]
     pub const fn value_err_or(self, message: &'static str) -> E {
         match self.value {
