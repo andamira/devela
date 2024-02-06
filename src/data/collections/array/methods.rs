@@ -27,7 +27,7 @@ impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
 
 // S:()
 impl<T, const LEN: usize> Array<T, (), LEN> {
-    /// Returns a new [`DirectArray`] from the given primitive `array` in compilation time.
+    /// Returns a new [`DirectArray`] from the given primitive `array` in compile-time.
     pub const fn new_const(array: [T; LEN]) -> Self {
         Self {
             array: Direct::new(array),
@@ -51,8 +51,7 @@ impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
 
 // `S:() + T:Copy`
 impl<T: Copy, const LEN: usize> Array<T, (), LEN> {
-    /// Returns an array, allocated in the stack, filled with `element`, copied,
-    /// in compilation time.
+    /// Returns an array, allocated in the stack, filled with `element`, copied, in compile-time.
     /// # Examples
     /// ```
     /// # use devela::data::Array;
@@ -138,7 +137,7 @@ impl<T, const LEN: usize> Array<T, (), LEN> {
 }
 // `S: (), T:Copy`
 impl<T: Copy, const LEN: usize> Array<T, (), LEN> {
-    /// Returns the inner boxed primitive array in compilation time.
+    /// Returns the inner boxed primitive array in compile-time.
     pub const fn into_array_const(self) -> [T; LEN] {
         self.array.0
     }

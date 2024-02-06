@@ -42,7 +42,7 @@ impl<T: Clone, const CAP: usize> Destaque<T, (), CAP> {
 // `S:() + T:Copy`
 impl<T: Copy, const LEN: usize> Destaque<T, (), LEN> {
     /// Returns an empty queue, allocated in the stack,
-    /// copying `element` to fill the remaining free data, in compilation time.
+    /// copying `element` to fill the remaining free data, in compile-time.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;

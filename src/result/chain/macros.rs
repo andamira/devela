@@ -3,7 +3,7 @@
 //!
 //
 
-/// Helper for chaining methods that returns `Result`, in compilation time.
+/// Helper for chaining methods that returns `Result`, in compile-time.
 ///
 /// This macro supports chaining operations with flexible initial expressions and return handling:
 /// - Initial expressions can either directly return `T` or a `Result<T, E>`.

@@ -8,7 +8,7 @@ mod fns;
 #[allow(unused)]
 pub use fns::*;
 
-/// Swaps two mutable references in compilation time, using a temporary variable.
+/// Swaps two mutable references in compile-time, using a temporary variable.
 // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
 #[macro_export]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]

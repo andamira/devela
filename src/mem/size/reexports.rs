@@ -6,7 +6,7 @@
 use crate::code::reexport;
 
 reexport! { rust: core::marker, local_module: "mem",
-    doc: "Types with a constant size known at compile time.",
+    doc: "Types with a constant size known at compile-time.",
     Sized
 }
 reexport! { rust: core::mem, local_module: "mem",
