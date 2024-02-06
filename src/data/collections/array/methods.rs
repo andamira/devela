@@ -130,15 +130,15 @@ impl<T, const LEN: usize> Array<T, Boxed, LEN> {
 }
 // `S: ()`
 impl<T, const LEN: usize> Array<T, (), LEN> {
-    /// Returns the inner boxed primitive array.
+    /// Returns the inner [`Direct`] primitive array.
     pub fn into_array(self) -> [T; LEN] {
-        self.array.0
+        self.array.into_inner()
     }
 }
 // `S: (), T:Copy`
 impl<T: Copy, const LEN: usize> Array<T, (), LEN> {
-    /// Returns the inner boxed primitive array in compile-time.
+    /// Returns the inner [`Direct`] primitive array in compile-time.
     pub const fn into_array_const(self) -> [T; LEN] {
-        self.array.0
+        self.array.into_inner_const()
     }
 }

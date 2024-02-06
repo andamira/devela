@@ -15,11 +15,26 @@
 pub struct Direct<T>(pub T);
 
 impl<T> Direct<T> {
-    /// New `Direct` storage.
+    /// Creates a new `Direct` storage for the given `t`.
     #[inline]
     #[must_use]
     pub const fn new(t: T) -> Self {
         Direct(t)
+    }
+
+    /// Returns the inner stored type.
+    #[inline]
+    #[must_use]
+    pub fn into_inner(self) -> T {
+        self.0
+    }
+}
+impl<T: Copy> Direct<T> {
+    /// Returns the inner stored type in compile-time.
+    #[inline]
+    #[must_use]
+    pub const fn into_inner_const(self) -> T {
+        self.0
     }
 }
 
