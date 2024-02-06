@@ -55,7 +55,7 @@ use crate::{
 ///   - over: [`over`][Self::over], [`over2`][Self::over2].
 ///   - tuck: [`tuck`][Self::tuck], [`tuck2`][Self::tuck2].
 ///
-/// - Stack owning *const* operations that returns `Self`:
+/// - Stack [chainable *const* operations](#chainable-const-operations).
 ///   - clear: [`own_clear`][Self::own_clear].
 ///   - push: [`own_push`][Self::push]*([uc][Self::own_push_uc])*,
 ///   - pop: [`own_pop`][Self::pop]*([uc][Self::own_pop_uc])*.

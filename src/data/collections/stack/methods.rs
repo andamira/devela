@@ -40,7 +40,7 @@ impl<T: Clone, const CAP: usize> Stack<T, (), CAP> {
 // `S:() + T:Copy`
 impl<T: Copy, const LEN: usize> Stack<T, (), LEN> {
     /// Returns an empty stack, allocated in the stack,
-    /// copying `element` to fill the remaining free data, in compile time.
+    /// copying `element` to fill the remaining free data, in compile-time.
     /// # Examples
     /// ```
     /// # use devela::data::Stack;
