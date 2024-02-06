@@ -47,6 +47,9 @@ impl<S, V> Own<S, Option<V>> {
     /* assert */
 
     /// Asserts the value is [`Some`] and returns `self`, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `None`.
     #[inline]
     pub const fn assert_some(self) -> Self {
         match self.value {
@@ -57,6 +60,9 @@ impl<S, V> Own<S, Option<V>> {
     }
 
     /// Asserts the value is [`Some`] and returns `self`, otherwise panics with `message`.
+    ///
+    /// # Panics
+    /// Panics if the value is `None`.
     #[inline]
     pub const fn assert_some_or(self, message: &'static str) -> Self {
         match self.value {
@@ -66,7 +72,10 @@ impl<S, V> Own<S, Option<V>> {
         self
     }
 
-    /// Asserts the value is [`Err`] and returns `self`, otherwise panics.
+    /// Asserts the value is [`None`] and returns `self`, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Some`.
     #[inline]
     pub const fn assert_none(self) -> Self {
         match self.value {
@@ -76,6 +85,9 @@ impl<S, V> Own<S, Option<V>> {
     }
 
     /// Asserts the value is [`None`] and returns `self`, otherwise panics with `message`.
+    ///
+    /// # Panics
+    /// Panics if the value is `Some`.
     #[inline]
     pub const fn assert_none_or(self, message: &'static str) -> Self {
         match self.value {
@@ -127,6 +139,9 @@ impl<S, V> Own<S, Option<V>> {
     /// Unwraps the contained `Some(value)` or panics.
     ///
     /// See also [`unwrap_const`][Self::unwrap_const] for `Copy` types.
+    ///
+    /// # Panics
+    /// Panics if the value is `None`.
     #[inline]
     pub fn unwrap(self) -> Own<S, V> {
         Own {
@@ -149,6 +164,9 @@ impl<S, V> Own<S, Option<V>> {
     /// Unwraps the contained `Some(value)` or panics with the given `message`.
     ///
     /// See also [`expect_const`][Self::expect_const] for `Copy` types.
+    ///
+    /// # Panics
+    /// Panics if the value is `None`.
     #[inline]
     pub fn expect(self, message: &str) -> Own<S, V> {
         Own {
@@ -186,6 +204,9 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     /* assert and deconstruct */
 
     /// Asserts the value is [`Some`] and returns the `state` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `None`.
     #[inline]
     pub const fn state_some(self) -> S {
         match self.value {
@@ -194,6 +215,9 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
         }
     }
     /// Asserts the value is [`Some`] and returns the `state` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `None`.
     #[inline]
     pub const fn state_some_or(self, message: &'static str) -> S {
         match self.value {
@@ -202,6 +226,9 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
         }
     }
     /// Asserts the value is [`Some`] and returns the `value` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `None`.
     #[inline]
     pub const fn value_some(self) -> V {
         match self.value {
@@ -210,6 +237,9 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
         }
     }
     /// Asserts the value is [`Some`] and returns the `value` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `None`.
     #[inline]
     pub const fn value_some_or(self, message: &'static str) -> V {
         match self.value {
@@ -219,6 +249,9 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     }
 
     /// Asserts the value is [`None`] and returns the `state` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Some`.
     #[inline]
     pub const fn state_none(self) -> S {
         match self.value {
@@ -227,6 +260,9 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
         }
     }
     /// Asserts the value is [`None`] and returns the `state` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Some`.
     #[inline]
     pub const fn state_none_or(self, message: &'static str) -> S {
         match self.value {
@@ -238,6 +274,9 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     /* unwrap */
 
     /// Unwraps the contained `Some(value)` or panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `None`.
     #[inline]
     pub const fn unwrap_const(self) -> Own<S, V> {
         if let Some(value) = self.value {
@@ -267,6 +306,9 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     }
 
     /// Unwraps the contained `Some(value)` or panics with the given `message`.
+    ///
+    /// # Panics
+    /// Panics if the value is `None`.
     #[inline]
     pub const fn expect_const(self, message: &'static str) -> Own<S, V> {
         if let Some(value) = self.value {

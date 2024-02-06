@@ -104,7 +104,89 @@ impl<S, V> Own<S, V> {
 
     /* assert */
 
+    /// Asserts the `state` matches the `predicate`, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the predicate returns `false`.
+    #[inline]
+    pub fn assert_state<F>(self, predicate: F) -> Self
+    where
+        F: FnOnce(&S) -> bool,
+    {
+        iif![predicate(&self.state); self; panic![]]
+    }
+    /// Asserts the `state` matches the `predicate`, otherwise panics with `message`.
+    ///
+    /// # Panics
+    /// Panics if the predicate returns `false`.
+    #[inline]
+    pub fn assert_state_or<F>(self, predicate: F, message: &str) -> Self
+    where
+        F: FnOnce(&S) -> bool,
+    {
+        iif![predicate(&self.state); self; panic!["{}", message]]
+    }
+
+    /// Asserts the `value` matches the `predicate`, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the predicate returns `false`.
+    #[inline]
+    pub fn assert_value<F>(self, predicate: F) -> Self
+    where
+        F: FnOnce(&V) -> bool,
+    {
+        iif![predicate(&self.value); self; panic![]]
+    }
+    /// Asserts the `value` matches the `predicate`, otherwise panics with `message`.
+    ///
+    /// # Panics
+    /// Panics if the predicate returns `false`.
+    #[inline]
+    pub fn assert_value_or<F>(self, predicate: F, message: &str) -> Self
+    where
+        F: FnOnce(&V) -> bool,
+    {
+        iif![predicate(&self.value); self; panic!["{}", message]]
+    }
+
+    /// Asserts both the `state` and `value` matches the corresponding predicates,
+    /// otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if any predicate returns `false`.
+    #[inline]
+    pub fn assert_both<F, G>(self, predicate_state: F, predicate_value: G) -> Self
+    where
+        F: FnOnce(&S) -> bool,
+        G: FnOnce(&V) -> bool,
+    {
+        iif![predicate_state(&self.state) && predicate_value(&self.value); self; panic![]]
+    }
+    /// Asserts both the `state` and `value` matches the corresponding predicates,
+    /// otherwise panics with `message`.
+    ///
+    /// # Panics
+    /// Panics if any predicate returns `false`.
+    #[inline]
+    pub fn assert_both_or<F, G>(self, predicate_state: F, predicate_value: G, message: &str) -> Self
+    where
+        F: FnOnce(&S) -> bool,
+        G: FnOnce(&V) -> bool,
+    {
+        if predicate_state(&self.state) && predicate_value(&self.value) {
+            self
+        } else {
+            panic!["{}", message]
+        }
+    }
+
+    /* assert_eq */
+
     /// Asserts the `state` equals `expected` and returns `self`, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the `state` doesn't equal the `expected` state.
     #[inline]
     pub fn assert_eq_state(self, expected: &S) -> Self
     where
@@ -113,6 +195,9 @@ impl<S, V> Own<S, V> {
         iif![self.state == *expected; self; panic![]]
     }
     /// Asserts the `state` equals `expected` and returns `self`, otherwise panics with `message`.
+    ///
+    /// # Panics
+    /// Panics if the `state` doesn't equal the `expected` state.
     #[inline]
     pub fn assert_eq_state_or(self, expected: &S, message: &str) -> Self
     where
@@ -122,6 +207,9 @@ impl<S, V> Own<S, V> {
     }
 
     /// Asserts the `value` equals `expected` and returns `self`, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the `value` doesn't equal the `expected` value.
     #[inline]
     pub fn assert_eq_value(self, expected: &V) -> Self
     where
@@ -130,6 +218,9 @@ impl<S, V> Own<S, V> {
         iif![self.value == *expected; self; panic![]]
     }
     /// Asserts the `value` equals `expected` and returns `self`, otherwise panics with `message`.
+    ///
+    /// # Panics
+    /// Panics if the `value` doesn't equal the `expected` value.
     #[inline]
     pub fn assert_eq_value_or(self, expected: &V, message: &str) -> Self
     where
@@ -140,6 +231,9 @@ impl<S, V> Own<S, V> {
 
     /// Asserts the `state` and `value` equals the corresponding expected ones,
     /// and returns `self`, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if either the `state` or the `value` are not the expected ones.
     #[inline]
     pub fn assert_eq_both(self, expected_state: &S, expected_value: &V) -> Self
     where
@@ -150,6 +244,9 @@ impl<S, V> Own<S, V> {
     }
     /// Asserts the `state` and `value` equals the corresponding expected ones,
     /// and returns `self`, otherwise panics with `message`
+    ///
+    /// # Panics
+    /// Panics if either the `state` or the `value` are not the expected ones.
     #[inline]
     pub fn assert_eq_both_or(self, expected_state: &S, expected_value: &V, message: &str) -> Self
     where

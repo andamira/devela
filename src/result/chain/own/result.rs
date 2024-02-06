@@ -55,6 +55,9 @@ impl<S, V, E> Own<S, Result<V, E>> {
     /* assert */
 
     /// Asserts the value is [`Ok`] and returns `self`, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Err`.
     #[inline]
     pub const fn assert_ok(self) -> Self {
         match self.value {
@@ -64,6 +67,9 @@ impl<S, V, E> Own<S, Result<V, E>> {
     }
 
     /// Asserts the value is [`Ok`] and returns `self`, otherwise panics with `message`.
+    ///
+    /// # Panics
+    /// Panics if the value is `Err`.
     #[inline]
     pub const fn assert_ok_or(self, message: &'static str) -> Self {
         match self.value {
@@ -73,6 +79,9 @@ impl<S, V, E> Own<S, Result<V, E>> {
     }
 
     /// Asserts the value is [`Err`] and returns `self`, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Ok`.
     #[inline]
     pub const fn assert_err(self) -> Self {
         match self.value {
@@ -81,6 +90,9 @@ impl<S, V, E> Own<S, Result<V, E>> {
         }
     }
     /// Asserts the value is [`Err`] and returns `self`, otherwise panics with `message`.
+    ///
+    /// # Panics
+    /// Panics if the value is `Ok`.
     #[inline]
     pub const fn assert_err_or(self, message: &'static str) -> Self {
         match self.value {
@@ -143,6 +155,9 @@ impl<S, V, E> Own<S, Result<V, E>> {
     /// Unwraps the contained `Ok(value)` or panics.
     ///
     /// See also [`unwrap_const`][Self::unwrap_const] for `Copy` types.
+    ///
+    /// # Panics
+    /// Panics if the value is `Err`.
     #[inline]
     pub fn unwrap(self) -> Own<S, V> {
         if let Ok(value) = self.value {
@@ -169,6 +184,9 @@ impl<S, V, E> Own<S, Result<V, E>> {
     /// Unwraps the contained `Ok(value)` or panics with a `message`.
     ///
     /// See also [`expect_const`][Self::expect_const] for `Copy` types.
+    ///
+    /// # Panics
+    /// Panics if the value is `Err`.
     #[inline]
     pub fn expect(self, message: &str) -> Own<S, V>
     where
@@ -208,6 +226,9 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /* assert and deconstruct */
 
     /// Asserts the value is [`Ok`] and returns the `state` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Err`.
     #[inline]
     pub const fn state_ok(self) -> S {
         match self.value {
@@ -216,6 +237,9 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
         }
     }
     /// Asserts the value is [`Ok`] and returns the `state` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Err`.
     #[inline]
     pub const fn state_ok_or(self, message: &'static str) -> S {
         match self.value {
@@ -224,6 +248,9 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
         }
     }
     /// Asserts the value is [`Ok`] and returns the `value` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Err`.
     #[inline]
     pub const fn value_ok(self) -> V {
         match self.value {
@@ -232,6 +259,9 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
         }
     }
     /// Asserts the value is [`Ok`] and returns the `value` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Err`.
     #[inline]
     pub const fn value_ok_or(self, message: &'static str) -> V {
         match self.value {
@@ -241,6 +271,9 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     }
 
     /// Asserts the value is [`Err`] and returns the `state` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Ok`.
     #[inline]
     pub const fn state_err(self) -> S {
         match self.value {
@@ -249,6 +282,9 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
         }
     }
     /// Asserts the value is [`Err`] and returns the `state` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Ok`.
     #[inline]
     pub const fn state_err_or(self, message: &'static str) -> S {
         match self.value {
@@ -257,6 +293,9 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
         }
     }
     /// Asserts the value is [`Err`] and returns the `value` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Ok`.
     #[inline]
     pub const fn value_err(self) -> E {
         match self.value {
@@ -265,6 +304,9 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
         }
     }
     /// Asserts the value is [`Err`] and returns the `value` field, otherwise panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Ok`.
     #[inline]
     pub const fn value_err_or(self, message: &'static str) -> E {
         match self.value {
@@ -276,6 +318,9 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /* unwrap */
 
     /// Unwraps the contained `Ok(value)` or panics.
+    ///
+    /// # Panics
+    /// Panics if the value is `Err`.
     #[inline]
     pub const fn unwrap_const(self) -> Own<S, V> {
         if let Ok(value) = self.value {
@@ -305,6 +350,9 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     }
 
     /// Unwraps the contained `Some(value)` or panics with the given `message`.
+    ///
+    /// # Panics
+    /// Panics if the value is `Err`.
     #[inline]
     pub const fn expect_const(self, message: &'static str) -> Own<S, V> {
         if let Ok(value) = self.value {
