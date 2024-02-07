@@ -7,7 +7,7 @@
 use crate::_deps::alloc::vec::Vec;
 use crate::{
     code::paste,
-    num::{Int, NumErrors as E, NumInt, NumResult as Result},
+    num::{Int, NumError as E, NumInt, NumResult as Result},
 };
 
 impl_int![];

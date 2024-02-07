@@ -9,10 +9,10 @@
 
 use crate::{
     code::{iif, paste},
-    num::{NumErrors, NumResult as Result, Primiting, Sign},
+    num::{NumError, NumResult as Result, Primiting, Sign},
 };
 use {
-    NumErrors::Overflow,
+    NumError::Overflow,
     Sign::{Negative, Positive},
 };
 

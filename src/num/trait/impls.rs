@@ -6,7 +6,7 @@
 #[cfg(not(feature = "std"))]
 use crate::code::iif;
 use crate::code::paste;
-use crate::num::{niche::*, Num, NumErrors as Error, NumResult as Result};
+use crate::num::{niche::*, Num, NumError as Error, NumResult as Result};
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
 //
 use Error::{Invalid, Unspecified};

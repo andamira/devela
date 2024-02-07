@@ -12,7 +12,7 @@
 use crate::{
     code::{iif, paste},
     data::Comparing,
-    num::{isize_up, upcasted_op, usize_up, Int, NumErrors as E, NumResult as Result},
+    num::{isize_up, upcasted_op, usize_up, Int, NumError as E, NumResult as Result},
 };
 use E::NonNegativeRequired;
 #[cfg(doc)]
@@ -76,7 +76,7 @@ macro_rules! impl_int {
             /// $$
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumErrors::NonNegativeRequired};
+            /// # use devela::num::{Int, NumError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Ok(Int(4))];"]
@@ -119,7 +119,7 @@ macro_rules! impl_int {
             /// or equal to the square root of `a`.
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumErrors::NonNegativeRequired};
+            /// # use devela::num::{Int, NumError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_floor(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_floor(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_floor(), Ok(Int(4))];"]
@@ -161,7 +161,7 @@ macro_rules! impl_int {
             /// $$
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumErrors::NonNegativeRequired};
+            /// # use devela::num::{Int, NumError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_round(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Ok(Int(4))];"]

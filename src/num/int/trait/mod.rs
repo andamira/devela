@@ -15,7 +15,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::vec::Vec;
-use crate::num::{Num, NumErrors as E, NumResult as Result};
+use crate::num::{Num, NumError as E, NumResult as Result};
 #[cfg(doc)]
 use E::{MismatchedSizes, NonNegativeRequired, NotImplemented, NotSupported, Overflow};
 

@@ -11,9 +11,9 @@
 
 use crate::{
     code::{iif, paste},
-    num::{isize_up, usize_up, Int, NumErrors, NumResult as Result},
+    num::{isize_up, usize_up, Int, NumError, NumResult as Result},
 };
-use NumErrors::Overflow;
+use NumError::Overflow;
 
 // $t:   the input/output type
 // $up:  the upcasted type to do the operations on (for prime_pi)

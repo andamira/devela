@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::num::{NumErrors as E, NumResult as Result};
+use crate::num::{NumError as E, NumResult as Result};
 use core::ops::{Deref, DerefMut};
 #[cfg(doc)]
 use E::{NotImplemented, NotSupported};

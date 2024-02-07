@@ -116,7 +116,7 @@ macro_rules! num_niche_impls {
     ) => { paste! {
         #[doc = "*See the [`" $fn "`](#fn." $fn $dt ") implementation for `" $t "`*."]
         /// # Errors
-        /// It will return [`Invalid`][crate::num::NumErrors::Invalid]
+        /// It will return [`Invalid`][crate::num::NumError::Invalid]
         /// if the result is invalid for this type.
         #[inline]
         pub $($const)? fn $fn($self, $($arg:$atype),*)
@@ -125,7 +125,7 @@ macro_rules! num_niche_impls {
             if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(val.0) {
                 Ok(Int(res))
             } else {
-                Err($crate::num::NumErrors::Invalid)
+                Err($crate::num::NumError::Invalid)
             }
         }
     }};
@@ -137,7 +137,7 @@ macro_rules! num_niche_impls {
     ) => { paste! {
         #[doc = "*See the [`" $fn "`](#fn." $fn $dt ") implementation for `" $t "`*."]
         /// # Errors
-        /// It will return [`Invalid`][crate::num::NumErrors::Invalid]
+        /// It will return [`Invalid`][crate::num::NumError::Invalid]
         /// if the result is invalid for this type.
         #[inline]
         pub $($const)? fn $fn($self, $($arg:$atype),*)
@@ -149,7 +149,7 @@ macro_rules! num_niche_impls {
                     if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(val.0) {
                         Ok(Int(res))
                     } else {
-                        Err($crate::num::NumErrors::Invalid)
+                        Err($crate::num::NumError::Invalid)
                     }
                 },
             }
@@ -169,9 +169,9 @@ macro_rules! num_niche_impls {
             -> $crate::num::NumResult<[Int<[<$n$t:camel>]<$($g,)*>>; 2]> {
             let array = Int($self.0.get()).$fn($($arg),*);
             let a = if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(array[0].0) {
-                Int(res) } else { return Err($crate::num::NumErrors::Invalid); };
+                Int(res) } else { return Err($crate::num::NumError::Invalid); };
             let b = if let Some(res) = [<$n$t:camel>]::<$($g),*>::new(array[1].0) {
-                Int(res) } else { return Err($crate::num::NumErrors::Invalid); };
+                Int(res) } else { return Err($crate::num::NumError::Invalid); };
             Ok([a, b])
         }
     }};

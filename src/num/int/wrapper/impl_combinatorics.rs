@@ -12,9 +12,9 @@
 
 use crate::{
     code::{cfor, iif, paste},
-    num::{Int, NumErrors, NumResult as Result, Primiting},
+    num::{Int, NumError, NumResult as Result, Primiting},
 };
-use NumErrors::{MismatchedSizes, NonNegativeRequired, Overflow};
+use NumError::{MismatchedSizes, NonNegativeRequired, Overflow};
 
 // $t:   the input/output type
 // $d:  the doclink suffix for the method name

@@ -16,7 +16,7 @@
 
 use crate::num::{Frac, Int, NumResult as Result};
 #[cfg(doc)]
-use {crate::num::NumErrors as E, E::Overflow};
+use {crate::num::NumError as E, E::Overflow};
 
 // $i: the integer type.
 // $self: the fractional self type.

@@ -23,7 +23,7 @@ use crate::{
 };
 use crate::{
     code::{iif, paste},
-    num::{Int, NumErrors as E, NumResult as Result},
+    num::{Int, NumError as E, NumResult as Result},
 };
 use E::MismatchedSizes;
 

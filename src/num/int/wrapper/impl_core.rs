@@ -17,9 +17,9 @@
 use {
     crate::{
         code::{iif, paste},
-        num::{isize_up, usize_up, Int, NumErrors, NumResult as Result, Primiting},
+        num::{isize_up, usize_up, Int, NumError, NumResult as Result, Primiting},
     },
-    NumErrors::Overflow,
+    NumError::Overflow,
 };
 
 // $t:   the input/output type
