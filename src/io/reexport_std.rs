@@ -7,46 +7,46 @@ use crate::code::reexport;
 
 /* io traits */
 
-reexport! { rust: no_std|std::io, local_module: "io",
+reexport! { rust: not(std)|std::io, local_module: "io",
     doc: "A type of `Read`er which has an internal buffer.",
     BufRead
 }
-reexport! { rust: no_std|std::io, local_module: "io",
+reexport! { rust: not(std)|std::io, local_module: "io",
     doc: "Allows for reading bytes from a source.",
     Read
 }
-reexport! { rust: no_std|std::io, local_module: "io",
+reexport! { rust: not(std)|std::io, local_module: "io",
     doc: "Provides a cursor which can be moved within a stream of bytes.",
     Seek
 }
-reexport! { rust: no_std|std::io, local_module: "io",
+reexport! { rust: not(std)|std::io, local_module: "io",
     doc: "A trait for objects which are byte-oriented sinks.",
     Write
 }
 
 /* io structs and enums */
 
-reexport! { rust: no_std|std::io, local_module: "io",
+reexport! { rust: not(std)|std::io, local_module: "io",
     doc: "Wraps an in-memory buffer and provides it with a [`Seek`] implementation.",
     Cursor
 }
-reexport! { rust: no_std|std::io, local_module: "io",
-    doc: "The error type for I/O operations of the [`Read`], [`Write`], [`Seek`],
+reexport! { rust: not(std)|std::io, local_module: "io",
+    doc: "The error type for I/O operations of [`Read`], [`Write`], [`Seek`],
     and associated traits.",
     @Error as IoError
 }
-reexport! { rust: no_std|std::io, local_module: "io",
+reexport! { rust: not(std)|std::io, local_module: "io",
     doc: "A list specifying general categories of I/O error.",
     @ErrorKind as IoErrorKind
 }
-reexport! { rust: no_std|std::io, local_module: "io",
+reexport! { rust: not(std)|std::io, local_module: "io",
     doc: "A specialized [`Result`] type for I/O operations.",
     @Result as IoResult
 }
 
 /* io functions */
 
-reexport! { rust: no_std|std::io, local_module: "io",
+reexport! { rust: not(std)|std::io, local_module: "io",
     doc: "Copies the entire contents of a reader into a writer.",
     @copy as io_copy
 }

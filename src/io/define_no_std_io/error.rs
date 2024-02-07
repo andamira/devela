@@ -7,7 +7,7 @@ use core::{convert::From, fmt, result};
 /// See <https://doc.rust-lang.org/std/io/struct.Result.html>.
 pub type IoResult<T> = result::Result<T, IoError>;
 
-/// The error type for I/O operations of the [`Read`], [`Write`], [`Seek`], and
+/// The error type for I/O operations of [`Read`], [`Write`], [`Seek`], and
 /// associated traits.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Error.html>.

@@ -8,6 +8,10 @@ use crate::code::reexport;
 /* crate */
 
 #[doc(inline)]
+#[cfg(feature = "io")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
+pub use crate::io::IoError;
+#[doc(inline)]
 #[cfg(feature = "text")]
 pub use crate::text::{ArrayStringError, CharConversionError};
 #[doc(inline)]
@@ -41,7 +45,7 @@ pub use std::*;
 mod std {
     use super::reexport;
 
-    reexport! { rust: no_std|std::error, local_module: "result",
+    reexport! { rust: not(std)|std::error, local_module: "result",
         doc: "A trait representing the basic expectations for error values.",
         Error
     }

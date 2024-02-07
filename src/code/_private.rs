@@ -167,7 +167,7 @@ macro_rules! reexport {
     ) => { $crate::code::paste! {
         #[doc(inline)]
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
-        /// or re-created for `no_std`'>`[no_]std`</span>
+        /// or recreated for `no_std`'>`[no_]std`</span>
         #[doc = $description]
         #[doc = "\n\n*Re-exported from [`std" $( "`]::[`" $( $std_path "::" )+ )?
             "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
@@ -185,6 +185,36 @@ macro_rules! reexport {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
+
+    // when the item is available in either `not(std)` or `std` (always, more transparent)
+    ( rust : not(std)|std $( :: $( $std_path:ident )::+)?,
+      local_module: $module_feature:literal,
+      doc: $description:literal,
+      $( $item:ident ),*
+      $(@ $item_to_rename:ident as $item_renamed:ident),*
+      $(,)?
+    ) => { $crate::code::paste! {
+        #[doc(inline)]
+        /// <span class='stab portability' title='re-exported from rust&#39;s `std`
+        /// or recreated if `not(std)`'>`?std`</span>
+        #[doc = $description]
+        #[doc = "\n\n*Re-exported from [`std" $( "`]::[`" $( $std_path "::" )+ )?
+            "`](https://doc.rust-lang.org/std/" $($( $std_path "/" )+)? ")*"]
+
+        #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
+
+        #[cfg_attr(
+            feature = "nightly_doc",
+            doc(cfg(all(feature = $module_feature)))
+        )]
+
+        #[cfg(feature = "std")]
+        pub use std :: $($( $std_path :: )+)? {
+            $( $item ),*
+            $( $item_to_rename as $item_renamed ),*
+        };
+    }};
+
 
     /* external dependencies */
 
