@@ -261,5 +261,4 @@ impl fmt::Display for CharConversionError {
     }
 }
 
-#[cfg(feature = "std")]
-impl std::error::Error for CharConversionError {}
+impl crate::result::Error for CharConversionError {}

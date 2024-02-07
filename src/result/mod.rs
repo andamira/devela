@@ -39,12 +39,8 @@ mod never;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 mod option;
 //
-#[cfg(feature = "no_std")]
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(all(feature = "result", any(feature = "no_std", feature = "std"))))
-)]
-mod reimplement_no_std;
+#[cfg(not(feature = "std"))]
+mod define_no_std_error;
 
 /* re-exports */
 
@@ -58,8 +54,8 @@ pub use panic::all::*;
 #[cfg(feature = "result")]
 pub use {ext_result::*, never::*, option::all::*};
 //
-#[cfg(feature = "no_std")]
-pub use reimplement_no_std::*;
+#[cfg(not(feature = "std"))]
+pub use define_no_std_error::*;
 
 pub(crate) mod all {
     // always compiled
@@ -72,6 +68,6 @@ pub(crate) mod all {
     pub use super::{ext_result::*, never::*, option::all::*};
     //
     #[doc(inline)]
-    #[cfg(feature = "no_std")]
-    pub use super::reimplement_no_std::*;
+    #[cfg(not(feature = "std"))]
+    pub use super::define_no_std_error::*;
 }

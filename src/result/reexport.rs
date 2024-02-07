@@ -8,6 +8,9 @@ use crate::code::reexport;
 /* crate */
 
 #[doc(inline)]
+#[cfg(feature = "text")]
+pub use crate::text::{ArrayStringError, CharConversionError};
+#[doc(inline)]
 pub use crate::{
     data::{DataError, DataResult},
     num::{NumError, NumResult},

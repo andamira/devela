@@ -55,10 +55,7 @@ impl DataError {
     }
 }
 
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-// WAIT: [error_in_core](https://github.com/rust-lang/rust/issues/103765)
-impl std::error::Error for DataError {}
+impl crate::result::Error for DataError {}
 
 mod core_impls {
     use super::DataError as E;

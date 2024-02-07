@@ -30,8 +30,7 @@ impl fmt::Display for ArrayStringError {
     }
 }
 
-#[cfg(feature = "std")]
-impl std::error::Error for ArrayStringError {}
+impl crate::result::Error for ArrayStringError {}
 
 // Private result type for this module.
 pub(super) type Result<T> = core::result::Result<T, ArrayStringError>;

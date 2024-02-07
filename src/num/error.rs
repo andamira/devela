@@ -52,10 +52,7 @@ impl NumError {
     }
 }
 
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-// WAIT: [error_in_core](https://github.com/rust-lang/rust/issues/103765)
-impl std::error::Error for NumError {}
+impl crate::result::Error for NumError {}
 
 mod core_impls {
     use super::{NumError as E, Sign};
