@@ -235,6 +235,7 @@ macro_rules! reexport {
     // used for: result::Either
     (non-optional $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
+      $( local_module: $module_feature:literal ,)?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
@@ -249,7 +250,10 @@ macro_rules! reexport {
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(all( $($( feature = $f ),+)? ))))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(all(
+            $( feature = $module_feature ,)?
+            $( $( feature = $f ),+ )?
+        ))))]
         #[cfg(all( $($( feature = $f )+)? ))]
 
         pub use ::$dep $( ::$dep_path )? :: {
