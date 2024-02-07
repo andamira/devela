@@ -5,6 +5,16 @@
 
 use crate::code::reexport;
 
+/* crate */
+
+#[doc(inline)]
+pub use crate::{
+    data::{DataError, DataResult},
+    num::{NumError, NumResult},
+};
+
+/* std */
+
 reexport! {non-optional "either" | either, local_module: "result",
     doc: "A general purpose sum type with two cases: `Left` and `Right`.",
     Either

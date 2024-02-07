@@ -7,6 +7,8 @@
 //! [`option`]: std::option
 //! [`panic`]: mod@std::panic
 //! [`result`]: std::result
+//!
+//! It re-exports the error and result types defined in other modules.
 //
 
 // warnings:
