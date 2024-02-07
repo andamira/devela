@@ -24,11 +24,10 @@ use crate::{
 /// - Constructors:
 ///   [`new`][Self::new],
 ///   [`new_copied`][Self::new_copied],
-///   [`new`][Self#method.new-1](alloc),
 ///   [`from_array`][Self::from_array].
 /// - Deconstructors:
 ///   [`to_array`][Self::to_array],
-///   [`to_vec`][Self::to_vec](alloc).
+///   [`to_vec`][Self::to_vec]*(`alloc`)*.
 /// - Queries:
 ///   [`len`][Self::len], [`is_empty`][Self::is_empty], [`is_full`][Self::is_full],
 ///   [`capacity`][Self::capacity], [`remaining_capacity`][Self::remaining_capacity],
@@ -40,7 +39,7 @@ use crate::{
 /// - Stack operations:
 ///   - clear: [`clear`][Self::clear].
 ///   - push: [`push`][Self::push].
-///   - pop: [`pop`][Self::pop].
+///   - pop: [`pop`][Self::pop] *(`unsafe_ptr`)*.
 ///   - peek:
 ///     [`peek`][Self::peek]*([mut][Self::peek_mut])*,
 ///     [`peek_nth`][Self::peek_nth]*([mut][Self::peek_nth_mut])*,
@@ -52,6 +51,9 @@ use crate::{
 ///   - rot:
 ///     [`rot`][Self::rot], [`rot_cc`][Self::rot_cc],
 ///     [`rot2`][Self::rot2], [`rot2_cc`][Self::rot2_cc].
+///
+/// - Stack [operations that depend on `Clone`](#operations-that-depend-on-clone).
+///   - pop: [`pop`][Self::pop] *(safe)*.
 ///   - dup: [`dup`][Self::dup], [`dup2`][Self::dup2].
 ///   - over: [`over`][Self::over], [`over2`][Self::over2].
 ///   - tuck: [`tuck`][Self::tuck], [`tuck2`][Self::tuck2].

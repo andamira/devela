@@ -185,7 +185,86 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
         Err(NotEnoughSpace(None))
     }
 
-    //
+    /* clear */
+
+    /// Clears the stack.
+    ///
+    /// `( 1 2 3 -- )`
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectStack;
+    /// let mut s = DirectStack::<_, 8>::from([1, 2, 3, 4]);
+    /// s.clear();
+    /// assert![s.is_empty()];
+    /// ```
+    pub fn clear(&mut self) {
+        self.len = 0;
+    }
+
+    /* push */
+
+    /// Pushes a new element to the top of the stack.
+    ///
+    /// `( 1 -- 1 2 )`
+    /// # Errors
+    /// Returns [`NotEnoughSpace`] if the stack is full.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectStack;
+    /// # fn main() -> devela::data::DataResult<()> {
+    /// let mut s = DirectStack::<u8, 2>::default();
+    /// s.push(1)?;
+    /// s.push(2)?;
+    /// assert![s.push(3).is_err()];
+    /// assert_eq![s.as_slice(), &[1, 2]];
+    /// # Ok(()) }
+    /// ```
+    #[inline]
+    pub fn push(&mut self, e: T) -> Result<()> {
+        if self.is_full() {
+            Err(NotEnoughSpace(Some(1)))
+        } else {
+            self.array[self.len] = e;
+            self.len += 1;
+            Ok(())
+        }
+    }
+
+    /* pop (unsafe) */
+
+    /// Pops the top stack element.
+    ///
+    /// `( 1 2 -- 1 )`
+    /// # Errors
+    /// Returns [`NotEnoughElements`] if the stack is empty.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectStack;
+    /// # fn main() -> devela::data::DataResult<()> {
+    /// let mut s = DirectStack::<_, 2>::from([1, 2]);
+    /// assert_eq![2, s.pop()?];
+    /// assert_eq![1, s.pop()?];
+    /// assert![s.is_empty()];
+    /// # Ok(()) }
+    /// ```
+    /// # Features
+    /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
+    #[inline]
+    #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
+    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+    pub fn pop(&mut self) -> Result<T> {
+        if self.is_empty() {
+            Err(NotEnoughElements(Some(1)))
+        } else {
+            self.len -= 1;
+            // MOTIVATION: to not depend on T: Clone
+            // SAFETY: we're not gonna access the value, but move it out
+            let e = unsafe { core::ptr::read((self.array.get_unchecked(self.len)) as *const T) };
+            Ok(e)
+        }
+    }
+
+    /* peek */
 
     /// Peeks the top stack element.
     ///
@@ -283,64 +362,7 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
         }
     }
 
-    /// Swaps the top two stack elements.
-    ///
-    /// `( 1 2 -- 2 1 )`
-    /// # Errors
-    /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 2 elements.
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectStack;
-    /// let mut s = DirectStack::<_, 2>::from([1, 2]);
-    /// s.swap();
-    /// assert_eq![s.as_slice(), &[2, 1]];
-    /// ```
-    #[inline]
-    pub fn swap(&mut self) -> Result<()> {
-        if self.len() < 2 {
-            Err(NotEnoughElements(Some(2)))
-        } else {
-            self.array.swap(self.len - 2, self.len - 1);
-            Ok(())
-        }
-    }
-
-    /// Swaps the top two pair stack elements.
-    ///
-    /// `( 1 2 3 4 -- 3 4 1 2 )`
-    /// # Errors
-    /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 4 elements.
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectStack;
-    /// let mut s = DirectStack::<_, 4>::from([1, 2, 3, 4]);
-    /// s.swap2();
-    /// assert_eq![s.as_slice(), &[3, 4, 1, 2]];
-    /// ```
-    #[inline]
-    pub fn swap2(&mut self) -> Result<()> {
-        if self.len() < 4 {
-            Err(NotEnoughElements(Some(4)))
-        } else {
-            self.array.swap(self.len - 4, self.len - 2);
-            self.array.swap(self.len - 3, self.len - 1);
-            Ok(())
-        }
-    }
-
-    /// Clears the stack.
-    ///
-    /// `( 1 2 3 -- )`
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectStack;
-    /// let mut s = DirectStack::<_, 8>::from([1, 2, 3, 4]);
-    /// s.clear();
-    /// assert![s.is_empty()];
-    /// ```
-    pub fn clear(&mut self) {
-        self.len = 0;
-    }
+    /* drop */
 
     /// Drops the top stack element.
     ///
@@ -385,6 +407,8 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
             Ok(())
         }
     }
+
+    /* nip */
 
     /// Drops the next of stack element.
     ///
@@ -432,6 +456,55 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
             Ok(())
         }
     }
+
+    /* swap */
+
+    /// Swaps the top two stack elements.
+    ///
+    /// `( 1 2 -- 2 1 )`
+    /// # Errors
+    /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 2 elements.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectStack;
+    /// let mut s = DirectStack::<_, 2>::from([1, 2]);
+    /// s.swap();
+    /// assert_eq![s.as_slice(), &[2, 1]];
+    /// ```
+    #[inline]
+    pub fn swap(&mut self) -> Result<()> {
+        if self.len() < 2 {
+            Err(NotEnoughElements(Some(2)))
+        } else {
+            self.array.swap(self.len - 2, self.len - 1);
+            Ok(())
+        }
+    }
+
+    /// Swaps the top two pair stack elements.
+    ///
+    /// `( 1 2 3 4 -- 3 4 1 2 )`
+    /// # Errors
+    /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 4 elements.
+    /// # Examples
+    /// ```
+    /// # use devela::data::DirectStack;
+    /// let mut s = DirectStack::<_, 4>::from([1, 2, 3, 4]);
+    /// s.swap2();
+    /// assert_eq![s.as_slice(), &[3, 4, 1, 2]];
+    /// ```
+    #[inline]
+    pub fn swap2(&mut self) -> Result<()> {
+        if self.len() < 4 {
+            Err(NotEnoughElements(Some(4)))
+        } else {
+            self.array.swap(self.len - 4, self.len - 2);
+            self.array.swap(self.len - 3, self.len - 1);
+            Ok(())
+        }
+    }
+
+    /* rot */
 
     /// Rotates the top three stack elements, clockwise.
     ///
@@ -528,33 +601,14 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
             Ok(())
         }
     }
+}
 
-    /// Pushes a new element to the top of the stack.
-    ///
-    /// `( 1 -- 1 2 )`
-    /// # Errors
-    /// Returns [`NotEnoughSpace`] if the stack is full.
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectStack;
-    /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut s = DirectStack::<u8, 2>::default();
-    /// s.push(1)?;
-    /// s.push(2)?;
-    /// assert![s.push(3).is_err()];
-    /// assert_eq![s.as_slice(), &[1, 2]];
-    /// # Ok(()) }
-    /// ```
-    #[inline]
-    pub fn push(&mut self, e: T) -> Result<()> {
-        if self.is_full() {
-            Err(NotEnoughSpace(Some(1)))
-        } else {
-            self.array[self.len] = e;
-            self.len += 1;
-            Ok(())
-        }
-    }
+/// # Operations that depend on `Clone`.
+///
+/// Every method is *const* and returns [`Own`][crate::Own]`<Self, V>`.
+// `T:Clone`
+impl<T: Clone, S: Storage, const CAP: usize> Stack<T, S, CAP> {
+    /* pop (safe) */
 
     /// Pops the top stack element.
     ///
@@ -574,40 +628,8 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
     /// # Features
     /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
     #[inline]
-    #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
-    pub fn pop(&mut self) -> Result<T> {
-        if self.is_empty() {
-            Err(NotEnoughElements(Some(1)))
-        } else {
-            self.len -= 1;
-            // SAFETY: we're not gonna access the value, but move it out
-            // MOTIVATION: to not depend on T: Clone
-            let e = unsafe { core::ptr::read((self.array.get_unchecked(self.len)) as *const T) };
-            Ok(e)
-        }
-    }
-}
-
-// `T:Clone`
-impl<T: Clone, S: Storage, const CAP: usize> Stack<T, S, CAP> {
-    /// Pops the top stack element.
-    ///
-    /// `( 1 2 -- 1 )`
-    /// # Errors
-    /// Returns [`NotEnoughElements`] if the stack is empty.
-    /// # Examples
-    /// ```
-    /// # use devela::data::DirectStack;
-    /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut s = DirectStack::<_, 2>::from([1, 2]);
-    /// assert_eq![2, s.pop()?];
-    /// assert_eq![1, s.pop()?];
-    /// assert![s.is_empty()];
-    /// # Ok(()) }
-    /// ```
-    #[inline]
     #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
+    #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
     // safe-only version that depends on T: Clone
     pub fn pop(&mut self) -> Result<T> {
         if self.is_empty() {
@@ -618,6 +640,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Stack<T, S, CAP> {
             Ok(e)
         }
     }
+
+    /* dup */
 
     /// Duplicates the top stack element.
     ///
@@ -678,6 +702,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Stack<T, S, CAP> {
         }
     }
 
+    /* over */
+
     /// Duplicates the next of stack element to the top.
     ///
     /// `( 1 2 -- 1 2 1 )`
@@ -736,6 +762,8 @@ impl<T: Clone, S: Storage, const CAP: usize> Stack<T, S, CAP> {
             Ok(())
         }
     }
+
+    /* tuck */
 
     /// Duplicates the top element before the next of stack element.
     ///
