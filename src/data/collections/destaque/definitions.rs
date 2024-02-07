@@ -19,6 +19,12 @@ use crate::{
 /// Rememeber that a single-ended *stack* operates only from the back, while a
 /// single-ended *queue* pushes to the back and pops from the front.
 ///
+/// See also the related traits:
+/// [`DataQueue`][crate::DataQueue], [`DataDeque`][crate::DataDeque],
+/// [`DataStack`][crate::DataStack], [`DataDestack`][crate::DataDestack]<br/>
+/// and aliases: [`BareDestaque`] and [`BoxedDestaque`].
+///
+/// ## Methods
 /// - General methods:
 ///   - [`new`][Self::new],
 /// [`len`][Self::len], [`is_empty`][Self::is_empty], [`is_full`][Self::is_full],
@@ -74,10 +80,6 @@ use crate::{
 /// [`tuck_front`][Self::tuck_front],
 /// [`tuck2_back`][Self::tuck2_back],
 /// [`tuck2_front`][Self::tuck2_front].
-///
-/// See also the related traits:
-/// [`DataQueue`][crate::DataQueue], [`DataDeque`][crate::DataDeque],
-/// [`DataStack`][crate::DataStack], [`DataDestack`][crate::DataDestack].
 pub struct Destaque<T, S: Storage, const CAP: usize> {
     pub(super) array: Array<T, S, CAP>,
     pub(super) len: usize,

@@ -19,6 +19,9 @@ use crate::mem::Boxed;
 /* types */
 
 /// A const generic array backed by the core [`array`] primitive.
+///
+/// See also the related trait: [`DataArray`][crate::DataArray]
+/// and aliases: [`BareArray`] and [`BoxedArray`].
 pub struct Array<T, S: Storage, const LEN: usize> {
     pub(crate) array: S::Stored<[T; LEN]>,
 }

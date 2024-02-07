@@ -602,7 +602,7 @@ impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP> {
     }
 }
 
-/// # Operations that depend on `Clone`.
+/// # Operations depending on `T: Clone`
 ///
 /// Every method is *const* and returns [`Own`][crate::Own]`<Self, V>`.
 // T:Clone

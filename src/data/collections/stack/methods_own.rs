@@ -21,9 +21,8 @@ use crate::{
 };
 use DataErrors::{NotEnoughElements, NotEnoughSpace};
 
-/// # Chainable *const* operations
+/// # Chainable *const* operations depending on `T: Copy`
 ///
-/// Depends on `T` being `Copy`.
 /// Every method is *const* and returns [`Own`][crate::Own]`<Self, V>`.
 impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /* clear */
@@ -777,8 +776,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 7> =
-    ///     Stack::from_array_const([0, 1, 2, 3, 4, 0, 0]).own_drop_n(2).state.own_over2().state_ok();
+    /// const S: Stack<i32, (), 7> = Stack::from_array_const([0, 1, 2, 3, 4, 0, 0])
+    ///     .own_drop_n(2).state.own_over2().state_ok();
     /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
     /// ```
     #[inline]
@@ -800,8 +799,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 7> =
-    ///     Stack::from_array_const([0, 1, 2, 3, 4, 0, 0]).own_drop_n(2).state.own_over2_unchecked().state;
+    /// const S: Stack<i32, (), 7> = Stack::from_array_const([0, 1, 2, 3, 4, 0, 0])
+    ///     .own_drop_n(2).state.own_over2_unchecked().state;
     /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
     /// ```
     #[inline]
@@ -878,8 +877,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 7> =
-    ///     Stack::from_array_const([0, 1, 2, 3, 4, 0, 0]).own_drop_n(2).state.own_tuck2_unchecked().state;
+    /// const S: Stack<i32, (), 7> = Stack::from_array_const([0, 1, 2, 3, 4, 0, 0])
+    ///     .own_drop_n(2).state.own_tuck2_unchecked().state;
     /// assert_eq![S.as_slice(), &[0, 3, 4, 1, 2, 3, 4]];
     /// ```
     #[inline]
@@ -902,8 +901,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 7> =
-    ///     Stack::from_array_const([0, 1, 2, 3, 4, 0, 0]).own_drop_n(2).state.own_tuck2_unchecked().state;
+    /// const S: Stack<i32, (), 7> = Stack::from_array_const([0, 1, 2, 3, 4, 0, 0])
+    ///     .own_drop_n(2).state.own_tuck2_unchecked().state;
     /// assert_eq![S.as_slice(), &[0, 3, 4, 1, 2, 3, 4]];
     /// ```
     #[inline]

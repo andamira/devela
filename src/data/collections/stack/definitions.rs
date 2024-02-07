@@ -18,7 +18,8 @@ use crate::{
 ///
 /// All the methods operate from the back.
 ///
-/// See also the related trait: [`DataStack`][crate::DataStack].
+/// See also the related trait: [`DataStack`][crate::DataStack]
+/// and aliases: [`BareStack`] and [`BoxedStack`].
 ///
 /// ## Methods
 /// - Constructors:
@@ -36,10 +37,10 @@ use crate::{
 ///   [`iter`][Self::iter],
 ///   [`extend`][Self::extend],
 ///
-/// - Stack operations:
+/// - Stack operations without bounds on `T`:
 ///   - clear: [`clear`][Self::clear].
 ///   - push: [`push`][Self::push].
-///   - pop: [`pop`][Self::pop] *(`unsafe_ptr`)*.
+///   - pop: [`pop`][Self::pop] *(unsafe)*.
 ///   - peek:
 ///     [`peek`][Self::peek]*([mut][Self::peek_mut])*,
 ///     [`peek_nth`][Self::peek_nth]*([mut][Self::peek_nth_mut])*,
@@ -52,13 +53,14 @@ use crate::{
 ///     [`rot`][Self::rot], [`rot_cc`][Self::rot_cc],
 ///     [`rot2`][Self::rot2], [`rot2_cc`][Self::rot2_cc].
 ///
-/// - Stack [operations that depend on `Clone`](#operations-that-depend-on-clone).
+/// - Stack [operations depending on `T: Clone`](#operations-depending-on-t-clone).
 ///   - pop: [`pop`][Self::pop] *(safe)*.
 ///   - dup: [`dup`][Self::dup], [`dup2`][Self::dup2].
 ///   - over: [`over`][Self::over], [`over2`][Self::over2].
 ///   - tuck: [`tuck`][Self::tuck], [`tuck2`][Self::tuck2].
 ///
-/// - Stack [chainable *const* operations](#chainable-const-operations) for `T: Copy`.
+/// - Stack [chainable *const* operations depending on `T:
+///   Copy`](#chainable-const-operations-depending-on-t-copy).
 ///   - clear: [`own_clear`][Self::own_clear].
 ///   - push: [`own_push`][Self::push]*([uc][Self::own_push_unchecked])*,
 ///   - pop: [`own_pop`][Self::pop]*([uc][Self::own_pop_unchecked])*.
