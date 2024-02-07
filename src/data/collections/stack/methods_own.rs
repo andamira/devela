@@ -132,6 +132,47 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         Own::new(sta, e)
     }
 
+    /* peek */
+
+    /// Peeks the top stack element in compile-time.
+    ///
+    /// `( 1 2 3 -- 1 2 )`
+    /// # Errors
+    /// Returns `Own<S,`[`NotEnoughElements`]`>` if the stack is empty.
+    /// # Examples
+    /// ```
+    /// # use devela::all::{DataResult, Own, Stack};
+    /// const S: Own<Stack<i32, (), 3>, DataResult<i32>> = Stack::from_array_const([1, 2, 3]).own_peek();
+    /// S.assert_state(|s| s.as_slice() == &[1, 2, 3]).assert_eq_value(&Ok(3));
+    /// ```
+    #[inline]
+    pub const fn own_peek(self) -> Own<Self, Result<T>> {
+        if self.len == 0 {
+            Own::new(self, Err(NotEnoughElements(Some(1))))
+        } else {
+            self.own_peek_unchecked().into_result_const()
+        }
+    }
+
+    /// Peeks the top stack element in compile-time, unchecked version.
+    ///
+    /// `( 1 2 3 -- 1 2 )`
+    /// # Panics
+    /// Panics if the stack is empty.
+    /// # Examples
+    /// ```
+    /// # use devela::all::{DataResult, Own, Stack};
+    /// const S: Own<Stack<i32, (), 3>, i32> = Stack::from_array_const([1, 2, 3]).own_peek_unchecked();
+    /// S.assert_state(|s| s.as_slice() == &[1, 2, 3]).assert_eq_value(&3);
+    /// ```
+    #[inline]
+    pub const fn own_peek_unchecked(self) -> Own<Self, T> {
+        let arr = self.array.into_array_const();
+        let e = arr[self.len - 1];
+        let sta = Self::from_array_const(arr);
+        Own::new(sta, e)
+    }
+
     /* drop */
 
     /// Drops the top stack element in compile-time.
