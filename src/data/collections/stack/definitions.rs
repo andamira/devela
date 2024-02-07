@@ -9,7 +9,7 @@
 use crate::mem::Boxed;
 use crate::{
     data::{Array, DataCollection, DataResult as Result},
-    mem::Storage,
+    mem::{Bare, Storage},
 };
 
 /* types */
@@ -91,7 +91,7 @@ pub struct Stack<T, S: Storage, const CAP: usize> {
 }
 
 /// A [`Stack`] stored in the stack.
-pub type DirectStack<T, const CAP: usize> = Stack<T, (), CAP>;
+pub type BareStack<T, const CAP: usize> = Stack<T, Bare, CAP>;
 
 /// A [`Stack`] stored in the heap.
 #[cfg(feature = "alloc")]
@@ -112,8 +112,8 @@ impl<'s, T, S: Storage, const CAP: usize> Iterator for StackIter<'s, T, S, CAP> 
     ///
     /// # Example
     /// ```
-    /// # use devela::data::DirectStack;
-    /// let s = DirectStack::<i32, 4>::from([1, 2]);
+    /// # use devela::data::BareStack;
+    /// let s = BareStack::<i32, 4>::from([1, 2]);
     ///
     /// let mut si = s.iter();
     /// assert_eq![Some(&1), si.next()];

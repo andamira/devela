@@ -5,7 +5,7 @@
 
 use crate::{
     data::{array_init, Array},
-    mem::{Direct, Storage},
+    mem::{Bare, BareBox, Storage},
 };
 use core::{
     borrow::{Borrow, BorrowMut},
@@ -128,12 +128,12 @@ where
     }
 }
 
-// S:() + T:Default
-impl<T: Default, const LEN: usize> Default for Array<T, (), LEN> {
+// S:Bare + T:Default
+impl<T: Default, const LEN: usize> Default for Array<T, Bare, LEN> {
     /// Returns an empty array, allocated in the stack,
     /// using the default value to fill the remaining free data.
     fn default() -> Self {
-        let array = Direct::new(array_init!(default [T; LEN], "safe_data", "unsafe_array"));
+        let array = BareBox::new(array_init!(default [T; LEN], "safe_data", "unsafe_array"));
         Array { array }
     }
 }
@@ -157,8 +157,8 @@ impl<T: Default, const LEN: usize> Default for Array<T, Boxed, LEN> {
     }
 }
 
-impl<T, const LEN: usize> From<Array<T, (), LEN>> for [T; LEN] {
-    fn from(array: Array<T, (), LEN>) -> [T; LEN] {
+impl<T, const LEN: usize> From<Array<T, Bare, LEN>> for [T; LEN] {
+    fn from(array: Array<T, Bare, LEN>) -> [T; LEN] {
         array.array.0
     }
 }
@@ -170,7 +170,7 @@ impl<T, const LEN: usize> From<Array<T, Boxed, LEN>> for Box<[T; LEN]> {
     }
 }
 
-impl<T: Default, I, const LEN: usize> From<I> for Array<T, (), LEN>
+impl<T: Default, I, const LEN: usize> From<I> for Array<T, Bare, LEN>
 where
     I: IntoIterator<Item = T>,
 {
@@ -181,14 +181,12 @@ where
     ///
     /// # Examples
     /// ```
-    /// use devela::data::DirectArray;
-    ///
-    /// let s: DirectArray<_, 4> = [1, 2, 3].into();
-    ///
+    /// # use devela::data::BareArray;
+    /// let s: BareArray<_, 4> = [1, 2, 3].into();
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
-    fn from(iterator: I) -> Array<T, (), LEN> {
-        let array = Direct::new(array_init!(iter [T; LEN], "safe_data", "unsafe_array", iterator));
+    fn from(iterator: I) -> Array<T, Bare, LEN> {
+        let array = BareBox::new(array_init!(iter [T; LEN], "safe_data", "unsafe_array", iterator));
         Array { array }
     }
 }

@@ -3,20 +3,28 @@
 //! The [`Storage`] trait allows the data structure implementations to have
 //! specialized methods by storage type (specially useful for constructors).
 //!
-//! It is already implemented for the [`Boxed`] type and the [`()`][unit] unit
-//! type, which wraps their data in a [`Box`] and a [`Direct`], respectively.
+//! It is already implemented for the [`Bare`] and [`Boxed`] type markers,
+//! which wraps their data in a [`BareBox`] and a [`Box`], respectively.
 //
 
-use core::ops;
+#[cfg(all(doc, feature = "alloc"))]
+use crate::_deps::alloc::boxed::Box;
+use core::ops::DerefMut;
 
-mod direct;
-pub use direct::*;
+mod bare;
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+mod boxed;
+
+pub use bare::*;
+#[cfg(feature = "alloc")]
+pub use boxed::*;
 
 /// Allows to be generic in respect of the data storage.
 ///
 /// There are two reference implementations:
+/// - [`Bare`][super::Bare], which wraps the data in a [`BareBox`].
 /// - [`Boxed`], which wraps the data in a [`Box`].
-/// - [`()`][unit], which wraps the data in a [`Direct`].
 ///
 /// # Examples
 /// ```
@@ -53,7 +61,7 @@ pub trait Storage {
     ///
     /// Any type `T` that is to be stored must be able to be dereferenced to a
     /// mutable reference of `T` and to be constructed from a value of type `T`.
-    type Stored<T>: ops::DerefMut<Target = T> + From<T>;
+    type Stored<T>: DerefMut<Target = T> + From<T>;
 
     /// Returns the static name of the storage implementation.
     ///
@@ -62,29 +70,4 @@ pub trait Storage {
 
     // WAIT: [box_into_inner](https://github.com/rust-lang/rust/issues/80437)
     // fn unstore(self) -> T;
-}
-
-/// A storage type that wraps its data in a [`Box`].
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
-pub struct Boxed;
-
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl Storage for Boxed {
-    type Stored<T> = crate::_deps::alloc::boxed::Box<T>;
-
-    fn name() -> &'static str {
-        "Boxed"
-    }
-}
-
-/// A storage type that wraps its data in a [`Direct`].
-impl Storage for () {
-    type Stored<T> = Direct<T>;
-
-    fn name() -> &'static str {
-        "Direct"
-    }
 }

@@ -1,25 +1,42 @@
-// ladata::mem::storage::direct
+// ladata::mem::storage::bare
 //
-//! Direct storage doesn't affect its content.
+//! *Bare* storage doesn't affect its contents
 //
 // API based on https://doc.rust-lang.org/alloc/boxed/struct.Box.html
 
-/// A no-op pointer type, like a [`Box`] that doesn't affect how `T` is stored.
+use crate::mem::{Bare, Storage};
+#[cfg(all(doc, feature = "alloc"))]
+use crate::{_deps::alloc::boxed::Box, mem::Boxed};
+
+/// A no-op pointer type, like a [`Box`] but without affecting how `T` is stored.
+///
+/// It is used as the underlying [`Storage`] for the [`Bare`] marker
+/// struct, just as a [`Box`] is used as the storage for [`Boxed`].
 ///
 /// # Examples
 /// ```
-/// use devela::mem::Direct;
-///
-/// let byte = Direct::new(0_u8);
+/// # use devela::mem::BareBox;
+/// let byte = BareBox::new(0_u8);
 /// ```
-pub struct Direct<T>(pub T);
+pub struct BareBox<T>(pub T);
 
-impl<T> Direct<T> {
-    /// Creates a new `Direct` storage for the given `t`.
+/// A marker struct for a storage type that wraps its data in a [`BareBox`].
+///
+/// This implementation is equivalent to the one for [`Boxed`] which uses [`Box`] for storage.
+impl Storage for Bare {
+    type Stored<T> = BareBox<T>;
+
+    fn name() -> &'static str {
+        "BareBox"
+    }
+}
+
+impl<T> BareBox<T> {
+    /// Creates a new `BareBox` storage for the given `t`.
     #[inline]
     #[must_use]
     pub const fn new(t: T) -> Self {
-        Direct(t)
+        BareBox(t)
     }
 
     /// Returns the inner stored type.
@@ -29,7 +46,7 @@ impl<T> Direct<T> {
         self.0
     }
 }
-impl<T: Copy> Direct<T> {
+impl<T: Copy> BareBox<T> {
     /// Returns the inner stored type in compile-time.
     #[inline]
     #[must_use]
@@ -39,10 +56,10 @@ impl<T: Copy> Direct<T> {
 }
 
 mod core_impls {
-    use super::Direct;
+    use super::BareBox;
     use core::{cmp, fmt, hash, ops};
 
-    impl<T> ops::Deref for Direct<T> {
+    impl<T> ops::Deref for BareBox<T> {
         type Target = T;
         #[inline]
         fn deref(&self) -> &T {
@@ -50,7 +67,7 @@ mod core_impls {
         }
     }
 
-    impl<T> ops::DerefMut for Direct<T> {
+    impl<T> ops::DerefMut for BareBox<T> {
         #[inline]
         #[must_use]
         fn deref_mut(&mut self) -> &mut T {
@@ -58,48 +75,48 @@ mod core_impls {
         }
     }
 
-    impl<T> From<T> for Direct<T> {
+    impl<T> From<T> for BareBox<T> {
         #[inline]
         #[must_use]
         fn from(t: T) -> Self {
-            Direct(t)
+            BareBox(t)
         }
     }
 
-    impl<T: Clone> Clone for Direct<T> {
+    impl<T: Clone> Clone for BareBox<T> {
         #[inline]
         #[must_use]
         fn clone(&self) -> Self {
-            Direct(self.0.clone())
+            BareBox(self.0.clone())
         }
     }
-    impl<T: Copy> Copy for Direct<T> {}
+    impl<T: Copy> Copy for BareBox<T> {}
 
-    impl<T: Default> Default for Direct<T> {
+    impl<T: Default> Default for BareBox<T> {
         #[inline]
         #[must_use]
         fn default() -> Self {
-            Direct(T::default())
+            BareBox(T::default())
         }
     }
 
-    impl<T: PartialEq> PartialEq for Direct<T> {
+    impl<T: PartialEq> PartialEq for BareBox<T> {
         #[inline]
         #[must_use]
         fn eq(&self, other: &Self) -> bool {
             self.0.eq(&other.0)
         }
     }
-    impl<T: Eq> Eq for Direct<T> {}
+    impl<T: Eq> Eq for BareBox<T> {}
 
-    impl<T: PartialOrd> PartialOrd for Direct<T> {
+    impl<T: PartialOrd> PartialOrd for BareBox<T> {
         #[inline]
         #[must_use]
         fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
             self.0.partial_cmp(&other.0)
         }
     }
-    impl<T: Ord> Ord for Direct<T> {
+    impl<T: Ord> Ord for BareBox<T> {
         #[inline]
         #[must_use]
         fn cmp(&self, other: &Self) -> cmp::Ordering {
@@ -107,33 +124,33 @@ mod core_impls {
         }
     }
 
-    impl<T: fmt::Debug> fmt::Debug for Direct<T> {
+    impl<T: fmt::Debug> fmt::Debug for BareBox<T> {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Debug::fmt(&self.0, f)
         }
     }
-    impl<T: fmt::Display> fmt::Display for Direct<T> {
+    impl<T: fmt::Display> fmt::Display for BareBox<T> {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Display::fmt(&self.0, f)
         }
     }
 
-    impl<T: fmt::Pointer> fmt::Pointer for Direct<T> {
+    impl<T: fmt::Pointer> fmt::Pointer for BareBox<T> {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Pointer::fmt(&self.0, f)
         }
     }
 
-    impl<T: hash::Hash> hash::Hash for Direct<T> {
+    impl<T: hash::Hash> hash::Hash for BareBox<T> {
         #[inline]
         fn hash<H: hash::Hasher>(&self, state: &mut H) {
             self.0.hash(state);
         }
     }
-    impl<T: hash::Hasher> hash::Hasher for Direct<T> {
+    impl<T: hash::Hasher> hash::Hasher for BareBox<T> {
         #[inline]
         #[must_use]
         fn finish(&self) -> u64 {
@@ -145,7 +162,7 @@ mod core_impls {
         }
     }
 
-    impl<I: Iterator> Iterator for Direct<I> {
+    impl<I: Iterator> Iterator for BareBox<I> {
         type Item = I::Item;
 
         #[inline]

@@ -8,7 +8,7 @@
 // - trait definition
 // - trait impls
 
-use crate::mem::{Direct, Size};
+use crate::mem::{BareBox, Size};
 
 use core::{
     cmp,
@@ -259,7 +259,7 @@ macro_rules! bit_size {
 
 /* impl BitSize */
 
-impl<T: BitSize<LEN>, const LEN: usize> BitSize<LEN> for Direct<T> {}
+impl<T: BitSize<LEN>, const LEN: usize> BitSize<LEN> for BareBox<T> {}
 
 bit_size![<T> = 0; for PhantomData<T>];
 bit_size![= 0; for (), Infallible, PhantomPinned];

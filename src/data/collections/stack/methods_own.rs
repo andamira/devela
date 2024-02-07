@@ -16,7 +16,7 @@ use crate::{
         error::{DataErrors, DataResult as Result},
         {Array, Stack},
     },
-    mem::{cswap, Storage},
+    mem::{cswap, Bare, Storage},
     result::Own,
 };
 use DataErrors::{NotEnoughElements, NotEnoughSpace};
@@ -25,7 +25,7 @@ use DataErrors::{NotEnoughElements, NotEnoughSpace};
 ///
 /// Depends on `T` being `Copy`.
 /// Every method is *const* and returns [`Own`][crate::Own]`<Self, V>`.
-impl<T: Copy, const CAP: usize> Stack<T, (), CAP> {
+impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /* clear */
 
     /// Clears the stack in compile-time.
@@ -121,8 +121,7 @@ impl<T: Copy, const CAP: usize> Stack<T, (), CAP> {
     /// ```
     /// # use devela::all::{DataResult, Own, Stack};
     /// const S: Own<Stack<i32, (), 3>, i32> = Stack::from_array_const([1, 2, 3]).own_pop_unchecked();
-    /// assert_eq![S.state.as_slice(), &[1, 2]];
-    /// assert_eq![S.value, 3];
+    /// S.assert_state(|s| s.as_slice() == &[1, 2]).assert_eq_value(&3);
     /// ```
     #[inline]
     pub const fn own_pop_unchecked(self) -> Own<Self, T> {

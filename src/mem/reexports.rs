@@ -3,7 +3,26 @@
 //! Reexported items from `core`.
 //
 
+#[cfg(all(doc, feature = "alloc"))]
+use super::Boxed;
 use crate::code::reexport;
+
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+/// A marker struct for a [`Storage`][super::Storage] type that wraps its data in a
+/// [`BareBox`][super::BareBox]. Alias of [`()`][unit].
+///
+/// Equivalent to the [`Boxed`] marker struct which uses a [`Box`] for the underlying storage.
+///
+/// ---
+pub type Bare = ();
+
+reexport! { rust: alloc::boxed, local_module: "mem",
+    doc: "A pointer type that uniquely owns a heap allocation of type `T`.
+
+It is used as the underlying [`Storage`][super::Storage] for the [`Boxed`] marker struct,
+just as a [`BareBox`][super::BareBox] is used as the storage for [`Bare`].",
+    Box
+}
 
 reexport! { rust: core::mem, local_module: "mem",
     doc: "A wrapper to inhibit compiler from automatically calling `T`’s destructor.",

@@ -7,7 +7,7 @@
 use crate::mem::Boxed;
 use crate::{
     data::{Array, Destaque},
-    mem::Storage,
+    mem::{Bare, Storage},
 };
 use core::fmt;
 
@@ -38,7 +38,7 @@ where
     S::Stored<[T; CAP]>: fmt::Debug,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut debug = f.debug_struct(stringify![DirectDestaque]);
+        let mut debug = f.debug_struct(stringify![Destaque]);
         debug
             .field("CAP", &CAP)
             .field("len", &self.len)
@@ -92,8 +92,8 @@ where
     }
 }
 
-// S:() + T:Default
-impl<T: Default, const CAP: usize> Default for Destaque<T, (), CAP> {
+// S:Bare + T:Default
+impl<T: Default, const CAP: usize> Default for Destaque<T, Bare, CAP> {
     /// Returns an empty queue, allocated in the stack,
     /// using the default value to fill the remaining free data.
     fn default() -> Self {
@@ -126,18 +126,18 @@ impl<T: Default, const CAP: usize> Default for Destaque<T, Boxed, CAP> {
     }
 }
 
-impl<T: Default, I, const CAP: usize> From<I> for Destaque<T, (), CAP>
+impl<T: Default, I, const CAP: usize> From<I> for Destaque<T, Bare, CAP>
 where
     I: IntoIterator<Item = T>,
 {
     /// Returns a queue filled with an iterator, in the stack.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let s: DirectDestaque<_, 3> = [1, 2, 3].into();
+    /// # use devela::data::Destaque;
+    /// let s: Destaque<_, (), 3> = [1, 2, 3].into();
     /// ```
-    fn from(iterator: I) -> Destaque<T, (), CAP> {
-        let mut s = Destaque::<T, (), CAP>::default();
+    fn from(iterator: I) -> Destaque<T, Bare, CAP> {
+        let mut s = Destaque::<T, Bare, CAP>::default();
         let _ = s.extend_back(iterator);
         s
     }

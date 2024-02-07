@@ -28,11 +28,11 @@ pub trait DataDeque: DataQueue {
     /// Add an element to the front of the queue.
     fn queue_push_front(&mut self, element: <Self as DataCollection>::Element) -> Result<()>;
 
-    /// Remove an element from the front of the queue (calls [`queue_dequeue`]).
+    /// Remove an element from the front of the queue (calls [`queue_pop`][DataQueue::queue_pop]).
     fn queue_pop_front(&mut self) -> Result<<Self as DataCollection>::Element> {
         self.queue_pop()
     }
-    /// Remove an element from the back of the queue (calls [`queue_enqueue`]).
+    /// Remove an element from the back of the queue (calls [`queue_push`][DataQueue::queue_push]).
     fn queue_push_back(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
         self.queue_push(element)
     }

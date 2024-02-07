@@ -7,7 +7,7 @@
 use crate::mem::Boxed;
 use crate::{
     data::{Array, Stack},
-    mem::Storage,
+    mem::{Bare, Storage},
 };
 use core::fmt;
 
@@ -60,7 +60,7 @@ where
 impl<T: Eq, S: Storage, const CAP: usize> Eq for Stack<T, S, CAP> where S::Stored<[T; CAP]>: Eq {}
 
 // S:() + T:Default
-impl<T: Default, const CAP: usize> Default for Stack<T, (), CAP> {
+impl<T: Default, const CAP: usize> Default for Stack<T, Bare, CAP> {
     /// Returns an empty stack, allocated in the stack,
     /// using the default value to fill the remaining free data.
     fn default() -> Self {
@@ -93,18 +93,18 @@ impl<T: Default, const CAP: usize> Default for Stack<T, Boxed, CAP> {
 
 /* From<IntoIterator<Item = T>> */
 
-impl<T: Default, I, const CAP: usize> From<I> for Stack<T, (), CAP>
+impl<T: Default, I, const CAP: usize> From<I> for Stack<T, Bare, CAP>
 where
     I: IntoIterator<Item = T>,
 {
     /// Returns a stack filled with an iterator, in the stack.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectStack;
-    /// let s: DirectStack<_, 3> = [1, 2, 3].into();
+    /// # use devela::data::Stack;
+    /// let s: Stack<_, (), 3> = [1, 2, 3].into();
     /// ```
-    fn from(iterator: I) -> Stack<T, (), CAP> {
-        let mut s = Stack::<T, (), CAP>::default();
+    fn from(iterator: I) -> Stack<T, Bare, CAP> {
+        let mut s = Stack::<T, Bare, CAP>::default();
         let _ = s.extend(iterator);
         s
     }

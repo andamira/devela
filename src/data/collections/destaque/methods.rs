@@ -13,15 +13,15 @@ use crate::{
         error::{DataErrors, DataResult as Result},
         {array_init, Array, Destaque, DestaqueIter},
     },
-    mem::Storage,
+    mem::{Bare, Storage},
 };
 use DataErrors::{NotEnoughElements, NotEnoughSpace};
 // IMPROVE use array_init
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};
 
-// `S:() + T:Clone`
-impl<T: Clone, const CAP: usize> Destaque<T, (), CAP> {
+// S:Bare + T:Clone
+impl<T: Clone, const CAP: usize> Destaque<T, Bare, CAP> {
     /// Returns an empty deque, allocated in the stack,
     /// cloning `element` to fill the remaining free data.
     /// # Examples
@@ -31,7 +31,7 @@ impl<T: Clone, const CAP: usize> Destaque<T, (), CAP> {
     /// ```
     pub fn new(element: T) -> Self {
         Self {
-            array: Array::<T, (), CAP>::with_cloned(element),
+            array: Array::<T, Bare, CAP>::with_cloned(element),
             front: 0,
             back: 0,
             len: 0,
@@ -39,8 +39,8 @@ impl<T: Clone, const CAP: usize> Destaque<T, (), CAP> {
     }
 }
 
-// `S:() + T:Copy`
-impl<T: Copy, const LEN: usize> Destaque<T, (), LEN> {
+// S:Bare + T:Copy
+impl<T: Copy, const LEN: usize> Destaque<T, Bare, LEN> {
     /// Returns an empty queue, allocated in the stack,
     /// copying `element` to fill the remaining free data, in compile-time.
     /// # Examples
@@ -59,7 +59,7 @@ impl<T: Copy, const LEN: usize> Destaque<T, (), LEN> {
     }
 }
 
-// `S:Boxed + T:Clone`
+// S:Boxed + T:Clone
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const CAP: usize> Destaque<T, Boxed, CAP> {
@@ -80,15 +80,15 @@ impl<T: Clone, const CAP: usize> Destaque<T, Boxed, CAP> {
     }
 }
 
-// `S: ()`
-impl<T, const CAP: usize> Destaque<T, (), CAP> {
+// S:Bare
+impl<T, const CAP: usize> Destaque<T, Bare, CAP> {
     /// Converts an array into a [`full`][Self::is_full] stack.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let s = DirectDestaque::<_, 3>::from_array([1, 2, 3]);
+    /// # use devela::data::Destaque;
+    /// let s = Destaque::<_, (), 3>::from_array([1, 2, 3]);
     /// ```
-    pub const fn from_array_const(arr: [T; CAP]) -> Destaque<T, (), CAP> {
+    pub const fn from_array_const(arr: [T; CAP]) -> Destaque<T, Bare, CAP> {
         Self {
             array: Array::new_const(arr),
             front: 0,
@@ -98,7 +98,6 @@ impl<T, const CAP: usize> Destaque<T, (), CAP> {
     }
 }
 
-// ``
 impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     // Returns the `nth` element's index counting from the back.
     #[inline]
@@ -116,8 +115,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Converts an array into a [`full`][Self::is_full] deque.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let q = DirectDestaque::<_, 3>::from_array([1, 2, 3]);
+    /// # use devela::data::Destaque;
+    /// let q = Destaque::<_, (), 3>::from_array([1, 2, 3]);
     /// ```
     pub fn from_array(arr: [T; CAP]) -> Destaque<T, S, CAP> {
         Self {
@@ -137,8 +136,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Checks `true` if the stack is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let q = DirectDestaque::<i32, 8>::default();
+    /// # use devela::data::Destaque;
+    /// let q = Destaque::<i32, (), 8>::default();
     /// assert![q.is_empty()];
     /// ```
     #[inline]
@@ -149,8 +148,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns `true` if the stack is full.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let q = DirectDestaque::<_, 3>::from([1, 2, 3]);
+    /// # use devela::data::Destaque;
+    /// let q = Destaque::<_, (), 3>::from([1, 2, 3]);
     /// assert![q.is_full()];
     /// ```
     #[inline]
@@ -161,8 +160,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns the deque's total capacity.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let q = DirectDestaque::<i32, 3>::default();
+    /// # use devela::data::Destaque;
+    /// let q = Destaque::<i32, (), 3>::default();
     /// assert_eq![3, q.capacity()];
     /// ```
     #[inline]
@@ -173,9 +172,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns the deque's remaining capacity.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<i32, 3>::default();
+    /// let mut q = Destaque::<i32, (), 3>::default();
     /// assert_eq![3, q.remaining_capacity()];
     /// q.push_back(1)?;
     /// assert_eq![2, q.remaining_capacity()];
@@ -205,8 +204,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughSpace`] if the deque becomes full before the iterator finishes.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 6>::from([1, 2, 3]);
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 6>::from([1, 2, 3]);
     /// q.extend_back([4, 5, 6, 7, 8]);
     /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 5, 6])];
     /// ```
@@ -232,8 +231,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughSpace`] if the destaque becomes full before the iterator finishes.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 6>::from([1, 2, 3]);
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 6>::from([1, 2, 3]);
     /// q.extend_front([4, 5, 6, 7, 8]);
     /// assert_eq![q.to_array(), Some([6, 5, 4, 1, 2, 3])];
     /// ```
@@ -261,9 +260,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughSpace`] if the destaque is full.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 3>::default();
+    /// let mut q = Destaque::<u8, (), 3>::default();
     /// q.push_front(1)?;
     /// q.push_front(2)?;
     /// q.push_front(3)?;
@@ -301,9 +300,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughSpace`] if the destaque is full.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 3>::default();
+    /// let mut q = Destaque::<u8, (), 3>::default();
     /// q.push_back(1)?;
     /// q.push_back(2)?;
     /// q.push_back(3)?;
@@ -346,9 +345,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// let q = Destaque::<_, (), 8>::from([1, 2, 3]);
     /// assert_eq![&3, q.peek_back()?];
     /// # Ok(()) }
     /// ```
@@ -367,9 +366,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3]);
     /// assert_eq![&mut 3, q.peek_back_mut()?];
     /// # Ok(()) }
     /// ```
@@ -388,9 +387,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// let q = Destaque::<_, (), 8>::from([1, 2, 3]);
     /// assert_eq![&1, q.peek_nth_back(2)?];
     /// # Ok(()) }
     /// ```
@@ -409,9 +408,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3]);
     /// assert_eq![&mut 1, q.peek_nth_back_mut(2)?];
     /// # Ok(()) }
     /// ```
@@ -430,9 +429,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// let q = Destaque::<_, (), 8>::from([1, 2, 3]);
     /// assert_eq![&1, q.peek_front()?];
     /// # Ok(()) }
     /// ```
@@ -451,9 +450,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3]);
     /// assert_eq![&mut 1, q.peek_front_mut()?];
     /// # Ok(()) }
     /// ```
@@ -472,9 +471,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let q = DirectDestaque::<_, 8>::from([1, 2, 3, 4]);
+    /// let q = Destaque::<_, (), 8>::from([1, 2, 3, 4]);
     /// assert_eq![&3, q.peek_nth_front(2)?];
     /// # Ok(()) }
     /// ```
@@ -493,9 +492,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3, 4]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3, 4]);
     /// assert_eq![&mut 3, q.peek_nth_front_mut(2)?];
     /// # Ok(()) }
     /// ```
@@ -520,10 +519,10 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
     ///
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3]);
     /// assert_eq![1, q.pop_front()?];
     /// assert_eq![2, q.pop_front()?];
     /// assert_eq![3, q.pop_front()?];
@@ -566,9 +565,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3]);
     /// assert_eq![3, q.pop_back()?];
     /// assert_eq![2, q.pop_back()?];
     /// assert_eq![1, q.pop_back()?];
@@ -600,8 +599,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// `( 1 2 -- )`
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3, 4]);
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3, 4]);
     /// q.clear();
     /// assert![q.is_empty()];
     /// ```
@@ -620,9 +619,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2]);
     /// q.drop_back()?;
     /// assert_eq![q.to_array(), Some([1])];
     /// # Ok(()) }
@@ -644,9 +643,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2]);
     /// q.drop_front()?;
     /// assert_eq![q.to_array(), Some([2])];
     /// # Ok(()) }
@@ -668,9 +667,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't contain at least `nth` elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3, 4]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3, 4]);
     /// q.drop_n_back(3)?;
     /// assert_eq![q.to_array(), Some([1])];
     /// # Ok(()) }
@@ -692,9 +691,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't contain at least `nth` elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3, 4]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3, 4]);
     /// q.drop_n_front(3)?;
     /// assert_eq![q.to_array(), Some([4])];
     /// # Ok(()) }
@@ -718,8 +717,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 4>::from([1, 2, 3, 4]);
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 4>::from([1, 2, 3, 4]);
     /// q.swap_back();
     /// assert_eq![q.to_array(), Some([1, 2, 4, 3])];
     /// ```
@@ -751,8 +750,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 4>::from([1, 2, 3, 4]);
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 4>::from([1, 2, 3, 4]);
     /// q.swap_front();
     /// assert_eq![q.to_array(), Some([2, 1, 3, 4])];
     /// ```
@@ -784,8 +783,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);
     /// q.swap2_back();
     /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 7, 8, 5, 6])];
     /// ```
@@ -821,8 +820,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 4 elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);
     /// q.swap2_front();
     /// assert_eq![q.to_array(), Some([3, 4, 1, 2, 5, 6, 7, 8])];
     /// ```
@@ -860,8 +859,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 6>::from([1, 2, 3, 4, 5]);
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 6>::from([1, 2, 3, 4, 5]);
     /// q.swap_ends();
     /// assert_eq![q.to_array(), Some([5, 2, 3, 4, 1])];
     /// ```
@@ -883,8 +882,8 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 4 elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut q = DirectDestaque::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);
     /// q.swap2_ends();
     /// assert_eq![q.to_array(), Some([7, 8, 3, 4, 5, 6, 1, 2])];
     /// ```
@@ -910,9 +909,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// `( 1 2 3 4 --  4 1 2 3 )`
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<i32, 8>::from([2, 3]);
+    /// let mut q = Destaque::<i32, (), 8>::from([2, 3]);
     /// q.push_front(1)?;
     /// q.push_back(4)?;
     /// assert_eq![q.to_array(), Some([1, 2, 3, 4])];
@@ -934,9 +933,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// `( 1 2 3 4 --  2 3 4 1 )` for `n = 3`
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<i32, 8>::from([2, 3]);
+    /// let mut q = Destaque::<i32, (), 8>::from([2, 3]);
     /// q.push_front(1)?;
     /// q.push_back(4)?;
     /// assert_eq![q.to_array(), Some([1, 2, 3, 4])];
@@ -959,9 +958,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// `( 1 2 3 4 --  2 3 4 1 )`
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<i32, 8>::from([2, 3]);
+    /// let mut q = Destaque::<i32, (), 8>::from([2, 3]);
     /// q.push_front(1)?;
     /// q.push_back(4)?;
     /// assert_eq![q.to_array(), Some([1, 2, 3, 4])];
@@ -983,9 +982,9 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// `( 1 2 3 4 --  4 1 2 3 )` for `nth = 3`
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<i32, 8>::from([2, 3]);
+    /// let mut q = Destaque::<i32, (), 8>::from([2, 3]);
     /// q.push_front(1)?;
     /// q.push_back(4)?;
     /// assert_eq![q.to_array(), Some([1, 2, 3, 4])];
@@ -1004,7 +1003,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     }
 }
 
-// `T:Clone`
+// T:Clone
 impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Pops the front element.
     ///
@@ -1013,9 +1012,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3]);
     /// assert_eq![1, q.pop_front()?];
     /// assert_eq![2, q.pop_front()?];
     /// assert_eq![3, q.pop_front()?];
@@ -1050,9 +1049,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns [`NotEnoughElements`] if the queue is empty.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 8>::from([1, 2, 3]);
+    /// let mut q = Destaque::<_, (), 8>::from([1, 2, 3]);
     /// assert_eq![3, q.pop_back()?];
     /// assert_eq![2, q.pop_back()?];
     /// assert_eq![1, q.pop_back()?];
@@ -1078,9 +1077,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns the queued elements as a vector.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 5>::from([3, 4]);
+    /// let mut q = Destaque::<_, (), 5>::from([3, 4]);
     /// q.push_front(2)?;
     /// q.push_back(5)?;
     /// q.push_front(1)?;
@@ -1116,9 +1115,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Panics if the new `LEN` sized array can't be allocated.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<_, 5>::from([3, 4]);
+    /// let mut q = Destaque::<_, (), 5>::from([3, 4]);
     /// q.push_front(2)?;
     /// q.push_back(5)?;
     /// q.push_front(1)?;
@@ -1168,9 +1167,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 4>::from([1, 2, 3]);
+    /// let mut q = Destaque::<u8, (), 4>::from([1, 2, 3]);
     /// q.dup_back()?;
     /// assert_eq![q.to_array(), Some([1, 2, 3, 3])];
     /// # Ok(()) }
@@ -1195,9 +1194,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 4>::from([1, 2, 3]);
+    /// let mut q = Destaque::<u8, (), 4>::from([1, 2, 3]);
     /// q.dup_front()?;
     /// assert_eq![q.to_array(), Some([1, 1, 2, 3])];
     /// # Ok(()) }
@@ -1222,9 +1221,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 6>::from([1, 2, 3, 4]);
+    /// let mut q = Destaque::<u8, (), 6>::from([1, 2, 3, 4]);
     /// q.dup2_back()?;
     /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 3, 4])];
     /// # Ok(()) }
@@ -1252,9 +1251,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 6>::from([1, 2, 3, 4]);
+    /// let mut q = Destaque::<u8, (), 6>::from([1, 2, 3, 4]);
     /// q.dup2_front()?;
     /// assert_eq![q.to_array(), Some([1, 2, 1, 2, 3, 4])];
     /// # Ok(()) }
@@ -1284,9 +1283,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 7>::from([1, 2, 3, 4]);
+    /// let mut q = Destaque::<u8, (), 7>::from([1, 2, 3, 4]);
     /// q.over_back()?;
     /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 3])];
     /// # Ok(()) }
@@ -1311,9 +1310,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 7>::from([1, 2, 3, 4]);
+    /// let mut q = Destaque::<u8, (), 7>::from([1, 2, 3, 4]);
     /// q.over_front()?;
     /// assert_eq![q.to_array(), Some([2, 1, 2, 3, 4])];
     /// # Ok(()) }
@@ -1338,9 +1337,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 8>::from([1, 2, 3, 4, 5, 6]);
+    /// let mut q = Destaque::<u8, (), 8>::from([1, 2, 3, 4, 5, 6]);
     /// q.over2_back()?;
     /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 5, 6, 3, 4])];
     /// # Ok(()) }
@@ -1368,9 +1367,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 8>::from([1, 2, 3, 4, 5, 6]);
+    /// let mut q = Destaque::<u8, (), 8>::from([1, 2, 3, 4, 5, 6]);
     /// q.over2_front()?;
     /// assert_eq![q.to_array(), Some([3, 4, 1, 2, 3, 4, 5, 6])];
     /// # Ok(()) }
@@ -1400,10 +1399,10 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
     ///
-    /// let mut q = DirectDestaque::<u8, 7>::from([1, 2, 3, 4, 5]);
+    /// let mut q = Destaque::<u8, (), 7>::from([1, 2, 3, 4, 5]);
     /// q.tuck_back()?;
     /// assert_eq![q.to_array(), Some([1, 2, 3, 5, 4, 5])];
     /// # Ok(()) }
@@ -1430,9 +1429,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 7>::from([1, 2, 3, 4, 5]);
+    /// let mut q = Destaque::<u8, (), 7>::from([1, 2, 3, 4, 5]);
     /// q.tuck_front()?;
     /// assert_eq![q.to_array(), Some([1, 2, 1, 3, 4, 5])];
     /// # Ok(()) }
@@ -1460,9 +1459,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 7>::from([1, 2, 3, 4, 5]);
+    /// let mut q = Destaque::<u8, (), 7>::from([1, 2, 3, 4, 5]);
     /// q.tuck2_back()?;
     /// assert_eq![q.to_array(), Some([1, 4, 5, 2, 3, 4, 5])];
     /// # Ok(()) }
@@ -1492,9 +1491,9 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
+    /// # use devela::data::Destaque;
     /// # fn main() -> devela::data::DataResult<()> {
-    /// let mut q = DirectDestaque::<u8, 7>::from([1, 2, 3, 4, 5]);
+    /// let mut q = Destaque::<u8, (), 7>::from([1, 2, 3, 4, 5]);
     /// q.tuck2_front()?;
     /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 1, 2, 5])];
     /// # Ok(()) }
@@ -1516,13 +1515,13 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     }
 }
 
-// `T: PartialEq`
+// T:PartialEq
 impl<T: PartialEq, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns true if the deque contains `element`.
     /// # Examples
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let dq = DirectDestaque::<_, 6>::from([5, 78, 42, 33, 9]);
+    /// # use devela::data::Destaque;
+    /// let dq = Destaque::<_, (), 6>::from([5, 78, 42, 33, 9]);
     ///
     /// assert![dq.contains(&9)];
     /// assert![!dq.contains(&8)];

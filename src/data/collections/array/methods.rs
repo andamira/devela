@@ -5,7 +5,7 @@
 
 use crate::{
     data::{array_init, Array},
-    mem::{Direct, Storage},
+    mem::{Bare, BareBox, Storage},
 };
 
 #[allow(unused)]
@@ -15,7 +15,6 @@ use crate::{
     mem::Boxed,
 };
 
-// ``
 impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
     /// Returns a new `Array` from the given primitive `array`.
     pub fn new(array: [T; LEN]) -> Self {
@@ -25,18 +24,19 @@ impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
     }
 }
 
-// S:()
-impl<T, const LEN: usize> Array<T, (), LEN> {
-    /// Returns a new [`DirectArray`] from the given primitive `array` in compile-time.
+// S:Bare
+impl<T, const LEN: usize> Array<T, Bare, LEN> {
+    /// Returns a new [`BareArray`][super::BareArray]
+    /// from the given primitive `array` in compile-time.
     pub const fn new_const(array: [T; LEN]) -> Self {
         Self {
-            array: Direct::new(array),
+            array: BareBox::new(array),
         }
     }
 }
 
-// `S:() + T:Clone`
-impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
+// S:Bare + T:Clone
+impl<T: Clone, const LEN: usize> Array<T, Bare, LEN> {
     /// Returns an array, allocated in the stack, filled with `element`, cloned.
     /// # Examples
     /// ```
@@ -44,13 +44,13 @@ impl<T: Clone, const LEN: usize> Array<T, (), LEN> {
     /// let a = Array::<_, (), 16>::with_cloned(0);
     /// ```
     pub fn with_cloned(element: T) -> Self {
-        let array = Direct::new(array_init!(clone [T; LEN], "safe_data", "unsafe_array", element));
+        let array = BareBox::new(array_init!(clone [T; LEN], "safe_data", "unsafe_array", element));
         Self { array }
     }
 }
 
-// `S:() + T:Copy`
-impl<T: Copy, const LEN: usize> Array<T, (), LEN> {
+// S:Bare + T:Copy
+impl<T: Copy, const LEN: usize> Array<T, Bare, LEN> {
     /// Returns an array, allocated in the stack, filled with `element`, copied, in compile-time.
     /// # Examples
     /// ```
@@ -58,12 +58,12 @@ impl<T: Copy, const LEN: usize> Array<T, (), LEN> {
     /// const A: Array<i32, (), 16> = Array::with_copied(0);
     /// ```
     pub const fn with_copied(element: T) -> Self {
-        let array = Direct::new([element; LEN]);
+        let array = BareBox::new([element; LEN]);
         Self { array }
     }
 }
 
-// `S:Boxed + T:Clone`
+// S:Boxed + T:Clone
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
@@ -79,7 +79,7 @@ impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
     }
 }
 
-// `T: PartialEq`
+// T:PartialEq
 impl<T: PartialEq, S: Storage, const CAP: usize> Array<T, S, CAP> {
     /// Returns true if the array contains `element`.
     /// # Examples
@@ -94,7 +94,6 @@ impl<T: PartialEq, S: Storage, const CAP: usize> Array<T, S, CAP> {
     }
 }
 
-// ``
 impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
     /// Returns the number of elements in the array.
     #[inline]
@@ -119,25 +118,25 @@ impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
     }
 }
 
-// `S: Boxed`
+// S:Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T, const LEN: usize> Array<T, Boxed, LEN> {
-    /// Returns the inner boxed primitive array.
+    /// Returns the inner [`Box`]ed primitive array.
     pub fn into_array(self) -> Box<[T; LEN]> {
         self.array
     }
 }
-// `S: ()`
-impl<T, const LEN: usize> Array<T, (), LEN> {
-    /// Returns the inner [`Direct`] primitive array.
+// S:Bare
+impl<T, const LEN: usize> Array<T, Bare, LEN> {
+    /// Returns the inner [`BareBox`]ed primitive array.
     pub fn into_array(self) -> [T; LEN] {
         self.array.into_inner()
     }
 }
-// `S: (), T:Copy`
-impl<T: Copy, const LEN: usize> Array<T, (), LEN> {
-    /// Returns the inner [`Direct`] primitive array in compile-time.
+// S:Bare, T:Copy
+impl<T: Copy, const LEN: usize> Array<T, Bare, LEN> {
+    /// Returns the inner [`BareBox`]ed primitive array in compile-time.
     pub const fn into_array_const(self) -> [T; LEN] {
         self.array.into_inner_const()
     }

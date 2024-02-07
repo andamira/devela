@@ -8,7 +8,7 @@
 use crate::mem::Boxed;
 use crate::{
     data::{Array, DataCollection, DataResult as Result},
-    mem::Storage,
+    mem::{Bare, Storage},
 };
 
 /* types */
@@ -86,7 +86,7 @@ pub struct Destaque<T, S: Storage, const CAP: usize> {
 }
 
 /// A [`Destaque`] stored in the stack.
-pub type DirectDestaque<T, const CAP: usize> = Destaque<T, (), CAP>;
+pub type BareDestaque<T, const CAP: usize> = Destaque<T, Bare, CAP>;
 
 /// A [`Destaque`] stored in the heap.
 #[cfg(feature = "alloc")]
@@ -106,8 +106,8 @@ impl<'s, T, S: Storage, const CAP: usize> Iterator for DestaqueIter<'s, T, S, CA
     /// Iterates over shared references.
     /// # Example
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut dq = DirectDestaque::<i32, 4>::from([1, 2]);
+    /// # use devela::data::Destaque;
+    /// let mut dq = Destaque::<i32, (), 4>::from([1, 2]);
     /// dq.pop_front();
     /// dq.push_back(3);
     /// dq.pop_front();
@@ -139,8 +139,8 @@ impl<'s, T, S: Storage, const CAP: usize> DoubleEndedIterator for DestaqueIter<'
     /// Iterates over shared references.
     /// # Example
     /// ```
-    /// # use devela::data::DirectDestaque;
-    /// let mut dq = DirectDestaque::<i32, 4>::from([1, 2]);
+    /// # use devela::data::Destaque;
+    /// let mut dq = Destaque::<i32, (), 4>::from([1, 2]);
     /// dq.pop_front();
     /// dq.push_back(3);
     /// dq.pop_front();
