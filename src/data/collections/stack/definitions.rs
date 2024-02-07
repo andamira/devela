@@ -47,6 +47,7 @@ use crate::{
 ///   - drop:
 ///     [`drop`][Self::drop], [`drop_n`][Self::drop_n],
 ///     [`drop_replace_default`][Self::drop_replace_default].
+///   - nip: [`nip`][Self::nip], [`nip2`][Self::nip2].
 ///   - swap: [`swap`][Self::swap], [`swap2`][Self::swap2],
 ///   - rot:
 ///     [`rot`][Self::rot], [`rot_cc`][Self::rot_cc],
@@ -55,13 +56,33 @@ use crate::{
 ///   - over: [`over`][Self::over], [`over2`][Self::over2].
 ///   - tuck: [`tuck`][Self::tuck], [`tuck2`][Self::tuck2].
 ///
-/// - Stack [chainable *const* operations](#chainable-const-operations).
+/// - Stack [chainable *const* operations](#chainable-const-operations) for `T: Copy`.
 ///   - clear: [`own_clear`][Self::own_clear].
 ///   - push: [`own_push`][Self::push]*([uc][Self::own_push_unchecked])*,
 ///   - pop: [`own_pop`][Self::pop]*([uc][Self::own_pop_unchecked])*.
 ///   - drop:
 ///     [`own_drop`][Self::own_drop]*([uc][Self::own_drop_unchecked])*,
 ///     [`own_drop_n`][Self::own_drop_n]*([uc][Self::own_drop_n_unchecked])*.
+///   - nip:
+///     [`own_nip`][Self::own_nip]*([uc][Self::own_nip_unchecked])*,
+///     [`own_nip2`][Self::own_nip2]*([uc][Self::own_nip2_unchecked])*.
+///   - swap:
+///     [`own_swap`][Self::own_swap]*([uc][Self::own_swap_unchecked])*,
+///     [`own_swap2`][Self::own_swap2]*([uc][Self::own_swap2_unchecked])*.
+///   - rot:
+///     [`own_rot`][Self::own_rot]*([uc][Self::own_rot_unchecked])*,
+///     [`own_rot_cc`][Self::own_rot_cc]*([uc][Self::own_rot_cc_unchecked])*,
+///     [`own_rot2`][Self::own_rot2]*([uc][Self::own_rot2_unchecked])*,
+///     [`own_rot2_cc`][Self::own_rot2_cc]*([uc][Self::own_rot2_cc_unchecked])*.
+///   - dup:
+///     [`own_dup`][Self::own_dup]*([uc][Self::own_dup_unchecked])*,
+///     [`own_dup2`][Self::own_dup2]*([uc][Self::own_dup2_unchecked])*.
+///   - over:
+///     [`own_over`][Self::own_over]*([uc][Self::own_over_unchecked])*,
+///     [`own_over2`][Self::own_over2]*([uc][Self::own_over2_unchecked])*.
+///   - tuck:
+///     [`own_tuck`][Self::own_tuck]*([uc][Self::own_tuck_unchecked])*,
+///     [`own_tuck2`][Self::own_tuck2]*([uc][Self::own_tuck2_unchecked])*.
 pub struct Stack<T, S: Storage, const CAP: usize> {
     pub(crate) array: Array<T, S, CAP>,
     pub(crate) len: usize,
