@@ -10,12 +10,12 @@ use crate::{
 };
 use crate::{
     data::{
-        error::{DataErrors, DataResult as Result},
+        error::{DataError, DataResult as Result},
         {array_init, Array, Destaque, DestaqueIter},
     },
     mem::{Bare, Storage},
 };
-use DataErrors::{NotEnoughElements, NotEnoughSpace};
+use DataError::{NotEnoughElements, NotEnoughSpace};
 // IMPROVE use array_init
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};

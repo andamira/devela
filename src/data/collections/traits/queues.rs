@@ -9,7 +9,7 @@
 //   - VecDeque
 
 use crate::{
-    data::{DataCollection, DataErrors as E, DataResult as Result},
+    data::{DataCollection, DataError as E, DataResult as Result},
     mem::Storage,
 };
 

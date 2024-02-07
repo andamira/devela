@@ -6,10 +6,10 @@
 use super::Biting;
 
 #[cfg(doc)]
-use crate::data::DataErrors::{MismatchedIndices, OutOfBounds, Overflow};
+use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
 use crate::{
     code::iif,
-    data::{DataErrors as E, DataResult as Result},
+    data::{DataError as E, DataResult as Result},
 };
 
 macro_rules! impl_bits_wrapper {

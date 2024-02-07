@@ -2,7 +2,7 @@
 
 use super::Biting;
 #[cfg(doc)]
-use crate::data::DataErrors::{MismatchedIndices, OutOfBounds, Overflow};
+use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
 use crate::data::DataResult as Result;
 
 /// Provides bitwise operations on `T`.

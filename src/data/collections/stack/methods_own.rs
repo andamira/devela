@@ -13,13 +13,13 @@
 use crate::{
     code::sf,
     data::{
-        error::{DataErrors, DataResult as Result},
+        error::{DataError, DataResult as Result},
         {Array, Stack},
     },
     mem::{cswap, Bare, Storage},
     result::Own,
 };
-use DataErrors::{NotEnoughElements, NotEnoughSpace};
+use DataError::{NotEnoughElements, NotEnoughSpace};
 
 /// # Chainable *const* operations depending on `T: Copy`
 ///
@@ -51,13 +51,13 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// Returns `Own<S,`[`NotEnoughSpace`]`>` if the stack is full.
     /// # Examples
     /// ```
-    /// # use devela::all::{DataResult, DataErrors, Own, Stack};
+    /// # use devela::all::{DataResult, DataError, Own, Stack};
     /// const S: Stack<i32, (), 2> = Stack::new_copied(0)
     ///     .own_push(1).state_ok()
     ///     .own_push(2).state_ok()
     ///     .own_push(3).state_err();
     /// assert_eq![S.as_slice(), &[1, 2]];
-    /// assert![S.own_push(3).value.is_err_and(|e| matches![e, DataErrors::NotEnoughSpace(_)])];
+    /// assert![S.own_push(3).value.is_err_and(|e| matches![e, DataError::NotEnoughSpace(_)])];
     /// ```
     #[inline]
     pub const fn own_push(self, e: T) -> Own<Self, Result<()>> {

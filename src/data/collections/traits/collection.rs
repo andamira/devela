@@ -19,7 +19,7 @@
 //   - UnorderedSet
 
 use crate::{
-    data::{Array, DataErrors as E, DataResult as Result, Destaque, Stack},
+    data::{Array, DataError as E, DataResult as Result, Destaque, Stack},
     mem::Storage,
 };
 

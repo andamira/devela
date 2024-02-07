@@ -6,6 +6,9 @@
 // fixes lints for fields assertions
 #![allow(clippy::eq_op, clippy::identity_op, unused_comparisons)]
 
+#[cfg(doc)]
+use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
+
 mod examples;
 pub use examples::*;
 
@@ -307,15 +310,13 @@ macro_rules! bitfield {
             ///
             /// # Errors
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
-            ///
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn is_checked_bit_set(self, index: u32)
                 -> $crate::data::DataResult<bool> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
                     Ok((self.bits & shl) != 0)
                 } else {
-                    Err($crate::data::DataErrors::OutOfBounds(Some(index as usize)))
+                    Err($crate::data::DataError::OutOfBounds(Some(index as usize)))
                 }
             }
 
@@ -330,15 +331,13 @@ macro_rules! bitfield {
             /// Returns a copy of `self` with only the value of the bit at `index`, checked.
             /// # Errors
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
-            ///
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn get_checked_bit(self, index: u32)
                 -> $crate::data::DataResult<Self> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
                     Ok(Self { bits: self.bits & shl })
                 } else {
-                    Err($crate::data::DataErrors::OutOfBounds(Some(index as usize)))
+                    Err($crate::data::DataError::OutOfBounds(Some(index as usize)))
                 }
             }
 
@@ -352,15 +351,13 @@ macro_rules! bitfield {
             /// Returns a copy of `self` with only the value of the bit at `index` shifted, checked.
             /// # Errors
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
-            ///
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn get_shifted_checked_bit(self, index: u32)
                 -> $crate::data::DataResult<Self> {
                 if let Some(shl) = self.bits.checked_shr(index) {
                     Ok(Self { bits: shl & 1 })
                 } else {
-                    Err($crate::data::DataErrors::OutOfBounds(Some(index as usize)))
+                    Err($crate::data::DataError::OutOfBounds(Some(index as usize)))
                 }
             }
 
@@ -378,15 +375,13 @@ macro_rules! bitfield {
             ///
             /// # Errors
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
-            ///
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn set_checked_bit(self, index: u32)
                 -> $crate::data::DataResult<Self> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
                     Ok(Self { bits: self.bits | shl })
                 } else {
-                    Err($crate::data::DataErrors::OutOfBounds(Some(index as usize)))
+                    Err($crate::data::DataError::OutOfBounds(Some(index as usize)))
                 }
             }
 
@@ -403,8 +398,6 @@ macro_rules! bitfield {
             ///
             /// # Errors
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
-            ///
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra fn mut_set_checked_bit(&mut self, index: u32)
                 -> $crate::data::DataResult<()> {
@@ -412,7 +405,7 @@ macro_rules! bitfield {
                     self.bits |= shl;
                     Ok(())
                 } else {
-                    Err($crate::data::DataErrors::OutOfBounds(Some(index as usize)))
+                    Err($crate::data::DataError::OutOfBounds(Some(index as usize)))
                 }
             }
 
@@ -430,15 +423,13 @@ macro_rules! bitfield {
             ///
             /// # Errors
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
-            ///
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn unset_checked_bit(self, index: u32)
                 -> $crate::data::DataResult<Self> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
                     Ok(Self { bits: self.bits & !shl })
                 } else {
-                    Err($crate::data::DataErrors::OutOfBounds(Some(index as usize)))
+                    Err($crate::data::DataError::OutOfBounds(Some(index as usize)))
                 }
             }
 
@@ -454,8 +445,6 @@ macro_rules! bitfield {
             ///
             /// # Errors
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
-            ///
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra fn mut_unset_checked_bit(&mut self, index: u32)
                 -> $crate::data::DataResult<()> {
@@ -463,7 +452,7 @@ macro_rules! bitfield {
                     self.bits &= !shl;
                     Ok(())
                 } else {
-                    Err($crate::data::DataErrors::OutOfBounds(Some(index as usize)))
+                    Err($crate::data::DataError::OutOfBounds(Some(index as usize)))
                 }
             }
 
@@ -492,15 +481,13 @@ macro_rules! bitfield {
             ///
             /// # Errors
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
-            ///
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn flip_checked_bit(self, index: u32)
                 -> $crate::data::DataResult<Self> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
                     Ok(Self { bits: self.bits ^ shl })
                 } else {
-                    Err($crate::data::DataErrors::OutOfBounds(Some(index as usize)))
+                    Err($crate::data::DataError::OutOfBounds(Some(index as usize)))
                 }
             }
 
@@ -519,7 +506,7 @@ macro_rules! bitfield {
                     self.bits ^= shl;
                     Ok(())
                 } else {
-                    Err($crate::data::DataErrors::OutOfBounds(Some(index as usize)))
+                    Err($crate::data::DataError::OutOfBounds(Some(index as usize)))
                 }
             }
         }
@@ -546,9 +533,6 @@ macro_rules! bitfield {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start > MAX_BIT || end > MAX_BIT`,
             /// or [`MismatchedIndices`] if `start > end`.
-            ///
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
             #[inline]
             $vis_extra const fn mask_checked_range(start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
@@ -571,9 +555,6 @@ macro_rules! bitfield {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start > MAX_BIT || end > MAX_BIT`,
             /// or [`MismatchedIndices`] if `start > end`.
-            ///
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
             #[inline]
             $vis_extra const fn get_checked_range(self, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
@@ -604,10 +585,6 @@ macro_rules! bitfield {
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`,
             /// [`MismatchedIndices`] if `start > end`, and
             /// [`Overflow`] if `value` does not fit within the specified bit range.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
-            /// [`Overflow`]: crate::data::DataErrors::Overflow
             #[inline]
             $vis_extra const fn get_value_checked_range(self, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
@@ -631,9 +608,6 @@ macro_rules! bitfield {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start > MAX_BIT || end > MAX_BIT`,
             /// or [`MismatchedIndices`] if `start > end`.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn set_checked_range(self, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
@@ -654,9 +628,6 @@ macro_rules! bitfield {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start > MAX_BIT || end > MAX_BIT`,
             /// or [`MismatchedIndices`] if `start > end`.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra fn mut_set_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::data::DataResult<()> {
@@ -689,9 +660,6 @@ macro_rules! bitfield {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`
             /// and [`MismatchedIndices`] if `start > end`.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn set_value_checked_range(self, value: $T, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
@@ -709,9 +677,6 @@ macro_rules! bitfield {
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`,
             /// [`MismatchedIndices`] if `start > end`, and
             /// [`Overflow`] if `value` does not fit within the specified bit range.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn set_checked_value_checked_range(self,
                 value: $T, start: u32, end: u32) -> $crate::data::DataResult<Self> {
@@ -734,9 +699,6 @@ macro_rules! bitfield {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start > MAX_BIT || end > MAX_BIT` and
             /// [`MismatchedIndices`] if `start > end`.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra fn mut_set_value_checked_range(&mut self,
                 value: $T, start: u32, end: u32) -> $crate::data::DataResult<()> {
@@ -750,9 +712,6 @@ macro_rules! bitfield {
             /// Returns [`OutOfBounds`] if `start > MAX_BIT || end > MAX_BIT`,
             /// [`MismatchedIndices`] if `start > end`, and
             /// [`Overflow`] if `value` does not fit within the specified bit range.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra fn mut_set_checked_value_checked_range(&mut self,
                 value: $T, start: u32, end: u32) -> $crate::data::DataResult<()> {
@@ -777,9 +736,6 @@ macro_rules! bitfield {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start > MAX_BIT || end > MAX_BIT`,
             /// or [`MismatchedIndices`] if `start > end`.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn unset_checked_range(self, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
@@ -800,9 +756,6 @@ macro_rules! bitfield {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start > MAX_BIT || end > MAX_BIT`,
             /// or [`MismatchedIndices`] if `start > end`.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra fn mut_unset_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::data::DataResult<()> {
@@ -825,9 +778,6 @@ macro_rules! bitfield {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start > MAX_BIT || end > MAX_BIT`,
             /// or [`MismatchedIndices`] if `start > end`.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra const fn flip_checked_range(self, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
@@ -848,9 +798,6 @@ macro_rules! bitfield {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start > MAX_BIT || end > MAX_BIT`,
             /// or [`MismatchedIndices`] if `start > end`.
-            ///
-            /// [`MismatchedIndices`]: crate::data::DataErrors::MismatchedIndices
-            /// [`OutOfBounds`]: crate::data::DataErrors::OutfOBounds
             #[inline]
             $vis_extra fn mut_flip_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::data::DataResult<()> {

@@ -4,12 +4,12 @@
 //
 
 /// A data-related result.
-pub type DataResult<T> = core::result::Result<T, DataErrors>;
+pub type DataResult<T> = core::result::Result<T, DataError>;
 
 /// A data-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub enum DataErrors {
+pub enum DataError {
     /// The requested data-related functionality is not implemented.
     NotImplemented,
 
@@ -46,22 +46,22 @@ pub enum DataErrors {
 }
 
 #[allow(dead_code)]
-impl DataErrors {
+impl DataError {
     pub(crate) const fn ni<T>() -> DataResult<T> {
-        Err(DataErrors::NotImplemented)
+        Err(DataError::NotImplemented)
     }
     pub(crate) const fn ns<T>() -> DataResult<T> {
-        Err(DataErrors::NotSupported)
+        Err(DataError::NotSupported)
     }
 }
 
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 // WAIT: [error_in_core](https://github.com/rust-lang/rust/issues/103765)
-impl std::error::Error for DataErrors {}
+impl std::error::Error for DataError {}
 
 mod core_impls {
-    use super::DataErrors as E;
+    use super::DataError as E;
     use core::fmt;
 
     impl fmt::Display for E {
