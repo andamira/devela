@@ -1,10 +1,9 @@
 // devela::num
 //
 //! Numeric types and operations, extends
-//! `std::{`[`num`], [`ops`]`}`.
+//! `std::`[`num`].
 //!
 //! [`num`]: std::num
-//! [`ops`]: std::ops
 //
 
 // warnings:
@@ -21,6 +20,8 @@ mod _private;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod alias;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
+mod always_fns;
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod error;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod float;
@@ -32,8 +33,6 @@ mod sign;
 // always compiled, public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 pub mod niche;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
-pub mod ops;
 
 // feature gated, private
 #[cfg(feature = "num")]
@@ -55,11 +54,11 @@ mod r#trait;
 pub(crate) use _private::*;
 
 // always compiled, non-public
-pub use {alias::*, error::*, float::*, primitive::*, sign::*};
+pub use {alias::*, always_fns::*, error::*, float::*, primitive::*, sign::*};
 
 // always compiled, public
 #[doc(no_inline)]
-pub use {niche::all::*, ops::all::*};
+pub use niche::all::*;
 
 // feature-gated, private
 #[cfg(feature = "num")]
@@ -69,7 +68,7 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        alias::*, error::*, float::*, niche::all::*, ops::all::*, primitive::*, sign::*,
+        alias::*, always_fns::*, error::*, float::*, niche::all::*, primitive::*, sign::*,
     };
 
     // feature-gated
