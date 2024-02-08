@@ -22,13 +22,13 @@
 
 // always compiled, non-public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
+mod cmp;
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 mod error;
 
 // always compiled, public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod bit;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-pub mod cmp;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod collections;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
@@ -56,11 +56,11 @@ pub mod dst;
 /* re-exports */
 
 // always,compiled, non-public
-pub use error::*;
+pub use {cmp::all::*, error::*};
 
 // always compiled, public
 #[doc(no_inline)]
-pub use {bit::all::*, cmp::all::*, collections::all::*, hash::all::*, iter::all::*};
+pub use {bit::all::*, collections::all::*, hash::all::*, iter::all::*};
 
 // feature-gated, public
 #[doc(no_inline)]
