@@ -21,6 +21,8 @@ mod _private;
 
 // always compiled, non-public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+mod asserts;
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod cfor;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod deprecate;
@@ -48,13 +50,15 @@ pub use paste::__paste;
 
 // always compied, non-public
 pub use {
-    cfor::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, reexports::*, skip_format::*,
+    asserts::*, cfor::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, reexports::*,
+    skip_format::*,
 };
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        cfor::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, reexports::*, skip_format::*,
+        asserts::*, cfor::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*, reexports::*,
+        skip_format::*,
     };
 }
