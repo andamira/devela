@@ -9,7 +9,7 @@ name = "devela"
 description = "A cohesive development foundation."
 version = "0.20.0-wip"
 edition = "2021"
-rust-version = "1.75.0" # sync with readme & .github/*/check.yml
+rust-version = "1.76.0" # sync with readme & .github/*/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
@@ -25,7 +25,7 @@ publish = true
 
 
 # ------------------------------------------------------------------------------
-# Features are grouped in 5 (mostly) independent categories:
+# Features are basically grouped in 5 mostly independent categories:
 # - Environment
 # - Module
 # - Safety
@@ -35,6 +35,9 @@ publish = true
 [features]
 
 # default = []
+
+# enables the most complete version of the documentation:
+docsrs = ["nightly", "all", "std", "unsafe", "dep", "libm"]
 
 
 #* environment features *#
@@ -89,9 +92,9 @@ work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 
 #* safety features *#
 
-# In order to use any unsafe functionality:
-# 1. enable the corresponding `unsafe` feature.
-# 2. don't enable `safe` feature in the module.
+# To use unsafe functionality:
+# 1. enable the desired `unsafe` feature.
+# 2. don't enable the `safe` feature for that module.
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
 	"safe_code", "safe_data", "safe_gfx", "safe_io", "safe_mem", "safe_num",
@@ -132,10 +135,6 @@ nightly = [ # enables nightly features
 ] # specific unstable features:
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	nightly_doc = [] # doc_cfg
-
-# enables compiling the full documentation for docs.rs
-docsrs = ["nightly", "all", "std", "unsafe", "dep", "libm"]
-
 
 
 #* dependency features *#
