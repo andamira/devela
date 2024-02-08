@@ -17,6 +17,7 @@ mod sorting;
 /* re-exports */
 
 // always compiled, non-public
+#[allow(unused)]
 pub use {comparing::*, sorting::*};
 
 pub(crate) mod all {
