@@ -32,7 +32,14 @@ mod shared; // implement Floating shared methods
 /// - Error functions: [`erf`][Floating#method.erf], [`erfc`][Floating#method.erfc].
 /// - [`exp10`][Floating#method.exp10].
 ///
-/// See also the [`ExtFloat`] trait.
+/// See also the [`ExtFloat`][super::ExtFloat] trait.
+///
+/// # Constants
+/// - [Related to Pi (π)](#mathematical-constants-related-to-pi-π)
+/// - [Related to Tau (τ)](#mathematical-constants-related-to-tau-τ)
+/// - [Related to Phi (φ)](#mathematical-constants-related-to-phi-φ)
+/// - [Related to integer roots](#mathematical-constants-related-to-integer-roots)
+/// - [Other constants](#other-mathematical-constants)
 #[derive(Debug, Clone, Copy)]
 pub struct Floating<T>(core::marker::PhantomData<T>);
 
