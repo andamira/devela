@@ -25,7 +25,8 @@ publish = true
 
 
 # ------------------------------------------------------------------------------
-# Features are basically grouped in 5 mostly independent categories:
+# Features are grouped in the following categories:
+# - Miscellaneous
 # - Environment
 # - Module
 # - Safety
@@ -34,7 +35,10 @@ publish = true
 
 [features]
 
-# default = []
+#* miscellaneous features *#
+
+# default = [] # no default features
+_exclude_example = [] # from testing
 
 # enables the most complete version of the documentation:
 docsrs = ["nightly", "all", "std", "unsafe", "dep", "libm"]
@@ -205,3 +209,10 @@ rustdoc-args = [ "--html-in-header", "./src/_docs/rustdoc-header.html" ]
 
 [badges]
 maintenance = { status = "experimental" }
+
+
+# ------------------------------------------------------------------------------
+
+[[example]]
+name = "cargo-script"
+required-features = ["_exclude_example"]
