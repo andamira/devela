@@ -1,47 +1,60 @@
-#!/bin/sh
+#!/bin/bash
 #
-# in order to configure git locally to use the new hook:
+# Runs rustfmt and clippy before a git commit.
+#
+# To configure git locally to use these hooks:
+# $ git config core.hooksPath "./tools/git_hooks"
 
-# ```sh
-# git config core.hooksPath "./.git_hooks"
-# ```
+RUSTFMT="rustfmt +stable --edition 2021" # for specific files
+CLIPPY="cargo +stable clippy" # for the whole project
+# CLIPPY="cargo +nightly clippy" # more buggy
 
-CARGO_FMT="cargo +stable fmt"
-CLIPPY="cargo +stable clippy"
+# CHANGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR) # only staged
+CHANGED_FILES=$(git diff --name-only --diff-filter=ACMR) # staged or not
 
-$CARGO_FMT --version &>/dev/null
-if [ $? != 0 ]; then
-    printf "[pre_commit] \033[0;31merror\033[0m: \"$CARGO_FMT\" not available?\n"
-    exit 1
+EXCLUDE_FILES=(
+	"examples/cargo-script.rs" # uses experimental cargo syntax
+)
+
+# Filter out excluded files and keep only Rust files
+RS_FILES=()
+for file in $CHANGED_FILES; do
+    if [[ " ${EXCLUDE_FILES[@]} " =~ " ${file} " ]] || [[ ! $file =~ \.rs$ ]]; then
+        # Skip excluded files and non-Rust files
+        continue
+    fi
+    # Add the remaining files to the list
+    RS_FILES+=("$file")
+done
+if [ ${#RS_FILES[@]} -eq 0 ]; then
+    echo "No applicable Rust files changed."
+    exit 0
 fi
 
-$CLIPPY --version &>/dev/null
-if [ $? != 0 ]; then
-    printf "[pre_commit] \033[0;31merror\033[0m: \"$CLIPPY\" not available?\n"
-    exit 1
-fi
-
-# ---
-
-$CARGO_FMT -- --check
-result=$?
-
-printf "[pre_commit] $CARGO_FMT → "
-if [ $result != 0 ]; then
-    printf "\033[0;31merror\033[0m \n"
+$RUSTFMT --version &>/dev/null || { echo "rustfmt not available"; exit 1; }
+formatting_errors=0
+for file in "${RS_FILES[@]}"; do
+    # echo "Checking format of $file"
+    $RUSTFMT --check "$file" || formatting_errors=$((formatting_errors + 1))
+done
+printf "[pre_commit] $RUSTFMT → "
+if [ $formatting_errors != 0 ]; then
+	if [ $formatting_errors == 1 ]; then
+		printf "\033[0;31merrors \033[0min $formatting_errors file\n"
+	else
+		printf "\033[0;31merrors \033[0min $formatting_errors files\n"
+	fi
 	exit $result
 else
-    printf "\033[0;32mOK\033[0m \n"
+    printf "\033[0;32mOK\033[0m\n"
 fi
 
-$CLIPPY
+$CLIPPY --version &>/dev/null || { echo "clippy not available"; exit 1; }
+$CLIPPY -- --deny warnings
 result=$?
-
 printf "[pre_commit] $CLIPPY → "
 if [ $result != 0 ]; then
-    printf "\033[0;31merror\033[0m \n"
+    printf "\033[0;31merror\033[0m\n"
 else
-    printf "\033[0;32mOK\033[0m \n"
+    printf "\033[0;32mOK\033[0m\n"
 fi
-
-exit $result
