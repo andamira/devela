@@ -19,14 +19,17 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add `Bare` type alias of `unit`.
 - re-export crate-defined result-related types from `result`.
 - re-export core types from `data::iter`.
+- add example: `cargo-script`.
 
 ### Removed
 - remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
 - remove `IntBuf` type and `IntBufAble` trait.
 - remove type aliases: `NonMax*` `NonMin*.
+- remove file `.gitattributes`.
 
 ### Changed
 - bump rust version to 1.76.0.
+- always compile `text::fmt`.
 - make `data::cmp` non-public.
 - move `ops` from `num` to `code`.
 - move docs html header to `src/_doc`.
@@ -43,8 +46,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename allocated collections with `Alloc`.
 - rename the feature `full` to `all`.
 - rename `FloatOps` to `ExtFloat`.
+- document the examples from `_docs`.
 - update the `array_init` macro syntax.
 - update the `cdbg` macro with column number.
+- move `.git_hooks` to `tools/git_hooks`.
+- improve the `pre-commit` git hook.
 
 ### Fixed
 - refactor root modules, simplify and dissassociate root-level feature-gating.
