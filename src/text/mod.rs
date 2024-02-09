@@ -20,6 +20,8 @@
 pub mod ascii;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod char;
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+pub mod fmt;
 
 // always compiled, non-public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
@@ -29,9 +31,6 @@ mod reexports;
 #[cfg(feature = "text")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod egc;
-#[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
-pub mod fmt;
 
 // feature-gated, non-public
 #[cfg(feature = "text")]
@@ -55,7 +54,7 @@ mod non_nul;
 // always compiled, public
 #[doc(no_inline)]
 #[allow(unused_imports)]
-pub use {ascii::all::*, char::all::*};
+pub use {ascii::all::*, char::all::*, fmt::all::*};
 
 // always compiled, non-public
 #[allow(unused_imports)]
@@ -64,7 +63,7 @@ pub use reexports::*;
 // feature-gated, public
 #[doc(no_inline)]
 #[cfg(feature = "text")]
-pub use {egc::all::*, fmt::all::*};
+pub use egc::all::*;
 
 // feature-gated, private
 #[cfg(feature = "text")]
@@ -74,10 +73,10 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{ascii::all::*, char::all::*, reexports::*};
+    pub use super::{ascii::all::*, char::all::*, fmt::all::*, reexports::*};
 
     // feature-gated
     #[doc(inline)]
     #[cfg(feature = "text")]
-    pub use super::{array_string::*, egc::all::*, error::*, ext::*, fmt::all::*, non_nul::*};
+    pub use super::{array_string::*, egc::all::*, error::*, ext::*, non_nul::*};
 }
