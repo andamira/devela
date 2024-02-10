@@ -10,16 +10,17 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - add traits: `NumToStr`, `DataQueue`, `DataDeque`, `DataStack`, `DataDestack`.
 - add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `BareDestaque`, `BoxedDestaque`, `BareStack`, `BoxedStack`, `Mismatch`, `Own`.
-- add features: `num_all`, `safe_code`, `safe_data`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`, `nightly_coro`, `nightly_doc`.
+- add features: `num_all`, `safe_code`, `safe_data`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`, `nightly_coro`, `nightly_doc`, `_exclude_example`.
 - add Floating constants: `FRAC_1_PHI`, `NEG_FRAC_1_PHI`, `SQ_PHI`, `FRAC_NEG_1_PHI`.
 - add `no_std` reimplementations of `std::error` and `std::io` types and traits.
 - add non-optional dependency `either` and reexport `Either` type and functions.
+- add examples: `cargo-script`, `bitfield`, `enumset`.
 - add macros: `assert_eq_all`, `assert_approx_eq_all`.
 - add niche number aliases: `NonEdge*`.
 - add `Bare` type alias of `unit`.
+- add script `tools/rustfmt` and `rustfmt_excluded_files` list.
 - re-export crate-defined result-related types from `result`.
 - re-export core types from `data::iter`.
-- add example: `cargo-script`.
 
 ### Removed
 - remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
@@ -32,7 +33,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - always compile `text::fmt`.
 - make `data::cmp` non-public.
 - move `ops` from `num` to `code`.
+- move `any` from `data` to `code`.
 - move docs html header to `src/_doc`.
+- move `.git_hooks` to `tools/git_hooks`.
 - move traits: `Apply`, `Also` to `result`.
 - rename `src/Doc.md` to `src/_doc/features.md`.
 - rename `::{_alloc, _core, _std}` to `::_deps::{alloc, core, std}`.
@@ -46,10 +49,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename allocated collections with `Alloc`.
 - rename the feature `full` to `all`.
 - rename `FloatOps` to `ExtFloat`.
-- document the examples from `_docs`.
-- update the `array_init` macro syntax.
+- document selected examples from `_docs`.
+- recreate the `pre-commit` script to leverage `rustfmt`.
+- make `bitfield` and `enumset` examples standalone.
+- update `enumset`: rename `LEN` associated constant to `ENUM_VARIANTS`, and add `enum_variants` method.
 - update the `cdbg` macro with column number.
-- move `.git_hooks` to `tools/git_hooks`.
+- update the `array_init` macro syntax.
 - improve the `pre-commit` git hook.
 
 ### Fixed
