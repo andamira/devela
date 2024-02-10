@@ -1,8 +1,9 @@
 // devela::code
 //
 //! Code generation and meta-programming, extends
-//! `std::{`[`convert`], [`hint`], [`marker`], [`ops`]`}`.
+//! `std::{`[`any`], [`convert`], [`hint`], [`marker`], [`ops`]`}`.
 //!
+//! [`any`]: std::any
 //! [`convert`]: std::convert
 //! [`hint`]: std::hint
 //! [`marker`]: std::marker

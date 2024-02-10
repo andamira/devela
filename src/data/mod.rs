@@ -1,10 +1,9 @@
 // devela::data
 //
 //! Data structures, extends
-//! `std::{`[`any`], [`array`], [`cmp`], [`collections`], [`hash`],
+//! `std::{`[`array`], [`cmp`], [`collections`], [`hash`],
 //! [`iter`], [`vec`]`}`.
 //!
-//! [`any`]: std::any
 //! [`array`]: mod@std::array
 //! [`cmp`]: std::cmp
 //! [`collections`]: std::collections
@@ -37,9 +36,6 @@ pub mod hash;
 pub mod iter;
 
 // feature-gated, public
-#[cfg(feature = "data")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-pub mod any;
 #[cfg_attr(
     feature = "nightly_doc",
     doc(cfg(all(feature = "unsafe_dyn", feature = "dep")))
@@ -64,9 +60,6 @@ pub use {bit::all::*, collections::all::*, hash::all::*, iter::all::*};
 
 // feature-gated, public
 #[doc(no_inline)]
-#[cfg(feature = "data")]
-pub use any::all::*;
-#[doc(no_inline)]
 #[cfg(all(
     feature = "data",
     feature = "unsafe_dyn",
@@ -83,9 +76,6 @@ pub(crate) mod all {
     };
 
     // feature-gated
-    #[doc(inline)]
-    #[cfg(feature = "data")]
-    pub use super::any::all::*;
     #[doc(inline)]
     #[cfg(all(
         feature = "data",

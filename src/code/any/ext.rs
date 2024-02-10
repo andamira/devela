@@ -1,4 +1,4 @@
-// devela::data::any::ext
+// devela::code::any::ext
 //
 //!
 //
@@ -30,7 +30,7 @@ pub trait ExtAny: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::{ExtAny, TypeId};
+    /// use devela::code::{ExtAny, TypeId};
     ///
     ///  let x = 5;
     ///  assert_eq!(x.type_of(), TypeId::of::<i32>());
@@ -43,7 +43,7 @@ pub trait ExtAny: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::ExtAny;
+    /// use devela::code::ExtAny;
     ///
     /// let x = 5;
     /// assert_eq!(x.type_name(), "i32");
@@ -56,7 +56,7 @@ pub trait ExtAny: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::ExtAny;
+    /// use devela::code::ExtAny;
     ///
     /// let val = 5;
     /// assert!(val.type_is::<i32>());
@@ -78,7 +78,7 @@ pub trait ExtAny: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::{Any, ExtAny};
+    /// use devela::code::{Any, ExtAny};
     ///
     /// let val = 5;
     /// let any: &dyn Any = &val as &dyn Any;
@@ -92,7 +92,7 @@ pub trait ExtAny: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::{Any, ExtAny};
+    /// use devela::code::{Any, ExtAny};
     ///
     /// let mut x = 5;
     /// let any: &mut dyn Any = x.as_any_mut();
@@ -106,7 +106,7 @@ pub trait ExtAny: Any + private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::any::{Any, ExtAny};
+    /// use devela::code::{Any, ExtAny};
     ///
     /// let x = Box::new(5);
     /// let any: Box<dyn Any> = x.as_any_box();
