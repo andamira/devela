@@ -21,7 +21,7 @@
 ///         Variant3{a: u8, b: u16},
 ///     }
 /// }
-/// assert_eq![3, MyEnum::VARIANTS];
+/// assert_eq![3, MyEnum::ENUM_VARIANTS];
 /// let mut eset = MyEnumSet::default();
 /// assert![eset.is_empty()];
 /// eset.mut_set_field_variant1();

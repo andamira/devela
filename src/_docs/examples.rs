@@ -5,6 +5,7 @@
 // NOTE: rustdoc doesn't detect changes in the examples, just in the library,
 // so it's necessary to modify the library to rebuild the examples docs
 
+#![allow(unused)]
 #![path = "../../examples"]
 
 // /// Shows how to document an in-crate integrated example.
