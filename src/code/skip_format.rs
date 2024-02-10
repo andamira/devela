@@ -9,12 +9,11 @@
 /// the fact that `rustfmt` does not usually apply formatting inside macros.
 ///
 /// It can be used as an alternative to the `#[rustfmt::skip]` attribute,
-/// specially where it can't be applied yet on stable rust.
+/// specially in places where it can't be applied yet on stable rust.
 ///
 /// # Examples
 /// ```
-/// use devela::code::sf;
-///
+/// # use devela::code::sf;
 /// // rustfmt has no powers here
 /// sf! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
 /// ```

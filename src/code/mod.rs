@@ -22,25 +22,25 @@ mod _private;
 
 // always compiled, non-public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod any;
+mod any; // dynamic typing and reflection
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod asserts;
+mod asserts; // assertion macros
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod cfor;
+mod cfor; // cfor![]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod deprecate;
+mod deprecate; // deprecate_feature![]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod enumset;
+mod enumset; // enumset![]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod ident;
+mod ident; // identifier related macros
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod iif;
+mod iif; // iif![]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod paste;
+mod paste; // paste![] wrapped for docs
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod reexports;
+mod reexports; // reexported items
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
-mod skip_format;
+mod skip_format; // sf![]
 
 /* re-exports */
 
