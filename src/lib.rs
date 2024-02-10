@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A cohesive development foundation.
+//! An integrated development foundation.
 //
 
 // warnings:

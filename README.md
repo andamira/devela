@@ -4,7 +4,7 @@
 [![API](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
 [![MSRV: 1.76.0](https://flat.badgen.net/badge/MSRV/1.76.0/purple)](https://releases.rs/docs/1.76.0/)
 
-A cohesive development foundation.
+An integrated development foundation.
 
 ## Status
 This project is currently in an experimental stage of development.
