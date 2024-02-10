@@ -9,9 +9,6 @@
 #[cfg(doc)]
 use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
 
-mod examples;
-pub use examples::*;
-
 #[cfg(test)]
 mod tests;
 
@@ -23,11 +20,10 @@ mod tests;
 /// `Clone`, `Copy`, `Debug`, `Default`, `PartialEq`, `Eq` and `Hash`.
 ///
 /// # Examples
-/// See also the example structs: [`_ExampleBitfield`],
-/// [`_ExampleBitfieldCustom`] and [`_ExampleBitfieldExtra`].
-/// ```
-/// use devela::data::bitfield;
+/// See also the [bitfield][crate::_docs::examples::bitfield] example.
 ///
+/// ```
+/// # use devela::data::bitfield;
 /// bitfield! {
 ///     /// My custom bit field struct.
 ///     struct MyBf(u8) {

@@ -18,7 +18,7 @@ include = [
 	"/Cargo.toml",
 	"/DOCS/*.md",
 	"/src/**/*.rs", "/src/**/*.md", "src/**/*.html",
-	"/examples/enumset.rs",
+	"/examples/bitfield.rs", "/examples/enumset.rs",
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "helpers", "extension", "extensions"]
@@ -216,6 +216,8 @@ maintenance = { status = "experimental" }
 # examples
 
 # included examples
+[[example]]
+name = "bitfield"
 [[example]]
 name = "enumset"
 

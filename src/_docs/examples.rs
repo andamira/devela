@@ -26,6 +26,8 @@
 // // fn main() {}
 // // ```
 
+#[path = "examples/bitfield.rs"]
+pub mod bitfield;
 #[path = "examples/enumset.rs"]
 pub mod enumset;
 
