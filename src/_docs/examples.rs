@@ -26,6 +26,9 @@
 // // fn main() {}
 // // ```
 
+#[path = "examples/enumset.rs"]
+pub mod enumset;
+
 // /// Shows how to document an out-crate standalone example.
 // #[path = "examples/separate_crate"]
 // pub mod example_separate_crate {

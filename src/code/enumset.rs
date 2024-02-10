@@ -7,13 +7,11 @@
 ///
 /// It uses the [`bitfield!`][crate::data::bitfield] macro to create the associated set.
 ///
-/// You have to give unique names for the enum and for the set.
+/// You have to give unique names both to the enum and to the associated set.
 ///
 /// # Examples
-/// See also the example types: [`_ExampleEnum`] and [`_ExampleEnumSet`].
 /// ```
-/// use devela::code::enumset;
-///
+/// # use devela::code::enumset;
 /// enumset! {
 ///     enum MyEnum(MyEnumSet: u8) {
 ///         Variant1,
@@ -21,12 +19,13 @@
 ///         Variant3{a: u8, b: u16},
 ///     }
 /// }
-/// assert_eq![3, MyEnum::LEN];
+/// assert_eq![3, MyEnum::VARIANTS];
 /// let mut eset = MyEnumSet::default();
 /// assert![eset.is_empty()];
 /// eset.mut_set_field_variant1();
 /// assert![eset.is_field_variant1()];
 /// ```
+/// See also the [enumset][crate::_docs::examples::enumset] example.
 #[macro_export]
 macro_rules! enumset {
     (
@@ -68,15 +67,18 @@ macro_rules! enumset {
 
         #[allow(non_snake_case)]
         mod [<_$enum_name _private>] {
-            pub(super) const TOTAL_VARIANTS: usize =
+            pub(super) const ENUM_VARIANTS: usize =
                 $crate::code::ident_total_count!($($variant_name)*);
-            $crate::code::ident_const_index!(pub(super), TOTAL_VARIANTS; $($variant_name)*);
+            $crate::code::ident_const_index!(pub(super), ENUM_VARIANTS; $($variant_name)*);
         }
 
         /// # `enumset` methods
         impl $( < $($gen),* > )? $enum_name $( < $($gen),* > )? $( where $($where)* )? {
             /// Returns the total number of variants.
-            pub const LEN: usize = [<_$enum_name _private>]::TOTAL_VARIANTS;
+            pub const ENUM_VARIANTS: usize = [<_$enum_name _private>]::ENUM_VARIANTS;
+
+            /// Returns the total number of variants.
+            pub const fn enum_variants(&self) -> usize { Self::ENUM_VARIANTS }
 
             /// Returns the associated empty set.
             pub const fn new_empty_set() -> $set_name {
@@ -103,64 +105,3 @@ macro_rules! enumset {
     }};
 }
 pub use enumset;
-
-/* example */
-
-enumset! {
-    /// An example created with [`enumset!`].
-    /// # Examples
-    /// ```
-    /// # use devela::code::enumset;
-    /// enumset! {
-    ///     /// An example created with [`enumset!`].
-    ///     #[allow(dead_code)]
-    ///     #[derive(Clone, Default)]
-    ///     #[repr(u64)]
-    ///     pub enum _ExampleEnum<'a, 'b, T>(_ExampleEnumSet: u8)
-    ///         [where T: Clone] // supports where clauses (between [])
-    ///     {
-    ///         #[default]
-    ///         Variant0 = 1,
-    ///         /// A tuple variant.
-    ///         Variant1([u8; 3]),
-    ///         /// A self-referential tuple variant.
-    ///         #[cfg(feature = "std")]
-    ///         Variant2(Box<Self>),
-    ///         /// A struct variant with discriminant.
-    ///         Variant3 {
-    ///             /// field1 docs.
-    ///             some: [u8; 2],
-    ///             /// field2 docs.
-    ///             other: u32
-    ///         } = 30,
-    ///         /// Supports generics and lifetimes.
-    ///         Variant4(T, &'a str, &'b u32),
-    ///     }
-    /// }
-    /// assert_eq![5, _ExampleEnum::<String>::LEN];
-    /// ```
-    #[allow(dead_code)]
-    #[derive(Clone, Default)]
-    #[repr(u64)]
-    pub enum _ExampleEnum<'a, 'b, T>(_ExampleEnumSet: u8)
-        [where T: Clone] // supports where clauses (between [])
-    {
-        /// A default unit variant.
-        #[default]
-        Variant0 = 1,
-        /// A tuple variant.
-        Variant1([u8; 3]),
-        /// A self-referential tuple variant.
-        #[cfg(feature = "std")]
-        Variant2(Box<Self>),
-        /// A struct variant with discriminant.
-        Variant3 {
-            /// field1 docs.
-            some: [u8; 2],
-            /// field2 docs.
-            other: u32
-        } = 30,
-        /// Supports generics and lifetimes.
-        Variant4(T, &'a str, &'b u32),
-    }
-}
