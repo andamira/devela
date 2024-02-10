@@ -1,7 +1,7 @@
 // devela::data::dst::tests::stack
 
+use crate::data::{DstArray, DstStack};
 use core::any::Any;
-use crate::data::{DstStack, DstArray};
 
 type DS<DST> = DstStack<DST, DstArray<usize, 8>>;
 
@@ -174,9 +174,8 @@ fn slice_push_panic_safety_unaligned() {
     ];
 
     let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-        let mut stack = DstStack::<[Sentinel], _>::with_buffer(
-            [core::mem::MaybeUninit::new(0xFFu8); 32],
-        );
+        let mut stack =
+            DstStack::<[Sentinel], _>::with_buffer([core::mem::MaybeUninit::new(0xFFu8); 32]);
         let _ = stack.push_cloned(&input);
     }));
     assert_eq!(COUNT.load(Ordering::SeqCst), 1);

@@ -24,8 +24,8 @@ jobs:
         with:
           components: rustfmt
 
-      - name: "cargo fmt --check"
-        run: cargo fmt --check
+      - name: "./tools/rustfmt check all exclude"
+        run: ./tools/rustfmt check all exclude
 
   # 2. clippy lints
   clippy:
