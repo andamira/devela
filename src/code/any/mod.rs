@@ -7,21 +7,17 @@
 
 /* modules */
 
-// feature-gated, non-public
-#[cfg(feature = "data")]
+// always compiled, non public
 mod ext;
-#[cfg(feature = "data")]
 mod reexports;
 
 /* re-exports */
 
-// feature-gated, non-public
-#[cfg(feature = "data")]
+// always compiled, non public
 pub use {ext::*, reexports::*};
 
 pub(crate) mod all {
-    // feature-gated
+    // always compiled
     #[doc(inline)]
-    #[cfg(feature = "data")]
     pub use super::{ext::*, reexports::*};
 }
