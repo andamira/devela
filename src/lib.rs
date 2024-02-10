@@ -52,21 +52,24 @@ pub mod time;
 pub mod ui;
 pub mod work;
 
-/// Dependencies.
+/// Additional dependencies.
 pub mod _deps;
 
-/// Documentation.
+/// Additional documentation.
 pub mod _docs {
-    #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
-    #![doc = include_str!("./_docs/features.md")]
-
     /// Documented examples.
     #[rustfmt::skip] // rustfmt doesn't work in here
     #[cfg(any(doc, test))]
     pub mod examples;
+
+    /// Documented features.
+    pub mod features {
+        #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
+        #![doc = include_str!("./_docs/features.md")]
+    }
 }
 
-/// All items re-exported.
+/// All the items are re-exported here.
 ///
 /// Note that any item tagged with [`dep`] can also be enabled by
 /// manually enabling the associated optional dependency.

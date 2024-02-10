@@ -1,6 +1,8 @@
 #!/usr/bin/env -S cargo +nightly -Zscript
 ## [dependencies]
-## devela = { version = "0.19", features = ["text"] }
+## devela = { path = ".." }
+//
+// devela::examples::cargo-script
 //
 //! A minimal standalone rust script.
 //!

@@ -54,7 +54,7 @@ std = [ # disables `no_std` compatibility and enables `std` functionality
 alloc = [ # enables `alloc` functionality
 	"dep?/alloc", "bytemuck?/extern_crate_alloc",
 ]
-no_std = [ # enables functionality incompatible with `std`
+no_std = [ # enables functionality incompatible with or substitute of `std`
 	"dep?/libm",
 ]
 

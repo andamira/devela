@@ -10,6 +10,8 @@
 /// You have to give unique names both to the enum and to the associated set.
 ///
 /// # Examples
+/// See also the [enumset][crate::_docs::examples::enumset] example.
+///
 /// ```
 /// # use devela::code::enumset;
 /// enumset! {
@@ -25,7 +27,6 @@
 /// eset.mut_set_field_variant1();
 /// assert![eset.is_field_variant1()];
 /// ```
-/// See also the [enumset][crate::_docs::examples::enumset] example.
 #[macro_export]
 macro_rules! enumset {
     (

@@ -1,6 +1,7 @@
 ## Features
 
-Features are grouped in 5 categories, mostly independent from each other:
+Features are grouped in the following categories:
+- *Miscellaneous*
 - *Environment*
 - *Module*
 - *Safety*
@@ -9,6 +10,14 @@ Features are grouped in 5 categories, mostly independent from each other:
 
 All features are disabled by default.
 
+Features from different categories are designed to be mostly independent from
+each other, and composable, except from the miscellaneous features.
+
+### Miscellaneous features
+
+- `docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
+  - Enables: `std`, `all`, `unsafe`, `nightly`, `dep`, `libm`.
+
 
 ### Environment features
 
@@ -16,7 +25,7 @@ By default the crate is `no_std` compatible without allocation.
 
 - `std`: disables `no_std` compatibility and enables `std` functionality.
 - `alloc`: enables `alloc` functionality.
-- `no_std`: enables functionality incompatible with `std`:
+- `no_std`: enables functionality incompatible with or substitute of `std`:
   - enables the `libm` optional dependency.
 
 
@@ -27,7 +36,7 @@ Modules can be enabled independently of *environment*, *dependency* or *safety*.
 When the `dep` feature is enabled, modules will also enable their associated
 optional dependencies.
 
-- `all`: enables all the root modules:
+- `all`: enables all the root modules and extra submodules:
 
 Single modules:
 - `code`: enables the [`code`] module,
@@ -36,8 +45,9 @@ Single modules:
 - `io`: enables the [`io`] module.
 - `mem`: enables the [`mem`] module,
   and the [`bytemuck`] optional dependency.
-  and the [`devela_macros`] optional dependency.
 - `num`: enables the [`num`] module.
+  - `num_all`: enables all the `num` extra submodules:
+    - `num_niche_impls`: extra impls for [`niche`] types.
 - `os`: enables all the [`os`] specific functionality.
 - `result`: enables the [`result`] module.
 - `text`: enables the [`text`] module,
@@ -45,18 +55,34 @@ Single modules:
   and the [`atomic`] and [`portable_atomic`] optional dependencies.
 - `time`: enables the [`time`] module.
 - `ui`: enables the [`ui`] module.
-  - `ui_term`: enables the terminal functionality,
+  - `ui_all`: enables all the `ui` extra submodules:
+    - `ui_term`: enables the terminal functionality,
     and the [`const-str`] optional dependency.
 - `work`: enables the [`work`] module.
+
+[`code`]: crate::code
+[`data`]: crate::data
+[`gfx`]: crate::gfx
+[`io`]: crate::io
+[`mem`]: crate::mem
+[`num`]: crate::num
+[`niche`]: crate::num::niche
+[`os`]: crate::os
+[`result`]: crate::result
+[`text`]: crate::text
+[`time`]: crate::time
+[`ui`]: crate::ui
+[`ui_term`]: crate::ui_term
+[`work`]: crate::work
 
 
 ### Safety features
 
 In order to use any unsafe functionality:
 1. enable the corresponding `unsafe` feature.
-2. don't enable `safe` feature in the module.
+2. don't enable the `safe` feature for that module.
 
-- `safe`: forbids `unsafe` (and overrides unsafe features)
+- `safe`: forbids `unsafe` (and overrides unsafe features), includes:
   - `safe_code`
   - `safe_data`
   - `safe_gfx`
@@ -70,7 +96,7 @@ In order to use any unsafe functionality:
   - `safe_ui`
   - `safe_work`
 
-- `unsafe`: enables unsafe (as long as it isn't forbidden in the module)
+- `unsafe`: enables `unsafe` (as long as it isn't forbidden in the module), includes:
 	- `unsafe_array` faster array initialization.
 	- `unsafe_async` custom task waker, coroutine impls.
 	- `unsafe_const` extra const methods.
@@ -87,8 +113,6 @@ In order to use any unsafe functionality:
   - `nightly_coro`: enables `coroutines`, `coroutine_trait`, `iter_from_coroutine`.
   - `nightly_doc`: enables `doc_cfg`.
 
-- `docsrs`: enables compiling the complete documentation for [docs.rs](https://docs.rs).
-
 
 ### Dependency features
 
@@ -98,22 +122,14 @@ Dependencies can also be enabled individually:
 - `atomic` is used in `work`.
 - `bytemuck` is used in `mem`, `num`.
 - `const-str` is used in `result`, `text`, `ui_term`.
-- `devela_macros` is used in `meta`.
 - `libm` is used in `num`.
+- `hashbrown` is used in `data`.
 - `portable-atomic` is used in `work`.
 - `unicode-segmentation` is used in `text`.
 - `unicode-width` is used in `text`.
 
-[`slice_into_array`]: data::convert::collection::slice_into_array
-[`MaybeUninit`]: core::mem::MaybeUninit
-[`transmute`]: core::mem::transmute
-[`mem_as_bytes`]: mem::mem_as_bytes
-[`mem_as_bytes_mut`]: mem::mem_as_bytes_mut
-[`mem_as_bytes_sized`]: mem::mem_as_bytes_sized
-
 [`atomic`]: dep::atomic
 [`bytemuck`]: dep::bytemuck
-[`devela_macros`]: dep::devela_macros
 [`const-str`]: dep::const_str
 [`portable_atomic`]: dep::portable_atomic
 [`unicode-segmentation`]: dep::unicode_segmentation
