@@ -76,7 +76,7 @@ doc: "The identity function.", identity }
 
 /* `core::default` reexports */
 
-// NOTE: the trait and the derive macro have the same name :(
+// NOTE: the trait and the derive macro have the same name
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 pub use core::default::Default;
@@ -89,3 +89,36 @@ reexport! { rust: core::hint, local_module: "code",
 doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_loop }
 reexport! { rust: core::hint, local_module: "code",
 doc: "Informs the compiler that the current calling site is not reachable.", unreachable_unchecked }
+
+/* `core::clone` reexports */
+
+// NOTE: the trait and the derive macro have the same name
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+pub use core::clone::Clone;
+
+/* `core::marker` reexports */
+
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+pub use core::marker::PhantomData;
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+pub use core::marker::PhantomPinned;
+
+// NOTE: the trait and the derive macro have the same name
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+pub use core::marker::Copy;
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+pub use core::marker::Send;
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+pub use core::marker::Sized;
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+pub use core::marker::Sync;
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+pub use core::marker::Unpin;

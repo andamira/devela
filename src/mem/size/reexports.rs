@@ -5,10 +5,9 @@
 
 use crate::code::reexport;
 
-reexport! { rust: core::marker, local_module: "mem",
-    doc: "Types with a constant size known at compile-time.",
-    Sized
-}
+#[doc(inline)]
+pub use crate::code::Sized;
+
 reexport! { rust: core::mem, local_module: "mem",
     doc: "Returns the size of a type in bytes.",
     @size_of as mem_size_of

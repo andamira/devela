@@ -174,7 +174,6 @@ macro_rules! bit_size {
         $( impl<const $T: $Tt> BitSize<$bits> for $t {} )+
     };
 
-
     /* primitives generic on $K, $V */
 
     (<$K:ident, $V:ident> = $bits:expr; for $($t:ty),+) => {
@@ -183,7 +182,6 @@ macro_rules! bit_size {
     (<const $K:ident: $Kt:ty, const $V:ident: $Vt:ty> = $bits:expr; for $($t:ty),+) => {
         $( impl<const $K: $Kt, const $V: $Vt> BitSize<$bits> for $t {} )+
     };
-
 
     /* pointer primitives */
 

@@ -19,7 +19,7 @@ reexport! { rust: core::hash, local_module: "data",
     Hasher
 }
 
-// NOTE: the trait and the derive macro have the same name :(
+// NOTE: the trait and the derive macro have the same name
 //
 // reexport! { rust: core::hash, local_module: "data",
 //     doc: "A hashable type.",
