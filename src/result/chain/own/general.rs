@@ -24,27 +24,43 @@ impl<S, V> Own<S, V> {
 
     /// Transforms itself into a tuple.
     ///
-    /// See also [`into_tuple_const`][Self::into_tuple_const] for `Copy` values.
+    /// See also [`const_into_tuple`][Self::const_into_tuple] for `Copy` values.
     #[inline]
     #[must_use]
     pub fn into_tuple(self) -> (S, V) {
         (self.state, self.value)
     }
 
+    /// Wraps the `state` field into an [`Option`].
+    ///
+    /// See also [`const_into_option`][Self::const_into_option] for `Copy` values.
+    #[inline]
+    pub fn state_into_option(self) -> Own<Option<S>, V> {
+        Own::new_some_state(self.state, self.value)
+    }
+
+    /// Wraps the `state` field into a [`Result`].
+    ///
+    /// See also [`const_into_result`][Self::const_into_result] for `Copy` values.
+    #[inline]
+    pub fn state_into_result<E>(self) -> Own<Result<S, E>, V> {
+        Own::new_ok_state(self.state, self.value)
+    }
+
     /// Wraps the `value` field into an [`Option`].
     ///
-    /// See also [`into_tuple_const`][Self::into_tuple_const] for `Copy` values.
+    /// See also [`const_into_option`][Self::const_into_option] for `Copy` values.
     #[inline]
-    pub fn into_option(self) -> Own<S, Option<V>> {
-        Own::new_some(self.state, self.value)
+    pub fn value_into_option(self) -> Own<S, Option<V>> {
+        Own::new_some_value(self.state, self.value)
     }
 
     /// Wraps the `value` field into a [`Result`].
     ///
-    /// See also [`into_tuple_const`][Self::into_tuple_const] for `Copy` values.
+    /// See also [`const_into_result`][Self::const_into_result] for `Copy` values.
     #[inline]
-    pub fn into_result<E>(self) -> Own<S, Result<V, E>> {
-        Own::new_ok(self.state, self.value)
+    pub fn value_into_result<E>(self) -> Own<S, Result<V, E>> {
+        Own::new_ok_value(self.state, self.value)
     }
 
     /* references */
@@ -280,21 +296,21 @@ impl<S, V> Own<S, V> {
 
     /// Replaces the existing `state` with a `new_state`.
     ///
-    /// See also [`replace_state_const`][Self::replace_state_const] for `Copy` values.
+    /// See also [`const_replace_state`][Self::const_replace_state] for `Copy` values.
     #[inline]
     pub fn replace_state(self, new_state: S) -> Self {
         Self::new(new_state, self.value)
     }
     /// Replaces the `value` with a `new_value`.
     ///
-    /// See also [`replace_value_const`][Self::replace_value_const] for `Copy` values.
+    /// See also [`const_replace_value`][Self::const_replace_value] for `Copy` values.
     #[inline]
     pub fn replace_value(self, new_value: V) -> Self {
         Self::new(self.state, new_value)
     }
     /// Replaces the existing `state` and `value` with `new_state` and `new_value`, respectively.
     ///
-    /// See also [`replace_both_const`][Self::replace_both_const] for `Copy` values.
+    /// See also [`const_replace_both`][Self::const_replace_both] for `Copy` values.
     #[inline]
     pub fn replace_both(self, new_state: S, new_value: V) -> Self {
         Self::new(new_state, new_value)
@@ -342,40 +358,50 @@ impl<S: Copy, V: Copy> Own<S, V> {
     /// Transforms itself into a tuple, in compile-time.
     #[inline]
     #[must_use]
-    pub const fn into_tuple_const(self) -> (S, V) {
+    pub const fn const_into_tuple(self) -> (S, V) {
         (self.state, self.value)
     }
 
-    /// Wraps the `value` field into an [`Option`], in compile-time.
+    /// Wraps the `state` field into an [`Option`], in compile-time.
     ///
-    /// See also [`into_tuple_const`][Self::into_tuple_const] for `Copy` values.
+    /// See also [`const_into_option`][Self::const_into_option] for `Copy` values.
     #[inline]
-    pub const fn into_option_const(self) -> Own<S, Option<V>> {
-        Own::new_some(self.state, self.value)
+    pub fn const_state_into_option(self) -> Own<Option<S>, V> {
+        Own::new_some_state(self.state, self.value)
+    }
+    /// Wraps the `state` field into a [`Result`], in compile-time.
+    ///
+    /// See also [`const_into_result`][Self::const_into_result] for `Copy` values.
+    #[inline]
+    pub const fn const_state_into_result<E>(self) -> Own<Result<S, E>, V> {
+        Own::new_ok_state(self.state, self.value)
     }
 
-    /// Wraps the `value` field into a [`Result`], in compile-time.
-    ///
-    /// See also [`into_tuple_const`][Self::into_tuple_const] for `Copy` values.
+    /// Wraps the `value` field into an [`Option`], in compile-time.
     #[inline]
-    pub const fn into_result_const<E>(self) -> Own<S, Result<V, E>> {
-        Own::new_ok(self.state, self.value)
+    pub const fn const_value_into_option(self) -> Own<S, Option<V>> {
+        Own::new_some_value(self.state, self.value)
+    }
+    /// Wraps the `value` field into a [`Result`], in compile-time.
+    #[inline]
+    pub const fn const_value_into_result<E>(self) -> Own<S, Result<V, E>> {
+        Own::new_ok_value(self.state, self.value)
     }
 
     /// Replaces the `state` self with a `new_state`, in compile-time.
     #[inline]
-    pub const fn replace_state_const(self, new_state: S) -> Self {
+    pub const fn const_replace_state(self, new_state: S) -> Self {
         Self::new(new_state, self.value)
     }
     /// Replaces the `value` with a `new_value`, in compile-time.
     #[inline]
-    pub const fn replace_value_const(self, new_value: V) -> Self {
+    pub const fn const_replace_value(self, new_value: V) -> Self {
         Self::new(self.state, new_value)
     }
     /// Replaces the `state` self with a `new_state` and the `value` with a `new_value`,
     /// in compile-time.
     #[inline]
-    pub const fn replace_both_const(self, new_state: S, new_value: V) -> Self {
+    pub const fn const_replace_both(self, new_state: S, new_value: V) -> Self {
         Self::new(new_state, new_value)
     }
 }
