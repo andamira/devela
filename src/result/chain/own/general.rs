@@ -33,7 +33,7 @@ impl<S, V> Own<S, V> {
 
     /// Wraps the `state` field into an [`Option`].
     ///
-    /// See also [`const_into_option`][Self::const_into_option] for `Copy` values.
+    /// See also [`const_state_into_option`][Self::const_state_into_option] for `Copy` values.
     #[inline]
     pub fn state_into_option(self) -> Own<Option<S>, V> {
         Own::new_some_state(self.state, self.value)
@@ -41,7 +41,7 @@ impl<S, V> Own<S, V> {
 
     /// Wraps the `state` field into a [`Result`].
     ///
-    /// See also [`const_into_result`][Self::const_into_result] for `Copy` values.
+    /// See also [`const_state_into_result`][Self::const_state_into_result] for `Copy` values.
     #[inline]
     pub fn state_into_result<E>(self) -> Own<Result<S, E>, V> {
         Own::new_ok_state(self.state, self.value)
@@ -49,7 +49,7 @@ impl<S, V> Own<S, V> {
 
     /// Wraps the `value` field into an [`Option`].
     ///
-    /// See also [`const_into_option`][Self::const_into_option] for `Copy` values.
+    /// See also [`const_value_into_option`][Self::const_value_into_option] for `Copy` values.
     #[inline]
     pub fn value_into_option(self) -> Own<S, Option<V>> {
         Own::new_some_value(self.state, self.value)
@@ -57,7 +57,7 @@ impl<S, V> Own<S, V> {
 
     /// Wraps the `value` field into a [`Result`].
     ///
-    /// See also [`const_into_result`][Self::const_into_result] for `Copy` values.
+    /// See also [`const_value_into_result`][Self::const_value_into_result] for `Copy` values.
     #[inline]
     pub fn value_into_result<E>(self) -> Own<S, Result<V, E>> {
         Own::new_ok_value(self.state, self.value)
@@ -363,15 +363,11 @@ impl<S: Copy, V: Copy> Own<S, V> {
     }
 
     /// Wraps the `state` field into an [`Option`], in compile-time.
-    ///
-    /// See also [`const_into_option`][Self::const_into_option] for `Copy` values.
     #[inline]
     pub fn const_state_into_option(self) -> Own<Option<S>, V> {
         Own::new_some_state(self.state, self.value)
     }
     /// Wraps the `state` field into a [`Result`], in compile-time.
-    ///
-    /// See also [`const_into_result`][Self::const_into_result] for `Copy` values.
     #[inline]
     pub const fn const_state_into_result<E>(self) -> Own<Result<S, E>, V> {
         Own::new_ok_state(self.state, self.value)

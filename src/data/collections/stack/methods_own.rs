@@ -53,9 +53,9 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{DataResult, DataError, Own, Stack};
     /// const S: Stack<i32, (), 2> = Stack::new_copied(0)
-    ///     .own_push(1).state_ok()
-    ///     .own_push(2).state_ok()
-    ///     .own_push(3).state_err();
+    ///     .own_push(1).const_value_ok_state()
+    ///     .own_push(2).const_value_ok_state()
+    ///     .own_push(3).const_value_err_state();
     /// assert_eq![S.as_slice(), &[1, 2]];
     /// assert![S.own_push(3).value.is_err_and(|e| matches![e, DataError::NotEnoughSpace(_)])];
     /// ```
@@ -64,7 +64,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len == CAP {
             Own::new(self, Err(NotEnoughSpace(Some(1))))
         } else {
-            self.own_push_unchecked(e).into_result_const()
+            self.own_push_unchecked(e).const_value_into_result()
         }
     }
 
@@ -99,7 +99,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{DataResult, Own, Stack};
-    /// const S: Own<Stack<i32, (), 3>, DataResult<i32>> = Stack::from_array_const([1, 2, 3]).own_pop();
+    /// const S: Own<Stack<i32, (), 3>, DataResult<i32>> =
+    ///     Stack::from_array_const([1, 2, 3]).own_pop();
     /// S.assert_state(|s| s.as_slice() == &[1, 2]).assert_eq_value(&Ok(3));
     /// ```
     #[inline]
@@ -107,7 +108,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len == 0 {
             Own::new(self, Err(NotEnoughElements(Some(1))))
         } else {
-            self.own_pop_unchecked().into_result_const()
+            self.own_pop_unchecked().const_value_into_result()
         }
     }
 
@@ -141,7 +142,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{DataResult, Own, Stack};
-    /// const S: Own<Stack<i32, (), 3>, DataResult<i32>> = Stack::from_array_const([1, 2, 3]).own_peek();
+    /// const S: Own<Stack<i32, (), 3>, DataResult<i32>> =
+    ///     Stack::from_array_const([1, 2, 3]).own_peek();
     /// S.assert_state(|s| s.as_slice() == &[1, 2, 3]).assert_eq_value(&Ok(3));
     /// ```
     #[inline]
@@ -149,7 +151,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len == 0 {
             Own::new(self, Err(NotEnoughElements(Some(1))))
         } else {
-            self.own_peek_unchecked().into_result_const()
+            self.own_peek_unchecked().const_value_into_result()
         }
     }
 
@@ -161,7 +163,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{DataResult, Own, Stack};
-    /// const S: Own<Stack<i32, (), 3>, i32> = Stack::from_array_const([1, 2, 3]).own_peek_unchecked();
+    /// const S: Own<Stack<i32, (), 3>, i32> =
+    ///     Stack::from_array_const([1, 2, 3]).own_peek_unchecked();
     /// S.assert_state(|s| s.as_slice() == &[1, 2, 3]).assert_eq_value(&3);
     /// ```
     #[inline]
@@ -182,10 +185,11 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_drop().state_ok();
+    /// const S: Stack<i32, (), 2> =
+    ///     Stack::from_array_const([1, 2]).own_drop().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[1]];
     ///
-    /// const T: Stack<i32, (), 2> = Stack::new_copied(0).own_drop().state_err();
+    /// const T: Stack<i32, (), 2> = Stack::new_copied(0).own_drop().const_value_err_state();
     /// assert![T.is_empty()];
     /// ```
     #[inline]
@@ -193,7 +197,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len == 0 {
             Own::new(self, Err(NotEnoughElements(Some(1))))
         } else {
-            self.own_drop_unchecked().into_result_const()
+            self.own_drop_unchecked().const_value_into_result()
         }
     }
     /// Swaps the top two pair stack elements, unchecked version.
@@ -223,7 +227,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_drop_n(3).state_ok();
+    /// const S: Stack<i32, (), 4> =
+    ///     Stack::from_array_const([1, 2, 3, 4]).own_drop_n(3).const_value_ok_state();
     /// assert_eq![S.as_slice(), &[1]];
     /// ```
     #[inline]
@@ -231,7 +236,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len < n {
             Own::new(self, Err(NotEnoughElements(Some(n))))
         } else {
-            self.own_drop_n_unchecked(n).into_result_const()
+            self.own_drop_n_unchecked(n).const_value_into_result()
         }
     }
     /// Drops the top `n` stack elements, unchecked version.
@@ -264,10 +269,12 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_nip().state_ok();
+    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2])
+    ///     .own_nip().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[2]];
     ///
-    /// const T: Stack<i32, (), 2> = Stack::new_copied(0).own_push(1).state_ok().own_nip().state_err();
+    /// const T: Stack<i32, (), 2> = Stack::new_copied(0)
+    ///     .own_push(1).const_value_ok_state().own_nip().const_value_err_state();
     /// assert_eq![T.as_slice(), &[1]];
     /// ```
     #[inline]
@@ -275,7 +282,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len < 2 {
             Own::new(self, Err(NotEnoughElements(Some(2))))
         } else {
-            self.own_nip_unchecked().into_result_const()
+            self.own_nip_unchecked().const_value_into_result()
         }
     }
 
@@ -308,7 +315,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_nip2().state_ok();
+    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_nip2().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[3, 4]];
     /// ```
     #[inline]
@@ -316,7 +323,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len < 4 {
             Own::new(self, Err(NotEnoughElements(Some(4))))
         } else {
-            self.own_nip2_unchecked().into_result_const()
+            self.own_nip2_unchecked().const_value_into_result()
         }
     }
 
@@ -352,10 +359,10 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{DataResult, Own, Stack};
-    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_swap().state_ok();
+    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_swap().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[2, 1]];
     ///
-    /// const T: Stack<i32, (), 1> = Stack::from_array_const([1]).own_swap().state_err();
+    /// const T: Stack<i32, (), 1> = Stack::from_array_const([1]).own_swap().const_value_err_state();
     /// assert_eq![T.as_slice(), &[1]];
     /// ```
     #[inline]
@@ -363,7 +370,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len < 2 {
             Own::new(self, Err(NotEnoughElements(Some(2))))
         } else {
-            self.own_swap_unchecked().into_result_const()
+            self.own_swap_unchecked().const_value_into_result()
         }
     }
     /// Swaps the top two stack elements in compile-time, unchecked version.
@@ -393,10 +400,10 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_swap2().state_ok();
+    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_swap2().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[3, 4, 1, 2]];
     ///
-    /// const T: Stack<i32, (), 3> = Stack::from_array_const([1, 2, 3]).own_swap2().state_err();
+    /// const T: Stack<i32, (), 3> = Stack::from_array_const([1, 2, 3]).own_swap2().const_value_err_state();
     /// assert_eq![T.as_slice(), &[1, 2, 3]];
     /// ```
     #[inline]
@@ -404,7 +411,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len < 4 {
             Own::new(self, Err(NotEnoughElements(Some(4))))
         } else {
-            self.own_swap2_unchecked().into_result_const()
+            self.own_swap2_unchecked().const_value_into_result()
         }
     }
     /// Swaps the top two pair stack elements in compile-time, unchecked version.
@@ -438,7 +445,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 4> = Stack::from_array_const([0, 1, 2, 3]).own_rot().state_ok();
+    /// const S: Stack<i32, (), 4> = Stack::from_array_const([0, 1, 2, 3]).own_rot().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 2, 3, 1]];
     /// ```
     #[inline]
@@ -446,7 +453,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len < 3 {
             Own::new(self, Err(NotEnoughElements(Some(3))))
         } else {
-            self.own_rot_unchecked().into_result_const()
+            self.own_rot_unchecked().const_value_into_result()
         }
     }
 
@@ -484,7 +491,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 4> = Stack::from_array_const([0, 1, 2, 3]).own_rot_cc().state_ok();
+    /// const S: Stack<i32, (), 4> = Stack::from_array_const([0, 1, 2, 3])
+    ///     .own_rot_cc().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 3, 1, 2]];
     /// ```
     #[inline]
@@ -492,7 +500,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len < 3 {
             Own::new(self, Err(NotEnoughElements(Some(3))))
         } else {
-            self.own_rot_cc_unchecked().into_result_const()
+            self.own_rot_cc_unchecked().const_value_into_result()
         }
     }
     /// Rotates the top three stack elements, counter-clockwise, unchecked version.
@@ -530,7 +538,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 7> =
-    ///     Stack::from_array_const([0, 1, 2, 3, 4, 5, 6]).own_rot2().state_ok();
+    ///     Stack::from_array_const([0, 1, 2, 3, 4, 5, 6]).own_rot2().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 3, 4, 5, 6, 1, 2]];
     /// ```
     #[inline]
@@ -538,7 +546,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len < 6 {
             Own::new(self, Err(NotEnoughElements(Some(6))))
         } else {
-            self.own_rot2_unchecked().into_result_const()
+            self.own_rot2_unchecked().const_value_into_result()
         }
     }
     /// Rotates the top six stack elements, clockwise, two times, unchecked version.
@@ -581,7 +589,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 7> =
-    ///     Stack::from_array_const([0, 1, 2, 3, 4, 5, 6]).own_rot2_cc().state_ok();
+    ///     Stack::from_array_const([0, 1, 2, 3, 4, 5, 6]).own_rot2_cc().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 5, 6, 1, 2, 3, 4]];
     /// ```
     #[inline]
@@ -589,7 +597,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         if self.len < 6 {
             Own::new(self, Err(NotEnoughElements(Some(6))))
         } else {
-            self.own_rot2_cc_unchecked().into_result_const()
+            self.own_rot2_cc_unchecked().const_value_into_result()
         }
     }
     /// Rotates the top six stack elements, counter-clockwise, two times, unchecked version.
@@ -633,7 +641,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 3> = Stack::new_copied(0).own_push(1).state.own_dup().state_ok();
+    /// const S: Stack<i32, (), 3> = Stack::new_copied(0)
+    ///     .own_push(1).state.own_dup().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[1, 1]];
     /// ```
     #[inline]
@@ -643,7 +652,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         } else if self.len == CAP {
             Own::new(self, Err(NotEnoughSpace(Some(1))))
         } else {
-            self.own_dup_unchecked().into_result_const()
+            self.own_dup_unchecked().const_value_into_result()
         }
     }
     /// Duplicates the top stack element, unchecked version.
@@ -677,8 +686,8 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 6> =
-    ///     Stack::from_array_const([0, 1, 2, 0, 0, 0]).own_drop_n(3).state.own_dup2().state_ok();
+    /// const S: Stack<i32, (), 6> = Stack::from_array_const([0, 1, 2, 0, 0, 0])
+    ///     .own_drop_n(3).state.own_dup2().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 1, 2, 1, 2]];
     /// ```
     #[inline]
@@ -688,7 +697,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         } else if self.len > CAP - 2 {
             Own::new(self, Err(NotEnoughSpace(Some(2))))
         } else {
-            self.own_dup2_unchecked().into_result_const()
+            self.own_dup2_unchecked().const_value_into_result()
         }
     }
     /// Duplicates the top stack pair of elements, unchecked version.
@@ -730,7 +739,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 4> =
-    ///     Stack::from_array_const([0, 1, 2, 0]).own_drop().state.own_over().state_ok();
+    ///     Stack::from_array_const([0, 1, 2, 0]).own_drop().state.own_over().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 1, 2, 1]];
     /// ```
     #[inline]
@@ -740,7 +749,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         } else if self.len == CAP {
             Own::new(self, Err(NotEnoughSpace(Some(1))))
         } else {
-            self.own_over_unchecked().into_result_const()
+            self.own_over_unchecked().const_value_into_result()
         }
     }
     /// Duplicates the next of stack element to the top.
@@ -777,7 +786,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 7> = Stack::from_array_const([0, 1, 2, 3, 4, 0, 0])
-    ///     .own_drop_n(2).state.own_over2().state_ok();
+    ///     .own_drop_n(2).state.own_over2().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
     /// ```
     #[inline]
@@ -787,7 +796,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         } else if CAP - self.len < 2 {
             Own::new(self, Err(NotEnoughSpace(Some(2))))
         } else {
-            self.own_over2_unchecked().into_result_const()
+            self.own_over2_unchecked().const_value_into_result()
         }
     }
     /// Duplicates the next of stack pair of elements to the top.
@@ -829,7 +838,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 4> =
-    ///     Stack::from_array_const([0, 1, 2, 0]).own_drop().state.own_tuck().state_ok();
+    ///     Stack::from_array_const([0, 1, 2, 0]).own_drop().state.own_tuck().const_value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 2, 1, 2]];
     /// ```
     #[inline]
@@ -839,7 +848,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         } else if self.len == CAP {
             Own::new(self, Err(NotEnoughSpace(Some(1))))
         } else {
-            self.own_tuck_unchecked().into_result_const()
+            self.own_tuck_unchecked().const_value_into_result()
         }
     }
     /// Duplicates the top element before the next of stack element, unchecked version.
@@ -888,7 +897,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
         } else if CAP - self.len < 2 {
             Own::new(self, Err(NotEnoughSpace(Some(2))))
         } else {
-            self.own_tuck2_unchecked().into_result_const()
+            self.own_tuck2_unchecked().const_value_into_result()
         }
     }
     /// Duplicates the top pair of elements before the next of stack pair of elements,
