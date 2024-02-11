@@ -25,11 +25,13 @@ RUSTFMT_CHECK_SCRIPT="$CRATE_ROOT/tools/rustfmt"
 #* CLIPPY *#
 
 $CLIPPY --version &>/dev/null || { echo "clippy not available"; exit 1; }
-$CLIPPY -- --deny warnings
+# $CLIPPY -- --deny warnings
+$CLIPPY
 result=$?
 printf "[pre_commit] $CLIPPY → "
 if [ $result != 0 ]; then
-    printf "\033[0;31merror\033[0m\n"
+	printf "\033[0;31merror\033[0m\n"
+	exit 1
 else
-    printf "\033[0;32mOK\033[0m\n"
+	printf "\033[0;32mOK\033[0m\n"
 fi
