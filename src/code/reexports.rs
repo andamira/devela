@@ -74,6 +74,13 @@ doc: "An attempted conversion that consumes self, which may or may not be expens
 reexport! { rust: core::convert, local_module: "code",
 doc: "The identity function.", identity }
 
+/* `core::default` reexports */
+
+// NOTE: the trait and the derive macro have the same name :(
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+pub use core::default::Default;
+
 /* `core::hint` reexports */
 
 reexport! { rust: core::hint, local_module: "code",

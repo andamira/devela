@@ -9,11 +9,37 @@
 
 use crate::code::reexport;
 
-/* reexport from the `atomic` crate */
+/* from `core` */
+
+// enums
+reexport! { rust: core::sync::atomic, local_module: "work",
+    doc: "Atomic memory ordering.",
+    @Ordering as AtomicOrdering
+}
+
+// functions
+reexport! { rust: core::sync::atomic, local_module: "work",
+    doc: "An atomic fence.",
+    @fence as atomic_fence
+}
+reexport! { rust: core::sync::atomic, local_module: "work",
+    doc: "A compiler memory fence.",
+    @compiler_fence as atomic_compiler_fence
+}
+
+/* from the `atomic` crate */
 
 reexport! { "atomic" | atomic, features: "work",
     doc: "A generic atomic wrapper type.",
     Atomic
+}
+
+#[cfg(any(feature = "dep", feature = "atomic"))]
+mod impl_const_default_for_atomic {
+    #![allow(clippy::declare_interior_mutable_const)]
+    use super::Atomic;
+    use crate::code::{impl_cdef, ConstDefault};
+    impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) => Atomic<T>];
 }
 
 /* from `portable-atomic` */
@@ -31,9 +57,19 @@ reexport! { "portable-atomic" | portable_atomic, features: "work",
     AtomicU128
 }
 
+#[cfg(any(feature = "dep", feature = "portable-atomic"))]
+mod impl_const_default_for_portable_atomic {
+    #![allow(clippy::declare_interior_mutable_const)]
+    use super::{AtomicF32, AtomicF64, AtomicU128};
+    use crate::code::{impl_cdef, ConstDefault};
+    impl_cdef![Self::new(f32::DEFAULT) => AtomicF32];
+    impl_cdef![Self::new(f64::DEFAULT) => AtomicF64];
+    impl_cdef![Self::new(u128::DEFAULT) => AtomicU128];
+}
+
 /* from either `portable-atomic` or `core` */
 
-// TODO: IMPROVE create new arm in `reexport` to deal with this case:
+// MAYBE: IMPROVE create new arm in `reexport` to deal with this case:
 
 /// <span class="stab portability" title="re-exported either from `core` or from the
 /// `portable-atomic` crate">`*`</span>
@@ -109,20 +145,22 @@ pub use crate::_deps::portable_atomic::AtomicBool;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::AtomicBool;
 
-/* from `core` */
-
-// enums
-reexport! { rust: core::sync::atomic, local_module: "work",
-    doc: "Atomic memory ordering.",
-    @Ordering as AtomicOrdering
-}
-
-// functions
-reexport! { rust: core::sync::atomic, local_module: "work",
-    doc: "An atomic fence.",
-    @fence as atomic_fence
-}
-reexport! { rust: core::sync::atomic, local_module: "work",
-    doc: "A compiler memory fence.",
-    @compiler_fence as atomic_compiler_fence
+mod impl_const_default_for_either {
+    #![allow(clippy::declare_interior_mutable_const)]
+    use super::{
+        AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize, AtomicPtr, AtomicU16, AtomicU32,
+        AtomicU64, AtomicU8, AtomicUsize,
+    };
+    use crate::code::{impl_cdef, ConstDefault};
+    impl_cdef![Self::new(i8::DEFAULT) => AtomicI8];
+    impl_cdef![Self::new(i16::DEFAULT) => AtomicI16];
+    impl_cdef![Self::new(i32::DEFAULT) => AtomicI32];
+    impl_cdef![Self::new(i64::DEFAULT) => AtomicI64];
+    impl_cdef![Self::new(isize::DEFAULT) => AtomicIsize];
+    impl_cdef![Self::new(u8::DEFAULT) => AtomicU8];
+    impl_cdef![Self::new(u16::DEFAULT) => AtomicU16];
+    impl_cdef![Self::new(u32::DEFAULT) => AtomicU32];
+    impl_cdef![Self::new(u64::DEFAULT) => AtomicU64];
+    impl_cdef![Self::new(usize::DEFAULT) => AtomicUsize];
+    impl_cdef![<T> Self::new(core::ptr::null_mut()) => AtomicPtr<T>];
 }

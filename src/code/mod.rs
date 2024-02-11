@@ -1,10 +1,11 @@
 // devela::code
 //
 //! Code generation and meta-programming, extends
-//! `std::{`[`any`], [`convert`], [`hint`], [`marker`], [`ops`]`}`.
+//! `std::{`[`any`], [`convert`], [`default`], [`hint`], [`marker`], [`ops`]`}`.
 //!
 //! [`any`]: std::any
 //! [`convert`]: std::convert
+//! [`default`]: std::default
 //! [`hint`]: std::hint
 //! [`marker`]: std::marker
 //! [`ops`]: std::ops
@@ -27,6 +28,8 @@ mod any; // dynamic typing and reflection
 mod asserts; // assertion macros
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod cfor; // cfor![]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
+mod default; // ConstDefault, Default
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
 mod deprecate; // deprecate_feature![]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "code")))]
@@ -53,15 +56,15 @@ pub use paste::__paste;
 
 // always compied, non-public
 pub use {
-    any::all::*, asserts::*, cfor::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*,
-    reexports::*, skip_format::*,
+    any::all::*, asserts::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*, iif::*,
+    paste::*, reexports::*, skip_format::*,
 };
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        any::all::*, asserts::*, cfor::*, deprecate::*, enumset::*, ident::*, iif::*, paste::*,
-        reexports::*, skip_format::*,
+        any::all::*, asserts::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*, iif::*,
+        paste::*, reexports::*, skip_format::*,
     };
 }

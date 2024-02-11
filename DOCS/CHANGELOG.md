@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.20.0-wip]
 
 ### Added
-- add traits: `NumToStr`, `DataQueue`, `DataDeque`, `DataStack`, `DataDestack`.
+- add traits: `NumToStr`, `ConstDefault`, `DataQueue`, `DataDeque`, `DataStack`, `DataDestack`.
 - add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `BareDestaque`, `BoxedDestaque`, `BareStack`, `BoxedStack`, `Mismatch`, `Own`.
 - add features: `num_all`, `safe_code`, `safe_data`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`, `nightly_coro`, `nightly_doc`, `_exclude_example`.
 - add Floating constants: `FRAC_1_PHI`, `NEG_FRAC_1_PHI`, `SQ_PHI`, `FRAC_NEG_1_PHI`.
@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add script `tools/rustfmt` and `rustfmt_excluded_files` list.
 - re-export crate-defined result-related types from `result`.
 - re-export core types from `data::iter`.
+- re-export `Default` from `code`.
 
 ### Removed
 - remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
