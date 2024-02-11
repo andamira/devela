@@ -185,6 +185,49 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         CAP - self.len()
     }
 
+    /// Returns the stack as pair of shared slices, which contain, in order,
+    /// the contents of the destaque.
+    /// # Examples
+    /// ```
+    /// # use devela::data::Destaque;
+    /// let d = Destaque::<_, (), 3>::from([1, 2, 3]);
+    /// assert_eq![d.as_slices(), (&[1, 2, 3][..], &[][..])];
+    /// ```
+    #[inline]
+    pub fn as_slices(&self) -> (&[T], &[T]) {
+        if self.len == 0 {
+            (&[], &[])
+        } else if self.front < self.back {
+            // Non-wrap-around case
+            let slice = &self.array[self.front..self.back];
+            (slice, &[])
+        } else {
+            // Wrap-around case
+            let first_slice = &self.array[self.front..CAP];
+            let second_slice = &self.array[..self.back];
+            (first_slice, second_slice)
+        }
+    }
+
+    /// Returns `true` if the destaque is contiguous.
+    /// # Examples
+    /// ```
+    /// # use devela::data::Destaque;
+    /// # fn main() -> devela::data::DataResult<()> {
+    /// let mut d = Destaque::<_, (), 3>::from([1, 2, 3]);
+    /// assert_eq![d.as_slices(), (&[1, 2, 3][..], &[][..])];
+    /// assert![d.is_contiguous()];
+    /// d.pop_back()?;
+    /// d.push_front(4)?;
+    /// assert![!d.is_contiguous()];
+    /// assert_eq![d.as_slices(), (&[4][..], &[1, 2][..])];
+    /// # Ok(()) }
+    /// ```
+    #[inline]
+    pub const fn is_contiguous(&self) -> bool {
+        (self.front == 0 && self.back == 0) || (self.front < self.back)
+    }
+
     /* iter */
 
     /// Returns an iterator.
@@ -224,6 +267,37 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         Err(NotEnoughSpace(None))
     }
 
+    /// Extends the back of the destaque from an iterator,
+    /// overriding elements from the front if the destaque is full.
+    ///
+    /// `( 1 2 3 -- 3 4 5 6)` for `[4 5 6]` and `CAP = 4`
+    /// # Examples
+    /// ```
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 4>::from([1, 2, 3]);
+    /// assert_eq![q.extend_back_override([4, 5, 6]), true];
+    /// assert_eq![q.to_array(), Some([3, 4, 5, 6])];
+    /// ```
+    pub fn extend_back_override<I>(&mut self, iterator: I) -> bool
+    where
+        I: IntoIterator<Item = T>,
+    {
+        let mut overriden = false;
+        for element in iterator.into_iter() {
+            if self.is_full() {
+                overriden = true;
+                // drop_front
+                self.front = (self.front + 1) % CAP;
+                self.len -= 1;
+            }
+            // push_back
+            self.array[self.back] = element;
+            self.back = (self.back + 1) % CAP;
+            self.len += 1;
+        }
+        overriden
+    }
+
     /// Extends the front of the destaque from an iterator.
     ///
     /// `( 1 2 -- 6 5 4 3 1 2 )` for `[3 4 5 6]`
@@ -249,6 +323,37 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
             }
         }
         Err(NotEnoughSpace(None))
+    }
+
+    /// Extends the front of the destaque from an iterator,
+    /// overriding elements from the back if the destaque is full.
+    ///
+    /// `( 1 2 3 -- 6 5 4 1)` for `[4 5 6]` and `CAP = 4`
+    /// # Examples
+    /// ```
+    /// # use devela::data::Destaque;
+    /// let mut q = Destaque::<_, (), 4>::from([1, 2, 3]);
+    /// assert_eq![q.extend_front_override([4, 5, 6]), true];
+    /// assert_eq![q.to_array(), Some([6, 5, 4, 1])];
+    /// ```
+    pub fn extend_front_override<I>(&mut self, iterator: I) -> bool
+    where
+        I: IntoIterator<Item = T>,
+    {
+        let mut overriden = false;
+        for element in iterator.into_iter() {
+            if self.is_full() {
+                overriden = true;
+                // drop_back
+                self.back = (self.back + CAP - 1) % CAP;
+                self.len -= 1;
+            }
+            // push_front
+            self.front = (self.front + CAP - 1) % CAP;
+            self.array[self.front] = element;
+            self.len += 1;
+        }
+        overriden
     }
 
     /* push */
@@ -289,6 +394,34 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         self.front = (self.front + CAP - 1) % CAP;
         self.array[self.front] = element;
         self.len += 1;
+    }
+
+    /// Pushes a new element to the front of the destaque,
+    /// overriding an element from the bacl if the destaque is full.
+    ///
+    /// Returns `true` if an element was overridden, and `false` otherwise.
+    ///
+    /// # Examples
+    /// ```
+    /// # use devela::data::Destaque;
+    /// let mut d = Destaque::<_, (), 3>::from([1, 2]);
+    /// assert_eq!(d.push_front_override(3), false);
+    /// assert_eq![d.to_array(), Some([3, 1, 2])];
+    /// assert_eq!(d.push_front_override(4), true);
+    /// assert_eq![d.to_array(), Some([4, 3, 1])];
+    /// ```
+    pub fn push_front_override(&mut self, element: T) -> bool {
+        let overridden = self.is_full();
+        if overridden {
+            // drop_back
+            self.back = (self.back + CAP - 1) % CAP;
+            self.len -= 1;
+        }
+        // push_front
+        self.front = (self.front + CAP - 1) % CAP;
+        self.array[self.front] = element;
+        self.len += 1;
+        overridden
     }
 
     /// Pushes a new element to the back of the destaque.
@@ -336,6 +469,34 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         self.array[self.back] = element;
         self.back = (self.back + 1) % CAP;
         self.len += 1;
+    }
+
+    /// Pushes a new element to the back of the destaque,
+    /// overriding the first element if the destaque is full.
+    ///
+    /// Returns `true` if an element was overridden, and `false` otherwise.
+    ///
+    /// # Examples
+    /// ```
+    /// # use devela::data::Destaque;
+    /// let mut d = Destaque::<_, (), 3>::from([1, 2]);
+    /// assert_eq!(d.push_back_override(3), false);
+    /// assert_eq![d.to_array(), Some([1, 2, 3])];
+    /// assert_eq!(d.push_back_override(4), true);
+    /// assert_eq![d.to_array(), Some([2, 3, 4])];
+    /// ```
+    pub fn push_back_override(&mut self, element: T) -> bool {
+        let overridden = self.is_full();
+        if overridden {
+            // drop_front
+            self.front = (self.front + 1) % CAP;
+            self.len -= 1;
+        }
+        // push_back
+        self.array[self.back] = element;
+        self.back = (self.back + 1) % CAP;
+        self.len += 1;
+        overridden
     }
 
     /* peek */
@@ -1072,7 +1233,61 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         }
     }
 
-    /* to_vec, to_array */
+    /* make_contiguous, to_vec, to_array */
+
+    /// Makes the elements of the destaque contiguous, rearranging the elements
+    /// so that they are in a single, continuous block starting from the front.
+    ///
+    /// This operation might rearrange the internal representation of the elements
+    /// to ensure they are contiguous. It clones the default element provided during
+    /// the destaque's construction to fill any gaps if necessary.
+    ///
+    /// Returns a mutable slice to the now contiguous elements.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use devela::Destaque;
+    ///
+    /// let mut d = Destaque::<_, (), 5>::new(0);
+    /// d.push_back(1);
+    /// d.push_back(2);
+    /// d.push_front(5);
+    /// assert_eq!(d.as_slices(), (&[5][..], &[1, 2][..]));
+    ///
+    /// assert_eq!(d.make_contiguous(0), &[5, 1, 2]);
+    /// assert_eq!(d.as_slices(), (&[5, 1, 2][..], &[][..]));
+    /// ```
+    #[allow(clippy::needless_range_loop)]
+    pub fn make_contiguous(&mut self, element: T) -> &mut [T] {
+        // Early return if already contiguous or empty
+        if self.is_contiguous() || self.len == 0 {
+            return &mut [];
+        }
+
+        // Create a temporary array filled with clones of the default_element
+        let mut temp: [T; CAP] = core::array::from_fn(|_| element.clone());
+
+        // IMPROVE: use the new array to construct the new self? BENCH
+
+        // Rearrange elements into their correct positions in the temporary array
+        for i in 0..self.len {
+            let index = (self.front + i) % CAP;
+            temp[i] = self.array[index].clone(); // Clone from the current array to temp
+        }
+
+        // Move elements from temp back into self.array, now in a contiguous order
+        // self.array[..self.len].copy_from_slice(&temp[..self.len]); // NOTE for Copy
+        for i in 0..self.len {
+            self.array[i] = temp[i].clone();
+        }
+
+        // Reset front and back to reflect the new contiguous layout
+        self.front = 0;
+        self.back = self.len;
+
+        &mut self.array[..self.len]
+    }
 
     /// Returns the destaqued elements as a vector.
     /// # Examples
