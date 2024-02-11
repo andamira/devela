@@ -1,4 +1,4 @@
-// devela::data::methods_own
+// devela::data::collections::stack::methods_own
 //
 //! owning stack const operations, in compile-time
 //! depends on S:(), T:Copy

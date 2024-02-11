@@ -22,7 +22,7 @@ use core::mem::{transmute_copy, MaybeUninit};
 
 // S:Bare + T:Clone
 impl<T: Clone, const CAP: usize> Destaque<T, Bare, CAP> {
-    /// Returns an empty deque, allocated in the stack,
+    /// Returns an empty destaque, allocated in the stack,
     /// cloning `element` to fill the remaining free data.
     /// # Examples
     /// ```
@@ -41,7 +41,7 @@ impl<T: Clone, const CAP: usize> Destaque<T, Bare, CAP> {
 
 // S:Bare + T:Copy
 impl<T: Copy, const LEN: usize> Destaque<T, Bare, LEN> {
-    /// Returns an empty queue, allocated in the stack,
+    /// Returns an empty destaque, allocated in the stack,
     /// copying `element` to fill the remaining free data, in compile-time.
     /// # Examples
     /// ```
@@ -63,7 +63,7 @@ impl<T: Copy, const LEN: usize> Destaque<T, Bare, LEN> {
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const CAP: usize> Destaque<T, Boxed, CAP> {
-    /// Returns an empty deque, allocated in the heap,
+    /// Returns an empty destaque, allocated in the heap,
     /// cloning `element` to fill the remaining free data.
     /// # Examples
     /// ```
@@ -86,7 +86,7 @@ impl<T, const CAP: usize> Destaque<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
-    /// let s = Destaque::<_, (), 3>::from_array([1, 2, 3]);
+    /// let d = Destaque::<_, (), 3>::from_array([1, 2, 3]);
     /// ```
     pub const fn from_array_const(arr: [T; CAP]) -> Destaque<T, Bare, CAP> {
         Self {
@@ -112,7 +112,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         (self.front + nth) % CAP
     }
 
-    /// Converts an array into a [`full`][Self::is_full] deque.
+    /// Converts an array into a [`full`][Self::is_full] destaque.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -127,7 +127,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         }
     }
 
-    /// Returns the number of queued elements.
+    /// Returns the number of destaqued elements.
     #[inline]
     pub const fn len(&self) -> usize {
         self.len
@@ -157,7 +157,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         self.len() == CAP
     }
 
-    /// Returns the deque's total capacity.
+    /// Returns the destaque's total capacity.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -169,7 +169,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         CAP
     }
 
-    /// Returns the deque's remaining capacity.
+    /// Returns the destaque's remaining capacity.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -190,18 +190,18 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     /// Returns an iterator.
     pub const fn iter(&self) -> DestaqueIter<'_, T, S, CAP> {
         DestaqueIter {
-            deque: self,
+            destaque: self,
             idx: 0,
         }
     }
 
     /* extend */
 
-    /// Extends the back of the deque from an iterator.
+    /// Extends the back of the destaque from an iterator.
     ///
     /// `( 1 2 -- 1 2 3 4 5 6)` for `[3 4 5 6]`
     /// # Errors
-    /// Returns [`NotEnoughSpace`] if the deque becomes full before the iterator finishes.
+    /// Returns [`NotEnoughSpace`] if the destaque becomes full before the iterator finishes.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -330,7 +330,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Unchecked version of [`push_back`][Self::push_back].
     /// # Panics
-    /// Panics if the queue is full.
+    /// Panics if the destaque is full.
     #[inline]
     pub fn push_back_unchecked(&mut self, element: T) {
         self.array[self.back] = element;
@@ -342,7 +342,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns a shared reference to the back element.
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the destaque is empty.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -363,7 +363,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns an exclusive reference to the back element.
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the destaque is empty.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -384,7 +384,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns a shared reference to the `nth` back element.
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -405,7 +405,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns an exclusive reference to the `nth` back element.
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -426,7 +426,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns a shared reference to the front element.
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the destaque is empty.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -447,7 +447,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns an exclusive reference to the front element.
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the destaque is empty.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -468,7 +468,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns a shared reference to the `nth` front element.
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -489,7 +489,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /// Returns an exclusive reference to the `nth` front element.
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -562,7 +562,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2-- 1 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the destaque is empty.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -594,7 +594,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /* clear */
 
-    /// Clears the queue.
+    /// Clears the destaque.
     ///
     /// `( 1 2 -- )`
     /// # Examples
@@ -616,7 +616,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 1 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the destaque is empty.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -640,7 +640,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 2 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the destaque is empty.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -664,7 +664,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 )` for `n = 3`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -688,7 +688,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 4 )` for `n = 3`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least `nth` elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least `nth` elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -710,11 +710,11 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /* swap */
 
-    /// Swaps the last two elements at the back of the queue.
+    /// Swaps the last two elements at the back of the destaque.
     ///
     /// `( 1 2 3 4 -- 1 2 4 3 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 2 elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -735,7 +735,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     }
     /// Unchecked version of [`swap_back`][Self::swap_back].
     /// # Panics
-    /// Panics if the queue doesn't contain at least 2 elements.
+    /// Panics if the destaque doesn't contain at least 2 elements.
     #[inline]
     pub fn swap_back_unchecked(&mut self) {
         let bi0 = self.idx_back(0);
@@ -743,11 +743,11 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         self.array.swap(bi0, bi1);
     }
 
-    /// Swaps the first two elements at the front of the queue.
+    /// Swaps the first two elements at the front of the destaque.
     ///
     /// `( 1 2 3 4 -- 2 1 3 4 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 2 elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -768,7 +768,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     }
     /// Unchecked version of [`swap_front`][Self::swap_front].
     /// # Panics
-    /// Panics if the queue doesn't contain at least 2 elements.
+    /// Panics if the destaque doesn't contain at least 2 elements.
     #[inline]
     pub fn swap_front_unchecked(&mut self) {
         let fi0 = self.idx_front(0);
@@ -776,11 +776,11 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         self.array.swap(fi0, fi1);
     }
 
-    /// Swaps the last two pairs of elements at the back of the queue.
+    /// Swaps the last two pairs of elements at the back of the destaque.
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 1 2 3 4 7 8 5 6 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 2 elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -804,7 +804,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     }
     /// Unchecked version of [`swap2_back`][Self::swap2_back].
     /// # Panics
-    /// Panics if the queue doesn't contain at least 2 elements.
+    /// Panics if the destaque doesn't contain at least 2 elements.
     pub fn swap2_back_unchecked(&mut self) {
         let bi0 = self.idx_back(0);
         let bi1 = self.idx_back(1);
@@ -814,10 +814,10 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         self.array.swap(bi0, bi2);
     }
 
-    /// Swaps the first two pairs of elements at the front of the queue.
+    /// Swaps the first two pairs of elements at the front of the destaque.
     /// `( 1 2 3 4 5 6 7 8 -- 3 4 1 2 5 6 7 8 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 4 elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 4 elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -841,7 +841,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     }
     /// Unchecked version of [`swap2_back`][Self::swap2_back].
     /// # Panics
-    /// Panics if the queue doesn't contain at least 2 elements.
+    /// Panics if the destaque doesn't contain at least 2 elements.
     #[inline]
     pub fn swap2_front_unchecked(&mut self) {
         let fi0 = self.idx_front(0);
@@ -856,7 +856,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 4 2 3 1 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 2 elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 2 elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -879,7 +879,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 7 8 3 4 5 6 1 2 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't contain at least 4 elements.
+    /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 4 elements.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -904,7 +904,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /* rot */
 
-    /// Rotates all the queued elements one place to the right.
+    /// Rotates all the destaqued elements one place to the right.
     ///
     /// `( 1 2 3 4 --  4 1 2 3 )`
     /// # Examples
@@ -928,7 +928,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         }
     }
 
-    /// Rotates all the queued elements `n` places to the right.
+    /// Rotates all the destaqued elements `n` places to the right.
     ///
     /// `( 1 2 3 4 --  2 3 4 1 )` for `n = 3`
     /// # Examples
@@ -953,7 +953,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         }
     }
 
-    /// Rotates all the queued elements one place to the left.
+    /// Rotates all the destaqued elements one place to the left.
     ///
     /// `( 1 2 3 4 --  2 3 4 1 )`
     /// # Examples
@@ -977,7 +977,7 @@ impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         }
     }
 
-    /// Rotates all the queued elements `n` places to the left.
+    /// Rotates all the destaqued elements `n` places to the left.
     ///
     /// `( 1 2 3 4 --  4 1 2 3 )` for `nth = 3`
     /// # Examples
@@ -1009,7 +1009,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 2 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the destaque is empty.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -1046,7 +1046,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 1 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty.
+    /// Returns [`NotEnoughElements`] if the destaque is empty.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -1074,7 +1074,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
     /* to_vec, to_array */
 
-    /// Returns the queued elements as a vector.
+    /// Returns the destaqued elements as a vector.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;
@@ -1095,7 +1095,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
             let mut vec = Vec::with_capacity(self.len());
             let mut index = self.front;
 
-            // makes sure a full queue is not rejected
+            // makes sure a full destaque is not rejected
             vec.push(self.array[index].clone());
             index = (index + 1) % CAP;
 
@@ -1107,7 +1107,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
         }
     }
 
-    /// Returns some `LEN` queued elements as an array, or `None` if the queue
+    /// Returns some `LEN` destaqued elements as an array, or `None` if the destaque
     /// is empty, or there are not at least `LEN` elements.
     ///
     /// This is a non `alloc` alternative method to [`to_vec`][Self::to_vec].
@@ -1163,7 +1163,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 1 2 2 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty
+    /// Returns [`NotEnoughElements`] if the destaque is empty
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
@@ -1190,7 +1190,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 -- 1 1 2 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue is empty
+    /// Returns [`NotEnoughElements`] if the destaque is empty
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
@@ -1217,7 +1217,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 3 4 3 4)`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least 2 elements,
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
@@ -1247,7 +1247,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 1 2 3 4)`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least 2 elements,
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
@@ -1279,7 +1279,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 3 4 3 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least 2 elements,
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
@@ -1306,7 +1306,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 2 1 2 3 4 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least 2 elements,
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
@@ -1333,7 +1333,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 1 2 3 4 5 6 7 8 5 6 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 4 elements,
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least 4 elements,
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
@@ -1363,7 +1363,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 3 4 1 2 3 4 5 6 7 8 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 4 elements,
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least 4 elements,
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
@@ -1395,7 +1395,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 4 3 4 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least 2 elements,
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
@@ -1425,7 +1425,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 -- 1 2 1 3 4 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 2 elements,
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least 2 elements,
     /// or [`NotEnoughSpace`] if it is full.
     /// # Examples
     /// ```
@@ -1455,7 +1455,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 1 2 3 4 7 8 5 6 7 8 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 4 elements,
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least 4 elements,
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
@@ -1487,7 +1487,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
     ///
     /// `( 1 2 3 4 5 6 7 8 -- 1 2 3 4 1 2 5 6 7 8 )`
     /// # Errors
-    /// Returns [`NotEnoughElements`] if the queue doesn't have at least 4 elements,
+    /// Returns [`NotEnoughElements`] if the destaque doesn't have at least 4 elements,
     /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
     /// # Examples
     /// ```
@@ -1517,7 +1517,7 @@ impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
 
 // T:PartialEq
 impl<T: PartialEq, S: Storage, const CAP: usize> Destaque<T, S, CAP> {
-    /// Returns true if the deque contains `element`.
+    /// Returns true if the destaque contains `element`.
     /// # Examples
     /// ```
     /// # use devela::data::Destaque;

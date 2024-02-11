@@ -99,7 +99,7 @@ pub type BoxedDestaque<T, const CAP: usize> = Destaque<T, Boxed, CAP>;
 
 /// An iterator over [`Destaque`] elements.
 pub struct DestaqueIter<'s, T, S: Storage, const CAP: usize> {
-    pub(super) deque: &'s Destaque<T, S, CAP>,
+    pub(super) destaque: &'s Destaque<T, S, CAP>,
     pub(super) idx: usize,
 }
 
@@ -121,17 +121,17 @@ impl<'s, T, S: Storage, const CAP: usize> Iterator for DestaqueIter<'s, T, S, CA
     /// assert_eq![None, dqi.next()];
     /// ```
     fn next(&mut self) -> Option<Self::Item> {
-        let item = if self.idx == self.deque.len() {
+        let item = if self.idx == self.destaque.len() {
             None
         } else {
-            Some(&self.deque.array[self.deque.idx_front(self.idx)])
+            Some(&self.destaque.array[self.destaque.idx_front(self.idx)])
         };
         self.idx += 1;
         item
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
-        (self.deque.len(), Some(self.deque.len()))
+        (self.destaque.len(), Some(self.destaque.len()))
     }
 }
 
@@ -159,10 +159,10 @@ impl<'s, T, S: Storage, const CAP: usize> DoubleEndedIterator for DestaqueIter<'
     /// assert_eq![None, dqi.next_back()];
     /// ```
     fn next_back(&mut self) -> Option<Self::Item> {
-        let item = if self.idx == self.deque.len() {
+        let item = if self.idx == self.destaque.len() {
             None
         } else {
-            Some(&self.deque.array[self.deque.idx_back(self.idx)])
+            Some(&self.destaque.array[self.destaque.idx_back(self.idx)])
         };
         self.idx += 1;
         item

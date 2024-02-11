@@ -38,7 +38,7 @@ where
         debug.field("CAP", &CAP).field("len", &self.len);
 
         if CAP <= 6 {
-            debug.field("nodes", &self.array);
+            debug.field("array", &self.array);
         } else {
             // IMPROVE: show the first 3 and the last 3
             debug.field("array { ... }", &());
