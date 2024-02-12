@@ -6,18 +6,18 @@
 /* modules */
 
 // always compiled, non-public
-mod macros;
 mod own;
 mod traits;
+mod unwrap;
 
 /* re-exports */
 
 // always compiled, non-public
-pub use {macros::*, own::*, traits::*};
+pub use {own::*, traits::*, unwrap::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{macros::*, own::*, traits::*};
+    pub use super::{own::*, traits::*, unwrap::*};
 }
