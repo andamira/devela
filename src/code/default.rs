@@ -22,11 +22,11 @@ macro_rules! impl_cdef {
     (@<$A:ident> $def:expr => $t:ty) => {
         impl<$A> ConstDefault for $t { const DEFAULT: Self = $def; }
     };
-    // <A: BOUND>
-    (<$A:ident:$BOUND:ident> $def:expr => $($t:ty),+) => {
-        $( impl_cdef![@<$A:$BOUND> $def => $t]; )+
+    // <A: A_> (bounded)
+    (<$A:ident:$A_:ident> $def:expr => $($t:ty),+) => {
+        $( impl_cdef![@<$A:$A_> $def => $t]; )+
     };
-    (@<$A:ident:$BOUND:ident> $def:expr => $t:ty) => {
+    (@<$A:ident:$A_:ident> $def:expr => $t:ty) => {
         impl<$A: ConstDefault> ConstDefault for $t { const DEFAULT: Self = $def; }
     };
     // <A, B>
@@ -34,6 +34,13 @@ macro_rules! impl_cdef {
     (@<$A:ident, $B:ident> $def:expr => $t:ty) => {
         impl<$A, $B> ConstDefault for $t { const DEFAULT: Self = $def; }
     };
+    // <A: A_, B: B_> (bounded)
+    (<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $($t:ty),+) => {
+        $( impl_cdef![@<$A:$A_, $B:$B_> $def => $t]; )+ };
+    (@<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $t:ty) => {
+        impl<$A:$A_, $B:$B_> ConstDefault for $t { const DEFAULT: Self = $def; }
+    };
+
     // <A, B, C>
     (<$A:ident, $B:ident, $C:ident> $def:expr => $($t:ty),+) => {
         $( impl_cdef![@<$A, $B, $C> $def => $t]; )+
@@ -161,8 +168,8 @@ mod impl_core {
     impl_cdef![<T: ConstDefault> Self(T::DEFAULT) =>
         AssertUnwindSafe<T>, Reverse<T>, Saturating<T>, Wrapping<T>
     ];
-    impl_cdef![<T: ConstDefault> Some(T::DEFAULT) => Option<T>];
     impl_cdef![<T> Self => PhantomData<T>];
+    impl_cdef![<T: ConstDefault> Some(T::DEFAULT) => Option<T>];
 
     // WAIT: [exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
     // impl_cdef![<T> Self::new(T::DEFAULT) => Exclusive<T>];

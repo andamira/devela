@@ -6,6 +6,7 @@
 // - https://doc.rust-lang.org/stable/core/ascii/enum.Char.html
 // - WAIT: [ascii::Char](https://github.com/rust-lang/rust/issues/110998)
 
+use crate::code::ConstDefault;
 use core::fmt;
 #[cfg(feature = "unsafe_niche")]
 use core::mem::transmute;
@@ -55,10 +56,11 @@ use core::mem::transmute;
 /// [chart]: https://www.unicode.org/charts/PDF/U0000.pdf
 /// [NIST FIPS 1-2]: https://nvlpubs.nist.gov/nistpubs/Legacy/FIPS/fipspub1-2-1977.pdf
 /// [NamesList]: https://www.unicode.org/Public/15.0.0/ucd/NamesList.txt
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(Debug, Copy, Clone, Default, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[repr(u8)]
 pub enum AsciiChar {
     /// U+0000
+    #[default]
     Null = 0,
     /// U+0001
     StartOfHeading = 1,
@@ -585,4 +587,8 @@ impl fmt::Display for AsciiChar {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt::Display::fmt(&self.as_char(), f)
     }
+}
+
+impl ConstDefault for AsciiChar {
+    const DEFAULT: Self = AsciiChar::Null;
 }

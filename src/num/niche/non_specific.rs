@@ -7,7 +7,7 @@
 
 #![allow(unused)]
 
-use crate::code::paste;
+use crate::code::{paste, ConstDefault};
 use core::{fmt, num::*, str::FromStr};
 
 #[cfg(all(
@@ -58,6 +58,9 @@ macro_rules! impl_non_specific {
 
         #[doc = $doc " integer that is known not to equal its edgemost value ([`"
             $abs "`][" [<$s:lower $b>] "::" $abs "])."]
+        ///
+        /// Unlike the `NonSpecific*` types in general, this type alias implements
+        /// the [`Default`] and [`ConstDefault`][crate::code::ConstDefault] traits.
         pub type [<NonEdge $s:upper $b>] = [<$name $s:upper $b>]<{[<$s:lower $b>]::$abs}>;
 
         impl Default for [<NonEdge $s:upper $b>] {
@@ -69,10 +72,22 @@ macro_rules! impl_non_specific {
                 return [<NonEdge $s:upper $b>]::new([<$s:lower $b>]::default()).unwrap();
 
                 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
-                // SAFETY: the default numeric primitive values is always 0,
-                // and their maximum value is never 0.
+                // SAFETY: the default numeric primitive value is always 0, and their MAX is never 0.
                 unsafe { return [<NonEdge $s:upper $b>]::new_unchecked([<$s:lower $b>]::default()); }
             }
+        }
+
+        impl ConstDefault for [<NonEdge $s:upper $b>] {
+            /// # Features
+            /// Makes use of the `unsafe_niche` feature if enabled.
+            const DEFAULT: Self = {
+                #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
+                if let Some(v) = Self::new([<$s:lower $b>]::DEFAULT) { v } else { unreachable![] }
+
+                #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
+                // SAFETY: the default numeric primitive value is always 0, and their MAX is never 0.
+                unsafe { [<NonEdge $s:upper $b>]::new_unchecked([<$s:lower $b>]::DEFAULT) }
+            };
         }
 
         /* methods */

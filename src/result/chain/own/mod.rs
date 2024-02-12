@@ -231,6 +231,7 @@ pub struct Own<S, V> {
 mod core_impls {
     use {
         super::Own,
+        crate::code::ConstDefault,
         core::{cmp::Ordering, fmt},
     };
 
@@ -241,6 +242,12 @@ mod core_impls {
                 value: V::default(),
             }
         }
+    }
+    impl<S: ConstDefault, V: ConstDefault> ConstDefault for Own<S, V> {
+        const DEFAULT: Self = Self {
+            state: S::DEFAULT,
+            value: V::DEFAULT,
+        };
     }
 
     impl<S: fmt::Debug, V: fmt::Debug> fmt::Debug for Own<S, V> {

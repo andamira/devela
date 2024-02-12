@@ -57,6 +57,7 @@ impl<T: Copy> BareBox<T> {
 
 mod core_impls {
     use super::BareBox;
+    use crate::code::ConstDefault;
     use core::{cmp, fmt, hash, ops};
 
     impl<T> ops::Deref for BareBox<T> {
@@ -98,6 +99,10 @@ mod core_impls {
         fn default() -> Self {
             BareBox(T::default())
         }
+    }
+
+    impl<T: ConstDefault> ConstDefault for BareBox<T> {
+        const DEFAULT: Self = BareBox(T::DEFAULT);
     }
 
     impl<T: PartialEq> PartialEq for BareBox<T> {

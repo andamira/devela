@@ -6,7 +6,10 @@
 use super::{
     Char16, Char24, Char32, Char7, Char8, CharConversionError, NonEdgeU8, NonSurrogateU16, Result,
 };
-use crate::code::paste;
+use crate::{
+    code::{paste, ConstDefault},
+    result::unwrap,
+};
 use core::fmt;
 
 /* Default, Display, Debug */
@@ -16,11 +19,15 @@ macro_rules! core_impls {
         $( core_impls![@$name: $bits + $default]; )+
     };
     (@$name:ident: $bits:literal + $default:expr) => { paste! {
-        /// Returns the default value of `\x00` (nul character).
         impl Default for [<$name $bits>] {
+            /// Returns the default value of `\x00` (nul character).
             #[inline]
             #[must_use]
             fn default() -> Self { $default }
+        }
+        impl ConstDefault for [<$name $bits>] {
+            /// Returns the default value of `\x00` (nul character).
+            const DEFAULT: Self = $default;
         }
         impl fmt::Display for [<$name $bits>] {
             #[inline]
@@ -61,10 +68,10 @@ macro_rules! core_impls {
     }};
 }
 core_impls![Char:
-    7+Self(NonEdgeU8::new(0).unwrap()),
+    7+Self(unwrap![some NonEdgeU8::new(0)]),
     8+Self(0),
-    16+Self(NonSurrogateU16::new(0).unwrap()),
-    24+Self{ hi: NonEdgeU8::new(0).unwrap(), mi: 0, lo: 0 },
+    16+Self(unwrap![some NonSurrogateU16::new(0)]),
+    24+Self{ hi: unwrap![some NonEdgeU8::new(0)], mi: 0, lo: 0 },
     32+Self('\x00')
 ];
 
