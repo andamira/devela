@@ -5,24 +5,6 @@
 
 /// Initializes a `[$T; $LEN]` array in multiple ways.
 ///
-/// # Macro arms
-/// - `safe_init`: safe array initialization in the stack with an `$init` expression.
-/// - `safe_init_heap`: safe array initialization in the heap with an `$init` expression.
-/// - `unsafe_init`: unsafe array initialization in the stack with an `$init` expression.
-/// - `unsafe_init_heap`: unsafe array initialization in the heap with an `$init` expression.
-/// ---
-/// - `clone`: initialize an array in the stack by cloning `$element`.
-/// - `clone_heap`: initialize an array in the heap by cloning `$element`.
-/// - `default`: initialize an array in the stack with `$T::default()`.
-/// - `default_heap`: initialize an array in the heap with `$T::default()`.
-/// - `iter`: initialize an array in the stack with `$intoiter` and `$T::default()`
-///    for any remaining elements.
-/// - `iter_heap`: initialize an array in the heap with `$intoiter` and `$T::default()`
-///    for any remaining elements.
-/// ---
-/// - `preop`: initialize an array in the stack by applying `$op` (in safe it
-///   first clones `$pre`) propagating any errors from `$pre` or `$op`.
-///
 /// # Arguments
 /// - `[$T; $LEN]`: the array's elements' type and length.
 /// - `$init`: a function with an `usize` argument that returns `$T`.
@@ -54,13 +36,17 @@
 /// and the given `$fsafe` is disabled, it will use unsafe initialization.
 #[macro_export]
 macro_rules! array_init {
-    // Safe array initialization in the stack
-    (safe_init [$T:ty; $LEN:expr], $init:expr) => {{
+    (
+    // Safe array initialization in the stack:
+    safe_init [$T:ty; $LEN:expr], $init:expr) => {{
+
         #[allow(clippy::redundant_closure_call)]
         core::array::from_fn(|i| $init(i))
     }};
-    // safe array initialization in the heap
-    (safe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
+    (
+    // safe array initialization in the heap:
+    safe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
+
         let mut v = Vec::<$T>::with_capacity($LEN);
         for i in 0..$LEN {
             #[allow(clippy::redundant_closure_call)]
@@ -71,8 +57,10 @@ macro_rules! array_init {
         })
     }};
 
-    // unsafe array initialization in the stack
-    (unsafe_init [$T:ty; $LEN:expr], $init:expr) => {{
+    (
+    // unsafe array initialization in the stack:
+    unsafe_init [$T:ty; $LEN:expr], $init:expr) => {{
+
         // SAFETY: array will be fully initialized in the subsequent loop
         let mut arr: [core::mem::MaybeUninit<$T>; $LEN] =
             unsafe { core::mem::MaybeUninit::uninit().assume_init() };
@@ -87,8 +75,10 @@ macro_rules! array_init {
         // SAFETY: we've initialized all the elements
         unsafe { core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
     }};
-    // unsafe array initialization in the heap
-    (unsafe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
+    (
+    // unsafe array initialization in the heap:
+    unsafe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
+
         let mut v = Vec::<$T>::with_capacity($LEN);
         #[allow(clippy::redundant_closure_call)]
         for i in 0..$LEN { v.push($init(i)); }
@@ -100,39 +90,49 @@ macro_rules! array_init {
 
     // ---
 
-    // initialize an array in the stack by cloning $element
-    (clone [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $element:expr) => {{
+    (
+    // initialize an array in the stack by cloning $element:
+    clone [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $element:expr) => {{
+
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
         { array_init!(safe_init [$T; $LEN], |_| $element.clone()) }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
         { array_init!(unsafe_init [$T; $LEN], |_| $element.clone()) }
     }};
-    // initialize an array in the heap, by cloning $element
-    (clone_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $element:expr) => {{
+    (
+    // initialize an array in the heap, by cloning $element:
+    clone_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $element:expr) => {{
+
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
         { array_init!(safe_init_heap [$T; $LEN], |_| $element.clone()) }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
         { array_init!(unsafe_init_heap [$T; $LEN], |_| $element.clone()) }
     }};
 
-    // initialize an array in the stack with $T::default()
-    (default [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
+    (
+    // initialize an array in the stack with $T::default():
+    default [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
+
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
         { array_init!(safe_init [$T; $LEN], |_| <$T>::default()) }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
         { array_init!(unsafe_init [$T; $LEN], |_| <$T>::default()) }
     }};
-    // initialize an array in the heap, with $T::default()
-    (default_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
+    (
+    // initialize an array in the heap, with $T::default():
+    default_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
+
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
         { array_init!(safe_init_heap [$T; $LEN], |_| <$T>::default()) }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
         { array_init!(unsafe_init_heap [$T; $LEN], |_| <$T>::default()) }
     }};
 
+    (
     // initialize an array in the stack with an IntoIterator<Item = $T> and with
     // $T::default() in case the iterator length is < $LEN, for the remaining elements.
-    (iter [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $intoiter:expr) => {{
+    iter [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $intoiter:expr) => {{
+
         let mut iterator = $intoiter.into_iter();
         let mut init_closure = |_| {
             if let Some(e) = iterator.next() { e } else { <$T>::default() }
@@ -143,9 +143,11 @@ macro_rules! array_init {
         { array_init!(unsafe_init [$T; $LEN], init_closure) }
     }};
 
+    (
     // initialize an array in the heap with an IntoIterator<Item = $T> and with
     // $T::default() in case the iterator length is < $LEN, for the remaining elements.
-    (iter_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $intoiter:expr) => {{
+    iter_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $intoiter:expr) => {{
+
         let mut iterator = $intoiter.into_iter();
         let mut init_closure = |_| {
             if let Some(e) = iterator.next() { e } else { <$T>::default() }
@@ -158,9 +160,11 @@ macro_rules! array_init {
 
     // ---
 
+    (
     // initialize an array by applying $op (in safe mode it first clones $pre)
     // and propagates errors both from $pre and $op.
-    (preop [$T:ty; $LEN:expr]?, $fsafe:literal, $funsafe:literal, $pre:expr, $op:expr) => {{
+    preop [$T:ty; $LEN:expr]?, $fsafe:literal, $funsafe:literal, $pre:expr, $op:expr) => {{
+
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
         {
             let init_value = $pre?; // error prone initial value
