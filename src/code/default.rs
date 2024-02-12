@@ -125,6 +125,9 @@ mod impl_core {
     impl_cdef![arrays <T: ConstDefault> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
     13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
 
+    impl_cdef![<T> core::ptr::null() => *const T];
+    impl_cdef![<T> core::ptr::null_mut() => *mut T];
+
     impl_cdef![<T> &[] => &[T]];
     // WAIT: [const_mut_refs](https://github.com/rust-lang/rust/issues/57349)
     // impl_cdef![<T> &mut [] => &mut [T]];

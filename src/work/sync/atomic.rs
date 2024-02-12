@@ -156,7 +156,7 @@ mod impl_const_default_for_portable_atomic {
     impl_cdef![Self::new(u32::DEFAULT) => super::AtomicU32];
     impl_cdef![Self::new(u64::DEFAULT) => super::AtomicU64];
     impl_cdef![Self::new(usize::DEFAULT) => super::AtomicUsize];
-    impl_cdef![<T> Self::new(core::ptr::null_mut()) => super::AtomicPtr<T>];
+    impl_cdef![<T> Self::new(<*mut T>::DEFAULT) => super::AtomicPtr<T>];
 }
 #[cfg(not(any(feature = "dep", feature = "portable-atomic")))]
 mod impl_const_default_for_core {
@@ -180,5 +180,5 @@ mod impl_const_default_for_core {
     #[cfg(target_has_atomic = "ptr")]
     impl_cdef![Self::new(usize::DEFAULT) => super::AtomicUsize];
     #[cfg(target_has_atomic = "ptr")]
-    impl_cdef![<T> Self::new(core::ptr::null_mut()) => super::AtomicPtr<T>];
+    impl_cdef![<T> Self::new(<*mut T>::DEFAULT) => super::AtomicPtr<T>];
 }
