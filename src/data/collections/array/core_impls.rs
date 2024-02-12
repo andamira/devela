@@ -4,6 +4,7 @@
 //
 
 use crate::{
+    code::ConstDefault,
     data::{array_init, Array},
     mem::{Bare, BareBox, Storage},
 };
@@ -136,6 +137,16 @@ impl<T: Default, const LEN: usize> Default for Array<T, Bare, LEN> {
         let array = BareBox::new(array_init!(default [T; LEN], "safe_data", "unsafe_array"));
         Array { array }
     }
+}
+// S:Bare + T:ConstDefault
+impl<T: ConstDefault, const LEN: usize> ConstDefault for Array<T, Bare, LEN> {
+    /// Returns an empty array, allocated in the stack,
+    /// using the default value to fill the remaining free data.
+    const DEFAULT: Self = {
+        Array {
+            array: BareBox::new([T::DEFAULT; LEN]),
+        }
+    };
 }
 
 // S:Boxed + T:Default
