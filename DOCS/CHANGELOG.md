@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add `no_std` reimplementations of `std::error` and `std::io` types and traits.
 - add non-optional dependency `either` and reexport `Either` type and functions.
 - add examples: `cargo-script`, `bitfield`, `enumset`.
-- add macros: `assert_eq_all`, `assert_approx_eq_all`.
+- add macros: `assert_eq_all`, `assert_approx_eq_all`, `unwrap`.
 - add niche number aliases: `NonEdge*`.
 - add `Bare` type alias of `unit`.
 - add script `tools/rustfmt` and `rustfmt_excluded_files` list.
@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Removed
 - remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
 - remove `IntBuf` type and `IntBufAble` trait.
+- remove re-exported macro: `option_unwrap`.
 - remove type aliases: `NonMax*` `NonMin*.
 - remove file `.gitattributes`.
 
@@ -51,8 +52,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename the feature `full` to `all`.
 - rename `FloatOps` to `ExtFloat`.
 - document selected examples from `_docs`.
-- recreate the `pre-commit` script to leverage `rustfmt`.
+- derive common traits for `Boxed`, `Primiting`.
 - make `bitfield` and `enumset` examples standalone.
+- recreate the `pre-commit` script to leverage `rustfmt`.
 - update `enumset`: rename `LEN` associated constant to `ENUM_VARIANTS`, and add `enum_variants` method.
 - update the `cdbg` macro with column number.
 - update the `array_init` macro syntax.
