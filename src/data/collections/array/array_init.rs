@@ -1,6 +1,6 @@
-// devela::data::collections::array::always
+// devela::data::collections::array::array_init
 //
-//! Array functionality always available for internal use.
+//!
 //
 
 /// Initializes a `[$T; $LEN]` array in multiple ways.
@@ -8,36 +8,41 @@
 /// # Arguments
 /// - `[$T; $LEN]`: the array's elements' type and length.
 /// - `$init`: a function with an `usize` argument that returns `$T`.
+/// - `$const_init`: a const fn with an `usize` argument that returns `$T: Copy`.
+/// - `$copiable`: an expression that returns an element of type `$T: Copy`.
+/// - `$clonable`: an expression that returns an element of type `$T: Clone`.
 /// - `$fsafe`: the name of a feature that forbids the use of `unsafe`.
 /// - `$funsafe`: the name of a feature that enables the use of `unsafe`.
-/// - `$element`: a clonable element of type `$T`.
 /// - `$intoiter`: an item that implements [`IntoIterator`].
-/// - `$element`: a clonable element of type `$T`.
 ///
 /// # Examples
 /// ```
-/// use devela::data::array_init;
+/// # use devela::data::array_init;
+/// assert_eq![[2,4,6], array_init![safe_init [i32; 3], |n| (n as i32 + 1) * 2]];
+/// #[cfg(feature = "unsafe_array")]
+/// assert_eq![[3,6,9], array_init![unsafe_init [i32; 3], |n| (n as i32 + 1) * 3]];
 ///
-/// assert_eq![[7,7,7], array_init![safe_init [i32; 3], |_| 7]];
-/// #[cfg(all(not(feature = "safe"), feature = "unsafe"))]
-/// assert_eq![[7,7,7], array_init![unsafe_init [i32; 3], |_| 7]];
+/// const fn init(n: usize) -> i32 { (n as i32 + 1) * 4 }
+/// const ARRAY: [i32; 3] = array_init![const_init [i32; 3], "safe", "unsafe_array", init, 0];
+/// assert_eq![[4, 8, 12], ARRAY];
 ///
-/// assert_eq![[7,7,7], array_init![clone [i32; 3], "safe", "unsafe",  7]];
-/// assert_eq![[0,0,0], array_init![default [i32; 3], "safe", "unsafe"]];
-/// assert_eq![[4,5,6], array_init![iter [i32; 3], "safe", "unsafe", vec![4,5,6,7,8]]];
-/// assert_eq![[4,0,0], array_init![iter [i32; 3], "safe", "unsafe", vec![4]]];
+/// assert_eq![[7,7,7], array_init![clone [i32; 3], "safe", "unsafe_array", 7]];
+/// assert_eq![[0,0,0], array_init![default [i32; 3], "safe", "unsafe_array"]];
+/// assert_eq![[4,5,6], array_init![iter [i32; 3], "safe", "unsafe_array", vec![4,5,6,7,8]]];
+/// assert_eq![[4,0,0], array_init![iter [i32; 3], "safe", "unsafe_array", vec![4]]];
 /// ```
 ///
 /// # Features
 /// The unsafe version uses [`MaybeUninit`][core::mem::MaybeUninit] in the case
 /// of stack allocation or [`Box::from_raw`] in the case of heap allocation.
 ///
-/// For `clone`, `default` and `iter` versions, if the given `$funsafe` is enabled
-/// and the given `$fsafe` is disabled, it will use unsafe initialization.
+/// For the `const_init`, `clone`, `default` and `iter` versions, if the given
+/// `$funsafe` is enabled and the given `$fsafe` is disabled, it will use unsafe
+/// initialization.
 #[macro_export]
 macro_rules! array_init {
     (
-    // Safe array initialization in the stack:
+    // safe array initialization in the stack:
     safe_init [$T:ty; $LEN:expr], $init:expr) => {{
 
         #[allow(clippy::redundant_closure_call)]
@@ -57,7 +62,8 @@ macro_rules! array_init {
         })
     }};
 
-    (
+   (
+    //
     // unsafe array initialization in the stack:
     unsafe_init [$T:ty; $LEN:expr], $init:expr) => {{
 
@@ -88,47 +94,91 @@ macro_rules! array_init {
         unsafe { Box::from_raw(raw_slice as *mut [$T; $LEN]) }
     }};
 
+    (
+    //
+    // safe array initialization in the stack, compile-time friendly.
+    safe_const_init [$T:ty; $LEN:expr], $const_init:expr, $copiable:expr) => {{
+
+        let mut arr: [$T; $LEN] = [$copiable; $LEN];
+        let mut i = 0;
+        while i < $LEN {
+            // WAIT: [const_closures](https://github.com/rust-lang/rust/issues/106003)
+            arr[i] = $const_init(i);
+            i += 1;
+        }
+        arr
+    }};
+    (
+    // unsafe array initialization in the stack, compile-time friendly.
+    unsafe_const_init [$T:ty; $LEN:expr], $const_init:expr) => {{
+
+        // WAIT: [maybe_uninit_uninit_array](https://github.com/rust-lang/rust/issues/96097)
+        // SAFETY: array will be fully initialized in the subsequent loop
+        let mut arr: [core::mem::MaybeUninit<$T>; $LEN] =
+            unsafe { core::mem::MaybeUninit::uninit().assume_init() };
+        let mut i = 0;
+        while i < $LEN {
+            arr[i] = core::mem::MaybeUninit::new($const_init(i));
+            i += 1;
+        }
+        // SAFETY: we've initialized all the elements
+        unsafe { core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
+    }};
+    (
+    // initialize an array the stack, compile-time friendly.
+    // $copiable is only used by the safe version as temporary placeholder.
+    const_init [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $const_init:expr, $copiable:expr) => {{
+
+        #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
+        { array_init![safe_const_init [$T; $LEN], $const_init, $copiable] }
+        #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
+        { array_init![unsafe_const_init [$T; $LEN], $const_init ] }
+    }};
+
     // ---
 
     (
-    // initialize an array in the stack by cloning $element:
-    clone [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $element:expr) => {{
+    //
+    // initialize an array in the stack by cloning $clonable:
+    clone [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $clonable:expr) => {{
 
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init!(safe_init [$T; $LEN], |_| $element.clone()) }
+        { array_init![safe_init [$T; $LEN], |_| $clonable.clone()] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init!(unsafe_init [$T; $LEN], |_| $element.clone()) }
+        { array_init![unsafe_init [$T; $LEN], |_| $clonable.clone()] }
     }};
     (
-    // initialize an array in the heap, by cloning $element:
-    clone_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $element:expr) => {{
+    // initialize an array in the heap, by cloning $clonable:
+    clone_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $clonable:expr) => {{
 
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init!(safe_init_heap [$T; $LEN], |_| $element.clone()) }
+        { array_init![safe_init_heap [$T; $LEN], |_| $clonable.clone()] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init!(unsafe_init_heap [$T; $LEN], |_| $element.clone()) }
+        { array_init![unsafe_init_heap [$T; $LEN], |_| $clonable.clone()] }
     }};
 
     (
+    //
     // initialize an array in the stack with $T::default():
     default [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
 
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init!(safe_init [$T; $LEN], |_| <$T>::default()) }
+        { array_init![safe_init [$T; $LEN], |_| <$T>::default()] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init!(unsafe_init [$T; $LEN], |_| <$T>::default()) }
+        { array_init![unsafe_init [$T; $LEN], |_| <$T>::default()] }
     }};
     (
     // initialize an array in the heap, with $T::default():
     default_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
 
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init!(safe_init_heap [$T; $LEN], |_| <$T>::default()) }
+        { array_init![safe_init_heap [$T; $LEN], |_| <$T>::default()] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init!(unsafe_init_heap [$T; $LEN], |_| <$T>::default()) }
+        { array_init![unsafe_init_heap [$T; $LEN], |_| <$T>::default()] }
     }};
 
     (
+    //
     // initialize an array in the stack with an IntoIterator<Item = $T> and with
     // $T::default() in case the iterator length is < $LEN, for the remaining elements.
     iter [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $intoiter:expr) => {{
@@ -138,9 +188,9 @@ macro_rules! array_init {
             if let Some(e) = iterator.next() { e } else { <$T>::default() }
         };
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init!(safe_init [$T; $LEN], init_closure) }
+        { array_init![safe_init [$T; $LEN], init_closure] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init!(unsafe_init [$T; $LEN], init_closure) }
+        { array_init![unsafe_init [$T; $LEN], init_closure] }
     }};
 
     (
@@ -153,9 +203,9 @@ macro_rules! array_init {
             if let Some(e) = iterator.next() { e } else { <$T>::default() }
         };
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
-        { array_init!(safe_init_heap [$T; $LEN], init_closure) }
+        { array_init![safe_init_heap [$T; $LEN], init_closure] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
-        { array_init!(unsafe_init_heap [$T; $LEN], init_closure) }
+        { array_init![unsafe_init_heap [$T; $LEN], init_closure] }
     }};
 
     // ---

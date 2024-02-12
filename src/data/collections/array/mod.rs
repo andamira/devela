@@ -11,7 +11,7 @@
 /* modules */
 
 // always compiled, non-public
-mod always;
+mod array_init;
 mod definitions;
 
 // always compiled, non-public, nothing to re-export
@@ -21,10 +21,10 @@ mod methods;
 /* re-export */
 
 // always compiled, non-public
-pub use {always::*, definitions::*};
+pub use {array_init::*, definitions::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{always::*, definitions::*};
+    pub use super::{array_init::*, definitions::*};
 }
