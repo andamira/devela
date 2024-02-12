@@ -219,7 +219,7 @@ impl<S: Copy, V: Copy> Own<Option<S>, V> {
     /// # Panics
     /// Panics if the state is `None`.
     #[inline]
-    pub const fn const_state_some_state(self) -> S {
+    pub const fn state_some_state(self) -> S {
         match self.state {
             Some(state) => state,
             None => panic![],
@@ -230,7 +230,7 @@ impl<S: Copy, V: Copy> Own<Option<S>, V> {
     /// # Panics
     /// Panics if the state is `None`.
     #[inline]
-    pub const fn const_state_some_state_or(self, message: &'static str) -> S {
+    pub const fn state_some_state_or(self, message: &'static str) -> S {
         match self.state {
             Some(state) => state,
             None => panic!["{}", message],
@@ -241,7 +241,7 @@ impl<S: Copy, V: Copy> Own<Option<S>, V> {
     /// # Panics
     /// Panics if the value is `None`.
     #[inline]
-    pub const fn const_state_some_value(self) -> V {
+    pub const fn state_some_value(self) -> V {
         match self.state {
             Some(_) => self.value,
             None => panic![],
@@ -252,7 +252,7 @@ impl<S: Copy, V: Copy> Own<Option<S>, V> {
     /// # Panics
     /// Panics if the value is `None`.
     #[inline]
-    pub const fn const_state_some_value_or(self, message: &'static str) -> V {
+    pub const fn state_some_value_or(self, message: &'static str) -> V {
         match self.state {
             Some(_) => self.value,
             None => panic!["{}", message],
@@ -264,7 +264,7 @@ impl<S: Copy, V: Copy> Own<Option<S>, V> {
     /// # Panics
     /// Panics if the state is `Some`.
     #[inline]
-    pub const fn const_state_none_value_or(self, message: &'static str) -> V {
+    pub const fn state_none_value_or(self, message: &'static str) -> V {
         match self.state {
             None => self.value,
             Some(_) => panic!["{}", message],

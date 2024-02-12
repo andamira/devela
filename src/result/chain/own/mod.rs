@@ -60,7 +60,7 @@ mod option_value;
 /// - [`Own<S: Copy, V: Copy>`](#impl-Own<S,+V>-1):
 ///
 /// [`const_into_tuple`](#method.const_into_tuple),
-/// [`state_into_option`](#method.state_into_option),
+/// [`const_state_into_option`](#method.const_state_into_option),
 /// [`const_state_into_result`](#method.const_state_into_result),
 /// [`const_value_into_option`](#method.const_value_into_option),
 /// [`const_value_into_result`](#method.const_value_into_result),
@@ -96,14 +96,14 @@ mod option_value;
 ///
 /// - [`Own<Result<S: Copy, E: Copy>, V: Copy>`](#impl-Own<Result<S,+E>,+V>-1):
 ///
-/// [`const_state_ok_state`](#method.const_state_ok_state),
-/// [`const_state_ok_state_or`](#method.const_state_ok_state_or),
-/// [`const_state_ok_value`](#method.const_state_ok_value),
-/// [`const_state_ok_value_or`](#method.const_state_ok_value_or),
-/// [`const_state_err_state`](#method.const_state_err_state),
-/// [`const_state_err_state_or`](#method.const_state_err_state_or),
-/// [`const_state_err_value`](#method.const_state_err_value),
-/// [`const_state_err_value_or`](#method.const_state_err_value_or),
+/// [`state_ok_state`](#method.state_ok_state),
+/// [`state_ok_state_or`](#method.state_ok_state_or),
+/// [`state_ok_value`](#method.state_ok_value),
+/// [`state_ok_value_or`](#method.state_ok_value_or),
+/// [`state_err_state`](#method.state_err_state),
+/// [`state_err_state_or`](#method.state_err_state_or),
+/// [`state_err_value`](#method.state_err_value),
+/// [`state_err_value_or`](#method.state_err_value_or),
 /// [`const_state_unwrap`](#method.const_state_unwrap),
 /// [`const_state_unwrap_or`](#method.const_state_unwrap_or),
 /// [`const_state_expect`](#method.const_state_expect),
@@ -136,14 +136,14 @@ mod option_value;
 ///
 /// - [`Own<S: Copy, Result<V: Copy, E: Copy>>`](#impl-Own<S,+Result<V,+E>>-1):
 ///
-/// [`const_value_ok_state`](#method.const_value_ok_state),
-/// [`const_value_ok_state_or`](#method.const_value_ok_state_or),
-/// [`const_value_ok_value`](#method.const_value_ok_value),
-/// [`const_value_ok_value_or`](#method.const_value_ok_value_or),
-/// [`const_value_err_state`](#method.const_value_err_state),
-/// [`const_value_err_state_or`](#method.const_value_err_state_or),
-/// [`const_value_err_value`](#method.const_value_err_value),
-/// [`const_value_err_value_or`](#method.const_value_err_value_or),
+/// [`value_ok_state`](#method.value_ok_state),
+/// [`value_ok_state_or`](#method.value_ok_state_or),
+/// [`value_ok_value`](#method.value_ok_value),
+/// [`value_ok_value_or`](#method.value_ok_value_or),
+/// [`value_err_state`](#method.value_err_state),
+/// [`value_err_state_or`](#method.value_err_state_or),
+/// [`value_err_value`](#method.value_err_value),
+/// [`value_err_value_or`](#method.value_err_value_or),
 /// [`const_value_unwrap`](#method.const_value_unwrap),
 /// [`const_value_unwrap_or`](#method.const_value_unwrap_or),
 /// [`const_value_expect_const`](#method.const_value_expect_const),
@@ -174,11 +174,11 @@ mod option_value;
 ///
 /// - [`Own<S: Copy, Option<V: Copy>>`](#impl-Own<Option<S>,+V>-1):
 ///
-/// [`const_state_some_state`](#method.const_state_some_state),
-/// [`const_state_some_state_or`](#method.const_state_some_state_or),
-/// [`const_state_some_value`](#method.const_state_some_value),
-/// [`const_state_some_value_or`](#method.const_state_some_value_or),
-/// [`const_state_none_value_or`](#method.const_state_none_value_or),
+/// [`state_some_state`](#method.state_some_state),
+/// [`state_some_state_or`](#method.state_some_state_or),
+/// [`state_some_value`](#method.state_some_value),
+/// [`state_some_value_or`](#method.state_some_value_or),
+/// [`state_none_value_or`](#method.state_none_value_or),
 /// [`const_state_unwrap`](#method.const_state_unwrap-1),
 /// [`const_state_unwrap_or`](#method.const_state_unwrap_or-1),
 /// [`const_state_expect`](#method.const_state_expect-1),
@@ -209,12 +209,12 @@ mod option_value;
 ///
 /// - [`Own<S: Copy, Option<V: Copy>>`](#impl-Own<S,+Option<V>>-1):
 ///
-/// [`const_state_some`](#method.const_state_some),
-/// [`const_value_some_state_or`](#method.const_value_some_state_or),
-/// [`const_value_some_value`](#method.const_value_some_value),
-/// [`const_value_some_value_or`](#method.const_value_some_value_or),
-/// [`const_value_none_state`](#method.const_value_none_state),
-/// [`const_value_none_state_or`](#method.const_value_none_state_or),
+/// [`value_some_state`](#method.value_some_state),
+/// [`value_some_state_or`](#method.value_some_state_or),
+/// [`value_some_value`](#method.value_some_value),
+/// [`value_some_value_or`](#method.value_some_value_or),
+/// [`value_none_state`](#method.value_none_state),
+/// [`value_none_state_or`](#method.value_none_state_or),
 /// [`const_value_unwrap`](#method.const_value_unwrap-1),
 /// [`const_value_unwrap_or`](#method.const_value_unwrap_or-1),
 /// [`const_value_expect`](#method.const_value_expect-1),

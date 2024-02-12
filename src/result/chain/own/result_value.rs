@@ -242,7 +242,7 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Err`.
     #[inline]
-    pub const fn const_value_ok_state(self) -> S {
+    pub const fn value_ok_state(self) -> S {
         match self.value {
             Ok(_) => self.state,
             Err(_) => panic![],
@@ -253,7 +253,7 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Err`.
     #[inline]
-    pub const fn const_value_ok_state_or(self, message: &'static str) -> S {
+    pub const fn value_ok_state_or(self, message: &'static str) -> S {
         match self.value {
             Ok(_) => self.state,
             Err(_) => panic!["{}", message],
@@ -264,7 +264,7 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Err`.
     #[inline]
-    pub const fn const_value_ok_value(self) -> V {
+    pub const fn value_ok_value(self) -> V {
         match self.value {
             Ok(v) => v,
             Err(_) => panic![],
@@ -275,7 +275,7 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Err`.
     #[inline]
-    pub const fn const_value_ok_value_or(self, message: &'static str) -> V {
+    pub const fn value_ok_value_or(self, message: &'static str) -> V {
         match self.value {
             Ok(v) => v,
             Err(_) => panic!["{}", message],
@@ -287,7 +287,7 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Ok`.
     #[inline]
-    pub const fn const_value_err_state(self) -> S {
+    pub const fn value_err_state(self) -> S {
         match self.value {
             Err(_) => self.state,
             Ok(_) => panic![],
@@ -298,7 +298,7 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Ok`.
     #[inline]
-    pub const fn const_value_err_state_or(self, message: &'static str) -> S {
+    pub const fn value_err_state_or(self, message: &'static str) -> S {
         match self.value {
             Err(_) => self.state,
             Ok(_) => panic!["{}", message],
@@ -309,7 +309,7 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Ok`.
     #[inline]
-    pub const fn const_value_err_value(self) -> E {
+    pub const fn value_err_value(self) -> E {
         match self.value {
             Err(e) => e,
             Ok(_) => panic![],
@@ -320,7 +320,7 @@ impl<S: Copy, V: Copy, E: Copy> Own<S, Result<V, E>> {
     /// # Panics
     /// Panics if the value is `Ok`.
     #[inline]
-    pub const fn const_value_err_value_or(self, message: &'static str) -> E {
+    pub const fn value_err_value_or(self, message: &'static str) -> E {
         match self.value {
             Err(e) => e,
             Ok(_) => panic!["{}", message],

@@ -241,7 +241,7 @@ impl<S: Copy, E: Copy, V: Copy> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Err`.
     #[inline]
-    pub const fn const_state_ok_state(self) -> S {
+    pub const fn state_ok_state(self) -> S {
         match self.state {
             Ok(state) => state,
             Err(_) => panic![],
@@ -252,7 +252,7 @@ impl<S: Copy, E: Copy, V: Copy> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Err`.
     #[inline]
-    pub const fn const_state_ok_state_or(self, message: &'static str) -> S {
+    pub const fn state_ok_state_or(self, message: &'static str) -> S {
         match self.state {
             Ok(state) => state,
             Err(_) => panic!["{}", message],
@@ -263,7 +263,7 @@ impl<S: Copy, E: Copy, V: Copy> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Err`.
     #[inline]
-    pub const fn const_state_ok_value(self) -> V {
+    pub const fn state_ok_value(self) -> V {
         match self.state {
             Ok(_) => self.value,
             Err(_) => panic![],
@@ -274,7 +274,7 @@ impl<S: Copy, E: Copy, V: Copy> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Err`.
     #[inline]
-    pub const fn const_state_ok_value_or(self, message: &'static str) -> V {
+    pub const fn state_ok_value_or(self, message: &'static str) -> V {
         match self.state {
             Ok(_) => self.value,
             Err(_) => panic!["{}", message],
@@ -286,7 +286,7 @@ impl<S: Copy, E: Copy, V: Copy> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Ok`.
     #[inline]
-    pub const fn const_state_err_state(self) -> E {
+    pub const fn state_err_state(self) -> E {
         match self.state {
             Err(state) => state,
             Ok(_) => panic![],
@@ -297,7 +297,7 @@ impl<S: Copy, E: Copy, V: Copy> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Ok`.
     #[inline]
-    pub const fn const_state_err_state_or(self, message: &'static str) -> E {
+    pub const fn state_err_state_or(self, message: &'static str) -> E {
         match self.state {
             Err(state) => state,
             Ok(_) => panic!["{}", message],
@@ -308,7 +308,7 @@ impl<S: Copy, E: Copy, V: Copy> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Ok`.
     #[inline]
-    pub const fn const_state_err_value(self) -> V {
+    pub const fn state_err_value(self) -> V {
         match self.state {
             Err(_) => self.value,
             Ok(_) => panic![],
@@ -319,7 +319,7 @@ impl<S: Copy, E: Copy, V: Copy> Own<Result<S, E>, V> {
     /// # Panics
     /// Panics if the state is `Ok`.
     #[inline]
-    pub const fn const_state_err_value_or(self, message: &'static str) -> V {
+    pub const fn state_err_value_or(self, message: &'static str) -> V {
         match self.state {
             Err(_) => self.value,
             Ok(_) => panic!["{}", message],

@@ -53,9 +53,9 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{DataResult, DataError, Own, Stack};
     /// const S: Stack<i32, (), 2> = Stack::new_copied(0)
-    ///     .own_push(1).const_value_ok_state()
-    ///     .own_push(2).const_value_ok_state()
-    ///     .own_push(3).const_value_err_state();
+    ///     .own_push(1).value_ok_state()
+    ///     .own_push(2).value_ok_state()
+    ///     .own_push(3).value_err_state();
     /// assert_eq![S.as_slice(), &[1, 2]];
     /// assert![S.own_push(3).value.is_err_and(|e| matches![e, DataError::NotEnoughSpace(_)])];
     /// ```
@@ -186,10 +186,10 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 2> =
-    ///     Stack::from_array_const([1, 2]).own_drop().const_value_ok_state();
+    ///     Stack::from_array_const([1, 2]).own_drop().value_ok_state();
     /// assert_eq![S.as_slice(), &[1]];
     ///
-    /// const T: Stack<i32, (), 2> = Stack::new_copied(0).own_drop().const_value_err_state();
+    /// const T: Stack<i32, (), 2> = Stack::new_copied(0).own_drop().value_err_state();
     /// assert![T.is_empty()];
     /// ```
     #[inline]
@@ -228,7 +228,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 4> =
-    ///     Stack::from_array_const([1, 2, 3, 4]).own_drop_n(3).const_value_ok_state();
+    ///     Stack::from_array_const([1, 2, 3, 4]).own_drop_n(3).value_ok_state();
     /// assert_eq![S.as_slice(), &[1]];
     /// ```
     #[inline]
@@ -270,11 +270,11 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2])
-    ///     .own_nip().const_value_ok_state();
+    ///     .own_nip().value_ok_state();
     /// assert_eq![S.as_slice(), &[2]];
     ///
     /// const T: Stack<i32, (), 2> = Stack::new_copied(0)
-    ///     .own_push(1).const_value_ok_state().own_nip().const_value_err_state();
+    ///     .own_push(1).value_ok_state().own_nip().value_err_state();
     /// assert_eq![T.as_slice(), &[1]];
     /// ```
     #[inline]
@@ -315,7 +315,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_nip2().const_value_ok_state();
+    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_nip2().value_ok_state();
     /// assert_eq![S.as_slice(), &[3, 4]];
     /// ```
     #[inline]
@@ -359,10 +359,10 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{DataResult, Own, Stack};
-    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_swap().const_value_ok_state();
+    /// const S: Stack<i32, (), 2> = Stack::from_array_const([1, 2]).own_swap().value_ok_state();
     /// assert_eq![S.as_slice(), &[2, 1]];
     ///
-    /// const T: Stack<i32, (), 1> = Stack::from_array_const([1]).own_swap().const_value_err_state();
+    /// const T: Stack<i32, (), 1> = Stack::from_array_const([1]).own_swap().value_err_state();
     /// assert_eq![T.as_slice(), &[1]];
     /// ```
     #[inline]
@@ -400,10 +400,10 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_swap2().const_value_ok_state();
+    /// const S: Stack<i32, (), 4> = Stack::from_array_const([1, 2, 3, 4]).own_swap2().value_ok_state();
     /// assert_eq![S.as_slice(), &[3, 4, 1, 2]];
     ///
-    /// const T: Stack<i32, (), 3> = Stack::from_array_const([1, 2, 3]).own_swap2().const_value_err_state();
+    /// const T: Stack<i32, (), 3> = Stack::from_array_const([1, 2, 3]).own_swap2().value_err_state();
     /// assert_eq![T.as_slice(), &[1, 2, 3]];
     /// ```
     #[inline]
@@ -445,7 +445,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// # Examples
     /// ```
     /// # use devela::all::{Own, Stack};
-    /// const S: Stack<i32, (), 4> = Stack::from_array_const([0, 1, 2, 3]).own_rot().const_value_ok_state();
+    /// const S: Stack<i32, (), 4> = Stack::from_array_const([0, 1, 2, 3]).own_rot().value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 2, 3, 1]];
     /// ```
     #[inline]
@@ -492,7 +492,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 4> = Stack::from_array_const([0, 1, 2, 3])
-    ///     .own_rot_cc().const_value_ok_state();
+    ///     .own_rot_cc().value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 3, 1, 2]];
     /// ```
     #[inline]
@@ -538,7 +538,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 7> =
-    ///     Stack::from_array_const([0, 1, 2, 3, 4, 5, 6]).own_rot2().const_value_ok_state();
+    ///     Stack::from_array_const([0, 1, 2, 3, 4, 5, 6]).own_rot2().value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 3, 4, 5, 6, 1, 2]];
     /// ```
     #[inline]
@@ -589,7 +589,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 7> =
-    ///     Stack::from_array_const([0, 1, 2, 3, 4, 5, 6]).own_rot2_cc().const_value_ok_state();
+    ///     Stack::from_array_const([0, 1, 2, 3, 4, 5, 6]).own_rot2_cc().value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 5, 6, 1, 2, 3, 4]];
     /// ```
     #[inline]
@@ -642,7 +642,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 3> = Stack::new_copied(0)
-    ///     .own_push(1).state.own_dup().const_value_ok_state();
+    ///     .own_push(1).state.own_dup().value_ok_state();
     /// assert_eq![S.as_slice(), &[1, 1]];
     /// ```
     #[inline]
@@ -687,7 +687,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 6> = Stack::from_array_const([0, 1, 2, 0, 0, 0])
-    ///     .own_drop_n(3).state.own_dup2().const_value_ok_state();
+    ///     .own_drop_n(3).state.own_dup2().value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 1, 2, 1, 2]];
     /// ```
     #[inline]
@@ -739,7 +739,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 4> =
-    ///     Stack::from_array_const([0, 1, 2, 0]).own_drop().state.own_over().const_value_ok_state();
+    ///     Stack::from_array_const([0, 1, 2, 0]).own_drop().state.own_over().value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 1, 2, 1]];
     /// ```
     #[inline]
@@ -786,7 +786,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 7> = Stack::from_array_const([0, 1, 2, 3, 4, 0, 0])
-    ///     .own_drop_n(2).state.own_over2().const_value_ok_state();
+    ///     .own_drop_n(2).state.own_over2().value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
     /// ```
     #[inline]
@@ -838,7 +838,7 @@ impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP> {
     /// ```
     /// # use devela::all::{Own, Stack};
     /// const S: Stack<i32, (), 4> =
-    ///     Stack::from_array_const([0, 1, 2, 0]).own_drop().state.own_tuck().const_value_ok_state();
+    ///     Stack::from_array_const([0, 1, 2, 0]).own_drop().state.own_tuck().value_ok_state();
     /// assert_eq![S.as_slice(), &[0, 2, 1, 2]];
     /// ```
     #[inline]

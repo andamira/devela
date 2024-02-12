@@ -219,7 +219,7 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     /// # Panics
     /// Panics if the value is `None`.
     #[inline]
-    pub const fn const_state_some(self) -> S {
+    pub const fn value_some_state(self) -> S {
         match self.value {
             Some(_) => self.state,
             None => panic![],
@@ -230,7 +230,7 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     /// # Panics
     /// Panics if the value is `None`.
     #[inline]
-    pub const fn const_value_some_state_or(self, message: &'static str) -> S {
+    pub const fn value_some_state_or(self, message: &'static str) -> S {
         match self.value {
             Some(_) => self.state,
             None => panic!["{}", message],
@@ -241,7 +241,7 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     /// # Panics
     /// Panics if the value is `None`.
     #[inline]
-    pub const fn const_value_some_value(self) -> V {
+    pub const fn value_some_value(self) -> V {
         match self.value {
             Some(v) => v,
             None => panic![],
@@ -252,7 +252,7 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     /// # Panics
     /// Panics if the value is `None`.
     #[inline]
-    pub const fn const_value_some_value_or(self, message: &'static str) -> V {
+    pub const fn value_some_value_or(self, message: &'static str) -> V {
         match self.value {
             Some(v) => v,
             None => panic!["{}", message],
@@ -264,7 +264,7 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     /// # Panics
     /// Panics if the value is `Some`.
     #[inline]
-    pub const fn const_value_none_state(self) -> S {
+    pub const fn value_none_state(self) -> S {
         match self.value {
             None => self.state,
             Some(_) => panic![],
@@ -275,7 +275,7 @@ impl<S: Copy, V: Copy> Own<S, Option<V>> {
     /// # Panics
     /// Panics if the value is `Some`.
     #[inline]
-    pub const fn const_value_none_state_or(self, message: &'static str) -> S {
+    pub const fn value_none_state_or(self, message: &'static str) -> S {
         match self.value {
             None => self.state,
             Some(_) => panic!["{}", message],
