@@ -34,14 +34,6 @@ reexport! { "atomic" | atomic, features: "work",
     Atomic
 }
 
-#[cfg(any(feature = "dep", feature = "atomic"))]
-mod impl_const_default_for_atomic {
-    #![allow(clippy::declare_interior_mutable_const)]
-    use super::Atomic;
-    use crate::code::{impl_cdef, ConstDefault};
-    impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) => Atomic<T>];
-}
-
 /* from `portable-atomic` */
 
 reexport! { "portable-atomic" | portable_atomic, features: "work",
@@ -55,16 +47,6 @@ reexport! { "portable-atomic" | portable_atomic, features: "work",
 reexport! { "portable-atomic" | portable_atomic, features: "work",
     doc: "An unsigned integer type which can be safely shared between threads.",
     AtomicU128
-}
-
-#[cfg(any(feature = "dep", feature = "portable-atomic"))]
-mod impl_const_default_for_portable_atomic {
-    #![allow(clippy::declare_interior_mutable_const)]
-    use super::{AtomicF32, AtomicF64, AtomicU128};
-    use crate::code::{impl_cdef, ConstDefault};
-    impl_cdef![Self::new(f32::DEFAULT) => AtomicF32];
-    impl_cdef![Self::new(f64::DEFAULT) => AtomicF64];
-    impl_cdef![Self::new(u128::DEFAULT) => AtomicU128];
 }
 
 /* from either `portable-atomic` or `core` */
@@ -145,22 +127,58 @@ pub use crate::_deps::portable_atomic::AtomicBool;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::AtomicBool;
 
-mod impl_const_default_for_either {
+/* impl ConstDefaut */
+
+#[cfg(any(feature = "dep", feature = "atomic"))]
+mod impl_const_default_for_atomic {
     #![allow(clippy::declare_interior_mutable_const)]
-    use super::{
-        AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize, AtomicPtr, AtomicU16, AtomicU32,
-        AtomicU64, AtomicU8, AtomicUsize,
-    };
     use crate::code::{impl_cdef, ConstDefault};
-    impl_cdef![Self::new(i8::DEFAULT) => AtomicI8];
-    impl_cdef![Self::new(i16::DEFAULT) => AtomicI16];
-    impl_cdef![Self::new(i32::DEFAULT) => AtomicI32];
-    impl_cdef![Self::new(i64::DEFAULT) => AtomicI64];
-    impl_cdef![Self::new(isize::DEFAULT) => AtomicIsize];
-    impl_cdef![Self::new(u8::DEFAULT) => AtomicU8];
-    impl_cdef![Self::new(u16::DEFAULT) => AtomicU16];
-    impl_cdef![Self::new(u32::DEFAULT) => AtomicU32];
-    impl_cdef![Self::new(u64::DEFAULT) => AtomicU64];
-    impl_cdef![Self::new(usize::DEFAULT) => AtomicUsize];
-    impl_cdef![<T> Self::new(core::ptr::null_mut()) => AtomicPtr<T>];
+    impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) => super::Atomic<T>];
+}
+#[cfg(any(feature = "dep", feature = "portable-atomic"))]
+mod impl_const_default_for_portable_atomic {
+    #![allow(clippy::declare_interior_mutable_const)]
+    use crate::code::{impl_cdef, ConstDefault};
+
+    // there are no core alternatives
+    impl_cdef![Self::new(f32::DEFAULT) => super::AtomicF32];
+    impl_cdef![Self::new(f64::DEFAULT) => super::AtomicF64];
+    impl_cdef![Self::new(u128::DEFAULT) => super::AtomicU128];
+
+    // core alternatives
+    impl_cdef![Self::new(i8::DEFAULT) => super::AtomicI8];
+    impl_cdef![Self::new(i16::DEFAULT) => super::AtomicI16];
+    impl_cdef![Self::new(i32::DEFAULT) => super::AtomicI32];
+    impl_cdef![Self::new(i64::DEFAULT) => super::AtomicI64];
+    impl_cdef![Self::new(isize::DEFAULT) => super::AtomicIsize];
+    impl_cdef![Self::new(u8::DEFAULT) => super::AtomicU8];
+    impl_cdef![Self::new(u16::DEFAULT) => super::AtomicU16];
+    impl_cdef![Self::new(u32::DEFAULT) => super::AtomicU32];
+    impl_cdef![Self::new(u64::DEFAULT) => super::AtomicU64];
+    impl_cdef![Self::new(usize::DEFAULT) => super::AtomicUsize];
+    impl_cdef![<T> Self::new(core::ptr::null_mut()) => super::AtomicPtr<T>];
+}
+#[cfg(not(any(feature = "dep", feature = "portable-atomic")))]
+mod impl_const_default_for_core {
+    #![allow(clippy::declare_interior_mutable_const)]
+    use crate::code::{impl_cdef, ConstDefault};
+
+    #[cfg(target_has_atomic = "16")]
+    impl_cdef![Self::new(i16::DEFAULT) => super::AtomicI16];
+    #[cfg(target_has_atomic = "16")]
+    impl_cdef![Self::new(u16::DEFAULT) => super::AtomicU16];
+    #[cfg(target_has_atomic = "32")]
+    impl_cdef![Self::new(i32::DEFAULT) => super::AtomicI32];
+    #[cfg(target_has_atomic = "32")]
+    impl_cdef![Self::new(u32::DEFAULT) => super::AtomicU32];
+    #[cfg(target_has_atomic = "64")]
+    impl_cdef![Self::new(i64::DEFAULT) => super::AtomicI64];
+    #[cfg(target_has_atomic = "64")]
+    impl_cdef![Self::new(u64::DEFAULT) => super::AtomicU64];
+    #[cfg(target_has_atomic = "ptr")]
+    impl_cdef![Self::new(isize::DEFAULT) => super::AtomicIsize];
+    #[cfg(target_has_atomic = "ptr")]
+    impl_cdef![Self::new(usize::DEFAULT) => super::AtomicUsize];
+    #[cfg(target_has_atomic = "ptr")]
+    impl_cdef![<T> Self::new(core::ptr::null_mut()) => super::AtomicPtr<T>];
 }
