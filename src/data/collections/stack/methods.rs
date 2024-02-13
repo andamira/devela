@@ -23,6 +23,13 @@ use core::mem::{transmute_copy, MaybeUninit};
 
 // helper macro to impl methods for a Stack with custom index size.
 macro_rules! impl_stack {
+    () => {
+        impl_stack![Stack, u8];
+        impl_stack![Stack, u16];
+        impl_stack![Stack, u32];
+        impl_stack![Stack, usize];
+    };
+
     // $name : name prefix. E.g.: Stack8b
     // $IDX : the index type. E.g. u8, usize
     ( $name:ident, $IDX:ty ) => { crate::code::paste! {
@@ -932,79 +939,6 @@ macro_rules! impl_stack {
             }
         }
 
-        /* StackIter */
-
-        impl<'s, T, S: Storage, const CAP: usize> Iterator for StackIter<'s, T, S, CAP, $IDX> {
-            type Item = &'s T;
-
-            /// Iterates over shared references.
-            ///
-            /// # Example
-            /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<i32, (), 4>::from([1, 2]);
-            ///
-            /// let mut si = s.iter();
-            /// assert_eq![Some(&1), si.next()];
-            /// assert_eq![Some(&2), si.next()];
-            /// assert_eq![None, si.next()];
-            /// ```
-            fn next(&mut self) -> Option<Self::Item> {
-                let item = if self.idx == self.stack.len as usize {
-                    None
-                } else {
-                    Some(&self.stack.array[self.idx])
-                };
-                self.idx += 1;
-                item
-            }
-
-            fn size_hint(&self) -> (usize, Option<usize>) {
-                (self.stack.len as usize, Some(self.stack.len as usize))
-            }
-        }
-        impl<'s, T, S: Storage, const CAP: usize> ExactSizeIterator
-            for StackIter<'s, T, S, CAP, $IDX> {}
-
-
-        /* From<IntoIterator<Item = T>> */
-
-        impl<T: Default, I, const CAP: usize> From<I> for Stack<T, Bare, CAP, $IDX>
-        where
-            I: IntoIterator<Item = T>,
-        {
-            /// Returns a stack filled with an iterator, in the stack.
-            /// # Examples
-            /// ```
-            /// # use devela::data::StackU8;
-            /// let s: StackU8<_, (), 3> = [1, 2, 3].into();
-            /// ```
-            fn from(iterator: I) -> Stack<T, Bare, CAP, $IDX> {
-                let mut s = Stack::<T, Bare, CAP, $IDX>::default();
-                let _ = s.extend(iterator);
-                s
-            }
-        }
-
-        #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-        impl<T: Default, I, const CAP: usize> From<I> for Stack<T, Boxed, CAP, $IDX>
-        where
-            I: IntoIterator<Item = T>,
-        {
-            /// Returns a stack filled with an iterator, in the heap.
-            /// # Examples
-            /// ```
-            /// # use devela::all::{Boxed, StackU32};
-            /// let s: StackU32<_, Boxed, 3> = [1, 2, 3].into();
-            /// ```
-            fn from(iterator: I) -> Stack<T, Boxed, CAP, $IDX> {
-                let mut s = Stack::<T, Boxed, CAP, $IDX>::default();
-                let _ = s.extend(iterator);
-                s
-            }
-        }
-
         impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP, $IDX> {
             /// Returns a interator.
             pub const fn iter(&self) -> StackIter<'_, T, S, CAP, $IDX> {
@@ -1088,7 +1022,4 @@ macro_rules! impl_stack {
         }
     }};
 }
-impl_stack![Stack, u8];
-impl_stack![Stack, u16];
-impl_stack![Stack, u32];
-impl_stack![Stack, usize];
+impl_stack!();

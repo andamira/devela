@@ -39,31 +39,6 @@ pub trait DataDestack: DataStack {
     }
 }
 
-/* impl for Stack */
-
-// safe alternative with T: Clone
-#[rustfmt::skip]
-#[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-impl<T: Clone, S: Storage, const CAP: usize> DataStack for Stack<T, S, CAP> {
-    fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
-        self.pop()
-    }
-    fn stack_push(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
-        self.push(element)
-    }
-}
-// unsafe alternative without T: Clone
-#[rustfmt::skip]
-#[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-impl<T, S: Storage, const CAP: usize> DataStack for Stack<T, S, CAP> {
-    fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
-        self.pop()
-    }
-    fn stack_push(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
-        self.push(element)
-    }
-}
-
 /* impl for Destaque */
 
 // safe alternative with T: Clone
