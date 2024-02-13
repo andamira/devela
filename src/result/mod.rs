@@ -20,10 +20,12 @@
 
 // always compiled, non-public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
-mod chain;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 mod mismatch;
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
+mod own;
 mod reexport;
+mod traits;
+mod unwrap;
 // always compiled, public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "result")))]
 pub mod panic;
@@ -45,7 +47,7 @@ mod define_no_std_error;
 /* re-exports */
 
 // always compiled, non-public
-pub use {chain::*, mismatch::*, reexport::*};
+pub use {mismatch::*, own::*, reexport::*, traits::*, unwrap::*};
 // always compiled, public
 #[doc(no_inline)]
 pub use panic::all::*;
@@ -60,7 +62,7 @@ pub use define_no_std_error::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{chain::*, mismatch::*, panic::all::*, reexport::*};
+    pub use super::{mismatch::*, own::*, panic::all::*, reexport::*, traits::*, unwrap::*};
 
     // feature-gated
     #[doc(inline)]

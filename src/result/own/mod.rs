@@ -1,4 +1,4 @@
-// devela::result::chain::own
+// devela::result::own
 //
 //!
 //

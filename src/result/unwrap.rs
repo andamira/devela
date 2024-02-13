@@ -1,4 +1,4 @@
-// devela::result::chain::macros
+// devela::result::macros
 //
 //!
 //

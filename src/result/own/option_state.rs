@@ -1,4 +1,4 @@
-// devela::result::chain::own::option_state
+// devela::result::own::option_state
 //
 //!
 //
