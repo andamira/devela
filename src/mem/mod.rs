@@ -27,15 +27,13 @@ mod always;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod reexports;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
+mod size;
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod slice;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod storage;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod r#trait;
-
-// always compiled, public
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
-pub mod size;
 
 // feature-gated, non-public
 #[cfg(feature = "mem")]
