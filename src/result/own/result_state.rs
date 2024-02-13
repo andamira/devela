@@ -5,17 +5,6 @@
 
 use super::Own;
 
-impl<S, E> Own<Result<S, E>, ()> {
-    /// A constructor that returns `Ok(state)` alongside an empty `()` value.
-    #[inline]
-    pub const fn empty_ok(state: S) -> Own<Result<S, E>, ()> {
-        Own {
-            state: Ok(state),
-            value: (),
-        }
-    }
-}
-
 /// # Additional methods for when the `state` field is a `Result`.
 impl<S, E, V> Own<Result<S, E>, V> {
     /// A constructor that returns `Ok(state)` alongside `value`.

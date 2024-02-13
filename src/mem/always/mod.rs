@@ -16,7 +16,6 @@ macro_rules! cswap {
     (
         // swaps any two mutable values by using a temporary variable
         $a:expr, $b:expr) => {{
-
         let tmp = $a;
         $a = $b;
         $b = tmp;
@@ -24,7 +23,6 @@ macro_rules! cswap {
     (
         // swaps two `T: BitXorAssign` mutable values without needing a temporary variable
         xor $a:expr, $b:expr) => {{
-
         $a ^= $b;
         $b ^= $a;
         $a ^= $b;

@@ -5,17 +5,6 @@
 
 use super::Own;
 
-impl<S> Own<S, Option<()>> {
-    /// A constructor that returns `state` alongside an empty `Some(())` value.
-    #[inline]
-    pub const fn empty_some(state: S) -> Own<S, Option<()>> {
-        Own {
-            state,
-            value: Some(()),
-        }
-    }
-}
-
 /// # Additional methods for when the `value` field is an `Option`.
 impl<S, V> Own<S, Option<V>> {
     /// A constructor that returns `state` alongside `Some(value)`.

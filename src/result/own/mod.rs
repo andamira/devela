@@ -17,6 +17,11 @@ mod option_value;
 /// It is designed to be used by methods that take ownership of `self`,
 /// and return it alongside the operation-specific result.
 ///
+/// By convention methods that return an `Own` should to be prefixed with `own_`,
+/// and any [`Result`] or [`Option`] should be part of the `state` field for
+/// constructors, and of the `value` field for most other methods, allowing
+/// `self` to be passed along a chain of operations.
+///
 /// ## Available methods
 /// - [`Own<S, ()>`](#impl-Own<S,+()>):
 /// [`empty`](#method_empty)
@@ -69,8 +74,6 @@ mod option_value;
 /// [`const_replace_both`](#method.const_replace_both).
 ///
 /// ### Implemented when the `state` is a `Result`:
-/// - [`Own<Result<S, E>, ()>`](#impl-Own<Result<S,+E>,+()>):
-/// [`empty_ok`](#method.empty_ok)
 ///
 /// - [`Own<Result<S, E>, V>`](#impl-Own<Result<S,+E>,+V>):
 ///
@@ -109,8 +112,6 @@ mod option_value;
 /// [`const_state_expect`](#method.const_state_expect),
 ///
 /// ### Implemented when the `value` is a `Result`:
-/// - [`Own<S, Result<()>>`](#impl-Own<S,+Result<(),+E>>):
-/// [`empty_ok`](#method.empty_ok-1)
 ///
 /// - [`Own<S, Result<V, E>>`](#impl-Own<S,+Result<V,+E>>):
 ///
@@ -149,8 +150,6 @@ mod option_value;
 /// [`const_value_expect_const`](#method.const_value_expect_const),
 ///
 /// ### Implemented when the `state` is an `Option`:
-/// - [`Own<Option<S>, ()>`](#impl-Own<Option<S>,+()>):
-/// [`empty_some`](#method.empty_some-1)
 ///
 /// - [`Own<Option<S>, V>`](#impl-Own<Option<S>,+V>):
 ///
@@ -184,8 +183,6 @@ mod option_value;
 /// [`const_state_expect`](#method.const_state_expect-1),
 ///
 /// ### Implemented when the `value` is an `Option`:
-/// - [`Own<S, Option<()>>`](#impl-Own<S,+Option<()>>):
-/// [`empty_some`](#method.empty_some-1)
 ///
 /// - [`Own<S, Option<V>>`](#impl-Own<S,+Option<V>>):
 ///
