@@ -22,14 +22,17 @@
 /// #[cfg(feature = "unsafe_array")]
 /// assert_eq![[3,6,9], array_init![unsafe_init [i32; 3], |n| (n as i32 + 1) * 3]];
 ///
-/// const fn init(n: usize) -> i32 { (n as i32 + 1) * 4 }
-/// const ARRAY: [i32; 3] = array_init![const_init [i32; 3], "safe", "unsafe_array", init, 0];
-/// assert_eq![[4, 8, 12], ARRAY];
-///
 /// assert_eq![[7,7,7], array_init![clone [i32; 3], "safe", "unsafe_array", 7]];
 /// assert_eq![[0,0,0], array_init![default [i32; 3], "safe", "unsafe_array"]];
 /// assert_eq![[4,5,6], array_init![iter [i32; 3], "safe", "unsafe_array", vec![4,5,6,7,8]]];
 /// assert_eq![[4,0,0], array_init![iter [i32; 3], "safe", "unsafe_array", vec![4]]];
+///
+/// const fn init(n: usize) -> i32 { (n as i32 + 1) * 4 }
+/// const ARRAY1: [i32; 3] = array_init![const_init [i32; 3], "safe", "unsafe_array", init, 0];
+/// assert_eq![[4, 8, 12], ARRAY1];
+///
+/// const ARRAY2: [i32; 3] = array_init![const_default [i32; 3]];
+/// assert_eq![[0, 0, 0], ARRAY2];
 /// ```
 ///
 /// # Features
@@ -42,14 +45,14 @@
 #[macro_export]
 macro_rules! array_init {
     (
-    // safe array initialization in the stack:
+    // safe array initialization in the stack
     safe_init [$T:ty; $LEN:expr], $init:expr) => {{
 
         #[allow(clippy::redundant_closure_call)]
         core::array::from_fn(|i| $init(i))
     }};
     (
-    // safe array initialization in the heap:
+    // safe array initialization in the heap
     safe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
 
         let mut v = Vec::<$T>::with_capacity($LEN);
@@ -64,7 +67,7 @@ macro_rules! array_init {
 
    (
     //
-    // unsafe array initialization in the stack:
+    // unsafe array initialization in the stack
     unsafe_init [$T:ty; $LEN:expr], $init:expr) => {{
 
         // SAFETY: array will be fully initialized in the subsequent loop
@@ -82,7 +85,7 @@ macro_rules! array_init {
         unsafe { core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
     }};
     (
-    // unsafe array initialization in the heap:
+    // unsafe array initialization in the heap
     unsafe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
 
         let mut v = Vec::<$T>::with_capacity($LEN);
@@ -139,7 +142,7 @@ macro_rules! array_init {
 
     (
     //
-    // initialize an array in the stack by cloning $clonable:
+    // initialize an array in the stack by cloning $clonable
     clone [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $clonable:expr) => {{
 
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
@@ -148,7 +151,7 @@ macro_rules! array_init {
         { array_init![unsafe_init [$T; $LEN], |_| $clonable.clone()] }
     }};
     (
-    // initialize an array in the heap, by cloning $clonable:
+    // initialize an array in the heap, by cloning $clonable
     clone_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $clonable:expr) => {{
 
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
@@ -159,7 +162,7 @@ macro_rules! array_init {
 
     (
     //
-    // initialize an array in the stack with $T::default():
+    // initialize an array in the stack with $T: Default::default()
     default [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
 
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
@@ -168,13 +171,19 @@ macro_rules! array_init {
         { array_init![unsafe_init [$T; $LEN], |_| <$T>::default()] }
     }};
     (
-    // initialize an array in the heap, with $T::default():
+    // initialize an array in the heap, with $T: Default::default()
     default_heap [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal) => {{
 
         #[cfg(any(feature = $fsafe, not(feature = $funsafe)))]
         { array_init![safe_init_heap [$T; $LEN], |_| <$T>::default()] }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
         { array_init![unsafe_init_heap [$T; $LEN], |_| <$T>::default()] }
+    }};
+
+    (
+    // initialize an array in the stack with $T: ConstDefault::DEFAULT
+    const_default [$T:ty; $LEN:expr]) => {{
+        [<$T as $crate::code::ConstDefault>::DEFAULT; $LEN]
     }};
 
     (
