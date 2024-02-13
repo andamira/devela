@@ -50,10 +50,8 @@ use crate::{
 /// ```
 ///
 /// # Performance
-/// The `_array` suffixed methods calls the [`cswap`] macro which uses a temporary
-/// variable to swap values, except when using unsigned primitives where it employs
-/// the [xor swap method](https://en.wikipedia.org/wiki/XOR_swap_algorithm), which
-/// can be more performant.
+/// The `_array` suffixed methods calls the [`cswap`] macro using the xor swap
+/// algorithm, excep for the floting-point version which uses a temporary variable.
 #[repr(transparent)]
 pub struct Sorting<T>(pub T);
 
@@ -455,7 +453,7 @@ macro_rules! impl_sorting {
                 let mut arr = self.0;
                 cfor![i in 0..N => {
                     cfor![j in 0..N-i-1 => {
-                        iif![arr[j] > arr[j+1]; cswap!(arr[j], arr[j+1])];
+                        iif![arr[j] > arr[j+1]; cswap!(xor arr[j], arr[j+1])];
                     }];
                 }];
                 arr
@@ -468,7 +466,7 @@ macro_rules! impl_sorting {
                 cfor![i in 1..N => {
                     let mut j = i;
                     while j > 0 && arr[j-1] > arr[j] {
-                        cswap!(arr[j], arr[j-1]);
+                        cswap!(xor arr[j], arr[j-1]);
                         j -= 1;
                     }
                 }];
@@ -484,12 +482,13 @@ macro_rules! impl_sorting {
                     cfor![j in (i+1)..N => {
                         iif![arr[j] < arr[min_index]; min_index = j];
                     }];
-                    cswap!(arr[min_index], arr[i]);
+                    cswap!(xor arr[min_index], arr[i]);
                 }];
                 arr
             }
         }
     }};
+
     (@unsigned $t:ty) => { paste! {
         impl<const N: usize> Sorting<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
@@ -533,6 +532,7 @@ macro_rules! impl_sorting {
             }
         }
     }};
+
     (@float $t:ty) => { paste! {
         impl<const N: usize> Sorting<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
