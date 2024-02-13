@@ -45,7 +45,7 @@ macro_rules! impl_stack {
             /// cloning `element` to fill the remaining free data.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP >= `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]."]
             ///
             /// # Examples
             /// ```
@@ -53,7 +53,7 @@ macro_rules! impl_stack {
             /// let s = StackU8::<_, (), 16>::new(0).unwrap();
             /// ```
             pub fn new(element: T) -> Result<Self> {
-                if CAP < $IDX::MAX as usize {
+                if CAP <= $IDX::MAX as usize {
                     Ok(Self {
                         array: Array::<T, Bare, CAP>::with_cloned(element),
                         len: 0,
@@ -70,7 +70,7 @@ macro_rules! impl_stack {
             /// copying `element` to fill the remaining free data, in compile-time.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP >= `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]."]
             ///
             /// # Examples
             /// ```
@@ -78,7 +78,7 @@ macro_rules! impl_stack {
             /// const S: StackU8<i32, (), 16> = unwrap![ok StackU8::new_copied(0)];
             /// ```
             pub const fn new_copied(element: T) -> Result<Self> {
-                if CAP < $IDX::MAX as usize {
+                if CAP <= $IDX::MAX as usize {
                     let array = Array::with_copied(element);
                     Ok(Self { array, len: 0 })
                 } else {

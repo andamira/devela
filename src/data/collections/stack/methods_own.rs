@@ -31,11 +31,13 @@ macro_rules! impl_stack {
         ///
         /// Every method is *const* and returns [`Own`][crate::Own]`<Self, V>`.
         impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP, $IDX> {
+            /* constructors */
+
             /// Returns an empty stack, allocated in the stack,
             /// copying `element` to fill the remaining free data.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP >= `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]."]
             ///
             /// # Examples
             /// ```
