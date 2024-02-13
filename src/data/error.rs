@@ -19,7 +19,7 @@ pub enum DataError {
     /// Value above maximum representable.
     Overflow,
 
-    /// The given `index` is out of bounds.
+    /// The given `index`, `length` or `capacity` is out of bounds.
     OutOfBounds(Option<usize>),
 
     /// The given indices does not match the expected order.

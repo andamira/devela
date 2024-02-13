@@ -1,14 +1,13 @@
-// devela::data::impls
+// devela::data::impl_traits
 //
 //!
 //
 
-use super::StackIter;
 #[cfg(feature = "alloc")]
 use crate::mem::Boxed;
 use crate::{
     code::ConstDefault,
-    data::{Array, DataCollection, DataError as E, DataResult as Result, DataStack, Stack},
+    data::{Array, DataCollection, DataResult as Result, DataStack, Stack, StackIter},
     mem::{Bare, Storage},
 };
 use core::fmt;

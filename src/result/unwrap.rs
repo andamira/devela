@@ -3,7 +3,7 @@
 //!
 //
 
-/// An `unwrap` taylored to work in compile-time.
+/// An unwrapper macro that works in compile-time.
 #[macro_export]
 macro_rules! unwrap {
     ( // Returns the contained `Some` value or panics if it's `None`.
