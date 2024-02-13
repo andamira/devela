@@ -16,12 +16,39 @@ use crate::{
 
 /// A stack backed by an [`Array`].
 ///
-/// All the methods operate from the back.
+/// It is generic in respect to its
+/// elements (`T`),
+/// storage (`S`),
+/// capacity (`CAP`),
+/// and index size (`IDX`).
 ///
-/// See also the related trait: [`DataStack`][crate::DataStack]
-/// and aliases: [`BareStack`] and [`BoxedStack`].
+/// The index size will upper-bound the capacity to the maximum for that type,
+/// e.g. `u8::MAX` for [`StackU8`].
+///
+/// The index size determines the maximum possible number of elements in the stack,
+/// thereby upper-bounding the capacity to the maximum value representable by the
+/// index type. For example, `u8::MAX` for [`StackU8`].
+///
+/// The total size in bytes of the stack may be influenced by the chosen index
+/// size, depending on the size and alignment of the elements. This difference
+/// could only be significant for small capacities, as only one index is stored.
+///
+/// See also the related aliases that specify `IDX`:
+/// [`StackU8`], [`StackU16`], [`StackU32`], [`StackUsize`],
+/// and the [`DataStack`][crate::DataStack] trait.
 ///
 /// ## Methods
+///
+/// All the stack operations are done from the back.
+///
+/// The methods are the same for all `IDX` sizes:
+/// - [Methods for `StackU8`][Self#methods-for-stacku8]
+/// - [Methods for `StackU16`][Self#methods-for-stacku16]
+/// - [Methods for `StackU32`][Self#methods-for-stacku32]
+/// - [Methods for `StackUsize`][Self#methods-for-stackusize]
+///
+/// The following list of methods links to the ones implemented for `StackU8`:
+///
 /// - Constructors:
 ///   [`new`][Self::new],
 ///   [`new_copied`][Self::new_copied],
@@ -62,8 +89,8 @@ use crate::{
 /// - Stack [chainable *const* operations depending on `T:
 ///   Copy`](#chainable-const-operations-depending-on-t-copy).
 ///   - clear: [`own_clear`][Self::own_clear].
-///   - push: [`own_push`][Self::push]*([uc][Self::own_push_unchecked])*,
-///   - pop: [`own_pop`][Self::pop]*([uc][Self::own_pop_unchecked])*.
+///   - push: [`own_push`][Self::own_push]*([uc][Self::own_push_unchecked])*,
+///   - pop: [`own_pop`][Self::own_pop]*([uc][Self::own_pop_unchecked])*.
 ///   - drop:
 ///     [`own_drop`][Self::own_drop]*([uc][Self::own_drop_unchecked])*,
 ///     [`own_drop_n`][Self::own_drop_n]*([uc][Self::own_drop_n_unchecked])*.
@@ -87,54 +114,32 @@ use crate::{
 ///   - tuck:
 ///     [`own_tuck`][Self::own_tuck]*([uc][Self::own_tuck_unchecked])*,
 ///     [`own_tuck2`][Self::own_tuck2]*([uc][Self::own_tuck2_unchecked])*.
-pub struct Stack<T, S: Storage, const CAP: usize> {
+pub struct Stack<T, S: Storage, const CAP: usize, IDX> {
     pub(crate) array: Array<T, S, CAP>,
-    pub(crate) len: usize,
+    pub(crate) len: IDX,
 }
 
+/// A [`Stack`] with an 8-bit index size.
+pub type StackU8<T, S, const CAP: usize> = Stack<T, S, CAP, u8>;
+/// A [`Stack`] with a 16-bit index size.
+pub type StackU16<T, S, const CAP: usize> = Stack<T, S, CAP, u16>;
+/// A [`Stack`] with a 32-bit index size.
+pub type StackU32<T, S, const CAP: usize> = Stack<T, S, CAP, u32>;
+/// A [`Stack`] with a pointer-sized index size.
+pub type StackUsize<T, S, const CAP: usize> = Stack<T, S, CAP, usize>;
+
 /// A [`Stack`] stored in the stack.
-pub type BareStack<T, const CAP: usize> = Stack<T, Bare, CAP>;
+pub type BareStack<T, const CAP: usize, IDX> = Stack<T, Bare, CAP, IDX>;
 
 /// A [`Stack`] stored in the heap.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub type BoxedStack<T, const CAP: usize> = Stack<T, Boxed, CAP>;
+pub type BoxedStack<T, const CAP: usize, IDX> = Stack<T, Boxed, CAP, IDX>;
 
 /* iterators */
 
-/// A stack iterator.
-pub struct StackIter<'s, T, S: Storage, const CAP: usize> {
-    pub(super) stack: &'s Stack<T, S, CAP>,
+/// An iterator over [`Stack`] elements.
+pub struct StackIter<'s, T, S: Storage, const CAP: usize, IDX> {
+    pub(super) stack: &'s Stack<T, S, CAP, IDX>,
     pub(super) idx: usize,
 }
-
-impl<'s, T, S: Storage, const CAP: usize> Iterator for StackIter<'s, T, S, CAP> {
-    type Item = &'s T;
-    /// Iterates over shared references.
-    ///
-    /// # Example
-    /// ```
-    /// # use devela::data::BareStack;
-    /// let s = BareStack::<i32, 4>::from([1, 2]);
-    ///
-    /// let mut si = s.iter();
-    /// assert_eq![Some(&1), si.next()];
-    /// assert_eq![Some(&2), si.next()];
-    /// assert_eq![None, si.next()];
-    /// ```
-    fn next(&mut self) -> Option<Self::Item> {
-        let item = if self.idx == self.stack.len() {
-            None
-        } else {
-            Some(&self.stack.array[self.idx])
-        };
-        self.idx += 1;
-        item
-    }
-
-    fn size_hint(&self) -> (usize, Option<usize>) {
-        (self.stack.len(), Some(self.stack.len()))
-    }
-}
-
-impl<'s, T, S: Storage, const CAP: usize> ExactSizeIterator for StackIter<'s, T, S, CAP> {}

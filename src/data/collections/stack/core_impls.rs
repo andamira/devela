@@ -3,16 +3,18 @@
 //!
 //
 
+use super::StackIter;
 #[cfg(feature = "alloc")]
 use crate::mem::Boxed;
 use crate::{
+    code::ConstDefault,
     data::{Array, Stack},
     mem::{Bare, Storage},
 };
 use core::fmt;
 
 // T:Clone
-impl<T: Clone, S: Storage, const CAP: usize> Clone for Stack<T, S, CAP>
+impl<T: Clone, S: Storage, const CAP: usize, IDX: Copy> Clone for Stack<T, S, CAP, IDX>
 where
     S::Stored<[T; CAP]>: Clone,
 {
@@ -25,11 +27,14 @@ where
 }
 
 // T:Copy
-impl<T: Copy, S: Storage, const CAP: usize> Copy for Stack<T, S, CAP> where S::Stored<[T; CAP]>: Copy
-{}
+impl<T: Copy, S: Storage, const CAP: usize, IDX: Copy> Copy for Stack<T, S, CAP, IDX> where
+    S::Stored<[T; CAP]>: Copy
+{
+}
 
 // T:Debug
-impl<T: fmt::Debug, S: Storage, const CAP: usize> fmt::Debug for Stack<T, S, CAP>
+impl<T: fmt::Debug, S: Storage, const CAP: usize, IDX: fmt::Debug> fmt::Debug
+    for Stack<T, S, CAP, IDX>
 where
     S::Stored<[T; CAP]>: fmt::Debug,
 {
@@ -48,7 +53,7 @@ where
 }
 
 // T:PartialEq
-impl<T: PartialEq, S: Storage, const CAP: usize> PartialEq for Stack<T, S, CAP>
+impl<T: PartialEq, S: Storage, const CAP: usize, IDX: PartialEq> PartialEq for Stack<T, S, CAP, IDX>
 where
     S::Stored<[T; CAP]>: PartialEq,
 {
@@ -57,74 +62,51 @@ where
     }
 }
 // T:Eq
-impl<T: Eq, S: Storage, const CAP: usize> Eq for Stack<T, S, CAP> where S::Stored<[T; CAP]>: Eq {}
+impl<T: Eq, S: Storage, const CAP: usize, IDX: Eq> Eq for Stack<T, S, CAP, IDX> where
+    S::Stored<[T; CAP]>: Eq
+{
+}
 
-// S:() + T:Default
-impl<T: Default, const CAP: usize> Default for Stack<T, Bare, CAP> {
+// S:Bare + T:Default
+impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, Bare, CAP, IDX> {
     /// Returns an empty stack, allocated in the stack,
     /// using the default value to fill the remaining free data.
     fn default() -> Self {
         Self {
             array: Array::default(),
-            len: 0,
+            len: IDX::default(),
         }
     }
+}
+
+// S:Bare + T:ConstDefault
+impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
+    for Stack<T, Bare, CAP, IDX>
+{
+    /// Returns an empty stack, allocated in the stack,
+    /// using the default value to fill the remaining free data.
+    const DEFAULT: Self = Self {
+        array: Array::DEFAULT,
+        len: IDX::DEFAULT,
+    };
 }
 
 // S:Boxed + T:Default
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-impl<T: Default, const CAP: usize> Default for Stack<T, Boxed, CAP> {
+impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, Boxed, CAP, IDX> {
     /// Returns an empty stack, allocated in the heap,
     /// using the default value to fill the remaining free data.
     ///
     /// # Examples
     /// ```
-    /// use devela::data::BoxedStack;
-    /// let mut s = BoxedStack::<i32, 100>::default();
+    /// use devela::all::{Boxed, StackU32};
+    /// let mut s = StackU32::<i32, Boxed, 100>::default();
     /// ```
     fn default() -> Self {
         Self {
             array: Array::default(),
-            len: 0,
+            len: IDX::default(),
         }
-    }
-}
-
-/* From<IntoIterator<Item = T>> */
-
-impl<T: Default, I, const CAP: usize> From<I> for Stack<T, Bare, CAP>
-where
-    I: IntoIterator<Item = T>,
-{
-    /// Returns a stack filled with an iterator, in the stack.
-    /// # Examples
-    /// ```
-    /// # use devela::data::Stack;
-    /// let s: Stack<_, (), 3> = [1, 2, 3].into();
-    /// ```
-    fn from(iterator: I) -> Stack<T, Bare, CAP> {
-        let mut s = Stack::<T, Bare, CAP>::default();
-        let _ = s.extend(iterator);
-        s
-    }
-}
-
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-impl<T: Default, I, const CAP: usize> From<I> for Stack<T, Boxed, CAP>
-where
-    I: IntoIterator<Item = T>,
-{
-    /// Returns a stack filled with an iterator, in the heap.
-    /// # Examples
-    /// ```
-    /// # use devela::data::BoxedStack;
-    /// let s: BoxedStack<_, 3> = [1, 2, 3].into();
-    /// ```
-    fn from(iterator: I) -> Stack<T, Boxed, CAP> {
-        let mut s = Stack::<T, Boxed, CAP>::default();
-        let _ = s.extend(iterator);
-        s
     }
 }
