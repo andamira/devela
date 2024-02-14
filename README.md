@@ -4,7 +4,7 @@
 [![API](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
 [![MSRV: 1.76.0](https://flat.badgen.net/badge/MSRV/1.76.0/purple)](https://releases.rs/docs/1.76.0/)
 
-An integrated development foundation.
+A cohesive Rust development layer.
 
 ## Status
 This project is currently in an experimental stage of development.

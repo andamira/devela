@@ -1,8 +1,10 @@
 // devela::lib
 //
-//! An integrated development foundation.
+//! A cohesive Rust development layer.
 //
 
+//* global config *//
+//
 // warnings:
 #![warn(missing_docs, clippy::all)]
 #![cfg_attr(not(feature = "deps"), allow(rustdoc::broken_intra_doc_links))]
@@ -10,6 +12,13 @@
     clippy::module_inception, // allow modules with the same name as its parent
     clippy::wrong_self_convention, // allow `is_` methods having an owned self
 )]
+//
+// environment:
+#![cfg_attr(not(feature = "std"), no_std)]
+//
+// safety:
+#![cfg_attr(feature = "safe", forbid(unsafe_code))]
+//
 // nightly:
 // - WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg))]
@@ -18,10 +27,6 @@
     feature = "nightly_coro",
     feature(coroutines, coroutine_trait, iter_from_coroutine)
 )]
-// environment:
-#![cfg_attr(not(feature = "std"), no_std)]
-// safety:
-#![cfg_attr(feature = "safe", forbid(unsafe_code))]
 
 // safeguard environment:
 #[cfg(all(feature = "std", feature = "no_std"))]

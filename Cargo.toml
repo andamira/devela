@@ -6,7 +6,7 @@ members = [".", "macros", "depend"]
 [package]
 
 name = "devela"
-description = "An integrated development foundation."
+description = "A cohesive Rust development layer."
 version = "0.20.0-wip"
 edition = "2021"
 rust-version = "1.76.0" # sync with readme & .github/*/check.yml
