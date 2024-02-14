@@ -49,10 +49,12 @@ docsrs = ["nightly", "all", "std", "unsafe", "dep", "libm"]
 
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc", "either/use_std",
-	"dep?/std", "atomic?/std", "bytemuck?/extern_crate_std"
+	"dep?/std", #:
+	"atomic?/std", "bytemuck?/extern_crate_std",  "memchr?/std", "wide?/std",
 ]
 alloc = [ # enables `alloc` functionality
-	"dep?/alloc", "bytemuck?/extern_crate_alloc",
+	"dep?/alloc", #:
+	"bytemuck?/extern_crate_alloc", "memchr?/alloc",
 ]
 no_std = [ # enables functionality incompatible with or substitute of `std`
 	"dep?/libm",
@@ -68,7 +70,7 @@ all = [ # enables all the modules and submodules
 	"io",
 	"mem",
 	"num", "num_all",
-	"os", # "os_all",
+	"os",
 	"result",
 	"text",
 	"time",
@@ -83,11 +85,11 @@ gfx = []
 io = []
 mem = ["dep?/bytemuck"]
 num = []
-	num_all = [ "num_niche_impls" ]
+	num_all = ["num_niche_impls"]
 	num_niche_impls = [] # extra impls for niche types
 os = []
 result = []
-text = ["dep?/const-str", "dep?/unicode-segmentation", "dep?/unicode-width"]
+text = ["dep?/const-str", "dep?/memchr", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
 ui = []
 	ui_all = [ "ui_term" ]
@@ -145,15 +147,22 @@ nightly = [ # enables nightly features
 #* dependency features *#
 
 dep = ["dep:dep"] # module features enables their dependencies as defined.
+	# TODO RETHINK DESIGN:
+	dep_all = ["dep", "dep_interop"]
+	dep_interop = [ # interoperability with external crates, extra traits
+		"dep?/bytemuck",
+	]
 
 atomic = ["dep:atomic"]
 bytemuck = ["dep:bytemuck"]
 const-str = ["dep:const-str"]
-libm = ["dep:libm"]
 hashbrown = ["dep:hashbrown"]
+libm = ["dep:libm"]
+memchr = ["dep:memchr"]
 portable-atomic = ["dep:portable-atomic"]
 unicode-segmentation = ["dep:unicode-segmentation"]
 unicode-width = ["dep:unicode-width"]
+wide = ["dep:wide"]
 
 
 # ------------------------------------------------------------------------------
@@ -161,21 +170,23 @@ unicode-width = ["dep:unicode-width"]
 [dependencies]
 devela_macros = { version  = "0.8.0" }
 #devela_macros = { path = "./macros" }
+either = { version = "1.9.0", default-features = false }
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 
 # There are two options for enabling optional dependencies:
 #
 # option A) When the `depend` feature is enabled each optional dependency will
 # be automatically enabled by some individual module feature, as defined above:
-dep = { package = "devela_depend", version = "0.2.0", optional = true }
+dep = { package = "devela_depend", version = "0.3.0", optional = true }
 #dep = { package = "devela_depend", path = "./depend", optional = true }
 #
 # option B) Otherwise optional features can be manually enabled:
 const-str = { version = "0.5.6", default-features = false, optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
+memchr = { version = "2.7.1", optional = true, default-features = false }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
 unicode-width = { version = "0.1.11", default-features = false, optional = true }
-either = { version = "1.9.0", default-features = false }
+wide = { version = "0.7.15", optional = true, default-features = false }
 [dependencies.atomic]
 version = "0.6.0"
 default-features = false

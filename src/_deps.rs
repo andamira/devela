@@ -66,6 +66,9 @@ mod _dep {
     #[cfg(feature = "libm")]
     pub use ::libm;
 
+    #[cfg(feature = "memchr")]
+    pub use ::memchr;
+
     #[cfg(feature = "portable-atomic")]
     pub use ::portable_atomic;
 
@@ -74,6 +77,9 @@ mod _dep {
 
     #[cfg(feature = "unicode-width")]
     pub use ::unicode_width;
+
+    #[cfg(feature = "wide")]
+    pub use ::wide;
 }
 
 // When the `dep` feature is enabled, the `devela_depend` crate is enabled,
@@ -92,15 +98,18 @@ mod _dep {
     reexport! { depend any_features: "data", "mem",
     dep: "bytemuck", bytemuck, "Small utilities for casting between plain data types." }
 
-    reexport! { depend any_features: "os_term", "text",
+    reexport! { depend any_features: "ui_term", "text",
     dep: "const-str", const_str, "Compile-time string operations." }
-
-    reexport! { depend any_features: "no_std",
-    dep: "libm", libm, "A port of [`MUSL`](https://musl.libc.org/)'s libm to Rust." }
 
     reexport! { depend any_features: "data", all_features: "alloc",
     dep: "hashbrown", hashbrown,
     "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`." }
+
+    reexport! { depend any_features: "no_std",
+    dep: "libm", libm, "A port of [`MUSL`](https://musl.libc.org/)'s libm to Rust." }
+
+    reexport! { depend any_features: "text",
+    dep: "memchr", memchr, "Optimized routines for string search primitives." }
 
     reexport! { depend any_features: "work",
     dep: "portable-atomic", portable_atomic,
@@ -113,4 +122,7 @@ mod _dep {
     reexport! { depend any_features: "text",
     dep: "unicode-width", unicode_width,
     "Determine displayed width of `char` and `str` types." }
+
+    reexport! { depend any_features: "os_arch",
+    dep: "wide", wide, "SIMD-compatible data types." }
 }
