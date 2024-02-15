@@ -17,13 +17,13 @@
 
 // always compiled, public
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
-pub mod ascii;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod char;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod fmt;
 
 // always compiled, non-public
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+mod ascii;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod reexports;
 
@@ -54,11 +54,11 @@ mod non_nul;
 // always compiled, public
 #[doc(no_inline)]
 #[allow(unused_imports)]
-pub use {ascii::all::*, char::all::*, fmt::all::*};
+pub use {char::all::*, fmt::all::*};
 
 // always compiled, non-public
 #[allow(unused_imports)]
-pub use reexports::*;
+pub use {ascii::all::*, reexports::*};
 
 // feature-gated, public
 #[doc(no_inline)]

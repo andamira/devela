@@ -59,7 +59,7 @@ use core::mem::transmute;
 #[derive(Debug, Copy, Clone, Default, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[repr(u8)]
 pub enum AsciiChar {
-    /// U+0000
+    /// U+0000 (Default variant)
     #[default]
     Null = 0,
     /// U+0001

@@ -15,18 +15,17 @@ mod always_fns;
 mod char;
 #[cfg(feature = "text")]
 mod fns;
-#[cfg(feature = "text")]
-mod reexport;
 
 /* re-exports */
 
 // always compiled, non-public
+#[allow(unused_imports)]
 pub use always_fns::*;
 
 // feature-gated, non-public
 #[cfg(feature = "text")]
-#[allow(unused_imports)] // reexport
-pub use {char::AsciiChar, fns::*, reexport::*};
+#[allow(unused_imports)]
+pub use {char::AsciiChar, fns::*};
 
 pub(crate) mod all {
     // always compiled
@@ -35,7 +34,7 @@ pub(crate) mod all {
 
     // feature-gated
     #[doc(inline)]
-    #[allow(unused_imports)] // always_fns, reexport
     #[cfg(feature = "text")]
-    pub use super::{always_fns::*, char::AsciiChar, fns::*, reexport::*};
+    #[allow(unused_imports)]
+    pub use super::{always_fns::*, char::AsciiChar, fns::*};
 }
