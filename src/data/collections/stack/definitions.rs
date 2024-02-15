@@ -19,7 +19,7 @@ use crate::{
 /// It is generic in respect to its
 /// elements (`T`),
 /// storage (`S`),
-/// capacity (`CAP`),
+/// capacity (`CAP`)
 /// and index size (`IDX`).
 ///
 /// The index size will upper-bound the capacity to the maximum for that type,
@@ -56,15 +56,27 @@ use crate::{
 /// - Deconstructors:
 ///   [`to_array`][Self::to_array],
 ///   [`to_vec`][Self::to_vec]*(`alloc`)*.
+///   [`as_slice`][Self::as_slice],
+///   [`as_mut_slice`][Self::as_mut_slice],
 /// - Queries:
 ///   [`len`][Self::len], [`is_empty`][Self::is_empty], [`is_full`][Self::is_full],
 ///   [`capacity`][Self::capacity], [`remaining_capacity`][Self::remaining_capacity],
 ///   [`contains`][Self::contains].
+/// - Resize:
+///   [`resize_default`][Self::resize_default]*([own][Self::own_resize_default])*,
+///   [`resize_default_truncate`][Self::resize_default_truncate]
+///     *([own][Self::own_resize_default_truncate])*.
+/// - Conversion:
+///   [`to_idx_u8`][Self::to_idx_u8]*([own][Self::own_to_idx_u8])*,
+///   [`to_idx_u16`][Self::to_idx_u16]*([own][Self::own_to_idx_u16])*,
+///   [`to_idx_u32`][Self::to_idx_u32]*([own][Self::own_to_idx_u32])*,
+///   [`to_idx_usize`][Self::to_idx_usize]*([own][Self::own_to_idx_usize])*.
 /// - Iterator related:
 ///   [`iter`][Self::iter],
 ///   [`extend`][Self::extend],
 ///
 /// - Stack operations without bounds on `T`:
+///
 ///   - clear: [`clear`][Self::clear].
 ///   - push: [`push`][Self::push].
 ///   - pop: [`pop`][Self::pop] *(unsafe)*.
@@ -81,6 +93,7 @@ use crate::{
 ///     [`rot2`][Self::rot2], [`rot2_cc`][Self::rot2_cc].
 ///
 /// - Stack [operations depending on `T: Clone`](#operations-depending-on-t-clone).
+///
 ///   - pop: [`pop`][Self::pop] *(safe)*.
 ///   - dup: [`dup`][Self::dup], [`dup2`][Self::dup2].
 ///   - over: [`over`][Self::over], [`over2`][Self::over2].
@@ -88,6 +101,7 @@ use crate::{
 ///
 /// - Stack [chainable *const* operations depending on `T:
 ///   Copy`](#chainable-const-operations-depending-on-t-copy).
+///
 ///   - clear: [`own_clear`][Self::own_clear].
 ///   - push: [`own_push`][Self::own_push]*([uc][Self::own_push_unchecked])*,
 ///   - pop: [`own_pop`][Self::own_pop]*([uc][Self::own_pop_unchecked])*.
@@ -114,6 +128,7 @@ use crate::{
 ///   - tuck:
 ///     [`own_tuck`][Self::own_tuck]*([uc][Self::own_tuck_unchecked])*,
 ///     [`own_tuck2`][Self::own_tuck2]*([uc][Self::own_tuck2_unchecked])*.
+#[must_use]
 pub struct Stack<T, S: Storage, const CAP: usize, IDX> {
     pub(crate) array: Array<T, S, CAP>,
     pub(crate) len: IDX,
@@ -139,6 +154,7 @@ pub type BoxedStack<T, const CAP: usize, IDX> = Stack<T, Boxed, CAP, IDX>;
 /* iterators */
 
 /// An iterator over [`Stack`] elements.
+#[must_use]
 pub struct StackIter<'s, T, S: Storage, const CAP: usize, IDX> {
     pub(super) stack: &'s Stack<T, S, CAP, IDX>,
     pub(super) idx: usize,

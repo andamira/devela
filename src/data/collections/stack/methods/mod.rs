@@ -2,7 +2,10 @@
 //
 //! Stacks.
 //
-// WIP make it generic on IDX type
+
+mod own;
+
+mod convert;
 
 #[cfg(feature = "alloc")]
 use crate::{
@@ -49,9 +52,10 @@ macro_rules! impl_stack {
             ///
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<_, (), 16>::new(0).unwrap();
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, (), 16>::new(0).unwrap();"]
             /// ```
+            #[inline]
             pub fn new(element: T) -> Result<Self> {
                 if CAP <= $IDX::MAX as usize {
                     Ok(Self {
@@ -74,9 +78,11 @@ macro_rules! impl_stack {
             ///
             /// # Examples
             /// ```
-            /// use devela::all::{StackU8, unwrap};
-            /// const S: StackU8<i32, (), 16> = unwrap![ok StackU8::new_copied(0)];
+            #[doc = "# use devela::all::{Stack" $IDX:camel ", unwrap};"]
+            #[doc = "const S: " Stack $IDX:camel
+                "<i32, (), 16> = unwrap![ok Stack" $IDX:camel "::new_copied(0)];"]
             /// ```
+            #[inline]
             pub const fn new_copied(element: T) -> Result<Self> {
                 if CAP <= $IDX::MAX as usize {
                     let array = Array::with_copied(element);
@@ -95,9 +101,10 @@ macro_rules! impl_stack {
             /// cloning `element` to fill the remaining free data.
             /// # Examples
             /// ```
-            /// # use devela::all::{StackU32, Boxed};
-            /// let mut s = StackU32::<_, Boxed, 100>::new(0);
+            #[doc = "# use devela::all::{Boxed, Stack" $IDX:camel "};"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, Boxed, 100>::new(0);"]
             /// ```
+            #[inline]
             pub fn new(element: T) -> Self {
                 Self {
                     array: Array::<T, Boxed, CAP>::with_cloned(element),
@@ -109,6 +116,7 @@ macro_rules! impl_stack {
         impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP, $IDX> {
             /// Returns the number of stacked elements.
             #[inline]
+            #[must_use]
             pub const fn len(&self) -> $IDX {
                 self.len
             }
@@ -116,11 +124,12 @@ macro_rules! impl_stack {
             /// Checks `true` if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<i32, (), 8>::default();
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let s = Stack" $IDX:camel "::<i32, (), 8>::default();"]
             /// assert![s.is_empty()];
             /// ```
             #[inline]
+            #[must_use]
             pub const fn is_empty(&self) -> bool {
                 self.len() == 0
             }
@@ -128,11 +137,12 @@ macro_rules! impl_stack {
             /// Returns `true` if the stack is full.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<_, (), 3>::from([1, 2, 3]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, (), 3>::from([1, 2, 3]);"]
             /// assert![s.is_full()];
             /// ```
             #[inline]
+            #[must_use]
             pub const fn is_full(&self) -> bool {
                 self.len() as usize == CAP
             }
@@ -140,11 +150,12 @@ macro_rules! impl_stack {
             /// Returns the stack's total capacity.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<i32, (), 3>::default();
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let s = Stack" $IDX:camel "::<i32, (), 3>::default();"]
             /// assert_eq![3, s.capacity()];
             /// ```
             #[inline]
+            #[must_use]
             pub const fn capacity(&self) -> $IDX {
                 CAP as $IDX
             }
@@ -152,15 +163,16 @@ macro_rules! impl_stack {
             /// Returns the stack's remaining capacity.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<i32, (), 3>::default();
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 3>::default();"]
             /// assert_eq![3, s.remaining_capacity()];
             /// s.push(1)?;
             /// assert_eq![2, s.remaining_capacity()];
             /// # Ok(()) }
             /// ```
             #[inline]
+            #[must_use]
             pub const fn remaining_capacity(&self) -> $IDX {
                 CAP as $IDX - self.len()
             }
@@ -170,11 +182,12 @@ macro_rules! impl_stack {
             /// Returns the stack as a shared slice.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<_, (), 3>::from([1, 2, 3]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, (), 3>::from([1, 2, 3]);"]
             /// assert_eq![s.as_slice(), &[1, 2, 3]];
             /// ```
             #[inline]
+            #[must_use]
             pub fn as_slice(&self) -> &[T] {
                 &self.array[..self.len as usize]
             }
@@ -182,11 +195,12 @@ macro_rules! impl_stack {
             /// Returns the stack as an exclusive slice.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 3>::from([1, 2, 3]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 3>::from([1, 2, 3]);"]
             /// assert_eq![s.as_mut_slice(), &mut [1, 2, 3]];
             /// ```
             #[inline]
+            #[must_use]
             pub fn as_mut_slice(&mut self) -> &mut [T] {
                 &mut self.array[..self.len as usize]
             }
@@ -196,14 +210,15 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughSpace`] if the stack becomes full before the iterator finishes.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 5>::default();
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 5>::default();"]
             /// s.extend([1, 2, 3]);
             /// assert_eq![s.as_slice(), &[1, 2, 3]];
             ///
             /// s.extend([4, 5, 6, 7, 8]);
             /// assert_eq![s.as_slice(), &[1, 2, 3, 4, 5]];
             /// ```
+            #[inline]
             pub fn extend<I>(&mut self, iterator: I) -> Result<()>
             where
                 I: IntoIterator<Item = T>,
@@ -226,11 +241,12 @@ macro_rules! impl_stack {
             /// `( 1 2 3 -- )`
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 8>::from([1, 2, 3, 4]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 8>::from([1, 2, 3, 4]);"]
             /// s.clear();
             /// assert![s.is_empty()];
             /// ```
+            #[inline]
             pub fn clear(&mut self) {
                 self.len = 0;
             }
@@ -244,9 +260,9 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughSpace`] if the stack is full.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<u8, (), 2>::default();
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 2>::default();"]
             /// s.push(1)?;
             /// s.push(2)?;
             /// assert![s.push(3).is_err()];
@@ -273,9 +289,9 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<_, (), 2>::from([1, 2]);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 2>::from([1, 2]);"]
             /// assert_eq![2, s.pop()?];
             /// assert_eq![1, s.pop()?];
             /// assert![s.is_empty()];
@@ -311,8 +327,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<_, (), 2>::from([1, 2]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, (), 2>::from([1, 2]);"]
             /// assert_eq![s.peek(), Ok(&2)];
             /// ```
             #[inline]
@@ -334,8 +350,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 2>::from([1, 2]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 2>::from([1, 2]);"]
             /// assert_eq![s.peek_mut(), Ok(&mut 2)];
             /// ```
             #[inline]
@@ -358,8 +374,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack has not enough elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<_, (), 5>::from([1, 2, 3, 4, 5]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, (), 5>::from([1, 2, 3, 4, 5]);"]
             /// assert_eq![s.peek_nth(0), Ok(&5)];
             /// assert_eq![s.peek_nth(4), Ok(&1)];
             /// ```
@@ -383,8 +399,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack has not enough elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 5>::from([1, 2, 3, 4, 5]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 5>::from([1, 2, 3, 4, 5]);"]
             /// assert_eq![s.peek_nth_mut(0), Ok(&mut 5)];
             /// assert_eq![s.peek_nth_mut(4), Ok(&mut 1)];
             /// ```
@@ -407,8 +423,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 2>::from([1, 2]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 2>::from([1, 2]);"]
             /// s.drop();
             /// assert_eq![s.as_slice(), &[1]];
             /// ```
@@ -429,8 +445,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack doesn't contain at least `n` elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 4>::from([1, 2, 3, 4]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 4>::from([1, 2, 3, 4]);"]
             /// s.drop_n(3);
             /// assert_eq![s.as_slice(), &[1]];
             /// ```
@@ -453,8 +469,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 2>::from([1, 2]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 2>::from([1, 2]);"]
             /// s.nip();
             /// assert_eq![s.as_slice(), &[2]];
             /// ```
@@ -476,8 +492,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 8>::from([1, 2, 3, 4]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 8>::from([1, 2, 3, 4]);"]
             /// s.nip2();
             /// assert_eq![s.as_slice(), &[3, 4]];
             /// ```
@@ -502,8 +518,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 2>::from([1, 2]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 2>::from([1, 2]);"]
             /// s.swap();
             /// assert_eq![s.as_slice(), &[2, 1]];
             /// ```
@@ -524,8 +540,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 4>::from([1, 2, 3, 4]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 4>::from([1, 2, 3, 4]);"]
             /// s.swap2();
             /// assert_eq![s.as_slice(), &[3, 4, 1, 2]];
             /// ```
@@ -549,9 +565,9 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<_, (), 3>::from(['a', 'b', 'c']);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 3>::from(['a', 'b', 'c']);"]
             /// s.rot()?;
             /// assert_eq![s.as_slice(), &['b', 'c', 'a']];
             /// # Ok(()) }
@@ -573,9 +589,9 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<_, (), 3>::from(['a', 'b', 'c']);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 3>::from(['a', 'b', 'c']);"]
             /// s.rot_cc()?;
             /// assert_eq![s.as_slice(), &['c', 'a', 'b']];
             /// # Ok(()) }
@@ -597,9 +613,9 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 6 elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<_, (), 6>::from(['a', 'b', 'c', 'd', 'e', 'f']);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 6>::from(['a', 'b', 'c', 'd', 'e', 'f']);"]
             /// s.rot2()?;
             /// assert_eq![s.as_slice(), &['c', 'd', 'e', 'f', 'a', 'b']];
             /// # Ok(()) }
@@ -621,9 +637,9 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack doesn't contain at least 6 elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<_, (), 6>::from(['a', 'b', 'c', 'd', 'e', 'f']);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 6>::from(['a', 'b', 'c', 'd', 'e', 'f']);"]
             /// s.rot2()?;
             /// assert_eq![s.as_slice(), &['c', 'd', 'e', 'f', 'a', 'b']];
             /// # Ok(()) }
@@ -653,9 +669,9 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<_, (), 2>::from([1, 2]);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 2>::from([1, 2]);"]
             /// assert_eq![2, s.pop()?];
             /// assert_eq![1, s.pop()?];
             /// assert![s.is_empty()];
@@ -687,9 +703,9 @@ macro_rules! impl_stack {
             /// [`NotEnoughSpace`] if the stack is full.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<u8, (), 2>::from([1]);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 2>::from([1]);"]
             /// s.dup()?;
             /// assert_eq![&[1, 1], s.as_slice()];
             /// # Ok(()) }
@@ -715,9 +731,9 @@ macro_rules! impl_stack {
             /// or [`NotEnoughSpace`] if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<u8, (), 5>::from([1, 2]);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 5>::from([1, 2]);"]
             /// s.dup2()?;
             /// assert_eq![&[1, 2, 1, 2], s.as_slice()];
             /// # Ok(()) }
@@ -748,9 +764,9 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 1 extra element.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<u8, (), 3>::from([1, 2]);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 3>::from([1, 2]);"]
             /// s.over()?;
             /// assert_eq![&[1, 2, 1], s.as_slice()];
             /// # Ok(()) }
@@ -776,9 +792,9 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<u8, (), 6>::from([1, 2, 3, 4]);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 6>::from([1, 2, 3, 4]);"]
             /// s.over2()?;
             /// assert_eq![&[1, 2, 3, 4, 1, 2], s.as_slice()];
             /// # Ok(()) }
@@ -809,9 +825,9 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 1 extra element.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()>  {
-            /// let mut s = StackU8::<u8, (), 3>::from([1, 2]);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 3>::from([1, 2]);"]
             /// s.tuck()?;
             /// assert_eq![&[2, 1, 2], s.as_slice()];
             /// # Ok(()) }
@@ -839,9 +855,9 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()>  {
-            /// let mut s = StackU8::<u8, (), 6>::from([1, 2, 3, 4]);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 6>::from([1, 2, 3, 4]);"]
             /// s.tuck2()?;
             /// assert_eq![&[3, 4, 1, 2, 3, 4], s.as_slice()];
             /// # Ok(()) }
@@ -873,9 +889,9 @@ macro_rules! impl_stack {
             /// Returns the stacked elements as a vector.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<_, (), 5>::from([1, 2]);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 5>::from([1, 2]);"]
             /// s.push(3)?;
             /// s.push(4)?;
             /// s.push(5)?;
@@ -884,6 +900,8 @@ macro_rules! impl_stack {
             /// ```
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[inline]
+            #[must_use]
             pub fn to_vec(&self) -> Vec<T> {
                 let mut vec = Vec::with_capacity(self.len as usize);
                 for i in 0..self.len as usize {
@@ -900,9 +918,9 @@ macro_rules! impl_stack {
             /// Panics if the new `LEN` sized array can't be allocated.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            /// let mut s = StackU8::<_, (), 5>::from([1, 2]);
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 5>::from([1, 2]);"]
             /// s.push(3)?;
             /// s.push(4)?;
             /// s.push(5)?;
@@ -911,6 +929,8 @@ macro_rules! impl_stack {
             /// ```
             /// # Features
             /// Makes use of the `unsafe_array` feature if enabled.
+            #[inline]
+            #[must_use]
             pub fn to_array<const LEN: usize>(&self) -> Option<[T; LEN]> {
                 // IMPROVE: use array_init
                 // MAYBE return not option
@@ -941,6 +961,7 @@ macro_rules! impl_stack {
 
         impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP, $IDX> {
             /// Returns a interator.
+            #[inline]
             pub const fn iter(&self) -> StackIter<'_, T, S, CAP, $IDX> {
                 StackIter {
                     stack: self,
@@ -951,9 +972,10 @@ macro_rules! impl_stack {
             /// Converts an array into a [`full`][Self::is_full] stack.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<_, (), 3>::from_array([1, 2, 3]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, (), 3>::from_array([1, 2, 3]);"]
             /// ```
+            #[inline]
             pub fn from_array(arr: [T; CAP]) -> Stack<T, S, CAP, $IDX> {
                 Self {
                     array: Array::new(arr),
@@ -967,9 +989,11 @@ macro_rules! impl_stack {
             /// Converts an array into a [`full`][Self::is_full] stack.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<_, (), 3>::from_array_const([1, 2, 3]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "const S: " Stack $IDX:camel
+                "<i32, (), 3> = Stack" $IDX:camel "::from_array_const([1, 2, 3]);"]
             /// ```
+            #[inline]
             pub const fn from_array_const(arr: [T; CAP]) -> Stack<T, Bare, CAP, $IDX> {
                 Self {
                     array: Array::new_const(arr),
@@ -983,12 +1007,14 @@ macro_rules! impl_stack {
             /// Returns true if the stack contains `element`.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<_, (), 6>::from([5, 78, 42, 33, 9]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, (), 6>::from([5, 78, 42, 33, 9]);"]
             ///
             /// assert![s.contains(&9)];
             /// assert![!s.contains(&8)];
             /// ```
+            #[inline]
+            #[must_use]
             pub fn contains(&self, element: &T) -> bool {
                 self.iter().any(|n| n == element)
             }
@@ -1004,8 +1030,8 @@ macro_rules! impl_stack {
             /// Returns [`NotEnoughElements`] if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let mut s = StackU8::<_, (), 2>::from([1, 2]);
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 2>::from([1, 2]);"]
             /// s.drop_replace_default();
             /// assert_eq![s.as_slice(), &[1]];
             /// ```

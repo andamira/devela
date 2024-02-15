@@ -19,14 +19,16 @@ use crate::{
     mem::{cswap, Bare, Storage},
     result::Own,
 };
-use DataError::{NotEnoughElements, NotEnoughSpace};
+use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};
 
 // helper macro to impl methods for a Stack with custom index size.
+//
+// $IDX : the index type. E.g. u8, usize
 macro_rules! impl_stack {
-    // $name : name prefix. E.g.: Stack8b
-    // $IDX : the index type. E.g. u8, usize
-    ( $name:ident, $IDX:ty ) => { crate::code::paste! {
+    (own $( $IDX:ty ),+ ) => { $( impl_stack![@own $IDX]; )+ };
 
+    // general own_ ops
+    (@own $IDX:ty ) => { crate::code::paste! {
         /// # Chainable *const* operations depending on `T: Copy`
         ///
         /// Every method is *const* and returns [`Own`][crate::Own]`<Self, V>`.
@@ -41,8 +43,8 @@ macro_rules! impl_stack {
             ///
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// let s = StackU8::<_, (), 16>::new(0).unwrap();
+            #[doc = "# use devela::all::{Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 16> = Stack" $IDX:camel "::own_new(0).state_ok_state();"]
             /// ```
             #[inline]
             pub const fn own_new(element: T) -> Own<Result<Self>, ()> {
@@ -56,8 +58,8 @@ macro_rules! impl_stack {
             /// `( 1 2 3 -- )`
             /// # Examples
             /// ```
-            /// # use devela::data::StackU8;
-            /// const S: StackU8<i32, (), 3> = StackU8::from_array_const([1, 2, 3]).own_clear();
+            #[doc = "# use devela::all::{Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 3> = Stack" $IDX:camel "::from_array_const([1, 2, 3]).own_clear();"]
             /// assert![S.is_empty()];
             /// ```
             pub const fn own_clear(self) -> Self {
@@ -75,8 +77,8 @@ macro_rules! impl_stack {
             /// Returns `Own<S,`[`NotEnoughSpace`]`>` if the stack is full.
             /// # Examples
             /// ```
-            /// # use devela::all::{DataResult, DataError, Own, StackU8};
-            /// const S: StackU8<i32, (), 2> = StackU8::own_new(0).state_ok_state()
+            #[doc = "# use devela::all::{DataResult, DataError, Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel "::own_new(0).state_ok_state()"]
             ///     .own_push(1).value_ok_state()
             ///     .own_push(2).value_ok_state()
             ///     .own_push(3).value_err_state();
@@ -99,8 +101,8 @@ macro_rules! impl_stack {
             /// Panics if the stack is full.
             /// # Examples
             /// ```
-            /// # use devela::all::{DataResult, StackU8};
-            /// const S: StackU8<i32, (), 2> = StackU8::own_new(0).state_ok_state()
+            #[doc = "# use devela::all::{DataResult,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel "::own_new(0).state_ok_state()"]
             ///     .own_push_unchecked(1).state.own_push_unchecked(2).state;
             /// assert_eq![S.as_slice(), &[1, 2]];
             /// ```
@@ -122,9 +124,9 @@ macro_rules! impl_stack {
             /// Returns `Own<S,`[`NotEnoughElements`]`>` if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::all::{DataResult, Own, StackU8};
-            /// const S: Own<StackU8<i32, (), 3>, DataResult<i32>> =
-            ///     StackU8::from_array_const([1, 2, 3]).own_pop();
+            #[doc = "# use devela::all::{DataResult, Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Own<Stack" $IDX:camel "<i32, (), 3>, DataResult<i32>> =\n"]
+            #[doc = "    Stack" $IDX:camel "::from_array_const([1, 2, 3]).own_pop();"]
             /// S.assert_state(|s| s.as_slice() == &[1, 2]).assert_eq_value(&Ok(3));
             /// ```
             #[inline]
@@ -143,9 +145,9 @@ macro_rules! impl_stack {
             /// Panics if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::all::{DataResult, Own, StackU8};
-            /// const S: Own<StackU8<i32, (), 3>, i32> = StackU8::from_array_const([1, 2, 3])
-            ///     .own_pop_unchecked();
+            #[doc = "# use devela::all::{DataResult, Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Own<Stack" $IDX:camel "<i32, (), 3>, i32> =\n"]
+            #[doc = "    Stack" $IDX:camel "::from_array_const([1, 2, 3]).own_pop_unchecked();"]
             /// S.assert_state(|s| s.as_slice() == &[1, 2]).assert_eq_value(&3);
             /// ```
             #[inline]
@@ -166,9 +168,9 @@ macro_rules! impl_stack {
             /// Returns `Own<S,`[`NotEnoughElements`]`>` if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::all::{DataResult, Own, StackU8};
-            /// const S: Own<StackU8<i32, (), 3>, DataResult<i32>> =
-            ///     StackU8::from_array_const([1, 2, 3]).own_peek();
+            #[doc = "# use devela::all::{DataResult, Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Own<Stack" $IDX:camel "<i32, (), 3>, DataResult<i32>> =\n"]
+            #[doc = "   Stack" $IDX:camel "::from_array_const([1, 2, 3]).own_peek();"]
             /// S.assert_state(|s| s.as_slice() == &[1, 2, 3]).assert_eq_value(&Ok(3));
             /// ```
             #[inline]
@@ -187,8 +189,8 @@ macro_rules! impl_stack {
             /// Panics if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::all::{DataResult, Own, StackU8};
-            /// const S: Own<StackU8<i32, (), 3>, i32> = StackU8::from_array_const([1, 2, 3])
+            #[doc = "# use devela::all::{DataResult, Own, Stack" $IDX:camel "};"]
+            #[doc = "const S: Own<Stack" $IDX:camel "<i32, (), 3>, i32> = Stack" $IDX:camel "::from_array_const([1, 2, 3])"]
             ///     .own_peek_unchecked();
             /// S.assert_state(|s| s.as_slice() == &[1, 2, 3]).assert_eq_value(&3);
             /// ```
@@ -209,12 +211,12 @@ macro_rules! impl_stack {
             /// Returns `Own<self,`[`NotEnoughElements`]`>` if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 2> = StackU8::from_array_const([1, 2])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel "::from_array_const([1, 2])"]
             ///     .own_drop().value_ok_state();
             /// assert_eq![S.as_slice(), &[1]];
             ///
-            /// const T: StackU8<i32, (), 2> = StackU8::own_new(0).state_ok_state()
+            #[doc = "const T: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel "::own_new(0).state_ok_state()"]
             ///     .own_drop().value_err_state();
             /// assert![T.is_empty()];
             /// ```
@@ -233,8 +235,8 @@ macro_rules! impl_stack {
             /// Panics if the stack is empty.
             /// # Examples
             /// ```
-            /// # use devela::all::StackU8;
-            /// const S: StackU8<i32, (), 2> = StackU8::from_array_const([1, 2])
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel "::from_array_const([1, 2])"]
             ///     .own_drop_unchecked().state;
             /// assert_eq![S.as_slice(), &[1]];
             /// ```
@@ -253,8 +255,8 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least `n` elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([1, 2, 3, 4])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([1, 2, 3, 4])"]
             ///     .own_drop_n(3).value_ok_state();
             /// assert_eq![S.as_slice(), &[1]];
             /// ```
@@ -273,8 +275,8 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least `n` elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([1, 2, 3, 4])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([1, 2, 3, 4])"]
             ///     .own_drop_n_unchecked(3).state;
             /// assert_eq![S.as_slice(), &[1]];
             /// ```
@@ -295,12 +297,12 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 2> = StackU8::from_array_const([1, 2])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel "::from_array_const([1, 2])"]
             ///     .own_nip().value_ok_state();
             /// assert_eq![S.as_slice(), &[2]];
             ///
-            /// const T: StackU8<i32, (), 2> = StackU8::own_new(0).state_ok_state()
+            #[doc = "const T: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel "::own_new(0).state_ok_state()"]
             ///     .own_push(1).value_ok_state().own_nip().value_err_state();
             /// assert_eq![T.as_slice(), &[1]];
             /// ```
@@ -320,8 +322,8 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 2> = StackU8::from_array_const([1, 2])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel "::from_array_const([1, 2])"]
             ///     .own_nip_unchecked().state;
             /// assert_eq![S.as_slice(), &[2]];
             /// ```
@@ -342,8 +344,8 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([1, 2, 3, 4])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([1, 2, 3, 4])"]
             ///     .own_nip2().value_ok_state();
             /// assert_eq![S.as_slice(), &[3, 4]];
             /// ```
@@ -363,8 +365,8 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([1, 2, 3, 4])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([1, 2, 3, 4])"]
             ///     .own_nip2_unchecked().state;
             /// assert_eq![S.as_slice(), &[3, 4]];
             /// ```
@@ -388,12 +390,12 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{DataResult, Own, StackU8};
-            /// const S: StackU8<i32, (), 2> = StackU8::from_array_const([1, 2])
+            #[doc = "# use devela::all::{DataResult, Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel "::from_array_const([1, 2])"]
             ///     .own_swap().value_ok_state();
             /// assert_eq![S.as_slice(), &[2, 1]];
             ///
-            /// const T: StackU8<i32, (), 1> = StackU8::from_array_const([1])
+            #[doc = "const T: Stack" $IDX:camel "<i32, (), 1> = Stack" $IDX:camel "::from_array_const([1])"]
             ///     .own_swap().value_err_state();
             /// assert_eq![T.as_slice(), &[1]];
             /// ```
@@ -412,8 +414,8 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 2> = StackU8::from_array_const([1, 2])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel "::from_array_const([1, 2])"]
             ///     .own_swap_unchecked().state;
             /// assert_eq![S.as_slice(), &[2, 1]];
             /// ```
@@ -432,12 +434,12 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([1, 2, 3, 4])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([1, 2, 3, 4])"]
             ///     .own_swap2().value_ok_state();
             /// assert_eq![S.as_slice(), &[3, 4, 1, 2]];
             ///
-            /// const T: StackU8<i32, (), 3> = StackU8::from_array_const([1, 2, 3])
+            #[doc = "const T: Stack" $IDX:camel "<i32, (), 3> = Stack" $IDX:camel "::from_array_const([1, 2, 3])"]
             ///     .own_swap2().value_err_state();
             /// assert_eq![T.as_slice(), &[1, 2, 3]];
             /// ```
@@ -456,8 +458,8 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([1, 2, 3, 4])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([1, 2, 3, 4])"]
             ///     .own_swap2_unchecked().state;
             /// assert_eq![S.as_slice(), &[3, 4, 1, 2]];
             /// ```
@@ -479,8 +481,8 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([0, 1, 2, 3])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3])"]
             ///     .own_rot().value_ok_state();
             /// assert_eq![S.as_slice(), &[0, 2, 3, 1]];
             /// ```
@@ -501,8 +503,9 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([0, 1, 2, 3]).own_rot_unchecked().state;
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3])"]
+            ///     .own_rot_unchecked().state;
             /// assert_eq![S.as_slice(), &[0, 2, 3, 1]];
             /// ```
             #[inline]
@@ -526,8 +529,8 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([0, 1, 2, 3])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3])"]
             ///     .own_rot_cc().value_ok_state();
             /// assert_eq![S.as_slice(), &[0, 3, 1, 2]];
             /// ```
@@ -547,8 +550,9 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([0, 1, 2, 3]).own_rot_cc_unchecked().state;
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3])"]
+            ///     .own_rot_cc_unchecked().state;
             /// assert_eq![S.as_slice(), &[0, 3, 1, 2]];
             /// ```
             #[inline]
@@ -572,8 +576,8 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 6 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 7> = StackU8::from_array_const([0, 1, 2, 3, 4, 5, 6])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 7> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2().value_ok_state();
             /// assert_eq![S.as_slice(), &[0, 3, 4, 5, 6, 1, 2]];
             /// ```
@@ -592,8 +596,8 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 6 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 7> = StackU8::from_array_const([0, 1, 2, 3, 4, 5, 6])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 7> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2_unchecked().state;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 5, 6, 1, 2]];
             /// ```
@@ -623,8 +627,8 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 6 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 7> = StackU8::from_array_const([0, 1, 2, 3, 4, 5, 6])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 7> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2_cc().value_ok_state();
             /// assert_eq![S.as_slice(), &[0, 5, 6, 1, 2, 3, 4]];
             /// ```
@@ -643,8 +647,8 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 6 elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 7> = StackU8::from_array_const([0, 1, 2, 3, 4, 5, 6])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 7> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2_cc_unchecked().state;
             /// assert_eq![S.as_slice(), &[0, 5, 6, 1, 2, 3, 4]];
             /// ```
@@ -676,8 +680,8 @@ macro_rules! impl_stack {
             /// `Own<self,`[`NotEnoughSpace`]`>` if the stack is full.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 3> = StackU8::own_new(0).state_ok_state()
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 3> = Stack" $IDX:camel "::own_new(0).state_ok_state()"]
             ///     .own_push(1).state.own_dup().value_ok_state();
             /// assert_eq![S.as_slice(), &[1, 1]];
             /// ```
@@ -698,8 +702,8 @@ macro_rules! impl_stack {
             /// Panics if the stack is either empty or full.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 3> = StackU8::own_new(0).state_ok_state()
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 3> = Stack" $IDX:camel "::own_new(0).state_ok_state()"]
             ///     .own_push(1).state.own_dup_unchecked().state;
             /// assert_eq![S.as_slice(), &[1, 1]];
             /// ```
@@ -722,8 +726,8 @@ macro_rules! impl_stack {
             /// if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 6> = StackU8::from_array_const([0, 1, 2, 0, 0, 0])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 6> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 0, 0, 0])"]
             ///     .own_drop_n(3).state.own_dup2().value_ok_state();
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1, 2]];
             /// ```
@@ -745,8 +749,8 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 6> = StackU8::from_array_const([0, 1, 2, 0, 0, 0])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 6> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 0, 0, 0])"]
             ///     .own_drop_n(3).state.own_dup2_unchecked().state;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1, 2]];
             /// ```
@@ -774,8 +778,8 @@ macro_rules! impl_stack {
             /// if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([0, 1, 2, 0])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 0])"]
             ///     .own_drop().state.own_over().value_ok_state();
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1]];
             /// ```
@@ -797,8 +801,8 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([0, 1, 2, 0])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 0])"]
             ///     .own_drop().state.own_over_unchecked().state;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1]];
             /// ```
@@ -821,8 +825,8 @@ macro_rules! impl_stack {
             /// if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 7> = StackU8::from_array_const([0, 1, 2, 3, 4, 0, 0])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 7> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).state.own_over2().value_ok_state();
             /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
             /// ```
@@ -844,8 +848,8 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 7> = StackU8::from_array_const([0, 1, 2, 3, 4, 0, 0])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 7> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).state.own_over2_unchecked().state;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
             /// ```
@@ -873,8 +877,8 @@ macro_rules! impl_stack {
             /// if it doesn't have enough space for 1 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([0, 1, 2, 0])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 0])"]
             ///     .own_drop().state.own_tuck().value_ok_state();
             /// assert_eq![S.as_slice(), &[0, 2, 1, 2]];
             /// ```
@@ -896,8 +900,8 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 1 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 4> = StackU8::from_array_const([0, 1, 2, 0])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 4> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 0])"]
             ///     .own_drop().state.own_tuck_unchecked().state;
             /// assert_eq![S.as_slice(), &[0, 2, 1, 2]];
             /// ```
@@ -922,8 +926,8 @@ macro_rules! impl_stack {
             /// if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 7> = StackU8::from_array_const([0, 1, 2, 3, 4, 0, 0])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 7> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).state.own_tuck2_unchecked().state;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 1, 2, 3, 4]];
             /// ```
@@ -946,8 +950,8 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            /// # use devela::all::{Own, StackU8};
-            /// const S: StackU8<i32, (), 7> = StackU8::from_array_const([0, 1, 2, 3, 4, 0, 0])
+            #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, (), 7> = Stack" $IDX:camel "::from_array_const([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).state.own_tuck2_unchecked().state;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 1, 2, 3, 4]];
             /// ```
@@ -969,7 +973,4 @@ macro_rules! impl_stack {
         }
     }};
 }
-impl_stack![Stack, u8];
-impl_stack![Stack, u16];
-impl_stack![Stack, u32];
-impl_stack![Stack, usize];
+impl_stack![own u8, u16, u32, usize];

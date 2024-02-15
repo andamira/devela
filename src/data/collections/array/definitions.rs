@@ -20,8 +20,33 @@ use crate::mem::Boxed;
 
 /// A const generic array backed by the core [`array`] primitive.
 ///
+/// It is generic in respect to its
+/// elements (`T`),
+/// storage (`S`)
+/// and length (`LEN`).
+///
 /// See also the related trait: [`DataArray`][crate::DataArray]
 /// and aliases: [`BareArray`] and [`BoxedArray`].
+///
+/// ## Methods
+///
+/// - Constructors:
+///   [`new`][Self::new],
+///   [`new_boxed`][Self::new_boxed]*(`alloc`)*,
+///   [`new_const`][Self::new_const].
+///   [`with_cloned`][Self::with_cloned].
+///   [`with_copied`][Self::with_copied].
+/// - Deconstructors:
+///   [`as_slice`][Self::as_slice],
+///   [`as_mut_slice`][Self::as_mut_slice],
+///   [`into_array`][Self::into_array],
+///   [`into_array_const`][Self::into_array_const],
+///   [`into_slice`][Self::into_slice]*(`alloc`)*,
+///   [`intto_vec`][Self::into_vec]*(`alloc`)*.
+/// - Queries:
+///   [`len`][Self::len], [`is_empty`][Self::is_empty],
+///   [`contains`][Self::contains].
+#[must_use]
 pub struct Array<T, S: Storage, const LEN: usize> {
     pub(crate) array: S::Stored<[T; LEN]>,
 }

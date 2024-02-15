@@ -11,7 +11,6 @@ mod definitions;
 // always compiled, non-public, nothing to re-export
 mod impl_traits;
 mod methods;
-mod methods_own;
 // #[cfg(test)]
 // mod tests;
 
