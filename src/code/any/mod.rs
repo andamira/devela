@@ -14,6 +14,7 @@ mod reexports;
 /* re-exports */
 
 // always compiled, non public
+#[allow(unused_imports)]
 pub use {ext::*, reexports::*};
 
 pub(crate) mod all {

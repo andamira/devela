@@ -12,7 +12,7 @@ pub use fns::*;
 ///
 /// For that it uses either a temporary variable or the [xor swap method].
 ///
-/// [xor swap method]: https://en.wikipedia.org/wiki/XOR_swap_algorithm)
+/// [xor swap method]: https://en.wikipedia.org/wiki/XOR_swap_algorithm
 // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
 #[macro_export]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
