@@ -9,7 +9,7 @@
 mod definitions;
 
 // always compiled, non-public, nothing to re-export
-mod core_impls;
+mod impl_traits;
 mod methods;
 #[cfg(test)]
 mod tests;

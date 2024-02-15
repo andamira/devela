@@ -5,7 +5,7 @@ use super::*;
 // test the private idx_* functions
 #[test]
 fn idx() {
-    let q = Destaque::<_, (), 5>::from([1u8, 2, 3]);
+    let q = DestaqueU8::<_, (), 5>::from([1u8, 2, 3]);
 
     // counting from the front:
     assert_eq![0, q.idx_front(0)];

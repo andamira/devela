@@ -15,16 +15,35 @@ use crate::{
 
 /// A double-ended queue and stack backed by an [`Array`].
 ///
+/// It is generic in respect to its
+/// elements (`T`),
+/// storage (`S`),
+/// capacity (`CAP`)
+/// and index size (`IDX`).
+///
+/// The index size will upper-bound the capacity to the maximum for that type,
+/// e.g. `u8::MAX` for [`DestaqueU8`].
+///
+/// The index size determines the maximum possible number of elements in the destaque,
+/// thereby upper-bounding the capacity to the maximum value representable by the
+/// index type. For example, `u8::MAX` for [`DestaqueU8`].
+///
+/// The total size in bytes of the stack may be influenced by the chosen index
+/// size, depending on the size and alignment of the elements. This difference
+/// could only be significant for small capacities, as only one index is stored.
+///
+/// See also the related aliases that specify `IDX`:
+/// [`DestaqueU8`], [`DestaqueU16`], [`DestaqueU32`], [`DestaqueUsize`],
+/// and the related traits:
+/// [`DataQueue`][crate::DataQueue], [`DataDeque`][crate::DataDeque],
+/// [`DataStack`][crate::DataStack], [`DataDestack`][crate::DataDestack].<br/>
+///
+/// ## Methods
+///
 /// It implements methods that operate from both the front and the back.
 /// Rememeber that a single-ended *stack* operates only from the back, while a
 /// single-ended *queue* pushes to the back and pops from the front.
 ///
-/// See also the related traits:
-/// [`DataQueue`][crate::DataQueue], [`DataDeque`][crate::DataDeque],
-/// [`DataStack`][crate::DataStack], [`DataDestack`][crate::DataDestack]<br/>
-/// and aliases: [`BareDestaque`] and [`BoxedDestaque`].
-///
-/// ## Methods
 /// - General methods:
 ///   - [`new`][Self::new],
 /// [`len`][Self::len], [`is_empty`][Self::is_empty], [`is_full`][Self::is_full],
@@ -80,91 +99,34 @@ use crate::{
 /// [`tuck_front`][Self::tuck_front],
 /// [`tuck2_back`][Self::tuck2_back],
 /// [`tuck2_front`][Self::tuck2_front].
-pub struct Destaque<T, S: Storage, const CAP: usize> {
+pub struct Destaque<T, S: Storage, const CAP: usize, IDX> {
     pub(super) array: Array<T, S, CAP>,
-    pub(super) len: usize,
-    pub(super) front: usize,
-    pub(super) back: usize,
+    pub(super) len: IDX,
+    pub(super) front: IDX,
+    pub(super) back: IDX,
 }
 
+/// A [`Destaque`] with an 8-bit index size.
+pub type DestaqueU8<T, S, const CAP: usize> = Destaque<T, S, CAP, u8>;
+/// A [`Destaque`] with a 16-bit index size.
+pub type DestaqueU16<T, S, const CAP: usize> = Destaque<T, S, CAP, u16>;
+/// A [`Destaque`] with a 32-bit index size.
+pub type DestaqueU32<T, S, const CAP: usize> = Destaque<T, S, CAP, u32>;
+/// A [`Destaque`] with a pointer-sized index size.
+pub type DestaqueUsize<T, S, const CAP: usize> = Destaque<T, S, CAP, usize>;
+
 /// A [`Destaque`] stored in the stack.
-pub type BareDestaque<T, const CAP: usize> = Destaque<T, Bare, CAP>;
+pub type BareDestaque<T, const CAP: usize, IDX> = Destaque<T, Bare, CAP, IDX>;
 
 /// A [`Destaque`] stored in the heap.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub type BoxedDestaque<T, const CAP: usize> = Destaque<T, Boxed, CAP>;
+pub type BoxedDestaque<T, const CAP: usize, IDX> = Destaque<T, Boxed, CAP, IDX>;
 
 /* iterators */
 
 /// An iterator over [`Destaque`] elements.
-pub struct DestaqueIter<'s, T, S: Storage, const CAP: usize> {
-    pub(super) destaque: &'s Destaque<T, S, CAP>,
+pub struct DestaqueIter<'s, T, S: Storage, const CAP: usize, IDX> {
+    pub(super) destaque: &'s Destaque<T, S, CAP, IDX>,
     pub(super) idx: usize,
-}
-
-impl<'s, T, S: Storage, const CAP: usize> Iterator for DestaqueIter<'s, T, S, CAP> {
-    type Item = &'s T;
-    /// Iterates over shared references.
-    /// # Example
-    /// ```
-    /// # use devela::data::Destaque;
-    /// let mut dq = Destaque::<i32, (), 4>::from([1, 2]);
-    /// dq.pop_front();
-    /// dq.push_back(3);
-    /// dq.pop_front();
-    /// dq.push_back(4);
-    ///
-    /// let mut dqi = dq.iter();
-    /// assert_eq![Some(&3), dqi.next()];
-    /// assert_eq![Some(&4), dqi.next()];
-    /// assert_eq![None, dqi.next()];
-    /// ```
-    fn next(&mut self) -> Option<Self::Item> {
-        let item = if self.idx == self.destaque.len() {
-            None
-        } else {
-            Some(&self.destaque.array[self.destaque.idx_front(self.idx)])
-        };
-        self.idx += 1;
-        item
-    }
-
-    fn size_hint(&self) -> (usize, Option<usize>) {
-        (self.destaque.len(), Some(self.destaque.len()))
-    }
-}
-
-impl<'s, T, S: Storage, const CAP: usize> ExactSizeIterator for DestaqueIter<'s, T, S, CAP> {}
-
-impl<'s, T, S: Storage, const CAP: usize> DoubleEndedIterator for DestaqueIter<'s, T, S, CAP> {
-    /// Iterates over shared references.
-    /// # Example
-    /// ```
-    /// # use devela::data::Destaque;
-    /// let mut dq = Destaque::<i32, (), 4>::from([1, 2]);
-    /// dq.pop_front();
-    /// dq.push_back(3);
-    /// dq.pop_front();
-    /// dq.push_back(4);
-    ///
-    /// let mut dqi = dq.iter();
-    /// assert_eq![Some(&3), dqi.next()];
-    /// assert_eq![Some(&4), dqi.next()];
-    /// assert_eq![None, dqi.next()];
-    ///
-    /// let mut dqi = dq.iter();
-    /// assert_eq![Some(&4), dqi.next_back()];
-    /// assert_eq![Some(&3), dqi.next_back()];
-    /// assert_eq![None, dqi.next_back()];
-    /// ```
-    fn next_back(&mut self) -> Option<Self::Item> {
-        let item = if self.idx == self.destaque.len() {
-            None
-        } else {
-            Some(&self.destaque.array[self.destaque.idx_back(self.idx)])
-        };
-        self.idx += 1;
-        item
-    }
 }
