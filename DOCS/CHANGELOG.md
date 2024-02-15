@@ -13,9 +13,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add features: `num_all`, `safe_code`, `safe_data`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`, `nightly_coro`, `nightly_doc`, `_exclude_example`.
 - add Floating constants: `FRAC_1_PHI`, `NEG_FRAC_1_PHI`, `SQ_PHI`, `FRAC_NEG_1_PHI`.
 - add `no_std` reimplementations of `std::error` and `std::io` types and traits.
-- add non-optional dependency `either` and reexport `Either` type and functions.
+- add non-optional dependency `either` and reexport its items.
+- add optional dependencies: `memchr`, `wide`.
 - add examples: `cargo-script`, `bitfield`, `enumset`.
 - add macros: `assert_eq_all`, `assert_approx_eq_all`, `unwrap`.
+- add `Array` methods: `new_boxed`, `into_slice`, `into_vec`.
 - add niche number aliases: `NonEdge*`.
 - add `Bare` type alias of `unit`.
 - add script `tools/rustfmt` and `rustfmt_excluded_files` list.
@@ -48,6 +50,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `Direct` to `BareBox`, and `DirectArray` `BareArray`.
 - rename `num_int_niche` feature to `num_niche_impls`.
 - rename `*fence` functions to `atomic_*fence`.
+- rename `ascii_` reexported macros to `str_`.
 - rename allocated collections with `Alloc`.
 - rename the feature `full` to `all`.
 - rename `FloatOps` to `ExtFloat`.
@@ -57,7 +60,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - recreate the `pre-commit` script to leverage `rustfmt`.
 - update `enumset`: rename `LEN` associated constant to `ENUM_VARIANTS`, and add `enum_variants` method.
 - update the `cdbg` macro with column number.
-- update the `array_init` macro syntax.
+- update and improve the `array_init` macro.
+- update the `cswap` macro with `xor` swap.
 - improve the `pre-commit` git hook.
 
 ### Fixed
