@@ -11,8 +11,8 @@
 /// - `$const_init`: a const fn with an `usize` argument that returns `$T: Copy`.
 /// - `$copiable`: an expression that returns an element of type `$T: Copy`.
 /// - `$clonable`: an expression that returns an element of type `$T: Clone`.
-/// - `$fsafe`: the name of a feature that forbids the use of `unsafe`.
-/// - `$funsafe`: the name of a feature that enables the use of `unsafe`.
+/// - `$fsafe`: a feature that forbids the use of `unsafe` when enabled.
+/// - `$funsafe`: a feature that enables the use of `unsafe` when enabled.
 /// - `$intoiter`: an item that implements [`IntoIterator`].
 ///
 /// # Examples

@@ -6,8 +6,6 @@
 // - define DataCollection
 // - impl for devela types:
 //   - Array
-//   - Stack
-//   - Destaque
 // - impl for reexported types:
 //   - array
 //   - Vec
@@ -19,7 +17,7 @@
 //   - UnorderedSet
 
 use crate::{
-    data::{Array, DataError as E, DataResult as Result, Destaque, Stack},
+    data::{Array, DataError as E, DataResult as Result},
     mem::Storage,
 };
 
@@ -61,21 +59,6 @@ impl<T, S: Storage, const LEN: usize> DataCollection for Array<T, S, LEN> {
     fn collection_is_empty(&self) -> Result<bool> { E::ns() }
     /// Returns [`NotSupported`][E::NotSupported] since a fixed-size array is never empty or full.
     fn collection_is_full(&self) -> Result<bool> { E::ns() }
-    fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
-        Ok(self.contains(&element))
-    }
-    fn collection_count(&self, element: &Self::Element) -> Result<usize> where T: PartialEq {
-        Ok(self.iter().filter(|&e| e == element).count())
-    }
-}
-
-#[rustfmt::skip]
-impl<T, S: Storage, const LEN: usize> DataCollection for Destaque<T, S, LEN> {
-    type Element = T;
-    fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
-    fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
-    fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
-    fn collection_is_full(&self) -> Result<bool> { Ok(self.is_full()) }
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
         Ok(self.contains(&element))
     }

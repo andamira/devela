@@ -10,20 +10,19 @@ use crate::{
     data::{Array, DataCollection, DataResult as Result, DataStack, Stack, StackIter},
     mem::{Bare, Storage},
 };
-use core::fmt;
+use core::{cmp::Ordering, fmt};
 
 // helper macro for implementing traits for a Stack depending on the custom index size.
 macro_rules! impl_stack {
     () => {
-        impl_stack![Stack, u8];
-        impl_stack![Stack, u16];
-        impl_stack![Stack, u32];
-        impl_stack![Stack, usize];
+        impl_stack![u8];
+        impl_stack![u16];
+        impl_stack![u32];
+        impl_stack![usize];
     };
 
-    // $name : name prefix. E.g.: Stack8b
     // $IDX : the index type. E.g. u8, usize
-    ( $name:ident, $IDX:ty ) => { crate::code::paste! {
+    ( $IDX:ty ) => { crate::code::paste! {
 
         /* impl data traits */
 
@@ -136,6 +135,29 @@ macro_rules! impl_stack {
         impl<'s, T, S: Storage, const CAP: usize> ExactSizeIterator
             for StackIter<'s, T, S, CAP, $IDX> {}
 
+        /* PartialOrd, Ord */
+
+        // T:PartialOrd
+        impl<T: PartialOrd, S: Storage, const CAP: usize> PartialOrd for Stack<T, S, CAP, $IDX>
+        where
+            S::Stored<[T; CAP]>: PartialOrd,
+        {
+            #[inline]
+            fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+                self.iter().partial_cmp(other.iter())
+            }
+        }
+
+        // T:Ord
+        impl<T: Ord, S: Storage, const CAP: usize> Ord for Stack<T, S, CAP, $IDX>
+        where
+            S::Stored<[T; CAP]>: Ord,
+        {
+            #[inline]
+            fn cmp(&self, other: &Self) -> Ordering {
+                self.iter().cmp(other.iter())
+            }
+        }
     }};
 }
 impl_stack!();

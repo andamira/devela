@@ -27,15 +27,14 @@ use core::mem::{transmute_copy, MaybeUninit};
 // helper macro to impl methods for a Stack with custom index size.
 macro_rules! impl_stack {
     () => {
-        impl_stack![Stack, u8];
-        impl_stack![Stack, u16];
-        impl_stack![Stack, u32];
-        impl_stack![Stack, usize];
+        impl_stack![u8];
+        impl_stack![u16];
+        impl_stack![u32];
+        impl_stack![usize];
     };
 
-    // $name : name prefix. E.g.: Stack8b
     // $IDX : the index type. E.g. u8, usize
-    ( $name:ident, $IDX:ty ) => { crate::code::paste! {
+    ( $IDX:ty ) => { crate::code::paste! {
 
         #[doc = "# Methods for `Stack" $IDX:camel "`\n\n"]
         /// --------------------------------------------------
@@ -943,6 +942,7 @@ macro_rules! impl_stack {
                     #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
                     let arr = {
                         let mut unarr: [MaybeUninit<T>; LEN] =
+                            // SAFETY: we will initialize all the elements
                             unsafe { MaybeUninit::uninit().assume_init() };
                         for (n, i) in unarr.iter_mut().enumerate().take(LEN) {
                             let _ = i.write(self.array[n].clone());
@@ -960,7 +960,7 @@ macro_rules! impl_stack {
         }
 
         impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP, $IDX> {
-            /// Returns a interator.
+            /// Returns an iterator.
             #[inline]
             pub const fn iter(&self) -> StackIter<'_, T, S, CAP, $IDX> {
                 StackIter {
