@@ -20,7 +20,7 @@ use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};
 
-// helper macro to impl methods for a Stack with custom index size.
+// helper macro to impl methods for a Destque with custom index size.
 macro_rules! impl_destaque {
     () => {
         impl_destaque![u8];
@@ -31,6 +31,12 @@ macro_rules! impl_destaque {
 
     // $IDX : the index type. E.g. u8, usize
     ( $IDX:ty ) => { crate::code::paste! {
+        /* constructors */
+
+        #[doc = "# Methods for `Destaque" $IDX:camel "`\n\n"]
+        /// --------------------------------------------------
+        /// --------------------------------------------------
+        impl<T: Clone, const CAP: usize> Destaque<T, Bare, CAP, $IDX> {}
 
         // S:Bare + T:Clone
         impl<T: Clone, const CAP: usize> Destaque<T, Bare, CAP, $IDX> {
@@ -115,23 +121,6 @@ macro_rules! impl_destaque {
         }
 
         impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP, $IDX> {
-            // Returns the `nth` element's index counting from the back.
-            #[inline]
-            #[must_use]
-            // pub(super) const fn idx_back(&self, nth: usize) -> usize {
-            //     (self.back as usize + CAP - nth - 1) % CAP
-            pub(super) const fn idx_back(&self, nth: $IDX) -> usize {
-                (self.back as usize + CAP - nth as usize - 1) % CAP
-            }
-            // Returns the `nth` element's index counting from the front.
-            #[inline]
-            #[must_use]
-            // pub(super) const fn idx_front(&self, nth: usize) -> usize {
-            //     (self.front as usize + nth) % CAP
-            pub(super) const fn idx_front(&self, nth: $IDX) -> usize {
-                (self.front as usize + nth as usize) % CAP
-            }
-
             /// Converts an array into a [`full`][Self::is_full] destaque.
             /// # Examples
             /// ```
@@ -147,13 +136,15 @@ macro_rules! impl_destaque {
                 }
             }
 
+            /* queries */
+
             /// Returns the number of destaqued elements.
             #[inline]
             pub const fn len(&self) -> $IDX {
                 self.len as $IDX
             }
 
-            /// Checks `true` if the stack is empty.
+            /// Checks `true` if the destaque is empty.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
@@ -165,7 +156,7 @@ macro_rules! impl_destaque {
                 self.len() == 0
             }
 
-            /// Returns `true` if the stack is full.
+            /// Returns `true` if the destaque is full.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
@@ -205,7 +196,9 @@ macro_rules! impl_destaque {
                 CAP as $IDX - self.len()
             }
 
-            /// Returns the stack as pair of shared slices, which contain, in order,
+            //
+
+            /// Returns the destaque as pair of shared slices, which contain, in order,
             /// the contents of the destaque.
             /// # Examples
             /// ```
@@ -246,134 +239,6 @@ macro_rules! impl_destaque {
             #[inline]
             pub const fn is_contiguous(&self) -> bool {
                 (self.front == 0 && self.back == 0) || (self.front < self.back)
-            }
-
-            /* iter */
-
-            /// Returns an iterator.
-            pub const fn iter(&self) -> DestaqueIter<'_, T, S, CAP, $IDX> {
-                DestaqueIter {
-                    destaque: self,
-                    idx: 0,
-                }
-            }
-
-            /* extend */
-
-            /// Extends the back of the destaque from an iterator.
-            ///
-            /// `( 1 2 -- 1 2 3 4 5 6)` for `[3 4 5 6]`
-            /// # Errors
-            /// Returns [`NotEnoughSpace`] if the destaque becomes full before the iterator finishes.
-            /// # Examples
-            /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 6>::from([1, 2, 3]);"]
-            /// q.extend_back([4, 5, 6, 7, 8]);
-            /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 5, 6])];
-            /// ```
-            pub fn extend_back<I>(&mut self, iterator: I) -> Result<()>
-            where
-                I: IntoIterator<Item = T>,
-            {
-                let mut iter = iterator.into_iter();
-                while !self.is_full() {
-                    if let Some(e) = iter.next() {
-                        self.push_back_unchecked(e);
-                    } else {
-                        return Ok(());
-                    }
-                }
-                Err(NotEnoughSpace(None))
-            }
-
-            /// Extends the back of the destaque from an iterator,
-            /// overriding elements from the front if the destaque is full.
-            ///
-            /// `( 1 2 3 -- 3 4 5 6)` for `[4 5 6]` and `CAP = 4`
-            /// # Examples
-            /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 4>::from([1, 2, 3]);"]
-            /// assert_eq![q.extend_back_override([4, 5, 6]), true];
-            /// assert_eq![q.to_array(), Some([3, 4, 5, 6])];
-            /// ```
-            pub fn extend_back_override<I>(&mut self, iterator: I) -> bool
-            where
-                I: IntoIterator<Item = T>,
-            {
-                let mut overriden = false;
-                for element in iterator.into_iter() {
-                    if self.is_full() {
-                        overriden = true;
-                        // drop_front
-                        self.front = (self.front + 1) % CAP as $IDX;
-                        self.len -= 1;
-                    }
-                    // push_back
-                    self.array[self.back as usize] = element;
-                    self.back = (self.back + 1) % CAP as $IDX;
-                    self.len += 1;
-                }
-                overriden
-            }
-
-            /// Extends the front of the destaque from an iterator.
-            ///
-            /// `( 1 2 -- 6 5 4 3 1 2 )` for `[3 4 5 6]`
-            /// # Errors
-            /// Returns [`NotEnoughSpace`] if the destaque becomes full before the iterator finishes.
-            /// # Examples
-            /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 6>::from([1, 2, 3]);"]
-            /// q.extend_front([4, 5, 6, 7, 8]);
-            /// assert_eq![q.to_array(), Some([6, 5, 4, 1, 2, 3])];
-            /// ```
-            pub fn extend_front<I>(&mut self, iterator: I) -> Result<()>
-            where
-                I: IntoIterator<Item = T>,
-            {
-                let mut iter = iterator.into_iter();
-                while !self.is_full() {
-                    if let Some(e) = iter.next() {
-                        self.push_front_unchecked(e);
-                    } else {
-                        return Ok(());
-                    }
-                }
-                Err(NotEnoughSpace(None))
-            }
-
-            /// Extends the front of the destaque from an iterator,
-            /// overriding elements from the back if the destaque is full.
-            ///
-            /// `( 1 2 3 -- 6 5 4 1)` for `[4 5 6]` and `CAP = 4`
-            /// # Examples
-            /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 4>::from([1, 2, 3]);"]
-            /// assert_eq![q.extend_front_override([4, 5, 6]), true];
-            /// assert_eq![q.to_array(), Some([6, 5, 4, 1])];
-            /// ```
-            pub fn extend_front_override<I>(&mut self, iterator: I) -> bool
-            where
-                I: IntoIterator<Item = T>,
-            {
-                let mut overriden = false;
-                for element in iterator.into_iter() {
-                    if self.is_full() {
-                        overriden = true;
-                        // drop_back
-                        self.back = (self.back + CAP as $IDX - 1) % CAP as $IDX;
-                        self.len -= 1;
-                    }
-                    // push_front
-                    self.front = (self.front + CAP as $IDX - 1) % CAP as $IDX;
-                    self.array[self.front as usize] = element;
-                    self.len += 1;
-                }
-                overriden
             }
 
             /* push */
@@ -1754,6 +1619,137 @@ macro_rules! impl_destaque {
             }
         }
 
+        /* iterators */
+
+        impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP, $IDX> {
+            /// Returns an iterator.
+            pub const fn iter(&self) -> DestaqueIter<'_, T, S, CAP, $IDX> {
+                DestaqueIter {
+                    destaque: self,
+                    idx: 0,
+                }
+            }
+
+            /* extend */
+
+            /// Extends the back of the destaque from an iterator.
+            ///
+            /// `( 1 2 -- 1 2 3 4 5 6)` for `[3 4 5 6]`
+            /// # Errors
+            /// Returns [`NotEnoughSpace`] if the destaque becomes full before the iterator finishes.
+            /// # Examples
+            /// ```
+            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 6>::from([1, 2, 3]);"]
+            /// q.extend_back([4, 5, 6, 7, 8]);
+            /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 5, 6])];
+            /// ```
+            pub fn extend_back<I>(&mut self, iterator: I) -> Result<()>
+            where
+                I: IntoIterator<Item = T>,
+            {
+                let mut iter = iterator.into_iter();
+                while !self.is_full() {
+                    if let Some(e) = iter.next() {
+                        self.push_back_unchecked(e);
+                    } else {
+                        return Ok(());
+                    }
+                }
+                Err(NotEnoughSpace(None))
+            }
+
+            /// Extends the back of the destaque from an iterator,
+            /// overriding elements from the front if the destaque is full.
+            ///
+            /// `( 1 2 3 -- 3 4 5 6)` for `[4 5 6]` and `CAP = 4`
+            /// # Examples
+            /// ```
+            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 4>::from([1, 2, 3]);"]
+            /// assert_eq![q.extend_back_override([4, 5, 6]), true];
+            /// assert_eq![q.to_array(), Some([3, 4, 5, 6])];
+            /// ```
+            pub fn extend_back_override<I>(&mut self, iterator: I) -> bool
+            where
+                I: IntoIterator<Item = T>,
+            {
+                let mut overriden = false;
+                for element in iterator.into_iter() {
+                    if self.is_full() {
+                        overriden = true;
+                        // drop_front
+                        self.front = (self.front + 1) % CAP as $IDX;
+                        self.len -= 1;
+                    }
+                    // push_back
+                    self.array[self.back as usize] = element;
+                    self.back = (self.back + 1) % CAP as $IDX;
+                    self.len += 1;
+                }
+                overriden
+            }
+
+            /// Extends the front of the destaque from an iterator.
+            ///
+            /// `( 1 2 -- 6 5 4 3 1 2 )` for `[3 4 5 6]`
+            /// # Errors
+            /// Returns [`NotEnoughSpace`] if the destaque becomes full before the iterator finishes.
+            /// # Examples
+            /// ```
+            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 6>::from([1, 2, 3]);"]
+            /// q.extend_front([4, 5, 6, 7, 8]);
+            /// assert_eq![q.to_array(), Some([6, 5, 4, 1, 2, 3])];
+            /// ```
+            pub fn extend_front<I>(&mut self, iterator: I) -> Result<()>
+            where
+                I: IntoIterator<Item = T>,
+            {
+                let mut iter = iterator.into_iter();
+                while !self.is_full() {
+                    if let Some(e) = iter.next() {
+                        self.push_front_unchecked(e);
+                    } else {
+                        return Ok(());
+                    }
+                }
+                Err(NotEnoughSpace(None))
+            }
+
+            /// Extends the front of the destaque from an iterator,
+            /// overriding elements from the back if the destaque is full.
+            ///
+            /// `( 1 2 3 -- 6 5 4 1)` for `[4 5 6]` and `CAP = 4`
+            /// # Examples
+            /// ```
+            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 4>::from([1, 2, 3]);"]
+            /// assert_eq![q.extend_front_override([4, 5, 6]), true];
+            /// assert_eq![q.to_array(), Some([6, 5, 4, 1])];
+            /// ```
+            pub fn extend_front_override<I>(&mut self, iterator: I) -> bool
+            where
+                I: IntoIterator<Item = T>,
+            {
+                let mut overriden = false;
+                for element in iterator.into_iter() {
+                    if self.is_full() {
+                        overriden = true;
+                        // drop_back
+                        self.back = (self.back + CAP as $IDX - 1) % CAP as $IDX;
+                        self.len -= 1;
+                    }
+                    // push_front
+                    self.front = (self.front + CAP as $IDX - 1) % CAP as $IDX;
+                    self.array[self.front as usize] = element;
+                    self.len += 1;
+                }
+                overriden
+            }
+
+        }
+
         // T:PartialEq
         impl<T: PartialEq, S: Storage, const CAP: usize> Destaque<T, S, CAP, $IDX> {
             /// Returns true if the destaque contains `element`.
@@ -1767,6 +1763,25 @@ macro_rules! impl_destaque {
             /// ```
             pub fn contains(&self, element: &T) -> bool {
                 self.iter().any(|n| n == element)
+            }
+        }
+
+        // TODO: drop_replace_default
+
+        /* private helpers */
+
+        impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP, $IDX> {
+            // Returns the `nth` element's index counting from the back.
+            #[inline]
+            #[must_use]
+            pub(super) const fn idx_back(&self, nth: $IDX) -> usize {
+                (self.back as usize + CAP - nth as usize - 1) % CAP
+            }
+            // Returns the `nth` element's index counting from the front.
+            #[inline]
+            #[must_use]
+            pub(super) const fn idx_front(&self, nth: $IDX) -> usize {
+                (self.front as usize + nth as usize) % CAP
             }
         }
     }};

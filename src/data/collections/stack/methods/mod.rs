@@ -35,6 +35,7 @@ macro_rules! impl_stack {
 
     // $IDX : the index type. E.g. u8, usize
     ( $IDX:ty ) => { crate::code::paste! {
+        /* constructors */
 
         #[doc = "# Methods for `Stack" $IDX:camel "`\n\n"]
         /// --------------------------------------------------
@@ -78,7 +79,7 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::{Stack" $IDX:camel ", unwrap};"]
-            #[doc = "const S: " Stack $IDX:camel
+            #[doc = "const S: Stack" $IDX:camel
                 "<i32, (), 16> = unwrap![ok Stack" $IDX:camel "::new_copied(0)];"]
             /// ```
             #[inline]
@@ -112,7 +113,41 @@ macro_rules! impl_stack {
             }
         }
 
+        // S:Bare
+        impl<T, const CAP: usize> Stack<T, Bare, CAP, $IDX> {
+            /// Converts an array into a [`full`][Self::is_full] stack.
+            /// # Examples
+            /// ```
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "const S: " Stack $IDX:camel
+                "<i32, (), 3> = Stack" $IDX:camel "::from_array_const([1, 2, 3]);"]
+            /// ```
+            #[inline]
+            pub const fn from_array_const(arr: [T; CAP]) -> Stack<T, Bare, CAP, $IDX> {
+                Self {
+                    array: Array::new_const(arr),
+                    len: CAP as $IDX,
+                }
+            }
+        }
+
         impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP, $IDX> {
+            /// Converts an array into a [`full`][Self::is_full] stack.
+            /// # Examples
+            /// ```
+            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, (), 3>::from_array([1, 2, 3]);"]
+            /// ```
+            #[inline]
+            pub fn from_array(arr: [T; CAP]) -> Stack<T, S, CAP, $IDX> {
+                Self {
+                    array: Array::new(arr),
+                    len: CAP as $IDX,
+                }
+            }
+
+            /* queries */
+
             /// Returns the number of stacked elements.
             #[inline]
             #[must_use]
@@ -204,34 +239,6 @@ macro_rules! impl_stack {
                 &mut self.array[..self.len as usize]
             }
 
-            /// Extends the stack from an iterator.
-            /// # Errors
-            /// Returns [`NotEnoughSpace`] if the stack becomes full before the iterator finishes.
-            /// # Examples
-            /// ```
-            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
-            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 5>::default();"]
-            /// s.extend([1, 2, 3]);
-            /// assert_eq![s.as_slice(), &[1, 2, 3]];
-            ///
-            /// s.extend([4, 5, 6, 7, 8]);
-            /// assert_eq![s.as_slice(), &[1, 2, 3, 4, 5]];
-            /// ```
-            #[inline]
-            pub fn extend<I>(&mut self, iterator: I) -> Result<()>
-            where
-                I: IntoIterator<Item = T>,
-            {
-                let mut iter = iterator.into_iter();
-                while !self.is_full() {
-                    if let Some(e) = iter.next() {
-                        let _ = self.push(e);
-                    } else {
-                        return Ok(());
-                    }
-                }
-                Err(NotEnoughSpace(None))
-            }
 
             /* clear */
 
@@ -959,6 +966,8 @@ macro_rules! impl_stack {
             }
         }
 
+        /* iterators */
+
         impl<T, S: Storage, const CAP: usize> Stack<T, S, CAP, $IDX> {
             /// Returns an iterator.
             #[inline]
@@ -969,38 +978,40 @@ macro_rules! impl_stack {
                 }
             }
 
-            /// Converts an array into a [`full`][Self::is_full] stack.
+            /* extend */
+
+            /// Extends the stack from an iterator.
+            /// # Errors
+            /// Returns [`NotEnoughSpace`] if the stack becomes full before the iterator finishes.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]
-            #[doc = "let s = Stack" $IDX:camel "::<_, (), 3>::from_array([1, 2, 3]);"]
+            #[doc = "let mut s = Stack" $IDX:camel "::<_, (), 5>::default();"]
+            /// s.extend([1, 2, 3]);
+            /// assert_eq![s.as_slice(), &[1, 2, 3]];
+            ///
+            /// s.extend([4, 5, 6, 7, 8]);
+            /// assert_eq![s.as_slice(), &[1, 2, 3, 4, 5]];
             /// ```
             #[inline]
-            pub fn from_array(arr: [T; CAP]) -> Stack<T, S, CAP, $IDX> {
-                Self {
-                    array: Array::new(arr),
-                    len: CAP as $IDX,
+            pub fn extend<I>(&mut self, iterator: I) -> Result<()>
+            where
+                I: IntoIterator<Item = T>,
+            {
+                let mut iter = iterator.into_iter();
+                while !self.is_full() {
+                    if let Some(e) = iter.next() {
+                        let _ = self.push(e);
+                    } else {
+                        return Ok(());
+                    }
                 }
+                Err(NotEnoughSpace(None))
             }
+
+            // TODO: extend_override
         }
 
-        // S:Bare
-        impl<T, const CAP: usize> Stack<T, Bare, CAP, $IDX> {
-            /// Converts an array into a [`full`][Self::is_full] stack.
-            /// # Examples
-            /// ```
-            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
-            #[doc = "const S: " Stack $IDX:camel
-                "<i32, (), 3> = Stack" $IDX:camel "::from_array_const([1, 2, 3]);"]
-            /// ```
-            #[inline]
-            pub const fn from_array_const(arr: [T; CAP]) -> Stack<T, Bare, CAP, $IDX> {
-                Self {
-                    array: Array::new_const(arr),
-                    len: CAP as $IDX,
-                }
-            }
-        }
 
         // T:PartialEq
         impl<T: PartialEq, S: Storage, const CAP: usize> Stack<T, S, CAP, $IDX> {

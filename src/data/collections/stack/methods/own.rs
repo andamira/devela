@@ -61,13 +61,13 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, (), 3> = Stack" $IDX:camel
-                "::from_array_const([1, 2, 3]).own_clear();"]
+                "::from_array_const([1, 2, 3]).own_clear().state;"]
             /// assert![S.is_empty()];
             /// ```
-            pub const fn own_clear(self) -> Self {
+            pub const fn own_clear(self) -> Own<Self, ()> {
                 let mut sta = self;
                 sta.len = 0;
-                sta
+                Own::empty(sta)
             }
 
             /* push */
