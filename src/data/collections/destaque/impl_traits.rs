@@ -144,13 +144,13 @@ macro_rules! impl_destaque {
             /// Returns a queue filled with an iterator, in the stack.
             /// # Examples
             /// ```
-            /// # use devela::data::Destaque;
-            /// let s: Destaque<_, (), 3> = [1, 2, 3].into();
+            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "let q: Destaque" $IDX:camel "<_, (), 3> = [1, 2, 3].into();"]
             /// ```
             fn from(iterator: I) -> Destaque<T, Bare, CAP, $IDX> {
-                let mut s = Destaque::<T, Bare, CAP, $IDX>::default();
-                let _ = s.extend_back(iterator);
-                s
+                let mut q = Destaque::<T, Bare, CAP, $IDX>::default();
+                let _ = q.extend_back(iterator);
+                q
             }
         }
 
@@ -162,13 +162,13 @@ macro_rules! impl_destaque {
             /// Returns a queue filled with an iterator, in the heap.
             /// # Examples
             /// ```
-            /// # use devela::data::BoxedDestaque;
-            /// let s: BoxedDestaque<_, 3> = [1, 2, 3].into();
+            #[doc = "# use devela::all::{Boxed, Destaque" $IDX:camel "};"]
+            #[doc = "let q: Destaque" $IDX:camel "<_, Boxed, 3> = [1, 2, 3].into();"]
             /// ```
             fn from(iterator: I) -> Destaque<T, Boxed, CAP, $IDX> {
-                let mut s = Destaque::<T, Boxed, CAP, $IDX>::default();
-                let _ = s.extend_back(iterator);
-                s
+                let mut q = Destaque::<T, Boxed, CAP, $IDX>::default();
+                let _ = q.extend_back(iterator);
+                q
             }
         }
 
@@ -179,17 +179,17 @@ macro_rules! impl_destaque {
             /// Iterates over shared references.
             /// # Example
             /// ```
-            /// # use devela::data::Destaque;
-            /// let mut dq = Destaque::<i32, (), 4>::from([1, 2]);
-            /// dq.pop_front();
-            /// dq.push_back(3);
-            /// dq.pop_front();
-            /// dq.push_back(4);
+            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, (), 4>::from([1, 2]);"]
+            /// q.pop_front();
+            /// q.push_back(3);
+            /// q.pop_front();
+            /// q.push_back(4);
             ///
-            /// let mut dqi = dq.iter();
-            /// assert_eq![Some(&3), dqi.next()];
-            /// assert_eq![Some(&4), dqi.next()];
-            /// assert_eq![None, dqi.next()];
+            /// let mut qi = q.iter();
+            /// assert_eq![Some(&3), qi.next()];
+            /// assert_eq![Some(&4), qi.next()];
+            /// assert_eq![None, qi.next()];
             /// ```
             fn next(&mut self) -> Option<Self::Item> {
                 let item = if self.idx == self.destaque.len() as usize {
@@ -211,22 +211,22 @@ macro_rules! impl_destaque {
             /// Iterates over shared references.
             /// # Example
             /// ```
-            /// # use devela::data::Destaque;
-            /// let mut dq = Destaque::<i32, (), 4>::from([1, 2]);
-            /// dq.pop_front();
-            /// dq.push_back(3);
-            /// dq.pop_front();
-            /// dq.push_back(4);
+            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, (), 4>::from([1, 2]);"]
+            /// q.pop_front();
+            /// q.push_back(3);
+            /// q.pop_front();
+            /// q.push_back(4);
             ///
-            /// let mut dqi = dq.iter();
-            /// assert_eq![Some(&3), dqi.next()];
-            /// assert_eq![Some(&4), dqi.next()];
-            /// assert_eq![None, dqi.next()];
+            /// let mut qi = q.iter();
+            /// assert_eq![Some(&3), qi.next()];
+            /// assert_eq![Some(&4), qi.next()];
+            /// assert_eq![None, qi.next()];
             ///
-            /// let mut dqi = dq.iter();
-            /// assert_eq![Some(&4), dqi.next_back()];
-            /// assert_eq![Some(&3), dqi.next_back()];
-            /// assert_eq![None, dqi.next_back()];
+            /// let mut qi = q.iter();
+            /// assert_eq![Some(&4), qi.next_back()];
+            /// assert_eq![Some(&3), qi.next_back()];
+            /// assert_eq![None, qi.next_back()];
             /// ```
             fn next_back(&mut self) -> Option<Self::Item> {
                 let item = if self.idx == self.destaque.len() as usize {
@@ -365,8 +365,8 @@ impl<T: Default, const CAP: usize, IDX: Default> Default for Destaque<T, Boxed, 
     /// using the default value to fill the remaining free data.
     /// # Examples
     /// ```
-    /// # use devela::data::BoxedDestaque;
-    /// let mut s = BoxedDestaque::<i32, 100>::default();
+    /// # use devela::all::{Boxed, DestaqueU8};
+    /// let mut q = DestaqueU8::<i32, Boxed, 100>::default();
     /// ```
     fn default() -> Self {
         Self {
