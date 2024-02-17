@@ -36,7 +36,7 @@ use crate::{
 /// [`DestaqueU8`], [`DestaqueU16`], [`DestaqueU32`], [`DestaqueUsize`],
 /// and the related traits:
 /// [`DataQueue`][crate::DataQueue], [`DataDeque`][crate::DataDeque],
-/// [`DataStack`][crate::DataStack], [`DataDestack`][crate::DataDestack].<br/>
+/// [`DataStack`][crate::DataStack], [`DataDesta`][crate::DataDesta].<br/>
 ///
 /// ## Methods
 ///

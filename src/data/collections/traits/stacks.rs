@@ -1,9 +1,9 @@
 // devela::data::collections::traits::stacks
 //
-//! DataStack and DataDestack abstract data types
+//! DataStack and DataDesta abstract data types
 //
 // TOC
-// - define traits DataStack, DataDestack
+// - define traits DataStack, DataDesta
 // - impl for
 //   - VecDeque
 
@@ -18,7 +18,7 @@ pub trait DataStack: DataCollection {
 }
 
 /// An abstract *double-ended stack* data type.
-pub trait DataDestack: DataStack {
+pub trait DataDesta: DataStack {
     /// Remove an element from the front of the stack.
     fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element>;
     /// Add an element to the front of the stack.
@@ -48,7 +48,7 @@ impl<T> DataStack for crate::data::collections::reexports::VecDeque<T> {
 }
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataDestack for crate::data::collections::reexports::VecDeque<T> {
+impl<T> DataDesta for crate::data::collections::reexports::VecDeque<T> {
     fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element> {
         self.pop_front().ok_or(E::NotEnoughElements(Some(1)))
     }

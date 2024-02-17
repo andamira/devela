@@ -8,7 +8,7 @@ use crate::mem::Boxed;
 use crate::{
     code::ConstDefault,
     data::{
-        Array, DataCollection, DataDeque, DataDestack, DataQueue, DataResult as Result, DataStack,
+        Array, DataCollection, DataDeque, DataDesta, DataQueue, DataResult as Result, DataStack,
         Destaque, DestaqueIter,
     },
     mem::{Bare, Storage},
@@ -106,7 +106,7 @@ macro_rules! impl_destaque {
         }
         #[rustfmt::skip]
         #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-        impl<T: Clone, S: Storage, const CAP: usize> DataDestack for Destaque<T, S, CAP, $IDX> {
+        impl<T: Clone, S: Storage, const CAP: usize> DataDesta for Destaque<T, S, CAP, $IDX> {
             fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element> {
                 self.pop_front()
             }
@@ -127,7 +127,7 @@ macro_rules! impl_destaque {
         }
         #[rustfmt::skip]
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-        impl<T, S: Storage, const CAP: usize> DataDestack for Destaque<T, S, CAP, $IDX> {
+        impl<T, S: Storage, const CAP: usize> DataDesta for Destaque<T, S, CAP, $IDX> {
             fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element> {
                 self.pop_front()
             }
