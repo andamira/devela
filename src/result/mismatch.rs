@@ -11,10 +11,10 @@
 /// It can be particularly useful for error handling and reporting.
 pub struct Mismatch<N, H> {
     /// Information about something that was needed, expected or anticipated.
-    pub need: Option<N>,
+    pub need: N,
 
     /// Information about something that was obtained, observed, or encountered.
-    pub have: Option<H>,
+    pub have: H,
 }
 
 impl<N, H> Mismatch<N, H> {}
@@ -38,14 +38,14 @@ mod core_impls {
     }
     impl<N: Copy, H: Copy> Copy for Mismatch<N, H> {}
 
-    impl<N, H> Default for Mismatch<N, H> {
+    impl<N: Default, H: Default> Default for Mismatch<N, H> {
         /// Returns an empty Mismatch with `None` for both fields.
         #[inline]
         #[must_use]
         fn default() -> Self {
             Self {
-                need: None,
-                have: None,
+                need: Default::default(),
+                have: Default::default(),
             }
         }
     }
