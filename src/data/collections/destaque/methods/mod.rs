@@ -332,10 +332,7 @@ macro_rules! impl_destaque {
                 if self.is_full() {
                     Err(NotEnoughSpace(Some(1)))
                 } else {
-                    self.array[self.back as usize] = element;
-                    self.back = (self.back + 1) % CAP as $IDX;
-                    self.len += 1;
-                    Ok(())
+                    Ok(self.push_back_unchecked(element))
                 }
             }
             /// Alias of [`push_back`][Self::push_back].
@@ -776,9 +773,7 @@ macro_rules! impl_destaque {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
                 } else {
-                    let bi0 = self.idx_back(0);
-                    let bi1 = self.idx_back(1);
-                    self.array.swap(bi0, bi1);
+                    self.swap_back_unchecked();
                     Ok(())
                 }
             }
@@ -809,9 +804,7 @@ macro_rules! impl_destaque {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
                 } else {
-                    let fi0 = self.idx_front(0);
-                    let fi1 = self.idx_front(1);
-                    self.array.swap(fi0, fi1);
+                    self.swap_front_unchecked();
                     Ok(())
                 }
             }
@@ -842,12 +835,7 @@ macro_rules! impl_destaque {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
                 } else {
-                    let bi0 = self.idx_back(0);
-                    let bi1 = self.idx_back(1);
-                    let bi2 = self.idx_back(2);
-                    let bi3 = self.idx_back(3);
-                    self.array.swap(bi1, bi3);
-                    self.array.swap(bi0, bi2);
+                    self.swap2_back_unchecked();
                     Ok(())
                 }
             }
@@ -879,12 +867,7 @@ macro_rules! impl_destaque {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
                 } else {
-                    let fi0 = self.idx_front(0);
-                    let fi1 = self.idx_front(1);
-                    let fi2 = self.idx_front(2);
-                    let fi3 = self.idx_front(3);
-                    self.array.swap(fi1, fi3);
-                    self.array.swap(fi0, fi2);
+                    self.swap2_front_unchecked();
                     Ok(())
                 }
             }
