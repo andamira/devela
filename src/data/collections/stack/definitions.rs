@@ -1,4 +1,4 @@
-// devela::data::collections::stack
+// devela::data::collections::stack::definitions
 //
 //! Stacks ar linear lists for which all accesses are made from one end.
 //!
@@ -130,8 +130,8 @@ use crate::{
 ///     [`own_tuck2`][Self::own_tuck2]*([uc][Self::own_tuck2_unchecked])*.
 #[must_use]
 pub struct Stack<T, S: Storage, const CAP: usize, IDX> {
-    pub(crate) array: Array<T, S, CAP>,
-    pub(crate) len: IDX,
+    pub(super) array: Array<T, S, CAP>,
+    pub(super) len: IDX,
 }
 
 /// A [`Stack`] with an 8-bit index size.

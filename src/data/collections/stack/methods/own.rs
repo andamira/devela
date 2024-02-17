@@ -72,7 +72,7 @@ macro_rules! impl_stack {
 
             /* push */
 
-            /// Pushes a new element to the top of the stack in compile-time.
+            /// Pushes a new `element` to the top of the stack in compile-time.
             ///
             /// `( 1 -- 1 2 )`
             /// # Errors
@@ -83,21 +83,20 @@ macro_rules! impl_stack {
             #[doc = "const S: Stack" $IDX:camel "<i32, (), 2> = Stack" $IDX:camel
                 "::own_new(0).state_ok_state()"]
             ///     .own_push(1).value_ok_state()
-            ///     .own_push(2).value_ok_state()
-            ///     .own_push(3).value_err_state();
+            ///     .own_push(2).value_ok_state();
             /// assert_eq![S.as_slice(), &[1, 2]];
             /// assert![S.own_push(3).value.is_err_and(|e| matches![e, DataError::NotEnoughSpace(_)])];
             /// ```
             #[inline]
-            pub const fn own_push(self, e: T) -> Own<Self, Result<()>> {
+            pub const fn own_push(self, element: T) -> Own<Self, Result<()>> {
                 if self.len as usize == CAP {
                     Own::new(self, Err(NotEnoughSpace(Some(1))))
                 } else {
-                    self.own_push_unchecked(e).const_value_into_result()
+                    self.own_push_unchecked(element).const_value_into_result()
                 }
             }
 
-            /// Pushes a new element to the top of the stack in compile-time, unchecked version.
+            /// Pushes a new `element` to the top of the stack in compile-time, unchecked version.
             ///
             /// `( 1 -- 1 2 )`
             /// # Panics
@@ -111,9 +110,9 @@ macro_rules! impl_stack {
             /// assert_eq![S.as_slice(), &[1, 2]];
             /// ```
             #[inline]
-            pub const fn own_push_unchecked(self, e: T) -> Own<Self, ()> {
+            pub const fn own_push_unchecked(self, element: T) -> Own<Self, ()> {
                 let mut arr = self.array.into_array_const();
-                arr[self.len as usize] = e;
+                arr[self.len as usize] = element;
                 let mut sta = Self::from_array_const(arr);
                 sta.len = self.len + 1;
                 Own::empty(sta)

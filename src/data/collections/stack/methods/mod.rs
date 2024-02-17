@@ -259,7 +259,7 @@ macro_rules! impl_stack {
 
             /* push */
 
-            /// Pushes a new element to the top of the stack.
+            /// Pushes a new `element` to the top of the stack.
             ///
             /// `( 1 -- 1 2 )`
             /// # Errors
@@ -276,11 +276,11 @@ macro_rules! impl_stack {
             /// # Ok(()) }
             /// ```
             #[inline]
-            pub fn push(&mut self, e: T) -> Result<()> {
+            pub fn push(&mut self, element: T) -> Result<()> {
                 if self.is_full() {
                     Err(NotEnoughSpace(Some(1)))
                 } else {
-                    self.array[self.len as usize] = e;
+                    self.array[self.len as usize] = element;
                     self.len += 1;
                     Ok(())
                 }

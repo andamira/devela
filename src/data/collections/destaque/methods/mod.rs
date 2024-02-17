@@ -243,7 +243,7 @@ macro_rules! impl_destaque {
 
             /* push */
 
-            /// Pushes a new element to the front of the destaque.
+            /// Pushes a new `element` to the front of the destaque.
             ///
             /// `( 1 2 -- 3 1 2 )`
             /// # Errors
@@ -281,7 +281,7 @@ macro_rules! impl_destaque {
                 self.len += 1;
             }
 
-            /// Pushes a new element to the front of the destaque,
+            /// Pushes a new `element` to the front of the destaque,
             /// overriding an element from the bacl if the destaque is full.
             ///
             /// Returns `true` if an element was overridden, and `false` otherwise.
@@ -309,7 +309,7 @@ macro_rules! impl_destaque {
                 overridden
             }
 
-            /// Pushes a new element to the back of the destaque.
+            /// Pushes a new `element` to the back of the destaque.
             ///
             /// This is the habitual *[`enqueue`]* operation for a single-ended **queue**.
             ///
@@ -353,7 +353,7 @@ macro_rules! impl_destaque {
                 self.len += 1;
             }
 
-            /// Pushes a new element to the back of the destaque,
+            /// Pushes a new `element` to the back of the destaque,
             /// overriding the first element if the destaque is full.
             ///
             /// Returns `true` if an element was overridden, and `false` otherwise.
@@ -379,6 +379,93 @@ macro_rules! impl_destaque {
                 self.back = (self.back + 1) % CAP as $IDX;
                 self.len += 1;
                 overridden
+            }
+
+            /* pop */
+
+            /// Pops the front element.
+            ///
+            /// This is the habitual *dequeue* operation for a signle-ended **queue**.
+            ///
+            /// `( 1 2 -- 2 )`
+            /// # Errors
+            /// Returns [`NotEnoughElements`] if the queue is empty.
+            /// # Examples
+            /// ```
+            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            /// # fn main() -> devela::data::DataResult<()> {
+            ///
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            /// assert_eq![1, q.pop_front()?];
+            /// assert_eq![2, q.pop_front()?];
+            /// assert_eq![3, q.pop_front()?];
+            /// assert![q.is_empty()];
+            /// # Ok(()) }
+            /// ```
+            /// # Features
+            /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
+            #[inline]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
+            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            pub fn pop_front(&mut self) -> Result<T> {
+                if self.is_empty() {
+                    Err(NotEnoughElements(Some(1)))
+                } else {
+                    // MOTIVATION: to not depend on T: Clone
+                    // SAFETY: we're not gonna access the value, but move it out
+                    let e = unsafe {
+                        core::ptr::read((self.array.get_unchecked(self.front as usize)) as *const T)
+                    };
+                    self.front = (self.front + 1) % CAP as $IDX;
+                    self.len -= 1;
+                    Ok(e)
+                }
+            }
+
+            /// Alias of [`pop_front`][Self::pop_front].
+            ///
+            /// This is the habitual *dequeue* operation for a single-ended **queue**.
+            #[inline]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
+            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            pub fn dequeue(&mut self) -> Result<T> {
+                self.pop_front()
+            }
+
+            /// Pops the back element.
+            ///
+            /// `( 1 2-- 1 )`
+            /// # Errors
+            /// Returns [`NotEnoughElements`] if the destaque is empty.
+            /// # Examples
+            /// ```
+            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            /// # fn main() -> devela::data::DataResult<()> {
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            /// assert_eq![3, q.pop_back()?];
+            /// assert_eq![2, q.pop_back()?];
+            /// assert_eq![1, q.pop_back()?];
+            /// assert![q.is_empty()];
+            /// # Ok(()) }
+            /// ```
+            /// # Features
+            /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
+            #[inline]
+            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
+            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            pub fn pop_back(&mut self) -> Result<T> {
+                if self.is_empty() {
+                    Err(NotEnoughElements(Some(1)))
+                } else {
+                    self.back = (self.back + CAP as $IDX - 1) % CAP as $IDX;
+                    // MOTIVATION: to not depend on T: Clone
+                    // SAFETY: we're not gonna access the value, but move it out
+                    let e = unsafe {
+                        core::ptr::read((self.array.get_unchecked(self.back as usize)) as *const T)
+                    };
+                    self.len -= 1;
+                    Ok(e)
+                }
             }
 
             /* peek */
@@ -548,93 +635,6 @@ macro_rules! impl_destaque {
                 } else {
                     let bi = self.idx_front(nth);
                     Ok(&mut self.array[bi])
-                }
-            }
-
-            /* pop */
-
-            /// Pops the front element.
-            ///
-            /// This is the habitual *dequeue* operation for a signle-ended **queue**.
-            ///
-            /// `( 1 2 -- 2 )`
-            /// # Errors
-            /// Returns [`NotEnoughElements`] if the queue is empty.
-            /// # Examples
-            /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
-            ///
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
-            /// assert_eq![1, q.pop_front()?];
-            /// assert_eq![2, q.pop_front()?];
-            /// assert_eq![3, q.pop_front()?];
-            /// assert![q.is_empty()];
-            /// # Ok(()) }
-            /// ```
-            /// # Features
-            /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
-            #[inline]
-            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
-            pub fn pop_front(&mut self) -> Result<T> {
-                if self.is_empty() {
-                    Err(NotEnoughElements(Some(1)))
-                } else {
-                    // MOTIVATION: to not depend on T: Clone
-                    // SAFETY: we're not gonna access the value, but move it out
-                    let e = unsafe {
-                        core::ptr::read((self.array.get_unchecked(self.front as usize)) as *const T)
-                    };
-                    self.front = (self.front + 1) % CAP as $IDX;
-                    self.len -= 1;
-                    Ok(e)
-                }
-            }
-
-            /// Alias of [`pop_front`][Self::pop_front].
-            ///
-            /// This is the habitual *dequeue* operation for a single-ended **queue**.
-            #[inline]
-            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
-            pub fn dequeue(&mut self) -> Result<T> {
-                self.pop_front()
-            }
-
-            /// Pops the back element.
-            ///
-            /// `( 1 2-- 1 )`
-            /// # Errors
-            /// Returns [`NotEnoughElements`] if the destaque is empty.
-            /// # Examples
-            /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
-            /// assert_eq![3, q.pop_back()?];
-            /// assert_eq![2, q.pop_back()?];
-            /// assert_eq![1, q.pop_back()?];
-            /// assert![q.is_empty()];
-            /// # Ok(()) }
-            /// ```
-            /// # Features
-            /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
-            #[inline]
-            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
-            pub fn pop_back(&mut self) -> Result<T> {
-                if self.is_empty() {
-                    Err(NotEnoughElements(Some(1)))
-                } else {
-                    self.back = (self.back + CAP as $IDX - 1) % CAP as $IDX;
-                    // MOTIVATION: to not depend on T: Clone
-                    // SAFETY: we're not gonna access the value, but move it out
-                    let e = unsafe {
-                        core::ptr::read((self.array.get_unchecked(self.back as usize)) as *const T)
-                    };
-                    self.len -= 1;
-                    Ok(e)
                 }
             }
 
