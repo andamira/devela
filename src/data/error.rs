@@ -3,6 +3,8 @@
 //!
 //
 
+use crate::result::Mismatch;
+
 /// A data-related result.
 pub type DataResult<T> = core::result::Result<T, DataError>;
 
@@ -20,13 +22,21 @@ pub enum DataError {
     Overflow,
 
     /// The given `index`, `length` or `capacity` is out of bounds.
+    ///
+    /// Optionally contains given magnitude.
     OutOfBounds(Option<usize>),
+
+    /// The given axis length is zero, which is not allowed.
+    InvalidAxisLength(Option<usize>),
 
     /// The given indices does not match the expected order.
     MismatchedIndices,
 
     /// The dimensions given did not match the elements provided
-    DimensionMismatch,
+    MismatchedDimensions(Mismatch<usize, usize>),
+
+    /// The given length or capacity did not match the required constraints.
+    MismatchedLength(Mismatch<usize, usize>),
 
     /// There are not enough elements for the operation.
     ///
@@ -67,6 +77,10 @@ mod core_impls {
                 E::NotImplemented => write!(f, "Not implemented."),
                 E::NotSupported => write!(f, "Not supported."),
                 E::Overflow => write!(f, "Value above maximum representable."),
+                E::InvalidAxisLength(n) => match n {
+                    Some(n) => write!(f, "Axis number {n} has 0 length, which is not allowed."),
+                    None => write!(f, "One ore more axis have 0 length, which is not allowed."),
+                },
                 E::MismatchedIndices => {
                     write!(f, "The given indices does not match the expected order.")
                 }
@@ -77,7 +91,12 @@ mod core_impls {
                         write!(f, "The given index is out of bounds.")
                     }
                 }
-                E::DimensionMismatch => write!(f, "Dimension Mismatch."),
+                E::MismatchedDimensions(m) => {
+                    write!(f, "Mismatched dimensions: {m:?}.")
+                }
+                E::MismatchedLength(m) => {
+                    write!(f, "Mismatched length or capacity: {m:?}.")
+                }
                 E::NotEnoughElements(n) => {
                     if let Some(n) = n {
                         write!(f, "Not enough elements. Needs at least `{n}` elements.")
