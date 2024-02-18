@@ -90,7 +90,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     where
         (VAL, BUF::Inner): MemAligned,
     {
-        <(VAL, BUF::Inner) as MemAligned>::check();
+        <(VAL, BUF::Inner) as MemAligned>::assert_compatibility();
 
         let rv = unsafe {
             let ptr: *const _ = check_fat_pointer(&val, get_ref);
@@ -154,7 +154,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     where
         (VAL, BUF::Inner): MemAligned,
     {
-        <(VAL, BUF::Inner) as MemAligned>::check();
+        <(VAL, BUF::Inner) as MemAligned>::assert_compatibility();
 
         let size = mem::size_of::<VAL>();
         let (raw_ptr, meta_len, meta) = decompose_pointer(check_fat_pointer(&val, get_ref));
@@ -321,7 +321,7 @@ where
     }
     /// Create a new zero-sized slice in the provided buffer (will error only if the metadata doesn't fit)
     pub fn empty_slice_with_buffer(mut buffer: BUF) -> Result<Self, ()> {
-        <(I, BUF::Inner) as MemAligned>::check();
+        <(I, BUF::Inner) as MemAligned>::assert_compatibility();
 
         let info_words = BUF::round_to_words(mem::size_of::<usize>());
         let req_words = info_words;

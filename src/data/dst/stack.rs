@@ -84,7 +84,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     where
         (VAL, BUF::Inner): MemAligned,
     {
-        <(VAL, BUF::Inner) as MemAligned>::check();
+        <(VAL, BUF::Inner) as MemAligned>::assert_compatibility();
 
         // SAFETY: Destination address is valid.
         unsafe {
@@ -211,7 +211,7 @@ where
     /// ```
     #[inline]
     pub fn push_cloned(&mut self, slice: &[DST]) -> Result<(), ()> {
-        <(DST, BUF::Inner) as MemAligned>::check();
+        <(DST, BUF::Inner) as MemAligned>::assert_compatibility();
         self.push_from_iter(slice.iter().cloned())
     }
     /// Pushes a set of items (copying out of the input `slice`).
@@ -228,7 +228,7 @@ where
     where
         DST: Copy,
     {
-        <(DST, BUF::Inner) as MemAligned>::check();
+        <(DST, BUF::Inner) as MemAligned>::assert_compatibility();
         // SAFETY: Carefully constructed to maintain consistency.
         unsafe {
             self.push_inner(slice).map(|pii| {
@@ -261,7 +261,7 @@ where
         &mut self,
         mut iter: impl ExactSizeIterator<Item = DST>,
     ) -> Result<(), ()> {
-        <(DST, BUF::Inner) as MemAligned>::check();
+        <(DST, BUF::Inner) as MemAligned>::assert_compatibility();
         // SAFETY: API used correctly.
         unsafe {
             let pii = self.push_inner_raw(iter.len() * mem::size_of::<DST>(), &[0])?;
