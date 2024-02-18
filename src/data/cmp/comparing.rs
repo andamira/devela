@@ -45,7 +45,6 @@ mod core_impls {
 
     impl<T: PartialEq> PartialEq for Comparing<T> {
         #[inline] #[must_use]
-        #[allow(clippy::unconditional_recursion)] // NIGHTLY FIX
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
     impl<T: Eq> Eq for Comparing<T> {}

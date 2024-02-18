@@ -4,15 +4,10 @@
 //! `std::`[`path`][std::path].
 //
 
-/* modules */
-
-// feature-gated, non-public
+/* feature-gated, non-public modules */
 #[cfg(feature = "io")]
 mod project;
 
-/* re-exports */
-
-// feature-gated, non-public
 #[cfg(feature = "io")]
 pub use project::*;
 

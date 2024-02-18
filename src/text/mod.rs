@@ -13,22 +13,39 @@
 // safety:
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 
-/* modules */
+/* always compiled, public modules */
 
-// always compiled, public
 pub mod char;
 pub mod fmt;
 
-// always compiled, non-public
+#[doc(no_inline)]
+#[allow(unused_imports)]
+pub use {char::all::*, fmt::all::*};
+
+/* always compiled, non-public moduels */
+
+#[allow(unused_imports)]
+pub use {ascii::all::*, reexports::*};
+
 mod ascii;
 mod reexports;
 
-// feature-gated, public
+/* feature-gated, public modules */
 #[cfg(feature = "text")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod egc;
 
-// feature-gated, non-public
+#[doc(no_inline)]
+#[cfg(feature = "text")]
+pub use egc::all::*;
+
+/* feature-gated, non-public modules */
+
+// crate-private
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+mod helpers; // impl_sized_alias (RETHINK)
+
 #[cfg(feature = "text")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod array_string;
@@ -40,28 +57,8 @@ mod error;
 mod ext;
 #[cfg(feature = "text")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
-mod helpers;
-#[cfg(feature = "text")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod non_nul;
 
-/* re-exports */
-
-// always compiled, public
-#[doc(no_inline)]
-#[allow(unused_imports)]
-pub use {char::all::*, fmt::all::*};
-
-// always compiled, non-public
-#[allow(unused_imports)]
-pub use {ascii::all::*, reexports::*};
-
-// feature-gated, public
-#[doc(no_inline)]
-#[cfg(feature = "text")]
-pub use egc::all::*;
-
-// feature-gated, private
 #[cfg(feature = "text")]
 pub use {array_string::*, error::*, ext::*, non_nul::*};
 

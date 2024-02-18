@@ -12,15 +12,11 @@
 //! [`await`]: https://doc.rust-lang.org/std/keyword.await.html
 //
 
-/* modules */
+/* always compiled, non-public modules */
 
-// always compiled, non-public
 mod coroutine;
 mod reexports;
 
-/* re-exports */
-
-// always compiled, non-public
 #[allow(unused_imports)] // coroutine
 pub use {coroutine::*, reexports::*};
 

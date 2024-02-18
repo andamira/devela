@@ -5,15 +5,11 @@
 //! [`fmt`]: std::fmt
 //
 
-/* modules */
+/* always compiled, private modules */
 
-// always compiled, private
 mod misc;
 mod num_to_str;
 
-/* re-exports */
-
-// always compiled, private
 pub use {misc::*, num_to_str::*};
 
 pub(crate) mod all {

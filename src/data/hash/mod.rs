@@ -5,14 +5,10 @@
 //! [`hash`]: std::hash
 //
 
-/* modules */
+/* always compiled, non-public modules */
 
-// always compiled, non-public
 mod reexports;
 
-/* re-exports */
-
-// always compiled, non-public
 #[allow(unused_imports)]
 pub use reexports::*;
 

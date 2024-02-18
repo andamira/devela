@@ -9,22 +9,14 @@
 // safety:
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
-/* modules */
+/* always compiled, private modules */
 
-// feature-gated, private
-#[cfg(feature = "time")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
 mod reexports;
 
-/* re-exports */
-
-// feature-gated, private
-#[cfg(feature = "time")]
 pub use reexports::*;
 
 pub(crate) mod all {
-    // feature-gated
+    // always compiled
     #[doc(inline)]
-    #[cfg(feature = "time")]
     pub use super::reexports::*;
 }

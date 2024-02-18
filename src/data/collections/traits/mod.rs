@@ -3,6 +3,8 @@
 //! Abstract data types
 //
 
+/* always compiled, non-public modules */
+
 mod array;
 mod collection;
 mod queues;

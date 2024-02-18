@@ -8,7 +8,7 @@
 #[cfg(feature = "alloc")]
 use crate::mem::Boxed;
 use crate::{
-    data::{Array, DataCollection, DataResult as Result},
+    data::{Array, DataResult as Result},
     mem::{Bare, Storage},
 };
 

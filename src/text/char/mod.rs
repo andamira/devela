@@ -5,7 +5,7 @@
 //! [`char`]: std::char
 //
 
-/* contains always compiled items */
+/* always compiled modules */
 
 mod always_fns;
 
@@ -13,21 +13,26 @@ mod always_fns;
 #[cfg(not(feature = "text"))]
 pub use always_fns::*;
 
-/* feature-gated */
+/* feature-gated modules */
 
+// without re-exports
 #[cfg(feature = "text")]
-mod definitions;
-#[cfg(feature = "text")]
-mod fns;
-
-#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod core_impls;
 #[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod impls;
 #[cfg(all(feature = "text", test))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod tests;
 
-// re-exports private sub-modules
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+mod definitions;
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+mod fns;
+
 #[cfg(feature = "text")]
 pub use {always_fns::*, definitions::*, fns::*};
 

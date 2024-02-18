@@ -11,12 +11,13 @@
 // safety:
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
-/* modules */
+/* always compiled, crate-private modules */
 
-// always compiled, crate-private
 mod _private;
+pub(crate) use _private::*;
 
-// always compiled, non-public
+/* always compiled, non-public modules */
+
 mod alias;
 mod always_fns;
 mod error;
@@ -24,8 +25,14 @@ mod float;
 mod primitive;
 mod sign;
 
-// always compiled, public
+pub use {alias::*, always_fns::*, error::*, float::*, primitive::*, sign::*};
+
+/* always compiled, public modules */
+
 pub mod niche;
+
+#[doc(no_inline)]
+pub use niche::all::*;
 
 // feature gated, private
 #[cfg(feature = "num")]
@@ -41,19 +48,6 @@ mod no;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod r#trait;
 
-/* re-exports */
-
-// always compiled, crate-private
-pub(crate) use _private::*;
-
-// always compiled, non-public
-pub use {alias::*, always_fns::*, error::*, float::*, primitive::*, sign::*};
-
-// always compiled, public
-#[doc(no_inline)]
-pub use niche::all::*;
-
-// feature-gated, private
 #[cfg(feature = "num")]
 pub use {frac::*, int::*, no::*, r#trait::*};
 

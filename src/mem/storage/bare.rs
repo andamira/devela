@@ -108,7 +108,6 @@ mod core_impls {
     impl<T: PartialEq> PartialEq for BareBox<T> {
         #[inline]
         #[must_use]
-        #[allow(clippy::unconditional_recursion)] // NIGHTLY FIX
         fn eq(&self, other: &Self) -> bool {
             self.0.eq(&other.0)
         }

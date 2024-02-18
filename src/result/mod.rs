@@ -14,11 +14,10 @@
 // warnings:
 #![cfg_attr(not(feature = "result"), allow(unused_imports))]
 // safety:
-#![cfg_attr(feature = "safe_error", forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_result", forbid(unsafe_code))]
 
-/* modules */
+/* always compiled, non-public modules */
 
-// always compiled, non-public
 mod ext_result;
 mod mismatch;
 mod never;
@@ -29,19 +28,16 @@ mod reexport;
 mod traits;
 mod unwrap;
 
-// feature-gated, non-public
-#[cfg(not(feature = "std"))]
-mod define_no_std_error;
-
-/* re-exports */
-
-// always compiled, non-public
 pub use {
     ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexport::*,
     traits::*, unwrap::*,
 };
 
-// feature-gated, private
+/* feature-gated, non-public modules */
+
+#[cfg(not(feature = "std"))]
+mod define_no_std_error;
+
 #[cfg(not(feature = "std"))]
 pub use define_no_std_error::*;
 

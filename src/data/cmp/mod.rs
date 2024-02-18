@@ -8,15 +8,10 @@
 //! [`pclamp`], [`pmax`] and [`pmin`] functions for comparing partially ordered values.
 //
 
-/* modules */
-
-// always compiled, non-public
+/* always compiled, non-public modules */
 mod comparing;
 mod sorting;
 
-/* re-exports */
-
-// always compiled, non-public
 #[allow(unused)]
 pub use {comparing::*, sorting::*};
 

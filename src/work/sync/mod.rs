@@ -5,25 +5,22 @@
 //! [`sync`]: std::sync
 //
 
-/* modules */
+/* always compiled, non-public modules */
 
-// non-public
 mod reexports;
 
-// public
-pub mod atomic;
-
-/* re-exports */
-
-// non-public
 #[allow(unused_imports)]
 pub use reexports::*;
 
-// public
+/* always compiled, non-public modules */
+
+pub mod atomic;
+
 #[doc(no_inline)]
 pub use atomic::*;
 
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{atomic::*, reexports::*};

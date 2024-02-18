@@ -182,7 +182,7 @@ mod impl_alloc {
     impl dyn Error {
         /// Attempts to downcast the box to a concrete type.
         #[inline]
-        #[cfg(all(not(feature = "safe_error"), feature = "unsafe_dyn"))]
+        #[cfg(all(not(feature = "safe_result"), feature = "unsafe_dyn"))]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
         pub fn downcast<T: Error + 'static>(self: Box<Self>) -> Result<Box<T>, Box<dyn Error>> {
             if self.is::<T>() {
@@ -199,7 +199,7 @@ mod impl_alloc {
     impl dyn Error + Send {
         /// Attempts to downcast the box to a concrete type.
         #[inline]
-        #[cfg(all(not(feature = "safe_error"), feature = "unsafe_dyn"))]
+        #[cfg(all(not(feature = "safe_result"), feature = "unsafe_dyn"))]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
         pub fn downcast<T: Error + 'static>(
             self: Box<Self>,
@@ -215,7 +215,7 @@ mod impl_alloc {
     impl dyn Error + Send + Sync {
         /// Attempts to downcast the box to a concrete type.
         #[inline]
-        #[cfg(all(not(feature = "safe_error"), feature = "unsafe_dyn"))]
+        #[cfg(all(not(feature = "safe_result"), feature = "unsafe_dyn"))]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
         pub fn downcast<T: Error + 'static>(self: Box<Self>) -> Result<Box<T>, Box<Self>> {
             let err: Box<dyn Error> = self;
@@ -245,7 +245,7 @@ impl dyn Error + 'static {
     /// Returns some reference to the boxed value if it is of type `T`, or
     /// `None` if it isn't.
     #[inline]
-    #[cfg(all(not(feature = "safe_error"), feature = "unsafe_dyn"))]
+    #[cfg(all(not(feature = "safe_result"), feature = "unsafe_dyn"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
     pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> {
         if self.is::<T>() {
@@ -258,7 +258,7 @@ impl dyn Error + 'static {
     /// Returns some mutable reference to the boxed value if it is of type `T`, or
     /// `None` if it isn't.
     #[inline]
-    #[cfg(all(not(feature = "safe_error"), feature = "unsafe_dyn"))]
+    #[cfg(all(not(feature = "safe_result"), feature = "unsafe_dyn"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
     pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> {
         if self.is::<T>() {
@@ -278,7 +278,7 @@ impl dyn Error + 'static + Send {
 
     /// Forwards to the method defined on the type `dyn Error`.
     #[inline]
-    #[cfg(all(not(feature = "safe_error"), feature = "unsafe_dyn"))]
+    #[cfg(all(not(feature = "safe_result"), feature = "unsafe_dyn"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
     pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> {
         <dyn Error + 'static>::downcast_ref::<T>(self)
@@ -286,7 +286,7 @@ impl dyn Error + 'static + Send {
 
     /// Forwards to the method defined on the type `dyn Error`.
     #[inline]
-    #[cfg(all(not(feature = "safe_error"), feature = "unsafe_dyn"))]
+    #[cfg(all(not(feature = "safe_result"), feature = "unsafe_dyn"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
     pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> {
         <dyn Error + 'static>::downcast_mut::<T>(self)
@@ -302,7 +302,7 @@ impl dyn Error + 'static + Send + Sync {
 
     /// Forwards to the method defined on the type `dyn Error`.
     #[inline]
-    #[cfg(all(not(feature = "safe_error"), feature = "unsafe_dyn"))]
+    #[cfg(all(not(feature = "safe_result"), feature = "unsafe_dyn"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
     pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> {
         <dyn Error + 'static>::downcast_ref::<T>(self)
@@ -310,7 +310,7 @@ impl dyn Error + 'static + Send + Sync {
 
     /// Forwards to the method defined on the type `dyn Error`.
     #[inline]
-    #[cfg(all(not(feature = "safe_error"), feature = "unsafe_dyn"))]
+    #[cfg(all(not(feature = "safe_result"), feature = "unsafe_dyn"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
     pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> {
         <dyn Error + 'static>::downcast_mut::<T>(self)

@@ -5,20 +5,16 @@
 //! [`thread`]: std::thread
 //
 
-/* modules */
+/* always compiled, non-public modules */
 
-// non-public
 mod reexports;
 mod sleep;
 
-/* re-exports */
-
-// non-public
 #[allow(unused_imports)]
 pub use {reexports::*, sleep::*};
 
-#[cfg(feature = "work")]
 pub(crate) mod all {
+    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{reexports::*, sleep::*};

@@ -17,12 +17,19 @@
 // safety:
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 
-/* modules */
+/* hidden re-exports */
 
-// always compiled, crate-private
+#[doc(hidden)]
+pub use paste::__paste;
+
+/* always compiled, crate-private modules */
+
 mod _private;
 
-// always compiled, non-public
+pub(crate) use _private::*;
+
+/* always compiled, non-public modules */
+
 mod any; // dynamic typing and reflection
 mod asserts; // assertion macros
 mod cfor; // cfor![]
@@ -35,16 +42,6 @@ mod paste; // paste![] wrapped for docs
 mod reexports; // reexported items
 mod skip_format; // sf![]
 
-/* re-exports */
-
-// always compiled, crate-private
-pub(crate) use _private::*;
-
-// always compiled, hidden public
-#[doc(hidden)]
-pub use paste::__paste;
-
-// always compied, non-public
 pub use {
     any::all::*, asserts::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*, iif::*,
     paste::*, reexports::*, skip_format::*,

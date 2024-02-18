@@ -10,33 +10,28 @@
 
 #![allow(unused_imports)]
 
-/* modules */
-
-// always compiled, non-public
+/* always compiled, non-public modules */
 mod array;
 mod destaque;
 mod reexports;
 mod stack;
 mod traits;
 
-// feature-gated, non-public
+pub use {array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*};
+
+/* feature-gated, non-public modules */
+
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 mod ext_vec;
 
-/* re-exports */
-
-// always compiled, non-public
-pub use {array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*};
-
-// feature-gated, non-public
 #[cfg(feature = "alloc")]
 pub use ext_vec::*;
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*};
+    pub use super::{array::all::*, destaque::all::*, reexports::*, stack::all::* traits::*};
 
     // feature-gated
     #[cfg(feature = "alloc")]

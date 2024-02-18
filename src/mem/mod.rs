@@ -17,9 +17,8 @@
 // safety:
 #![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]
 
-/* modules */
+/* always compiled, non-public modules */
 
-// always compiled, non-public
 mod aligned;
 mod always;
 mod reexports;
@@ -28,18 +27,15 @@ mod slice;
 mod storage;
 mod r#trait;
 
-// feature-gated, non-public
+#[allow(unused_imports)]
+pub use {aligned::*, always::*, r#trait::*, reexports::*, size::*, slice::*, storage::*};
+
+/* feature-gated, non-public modules */
+
 #[cfg(feature = "mem")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod fns;
 
-/* re-exports */
-
-// always compiled, non-public
-#[allow(unused_imports)]
-pub use {aligned::*, always::*, r#trait::*, reexports::*, size::*, slice::*, storage::*};
-
-// feature-gated, non-public
 #[cfg(feature = "mem")]
 pub use fns::*;
 

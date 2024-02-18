@@ -12,9 +12,7 @@
 // safety:
 #![cfg_attr(feature = "safe_work", forbid(unsafe_code))]
 
-/* modules */
-
-// feature-gated, public
+/* feature-gated, public modules */
 #[cfg(feature = "work")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub mod r#async;
@@ -25,9 +23,6 @@ pub mod sync;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub mod thread;
 
-/* re-exports */
-
-// feature-gated, public
 #[doc(no_inline)]
 #[cfg(feature = "work")]
 #[allow(unused_imports)]

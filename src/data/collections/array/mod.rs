@@ -8,19 +8,14 @@
 //! homogeneous data structures.
 //
 
-/* modules */
+/* always compiled, non-public mdules */
 
-// always compiled, non-public
-mod array_init;
-mod definitions;
-
-// always compiled, non-public, nothing to re-export
+// without re-exports
 mod core_impls;
 mod methods;
 
-/* re-export */
-
-// always compiled, non-public
+mod array_init;
+mod definitions;
 pub use {array_init::*, definitions::*};
 
 pub(crate) mod all {

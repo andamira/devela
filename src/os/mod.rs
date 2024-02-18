@@ -13,15 +13,11 @@
 // safety:
 #![cfg_attr(feature = "safe_os", forbid(unsafe_code))]
 
-/* modules */
+/* always compiled, public modules */
 
-// always compiled, public
 pub mod arch;
 pub mod ffi;
 
-/* re-exports */
-
-// always compiled, public
 #[doc(no_inline)]
 pub use {arch::all::*, ffi::all::*};
 

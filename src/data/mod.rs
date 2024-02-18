@@ -17,19 +17,25 @@
 // safety:
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
-/* modules */
+/* always compiled, non-public modules */
 
-// always compiled, non-public
 mod cmp;
 mod error;
 
-// always compiled, public
+pub use {cmp::all::*, error::*};
+
+/* always compiled, public modules */
+
 pub mod bit;
 pub mod collections;
 pub mod hash;
 pub mod iter;
 
-// feature-gated, public
+#[doc(no_inline)]
+pub use {bit::all::*, collections::all::*, hash::all::*, iter::all::*};
+
+/* feature-gated, public modules */
+
 #[cfg_attr(
     feature = "nightly_doc",
     doc(cfg(all(feature = "unsafe_dyn", feature = "dep")))
@@ -43,16 +49,6 @@ pub mod iter;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod dst;
 
-/* re-exports */
-
-// always,compiled, non-public
-pub use {cmp::all::*, error::*};
-
-// always compiled, public
-#[doc(no_inline)]
-pub use {bit::all::*, collections::all::*, hash::all::*, iter::all::*};
-
-// feature-gated, public
 #[doc(no_inline)]
 #[cfg(all(
     feature = "data",

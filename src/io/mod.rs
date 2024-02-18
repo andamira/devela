@@ -15,13 +15,12 @@
 // safety:
 #![cfg_attr(feature = "safe_io", forbid(unsafe_code))]
 
-/* modules */
+/* feature-gated, non-public modules */
 
-// feature-gated, non-public
 #[cfg(feature = "io")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
 mod path;
-//
+
 #[cfg(not(feature = "std"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
 mod define_no_std_io;
@@ -29,12 +28,9 @@ mod define_no_std_io;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
 mod reexport_std;
 
-/* re-exports */
-
-// feature-gated, non-public
 #[cfg(feature = "io")]
 pub use path::all::*;
-//
+
 #[cfg(not(feature = "std"))]
 pub use define_no_std_io::*;
 #[cfg(feature = "std")]
