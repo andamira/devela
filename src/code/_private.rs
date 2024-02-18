@@ -73,7 +73,7 @@ macro_rules! reexport {
     //
     // when the item is available in `core`
     ( rust : core $( :: $( $core_path:ident )::+)?,
-      local_module: $module_feature:literal,
+      $( local_module: $module_feature:literal, )?
       $( extra_features: $($extraf:literal),+ $(,)? )?
       doc: $description:literal,
       $( $item:ident ),*
@@ -90,7 +90,7 @@ macro_rules! reexport {
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
         #[cfg_attr(feature = "nightly_doc", doc(cfg(all(
-            feature = $module_feature,
+            $( feature = $module_feature, )?
             $( all($(feature = $extraf),+) )?
         ))))]
         #[cfg(all(
@@ -103,7 +103,7 @@ macro_rules! reexport {
     }};
     // when the item is available in `alloc`
     ( rust : alloc $( :: $( $alloc_path:ident )::+)?,
-      local_module: $module_feature:literal,
+      $( local_module: $module_feature:literal, )?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
@@ -120,7 +120,10 @@ macro_rules! reexport {
 
         #[cfg_attr(
             feature = "nightly_doc",
-            doc(cfg(all(feature = $module_feature, feature = "alloc")))
+            doc(cfg(all(
+                $( feature = $module_feature, )?
+                feature = "alloc"
+            )))
         )]
 
         #[cfg(feature = "alloc")]
@@ -131,7 +134,7 @@ macro_rules! reexport {
     }};
     // when the item is available in `std`
     ( rust : std $( :: $( $std_path:ident )::+)?,
-      local_module: $module_feature:literal,
+      $( local_module: $module_feature:literal, )?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
@@ -148,7 +151,10 @@ macro_rules! reexport {
 
         #[cfg_attr(
             feature = "nightly_doc",
-            doc(cfg(all(feature = $module_feature, feature = "std")))
+            doc(cfg(all(
+                $( feature = $module_feature, )?
+                feature = "std"
+            )))
         )]
 
         #[cfg(feature = "std")]
@@ -159,7 +165,7 @@ macro_rules! reexport {
     }};
     // when the item is available in either `no_std` or `std`
     ( rust : no_std|std $( :: $( $std_path:ident )::+)?,
-      local_module: $module_feature:literal,
+      $( local_module: $module_feature:literal, )?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
@@ -176,7 +182,10 @@ macro_rules! reexport {
 
         #[cfg_attr(
             feature = "nightly_doc",
-            doc(cfg(all(feature = $module_feature, any(feature = "std", feature = "no_std"))))
+            doc(cfg(all(
+                $( feature = $module_feature, )?
+                any(feature = "std", feature = "no_std")
+            )))
         )]
 
         #[cfg(feature = "std")]
@@ -188,7 +197,7 @@ macro_rules! reexport {
 
     // when the item is available in either `not(std)` or `std` (always, more transparent)
     ( rust : not(std)|std $( :: $( $std_path:ident )::+)?,
-      local_module: $module_feature:literal,
+      $( local_module: $module_feature:literal, )?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
@@ -205,7 +214,9 @@ macro_rules! reexport {
 
         #[cfg_attr(
             feature = "nightly_doc",
-            doc(cfg(all(feature = $module_feature)))
+            doc(cfg(all(
+                $( feature = $module_feature, )?
+            )))
         )]
 
         #[cfg(feature = "std")]
