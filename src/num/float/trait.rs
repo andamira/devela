@@ -1,6 +1,6 @@
 // devela::num::float::trait
 
-use super::Floating;
+use crate::num::{Floating, Sign};
 
 /// Extension trait for floating-point types.
 ///
@@ -99,6 +99,14 @@ pub trait ExtFloat: Sized {
     #[must_use]
     fn abs(self) -> Self;
 
+    /// Returns the `Sign` of `self`.
+    #[must_use]
+    fn sign(self) -> Sign;
+
+    /// A number that represents the sign of `self`.
+    #[must_use]
+    fn signum(self) -> Self;
+
     /// Flips the sign of `self`.
     #[must_use]
     fn flip_sign(self) -> Self;
@@ -111,9 +119,17 @@ pub trait ExtFloat: Sized {
     #[must_use]
     fn is_sign_negative(self) -> bool;
 
-    /// A number that represents the sign of `self`.
+    /// Returns `true` if `self` is either 0.0 or -0.0.
     #[must_use]
-    fn signum(self) -> Self;
+    fn is_zero(self) -> bool;
+
+    /// Returns `true` if `self` has a positive sign and is not zero.
+    #[must_use]
+    fn is_sign_positive_nonzero(self) -> bool;
+
+    /// Returns `true` if `self` has a negative sign and is not zero.
+    #[must_use]
+    fn is_sign_negative_nonzero(self) -> bool;
 
     /// A number composed of a magnitude of `self` and the sign of `sign`.
     #[must_use]
@@ -433,16 +449,30 @@ macro_rules! impl_float_ext {
             fn abs(self) -> Self { Floating::<$f>::abs(self) }
 
             #[inline(always)]
-            fn flip_sign(self) -> Self { Floating::<$f>::flip_sign(self) }
-
-            #[inline(always)]
-            fn is_sign_positive(self) -> bool { <$f>::is_sign_positive(self) }
-
-            #[inline(always)]
-            fn is_sign_negative(self) -> bool { <$f>::is_sign_negative(self) }
+            fn sign(self) -> Sign { Floating::<$f>::sign(self) }
 
             #[inline(always)]
             fn signum(self) -> Self { Floating::<$f>::signum(self) }
+
+            #[inline(always)]
+            fn flip_sign(self) -> Self { Floating::<$f>::flip_sign(self) }
+
+            #[inline(always)]
+            fn is_sign_positive(self) -> bool { Floating::<$f>::is_sign_positive(self) }
+
+            #[inline(always)]
+            fn is_sign_negative(self) -> bool { Floating::<$f>::is_sign_negative(self) }
+
+            #[inline(always)]
+            fn is_zero(self) -> bool { Floating::<$f>::is_zero(self) }
+
+            #[inline(always)]
+            fn is_sign_positive_nonzero(self) -> bool {
+                Floating::<$f>::is_sign_positive_nonzero(self) }
+
+            #[inline(always)]
+            fn is_sign_negative_nonzero(self) -> bool {
+                Floating::<$f>::is_sign_negative_nonzero(self) }
 
             #[inline(always)]
             fn copysign(self, sign: Self) -> Self { Floating::<$f>::copysign(self, sign) }

@@ -2,8 +2,10 @@
 //!
 //
 
-use super::Floating;
-use crate::code::iif;
+use crate::{
+    code::iif,
+    num::{Floating, Sign},
+};
 
 // Implements methods independently of any features
 //
@@ -34,13 +36,111 @@ macro_rules! custom_impls {
                     iif![Self::abs(x - r) == 0.5; r + Self::signum(x); r]]
             }
 
-            /// Returns `true` if `x` is positive.
-            #[must_use] #[inline]
+            /// Returns the [`Sign`] of `x`.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            pub const fn sign(x: $f) -> Sign {
+                if Self::is_zero(x) {
+                    Sign::None
+                } else if Self::is_sign_positive(x) {
+                    Sign::Positive
+                } else {
+                    Sign::Negative
+                }
+            }
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            pub fn sign(x: $f) -> Sign {
+                if Self::is_zero(x) {
+                    Sign::None
+                } else if Self::is_sign_positive(x) {
+                    Sign::Positive
+                } else {
+                    Sign::Negative
+                }
+            }
+
+            /// Returns `true` if `self` has a positive sign.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            pub const fn is_sign_positive(x: $f) -> bool {
+                // WAIT: [const_float_classify](https://github.com/rust-lang/rust/issues/72505)
+                // <$f>::is_sign_positive(x)
+
+                let bits: $uf = unsafe { core::mem::transmute(x) };
+                let sign_bit_mask = <$uf>::MAX / 2 + 1;
+                (bits & sign_bit_mask) == 0 // if sign bit is not set it's a positive number or +0
+            }
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn is_sign_positive(x: $f) -> bool { <$f>::is_sign_positive(x) }
 
-            /// Returns `true` if `x` is negative.
-            #[must_use] #[inline]
+            /// Returns `true` if `self` has a negative sign.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            pub const fn is_sign_negative(x: $f) -> bool {
+                // WAIT: [const_float_classify](https://github.com/rust-lang/rust/issues/72505)
+                // <$f>::is_sign_negative(x)
+
+                let bits: $uf = unsafe { core::mem::transmute(x) };
+                let sign_bit_mask = <$uf>::MAX / 2 + 1;
+                (bits & sign_bit_mask) != 0 // if sign bit is set it's a negative number or -0
+            }
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn is_sign_negative(x: $f) -> bool { <$f>::is_sign_negative(x) }
+
+            /// Returns `true` if `x` is 0.0 or -0.0.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            pub const fn is_zero(x: $f) -> bool {
+                // WAIT: [const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
+                let bits: $uf = unsafe { core::mem::transmute(x) };
+                let non_sign_bits_mask = !($uf::MAX / 2 + 1);
+                (bits & non_sign_bits_mask) == 0
+            }
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            pub fn is_zero(x: $f) -> bool {
+                let non_sign_bits_mask = !($uf::MAX / 2 + 1);
+                (x.to_bits() & non_sign_bits_mask) == 0
+            }
+
+            /// Returns `true` if `x` has a positive sign and is not zero.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            pub const fn is_sign_positive_nonzero(x: $f) -> bool {
+                !Self::is_zero(x) && Self::is_sign_positive(x)
+            }
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            pub fn is_sign_positive_nonzero(x: $f) -> bool {
+                !Self::is_zero(x) && Self::is_sign_positive(x)
+            }
+
+            /// Returns `true` if `x` has a negative sign and is not zero.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            pub const fn is_sign_negative_nonzero(x: $f) -> bool {
+                !Self::is_zero(x) && Self::is_sign_negative(x)
+            }
+            #[inline] #[must_use] #[allow(missing_docs)]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            pub fn is_sign_negative_nonzero(x: $f) -> bool {
+                !Self::is_zero(x) && Self::is_sign_negative(x)
+            }
 
             /// Computes `(x * mul + add)` normally.
             #[must_use] #[inline]
@@ -765,17 +865,17 @@ macro_rules! custom_impls {
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn flip_sign(x: $f) -> $f {
-                let mask = <$uf>::MAX / 2 + 1;
+                let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 unsafe {
                     let bits: $uf = core::mem::transmute(x);
-                    core::mem::transmute(bits ^ mask)
+                    core::mem::transmute(bits ^ sign_bit_mask)
                 }
             }
             #[inline] #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn flip_sign(x: $f) -> $f {
-                let mask = <$uf>::MAX / 2 + 1;
-                <$f>::from_bits(x.to_bits() ^ mask)
+                let sign_bit_mask = <$uf>::MAX / 2 + 1;
+                <$f>::from_bits(x.to_bits() ^ sign_bit_mask)
             }
 
             /// Returns the clamped value, ignoring `NaN`.
@@ -833,6 +933,7 @@ macro_rules! custom_impls {
                 } else if y > x {
                     y
                 } else if x == y {
+                    // if Self::is_sign_positive(x) && Self::is_sign_negative(y) { x } else { y }
                     if x.is_sign_positive() && y.is_sign_negative() { x } else { y }
                 } else {
                     x + y
@@ -847,6 +948,7 @@ macro_rules! custom_impls {
                 } else if y < x {
                     y
                 } else if x == y {
+                    // if Self::is_sign_negative(x) && Self::is_sign_positive(y) { x } else { y }
                     if x.is_sign_negative() && y.is_sign_positive() { x } else { y }
                 } else {
                     // At least one input is NaN. Use `+` to perform NaN propagation and quieting.
