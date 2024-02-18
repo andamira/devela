@@ -22,19 +22,19 @@ pub use crate::{
 
 /* std */
 
-reexport! {non-optional "either" | either, local_module: "result",
+reexport! {non-optional "either" | either,
     doc: "A general purpose sum type with two cases: `Left` and `Right`.",
     Either
 }
-reexport! {non-optional "either" | either, local_module: "result",
+reexport! {non-optional "either" | either,
     doc: "Evaluate the provided expression for both [`Either::Left`] and [`Either::Right`]",
     @for_both as either_for_both
 }
-reexport! {non-optional "either" | either, local_module: "result",
+reexport! {non-optional "either" | either,
     doc: "Unwraps the left side of an [`Either`], which fails early with the opposite side.",
     @try_left as either_try_left
 }
-reexport! {non-optional "either" | either, local_module: "result",
+reexport! {non-optional "either" | either,
     doc: "Unwraps the right side of an [`Either`], which fails early with the opposite side.",
     @try_right as either_try_right
 }
@@ -45,7 +45,8 @@ pub use std::*;
 mod std {
     use super::reexport;
 
-    reexport! { rust: not(std)|std::error, local_module: "result",
+    // In sync with super::define_no_std_error::Error
+    reexport! { rust: not(std)|std::error,
         doc: "A trait representing the basic expectations for error values.",
         Error
     }

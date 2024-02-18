@@ -16,15 +16,11 @@
 /* modules */
 
 // always compiled, public
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod char;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 pub mod fmt;
 
 // always compiled, non-public
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod ascii;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
 mod reexports;
 
 // feature-gated, public

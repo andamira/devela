@@ -21,6 +21,7 @@ mod traits;
 
 // feature-gated, non-public
 #[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 mod ext_vec;
 
 /* re-exports */

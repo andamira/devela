@@ -7,27 +7,27 @@ use crate::code::reexport;
 
 /* from `alloc` */
 
-reexport! { rust: alloc::collections, local_module: "data",
+reexport! { rust: alloc::collections,
     doc: "A doubly-linked list with owned nodes.",
     @LinkedList as AllocLinkedList
 }
-reexport! { rust: alloc::collections, local_module: "data",
+reexport! { rust: alloc::collections,
     doc: "An ordered map based on a B-Tree.",
     @BTreeMap as AllocOrdMap
 }
-reexport! { rust: alloc::collections, local_module: "data",
+reexport! { rust: alloc::collections,
     doc: "An ordered set based on a B-Tree.",
     @BTreeSet as AllocOrdSet
 }
-reexport! { rust: alloc::collections, local_module: "data",
+reexport! { rust: alloc::collections,
     doc: "A priority queue implemented with a binary heap.",
     @BinaryHeap as AllocPrioQueue
 }
-reexport! { rust: alloc::vec, local_module: "data",
+reexport! { rust: alloc::vec,
     doc: "A contiguous growable array.",
     Vec
 }
-reexport! { rust: alloc::collections, local_module: "data",
+reexport! { rust: alloc::collections,
     doc: "A double-ended growable queue.",
     VecDeque
 }

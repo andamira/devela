@@ -20,19 +20,13 @@
 /* modules */
 
 // always compiled, non-public
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 mod cmp;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 mod error;
 
 // always compiled, public
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod bit;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod collections;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod hash;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod iter;
 
 // feature-gated, public

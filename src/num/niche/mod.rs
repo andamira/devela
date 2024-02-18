@@ -14,8 +14,10 @@ mod reexports;
 mod tests;
 //
 #[cfg(feature = "num")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod non_range;
 #[cfg(feature = "num")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod range;
 
 /* re-exports */

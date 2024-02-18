@@ -17,21 +17,14 @@
 mod _private;
 
 // always compiled, non-public
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod alias;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod always_fns;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod error;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod float;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod primitive;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 mod sign;
 
 // always compiled, public
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
 pub mod niche;
 
 // feature gated, private

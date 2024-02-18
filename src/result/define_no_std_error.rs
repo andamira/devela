@@ -16,7 +16,7 @@ mod private {
 }
 
 /// <span class='stab portability' title='re-exported from rust&#39;s `std`
-/// or re-created for `no_std`'>`std|no_std`</span>
+/// or recreated if `not(std)`'>`?std`</span>
 //
 /// A trait representing the basic expectations for error values.
 ///

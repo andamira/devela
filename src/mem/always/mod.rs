@@ -15,7 +15,6 @@ pub use fns::*;
 /// [xor swap method]: https://en.wikipedia.org/wiki/XOR_swap_algorithm
 // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
 #[macro_export]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 macro_rules! cswap {
     (
         // swaps two values using a temporary variable

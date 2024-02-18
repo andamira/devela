@@ -55,7 +55,6 @@ pub use boxed::*;
 /// assert_eq![8, size_of::<MyStructure::<u8, devela::mem::Boxed, 100>>()];
 ///
 /// ```
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 pub trait Storage {
     /// The stored associated type.
     ///

@@ -20,19 +20,12 @@
 /* modules */
 
 // always compiled, non-public
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod aligned;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod always;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod reexports;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod size;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod slice;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod storage;
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
 mod r#trait;
 
 // feature-gated, non-public
