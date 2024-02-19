@@ -75,9 +75,7 @@ unsafe impl<T: Pod, const N: usize> DstBuf for [MaybeUninit<T>; N] {
 ///
 /// # Examples
 /// ```
-/// use devela::data::DstQueue;
-/// use core::mem::MaybeUninit;
-///
+/// # use {devela::data::DstQueue, core::mem::MaybeUninit};
 /// let mut buf = DstQueue::<str, Vec<MaybeUninit<u8>>>::new();
 /// buf.push_back_str("Hello world!");
 /// buf.push_back_str("This is a very long string");
@@ -143,13 +141,13 @@ unsafe impl<T: Pod, const N: usize> DstBuf for DstArray<T, N> {
 
 /// A statically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
-pub type DstArrayU<const N: usize> = DstArray<usize, N>;
+pub type DstArrayUsize<const N: usize> = DstArray<usize, N>;
 
 /// A dynamically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub type DstVecU = crate::_deps::alloc::vec::Vec<MaybeUninit<usize>>;
+pub type DstVecUsize = crate::_deps::alloc::vec::Vec<MaybeUninit<usize>>;
 
 // MAYBE
 // /// A DST buffer backing onto a Vec.

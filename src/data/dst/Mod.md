@@ -14,8 +14,7 @@ As a quick example - The following wraps a 64-bit integer up in an inline DST
 using the `Any` trait.
 
 ```rust
-use devela::all::{Any, DstArray, DstValue};
-
+# use devela::all::{Any, DstArray, DstValue};
 let dst = DstValue::<dyn Any, DstArray<usize, 2>>::new(1234u64, |p| p)
     .ok().expect("Integer did not fit in allocation");
 println!("dst as u64 = {:?}", dst.downcast_ref::<u64>());
@@ -27,13 +26,12 @@ The following snippet shows how small (`'static`) closures can be returned using
 this crate
 
 ```rust
-use devela::all::{DstArrayU, DstQueue, DstValue};
-
-let c = DstValue::<dyn Fn(i32) -> i32, DstArrayU<1>>::new(|n| n * 3, |v| v)
+# use devela::all::{DstArrayUsize, DstQueue, DstValue};
+let c = DstValue::<dyn Fn(i32) -> i32, DstArrayUsize<1>>::new(|n| n * 3, |v| v)
     .ok().expect("Not enough size!");
 assert_eq!(c(6), 18);
 
-let mut q = DstQueue::<dyn Fn(i32) -> i32, DstArrayU<8>>::new();
+let mut q = DstQueue::<dyn Fn(i32) -> i32, DstArrayUsize<8>>::new();
 assert![q.push_back(|n| n * 3, |v| v).is_ok()];
 assert![q.push_back(|n| n - 3, |v| v).is_ok()];
 assert_eq![18, q.front().unwrap()(6)];
@@ -47,16 +45,14 @@ If you need larger alignment, you can use a different type for the backing array
 
 This code panics, because i128 requires 8/16 byte alignment (usually)
 ```should_panic
-use devela::all::{Any, DstArray, DstValue};
-
+# use devela::all::{Any, DstArray, DstValue};
 let v: DstValue<dyn Any, DstArray<u8, 32>> =
     DstValue::new(123i128, |p| p as _).unwrap();
 ```
 
 This works, because the backing buffer has sufficient alignment
 ```rust
-use devela::all::{Any, DstArray, DstValue};
-
+# use devela::all::{Any, DstArray, DstValue};
 let v: DstValue<dyn Any, DstArray<u128, 2>> =
     DstValue::new(123i128, |p| p as _).unwrap();
 ```

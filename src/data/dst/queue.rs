@@ -18,19 +18,18 @@ use core::{marker, mem, ptr};
 ///
 /// # Examples
 /// ```
-/// use devela::data::{DstQueueU};
-///
-/// let mut queue = DstQueueU::<[u8], 16>::new();
+/// # use devela::data::DstQueueUsize;
+/// let mut queue = DstQueueUsize::<[u8], 16>::new();
 /// queue.push_copied(&[1]);
 /// ```
-pub type DstQueueU<DST /*: ?Sized*/, const N: usize> = DstQueue<DST, DstArray<usize, N>>;
+// WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792) ↓DENIED
+pub type DstQueueUsize<DST /*: ?Sized*/, const N: usize> = DstQueue<DST, DstArray<usize, N>>;
 
 /// A statically allocated FIFO queue of <abbr title="Dynamically sized type">DST</abbr>s.
 ///
 /// # Examples
 /// ```
-/// use devela::data::{DstArray, DstQueue};
-///
+/// # use devela::data::{DstArray, DstQueue};
 /// let mut queue = DstQueue::<str, DstArray<usize, 8>>::new();
 /// queue.push_back_str("Hello");
 /// queue.push_back_str("World");
@@ -144,8 +143,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstQueue};
-    ///
+    /// # use devela::data::{DstArray, DstQueue};
     /// let mut list = DstQueue::<str, DstArray<usize, 8>>::new();
     /// list.push_back_str("Hello");
     /// list.push_back_str("world");
@@ -164,8 +162,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstQueue};
-    ///
+    /// # use devela::data::{DstArray, DstQueue};
     /// let mut list = DstQueue::<[u8], DstArray<usize, 8>>::new();
     /// list.push_copied(&[1,2,3]);
     /// list.push_copied(&[9]);
@@ -189,9 +186,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstQueue};
-    /// use core::{any::Any, fmt::Debug};
-    ///
+    /// # use {devela::data::{DstArray, DstQueue}, core::{any::Any, fmt::Debug}};
     /// trait DebugAny: 'static + Any + Debug { fn as_any(&self) -> &dyn Any; }
     /// impl<DST: Debug + Any + 'static> DebugAny for DST { fn as_any(&self) -> &dyn Any { self } }
     /// let mut list = {
@@ -272,8 +267,7 @@ where
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstQueue};
-    ///
+    /// # use devela::data::{DstArray, DstQueue};
     /// let mut queue = DstQueue::<[String], DstArray<usize, 8>>::new();
     /// queue.push_cloned(&["1".to_owned()]);
     /// ```
@@ -287,8 +281,7 @@ where
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstQueue};
-    ///
+    /// # use devela::data::{DstArray, DstQueue};
     /// let mut queue = DstQueue::<[usize], DstArray<usize, 8>>::new();
     /// queue.push_copied(&[1]);
     /// ```
@@ -319,8 +312,7 @@ where
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstQueue};
-    ///
+    /// # use devela::data::{DstArray, DstQueue};
     /// let mut stack = DstQueue::<[u8], DstArray<usize, 8>>::new();
     /// stack.push_from_iter(0..10);
     /// assert_eq!(stack.front().unwrap(), &[0,1,2,3,4,5,6,7,8,9]);

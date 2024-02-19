@@ -12,6 +12,10 @@
     clippy::module_inception, // allow modules with the same name as its parent
     clippy::wrong_self_convention, // allow `is_` methods having an owned self
 )]
+#![deny(
+    // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
+    type_alias_bounds,
+)]
 //
 // environment:
 #![cfg_attr(not(feature = "std"), no_std)]

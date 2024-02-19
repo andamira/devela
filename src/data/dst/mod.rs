@@ -24,6 +24,6 @@ mod stack;
 mod value;
 
 pub use buffer::*;
-pub use queue::{DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopHandle, DstQueueU};
-pub use stack::{DstStack, DstStackIter, DstStackIterMut, DstStackU};
-pub use value::{DstValue, DstValueU};
+pub use queue::{DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopHandle, DstQueueUsize};
+pub use stack::{DstStack, DstStackIter, DstStackIterMut, DstStackUsize};
+pub use value::{DstValue, DstValueUsize};

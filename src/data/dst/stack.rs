@@ -18,10 +18,12 @@ use core::{marker, mem, ptr};
 ///
 /// # Examples
 /// ```
-/// let mut stack = devela::data::DstStackU::<[u8], 16>::new();
+/// # use devela::data::DstStackUsize;
+/// let mut stack = DstStackUsize::<[u8], 16>::new();
 /// stack.push_copied(&[1]);
 /// ```
-pub type DstStackU<DST /*: ?Sized*/, const N: usize> = DstStack<DST, DstArray<usize, N>>;
+// WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792) ↓DENIED
+pub type DstStackUsize<DST /*: ?Sized*/, const N: usize> = DstStack<DST, DstArray<usize, N>>;
 
 // Implementation Notes
 // -----
@@ -74,8 +76,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     /// Pushes a value at the top of the stack.
     ///
     /// ```
-    /// use devela::data::{DstArray, DstStack};
-    ///
+    /// # use devela::data::{DstArray, DstStack};
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push([1, 2,3], |v| v);
     /// ```
@@ -132,8 +133,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstStack};
-    ///
+    /// # use devela::data::{DstArray, DstStack};
     /// let mut list = DstStack::<str, DstArray<usize, 8>>::new();
     /// list.push_str("Hello");
     /// list.push_str("world");
@@ -152,8 +152,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstStack};
-    ///
+    /// # use devela::data::{DstArray, DstStack};
     /// let mut list = DstStack::<[u8], DstArray<usize, 8>>::new();
     /// list.push_copied(&[1,2,3]);
     /// list.push_copied(&[9]);
@@ -177,8 +176,7 @@ impl<BUF: DstBuf> DstStack<str, BUF> {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstStack};
-    ///
+    /// # use devela::data::{DstArray, DstStack};
     /// let mut stack = DstStack::<str, DstArray<u8, 32>>::new();
     /// stack.push_str("Hello!");
     /// ```
@@ -204,8 +202,7 @@ where
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstStack};
-    ///
+    /// # use devela::data::{DstArray, DstStack};
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push_cloned(&[1, 2, 3]);
     /// ```
@@ -218,8 +215,7 @@ where
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstStack};
-    ///
+    /// # use devela::data::{DstArray, DstStack};
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push_copied(&[1, 2, 3]);
     /// ```
@@ -250,8 +246,7 @@ where
     ///
     /// # Examples
     /// ```
-    /// use devela::data::{DstArray, DstStack};
-    ///
+    /// # use devela::data::{DstArray, DstStack};
     /// let mut stack = DstStack::<[u8], DstArray<usize, 8>>::new();
     /// stack.push_from_iter(0..10);
     /// assert_eq!(stack.top().unwrap(), &[0,1,2,3,4,5,6,7,8,9]);
