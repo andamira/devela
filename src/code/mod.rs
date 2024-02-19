@@ -1,7 +1,7 @@
 // devela::code
 //
-//! Meta-programming, extends
-//! `std::{`[`any`], [`clone`]. [`convert`], [`default`], [`hint`], [`marker`], [`ops`]`}`.
+//! Code reflective synthesis, extends
+//! `std::{`[`any`], [`clone`], [`convert`], [`default`], [`hint`], [`marker`], [`ops`]`}`.
 //!
 //! [`any`]: std::any
 //! [`clone`]: std::clone

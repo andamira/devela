@@ -1,12 +1,15 @@
 // devela::result
 //
-//! Result related functionality, extends
+//! Result handling and functional enhancements, extends
 //! `std::{`[`error`], [`option`], [`panic`], [`result`]`}`.
 //!
 //! [`error`]: std::error
 //! [`option`]: std::option
 //! [`panic`]: mod@std::panic
 //! [`result`]: std::result
+//!
+//! Streamlines error management, result chaining, and introduces utility types
+//! and macros.
 //!
 //! It re-exports the error and result types defined in other modules.
 //

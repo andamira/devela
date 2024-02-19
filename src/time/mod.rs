@@ -1,6 +1,6 @@
 // devela::time
 //
-//! Temporal quantification, extends
+//! Time and calendar types and operations, extends
 //! `std::`[`time`].
 //!
 //! [`time`]: std::time

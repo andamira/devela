@@ -1,6 +1,6 @@
 // devela::os
 //
-//! OS-specific functionality, extends
+//! Operating system, hardware and cross-language interfacing, extends
 //! `std::{`[`arch`], [`ffi`], [`os`]`}`.
 //!
 //! [`arch`]: std::arch

@@ -1,6 +1,6 @@
 // devela::fig
 //
-//! Figures, geometric types and operations.
+//! Geometric figures and operations, spatial constructs and analysis.
 //
 
 // safety:

@@ -11,7 +11,7 @@ use crate::num::Int;
 
 mod impl_frac;
 
-/// Provides fraction-related operations on `T`, most of them *const*.
+/// Provides comprehensive fractional operations on `T`, most of them *const*.
 ///
 /// It's implemented for:
 /// - arrays: `[i8; 2]`… `[u128; 2]`; `[Int<i8>; 2]`… `[Int<u128>; 2]`.

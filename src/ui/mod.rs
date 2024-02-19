@@ -1,6 +1,6 @@
 // devela::ui
 //
-//! User interface functionality.
+//! User interface fundamentals and minimal implementations.
 //
 
 // safety:

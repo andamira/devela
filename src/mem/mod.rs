@@ -42,6 +42,7 @@ pub use fns::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{
         aligned::*, always::*, r#trait::*, reexports::*, size::all::*, slice::all::*, storage::*,
     };

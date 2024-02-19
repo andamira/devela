@@ -32,7 +32,7 @@ mod auto_impls {
     impl<'a, T: NumInt> NumRefInt<'a> for &mut T {}
 }
 
-/// Common trait for integer types.
+/// Common auto-trait for integer types.
 ///
 /// # Notes
 /// - We use `n` to refer to the `self` argument in all the method descriptions and formulas.

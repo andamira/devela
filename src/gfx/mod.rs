@@ -1,6 +1,6 @@
 // devela::gfx
 //
-//! Graphics functionality.
+//! Graphics rendering, chromacity and image manipulation.
 //
 
 // warnings:

@@ -14,7 +14,7 @@ mod impl_factors;
 mod impl_prime;
 mod impl_sqrt;
 
-/// Provides integer operations on `T`, most of them *const*.
+/// Provides comprehensive integer operations on `T`, most of them *const*.
 ///
 /// It's implemented for:
 /// - all the integer primitives: `i8`, …, `i128`, `u8`, …, `u128`.

@@ -1,6 +1,6 @@
 // devela::data
 //
-//! Data structures, extends
+//! Data handling and manipulation, extends
 //! `std::{`[`array`], [`cmp`], [`collections`], [`hash`],
 //! [`iter`], [`vec`]`}`.
 //!
