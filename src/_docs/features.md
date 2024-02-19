@@ -41,6 +41,7 @@ optional dependencies.
 Single modules:
 - `code`: enables the [`code`] module,
 - `data`: enables the [`data`] module,
+- `fig`: enables the [`fig`] module.
 - `gfx`: enables the [`gfx`] module.
 - `io`: enables the [`io`] module.
 - `mem`: enables the [`mem`] module,
@@ -62,6 +63,7 @@ Single modules:
 
 [`code`]: crate::code
 [`data`]: crate::data
+[`fig`]: crate::fig
 [`gfx`]: crate::gfx
 [`io`]: crate::io
 [`mem`]: crate::mem
@@ -85,6 +87,7 @@ In order to use any unsafe functionality:
 - `safe`: forbids `unsafe` (and overrides unsafe features), includes:
   - `safe_code`
   - `safe_data`
+  - `safe_fig`
   - `safe_gfx`
   - `safe_io`
   - `safe_mem`

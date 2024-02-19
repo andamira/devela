@@ -1,6 +1,6 @@
 // devela::num
 //
-//! Numeric types and operations, extends
+//! Numbers, numeric types and operations, extends
 //! `std::`[`num`].
 //!
 //! [`num`]: std::num
