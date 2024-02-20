@@ -40,7 +40,6 @@ publish = true
 
 # default = [] # no default features
 _exclude_example = [] # from testing
-
 # enables the most complete version of the documentation:
 docsrs = ["nightly", "all", "std", "unsafe", "dep", "libm"]
 
@@ -94,8 +93,10 @@ result = []
 text = ["dep?/const-str", "dep?/memchr", "dep?/unicode-segmentation", "dep?/unicode-width"]
 time = []
 ui = []
-	ui_all = [ "ui_term" ]
-	ui_term = ["dep?/const-str"] # terminal support
+	ui_all = ["ui_term", "ui_window"]
+	ui_events = ["dep?/crossterm_events", "crossterm?/events"]
+	ui_term = ["dep?/const-str", "dep?/crossterm"]
+	ui_window = ["dep?/miniquad"]
 work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
 
 
@@ -123,6 +124,7 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 	safe_time = []
 	safe_ui = ["safe_ui_term"]
 		safe_ui_term = []
+		# safe_ui_window = []
 	safe_work = []
 
 unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
@@ -160,9 +162,11 @@ dep = ["dep:dep"] # module features enables their dependencies as defined.
 atomic = ["dep:atomic"]
 bytemuck = ["dep:bytemuck"]
 const-str = ["dep:const-str"]
+crossterm = ["dep:crossterm"]
 hashbrown = ["dep:hashbrown"]
 libm = ["dep:libm"]
 memchr = ["dep:memchr"]
+miniquad = ["dep:miniquad"]
 portable-atomic = ["dep:portable-atomic"]
 unicode-segmentation = ["dep:unicode-segmentation"]
 unicode-width = ["dep:unicode-width"]
@@ -181,35 +185,41 @@ paste_crate = { package = "paste", version = "1.0.14", default-features = false 
 #
 # option A) When the `depend` feature is enabled each optional dependency will
 # be automatically enabled by some individual module feature, as defined above:
-dep = { package = "devela_depend", version = "0.3.0", optional = true }
+dep = { package = "devela_depend", version = "0.4.0", optional = true }
 #dep = { package = "devela_depend", path = "./depend", optional = true }
 #
 # option B) Otherwise optional features can be manually enabled:
 const-str = { version = "0.5.6", default-features = false, optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
 memchr = { version = "2.7.1", optional = true, default-features = false }
+miniquad = { version = "0.4.0-alpha.10", default-features = false, optional = true }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
 unicode-width = { version = "0.1.11", default-features = false, optional = true }
 wide = { version = "0.7.15", optional = true, default-features = false }
 [dependencies.atomic]
 version = "0.6.0"
-default-features = false
 optional = true
+default-features = false
 features = ["fallback"]
 [dependencies.bytemuck]
 version = "1.14.0"
-default-features = false
 optional = true
+default-features = false
 features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
+[dependencies.crossterm]
+version = "0.27.0"
+optional = true
+default-features = false
+features = ["windows"]
 [dependencies.hashbrown]
 version = "0.14.1"
-default-features = false
 optional = true
+default-features = false
 features = ["ahash", "inline-more"]
 [dependencies.portable-atomic]
 version = "1.4.3"
-default-features = false
 optional = true
+default-features = false
 features = ["fallback", "float"]
 
 [dev-dependencies]

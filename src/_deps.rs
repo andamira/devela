@@ -60,6 +60,9 @@ mod _dep {
     #[cfg(feature = "const-str")]
     pub use ::const_str;
 
+    #[cfg(feature = "crossterm")]
+    pub use ::crossterm;
+
     #[cfg(all(feature = "hashbrown", feature = "alloc"))]
     pub use ::hashbrown;
 
@@ -68,6 +71,9 @@ mod _dep {
 
     #[cfg(feature = "memchr")]
     pub use ::memchr;
+
+    #[cfg(feature = "miniquad")]
+    pub use ::miniquad;
 
     #[cfg(feature = "portable-atomic")]
     pub use ::portable_atomic;
@@ -101,6 +107,9 @@ mod _dep {
     reexport! { depend any_features: "ui_term", "text",
     dep: "const-str", const_str, "Compile-time string operations." }
 
+    reexport! { depend any_features: "ui_term",
+    dep: "crossterm", crossterm, "A crossplatform terminal library for manipulating terminals." }
+
     reexport! { depend any_features: "data", all_features: "alloc",
     dep: "hashbrown", hashbrown,
     "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`." }
@@ -110,6 +119,9 @@ mod _dep {
 
     reexport! { depend any_features: "text",
     dep: "memchr", memchr, "Optimized routines for string search primitives." }
+
+    reexport! { depend any_features: "ui_window",
+    dep: "miniquad", miniquad, "Cross-platform window context and rendering library." }
 
     reexport! { depend any_features: "work",
     dep: "portable-atomic", portable_atomic,

@@ -27,19 +27,19 @@ impl<S, V> Own<S, V> {
 
     /* destructors (3) */
 
-    /// Transforms itself into a tuple.
+    /// Returns both `state` and `value` as a tuple.
     #[inline] #[rustfmt::skip]
     pub fn sv(self) -> (S, V) {
         (self.s, self.v)
     }
 
-    /// Returns shared references to both `state` and `value` fields.
+    /// Returns shared references to both `state` and `value`.
     #[inline] #[rustfmt::skip]
     pub const fn sv_ref(&self) -> (&S, &V) {
         (&self.s, &self.v)
     }
 
-    /// Returns exclusive references to both `state` and `value` fields.
+    /// Returns exclusive references to both `state` and `value`.
     #[inline] #[rustfmt::skip]
     pub fn sv_mut(&mut self) -> (&mut S, &mut V) {
         (&mut self.s, &mut self.v)
@@ -72,7 +72,7 @@ impl<S, V> Own<S, V> {
     }
     /// Wraps the `state` field into [`Some`].
     #[inline]
-    pub fn s_wrap_som(self) -> Own<Option<S>, V> {
+    pub fn s_wrap_some(self) -> Own<Option<S>, V> {
         Own::new(Some(self.s), self.v)
     }
 
