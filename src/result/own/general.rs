@@ -2,15 +2,18 @@
 //
 //!
 //
+// methods: 1 + 25 + 8 = 34
 
 use super::Own;
 use crate::code::iif;
+
+/* constructors (2) */
 
 impl<S> Own<S, ()> {
     /// A constructor with the given `state` and an empty value.
     #[inline]
     pub const fn empty(state: S) -> Own<S, ()> {
-        Own { state, value: () }
+        Own::new(state, ())
     }
 }
 
@@ -19,385 +22,254 @@ impl<S, V> Own<S, V> {
     /// A constructor with the given `state` and `value`.
     #[inline]
     pub const fn new(state: S, value: V) -> Self {
-        Own { state, value }
+        Own { s: state, v: value }
     }
+
+    /* destructors (3) */
 
     /// Transforms itself into a tuple.
-    ///
-    /// See also [`const_into_tuple`][Self::const_into_tuple] for `Copy` values.
-    #[inline]
-    #[must_use]
-    pub fn into_tuple(self) -> (S, V) {
-        (self.state, self.value)
+    #[inline] #[rustfmt::skip]
+    pub fn sv(self) -> (S, V) {
+        (self.s, self.v)
     }
 
-    /// Wraps the `state` field into an [`Option`].
-    ///
-    /// See also [`const_state_into_option`][Self::const_state_into_option] for `Copy` values.
-    #[inline]
-    pub fn state_into_option(self) -> Own<Option<S>, V> {
-        Own::new_some_state(self.state, self.value)
-    }
-
-    /// Wraps the `state` field into a [`Result`].
-    ///
-    /// See also [`const_state_into_result`][Self::const_state_into_result] for `Copy` values.
-    #[inline]
-    pub fn state_into_result<E>(self) -> Own<Result<S, E>, V> {
-        Own::new_ok_state(self.state, self.value)
-    }
-
-    /// Wraps the `value` field into an [`Option`].
-    ///
-    /// See also [`const_value_into_option`][Self::const_value_into_option] for `Copy` values.
-    #[inline]
-    pub fn value_into_option(self) -> Own<S, Option<V>> {
-        Own::new_some_value(self.state, self.value)
-    }
-
-    /// Wraps the `value` field into a [`Result`].
-    ///
-    /// See also [`const_value_into_result`][Self::const_value_into_result] for `Copy` values.
-    #[inline]
-    pub fn value_into_result<E>(self) -> Own<S, Result<V, E>> {
-        Own::new_ok_value(self.state, self.value)
-    }
-
-    /* references */
-
-    /// Returns a shared reference to the `state` field.
-    #[inline]
-    #[must_use]
-    pub const fn ref_state(&self) -> &S {
-        &self.state
-    }
-    /// Returns a shared reference to the `value` field.
-    #[inline]
-    #[must_use]
-    pub const fn ref_value(&self) -> &V {
-        &self.value
-    }
     /// Returns shared references to both `state` and `value` fields.
-    #[inline]
-    #[must_use]
-    pub const fn ref_both(&self) -> (&S, &V) {
-        (&self.state, &self.value)
+    #[inline] #[rustfmt::skip]
+    pub const fn sv_ref(&self) -> (&S, &V) {
+        (&self.s, &self.v)
     }
 
-    /// Returns an exclusive reference to the `state` field.
-    #[inline]
-    #[must_use]
-    pub fn mut_state(&mut self) -> &mut S {
-        &mut self.state
-    }
-    /// Returns an exclusive reference to the `value` field.
-    #[inline]
-    #[must_use]
-    pub fn mut_value(&mut self) -> &mut V {
-        &mut self.value
-    }
     /// Returns exclusive references to both `state` and `value` fields.
-    #[inline]
-    #[must_use]
-    pub fn mut_both(&mut self) -> (&mut S, &mut V) {
-        (&mut self.state, &mut self.value)
+    #[inline] #[rustfmt::skip]
+    pub fn sv_mut(&mut self) -> (&mut S, &mut V) {
+        (&mut self.s, &mut self.v)
     }
 
-    /* equality test */
+    /* replace (3) */
+
+    /// Replaces the existing `state` with a `new_state`.
+    #[inline]
+    pub fn s_replace(self, new_state: S) -> Self {
+        Self::new(new_state, self.v)
+    }
+    /// Replaces the `value` with a `new_value`.
+    #[inline]
+    pub fn v_replace(self, new_value: V) -> Self {
+        Self::new(self.s, new_value)
+    }
+    /// Replaces the existing `state` and `value` with `new_state` and `new_value`, respectively.
+    #[inline]
+    pub fn sv_replace(self, new_state: S, new_value: V) -> Self {
+        Self::new(new_state, new_value)
+    }
+
+    /* wrap (4) */
+
+    /// Wraps the `state` field into [`Ok`].
+    #[inline]
+    pub fn s_wrap_ok<E>(self) -> Own<Result<S, E>, V> {
+        Own::new(Ok(self.s), self.v)
+    }
+    /// Wraps the `state` field into [`Some`].
+    #[inline]
+    pub fn s_wrap_som(self) -> Own<Option<S>, V> {
+        Own::new(Some(self.s), self.v)
+    }
+
+    /// Wraps the `value` field into [`Ok`].
+    #[inline]
+    pub fn v_wrap_ok<E>(self) -> Own<S, Result<V, E>> {
+        Own::new(self.s, Ok(self.v))
+    }
+    /// Wraps the `value` field into [`Some`].
+    #[inline]
+    pub fn v_wrap_some(self) -> Own<S, Option<V>> {
+        Own::new(self.s, Some(self.v))
+    }
+
+    /* map (3) */
+
+    /// Applies a mapping function to the state.
+    #[inline] #[rustfmt::skip]
+    pub fn s_map<T, F: FnOnce(S) -> T>(self, f: F) -> Own<T, V> {
+        Own::new(f(self.s), self.v)
+    }
+
+    /// Applies a mapping function to the value.
+    #[inline] #[rustfmt::skip]
+    pub fn v_map<W, F: FnOnce(V) -> W>(self, f: F) -> Own<S, W> {
+        Own::new(self.s, f(self.v))
+    }
+
+    /// Applies applies a separate mapping function to the state and value.
+    #[inline] #[rustfmt::skip]
+    pub fn sv_map<F, G, T, W>(self, sf: F, vf: G) -> Own<T, W>
+    where F: FnOnce(S) -> T, G: FnOnce(V) -> W {
+        Own::new(sf(self.s), vf(self.v))
+    }
+
+    /* equality test (3) */
 
     /// Returns `true` if the current `state` equals the given `expected` state.
-    #[inline]
-    #[must_use]
-    pub fn is_state(&self, expected: &S) -> bool
-    where
-        S: PartialEq,
-    {
-        self.state == *expected
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub fn s_eq(&self, expected: &S) -> bool where S: PartialEq {
+        self.s == *expected
     }
     /// Returns `true` if the current `value` equals the given `expected` value.
-    #[inline]
-    #[must_use]
-    pub fn is_value(&self, expected: &V) -> bool
-    where
-        V: PartialEq,
-    {
-        self.value == *expected
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub fn v_eq(&self, expected: &V) -> bool where V: PartialEq {
+        self.v == *expected
     }
     /// Returns `true` if the current `state` and `value` equals the corresponding expected ones.
-    #[inline]
-    #[must_use]
-    pub fn are_both(&self, expected_state: &S, expected_value: &V) -> bool
-    where
-        S: PartialEq,
-        V: PartialEq,
-    {
-        self.state == *expected_state && self.value == *expected_value
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub fn sv_eq(&self, expected_state: &S, expected_value: &V) -> bool
+    where S: PartialEq, V: PartialEq {
+        self.s == *expected_state && self.v == *expected_value
     }
 
-    /* assert */
+    /* assert (or, eq, eq_or) (12) */
 
     /// Asserts the `state` matches the `predicate`, otherwise panics.
-    ///
     /// # Panics
     /// Panics if the predicate returns `false`.
-    #[inline]
-    pub fn assert_state<F>(self, predicate: F) -> Self
-    where
-        F: FnOnce(&S) -> bool,
-    {
-        iif![predicate(&self.state); self; panic![]]
+    #[inline] #[rustfmt::skip]
+    pub fn s_assert<F: FnOnce(&S) -> bool>(self, predicate: F) -> Self {
+        iif![predicate(&self.s); self; panic![]]
     }
     /// Asserts the `state` matches the `predicate`, otherwise panics with `message`.
-    ///
     /// # Panics
     /// Panics if the predicate returns `false`.
-    #[inline]
-    pub fn assert_state_or<F>(self, predicate: F, message: &str) -> Self
-    where
-        F: FnOnce(&S) -> bool,
-    {
-        iif![predicate(&self.state); self; panic!["{}", message]]
+    #[inline] #[rustfmt::skip]
+    pub fn s_assert_or<F: FnOnce(&S) -> bool>(self, predicate: F, message: &str) -> Self {
+        iif![predicate(&self.s); self; panic!["{}", message]]
+    }
+    /// Asserts the `state` equals `expected` and returns `self`, otherwise panics.
+    /// # Panics
+    /// Panics if the `state` doesn't equal the `expected` state.
+    #[inline] #[rustfmt::skip]
+    pub fn s_assert_eq(self, expected_state: &S) -> Self where S: PartialEq {
+        iif![self.s == *expected_state; self; panic![]]
+    }
+    /// Asserts the `state` equals `expected` and returns `self`, otherwise panics with `message`.
+    /// # Panics
+    /// Panics if the `state` doesn't equal the `expected` state.
+    #[inline] #[rustfmt::skip]
+    pub fn s_assert_eq_or(self, expected_state: &S, message: &str) -> Self where S: PartialEq {
+        iif![self.s == *expected_state; self; panic!["{}", message]]
     }
 
     /// Asserts the `value` matches the `predicate`, otherwise panics.
-    ///
     /// # Panics
     /// Panics if the predicate returns `false`.
-    #[inline]
-    pub fn assert_value<F>(self, predicate: F) -> Self
-    where
-        F: FnOnce(&V) -> bool,
-    {
-        iif![predicate(&self.value); self; panic![]]
+    #[inline] #[rustfmt::skip]
+    pub fn v_assert<F: FnOnce(&V) -> bool>(self, predicate: F) -> Self {
+        iif![predicate(&self.v); self; panic![]]
     }
     /// Asserts the `value` matches the `predicate`, otherwise panics with `message`.
-    ///
     /// # Panics
     /// Panics if the predicate returns `false`.
-    #[inline]
-    pub fn assert_value_or<F>(self, predicate: F, message: &str) -> Self
-    where
-        F: FnOnce(&V) -> bool,
-    {
-        iif![predicate(&self.value); self; panic!["{}", message]]
+    #[inline] #[rustfmt::skip]
+    pub fn v_assert_or<F: FnOnce(&V) -> bool>(self, predicate: F, message: &str) -> Self {
+        iif![predicate(&self.v); self; panic!["{}", message]]
+    }
+    /// Asserts the `value` equals `expected` and returns `self`, otherwise panics.
+    /// # Panics
+    /// Panics if the `value` doesn't equal the `expected` value.
+    #[inline] #[rustfmt::skip]
+    pub fn v_assert_eq(self, expected_value: &V) -> Self where V: PartialEq {
+        iif![self.v == *expected_value; self; panic![]]
+    }
+    /// Asserts the `value` equals `expected` and returns `self`, otherwise panics with `message`.
+    /// # Panics
+    /// Panics if the `value` doesn't equal the `expected` value.
+    #[inline] #[rustfmt::skip]
+    pub fn v_assert_eq_or(self, expected_value: &V, message: &str) -> Self where V: PartialEq {
+        iif![self.v == *expected_value; self; panic!["{}", message]]
     }
 
     /// Asserts both the `state` and `value` matches the corresponding predicates,
     /// otherwise panics.
-    ///
     /// # Panics
     /// Panics if any predicate returns `false`.
-    #[inline]
-    pub fn assert_both<F, G>(self, predicate_state: F, predicate_value: G) -> Self
-    where
-        F: FnOnce(&S) -> bool,
-        G: FnOnce(&V) -> bool,
-    {
-        iif![predicate_state(&self.state) && predicate_value(&self.value); self; panic![]]
+    #[inline] #[rustfmt::skip]
+    pub fn sv_assert<F, G>(self, s_predicate: F, v_predicate: G) -> Self
+    where F: FnOnce(&S) -> bool, G: FnOnce(&V) -> bool {
+        iif![s_predicate(&self.s) && v_predicate(&self.v); self; panic![]]
     }
     /// Asserts both the `state` and `value` matches the corresponding predicates,
     /// otherwise panics with `message`.
-    ///
     /// # Panics
     /// Panics if any predicate returns `false`.
-    #[inline]
-    pub fn assert_both_or<F, G>(self, predicate_state: F, predicate_value: G, message: &str) -> Self
-    where
-        F: FnOnce(&S) -> bool,
-        G: FnOnce(&V) -> bool,
-    {
-        if predicate_state(&self.state) && predicate_value(&self.value) {
-            self
-        } else {
-            panic!["{}", message]
-        }
+    #[inline] #[rustfmt::skip]
+    pub fn sv_assert_or<F, G>(self, s_predicate: F, v_predicate: G, message: &str) -> Self
+    where F: FnOnce(&S) -> bool, G: FnOnce(&V) -> bool {
+        iif![s_predicate(&self.s) && v_predicate(&self.v); self; panic!["{}", message]]
     }
-
-    /* assert_eq */
-
-    /// Asserts the `state` equals `expected` and returns `self`, otherwise panics.
-    ///
-    /// # Panics
-    /// Panics if the `state` doesn't equal the `expected` state.
-    #[inline]
-    pub fn assert_eq_state(self, expected: &S) -> Self
-    where
-        S: PartialEq,
-    {
-        iif![self.state == *expected; self; panic![]]
-    }
-    /// Asserts the `state` equals `expected` and returns `self`, otherwise panics with `message`.
-    ///
-    /// # Panics
-    /// Panics if the `state` doesn't equal the `expected` state.
-    #[inline]
-    pub fn assert_eq_state_or(self, expected: &S, message: &str) -> Self
-    where
-        S: PartialEq,
-    {
-        iif![self.state == *expected; self; panic!["{}", message]]
-    }
-
-    /// Asserts the `value` equals `expected` and returns `self`, otherwise panics.
-    ///
-    /// # Panics
-    /// Panics if the `value` doesn't equal the `expected` value.
-    #[inline]
-    pub fn assert_eq_value(self, expected: &V) -> Self
-    where
-        V: PartialEq,
-    {
-        iif![self.value == *expected; self; panic![]]
-    }
-    /// Asserts the `value` equals `expected` and returns `self`, otherwise panics with `message`.
-    ///
-    /// # Panics
-    /// Panics if the `value` doesn't equal the `expected` value.
-    #[inline]
-    pub fn assert_eq_value_or(self, expected: &V, message: &str) -> Self
-    where
-        V: PartialEq,
-    {
-        iif![self.value == *expected; self; panic!["{}", message]]
-    }
-
     /// Asserts the `state` and `value` equals the corresponding expected ones,
     /// and returns `self`, otherwise panics.
-    ///
     /// # Panics
     /// Panics if either the `state` or the `value` are not the expected ones.
-    #[inline]
-    pub fn assert_eq_both(self, expected_state: &S, expected_value: &V) -> Self
-    where
-        S: PartialEq,
-        V: PartialEq,
-    {
-        iif![self.state == *expected_state && self.value == *expected_value; self; panic![]]
+    #[inline] #[rustfmt::skip]
+    pub fn sv_assert_eq(self, expected_state: &S, expected_value: &V) -> Self
+    where S: PartialEq, V: PartialEq {
+        iif![self.s == *expected_state && self.v == *expected_value; self; panic![]]
     }
     /// Asserts the `state` and `value` equals the corresponding expected ones,
     /// and returns `self`, otherwise panics with `message`
-    ///
     /// # Panics
     /// Panics if either the `state` or the `value` are not the expected ones.
-    #[inline]
-    pub fn assert_eq_both_or(self, expected_state: &S, expected_value: &V, message: &str) -> Self
-    where
-        S: PartialEq,
-        V: PartialEq,
-    {
-        if self.state == *expected_state && self.value == *expected_value {
-            self
-        } else {
-            panic!["{}", message]
-        }
-    }
-
-    /* replace */
-
-    /// Replaces the existing `state` with a `new_state`.
-    ///
-    /// See also [`const_replace_state`][Self::const_replace_state] for `Copy` values.
-    #[inline]
-    pub fn replace_state(self, new_state: S) -> Self {
-        Self::new(new_state, self.value)
-    }
-    /// Replaces the `value` with a `new_value`.
-    ///
-    /// See also [`const_replace_value`][Self::const_replace_value] for `Copy` values.
-    #[inline]
-    pub fn replace_value(self, new_value: V) -> Self {
-        Self::new(self.state, new_value)
-    }
-    /// Replaces the existing `state` and `value` with `new_state` and `new_value`, respectively.
-    ///
-    /// See also [`const_replace_both`][Self::const_replace_both] for `Copy` values.
-    #[inline]
-    pub fn replace_both(self, new_state: S, new_value: V) -> Self {
-        Self::new(new_state, new_value)
-    }
-
-    /* map */
-
-    /// Applies a mapping function `f` to the `state` field.
-    #[inline]
-    pub fn map_state<F, NewState>(self, f: F) -> Own<NewState, V>
-    where
-        F: FnOnce(S) -> NewState,
-    {
-        Own {
-            state: f(self.state),
-            value: self.value,
-        }
-    }
-    /// Applies a mapping function `f` to the `value` field.
-    #[inline]
-    pub fn map_value<F, NewT>(self, f: F) -> Own<S, NewT>
-    where
-        F: FnOnce(V) -> NewT,
-    {
-        Own {
-            state: self.state,
-            value: f(self.value),
-        }
-    }
-    /// Applies the mapping functions `f_*` to the respective `state` and `value` fields.
-    pub fn map_both<F, G, NewState, NewT>(self, f_state: F, f_value: G) -> Own<NewState, NewT>
-    where
-        F: FnOnce(S) -> NewState,
-        G: FnOnce(V) -> NewT,
-    {
-        Own {
-            state: f_state(self.state),
-            value: f_value(self.value),
-        }
+    #[inline] #[rustfmt::skip]
+    pub fn sv_assert_eq_or(self, expected_state: &S, expected_value: &V, message: &str) -> Self
+    where S: PartialEq, V: PartialEq {
+        iif![self.s == *expected_state && self.v == *expected_value; self; panic!["{}", message]]
     }
 }
 
 /// # Additional *const* methods for when everything is `Copy`.
 impl<S: Copy, V: Copy> Own<S, V> {
+    // (7)
     /// Transforms itself into a tuple, in compile-time.
-    #[inline]
-    #[must_use]
-    pub const fn const_into_tuple(self) -> (S, V) {
-        (self.state, self.value)
-    }
-
-    /// Wraps the `state` field into an [`Option`], in compile-time.
-    #[inline]
-    pub fn const_state_into_option(self) -> Own<Option<S>, V> {
-        Own::new_some_state(self.state, self.value)
-    }
-    /// Wraps the `state` field into a [`Result`], in compile-time.
-    #[inline]
-    pub const fn const_state_into_result<E>(self) -> Own<Result<S, E>, V> {
-        Own::new_ok_state(self.state, self.value)
-    }
-
-    /// Wraps the `value` field into an [`Option`], in compile-time.
-    #[inline]
-    pub const fn const_value_into_option(self) -> Own<S, Option<V>> {
-        Own::new_some_value(self.state, self.value)
-    }
-    /// Wraps the `value` field into a [`Result`], in compile-time.
-    #[inline]
-    pub const fn const_value_into_result<E>(self) -> Own<S, Result<V, E>> {
-        Own::new_ok_value(self.state, self.value)
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn sv_const(self) -> (S, V) {
+        (self.s, self.v)
     }
 
     /// Replaces the `state` self with a `new_state`, in compile-time.
     #[inline]
-    pub const fn const_replace_state(self, new_state: S) -> Self {
-        Self::new(new_state, self.value)
+    pub const fn s_const_replace(self, s: S) -> Self {
+        Self::new(s, self.v)
     }
     /// Replaces the `value` with a `new_value`, in compile-time.
     #[inline]
-    pub const fn const_replace_value(self, new_value: V) -> Self {
-        Self::new(self.state, new_value)
+    pub const fn v_const_replace(self, v: V) -> Self {
+        Self::new(self.s, v)
     }
     /// Replaces the `state` self with a `new_state` and the `value` with a `new_value`,
     /// in compile-time.
     #[inline]
-    pub const fn const_replace_both(self, new_state: S, new_value: V) -> Self {
+    pub const fn sv_const_replace(self, new_state: S, new_value: V) -> Self {
         Self::new(new_state, new_value)
+    }
+
+    /// Wraps the `state` field into a [`Result`], in compile-time.
+    #[inline]
+    pub const fn s_const_wrap_ok<E>(self) -> Own<Result<S, E>, V> {
+        Own::new(Ok(self.s), self.v)
+    }
+    /// Wraps the `state` field into an [`Option`], in compile-time.
+    #[inline]
+    pub const fn s_const_wrap_some(self) -> Own<Option<S>, V> {
+        Own::new(Some(self.s), self.v)
+    }
+
+    /// Wraps the `value` field into a [`Result`], in compile-time.
+    #[inline]
+    pub const fn v_const_wrap_ok<E>(self) -> Own<S, Result<V, E>> {
+        Own::new(self.s, Ok(self.v))
+    }
+    /// Wraps the `value` field into an [`Option`], in compile-time.
+    #[inline]
+    pub const fn v_const_wrap_some(self) -> Own<S, Option<V>> {
+        Own::new(self.s, Some(self.v))
     }
 }

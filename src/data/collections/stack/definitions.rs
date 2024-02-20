@@ -49,16 +49,16 @@ use crate::{
 ///
 /// The following list of methods links to the ones implemented for `StackU8`:
 ///
-/// - Constructors:
+/// - Construct:
 ///   [`new`][Self::new],
 ///   [`new_copied`][Self::new_copied],
 ///   [`from_array`][Self::from_array].
-/// - Deconstructors:
+/// - Deconstruct:
 ///   [`to_array`][Self::to_array],
 ///   [`to_vec`][Self::to_vec]*(`alloc`)*.
 ///   [`as_slice`][Self::as_slice],
 ///   [`as_mut_slice`][Self::as_mut_slice],
-/// - Queries:
+/// - Query:
 ///   [`len`][Self::len], [`is_empty`][Self::is_empty], [`is_full`][Self::is_full],
 ///   [`capacity`][Self::capacity], [`remaining_capacity`][Self::remaining_capacity],
 ///   [`contains`][Self::contains].
@@ -66,12 +66,12 @@ use crate::{
 ///   [`resize_default`][Self::resize_default]*([own][Self::own_resize_default])*,
 ///   [`resize_default_truncate`][Self::resize_default_truncate]
 ///     *([own][Self::own_resize_default_truncate])*.
-/// - Conversion:
+/// - Convert:
 ///   [`to_idx_u8`][Self::to_idx_u8]*([own][Self::own_to_idx_u8])*,
 ///   [`to_idx_u16`][Self::to_idx_u16]*([own][Self::own_to_idx_u16])*,
 ///   [`to_idx_u32`][Self::to_idx_u32]*([own][Self::own_to_idx_u32])*,
 ///   [`to_idx_usize`][Self::to_idx_usize]*([own][Self::own_to_idx_usize])*.
-/// - Iterator related:
+/// - Iterate:
 ///   [`iter`][Self::iter],
 ///   [`extend`][Self::extend],
 ///

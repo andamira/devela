@@ -31,7 +31,7 @@ pub use ext_vec::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{array::all::*, destaque::all::*, reexports::*, stack::all::* traits::*};
+    pub use super::{array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*};
 
     // feature-gated
     #[cfg(feature = "alloc")]

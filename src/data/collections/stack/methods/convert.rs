@@ -206,10 +206,10 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             #[doc = "const S: Stack" $IDX:camel "<i32, (), 8> = Stack" $IDX:camel "::own_new(0)"]
-            ///     .state_ok_state().own_push(1).state.own_push(2).state.own_push(3).state;
-            #[doc = "const T: Stack" $IDX:camel "<i32, (), 4> = S.own_resize_default().state_ok_state();"]
+            ///     .s_const_unwrap().s.own_push(1).s.own_push(2).s.own_push(3).s;
+            #[doc = "const T: Stack" $IDX:camel "<i32, (), 4> = S.own_resize_default().s_const_unwrap().s;"]
             /// assert_eq![S.as_slice(), T.as_slice()];
-            /// let _ = S.own_resize_default::<2>().assert_state_err(); // too small
+            /// let _ = S.own_resize_default::<2>().s_assert_err(); // too small
             /// ```
             #[inline]
             pub const fn own_resize_default<const NEW_CAP: usize>(self) -> Own<Result<Stack<T, Bare, NEW_CAP, $IDX>>, ()> {
@@ -241,10 +241,10 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             #[doc = "const S: Stack" $IDX:camel "<i32, (), 8> = Stack" $IDX:camel "::own_new(0)"]
-            ///     .state_ok_state().own_push(1).state.own_push(2).state.own_push(3).state;
-            #[doc = "const T: Stack" $IDX:camel "<i32, (), 4> = S.own_resize_default_truncate().state;"]
+            ///     .s_const_unwrap().s.own_push(1).s.own_push(2).s.own_push(3).s;
+            #[doc = "const T: Stack" $IDX:camel "<i32, (), 4> = S.own_resize_default_truncate().s;"]
             /// assert_eq![S.as_slice(), T.as_slice()];
-            #[doc = "const U: Stack" $IDX:camel "<i32, (), 2> = S.own_resize_default_truncate().state;"]
+            #[doc = "const U: Stack" $IDX:camel "<i32, (), 2> = S.own_resize_default_truncate().s;"]
             /// assert_eq![U.as_slice(), &[2, 3]];
             /// ```
             #[inline]
@@ -339,9 +339,9 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::data::*;"]
             #[doc = "const S: Stack" $IDX:camel "<i32, (), 6> = Stack" $IDX:camel "::own_new(0)"]
-            ///     .state_ok_state().own_push(1).state.own_push(2).state.own_push(3).state;
+            ///     .s_const_unwrap().s.own_push(1).s.own_push(2).s.own_push(3).s;
             #[doc = "const T: Stack" $NEW_IDX:camel "<i32, (), 6> = S.own_to_idx_"
-                $NEW_IDX "().state_ok_state();"]
+                $NEW_IDX "().s_const_unwrap().s;"]
             /// assert_eq![S.as_slice(), T.as_slice()];
             /// ```
             #[inline]

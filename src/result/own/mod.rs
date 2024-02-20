@@ -3,246 +3,117 @@
 //!
 //
 
-// the order of the modules determines the order of the impl blocks in the docs
 mod general;
+mod state;
+mod value;
 
-mod result_state;
-mod result_value;
-
-mod option_state;
-mod option_value;
-
-/// A return type encapsulating an owned `state` alongside a return `value`.
+/// A return type encapsulating an owned **state** `S` and a **value** `V`.
 ///
 /// It is designed to be used by methods that take ownership of `self`,
 /// and return it alongside the operation-specific result.
 ///
 /// By convention methods that return an `Own` should to be prefixed with `own_`,
-/// and any [`Result`] or [`Option`] should be part of the `state` field for
-/// constructors, and of the `value` field for most other methods, allowing
+/// and any [`Result`] or [`Option`] should be part of the `state` field for the
+/// constructors, and part of the `value` field for most other methods, allowing
 /// `self` to be passed along a chain of operations.
 ///
-/// ## Available methods
-/// - [`Own<S, ()>`](#impl-Own<S,+()>):
-/// [`empty`](#method_empty)
-///
-/// - [`Own<S, V>`](#impl-Own<S,+V>):
-/// [`new`](#method.new),
-///
-/// [`into_tuple`](#method.into_tuple),
-/// [`state_into_option`](#method.state_into_option),
-/// [`state_into_result`](#method.state_into_result),
-/// [`value_into_option`](#method.value_into_option),
-/// [`value_into_result`](#method.value_into_result),
-///
-/// [`ref_state`](#method.ref_state),
-/// [`ref_value`](#method.ref_value),
-/// [`ref_both`](#method.ref_both),
-/// [`mut_state`](#method.mut_state),
-/// [`mut_value`](#method.mut_value),
-/// [`mut_both`](#method.mut_both),
-///
-/// [`is_state`](#method.is_state),
-/// [`is_value`](#method.is_value),
-/// [`are_both`](#method.are_both),
-///
-/// [`assert_state`](#method.assert_state),
-/// [`assert_state_or`](#method.assert_state_or),
-/// [`assert_value`](#method.assert_value),
-/// [`assert_value_or`](#method.assert_value_or),
-/// [`assert_both`](#method.assert_both),
-/// [`assert_both_or`](#method.assert_both_or),
-///
-/// [`assert_eq_state`](#method.assert_eq_state),
-/// [`assert_eq_state_or`](#method.assert_eq_state_or),
-/// [`assert_eq_value`](#method.assert_eq_value),
-/// [`assert_eq_value_or`](#method.assert_eq_value_or),
-/// [`assert_eq_both`](#method.assert_eq_both),
-/// [`assert_eq_both_or`](#method.assert_eq_both_or),
-///
-/// [`replace_state`](#method.replace_state),
-/// [`replace_value`](#method.replace_value),
-/// [`replace_both`](#method.replace_both),
-///
-/// [`map_state`](#method.map_state),
-/// [`map_value`](#method.map_value),
-/// [`map_both`](#method.map_both),
-///
-/// - [`Own<S: Copy, V: Copy>`](#impl-Own<S,+V>-1):
-///
-/// [`const_into_tuple`](#method.const_into_tuple),
-/// [`const_state_into_option`](#method.const_state_into_option),
-/// [`const_state_into_result`](#method.const_state_into_result),
-/// [`const_value_into_option`](#method.const_value_into_option),
-/// [`const_value_into_result`](#method.const_value_into_result),
-///
-/// [`const_replace_state`](#method.const_replace_state),
-/// [`const_replace_value`](#method.const_replace_value),
-/// [`const_replace_both`](#method.const_replace_both).
-///
-/// ### Implemented when the `state` is a `Result`:
-///
-/// - [`Own<Result<S, E>, V>`](#impl-Own<Result<S,+E>,+V>):
-/// [`new_ok_state`](#method.new_ok_state),
-/// [`new_err_state`](#method.new_err_state),
-///
-/// [`is_state_ok`](#method.is_state_ok),
-/// [`is_state_ok_and`](#method.is_state_ok_and),
-/// [`is_state_err`](#method.is_state_err),
-/// [`is_state_err_and`](#method.is_state_err_and),
-///
-/// [`assert_state_ok`](#method.assert_state_ok),
-/// [`assert_state_ok_or`](#method.assert_state_ok_or),
-/// [`assert_state_err`](#method.assert_state_err),
-/// [`assert_state_err_or`](#method.assert_state_err_or),
-///
-/// [`state_map`](#method.state_map),
-/// [`state_map_err`](#method.state_map_err),
-/// [`state_and`](#method.state_and),
-/// [`state_and_then`](#method.state_and_then),
-///
-/// [`state_unwrap`](#method.state_unwrap),
-/// [`state_unwrap_or`](#method.state_unwrap_or),
-/// [`state_expect`](#method.state_expect),
-/// [`state_ok`](#method.state_ok),
-/// [`state_err`](#method.state_err),
-///
-/// - [`Own<Result<S: Copy, E: Copy>, V: Copy>`](#impl-Own<Result<S,+E>,+V>-1):
-///
-/// [`state_ok_state`](#method.state_ok_state),
-/// [`state_ok_state_or`](#method.state_ok_state_or),
-/// [`state_ok_value`](#method.state_ok_value),
-/// [`state_ok_value_or`](#method.state_ok_value_or),
-/// [`state_err_state`](#method.state_err_state),
-/// [`state_err_state_or`](#method.state_err_state_or),
-/// [`state_err_value`](#method.state_err_value),
-/// [`state_err_value_or`](#method.state_err_value_or),
-/// [`const_state_unwrap`](#method.const_state_unwrap),
-/// [`const_state_unwrap_or`](#method.const_state_unwrap_or),
-/// [`const_state_expect`](#method.const_state_expect),
-///
-/// ### Implemented when the `value` is a `Result`:
-///
-/// - [`Own<S, Result<V, E>>`](#impl-Own<S,+Result<V,+E>>):
-/// [`new_ok_value`](#method.new_ok_value),
-/// [`new_err_value`](#method.new_err_value),
-///
-/// [`is_value_ok`](#method.is_value_ok),
-/// [`is_value_ok_and`](#method.is_value_ok_and),
-/// [`is_value_err`](#method.is_value_err),
-/// [`is_value_err_and`](#method.is_value_err_and),
-///
-/// [`assert_value_ok`](#method.assert_value_ok),
-/// [`assert_value_ok_or`](#method.assert_value_ok_or),
-/// [`assert_value_err`](#method.assert_value_err),
-/// [`assert_value_err_or`](#method.assert_value_err_or),
-///
-/// [`value_map`](#method.value_map),
-/// [`value_map_err`](#method.value_map_err),
-/// [`value_and`](#method.value_and),
-/// [`value_and_then`](#method.value_and_then),
-///
-/// [`value_unwrap`](#method.value_unwrap),
-/// [`value_unwrap_or`](#method.value_unwrap_or),
-/// [`value_expect`](#method.value_expect),
-/// [`value_ok`](#method.value_ok),
-/// [`value_err`](#method.value_err),
-///
-/// - [`Own<S: Copy, Result<V: Copy, E: Copy>>`](#impl-Own<S,+Result<V,+E>>-1):
-///
-/// [`value_ok_state`](#method.value_ok_state),
-/// [`value_ok_state_or`](#method.value_ok_state_or),
-/// [`value_ok_value`](#method.value_ok_value),
-/// [`value_ok_value_or`](#method.value_ok_value_or),
-/// [`value_err_state`](#method.value_err_state),
-/// [`value_err_state_or`](#method.value_err_state_or),
-/// [`value_err_value`](#method.value_err_value),
-/// [`value_err_value_or`](#method.value_err_value_or),
-///
-/// [`const_value_unwrap`](#method.const_value_unwrap),
-/// [`const_value_unwrap_or`](#method.const_value_unwrap_or),
-/// [`const_value_expect_const`](#method.const_value_expect_const),
-///
-/// ### Implemented when the `state` is an `Option`:
-///
-/// - [`Own<Option<S>, V>`](#impl-Own<Option<S>,+V>):
-/// [`new_some_state`](#method.new_some_state),
-/// [`new_none_state`](#method.new_none_state),
-///
-/// [`is_state_some`](#method.is_state_some),
-/// [`is_state_some_and`](#method.is_state_some_and),
-/// [`is_state_none`](#method.is_state_none),
-///
-/// [`assert_state_some`](#method.assert_state_some),
-/// [`assert_state_some_or`](#method.assert_state_some_or),
-/// [`assert_state_none`](#method.assert_state_none),
-/// [`assert_state_none_or`](#method.assert_state_none_or),
-///
-/// [`state_map`](#method.state_map-1),
-/// [`state_and`](#method.state_and-1),
-/// [`state_and_then`](#method.state_and_then-1),
-///
-/// [`state_unwrap`](#method.state_unwrap-1),
-/// [`state_unwrap_or`](#method.state_unwrap_or-1),
-/// [`state_expect`](#method.state_expect-1),
-/// [`state_ok_or`](#method.state_ok_or),
-/// [`state_ok_or_else`](#method.state_ok_or_else),
-///
-/// - [`Own<S: Copy, Option<V: Copy>>`](#impl-Own<Option<S>,+V>-1):
-///
-/// [`state_some_state`](#method.state_some_state),
-/// [`state_some_state_or`](#method.state_some_state_or),
-/// [`state_some_value`](#method.state_some_value),
-/// [`state_some_value_or`](#method.state_some_value_or),
-/// [`state_none_value_or`](#method.state_none_value_or),
-/// [`const_state_unwrap`](#method.const_state_unwrap-1),
-/// [`const_state_unwrap_or`](#method.const_state_unwrap_or-1),
-/// [`const_state_expect`](#method.const_state_expect-1),
-///
-/// ### Implemented when the `value` is an `Option`:
-///
-/// - [`Own<S, Option<V>>`](#impl-Own<S,+Option<V>>):
-/// [`new_some_value`](#method.new_some_value),
-/// [`new_none_value`](#method.new_none_value),
-///
-/// [`is_value_some`](#method.is_value_some),
-/// [`is_value_some_and`](#method.is_value_some_and),
-/// [`is_value_none`](#method.is_value_none),
-///
-/// [`assert_value_some`](#method.assert_value_some),
-/// [`assert_value_some_or`](#method.assert_value_some_or),
-/// [`assert_value_none`](#method.assert_value_none),
-/// [`assert_value_none_or`](#method.assert_value_none_or),
-///
-/// [`value_map`](#method.value_map-1),
-/// [`value_and`](#method.value_and-1),
-/// [`value_and_then`](#method.value_and_then-1),
-/// [`value_unwrap`](#method.value_unwrap-1),
-/// [`value_unwrap_or`](#method.value_unwrap_or-1),
-/// [`value_expect`](#method.value_expect-1),
-/// [`value_ok_or`](#method.value_ok_or-1),
-/// [`value_ok_or_else`](#method.value_ok_or_else),
-///
-/// - [`Own<S: Copy, Option<V: Copy>>`](#impl-Own<S,+Option<V>>-1):
-///
-/// [`value_some_state`](#method.value_some_state),
-/// [`value_some_state_or`](#method.value_some_state_or),
-/// [`value_some_value`](#method.value_some_value),
-/// [`value_some_value_or`](#method.value_some_value_or),
-/// [`value_none_state`](#method.value_none_state),
-/// [`value_none_state_or`](#method.value_none_state_or),
-///
-/// [`const_value_unwrap`](#method.const_value_unwrap-1),
-/// [`const_value_unwrap_or`](#method.const_value_unwrap_or-1),
-/// [`const_value_expect`](#method.const_value_expect-1),
+/// ## Methods
 
+/// ### [General methods](#impl-Own<S,+V>)
+/// Additional [*const* methods](#impl-Own<S,+V>-1) are available when both types are `Copy`.
+/// - Construct:
+///   [`new`](#method.new),
+///   [`empty`](#method.empty).
+/// - Deconstruct:
+///   [`sv`](#method.sv)*([const](#method.sv_const))*
+///   [`sv_ref`](#method.sv_ref),
+///   [`sv_mut`](#method.sv_mut).
+/// - Replace:
+///   [`s_replace`](#method.s_replace)*([const](#method.s_const_replace))*,
+///   [`v_replace`](#method.v_replace)*([const](#method.v_const_replace))*,
+///   [`sv_replace`](#method.sv_replace)*([const](#method.sv_const_replace))*,
+/// - Wrap:
+///   [`s_wrap_ok`](#method.s_wrap_ok)*([const](#method.s_const_wrap_ok))*,
+///   [`s_wrap_some`](#method.s_wrap_some)*([const](#method.s_const_wrap_some))*,
+///   [`v_wrap_ok`](#method.v_wrap_ok)*([const](#method.v_const_wrap_ok))*,
+///   [`v_wrap_some`](#method.v_wrap_some)*([const](#method.v_const_wrap_some))*,
+/// - Map:
+///   [`s_map`](#method.s_map),
+///   [`v_map`](#method.v_map),
+///   [`sv_map`](#method.sv_map).
+/// - Query:
+///   [`s_eq`](#method.s_eq),
+///   [`v_eq`](#method.v_eq),
+///   [`sv_eq`](#method.sv_eq).
+/// - Assert:
+///   [`s_assert`](#method.s_assert)*([or](#method.s_assert_or),
+///     [eq](#method.s_assert_eq), [eq_or](#method.s_assert_eq_or))*,
+///   [`v_assert`](#method.v_assert)*([or](#method.v_assert_or)
+///     [eq](#method.v_assert_eq), [eq_or](#method.v_assert_eq_or))*,
+///   [`sv_assert`](#method.sv_assert)*([or](#method.sv_assert_or),
+///     [eq](#method.sv_assert_eq), [eq_or](#method.sv_assert_eq_or))*.
+
+/// ### [Methods for when `state` is a `Result`](#impl-Own<Result<S,+E>,+V>)
+/// - Map:
+///   [`s_map_ok`](#method.s_map_ok),
+///   [`s_map_err`](#method.s_map_err),
+///   [`s_and`](#method.s_and),
+///   [`s_and_then`](#method.s_and_then).
+/// - Assert:
+///   [`s_assert_ok`](#method.s_assert_ok)*([or](#method.s_assert_ok_or))*,
+///   [`s_assert_err`](#method.s_assert_err)*([or](#method.s_assert_err_or))*.
+/// - Unwrap:
+///   [`s_unwrap`](#method.s_unwrap)*([const](#method.s_const_unwrap))*,
+///   [`s_unwrap_or`](#method.s_unwrap_or)*([const](#method.s_const_unwrap_or))*,
+///   [`s_expect`](#method.s_expect)*([const](#method.s_const_expect))*.
+
+/// ### [Methods for when `state` is an `Option`](#impl-Own<Option<S>,+V>)
+/// - Map:
+///   [`s_map_some`](#method.s_map_some),
+///   [`s_and`](#method.s_and-1),
+///   [`s_and_then`](#method.s_and_then-1).
+/// - Assert:
+///   [`s_assert_some`](#method.s_assert_some)*([or](#method.s_assert_some_or))*,
+///   [`s_assert_none`](#method.s_assert_none)*([or](#method.s_assert_none_or))*.
+/// - Unwrap:
+///   [`s_unwrap`](#method.s_unwrap-1)*([const](#method.s_const_unwrap-1))*,
+///   [`s_unwrap_or`](#method.s_unwrap_or-1)*([const](#method.s_const_unwrap_or-1))*,
+///   [`s_expect`](#method.s_expect-1)*([const](#method.s_const_expect-1))*.
+///
+
+/// ### [Methods for when `value` is a `Result`](#impl-Own<S,+Result<V,+E>>)
+/// - Map:
+///   [`v_map_ok`](#method.v_map_ok),
+///   [`v_map_err`](#method.v_map_err),
+///   [`v_and`](#method.v_and),
+///   [`v_and_then`](#method.v_and_then).
+/// - Assert:
+///   [`v_assert_ok`](#method.v_assert_ok)*([or](#method.v_assert_ok_or))*,
+///   [`v_assert_err`](#method.v_assert_err)*([or](#method.v_assert_err_or))*.
+/// - Unwrap:
+///   [`v_unwrap`](#method.v_unwrap)*([const](#method.v_const_unwrap))*,
+///   [`v_unwrap_or`](#method.v_unwrap_or)*([const](#method.v_const_unwrap_or))*,
+///   [`v_expect`](#method.v_expect)*([const](#method.v_const_expect))*.
+
+/// ### [Methods for when `value` is an `Option`](#impl-Own<S,+Option<V>>)
+/// - Map:
+///   [`v_map_some`](#method.v_map_some),
+///   [`v_and`](#method.v_and-1),
+///   [`v_and_then`](#method.v_and_then-1).
+/// - Assert:
+///   [`v_assert_some`](#method.v_assert_some)*([or](#method.v_assert_some_or))*,
+///   [`v_assert_none`](#method.v_assert_none)*([or](#method.v_assert_none_or))*.
+/// - Unwrap:
+///   [`v_unwrap`](#method.v_unwrap-1)*([const](#method.v_const_unwrap-1))*,
+///   [`v_unwrap_or`](#method.v_unwrap_or-1)*([const](#method.v_const_unwrap_or-1))*,
+///   [`v_expect`](#method.v_expect-1)*([const](#method.v_const_expect-1))*.
 #[must_use]
 pub struct Own<S, V> {
-    /// The new state after the operation.
-    pub state: S,
+    /// The `state` after the operation.
+    pub s: S,
 
-    /// The value resulting from the operation.
-    pub value: V,
+    /// The `value` resulting from the operation.
+    pub v: V,
 }
 
 mod core_impls {
@@ -254,47 +125,38 @@ mod core_impls {
 
     impl<S: Default, V: Default> Default for Own<S, V> {
         fn default() -> Self {
-            Self {
-                state: S::default(),
-                value: V::default(),
-            }
+            Own::new(S::default(), V::default())
         }
     }
     impl<S: ConstDefault, V: ConstDefault> ConstDefault for Own<S, V> {
-        const DEFAULT: Self = Self {
-            state: S::DEFAULT,
-            value: V::DEFAULT,
-        };
+        const DEFAULT: Self = Own::new(S::DEFAULT, V::DEFAULT);
     }
 
     impl<S: fmt::Debug, V: fmt::Debug> fmt::Debug for Own<S, V> {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             let mut debug = f.debug_struct("Own");
             debug
-                .field("state", &self.state)
-                .field("value", &self.value)
+                .field("state", &self.s)
+                .field("value", &self.v)
                 .finish()
         }
     }
     impl<S: fmt::Display, V: fmt::Display> fmt::Display for Own<S, V> {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            write!(f, "State: {}, Value: {}", self.state, self.value)
+            write!(f, "State: {}, Value: {}", self.s, self.v)
         }
     }
 
     impl<S: Clone, V: Clone> Clone for Own<S, V> {
         fn clone(&self) -> Self {
-            Self {
-                state: self.state.clone(),
-                value: self.value.clone(),
-            }
+            Own::new(self.s.clone(), self.v.clone())
         }
     }
     impl<S: Copy, V: Copy> Copy for Own<S, V> {}
 
     impl<S: PartialEq, V: PartialEq> PartialEq for Own<S, V> {
         fn eq(&self, other: &Self) -> bool {
-            self.state == other.state && self.value == other.value
+            self.s == other.s && self.v == other.v
         }
     }
     impl<S: Eq, V: Eq> Eq for Own<S, V> {}
@@ -302,8 +164,8 @@ mod core_impls {
     impl<S: PartialOrd, V: PartialOrd> PartialOrd for Own<S, V> {
         /// State's ordering takes precedence over value's ordering.
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-            match self.state.partial_cmp(&other.state) {
-                Some(Ordering::Equal) => self.value.partial_cmp(&other.value),
+            match self.s.partial_cmp(&other.s) {
+                Some(Ordering::Equal) => self.v.partial_cmp(&other.v),
                 other => other,
             }
         }
@@ -311,8 +173,8 @@ mod core_impls {
     impl<S: Ord, V: Ord> Ord for Own<S, V> {
         /// State's ordering takes precedence over value's ordering.
         fn cmp(&self, other: &Self) -> Ordering {
-            match self.state.cmp(&other.state) {
-                Ordering::Equal => self.value.cmp(&other.value),
+            match self.s.cmp(&other.s) {
+                Ordering::Equal => self.v.cmp(&other.v),
                 other => other,
             }
         }
