@@ -17,6 +17,7 @@ pub use crate::text::{ArrayStringError, CharConversionError};
 #[doc(inline)]
 pub use crate::{
     data::{DataError, DataResult},
+    gfx::{GfxError, GfxResult},
     num::{NumError, NumResult},
 };
 

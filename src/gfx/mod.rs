@@ -8,23 +8,32 @@
 // safety:
 #![cfg_attr(feature = "safe_gfx", forbid(unsafe_code))]
 
-/* modules */
+/* always-compiled, non-public modules */
 
-// feature-gated, public
+mod error;
+
+pub use error::*;
+
+/* feature-gated, public modules */
+
 #[cfg(feature = "gfx")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "gfx")))]
 pub mod color;
-
-/* re-exports */
+#[cfg(feature = "gfx")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "gfx")))]
+pub mod img;
 
 // feature-gated, public
 #[doc(no_inline)]
 #[cfg(feature = "gfx")]
-pub use color::all::*;
+pub use {color::all::*, img::all::*};
 
 pub(crate) mod all {
+    // always-compiled
+    pub use super::error::*;
+
     // feature-gated
     #[doc(inline)]
     #[cfg(feature = "gfx")]
-    pub use super::color::*;
+    pub use super::{color::*, img::*};
 }
