@@ -3,6 +3,8 @@
 //! 8-bit versions of XorShift generators.
 //
 
+use crate::result::Own;
+
 /// The `XorShift8` pseudo-random number generator.
 ///
 /// It has an 8-bit state and generates 8-bit numbers.
@@ -86,6 +88,13 @@ impl XorShift8 {
         x ^= x >> 4;
         x ^= x << 2;
         Self(x)
+    }
+
+    /// Returns both the next random state and the `u8` value.
+    pub const fn own_next_u8(self) -> Own<Self, u8> {
+        let s = self.next_new();
+        let v = s.current_u8();
+        Own::new(s, v)
     }
 }
 
@@ -198,6 +207,13 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
         x ^= x >> SH2;
         x ^= x << SH3;
         Self(x)
+    }
+
+    /// Returns both the next random state and the `u8` value.
+    pub const fn own_next_u8(self) -> Own<Self, u8> {
+        let s = self.next_new();
+        let v = s.current_u8();
+        Own::new(s, v)
     }
 }
 

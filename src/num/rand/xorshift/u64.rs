@@ -3,7 +3,7 @@
 //! 64-bit versions of XorShift generators.
 //
 
-use crate::num::Primiting as P;
+use crate::{num::Primiting as P, result::Own};
 
 /// The `XorShift64` pseudo-random number generator.
 ///
@@ -90,6 +90,13 @@ impl XorShift64 {
         x ^= x >> 7;
         x ^= x << 17;
         Self(x)
+    }
+
+    /// Returns both the next random state and the `u64` value.
+    pub const fn own_next_u64(self) -> Own<Self, u64> {
+        let s = self.next_new();
+        let v = s.current_u64();
+        Own::new(s, v)
     }
 }
 

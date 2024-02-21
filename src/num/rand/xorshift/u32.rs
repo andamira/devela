@@ -3,7 +3,7 @@
 //! 32-bit versions of XorShift generators.
 //
 
-use crate::num::Primiting as P;
+use crate::{num::Primiting as P, result::Own};
 
 /// The `XorShift32` pseudo-random number generator.
 ///
@@ -92,6 +92,13 @@ impl XorShift32 {
         x ^= x >> 17;
         x ^= x << 5;
         Self(x)
+    }
+
+    /// Returns both the next random state and the `u32` value.
+    pub const fn own_next_u32(self) -> Own<Self, u32> {
+        let s = self.next_new();
+        let v = s.current_u32();
+        Own::new(s, v)
     }
 }
 

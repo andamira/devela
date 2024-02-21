@@ -3,7 +3,7 @@
 //! 16-bit versions of XorShift generators.
 //
 
-use crate::num::Primiting as P;
+use crate::{num::Primiting as P, result::Own};
 
 /// The `XorShift16` pseudo-random number generator.
 ///
@@ -91,6 +91,13 @@ impl XorShift16 {
         x ^= x >> 9;
         x ^= x << 8;
         Self(x)
+    }
+
+    /// Returns both the next random state and the `u16` value.
+    pub const fn own_next_u16(self) -> Own<Self, u16> {
+        let s = self.next_new();
+        let v = s.current_u16();
+        Own::new(s, v)
     }
 }
 

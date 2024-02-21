@@ -3,6 +3,8 @@
 //!
 //
 
+use crate::result::Own;
+
 /// X ABC Algorithm Random Number Generator for 8-bit Devices.
 ///
 /// It has a 32-bit state and generates 8-bit numbers.
@@ -119,6 +121,13 @@ impl Xabc {
         b = b.wrapping_add(a);
         c = c.wrapping_add(b >> 1) ^ a;
         Self { a, b, c, x }
+    }
+
+    /// Returns both the next random state and the `u8` value.
+    pub const fn own_next_u8(self) -> Own<Self, u8> {
+        let s = self.next_new();
+        let v = s.current_u8();
+        Own::new(s, v)
     }
 }
 
