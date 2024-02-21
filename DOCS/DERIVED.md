@@ -22,6 +22,10 @@ This project includes the following derived works:
   as the [`NumToStr`] trait.
 - Integration of [size_of_trait] by Joshua Nelson, licensed as BSD-3,
   as the [`mem_size_of_expr`] macro.
+- Integration of [8bit_rng] algorithms by Edward Rosten, licensed as BSD-2,
+  as the [`Xyza8a`] and [`Xyza8b`] RNGs.
+- Integration of [Xabc] algorithm openly published by *EternityForest*,
+  as the [`Xabc`] RNG.
 
 [0]: https://github.com/andamira/devela/blob/main/src/fmt/int_buf/MODIFICATIONS.md
 [itoa]: https://crates.io/crates/itoa/1.0.9
@@ -48,3 +52,8 @@ This project includes the following derived works:
 [numtoa]: https://crates.io/crates/numtoa/0.2.4
 [size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3
 [`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/mem/size/macro.mem_size_of_expr.html
+[8bit_rng]: https://github.com/edrosten/8bit_rng
+[`Xyza8a`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xyza8a.html
+[`Xyza8b`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xyza8b.html
+[Xabc]: https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/
+[`Xabc`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xabc.html

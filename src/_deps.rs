@@ -78,6 +78,9 @@ mod _dep {
     #[cfg(feature = "portable-atomic")]
     pub use ::portable_atomic;
 
+    #[cfg(feature = "rand_core")]
+    pub use ::rand_core;
+
     #[cfg(feature = "unicode-segmentation")]
     pub use ::unicode_segmentation;
 
@@ -126,6 +129,9 @@ mod _dep {
     reexport! { depend any_features: "work",
     dep: "portable-atomic", portable_atomic,
     "Portable atomic types including 128-bit atomics, floats, etc." }
+
+    reexport! { depend any_features: "num",
+    dep: "rand_core", rand_core, "Random number generation traits." }
 
     reexport! { depend any_features: "text",
     dep: "unicode-segmentation", unicode_segmentation,

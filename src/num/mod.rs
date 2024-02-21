@@ -30,9 +30,10 @@ pub use {alias::*, always_fns::*, error::*, float::*, primitive::*, sign::*};
 /* always compiled, public modules */
 
 pub mod niche;
+pub mod rand;
 
 #[doc(no_inline)]
-pub use niche::all::*;
+pub use {niche::all::*, rand::all::*};
 
 // feature gated, private
 #[cfg(feature = "num")]
@@ -55,7 +56,8 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        alias::*, always_fns::*, error::*, float::*, niche::all::*, primitive::*, sign::*,
+        alias::*, always_fns::*, error::*, float::*, niche::all::*, primitive::*, rand::all::*,
+        sign::*,
     };
 
     // feature-gated

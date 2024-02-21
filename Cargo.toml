@@ -49,11 +49,12 @@ docsrs = ["nightly", "all", "std", "unsafe", "dep", "libm"]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc", "either/use_std",
 	"dep?/std", #:
-	"atomic?/std", "bytemuck?/extern_crate_std",  "memchr?/std", "wide?/std",
+	"atomic?/std", "bytemuck?/extern_crate_std", "memchr?/std", "rand_core?/std",
+	"wide?/std",
 ]
 alloc = [ # enables `alloc` functionality
 	"dep?/alloc", #:
-	"bytemuck?/extern_crate_alloc", "memchr?/alloc",
+	"bytemuck?/extern_crate_alloc", "memchr?/alloc", "rand_core?/alloc"
 ]
 no_std = [ # enables functionality incompatible with or substitute of `std`
 	"dep?/libm",
@@ -86,8 +87,9 @@ gfx = []
 io = []
 mem = ["dep?/bytemuck"]
 num = []
-	num_all = ["num_niche_impls"]
+	num_all = ["num_niche_impls", "num_rand"]
 	num_niche_impls = [] # extra impls for niche types
+	num_rand = ["dep?/rand_core"] # extra randomness interoperability
 os = []
 result = []
 text = ["dep?/const-str", "dep?/memchr", "dep?/unicode-segmentation", "dep?/unicode-width"]
@@ -156,7 +158,8 @@ dep = ["dep:dep"] # module features enables their dependencies as defined.
 	# TODO RETHINK DESIGN:
 	dep_all = ["dep", "dep_interop"]
 	dep_interop = [ # interoperability with external crates, extra traits
-		"dep?/bytemuck",
+		"dep?/bytemuck", "dep?/rand_core",
+		# "dep?/serde"
 	]
 
 atomic = ["dep:atomic"]
@@ -168,6 +171,7 @@ libm = ["dep:libm"]
 memchr = ["dep:memchr"]
 miniquad = ["dep:miniquad"]
 portable-atomic = ["dep:portable-atomic"]
+rand_core = ["dep:rand_core"]
 unicode-segmentation = ["dep:unicode-segmentation"]
 unicode-width = ["dep:unicode-width"]
 wide = ["dep:wide"]
@@ -185,7 +189,7 @@ paste_crate = { package = "paste", version = "1.0.14", default-features = false 
 #
 # option A) When the `depend` feature is enabled each optional dependency will
 # be automatically enabled by some individual module feature, as defined above:
-dep = { package = "devela_depend", version = "0.4.0", optional = true }
+dep = { package = "devela_depend", version = "0.4.1", optional = true }
 #dep = { package = "devela_depend", path = "./depend", optional = true }
 #
 # option B) Otherwise optional features can be manually enabled:
@@ -193,6 +197,7 @@ const-str = { version = "0.5.6", default-features = false, optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
 memchr = { version = "2.7.1", optional = true, default-features = false }
 miniquad = { version = "0.4.0-alpha.10", default-features = false, optional = true }
+rand_core = { version = "0.6.4", default-features = false, optional = true }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
 unicode-width = { version = "0.1.11", default-features = false, optional = true }
 wide = { version = "0.7.15", optional = true, default-features = false }
