@@ -59,6 +59,12 @@ mod core_impls {
         }
     }
 
+    impl<N: fmt::Display, H: fmt::Display> fmt::Display for Mismatch<N, H> {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "Mismatch {{ need: {}, have: {} }}", self.need, self.have)
+        }
+    }
+
     impl<N: PartialEq, H: PartialEq> PartialEq for Mismatch<N, H> {
         #[inline]
         fn eq(&self, other: &Self) -> bool {
