@@ -196,7 +196,7 @@ dep = { package = "devela_depend", version = "0.4.1", optional = true }
 const-str = { version = "0.5.6", default-features = false, optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
 memchr = { version = "2.7.1", optional = true, default-features = false }
-miniquad = { version = "0.4.0-alpha.10", default-features = false, optional = true }
+miniquad = { version = "0.4.0", default-features = false, optional = true }
 rand_core = { version = "0.6.4", default-features = false, optional = true }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
 unicode-width = { version = "0.1.11", default-features = false, optional = true }
