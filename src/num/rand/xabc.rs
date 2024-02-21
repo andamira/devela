@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::result::Own;
+use crate::{code::ConstDefault, result::Own};
 
 /// X ABC Algorithm Random Number Generator for 8-bit Devices.
 ///
@@ -49,9 +49,13 @@ pub struct Xabc {
 }
 
 impl Default for Xabc {
+    #[inline]
     fn default() -> Self {
-        Self::new(Self::DEFAULT_SEED)
+        Self::DEFAULT
     }
+}
+impl ConstDefault for Xabc {
+    const DEFAULT: Self = Self::new(Self::DEFAULT_SEED);
 }
 
 // private associated items

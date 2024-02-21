@@ -3,7 +3,7 @@
 //! 8-bit versions of XorShift generators.
 //
 
-use crate::result::Own;
+use crate::{code::ConstDefault, result::Own};
 
 /// The `XorShift8` pseudo-random number generator.
 ///
@@ -17,8 +17,11 @@ pub struct XorShift8(u8);
 impl Default for XorShift8 {
     #[inline]
     fn default() -> Self {
-        Self::new_unchecked(Self::DEFAULT_SEED)
+        Self::DEFAULT
     }
+}
+impl ConstDefault for XorShift8 {
+    const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 // private associated items
@@ -123,6 +126,11 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> Default
     fn default() -> Self {
         Self::new_unchecked(Self::DEFAULT_SEED)
     }
+}
+impl<const SH1: usize, const SH2: usize, const SH3: usize> ConstDefault
+    for XorShift8Custom<SH1, SH2, SH3>
+{
+    const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 // private associated items

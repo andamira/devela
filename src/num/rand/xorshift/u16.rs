@@ -3,7 +3,7 @@
 //! 16-bit versions of XorShift generators.
 //
 
-use crate::{num::Primiting as P, result::Own};
+use crate::{code::ConstDefault, num::Primiting as P, result::Own};
 
 /// The `XorShift16` pseudo-random number generator.
 ///
@@ -18,8 +18,11 @@ pub struct XorShift16(u16);
 impl Default for XorShift16 {
     #[inline]
     fn default() -> Self {
-        Self::new_unchecked(Self::DEFAULT_SEED)
+        Self::DEFAULT
     }
+}
+impl ConstDefault for XorShift16 {
+    const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 // private associated items

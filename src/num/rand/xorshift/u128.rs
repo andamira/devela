@@ -3,7 +3,7 @@
 //! 128-bit versions of XorShift generators.
 //
 
-use crate::{num::Primiting as P, result::Own};
+use crate::{code::ConstDefault, num::Primiting as P, result::Own};
 
 /// The `XorShift128` pseudo-random number generator.
 ///
@@ -15,8 +15,11 @@ pub struct XorShift128([u32; 4]);
 impl Default for XorShift128 {
     #[inline]
     fn default() -> Self {
-        Self::new_unchecked(Self::DEFAULT_SEED)
+        Self::DEFAULT
     }
+}
+impl ConstDefault for XorShift128 {
+    const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 // private associated items
@@ -183,8 +186,11 @@ pub struct XorShift128p([u64; 2]);
 impl Default for XorShift128p {
     #[inline]
     fn default() -> Self {
-        Self::new_unchecked([0xDEFA0017_DEFA0017; 2])
+        Self::DEFAULT
     }
+}
+impl ConstDefault for XorShift128p {
+    const DEFAULT: Self = Self::new_unchecked(Self::DEFAULT_SEED);
 }
 
 // private associated items
