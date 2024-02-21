@@ -66,7 +66,7 @@ impl XorShift64 {
     /// Returns the current random `u64`.
     #[inline]
     #[must_use]
-    pub const fn current_u16(&self) -> u64 {
+    pub const fn current_u64(&self) -> u64 {
         self.0
     }
 

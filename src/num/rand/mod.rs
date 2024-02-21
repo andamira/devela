@@ -6,6 +6,11 @@
 //! - RNG algorithms specialized for 8-bit devices:
 //!   [`Xabc`], [`Xyza8a`], [`Xyza8b`].
 //! - Classic *XorShift* algorithms and variations with a smaller state.
+//!
+//! These RNGs differ from the recommendations in [`RngCore`]
+//! by implementing [`Copy`] and [`Default`].
+//!
+//! [`RngCore`]: https://docs.rs/rand_core/latest/rand_core/trait.RngCore.html
 //
 
 /* always compiled, non-public modules */
