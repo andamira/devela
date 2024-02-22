@@ -144,7 +144,7 @@ macro_rules! impl_destaque {
                 self.len as $IDX
             }
 
-            /// Checks `true` if the destaque is empty.
+            /// Returns `true` if the destaque is empty.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]

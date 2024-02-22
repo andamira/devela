@@ -155,7 +155,7 @@ macro_rules! impl_stack {
                 self.len
             }
 
-            /// Checks `true` if the stack is empty.
+            /// Returns `true` if the stack is empty.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]

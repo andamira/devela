@@ -11,7 +11,7 @@
 /* always compiled, non-public mdules */
 
 // without re-exports
-mod core_impls;
+mod impl_traits;
 mod methods;
 
 mod array_init;

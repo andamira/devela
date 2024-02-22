@@ -65,11 +65,11 @@ impl DataError {
     }
 }
 
-impl crate::result::Error for DataError {}
-
 mod core_impls {
     use super::DataError as E;
     use core::fmt;
+
+    impl crate::result::Error for E {}
 
     impl fmt::Display for E {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

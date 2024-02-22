@@ -1,4 +1,4 @@
-// devela::data::collections::destaque::methods
+// devela::data::collections::destaque::impl_traits
 //
 //!
 //

@@ -131,8 +131,8 @@ where
 
 // S:Bare + T:Default
 impl<T: Default, const LEN: usize> Default for Array<T, Bare, LEN> {
-    /// Returns an empty array, allocated in the stack,
-    /// using the default value to fill the remaining free data.
+    /// Returns an array, allocated in the stack,
+    /// using the default value to fill the data.
     fn default() -> Self {
         let array = BareBox::new(array_init!(default [T; LEN], "safe_data", "unsafe_array"));
         Array { array }
@@ -140,8 +140,8 @@ impl<T: Default, const LEN: usize> Default for Array<T, Bare, LEN> {
 }
 // S:Bare + T:ConstDefault
 impl<T: ConstDefault, const LEN: usize> ConstDefault for Array<T, Bare, LEN> {
-    /// Returns an empty array, allocated in the stack,
-    /// using the default value to fill the remaining free data.
+    /// Returns an array, allocated in the stack,
+    /// using the default value to fill the data.
     const DEFAULT: Self = {
         Array {
             array: BareBox::new([T::DEFAULT; LEN]),
@@ -153,13 +153,12 @@ impl<T: ConstDefault, const LEN: usize> ConstDefault for Array<T, Bare, LEN> {
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Default, const LEN: usize> Default for Array<T, Boxed, LEN> {
-    /// Returns an empty array, allocated in the heap,
-    /// using the default value to fill the remaining free data.
+    /// Returns an array, allocated in the heap,
+    /// using the default value to fill the data.
     ///
     /// # Examples
     /// ```
-    /// use devela::data::BoxedArray;
-    ///
+    /// # use devela::data::BoxedArray;
     /// let mut s = BoxedArray::<i32, 100>::default();
     /// ```
     fn default() -> Self {
@@ -212,8 +211,7 @@ where
     ///
     /// # Examples
     /// ```
-    /// use devela::data::BoxedArray;
-    ///
+    /// # use devela::data::BoxedArray;
     /// let s: BoxedArray<_, 4> = [1, 2, 3].into();
     ///
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
