@@ -112,7 +112,7 @@ macro_rules! impl_destaque {
             /// ```
             pub const fn from_array_const(arr: [T; CAP]) -> Destaque<T, Bare, CAP, $IDX> {
                 Self {
-                    array: Array::new_const(arr),
+                    array: Array::new_bare(arr),
                     front: 0,
                     back: 0,
                     len: CAP as $IDX,

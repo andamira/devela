@@ -41,7 +41,7 @@ impl<T, const LEN: usize> Array<T, Bare, LEN> {
     /// Returns a new [`BareArray`][super::BareArray]
     /// from the given primitive `array` in compile-time.
     #[inline]
-    pub const fn new_const(array: [T; LEN]) -> Self {
+    pub const fn new_bare(array: [T; LEN]) -> Self {
         Self {
             array: BareBox::new(array),
         }
@@ -92,6 +92,24 @@ impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
     pub fn with_cloned(element: T) -> Self {
         let array = array_init!(clone_heap [T; LEN], "safe_data", "unsafe_array", element);
         Self { array }
+    }
+}
+
+// T:Clone
+impl<T: Clone, S: Storage, const LEN: usize> Array<T, S, LEN> {
+    /// Fills all elements of the array with the given `element`.
+    #[inline]
+    pub fn fill(&mut self, element: T) {
+        self.iter_mut().for_each(|i| *i = element.clone());
+    }
+}
+
+// T:Default
+impl<T: Default, S: Storage, const LEN: usize> Array<T, S, LEN> {
+    /// Fills all elements of the array with the default value.
+    #[inline]
+    pub fn fill_default(&mut self) {
+        self.iter_mut().for_each(|i| *i = T::default());
     }
 }
 

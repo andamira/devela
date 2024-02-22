@@ -125,7 +125,7 @@ macro_rules! impl_stack {
             #[inline]
             pub const fn from_array_const(arr: [T; CAP]) -> Stack<T, Bare, CAP, $IDX> {
                 Self {
-                    array: Array::new_const(arr),
+                    array: Array::new_bare(arr),
                     len: CAP as $IDX,
                 }
             }
@@ -238,7 +238,6 @@ macro_rules! impl_stack {
             pub fn as_mut_slice(&mut self) -> &mut [T] {
                 &mut self.array[..self.len as usize]
             }
-
 
             /* clear */
 

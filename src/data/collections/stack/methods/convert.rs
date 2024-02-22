@@ -226,7 +226,7 @@ macro_rules! impl_stack {
                     }
 
                     Own::empty(Ok(Stack {
-                        array: Array::new_const(new_arr),
+                        array: Array::new_bare(new_arr),
                         len: self.len,
                     }))
                 }
@@ -266,7 +266,7 @@ macro_rules! impl_stack {
                 }
 
                 Own::empty(Stack {
-                    array: Array::new_const(new_arr),
+                    array: Array::new_bare(new_arr),
                     len: new_len as $IDX,
                 })
             }
