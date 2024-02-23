@@ -12,11 +12,12 @@
 
 mod array_init;
 mod d1; // 1-dimensional
+mod d2; // 2-dimensional
 
-pub use {array_init::*, d1::all::*};
+pub use {array_init::*, d1::all::*, d2::all::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{array_init::*, d1::all::*};
+    pub use super::{array_init::*, d1::all::*, d2::all::*};
 }
