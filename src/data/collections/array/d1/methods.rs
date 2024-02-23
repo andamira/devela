@@ -1,6 +1,6 @@
-// devela::data::collections::array::methods
+// devela::data::collections::array::d1::methods
 //
-//! Arrays.
+//! 1-dimensional array methods
 //
 
 use crate::{

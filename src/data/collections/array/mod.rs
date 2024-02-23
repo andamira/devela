@@ -10,16 +10,13 @@
 
 /* always compiled, non-public mdules */
 
-// without re-exports
-mod impl_traits;
-mod methods;
-
 mod array_init;
-mod definitions;
-pub use {array_init::*, definitions::*};
+mod d1; // 1-dimensional
+
+pub use {array_init::*, d1::all::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{array_init::*, definitions::*};
+    pub use super::{array_init::*, d1::all::*};
 }

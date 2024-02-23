@@ -1,6 +1,6 @@
-// devela::data::collections:array::core_impls
+// devela::data::collections:array::d1::impl_traits
 //
-//!
+//! 1-dimensional array trait impls
 //
 
 use crate::{
