@@ -37,8 +37,8 @@ macro_rules! impl_maj {
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
             #[inline]
-            pub fn get_ref(&self, col_row: [usize; 2]) -> Result<&T> {
-                Self::get_index(col_row).map(|idx| &self.array[idx])
+            pub fn get_ref(&self, xy: [usize; 2]) -> Result<&T> {
+                Self::get_index(xy).map(|idx| &self.array[idx])
             }
             /// Returns a reference to the element at the given 2D coordinates
             #[doc = "in the current " $D1 "-major order."]
@@ -46,8 +46,8 @@ macro_rules! impl_maj {
             /// Panics if the coordinates are out of bounds.
             #[inline]
             #[must_use]
-            pub fn get_ref_unchecked(&self, col_row: [usize; 2]) -> &T {
-                &self.array.array[Self::get_index_unchecked(col_row)]
+            pub fn get_ref_unchecked(&self, xy: [usize; 2]) -> &T {
+                &self.array.array[Self::get_index_unchecked(xy)]
             }
 
             /* get_mut */
@@ -57,8 +57,8 @@ macro_rules! impl_maj {
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
             #[inline]
-            pub fn get_mut(&mut self, col_row: [usize; 2]) -> Result<&mut T> {
-                Self::get_index(col_row).map(|idx| &mut self.array[idx])
+            pub fn get_mut(&mut self, xy: [usize; 2]) -> Result<&mut T> {
+                Self::get_index(xy).map(|idx| &mut self.array[idx])
             }
             /// Returns an exclusive reference to the element at the given 2D coordinates
             #[doc = "in the current " $D1 "-major order."]
@@ -66,8 +66,8 @@ macro_rules! impl_maj {
             /// Panics if the coordinates are out of bounds.
             #[inline]
             #[must_use]
-            pub fn get_mut_unchecked(&mut self, col_row: [usize; 2]) -> &mut T {
-                &mut self.array.array[Self::get_index_unchecked(col_row)]
+            pub fn get_mut_unchecked(&mut self, xy: [usize; 2]) -> &mut T {
+                &mut self.array.array[Self::get_index_unchecked(xy)]
             }
 
             /* set */
@@ -77,8 +77,8 @@ macro_rules! impl_maj {
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
             #[inline]
-            pub fn set(&mut self, element: T, col_row: [usize; 2]) -> Result<()> {
-                self.get_mut(col_row).map(|e| {
+            pub fn set(&mut self, element: T, xy: [usize; 2]) -> Result<()> {
+                self.get_mut(xy).map(|e| {
                     *e = element;
                 })
             }
@@ -87,8 +87,8 @@ macro_rules! impl_maj {
             /// # Panics
             /// Panics if the coordinates are out of bounds.
             #[inline]
-            pub fn set_unchecked(&mut self, element: T, col_row: [usize; 2]) {
-                let e = self.get_mut_unchecked(col_row);
+            pub fn set_unchecked(&mut self, element: T, xy: [usize; 2]) {
+                let e = self.get_mut_unchecked(xy);
                 *e = element;
             }
         }
@@ -104,8 +104,8 @@ macro_rules! impl_maj {
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
             #[inline]
-            pub fn get(&self, col_row: [usize; 2]) -> Result<T> {
-                Self::get_index(col_row).map(|idx| self.array[idx].clone())
+            pub fn get(&self, xy: [usize; 2]) -> Result<T> {
+                Self::get_index(xy).map(|idx| self.array[idx].clone())
             }
             /// Returns a clone of the element at the given 2D coordinates
             #[doc = "in the current " $D1 "-major order."]
@@ -113,8 +113,8 @@ macro_rules! impl_maj {
             /// Panics if the coordinates are out of bounds.
             #[inline]
             #[must_use]
-            pub fn get_unchecked(&self, col_row: [usize; 2]) -> T {
-                self.array.array[Self::get_index_unchecked(col_row)].clone()
+            pub fn get_unchecked(&self, xy: [usize; 2]) -> T {
+                self.array.array[Self::get_index_unchecked(xy)].clone()
             }
         }
 
@@ -131,8 +131,8 @@ macro_rules! impl_maj {
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
             #[inline]
-            pub fn [<get_ref_ $D2 maj>](&self, col_row: [usize; 2]) -> Result<&T> {
-                Self::[<get_index_ $D2 maj>](col_row).map(|idx| &self.array[idx])
+            pub fn [<get_ref_ $D2 maj>](&self, xy: [usize; 2]) -> Result<&T> {
+                Self::[<get_index_ $D2 maj>](xy).map(|idx| &self.array[idx])
             }
             /// Returns a reference to the element at the given 2D coordinates
             #[doc = "in the opposite " $D2 "-major order."]
@@ -140,8 +140,8 @@ macro_rules! impl_maj {
             /// Panics if the coordinates are out of bounds.
             #[inline]
             #[must_use]
-            pub fn [<get_ref_ $D2 maj_unchecked>](&self, col_row: [usize; 2]) -> &T {
-                &self.array.array[Self::[<get_index_ $D2 maj_unchecked>](col_row)]
+            pub fn [<get_ref_ $D2 maj_unchecked>](&self, xy: [usize; 2]) -> &T {
+                &self.array.array[Self::[<get_index_ $D2 maj_unchecked>](xy)]
             }
 
             /* get_mut (opposite order) */
@@ -151,8 +151,8 @@ macro_rules! impl_maj {
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
             #[inline]
-            pub fn [<get_mut_ $D2 maj>](&mut self, col_row: [usize; 2]) -> Result<&mut T> {
-                Self::[<get_index_ $D2 maj>](col_row).map(|idx| &mut self.array[idx])
+            pub fn [<get_mut_ $D2 maj>](&mut self, xy: [usize; 2]) -> Result<&mut T> {
+                Self::[<get_index_ $D2 maj>](xy).map(|idx| &mut self.array[idx])
             }
             /// Returns an exclusive reference to the element at the given 2D coordinates
             #[doc = "in the opposite " $D2 "-major order."]
@@ -160,8 +160,8 @@ macro_rules! impl_maj {
             /// Panics if the coordinates are out of bounds.
             #[inline]
             #[must_use]
-            pub fn [<get_mut_ $D2 maj_unchecked>](&mut self, col_row: [usize; 2]) -> &mut T {
-                &mut self.array.array[Self::[<get_index_ $D2 maj_unchecked>](col_row)]
+            pub fn [<get_mut_ $D2 maj_unchecked>](&mut self, xy: [usize; 2]) -> &mut T {
+                &mut self.array.array[Self::[<get_index_ $D2 maj_unchecked>](xy)]
             }
 
             /* set (opposite order) */
@@ -171,8 +171,8 @@ macro_rules! impl_maj {
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
             #[inline]
-            pub fn [<set_ $D2 maj>](&mut self, element: T, col_row: [usize; 2]) -> Result<()> {
-                self.[<get_mut_ $D2 maj>](col_row).map(|e| {
+            pub fn [<set_ $D2 maj>](&mut self, element: T, xy: [usize; 2]) -> Result<()> {
+                self.[<get_mut_ $D2 maj>](xy).map(|e| {
                     *e = element;
                 })
             }
@@ -181,8 +181,8 @@ macro_rules! impl_maj {
             /// # Panics
             /// Panics if the coordinates are out of bounds.
             #[inline]
-            pub fn [<set_ $D2 maj_unchecked>](&mut self, element: T, col_row: [usize; 2]) {
-                let e = self.[<get_mut_ $D2 maj_unchecked>](col_row);
+            pub fn [<set_ $D2 maj_unchecked>](&mut self, element: T, xy: [usize; 2]) {
+                let e = self.[<get_mut_ $D2 maj_unchecked>](xy);
                 *e = element;
             }
 
@@ -193,15 +193,15 @@ macro_rules! impl_maj {
             /// # Errors
             /// Returns [`Overflow`] if the resulting index is `> LEN`.
             #[inline]
-            pub const fn [<get_index_ $D2 maj>](col_row: [usize; 2]) -> Result<usize> {
-                Array2d::<T, S, X, Y, LEN, $YMAJ>::[<get_index>](col_row)
+            pub const fn [<get_index_ $D2 maj>](xy: [usize; 2]) -> Result<usize> {
+                Array2d::<T, S, X, Y, LEN, $YMAJ>::[<get_index>](xy)
             }
             /// Calculates the 1D array index from the given 2D coordinates
             #[doc = "in the opposite " $D2 "-major order."]
             #[inline]
             #[must_use]
-            pub const fn [<get_index_ $D2 maj_unchecked>](col_row: [usize; 2]) -> usize {
-                Array2d::<T, S, X, Y, LEN, $YMAJ>::[<get_index_unchecked>](col_row)
+            pub const fn [<get_index_ $D2 maj_unchecked>](xy: [usize; 2]) -> usize {
+                Array2d::<T, S, X, Y, LEN, $YMAJ>::[<get_index_unchecked>](xy)
             }
 
             /// Calculates the 2D coordinates from the given 1D array index
@@ -230,8 +230,8 @@ macro_rules! impl_maj {
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
             #[inline]
-            pub fn [<get_ $D2 maj>](&self, col_row: [usize; 2]) -> Result<T> {
-                Self::[<get_index_ $D2 maj>](col_row).map(|idx| self.array[idx].clone())
+            pub fn [<get_ $D2 maj>](&self, xy: [usize; 2]) -> Result<T> {
+                Self::[<get_index_ $D2 maj>](xy).map(|idx| self.array[idx].clone())
             }
             /// Returns a clone of the element at the given 2D coordinates
             #[doc = "in the opposite " $D2 "-major order."]
@@ -239,8 +239,8 @@ macro_rules! impl_maj {
             /// Panics if the coordinates are out of bounds.
             #[inline]
             #[must_use]
-            pub fn [<get_ $D2 maj_unchecked>](&self, col_row: [usize; 2]) -> T {
-                self.array.array[Self::[<get_index_ $D2 maj_unchecked>](col_row)].clone()
+            pub fn [<get_ $D2 maj_unchecked>](&self, xy: [usize; 2]) -> T {
+                self.array.array[Self::[<get_index_ $D2 maj_unchecked>](xy)].clone()
             }
         }
     }};
@@ -258,8 +258,8 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize>
     /// # Errors
     /// Returns [`Overflow`] if the resulting index is `>= LEN`.
     #[inline]
-    pub const fn get_index(col_row: [usize; 2]) -> Result<usize> {
-        let idx = Self::get_index_unchecked(col_row);
+    pub const fn get_index(xy: [usize; 2]) -> Result<usize> {
+        let idx = Self::get_index_unchecked(xy);
         iif![idx < LEN; Ok(idx); Err(Overflow)]
     }
     /// Calculates the 1D array index from the given 2D coordinates
@@ -270,8 +270,8 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize>
     // BENCH: 0.63 ns
     #[inline]
     #[must_use]
-    pub const fn get_index_unchecked(col_row: [usize; 2]) -> usize {
-        col_row[1] * Y + col_row[0]
+    pub const fn get_index_unchecked(xy: [usize; 2]) -> usize {
+        xy[1] * Y + xy[0]
     }
 
     /// Calculates the 2D coordinates from the given 1D array index
@@ -304,8 +304,8 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize>
     /// # Errors
     /// Returns [`Overflow`] if the resulting index is `>= LEN`.
     #[inline]
-    pub const fn get_index(col_row: [usize; 2]) -> Result<usize> {
-        let idx = Self::get_index_unchecked(col_row);
+    pub const fn get_index(xy: [usize; 2]) -> Result<usize> {
+        let idx = Self::get_index_unchecked(xy);
         iif![idx < LEN; Ok(idx); Err(Overflow)]
     }
     /// Calculates the 1D array index from the given 2D coordinates
@@ -316,8 +316,8 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize>
     // BENCH: 0.62 ns
     #[inline]
     #[must_use]
-    pub const fn get_index_unchecked(col_row: [usize; 2]) -> usize {
-        col_row[0] * X + col_row[1]
+    pub const fn get_index_unchecked(xy: [usize; 2]) -> usize {
+        xy[0] * X + xy[1]
     }
 
     /// Calculates the 2D coordinates from the given 1D array index

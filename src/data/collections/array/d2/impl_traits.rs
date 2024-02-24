@@ -7,13 +7,39 @@
 use crate::mem::Boxed;
 use crate::{
     code::ConstDefault,
-    data::{Array, DataCollection, DataResult as Result, Array2d, /* DataArray,*/ /*Array2dIter*/ },
+    data::{
+        Array, Array2d, /* DataArray,*/
+        /*Array2dIter*/
+        DataCollection, DataResult as Result,
+    },
     mem::{Bare, Storage},
 };
 use core::{cmp::Ordering, fmt};
 
+/* Clone, Copy */
 
-/* Default */
+// T:Clone
+impl<T: Clone, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool> Clone
+    for Array2d<T, S, X, Y, LEN, XMAJ>
+where
+    S::Stored<[T; LEN]>: Clone,
+{
+    fn clone(&self) -> Self {
+        Self {
+            array: self.array.clone(),
+        }
+    }
+}
+
+// T:Copy
+impl<T: Copy, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool> Copy
+    for Array2d<T, S, X, Y, LEN, XMAJ>
+where
+    S::Stored<[T; LEN]>: Copy,
+{
+}
+
+/* Default, ConstDefault */
 
 // S:Bare + T:Default
 impl<T: Default, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool> Default
@@ -69,7 +95,7 @@ impl<T: Default, const X: usize, const Y: usize, const LEN: usize, const XMAJ: b
     }
 }
 
-// T: Debug row-major
+// T:Debug, X-major
 impl<T: fmt::Debug, S: Storage, const X: usize, const Y: usize, const LEN: usize> fmt::Debug
     for Array2d<T, S, X, Y, LEN, true>
 {
@@ -78,7 +104,7 @@ impl<T: fmt::Debug, S: Storage, const X: usize, const Y: usize, const LEN: usize
         write!(f, "T: {}, ", core::any::type_name::<T>())?; // ?
         write!(f, "S: {}, ", S::name())?;
         write!(f, "X:{X}, Y:{Y} = LEN:{LEN}, ")?;
-        write!(f, "row-major")?;
+        write!(f, "X-major")?;
 
         // TODO: first 6 elements
         // TODO: last 6 elements
@@ -86,7 +112,7 @@ impl<T: fmt::Debug, S: Storage, const X: usize, const Y: usize, const LEN: usize
         write!(f, " }}")
     }
 }
-// col-major
+// T:Debug, Y-major
 impl<T: fmt::Debug, S: Storage, const X: usize, const Y: usize, const LEN: usize> fmt::Debug
     for Array2d<T, S, X, Y, LEN, false>
 {
@@ -95,7 +121,7 @@ impl<T: fmt::Debug, S: Storage, const X: usize, const Y: usize, const LEN: usize
         write!(f, "T: {}, ", core::any::type_name::<T>())?; // ?
         write!(f, "S: {}, ", S::name())?;
         write!(f, "X:{X}, Y:{Y} = LEN:{LEN}, ")?;
-        write!(f, "col-major")?;
+        write!(f, "Y-major")?;
 
         // TODO: first 6 elements
         // TODO: last 6 elements
