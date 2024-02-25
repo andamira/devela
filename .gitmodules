@@ -3,4 +3,4 @@
 	url = https://github.com/andamira/devela_macros.git
 [submodule "depend"]
 	path = depend
-	url = git@github.com:andamira/devela_depend.git
+	url = https://github.com/andamira/devela_depend.git
