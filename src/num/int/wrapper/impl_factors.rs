@@ -23,9 +23,9 @@ use crate::{
 };
 use crate::{
     code::{iif, paste},
-    num::{Int, NumError as E, NumResult as Result},
+    num::{Int, NumError, NumResult as Result},
 };
-use E::MismatchedSizes;
+use NumError::MismatchedSizes;
 
 // $t:   the input/output type
 // $d:  the doclink suffix for the method name
@@ -52,6 +52,7 @@ macro_rules! impl_int {
             /* signed factors alloc */
 
             /// Returns the factors (including 1 and self).
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -64,19 +65,19 @@ macro_rules! impl_int {
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-            pub fn factors(mut self) -> Vec<$t> {
-                self.0 = self.0.abs();
-                iif![self.0 == 0; return vec![];
-                iif![self.0 == 1; return vec![1]]];
+            pub fn factors(self) -> Vec<$t> {
+                let n = self.0.abs();
+                iif![n == 0; return vec![];
+                iif![n == 1; return vec![1]]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
                     let temp = set.clone();
                     let mut x = p;
-                    while x <= self.0 {
+                    while x <= n {
                         for &num in &temp {
                             let new_num = num * x;
-                            iif!{self.0 % new_num == 0; {set.insert(new_num);} }
+                            iif!{n % new_num == 0; {set.insert(new_num);} }
                         }
                         x *= p;
                     }
@@ -98,18 +99,18 @@ macro_rules! impl_int {
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-            pub fn factors_proper(mut self) -> Vec<$t> {
-                self.0 = self.0.abs();
-                iif![self.0 == 0; return vec![]];
+            pub fn factors_proper(self) -> Vec<$t> {
+                let n = self.0.abs();
+                iif![n == 0; return vec![]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
                     let temp = set.clone();
                     let mut x = p;
-                    while x <= self.0 {
+                    while x <= n {
                         for &num in &temp {
                             let new_num = num * x;
-                            if self.0 % new_num == 0 {
+                            if n % new_num == 0 {
                                 set.insert(new_num);
                             }
                         }
@@ -117,11 +118,12 @@ macro_rules! impl_int {
                     }
                 }
                 set.remove(&1);
-                set.remove(&self.0);
+                set.remove(&n);
                 set.into_iter().collect()
             }
 
             /// Returns the prime factors.
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -136,8 +138,9 @@ macro_rules! impl_int {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime(self) -> Vec<$t> {
                 let mut factors = Vec::new();
-                iif![self.0 == 0; return factors];
                 let mut n = self.0.abs();
+                iif![n == 0; return factors];
+
                 // Divide by 2 until the number is odd
                 while n % 2 == 0 {
                     factors.push(2);
@@ -158,10 +161,12 @@ macro_rules! impl_int {
             }
 
             /// Returns the unique prime factors.
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique(), vec![2, 3]];"]
+            #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique(), vec![2, 3]];"]
             /// ```
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
@@ -174,8 +179,10 @@ macro_rules! impl_int {
 
             /// Writes the factors in `fbuf`, and the unique prime factors in `upfbuf`.
             ///
-            /// Returns a tuple with the number of factors and unique prime factors found,
-            /// or [`MismatchedSizes`] if the total number of factors is greater
+            /// Returns a tuple with the number of factors and unique prime factors found.
+            ///
+            /// # Errors
+            /// Returns [`MismatchedSizes`] if the total number of factors is greater
             /// than the length of any buffer.
             ///
             /// # Examples
@@ -188,17 +195,17 @@ macro_rules! impl_int {
             /// assert_eq![upbuf[..2], [2, 3]];
             /// ```
             #[inline]
-            pub fn factors_buf(mut self, fbuf: &mut [$t], upfbuf: &mut [$t])
+            pub fn factors_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t])
                 -> Result<(usize, usize)> {
-                self.0 = self.0.abs();
-                iif![self.0 == 0; return Ok((0, 0))];
-                iif![self.0 == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
+                let n = self.0.abs();
+                iif![n == 0; return Ok((0, 0))];
+                iif![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 fbuf[f_count] = 1;
                 f_count += 1;
                 let prime_factors_count = self.factors_prime_unique_buf(upfbuf)?;
-                for i in 2..=self.0 {
-                    if self.0 % i == 0 {
+                for i in 2..=n {
+                    if n % i == 0 {
                         if f_count < fbuf.len() {
                             fbuf[f_count] = i;
                             f_count += 1;
@@ -212,8 +219,10 @@ macro_rules! impl_int {
 
             /// Writes the proper factors in `fbuf`, and the unique prime factors in `upfbuf`.
             ///
-            /// Returns a tuple with the number of factors and unique prime factors found,
-            /// or [`MismatchedSizes`] if the total number of factors is greater
+            /// Returns a tuple with the number of factors and unique prime factors found.
+            ///
+            /// # Errors
+            /// Returns [`MismatchedSizes`] if the total number of factors is greater
             /// than the length of any buffer.
             ///
             /// # Examples
@@ -227,15 +236,15 @@ macro_rules! impl_int {
             /// assert_eq![upbuf[..2], [2, 3]];
             /// ```
             #[inline]
-            pub fn factors_proper_buf(mut self, fbuf: &mut [$t], upfbuf: &mut [$t])
+            pub fn factors_proper_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t])
                 -> Result<(usize, usize)> {
-                self.0 = self.0.abs();
-                iif![self.0 == 0; return Ok((0, 0))];
-                iif![self.0 == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
+                let n = self.0.abs();
+                iif![n == 0; return Ok((0, 0))];
+                iif![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 let prime_factors_count = self.factors_prime_unique_buf(upfbuf)?;
-                for i in 2..self.0 {
-                    if self.0 % i == 0 {
+                for i in 2..n {
+                    if n % i == 0 {
                         if f_count < fbuf.len() {
                             fbuf[f_count] = i;
                             f_count += 1;
@@ -249,8 +258,11 @@ macro_rules! impl_int {
 
             /// Writes the prime factors in the given `buffer`.
             ///
-            /// Returns the number of factors found, or [`MismatchedSizes`] if the total number
-            /// of factors is greater than the length of the `buffer`.
+            /// Returns the number of factors found
+            ///
+            /// # Errors
+            /// Returns [`MismatchedSizes`] if the total number of factors
+            /// is greater than the length of the `buffer`.
             ///
             /// # Examples
             /// ```
@@ -304,8 +316,9 @@ macro_rules! impl_int {
             /// The buffer must be large enough to hold all the non-unique factors of `n`.
             /// In that case the function will return the number of unique factors found.
             ///
-            /// Otherwise it will return `MismatchedSizes`, and the buffer will only contain
-            /// the non-unique factors that could fit, like
+            /// # Errors
+            /// Returns [`MismatchedSizes`] otherwise. In that case the buffer
+            /// will only contain the non-unique factors that could fit, same as
             #[doc = "[`factors_prime_buf`](#method.factors_prime_buf" $d ")."]
             ///
             /// # Examples
@@ -336,8 +349,11 @@ macro_rules! impl_int {
 
             /// Writes the prime factors in `pfbuf`, and the unique prime factors in `upfbuf`.
             ///
-            /// Returns the number of factors found, or `MismatchedSizes` if the total number
-            /// of factors is greater than the length of the `buffer`.
+            /// Returns the number of factors found.
+            ///
+            /// # Errors
+            /// Returns `MismatchedSizes` if the total number of factors
+            /// is greater than the length of the `buffer`.
             ///
             /// # Examples
             /// ```
@@ -407,16 +423,17 @@ macro_rules! impl_int {
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors(self) -> Vec<$t> {
-                iif![self.0 == 0; return vec![]; iif![self.0 == 1; return vec![1]]];
+                let n = self.0;
+                iif![n == 0; return vec![]; iif![n == 1; return vec![1]]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
                     let temp = set.clone();
                     let mut x = p;
-                    while x <= self.0 {
+                    while x <= n {
                         for &num in &temp {
                             let new_num = num * x;
-                            if self.0 % new_num == 0 {
+                            if n % new_num == 0 {
                                 set.insert(new_num);
                             }
                         }
@@ -440,16 +457,17 @@ macro_rules! impl_int {
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_proper(self) -> Vec<$t> {
-                iif![self.0 == 0; return vec![]];
+                let n = self.0;
+                iif![n == 0; return vec![]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
                     let temp = set.clone();
                     let mut x = p;
-                    while x <= self.0 {
+                    while x <= n {
                         for &num in &temp {
                             let new_num = num * x;
-                            if self.0 % new_num == 0 {
+                            if n % new_num == 0 {
                                 set.insert(new_num);
                             }
                         }
@@ -457,7 +475,7 @@ macro_rules! impl_int {
                     }
                 }
                 set.remove(&1);
-                set.remove(&self.0);
+                set.remove(&n);
                 set.into_iter().collect()
             }
 
@@ -474,25 +492,27 @@ macro_rules! impl_int {
             #[inline] #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-            pub fn factors_prime(mut self) -> Vec<$t> {
+            pub fn factors_prime(self) -> Vec<$t> {
                 let mut factors = Vec::new();
-                iif![self.0 == 0; return factors];
+                let mut n = self.0;
+                iif![n == 0; return factors];
+
                 // Divide by 2 until the number is odd
-                while self.0 % 2 == 0 {
+                while n % 2 == 0 {
                     factors.push(2);
-                    self.0 /= 2;
+                    n /= 2;
                 }
                 // Divide by odd numbers starting from 3
                 let mut i = 3;
-                while i * i <= self.0 {
-                    while self.0 % i == 0 {
+                while i * i <= n {
+                    while n % i == 0 {
                         factors.push(i);
-                        self.0 /= i;
+                        n /= i;
                     }
                     i += 2;
                 }
                 // If the remaining number is greater than 2, it's a prime factor
-                iif![self.0 > 2; factors.push(self.0)];
+                iif![n > 2; factors.push(n)];
                 factors
             }
 
@@ -510,13 +530,13 @@ macro_rules! impl_int {
                 self.factors_prime().also_mut(|v| v.dedup())
             }
 
-            /* unsigned factors non_alloc */
-
             /// Writes the factors in `fbuf`, and the unique prime factors in `upfbuf`.
             ///
-            /// Returns a tuple with the number of factors and unique prime factors found,
-            /// or `MismatchedSizes` if the total number of factors is greater
-            /// than the length of any buffer.
+            /// Returns a tuple with the number of factors and unique prime factors found.
+            ///
+            /// # Errors
+            /// Returns [`MismatchedSizes`] if the total number of factors
+            /// is greater than the length of any buffer.
             ///
             /// # Examples
             /// ```
@@ -529,14 +549,15 @@ macro_rules! impl_int {
             /// ```
             #[inline]
             pub fn factors_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t]) -> Result<(usize, usize)> {
-                iif![self.0 == 0; return Ok((0, 0))];
-                iif![self.0 == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
+                let n = self.0;
+                iif![n == 0; return Ok((0, 0))];
+                iif![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 fbuf[f_count] = 1;
                 f_count += 1;
                 let prime_factors_count = self.factors_prime_unique_buf(upfbuf)?;
-                for i in 2..=self.0 {
-                    if self.0 % i == 0 {
+                for i in 2..=n {
+                    if n % i == 0 {
                         if f_count < fbuf.len() {
                             fbuf[f_count] = i; f_count += 1;
                         } else {
@@ -549,9 +570,11 @@ macro_rules! impl_int {
 
             /// Writes the proper factors in `fbuf`, and the unique prime factors in `upfbuf`.
             ///
-            /// Returns a tuple with the number of factors and unique prime factors found,
-            /// or `MismatchedSizes` if the total number of factors is greater
-            /// than the length of any buffer.
+            /// Returns a tuple with the number of factors and unique prime factors found.
+            ///
+            /// # Errors
+            /// Returns [`MismatchedSizes`] if the total number of factors
+            /// is greater than the length of any buffer.
             ///
             /// # Examples
             /// ```
@@ -566,12 +589,13 @@ macro_rules! impl_int {
             #[inline]
             pub fn factors_proper_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t]
             ) -> Result<(usize, usize)> {
-                iif![self.0 == 0; return Ok((0, 0))];
-                iif![self.0 == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
+                let n = self.0;
+                iif![n == 0; return Ok((0, 0))];
+                iif![n == 1; { fbuf[0] = 1; return Ok((1, 0)); }];
                 let mut f_count = 0;
                 let prime_factors_count = self.factors_prime_unique_buf(upfbuf)?;
-                for i in 2..self.0 {
-                    if self.0 % i == 0 {
+                for i in 2..n {
+                    if n % i == 0 {
                         if f_count < fbuf.len() {
                             fbuf[f_count] = i;
                             f_count += 1;
@@ -585,8 +609,11 @@ macro_rules! impl_int {
 
             /// Writes the prime factors in the given `buffer`.
             ///
-            /// Returns the number of factors found, or [`MismatchedSizes`] if the total number
-            /// of factors is greater than the length of the `buffer`.
+            /// Returns the number of factors found.
+            ///
+            /// # Errors
+            /// Returns [`MismatchedSizes`] if the total number of factors
+            /// is greater than the length of the `buffer`.
             ///
             /// # Examples
             /// ```
@@ -605,8 +632,9 @@ macro_rules! impl_int {
             /// ```
             #[inline]
             pub fn factors_prime_buf(self, buffer: &mut [$t]) -> Result<usize> {
-                iif![self.0 == 0; return Ok(0)];
-                let (mut n, mut idx) = (self.0, 0);
+                let n = self.0;
+                iif![n == 0; return Ok(0)];
+                let (mut n, mut idx) = (n, 0);
                 while n % 2 == 0 {
                     if idx < buffer.len() {
                         buffer[idx] = 2; idx += 1; n /= 2;
@@ -640,9 +668,11 @@ macro_rules! impl_int {
             /// The buffer must be large enough to hold all the non-unique factors of `n`.
             /// In that case the function will return the number of unique factors found.
             ///
-            /// Otherwise it will return [`MismatchedSizes`], and the buffer will only contain
-            /// the non-unique factors that could fit. Same as calling the method
+            /// # Errors
+            /// Returns [`MismatchedSizes`] otherwise. In that case the buffer
+            /// will only contain the non-unique factors that could fit, same as
             #[doc = "[`factors_prime_buf`](#method.factors_prime_buf" $d ")."]
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -671,8 +701,11 @@ macro_rules! impl_int {
 
             /// Writes the prime factors in `pfbuf`, and the unique factors in `upfbuf`.
             ///
-            /// Returns the number of factors found, or `MismatchedSizes` if the total number
-            /// of factors is greater than the length of the `buffer`.
+            /// Returns the number of factors found.
+            ///
+            /// # Errors
+            /// Returns [`MismatchedSizes`] if the total number of factors
+            /// is greater than the length of the `buffer`.
             ///
             /// # Examples
             /// ```
