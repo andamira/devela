@@ -43,7 +43,7 @@ use crate::{
 ///   [`y_len`][Self::y_len]
 ///   [`is_empty`][Self::is_empty],
 ///   [`contains`][Self::contains].
-/// - Indexing and coordinates (by default for the same order):
+/// - Indexing and coordinates (for the current order):
 ///   - [`get_ref`][Self::get_ref]*([`uc`][Self::get_ref_unchecked])*,
 ///   [`get_mut`][Self::get_mut]*([`uc`][Self::get_mut_unchecked])*,
 ///   [`set`][Self::set]*([`uc`][Self::set_unchecked])*,
@@ -65,6 +65,14 @@ use crate::{
 ///
 /// ## Panics
 /// Note that the `Default` and `ConstDefault` constructors will panic if `X * Y != LEN`.
+//
+// WAIT: [adt_const_params](https://github.com/rust-lang/rust/issues/95174)
+//       will allow to use enums and arrays as const-generic parameters.
+// WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560)
+//       will allow calculating LEN automatically from X and Y. WAIT: Depends on:
+// WAIT:1.78: [allow constants refer to statics](https://github.com/rust-lang/rust/pull/119614)
+// WAIT:1.77: [const-eval interning improvements](https://github.com/rust-lang/rust/pull/119044)
+// DONE:1.76: [compile-time evaluation improvements](https://github.com/rust-lang/rust/pull/118324)
 pub struct Array2d<
     T,
     S: Storage,

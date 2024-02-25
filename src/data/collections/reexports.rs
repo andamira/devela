@@ -5,6 +5,13 @@
 
 use crate::code::reexport;
 
+/* from `array` */
+
+reexport! { rust: core::array,
+    doc: "A by-value [array] iterator.",
+    @IntoIter as ArrayIntoIter
+}
+
 /* from `alloc` */
 
 reexport! { rust: alloc::collections,

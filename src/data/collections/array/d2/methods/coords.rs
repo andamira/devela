@@ -1,6 +1,6 @@
-// devela::data::collections::array::d2::methods::indexing
+// devela::data::collections::array::d2::methods::coords
 //
-//! 2-dimensional array indexing methods
+//! 2-dimensional array coordinates and indexing methods
 //
 
 use crate::{

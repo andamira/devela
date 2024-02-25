@@ -180,6 +180,8 @@ impl<T, const LEN: usize> From<Array<T, Boxed, LEN>> for Box<[T; LEN]> {
     }
 }
 
+/* iterator related */
+
 impl<T: Default, I, const LEN: usize> From<I> for Array<T, Bare, LEN>
 where
     I: IntoIterator<Item = T>,
