@@ -9,11 +9,15 @@
 //     - factors_proper
 //     - factors_prime
 //     - factors_prime_unique
+//     - factors_prime_unique_exp
 //   - non_allocating:
+//     - factors_prime_count
+//     - factors_prime_unique_count
 //     - factors_buf
 //     - factors_proper_buf
 //     - factors_prime_buf
 //     - factors_prime_unique_buf
+//     - factors_prime_unique_exp_buf
 //     - factors_prime_unique_plus_buf
 
 #[cfg(feature = "alloc")]
@@ -175,7 +179,118 @@ macro_rules! impl_int {
                 self.factors_prime().also_mut(|v| v.dedup())
             }
 
+            /// Returns the unique prime factors with its exponent.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
+            #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors_prime_unique_exp(), vec![]];"]
+            #[doc = "assert_eq![Int(1_" $t ").factors_prime_unique_exp(), vec![]];"]
+            #[doc = "assert_eq![Int(7_" $t ").factors_prime_unique_exp(), vec![(7, 1)]];"]
+            /// ```
+            #[inline] #[must_use]
+            #[cfg(feature = "alloc")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            pub fn factors_prime_unique_exp(self) -> Vec<($t, u32)> {
+                let mut factors = Vec::new();
+                let mut current = None;
+                let mut count = 0;
+
+                for prime in self.factors_prime() {
+                    match current {
+                        Some(f) if f == prime => {
+                            count += 1;
+                        },
+                        _ => {
+                            if let Some(f) = current {
+                                factors.push((f, count));
+                            }
+                            current = Some(prime);
+                            count = 1;
+                        },
+                    }
+                }
+                if let Some(f) = current {
+                    factors.push((f, count));
+                }
+                factors
+            }
+
             /* signed factors non_alloc */
+
+            /// Returns the count of prime factors.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Int(24_" $t ").factors_prime_count(), 4];"]
+            #[doc = "assert_eq![Int(-24_" $t ").factors_prime_count(), 4];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors_prime_count(), 0];"]
+            #[doc = "assert_eq![Int(1_" $t ").factors_prime_count(), 0];"]
+            #[doc = "assert_eq![Int(7_" $t ").factors_prime_count(), 1];"]
+            /// ```
+            #[inline] #[must_use]
+            pub fn factors_prime_count(self) -> usize {
+                let mut n = self.0.abs();
+                iif![n == 0; return 0];
+                let mut count = 0;
+                // Divide by 2 until the number is odd
+                while n % 2 == 0 {
+                    count += 1;
+                    n /= 2;
+                }
+                // Divide by odd numbers starting from 3
+                let mut i = 3;
+                while i * i <= n {
+                    while n % i == 0 {
+                        count += 1;
+                        n /= i;
+                    }
+                    i += 2;
+                }
+                // If the remaining number is greater than 2, it's a prime factor
+                iif![n > 2; count += 1];
+                count
+            }
+
+            /// Returns the count of unique prime factors.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_count(), 2];"]
+            #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique_count(), 2];"]
+            /// ```
+            #[inline] #[must_use]
+            pub fn factors_prime_unique_count(self) -> usize {
+                let mut n = self.0.abs();
+                iif![n == 0; return 0];
+                let mut count = 0;
+                let mut last = 0;
+
+                // Divide by 2 until the number is odd
+                while n % 2 == 0 {
+                    iif![last != 2; { count += 1; last = 2 }];
+                    n /= 2;
+                }
+                // Divide by odd numbers starting from 3
+                let mut i = 3;
+                while i * i <= n {
+                    while n % i == 0 {
+                        iif![last != i; { count += 1; last = i }];
+                        n /= i;
+                    }
+                    i += 2;
+                }
+                // If the remaining number is greater than 2,
+                // and not the same as the last factor, it's a prime factor
+                if n > 2 && last != n {
+                    count += 1;
+                }
+                count
+            }
 
             /// Writes the factors in `fbuf`, and the unique prime factors in `upfbuf`.
             ///
@@ -272,7 +387,7 @@ macro_rules! impl_int {
             ///
             /// assert_eq![buf[..4], [2, 2, 2, 3]];
             #[doc = "assert![Int(24_" $t " * 4).factors_prime_buf(&mut buf).is_err()];"]
-            /// assert_eq![buf, [2, 2, 2, 2, 2]]; // the 3 didn't fit
+            /// assert_eq![buf, [2, 2, 2, 2, 2]]; // the factor of 3 didn't fit
             ///
             #[doc = "assert_eq![Int(0_" $t ").factors_prime_buf(&mut buf), Ok(0)];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_prime_buf(&mut buf), Ok(0)];"]
@@ -313,7 +428,7 @@ macro_rules! impl_int {
 
             /// Writes the prime factors in the given `buffer`.
             ///
-            /// The buffer must be large enough to hold all the non-unique factors of `n`.
+            /// The `buffer` must be large enough to hold all the non-unique factors of `n`.
             /// In that case the function will return the number of unique factors found.
             ///
             /// # Errors
@@ -345,6 +460,92 @@ macro_rules! impl_int {
                     }
                 }
                 Ok(unique_count)
+            }
+
+            /// Writes the unique prime factors in the given `fbuffer`, and the
+            /// associated exponent in the given `ebuffer` at the same index.
+            ///
+            /// The `fbuffer` must be large enough to hold all the non-unique factors of `n`.
+            /// In that case the function will return the number of unique factors found.
+            ///
+            /// # Errors
+            /// Returns [`MismatchedSizes`] otherwise. In that case the buffer
+            /// will only contain the non-unique factors that could fit, same as
+            #[doc = "[`factors_prime_buf`](#method.factors_prime_buf" $d ")."]
+            ///
+            /// Returns [`MismatchedSizes`] if `ebuffer` is not large enough as well.
+            /// In that case the number of unique factors will equal `ebuffer.len()`.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            /// let mut fbuf = [0; 4];
+            /// let mut ebuf = [0; 2];
+            #[doc = "assert_eq![Int(40_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf), Ok(2)];"]
+            /// assert_eq![fbuf[..2], [2, 5]]; // 2^3, 5^1, …
+            /// assert_eq![ebuf[..2], [3, 1]];
+            ///
+            #[doc = "assert_eq![Int(0_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf), Ok(0)];"]
+            #[doc = "assert_eq![Int(1_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf), Ok(0)];"]
+            #[doc = "assert_eq![Int(7_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf), Ok(1)];"]
+            /// assert_eq![fbuf[..1], [7]]; // 7^1
+            /// assert_eq![ebuf[..1], [1]];
+            ///
+            /// // When `fbuffer` is not large enough:
+            /// let mut fbuf = [0; 3];
+            /// let mut ebuf = [0; 2];
+            #[doc = "assert![Int(24_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf).is_err()];"]
+            /// assert_eq![fbuf, [2, 2, 2]]; // the factor of 5 didn't fit
+            /// assert_eq![ebuf, [0, 0]]; // the exponents didn't get written
+            ///
+            /// // When `ebuffer` is not large enough:
+            /// let mut fbuf = [0; 4];
+            /// let mut ebuf = [0; 1];
+            #[doc = "assert![Int(24_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf).is_err()];"]
+            /// assert_eq![fbuf[..ebuf.len()], [2]]; // 2^3, Err, …
+            /// assert_eq![ebuf[..], [3]];
+            /// ```
+            // IMPROVE: differenciate between both errors more clearly.
+            pub fn factors_prime_unique_exp_buf(self, fbuffer: &mut [$t], ebuffer: &mut [u32])
+            -> Result<usize> {
+                let prime_factors_count = self.factors_prime_buf(fbuffer)?;
+                iif![prime_factors_count == 0; return Ok(0)];
+
+                let mut current_factor = fbuffer[0]; // current factor
+                let mut unique_idx = 0; // current unique factor index
+                let mut exp_count = 1; //
+
+                for i in 1..prime_factors_count {
+                    // Same factor as before, increment the exponent count
+                    if fbuffer[i] == current_factor {
+                        exp_count += 1;
+                    } else {
+                        // New factor found, store the previous factor and its exp_count
+                        fbuffer[unique_idx] = current_factor;
+                        iif![unique_idx >= ebuffer.len(); return Err(MismatchedSizes)];
+                        ebuffer[unique_idx] = exp_count;
+                        unique_idx += 1; // Move to the next unique factor
+
+                        // Reset for the new factor
+                        current_factor = fbuffer[i];
+                        exp_count = 1;
+                    }
+                }
+                // Store the last factor and its exponent count
+                if unique_idx < fbuffer.len() && unique_idx < ebuffer.len() {
+                    fbuffer[unique_idx] = current_factor;
+                    ebuffer[unique_idx] = exp_count;
+                    unique_idx += 1; // increment the index to represent the unique count
+                } else {
+                    return Err(MismatchedSizes);
+                }
+                Ok(unique_idx)
             }
 
             /// Writes the prime factors in `pfbuf`, and the unique prime factors in `upfbuf`.
@@ -530,6 +731,116 @@ macro_rules! impl_int {
                 self.factors_prime().also_mut(|v| v.dedup())
             }
 
+            /// Returns the unique prime factors with its exponent.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors_prime_unique_exp(), vec![]];"]
+            #[doc = "assert_eq![Int(1_" $t ").factors_prime_unique_exp(), vec![]];"]
+            #[doc = "assert_eq![Int(7_" $t ").factors_prime_unique_exp(), vec![(7, 1)]];"]
+            /// ```
+            #[inline] #[must_use]
+            #[cfg(feature = "alloc")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            pub fn factors_prime_unique_exp(self) -> Vec<($t, u32)> {
+                let mut factors = Vec::new();
+                let mut current = None;
+                let mut count = 0;
+
+                for prime in self.factors_prime() {
+                    match current {
+                        Some(f) if f == prime => {
+                            count += 1;
+                        },
+                        _ => {
+                            if let Some(f) = current {
+                                factors.push((f, count));
+                            }
+                            current = Some(prime);
+                            count = 1;
+                        },
+                    }
+                }
+                if let Some(f) = current {
+                    factors.push((f, count));
+                }
+                factors
+            }
+
+            /* unsigned factors non_alloc */
+
+            /// Returns the count of prime factors.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Int(24_" $t ").factors_prime_count(), 4];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors_prime_count(), 0];"]
+            #[doc = "assert_eq![Int(1_" $t ").factors_prime_count(), 0];"]
+            #[doc = "assert_eq![Int(7_" $t ").factors_prime_count(), 1];"]
+            /// ```
+            #[inline] #[must_use]
+            pub fn factors_prime_count(self) -> usize {
+                let mut n = self.0;
+                iif![n == 0; return 0];
+                let mut count = 0;
+                // Divide by 2 until the number is odd
+                while n % 2 == 0 {
+                    count += 1;
+                    n /= 2;
+                }
+                // Divide by odd numbers starting from 3
+                let mut i = 3;
+                while i * i <= n {
+                    while n % i == 0 {
+                        count += 1;
+                        n /= i;
+                    }
+                    i += 2;
+                }
+                // If the remaining number is greater than 2, it's a prime factor
+                iif![n > 2; count += 1];
+                count
+            }
+
+            /// Returns the count of unique prime factors.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_count(), 2];"]
+            /// ```
+            #[inline] #[must_use]
+            pub fn factors_prime_unique_count(self) -> usize {
+                let mut n = self.0;
+                iif![n == 0; return 0];
+                let mut count = 0;
+                let mut last = 0;
+
+                // Divide by 2 until the number is odd
+                while n % 2 == 0 {
+                    iif![last != 2; { count += 1; last = 2 }];
+                    n /= 2;
+                }
+                // Divide by odd numbers starting from 3
+                let mut i = 3;
+                while i * i <= n {
+                    while n % i == 0 {
+                        iif![last != i; { count += 1; last = i }];
+                        n /= i;
+                    }
+                    i += 2;
+                }
+                // If the remaining number is greater than 2,
+                // and not the same as the last factor, it's a prime factor
+                if n > 2 && last != n {
+                    count += 1;
+                }
+                count
+            }
+
             /// Writes the factors in `fbuf`, and the unique prime factors in `upfbuf`.
             ///
             /// Returns a tuple with the number of factors and unique prime factors found.
@@ -623,7 +934,7 @@ macro_rules! impl_int {
             ///
             /// assert_eq![buf[..4], [2, 2, 2, 3]];
             #[doc = "assert![Int(24_" $t " * 4).factors_prime_buf(&mut buf).is_err()];"]
-            /// assert_eq![buf, [2, 2, 2, 2, 2]]; // the 3 didn't fit
+            /// assert_eq![buf, [2, 2, 2, 2, 2]]; // the factor of 3 didn't fit
             ///
             #[doc = "assert_eq![Int(0_" $t ").factors_prime_buf(&mut buf), Ok(0)];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_prime_buf(&mut buf), Ok(0)];"]
@@ -648,7 +959,7 @@ macro_rules! impl_int {
                         if idx < buffer.len() {
                             buffer[idx] = i; idx += 1; n /= i;
                         } else {
-                        return Err(MismatchedSizes);
+                            return Err(MismatchedSizes);
                         }
                     }
                     i += 2;
@@ -665,7 +976,7 @@ macro_rules! impl_int {
 
             /// Writes the prime factors in the given `buffer`.
             ///
-            /// The buffer must be large enough to hold all the non-unique factors of `n`.
+            /// The `buffer` must be large enough to hold all the non-unique factors of `n`.
             /// In that case the function will return the number of unique factors found.
             ///
             /// # Errors
@@ -697,6 +1008,92 @@ macro_rules! impl_int {
                     }
                 }
                 Ok(unique_count)
+            }
+
+            /// Writes the unique prime factors in the given `fbuffer`, and the
+            /// associated exponent in the given `ebuffer` at the same index.
+            ///
+            /// The `fbuffer` must be large enough to hold all the non-unique factors of `n`.
+            /// In that case the function will return the number of unique factors found.
+            ///
+            /// # Errors
+            /// Returns [`MismatchedSizes`] otherwise. In that case the buffer
+            /// will only contain the non-unique factors that could fit, same as
+            #[doc = "[`factors_prime_buf`](#method.factors_prime_buf" $d ")."]
+            ///
+            /// Returns [`MismatchedSizes`] if `ebuffer` is not large enough as well.
+            /// In that case the number of unique factors will equal `ebuffer.len()`.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            /// let mut fbuf = [0; 4];
+            /// let mut ebuf = [0; 2];
+            #[doc = "assert_eq![Int(40_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf), Ok(2)];"]
+            /// assert_eq![fbuf[..2], [2, 5]]; // 2^3, 5^1, …
+            /// assert_eq![ebuf[..2], [3, 1]];
+            ///
+            #[doc = "assert_eq![Int(0_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf), Ok(0)];"]
+            #[doc = "assert_eq![Int(1_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf), Ok(0)];"]
+            #[doc = "assert_eq![Int(7_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf), Ok(1)];"]
+            /// assert_eq![fbuf[..1], [7]]; // 7^1
+            /// assert_eq![ebuf[..1], [1]];
+            ///
+            /// // When `fbuffer` is not large enough:
+            /// let mut fbuf = [0; 3];
+            /// let mut ebuf = [0; 2];
+            #[doc = "assert![Int(24_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf).is_err()];"]
+            /// assert_eq![fbuf, [2, 2, 2]]; // the factor of 5 didn't fit
+            /// assert_eq![ebuf, [0, 0]]; // the exponents didn't get written
+            ///
+            /// // When `ebuffer` is not large enough:
+            /// let mut fbuf = [0; 4];
+            /// let mut ebuf = [0; 1];
+            #[doc = "assert![Int(24_" $t
+                ").factors_prime_unique_exp_buf(&mut fbuf, &mut ebuf).is_err()];"]
+            /// assert_eq![fbuf[..ebuf.len()], [2]]; // 2^3, Err, …
+            /// assert_eq![ebuf[..], [3]];
+            /// ```
+            // IMPROVE: differenciate between both errors more clearly.
+            pub fn factors_prime_unique_exp_buf(self, fbuffer: &mut [$t], ebuffer: &mut [u32])
+            -> Result<usize> {
+                let prime_factors_count = self.factors_prime_buf(fbuffer)?;
+                iif![prime_factors_count == 0; return Ok(0)];
+
+                let mut current_factor = fbuffer[0]; // current factor
+                let mut unique_idx = 0; // current unique factor index
+                let mut exp_count = 1; //
+
+                for i in 1..prime_factors_count {
+                    // Same factor as before, increment the exponent count
+                    if fbuffer[i] == current_factor {
+                        exp_count += 1;
+                    } else {
+                        // New factor found, store the previous factor and its exp_count
+                        fbuffer[unique_idx] = current_factor;
+                        iif![unique_idx >= ebuffer.len(); return Err(MismatchedSizes)];
+                        ebuffer[unique_idx] = exp_count;
+                        unique_idx += 1; // Move to the next unique factor
+
+                        // Reset for the new factor
+                        current_factor = fbuffer[i];
+                        exp_count = 1;
+                    }
+                }
+                // Store the last factor and its exponent count
+                if unique_idx < fbuffer.len() && unique_idx < ebuffer.len() {
+                    fbuffer[unique_idx] = current_factor;
+                    ebuffer[unique_idx] = exp_count;
+                    unique_idx += 1; // increment the index to represent the unique count
+                } else {
+                    return Err(MismatchedSizes);
+                }
+                Ok(unique_idx)
             }
 
             /// Writes the prime factors in `pfbuf`, and the unique factors in `upfbuf`.
