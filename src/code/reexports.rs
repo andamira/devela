@@ -9,7 +9,10 @@ use super::reexport;
 
 /// <span class="stab portability" title="re-exported from `devela_macros`
 /// crate">`devela_macros`</span>
-pub use devela_macros::{cif, coalesce, compile, compile_attr, compile_doc};
+pub use devela_macros::{
+    cif, coalesce, compile, compile_attr, compile_doc, ident_total, ident_total_unique,
+    ident_unique,
+};
 
 /// <span class="stab portability" title="re-exported from the `paste crate`">`paste`</span>
 pub use super::paste::paste;

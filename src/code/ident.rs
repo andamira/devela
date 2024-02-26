@@ -49,10 +49,12 @@ pub use ident_const_index;
 /// # assert_eq![3, ident_total_count!(one, two three)]; // only some commas (not encouraged)
 /// ```
 #[macro_export]
+#[deprecated(since = "0.20.0", note = "Use faster `ident_total` proc-macro instead.")]
 macro_rules! ident_total_count {
     () => { 0usize };
     ($ident:ident $(,)? $($rest:ident $(,)? )*) => {
         1usize + $crate::code::ident_total_count!($($rest)*)
     };
 }
+#[allow(deprecated)]
 pub use ident_total_count;

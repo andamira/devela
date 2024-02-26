@@ -69,7 +69,7 @@ macro_rules! enumset {
         #[allow(non_snake_case)]
         mod [<_$enum_name _private>] {
             pub(super) const ENUM_VARIANTS: usize =
-                $crate::code::ident_total_count!($($variant_name)*);
+                $crate::code::ident_total!($($variant_name)*);
             $crate::code::ident_const_index!(pub(super), ENUM_VARIANTS; $($variant_name)*);
         }
 
