@@ -84,11 +84,11 @@ pub struct Array2d<
     pub(super) array: Array<T, S, LEN>,
 }
 
-/// A [`Array2d`] stored in the stack.
+/// An [`Array2d`] stored in the stack.
 pub type BareArray2d<T, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool = true> =
     Array2d<T, Bare, X, Y, LEN, XMAJ>;
 
-/// A [`Array2d`] stored in the heap.
+/// An [`Array2d`] stored in the heap.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 pub type BoxedArray2d<

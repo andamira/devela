@@ -248,10 +248,11 @@ mod manual_impls_small_tuples {
     }
 }
 
+#[rustfmt::skip]
 mod impl_fmt {
-    use super::{TupleDisplay, TupleDebug, TupleFmt, ExtTuple};
-    use core::fmt::{Formatter, Result, Debug, Display};
+    use super::{ExtTuple, TupleDebug, TupleDisplay, TupleFmt};
     use crate::code::paste;
+    use core::fmt::{Debug, Display, Formatter, Result};
 
     impl<T: TupleDebug> Debug for TupleFmt<T> {
         fn fmt(&self, f: &mut Formatter) -> Result {
