@@ -7,6 +7,18 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.9.0] - 2024-02-26
+
+### Added
+- add macros: `ident_total`, `ident_unique`, `ident_total_unique`.
+
+### Changed
+- enable `std` feature by default.
+- rename `nightly_docs` feature to `docsrs`.
+
+### Removed
+- remove features: `safest`, `unsafest`.
+
 ## [0.8.0] - 2024-01-15
 
 ### Added
@@ -123,7 +135,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - new attribute macro `include_block`.
 
-[unreleased]: https://github.com/andamira/devela_macros/compare/v0.7.0...HEAD
+[unreleased]: https://github.com/andamira/devela_macros/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/andamira/devela_macros/releases/tag/v0.9.0
+[0.8.0]: https://github.com/andamira/devela_macros/releases/tag/v0.8.0
 [0.7.0]: https://github.com/andamira/devela_macros/releases/tag/v0.7.0
 [0.6.1]: https://github.com/andamira/devela_macros/releases/tag/v0.6.1
 [0.6.0]: https://github.com/andamira/devela_macros/releases/tag/v0.6.0
