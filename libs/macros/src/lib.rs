@@ -68,7 +68,7 @@ use alloc::{
 };
 
 extern crate proc_macro;
-use proc_macro::TokenStream;
+use proc_macro::{TokenStream, TokenTree};
 
 #[cfg(feature = "alloc")]
 #[cfg(test)]
@@ -198,4 +198,101 @@ pub fn coalesce(input: TokenStream) -> TokenStream {
     first_non_empty_arg
         .parse()
         .expect("Failed to parse TokenStream")
+}
+
+/// Returns the total number of [identifiers] in its input.
+///
+/// [identifiers]: https://doc.rust-lang.org/reference/identifiers.html
+///
+/// This macro does not differentiate between different kinds of identifiers
+/// nor check their validity in context. It simply counts all identifier,
+/// discarding the rest.
+///
+/// See also [`ident_unique!`], [`ident_total_unique!`].
+///
+/// # Examples
+/// ```
+/// # use devela_macros::ident_total;
+/// assert_eq![ident_total!(a, a 東 r#true; a3 != 3a), 5];
+/// ```
+#[proc_macro]
+pub fn ident_total(input: TokenStream) -> TokenStream {
+    let mut count = 0;
+    for token in input {
+        #[allow(clippy::single_match)]
+        match token {
+            TokenTree::Ident(_) => count += 1,
+            _ => {}
+        }
+    }
+    let result = format!("{}", count);
+    result.parse().unwrap()
+}
+
+/// Returns the number of *unique* [identifiers] in its input.
+///
+/// [identifiers]: https://doc.rust-lang.org/reference/identifiers.html
+///
+/// This macro does not differentiate between different kinds of identifiers
+/// nor check their validity in context. It simply counts all unique identifiers,
+/// discarding the rest.
+///
+/// See also [`ident_total!`], [`ident_total_unique!`].
+///
+/// # Examples
+/// ```
+/// # use devela_macros::ident_unique;
+/// assert_eq![ident_unique!(a, a 東 r#true; a3 != 3a), 4];
+/// ```
+#[proc_macro]
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
+pub fn ident_unique(input: TokenStream) -> TokenStream {
+    let mut unique = std::collections::HashSet::new();
+    for token in input {
+        #[allow(clippy::single_match)]
+        match token {
+            TokenTree::Ident(i) => {
+                unique.insert(i.to_string());
+            }
+            _ => {}
+        }
+    }
+    let result = format!("{}", unique.len());
+    result.parse().unwrap()
+}
+
+/// Returns the numbers of both *total* and *unique* [identifiers] in its input.
+///
+/// [identifiers]: https://doc.rust-lang.org/reference/identifiers.html
+///
+/// This macro does not differentiate between different kinds of identifiers
+/// nor check their validity in context. It simply counts all identifiers,
+/// discarding the rest, and returns an array with both the total and unique count.
+///
+/// See also [`ident_total!`], [`ident_unique!`].
+///
+/// # Examples
+/// ```
+/// # use devela_macros::ident_total_unique;
+/// assert_eq![ident_total_unique!(a, a 東 r#true; a3 != 3a), [5, 4]];
+/// ```
+#[proc_macro]
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
+pub fn ident_total_unique(input: TokenStream) -> TokenStream {
+    let mut unique = std::collections::HashSet::new();
+    let mut total = 0;
+    for token in input {
+        #[allow(clippy::single_match)]
+        match token {
+            TokenTree::Ident(i) => {
+                total += 1;
+                unique.insert(i.to_string());
+            }
+            _ => {}
+        }
+    }
+    let result = format!("[{}, {}]", total, unique.len());
+    result.parse().unwrap()
 }
