@@ -2,6 +2,8 @@ This project includes the following derived works:
 
 - A [modified][1] version of [stack_dst] by John Hodge, licensed as MIT OR Apache-2.0,
   in the [`data::dst`] module.
+- A [modified][2] version of [tupl] by *Dragoteryx*, licensed as MIT or Apache-2.0,
+  as part of the [`ExtTuple`] trait.
 - Adaptation of [opt_reduce] by Waffle Lapkin, licensed as MIT,
   as part of the [`OptionExt`] trait.
 - Adaptation of [fmtor] by Tyler Ruckinger, licensed as MIT OR Apache-2.0,
@@ -27,11 +29,11 @@ This project includes the following derived works:
 - Integration of [Xabc] algorithm openly published by *EternityForest*,
   as the [`Xabc`] RNG.
 
-[0]: https://github.com/andamira/devela/blob/main/src/fmt/int_buf/MODIFICATIONS.md
-[itoa]: https://crates.io/crates/itoa/1.0.9
 [1]: https://github.com/andamira/devela/blob/main/src/data/dst/MODIFICATIONS.md
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
 [`data::dst`]: https://docs.rs/devela/latest/devela/data/dst/index.html
+[2]: https://github.com/andamira/devela/blob/main/src/data/collections/tuple/MODIFICATIONS.md
+[tupl]: https://crates.io/crates/tupl/0.4.0
 [opt_reduce]: https://crates.io/crates/opt_reduce/1.0.0
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
 [option-ext]: https://crates.io/crates/option-ext/0.2.0

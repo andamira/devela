@@ -11,13 +11,15 @@
 #![allow(unused_imports)]
 
 /* always compiled, non-public modules */
+
 mod array;
 mod destaque;
 mod reexports;
 mod stack;
 mod traits;
+mod tuple; // ExtTuple, TupleFmt
 
-pub use {array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*};
+pub use {array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*, tuple::*};
 
 /* feature-gated, non-public modules */
 
@@ -31,7 +33,9 @@ pub use ext_vec::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*};
+    pub use super::{
+        array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*, tuple::*,
+    };
 
     // feature-gated
     #[cfg(feature = "alloc")]
