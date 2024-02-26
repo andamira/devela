@@ -28,32 +28,32 @@ proc-macro = true
 
 [features]
 
-default = ["alloc", "safe"]
+default = ["std", "safe"]
+# enables the most complete version of the documentation:
+docsrs = ["nightly", "std", "unsafe"]
 
 #* environment features *#
 
 std = ["alloc"]
 alloc = []
 
+
 #* safety features *#
 
 unsafe = [] # enables unsafe features in this crate (unused)
 safe = [] # forbids `unsafe` in this crate
-safest = ["safe"] # forbids `unsafe` recursively (unused)
-unsafest = ["unsafe"] # enables `unsafe` recursively (unused)
+
 
 #* nightly features *#
 
 nightly = [] # enables nightly features
-nightly_docs = [ # enables features for docs.rs
-	"nightly", "std", "unsafe"
-]
+
 
 # ------------------------------------------------------------------------------
 
 [package.metadata.docs.rs]
 no-default-features = true
-features = ["nightly_docs"]
+features = ["docsrs"]
 
 [badges]
 maintenance = { status = "experimental" }
