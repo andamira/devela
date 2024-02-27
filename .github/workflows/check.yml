@@ -70,10 +70,10 @@ jobs:
       - name: "Install nightly"
         uses: dtolnay/rust-toolchain@nightly
 
-      - name: "cargo +nightly doc -F docsrs"
-        run: cargo doc -F docsrs
+      - name: "cargo +nightly doc -F _docsrs_max"
+        run: cargo doc -F _docsrs_max
         env:
-          RUSTDOCFLAGS: --cfg docsrs
+          RUSTDOCFLAGS: --cfg _docsrs_max
 
   # 4. minimum supported Rust version
   msrv:

@@ -40,9 +40,13 @@ publish = true
 #* miscellaneous features *#
 
 # default = [] # no default features
+
 _exclude_example = [] # from testing
-# enables the most complete version of the documentation:
-docsrs = ["nightly", "all", "std", "unsafe", "dep", "libm"]
+
+# enables the most complete versions of the documentation:
+_docsrs = ["nightly", "all", "std", "unsafe", "dep", "libm"]
+_docsrs_max = ["nightly", "all", "std", "unsafe", "dep", "libm", "capability_max"]
+_docsrs_stable = ["all", "std", "unsafe", "dep", "libm"]
 
 
 #* environment features *#
@@ -158,16 +162,16 @@ nightly = [ # enables nightly features
 # Enabling extra capabilites can worsen compilation times.
 # Some relative compilation times are provided as a guide.
 
-_capability_max = [ # enables the maximum capabilities
+capability_max = [ # enables the maximum capabilities
 	"_tuple_arity_127",
 ]
 
 # The maximum tuple arity supported by ExtTuple:
-# By default the tuple arity is 15     # compile  5s
-_tuple_arity_31 = []                   # compile  8s
-_tuple_arity_63 = ["_tuple_arity_31"]  # compile 12s
-_tuple_arity_95 = ["_tuple_arity_63"]  # compile 18s
-_tuple_arity_127 = ["_tuple_arity_95"] # compile 28s
+# By default tuple arity is 15         # compile  4.9s
+_tuple_arity_31 = []                   # compile  5.3s
+_tuple_arity_63 = ["_tuple_arity_31"]  # compile  7.5s
+_tuple_arity_95 = ["_tuple_arity_63"]  # compile 10.5s
+_tuple_arity_127 = ["_tuple_arity_95"] # compile 14.9s
 
 
 #* dependency features *#
@@ -253,7 +257,7 @@ devela = { path = ".", features = ["all"] }
 
 [package.metadata.docs.rs]
 no-default-features = true
-features = ["docsrs"]
+features = ["_docsrs_max"]
 rustdoc-args = [ "--html-in-header", "./src/_docs/rustdoc-header.html" ]
 
 [badges]

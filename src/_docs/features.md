@@ -16,8 +16,12 @@ each other, and composable, except from the miscellaneous features.
 
 ### Miscellaneous features
 
-- `docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
+In this category there are features with varied purposes mostly for internal use.
+
+- `_docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
   - Enables: `std`, `all`, `unsafe`, `nightly`, `dep`, `libm`.
+- `_docsrs_max`: like `_docsrs` but also enables `capability_max`.
+- `_docsrs_stable`: like `_docsrs` but without enabling `nightly`.
 
 
 ### Environment features
@@ -123,7 +127,7 @@ In order to use any unsafe functionality:
 These semi-hidden features allows to fine-tune extra capabilities.
 Enabling them will likely worsen compilation times.
 
-- `_capabilities_max`: enables the maximum capabilities.
+- `capability_max`: enables the maximum capabilities.
 - `_tuple_arity_[31|63|96|127]`: increased arity support for [`ExtTuple`].
 
 [`ExtTuple`]: crate::data::collections::ExtTuple
