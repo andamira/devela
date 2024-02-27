@@ -13,11 +13,12 @@
 mod array_init;
 mod d1; // 1-dimensional
 mod d2; // 2-dimensional
+mod ext; // ExtArray, ArrayFmt
 
-pub use {array_init::*, d1::all::*, d2::all::*};
+pub use {array_init::*, d1::all::*, d2::all::*, ext::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{array_init::*, d1::all::*, d2::all::*};
+    pub use super::{array_init::*, d1::all::*, d2::all::*, ext::*};
 }
