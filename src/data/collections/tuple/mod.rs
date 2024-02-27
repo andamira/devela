@@ -71,28 +71,27 @@ pub trait ExtTuple: private::Sealed {
     #[rustfmt::skip]
     fn fmt(self) -> TupleFmt<Self> where Self: Sized { TupleFmt(self) }
 
-    ///
+    /// Returns a shared reference to the head of this tuple.
     fn head(&self) -> &Self::Head;
-    ///
+    /// Returns a shared reference to the tail of this tuple.
     fn tail(&self) -> &Self::Tail;
-    ///
+    /// Returns an exclusive reference to the head of this tuple.
     fn mut_head(&mut self) -> &mut Self::Head;
-    ///
+    /// Returns an exclusive reference to the tail of this tuple.
     fn mut_tail(&mut self) -> &mut Self::Tail;
 
-    /// Returns a tuple with the head element splitted from the rest.
+    /// Returns this tuple with the head element splitted from the rest.
     fn split_head(self) -> (Self::Head, Self::NoHead);
-    /// Returns a tuple with the tail element splitted from the rest.
+    /// Returns this tuple with the tail element splitted from the rest.
     fn split_tail(self) -> (Self::NoTail, Self::Tail);
 
-    /// Returns the tuple without the head.
+    /// Returns this tuple without the head.
     fn no_head(self) -> Self::NoHead;
-    /// Returns the tuple without the head.
+    /// Returns this tuple without the head.
     fn no_tail(self) -> Self::NoTail;
 
     /// Appends the given `value` to this tuple.
     fn append<T>(self, value: T) -> Self::Append<T>;
-
     /// Prepends the given `value` to this tuple.
     fn prepend<T>(self, value: T) -> Self::Prepend<T>;
 }
