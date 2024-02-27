@@ -6,6 +6,7 @@ Features are grouped in the following categories:
 - *Module*
 - *Safety*
 - *Nightly*
+- *Capability*
 - *Dependency*
 
 All features are disabled by default.
@@ -115,6 +116,17 @@ In order to use any unsafe functionality:
 - `nightly`: enables nightly features.
   - `nightly_coro`: enables `coroutines`, `coroutine_trait`, `iter_from_coroutine`.
   - `nightly_doc`: enables `doc_cfg`.
+
+
+### Capability features
+
+These semi-hidden features allows to fine-tune extra capabilities.
+Enabling them will likely worsen compilation times.
+
+- `_capabilities_max`: enables the maximum capabilities.
+- `_tuple_arity_[31|63|96|127]`: increased arity support for [`ExtTuple`].
+
+[`ExtTuple`]: crate::data::collections::ExtTuple
 
 
 ### Dependency features

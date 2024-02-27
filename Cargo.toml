@@ -32,6 +32,7 @@ publish = true
 # - Module
 # - Safety
 # - Nightly
+# - Capability
 # - Dependency
 
 [features]
@@ -150,6 +151,23 @@ nightly = [ # enables nightly features
 ] # specific unstable features:
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	nightly_doc = [] # doc_cfg
+
+
+#* capability features *#
+
+# Enabling extra capabilites can worsen compilation times.
+# Some relative compilation times are provided as a guide.
+
+_capability_max = [ # enables the maximum capabilities
+	"_tuple_arity_127",
+]
+
+# The maximum tuple arity supported by ExtTuple:
+# By default the tuple arity is 15     # compile  5s
+_tuple_arity_31 = []                   # compile  8s
+_tuple_arity_63 = ["_tuple_arity_31"]  # compile 12s
+_tuple_arity_95 = ["_tuple_arity_63"]  # compile 18s
+_tuple_arity_127 = ["_tuple_arity_95"] # compile 28s
 
 
 #* dependency features *#
