@@ -9,7 +9,6 @@
 mod ansi;
 
 // re-export private sub-modules
-#[cfg(feature = "ui_term")]
 pub use ansi::*;
 
 pub(crate) mod all {
