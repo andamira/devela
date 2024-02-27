@@ -5,6 +5,8 @@
 
 /// Represents a mismatch between an expected `need` and an encountered `have`.
 ///
+/// With optional contextual information in the `info` field.
+///
 /// This struct conveys optional information about the anticipated `need` and
 /// the observed `have`, allowing for either, both, or none to be specified.
 ///
@@ -15,6 +17,9 @@ pub struct Mismatch<N, H> {
 
     /// Information about something that was obtained, observed, or encountered.
     pub have: H,
+
+    /// Contextual information about the mismatch.
+    pub info: &'static str,
 }
 
 impl<N, H> Mismatch<N, H> {}
@@ -33,6 +38,7 @@ mod core_impls {
             Self {
                 need: self.need.clone(),
                 have: self.have.clone(),
+                info: self.info,
             }
         }
     }
@@ -46,6 +52,7 @@ mod core_impls {
             Self {
                 need: Default::default(),
                 have: Default::default(),
+                info: "",
             }
         }
     }
@@ -55,20 +62,25 @@ mod core_impls {
             let mut debug = f.debug_struct("Mismatch");
             debug.field("need", &self.need);
             debug.field("have", &self.have);
+            debug.field("info", &self.info);
             debug.finish()
         }
     }
 
     impl<N: fmt::Display, H: fmt::Display> fmt::Display for Mismatch<N, H> {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            write!(f, "Mismatch {{ need: {}, have: {} }}", self.need, self.have)
+            write!(
+                f,
+                "Mismatch {{ need: {}, have: {}, info: {} }}",
+                self.need, self.have, self.info
+            )
         }
     }
 
     impl<N: PartialEq, H: PartialEq> PartialEq for Mismatch<N, H> {
         #[inline]
         fn eq(&self, other: &Self) -> bool {
-            self.need == other.need && self.have == other.have
+            self.need == other.need && self.have == other.have && self.info == other.info
         }
     }
     impl<N: Eq, H: Eq> Eq for Mismatch<N, H> {}
@@ -77,7 +89,10 @@ mod core_impls {
         /// Compare need first. If they are equal, then compare have.
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             match self.need.partial_cmp(&other.need) {
-                Some(Ordering::Equal) => self.have.partial_cmp(&other.have),
+                Some(Ordering::Equal) => match self.have.partial_cmp(&other.have) {
+                    Some(Ordering::Equal) => self.info.partial_cmp(&other.info),
+                    other => other,
+                },
                 other => other,
             }
         }
@@ -86,7 +101,10 @@ mod core_impls {
         /// Compare need first. If they are equal, then compare have.
         fn cmp(&self, other: &Self) -> Ordering {
             match self.need.cmp(&other.need) {
-                Ordering::Equal => self.have.cmp(&other.have),
+                Ordering::Equal => match self.have.cmp(&other.have) {
+                    Ordering::Equal => self.info.cmp(&other.info),
+                    order => order,
+                },
                 order => order,
             }
         }

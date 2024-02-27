@@ -133,7 +133,7 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ
             if len == LEN {
                 Ok(())
             } else {
-                Err(MismatchedLength(Mismatch { need: LEN, have: len }))
+                Err(MismatchedLength(Mismatch { need: LEN, have: len, info: "X * Y != LEN" }))
             }
         } else {
             Err(Overflow)
@@ -147,11 +147,11 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ
     pub(crate) const fn panic_check_CRLEN() {
         if let Some(len) = X.checked_mul(Y) {
             if len != LEN {
-                panic![concat![ "Array2d Mismatch: Columns * Rows != LEN: ",
+                panic![concat![ "Array2d Mismatch: X * Y != LEN: ",
                     stringify!(X), " * ", stringify!(Y), " != ", stringify!(LEN) ]];
             }
         } else {
-            panic![concat![ "Array2d overflow: Columns * Rows (",
+            panic![concat![ "Array2d overflow: X * Y (",
                 stringify!(Y), " * ", stringify!(X), " > usize::MAX)" ]];
         }
     }
