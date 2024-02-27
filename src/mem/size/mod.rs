@@ -9,7 +9,7 @@ mod expr;
 mod reexports;
 mod size;
 
-pub use {bit::*, expr::mem_size_of_expr, reexports::*, size::*};
+pub use {bit::*, expr::*, reexports::*, size::*};
 
 pub(crate) mod all {
     // always compiled

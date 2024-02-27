@@ -43,6 +43,7 @@ pub use ident_const_index;
 /// Supports optional commas for separators.
 /// # Examples
 /// ```
+/// # #![allow(deprecated)]
 /// # use devela::code::ident_total_count;
 /// assert_eq![5, ident_total_count!(one, two, three, four, five)]; // with commas
 /// assert_eq![4, ident_total_count!(one two three four)]; // without commas
