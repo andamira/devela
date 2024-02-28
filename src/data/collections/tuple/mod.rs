@@ -76,9 +76,9 @@ pub trait ExtTuple: private::Sealed {
     /// Returns a shared reference to the tail of this tuple.
     fn tail(&self) -> &Self::Tail;
     /// Returns an exclusive reference to the head of this tuple.
-    fn mut_head(&mut self) -> &mut Self::Head;
+    fn head_mut(&mut self) -> &mut Self::Head;
     /// Returns an exclusive reference to the tail of this tuple.
-    fn mut_tail(&mut self) -> &mut Self::Tail;
+    fn tail_mut(&mut self) -> &mut Self::Tail;
 
     /// Returns this tuple with the head element splitted from the rest.
     fn split_head(self) -> (Self::Head, Self::NoHead);
@@ -114,8 +114,8 @@ mod manual_impls {
         type Prepend<T> = (T,);
         fn head(&self) -> &Self::Head { self }
         fn tail(&self) -> &Self::Tail { self }
-        fn mut_head(&mut self) -> &mut Self::Head { self }
-        fn mut_tail(&mut self) -> &mut Self::Tail { self }
+        fn head_mut(&mut self) -> &mut Self::Head { self }
+        fn tail_mut(&mut self) -> &mut Self::Tail { self }
         fn split_head(self) -> (Self::Head, Self::NoHead) { ((), ()) }
         fn split_tail(self) -> (Self::NoTail, Self::Tail) { ((), ()) }
         fn no_head(self) -> Self::NoHead {}
@@ -146,8 +146,8 @@ mod manual_impls {
         type Prepend<T> = (T, HEADTAIL);
         fn head(&self) -> &Self::Head { &self.0 }
         fn tail(&self) -> &Self::Tail { &self.0 }
-        fn mut_head(&mut self) -> &mut Self::Head { &mut self.0 }
-        fn mut_tail(&mut self) -> &mut Self::Tail { &mut self.0 }
+        fn head_mut(&mut self) -> &mut Self::Head { &mut self.0 }
+        fn tail_mut(&mut self) -> &mut Self::Tail { &mut self.0 }
         fn split_head(self) -> (Self::Head, Self::NoHead) { (self.0, ()) }
         fn split_tail(self) -> (Self::NoTail, Self::Tail) { ((), self.0) }
         fn no_head(self) -> Self::NoHead {}
@@ -178,8 +178,8 @@ mod manual_impls {
         type Prepend<T> = (T, HEAD, TAIL);
         fn head(&self) -> &Self::Head { &self.0 }
         fn tail(&self) -> &Self::Tail { &self.1 }
-        fn mut_head(&mut self) -> &mut Self::Head { &mut self.0 }
-        fn mut_tail(&mut self) -> &mut Self::Tail { &mut self.1 }
+        fn head_mut(&mut self) -> &mut Self::Head { &mut self.0 }
+        fn tail_mut(&mut self) -> &mut Self::Tail { &mut self.1 }
         fn split_head(self) -> (Self::Head, Self::NoHead) { (self.0, (self.1,)) }
         fn split_tail(self) -> (Self::NoTail, Self::Tail) { ((self.0,), self.1) }
         fn no_head(self) -> Self::NoHead { (self.1,) }
@@ -220,8 +220,8 @@ macro_rules! impl_tuple {
 
             fn head(&self) -> &Self::Head { &self.0 }
             fn tail(&self) -> &Self::Tail { let (.., tail) = self; tail }
-			fn mut_head(&mut self) -> &mut Self::Head { &mut self.0 }
-            fn mut_tail(&mut self) -> &mut Self::Tail { let (.., tail) = self; tail }
+			fn head_mut(&mut self) -> &mut Self::Head { &mut self.0 }
+            fn tail_mut(&mut self) -> &mut Self::Tail { let (.., tail) = self; tail }
 
 			fn split_head(self) -> (Self::Head, Self::NoHead) {
 				let (head, $t1, $($tn,)* tail) = self; (head, ($t1, $($tn,)* tail))
