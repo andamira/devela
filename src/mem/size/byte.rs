@@ -1,4 +1,4 @@
-// devela::mem::size::size
+// devela::mem::size::byte
 //
 //! Functionality related to byte sizes.
 //
@@ -6,13 +6,13 @@
 use super::super::{mem_align_of, mem_align_of_val, mem_size_of, mem_size_of_val, Mem};
 use crate::code::iif;
 
-impl<T> Size for T {}
+impl<T> ByteSize for T {}
 
 /// Type size information.
 ///
 /// This trait is automatically implemented for every `Sized` type.
 // (this allows use to have associated constants depending on Self)
-pub trait Size: Mem + Sized {
+pub trait ByteSize: Mem + Sized {
     /// The alignment of this type in bytes.
     const BYTE_ALIGN: usize = mem_align_of::<Self>();
 
@@ -45,7 +45,7 @@ pub trait Size: Mem + Sized {
     ///
     /// # Examples
     /// ```
-    /// use devela::mem::Size;
+    /// use devela::mem::ByteSize;
     ///
     /// assert_eq![().ptr_size_ratio(), [1, 0]];
     /// assert_eq![1_usize.ptr_size_ratio(), [1, 1]];

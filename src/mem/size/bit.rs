@@ -8,7 +8,7 @@
 // - trait definition
 // - trait impls
 
-use crate::mem::{BareBox, Size};
+use crate::mem::{BareBox, ByteSize};
 
 use core::{
     cmp,
@@ -107,7 +107,7 @@ pub const fn bytes_from_bits(bit_size: usize) -> usize {
 /// Indicates a size of exactly `LEN` bits for the relevant data part of this type.
 ///
 /// E.g. a `bool` has a BitSize of 1 bit.
-pub trait BitSize<const LEN: usize>: Size {
+pub trait BitSize<const LEN: usize>: ByteSize {
     /// The bit size of this type (only the relevant data part, without padding).
     ///
     /// # Panics
