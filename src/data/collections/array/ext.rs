@@ -7,24 +7,25 @@ use core::fmt;
 
 /// A formatting wrapper for [`ExtArray`]s, implementing `Display` and `Debug`.
 #[repr(transparent)]
-pub struct ArrayFmt<T: ExtArray>(pub T);
+pub struct ArrayFmt<'a, T: ExtArray>(&'a T);
 
 // Private traits for arrays with elements that implement Debug or Display.
 trait ArrayDisplay: ExtArray {
     fn fmt_display(&self, f: &mut fmt::Formatter) -> fmt::Result;
 }
+
 // this one is a bit redundant since arrays of any size can impl Debug,
 // nevertheless it's better if we can offer the same api in both cases.
 trait ArrayDebug: ExtArray {
     fn fmt_debug(&self, f: &mut fmt::Formatter) -> fmt::Result;
 }
 
-impl<T: ArrayDisplay> fmt::Display for ArrayFmt<T> {
+impl<'a, T: ArrayDisplay> fmt::Display for ArrayFmt<'a, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt_display(f)
     }
 }
-impl<T: ArrayDebug> fmt::Debug for ArrayFmt<T> {
+impl<'a, T: ArrayDebug> fmt::Debug for ArrayFmt<'a, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt_debug(f)
     }
@@ -42,19 +43,12 @@ pub trait ExtArray: private::Sealed {
 
     /// Wraps the array in a [`ArrayFmt`] for formatting purposes.
     #[rustfmt::skip]
-    fn fmt(self) -> ArrayFmt<Self> where Self: Sized { ArrayFmt(self) }
+    fn fmt(&self) -> ArrayFmt<Self> where Self: Sized { ArrayFmt(self) }
 }
 
 impl<T, const LEN: usize> private::Sealed for [T; LEN] {}
 impl<T, const LEN: usize> ExtArray for [T; LEN] {
     const LEN: usize = LEN;
-
-    fn fmt(self) -> ArrayFmt<Self>
-    where
-        Self: Sized,
-    {
-        ArrayFmt(self)
-    }
 }
 
 impl<T, const LEN: usize> ArrayDisplay for [T; LEN]

@@ -7,7 +7,7 @@ use core::fmt;
 
 /// A formatting wrapper for [`ExtTuple`]s, implementing `Display` and `Debug`.
 #[repr(transparent)]
-pub struct TupleFmt<T: ExtTuple>(pub T);
+pub struct TupleFmt<'a, T: ExtTuple>(&'a T);
 
 // Private traits for tuples with elements that implement Debug or Display.
 trait TupleDebug: ExtTuple {
@@ -17,12 +17,12 @@ trait TupleDisplay: ExtTuple {
     fn fmt_display(&self, f: &mut fmt::Formatter) -> fmt::Result;
 }
 
-impl<T: TupleDebug> fmt::Debug for TupleFmt<T> {
+impl<'a, T: TupleDebug> fmt::Debug for TupleFmt<'a, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt_debug(f)
     }
 }
-impl<T: TupleDisplay> fmt::Display for TupleFmt<T> {
+impl<'a, T: TupleDisplay> fmt::Display for TupleFmt<'a, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt_display(f)
     }
@@ -69,7 +69,7 @@ pub trait ExtTuple: private::Sealed {
 
     /// Wraps the tuple in a [`TupleFmt`] for formatting purposes.
     #[rustfmt::skip]
-    fn fmt(self) -> TupleFmt<Self> where Self: Sized { TupleFmt(self) }
+    fn fmt(&self) -> TupleFmt<Self> where Self: Sized { TupleFmt(self) }
 
     /// Returns a shared reference to the head of this tuple.
     fn head(&self) -> &Self::Head;
