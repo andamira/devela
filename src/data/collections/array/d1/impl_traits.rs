@@ -28,37 +28,37 @@ impl<T, const LEN: usize, S: Storage> Deref for Array<T, LEN, S> {
     type Target = [T];
 
     fn deref(&self) -> &Self::Target {
-        self.array.deref()
+        self.data.deref()
     }
 }
 // DerefMut
 impl<T, const LEN: usize, S: Storage> DerefMut for Array<T, LEN, S> {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        self.array.deref_mut()
+        self.data.deref_mut()
     }
 }
 // AsRef
 impl<T, const LEN: usize, S: Storage> AsRef<[T; LEN]> for Array<T, LEN, S> {
     fn as_ref(&self) -> &[T; LEN] {
-        &self.array
+        &self.data
     }
 }
 // AsMut
 impl<T, const LEN: usize, S: Storage> AsMut<[T; LEN]> for Array<T, LEN, S> {
     fn as_mut(&mut self) -> &mut [T; LEN] {
-        &mut self.array
+        &mut self.data
     }
 }
 // Borrow
 impl<T, const LEN: usize, S: Storage> Borrow<[T; LEN]> for Array<T, LEN, S> {
     fn borrow(&self) -> &[T; LEN] {
-        &self.array
+        &self.data
     }
 }
 // BorrowMut
 impl<T, const LEN: usize, S: Storage> BorrowMut<[T; LEN]> for Array<T, LEN, S> {
     fn borrow_mut(&mut self) -> &mut [T; LEN] {
-        &mut self.array
+        &mut self.data
     }
 }
 
@@ -69,7 +69,7 @@ where
 {
     fn clone(&self) -> Self {
         Self {
-            array: self.array.clone(),
+            data: self.data.clone(),
         }
     }
 }
@@ -84,9 +84,20 @@ where
     S::Stored<[T; LEN]>: fmt::Debug,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut debug = f.debug_struct(stringify![Array]);
-        debug.field("LEN", &LEN);
-        debug.field("", &self.array);
+        let mut debug = f.debug_struct("Array");
+        debug
+            .field("T", &core::any::type_name::<T>())
+            .field("S", &S::name())
+            .field("LEN", &LEN);
+
+        const MAX: usize = 16;
+        if LEN <= MAX {
+            debug.field("data", &self.data);
+        } else {
+            let first = &self.data[..MAX / 2];
+            let last = &self.data[LEN - MAX / 2..];
+            debug.field("array", &(&first, "...", &last));
+        }
         debug.finish()
     }
 }
@@ -96,7 +107,7 @@ where
     S::Stored<[T; LEN]>: PartialEq,
 {
     fn eq(&self, other: &Self) -> bool {
-        self.array == other.array && self.len() == other.len()
+        self.data == other.data && self.len() == other.len()
     }
 }
 // T:Eq
@@ -107,7 +118,7 @@ where
     S::Stored<[T; LEN]>: PartialOrd,
 {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.array.partial_cmp(&other.array)
+        self.data.partial_cmp(&other.data)
     }
 }
 // T:Ord
@@ -116,7 +127,7 @@ where
     S::Stored<[T; LEN]>: Ord,
 {
     fn cmp(&self, other: &Self) -> Ordering {
-        self.array.cmp(&other.array)
+        self.data.cmp(&other.data)
     }
 }
 // T:Hash
@@ -125,7 +136,7 @@ where
     S::Stored<[T; LEN]>: Hash,
 {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        self.array.hash(state)
+        self.data.hash(state)
     }
 }
 
@@ -134,8 +145,8 @@ impl<T: Default, const LEN: usize> Default for Array<T, LEN, Bare> {
     /// Returns an array, allocated in the stack,
     /// using the default value to fill the data.
     fn default() -> Self {
-        let array = BareBox::new(array_init!(default [T; LEN], "safe_data", "unsafe_array"));
-        Array { array }
+        let data = BareBox::new(array_init!(default [T; LEN], "safe_data", "unsafe_array"));
+        Array { data }
     }
 }
 // S:Bare + T:ConstDefault
@@ -144,7 +155,7 @@ impl<T: ConstDefault, const LEN: usize> ConstDefault for Array<T, LEN, Bare> {
     /// using the default value to fill the data.
     const DEFAULT: Self = {
         Array {
-            array: BareBox::new([T::DEFAULT; LEN]),
+            data: BareBox::new([T::DEFAULT; LEN]),
         }
     };
 }
@@ -162,21 +173,21 @@ impl<T: Default, const LEN: usize> Default for Array<T, LEN, Boxed> {
     /// let mut s = Array::<i32, 100, Boxed>::default();
     /// ```
     fn default() -> Self {
-        let array = array_init!(default_heap [T; LEN], "safe_data", "unsafe_array");
-        Array { array }
+        let data = array_init!(default_heap [T; LEN], "safe_data", "unsafe_array");
+        Array { data }
     }
 }
 
 impl<T, const LEN: usize> From<Array<T, LEN, Bare>> for [T; LEN] {
     fn from(array: Array<T, LEN, Bare>) -> [T; LEN] {
-        array.array.0
+        array.data.0
     }
 }
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T, const LEN: usize> From<Array<T, LEN, Boxed>> for Box<[T; LEN]> {
     fn from(array: Array<T, LEN, Boxed>) -> Box<[T; LEN]> {
-        array.array
+        array.data
     }
 }
 
@@ -198,8 +209,8 @@ where
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
     fn from(iterator: I) -> Array<T, LEN, Bare> {
-        let array = BareBox::new(array_init!(iter [T; LEN], "safe_data", "unsafe_array", iterator));
-        Array { array }
+        let data = BareBox::new(array_init!(iter [T; LEN], "safe_data", "unsafe_array", iterator));
+        Array { data }
     }
 }
 
@@ -219,8 +230,8 @@ where
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
     fn from(iterator: I) -> Array<T, LEN, Boxed> {
-        let array = array_init!(iter_heap [T; LEN], "safe_data", "unsafe_array", iterator);
-        Array { array }
+        let data = array_init!(iter_heap [T; LEN], "safe_data", "unsafe_array", iterator);
+        Array { data }
     }
 }
 
@@ -236,7 +247,7 @@ where
     fn bitand(self, rhs: Self) -> Self::Output {
         let mut result = self;
         for i in 0..LEN {
-            result.array[i] = result.array[i] & rhs.array[i];
+            result.data[i] = result.data[i] & rhs.data[i];
         }
         result
     }
@@ -251,7 +262,7 @@ where
     fn bitor(self, rhs: Self) -> Self::Output {
         let mut result = self;
         for i in 0..LEN {
-            result.array[i] = result.array[i] | rhs.array[i];
+            result.data[i] = result.data[i] | rhs.data[i];
         }
         result
     }
@@ -266,7 +277,7 @@ where
     fn bitxor(self, rhs: Self) -> Self::Output {
         let mut result = self;
         for i in 0..LEN {
-            result.array[i] = result.array[i] ^ rhs.array[i];
+            result.data[i] = result.data[i] ^ rhs.data[i];
         }
         result
     }
@@ -279,7 +290,7 @@ where
 {
     fn bitand_assign(&mut self, rhs: Self) {
         for i in 0..LEN {
-            self.array[i] &= rhs.array[i];
+            self.data[i] &= rhs.data[i];
         }
     }
 }
@@ -291,7 +302,7 @@ where
 {
     fn bitor_assign(&mut self, rhs: Self) {
         for i in 0..LEN {
-            self.array[i] |= rhs.array[i];
+            self.data[i] |= rhs.data[i];
         }
     }
 }
@@ -303,7 +314,7 @@ where
 {
     fn bitxor_assign(&mut self, rhs: Self) {
         for i in 0..LEN {
-            self.array[i] ^= rhs.array[i];
+            self.data[i] ^= rhs.data[i];
         }
     }
 }
@@ -318,7 +329,7 @@ where
     fn not(self) -> Self::Output {
         let mut result = self;
         for i in 0..LEN {
-            result.array[i] = !result.array[i];
+            result.data[i] = !result.data[i];
         }
         result
     }

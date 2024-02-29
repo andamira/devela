@@ -14,7 +14,7 @@ use crate::{
 
 /* types */
 
-/// A stack backed by an [`Array`].
+/// A static stack backed by an [`Array`].
 ///
 /// It is generic in respect to its
 /// elements (`T`),
@@ -130,7 +130,7 @@ use crate::{
 ///     [`own_tuck2`][Self::own_tuck2]*([uc][Self::own_tuck2_unchecked])*.
 #[must_use]
 pub struct Stack<T, const CAP: usize, IDX, S: Storage = Bare> {
-    pub(super) array: Array<T, CAP, S>,
+    pub(super) data: Array<T, CAP, S>,
     pub(super) len: IDX,
 }
 

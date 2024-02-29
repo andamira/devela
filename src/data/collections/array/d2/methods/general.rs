@@ -38,7 +38,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     pub fn with_cloned(element: T) -> Result<Self> {
         Self::check_CR()?;
         Ok(Self {
-            array: Array::<T, CR, Bare>::with_cloned(element),
+            data: Array::<T, CR, Bare>::with_cloned(element),
         })
     }
 }
@@ -60,7 +60,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     pub const fn with_copied(element: T) -> Result<Self> {
         match Self::check_CR() {
             Ok(_) => Ok(Self {
-                array: Array::<T, CR, Bare>::with_copied(element),
+                data: Array::<T, CR, Bare>::with_copied(element),
             }),
             Err(e) => Err(e),
         }
@@ -86,7 +86,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     pub fn with_cloned(element: T) -> Result<Self> {
         Self::check_CR()?;
         Ok(Self {
-            array: Array::<T, CR, Boxed>::with_cloned(element),
+            data: Array::<T, CR, Boxed>::with_cloned(element),
         })
     }
 }
@@ -166,7 +166,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     // /// assert_eq![s.as_slice(), &[1, 2, 3]];
     // /// ```
     #[inline] #[must_use]
-    pub fn as_slice(&self) -> &[T] { self.array.as_slice() }
+    pub fn as_slice(&self) -> &[T] { self.data.as_slice() }
 
     /// Returns the stack as an exclusive slice.
     // /// # Examples
@@ -176,7 +176,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     // /// assert_eq![s.as_mut_slice(), &mut [1, 2, 3]];
     // /// ```
     #[inline] #[must_use]
-    pub fn as_mut_slice(&mut self) -> &mut [T] { self.array.as_mut_slice() }
+    pub fn as_mut_slice(&mut self) -> &mut [T] { self.data.as_mut_slice() }
 }
 
 // S:Bare
@@ -186,7 +186,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 {
     /// Returns the inner [`BareBox`]ed primitive array.
     #[inline] #[must_use]
-    pub fn into_array(self) -> [T; CR] { self.array.into_array() }
+    pub fn into_array(self) -> [T; CR] { self.data.into_array() }
 }
 
 // S:Bare, T:Copy
@@ -196,7 +196,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 {
     /// Returns the inner [`BareBox`]ed primitive array in compile-time.
     #[inline] #[must_use]
-    pub const fn into_array_const(self) -> [T; CR] { self.array.into_array_const() }
+    pub const fn into_array_const(self) -> [T; CR] { self.data.into_array_const() }
 }
 
 // S:Boxed
@@ -208,15 +208,15 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 {
     /// Returns the inner [`Box`]ed primitive array.
     #[inline] #[must_use]
-    pub fn into_array(self) -> Box<[T; CR]> { self.array.into_array() }
+    pub fn into_array(self) -> Box<[T; CR]> { self.data.into_array() }
 
     /// Returns the inner [`Box`]ed primitive array as a slice.
     #[inline] #[must_use]
-    pub fn into_slice(self) -> Box<[T]> { self.array.into_slice() }
+    pub fn into_slice(self) -> Box<[T]> { self.data.into_slice() }
 
     /// Returns the inner [`Box`]ed primitive array as a `Vec`.
     #[inline] #[must_use]
-    pub fn into_vec(self) -> Vec<T> { self.array.into_vec() }
+    pub fn into_vec(self) -> Vec<T> { self.data.into_vec() }
 }
 
 // T: Clone
@@ -226,7 +226,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
 {
     /// Fills all elements of the grid with the given `element`.
     #[inline]
-    pub fn fill(&mut self, element: T) { self.array.fill(element) }
+    pub fn fill(&mut self, element: T) { self.data.fill(element) }
 }
 
 // T:PartialEq
@@ -250,6 +250,6 @@ impl<
     #[inline]
     #[must_use]
     pub fn contains(&self, element: &T) -> bool {
-        self.array.iter().any(|n| n == element)
+        self.data.iter().any(|n| n == element)
     }
 }

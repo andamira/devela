@@ -50,7 +50,7 @@ macro_rules! impl_destaque {
             pub fn new(element: T) -> Result<Self> {
                 if CAP <= $IDX::MAX as usize {
                     Ok(Self {
-                        array: Array::<T, CAP, Bare>::with_cloned(element),
+                        data: Array::<T, CAP, Bare>::with_cloned(element),
                         front: 0,
                         back: 0,
                         len: 0,
@@ -73,8 +73,8 @@ macro_rules! impl_destaque {
             /// ```
             pub const fn new_copied(element: T) -> Result<Self> {
                 if CAP <= $IDX::MAX as usize {
-                    let array = Array::with_copied(element);
-                    Ok(Self { array, front: 0, back: 0, len: 0 })
+                    let data = Array::with_copied(element);
+                    Ok(Self { data, front: 0, back: 0, len: 0 })
                 } else {
                     Err(OutOfBounds(Some(CAP)))
                 }
@@ -94,7 +94,7 @@ macro_rules! impl_destaque {
             /// ```
             pub fn new(element: T) -> Self {
                 Self {
-                    array: Array::<T, CAP, Boxed>::with_cloned(element),
+                    data: Array::<T, CAP, Boxed>::with_cloned(element),
                     front: 0,
                     back: 0,
                     len: 0,
@@ -112,7 +112,7 @@ macro_rules! impl_destaque {
             /// ```
             pub const fn from_array_const(arr: [T; CAP]) -> Destaque<T, CAP, $IDX, Bare> {
                 Self {
-                    array: Array::new_bare(arr),
+                    data: Array::new_bare(arr),
                     front: 0,
                     back: 0,
                     len: CAP as $IDX,
@@ -129,7 +129,7 @@ macro_rules! impl_destaque {
             /// ```
             pub fn from_array(arr: [T; CAP]) -> Destaque<T, CAP, $IDX, S> {
                 Self {
-                    array: Array::new(arr),
+                    data: Array::new(arr),
                     front: 0,
                     back: 0,
                     len: CAP as $IDX,
@@ -212,12 +212,12 @@ macro_rules! impl_destaque {
                     (&[], &[])
                 } else if self.front < self.back {
                     // Non-wrap-around case
-                    let slice = &self.array[self.front as usize..self.back as usize];
+                    let slice = &self.data[self.front as usize..self.back as usize];
                     (slice, &[])
                 } else {
                     // Wrap-around case
-                    let first_slice = &self.array[self.front as usize..CAP];
-                    let second_slice = &self.array[..self.back as usize];
+                    let first_slice = &self.data[self.front as usize..CAP];
+                    let second_slice = &self.data[..self.back as usize];
                     (first_slice, second_slice)
                 }
             }
@@ -265,7 +265,7 @@ macro_rules! impl_destaque {
                     Err(NotEnoughSpace(Some(1)))
                 } else {
                     self.front = (self.front + CAP as $IDX - 1) % CAP as $IDX;
-                    self.array[self.front as usize] = element;
+                    self.data[self.front as usize] = element;
                     self.len += 1;
                     Ok(())
                 }
@@ -277,7 +277,7 @@ macro_rules! impl_destaque {
             #[inline]
             pub fn push_front_unchecked(&mut self, element: T) {
                 self.front = (self.front + CAP as $IDX - 1) % CAP as $IDX;
-                self.array[self.front as usize] = element;
+                self.data[self.front as usize] = element;
                 self.len += 1;
             }
 
@@ -304,7 +304,7 @@ macro_rules! impl_destaque {
                 }
                 // push_front
                 self.front = (self.front + CAP as $IDX - 1) % CAP as $IDX;
-                self.array[self.front as usize] = element;
+                self.data[self.front as usize] = element;
                 self.len += 1;
                 overridden
             }
@@ -348,7 +348,7 @@ macro_rules! impl_destaque {
             /// Panics if the destaque is full.
             #[inline]
             pub fn push_back_unchecked(&mut self, element: T) {
-                self.array[self.back as usize] = element;
+                self.data[self.back as usize] = element;
                 self.back = (self.back + 1) % CAP as $IDX;
                 self.len += 1;
             }
@@ -375,7 +375,7 @@ macro_rules! impl_destaque {
                     self.len -= 1;
                 }
                 // push_back
-                self.array[self.back as usize] = element;
+                self.data[self.back as usize] = element;
                 self.back = (self.back + 1) % CAP as $IDX;
                 self.len += 1;
                 overridden
@@ -414,7 +414,7 @@ macro_rules! impl_destaque {
                     // MOTIVATION: to not depend on T: Clone
                     // SAFETY: we're not gonna access the value, but move it out
                     let e = unsafe {
-                        core::ptr::read((self.array.get_unchecked(self.front as usize)) as *const T)
+                        core::ptr::read((self.data.get_unchecked(self.front as usize)) as *const T)
                     };
                     self.front = (self.front + 1) % CAP as $IDX;
                     self.len -= 1;
@@ -461,7 +461,7 @@ macro_rules! impl_destaque {
                     // MOTIVATION: to not depend on T: Clone
                     // SAFETY: we're not gonna access the value, but move it out
                     let e = unsafe {
-                        core::ptr::read((self.array.get_unchecked(self.back as usize)) as *const T)
+                        core::ptr::read((self.data.get_unchecked(self.back as usize)) as *const T)
                     };
                     self.len -= 1;
                     Ok(e)
@@ -487,7 +487,7 @@ macro_rules! impl_destaque {
                     Err(NotEnoughElements(Some(1)))
                 } else {
                     let bi = self.idx_back(0);
-                    Ok(&self.array[bi])
+                    Ok(&self.data[bi])
                 }
             }
 
@@ -508,7 +508,7 @@ macro_rules! impl_destaque {
                     Err(NotEnoughElements(Some(1)))
                 } else {
                     let bi = self.idx_back(0);
-                    Ok(&mut self.array[bi])
+                    Ok(&mut self.data[bi])
                 }
             }
 
@@ -529,7 +529,7 @@ macro_rules! impl_destaque {
                     Err(NotEnoughElements(Some(nth as usize)))
                 } else {
                     let bi = self.idx_back(nth);
-                    Ok(&self.array[bi])
+                    Ok(&self.data[bi])
                 }
             }
 
@@ -550,7 +550,7 @@ macro_rules! impl_destaque {
                     Err(NotEnoughElements(Some(nth as usize)))
                 } else {
                     let bi = self.idx_back(nth);
-                    Ok(&mut self.array[bi])
+                    Ok(&mut self.data[bi])
                 }
             }
 
@@ -571,7 +571,7 @@ macro_rules! impl_destaque {
                     Err(NotEnoughElements(Some(1)))
                 } else {
                     let fi = self.idx_front(0);
-                    Ok(&self.array[fi])
+                    Ok(&self.data[fi])
                 }
             }
 
@@ -592,7 +592,7 @@ macro_rules! impl_destaque {
                     Err(NotEnoughElements(Some(1)))
                 } else {
                     let fi = self.idx_front(0);
-                    Ok(&mut self.array[fi])
+                    Ok(&mut self.data[fi])
                 }
             }
 
@@ -613,7 +613,7 @@ macro_rules! impl_destaque {
                     Err(NotEnoughElements(Some(nth as usize)))
                 } else {
                     let bi = self.idx_front(nth);
-                    Ok(&self.array[bi])
+                    Ok(&self.data[bi])
                 }
             }
 
@@ -634,7 +634,7 @@ macro_rules! impl_destaque {
                     Err(NotEnoughElements(Some(nth as usize)))
                 } else {
                     let bi = self.idx_front(nth);
-                    Ok(&mut self.array[bi])
+                    Ok(&mut self.data[bi])
                 }
             }
 
@@ -784,7 +784,7 @@ macro_rules! impl_destaque {
             pub fn swap_back_unchecked(&mut self) {
                 let bi0 = self.idx_back(0);
                 let bi1 = self.idx_back(1);
-                self.array.swap(bi0, bi1);
+                self.data.swap(bi0, bi1);
             }
 
             /// Swaps the first two elements at the front of the destaque.
@@ -815,7 +815,7 @@ macro_rules! impl_destaque {
             pub fn swap_front_unchecked(&mut self) {
                 let fi0 = self.idx_front(0);
                 let fi1 = self.idx_front(1);
-                self.array.swap(fi0, fi1);
+                self.data.swap(fi0, fi1);
             }
 
             /// Swaps the last two pairs of elements at the back of the destaque.
@@ -847,8 +847,8 @@ macro_rules! impl_destaque {
                 let bi1 = self.idx_back(1);
                 let bi2 = self.idx_back(2);
                 let bi3 = self.idx_back(3);
-                self.array.swap(bi1, bi3);
-                self.array.swap(bi0, bi2);
+                self.data.swap(bi1, bi3);
+                self.data.swap(bi0, bi2);
             }
 
             /// Swaps the first two pairs of elements at the front of the destaque.
@@ -880,8 +880,8 @@ macro_rules! impl_destaque {
                 let fi1 = self.idx_front(1);
                 let fi2 = self.idx_front(2);
                 let fi3 = self.idx_front(3);
-                self.array.swap(fi1, fi3);
-                self.array.swap(fi0, fi2);
+                self.data.swap(fi1, fi3);
+                self.data.swap(fi0, fi2);
             }
 
             /// Swaps the front and back elements.
@@ -903,7 +903,7 @@ macro_rules! impl_destaque {
                 } else {
                     let bi0 = self.idx_back(0);
                     let fi0 = self.idx_front(0);
-                    self.array.swap(bi0, fi0);
+                    self.data.swap(bi0, fi0);
                     Ok(())
                 }
             }
@@ -928,8 +928,8 @@ macro_rules! impl_destaque {
                     let bi1 = self.idx_back(1);
                     let fi0 = self.idx_front(0);
                     let fi1 = self.idx_front(1);
-                    self.array.swap(bi0, fi1);
-                    self.array.swap(bi1, fi0);
+                    self.data.swap(bi0, fi1);
+                    self.data.swap(bi1, fi0);
                     Ok(())
                 }
             }
@@ -956,7 +956,7 @@ macro_rules! impl_destaque {
                     // equivalent to: self.push_front(self.pop_back()?)?
                     self.back = (self.back + CAP as $IDX - 1) % CAP as $IDX;
                     self.front = (self.front + CAP as $IDX - 1) % CAP as $IDX;
-                    self.array.swap(self.back as usize, self.front as usize);
+                    self.data.swap(self.back as usize, self.front as usize);
                 }
             }
 
@@ -981,7 +981,7 @@ macro_rules! impl_destaque {
                 for _ in 0..nth as usize {
                     self.back = (self.back + CAP as $IDX - 1) % CAP as $IDX;
                     self.front = (self.front + CAP as $IDX - 1) % CAP as $IDX;
-                    self.array.swap(self.back as usize, self.front as usize);
+                    self.data.swap(self.back as usize, self.front as usize);
                 }
             }
 
@@ -1003,7 +1003,7 @@ macro_rules! impl_destaque {
             pub fn rot_left(&mut self) {
                 if !self.is_empty() {
                     // equivalent to: self.push_back(self.pop_front()?)?
-                    self.array.swap(self.back as usize, self.front as usize);
+                    self.data.swap(self.back as usize, self.front as usize);
                     self.back = (self.back + 1) % CAP as $IDX;
                     self.front = (self.front + 1) % CAP as $IDX;
                 }
@@ -1028,7 +1028,7 @@ macro_rules! impl_destaque {
                 // don't rotate more than necessary
                 let nth = nth as usize % self.len() as usize;
                 for _ in 0..nth {
-                    self.array.swap(self.back as usize, self.front as usize);
+                    self.data.swap(self.back as usize, self.front as usize);
                     self.back = (self.back + 1) % CAP as $IDX;
                     self.front = (self.front + 1) % CAP as $IDX;
                 }
@@ -1059,7 +1059,7 @@ macro_rules! impl_destaque {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
                 } else {
-                    let e = self.array[self.front as usize].clone();
+                    let e = self.data[self.front as usize].clone();
                     self.front = (self.front + 1) % CAP as $IDX;
                     self.len -= 1;
                     Ok(e)
@@ -1098,7 +1098,7 @@ macro_rules! impl_destaque {
                     Err(NotEnoughElements(Some(1)))
                 } else {
                     self.back = (self.back + CAP as $IDX - 1) % CAP as $IDX;
-                    let e = self.array[self.back as usize].clone();
+                    let e = self.data[self.back as usize].clone();
                     self.len -= 1;
                     Ok(e)
                 }
@@ -1144,20 +1144,20 @@ macro_rules! impl_destaque {
                 // Rearrange elements into their correct positions in the temporary array
                 for i in 0..self.len as usize {
                     let index = (self.front as usize + i) % CAP;
-                    temp[i] = self.array[index as usize].clone(); // Clone from the current array to temp
+                    temp[i] = self.data[index as usize].clone(); // Clone from the current array to temp
                 }
 
-                // Move elements from temp back into self.array, now in a contiguous order
-                // self.array[..self.len].copy_from_slice(&temp[..self.len]); // NOTE for Copy
+                // Move elements from temp back into self.data, now in a contiguous order
+                // self.data[..self.len].copy_from_slice(&temp[..self.len]); // NOTE for Copy
                 for i in 0..self.len as usize {
-                    self.array[i] = temp[i].clone();
+                    self.data[i] = temp[i].clone();
                 }
 
                 // Reset front and back to reflect the new contiguous layout
                 self.front = 0;
                 self.back = self.len;
 
-                &mut self.array[..self.len as usize]
+                &mut self.data[..self.len as usize]
             }
 
             /// Returns the destaqued elements as a vector.
@@ -1182,11 +1182,11 @@ macro_rules! impl_destaque {
                     let mut index = self.front as usize;
 
                     // makes sure a full destaque is not rejected
-                    vec.push(self.array[index].clone());
+                    vec.push(self.data[index].clone());
                     index = (index + 1) % CAP;
 
                     while index != self.back as usize {
-                        vec.push(self.array[index].clone());
+                        vec.push(self.data[index].clone());
                         index = (index + 1) % CAP;
                     }
                     vec
@@ -1228,7 +1228,7 @@ macro_rules! impl_destaque {
                             unsafe { MaybeUninit::uninit().assume_init() };
                         for (n, i) in unarr.iter_mut().enumerate().take(LEN) {
                             let index = (self.front as usize + n) % CAP;
-                            let _ = i.write(self.array[index].clone());
+                            let _ = i.write(self.data[index].clone());
                         }
                         // SAFETY: we've initialized all the elements
                         unsafe { transmute_copy::<_, [T; LEN]>(&unarr) }
@@ -1237,7 +1237,7 @@ macro_rules! impl_destaque {
                     #[cfg(any(feature = "safe_data", not(feature = "unsafe_array")))]
                     let arr = core::array::from_fn(|n| {
                         let index = (self.front as usize + n) % CAP;
-                        self.array[index].clone()
+                        self.data[index].clone()
                     });
 
                     Some(arr)
@@ -1666,7 +1666,7 @@ macro_rules! impl_destaque {
                         self.len -= 1;
                     }
                     // push_back
-                    self.array[self.back as usize] = element;
+                    self.data[self.back as usize] = element;
                     self.back = (self.back + 1) % CAP as $IDX;
                     self.len += 1;
                 }
@@ -1725,7 +1725,7 @@ macro_rules! impl_destaque {
                     }
                     // push_front
                     self.front = (self.front + CAP as $IDX - 1) % CAP as $IDX;
-                    self.array[self.front as usize] = element;
+                    self.data[self.front as usize] = element;
                     self.len += 1;
                 }
                 overriden

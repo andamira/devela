@@ -111,7 +111,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_push_unchecked(self, element: T) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 arr[self.len as usize] = element;
                 let mut sta = Self::from_array_const(arr);
                 sta.len = self.len + 1;
@@ -155,7 +155,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_pop_unchecked(self) -> Own<Self, T> {
-                let arr = self.array.into_array_const();
+                let arr = self.data.into_array_const();
                 let e = arr[self.len as usize - 1];
                 let mut sta = Self::from_array_const(arr);
                 sta.len = self.len - 1;
@@ -200,7 +200,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_peek_unchecked(self) -> Own<Self, T> {
-                let arr = self.array.into_array_const();
+                let arr = self.data.into_array_const();
                 let e = arr[self.len as usize - 1];
                 let sta = Self::from_array_const(arr);
                 Own::new(sta, e)
@@ -341,7 +341,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_nip_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
                 let mut sta = Self::from_array_const(arr);
                 sta.len -= 1;
@@ -386,7 +386,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_nip2_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
                 cswap![arr[self.len as usize - 3], arr[self.len as usize - 1]];
                 let mut sta = Self::from_array_const(arr);
@@ -438,7 +438,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_swap_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
                 Own::empty(Self::from_array_const(arr))
             }
@@ -485,7 +485,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_swap2_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
                 cswap![arr[self.len as usize - 3], arr[self.len as usize - 1]];
                 Own::new(Self::from_array_const(arr), ())
@@ -534,7 +534,7 @@ macro_rules! impl_stack {
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 let [a, b, c] = [arr[len - 3], arr[len - 2], arr[len - 1]];
                 arr[len - 3] = b;
                 arr[len - 2] = c;
@@ -583,7 +583,7 @@ macro_rules! impl_stack {
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot_cc_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 let [a, b, c] = [arr[len - 3], arr[len - 2], arr[len - 1]];
                 arr[len - 3] = c;
                 arr[len - 2] = a;
@@ -631,7 +631,7 @@ macro_rules! impl_stack {
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot2_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 let [a, b, c, d, e, f] = sf! {[
                     arr[len - 6], arr[len - 5], arr[len - 4], arr[len - 3], arr[len - 2], arr[len - 1],
                 ]};
@@ -684,7 +684,7 @@ macro_rules! impl_stack {
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot2_cc_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 let [a, b, c, d, e, f] = sf! {[
                     arr[len - 6], arr[len - 5], arr[len - 4], arr[len - 3], arr[len - 2], arr[len - 1]
                 ]};
@@ -739,7 +739,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_dup_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 arr[self.len as usize] = arr[self.len as usize - 1];
                 let mut sta = Self::from_array_const(arr);
                 sta.len = self.len + 1;
@@ -788,7 +788,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_dup2_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 let a = arr[self.len as usize - 2];
                 let b = arr[self.len as usize - 1];
                 arr[self.len as usize] = a;
@@ -842,9 +842,9 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_over_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const(); // operate over a copy of the inner array
+                let mut arr = self.data.into_array_const();
                 arr[self.len as usize] = arr[self.len as usize - 2];
-                let mut sta = Self::from_array_const(arr); // recreate the stack and adjust the length
+                let mut sta = Self::from_array_const(arr);
                 sta.len = self.len + 1;
                 Own::empty(sta)
             }
@@ -891,7 +891,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_over2_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 let a = arr[self.len as usize - 4];
                 let b = arr[self.len as usize - 3];
                 arr[self.len as usize] = a;
@@ -945,7 +945,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_tuck_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 let a = arr[self.len as usize - 1];
                 cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
                 arr[self.len as usize] = a;
@@ -997,7 +997,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_tuck2_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.array.into_array_const();
+                let mut arr = self.data.into_array_const();
                 // swap2
                 cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
                 cswap![arr[self.len as usize - 3], arr[self.len as usize - 1]];

@@ -81,5 +81,5 @@ pub struct Array2d<
     const RMAJ: bool = true,
     S: Storage = Bare,
 > {
-    pub(super) array: Array<T, CR, S>,
+    pub(super) data: Array<T, CR, S>,
 }

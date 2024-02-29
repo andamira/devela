@@ -26,7 +26,7 @@ where
 {
     fn clone(&self) -> Self {
         Self {
-            array: self.array.clone(),
+            data: self.data.clone(),
         }
     }
 }
@@ -52,7 +52,7 @@ impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bo
     fn default() -> Self {
         Self::panic_check_CR();
         Self {
-            array: Array::<T, CR, Bare>::default(),
+            data: Array::<T, CR, Bare>::default(),
         }
     }
 }
@@ -68,7 +68,7 @@ impl<T: ConstDefault, const C: usize, const R: usize, const CR: usize, const RMA
     const DEFAULT: Self = {
         Self::panic_check_CR();
         Self {
-            array: Array::<T, CR, Bare>::DEFAULT,
+            data: Array::<T, CR, Bare>::DEFAULT,
         }
     };
 }
@@ -90,42 +90,32 @@ impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bo
     fn default() -> Self {
         Self::panic_check_CR();
         Self {
-            array: Array::<T, CR, Boxed>::default(),
+            data: Array::<T, CR, Boxed>::default(),
         }
     }
 }
 
-// T:Debug, row-major
-impl<T: fmt::Debug, const C: usize, const R: usize, const CR: usize, S: Storage> fmt::Debug
-    for Array2d<T, C, R, CR, true, S>
+// T:Debug
+impl<
+        T: fmt::Debug,
+        const C: usize,
+        const R: usize,
+        const CR: usize,
+        S: Storage,
+        const RMAJ: bool,
+    > fmt::Debug for Array2d<T, C, R, CR, RMAJ, S>
+where
+    S::Stored<[T; CR]>: fmt::Debug,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Array2d {{ ")?;
-        write!(f, "T: {}, ", core::any::type_name::<T>())?; // ?
-        write!(f, "S: {}, ", S::name())?;
-        write!(f, "C:{C}, R:{R} = CR:{CR}, ")?;
-        write!(f, "row-major")?;
-
-        // TODO: first 6 elements
-        // TODO: last 6 elements
-
-        write!(f, " }}")
-    }
-}
-// T:Debug, column-major
-impl<T: fmt::Debug, const C: usize, const R: usize, const CR: usize, S: Storage> fmt::Debug
-    for Array2d<T, C, R, CR, false, S>
-{
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Array2d {{ ")?;
-        write!(f, "T: {}, ", core::any::type_name::<T>())?; // ?
-        write!(f, "S: {}, ", S::name())?;
-        write!(f, "C:{C}, R:{R} = CR:{CR}, ")?;
-        write!(f, "column-major")?;
-
-        // TODO: first 6 elements
-        // TODO: last 6 elements
-
-        write!(f, " }}")
+        f.debug_struct("Array2d")
+            .field("T", &core::any::type_name::<T>())
+            .field("S", &S::name())
+            .field("C", &C)
+            .field("R", &R)
+            .field("CR", &CR)
+            .field("RMAJ", &RMAJ)
+            .field("data", &self.data)
+            .finish()
     }
 }

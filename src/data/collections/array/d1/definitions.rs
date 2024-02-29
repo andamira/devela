@@ -46,5 +46,5 @@ use crate::mem::Boxed;
 ///   [`contains`][Self::contains].
 #[must_use]
 pub struct Array<T, const LEN: usize, S: Storage = Bare> {
-    pub(crate) array: S::Stored<[T; LEN]>,
+    pub(crate) data: S::Stored<[T; LEN]>,
 }

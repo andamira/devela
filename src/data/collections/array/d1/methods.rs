@@ -19,9 +19,7 @@ impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Returns a new `Array` from the given primitive `array`.
     #[inline]
     pub fn new(array: [T; LEN]) -> Self {
-        Self {
-            array: array.into(),
-        }
+        Self { data: array.into() }
     }
 }
 
@@ -32,7 +30,7 @@ impl<T, const LEN: usize> Array<T, LEN, Bare> {
     #[inline]
     pub const fn new_bare(array: [T; LEN]) -> Self {
         Self {
-            array: BareBox::new(array),
+            data: BareBox::new(array),
         }
     }
 }
@@ -47,8 +45,8 @@ impl<T: Clone, const LEN: usize> Array<T, LEN, Bare> {
     /// ```
     #[inline]
     pub fn with_cloned(element: T) -> Self {
-        let array = BareBox::new(array_init!(clone [T; LEN], "safe_data", "unsafe_array", element));
-        Self { array }
+        let data = BareBox::new(array_init!(clone [T; LEN], "safe_data", "unsafe_array", element));
+        Self { data }
     }
 }
 
@@ -62,8 +60,8 @@ impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     /// ```
     #[inline]
     pub const fn with_copied(element: T) -> Self {
-        let array = BareBox::new([element; LEN]);
-        Self { array }
+        let data = BareBox::new([element; LEN]);
+        Self { data }
     }
 }
 
@@ -74,7 +72,7 @@ impl<T, const LEN: usize> Array<T, LEN, Boxed> {
     /// Returns a new `Array` from the given `boxed_array`.
     #[inline]
     pub fn new_boxed(boxed_array: Box<[T; LEN]>) -> Self {
-        Array { array: boxed_array }
+        Array { data: boxed_array }
     }
 }
 
@@ -90,8 +88,8 @@ impl<T: Clone, const LEN: usize> Array<T, LEN, Boxed> {
     /// ```
     #[inline]
     pub fn with_cloned(element: T) -> Self {
-        let array = array_init!(clone_heap [T; LEN], "safe_data", "unsafe_array", element);
-        Self { array }
+        let data = array_init!(clone_heap [T; LEN], "safe_data", "unsafe_array", element);
+        Self { data }
     }
 }
 
@@ -149,14 +147,14 @@ impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     #[inline]
     #[must_use]
     pub fn as_slice(&self) -> &[T] {
-        self.array.as_slice()
+        self.data.as_slice()
     }
 
     /// Returns an exclusive slice containing the entire array.
     #[inline]
     #[must_use]
     pub fn as_mut_slice(&mut self) -> &mut [T] {
-        self.array.as_mut_slice()
+        self.data.as_mut_slice()
     }
 }
 
@@ -168,13 +166,13 @@ impl<T, const LEN: usize> Array<T, LEN, Boxed> {
     #[inline]
     #[must_use]
     pub fn into_array(self) -> Box<[T; LEN]> {
-        self.array
+        self.data
     }
     /// Returns the inner [`Box`]ed primitive array as a slice.
     #[inline]
     #[must_use]
     pub fn into_slice(self) -> Box<[T]> {
-        self.array
+        self.data
     }
     /// Returns the inner [`Box`]ed primitive array as a `Vec`.
     #[inline]
@@ -189,7 +187,7 @@ impl<T, const LEN: usize> Array<T, LEN, Bare> {
     #[inline]
     #[must_use]
     pub fn into_array(self) -> [T; LEN] {
-        self.array.into_inner()
+        self.data.into_inner()
     }
 }
 // S:Bare, T:Copy
@@ -198,6 +196,6 @@ impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     #[inline]
     #[must_use]
     pub const fn into_array_const(self) -> [T; LEN] {
-        self.array.into_inner_const()
+        self.data.into_inner_const()
     }
 }

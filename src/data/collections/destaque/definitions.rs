@@ -13,7 +13,7 @@ use crate::{
 
 /* types */
 
-/// A double-ended queue and stack backed by an [`Array`].
+/// A static double-ended queue and stack backed by an [`Array`].
 ///
 /// It is generic in respect to its
 /// elements (`T`),
@@ -100,7 +100,7 @@ use crate::{
 /// [`tuck2_back`][Self::tuck2_back],
 /// [`tuck2_front`][Self::tuck2_front].
 pub struct Destaque<T, const CAP: usize, IDX, S: Storage = Bare> {
-    pub(super) array: Array<T, CAP, S>,
+    pub(super) data: Array<T, CAP, S>,
     pub(super) len: IDX,
     pub(super) front: IDX,
     pub(super) back: IDX,

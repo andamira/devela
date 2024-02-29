@@ -195,7 +195,7 @@ macro_rules! impl_destaque {
                 let item = if self.idx == self.destaque.len() as usize {
                     None
                 } else {
-                    Some(&self.destaque.array[self.destaque.idx_front(self.idx as $IDX)])
+                    Some(&self.destaque.data[self.destaque.idx_front(self.idx as $IDX)])
                 };
                 self.idx += 1;
                 item
@@ -232,7 +232,7 @@ macro_rules! impl_destaque {
                 let item = if self.idx == self.destaque.len() as usize {
                     None
                 } else {
-                    Some(&self.destaque.array[self.destaque.idx_back(self.idx as $IDX)])
+                    Some(&self.destaque.data[self.destaque.idx_back(self.idx as $IDX)])
                 };
                 self.idx += 1;
                 item
@@ -273,7 +273,7 @@ where
 {
     fn clone(&self) -> Self {
         Self {
-            array: self.array.clone(),
+            data: self.data.clone(),
             front: self.front.clone(),
             back: self.back.clone(),
             len: self.len.clone(),
@@ -294,20 +294,13 @@ where
     S::Stored<[T; CAP]>: fmt::Debug,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut debug = f.debug_struct(stringify![Destaque]);
-        debug
+        f.debug_struct("Destaque")
             .field("CAP", &CAP)
             .field("len", &self.len)
             .field("front", &self.front)
-            .field("back", &self.back);
-
-        if CAP <= 6 {
-            debug.field("array", &self.array);
-        } else {
-            // IMPROVE: show the first 3 and the last 3
-            debug.field("array { ... }", &());
-        }
-        debug.finish()
+            .field("back", &self.back)
+            .field("data", &self.data)
+            .finish()
     }
 }
 
@@ -318,7 +311,7 @@ where
     S::Stored<[T; CAP]>: PartialEq,
 {
     fn eq(&self, other: &Self) -> bool {
-        self.array == other.array
+        self.data == other.data
             && self.len == other.len
             && self.front == other.front
             && self.back == other.back
@@ -336,7 +329,7 @@ impl<T: Default, const CAP: usize, IDX: Default> Default for Destaque<T, CAP, ID
     /// using the default value to fill the remaining free data.
     fn default() -> Self {
         Self {
-            array: Array::default(),
+            data: Array::default(),
             front: IDX::default(),
             back: IDX::default(),
             len: IDX::default(),
@@ -351,7 +344,7 @@ impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
     /// Returns an empty stack, allocated in the stack,
     /// using the default value to fill the remaining free data.
     const DEFAULT: Self = Self {
-        array: Array::DEFAULT,
+        data: Array::DEFAULT,
         front: IDX::DEFAULT,
         back: IDX::DEFAULT,
         len: IDX::DEFAULT,
@@ -370,7 +363,7 @@ impl<T: Default, const CAP: usize, IDX: Default> Default for Destaque<T, CAP, ID
     /// ```
     fn default() -> Self {
         Self {
-            array: Array::default(),
+            data: Array::default(),
             front: IDX::default(),
             back: IDX::default(),
             len: IDX::default(),

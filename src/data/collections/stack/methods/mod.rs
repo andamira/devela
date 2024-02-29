@@ -59,7 +59,7 @@ macro_rules! impl_stack {
             pub fn new(element: T) -> Result<Self> {
                 if CAP <= $IDX::MAX as usize {
                     Ok(Self {
-                        array: Array::<T, CAP, Bare>::with_cloned(element),
+                        data: Array::<T, CAP, Bare>::with_cloned(element),
                         len: 0,
                     })
                 } else {
@@ -85,8 +85,8 @@ macro_rules! impl_stack {
             #[inline]
             pub const fn new_copied(element: T) -> Result<Self> {
                 if CAP <= $IDX::MAX as usize {
-                    let array = Array::with_copied(element);
-                    Ok(Self { array, len: 0 })
+                    let data = Array::with_copied(element);
+                    Ok(Self { data, len: 0 })
                 } else {
                     Err(OutOfBounds(Some(CAP)))
                 }
@@ -107,7 +107,7 @@ macro_rules! impl_stack {
             #[inline]
             pub fn new(element: T) -> Self {
                 Self {
-                    array: Array::<T, CAP, Boxed>::with_cloned(element),
+                    data: Array::<T, CAP, Boxed>::with_cloned(element),
                     len: 0,
                 }
             }
@@ -125,7 +125,7 @@ macro_rules! impl_stack {
             #[inline]
             pub const fn from_array_const(arr: [T; CAP]) -> Stack<T, CAP, $IDX, Bare> {
                 Self {
-                    array: Array::new_bare(arr),
+                    data: Array::new_bare(arr),
                     len: CAP as $IDX,
                 }
             }
@@ -141,7 +141,7 @@ macro_rules! impl_stack {
             #[inline]
             pub fn from_array(arr: [T; CAP]) -> Stack<T, CAP, $IDX, S> {
                 Self {
-                    array: Array::new(arr),
+                    data: Array::new(arr),
                     len: CAP as $IDX,
                 }
             }
@@ -223,7 +223,7 @@ macro_rules! impl_stack {
             #[inline]
             #[must_use]
             pub fn as_slice(&self) -> &[T] {
-                &self.array[..self.len as usize]
+                &self.data[..self.len as usize]
             }
 
             /// Returns the stack as an exclusive slice.
@@ -236,7 +236,7 @@ macro_rules! impl_stack {
             #[inline]
             #[must_use]
             pub fn as_mut_slice(&mut self) -> &mut [T] {
-                &mut self.array[..self.len as usize]
+                &mut self.data[..self.len as usize]
             }
 
             /* clear */
@@ -279,7 +279,7 @@ macro_rules! impl_stack {
                 if self.is_full() {
                     Err(NotEnoughSpace(Some(1)))
                 } else {
-                    self.array[self.len as usize] = element;
+                    self.data[self.len as usize] = element;
                     self.len += 1;
                     Ok(())
                 }
@@ -315,7 +315,7 @@ macro_rules! impl_stack {
                     // MOTIVATION: to not depend on T: Clone
                     // SAFETY: we're not gonna access the value, but move it out
                     let e = unsafe {
-                        core::ptr::read((self.array.get_unchecked(self.len as usize)) as *const T)
+                        core::ptr::read((self.data.get_unchecked(self.len as usize)) as *const T)
                     };
                     Ok(e)
                 }
@@ -341,7 +341,7 @@ macro_rules! impl_stack {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
                 } else {
-                    let e = &self.array[self.len as usize - 1];
+                    let e = &self.data[self.len as usize - 1];
                     Ok(e)
                 }
             }
@@ -364,7 +364,7 @@ macro_rules! impl_stack {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
                 } else {
-                    let e = &mut self.array[self.len as usize - 1];
+                    let e = &mut self.data[self.len as usize - 1];
                     Ok(e)
                 }
             }
@@ -389,7 +389,7 @@ macro_rules! impl_stack {
                 if self.len() <= nth {
                     Err(NotEnoughElements(Some(nth as usize)))
                 } else {
-                    let e = &self.array[self.len as usize - 1 - nth as usize];
+                    let e = &self.data[self.len as usize - 1 - nth as usize];
                     Ok(e)
                 }
             }
@@ -414,7 +414,7 @@ macro_rules! impl_stack {
                 if self.len() <= nth {
                     Err(NotEnoughElements(Some(nth as usize)))
                 } else {
-                    let e = &mut self.array[self.len as usize - 1 - nth as usize];
+                    let e = &mut self.data[self.len as usize - 1 - nth as usize];
                     Ok(e)
                 }
             }
@@ -484,7 +484,7 @@ macro_rules! impl_stack {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
                 } else {
-                    self.array.swap(self.len as usize - 2, self.len as usize - 1);
+                    self.data.swap(self.len as usize - 2, self.len as usize - 1);
                     self.len -= 1;
                     Ok(())
                 }
@@ -507,8 +507,8 @@ macro_rules! impl_stack {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
                 } else {
-                    self.array.swap(self.len as usize - 4, self.len as usize - 2);
-                    self.array.swap(self.len as usize - 3, self.len as usize - 1);
+                    self.data.swap(self.len as usize - 4, self.len as usize - 2);
+                    self.data.swap(self.len as usize - 3, self.len as usize - 1);
                     self.len -= 2;
                     Ok(())
                 }
@@ -533,7 +533,7 @@ macro_rules! impl_stack {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
                 } else {
-                    self.array.swap(self.len as usize - 2, self.len as usize - 1);
+                    self.data.swap(self.len as usize - 2, self.len as usize - 1);
                     Ok(())
                 }
             }
@@ -555,8 +555,8 @@ macro_rules! impl_stack {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
                 } else {
-                    self.array.swap(self.len as usize - 4, self.len as usize - 2);
-                    self.array.swap(self.len as usize - 3, self.len as usize - 1);
+                    self.data.swap(self.len as usize - 4, self.len as usize - 2);
+                    self.data.swap(self.len as usize - 3, self.len as usize - 1);
                     Ok(())
                 }
             }
@@ -582,7 +582,7 @@ macro_rules! impl_stack {
                 if self.len() < 3 {
                     Err(NotEnoughElements(Some(3)))
                 } else {
-                    self.array[self.len as usize - 3..self.len as usize].rotate_left(1);
+                    self.data[self.len as usize - 3..self.len as usize].rotate_left(1);
                     Ok(())
                 }
             }
@@ -606,7 +606,7 @@ macro_rules! impl_stack {
                 if self.len() < 3 {
                     Err(NotEnoughElements(Some(3)))
                 } else {
-                    self.array[self.len as usize - 3..self.len as usize].rotate_right(1);
+                    self.data[self.len as usize - 3..self.len as usize].rotate_right(1);
                     Ok(())
                 }
             }
@@ -630,7 +630,7 @@ macro_rules! impl_stack {
                 if self.len() < 6 {
                     Err(NotEnoughElements(Some(6)))
                 } else {
-                    self.array[self.len as usize - 6..self.len as usize].rotate_left(2);
+                    self.data[self.len as usize - 6..self.len as usize].rotate_left(2);
                     Ok(())
                 }
             }
@@ -654,7 +654,7 @@ macro_rules! impl_stack {
                 if self.len() < 6 {
                     Err(NotEnoughElements(Some(6)))
                 } else {
-                    self.array[self.len as usize - 6..self.len as usize].rotate_right(2);
+                    self.data[self.len as usize - 6..self.len as usize].rotate_right(2);
                     Ok(())
                 }
             }
@@ -693,7 +693,7 @@ macro_rules! impl_stack {
                     Err(NotEnoughElements(Some(1)))
                 } else {
                     self.len -= 1;
-                    let e = self.array[self.len as usize].clone();
+                    let e = self.data[self.len as usize].clone();
                     Ok(e)
                 }
             }
@@ -722,7 +722,7 @@ macro_rules! impl_stack {
                 } else if self.is_full() {
                     Err(NotEnoughSpace(Some(1)))
                 } else {
-                    self.array[self.len as usize] = self.array[self.len as usize - 1].clone();
+                    self.data[self.len as usize] = self.data[self.len as usize - 1].clone();
                     self.len += 1;
                     Ok(())
                 }
@@ -750,10 +750,10 @@ macro_rules! impl_stack {
                 } else if self.len() as usize > CAP - 2 {
                     Err(NotEnoughSpace(Some(2)))
                 } else {
-                    let a = self.array[self.len as usize - 2].clone();
-                    let b = self.array[self.len as usize - 1].clone();
-                    self.array[self.len as usize] = a;
-                    self.array[self.len as usize + 1] = b;
+                    let a = self.data[self.len as usize - 2].clone();
+                    let b = self.data[self.len as usize - 1].clone();
+                    self.data[self.len as usize] = a;
+                    self.data[self.len as usize + 1] = b;
                     self.len += 2;
                     Ok(())
                 }
@@ -783,7 +783,7 @@ macro_rules! impl_stack {
                 } else if self.is_full() {
                     Err(NotEnoughSpace(Some(1)))
                 } else {
-                    self.array[self.len as usize] = self.array[self.len as usize - 2].clone();
+                    self.data[self.len as usize] = self.data[self.len as usize - 2].clone();
                     self.len += 1;
                     Ok(())
                 }
@@ -811,10 +811,10 @@ macro_rules! impl_stack {
                 } else if self.remaining_capacity() < 2 {
                     Err(NotEnoughSpace(Some(2)))
                 } else {
-                    let a = self.array[self.len as usize - 4].clone();
-                    let b = self.array[self.len as usize - 3].clone();
-                    self.array[self.len as usize ] = a;
-                    self.array[self.len as usize + 1] = b;
+                    let a = self.data[self.len as usize - 4].clone();
+                    let b = self.data[self.len as usize - 3].clone();
+                    self.data[self.len as usize ] = a;
+                    self.data[self.len as usize + 1] = b;
                     self.len += 2;
                     Ok(())
                 }
@@ -844,9 +844,9 @@ macro_rules! impl_stack {
                 } else if self.is_full() {
                     Err(NotEnoughSpace(Some(1)))
                 } else {
-                    let a = self.array[self.len as usize - 1].clone();
-                    self.array.swap(self.len as usize - 2, self.len as usize - 1);
-                    self.array[self.len as usize] = a;
+                    let a = self.data[self.len as usize - 1].clone();
+                    self.data.swap(self.len as usize - 2, self.len as usize - 1);
+                    self.data[self.len as usize] = a;
                     self.len += 1;
                     Ok(())
                 }
@@ -875,14 +875,14 @@ macro_rules! impl_stack {
                     Err(NotEnoughSpace(Some(2)))
                 } else {
                     // swap2
-                    self.array.swap(self.len as usize - 4, self.len as usize - 2);
-                    self.array.swap(self.len as usize - 3, self.len as usize - 1);
+                    self.data.swap(self.len as usize - 4, self.len as usize - 2);
+                    self.data.swap(self.len as usize - 3, self.len as usize - 1);
 
                     // over2
-                    let a = self.array[self.len as usize - 4].clone();
-                    let b = self.array[self.len as usize - 3].clone();
-                    self.array[self.len as usize] = a;
-                    self.array[self.len as usize + 1] = b;
+                    let a = self.data[self.len as usize - 4].clone();
+                    let b = self.data[self.len as usize - 3].clone();
+                    self.data[self.len as usize] = a;
+                    self.data[self.len as usize + 1] = b;
 
                     self.len += 2;
                     Ok(())
@@ -910,7 +910,7 @@ macro_rules! impl_stack {
             pub fn to_vec(&self) -> Vec<T> {
                 let mut vec = Vec::with_capacity(self.len as usize);
                 for i in 0..self.len as usize {
-                    vec.push(self.array[i].clone());
+                    vec.push(self.data[i].clone());
                 }
                 vec
             }
@@ -951,14 +951,14 @@ macro_rules! impl_stack {
                             // SAFETY: we will initialize all the elements
                             unsafe { MaybeUninit::uninit().assume_init() };
                         for (n, i) in unarr.iter_mut().enumerate().take(LEN) {
-                            let _ = i.write(self.array[n].clone());
+                            let _ = i.write(self.data[n].clone());
                         }
                         // SAFETY: we've initialized all the elements
                         unsafe { transmute_copy::<_, [T; LEN]>(&unarr) }
                     };
 
                     #[cfg(any(feature = "safe_data", not(feature = "unsafe_array")))]
-                    let arr = core::array::from_fn(|n| self.array[n].clone());
+                    let arr = core::array::from_fn(|n| self.data[n].clone());
 
                     Some(arr)
                 }
@@ -1050,7 +1050,7 @@ macro_rules! impl_stack {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
                 } else {
-                    self.array[self.len as usize - 1] = T::default();
+                    self.data[self.len as usize - 1] = T::default();
                     self.len -= 1;
                     Ok(())
                 }

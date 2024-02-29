@@ -55,13 +55,13 @@ macro_rules! impl_stack {
                 if NEW_CAP < (self.len() as usize) {
                     Err(OutOfBounds(Some(NEW_CAP)))
                 } else {
-                    let old_arr: [T; CAP] = self.array.into_array();
+                    let old_arr: [T; CAP] = self.data.into_array();
                     let mut new_arr = array_init![default [T; NEW_CAP], "safe_data", "unsafe_array"];
                     for (i, item) in old_arr.into_iter().enumerate().take(NEW_CAP) {
                         new_arr[i] = item;
                     }
                     Ok(Stack {
-                        array: Array::new(new_arr),
+                        data: Array::new(new_arr),
                         len: self.len,
                     })
                 }
@@ -91,13 +91,13 @@ macro_rules! impl_stack {
                     0
                 };
                 let new_len = core::cmp::min(self.len(), NEW_CAP as $IDX);
-                let old_arr: [T; CAP] = self.array.into_array();
+                let old_arr: [T; CAP] = self.data.into_array();
                 let mut new_arr = array_init![default [T; NEW_CAP], "safe_data", "unsafe_array"];
                 for (i, item) in old_arr.into_iter().enumerate().skip(start_idx).take(NEW_CAP) {
                     new_arr[i - start_idx] = item;
                 }
                 Stack {
-                    array: Array::new(new_arr),
+                    data: Array::new(new_arr),
                     len: new_len,
                 }
             }
@@ -133,7 +133,7 @@ macro_rules! impl_stack {
                 if NEW_CAP < (self.len as usize) {
                     Err(OutOfBounds(Some(NEW_CAP)))
                 } else {
-                    let old_arr = self.array.into_vec();
+                    let old_arr = self.data.into_vec();
                     let mut v = Vec::with_capacity(NEW_CAP);
                     for item in old_arr.into_iter().take(self.len as usize) {
                         v.push(item);
@@ -144,7 +144,7 @@ macro_rules! impl_stack {
                         panic!("Failed to convert Box<[T]> to Box<[T; NEW_CAP={}]>", NEW_CAP)
                     });
                     Ok(Stack {
-                        array: Array::new_boxed(new_arr),
+                        data: Array::new_boxed(new_arr),
                         len: self.len,
                     })
                 }
@@ -168,7 +168,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub fn resize_default_truncate<const NEW_CAP: usize>(self) -> Stack<T, NEW_CAP, $IDX, Boxed> {
-                let mut old_vec = self.array.into_vec();
+                let mut old_vec = self.data.into_vec();
 
                 // When reducing capacity, truncate elements from the front.
                 if NEW_CAP < self.len as usize {
@@ -182,7 +182,7 @@ macro_rules! impl_stack {
                     panic!("Failed to convert Box<[T]> to Box<[T; NEW_CAP={}]>", NEW_CAP)
                 });
                 Stack {
-                    array: Array::new_boxed(new_arr),
+                    data: Array::new_boxed(new_arr),
                     len: core::cmp::min(self.len as usize, NEW_CAP) as $IDX,
                 }
             }
@@ -216,7 +216,7 @@ macro_rules! impl_stack {
                 if NEW_CAP < (self.len as usize) {
                     Own::empty(Err(OutOfBounds(Some(NEW_CAP))))
                 } else {
-                    let old_arr: [T; CAP] = self.array.into_array_const();
+                    let old_arr: [T; CAP] = self.data.into_array_const();
                     let mut new_arr = array_init![const_default [T; NEW_CAP]];
 
                     let mut i = 0;
@@ -226,7 +226,7 @@ macro_rules! impl_stack {
                     }
 
                     Own::empty(Ok(Stack {
-                        array: Array::new_bare(new_arr),
+                        data: Array::new_bare(new_arr),
                         len: self.len,
                     }))
                 }
@@ -256,7 +256,7 @@ macro_rules! impl_stack {
                     0
                 };
                 let new_len = Comparing(NEW_CAP).min(self.len as usize);
-                let old_arr: [T; CAP] = self.array.into_array_const();
+                let old_arr: [T; CAP] = self.data.into_array_const();
                 let mut new_arr = array_init![const_default [T; NEW_CAP]];
 
                 let mut i = 0;
@@ -266,7 +266,7 @@ macro_rules! impl_stack {
                 }
 
                 Own::empty(Stack {
-                    array: Array::new_bare(new_arr),
+                    data: Array::new_bare(new_arr),
                     len: new_len as $IDX,
                 })
             }
@@ -293,7 +293,7 @@ macro_rules! impl_stack {
             #[inline]
             pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, CAP, $NEW_IDX, Bare>> {
                 if CAP <= $NEW_IDX::MAX as usize {
-                    Ok(Stack { array: self.array, len: self.len as $NEW_IDX })
+                    Ok(Stack { data: self.data, len: self.len as $NEW_IDX })
                 } else {
                     Err(NotEnoughSpace(Some($NEW_IDX::MAX as usize - CAP)))
                 }
@@ -320,7 +320,7 @@ macro_rules! impl_stack {
             #[inline]
             pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, CAP, $NEW_IDX, Boxed>> {
                 if CAP <= $NEW_IDX::MAX as usize {
-                    Ok(Stack { array: self.array, len: self.len as $NEW_IDX })
+                    Ok(Stack { data: self.data, len: self.len as $NEW_IDX })
                 } else {
                     Err(NotEnoughSpace(Some($NEW_IDX::MAX as usize - CAP)))
                 }
@@ -347,7 +347,7 @@ macro_rules! impl_stack {
             #[inline]
             pub const fn [<own_to_idx_ $NEW_IDX>](self) -> Own<Result<Stack<T, CAP, $NEW_IDX, Bare>>, ()> {
                 if CAP <= $NEW_IDX::MAX as usize {
-                    Own::empty(Ok(Stack { array: self.array, len: self.len as $NEW_IDX }))
+                    Own::empty(Ok(Stack { data: self.data, len: self.len as $NEW_IDX }))
                 } else {
                     Own::empty(Err(NotEnoughSpace(Some($NEW_IDX::MAX as usize - CAP))))
                 }
