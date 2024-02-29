@@ -28,7 +28,7 @@ macro_rules! impl_stack {
 
         /// # Stack resize.
         // S: ()
-        impl<T: Default, const CAP: usize> Stack<T, Bare, CAP, $IDX> {
+        impl<T: Default, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             /// Converts the current stack to a different capacity while preserving all existing elements.
             ///
             /// This method creates a new stack with the specified new capacity and moves the
@@ -43,15 +43,15 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]
-            #[doc = "let s = Stack" $IDX:camel "::<_, (), 8>::from([1, 2, 3, 4]);"]
-            #[doc = "let less_cap: Stack" $IDX:camel "::<_, (), 4> = s.resize_default().unwrap();"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
+            #[doc = "let less_cap: Stack" $IDX:camel "::<_, 4> = s.resize_default().unwrap();"]
             /// assert_eq![s.as_slice(), less_cap.as_slice()];
-            #[doc = "let more_cap: Stack" $IDX:camel "::<_, (), 12> = s.resize_default().unwrap();"]
+            #[doc = "let more_cap: Stack" $IDX:camel "::<_, 12> = s.resize_default().unwrap();"]
             /// assert_eq![s.as_slice(), more_cap.as_slice()];
             /// assert![s.resize_default::<2>().is_err()]; // too small
             /// ```
             #[inline]
-            pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, Bare, NEW_CAP, $IDX>> {
+            pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Bare>> {
                 if NEW_CAP < (self.len() as usize) {
                     Err(OutOfBounds(Some(NEW_CAP)))
                 } else {
@@ -75,16 +75,16 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]
-            #[doc = "let s = Stack" $IDX:camel "::<_, (), 8>::from([1, 2, 3, 4]);"]
-            #[doc = "let less_cap: Stack" $IDX:camel "::<_, (), 4> = s.resize_default_truncate();"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
+            #[doc = "let less_cap: Stack" $IDX:camel "::<_, 4> = s.resize_default_truncate();"]
             /// assert_eq![less_cap.as_slice(), s.as_slice()];
-            #[doc = "let more_cap: Stack" $IDX:camel "::<_, (), 12> = s.resize_default_truncate();"]
+            #[doc = "let more_cap: Stack" $IDX:camel "::<_, 12> = s.resize_default_truncate();"]
             /// assert_eq![more_cap.as_slice(), s.as_slice()];
-            #[doc = "let drop_cap: Stack" $IDX:camel "::<_, (), 2> = s.resize_default_truncate();"]
+            #[doc = "let drop_cap: Stack" $IDX:camel "::<_, 2> = s.resize_default_truncate();"]
             /// assert_eq![drop_cap.as_slice(), &[3, 4]];
             /// ```
             #[inline]
-            pub fn resize_default_truncate<const NEW_CAP: usize>(self) -> Stack<T, Bare, NEW_CAP, $IDX> {
+            pub fn resize_default_truncate<const NEW_CAP: usize>(self) -> Stack<T, NEW_CAP, $IDX, Bare> {
                 let start_idx = if self.len() as usize > NEW_CAP {
                     self.len() as usize - NEW_CAP
                 } else {
@@ -106,7 +106,7 @@ macro_rules! impl_stack {
         // S: Boxed
         #[cfg(feature = "alloc")]
         #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-        impl<T: Default, const CAP: usize> Stack<T, Boxed, CAP, $IDX> {
+        impl<T: Default, const CAP: usize> Stack<T, CAP, $IDX, Boxed> {
             /// Converts the current stack to a different capacity while preserving all existing elements.
             ///
             /// This method creates a new stack with the specified new capacity and moves the
@@ -121,15 +121,15 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::{Boxed, Stack" $IDX:camel "};"]
-            #[doc = "let s = Stack" $IDX:camel "::<_, Boxed, 8>::from([1, 2, 3, 4]);"]
-            #[doc = "let less_cap: Stack" $IDX:camel "::<_, Boxed, 4> = s.clone().resize_default().unwrap();"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, 8, Boxed>::from([1, 2, 3, 4]);"]
+            #[doc = "let less_cap: Stack" $IDX:camel "::<_, 4, Boxed> = s.clone().resize_default().unwrap();"]
             /// assert_eq![s.as_slice(), less_cap.as_slice()];
-            #[doc = "let more_cap: Stack" $IDX:camel "::<_, Boxed, 12> = s.clone().resize_default().unwrap();"]
+            #[doc = "let more_cap: Stack" $IDX:camel "::<_, 12, Boxed> = s.clone().resize_default().unwrap();"]
             /// assert_eq![s.as_slice(), more_cap.as_slice()];
             /// assert![s.resize_default::<2>().is_err()]; // too small
             /// ```
             #[inline]
-            pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, Boxed, NEW_CAP, $IDX>> {
+            pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Boxed>> {
                 if NEW_CAP < (self.len as usize) {
                     Err(OutOfBounds(Some(NEW_CAP)))
                 } else {
@@ -158,16 +158,16 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::{Boxed, Stack" $IDX:camel "};"]
-            #[doc = "let s = Stack" $IDX:camel "::<_, Boxed, 8>::from([1, 2, 3, 4]);"]
-            #[doc = "let less_cap: Stack" $IDX:camel "::<_, Boxed, 4> = s.clone().resize_default_truncate();"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, 8, Boxed>::from([1, 2, 3, 4]);"]
+            #[doc = "let less_cap: Stack" $IDX:camel "::<_, 4, Boxed> = s.clone().resize_default_truncate();"]
             /// assert_eq![less_cap.as_slice(), s.as_slice()];
-            #[doc = "let more_cap: Stack" $IDX:camel "::<_, Boxed, 12> = s.clone().resize_default_truncate();"]
+            #[doc = "let more_cap: Stack" $IDX:camel "::<_, 12, Boxed> = s.clone().resize_default_truncate();"]
             /// assert_eq![more_cap.as_slice(), s.as_slice()];
-            #[doc = "let drop_cap: Stack" $IDX:camel "::<_, Boxed, 2> = s.resize_default_truncate();"]
+            #[doc = "let drop_cap: Stack" $IDX:camel "::<_, 2, Boxed> = s.resize_default_truncate();"]
             /// assert_eq![drop_cap.as_slice(), &[3, 4]];
             /// ```
             #[inline]
-            pub fn resize_default_truncate<const NEW_CAP: usize>(self) -> Stack<T, Boxed, NEW_CAP, $IDX> {
+            pub fn resize_default_truncate<const NEW_CAP: usize>(self) -> Stack<T, NEW_CAP, $IDX, Boxed> {
                 let mut old_vec = self.array.into_vec();
 
                 // When reducing capacity, truncate elements from the front.
@@ -189,7 +189,7 @@ macro_rules! impl_stack {
         }
 
         // S: ()
-        impl<T: ConstDefault + Copy, const CAP: usize> Stack<T, Bare, CAP, $IDX> {
+        impl<T: ConstDefault + Copy, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
 
             /// Converts the current stack to a different capacity while preserving all existing elements.
             ///
@@ -205,14 +205,14 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]
-            #[doc = "const S: Stack" $IDX:camel "<i32, (), 8> = Stack" $IDX:camel "::own_new(0)"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, 8> = Stack" $IDX:camel "::own_new(0)"]
             ///     .s_const_unwrap().s.own_push(1).s.own_push(2).s.own_push(3).s;
-            #[doc = "const T: Stack" $IDX:camel "<i32, (), 4> = S.own_resize_default().s_const_unwrap().s;"]
+            #[doc = "const T: Stack" $IDX:camel "<i32, 4> = S.own_resize_default().s_const_unwrap().s;"]
             /// assert_eq![S.as_slice(), T.as_slice()];
             /// let _ = S.own_resize_default::<2>().s_assert_err(); // too small
             /// ```
             #[inline]
-            pub const fn own_resize_default<const NEW_CAP: usize>(self) -> Own<Result<Stack<T, Bare, NEW_CAP, $IDX>>, ()> {
+            pub const fn own_resize_default<const NEW_CAP: usize>(self) -> Own<Result<Stack<T, NEW_CAP, $IDX, Bare>>, ()> {
                 if NEW_CAP < (self.len as usize) {
                     Own::empty(Err(OutOfBounds(Some(NEW_CAP))))
                 } else {
@@ -240,16 +240,16 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]
-            #[doc = "const S: Stack" $IDX:camel "<i32, (), 8> = Stack" $IDX:camel "::own_new(0)"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, 8> = Stack" $IDX:camel "::own_new(0)"]
             ///     .s_const_unwrap().s.own_push(1).s.own_push(2).s.own_push(3).s;
-            #[doc = "const T: Stack" $IDX:camel "<i32, (), 4> = S.own_resize_default_truncate().s;"]
+            #[doc = "const T: Stack" $IDX:camel "<i32, 4> = S.own_resize_default_truncate().s;"]
             /// assert_eq![S.as_slice(), T.as_slice()];
-            #[doc = "const U: Stack" $IDX:camel "<i32, (), 2> = S.own_resize_default_truncate().s;"]
+            #[doc = "const U: Stack" $IDX:camel "<i32, 2> = S.own_resize_default_truncate().s;"]
             /// assert_eq![U.as_slice(), &[2, 3]];
             /// ```
             #[inline]
             pub const fn own_resize_default_truncate<const NEW_CAP: usize>(self)
-                -> Own<Stack<T, Bare, NEW_CAP, $IDX>, ()> {
+                -> Own<Stack<T, NEW_CAP, $IDX, Bare>, ()> {
                 let start_idx = if self.len as usize > NEW_CAP {
                     self.len as usize - NEW_CAP
                 } else {
@@ -276,7 +276,7 @@ macro_rules! impl_stack {
 
         // S: Bare
         /// # Stack index-size conversion.
-        impl<T, const CAP: usize> Stack<T, Bare, CAP, $IDX> {
+        impl<T, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             $(
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
             ///
@@ -286,12 +286,12 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::data::*;"]
-            #[doc = "let s = Stack" $IDX:camel "::<_, (), 6>::from([1, 2, 3, 4]);"]
-            #[doc = "let t: Stack" $NEW_IDX:camel "::<_, (), 6> = s.to_idx_" $NEW_IDX "().unwrap();"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, 6>::from([1, 2, 3, 4]);"]
+            #[doc = "let t: Stack" $NEW_IDX:camel "::<_, 6> = s.to_idx_" $NEW_IDX "().unwrap();"]
             /// assert_eq![s.as_slice(), t.as_slice()];
             /// ```
             #[inline]
-            pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, Bare, CAP, $NEW_IDX>> {
+            pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, CAP, $NEW_IDX, Bare>> {
                 if CAP <= $NEW_IDX::MAX as usize {
                     Ok(Stack { array: self.array, len: self.len as $NEW_IDX })
                 } else {
@@ -303,7 +303,7 @@ macro_rules! impl_stack {
         // S: Boxed
         #[cfg(feature = "alloc")]
         #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-        impl<T, const CAP: usize> Stack<T, Boxed, CAP, $IDX> {
+        impl<T, const CAP: usize> Stack<T, CAP, $IDX, Boxed> {
             $(
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
             ///
@@ -313,12 +313,12 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::*;"]
-            #[doc = "let s = Stack" $IDX:camel "::<_, Boxed, 6>::from([1, 2, 3]);"]
-            #[doc = "let t: Stack" $NEW_IDX:camel "::<_, Boxed, 6> = s.to_idx_" $NEW_IDX "().unwrap();"]
+            #[doc = "let s = Stack" $IDX:camel "::<_, 6, Boxed>::from([1, 2, 3]);"]
+            #[doc = "let t: Stack" $NEW_IDX:camel "::<_, 6, Boxed> = s.to_idx_" $NEW_IDX "().unwrap();"]
             /// assert_eq![t.as_slice(), &[1, 2, 3]];
             /// ```
             #[inline]
-            pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, Boxed, CAP, $NEW_IDX>> {
+            pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, CAP, $NEW_IDX, Boxed>> {
                 if CAP <= $NEW_IDX::MAX as usize {
                     Ok(Stack { array: self.array, len: self.len as $NEW_IDX })
                 } else {
@@ -328,7 +328,7 @@ macro_rules! impl_stack {
             )+
         }
         // S: Bare, T: Copy
-        impl<T: Copy, const CAP: usize> Stack<T, Bare, CAP, $IDX> {
+        impl<T: Copy, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             $(
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
             ///
@@ -338,14 +338,14 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::data::*;"]
-            #[doc = "const S: Stack" $IDX:camel "<i32, (), 6> = Stack" $IDX:camel "::own_new(0)"]
+            #[doc = "const S: Stack" $IDX:camel "<i32, 6> = Stack" $IDX:camel "::own_new(0)"]
             ///     .s_const_unwrap().s.own_push(1).s.own_push(2).s.own_push(3).s;
-            #[doc = "const T: Stack" $NEW_IDX:camel "<i32, (), 6> = S.own_to_idx_"
+            #[doc = "const T: Stack" $NEW_IDX:camel "<i32, 6> = S.own_to_idx_"
                 $NEW_IDX "().s_const_unwrap().s;"]
             /// assert_eq![S.as_slice(), T.as_slice()];
             /// ```
             #[inline]
-            pub const fn [<own_to_idx_ $NEW_IDX>](self) -> Own<Result<Stack<T, Bare, CAP, $NEW_IDX>>, ()> {
+            pub const fn [<own_to_idx_ $NEW_IDX>](self) -> Own<Result<Stack<T, CAP, $NEW_IDX, Bare>>, ()> {
                 if CAP <= $NEW_IDX::MAX as usize {
                     Own::empty(Ok(Stack { array: self.array, len: self.len as $NEW_IDX }))
                 } else {

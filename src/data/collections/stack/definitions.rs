@@ -18,9 +18,9 @@ use crate::{
 ///
 /// It is generic in respect to its
 /// elements (`T`),
-/// storage (`S`),
-/// capacity (`CAP`)
-/// and index size (`IDX`).
+/// capacity (`CAP`),
+/// index size (`IDX`)
+/// and storage (`S`),
 ///
 /// The index size will upper-bound the capacity to the maximum for that type,
 /// e.g. `u8::MAX` for [`StackU8`].
@@ -129,33 +129,25 @@ use crate::{
 ///     [`own_tuck`][Self::own_tuck]*([uc][Self::own_tuck_unchecked])*,
 ///     [`own_tuck2`][Self::own_tuck2]*([uc][Self::own_tuck2_unchecked])*.
 #[must_use]
-pub struct Stack<T, S: Storage, const CAP: usize, IDX> {
+pub struct Stack<T, const CAP: usize, IDX, S: Storage = Bare> {
     pub(super) array: Array<T, S, CAP>,
     pub(super) len: IDX,
 }
 
 /// A [`Stack`] with an 8-bit index size.
-pub type StackU8<T, S, const CAP: usize> = Stack<T, S, CAP, u8>;
+pub type StackU8<T, const CAP: usize, S = Bare> = Stack<T, CAP, u8, S>;
 /// A [`Stack`] with a 16-bit index size.
-pub type StackU16<T, S, const CAP: usize> = Stack<T, S, CAP, u16>;
+pub type StackU16<T, const CAP: usize, S = Bare> = Stack<T, CAP, u16, S>;
 /// A [`Stack`] with a 32-bit index size.
-pub type StackU32<T, S, const CAP: usize> = Stack<T, S, CAP, u32>;
+pub type StackU32<T, const CAP: usize, S = Bare> = Stack<T, CAP, u32, S>;
 /// A [`Stack`] with a pointer-sized index size.
-pub type StackUsize<T, S, const CAP: usize> = Stack<T, S, CAP, usize>;
-
-/// A [`Stack`] stored in the stack.
-pub type BareStack<T, const CAP: usize, IDX> = Stack<T, Bare, CAP, IDX>;
-
-/// A [`Stack`] stored in the heap.
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub type BoxedStack<T, const CAP: usize, IDX> = Stack<T, Boxed, CAP, IDX>;
+pub type StackUsize<T, const CAP: usize, S = Bare> = Stack<T, CAP, usize, S>;
 
 /* iterators */
 
 /// An iterator over [`Stack`] elements.
 #[must_use]
-pub struct StackIter<'s, T, S: Storage, const CAP: usize, IDX> {
-    pub(super) stack: &'s Stack<T, S, CAP, IDX>,
+pub struct StackIter<'s, T, const CAP: usize, IDX, S: Storage = Bare> {
+    pub(super) stack: &'s Stack<T, CAP, IDX, S>,
     pub(super) idx: usize,
 }
