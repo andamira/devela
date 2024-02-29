@@ -38,7 +38,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     pub fn with_cloned(element: T) -> Result<Self> {
         Self::check_CR()?;
         Ok(Self {
-            array: Array::<T, Bare, CR>::with_cloned(element),
+            array: Array::<T, CR, Bare>::with_cloned(element),
         })
     }
 }
@@ -60,7 +60,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     pub const fn with_copied(element: T) -> Result<Self> {
         match Self::check_CR() {
             Ok(_) => Ok(Self {
-                array: Array::<T, Bare, CR>::with_copied(element),
+                array: Array::<T, CR, Bare>::with_copied(element),
             }),
             Err(e) => Err(e),
         }
@@ -81,12 +81,12 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// # Examples
     /// ```
     /// # use devela::all::{Boxed, Array2d};
-    /// let g = Array2d::<_, 4, 4, {4 * 4}, Boxed>::with_cloned(String::from("·"));
+    /// let g = Array2d::<_, 4, 4, {4 * 4}, true, Boxed>::with_cloned(String::from("·"));
     /// ```
     pub fn with_cloned(element: T) -> Result<Self> {
         Self::check_CR()?;
         Ok(Self {
-            array: Array::<T, Boxed, CR>::with_cloned(element),
+            array: Array::<T, CR, Boxed>::with_cloned(element),
         })
     }
 }

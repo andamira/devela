@@ -50,7 +50,7 @@ macro_rules! impl_destaque {
             pub fn new(element: T) -> Result<Self> {
                 if CAP <= $IDX::MAX as usize {
                     Ok(Self {
-                        array: Array::<T, Bare, CAP>::with_cloned(element),
+                        array: Array::<T, CAP, Bare>::with_cloned(element),
                         front: 0,
                         back: 0,
                         len: 0,
@@ -94,7 +94,7 @@ macro_rules! impl_destaque {
             /// ```
             pub fn new(element: T) -> Self {
                 Self {
-                    array: Array::<T, Boxed, CAP>::with_cloned(element),
+                    array: Array::<T, CAP, Boxed>::with_cloned(element),
                     front: 0,
                     back: 0,
                     len: 0,

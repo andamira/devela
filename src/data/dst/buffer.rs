@@ -107,10 +107,10 @@ unsafe impl<T: Pod> DstBuf for crate::_deps::alloc::vec::Vec<MaybeUninit<T>> {
 /// A statically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s.
 pub struct DstArray<T, const N: usize> {
-    inner: Array<MaybeUninit<T>, (), N>,
+    inner: Array<MaybeUninit<T>, N>,
 }
 impl<T, const N: usize> Deref for DstArray<T, N> {
-    type Target = Array<MaybeUninit<T>, (), N>;
+    type Target = Array<MaybeUninit<T>, N>;
 
     fn deref(&self) -> &Self::Target {
         &self.inner

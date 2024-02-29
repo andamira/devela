@@ -37,7 +37,7 @@ pub trait DataArray: DataCollection {
 
 /* impl for Array */
 
-impl<T, S: Storage, const LEN: usize> DataArray for crate::data::Array<T, S, LEN> {
+impl<T, const LEN: usize, S: Storage> DataArray for crate::data::Array<T, LEN, S> {
     fn array_ref_get(&self, idx: usize) -> Result<&<Self as DataCollection>::Element> {
         if let Some(e) = self.get(idx) {
             Ok(e)

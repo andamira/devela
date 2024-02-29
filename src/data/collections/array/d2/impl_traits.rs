@@ -52,7 +52,7 @@ impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bo
     fn default() -> Self {
         Self::panic_check_CR();
         Self {
-            array: Array::<T, Bare, CR>::default(),
+            array: Array::<T, CR, Bare>::default(),
         }
     }
 }
@@ -68,7 +68,7 @@ impl<T: ConstDefault, const C: usize, const R: usize, const CR: usize, const RMA
     const DEFAULT: Self = {
         Self::panic_check_CR();
         Self {
-            array: Array::<T, Bare, CR>::DEFAULT,
+            array: Array::<T, CR, Bare>::DEFAULT,
         }
     };
 }
@@ -85,12 +85,12 @@ impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bo
     /// # Examples
     /// ```
     /// # use devela::all::{Boxed, Array2d};
-    /// let g = Array2d::<String, 4, 4, {4 * 4}, Boxed>::default();
+    /// let g = Array2d::<String, 4, 4, {4 * 4}, true, Boxed>::default();
     /// ```
     fn default() -> Self {
         Self::panic_check_CR();
         Self {
-            array: Array::<T, Boxed, CR>::default(),
+            array: Array::<T, CR, Boxed>::default(),
         }
     }
 }

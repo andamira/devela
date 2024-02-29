@@ -3,7 +3,7 @@
 //! 1-dimensional array definitions
 //
 // TOC
-// - define types Array, BareArray, BoxedArray
+// - define Array
 // - define trait DataArray
 // - implement DataCollection for Array
 // - implement DataArray for Array
@@ -25,8 +25,7 @@ use crate::mem::Boxed;
 /// storage (`S`)
 /// and length (`LEN`).
 ///
-/// See also the related trait: [`DataArray`][crate::DataArray]
-/// and aliases: [`BareArray`] and [`BoxedArray`].
+/// See also the related trait: [`DataArray`][crate::DataArray].
 ///
 /// ## Methods
 ///
@@ -46,14 +45,6 @@ use crate::mem::Boxed;
 ///   [`len`][Self::len], [`is_empty`][Self::is_empty],
 ///   [`contains`][Self::contains].
 #[must_use]
-pub struct Array<T, S: Storage, const LEN: usize> {
+pub struct Array<T, const LEN: usize, S: Storage = Bare> {
     pub(crate) array: S::Stored<[T; LEN]>,
 }
-
-/// An [`Array`] stored in the stack.
-pub type BareArray<T, const LEN: usize> = Array<T, Bare, LEN>;
-
-/// An [`Array`] stored in the heap.
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub type BoxedArray<T, const LEN: usize> = Array<T, Boxed, LEN>;

@@ -59,7 +59,7 @@ macro_rules! impl_stack {
             pub fn new(element: T) -> Result<Self> {
                 if CAP <= $IDX::MAX as usize {
                     Ok(Self {
-                        array: Array::<T, Bare, CAP>::with_cloned(element),
+                        array: Array::<T, CAP, Bare>::with_cloned(element),
                         len: 0,
                     })
                 } else {
@@ -107,7 +107,7 @@ macro_rules! impl_stack {
             #[inline]
             pub fn new(element: T) -> Self {
                 Self {
-                    array: Array::<T, Boxed, CAP>::with_cloned(element),
+                    array: Array::<T, CAP, Boxed>::with_cloned(element),
                     len: 0,
                 }
             }
@@ -940,7 +940,7 @@ macro_rules! impl_stack {
                 // IMPROVE: use array_init
                 // MAYBE return not option
                 // TODO: improve from_iter
-                // Some(Array::<T, S, LEN>::new())
+                // Some(Array::<T, LEN, S>::new())
 
                 if self.is_empty() || LEN > self.len as usize || LEN == 0 {
                     None

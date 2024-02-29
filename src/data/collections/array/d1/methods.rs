@@ -15,7 +15,7 @@ use crate::{
     mem::Boxed,
 };
 
-impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
+impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Returns a new `Array` from the given primitive `array`.
     #[inline]
     pub fn new(array: [T; LEN]) -> Self {
@@ -26,8 +26,8 @@ impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
 }
 
 // S:Bare
-impl<T, const LEN: usize> Array<T, Bare, LEN> {
-    /// Returns a new [`BareArray`][super::BareArray]
+impl<T, const LEN: usize> Array<T, LEN, Bare> {
+    /// Returns a new [`Array`] allocated in the stack,
     /// from the given primitive `array` in compile-time.
     #[inline]
     pub const fn new_bare(array: [T; LEN]) -> Self {
@@ -38,12 +38,12 @@ impl<T, const LEN: usize> Array<T, Bare, LEN> {
 }
 
 // S:Bare + T:Clone
-impl<T: Clone, const LEN: usize> Array<T, Bare, LEN> {
+impl<T: Clone, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns an array, allocated in the stack, filled with `element`, cloned.
     /// # Examples
     /// ```
     /// # use devela::data::Array;
-    /// let a = Array::<_, (), 16>::with_cloned(0);
+    /// let a = Array::<_, 16>::with_cloned(0);
     /// ```
     #[inline]
     pub fn with_cloned(element: T) -> Self {
@@ -53,12 +53,12 @@ impl<T: Clone, const LEN: usize> Array<T, Bare, LEN> {
 }
 
 // S:Bare + T:Copy
-impl<T: Copy, const LEN: usize> Array<T, Bare, LEN> {
+impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns an array, allocated in the stack, filled with `element`, copied, in compile-time.
     /// # Examples
     /// ```
     /// # use devela::data::Array;
-    /// const A: Array<i32, (), 16> = Array::with_copied(0);
+    /// const A: Array<i32, 16> = Array::with_copied(0);
     /// ```
     #[inline]
     pub const fn with_copied(element: T) -> Self {
@@ -70,7 +70,7 @@ impl<T: Copy, const LEN: usize> Array<T, Bare, LEN> {
 // S:Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T, const LEN: usize> Array<T, Boxed, LEN> {
+impl<T, const LEN: usize> Array<T, LEN, Boxed> {
     /// Returns a new `Array` from the given `boxed_array`.
     #[inline]
     pub fn new_boxed(boxed_array: Box<[T; LEN]>) -> Self {
@@ -81,12 +81,12 @@ impl<T, const LEN: usize> Array<T, Boxed, LEN> {
 // S:Boxed + T:Clone
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
+impl<T: Clone, const LEN: usize> Array<T, LEN, Boxed> {
     /// Returns an array, allocated in the heap, filled with `element`, cloned.
     /// # Examples
     /// ```
-    /// # use devela::data::BoxedArray;
-    /// let mut a = BoxedArray::<_, 1_000>::with_cloned(0);
+    /// # use devela::all::{Array, Boxed};
+    /// let mut a = Array::<_, 1_000, Boxed>::with_cloned(0);
     /// ```
     #[inline]
     pub fn with_cloned(element: T) -> Self {
@@ -96,7 +96,7 @@ impl<T: Clone, const LEN: usize> Array<T, Boxed, LEN> {
 }
 
 // T:Clone
-impl<T: Clone, S: Storage, const LEN: usize> Array<T, S, LEN> {
+impl<T: Clone, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Fills all elements of the array with the given `element`.
     #[inline]
     pub fn fill(&mut self, element: T) {
@@ -105,7 +105,7 @@ impl<T: Clone, S: Storage, const LEN: usize> Array<T, S, LEN> {
 }
 
 // T:Default
-impl<T: Default, S: Storage, const LEN: usize> Array<T, S, LEN> {
+impl<T: Default, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Fills all elements of the array with the default value.
     #[inline]
     pub fn fill_default(&mut self) {
@@ -114,12 +114,12 @@ impl<T: Default, S: Storage, const LEN: usize> Array<T, S, LEN> {
 }
 
 // T:PartialEq
-impl<T: PartialEq, S: Storage, const CAP: usize> Array<T, S, CAP> {
+impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Returns true if the array contains `element`.
     /// # Examples
     /// ```
     /// # use devela::all::Array;
-    /// let a = Array::<_, (), 5>::new([5, 78, 42, 33, 9]);
+    /// let a = Array::<_, 5>::new([5, 78, 42, 33, 9]);
     /// assert![a.contains(&9)];
     /// assert![!a.contains(&8)];
     /// ```
@@ -130,7 +130,7 @@ impl<T: PartialEq, S: Storage, const CAP: usize> Array<T, S, CAP> {
     }
 }
 
-impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
+impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Returns the number of elements in the array.
     #[inline]
     #[must_use]
@@ -163,7 +163,7 @@ impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
 // S:Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T, const LEN: usize> Array<T, Boxed, LEN> {
+impl<T, const LEN: usize> Array<T, LEN, Boxed> {
     /// Returns the inner [`Box`]ed primitive array.
     #[inline]
     #[must_use]
@@ -184,7 +184,7 @@ impl<T, const LEN: usize> Array<T, Boxed, LEN> {
     }
 }
 // S:Bare
-impl<T, const LEN: usize> Array<T, Bare, LEN> {
+impl<T, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns the inner [`BareBox`]ed primitive array.
     #[inline]
     #[must_use]
@@ -193,7 +193,7 @@ impl<T, const LEN: usize> Array<T, Bare, LEN> {
     }
 }
 // S:Bare, T:Copy
-impl<T: Copy, const LEN: usize> Array<T, Bare, LEN> {
+impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns the inner [`BareBox`]ed primitive array in compile-time.
     #[inline]
     #[must_use]

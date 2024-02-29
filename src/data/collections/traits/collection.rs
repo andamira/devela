@@ -50,7 +50,7 @@ pub trait DataCollection {
 /* impl for devela types */
 
 #[rustfmt::skip]
-impl<T, S: Storage, const LEN: usize> DataCollection for Array<T, S, LEN> {
+impl<T, const LEN: usize, S: Storage> DataCollection for Array<T, LEN, S> {
     type Element = T;
     /// The capacity of a fixed-size array is always equal to its length.
     fn collection_capacity(&self) -> Result<usize> { Ok(LEN) }

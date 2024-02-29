@@ -18,7 +18,7 @@ use crate::{
 /// rows (`R`),
 /// size (`CR`),
 /// storage order (`RMAJ`)
-/// and storage location (`S`).
+/// and storage (`S`).
 ///
 /// The total lenght `CR` must be equal to the product `C` * `R`.
 ///
@@ -81,5 +81,5 @@ pub struct Array2d<
     const RMAJ: bool = true,
     S: Storage = Bare,
 > {
-    pub(super) array: Array<T, S, CR>,
+    pub(super) array: Array<T, CR, S>,
 }

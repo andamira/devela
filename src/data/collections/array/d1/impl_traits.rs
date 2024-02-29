@@ -24,7 +24,7 @@ use crate::{
 };
 
 // Deref
-impl<T, S: Storage, const LEN: usize> Deref for Array<T, S, LEN> {
+impl<T, const LEN: usize, S: Storage> Deref for Array<T, LEN, S> {
     type Target = [T];
 
     fn deref(&self) -> &Self::Target {
@@ -32,38 +32,38 @@ impl<T, S: Storage, const LEN: usize> Deref for Array<T, S, LEN> {
     }
 }
 // DerefMut
-impl<T, S: Storage, const LEN: usize> DerefMut for Array<T, S, LEN> {
+impl<T, const LEN: usize, S: Storage> DerefMut for Array<T, LEN, S> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.array.deref_mut()
     }
 }
 // AsRef
-impl<T, S: Storage, const LEN: usize> AsRef<[T; LEN]> for Array<T, S, LEN> {
+impl<T, const LEN: usize, S: Storage> AsRef<[T; LEN]> for Array<T, LEN, S> {
     fn as_ref(&self) -> &[T; LEN] {
         &self.array
     }
 }
 // AsMut
-impl<T, S: Storage, const LEN: usize> AsMut<[T; LEN]> for Array<T, S, LEN> {
+impl<T, const LEN: usize, S: Storage> AsMut<[T; LEN]> for Array<T, LEN, S> {
     fn as_mut(&mut self) -> &mut [T; LEN] {
         &mut self.array
     }
 }
 // Borrow
-impl<T, S: Storage, const LEN: usize> Borrow<[T; LEN]> for Array<T, S, LEN> {
+impl<T, const LEN: usize, S: Storage> Borrow<[T; LEN]> for Array<T, LEN, S> {
     fn borrow(&self) -> &[T; LEN] {
         &self.array
     }
 }
 // BorrowMut
-impl<T, S: Storage, const LEN: usize> BorrowMut<[T; LEN]> for Array<T, S, LEN> {
+impl<T, const LEN: usize, S: Storage> BorrowMut<[T; LEN]> for Array<T, LEN, S> {
     fn borrow_mut(&mut self) -> &mut [T; LEN] {
         &mut self.array
     }
 }
 
 // T:Clone
-impl<T: Clone, S: Storage, const LEN: usize> Clone for Array<T, S, LEN>
+impl<T: Clone, const LEN: usize, S: Storage> Clone for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Clone,
 {
@@ -75,11 +75,11 @@ where
 }
 
 // T:Copy
-impl<T: Copy, S: Storage, const LEN: usize> Copy for Array<T, S, LEN> where S::Stored<[T; LEN]>: Copy
+impl<T: Copy, const LEN: usize, S: Storage> Copy for Array<T, LEN, S> where S::Stored<[T; LEN]>: Copy
 {}
 
 // T:Debug
-impl<T: fmt::Debug, S: Storage, const LEN: usize> fmt::Debug for Array<T, S, LEN>
+impl<T: fmt::Debug, const LEN: usize, S: Storage> fmt::Debug for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: fmt::Debug,
 {
@@ -91,7 +91,7 @@ where
     }
 }
 // T:PartialEq
-impl<T: PartialEq, S: Storage, const LEN: usize> PartialEq for Array<T, S, LEN>
+impl<T: PartialEq, const LEN: usize, S: Storage> PartialEq for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: PartialEq,
 {
@@ -100,9 +100,9 @@ where
     }
 }
 // T:Eq
-impl<T: Eq, S: Storage, const LEN: usize> Eq for Array<T, S, LEN> where S::Stored<[T; LEN]>: Eq {}
+impl<T: Eq, const LEN: usize, S: Storage> Eq for Array<T, LEN, S> where S::Stored<[T; LEN]>: Eq {}
 // T:PartialOrd
-impl<T: PartialOrd, S: Storage, const LEN: usize> PartialOrd for Array<T, S, LEN>
+impl<T: PartialOrd, const LEN: usize, S: Storage> PartialOrd for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: PartialOrd,
 {
@@ -111,7 +111,7 @@ where
     }
 }
 // T:Ord
-impl<T: Ord, S: Storage, const LEN: usize> Ord for Array<T, S, LEN>
+impl<T: Ord, const LEN: usize, S: Storage> Ord for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Ord,
 {
@@ -120,7 +120,7 @@ where
     }
 }
 // T:Hash
-impl<T: Hash, S: Storage, const LEN: usize> Hash for Array<T, S, LEN>
+impl<T: Hash, const LEN: usize, S: Storage> Hash for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Hash,
 {
@@ -130,7 +130,7 @@ where
 }
 
 // S:Bare + T:Default
-impl<T: Default, const LEN: usize> Default for Array<T, Bare, LEN> {
+impl<T: Default, const LEN: usize> Default for Array<T, LEN, Bare> {
     /// Returns an array, allocated in the stack,
     /// using the default value to fill the data.
     fn default() -> Self {
@@ -139,7 +139,7 @@ impl<T: Default, const LEN: usize> Default for Array<T, Bare, LEN> {
     }
 }
 // S:Bare + T:ConstDefault
-impl<T: ConstDefault, const LEN: usize> ConstDefault for Array<T, Bare, LEN> {
+impl<T: ConstDefault, const LEN: usize> ConstDefault for Array<T, LEN, Bare> {
     /// Returns an array, allocated in the stack,
     /// using the default value to fill the data.
     const DEFAULT: Self = {
@@ -152,14 +152,14 @@ impl<T: ConstDefault, const LEN: usize> ConstDefault for Array<T, Bare, LEN> {
 // S:Boxed + T:Default
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T: Default, const LEN: usize> Default for Array<T, Boxed, LEN> {
+impl<T: Default, const LEN: usize> Default for Array<T, LEN, Boxed> {
     /// Returns an array, allocated in the heap,
     /// using the default value to fill the data.
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::BoxedArray;
-    /// let mut s = BoxedArray::<i32, 100>::default();
+    /// # use devela::all::{Array, Boxed};
+    /// let mut s = Array::<i32, 100, Boxed>::default();
     /// ```
     fn default() -> Self {
         let array = array_init!(default_heap [T; LEN], "safe_data", "unsafe_array");
@@ -167,22 +167,22 @@ impl<T: Default, const LEN: usize> Default for Array<T, Boxed, LEN> {
     }
 }
 
-impl<T, const LEN: usize> From<Array<T, Bare, LEN>> for [T; LEN] {
-    fn from(array: Array<T, Bare, LEN>) -> [T; LEN] {
+impl<T, const LEN: usize> From<Array<T, LEN, Bare>> for [T; LEN] {
+    fn from(array: Array<T, LEN, Bare>) -> [T; LEN] {
         array.array.0
     }
 }
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T, const LEN: usize> From<Array<T, Boxed, LEN>> for Box<[T; LEN]> {
-    fn from(array: Array<T, Boxed, LEN>) -> Box<[T; LEN]> {
+impl<T, const LEN: usize> From<Array<T, LEN, Boxed>> for Box<[T; LEN]> {
+    fn from(array: Array<T, LEN, Boxed>) -> Box<[T; LEN]> {
         array.array
     }
 }
 
 /* iterator related */
 
-impl<T: Default, I, const LEN: usize> From<I> for Array<T, Bare, LEN>
+impl<T: Default, I, const LEN: usize> From<I> for Array<T, LEN, Bare>
 where
     I: IntoIterator<Item = T>,
 {
@@ -193,11 +193,11 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::BareArray;
-    /// let s: BareArray<_, 4> = [1, 2, 3].into();
+    /// # use devela::data::Array;
+    /// let s: Array<_, 4> = [1, 2, 3].into();
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
-    fn from(iterator: I) -> Array<T, Bare, LEN> {
+    fn from(iterator: I) -> Array<T, LEN, Bare> {
         let array = BareBox::new(array_init!(iter [T; LEN], "safe_data", "unsafe_array", iterator));
         Array { array }
     }
@@ -205,7 +205,7 @@ where
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T: Default, I, const LEN: usize> From<I> for Array<T, Boxed, LEN>
+impl<T: Default, I, const LEN: usize> From<I> for Array<T, LEN, Boxed>
 where
     I: IntoIterator<Item = T>,
 {
@@ -213,12 +213,12 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::BoxedArray;
-    /// let s: BoxedArray<_, 4> = [1, 2, 3].into();
+    /// # use devela::all::{Array, Boxed};
+    /// let s: Array<_, 4, Boxed> = [1, 2, 3].into();
     ///
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];
     /// ```
-    fn from(iterator: I) -> Array<T, Boxed, LEN> {
+    fn from(iterator: I) -> Array<T, LEN, Boxed> {
         let array = array_init!(iter_heap [T; LEN], "safe_data", "unsafe_array", iterator);
         Array { array }
     }
@@ -226,7 +226,7 @@ where
 
 /* impl bitwise ops */
 
-impl<T, S: Storage, const LEN: usize> BitAnd for Array<T, S, LEN>
+impl<T, const LEN: usize, S: Storage> BitAnd for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Copy,
     T: BitAnd<Output = T> + Copy,
@@ -241,7 +241,7 @@ where
         result
     }
 }
-impl<T, S: Storage, const LEN: usize> BitOr for Array<T, S, LEN>
+impl<T, const LEN: usize, S: Storage> BitOr for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Copy,
     T: BitOr<Output = T> + Copy,
@@ -256,7 +256,7 @@ where
         result
     }
 }
-impl<T, S: Storage, const LEN: usize> BitXor for Array<T, S, LEN>
+impl<T, const LEN: usize, S: Storage> BitXor for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Copy,
     T: BitXor<Output = T> + Copy,
@@ -272,7 +272,7 @@ where
     }
 }
 
-impl<T, S: Storage, const LEN: usize> BitAndAssign for Array<T, S, LEN>
+impl<T, const LEN: usize, S: Storage> BitAndAssign for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Copy,
     T: BitAndAssign + Copy,
@@ -284,7 +284,7 @@ where
     }
 }
 
-impl<T, S: Storage, const LEN: usize> BitOrAssign for Array<T, S, LEN>
+impl<T, const LEN: usize, S: Storage> BitOrAssign for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Copy,
     T: BitOrAssign + Copy,
@@ -296,7 +296,7 @@ where
     }
 }
 
-impl<T, S: Storage, const LEN: usize> BitXorAssign for Array<T, S, LEN>
+impl<T, const LEN: usize, S: Storage> BitXorAssign for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Copy,
     T: BitXorAssign + Copy,
@@ -308,7 +308,7 @@ where
     }
 }
 
-impl<T, S: Storage, const LEN: usize> Not for Array<T, S, LEN>
+impl<T, const LEN: usize, S: Storage> Not for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Clone,
     T: Not<Output = T> + Copy,
