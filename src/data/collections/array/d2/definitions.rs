@@ -15,16 +15,16 @@ use crate::{
 /// It is generic in respect to its
 /// elements (`T`),
 /// storage (`S`),
-/// x-length (`X`),
-/// y-length (`Y`),
-/// total length (`LEN`)
-/// and storage order (`XMAJ`).
+/// columns (`C`),
+/// rows (`R`),
+/// size (`CR`)
+/// and storage order (`RMAJ`).
 ///
-/// The lenght `LEN` must be equal to `X` * `Y`.
+/// The total lenght `CR` must be equal to the product `C` * `R`.
 ///
 /// The
 /// [*storage order*](https://en.wikipedia.org/wiki/Row-_and_column-major_order)
-/// is X-major by default (`XMAJ = true`) and can be made Y-major if set to false.
+/// is row-major by default (`RMAJ = true`). It can be column-major if set to false.
 ///
 /// ## Methods
 ///
@@ -50,51 +50,46 @@ use crate::{
 ///   [`get_index`][Self::get_index]*([`uc`][Self::get_index_unchecked])*,
 ///   [`get_coords`][Self::get_coords]*([`uc`][Self::get_coords_unchecked])*.
 /// - Indexing and coordinates (specific for the **opposite** order):
-///   - X-major:
-///   [`get_ref_ymaj`][Self::get_ref_ymaj]*([`uc`][Self::get_ref_ymaj_unchecked])*,
-///   [`get_mut_ymaj`][Self::get_mut_ymaj]*([`uc`][Self::get_mut_ymaj_unchecked])*,
-///   [`set_ymaj`][Self::set_ymaj]*([`uc`][Self::set_ymaj_unchecked])*,
-///   [`get_index_ymaj`][Self::get_index_ymaj]*([`uc`][Self::get_index_ymaj_unchecked])*,
-///   [`get_coords_ymaj`][Self::get_coords_ymaj]*([`uc`][Self::get_coords_ymaj_unchecked])*.
-///   - Y-major:
-///   [`get_ref_xmaj`][Self::get_ref_xmaj]*([`uc`][Self::get_ref_xmaj_unchecked])*,
-///   [`get_mut_xmaj`][Self::get_mut_xmaj]*([`uc`][Self::get_mut_xmaj_unchecked])*,
-///   [`set_xmaj`][Self::set_xmaj]*([`uc`][Self::set_xmaj_unchecked])*,
-///   [`get_index_xmaj`][Self::get_index_xmaj]*([`uc`][Self::get_index_xmaj_unchecked])*,
-///   [`get_coords_xmaj`][Self::get_coords_xmaj]*([`uc`][Self::get_coords_xmaj_unchecked])*.
+///   - row-major:
+///   [`get_ref_cmaj`][Self::get_ref_cmaj]*([`uc`][Self::get_ref_cmaj_unchecked])*,
+///   [`get_mut_cmaj`][Self::get_mut_cmaj]*([`uc`][Self::get_mut_cmaj_unchecked])*,
+///   [`set_cmaj`][Self::set_cmaj]*([`uc`][Self::set_cmaj_unchecked])*,
+///   [`get_index_cmaj`][Self::get_index_cmaj]*([`uc`][Self::get_index_cmaj_unchecked])*,
+///   [`get_coords_cmaj`][Self::get_coords_cmaj]*([`uc`][Self::get_coords_cmaj_unchecked])*.
+///   - column-major:
+///   [`get_ref_rmaj`][Self::get_ref_rmaj]*([`uc`][Self::get_ref_rmaj_unchecked])*,
+///   [`get_mut_rmaj`][Self::get_mut_rmaj]*([`uc`][Self::get_mut_rmaj_unchecked])*,
+///   [`set_rmaj`][Self::set_rmaj]*([`uc`][Self::set_rmaj_unchecked])*,
+///   [`get_index_rmaj`][Self::get_index_rmaj]*([`uc`][Self::get_index_rmaj_unchecked])*,
+///   [`get_coords_rmaj`][Self::get_coords_rmaj]*([`uc`][Self::get_coords_rmaj_unchecked])*.
 ///
 /// ## Panics
-/// Note that the `Default` and `ConstDefault` constructors will panic if `X * Y != LEN`.
+/// Note that the `Default` and `ConstDefault` constructors will panic if `C * R != CR`.
 //
 // WAIT: [adt_const_params](https://github.com/rust-lang/rust/issues/95174)
 //       will allow to use enums and arrays as const-generic parameters.
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560)
-//       will allow calculating LEN automatically from X and Y. WAIT: Depends on:
+//       will allow calculating CR automatically from C and R. WAIT: Depends on:
 // WAIT:1.78: [allow constants refer to statics](https://github.com/rust-lang/rust/pull/119614)
 // WAIT:1.77: [const-eval interning improvements](https://github.com/rust-lang/rust/pull/119044)
 // DONE:1.76: [compile-time evaluation improvements](https://github.com/rust-lang/rust/pull/118324)
 pub struct Array2d<
     T,
     S: Storage,
-    const X: usize,
-    const Y: usize,
-    const LEN: usize,
-    const XMAJ: bool = true,
+    const C: usize,
+    const R: usize,
+    const CR: usize,
+    const RMAJ: bool = true,
 > {
-    pub(super) array: Array<T, S, LEN>,
+    pub(super) array: Array<T, S, CR>,
 }
 
 /// An [`Array2d`] stored in the stack.
-pub type BareArray2d<T, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool = true> =
-    Array2d<T, Bare, X, Y, LEN, XMAJ>;
+pub type BareArray2d<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool = true> =
+    Array2d<T, Bare, C, R, CR, RMAJ>;
 
 /// An [`Array2d`] stored in the heap.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub type BoxedArray2d<
-    T,
-    const X: usize,
-    const Y: usize,
-    const LEN: usize,
-    const XMAJ: bool = true,
-> = Array2d<T, Boxed, X, Y, LEN, XMAJ>;
+pub type BoxedArray2d<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool = true> =
+    Array2d<T, Boxed, C, R, CR, RMAJ>;

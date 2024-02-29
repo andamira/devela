@@ -22,35 +22,35 @@ use DataError::{MismatchedLength, Overflow};
 /* constructors */
 
 // S:Bare + T:Clone
-impl<T: Clone, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
-    Array2d<T, Bare, X, Y, LEN, XMAJ>
+impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
+    Array2d<T, Bare, C, R, CR, RMAJ>
 {
     /// Returns a 2-dimensional grid, allocated in the stack,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`Overflow`] if `X * Y > usize::MAX`
-    /// or [`MismatchedLength`] if `X * Y != LEN`.
+    /// Returns [`Overflow`] if `C * R > usize::MAX`
+    /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::data::Array2d;
     /// let g = Array2d::<_, (), 4, 4, {4 * 4}>::with_cloned('.');
     /// ```
     pub fn with_cloned(element: T) -> Result<Self> {
-        Self::check_XYLEN()?;
+        Self::check_CR()?;
         Ok(Self {
-            array: Array::<T, Bare, LEN>::with_cloned(element),
+            array: Array::<T, Bare, CR>::with_cloned(element),
         })
     }
 }
 // S:Bare + T:Copy
-impl<T: Copy, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
-    Array2d<T, Bare, X, Y, LEN, XMAJ>
+impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
+    Array2d<T, Bare, C, R, CR, RMAJ>
 {
     /// Returns a 2-dimensional grid, allocated in the stack,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`Overflow`] if `X * Y > usize::MAX`
-    /// or [`MismatchedLength`] if `X * Y != LEN`.
+    /// Returns [`Overflow`] if `C * R > usize::MAX`
+    /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::all::{DataResult, Array2d};
@@ -58,9 +58,9 @@ impl<T: Copy, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool
     /// assert![GRID.is_ok()];
     /// ```
     pub const fn with_copied(element: T) -> Result<Self> {
-        match Self::check_XYLEN() {
+        match Self::check_CR() {
             Ok(_) => Ok(Self {
-                array: Array::<T, Bare, LEN>::with_copied(element),
+                array: Array::<T, Bare, CR>::with_copied(element),
             }),
             Err(e) => Err(e),
         }
@@ -70,45 +70,45 @@ impl<T: Copy, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool
 // S:Boxed + T:Clone
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-impl<T: Clone, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
-    Array2d<T, Boxed, X, Y, LEN, XMAJ>
+impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
+    Array2d<T, Boxed, C, R, CR, RMAJ>
 {
     /// Returns a 2-dimensional grid, allocated in the heap,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`Overflow`] if `X * Y > usize::MAX`
-    /// or [`MismatchedLength`] if `X * Y != LEN`.
+    /// Returns [`Overflow`] if `C * R > usize::MAX`
+    /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::all::{Boxed, Array2d};
     /// let g = Array2d::<_, Boxed, 4, 4, {4 * 4}>::with_cloned(String::from("·"));
     /// ```
     pub fn with_cloned(element: T) -> Result<Self> {
-        Self::check_XYLEN()?;
+        Self::check_CR()?;
         Ok(Self {
-            array: Array::<T, Boxed, LEN>::with_cloned(element),
+            array: Array::<T, Boxed, CR>::with_cloned(element),
         })
     }
 }
 
 // Order-independent
 #[rustfmt::skip]
-impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
-    Array2d<T, S, X, Y, LEN, XMAJ>
+impl<T, S: Storage, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
+    Array2d<T, S, C, R, CR, RMAJ>
 {
     /* general queries */
 
-    /// Returns the total length of the array, equals `X * Y`.
+    /// Returns the total length of the array, equals `C * R`.
     #[inline] #[must_use]
-    pub const fn len(&self) -> usize { LEN }
+    pub const fn len(&self) -> usize { CR }
 
-    /// Returns the length of the X axis.
+    /// Returns the length of the C axis.
     /// (AKA width, number of columns or row length).
-    #[inline] #[must_use] pub const fn x_len(&self) -> usize { X }
+    #[inline] #[must_use] pub const fn x_len(&self) -> usize { C }
 
-    /// Returns the length of the Y axis
+    /// Returns the length of the R axis
     /// (AKA height, number of rows or column length).
-    #[inline] #[must_use] pub const fn y_len(&self) -> usize { X }
+    #[inline] #[must_use] pub const fn y_len(&self) -> usize { C }
 
     /// Returns `true` if the stack is empty (has 0 length).
     /// # Examples
@@ -121,19 +121,19 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ
     /// assert![g2.is_empty()];
     /// ```
     #[inline] #[must_use]
-    pub const fn is_empty(&self) -> bool { LEN == 0 }
+    pub const fn is_empty(&self) -> bool { CR == 0 }
 
     /// Checks the geometry of the columns, rows and their product length.
     /// # Errors
-    /// Returns [`Overflow`] if `X * Y > usize::MAX`
-    /// or [`MismatchedLength`] if `X * Y != LEN`.
+    /// Returns [`Overflow`] if `C * R > usize::MAX`
+    /// or [`MismatchedLength`] if `C * R != CR`.
     #[inline] #[allow(non_snake_case)]
-    pub(crate) const fn check_XYLEN() -> Result<()> {
-        if let Some(len) = X.checked_mul(Y) {
-            if len == LEN {
+    pub(crate) const fn check_CR() -> Result<()> {
+        if let Some(len) = C.checked_mul(R) {
+            if len == CR {
                 Ok(())
             } else {
-                Err(MismatchedLength(Mismatch { need: LEN, have: len, info: "X * Y != LEN" }))
+                Err(MismatchedLength(Mismatch { need: CR, have: len, info: "C * R != CR" }))
             }
         } else {
             Err(Overflow)
@@ -142,17 +142,17 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ
 
     /// Checks the geometry of the columns, rows and their product length.
     /// # Panics
-    /// Panics if `X * Y > usize::MAX` or if `X * Y != LEN`.
+    /// Panics if `C * R > usize::MAX` or if `C * R != CR`.
     #[inline] #[allow(non_snake_case)]
-    pub(crate) const fn panic_check_XYLEN() {
-        if let Some(len) = X.checked_mul(Y) {
-            if len != LEN {
-                panic![concat![ "Array2d Mismatch: X * Y != LEN: ",
-                    stringify!(X), " * ", stringify!(Y), " != ", stringify!(LEN) ]];
+    pub(crate) const fn panic_check_CR() {
+        if let Some(len) = C.checked_mul(R) {
+            if len != CR {
+                panic![concat![ "Array2d Mismatch: C * R != CR: ",
+                    stringify!(C), " * ", stringify!(R), " != ", stringify!(CR) ]];
             }
         } else {
-            panic![concat![ "Array2d overflow: X * Y (",
-                stringify!(Y), " * ", stringify!(X), " > usize::MAX)" ]];
+            panic![concat![ "Array2d overflow: C * R (",
+                stringify!(R), " * ", stringify!(C), " > usize::MAX)" ]];
         }
     }
 
@@ -181,34 +181,34 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ
 
 // S:Bare
 #[rustfmt::skip]
-impl<T, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
-    Array2d<T, Bare, X, Y, LEN, XMAJ>
+impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
+    Array2d<T, Bare, C, R, CR, RMAJ>
 {
     /// Returns the inner [`BareBox`]ed primitive array.
     #[inline] #[must_use]
-    pub fn into_array(self) -> [T; LEN] { self.array.into_array() }
+    pub fn into_array(self) -> [T; CR] { self.array.into_array() }
 }
 
 // S:Bare, T:Copy
 #[rustfmt::skip]
-impl<T: Copy, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
-    Array2d<T, Bare, X, Y, LEN, XMAJ>
+impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
+    Array2d<T, Bare, C, R, CR, RMAJ>
 {
     /// Returns the inner [`BareBox`]ed primitive array in compile-time.
     #[inline] #[must_use]
-    pub const fn into_array_const(self) -> [T; LEN] { self.array.into_array_const() }
+    pub const fn into_array_const(self) -> [T; CR] { self.array.into_array_const() }
 }
 
 // S:Boxed
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
-    Array2d<T, Boxed, X, Y, LEN, XMAJ>
+impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
+    Array2d<T, Boxed, C, R, CR, RMAJ>
 {
     /// Returns the inner [`Box`]ed primitive array.
     #[inline] #[must_use]
-    pub fn into_array(self) -> Box<[T; LEN]> { self.array.into_array() }
+    pub fn into_array(self) -> Box<[T; CR]> { self.array.into_array() }
 
     /// Returns the inner [`Box`]ed primitive array as a slice.
     #[inline] #[must_use]
@@ -221,8 +221,8 @@ impl<T, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
 
 // T: Clone
 #[rustfmt::skip]
-impl<T: Clone, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
-    Array2d<T, S, X, Y, LEN, XMAJ>
+impl<T: Clone, S: Storage, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
+    Array2d<T, S, C, R, CR, RMAJ>
 {
     /// Fills all elements of the grid with the given `element`.
     #[inline]
@@ -233,11 +233,11 @@ impl<T: Clone, S: Storage, const X: usize, const Y: usize, const LEN: usize, con
 impl<
         T: PartialEq,
         S: Storage,
-        const X: usize,
-        const Y: usize,
-        const LEN: usize,
-        const XMAJ: bool,
-    > Array2d<T, S, X, Y, LEN, XMAJ>
+        const C: usize,
+        const R: usize,
+        const CR: usize,
+        const RMAJ: bool,
+    > Array2d<T, S, C, R, CR, RMAJ>
 {
     /// Returns true if the array contains `element`.
     /// # Examples
