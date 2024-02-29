@@ -8,19 +8,25 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.20.0-wip]
 
 ### Added
-- add traits: `NumToStr`, `ConstDefault`, `DataQueue`, `DataDeque`, `DataStack`, `DataDestack`.
-- add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `BareDestaque`, `BoxedDestaque`, `BareStack`, `BoxedStack`, `Mismatch`, `Own`.
-- add features: `num_all`, `safe_code`, `safe_data`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`, `nightly_coro`, `nightly_doc`, `_exclude_example`.
+- add traits: `NumToStr`, `ConstDefault`, `DataQueue`, `DataDeque`, `DataStack`, `DataDesta`, `ExtTuple`.
+- add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `BareDestaque`, `BoxedDestaque`, `BareStack`, `BoxedStack`, `Mismatch`, `Own`, `GfxError`, `GfxResult`, `Pnm`, `Array2d`.
+- add features: `fig`, `num_all`, `safe_code`, `safe_data`, `safe_fig`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`, `nightly_coro`, `nightly_doc`, `_exclude_example`, `ui_window`, `ui_events`, `num_rand`.
+- add capability features: `_capability_max`, `_tuple_arity_31`, `_tuple_arity_63`, `_tuple_arity_95`, `_tuple_arity_127`.
+- add RNGS: `Xabc`, `XorShift8`, `XorShift8Custom`, `XorShift16`, `XorShift32`, `XorShift64`, `XorShift128`, `XorShift128p`, `Xyza8a`, `Xyza8b`.
 - add Floating constants: `FRAC_1_PHI`, `NEG_FRAC_1_PHI`, `SQ_PHI`, `FRAC_NEG_1_PHI`.
 - add `no_std` reimplementations of `std::error` and `std::io` types and traits.
 - add non-optional dependency `either` and reexport its items.
-- add optional dependencies: `memchr`, `wide`.
+- add optional dependencies: `memchr`, `wide`, `crossterm`, `miniquad`, `rand_core`.
 - add examples: `cargo-script`, `bitfield`, `enumset`.
 - add macros: `assert_eq_all`, `assert_approx_eq_all`, `unwrap`.
 - add `Array` methods: `new_boxed`, `into_slice`, `into_vec`.
 - add niche number aliases: `NonEdge*`.
 - add `Bare` type alias of `unit`.
+- add module: `fig`.
 - add script `tools/rustfmt` and `rustfmt_excluded_files` list.
+- add new `DataError` variants: `MismatchedLength`, `InvalidAxisLength.
+- add new `Floating` and `ExtFloat` methods: `sign`, `is_zero`, `is_sign_positive_nonzero`, `is_sign_negative_nonzero`.
+- re-export proc-macros: `ident_total`, `ident_unique`, `ident_total_unique`.
 - re-export crate-defined result-related types from `result`.
 - re-export core types from `data::iter`.
 - re-export `Default` from `code`.
@@ -31,6 +37,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove re-exported macro: `option_unwrap`.
 - remove type aliases: `NonMax*` `NonMin*.
 - remove file `.gitattributes`.
+- deprecate`ident_total_count` macro.
 
 ### Changed
 - bump rust version to 1.76.0.
@@ -51,9 +58,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `num_int_niche` feature to `num_niche_impls`.
 - rename `*fence` functions to `atomic_*fence`.
 - rename `ascii_` reexported macros to `str_`.
-- rename allocated collections with `Alloc`.
-- rename the feature `full` to `all`.
+- prefix allocated collections with `Alloc`.
+- rename aliases: `Dst*U` to `Dst*Usize`.
+- rename mem::`Size` to mem::`ByteSize`.
 - rename `FloatOps` to `ExtFloat`.
+- rename feature `full` to `all`.
 - document selected examples from `_docs`.
 - derive common traits for `Boxed`, `Primiting`.
 - make `bitfield` and `enumset` examples standalone.
@@ -68,6 +77,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - refactor root modules, simplify and dissassociate root-level feature-gating.
 - update and add more tests for macros: `cfor`, `mem_size_of_expr`.
 - allow to forbid unsafe at the individual module level.
+- fix `data::dst` feature-gates.
 
 ## [0.19.0] 2024-01-24
 
@@ -680,7 +690,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.19.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.20.0...HEAD
+[0.20.0]: https://github.com/andamira/devela/releases/tag/v0.20.0
 [0.19.0]: https://github.com/andamira/devela/releases/tag/v0.19.0
 [0.18.1]: https://github.com/andamira/devela/releases/tag/v0.18.1
 [0.18.0]: https://github.com/andamira/devela/releases/tag/v0.18.0
