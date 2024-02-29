@@ -62,17 +62,17 @@ pub mod time;
 pub mod ui;
 pub mod work;
 
-/// Additional dependencies.
+/// Dependencies.
 pub mod _deps;
 
-/// Additional documentation.
+/// Documentation.
 pub mod _docs {
     /// Documented examples.
     #[rustfmt::skip] // rustfmt doesn't work in here
     #[cfg(any(doc, test))]
     pub mod examples;
 
-    /// Documented features.
+    /// Cargo features.
     pub mod features {
         #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
         #![doc = include_str!("./_docs/features.md")]

@@ -50,7 +50,7 @@ impl<T: Default, const X: usize, const Y: usize, const LEN: usize, const XMAJ: b
     /// # Panics
     /// Panics if `X * Y > usize::MAX` or if `X * Y != LEN`.
     fn default() -> Self {
-        Self::panic_check_CRLEN();
+        Self::panic_check_XYLEN();
         Self {
             array: Array::<T, Bare, LEN>::default(),
         }
@@ -66,7 +66,7 @@ impl<T: ConstDefault, const X: usize, const Y: usize, const LEN: usize, const XM
     /// # Panics
     /// Panics if `X * Y > usize::MAX` or if `X * Y != LEN`.
     const DEFAULT: Self = {
-        Self::panic_check_CRLEN();
+        Self::panic_check_XYLEN();
         Self {
             array: Array::<T, Bare, LEN>::DEFAULT,
         }
@@ -88,7 +88,7 @@ impl<T: Default, const X: usize, const Y: usize, const LEN: usize, const XMAJ: b
     /// let g = Array2d::<String, Boxed, 4, 4, {4 * 4}>::default();
     /// ```
     fn default() -> Self {
-        Self::panic_check_CRLEN();
+        Self::panic_check_XYLEN();
         Self {
             array: Array::<T, Boxed, LEN>::default(),
         }

@@ -21,7 +21,7 @@ use DataError::{MismatchedLength, Overflow};
 
 /* constructors */
 
-// `S:Bare + T:Clone`
+// S:Bare + T:Clone
 impl<T: Clone, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
     Array2d<T, Bare, X, Y, LEN, XMAJ>
 {
@@ -36,13 +36,13 @@ impl<T: Clone, const X: usize, const Y: usize, const LEN: usize, const XMAJ: boo
     /// let g = Array2d::<_, (), 4, 4, {4 * 4}>::with_cloned('.');
     /// ```
     pub fn with_cloned(element: T) -> Result<Self> {
-        Self::check_CRLEN()?;
+        Self::check_XYLEN()?;
         Ok(Self {
             array: Array::<T, Bare, LEN>::with_cloned(element),
         })
     }
 }
-// `S:Bare + T:Copy`
+// S:Bare + T:Copy
 impl<T: Copy, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool>
     Array2d<T, Bare, X, Y, LEN, XMAJ>
 {
@@ -58,7 +58,7 @@ impl<T: Copy, const X: usize, const Y: usize, const LEN: usize, const XMAJ: bool
     /// assert![GRID.is_ok()];
     /// ```
     pub const fn with_copied(element: T) -> Result<Self> {
-        match Self::check_CRLEN() {
+        match Self::check_XYLEN() {
             Ok(_) => Ok(Self {
                 array: Array::<T, Bare, LEN>::with_copied(element),
             }),
@@ -84,7 +84,7 @@ impl<T: Clone, const X: usize, const Y: usize, const LEN: usize, const XMAJ: boo
     /// let g = Array2d::<_, Boxed, 4, 4, {4 * 4}>::with_cloned(String::from("·"));
     /// ```
     pub fn with_cloned(element: T) -> Result<Self> {
-        Self::check_CRLEN()?;
+        Self::check_XYLEN()?;
         Ok(Self {
             array: Array::<T, Boxed, LEN>::with_cloned(element),
         })
@@ -128,7 +128,7 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ
     /// Returns [`Overflow`] if `X * Y > usize::MAX`
     /// or [`MismatchedLength`] if `X * Y != LEN`.
     #[inline] #[allow(non_snake_case)]
-    pub(crate) const fn check_CRLEN() -> Result<()> {
+    pub(crate) const fn check_XYLEN() -> Result<()> {
         if let Some(len) = X.checked_mul(Y) {
             if len == LEN {
                 Ok(())
@@ -144,7 +144,7 @@ impl<T, S: Storage, const X: usize, const Y: usize, const LEN: usize, const XMAJ
     /// # Panics
     /// Panics if `X * Y > usize::MAX` or if `X * Y != LEN`.
     #[inline] #[allow(non_snake_case)]
-    pub(crate) const fn panic_check_CRLEN() {
+    pub(crate) const fn panic_check_XYLEN() {
         if let Some(len) = X.checked_mul(Y) {
             if len != LEN {
                 panic![concat![ "Array2d Mismatch: X * Y != LEN: ",

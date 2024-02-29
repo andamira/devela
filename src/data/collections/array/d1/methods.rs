@@ -25,17 +25,6 @@ impl<T, S: Storage, const LEN: usize> Array<T, S, LEN> {
     }
 }
 
-// S:Boxed
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T, const LEN: usize> Array<T, Boxed, LEN> {
-    /// Returns a new `Array` from the given `boxed_array`.
-    #[inline]
-    pub fn new_boxed(boxed_array: Box<[T; LEN]>) -> Self {
-        Array { array: boxed_array }
-    }
-}
-
 // S:Bare
 impl<T, const LEN: usize> Array<T, Bare, LEN> {
     /// Returns a new [`BareArray`][super::BareArray]
@@ -75,6 +64,17 @@ impl<T: Copy, const LEN: usize> Array<T, Bare, LEN> {
     pub const fn with_copied(element: T) -> Self {
         let array = BareBox::new([element; LEN]);
         Self { array }
+    }
+}
+
+// S:Boxed
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+impl<T, const LEN: usize> Array<T, Boxed, LEN> {
+    /// Returns a new `Array` from the given `boxed_array`.
+    #[inline]
+    pub fn new_boxed(boxed_array: Box<[T; LEN]>) -> Self {
+        Array { array: boxed_array }
     }
 }
 

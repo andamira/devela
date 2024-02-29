@@ -90,7 +90,7 @@ mod core_impls {
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             match self.need.partial_cmp(&other.need) {
                 Some(Ordering::Equal) => match self.have.partial_cmp(&other.have) {
-                    Some(Ordering::Equal) => self.info.partial_cmp(&other.info),
+                    Some(Ordering::Equal) => self.info.partial_cmp(other.info),
                     other => other,
                 },
                 other => other,
@@ -102,7 +102,7 @@ mod core_impls {
         fn cmp(&self, other: &Self) -> Ordering {
             match self.need.cmp(&other.need) {
                 Ordering::Equal => match self.have.cmp(&other.have) {
-                    Ordering::Equal => self.info.cmp(&other.info),
+                    Ordering::Equal => self.info.cmp(other.info),
                     order => order,
                 },
                 order => order,
