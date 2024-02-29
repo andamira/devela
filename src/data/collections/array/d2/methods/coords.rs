@@ -30,8 +30,8 @@ macro_rules! impl_maj {
       $CMAJ:literal:$D2:ident:$D2long:literal) => { crate::code::paste! {
 
         #[doc = "# Single element indexing (" $D1long "-major order)"]
-        impl<T, S: Storage, const C: usize, const R: usize, const CR: usize>
-            Array2d<T, S, C, R, CR, $RMAJ>
+        impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
+            Array2d<T, C, R, CR, $RMAJ, S>
         {
             /* get_ref */
 
@@ -97,8 +97,8 @@ macro_rules! impl_maj {
         }
 
         // # Single element clone
-        impl<T: Clone, S: Storage, const C: usize, const R: usize, const CR: usize>
-            Array2d<T, S, C, R, CR, $RMAJ>
+        impl<T: Clone, const C: usize, const R: usize, const CR: usize, S: Storage>
+            Array2d<T, C, R, CR, $RMAJ, S>
         {
             /* get */
 
@@ -124,8 +124,8 @@ macro_rules! impl_maj {
         /* methods in opposite-order */
 
         #[doc = "# Single element indexing (using opposite " $D2long "-major order)"]
-        impl<T, S: Storage, const C: usize, const R: usize, const CR: usize>
-            Array2d<T, S, C, R, CR, $RMAJ>
+        impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
+            Array2d<T, C, R, CR, $RMAJ, S>
         {
             /* get_ref (opposite order) */
 
@@ -197,14 +197,14 @@ macro_rules! impl_maj {
             /// Returns [`Overflow`] if the resulting index is `> CR`.
             #[inline]
             pub const fn [<get_index_ $D2 maj>](col_row: [usize; 2]) -> Result<usize> {
-                Array2d::<T, S, C, R, CR, $CMAJ>::[<get_index>](col_row)
+                Array2d::<T, C, R, CR, $CMAJ, S>::[<get_index>](col_row)
             }
             /// Calculates the 1D array index from the given 2D coordinates
             #[doc = "in the opposite " $D2long "-major order."]
             #[inline]
             #[must_use]
             pub const fn [<get_index_ $D2 maj_unchecked>](col_row: [usize; 2]) -> usize {
-                Array2d::<T, S, C, R, CR, $CMAJ>::[<get_index_unchecked>](col_row)
+                Array2d::<T, C, R, CR, $CMAJ, S>::[<get_index_unchecked>](col_row)
             }
 
             /// Calculates the 2D coordinates from the given 1D array index
@@ -213,18 +213,18 @@ macro_rules! impl_maj {
             /// Returns [`Overflow`] if `index` is `> CR`.
             #[inline]
             pub const fn [<get_coords_ $D2 maj>](index: usize) -> Result<[usize; 2]> {
-                Array2d::<T, S, C, R, CR, $CMAJ>::[<get_coords>](index)
+                Array2d::<T, C, R, CR, $CMAJ, S>::[<get_coords>](index)
             }
             /// Calculates the 2D coordinates from the given 1D array index
             #[doc = "in the opposite " $D2long "-major order."]
             #[inline]
             pub const fn [<get_coords_ $D2 maj_unchecked>](index: usize) -> [usize; 2] {
-                Array2d::<T, S, C, R, CR, $CMAJ>::[<get_coords_unchecked>](index)
+                Array2d::<T, C, R, CR, $CMAJ, S>::[<get_coords_unchecked>](index)
             }
         }
 
-        impl<T: Clone, S: Storage, const C: usize, const R: usize, const CR: usize>
-            Array2d<T, S, C, R, CR, $RMAJ>
+        impl<T: Clone, const C: usize, const R: usize, const CR: usize, S: Storage>
+            Array2d<T, C, R, CR, $RMAJ, S>
         {
             /* get (opposite order) */
 
@@ -253,7 +253,7 @@ impl_maj![];
 /* storage order specific implementations */
 
 /// # Fundamental indexing methods in row-major order.
-impl<T, S: Storage, const C: usize, const R: usize, const CR: usize> Array2d<T, S, C, R, CR, true> {
+impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, C, R, CR, true, S> {
     /// Calculates the 1D array index from the given 2D coordinates
     /// in the current row-major order.
     /// # Errors
@@ -297,8 +297,8 @@ impl<T, S: Storage, const C: usize, const R: usize, const CR: usize> Array2d<T, 
 }
 
 /// # Fundamental indexing methods in column-major order.
-impl<T, S: Storage, const C: usize, const R: usize, const CR: usize>
-    Array2d<T, S, C, R, CR, false>
+impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
+    Array2d<T, C, R, CR, false, S>
 {
     /// Calculates the 1D array index from the given 2D coordinates
     /// in the current column-major order.

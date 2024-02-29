@@ -4,7 +4,7 @@ use super::*;
 
 #[test]
 fn array2d_indexing() {
-    type XMAJ = Array2d<u32, (), 3, 3, { 3 * 3 }>;
+    type XMAJ = Array2d<u32, 3, 3, { 3 * 3 }>;
 
     assert_eq!(XMAJ::get_index_unchecked([0, 0]), 0);
     assert_eq!(XMAJ::get_index_unchecked([1, 0]), 1);
@@ -19,7 +19,7 @@ fn array2d_indexing() {
     assert!(XMAJ::get_index([3, 2]).is_err());
     assert!(XMAJ::get_coords(9).is_err());
 
-    type YMAJ = Array2d<u32, (), 3, 3, { 3 * 3 }, false>;
+    type YMAJ = Array2d<u32, 3, 3, { 3 * 3 }, false>;
 
     assert_eq!(YMAJ::get_index_unchecked([0, 0]), 0);
     assert_eq!(YMAJ::get_index_unchecked([1, 0]), 3);

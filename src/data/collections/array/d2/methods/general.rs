@@ -23,7 +23,7 @@ use DataError::{MismatchedLength, Overflow};
 
 // S:Bare + T:Clone
 impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
-    Array2d<T, Bare, C, R, CR, RMAJ>
+    Array2d<T, C, R, CR, RMAJ, Bare>
 {
     /// Returns a 2-dimensional grid, allocated in the stack,
     /// using `element` to fill the remaining free data.
@@ -33,7 +33,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// # Examples
     /// ```
     /// # use devela::data::Array2d;
-    /// let g = Array2d::<_, (), 4, 4, {4 * 4}>::with_cloned('.');
+    /// let g = Array2d::<_, 4, 4, {4 * 4}>::with_cloned('.');
     /// ```
     pub fn with_cloned(element: T) -> Result<Self> {
         Self::check_CR()?;
@@ -44,7 +44,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
 }
 // S:Bare + T:Copy
 impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
-    Array2d<T, Bare, C, R, CR, RMAJ>
+    Array2d<T, C, R, CR, RMAJ, Bare>
 {
     /// Returns a 2-dimensional grid, allocated in the stack,
     /// using `element` to fill the remaining free data.
@@ -54,7 +54,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     /// # Examples
     /// ```
     /// # use devela::all::{DataResult, Array2d};
-    /// const GRID: DataResult<Array2d::<char, (), 4, 4, {4 * 4}>> = Array2d::with_copied('.');
+    /// const GRID: DataResult<Array2d::<char, 4, 4, {4 * 4}>> = Array2d::with_copied('.');
     /// assert![GRID.is_ok()];
     /// ```
     pub const fn with_copied(element: T) -> Result<Self> {
@@ -71,7 +71,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
-    Array2d<T, Boxed, C, R, CR, RMAJ>
+    Array2d<T, C, R, CR, RMAJ, Boxed>
 {
     /// Returns a 2-dimensional grid, allocated in the heap,
     /// using `element` to fill the remaining free data.
@@ -81,7 +81,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// # Examples
     /// ```
     /// # use devela::all::{Boxed, Array2d};
-    /// let g = Array2d::<_, Boxed, 4, 4, {4 * 4}>::with_cloned(String::from("·"));
+    /// let g = Array2d::<_, 4, 4, {4 * 4}, Boxed>::with_cloned(String::from("·"));
     /// ```
     pub fn with_cloned(element: T) -> Result<Self> {
         Self::check_CR()?;
@@ -93,8 +93,8 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
 
 // Order-independent
 #[rustfmt::skip]
-impl<T, S: Storage, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
-    Array2d<T, S, C, R, CR, RMAJ>
+impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: Storage>
+    Array2d<T, C, R, CR, RMAJ, S>
 {
     /* general queries */
 
@@ -114,10 +114,10 @@ impl<T, S: Storage, const C: usize, const R: usize, const CR: usize, const RMAJ:
     /// # Examples
     /// ```
     /// # use devela::all::Array2d;
-    /// let g1 = Array2d::<i32, (), 3, 3, 9>::default();
+    /// let g1 = Array2d::<i32, 3, 3, 9>::default();
     /// assert![!g1.is_empty()];
     ///
-    /// let g2 = Array2d::<i32, (), 0, 0, 0>::default();
+    /// let g2 = Array2d::<i32, 0, 0, 0>::default();
     /// assert![g2.is_empty()];
     /// ```
     #[inline] #[must_use]
@@ -182,7 +182,7 @@ impl<T, S: Storage, const C: usize, const R: usize, const CR: usize, const RMAJ:
 // S:Bare
 #[rustfmt::skip]
 impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
-    Array2d<T, Bare, C, R, CR, RMAJ>
+    Array2d<T, C, R, CR, RMAJ, Bare>
 {
     /// Returns the inner [`BareBox`]ed primitive array.
     #[inline] #[must_use]
@@ -192,7 +192,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 // S:Bare, T:Copy
 #[rustfmt::skip]
 impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
-    Array2d<T, Bare, C, R, CR, RMAJ>
+    Array2d<T, C, R, CR, RMAJ, Bare>
 {
     /// Returns the inner [`BareBox`]ed primitive array in compile-time.
     #[inline] #[must_use]
@@ -204,7 +204,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
-    Array2d<T, Boxed, C, R, CR, RMAJ>
+    Array2d<T, C, R, CR, RMAJ, Boxed>
 {
     /// Returns the inner [`Box`]ed primitive array.
     #[inline] #[must_use]
@@ -221,8 +221,8 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 
 // T: Clone
 #[rustfmt::skip]
-impl<T: Clone, S: Storage, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
-    Array2d<T, S, C, R, CR, RMAJ>
+impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: Storage>
+    Array2d<T, C, R, CR, RMAJ, S>
 {
     /// Fills all elements of the grid with the given `element`.
     #[inline]
@@ -232,18 +232,18 @@ impl<T: Clone, S: Storage, const C: usize, const R: usize, const CR: usize, cons
 // T:PartialEq
 impl<
         T: PartialEq,
-        S: Storage,
         const C: usize,
         const R: usize,
         const CR: usize,
         const RMAJ: bool,
-    > Array2d<T, S, C, R, CR, RMAJ>
+        S: Storage,
+    > Array2d<T, C, R, CR, RMAJ, S>
 {
     /// Returns true if the array contains `element`.
     /// # Examples
     // /// ```
     // /// # use devela::all::Array2d;
-    // /// let a = Array2d::<_, (), 5>::new([5, 78, 42, 33, 9]);
+    // /// let a = Array2d::<_, 5, 5, 25>::new([5, 78, 42, 33, 9]);
     // /// assert![a.contains(&9)];
     // /// assert![!a.contains(&8)];
     // /// ```

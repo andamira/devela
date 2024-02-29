@@ -14,11 +14,11 @@ use crate::{
 ///
 /// It is generic in respect to its
 /// elements (`T`),
-/// storage (`S`),
 /// columns (`C`),
 /// rows (`R`),
-/// size (`CR`)
-/// and storage order (`RMAJ`).
+/// size (`CR`),
+/// storage order (`RMAJ`)
+/// and storage location (`S`).
 ///
 /// The total lenght `CR` must be equal to the product `C` * `R`.
 ///
@@ -75,21 +75,11 @@ use crate::{
 // DONE:1.76: [compile-time evaluation improvements](https://github.com/rust-lang/rust/pull/118324)
 pub struct Array2d<
     T,
-    S: Storage,
     const C: usize,
     const R: usize,
     const CR: usize,
     const RMAJ: bool = true,
+    S: Storage = Bare,
 > {
     pub(super) array: Array<T, S, CR>,
 }
-
-/// An [`Array2d`] stored in the stack.
-pub type BareArray2d<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool = true> =
-    Array2d<T, Bare, C, R, CR, RMAJ>;
-
-/// An [`Array2d`] stored in the heap.
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub type BoxedArray2d<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool = true> =
-    Array2d<T, Boxed, C, R, CR, RMAJ>;
