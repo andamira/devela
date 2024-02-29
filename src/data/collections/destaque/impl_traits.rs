@@ -32,7 +32,7 @@ macro_rules! impl_destaque {
         /* collection */
 
         #[rustfmt::skip]
-        impl<T, S: Storage, const LEN: usize> DataCollection for Destaque<T, S, LEN, $IDX> {
+        impl<T, const LEN: usize, S: Storage> DataCollection for Destaque<T, LEN, $IDX, S> {
             type Element = T;
             fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity() as usize) }
             fn collection_len(&self) -> Result<usize> { Ok(self.len() as usize) }
@@ -51,7 +51,7 @@ macro_rules! impl_destaque {
         // safe alternative with T: Clone
         #[rustfmt::skip]
         #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-        impl<T: Clone, S: Storage, const CAP: usize> DataQueue for crate::data::collections::Destaque<T, S, CAP, $IDX> {
+        impl<T: Clone, const CAP: usize, S: Storage> DataQueue for crate::data::collections::Destaque<T, CAP, $IDX, S> {
             fn queue_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
                 self.pop_front()
             }
@@ -61,7 +61,7 @@ macro_rules! impl_destaque {
         }
         #[rustfmt::skip]
         #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-        impl<T: Clone, S: Storage, const CAP: usize> DataDeque for crate::data::collections::Destaque<T, S, CAP, $IDX> {
+        impl<T: Clone, const CAP: usize, S: Storage> DataDeque for crate::data::collections::Destaque<T, CAP, $IDX, S> {
             fn queue_pop_back(&mut self) -> Result<<Self as DataCollection>::Element> {
                 self.pop_back()
             }
@@ -72,7 +72,7 @@ macro_rules! impl_destaque {
         // unsafe alternative without T: Clone
         #[rustfmt::skip]
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-        impl<T, S: Storage, const CAP: usize> DataQueue for crate::data::collections::Destaque<T, S, CAP, $IDX> {
+        impl<T, const CAP: usize, S: Storage> DataQueue for crate::data::collections::Destaque<T, CAP, $IDX, S> {
             fn queue_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
                 self.pop_front()
             }
@@ -82,7 +82,7 @@ macro_rules! impl_destaque {
         }
         #[rustfmt::skip]
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-        impl<T, S: Storage, const CAP: usize> DataDeque for crate::data::collections::Destaque<T, S, CAP, $IDX> {
+        impl<T, const CAP: usize, S: Storage> DataDeque for crate::data::collections::Destaque<T, CAP, $IDX, S> {
             fn queue_pop_back(&mut self) -> Result<<Self as DataCollection>::Element> {
                 self.pop_back()
             }
@@ -96,7 +96,7 @@ macro_rules! impl_destaque {
         // safe alternative with T: Clone
         #[rustfmt::skip]
         #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-        impl<T: Clone, S: Storage, const CAP: usize> DataStack for Destaque<T, S, CAP, $IDX> {
+        impl<T: Clone, const CAP: usize, S: Storage> DataStack for Destaque<T, CAP, $IDX, S> {
             fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
                 self.pop_back()
             }
@@ -106,7 +106,7 @@ macro_rules! impl_destaque {
         }
         #[rustfmt::skip]
         #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
-        impl<T: Clone, S: Storage, const CAP: usize> DataDesta for Destaque<T, S, CAP, $IDX> {
+        impl<T: Clone, const CAP: usize, S: Storage> DataDesta for Destaque<T, CAP, $IDX, S> {
             fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element> {
                 self.pop_front()
             }
@@ -117,7 +117,7 @@ macro_rules! impl_destaque {
         // unsafe alternative without T: Clone
         #[rustfmt::skip]
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-        impl<T, S: Storage, const CAP: usize> DataStack for Destaque<T, S, CAP, $IDX> {
+        impl<T, const CAP: usize, S: Storage> DataStack for Destaque<T, CAP, $IDX, S> {
             fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
                 self.pop_back()
             }
@@ -127,7 +127,7 @@ macro_rules! impl_destaque {
         }
         #[rustfmt::skip]
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-        impl<T, S: Storage, const CAP: usize> DataDesta for Destaque<T, S, CAP, $IDX> {
+        impl<T, const CAP: usize, S: Storage> DataDesta for Destaque<T, CAP, $IDX, S> {
             fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element> {
                 self.pop_front()
             }
@@ -137,7 +137,7 @@ macro_rules! impl_destaque {
         }
         /* impl From<IntoIterator<Item = T>> */
 
-        impl<T: Default, I, const CAP: usize> From<I> for Destaque<T, Bare, CAP, $IDX>
+        impl<T: Default, I, const CAP: usize> From<I> for Destaque<T, CAP, $IDX, Bare>
         where
             I: IntoIterator<Item = T>,
         {
@@ -145,17 +145,17 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let q: Destaque" $IDX:camel "<_, (), 3> = [1, 2, 3].into();"]
+            #[doc = "let q: Destaque" $IDX:camel "<_, 3> = [1, 2, 3].into();"]
             /// ```
-            fn from(iterator: I) -> Destaque<T, Bare, CAP, $IDX> {
-                let mut q = Destaque::<T, Bare, CAP, $IDX>::default();
+            fn from(iterator: I) -> Destaque<T, CAP, $IDX, Bare> {
+                let mut q = Destaque::<T, CAP, $IDX, Bare>::default();
                 let _ = q.extend_back(iterator);
                 q
             }
         }
 
         #[cfg(feature = "alloc")]
-        impl<T: Default, I, const CAP: usize> From<I> for Destaque<T, Boxed, CAP, $IDX>
+        impl<T: Default, I, const CAP: usize> From<I> for Destaque<T, CAP, $IDX, Boxed>
         where
             I: IntoIterator<Item = T>,
         {
@@ -163,10 +163,10 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::{Boxed, Destaque" $IDX:camel "};"]
-            #[doc = "let q: Destaque" $IDX:camel "<_, Boxed, 3> = [1, 2, 3].into();"]
+            #[doc = "let q: Destaque" $IDX:camel "<_, 3, Boxed> = [1, 2, 3].into();"]
             /// ```
-            fn from(iterator: I) -> Destaque<T, Boxed, CAP, $IDX> {
-                let mut q = Destaque::<T, Boxed, CAP, $IDX>::default();
+            fn from(iterator: I) -> Destaque<T, CAP, $IDX, Boxed> {
+                let mut q = Destaque::<T, CAP, $IDX, Boxed>::default();
                 let _ = q.extend_back(iterator);
                 q
             }
@@ -174,13 +174,13 @@ macro_rules! impl_destaque {
 
         /* iterators */
 
-        impl<'s, T, S: Storage, const CAP: usize> Iterator for DestaqueIter<'s, T, S, CAP, $IDX> {
+        impl<'s, T, const CAP: usize, S: Storage> Iterator for DestaqueIter<'s, T, CAP, $IDX, S> {
             type Item = &'s T;
             /// Iterates over shared references.
             /// # Example
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, (), 4>::from([1, 2]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 4>::from([1, 2]);"]
             /// q.pop_front();
             /// q.push_back(3);
             /// q.pop_front();
@@ -205,14 +205,14 @@ macro_rules! impl_destaque {
                 (self.destaque.len() as usize, Some(self.destaque.len() as usize))
             }
         }
-        impl<'s, T, S: Storage, const CAP: usize> ExactSizeIterator for DestaqueIter<'s, T, S, CAP, $IDX> {}
+        impl<'s, T, const CAP: usize, S: Storage> ExactSizeIterator for DestaqueIter<'s, T, CAP, $IDX, S> {}
 
-        impl<'s, T, S: Storage, const CAP: usize> DoubleEndedIterator for DestaqueIter<'s, T, S, CAP, $IDX> {
+        impl<'s, T, const CAP: usize, S: Storage> DoubleEndedIterator for DestaqueIter<'s, T, CAP, $IDX, S> {
             /// Iterates over shared references.
             /// # Example
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, (), 4>::from([1, 2]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 4>::from([1, 2]);"]
             /// q.pop_front();
             /// q.push_back(3);
             /// q.pop_front();
@@ -242,7 +242,7 @@ macro_rules! impl_destaque {
         /* PartialOrd, Ord */
 
         // T:PartialOrd
-        impl<T: PartialOrd, S: Storage, const CAP: usize> PartialOrd for Destaque<T, S, CAP, $IDX>
+        impl<T: PartialOrd, const CAP: usize, S: Storage> PartialOrd for Destaque<T, CAP, $IDX, S>
         where
             S::Stored<[T; CAP]>: PartialOrd,
         {
@@ -253,7 +253,7 @@ macro_rules! impl_destaque {
         }
 
         // T:Ord
-        impl<T: Ord, S: Storage, const CAP: usize> Ord for Destaque<T, S, CAP, $IDX>
+        impl<T: Ord, const CAP: usize, S: Storage> Ord for Destaque<T, CAP, $IDX, S>
         where
             S::Stored<[T; CAP]>: Ord,
         {
@@ -267,7 +267,7 @@ macro_rules! impl_destaque {
 impl_destaque!();
 
 // T:Clone
-impl<T: Clone, S: Storage, const CAP: usize, IDX: Clone> Clone for Destaque<T, S, CAP, IDX>
+impl<T: Clone, const CAP: usize, IDX: Clone, S: Storage> Clone for Destaque<T, CAP, IDX, S>
 where
     S::Stored<[T; CAP]>: Clone,
 {
@@ -282,14 +282,14 @@ where
 }
 
 // T:Copy
-impl<T: Copy, S: Storage, const CAP: usize, IDX: Copy> Copy for Destaque<T, S, CAP, IDX> where
+impl<T: Copy, const CAP: usize, IDX: Copy, S: Storage> Copy for Destaque<T, CAP, IDX, S> where
     S::Stored<[T; CAP]>: Copy
 {
 }
 
 // T:Debug
-impl<T: fmt::Debug, S: Storage, const CAP: usize, IDX: fmt::Debug> fmt::Debug
-    for Destaque<T, S, CAP, IDX>
+impl<T: fmt::Debug, const CAP: usize, IDX: fmt::Debug, S: Storage> fmt::Debug
+    for Destaque<T, CAP, IDX, S>
 where
     S::Stored<[T; CAP]>: fmt::Debug,
 {
@@ -312,8 +312,8 @@ where
 }
 
 // T:PartialEq
-impl<T: PartialEq, S: Storage, const CAP: usize, IDX: PartialEq> PartialEq
-    for Destaque<T, S, CAP, IDX>
+impl<T: PartialEq, const CAP: usize, IDX: PartialEq, S: Storage> PartialEq
+    for Destaque<T, CAP, IDX, S>
 where
     S::Stored<[T; CAP]>: PartialEq,
 {
@@ -325,13 +325,13 @@ where
     }
 }
 // T:Eq
-impl<T: Eq, S: Storage, const CAP: usize, IDX: Eq> Eq for Destaque<T, S, CAP, IDX> where
+impl<T: Eq, const CAP: usize, IDX: Eq, S: Storage> Eq for Destaque<T, CAP, IDX, S> where
     S::Stored<[T; CAP]>: Eq
 {
 }
 
 // S:Bare + T:Default
-impl<T: Default, const CAP: usize, IDX: Default> Default for Destaque<T, Bare, CAP, IDX> {
+impl<T: Default, const CAP: usize, IDX: Default> Default for Destaque<T, CAP, IDX, Bare> {
     /// Returns an empty queue, allocated in the stack,
     /// using the default value to fill the remaining free data.
     fn default() -> Self {
@@ -346,7 +346,7 @@ impl<T: Default, const CAP: usize, IDX: Default> Default for Destaque<T, Bare, C
 
 // S:Bare + T:ConstDefault
 impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
-    for Destaque<T, Bare, CAP, IDX>
+    for Destaque<T, CAP, IDX, Bare>
 {
     /// Returns an empty stack, allocated in the stack,
     /// using the default value to fill the remaining free data.
@@ -360,13 +360,13 @@ impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
 
 // S:Boxed + T:Default
 #[cfg(feature = "alloc")]
-impl<T: Default, const CAP: usize, IDX: Default> Default for Destaque<T, Boxed, CAP, IDX> {
+impl<T: Default, const CAP: usize, IDX: Default> Default for Destaque<T, CAP, IDX, Boxed> {
     /// Returns an empty queue, allocated in the heap,
     /// using the default value to fill the remaining free data.
     /// # Examples
     /// ```
     /// # use devela::all::{Boxed, DestaqueU8};
-    /// let mut q = DestaqueU8::<i32, Boxed, 100>::default();
+    /// let mut q = DestaqueU8::<i32, 100, Boxed>::default();
     /// ```
     fn default() -> Self {
         Self {

@@ -17,9 +17,9 @@ use crate::{
 ///
 /// It is generic in respect to its
 /// elements (`T`),
-/// storage (`S`),
-/// capacity (`CAP`)
-/// and index size (`IDX`).
+/// capacity (`CAP`),
+/// index size (`IDX`)
+/// and storage (`S`).
 ///
 /// The index size will upper-bound the capacity to the maximum for that type,
 /// e.g. `u8::MAX` for [`DestaqueU8`].
@@ -99,7 +99,7 @@ use crate::{
 /// [`tuck_front`][Self::tuck_front],
 /// [`tuck2_back`][Self::tuck2_back],
 /// [`tuck2_front`][Self::tuck2_front].
-pub struct Destaque<T, S: Storage, const CAP: usize, IDX> {
+pub struct Destaque<T, const CAP: usize, IDX, S: Storage = Bare> {
     pub(super) array: Array<T, S, CAP>,
     pub(super) len: IDX,
     pub(super) front: IDX,
@@ -107,26 +107,18 @@ pub struct Destaque<T, S: Storage, const CAP: usize, IDX> {
 }
 
 /// A [`Destaque`] with an 8-bit index size.
-pub type DestaqueU8<T, S, const CAP: usize> = Destaque<T, S, CAP, u8>;
+pub type DestaqueU8<T, const CAP: usize, S = Bare> = Destaque<T, CAP, u8, S>;
 /// A [`Destaque`] with a 16-bit index size.
-pub type DestaqueU16<T, S, const CAP: usize> = Destaque<T, S, CAP, u16>;
+pub type DestaqueU16<T, const CAP: usize, S = Bare> = Destaque<T, CAP, u16, S>;
 /// A [`Destaque`] with a 32-bit index size.
-pub type DestaqueU32<T, S, const CAP: usize> = Destaque<T, S, CAP, u32>;
+pub type DestaqueU32<T, const CAP: usize, S = Bare> = Destaque<T, CAP, u32, S>;
 /// A [`Destaque`] with a pointer-sized index size.
-pub type DestaqueUsize<T, S, const CAP: usize> = Destaque<T, S, CAP, usize>;
-
-/// A [`Destaque`] stored in the stack.
-pub type BareDestaque<T, const CAP: usize, IDX> = Destaque<T, Bare, CAP, IDX>;
-
-/// A [`Destaque`] stored in the heap.
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-pub type BoxedDestaque<T, const CAP: usize, IDX> = Destaque<T, Boxed, CAP, IDX>;
+pub type DestaqueUsize<T, const CAP: usize, S = Bare> = Destaque<T, CAP, usize, S>;
 
 /* iterators */
 
 /// An iterator over [`Destaque`] elements.
-pub struct DestaqueIter<'s, T, S: Storage, const CAP: usize, IDX> {
-    pub(super) destaque: &'s Destaque<T, S, CAP, IDX>,
+pub struct DestaqueIter<'s, T, const CAP: usize, IDX, S: Storage = Bare> {
+    pub(super) destaque: &'s Destaque<T, CAP, IDX, S>,
     pub(super) idx: usize,
 }

@@ -36,16 +36,16 @@ macro_rules! impl_destaque {
         #[doc = "# Methods for `Destaque" $IDX:camel "`\n\n"]
         /// --------------------------------------------------
         /// --------------------------------------------------
-        impl<T: Clone, const CAP: usize> Destaque<T, Bare, CAP, $IDX> {}
+        impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {}
 
         // S:Bare + T:Clone
-        impl<T: Clone, const CAP: usize> Destaque<T, Bare, CAP, $IDX> {
+        impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {
             /// Returns an empty destaque, allocated in the stack,
             /// cloning `element` to fill the remaining free data.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let q = Destaque" $IDX:camel "::<_, (), 16>::new(0).unwrap();"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
             pub fn new(element: T) -> Result<Self> {
                 if CAP <= $IDX::MAX as usize {
@@ -62,14 +62,14 @@ macro_rules! impl_destaque {
         }
 
         // S:Bare + T:Copy
-        impl<T: Copy, const CAP: usize> Destaque<T, Bare, CAP, $IDX> {
+        impl<T: Copy, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {
             /// Returns an empty destaque, allocated in the stack,
             /// copying `element` to fill the remaining free data, in compile-time.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::{Destaque" $IDX:camel ", unwrap};"]
             #[doc = "const S: Destaque" $IDX:camel
-                "<i32, (), 16> = unwrap![ok Destaque" $IDX:camel "::new_copied(0)];"]
+                "<i32, 16> = unwrap![ok Destaque" $IDX:camel "::new_copied(0)];"]
             /// ```
             pub const fn new_copied(element: T) -> Result<Self> {
                 if CAP <= $IDX::MAX as usize {
@@ -84,13 +84,13 @@ macro_rules! impl_destaque {
         // S:Boxed + T:Clone
         #[cfg(feature = "alloc")]
         #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
-        impl<T: Clone, const CAP: usize> Destaque<T, Boxed, CAP, $IDX> {
+        impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Boxed> {
             /// Returns an empty destaque, allocated in the heap,
             /// cloning `element` to fill the remaining free data.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::{Boxed, Destaque" $IDX:camel "};"]
-            #[doc = "let q = Destaque" $IDX:camel "::<_, Boxed, 3>::new(0);"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 3, Boxed>::new(0);"]
             /// ```
             pub fn new(element: T) -> Self {
                 Self {
@@ -103,14 +103,14 @@ macro_rules! impl_destaque {
         }
 
         // S:Bare
-        impl<T, const CAP: usize> Destaque<T, Bare, CAP, $IDX> {
+        impl<T, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {
             /// Converts an array into a [`full`][Self::is_full] stack.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let q = Destaque" $IDX:camel "::<_, (), 3>::from_array([1, 2, 3]);"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from_array([1, 2, 3]);"]
             /// ```
-            pub const fn from_array_const(arr: [T; CAP]) -> Destaque<T, Bare, CAP, $IDX> {
+            pub const fn from_array_const(arr: [T; CAP]) -> Destaque<T, CAP, $IDX, Bare> {
                 Self {
                     array: Array::new_bare(arr),
                     front: 0,
@@ -120,14 +120,14 @@ macro_rules! impl_destaque {
             }
         }
 
-        impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP, $IDX> {
+        impl<T, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Converts an array into a [`full`][Self::is_full] destaque.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let q = Destaque" $IDX:camel "::<_, (), 3>::from_array([1, 2, 3]);"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from_array([1, 2, 3]);"]
             /// ```
-            pub fn from_array(arr: [T; CAP]) -> Destaque<T, S, CAP, $IDX> {
+            pub fn from_array(arr: [T; CAP]) -> Destaque<T, CAP, $IDX, S> {
                 Self {
                     array: Array::new(arr),
                     front: 0,
@@ -148,7 +148,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let q = Destaque" $IDX:camel "::<i32, (), 8>::default();"]
+            #[doc = "let q = Destaque" $IDX:camel "::<i32, 8>::default();"]
             /// assert![q.is_empty()];
             /// ```
             #[inline]
@@ -160,7 +160,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let q = Destaque" $IDX:camel "::<_, (), 3>::from([1, 2, 3]);"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert![q.is_full()];
             /// ```
             #[inline]
@@ -172,7 +172,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let q = Destaque" $IDX:camel "::<i32, (), 3>::default();"]
+            #[doc = "let q = Destaque" $IDX:camel "::<i32, 3>::default();"]
             /// assert_eq![3, q.capacity()];
             /// ```
             #[inline]
@@ -185,7 +185,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, (), 3>::default();"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 3>::default();"]
             /// assert_eq![3, q.remaining_capacity()];
             /// q.push_back(1)?;
             /// assert_eq![2, q.remaining_capacity()];
@@ -203,7 +203,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let q = Destaque" $IDX:camel "::<_, (), 3>::from([1, 2, 3]);"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert_eq![q.as_slices(), (&[1, 2, 3][..], &[][..])];
             /// ```
             #[inline]
@@ -227,7 +227,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 3>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert_eq![q.as_slices(), (&[1, 2, 3][..], &[][..])];
             /// assert![q.is_contiguous()];
             /// q.pop_back()?;
@@ -252,7 +252,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 3>::default();"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 3>::default();"]
             /// q.push_front(1)?;
             /// q.push_front(2)?;
             /// q.push_front(3)?;
@@ -289,7 +289,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 3>::from([1, 2]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 3>::from([1, 2]);"]
             /// assert_eq!(q.push_front_override(3), false);
             /// assert_eq![q.to_array(), Some([3, 1, 2])];
             /// assert_eq!(q.push_front_override(4), true);
@@ -320,7 +320,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 3>::default();"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 3>::default();"]
             /// q.push_back(1)?;
             /// q.push_back(2)?;
             /// q.push_back(3)?;
@@ -361,7 +361,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 3>::from([1, 2]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 3>::from([1, 2]);"]
             /// assert_eq!(q.push_back_override(3), false);
             /// assert_eq![q.to_array(), Some([1, 2, 3])];
             /// assert_eq!(q.push_back_override(4), true);
@@ -395,7 +395,7 @@ macro_rules! impl_destaque {
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             ///
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![1, q.pop_front()?];
             /// assert_eq![2, q.pop_front()?];
             /// assert_eq![3, q.pop_front()?];
@@ -441,7 +441,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![3, q.pop_back()?];
             /// assert_eq![2, q.pop_back()?];
             /// assert_eq![1, q.pop_back()?];
@@ -477,7 +477,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&3, q.peek_back()?];
             /// # Ok(()) }
             /// ```
@@ -498,7 +498,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&mut 3, q.peek_back_mut()?];
             /// # Ok(()) }
             /// ```
@@ -519,7 +519,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&1, q.peek_nth_back(2)?];
             /// # Ok(()) }
             /// ```
@@ -540,7 +540,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&mut 1, q.peek_nth_back_mut(2)?];
             /// # Ok(()) }
             /// ```
@@ -561,7 +561,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&1, q.peek_front()?];
             /// # Ok(()) }
             /// ```
@@ -582,7 +582,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&mut 1, q.peek_front_mut()?];
             /// # Ok(()) }
             /// ```
@@ -603,7 +603,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3, 4]);"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             /// assert_eq![&3, q.peek_nth_front(2)?];
             /// # Ok(()) }
             /// ```
@@ -624,7 +624,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             /// assert_eq![&mut 3, q.peek_nth_front_mut(2)?];
             /// # Ok(()) }
             /// ```
@@ -646,7 +646,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             /// q.clear();
             /// assert![q.is_empty()];
             /// ```
@@ -667,7 +667,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2]);"]
             /// q.drop_back()?;
             /// assert_eq![q.to_array(), Some([1])];
             /// # Ok(()) }
@@ -691,7 +691,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2]);"]
             /// q.drop_front()?;
             /// assert_eq![q.to_array(), Some([2])];
             /// # Ok(()) }
@@ -715,7 +715,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             /// q.drop_n_back(3)?;
             /// assert_eq![q.to_array(), Some([1])];
             /// # Ok(()) }
@@ -739,7 +739,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             /// q.drop_n_front(3)?;
             /// assert_eq![q.to_array(), Some([4])];
             /// # Ok(()) }
@@ -764,7 +764,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 4>::from([1, 2, 3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 4>::from([1, 2, 3, 4]);"]
             /// q.swap_back();
             /// assert_eq![q.to_array(), Some([1, 2, 4, 3])];
             /// ```
@@ -795,7 +795,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 4>::from([1, 2, 3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 4>::from([1, 2, 3, 4]);"]
             /// q.swap_front();
             /// assert_eq![q.to_array(), Some([2, 1, 3, 4])];
             /// ```
@@ -826,7 +826,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);"]
             /// q.swap2_back();
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 7, 8, 5, 6])];
             /// ```
@@ -858,7 +858,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);"]
             /// q.swap2_front();
             /// assert_eq![q.to_array(), Some([3, 4, 1, 2, 5, 6, 7, 8])];
             /// ```
@@ -892,7 +892,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 6>::from([1, 2, 3, 4, 5]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 6>::from([1, 2, 3, 4, 5]);"]
             /// q.swap_ends();
             /// assert_eq![q.to_array(), Some([5, 2, 3, 4, 1])];
             /// ```
@@ -915,7 +915,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);"]
             /// q.swap2_ends();
             /// assert_eq![q.to_array(), Some([7, 8, 3, 4, 5, 6, 1, 2])];
             /// ```
@@ -943,7 +943,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, (), 8>::from([2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 8>::from([2, 3]);"]
             /// q.push_front(1)?;
             /// q.push_back(4)?;
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4])];
@@ -967,7 +967,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, (), 8>::from([2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 8>::from([2, 3]);"]
             /// q.push_front(1)?;
             /// q.push_back(4)?;
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4])];
@@ -992,7 +992,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, (), 8>::from([2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 8>::from([2, 3]);"]
             /// q.push_front(1)?;
             /// q.push_back(4)?;
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4])];
@@ -1016,7 +1016,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, (), 8>::from([2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 8>::from([2, 3]);"]
             /// q.push_front(1)?;
             /// q.push_back(4)?;
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4])];
@@ -1036,7 +1036,7 @@ macro_rules! impl_destaque {
         }
 
         // T:Clone
-        impl<T: Clone, S: Storage, const CAP: usize> Destaque<T, S, CAP, $IDX> {
+        impl<T: Clone, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Pops the front element.
             ///
             /// `( 1 2 -- 2 )`
@@ -1046,7 +1046,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![1, q.pop_front()?];
             /// assert_eq![2, q.pop_front()?];
             /// assert_eq![3, q.pop_front()?];
@@ -1083,7 +1083,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 8>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![3, q.pop_back()?];
             /// assert_eq![2, q.pop_back()?];
             /// assert_eq![1, q.pop_back()?];
@@ -1120,7 +1120,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             ///
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 5>::new(0).unwrap();"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 5>::new(0).unwrap();"]
             /// q.push_back(1);
             /// q.push_back(2);
             /// q.push_front(5);
@@ -1165,7 +1165,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 5>::from([3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 5>::from([3, 4]);"]
             /// q.push_front(2)?;
             /// q.push_back(5)?;
             /// q.push_front(1)?;
@@ -1203,7 +1203,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 5>::from([3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 5>::from([3, 4]);"]
             /// q.push_front(2)?;
             /// q.push_back(5)?;
             /// q.push_front(1)?;
@@ -1216,7 +1216,7 @@ macro_rules! impl_destaque {
                 // IMPROVE: use array_init
                 // MAYBE return not option
                 // TODO: improve from_iter
-                // Some(Array::<T, S, LEN>::new())
+                // Some(Array::<T, LEN, S>::new())
 
                 if self.is_empty() || LEN > self.len() as usize || LEN == 0 {
                     None
@@ -1256,7 +1256,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 4>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 4>::from([1, 2, 3]);"]
             /// q.dup_back()?;
             /// assert_eq![q.to_array(), Some([1, 2, 3, 3])];
             /// # Ok(()) }
@@ -1283,7 +1283,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 4>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 4>::from([1, 2, 3]);"]
             /// q.dup_front()?;
             /// assert_eq![q.to_array(), Some([1, 1, 2, 3])];
             /// # Ok(()) }
@@ -1310,7 +1310,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 6>::from([1, 2, 3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 6>::from([1, 2, 3, 4]);"]
             /// q.dup2_back()?;
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 3, 4])];
             /// # Ok(()) }
@@ -1340,7 +1340,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 6>::from([1, 2, 3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 6>::from([1, 2, 3, 4]);"]
             /// q.dup2_front()?;
             /// assert_eq![q.to_array(), Some([1, 2, 1, 2, 3, 4])];
             /// # Ok(()) }
@@ -1372,7 +1372,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 7>::from([1, 2, 3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4]);"]
             /// q.over_back()?;
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 3])];
             /// # Ok(()) }
@@ -1399,7 +1399,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 7>::from([1, 2, 3, 4]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4]);"]
             /// q.over_front()?;
             /// assert_eq![q.to_array(), Some([2, 1, 2, 3, 4])];
             /// # Ok(()) }
@@ -1426,7 +1426,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 8>::from([1, 2, 3, 4, 5, 6]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 8>::from([1, 2, 3, 4, 5, 6]);"]
             /// q.over2_back()?;
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 5, 6, 3, 4])];
             /// # Ok(()) }
@@ -1456,7 +1456,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 8>::from([1, 2, 3, 4, 5, 6]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 8>::from([1, 2, 3, 4, 5, 6]);"]
             /// q.over2_front()?;
             /// assert_eq![q.to_array(), Some([3, 4, 1, 2, 3, 4, 5, 6])];
             /// # Ok(()) }
@@ -1489,7 +1489,7 @@ macro_rules! impl_destaque {
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             ///
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 7>::from([1, 2, 3, 4, 5]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4, 5]);"]
             /// q.tuck_back()?;
             /// assert_eq![q.to_array(), Some([1, 2, 3, 5, 4, 5])];
             /// # Ok(()) }
@@ -1518,7 +1518,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 7>::from([1, 2, 3, 4, 5]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4, 5]);"]
             /// q.tuck_front()?;
             /// assert_eq![q.to_array(), Some([1, 2, 1, 3, 4, 5])];
             /// # Ok(()) }
@@ -1548,7 +1548,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 7>::from([1, 2, 3, 4, 5]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4, 5]);"]
             /// q.tuck2_back()?;
             /// assert_eq![q.to_array(), Some([1, 4, 5, 2, 3, 4, 5])];
             /// # Ok(()) }
@@ -1580,7 +1580,7 @@ macro_rules! impl_destaque {
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
-            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, (), 7>::from([1, 2, 3, 4, 5]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4, 5]);"]
             /// q.tuck2_front()?;
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 1, 2, 5])];
             /// # Ok(()) }
@@ -1604,9 +1604,9 @@ macro_rules! impl_destaque {
 
         /* iterators */
 
-        impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP, $IDX> {
+        impl<T, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Returns an iterator.
-            pub const fn iter(&self) -> DestaqueIter<'_, T, S, CAP, $IDX> {
+            pub const fn iter(&self) -> DestaqueIter<'_, T, CAP, $IDX, S> {
                 DestaqueIter {
                     destaque: self,
                     idx: 0,
@@ -1623,7 +1623,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 6>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 6>::from([1, 2, 3]);"]
             /// q.extend_back([4, 5, 6, 7, 8]);
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 5, 6])];
             /// ```
@@ -1649,7 +1649,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 4>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 4>::from([1, 2, 3]);"]
             /// assert_eq![q.extend_back_override([4, 5, 6]), true];
             /// assert_eq![q.to_array(), Some([3, 4, 5, 6])];
             /// ```
@@ -1681,7 +1681,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 6>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 6>::from([1, 2, 3]);"]
             /// q.extend_front([4, 5, 6, 7, 8]);
             /// assert_eq![q.to_array(), Some([6, 5, 4, 1, 2, 3])];
             /// ```
@@ -1707,7 +1707,7 @@ macro_rules! impl_destaque {
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let mut q = Destaque" $IDX:camel "::<_, (), 4>::from([1, 2, 3]);"]
+            #[doc = "let mut q = Destaque" $IDX:camel "::<_, 4>::from([1, 2, 3]);"]
             /// assert_eq![q.extend_front_override([4, 5, 6]), true];
             /// assert_eq![q.to_array(), Some([6, 5, 4, 1])];
             /// ```
@@ -1734,12 +1734,12 @@ macro_rules! impl_destaque {
         }
 
         // T:PartialEq
-        impl<T: PartialEq, S: Storage, const CAP: usize> Destaque<T, S, CAP, $IDX> {
+        impl<T: PartialEq, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Returns true if the destaque contains `element`.
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
-            #[doc = "let q = Destaque" $IDX:camel "::<_, (), 6>::from([5, 78, 42, 33, 9]);"]
+            #[doc = "let q = Destaque" $IDX:camel "::<_, 6>::from([5, 78, 42, 33, 9]);"]
             ///
             /// assert![q.contains(&9)];
             /// assert![!q.contains(&8)];
@@ -1753,7 +1753,7 @@ macro_rules! impl_destaque {
 
         /* private helpers */
 
-        impl<T, S: Storage, const CAP: usize> Destaque<T, S, CAP, $IDX> {
+        impl<T, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             // Returns the `nth` element's index counting from the back.
             #[inline]
             #[must_use]
