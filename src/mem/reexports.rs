@@ -7,6 +7,8 @@
 use super::Boxed;
 use crate::code::reexport;
 
+/* type aliases */
+
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// A marker struct for a [`Storage`][super::Storage] type that wraps its data in a
 /// [`BareBox`][super::BareBox]. Alias of [`()`][unit].
@@ -16,6 +18,8 @@ use crate::code::reexport;
 /// ---
 pub type Bare = ();
 
+/* box */
+
 reexport! { rust: alloc::boxed,
     doc: "A pointer type that uniquely owns a heap allocation of type `T`.
 
@@ -23,6 +27,8 @@ It is used as the underlying [`Storage`][super::Storage] for the [`Boxed`] marke
 just as a [`BareBox`][super::BareBox] is used as the storage for [`Bare`].",
     Box
 }
+
+/* mem */
 
 reexport! { rust: core::mem,
     doc: "A wrapper to inhibit compiler from automatically calling `T`’s destructor.",
@@ -83,4 +89,15 @@ reexport! { rust: core::mem,
 reexport! { rust: core::mem,
     doc: "Returns the value of type `T` represented by the all-zero byte-pattern.",
     @zeroed as mem_zeroed
+}
+
+/* pin */
+
+reexport! { rust: core::pin,
+    doc: "Constructs a <code>[Pin]<[&mut] T></code>, by pinning a `value: T` locally.",
+    pin
+}
+reexport! { rust: core::pin,
+    doc: "A pointer which pins its pointee in place.",
+    Pin
 }
