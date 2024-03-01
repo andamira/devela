@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add RNGS: `Xabc`, `XorShift8`, `XorShift8Custom`, `XorShift16`, `XorShift32`, `XorShift64`, `XorShift128`, `XorShift128p`, `Xyza8a`, `Xyza8b`.
 - add Floating constants: `FRAC_1_PHI`, `NEG_FRAC_1_PHI`, `SQ_PHI`, `FRAC_NEG_1_PHI`.
 - add `no_std` reimplementations of `std::error` and `std::io` types and traits.
-- add non-optional dependency `either` and reexport its items.
+- add non-optional dependency `either` and re-export its items.
 - add optional dependencies: `memchr`, `wide`, `crossterm`, `miniquad`, `rand_core`.
 - add examples: `cargo-script`, `bitfield`, `enumset`.
 - add macros: `assert_eq_all`, `assert_approx_eq_all`, `unwrap`.
@@ -57,7 +57,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `Direct` to `BareBox`, and `DirectArray` `BareArray`.
 - rename `num_int_niche` feature to `num_niche_impls`.
 - rename `*fence` functions to `atomic_*fence`.
-- rename `ascii_` reexported macros to `str_`.
+- rename `ascii_` re-exported macros to `str_`.
 - prefix allocated collections with `Alloc`.
 - rename aliases: `Dst*U` to `Dst*Usize`.
 - rename mem::`Size` to mem::`ByteSize`.
@@ -92,7 +92,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `NumErrors` variants: `MismatchedSizes`, `NonNegativeRequired`, `PositiveRequired`.
 - new color constants: `COLOR_LUMINANCE_[RED|GREEN|BLUE]`.
 - complete `Floating` and `FloatOps` methods and constants.
-- reexport `panic` from `error`, and `hint` from `code`.
+- re-export `panic` from `error`, and `hint` from `code`.
 - new type aliases: `isize_up`, `usize_up`.
 - new enums: `DataErrors`, `Sign`.
 
@@ -129,8 +129,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `Floating` and `FloatOps` method: `round` to `round_ties_away`.
 - rename `FromPrimitives` to `PrimitiveJoin` and `IntoPrimitives` to `PrimitiveSplit`.
 - rename fn `mem_ptr_ratio` and method `Size::ptr_ratio` to `ptr_size_ratio`.
-- rename reexported time types: `Duration` to `SystemDuration`, `Instant` to `SystemInstant`.
-- reexport `BitwisePrimitives` and `CastPrimitives` traits from `prelude`.
+- rename re-exported time types: `Duration` to `SystemDuration`, `Instant` to `SystemInstant`.
+- re-export `BitwisePrimitives` and `CastPrimitives` traits from `prelude`.
 - change `Ansi::print` method and `ansip` macro to depend on `std`.
 - improve `Floating` type and `FloatOps` trait to be partially available without `std` or `libm` features, reverting to the taylor versions when there's no better option.
 - impl `DataCollection` for `array`, `Vec`, `VecDeque`, `OrderedMap`, `OrderedSet`, `UnorderedMap`, `UnorderedSet`.
@@ -156,7 +156,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.18.1] 2023-11-08
 
 #### Fixed
-- fix `FloatExt` reexport.
+- fix `FloatExt` re-export.
 - fix `DERIVED.md` links.
 
 ## [0.18.0] 2023-11-03
@@ -216,7 +216,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - add `mem_size_of_expr` macro.
 - new type `NumErr`, new type alias `NumResult`.
-- reexport `BinaryHeap` from `data::PriorityQueue`.
+- re-export `BinaryHeap` from `data::PriorityQueue`.
 - new time module, and features: `time`, `time_unsafe`, `unsafe_time`.
 - add `min_fsize`, `max_fsize`, `clamp_fsize` `total_cmp_fsize`.
 - new struct `Array`, and aliases `BoxedArray`, `DirectArray`.
@@ -240,7 +240,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - make `Storage` always compiled.
 
 ### Fixed
-- reexport missing `result::{NeverOk, NeverErr} types.
+- re-export missing `result::{NeverOk, NeverErr} types.
 
 ## [0.15.0] - 2023-10-19
 
@@ -269,7 +269,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - update `bytemuck`, enable more features.
 
 ### Fixed
-- new private helper macro `reexport` for reexported items.
+- new private helper macro `reexport` for re-exported items.
 - do not enable the empty `default` feature.
 - improve re-exports rustdoc tags.
 - fix `core::num` re-exports.
@@ -299,7 +299,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - make private the `Range*::XOR_VALUE` constant.
 - add missing must_use and inline attributes.
 - add missing unsafe safeguarded features.
-- reexport `option_unwrap` from `all`.
+- re-export `option_unwrap` from `all`.
 - simplify documentation on features.
 - add global warning `missing_docs`.
 - update some docs.
@@ -372,10 +372,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `os::linux::terminal` module.
 - new `LinuxTermios` methods: `enable_raw_mode`, `disable_raw_mode`, `is_terminal`, `get_state`, `set_state`.
 - new `LinuxSigaction` method `new`.
-- reexport all `core::sync::atomic` types; reexport `Ordering` as `AtomicOrdering`.
-- reexport renamed `const-str` macros from `ascii`, `str` and `option` modules.
-- reexport `atomic::Atomic` and all `portable-atomic` types.
-- reexport `core::num::NonZero*` types from `num` module.
+- re-export all `core::sync::atomic` types; re-export `Ordering` as `AtomicOrdering`.
+- re-export renamed `const-str` macros from `ascii`, `str` and `option` modules.
+- re-export `atomic::Atomic` and all `portable-atomic` types.
+- re-export `core::num::NonZero*` types from `num` module.
 
 ### Removed
 - remove the already deprecated macros `cdbg`, `rfs`.
@@ -401,7 +401,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - ensure dependencies doesn't include default features.
 - update .gitattributes to show all languages.
 - move lengthy `target_arch` rustdoc tags to the doc-comments.
-- update documentation on reexported types.
+- update documentation on re-exported types.
 
 ## [0.10.0] - 2023-09-13
 
@@ -434,7 +434,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move documentation on features to `_features`.
 - move derived works info to a separate file.
 - avoid loading `sys_nanosleep` in risc-v.
-- fix `az` and `bytemuck` reexports.
+- fix `az` and `bytemuck` re-exports.
 - fix arm assembly.
 
 ## [0.9.0] - 2023-09-08
@@ -472,7 +472,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `sleep4` macro.
 
 ### Removed
-- remove `num::*` module reexport from the prelude.
+- remove `num::*` module re-export from the prelude.
 - remove fns `counter_string`, `indent`, macro `iformat` (move to `textos`).
 
 ### Changed
@@ -481,13 +481,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Fixed
 - fix cargo aliases.
-- fix external reexports.
+- fix external re-exports.
 
 ## [0.7.1] - 2023-08-23
 
 ### Changed
 - unhide the macros from the root.
-- reexport `paste` with wrapped documentation.
+- re-export `paste` with wrapped documentation.
 
 ## [0.7.0] - 2023-08-23
 
@@ -496,24 +496,24 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `SliceExtMut` trait.
 - new `OptionExt` methods: `fmt_or`, `fmt_or_else`, `fmt_or_empty`.
 - new structs: `OptionFmtOr`, `OptionFmtOrElse`, `OptionFmtOrEmpty`.
-- new `codegen` module; reexport the `compile` and `paste` macros from there.
+- new `codegen` module; re-export the `compile` and `paste` macros from there.
 - add categories: `development-tools`, `no-std::no-alloc`.
 
 ### Removed
-- avoid reexporting external macros from the root and hide the root documentation for the rest.
+- avoid re-exporting external macros from the root and hide the root documentation for the rest.
 
 ### Changed
 - implement `InBufAble` for `NonRange*` and `Range*`.
 - rename feature `unsafe_non_specific` to `unsafe_num`
 - move mutable methods from `SliceExt` to the new `SliceExtMut` trait.
 - implement the slice extension traits for slice references, arrays and vecs.
-- reexport used bytemuck types in `all`.
+- re-export used bytemuck types in `all`.
 - include `bytemuck` in `unsafe`.
 - bump MSRV to `1.71.1`.
 - rename `unsafe_*` features: `unsafe_int_buf` to `unsafe_fmt`, `unsafe_cmp_float` to `unsafe_cmp`, `unsafe_uninit_array` to `unsafe_convert`.
 - remove `std` requirement for `cdbg` macro.
 - bump `devela_macros` to `0.5.0`.
-  - reexport new macros: `compile_attr` and `cif`.
+  - re-export new macros: `compile_attr` and `cif`.
 
 ### Fixed
 - improve `Debug` impl for `NonSpecific*` and `NonRange*`.
@@ -607,7 +607,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.3.0] - 2023-05-09
 
 ### Added
-- reexport the `az` crate and the `paste` macro.
+- re-export the `az` crate and the `paste` macro.
 
 ### Changed
 - improve the `compile` attribute macro to support the `not()` option.
