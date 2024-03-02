@@ -20,7 +20,7 @@
 /* always compiled, non-public modules */
 
 mod aligned;
-mod always;
+mod fns_macros;
 mod reexports;
 mod size;
 mod slice;
@@ -28,27 +28,14 @@ mod storage;
 mod r#trait;
 
 #[allow(unused_imports)]
-pub use {aligned::*, always::*, r#trait::*, reexports::*, size::*, slice::*, storage::*};
-
-/* feature-gated, non-public modules */
-
-#[cfg(feature = "mem")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mem")))]
-mod fns;
-
-#[cfg(feature = "mem")]
-pub use fns::*;
+pub use {aligned::*, fns_macros::*, r#trait::*, reexports::*, size::*, slice::*, storage::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        aligned::*, always::*, r#trait::*, reexports::*, size::all::*, slice::all::*, storage::*,
+        aligned::*, fns_macros::*, r#trait::*, reexports::*, size::all::*, slice::all::*,
+        storage::*,
     };
-
-    // feature-gated
-    #[doc(inline)]
-    #[cfg(feature = "mem")]
-    pub use super::fns::*;
 }
