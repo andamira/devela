@@ -12,10 +12,15 @@
 // safety:
 #![cfg_attr(feature = "safe_work", forbid(unsafe_code))]
 
-/* feature-gated, public modules */
-#[cfg(feature = "work")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
+/* always-compiled, public modules */
+
 pub mod r#async;
+
+#[doc(no_inline)]
+pub use r#async::all::*;
+
+/* feature-gated, public modules */
+
 #[cfg(feature = "work")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub mod sync;
@@ -26,12 +31,16 @@ pub mod thread;
 #[doc(no_inline)]
 #[cfg(feature = "work")]
 #[allow(unused_imports)]
-pub use {r#async::all::*, sync::all::*, thread::all::*};
+pub use {sync::all::*, thread::all::*};
 
 pub(crate) mod all {
+    // always-compiled
+    #[doc(inline)]
+    pub use super::r#async::all::*;
+
     // feature-gated
     #[doc(inline)]
     #[cfg(feature = "work")]
     #[allow(unused_imports)]
-    pub use super::{r#async::all::*, sync::all::*, thread::all::*};
+    pub use super::{sync::all::*, thread::all::*};
 }

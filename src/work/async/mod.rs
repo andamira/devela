@@ -20,9 +20,23 @@ mod reexports;
 #[allow(unused_imports)] // coroutine
 pub use {coroutine::*, reexports::*};
 
+/* feature-gated, non-public modules */
+
+#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_async")))]
+mod noop;
+
+#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
+pub use noop::TaskWakerNoop;
+
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused_imports)] // coroutine
     pub use super::{coroutine::*, reexports::*};
+
+    // feature-gated
+    #[doc(inline)]
+    #[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
+    pub use super::noop::TaskWakerNoop;
 }

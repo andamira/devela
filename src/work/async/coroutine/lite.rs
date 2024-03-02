@@ -14,7 +14,7 @@
 
 use crate::{
     _deps::alloc::{boxed::Box, collections::VecDeque},
-    work::{TaskContext, TaskPoll, TaskRawWaker, TaskRawWakerVTable, TaskWaker},
+    work::{TaskContext, TaskPoll, TaskWakerNoop},
 };
 use core::{future::Future, pin::Pin};
 
@@ -99,7 +99,7 @@ impl LiteCoroutineExecutor {
 
     /// Runs the executor.
     pub fn run(&mut self) {
-        let waker = LiteCoroutineWaker::new_waker();
+        let waker = TaskWakerNoop::new();
         let mut context = TaskContext::from_waker(&waker);
 
         while let Some(mut coroutine) = self.coroutines.pop_front() {
@@ -110,33 +110,5 @@ impl LiteCoroutineExecutor {
                 TaskPoll::Ready(()) => {}
             }
         }
-    }
-}
-
-/// A dummy `TaskWaker` that does nothing when woken.
-// This is used to create a context for polling the coroutines.
-// The TaskContext is required by the `Future::poll` method, but since this is a
-// single-threaded executor, the waker is not actually needed.
-pub struct LiteCoroutineWaker;
-impl LiteCoroutineWaker {
-    /// Creates a new `Waker` that does nothing when `wake` is called.
-    // WAIT: [task::Waker::noop](https://github.com/rust-lang/rust/pull/96875)
-    // (it will be const and returned as a &'static)
-    #[inline]
-    #[must_use]
-    fn new_waker() -> TaskWaker {
-        const RAW_WAKER: TaskRawWaker = TaskRawWaker::new(core::ptr::null(), &VTABLE);
-        const VTABLE: TaskRawWakerVTable = TaskRawWakerVTable::new(
-            // Cloning just returns a new no-op raw waker
-            |_| RAW_WAKER,
-            // `wake` does nothing
-            |_| {},
-            // `wake_by_ref` does nothing
-            |_| {},
-            // Dropping does nothing as we don't allocate anything
-            |_| {},
-        );
-        // SAFETY: The waker points to a vtable with functions that do nothing.
-        unsafe { TaskWaker::from_raw(RAW_WAKER) }
     }
 }

@@ -25,7 +25,6 @@ mod lite;
 
 // feature-gated, non-public
 #[cfg(feature = "nightly_coro")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_coro")))]
 pub use reexports::*;
 //
 #[cfg(all(
