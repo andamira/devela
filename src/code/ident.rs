@@ -22,7 +22,7 @@ macro_rules! ident_const_index {
         $vis:vis, $total:expr; $ident:ident $($rest:ident)*
     ) => { $crate::code::paste! {
         #[allow(non_upper_case_globals)]
-        $vis const $ident: usize = $total - $crate::code::ident_total_count!($($rest)*) - 1;
+        $vis const $ident: usize = $total - $crate::code::ident_total!($($rest)*) - 1;
         $( $crate::code::ident_const_index!($vis, $total; $rest); )*
     }};
     ( // with commas:
@@ -32,7 +32,7 @@ macro_rules! ident_const_index {
         $vis:vis, $total:expr; $ident:ident $(, $($rest:ident),* $(,)? )?
     ) => { $crate::code::paste! {
         #[allow(non_upper_case_globals)]
-        $vis const $ident: usize = $total - $crate::code::ident_total_count!( $($($rest)*)? ) - 1;
+        $vis const $ident: usize = $total - $crate::code::ident_total!( $($($rest)*)? ) - 1;
         $( $crate::code::ident_const_index!($vis, $total; $($rest),*); )?
     }};
 }
