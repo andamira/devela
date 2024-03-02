@@ -4,87 +4,229 @@
 //
 
 /// An unwrapper macro that works in compile-time.
+///
+/// It supports unwrapping [`Option`], [`Result`] and [`OptRes`][super::OptRes].
 #[macro_export]
 macro_rules! unwrap {
-    ( // Returns the contained `Some` value or panics if it's `None`.
+    (
+
+      // Option<T>
+      // ---------
+
+      // Returns the contained `Some` value, or panics if it's `None`.
       some $value:expr ) => {
-        if let Some(v) = $value {
-            v
-        } else {
-            panic![];
+        match $value {
+            Some(v) => v,
+            None => panic![],
         }
     };
-
-    ( // Returns the contained `Some` value or the given default if it's `None`.
-      some_or $value:expr, $default:expr) => {
-        if let Some(v) = $value {
-            v
-        } else {
-            $default
-        }
-    };
-
-    ( // Returns the contained `Some` value or panics the given message if it's `None`.
+    (
+      // Returns the contained `Some` value, or panics with the given message if it's `None`.
       some_expect $value:expr, $message:literal) => {
-        if let Some(v) = $value {
-            v
-        } else {
-            panic!["{}", $message]
+        match $value {
+            Some(v) => v,
+            None => panic!["{}", $message],
         }
     };
+    (
+      // Returns the contained `Some` value, or the given default if it's `None`.
+      some_or $value:expr, $default:expr) => {
+        match $value {
+            Some(v) => v,
+            None => $default,
+        }
+    };
+    (
 
-    ( // Returns the contained `Ok` value or panics if it's `Err`.
+      // Result<T, E>
+      // ------------
+
+      // Returns the contained `Ok` value, or panics if it's `Err`.
       ok $value:expr ) => {
-        if let Ok(v) = $value {
-            v
-        } else {
-            panic![];
+        match $value {
+            Ok(v) => v,
+            Err(_) => panic![],
         }
     };
-
-    ( // Returns the contained `Ok` value or a provided default if it's `Err`.
-      ok_or $value:expr, $default:expr) => {
-        if let Ok(v) = $value {
-            v
-        } else {
-            $default
-        }
-    };
-
-    ( // Returns the contained `Ok` value or panics the given message if it's `Err`.
+    (
+      // Returns the contained `Ok` value, or panics with the given message if it's `Err`.
       ok_expect $value:expr, $message:literal) => {
-        if let Ok(v) = $value {
-            v
-        } else {
-            panic!["{}", $message]
+        match $value {
+            Ok(v) => v,
+            Err(_) => panic!["{}", $message],
         }
     };
-
-    ( // Returns the contained `Err` value or panics if it's `Ok`.
+    (
+      // Returns the contained `Ok` value, or a provided default if it's `Err`.
+      ok_or $value:expr, $default:expr) => {
+        match $value {
+            Ok(v) => v,
+            Err(_) => $default,
+        }
+    };
+    (
+      // Returns the contained `Err` value, or panics if it's `Ok`.
       err $value:expr ) => {
-        if let Err(v) = $value {
-            v
-        } else {
-            panic![];
+        match $value {
+            Ok(_) => panic![],
+            Err(v) => v,
         }
     };
-
-    ( // Returns the contained `Err` value or a provided default if it's `Ok`.
-      err_or $value:expr, $default:expr) => {
-        if let Err(v) = $value {
-            v
-        } else {
-            $default
-        }
-    };
-
-    ( // Returns the contained `Err` value or panics the given message if it's `Ok`.
+    (
+      // Returns the contained `Err` value, or panics the given message if it's `Ok`.
       err_expect $value:expr, $message:literal) => {
-        if let Err(v) = $value {
-            v
-        } else {
-            panic!["{}", $message]
+        match $value {
+            Ok(_) => panic!["{}", $message],
+            Err(v) => v,
+        }
+    };
+    (
+      // Returns the contained `Err` value, or a provided default if it's `Ok`.
+      err_or $value:expr, $default:expr) => {
+        match $value {
+            Ok(_) => $default,
+            Err(v) => v,
+        }
+    };
+    (
+
+      // OptRes<T, E>
+      // ------------
+
+      // Returns the contained `Some(Ok)` value,
+      // or panics if it's `Some(Err)` or `None`.
+      sok $value:expr ) => {
+        match $value {
+            Some(Ok(v)) => v,
+            Some(Err(_)) => panic![],
+            None => panic![],
+        }
+    };
+    (
+      // Returns the contained `Some(Ok)` value,
+      // or panics with the given message if it's `Some(Err)` or `None`.
+      sok_expect $value:expr, $message:literal) => {
+        match $value {
+            Some(Ok(v)) => v,
+            Some(Err(_)) => panic!["{}", $message],
+            None => panic!["{}", $message],
+        }
+    };
+    (
+      // Returns the contained `Some(Ok)` value,
+      // or a provided default if it's `Some(Err)` or `None`.
+      sok_or $value:expr, $default:expr) => {
+        match $value {
+            Some(Ok(v)) => v,
+            Some(Err(_)) => $default,
+            None => $default,
+        }
+    };
+    (
+      // Returns the contained `Some(Err)` value,
+      // or panics if it's `Some(Ok)` or `None`.
+      serr $value:expr ) => {
+        match $value {
+            Some(Ok(_)) => panic![],
+            Some(Err(v)) => v,
+            None => panic![],
+        }
+    };
+    (
+      // Returns the contained `Some(Err)` value,
+      // or panics with the given message if it's `Some(Ok)` or `None`.
+      serr_expect $value:expr, $message:literal) => {
+        match $value {
+            Some(Ok(_)) => panic!["{}", $message],
+            Some(Err(v)) => v,
+            None => panic!["{}", $message],
+        }
+    };
+    (
+      // Returns the contained `Some(Err)` value,
+      // or a provided default if it's `Some(Ok)` or `None`.
+      serr_or $value:expr, $default:expr) => {
+        match $value {
+            Some(Ok(_)) => $default,
+            Some(Err(v)) => v,
+            None => $default,
         }
     };
 }
 pub use unwrap;
+
+#[cfg(test)]
+mod tests {
+    #[cfg(feature = "std")]
+    use crate::result::panic_catch;
+    use crate::result::{serr, sok, unwrap, OptRes};
+
+    const OPTION_SOME: Option<bool> = Some(true);
+    const OPTION_NONE: Option<bool> = None;
+
+    const RESULT_OK: Result<bool, bool> = Ok(true);
+    const RESULT_ERR: Result<bool, bool> = Err(true);
+
+    const OPTRES_OK: OptRes<bool, bool> = sok(true);
+    const OPTRES_ERR: OptRes<bool, bool> = serr(true);
+    const OPTRES_NONE: OptRes<bool, bool> = None;
+
+    #[test]
+    fn test_unwrap_option() {
+        assert![unwrap![some OPTION_SOME]];
+        assert![unwrap![some_expect OPTION_SOME, "ERR"]];
+        assert_eq![unwrap![some_or OPTION_SOME, false], true];
+        assert_eq![unwrap![some_or OPTION_NONE, false], false];
+    }
+    #[test] #[cfg(feature = "std")] #[rustfmt::skip]
+    fn test_unwrap_option_panic() {
+        assert![panic_catch(|| { assert![unwrap![some OPTION_NONE]] }).is_err()];
+        assert![panic_catch(|| { assert![unwrap![some_expect OPTION_NONE, "ERR"]] }).is_err()];
+    }
+
+    #[test]
+    fn test_unwrap_result() {
+        assert![unwrap![ok RESULT_OK]];
+        assert![unwrap![ok_expect RESULT_OK, "ERR"]];
+        assert_eq![unwrap![ok_or RESULT_OK, false], true];
+        assert_eq![unwrap![ok_or RESULT_ERR, false], false];
+
+        assert![unwrap![err RESULT_ERR]];
+        assert![unwrap![err_expect RESULT_ERR, "ERR"]];
+        assert_eq![unwrap![err_or RESULT_ERR, false], true];
+        assert_eq![unwrap![err_or RESULT_OK, false], false];
+    }
+    #[test] #[cfg(feature = "std")] #[rustfmt::skip]
+    fn test_unwrap_result_panic() {
+        assert![panic_catch(|| { assert![unwrap![ok RESULT_ERR]] }).is_err()];
+        assert![panic_catch(|| { assert![unwrap![ok_expect RESULT_ERR, "ERR"]] }).is_err()];
+
+        assert![panic_catch(|| { assert![unwrap![err RESULT_OK]] }).is_err()];
+        assert![panic_catch(|| { assert![unwrap![err_expect RESULT_OK, "ERR"]] }).is_err()];
+    }
+
+    #[test]
+    fn test_unwrap_optres() {
+        assert![unwrap![sok OPTRES_OK]];
+        assert![unwrap![sok_expect OPTRES_OK, "ERR"]];
+        assert_eq![unwrap![sok_or OPTRES_OK, false], true];
+        assert_eq![unwrap![sok_or OPTRES_ERR, false], false];
+
+        assert![unwrap![serr OPTRES_ERR]];
+        assert![unwrap![serr_expect OPTRES_ERR, "ERR"]];
+        assert_eq![unwrap![serr_or OPTRES_ERR, false], true];
+        assert_eq![unwrap![serr_or OPTRES_OK, false], false];
+    }
+    #[test] #[cfg(feature = "std")] #[rustfmt::skip]
+    fn test_unwrap_optres_panic() {
+        assert![panic_catch(|| { assert![unwrap![sok OPTRES_ERR]] }).is_err()];
+        assert![panic_catch(|| { assert![unwrap![sok OPTRES_NONE]] }).is_err()];
+        assert![panic_catch(|| { assert![unwrap![sok_expect OPTRES_ERR, "ERR"]] }).is_err()];
+        assert![panic_catch(|| { assert![unwrap![sok_expect OPTRES_NONE, "ERR"]] }).is_err()];
+
+        assert![panic_catch(|| { assert![unwrap![serr OPTRES_OK]] }).is_err()];
+        assert![panic_catch(|| { assert![unwrap![serr OPTRES_NONE]] }).is_err()];
+        assert![panic_catch(|| { assert![unwrap![serr_expect OPTRES_OK, "ERR"]] }).is_err()];
+        assert![panic_catch(|| { assert![unwrap![serr_expect OPTRES_NONE, "ERR"]] }).is_err()];
+    }
+}
