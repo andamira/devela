@@ -14,103 +14,179 @@
 
 use crate::{
     _deps::alloc::{boxed::Box, collections::VecDeque},
-    work::{TaskContext, TaskPoll, TaskWakerNoop},
+    mem::Pin,
+    result::{serr, sok, OptRes},
+    work::{Future, TaskContext, TaskPoll, TaskWakerNoop},
 };
-use core::{future::Future, pin::Pin};
+use core::fmt::Debug;
 
 /* coroutine */
 
-/// Represents a single-threaded coroutine.
+/// Represents a single thread stackless coroutine.
 ///
-/// It has a private state that can be either running or halted.
-pub struct Coro {
-    state: CoroState,
+/// It has a private status that can be either running or halted.
+///
+/// # Examples
+/// ```
+#[doc = include_str!("../../../../examples/coro.rs")]
+/// ```
+/// It outputs:
+/// ```text
+/// Running
+/// > instance 1 NEW
+/// > instance 2 NEW
+/// > instance 3 NEW
+/// > instance 4 NEW
+///   instance 1 A.0 Ok('a'))
+///   instance 2 A.0 Ok('a'))
+///   instance 3 A.0 Ok('a'))
+///   instance 1 B Ok('b')
+///   instance 2 B Ok('b')
+///   instance 3 B Ok('b')
+///   instance 1 A.1 Ok('a'))
+///   instance 2 A.1 Ok('a'))
+///   instance 3 A.1 Ok('a'))
+///   instance 4 BYE!
+///   instance 1 B Ok('b')
+///   instance 2 B Ok('b')
+///   instance 3 B Ok('b')
+///   instance 1 A.2 Ok('a'))
+///   instance 2 A.2 Ok('a'))
+///   instance 3 A.2 Ok('a'))
+///   instance 1 B Ok('b')
+///   instance 2 B Ok('b')
+///   instance 3 B Ok('b')
+///   instance 1 A.3 Ok('a'))
+///   instance 2 A.3 Ok('a'))
+///   instance 3 A.3 Ok('a'))
+///   instance 1 B Ok('b')
+///   instance 2 B Ok('b')
+///   instance 3 B Ok('b')
+/// Done
+/// ```
+#[derive(Debug)]
+pub struct Coro<T, E> {
+    status: CoroStatus,
+    result: OptRes<T, E>,
 }
 
-impl Coro {
-    /// Returns a `CoroYield` object, which is a future that can be awaited on.
-    pub fn waiter(&mut self) -> CoroYield<'_> {
-        CoroYield { coroutine: self }
-    }
-}
-
-// Private Coro state.
-enum CoroState {
+// Private coroutine status.
+#[derive(Clone, Copy, Debug)]
+enum CoroStatus {
     Halted,
     Running,
 }
 
-/// A future that alternates between [`Ready`][TaskPoll::Ready] and
-/// [`Pending`][TaskPoll::Pending] states each time it's polled.
-///
-/// This allows the coroutine to yield control back to its `CoroRunner`
-/// and be resumed later.
-pub struct CoroYield<'a> {
-    coroutine: &'a mut Coro,
+impl<T, E> Coro<T, E> {
+    // Returns a new coroutine.
+    fn new() -> Self {
+        Coro {
+            status: CoroStatus::Running,
+            result: None,
+        }
+    }
+
+    /// Yields an [`Ok`] `value` and returns an awaitable CoroYield.
+    #[inline]
+    pub fn yield_ok(&mut self, value: T) -> CoroYield<'_, T, E> {
+        self.result = sok(value);
+        CoroYield { cor: self }
+    }
+
+    /// Yields an [`Err`] and returns an awaitable future.
+    #[inline]
+    pub fn yield_err(&mut self, error: E) -> CoroYield<'_, T, E> {
+        self.result = serr(error);
+        CoroYield { cor: self }
+    }
 }
-impl<'a> Future for CoroYield<'a> {
-    type Output = ();
+
+/* yielder */
+
+/// A future that alternates between [`Ready`][TaskPoll::Ready] and
+/// [`Pending`][TaskPoll::Pending] status each time it's polled.
+///
+/// This allows the coroutine to yield control back to its [`CoroRun`]
+/// and be resumed later.
+pub struct CoroYield<'a, T, E> {
+    cor: &'a mut Coro<T, E>,
+}
+
+impl<'a, T, E> Future for CoroYield<'a, T, E> {
+    type Output = OptRes<T, E>;
+
     fn poll(mut self: Pin<&mut Self>, _cx: &mut TaskContext) -> TaskPoll<Self::Output> {
-        match self.coroutine.state {
-            CoroState::Halted => {
-                self.coroutine.state = CoroState::Running;
-                TaskPoll::Ready(())
+        match self.cor.status {
+            CoroStatus::Halted => {
+                self.cor.status = CoroStatus::Running;
+                if let Some(result) = self.cor.result.take() {
+                    match result {
+                        Err(error) => TaskPoll::Ready(serr(error)),
+                        Ok(value) => TaskPoll::Ready(sok(value)),
+                    }
+                } else {
+                    unreachable!();
+                }
             }
-            CoroState::Running => {
-                self.coroutine.state = CoroState::Halted;
+            CoroStatus::Running => {
+                self.cor.status = CoroStatus::Halted;
                 TaskPoll::Pending
             }
         }
     }
 }
 
-/// A [`Coro`] runner responsible for managing and executing the coroutines.
+/* runner */
+
+/// A managed collection of [`Coro`]utines to be run in a single thread.
 ///
 /// It maintains a queue of coroutines and runs them in a loop until they
-/// are all complete. When a coroutine is polled and returns TaskPoll::Pending, it is put back
-/// into the queue to be run again later. If it returns TaskPoll::Ready, it is
-/// considered complete and is not put back into the queue.
-pub struct CoroRunner {
-    coroutines: VecDeque<Pin<Box<dyn Future<Output = ()>>>>,
+/// are all complete. When a coroutine is polled and returns [`TaskPoll::Pending`],
+/// it is put back into the queue to be run again later. If it returns
+/// [`Poll::Ready`], it is considered complete and is not put back into the queue.
+#[derive(Default)]
+pub struct CoroRun<T, E> {
+    #[allow(clippy::type_complexity)]
+    coroutines: VecDeque<Pin<Box<dyn Future<Output = OptRes<T, E>>>>>,
 }
 
-impl Default for CoroRunner {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl CoroRunner {
-    /// Returns a new executor.
+impl<T, E: 'static + Debug> CoroRun<T, E> {
+    /// Returns a new empty runner.
     pub fn new() -> Self {
-        CoroRunner {
+        CoroRun {
             coroutines: VecDeque::new(),
         }
     }
 
-    /// Adds a task to the executor in the form of a closure.
+    /// Adds a closure to the runner.
     pub fn push<C, F>(&mut self, closure: C)
     where
-        F: Future<Output = ()> + 'static,
-        C: FnOnce(Coro) -> F,
+        F: Future<Output = OptRes<T, E>> + 'static,
+        C: FnOnce(Coro<T, E>) -> F,
     {
-        let coroutine = Coro {
-            state: CoroState::Running,
-        };
-        self.coroutines.push_back(Box::pin(closure(coroutine)));
+        self.coroutines.push_back(Box::pin(closure(Coro::new())));
     }
 
-    /// Runs the executor.
+    /// Runs all the coroutines to completion.
     pub fn run(&mut self) {
         let waker = TaskWakerNoop::new();
         let mut context = TaskContext::from_waker(&waker);
 
-        while let Some(mut coroutine) = self.coroutines.pop_front() {
-            match coroutine.as_mut().poll(&mut context) {
+        while let Some(mut cor) = self.coroutines.pop_front() {
+            let polled = cor.as_mut().poll(&mut context);
+            // println!("  coroutine polled:");
+
+            match polled {
                 TaskPoll::Pending => {
-                    self.coroutines.push_back(coroutine);
+                    // println!("  - pending, push back");
+                    self.coroutines.push_back(cor);
                 }
-                TaskPoll::Ready(()) => {}
+                TaskPoll::Ready(_result) => {
+                    // println!("  - READY");
+                    // if let Some(Err(err)) = result {
+                    //     // eprintln!("    Error in coroutine: {:?}", err);
+                    // }
+                }
             }
         }
     }
