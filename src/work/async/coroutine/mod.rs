@@ -19,7 +19,7 @@ mod reexports;
     feature = "nightly_doc",
     doc(cfg(all(feature = "unsafe_async", feature = "alloc")))
 )]
-mod lite;
+mod coro;
 
 /* re-exports */
 
@@ -32,7 +32,7 @@ pub use reexports::*;
     feature = "unsafe_async",
     feature = "alloc"
 ))]
-pub use lite::*;
+pub use coro::*;
 
 pub(crate) mod all {
     // feature-gated
@@ -47,5 +47,5 @@ pub(crate) mod all {
         feature = "unsafe_async",
         feature = "alloc"
     ))]
-    pub use super::lite::*;
+    pub use super::coro::*;
 }

@@ -18,22 +18,24 @@ use crate::{
 };
 use core::{future::Future, pin::Pin};
 
+/* coroutine */
+
 /// Represents a single-threaded coroutine.
 ///
 /// It has a private state that can be either running or halted.
-pub struct LiteCoroutine {
-    state: LiteCoroutineState,
+pub struct Coro {
+    state: CoroState,
 }
 
-impl LiteCoroutine {
-    /// Returns a `LiteCoroutineWaiter` object, which is a future that can be awaited on.
-    pub fn waiter(&mut self) -> LiteCoroutineWaiter<'_> {
-        LiteCoroutineWaiter { coroutine: self }
+impl Coro {
+    /// Returns a `CoroYield` object, which is a future that can be awaited on.
+    pub fn waiter(&mut self) -> CoroYield<'_> {
+        CoroYield { coroutine: self }
     }
 }
 
-// Private LiteCoroutine state.
-enum LiteCoroutineState {
+// Private Coro state.
+enum CoroState {
     Halted,
     Running,
 }
@@ -41,46 +43,47 @@ enum LiteCoroutineState {
 /// A future that alternates between [`Ready`][TaskPoll::Ready] and
 /// [`Pending`][TaskPoll::Pending] states each time it's polled.
 ///
-/// This allows the coroutine to yield control back to its `LiteCoroutineExecutor`
+/// This allows the coroutine to yield control back to its `CoroRunner`
 /// and be resumed later.
-pub struct LiteCoroutineWaiter<'a> {
-    coroutine: &'a mut LiteCoroutine,
+pub struct CoroYield<'a> {
+    coroutine: &'a mut Coro,
 }
-impl<'a> Future for LiteCoroutineWaiter<'a> {
+impl<'a> Future for CoroYield<'a> {
     type Output = ();
     fn poll(mut self: Pin<&mut Self>, _cx: &mut TaskContext) -> TaskPoll<Self::Output> {
         match self.coroutine.state {
-            LiteCoroutineState::Halted => {
-                self.coroutine.state = LiteCoroutineState::Running;
+            CoroState::Halted => {
+                self.coroutine.state = CoroState::Running;
                 TaskPoll::Ready(())
             }
-            LiteCoroutineState::Running => {
-                self.coroutine.state = LiteCoroutineState::Halted;
+            CoroState::Running => {
+                self.coroutine.state = CoroState::Halted;
                 TaskPoll::Pending
             }
         }
     }
 }
-/// An executor responsible for managing and executing the coroutines.
+
+/// A [`Coro`] runner responsible for managing and executing the coroutines.
 ///
 /// It maintains a queue of coroutines and runs them in a loop until they
 /// are all complete. When a coroutine is polled and returns TaskPoll::Pending, it is put back
 /// into the queue to be run again later. If it returns TaskPoll::Ready, it is
 /// considered complete and is not put back into the queue.
-pub struct LiteCoroutineExecutor {
+pub struct CoroRunner {
     coroutines: VecDeque<Pin<Box<dyn Future<Output = ()>>>>,
 }
 
-impl Default for LiteCoroutineExecutor {
+impl Default for CoroRunner {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl LiteCoroutineExecutor {
+impl CoroRunner {
     /// Returns a new executor.
     pub fn new() -> Self {
-        LiteCoroutineExecutor {
+        CoroRunner {
             coroutines: VecDeque::new(),
         }
     }
@@ -89,10 +92,10 @@ impl LiteCoroutineExecutor {
     pub fn push<C, F>(&mut self, closure: C)
     where
         F: Future<Output = ()> + 'static,
-        C: FnOnce(LiteCoroutine) -> F,
+        C: FnOnce(Coro) -> F,
     {
-        let coroutine = LiteCoroutine {
-            state: LiteCoroutineState::Running,
+        let coroutine = Coro {
+            state: CoroState::Running,
         };
         self.coroutines.push_back(Box::pin(closure(coroutine)));
     }
