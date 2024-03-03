@@ -11,7 +11,7 @@
 
 use crate::{
     code::{iif, paste},
-    data::Comparing,
+    data::Compare,
     num::{isize_up, upcasted_op, usize_up, Int, NumError as E, NumResult as Result},
 };
 use E::NonNegativeRequired;
@@ -129,7 +129,7 @@ macro_rules! impl_int {
             /// ```
             #[inline]
             pub const fn sqrt_floor(self) -> Result<Int<$t>> {
-                let a = Comparing(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
+                let a = Compare(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
                 if a.is_negative() {
                     Err(NonNegativeRequired)
                 } else if a < 2 {
@@ -288,7 +288,7 @@ macro_rules! impl_int {
             /// ```
             #[inline] #[must_use]
             pub const fn sqrt_floor(self) -> Int<$t> {
-                let a = Comparing(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
+                let a = Compare(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
                 if a < 2 {
                     self
                 } else {

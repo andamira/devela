@@ -3,10 +3,10 @@
 //! Helper wrapper for comparing.
 //
 // TOC
-// - Comparing definition
+// - Compare definition
 // - impl core traits
-// - impl Comparing for T: PartialOrd
-// - impl Comparing for primitives
+// - impl Compare for T: PartialOrd
+// - impl Compare for primitives
 //   - int
 //   - float
 // - tests
@@ -34,49 +34,49 @@ use core::cmp::Ordering::{self, *};
 ///  `is_positive`, `is_negative`, `is_finite`, `is_infinite`, `is_nan`.
 /// - methods will only be *const* with the `unsafe_const` feature enabled.
 #[repr(transparent)]
-pub struct Comparing<T>(pub T);
+pub struct Compare<T>(pub T);
 
 #[rustfmt::skip]
 mod core_impls {
-    use {super::{Comparing, Ordering}, core::fmt};
+    use {super::{Compare, Ordering}, core::fmt};
 
-    impl<T: Clone> Clone for Comparing<T> { fn clone(&self) -> Self { Self(self.0.clone()) } }
-    impl<T: Copy> Copy for Comparing<T> {}
+    impl<T: Clone> Clone for Compare<T> { fn clone(&self) -> Self { Self(self.0.clone()) } }
+    impl<T: Copy> Copy for Compare<T> {}
 
-    impl<T: PartialEq> PartialEq for Comparing<T> {
+    impl<T: PartialEq> PartialEq for Compare<T> {
         #[inline] #[must_use]
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
-    impl<T: Eq> Eq for Comparing<T> {}
-    impl<T: PartialOrd> PartialOrd for Comparing<T> {
+    impl<T: Eq> Eq for Compare<T> {}
+    impl<T: PartialOrd> PartialOrd for Compare<T> {
         #[inline] #[must_use]
         fn partial_cmp(&self, other: &Self) -> Option<Ordering> { self.0.partial_cmp(&other.0) }
     }
-    impl<T: Ord> Ord for Comparing<T> {
+    impl<T: Ord> Ord for Compare<T> {
         #[inline] #[must_use]
         fn cmp(&self, other: &Self) -> Ordering { self.0.cmp(&other.0) }
     }
 
-    impl<T: fmt::Display> fmt::Display for Comparing<T> {
+    impl<T: fmt::Display> fmt::Display for Compare<T> {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Display::fmt(&self.0, f) }
     }
-    impl<T: fmt::Debug> fmt::Debug for Comparing<T> {
+    impl<T: fmt::Debug> fmt::Debug for Compare<T> {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            f.debug_tuple("Comparing").field(&self.0).finish()
+            f.debug_tuple("Compare").field(&self.0).finish()
         }
     }
 }
 
 #[rustfmt::skip]
-impl<T: PartialOrd> Comparing<T> {
+impl<T: PartialOrd> Compare<T> {
     /// Compares and returns a [`PartialOrd`]ered `value` clamped between `min` and `max`.
     /// # Examples
     /// ```
-    /// # use devela::data::Comparing;
-    /// assert_eq![0.4, Comparing(1.0).pclamp(0.2, 0.4)];
-    /// assert_eq![0.2, Comparing(0.0).pclamp(0.2, 0.4)];
+    /// # use devela::data::Compare;
+    /// assert_eq![0.4, Compare(1.0).pclamp(0.2, 0.4)];
+    /// assert_eq![0.2, Compare(0.0).pclamp(0.2, 0.4)];
     /// ```
     #[inline] #[must_use]
     pub fn pclamp(self, min: T, max: T) -> T { Self(self.pmax(min)).pmin(max) }
@@ -86,8 +86,8 @@ impl<T: PartialOrd> Comparing<T> {
     /// Complements `core::cmp::`[`max`][`core::cmp::max] which requires [`Ord`]
     /// # Examples
     /// ```
-    /// # use devela::data::Comparing;
-    /// assert_eq![0.4, Comparing(0.2).pmax(0.4)];
+    /// # use devela::data::Compare;
+    /// assert_eq![0.4, Compare(0.2).pmax(0.4)];
     /// ```
     #[inline] #[must_use]
     pub fn pmax(self, other: T) -> T { if self.0 > other { self.0 } else { other } }
@@ -97,8 +97,8 @@ impl<T: PartialOrd> Comparing<T> {
     /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires [`Ord`]
     /// # Example
     /// ```
-    /// # use devela::data::Comparing;
-    /// assert_eq![0.2, Comparing(0.2).pmin(0.4)];
+    /// # use devela::data::Compare;
+    /// assert_eq![0.2, Compare(0.2).pmin(0.4)];
     /// ```
     #[inline] #[must_use]
     pub fn pmin(self, other: T) -> T { if self.0 < other { self.0 } else { other } }
@@ -109,7 +109,7 @@ macro_rules! impl_comparing {
     // $p: the integer type
     (int: $($p:ty),+) => { $( impl_comparing![@int: $p]; )+ };
     (@int: $p:ty) => {
-        impl Comparing<$p> {
+        impl Compare<$p> {
             /// Compares and returns `self` clamped between `min` and `max`.
             #[inline] #[must_use]
             pub const fn clamp(self, min: $p, max: $p) -> $p { Self(self.max(min)).min(max) }
@@ -148,7 +148,7 @@ macro_rules! impl_comparing {
     // $sh: the shift amount for the given bits ($b - 1)
     (float: $($f:ty:$b:literal:$sh:literal),+) => { $( impl_comparing![@float: $f:$b:$sh]; )+ };
     (@float: $f:ty:$b:literal:$sh:literal) => { paste! {
-        impl Comparing<$f> {
+        impl Compare<$f> {
             #[doc = "A (`const`) port of `" $f "::`[`total_cmp`][" $f "#method.total_cmp]."]
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
@@ -186,9 +186,9 @@ macro_rules! impl_comparing {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             /// # Examples
             /// ```
-            /// # use devela::data::Comparing;
-            #[doc = "assert_eq![2.0, Comparing(5.0" $f ").clamp(-1.0, 2.0)];"]
-            #[doc = "assert_eq![-1.0, Comparing(-5.0" $f ").clamp(-1.0, 2.0)];"]
+            /// # use devela::data::Compare;
+            #[doc = "assert_eq![2.0, Compare(5.0" $f ").clamp(-1.0, 2.0)];"]
+            #[doc = "assert_eq![-1.0, Compare(-5.0" $f ").clamp(-1.0, 2.0)];"]
             /// ```
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
@@ -203,11 +203,11 @@ macro_rules! impl_comparing {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             /// # Examples
             /// ```
-            /// # use devela::data::Comparing;
-            #[doc = "assert_eq![2.0, Comparing(2.0" $f ").max(-1.0)];"]
-            #[doc = "assert_eq![2.0, Comparing(1.0" $f ").max(2.0)];"]
-            #[doc = "assert_eq![0.0, Comparing(-0.0" $f ").max(0.0)];"]
-            #[doc = "assert_eq![" $f "::INFINITY, Comparing(" $f "::INFINITY).max("
+            /// # use devela::data::Compare;
+            #[doc = "assert_eq![2.0, Compare(2.0" $f ").max(-1.0)];"]
+            #[doc = "assert_eq![2.0, Compare(1.0" $f ").max(2.0)];"]
+            #[doc = "assert_eq![0.0, Compare(-0.0" $f ").max(0.0)];"]
+            #[doc = "assert_eq![" $f "::INFINITY, Compare(" $f "::INFINITY).max("
                 $f "::NEG_INFINITY)];"]
             /// ```
             #[inline] #[must_use]
@@ -227,11 +227,11 @@ macro_rules! impl_comparing {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             /// # Examples
             /// ```
-            /// # use devela::data::Comparing;
-            #[doc = "assert_eq![-1.0, Comparing(2.0" $f ").min(-1.0)];"]
-            #[doc = "assert_eq![1.0, Comparing(1.0" $f ").min(2.0)];"]
-            #[doc = "assert_eq![-0.0, Comparing(-0.0" $f ").min(0.0)];"]
-            #[doc = "assert_eq![" $f "::NEG_INFINITY, Comparing(" $f "::INFINITY).min("
+            /// # use devela::data::Compare;
+            #[doc = "assert_eq![-1.0, Compare(2.0" $f ").min(-1.0)];"]
+            #[doc = "assert_eq![1.0, Compare(1.0" $f ").min(2.0)];"]
+            #[doc = "assert_eq![-0.0, Compare(-0.0" $f ").min(0.0)];"]
+            #[doc = "assert_eq![" $f "::NEG_INFINITY, Compare(" $f "::INFINITY).min("
                 $f "::NEG_INFINITY)];"]
             /// ```
             #[inline] #[must_use]
@@ -380,7 +380,7 @@ impl_comparing![float: f32:32:31, f64:64:63];
 
 #[cfg(test)]
 mod test_min_max_clamp {
-    use super::Comparing as C;
+    use super::Compare as C;
 
     #[test]
     fn min_max_clamp() {

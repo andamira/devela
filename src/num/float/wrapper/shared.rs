@@ -890,12 +890,12 @@ macro_rules! custom_impls {
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn clamp_total(value: $f, min: $f, max: $f) -> $f {
-                $crate::data::Comparing(value).clamp(min, max)
+                $crate::data::Compare(value).clamp(min, max)
             }
             #[inline] #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn clamp_total(value: $f, min: $f, max: $f) -> $f {
-                $crate::data::Comparing(value).clamp(min, max)
+                $crate::data::Compare(value).clamp(min, max)
             }
 
             /// Returns the maximum of two numbers using total order.
@@ -903,20 +903,20 @@ macro_rules! custom_impls {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn max_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).max(y) }
+            pub const fn max_total(x: $f, y: $f) -> $f { $crate::data::Compare(x).max(y) }
             #[inline] #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn max_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).max(y) }
+            pub fn max_total(x: $f, y: $f) -> $f { $crate::data::Compare(x).max(y) }
 
             /// Returns the minimum of two numbers using total order.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn min_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).min(y) }
+            pub const fn min_total(x: $f, y: $f) -> $f { $crate::data::Compare(x).min(y) }
             #[inline] #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn min_total(x: $f, y: $f) -> $f { $crate::data::Comparing(x).min(y) }
+            pub fn min_total(x: $f, y: $f) -> $f { $crate::data::Compare(x).min(y) }
 
             /// Returns the clamped `x` value, propagating `NaN`.
             #[must_use] #[inline(always)]

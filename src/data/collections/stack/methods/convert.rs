@@ -7,7 +7,7 @@ use crate::{
     code::{sf, ConstDefault},
     data::{
         error::{DataError, DataResult as Result},
-        {array_init, Array, Comparing, Stack},
+        {array_init, Array, Compare, Stack},
     },
     mem::{cswap, Bare, Storage},
     result::Own,
@@ -255,7 +255,7 @@ macro_rules! impl_stack {
                 } else {
                     0
                 };
-                let new_len = Comparing(NEW_CAP).min(self.len as usize);
+                let new_len = Compare(NEW_CAP).min(self.len as usize);
                 let old_arr: [T; CAP] = self.data.into_array_const();
                 let mut new_arr = array_init![const_default [T; NEW_CAP]];
 

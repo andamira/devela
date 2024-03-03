@@ -3,7 +3,7 @@
 //! Slicing functionality wrapper struct.
 //
 
-use crate::data::Comparing;
+use crate::data::Compare;
 
 /// Provides slicing operations on `&[T]`, many of them *const*.
 ///
@@ -31,7 +31,7 @@ impl<T> Slicing<T> {
     #[inline]
     #[must_use]
     pub const fn lsplit(slice: &[T], len: usize) -> &[T] {
-        let end_idx = Comparing(len).clamp(0, slice.len());
+        let end_idx = Compare(len).clamp(0, slice.len());
         let (left, _) = slice.split_at(end_idx);
         left
     }
@@ -50,7 +50,7 @@ impl<T> Slicing<T> {
     #[inline]
     #[must_use]
     pub fn lsplit_mut(slice: &mut [T], len: usize) -> &mut [T] {
-        let end_idx = Comparing(len).clamp(0, slice.len());
+        let end_idx = Compare(len).clamp(0, slice.len());
         let (left, _) = slice.split_at_mut(end_idx);
         left
     }
@@ -122,7 +122,7 @@ impl<T> Slicing<T> {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-        let end_idx = Comparing(mid_idx + half_len).min(slice.len());
+        let end_idx = Compare(mid_idx + half_len).min(slice.len());
         let (_, right) = slice.split_at(start_idx);
         let (middle, _) = right.split_at(end_idx - start_idx);
         middle
@@ -153,7 +153,7 @@ impl<T> Slicing<T> {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-        let end_idx = Comparing(mid_idx + half_len).min(slice.len());
+        let end_idx = Compare(mid_idx + half_len).min(slice.len());
         let (_, right) = slice.split_at_mut(start_idx);
         let (middle, _) = right.split_at_mut(end_idx - start_idx);
         middle
@@ -186,7 +186,7 @@ impl<T> Slicing<T> {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len);
-        let end_idx = Comparing(mid_idx + half_len + (len % 2)).min(slice.len());
+        let end_idx = Compare(mid_idx + half_len + (len % 2)).min(slice.len());
         let (_, right) = slice.split_at(start_idx);
         let (middle, _) = right.split_at(end_idx - start_idx);
         middle
@@ -218,7 +218,7 @@ impl<T> Slicing<T> {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len);
-        let end_idx = Comparing(mid_idx + half_len + (len % 2)).min(slice.len());
+        let end_idx = Compare(mid_idx + half_len + (len % 2)).min(slice.len());
         let (_, right) = slice.split_at_mut(start_idx);
         let (middle, _) = right.split_at_mut(end_idx - start_idx);
         middle

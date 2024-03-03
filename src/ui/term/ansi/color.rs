@@ -5,7 +5,7 @@
 
 use super::Ansi;
 use crate::{
-    data::Comparing,
+    data::Compare,
     text::{ascii_1digit, ascii_u8_digits},
 };
 
@@ -460,8 +460,8 @@ impl Ansi {
     #[rustfmt::skip]
     pub const fn GRAY(fg: u8, bg: u8) -> [u8; 19] {
         const X: [u8; 4] = C::C8;
-        let cf = ascii_u8_digits(Comparing(fg).min(23));
-        let cb = ascii_u8_digits(Comparing(bg).min(23));
+        let cf = ascii_u8_digits(Compare(fg).min(23));
+        let cb = ascii_u8_digits(Compare(bg).min(23));
         [
             b'\x1b', b'[',
             C::FG, X[0], X[1], X[2], X[3], cf[0], cf[1], cf[2],
