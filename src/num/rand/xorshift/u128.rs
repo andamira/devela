@@ -3,7 +3,7 @@
 //! 128-bit versions of XorShift generators.
 //
 
-use crate::{code::ConstDefault, num::Primiting as P, result::Own};
+use crate::{code::ConstDefault, num::Cast, result::Own};
 
 /// The `XorShift128` pseudo-random number generator.
 ///
@@ -125,7 +125,7 @@ impl XorShift128 {
     /// The seeds will be split in little endian order.
     #[inline]
     pub const fn new1_u128(seed: u128) -> Option<Self> {
-        Self::new(P(seed).into_u32_le())
+        Self::new(Cast(seed).into_u32_le())
     }
 
     /// Returns a seeded `XorShift128` generator from the given 2 × 64-bit seeds.
@@ -133,8 +133,8 @@ impl XorShift128 {
     /// The seeds will be split in little endian order.
     #[inline]
     pub const fn new2_u64(seeds: [u64; 2]) -> Option<Self> {
-        let [x, y] = P(seeds[0]).into_u32_le();
-        let [z, a] = P(seeds[1]).into_u32_le();
+        let [x, y] = Cast(seeds[0]).into_u32_le();
+        let [z, a] = Cast(seeds[1]).into_u32_le();
         Self::new([x, y, z, a])
     }
 
@@ -152,10 +152,10 @@ impl XorShift128 {
     #[inline]
     pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
         Self::new([
-            P::<u32>::from_u16_le([seeds[0], seeds[1]]),
-            P::<u32>::from_u16_le([seeds[2], seeds[3]]),
-            P::<u32>::from_u16_le([seeds[4], seeds[5]]),
-            P::<u32>::from_u16_le([seeds[6], seeds[7]]),
+            Cast::<u32>::from_u16_le([seeds[0], seeds[1]]),
+            Cast::<u32>::from_u16_le([seeds[2], seeds[3]]),
+            Cast::<u32>::from_u16_le([seeds[4], seeds[5]]),
+            Cast::<u32>::from_u16_le([seeds[6], seeds[7]]),
         ])
     }
 
@@ -165,10 +165,10 @@ impl XorShift128 {
     #[inline]
     pub const fn new16_u8(seeds: [u8; 16]) -> Option<Self> {
         Self::new([
-            P::<u32>::from_u8_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
-            P::<u32>::from_u8_le([seeds[4], seeds[5], seeds[6], seeds[7]]),
-            P::<u32>::from_u8_le([seeds[8], seeds[9], seeds[10], seeds[11]]),
-            P::<u32>::from_u8_le([seeds[12], seeds[13], seeds[14], seeds[15]]),
+            Cast::<u32>::from_u8_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
+            Cast::<u32>::from_u8_le([seeds[4], seeds[5], seeds[6], seeds[7]]),
+            Cast::<u32>::from_u8_le([seeds[8], seeds[9], seeds[10], seeds[11]]),
+            Cast::<u32>::from_u8_le([seeds[12], seeds[13], seeds[14], seeds[15]]),
         ])
     }
 }
@@ -287,7 +287,7 @@ impl XorShift128p {
     /// The seeds will be split in little endian order.
     #[inline]
     pub const fn new1_u128(seed: u128) -> Option<Self> {
-        Self::new(P(seed).into_u64_le())
+        Self::new(Cast(seed).into_u64_le())
     }
 
     /// Returns a seeded `XorShift128+` generator from the given 2 × 64-bit seeds.
@@ -304,8 +304,8 @@ impl XorShift128p {
     #[inline]
     pub const fn new4_u32(seeds: [u32; 4]) -> Option<Self> {
         Self::new([
-            P::<u64>::from_u32_le([seeds[0], seeds[1]]),
-            P::<u64>::from_u32_le([seeds[2], seeds[3]]),
+            Cast::<u64>::from_u32_le([seeds[0], seeds[1]]),
+            Cast::<u64>::from_u32_le([seeds[2], seeds[3]]),
         ])
     }
 
@@ -315,8 +315,8 @@ impl XorShift128p {
     #[inline]
     pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
         Self::new([
-            P::<u64>::from_u16_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
-            P::<u64>::from_u16_le([seeds[4], seeds[5], seeds[6], seeds[7]]),
+            Cast::<u64>::from_u16_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
+            Cast::<u64>::from_u16_le([seeds[4], seeds[5], seeds[6], seeds[7]]),
         ])
     }
 
@@ -327,8 +327,8 @@ impl XorShift128p {
     pub const fn new16_u8(seeds: [u8; 16]) -> Option<Self> {
         let s = seeds;
         Self::new([
-            P::<u64>::from_u8_le([s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]]),
-            P::<u64>::from_u8_le([s[8], s[9], s[10], s[11], s[12], s[13], s[14], s[15]]),
+            Cast::<u64>::from_u8_le([s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]]),
+            Cast::<u64>::from_u8_le([s[8], s[9], s[10], s[11], s[12], s[13], s[14], s[15]]),
         ])
     }
 }

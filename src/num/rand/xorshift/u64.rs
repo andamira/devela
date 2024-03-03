@@ -3,7 +3,7 @@
 //! 64-bit versions of XorShift generators.
 //
 
-use crate::{code::ConstDefault, num::Primiting as P, result::Own};
+use crate::{code::ConstDefault, num::Cast, result::Own};
 
 /// The `XorShift64` pseudo-random number generator.
 ///
@@ -118,7 +118,7 @@ impl XorShift64 {
     /// The seeds will be joined in little endian order.
     #[inline]
     pub const fn new2_u32(seeds: [u32; 2]) -> Option<Self> {
-        Self::new(P::<u64>::from_u32_le(seeds))
+        Self::new(Cast::<u64>::from_u32_le(seeds))
     }
 
     /// Returns a seeded `XorShift64` generator from the given 4 × 16-bit seeds.
@@ -126,7 +126,7 @@ impl XorShift64 {
     /// The seeds will be joined in little endian order.
     #[inline]
     pub const fn new4_u16(seeds: [u16; 4]) -> Option<Self> {
-        Self::new(P::<u64>::from_u16_le(seeds))
+        Self::new(Cast::<u64>::from_u16_le(seeds))
     }
 
     /// Returns a seeded `XorShift64` generator from the given 4 × 8-bit seeds.
@@ -134,7 +134,7 @@ impl XorShift64 {
     /// The seeds will be joined in little endian order.
     #[inline]
     pub const fn new8_u8(seeds: [u8; 8]) -> Option<Self> {
-        Self::new(P::<u64>::from_u8_le(seeds))
+        Self::new(Cast::<u64>::from_u8_le(seeds))
     }
 }
 

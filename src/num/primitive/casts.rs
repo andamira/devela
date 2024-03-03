@@ -9,7 +9,7 @@
 
 use crate::{
     code::{iif, paste},
-    num::{NumError, NumResult as Result, Primiting, Sign},
+    num::{Cast, NumError, NumResult as Result, Sign},
 };
 use {
     NumError::Overflow,
@@ -18,7 +18,7 @@ use {
 
 /// Offers methods for casting between primitives.
 ///
-/// See also the [`Primiting`] type for the equivalent *const* methods.
+/// See also the [`Cast`] type for the equivalent *const* methods.
 /// # Errors
 /// Checked methods will return [`Overflow`]
 /// if the original value can't fit in the returned type.
@@ -85,7 +85,7 @@ pub trait PrimitiveCast {
     fn saturating_cast_to_isize(self) -> isize;
 }
 
-// Implements the public casting methods for the trait and Primiting wrapper
+// Implements the public casting methods for the trait and Cast wrapper
 macro_rules! impl_cast_methods {
     ($($t:ty),+) => { $( impl_cast_methods![@$t]; )+ };
     (@$t:ty) => { paste! {
@@ -144,7 +144,7 @@ macro_rules! impl_cast_methods {
         ///
         /// # Errors
         /// Checked methods will return [`Overflow`] if `self` can't fit in the returned type.
-        impl Primiting<$t> {
+        impl Cast<$t> {
             #[doc = "Casts from `" $t "` to `u8` with range check."]
             #[inline(always)]
             pub const fn checked_cast_to_u8(self) -> Result<u8> {

@@ -3,7 +3,7 @@
 //! 32-bit versions of XorShift generators.
 //
 
-use crate::{code::ConstDefault, num::Primiting as P, result::Own};
+use crate::{code::ConstDefault, num::Cast, result::Own};
 
 /// The `XorShift32` pseudo-random number generator.
 ///
@@ -122,7 +122,7 @@ impl XorShift32 {
     #[inline]
     #[must_use]
     pub const fn new2_u16(seeds: [u16; 2]) -> Option<Self> {
-        Self::new(P::<u32>::from_u16_le(seeds))
+        Self::new(Cast::<u32>::from_u16_le(seeds))
     }
 
     /// Returns a seeded `XorShift32` generator from the given 4 × 8-bit seeds.
@@ -131,7 +131,7 @@ impl XorShift32 {
     #[inline]
     #[must_use]
     pub const fn new4_u8(seeds: [u8; 4]) -> Option<Self> {
-        Self::new(P::<u32>::from_u8_le(seeds))
+        Self::new(Cast::<u32>::from_u8_le(seeds))
     }
 }
 
@@ -139,7 +139,7 @@ impl XorShift32 {
 // #[cfg(any(feature = "rand_core", all(feature = "dep", feature = "num")))] // MAYBE
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand_core")))]
 mod impl_rand {
-    use super::{XorShift32, P};
+    use super::{Cast, XorShift32};
     use crate::_deps::rand_core::{Error, RngCore, SeedableRng};
 
     impl RngCore for XorShift32 {
@@ -152,7 +152,7 @@ mod impl_rand {
         /// Returns the next 2 × random `u32` combined as a single `u64`.
         #[inline]
         fn next_u64(&mut self) -> u64 {
-            P::<u64>::from_u32_le([self.next_u32(), self.next_u32()])
+            Cast::<u64>::from_u32_le([self.next_u32(), self.next_u32()])
         }
 
         #[inline]

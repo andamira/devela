@@ -12,7 +12,7 @@
 
 use crate::{
     code::{cfor, iif, paste},
-    num::{Int, NumError, NumResult as Result, Primiting},
+    num::{Cast, Int, NumError, NumResult as Result},
 };
 use NumError::{MismatchedSizes, NonNegativeRequired, Overflow};
 
@@ -285,7 +285,7 @@ macro_rules! impl_int {
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
-                let r_u32 = if let Ok(res) = Primiting(r).checked_cast_to_u32() {
+                let r_u32 = if let Ok(res) = Cast(r).checked_cast_to_u32() {
                     res
                 } else {
                     return Err(Overflow(None));
@@ -543,7 +543,7 @@ macro_rules! impl_int {
             #[inline]
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
-                let r_u32 = if let Ok(res) = Primiting(r).checked_cast_to_u32() {
+                let r_u32 = if let Ok(res) = Cast(r).checked_cast_to_u32() {
                     res
                 } else {
                     return Err(Overflow(None));

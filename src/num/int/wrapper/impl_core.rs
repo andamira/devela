@@ -17,7 +17,7 @@
 use {
     crate::{
         code::{iif, paste},
-        num::{isize_up, usize_up, Int, NumError, NumResult as Result, Primiting},
+        num::{isize_up, usize_up, Cast, Int, NumError, NumResult as Result},
     },
     NumError::Overflow,
 };
@@ -253,7 +253,7 @@ macro_rules! impl_int {
                 let max_min = iif![let Some(n) = max.checked_sub(min); n; return Err(Overflow(None))];
                 let div = iif![let Some(n) = mul.checked_div(max_min); n; return Err(Overflow(None))];
                 let sum = iif![let Some(n) = div.checked_add(a); n; return Err(Overflow(None))];
-                match Primiting(sum).[<checked_cast_to_ $t>]() {
+                match Cast(sum).[<checked_cast_to_ $t>]() {
                     Ok(n) => Ok(Int(n)),
                     Err(e) => Err(e),
                 }
@@ -401,7 +401,7 @@ macro_rules! impl_int {
                 let max_min = iif![let Some(n) = max.checked_sub(min); n; return Err(Overflow(None))];
                 let div = iif![let Some(n) = mul.checked_div(max_min); n; return Err(Overflow(None))];
                 let sum = iif![let Some(n) = div.checked_add(a); n; return Err(Overflow(None))];
-                match Primiting(sum).[<checked_cast_to_ $t>]() {
+                match Cast(sum).[<checked_cast_to_ $t>]() {
                     Ok(n) => Ok(Int(n)),
                     Err(e) => Err(e),
                 }

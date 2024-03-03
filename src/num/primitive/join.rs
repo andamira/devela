@@ -7,7 +7,7 @@
 // - trait implementation
 // - wrapper implementations
 
-use super::Primiting;
+use super::Cast;
 use crate::code::paste;
 
 /// Offers methods to construct a primitive from an array or slice of smaller primitives.
@@ -19,7 +19,7 @@ use crate::code::paste;
 /// - If the slice contains more elements than required, the method will
 ///   ignore the extra elements.
 ///
-/// See also the [`Primiting`] type for the equivalent *const* methods, and the
+/// See also the [`Cast`] type for the equivalent *const* methods, and the
 /// [`PrimitiveSplit`][super::PrimitiveSplit] trait for the opposite operations.
 pub trait PrimitiveJoin<T, U, const LEN: usize> {
     /// Constructs a primitive `T` from an array of `U` in big-endian order.
@@ -51,18 +51,18 @@ macro_rules! impl_from_trait {
     (@$T:ident, $U:ident, $LEN:literal) => { paste! {
         impl PrimitiveJoin<$T, $U, $LEN> for $T {
             #[inline]
-            fn from_array_be(values: [$U; $LEN]) -> $T { Primiting::<$T>::[<from_ $U _be>](values) }
+            fn from_array_be(values: [$U; $LEN]) -> $T { Cast::<$T>::[<from_ $U _be>](values) }
             #[inline]
-            fn from_array_le(values: [$U; $LEN]) -> $T { Primiting::<$T>::[<from_ $U _le>](values) }
+            fn from_array_le(values: [$U; $LEN]) -> $T { Cast::<$T>::[<from_ $U _le>](values) }
             #[inline]
-            fn from_array_ne(values: [$U; $LEN]) -> $T { Primiting::<$T>::[<from_ $U _ne>](values) }
+            fn from_array_ne(values: [$U; $LEN]) -> $T { Cast::<$T>::[<from_ $U _ne>](values) }
             #[inline]
             fn from_slice_be(values: &[$U]) -> $T {
                 let mut array = [0; $LEN];
                 for (i, &v) in values.iter().enumerate() {
                     array[i] = v;
                 }
-                Primiting::<$T>::[<from_ $U _be>](array)
+                Cast::<$T>::[<from_ $U _be>](array)
             }
             #[inline]
             fn from_slice_le(values: &[$U]) -> $T {
@@ -70,7 +70,7 @@ macro_rules! impl_from_trait {
                 for (i, &v) in values.iter().enumerate() {
                     array[i] = v;
                 }
-                Primiting::<$T>::[<from_ $U _le>](array)
+                Cast::<$T>::[<from_ $U _le>](array)
             }
             #[inline]
             fn from_slice_ne(values: &[$U]) -> $T {
@@ -78,7 +78,7 @@ macro_rules! impl_from_trait {
                 for (i, &v) in values.iter().enumerate() {
                     array[i] = v;
                 }
-                Primiting::<$T>::[<from_ $U _ne>](array)
+                Cast::<$T>::[<from_ $U _ne>](array)
             }
         }
     }};
@@ -90,10 +90,10 @@ impl_from_trait![
     u16, u8, 2;
 ];
 
-/* implements the Primiting wrapper methods */
+/* implements the Cast wrapper methods */
 
 #[rustfmt::skip]
-impl Primiting<u16> {
+impl Cast<u16> {
     /// Constructs a `u16` from an array of `[u8; 2]` in big-endian order.
     #[inline] #[must_use]
     pub const fn from_u8_be(v: [u8; 2]) -> u16 { u16::from_be_bytes(v) }
@@ -108,7 +108,7 @@ impl Primiting<u16> {
 }
 
 #[rustfmt::skip]
-impl Primiting<u32> {
+impl Cast<u32> {
     /// Constructs a `u32` from an array of `[u16; 2]` in big-endian order.
     #[inline] #[must_use]
     pub const fn from_u16_be(v: [u16; 2]) -> u32 {
@@ -125,9 +125,9 @@ impl Primiting<u32> {
     #[inline] #[must_use]
     pub const fn from_u16_ne(v: [u16; 2]) -> u32 {
         if cfg!(target_endian = "big") {
-            Primiting::<u32>::from_u16_be(v)
+            Cast::<u32>::from_u16_be(v)
         } else {
-            Primiting::<u32>::from_u16_le(v)
+            Cast::<u32>::from_u16_le(v)
         }
     }
 
@@ -145,7 +145,7 @@ impl Primiting<u32> {
 }
 
 #[rustfmt::skip]
-impl Primiting<u64> {
+impl Cast<u64> {
     /// Constructs a `u64` from an array of `[u32; 2]` in big-endian order.
     #[inline] #[must_use]
     pub const fn from_u32_be(v: [u32; 2]) -> u64 {
@@ -162,9 +162,9 @@ impl Primiting<u64> {
     #[inline] #[must_use]
     pub const fn from_u32_ne(v: [u32; 2]) -> u64 {
         if cfg!(target_endian = "big") {
-            Primiting::<u64>::from_u32_be(v)
+            Cast::<u64>::from_u32_be(v)
         } else {
-            Primiting::<u64>::from_u32_le(v)
+            Cast::<u64>::from_u32_le(v)
         }
     }
 
@@ -190,9 +190,9 @@ impl Primiting<u64> {
     #[inline] #[must_use]
     pub const fn from_u16_ne(v: [u16; 4]) -> u64 {
         if cfg!(target_endian = "big") {
-            Primiting::<u64>::from_u16_be(v)
+            Cast::<u64>::from_u16_be(v)
         } else {
-            Primiting::<u64>::from_u16_le(v)
+            Cast::<u64>::from_u16_le(v)
         }
     }
 
@@ -210,7 +210,7 @@ impl Primiting<u64> {
 }
 
 #[rustfmt::skip]
-impl Primiting<u128> {
+impl Cast<u128> {
     /// Constructs a `u128` from an array of `[u64; 2]` in big-endian order.
     #[inline] #[must_use]
     pub const fn from_u64_be(v: [u64; 2]) -> u128 {
@@ -227,9 +227,9 @@ impl Primiting<u128> {
     #[inline] #[must_use]
     pub const fn from_u64_ne(v: [u64; 2]) -> u128 {
         if cfg!(target_endian = "big") {
-            Primiting::<u128>::from_u64_be(v)
+            Cast::<u128>::from_u64_be(v)
         } else {
-            Primiting::<u128>::from_u64_le(v)
+            Cast::<u128>::from_u64_le(v)
         }
     }
 
@@ -255,9 +255,9 @@ impl Primiting<u128> {
     #[inline] #[must_use]
     pub const fn from_u32_ne(v: [u32; 4]) -> u128 {
         if cfg!(target_endian = "big") {
-            Primiting::<u128>::from_u32_be(v)
+            Cast::<u128>::from_u32_be(v)
         } else {
-            Primiting::<u128>::from_u32_le(v)
+            Cast::<u128>::from_u32_le(v)
         }
     }
 
@@ -291,9 +291,9 @@ impl Primiting<u128> {
     #[inline] #[must_use]
     pub const fn from_u16_ne(v: [u16; 8]) -> u128 {
         if cfg!(target_endian = "big") {
-            Primiting::<u128>::from_u16_be(v)
+            Cast::<u128>::from_u16_be(v)
         } else {
-            Primiting::<u128>::from_u16_le(v)
+            Cast::<u128>::from_u16_le(v)
         }
     }
 

@@ -323,7 +323,7 @@ impl TryFrom<UnixTimeI64> for UnixTimeU32 {
 mod std_impls {
     use super::{TimeError, UnixTimeI64, UnixTimeU32};
     use crate::{
-        num::Primiting,
+        num::Cast,
         time::{SystemTime, SystemTimeError},
     };
     use core::convert::TryFrom;
@@ -345,7 +345,7 @@ mod std_impls {
         fn try_from(time: SystemTime) -> Result<Self, Self::Error> {
             let since = time.duration_since(SystemTime::UNIX_EPOCH)?;
             let seconds = u32::try_from(since.as_secs()).map_err(|_| {
-                TimeError::OutOfBounds(Primiting(since.as_secs()).checked_cast_to_usize().ok())
+                TimeError::OutOfBounds(Cast(since.as_secs()).checked_cast_to_usize().ok())
             })?;
             Ok(UnixTimeU32 { seconds })
         }

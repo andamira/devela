@@ -7,12 +7,12 @@
 // - trait implementation
 // - wrapper implementations
 
-use super::Primiting;
+use super::Cast;
 use crate::code::paste;
 
 /// Offers methods to split a primitive into an array of smaller primitives.
 ///
-/// See also the [`Primiting`] type for the equivalent *const* methods, and the
+/// See also the [`Cast`] type for the equivalent *const* methods, and the
 /// [`PrimitiveJoin`][super::PrimitiveJoin] trait for the opposite operations.
 pub trait PrimitiveSplit<T, const LEN: usize> {
     /// Splits `self` into an array of `T` in big-endian order.
@@ -34,11 +34,11 @@ macro_rules! impl_into_trait {
     (@$P:ident, $T:ident, $LEN:literal) => { paste! {
         impl PrimitiveSplit<$T, $LEN> for $P {
             #[inline]
-            fn into_array_be(self) -> [$T; $LEN] { Primiting(self).[<into_ $T _be>]() }
+            fn into_array_be(self) -> [$T; $LEN] { Cast(self).[<into_ $T _be>]() }
             #[inline]
-            fn into_array_le(self) -> [$T; $LEN] { Primiting(self).[<into_ $T _le>]() }
+            fn into_array_le(self) -> [$T; $LEN] { Cast(self).[<into_ $T _le>]() }
             #[inline]
-            fn into_array_ne(self) -> [$T; $LEN] { Primiting(self).[<into_ $T _ne>]() }
+            fn into_array_ne(self) -> [$T; $LEN] { Cast(self).[<into_ $T _ne>]() }
         }
     }};
 }
@@ -49,10 +49,10 @@ impl_into_trait![
     u16, u8, 2;
 ];
 
-/* implements the Primiting wrapper methods */
+/* implements the Cast wrapper methods */
 
 #[rustfmt::skip]
-impl Primiting<u16> {
+impl Cast<u16> {
     /// Splits a `u16` into an array of `[u8; 2]` in big-endian order.
     #[inline] #[must_use]
     pub const fn into_u8_be(self) -> [u8; 2] { self.0.to_be_bytes() }
@@ -67,7 +67,7 @@ impl Primiting<u16> {
 }
 
 #[rustfmt::skip]
-impl Primiting<u32> {
+impl Cast<u32> {
     /// Splits a `u32` into an array of `[u16; 2]` in big-endian order.
     #[inline] #[must_use]
     pub const fn into_u16_be(self) -> [u16; 2] {
@@ -88,9 +88,9 @@ impl Primiting<u32> {
     #[inline] #[must_use]
     pub const fn into_u16_ne(self) -> [u16; 2] {
         if cfg!(target_endian = "big") {
-            Primiting::<u32>::into_u16_be(self)
+            Cast::<u32>::into_u16_be(self)
         } else {
-            Primiting::<u32>::into_u16_le(self)
+            Cast::<u32>::into_u16_le(self)
         }
     }
 
@@ -108,7 +108,7 @@ impl Primiting<u32> {
 }
 
 #[rustfmt::skip]
-impl Primiting<u64> {
+impl Cast<u64> {
     /// Splits a `u64` into an array of `[u32; 2]` in big-endian order.
     #[inline] #[must_use]
     pub const fn into_u32_be(self) -> [u32; 2] {
@@ -129,9 +129,9 @@ impl Primiting<u64> {
     #[inline] #[must_use]
     pub const fn into_u32_ne(self) -> [u32; 2] {
         if cfg!(target_endian = "big") {
-            Primiting::<u64>::into_u32_be(self)
+            Cast::<u64>::into_u32_be(self)
         } else {
-            Primiting::<u64>::into_u32_le(self)
+            Cast::<u64>::into_u32_le(self)
         }
     }
 
@@ -159,9 +159,9 @@ impl Primiting<u64> {
     #[inline] #[must_use]
     pub const fn into_u16_ne(self) -> [u16; 4] {
         if cfg!(target_endian = "big") {
-            Primiting::<u64>::into_u16_be(self)
+            Cast::<u64>::into_u16_be(self)
         } else {
-            Primiting::<u64>::into_u16_le(self)
+            Cast::<u64>::into_u16_le(self)
         }
     }
 
@@ -177,15 +177,15 @@ impl Primiting<u64> {
     #[inline] #[must_use]
     pub const fn into_u8_ne(self) -> [u8; 8] {
         if cfg!(target_endian = "big") {
-            Primiting::<u64>::into_u8_be(self)
+            Cast::<u64>::into_u8_be(self)
         } else {
-            Primiting::<u64>::into_u8_le(self)
+            Cast::<u64>::into_u8_le(self)
         }
     }
 }
 
 #[rustfmt::skip]
-impl Primiting<u128> {
+impl Cast<u128> {
     /// Splits a `u128` into an array of `[u64; 2]` in big-endian order.
     #[inline] #[must_use]
     pub const fn into_u64_be(self) -> [u64; 2] {
@@ -206,9 +206,9 @@ impl Primiting<u128> {
     #[inline] #[must_use]
     pub const fn into_u64_ne(self) -> [u64; 2] {
         if cfg!(target_endian = "big") {
-            Primiting::<u128>::into_u64_be(self)
+            Cast::<u128>::into_u64_be(self)
         } else {
-            Primiting::<u128>::into_u64_le(self)
+            Cast::<u128>::into_u64_le(self)
         }
     }
 
@@ -236,9 +236,9 @@ impl Primiting<u128> {
     #[inline] #[must_use]
     pub const fn into_u32_ne(self) -> [u32; 4] {
         if cfg!(target_endian = "big") {
-            Primiting::<u128>::into_u32_be(self)
+            Cast::<u128>::into_u32_be(self)
         } else {
-            Primiting::<u128>::into_u32_le(self)
+            Cast::<u128>::into_u32_le(self)
         }
     }
 
@@ -274,9 +274,9 @@ impl Primiting<u128> {
     #[inline] #[must_use]
     pub const fn into_u16_ne(self) -> [u16; 8] {
         if cfg!(target_endian = "big") {
-            Primiting::<u128>::into_u16_be(self)
+            Cast::<u128>::into_u16_be(self)
         } else {
-            Primiting::<u128>::into_u16_le(self)
+            Cast::<u128>::into_u16_le(self)
         }
     }
 
