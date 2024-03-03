@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.20.0-wip]
 
 ### Added
-- add traits: `NumToStr`, `ConstDefault`, `DataQueue`, `DataDeque`, `DataStack`, `DataDesta`, `ExtTuple`.
-- add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `BareDestaque`, `BoxedDestaque`, `BareStack`, `BoxedStack`, `Mismatch`, `Own`, `GfxError`, `GfxResult`, `Pnm`, `Array2d`.
+- add traits: `NumToStr`, `ConstDefault`, `DataQueue`, `DataDeque`, `DataStack`, `DataDesta`, `ExtTuple`, `ExtArray`.
+- add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `Mismatch`, `Own`, `GfxError`, `GfxResult`, `Pnm`, `Array2d`, `OptRes`, `TupleFmt`, `ArrayFmt`.
 - add features: `fig`, `num_all`, `safe_code`, `safe_data`, `safe_fig`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`, `nightly_coro`, `nightly_doc`, `_exclude_example`, `ui_window`, `ui_events`, `num_rand`.
 - add capability features: `_capability_max`, `_tuple_arity_31`, `_tuple_arity_63`, `_tuple_arity_95`, `_tuple_arity_127`.
 - add RNGS: `Xabc`, `XorShift8`, `XorShift8Custom`, `XorShift16`, `XorShift32`, `XorShift64`, `XorShift128`, `XorShift128p`, `Xyza8a`, `Xyza8b`.
@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add examples: `cargo-script`, `bitfield`, `enumset`.
 - add macros: `assert_eq_all`, `assert_approx_eq_all`, `unwrap`.
 - add `Array` methods: `new_boxed`, `into_slice`, `into_vec`.
+- add fns: `mem_copy`, `serr` and `sok`.
 - add niche number aliases: `NonEdge*`.
 - add `Bare` type alias of `unit`.
 - add module: `fig`.
@@ -35,36 +36,39 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
 - remove `IntBuf` type and `IntBufAble` trait.
 - remove re-exported macro: `option_unwrap`.
-- remove type aliases: `NonMax*` `NonMin*.
+- remove type aliases: `NonMax*` `NonMin*, DirectArray, BoxedArray.
 - remove file `.gitattributes`.
 - deprecate`ident_total_count` macro.
 
 ### Changed
 - bump rust version to 1.76.0.
-- always compile `text::fmt`.
 - make `data::cmp` non-public.
 - move `ops` from `num` to `code`.
 - move `any` from `data` to `code`.
 - move docs html header to `src/_doc`.
 - move `.git_hooks` to `tools/git_hooks`.
 - move traits: `Apply`, `Also` to `result`.
+- make `bytemuck` a non-optional dependency.
 - rename `src/Doc.md` to `src/_doc/features.md`.
 - rename `::{_alloc, _core, _std}` to `::_deps::{alloc, core, std}`.
 - rename the `__doc` module to `_docs` and the `_dep` module to `_deps`.
 - rename the `error` module to `result`, and the `render` module to `gfx`.
 - rename `AnyExt`, `OptionExt`, `ResultExt`, `SliceExt`, `SliceExtMut`, `StrExt` and `StringExt` to `ExtAny`, `ExtOption`, `ExtResult`, `ExtSlice`, `ExtSliceMut`, `ExtStr` and `ExtString` and `ExtVec` respectively.
+- rename `LiteCoroutine`, `LiteCoroutineExecutor`, `LiteCoroutineWaiter` and `LiteCoroutineWaker` to `Coro`, `CoroRun` `CoroYield` and `TaskWakerNoop`, respectively.
 - rename `DataErrors` to `DataError` and `NumErrors` to `NumError`.
-- rename `Direct` to `BareBox`, and `DirectArray` `BareArray`.
 - rename `num_int_niche` feature to `num_niche_impls`.
 - rename `*fence` functions to `atomic_*fence`.
 - rename `ascii_` re-exported macros to `str_`.
 - prefix allocated collections with `Alloc`.
 - rename aliases: `Dst*U` to `Dst*Usize`.
 - rename mem::`Size` to mem::`ByteSize`.
+- rename feature `docsrs` to `_docsrs`.
 - rename `FloatOps` to `ExtFloat`.
 - rename feature `full` to `all`.
+- rename `Direct` to `BareBox`.
 - document selected examples from `_docs`.
 - derive common traits for `Boxed`, `Primiting`.
+- always compile `text::fmt`, `work::async::coro`.
 - make `bitfield` and `enumset` examples standalone.
 - recreate the `pre-commit` script to leverage `rustfmt`.
 - update `enumset`: rename `LEN` associated constant to `ENUM_VARIANTS`, and add `enum_variants` method.
