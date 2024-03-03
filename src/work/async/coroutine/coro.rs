@@ -12,8 +12,11 @@
 //! - <https://www.reddit.com/r/rust/comments/etqwhx/a_stackless_rust_coroutine_library_under_100_loc/>
 //
 
+#[cfg(feature = "alloc")]
+use crate::_deps::alloc::{boxed::Box, collections::VecDeque};
+#[cfg(feature = "unsafe_dyn")]
+use crate::data::{DstArray, DstQueue};
 use crate::{
-    _deps::alloc::{boxed::Box, collections::VecDeque},
     mem::Pin,
     result::{serr, sok, OptRes},
     work::{Future, TaskContext, TaskPoll, TaskWakerNoop},
@@ -115,7 +118,7 @@ pub struct CoroYield<'a, T, E> {
 impl<'a, T, E> Future for CoroYield<'a, T, E> {
     type Output = OptRes<T, E>;
 
-    fn poll(mut self: Pin<&mut Self>, _cx: &mut TaskContext) -> TaskPoll<Self::Output> {
+    fn poll(mut self: Pin<&mut Self>, _cx: &mut TaskContext) -> TaskPoll<OptRes<T, E>> {
         match self.cor.status {
             CoroStatus::Halted => {
                 self.cor.status = CoroStatus::Running;
@@ -138,23 +141,28 @@ impl<'a, T, E> Future for CoroYield<'a, T, E> {
 
 /* runner */
 
-/// A managed collection of [`Coro`]utines to be run in a single thread.
+/// A managed dynamic collection of single-thread [`Coro`]utines.
 ///
-/// It maintains a queue of coroutines and runs them in a loop until they
-/// are all complete. When a coroutine is polled and returns [`TaskPoll::Pending`],
-/// it is put back into the queue to be run again later. If it returns
-/// [`Poll::Ready`], it is considered complete and is not put back into the queue.
+/// It maintains a queue of coroutines in the stack, and runs them in a loop until
+/// they are all complete.
+///
+/// When a coroutine is polled and returns [`TaskPoll::Pending`], it is put back
+/// into the queue to be run again later. If it returns [`Poll::Ready`]
+/// it is considered complete and is not put back into the queue.
 #[derive(Default)]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub struct CoroRun<T, E> {
     #[allow(clippy::type_complexity)]
-    coroutines: VecDeque<Pin<Box<dyn Future<Output = OptRes<T, E>>>>>,
+    coros: VecDeque<Pin<Box<dyn Future<Output = OptRes<T, E>>>>>,
 }
 
+#[cfg(feature = "alloc")]
 impl<T, E: 'static + Debug> CoroRun<T, E> {
     /// Returns a new empty runner.
     pub fn new() -> Self {
         CoroRun {
-            coroutines: VecDeque::new(),
+            coros: VecDeque::new(),
         }
     }
 
@@ -164,7 +172,7 @@ impl<T, E: 'static + Debug> CoroRun<T, E> {
         F: Future<Output = OptRes<T, E>> + 'static,
         C: FnOnce(Coro<T, E>) -> F,
     {
-        self.coroutines.push_back(Box::pin(closure(Coro::new())));
+        self.coros.push_back(Box::pin(closure(Coro::new())));
     }
 
     /// Runs all the coroutines to completion.
@@ -172,14 +180,14 @@ impl<T, E: 'static + Debug> CoroRun<T, E> {
         let waker = TaskWakerNoop::new();
         let mut context = TaskContext::from_waker(&waker);
 
-        while let Some(mut cor) = self.coroutines.pop_front() {
+        while let Some(mut cor) = self.coros.pop_front() {
             let polled = cor.as_mut().poll(&mut context);
             // println!("  coroutine polled:");
 
             match polled {
                 TaskPoll::Pending => {
                     // println!("  - pending, push back");
-                    self.coroutines.push_back(cor);
+                    self.coros.push_back(cor);
                 }
                 TaskPoll::Ready(_result) => {
                     // println!("  - READY");

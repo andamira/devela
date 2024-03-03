@@ -10,15 +10,9 @@
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_coro")))]
 mod reexports;
 //
-#[cfg(all(
-    not(feature = "safe_work"),
-    feature = "unsafe_async",
-    feature = "alloc"
-))]
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(all(feature = "unsafe_async", feature = "alloc")))
-)]
+// NOTE: it depends on unsafe_async because of TaskWakerNoop
+#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_async")))]
 mod coro;
 
 /* re-exports */
@@ -27,11 +21,7 @@ mod coro;
 #[cfg(feature = "nightly_coro")]
 pub use reexports::*;
 //
-#[cfg(all(
-    not(feature = "safe_work"),
-    feature = "unsafe_async",
-    feature = "alloc"
-))]
+#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
 pub use coro::*;
 
 pub(crate) mod all {
@@ -42,10 +32,7 @@ pub(crate) mod all {
     pub use super::reexports::*;
     //
     #[doc(inline)]
-    #[cfg(all(
-        not(feature = "safe_work"),
-        feature = "unsafe_async",
-        feature = "alloc"
-    ))]
+    #[allow(unused_imports)]
+    #[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
     pub use super::coro::*;
 }
