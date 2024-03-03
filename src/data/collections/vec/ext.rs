@@ -1,4 +1,4 @@
-// devela::data::collections::ext_vec
+// devela::data::collections::vec::ext
 //
 //!
 //
@@ -6,9 +6,7 @@
 use crate::_deps::alloc::vec::Vec;
 
 // Marker trait to prevent downstream implementations of the `ExtVec` trait.
-mod private {
-    pub trait Sealed {}
-}
+#[rustfmt::skip] mod private { pub trait Sealed {} }
 impl<T> private::Sealed for Vec<T> {}
 
 /// Extension trait providing additional methods for [`Vec`].

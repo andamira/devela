@@ -25,10 +25,10 @@ pub use {array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-mod ext_vec;
+mod vec;
 
 #[cfg(feature = "alloc")]
-pub use ext_vec::*;
+pub use vec::*;
 
 pub(crate) mod all {
     // always compiled
@@ -39,5 +39,5 @@ pub(crate) mod all {
 
     // feature-gated
     #[cfg(feature = "alloc")]
-    pub use super::ext_vec::*;
+    pub use super::vec::*;
 }
