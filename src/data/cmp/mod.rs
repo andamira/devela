@@ -10,13 +10,13 @@
 
 /* always compiled, non-public modules */
 mod compare;
-mod sorting;
+mod sort;
 
 #[allow(unused)]
-pub use {compare::*, sorting::*};
+pub use {compare::*, sort::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{compare::*, sorting::*};
+    pub use super::{compare::*, sort::*};
 }
