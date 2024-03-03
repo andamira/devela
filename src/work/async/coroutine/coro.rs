@@ -14,8 +14,6 @@
 
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::{boxed::Box, collections::VecDeque};
-#[cfg(feature = "unsafe_dyn")]
-use crate::data::{DstArray, DstQueue};
 use crate::{
     mem::Pin,
     result::{serr, sok, OptRes},

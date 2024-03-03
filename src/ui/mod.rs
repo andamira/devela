@@ -6,16 +6,14 @@
 // safety:
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
 
-/* modules */
+/* always compiled, non-public modules */
 
-// feature-gated, public
+/* feature-gated, public modules */
+
 #[cfg(feature = "ui_term")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ui_term")))]
 pub mod term;
 
-/* re-exports */
-
-// feature-gated, public
 #[doc(no_inline)]
 #[cfg(feature = "ui_term")]
 pub use term::all::*;

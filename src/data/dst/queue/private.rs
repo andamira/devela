@@ -23,9 +23,8 @@ pub(super) struct PushInnerInfo<'a, I> {
 
 impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     /// Pushes an item to the list (setting metadata based on `fat_ptr`).
-    ///
-    /// # Safety
-    /// Unsafe. Caller must fill the buffer before any potential panic.
+    //
+    // SAFETY: Caller must fill the buffer before any potential panic.
     pub(super) unsafe fn push_inner(
         &mut self,
         fat_ptr: &DST,
@@ -35,6 +34,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
         self.push_inner_raw(bytes, &v[..len])
     }
 
+    // SAFETY: TODO
     pub(super) unsafe fn push_inner_raw(
         &mut self,
         bytes: usize,
@@ -94,9 +94,9 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
         unsafe { self.raw_at(self.read_pos) }
     }
 
-    // SAFETY:UNSAFE Caller must ensure that `pos` is the start of an object.
     #[must_use]
     #[inline]
+    // SAFETY: Caller must ensure that `pos` is the start of an object.
     pub(super) unsafe fn raw_at(&self, pos: usize) -> *mut DST {
         assert!(pos >= self.read_pos);
         assert!(pos < self.write_pos);
@@ -114,9 +114,9 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
         unsafe { self.raw_at_mut(self.read_pos) }
     }
 
-    // SAFETY:UNSAFE Caller must ensure that `pos` is the start of an object.
     #[must_use]
     #[inline]
+    // SAFETY: Caller must ensure that `pos` is the start of an object.
     pub(super) unsafe fn raw_at_mut(&mut self, pos: usize) -> *mut DST {
         assert!(pos >= self.read_pos);
         assert!(pos < self.write_pos);

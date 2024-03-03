@@ -185,7 +185,6 @@ dep = ["dep:dep"] # module features enables their dependencies as defined.
 	]
 
 atomic = ["dep:atomic"]
-bytemuck = ["dep:bytemuck"]
 const-str = ["dep:const-str"]
 crossterm = ["dep:crossterm"]
 hashbrown = ["dep:hashbrown"]
