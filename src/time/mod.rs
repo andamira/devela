@@ -11,12 +11,15 @@
 
 /* always compiled, private modules */
 
+mod calendar;
+mod error;
 mod reexports;
+mod unix;
 
-pub use reexports::*;
+pub use {calendar::*, error::*, reexports::*, unix::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::reexports::*;
+    pub use super::{calendar::*, error::*, reexports::*, unix::*};
 }
