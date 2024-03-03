@@ -104,7 +104,7 @@ unsafe impl<T: Pod> DstBuf for crate::_deps::alloc::vec::Vec<MaybeUninit<T>> {
     }
 }
 
-/// A statically allocated buffer for storing <abbr title="Dynamically sized
+/// A static array for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s.
 pub struct DstArray<T, const N: usize> {
     inner: Array<MaybeUninit<T>, N>,

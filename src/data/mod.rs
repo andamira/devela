@@ -38,22 +38,21 @@ pub use {bit::all::*, collections::all::*, hash::all::*, iter::all::*};
 
 #[cfg_attr(
     feature = "nightly_doc",
-    doc(cfg(all(feature = "unsafe_dyn", feature = "dep", feature = "data")))
+    doc(cfg(all(feature = "unsafe_dyn", feature = "bytemuck")))
 )]
 #[cfg(all(
+    not(feature = "safe_data"),
     feature = "unsafe_dyn",
-    any(feature = "bytemuck", all(feature = "dep", feature = "data")),
-    not(feature = "safe_data")
+    feature = "bytemuck",
 ))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 pub mod dst;
 
-#[doc(no_inline)]
 #[cfg(all(
-    feature = "unsafe_dyn",
-    any(feature = "bytemuck", all(feature = "dep", feature = "data")),
     not(feature = "safe_data"),
+    feature = "unsafe_dyn",
+    feature = "bytemuck",
 ))]
+#[doc(no_inline)]
 pub use dst::*;
 
 pub(crate) mod all {
@@ -64,11 +63,11 @@ pub(crate) mod all {
     };
 
     // feature-gated
-    #[doc(inline)]
     #[cfg(all(
-        feature = "unsafe_dyn",
-        any(feature = "bytemuck", all(feature = "dep", feature = "data")),
         not(feature = "safe_data"),
+        feature = "unsafe_dyn",
+        feature = "bytemuck",
     ))]
+    #[doc(inline)]
     pub use super::dst::*;
 }
