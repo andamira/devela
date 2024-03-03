@@ -54,12 +54,12 @@ _docsrs_stable = ["all", "std", "unsafe", "dep", "libm"]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc", "either/use_std",
 	"dep?/std", #:
-	"atomic?/std", "bytemuck?/extern_crate_std", "memchr?/std", "rand_core?/std",
+	"atomic?/std", "bytemuck/extern_crate_std", "memchr?/std", "rand_core?/std",
 	"wide?/std",
 ]
 alloc = [ # enables `alloc` functionality
 	"dep?/alloc", #:
-	"bytemuck?/extern_crate_alloc", "memchr?/alloc", "rand_core?/alloc"
+	"bytemuck/extern_crate_alloc", "memchr?/alloc", "rand_core?/alloc"
 ]
 no_std = [ # enables functionality incompatible with or substitute of `std`
 	"dep?/libm",
@@ -86,11 +86,11 @@ all = [ # enables all the modules and submodules
 
 # individual modules
 code = []
-data = ["dep?/bytemuck", "dep?/hashbrown"]
+data = ["dep?/hashbrown"]
 fig = []
 gfx = []
 io = []
-mem = ["dep?/bytemuck"]
+mem = []
 num = []
 	num_all = ["num_niche_impls", "num_rand"]
 	num_niche_impls = [] # extra impls for niche types
@@ -104,7 +104,7 @@ ui = []
 	ui_events = ["dep?/crossterm_events", "crossterm?/events"]
 	ui_term = ["dep?/const-str", "dep?/crossterm"]
 	ui_window = ["dep?/miniquad"]
-work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck?/zeroable_atomics"]
+work = ["dep?/atomic", "dep?/portable-atomic", "bytemuck/zeroable_atomics"]
 
 
 #* safety features *#
@@ -180,7 +180,7 @@ dep = ["dep:dep"] # module features enables their dependencies as defined.
 	# TODO RETHINK DESIGN:
 	dep_all = ["dep", "dep_interop"]
 	dep_interop = [ # interoperability with external crates, extra traits
-		"dep?/bytemuck", "dep?/rand_core",
+		"dep?/rand_core",
 		# "dep?/serde"
 	]
 
@@ -232,7 +232,6 @@ default-features = false
 features = ["fallback"]
 [dependencies.bytemuck]
 version = "1.14.0"
-optional = true
 default-features = false
 features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
 [dependencies.crossterm]

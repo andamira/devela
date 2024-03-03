@@ -4,8 +4,8 @@
 //
 // TOC
 
-use super::{DstBuf, DstQueue, DstQueuePopHandle, DstQueueIter, DstQueueIterMut};
-use super::super::{check_fat_pointer, make_fat_ptr, list_push_gen};
+use super::super::{check_fat_pointer, list_push_gen, make_fat_ptr};
+use super::{DstBuf, DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopHandle};
 use crate::mem::MemAligned;
 use core::{marker, mem, ptr};
 
@@ -212,7 +212,7 @@ where
     /// queue.push_cloned(&["1".to_owned()]);
     /// ```
     #[inline]
-    pub fn push_cloned(&mut self, slice: &[DST]) -> Result<(), ()> 
+    pub fn push_cloned(&mut self, slice: &[DST]) -> Result<(), ()>
     where
         DST: Clone,
     {

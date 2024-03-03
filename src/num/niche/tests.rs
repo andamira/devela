@@ -64,11 +64,7 @@ fn non_range() {
 }
 
 #[test]
-#[cfg(all(
-    any(feature = "bytemuck", feature = "dep"),
-    feature = "unsafe_niche",
-    not(feature = "safe_num")
-))]
+#[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
 fn non_range_bytemuck() {
     use crate::_deps::bytemuck::CheckedBitPattern;
 
@@ -149,11 +145,7 @@ fn range() {
 }
 
 #[test]
-#[cfg(all(
-    any(feature = "bytemuck", feature = "dep"),
-    feature = "unsafe_niche",
-    not(feature = "safe_num")
-))]
+#[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
 fn range_bytemuck() {
     use crate::_deps::bytemuck::CheckedBitPattern;
 

@@ -29,7 +29,7 @@ impl<BUF: DstBuf, DST: ?Sized + fmt::Debug> fmt::Debug for DstQueue<DST, BUF> {
             f.write_str(",")?;
         }
         f.write_str("]")?;
-        Ok( () )
+        Ok(())
     }
 }
 

@@ -49,8 +49,7 @@ Single modules:
 - `fig`: enables the [`fig`] module.
 - `gfx`: enables the [`gfx`] module.
 - `io`: enables the [`io`] module.
-- `mem`: enables the [`mem`] module,
-  and the [`bytemuck`] optional dependency.
+- `mem`: enables the [`mem`] module.
 - `num`: enables the [`num`] module.
   - `num_all`: enables all the `num` extra submodules:
     - `num_niche_impls`: extra impls for [`niche`] types.
@@ -139,7 +138,6 @@ Enabling them will likely worsen compilation times.
 
 Dependencies can also be enabled individually:
 - `atomic` is used in `work`.
-- `bytemuck` is used in `mem`, `num`.
 - `const-str` is used in `result`, `text`, `ui_term`.
 - `libm` is used in `num`.
 - `hashbrown` is used in `data`.
@@ -148,7 +146,6 @@ Dependencies can also be enabled individually:
 - `unicode-width` is used in `text`.
 
 [`atomic`]: dep::atomic
-[`bytemuck`]: dep::bytemuck
 [`const-str`]: dep::const_str
 [`portable_atomic`]: dep::portable_atomic
 [`unicode-segmentation`]: dep::unicode_segmentation

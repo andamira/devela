@@ -6,11 +6,7 @@
 use crate::code::{iif, paste};
 use core::{fmt, num::*, str::FromStr};
 
-#[cfg(all(
-    any(feature = "bytemuck", feature = "dep"),
-    feature = "unsafe_niche",
-    not(feature = "safe_num")
-))]
+#[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
 impl_non_range![NonRange];
@@ -237,31 +233,23 @@ macro_rules! impl_non_range {
 
         /* external impls*/
 
-        #[cfg(all(any(feature = "bytemuck", feature = "dep"),
-            feature = "unsafe_niche", not(feature = "safe_num")))]
-        #[cfg_attr(feature = "nightly_doc",
-            doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
+        #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             ZeroableInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-        #[cfg(all(any(feature = "bytemuck", feature = "dep"),
-            feature = "unsafe_niche", not(feature = "safe_num")))]
-        #[cfg_attr(feature = "nightly_doc",
-            doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
+        #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             PodInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-        #[cfg(all(any(feature = "bytemuck", feature = "dep"),
-            feature = "unsafe_niche", not(feature = "safe_num")))]
-        #[cfg_attr(feature = "nightly_doc",
-            doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
+        #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             NoUninit for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-        #[cfg(all(any(feature = "bytemuck", feature = "dep"),
-            feature = "unsafe_niche", not(feature = "safe_num")))]
-        #[cfg_attr(feature = "nightly_doc",
-            doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
+        #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
         unsafe impl<const RMIN: [<$s:lower $b>], const RMAX: [<$s:lower $b>]>
             CheckedBitPattern for [<$name $s:upper $b>]<RMIN, RMAX> {
             type Bits = [<$s:lower $b>];

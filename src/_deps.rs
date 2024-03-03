@@ -44,6 +44,8 @@ pub use ::core;
 #[doc(inline)]
 pub use ::std;
 
+pub use ::bytemuck;
+
 #[allow(unused)]
 pub use _dep::*;
 
@@ -53,9 +55,6 @@ pub use _dep::*;
 mod _dep {
     #[cfg(feature = "atomic")]
     pub use ::atomic;
-
-    #[cfg(feature = "bytemuck")]
-    pub use ::bytemuck;
 
     #[cfg(feature = "const-str")]
     pub use ::const_str;
@@ -103,9 +102,6 @@ mod _dep {
 
     reexport! { depend any_features: "work",
     dep: "atomic", atomic, "A generic atomic wrapper type." }
-
-    reexport! { depend any_features: "data", "mem",
-    dep: "bytemuck", bytemuck, "Small utilities for casting between plain data types." }
 
     reexport! { depend any_features: "ui_term", "text",
     dep: "const-str", const_str, "Compile-time string operations." }
