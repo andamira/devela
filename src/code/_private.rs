@@ -9,54 +9,6 @@
 
 /// Macro helper for documentation of re-exported items.
 macro_rules! reexport {
-    /* reexports from the `depend` module */
-
-    // reexports an optional dependency from the `dep` group,
-    // which depends on any feature `$f` and any feature `$f2`, e.g. "alloc":
-    ( depend
-      $( any_features: $($anyf:literal),+ $(,)? )?
-      $( all_features: $($allf:literal),+ $(,)? )?
-      dep: $dep_name:literal, $dep_module:ident, $dep_description:literal
-      $(,)?
-    ) => {
-        // with the crate manually enabled
-        #[doc(inline)]
-        #[doc = concat!("<span class='stab portability' title='re-exported `",
-            $dep_name, "` crate (independently or via the `depend` feature)'>`",
-            $dep_name, "`</span>")]
-        #[doc = $dep_description]
-        #[doc = concat!("\n\n*Re-exported [`", $dep_name,
-            "`](https://docs.rs/", $dep_name, ")* crate.\n\n---")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(all(
-            any( $( $(feature = $anyf),+ )? )
-            $(, all($(feature = $allf),+) )?
-        ))))]
-        #[cfg(all(
-            feature = $dep_name
-            $(, not(any($(feature = $anyf),+)) )?
-            $(, not(all($(feature = $allf),+)) )?
-        ))]
-        pub use ::$dep_module;
-
-        // with the "dep" feature enabled
-        #[doc(inline)]
-        #[doc = concat!("<span class='stab portability' title='re-exported `",
-            $dep_name, "` crate (independently or via the `depend` feature)'>`",
-            $dep_name, "`</span>")]
-        #[doc = $dep_description]
-        #[doc = concat!("\n\n*Re-exported [`", $dep_name,
-            "`](https://docs.rs/", $dep_name, ")* crate.\n\n---")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(all(
-            any( $($(feature = $anyf),+)? )
-            $(, all($(feature = $allf),+) )?
-        ))))]
-        #[cfg(all(
-            any( $( $(feature = $anyf),+ )? )
-            $(, all($(feature = $allf),+) )?
-        ))]
-        pub use dep::$dep_module;
-    };
-
     /* reexports from normal modules */
 
     // the following 4 arms allows reexporting items from:
@@ -234,7 +186,7 @@ macro_rules! reexport {
     // - Supports multiple reexported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
     ( $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
-      features: $( $f:literal ),+ ,
+      $( features: $( $f:literal ),+ ,)?
       doc: $description:literal,
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
@@ -254,13 +206,15 @@ macro_rules! reexport {
         // but leave it in the following cfg attribute.
         // Also, the part of negated features and target_has_atomic
         // would require a different branch
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(
-            all(feature = "dep" $( , feature = $f )+ ),
-        )))]
+        #[cfg_attr(
+            feature = "nightly_doc",
+            doc(cfg(all(
+                feature = $dep_str $(, $(feature = $f)+ )?
+            )))
+        )]
 
         #[cfg(any(
-            all(feature = "dep" $( , feature = $f )+ ),
-            feature = $dep_str
+            all(feature = $dep_str $(, $(feature = $f),+ )? )
         ))]
         pub use crate::_deps::$dep $( ::$dep_path )? :: {
             $( $item ),*

@@ -55,37 +55,33 @@ use crate::text::StringEgc;
 #[cfg(feature = "text")]
 use crate::text::{ArrayU8NonNulEgc, ArrayU8NonNulString};
 
-#[cfg(any(all(feature = "work", feature = "dep"), feature = "portable-atomic"))]
+#[cfg(feature = "portable-atomic")]
 use crate::_deps::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
 #[cfg(feature = "work")]
 use crate::work::sync::atomic::{AtomicBool, AtomicOrdering};
 #[cfg(all(
     feature = "work",
-    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "16"),
+    any(feature = "portable-atomic", target_has_atomic = "16")
 ))]
 use crate::work::sync::atomic::{AtomicI16, AtomicU16};
 #[cfg(all(
     feature = "work",
-    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "32"),
+    any(feature = "portable-atomic", target_has_atomic = "32")
 ))]
 use crate::work::sync::atomic::{AtomicI32, AtomicU32};
 #[cfg(all(
     feature = "work",
-    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "64"),
+    any(feature = "portable-atomic", target_has_atomic = "64")
 ))]
 use crate::work::sync::atomic::{AtomicI64, AtomicU64};
 #[cfg(all(
     feature = "work",
-    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "8"),
+    any(feature = "portable-atomic", target_has_atomic = "8")
 ))]
 use crate::work::sync::atomic::{AtomicI8, AtomicU8};
 #[cfg(all(
     feature = "work",
-    any(
-        feature = "dep",
-        feature = "portable-atomic",
-        target_has_atomic = "ptr"
-    ),
+    any(feature = "portable-atomic", target_has_atomic = "ptr")
 ))]
 use crate::work::sync::atomic::{AtomicIsize, AtomicPtr, AtomicUsize};
 
@@ -204,23 +200,9 @@ macro_rules! bit_size {
         #[cfg(feature = "num")]
         bit_size![<const RMIN: usize, const RMAX: usize> = 8; for RangeUsize<RMIN, RMAX>];
 
-        #[cfg(all(
-            feature = "work",
-            any(
-                feature = "dep",
-                feature = "portable-atomic",
-                target_has_atomic = "ptr"
-            ),
-        ))]
+        #[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "ptr")))]
         bit_size![= $PTR_BITS; for AtomicIsize, AtomicUsize];
-        #[cfg(all(
-            feature = "work",
-            any(
-                feature = "dep",
-                feature = "portable-atomic",
-                target_has_atomic = "ptr"
-            ),
-        ))]
+        #[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "ptr")))]
         bit_size![<T> = $PTR_BITS; for AtomicPtr<T>];
 
         #[cfg(feature = "std")]
@@ -361,29 +343,29 @@ bit_size![= 1; for AtomicBool];
 bit_size![= 8; for AtomicOrdering];
 #[cfg(all(
     feature = "work",
-    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "8"),
+    any(feature = "portable-atomic", target_has_atomic = "8")
 ))]
 bit_size![= 8; for AtomicI8, AtomicU8];
 #[cfg(all(
     feature = "work",
-    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "16"),
+    any(feature = "portable-atomic", target_has_atomic = "16")
 ))]
 bit_size![= 16; for AtomicI16, AtomicU16];
 #[cfg(all(
     feature = "work",
-    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "32"),
+    any(feature = "portable-atomic", target_has_atomic = "32")
 ))]
 bit_size![= 32; for AtomicI32, AtomicU32];
 #[cfg(all(
     feature = "work",
-    any(feature = "dep", feature = "portable-atomic", target_has_atomic = "64"),
+    any(feature = "portable-atomic", target_has_atomic = "64")
 ))]
 bit_size![= 64; for AtomicI64, AtomicU64];
-#[cfg(any(all(feature = "work", feature = "dep"), feature = "portable-atomic"))]
+#[cfg(feature = "portable-atomic")]
 bit_size![= 32; for AtomicF32];
-#[cfg(any(all(feature = "work", feature = "dep"), feature = "portable-atomic"))]
+#[cfg(feature = "portable-atomic")]
 bit_size![= 64; for AtomicF64];
-#[cfg(any(all(feature = "work", feature = "dep"), feature = "portable-atomic"))]
+#[cfg(feature = "portable-atomic")]
 bit_size![= 128; for AtomicI128, AtomicU128];
 
 #[cfg(feature = "text")]

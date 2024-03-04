@@ -166,7 +166,7 @@ impl<V> DataCollection for crate::data::collections::AllocOrdSet<V> {
 }
 
 #[rustfmt::skip]
-#[cfg(feature = "hashbrown")]
+#[cfg(all(feature = "alloc", feature = "hashbrown"))]
 impl<K, V> DataCollection for crate::data::collections::AllocMap<K, V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
@@ -181,7 +181,7 @@ impl<K, V> DataCollection for crate::data::collections::AllocMap<K, V> {
     }
 }
 #[rustfmt::skip]
-#[cfg(feature = "hashbrown")]
+#[cfg(all(feature = "alloc", feature = "hashbrown"))]
 impl<V> DataCollection for crate::data::collections::AllocSet<V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { E::ns() }

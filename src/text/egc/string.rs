@@ -9,9 +9,9 @@ use crate::_deps::alloc::{
     str::{self, Chars as CharIterator},
     string::String,
 };
-#[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
+#[cfg(feature = "unicode-segmentation")]
 use crate::_deps::unicode_segmentation::UnicodeSegmentation;
-#[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
+#[cfg(feature = "unicode-segmentation")]
 use crate::text::char::*;
 
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].
@@ -31,11 +31,8 @@ impl StringEgc {
     /// Creates a new `StringEgc` from a `Char7`.
     #[inline]
     #[must_use]
-    #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
-    )]
+    #[cfg(feature = "unicode-segmentation")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char7(c: Char7) -> StringEgc {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
@@ -43,11 +40,8 @@ impl StringEgc {
     /// Creates a new `StringEgc` from a `Char8`.
     #[inline]
     #[must_use]
-    #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
-    )]
+    #[cfg(feature = "unicode-segmentation")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char8(c: Char8) -> StringEgc {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
@@ -55,11 +49,8 @@ impl StringEgc {
     /// Creates a new `StringEgc` from a `Char16`.
     #[inline]
     #[must_use]
-    #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
-    )]
+    #[cfg(feature = "unicode-segmentation")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char16(c: Char16) -> StringEgc {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
@@ -67,11 +58,8 @@ impl StringEgc {
     /// Creates a new `StringEgc` from a `Char24`.
     #[inline]
     #[must_use]
-    #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
-    )]
+    #[cfg(feature = "unicode-segmentation")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char24(c: Char24) -> StringEgc {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
@@ -81,11 +69,8 @@ impl StringEgc {
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
     #[must_use]
-    #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(all(any(feature = "dep", feature = "unicode-segmentation"))))
-    )]
+    #[cfg(feature = "unicode-segmentation")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char32(c: Char32) -> StringEgc {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return str::from_utf8(&c.to_utf8_bytes()).unwrap().into();
@@ -100,11 +85,8 @@ impl StringEgc {
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
     #[must_use]
-    #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
-    )]
+    #[cfg(feature = "unicode-segmentation")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char(c: char) -> StringEgc {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return str::from_utf8(&crate::text::char_to_utf8_bytes(c))
@@ -174,22 +156,16 @@ mod core_impls {
         }
     }
 
-    #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
-    )]
+    #[cfg(feature = "unicode-segmentation")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     impl From<String> for StringEgc {
         #[inline]
         fn from(s: String) -> StringEgc {
             StringEgc(s.graphemes(true).take(1).collect())
         }
     }
-    #[cfg(any(feature = "dep", feature = "unicode-segmentation"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "dep", feature = "unicode-segmentation")))
-    )]
+    #[cfg(feature = "unicode-segmentation")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     impl From<&str> for StringEgc {
         #[inline]
         #[must_use]

@@ -237,7 +237,6 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
 }
 
 #[cfg(feature = "rand_core")]
-// #[cfg(any(feature = "rand_core", all(feature = "dep", feature = "num")))] // MAYBE
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand_core")))]
 mod impl_rand {
     use super::{XorShift8, XorShift8Custom};

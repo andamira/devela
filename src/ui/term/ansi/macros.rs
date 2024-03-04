@@ -29,12 +29,9 @@
 /// See [`ansi!`] for the `&str` version and [`ansip!`] for the printing version.
 ///
 /// [0]: super::Ansi#ansi-escape-codes
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "const-str")))]
+#[cfg(feature = "const-str")]
 #[macro_export]
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(all(feature = "dep", feature = "text")))
-)]
-#[cfg(any(all(feature = "dep", feature = "text"), feature = "const-str"))]
 macro_rules! ansib {
     ( $( $command:ident $( ( $($arg:expr),* ) )? $(,)? )+ ) => { $crate::code::paste! {
         $crate::_deps::const_str::concat_bytes!(
@@ -43,8 +40,8 @@ macro_rules! ansib {
     }};
 }
 #[doc(inline)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep")))]
-#[cfg(any(feature = "dep", feature = "const-str"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "const-str")))]
+#[cfg(feature = "const-str")]
 pub use ansib;
 
 /// Concatenates [`Ansi` escape codes][0], and returns a [`&str`].
@@ -78,8 +75,8 @@ pub use ansib;
 ///
 /// [0]: super::Ansi#ansi-escape-codes
 #[macro_export]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep")))]
-#[cfg(any(feature = "dep", feature = "const-str"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "const-str")))]
+#[cfg(feature = "const-str")]
 macro_rules! ansi {
     ($($arg:tt)*) => {
         if cfg!(all(not(feature = "safe_ui_term"), feature = "unsafe_str")) {
@@ -97,8 +94,8 @@ macro_rules! ansi {
     };
 }
 #[doc(inline)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep")))]
-#[cfg(any(feature = "dep", feature = "const-str"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "const-str")))]
+#[cfg(feature = "const-str")]
 pub use ansi;
 
 /// Prints concatenated [`Ansi` escape codes][0]
@@ -120,28 +117,14 @@ pub use ansi;
 /// See [`ansi!`] and [`ansib!`] for the non-printing versions.
 ///
 /// [0]: super::Ansi#ansi-escape-codes
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(all(feature = "dep", feature = "std",)))
-)]
-#[cfg(all(
-    not(miri),
-    feature = "std",
-    any(feature = "const-str", feature = "dep")
-))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg(all(not(miri), feature = "std", feature = "const-str"))]
 #[macro_export]
 macro_rules! ansip {
     ($($arg:tt)*) => { $crate::ui::term::Ansi::print( $crate::ui::term::ansib![ $($arg)* ] ); };
 }
 
-#[cfg_attr(
-    feature = "nightly_doc",
-    doc(cfg(all(feature = "dep", feature = "std",)))
-)]
-#[cfg(all(
-    not(miri),
-    feature = "std",
-    any(feature = "const-str", feature = "dep")
-))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg(all(not(miri), feature = "std", feature = "const-str"))]
 #[doc(inline)]
 pub use ansip;

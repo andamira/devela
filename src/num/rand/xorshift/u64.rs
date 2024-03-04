@@ -139,7 +139,6 @@ impl XorShift64 {
 }
 
 #[cfg(feature = "rand_core")]
-// #[cfg(any(feature = "rand_core", all(feature = "dep", feature = "num")))] // MAYBE
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand_core")))]
 mod impl_rand {
     use super::XorShift64;

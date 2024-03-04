@@ -19,7 +19,7 @@ each other, and composable, except from the miscellaneous features.
 In this category there are features with varied purposes mostly for internal use.
 
 - `_docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
-  - Enables: `std`, `all`, `unsafe`, `nightly`, `dep`, `libm`.
+  - Enables: `std`, `all`, `unsafe`, `nightly`, `dep_all`, `libm`.
 - `_docsrs_max`: like `_docsrs` but also enables `capability_max`.
 - `_docsrs_stable`: like `_docsrs` but without enabling `nightly`.
 
@@ -38,9 +38,6 @@ By default the crate is `no_std` compatible without allocation.
 
 Modules can be enabled independently of *environment*, *dependency* or *safety*.
 
-When the `dep` feature is enabled, modules will also enable their associated
-optional dependencies.
-
 - `all`: enables all the root modules and extra submodules:
 
 Single modules:
@@ -56,13 +53,10 @@ Single modules:
 - `os`: enables all the [`os`] specific functionality.
 - `result`: enables the [`result`] module.
 - `text`: enables the [`text`] module,
-  and the [`const-str`], [`unicode-segmentation`] and [`unicode-width`] optional dependencies.
-  and the [`atomic`] and [`portable_atomic`] optional dependencies.
 - `time`: enables the [`time`] module.
 - `ui`: enables the [`ui`] module.
   - `ui_all`: enables all the `ui` extra submodules:
     - `ui_term`: enables the terminal functionality,
-    and the [`const-str`] optional dependency.
 - `work`: enables the [`work`] module.
 
 [`code`]: crate::code
@@ -134,19 +128,7 @@ Enabling them will likely worsen compilation times.
 
 ### Dependency features
 
-- `dep`: allows modules to automatically enable their defined dependencies.
-
-Dependencies can also be enabled individually:
-- `atomic` is used in `work`.
-- `const-str` is used in `result`, `text`, `ui_term`.
-- `libm` is used in `num`.
-- `hashbrown` is used in `data`.
-- `portable-atomic` is used in `work`.
-- `unicode-segmentation` is used in `text`.
-- `unicode-width` is used in `text`.
-
-[`atomic`]: dep::atomic
-[`const-str`]: dep::const_str
-[`portable_atomic`]: dep::portable_atomic
-[`unicode-segmentation`]: dep::unicode_segmentation
-[`unicode-width`]: dep::unicode_width
+- `dep_all`: enables all the optional dependencies
+  - `dep_text`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
+  - `dep_ui_term`: enables `const-str`, `crossterm`.
+  - `dep_work`: enables `atomic`, `portable-atomic`.

@@ -1,6 +1,3 @@
 [submodule "macros"]
 	path = macros
 	url = https://github.com/andamira/devela_macros.git
-[submodule "depend"]
-	path = depend
-	url = https://github.com/andamira/devela_depend.git
