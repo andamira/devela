@@ -26,7 +26,9 @@ pub enum DataError {
     /// Optionally contains given magnitude.
     OutOfBounds(Option<usize>),
 
-    /// The given axis length is zero, which is not allowed.
+    /// The given axis has 0 length, which is not allowed.
+    ///
+    /// Optionally contains the given axis number.
     InvalidAxisLength(Option<usize>),
 
     /// The given indices does not match the expected order.
@@ -47,6 +49,11 @@ pub enum DataError {
     ///
     /// Optionally contains the number of free spaces needed.
     NotEnoughSpace(Option<usize>),
+
+    /// The operation could only add a subset of the elements.
+    ///
+    /// Optionally contains the number of elements added.
+    PartiallyAdded(Option<usize>),
 
     /// The key already exists.
     KeyAlreadyExists,
@@ -84,36 +91,31 @@ mod core_impls {
                 E::MismatchedIndices => {
                     write!(f, "The given indices does not match the expected order.")
                 }
-                E::OutOfBounds(i) => {
-                    if let Some(i) = i {
-                        write!(f, "The given index {i} is out of bounds.")
-                    } else {
-                        write!(f, "The given index is out of bounds.")
-                    }
-                }
+                E::OutOfBounds(i) => match i {
+                    Some(i) => write!(f, "The given index {i} is out of bounds."),
+                    None => write!(f, "The given index is out of bounds."),
+                },
                 E::MismatchedDimensions(m) => {
                     write!(f, "Mismatched dimensions: {m:?}.")
                 }
                 E::MismatchedLength(m) => {
                     write!(f, "Mismatched length or capacity: {m:?}.")
                 }
-                E::NotEnoughElements(n) => {
-                    if let Some(n) = n {
-                        write!(f, "Not enough elements. Needs at least `{n}` elements.")
-                    } else {
-                        write!(f, "Not enough elements.")
-                    }
-                }
-                E::NotEnoughSpace(n) => {
-                    if let Some(n) = n {
-                        write!(
-                            f,
-                            "Not enough space. Needs at least `{n}` free space for elements."
-                        )
-                    } else {
-                        write!(f, "Not enough space.")
-                    }
-                }
+                E::NotEnoughElements(n) => match n {
+                    Some(n) => write!(f, "Not enough elements. Needs at least `{n}` elements."),
+                    None => write!(f, "Not enough elements."),
+                },
+                E::NotEnoughSpace(n) => match n {
+                    Some(n) => write!(
+                        f,
+                        "Not enough space. Needs at least `{n}` free space for elements."
+                    ),
+                    None => write!(f, "Not enough space."),
+                },
+                E::PartiallyAdded(n) => match n {
+                    Some(n) => write!(f, "Only `{n}` elements could be added."),
+                    None => write!(f, "Only a subset of elements could be added."),
+                },
                 E::KeyAlreadyExists => write!(f, "The key already exists."),
                 E::EmptyNode => write!(f, "The node is empty."),
             }
