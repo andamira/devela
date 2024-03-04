@@ -275,7 +275,7 @@ maintenance = { status = "experimental" }
 [[example]]
 name = "bitfield"
 [[example]]
-name = "coro"
+name = "coro_run"
 required-features = ["unsafe_async", "alloc"]
 [[example]]
 name = "enumset"

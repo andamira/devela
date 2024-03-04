@@ -2,23 +2,10 @@
 //
 //! 1-dimensional array definitions
 //
-// TOC
-// - define Array
-// - define trait DataArray
-// - implement DataCollection for Array
-// - implement DataArray for Array
 
-use crate::{
-    data::{DataCollection, DataError as E, DataResult as Result},
-    mem::{Bare, Storage},
-};
+use crate::mem::{Bare, Storage};
 
-#[cfg(feature = "alloc")]
-use crate::mem::Boxed;
-
-/* types */
-
-/// A const generic 1-dimensional array backed by the core [`array`] primitive.
+/// A static 1-dimensional array backed by the core [array] primitive.
 ///
 /// It is generic in respect to its
 /// elements (`T`),

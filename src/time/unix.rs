@@ -9,8 +9,8 @@
 //! Unix time.
 //
 
-use crate::time::{is_leap_year, Month, TimeError};
-use core::{convert::TryFrom, fmt, num::TryFromIntError};
+use crate::time::{is_leap_year, Month};
+use core::{fmt, num::TryFromIntError};
 
 /// 64-bit Unix time, supporting negative values.
 ///
@@ -321,12 +321,11 @@ impl TryFrom<UnixTimeI64> for UnixTimeU32 {
 
 #[cfg(feature = "std")]
 mod std_impls {
-    use super::{TimeError, UnixTimeI64, UnixTimeU32};
+    use super::{UnixTimeI64, UnixTimeU32};
     use crate::{
         num::Cast,
-        time::{SystemTime, SystemTimeError},
+        time::{SystemTime, SystemTimeError, TimeError},
     };
-    use core::convert::TryFrom;
 
     impl TryFrom<SystemTime> for UnixTimeI64 {
         type Error = SystemTimeError;

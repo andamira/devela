@@ -13,11 +13,14 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::_deps::alloc::{boxed::Box, collections::VecDeque};
+use crate::{
+    _deps::alloc::{boxed::Box, collections::VecDeque},
+    work::TaskWakerNoop,
+};
 use crate::{
     mem::Pin,
     result::{serr, sok, OptRes},
-    work::{Future, TaskContext, TaskPoll, TaskWakerNoop},
+    work::{Future, TaskContext, TaskPoll},
 };
 use core::fmt::Debug;
 
@@ -26,45 +29,6 @@ use core::fmt::Debug;
 /// Represents a single thread stackless coroutine.
 ///
 /// It has a private status that can be either running or halted.
-///
-/// # Examples
-/// ```
-#[doc = include_str!("../../../../examples/coro.rs")]
-/// ```
-/// It outputs:
-/// ```text
-/// Running
-/// > instance 1 NEW
-/// > instance 2 NEW
-/// > instance 3 NEW
-/// > instance 4 NEW
-///   instance 1 A.0 Ok('a'))
-///   instance 2 A.0 Ok('a'))
-///   instance 3 A.0 Ok('a'))
-///   instance 1 B Ok('b')
-///   instance 2 B Ok('b')
-///   instance 3 B Ok('b')
-///   instance 1 A.1 Ok('a'))
-///   instance 2 A.1 Ok('a'))
-///   instance 3 A.1 Ok('a'))
-///   instance 4 BYE!
-///   instance 1 B Ok('b')
-///   instance 2 B Ok('b')
-///   instance 3 B Ok('b')
-///   instance 1 A.2 Ok('a'))
-///   instance 2 A.2 Ok('a'))
-///   instance 3 A.2 Ok('a'))
-///   instance 1 B Ok('b')
-///   instance 2 B Ok('b')
-///   instance 3 B Ok('b')
-///   instance 1 A.3 Ok('a'))
-///   instance 2 A.3 Ok('a'))
-///   instance 3 A.3 Ok('a'))
-///   instance 1 B Ok('b')
-///   instance 2 B Ok('b')
-///   instance 3 B Ok('b')
-/// Done
-/// ```
 #[derive(Debug)]
 pub struct Coro<T, E> {
     status: CoroStatus,
@@ -80,6 +44,8 @@ enum CoroStatus {
 
 impl<T, E> Coro<T, E> {
     // Returns a new coroutine.
+    #[inline]
+    #[allow(unused)]
     fn new() -> Self {
         Coro {
             status: CoroStatus::Running,
@@ -107,8 +73,7 @@ impl<T, E> Coro<T, E> {
 /// A future that alternates between [`Ready`][TaskPoll::Ready] and
 /// [`Pending`][TaskPoll::Pending] status each time it's polled.
 ///
-/// This allows the coroutine to yield control back to its [`CoroRun`]
-/// and be resumed later.
+/// This allows the coroutine to yield control back and be resumed later.
 pub struct CoroYield<'a, T, E> {
     cor: &'a mut Coro<T, E>,
 }
@@ -147,6 +112,45 @@ impl<'a, T, E> Future for CoroYield<'a, T, E> {
 /// When a coroutine is polled and returns [`TaskPoll::Pending`], it is put back
 /// into the queue to be run again later. If it returns [`Poll::Ready`]
 /// it is considered complete and is not put back into the queue.
+///
+/// # Examples
+/// ```
+#[doc = include_str!("../../../../examples/coro_run.rs")]
+/// ```
+/// It outputs:
+/// ```text
+/// Running
+/// > instance 1 NEW
+/// > instance 2 NEW
+/// > instance 3 NEW
+/// > instance 4 NEW
+///   instance 1 A.0 Ok('a'))
+///   instance 2 A.0 Ok('a'))
+///   instance 3 A.0 Ok('a'))
+///   instance 1 B Ok('b')
+///   instance 2 B Ok('b')
+///   instance 3 B Ok('b')
+///   instance 1 A.1 Ok('a'))
+///   instance 2 A.1 Ok('a'))
+///   instance 3 A.1 Ok('a'))
+///   instance 4 BYE!
+///   instance 1 B Ok('b')
+///   instance 2 B Ok('b')
+///   instance 3 B Ok('b')
+///   instance 1 A.2 Ok('a'))
+///   instance 2 A.2 Ok('a'))
+///   instance 3 A.2 Ok('a'))
+///   instance 1 B Ok('b')
+///   instance 2 B Ok('b')
+///   instance 3 B Ok('b')
+///   instance 1 A.3 Ok('a'))
+///   instance 2 A.3 Ok('a'))
+///   instance 3 A.3 Ok('a'))
+///   instance 1 B Ok('b')
+///   instance 2 B Ok('b')
+///   instance 3 B Ok('b')
+/// Done
+/// ```
 #[derive(Default)]
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]

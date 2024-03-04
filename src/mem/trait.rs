@@ -3,7 +3,9 @@
 //! Functionality related to byte sizes.
 //
 
-use super::{mem_needs_drop, mem_swap, *};
+#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+use super::{mem_as_bytes, mem_as_bytes_mut};
+use super::{mem_drop, mem_forget, mem_needs_drop, mem_replace, mem_swap, mem_take};
 
 impl<T: ?Sized> Mem for T {}
 
@@ -63,8 +65,8 @@ pub trait Mem {
     /// View a `Sync + Unpin` `self` as `&[u8]`.
     ///
     /// For the `const` version for sized types see [`mem_as_bytes_sized`].
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     fn mem_as_bytes(&self) -> &[u8]
     where
         Self: Sync + Unpin,
@@ -73,8 +75,8 @@ pub trait Mem {
     }
 
     /// View a `Sync + Unpin` `self` as `&mut [u8]`.
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     fn mem_as_bytes_mut(&mut self) -> &mut [u8]
     where
         Self: Sync + Unpin,

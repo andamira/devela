@@ -11,6 +11,7 @@ use crate::text::AsciiChar;
 // Marker trait to prevent downstream implementations of the `ExtString` trait.
 #[cfg(feature = "alloc")]
 impl private::Sealed for String {}
+#[cfg(feature = "alloc")]
 mod private {
     pub trait Sealed {}
 }

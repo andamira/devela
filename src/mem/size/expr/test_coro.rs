@@ -1,12 +1,14 @@
 // devela::mem::size::expr::test_coro
 
-use super::tests::Foo;
-
 #[cfg(not(miri))]
 #[test]
 fn api_coro() {
     use crate::_deps::alloc::{string::String, vec};
     use crate::work::Coroutine;
+
+    pub(super) trait Foo<'a, 'b> {}
+    impl<'a> Foo<'a, 'static> for () {}
+    impl<'a, 'b> Foo<'a, 'b> for usize {}
 
     let _byte = 0_u8;
     let _b: usize = mem_size_of_expr!(_byte);

@@ -10,7 +10,7 @@ use crate::{
     mem::{Bare, Storage},
 };
 
-/// A const-generic 2-dimensional [`Array`].
+/// A static 2-dimensional [`Array`].
 ///
 /// It is generic in respect to its
 /// elements (`T`),

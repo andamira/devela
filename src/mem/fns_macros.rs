@@ -11,6 +11,7 @@
 // - macros
 //   - cswap
 
+#[cfg(not(miri))]
 use crate::code::iif;
 
 /* fns */

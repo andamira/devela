@@ -3,7 +3,7 @@
 //! 1-dimensional array
 //
 
-/* always compiled, non-public modules */
+/* always compiled */
 
 // without re-exports
 mod impl_traits;

@@ -10,8 +10,7 @@
 ///
 /// # Example
 /// ```
-/// use devela::mem::mem_size_of_expr;
-///
+/// # use devela::mem::mem_size_of_expr;
 /// async fn f() {
 ///     let x = 1;
 ///     core::future::ready(()).await;
@@ -56,10 +55,6 @@ mod test_coro;
 mod tests {
     use super::mem_size_of_expr;
     use crate::mem::mem_size_of;
-
-    pub(super) trait Foo<'a, 'b> {}
-    impl<'a> Foo<'a, 'static> for () {}
-    impl<'a, 'b> Foo<'a, 'b> for usize {}
 
     async fn f() {
         let _x = 1;

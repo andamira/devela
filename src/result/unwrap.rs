@@ -211,11 +211,13 @@ mod tests {
         assert![unwrap![sok_expect OPTRES_OK, "ERR"]];
         assert_eq![unwrap![sok_or OPTRES_OK, false], true];
         assert_eq![unwrap![sok_or OPTRES_ERR, false], false];
+        assert_eq![unwrap![sok_or OPTRES_NONE, false], false];
 
         assert![unwrap![serr OPTRES_ERR]];
         assert![unwrap![serr_expect OPTRES_ERR, "ERR"]];
         assert_eq![unwrap![serr_or OPTRES_ERR, false], true];
         assert_eq![unwrap![serr_or OPTRES_OK, false], false];
+        assert_eq![unwrap![serr_or OPTRES_NONE, false], false];
     }
     #[test] #[cfg(feature = "std")] #[rustfmt::skip]
     fn test_unwrap_optres_panic() {
