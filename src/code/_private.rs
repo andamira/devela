@@ -9,7 +9,7 @@
 
 /// Macro helper for documentation of re-exported items.
 macro_rules! reexport {
-    /* reexports from normal modules */
+    /* re-exports from normal modules */
 
     // the following 4 arms allows reexporting items from:
     // `core`, `alloc`, `std` or `no_std`|`std`.
@@ -181,7 +181,40 @@ macro_rules! reexport {
 
     /* external dependencies */
 
-    // reexports items from an external optional dependency, from any normal module.
+    // Re-exports a non-optional crate
+    (crate $dep_str:literal | $dep:ident,
+     doc: $description:literal
+     $(, features: $( $f:literal ),+ )?
+    ) => { $crate::code::paste! {
+        #[doc = "<span class='stab portability' title='re-exported `" $dep_str
+            "`'>`" $dep_str "`</span>"]
+        #[doc = $description "\n\n---" ]
+        #[doc(inline)]
+        pub use ::$dep;
+    }};
+
+    // Re-exports an optional crate
+    (optional_crate $dep_str:literal | $dep:ident,
+     doc: $description:literal
+     $(, features: $( $f:literal ),+ )?
+    ) => { $crate::code::paste! {
+        #[doc = "<span class='stab portability' title='re-exported `" $dep_str
+            "`'>`" $dep_str "`</span>"]
+        #[doc = $description "\n\n---" ]
+        #[cfg_attr(
+            feature = "nightly_doc",
+            doc(cfg(all(
+                feature = $dep_str $(, $(feature = $f)+ )?
+            )))
+        )]
+        #[cfg(any(
+            all(feature = $dep_str $(, $(feature = $f),+ )? )
+        ))]
+        #[doc(inline)]
+        pub use ::$dep;
+    }};
+
+    // re-exports items from an external optional dependency, from any normal module.
     //
     // - Supports multiple reexported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
@@ -193,8 +226,8 @@ macro_rules! reexport {
       $(,)?
     ) => { $crate::code::paste! {
         #[doc(inline)]
-        #[doc = "<span class='stab portability' title='re-exported from `" $dep_str
-            "` (also enabled via `dep`)'>`" $dep_str "`</span>"]
+        #[doc = "<span class='stab portability' title='re-exported from `"
+            $dep_str "`'>`" $dep_str "`</span>"]
         #[doc = $description]
         #[doc = "\n\n*Re-exported from the [`" $dep_str
             "`](https://docs.rs/" $dep_str " ) crate*"]
@@ -222,7 +255,7 @@ macro_rules! reexport {
         };
     }};
 
-    // reexports items from an external non-optional dependency, from any normal module.
+    // re-exports items from an external non-optional dependency, from any normal module.
     //
     // - Supports multiple reexported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
