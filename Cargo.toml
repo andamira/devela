@@ -135,8 +135,8 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	"unsafe_array", "unsafe_async", "unsafe_const", "unsafe_dyn",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
 ] # for specific purposes:
-	unsafe_array = [] # faster array initialization.
-	unsafe_async = [] # custom task waker, coroutine impls.
+	unsafe_array = [] # faster array initialization, UninitArray.
+	unsafe_async = [] # TaskWakerNoop, CoroRun
 	unsafe_const = [] # extra const methods.
 	unsafe_dyn = [] # DSTs in the stack, no_std Error dyn impls.
 	unsafe_niche = [] # unchecked niche constructors.
