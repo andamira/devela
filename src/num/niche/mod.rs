@@ -15,14 +15,14 @@ pub use {non_specific::*, reexports::*};
 #[cfg(all(feature = "num", test))]
 mod tests;
 //
-#[cfg(feature = "num")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
+#[cfg(feature = "num_niche_range")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_niche_range")))]
 mod non_range;
-#[cfg(feature = "num")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num")))]
+#[cfg(feature = "num_niche_range")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_niche_range")))]
 mod range;
 
-#[cfg(feature = "num")]
+#[cfg(feature = "num_niche_range")]
 pub use {non_range::*, range::*};
 
 pub(crate) mod all {
@@ -32,6 +32,6 @@ pub(crate) mod all {
 
     // feature-gated
     #[doc(inline)]
-    #[cfg(feature = "num")]
+    #[cfg(feature = "num_niche_range")]
     pub use super::{non_range::*, range::*};
 }

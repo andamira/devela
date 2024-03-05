@@ -115,6 +115,8 @@ macro_rules! impl_num {
         }
 
         // NonSpecificI*
+        #[cfg(feature = "num_niche_impls")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_niche_impls")))]
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
             type Inner = $p;
             type Out =  [<NonSpecific $p:camel>]<V>;
@@ -123,6 +125,9 @@ macro_rules! impl_num {
         }
 
         // NonRangeI*
+        #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))]
+        #[cfg_attr( feature = "nightly_doc",
+            doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))))]
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
             type Out = [<NonRange $p:camel>]<RMIN, RMAX>;
@@ -131,6 +136,9 @@ macro_rules! impl_num {
         }
 
         // RangeI*
+        #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))]
+        #[cfg_attr( feature = "nightly_doc",
+            doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))))]
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
             type Out = [<Range $p:camel>]<RMIN, RMAX>;
@@ -242,6 +250,8 @@ macro_rules! impl_num {
         }
 
         // NonSpecificU*
+        #[cfg(feature = "num_niche_impls")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_niche_impls")))]
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
             type Inner = $p;
             type Out = [<NonSpecific $p:camel>]<V>;
@@ -249,6 +259,9 @@ macro_rules! impl_num {
             impl_num![custom_u_body]; }
 
         // NonRangeU*
+        #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))]
+        #[cfg_attr( feature = "nightly_doc",
+            doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))))]
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
             type Out = [<NonRange $p:camel>]<RMIN, RMAX>;
@@ -257,6 +270,9 @@ macro_rules! impl_num {
         }
 
         // RangeU*
+        #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))]
+        #[cfg_attr( feature = "nightly_doc",
+            doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))))]
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
             type Out = [<Range $p:camel>]<RMIN, RMAX>;
