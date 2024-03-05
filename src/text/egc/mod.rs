@@ -8,16 +8,16 @@
 //! [0]: https://www.unicode.org/reports/tr29/
 //
 
-mod array_string;
-mod non_nul;
+mod nonul;
 #[cfg(feature = "alloc")]
 mod string;
+mod string_u8;
 mod r#trait;
 
 pub use all::*;
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{array_string::*, non_nul::*, r#trait::*};
+    pub use super::{nonul::*, r#trait::*, string_u8::*};
 
     #[doc(inline)]
     #[cfg(feature = "alloc")]

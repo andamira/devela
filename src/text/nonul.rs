@@ -1,4 +1,4 @@
-// devela::text::non_nul
+// devela::text::nonul
 //
 //! Non-nul `String` backed by an array.
 //
@@ -24,12 +24,12 @@ const NUL_CHAR: char = '\0';
 ///
 /// Internally, the first 0 byte in the array indicates the end of the string.
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct ArrayU8NonNulString<const CAP: usize> {
+pub struct StringNonul<const CAP: usize> {
     arr: [u8; CAP],
 }
 
 impl_sized_alias![
-    NonNulString, ArrayU8NonNulString,
+    StringNonul, StringNonul,
     "UTF-8–encoded string, backed by an array of ",
     ". Can't contain nul chars.":
     "An" 8, 1 "";
@@ -39,15 +39,15 @@ impl_sized_alias![
     "A" 128, 16 "s";
 ];
 
-impl<const CAP: usize> ArrayU8NonNulString<CAP> {
-    /// Creates a new empty `ArrayU8NonNulString`.
+impl<const CAP: usize> StringNonul<CAP> {
+    /// Creates a new empty `StringNonul`.
     #[inline]
     #[must_use]
     pub const fn new() -> Self {
         Self { arr: [0; CAP] }
     }
 
-    /// Creates a new `ArrayU8NonNulString` from a `Char7`.
+    /// Creates a new `StringNonul` from a `Char7`.
     ///
     /// If `c`.[`is_nul()`][Char7#method.is_nul] an empty string will be returned.
     ///
@@ -65,7 +65,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
         new
     }
 
-    /// Creates a new `ArrayU8NonNulString` from a `Char8`.
+    /// Creates a new `StringNonul` from a `Char8`.
     ///
     /// If `c`.[`is_nul()`][Char8#method.is_nul] an empty string will be returned.
     ///
@@ -89,7 +89,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
         new
     }
 
-    /// Creates a new `ArrayU8NonNulString` from a `Char16`.
+    /// Creates a new `StringNonul` from a `Char16`.
     ///
     /// If `c`.[`is_nul()`][Char16#method.is_nul] an empty string will be returned.
     ///
@@ -116,7 +116,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
         new
     }
 
-    /// Creates a new `ArrayU8NonNulString` from a `Char24`.
+    /// Creates a new `StringNonul` from a `Char24`.
     ///
     /// If `c`.[`is_nul()`][Char24#method.is_nul] an empty string will be returned.
     ///
@@ -146,7 +146,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
         new
     }
 
-    /// Creates a new `ArrayU8NonNulString` from a `Char32`.
+    /// Creates a new `StringNonul` from a `Char32`.
     ///
     /// If `c`.[`is_nul()`][Char32#method.is_nul] an empty string will be returned.
     ///
@@ -160,7 +160,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
         Self::from_char(c.0)
     }
 
-    /// Creates a new `ArrayU8NonNulString` from a `char`.
+    /// Creates a new `StringNonul` from a `char`.
     ///
     /// If `c` is NUL an empty string will be returned.
     ///
@@ -488,7 +488,7 @@ impl<const CAP: usize> ArrayU8NonNulString<CAP> {
 
 /* traits */
 
-impl<const CAP: usize> Default for ArrayU8NonNulString<CAP> {
+impl<const CAP: usize> Default for StringNonul<CAP> {
     /// Returns an empty string.
     #[inline]
     #[must_use]
@@ -497,13 +497,13 @@ impl<const CAP: usize> Default for ArrayU8NonNulString<CAP> {
     }
 }
 
-impl<const CAP: usize> fmt::Display for ArrayU8NonNulString<CAP> {
+impl<const CAP: usize> fmt::Display for StringNonul<CAP> {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.as_str())
     }
 }
-impl<const CAP: usize> fmt::Debug for ArrayU8NonNulString<CAP> {
+impl<const CAP: usize> fmt::Debug for StringNonul<CAP> {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{:?}", self.as_str())

@@ -1,4 +1,4 @@
-// devela::text::egc::u8string
+// devela::text::egc::string_u8
 //
 //!
 //
@@ -11,20 +11,20 @@ use super::Egc;
 use crate::_deps::alloc::{ffi::CString, str::Chars};
 use crate::text::{
     char::*,
-    {helpers::impl_sized_alias, ArrayU8String},
+    {helpers::impl_sized_alias, StringU8},
 };
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
 
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by an
-/// [`ArrayU8String`].
+/// [`StringU8`].
 #[derive(Clone, PartialEq, Eq, Hash)]
 #[repr(transparent)]
-pub struct ArrayU8Egc<const CAP: usize>(ArrayU8String<CAP>);
+pub struct EgcU8<const CAP: usize>(StringU8<CAP>);
 
 impl_sized_alias![
-    Egc, ArrayU8Egc,
+    Egc, EgcU8,
     "<abbr title='Extended Grapheme Cluster'>EGC</abbr>, backed by an array of ",
     ".":
     "A" 16, 1 "";
@@ -33,17 +33,17 @@ impl_sized_alias![
     "A" 128, 15 "s"
 ];
 
-impl<const CAP: usize> ArrayU8Egc<CAP> {
-    /// Creates a new empty `ArrayU8Egc`.
+impl<const CAP: usize> EgcU8<CAP> {
+    /// Creates a new empty `EgcU8`.
     /// # Panics
     /// Panics if `CAP` > 255.
     #[inline]
     #[must_use]
     pub const fn new() -> Self {
-        Self(ArrayU8String::new())
+        Self(StringU8::new())
     }
 
-    /// Creates a new `ArrayU8Egc` from a `Char7`.
+    /// Creates a new `EgcU8` from a `Char7`.
     /// # Panics
     /// Panics if `CAP` > 255 or < 1.
     ///
@@ -51,10 +51,10 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char7(c: Char7) -> Self {
-        Self(ArrayU8String::from_char7(c))
+        Self(StringU8::from_char7(c))
     }
 
-    /// Creates a new `ArrayU8Egc` from a `Char8`.
+    /// Creates a new `EgcU8` from a `Char8`.
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char8#method.len_utf8].
     ///
@@ -62,10 +62,10 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char8(c: Char8) -> Self {
-        Self(ArrayU8String::from_char8(c))
+        Self(StringU8::from_char8(c))
     }
 
-    /// Creates a new `ArrayU8Egc` from a `Char16`.
+    /// Creates a new `EgcU8` from a `Char16`.
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char16#method.len_utf8].
     ///
@@ -73,10 +73,10 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char16(c: Char16) -> Self {
-        Self(ArrayU8String::from_char16(c))
+        Self(StringU8::from_char16(c))
     }
 
-    /// Creates a new `ArrayU8Egc` from a `Char24`.
+    /// Creates a new `EgcU8` from a `Char24`.
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char24#method.len_utf8].
     ///
@@ -84,10 +84,10 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char24(c: Char24) -> Self {
-        Self(ArrayU8String::from_char24(c))
+        Self(StringU8::from_char24(c))
     }
 
-    /// Creates a new `ArrayU8Egc` from a `Char32`.
+    /// Creates a new `EgcU8` from a `Char32`.
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char32#method.len_utf8].
     ///
@@ -95,10 +95,10 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char32(c: Char32) -> Self {
-        Self(ArrayU8String::from_char32(c))
+        Self(StringU8::from_char32(c))
     }
 
-    /// Creates a new `ArrayU8Egc` from a `char`.
+    /// Creates a new `EgcU8` from a `char`.
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Chars#method.len_utf8].
     ///
@@ -106,7 +106,7 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char(c: char) -> Self {
-        Self(ArrayU8String::from_char(c))
+        Self(StringU8::from_char(c))
     }
 
     //
@@ -212,13 +212,13 @@ impl<const CAP: usize> ArrayU8Egc<CAP> {
 
 /* traits */
 
-impl<const CAP: usize> Egc for ArrayU8Egc<CAP> {}
+impl<const CAP: usize> Egc for EgcU8<CAP> {}
 
 mod core_impls {
     use super::*;
     use core::fmt;
 
-    impl<const CAP: usize> Default for ArrayU8Egc<CAP> {
+    impl<const CAP: usize> Default for EgcU8<CAP> {
         /// Returns an empty extended grapheme character.
         #[inline]
         fn default() -> Self {
@@ -226,32 +226,32 @@ mod core_impls {
         }
     }
 
-    impl<const CAP: usize> fmt::Display for ArrayU8Egc<CAP> {
+    impl<const CAP: usize> fmt::Display for EgcU8<CAP> {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(f, "{}", self.0)
         }
     }
-    impl<const CAP: usize> fmt::Debug for ArrayU8Egc<CAP> {
+    impl<const CAP: usize> fmt::Debug for EgcU8<CAP> {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(f, "{:?}", self.0)
         }
     }
 
-    // impl From<String> for ArrayU8Egc {
-    //     fn from(s: String) -> ArrayU8Egc {
-    //         ArrayU8Egc(s.graphemes(true).take(1).collect())
+    // impl From<String> for EgcU8 {
+    //     fn from(s: String) -> EgcU8 {
+    //         EgcU8(s.graphemes(true).take(1).collect())
     //     }
     // }
-    // impl From<&str> for ArrayU8Egc {
-    //     fn from(s: &str) -> ArrayU8Egc {
-    //         ArrayU8Egc(s.graphemes(true).take(1).collect())
+    // impl From<&str> for EgcU8 {
+    //     fn from(s: &str) -> EgcU8 {
+    //         EgcU8(s.graphemes(true).take(1).collect())
     //     }
     // }
-    // impl From<char> for ArrayU8Egc {
-    //     fn from(s: char) -> ArrayU8Egc {
-    //         ArrayU8Egc(s.into())
+    // impl From<char> for EgcU8 {
+    //     fn from(s: char) -> EgcU8 {
+    //         EgcU8(s.into())
     //     }
     // }
 }

@@ -38,7 +38,6 @@ use crate::num::{
 
 #[cfg(feature = "text")]
 use crate::text::char::{Char16, Char24, Char32, Char7, Char8};
-#[cfg(feature = "text")]
 use crate::text::AsciiChar;
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
@@ -50,10 +49,10 @@ use crate::_deps::alloc::{
     string::String,
     vec::Vec,
 };
-#[cfg(all(feature = "alloc", feature = "text"))]
+#[cfg(feature = "alloc")]
 use crate::text::StringEgc;
 #[cfg(feature = "text")]
-use crate::text::{ArrayU8NonNulEgc, ArrayU8NonNulString};
+use crate::text::{EgcNonul, StringNonul};
 
 #[cfg(feature = "portable-atomic")]
 use crate::_deps::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
@@ -252,7 +251,6 @@ bit_size![= 128; for i128, u128, Duration];
 #[cfg(feature = "std")]
 bit_size![= 128; for Instant, SystemTime];
 
-#[cfg(feature = "text")]
 bit_size![= 7; for AsciiChar];
 
 #[cfg(feature = "text")]
@@ -369,14 +367,11 @@ bit_size![= 64; for AtomicF64];
 bit_size![= 128; for AtomicI128, AtomicU128];
 
 #[cfg(feature = "text")]
-bit_size![<const LEN: usize> = LEN; for ArrayU8NonNulString<LEN>, ArrayU8NonNulEgc<LEN>];
+bit_size![<const LEN: usize> = LEN; for StringNonul<LEN>, EgcNonul<LEN>];
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
-// #[cfg(feature = "text")]
-// bit_size![<const LEN: usize> = { LEN + 8 }; for ArrayU8String<LEN>, ArrayU8Egc<LEN>];
-// #[cfg(feature = "text")]
-// bit_size![<const LEN: usize> = { LEN + 16 }; for ArrayU16String<LEN>];
-// #[cfg(feature = "text")]
-// bit_size![<const LEN: usize> = { LEN + 32 }; for ArrayU32String<LEN>];
+// bit_size![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, EgcU8<LEN>];
+// bit_size![<const LEN: usize> = { LEN + 16 }; for StringU16<LEN>];
+// bit_size![<const LEN: usize> = { LEN + 32 }; for StringU32<LEN>];
 
 #[cfg(target_pointer_width = "8")]
 bit_size![pointer = 8];

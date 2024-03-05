@@ -1,4 +1,4 @@
-// devela::text::u8string
+// devela::text::string_u
 //
 //! `String` backed by an array.
 //
@@ -8,13 +8,20 @@
 //   - trait impls
 // - tests
 
-use super::{helpers::impl_sized_alias, ArrayStringError, Result};
+use super::{
+    char::{char_to_utf8_bytes, char_utf8_4bytes_len},
+    helpers::impl_sized_alias,
+    ArrayStringError, Result,
+};
 use core::{fmt, ops::Deref};
 
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::{ffi::CString, str::Chars, string::ToString};
 
-use super::char::*;
+#[cfg(feature = "text")]
+use super::char::{
+    char_utf8_2bytes_len, char_utf8_3bytes_len, Char16, Char24, Char32, Char7, Char8,
+};
 
 macro_rules! generate_array_string {
     ($($t:ty),+ $(,)?) => {
@@ -28,13 +35,13 @@ macro_rules! generate_array_string {
         ///
         #[doc = "Internally, the current length is stored as a [`" u8 "`]."]
         #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-        pub struct [<Array $t:upper String>]<const CAP: usize> {
+        pub struct [<String $t:upper>]<const CAP: usize> {
             // WAITING for when we can use CAP: u8 for panic-less const boundary check.
             arr: [u8; CAP],
             len: $t,
         }
 
-        impl<const CAP: usize> [<Array $t:upper String>]<CAP> {
+        impl<const CAP: usize> [<String $t:upper>]<CAP> {
             #[doc = "Creates a new empty `Array" $t:upper "String>]` with a capacity of `CAP` bytes."]
             ///
             /// # Panics
@@ -57,6 +64,8 @@ macro_rules! generate_array_string {
             #[doc = "Will never panic if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
             #[must_use]
+            #[cfg(feature = "text")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
             pub const fn from_char7(c: Char7) -> Self {
                 let mut new = Self::new();
                 new.arr[0] = c.to_utf8_bytes()[0];
@@ -73,6 +82,8 @@ macro_rules! generate_array_string {
             #[doc = "Will never panic if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
             #[must_use]
+            #[cfg(feature = "text")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
             pub const fn from_char8(c: Char8) -> Self {
                 let mut new = Self::new();
 
@@ -95,6 +106,8 @@ macro_rules! generate_array_string {
             #[doc = "Will never panic if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
             #[must_use]
+            #[cfg(feature = "text")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
             pub const fn from_char16(c: Char16) -> Self {
                 let mut new = Self::new();
 
@@ -120,6 +133,8 @@ macro_rules! generate_array_string {
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
             #[must_use]
+            #[cfg(feature = "text")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
             pub const fn from_char24(c: Char24) -> Self {
                 let mut new = Self::new();
 
@@ -148,6 +163,8 @@ macro_rules! generate_array_string {
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
             #[must_use]
+            #[cfg(feature = "text")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
             pub const fn from_char32(c: Char32) -> Self {
                 Self::from_char(c.0)
             }
@@ -403,7 +420,7 @@ macro_rules! generate_array_string {
 
         /* traits */
 
-        impl<const CAP: usize> Default for [<Array $t:upper String>]<CAP> {
+        impl<const CAP: usize> Default for [<String $t:upper>]<CAP> {
             /// Returns an empty string.
             ///
             /// # Panics
@@ -415,21 +432,21 @@ macro_rules! generate_array_string {
             }
         }
 
-        impl<const CAP: usize> fmt::Display for [<Array $t:upper String>]<CAP> {
+        impl<const CAP: usize> fmt::Display for [<String $t:upper>]<CAP> {
             #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(f, "{}", self.as_str())
             }
         }
 
-        impl<const CAP: usize> fmt::Debug for [<Array $t:upper String>]<CAP> {
+        impl<const CAP: usize> fmt::Debug for [<String $t:upper>]<CAP> {
             #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(f, "{:?}", self.as_str())
             }
         }
 
-        impl<const CAP: usize> Deref for [<Array $t:upper String>]<CAP> {
+        impl<const CAP: usize> Deref for [<String $t:upper>]<CAP> {
             type Target = str;
             #[inline]
             #[must_use]
@@ -438,7 +455,7 @@ macro_rules! generate_array_string {
             }
         }
 
-        impl<const CAP: usize> AsRef<str> for [<Array $t:upper String>]<CAP> {
+        impl<const CAP: usize> AsRef<str> for [<String $t:upper>]<CAP> {
             #[inline]
             #[must_use]
             fn as_ref(&self) -> &str {
@@ -446,7 +463,7 @@ macro_rules! generate_array_string {
             }
         }
 
-        impl<const CAP: usize> AsRef<[u8]> for [<Array $t:upper String>]<CAP> {
+        impl<const CAP: usize> AsRef<[u8]> for [<String $t:upper>]<CAP> {
             #[inline]
             #[must_use]
             fn as_ref(&self) -> &[u8] {
@@ -456,7 +473,7 @@ macro_rules! generate_array_string {
 
         #[cfg(all(feature = "std", any(unix, target_os = "wasi")))]
         mod [< std_impls_ $t >] {
-            use super::[<Array $t:upper String>];
+            use super::[<String $t:upper>];
             use std::ffi::OsStr;
 
             #[cfg(unix)]
@@ -467,7 +484,7 @@ macro_rules! generate_array_string {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(
                 all(feature = "std", any(unix, target_os = "wasi"))
             )))]
-            impl<const CAP: usize> AsRef<OsStr> for [<Array $t:upper String>]<CAP> {
+            impl<const CAP: usize> AsRef<OsStr> for [<String $t:upper>]<CAP> {
             #[must_use]
                 fn as_ref(&self) -> &OsStr {
                     OsStr::from_bytes(self.as_bytes())
@@ -479,7 +496,7 @@ macro_rules! generate_array_string {
 generate_array_string![u8, u16, u32];
 
 impl_sized_alias![
-    String, ArrayU8String,
+    String, StringU8,
     "UTF-8–encoded string, backed by an array of ", ".":
     "A" 16, 1 "";
     "A" 32, 3 "s";

@@ -1,4 +1,4 @@
-// devela::text::egc::non_nul
+// devela::text::egc::nonul
 //
 //!
 //
@@ -12,20 +12,19 @@ use super::Egc;
 use crate::_deps::alloc::{ffi::CString, str::Chars};
 use crate::text::{
     char::*,
-    {helpers::impl_sized_alias, ArrayU8NonNulString},
+    {helpers::impl_sized_alias, StringNonul},
 };
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
 
-/// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by an
-/// [`ArrayU8NonNulString`].
+/// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`StringNonul`].
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 #[repr(transparent)]
-pub struct ArrayU8NonNulEgc<const CAP: usize>(ArrayU8NonNulString<CAP>);
+pub struct EgcNonul<const CAP: usize>(StringNonul<CAP>);
 
 impl_sized_alias![
-    NonNulEgc, ArrayU8NonNulEgc,
+    EgcNonul, EgcNonul,
     "<abbr title='Extended Grapheme Cluster'>EGC</abbr>, backed by an array of ",
     ". Can't contain nul chars.":
     "An" 8, 1 "";
@@ -37,14 +36,14 @@ impl_sized_alias![
 
 /* impls */
 
-impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
-    /// Creates a new empty `ArrayU8NonNulString`.
+impl<const CAP: usize> EgcNonul<CAP> {
+    /// Creates a new empty `StringNonul`.
     #[inline]
     pub const fn new() -> Self {
-        Self(ArrayU8NonNulString::new())
+        Self(StringNonul::new())
     }
 
-    /// Creates a new `ArrayU8NonNulEgc` from a `Char7`.
+    /// Creates a new `EgcNonul` from a `Char7`.
     ///
     /// If `c`.[`is_nul()`][Char7#method.is_nul] an empty egc will be returned.
     /// # Panics
@@ -54,10 +53,10 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char7(c: Char7) -> Self {
-        Self(ArrayU8NonNulString::from_char7(c))
+        Self(StringNonul::from_char7(c))
     }
 
-    /// Creates a new `ArrayU8NonNulEgc` from a `Char8`.
+    /// Creates a new `EgcNonul` from a `Char8`.
     ///
     /// If `c`.[`is_nul()`][Char8#method.is_nul] an empty egc will be returned.
     /// # Panics
@@ -67,10 +66,10 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char8(c: Char8) -> Self {
-        Self(ArrayU8NonNulString::from_char8(c))
+        Self(StringNonul::from_char8(c))
     }
 
-    /// Creates a new `ArrayU8NonNulEgc` from a `Char16`.
+    /// Creates a new `EgcNonul` from a `Char16`.
     ///
     /// If `c`.[`is_nul()`][Char16#method.is_nul] an empty egc will be returned.
     /// # Panics
@@ -80,10 +79,10 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char16(c: Char16) -> Self {
-        Self(ArrayU8NonNulString::from_char16(c))
+        Self(StringNonul::from_char16(c))
     }
 
-    /// Creates a new `ArrayU8NonNulEgc` from a `Char24`.
+    /// Creates a new `EgcNonul` from a `Char24`.
     ///
     /// If `c`.[`is_nul()`][Char24#method.is_nul] an empty egc will be returned.
     /// # Panics
@@ -93,10 +92,10 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char24(c: Char24) -> Self {
-        Self(ArrayU8NonNulString::from_char24(c))
+        Self(StringNonul::from_char24(c))
     }
 
-    /// Creates a new `ArrayU8NonNulEgc` from a `Char32`.
+    /// Creates a new `EgcNonul` from a `Char32`.
     ///
     /// If `c`.[`is_nul()`][Char32#method.is_nul] an empty egc will be returned.
     /// # Panics
@@ -106,10 +105,10 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char32(c: Char32) -> Self {
-        Self(ArrayU8NonNulString::from_char32(c))
+        Self(StringNonul::from_char32(c))
     }
 
-    /// Creates a new `ArrayU8NonNulEgc` from a `char`.
+    /// Creates a new `EgcNonul` from a `char`.
     ///
     /// If `c`.[`is_nul()`][Chars#method.is_nul] an empty egc will be returned.
     /// # Panics
@@ -119,7 +118,7 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
     #[inline]
     #[must_use]
     pub const fn from_char(c: char) -> Self {
-        Self(ArrayU8NonNulString::from_char(c))
+        Self(StringNonul::from_char(c))
     }
 
     //
@@ -227,13 +226,13 @@ impl<const CAP: usize> ArrayU8NonNulEgc<CAP> {
 
 /* traits */
 
-impl<const CAP: usize> Egc for ArrayU8NonNulEgc<CAP> {}
+impl<const CAP: usize> Egc for EgcNonul<CAP> {}
 
 mod core_impls {
     use super::*;
     use core::fmt;
 
-    impl<const CAP: usize> Default for ArrayU8NonNulEgc<CAP> {
+    impl<const CAP: usize> Default for EgcNonul<CAP> {
         /// Returns an empty extended grapheme character.
         #[inline]
         fn default() -> Self {
@@ -241,13 +240,13 @@ mod core_impls {
         }
     }
 
-    impl<const CAP: usize> fmt::Display for ArrayU8NonNulEgc<CAP> {
+    impl<const CAP: usize> fmt::Display for EgcNonul<CAP> {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(f, "{}", self.0)
         }
     }
-    impl<const CAP: usize> fmt::Debug for ArrayU8NonNulEgc<CAP> {
+    impl<const CAP: usize> fmt::Debug for EgcNonul<CAP> {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(f, "{:?}", self.0)
@@ -255,19 +254,19 @@ mod core_impls {
     }
 
     // TODO
-    // impl<const CAP: usize> From<String> for ArrayU8NonNulEgc<CAP> {
-    //     fn from(s: String) -> ArrayU8NonNulEgc<CAP> {
-    //         ArrayU8NonNulEgc(s.graphemes(true).take(1).collect())
+    // impl<const CAP: usize> From<String> for EgcNonul<CAP> {
+    //     fn from(s: String) -> EgcNonul<CAP> {
+    //         EgcNonul(s.graphemes(true).take(1).collect())
     //     }
     // }
-    // impl From<&str> for ArrayU8NonNulEgc {
-    //     fn from(s: &str) -> ArrayU8NonNulEgc {
-    //         ArrayU8NonNulEgc(s.graphemes(true).take(1).collect())
+    // impl From<&str> for EgcNonul {
+    //     fn from(s: &str) -> EgcNonul {
+    //         EgcNonul(s.graphemes(true).take(1).collect())
     //     }
     // }
-    // impl From<char> for ArrayU8NonNulEgc {
-    //     fn from(s: char) -> ArrayU8NonNulEgc {
-    //         ArrayU8NonNulEgc(s.into())
+    // impl From<char> for EgcNonul {
+    //     fn from(s: char) -> EgcNonul {
+    //         EgcNonul(s.into())
     //     }
     // }
 }
