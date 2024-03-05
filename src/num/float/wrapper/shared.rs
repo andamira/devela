@@ -50,7 +50,10 @@ macro_rules! custom_impls {
                     Sign::Negative
                 }
             }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            /// Returns the [`Sign`] of `x`.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn sign(x: $f) -> Sign {
                 if Self::is_zero(x) {
@@ -70,12 +73,14 @@ macro_rules! custom_impls {
             pub const fn is_sign_positive(x: $f) -> bool {
                 // WAIT: [const_float_classify](https://github.com/rust-lang/rust/issues/72505)
                 // <$f>::is_sign_positive(x)
-
                 let bits: $uf = unsafe { core::mem::transmute(x) };
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 (bits & sign_bit_mask) == 0 // if sign bit is not set it's a positive number or +0
             }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            /// Returns `true` if `self` has a positive sign.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn is_sign_positive(x: $f) -> bool { <$f>::is_sign_positive(x) }
 
@@ -92,7 +97,10 @@ macro_rules! custom_impls {
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 (bits & sign_bit_mask) != 0 // if sign bit is set it's a negative number or -0
             }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            /// Returns `true` if `self` has a negative sign.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn is_sign_negative(x: $f) -> bool { <$f>::is_sign_negative(x) }
 
@@ -107,7 +115,10 @@ macro_rules! custom_impls {
                 let non_sign_bits_mask = !($uf::MAX / 2 + 1);
                 (bits & non_sign_bits_mask) == 0
             }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            /// Returns `true` if `x` is 0.0 or -0.0.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn is_zero(x: $f) -> bool {
                 let non_sign_bits_mask = !($uf::MAX / 2 + 1);
@@ -122,7 +133,10 @@ macro_rules! custom_impls {
             pub const fn is_sign_positive_nonzero(x: $f) -> bool {
                 !Self::is_zero(x) && Self::is_sign_positive(x)
             }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            /// Returns `true` if `x` has a positive sign and is not zero.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn is_sign_positive_nonzero(x: $f) -> bool {
                 !Self::is_zero(x) && Self::is_sign_positive(x)
@@ -136,7 +150,10 @@ macro_rules! custom_impls {
             pub const fn is_sign_negative_nonzero(x: $f) -> bool {
                 !Self::is_zero(x) && Self::is_sign_negative(x)
             }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            /// Returns `true` if `x` has a negative sign and is not zero.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn is_sign_negative_nonzero(x: $f) -> bool {
                 !Self::is_zero(x) && Self::is_sign_negative(x)
@@ -871,7 +888,10 @@ macro_rules! custom_impls {
                     core::mem::transmute(bits ^ sign_bit_mask)
                 }
             }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            /// Flips the sign of `x`.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn flip_sign(x: $f) -> $f {
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
@@ -892,7 +912,10 @@ macro_rules! custom_impls {
             pub const fn clamp_total(value: $f, min: $f, max: $f) -> $f {
                 $crate::data::Compare(value).clamp(min, max)
             }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            /// Returns the clamped value, using total order.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn clamp_total(value: $f, min: $f, max: $f) -> $f {
                 $crate::data::Compare(value).clamp(min, max)
@@ -904,7 +927,10 @@ macro_rules! custom_impls {
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn max_total(x: $f, y: $f) -> $f { $crate::data::Compare(x).max(y) }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            /// Returns the maximum of two numbers using total order.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn max_total(x: $f, y: $f) -> $f { $crate::data::Compare(x).max(y) }
 
@@ -914,7 +940,10 @@ macro_rules! custom_impls {
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn min_total(x: $f, y: $f) -> $f { $crate::data::Compare(x).min(y) }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            /// Returns the minimum of two numbers using total order.
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn min_total(x: $f, y: $f) -> $f { $crate::data::Compare(x).min(y) }
 

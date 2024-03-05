@@ -299,7 +299,7 @@ macro_rules! math_const_impls {
             pub const FRAC_1_CBRT_3: $f = 0.693361274350634704843352274785961795;
         }
 
-        /// # *Othe mathematical constants*.
+        /// # *Other mathematical constants*.
         impl Floating<$f> {
             /// $ e $
             /// ([A001113](https://oeis.org/A001113/constant))
