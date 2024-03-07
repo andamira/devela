@@ -9,8 +9,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - add traits: `NumToStr`, `ConstDefault`, `DataQueue`, `DataDeque`, `DataStack`, `DataDesta`, `ExtTuple`, `ExtArray`.
-- add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `Mismatch`, `Own`, `GfxError`, `GfxResult`, `Pnm`, `Array2d`, `OptRes`, `TupleFmt`, `ArrayFmt`.
-- add features: `fig`, `num_all`, `safe_code`, `safe_data`, `safe_fig`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`, `nightly_coro`, `nightly_doc`, `_exclude_example`, `ui_window`, `ui_events`, `num_rand`.
+- add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `Mismatch`, `Own`, `GfxError`, `GfxResult`, `Pnm`, `Array2d`, `OptRes`, `TupleFmt`, `ArrayFmt`, `UninitArray`.
+- add features: `fig`, `num_all`, `safe_code`, `safe_data`, `safe_fig`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`, `nightly_coro`, `nightly_doc`, `_exclude_example`, `ui_window`, `ui_events`, `num_niche_range`.
+-
 - add capability features: `_capability_max`, `_tuple_arity_31`, `_tuple_arity_63`, `_tuple_arity_95`, `_tuple_arity_127`.
 - add RNGS: `Xabc`, `XorShift8`, `XorShift8Custom`, `XorShift16`, `XorShift32`, `XorShift64`, `XorShift128`, `XorShift128p`, `Xyza8a`, `Xyza8b`.
 - add Floating constants: `FRAC_1_PHI`, `NEG_FRAC_1_PHI`, `SQ_PHI`, `FRAC_NEG_1_PHI`.
@@ -26,6 +27,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add module: `fig`.
 - add script `tools/rustfmt` and `rustfmt_excluded_files` list.
 - add new `DataError` variants: `MismatchedLength`, `InvalidAxisLength.
+- add new `TextError` variants: `CharConversion`, `OutOfBounds`.
 - add new `Floating` and `ExtFloat` methods: `sign`, `is_zero`, `is_sign_positive_nonzero`, `is_sign_negative_nonzero`.
 - re-export proc-macros: `ident_total`, `ident_unique`, `ident_total_unique`.
 - re-export crate-defined result-related types from `result`.
@@ -33,11 +35,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export `Default` from `code`.
 
 ### Removed
-- remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`.
+- remove `devela_depend`, simplify system for optional dependencies.
+- remove features: `fullest`, `safest`, `unsafest`, `full_unsafe`, `data_unsafe`, `mem_unsafe`, `num_unsafe`, `os_unsafe`, `text_unsafe`, `ui_unsafe`, `ui_term_unsafe`, `work_unsafe`, `dep`, `dep_interop`.
 - remove `IntBuf` type and `IntBufAble` trait.
 - remove re-exported macro: `option_unwrap`.
 - remove type aliases: `NonMax*` `NonMin*, DirectArray, BoxedArray.
 - remove file `.gitattributes`.
+- remove `CharConversionError`.
 - deprecate`ident_total_count` macro.
 
 ### Changed
@@ -55,6 +59,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename the `error` module to `result`, and the `render` module to `gfx`.
 - rename `AnyExt`, `OptionExt`, `ResultExt`, `SliceExt`, `SliceExtMut`, `StrExt` and `StringExt` to `ExtAny`, `ExtOption`, `ExtResult`, `ExtSlice`, `ExtSliceMut`, `ExtStr` and `ExtString` and `ExtVec` respectively.
 - rename `LiteCoroutine`, `LiteCoroutineExecutor`, `LiteCoroutineWaiter` and `LiteCoroutineWaker` to `Coro`, `CoroRun` `CoroYield` and `TaskWakerNoop`, respectively.
+- rename `ArrayStringError` to `TextError`, `ArrayU*String` to `StringU*`, `ArrayU8NonNulString` to `StringNonul`, `ArrayU8NonNulEgc` to `EgcNonul`.
 - rename `DataErrors` to `DataError` and `NumErrors` to `NumError`.
 - rename `num_int_niche` feature to `num_niche_impls`.
 - rename `*fence` functions to `atomic_*fence`.
@@ -66,9 +71,14 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `FloatOps` to `ExtFloat`.
 - rename feature `full` to `all`.
 - rename `Direct` to `BareBox`.
+- rename `Sorting` to `Sort`.
+- rename `Primiting` to `Cast`.
+- rename `Comparing` to `Compare`.
 - document selected examples from `_docs`.
-- derive common traits for `Boxed`, `Primiting`.
+- derive common traits for `Boxed`, `Cast`.
+- always compile `num` submodules in general.
 - always compile `text::fmt`, `work::async::coro`.
+- make `text` `chars` methods not depend on `alloc`.
 - make `bitfield` and `enumset` examples standalone.
 - recreate the `pre-commit` script to leverage `rustfmt`.
 - update `enumset`: rename `LEN` associated constant to `ENUM_VARIANTS`, and add `enum_variants` method.
