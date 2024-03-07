@@ -15,7 +15,7 @@ use super::{
 };
 use crate::result::unwrap;
 use core::{fmt, ops::Deref, str::Chars};
-use TextError::{NotEnoughCapacity, NotEnoughElements, OutOfBounds};
+use TextError::{InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds};
 
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::{ffi::CString, string::ToString};
@@ -39,27 +39,36 @@ macro_rules! generate_array_string {
         ///
         /// ## Methods
         ///
-        /// The methods are the same for all maximum capacities.
-        /// - [Methods for `StringU8`][Self#methods-for-stacku8]
-        /// - [Methods for `StringU16`][Self#methods-for-stacku16]
-        /// - [Methods for `StringU32`][Self#methods-for-stacku32]
-        ///
-        /// The following list of methods links to the ones implemented for `StringU8`:
-        ///
         /// - Construct:
         ///   [`new`][Self::new],
-        ///   [`new_copied`][Self::new_copied],
-        ///   [`from_char`][Self::from_char]*([`7`](Self::from_char7))*.
+        ///   [`from_char`][Self::from_char]*(
+        ///     [`7`](Self::from_char7),
+        ///     [`8`](Self::from_char8),
+        ///     [`16`](Self::from_char16),
+        ///     [`24`](Self::from_char24),
+        ///     [`32`](Self::from_char32)
+        ///   )*.
         /// - Deconstruct:
-        ///   [`to_array`][Self::to_array],
-        ///   [`as_slice`][Self::as_slice],
-        ///   [`as_mut_slice`][Self::as_mut_slice],
+        ///   [`into_array`][Self::into_array],
+        ///   [`as_array`][Self::as_array],
+        ///   [`as_bytes`][Self::as_bytes]
+        ///     *([mut][Self::as_bytes_mut]<sup title="unsafe function">⚠</sup>)*,
+        ///   [`as_str`][Self::as_str]
+        ///     *([mut][Self::as_mut_str]<sup title="unsafe function">⚠</sup>)*,
+        ///   [`chars`][Self::chars],
+        ///   [`to_cstring`][Self::to_cstring](`alloc`).
         /// - Query:
-        ///   [`len`][Self::len], [`is_empty`][Self::is_empty], [`is_full`][Self::is_full],
-        ///   [`capacity`][Self::capacity], [`remaining_capacity`][Self::remaining_capacity],
-        ///   [`contains`][Self::contains].
-        /// - ...
-        ///   [`clear`][Self::clear], [`reset`][Self::reset]
+        ///   [`len`][Self::len],
+        ///   [`is_empty`][Self::is_empty],
+        ///   [`is_full`][Self::is_full],
+        ///   [`capacity`][Self::capacity],
+        ///   [`remaining_capacity`][Self::remaining_capacity].
+        /// - Operations:
+        ///   [`clear`][Self::clear], [`reset`][Self::reset],
+        ///   [`pop`][Self::pop]*([try][Self::try_pop])*,
+        ///   [`push`][Self::push]*([try][Self::try_push])*.
+        ///   [`push_str`][Self::push]*([try][Self::try_push_str])*,
+        ///   [`try_push_str_complete`][Self::try_push_str_complete].
         #[must_use]
         #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
         pub struct [<String $t:camel>]<const CAP: usize> {
@@ -67,10 +76,6 @@ macro_rules! generate_array_string {
             arr: [u8; CAP],
             len: $t,
         }
-
-        #[doc = "# Methods for `String" $t:camel "`\n\n"]
-        /// --------------------------------------------------
-        /// --------------------------------------------------
 
         impl<const CAP: usize> [<String $t:camel>]<CAP> {
             /* construct */
@@ -88,42 +93,116 @@ macro_rules! generate_array_string {
                 }
             }
 
-            //
+            /* query */
 
-            /// Returns the current length.
-            #[inline]
-            #[must_use]
-            pub const fn len(&self) -> usize {
-                self.len as usize
-            }
+            /// Returns the current string length in bytes.
+            #[inline] #[must_use] #[rustfmt::skip]
+            pub const fn len(&self) -> usize { self.len as usize }
 
             /// Returns `true` if the current length is 0.
-            #[inline]
-            #[must_use]
-            pub const fn is_empty(&self) -> bool {
-                self.len == 0
-            }
+            #[inline] #[must_use] #[rustfmt::skip]
+            pub const fn is_empty(&self) -> bool { self.len == 0 }
 
             /// Returns `true` if the current remaining capacity is 0.
-            #[inline]
-            #[must_use]
-            pub const fn is_full(&self) -> bool {
-                self.len == CAP as $t
-            }
+            #[inline] #[must_use] #[rustfmt::skip]
+            pub const fn is_full(&self) -> bool { self.len == CAP as $t }
 
             /// Returns the total capacity in bytes.
+            #[inline] #[must_use] #[rustfmt::skip]
+            pub const fn capacity() -> usize { CAP }
+
+            /// Returns the remaining capacity in bytes.
+            #[inline] #[must_use] #[rustfmt::skip]
+            pub const fn remaining_capacity(&self) -> usize { CAP - self.len as usize }
+
+            /* deconstruct */
+
+            /// Returns the inner array with the full contents.
+            ///
+            /// The array contains all the bytes, including those outside the current length.
+            #[inline] #[must_use] #[rustfmt::skip]
+            pub const fn into_array(self) -> [u8; CAP] { self.arr }
+
+            /// Returns a copy of the inner array with the full contents.
+            ///
+            /// The array contains all the bytes, including those outside the current length.
+            #[inline] #[must_use] #[rustfmt::skip]
+            pub const fn as_array(&self) -> [u8; CAP] { self.arr }
+
+            /// Returns a byte slice of the inner string slice.
+            ///
+            /// # Features
+            /// Makes use of the `unsafe_slice` feature if enabled.
+            #[inline] #[must_use] #[rustfmt::skip]
+            pub fn as_bytes(&self) -> &[u8] {
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
+                return self.arr.get(0..self.len as usize).expect("len must be <= arr.len()");
+
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+                // SAFETY: we ensure len is always <= arr.len()
+                unsafe { self.arr.get_unchecked(0..self.len as usize) }
+            }
+            /// Returns an exclusive byte slice of the inner string slice.
+            ///
+            /// # Safety
+            /// The caller must ensure that the content of the slice is valid UTF-8
+            /// before the borrow ends and the underlying `str` is used.
+            ///
+            /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
             #[inline]
             #[must_use]
-            pub const fn capacity() -> usize {
-                CAP
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+            pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
+                self.arr.get_unchecked_mut(0..self.len as usize)
             }
 
-            /// Returns the remaining capacity.
+            /// Returns the inner string slice.
+            ///
+            /// # Features
+            /// Makes use of the `unsafe_str` feature if enabled.
             #[inline]
             #[must_use]
-            pub const fn remaining_capacity(&self) -> usize {
-                CAP - self.len as usize
+            pub fn as_str(&self) -> &str {
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+                return core::str::from_utf8(
+                    self.arr
+                        .get(0..self.len as usize)
+                        .expect("len must be <= arr.len()"),
+                )
+                .expect("must be valid UTF-8");
+
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+                // SAFETY: we ensure to contain only valid UTF-8
+                unsafe {
+                    core::str::from_utf8_unchecked(
+                        self.arr
+                            .get(0..self.len as usize)
+                            .expect("len must be <= arr.len()"),
+                    )
+                }
             }
+
+            /// Returns the exclusive inner string slice.
+            /// Makes use of the `unsafe_str` feature if enabled.
+            #[must_use]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+            pub fn as_mut_str(&mut self) -> &mut str {
+                unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
+            }
+
+            /// Returns an iterator over the `chars` of this grapheme cluster.
+            #[inline] #[rustfmt::skip]
+            pub fn chars(&self) -> Chars { self.as_str().chars() }
+
+            /// Returns a new allocated C-compatible, nul-terminanted string.
+            #[inline] #[must_use] #[rustfmt::skip]
+            #[cfg(feature = "alloc")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+            pub fn to_cstring(&self) -> CString { CString::new(self.to_string()).unwrap() }
+
+            /* operations */
 
             /// Sets the length to 0.
             #[inline]
@@ -138,109 +217,6 @@ macro_rules! generate_array_string {
                 self.len = 0;
             }
 
-            //
-
-            /// Returns a byte slice of the inner string slice.
-            /// # Features
-            /// Makes use of the `unsafe_slice` feature if enabled.
-            #[inline]
-            #[must_use]
-            pub fn as_bytes(&self) -> &[u8] {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
-                return self.arr
-                    .get(0..self.len as usize)
-                    .expect("len must be <= arr.len()");
-
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-                // SAFETY: TODO
-                unsafe {
-                    self.arr.get_unchecked(0..self.len as usize)
-                }
-            }
-
-            /// Returns a mutable byte slice of the inner string slice.
-            /// # Safety
-            /// TODO
-            #[inline]
-            #[must_use]
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
-            pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
-                self.arr.get_unchecked_mut(0..self.len as usize)
-            }
-
-            /// Returns a copy of the inner array with the full contents.
-            ///
-            /// The array contains all the bytes, including those outside the current length.
-            #[inline]
-            #[must_use]
-            pub const fn as_array(&self) -> [u8; CAP] {
-                self.arr
-            }
-
-            /// Returns the inner array with the full contents.
-            ///
-            /// The array contains all the bytes, including those outside the current length.
-            #[inline]
-            #[must_use]
-            pub const fn into_array(self) -> [u8; CAP] {
-                self.arr
-            }
-
-            /// Returns the inner string slice.
-            /// # Features
-            /// Makes use of the `unsafe_str` feature if enabled.
-            #[inline]
-            #[must_use]
-            pub fn as_str(&self) -> &str {
-                #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-                return core::str::from_utf8(
-                    self.arr
-                        .get(0..self.len as usize)
-                        .expect("len must be <= arr.len()"),
-                )
-                .expect("must be valid utf-8");
-
-                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-                // SAFETY: TODO
-                unsafe {
-                    core::str::from_utf8_unchecked(
-                        self.arr
-                            .get(0..self.len as usize)
-                            .expect("len must be <= arr.len()"),
-                    )
-                }
-            }
-
-            /// Returns the mutable inner string slice.
-            /// # Features
-            /// Makes use of the `unsafe_str` feature if enabled.
-            /// # Safety
-            /// TODO
-            #[must_use]
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
-            pub fn as_str_mut(&mut self) -> &mut str {
-                // SAFETY: TODO
-                unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
-            }
-
-            /// Returns an iterator over the `chars` of this grapheme cluster.
-            #[inline]
-            pub fn chars(&self) -> Chars {
-                self.as_str().chars()
-            }
-
-            /// Returns a new allocated C-compatible, nul-terminanted string.
-            #[inline]
-            #[must_use]
-            #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-            pub fn to_cstring(&self) -> CString {
-                CString::new(self.to_string()).unwrap()
-            }
-
-            //
 
             /// Removes the last character and returns it, or `None` if
             /// the string is empty.
@@ -307,6 +283,62 @@ macro_rules! generate_array_string {
                     Ok(char_len)
                 } else {
                     Err(NotEnoughCapacity(char_len))
+                }
+            }
+
+            /// Appends to the end the fitting characters from the given `string` slice.
+            ///
+            /// Nul characters will be stripped out.
+            ///
+            /// Returns the number of bytes written, which will be 0
+            /// if not even the first non-nul character can fit.
+            pub fn push_str(&mut self, string: &str) -> usize {
+                let mut bytes_written = 0;
+
+                for character in string.chars() {
+                    let char_len = character.len_utf8();
+                    if self.len as usize + char_len <= CAP {
+                        let start_pos = self.len as usize;
+                        character.encode_utf8(&mut self.arr[start_pos..]);
+                        self.len += char_len as $t;
+                        bytes_written += char_len;
+                    } else {
+                        break;
+                    }
+                }
+                bytes_written
+            }
+
+            /// Tries to append to the end the characters from the given `string` slice.
+            ///
+            /// Returns the number of bytes written.
+            ///
+            /// # Errors
+            /// Returns [`NotEnoughCapacity`] if the capacity is not enough
+            /// to hold even the first character.
+            pub fn try_push_str(&mut self, string: &str) -> Result<usize> {
+                if string.is_empty() {
+                    return Ok(0);
+                }
+                let first_char_len = string.chars().next().unwrap().len_utf8();
+                if self.remaining_capacity() < first_char_len {
+                    Err(NotEnoughCapacity(first_char_len))
+                } else {
+                    Ok(self.push_str(string))
+                }
+            }
+
+            /// Tries to append the complete `string` slice to the end.
+            ///
+            /// Returns the number of bytes written in success.
+            ///
+            /// # Errors
+            /// Returns [`NotEnoughCapacity`] if the slice wont completely fit.
+            pub fn try_push_str_complete(&mut self, string: &str) -> Result<usize> {
+                if self.remaining_capacity() >= string.len() {
+                    Ok(self.push_str(string))
+                } else {
+                    Err(NotEnoughCapacity(string.len()))
                 }
             }
 
@@ -450,7 +482,7 @@ macro_rules! generate_array_string {
             }
         }
 
-        /* traits */
+        /* traits implementations */
 
         impl<const CAP: usize> Default for [<String $t:camel>]<CAP> {
             /// Returns an empty string.
@@ -502,6 +534,53 @@ macro_rules! generate_array_string {
             }
         }
 
+        impl<const CAP: usize> TryFrom<&str> for [<String $t:camel>]<CAP> {
+            type Error = TextError;
+
+            #[doc = "Tries to create a new `String" $t:camel "` from the given `string` slice."]
+            ///
+            /// # Errors
+            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`]"]
+            /// or [`NotEnoughCapacity`] if `CAP < string.len()`.
+            fn try_from(string: &str) -> Result<Self> {
+                if CAP < string.len() {
+                    Err(NotEnoughCapacity(string.len()))
+                } else {
+                    let mut new_string = Self::new()?;
+                    let bytes = string.as_bytes();
+                    new_string.arr[..bytes.len()].copy_from_slice(bytes);
+                    Ok(new_string)
+                }
+            }
+        }
+
+        impl<const CAP: usize> TryFrom<&[u8]> for [<String $t:camel>]<CAP> {
+            type Error = TextError;
+
+            #[doc = "Tries to create a new `String" $t:camel "` from the given slice of bytes."]
+            ///
+            /// # Errors
+            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`],"]
+            /// [`NotEnoughCapacity`] if `CAP < bytes.len()`
+            /// or [`InvalidUtf8`] if the bytes are not valid UTF-8.
+            fn try_from(bytes: &[u8]) -> Result<Self> {
+                if CAP < bytes.len() {
+                    Err(NotEnoughCapacity(bytes.len()))
+                } else {
+                    // Check if the byte slice is valid UTF-8
+                    match core::str::from_utf8(bytes) {
+                        Ok(_) => {
+                            let mut arr = [0; CAP];
+                            arr[..bytes.len()].copy_from_slice(bytes);
+                            Ok(Self { arr, len: bytes.len() as $t })
+                        },
+                        Err(e) => Err(InvalidUtf8(Some(e))),
+                    }
+                }
+            }
+        }
+
+
         #[cfg(all(feature = "std", any(unix, target_os = "wasi")))]
         mod [< std_impls_ $t >] {
             use super::[<String $t:camel>];
@@ -537,12 +616,11 @@ impl_sized_alias![
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::{String32, StringU8};
 
     #[test]
     fn push() {
         let mut s = String32::new().unwrap(); // max capacity == 3
-
         assert![s.try_push('ñ').is_ok()];
         assert_eq![2, s.len()];
         assert![s.try_push('ñ').is_err()];
@@ -551,11 +629,9 @@ mod tests {
         assert_eq![3, s.len()];
     }
 
-    // TODO
     #[test]
     fn pop() {
         let mut s = String32::new().unwrap(); // max capacity == 3
-
         s.push('ñ');
         s.push('a');
         assert_eq![Some('a'), s.pop()];

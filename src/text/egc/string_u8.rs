@@ -194,8 +194,8 @@ impl<const CAP: usize> EgcU8<CAP> {
     /// TODO
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
-    pub unsafe fn as_str_mut(&mut self) -> &mut str {
-        self.0.as_str_mut()
+    pub unsafe fn as_mut_str(&mut self) -> &mut str {
+        self.0.as_mut_str()
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
