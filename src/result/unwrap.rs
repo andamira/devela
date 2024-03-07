@@ -13,15 +13,23 @@ macro_rules! unwrap {
       // Option<T>
       // ---------
 
-      // Returns the contained `Some` value, or panics if it's `None`.
-      some $value:expr ) => {
+      // Unwraps the contained `Some` value, or otherwise returns `None`.
+      some? $value:expr ) => {
+        match $value {
+            Some(v) => v,
+            None => return None,
+        }
+    };
+    (
+      // Unwraps the contained `Some` value, or panics if it's `None`.
+      some $value:expr) => {
         match $value {
             Some(v) => v,
             None => panic![],
         }
     };
     (
-      // Returns the contained `Some` value, or panics with the given message if it's `None`.
+      // Unwraps the contained `Some` value, or panics with the given message if it's `None`.
       some_expect $value:expr, $message:literal) => {
         match $value {
             Some(v) => v,
@@ -29,7 +37,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Returns the contained `Some` value, or the given default if it's `None`.
+      // Unwraps the contained `Some` value, or the given default if it's `None`.
       some_or $value:expr, $default:expr) => {
         match $value {
             Some(v) => v,
@@ -41,7 +49,15 @@ macro_rules! unwrap {
       // Result<T, E>
       // ------------
 
-      // Returns the contained `Ok` value, or panics if it's `Err`.
+      // Unwraps the contained `Ok` value, or otherwise returns the `Err` value.
+      ok? $value:expr ) => {
+        match $value {
+            Ok(v) => v,
+            Err(e) => return Err(e),
+        }
+    };
+    (
+      // Unwraps the contained `Ok` value, or panics if it's `Err`.
       ok $value:expr ) => {
         match $value {
             Ok(v) => v,
@@ -49,7 +65,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Returns the contained `Ok` value, or panics with the given message if it's `Err`.
+      // Unwraps the contained `Ok` value, or panics with the given message if it's `Err`.
       ok_expect $value:expr, $message:literal) => {
         match $value {
             Ok(v) => v,
@@ -57,7 +73,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Returns the contained `Ok` value, or a provided default if it's `Err`.
+      // Unwraps the contained `Ok` value, or a provided default if it's `Err`.
       ok_or $value:expr, $default:expr) => {
         match $value {
             Ok(v) => v,
@@ -65,7 +81,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Returns the contained `Err` value, or panics if it's `Ok`.
+      // Unwraps the contained `Err` value, or panics if it's `Ok`.
       err $value:expr ) => {
         match $value {
             Ok(_) => panic![],
@@ -73,7 +89,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Returns the contained `Err` value, or panics the given message if it's `Ok`.
+      // Unwraps the contained `Err` value, or panics the given message if it's `Ok`.
       err_expect $value:expr, $message:literal) => {
         match $value {
             Ok(_) => panic!["{}", $message],
@@ -81,7 +97,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Returns the contained `Err` value, or a provided default if it's `Ok`.
+      // Unwraps the contained `Err` value, or a provided default if it's `Ok`.
       err_or $value:expr, $default:expr) => {
         match $value {
             Ok(_) => $default,
@@ -93,7 +109,17 @@ macro_rules! unwrap {
       // OptRes<T, E>
       // ------------
 
-      // Returns the contained `Some(Ok)` value,
+      // Unwraps the contained `Some(Ok)` value,
+      // or otherwise either returns the `Some(Err)` value or `None`.
+      sok? $value:expr ) => {
+        match $value {
+            Some(Ok(v)) => v,
+            Some(Err(e)) => return Some(Err(e)),
+            None => return None,
+        }
+    };
+    (
+      // Unwraps the contained `Some(Ok)` value,
       // or panics if it's `Some(Err)` or `None`.
       sok $value:expr ) => {
         match $value {
@@ -102,8 +128,9 @@ macro_rules! unwrap {
             None => panic![],
         }
     };
+
     (
-      // Returns the contained `Some(Ok)` value,
+      // Unwraps the contained `Some(Ok)` value,
       // or panics with the given message if it's `Some(Err)` or `None`.
       sok_expect $value:expr, $message:literal) => {
         match $value {
@@ -113,7 +140,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Returns the contained `Some(Ok)` value,
+      // Unwraps the contained `Some(Ok)` value,
       // or a provided default if it's `Some(Err)` or `None`.
       sok_or $value:expr, $default:expr) => {
         match $value {
@@ -123,7 +150,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Returns the contained `Some(Err)` value,
+      // Unwraps the contained `Some(Err)` value,
       // or panics if it's `Some(Ok)` or `None`.
       serr $value:expr ) => {
         match $value {
@@ -133,7 +160,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Returns the contained `Some(Err)` value,
+      // Unwraps the contained `Some(Err)` value,
       // or panics with the given message if it's `Some(Ok)` or `None`.
       serr_expect $value:expr, $message:literal) => {
         match $value {
@@ -143,7 +170,7 @@ macro_rules! unwrap {
         }
     };
     (
-      // Returns the contained `Some(Err)` value,
+      // Unwraps the contained `Some(Err)` value,
       // or a provided default if it's `Some(Ok)` or `None`.
       serr_or $value:expr, $default:expr) => {
         match $value {
