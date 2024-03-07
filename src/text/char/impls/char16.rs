@@ -1,7 +1,14 @@
 // devela::text::char::impls::char16
+//
+//!
+//
 
-use super::*;
-use crate::text::AsciiChar;
+use super::{Char16, Char24, Char32, Char7, Char8};
+use crate::text::{
+    char::NonSurrogateU16, char_byte_len, char_is_7bit, char_is_noncharacter, AsciiChar, TextError,
+    TextResult as Result,
+};
+use TextError::CharConversion;
 
 impl Char16 {
     /* private helper fns */
@@ -69,7 +76,7 @@ impl Char16 {
         if char_byte_len(c) == 1 {
             Ok(Char16::new_unchecked(c as u16))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
     /// Tries to convert a `Char32` to `Char16`.
@@ -83,7 +90,7 @@ impl Char16 {
         if char_byte_len(c as u32) <= 2 {
             Ok(Char16::new_unchecked(c as u32 as u16))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
 
@@ -106,7 +113,7 @@ impl Char16 {
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0.get() as u8) });
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
 

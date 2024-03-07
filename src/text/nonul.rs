@@ -6,11 +6,15 @@
 // - definitions
 // - trait impls
 
-use super::{helpers::impl_sized_alias, ArrayStringError, Result};
-use core::fmt;
+use crate::{
+    result::unwrap,
+    text::{helpers::impl_sized_alias, TextError, TextResult as Result},
+};
+use core::{fmt, str::Chars};
+use TextError::{NotEnoughCapacity, NotEnoughElements, OutOfBounds};
 
 #[cfg(feature = "alloc")]
-use crate::_deps::alloc::{ffi::CString, str::Chars, string::ToString};
+use crate::_deps::alloc::{ffi::CString, string::ToString};
 
 use super::char::*;
 
@@ -23,6 +27,7 @@ const NUL_CHAR: char = '\0';
 /// Can't contain nul chars.
 ///
 /// Internally, the first 0 byte in the array indicates the end of the string.
+#[must_use]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct StringNonul<const CAP: usize> {
     arr: [u8; CAP],
@@ -41,42 +46,49 @@ impl_sized_alias![
 
 impl<const CAP: usize> StringNonul<CAP> {
     /// Creates a new empty `StringNonul`.
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255.
     #[inline]
-    #[must_use]
-    pub const fn new() -> Self {
-        Self { arr: [0; CAP] }
+    pub const fn new() -> Result<Self> {
+        if CAP <= u8::MAX as usize {
+            Ok(Self { arr: [0; CAP] })
+        } else {
+            Err(OutOfBounds(Some(CAP)))
+        }
     }
 
     /// Creates a new `StringNonul` from a `Char7`.
     ///
     /// If `c`.[`is_nul()`][Char7#method.is_nul] an empty string will be returned.
     ///
-    /// # Panics
-    /// Panics if `!c.is_nul()` and `CAP` < 1
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()` and `CAP` < 1.
     ///
-    /// Will never panic if `CAP` >= 1.
+    /// Will always succeed if `CAP` >= 1.
     #[inline]
-    #[must_use]
-    pub const fn from_char7(c: Char7) -> Self {
-        let mut new = Self::new();
+    pub const fn from_char7(c: Char7) -> Result<Self> {
+        let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             new.arr[0] = c.to_utf8_bytes()[0];
         }
-        new
+        Ok(new)
     }
 
     /// Creates a new `StringNonul` from a `Char8`.
     ///
     /// If `c`.[`is_nul()`][Char8#method.is_nul] an empty string will be returned.
     ///
-    /// # Panics
-    /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
+    /// and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
     ///
-    /// Will never panic if `CAP` >= 2.
+    /// Will always succeed if `CAP` >= 2.
     #[inline]
-    #[must_use]
-    pub const fn from_char8(c: Char8) -> Self {
-        let mut new = Self::new();
+    pub const fn from_char8(c: Char8) -> Result<Self> {
+        let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = char_utf8_2bytes_len(bytes);
@@ -86,21 +98,22 @@ impl<const CAP: usize> StringNonul<CAP> {
                 new.arr[1] = bytes[1];
             }
         }
-        new
+        Ok(new)
     }
 
     /// Creates a new `StringNonul` from a `Char16`.
     ///
     /// If `c`.[`is_nul()`][Char16#method.is_nul] an empty string will be returned.
     ///
-    /// # Panics
-    /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
+    /// and `CAP` < `c.`[`len_utf8()`][Char16#method.len_utf8].
     ///
-    /// Will never panic if `CAP` >= 3.
+    /// Will always succeed if `CAP` >= 3.
     #[inline]
-    #[must_use]
-    pub const fn from_char16(c: Char16) -> Self {
-        let mut new = Self::new();
+    pub const fn from_char16(c: Char16) -> Result<Self> {
+        let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = char_utf8_3bytes_len(bytes);
@@ -113,21 +126,22 @@ impl<const CAP: usize> StringNonul<CAP> {
                 new.arr[2] = bytes[2];
             }
         }
-        new
+        Ok(new)
     }
 
     /// Creates a new `StringNonul` from a `Char24`.
     ///
     /// If `c`.[`is_nul()`][Char24#method.is_nul] an empty string will be returned.
     ///
-    /// # Panics
-    /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
+    /// and `CAP` < `c.`[`len_utf8()`][Char24#method.len_utf8].
     ///
-    /// Will never panic if `CAP` >= 4.
+    /// Will always succeed if `CAP` >= 4.
     #[inline]
-    #[must_use]
-    pub const fn from_char24(c: Char24) -> Self {
-        let mut new = Self::new();
+    pub const fn from_char24(c: Char24) -> Result<Self> {
+        let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
             let len = char_utf8_4bytes_len(bytes);
@@ -143,21 +157,22 @@ impl<const CAP: usize> StringNonul<CAP> {
                 new.arr[3] = bytes[3];
             }
         }
-        new
+        Ok(new)
     }
 
     /// Creates a new `StringNonul` from a `Char32`.
     ///
-    /// If `c`.[`is_nul()`][Char32#method.is_nul] an empty string will be returned.
+    /// If `c`.[`is_nul()`][UnicodeScalar#method.is_nul] an empty string will be returned.
     ///
-    /// # Panics
-    /// Panics if `!c.is_nul()` and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
+    /// and `CAP` < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
     ///
-    /// Will never panic if `CAP` is >= 4.
+    /// Will always succeed if `CAP` >= 4.
     #[inline]
-    #[must_use]
-    pub const fn from_char32(c: Char32) -> Self {
-        Self::from_char(c.0)
+    pub const fn from_char32(c: Char32) -> Result<Self> {
+        Ok(unwrap![ok? Self::from_char(c.0)])
     }
 
     /// Creates a new `StringNonul` from a `char`.
@@ -168,10 +183,16 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Panics if `c != NUL` and `CAP` < `c` lenght.
     ///
     /// Will never panic if `CAP` is >= 4.
+
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
+    /// and `CAP` < `c.`[`len_utf8()`][Char32#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 4.
     #[inline]
-    #[must_use]
-    pub const fn from_char(c: char) -> Self {
-        let mut new = Self::new();
+    pub const fn from_char(c: char) -> Result<Self> {
+        let mut new = unwrap![ok? Self::new()];
 
         if c as u32 != 0 {
             let bytes = char_to_utf8_bytes(c);
@@ -188,7 +209,7 @@ impl<const CAP: usize> StringNonul<CAP> {
                 new.arr[3] = bytes[3];
             }
         }
-        new
+        Ok(new)
     }
 
     //
@@ -313,8 +334,6 @@ impl<const CAP: usize> StringNonul<CAP> {
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[inline]
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn chars(&self) -> Chars {
         self.as_str().chars()
     }
@@ -345,11 +364,11 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Tries to remove the last character and return it.
     ///
     /// # Errors
-    /// Returns an error if the string is empty.
+    /// Returns [`NotEnoughElements`] if the string is empty.
     #[inline]
     pub fn try_pop(&mut self) -> Result<char> {
         if self.is_empty() {
-            Err(ArrayStringError::NotEnoughElements(1))
+            Err(NotEnoughElements(1))
         } else {
             Ok(self.pop_unchecked())
         }
@@ -401,7 +420,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Trying to push a nul character does nothing and returns 0 bytes.
     ///
     /// # Errors
-    /// Returns an error if the capacity is not enough to hold the given character.
+    /// Returns [`NotEnoughCapacity`] if the capacity is not enough to hold the given character.
     pub fn try_push(&mut self, character: char) -> Result<usize> {
         let char_len = character.len_utf8();
 
@@ -414,7 +433,7 @@ impl<const CAP: usize> StringNonul<CAP> {
             let _ = character.encode_utf8(&mut self.arr[len..new_len]);
             Ok(char_len)
         } else {
-            Err(ArrayStringError::NotEnoughCapacity(char_len))
+            Err(NotEnoughCapacity(char_len))
         }
     }
 
@@ -451,7 +470,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns the number of bytes written.
     ///
     /// # Errors
-    /// Returns an error if the capacity is not enough to hold even the
+    /// Returns [`NotEnoughCapacity`] if the capacity is not enough to hold even the
     /// first non-nul character.
     pub fn try_push_str(&mut self, string: &str) -> Result<usize> {
         let first_char_len = string
@@ -460,7 +479,7 @@ impl<const CAP: usize> StringNonul<CAP> {
             .map(|c| c.len_utf8())
             .unwrap_or(0);
         if self.remaining_capacity() < first_char_len {
-            Err(ArrayStringError::NotEnoughCapacity(first_char_len))
+            Err(NotEnoughCapacity(first_char_len))
         } else {
             Ok(self.push_str(string))
         }
@@ -473,7 +492,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Nul characters will not be taken into account.
     ///
     /// # Errors
-    /// Returns an error if the slice wont completely fit.
+    /// Returns [`NotEnoughCapacity`] if the slice wont completely fit.
     #[inline]
     pub fn try_push_str_complete(&mut self, string: &str) -> Result<usize> {
         let non_nul_len = string.as_bytes().iter().filter(|x| **x != 0).count();
@@ -481,7 +500,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         if self.remaining_capacity() >= non_nul_len {
             Ok(self.push_str(string))
         } else {
-            Err(ArrayStringError::NotEnoughCapacity(non_nul_len))
+            Err(NotEnoughCapacity(non_nul_len))
         }
     }
 }
@@ -490,10 +509,12 @@ impl<const CAP: usize> StringNonul<CAP> {
 
 impl<const CAP: usize> Default for StringNonul<CAP> {
     /// Returns an empty string.
+    ///
+    /// # Panics
+    /// Panics if `CAP > 255`.
     #[inline]
-    #[must_use]
     fn default() -> Self {
-        Self::new()
+        Self::new().unwrap()
     }
 }
 

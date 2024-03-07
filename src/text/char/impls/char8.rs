@@ -1,7 +1,10 @@
 // devela::text::char::impls::char8
 
-use super::*;
-use crate::text::AsciiChar;
+use super::{Char16, Char24, Char32, Char7, Char8};
+use crate::text::{
+    char_byte_len, char_is_7bit, char_is_noncharacter, AsciiChar, TextError, TextResult as Result,
+};
+use TextError::CharConversion;
 
 impl Char8 {
     /* private helper fns */
@@ -40,7 +43,7 @@ impl Char8 {
         if char_byte_len(c.to_u32()) == 1 {
             Ok(Char8(c.to_u32() as u8))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
     /// Tries to convert a `Char24` to `Char8`.
@@ -50,7 +53,7 @@ impl Char8 {
         if char_byte_len(c) == 1 {
             Ok(Char8(c as u8))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
     /// Tries to convert a `Char32` to `Char8`.
@@ -59,7 +62,7 @@ impl Char8 {
         if char_byte_len(c.to_u32()) == 1 {
             Ok(Char8(c.to_u32() as u8))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
     /// Tries to convert a `char` to `Char8`.
@@ -68,7 +71,7 @@ impl Char8 {
         if char_byte_len(c as u32) == 1 {
             Ok(Char8(c as u32 as u8))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
 
@@ -91,7 +94,7 @@ impl Char8 {
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0) });
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
 

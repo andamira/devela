@@ -1,7 +1,11 @@
 // devela::text::char::impls::char32
 
-use super::*;
-use crate::text::AsciiChar;
+use super::{Char16, Char24, Char32, Char7, Char8};
+use crate::text::{
+    char_is_7bit, char_is_noncharacter, char_to_utf8_bytes, AsciiChar, TextError,
+    TextResult as Result,
+};
+use TextError::CharConversion;
 
 impl Char32 {
     /* constants */
@@ -71,7 +75,7 @@ impl Char32 {
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0 as u8) });
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
 

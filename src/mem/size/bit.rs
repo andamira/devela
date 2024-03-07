@@ -42,7 +42,7 @@ use crate::text::AsciiChar;
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // #[cfg(feature = "text")]
-// use crate::text::{ArrayU16String, ArrayU32String, ArrayU8Egc, ArrayU8String};
+// use crate::text::{StringU16, StringU32, EgcU8, StringU8};
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::{
     collections::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, VecDeque},

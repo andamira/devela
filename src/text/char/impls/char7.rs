@@ -1,7 +1,8 @@
 // devela::text::char::impls::char7
 
-use super::*;
-use crate::text::AsciiChar;
+use super::{Char16, Char24, Char32, Char7, Char8};
+use crate::text::{char::NonEdgeU8, char_is_7bit, AsciiChar, TextError, TextResult as Result};
+use TextError::CharConversion;
 
 impl Char7 {
     /* private helper fns */
@@ -51,7 +52,7 @@ impl Char7 {
         if char_is_7bit(c.to_u32()) {
             Ok(Char7::new_unchecked(c.to_u32() as u8))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
     /// Tries to convert a `Char16` to `Char7`.
@@ -60,7 +61,7 @@ impl Char7 {
         if char_is_7bit(c.to_u32()) {
             Ok(Char7::new_unchecked(c.to_u32() as u8))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
     /// Tries to convert a `Char24` to `Char7`.
@@ -70,7 +71,7 @@ impl Char7 {
         if char_is_7bit(c) {
             Ok(Char7::new_unchecked(c as u8))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
     /// Tries to convert a `Char32` to `Char8`.
@@ -79,7 +80,7 @@ impl Char7 {
         if char_is_7bit(c.to_u32()) {
             Ok(Char7::new_unchecked(c.to_u32() as u8))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
     /// Tries to convert a `char` to `Char8`.
@@ -88,7 +89,7 @@ impl Char7 {
         if char_is_7bit(c as u32) {
             Ok(Char7::new_unchecked(c as u32 as u8))
         } else {
-            Err(CharConversionError(()))
+            Err(CharConversion)
         }
     }
 

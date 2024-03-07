@@ -5,18 +5,11 @@
 // TOC
 // - Char* struct definitions
 // - UnicodeScalar trait definition
-// - CharConversionError
 
-use core::fmt;
-
-/* private types */
-
-pub(super) type Result<T> = core::result::Result<T, CharConversionError>;
+pub(super) use crate::num::{NonEdgeU8, NonSpecificU16};
 
 // This is a surrogate UTF-16 code point that can't ever be a unicode scalar.
 pub(super) type NonSurrogateU16 = NonSpecificU16<0xDFFF>;
-
-pub(super) use crate::num::{NonEdgeU8, NonSpecificU16};
 
 /* public types */
 
@@ -249,16 +242,3 @@ pub trait UnicodeScalar {
     #[must_use]
     fn is_ascii(self) -> bool;
 }
-
-/// The error type returned when a conversion to a unicode scalar fails.
-// The private field forbids external construction.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct CharConversionError(pub(super) ());
-
-impl fmt::Display for CharConversionError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        "unicode code point out of range".fmt(f)
-    }
-}
-
-impl crate::result::Error for CharConversionError {}

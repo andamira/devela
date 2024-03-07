@@ -3,12 +3,11 @@
 //! implementations of core traits
 //
 
-use super::{
-    Char16, Char24, Char32, Char7, Char8, CharConversionError, NonEdgeU8, NonSurrogateU16, Result,
-};
+use super::{Char16, Char24, Char32, Char7, Char8, NonEdgeU8, NonSurrogateU16};
 use crate::{
     code::{paste, ConstDefault},
     result::unwrap,
+    text::{TextError, TextResult as Result},
 };
 use core::fmt;
 
@@ -116,7 +115,7 @@ impl From<Char7> for char {
 /* From Char8 */
 
 impl TryFrom<Char8> for Char7 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: Char8) -> Result<Char7> {
         c.try_to_char7()
@@ -154,14 +153,14 @@ impl From<Char8> for char {
 /* From Char16 */
 
 impl TryFrom<Char16> for Char7 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: Char16) -> Result<Char7> {
         c.try_to_char7()
     }
 }
 impl TryFrom<Char16> for Char8 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: Char16) -> Result<Char8> {
         c.try_to_char8()
@@ -199,21 +198,21 @@ impl From<Char16> for char {
 /* From Char24 */
 
 impl TryFrom<Char24> for Char7 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: Char24) -> Result<Char7> {
         c.try_to_char7()
     }
 }
 impl TryFrom<Char24> for Char8 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: Char24) -> Result<Char8> {
         c.try_to_char8()
     }
 }
 impl TryFrom<Char24> for Char16 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: Char24) -> Result<Char16> {
         c.try_to_char16()
@@ -244,21 +243,21 @@ impl From<Char24> for char {
 /* From Char32 */
 
 impl TryFrom<Char32> for Char7 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: Char32) -> Result<Char7> {
         c.try_to_char7()
     }
 }
 impl TryFrom<Char32> for Char8 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: Char32) -> Result<Char8> {
         c.try_to_char8()
     }
 }
 impl TryFrom<Char32> for Char16 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: Char32) -> Result<Char16> {
         c.try_to_char16()
@@ -282,21 +281,21 @@ impl From<Char32> for char {
 /* From char */
 
 impl TryFrom<char> for Char7 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: char) -> Result<Char7> {
         Char7::try_from_char(c)
     }
 }
 impl TryFrom<char> for Char8 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: char) -> Result<Char8> {
         Char8::try_from_char(c)
     }
 }
 impl TryFrom<char> for Char16 {
-    type Error = CharConversionError;
+    type Error = TextError;
     #[inline]
     fn try_from(c: char) -> Result<Char16> {
         Char16::try_from_char(c)

@@ -3,7 +3,7 @@
 // `char` can only implement the trait, not the associated const methods,
 // (and that's the main reason we have the Char32 wrapper type).
 
-use super::*;
+use crate::text::{char_byte_len, char_is_noncharacter, Char32, UnicodeScalar};
 
 impl UnicodeScalar for char {
     const MAX: Self = Self::MAX;

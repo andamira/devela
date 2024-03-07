@@ -8,11 +8,16 @@
 
 use super::Egc;
 #[cfg(feature = "alloc")]
-use crate::_deps::alloc::{ffi::CString, str::Chars};
-use crate::text::{
-    char::*,
-    {helpers::impl_sized_alias, StringU8},
+use crate::_deps::alloc::ffi::CString;
+use crate::{
+    result::unwrap,
+    text::{
+        char::*,
+        TextResult as Result,
+        {helpers::impl_sized_alias, StringU8},
+    },
 };
+use core::str::Chars;
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
@@ -35,78 +40,77 @@ impl_sized_alias![
 
 impl<const CAP: usize> EgcU8<CAP> {
     /// Creates a new empty `EgcU8`.
-    /// # Panics
-    /// Panics if `CAP` > 255.
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP > 255.
     #[inline]
-    #[must_use]
-    pub const fn new() -> Self {
-        Self(StringU8::new())
+    pub const fn new() -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::new()]))
     }
 
     /// Creates a new `EgcU8` from a `Char7`.
-    /// # Panics
-    /// Panics if `CAP` > 255 or < 1.
     ///
-    /// Will never panic if `CAP` >= 1 and <= 255.
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP > 255.
+    ///
+    /// Will always succeed if `CAP` >= 1 and <= 255.
     #[inline]
-    #[must_use]
-    pub const fn from_char7(c: Char7) -> Self {
-        Self(StringU8::from_char7(c))
+    pub const fn from_char7(c: Char7) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char7(c)]))
     }
 
     /// Creates a new `EgcU8` from a `Char8`.
-    /// # Panics
-    /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char8#method.len_utf8].
     ///
-    /// Will never panic if `CAP` >= 2 and <= 255.
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][Char8#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 2 and <= 255.
     #[inline]
-    #[must_use]
-    pub const fn from_char8(c: Char8) -> Self {
-        Self(StringU8::from_char8(c))
+    pub const fn from_char8(c: Char8) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char8(c)]))
     }
 
     /// Creates a new `EgcU8` from a `Char16`.
-    /// # Panics
-    /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char16#method.len_utf8].
     ///
-    /// Will never panic if `CAP` >= 3 and <= 255.
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][Char16#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 3 and <= 255.
     #[inline]
-    #[must_use]
-    pub const fn from_char16(c: Char16) -> Self {
-        Self(StringU8::from_char16(c))
+    pub const fn from_char16(c: Char16) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char16(c)]))
     }
 
     /// Creates a new `EgcU8` from a `Char24`.
-    /// # Panics
-    /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char24#method.len_utf8].
     ///
-    /// Will never panic if `CAP` >= 4 and <= 255.
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][Char24#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 4 and <= 255.
     #[inline]
-    #[must_use]
-    pub const fn from_char24(c: Char24) -> Self {
-        Self(StringU8::from_char24(c))
+    pub const fn from_char24(c: Char24) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char24(c)]))
     }
 
     /// Creates a new `EgcU8` from a `Char32`.
-    /// # Panics
-    /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Char32#method.len_utf8].
     ///
-    /// Will never panic if `CAP` >= 4 and <= 255.
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][Char32#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 4 and <= 255.
     #[inline]
-    #[must_use]
-    pub const fn from_char32(c: Char32) -> Self {
-        Self(StringU8::from_char32(c))
+    pub const fn from_char32(c: Char32) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char32(c)]))
     }
 
     /// Creates a new `EgcU8` from a `char`.
     /// # Panics
-    /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][Chars#method.len_utf8].
+    /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
     ///
     /// Will never panic if `CAP` >= 4 and <= 255.
     #[inline]
-    #[must_use]
-    pub const fn from_char(c: char) -> Self {
-        Self(StringU8::from_char(c))
+    pub const fn from_char(c: char) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char(c)]))
     }
 
     //
@@ -195,8 +199,7 @@ impl<const CAP: usize> EgcU8<CAP> {
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
-    #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[inline]
     pub fn chars(&self) -> Chars {
         self.0.chars()
     }
@@ -220,9 +223,12 @@ mod core_impls {
 
     impl<const CAP: usize> Default for EgcU8<CAP> {
         /// Returns an empty extended grapheme character.
+        ///
+        /// # Panics
+        /// Panics if `CAP` > 255.
         #[inline]
         fn default() -> Self {
-            Self::new()
+            unwrap![ok Self::new()]
         }
     }
 

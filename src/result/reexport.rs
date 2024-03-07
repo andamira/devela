@@ -12,13 +12,11 @@ use crate::code::reexport;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
 pub use crate::io::IoError;
 #[doc(inline)]
-#[cfg(feature = "text")]
-pub use crate::text::{ArrayStringError, CharConversionError};
-#[doc(inline)]
 pub use crate::{
     data::{DataError, DataResult},
     gfx::{GfxError, GfxResult},
     num::{NumError, NumResult},
+    text::{TextError, TextResult},
 };
 
 /* std */

@@ -6,10 +6,7 @@
 // - specific implementations
 // - common implementations
 
-use super::{
-    char_byte_len, char_is_7bit, char_is_noncharacter, char_to_utf8_bytes, Char16, Char24, Char32,
-    Char7, Char8, CharConversionError, NonEdgeU8, NonSurrogateU16, Result, UnicodeScalar,
-};
+use super::{char_byte_len, Char16, Char24, Char32, Char7, Char8, UnicodeScalar};
 use crate::code::paste;
 
 /* specific implementations */
@@ -23,15 +20,13 @@ mod char8;
 
 /* common implementations */
 
-macro_rules! impls {
-    ($name:ident: $( $bits:literal ),+ ) => {
-        $( impls![@$name: $bits]; )+
-    };
-    (@$name:ident: $bits:literal) => { paste! {
+macro_rules! impl_char {
+    ($( $bits:literal ),+ ) => { $( impl_char![@$bits]; )+ };
+    (@$bits:literal) => { paste! {
 
         /* impl traits */
 
-        impl UnicodeScalar for [<$name $bits>] {
+        impl UnicodeScalar for [<Char $bits>] {
             const MAX: Self = Self::MAX;
 
             /* encode */
@@ -96,7 +91,7 @@ macro_rules! impls {
 
         /* impl const fns */
 
-        impl [<$name $bits>] {
+        impl [<Char $bits>] {
 
             /* encode */
 
@@ -149,4 +144,4 @@ macro_rules! impls {
         }
     }};
 }
-impls![Char: 7, 8, 16, 24, 32];
+impl_char![7, 8, 16, 24, 32];
