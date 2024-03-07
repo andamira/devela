@@ -5,17 +5,16 @@
 //! [`slice`]: std::slice
 //
 
-/* always compiled, non-public modules */
+/* always compiled */
 
-mod always_fns;
 mod ext;
 mod wrapper;
 
-pub use {always_fns::*, ext::*, wrapper::*};
+pub use {ext::*, wrapper::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[cfg(feature = "mem")]
-    pub use super::{always_fns::*, ext::*, wrapper::*};
+    pub use super::{ext::*, wrapper::*};
 }

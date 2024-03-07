@@ -11,7 +11,7 @@ use core::str::from_utf8_unchecked;
 use crate::{code::iif, text::AsciiChar};
 
 // IMPROVE: use NumToStr
-use crate::{mem::slice_trim_leading_bytes, text::Ascii};
+use crate::{mem::Slice, text::Ascii};
 
 // Marker trait to prevent downstream implementations of the `ExtStr` trait.
 impl private::Sealed for str {}
@@ -106,7 +106,7 @@ impl ExtStr for str {
             let mut separator_turn = true; // start writing the separator
 
             let mut num_buf = Ascii(num).digits();
-            let mut num_bytes = slice_trim_leading_bytes(&num_buf, b'0');
+            let mut num_bytes = Slice::trim_leading_bytes(&num_buf, b'0');
             // IMPROVE:BENCH use NumToStr
             // let mut num_buf = [0u8; 22];
             // let mut num_bytes = num.to_bytes_base(10, &mut num_buf);
@@ -123,7 +123,7 @@ impl ExtStr for str {
                     num = index;
 
                     num_buf = Ascii(num).digits();
-                    num_bytes = slice_trim_leading_bytes(&num_buf, b'0');
+                    num_bytes = Slice::trim_leading_bytes(&num_buf, b'0');
                     // IMPROVE: use NumToStr
                     // num_bytes = num.to_bytes_base(10, &mut num_buf);
 
