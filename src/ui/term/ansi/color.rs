@@ -4,10 +4,7 @@
 //
 
 use super::Ansi;
-use crate::{
-    data::Compare,
-    text::{ascii_1digit, ascii_u8_digits},
-};
+use crate::{data::Compare, text::Ascii};
 
 /// ANSI 3-bit color codes, 8 colors.
 #[repr(u8)]
@@ -37,7 +34,7 @@ impl AnsiColor3b {
     #[inline]
     #[must_use]
     pub const fn to_ascii(&self) -> u8 {
-        ascii_1digit(*self as u8)
+        Ascii(*self as u8).digits_1()
     }
 
     /// Returns an `AnsiColor3b` from an `u8` value.
@@ -210,7 +207,7 @@ impl AnsiColor8b {
     #[inline]
     #[must_use]
     pub const fn to_ascii(&self) -> [u8; 3] {
-        ascii_u8_digits(self.0)
+        Ascii(self.0).digits()
     }
 }
 impl From<AnsiColor3b> for AnsiColor8b {
@@ -460,8 +457,8 @@ impl Ansi {
     #[rustfmt::skip]
     pub const fn GRAY(fg: u8, bg: u8) -> [u8; 19] {
         const X: [u8; 4] = C::C8;
-        let cf = ascii_u8_digits(Compare(fg).min(23));
-        let cb = ascii_u8_digits(Compare(bg).min(23));
+        let cf = Ascii(Compare(fg).min(23)).digits();
+        let cb = Ascii(Compare(bg).min(23)).digits();
         [
             b'\x1b', b'[',
             C::FG, X[0], X[1], X[2], X[3], cf[0], cf[1], cf[2],
@@ -580,8 +577,8 @@ impl Ansi {
         const X: [u8; 4] = C::RGB;
         let [fr, fg, fb] = fg;
         let [br, bg, bb] = bg;
-        let [fr, fg, fb] = [ascii_u8_digits(fr), ascii_u8_digits(fg), ascii_u8_digits(fb)];
-        let [br, bg, bb] = [ascii_u8_digits(br), ascii_u8_digits(bg), ascii_u8_digits(bb)];
+        let [fr, fg, fb] = [Ascii(fr).digits(), Ascii(fg).digits(), Ascii(fb).digits()];
+        let [br, bg, bb] = [Ascii(br).digits(), Ascii(bg).digits(), Ascii(bb).digits()];
         [
             b'\x1b', b'[',
             C::FG, X[0], X[1], X[2], X[3],
@@ -599,7 +596,7 @@ impl Ansi {
     pub const fn RGB_FG(fg: [u8; 3]) -> [u8; 19] {
         const X: [u8; 4] = C::RGB;
         let [r, g, b] = fg;
-        let [r, g, b] = [ascii_u8_digits(r), ascii_u8_digits(g), ascii_u8_digits(b)];
+        let [r, g, b] = [Ascii(r).digits(), Ascii(g).digits(), Ascii(b).digits()];
         [
             b'\x1b', b'[',
             C::FG, X[0], X[1], X[2], X[3],
@@ -615,7 +612,7 @@ impl Ansi {
     pub const fn RGB_BG(bg: [u8; 3]) -> [u8; 19] {
         const X: [u8; 4] = C::RGB;
         let [r, g, b] = bg;
-        let [r, g, b] = [ascii_u8_digits(r), ascii_u8_digits(g), ascii_u8_digits(b)];
+        let [r, g, b] = [Ascii(r).digits(), Ascii(g).digits(), Ascii(b).digits()];
         [
             b'\x1b', b'[',
             C::BG, X[0], X[1], X[2], X[3],

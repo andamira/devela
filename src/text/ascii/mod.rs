@@ -7,16 +7,15 @@
 
 /* always compiled */
 
-mod always_fns;
 mod char;
-mod fns;
+mod wrapper;
 
 #[allow(unused_imports)]
-pub use {always_fns::*, char::AsciiChar, fns::*};
+pub use {char::AsciiChar, wrapper::Ascii};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{always_fns::*, char::AsciiChar, fns::*};
+    pub use super::{char::AsciiChar, wrapper::Ascii};
 }
