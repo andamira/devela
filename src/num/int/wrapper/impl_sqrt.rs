@@ -11,7 +11,7 @@
 
 use crate::{
     code::{iif, paste},
-    num::{Compare, isize_up, upcasted_op, usize_up, Int, NumError as E, NumResult as Result},
+    num::{isize_up, upcasted_op, usize_up, Compare, Int, NumError as E, NumResult as Result},
 };
 use E::NonNegativeRequired;
 #[cfg(doc)]
@@ -381,6 +381,7 @@ impl_int![signed i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128
 impl_int![unsigned u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10",
     usize:usize_up:"-11"];
 
+// TODO
 // #[cfg(feature = "num_niche_impls")]
 // use crate::num::{niche::*, num_niche_impls};
 // #[cfg(feature = "num_niche_impls")]

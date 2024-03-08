@@ -44,9 +44,7 @@ pub use dst::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{
-        bit::all::*, collections::all::*, error::*, hash::all::*, iter::all::*,
-    };
+    pub use super::{bit::all::*, collections::all::*, error::*, hash::all::*, iter::all::*};
 
     // feature-gated
     #[doc(inline)]

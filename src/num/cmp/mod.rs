@@ -20,5 +20,4 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{compare::*, reexports::*};
-
 }
