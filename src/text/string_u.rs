@@ -13,17 +13,22 @@ use super::{
     helpers::impl_sized_alias,
     TextError, TextResult as Result,
 };
-use crate::result::unwrap;
-use core::{fmt, ops::Deref, str::Chars};
+use crate::{num::Compare, result::unwrap};
+use core::{
+    fmt,
+    ops::Deref,
+    str::{from_utf8, Chars},
+};
 use TextError::{InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds};
-
-#[cfg(feature = "alloc")]
-use crate::_deps::alloc::{ffi::CString, string::ToString};
 
 #[cfg(feature = "text")]
 use super::char::{
     char_utf8_2bytes_len, char_utf8_3bytes_len, Char16, Char24, Char32, Char7, Char8,
 };
+#[cfg(feature = "alloc")]
+use crate::_deps::alloc::{ffi::CString, string::ToString};
+#[cfg(feature = "unsafe_str")]
+use core::str::from_utf8_unchecked;
 
 macro_rules! generate_array_string {
     ($($t:ty),+ $(,)?) => {
@@ -165,7 +170,7 @@ macro_rules! generate_array_string {
             #[must_use]
             pub fn as_str(&self) -> &str {
                 #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-                return core::str::from_utf8(
+                return from_utf8(
                     self.arr
                         .get(0..self.len as usize)
                         .expect("len must be <= arr.len()"),
@@ -175,7 +180,7 @@ macro_rules! generate_array_string {
                 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
                 // SAFETY: we ensure to contain only valid UTF-8
                 unsafe {
-                    core::str::from_utf8_unchecked(
+                    from_utf8_unchecked(
                         self.arr
                             .get(0..self.len as usize)
                             .expect("len must be <= arr.len()"),
@@ -488,7 +493,7 @@ macro_rules! generate_array_string {
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
             #[inline]
             pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self> {
-                match core::str::from_utf8(&bytes) {
+                match from_utf8(&bytes) {
                     Ok(_) => {
                         Ok(Self { arr: bytes, len: CAP as $t })
                     },
@@ -507,6 +512,92 @@ macro_rules! generate_array_string {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
                 Self { arr: bytes, len: CAP as $t }
+            }
+
+            /// Returns a string from an array of `bytes`,
+            /// truncated to `n` bytes long counting from the left.
+            ///
+            /// The new `length` is maxed out at `CAP`.
+            ///
+            /// # Errors
+            /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
+            #[inline]
+            pub fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
+                let length = Compare(length).min(CAP as $t);
+                // IMPROVE make const. Limited by slice indexing
+                match from_utf8(&bytes[0..length as usize]) {
+                    Ok(_) => Ok(Self { arr: bytes, len: length }),
+                    Err(e) => Err(InvalidUtf8(Some(e))),
+                }
+            }
+
+            /// Returns a string from an array of `bytes`,
+            /// truncated to `n` bytes long counting from the left,
+            /// which must be valid UTF-8.
+            ///
+            /// The new `length` is maxed out at `CAP`.
+            ///
+            /// # Safety
+            /// The caller must ensure that the content of the truncated slice is valid UTF-8.
+            ///
+            /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
+            #[inline]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+            pub const unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
+                Self { arr: bytes, len: Compare(length).min(CAP as $t) }
+            }
+
+            /// Returns a string from an array of `bytes`,
+            /// truncated to `n` bytes long counting from the right.
+            ///
+            /// The new `length` is maxed out at `CAP`.
+            /// Bytes are shift-copied without allocating a new array.
+            ///
+            /// # Errors
+            /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
+            #[inline]
+            pub fn from_bytes_nright(mut bytes: [u8; CAP], length: $t) -> Result<Self> {
+                let length = Compare(length).min(CAP as $t);
+                let ulen = length as usize;
+                let start = CAP - ulen;
+                let mut i = 0;
+                while i < ulen {
+                    bytes[i] = bytes[start + i];
+                    i += 1;
+                }
+                // IMPROVE make const. Limited by slice indexing
+                match core::str::from_utf8(&bytes[0..ulen]) {
+                    Ok(_) => Ok(Self { arr: bytes, len: length }),
+                    Err(e) => Err(InvalidUtf8(Some(e))),
+                }
+            }
+
+            /// Returns a string from an array of `bytes`,
+            /// truncated to `n` bytes long counting from the right,
+            /// which must be valid UTF-8.
+            ///
+            /// The new `length` is maxed out at `CAP`.
+            /// Bytes are shift-copied without allocating a new array.
+            ///
+            /// # Safety
+            /// The caller must ensure that the content of the truncated slice is valid UTF-8.
+            ///
+            /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
+            #[inline]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+            pub const unsafe fn from_bytes_nright_unchecked(mut bytes: [u8; CAP], length: $t)
+                -> Self {
+                let length = Compare(length).min(CAP as $t);
+                let ulen = length as usize;
+                let start = CAP - ulen;
+                let mut i = 0;
+                while i < ulen {
+                    bytes[i] = bytes[start + i];
+                    i += 1;
+                }
+                Self { arr: bytes, len: length }
             }
         }
 
@@ -596,7 +687,7 @@ macro_rules! generate_array_string {
                     Err(NotEnoughCapacity(bytes.len()))
                 } else {
                     // Check if the byte slice is valid UTF-8
-                    match core::str::from_utf8(bytes) {
+                    match from_utf8(bytes) {
                         Ok(_) => {
                             let mut arr = [0; CAP];
                             arr[..bytes.len()].copy_from_slice(bytes);

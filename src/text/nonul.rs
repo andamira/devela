@@ -537,7 +537,7 @@ impl<const CAP: usize> StringNonul<CAP> {
                     index += 1;
                 }
                 Ok(Self { arr: bytes })
-            },
+            }
             Err(e) => Err(InvalidUtf8(Some(e))),
         }
     }
@@ -553,7 +553,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
-        Self { arr: bytes, len: CAP as u8 }
+        Self { arr: bytes }
     }
 }
 
