@@ -74,6 +74,7 @@ macro_rules! iif {
     };
 
     (let $pat:pat = $if:expr ; $true:expr) => {
+        #[allow(clippy::question_mark)]
         if let $pat = $if {
             $true
         }

@@ -43,7 +43,7 @@ impl Ascii<usize> {
         iif![self.0 == 0; 1; self.0.ilog10() as usize + 1]
     }
 
-    /// Converts a `usize` into a byte array of `5` ascii digits, padded with zeros.
+    /// Converts a `usize` into a byte array of `5` ascii digits with leading zeros.
     ///
     /// The actual array length depends on the target platform's pointer size.
     ///
@@ -54,7 +54,7 @@ impl Ascii<usize> {
         Ascii(self.0 as u16).digits()
     }
 
-    /// Converts a `usize` into a byte array of `10` ascii digits, padded with zeros.
+    /// Converts a `usize` into a byte array of `10` ascii digits with leading zeros.
     ///
     /// The actual array length depends on the target platform's pointer size.
     ///
@@ -65,7 +65,7 @@ impl Ascii<usize> {
         Ascii(self.0 as u32).digits()
     }
 
-    /// Converts a `usize` into a byte array of `20` ascii digits, padded with zeros.
+    /// Converts a `usize` into a byte array of `20` ascii digits with leading zeros.
     ///
     /// The actual array length depends on the target platform's pointer size.
     ///
@@ -102,7 +102,7 @@ impl Ascii<u8> {
     /// ```
     /// # use devela::text::Ascii;
     /// assert_eq![1, Ascii(0_u8).count_digits()];
-    /// assert_eq![4, Ascii(9876_u8).count_digits()];
+    /// assert_eq![3, Ascii(123_u8).count_digits()];
     /// ```
     #[inline]
     #[must_use]
@@ -110,7 +110,7 @@ impl Ascii<u8> {
         iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
     }
 
-    /// Converts a `u8` into a byte array of `3` ASCII digits, padded with zeros.
+    /// Converts a `u8` into a byte array of `3` ASCII digits with leading zeros.
     ///
     /// You can trim the leading zeros with
     /// [`slice_trim_leading_bytes`][crate::mem::slice_trim_leading_bytes].
@@ -176,8 +176,8 @@ impl Ascii<u16> {
     pub const fn digits(self) -> [u8; 5] {
         [
             //              54321
-            //              65535 u16::MAX
-            self.calc_digit(10000),
+            //              65535    ← u16::MAX
+            self.calc_digit(10000), // 5 digits
             self.calc_digit(1000),
             self.calc_digit(100),
             self.calc_digit(10),
@@ -244,7 +244,7 @@ impl Ascii<u32> {
     pub const fn digits(self) -> [u8; 10] {
         [
             //              0987654321
-            //              4294967295 u32::MAX
+            //              4294967295    ← u32::MAX
             self.calc_digit(1000000000), // 10 digits
             self.calc_digit(100000000),
             self.calc_digit(10000000),
@@ -285,7 +285,7 @@ impl Ascii<u64> {
     pub const fn digits(self) -> [u8; 20] {
         [
             //              0987654321_987654321
-            //              18446744073709551615 u64::MAX
+            //              18446744073709551615    ← u64::MAX
             self.calc_digit(10000000000000000000), // 20 digits
             self.calc_digit(1000000000000000000),
             self.calc_digit(100000000000000000),
@@ -336,7 +336,7 @@ impl Ascii<u128> {
     pub const fn digits(self) -> [u8; 39] {
         [
             //              987654321_987654321_987654321_987654321
-            //              340282366920938463463374607431768211455 u128::MAX
+            //              340282366920938463463374607431768211455    ← u128::MAX
             self.calc_digit(100000000000000000000000000000000000000), // 39 digits
             self.calc_digit(10000000000000000000000000000000000000),
             self.calc_digit(1000000000000000000000000000000000000),

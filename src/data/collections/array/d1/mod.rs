@@ -15,6 +15,7 @@ pub use definitions::*;
 /* feature-gated */
 
 #[cfg(feature = "unsafe_array")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_array")))]
 mod uninit;
 
 #[cfg(feature = "unsafe_array")]

@@ -8,7 +8,7 @@
 
 use crate::code::ConstDefault;
 use core::fmt;
-#[cfg(feature = "unsafe_niche")]
+#[cfg(feature = "unsafe_str")]
 use core::mem::transmute;
 
 /// One of the 128 Unicode characters from U+0000 through U+007F,
@@ -463,8 +463,8 @@ impl AsciiChar {
     /// `b` must be in `0..=127`, or else this is UB.
     #[inline]
     #[must_use]
-    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
     pub const unsafe fn from_u8_unchecked(b: u8) -> Self {
         // SAFETY: Our safety precondition is that `b` is in-range.
         unsafe { transmute(b) }
