@@ -25,6 +25,9 @@ pub enum TextError {
     /// The error type returned when a conversion to a unicode scalar fails.
     CharConversion,
 
+    /// An invalid NUL character was found.
+    InvalidNul,
+
     /// An error which can occur when attempting to interpret
     /// a sequence of [`u8`] as a string.
     // Consider:
@@ -61,6 +64,7 @@ mod core_impls {
                         ),
                     },
                 },
+                E::InvalidNul => write!(f, "An invalid NUL character was found."),
                 E::OutOfBounds(i) => match i {
                     None => write!(f, "The given index or capacity is out of bounds."),
                     Some(i) => write!(f, "The given index or capacity {i} is out of bounds."),

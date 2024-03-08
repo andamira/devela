@@ -11,7 +11,7 @@ use crate::{
     text::{helpers::impl_sized_alias, TextError, TextResult as Result},
 };
 use core::{fmt, ops::Deref, str::Chars};
-use TextError::{InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds};
+use TextError::{InvalidNul, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds};
 
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::{ffi::CString, string::ToString};
@@ -516,6 +516,44 @@ impl<const CAP: usize> StringNonul<CAP> {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     pub const fn from_char32(c: Char32) -> Result<Self> {
         Ok(unwrap![ok? Self::from_char(c.0)])
+    }
+
+    /* from bytes */
+
+    /// Returns a string from an array of `bytes`.
+    ///
+    /// # Errors
+    /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8,
+    /// and [`InvalidNul`] if the bytes contains a NUL character.
+    #[inline]
+    pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self> {
+        match core::str::from_utf8(&bytes) {
+            Ok(_) => {
+                let mut index = 0;
+                while index < CAP {
+                    if bytes[index] == 0 {
+                        return Err(InvalidNul);
+                    }
+                    index += 1;
+                }
+                Ok(Self { arr: bytes })
+            },
+            Err(e) => Err(InvalidUtf8(Some(e))),
+        }
+    }
+
+    /// Returns a string from an array of `bytes` that must be valid UTF-8.
+    ///
+    /// # Safety
+    /// The caller must ensure that the content of the slice is valid UTF-8,
+    /// and that it doesn't contain nul characters.
+    ///
+    /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
+    #[inline]
+    #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+    pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
+        Self { arr: bytes, len: CAP as u8 }
     }
 }
 

@@ -217,7 +217,6 @@ macro_rules! generate_array_string {
                 self.len = 0;
             }
 
-
             /// Removes the last character and returns it, or `None` if
             /// the string is empty.
             #[inline]
@@ -479,6 +478,35 @@ macro_rules! generate_array_string {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
             pub const fn from_char32(c: Char32) -> Result<Self> {
                 Ok(unwrap![ok? Self::from_char(c.0)])
+            }
+
+            /* from bytes */
+
+            /// Returns a string from a slice of `bytes`.
+            ///
+            /// # Errors
+            /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
+            #[inline]
+            pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self> {
+                match core::str::from_utf8(&bytes) {
+                    Ok(_) => {
+                        Ok(Self { arr: bytes, len: CAP as $t })
+                    },
+                    Err(e) => Err(InvalidUtf8(Some(e))),
+                }
+            }
+
+            /// Returns a string from an array of `bytes` that must be valid UTF-8.
+            ///
+            /// # Safety
+            /// The caller must ensure that the content of the slice is valid UTF-8.
+            ///
+            /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
+            #[inline]
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
+            pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
+                Self { arr: bytes, len: CAP as $t }
             }
         }
 
