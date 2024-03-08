@@ -515,7 +515,7 @@ macro_rules! generate_array_string {
             }
 
             /// Returns a string from an array of `bytes`,
-            /// truncated to `n` bytes long counting from the left.
+            /// truncated to `n` bytes counting from the left.
             ///
             /// The new `length` is maxed out at `CAP`.
             ///
@@ -532,7 +532,7 @@ macro_rules! generate_array_string {
             }
 
             /// Returns a string from an array of `bytes`,
-            /// truncated to `n` bytes long counting from the left,
+            /// truncated to `n` bytes counting from the left,
             /// which must be valid UTF-8.
             ///
             /// The new `length` is maxed out at `CAP`.
@@ -549,7 +549,7 @@ macro_rules! generate_array_string {
             }
 
             /// Returns a string from an array of `bytes`,
-            /// truncated to `n` bytes long counting from the right.
+            /// truncated to `n` bytes counting from the right.
             ///
             /// The new `length` is maxed out at `CAP`.
             /// Bytes are shift-copied without allocating a new array.
@@ -572,7 +572,7 @@ macro_rules! generate_array_string {
             }
 
             /// Returns a string from an array of `bytes`,
-            /// truncated to `n` bytes long counting from the right,
+            /// truncated to `n` bytes counting from the right,
             /// which must be valid UTF-8.
             ///
             /// The new `length` is maxed out at `CAP`.

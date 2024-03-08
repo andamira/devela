@@ -49,7 +49,7 @@ use crate::_deps::alloc::{
     string::String,
     vec::Vec,
 };
-#[cfg(feature = "alloc")]
+#[cfg(all(feature = "text", feature = "alloc"))]
 use crate::text::StringEgc;
 #[cfg(feature = "text")]
 use crate::text::{EgcNonul, StringNonul};

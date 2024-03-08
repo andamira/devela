@@ -4,7 +4,6 @@
 //
 
 use crate::{code::iif, num::Compare, result::unwrap, text::StringU8};
-use core::str::from_utf8;
 #[cfg(feature = "unsafe_str")]
 use core::str::from_utf8_unchecked;
 
