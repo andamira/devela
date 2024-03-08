@@ -1,4 +1,4 @@
-// devela::data::cmp::sorting
+// devela::data::sort
 //
 //! Helpers for sorting.
 //
@@ -13,8 +13,8 @@
 use crate::_deps::alloc::{collections::BTreeMap, vec::Vec};
 use crate::{
     code::{cfor, iif, paste},
-    data::Compare,
     mem::cswap,
+    num::Compare,
 };
 
 /// Provides sorting methods for arrays and slices of `T`.

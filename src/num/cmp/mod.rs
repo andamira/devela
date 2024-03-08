@@ -1,6 +1,6 @@
 // devela::data::cmp
 //
-//! Comparing, ordering and sorting, extends `std::`[`cmp`].
+//! Comparing and ordering values, extends `std::`[`cmp`].
 //!
 //! [`cmp`]: std::cmp
 //!
@@ -8,15 +8,17 @@
 //! [`pclamp`], [`pmax`] and [`pmin`] functions for comparing partially ordered values.
 //
 
-/* always compiled, non-public modules */
+/* always compiled */
+
 mod compare;
-mod sort;
+mod reexports;
 
 #[allow(unused)]
-pub use {compare::*, sort::*};
+pub use {compare::*, reexports::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{compare::*, sort::*};
+    pub use super::{compare::*, reexports::*};
+
 }

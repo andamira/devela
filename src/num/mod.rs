@@ -1,8 +1,9 @@
 // devela::num
 //
 //! Numerical types and computations, arithmetic operations, extends
-//! `std::`[`num`].
+//! `std::{`, [`cmp`], [`num`]`}`.
 //!
+//! [`cmp`]: std::cmp
 //! [`num`]: std::num
 //
 
@@ -11,14 +12,13 @@
 // safety:
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
-/* always compiled, crate-private modules */
+/* always compiled */
 
 mod _private;
 pub(crate) use _private::*;
 
-/* always compiled, non-public modules */
-
 mod alias;
+mod cmp;
 mod error;
 mod float;
 mod frac;
@@ -28,9 +28,10 @@ mod primitive;
 mod sign;
 mod r#trait;
 
-pub use {alias::*, error::*, float::*, frac::*, int::*, no::*, primitive::*, r#trait::*, sign::*};
-
-/* always compiled, public modules */
+pub use {
+    alias::*, cmp::all::*, error::*, float::*, frac::*, int::*, no::*, primitive::*, r#trait::*,
+    sign::*,
+};
 
 pub mod niche;
 pub mod rand;
@@ -42,8 +43,7 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        alias::*, error::*, float::*, niche::all::*, primitive::*, rand::all::*, sign::*,
+        alias::*, cmp::all::*, error::*, float::*, frac::*, int::*, niche::all::*, no::*,
+        primitive::*, r#trait::*, rand::all::*, sign::*,
     };
-    #[doc(inline)]
-    pub use super::{frac::*, int::*, no::*, r#trait::*};
 }

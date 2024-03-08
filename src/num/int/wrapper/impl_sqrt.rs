@@ -11,8 +11,7 @@
 
 use crate::{
     code::{iif, paste},
-    data::Compare,
-    num::{isize_up, upcasted_op, usize_up, Int, NumError as E, NumResult as Result},
+    num::{Compare, isize_up, upcasted_op, usize_up, Int, NumError as E, NumResult as Result},
 };
 use E::NonNegativeRequired;
 #[cfg(doc)]

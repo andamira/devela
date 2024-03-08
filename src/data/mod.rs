@@ -1,11 +1,10 @@
 // devela::data
 //
 //! Data handling and manipulation, extends
-//! `std::{`[`array`], [`cmp`], [`collections`], [`hash`],
+//! `std::{`[`array`], [`collections`], [`hash`],
 //! [`iter`], [`vec`]`}`.
 //!
 //! [`array`]: mod@std::array
-//! [`cmp`]: std::cmp
 //! [`collections`]: std::collections
 //! [`hash`]: std::hash
 //! [`iter`]: std::iter
@@ -17,14 +16,12 @@
 // safety:
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
-/* always compiled, non-public modules */
+/* always compiled */
 
-mod cmp;
 mod error;
+mod sort;
 
-pub use {cmp::all::*, error::*};
-
-/* always compiled, public modules */
+pub use {error::*, sort::Sort};
 
 pub mod bit;
 pub mod collections;
@@ -34,7 +31,7 @@ pub mod iter;
 #[doc(no_inline)]
 pub use {bit::all::*, collections::all::*, hash::all::*, iter::all::*};
 
-/* feature-gated, public modules */
+/* feature-gated */
 
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_dyn"))]
@@ -48,7 +45,7 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        bit::all::*, cmp::all::*, collections::all::*, error::*, hash::all::*, iter::all::*,
+        bit::all::*, collections::all::*, error::*, hash::all::*, iter::all::*,
     };
 
     // feature-gated

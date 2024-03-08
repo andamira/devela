@@ -3,7 +3,7 @@
 //! Slice functionality wrapper struct.
 //
 
-use crate::data::Compare;
+use crate::num::Compare;
 
 /// Provides slicing operations on `&[T]`, many of them *const*.
 ///

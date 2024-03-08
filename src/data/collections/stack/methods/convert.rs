@@ -7,9 +7,10 @@ use crate::{
     code::{sf, ConstDefault},
     data::{
         error::{DataError, DataResult as Result},
-        {array_init, Array, Compare, Stack},
+        {array_init, Array, Stack},
     },
     mem::{cswap, Bare, Storage},
+    num::Compare,
     result::Own,
 };
 #[cfg(feature = "alloc")]
