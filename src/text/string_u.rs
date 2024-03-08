@@ -13,7 +13,7 @@ use super::{
     helpers::impl_sized_alias,
     TextError, TextResult as Result,
 };
-use crate::{num::Compare, result::unwrap};
+use crate::{code::cfor, num::Compare, result::unwrap};
 use core::{
     fmt,
     ops::Deref,
@@ -561,11 +561,9 @@ macro_rules! generate_array_string {
                 let length = Compare(length).min(CAP as $t);
                 let ulen = length as usize;
                 let start = CAP - ulen;
-                let mut i = 0;
-                while i < ulen {
+                cfor![i in 0..ulen => {
                     bytes[i] = bytes[start + i];
-                    i += 1;
-                }
+                }];
                 // IMPROVE make const. Limited by slice indexing
                 match core::str::from_utf8(&bytes[0..ulen]) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
@@ -592,11 +590,9 @@ macro_rules! generate_array_string {
                 let length = Compare(length).min(CAP as $t);
                 let ulen = length as usize;
                 let start = CAP - ulen;
-                let mut i = 0;
-                while i < ulen {
+                cfor![i in 0..ulen => {
                     bytes[i] = bytes[start + i];
-                    i += 1;
-                }
+                }];
                 Self { arr: bytes, len: length }
             }
         }

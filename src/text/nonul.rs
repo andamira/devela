@@ -7,6 +7,7 @@
 // - trait impls
 
 use crate::{
+    code::cfor,
     result::unwrap,
     text::{helpers::impl_sized_alias, TextError, TextResult as Result},
 };
@@ -529,13 +530,11 @@ impl<const CAP: usize> StringNonul<CAP> {
     pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self> {
         match core::str::from_utf8(&bytes) {
             Ok(_) => {
-                let mut index = 0;
-                while index < CAP {
+                cfor![index in 0..CAP => {
                     if bytes[index] == 0 {
                         return Err(InvalidNul);
                     }
-                    index += 1;
-                }
+                }];
                 Ok(Self { arr: bytes })
             }
             Err(e) => Err(InvalidUtf8(Some(e))),
