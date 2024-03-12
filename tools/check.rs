@@ -4,7 +4,7 @@
 //! toml_edit = "0.20"
 //! itertools = "0.11"
 //! lexopt = "0.3"
-//! devela = { version = "0.19.0", features = ["std", "code", "io"] }
+//! devela = { version = "0.20.0", features = ["std", "code", "io"] }
 //! ```
 // This script needs [rusts-cript](https://crates.io/crates/rust-script) to run.
 
@@ -24,9 +24,9 @@ use toml_edit::Document;
 /* global configuration */
 
 #[rustfmt::skip]
-const ROOT_MODULES: [&str; 12] = [
-    "code", "data", "io", "mem", "num", "os",
-    "render", "result", "text", "time", "ui", "work",
+const ROOT_MODULES: [&str; 13] = [
+    "code", "data", "fig", "gfx", "io", "mem", "num",
+    "os", "result", "text", "time", "ui", "work",
 ];
 
 const STD_ARCHES: &[&str] = &[
