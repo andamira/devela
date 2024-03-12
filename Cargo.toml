@@ -150,10 +150,11 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 #* nightly features *#
 
 nightly = [ # enables all the unstable features
-	"nightly_coro", "nightly_doc",
+	"nightly_coro", "nightly_doc", "nightly_simd",
 ] # specific unstable features:
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	nightly_doc = [] # doc_cfg
+	nightly_simd = [] # portable_simd
 
 
 #* capability features *#

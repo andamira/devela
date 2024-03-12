@@ -35,6 +35,8 @@
     feature = "nightly_coro",
     feature(coroutines, coroutine_trait, iter_from_coroutine)
 )]
+// WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
+#![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
 
 // safeguard environment:
 #[cfg(all(feature = "std", feature = "no_std"))]
