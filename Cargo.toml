@@ -18,7 +18,8 @@ include = [
 	"/Cargo.toml",
 	"/DOCS/*.md",
 	"/src/**/*.rs", "/src/**/*.md", "src/**/*.html",
-	"/examples/bitfield.rs", "/examples/enumset.rs", "/examples/coro.rs"
+	"/examples/bitfield.rs", "/examples/enumset.rs",
+	"/examples/cargo_script.rs", "/examples/coro_run.rs",
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
@@ -291,5 +292,5 @@ name = "enumset"
 
 # excluded examples
 [[example]]
-name = "cargo-script"
+name = "cargo_script"
 required-features = ["_exclude_example"]

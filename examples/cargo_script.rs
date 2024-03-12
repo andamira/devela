@@ -2,7 +2,7 @@
 ## [dependencies]
 ## devela = { path = ".." }
 //
-// devela::examples::cargo-script
+// devela::examples::cargo_script
 //
 //! A minimal standalone rust script.
 //!
