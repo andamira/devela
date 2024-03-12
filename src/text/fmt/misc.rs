@@ -85,7 +85,7 @@ pub fn format_buf_args<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a
 #[macro_export]
 macro_rules! format_buf {
     ($buf:expr, $($args:tt)*) => {
-        $crate::text::fmt::format_buf_args($buf, format_args![$($args)*])
+        $crate::text::format_buf_args($buf, format_args![$($args)*])
     };
 }
 pub use format_buf;

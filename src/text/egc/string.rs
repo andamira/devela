@@ -12,7 +12,7 @@ use crate::_deps::alloc::{
 #[cfg(feature = "unicode-segmentation")]
 use crate::_deps::unicode_segmentation::UnicodeSegmentation;
 #[cfg(feature = "unicode-segmentation")]
-use crate::text::char::*;
+use crate::text::{Char16, Char24, Char32, Char7, Char8};
 
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]

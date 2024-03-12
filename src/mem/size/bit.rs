@@ -36,9 +36,9 @@ use crate::num::{
     RangeUsize,
 };
 
-#[cfg(feature = "text")]
-use crate::text::char::{Char16, Char24, Char32, Char7, Char8};
 use crate::text::AsciiChar;
+#[cfg(feature = "text")]
+use crate::text::{Char16, Char24, Char32, Char7, Char8};
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // #[cfg(feature = "text")]

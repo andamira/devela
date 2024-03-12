@@ -13,26 +13,28 @@
 // safety:
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 
-/* always compiled, public modules */
-
-pub mod char;
-pub mod fmt;
-
-#[doc(no_inline)]
-#[allow(unused_imports)]
-pub use {char::all::*, fmt::all::*};
-
-/* always compiled, non-public moduels */
+/* always compiled */
 
 mod ascii;
+mod char;
 mod error;
 mod ext;
+mod fmt;
 mod helpers;
 mod reexports;
 mod string_u;
+mod traits;
+
+#[cfg(feature = "alloc")]
+mod case;
+#[cfg(feature = "alloc")]
+pub use case::*;
 
 #[allow(unused_imports)]
-pub use {ascii::all::*, error::*, ext::*, reexports::*, string_u::*};
+pub use {
+    ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, reexports::*, string_u::*,
+    traits::*,
+};
 
 /* feature-gated, public modules */
 

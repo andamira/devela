@@ -18,18 +18,18 @@
 
 /* always compiled */
 
+mod bit;
 mod error;
 mod sort;
 
-pub use {error::*, sort::Sort};
+pub use {bit::all::*, error::*, sort::Sort};
 
-pub mod bit;
 pub mod collections;
 pub mod hash;
 pub mod iter;
 
 #[doc(no_inline)]
-pub use {bit::all::*, collections::all::*, hash::all::*, iter::all::*};
+pub use {collections::all::*, hash::all::*, iter::all::*};
 
 /* feature-gated */
 
