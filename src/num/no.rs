@@ -3,8 +3,6 @@
 //! Not a number.
 //
 
-use super::{Num, NumInt};
-
 /// Represents the absence of a number.
 ///
 /// This can be used anywhere an implementation of [`Num`] is expected,
@@ -12,7 +10,7 @@ use super::{Num, NumInt};
 pub type NoNum = ();
 
 #[rustfmt::skip]
-impl Num for NoNum {
+impl super::Num for NoNum {
     type Inner = ();
     type Out = ();
     type Rhs = ();
@@ -20,4 +18,5 @@ impl Num for NoNum {
     fn num_into(self) -> Self::Inner {}
 }
 
-impl NumInt for NoNum {}
+#[cfg(feature = "num_int")]
+impl super::NumInt for NoNum {}

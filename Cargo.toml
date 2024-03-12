@@ -91,6 +91,7 @@ io = []
 mem = []
 num = []
 	num_all = ["num_niche_impls", "num_niche_range"]
+	num_int = [] # Int, NumInt, NumRefInt, Frac
 	num_niche_impls = [] # extra implementations for niche types
 	num_niche_range = [] # Range and NonRange niche types
 os = []

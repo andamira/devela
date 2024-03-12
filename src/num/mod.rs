@@ -21,29 +21,36 @@ mod alias;
 mod cmp;
 mod error;
 mod float;
-mod frac;
-mod int;
 mod no;
 mod primitive;
 mod sign;
 mod r#trait;
-
-pub use {
-    alias::*, cmp::all::*, error::*, float::*, frac::*, int::*, no::*, primitive::*, r#trait::*,
-    sign::*,
-};
+pub use {alias::*, cmp::all::*, error::*, float::*, no::*, primitive::*, r#trait::*, sign::*};
 
 pub mod niche;
 pub mod rand;
-
 #[doc(no_inline)]
 pub use {niche::all::*, rand::all::*};
+
+/* feature-gated */
+
+#[cfg(feature = "num_int")]
+mod frac;
+#[cfg(feature = "num_int")]
+mod int;
+#[cfg(feature = "num_int")]
+pub use {frac::*, int::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        alias::*, cmp::all::*, error::*, float::*, frac::*, int::*, niche::all::*, no::*,
-        primitive::*, r#trait::*, rand::all::*, sign::*,
+        alias::*, cmp::all::*, error::*, float::*, niche::all::*, no::*, primitive::*, r#trait::*,
+        rand::all::*, sign::*,
     };
+
+    // feature-gated
+    #[doc(inline)]
+    #[cfg(feature = "num_int")]
+    pub use super::{frac::*, int::*};
 }
