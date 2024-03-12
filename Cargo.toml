@@ -21,7 +21,7 @@ include = [
 	"/examples/bitfield.rs", "/examples/enumset.rs", "/examples/coro.rs"
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
-keywords = ["dev", "helper", "helpers", "extension", "extensions"]
+keywords = ["dev", "helper", "library", "std", "extension"]
 publish = true
 
 
