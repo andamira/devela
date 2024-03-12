@@ -73,12 +73,12 @@ all = [ # enables all the modules and submodules
 	"gfx",
 	"io",
 	"mem",
-	"num", "num_all",
+	"num",
 	"os",
 	"result",
 	"text",
 	"time",
-	"ui", "ui_all",
+	"ui",
 	"work",
 	]
 
@@ -89,8 +89,9 @@ fig = []
 gfx = []
 io = []
 mem = []
-num = []
-	num_all = ["num_niche_impls", "num_niche_range"]
+num = [ # enables all the `num` sub-features
+	"num_int", "num_niche_impls", "num_niche_range"
+	]
 	num_int = [] # Int, NumInt, NumRefInt, Frac
 	num_niche_impls = [] # extra implementations for niche types
 	num_niche_range = [] # Range and NonRange niche types
@@ -98,10 +99,11 @@ os = []
 result = []
 text = []
 time = []
-ui = []
-	ui_all = ["ui_term"]
-	ui_events = ["crossterm?/events"]
-	ui_term = []
+ui = [ # enables all the `ui` sub-features
+	 "ui_events", "ui_term",
+	]
+	ui_events = ["crossterm?/events"] # support for events
+	ui_term = [] # terminal functionality
 	# ui_window = ["miniquad"]
 work = ["bytemuck/zeroable_atomics"]
 

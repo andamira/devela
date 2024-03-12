@@ -41,23 +41,23 @@ Modules can be enabled independently of *environment*, *dependency* or *safety*.
 - `all`: enables all the root modules and extra submodules:
 
 Single modules:
-- `code`: enables the [`code`] module,
-- `data`: enables the [`data`] module,
-- `fig`: enables the [`fig`] module.
-- `gfx`: enables the [`gfx`] module.
-- `io`: enables the [`io`] module.
-- `mem`: enables the [`mem`] module.
-- `num`: enables the [`num`] module.
-  - `num_all`: enables all the `num` extra submodules:
+- [`code`]
+- [`data`]
+- [`fig`]
+- [`gfx`]
+- [`io`]
+- [`mem`]
+- [`num`]: enables all the `num` extra submodules:
     - `num_niche_impls`: extra impls for [`niche`] types.
-- `os`: enables all the [`os`] specific functionality.
-- `result`: enables the [`result`] module.
-- `text`: enables the [`text`] module,
-- `time`: enables the [`time`] module.
-- `ui`: enables the [`ui`] module.
-  - `ui_all`: enables all the `ui` extra submodules:
-    - `ui_term`: enables the terminal functionality,
-- `work`: enables the [`work`] module.
+    - `num_niche_range`: `Range` and `NonRange` niche types.
+- [`os`]
+- [`result`]
+- [`text`]
+- [`time`]
+- [`ui`]: enables all the `ui` extra submodules:
+    - `ui_events`: extra support for events.
+    - `ui_term`: enables the terminal functionality.
+- [`work`]
 
 [`code`]: crate::code
 [`data`]: crate::data
