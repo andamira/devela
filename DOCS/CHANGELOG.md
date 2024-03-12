@@ -9,19 +9,19 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - add traits: `NumToStr`, `ConstDefault`, `DataQueue`, `DataDeque`, `DataStack`, `DataDesta`, `ExtTuple`, `ExtArray`.
-- add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `Mismatch`, `Own`, `GfxError`, `GfxResult`, `Pnm`, `Array2d`, `OptRes`, `TupleFmt`, `ArrayFmt`, `UninitArray`.
+- add types: `Destaque`, `DestaqueIter`, `Stack`, `StackIter`, `Mismatch`, `Own`, `GfxError`, `GfxResult`, `Pnm`, `Array2d`, `OptRes`, `TupleFmt`, `ArrayFmt`, `UninitArray`, `Ascii`, `MilliToHour`, `NanoToSec`, `SecToYear`.
 - add features: `fig`, `num_all`, `safe_code`, `safe_data`, `safe_fig`, `safe_gfx`, `safe_mem`, `safe_num`, `safe_os`, `safe_result`, `safe_text`, `safe_time`, `safe_ui`, `safe_ui_term`, `safe_work`, `unsafe_array`, `unsafe_async`, `unsafe_const`, `unsafe_dyn`, `unsafe_niche`, `unsafe_slice`, `unsafe_str`, `nightly_coro`, `nightly_doc`, `_exclude_example`, `ui_window`, `ui_events`, `num_niche_range`.
--
 - add capability features: `_capability_max`, `_tuple_arity_31`, `_tuple_arity_63`, `_tuple_arity_95`, `_tuple_arity_127`.
 - add RNGS: `Xabc`, `XorShift8`, `XorShift8Custom`, `XorShift16`, `XorShift32`, `XorShift64`, `XorShift128`, `XorShift128p`, `Xyza8a`, `Xyza8b`.
-- add Floating constants: `FRAC_1_PHI`, `NEG_FRAC_1_PHI`, `SQ_PHI`, `FRAC_NEG_1_PHI`.
+- add `Floating` constants: `FRAC_1_PHI`, `NEG_FRAC_1_PHI`, `SQ_PHI`, `FRAC_NEG_1_PHI`.
 - add `no_std` reimplementations of `std::error` and `std::io` types and traits.
 - add non-optional dependency `either` and re-export its items.
 - add optional dependencies: `memchr`, `wide`, `crossterm`, `miniquad`, `rand_core`.
-- add examples: `cargo-script`, `bitfield`, `enumset`.
 - add macros: `assert_eq_all`, `assert_approx_eq_all`, `unwrap`.
 - add `Array` methods: `new_boxed`, `into_slice`, `into_vec`.
+- add examples: `cargo-script`, `bitfield`, `enumset`.
 - add fns: `mem_copy`, `serr` and `sok`.
+- add type aliases: `isize_down`, `usize_down`.
 - add niche number aliases: `NonEdge*`.
 - add `Bare` type alias of `unit`.
 - add module: `fig`.
@@ -32,6 +32,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export proc-macros: `ident_total`, `ident_unique`, `ident_total_unique`.
 - re-export crate-defined result-related types from `result`.
 - re-export core types from `data::iter`.
+- re-export core tpes from `num::cmp`.
 - re-export `Default` from `code`.
 
 ### Removed
@@ -42,11 +43,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove type aliases: `NonMax*` `NonMin*, DirectArray, BoxedArray.
 - remove file `.gitattributes`.
 - remove `CharConversionError`.
+- remove `asci_` standalone fns.
 - deprecate`ident_total_count` macro.
 
 ### Changed
 - bump rust version to 1.76.0.
-- make `data::cmp` non-public.
+- make `num::cmp` non-public.
+- move `cmp` from `data` to `num`.
 - move `ops` from `num` to `code`.
 - move `any` from `data` to `code`.
 - move docs html header to `src/_doc`.
@@ -71,6 +74,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `FloatOps` to `ExtFloat`.
 - rename feature `full` to `all`.
 - rename `Direct` to `BareBox`.
+- rename `Slicing` to `Slice`.
 - rename `Sorting` to `Sort`.
 - rename `Primiting` to `Cast`.
 - rename `Comparing` to `Compare`.
