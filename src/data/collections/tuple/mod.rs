@@ -67,32 +67,49 @@ pub trait ExtTuple: private::Sealed {
         } else { 127 }
     };
 
+    /// The arity of this tuple (the number of contained elements).
+    #[inline]
+    #[must_use]
+    fn arity(&self) -> usize {
+        Self::ARITY
+    }
+
     /// Wraps the tuple in a [`TupleFmt`] for formatting purposes.
     #[rustfmt::skip]
     fn fmt(&self) -> TupleFmt<Self> where Self: Sized { TupleFmt(self) }
 
     /// Returns a shared reference to the head of this tuple.
+    #[must_use]
     fn head(&self) -> &Self::Head;
     /// Returns a shared reference to the tail of this tuple.
+    #[must_use]
     fn tail(&self) -> &Self::Tail;
     /// Returns an exclusive reference to the head of this tuple.
+    #[must_use]
     fn head_mut(&mut self) -> &mut Self::Head;
     /// Returns an exclusive reference to the tail of this tuple.
+    #[must_use]
     fn tail_mut(&mut self) -> &mut Self::Tail;
 
     /// Returns this tuple with the head element splitted from the rest.
+    #[must_use]
     fn split_head(self) -> (Self::Head, Self::NoHead);
     /// Returns this tuple with the tail element splitted from the rest.
+    #[must_use]
     fn split_tail(self) -> (Self::NoTail, Self::Tail);
 
     /// Returns this tuple without the head.
+    #[must_use]
     fn no_head(self) -> Self::NoHead;
     /// Returns this tuple without the head.
+    #[must_use]
     fn no_tail(self) -> Self::NoTail;
 
     /// Appends the given `value` to this tuple.
+    #[must_use]
     fn append<T>(self, value: T) -> Self::Append<T>;
     /// Prepends the given `value` to this tuple.
+    #[must_use]
     fn prepend<T>(self, value: T) -> Self::Prepend<T>;
 }
 

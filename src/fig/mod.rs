@@ -6,18 +6,16 @@
 // safety:
 #![cfg_attr(feature = "safe_fig", forbid(unsafe_code))]
 
-/* feature-gated, private modules */
+/* always compiled */
 
-// #[cfg(feature = "fig")]
-// mod x;
-//
-// #[doc(no_inline)]
-// #[cfg(feature = "fig")]
-// pub use x::*;
+// mod algebra;
+// mod primitives;
+
+// pub use algebra::*;
+// pub use primitives::*;
 
 pub(crate) mod all {
-    // // feature-gated
-    // #[doc(inline)]
-    // #[cfg(feature = "fig")]
-    // pub use super::x::*;
+    // always compiled
+    // pub use super::algebra::*;
+    // pub use super::primitives::*;
 }

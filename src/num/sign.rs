@@ -16,15 +16,15 @@ use NumError::Invalid;
 /// Represents the sign of a number.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum Sign {
+    /// A negative sign (-).
+    Negative = -1,
+
     /// An absence of sign, associated with Zero. (The default)
     #[default]
-    None,
+    None = 0,
 
     /// A positive sign (+).
-    Positive,
-
-    /// A negative sign (-).
-    Negative,
+    Positive = 1,
 }
 
 impl ConstDefault for Sign {

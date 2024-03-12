@@ -9,6 +9,10 @@
 #![warn(missing_docs, clippy::all)]
 #![cfg_attr(not(feature = "deps"), allow(rustdoc::broken_intra_doc_links))]
 #![allow(
+    unknown_lints,
+    clippy::empty_docs,
+    clippy::mixed_attributes_style,
+    //
     clippy::module_inception, // allow modules with the same name as its parent
     clippy::wrong_self_convention, // allow `is_` methods having an owned self
 )]
@@ -24,9 +28,9 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
 // nightly:
-// - WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
+// WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg))]
-// - WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
+// WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 #![cfg_attr(
     feature = "nightly_coro",
     feature(coroutines, coroutine_trait, iter_from_coroutine)

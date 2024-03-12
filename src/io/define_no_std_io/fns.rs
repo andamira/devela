@@ -9,10 +9,10 @@ use crate::{
 ///
 /// # Features
 /// Makes use of the `unsafe_io` feature to employ [`MaybeUninit`].
-pub fn copy<R: ?Sized, W: ?Sized, const S: usize>(reader: &mut R, writer: &mut W) -> IoResult<u64>
+pub fn copy<R, W, const S: usize>(reader: &mut R, writer: &mut W) -> IoResult<u64>
 where
-    R: Read,
-    W: Write,
+    R: ?Sized + Read,
+    W: ?Sized + Write,
 {
     #[cfg(not(feature = "unsafe_io"))]
     let mut buf = [0u8; S];

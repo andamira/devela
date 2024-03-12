@@ -1,7 +1,7 @@
 // devela::num
 //
 //! Numerical types and computations, arithmetic operations, extends
-//! `std::{`, [`cmp`], [`num`]`}`.
+//! `std::{`[`cmp`], [`num`]`}`.
 //!
 //! [`cmp`]: std::cmp
 //! [`num`]: std::num
