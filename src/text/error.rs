@@ -8,7 +8,7 @@ use core::str::Utf8Error;
 /// A text-related result.
 pub type TextResult<T> = core::result::Result<T, TextError>;
 
-/// A text-related result.
+/// A text-related error.
 #[non_exhaustive]
 #[derive(Debug)]
 pub enum TextError {

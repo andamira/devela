@@ -45,19 +45,19 @@ Single modules:
 - [`data`]
 - [`fig`]
 - [`gfx`]
-- [`io`]
+- [`io`]: enables `io` functionality.
 - [`mem`]
 - [`num`]: enables all the `num` extra submodules:
     - `num_niche_impls`: extra impls for [`niche`] types.
     - `num_niche_range`: `Range` and `NonRange` niche types.
 - [`os`]
 - [`result`]
-- [`text`]
+- [`text`]: enables `Char*`, `Egc`, `Nonul`.
 - [`time`]
 - [`ui`]: enables all the `ui` extra submodules:
     - `ui_events`: extra support for events.
     - `ui_term`: enables the terminal functionality.
-- [`work`]
+- [`work`]: enables `work` functionality.
 
 [`code`]: crate::code
 [`data`]: crate::data

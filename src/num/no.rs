@@ -19,4 +19,5 @@ impl super::Num for NoNum {
 }
 
 #[cfg(feature = "num_int")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
 impl super::NumInt for NoNum {}

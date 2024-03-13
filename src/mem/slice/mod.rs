@@ -15,6 +15,5 @@ pub use {ext::*, wrapper::*};
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    #[cfg(feature = "mem")]
     pub use super::{ext::*, wrapper::*};
 }

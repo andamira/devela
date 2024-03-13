@@ -23,18 +23,9 @@ mod fmt;
 mod helpers;
 mod reexports;
 mod string_u;
-mod traits;
-
-#[cfg(feature = "alloc")]
-mod case;
-#[cfg(feature = "alloc")]
-pub use case::*;
 
 #[allow(unused_imports)]
-pub use {
-    ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, reexports::*, string_u::*,
-    traits::*,
-};
+pub use {ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, reexports::*, string_u::*};
 
 /* feature-gated, public modules */
 
