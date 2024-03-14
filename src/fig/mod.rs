@@ -6,16 +6,21 @@
 // safety:
 #![cfg_attr(feature = "safe_fig", forbid(unsafe_code))]
 
-/* always compiled */
+/* feature-gated */
 
+// #[cfg(feature = "fig")]
 // mod algebra;
-// mod primitives;
+#[cfg(feature = "fig")]
+mod prim;
 
-// pub use algebra::*;
-// pub use primitives::*;
+#[cfg(feature = "fig")]
+pub use prim::*;
+// pub use {algebra::*, prim::*};
 
 pub(crate) mod all {
-    // always compiled
-    // pub use super::algebra::*;
-    // pub use super::primitives::*;
+    // feature-gated
+    #[doc(inline)]
+    #[cfg(feature = "fig")]
+    pub use super::prim::*;
+    // pub use super::{algebra::*, prim::*};
 }
