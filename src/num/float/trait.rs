@@ -99,6 +99,10 @@ pub trait ExtFloat: Sized {
     #[must_use]
     fn abs(self) -> Self;
 
+    /// The negative absolute value of `self`.
+    #[must_use]
+    fn neg_abs(self) -> Self;
+
     /// Returns the `Sign` of `self`.
     #[must_use]
     fn sign(self) -> Sign;
@@ -447,6 +451,9 @@ macro_rules! impl_float_ext {
 
             #[inline(always)]
             fn abs(self) -> Self { Floating::<$f>::abs(self) }
+
+            #[inline(always)]
+            fn neg_abs(self) -> Self { Floating::<$f>::neg_abs(self) }
 
             #[inline(always)]
             fn sign(self) -> Sign { Floating::<$f>::sign(self) }

@@ -876,6 +876,23 @@ macro_rules! custom_impls {
                 }
             }
 
+            /// The negative absolute value of `x` (sets the sign of `x` to negative).
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            pub const fn neg_abs(x: $f) -> $f {
+                if Self::is_sign_negative(x) { x } else { Self::flip_sign(x) }
+            }
+            /// The negative absolute value of `x` (sets the sign of `x` to negative).
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            pub fn neg_abs(x: $f) -> $f {
+                if Self::is_sign_negative(x) { x } else { Self::flip_sign(x) }
+            }
+
             /// Flips the sign of `x`.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
