@@ -11,12 +11,54 @@ mod r#impl;
 ///
 /// It's unit-agnostic over radians or degrees, and respects directionality.
 ///
-/// If `T` is an integer primitive the range from 0 to T::MAX represents a full
-/// turn, and for signed primitives the range from 0 to T::MIN represents a full
-/// negative (clockwise) turn.
+/// When `T` is an integer primitive the angle is considered to be always
+/// normalized. By virtue of the range from `[0..T::MAX]` representing a full
+/// positive (counterclockwise) turn. And in the case of signed primitives,
+/// the range from `[0..T::MIN]` represents a full negative (clockwise) turn.
 ///
-/// For floating-point primitives the range from -1..1 (non-inclusive) represents
-/// the normalized full turn, anything beyond being angles larger than a full turn.
+/// For floating-point primitives the range from -1 to 1 (non-inclusive) represents
+/// the normalized full turn, and anything beyond that are non-normalied angles.
+///
+/// # Methods
+///
+/// Methods are implemented the same for each main angle representation, using:
+///
+/// - Floating-point: E.g.: [methods for `f32`](#methods-for-angles-represented-using-f32).
+/// - Signed integers. E.g: [methods for `i32`](#methods-for-angles-represented-using-i32).
+/// - Unsigned integers. E.g.: [methods for `u32`](#methods-for-angles-represented-using-u32).
+///
+/// ## Methods for `f32`
+/// - Construction:
+///   - `new_`
+///     [`full`](Self::new_full),
+///     [`right`][Self::new_right],
+///     [`straight`][Self::new_straight].
+///   - `from_`
+///     [`rad`](Self::from_rad),
+///     [`deg`][Self::from_deg],
+///     [`custom`][Self::from_custom].
+/// - Conversion:
+///   - `to_`
+///     [`rad`](Self::to_rad),
+///     [`deg`][Self::to_deg],
+///     [`custom`][Self::to_custom].
+/// - Normalization:
+///   - [`normalize`](Self::normalize), *(
+///     [`is_`][Self::is_normalized],
+///     [`set_`][Self::set_normalized]. )*
+/// - Direction:
+///   - [`direction`](Self::direction), *(
+///     [`with_`](Self::with_direction),
+///     [`has_`](Self::has_direction),
+///     [`set_`](Self::set_direction),
+///     [`invert_`](Self::invert_direction). )*
+///   - [`negative`](Self::negative), *(
+///     [`set_`](Self::set_negative). )*
+///   - [`positive`](Self::positive), *(
+///     [`set_`](Self::set_positive). )*
+/// - Kind:
+///   - [`kind`](Self::kind), *(
+///     [`is_`](Self::is_kind). )*
 #[must_use]
 #[repr(transparent)]
 pub struct Angle<T>(pub T);
