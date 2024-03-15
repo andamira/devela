@@ -27,7 +27,7 @@ macro_rules! impl_angle {
             #[inline]
             pub const fn new_straight() -> Self { Self(0.5) }
 
-            /// Creates a new angle a `radians` value.
+            /// Creates a new angle from a `radians` value.
             #[inline]
             pub fn from_rad(radians: $f) -> Self {
                 Self(radians / Floating::<$f>::TAU)

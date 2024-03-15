@@ -269,5 +269,5 @@ macro_rules! impl_angle {
         }
     };
 }
-impl_angle![uint u8:f32, u16:f32, u32:f32, u64:f64, u128:f64, usize:fsize];
 impl_angle![sint i8:f32, i16:f32, i32:f32, i64:f64, i128:f64, isize:fsize];
+impl_angle![uint u8:f32, u16:f32, u32:f32, u64:f64, u128:f64, usize:fsize];

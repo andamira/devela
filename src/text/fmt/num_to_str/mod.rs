@@ -25,7 +25,7 @@ pub trait NumToStr<T> {
     ///
     /// # Example
     /// ```
-    /// use devela::text::fmt::NumToStr;
+    /// use devela::text::NumToStr;
     /// use std::io::{self, Write};
     ///
     /// let stdout = io::stdout();

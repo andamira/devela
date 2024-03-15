@@ -60,7 +60,7 @@ macro_rules! math_const_impls {
         impl Floating<$f> {
             /// $ π = \frac{1}{2} τ = 180º $
             /// ([A000796](https://oeis.org/A000796/constant))
-            /// $ the ratio of the circumference to the diameter *
+            /// *the ratio of the circumference to the diameter, a half-turn*
             pub const PI: $f = 3.14159265358979323846264338327950288;
 
             /// $ π/2 = τ/4 = 90º $
@@ -98,7 +98,7 @@ macro_rules! math_const_impls {
 
             /// $ 2/π $
             /// ([A060294](https://oeis.org/A060294/constant))
-            /// * Buffon's constant *
+            /// *Buffon's constant*
             pub const FRAC_2_PI: $f = 0.636619772367581343075535053490057448;
 
             /// $ 2/\sqrt{π} $
@@ -110,7 +110,7 @@ macro_rules! math_const_impls {
         impl Floating<$f> {
             /// $ τ = 2π = 360º $
             /// ([A019692](https://oeis.org/A019692/constant))
-            /// $ the ratio of the circumference to the radius *
+            /// *the ratio of the circumference to the radius, a full-turn*
             pub const TAU: $f = 6.28318530717958647692528676655900577;
 
             /// $ τ/2 = π = 180º $
@@ -214,7 +214,7 @@ macro_rules! math_const_impls {
             pub const FRAC_1_PHI: $f = 0.618033988749894848204586834365638118; // last 77 → 8
 
             /// $ -1/φ = 1-φ $
-            /// *the negative reciprocal of [φ][Self#PHI] and its conjugate of $ x^2-x-1 $*
+            /// *the negative reciprocal of [φ][Self#PHI] and its conjugate in $ x^2-x-1 $*
             pub const NEG_FRAC_1_PHI: $f = -0.618033988749894848204586834365638118; // last 77 → 8
 
             /// $ \sqrt{φ} $

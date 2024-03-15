@@ -38,7 +38,7 @@ impl<T: ConstDefault> ConstDefault for Angle<T> {
 // T:Debug
 impl<T: fmt::Debug> fmt::Debug for Angle<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_tuple("Angle").field(&self.0).finish()
+        write!(f, "Angle({:?})", self.0)
     }
 }
 

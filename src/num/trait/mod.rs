@@ -15,7 +15,7 @@ impl<'a, T: Num> NumRef<'a> for &T { type Own = T; }
 #[rustfmt::skip]
 impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
 
-/// Common auto-trait for numeric types.
+/// Common trait for numeric types.
 ///
 /// # Notes
 /// - Every method in this trait returns [`NotImplemented`] by default.
