@@ -5,7 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
-## Unreleased
+## Unreleased [0.21.0-wip]
+
+### Added
+- add features: `num_int`.
+- add traits: `NumVector`.
+- add types: `Angle`, `AngleDirection`, `AngleKind`.
+- add types: `Vector`, `Vector2d`, `Vector3d`, `VecVector`.
+- add `Floating` and `ExtFloat` methods: `neg_abs`.
+- add new arms to array_init: `init`, `init_heap`.
+
+### Removed
+- remove features: `num_all`, `ui_all`.
+
+### Changed
+- move the enabling of all module's sub-features to the root module feature.
+
+### Fixed
+- make `cdbg!` depend on `std`.
+- fix `Bitsize` impl for niche types.
+
 
 ## [0.20.0]
 
