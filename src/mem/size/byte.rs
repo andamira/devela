@@ -8,10 +8,10 @@ use crate::code::iif;
 
 impl<T> ByteSize for T {}
 
-/// Type size information.
+/// Type size information in bytes.
 ///
 /// This trait is automatically implemented for every `Sized` type.
-// (this allows use to have associated constants depending on Self)
+// (this allows to have associated constants depending on Self)
 pub trait ByteSize: Mem + Sized {
     /// The alignment of this type in bytes.
     const BYTE_ALIGN: usize = mem_align_of::<Self>();
