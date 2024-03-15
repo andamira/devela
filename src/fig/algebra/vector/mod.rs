@@ -12,7 +12,9 @@
 use crate::_deps::alloc::{boxed::Box, vec::Vec};
 use crate::num::{Num, NumError, NumResult as Result};
 
-mod r#impl;
+mod impl_array;
+#[cfg(feature = "alloc")]
+mod impl_vec;
 
 /* types */
 

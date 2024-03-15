@@ -1,10 +1,10 @@
-// devela::fig::algebra::vector::impl::core_traits
+// devela::fig::algebra::vector::impl_array::core_traits
 //
 //!
 //
 
 use crate::{code::ConstDefault, data::array_init, fig::Vector};
-use core::{cmp::Ordering, fmt};
+use core::fmt;
 
 /* Clone, Copy */
 
@@ -59,21 +59,3 @@ impl<T: PartialEq, const D: usize> PartialEq for Vector<T, D> {
 }
 // T:Eq
 impl<T: Eq, const D: usize> Eq for Vector<T, D> {}
-
-// // T:PartialOrd
-// impl<T: PartialOrd, const D: usize> PartialOrd for Vector<T, D>
-// {
-//     #[inline]
-//     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-//         self.iter().partial_cmp(other.iter())
-//     }
-// }
-//
-// // T:Ord
-// impl<T: Ord, const D: usize> Ord for Vector<T, D>
-// {
-//     #[inline]
-//     fn cmp(&self, other: &Self) -> Ordering {
-//         self.iter().cmp(other.iter())
-//     }
-// }
