@@ -6,13 +6,14 @@
 /* always compiled */
 
 mod angle;
+mod extent;
 
 #[allow(unused)]
-pub use angle::*;
+pub use {angle::*, extent::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused)]
-    pub use super::angle::*;
+    pub use super::{angle::*, extent::*};
 }
