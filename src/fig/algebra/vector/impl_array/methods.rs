@@ -5,8 +5,7 @@
 
 #![allow(clippy::needless_range_loop)]
 
-use super::super::Vector;
-use crate::num::ExtFloat;
+use crate::{data::array_init, fig::Vector, num::ExtFloat};
 #[cfg(feature = "num_int")]
 use crate::{num::Int, result::unwrap};
 
@@ -283,6 +282,17 @@ macro_rules! impl_vector {
                 let mut i = 0;
                 while i < D {
                     result[i] = self.array[i] + other.array[i];
+                    i += 1;
+                }
+                Vector::new(result)
+            }
+
+            /// Subtracts another vector from this vector.
+            pub fn sub(self, other: Self) -> Self {
+                let mut result = [0.0; D];
+                let mut i = 0;
+                while i < D {
+                    result[i] = self.array[i] - other.array[i];
                     i += 1;
                 }
                 Vector::new(result)

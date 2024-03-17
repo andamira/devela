@@ -4,7 +4,10 @@
 //
 
 use crate::{code::ConstDefault, data::array_init, fig::Vector};
-use core::fmt;
+use core::{
+    fmt,
+    hash::{Hash, Hasher},
+};
 
 /* Clone, Copy */
 
@@ -59,3 +62,10 @@ impl<T: PartialEq, const D: usize> PartialEq for Vector<T, D> {
 }
 // T:Eq
 impl<T: Eq, const D: usize> Eq for Vector<T, D> {}
+
+impl<T: Hash, const D: usize> Hash for Vector<T, D> {
+    #[inline]
+    fn hash<HR: Hasher>(&self, state: &mut HR) {
+        self.array.hash(state);
+    }
+}
