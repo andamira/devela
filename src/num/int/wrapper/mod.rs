@@ -44,6 +44,9 @@ mod impl_sqrt;
 #[repr(transparent)]
 pub struct Int<T>(pub T);
 
+crate::num::impl_ops![Int: i8, i16,i32, i64, i128, isize];
+crate::num::impl_ops![Int: (no_neg) u8, u16, u32, u64, u128, usize];
+
 #[rustfmt::skip]
 mod core_impls {
     use {super::Int, core::{fmt, cmp, hash}};
@@ -93,6 +96,11 @@ mod core_impls {
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
     impl<T: Eq> Eq for Int<T> {}
+    impl<T: PartialEq> PartialEq<T> for Int<T> {
+        #[inline] #[must_use]
+        fn eq(&self, other: &T) -> bool { self.0.eq(other) }
+    }
+
     impl<T: PartialOrd> PartialOrd for Int<T> {
         #[inline] #[must_use]
         fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
@@ -105,6 +113,13 @@ mod core_impls {
             self.0.cmp(&other.0)
         }
     }
+    impl<T: PartialOrd> PartialOrd<T> for Int<T> {
+        #[inline] #[must_use]
+        fn partial_cmp(&self, other: &T) -> Option<cmp::Ordering> {
+            self.0.partial_cmp(other)
+        }
+    }
+
     impl<T: hash::Hash> hash::Hash for Int<T> {
         #[inline]
         fn hash<H: hash::Hasher>(&self, state: &mut H) {

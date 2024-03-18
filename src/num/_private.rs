@@ -5,6 +5,7 @@
 // TOC
 // - upcasted_op
 // - num_niche_impls
+// - impl_ops
 
 #![allow(unused, non_camel_case_types)]
 
@@ -232,3 +233,92 @@ macro_rules! num_niche_impls {
     };
 }
 pub(crate) use num_niche_impls;
+
+// implement the arithmetic operators for a unit struct wrapper, based on the inner type
+//
+// $W: the outer wrapper
+// $T: the inner type
+macro_rules! impl_ops {
+    ($W:ident: $($T:ty),+) => { $(
+        $crate::num::impl_ops![@common $W($T)];
+        $crate::num::impl_ops![@neg $W($T)];
+    )+ };
+    ($W:ident: (no_neg) $($T:ty),+) => { $(
+        $crate::num::impl_ops![@common $W($T)];
+    )+ };
+
+    (@common $W:ident($T:ty)) => {
+        $crate::num::impl_ops![@op $W($T), Add, add];
+        $crate::num::impl_ops![@op $W($T), Sub, sub];
+        $crate::num::impl_ops![@op $W($T), Mul, mul];
+        $crate::num::impl_ops![@op $W($T), Div, div];
+        $crate::num::impl_ops![@op $W($T), Rem, rem];
+        $crate::num::impl_ops![@op_assign $W($T), AddAssign, add_assign];
+        $crate::num::impl_ops![@op_assign $W($T), SubAssign, sub_assign];
+        $crate::num::impl_ops![@op_assign $W($T), MulAssign, mul_assign];
+        $crate::num::impl_ops![@op_assign $W($T), DivAssign, div_assign];
+        $crate::num::impl_ops![@op_assign $W($T), RemAssign, rem_assign];
+    };
+    (@neg $W:ident($T:ty)) => {
+        impl core::ops::Neg for $W<$T> {
+            type Output = $W<$T>;
+            #[inline] fn neg(self) -> $W<$T> { $W(self.0.neg()) }
+        }
+    };
+
+    // $wrap:  the wrapper type
+    // $T:     the inner type
+    // $trait: the trait to implement
+    // $fn:    the name of the method
+    (@op $W:ident($T:ty), $trait:ident, $fn:ident) => {
+        /* $W<$T> op $W<$T> -> $W<$T> */
+        impl core::ops::$trait for $W<$T> {
+            $crate::num::impl_ops![@op_body $W($T), $fn, $W<$T>, 0];
+        }
+        impl<'s> core::ops::$trait<$W<$T>> for &'s $W<$T> {
+            $crate::num::impl_ops![@op_body $W($T), $fn, $W<$T>, 0];
+        }
+        impl<'o> core::ops::$trait<&'o $W<$T>> for $W<$T> {
+            $crate::num::impl_ops![@op_body $W($T), $fn, &'o $W<$T>, 0];
+        }
+        impl<'s, 'o> core::ops::$trait<&'o $W<$T>> for &'s $W<$T> {
+            $crate::num::impl_ops![@op_body $W($T), $fn, &'o $W<$T>, 0];
+        }
+        /* $W<$T> op $T -> $W<$T> */
+        impl core::ops::$trait<$T> for $W<$T> {
+            $crate::num::impl_ops![@op_body $W($T), $fn, $T];
+        }
+        impl<'s> core::ops::$trait<$T> for &'s $W<$T> {
+            $crate::num::impl_ops![@op_body $W($T), $fn, $T];
+        }
+        impl<'o> core::ops::$trait<&'o $T> for $W<$T> {
+            $crate::num::impl_ops![@op_body $W($T), $fn, &'o $T];
+        }
+        impl<'s, 'o> core::ops::$trait<&'o $T> for &'s $W<$T> {
+            $crate::num::impl_ops![@op_body $W($T), $fn, &'o $T];
+        }
+    };
+    (@op_body $W:ident($T:ty), $fn:ident, $other:ty $(, $other_field:tt)?) => {
+        type Output = $W<$T>;
+        #[inline]
+        fn $fn(self, other: $other) -> $W<$T> { $W(self.0.$fn(other$(. $other_field)?)) }
+    };
+
+    (@op_assign $W:ident($T:ty), $trait:ident, $fn:ident) => {
+        /* $W<$T> op_assign $W<$T> */
+        impl core::ops::$trait for $W<$T> {
+            #[inline] fn $fn(&mut self, other: $W<$T>) { self.0.$fn(other.0); }
+        }
+        impl<'o> core::ops::$trait<&'o $W<$T>> for $W<$T> {
+            #[inline] fn $fn(&mut self, other: &'o $W<$T>) { self.0.$fn(other.0); }
+        }
+        /* $W<$T> op_assign $T -> $W<$T> */
+        impl core::ops::$trait<$T> for $W<$T> {
+            #[inline] fn $fn(&mut self, other: $T) { self.0.$fn(other); }
+        }
+        impl<'o> core::ops::$trait<&'o $T> for $W<$T> {
+            #[inline] fn $fn(&mut self, other: &'o $T) { self.0.$fn(other); }
+        }
+    };
+}
+pub(crate) use impl_ops;
