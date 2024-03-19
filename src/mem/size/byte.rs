@@ -3,8 +3,10 @@
 //! Functionality related to byte sizes.
 //
 
-use super::super::{mem_align_of, mem_align_of_val, mem_size_of, mem_size_of_val, Mem};
-use crate::code::iif;
+use crate::{
+    code::iif,
+    mem::{mem_align_of, mem_align_of_val, mem_size_of, mem_size_of_val},
+};
 
 impl<T> ByteSize for T {}
 
@@ -12,7 +14,7 @@ impl<T> ByteSize for T {}
 ///
 /// This trait is automatically implemented for every `Sized` type.
 // (this allows to have associated constants depending on Self)
-pub trait ByteSize: Mem + Sized {
+pub trait ByteSize: Sized {
     /// The alignment of this type in bytes.
     const BYTE_ALIGN: usize = mem_align_of::<Self>();
 
