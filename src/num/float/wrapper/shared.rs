@@ -631,7 +631,7 @@ macro_rules! custom_impls {
                 let x = self.clamp(-Self::PI.0, Self::PI.0).0;
                 let (mut cos, mut term, mut factorial) = (1.0, 1.0, 1.0);
                 for i in 1..terms {
-                    term *= -self.0 * self.0;
+                    term *= -x * x;
                     factorial *= ((2 * i - 1) * (2 * i)) as $f;
                     cos += term / factorial;
                 }
@@ -671,7 +671,7 @@ macro_rules! custom_impls {
             #[inline] #[must_use]
             pub fn tan_series(self, terms: $ue) -> Float<$f> {
                 let x = self.clamp(-Self::PI.0 / 2.0 + 0.0001, Self::PI.0 / 2.0 - 0.0001);
-                let (sin, cos) = self.sin_cos_series(terms);
+                let (sin, cos) = x.sin_cos_series(terms);
                 iif![cos.abs() < 0.0001; return Self::MAX];
                 Float(sin.0 / cos.0)
             }

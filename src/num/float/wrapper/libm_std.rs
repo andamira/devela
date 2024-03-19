@@ -22,12 +22,13 @@ macro_rules! impl_fp {
     };
     // Matches a specific floating-point type and any number of operations.
     // Generates the impl block for Float<$f> and calls the matching implementation.
-    ($lib:ident : $f:ty : $($ops:tt)*) => { $crate::code::paste! {
-        #[doc = "# *This implementation block leverages the `" $lib "` feature.*"]
+    ($lib:ident : $f:ty : $($ops:tt)*) => {
+        #[doc =
+        concat!["# *This implementation block leverages the `", stringify![$lib], "` feature.*"]]
         impl Float<$f> {
             impl_fp![@$lib : $f : $($ops)*];
         }
-    }};
+    };
     // Matches multiple operations and uses recursion to process each one.
     (@$lib:ident : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*
      ; $($rest:tt)*) => {
@@ -389,7 +390,7 @@ mod _no_std_no_libm {
     // $ie: the integer type for integer exponentiation.
     macro_rules! custom_impls {
         ($( ($f:ty, $ub:ty, $ie:ty) ),+) => { $( custom_impls![@$f, $ub, $ie]; )+ };
-        (@$f:ty, $ub:ty, $ie:ty) => { $crate::code::paste! {
+        (@$f:ty, $ub:ty, $ie:ty) => {
             /// # *Implementations without `std` or `libm`*.
             impl Float<$f> {
                 /// The largest integer less than or equal to itself.
@@ -465,7 +466,7 @@ mod _no_std_no_libm {
                     if exponent < 0 {
                         iif![self.0.is_sign_positive(); Float(0.0); Float(-0.0)]
                     } else if exponent < SIG_BITS {
-                        let mask = !(([<1_ $ub>] << (SIG_BITS - exponent)) - 1);
+                        let mask = !(((1 as $ub) << (SIG_BITS - exponent)) - 1);
                         let new_bits = bits & mask;
                         Float(<$f>::from_bits(new_bits))
                     } else {
@@ -563,7 +564,7 @@ mod _no_std_no_libm {
                     }
                 }
             }
-        }};
+        };
     }
     custom_impls![(f32, u32, i32), (f64, u64, i32)];
 }

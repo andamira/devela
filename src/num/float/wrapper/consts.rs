@@ -21,7 +21,7 @@ macro_rules! technical_const_impls {
     };
     (@$f:ty:$u:ty
      [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal]
-     ) => { $crate::code::paste! {
+     ) => {
         #[allow(unused)]
         impl Float<$f> {
             // Bias value used in the exponent to allow representation of both positive
@@ -40,7 +40,7 @@ macro_rules! technical_const_impls {
             // Newton-Raphson method for square root calculation:
             pub(super) const NR_TOLERANCE: $f = $nrt;
         }
-    }};
+    };
 }
 technical_const_impls![
     // Uses Lomont's single precision magic number for fisqrt
@@ -58,7 +58,7 @@ technical_const_impls![
 // $f: the floating-point type.
 macro_rules! math_const_impls {
     ($( $f:ty),+) => { $( math_const_impls![@$f]; )+ };
-    (@$f:ty) => { $crate::code::paste! {
+    (@$f:ty) => {
         /// # *Basic mathematical constants*.
         impl Float<$f> {
             /// The multiplicative identity 1.
@@ -450,6 +450,6 @@ macro_rules! math_const_impls {
             pub const LN_10: Float<$f> =
                 Float(2.30258509299404568401799145468436421);
         }
-    }};
+    };
 }
 math_const_impls![f32, f64];

@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::num::{Float, Num, Sign};
+use crate::num::{Float, Sign};
 
 /// Extension trait for floating-point types.
 ///
