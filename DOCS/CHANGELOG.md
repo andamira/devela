@@ -8,10 +8,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Unreleased [0.21.0-wip]
 
 ### Added
-- add features: `num_int`.
+- add features: `num_float`, `num_int`.
 - add traits: `NumVector`.
-- add types: `Angle`, `AngleDirection`, `AngleKind`.
+- add types: `Extent`, `Extent2d`, `Extend3d`.
+- add types: `Angle`, `AngleDirection`, `AngleKind`
 - add types: `Vector`, `Vector2d`, `Vector3d`, `VecVector`.
+- add types: `Point`, `Point2d`, `Point3d`, `Points`, `VecPoints`.
 - add `Floating` and `ExtFloat` methods: `neg_abs`.
 - add new arms to array_init: `init`, `init_heap`.
 
@@ -19,6 +21,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove features: `num_all`, `ui_all`.
 
 ### Changed
+- rename `Floating` to `Float` and make it own `self`.
+- add more consts to `Float` and `ExtFloat`.
+- change `From<float>` for `Sign` to return the zero sign.
+- add bounds for `color_gamma_*` functions.
 - move the enabling of all module's sub-features to the root module feature.
 
 ### Fixed
