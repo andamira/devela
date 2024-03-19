@@ -45,16 +45,18 @@ Single modules:
 - [`data`]
 - [`fig`]
 - [`gfx`]
-- [`io`]: enables `io` functionality.
+- [`io`]: enables the `io` functionality.
 - [`mem`]
-- [`num`]: enables all the `num` extra submodules:
+- [`num`]: enables all of the `num` sub-features:
+    - `num_float`: `Float`, `ExtFloat`.
+    - `num_int`: `Frac`, `Int`, `NumInt`, `NumRefInt`.
     - `num_niche_impls`: extra impls for [`niche`] types.
-    - `num_niche_range`: `Range` and `NonRange` niche types.
+    - `num_niche_range`: `Range*` and `NonRange*` niche types.
 - [`os`]
 - [`result`]
 - [`text`]: enables `Char*`, `Egc`, `Nonul`.
 - [`time`]
-- [`ui`]: enables all the `ui` extra submodules:
+- [`ui`]: enables all of the `ui` sub-features:
     - `ui_events`: extra support for events.
     - `ui_term`: enables the terminal functionality.
 - [`work`]: enables `work` functionality.

@@ -93,7 +93,7 @@ num = [ # enables all the `num` sub-features
 	"num_float", "num_int", "num_niche_impls", "num_niche_range"
 	]
 	num_float = [] # Float, ExtFloat
-	num_int = [] # Int, NumInt, NumRefInt, Frac types
+	num_int = [] # Frac, Int, NumInt, NumRefInt
 	num_niche_impls = [] # extra implementations for niche types
 	num_niche_range = [] # Range* and NonRange* niche types
 os = []
