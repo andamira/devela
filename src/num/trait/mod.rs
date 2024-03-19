@@ -80,26 +80,36 @@ pub trait Num {
     fn num_add(self, rhs: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_add`][Self::num_add] but takes the arguments by reference.*
     fn num_ref_add(&self, rhs: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Computes `&mut self += rhs;` (addition).
+    fn num_ref_add_assign(&mut self, rhs: &Self::Rhs) -> Result<()> { E::ni() }
 
     /// Computes `self - rhs` (subtraction).
     fn num_sub(self, rhs: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_sub`][Self::num_sub] but takes the arguments by reference.*
     fn num_ref_sub(&self, rhs: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Computes `&mut self -= rhs;` (subtraction).
+    fn num_ref_sub_assign(&mut self, rhs: &Self::Rhs) -> Result<()> { E::ni() }
 
     /// Computes `self * rhs` (multiplication).
     fn num_mul(self, rhs: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_mul`][Self::num_mul] but takes the arguments by reference.*
     fn num_ref_mul(&self, rhs: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Computes `&mut self *= rhs;` (multiplication).
+    fn num_ref_mul_assign(&mut self, rhs: &Self::Rhs) -> Result<()> { E::ni() }
 
     /// Computes `self / rhs` (division).
     fn num_div(self, rhs: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_div`][Self::num_div] but takes the arguments by reference.*
     fn num_ref_div(&self, rhs: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Computes `&mut self /= rhs;` (division).
+    fn num_ref_div_assign(&mut self, rhs: &Self::Rhs) -> Result<()> { E::ni() }
 
     /// Computes `self % rhs` (remainder).
     fn num_rem(self, rhs: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`num_rem`][Self::num_rem] but takes the arguments by reference.*
     fn num_ref_rem(&self, rhs: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+    /// Computes `&mut self %= rhs;` (remainder).
+    fn num_ref_rem_assign(&mut self, rhs: &Self::Rhs) -> Result<()> { E::ni() }
 
     /// Computes `-self` (additive inverse).
     fn num_neg(self) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -158,22 +168,37 @@ where
     /// Computes `&self + &rhs`.
     fn num_ref_add(&self, rhs: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_add(rhs) }
+    /// Computes `&mut self += &rhs`.
+    fn num_ref_add_assign(&mut self, rhs: &<Self::Own as Num>::Rhs) -> Result<()>
+    where Self: DerefMut<Target = Self::Own> { self.deref_mut().num_ref_add_assign(rhs) }
 
     /// Computes `&self - &rhs`.
     fn num_ref_sub(&self, rhs: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_sub(rhs) }
+    /// Computes `&mut self -= &rhs`.
+    fn num_ref_sub_assign(&mut self, rhs: &<Self::Own as Num>::Rhs) -> Result<()>
+    where Self: DerefMut<Target = Self::Own> { self.deref_mut().num_ref_sub_assign(rhs) }
 
     /// Computes `&self * &rhs`.
     fn num_ref_mul(&self, rhs: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_mul(rhs) }
+    /// Computes `&mut self *= &rhs`.
+    fn num_ref_mul_assign(&mut self, rhs: &<Self::Own as Num>::Rhs) -> Result<()>
+    where Self: DerefMut<Target = Self::Own> { self.deref_mut().num_ref_mul_assign(rhs) }
 
     /// Computes `&self / &rhs`.
     fn num_ref_div(&self, rhs: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_div(rhs) }
+    /// Computes `&mut self /= &rhs`.
+    fn num_ref_div_assign(&mut self, rhs: &<Self::Own as Num>::Rhs) -> Result<()>
+    where Self: DerefMut<Target = Self::Own> { self.deref_mut().num_ref_div_assign(rhs) }
 
     /// Computes `&self % &rhs`.
     fn num_ref_rem(&self, rhs: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
         self.deref().num_ref_rem(rhs) }
+    /// Computes `&mut self %= &rhs`.
+    fn num_ref_rem_assign(&mut self, rhs: &<Self::Own as Num>::Rhs) -> Result<()>
+    where Self: DerefMut<Target = Self::Own> { self.deref_mut().num_ref_rem_assign(rhs) }
 
     /// Computes `- &self`.
     fn num_ref_neg(&self) -> Result<<Self::Own as Num>::Out> { self.deref().num_ref_neg() }

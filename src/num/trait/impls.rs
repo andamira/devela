@@ -404,8 +404,10 @@ macro_rules! impl_num {
     // (this could be regarded as unnecessary since it's the same as the default implementantion,
     // but it allows us to debug missing implementations while swithing the commented out blocks
     // in the num module that provides non-automatic implementations for the trait methods)
+
     (op1_none $Self:ty => $($op:ident),+) => {
-        $( impl_num![@op1_none $Self => $op]; )+ };
+        // $( impl_num![@op1_none $Self => $op]; )+ // uncomment to DEBUG
+    };
     (@op1_none $Self:ty => $op:ident) => { paste! {
         #[inline]
         fn [<num_ $op>](self) -> Result<$Self::Out> { Error::ni() }
@@ -419,6 +421,8 @@ macro_rules! impl_num {
         fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> { Error::ni() }
         #[inline]
         fn [<num_ref_ $op>](&self, other: &$Self) -> Result<$Self::Out> { Error::ni() }
+        #[inline]
+        fn [<num_ref_ $op _assign>](&mut self, other: &$Self) -> Result<()> { Error::ni() }
     };
 
     /* ops that call .checked() for i*, u*, and few for NonZero* */
@@ -446,6 +450,11 @@ macro_rules! impl_num {
         fn [<num_ref_ $op>](&self, other: &$Self) -> Result<$Self::Out> {
             self.[<checked_ $op>](*other).ok_or(Unspecified)
         }
+        #[inline]
+        fn [<num_ref_ $op _assign>](&mut self, other: &$Self) -> Result<()> {
+            *self = self.[<checked_ $op>](*other).ok_or(Unspecified)?;
+            Ok(())
+        }
     }};
 
     /* ops that call .get().checked() for: NonZero*, NonSpecific*, (Non)Range* */
@@ -467,11 +476,19 @@ macro_rules! impl_num {
     (@op2_get_checked $Self:ty => $op:ident) => { paste! {
         #[inline]
         fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> {
-            $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
+            $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?)
+                .ok_or(Unspecified)
         }
         #[inline]
         fn [<num_ref_ $op>](&self, other: &$Self) -> Result<$Self::Out> {
-            $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?).ok_or(Unspecified)
+            $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?)
+                .ok_or(Unspecified)
+        }
+        #[inline]
+        fn [<num_ref_ $op _assign>](&mut self, other: &$Self) -> Result<()> {
+            *self = $Self::new(self.get().[<checked_ $op>](other.get()).ok_or(Unspecified)?)
+                .ok_or(Unspecified)?;
+            Ok(())
         }
     }};
 
