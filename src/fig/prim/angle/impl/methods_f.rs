@@ -4,7 +4,7 @@
 //
 
 use super::super::{Angle, AngleDirection, AngleKind};
-use crate::num::{fsize, Compare, ExtFloat, Floating};
+use crate::num::{fsize, Compare, ExtFloat, Float};
 
 // impl Angle methods with a floating-point representation
 macro_rules! impl_angle {
@@ -30,7 +30,7 @@ macro_rules! impl_angle {
             /// Creates a new angle from a `radians` value.
             #[inline]
             pub fn from_rad(radians: $f) -> Self {
-                Self(radians / Floating::<$f>::TAU)
+                Self(radians / <$f>::TAU)
             }
 
             /// Creates a new angle from a `degrees` value.
@@ -50,7 +50,7 @@ macro_rules! impl_angle {
             /// Converts the angle to radians.
             #[inline] #[must_use]
             pub fn to_rad(self) -> $f {
-                self.0 * Floating::<$f>::TAU
+                self.0 * <$f>::TAU
             }
 
             /// Converts the angle to degrees.
@@ -97,7 +97,7 @@ macro_rules! impl_angle {
             #[inline] #[cfg(all(not(feature = "safe_fig"), feature = "unsafe_const"))]
             pub const fn direction(self) -> AngleDirection {
                 use AngleDirection::{Clockwise, CounterClockwise};
-                if Floating::<$f>::is_sign_negative(self.0) { Clockwise } else { CounterClockwise }
+                if Float(self.0).is_sign_negative() { Clockwise } else { CounterClockwise }
             }
             /// Returns the angle direction.
             ///
@@ -141,8 +141,8 @@ macro_rules! impl_angle {
             pub const fn with_direction(self, direction: AngleDirection) -> Self {
                 use AngleDirection as D;
                 match direction {
-                    D::CounterClockwise | D::Undefined => Self(Floating::<$f>::const_abs(self.0)),
-                    D::Clockwise => Self(Floating::<$f>::neg_abs(self.0)),
+                    D::CounterClockwise | D::Undefined => Self(Float(self.0).const_abs().0),
+                    D::Clockwise => Self(Float(self.0).neg_abs().0),
                 }
             }
             /// Returns a version of the angle with the given `direction`.
@@ -176,38 +176,38 @@ macro_rules! impl_angle {
             /// This function will only be const with the `unsafe_const` feature enabled.
             #[inline] #[cfg(all(not(feature = "safe_fig"), feature = "unsafe_const"))]
             pub const fn invert_direction(self) -> Self {
-                Self(Floating::<$f>::flip_sign(self.0))
+                Self(Float(self.0).flip_sign().0)
             }
             /// Returns a version of the angle with inverted direction.
             /// # Features
             /// This function will only be const with the `unsafe_const` feature enabled.
             #[inline] #[cfg(any(feature = "safe_fig", not(feature = "unsafe_const")))]
             pub fn invert_direction(self) -> Self {
-                Self(Floating::<$f>::flip_sign(self.0))
+                Self(Float(self.0).flip_sign().0)
             }
 
             /// Returns the negative version of the angle.
             /// # Features
             /// This function will only be const with the `unsafe_const` feature enabled.
             #[inline] #[cfg(all(not(feature = "safe_fig"), feature = "unsafe_const"))]
-            pub const fn negative(self) -> Self { Self(Floating::<$f>::neg_abs(self.0)) }
+            pub const fn negative(self) -> Self { Self(Float(self.0).neg_abs().0) }
             /// Returns the negative version of the angle.
             /// # Features
             /// This function will only be const with the `unsafe_const` feature enabled.
             #[inline] #[cfg(any(feature = "safe_fig", not(feature = "unsafe_const")))]
-            pub fn negative(self) -> Self { Self(Floating::<$f>::neg_abs(self.0)) }
+            pub fn negative(self) -> Self { Self(Float(self.0).neg_abs().0) }
 
             /// Sets the angle as negative.
             #[inline]
             pub fn set_negative(&mut self) {
-                self.0 = Floating::<$f>::neg_abs(self.0);
+                self.0 = Float(self.0).neg_abs().0;
             }
 
             /// Returns the positive version of the angle.
             /// # Features
             /// This function will only be const with the `unsafe_const` feature enabled.
             #[inline] #[cfg(all(not(feature = "safe_fig"), feature = "unsafe_const"))]
-            pub const fn positive(self) -> Self { Self(Floating::<$f>::const_abs(self.0)) }
+            pub const fn positive(self) -> Self { Self(Float(self.0).const_abs().0) }
             /// Returns the positive version of the angle.
             /// # Features
             /// This function will only be const with the `unsafe_const` feature enabled.

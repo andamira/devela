@@ -1,16 +1,17 @@
-// devela::num::float::shared
-//!
+// devela::num::float::wrapper::impl_libm_std
+//
+//! Methods depending on libm, std, or their absence
 //
 
-use super::Floating;
+use super::Float;
 
-// macro helper for implementing methods for `Floating`, from either `libm` or `std`.
+// macro helper for implementing methods for `Float`, from either `libm` or `std`.
 //
 // $lib: the library to use.
 // $f: the floating-point type to support.
 // $doc: an optional documentation string.
 // $opfn: the original operation function name.
-// $op: the new operation function name in Floating.
+// $op: the new operation function name in Float.
 #[cfg(any(feature = "libm", feature = "std"))]
 macro_rules! impl_fp {
     // Matches a wildcard floating-point type (f*).
@@ -20,10 +21,10 @@ macro_rules! impl_fp {
         impl_fp![$lib : f64 : $($ops)*];
     };
     // Matches a specific floating-point type and any number of operations.
-    // Generates the impl block for Floating<$f> and calls the matching implementation.
+    // Generates the impl block for Float<$f> and calls the matching implementation.
     ($lib:ident : $f:ty : $($ops:tt)*) => { $crate::code::paste! {
         #[doc = "# *This implementation block leverages the `" $lib "` feature.*"]
-        impl Floating<$f> {
+        impl Float<$f> {
             impl_fp![@$lib : $f : $($ops)*];
         }
     }};
@@ -36,17 +37,17 @@ macro_rules! impl_fp {
     // Matches a single operation and implements it using the `libm` library.
     (@libm : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*) => {
         $(#[doc = $doc])?
-        #[inline(always)]
-        pub fn $op($($arg: $f),*) -> $f {
-            $crate::_deps::libm::Libm::<$f>::$opfn($($arg),*)
+        #[inline]
+        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
+            Float($crate::_deps::libm::Libm::<$f>::$opfn(self.0, $($arg),*))
         }
     };
     // Matches a single operation and implements it using the `std` library.
     (@std : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*) => {
         $(#[doc = $doc])?
-        #[inline(always)]
-        pub fn $op($($arg: $f),*) -> $f {
-            <$f>::$opfn($($arg),*)
+        #[inline]
+        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
+            Float(<$f>::$opfn(self.0, $($arg),*))
         }
     };
 }
@@ -55,110 +56,110 @@ use impl_fp;
 
 #[cfg(feature = "libm")]
 mod _libm {
-    use super::{impl_fp, Floating};
+    use super::{impl_fp, Float};
     use crate::{_deps::libm::Libm, code::iif};
     // custom implementations are commented out
     impl_fp![libm:f*:
-       r"The largest integer less than or equal to `x`.
+        r"The largest integer less than or equal to `x`.
         $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$ "
-        floor = floor: x;
+        floor = floor: ;
         r"The smallest integer greater than or equal to `x`.
         $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$"
-        ceil = ceil: x;
-        "The nearest integer to `x`, rounding ties away from `0.0`."
-        round = round_ties_away: x;
+        ceil = ceil: ;
+        "The nearest integer to itself, rounding ties away from `0.0`."
+        round = round_ties_away: ;
         "The integral part."
-        trunc = trunc: x;
+        trunc = trunc: ;
         // fract
         // split == modf
-        "The absolute value of `x`."
-        fabs = abs: x;
+        "Its absolute value."
+        fabs = abs: ;
         // signum
-        "A number composed of a `magnitude` and a `sign`."
-        copysign = copysign: magnitude, sign;
-        "Fused multiply-add. Computes (x * y) + z with only one rounding error."
-        fma = mul_add: x, y, z;
+        "A number composed of its magnitude and the `sign` of other."
+        copysign = copysign: sign;
+        "Fused multiply-add. Computes (self * mul) + add with only one rounding error."
+        fma = mul_add: mul, add;
         // div_euclid
         // rem_euclid
-        "Raises `x` to the `p` floating point power."
-        pow = powf: x, p;
+        "Raises itself to the `p` floating point power."
+        pow = powf: p;
         // powi
         "Square root."
-        sqrt = sqrt: x;
+        sqrt = sqrt: ;
         "$e^x$ (the exponential function)."
-        exp = exp: x;
+        exp = exp: ;
         "$2^x$."
-        exp2 = exp2: x;
+        exp2 = exp2: ;
         "$e^x -1$, more accurately for small values of `x`."
-        expm1 = exp_m1: x;
+        expm1 = exp_m1: ;
         // ln = ln: x;
         "The natural logarithm."
-        log = ln: x;
+        log = ln: ;
         "The natural logarithm plus 1, more accurately."
-        log1p = ln_1p: x;
+        log1p = ln_1p: ;
         // log
         "The base 2 logarithm."
-        log2 = log2: x;
+        log2 = log2: ;
         "The base 10 logarithm."
-        log10 = log10: x;
+        log10 = log10: ;
         "The cubic root."
-        cbrt = cbrt: x;
+        cbrt = cbrt: ;
         "The hypothenuse (the euclidean distance)."
-        hypot = hypot: x, y;
+        hypot = hypot: other;
         "The sine."
-        sin = sin: x;
+        sin = sin: ;
         "The cosine."
-        cos = cos: x;
+        cos = cos: ;
         "The tangent."
-        tan = tan: x;
+        tan = tan: ;
         "The arc sine."
-        asin = asin: x;
+        asin = asin: ;
         "The arc cosine."
-        acos = acos: x;
+        acos = acos: ;
         "The arc tangent."
-        atan = atan: x;
+        atan = atan: ;
         "The arc tangent of two variables."
-        atan2 = atan2: x, y;
+        atan2 = atan2: other;
         // sin_cos
         "The hyperbolic sine."
-        sinh = sinh: x;
+        sinh = sinh: ;
         "The hyperbolic cosine."
-        cosh = cosh: x;
+        cosh = cosh: ;
         "The hyperbolic tangent."
-        tanh = tanh: x;
+        tanh = tanh: ;
         "The inverse hyperbolic sine."
-        asinh = asinh: x;
+        asinh = asinh: ;
         "The inverse hyperbolic cosine."
-        acosh = acosh: x;
+        acosh = acosh: ;
         "The inverse hyperbolic tangent."
-        atanh = atanh: x;
+        atanh = atanh: ;
 
         "The minimum of two numbers, ignoring `NaN`."
-        fmax = max: x, y;
+        fmax = max: other;
         "The minimum of two numbers, ignoring `NaN`."
-        fmin = min: x, y;
+        fmin = min: other;
 
         /* only in libm */
 
         "`10^x`."
-        exp10 = exp10: x;
+        exp10 = exp10: ;
         "The gamma function. Generalizes the factorial function to complex numbers."
-        tgamma = gamma : x;
+        tgamma = gamma: ;
         "The natural logarithm of the absolute value of the gamma function."
-        lgamma = lgamma : x;
+        lgamma = lgamma: ;
         "The error function."
-        erf = erf: x;
+        erf = erf: ;
         "The complementary error function (1 - erf)."
-        erfc = erfc: x;
+        erfc = erfc: ;
         "The bessel function of the first kind, of order 0."
-        j0 = j0: x;
+        j0 = j0: ;
         "The bessel function of the first kind, of order 1."
-        j1 = j1: x;
+        j1 = j1: ;
         // jn
         "The bessel function of the second kind, of order 0."
-        y0 = y0: x;
+        y0 = y0: ;
         "The bessel function of the second kind, of order 1."
-        y1 = y1: x
+        y1 = y1:
         // yn
     ];
     // $f: the floating-point type.
@@ -167,38 +168,51 @@ mod _libm {
         ($( ($f:ty, $e:ty) ),+) => { $( custom_impls![@$f, $e]; )+ };
         (@$f:ty, $e:ty) => {
             /// # *Implementations using the `libm` feature*.
-            impl Floating<$f> {
-                /// The fractional part of `x`.
+            impl Float<$f> {
+                /// The fractional part.
                 ///
                 /// $$ \text{fract}(x) = x - \lfloor x \rfloor $$
-                #[must_use] #[inline(always)]
-                pub fn fract(x: $f) -> $f { x - Libm::<$f>::trunc(x) }
+                #[must_use] #[inline]
+                pub fn fract(self) -> Float<$f> { Float(self.0 - Libm::<$f>::trunc(self.0)) }
 
-                /// The integral and fractional parts of `x`.
+                /// The integral and fractional parts.
                 ///
                 /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
-                #[must_use] #[inline(always)]
-                pub fn split(x: $f) -> ($f, $f) { Libm::<$f>::modf(x) }
+                #[must_use] #[inline]
+                pub fn split(self) -> (Float<$f>, Float<$f>) {
+                    let (i, f) = Libm::<$f>::modf(self.0);
+                    (Self(i), Self(f))
+                }
 
                 /// A number that represents the sign of `x`, propagating `NaN`.
                 #[must_use] #[inline]
-                pub fn signum(x: $f) -> $f {
-                    iif![x.is_nan(); <$f>::NAN; Libm::<$f>::copysign(1.0, x)]
+                pub fn signum(self) -> Float<$f> {
+                    if self.0.is_nan() {
+                        Self::NAN
+                    } else {
+                        Float(Libm::<$f>::copysign(1.0, self.0))
+                    }
                 }
 
                 /// Raises `x` to the `p` integer power.
-                #[must_use] #[inline(always)]
-                pub fn powi(x: $f, p: $e) -> $f { Self::powf(x, p as $f) }
+                #[must_use] #[inline]
+                pub fn powi(self, p: $e) -> Float<$f> { self.powf(p as $f) }
 
                 /// The logarithm of the number with respect to an arbitrary base.
-                #[must_use] #[inline(always)]
-                pub fn log(x: $f, base: $f) -> $f { Self::ln(base) / Self::ln(x) }
+                #[must_use] #[inline]
+                pub fn log(self, base: $f) -> Float<$f> {
+                    // Float(Self::ln(base).0 / Self::ln(self).0)
+                    Float(Float(base).ln().0 / self.ln().0)
+                }
 
                 /// The sine and cosine.
                 #[must_use] #[inline(always)]
-                pub fn sin_cos(x: $f) -> ($f, $f) { Libm::<$f>::sincos(x) }
+                pub fn sin_cos(self) -> (Float<$f>, Float<$f>) {
+                    let (sin, cos) = Libm::<$f>::sincos(self.0);
+                    (Float(sin), Float(cos))
+                }
 
-                // NOTE: implemented manually in _either
+                // NOTE: implemented manually in `shared.rs`
                 //
                 // /// The clamped `x` value, propagating `NaN`.
                 // #[must_use] #[inline(always)]
@@ -220,14 +234,17 @@ mod _libm {
 
                 /// The natural logarithm of the absolute value of the gamma function,
                 /// plus its sign.
-                #[must_use] #[inline(always)]
-                pub fn lgamma_r(x: $f) -> ($f, $e) { Libm::<$f>::lgamma_r(x) }
+                #[must_use] #[inline]
+                pub fn lgamma_r(self) -> (Float<$f>, $e) {
+                    let (f, sign) = Libm::<$f>::lgamma_r(self.0);
+                    (Float(f), sign)
+                }
                 /// Bessel function of the first kind, of order `n`.
-                #[must_use] #[inline(always)]
-                pub fn jn(n: $e, x: $f) -> $f { Libm::<$f>::jn(n, x) }
+                #[inline]#[must_use]
+                pub fn jn(self, n: $e) -> Float<$f> { Float(Libm::<$f>::jn(n, self.0)) }
                 /// Bessel function of the second kind, of order `n`.
-                #[must_use] #[inline(always)]
-                pub fn yn(n: $e, x: $f) -> $f { Libm::<$f>::yn(n, x) }
+                #[inline] #[must_use]
+                pub fn yn(self, n: $e) -> Float<$f> { Float(Libm::<$f>::yn(n, self.0)) }
             }
         };
     }
@@ -236,95 +253,95 @@ mod _libm {
 
 #[cfg(all(not(feature = "libm"), feature = "std"))]
 mod _std {
-    use super::{impl_fp, Floating};
+    use super::{impl_fp, Float};
     // custom implementations are commented out:
     impl_fp![std:f*:
-       r"The largest integer less than or equal to `x`.
+        r"The largest integer less than or equal to `x`.
         $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$ "
-        floor = floor: x;
+        floor = floor: ;
         r"The smallest integer greater than or equal to `x`.
         $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$"
-        ceil = ceil: x;
+        ceil = ceil: ;
         "The nearest integer to `x`, rounding ties away from `0.0`."
-        round = round_ties_away: x;
+        round = round_ties_away: ;
         r"The integral part.
         $$ \text{trunc}(x) = \begin{cases}
         \lfloor x \rfloor, & \text{if } x \geq 0 \\
         \lceil x \rceil, & \text{if } x < 0
         \end{cases} $$"
-        trunc = trunc: x;
+        trunc = trunc: ;
         r"The fractional part.
         $$ \text{fract}(x) = x - \text{trunc}(x) $$"
-        fract = fract: x;
+        fract = fract: ;
         // split == modf
         "The absolute value of `x`."
-        abs = abs: x;
+        abs = abs: ;
         "A number that represents the sign of `x`."
-        signum = signum: x;
+        signum = signum: ;
         "A number composed of a `magnitude` and a `sign`."
-        copysign = copysign: magnitude, sign;
-        "Fused multiply-add. Computes (x * y) + z with only one rounding error."
-        mul_add = mul_add: x, y, z;
+        copysign = copysign: sign;
+        "Fused multiply-add. Computes (self * mul) + add with only one rounding error."
+        mul_add = mul_add: mul, add;
         // implemented manually for all:
-        // div_euclid = div_euclid: x, y;
-        // rem_euclid = rem_euclid: x, y;
-        "Raises `x` to the `p` floating point power."
-        powf = powf: x, p;
+        // div_euclid = div_euclid: other;
+        // rem_euclid = rem_euclid: other;
+        "Raises itself to the `p` floating point power."
+        powf = powf: p;
         // powi
         "The square root."
-        sqrt = sqrt: x;
+        sqrt = sqrt: ;
         "$e^x$ (the exponential function)."
-        exp = exp: x;
+        exp = exp: ;
         "$2^x$."
-        exp2 = exp2: x;
+        exp2 = exp2: ;
         "$e^x -1$, more accurately for small values of `x`."
-        exp_m1 = exp_m1: x;
+        exp_m1 = exp_m1: ;
         "The natural logarithm."
-        ln = ln: x;
+        ln = ln: ;
         "The natural logarithm plus 1, more accurately."
-        ln_1p = ln_1p: x;
+        ln_1p = ln_1p: ;
         "The logarithm of the number with respect to an arbitrary base."
-        log = log: x, y;
+        log = log: base;
         "The base 2 logarithm."
-        log2 = log2: x;
+        log2 = log2: ;
         "The base 10 logarithm."
-        log10 = log10: x;
+        log10 = log10: ;
         "The cubic root."
-        cbrt = cbrt: x;
+        cbrt = cbrt: ;
         "The hypothenuse (the euclidean distance)."
-        hypot = hypot: x, y;
+        hypot = hypot: other;
         "The sine."
-        sin = sin: x;
+        sin = sin: ;
         "The cosine."
-        cos = cos: x;
+        cos = cos: ;
         "The tangent."
-        tan = tan: x;
+        tan = tan: ;
         "The arc sine."
-        asin = asin: x;
+        asin = asin: ;
         "The arc cosine."
-        acos = acos: x;
+        acos = acos: ;
         "The arc tangent."
-        atan = atan: x;
+        atan = atan: ;
         "The arc tangent of two variables."
-        atan2 = atan2: x, y;
+        atan2 = atan2: other;
         // sin_cos
         "The hyperbolic sine."
-        sinh = sinh: x;
+        sinh = sinh: ;
         "The hyperbolic cosine."
-        cosh = cosh: x;
+        cosh = cosh: ;
         "The hyperbolic tangent."
-        tanh = tanh: x;
+        tanh = tanh: ;
         "The inverse hyperbolic sine."
-        asinh = asinh: x;
+        asinh = asinh: ;
         "The inverse hyperbolic cosine."
-        acosh = acosh: x;
+        acosh = acosh: ;
         "The inverse hyperbolic tangent."
-        atanh = atanh: x;
+        atanh = atanh: ;
 
         "The maximum of two numbers, ignoring `NaN`."
-        max = max: x, y;
+        max = max: other;
         "The minimum of two numbers, ignoring `NaN`."
-        min = min: x, y
+        min = min: other
 
         /* not implemented */
         // exp10: https://internals.rust-lang.org/t/enh-add-exp10-and-expf-base-x-f64-f32-methods-to-stdlib-to-symmetrize-api
@@ -338,20 +355,23 @@ mod _std {
         ($( ($f:ty, $e:ty) ),+) => { $( custom_impls![@$f, $e]; )+ };
         (@$f:ty, $e:ty) => {
             /// # *Implementations using the `std` feature*.
-            impl Floating<$f> {
-                /// Raises `x` to the `p` integer power.
-                #[inline(always)]
-                pub fn powi(x: $f, p: $e) -> $f { <$f>::powi(x, p) }
+            impl Float<$f> {
+                /// Raises itself to the `p` integer power.
+                #[inline]
+                pub fn powi(self, p: $e) -> Float<$f> { Float(<$f>::powi(self.0, p)) }
                 /// Both the sine and cosine.
-                #[inline(always)]
-                pub fn sin_cos(x: $f) -> ($f, $f) { <$f>::sin_cos(x) }
+                #[inline]
+                pub fn sin_cos(self) -> (Float<$f>, Float<$f>) {
+                    let (sin, cos) = <$f>::sin_cos(self.0);
+                    (Float(sin), Float(cos))
+                }
                 /// The integral and fractional parts of `x`.
                 ///
                 /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
-                #[inline(always)]
-                pub fn split(x: $f) -> ($f, $f) {
-                    let trunc = Self::trunc(x);
-                    (trunc, x - trunc)
+                #[inline]
+                pub fn split(self) -> (Float<$f>, Float<$f>) {
+                    let trunc = self.trunc();
+                    (trunc, Float(self.0 - trunc.0))
                 }
             }
         };
@@ -361,7 +381,7 @@ mod _std {
 
 #[cfg(all(not(feature = "libm"), not(feature = "std")))]
 mod _no_std_no_libm {
-    use super::Floating;
+    use super::Float;
     use crate::code::iif;
 
     // $f: the floating-point type.
@@ -371,40 +391,38 @@ mod _no_std_no_libm {
         ($( ($f:ty, $ub:ty, $ie:ty) ),+) => { $( custom_impls![@$f, $ub, $ie]; )+ };
         (@$f:ty, $ub:ty, $ie:ty) => { $crate::code::paste! {
             /// # *Implementations without `std` or `libm`*.
-            impl Floating<$f> {
-                /// The largest integer less than or equal to `x`.
+            impl Float<$f> {
+                /// The largest integer less than or equal to itself.
                 ///
                 /// $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$
                 #[must_use] #[inline]
-                pub fn floor(x: $f) -> $f {
-                    let mut result = Self::trunc(x);
-                    if x.is_sign_negative() && Self::abs(x - result) > <$f>::EPSILON {
+                pub fn floor(self) -> Float<$f> {
+                    let mut result = self.trunc().0;
+                    if self.0.is_sign_negative() && Float(self.0 - result).abs().0 > <$f>::EPSILON {
                         result -= 1.0;
                     }
-                    result
+                    Float(result)
                 }
 
-                /// The smallest integer greater than or equal to `x`.
+                /// The smallest integer greater than or equal to itself.
                 ///
                 /// $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$
                 #[must_use] #[inline]
-                pub fn ceil(x: $f) -> $f {
-                    let mut result = Self::trunc(x);
-                    if x.is_sign_positive() && Self::abs(x - result) > <$f>::EPSILON {
+                pub fn ceil(self) -> Float<$f> {
+                    let mut result = self.trunc().0;
+                    if self.0.is_sign_positive() && Float(self.0 - result).abs().0 > <$f>::EPSILON {
                         result += 1.0;
                     }
-                    result
+                    Float(result)
                 }
 
-                /// The nearest integer to `self`, default rounding
+                /// The nearest integer to itself, default rounding
                 ///
                 /// This is the default [`round_ties_away`] implementation.
                 #[must_use] #[inline]
-                pub fn round(x: $f) -> $f {
-                    Self::trunc(x + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, x))
-                }
+                pub fn round(self) -> Float<$f> { self.round_ties_away() }
 
-                /// The nearest integer to `self`, rounding ties away from `0.0`.
+                /// The nearest integer to itself, rounding ties away from `0.0`.
                 ///
                 /// This is the default [`round`] implementation.
                 ///
@@ -417,8 +435,8 @@ mod _no_std_no_libm {
                 /// \end{cases}
                 /// $$
                 #[must_use] #[inline]
-                pub fn round_ties_away(x: $f) -> $f {
-                    Self::trunc(x + Self::copysign(0.5 - 0.25 * <$f>::EPSILON, x))
+                pub fn round_ties_away(self) -> Float<$f> {
+                    Float(self.0 + Float(0.5 - 0.25 * <$f>::EPSILON).copysign(self.0).0).trunc()
                 }
 
                 /// The integral part.
@@ -436,41 +454,41 @@ mod _no_std_no_libm {
                 /// created to remove the fractional part. The new bits are then used to create
                 /// the truncated floating-point number.
                 #[must_use] #[inline]
-                pub fn trunc(x: $f) -> $f {
-                    let bits = x.to_bits();
-                    const BIAS: $ie = Floating::<$f>::BIAS as $ie;
-                    const SIG_BITS: $ie = Floating::<$f>::SIGNIFICAND_BITS as $ie;
-                    const EXP_MASK: $ub = (1 << Floating::<$f>::EXPONENT_BITS) - 1;
+                pub fn trunc(self) -> Float<$f> {
+                    let bits = self.0.to_bits();
+                    const BIAS: $ie = Float::<$f>::BIAS as $ie;
+                    const SIG_BITS: $ie = Float::<$f>::SIGNIFICAND_BITS as $ie;
+                    const EXP_MASK: $ub = (1 << Float::<$f>::EXPONENT_BITS) - 1;
 
                     #[allow(clippy::cast_possible_wrap)]
                     let exponent = (((bits >> SIG_BITS) & EXP_MASK) as $ie) - BIAS;
                     if exponent < 0 {
-                        iif![x.is_sign_positive(); 0.0; -0.0]
+                        iif![self.0.is_sign_positive(); Float(0.0); Float(-0.0)]
                     } else if exponent < SIG_BITS {
                         let mask = !(([<1_ $ub>] << (SIG_BITS - exponent)) - 1);
                         let new_bits = bits & mask;
-                        <$f>::from_bits(new_bits)
+                        Float(<$f>::from_bits(new_bits))
                     } else {
-                        x
+                        self
                     }
                 }
 
                 /// The fractional part.
                 ///
                 /// $$ \text{fract}(x) = x - \text{trunc}(x) $$
-                #[must_use] #[inline(always)]
-                pub fn fract(x: $f) -> $f { x - Self::trunc(x) }
+                #[must_use] #[inline]
+                pub fn fract(self) -> Float<$f> { Float(self.0 - self.trunc().0) }
 
                 /// The integral and fractional parts.
                 ///
                 /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
-                #[must_use] #[inline(always)]
-                pub fn split(x: $f) -> ($f, $f) {
-                    let trunc = Self::trunc(x);
-                    (trunc, x - trunc)
+                #[must_use] #[inline]
+                pub fn split(self) -> (Float<$f>, Float<$f>) {
+                    let trunc = self.trunc();
+                    (trunc, Float(self.0 - trunc.0))
                 }
 
-                /// The absolute value of `x`.
+                /// The absolute value.
                 ///
                 /// # Features
                 /// This function will only be `const` with the `unsafe_const` feature enabled,
@@ -479,8 +497,8 @@ mod _no_std_no_libm {
                 /// See also [`const_abs`][Self::const_abs].
                 #[inline] #[must_use]
                 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-                pub const fn abs(x: $f) -> $f { Self::const_abs(x) }
-                /// The absolute value of `x`.
+                pub const fn abs(self) -> Float<$f> { self.const_abs() }
+                /// The absolute value.
                 ///
                 /// # Features
                 /// This function will only be `const` with the `unsafe_const` feature enabled,
@@ -489,58 +507,58 @@ mod _no_std_no_libm {
                 /// See also [`const_abs`][Self::const_abs].
                 #[inline] #[must_use]
                 #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-                pub fn abs(x: $f) -> $f {
+                pub fn abs(self) -> Float<$f> {
                     let mask = <$ub>::MAX / 2;
-                    let bits: $ub = x.to_bits() & mask;
-                    <$f>::from_bits(bits)
+                    let bits: $ub = self.0.to_bits() & mask;
+                    Float(<$f>::from_bits(bits))
                 }
 
-                /// A number that represents the sign of `x`, propagating `NaN`.
+                /// A number that represents its sign, propagating `NaN`.
                 #[must_use] #[inline]
-                pub fn signum(x: $f) -> $f {
-                    iif![x.is_nan(); <$f>::NAN; Self::copysign(1.0, x)]
+                pub fn signum(self) -> Float<$f> {
+                    if self.0.is_nan() { Float(<$f>::NAN) } else { Self::ONE.copysign(self.0) }
                 }
 
-                /// A number composed of a `magnitude` and a `sign`.
-                #[must_use] #[inline(always)]
-                pub fn copysign(magnitude: $f, sign: $f) -> $f {
+                /// A number composed of the magnitude of itself and the `sign` of other.
+                #[must_use] #[inline]
+                pub fn copysign(self, sign: $f) -> Float<$f> {
                     const SIGN_MASK: $ub = <$ub>::MAX / 2 + 1;
                     const VALUE_MASK: $ub = <$ub>::MAX / 2;
                     let sign_bit = sign.to_bits() & SIGN_MASK;
-                    let value_bits = magnitude.to_bits() & VALUE_MASK;
-                    <$f>::from_bits(value_bits | sign_bit)
+                    let value_bits = self.0.to_bits() & VALUE_MASK;
+                    Float(<$f>::from_bits(value_bits | sign_bit))
                 }
 
-                /// The maximum of two numbers, ignoring `NaN`.
+                /// The maximum between itself and `other`, ignoring `NaN`.
                 #[must_use] #[inline]
-                pub fn max(x: $f, y: $f) -> $f {
-                    (if x.is_nan() || x < y { y } else { x }) * 1.0
+                pub fn max(self, other: $f) -> Float<$f> {
+                    if self.0.is_nan() || self.0 < other { Float(other) } else { self }
                 }
 
-                /// The minimum of two numbers, ignoring `NaN`.
+                /// The minimum between itself and other, ignoring `NaN`.
                 #[must_use] #[inline]
-                pub fn min(x: $f, y: $f) -> $f {
-                    (iif![y.is_nan() || x < y; x; y]) * 1.0
+                pub fn min(self, other: $f) -> Float<$f> {
+                    if other.is_nan() || self.0 < other { self } else { Float(other) }
                 }
 
-                /// Raises `x` to the `p` integer power.
+                /// Raises itself to the `p` integer power.
                 #[must_use] #[inline]
-                pub fn powi(x: $f, p: $ie) -> $f {
+                pub fn powi(self, p: $ie) -> Float<$f> {
                     match p {
-                        0 => 1.0,
+                        0 => Self::ONE,
                         1.. => {
-                            let mut result = x;
+                            let mut result = self.0;
                             for _i in 1..p {
-                                result *= x;
+                                result *= self.0;
                             }
-                            result
+                            Float(result)
                         }
                         _ => {
-                            let mut result = x;
+                            let mut result = self.0;
                             for _i in 1..p.abs() {
-                                result /= x;
+                                result /= self.0;
                             }
-                            result
+                            Float(result)
                         }
                     }
                 }

@@ -1,11 +1,15 @@
-// devela::num::float::shared
-//!
+// devela::num::float::wrapper::impl_shared
+//
+//! Shared methods
 //
 
 use crate::{
-    code::iif,
-    num::{Floating, Sign},
+    code::{iif, paste},
+    num::{Compare, Float, Sign},
 };
+#[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+use core::mem::transmute;
+use core::{concat as cc, stringify as sfy};
 
 // Implements methods independently of any features
 //
@@ -14,51 +18,67 @@ use crate::{
 // $ue: unsigned int type used for integer exponentiation and number of terms (u32).
 macro_rules! custom_impls {
     ($( ($f:ty:$uf:ty, $ue:ty) ),+) => { $( custom_impls![@$f:$uf, $ue]; )+ };
-    (@$f:ty:$uf:ty, $ue:ty) => { $crate::code::paste! {
+    (@$f:ty:$uf:ty, $ue:ty) => {
         /// # *Common implementations with or without `std` or `libm`*.
         /// # Features
         /// Several methods will only be *const* with the `unsafe_const` feature enabled.
-        impl Floating<$f> {
+        impl Float<$f> {
             /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
-            // WAIT: [round_ties_even](https://github.com/rust-lang/rust/issues/96710)
-            #[must_use] #[inline]
-            pub fn round_ties_even(x: $f) -> $f {
-                let r = Self::round_ties_away(x);
-                iif![r % 2.0 == 0.0; r ;
-                    iif![Self::abs(x - r) == 0.5; r - Self::signum(x); r]]
+            // WAIT:1.77 [round_ties_even](https://github.com/rust-lang/rust/issues/96710)
+            #[inline] #[must_use]
+            pub fn round_ties_even(self) -> Float<$f> {
+                let r = self.round_ties_away();
+                iif![r.0 % 2.0 == 0.0; r;
+                    iif![(self - r).abs() == 0.5; r - self.signum(); r]]
             }
 
-            /// Returns the nearest integer to `x`, rounding ties to the nearest odd integer.
-            #[must_use] #[inline]
-            pub fn round_ties_odd(x: $f) -> $f {
-                let r = Self::round_ties_away(x);
-                iif![r % 2.0 != 0.0; r ;
-                    iif![Self::abs(x - r) == 0.5; r + Self::signum(x); r]]
+            /// Returns the nearest integer, rounding ties to the nearest odd integer.
+            #[inline] #[must_use]
+            pub fn round_ties_odd(self) -> Float<$f> {
+                let r = self.round_ties_away();
+                iif![r.0 % 2.0 != 0.0; r ;
+                    iif![(self - r).abs() == 0.5; r + self.signum(); r]]
             }
 
-            /// Returns the [`Sign`] of `x`.
+            /// Returns the [`Sign`].
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn sign(x: $f) -> Sign {
-                if Self::is_zero(x) {
+            pub const fn sign(self) -> Sign {
+                if self.is_sign_positive() { Sign::Positive } else { Sign::Negative }
+            }
+            /// Returns the [`Sign`].
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            pub fn sign(self) -> Sign {
+                if self.is_sign_positive() { Sign::Positive } else { Sign::Negative }
+            }
+            /// Returns the [`Sign`], returning [`None`][Sign::None] for zero
+            /// # Features
+            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            #[inline] #[must_use]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            pub const fn sign_nonzero(self) -> Sign {
+                if self.is_zero() {
                     Sign::None
-                } else if Self::is_sign_positive(x) {
+                } else if self.is_sign_positive() {
                     Sign::Positive
                 } else {
                     Sign::Negative
                 }
             }
-            /// Returns the [`Sign`] of `x`.
+            /// Returns the [`Sign`], returning [`None`][Sign::None] for zero
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn sign(x: $f) -> Sign {
-                if Self::is_zero(x) {
+            pub fn sign_nonzero(self) -> Sign {
+                if self.is_zero() {
                     Sign::None
-                } else if Self::is_sign_positive(x) {
+                } else if self.is_sign_positive() {
                     Sign::Positive
                 } else {
                     Sign::Negative
@@ -70,10 +90,9 @@ macro_rules! custom_impls {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn is_sign_positive(x: $f) -> bool {
+            pub const fn is_sign_positive(self) -> bool {
                 // WAIT: [const_float_classify](https://github.com/rust-lang/rust/issues/72505)
-                // <$f>::is_sign_positive(x)
-                let bits: $uf = unsafe { core::mem::transmute(x) };
+                let bits: $uf = unsafe { transmute(self.0) };
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 (bits & sign_bit_mask) == 0 // if sign bit is not set it's a positive number or +0
             }
@@ -82,18 +101,16 @@ macro_rules! custom_impls {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn is_sign_positive(x: $f) -> bool { <$f>::is_sign_positive(x) }
+            pub fn is_sign_positive(self) -> bool { self.0.is_sign_positive() }
 
             /// Returns `true` if `self` has a negative sign.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn is_sign_negative(x: $f) -> bool {
+            pub const fn is_sign_negative(self) -> bool {
                 // WAIT: [const_float_classify](https://github.com/rust-lang/rust/issues/72505)
-                // <$f>::is_sign_negative(x)
-
-                let bits: $uf = unsafe { core::mem::transmute(x) };
+                let bits: $uf = unsafe { transmute(self.0) };
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 (bits & sign_bit_mask) != 0 // if sign bit is set it's a negative number or -0
             }
@@ -102,17 +119,17 @@ macro_rules! custom_impls {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn is_sign_negative(x: $f) -> bool { <$f>::is_sign_negative(x) }
+            pub fn is_sign_negative(self) -> bool { self.0.is_sign_negative() }
 
             /// Returns `true` if `x` is 0.0 or -0.0.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn is_zero(x: $f) -> bool {
+            pub const fn is_zero(self) -> bool {
                 // WAIT: [const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
-                let bits: $uf = unsafe { core::mem::transmute(x) };
-                let non_sign_bits_mask = !($uf::MAX / 2 + 1);
+                let bits: $uf = unsafe { transmute(self.0) };
+                let non_sign_bits_mask = !(<$uf>::MAX / 2 + 1);
                 (bits & non_sign_bits_mask) == 0
             }
             /// Returns `true` if `x` is 0.0 or -0.0.
@@ -120,9 +137,9 @@ macro_rules! custom_impls {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn is_zero(x: $f) -> bool {
-                let non_sign_bits_mask = !($uf::MAX / 2 + 1);
-                (x.to_bits() & non_sign_bits_mask) == 0
+            pub fn is_zero(self) -> bool {
+                let non_sign_bits_mask = !(<$uf>::MAX / 2 + 1);
+                (self.0.to_bits() & non_sign_bits_mask) == 0
             }
 
             /// Returns `true` if `x` has a positive sign and is not zero.
@@ -130,16 +147,16 @@ macro_rules! custom_impls {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn is_sign_positive_nonzero(x: $f) -> bool {
-                !Self::is_zero(x) && Self::is_sign_positive(x)
+            pub const fn is_sign_positive_nonzero(self) -> bool {
+                !self.is_zero() && self.is_sign_positive()
             }
             /// Returns `true` if `x` has a positive sign and is not zero.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn is_sign_positive_nonzero(x: $f) -> bool {
-                !Self::is_zero(x) && Self::is_sign_positive(x)
+            pub fn is_sign_positive_nonzero(self) -> bool {
+                !self.is_zero() && self.is_sign_positive()
             }
 
             /// Returns `true` if `x` has a negative sign and is not zero.
@@ -147,69 +164,86 @@ macro_rules! custom_impls {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn is_sign_negative_nonzero(x: $f) -> bool {
-                !Self::is_zero(x) && Self::is_sign_negative(x)
+            pub const fn is_sign_negative_nonzero(self) -> bool {
+                !self.is_zero() && self.is_sign_negative()
             }
             /// Returns `true` if `x` has a negative sign and is not zero.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn is_sign_negative_nonzero(x: $f) -> bool {
-                !Self::is_zero(x) && Self::is_sign_negative(x)
+            pub fn is_sign_negative_nonzero(self) -> bool {
+                !self.is_zero() && self.is_sign_negative()
             }
 
             /// Computes `(x * mul + add)` normally.
-            #[must_use] #[inline]
-            pub fn mul_add_fallback(x: $f, mul: $f, add: $f) -> $f { x * mul + add }
+            #[inline] #[must_use]
+            pub fn mul_add_fallback(self, mul: $f, add: $f) -> Float<$f> {
+                self * mul + add
+            }
 
             /// The euclidean division.
-            #[must_use] #[inline]
-            pub fn div_euclid(x: $f, y: $f) -> $f {
-                let q = Self::trunc(x / y);
-                iif![x % y < 0.0; return iif![y > 0.0; q - 1.0; q + 1.0]]; q
+            #[inline] #[must_use]
+            pub fn div_euclid(self, other: $f) -> Float<$f> {
+                let q = (self / other).trunc();
+                if self % other < 0.0 {
+                    iif![other > 0.0; q - 1.0; q + 1.0]
+                } else {
+                    q
+                }
             }
 
-            /// The least nonnegative remainder of `x` % `y`.
-            #[must_use] #[inline]
-            pub fn rem_euclid(x: $f, y: $f) -> $f {
-                let r = x % y; iif![r < 0.0; r + Self::abs(y); r]
+            /// The least nonnegative remainder of `self` % `other`.
+            #[inline] #[must_use]
+            pub fn rem_euclid(self, other: $f) -> Float<$f> {
+                let r = self % other;
+                iif![r < 0.0; r + Float(other).abs(); r]
             }
 
-            /// Returns the value `x` between `[min..=max]` scaled to a new range `[u..=v]`.
+            /// Returns `self` between `[min..=max]` scaled to a new range `[u..=v]`.
             ///
-            /// Values of `x` outside `[min..=max]` are not clamped and will result in extrapolation.
+            /// Values of `self` outside of `[min..=max]` are not clamped
+            /// and will result in extrapolation.
+            ///
             /// # Formula
-            /// $$ \large \text{scale}(x, min, max, u, v) = (v - u) \frac{x - min}{max - min} + u $$
+            /// $$
+            /// \large \text{scale}(x, min, max, u, v) = (v - u) \frac{x - min}{max - min} + u
+            /// $$
+            ///
             /// # Examples
             /// ```
-            /// # use devela::num::Floating;
-            #[doc = "assert_eq![0.125, Floating::<" $f ">::scale(45., 0., 360., 0., 1.)];"]
-            #[doc = "assert_eq![-0.75, Floating::<" $f ">::scale(45., 0., 360., -1., 1.)];"]
-            #[doc = "assert_eq![45., Floating::<" $f ">::scale(0.125, 0., 1., 0., 360.)];"]
-            #[doc = "assert_eq![45., Floating::<" $f ">::scale(-0.75, -1., 1., 0., 360.)];"]
+            /// # use devela::num::Float;
+            #[doc = cc!["assert_eq![Float(45_", sfy![$f], ").scale(0., 360., 0., 1.), 0.125];"]]
+            #[doc = cc!["assert_eq![Float(45_", sfy![$f], ").scale(0., 360., -1., 1.), -0.75];"]]
+            #[doc = cc!["assert_eq![Float(0.125_", sfy![$f], ").scale(0., 1., 0., 360.), 45.];"]]
+            #[doc = cc!["assert_eq![Float(-0.75_", sfy![$f], ").scale(-1., 1., 0., 360.), 45.];"]]
             /// ```
-            #[must_use] #[inline]
-            pub fn scale(x: $f, min: $f, max: $f, u: $f, v: $f) -> $f {
-                (v - u) * (x - min) / (max - min) + u
+            #[inline] #[must_use]
+            pub fn scale(self, min: $f, max: $f, u: $f, v: $f) -> Float<$f> {
+                Float((v - u) * (self.0 - min) / (max - min) + u)
             }
 
             /// Calculates a linearly interpolated value between `u..=v`
-            /// based on the percentage `x` between `[0..=1]`.
+            /// based on `self` as a percentage between `[0..=1]`.
             ///
-            /// Values of `x` outside `[0..=1]` are not clamped and will result in extrapolation.
+            /// Values of `self` outside `[0..=1]` are not clamped
+            /// and will result in extrapolation.
+            ///
             /// # Formula
             /// $$ \large \text{lerp}(x, u, v) = (1 - x) \cdot u + x \cdot v $$
+            ///
             /// # Examples
             /// ```
-            /// # use devela::num::Floating;
-            #[doc = "assert_eq![60., Floating::<" $f ">::lerp(0.5, 40., 80.)];"]
+            /// # use devela::num::Float;
+            #[doc = cc!{"assert_eq![Float(0.5_", sfy![$f], ").lerp(40., 80.), 60.];"}]
             /// ```
-            #[must_use] #[inline]
-            pub fn lerp(x: $f, u: $f, v: $f) -> $f { (1.0 - x) * u + x * v }
+            #[inline] #[must_use]
+            pub fn lerp(self, u: $f, v: $f) -> Float<$f> {
+                Float((1.0 - self.0) * u + self.0 * v)
+            }
 
-            /// Raises `x` to the `y` floating point power using the Taylor series via the
-            /// `exp` and `ln` functins.
+            /// Raises itself to the `y` floating point power using the Taylor series via the
+            /// `exp` and `ln` functions.
             ///
             /// $$ \large x^y = e^{y \cdot \ln(x)} $$
             ///
@@ -217,64 +251,64 @@ macro_rules! custom_impls {
             ///
             /// The terms for the exponential function are calculated using
             /// [`exp_series_terms`][Self::exp_series_terms] using $y\cdot\ln(x)$.
-            #[must_use] #[inline]
-            pub fn powf_series(x: $f, y: $f, ln_x_terms: $ue) -> $f {
-                let xabs = Self::abs(x);
+            #[inline] #[must_use]
+            pub fn powf_series(self, y: $f, ln_x_terms: $ue) -> Float<$f> {
+                let xabs = self.abs();
                 if xabs == 0.0 {
-                    iif![Self::abs(y) == 0.0; 1.0; 0.0]
+                    iif![Float(y).abs() == 0.0; Self::ONE; Self::ZERO]
                 } else {
-                    let ln_x = Self::ln_series(xabs, ln_x_terms);
-                    let power = y * ln_x;
-                    let exp_y_terms = Self::exp_series_terms(power);
-                    let result = Self::exp_series(power, exp_y_terms);
-                    iif![x.is_sign_negative(); -result; result]
+                    let ln_x = xabs.ln_series(ln_x_terms).0;
+                    let power = Float(y * ln_x);
+                    let exp_y_terms = power.exp_series_terms();
+                    let result = power.exp_series(exp_y_terms);
+                    iif![self.is_sign_negative(); -result; result]
                 }
             }
 
             /// $ \sqrt{x} $ The square root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
-            #[must_use] #[inline]
-            pub fn sqrt_nr(x: $f) -> $f {
-                if x < 0.0 {
-                    $f::NAN
-                } else if x == 0.0 {
-                    0.0
+            #[inline] #[must_use]
+            pub fn sqrt_nr(self) -> Float<$f> {
+                if self < 0.0 {
+                    Self::NAN
+                } else if self == 0.0 {
+                    Self::ZERO
                 } else {
-                    let mut guess = x;
-                    let mut guess_next = 0.5 * (guess + x / guess);
-                    while Self::abs(guess - guess_next) > Self::NR_TOLERANCE {
+                    let mut guess = self.0;
+                    let mut guess_next = 0.5 * (guess + self.0 / guess);
+                    while Self(guess - guess_next).abs() > Self::NR_TOLERANCE {
                         guess = guess_next;
-                        guess_next = 0.5 * (guess + x / guess);
+                        guess_next = 0.5 * (guess + self.0 / guess);
                     }
-                    guess_next
+                    Float(guess_next)
                 }
             }
 
             /// $ \sqrt{x} $ the square root calculated using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
-            #[must_use] #[inline]
-            pub fn sqrt_fisr(x: $f) -> $f { 1.0 / Self::fisr(x) }
+            #[inline] #[must_use]
+            pub fn sqrt_fisr(self) -> Float<$f> { Float(1.0 / self.fisr().0) }
 
             /// $ 1 / \sqrt{x} $ the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
-            #[must_use] #[inline]
-            pub fn fisr(x: $f) -> $f {
-                let (mut i, three_halfs, x2) = (x.to_bits(), 1.5, x * 0.5);
+            #[inline] #[must_use]
+            pub fn fisr(self) -> Float<$f> {
+                let (mut i, three_halfs, x2) = (self.0.to_bits(), 1.5, self.0 * 0.5);
                 i = Self::FISR_MAGIC - (i >> 1);
                 let y = <$f>::from_bits(i);
-                y * (three_halfs - (x2 * y * y))
+                Float(y * (three_halfs - (x2 * y * y)))
             }
 
             /// $ \sqrt[3]{x} $ The cubic root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
-            #[must_use] #[inline]
-            pub fn cbrt_nr(x: $f) -> $f {
-                iif![x == 0.0; return 0.0];
-                let mut guess = x;
+            #[inline] #[must_use]
+            pub fn cbrt_nr(self) -> Float<$f> {
+                iif![self == 0.0; return self];
+                let mut guess = self.0;
                 loop {
-                    let next_guess = (2.0 * guess + x / (guess * guess)) / 3.0;
-                    if Self::abs(next_guess - guess) < Self::NR_TOLERANCE {
-                        break next_guess;
+                    let next_guess = (2.0 * guess + self.0 / (guess * guess)) / 3.0;
+                    if Float(next_guess - guess).abs() < Self::NR_TOLERANCE {
+                        break Float(next_guess);
                     }
                     guess = next_guess;
                 }
@@ -284,15 +318,15 @@ macro_rules! custom_impls {
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             ///
             /// $$ \text{hypot}(x, y) = \sqrt{x^2 + y^2} $$
-            #[must_use] #[inline]
-            pub fn hypot_nr(x: $f, y: $f) -> $f { Self::sqrt_nr(x * x + y * y) }
+            #[inline] #[must_use]
+            pub fn hypot_nr(self, y: $f) -> Float<$f> { (self * self + y * y).sqrt_nr() }
 
             /// The hypothenuse (the euclidean distance) using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
             ///
             /// $$ \text{hypot}(x, y) = \sqrt{x^2 + y^2} $$
-            #[must_use] #[inline]
-            pub fn hypot_fisr(x: $f, y: $f) -> $f { Self::sqrt_fisr(x * x + y * y) }
+            #[inline] #[must_use]
+            pub fn hypot_fisr(self, y: $f) -> Float<$f> { (self * self + y * y).sqrt_fisr() }
 
             /// Computes the exponential function $e^x$ using Taylor series expansion.
             ///
@@ -300,15 +334,15 @@ macro_rules! custom_impls {
             /// For values $ x < 0 $ it uses the identity: $$ e^x = \frac{1}{e^-x} $$
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
-            #[must_use] #[inline]
-            pub fn exp_series(x: $f, terms: $ue) -> $f {
-                iif![x < 0.0; return 1.0 / Self::exp_series(-x, terms)];
+            #[inline] #[must_use]
+            pub fn exp_series(self, terms: $ue) -> Float<$f> {
+                iif![self < 0.0; return Float(1.0 / (-self).exp_series(terms).0)];
                 let (mut result, mut term) = (1.0, 1.0);
                 for i in 1..=terms {
-                    term *= x / i as $f;
+                    term *= self.0 / i as $f;
                     result += term;
                 }
-                result
+                Float(result)
             }
 
             /// Determines the number of terms needed for [`exp_series`][Self::exp_series]
@@ -331,8 +365,10 @@ macro_rules! custom_impls {
             /// ± 500.000 →   ---    692
             /// ± 709.782 →   ---    938  (max for f64 == f64:MAX.ln())
             /// ```
-            #[must_use] #[inline(always)]
-            pub fn exp_series_terms(x: $f) -> $ue { Self::[<exp_series_terms_ $f>](x) }
+            #[inline] #[must_use]
+            pub fn exp_series_terms(self) -> $ue { paste! {
+                Self::[<exp_series_terms_ $f>](self.0)
+            }}
 
             /// Calculates $ e^x - 1 $ using the Taylor series expansion.
             ///
@@ -341,20 +377,20 @@ macro_rules! custom_impls {
             /// For values $ x > 0.001 $ it uses [`exp_series`][Self::exp_series].
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
-            #[must_use] #[inline]
-            pub fn exp_m1_series(x: $f, terms: $ue) -> $f {
-                if x < 0.0 {
-                    1.0 / Self::exp_m1_series(-x, terms)
-                } else if x > 0.001 {
-                    Self::exp_series(x, terms) - 1.0
+            #[inline] #[must_use]
+            pub fn exp_m1_series(self, terms: $ue) -> Float<$f> {
+                if self < 0.0 {
+                    Float(1.0 / (-self).exp_m1_series(terms).0)
+                } else if self > 0.001 {
+                    self.exp_series(terms)- 1.0
                 } else {
-                    let (mut result, mut term, mut factorial) = (0.0, x, 1.0);
+                    let (mut result, mut term, mut factorial) = (0.0, self.0, 1.0);
                     for i in 1..=terms {
                         result += term;
                         factorial *= (i + 1) as $f;
-                        term *= x / factorial;
+                        term *= self.0 / factorial;
                     }
-                    result
+                    Float(result)
                 }
             }
 
@@ -368,14 +404,14 @@ macro_rules! custom_impls {
             ///
             /// The maximum values with a representable result are:
             /// 127 for `f32` and 1023 for `f64`.
-            #[must_use] #[inline]
-            pub fn exp2_series(x: $f, terms: $ue) -> $f {
-                let (mut result, mut term) = (1.0, x * Self::LN_2);
+            #[inline] #[must_use]
+            pub fn exp2_series(self, terms: $ue) -> Float<$f> {
+                let (mut result, mut term) = (1.0, self.0 * Self::LN_2.0);
                 for n in 1..terms {
                     result += term;
-                    term *= x * Self::LN_2 / (n as $f + 1.0);
+                    term *= self.0 * Self::LN_2.0 / (n as $f + 1.0);
                 }
-                result
+                Float(result)
             }
 
             /// Determines the number of terms needed for [`exp2_series`][Self::exp2_series]
@@ -397,8 +433,10 @@ macro_rules! custom_impls {
             /// ± 511.0 →    ---    520
             /// ± 1023.999 → ---    939 (max for f64)
             /// ```
-            #[must_use] #[inline(always)]
-            pub fn exp2_series_terms(x: $f) -> $ue { Self::[<exp2_series_terms_ $f>](x) }
+            #[inline] #[must_use]
+            pub fn exp2_series_terms(self) -> $ue { paste! {
+                Self::[<exp2_series_terms_ $f>](self.0)
+            }}
 
             /// Computes the natural logarithm of `x` using a Taylor-Mercator series expansion.
             ///
@@ -411,38 +449,40 @@ macro_rules! custom_impls {
             /// $$
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use] #[inline]
-            pub fn ln_series(x: $f, terms: $ue) -> $f {
-                if x < 0.0 {
-                    $f::NAN
-                } else if x > 0.0 {
+            #[inline] #[must_use]
+            pub fn ln_series(self, terms: $ue) -> Float<$f> {
+                if self < 0.0 {
+                    Self::NAN
+                } else if self > 0.0 {
                     let mut sum = 0.0;
-                    let y = (x - 1.0) / (x + 1.0);
+                    let y = (self.0 - 1.0) / (self.0 + 1.0);
                     let mut y_pow = y;
                     for i in 0..terms {
                         sum += y_pow / (2 * i + 1) as $f;
                         y_pow *= y * y;
                     }
-                    2.0 * sum
+                    Float(2.0 * sum)
                 } else {
-                    $f::NEG_INFINITY
+                    Self::NEG_INFINITY
                 }
             }
 
-            /// Computes the natural logarithm of `1 + x` using a Taylor-Mercator series expansion.
+            /// Computes the natural logarithm of `1 + self`
+            /// using a Taylor-Mercator series expansion.
             ///
-            /// This method is more efficient for values of `x` near 0. Values too
-            /// small or too big could be impractical to calculate with precision.
+            /// This method is more efficient for values of `self` near 0.
+            /// Values too small or too big could be impractical to calculate with precision.
             ///
-            /// Returns `ln(1+x)` more accurately than if the operations were performed separately.
+            /// Returns `ln(1+self)` more accurately
+            /// than if the operations were performed separately.
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use] #[inline]
-            pub fn ln_1p_series(x: $f, terms: $ue) -> $f {
-                if x < -1.0 {
-                    $f::NAN
-                } else if x > -1.0 {
-                    let x1 = x + 1.0;
+            #[inline] #[must_use]
+            pub fn ln_1p_series(self, terms: $ue) -> Float<$f> {
+                if self < -1.0 {
+                    Self::NAN
+                } else if self > -1.0 {
+                    let x1 = self.0 + 1.0;
                     let mut sum = 0.0;
                     let y = (x1 - 1.0) / (x1 + 1.0);
                     let mut y_pow = y;
@@ -450,46 +490,46 @@ macro_rules! custom_impls {
                         sum += y_pow / (2 * i + 1) as $f;
                         y_pow *= y * y;
                     }
-                    2.0 * sum
+                    Float(2.0 * sum)
                 } else {
-                    $f::NEG_INFINITY
+                    Self::NEG_INFINITY
                 }
             }
 
-            /// Computes the logarithm of `x` to the given `base` using the change of base formula.
+            /// Computes the logarithm to the given `base` using the change of base formula.
             ///
             /// $$ \log_{\text{base}}(x) = \frac{\ln(x)}{\ln(\text{base})} $$
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use] #[inline]
-            pub fn log_series(x: $f, base: $f, terms: $ue) -> $f {
+            #[inline] #[must_use]
+            pub fn log_series(self, base: $f, terms: $ue) -> Float<$f> {
                 if base <= 0.0 {
-                    $f::NAN
+                    Self::NAN
                 } else if base == 1.0 {
-                    iif![x == 1.0; $f::NAN; $f::NEG_INFINITY]
+                    iif![self == 1.0; Self::NAN; Self::NEG_INFINITY]
                 } else {
-                    Self::ln_series(x, terms) / Self::ln_series(base, terms)
+                    self.ln_series(terms) / Float(base).ln_series(terms)
                 }
             }
 
-            /// Computes the base-2 logarithm of `x` using the change of base formula.
+            /// Computes the base-2 logarithm using the change of base formula.
             ///
             /// $$ \log_{2}(x) = \frac{\ln(x)}{\ln(2)} $$
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use] #[inline]
-            pub fn log2_series(x: $f, terms: $ue) -> $f {
-                Self::ln_series(x, terms) / Self::ln_series(2.0, terms)
+            #[inline] #[must_use]
+            pub fn log2_series(self, terms: $ue) -> Float<$f> {
+                self.ln_series(terms) / Float::<$f>(2.0).ln_series(terms)
             }
 
-            /// Computes the base-10 logarithm of `x` using the change of base formula.
+            /// Computes the base-10 logarithm using the change of base formula.
             ///
             /// $$ \log_{10}(x) = \frac{\ln(x)}{\ln(10)} $$
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use] #[inline]
-            pub fn log10_series(x: $f, terms: $ue) -> $f {
-                Self::ln_series(x, terms) / Self::ln_series(10.0, terms)
+            #[inline] #[must_use]
+            pub fn log10_series(self, terms: $ue) -> Float<$f> {
+                self.ln_series(terms) / Float::<$f>(10.0).ln_series(terms)
             }
 
             /// Determines the number of terms needed for [`exp2_series`][Self::exp2_series]
@@ -514,10 +554,10 @@ macro_rules! custom_impls {
             /// ± 10000. →   12578  59174
             /// ± 100000. →  81181 536609
             /// ```
-            #[must_use] #[inline(always)]
-            pub fn ln_series_terms(x: $f) -> $ue {
-                Self::[<ln_series_terms_ $f>](x)
-            }
+            #[inline] #[must_use]
+            pub fn ln_series_terms(self) -> $ue { paste! {
+                Self::[<ln_series_terms_ $f>](self.0)
+            }}
 
             /// The factorial of the integer value `x`.
             ///
@@ -525,9 +565,9 @@ macro_rules! custom_impls {
             /// 34 for `f32` and 170 for `f64`.
             ///
             /// Note that precision is poor for large values.
-            #[must_use] #[inline]
-            pub fn factorial(x: $ue) -> $f {
-                let mut result = 1.0;
+            #[inline] #[must_use]
+            pub fn factorial(x: $ue) -> Float<$f> {
+                let mut result = Self::ONE;
                 for i in 1..=x {
                     result *= i as $f;
                 }
@@ -554,16 +594,16 @@ macro_rules! custom_impls {
             /// ± 0.900 →      6     10
             /// ± 0.999 →      6     10
             /// ```
-            #[must_use] #[inline]
-            pub fn sin_series(x: $f, terms: $ue) -> $f {
-                let x = Self::clamp(x, -Self::PI, Self::PI);
+            #[inline] #[must_use]
+            pub fn sin_series(self, terms: $ue) -> Float<$f> {
+                let x = self.clamp(-Self::PI.0, Self::PI.0).0;
                 let (mut sin, mut term, mut factorial) = (x, x, 1.0);
                 for i in 1..terms {
                     term *= -x * x;
                     factorial *= ((2 * i + 1) * (2 * i)) as $f;
                     sin += term / factorial;
                 }
-                sin
+                Float(sin)
             }
 
             /// Computes the cosine using taylor series expansion.
@@ -586,22 +626,22 @@ macro_rules! custom_impls {
             /// ± 0.900 →      7     10
             /// ± 0.999 →      7     11
             /// ```
-            #[must_use] #[inline]
-            pub fn cos_series(x: $f, terms: $ue) -> $f {
-                let x = Self::clamp(x, -Self::PI, Self::PI);
+            #[inline] #[must_use]
+            pub fn cos_series(self, terms: $ue) -> Float<$f> {
+                let x = self.clamp(-Self::PI.0, Self::PI.0).0;
                 let (mut cos, mut term, mut factorial) = (1.0, 1.0, 1.0);
                 for i in 1..terms {
-                    term *= -x * x;
+                    term *= -self.0 * self.0;
                     factorial *= ((2 * i - 1) * (2 * i)) as $f;
                     cos += term / factorial;
                 }
-                cos
+                Float(cos)
             }
 
             /// Computes the sine and the cosine using Taylor series expansion.
-            #[must_use] #[inline]
-            pub fn sin_cos_series(x: $f, terms: $ue) -> ($f, $f) {
-                (Self::sin_series(x, terms), Self::cos_series(x, terms))
+            #[inline] #[must_use]
+            pub fn sin_cos_series(self, terms: $ue) -> (Float<$f>, Float<$f>) {
+                (self.sin_series(terms), self.cos_series(terms))
             }
 
             /// Computes the tangent using Taylor series expansion of sine and cosine.
@@ -628,12 +668,12 @@ macro_rules! custom_impls {
             /// ± 0.900 →      7     10
             /// ± 0.999 →      7     11
             /// ```
-            #[must_use] #[inline]
-            pub fn tan_series(x: $f, terms: $ue) -> $f {
-                let x = Self::clamp(x, -Self::PI / 2.0 + 0.0001, Self::PI / 2.0 - 0.0001);
-                let (sin, cos) = Self::sin_cos_series(x, terms);
-                iif![Self::abs(cos) < 0.0001; return $f::MAX];
-                sin / cos
+            #[inline] #[must_use]
+            pub fn tan_series(self, terms: $ue) -> Float<$f> {
+                let x = self.clamp(-Self::PI.0 / 2.0 + 0.0001, Self::PI.0 / 2.0 - 0.0001);
+                let (sin, cos) = self.sin_cos_series(terms);
+                iif![cos.abs() < 0.0001; return Self::MAX];
+                Float(sin.0 / cos.0)
             }
 
             /// Computes the arcsine using Taylor series expansion.
@@ -653,18 +693,18 @@ macro_rules! custom_impls {
             /// may be necessary.
             ///
             /// See also [`asin_series_terms`][Self::asin_series_terms].
-            #[must_use] #[inline]
-            pub fn asin_series(x: $f, terms: $ue) -> $f {
-                iif![Self::abs(x) > 1.0; return $f::NAN];
-                let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, x);
+            #[inline] #[must_use]
+            pub fn asin_series(self, terms: $ue) -> Float<$f> {
+                iif![self.abs() > 1.0; return Self::NAN];
+                let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, self.0);
                 for i in 0..terms {
                     if i != 0 {
                         multiplier *= (2 * i - 1) as $f / (2 * i) as $f;
-                        power_x *= x * x;
+                        power_x *= self.0 * self.0;
                     }
                     asin_approx += multiplier * power_x / (2 * i + 1) as $f;
                 }
-                asin_approx
+                Float(asin_approx)
             }
 
             /// Determines the number of terms needed for [`asin_series`][Self::asin_series]
@@ -684,8 +724,10 @@ macro_rules! custom_impls {
             /// ± 0.990 →    333   1235
             /// ± 0.999 →   1989  10768
             /// ```
-            #[must_use] #[inline(always)]
-            pub fn asin_series_terms(x: $f) -> $ue { Self::[<asin_acos_series_terms_ $f>](x) }
+            #[inline] #[must_use]
+            pub fn asin_series_terms(self) -> $ue { paste! {
+                Self::[<asin_acos_series_terms_ $f>](self.0)
+            }}
 
             /// Computes the arccosine using the Taylor expansion of arcsine.
             ///
@@ -693,18 +735,20 @@ macro_rules! custom_impls {
             ///
             /// See the [`asin_series_terms`][Self#method.asin_series_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use] #[inline]
-            pub fn acos_series(x: $f, terms: $ue) -> $f {
-                iif![Self::abs(x) > 1.0; return $f::NAN];
-                Self::FRAC_PI_2 - Self::asin_series(x, terms)
+            #[inline] #[must_use]
+            pub fn acos_series(self, terms: $ue) -> Float<$f> {
+                iif![self.abs() > 1.0; return Self::NAN];
+                Self::FRAC_PI_2 - self.asin_series(terms)
             }
 
             /// Determines the number of terms needed for [`acos_series`][Self::acos_series]
             /// to reach a stable result based on the input value.
             ///
             /// The table is the same as [`asin_series_terms`][Self::asin_series_terms].
-            #[must_use] #[inline(always)]
-            pub fn acos_series_terms(x: $f) -> $ue { Self::[<asin_acos_series_terms_ $f>](x) }
+            #[inline] #[must_use]
+            pub fn acos_series_terms(self) -> $ue { paste! {
+                Self::[<asin_acos_series_terms_ $f>](self.0)
+            }}
 
             /// Computes the arctangent using Taylor series expansion.
             ///
@@ -719,22 +763,22 @@ macro_rules! custom_impls {
             /// may be necessary.
             ///
             /// See also [`atan_series_terms`][Self::atan_series_terms].
-            #[must_use] #[inline]
-            pub fn atan_series(x: $f, terms: $ue) -> $f {
-                if Self::abs(x) > 1.0 {
-                    if x > 0.0 {
-                        Self::FRAC_PI_2 - Self::atan_series(1.0 / x, terms)
+            #[inline] #[must_use]
+            pub fn atan_series(self, terms: $ue) -> Float<$f> {
+                if self.abs() > 1.0 {
+                    if self > 0.0 {
+                        Self::FRAC_PI_2 - Float(1.0 / self.0).atan_series(terms)
                     } else {
-                        -Self::FRAC_PI_2 - Self::atan_series(1.0 / x, terms)
+                        -Self::FRAC_PI_2 - Float(1.0 / self.0).atan_series(terms)
                     }
                 } else {
-                    let (mut atan_approx, mut num, mut sign) = (0.0, x, 1.0);
+                    let (mut atan_approx, mut num, mut sign) = (Self::ZERO, self, Self::ONE);
                     for i in 0..terms {
                         if i > 0 {
-                            num *= x * x;
+                            num *= self * self;
                             sign = -sign;
                         }
-                        atan_approx += sign * num / (2 * i + 1) as $f;
+                        atan_approx += sign * num / (2.0 * i as $f + 1.0);
                     }
                     atan_approx
                 }
@@ -757,27 +801,30 @@ macro_rules! custom_impls {
             /// ± 0.990 →    518   1466
             /// ± 0.999 →   4151  13604
             /// ```
-            #[must_use] #[inline(always)]
-            pub fn atan_series_terms(x: $f) -> $ue { Self::[<atan_series_terms_ $f>](x) }
+            #[inline] #[must_use]
+            pub fn atan_series_terms(self) -> $ue { paste! {
+                Self::[<atan_series_terms_ $f>](self.0)
+            }}
 
-            /// Computes the four quadrant arctangent of `x` and `y` using Taylor series expansion.
+            /// Computes the four quadrant arctangent of `self` and `other`
+            /// using Taylor series expansion.
             ///
             /// See also [`atan_series_terms`][Self::atan_series_terms].
-            #[must_use] #[inline]
-            pub fn atan2_series(x: $f, y: $f, terms: $ue) -> $f {
-                if y > 0.0 {
-                    Self::atan_series(x / y, terms)
-                } else if x >= 0.0 && y < 0.0 {
-                    Self::atan_series(x / y, terms) + Self::PI
-                } else if x < 0.0 && y < 0.0 {
-                    Self::atan_series(x / y, terms) - Self::PI
-                } else if x > 0.0 && y == 0.0 {
+            #[inline] #[must_use]
+            pub fn atan2_series(self, other: $f, terms: $ue) -> Float<$f> {
+                if other > 0.0 {
+                    (self / other).atan_series(terms)
+                } else if self >= 0.0 && other < 0.0 {
+                    (self / other).atan_series(terms) + Self::PI
+                } else if self < 0.0 && other < 0.0 {
+                    (self / other).atan_series(terms) - Self::PI
+                } else if self > 0.0 && other == 0.0 {
                     Self::PI / 2.0
-                } else if x < 0.0 && y == 0.0 {
+                } else if self < 0.0 && other == 0.0 {
                     -Self::PI / 2.0
                 } else {
-                    // x and y are both zero, undefined behavior
-                    $f::NAN
+                    // self and other are both zero, undefined behavior
+                    Self::NAN
                 }
             }
 
@@ -788,9 +835,9 @@ macro_rules! custom_impls {
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use] #[inline]
-            pub fn sinh_series(x: $f, terms: $ue) -> $f {
-                (Self::exp_series(x, terms) - Self::exp_series(-x, terms)) / 2.0
+            #[inline] #[must_use]
+            pub fn sinh_series(self, terms: $ue) -> Float<$f> {
+                (self.exp_series(terms) - -self.exp_series(terms)) / 2.0
             }
 
             /// The hyperbolic cosine calculated using Taylor series expansion
@@ -800,9 +847,9 @@ macro_rules! custom_impls {
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use] #[inline]
-            pub fn cosh_series(x: $f, terms: $ue) -> $f {
-                (Self::exp_series(x, terms) + Self::exp_series(-x, terms)) / 2.0
+            #[inline] #[must_use]
+            pub fn cosh_series(self, terms: $ue) -> Float<$f> {
+                (self.exp_series(terms) + -self.exp_series(terms)) / 2.0
             }
 
             /// Computes the hyperbolic tangent using Taylor series expansion of
@@ -812,10 +859,10 @@ macro_rules! custom_impls {
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
-            #[must_use] #[inline]
-            pub fn tanh_series(x: $f, terms: $ue) -> $f {
-                let sinh_approx = Self::sinh_series(x, terms);
-                let cosh_approx = Self::cosh_series(x, terms);
+            #[inline] #[must_use]
+            pub fn tanh_series(self, terms: $ue) -> Float<$f> {
+                let sinh_approx = self.sinh_series(terms);
+                let cosh_approx = self.cosh_series(terms);
                 sinh_approx / cosh_approx
             }
 
@@ -824,10 +871,10 @@ macro_rules! custom_impls {
             /// $$ \text{asinh}(x) = \ln(x + \sqrt{x^2 + 1}) $$
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use] #[inline]
-            pub fn asinh_series(x: $f, terms: $ue) -> $f {
-                let sqrt = Self::sqrt_nr(x * x + 1.0);
-                Self::ln_series(x + sqrt, terms)
+            #[inline] #[must_use]
+            pub fn asinh_series(self, terms: $ue) -> Float<$f> {
+                let sqrt = (self * self + 1.0).sqrt_nr();
+                (self + sqrt).ln_series(terms)
             }
 
             /// Computes the inverse hyperbolic cosine using the natural logarithm definition.
@@ -835,13 +882,13 @@ macro_rules! custom_impls {
             /// $$ \text{acosh}(x) = \ln(x + \sqrt{x^2 - 1}) $$
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use] #[inline]
-            pub fn acosh_series(x: $f, terms: $ue) -> $f {
-                if x < 1.0 {
-                    $f::NAN
+            #[inline] #[must_use]
+            pub fn acosh_series(self, terms: $ue) -> Float<$f> {
+                if self < 1.0 {
+                    Self::NAN
                 } else {
-                    let sqrt = Self::sqrt_nr(x * x - 1.0);
-                    Self::ln_series(x + sqrt, terms)
+                    let sqrt = (self * self - 1.0).sqrt_nr();
+                    (self + sqrt).ln_series(terms)
                 }
             }
 
@@ -850,169 +897,174 @@ macro_rules! custom_impls {
             /// $$ \text{atanh}(x) = \frac{1}{2} \ln\left(\frac{1 + x}{1 - x}\right) $$
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use] #[inline]
-            pub fn atanh_series(x: $f, terms: $ue) -> $f {
-                if x >= 1.0 {
-                    $f::INFINITY
-                } else if x <= -1.0 {
-                    $f::NEG_INFINITY
+            #[inline] #[must_use]
+            pub fn atanh_series(self, terms: $ue) -> Float<$f> {
+                if self >= 1.0 {
+                    Self::INFINITY
+                } else if self <= -1.0 {
+                    Self::NEG_INFINITY
                 } else {
-                    0.5 * Self::ln_series((1.0 + x) / (1.0 - x), terms)
+                    ((self + 1.0) / (1.0 - self.0)).ln_series(terms) * 0.5
                 }
             }
 
-            /// The absolute value of `x` in constant-time.
+            /// The absolute value of `self` in constant-time.
             ///
             /// This is a separate function from [`abs`][Self::abs] because we also want to have
             /// the possibly more efficient `std` and `libm` implementations.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_const")))]
-            pub const fn const_abs(x: $f) -> $f {
+            pub const fn const_abs(self) -> Float<$f> {
                 let mask = <$uf>::MAX / 2;
                 unsafe {
-                    let bits: $uf = core::mem::transmute(x);
-                    core::mem::transmute(bits & mask)
+                    let bits: $uf = transmute(self.0);
+                    Float(transmute(bits & mask))
                 }
             }
 
-            /// The negative absolute value of `x` (sets the sign of `x` to negative).
+            /// The negative absolute value of `self` (sets its sign to be negative).
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn neg_abs(x: $f) -> $f {
-                if Self::is_sign_negative(x) { x } else { Self::flip_sign(x) }
+            pub const fn neg_abs(self) -> Float<$f> {
+                if self.is_sign_negative() { self } else { self.flip_sign() }
             }
-            /// The negative absolute value of `x` (sets the sign of `x` to negative).
+            /// The negative absolute value of `self` (sets its sign to be negative).
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn neg_abs(x: $f) -> $f {
-                if Self::is_sign_negative(x) { x } else { Self::flip_sign(x) }
+            pub fn neg_abs(self) -> Float<$f> {
+                if self.is_sign_negative() { self } else { self.flip_sign() }
             }
 
-            /// Flips the sign of `x`.
+            /// Flips its sign.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn flip_sign(x: $f) -> $f {
+            pub const fn flip_sign(self) -> Float<$f> {
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 unsafe {
-                    let bits: $uf = core::mem::transmute(x);
-                    core::mem::transmute(bits ^ sign_bit_mask)
+                    let bits: $uf = transmute(self.0);
+                    Float(transmute(bits ^ sign_bit_mask))
                 }
             }
-            /// Flips the sign of `x`.
+            /// Flips its sign.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn flip_sign(x: $f) -> $f {
+            pub fn flip_sign(self) -> Float<$f> {
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
-                <$f>::from_bits(x.to_bits() ^ sign_bit_mask)
+                Float(<$f>::from_bits(self.0.to_bits() ^ sign_bit_mask))
             }
 
-            /// Returns the clamped value, ignoring `NaN`.
-            #[must_use] #[inline(always)]
-            pub fn clamp(value: $f, min: $f, max: $f) -> $f {
-                Self::min(Self::max(value, min), max)
-            }
+            /// Returns itself clamped between `min` and `max`, ignoring `NaN`.
+            #[inline] #[must_use]
+            pub fn clamp(self, min: $f, max: $f) -> Float<$f> { self.max(min).min(max) }
 
-            /// Returns the clamped value, using total order.
+            /// Returns itself clamped between `min` and `max`, using total order.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn clamp_total(value: $f, min: $f, max: $f) -> $f {
-                $crate::num::Compare(value).clamp(min, max)
+            pub const fn clamp_total(self, min: $f, max: $f) -> Float<$f> {
+                Float(Compare(self.0).clamp(min, max))
             }
-            /// Returns the clamped value, using total order.
+            /// Returns itself clamped between `min` and `max`, using total order.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn clamp_total(value: $f, min: $f, max: $f) -> $f {
-                $crate::num::Compare(value).clamp(min, max)
+            pub fn clamp_total(self, min: $f, max: $f) -> Float<$f> {
+                Float(Compare(self.0).clamp(min, max))
             }
 
-            /// Returns the maximum of two numbers using total order.
+            /// Returns the maximum between itself and `other`, using total order.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn max_total(x: $f, y: $f) -> $f { $crate::num::Compare(x).max(y) }
-            /// Returns the maximum of two numbers using total order.
+            pub const fn max_total(self, other: $f) -> Float<$f> {
+                Float(Compare(self.0).max(other))
+            }
+            /// Returns the maximum between itself and `other`, using total order.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn max_total(x: $f, y: $f) -> $f { $crate::num::Compare(x).max(y) }
+            pub fn max_total(self, other: $f) -> Float<$f> {
+                Float(Compare(self.0).max(other))
+            }
 
-            /// Returns the minimum of two numbers using total order.
+            /// Returns the minimum between itself and `other`, using total order.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn min_total(x: $f, y: $f) -> $f { $crate::num::Compare(x).min(y) }
-            /// Returns the minimum of two numbers using total order.
+            pub const fn min_total(self, other: $f) -> Float<$f> {
+                Float(Compare(self.0).min(other))
+            }
+            /// Returns the minimum between itself and `other`, using total order.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn min_total(x: $f, y: $f) -> $f { $crate::num::Compare(x).min(y) }
-
-            /// Returns the clamped `x` value, propagating `NaN`.
-            #[must_use] #[inline(always)]
-            pub fn clamp_nan(value: $f, min: $f, max: $f) -> $f {
-                Self::min_nan(Self::max_nan(value, min), max)
+            pub fn min_total(self, other: $f) -> Float<$f> {
+                Float(Compare(self.0).min(other))
             }
 
-            /// Returns the maximum of two numbers, propagating `NaN`.
+            /// Returns itself clamped between `min` and `max`, propagating `NaN`.
+            #[inline] #[must_use]
+            pub fn clamp_nan(self, min: $f, max: $f) -> Float<$f> {
+                self.max_nan(min).min_nan(max)
+            }
+
+            /// Returns the maximum between itself and `other`, propagating `Nan`.
             // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
-            #[must_use] #[inline(always)]
-            pub fn max_nan(x: $f, y: $f) -> $f {
-                if x > y {
-                    x
-                } else if y > x {
-                    y
-                } else if x == y {
-                    // if Self::is_sign_positive(x) && Self::is_sign_negative(y) { x } else { y }
-                    if x.is_sign_positive() && y.is_sign_negative() { x } else { y }
-                } else {
-                    x + y
-                }
-            }
-            /// Returns the minimum of two numbers, propagating `NaN`.
-            #[must_use] #[inline(always)]
-            // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
-            pub fn min_nan(x: $f, y: $f) -> $f {
-                if x < y {
-                    x
-                } else if y < x {
-                    y
-                } else if x == y {
-                    // if Self::is_sign_negative(x) && Self::is_sign_positive(y) { x } else { y }
-                    if x.is_sign_negative() && y.is_sign_positive() { x } else { y }
+            #[inline] #[must_use]
+            pub fn max_nan(self, other: $f) -> Float<$f> {
+                if self > other {
+                    self
+                } else if self < other {
+                    Float(other)
+                } else if self == other {
+                    iif![self.is_sign_positive() && other.is_sign_negative(); self; Float(other)]
                 } else {
                     // At least one input is NaN. Use `+` to perform NaN propagation and quieting.
-                    x + y
+                    Float(self.0 + other)
+                }
+            }
+            /// Returns the minimum between itself and `other`, propagating `Nan`.
+            #[inline] #[must_use]
+            // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
+            pub fn min_nan(self, other: $f) -> Float<$f> {
+                if self < other {
+                    self
+                } else if self < other {
+                    Float(other)
+                } else if self == other {
+                    iif![self.is_sign_negative() && other.is_sign_positive(); self; Float(other)]
+                } else {
+                    // At least one input is NaN. Use `+` to perform NaN propagation and quieting.
+                    Float(self.0 + other)
                 }
             }
         }
-    }};
+    };
 }
 custom_impls![(f32:u32, u32), (f64:u64, u32)];
 
 /* private helpers */
 
 #[rustfmt::skip]
-impl Floating<f32> {
-    #[must_use] #[inline]
+impl Float<f32> {
+    #[inline] #[must_use]
     pub(super) fn asin_acos_series_terms_f32(x: f32) -> u32 {
-        let abs_a = Self::abs(x);
+        let abs_a = Float(x).abs().0;
         if abs_a <= 0.1 { 5
         } else if abs_a <= 0.3 { 7
         } else if abs_a <= 0.5 { 10
@@ -1022,9 +1074,9 @@ impl Floating<f32> {
         } else { 1989 // computed for 0.999
         }
     }
-    #[must_use] #[inline]
+    #[inline] #[must_use]
     pub(super) fn atan_series_terms_f32(x: f32) -> u32 {
-        let abs_a = Self::abs(x);
+        let abs_a = Float(x).abs().0;
         if abs_a <= 0.1 { 5
         } else if abs_a <= 0.3 { 7
         } else if abs_a <= 0.5 { 12
@@ -1034,9 +1086,9 @@ impl Floating<f32> {
         } else { 4151 // computed for 0.999
         }
     }
-    #[must_use] #[inline]
+    #[inline] #[must_use]
     pub(super) fn exp_series_terms_f32(x: f32) -> u32 {
-        let abs_a = Self::abs(x);
+        let abs_a = Float(x).abs().0;
         if abs_a <= 0.001 { 3
         } else if abs_a <= 0.1 { 6
         } else if abs_a <= 1.0 { 11
@@ -1046,9 +1098,9 @@ impl Floating<f32> {
         } else { 143 // computed for max computable value f32::MAX.ln()
         }
     }
-    #[must_use] #[inline]
+    #[inline] #[must_use]
     pub(super) fn exp2_series_terms_f32(x: f32) -> u32 {
-        let abs_a = Self::abs(x);
+        let abs_a = Float(x).abs().0;
         if abs_a <= 0.3 { 8
         } else if abs_a <= 3.0 { 15
         } else if abs_a <= 7.0 { 22
@@ -1058,9 +1110,9 @@ impl Floating<f32> {
         } else { 144 // computed for max computable value f64::MAX.ln()
         }
     }
-    #[must_use] #[inline]
+    #[inline] #[must_use]
     pub(super) fn ln_series_terms_f32(x: f32) -> u32 {
-        let x = Self::abs(x);
+        let x = Float(x).abs().0;
         let x = if x == 0.0 { return 0;
         } else if x <= 1. { 1. / x } else { x };
 
@@ -1083,10 +1135,10 @@ impl Floating<f32> {
     }
 }
 #[rustfmt::skip]
-impl Floating<f64> {
-    #[must_use] #[inline]
+impl Float<f64> {
+    #[inline] #[must_use]
     pub(super) fn asin_acos_series_terms_f64(x: f64) -> u32 {
-        let abs_a = Self::abs(x);
+        let abs_a = Float(x).abs().0;
         if abs_a <= 0.1 { 9
         } else if abs_a <= 0.3 { 15
         } else if abs_a <= 0.5 { 24
@@ -1096,9 +1148,9 @@ impl Floating<f64> {
         } else { 10768 // computed for 0.999
         }
     }
-    #[must_use] #[inline]
+    #[inline] #[must_use]
     pub(super) fn atan_series_terms_f64(x: f64) -> u32 {
-        let abs_a = Self::abs(x);
+        let abs_a = Float(x).abs().0;
         if abs_a <= 0.1 { 9
         } else if abs_a <= 0.3 { 15
         } else if abs_a <= 0.5 { 26
@@ -1108,9 +1160,9 @@ impl Floating<f64> {
         } else { 13604 // computed for 0.999
         }
     }
-    #[must_use] #[inline]
+    #[inline] #[must_use]
     pub(super) fn exp_series_terms_f64(x: f64) -> u32 {
-        let abs_a = Self::abs(x);
+        let abs_a = Float(x).abs().0;
         if abs_a <= 0.001 { 5
         } else if abs_a <= 0.1 { 10
         } else if abs_a <= 1.0 { 18
@@ -1124,9 +1176,9 @@ impl Floating<f64> {
         } else { 938 // computed for max computable value 709.782
         }
     }
-    #[must_use] #[inline]
+    #[inline] #[must_use]
     pub(super) fn exp2_series_terms_f64(x: f64) -> u32 {
-        let abs_a = Self::abs(x);
+        let abs_a = Float(x).abs().0;
         if abs_a <= 0.3 { 13
         } else if abs_a <= 3.0 { 25
         } else if abs_a <= 7.0 { 34
@@ -1139,9 +1191,9 @@ impl Floating<f64> {
         } else { 939 // computed for max computable value 1023.999
         }
     }
-    #[must_use] #[inline]
+    #[inline] #[must_use]
     pub(super) fn ln_series_terms_f64(x: f64) -> u32 {
-        let x = Self::abs(x);
+        let x = Float(x).abs().0;
         let x = if x == 0.0 { return 0;
         } else if x <= 1. { 1. / x } else { x };
 

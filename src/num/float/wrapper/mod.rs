@@ -1,27 +1,18 @@
-// devela::num::flat::wrapper
+// devela::num::float::wrapper
 //
-//! Floating point wrapper struct.
+//! Floating-point wrapper struct.
 //
-// TOC
-// - define Floating struct
-// - implement Floating methods
-//   - when std is enabled
-//   - when libm is enabled
-//   - when neither std or libm are enabled
 
-mod shared; // shared methods
+mod shared;
 
-// #[cfg(any(feature = "libm", feature = "std"))]
-mod libm_std; // methods depending on libm, std, or their absence
+mod libm_std;
 
-mod consts; // define constants
+mod consts;
 
-/// Provides floating-point operations for `T`.
-///
-/// Every operation returns the inner type `T` instead of `Self`.
-/// It is designed as a utility namespace and does not hold or wrap data itself.
-/// Instead, it operates on slices provided directly as arguments to its static methods.
-///
+#[cfg(test)]
+mod tests;
+
+/// Provides comprehensive floating-point operations for `T`, some of them *const*.
 ///
 /// See also the [`ExtFloat`][super::ExtFloat] trait.
 ///
@@ -33,20 +24,63 @@ mod consts; // define constants
 /// - [Other constants](#other-mathematical-constants)
 ///
 /// # Features
-///
 /// The wrapper leverages `std` or `libm` if enabled, otherwise implements fallbacks.
 /// It also favors `std` style for method's names, but changes a few like `minimum`
 /// for `min_nan` and `maximum` for `max_nan`, for consistency.
 ///
 /// If both the `libm` and `std` features are enabled the `libm` functions will
 /// be used, since it contains more functions, namely:
-/// - Gamma functions: [`gamma`][Floating#method.gamma], [`lgamma`][Floating#method.lgamma],
-///   [`lgamma_r`][Floating#method.lgamma_r].
+/// - Gamma functions: [`gamma`][Float#method.gamma], [`lgamma`][Float#method.lgamma],
+///   [`lgamma_r`][Float#method.lgamma_r].
 /// - Bessel functions:
-///   [`j0`][Floating#method.j0], [`j1`][Floating#method.j1], [`jn`][Floating#method.jn],
-///   [`y0`][Floating#method.y0], [`y1`][Floating#method.y1], [`yn`][Floating#method.yn].
-/// - Error functions: [`erf`][Floating#method.erf], [`erfc`][Floating#method.erfc].
-/// - [`exp10`][Floating#method.exp10].
+///   [`j0`][Float#method.j0], [`j1`][Float#method.j1], [`jn`][Float#method.jn],
+///   [`y0`][Float#method.y0], [`y1`][Float#method.y1], [`yn`][Float#method.yn].
+/// - Error functions: [`erf`][Float#method.erf], [`erfc`][Float#method.erfc].
+/// - [`exp10`][Float#method.exp10].
+#[repr(transparent)]
+pub struct Float<T>(pub T);
 
-#[derive(Debug, Clone, Copy)]
-pub struct Floating<T>(core::marker::PhantomData<T>);
+crate::num::impl_ops![Float: f32, f64];
+
+#[rustfmt::skip]
+mod core_impls {
+    use {super::Float, core::{fmt, cmp}};
+
+    impl<T: Clone> Clone for Float<T> {
+        #[inline] #[must_use]
+        fn clone(&self) -> Self { Self(self.0.clone()) }
+    }
+    impl<T: Copy> Copy for Float<T> {}
+    impl<T: fmt::Debug> fmt::Debug for Float<T> {
+        #[inline]
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            f.debug_tuple("Float").field(&self.0).finish()
+        }
+    }
+    impl<T: fmt::Display> fmt::Display for Float<T> {
+        #[inline]
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Display::fmt(&self.0, f) }
+    }
+
+    impl<T: PartialEq> PartialEq for Float<T> {
+        #[inline] #[must_use]
+        fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
+    }
+    impl<T: PartialEq> PartialEq<T> for Float<T> {
+        #[inline] #[must_use]
+        fn eq(&self, other: &T) -> bool { self.0.eq(other) }
+    }
+
+    impl<T: PartialOrd> PartialOrd for Float<T> {
+        #[inline] #[must_use]
+        fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
+            self.0.partial_cmp(&other.0)
+        }
+    }
+    impl<T: PartialOrd> PartialOrd<T> for Float<T> {
+        #[inline] #[must_use]
+        fn partial_cmp(&self, other: &T) -> Option<cmp::Ordering> {
+            self.0.partial_cmp(other)
+        }
+    }
+}

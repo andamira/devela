@@ -17,7 +17,7 @@
 
 use crate::code::{iif, paste};
 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-use crate::num::Floating;
+use crate::num::Float;
 use core::cmp::Ordering::{self, *};
 
 /// Provides comparing methods for `T`, most of them *const*.
@@ -352,7 +352,7 @@ macro_rules! impl_comparing {
                 // check whether it's between 0 and the smallest finite value
                 (matches![self.total_cmp($f::MIN_POSITIVE), Less] &&
                  matches![self.total_cmp(0.0), Greater]) ||
-                (matches![self.total_cmp(Floating::<$f>::flip_sign($f::MIN_POSITIVE)), Greater] &&
+                (matches![self.total_cmp(Float($f::MIN_POSITIVE).flip_sign().0), Greater] &&
                  matches![self.total_cmp(-0.0), Less])
             }
             #[inline] #[must_use] #[allow(missing_docs)]
@@ -366,7 +366,7 @@ macro_rules! impl_comparing {
                 (matches![self.total_cmp($f::MIN_POSITIVE), Greater | Equal]  &&
                 matches![self.total_cmp($f::INFINITY), Less]) ||
                 (matches![self.total_cmp(
-                        Floating::<$f>::flip_sign($f::MIN_POSITIVE)), Less | Equal] &&
+                        Float($f::MIN_POSITIVE).flip_sign().0), Less | Equal] &&
                 matches![self.total_cmp($f::NEG_INFINITY), Greater])
             }
             #[inline] #[must_use] #[allow(missing_docs)]

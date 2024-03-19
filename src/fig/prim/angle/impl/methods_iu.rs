@@ -6,7 +6,7 @@
 use super::super::{Angle, AngleDirection, AngleKind};
 use crate::{
     code::compile,
-    num::{fsize, ExtFloat, Floating},
+    num::{fsize, ExtFloat},
 };
 
 // impl Angle methods with an integer representation
@@ -52,7 +52,7 @@ macro_rules! impl_angle {
             /// Creates a new angle from a floating-point `radians` value.
             #[inline]
             pub fn from_rad(radians: $f) -> Self {
-                Self(Self::from_float_normalized(radians, Floating::<$f>::TAU))
+                Self(Self::from_float_normalized(radians, <$f>::TAU))
             }
 
             /// Creates a new angle from a floating-point `degrees` value.
@@ -71,7 +71,7 @@ macro_rules! impl_angle {
 
             /// Converts the angle to radians.
             #[inline] #[must_use]
-            pub fn to_rad(self) -> $f { self.to_float_normalized() * Floating::<$f>::TAU }
+            pub fn to_rad(self) -> $f { self.to_float_normalized() * <$f>::TAU }
             /// Converts the angle to degrees.
             #[inline] #[must_use]
             pub fn to_deg(self) -> $f { self.to_float_normalized() * 360.0 }

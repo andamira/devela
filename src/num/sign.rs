@@ -9,7 +9,7 @@
 
 use crate::{
     code::ConstDefault,
-    num::{Floating, NumError, NumResult as Result},
+    num::{Float, NumError, NumResult as Result},
 };
 use NumError::Invalid;
 
@@ -59,9 +59,9 @@ macro_rules! impl_into_sign {
             /// Returns `None` if 0.0, `Positive` if > 0 and `Negative` if < 0.
             #[must_use] #[inline]
             fn from(n: $float) -> Sign {
-                if Floating::<$float>::is_zero(n) {
+                if Float(n).is_zero() {
                     Sign::None
-                } else if Floating::<$float>::is_sign_positive(n) {
+                } else if Float(n).is_sign_positive() {
                     Sign::Positive
                 } else {
                     Sign::Negative
