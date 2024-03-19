@@ -90,11 +90,12 @@ gfx = []
 io = []
 mem = []
 num = [ # enables all the `num` sub-features
-	"num_int", "num_niche_impls", "num_niche_range"
+	"num_float", "num_int", "num_niche_impls", "num_niche_range"
 	]
-	num_int = [] # Int, NumInt, NumRefInt, Frac
+	num_float = [] # Float, ExtFloat
+	num_int = [] # Int, NumInt, NumRefInt, Frac types
 	num_niche_impls = [] # extra implementations for niche types
-	num_niche_range = [] # Range and NonRange niche types
+	num_niche_range = [] # Range* and NonRange* niche types
 os = []
 result = []
 text = []

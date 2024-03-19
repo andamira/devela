@@ -3,7 +3,7 @@
 //! Standalone color functions and constants.
 
 use crate::code::{iif, paste, sf};
-#[allow(unused_imports)]
+#[cfg(feature = "num_float")]
 use crate::num::ExtFloat;
 
 /// The coefficient used for calculating the red luminance.
@@ -37,6 +37,8 @@ macro_rules! color_gamma_fns {
         /// \end{align}
         /// $$
         #[inline]
+        #[cfg(any(feature = "std", feature = "num_float"))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "num_float"))))]
         pub fn [<color_gamma_apply_ $t>](c: $t, gamma: $t) -> $t {
             iif![c <= 0.0031308; 12.92 * c; 1.055 * c.powf(1.0 / gamma) - 0.055]
         }
@@ -54,6 +56,8 @@ macro_rules! color_gamma_fns {
         /// \end{align}
         /// $$
         #[inline]
+        #[cfg(any(feature = "std", feature = "num_float"))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "num_float"))))]
         pub fn [<color_gamma_remove_ $t>](c: $t, gamma: $t) -> $t {
             iif![c <= 0.04045; c / 12.92; ((c + 0.055) / (1.055)).powf(gamma)]
         }

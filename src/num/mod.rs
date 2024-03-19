@@ -20,12 +20,11 @@ pub(crate) use _private::*;
 mod alias;
 mod cmp;
 mod error;
-mod float;
 mod no;
 mod primitive;
 mod sign;
 mod r#trait;
-pub use {alias::*, cmp::all::*, error::*, float::*, no::*, primitive::*, r#trait::*, sign::*};
+pub use {alias::*, cmp::all::*, error::*, no::*, primitive::*, r#trait::*, sign::*};
 
 pub mod niche;
 pub mod rand;
@@ -34,22 +33,30 @@ pub use {niche::all::*, rand::all::*};
 
 /* feature-gated */
 
+#[cfg(feature = "num_float")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_float")))]
+mod float;
 #[cfg(feature = "num_int")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
 mod frac;
 #[cfg(feature = "num_int")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
 mod int;
 #[cfg(feature = "num_int")]
-pub use {frac::*, int::*};
+pub use {float::*, frac::*, int::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        alias::*, cmp::all::*, error::*, float::*, niche::all::*, no::*, primitive::*, r#trait::*,
+        alias::*, cmp::all::*, error::*, niche::all::*, no::*, primitive::*, r#trait::*,
         rand::all::*, sign::*,
     };
 
     // feature-gated
+    #[doc(inline)]
+    #[cfg(feature = "num_float")]
+    pub use super::float::*;
     #[doc(inline)]
     #[cfg(feature = "num_int")]
     pub use super::{frac::*, int::*};
