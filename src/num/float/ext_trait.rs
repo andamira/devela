@@ -1,4 +1,4 @@
-// devela::num::float::trait
+// devela::num::float::ext_trait
 //
 //!
 //

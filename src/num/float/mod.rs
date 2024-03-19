@@ -5,7 +5,7 @@
 
 #![cfg_attr(not(feature = "num"), allow(unused))]
 
-mod r#trait;
+mod ext_trait;
 mod wrapper;
 
-pub use {r#trait::*, wrapper::*};
+pub use {ext_trait::*, wrapper::*};

@@ -3,10 +3,10 @@
 //! Integer functionality.
 //
 
-mod r#trait;
+mod num_trait;
 mod wrapper;
 
-pub use {r#trait::*, wrapper::*};
+pub use {num_trait::*, wrapper::*};
 
 #[allow(unused_imports)]
 use crate::num::ExtFloat;

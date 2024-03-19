@@ -1,4 +1,4 @@
-// devela::num::int::trait::ref
+// devela::num::int::num_trait::ref
 //
 //!
 //
