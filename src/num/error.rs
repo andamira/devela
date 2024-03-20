@@ -38,6 +38,9 @@ pub enum NumError {
     /// A positive value is required.
     PositiveRequired,
 
+    /// A non-zero value is required.
+    NonZeroRequired,
+
     /// An arithmetic overflow error, with an optional associated sign.
     Overflow(Option<Sign>),
 }
@@ -70,6 +73,7 @@ mod core_impls {
                 }
                 E::NonNegativeRequired => write!(f, "A non-negative value is required."),
                 E::PositiveRequired => write!(f, "A positive value is required.."),
+                E::NonZeroRequired => write!(f, "A non-zero value is required."),
                 E::Overflow(sign) => {
                     if let Some(sign) = sign {
                         match sign {
