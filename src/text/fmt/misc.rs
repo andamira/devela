@@ -46,7 +46,7 @@ macro_rules! cdbg {
         }
     };
     ($($val:expr),+ $(,)?) => {
-        ($(cdbg!($val)),+,)
+        ($($crate::text::cdbg!($val)),+,)
     };
 }
 #[cfg(feature = "std")]
