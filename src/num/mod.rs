@@ -42,8 +42,11 @@ mod frac;
 #[cfg(feature = "num_int")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
 mod int;
+
+#[cfg(feature = "num_float")]
+pub use float::*;
 #[cfg(feature = "num_int")]
-pub use {float::*, frac::*, int::*};
+pub use {frac::*, int::*};
 
 pub(crate) mod all {
     // always compiled

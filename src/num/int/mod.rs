@@ -8,7 +8,8 @@ mod wrapper;
 
 pub use {num_trait::*, wrapper::*};
 
-#[allow(unused_imports)]
+#[allow(unused_import)]
+#[cfg(feature = "num_float")]
 use crate::num::ExtFloat;
 
 /// The prime number theorem formula.
@@ -41,6 +42,11 @@ use crate::num::ExtFloat;
 //
 // IMPROVE: use big int and big float.
 #[must_use]
+#[cfg(any(feature = "std", feature = "num_float"))]
+#[cfg_attr(
+    feature = "nightly_doc",
+    doc(cfg(any(feature = "std", feature = "alloc")))
+)]
 pub fn prime_number_theorem(n: u128) -> u128 {
     #[allow(clippy::cast_precision_loss)]
     let float_n = n as f64;
