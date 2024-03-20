@@ -35,8 +35,6 @@ macro_rules! impl_int {
         #[doc = "- [div_ties_towards](#method.div_ties_towards" $d ")"]
         #[doc = "- [div_ties_even](#method.div_ties_even" $d ")"]
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /// Returns the truncated quotient and the remainder.
             #[inline] #[must_use]
@@ -230,8 +228,6 @@ macro_rules! impl_int {
         #[doc = "- [div_ties_towards](#method.div_ties_towards" $d ")"]
         #[doc = "- [div_ties_even](#method.div_ties_even" $d ")"]
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /* unsigned division */
 
@@ -384,8 +380,6 @@ macro_rules! impl_int {
         #[doc = "- [div_ties_towards](#method.div_ties_towards" $d ")"]
         #[doc = "- [div_ties_even](#method.div_ties_even" $d ")"]
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             num_niche_impls![Int => array2 $n:$t:$dt<$($g),*>, +const div_rem, self, b: $t];
             num_niche_impls![Int $n:$t:$dt<$($g),*>, +const div_ceil, self, b: $t];

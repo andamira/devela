@@ -33,7 +33,6 @@ macro_rules! impl_frac {
     // both for signed and unsigned
     (@array $i:ty, $self:ty, $fout:ty) => { $crate::code::paste! {
         #[doc = "# Fraction related methods for `[" $i "; 2]`\n\n"]
-        /// See the related trait [`NumFrac`][crate::num::NumFrac].
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
             #[must_use] #[inline]
@@ -111,7 +110,6 @@ macro_rules! impl_frac {
 
     (@int_array $i:ty, $self:ty, $fout:ty) => { $crate::code::paste! {
         #[doc = "# Fraction related methods for `[Int<" $i ">; 2]`\n\n"]
-        /// See the related trait [`NumFrac`][crate::num::NumFrac].
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
             #[must_use] #[inline]

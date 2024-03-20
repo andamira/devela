@@ -32,8 +32,6 @@ macro_rules! impl_int {
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /// Returns `true` if it's a perfect square.
             ///
@@ -201,8 +199,6 @@ macro_rules! impl_int {
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /* unsigned square root */
 
@@ -362,8 +358,6 @@ macro_rules! impl_int {
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             num_niche_impls![Int=>bool: $n:$t:$dt<$($g),*>, +const is_square, self];
 

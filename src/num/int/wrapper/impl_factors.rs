@@ -50,8 +50,6 @@ macro_rules! impl_int {
         #[doc = "   - [factors_proper_buf](#method.factors_proper_buf" $d ")"]
         #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $d ")"]
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /* signed factors alloc */
 
@@ -605,8 +603,6 @@ macro_rules! impl_int {
         #[doc = "   - [factors_proper_buf](#method.factors_proper_buf" $d ")"]
         #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $d ")"]
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /* unsigned factors alloc */
 

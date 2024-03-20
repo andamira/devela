@@ -29,8 +29,6 @@ macro_rules! impl_int {
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
         #[doc = "- [prime_pi](#method.prime_pi" $d ")"]
         #[doc = "- [totient](#method.totient" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /// Returns `true` if `n` is prime.
             ///
@@ -165,8 +163,6 @@ macro_rules! impl_int {
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
         #[doc = "- [prime_pi](#method.prime_pi" $d ")"]
         #[doc = "- [totient](#method.totient" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /// Returns `true` if `n` is prime.
             ///
@@ -296,8 +292,6 @@ macro_rules! impl_int {
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
         #[doc = "- [prime_pi](#method.prime_pi" $d ")"]
         #[doc = "- [totient](#method.totient" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             num_niche_impls![Int=>bool: $n:$t:$dt<$($g),*>, +const is_prime, self];
             num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const prime_nth, self];

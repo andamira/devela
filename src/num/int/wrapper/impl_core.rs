@@ -41,8 +41,6 @@ macro_rules! impl_int {
         #[doc = "- [lcm](#method.lcm" $d ")"]
         #[doc = "- [scale](#method.scale" $d ")"]
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /// Returns the absolute value of `self`.
             #[inline] #[must_use]
@@ -294,8 +292,6 @@ macro_rules! impl_int {
         #[doc = "- [lcm](#method.lcm" $d ")"]
         #[doc = "- [scale](#method.scale" $d ")"]
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl Int<$t> {
             /// Returns the absolute value of `self` (no-op).
             #[inline] #[must_use]
@@ -452,8 +448,6 @@ macro_rules! impl_int {
         #[doc = "- [lcm](#method.lcm" $d ")"]
         #[doc = "- [scale](#method.scale" $d ")"]
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
-        ///
-        /// See the related trait [`NumInt`][crate::num::NumInt].
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             num_niche_impls![Int $n:$t:$dt<$($g),*>, +const abs, self];
             num_niche_impls![Int=>bool: $n:$t:$dt<$($g),*>, +const is_even, self];
