@@ -71,7 +71,7 @@ use crate::{
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560)
 //       will allow calculating CR automatically from C and R. WAIT: Depends on:
 // WAIT:1.78: [allow constants refer to statics](https://github.com/rust-lang/rust/pull/119614)
-// WAIT:1.77: [const-eval interning improvements](https://github.com/rust-lang/rust/pull/119044)
+// DONE:1.77: [const-eval interning improvements](https://github.com/rust-lang/rust/pull/119044)
 // DONE:1.76: [compile-time evaluation improvements](https://github.com/rust-lang/rust/pull/118324)
 pub struct Array2d<
     T,
