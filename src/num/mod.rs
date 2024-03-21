@@ -20,11 +20,12 @@ pub(crate) use _private::*;
 mod alias;
 mod cmp;
 mod error;
+mod gcd;
 mod no;
 mod primitive;
 mod sign;
 mod r#trait;
-pub use {alias::*, cmp::all::*, error::*, no::*, primitive::*, r#trait::*, sign::*};
+pub use {alias::*, cmp::all::*, error::*, gcd::*, no::*, primitive::*, r#trait::*, sign::*};
 
 pub mod niche;
 pub mod rand;
@@ -52,7 +53,7 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        alias::*, cmp::all::*, error::*, niche::all::*, no::*, primitive::*, r#trait::*,
+        alias::*, cmp::all::*, error::*, gcd::*, niche::all::*, no::*, primitive::*, r#trait::*,
         rand::all::*, sign::*,
     };
 
