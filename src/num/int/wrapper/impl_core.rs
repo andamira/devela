@@ -18,7 +18,7 @@ use {
     crate::{
         code::{iif, paste},
         mem::cswap,
-        num::{isize_up, usize_up, Cast, Int, NumError, NumResult as Result},
+        num::{isize_up, usize_up, Cast, GcdExt, Int, NumError, NumResult as Result},
     },
     NumError::Overflow,
 };
@@ -128,15 +128,15 @@ macro_rules! impl_int {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "let [gcd, x, y] = Int(32_" $t ").gcd_ext(36);"]
+            #[doc = "let [gcd, x, y] = Int(32_" $t ").gcd_ext(36).as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
-            #[inline] #[must_use]
-            pub const fn gcd_ext(self, b: $t) -> [Int<$t>; 3] {
+            #[inline]
+            pub const fn gcd_ext(self, b: $t) -> GcdExt<Int<$t>, Int<$t>> {
                 let [mut a, mut b] = [self.0.abs(), b.abs()];
-                if a == 0 { return [Int(b), Int(0), Int(1)]; }
-                if b == 0 { return [Int(a), Int(1), Int(0)]; }
+                if a == 0 { return GcdExt::new(Int(b), Int(0), Int(1)); }
+                if b == 0 { return GcdExt::new(Int(a), Int(1), Int(0)); }
 
                 let mut k = 0;
                 while ((a | b) & 1) == 0 {
@@ -174,7 +174,7 @@ macro_rules! impl_int {
                     ta -= sa;
                     tb -= sb;
                 }
-                [Int(a << k), Int(sa), Int(sb)]
+                GcdExt::new(Int(a << k), Int(sa), Int(sb))
             }
 
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
@@ -192,18 +192,18 @@ macro_rules! impl_int {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "let [gcd, x, y] = Int(32_" $t ").gcd_ext_euc(36);"]
+            #[doc = "let [gcd, x, y] = Int(32_" $t ").gcd_ext_euc(36).as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
-            #[inline] #[must_use]
-            pub const fn gcd_ext_euc(self, b: $t) -> [Int<$t>; 3] {
+            #[inline]
+            pub const fn gcd_ext_euc(self, b: $t) -> GcdExt<Int<$t>, Int<$t>> {
                 let a = self.0;
                 if a == 0 {
-                    [Int(b), Int(0), Int(1)]
+                    GcdExt::new(Int(b), Int(0), Int(1))
                 } else {
-                    let [g, x, y] = Int(b % a).gcd_ext_euc(a);
-                    [g, Int(y.0 - (b / a) * x.0), x] // IMPROVE impl ops
+                    let (g, x, y) = Int(b % a).gcd_ext_euc(a).as_tuple_const();
+                    GcdExt::new(g, Int(y.0 - (b / a) * x.0), x) // IMPROVE impl ops
                 }
             }
 

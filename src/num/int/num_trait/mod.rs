@@ -15,7 +15,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::vec::Vec;
-use crate::num::{Num, NumError as E, NumResult as Result};
+use crate::num::{GcdExt, Num, NumError as E, NumResult as Result};
 #[cfg(doc)]
 use E::{MismatchedSizes, NonNegativeRequired, NotImplemented, NotSupported, Overflow};
 
@@ -157,9 +157,11 @@ pub trait NumInt: Num {
     fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
-    fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> where Self: Sized { E::ni() }
+    fn int_gcd_ext(self, other: Self::Rhs)
+        -> Result<GcdExt<Self::Out, Self::Out>> where Self: Sized { E::ni() }
     /// *Like [`int_gcd_ext`][Self::int_gcd_ext] but takes the arguments by reference.*
-    fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ni() }
+    fn int_ref_gcd_ext(&self, other: &Self::Rhs)
+        -> Result<GcdExt<Self::Out, Self::Out>> { E::ni() }
 
     /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
     fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }

@@ -14,7 +14,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::vec::Vec;
-use crate::num::{Num, NumInt, NumRef, NumResult as Result};
+use crate::num::{GcdExt, Num, NumInt, NumRef, NumResult as Result};
 use core::ops::Deref;
 
 /// Common trait for referenced integer types.
@@ -67,12 +67,15 @@ where
     fn int_ref_gcd(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_gcd(other) }
     /// *Calls `NumInt::`[`int_ref_gcd_ext`][NumInt::int_ref_gcd_ext]*.
+    #[allow(clippy::type_complexity)]
     fn int_ref_gcd_ext(&self, other: &<Self::Own as Num>::Rhs)
-        -> Result<[<Self::Own as Num>::Out; 3]> {
+        -> Result<GcdExt<<Self::Own as Num>::Out, <Self::Own as Num>::Out>> {
             self.deref().int_ref_gcd_ext(other) }
+
     /// *Calls `NumInt::`[`int_ref_lcm`][NumInt::int_ref_lcm]*.
     fn int_ref_lcm(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_lcm(other) }
+
     /// *Calls `NumInt::`[`int_ref_scale`][NumInt::int_ref_scale]*.
     fn int_ref_scale(&self,
         min: &<Self::Own as Num>::Rhs, max: &<Self::Own as Num>::Rhs,
@@ -137,19 +140,19 @@ where
 
     /// *Calls `NumInt::`[`int_ref_factors`][NumInt::int_ref_factors]*.
     #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    fn int_ref_factors(&self) -> Result<Vec<<Self::Own as Num>::Out>> { 
+    fn int_ref_factors(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors() }
     /// *Calls `NumInt::`[`int_ref_factors_proper`][NumInt::int_ref_factors_proper]*.
     #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    fn int_ref_factors_proper(&self) -> Result<Vec<<Self::Own as Num>::Out>> { 
+    fn int_ref_factors_proper(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors_proper() }
     /// *Calls `NumInt::`[`int_ref_factors_prime`][NumInt::int_ref_factors_prime]*.
     #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    fn int_ref_factors_prime(&self) -> Result<Vec<<Self::Own as Num>::Out>> { 
+    fn int_ref_factors_prime(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors_prime() }
     /// *Calls `NumInt::`[`int_ref_factors_prime_unique`][NumInt::int_ref_factors_prime_unique]*.
     #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    fn int_ref_factors_prime_unique(&self) -> Result<Vec<<Self::Own as Num>::Out>> { 
+    fn int_ref_factors_prime_unique(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors_prime_unique() }
 
     /* factors (non-allocating) */
@@ -157,20 +160,20 @@ where
     /// *Calls `NumInt::`[`int_ref_factors_buf`][NumInt::int_ref_factors_buf]*.
     fn int_ref_factors_buf(&self,
         fbuf: &mut [<Self::Own as Num>::Out], upfbuf: &mut [<Self::Own as Num>::Out])
-        -> Result<(usize, usize)> { 
+        -> Result<(usize, usize)> {
             self.deref().int_ref_factors_buf(fbuf, upfbuf) }
     /// *Calls `NumInt::`[`int_ref_factors_proper_buf`][NumInt::int_ref_factors_proper_buf]*.
     fn int_ref_factors_proper_buf(&self,
         fbuf: &mut [<Self::Own as Num>::Out], upfbuf: &mut [<Self::Own as Num>::Out])
-        -> Result<(usize, usize)> { 
+        -> Result<(usize, usize)> {
             self.deref().int_ref_factors_proper_buf(fbuf, upfbuf) }
     /// *Calls `NumInt::`[`int_ref_factors_prime_buf`][NumInt::int_ref_factors_prime_buf]*.
-    fn int_ref_factors_prime_buf(&self, buffer: &mut [<Self::Own as Num>::Out]) -> Result<usize> { 
+    fn int_ref_factors_prime_buf(&self, buffer: &mut [<Self::Own as Num>::Out]) -> Result<usize> {
             self.deref().int_ref_factors_prime_buf(buffer) }
     /// *Calls
     /// `NumInt::`[`int_ref_factors_prime_unique_buf`][NumInt::int_ref_factors_prime_unique_buf]*.
     fn int_ref_factors_prime_unique_buf(&self, buffer: &mut [<Self::Own as Num>::Out])
-        -> Result<usize> { 
+        -> Result<usize> {
             self.deref().int_ref_factors_prime_unique_buf(buffer) }
 
     /* primes */

@@ -7,7 +7,7 @@
 use crate::_deps::alloc::vec::Vec;
 use crate::{
     code::paste,
-    num::{Int, NumError as E, NumInt, NumResult as Result},
+    num::{GcdExt, Int, NumError as E, NumInt, NumResult as Result},
 };
 
 impl_int![];
@@ -28,13 +28,13 @@ macro_rules! impl_int {
             /* core */
 
             #[inline]
-            fn int_gcd_ext(self, other: Self::Rhs) -> Result<[Self::Out; 3]> {
-                let [gcd, b1, b2] = Int(self).gcd_ext(other);
-                Ok([gcd.0, b1.0, b2.0]) }
+            fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdExt<Self::Out, Self::Out>> {
+                let g = Int(self).gcd_ext(other);
+                Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
             #[inline]
-            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<[Self::Out; 3]> {
-                let [gcd, b1, b2] = Int(*self).gcd_ext(*other);
-                Ok([gcd.0, b1.0, b2.0]) }
+            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdExt<Self::Out, Self::Out>> {
+                let g = Int(*self).gcd_ext(*other);
+                Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
 
             /* roots */
 
@@ -58,9 +58,11 @@ macro_rules! impl_int {
             /* core */
 
             #[inline]
-            fn int_gcd_ext(self, _: Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
+            fn int_gcd_ext(self, _: Self::Rhs)
+                -> Result<GcdExt<Self::Out, Self::Out>> { E::ns() }
             #[inline]
-            fn int_ref_gcd_ext(&self, _: &Self::Rhs) -> Result<[Self::Out; 3]> { E::ns() }
+            fn int_ref_gcd_ext(&self, _: &Self::Rhs)
+                -> Result<GcdExt<Self::Out, Self::Out>> { E::ns() }
 
             /* roots */
 
