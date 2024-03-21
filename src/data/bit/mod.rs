@@ -3,13 +3,14 @@
 //! Bit-focused types and traits.
 //
 
-/* always compiled, non-public modules */
+/* always compiled */
 
 mod field;
 mod r#trait;
 mod wrapper;
 
-pub use {field::*, r#trait::BitOps, wrapper::Biting};
+#[allow(unused_imports)]
+use {field::*, r#trait::BitOps, wrapper::Biting};
 
 pub(crate) mod all {
     // always compiled

@@ -5,7 +5,7 @@
 
 use super::super::{NumVector, VecVector};
 use crate::data::Vec;
-use crate::num::{Num, NumResult as Result};
+use crate::num::Num;
 
 impl<T: Num> NumVector for VecVector<T> {
     type Scalar = T;

@@ -8,9 +8,9 @@
 //! homogeneous data structures.
 //
 
-/* always compiled, non-public mdules */
+/* always compiled */
 
-mod ext; // ExtArray, ArrayFmt
+mod ext;
 
 pub use ext::*;
 

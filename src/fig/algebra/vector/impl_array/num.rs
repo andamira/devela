@@ -4,7 +4,7 @@
 //
 
 use super::super::{NumVector, Vector};
-use crate::num::{Num, NumResult as Result};
+use crate::num::Num;
 
 impl<T: Num, const D: usize> NumVector for Vector<T, D> {
     type Scalar = T;

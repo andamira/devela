@@ -5,7 +5,7 @@
 
 #![allow(clippy::needless_range_loop)]
 
-use crate::{data::array_init, fig::Vector, num::ExtFloat};
+use crate::fig::Vector;
 #[cfg(feature = "num_int")]
 use crate::{num::Int, result::unwrap};
 

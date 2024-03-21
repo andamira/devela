@@ -7,7 +7,8 @@ use crate::num::{Float, Sign};
 
 /// Extension trait for floating-point types.
 ///
-/// This trait can be more convenient to use than the [`Float`] struct.
+/// This trait can be more convenient to use than the [`Float`] struct,
+/// for non-const operations over primitive floating-point types.
 ///
 /// `Float` has a few more methods implemented if the `libm` feature is enabled,
 /// and some of its methods are *const* if the `unsafe_const` feature is enabled.
