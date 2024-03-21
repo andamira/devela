@@ -5,14 +5,16 @@
 // TOC
 // - signed|unsigned:
 //   - modulo (uc)
-//   - modulo_fits (uc)
+//   - modulo_cycles (uc)
 //   - modulo_add (uc)
-//   - modulo_add_fits (uc)
+//   - modulo_add_cycles (uc)
 //   - modulo_sub (uc)
+//   - modulo_sub_cycles (uc)
 
 use crate::{
     code::{cif, paste},
     num::{isize_up, usize_up, Int, NumError, NumResult as Result},
+    result::ValueQuant,
 };
 use NumError::{NonZeroRequired, Overflow};
 
@@ -81,14 +83,16 @@ macro_rules! impl_int {
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d
             ") *([uc](#method.modulo_unchecked" $d ")*)"]
-        #[doc = "- [modulo_fits](#method.modulo_fits" $d
-            ") *([uc](#method.modulo_fits_unchecked" $d "))*"]
+        #[doc = "- [modulo_cycles](#method.modulo_cycles" $d
+            ") *([uc](#method.modulo_cycles_unchecked" $d "))*"]
         #[doc = "- [modulo_add](#method.modulo_add" $d
             ") *([uc](#method.modulo_add_unchecked" $d "))*"]
-        #[doc = "- [modulo_add_fits](#method.modulo_add" $d
-            ") *([uc](#method.modulo_add_fits_unchecked" $d "))*"]
+        #[doc = "- [modulo_add_cycles](#method.modulo_add_cycles" $d
+            ") *([uc](#method.modulo_add_cycles_unchecked" $d "))*"]
         #[doc = "- [modulo_sub](#method.modulo_sub" $d
             ") *([uc](#method.modulo_sub_unchecked" $d "))*"]
+        #[doc = "- [modulo_sub_cycles](#method.modulo_add_cycles" $d
+            ") *([uc](#method.modulo_sub_cycles_unchecked" $d "))*"]
         impl Int<$t> {
             /* modulo (signed) */
 
@@ -190,15 +194,32 @@ macro_rules! impl_int {
             /* modulo fits (signed) */
 
             /// Computes the non-negative modulo of `self` over |`modulus`|,
-            /// and the |times| it fits.
+            /// and the number of cycles the result is reduced.
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
             /// if `self == MIN && modulus == ±1` it can return [`Overflow`].
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumResult, NumError};
+            /// # fn main() -> NumResult<()> {
+            /// let m = 3;
+            #[doc = "assert_eq![Int(-3_" $t ").modulo_cycles(m)?, (0, 1)];"]
+            #[doc = "assert_eq![Int(-2_" $t ").modulo_cycles(m)?, (1, 0)];"]
+            #[doc = "assert_eq![Int(-1_" $t ").modulo_cycles(m)?, (2, 0)];"]
+            #[doc = "assert_eq![Int( 0_" $t ").modulo_cycles(m)?, (0, 0)];"]
+            #[doc = "assert_eq![Int( 1_" $t ").modulo_cycles(m)?, (1, 0)];"]
+            #[doc = "assert_eq![Int( 2_" $t ").modulo_cycles(m)?, (2, 0)];"]
+            #[doc = "assert_eq![Int( 3_" $t ").modulo_cycles(m)?, (0, 1)];"]
+            ///
+            #[doc = "assert_eq![Int(10_" $t ").modulo_cycles(m)?, (1, 3)];"]
+            /// # Ok(()) }
+            /// ```
             #[inline]
-            pub const fn modulo_fits(self, modulus: $t) -> Result<(Int<$t>, Int<$t>)> {
+            pub const fn modulo_cycles(self, modulus: $t) -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
                     cold_err_zero()
                 } else {
@@ -206,7 +227,7 @@ macro_rules! impl_int {
                     if let Some(v) = orig.checked_rem_euclid(m) {
                         let modulo = Int(v as $t);
                         let times = Int(((orig / m) as $t).abs());
-                        Ok((modulo, times))
+                        Ok(ValueQuant::new(modulo, times))
                     } else {
                         cold_err_overflow()
                     }
@@ -214,42 +235,20 @@ macro_rules! impl_int {
             }
 
             /// Computes the non-negative modulo of `self` over |`modulus`|,
-            /// and the |times| it fits, unchecked version.
+            /// and the number of cycles the result is reduced,
+            /// unchecked version.
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it can also panic
             /// if `self == MIN && modulus == ±1`.
-            ///
-            /// # Examples
-            /// ```
-            /// # use devela::num::Int;
-            /// let m = 3;
-            #[doc = "let (modulo, times) = Int(-3_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 0]; assert_eq![times, 1];
-            #[doc = "let (modulo, times) = Int(-2_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 1]; assert_eq![times, 0];
-            #[doc = "let (modulo, times) = Int(-1_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 2]; assert_eq![times, 0];
-            #[doc = "let (modulo, times) = Int(0_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 0]; assert_eq![times, 0];
-            #[doc = "let (modulo, times) = Int(1_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 1]; assert_eq![times, 0];
-            #[doc = "let (modulo, times) = Int(2_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 2]; assert_eq![times, 0];
-            #[doc = "let (modulo, times) = Int(3_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 0]; assert_eq![times, 1];
-            ///
-            #[doc = "let (modulo, times) = Int(10_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 1]; assert_eq![times, 3];
-            /// ```
-            #[must_use] #[inline]
-            pub const fn modulo_fits_unchecked(self, modulus: $t) -> (Int<$t>, Int<$t>) {
+            #[inline]
+            pub const fn modulo_cycles_unchecked(self, modulus: $t) -> ValueQuant<Int<$t>, Int<$t>> {
                 let (v, m) = (self.0 as $up, modulus as $up);
                 let modulo = Int(v.rem_euclid(m) as $t);
                 let times = Int(((v / m) as $t).abs());
-                (modulo, times)
+                ValueQuant::new(modulo, times)
             }
 
             /* modulo add (signed) */
@@ -267,14 +266,15 @@ macro_rules! impl_int {
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
-            #[doc = "assert_eq![Int(-2_" $t ").modulo_add(-1, m)?, 0];"]
-            #[doc = "assert_eq![Int(-1_" $t ").modulo_add(-1, m)?, 1];"]
-            #[doc = "assert_eq![Int(0_" $t ").modulo_add(-1, m)?, 2];"]
-            #[doc = "assert_eq![Int(0_" $t ").modulo_add(0, m)?, 0];"]
-            #[doc = "assert_eq![Int(0_" $t ").modulo_add(1, m)?, 1];"]
-            #[doc = "assert_eq![Int(0_" $t ").modulo_add(2, m)?, 2];"]
-            #[doc = "assert_eq![Int(0_" $t ").modulo_add(3, m)?, 0];"]
-            #[doc = "assert_eq![Int(1_" $t ").modulo_add(1, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add(-4, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add(-3, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add(-2, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add(-1, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add( 0, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add( 1, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add( 2, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add( 3, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add( 4, m)?, 2];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -309,7 +309,7 @@ macro_rules! impl_int {
             /* modulo add fits (signed) */
 
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
-            /// and the *times* it fits in the sum.
+            /// and the number of cycles the result is reduced.
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             ///
@@ -323,14 +323,21 @@ macro_rules! impl_int {
             /// ```
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
-            /// let m = 4;
-            #[doc = "let (modulo, times) = Int(-10_" $t ").modulo_add_fits(15, m)?;"]
-            /// assert_eq!(modulo, 1); assert_eq!(times, 1);
+            /// let m = 3;
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(-4, m)?, (0, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(-3, m)?, (1, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(-2, m)?, (2, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(-1, m)?, (0, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 0, m)?, (1, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 1, m)?, (2, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 2, m)?, (0, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 3, m)?, (1, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 4, m)?, (2, 2)];"]
             /// # Ok(()) }
             /// ```
             #[inline]
-            pub const fn modulo_add_fits(self, other: $t, modulus: $t)
-                -> Result<(Int<$t>, Int<$t>)> {
+            pub const fn modulo_add_cycles(self, other: $t, modulus: $t)
+                -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
                     cold_err_zero()
                 } else {
@@ -341,7 +348,7 @@ macro_rules! impl_int {
                     if let Some(v) = sum.checked_rem_euclid(m) {
                         let modulo = Int(v as $t);
                         let times = Int(((sum / m) as $t).abs());
-                        Ok((modulo, times))
+                        Ok(ValueQuant::new(modulo, times))
                     } else {
                         cold_err_overflow()
                     }
@@ -349,7 +356,8 @@ macro_rules! impl_int {
             }
 
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
-            /// and the times it fits in the sum.
+            /// and the number of cycles the result is reduced,
+            /// unchecked version.
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             ///
@@ -357,21 +365,21 @@ macro_rules! impl_int {
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
             /// more probably than in [`modulo_add_unchecked`][Self::modulo_add_unchecked]
             /// since we can't reduce the operands beforehand in order to calculate *times*.
-            #[must_use] #[inline]
-            pub const fn modulo_add_fits_unchecked(self, other: $t, modulus: $t)
-                -> (Int<$t>, Int<$t>) {
+            #[inline]
+            pub const fn modulo_add_cycles_unchecked(self, other: $t, modulus: $t)
+                -> ValueQuant<Int<$t>, Int<$t>> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                 // not reducing for i128 makes overflow more likely,
                 // but we can't if we want to calculate `times`.
                 let sum = a + b;
                 let modulo = sum.rem_euclid(m) as $t;
                 let times = ((sum / m) as $t).abs();
-                (Int(modulo), Int(times))
+                ValueQuant::new(Int(modulo), Int(times))
             }
 
             /* modulo sub (signed) */
 
-            /// Computes the modulo of `self - other` over `modulus`.
+            /// Computes the modulo of `self - other` over |`modulus`|.
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             ///
@@ -383,15 +391,15 @@ macro_rules! impl_int {
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
-            #[doc = "assert_eq![Int(-5_" $t ").modulo_sub(-4, m)?, 2];"]
-            #[doc = "assert_eq![Int(-5_" $t ").modulo_sub(-3, m)?, 1];"]
-            #[doc = "assert_eq![Int(-5_" $t ").modulo_sub(-2, m)?, 0];"]
-            #[doc = "assert_eq![Int(-5_" $t ").modulo_sub(-1, m)?, 2];"]
-            #[doc = "assert_eq![Int(-5_" $t ").modulo_sub(0, m)?, 1];"]
-            #[doc = "assert_eq![Int(-5_" $t ").modulo_sub(1, m)?, 0];"]
-            #[doc = "assert_eq![Int(-5_" $t ").modulo_sub(2, m)?, 2];"]
-            #[doc = "assert_eq![Int(-5_" $t ").modulo_sub(3, m)?, 1];"]
-            #[doc = "assert_eq![Int(-5_" $t ").modulo_sub(4, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub(-4, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub(-3, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub(-2, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub(-1, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 0, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 1, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 2, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 3, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 4, m)?, 0];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -405,7 +413,7 @@ macro_rules! impl_int {
                 }
             }
 
-            /// Computes the modulo of `self - other` over `modulus`,
+            /// Computes the modulo of `self - other` over |`modulus`|,
             /// unchecked version.
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
@@ -418,23 +426,90 @@ macro_rules! impl_int {
                 let res = upcastop![reduce -sub(a, b) % m, $is_up];
                 Int(res.rem_euclid(m) as $t)
             }
+
+            /* modulo sub fits (signed) */
+
+            /// Computes the non-negative modulo of `self - other` over |`modulus`|,
+            /// and the number of cycles the result is reduced.
+            ///
+            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
+            /// it can also return [`Overflow`] (unlike [`modulo_sub`][Self::modulo_sub])
+            /// since we can't reduce the operands beforehand in order to calculate *times*.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumResult, NumError};
+            /// # fn main() -> NumResult<()> {
+            /// let m = 3;
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(-4, m)?, (2, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(-3, m)?, (1, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(-2, m)?, (0, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(-1, m)?, (2, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 0, m)?, (1, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 1, m)?, (0, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 2, m)?, (2, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 3, m)?, (1, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 4, m)?, (0, 0)];"]
+            /// # Ok(()) }
+            /// ```
+            #[inline]
+            pub const fn modulo_sub_cycles(self, other: $t, modulus: $t)
+                -> Result<ValueQuant<Int<$t>, Int<$t>>> {
+                if modulus == 0 {
+                    cold_err_zero()
+                } else {
+                    let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
+                    // not reducing for i128 makes overflow more likely,
+                    // but we can't if we want to calculate `times`.
+                    let res = upcastop![err -sub(a, b) $is_up];
+                    let modulo = Int(res.rem_euclid(m) as $t);
+                    let times = Int(((res / m) as $t).abs());
+                    Ok(ValueQuant::new(modulo, times))
+                }
+            }
+
+            /// Computes the non-negative modulo of `self - other` over |`modulus`|,
+            /// and the number of cycles the result is reduced,
+            /// unchecked version.
+            ///
+            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            ///
+            /// # Panics
+            /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
+            /// more probably than in [`modulo_sub_unchecked`][Self::modulo_sub_unchecked]
+            /// since we can't reduce the operands beforehand in order to calculate *times*.
+            #[must_use] #[inline]
+            pub const fn modulo_sub_cycles_unchecked(self, other: $t, modulus: $t)
+                -> (Int<$t>, Int<$t>) {
+                let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
+                // not reducing for i128 makes overflow more likely,
+                // but we can't if we want to calculate `times`.
+                let res = a - b;
+                let modulo = res.rem_euclid(m) as $t;
+                let times = ((res / m) as $t).abs();
+                (Int(modulo), Int(times))
+            }
         }
     }};
 
     // implements unsigned ops
-    // NOTE: upcasting is not used for unsigned operations
     (@unsigned ($t:ty, $up:ty:$is_up:ident, $d:literal) ) => { paste! {
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d
             ") *([uc](#method.modulo_unchecked" $d ")*)"]
-        #[doc = "- [modulo_fits](#method.modulo_fits" $d
-            ") *([uc](#method.modulo_fits_unchecked" $d "))*"]
+        #[doc = "- [modulo_cycles](#method.modulo_cycles" $d
+            ") *([uc](#method.modulo_cycles_unchecked" $d "))*"]
         #[doc = "- [modulo_add](#method.modulo_add" $d
             ") *([uc](#method.modulo_add_unchecked" $d "))*"]
-        #[doc = "- [modulo_add_fits](#method.modulo_add" $d
-            ") *([uc](#method.modulo_add_fits_unchecked" $d "))*"]
+        #[doc = "- [modulo_add_cycles](#method.modulo_add_cycles" $d
+            ") *([uc](#method.modulo_add_cycles_unchecked" $d "))*"]
         #[doc = "- [modulo_sub](#method.modulo_sub" $d
             ") *([uc](#method.modulo_sub_unchecked" $d "))*"]
+        #[doc = "- [modulo_sub_cycles](#method.modulo_sub_cycles" $d
+            ") *([uc](#method.modulo_add_cycles_unchecked" $d "))*"]
         impl Int<$t> {
             /* modulo (unsigned) */
 
@@ -493,21 +568,36 @@ macro_rules! impl_int {
             /* modulo fits (unsigned) */
 
             /// Computes the non-negative modulo of `self` over `modulus`,
-            /// and the times it fits.
+            /// and the number of cycles it is reduced.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumResult, NumError};
+            /// # fn main() -> NumResult<()> {
+            /// let m = 3;
+            #[doc = "assert_eq![Int( 0_" $t ").modulo_cycles(m)?, (0, 0)];"]
+            #[doc = "assert_eq![Int( 1_" $t ").modulo_cycles(m)?, (1, 0)];"]
+            #[doc = "assert_eq![Int( 2_" $t ").modulo_cycles(m)?, (2, 0)];"]
+            #[doc = "assert_eq![Int( 3_" $t ").modulo_cycles(m)?, (0, 1)];"]
+            ///
+            #[doc = "assert_eq![Int(10_" $t ").modulo_cycles(m)?, (1, 3)];"]
+            /// # Ok(()) }
+            /// ```
             #[inline]
-            pub const fn modulo_fits(self, modulus: $t) -> Result<(Int<$t>, Int<$t>)> {
+            pub const fn modulo_cycles(self, modulus: $t) -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
                     cold_err_zero()
                 } else {
-                    Ok((Int(self.0 % modulus), Int(self.0 / modulus)))
+                    Ok(ValueQuant::new(Int(self.0 % modulus), Int(self.0 / modulus)))
                 }
             }
 
             /// Computes the non-negative modulo of `self` over `modulus`,
-            /// and the times it fits, unchecked version.
+            /// and the number of cycles it is reduced,
+            /// unchecked version.
             ///
             /// # Panics
             /// Panics if `modulus == 0`.
@@ -516,26 +606,23 @@ macro_rules! impl_int {
             /// ```
             /// # use devela::num::Int;
             /// let m = 3;
-            #[doc = "let (modulo, times) = Int(0_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 0]; assert_eq![times, 0];
-            #[doc = "let (modulo, times) = Int(1_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 1]; assert_eq![times, 0];
-            #[doc = "let (modulo, times) = Int(2_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 2]; assert_eq![times, 0];
-            #[doc = "let (modulo, times) = Int(3_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 0]; assert_eq![times, 1];
+            #[doc = "assert_eq![Int( 0_" $t ").modulo_cycles_unchecked(m), (0, 0)];"]
+            #[doc = "assert_eq![Int( 1_" $t ").modulo_cycles_unchecked(m), (1, 0)];"]
+            #[doc = "assert_eq![Int( 2_" $t ").modulo_cycles_unchecked(m), (2, 0)];"]
+            #[doc = "assert_eq![Int( 3_" $t ").modulo_cycles_unchecked(m), (0, 1)];"]
             ///
-            #[doc = "let (modulo, times) = Int(10_" $t ").modulo_fits_unchecked(m);"]
-            /// assert_eq![modulo, 1]; assert_eq![times, 3];
+            #[doc = "assert_eq![Int(10_" $t ").modulo_cycles_unchecked(m), (1, 3)];"]
             /// ```
-            #[must_use] #[inline]
-            pub const fn modulo_fits_unchecked(self, modulus: $t) -> (Int<$t>, Int<$t>) {
-                (Int(self.0 % modulus), Int(self.0 / modulus))
+            #[inline]
+            pub const fn modulo_cycles_unchecked(self, modulus: $t) -> ValueQuant<Int<$t>, Int<$t>> {
+                ValueQuant::new(Int(self.0 % modulus), Int(self.0 / modulus))
             }
 
             /* modulo add (unsigned) */
 
             /// Computes the modulo of `self + other` over `modulus`.
+            ///
+            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `u128`
@@ -567,6 +654,8 @@ macro_rules! impl_int {
             /// Computes the modulo of `self + other` over `modulus`,
             /// unchecked version.
             ///
+            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it could also panic on overflow.
             #[inline]
@@ -579,7 +668,9 @@ macro_rules! impl_int {
             /* modulo add fits (unsigned) */
 
             /// Computes the modulo of `self + other` over `modulus`,
-            /// and the *times* it fits in the sum.
+            /// and the number of cycles the result is reduced.
+            ///
+            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `u128`
@@ -591,14 +682,17 @@ macro_rules! impl_int {
             /// ```
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
-            /// let m = 4;
-            #[doc = "let (modulo, times) = Int(10_" $t ").modulo_add_fits(15, m)?;"]
-            /// assert_eq!(modulo, 1); assert_eq!(times, 6);
+            /// let m = 3;
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 0, m)?, (1, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 1, m)?, (2, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 2, m)?, (0, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 3, m)?, (1, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 4, m)?, (2, 2)];"]
             /// # Ok(()) }
             /// ```
             #[inline]
-            pub const fn modulo_add_fits(self, other: $t, modulus: $t)
-                -> Result<(Int<$t>, Int<$t>)> {
+            pub const fn modulo_add_cycles(self, other: $t, modulus: $t)
+                -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
                     cold_err_zero()
                 } else {
@@ -608,27 +702,30 @@ macro_rules! impl_int {
                     let sum = upcastop![err +add(a, b) $is_up];
                     let modulo = Int((sum % m) as $t);
                     let times = Int((sum / m) as $t);
-                    Ok((modulo, times))
+                    Ok(ValueQuant::new(modulo, times))
                 }
             }
 
             /// Computes the modulo of `self + other` over `modulus`,
-            /// and the times it fits in the sum.
+            /// and the number of cycles the result is reduced,
+            /// unchecked version.
+            ///
+            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it can also panic on overflow,
             /// more probably than in [`modulo_add_unchecked`][Self::modulo_add_unchecked]
             /// since we can't reduce the operands beforehand in order to calculate *times*.
-            #[must_use] #[inline]
-            pub const fn modulo_add_fits_unchecked(self, other: $t, modulus: $t)
-                -> (Int<$t>, Int<$t>) {
+            #[inline]
+            pub const fn modulo_add_cycles_unchecked(self, other: $t, modulus: $t)
+                -> ValueQuant<Int<$t>, Int<$t>> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                 // not reducing for u128 makes overflow more likely,
                 // but we can't if we want to calculate `times`.
                 let sum = a + b;
                 let modulo = Int((sum % m) as $t);
                 let times = Int((sum / m) as $t);
-                ((modulo, times))
+                ValueQuant::new(modulo, times)
             }
 
             /* modulo sub (unsigned) */
@@ -636,19 +733,19 @@ macro_rules! impl_int {
             /// Computes the modulo of `self - other` over `modulus`.
             ///
             /// # Errors
-            /// Returns [`NonZeroRequired`] if `modulus == 0`,
-            /// and it could also return [`Overflow`].
+            /// Returns [`NonZeroRequired`] if `modulus == 0`, and it can also
+            /// return [`Overflow`] if the result would be a negative value.
             ///
             /// # Examples
             /// ```
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
-            #[doc = "assert_eq![Int(5_" $t ").modulo_sub(0, m)?, 2];"]
-            #[doc = "assert_eq![Int(5_" $t ").modulo_sub(1, m)?, 1];"]
-            #[doc = "assert_eq![Int(5_" $t ").modulo_sub(2, m)?, 0];"]
-            #[doc = "assert_eq![Int(5_" $t ").modulo_sub(3, m)?, 2];"]
-            #[doc = "assert_eq![Int(5_" $t ").modulo_sub(4, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 0, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 1, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 2, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 3, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 4, m)?, 0];"]
             ///
             #[doc = "assert_eq![Int(0_" $t ").modulo_sub(1, m), Err(NumError::Overflow(None))];"]
             /// # Ok(()) }
@@ -670,10 +767,62 @@ macro_rules! impl_int {
             /// unchecked version.
             ///
             /// # Panics
-            /// Panics if `modulus == 0`, and on overflow.
+            /// Panics if `modulus == 0`, and if the result would be a negative value.
             #[inline]
             pub const fn modulo_sub_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 Int(((self.0 - other) % modulus))
+            }
+
+            /* modulo sub fits (unsigned) */
+
+            /// Computes the modulo of `self - other` over `modulus`,
+            /// and the number of cycles the result is reduced.
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `modulus == 0`, and it can also
+            /// return [`Overflow`] if the result would be a negative value.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumResult, NumError};
+            /// # fn main() -> NumResult<()> {
+            /// let m = 3;
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 0, m)?, (1, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 1, m)?, (0, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 2, m)?, (2, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 3, m)?, (1, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 4, m)?, (0, 0)];"]
+            /// # Ok(()) }
+            /// ```
+            #[inline]
+            pub const fn modulo_sub_cycles(self, other: $t, modulus: $t)
+                -> Result<ValueQuant<Int<$t>, Int<$t>>> {
+                if modulus == 0 {
+                    cold_err_zero()
+                } else {
+                    if let Some(res) = self.0.checked_sub(other) {
+                        let modulo = Int((res % modulus) as $t);
+                        let times = Int((res / modulus) as $t);
+                        Ok(ValueQuant::new(modulo, times))
+                    } else {
+                        Err(Overflow(None))
+                    }
+                }
+            }
+
+            /// Computes the modulo of `self - other` over `modulus`,
+            /// and the number of cycles the result is reduced,
+            /// unchecked version.
+            ///
+            /// # Panics
+            /// Panics if `modulus == 0`, and if the result would be a negative value.
+            #[must_use] #[inline]
+            pub const fn modulo_sub_cycles_unchecked(self, other: $t, modulus: $t)
+                -> ValueQuant<Int<$t>, Int<$t>> {
+                let res = self.0 - other;
+                let modulo = Int((res % modulus) as $t);
+                let times = Int((res / modulus) as $t);
+                ValueQuant::new(modulo, times)
             }
         }
     }};
