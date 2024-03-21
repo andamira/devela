@@ -30,10 +30,11 @@ mod panic;
 mod reexport;
 mod traits;
 mod unwrap;
+mod value_quant;
 
 pub use {
     ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexport::*,
-    traits::*, unwrap::*,
+    traits::*, unwrap::*, value_quant::*,
 };
 
 /* feature-gated, non-public modules */
@@ -49,7 +50,7 @@ pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
         ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexport::*,
-        traits::*, unwrap::*,
+        traits::*, unwrap::*, value_quant::*,
     };
 
     // feature-gated

@@ -25,7 +25,7 @@ pub struct Mismatch<N, H> {
 impl<N, H> Mismatch<N, H> {}
 
 mod core_impls {
-    use super::*;
+    use super::Mismatch;
     use core::{
         cmp::Ordering,
         fmt,
