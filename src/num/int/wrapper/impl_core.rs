@@ -17,6 +17,7 @@
 use {
     crate::{
         code::{iif, paste},
+        mem::cswap,
         num::{isize_up, usize_up, Cast, Int, NumError, NumResult as Result},
     },
     NumError::Overflow,
@@ -100,7 +101,7 @@ macro_rules! impl_int {
                 while b != 0 {
                     b >>= b.trailing_zeros();
                     // ensure b >= a before substraction:
-                    iif![a > b; {let swp = a; a = b; b = swp }; b -= a];
+                    iif![a > b; cswap![a, b]; b -= a];
                 }
                 Int(a << k)
 
@@ -165,9 +166,9 @@ macro_rules! impl_int {
                         tb >>= 1;
                     }
                     if a > b {
-                        let swp = a; a = b; b = swp;
-                        let swp = sa; sa = ta; ta = swp;
-                        let swp = sb; sb = tb; tb = swp;
+                        cswap![a, b];
+                        cswap![sa, ta];
+                        cswap![sb, tb];
                     }
                     b -= a;
                     ta -= sa;
@@ -346,7 +347,7 @@ macro_rules! impl_int {
                 while b != 0 {
                     b >>= b.trailing_zeros();
                     // ensure b >= a before substraction:
-                    iif![a > b; {let swp = a; a = b; b = swp }; b -= a];
+                    iif![a > b; cswap![a, b]; b -= a];
                 }
                 Int(a << k)
 
