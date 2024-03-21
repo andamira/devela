@@ -52,7 +52,9 @@ crate::num::impl_ops![Int: (no_neg) u8, u16, u32, u64, u128, usize];
 
 #[rustfmt::skip]
 mod core_impls {
-    use {super::Int, core::{fmt, cmp, hash}};
+    use super::Int;
+    use core::{fmt, cmp, hash};
+    use crate::result::ValueQuant;
 
     impl<T: Clone> Clone for Int<T> {
         #[inline] #[must_use]
@@ -94,15 +96,46 @@ mod core_impls {
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::LowerExp::fmt(&self.0, f) }
     }
 
+    /* eq */
+
     impl<T: PartialEq> PartialEq for Int<T> {
         #[inline] #[must_use]
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
     impl<T: Eq> Eq for Int<T> {}
+    // with the inner value:
     impl<T: PartialEq> PartialEq<T> for Int<T> {
         #[inline] #[must_use]
         fn eq(&self, other: &T) -> bool { self.0.eq(other) }
     }
+    // with ValueQuant:
+    impl<T: PartialEq> PartialEq<ValueQuant<T, T>> for ValueQuant<Int<T>, Int<T>> {
+        #[inline] #[must_use]
+        fn eq(&self, other: &ValueQuant<T, T>) -> bool {
+            self.v.eq(&other.v) && self.q.eq(&other.q)
+        }
+    }
+    impl<T: PartialEq> PartialEq<ValueQuant<Int<T>, Int<T>>> for ValueQuant<T, T> {
+        #[inline] #[must_use]
+        fn eq(&self, other: &ValueQuant<Int<T>, Int<T>>) -> bool {
+            self.v.eq(&other.v.0) && self.q.eq(&other.q.0)
+        }
+    }
+    // with ValueQuant and tuple:
+    impl<T: PartialEq> PartialEq<(T, T)> for ValueQuant<Int<T>, Int<T>> {
+        #[inline] #[must_use]
+        fn eq(&self, other: &(T, T)) -> bool {
+            self.v.eq(&other.0) && self.q.eq(&other.1)
+        }
+    }
+    impl<T: PartialEq> PartialEq<(Int<T>, Int<T>)> for ValueQuant<T, T> {
+        #[inline] #[must_use]
+        fn eq(&self, other: &(Int<T>, Int<T>)) -> bool {
+            self.v.eq(&other.0.0) && self.q.eq(&other.1.0)
+        }
+    }
+
+    /* ord*/
 
     impl<T: PartialOrd> PartialOrd for Int<T> {
         #[inline] #[must_use]
@@ -116,6 +149,7 @@ mod core_impls {
             self.0.cmp(&other.0)
         }
     }
+    // with the inner value:
     impl<T: PartialOrd> PartialOrd<T> for Int<T> {
         #[inline] #[must_use]
         fn partial_cmp(&self, other: &T) -> Option<cmp::Ordering> {

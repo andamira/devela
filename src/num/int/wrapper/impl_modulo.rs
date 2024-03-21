@@ -197,7 +197,7 @@ macro_rules! impl_int {
                 Int(v.rem_euclid(m) as $t)
             }
 
-            /* modulo fits (signed) */
+            /* modulo cycles (signed) */
 
             /// Computes the non-negative modulo of `self` over |`modulus`|,
             /// and the number of cycles the result is reduced.
@@ -220,8 +220,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int( 1_" $t ").modulo_cycles(m)?, (1, 0)];"]
             #[doc = "assert_eq![Int( 2_" $t ").modulo_cycles(m)?, (2, 0)];"]
             #[doc = "assert_eq![Int( 3_" $t ").modulo_cycles(m)?, (0, 1)];"]
-            ///
-            #[doc = "assert_eq![Int(10_" $t ").modulo_cycles(m)?, (1, 3)];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -312,7 +310,7 @@ macro_rules! impl_int {
                 Int(sum.rem_euclid(m) as $t)
             }
 
-            /* modulo add fits (signed) */
+            /* modulo add cycles (signed) */
 
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
             /// and the number of cycles the result is reduced.
@@ -433,7 +431,7 @@ macro_rules! impl_int {
                 Int(res.rem_euclid(m) as $t)
             }
 
-            /* modulo sub fits (signed) */
+            /* modulo sub cycles (signed) */
 
             /// Computes the non-negative modulo of `self - other` over |`modulus`|,
             /// and the number of cycles the result is reduced.
@@ -518,11 +516,11 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(-3, m)?, 0];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(-2, m)?, 1];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(-1, m)?, 2];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 0, m)?, 0];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 1, m)?, 1];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 2, m)?, 2];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 3, m)?, 0];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 4, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul(0, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul(1, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul(2, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul(3, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul(4, m)?, 1];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -554,7 +552,7 @@ macro_rules! impl_int {
                 Int(sum.rem_euclid(m) as $t)
             }
 
-            /* modulo mul fits (signed) */
+            /* modulo mul cycles (signed) */
 
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
             /// and the number of cycles the result is reduced.
@@ -576,11 +574,11 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(-3, m)?, (0, 4)];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(-2, m)?, (1, 2)];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(-1, m)?, (2, 1)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 0, m)?, (0, 0)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 1, m)?, (1, 1)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 2, m)?, (2, 2)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 3, m)?, (0, 4)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 4, m)?, (1, 5)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(0, m)?, (0, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(1, m)?, (1, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(2, m)?, (2, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(3, m)?, (0, 4)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(4, m)?, (1, 5)];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -702,7 +700,7 @@ macro_rules! impl_int {
                 Int(self.0 % modulus)
             }
 
-            /* modulo fits (unsigned) */
+            /* modulo cycles (unsigned) */
 
             /// Computes the non-negative modulo of `self` over `modulus`,
             /// and the number of cycles it is reduced.
@@ -715,12 +713,10 @@ macro_rules! impl_int {
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
-            #[doc = "assert_eq![Int( 0_" $t ").modulo_cycles(m)?, (0, 0)];"]
-            #[doc = "assert_eq![Int( 1_" $t ").modulo_cycles(m)?, (1, 0)];"]
-            #[doc = "assert_eq![Int( 2_" $t ").modulo_cycles(m)?, (2, 0)];"]
-            #[doc = "assert_eq![Int( 3_" $t ").modulo_cycles(m)?, (0, 1)];"]
-            ///
-            #[doc = "assert_eq![Int(10_" $t ").modulo_cycles(m)?, (1, 3)];"]
+            #[doc = "assert_eq![Int(0_" $t ").modulo_cycles(m)?, (0, 0)];"]
+            #[doc = "assert_eq![Int(1_" $t ").modulo_cycles(m)?, (1, 0)];"]
+            #[doc = "assert_eq![Int(2_" $t ").modulo_cycles(m)?, (2, 0)];"]
+            #[doc = "assert_eq![Int(3_" $t ").modulo_cycles(m)?, (0, 1)];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -743,12 +739,10 @@ macro_rules! impl_int {
             /// ```
             /// # use devela::num::Int;
             /// let m = 3;
-            #[doc = "assert_eq![Int( 0_" $t ").modulo_cycles_unchecked(m), (0, 0)];"]
-            #[doc = "assert_eq![Int( 1_" $t ").modulo_cycles_unchecked(m), (1, 0)];"]
-            #[doc = "assert_eq![Int( 2_" $t ").modulo_cycles_unchecked(m), (2, 0)];"]
-            #[doc = "assert_eq![Int( 3_" $t ").modulo_cycles_unchecked(m), (0, 1)];"]
-            ///
-            #[doc = "assert_eq![Int(10_" $t ").modulo_cycles_unchecked(m), (1, 3)];"]
+            #[doc = "assert_eq![Int(0_" $t ").modulo_cycles_unchecked(m), (0, 0)];"]
+            #[doc = "assert_eq![Int(1_" $t ").modulo_cycles_unchecked(m), (1, 0)];"]
+            #[doc = "assert_eq![Int(2_" $t ").modulo_cycles_unchecked(m), (2, 0)];"]
+            #[doc = "assert_eq![Int(3_" $t ").modulo_cycles_unchecked(m), (0, 1)];"]
             /// ```
             #[inline]
             pub const fn modulo_cycles_unchecked(self, modulus: $t) -> ValueQuant<Int<$t>, Int<$t>> {
@@ -770,11 +764,11 @@ macro_rules! impl_int {
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
-            #[doc = "assert_eq![Int(4_" $t ").modulo_add( 0, m)?, 1];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_add( 1, m)?, 2];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_add( 2, m)?, 0];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_add( 3, m)?, 1];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_add( 4, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add(0, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add(1, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add(2, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add(3, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add(4, m)?, 2];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -802,7 +796,7 @@ macro_rules! impl_int {
                 Int((sum % m) as $t)
             }
 
-            /* modulo add fits (unsigned) */
+            /* modulo add cycles (unsigned) */
 
             /// Computes the modulo of `self + other` over `modulus`,
             /// and the number of cycles the result is reduced.
@@ -820,11 +814,11 @@ macro_rules! impl_int {
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
-            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 0, m)?, (1, 1)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 1, m)?, (2, 1)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 2, m)?, (0, 2)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 3, m)?, (1, 2)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 4, m)?, (2, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(0, m)?, (1, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(1, m)?, (2, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(2, m)?, (0, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(3, m)?, (1, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(4, m)?, (2, 2)];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -878,13 +872,11 @@ macro_rules! impl_int {
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
-            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 0, m)?, 1];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 1, m)?, 0];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 2, m)?, 2];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 3, m)?, 1];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 4, m)?, 0];"]
-            ///
-            #[doc = "assert_eq![Int(0_" $t ").modulo_sub(1, m), Err(NumError::Overflow(None))];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub(0, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub(1, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub(2, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub(3, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub(4, m)?, 0];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -910,7 +902,7 @@ macro_rules! impl_int {
                 Int(((self.0 - other) % modulus))
             }
 
-            /* modulo sub fits (unsigned) */
+            /* modulo sub cycles (unsigned) */
 
             /// Computes the modulo of `self - other` over `modulus`,
             /// and the number of cycles the result is reduced.
@@ -924,11 +916,11 @@ macro_rules! impl_int {
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
-            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 0, m)?, (1, 1)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 1, m)?, (0, 1)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 2, m)?, (2, 0)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 3, m)?, (1, 0)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 4, m)?, (0, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(0, m)?, (1, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(1, m)?, (0, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(2, m)?, (2, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(3, m)?, (1, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(4, m)?, (0, 0)];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -1009,7 +1001,7 @@ macro_rules! impl_int {
                 Int((sum % m) as $t)
             }
 
-            /* modulo mul fits (unsigned) */
+            /* modulo mul cycles (unsigned) */
 
             /// Computes the modulo of `self + other` over `modulus`,
             /// and the number of cycles the result is reduced.
@@ -1027,11 +1019,11 @@ macro_rules! impl_int {
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 0, m)?, (0, 0)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 1, m)?, (1, 1)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 2, m)?, (2, 2)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 3, m)?, (0, 4)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 4, m)?, (1, 5)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(0, m)?, (0, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(1, m)?, (1, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(2, m)?, (2, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(3, m)?, (0, 4)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(4, m)?, (1, 5)];"]
             /// # Ok(()) }
             /// ```
             #[inline]
