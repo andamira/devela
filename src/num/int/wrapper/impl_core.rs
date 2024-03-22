@@ -391,14 +391,12 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
-            #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext(36).as_tuple();"]
+            /// # use devela::num::{Int, isize_up};
+            #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext(36).unwrap().as_tuple();"]
             /// assert_eq!(gcd.0, 4);
-            /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
+            #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
             #[inline]
-            // THE PROBLEM IS WITH non-upscalable
-            // - A) I could limit u128 to i128::MAX by returning result…
             pub const fn gcd_ext(self, b: $t) -> Result<GcdExt<Int<$t>, Int<$iup>>> {
                 if self.0 == 0 { return Ok(GcdExt::new(Int(b), Int(0), Int(1))); }
                 if b == 0 { return Ok(GcdExt::new(self, Int(1), Int(0))); }
@@ -463,10 +461,10 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
-            #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext_euc(36).as_tuple();"]
+            /// # use devela::num::{Int, isize_up};
+            #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext_euc(36).unwrap().as_tuple();"]
             /// assert_eq!(gcd.0, 4);
-            /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
+            #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
             #[inline]
             pub const fn gcd_ext_euc(self, b: $t) -> Result<GcdExt<Int<$t>, Int<$iup>>> {

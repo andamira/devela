@@ -29,6 +29,9 @@ pub enum NumError {
     /// An invalid value was received for the given type or operation.
     Invalid,
 
+    /// An inverse doesn't exist.
+    NoInverse,
+
     /// The provided values are not compatible in size.
     MismatchedSizes,
 
@@ -68,6 +71,7 @@ mod core_impls {
                 E::NotSupported => write!(f, "Not supported."),
                 E::Unspecified => write!(f, "Unspecified."),
                 E::Invalid => write!(f, "Invalid value."),
+                E::NoInverse => write!(f, "An inverse doesn't exist."),
                 E::MismatchedSizes => {
                     write!(f, "The provided values are not compatible in size.")
                 }
