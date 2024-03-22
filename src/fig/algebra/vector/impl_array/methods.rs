@@ -6,6 +6,8 @@
 #![allow(clippy::needless_range_loop)]
 
 use crate::fig::Vector;
+#[cfg(all(not(feature = "std"), feature = "num_float"))]
+use crate::num::ExtFloat;
 #[cfg(feature = "num_int")]
 use crate::{num::Int, result::unwrap};
 
@@ -264,6 +266,7 @@ macro_rules! impl_vector {
             /// # Formula
             /// $$ \large |\vec{V}| = \sqrt{V_0^2 + ... + V_n^2} $$
             #[inline]
+            #[cfg(any(feature = "std", feature = "num_float"))]
             pub fn magnitude(self) -> $f { self.dot(self).sqrt() }
 
             /// Calculates the squared magnitude of the vector.

@@ -945,7 +945,7 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and if the result would be a negative value.
-            #[must_use] #[inline]
+            #[inline]
             pub const fn modulo_sub_cycles_unchecked(self, other: $t, modulus: $t)
                 -> ValueQuant<Int<$t>, Int<$t>> {
                 let res = self.0 - other;

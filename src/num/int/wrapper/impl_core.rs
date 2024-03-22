@@ -128,7 +128,7 @@ macro_rules! impl_int {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "let [gcd, x, y] = Int(32_" $t ").gcd_ext(36).as_tuple();"]
+            #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext(36).as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
@@ -192,7 +192,7 @@ macro_rules! impl_int {
             /// # Examples
             /// ```
             /// # use devela::num::Int;
-            #[doc = "let [gcd, x, y] = Int(32_" $t ").gcd_ext_euc(36).as_tuple();"]
+            #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext_euc(36).as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```

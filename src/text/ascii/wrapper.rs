@@ -3,9 +3,9 @@
 //! Ascii functionality wrapper struct.
 //
 
-use crate::{code::iif, num::Compare, result::unwrap, text::StringU8};
-#[cfg(feature = "unsafe_str")]
-use core::str::from_utf8_unchecked;
+#[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
+use crate::result::unwrap;
+use crate::{code::iif, num::Compare, text::StringU8};
 
 /// Provides ASCII operations on `T`, most of them *const*.
 #[derive(Clone, Copy)]

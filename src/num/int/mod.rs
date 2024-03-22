@@ -6,10 +6,9 @@
 mod num_trait;
 mod wrapper;
 
-pub use {num_trait::*, wrapper::*};
-
-#[cfg(feature = "num_float")]
+#[cfg(all(not(feature = "std"), feature = "num_float"))]
 use crate::num::ExtFloat;
+pub use {num_trait::*, wrapper::*};
 
 /// The prime number theorem formula.
 ///
