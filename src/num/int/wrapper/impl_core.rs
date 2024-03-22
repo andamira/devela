@@ -19,16 +19,22 @@ use {
         code::{iif, paste},
         mem::cswap,
         num::{isize_up, usize_up, Cast, GcdExt, Int, NumError, NumResult as Result},
+        result::unwrap,
     },
     NumError::Overflow,
 };
 
 // $t:   the input/output type
 // $up:  the upcasted type to do the operations on (for lcm)
+// $iup: the signed upcasted type for some methods (gcd_ext)
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
-    (signed $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_int![@signed $t:$up:$d]; )+ };
-    (unsigned $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_int![@unsigned $t:$up:$d]; )+ };
+    (signed $( $t:ty : $up:ty : $d:literal ),+) => {
+        $( impl_int![@signed $t:$up:$d]; )+
+    };
+    (unsigned $( $t:ty : $up:ty | $iup:ty : $d:literal ),+) => {
+        $( impl_int![@unsigned $t:$up|$iup:$d]; )+
+    };
 
     // implements signed ops
     (@signed $t:ty : $up:ty : $d:literal) => { paste! {
@@ -48,6 +54,7 @@ macro_rules! impl_int {
             pub const fn abs(self) -> Int<$t> { Int(self.0.abs()) }
 
             /// Returns `true` if `self` is an even number.
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -60,6 +67,7 @@ macro_rules! impl_int {
             pub const fn is_even(self) -> bool { self.0 & 1 == 0 }
 
             /// Returns `true` if `self` is an odd number.
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -100,7 +108,7 @@ macro_rules! impl_int {
                 // Break when a == GCD of a / 2^k:
                 while b != 0 {
                     b >>= b.trailing_zeros();
-                    // ensure b >= a before substraction:
+                    // ensure b >= a before subtraction:
                     iif![a > b; cswap![a, b]; b -= a];
                 }
                 Int(a << k)
@@ -116,8 +124,6 @@ macro_rules! impl_int {
             /// efficient to compute than Euclid's. It uses only simple arithmetic
             /// operations and works by dividing the inputs by 2 until they are odd,
             /// and then subtracting the smaller number from the larger one.
-            ///
-            /// There's no unsigned version of this function, since the coeficients can be negative.
             ///
             /// The Bézout's coefficients are not unique, and different algorithms
             /// can yield different coefficients that all satisfy Bézout's identity.
@@ -184,8 +190,6 @@ macro_rules! impl_int {
             /// series of euclidean divisions and works by subtracting multiples
             /// of the smaller number from the larger one.
             ///
-            /// There's no unsigned version of this function, since the coeficients can be negative.
-            ///
             /// The Bézout's coefficients are not unique, and different algorithms
             /// can yield different coefficients that all satisfy Bézout's identity.
             ///
@@ -203,15 +207,17 @@ macro_rules! impl_int {
                     GcdExt::new(Int(b), Int(0), Int(1))
                 } else {
                     let (g, x, y) = Int(b % a).gcd_ext_euc(a).as_tuple_const();
-                    GcdExt::new(g, Int(y.0 - (b / a) * x.0), x) // IMPROVE impl ops
+                    GcdExt::new(g, Int(y.0 - (b / a) * x.0), x)
                 }
             }
 
             /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            ///
             /// # Errors
             /// Can [`Overflow`].
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -231,11 +237,14 @@ macro_rules! impl_int {
             #[doc = "It upcasts internally to [`" $up "`] for the checked operations."]
             ///
             /// If the value lies outside of `[min..=max]` it will result in extrapolation.
+            ///
             /// # Errors
             /// Can [`Overflow`] for extrapolated values that can't fit the type,
             /// and for overflowing arithmetic operations in the following formula:
+            ///
             /// # Formula
             /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -264,10 +273,13 @@ macro_rules! impl_int {
             ///
             /// If the value lies outside of `[min..=max]` it will result in extrapolation, and
             /// if the value doesn't fit in the type it will wrap around its boundaries.
+            ///
             /// # Panics
             /// Could panic for large values of `i128` or `u128`.
+            ///
             /// # Formula
             /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -284,7 +296,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $up:ty : $d:literal) => { paste! {
+    (@unsigned $t:ty : $up:ty | $iup:ty : $d:literal) => { paste! {
         #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $d ")"]
         #[doc = "- [is_even](#method.is_even" $d ")"]
@@ -299,6 +311,7 @@ macro_rules! impl_int {
             pub const fn abs(self) -> Int<$t> { self }
 
             /// Returns `true` if `self` is an even number.
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -310,6 +323,7 @@ macro_rules! impl_int {
             pub const fn is_even(self) -> bool { self.0 & 1 == 0 }
 
             /// Returns `true` if `self` is an odd number.
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -346,7 +360,7 @@ macro_rules! impl_int {
                 // Break when a == GCD of a / 2^k:
                 while b != 0 {
                     b >>= b.trailing_zeros();
-                    // ensure b >= a before substraction:
+                    // ensure b >= a before subtraction:
                     iif![a > b; cswap![a, b]; b -= a];
                 }
                 Int(a << k)
@@ -355,11 +369,125 @@ macro_rules! impl_int {
                 // while a != b { iif![a > b; a -= b; b -= a] }; a
             }
 
+            /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
+            /// and the Bézout coeficients.
+            ///
+            #[doc = "It upcasts to [`" $iup "`] for the inner operations,"]
+            /// and for the type of the returned coefficients.
+            ///
+            /// This version uses the extended Stein's algorithm which is much more
+            /// efficient to compute than Euclid's. It uses only simple arithmetic
+            /// operations and works by dividing the inputs by 2 until they are odd,
+            /// and then subtracting the smaller number from the larger one.
+            ///
+            /// The Bézout's coefficients are not unique, and different algorithms
+            /// can yield different coefficients that all satisfy Bézout's identity.
+            ///
+            /// Bézout's identity states that for any two integers a and b,
+            /// there exist integers x and y such that $ax + by = gcd(a, b)$.
+            ///
+            /// # Errors
+            /// Can return [`Overflow`] for `u128`.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext(36).as_tuple();"]
+            /// assert_eq!(gcd.0, 4);
+            /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
+            /// ```
+            #[inline]
+            // THE PROBLEM IS WITH non-upscalable
+            // - A) I could limit u128 to i128::MAX by returning result…
+            pub const fn gcd_ext(self, b: $t) -> Result<GcdExt<Int<$t>, Int<$iup>>> {
+                if self.0 == 0 { return Ok(GcdExt::new(Int(b), Int(0), Int(1))); }
+                if b == 0 { return Ok(GcdExt::new(self, Int(1), Int(0))); }
+
+                let mut a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
+                let mut b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
+
+                let mut k = 0;
+                while ((a | b) & 1) == 0 {
+                    a >>= 1;
+                    b >>= 1;
+                    k += 1;
+                }
+                let (a0, b0, mut sa, mut sb, mut ta, mut tb) = (a, b, 1, 0, 0, 1);
+
+                while (a & 1) == 0 {
+                    if (sa & 1) != 0 || (sb & 1) != 0 {
+                        sa -= b0;
+                        sb += a0;
+                    }
+                    a >>= 1;
+                    sa >>= 1;
+                    sb >>= 1;
+                }
+                while b != 0 {
+                    while (b & 1) == 0 {
+                        if (ta & 1) != 0 || (tb & 1) != 0 {
+                            ta -= b0;
+                            tb += a0;
+                        }
+                        b >>= 1;
+                        ta >>= 1;
+                        tb >>= 1;
+                    }
+                    if a > b {
+                        cswap![a, b];
+                        cswap![sa, ta];
+                        cswap![sb, tb];
+                    }
+                    b -= a;
+                    ta -= sa;
+                    tb -= sb;
+                }
+                Ok(GcdExt::new(Int((a << k) as $t), Int(sa), Int(sb)))
+            }
+
+            /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
+            /// and the Bézout coeficients.
+            ///
+            #[doc = "It upcasts to [`" $iup "`] for the inner operations,"]
+            /// and for the type of the returned coefficients.
+            ///
+            /// This version uses the extended Euclids's algorithm, which uses a
+            /// series of euclidean divisions and works by subtracting multiples
+            /// of the smaller number from the larger one.
+            ///
+            /// The Bézout's coefficients are not unique, and different algorithms
+            /// can yield different coefficients that all satisfy Bézout's identity.
+            ///
+            /// # Errors
+            /// Can return [`Overflow`] for `u128`.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext_euc(36).as_tuple();"]
+            /// assert_eq!(gcd.0, 4);
+            /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
+            /// ```
+            #[inline]
+            pub const fn gcd_ext_euc(self, b: $t) -> Result<GcdExt<Int<$t>, Int<$iup>>> {
+                let a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
+                let b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
+
+                if a == 0 {
+                    Ok(GcdExt::new(Int(b as $t), Int(0), Int(1)))
+                } else {
+                    let (g, x, y) = Int(b % a).gcd_ext_euc(a).as_tuple_const();
+                    Ok(GcdExt::new(Int(g.0 as $t), Int(y.0 - (b / a) * x.0), x))
+                }
+            }
+
             /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
             ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            ///
             /// # Errors
             /// Can [`Overflow`].
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -377,11 +505,14 @@ macro_rules! impl_int {
             #[doc = "It upcasts internally to [`" $up "`] for the checked operations."]
             ///
             /// If the value lies outside of `[min..=max]` it will result in extrapolation.
+            ///
             /// # Errors
             /// Can [`Overflow`] for extrapolated values that can't fit the type,
             /// and for overflowing arithmetic operations in the following formula:
+            ///
             /// # Formula
             /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -410,10 +541,13 @@ macro_rules! impl_int {
             ///
             /// If the value lies outside of `[min..=max]` it will result in extrapolation, and
             /// if the value doesn't fit in the type it will wrap around its boundaries.
+            ///
             /// # Panics
             /// Could panic for large values of `i128` or `u128`.
+            ///
             /// # Formula
             /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -443,7 +577,7 @@ macro_rules! impl_int {
         #[doc = "- [is_even](#method.is_even" $d ")"]
         #[doc = "- [is_odd](#method.is_odd" $d ")"]
         #[doc = "- [gcd](#method.gcd" $d ")"]
-        // IMPROVE: not in unsigned, and for now not in niche signed either
+        // IMPROVE: only unsigned version returns Result
         // #[doc = "- [gcd_ext](#method.gcd_ext" $d ")"]
         // #[doc = "- [gcd_ext_euc](#method.gcd_ext_euc" $d ")"]
         #[doc = "- [lcm](#method.lcm" $d ")"]
@@ -466,7 +600,8 @@ macro_rules! impl_int {
 impl_int![signed
 i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128:"-4", isize:isize_up:"-5"];
 impl_int![unsigned
-u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10", usize:usize_up:"-11"];
+u8:u16|i16:"-6", u16:u32|i32:"-7", u32:u64|i64:"-8", u64:u128|i128:"-9", u128:u128|i128:"-10",
+usize:usize_up|isize_up:"-11"];
 
 #[cfg(feature = "num_niche_impls")]
 use crate::num::{niche::*, num_niche_impls};
