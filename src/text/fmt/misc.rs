@@ -27,7 +27,6 @@ use core::{
 /// ```
 // Source code based on Rust 1.76 core implementation of `dbg!`
 #[macro_export]
-#[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 macro_rules! cdbg {
     () => {
@@ -49,7 +48,6 @@ macro_rules! cdbg {
         ($($crate::text::cdbg!($val)),+,)
     };
 }
-#[cfg(feature = "std")]
 pub use cdbg;
 
 /// Returns a formatted [`str`] slice backed by a buffer, `no_std` compatible.
