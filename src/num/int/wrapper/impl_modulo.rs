@@ -13,13 +13,14 @@
 //   - modulo_sub_cycles (uc)
 //   - modulo_mul (uc)
 //   - modulo_mul_cycles (uc)
+//   - modulo_mul_inv (uc)
 
 use crate::{
     code::{cif, iif, paste},
     num::{isize_up, usize_up, Int, NumError, NumResult as Result},
-    result::{ValueQuant, unwrap},
+    result::{unwrap, ValueQuant},
 };
-use NumError::{NonZeroRequired, Overflow};
+use NumError::{NoInverse, NonZeroRequired, Overflow};
 
 // helper function to be called from the cold path branch when modulus == 0.
 #[cold] #[inline(never)] #[rustfmt::skip]
@@ -72,13 +73,16 @@ macro_rules! upcastop {
 }
 
 // $t:     the input/output type
-// $up:    the upcasted type to do the operations on (the ones that can overflow) (not used)
-// $is_up: information about the upcasted type [Y|N] in size
+// $up:    the upcasted type to do the operations on (the ones that can overflow)
+// $iup:   the signed upcasted type for some methods.
+// $is_up: [Y|N]. `Y` if bitsize of $up|$iup > $t; `N` if bitsize $up|$iup == $t.
 macro_rules! impl_int {
     (signed $( ($t:ty, $up:ty:$is_up:ident, $d:literal) ),+) => {
-        $( impl_int![@signed ($t, $up:$is_up, $d)]; )+ };
-    (unsigned $( ($t:ty, $up:ty:$is_up:ident, $d:literal) ),+) => {
-        $( impl_int![@unsigned ($t, $up:$is_up, $d)]; )+ };
+        $( impl_int![@signed ($t, $up:$is_up, $d)]; )+
+    };
+    (unsigned $( ($t:ty, $up:ty | $iup:ty : $is_up:ident, $d:literal) ),+) => {
+        $( impl_int![@unsigned ($t, $up|$iup:$is_up, $d)]; )+
+    };
 
     // implements signed ops
     (@signed ($t:ty, $up:ty:$is_up:ident, $d:literal) ) => { paste! {
@@ -105,6 +109,8 @@ macro_rules! impl_int {
             ") *([uc](#method.modulo_mul_unchecked" $d "))*"]
         #[doc = "- [modulo_mul_cycles](#method.modulo_mul_cycles" $d
             ") *([uc](#method.modulo_mul_cycles_unchecked" $d "))*"]
+        #[doc = "- [modulo_mul_inv](#method.modulo_mul_inv" $d
+            ") *([uc](#method.modulo_mul_inv_unchecked" $d "))*"]
         impl Int<$t> {
             /* modulo (signed) */
 
@@ -112,7 +118,8 @@ macro_rules! impl_int {
             ///
             /// The result is non-negative and less than the absolute value of `modulus`,
             /// i.e., in the range $ [0, |\text{modulus}|) $.
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            ///
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -127,12 +134,11 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(-3_" $t ").modulo(m)?, 0];"]
             #[doc = "assert_eq![Int(-2_" $t ").modulo(m)?, 1];"]
             #[doc = "assert_eq![Int(-1_" $t ").modulo(m)?, 2];"]
-            #[doc = "assert_eq![Int(0_" $t ").modulo(m)?, 0];"]
-            #[doc = "assert_eq![Int(1_" $t ").modulo(m)?, 1];"]
-            #[doc = "assert_eq![Int(2_" $t ").modulo(m)?, 2];"]
-            #[doc = "assert_eq![Int(3_" $t ").modulo(m)?, 0];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo(m)?, 1];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo(-m)?, 1];"]
+            #[doc = "assert_eq![Int( 0_" $t ").modulo(m)?, 0];"]
+            #[doc = "assert_eq![Int( 1_" $t ").modulo(m)?, 1];"]
+            #[doc = "assert_eq![Int( 2_" $t ").modulo(m)?, 2];"]
+            #[doc = "assert_eq![Int( 3_" $t ").modulo(m)?, 0];"]
+            #[doc = "assert_eq![Int( 4_" $t ").modulo(m)?, 1];"]
             ///
             #[doc = "assert_eq![Int(" $t "::MAX).modulo(" $t "::MIN)?, " $t "::MAX];"]
             #[doc = "assert_eq![Int(" $t "::MIN).modulo(" $t "::MAX)?, " $t "::MAX - 1];"]
@@ -161,7 +167,8 @@ macro_rules! impl_int {
             ///
             /// The result is non-negative and less than the absolute value of `modulus`,
             /// i.e., in the range $ [0, |\text{modulus}|) $.
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operation."]
+            ///
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it could also panic on overflow.
@@ -174,12 +181,12 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(-3_" $t ").modulo_unchecked(m), 0];"]
             #[doc = "assert_eq![Int(-2_" $t ").modulo_unchecked(m), 1];"]
             #[doc = "assert_eq![Int(-1_" $t ").modulo_unchecked(m), 2];"]
-            #[doc = "assert_eq![Int(0_" $t ").modulo_unchecked(m), 0];"]
-            #[doc = "assert_eq![Int(1_" $t ").modulo_unchecked(m), 1];"]
-            #[doc = "assert_eq![Int(2_" $t ").modulo_unchecked(m), 2];"]
-            #[doc = "assert_eq![Int(3_" $t ").modulo_unchecked(m), 0];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_unchecked(m), 1];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_unchecked(-m), 1];"]
+            #[doc = "assert_eq![Int( 0_" $t ").modulo_unchecked(m), 0];"]
+            #[doc = "assert_eq![Int( 1_" $t ").modulo_unchecked(m), 1];"]
+            #[doc = "assert_eq![Int( 2_" $t ").modulo_unchecked(m), 2];"]
+            #[doc = "assert_eq![Int( 3_" $t ").modulo_unchecked(m), 0];"]
+            #[doc = "assert_eq![Int( 4_" $t ").modulo_unchecked(m), 1];"]
+            #[doc = "assert_eq![Int( 4_" $t ").modulo_unchecked(-m), 1];"]
             ///
             #[doc = "assert_eq![Int(" $t "::MAX).modulo_unchecked(" $t "::MAX - 1), 1];"]
             #[doc = "assert_eq![Int(" $t "::MAX).modulo_unchecked(" $t "::MAX), 0];"]
@@ -208,7 +215,7 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self` over |`modulus`|,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -248,7 +255,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it can also panic
@@ -265,7 +272,7 @@ macro_rules! impl_int {
 
             /// Computes the non-negative modulo of `self + other` over |`modulus`|.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -305,7 +312,7 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it could also panic on overflow.
@@ -321,7 +328,7 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -369,7 +376,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
@@ -409,10 +416,10 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(-3_" $t ").modulo_add_inv(m)?, 0];"]
             #[doc = "assert_eq![Int(-2_" $t ").modulo_add_inv(m)?, 2];"]
             #[doc = "assert_eq![Int(-1_" $t ").modulo_add_inv(m)?, 1];"]
-            #[doc = "assert_eq![Int(0_" $t ").modulo_add_inv(m)?, 0];"]
-            #[doc = "assert_eq![Int(1_" $t ").modulo_add_inv(m)?, 2];"]
-            #[doc = "assert_eq![Int(2_" $t ").modulo_add_inv(m)?, 1];"]
-            #[doc = "assert_eq![Int(3_" $t ").modulo_add_inv(m)?, 0];"]
+            #[doc = "assert_eq![Int( 0_" $t ").modulo_add_inv(m)?, 0];"]
+            #[doc = "assert_eq![Int( 1_" $t ").modulo_add_inv(m)?, 2];"]
+            #[doc = "assert_eq![Int( 2_" $t ").modulo_add_inv(m)?, 1];"]
+            #[doc = "assert_eq![Int( 3_" $t ").modulo_add_inv(m)?, 0];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -446,7 +453,7 @@ macro_rules! impl_int {
 
             /// Computes the modulo of `self - other` over |`modulus`|.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`.
@@ -481,7 +488,7 @@ macro_rules! impl_int {
             /// Computes the modulo of `self - other` over |`modulus`|,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`.
@@ -497,7 +504,7 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self - other` over |`modulus`|,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -540,7 +547,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
@@ -562,7 +569,7 @@ macro_rules! impl_int {
 
             /// Computes the non-negative modulo of `self + other` over |`modulus`|.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -577,11 +584,11 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(-3, m)?, 0];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(-2, m)?, 1];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(-1, m)?, 2];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul(0, m)?, 0];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul(1, m)?, 1];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul(2, m)?, 2];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul(3, m)?, 0];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul(4, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 0, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 1, m)?, 1];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 2, m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 3, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 4, m)?, 1];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -602,7 +609,7 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it could also panic on overflow.
@@ -618,7 +625,7 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -635,11 +642,11 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(-3, m)?, (0, 4)];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(-2, m)?, (1, 2)];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(-1, m)?, (2, 1)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(0, m)?, (0, 0)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(1, m)?, (1, 1)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(2, m)?, (2, 2)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(3, m)?, (0, 4)];"]
-            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(4, m)?, (1, 5)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 0, m)?, (0, 0)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 1, m)?, (1, 1)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 2, m)?, (2, 2)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 3, m)?, (0, 4)];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 4, m)?, (1, 5)];"]
             /// # Ok(()) }
             /// ```
             #[inline]
@@ -666,7 +673,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
@@ -684,11 +691,75 @@ macro_rules! impl_int {
                 ValueQuant::new(Int(modulo), Int(times))
             }
 
+            /* modulo mul inv (signed) */
+
+            /// Calculates the modular multiplicative inverse.
+            ///
+            /// The modular multiplicative inverse of *self* modulo *modulus*
+            /// is an integer *b* such that $ ab \equiv 1 (\mod m) $.
+            ///
+            /// The modular multiplicative inverse exists only if `self` and
+            /// `modulus` are coprime, meaning their greatest common divisor is 1.
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `modulus == 0`,
+            /// or [`NoInverse`] if there's no inverse.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumResult, NumError};
+            /// # fn main() -> NumResult<()> {
+            /// let m = 5;
+            #[doc = "assert_eq![Int(-4_" $t ").modulo_mul_inv(m)?, 4];"]
+            #[doc = "assert_eq![Int(-3_" $t ").modulo_mul_inv(m)?, 2];"]
+            #[doc = "assert_eq![Int(-2_" $t ").modulo_mul_inv(m)?, 3];"]
+            #[doc = "assert_eq![Int(-1_" $t ").modulo_mul_inv(m)?, 1];"]
+            #[doc = "assert_eq![Int( 0_" $t ").modulo_mul_inv(m), Err(NumError::NoInverse)];"]
+            #[doc = "assert_eq![Int( 1_" $t ").modulo_mul_inv(m)?, 1];"]
+            #[doc = "assert_eq![Int( 2_" $t ").modulo_mul_inv(m)?, 3];"]
+            #[doc = "assert_eq![Int( 3_" $t ").modulo_mul_inv(m)?, 2];"]
+            #[doc = "assert_eq![Int( 4_" $t ").modulo_mul_inv(m)?, 4];"]
+            /// # Ok(()) }
+            /// ```
+            #[inline]
+            pub const fn modulo_mul_inv(self, modulus: $t) -> Result<Int<$t>> {
+                if modulus == 0 {
+                    cold_err_zero()
+                } else {
+                    let (gcd, x, _) = self.gcd_ext(modulus).as_tuple_const();
+                    if gcd.0 != 1 {
+                        Err(NoInverse)
+                    } else {
+                        Ok(Int(x.0.rem_euclid(modulus)))
+                    }
+                }
+            }
+
+            /// Calculates the modular multiplicative inverse,
+            /// unchecked version.
+            ///
+            /// The modular multiplicative inverse of *self* modulo *modulus*
+            /// is an integer *b* such that $ ab \equiv 1 (\mod m) $.
+            ///
+            /// The modular multiplicative inverse exists only if `self` and
+            /// `modulus` are coprime, meaning their greatest common divisor is 1.
+            ///
+            /// # Panics
+            /// Panics if `modulus == 0`, and if there's no inverse.
+            #[inline]
+            pub const fn modulo_mul_inv_unchecked(self, modulus: $t) -> Int<$t> {
+                let (gcd, x, _) = self.gcd_ext(modulus).as_tuple_const();
+                if gcd.0 != 1 {
+                    panic!["No inverse"];
+                } else {
+                    Int(x.0.rem_euclid(modulus))
+                }
+            }
         }
     }};
 
     // implements unsigned ops
-    (@unsigned ($t:ty, $up:ty:$is_up:ident, $d:literal) ) => { paste! {
+    (@unsigned ($t:ty, $up:ty | $iup:ty : $is_up:ident, $d:literal) ) => { paste! {
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d
             ") *([uc](#method.modulo_unchecked" $d ")*)"]
@@ -711,6 +782,8 @@ macro_rules! impl_int {
             ") *([uc](#method.modulo_mul_unchecked" $d "))*"]
         #[doc = "- [modulo_mul_cycles](#method.modulo_mul_cycles" $d
             ") *([uc](#method.modulo_mul_cycles_unchecked" $d "))*"]
+        #[doc = "- [modulo_mul_inv](#method.modulo_mul_inv" $d
+            ") *([uc](#method.modulo_mul_inv_unchecked" $d "))*"]
         impl Int<$t> {
             /* modulo (unsigned) */
 
@@ -820,7 +893,7 @@ macro_rules! impl_int {
 
             /// Computes the modulo of `self + other` over `modulus`.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `u128`
@@ -852,7 +925,7 @@ macro_rules! impl_int {
             /// Computes the modulo of `self + other` over `modulus`,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it could also panic on overflow.
@@ -868,7 +941,7 @@ macro_rules! impl_int {
             /// Computes the modulo of `self + other` over `modulus`,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `u128`
@@ -908,7 +981,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it can also panic on overflow,
@@ -1076,7 +1149,7 @@ macro_rules! impl_int {
 
             /// Computes the modulo of `self + other` over `modulus`.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `u128`
@@ -1108,7 +1181,7 @@ macro_rules! impl_int {
             /// Computes the modulo of `self + other` over `modulus`,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it could also panic on overflow.
@@ -1124,7 +1197,7 @@ macro_rules! impl_int {
             /// Computes the modulo of `self + other` over `modulus`,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `u128`
@@ -1164,7 +1237,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "It upcasts internally to [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it can also panic on overflow,
@@ -1181,6 +1254,75 @@ macro_rules! impl_int {
                 let times = Int((sum / m) as $t);
                 ValueQuant::new(modulo, times)
             }
+
+            /* modulo mul inv (unsigned) */
+
+            /// Calculates the modular multiplicative inverse.
+            ///
+            #[doc = "It upcasts internally to [`" $iup "`]."]
+            ///
+            /// The modular multiplicative inverse of *a* modulo *m*
+            /// is an integer *b* such that $ ab \equiv 1 (\mod m) $.
+            ///
+            /// The modular multiplicative inverse exists only if `self` and
+            /// `modulus` are coprime, meaning their greatest common divisor is 1.
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `modulus == 0`,
+            /// [`NoInverse`] if there's no inverse,
+            /// and for `u128` it could return [`Overflow`] when casting
+            /// in the [`gcd_ext`][Self::gcd_ext] calculation.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumResult, NumError};
+            /// # fn main() -> NumResult<()> {
+            /// let m = 5;
+            #[doc = "assert_eq![Int(0_" $t ").modulo_mul_inv(m), Err(NumError::NoInverse)];"]
+            #[doc = "assert_eq![Int(1_" $t ").modulo_mul_inv(m)?, 1];"]
+            #[doc = "assert_eq![Int(2_" $t ").modulo_mul_inv(m)?, 3];"]
+            #[doc = "assert_eq![Int(3_" $t ").modulo_mul_inv(m)?, 2];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_mul_inv(m)?, 4];"]
+            /// # Ok(()) }
+            /// ```
+            #[inline]
+            pub const fn modulo_mul_inv(self, modulus: $t) -> Result<Int<$t>> {
+                if modulus == 0 {
+                    cold_err_zero()
+                } else {
+                    let (gcd, x, _) = unwrap![ok? self.gcd_ext(modulus)].as_tuple_const();
+                    if gcd.0 != 1 {
+                        Err(NoInverse)
+                    } else {
+                        Ok(Int((x.0.rem_euclid(modulus as $iup) as $t)))
+                    }
+                }
+            }
+
+            /// Calculates the modular multiplicative inverse,
+            /// unchecked version.
+            ///
+            #[doc = "It upcasts internally to [`" $iup "`]."]
+            ///
+            /// The modular multiplicative inverse of *a* modulo *m*
+            /// is an integer *b* such that $ ab \equiv 1 (\mod m) $.
+            ///
+            /// The modular multiplicative inverse exists only if `self` and
+            /// `modulus` are coprime, meaning their greatest common divisor is 1.
+            ///
+            /// # Panics
+            /// Panics if `modulus == 0`, if there's no inverse,
+            /// and for `u128` it could overflow when casting
+            /// in the [`gcd_ext`][Self::gcd_ext] calculation.
+            #[inline]
+            pub const fn modulo_mul_inv_unchecked(self, modulus: $t) -> Int<$t> {
+                let (gcd, x, _) = unwrap![ok self.gcd_ext(modulus)].as_tuple_const();
+                if gcd.0 != 1 {
+                    panic!["no inverse"]; // CHECK without checking
+                } else {
+                    Int((x.0.rem_euclid(modulus as $iup) as $t))
+                }
+            }
         }
     }};
 }
@@ -1189,6 +1331,6 @@ impl_int![signed
     (i64, i128:Y, "-3"), (i128, i128:N, "-4"), (isize, isize_up:Y, "-5")
 ];
 impl_int![unsigned
-    (u8, u16:Y, "-6"), (u16, u32:Y, "-7"), (u32, u64:Y, "-8"),
-    (u64, u128:Y, "-9"), (u128, u128:N, "-10"), (usize, usize_up:Y, "-11")
+    (u8, u16|i16:Y, "-6"), (u16, u32|i32:Y, "-7"), (u32, u64|i64:Y, "-8"),
+    (u64, u128|i128:Y, "-9"), (u128, u128|i128:N, "-10"), (usize, usize_up|isize_up:Y, "-11")
 ];
