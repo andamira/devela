@@ -8,15 +8,16 @@
 //   - modulo_cycles (uc)
 //   - modulo_add (uc)
 //   - modulo_add_cycles (uc)
+//   - modulo_add_inv (uc)
 //   - modulo_sub (uc)
 //   - modulo_sub_cycles (uc)
 //   - modulo_mul (uc)
 //   - modulo_mul_cycles (uc)
 
 use crate::{
-    code::{cif, paste},
+    code::{cif, iif, paste},
     num::{isize_up, usize_up, Int, NumError, NumResult as Result},
-    result::ValueQuant,
+    result::{ValueQuant, unwrap},
 };
 use NumError::{NonZeroRequired, Overflow};
 
@@ -87,18 +88,23 @@ macro_rules! impl_int {
             ") *([uc](#method.modulo_unchecked" $d ")*)"]
         #[doc = "- [modulo_cycles](#method.modulo_cycles" $d
             ") *([uc](#method.modulo_cycles_unchecked" $d "))*"]
+        //
         #[doc = "- [modulo_add](#method.modulo_add" $d
             ") *([uc](#method.modulo_add_unchecked" $d "))*"]
         #[doc = "- [modulo_add_cycles](#method.modulo_add_cycles" $d
             ") *([uc](#method.modulo_add_cycles_unchecked" $d "))*"]
+        #[doc = "- [modulo_add_inv](#method.modulo_add_inv" $d
+            ") *([uc](#method.modulo_add_inv_unchecked" $d "))*"]
+        //
         #[doc = "- [modulo_sub](#method.modulo_sub" $d
             ") *([uc](#method.modulo_sub_unchecked" $d "))*"]
         #[doc = "- [modulo_sub_cycles](#method.modulo_add_cycles" $d
             ") *([uc](#method.modulo_sub_cycles_unchecked" $d "))*"]
+        //
         #[doc = "- [modulo_mul](#method.modulo_mul" $d
             ") *([uc](#method.modulo_mul_unchecked" $d "))*"]
         #[doc = "- [modulo_mul_cycles](#method.modulo_mul_cycles" $d
-            ") *([uc](#method.modulo_add_cycles_unchecked" $d "))*"]
+            ") *([uc](#method.modulo_mul_cycles_unchecked" $d "))*"]
         impl Int<$t> {
             /* modulo (signed) */
 
@@ -381,6 +387,61 @@ macro_rules! impl_int {
                 ValueQuant::new(Int(modulo), Int(times))
             }
 
+            /* modulo add inverse (signed) */
+
+            /// Calculates the modular additive inverse.
+            ///
+            /// The modular additive inverse of *self* modulo *modulus*
+            /// is an integer *b* such that $ a+b \equiv 0 (\mod m) $.
+            ///
+            /// The modular multiplicative inverse always exists and is simply
+            /// `modulus - self` if `self != 0`, or 0 otherwise.
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `modulus == 0`.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumResult, NumError};
+            /// # fn main() -> NumResult<()> {
+            /// let m = 3;
+            #[doc = "assert_eq![Int(-4_" $t ").modulo_add_inv(m)?, 1];"]
+            #[doc = "assert_eq![Int(-3_" $t ").modulo_add_inv(m)?, 0];"]
+            #[doc = "assert_eq![Int(-2_" $t ").modulo_add_inv(m)?, 2];"]
+            #[doc = "assert_eq![Int(-1_" $t ").modulo_add_inv(m)?, 1];"]
+            #[doc = "assert_eq![Int(0_" $t ").modulo_add_inv(m)?, 0];"]
+            #[doc = "assert_eq![Int(1_" $t ").modulo_add_inv(m)?, 2];"]
+            #[doc = "assert_eq![Int(2_" $t ").modulo_add_inv(m)?, 1];"]
+            #[doc = "assert_eq![Int(3_" $t ").modulo_add_inv(m)?, 0];"]
+            /// # Ok(()) }
+            /// ```
+            #[inline]
+            pub const fn modulo_add_inv(self, modulus: $t) -> Result<Int<$t>> {
+                if modulus == 0 {
+                    cold_err_zero()
+                } else {
+                    let rem = (self.0.rem_euclid(modulus));
+                    iif![rem == 0; Ok(Int(0)); Ok(Int(modulus - rem))]
+                }
+            }
+
+            /// Calculates the modular additive inverse,
+            /// unchecked version.
+            ///
+            /// The modular additive inverse of *self* modulo *modulus*
+            /// is an integer *b* such that $ a+b \equiv 0 (\mod m) $.
+            ///
+            /// The modular multiplicative inverse always exists and is simply
+            /// `modulus - self` if `self != 0`, or 0 otherwise.
+            ///
+            /// # Panics
+            /// Panics if `modulus == 0`.
+            #[inline]
+            pub const fn modulo_add_inv_unchecked(self, modulus: $t) -> Int<$t> {
+                let rem = (self.0.rem_euclid(modulus));
+                iif![rem == 0; Int(0); Int(modulus - rem)]
+            }
+
             /* modulo sub (signed) */
 
             /// Computes the modulo of `self - other` over |`modulus`|.
@@ -633,18 +694,23 @@ macro_rules! impl_int {
             ") *([uc](#method.modulo_unchecked" $d ")*)"]
         #[doc = "- [modulo_cycles](#method.modulo_cycles" $d
             ") *([uc](#method.modulo_cycles_unchecked" $d "))*"]
+        //
         #[doc = "- [modulo_add](#method.modulo_add" $d
             ") *([uc](#method.modulo_add_unchecked" $d "))*"]
         #[doc = "- [modulo_add_cycles](#method.modulo_add_cycles" $d
             ") *([uc](#method.modulo_add_cycles_unchecked" $d "))*"]
+        #[doc = "- [modulo_add_inv](#method.modulo_add_inv" $d
+            ") *([uc](#method.modulo_add_inv_unchecked" $d "))*"]
+        //
         #[doc = "- [modulo_sub](#method.modulo_sub" $d
             ") *([uc](#method.modulo_sub_unchecked" $d "))*"]
         #[doc = "- [modulo_sub_cycles](#method.modulo_sub_cycles" $d
-            ") *([uc](#method.modulo_add_cycles_unchecked" $d "))*"]
+            ") *([uc](#method.modulo_sub_cycles_unchecked" $d "))*"]
+        //
         #[doc = "- [modulo_mul](#method.modulo_mul" $d
             ") *([uc](#method.modulo_mul_unchecked" $d "))*"]
         #[doc = "- [modulo_mul_cycles](#method.modulo_mul_cycles" $d
-            ") *([uc](#method.modulo_add_cycles_unchecked" $d "))*"]
+            ") *([uc](#method.modulo_mul_cycles_unchecked" $d "))*"]
         impl Int<$t> {
             /* modulo (unsigned) */
 
@@ -745,7 +811,8 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(3_" $t ").modulo_cycles_unchecked(m), (0, 1)];"]
             /// ```
             #[inline]
-            pub const fn modulo_cycles_unchecked(self, modulus: $t) -> ValueQuant<Int<$t>, Int<$t>> {
+            pub const fn modulo_cycles_unchecked(self, modulus: $t)
+                -> ValueQuant<Int<$t>, Int<$t>> {
                 ValueQuant::new(Int(self.0 % modulus), Int(self.0 / modulus))
             }
 
@@ -857,6 +924,57 @@ macro_rules! impl_int {
                 let modulo = Int((sum % m) as $t);
                 let times = Int((sum / m) as $t);
                 ValueQuant::new(modulo, times)
+            }
+
+            /* modulo add inverse (unsigned) */
+
+            /// Calculates the modular additive inverse.
+            ///
+            /// The modular additive inverse of *self* modulo *modulus*
+            /// is an integer *b* such that $ a+b \equiv 0 (\mod m) $.
+            ///
+            /// The modular multiplicative inverse always exists and is simply
+            /// `modulus - self` if `self != 0`, or 0 otherwise.
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `modulus == 0`.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumResult, NumError};
+            /// # fn main() -> NumResult<()> {
+            /// let m = 3;
+            #[doc = "assert_eq![Int(0_" $t ").modulo_add_inv(m)?, 0];"]
+            #[doc = "assert_eq![Int(1_" $t ").modulo_add_inv(m)?, 2];"]
+            #[doc = "assert_eq![Int(2_" $t ").modulo_add_inv(m)?, 1];"]
+            #[doc = "assert_eq![Int(3_" $t ").modulo_add_inv(m)?, 0];"]
+            /// # Ok(()) }
+            /// ```
+            #[inline]
+            pub const fn modulo_add_inv(self, modulus: $t) -> Result<Int<$t>> {
+                if modulus == 0 {
+                    cold_err_zero()
+                } else {
+                    let rem = (self.0.rem_euclid(modulus));
+                    iif![rem == 0; Ok(Int(0)); Ok(Int(modulus - rem))]
+                }
+            }
+
+            /// Calculates the modular additive inverse,
+            /// unchecked version.
+            ///
+            /// The modular additive inverse of *self* modulo *modulus*
+            /// is an integer *b* such that $ a+b \equiv 0 (\mod m) $.
+            ///
+            /// The modular multiplicative inverse always exists and is simply
+            /// `modulus - self` if `self != 0`, or 0 otherwise.
+            ///
+            /// # Panics
+            /// Panics if `modulus == 0`.
+            #[inline]
+            pub const fn modulo_add_inv_unchecked(self, modulus: $t) -> Int<$t> {
+                let rem = (self.0.rem_euclid(modulus));
+                iif![rem == 0; Int(0); Int(modulus - rem)]
             }
 
             /* modulo sub (unsigned) */
