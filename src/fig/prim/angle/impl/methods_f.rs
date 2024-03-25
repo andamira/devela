@@ -4,7 +4,9 @@
 //
 
 use super::super::{Angle, AngleDirection, AngleKind};
-use crate::num::{fsize, Compare, ExtFloat, Float};
+use crate::num::{fsize, Compare, ExtFloatConst};
+#[cfg(feature = "num_float")]
+use crate::num::{ExtFloat, Float};
 
 // impl Angle methods with a floating-point representation
 macro_rules! impl_angle {
@@ -175,6 +177,8 @@ macro_rules! impl_angle {
             /// # Features
             /// This function will only be const with the `unsafe_const` feature enabled.
             #[inline] #[cfg(all(not(feature = "safe_fig"), feature = "unsafe_const"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_float")))]
+            #[cfg(feature = "num_float")]
             pub const fn invert_direction(self) -> Self {
                 Self(Float(self.0).flip_sign().0)
             }
@@ -182,25 +186,39 @@ macro_rules! impl_angle {
             /// # Features
             /// This function will only be const with the `unsafe_const` feature enabled.
             #[inline] #[cfg(any(feature = "safe_fig", not(feature = "unsafe_const")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_float")))]
+            #[cfg(feature = "num_float")]
             pub fn invert_direction(self) -> Self {
                 Self(Float(self.0).flip_sign().0)
             }
 
             /// Returns the negative version of the angle.
             /// # Features
-            /// This function will only be const with the `unsafe_const` feature enabled.
-            #[inline] #[cfg(all(not(feature = "safe_fig"), feature = "unsafe_const"))]
+            /// This function will only be const with the `unsafe_const` and `num_float`
+            /// features enabled.
+            #[inline] #[cfg(all(
+                not(feature = "safe_fig"), feature = "unsafe_const", feature = "num_float"
+            ))]
             pub const fn negative(self) -> Self { Self(Float(self.0).neg_abs().0) }
             /// Returns the negative version of the angle.
             /// # Features
-            /// This function will only be const with the `unsafe_const` feature enabled.
+            /// This function will only be const with the `unsafe_const` and `num_float`
+            /// features enabled.
             #[inline] #[cfg(any(feature = "safe_fig", not(feature = "unsafe_const")))]
-            pub fn negative(self) -> Self { Self(Float(self.0).neg_abs().0) }
+            pub fn negative(self) -> Self {
+                #[cfg(feature = "num_float")]
+                return Self(Float(self.0).neg_abs().0);
+                #[cfg(not(feature = "num_float"))]
+                return Self(-self.0.abs());
+            }
 
             /// Sets the angle as negative.
             #[inline]
             pub fn set_negative(&mut self) {
-                self.0 = Float(self.0).neg_abs().0;
+                #[cfg(feature = "num_float")]
+                { self.0 = Float(self.0).neg_abs().0; }
+                #[cfg(not(feature = "num_float"))]
+                { self.0 = -self.0.abs(); }
             }
 
             /// Returns the positive version of the angle.

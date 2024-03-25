@@ -4,9 +4,11 @@
 //
 
 use super::super::{Angle, AngleDirection, AngleKind};
+#[cfg(all(not(feature = "std"), feature = "num_float"))]
+use crate::num::ExtFloat;
 use crate::{
     code::compile,
-    num::{fsize, ExtFloat},
+    num::{fsize, ExtFloatConst},
 };
 
 // impl Angle methods with an integer representation
@@ -31,6 +33,7 @@ macro_rules! impl_angle {
             fn to_float_normalized(self) -> $f { self.0 as $f / <$t>::MAX as $f }
             // Returns the `value` associated to the full turn `unit`, scaled to the full $t range.
             #[inline]
+            #[cfg(any(feature = "std", feature = "num_float"))]
             fn from_float_normalized(value: $f, unit: $f) -> $t {
                 ((value / unit) * <$t>::MAX as $f).round() as $t
             }
@@ -51,18 +54,27 @@ macro_rules! impl_angle {
 
             /// Creates a new angle from a floating-point `radians` value.
             #[inline]
+            #[cfg(any(feature = "std", feature = "num_float"))]
+            #[cfg_attr(feature = "nightly_doc",
+                doc(cfg(any(feature = "std", feature = "num_float"))))]
             pub fn from_rad(radians: $f) -> Self {
                 Self(Self::from_float_normalized(radians, <$f>::TAU))
             }
 
             /// Creates a new angle from a floating-point `degrees` value.
             #[inline]
+            #[cfg(any(feature = "std", feature = "num_float"))]
+            #[cfg_attr(feature = "nightly_doc",
+                doc(cfg(any(feature = "std", feature = "num_float"))))]
             pub fn from_deg(degrees: $f) -> Self {
                 Self(Self::from_float_normalized(degrees, 360.0))
             }
 
             /// Creates a new angle from a `value` in a `custom_unit` which represents a full turn.
             #[inline]
+            #[cfg(any(feature = "std", feature = "num_float"))]
+            #[cfg_attr(feature = "nightly_doc",
+                doc(cfg(any(feature = "std", feature = "num_float"))))]
             pub fn from_custom(value: $f, custom_unit: $f) -> Self {
                 Self(Self::from_float_normalized(value, custom_unit))
             }
@@ -71,6 +83,9 @@ macro_rules! impl_angle {
 
             /// Converts the angle to radians.
             #[inline] #[must_use]
+            #[cfg(any(feature = "std", feature = "num_float"))]
+            #[cfg_attr(feature = "nightly_doc",
+                doc(cfg(any(feature = "std", feature = "num_float"))))]
             pub fn to_rad(self) -> $f { self.to_float_normalized() * <$f>::TAU }
             /// Converts the angle to degrees.
             #[inline] #[must_use]
@@ -199,15 +214,13 @@ macro_rules! impl_angle {
             /// # Features
             /// This function will only be const with the `unsafe_const` feature enabled.
             #[inline]
-            pub const fn negative(self) -> Self { Self(self.0.saturating_abs()) }
+            pub const fn negative(self) -> Self { Self(-self.0.saturating_abs()) }
 
             /// Sets the angle as negative.
             #[inline]
             pub fn set_negative(&mut self) { self.0 = -self.0.saturating_abs(); }
 
             /// Returns the positive version of the angle.
-            /// # Features
-            /// This function will only be const with the `unsafe_const` feature enabled.
             #[inline]
             pub const fn positive(self) -> Self { Self(self.0.saturating_abs()) }
 
