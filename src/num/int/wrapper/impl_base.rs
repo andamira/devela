@@ -17,13 +17,18 @@ use crate::{
 };
 
 // $t:  the integer primitive input/output type, and the niche inner type
+// $cap: the capability feature that enables the given implementation. E.g "i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
-    (prim_signed $( $t:ty : $d:literal ),+) => { $( impl_int![@prim_signed $t:$d]; )+ };
-    (prim_unsigned $( $t:ty : $d:literal ),+) => { $( impl_int![@prim_unsigned $t:$d]; )+ };
+    (prim_signed $( $t:ty : $cap:literal : $d:literal ),+) => {
+        $( impl_int![@prim_signed $t:$cap:$d]; )+
+    };
+    (prim_unsigned $( $t:ty : $cap:literal : $d:literal ),+) => {
+        $( impl_int![@prim_unsigned $t:$cap:$d]; )+
+    };
 
     // implements ops on signed primitives
-    (@prim_signed $t:ty : $d:literal) => { paste! {
+    (@prim_signed $t:ty : $cap:literal : $d:literal) => { paste! {
         /* signed digits */
 
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
@@ -33,6 +38,9 @@ macro_rules! impl_int {
         #[doc = "- [digits_base_sign](#method.digits_base_sign" $d ")"]
         #[doc = "- [digital_root](#method.digital_root" $d ")"]
         #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the number of digits in base 10.
             /// # Examples
@@ -160,7 +168,7 @@ macro_rules! impl_int {
     }};
 
     // implements ops on unsigned primitives
-    (@prim_unsigned $t:ty : $d:literal) => { paste! {
+    (@prim_unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
         #[doc = "- [digits](#method.digits" $d ")"]
         #[doc = "- [digits_sign](#method.digits_sign" $d ")"]
@@ -168,6 +176,9 @@ macro_rules! impl_int {
         #[doc = "- [digits_base_sign](#method.digits_base_sign" $d ")"]
         #[doc = "- [digital_root](#method.digital_root" $d ")"]
         #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned digits */
 
@@ -248,6 +259,7 @@ macro_rules! impl_int {
         }
     }};
 
+    /* DISABLED
     // $n:  the niche type name prefix (e.g. NonRange)
     // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
     // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
@@ -273,11 +285,16 @@ macro_rules! impl_int {
             num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digital_root_base, self, base:$t];
         }
     }};
+    */
 }
-impl_int![prim_signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
-impl_int![prim_unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
+impl_int![prim_signed
+    i8:"i8":"", i16:"i16":"-1", i32:"i32":"-2", i64:"i64":"-3",
+    i128:"i128":"-4", isize:"isize":"-5"];
+impl_int![prim_unsigned
+    u8:"u8":"-6", u16:"u16":"-7", u32:"u32":"-8", u64:"u64":"-9",
+    u128:"u128":"-10", usize:"usize":"-11"];
 
-#[cfg(feature = "num_niche_impls")]
-use crate::num::{niche::*, num_niche_impls};
-#[cfg(feature = "num_niche_impls")]
-num_niche_impls![impl_int niche];
+// #[cfg(feature = "num_niche_impls")]
+// use crate::num::{niche::*, num_niche_impls};
+// #[cfg(feature = "num_niche_impls")]
+// num_niche_impls![impl_int niche];

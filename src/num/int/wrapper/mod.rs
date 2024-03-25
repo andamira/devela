@@ -47,8 +47,10 @@ mod impl_sqrt;
 #[repr(transparent)]
 pub struct Int<T>(pub T);
 
-crate::num::impl_ops![Int: i8, i16,i32, i64, i128, isize];
-crate::num::impl_ops![Int: (no_neg) u8, u16, u32, u64, u128, usize];
+crate::num::impl_ops![Int:
+    i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize"];
+crate::num::impl_ops![Int: (no_neg)
+    u8:"i8", u16:"u16", u32:"u32", u64:"u64", u128:"u128", usize:"usize"];
 
 #[rustfmt::skip]
 mod core_impls {

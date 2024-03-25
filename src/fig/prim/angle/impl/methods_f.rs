@@ -11,9 +11,11 @@ use crate::num::{ExtFloat, Float};
 // impl Angle methods with a floating-point representation
 macro_rules! impl_angle {
     // $f: the inner floating-point type
-    (float $($f:ty),+) => { $( impl_angle![@float $f]; )+ };
-    (@float $f:ty) => {
+    (float $($f:ty : $cap:literal),+) => { $( impl_angle![@float $f : $cap]; )+ };
+    (@float $f:ty : $cap:literal) => {
         #[doc = concat!("# Methods for angles represented using `", stringify!($f), "`.")]
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Angle<$f> {
             /* construct */
 
@@ -279,4 +281,4 @@ macro_rules! impl_angle {
         }
     };
 }
-impl_angle![float f32, f64];
+impl_angle![float f32:"f32", f64:"f64"];

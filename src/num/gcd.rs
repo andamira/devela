@@ -8,7 +8,7 @@ use core::fmt;
 /// A return type for the calculated
 /// <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
 ///
-/// The coefficients are solutions to the equation $ gcd(a, b) = a*x + b*y $.
+/// The coefficients are the solutions to the equation $ \text{gcd}(a, b) = a*x + b*y $.
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct GcdExt<G, C> {

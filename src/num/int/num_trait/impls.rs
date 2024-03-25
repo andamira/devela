@@ -10,18 +10,21 @@ use crate::{
     num::{GcdExt, Int, NumError as E, NumInt, NumResult as Result},
 };
 
-impl_int![];
+// $p:  the primitive type
+// $cap: the capability feature that enables the given implementation. E.g "i8".
 macro_rules! impl_int {
     [] => {
-        impl_int![i i8, i16, i32, i64, i128, isize];
-        impl_int![u u8, u16, u32, u64, u128, usize];
+        impl_int![i i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize"];
+        impl_int![u u8:"u8", u16:"u16", u32:"u32", u64:"u64", u128:"u128", usize:"usize"];
     };
 
     // Implements `NumInt` for signed integer types
     // --------------------------------------------------------------------------------------------
-    (i $($p:ident),+) => { $( impl_int![@i $p]; )+ };
-    (@i $p:ident) => { paste! {
+    (i $($p:ident : $cap:literal),+) => { $( impl_int![@i $p:$cap]; )+ };
+    (@i $p:ident : $cap:literal) => { paste! {
         // i*
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl NumInt for $p {
             impl_int![common_body_iu];
 
@@ -49,9 +52,11 @@ macro_rules! impl_int {
 
     // Implements `Num` for unsigned integer types
     // --------------------------------------------------------------------------------------------
-    (u $($p:ident),+) => { $( impl_int![@u $p]; )+ };
-    (@u $p:ident) => { paste! {
+    (u $($p:ident : $cap:literal),+) => { $( impl_int![@u $p:$cap]; )+ };
+    (@u $p:ident : $cap:literal) => { paste! {
         // u*
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl NumInt for $p {
             impl_int![common_body_iu];
 
@@ -312,4 +317,4 @@ macro_rules! impl_int {
         // NOTE: the rest are sign-specific
     };
 }
-use impl_int;
+impl_int![];

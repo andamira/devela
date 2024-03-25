@@ -23,10 +23,10 @@ use crate::{
 use NumError::{NoInverse, NonZeroRequired, Overflow};
 
 // helper function to be called from the cold path branch when modulus == 0.
-#[cold] #[inline(never)] #[rustfmt::skip]
+#[cold] #[inline(never)] #[rustfmt::skip] #[allow(dead_code)]
 const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 // helper function to be called from the cold path branch for rare i128 overflow.
-#[cold] #[inline(never)] #[rustfmt::skip]
+#[cold] #[inline(never)] #[rustfmt::skip] #[allow(dead_code)]
 const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 
 // helper macro to deal with the case when we can't upcast (i.e. for 128-bits).
@@ -40,7 +40,7 @@ const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 // WAIT: [unchecked_add|mul](https://github.com/rust-lang/rust/issues/85122)
 //   [Stabilize unchecked_{add,sub,mul}](https://github.com/rust-lang/rust/pull/122520)
 //   let Some(x) = x.checked_add(y) else { unsafe { hint::unreachable_unchecked() }};
-#[rustfmt::skip]
+#[rustfmt::skip] #[allow(unused_macros)]
 macro_rules! upcastop {
     // this is used for checked versions
     (err $op:tt $fn:ident($lhs:expr, $rhs:expr) $is_up:ident) => { paste! {
@@ -73,19 +73,23 @@ macro_rules! upcastop {
 }
 
 // $t:     the input/output type
-// $up:    the upcasted type to do the operations on (the ones that can overflow)
-// $iup:   the signed upcasted type for some methods.
+// $cap:   the capability feature that enables the given implementation. E.g u8.
+// $up:    the upcasted type to do the operations on (the ones that can overflow) E.g. u16.
+// $iup:   the signed upcasted type for some methods. E.g. i16.
+// $icap:  the feature that enables some methods related to `$iup`. E.g "i16".
 // $is_up: [Y|N]. `Y` if bitsize of $up|$iup > $t; `N` if bitsize $up|$iup == $t.
 macro_rules! impl_int {
-    (signed $( ($t:ty, $up:ty:$is_up:ident, $d:literal) ),+) => {
-        $( impl_int![@signed ($t, $up:$is_up, $d)]; )+
+    (signed $( ($t:ty : $cap:literal, $up:ty:$is_up:ident, $d:literal) ),+) => {
+        $( impl_int![@signed ($t:$cap, $up:$is_up, $d)]; )+
     };
-    (unsigned $( ($t:ty, $up:ty | $iup:ty : $is_up:ident, $d:literal) ),+) => {
-        $( impl_int![@unsigned ($t, $up|$iup:$is_up, $d)]; )+
+    (unsigned $(
+        ($t:ty : $cap:literal, $up:ty | $iup:ty : $icap:literal : $is_up:ident, $d:literal)
+    ),+ ) => {
+        $( impl_int![@unsigned ($t:$cap, $up|$iup:$icap :$is_up, $d)]; )+
     };
 
     // implements signed ops
-    (@signed ($t:ty, $up:ty:$is_up:ident, $d:literal) ) => { paste! {
+    (@signed ($t:ty : $cap:literal, $up:ty:$is_up:ident, $d:literal) ) => { paste! {
 
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d
@@ -111,6 +115,9 @@ macro_rules! impl_int {
             ") *([uc](#method.modulo_mul_cycles_unchecked" $d "))*"]
         #[doc = "- [modulo_mul_inv](#method.modulo_mul_inv" $d
             ") *([uc](#method.modulo_mul_inv_unchecked" $d "))*"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* modulo (signed) */
 
@@ -759,7 +766,9 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned ($t:ty, $up:ty | $iup:ty : $is_up:ident, $d:literal) ) => { paste! {
+    (@unsigned
+         ($t:ty : $cap:literal, $up:ty | $iup:ty : $icap:literal : $is_up:ident, $d:literal)
+    ) => { paste! {
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d
             ") *([uc](#method.modulo_unchecked" $d ")*)"]
@@ -784,6 +793,9 @@ macro_rules! impl_int {
             ") *([uc](#method.modulo_mul_cycles_unchecked" $d "))*"]
         #[doc = "- [modulo_mul_inv](#method.modulo_mul_inv" $d
             ") *([uc](#method.modulo_mul_inv_unchecked" $d "))*"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* modulo (unsigned) */
 
@@ -1286,6 +1298,8 @@ macro_rules! impl_int {
             /// # Ok(()) }
             /// ```
             #[inline]
+            #[cfg(feature = $icap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn modulo_mul_inv(self, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1315,6 +1329,8 @@ macro_rules! impl_int {
             /// and for `u128` it could overflow when casting
             /// in the [`gcd_ext`][Self::gcd_ext] calculation.
             #[inline]
+            #[cfg(feature = $icap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn modulo_mul_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let (gcd, x, _) = unwrap![ok self.gcd_ext(modulus)].as_tuple_const();
                 if gcd.0 != 1 {
@@ -1327,10 +1343,17 @@ macro_rules! impl_int {
     }};
 }
 impl_int![signed
-    (i8, i16:Y, ""), (i16, i32:Y, "-1"), (i32, i64:Y, "-2"),
-    (i64, i128:Y, "-3"), (i128, i128:N, "-4"), (isize, isize_up:Y, "-5")
+    (i8:"i8", i16:Y, ""), (i16:"i16", i32:Y, "-1"), (i32:"i32", i64:Y, "-2"),
+    (i64:"i64", i128:Y, "-3"), (i128:"i128", i128:N, "-4"),
+    (isize:"isize", isize_up:Y, "-5")
 ];
 impl_int![unsigned
-    (u8, u16|i16:Y, "-6"), (u16, u32|i32:Y, "-7"), (u32, u64|i64:Y, "-8"),
-    (u64, u128|i128:Y, "-9"), (u128, u128|i128:N, "-10"), (usize, usize_up|isize_up:Y, "-11")
+    (u8:"u8", u16|i16:"i16":Y, "-6"), (u16:"u16", u32|i32:"i32":Y, "-7"),
+    (u32:"u32", u64|i64:"i64":Y, "-8"), (u64:"u64", u128|i128:"i128":Y, "-9"),
+    (u128:"u128", u128|i128:"i128":N, "-10")
+    // (usize:"usize", usize_up|isize_up:Y, "-11")
 ];
+#[cfg(target_pointer_width = "32")]
+impl_int![unsigned (usize:"usize", usize_up|isize_up:"i64":Y, "-11")];
+#[cfg(target_pointer_width = "64")]
+impl_int![unsigned (usize:"usize", usize_up|isize_up:"i128":Y, "-11")];

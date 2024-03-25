@@ -419,11 +419,16 @@ pub trait ExtFloat: ExtFloatConst + Sized {
 }
 
 macro_rules! impl_float_ext {
-    // $f: the floating-point type.
-    // $ue: unsigned int type with the same bit-size.
-    // $ie: the integer type for integer exponentiation.
-    ($( ($f:ty, $ue:ty|$ie:ty) ),+) => { $( impl_float_ext![@$f, $ue|$ie]; )+ };
-    (@$f:ty, $ue:ty|$ie:ty) => {
+    // $f:   the floating-point type.
+    // $ue:  unsigned int type with the same bit-size.
+    // $ie:  the integer type for integer exponentiation.
+    // $cap: the capability feature that enables the given implementation. E.g "i8".
+    ($( ($f:ty, $ue:ty|$ie:ty): $cap:literal ),+) => {
+        $( impl_float_ext![@$f, $ue|$ie, $cap]; )+
+    };
+    (@$f:ty, $ue:ty|$ie:ty, $cap:literal) => {
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl ExtFloat for $f {
             #[inline]
             fn floor(self) -> Self { Float(self).floor().0 }
@@ -704,4 +709,4 @@ macro_rules! impl_float_ext {
         }
     }
 }
-impl_float_ext![(f32, u32 | i32), (f64, u32 | i32)];
+impl_float_ext![(f32, u32 | i32):"f32", (f64, u32 | i32):"f64"];

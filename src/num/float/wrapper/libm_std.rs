@@ -163,12 +163,17 @@ mod _libm {
         y1 = y1:
         // yn
     ];
-    // $f: the floating-point type.
-    // $e: the integer type for integer exponentiation.
+    // $f:   the floating-point type.
+    // $e:   the integer type for integer exponentiation.
+    // $cap: the capability feature enables the given implementation. E.g "f32".
     macro_rules! custom_impls {
-        ($( ($f:ty, $e:ty) ),+) => { $( custom_impls![@$f, $e]; )+ };
-        (@$f:ty, $e:ty) => {
+        ($( ($f:ty, $e:ty): $cap:literal ),+) => {
+            $( custom_impls![@$f, $e, $cap]; )+
+        };
+        (@$f:ty, $e:ty, $cap:literal) => {
             /// # *Implementations using the `libm` feature*.
+            #[cfg(feature = $cap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The fractional part.
                 ///
@@ -249,7 +254,7 @@ mod _libm {
             }
         };
     }
-    custom_impls![(f32, i32), (f64, i32)];
+    custom_impls![(f32, i32):"f32", (f64, i32):"f64"];
 }
 
 #[cfg(all(not(feature = "libm"), feature = "std"))]
@@ -350,12 +355,17 @@ mod _std {
         // WAIT: (gamma, ln_gamma) [float_gamma](https://github.com/rust-lang/rust/issues/99842)
     ];
 
-    // $f: the floating-point type.
-    // $e: the integer type for integer exponentiation.
+    // $f:   the floating-point type.
+    // $e:   the integer type for integer exponentiation.
+    // $cap: the capability feature that enables the given implementation. E.g "f32".
     macro_rules! custom_impls {
-        ($( ($f:ty, $e:ty) ),+) => { $( custom_impls![@$f, $e]; )+ };
-        (@$f:ty, $e:ty) => {
+        ($( ($f:ty, $e:ty): $cap:literal ),+) => {
+            $( custom_impls![@$f, $e, $cap]; )+
+        };
+        (@$f:ty, $e:ty, $cap:literal) => {
             /// # *Implementations using the `std` feature*.
+            #[cfg(feature = $cap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// Raises itself to the `p` integer power.
                 #[inline]
@@ -377,7 +387,7 @@ mod _std {
             }
         };
     }
-    custom_impls![(f32, i32), (f64, i32)];
+    custom_impls![(f32, i32):"f32", (f64, i32):"f64"];
 }
 
 #[cfg(all(not(feature = "libm"), not(feature = "std")))]
@@ -385,13 +395,18 @@ mod _no_std_no_libm {
     use super::Float;
     use crate::code::iif;
 
-    // $f: the floating-point type.
-    // $ub: unsigned int type with the same bit-size.
-    // $ie: the integer type for integer exponentiation.
+    // $f:   the floating-point type.
+    // $ub:  unsigned int type with the same bit-size.
+    // $ie:  the integer type for integer exponentiation.
+    // $cap: the capability feature that enables the given implementation. E.g "f32".
     macro_rules! custom_impls {
-        ($( ($f:ty, $ub:ty, $ie:ty) ),+) => { $( custom_impls![@$f, $ub, $ie]; )+ };
-        (@$f:ty, $ub:ty, $ie:ty) => {
+        ($( ($f:ty, $ub:ty, $ie:ty) : $cap:literal ),+) => {
+            $( custom_impls![@$f, $ub, $ie, $cap]; )+
+        };
+        (@$f:ty, $ub:ty, $ie:ty, $cap:literal) => {
             /// # *Implementations without `std` or `libm`*.
+            #[cfg(feature = $cap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The largest integer less than or equal to itself.
                 ///
@@ -566,5 +581,5 @@ mod _no_std_no_libm {
             }
         };
     }
-    custom_impls![(f32, u32, i32), (f64, u64, i32)];
+    custom_impls![(f32, u32, i32):"f32", (f64, u64, i32):"f64"];
 }

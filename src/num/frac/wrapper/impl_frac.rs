@@ -18,21 +18,31 @@ use crate::num::{Frac, Int, NumResult as Result};
 #[cfg(doc)]
 use {crate::num::NumError as E, E::Overflow};
 
-// $i: the integer type.
+// $i:    the integer type.
 // $self: the fractional self type.
 // $fout: the fractionsl output type.
+// $cap:  the capability feature that enables the given implementation. E.g "i8".
 macro_rules! impl_frac {
-    ($( $i:ty ),+ ) => {
+    [] => {
+        impl_frac![
+            i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize",
+            u8:"u8", u16:"u16", u32:"u32", u64:"u64", u128:"u128", usize:"usize"
+        ];
+    };
+
+    ($( $i:ty : $cap:literal ),+ ) => {
         $(
-            impl_frac![@array $i, [$i; 2], Frac<[$i; 2]>];
-            impl_frac![@int_array $i, [Int<$i>; 2], Frac<[Int<$i>; 2]>];
-            // impl_frac![@slice $i, &[$i], [$i; 2]]; // MAYBE
+            impl_frac![@array $i:$cap, [$i; 2], Frac<[$i; 2]>];
+            impl_frac![@int_array $i:$cap, [Int<$i>; 2], Frac<[Int<$i>; 2]>];
+            // impl_frac![@slice $i:$cap, &[$i], [$i; 2]]; // MAYBE
         )+
     };
 
     // both for signed and unsigned
-    (@array $i:ty, $self:ty, $fout:ty) => { $crate::code::paste! {
+    (@array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::code::paste! {
         #[doc = "# Fraction related methods for `[" $i "; 2]`\n\n"]
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
             #[must_use] #[inline]
@@ -108,8 +118,10 @@ macro_rules! impl_frac {
         }
     }};
 
-    (@int_array $i:ty, $self:ty, $fout:ty) => { $crate::code::paste! {
+    (@int_array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::code::paste! {
         #[doc = "# Fraction related methods for `[Int<" $i ">; 2]`\n\n"]
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
             #[must_use] #[inline]
@@ -181,4 +193,4 @@ macro_rules! impl_frac {
         }
     }};
 }
-impl_frac![i8, i16, i32, i64, i128, isize, u8, u16, u32, u64, u128, usize];
+impl_frac![];

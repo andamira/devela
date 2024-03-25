@@ -17,13 +17,18 @@ use crate::{
 use NumError::{MismatchedSizes, NonNegativeRequired, Overflow};
 
 // $t:   the input/output type
+// $cap: the capability feature that enables the given implementation. E.g "i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
-    (signed $( $t:ty : $d:literal ),+) => { $( impl_int![@signed $t:$d]; )+ };
-    (unsigned $( $t:ty : $d:literal ),+) => { $( impl_int![@unsigned $t:$d]; )+ };
+    (signed $( $t:ty : $cap:literal : $d:literal ),+) => {
+        $( impl_int![@signed $t:$cap:$d]; )+
+    };
+    (unsigned $( $t:ty : $cap:literal : $d:literal ),+) => {
+        $( impl_int![@unsigned $t:$cap:$d]; )+
+    };
 
     // implements signed ops
-    (@signed $t:ty : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $d:literal) => { paste! {
         #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $d ")"]
         #[doc = "- [subfactorial](#method.subfactorial" $d ")"]
@@ -31,6 +36,9 @@ macro_rules! impl_int {
         #[doc = "- [permute_rep](#method.permute_rep" $d ")"]
         #[doc = "- [combine](#method.combine" $d ")"]
         #[doc = "- [combine_rep](#method.combine_rep" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the factorial.
             ///
@@ -298,7 +306,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
         #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $d ")"]
         #[doc = "- [subfactorial](#method.subfactorial" $d ")"]
@@ -306,6 +314,9 @@ macro_rules! impl_int {
         #[doc = "- [combine_rep](#method.combine_rep" $d ")"]
         #[doc = "- [permute](#method.permute" $d ")"]
         #[doc = "- [permute_rep](#method.permute_rep" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the factorial.
             ///
@@ -553,6 +564,7 @@ macro_rules! impl_int {
         }
     }};
 
+    /* DISABLED
     // $n:  the niche type name prefix (e.g. NonRange)
     // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
     // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
@@ -578,11 +590,18 @@ macro_rules! impl_int {
             num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const permute_rep, self, r: $t];
         }
     }};
+    */
 }
-impl_int![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
-impl_int![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
+impl_int![signed
+    i8:"i8":"", i16:"i16":"-1", i32:"i32":"-2", i64:"i64":"-3",
+    i128:"i128":"-4", isize:"isize":"-5"
+];
+impl_int![unsigned
+    u8:"u8":"-6", u16:"u16":"-7", u32:"u32":"-8", u64:"u64":"-9",
+    u128:"u128":"-10", usize:"usize":"-11"
+];
 
-#[cfg(feature = "num_niche_impls")]
-use crate::num::{niche::*, num_niche_impls};
-#[cfg(feature = "num_niche_impls")]
-num_niche_impls![impl_int niche];
+// #[cfg(feature = "num_niche_impls")]
+// use crate::num::{niche::*, num_niche_impls};
+// #[cfg(feature = "num_niche_impls")]
+// num_niche_impls![impl_int niche];

@@ -143,11 +143,14 @@ macro_rules! impl_comparing {
         }
     };
 
-    // $f: the floating-point type
-    // $b:  the bits of the floating-point primitive
-    // $sh: the shift amount for the given bits ($b - 1)
-    (float: $($f:ty:$b:literal:$sh:literal),+) => { $( impl_comparing![@float: $f:$b:$sh]; )+ };
-    (@float: $f:ty:$b:literal:$sh:literal) => { paste! {
+    // $f:    the floating-point type
+    // $fcap: the capability feature associated with the `$f` type. E.g "f32".
+    // $b:    the bits of the floating-point primitive
+    // $sh:   the shift amount for the given bits ($b - 1)
+    (float: $($f:ty:$fcap:literal:$b:literal:$sh:literal),+) => {
+        $( impl_comparing![@float: $f:$fcap:$b:$sh]; )+
+    };
+    (@float: $f:ty:$fcap:literal:$b:literal:$sh:literal) => { paste! {
         impl Compare<$f> {
             #[doc = "A (`const`) port of `" $f "::`[`total_cmp`][" $f "#method.total_cmp]."]
             /// # Features
@@ -346,8 +349,12 @@ macro_rules! impl_comparing {
             pub fn is_nan(self) -> bool { self.0.is_nan() }
 
             /// Returns `true` if `self` is subnormal.
+            ///
+            /// # Features
+            #[doc = "This function will only be const with the `unsafe_const` and `" $fcap "`"]
+            /// features enabled.
             #[inline] #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", feature = $fcap))]
             pub const fn is_subnormal(self) -> bool {
                 // check whether it's between 0 and the smallest finite value
                 (matches![self.total_cmp($f::MIN_POSITIVE), Less] &&
@@ -360,8 +367,12 @@ macro_rules! impl_comparing {
             pub fn is_subnormal(self) -> bool { self.0.is_subnormal() }
 
             /// Returns `true` if `self` is neither zero, infinite, subnormal, or NaN.
+            ///
+            /// # Features
+            #[doc = "This function will only be const with the `unsafe_const` and `" $fcap "`"]
+            /// features enabled.
             #[inline] #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", feature = $fcap))]
             pub const fn is_normal(self) -> bool {
                 (matches![self.total_cmp($f::MIN_POSITIVE), Greater | Equal]  &&
                 matches![self.total_cmp($f::INFINITY), Less]) ||
@@ -376,7 +387,7 @@ macro_rules! impl_comparing {
     }};
 }
 impl_comparing![int: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
-impl_comparing![float: f32:32:31, f64:64:63];
+impl_comparing![float: f32:"f32":32:31, f64:"f64":64:63];
 
 #[cfg(test)]
 mod test_min_max_clamp {
@@ -424,10 +435,16 @@ mod test_min_max_clamp {
         assert![!negzero.is_positive()];
         assert![!neginf.is_positive()];
 
-        assert![sub.is_subnormal() && !sub.is_normal()];
-        assert![!zero.is_subnormal() && !zero.is_normal()];
-        assert![one.is_normal() && !one.is_subnormal()];
-        assert![min.is_normal() && !min.is_subnormal()];
-        assert![negmin.is_normal() && !negmin.is_subnormal()];
+        #[cfg(any(
+            all(not(feature = "safe_num"), feature = "unsafe_const", feature = "f32"),
+            any(feature = "safe_num", not(feature = "unsafe_const"))
+        ))]
+        {
+            assert![sub.is_subnormal() && !sub.is_normal()];
+            assert![!zero.is_subnormal() && !zero.is_normal()];
+            assert![one.is_normal() && !one.is_subnormal()];
+            assert![min.is_normal() && !min.is_subnormal()];
+            assert![negmin.is_normal() && !negmin.is_subnormal()];
+        }
     }
 }

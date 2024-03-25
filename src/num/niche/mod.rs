@@ -12,7 +12,7 @@ pub use {non_specific::*, reexports::*};
 
 /* feature-gated, non-public modules */
 
-#[cfg(all(feature = "num", test))]
+#[cfg(all(feature = "num_niche_range", feature = "i8", test))]
 mod tests;
 //
 #[cfg(feature = "num_niche_range")]

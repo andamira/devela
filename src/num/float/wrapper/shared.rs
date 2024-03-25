@@ -13,15 +13,20 @@ use core::{concat as cc, stringify as sfy};
 
 // Implements methods independently of any features
 //
-// $f: the floating-point type.
-// $uf: unsigned int type with the same bit-size.
-// $ue: unsigned int type used for integer exponentiation and number of terms (u32).
+// $f:   the floating-point type.
+// $uf:  unsigned int type with the same bit-size.
+// $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
+// $cap: the capability feature enables the given implementation. E.g "f32".
 macro_rules! custom_impls {
-    ($( ($f:ty:$uf:ty, $ue:ty) ),+) => { $( custom_impls![@$f:$uf, $ue]; )+ };
-    (@$f:ty:$uf:ty, $ue:ty) => {
+    ($( ($f:ty:$uf:ty, $ue:ty) : $cap:literal ),+) => {
+        $( custom_impls![@$f:$uf, $ue, $cap]; )+
+    };
+    (@$f:ty:$uf:ty, $ue:ty, $cap:literal) => {
         /// # *Common implementations with or without `std` or `libm`*.
         /// # Features
         /// Several methods will only be *const* with the `unsafe_const` feature enabled.
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Float<$f> {
             /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
             // WAIT:1.77 [round_ties_even](https://github.com/rust-lang/rust/issues/96710)
@@ -1056,11 +1061,12 @@ macro_rules! custom_impls {
         }
     };
 }
-custom_impls![(f32:u32, u32), (f64:u64, u32)];
+custom_impls![(f32:u32, u32):"f32", (f64:u64, u32):"f64"];
 
 /* private helpers */
 
 #[rustfmt::skip]
+#[cfg(feature = "f32")]
 impl Float<f32> {
     #[inline] #[must_use]
     pub(super) fn asin_acos_series_terms_f32(x: f32) -> u32 {
@@ -1134,7 +1140,9 @@ impl Float<f32> {
         // 81181 * 5 = 405905
     }
 }
+
 #[rustfmt::skip]
+#[cfg(feature = "f64")]
 impl Float<f64> {
     #[inline] #[must_use]
     pub(super) fn asin_acos_series_terms_f64(x: f64) -> u32 {

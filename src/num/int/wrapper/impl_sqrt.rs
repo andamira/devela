@@ -18,13 +18,18 @@ use E::NonNegativeRequired;
 use E::Overflow;
 
 // $t:   the input/output type
+// $cap: the capability feature that enables the given implementation. E.g "i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
-    (signed $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_int![@signed $t:$up:$d]; )+ };
-    (unsigned $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_int![@unsigned $t:$up:$d]; )+ };
+    (signed $( $t:ty : $cap:literal : $up:ty : $d:literal ),+) => {
+        $( impl_int![@signed $t:$cap:$up:$d]; )+
+    };
+    (unsigned $( $t:ty : $cap:literal : $up:ty : $d:literal ),+) => {
+        $( impl_int![@unsigned $t:$cap:$up:$d]; )+
+    };
 
     // implements signed ops
-    (@signed $t:ty : $up:ty : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
         /* signed square root */
 
         #[doc = "# Integer square root related methods for `" $t "`\n\n"]
@@ -193,7 +198,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $up:ty : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
         #[doc = "# Integer square root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
@@ -344,6 +349,7 @@ macro_rules! impl_int {
         }
     }};
 
+    /* DISABLED
     // $n:  the niche type name prefix (e.g. NonRange)
     // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
     // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
@@ -361,6 +367,7 @@ macro_rules! impl_int {
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
             num_niche_impls![Int=>bool: $n:$t:$dt<$($g),*>, +const is_square, self];
 
+            // IMPROVE: only Signed returns Result
             // num_niche_impls![Int $n:$t:$dt<$($g),*>, +const sqrt_ceil, self, b: $t];
             // num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_ceil, self, b: $t];
             // num_niche_impls![Int $n:$t:$dt<$($g),*>, +const sqrt_floor, self, b: $t];
@@ -369,13 +376,17 @@ macro_rules! impl_int {
             num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_round, self, b: $t];
         }
     }};
+    */
 }
-impl_int![signed i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128:"-4",
-    isize:isize_up:"-5"];
-impl_int![unsigned u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10",
-    usize:usize_up:"-11"];
+impl_int![signed
+    i8:"i8":i16:"", i16:"i16":i32:"-1", i32:"i32":i64:"-2", i64:"i64":i128:"-3",
+    i128:"i128":i128:"-4", isize:"isize":isize_up:"-5"
+];
+impl_int![unsigned
+    u8:"u8":u16:"-6", u16:"u16":u32:"-7", u32:"u32":u64:"-8", u64:"u64":u128:"-9",
+    u128:"u128":u128:"-10", usize:"usize":usize_up:"-11"
+];
 
-// TODO
 // #[cfg(feature = "num_niche_impls")]
 // use crate::num::{niche::*, num_niche_impls};
 // #[cfg(feature = "num_niche_impls")]

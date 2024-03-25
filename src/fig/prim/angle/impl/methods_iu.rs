@@ -22,9 +22,15 @@ macro_rules! impl_angle {
     //
     // $t: the inner integer primitive type
     // $f: the associated floating point type
-    (int $($t:ty : $f:ty),+) => { $( impl_angle![@int $t:$f]; )+ };
-    (@int $t:ty : $f:ty) => {
+    // $tcap: the capability feature that enables the given integer implementation. E.g "i8".
+    // $fcap: the capability feature that enables the given floating implementation. E.g "f32".
+    (int $($t:ty : $f:ty ; $tcap:literal : $fcap:literal),+) => {
+        $( impl_angle![@int $t:$f ; $tcap:$fcap]; )+
+    };
+    (@int $t:ty : $f:ty ; $tcap:literal : $fcap:literal) => {
         #[doc = concat!("# Methods for angles represented using `", stringify!($t), "`.")]
+        #[cfg(feature = $tcap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $tcap)))]
         impl Angle<$t> {
             /* private helpers */
 
@@ -33,7 +39,7 @@ macro_rules! impl_angle {
             fn to_float_normalized(self) -> $f { self.0 as $f / <$t>::MAX as $f }
             // Returns the `value` associated to the full turn `unit`, scaled to the full $t range.
             #[inline]
-            #[cfg(any(feature = "std", feature = "num_float"))]
+            #[cfg(any(feature = "std", all(feature = "num_float", feature = $fcap)))]
             fn from_float_normalized(value: $f, unit: $f) -> $t {
                 ((value / unit) * <$t>::MAX as $f).round() as $t
             }
@@ -54,27 +60,27 @@ macro_rules! impl_angle {
 
             /// Creates a new angle from a floating-point `radians` value.
             #[inline]
-            #[cfg(any(feature = "std", feature = "num_float"))]
+            #[cfg(any(feature = "std", all(feature = "num_float", feature = $fcap)))]
             #[cfg_attr(feature = "nightly_doc",
-                doc(cfg(any(feature = "std", feature = "num_float"))))]
+                doc(cfg(any(feature = "std", all(feature = "num_float", feature = $fcap)))))]
             pub fn from_rad(radians: $f) -> Self {
                 Self(Self::from_float_normalized(radians, <$f>::TAU))
             }
 
             /// Creates a new angle from a floating-point `degrees` value.
             #[inline]
-            #[cfg(any(feature = "std", feature = "num_float"))]
+            #[cfg(any(feature = "std", all(feature = "num_float", feature = $fcap)))]
             #[cfg_attr(feature = "nightly_doc",
-                doc(cfg(any(feature = "std", feature = "num_float"))))]
+                doc(cfg(any(feature = "std", all(feature = "num_float", feature = $fcap)))))]
             pub fn from_deg(degrees: $f) -> Self {
                 Self(Self::from_float_normalized(degrees, 360.0))
             }
 
             /// Creates a new angle from a `value` in a `custom_unit` which represents a full turn.
             #[inline]
-            #[cfg(any(feature = "std", feature = "num_float"))]
+            #[cfg(any(feature = "std", all(feature = "num_float", feature = $fcap)))]
             #[cfg_attr(feature = "nightly_doc",
-                doc(cfg(any(feature = "std", feature = "num_float"))))]
+                doc(cfg(any(feature = "std", all(feature = "num_float", feature = $fcap)))))]
             pub fn from_custom(value: $f, custom_unit: $f) -> Self {
                 Self(Self::from_float_normalized(value, custom_unit))
             }
@@ -159,10 +165,15 @@ macro_rules! impl_angle {
     };
 
     // signed integers specific methods
-    (sint $($t:ty : $f:ty),+) => { $( impl_angle![@sint $t:$f]; )+ };
-    (@sint $t:ty : $f:ty) => {
-        impl_angle![int $t:$f];
+    (sint $($t:ty : $f:ty ; $tcap:literal : $fcap:literal),+) => {
+        $( impl_angle![@sint $t:$f ; $tcap:$fcap]; )+
+    };
+    (@sint $t:ty : $f:ty ; $tcap:literal : $fcap:literal) => {
+        impl_angle![int $t:$f ; $tcap:$fcap];
+
         #[doc = concat!("# Methods for angles represented using `", stringify!($t), "`, signed.")]
+        #[cfg(feature = $tcap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $tcap)))]
         impl Angle<$t> {
             /* direction */
 
@@ -231,11 +242,15 @@ macro_rules! impl_angle {
     };
 
     // unsigned integers specific methods
-    (uint $($t:ty : $f:ty),+) => { $( impl_angle![@uint $t:$f]; )+ };
-    (@uint $t:ty : $f:ty) => {
-        impl_angle![int $t:$f];
+    (uint $($t:ty : $f:ty ; $tcap:literal : $fcap:literal),+) => {
+        $( impl_angle![@uint $t:$f ; $tcap:$fcap]; )+
+    };
+    (@uint $t:ty : $f:ty ; $tcap:literal : $fcap:literal) => {
+        impl_angle![int $t:$f ; $tcap:$fcap];
 
         #[doc = concat!("# Methods for angles represented using `", stringify!($t), "`, unsigned.")]
+        #[cfg(feature = $tcap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $tcap)))]
         impl Angle<$t> {
             /* direction */
 
@@ -282,5 +297,20 @@ macro_rules! impl_angle {
         }
     };
 }
-impl_angle![sint i8:f32, i16:f32, i32:f32, i64:f64, i128:f64, isize:fsize];
-impl_angle![uint u8:f32, u16:f32, u32:f32, u64:f64, u128:f64, usize:fsize];
+impl_angle![sint
+    i8:f32;"i8":"f32", i16:f32;"i16":"f32", i32:f32;"i32":"f32",
+    i64:f64;"i64":"f64", i128:f64;"i128":"f64"
+];
+#[cfg(target_pointer_width = "32")]
+impl_angle![sint isize:fsize;"isize":"f32"];
+#[cfg(target_pointer_width = "64")]
+impl_angle![sint isize:fsize;"isize":"f64"];
+
+impl_angle![uint
+    u8:f32;"u8":"f32", u16:f32;"u16":"f32", u32:f32;"u32":"f32",
+    u64:f64;"u64":"f64", u128:f64;"u128":"f64"
+];
+#[cfg(target_pointer_width = "32")]
+impl_angle![uint usize:fsize;"usize":"f32"];
+#[cfg(target_pointer_width = "64")]
+impl_angle![uint usize:fsize;"usize":"f64"];

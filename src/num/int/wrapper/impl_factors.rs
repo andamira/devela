@@ -32,13 +32,18 @@ use crate::{
 use NumError::MismatchedSizes;
 
 // $t:   the input/output type
+// $cap: the capability feature that enables the given implementation. E.g "i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
-    (signed $( $t:ty : $d:literal ),+) => { $( impl_int![@signed $t:$d]; )+ };
-    (unsigned $( $t:ty : $d:literal ),+) => { $( impl_int![@unsigned $t:$d]; )+ };
+    (signed $( $t:ty : $cap:literal : $d:literal ),+) => {
+        $( impl_int![@signed $t:$cap:$d]; )+
+    };
+    (unsigned $( $t:ty : $cap:literal : $d:literal ),+) => {
+        $( impl_int![@unsigned $t:$cap:$d]; )+
+    };
 
     // implements signed ops
-    (@signed $t:ty : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $d:literal) => { paste! {
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
         #[doc = "   - [factors](#method.factors" $d ")"]
@@ -50,6 +55,9 @@ macro_rules! impl_int {
         #[doc = "   - [factors_proper_buf](#method.factors_proper_buf" $d ")"]
         #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $d ")"]
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* signed factors alloc */
 
@@ -591,7 +599,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
         #[doc = "   - [factors](#method.factors" $d ")"]
@@ -603,6 +611,9 @@ macro_rules! impl_int {
         #[doc = "   - [factors_proper_buf](#method.factors_proper_buf" $d ")"]
         #[doc = "   - [factors_prime_buf](#method.factors_prime_buf" $d ")"]
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned factors alloc */
 
@@ -1136,5 +1147,11 @@ macro_rules! impl_int {
         }
     }};
 }
-impl_int![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
-impl_int![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
+impl_int![signed
+    i8:"i8":"", i16:"i16":"-1", i32:"i32":"-2", i64:"i64":"-3",
+    i128:"i128":"-4", isize:"isize":"-5"
+];
+impl_int![unsigned
+    u8:"u8":"-6", u16:"u16":"-7", u32:"u32":"-8", u64:"u64":"-9",
+    u128:"u128":"-10", usize:"usize":"-11"
+];

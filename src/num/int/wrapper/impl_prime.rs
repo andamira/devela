@@ -16,19 +16,27 @@ use crate::{
 use NumError::Overflow;
 
 // $t:   the input/output type
+// $cap: the capability feature that enables the given implementation. E.g "i8".
 // $up:  the upcasted type to do the operations on (for prime_pi)
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
-    (signed $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_int![@signed $t:$up:$d]; )+ };
-    (unsigned $( $t:ty : $up:ty : $d:literal ),+) => { $( impl_int![@unsigned $t:$up:$d]; )+ };
+    (signed $( $t:ty : $cap:literal : $up:ty : $d:literal ),+) => {
+        $( impl_int![@signed $t:$cap:$up:$d]; )+
+    };
+    (unsigned $( $t:ty : $cap:literal : $up:ty : $d:literal ),+) => {
+        $( impl_int![@unsigned $t:$cap:$up:$d]; )+
+    };
 
     // implements signed ops
-    (@signed $t:ty : $up: ty : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $up: ty : $d:literal) => { paste! {
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
         #[doc = "- [prime_pi](#method.prime_pi" $d ")"]
         #[doc = "- [totient](#method.totient" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns `true` if `n` is prime.
             ///
@@ -157,12 +165,15 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $up:ty : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
         #[doc = "- [prime_pi](#method.prime_pi" $d ")"]
         #[doc = "- [totient](#method.totient" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns `true` if `n` is prime.
             ///
@@ -278,6 +289,7 @@ macro_rules! impl_int {
         }
     }};
 
+    /* DISABLED
     // $n:  the niche type name prefix (e.g. NonRange)
     // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
     // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
@@ -299,13 +311,18 @@ macro_rules! impl_int {
             num_niche_impls![Int $n:$t:$dt<$($g),*>, +const totient, self];
         }
     }};
+    */
 }
 impl_int![signed
-    i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128:"-4", isize:isize_up:"-5"];
+    i8:"i8":i16:"", i16:"i16":i32:"-1", i32:"i32":i64:"-2", i64:"i64":i128:"-3",
+    i128:"i128":i128:"-4", isize:"isize":isize_up:"-5"
+];
 impl_int![unsigned
-    u8:u16:"-6", u16:u32:"-7", u32:u64:"-8", u64:u128:"-9", u128:u128:"-10", usize:usize_up:"-11"];
+    u8:"u8":u16:"-6", u16:"u16":u32:"-7", u32:"u32":u64:"-8", u64:"u64":u128:"-9",
+    u128:"u128":u128:"-10", usize:"usize":usize_up:"-11"
+];
 
-#[cfg(feature = "num_niche_impls")]
-use crate::num::{niche::*, num_niche_impls};
-#[cfg(feature = "num_niche_impls")]
-num_niche_impls![impl_int niche];
+// #[cfg(feature = "num_niche_impls")]
+// use crate::num::{niche::*, num_niche_impls};
+// #[cfg(feature = "num_niche_impls")]
+// num_niche_impls![impl_int niche];

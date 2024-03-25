@@ -45,7 +45,7 @@ publish = true
 _exclude_example = [] # from testing
 
 # enables the most complete versions of the documentation:
-_docsrs = ["nightly", "all", "std", "unsafe", "dep_all"]
+_docsrs = ["nightly", "all", "std", "unsafe", "dep_all", "cap_nums"]
 _docsrs_max = ["nightly", "all", "std", "unsafe", "dep_all", "capability_max"]
 _docsrs_stable = ["all", "std", "unsafe", "dep_all"]
 
@@ -67,18 +67,8 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 #* module features *#
 
 all = [ # enables all the modules and submodules
-	"code",
-	"data",
-	"fig",
-	"gfx",
-	"io",
-	"mem",
-	"num",
-	"os",
-	"result",
-	"text",
-	"time",
-	"ui",
+	"code", "data", "fig", "gfx", "io", "mem",
+	"num", "os", "result", "text", "time", "ui",
 	"work",
 	]
 
@@ -98,7 +88,7 @@ num = [ # enables all the `num` sub-features
 	num_niche_range = [] # Range* and NonRange* niche types
 os = []
 result = []
-text = []
+text = ["u8", "u16"]
 time = []
 ui = [ # enables all the `ui` sub-features
 	 "ui_events", "ui_term",
@@ -166,8 +156,29 @@ nightly = [ # enables all the unstable features
 # Some relative compilation times are provided as a guide.
 
 capability_max = [ # enables the maximum capabilities
-	"_tuple_arity_127",
+	"_tuple_arity_127", "cap_nums",
 ]
+
+cap_nums = ["cap_ints", "cap_floats"] # Enables all numeric types
+cap_floats = ["f32", "f64"] # Enables all floating-point types
+cap_ints = ["cap_signed_ints", "cap_unsigned_ints"] # Enables all integer types
+cap_signed_ints = ["i8", "i16", "i32", "i64", "i128", "isize"] # All signed integers
+cap_unsigned_ints = ["u8", "u16", "u32", "u64", "u128", "usize"] # All unsigned integers
+# Primitive type features for fine-grained control:
+f32 = []
+f64 = []
+i8 = []
+u8 = []
+i16 = []
+u16 = []
+i32 = []
+u32 = []
+i64 = []
+u64 = []
+i128 = []
+u128 = []
+isize = []
+usize = []
 
 # The maximum tuple arity supported by ExtTuple:
 # By default tuple arity is 15         # compile  4.9s

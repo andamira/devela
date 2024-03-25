@@ -60,8 +60,10 @@ macro_rules! impl_point {
     // integers common methods
     //
     // $t: the inner integer primitive type
-    (int $($t:ty),+) => { $( impl_point![@int $t]; )+ };
-    (@int $t:ty) => {
+    (int $($t:ty : $cap:literal),+) => { $( impl_point![@int $t:$cap]; )+ };
+    (@int $t:ty : $cap:literal) => {
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<const D: usize> Point<$t, D> {
             /// Adds the given vector.
             #[inline]
@@ -76,18 +78,26 @@ macro_rules! impl_point {
 
         }
     };
-    (sint $($t:ty),+) => { $( impl_point![@sint $t]; )+ };
-    (@sint $t:ty ) => {
-        impl_point![int $t];
+    (sint $($t:ty : $cap:literal),+) => { $( impl_point![@sint $t:$cap]; )+ };
+    (@sint $t:ty : $cap:literal ) => {
+        impl_point![int $t:$cap];
+
+        // #[cfg(feature = $cap )]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
     };
-    (uint $($t:ty),+) => { $( impl_point![@uint $t]; )+ };
-    (@uint $t:ty ) => {
-        impl_point![int $t];
+    (uint $($t:ty : $cap:literal),+) => { $( impl_point![@uint $t:$cap]; )+ };
+    (@uint $t:ty : $cap:literal) => {
+        impl_point![int $t:$cap];
+
+        // #[cfg(feature = $cap )]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
     };
 
     // $f: the inner floating-point primitive type
-    (float $($f:ty),+) => { $( impl_point![@float $f]; )+ };
-    (@float $f:ty) => {
+    (float $( $f:ty : $cap:literal ),+) => { $( impl_point![@float $f:$cap]; )+ };
+    (@float $f:ty : $cap:literal) => {
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<const D: usize> Point<$f, D> {
             /// Adds the given vector.
             #[inline]
@@ -102,6 +112,6 @@ macro_rules! impl_point {
         }
     };
 }
-impl_point![sint i8, i16, i32, i64, i128, isize];
-impl_point![uint u8, u16, u32, u64, u128, usize];
-impl_point![float f32, f64];
+impl_point![sint i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize"];
+impl_point![uint u8:"u8", u16:"u16", u32:"u32", u64:"u64", u128:"u128", usize:"usize"];
+impl_point![float f32:"f32", f64:"f64"];

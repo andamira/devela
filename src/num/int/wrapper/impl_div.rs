@@ -18,13 +18,18 @@ use crate::{
 };
 
 // $t:   the input/output type
+// $cap: the capability feature that enables the given implementation. E.g "i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
-    (signed $( $t:ty : $d:literal ),+) => { $( impl_int![@signed $t:$d]; )+ };
-    (unsigned $( $t:ty : $d:literal ),+) => { $( impl_int![@unsigned $t:$d]; )+ };
+    (signed $( $t:ty : $cap:literal : $d:literal ),+) => {
+        $( impl_int![@signed $t:$cap:$d]; )+
+    };
+    (unsigned $( $t:ty : $cap:literal : $d:literal ),+) => {
+        $( impl_int![@unsigned $t:$cap:$d]; )+
+    };
 
     // implements signed ops
-    (@signed $t:ty : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $d:literal) => { paste! {
         /* signed division */
 
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
@@ -35,6 +40,9 @@ macro_rules! impl_int {
         #[doc = "- [div_ties_towards](#method.div_ties_towards" $d ")"]
         #[doc = "- [div_ties_even](#method.div_ties_even" $d ")"]
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the truncated quotient and the remainder.
             #[inline] #[must_use]
@@ -219,7 +227,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $d ")"]
         #[doc = "- [div_ceil](#method.div_ceil" $d ")"]
@@ -228,6 +236,9 @@ macro_rules! impl_int {
         #[doc = "- [div_ties_towards](#method.div_ties_towards" $d ")"]
         #[doc = "- [div_ties_even](#method.div_ties_even" $d ")"]
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned division */
 
@@ -363,6 +374,7 @@ macro_rules! impl_int {
         }
     }};
 
+    /* DISABLED
     // $n:  the niche type name prefix (e.g. NonRange)
     // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
     // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
@@ -381,6 +393,8 @@ macro_rules! impl_int {
         #[doc = "- [div_ties_even](#method.div_ties_even" $d ")"]
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
         impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
+            // WIP: general length array
+            // num_niche_impls![Int => array=2 $n:$t:$dt<$($g),*>, +const div_rem, self, b: $t];
             num_niche_impls![Int => array2 $n:$t:$dt<$($g),*>, +const div_rem, self, b: $t];
             num_niche_impls![Int $n:$t:$dt<$($g),*>, +const div_ceil, self, b: $t];
             num_niche_impls![Int $n:$t:$dt<$($g),*>, +const div_floor, self, b: $t];
@@ -390,11 +404,18 @@ macro_rules! impl_int {
             num_niche_impls![Int $n:$t:$dt<$($g),*>, +const div_ties_odd, self, b: $t];
         }
     }};
+    */
 }
-impl_int![signed i8:"", i16:"-1", i32:"-2", i64:"-3", i128:"-4", isize:"-5"];
-impl_int![unsigned u8:"-6", u16:"-7", u32:"-8", u64:"-9", u128:"-10", usize:"-11"];
+impl_int![signed
+    i8:"i8":"", i16:"i16":"-1", i32:"i32":"-2", i64:"i64":"-3",
+    i128:"i128":"-4", isize:"isize":"-5"
+];
+impl_int![unsigned
+    u8:"u8":"-6", u16:"u16":"-7", u32:"u32":"-8", u64:"u64":"-9",
+    u128:"u128":"-10", usize:"usize":"-11"
+];
 
-#[cfg(feature = "num_niche_impls")]
-use crate::num::{niche::*, num_niche_impls};
-#[cfg(feature = "num_niche_impls")]
-num_niche_impls![impl_int niche];
+// #[cfg(feature = "num_niche_impls")]
+// use crate::num::{niche::*, num_niche_impls};
+// #[cfg(feature = "num_niche_impls")]
+// num_niche_impls![impl_int niche];

@@ -25,19 +25,21 @@ use {
 };
 
 // $t:   the input/output type
-// $up:  the upcasted type to do the operations on (for lcm)
-// $iup: the signed upcasted type for some methods (gcd_ext)
+// $cap: the capability feature that enables the given implementation. E.g "u8".
+// $up:  the upcasted type to do the operations on (for lcm). E.g u8.
+// $iup: the signed upcasted type for some methods (gcd_ext). E.g. i16.
+// $icap: the feature that enables some methods related to `$iup`. E.g "i16".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
-    (signed $( $t:ty : $up:ty : $d:literal ),+) => {
-        $( impl_int![@signed $t:$up:$d]; )+
+    (signed $( $t:ty : $cap:literal : $up:ty : $d:literal ),+) => {
+        $( impl_int![@signed $t:$cap:$up:$d]; )+
     };
-    (unsigned $( $t:ty : $up:ty | $iup:ty : $d:literal ),+) => {
-        $( impl_int![@unsigned $t:$up|$iup:$d]; )+
+    (unsigned $( $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal : $d:literal ),+) => {
+        $( impl_int![@unsigned $t:$cap:$up|$iup:$icap : $d]; )+
     };
 
     // implements signed ops
-    (@signed $t:ty : $up:ty : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
         #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $d ")"]
         #[doc = "- [is_even](#method.is_even" $d ")"]
@@ -48,6 +50,9 @@ macro_rules! impl_int {
         #[doc = "- [lcm](#method.lcm" $d ")"]
         #[doc = "- [scale](#method.scale" $d ")"]
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the absolute value of `self`.
             #[inline] #[must_use]
@@ -292,11 +297,12 @@ macro_rules! impl_int {
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
                 Int(((b - a) * (v - min) / (max - min) + a) as $t)
             }
+            // MAYBE: scale_saturate
         }
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $up:ty | $iup:ty : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal : $d:literal) => { paste! {
         #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $d ")"]
         #[doc = "- [is_even](#method.is_even" $d ")"]
@@ -305,6 +311,9 @@ macro_rules! impl_int {
         #[doc = "- [lcm](#method.lcm" $d ")"]
         #[doc = "- [scale](#method.scale" $d ")"]
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
+        ///
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the absolute value of `self` (no-op).
             #[inline] #[must_use]
@@ -397,6 +406,8 @@ macro_rules! impl_int {
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
             #[inline]
+            #[cfg(feature = $icap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn gcd_ext(self, b: $t) -> Result<GcdExt<Int<$t>, Int<$iup>>> {
                 if self.0 == 0 { return Ok(GcdExt::new(Int(b), Int(0), Int(1))); }
                 if b == 0 { return Ok(GcdExt::new(self, Int(1), Int(0))); }
@@ -467,6 +478,8 @@ macro_rules! impl_int {
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
             #[inline]
+            #[cfg(feature = $icap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn gcd_ext_euc(self, b: $t) -> Result<GcdExt<Int<$t>, Int<$iup>>> {
                 let a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
                 let b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
@@ -516,7 +529,7 @@ macro_rules! impl_int {
             /// # use devela::num::Int;
             #[doc = "assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
-            /// assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow"]
+            /// // assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow"]
             /// ```
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
                 let v = self.0 as $up;
@@ -558,9 +571,11 @@ macro_rules! impl_int {
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
                 Int(((b - a) * (v - min) / (max - min) + a) as $t)
             }
+            // MAYBE: scale_saturate
         }
     }};
 
+    /* DISABLED
     // $n:  the niche type name prefix (e.g. NonRange)
     // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
     // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
@@ -594,14 +609,23 @@ macro_rules! impl_int {
                 min: $t, max: $t, a: $t, b: $t];
         }
     }};
+    */
 }
 impl_int![signed
-i8:i16:"", i16:i32:"-1", i32:i64:"-2", i64:i128:"-3", i128:i128:"-4", isize:isize_up:"-5"];
+    i8:"i8":i16:"", i16:"i16":i32:"-1", i32:"i32":i64:"-2", i64:"i64":i128:"-3",
+    i128:"i128":i128:"-4", isize:"isize":isize_up:"-5"
+];
 impl_int![unsigned
-u8:u16|i16:"-6", u16:u32|i32:"-7", u32:u64|i64:"-8", u64:u128|i128:"-9", u128:u128|i128:"-10",
-usize:usize_up|isize_up:"-11"];
+    u8:"u8":u16|i16:"i16":"-6", u16:"u16":u32|i32:"i32":"-7", u32:"u32":u64|i64:"i64":"-8",
+    u64:"u64":u128|i128:"i128":"-9", u128:"u128":u128|i128:"i128":"-10"
+    // usize:"usize":usize_up|isize_up:"-11"
+];
+#[cfg(target_pointer_width = "32")]
+impl_int![unsigned usize:"usize":usize_up|isize_up:"i64":"-11"];
+#[cfg(target_pointer_width = "64")]
+impl_int![unsigned usize:"usize":usize_up|isize_up:"i128":"-11"];
 
-#[cfg(feature = "num_niche_impls")]
-use crate::num::{niche::*, num_niche_impls};
-#[cfg(feature = "num_niche_impls")]
-num_niche_impls![impl_int niche];
+// #[cfg(feature = "num_niche_impls")]
+// use crate::num::{niche::*, num_niche_impls};
+// #[cfg(feature = "num_niche_impls")]
+// num_niche_impls![impl_int niche];

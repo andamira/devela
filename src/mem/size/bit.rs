@@ -24,18 +24,9 @@ use std::{
     time::{Instant, SystemTime},
 };
 
-#[cfg(feature = "num_niche_range")]
 use crate::num::{
-    NonRangeI128, NonRangeI16, NonRangeI32, NonRangeI64, NonRangeI8, NonRangeIsize, NonRangeU128,
-    NonRangeU16, NonRangeU32, NonRangeU64, NonRangeU8, NonRangeUsize, RangeI128, RangeI16,
-    RangeI32, RangeI64, RangeI8, RangeIsize, RangeU128, RangeU16, RangeU32, RangeU64, RangeU8,
-    RangeUsize,
-};
-use crate::num::{
-    NonSpecificI128, NonSpecificI16, NonSpecificI32, NonSpecificI64, NonSpecificI8,
-    NonSpecificIsize, NonSpecificU128, NonSpecificU16, NonSpecificU32, NonSpecificU64,
-    NonSpecificU8, NonSpecificUsize, NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8,
-    NonZeroIsize, NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
+    NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
+    NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
 };
 
 use crate::text::AsciiChar;
@@ -167,19 +158,19 @@ macro_rules! bit_size {
     /* primitives generic on $T */
 
     (<$T:ident> = $bits:expr; for $($t:ty),+) => {
-        $( impl<$T> BitSize<$bits> for $t {} )+
+        $( impl<$T> $crate::mem::BitSize<$bits> for $t {} )+
     };
     (<const $T:ident: $Tt:ty> = $bits:expr; for $($t:ty),+) => {
-        $( impl<const $T: $Tt> BitSize<$bits> for $t {} )+
+        $( impl<const $T: $Tt> $crate::mem::BitSize<$bits> for $t {} )+
     };
 
     /* primitives generic on $K, $V */
 
     (<$K:ident, $V:ident> = $bits:expr; for $($t:ty),+) => {
-        $( impl<$K, $V> BitSize<$bits> for $t {} )+
+        $( impl<$K, $V> $crate::mem::BitSize<$bits> for $t {} )+
     };
     (<const $K:ident: $Kt:ty, const $V:ident: $Vt:ty> = $bits:expr; for $($t:ty),+) => {
-        $( impl<const $K: $Kt, const $V: $Vt> BitSize<$bits> for $t {} )+
+        $( impl<const $K: $Kt, const $V: $Vt> $crate::mem::BitSize<$bits> for $t {} )+
     };
 
     /* pointer primitives */
@@ -189,16 +180,6 @@ macro_rules! bit_size {
         bit_size![= $PTR_BITS; for isize, usize];
 
         bit_size![= $PTR_BITS; for NonZeroIsize, NonZeroUsize];
-        bit_size![<const V: isize> = $PTR_BITS; for NonSpecificIsize<V>];
-        bit_size![<const V: usize> = $PTR_BITS; for NonSpecificUsize<V>];
-        #[cfg(feature = "num_niche_range")]
-        bit_size![<const RMIN: isize, const RMAX: isize> = 8; for NonRangeIsize<RMIN, RMAX>];
-        #[cfg(feature = "num_niche_range")]
-        bit_size![<const RMIN: usize, const RMAX: usize> = 8; for NonRangeUsize<RMIN, RMAX>];
-        #[cfg(feature = "num_niche_range")]
-        bit_size![<const RMIN: isize, const RMAX: isize> = 8; for RangeIsize<RMIN, RMAX>];
-        #[cfg(feature = "num_niche_range")]
-        bit_size![<const RMIN: usize, const RMAX: usize> = 8; for RangeUsize<RMIN, RMAX>];
 
         #[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "ptr")))]
         bit_size![= $PTR_BITS; for AtomicIsize, AtomicUsize];
@@ -233,9 +214,12 @@ macro_rules! bit_size {
     /* arrays */
 
     (array = $bits:literal * len for T: $tsize:literal * len: $($len:literal),+) => {
-        $( impl<T: BitSize<$tsize>> BitSize<{$bits*$len}> for [T; $len] {} )+
+        $(
+        impl<T: $crate::mem::BitSize<$tsize>> $crate::mem::BitSize<{$bits*$len}> for [T; $len] {}
+        )+
     };
 }
+#[allow(unused_imports)] // TEMP
 pub(crate) use bit_size;
 
 /* impl BitSize */
@@ -271,56 +255,6 @@ bit_size![= 16; for NonZeroI16, NonZeroU16];
 bit_size![= 32; for NonZeroI32, NonZeroU32];
 bit_size![= 64; for NonZeroI64, NonZeroU64];
 bit_size![= 128; for NonZeroI128, NonZeroU128];
-bit_size![<const V: i8> = 8; for NonSpecificI8<V>];
-bit_size![<const V: u8> = 8; for NonSpecificU8<V>];
-bit_size![<const V: i16> = 16; for NonSpecificI16<V>];
-bit_size![<const V: u16> = 16; for NonSpecificU16<V>];
-bit_size![<const V: i32> = 32; for NonSpecificI32<V>];
-bit_size![<const V: u32> = 32; for NonSpecificU32<V>];
-bit_size![<const V: i64> = 64; for NonSpecificI64<V>];
-bit_size![<const V: u64> = 64; for NonSpecificU64<V>];
-bit_size![<const V: i128> = 128; for NonSpecificI128<V>];
-bit_size![<const V: u128> = 128; for NonSpecificU128<V>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: i8, const RMAX:i8> = 8; for NonRangeI8<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: u8, const RMAX:u8> = 8; for NonRangeU8<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: i16, const RMAX:i16> = 16; for NonRangeI16<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: u16, const RMAX:u16> = 16; for NonRangeU16<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: i32, const RMAX:i32> = 32; for NonRangeI32<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: u32, const RMAX:u32> = 32; for NonRangeU32<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: i64, const RMAX:i64> = 64; for NonRangeI64<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: u64, const RMAX:u64> = 64; for NonRangeU64<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: i128, const RMAX:i128> = 128; for NonRangeI128<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: u128, const RMAX:u128> = 128; for NonRangeU128<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: i8, const RMAX:i8> = 8; for RangeI8<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: u8, const RMAX:u8> = 8; for RangeU8<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: i16, const RMAX:i16> = 16; for RangeI16<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: u16, const RMAX:u16> = 16; for RangeU16<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: i32, const RMAX:i32> = 32; for RangeI32<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: u32, const RMAX:u32> = 32; for RangeU32<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: i64, const RMAX:i64> = 64; for RangeI64<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: u64, const RMAX:u64> = 64; for RangeU64<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: i128, const RMAX:i128> = 128; for RangeI128<RMIN, RMAX>];
-#[cfg(feature = "num_niche_range")]
-bit_size![<const RMIN: u128, const RMAX:u128> = 128; for RangeU128<RMIN, RMAX>];
 
 #[cfg(feature = "work")]
 bit_size![= 1; for AtomicBool];

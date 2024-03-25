@@ -11,19 +11,22 @@ use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
 //
 use Error::{Invalid, Unspecified};
 
-impl_num![];
+// $p:   the primitive type
+// $cap:  the capability feature that enables the given implementation. E.g "i8".
 macro_rules! impl_num {
     [] => {
-        impl_num![i i8, i16, i32, i64, i128, isize];
-        impl_num![u u8, u16, u32, u64, u128, usize];
-        impl_num![f f32, f64];
+        impl_num![i i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize"];
+        impl_num![u u8:"u8", u16:"u16", u32:"u32", u64:"u64", u128:"u128", usize:"usize"];
+        impl_num![f f32:"f32", f64:"f64"];
     };
 
     // Implements `Num` for signed integer types
     // --------------------------------------------------------------------------------------------
-    (i $($p:ident),+) => { $( impl_num![@i $p]; )+ };
-    (@i $p:ident) => { paste! {
+    (i $($p:ident : $cap:literal),+) => { $( impl_num![@i $p : $cap]; )+ };
+    (@i $p:ident : $cap:literal) => { paste! {
         // i*
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Num for $p {
             type Inner = $p;
             type Out = $p;
@@ -63,6 +66,8 @@ macro_rules! impl_num {
         }
 
         // NonZeroI*
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
             type Out = [<NonZero $p:camel>];
@@ -115,8 +120,9 @@ macro_rules! impl_num {
         }
 
         // NonSpecificI*
-        #[cfg(feature = "num_niche_impls")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_niche_impls")))]
+        #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))]
+        #[cfg_attr(feature = "nightly_doc",
+            doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))))]
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
             type Inner = $p;
             type Out =  [<NonSpecific $p:camel>]<V>;
@@ -125,9 +131,9 @@ macro_rules! impl_num {
         }
 
         // NonRangeI*
-        #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))]
-        #[cfg_attr( feature = "nightly_doc",
-            doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))))]
+        #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))]
+        #[cfg_attr(feature = "nightly_doc",
+            doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))))]
         impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
             type Out = [<NonRange $p:camel>]<RMIN, RMAX>;
@@ -136,9 +142,9 @@ macro_rules! impl_num {
         }
 
         // RangeI*
-        #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))]
-        #[cfg_attr( feature = "nightly_doc",
-            doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))))]
+        #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))]
+        #[cfg_attr(feature = "nightly_doc",
+            doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))))]
         impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
             type Inner = $p;
             type Out = [<Range $p:camel>]<RMIN, RMAX>;
@@ -149,9 +155,11 @@ macro_rules! impl_num {
 
     // Implements `Num` for unsigned integer types
     // --------------------------------------------------------------------------------------------
-    (u $($p:ident),+) => { $( impl_num![@u $p]; )+ };
-    (@u $p:ident) => { paste! {
+    (u $($p:ident : $cap:literal),+) => { $( impl_num![@u $p : $cap]; )+ };
+    (@u $p:ident : $cap:literal) => { paste! {
         // u*
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Num for $p {
             type Inner = $p;
             type Out = $p;
@@ -195,6 +203,8 @@ macro_rules! impl_num {
         }
 
         // NonZeroU*
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Num for [<NonZero $p:camel>] {
             type Inner = $p;
             type Out = [<NonZero $p:camel>];
@@ -250,6 +260,8 @@ macro_rules! impl_num {
         }
 
         // NonSpecificU*
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         #[cfg(feature = "num_niche_impls")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_niche_impls")))]
         impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
@@ -259,6 +271,8 @@ macro_rules! impl_num {
             impl_num![custom_u_body]; }
 
         // NonRangeU*
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))]
         #[cfg_attr( feature = "nightly_doc",
             doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))))]
@@ -270,6 +284,8 @@ macro_rules! impl_num {
         }
 
         // RangeU*
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))]
         #[cfg_attr( feature = "nightly_doc",
             doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))))]
@@ -282,9 +298,11 @@ macro_rules! impl_num {
 
     // Implements `Num` for the floating-point types
     // --------------------------------------------------------------------------------------------
-    (f $($p:ident),+) => { $( impl_num![@f $p]; )+ };
-    (@f $p:ident) => {
+    (f $($p:ident : $cap:literal),+) => { $( impl_num![@f $p : $cap]; )+ };
+    (@f $p:ident : $cap:literal) => {
         // f*
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Num for $p { paste! {
             type Inner = $p;
             type Out = $p;
@@ -517,4 +535,4 @@ macro_rules! impl_num {
     // ============================================================================================
     // ...
 }
-use impl_num;
+impl_num![];

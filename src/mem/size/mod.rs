@@ -3,7 +3,8 @@
 //! Memory size functionality.
 //
 
-/* always compiled, non-public modules */
+/* always compiled */
+
 mod bit;
 mod byte;
 mod expr;
