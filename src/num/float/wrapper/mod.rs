@@ -14,14 +14,10 @@ mod tests;
 
 /// Provides comprehensive floating-point operations for `T`, some of them *const*.
 ///
-/// See also the [`ExtFloat`][super::ExtFloat] trait.
+/// See also the [`ExtFloat`][super::ExtFloat] and [ExtFloatConst][super::ExtFloatConst] traits.
 ///
-/// # Constants
-/// - [Related to Pi (π)](#mathematical-constants-related-to-pi-π)
-/// - [Related to Tau (τ)](#mathematical-constants-related-to-tau-τ)
-/// - [Related to Phi (φ)](#mathematical-constants-related-to-phi-φ)
-/// - [Related to integer roots](#mathematical-constants-related-to-integer-roots)
-/// - [Other constants](#other-mathematical-constants)
+/// # Methods
+/// TODO
 ///
 /// # Features
 /// The wrapper leverages `std` or `libm` if enabled, otherwise implements fallbacks.
