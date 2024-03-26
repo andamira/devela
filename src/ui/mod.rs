@@ -6,9 +6,9 @@
 // safety:
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
 
-/* always compiled, non-public modules */
+/* always compiled */
 
-/* feature-gated, public modules */
+/* feature-gated */
 
 #[cfg(feature = "ui_term")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ui_term")))]

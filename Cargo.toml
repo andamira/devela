@@ -20,6 +20,7 @@ include = [
 	"/src/**/*.rs", "/src/**/*.md", "src/**/*.html",
 	"/examples/bitfield.rs", "/examples/enumset.rs",
 	"/examples/cargo_script.rs", "/examples/coro_run.rs",
+	"/examples/cli_prompt.rs",
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
@@ -91,10 +92,9 @@ result = []
 text = ["u8", "u16"]
 time = []
 ui = [ # enables all the `ui` sub-features
-	 "ui_events", "ui_term",
+	 "ui_term",
 	]
-	ui_events = ["crossterm?/events"] # support for events
-	ui_term = [] # terminal functionality
+	ui_term = ["unicode-width", "unicode-segmentation"] # terminal functionality
 	# ui_window = ["miniquad"]
 work = ["bytemuck/zeroable_atomics"]
 
@@ -159,7 +159,7 @@ capability_max = [ # enables the maximum capabilities
 	"_tuple_arity_127", "cap_nums",
 ]
 
-cap_nums = ["cap_ints", "cap_floats"] # Enables all numeric types
+cap_nums = ["cap_floats", "cap_ints"] # Enables all numeric types
 cap_floats = ["f32", "f64"] # Enables all floating-point types
 cap_ints = ["cap_signed_ints", "cap_unsigned_ints"] # Enables all integer types
 cap_signed_ints = ["i8", "i16", "i32", "i64", "i128", "isize"] # All signed integers
@@ -263,7 +263,7 @@ features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_u
 version = "0.27.0"
 optional = true
 default-features = false
-features = ["windows"]
+features = ["events", "windows"]
 [dependencies.hashbrown]
 version = "0.14.1"
 optional = true
@@ -305,6 +305,9 @@ name = "coro_run"
 required-features = ["unsafe_async", "alloc"]
 [[example]]
 name = "enumset"
+[[example]]
+name = "cli_prompt"
+required-features = ["ui_term", "crossterm", "std"]
 
 # excluded examples
 [[example]]

@@ -7,11 +7,13 @@
 #![cfg_attr(feature = "safe_ui_term", forbid(unsafe_code))]
 
 mod ansi;
+mod cli;
 
-// re-export private sub-modules
-pub use ansi::*;
+#[allow(unused_imports)]
+pub use {ansi::*, cli::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::ansi::*;
+    #[allow(unused_imports)]
+    pub use super::{ansi::*, cli::*};
 }
