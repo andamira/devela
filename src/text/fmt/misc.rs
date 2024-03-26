@@ -15,41 +15,6 @@ use core::{
     str::{from_utf8, from_utf8_unchecked},
 };
 
-/// A more *`c`ompact [`dbg!`]* using `{:?}` instead of `{:#?}` for formatting.
-///
-/// # Examples
-/// ```
-/// use devela::text::cdbg;
-///
-/// let a = vec![1, 2, 3];
-/// let _b = cdbg![a];
-/// //       ^-- prints: [src/main.rs:5] a = [1, 2, 3]
-/// ```
-// Source code based on Rust 1.76 core implementation of `dbg!`
-#[macro_export]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-macro_rules! cdbg {
-    () => {
-        eprintln!("[{}:{}:{}]", file!(), line!(), column!())
-    };
-    ($val:expr $(,)?) => {
-        // TRICK: match extends the lifetime of temporaries and evaluates args only once:
-        // - https://stackoverflow.com/a/48732525/1063961
-        // - https://github.com/rust-lang/rust/commit/d3c831ba4a4
-        match $val {
-            tmp => {
-                eprintln!("[{}:{}:{}] {} = {:?}", // <- KEY CHANGE
-                    file!(), line!(), column!(), stringify!($val), &tmp);
-                tmp
-            }
-        }
-    };
-    ($($val:expr),+ $(,)?) => {
-        ($($crate::text::cdbg!($val)),+,)
-    };
-}
-pub use cdbg;
-
 /// Returns a formatted [`str`] slice backed by a buffer, `no_std` compatible.
 ///
 /// See also the slightly more convenient to use [`format_buf!`][crate::format_buf!] macro.

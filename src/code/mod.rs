@@ -32,6 +32,7 @@ pub(crate) use _private::*;
 
 mod any; // dynamic typing and reflection
 mod asserts; // assertion macros
+mod cdbg; // cdbg![]
 mod cfor; // cfor![]
 mod default; // ConstDefault, Default
 mod deprecate; // deprecate_feature![]
@@ -43,15 +44,15 @@ mod reexports; // reexported items
 mod skip_format; // sf![]
 
 pub use {
-    any::all::*, asserts::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*, iif::*,
-    paste::*, reexports::*, skip_format::*,
+    any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*,
+    iif::*, paste::*, reexports::*, skip_format::*,
 };
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        any::all::*, asserts::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*, iif::*,
-        paste::*, reexports::*, skip_format::*,
+        any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*,
+        iif::*, paste::*, reexports::*, skip_format::*,
     };
 }
