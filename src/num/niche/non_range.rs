@@ -54,7 +54,6 @@ macro_rules! impl_non_range {
         /// ```
         ///
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        #[repr(C)]
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         pub struct [<$name $s:upper $b>]<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>

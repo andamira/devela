@@ -53,7 +53,6 @@ macro_rules! impl_non_specific {
         ///
         #[doc = "See also [`NonEdge" $s:upper $b "`]."]
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        #[repr(C)]
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         pub struct [<$name $s:upper $b>]<const V: [<$s $b>]>([<NonZero $s:upper $b>]);
