@@ -563,34 +563,6 @@ macro_rules! impl_int {
             }
         }
     }};
-
-    /* DISABLED
-    // $n:  the niche type name prefix (e.g. NonRange)
-    // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
-    // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
-    // $d:  the doclink suffix for the method name
-    // $dt: the doclink suffix for the associated method name implemented for the inner primitive
-    (niche $( $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal),+ $(,)? ) => {
-        $( impl_int![@niche $n:$t <$($g),*> : $d:$dt ]; )+
-    };
-    (@niche $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal) => { paste! {
-        #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
-        #[doc = "- [factorial](#method.factorial" $d ")"]
-        #[doc = "- [subfactorial](#method.subfactorial" $d ")"]
-        #[doc = "- [combine](#method.combine" $d ")"]
-        #[doc = "- [combine_rep](#method.combine_rep" $d ")"]
-        #[doc = "- [permute](#method.permute" $d ")"]
-        #[doc = "- [permute_rep](#method.permute_rep" $d ")"]
-        impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
-            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const factorial, self];
-            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const subfactorial, self];
-            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const combine, self, r: $t];
-            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const combine_rep, self, r: $t];
-            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const permute, self, r: $t];
-            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const permute_rep, self, r: $t];
-        }
-    }};
-    */
 }
 impl_int![signed
     i8:"i8":"", i16:"i16":"-1", i32:"i32":"-2", i64:"i64":"-3",
@@ -600,8 +572,3 @@ impl_int![unsigned
     u8:"u8":"-6", u16:"u16":"-7", u32:"u32":"-8", u64:"u64":"-9",
     u128:"u128":"-10", usize:"usize":"-11"
 ];
-
-// #[cfg(feature = "num_niche_impls")]
-// use crate::num::{niche::*, num_niche_impls};
-// #[cfg(feature = "num_niche_impls")]
-// num_niche_impls![impl_int niche];

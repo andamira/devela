@@ -574,42 +574,6 @@ macro_rules! impl_int {
             // MAYBE: scale_saturate
         }
     }};
-
-    /* DISABLED
-    // $n:  the niche type name prefix (e.g. NonRange)
-    // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
-    // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
-    // $d:  the doclink suffix for the method name
-    // $dt: the doclink suffix for the associated method name implemented for the inner primitive
-    (niche $( $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal),+ $(,)? ) => {
-        $( impl_int![@niche $n:$t <$($g),*> : $d:$dt ]; )+
-    };
-    (@niche $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal) => { paste! {
-        #[doc = "# Integer core methods for `" $t "`\n\n"]
-        #[doc = "- [abs](#method.abs" $d ")"]
-        #[doc = "- [is_even](#method.is_even" $d ")"]
-        #[doc = "- [is_odd](#method.is_odd" $d ")"]
-        #[doc = "- [gcd](#method.gcd" $d ")"]
-        // IMPROVE: only unsigned version returns Result
-        // #[doc = "- [gcd_ext](#method.gcd_ext" $d ")"]
-        // #[doc = "- [gcd_ext_euc](#method.gcd_ext_euc" $d ")"]
-        #[doc = "- [lcm](#method.lcm" $d ")"]
-        #[doc = "- [scale](#method.scale" $d ")"]
-        #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
-        impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
-            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const abs, self];
-            num_niche_impls![Int=>bool: $n:$t:$dt<$($g),*>, +const is_even, self];
-            num_niche_impls![Int=>bool: $n:$t:$dt<$($g),*>, +const is_odd, self];
-            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const gcd, self, r: $t];
-            // ...
-            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const lcm, self, r: $t];
-            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const scale, self,
-                min: $t, max: $t, a: $t, b: $t];
-            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const scale_wrap, self,
-                min: $t, max: $t, a: $t, b: $t];
-        }
-    }};
-    */
 }
 impl_int![signed
     i8:"i8":i16:"", i16:"i16":i32:"-1", i32:"i32":i64:"-2", i64:"i64":i128:"-3",
@@ -624,8 +588,3 @@ impl_int![unsigned
 impl_int![unsigned usize:"usize":usize_up|isize_up:"i64":"-11"];
 #[cfg(target_pointer_width = "64")]
 impl_int![unsigned usize:"usize":usize_up|isize_up:"i128":"-11"];
-
-// #[cfg(feature = "num_niche_impls")]
-// use crate::num::{niche::*, num_niche_impls};
-// #[cfg(feature = "num_niche_impls")]
-// num_niche_impls![impl_int niche];

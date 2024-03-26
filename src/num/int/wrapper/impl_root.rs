@@ -352,35 +352,6 @@ macro_rules! impl_int {
             }
         }
     }};
-
-    /* DISABLED
-    // $n:  the niche type name prefix (e.g. NonRange)
-    // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
-    // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
-    // $d:  the doclink suffix for the method name
-    // $dt: the doclink suffix for the associated method name implemented for the inner primitive
-    (niche $( $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal),+ $(,)? ) => {
-        $( impl_int![@niche $n:$t <$($g),*> : $d:$dt ]; )+
-    };
-    (@niche $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal) => { paste! {
-        #[doc = "# Integer square root related methods for `" $t "`\n\n"]
-        #[doc = "- [is_square](#method.is_square" $d ")"]
-        #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
-        #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
-        #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
-        impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
-            num_niche_impls![Int=>bool: $n:$t:$dt<$($g),*>, +const is_square, self];
-
-            // IMPROVE: only Signed returns Result
-            // num_niche_impls![Int $n:$t:$dt<$($g),*>, +const sqrt_ceil, self, b: $t];
-            // num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_ceil, self, b: $t];
-            // num_niche_impls![Int $n:$t:$dt<$($g),*>, +const sqrt_floor, self, b: $t];
-            // num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_floor, self, b: $t];
-
-            num_niche_impls![Int=>res $n:$t:$dt<$($g),*>, +const sqrt_round, self, b: $t];
-        }
-    }};
-    */
 }
 impl_int![signed
     i8:"i8":i16:"", i16:"i16":i32:"-1", i32:"i32":i64:"-2", i64:"i64":i128:"-3",
@@ -390,10 +361,3 @@ impl_int![unsigned
     u8:"u8":u16:"-6", u16:"u16":u32:"-7", u32:"u32":u64:"-8", u64:"u64":u128:"-9",
     u128:"u128":u128:"-10", usize:"usize":usize_up:"-11"
 ];
-
-// #[cfg(feature = "num_niche_impls")]
-// use crate::num::{niche::*, num_niche_impls};
-// #[cfg(feature = "num_niche_impls")]
-// num_niche_impls![impl_int_signed niche_signed];
-// #[cfg(feature = "num_niche_impls")]
-// num_niche_impls![impl_int_unsigned niche_unsigned];

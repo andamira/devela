@@ -258,43 +258,12 @@ macro_rules! impl_int {
             }
         }
     }};
-
-    /* DISABLED
-    // $n:  the niche type name prefix (e.g. NonRange)
-    // $t:  the niche inner type (the associated primitive integer) (e.g. u8)
-    // $($g)*: an optional list of const generics (e.g. RMIN, RMAX)
-    // $d:  the doclink suffix for the method name
-    // $dt: the doclink suffix for the associated method name implemented for the inner primitive
-    (niche $( $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal),+ $(,)? ) => {
-        $( impl_int![@niche $n:$t <$($g),*> : $d:$dt ]; )+
-    };
-    (@niche $n:ident : $t:ident <$($g:ident),*> : $d:literal : $dt: literal) => { paste! {
-        #[doc = "# Integer base related methods for `" [<$n$t:camel>] "`\n\n"]
-        #[doc = "- [digits](#method.digits" $d ")"]
-        #[doc = "- [digits_sign](#method.digits_sign" $d ")"]
-        #[doc = "- [digits_base](#method.digits_base" $d ")"]
-        #[doc = "- [digits_base_sign](#method.digits_base_sign" $d ")"]
-        #[doc = "- [digital_root](#method.digital_root" $d ")"]
-        #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
-        impl<$(const $g:$t,)*> Int<[<$n$t:camel>]<$($g,)*>> {
-            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digits, self];
-            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digits_sign, self];
-            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digits_base, self, base:$t];
-            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digits_base_sign, self, base:$t];
-            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digital_root, self];
-            num_niche_impls![Int $n:$t:$dt<$($g),*>, +const digital_root_base, self, base:$t];
-        }
-    }};
-    */
 }
 impl_int![prim_signed
     i8:"i8":"", i16:"i16":"-1", i32:"i32":"-2", i64:"i64":"-3",
-    i128:"i128":"-4", isize:"isize":"-5"];
+    i128:"i128":"-4", isize:"isize":"-5"
+];
 impl_int![prim_unsigned
     u8:"u8":"-6", u16:"u16":"-7", u32:"u32":"-8", u64:"u64":"-9",
-    u128:"u128":"-10", usize:"usize":"-11"];
-
-// #[cfg(feature = "num_niche_impls")]
-// use crate::num::{niche::*, num_niche_impls};
-// #[cfg(feature = "num_niche_impls")]
-// num_niche_impls![impl_int niche];
+    u128:"u128":"-10", usize:"usize":"-11"
+];
