@@ -1,6 +1,6 @@
-// devela::num::int::wrapper::impl_sqrt
+// devela::num::int::wrapper::impl_root
 //
-//! implements square root related functions
+//! implements root related functions
 //
 // TOC
 // - signed|unsigned:
@@ -32,11 +32,13 @@ macro_rules! impl_int {
     (@signed $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
         /* signed square root */
 
-        #[doc = "# Integer square root related methods for `" $t "`\n\n"]
+        #[doc = "# Integer root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns `true` if it's a perfect square.
             ///
@@ -199,11 +201,13 @@ macro_rules! impl_int {
 
     // implements unsigned ops
     (@unsigned $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
-        #[doc = "# Integer square root related methods for `" $t "`\n\n"]
+        #[doc = "# Integer root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned square root */
 

@@ -13,7 +13,7 @@ mod impl_div;
 mod impl_factors;
 mod impl_modulo;
 mod impl_prime;
-mod impl_sqrt;
+mod impl_root;
 
 /// Provides comprehensive integer operations on `T`, most of them *const*.
 ///
@@ -32,7 +32,7 @@ mod impl_sqrt;
 /// [factors][Self#integer-factors-related-methods-for-i32],
 /// [modulo][Self#integer-modulo-related-methods-for-i32],
 /// [primes][Self#integer-prime-related-methods-for-i32],
-/// [square root][Self#integer-square-root-related-methods-for-i32].
+/// [root][Self#integer-root-related-methods-for-i32].
 /// - `u32` methods documentation related to:
 /// [base][Self#integer-base-related-methods-for-u32],
 /// [core][Self#integer-core-methods-for-u32],
@@ -41,7 +41,7 @@ mod impl_sqrt;
 /// [factors][Self#integer-factors-related-methods-for-u32],
 /// [modulo][Self#integer-modulo-related-methods-for-u32],
 /// [primes][Self#integer-prime-related-methods-for-u32],
-/// [square root][Self#integer-square-root-related-methods-for-u32].
+/// [root][Self#integer-root-related-methods-for-u32].
 ///
 /// See also the related trait [`NumInt`][super::NumInt].
 #[repr(transparent)]

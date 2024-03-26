@@ -74,7 +74,7 @@ macro_rules! impl_int {
                 Int(res)
             }
 
-            /// Returns the number of digits in the given positive `base`.
+            /// Returns the number of digits in the given absolute `base`.
             ///
             /// If the base is 0, it returns 0.
             /// # Examples
@@ -96,7 +96,7 @@ macro_rules! impl_int {
                 iif![let Some(c) = a.checked_ilog(base); Int(c as $t + 1); Int(1)]
             }
 
-            /// Returns the number of digits in the given positive `base`,
+            /// Returns the number of digits in the given absolute `base`,
             /// including the negative sign.
             ///
             /// If the base is 0, it returns 0.
@@ -143,7 +143,7 @@ macro_rules! impl_int {
                 Int(sum)
             }
 
-            /// Returns the digital root in in the given `positive` base.
+            /// Returns the digital root in in the given absolute `base`.
             /// # Examples
             /// ```
             /// # use devela::num::Int;
@@ -239,7 +239,7 @@ macro_rules! impl_int {
                 Int(sum)
             }
 
-            /// Returns the digital root in in the given `positive` base.
+            /// Returns the digital root in in the given absolute `base`.
             /// # Examples
             /// ```
             /// # use devela::num::Int;
