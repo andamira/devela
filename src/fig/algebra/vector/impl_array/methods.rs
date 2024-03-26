@@ -27,10 +27,12 @@ macro_rules! impl_vector {
     // integers common methods
     //
     // $t: the inner integer primitive type
-    (int $($t:ty),+) => { $( impl_vector![@int $t]; )+ };
-    (@int $t:ty) => {
+    (int $($t:ty : $cap:literal),+) => { $( impl_vector![@int $t:$cap]; )+ };
+    (@int $t:ty : $cap:literal) => {
         #[doc = concat!("# Methods for vectors represented using `",
             stringify!($t), "`.")]
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$t, D> {
             /// A `Vector` with all ones.
             pub const ONE: Self = Self::new([1; D]);
@@ -161,12 +163,14 @@ macro_rules! impl_vector {
     };
 
     // signed integers specific methods
-    (sint $($t:ty),+) => { $( impl_vector![@sint $t]; )+ };
-    (@sint $t:ty ) => {
-        impl_vector![int $t];
+    (sint $($t:ty : $cap:literal),+) => { $( impl_vector![@sint $t:$cap]; )+ };
+    (@sint $t:ty : $cap:literal) => {
+        impl_vector![int $t:$cap];
 
         #[doc = concat!("# Methods for vectors represented using `",
             stringify!($t), "`, signed.")]
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$t, D> {
             /// A `Vector` with all negative ones.
             pub const NEG_ONE: Self = Self::new([-1; D]);
@@ -199,12 +203,14 @@ macro_rules! impl_vector {
     };
 
     // unsigned integers specific methods
-    (uint $($t:ty),+) => { $( impl_vector![@uint $t]; )+ };
-    (@uint $t:ty ) => {
-        impl_vector![int $t];
+    (uint $($t:ty : $cap:literal),+) => { $( impl_vector![@uint $t:$cap]; )+ };
+    (@uint $t:ty : $cap:literal ) => {
+        impl_vector![int $t:$cap];
 
         #[doc = concat!("# Methods for vectors represented using `",
             stringify!($t), "`, unsigned.")]
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$t, D> {
             /// Calculates the floored magnitude of the vector.
             ///
@@ -234,10 +240,14 @@ macro_rules! impl_vector {
     };
 
     // $f: the inner floating-point primitive type
-    (float $($f:ty),+) => { $( impl_vector![@float $f]; )+ };
-    (@float $f:ty) => {
+    (float $($f:ty : $cap:literal),+) => {
+        $( impl_vector![@float $f:$cap]; )+
+    };
+    (@float $f:ty : $cap:literal) => {
         #[doc = concat!("# Methods for vectors represented using `",
             stringify!($f), "`.")]
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<const D: usize> Vector<$f, D> {
             /// A `Vector` with all ones.
             pub const ONE: Self = Self::new([1.0; D]);
@@ -252,6 +262,9 @@ macro_rules! impl_vector {
             /// \bm{n} = \widehat{\bm{a}} = \frac{1}{d}\thinspace\bm{a} =
             /// \frac{\bm{a}}{|\bm{a}|}
             /// $$
+            #[cfg(any(feature = "std", feature = "num_float"))]
+            #[cfg_attr(feature = "nightly_doc",
+                doc(cfg(any(feature = "std", feature = "num_int"))))]
             pub fn normalize(&self) -> Self {
                 let mag = self.magnitude();
                 let mut normalized = [0.0; D];
@@ -267,6 +280,8 @@ macro_rules! impl_vector {
             /// $$ \large |\vec{V}| = \sqrt{V_0^2 + ... + V_n^2} $$
             #[inline]
             #[cfg(any(feature = "std", feature = "num_float"))]
+            #[cfg_attr(feature = "nightly_doc",
+                doc(cfg(any(feature = "std", feature = "num_int"))))]
             pub fn magnitude(self) -> $f { self.dot(self).sqrt() }
 
             /// Calculates the squared magnitude of the vector.
@@ -359,6 +374,6 @@ macro_rules! impl_vector {
         }
     };
 }
-impl_vector![sint i8, i16, i32, i64, i128, isize];
-impl_vector![uint u8, u16, u32, u64, u128, usize];
-impl_vector![float f32, f64];
+impl_vector![sint i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize"];
+impl_vector![uint u8:"u8", u16:"u16", u32:"u32", u64:"u64", u128:"u128", usize:"usize"];
+impl_vector![float f32:"f32", f64:"f64"];

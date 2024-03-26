@@ -21,9 +21,11 @@ pub const COLOR_LUMINANCE_BLUE: f32 = LUMINANCE_BLUE![];
 sf! { macro_rules! LUMINANCE_BLUE { () => { 0.072192 }; } }
 pub(crate) use LUMINANCE_BLUE;
 
+// $t:   the floating-point primitive
+// $cap: the capability feature that enables the given implementation. E.g "i8".
 macro_rules! color_gamma_fns {
-    ($($t:ty),+) => { $( color_gamma_fns![@$t]; )+ };
-    (@$t:ty) => { paste! {
+    ($($t:ty : $cap:literal),+) => { $( color_gamma_fns![@$t:$cap]; )+ };
+    (@$t:ty : $cap:literal) => { paste! {
         #[doc = "Applies the `gamma` *(γ)* to a linear `" $t "` channel to make it non-linear."]
         ///
         /// # Algorithm
@@ -37,8 +39,9 @@ macro_rules! color_gamma_fns {
         /// \end{align}
         /// $$
         #[inline]
-        #[cfg(any(feature = "std", feature = "num_float"))]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "num_float"))))]
+        #[cfg(any(feature = "std", all(feature = "num_float", feature = "$cap")))]
+        #[cfg_attr(feature = "nightly_doc",
+            doc(cfg(any(feature = "std", all(feature = "num_float", feature = $cap)))))]
         pub fn [<color_gamma_apply_ $t>](c: $t, gamma: $t) -> $t {
             iif![c <= 0.0031308; 12.92 * c; 1.055 * c.powf(1.0 / gamma) - 0.055]
         }
@@ -56,11 +59,12 @@ macro_rules! color_gamma_fns {
         /// \end{align}
         /// $$
         #[inline]
-        #[cfg(any(feature = "std", feature = "num_float"))]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "num_float"))))]
+        #[cfg(any(feature = "std", all(feature = "num_float", feature = $cap)))]
+        #[cfg_attr(feature = "nightly_doc",
+            doc(cfg(any(feature = "std", all(feature = "num_float", feature = $cap)))))]
         pub fn [<color_gamma_remove_ $t>](c: $t, gamma: $t) -> $t {
             iif![c <= 0.04045; c / 12.92; ((c + 0.055) / (1.055)).powf(gamma)]
         }
     }};
 }
-color_gamma_fns!(f32, f64);
+color_gamma_fns![f32:"f32", f64:"f64"];
