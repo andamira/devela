@@ -3,14 +3,15 @@
 //!
 //
 
-use super::{Point, Point2d, Point3d, Vector};
+use super::{Point, Point2d, Point3d};
+
+#[cfg(feature = "fig")]
+use crate::fig::Vector;
 
 impl<T, const D: usize> Point<T, D> {
     /// Returns a new `Point` from the given `array`.
     pub const fn new(array: [T; D]) -> Self {
-        Self {
-            coords: Vector::new(array),
-        }
+        Self { coords: array }
     }
 }
 
@@ -19,41 +20,41 @@ impl<T, const D: usize> Point<T, D> {
 #[rustfmt::skip]
 impl<T> Point2d<T> {
     /// Returns a copy of the first dimension `x`.
-    #[inline] pub const fn x(self) -> T where T: Copy { self.coords.array[0] }
+    #[inline] pub const fn x(self) -> T where T: Copy { self.coords[0] }
     /// Returns a copy of the second dimension `y`.
-    #[inline] pub const fn y(self) -> T where T: Copy { self.coords.array[1] }
+    #[inline] pub const fn y(self) -> T where T: Copy { self.coords[1] }
     /// Returns a shared reference to the first dimension `x`.
-    #[inline] pub const fn x_ref(&self) -> &T { &self.coords.array[0] }
+    #[inline] pub const fn x_ref(&self) -> &T { &self.coords[0] }
     /// Returns a shared reference to the second dimension `y`.
-    #[inline] pub const fn y_ref(&self) -> &T { &self.coords.array[1] }
+    #[inline] pub const fn y_ref(&self) -> &T { &self.coords[1] }
     /// Returns an exclusive reference to the first dimension `x`.
-    #[inline] pub fn x_mut(&mut self) -> &mut T { &mut self.coords.array[0] }
+    #[inline] pub fn x_mut(&mut self) -> &mut T { &mut self.coords[0] }
     /// Returns an exclusive reference to the second dimension `y`.
-    #[inline] pub fn y_mut(&mut self) -> &mut T { &mut self.coords.array[1] }
+    #[inline] pub fn y_mut(&mut self) -> &mut T { &mut self.coords[1] }
 }
 
 #[rustfmt::skip]
 impl<T> Point3d<T> {
     /// Returns a copy of the first dimension `x`.
-    #[inline] pub const fn x(self) -> T where T: Copy { self.coords.array[0] }
+    #[inline] pub const fn x(self) -> T where T: Copy { self.coords[0] }
     /// Returns a copy of the second dimension `y`.
-    #[inline] pub const fn y(self) -> T where T: Copy { self.coords.array[1] }
+    #[inline] pub const fn y(self) -> T where T: Copy { self.coords[1] }
     /// Returns a copy of the third dimension `z`.
-    #[inline] pub const fn z(self) -> T where T: Copy { self.coords.array[2] }
+    #[inline] pub const fn z(self) -> T where T: Copy { self.coords[2] }
 
     /// Returns a shared reference to the first dimension `x`.
-    #[inline] pub const fn x_ref(&self) -> &T { &self.coords.array[0] }
+    #[inline] pub const fn x_ref(&self) -> &T { &self.coords[0] }
     /// Returns a shared reference to the second dimension `y`.
-    #[inline] pub const fn y_ref(&self) -> &T { &self.coords.array[1] }
+    #[inline] pub const fn y_ref(&self) -> &T { &self.coords[1] }
     /// Returns a shared reference to the third dimension `z`.
-    #[inline] pub const fn z_ref(&self) -> &T { &self.coords.array[2] }
+    #[inline] pub const fn z_ref(&self) -> &T { &self.coords[2] }
 
     /// Returns an exclusive reference to the first dimension `x`.
-    #[inline] pub fn x_mut(&mut self) -> &mut T { &mut self.coords.array[0] }
+    #[inline] pub fn x_mut(&mut self) -> &mut T { &mut self.coords[0] }
     /// Returns an exclusive reference to the second dimension `y`.
-    #[inline] pub fn y_mut(&mut self) -> &mut T { &mut self.coords.array[1] }
+    #[inline] pub fn y_mut(&mut self) -> &mut T { &mut self.coords[1] }
     /// Returns an exclusive reference to the third dimension `z`.
-    #[inline] pub fn z_mut(&mut self) -> &mut T { &mut self.coords.array[2] }
+    #[inline] pub fn z_mut(&mut self) -> &mut T { &mut self.coords[2] }
 }
 
 macro_rules! impl_point {
@@ -65,17 +66,18 @@ macro_rules! impl_point {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<const D: usize> Point<$t, D> {
-            /// Adds the given vector.
-            #[inline]
-            pub const fn c_add_vector(self, v: Vector<$t, D>) -> Self {
-                Self { coords: self.coords.c_add(v) }
-            }
-            /// Subtracts the given vector.
-            #[inline]
-            pub const fn c_sub_vector(self, v: Vector<$t, D>) -> Self {
-                Self { coords: self.coords.c_sub(v) }
-            }
-
+            // TODO
+            //
+            // /// Adds the given vector.
+            // #[inline]
+            // pub const fn c_add_vector(self, v: Vector<$t, D>) -> Self {
+            //     Self { coords: self.coords.c_add(v) }
+            // }
+            // /// Subtracts the given vector.
+            // #[inline]
+            // pub const fn c_sub_vector(self, v: Vector<$t, D>) -> Self {
+            //     Self { coords: self.coords.c_sub(v) }
+            // }
         }
     };
     (sint $($t:ty : $cap:literal),+) => { $( impl_point![@sint $t:$cap]; )+ };
@@ -99,16 +101,18 @@ macro_rules! impl_point {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<const D: usize> Point<$f, D> {
-            /// Adds the given vector.
-            #[inline]
-            pub fn add_vector(self, v: Vector<$f, D>) -> Self {
-                Self { coords: self.coords.add(v) }
-            }
-            /// Subtracts the given vector.
-            #[inline]
-            pub fn sub_vector(self, v: Vector<$f, D>) -> Self {
-                Self { coords: self.coords.sub(v) }
-            }
+            // TODO
+            //
+            // /// Adds the given vector.
+            // #[inline]
+            // pub fn add_vector(self, v: Vector<$f, D>) -> Self {
+            //     Self { coords: self.coords.add(v) }
+            // }
+            // /// Subtracts the given vector.
+            // #[inline]
+            // pub fn sub_vector(self, v: Vector<$f, D>) -> Self {
+            //     Self { coords: self.coords.sub(v) }
+            // }
         }
     };
 }

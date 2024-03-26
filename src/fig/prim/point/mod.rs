@@ -5,17 +5,15 @@
 
 #[cfg(feature = "alloc")]
 use crate::data::Vec;
-use crate::{data::Array, fig::Vector, mem::Storage, Bare};
+use crate::{data::Array, mem::Storage, Bare};
 
 mod core_traits;
 mod methods;
 
 /// A coordinate position in `D`-space without extent.
-///
-/// It's internally represented as a [`Vector`] from an origin.
 pub struct Point<T, const D: usize> {
     /// The D-dimensional coordinates.
-    pub coords: Vector<T, D>,
+    pub coords: [T; D],
 }
 
 /// A specific position in 2d-space without a size.
