@@ -14,6 +14,7 @@
 //   - modulo_mul (uc)
 //   - modulo_mul_cycles (uc)
 //   - modulo_mul_inv (uc)
+//   - modulo_div (uc)
 
 use crate::{
     code::{cif, iif, paste},
@@ -115,6 +116,9 @@ macro_rules! impl_int {
             ") *([uc](#method.modulo_mul_cycles_unchecked" $d "))*"]
         #[doc = "- [modulo_mul_inv](#method.modulo_mul_inv" $d
             ") *([uc](#method.modulo_mul_inv_unchecked" $d "))*"]
+        //
+        #[doc = "- [modulo_div](#method.modulo_div" $d
+            ") *([uc](#method.modulo_div_unchecked" $d "))*"]
         ///
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -762,6 +766,60 @@ macro_rules! impl_int {
                     Int(x.0.rem_euclid(modulus))
                 }
             }
+
+            /* modulo div (signed) */
+
+            /// Computes `self / other` over |`modulus`|.
+            ///
+            #[doc = "It upcasts internally to [`" $up "`]."]
+            ///
+            /// $a / b \mod m$ is equivalent to $a * b^{-1} \mod m$,
+            /// where $b^{-1}$ is the modular multiplicative inverse
+            /// of $b$ modulo $m$.
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `modulus == 0`,
+            /// and [`NoInverse`] if there's no multiplicative inverse of `other`.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumResult, NumError};
+            /// # fn main() -> NumResult<()> {
+            /// let m = 3;
+            #[doc = "assert_eq![Int(-4_" $t ").modulo_div(2, m)?, 1];"]
+            #[doc = "assert_eq![Int(-3_" $t ").modulo_div(2, m)?, 0];"]
+            #[doc = "assert_eq![Int(-2_" $t ").modulo_div(2, m)?, 2];"]
+            #[doc = "assert_eq![Int(-1_" $t ").modulo_div(2, m)?, 1];"]
+            #[doc = "assert_eq![Int( 0_" $t ").modulo_div(2, m)?, 0];"]
+            #[doc = "assert_eq![Int( 1_" $t ").modulo_div(2, m)?, 2];"]
+            #[doc = "assert_eq![Int( 2_" $t ").modulo_div(2, m)?, 1];"]
+            #[doc = "assert_eq![Int( 3_" $t ").modulo_div(2, m)?, 0];"]
+            #[doc = "assert_eq![Int( 4_" $t ").modulo_div(2, m)?, 2];"]
+            /// # Ok(()) }
+            /// ```
+            #[inline]
+            pub const fn modulo_div(self, other: $t, modulus: $t) -> Result<Int<$t>> {
+                if modulus == 0 {
+                    cold_err_zero()
+                } else {
+                    let inverse = unwrap![ok? Int(other).modulo_mul_inv(modulus)];
+                    self.modulo_mul(inverse.0, modulus)
+                }
+            }
+
+            /// Computes `self / other` over |`modulus`|,
+            /// unchecked version.
+            ///
+            #[doc = "It upcasts internally to [`" $up "`]."]
+            ///
+            /// # Panics
+            /// Panics if `modulus == 0`,
+            /// and if there's no multiplicative inverse of `other`.
+            #[inline]
+            pub const fn modulo_div_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
+                let inverse = Int(other).modulo_mul_inv_unchecked(modulus);
+                self.modulo_mul_unchecked(inverse.0, modulus)
+            }
         }
     }};
 
@@ -793,6 +851,9 @@ macro_rules! impl_int {
             ") *([uc](#method.modulo_mul_cycles_unchecked" $d "))*"]
         #[doc = "- [modulo_mul_inv](#method.modulo_mul_inv" $d
             ") *([uc](#method.modulo_mul_inv_unchecked" $d "))*"]
+        //
+        #[doc = "- [modulo_div](#method.modulo_div" $d
+            ") *([uc](#method.modulo_div_unchecked" $d "))*"]
         ///
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -1339,6 +1400,63 @@ macro_rules! impl_int {
                     Int((x.0.rem_euclid(modulus as $iup) as $t))
                 }
             }
+
+            /* modulo div (unsigned) */
+
+            /// Computes `self / other` over `modulus`.
+            ///
+            #[doc = "It upcasts internally to [`" $iup "`]."]
+            ///
+            /// $a / b \mod m$ is equivalent to $a * b^{-1} \mod m$,
+            /// where $b^{-1}$ is the modular multiplicative inverse
+            /// of $b$ modulo $m$.
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `modulus == 0`,
+            /// [`NoInverse`] if there's no multiplicative inverse of `other`,
+            /// and for `u128` it could return [`Overflow`] when casting
+            /// in the [`gcd_ext`][Self::gcd_ext] calculation.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumResult, NumError};
+            /// # fn main() -> NumResult<()> {
+            /// let m = 3;
+            #[doc = "assert_eq![Int( 0_" $t ").modulo_div(2, m)?, 0];"]
+            #[doc = "assert_eq![Int( 1_" $t ").modulo_div(2, m)?, 2];"]
+            #[doc = "assert_eq![Int( 2_" $t ").modulo_div(2, m)?, 1];"]
+            #[doc = "assert_eq![Int( 3_" $t ").modulo_div(2, m)?, 0];"]
+            #[doc = "assert_eq![Int( 4_" $t ").modulo_div(2, m)?, 2];"]
+            /// # Ok(()) }
+            /// ```
+            #[inline]
+            #[cfg(feature = $icap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
+            pub const fn modulo_div(self, other: $t, modulus: $t) -> Result<Int<$t>> {
+                if modulus == 0 {
+                    cold_err_zero()
+                } else {
+                    let inverse = unwrap![ok? Int(other).modulo_mul_inv(modulus)];
+                    self.modulo_mul(inverse.0, modulus)
+                }
+            }
+
+            /// Computes `self / other` over `modulus`,
+            /// unchecked version.
+            ///
+            #[doc = "It upcasts internally to [`" $iup "`]."]
+            ///
+            /// # Panics
+            /// Panics if `modulus == 0`,
+            /// if there's no multiplicative inverse of `other`.
+            /// and for `u128` it could overflow when casting
+            /// in the [`gcd_ext`][Self::gcd_ext] calculation.
+            #[inline]
+            #[cfg(feature = $icap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
+            pub const fn modulo_div_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
+                let inverse = Int(other).modulo_mul_inv_unchecked(modulus);
+                self.modulo_mul_unchecked(inverse.0, modulus)
+            }
         }
     }};
 }
@@ -1351,7 +1469,6 @@ impl_int![unsigned
     (u8:"u8", u16|i16:"i16":Y, "-6"), (u16:"u16", u32|i32:"i32":Y, "-7"),
     (u32:"u32", u64|i64:"i64":Y, "-8"), (u64:"u64", u128|i128:"i128":Y, "-9"),
     (u128:"u128", u128|i128:"i128":N, "-10")
-    // (usize:"usize", usize_up|isize_up:Y, "-11")
 ];
 #[cfg(target_pointer_width = "32")]
 impl_int![unsigned (usize:"usize", usize_up|isize_up:"i64":Y, "-11")];
