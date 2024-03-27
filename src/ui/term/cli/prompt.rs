@@ -3,7 +3,7 @@
 //! A versatile CLI prompt.
 //
 
-use core::fm
+use core::fmt;
 use crossterm::{
     cursor::MoveToColumn,
     event::{read, Event, KeyCode, KeyEvent, KeyModifiers},

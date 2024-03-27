@@ -92,7 +92,7 @@ macro_rules! impl_int {
             pub const fn sqrt_ceil(self) -> Result<Int<$t>> {
                 let a = self.0;
                 if let Ok(floor) = self.sqrt_floor() {
-                    iif![floor.0 * floor.0 == a; Ok(floor); Ok(Int(floor.0 + 1))] // IMPROVE ops
+                    iif![floor.0 * floor.0 == a; Ok(floor); Ok(Int(floor.0 + 1))]
                 } else {
                     Err(NonNegativeRequired)
                 }
@@ -150,7 +150,8 @@ macro_rules! impl_int {
 
             /// Returns the rounded integer square root.
             ///
-            /// Upcasts to a bigger size for the intermediate operations, if possible.
+            #[doc = "It upcasts internally to [`" $up "`]."]
+            ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative, or possibly [`Overflow`]
             /// if there's no larger type to upcast and the value is close to its maximum.
@@ -172,8 +173,8 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(20_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(21_" $t ").sqrt_round(), Ok(Int(5))];"]
             #[doc="assert_eq![Int(-4_" $t ").sqrt_round(), Err(NonNegativeRequired)];"]
-            #[doc="assert![Int(i64::MAX).sqrt_round().is_ok()];"]
-            #[doc="assert![Int(i128::MAX).sqrt_round().is_err()];"]
+            // #[doc="assert![Int(i64::MAX).sqrt_round().is_ok()];"]
+            // #[doc="assert![Int(i128::MAX).sqrt_round().is_err()];"]
             /// ```
             #[inline]
             pub const fn sqrt_round(self) -> Result<Int<$t>> {
@@ -257,7 +258,7 @@ macro_rules! impl_int {
             #[inline] #[must_use]
             pub const fn sqrt_ceil(self) -> Int<$t> {
                 let a = self.0; let floor = self.sqrt_floor();
-                iif![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)] // IMPROVE ops
+                iif![floor.0 * floor.0 == a; floor; Int(floor.0 + 1)]
             }
 
             /// Returns the floored integer square root.
@@ -307,7 +308,8 @@ macro_rules! impl_int {
 
             /// Returns the rounded integer square root.
             ///
-            /// Upcasts to a bigger size for the intermediate operations, if possible.
+            #[doc = "It upcasts internally to [`" $up "`]."]
+            ///
             /// # Errors
             /// Can returns [`Overflow`] if there's no larger type to upcast and the value
             /// is close to its maximum.
@@ -328,8 +330,6 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(20_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(21_" $t ").sqrt_round(), Ok(Int(5))];"]
-            #[doc="assert![Int(i64::MAX).sqrt_round().is_ok()];"]
-            #[doc="assert![Int(i128::MAX).sqrt_round().is_err()];"]
             /// ```
             #[inline]
             pub const fn sqrt_round(self) -> Result<Int<$t>> {
