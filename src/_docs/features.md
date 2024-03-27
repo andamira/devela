@@ -50,7 +50,6 @@ Single modules:
 - [`num`]: enables all of the `num` sub-features:
     - `num_float`: `Float`, `ExtFloat`.
     - `num_int`: `Frac`, `Int`, `NumInt`, `NumRefInt`.
-    - `num_niche_impls`: extra impls for [`niche`] types.
     - `num_niche_range`: `Range*` and `NonRange*` niche types.
 - [`os`]
 - [`result`]
