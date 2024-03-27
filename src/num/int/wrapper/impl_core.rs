@@ -8,11 +8,12 @@
 //   - is_even
 //   - is_odd
 //   - gcd
-//   - lcm
-//   - scale
-// - signed only:
 //   - gcd_ext
 //   - gcd_ext_euc
+//   - lcm
+//   - scale
+//   - scale_wrap
+//   - midpoint
 
 use {
     crate::{
@@ -26,20 +27,21 @@ use {
 
 // $t:   the input/output type
 // $cap: the capability feature that enables the given implementation. E.g "u8".
+// $ut:  the unsigned type of the same size as $t (only for signed)
 // $up:  the upcasted type to do the operations on (for lcm). E.g u8.
-// $iup: the signed upcasted type for some methods (gcd_ext). E.g. i16.
-// $icap: the feature that enables some methods related to `$iup`. E.g "i16".
+// $iup: the signed upcasted type for some methods (gcd_ext). E.g. i16. (only for unsigned)
+// $icap: the feature that enables some methods related to `$iup`. E.g "i16". (only for unsigned)
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
-    (signed $( $t:ty : $cap:literal : $up:ty : $d:literal ),+) => {
-        $( impl_int![@signed $t:$cap:$up:$d]; )+
+    (signed $( $t:ty : $cap:literal : $ut:ty : $up:ty : $d:literal ),+) => {
+        $( impl_int![@signed $t:$cap:$ut:$up:$d]; )+
     };
     (unsigned $( $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal : $d:literal ),+) => {
         $( impl_int![@unsigned $t:$cap:$up|$iup:$icap : $d]; )+
     };
 
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $ut:ty : $up:ty : $d:literal) => { paste! {
         #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $d ")"]
         #[doc = "- [is_even](#method.is_even" $d ")"]
@@ -50,6 +52,7 @@ macro_rules! impl_int {
         #[doc = "- [lcm](#method.lcm" $d ")"]
         #[doc = "- [scale](#method.scale" $d ")"]
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
+        #[doc = "- [midpoint](#method.midpoint" $d ")"]
         ///
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -298,6 +301,34 @@ macro_rules! impl_int {
                 Int(((b - a) * (v - min) / (max - min) + a) as $t)
             }
             // MAYBE: scale_saturate
+
+            /// Calculates the middle point of `self` and `other`.
+            ///
+            /// The result is always rounded towards negative infinity.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(4), 2];")]
+            #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(-1), -1];")]
+            #[doc = concat!("assert_eq![Int(-1_", stringify!($t), ").midpoint(0), -1];")]
+            /// ```
+            // WAIT: [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
+            // NOTE: based on Rust's std implementation.
+            #[inline]
+            pub const fn midpoint(self, other: $t) -> Int<$t> {
+                const U: $ut = <$t>::MIN.unsigned_abs();
+
+                // Map a $t to a $ut
+                // ex: i8 [-128; 127] to [0; 255]
+                const fn map(a: $t) -> $ut { (a as $ut) ^ U }
+
+                // Map a $ut to a $t
+                // ex: u8 [0; 255] to [-128; 127]
+                const fn demap(a: $ut) -> $t { (a ^ U) as $t }
+
+                Int(demap(Int(map(self.0)).midpoint(map(other)).0))
+            }
         }
     }};
 
@@ -308,9 +339,12 @@ macro_rules! impl_int {
         #[doc = "- [is_even](#method.is_even" $d ")"]
         #[doc = "- [is_odd](#method.is_odd" $d ")"]
         #[doc = "- [gcd](#method.gcd" $d ")"]
+        #[doc = "- [gcd_ext](#method.gcd_ext" $d ")"]
+        #[doc = "- [gcd_ext_euc](#method.gcd_ext_euc" $d ")"]
         #[doc = "- [lcm](#method.lcm" $d ")"]
         #[doc = "- [scale](#method.scale" $d ")"]
         #[doc = "- [scale_wrap](#method.scale_wrap" $d ")"]
+        #[doc = "- [midpoint](#method.midpoint" $d ")"]
         ///
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -572,17 +606,35 @@ macro_rules! impl_int {
                 Int(((b - a) * (v - min) / (max - min) + a) as $t)
             }
             // MAYBE: scale_saturate
+
+            /// Calculates the middle point of `self` and `other`.
+            ///
+            /// The result is always rounded towards negative infinity.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Int;
+            #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(4), 2];")]
+            #[doc = concat!("assert_eq![Int(1_", stringify!($t), ").midpoint(4), 2];")]
+            /// ```
+            // WAIT: [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
+            // NOTE: based on Rust's std implementation.
+            #[inline]
+            pub const fn midpoint(self, other: $t) -> Int<$t> {
+                // Use the well known branchless algorithm from Hacker's Delight to compute
+                // `(a + b) / 2` without overflowing: `((a ^ b) >> 1) + (a & b)`.
+                Int(((self.0 ^ other) >> 1) + (self.0 & other))
+            }
         }
     }};
 }
 impl_int![signed
-    i8:"i8":i16:"", i16:"i16":i32:"-1", i32:"i32":i64:"-2", i64:"i64":i128:"-3",
-    i128:"i128":i128:"-4", isize:"isize":isize_up:"-5"
+    i8:"i8":u8:i16:"", i16:"i16":u16:i32:"-1", i32:"i32":u32:i64:"-2", i64:"i64":u64:i128:"-3",
+    i128:"i128":u128:i128:"-4", isize:"isize":usize:isize_up:"-5"
 ];
 impl_int![unsigned
     u8:"u8":u16|i16:"i16":"-6", u16:"u16":u32|i32:"i32":"-7", u32:"u32":u64|i64:"i64":"-8",
     u64:"u64":u128|i128:"i128":"-9", u128:"u128":u128|i128:"i128":"-10"
-    // usize:"usize":usize_up|isize_up:"-11"
 ];
 #[cfg(target_pointer_width = "32")]
 impl_int![unsigned usize:"usize":usize_up|isize_up:"i64":"-11"];
