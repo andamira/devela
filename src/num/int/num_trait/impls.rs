@@ -168,6 +168,13 @@ macro_rules! impl_int {
         fn int_ref_scale_wrap(&self, min: &Self::Rhs, max: &Self::Rhs, a: &Self::Rhs, b: &Self::Rhs)
             -> Result<Self::Out> { Ok(Int(*self).scale_wrap(*min, *max, *a, *b).0) }
 
+        #[inline]
+        fn int_midpoint(self, other: Self::Rhs) -> Result<Self::Out> {
+            Ok(Int(self).midpoint(other).0) }
+        #[inline]
+        fn int_ref_midpoint(&self, other: &Self::Rhs) -> Result<Self::Out> {
+            Ok(Int(*self).midpoint(*other).0) }
+
         /* combinatorics */
 
         #[inline]

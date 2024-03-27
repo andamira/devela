@@ -61,6 +61,7 @@ mod auto_impls {
 ///     [`gcd_ext`][Self::int_gcd_ext],
 ///     [`lcm`][Self::int_lcm],
 ///     [`scale`][Self::int_scale].
+///     [`midpoint`][Self::int_midpoint].
 /// - combinatorics:
 ///     [`factorial`][Self::int_factorial],
 ///     [`subfactorial`][Self::int_subfactorial],
@@ -194,6 +195,11 @@ pub trait NumInt: Num {
     /// *Like [`int_scale_wrap`][Self::int_scale_wrap] but takes the arguments by reference.*
     fn int_ref_scale_wrap(&self, min: &Self::Rhs, max: &Self::Rhs, a: &Self::Rhs, b: &Self::Rhs)
         -> Result<Self::Out> { E::ni() }
+
+    /// Returns the midpoint of `self` and `other`.
+    fn int_midpoint(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_midpoint`][Self::int_midpoint] but takes the arguments by reference.*
+    fn int_ref_midpoint(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /* combinatorics */
 

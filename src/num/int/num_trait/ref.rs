@@ -74,7 +74,7 @@ where
 
     /// *Calls `NumInt::`[`int_ref_lcm`][NumInt::int_ref_lcm]*.
     fn int_ref_lcm(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_lcm(other) }
+        self.deref().int_ref_lcm(other) }
 
     /// *Calls `NumInt::`[`int_ref_scale`][NumInt::int_ref_scale]*.
     fn int_ref_scale(&self,
@@ -89,37 +89,45 @@ where
         -> Result<<Self::Own as Num>::Out> {
         self.deref().int_ref_scale_wrap(min, max, a, b) }
 
+    /// *Calls `NumInt::`[`int_ref_midpoint`][NumInt::int_ref_midpoint]*.
+    fn int_ref_midpoint(&self, other: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_midpoint(other) }
+
     /* combinatorics */
 
     /// *Calls `NumInt::`[`int_ref_factorial`][NumInt::int_ref_factorial]*.
     fn int_ref_factorial(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_factorial() }
+        self.deref().int_ref_factorial() }
     /// *Calls `NumInt::`[`int_ref_subfactorial`][NumInt::int_ref_subfactorial]*.
     fn int_ref_subfactorial(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_subfactorial() }
+        self.deref().int_ref_subfactorial() }
     /// *Calls `NumInt::`[`int_ref_permute`][NumInt::int_ref_permute]*.
     fn int_ref_permute(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_permute(r) }
+        self.deref().int_ref_permute(r) }
     /// *Calls `NumInt::`[`int_ref_permute_rep`][NumInt::int_ref_permute_rep]*.
     fn int_ref_permute_rep(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_permute_rep(r) }
+        self.deref().int_ref_permute_rep(r) }
     /// *Calls `NumInt::`[`int_ref_combine`][NumInt::int_ref_combine]*.
     fn int_ref_combine(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_combine(r) }
+        self.deref().int_ref_combine(r) }
     /// *Calls `NumInt::`[`int_ref_combine_rep`][NumInt::int_ref_combine_rep]*.
     fn int_ref_combine_rep(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_combine_rep(r) }
+        self.deref().int_ref_combine_rep(r) }
 
     /* division */
 
     /// *Calls `NumInt::`[`int_ref_div_rem`][NumInt::int_ref_div_rem]*.
-    fn int_ref_div_rem(&self, b: &<Self::Own as Num>::Rhs) -> Result<[<Self::Own as Num>::Out; 2]> {
+    fn int_ref_div_rem(&self, b: &<Self::Own as Num>::Rhs)
+        -> Result<[<Self::Own as Num>::Out; 2]> {
             self.deref().int_ref_div_rem(b) }
     /// *Calls `NumInt::`[`int_ref_div_ceil`][NumInt::int_ref_div_ceil]*.
-    fn int_ref_div_ceil(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+    fn int_ref_div_ceil(&self, b: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_div_ceil(b) }
     /// *Calls `NumInt::`[`int_ref_div_floor`][NumInt::int_ref_div_floor]*.
-    fn int_ref_div_floor(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+    fn int_ref_div_floor(&self, b: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_div_floor(b) }
     /// *Calls `NumInt::`[`int_ref_div_ties_away`][NumInt::int_ref_div_ties_away]*.
     fn int_ref_div_ties_away(&self, b: &<Self::Own as Num>::Rhs)
@@ -130,10 +138,12 @@ where
         -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_div_ties_towards(b) }
     /// *Calls `NumInt::`[`int_ref_div_ties_even`][NumInt::int_ref_div_ties_even]*.
-    fn int_ref_div_ties_even(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+    fn int_ref_div_ties_even(&self, b: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_div_ties_even(b) }
     /// *Calls `NumInt::`[`int_ref_div_ties_odd`][NumInt::int_ref_div_ties_odd]*.
-    fn int_ref_div_ties_odd(&self, b: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
+    fn int_ref_div_ties_odd(&self, b: &<Self::Own as Num>::Rhs)
+        -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_div_ties_odd(b) }
 
     /* factors (allocating) */
