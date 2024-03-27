@@ -12,10 +12,18 @@
 use crate::{
     code::{iif, paste},
     num::{isize_up, upcasted_op, usize_up, Compare, Int, NumError as E, NumResult as Result},
+    result::unwrap,
 };
-use E::NonNegativeRequired;
 #[cfg(doc)]
 use E::Overflow;
+use E::{NonNegativeRequired, NonZeroRequired};
+
+// helper function to be called from the cold path branch when nth == 0 in root_*.
+#[cold] #[inline(never)] #[rustfmt::skip] #[allow(dead_code)]
+const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
+// helper function to be called from the cold path branches with an ok result.
+#[cold] #[inline(never)] #[rustfmt::skip] #[allow(dead_code)]
+const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 
 // $t:   the input/output type
 // $cap: the capability feature that enables the given implementation. E.g "i8".
@@ -30,7 +38,7 @@ macro_rules! impl_int {
 
     // implements signed ops
     (@signed $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
-        /* signed square root */
+        /* sqrt (signed) */
 
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]
@@ -173,8 +181,6 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(20_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(21_" $t ").sqrt_round(), Ok(Int(5))];"]
             #[doc="assert_eq![Int(-4_" $t ").sqrt_round(), Err(NonNegativeRequired)];"]
-            // #[doc="assert![Int(i64::MAX).sqrt_round().is_ok()];"]
-            // #[doc="assert![Int(i128::MAX).sqrt_round().is_err()];"]
             /// ```
             #[inline]
             pub const fn sqrt_round(self) -> Result<Int<$t>> {
@@ -197,6 +203,89 @@ macro_rules! impl_int {
                     iif![a - mul >= (x + 1) * (x + 1) - a; Ok(Int(x as $t + 1)); Ok(Int(x as $t))]
                 }
             }
+
+            /* root (signed) */
+
+            /// Returns the ceiled integer `nth` root.
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `nth` is 0, or
+            /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            #[doc="assert_eq![Int(48_" $t ").root_ceil(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(70_" $t ").root_ceil(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(81_" $t ").root_ceil(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(88_" $t ").root_ceil(4), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(114_" $t ").root_ceil(4), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(-81" $t ").root_ceil(4), Err(NonNegativeRequired)];"]
+            #[doc="assert_eq![Int(" $t "::MAX).root_ceil(1), Ok(Int(" $t "::MAX))];"]
+            /// ```
+            pub const fn root_ceil(self, nth: u32) -> Result<Int<$t>> {
+                if nth == 0 {
+                    cold_err_zero()
+                } else if nth == 1 {
+                    cold_ok_int(self)
+                } else if self.0 == 0 {
+                    cold_ok_int(Int(0))
+                } else if self.0 < 0 && nth % 2 == 0 {
+                    Err(NonNegativeRequired)
+                } else {
+                    let mut x = 1 as $t;
+                    let positive_base = self.0.abs();
+                    while let Some(val) = x.checked_pow(nth) {
+                        if val > positive_base { break; }
+                        x += 1;
+                    }
+                    let floor_root = x - 1;
+                    let ceil_root = if floor_root.pow(nth) == positive_base {
+                        floor_root
+                    } else {
+                        floor_root + 1
+                    };
+                    Ok(Int(ceil_root * self.0.signum()))
+                }
+            }
+
+            /// Returns the floored integer `nth` root.
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `nth` is 0, or
+            /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            #[doc="assert_eq![Int(48_" $t ").root_floor(4), Ok(Int(2))];"]
+            #[doc="assert_eq![Int(70_" $t ").root_floor(4), Ok(Int(2))];"]
+            #[doc="assert_eq![Int(81_" $t ").root_floor(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(88_" $t ").root_floor(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(114_" $t ").root_floor(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(-81_" $t ").root_floor(4), Err(NonNegativeRequired)];"]
+            #[doc="assert_eq![Int(" $t "::MAX).root_floor(1), Ok(Int(" $t "::MAX))];"]
+            /// ```
+            #[inline]
+            pub const fn root_floor(self, nth: u32) -> Result<Int<$t>> {
+                if nth == 0 {
+                    cold_err_zero()
+                } else if nth == 1 {
+                    cold_ok_int(self)
+                } else if self.0 == 0 {
+                    cold_ok_int(Int(0))
+                } else if self.0 < 0 && nth % 2 == 0 {
+                    Err(NonNegativeRequired)
+                } else {
+                    let mut x = 1 as $t;
+                    let positive_base = self.0.abs();
+                    while let Some(val) = x.checked_pow(nth) {
+                        if val > positive_base { break; }
+                        x += 1;
+                    }
+                    Ok(Int((x - 1) * self.0.signum()))
+                }
+            }
         }
     }};
 
@@ -210,7 +299,7 @@ macro_rules! impl_int {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
-            /* unsigned square root */
+            /* sqrt (unsigned) */
 
             /// Returns `true` if it's a perfect square, false otherwise.
             /// # Algorithm
@@ -348,6 +437,72 @@ macro_rules! impl_int {
                     // do we have to round up?
                     let mul = upcasted_op![mul_err(x, x) $t => $up];
                     iif![a - mul >= (x + 1) * (x + 1) - a; Ok(Int(x as $t + 1)); Ok(Int(x as $t))]
+                }
+            }
+
+            /* root (unsigned) */
+
+            /// Returns the ceiled integer `nth` root.
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `nth` is 0.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            #[doc="assert_eq![Int(48_" $t ").root_ceil(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(70_" $t ").root_ceil(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(81_" $t ").root_ceil(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(88_" $t ").root_ceil(4), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(114_" $t ").root_ceil(4), Ok(Int(4))];"]
+            #[doc="assert_eq![Int(" $t "::MAX).root_ceil(1), Ok(Int(" $t "::MAX))];"]
+            /// ```
+            #[inline]
+            pub const fn root_ceil(self, nth: u32) -> Result<Int<$t>> {
+                match self.root_floor(nth) {
+                    Ok(floor_root) => {
+                        if floor_root.0.pow(nth) == self.0 {
+                            Ok(floor_root)
+                        } else {
+                            Ok(Int(floor_root.0 + 1))
+                        }
+                    },
+                    Err(e) => Err(e),
+                }
+            }
+
+            /// Returns the floored integer `nth` root.
+            ///
+            /// # Errors
+            /// Returns [`NonZeroRequired`] if `nth` is 0.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            #[doc="assert_eq![Int(48_" $t ").root_floor(4), Ok(Int(2))];"]
+            #[doc="assert_eq![Int(70_" $t ").root_floor(4), Ok(Int(2))];"]
+            #[doc="assert_eq![Int(81_" $t ").root_floor(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(88_" $t ").root_floor(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(114_" $t ").root_floor(4), Ok(Int(3))];"]
+            #[doc="assert_eq![Int(" $t "::MAX).root_floor(1), Ok(Int(" $t "::MAX))];"]
+            /// ```
+            #[inline]
+            pub const fn root_floor(self, nth: u32) -> Result<Int<$t>> {
+                if nth == 0 {
+                    cold_err_zero()
+                } else if nth == 1 {
+                    cold_ok_int(self)
+                } else if self.0 == 0 {
+                    cold_ok_int(Int(0))
+                } else {
+                    let mut x = 1 as $t;
+                    while let Some(val) = x.checked_pow(nth) {
+                        if val > self.0 {
+                            break;
+                        }
+                        x += 1;
+                    }
+                    Ok(Int(x - 1))
                 }
             }
         }
