@@ -201,7 +201,7 @@ where
     fn int_ref_totient(&self) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_totient() }
 
-    /* square root */
+    /* sqrt roots */
 
     /// *Calls `NumInt::`[`int_ref_is_square`][NumInt::int_ref_is_square]*.
     fn int_ref_is_square(&self) -> Result<bool> {
@@ -215,4 +215,13 @@ where
     /// *Calls `NumInt::`[`int_ref_sqrt_round`][NumInt::int_ref_sqrt_round]*.
     fn int_ref_sqrt_round(&self) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_sqrt_round() }
+
+    /* roots */
+
+    /// *Calls `NumInt::`[`int_ref_root_ceil`][NumInt::int_ref_root_ceil]*.
+    fn int_ref_root_ceil(&self, nth: u32) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_root_ceil(nth) }
+    /// *Calls `NumInt::`[`int_ref_root_floor`][NumInt::int_ref_root_floor]*.
+    fn int_ref_root_floor(&self, nth: u32) -> Result<<Self::Own as Num>::Out> {
+            self.deref().int_ref_root_floor(nth) }
 }

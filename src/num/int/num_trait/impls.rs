@@ -39,14 +39,28 @@ macro_rules! impl_int {
                 let g = Int(*self).gcd_ext(*other);
                 Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
 
-            /* roots */
+            /* sqrt roots */
 
             #[inline]
-            fn int_sqrt_ceil(self) -> Result<Self::Out> { Int(self).sqrt_ceil().map(|n|n.0) }
+            fn int_sqrt_ceil(self) -> Result<Self::Out> {
+                Int(self).sqrt_ceil().map(|n|n.0) }
             #[inline]
-            fn int_sqrt_floor(self) -> Result<Self::Out> { Int(self).sqrt_floor().map(|n|n.0) }
+            fn int_ref_sqrt_ceil(&self) -> Result<Self::Out> {
+                Int(*self).sqrt_ceil().map(|n|n.0) }
+
             #[inline]
-            fn int_sqrt_round(self) -> Result<Self::Out> { Int(self).sqrt_round().map(|n|n.0) }
+            fn int_sqrt_floor(self) -> Result<Self::Out> {
+                Int(self).sqrt_floor().map(|n|n.0) }
+            #[inline]
+            fn int_ref_sqrt_floor(&self) -> Result<Self::Out> {
+                Int(*self).sqrt_floor().map(|n|n.0) }
+
+            #[inline]
+            fn int_sqrt_round(self) -> Result<Self::Out> {
+                Int(self).sqrt_round().map(|n|n.0) }
+            #[inline]
+            fn int_ref_sqrt_round(&self) -> Result<Self::Out> {
+                Int(*self).sqrt_round().map(|n|n.0) }
         }
     }};
 
@@ -69,14 +83,28 @@ macro_rules! impl_int {
             fn int_ref_gcd_ext(&self, _: &Self::Rhs)
                 -> Result<GcdExt<Self::Out, Self::Out>> { E::ns() }
 
-            /* roots */
+            /* sqrt roots */
 
             #[inline]
-            fn int_sqrt_ceil(self) -> Result<Self::Out> { Ok(Int(self).sqrt_ceil().0) }
+            fn int_sqrt_ceil(self) -> Result<Self::Out> {
+                Ok(Int(self).sqrt_ceil().0) }
             #[inline]
-            fn int_sqrt_floor(self) -> Result<Self::Out> { Ok(Int(self).sqrt_floor().0) }
+            fn int_ref_sqrt_ceil(&self) -> Result<Self::Out> {
+                Ok(Int(*self).sqrt_ceil().0) }
+
             #[inline]
-            fn int_sqrt_round(self) -> Result<Self::Out> { Int(self).sqrt_round().map(|n|n.0) }
+            fn int_sqrt_floor(self) -> Result<Self::Out> {
+                Ok(Int(self).sqrt_floor().0) }
+            #[inline]
+            fn int_ref_sqrt_floor(&self) -> Result<Self::Out> {
+                Ok(Int(*self).sqrt_floor().0) }
+
+            #[inline]
+            fn int_sqrt_round(self) -> Result<Self::Out> {
+                Int(self).sqrt_round().map(|n|n.0) }
+            #[inline]
+            fn int_ref_sqrt_round(&self) -> Result<Self::Out> {
+                Int(*self).sqrt_round().map(|n|n.0) }
         }
     }};
 
@@ -315,13 +343,29 @@ macro_rules! impl_int {
         #[inline]
         fn int_ref_totient(&self) -> Result<Self::Out> { Ok(Int(*self).totient().0) }
 
-        /* roots */
+        /* sqrt roots */
 
         #[inline]
         fn int_is_square(self) -> Result<bool> { Ok(Int(self).is_square()) }
         #[inline]
         fn int_ref_is_square(&self) -> Result<bool> { Ok(Int(*self).is_square()) }
         // NOTE: the rest are sign-specific
+
+        /* roots */
+
+        #[inline]
+        fn int_root_ceil(self, nth: u32) -> Result<Self::Out> {
+            Int(self).root_ceil(nth).map(|n|n.0) }
+        #[inline]
+        fn int_ref_root_ceil(&self, nth: u32) -> Result<Self::Out> {
+            Int(*self).root_ceil(nth).map(|n|n.0) }
+
+        #[inline]
+        fn int_root_floor(self, nth: u32) -> Result<Self::Out> {
+            Int(self).root_floor(nth).map(|n|n.0) }
+        #[inline]
+        fn int_ref_root_floor(&self, nth: u32) -> Result<Self::Out> {
+            Int(*self).root_floor(nth).map(|n|n.0) }
     };
 }
 impl_int![];

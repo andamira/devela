@@ -575,7 +575,7 @@ pub trait NumInt: Num {
     /// *Like [`int_totient`][Self::int_totient] but takes the arguments by reference.*
     fn int_ref_totient(&self) -> Result<Self::Out> { E::ni() }
 
-    /* square root */
+    /* sqrt roots */
 
     /// Returns `true` if it's a perfect square.
     ///
@@ -658,4 +658,24 @@ pub trait NumInt: Num {
     fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_sqrt_round`][Self::int_sqrt_round] but takes the arguments by reference.*
     fn int_ref_sqrt_round(&self) -> Result<Self::Out> { E::ni() }
+
+    /* roots */
+
+    /// Returns the ceiled integer `nth` root.
+    ///
+    /// # Errors
+    /// Returns [`NonZeroRequired`] if `nth` is 0, or
+    /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
+    fn int_root_ceil(self, nth: u32) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_root_ceil`][Self::int_root_ceil] but takes the arguments by reference.*
+    fn int_ref_root_ceil(&self, nth: u32) -> Result<Self::Out> { E::ni() }
+
+    /// Returns the floored integer `nth` root.
+    ///
+    /// # Errors
+    /// Returns [`NonZeroRequired`] if `nth` is 0, or
+    /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
+    fn int_root_floor(self, nth: u32) -> Result<Self::Out> where Self: Sized { E::ni() }
+    /// *Like [`int_root_floor`][Self::int_root_floor] but takes the arguments by reference.*
+    fn int_ref_root_floor(&self, nth: u32) -> Result<Self::Out> { E::ni() }
 }
