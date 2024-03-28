@@ -41,7 +41,7 @@ mod auto_impls {
 /// - Any concrete implementation must implement the operations it wants to support.
 /// - Any operations specifically not supported should ideally return [`NotSupported`].
 /// - This trait tries to offer the same methods everywhere, giving a result when possible.
-/// - Operations are generally supported if they can be valid for some, not necessarily all, values.
+/// - Operations are generally supported if they can be valid for some values.
 /// - Most methods come in two variants, starting with different prefixes:
 ///   - `int_*` methods take the arguments by value.
 ///   - `int_ref_*` methods take the arguments by reference.
@@ -100,6 +100,9 @@ mod auto_impls {
 /// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait NumInt: Num {
+    /// Specifically signed output type for some operations (▶ `int_gcd_ext`).
+    type OutI;
+
     /* base */
 
     /// Returns the digital root in base 10.
@@ -130,7 +133,8 @@ pub trait NumInt: Num {
     fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of digits in the given `base`.
-    fn int_digits_base_sign(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    fn int_digits_base_sign(self, base: Self::Rhs)
+        -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_digits_base_sign`][Self::int_digits_base_sign]
     /// but takes the arguments by reference.*
     fn int_ref_digits_base_sign(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
@@ -159,10 +163,10 @@ pub trait NumInt: Num {
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
     fn int_gcd_ext(self, other: Self::Rhs)
-        -> Result<GcdExt<Self::Out, Self::Out>> where Self: Sized { E::ni() }
+        -> Result<GcdExt<Self::Out, Self::OutI>> where Self: Sized { E::ni() }
     /// *Like [`int_gcd_ext`][Self::int_gcd_ext] but takes the arguments by reference.*
     fn int_ref_gcd_ext(&self, other: &Self::Rhs)
-        -> Result<GcdExt<Self::Out, Self::Out>> { E::ni() }
+        -> Result<GcdExt<Self::Out, Self::OutI>> { E::ni() }
 
     /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
     fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -514,7 +518,8 @@ pub trait NumInt: Num {
     /// assert_eq![7_i32.int_factors_prime_buf(&mut buf), Ok(1)];
     /// assert_eq![buf[..1], [7]];
     /// ```
-    fn int_factors_prime_buf(self, buffer: &mut [Self]) -> Result<usize> where Self: Sized { E::ni() }
+    fn int_factors_prime_buf(self, buffer: &mut [Self])
+        -> Result<usize> where Self: Sized { E::ni() }
     /// *Like [`int_factors_prime_buf`][Self::int_factors_prime_buf]
     /// but takes the arguments by reference.*
     fn int_ref_factors_prime_buf(&self, buffer: &mut [Self::Out]) -> Result<usize> { E::ni() }

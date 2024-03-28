@@ -10,14 +10,11 @@ use crate::{
     num::{GcdExt, Int, NumError as E, NumInt, NumResult as Result},
 };
 
-// $p:  the primitive type
-// $cap: the capability feature that enables the given implementation. E.g "i8".
+// $p:     the primitive type
+// $cap:   the capability feature that enables the given implementation. E.g "i8".
+// $io:    the signed output primitive type (upcasted for unsigned, same as $p for signed)
+// $iocap: the capability feature that enables some ops with signed output primitive type.
 macro_rules! impl_int {
-    [] => {
-        impl_int![i i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize"];
-        impl_int![u u8:"u8", u16:"u16", u32:"u32", u64:"u64", u128:"u128", usize:"usize"];
-    };
-
     // Implements `NumInt` for signed integer types
     // --------------------------------------------------------------------------------------------
     (i $($p:ident : $cap:literal),+) => { $( impl_int![@i $p:$cap]; )+ };
@@ -26,16 +23,18 @@ macro_rules! impl_int {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl NumInt for $p {
+            type OutI = $p;
+
             impl_int![common_body_iu];
 
             /* core */
 
             #[inline]
-            fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdExt<Self::Out, Self::Out>> {
+            fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdExt<Self::Out, Self::OutI>> {
                 let g = Int(self).gcd_ext(other);
                 Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
             #[inline]
-            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdExt<Self::Out, Self::Out>> {
+            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdExt<Self::Out, Self::OutI>> {
                 let g = Int(*self).gcd_ext(*other);
                 Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
 
@@ -66,22 +65,32 @@ macro_rules! impl_int {
 
     // Implements `Num` for unsigned integer types
     // --------------------------------------------------------------------------------------------
-    (u $($p:ident : $cap:literal),+) => { $( impl_int![@u $p:$cap]; )+ };
-    (@u $p:ident : $cap:literal) => { paste! {
+    (u $($p:ident : $cap:literal | $io:ident : $iocap:literal),+) => {
+        $( impl_int![@u $p:$cap | $io:$iocap]; )+
+    };
+    (@u $p:ident : $cap:literal | $io:ident : $iocap:literal) => { paste! {
         // u*
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl NumInt for $p {
+            type OutI = $io;
+
             impl_int![common_body_iu];
 
             /* core */
 
             #[inline]
-            fn int_gcd_ext(self, _: Self::Rhs)
-                -> Result<GcdExt<Self::Out, Self::Out>> { E::ns() }
+            #[cfg(feature = $iocap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $iocap)))]
+            fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdExt<Self::Out, Self::OutI>> {
+                let g = Int(self).gcd_ext(other)?;
+                Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
             #[inline]
-            fn int_ref_gcd_ext(&self, _: &Self::Rhs)
-                -> Result<GcdExt<Self::Out, Self::Out>> { E::ns() }
+            #[cfg(feature = $iocap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $iocap)))]
+            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdExt<Self::Out, Self::OutI>> {
+                let g = Int(*self).gcd_ext(*other)?;
+                Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
 
             /* sqrt roots */
 
@@ -368,4 +377,10 @@ macro_rules! impl_int {
             Int(*self).root_floor(nth).map(|n|n.0) }
     };
 }
-impl_int![];
+impl_int![i i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize"];
+impl_int![u u8:"u8"|i16:"i16", u16:"u16"|i32:"i32", u32:"u32"|i64:"i64",
+    u64:"u64"|i128:"i128", u128:"u128"|i128:"i128"];
+#[cfg(target_pointer_width = "32")]
+impl_int![u usize:"usize"|isize_up:"i64"];
+#[cfg(target_pointer_width = "64")]
+impl_int![u usize:"usize"|isize_up:"i128"];
