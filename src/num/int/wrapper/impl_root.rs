@@ -8,6 +8,8 @@
 // - sqrt_ceil
 // - sqrt_floor
 // - sqrt_round
+// - root_ceil
+// - root_floor
 
 use crate::{
     code::{iif, paste},
@@ -107,8 +109,10 @@ macro_rules! impl_int {
             }
 
             /// Returns the floored integer square root.
+            ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative.
+            ///
             /// # Algorithm
             /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
             ///
@@ -129,6 +133,7 @@ macro_rules! impl_int {
             /// Hence, the function continues updating the estimate until
             /// reaching $n_{k}$, which provides the largest integer less than
             /// or equal to the square root of `a`.
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::{Int, NumError::NonNegativeRequired};

@@ -171,9 +171,11 @@ pub trait NumInt: Num {
 
     /// Returns a scaled value in `[min..=max]` to a new range `[a..=b]`.
     /// If the value lies outside of `[min..=max]` it will result in extrapolation.
+    ///
     /// # Errors
     /// Can [`Overflow`] for extrapolated values that can't fit the type,
     /// and for overflowing arithmetic operations in the following formula:
+    ///
     /// # Formula
     /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
     fn int_scale(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
@@ -186,8 +188,10 @@ pub trait NumInt: Num {
     ///
     /// If the value lies outside of `[min..=max]` it will result in extrapolation, and
     /// if the value doesn't fit in the type it will wrap around its boundaries.
+    ///
     /// # Panics
     /// Could panic for very large values on some implementations.
+    ///
     /// # Formula
     /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
     fn int_scale_wrap(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
@@ -257,6 +261,7 @@ pub trait NumInt: Num {
     ///
     /// # Formula
     /// $$ \large P(n,r) = \frac{n!}{(n−r)!} $$
+    ///
     /// # Errors
     /// Returns [`MismatchedSizes`] if $r > n$ and [`Overflow`] if the result cant't fit the type.
     fn int_permute(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -268,6 +273,7 @@ pub trait NumInt: Num {
     ///
     /// # Formula
     /// $$ \large P_\text{rep}(n,r) = n_r $$
+    ///
     /// # Errors
     /// Returns [`Overflow`] if the result cant't fit the type.
     fn int_permute_rep(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -278,6 +284,7 @@ pub trait NumInt: Num {
     ///
     /// # Formula
     /// $$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$
+    ///
     /// # Errors
     /// Returns [`MismatchedSizes`] if $r > n$ and [`Overflow`] if the result cant't fit the type.
     fn int_combine(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -291,6 +298,7 @@ pub trait NumInt: Num {
     ///
     /// # Formula
     /// $$ \large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
+    ///
     /// # Errors
     /// Returns [`Overflow`][E::Overflow] if the result cant't fit the type.
     fn int_combine_rep(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -305,6 +313,7 @@ pub trait NumInt: Num {
     fn int_ref_div_rem(&self, b: &Self::Rhs) -> Result<[Self::Out; 2]> { E::ni() }
 
     /// Returns the quotient, rounding the result towards positive infinity.
+    ///
     /// # Notation
     /// $$ \large \left\lceil \frac{x}{y} \right\rceil $$
     fn int_div_ceil(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -312,6 +321,7 @@ pub trait NumInt: Num {
     fn int_ref_div_ceil(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding the result towards negative infinity.
+    ///
     /// # Notation
     /// $$ \large \left\lfloor \frac{x}{y} \right\rfloor $$
     fn int_div_floor(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -325,7 +335,8 @@ pub trait NumInt: Num {
 
     /// Returns the quotient, rounding ties towards from zero.
     fn int_div_ties_towards(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ties_towards`][Self::int_div_ties_towards] but takes the arguments by reference.*
+    /// *Like [`int_div_ties_towards`][Self::int_div_ties_towards]
+    /// but takes the arguments by reference.*
     fn int_ref_div_ties_towards(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding ties to the nearest even number.
@@ -343,6 +354,7 @@ pub trait NumInt: Num {
     /// Returns the factors (including 1 and self).
     ///
     /// This is the allocating version of [`int_factors_buf`][Self::int_factors_buf].
+    ///
     /// # Examples
     /// ```ignore
     /// # use devela::num::NumInt;
@@ -364,6 +376,7 @@ pub trait NumInt: Num {
     /// Returns the proper factors.
     ///
     /// This is the allocating version of [`int_factors_proper_buf`][Self::int_factors_proper_buf].
+    ///
     /// # Examples
     /// ```ignore
     /// # use devela::num::NumInt;
@@ -385,6 +398,7 @@ pub trait NumInt: Num {
     /// Returns the prime factors.
     ///
     /// This is the allocating version of [`int_factors_prime_buf`][Self::int_factors_prime_buf].
+    ///
     /// # Examples
     /// ```ignore
     /// # use devela::num::NumInt;
@@ -407,6 +421,7 @@ pub trait NumInt: Num {
     ///
     /// This is the allocating version of
     /// [`int_factors_prime_unique_buf`][Self::int_factors_prime_unique_buf].
+    ///
     /// # Examples
     /// ```ignore
     /// # use devela::num::NumInt;
@@ -428,9 +443,11 @@ pub trait NumInt: Num {
     /// This is the non-allocating version of [`int_factors`][Self::int_factors].
     ///
     /// Returns a tuple with the number of factors and unique prime factors found.
+    ///
     /// # Errors
     /// Returns [`MismatchedSizes`] if the total number of factors is greater
     /// than the length of any buffer.
+    ///
     /// # Examples
     /// ```ignore
     /// # use devela::num::NumInt;
@@ -451,9 +468,11 @@ pub trait NumInt: Num {
     /// This is the non-allocating version of [`int_factors_proper`][Self::int_factors_proper].
     ///
     /// Returns a tuple with the number of factors and unique prime factors found.
+    ///
     /// # Errors
     /// Returns [`MismatchedSizes`] if the total number of factors is greater
     /// than the length of any buffer.
+    ///
     /// # Examples
     /// ```ignore
     /// # use devela::num::NumInt;
@@ -475,6 +494,7 @@ pub trait NumInt: Num {
     /// This is the non-allocating version of [`int_factors_prime`][Self::int_factors_prime].
     ///
     /// Returns the number of factors found.
+    ///
     /// # Errors
     /// Returns [`MismatchedSizes`] if the total number of factors is greater
     /// than the length of the `buffer`.
@@ -506,6 +526,7 @@ pub trait NumInt: Num {
     ///
     /// The buffer must be large enough to hold all the non-unique factors of `n`.
     /// In that case the function will return the number of unique factors found.
+    ///
     /// # Errors
     /// Returns [`MismatchedSizes`] if the unique number of factors is greater
     /// than the length of the `buffer`. In that case the buffer will only contain the
@@ -535,6 +556,7 @@ pub trait NumInt: Num {
     /// Finds the 0-indexed `nth` prime number.
     ///
     /// Note: If `nth` is negative, this function should treat it as its absolute value.
+    ///
     /// # Errors
     /// Returns [`Overflow`] if the result can't fit the type.
     fn int_prime_nth(self) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -558,6 +580,10 @@ pub trait NumInt: Num {
     /// Returns `true` if it's a perfect square.
     ///
     /// Returns `false` otherwise, which includes all possible negative values.
+    ///
+    /// # Errors
+    /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
+    ///
     /// # Algorithm
     /// $$ \large
     /// \text{is\textunderscore square}(a) = \begin{cases}
@@ -565,14 +591,15 @@ pub trait NumInt: Num {
     /// \text{false} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 \neq a
     /// \end{cases}
     /// $$
-    /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
     fn int_is_square(self) -> Result<bool> where Self: Sized { E::ni() }
     /// *Like [`int_is_square`][Self::int_is_square] but takes the arguments by reference.*
     fn int_ref_is_square(&self) -> Result<bool> { E::ni() }
 
     /// Returns the ceiled integer square root.
     ///
-    /// Returns `None` if `a` is negative.
+    /// # Errors
+    /// Returns [`NonNegativeRequired`] if `self` is negative.
+    ///
     /// # Algorithm
     /// $$ \large
     /// \begin{align}
@@ -588,7 +615,9 @@ pub trait NumInt: Num {
 
     /// Returns the floored integer square root.
     ///
-    /// Returns `None` if `a` is negative.
+    /// # Errors
+    /// Returns [`NonNegativeRequired`] if `self` is negative.
+    ///
     /// # Algorithm
     /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
     ///
@@ -616,6 +645,7 @@ pub trait NumInt: Num {
     fn int_ref_sqrt_floor(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the rounded integer square root.
+    ///
     /// # Algorithm
     /// $$ \large
     /// \begin{align}
