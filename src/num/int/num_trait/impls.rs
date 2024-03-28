@@ -10,20 +10,25 @@ use crate::{
     num::{GcdExt, Int, NumError as E, NumInt, NumResult as Result},
 };
 
-// $p:     the primitive type
+// $t:     the primitive type
 // $cap:   the capability feature that enables the given implementation. E.g "i8".
-// $io:    the signed output primitive type (upcasted for unsigned, same as $p for signed)
+//
+// $ut:    the unsigned type of the same size as $t, only for signed (used for midpoint).
+// $ucap:  the feature that enables some methods related to `$ut`. E.g "i8". (only for signed)
+//
+// $io:    the signed output primitive type (upcasted for unsigned, same as $t for signed).
 // $iocap: the capability feature that enables some ops with signed output primitive type.
 macro_rules! impl_int {
     // Implements `NumInt` for signed integer types
     // --------------------------------------------------------------------------------------------
-    (i $($p:ident : $cap:literal),+) => { $( impl_int![@i $p:$cap]; )+ };
-    (@i $p:ident : $cap:literal) => { paste! {
-        // i*
+    (signed $($t:ident : $cap:literal | $ut:ident : $ucap:literal),+) => {
+        $( impl_int![@signed $t:$cap | $ut:$ucap]; )+
+    };
+    (@signed $t:ident : $cap:literal | $ut:ident:$ucap:literal) => { paste! {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        impl NumInt for $p {
-            type OutI = $p;
+        impl NumInt for $t {
+            type OutI = $t;
 
             impl_int![common_body_iu];
 
@@ -37,6 +42,17 @@ macro_rules! impl_int {
             fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdExt<Self::Out, Self::OutI>> {
                 let g = Int(*self).gcd_ext(*other);
                 Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
+
+            #[inline]
+            #[cfg(feature = $ucap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $ucap)))]
+            fn int_midpoint(self, other: Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(self).midpoint(other).0) }
+            #[inline]
+            #[cfg(feature = $ucap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $ucap)))]
+            fn int_ref_midpoint(&self, other: &Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(*self).midpoint(*other).0) }
 
             /* sqrt roots */
 
@@ -65,14 +81,13 @@ macro_rules! impl_int {
 
     // Implements `Num` for unsigned integer types
     // --------------------------------------------------------------------------------------------
-    (u $($p:ident : $cap:literal | $io:ident : $iocap:literal),+) => {
-        $( impl_int![@u $p:$cap | $io:$iocap]; )+
+    (unsigned $($t:ident : $cap:literal | $io:ident : $iocap:literal),+) => {
+        $( impl_int![@unsigned $t:$cap | $io:$iocap]; )+
     };
-    (@u $p:ident : $cap:literal | $io:ident : $iocap:literal) => { paste! {
-        // u*
+    (@unsigned $t:ident : $cap:literal | $io:ident : $iocap:literal) => { paste! {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        impl NumInt for $p {
+        impl NumInt for $t {
             type OutI = $io;
 
             impl_int![common_body_iu];
@@ -91,6 +106,13 @@ macro_rules! impl_int {
             fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdExt<Self::Out, Self::OutI>> {
                 let g = Int(*self).gcd_ext(*other)?;
                 Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
+
+            #[inline]
+            fn int_midpoint(self, other: Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(self).midpoint(other).0) }
+            #[inline]
+            fn int_ref_midpoint(&self, other: &Self::Rhs) -> Result<Self::Out> {
+                Ok(Int(*self).midpoint(*other).0) }
 
             /* sqrt roots */
 
@@ -204,13 +226,6 @@ macro_rules! impl_int {
         #[inline]
         fn int_ref_scale_wrap(&self, min: &Self::Rhs, max: &Self::Rhs, a: &Self::Rhs, b: &Self::Rhs)
             -> Result<Self::Out> { Ok(Int(*self).scale_wrap(*min, *max, *a, *b).0) }
-
-        #[inline]
-        fn int_midpoint(self, other: Self::Rhs) -> Result<Self::Out> {
-            Ok(Int(self).midpoint(other).0) }
-        #[inline]
-        fn int_ref_midpoint(&self, other: &Self::Rhs) -> Result<Self::Out> {
-            Ok(Int(*self).midpoint(*other).0) }
 
         /* combinatorics */
 
@@ -377,10 +392,15 @@ macro_rules! impl_int {
             Int(*self).root_floor(nth).map(|n|n.0) }
     };
 }
-impl_int![i i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize"];
-impl_int![u u8:"u8"|i16:"i16", u16:"u16"|i32:"i32", u32:"u32"|i64:"i64",
-    u64:"u64"|i128:"i128", u128:"u128"|i128:"i128"];
+impl_int![signed
+    i8:"i8"|u8:"u8", i16:"i16"|u16:"u16", i32:"i32"|u32:"u32", i64:"i64"|u64:"u64",
+    i128:"i128"|u128:"u128", isize:"isize"|usize:"usize"
+];
+impl_int![unsigned
+    u8:"u8"|i16:"i16", u16:"u16"|i32:"i32", u32:"u32"|i64:"i64",
+    u64:"u64"|i128:"i128", u128:"u128"|i128:"i128"
+];
 #[cfg(target_pointer_width = "32")]
-impl_int![u usize:"usize"|isize_up:"i64"];
+impl_int![unsigned usize:"usize"|isize_up:"i64"];
 #[cfg(target_pointer_width = "64")]
-impl_int![u usize:"usize"|isize_up:"i128"];
+impl_int![unsigned usize:"usize"|isize_up:"i128"];

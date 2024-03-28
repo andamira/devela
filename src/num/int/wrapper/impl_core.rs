@@ -27,14 +27,18 @@ use {
 
 // $t:    the input/output type
 // $cap:  the capability feature that enables the given implementation. E.g "u8".
+//
 // $ut:   the unsigned type of the same size as $t (only for signed)
-// $ucap: the feature that enables some methods related to `$ut`. E.g "i8". (only for signed)
+// $ucap: the feature that enables some methods related to `$ut`. (signed midpoint)
+//
 // $up:   the upcasted type to do the operations on (for lcm). E.g u8.
+//
 // $iup:  the signed upcasted type for some methods (gcd_ext). E.g. i16. (only for unsigned)
 // $icap: the feature that enables some methods related to `$iup`. E.g "i16". (only for unsigned)
+//
 // $d:    the doclink suffix for the method name
 macro_rules! impl_int {
-    (signed $( $t:ty : $cap:literal : $ut:ty : $ucap:literal : $up:ty : $d:literal ),+) => {
+    (signed $( $t:ty : $cap:literal : $ut:ty : $ucap:literal | $up:ty : $d:literal ),+) => {
         $( impl_int![@signed $t:$cap:$ut:$ucap:$up:$d]; )+
     };
     (unsigned $( $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal : $d:literal ),+) => {
@@ -632,9 +636,9 @@ macro_rules! impl_int {
     }};
 }
 impl_int![signed
-    i8:"i8":u8:"u8":i16:"", i16:"i16":u16:"u16":i32:"-1", i32:"i32":u32:"u32":i64:"-2",
-    i64:"i64":u64:"u64":i128:"-3", i128:"i128":u128:"u128":i128:"-4",
-    isize:"isize":usize:"usize":isize_up:"-5"
+    i8:"i8":u8:"u8"|i16:"", i16:"i16":u16:"u16"|i32:"-1", i32:"i32":u32:"u32"|i64:"-2",
+    i64:"i64":u64:"u64"|i128:"-3", i128:"i128":u128:"u128"|i128:"-4",
+    isize:"isize":usize:"usize"|isize_up:"-5"
 ];
 impl_int![unsigned
     u8:"u8":u16|i16:"i16":"-6", u16:"u16":u32|i32:"i32":"-7", u32:"u32":u64|i64:"i64":"-8",
