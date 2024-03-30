@@ -17,9 +17,8 @@
 //   - modulo_div (uc)
 
 use crate::{
-    code::{cif, iif, paste},
+    code::{cif, iif, paste, unwrap, ValueQuant},
     num::{isize_up, usize_up, Int, NumError, NumResult as Result},
-    result::{unwrap, ValueQuant},
 };
 use NumError::{NoInverse, NonZeroRequired, Overflow};
 

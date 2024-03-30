@@ -10,7 +10,7 @@ use super::Egc;
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::ffi::CString;
 use crate::{
-    result::unwrap,
+    code::unwrap,
     text::{
         char::*,
         TextResult as Result,

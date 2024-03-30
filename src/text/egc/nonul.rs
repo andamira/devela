@@ -13,7 +13,7 @@ use crate::_deps::alloc::ffi::CString;
 #[cfg(doc)]
 use crate::text::TextError::{NotEnoughCapacity, OutOfBounds};
 use crate::{
-    result::unwrap,
+    code::unwrap,
     text::{char::*, helpers::impl_sized_alias, StringNonul, TextResult as Result},
 };
 use core::str::Chars;

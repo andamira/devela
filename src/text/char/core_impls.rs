@@ -5,8 +5,7 @@
 
 use super::{Char16, Char24, Char32, Char7, Char8, NonEdgeU8, NonSurrogateU16};
 use crate::{
-    code::{paste, ConstDefault},
-    result::unwrap,
+    code::{paste, unwrap, ConstDefault},
     text::{TextError, TextResult as Result},
 };
 use core::fmt;

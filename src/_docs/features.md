@@ -52,7 +52,6 @@ Single modules:
     - `num_int`: `Frac`, `Int`, `NumInt`, `NumRefInt`.
     - `num_niche_range`: `Range*` and `NonRange*` niche types.
 - [`os`]
-- [`result`]
 - [`text`]: enables `Char*`, `Egc`, `Nonul`.
 - [`time`]
 - [`ui`]: enables all of the `ui` sub-features:
@@ -69,7 +68,6 @@ Single modules:
 [`num`]: crate::num
 [`niche`]: crate::num::niche
 [`os`]: crate::os
-[`result`]: crate::result
 [`text`]: crate::text
 [`time`]: crate::time
 [`ui`]: crate::ui
@@ -92,7 +90,6 @@ In order to use any unsafe functionality:
   - `safe_mem`
   - `safe_num`
   - `safe_os`
-  - `safe_result`
   - `safe_text`
   - `safe_time`
   - `safe_ui`

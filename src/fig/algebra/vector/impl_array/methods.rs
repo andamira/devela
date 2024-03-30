@@ -9,7 +9,7 @@ use crate::fig::Vector;
 #[cfg(all(not(feature = "std"), feature = "num_float"))]
 use crate::num::ExtFloat;
 #[cfg(feature = "num_int")]
-use crate::{num::Int, result::unwrap};
+use crate::{code::unwrap, num::Int};
 
 /* common methods */
 

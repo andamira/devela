@@ -13,7 +13,10 @@ use super::{
     helpers::impl_sized_alias,
     TextError, TextResult as Result,
 };
-use crate::{code::cfor, num::Compare, result::unwrap};
+use crate::{
+    code::{cfor, unwrap},
+    num::Compare,
+};
 use core::{
     fmt,
     ops::Deref,

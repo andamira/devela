@@ -4,7 +4,7 @@
 //
 
 #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-use crate::result::unwrap;
+use crate::code::unwrap;
 use crate::{code::iif, num::Compare, text::StringU8};
 
 /// Provides ASCII operations on `T`, most of them *const*.

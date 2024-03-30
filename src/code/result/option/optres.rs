@@ -1,4 +1,4 @@
-// devela::result::option::optres
+// devela::code::result::option::optres
 //
 //!
 //
@@ -16,7 +16,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::result::{sok, serr, OptRes};
+/// use devela::code::{sok, serr, OptRes};
 ///
 /// #[derive(Debug, PartialEq)]
 /// struct V(i32);

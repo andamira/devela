@@ -18,8 +18,8 @@ use crate::{
     work::TaskWakerNoop,
 };
 use crate::{
+    code::{serr, sok, OptRes},
     mem::Pin,
-    result::{serr, sok, OptRes},
     work::{Future, TaskContext, TaskPoll},
 };
 use core::fmt::Debug;

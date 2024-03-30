@@ -12,9 +12,8 @@
 // - root_floor
 
 use crate::{
-    code::{iif, paste},
+    code::{iif, paste, unwrap},
     num::{isize_up, upcasted_op, usize_up, Compare, Int, NumError as E, NumResult as Result},
-    result::unwrap,
 };
 #[cfg(doc)]
 use E::Overflow;

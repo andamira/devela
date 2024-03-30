@@ -1,23 +1,24 @@
-// devela::result::reexport_std
+// devela::code::result::reexport_std
 //
 //! Reexported items from `std`.
 //
 
 use crate::code::reexport;
 
-/* crate */
-
-#[doc(inline)]
-#[cfg(feature = "io")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
-pub use crate::io::IoError;
-#[doc(inline)]
-pub use crate::{
-    data::{DataError, DataResult},
-    gfx::{GfxError, GfxResult},
-    num::{NumError, NumResult},
-    text::{TextError, TextResult},
-};
+// MAYBE
+// /* crate */
+//
+// #[doc(inline)]
+// #[cfg(feature = "io")]
+// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
+// pub use crate::io::IoError;
+// #[doc(inline)]
+// pub use crate::{
+//     data::{DataError, DataResult},
+//     gfx::{GfxError, GfxResult},
+//     num::{NumError, NumResult},
+//     text::{TextError, TextResult},
+// };
 
 /* std */
 

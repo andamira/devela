@@ -1,4 +1,4 @@
-// devela::result
+// devela::code::result
 //
 //! Result handling and functional enhancements, extends
 //! `std::{`[`error`], [`option`], [`panic`], [`result`]`}`.

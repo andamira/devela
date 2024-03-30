@@ -62,7 +62,6 @@ pub mod io;
 pub mod mem;
 pub mod num;
 pub mod os;
-pub mod result;
 pub mod text;
 pub mod time;
 pub mod ui;
@@ -94,7 +93,7 @@ pub mod all {
     #[doc(inline)]
     pub use super::{
         code::all::*, data::all::*, fig::all::*, gfx::all::*, io::all::*, mem::all::*, num::all::*,
-        os::all::*, result::all::*, text::all::*, time::all::*, ui::all::*, work::all::*,
+        os::all::*, text::all::*, time::all::*, ui::all::*, work::all::*,
     };
 }
 // and from the root

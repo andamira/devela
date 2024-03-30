@@ -1,7 +1,7 @@
 // examples/coro.rs
 
 use devela::{
-    result::{serr, sok},
+    code::{serr, sok},
     work::CoroRun,
 };
 

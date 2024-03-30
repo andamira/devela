@@ -3,7 +3,10 @@
 //! 16-bit versions of XorShift generators.
 //
 
-use crate::{code::ConstDefault, num::Cast, result::Own};
+use crate::{
+    num::Cast,
+    {code::ConstDefault, Own},
+};
 
 /// The `XorShift16` pseudo-random number generator.
 ///

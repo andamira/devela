@@ -11,13 +11,12 @@
 // - returning it.
 
 use crate::{
-    code::sf,
+    code::{sf, Own},
     data::{
         error::{DataError, DataResult as Result},
         {Array, Stack},
     },
     mem::{cswap, Bare, Storage},
-    result::Own,
 };
 use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};
 

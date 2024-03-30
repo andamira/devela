@@ -24,7 +24,7 @@ use crate::gfx::{GfxError as E, GfxResult as Result};
 
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::string::String;
-use crate::result::Mismatch;
+use crate::code::Mismatch;
 use core::fmt::{self, Write};
 
 /// A collection of methods for encoding and decoding

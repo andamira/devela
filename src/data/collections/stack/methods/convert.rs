@@ -4,14 +4,13 @@
 //
 
 use crate::{
-    code::{sf, ConstDefault},
+    code::{sf, ConstDefault, Own},
     data::{
         error::{DataError, DataResult as Result},
         {array_init, Array, Stack},
     },
     mem::{cswap, Bare, Storage},
     num::Compare,
-    result::Own,
 };
 #[cfg(feature = "alloc")]
 use crate::{

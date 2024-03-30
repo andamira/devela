@@ -3,7 +3,7 @@
 //!
 //
 
-use super::Sign;
+use crate::{code::Mismatch, num::Sign};
 
 /// A numerical result.
 pub type NumResult<T> = core::result::Result<T, NumError>;
@@ -58,7 +58,7 @@ impl NumError {
     }
 }
 
-impl crate::result::Error for NumError {}
+impl crate::code::Error for NumError {}
 
 mod core_impls {
     use super::{NumError as E, Sign};

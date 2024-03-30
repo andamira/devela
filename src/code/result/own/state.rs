@@ -1,4 +1,4 @@
-// devela::result::own::state
+// devela::code::result::own::state
 //
 //! Methods .
 //

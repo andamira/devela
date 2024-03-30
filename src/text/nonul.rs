@@ -7,8 +7,7 @@
 // - trait impls
 
 use crate::{
-    code::cfor,
-    result::unwrap,
+    code::{cfor, unwrap},
     text::{helpers::impl_sized_alias, TextError, TextResult as Result},
 };
 use core::{fmt, ops::Deref, str::Chars};

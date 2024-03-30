@@ -1,4 +1,4 @@
-// devela::result::option
+// devela::code::result::option
 //
 //! Option, extends
 //! `std::`[`option`][std::option].

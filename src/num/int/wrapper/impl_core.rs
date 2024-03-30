@@ -17,10 +17,9 @@
 
 use {
     crate::{
-        code::{iif, paste},
+        code::{iif, paste, unwrap},
         mem::cswap,
         num::{isize_up, usize_up, Cast, GcdExt, Int, NumError, NumResult as Result},
-        result::unwrap,
     },
     NumError::Overflow,
 };

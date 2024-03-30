@@ -54,7 +54,7 @@ crate::num::impl_ops![Int: (no_neg)
 mod core_impls {
     use super::Int;
     use core::{fmt, cmp, hash};
-    use crate::result::ValueQuant;
+    use crate::code::ValueQuant;
 
     impl<T: Clone> Clone for Int<T> {
         #[inline] #[must_use]

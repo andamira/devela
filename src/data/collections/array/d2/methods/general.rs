@@ -9,13 +9,12 @@ use crate::{
     mem::{Box, Boxed},
 };
 use crate::{
-    code::iif,
+    code::{iif, Mismatch},
     data::{
         error::{DataError, DataResult as Result},
         {Array, Array2d},
     },
     mem::{Bare, Storage},
-    result::Mismatch,
 };
 use DataError::{MismatchedLength, Overflow};
 
