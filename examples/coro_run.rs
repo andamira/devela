@@ -2,7 +2,7 @@
 
 use devela::{
     code::{serr, sok},
-    work::CoroRun,
+    exec::CoroRun,
 };
 
 fn main() {

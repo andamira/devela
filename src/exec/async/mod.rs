@@ -1,4 +1,4 @@
-// devela::work::async
+// devela::exec::async
 //
 //! Asynchrony, extends `std::{`[`future`], [`task`]`}`.
 //!
@@ -12,7 +12,7 @@
 //! [`await`]: https://doc.rust-lang.org/std/keyword.await.html
 //
 
-/* always compiled, non-public modules */
+/* always compiled */
 
 mod coroutine;
 mod reexports;
@@ -20,13 +20,13 @@ mod reexports;
 #[allow(unused_imports)] // coroutine
 pub use {coroutine::*, reexports::*};
 
-/* feature-gated, non-public modules */
+/* feature-gated */
 
-#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
+#[cfg(all(not(feature = "safe_exec"), feature = "unsafe_async"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_async")))]
 mod noop;
 
-#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
+#[cfg(all(not(feature = "safe_exec"), feature = "unsafe_async"))]
 pub use noop::TaskWakerNoop;
 
 pub(crate) mod all {
@@ -37,6 +37,6 @@ pub(crate) mod all {
 
     // feature-gated
     #[doc(inline)]
-    #[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
+    #[cfg(all(not(feature = "safe_exec"), feature = "unsafe_async"))]
     pub use super::noop::TaskWakerNoop;
 }

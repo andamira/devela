@@ -68,8 +68,8 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 #* module features *#
 
 all = [ # enables all the modules and submodules
-	"code", "data", "fig", "gfx", "io", "mem",
-	"num", "os", "text", "time", "ui", "work",
+	"code", "data", "exec", "fig", "gfx", "io",
+	"mem", "num", "os", "text", "time", "ui",
 	]
 
 # individual modules
@@ -77,6 +77,7 @@ code = []
 data = []
 fig = []
 gfx = []
+exec = ["bytemuck/zeroable_atomics"]
 io = []
 mem = []
 num = [ # enables all the `num` sub-features
@@ -93,7 +94,6 @@ ui = [ # enables all the `ui` sub-features
 	]
 	ui_term = ["unicode-width", "unicode-segmentation"] # terminal functionality
 	# ui_window = ["miniquad"]
-work = ["bytemuck/zeroable_atomics"]
 
 
 #* safety features *#
@@ -103,11 +103,12 @@ work = ["bytemuck/zeroable_atomics"]
 # 2. don't enable the `safe` feature for that module.
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_fig", "safe_gfx", "safe_io", "safe_mem",
-	"safe_num", "safe_os", "safe_text", "safe_time", "safe_ui", "safe_work",
+	"safe_code", "safe_data", "safe_exec", "safe_fig", "safe_gfx", "safe_io",
+	"safe_mem", "safe_num", "safe_os", "safe_text", "safe_time", "safe_ui",
 ] # in specific modules:
 	safe_code = []
 	safe_data = []
+	safe_exec = []
 	safe_fig = []
 	safe_gfx = []
 	safe_io = []
@@ -119,7 +120,6 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 	safe_ui = ["safe_ui_term"]
 		safe_ui_term = []
 		# safe_ui_window = []
-	safe_work = []
 
 unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	"unsafe_array", "unsafe_async", "unsafe_const", "unsafe_dyn",
@@ -209,9 +209,9 @@ dep_all = [ # enables all optional dependencies
 	"unicode-width",
 	"wide",
 ] # enable groups of dependencies:
+	dep_exec = ["atomic", "portable-atomic"]
 	dep_text = ["const-str", "memchr", "unicode-segmentation", "unicode-width"]
 	dep_ui_term = ["const-str", "crossterm"]
-	dep_work = ["atomic", "portable-atomic"]
 
 atomic = ["dep:atomic"]
 const-str = ["dep:const-str"]

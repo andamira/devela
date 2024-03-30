@@ -1,9 +1,9 @@
-// devela::work::async::noop
+// devela::exec::async::noop
 //
 //!
 //
 
-use crate::work::{TaskRawWaker, TaskRawWakerVTable, TaskWaker};
+use crate::exec::{TaskRawWaker, TaskRawWakerVTable, TaskWaker};
 
 /// A dummy `TaskWaker` that does nothing when woken.
 //

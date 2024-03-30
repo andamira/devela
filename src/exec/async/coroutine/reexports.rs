@@ -1,4 +1,4 @@
-// devela::work::async::coroutine::reexports
+// devela::exec::async::coroutine::reexports
 //
 //! Reexported items.
 //

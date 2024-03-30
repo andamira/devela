@@ -43,6 +43,7 @@ Modules can be enabled independently of *environment*, *dependency* or *safety*.
 Single modules:
 - [`code`]
 - [`data`]
+- [`exec`]: enables `exec` functionality.
 - [`fig`]
 - [`gfx`]
 - [`io`]: enables the `io` functionality.
@@ -57,10 +58,10 @@ Single modules:
 - [`ui`]: enables all of the `ui` sub-features:
     - `ui_events`: extra support for events.
     - `ui_term`: enables the terminal functionality.
-- [`work`]: enables `work` functionality.
 
 [`code`]: crate::code
 [`data`]: crate::data
+[`exec`]: crate::exec
 [`fig`]: crate::fig
 [`gfx`]: crate::gfx
 [`io`]: crate::io
@@ -72,7 +73,6 @@ Single modules:
 [`time`]: crate::time
 [`ui`]: crate::ui
 [`ui_term`]: crate::ui_term
-[`work`]: crate::work
 
 
 ### Safety features

@@ -1,18 +1,18 @@
-// devela::work::sync
+// devela::exec::sync
 //
 //! Synchronization, extends `std::`[`sync`].
 //!
 //! [`sync`]: std::sync
 //
 
-/* always compiled, non-public modules */
+/* always compiled */
 
 mod reexports;
 
 #[allow(unused_imports)]
 pub use reexports::*;
 
-/* always compiled, non-public modules */
+/* always compiled */
 
 pub mod atomic;
 

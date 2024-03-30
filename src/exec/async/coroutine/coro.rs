@@ -1,4 +1,4 @@
-// devela::work::async::coroutine
+// devela::exec::async::coroutine
 //
 //! A minimal single-threaded coroutine implementation.
 //!
@@ -15,12 +15,12 @@
 #[cfg(feature = "alloc")]
 use crate::{
     _deps::alloc::{boxed::Box, collections::VecDeque},
-    work::TaskWakerNoop,
+    exec::TaskWakerNoop,
 };
 use crate::{
     code::{serr, sok, OptRes},
+    exec::{Future, TaskContext, TaskPoll},
     mem::Pin,
-    work::{Future, TaskContext, TaskPoll},
 };
 use core::fmt::Debug;
 

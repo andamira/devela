@@ -1,4 +1,4 @@
-// devela::work::thread
+// devela::exec::thread
 //
 //! Native threads, extends `std::`[`thread`].
 //!

@@ -1,16 +1,17 @@
-// devela::work
+// devela::exec
 //
-//! Work management, extends
-//! `std::{`[`future`], [`sync`], [`task`], [`thread`]`}`.
+//! Execution strategies and concurrency management, <small>extends
+//! `std::{`[`future`], [`process`], [`sync`], [`task`], [`thread`]`}`.</small>
 //!
 //! [`future`]: std::future
+//! [`process`]: std::process
 //! [`sync`]: std::sync
 //! [`task`]: std::task
 //! [`thread`]: std::thread
 //
 
 // safety:
-#![cfg_attr(feature = "safe_work", forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_exec", forbid(unsafe_code))]
 
 /* always-compiled, public modules */
 
@@ -21,15 +22,15 @@ pub use r#async::all::*;
 
 /* feature-gated, public modules */
 
-#[cfg(feature = "work")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
+#[cfg(feature = "exec")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
 pub mod sync;
-#[cfg(feature = "work")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
+#[cfg(feature = "exec")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
 pub mod thread;
 
 #[doc(no_inline)]
-#[cfg(feature = "work")]
+#[cfg(feature = "exec")]
 #[allow(unused_imports)]
 pub use {sync::all::*, thread::all::*};
 
@@ -40,7 +41,7 @@ pub(crate) mod all {
 
     // feature-gated
     #[doc(inline)]
-    #[cfg(feature = "work")]
+    #[cfg(feature = "exec")]
     #[allow(unused_imports)]
     pub use super::{sync::all::*, thread::all::*};
 }

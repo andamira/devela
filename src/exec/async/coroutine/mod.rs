@@ -1,4 +1,4 @@
-// devela::work::async::coroutine
+// devela::exec::async::coroutine
 //
 //! Coroutine implementations.
 //
@@ -11,7 +11,7 @@
 mod reexports;
 //
 // NOTE: it depends on unsafe_async because of TaskWakerNoop
-#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
+#[cfg(all(not(feature = "safe_exec"), feature = "unsafe_async"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_async")))]
 mod coro;
 
@@ -22,7 +22,7 @@ mod coro;
 #[cfg(feature = "nightly_coro")]
 pub use reexports::*;
 //
-#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
+#[cfg(all(not(feature = "safe_exec"), feature = "unsafe_async"))]
 pub use coro::*;
 
 pub(crate) mod all {
@@ -35,6 +35,6 @@ pub(crate) mod all {
     //
     #[doc(inline)]
     #[allow(unused_imports)]
-    #[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
+    #[cfg(all(not(feature = "safe_exec"), feature = "unsafe_async"))]
     pub use super::coro::*;
 }
