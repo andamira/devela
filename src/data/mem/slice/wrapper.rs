@@ -1,4 +1,4 @@
-// devela::mem::slice::wrapper
+// devela::data::mem::slice::wrapper
 //
 //! Slice functionality wrapper struct.
 //
@@ -22,7 +22,7 @@ impl<T> Slice<T> {
     /// If `len > self.len()` it returns the full slice.
     /// # Examples
     /// ```
-    /// # use devela::mem::Slice;
+    /// # use devela::data::Slice;
     /// let v = [1, 2, 3, 4, 5, 6];
     /// assert_eq!(Slice::lsplit(&v, 3), &[1, 2, 3]);
     /// assert_eq!(Slice::lsplit(&v, 0), &[]);
@@ -41,7 +41,7 @@ impl<T> Slice<T> {
     /// If `left_len > slice.len()` it returns the full slice.
     /// # Examples
     /// ```
-    /// # use devela::mem::Slice;
+    /// # use devela::data::Slice;
     /// let mut v = [1, 2, 3, 4, 5, 6];
     /// assert_eq!(Slice::lsplit_mut(&mut v, 3), &mut [1, 2, 3]);
     /// assert_eq!(Slice::lsplit_mut(&mut v, 0), &mut []);
@@ -62,7 +62,7 @@ impl<T> Slice<T> {
     /// If `left_len > slice.len()` it returns the full slice.
     /// # Examples
     /// ```
-    /// # use devela::mem::Slice;
+    /// # use devela::data::Slice;
     /// let v = [1, 2, 3, 4, 5, 6];
     /// assert_eq!(Slice::rsplit(&v, 3), &[4, 5, 6]);
     /// assert_eq!(Slice::rsplit(&v, 0), &[]);
@@ -82,7 +82,7 @@ impl<T> Slice<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::mem::Slice;
+    /// # use devela::data::Slice;
     /// let mut v = [1, 2, 3, 4, 5, 6];
     /// assert_eq!(Slice::rsplit_mut(&mut v, 3), &mut [4, 5, 6]);
     /// assert_eq!(Slice::rsplit_mut(&mut v, 0), &mut []);
@@ -106,7 +106,7 @@ impl<T> Slice<T> {
     /// If `len > slice.len()` returns the full `slice`.
     /// # Examples
     /// ```
-    /// use devela::mem::Slice;
+    /// use devela::data::Slice;
     /// let v = [1, 2, 3, 4, 5, 6];
     /// assert_eq!(Slice::msplit_left(&v, 0), &[]);
     /// assert_eq!(Slice::msplit_left(&v, 1), &[3]);
@@ -137,7 +137,7 @@ impl<T> Slice<T> {
     /// If `len > slice.len()` returns the full `slice`.
     /// # Examples
     /// ```
-    /// use devela::mem::Slice;
+    /// use devela::data::Slice;
     /// let mut v = [1, 2, 3, 4, 5, 6];
     /// assert_eq!(Slice::msplit_left_mut(&mut v, 0), &mut []);
     /// assert_eq!(Slice::msplit_left_mut(&mut v, 1), &mut [3]);
@@ -169,7 +169,7 @@ impl<T> Slice<T> {
     /// If `len > slice.len()` returns the full `slice`.
     /// # Examples
     /// ```
-    /// # use devela::mem::Slice;
+    /// # use devela::data::Slice;
     /// let v = [1, 2, 3, 4, 5, 6];
     /// assert_eq!(Slice::msplit_right(&v, 0), &[]);
     /// assert_eq!(Slice::msplit_right(&v, 1), &[4]);
@@ -201,7 +201,7 @@ impl<T> Slice<T> {
     /// If `len > slice.len()` returns the full `slice`.
     /// # Examples
     /// ```
-    /// # use devela::mem::Slice;
+    /// # use devela::data::Slice;
     /// let mut v = [1, 2, 3, 4, 5, 6];
     /// assert_eq!(Slice::msplit_right_mut(&mut v, 0), &mut []);
     /// assert_eq!(Slice::msplit_right_mut(&mut v, 1), &mut [4]);

@@ -5,7 +5,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::data::Vec;
-use crate::{data::Array, mem::Storage, Bare};
+use crate::data::{Array, Bare, Storage};
 
 mod core_traits;
 mod methods;

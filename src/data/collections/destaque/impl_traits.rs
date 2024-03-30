@@ -4,14 +4,13 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::mem::Boxed;
+use crate::data::Boxed;
 use crate::{
     code::ConstDefault,
     data::{
-        Array, DataCollection, DataDeque, DataDesta, DataQueue, DataResult as Result, DataStack,
-        Destaque, DestaqueIter,
+        Array, Bare, DataCollection, DataDeque, DataDesta, DataQueue, DataResult as Result,
+        DataStack, Destaque, DestaqueIter, Storage,
     },
-    mem::{Bare, Storage},
 };
 use core::{cmp::Ordering, fmt};
 

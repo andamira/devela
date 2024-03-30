@@ -6,7 +6,7 @@
 
 use crate::{
     code::{iif, paste},
-    mem::{bit_size, ByteSize},
+    data::{bit_size, ByteSize},
 };
 use core::{fmt, num::*, str::FromStr};
 

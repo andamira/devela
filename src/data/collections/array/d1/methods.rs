@@ -3,16 +3,13 @@
 //! 1-dimensional array methods
 //
 
-use crate::{
-    data::{array_init, Array},
-    mem::{Bare, BareBox, Storage},
-};
+use crate::data::{array_init, Array, Bare, BareBox, Storage};
 
 #[allow(unused)]
 #[cfg(feature = "alloc")]
 use crate::{
     _deps::alloc::{boxed::Box, vec::Vec},
-    mem::Boxed,
+    data::Boxed,
 };
 
 impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {

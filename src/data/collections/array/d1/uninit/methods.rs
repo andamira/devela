@@ -2,8 +2,7 @@
 
 use crate::{
     code::iif,
-    data::{Array, DataError, DataResult as Result, UninitArray},
-    mem::{MaybeUninit, Storage},
+    data::{Array, DataError, DataResult as Result, MaybeUninit, Storage, UninitArray},
 };
 use core::{
     ptr::{replace, swap},

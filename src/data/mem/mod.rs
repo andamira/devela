@@ -1,4 +1,4 @@
-// devela::mem
+// devela::data::mem
 //
 //! Memory management, extends
 //! `std::{`[`alloc`], [`borrow`], [`boxed`], [`cell`], [`mem`], [`pin`],

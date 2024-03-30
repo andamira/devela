@@ -3,12 +3,9 @@
 //! 2-dimensional array definitions
 //
 
+use crate::data::{Array, Bare, DataResult as Result, Storage};
 #[cfg(feature = "alloc")]
-use crate::{_deps::alloc::vec::Vec, mem::Boxed};
-use crate::{
-    data::{Array, DataResult as Result},
-    mem::{Bare, Storage},
-};
+use crate::{_deps::alloc::vec::Vec, data::Boxed};
 
 /// A static 2-dimensional [`Array`].
 ///

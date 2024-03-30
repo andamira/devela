@@ -7,17 +7,15 @@ mod own;
 
 mod convert;
 
+use crate::data::{
+    array_init,
+    error::{DataError, DataResult as Result},
+    mem_size_of, Array, Bare, Stack, StackIter, Storage,
+};
 #[cfg(feature = "alloc")]
 use crate::{
     _deps::alloc::{vec, vec::Vec},
-    mem::Boxed,
-};
-use crate::{
-    data::{
-        error::{DataError, DataResult as Result},
-        {array_init, Array, Stack, StackIter},
-    },
-    mem::{Bare, Storage},
+    data::Boxed,
 };
 use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};
 // IMPROVE use array_init

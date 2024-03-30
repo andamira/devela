@@ -16,10 +16,7 @@
 //   - UnorderedMap
 //   - UnorderedSet
 
-use crate::{
-    data::{Array, DataError as E, DataResult as Result},
-    mem::Storage,
-};
+use crate::data::{Array, DataError as E, DataResult as Result, Storage};
 
 /// An abstract data collection.
 ///

@@ -11,7 +11,7 @@ use core::str::from_utf8_unchecked;
 use crate::{code::iif, text::AsciiChar};
 
 // IMPROVE: use NumToStr
-use crate::{mem::Slice, text::Ascii};
+use crate::{data::Slice, text::Ascii};
 
 // Marker trait to prevent downstream implementations of the `ExtStr` trait.
 impl private::Sealed for str {}

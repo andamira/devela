@@ -6,7 +6,7 @@
 
 use super::super::{decompose_pointer, make_fat_ptr, store_metadata};
 use super::{DstBuf, DstQueue};
-use crate::mem::{mem_size_of, mem_size_of_val, MaybeUninit};
+use crate::data::{mem_size_of, mem_size_of_val, MaybeUninit};
 use core::ptr::drop_in_place;
 
 pub(super) struct PushInnerInfo<'a, I> {

@@ -5,11 +5,8 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::mem::Boxed;
-use crate::{
-    data::{Array, DataCollection, DataResult as Result},
-    mem::{Bare, Storage},
-};
+use crate::data::Boxed;
+use crate::data::{Array, Bare, DataCollection, DataResult as Result, Storage};
 
 /* types */
 

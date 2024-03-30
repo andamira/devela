@@ -14,8 +14,6 @@
 //! It re-exports the error and result types defined in other modules.
 //
 
-// warnings:
-#![cfg_attr(not(feature = "result"), allow(unused_imports))]
 // safety:
 #![cfg_attr(feature = "safe_result", forbid(unsafe_code))]
 

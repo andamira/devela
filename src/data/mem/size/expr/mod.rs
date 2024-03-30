@@ -1,4 +1,4 @@
-// devela::mem::size::expr
+// devela::data::mem::size::expr
 //
 // Original source code by Joshua Nelson, licensed as BSD-3,
 // https://crates.io/crates/size-of-trait/1.1.3
@@ -10,7 +10,7 @@
 ///
 /// # Example
 /// ```
-/// # use devela::mem::mem_size_of_expr;
+/// # use devela::data::mem_size_of_expr;
 /// async fn f() {
 ///     let x = 1;
 ///     core::future::ready(()).await;
@@ -21,7 +21,7 @@
 #[macro_export]
 macro_rules! mem_size_of_expr {
     ($expr: expr) => {
-        $crate::mem::__mem_size_of_expr(
+        $crate::data::__mem_size_of_expr(
             // The array of function pointers is created in an unreachable branch
             // of an if-else block to avoid evaluating it.
             if true {
@@ -42,7 +42,7 @@ pub use mem_size_of_expr;
 // A helper macro used to bridge the gap between compile-time and runtime.
 #[doc(hidden)]
 pub const fn __mem_size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0]; 0]) -> usize {
-    crate::mem::mem_size_of::<T>()
+    crate::data::mem_size_of::<T>()
 }
 
 /* tests */
@@ -54,7 +54,7 @@ mod test_coro;
 #[cfg(test)]
 mod tests {
     use super::mem_size_of_expr;
-    use crate::mem::mem_size_of;
+    use crate::data::mem_size_of;
 
     async fn f() {
         let _x = 1;

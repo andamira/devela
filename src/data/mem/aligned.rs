@@ -1,4 +1,4 @@
-// devela::mem::aligned
+// devela::data::mem::aligned
 //
 //! Alignment
 //!

@@ -1,4 +1,4 @@
-// devela::mem::size
+// devela::data::mem::size
 //
 //! Memory size functionality.
 //

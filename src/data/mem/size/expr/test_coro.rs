@@ -1,4 +1,6 @@
-// devela::mem::size::expr::test_coro
+// devela::data::mem::size::expr::test_coro
+
+use super::mem_size_of_expr;
 
 #[cfg(not(miri))]
 #[test]

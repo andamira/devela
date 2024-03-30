@@ -3,17 +3,17 @@
 //! Double-ended queue + double-ended stack.
 //
 
+mod own;
+
+use crate::data::{
+    array_init,
+    error::{DataError, DataResult as Result},
+    Array, Bare, Destaque, DestaqueIter, Storage,
+};
 #[cfg(feature = "alloc")]
 use crate::{
     _deps::alloc::{vec, vec::Vec},
-    mem::Boxed,
-};
-use crate::{
-    data::{
-        error::{DataError, DataResult as Result},
-        {array_init, Array, Destaque, DestaqueIter},
-    },
-    mem::{Bare, Storage},
+    data::Boxed,
 };
 use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};
 // IMPROVE use array_init

@@ -1,12 +1,12 @@
-// ladata::mem::storage::bare
+// devela::data::mem::storage::bare
 //
 //! *Bare* storage doesn't affect its contents
 //
 // API based on https://doc.rust-lang.org/alloc/boxed/struct.Box.html
 
-use crate::mem::{Bare, Storage};
+use crate::data::{Bare, Storage};
 #[cfg(all(doc, feature = "alloc"))]
-use crate::{_deps::alloc::boxed::Box, mem::Boxed};
+use crate::{_deps::alloc::boxed::Box, data::Boxed};
 
 /// A no-op pointer type, like a [`Box`] but without affecting how `T` is stored.
 ///
@@ -15,7 +15,7 @@ use crate::{_deps::alloc::boxed::Box, mem::Boxed};
 ///
 /// # Examples
 /// ```
-/// # use devela::mem::BareBox;
+/// # use devela::data::BareBox;
 /// let byte = BareBox::new(0_u8);
 /// ```
 pub struct BareBox<T>(pub T);

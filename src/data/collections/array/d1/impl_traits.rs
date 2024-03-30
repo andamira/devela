@@ -5,8 +5,7 @@
 
 use crate::{
     code::ConstDefault,
-    data::{array_init, Array},
-    mem::{Bare, BareBox, Storage},
+    data::{array_init, Array, Bare, BareBox, Storage},
 };
 use core::{
     borrow::{Borrow, BorrowMut},
@@ -20,7 +19,7 @@ use core::{
 #[cfg(feature = "alloc")]
 use crate::{
     _deps::alloc::{boxed::Box, vec::Vec},
-    mem::Boxed,
+    data::Boxed,
 };
 
 // Deref

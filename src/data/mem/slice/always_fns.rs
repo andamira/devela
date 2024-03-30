@@ -1,4 +1,4 @@
-// devela::mem::slice::always_fns
+// devela::data::mem::slice::always_fns
 //
 //! `slice` standalone functions.
 //!

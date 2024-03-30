@@ -6,15 +6,14 @@
 #[cfg(feature = "alloc")]
 use crate::{
     _deps::alloc::vec::Vec,
-    mem::{Box, Boxed},
+    data::{Box, Boxed},
 };
 use crate::{
     code::{iif, Mismatch},
     data::{
         error::{DataError, DataResult as Result},
-        {Array, Array2d},
+        Array, Array2d, Bare, Storage,
     },
-    mem::{Bare, Storage},
 };
 use DataError::{MismatchedLength, Overflow};
 

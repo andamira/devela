@@ -7,9 +7,8 @@ use crate::{
     code::iif,
     data::{
         error::{DataError, DataResult as Result},
-        Array2d,
+        Array2d, Storage,
     },
-    mem::Storage,
 };
 use DataError::Overflow;
 

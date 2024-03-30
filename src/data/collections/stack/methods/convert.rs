@@ -6,16 +6,16 @@
 use crate::{
     code::{sf, ConstDefault, Own},
     data::{
+        array_init, cswap,
         error::{DataError, DataResult as Result},
-        {array_init, Array, Stack},
+        Array, Bare, Stack, Storage,
     },
-    mem::{cswap, Bare, Storage},
     num::Compare,
 };
 #[cfg(feature = "alloc")]
 use crate::{
     data::Vec,
-    mem::{Box, Boxed},
+    data::{Box, Boxed},
 };
 use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};
 

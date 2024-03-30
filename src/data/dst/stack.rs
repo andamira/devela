@@ -8,7 +8,7 @@
 // - core_impls
 
 use super::{check_fat_pointer, decompose_pointer, list_push_gen, DstArray, DstBuf};
-use crate::mem::MemAligned;
+use crate::data::MemAligned;
 use core::{marker, mem, ptr};
 
 /* public API */

@@ -47,7 +47,6 @@ Single modules:
 - [`fig`]
 - [`gfx`]
 - [`io`]: enables the `io` functionality.
-- [`mem`]
 - [`num`]: enables all of the `num` sub-features:
     - `num_float`: `Float`, `ExtFloat`.
     - `num_int`: `Frac`, `Int`, `NumInt`, `NumRefInt`.
@@ -65,7 +64,6 @@ Single modules:
 [`fig`]: crate::fig
 [`gfx`]: crate::gfx
 [`io`]: crate::io
-[`mem`]: crate::mem
 [`num`]: crate::num
 [`niche`]: crate::num::niche
 [`os`]: crate::os
@@ -87,7 +85,6 @@ In order to use any unsafe functionality:
   - `safe_fig`
   - `safe_gfx`
   - `safe_io`
-  - `safe_mem`
   - `safe_num`
   - `safe_os`
   - `safe_text`

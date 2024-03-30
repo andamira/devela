@@ -1,9 +1,9 @@
-// devela::mem::trait
+// devela::data::mem::trait
 //
 //! Functionality related to byte sizes.
 //
 
-#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_slice"))]
 use super::{mem_as_bytes, mem_as_bytes_mut};
 use super::{mem_drop, mem_forget, mem_needs_drop, mem_replace, mem_swap, mem_take};
 

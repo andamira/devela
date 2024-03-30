@@ -1,8 +1,8 @@
 // devela::io::reimplement_no_std::fns
 
 use crate::{
+    data::MaybeUninit,
     io::{IoErrorKind, IoResult, Read, Write},
-    mem::MaybeUninit,
 };
 
 /// Copies the entire contents of a reader into a writer.

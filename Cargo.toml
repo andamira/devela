@@ -69,7 +69,7 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 
 all = [ # enables all the modules and submodules
 	"code", "data", "exec", "fig", "gfx", "io",
-	"mem", "num", "os", "text", "time", "ui",
+	"num", "os", "text", "time", "ui",
 	]
 
 # individual modules
@@ -79,7 +79,6 @@ fig = []
 gfx = []
 exec = ["bytemuck/zeroable_atomics"]
 io = []
-mem = []
 num = [ # enables all the `num` sub-features
 	"num_float", "num_int", "num_niche_range"
 	]
@@ -104,7 +103,7 @@ ui = [ # enables all the `ui` sub-features
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
 	"safe_code", "safe_data", "safe_exec", "safe_fig", "safe_gfx", "safe_io",
-	"safe_mem", "safe_num", "safe_os", "safe_text", "safe_time", "safe_ui",
+	"safe_num", "safe_os", "safe_text", "safe_time", "safe_ui",
 ] # in specific modules:
 	safe_code = []
 	safe_data = []
@@ -112,7 +111,6 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 	safe_fig = []
 	safe_gfx = []
 	safe_io = []
-	safe_mem = []
 	safe_num = []
 	safe_os = []
 	safe_text = []
