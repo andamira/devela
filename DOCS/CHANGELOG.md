@@ -9,27 +9,44 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - add features: `num_float`, `num_int`.
-- add traits: `NumVector`.
-- add types: `Extent`, `Extent2d`, `Extend3d`.
+- add features: `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `u8`, `u16`, `u32`, `u64`, `u128`, `usize`, `f32`, `f64`, `cap_float`, `cap_int`, `cap_i`, `cap_u`, `cap_nums`, `_docsrs_nums`.
+- add traits: `ExtFloatConst`, `NumVector`.
+- add type: `Prompt`.
+- add types: `GcdExt`, `ValueQuant`.
+- add types: `Extent`, `Extent2d`, `Extent3d`.
 - add types: `Angle`, `AngleDirection`, `AngleKind`
 - add types: `Vector`, `Vector2d`, `Vector3d`, `VecVector`.
 - add types: `Point`, `Point2d`, `Point3d`, `Points`, `VecPoints`.
-- add `Floating` and `ExtFloat` methods: `neg_abs`.
-- add new arms to array_init: `init`, `init_heap`.
+- add `Floating` and `ExtFloat` method: `neg_abs`.
+- add methods to `Int`: `midpoint`, `modulo*`.
+- add unsigned `gcd_ext` and `gcd_ext_euc` methods to `Int`.
+- add `NumError` variant: `NoInverse`.
+- add `*_assign` methods to `Num` and `NumRef`.
+- add new arms to `array_init:` `init`, `init_heap`.
+- add methods for casting to `[iu]size_[up|down]` to `Cast` and `PrimitiveCast`.
+- add methods to `Int`, `NumInt`, `NumRefInt`: `midpoint`.
 
 ### Removed
-- remove features: `num_all`, `ui_all`.
+- remove features: `num_all`, `ui_all`, `num_niche_impls`, `result`, `safe_result`.
+- remove `Mem` trait bound from `ByteSize`.
+- remove `repr(C)` attribute from niche types.
 
 ### Changed
+- bump rust version to 1.77.1.
 - rename `Floating` to `Float` and make it own `self`.
+- rename `Mem` to `ExtMem`.
+- rename `work` module to `exec`.
+- move `mem` module inside `data`.
+- move `result` module inside `code`.
+- improve `cdbg`, allow to customize the location file path.
 - add more consts to `Float` and `ExtFloat`.
 - change `From<float>` for `Sign` to return the zero sign.
 - add bounds for `color_gamma_*` functions.
 - move the enabling of all module's sub-features to the root module feature.
 
 ### Fixed
-- make `cdbg!` depend on `std`.
 - fix `Bitsize` impl for niche types.
+- add missing `NumInt` `sqrt` implementations.
 
 
 ## [0.20.0]
