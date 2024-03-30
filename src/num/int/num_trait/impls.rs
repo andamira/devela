@@ -7,7 +7,7 @@
 use crate::_deps::alloc::vec::Vec;
 use crate::{
     code::paste,
-    num::{GcdExt, Int, NumError as E, NumInt, NumResult as Result},
+    num::{isize_up, GcdExt, Int, NumError as E, NumInt, NumResult as Result},
 };
 
 // $t:     the primitive type

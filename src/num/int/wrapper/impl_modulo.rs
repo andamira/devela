@@ -53,21 +53,21 @@ macro_rules! upcastop {
             }
         }
     }};
-    // this is used for checked versions that don't need to calculate times
+    // this is used for checked versions that don't need to calculate cycles
     (reduce_err $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
             $lhs $op $rhs
-        } else { // otherwise reduce each sumand before the checked operation:
+        } else { // otherwise reduce each operand before the checked operation:
             if let Some(result) = ($lhs % $modulus).[<checked_ $fn>]($rhs % $modulus) {
                 result } else { return Err(Overflow(None));
             }
         }
     }};
-    // this is used for unchecked versions that don't need to calculate times
+    // this is used for unchecked versions that don't need to calculate cycles
     (reduce $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
             $lhs $op $rhs
-        } else { // otherwise reduce each sumand before the unchecked operation:
+        } else { // otherwise reduce each operand before the unchecked operation:
             ($lhs % $modulus) $op ($rhs % $modulus)
         }
     }};
@@ -1421,11 +1421,11 @@ macro_rules! impl_int {
             /// # use devela::num::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
-            #[doc = "assert_eq![Int( 0_" $t ").modulo_div(2, m)?, 0];"]
-            #[doc = "assert_eq![Int( 1_" $t ").modulo_div(2, m)?, 2];"]
-            #[doc = "assert_eq![Int( 2_" $t ").modulo_div(2, m)?, 1];"]
-            #[doc = "assert_eq![Int( 3_" $t ").modulo_div(2, m)?, 0];"]
-            #[doc = "assert_eq![Int( 4_" $t ").modulo_div(2, m)?, 2];"]
+            #[doc = "assert_eq![Int(0_" $t ").modulo_div(2, m)?, 0];"]
+            #[doc = "assert_eq![Int(1_" $t ").modulo_div(2, m)?, 2];"]
+            #[doc = "assert_eq![Int(2_" $t ").modulo_div(2, m)?, 1];"]
+            #[doc = "assert_eq![Int(3_" $t ").modulo_div(2, m)?, 0];"]
+            #[doc = "assert_eq![Int(4_" $t ").modulo_div(2, m)?, 2];"]
             /// # Ok(()) }
             /// ```
             #[inline]
