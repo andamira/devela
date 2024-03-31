@@ -20,7 +20,7 @@ mod tests;
 /// `Clone`, `Copy`, `Debug`, `Default`, `PartialEq`, `Eq` and `Hash`.
 ///
 /// # Examples
-/// See also the [bitfield][crate::_docs::examples::bitfield] example.
+/// See also the [bitfield][crate::_info::examples::bitfield] example.
 ///
 /// ```
 /// # use devela::data::bitfield;

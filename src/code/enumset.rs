@@ -10,7 +10,7 @@
 /// You have to give unique names both to the enum and to the associated set.
 ///
 /// # Examples
-/// See also the [enumset][crate::_docs::examples::enumset] example.
+/// See also the [enumset][crate::_info::examples::enumset] example.
 ///
 /// ```
 /// # use devela::code::enumset;
