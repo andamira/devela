@@ -13,23 +13,21 @@
 // safety:
 #![cfg_attr(feature = "safe_exec", forbid(unsafe_code))]
 
-/* always-compiled, public modules */
+/* always-compiled */
 
-pub mod r#async;
+mod r#async;
 
-#[doc(no_inline)]
 pub use r#async::all::*;
 
-/* feature-gated, public modules */
+/* feature-gated */
 
 #[cfg(feature = "exec")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
-pub mod sync;
+mod sync;
 #[cfg(feature = "exec")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
-pub mod thread;
+mod thread;
 
-#[doc(no_inline)]
 #[cfg(feature = "exec")]
 #[allow(unused_imports)]
 pub use {sync::all::*, thread::all::*};
