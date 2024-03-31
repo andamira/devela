@@ -1,7 +1,7 @@
 // devela::num
 //
-//! Numerical types and computations, arithmetic operations, extends
-//! `std::{`[`cmp`], [`num`]`}`.
+//! Numerical types, operations, geometry, algebra, <small>extends
+//! `std::{`[`cmp`], [`num`]`}`.</small>
 //!
 //! [`cmp`]: std::cmp
 //! [`num`]: std::num
@@ -30,10 +30,11 @@ pub use {
     alias::*, cmp::all::*, error::*, float::*, gcd::*, no::*, primitive::*, r#trait::*, sign::*,
 };
 
+pub mod geom;
 pub mod niche;
 pub mod rand;
 #[doc(no_inline)]
-pub use {niche::all::*, rand::all::*};
+pub use {geom::all::*, niche::all::*, rand::all::*};
 
 /* feature-gated */
 

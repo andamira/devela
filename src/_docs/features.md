@@ -44,11 +44,11 @@ Single modules:
 - [`code`]
 - [`data`]
 - [`exec`]: enables `exec` functionality.
-- [`fig`]
 - [`gfx`]
 - [`io`]: enables the `io` functionality.
 - [`num`]: enables all of the `num` sub-features:
     - `num_float`: `Float`, `ExtFloat`.
+    - `num_geom`: `NumVector`, `Vector`, `VecVector`.
     - `num_int`: `Frac`, `Int`, `NumInt`, `NumRefInt`.
     - `num_niche_range`: `Range*` and `NonRange*` niche types.
 - [`os`]
@@ -61,7 +61,6 @@ Single modules:
 [`code`]: crate::code
 [`data`]: crate::data
 [`exec`]: crate::exec
-[`fig`]: crate::fig
 [`gfx`]: crate::gfx
 [`io`]: crate::io
 [`num`]: crate::num
@@ -82,7 +81,6 @@ In order to use any unsafe functionality:
 - `safe`: forbids `unsafe` (and overrides unsafe features), includes:
   - `safe_code`
   - `safe_data`
-  - `safe_fig`
   - `safe_gfx`
   - `safe_io`
   - `safe_num`

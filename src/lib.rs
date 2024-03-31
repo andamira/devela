@@ -57,7 +57,6 @@ compile_error!("You can't enable `safe` and any `unsafe*` features at the same t
 pub mod code;
 pub mod data;
 pub mod exec;
-pub mod fig;
 pub mod gfx;
 pub mod io;
 pub mod num;
@@ -91,8 +90,8 @@ pub mod all {
     #[allow(unused_imports)]
     #[doc(inline)]
     pub use super::{
-        code::all::*, data::all::*, exec::all::*, fig::all::*, gfx::all::*, io::all::*,
-        num::all::*, os::all::*, text::all::*, time::all::*, ui::all::*,
+        code::all::*, data::all::*, exec::all::*, gfx::all::*, io::all::*, num::all::*, os::all::*,
+        text::all::*, time::all::*, ui::all::*,
     };
 }
 // and from the root

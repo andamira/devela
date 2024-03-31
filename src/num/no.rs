@@ -9,8 +9,6 @@
 /// since it implements all the numeric traits, but does nothing.
 pub type NoNum = ();
 
-/* num */
-
 #[rustfmt::skip]
 impl super::Num for NoNum {
     type Inner = ();
