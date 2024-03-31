@@ -3,7 +3,7 @@
 //! skip formatting macros
 //
 
-/// *`s`kip `f`ormatting* macro.
+/// *`s`kip `f`ormatting* wrapper macro.
 ///
 /// Preserves the formatting of the code provided as arguments, by relying on
 /// the fact that `rustfmt` does not usually apply formatting inside macros.

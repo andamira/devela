@@ -6,7 +6,7 @@
 // WAIT: [for-loops in constants](https://github.com/rust-lang/rust/issues/87575)
 // IMPROVE: doesn't work in certain circumstances.
 
-/// A for loop that is usable in const contexts.
+/// A for loop that is usable in *compile-time* contexts.
 ///
 /// It aims to work exactly like a normal for loop over a standard exclusive range,
 /// eg. `0..10` or `-5..5`. Unfortunately it doesn't support other types of ranges
