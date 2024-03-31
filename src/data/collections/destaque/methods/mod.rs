@@ -3,8 +3,6 @@
 //! Double-ended queue + double-ended stack.
 //
 
-mod own;
-
 use crate::data::{
     array_init,
     error::{DataError, DataResult as Result},
