@@ -1,4 +1,4 @@
-// devela::io::reimplement_no_std::impls
+// devela::sys::io::reimplement_no_std::impls
 
 use super::error::{IoError, IoErrorKind, IoResult as Result};
 use super::traits::{BufRead, Read, Seek, SeekFrom, Write};

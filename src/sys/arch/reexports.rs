@@ -1,4 +1,4 @@
-// devela::os::arch::reexports
+// devela::sys::arch::reexports
 //
 //! Reexported items from `core`.
 //

@@ -45,14 +45,13 @@ Single modules:
 - [`data`]
 - [`exec`]: enables `exec` functionality.
 - [`gfx`]
-- [`io`]: enables the `io` functionality.
+- [`lex`]: enables `Char*`, `Egc`, `Nonul`.
 - [`num`]: enables all of the `num` sub-features:
     - `num_float`: `Float`, `ExtFloat`.
     - `num_geom`: `NumVector`, `Vector`, `VecVector`.
     - `num_int`: `Frac`, `Int`, `NumInt`, `NumRefInt`.
     - `num_niche_range`: `Range*` and `NonRange*` niche types.
-- [`os`]
-- [`text`]: enables `Char*`, `Egc`, `Nonul`.
+- [`sys`]
 - [`time`]
 - [`ui`]: enables all of the `ui` sub-features:
     - `ui_events`: extra support for events.
@@ -62,11 +61,10 @@ Single modules:
 [`data`]: crate::data
 [`exec`]: crate::exec
 [`gfx`]: crate::gfx
-[`io`]: crate::io
+[`lex`]: crate::lex
 [`num`]: crate::num
 [`niche`]: crate::num::niche
-[`os`]: crate::os
-[`text`]: crate::text
+[`sys`]: crate::sys
 [`time`]: crate::time
 [`ui`]: crate::ui
 [`ui_term`]: crate::ui_term
@@ -82,10 +80,9 @@ In order to use any unsafe functionality:
   - `safe_code`
   - `safe_data`
   - `safe_gfx`
-  - `safe_io`
+  - `safe_lex`
   - `safe_num`
-  - `safe_os`
-  - `safe_text`
+  - `safe_sys`
   - `safe_time`
   - `safe_ui`
   - `safe_work`
@@ -136,6 +133,6 @@ That's the case for example of [`Float`], [`Int`], or the [`niche`] types.
 ### Dependency features
 
 - `dep_all`: enables all the optional dependencies
-  - `dep_text`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
+  - `dep_exec`: enables `atomic`, `portable-atomic`.
+  - `dep_lex`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
   - `dep_ui_term`: enables `const-str`, `crossterm`.
-  - `dep_work`: enables `atomic`, `portable-atomic`.

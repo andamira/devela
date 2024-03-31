@@ -1,4 +1,4 @@
-// devela::io::reimplement_no_std::cursor
+// devela::sys::io::reimplement_no_std::cursor
 
 use super::{BufRead, IoError, IoErrorKind, IoResult as Result, Read, Seek, SeekFrom, Write};
 use core::cmp;

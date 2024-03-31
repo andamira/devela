@@ -1,19 +1,19 @@
-// devela::io::path
+// devela::sys::path
 //
 //! Paths, extends
 //! `std::`[`path`][std::path].
 //
 
 /* feature-gated, non-public modules */
-#[cfg(feature = "io")]
+#[cfg(feature = "sys")]
 mod project;
 
-#[cfg(feature = "io")]
+#[cfg(feature = "sys")]
 pub use project::*;
 
 pub(crate) mod all {
     // feature-gated
     #[doc(inline)]
-    #[cfg(feature = "io")]
+    #[cfg(feature = "sys")]
     pub use super::project::*;
 }

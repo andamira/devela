@@ -1,4 +1,4 @@
-// devela::os::ffi::reexports
+// devela::sys::ffi::reexports
 //
 //! Reexported items from `core`.
 //

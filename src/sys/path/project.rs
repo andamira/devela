@@ -1,4 +1,4 @@
-// devela::io::path::project
+// devela::sys::path::project
 //
 //!
 //
@@ -21,7 +21,7 @@ use std::{
 ///
 /// # Examples
 /// ```
-/// use devela::io::crate_root;
+/// use devela::sys::crate_root;
 ///
 /// match crate_root("") {
 ///     Ok(p) => println!("Current crate root is {:?}", p),

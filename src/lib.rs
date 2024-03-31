@@ -58,10 +58,9 @@ pub mod code;
 pub mod data;
 pub mod exec;
 pub mod gfx;
-pub mod io;
 pub mod lex;
 pub mod num;
-pub mod os;
+pub mod sys;
 pub mod time;
 pub mod ui;
 
@@ -109,8 +108,8 @@ pub mod all {
     #[allow(unused_imports)]
     #[doc(inline)]
     pub use super::{
-        code::all::*, data::all::*, exec::all::*, gfx::all::*, io::all::*, lex::all::*,
-        num::all::*, os::all::*, time::all::*, ui::all::*,
+        code::all::*, data::all::*, exec::all::*, gfx::all::*, lex::all::*, num::all::*,
+        sys::all::*, time::all::*, ui::all::*,
     };
 }
 // and from the root

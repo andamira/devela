@@ -1,9 +1,9 @@
-// devela::os::ffi
+// devela::sys::arch
 //
-//! Platform-specific types, as defined by C, extends
-//! `std::`[`ffi`].
+//! SIMD and vendor intrinsics, extends
+//! `std::`[`arch`].
 //!
-//! [`ffi`]: std::ffi
+//! [`arch`]: std::arch
 //
 
 mod reexports;

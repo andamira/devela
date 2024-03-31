@@ -1,8 +1,8 @@
-// devela::io::reimplement_no_std::buffered
+// devela::sys::io::reimplement_no_std::buffered
 //
 //! Buffering wrappers for I/O traits
 
-use crate::io::{BufRead, IoError, IoErrorKind, IoResult as Result, Read, Seek, SeekFrom, Write};
+use super::{BufRead, IoError, IoErrorKind, IoResult as Result, Read, Seek, SeekFrom, Write};
 use core::{cmp, fmt};
 
 // TODO:IMPROVE

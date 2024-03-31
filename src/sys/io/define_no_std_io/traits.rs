@@ -1,4 +1,4 @@
-// devela::io::reimplement_no_std::traits
+// devela::sys::io::reimplement_no_std::traits
 
 use super::error::{IoError as Error, IoErrorKind, IoResult as Result};
 #[cfg(feature = "alloc")]
@@ -24,7 +24,7 @@ mod alloc_impls {
         read_to_end_with_reservation(r, buf, |_| 32)
     }
 
-    #[cfg(not(feature = "unsafe_io"))] // SAFE version
+    #[cfg(not(feature = "unsafe_sys"))] // SAFE version
     pub(super) fn read_to_end_with_reservation<R, F>(
         r: &mut R,
         buf: &mut Vec<u8>,
@@ -87,7 +87,7 @@ mod alloc_impls {
         }
     }
 
-    #[cfg(feature = "unsafe_io")] // UNSAFE version
+    #[cfg(feature = "unsafe_sys")] // UNSAFE version
     pub(super) fn read_to_end_with_reservation<R, F>(
         r: &mut R,
         buf: &mut Vec<u8>,
