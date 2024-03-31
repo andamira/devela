@@ -1,4 +1,4 @@
-// devela::gfx::color::error
+// devela::mix::color::error
 //
 //!
 //

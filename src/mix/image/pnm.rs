@@ -1,4 +1,4 @@
-// devela::gfx::img::pnm
+// devela::mix::image::pnm
 //
 //! PNM is the portable anymap format Netpbm image format family (PBM, PGM, PPM)
 //
@@ -19,8 +19,8 @@
 // it supports ASCII (P3) and binary (P6) formats. Each pixel is represented by
 // three values (red, green, and blue), each in the range of 0 to 255 for 8-bit images.
 
-// use crate::gfx::color:: ;
-use crate::gfx::{GfxError as E, GfxResult as Result};
+// use crate::mix::color:: ;
+use crate::mix::{MixError as E, MixResult as Result};
 
 #[cfg(feature = "alloc")]
 use crate::_alloc::string::String;

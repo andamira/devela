@@ -57,8 +57,8 @@ compile_error!("You can't enable `safe` and any `unsafe*` features at the same t
 pub mod code;
 pub mod data;
 pub mod exec;
-pub mod gfx;
 pub mod lex;
+pub mod mix;
 pub mod num;
 pub mod sys;
 pub mod time;
@@ -100,7 +100,7 @@ pub mod _info {
     }
 }
 
-/// All the library items are flat re-exported here.
+/// All the library items are re-exported here.
 ///
 /// Note that any item tagged with [`dep`] can also be enabled by
 /// manually enabling the associated optional dependency.
@@ -108,7 +108,7 @@ pub mod all {
     #[allow(unused_imports)]
     #[doc(inline)]
     pub use super::{
-        code::all::*, data::all::*, exec::all::*, gfx::all::*, lex::all::*, num::all::*,
+        code::all::*, data::all::*, exec::all::*, lex::all::*, mix::all::*, num::all::*,
         sys::all::*, time::all::*, ui::all::*,
     };
 }

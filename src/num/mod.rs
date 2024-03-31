@@ -1,6 +1,6 @@
 // devela::num
 //
-//! Numerical types, operations, geometry, algebra, <small>extends
+//! Numerical types and operations, algebra, geometry, <small>extends
 //! `std::{`[`cmp`], [`num`]`}`.</small>
 //!
 //! [`cmp`]: std::cmp

@@ -44,8 +44,8 @@ Single modules:
 - [`code`]
 - [`data`]
 - [`exec`]: enables `exec` functionality.
-- [`gfx`]
 - [`lex`]: enables `Char*`, `Egc`, `Nonul`.
+- [`mix`]: enables audio, colors, images…
 - [`num`]: enables all of the `num` sub-features:
     - `num_float`: `Float`, `ExtFloat`.
     - `num_geom`: `NumVector`, `Vector`, `VecVector`.
@@ -60,8 +60,8 @@ Single modules:
 [`code`]: crate::code
 [`data`]: crate::data
 [`exec`]: crate::exec
-[`gfx`]: crate::gfx
 [`lex`]: crate::lex
+[`mix`]: crate::mix
 [`num`]: crate::num
 [`niche`]: crate::num::niche
 [`sys`]: crate::sys
@@ -79,8 +79,8 @@ In order to use any unsafe functionality:
 - `safe`: forbids `unsafe` (and overrides unsafe features), includes:
   - `safe_code`
   - `safe_data`
-  - `safe_gfx`
   - `safe_lex`
+  - `safe_mix`
   - `safe_num`
   - `safe_sys`
   - `safe_time`

@@ -1,16 +1,16 @@
-// devela::gfx::error
+// devela::mix::error
 //
 //!
 //
 
-use crate::code::{Either, Mismatch};
+use crate::code::Mismatch;
 
-/// A gfx-related result.
-pub type GfxResult<T> = core::result::Result<T, GfxError>;
+/// A mixed-media result.
+pub type MixResult<T> = core::result::Result<T, MixError>;
 
-/// A gfx-related error.
+/// A mixed-media error.
 #[derive(Clone, Copy, Debug)]
-pub enum GfxError {
+pub enum MixError {
     /// Invalid image size, with an optional width and height.
     // InvalidImageSize(Mismatch<SizeUsize, SizeUsize>), // TODO
     InvalidImageSize(Option<(usize, usize)>), // TEMP
@@ -23,7 +23,7 @@ pub enum GfxError {
 }
 
 mod core_impls {
-    use super::GfxError as E;
+    use super::MixError as E;
     use core::fmt;
 
     impl crate::code::Error for E {}

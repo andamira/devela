@@ -1,20 +1,20 @@
-// devela::gfx::img
+// devela::mix::image
 //
 //! Image formats and manipulation.
 //
 
-/* feature-gated, non-public modules */
+/* feature-gated */
 
-#[cfg(feature = "gfx")]
+#[cfg(feature = "mix")]
 mod pnm;
 
-#[cfg(feature = "gfx")]
+#[cfg(feature = "mix")]
 #[allow(unused_imports)]
 pub use pnm::*;
 
 pub(crate) mod all {
     #[doc(inline)]
-    #[cfg(feature = "gfx")]
+    #[cfg(feature = "mix")]
     #[allow(unused_imports)]
     pub use super::pnm::*;
 }
