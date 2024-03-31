@@ -15,7 +15,7 @@
 #[cfg(feature = "alloc")]
 use crate::{
     _alloc::{boxed::Box, collections::VecDeque},
-    exec::TaskWakerNoop,
+    exec::task_waker_noop,
 };
 use crate::{
     code::{serr, sok, OptRes},
@@ -179,7 +179,7 @@ impl<T, E: 'static + Debug> CoroRun<T, E> {
 
     /// Runs all the coroutines to completion.
     pub fn run(&mut self) {
-        let waker = TaskWakerNoop::new();
+        let waker = task_waker_noop();
         let mut context = TaskContext::from_waker(&waker);
 
         while let Some(mut cor) = self.coros.pop_front() {
