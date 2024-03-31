@@ -2,7 +2,7 @@
 //
 //!
 //
-// NOTE: rustdoc doesn't detect changes in the examples, just in the library,
+// NOTE: rustdoc doesn't detect changes in the examples, only in the library,
 // so it's necessary to modify the library to rebuild the examples docs
 
 #![allow(unused)]
@@ -27,9 +27,12 @@
 // // fn main() {}
 // // ```
 
-#[path = "examples/bitfield.rs"]
+#[cfg_attr(any(doc, test), path = "examples/bitfield.rs")]
+#[cfg_attr(not(any(doc, test)), path = "../../examples/bitfield.rs")]
 pub mod bitfield;
-#[path = "examples/enumset.rs"]
+
+#[cfg_attr(any(doc, test), path = "examples/enumset.rs")]
+#[cfg_attr(not(any(doc, test)), path = "../../examples/enumset.rs")]
 pub mod enumset;
 
 // /// Shows how to document an out-crate standalone example.

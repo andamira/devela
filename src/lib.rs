@@ -89,7 +89,6 @@ pub use ::std as _std;
 /// Information about the library
 pub mod _info {
     /// Documented examples.
-    #[rustfmt::skip] // rustfmt doesn't work in here
     #[cfg(any(doc, test))]
     pub mod examples;
 
