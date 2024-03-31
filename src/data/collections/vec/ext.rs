@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::_deps::alloc::vec::Vec;
+use crate::_alloc::vec::Vec;
 
 // Marker trait to prevent downstream implementations of the `ExtVec` trait.
 #[rustfmt::skip] mod private { pub trait Sealed {} }

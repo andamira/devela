@@ -22,7 +22,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::{
-    _deps::alloc::{collections::BTreeSet, vec, vec::Vec},
+    _alloc::{collections::BTreeSet, vec, vec::Vec},
     code::Also,
 };
 use crate::{

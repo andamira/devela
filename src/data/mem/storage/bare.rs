@@ -6,7 +6,7 @@
 
 use crate::data::{Bare, Storage};
 #[cfg(all(doc, feature = "alloc"))]
-use crate::{_deps::alloc::boxed::Box, data::Boxed};
+use crate::{_alloc::boxed::Box, data::Boxed};
 
 /// A no-op pointer type, like a [`Box`] but without affecting how `T` is stored.
 ///

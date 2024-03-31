@@ -9,7 +9,7 @@
 
 use super::Egc;
 #[cfg(feature = "alloc")]
-use crate::_deps::alloc::ffi::CString;
+use crate::_alloc::ffi::CString;
 #[cfg(doc)]
 use crate::lex::LexError::{NotEnoughCapacity, OutOfBounds};
 use crate::{

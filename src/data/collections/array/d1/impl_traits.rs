@@ -18,7 +18,7 @@ use core::{
 
 #[cfg(feature = "alloc")]
 use crate::{
-    _deps::alloc::{boxed::Box, vec::Vec},
+    _alloc::{boxed::Box, vec::Vec},
     data::Boxed,
 };
 

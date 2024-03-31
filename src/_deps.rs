@@ -11,25 +11,6 @@
 
 use crate::code::reexport;
 
-/* environment */
-
-/// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
-/// *Re-exported Rust `alloc` library environment.*
-#[doc(inline)]
-#[cfg(feature = "alloc")]
-pub extern crate alloc;
-
-/// <span class='stab portability' title='re-exported `core`'>`core`</span>
-/// *Re-exported Rust `core` library environment.*
-#[doc(inline)]
-pub use ::core;
-
-/// <span class='stab portability' title='re-exported `std`'>`std`</span>
-/// *Re-exported Rust `std` library environment.*
-#[cfg(feature = "std")]
-#[doc(inline)]
-pub use ::std;
-
 /* always compiled */
 
 reexport! { crate "bytemuck" | bytemuck,

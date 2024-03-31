@@ -186,7 +186,7 @@ mod impl_core {
 mod impl_alloc {
     use super::ConstDefault;
     use crate::{
-        _deps::alloc::{rc::Weak as RcWeak, string::String},
+        _alloc::{rc::Weak as RcWeak, string::String},
         data::collections::{AllocLinkedList, AllocOrdMap, AllocOrdSet, Vec, VecDeque},
     };
 

@@ -5,7 +5,7 @@
 
 #[cfg(doc)]
 use crate::data::{Bare, BareBox};
-use crate::{_deps::alloc::boxed::Box, code::ConstDefault, data::Storage};
+use crate::{_alloc::boxed::Box, code::ConstDefault, data::Storage};
 
 /// A marker struct for a [`Storage`] type that wraps its data in a [`Box`].
 ///

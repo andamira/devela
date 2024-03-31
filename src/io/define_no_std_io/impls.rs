@@ -158,7 +158,7 @@ impl Write for &mut [u8] {
 /// Write is implemented for `Vec<u8>` by appending to the vector.
 /// The vector will grow as needed.
 #[cfg(feature = "alloc")]
-impl Write for crate::_deps::alloc::vec::Vec<u8> {
+impl Write for crate::_alloc::vec::Vec<u8> {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
         self.extend_from_slice(buf);

@@ -61,7 +61,7 @@ macro_rules! array_init {
     (
     // safe array initialization in the heap
     safe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
-        let mut v = $crate::_deps::alloc::vec::Vec::<$T>::with_capacity($LEN);
+        let mut v = $crate::_alloc::vec::Vec::<$T>::with_capacity($LEN);
         for i in 0..$LEN {
             #[allow(clippy::redundant_closure_call)]
             v.push($init(i));
@@ -105,7 +105,7 @@ macro_rules! array_init {
     (
     // unsafe array initialization in the heap
     unsafe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
-        let mut v = $crate::_deps::alloc::vec::Vec::<$T>::with_capacity($LEN);
+        let mut v = $crate::_alloc::vec::Vec::<$T>::with_capacity($LEN);
         #[allow(clippy::redundant_closure_call)]
         for i in 0..$LEN { v.push($init(i)); }
         let slice = v.into_boxed_slice();

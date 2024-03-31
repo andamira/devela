@@ -5,7 +5,7 @@
 
 use super::Slice;
 #[cfg(feature = "alloc")]
-use crate::_deps::alloc::vec::Vec;
+use crate::_alloc::vec::Vec;
 
 // Marker trait to prevent downstream implementations of the `ExtSlice` trait.
 mod private {

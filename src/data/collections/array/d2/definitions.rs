@@ -5,7 +5,7 @@
 
 use crate::data::{Array, Bare, DataResult as Result, Storage};
 #[cfg(feature = "alloc")]
-use crate::{_deps::alloc::vec::Vec, data::Boxed};
+use crate::{_alloc::vec::Vec, data::Boxed};
 
 /// A static 2-dimensional [`Array`].
 ///

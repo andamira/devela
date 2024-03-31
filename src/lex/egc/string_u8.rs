@@ -8,7 +8,7 @@
 
 use super::Egc;
 #[cfg(feature = "alloc")]
-use crate::_deps::alloc::ffi::CString;
+use crate::_alloc::ffi::CString;
 use crate::{
     code::unwrap,
     lex::{

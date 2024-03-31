@@ -10,7 +10,7 @@ use crate::data::{
 };
 #[cfg(feature = "alloc")]
 use crate::{
-    _deps::alloc::{vec, vec::Vec},
+    _alloc::{vec, vec::Vec},
     data::Boxed,
 };
 use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};

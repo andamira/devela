@@ -37,7 +37,7 @@ use crate::lex::{Char16, Char24, Char32, Char7, Char8};
 // #[cfg(feature = "lex")]
 // use crate::lex::{StringU16, StringU32, EgcU8, StringU8};
 #[cfg(feature = "alloc")]
-use crate::_deps::alloc::{
+use crate::_alloc::{
     collections::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, VecDeque},
     string::String,
     vec::Vec,

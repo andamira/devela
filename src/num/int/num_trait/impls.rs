@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::_deps::alloc::vec::Vec;
+use crate::_alloc::vec::Vec;
 use crate::{
     code::paste,
     num::{isize_up, GcdExt, Int, NumError as E, NumInt, NumResult as Result},
