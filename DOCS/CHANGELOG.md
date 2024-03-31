@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Unreleased [0.21.0-wip]
 
 ### Added
-- add features: `num_float`, `num_int`.
+- add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`.
 - add features: `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `u8`, `u16`, `u32`, `u64`, `u128`, `usize`, `f32`, `f64`, `cap_float`, `cap_int`, `cap_i`, `cap_u`, `cap_nums`, `_docsrs_nums`.
 - add traits: `ExtFloatConst`, `NumVector`.
 - add type: `Prompt`.
@@ -27,17 +27,26 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add methods to `Int`, `NumInt`, `NumRefInt`: `midpoint`.
 
 ### Removed
-- remove features: `num_all`, `ui_all`, `num_niche_impls`, `result`, `safe_result`.
+- remove features: `num_all`, `ui_all`, `num_niche_impls`, `result`, `safe_result`, `mem`, `safe_mem`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`.
 - remove `Mem` trait bound from `ByteSize`.
+- remove deprecated `ident_total_count` macro.
 - remove `repr(C)` attribute from niche types.
 
 ### Changed
 - bump rust version to 1.77.1.
-- rename `Floating` to `Float` and make it own `self`.
-- rename `Mem` to `ExtMem`.
-- rename `work` module to `exec`.
 - move `mem` module inside `data`.
 - move `result` module inside `code`.
+- move `io` moule and `os` submodules to `sys`.
+- move `rustdoc-header.html` file to `/DOCS/`.
+- move `_deps::{code, alloc, std}` to `::{_core, _alloc, _std}`.
+- rename `gfx` module to `mix`.
+- rename `text` module to `lex`.
+- rename `Mem` trait to `ExtMem`.
+- rename `Text` trait to `StrOwn`.
+- rename `_docs` module to `_info`.
+- rename `os` module to `sys`, make submodules private.
+- rename `work` module to `exec`, make submodules private.
+- rename `Floating` wrapper to `Float` and make it own `self`.
 - improve `cdbg`, allow to customize the location file path.
 - add more consts to `Float` and `ExtFloat`.
 - change `From<float>` for `Sign` to return the zero sign.
@@ -47,6 +56,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Fixed
 - fix `Bitsize` impl for niche types.
 - add missing `NumInt` `sqrt` implementations.
+- make `_info/examples` parseable by `rustfmt`.
 
 
 ## [0.20.0]
