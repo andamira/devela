@@ -13,14 +13,15 @@
 
 mod calendar;
 mod error;
+mod fmt;
 mod reexports;
 mod split;
 mod unix;
 
-pub use {calendar::*, error::*, reexports::*, split::*, unix::*};
+pub use {calendar::*, error::*, fmt::*, reexports::*, split::*, unix::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{calendar::*, error::*, reexports::*, split::*, unix::*};
+    pub use super::{calendar::*, error::*, fmt::*, reexports::*, split::*, unix::*};
 }
