@@ -1,7 +1,7 @@
 // devela::time
 //
-//! Time and calendar types and operations, extends
-//! `std::`[`time`].
+//! Time and calendar types and operations, <small>extends
+//! `std::`[`time`].</small>
 //!
 //! [`time`]: std::time
 //

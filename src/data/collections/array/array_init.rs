@@ -130,7 +130,7 @@ macro_rules! array_init {
     }};
     (
 
-    /* generalized initializations */
+    /* safety-agnostic initializations */
 
     // initialize an array in the stack
     init [$T:ty; $LEN:expr], $fsafe:literal, $funsafe:literal, $init:expr) => {{
