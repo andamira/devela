@@ -627,6 +627,22 @@ macro_rules! generate_array_string {
             }
         }
 
+        impl<const CAP: usize> PartialEq<&str> for [<String $t:camel>]<CAP> {
+            #[inline]
+            #[must_use]
+            fn eq(&self, slice: &&str) -> bool {
+                self.as_str() == *slice
+            }
+        }
+        // and for when &str is on the left-hand side of the comparison
+        impl<const CAP: usize> PartialEq<[<String $t:camel>]<CAP>> for &str {
+            #[inline]
+            #[must_use]
+            fn eq(&self, string: & [<String $t:camel>]<CAP>) -> bool {
+                *self == string.as_str()
+            }
+        }
+
         impl<const CAP: usize> Deref for [<String $t:camel>]<CAP> {
             type Target = str;
             #[inline]

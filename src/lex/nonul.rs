@@ -581,6 +581,21 @@ impl<const CAP: usize> fmt::Debug for StringNonul<CAP> {
     }
 }
 
+impl<const CAP: usize> PartialEq<&str> for StringNonul<CAP> {
+    #[inline]
+    #[must_use]
+    fn eq(&self, slice: &&str) -> bool {
+        self.as_str() == *slice
+    }
+}
+impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &str {
+    #[inline]
+    #[must_use]
+    fn eq(&self, string: &StringNonul<CAP>) -> bool {
+        *self == string.as_str()
+    }
+}
+
 impl<const CAP: usize> Deref for StringNonul<CAP> {
     type Target = str;
     #[inline]
