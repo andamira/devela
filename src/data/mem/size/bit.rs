@@ -29,23 +29,23 @@ use crate::num::{
     NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
 };
 
-use crate::text::AsciiChar;
-#[cfg(feature = "text")]
-use crate::text::{Char16, Char24, Char32, Char7, Char8};
+use crate::lex::AsciiChar;
+#[cfg(feature = "lex")]
+use crate::lex::{Char16, Char24, Char32, Char7, Char8};
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
-// #[cfg(feature = "text")]
-// use crate::text::{StringU16, StringU32, EgcU8, StringU8};
+// #[cfg(feature = "lex")]
+// use crate::lex::{StringU16, StringU32, EgcU8, StringU8};
 #[cfg(feature = "alloc")]
 use crate::_deps::alloc::{
     collections::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, VecDeque},
     string::String,
     vec::Vec,
 };
-#[cfg(all(feature = "text", feature = "alloc"))]
-use crate::text::StringEgc;
-#[cfg(feature = "text")]
-use crate::text::{EgcNonul, StringNonul};
+#[cfg(all(feature = "lex", feature = "alloc"))]
+use crate::lex::StringEgc;
+#[cfg(feature = "lex")]
+use crate::lex::{EgcNonul, StringNonul};
 
 #[cfg(feature = "portable-atomic")]
 use crate::_deps::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
@@ -195,7 +195,7 @@ macro_rules! bit_size {
         #[cfg(feature = "alloc")]
         bit_size![= {$PTR_BITS * 3}; for String];
 
-        #[cfg(all(feature = "alloc", feature = "text"))]
+        #[cfg(all(feature = "alloc", feature = "lex"))]
         bit_size![= {$PTR_BITS * 3}; for StringEgc];
 
         #[cfg(feature = "alloc")]
@@ -239,15 +239,15 @@ bit_size![= 128; for Instant, SystemTime];
 
 bit_size![= 7; for AsciiChar];
 
-#[cfg(feature = "text")]
+#[cfg(feature = "lex")]
 bit_size![= 7; for Char7];
-#[cfg(feature = "text")]
+#[cfg(feature = "lex")]
 bit_size![= 8; for Char8];
-#[cfg(feature = "text")]
+#[cfg(feature = "lex")]
 bit_size![= 16; for Char16];
-#[cfg(feature = "text")]
+#[cfg(feature = "lex")]
 bit_size![= 24; for Char24];
-#[cfg(feature = "text")]
+#[cfg(feature = "lex")]
 bit_size![= 32; for Char32];
 
 bit_size![= 8; for NonZeroI8, NonZeroU8];
@@ -287,7 +287,7 @@ bit_size![= 64; for AtomicF64];
 #[cfg(feature = "portable-atomic")]
 bit_size![= 128; for AtomicI128, AtomicU128];
 
-#[cfg(feature = "text")]
+#[cfg(feature = "lex")]
 bit_size![<const LEN: usize> = LEN; for StringNonul<LEN>, EgcNonul<LEN>];
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // bit_size![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, EgcU8<LEN>];

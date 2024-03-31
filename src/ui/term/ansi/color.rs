@@ -4,7 +4,7 @@
 //
 
 use super::Ansi;
-use crate::{num::Compare, text::Ascii};
+use crate::{lex::Ascii, num::Compare};
 
 /// ANSI 3-bit color codes, 8 colors.
 #[repr(u8)]

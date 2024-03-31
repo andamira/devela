@@ -3,7 +3,7 @@
 //! ANSI codes.
 //
 
-use crate::text::Ascii;
+use crate::lex::Ascii;
 
 /// ANSI escape codes.
 ///

@@ -68,7 +68,7 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 #* module features *#
 
 all = [ # enables all the modules and submodules
-	"code", "data", "exec", "gfx", "io", "num", "os", "text", "time", "ui",
+	"code", "data", "exec", "gfx", "io", "lex", "num", "os","time", "ui",
 ]
 
 # individual modules
@@ -77,6 +77,7 @@ data = []
 gfx = []
 exec = ["bytemuck/zeroable_atomics"]
 io = []
+lex = ["u8", "u16"]
 num = [ # enables all the `num` sub-features
 	"num_float", "num_geom", "num_int", "num_niche_range"
 	]
@@ -85,7 +86,6 @@ num = [ # enables all the `num` sub-features
 	num_int = [] # Frac, Int, NumInt, NumRefInt
 	num_niche_range = [] # Range* and NonRange* niche types
 os = []
-text = ["u8", "u16"]
 time = []
 ui = [ # enables all the `ui` sub-features
 	 "ui_term",
@@ -102,16 +102,16 @@ ui = [ # enables all the `ui` sub-features
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
 	"safe_code", "safe_data", "safe_exec", "safe_gfx", "safe_io",
-	"safe_num", "safe_os", "safe_text", "safe_time", "safe_ui",
+	"safe_lex", "safe_num", "safe_os","safe_time", "safe_ui",
 ] # in specific modules:
 	safe_code = []
 	safe_data = []
 	safe_exec = []
 	safe_gfx = []
 	safe_io = []
+	safe_lex = []
 	safe_num = []
 	safe_os = []
-	safe_text = []
 	safe_time = []
 	safe_ui = ["safe_ui_term"]
 		safe_ui_term = []
@@ -206,7 +206,7 @@ dep_all = [ # enables all optional dependencies
 	"wide",
 ] # enable groups of dependencies:
 	dep_exec = ["atomic", "portable-atomic"]
-	dep_text = ["const-str", "memchr", "unicode-segmentation", "unicode-width"]
+	dep_lex = ["const-str", "memchr", "unicode-segmentation", "unicode-width"]
 	dep_ui_term = ["const-str", "crossterm"]
 
 atomic = ["dep:atomic"]

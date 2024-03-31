@@ -1,0 +1,302 @@
+// devela::lex::egc::nonul
+//
+//!
+//
+// TOC
+// - definitions
+// - trait impls
+// - conversions
+
+use super::Egc;
+#[cfg(feature = "alloc")]
+use crate::_deps::alloc::ffi::CString;
+#[cfg(doc)]
+use crate::lex::LexError::{NotEnoughCapacity, OutOfBounds};
+use crate::{
+    code::unwrap,
+    lex::{char::*, helpers::impl_sized_alias, LexResult as Result, StringNonul},
+};
+use core::str::Chars;
+// use unicode_segmentation::UnicodeSegmentation;
+
+/* definitions */
+
+/// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`StringNonul`].
+#[must_use]
+#[repr(transparent)]
+#[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct EgcNonul<const CAP: usize>(StringNonul<CAP>);
+
+impl_sized_alias![
+    EgcNonul, EgcNonul,
+    "<abbr title='Extended Grapheme Cluster'>EGC</abbr>, backed by an array of ",
+    ". Can't contain nul chars.":
+    "An" 8, 1 "";
+    "A" 16, 2 "s";
+    "A" 32, 4 "s";
+    "A" 64, 8 "s";
+    "A" 128, 16 "s"
+];
+
+/* impls */
+
+impl<const CAP: usize> EgcNonul<CAP> {
+    /// Creates a new empty `StringNonul`.
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255.
+    #[inline]
+    pub const fn new() -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::new()]))
+    }
+
+    /// Creates a new `EgcNonul` from a `Char7`.
+    ///
+    /// If `c`.[`is_nul()`][Char7#method.is_nul] an empty egc will be returned.
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()` and `CAP` < 1.
+    ///
+    /// Will always succeed if `CAP` >= 1.
+    #[inline]
+    pub const fn from_char7(c: Char7) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char7(c)]))
+    }
+
+    /// Creates a new `EgcNonul` from a `Char8`.
+    ///
+    /// If `c`.[`is_nul()`][Char8#method.is_nul] an empty egc will be returned.
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
+    /// and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 2.
+    #[inline]
+    pub const fn from_char8(c: Char8) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char8(c)]))
+    }
+
+    /// Creates a new `EgcNonul` from a `Char16`.
+    ///
+    /// If `c`.[`is_nul()`][Char16#method.is_nul] an empty egc will be returned.
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
+    /// and `CAP` < `c.`[`len_utf8()`][Char16#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 3.
+    #[inline]
+    pub const fn from_char16(c: Char16) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char16(c)]))
+    }
+
+    /// Creates a new `EgcNonul` from a `Char24`.
+    ///
+    /// If `c`.[`is_nul()`][Char24#method.is_nul] an empty egc will be returned.
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
+    /// and `CAP` < `c.`[`len_utf8()`][Char24#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 4.
+    #[inline]
+    pub const fn from_char24(c: Char24) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char24(c)]))
+    }
+
+    /// Creates a new `EgcNonul` from a `Char32`.
+    ///
+    /// If `c`.[`is_nul()`][Char32#method.is_nul] an empty egc will be returned.
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
+    /// and `CAP` < `c.`[`len_utf8()`][Char32#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 4.
+    #[inline]
+    pub const fn from_char32(c: Char32) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char32(c)]))
+    }
+
+    /// Creates a new `EgcNonul` from a `char`.
+    ///
+    /// If `c`.[`is_nul()`][UnicodeScalar#method.is_nul] an empty egc will be returned.
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `CAP` > 255,
+    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
+    /// and `CAP` < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
+    ///
+    /// Will always succeed if `CAP` >= 4.
+    #[inline]
+    pub const fn from_char(c: char) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char(c)]))
+    }
+
+    //
+
+    /// Returns the length in bytes.
+    #[inline]
+    #[must_use]
+    pub fn len(&self) -> usize {
+        self.0.len()
+    }
+
+    /// Returns `true` if the current length is 0.
+    #[inline]
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        self.0.len() == 0
+    }
+
+    /// Returns the total capacity in bytes.
+    #[inline]
+    #[must_use]
+    pub const fn capacity() -> usize {
+        CAP
+    }
+
+    /// Returns the remaining capacity.
+    #[inline]
+    #[must_use]
+    pub fn remaining_capacity(&self) -> usize {
+        CAP - self.len()
+    }
+
+    /// Returns `true` if the current remaining capacity is 0.
+    #[inline]
+    #[must_use]
+    pub fn is_full(&self) -> bool {
+        self.len() == CAP
+    }
+
+    /// Sets the length to 0, by resetting all bytes to 0.
+    #[inline]
+    pub fn clear(&mut self) {
+        self.0.clear();
+    }
+
+    //
+
+    /// Returns a byte slice of the inner string slice.
+    #[inline]
+    #[must_use]
+    pub fn as_bytes(&self) -> &[u8] {
+        self.0.as_bytes()
+    }
+
+    /// Returns a mutable byte slice of the inner string slice.
+    /// # Safety
+    /// TODO
+    #[inline]
+    #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_slice"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
+        self.0.as_bytes_mut()
+    }
+
+    /// Returns a copy of the inner array with the full contents.
+    ///
+    /// The array contains all the bytes, including those outside the current length.
+    #[inline]
+    #[must_use]
+    pub fn as_array(&self) -> [u8; CAP] {
+        self.0.as_array()
+    }
+
+    /// Returns the inner array with the full contents.
+    ///
+    /// The array contains all the bytes, including those outside the current length.
+    #[inline]
+    #[must_use]
+    pub fn into_array(self) -> [u8; CAP] {
+        self.0.into_array()
+    }
+
+    /// Returns the inner string slice.
+    #[inline]
+    #[must_use]
+    pub fn as_str(&self) -> &str {
+        self.0.as_str()
+    }
+
+    /// Returns the mutable inner string slice.
+    /// # Safety
+    /// TODO
+    #[inline]
+    #[must_use]
+    #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_slice"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    pub unsafe fn as_mut_str(&mut self) -> &mut str {
+        self.0.as_mut_str()
+    }
+
+    /// Returns an iterator over the `chars` of this grapheme cluster.
+    #[inline]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    pub fn chars(&self) -> Chars {
+        self.0.chars()
+    }
+
+    /// Returns a new allocated C-compatible, nul-terminanted string.
+    #[inline]
+    #[must_use]
+    #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    pub fn to_cstring(&self) -> CString {
+        self.0.to_cstring()
+    }
+}
+
+/* traits */
+
+impl<const CAP: usize> Egc for EgcNonul<CAP> {}
+
+mod core_impls {
+    use super::*;
+    use core::fmt;
+
+    impl<const CAP: usize> Default for EgcNonul<CAP> {
+        /// Returns an empty extended grapheme character.
+        #[inline]
+        fn default() -> Self {
+            Self::new().unwrap()
+        }
+    }
+
+    impl<const CAP: usize> fmt::Display for EgcNonul<CAP> {
+        #[inline]
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "{}", self.0)
+        }
+    }
+    impl<const CAP: usize> fmt::Debug for EgcNonul<CAP> {
+        #[inline]
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "{:?}", self.0)
+        }
+    }
+
+    // TODO
+    // impl<const CAP: usize> From<String> for EgcNonul<CAP> {
+    //     fn from(s: String) -> EgcNonul<CAP> {
+    //         EgcNonul(s.graphemes(true).take(1).collect())
+    //     }
+    // }
+    // impl From<&str> for EgcNonul {
+    //     fn from(s: &str) -> EgcNonul {
+    //         EgcNonul(s.graphemes(true).take(1).collect())
+    //     }
+    // }
+    // impl From<char> for EgcNonul {
+    //     fn from(s: char) -> EgcNonul {
+    //         EgcNonul(s.into())
+    //     }
+    // }
+}
