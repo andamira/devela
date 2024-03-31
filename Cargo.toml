@@ -16,8 +16,8 @@ documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
 include = [
 	"/Cargo.toml",
-	"/DOCS/*.md",
-	"/src/**/*.rs", "/src/**/*.md", "src/**/*.html",
+	"/DOCS/*",
+	"/src/**/*.rs", "/src/**/*.md",
 	"/examples/bitfield.rs", "/examples/enumset.rs",
 	"/examples/cargo_script.rs", "/examples/coro_run.rs",
 	"/examples/cli_prompt.rs",
@@ -279,7 +279,7 @@ devela = { path = ".", features = ["all"] }
 [package.metadata.docs.rs]
 no-default-features = true
 features = ["_docsrs_max"]
-rustdoc-args = [ "--html-in-header", "./src/_info/rustdoc-header.html" ]
+rustdoc-args = [ "--html-in-header", "./DOCS/rustdoc-header.html" ]
 
 [badges]
 maintenance = { status = "experimental" }
