@@ -16,7 +16,11 @@
 // - WAIT: [const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/issues/57241)
 
 use crate::code::{iif, paste};
-#[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+#[cfg(all(
+    not(feature = "safe_num"),
+    feature = "unsafe_const",
+    feature = "num_float"
+))]
 use crate::num::Float;
 use core::cmp::Ordering::{self, *};
 
@@ -351,10 +355,11 @@ macro_rules! impl_comparing {
             /// Returns `true` if `self` is subnormal.
             ///
             /// # Features
-            #[doc = "This function will only be const with the `unsafe_const` and `" $fcap "`"]
-            /// features enabled.
+            #[doc = "This function will only be const with the `unsafe_const`, `" $fcap "`,"]
+            /// and `num_float` features enabled.
             #[inline] #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", feature = $fcap))]
+            #[cfg(all(not(feature = "safe_num"),
+                feature = "unsafe_const", feature = "num_float", feature = $fcap))]
             pub const fn is_subnormal(self) -> bool {
                 // check whether it's between 0 and the smallest finite value
                 (matches![self.total_cmp($f::MIN_POSITIVE), Less] &&
@@ -363,16 +368,18 @@ macro_rules! impl_comparing {
                  matches![self.total_cmp(-0.0), Less])
             }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            #[cfg(any(feature = "safe_num",
+                not(any(feature = "unsafe_const", feature = "num_float", feature = $fcap ))))]
             pub fn is_subnormal(self) -> bool { self.0.is_subnormal() }
 
             /// Returns `true` if `self` is neither zero, infinite, subnormal, or NaN.
             ///
             /// # Features
-            #[doc = "This function will only be const with the `unsafe_const` and `" $fcap "`"]
-            /// features enabled.
+            #[doc = "This function will only be const with the `unsafe_const` and `" $fcap "`,"]
+            /// and `num_float` features enabled.
             #[inline] #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", feature = $fcap))]
+            #[cfg(all(not(feature = "safe_num"),
+                feature = "unsafe_const", feature = "num_float", feature = $fcap))]
             pub const fn is_normal(self) -> bool {
                 (matches![self.total_cmp($f::MIN_POSITIVE), Greater | Equal]  &&
                 matches![self.total_cmp($f::INFINITY), Less]) ||
@@ -381,7 +388,8 @@ macro_rules! impl_comparing {
                 matches![self.total_cmp($f::NEG_INFINITY), Greater])
             }
             #[inline] #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            #[cfg(any(feature = "safe_num",
+                not(any(feature = "unsafe_const", feature = "num_float", feature = $fcap))))]
             pub fn is_normal(self) -> bool { self.0.is_normal() }
         }
     }};
