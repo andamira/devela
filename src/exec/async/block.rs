@@ -20,6 +20,8 @@ use crate::{
 
 /// Blocks the thread until the `future` is ready.
 ///
+/// See also the [`ExtFuture`][super::ExtFuture] trait.
+///
 /// # Examples
 /// ```
 /// let future = async {};
