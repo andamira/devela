@@ -3,8 +3,7 @@
 //! A simple logger.
 //
 
-use super::{Log, LogLevel, LogLevelFilter, LogMetadata, LogRecord};
-use crate::_deps::log::{max_level, set_logger, set_max_level};
+use super::{Log, Logging, LogLevel, LogLevelFilter, LogMetadata, LogRecord};
 
 /// A simple logger.
 pub struct LoggerSimple;
@@ -32,15 +31,15 @@ impl LoggerSimple {
                 level = rust_log_var;
             }
         }
-        set_logger(&LOGGER)?;
-        set_max_level(level);
+        Logging::set_logger(&LOGGER)?;
+        Logging::set_max_level(level);
         Ok(())
     }
 }
 
 impl Log for LoggerSimple {
     fn enabled(&self, metadata: &LogMetadata) -> bool {
-        metadata.level() <= max_level()
+        metadata.level() <= Logging::max_level()
     }
 
     fn log(&self, record: &LogRecord) {

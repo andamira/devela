@@ -3,13 +3,14 @@
 //!
 //
 
+mod logging;
 mod reexports;
 mod simple;
 
 #[allow(unused)]
-pub use {reexports::*, simple::*};
+pub use {logging::*, reexports::*, simple::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{reexports::*, simple::*};
+    pub use super::{logging::*, reexports::*, simple::*};
 }
