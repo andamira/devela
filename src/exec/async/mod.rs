@@ -21,9 +21,25 @@ mod waker;
 #[allow(unused_imports)]
 pub use {coroutine::*, reexports::*, waker::*};
 
+/* feature-gated */
+
+#[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+mod block;
+
+#[allow(unused_imports)]
+#[cfg(feature = "std")]
+pub use block::*;
+
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{coroutine::*, reexports::*, waker::*};
+
+    // feature-gated
+    #[doc(inline)]
+    // #[allow(unused_imports)]
+    #[cfg(feature = "std")]
+    pub use super::block::*;
 }
