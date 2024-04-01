@@ -96,6 +96,7 @@ In order to use any unsafe functionality:
 	- `unsafe_ptr` pop methods without `Clone`.
 	- `unsafe_slice` extra slice methods, avoid bound checks.
 	- `unsafe_str` unchecked utf-8 char and &str conversions.
+	- `unsafe_thread` `Logging::set_logger_racy`.
 
 
 ### Nightly features

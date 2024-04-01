@@ -3,7 +3,7 @@
 //! A simple logger.
 //
 
-use super::{Log, Logging, LogLevel, LogLevelFilter, LogMetadata, LogRecord};
+use super::{Log, LogLevel, LogLevelFilter, LogMetadata, LogRecord, Logging};
 
 /// A simple logger.
 pub struct LoggerSimple;
