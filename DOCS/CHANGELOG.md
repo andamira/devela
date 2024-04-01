@@ -10,7 +10,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`.
 - add features: `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `u8`, `u16`, `u32`, `u64`, `u128`, `usize`, `f32`, `f64`, `cap_float`, `cap_int`, `cap_i`, `cap_u`, `cap_nums`, `_docsrs_nums`.
-- add traits: `ExtFloatConst`, `NumVector`.
+- add traits: `ExtFuture`, `ExtFloatConst`, `NumVector`.
+- add function: `future_block`.
+- add type: `Timecode`.
 - add type: `Prompt`.
 - add types: `GcdExt`, `ValueQuant`.
 - add types: `Extent`, `Extent2d`, `Extent3d`.
@@ -47,13 +49,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `os` module to `sys`, make submodules private.
 - rename `work` module to `exec`, make submodules private.
 - rename `Floating` wrapper to `Float` and make it own `self`.
-- improve `cdbg`, allow to customize the location file path.
+- improve `cdbg`, allow to customize the location path and print fmt.
+- change `TaskWakerNoop` struct into `task_waker_noop` fn.
 - add more consts to `Float` and `ExtFloat`.
 - change `From<float>` for `Sign` to return the zero sign.
 - add bounds for `color_gamma_*` functions.
 - move the enabling of all module's sub-features to the root module feature.
 
 ### Fixed
+- fix `exec` re-exports.
 - fix `Bitsize` impl for niche types.
 - add missing `NumInt` `sqrt` implementations.
 - make `_info/examples` parseable by `rustfmt`.
