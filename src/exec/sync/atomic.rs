@@ -2,7 +2,7 @@
 //
 //! Atomic types.
 //!
-//! It also reexports the [`Atomic`] type from the
+//! It also re-exports the [`Atomic`] type from the
 //! [`atomic`](https://docs.rs/atomic) crate,
 //! and some useful definitions from `core`.
 //

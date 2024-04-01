@@ -5,6 +5,8 @@
 
 use crate::code::reexport;
 
+/* `core` re-exports */
+
 reexport! { rust: core::arch,
     doc: "Inline assembly.",
     asm
@@ -14,12 +16,13 @@ reexport! { rust: core::arch,
     global_asm
 }
 
-reexport! { rust: std::arch,
-    doc: "Tests at *runtime* whether an `aarch64` feature is enabled on aarch64 platforms.",
-    is_aarch64_feature_detected
-}
+/* `std` re-exports */
 
 reexport! { rust: std::arch,
-    doc: "Tests at *runtime* whether a CPU feature is enabled on x86/x86-64 platforms.",
-    is_x86_feature_detected
+    doc: "Tests at *runtime* whether an `aarch64` feature is enabled.",
+    @is_aarch64_feature_detected as detect_aarch64
+}
+reexport! { rust: std::arch,
+    doc: "Tests at *runtime* whether an `x86/x86-64` feature is enabled.",
+    @is_x86_feature_detected as detect_x86
 }

@@ -14,7 +14,7 @@ macro_rules! reexport {
     // the following 4 arms allows reexporting items from:
     // `core`, `alloc`, `std` or `no_std`|`std`.
     //
-    // - Supports multiple reexported items.
+    // - Supports multiple re-exported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
     //
     // # Examples
@@ -216,7 +216,7 @@ macro_rules! reexport {
 
     // re-exports items from an external optional dependency, from any normal module.
     //
-    // - Supports multiple reexported items.
+    // - Supports multiple re-exported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
     ( $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
@@ -257,7 +257,7 @@ macro_rules! reexport {
 
     // re-exports items from an external non-optional dependency, from any normal module.
     //
-    // - Supports multiple reexported items.
+    // - Supports multiple re-exported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
     //
     // used for: result::Either

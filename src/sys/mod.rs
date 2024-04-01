@@ -23,7 +23,6 @@
 mod arch;
 mod ffi;
 mod io;
-
 pub use {arch::*, ffi::*, io::*};
 
 /* feature-gated */
@@ -31,7 +30,6 @@ pub use {arch::*, ffi::*, io::*};
 #[cfg(feature = "sys")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
 mod path;
-
 #[cfg(feature = "sys")]
 pub use path::*;
 

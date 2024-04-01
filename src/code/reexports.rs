@@ -17,7 +17,7 @@ pub use devela_macros::{
 /// <span class="stab portability" title="re-exported from the `paste crate`">`paste`</span>
 pub use super::paste::paste;
 
-/* `core` reexports */
+/* `core` re-exports */
 
 // source code
 reexport! { rust: core,
@@ -55,7 +55,7 @@ doc: "Includes a file as a reference to a byte array.", include_bytes }
 reexport! { rust: core,
 doc: "Includes a UTF-8 encoded file as a string.", include_str }
 
-/* `core::convert` reexports */
+/* `core::convert` re-exports */
 
 // traits
 reexport! { rust: core::convert,
@@ -76,13 +76,13 @@ doc: "An attempted conversion that consumes self, which may or may not be expens
 reexport! { rust: core::convert,
 doc: "The identity function.", identity }
 
-/* `core::default` reexports */
+/* `core::default` re-exports */
 
 // NOTE: the trait and the derive macro have the same name
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 pub use core::default::Default;
 
-/* `core::hint` reexports */
+/* `core::hint` re-exports */
 
 reexport! { rust: core::hint,
 doc: "Hints the compiler to be maximally pessimistic about what black_box could do.", black_box }
@@ -91,13 +91,13 @@ doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_
 reexport! { rust: core::hint,
 doc: "Informs the compiler that the current calling site is not reachable.", unreachable_unchecked }
 
-/* `core::clone` reexports */
+/* `core::clone` re-exports */
 
 // NOTE: the trait and the derive macro have the same name
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 pub use core::clone::Clone;
 
-/* `core::marker` reexports */
+/* `core::marker` re-exports */
 
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 pub use core::marker::PhantomData;

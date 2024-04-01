@@ -25,13 +25,13 @@ mod never;
 mod option;
 mod own;
 mod panic;
-mod reexport;
+mod reexports;
 mod traits;
 mod unwrap;
 mod value_quant;
 
 pub use {
-    ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexport::*,
+    ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexports::*,
     traits::*, unwrap::*, value_quant::*,
 };
 
@@ -47,7 +47,7 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     pub use super::{
-        ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexport::*,
+        ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexports::*,
         traits::*, unwrap::*, value_quant::*,
     };
 

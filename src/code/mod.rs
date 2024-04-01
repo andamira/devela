@@ -45,7 +45,7 @@ mod enumset; // enumset![]
 mod ident; // identifier related macros
 mod iif; // iif![]
 mod paste; // paste![] wrapped for docs
-mod reexports; // reexported items
+mod reexports; // re-exported items
 mod result; // std::{error, option, panic, result}
 mod skip_format; // sf![]
 
