@@ -5,7 +5,7 @@
 //! [`thread`]: std::thread
 //
 
-/* always compiled, non-public modules */
+/* always compiled */
 
 mod reexports;
 mod sleep;

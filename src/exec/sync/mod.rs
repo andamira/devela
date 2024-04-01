@@ -12,16 +12,24 @@ mod reexports;
 #[allow(unused_imports)]
 pub use reexports::*;
 
-/* always compiled */
+/* feature-gated */
 
-pub mod atomic;
+#[cfg(feature = "exec")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+mod atomic;
 
-#[doc(no_inline)]
+#[cfg(feature = "exec")]
 pub use atomic::*;
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{atomic::*, reexports::*};
+    pub use super::reexports::*;
+
+    // feature-gated
+    #[doc(inline)]
+    #[allow(unused_imports)]
+    #[cfg(feature = "exec")]
+    pub use super::atomic::*;
 }

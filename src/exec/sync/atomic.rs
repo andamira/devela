@@ -40,7 +40,7 @@ reexport! { "portable-atomic" | portable_atomic, features: "exec",
     doc: "A floating point type which can be safely shared between threads.",
     AtomicF32, AtomicF64
 }
-reexport! { "portable-atomic" | portable_atomic, features: "exeexec",
+reexport! { "portable-atomic" | portable_atomic, features: "exec",
     doc: "A signed integer type which can be safely shared between threads.",
     AtomicI128
 }

@@ -7,7 +7,7 @@ use crate::code::reexport;
 
 /* structs */
 
-reexport! { rust: std::sync,
+reexport! { rust: alloc::sync,
     doc: "A thread-safe reference-counting pointer.",
     Arc
 }
@@ -64,7 +64,7 @@ reexport! { rust: std::sync,
         due to a time out or not.",
     WaitTimeoutResult
 }
-reexport! { rust: std::sync,
+reexport! { rust: alloc::sync,
     doc: "A version of [`Arc`] that holds a non-owning reference to the managed allocation.",
     @Weak as ArcWeak
 }

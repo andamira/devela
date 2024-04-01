@@ -16,30 +16,14 @@
 /* always-compiled */
 
 mod r#async;
-
-pub use r#async::all::*;
-
-/* feature-gated */
-
-#[cfg(feature = "exec")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
 mod sync;
-#[cfg(feature = "exec")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
 mod thread;
 
-#[cfg(feature = "exec")]
-#[allow(unused_imports)]
-pub use {sync::all::*, thread::all::*};
+pub use {r#async::all::*, sync::all::*, thread::all::*};
 
 pub(crate) mod all {
     // always-compiled
     #[doc(inline)]
-    pub use super::r#async::all::*;
-
-    // feature-gated
-    #[doc(inline)]
-    #[cfg(feature = "exec")]
     #[allow(unused_imports)]
-    pub use super::{sync::all::*, thread::all::*};
+    pub use super::{r#async::all::*, sync::all::*, thread::all::*};
 }
