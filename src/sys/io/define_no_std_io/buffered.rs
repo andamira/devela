@@ -5,20 +5,13 @@
 use super::{BufRead, IoError, IoErrorKind, IoResult as Result, Read, Seek, SeekFrom, Write};
 use core::{cmp, fmt};
 
-// TODO:IMPROVE
-// #[cfg(feature = "memchr")]
-// use memchr::memchr;
-// #[cfg(not(feature = "memchr"))]
-pub fn memrchr(needle: u8, haystack: &[u8]) -> Option<usize> {
+#[cfg(feature = "memchr")]
+use memchr::memrchr;
+#[rustfmt::skip]
+#[cfg(not(feature = "memchr"))]
+fn memrchr(needle: u8, haystack: &[u8]) -> Option<usize> {
     haystack.iter().enumerate().rev().find_map(
-        |(index, &byte)| {
-            if byte == needle {
-                Some(index)
-            } else {
-                None
-            }
-        },
-    )
+        |(index, &byte)| crate::iif![byte == needle; Some(index); None])
 }
 
 /// The `BufReader<R, S>` struct adds buffering to any reader.

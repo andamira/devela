@@ -8,10 +8,12 @@ mod cursor;
 mod error;
 mod fns;
 mod impls;
-mod traits;
+mod other;
 
-pub use buffered::{BufReader, BufWriter, LineWriter};
-pub use cursor::Cursor;
-pub use error::{IoError, IoErrorKind, IoResult};
-pub use fns::copy;
-pub use traits::{BufRead, Bytes, Chain, Read, Seek, SeekFrom, Take, Write};
+pub use buffered::{BufReader, BufWriter, LineWriter}; // traits
+pub use cursor::Cursor; // struct
+pub use error::{IoError, IoErrorKind, IoResult}; // struct, enum, type
+pub use fns::io_copy; // fn
+pub use other::SeekFrom; // enum
+pub use other::{BufRead, Read, Seek, Write}; // traits
+pub use other::{Bytes, Chain, Take}; // structs

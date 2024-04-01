@@ -27,6 +27,14 @@ reexport! { rust: not(std)|std::io,
 /* io structs and enums */
 
 reexport! { rust: not(std)|std::io,
+    doc: "Adds buffering to any reader.",
+    BufReader
+}
+reexport! { rust: not(std)|std::io,
+    doc: "Wraps a writer and buffers its output.",
+    BufWriter
+}
+reexport! { rust: not(std)|std::io,
     doc: "Wraps an in-memory buffer and provides it with a [`Seek`] implementation.",
     Cursor
 }
@@ -40,6 +48,10 @@ reexport! { rust: not(std)|std::io,
     @ErrorKind as IoErrorKind
 }
 reexport! { rust: not(std)|std::io,
+    doc: "Like `BufWriter`, but flushing whenever a newline (`0x0a`, `'\n'`) is detected.",
+    LineWriter
+}
+reexport! { rust: not(std)|std::io,
     doc: "A specialized [`Result`] type for I/O operations.",
     @Result as IoResult
 }
@@ -50,7 +62,6 @@ reexport! { rust: not(std)|std::io,
     doc: "Copies the entire contents of a reader into a writer.",
     @copy as io_copy
 }
-
 reexport! { rust: std::io,
     doc: "Creates a value that is always at EOF for reads, and ignores all data written.",
     @empty as io_empty

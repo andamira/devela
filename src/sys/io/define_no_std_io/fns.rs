@@ -9,7 +9,7 @@ use crate::{
 ///
 /// # Features
 /// Makes use of the `unsafe_sys` feature to employ [`MaybeUninit`].
-pub fn copy<R, W, const S: usize>(reader: &mut R, writer: &mut W) -> IoResult<u64>
+pub fn io_copy<R, W, const S: usize>(reader: &mut R, writer: &mut W) -> IoResult<u64>
 where
     R: ?Sized + Read,
     W: ?Sized + Write,
