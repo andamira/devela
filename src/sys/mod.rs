@@ -27,6 +27,12 @@ pub use {arch::*, ffi::*, io::*};
 
 /* feature-gated */
 
+#[cfg(feature = "log")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "log")))]
+mod log;
+#[cfg(feature = "log")]
+pub use log::*;
+
 #[cfg(feature = "sys")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
 mod path;
@@ -40,6 +46,17 @@ pub(crate) mod all {
 
     // feature-gated
     #[doc(inline)]
+    #[cfg(feature = "log")]
+    pub use super::log::all::*;
+    #[doc(inline)]
     #[cfg(feature = "sys")]
     pub use super::path::all::*;
 }
+
+// WIP
+// mod simd;
+// pub use simd::*;
+
+// WIP
+// #[doc(inline)]
+// pub use super::simd::*;

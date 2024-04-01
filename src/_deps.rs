@@ -35,6 +35,9 @@ reexport! { optional_crate "hashbrown" | hashbrown,
 reexport! { optional_crate "libm" | libm,
     doc: "A port of [`MUSL`](https://musl.libc.org/)'s libm to Rust."
 }
+reexport! { optional_crate "log" | log,
+    doc: "A lightweight logging facade."
+}
 reexport! { optional_crate "memchr" | memchr,
     doc: "Optimized routines for string search primitives."
 }

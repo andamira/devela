@@ -18,6 +18,7 @@ include = [
 	"/Cargo.toml",
 	"/DOCS/*",
 	"/src/**/*.rs", "/src/**/*.md",
+	#
 	"/examples/bitfield.rs", "/examples/enumset.rs",
 	"/examples/cargo_script.rs", "/examples/coro_run.rs",
 	"/examples/cli_prompt.rs",
@@ -54,12 +55,13 @@ _docsrs_stable = ["all", "std", "unsafe", "dep_all"]
 #* environment features *#
 
 std = [ # disables `no_std` compatibility and enables `std` functionality
-	"alloc", "either/use_std",
+	"alloc", "either/use_std", "log/std",
 	"atomic?/std", "bytemuck/extern_crate_std", "memchr?/std", "rand_core?/std",
 	"wide?/std",
 ]
 alloc = [ # enables `alloc` functionality
-	"bytemuck/extern_crate_alloc", "memchr?/alloc", "rand_core?/alloc"
+	"bytemuck/extern_crate_alloc",
+	"memchr?/alloc", "rand_core?/alloc"
 ]
 no_std = [ # enables functionality incompatible with or substitute of `std`
 ]
@@ -120,7 +122,7 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
 ] # for specific purposes:
 	unsafe_array = [] # faster array initialization, UninitArray.
-	unsafe_async = [] # TaskWakerNoop, CoroRun
+	unsafe_async = [] # task_waker_noop, CoroRun
 	unsafe_const = [] # extra const methods.
 	unsafe_dyn = [] # DSTs in the stack, no_std Error dyn impls.
 	unsafe_niche = [] # unchecked niche constructors.
@@ -195,6 +197,7 @@ dep_all = [ # enables all optional dependencies
 	"crossterm",
 	"hashbrown",
 	"libm",
+	"log",
 	"memchr",
 	"miniquad",
 	"portable-atomic",
@@ -212,6 +215,7 @@ const-str = ["dep:const-str"]
 crossterm = ["dep:crossterm"]
 hashbrown = ["dep:hashbrown"]
 libm = ["dep:libm"]
+log = ["dep:log"]
 memchr = ["dep:memchr"]
 miniquad = ["dep:miniquad"] # std
 portable-atomic = ["dep:portable-atomic"]
@@ -225,29 +229,36 @@ wide = ["dep:wide"]
 
 [dependencies]
 
+# non-optional:
 devela_macros = { version  = "0.9.0" }
 #devela_macros = { path = "./macros" }
 either = { version = "1.9.0", default-features = false }
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 
-# optional dependencies
+# optional:
 const-str = { version = "0.5.6", default-features = false, optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
+log = { version = "0.4.21", default-features = false, optional = true }
 memchr = { version = "2.7.1", optional = true, default-features = false }
 miniquad = { version = "0.4.0", default-features = false, optional = true }
 rand_core = { version = "0.6.4", default-features = false, optional = true }
 unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
 unicode-width = { version = "0.1.11", default-features = false, optional = true }
 wide = { version = "0.7.15", optional = true, default-features = false }
+
+# non-optional:
+[dependencies.bytemuck]
+version = "1.14.0"
+optional = false
+default-features = false
+features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
+
+# optional:
 [dependencies.atomic]
 version = "0.6.0"
 optional = true
 default-features = false
 features = ["fallback"]
-[dependencies.bytemuck]
-version = "1.14.0"
-default-features = false
-features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
 [dependencies.crossterm]
 version = "0.27.0"
 optional = true
