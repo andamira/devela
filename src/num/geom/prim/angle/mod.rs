@@ -7,7 +7,7 @@
 
 mod r#impl;
 
-/// A basic angle.
+/// A generic angle.
 ///
 /// It's unit-agnostic over radians or degrees, and respects directionality.
 ///

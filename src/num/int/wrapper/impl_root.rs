@@ -326,7 +326,7 @@ macro_rules! impl_int {
             pub const fn is_square(self) -> bool {
                 let a = self.0;
                 let sqrt = self.sqrt_floor();
-                sqrt.0 * sqrt.0 == a // IMPROVE ops
+                sqrt.0 * sqrt.0 == a
             }
 
             /// Returns the ceiled integer square root.

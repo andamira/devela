@@ -5,13 +5,13 @@ This project includes the following derived works:
 - A [modified][2] version of [tupl] by *Dragoteryx*, licensed as MIT or Apache-2.0,
   as part of the [`ExtTuple`] trait.
 - Adaptation of [opt_reduce] by Waffle Lapkin, licensed as MIT,
-  as part of the [`OptionExt`] trait.
+  as part of the [`ExtOption`] trait.
 - Adaptation of [fmtor] by Tyler Ruckinger, licensed as MIT OR Apache-2.0,
-  as part of the [`OptionExt`] trait.
+  as part of the [`ExtOption`] trait.
 - Adaptation of [option-ext] by Simon Ochsenreither, licensed as MPL-2.0,
-  as part of the [`OptionExt`] trait.
+  as part of the [`ExtOption`] trait.
 - Adaptation of [result-ext] by Simon Ochsenreither, licensed as MPL-2.0,
-  as part of the [`ResultExt`] trait.
+  as part of the [`ExtResult`] trait.
 - Adaptation of [apply] by George Burton, licensed as Unlicense,
   as part of the [`Also`] and [`Apply`] traits.
 - Adaptation of [rawbytes] by Frank Denis, licensed as MIT,
@@ -38,22 +38,22 @@ This project includes the following derived works:
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
 [option-ext]: https://crates.io/crates/option-ext/0.2.0
 [result-ext]: https://crates.io/crates/result-ext/0.2.0
-[`OptionExt`]: https://docs.rs/devela/latest/devela/error/trait.OptionExt.html
-[`ResultExt`]: https://docs.rs/devela/latest/devela/error/trait.ResultExt.html
+[`ExtOption`]: https://docs.rs/devela/latest/devela/code/trait.ExtOption.html
+[`ExtResult`]: https://docs.rs/devela/latest/devela/code/trait.ExtResult.html
 [apply]: https://crates.io/crates/apply/0.3.0
 [`Also`]: https://docs.rs/devela/latest/devela/code/trait.Also.html
 [`Apply`]: https://docs.rs/devela/latest/devela/code/trait.Apply.html
 [rawbytes]: https://crates.io/crates/rawbytes/1.0.0
-[`mem_as_bytes`]: https://docs.rs/devela/latest/devela/mem/fn.mem_as_bytes.html
-[`mem_as_bytes_mut`]: https://docs.rs/devela/latest/devela/mem/fn.mem_as_bytes_mut.html
+[`mem_as_bytes`]: https://docs.rs/devela/latest/devela/data/fn.mem_as_bytes.html
+[`mem_as_bytes_mut`]: https://docs.rs/devela/latest/devela/data/fn.mem_as_bytes_mut.html
 [const_for]: https://crates.io/crates/const_for/0.1.4
 [`cfor`]: https://docs.rs/devela/latest/devela/code/macro.cfor.html
 [no_std_io]: https://crates.io/crates/no_std_io/0.6.0
 [core2]: https://crates.io/crates/core2/0.4.0
-[`io`]: https://docs.rs/devela/latest/devela/io/
+[`io`]: https://docs.rs/devela/latest/devela/sys/io/
 [numtoa]: https://crates.io/crates/numtoa/0.2.4
 [size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3
-[`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/mem/size/macro.mem_size_of_expr.html
+[`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/data/size/macro.mem_size_of_expr.html
 [8bit_rng]: https://github.com/edrosten/8bit_rng
 [`Xyza8a`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xyza8a.html
 [`Xyza8b`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xyza8b.html

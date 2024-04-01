@@ -1,6 +1,6 @@
 // devela::num::geom
 //
-//! Geometric figures and operations, spatial constructs and analysis.
+//! Geometric types and operations, spatial constructs and analysis.
 //
 
 mod prim;

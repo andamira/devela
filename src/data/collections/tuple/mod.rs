@@ -38,9 +38,9 @@ mod private { pub trait Sealed {} }
 ///
 /// # Features
 /// By default it's implemented for tuples of arity of 15 or less.
-///
 /// It supports increased arities of 31, 63, 95 and 127 by enabling the
-/// corresponding feature: `_tuple_arity_[31|63|95|127]`.
+/// corresponding feature: `_tuple_arity_[31|63|95|127]`,
+/// which in turn will increase compilation times.
 pub trait ExtTuple: private::Sealed {
     /// The first element of this tuple.
     type Head;
@@ -58,7 +58,9 @@ pub trait ExtTuple: private::Sealed {
     /// The arity of this tuple (the number of contained elements).
     const ARITY: usize;
 
-    /// The maximum arity supported by the trait in the current compilation.
+    /// The maximum arity supported by the current compilation options.
+    ///
+    /// See the available [features](#features) to increase this number.
     #[rustfmt::skip] const MAX_ARITY: usize = {
         if cfg!(not(feature = "_tuple_arity_31")) { 15
         } else if cfg!(all(feature = "_tuple_arity_31", not(feature = "_tuple_arity_63"))) { 31
