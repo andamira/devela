@@ -28,7 +28,8 @@ keywords = ["dev", "helper", "library", "std", "extension"]
 publish = true
 
 
-# ------------------------------------------------------------------------------
+[features]
+# ==============================================================================
 # Features are grouped in the following categories:
 # - Miscellaneous
 # - Environment
@@ -37,10 +38,13 @@ publish = true
 # - Nightly
 # - Capability
 # - Dependency
-
-[features]
+#
+# Sintax:
+# - ["name"]: Normal public-facing features starting with a letter.
+#
 
 #* miscellaneous features *#
+# ------------------------------------------------------------------------------
 
 # default = [] # no default features
 
@@ -53,6 +57,7 @@ _docsrs_stable = ["all", "std", "unsafe", "dep_all"]
 
 
 #* environment features *#
+# ------------------------------------------------------------------------------
 
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc", "either/use_std", "log/std",
@@ -68,18 +73,17 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 
 
 #* module features *#
+# ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	"code", "data", "exec", "lex", "mix", "num", "sys", "time", "ui",
-]
-
-# individual modules
+	"code", "data", "exec", "lex", "mix", "num", "sys", "time", "ui"
+	]
 code = []
 data = []
 exec = ["bytemuck/zeroable_atomics"]
 lex = ["u8", "u16"]
 mix = []
-num = [ # enables all the `num` sub-features
+num = [
 	"num_float", "num_geom", "num_int", "num_niche_range"
 	]
 	num_float = [] # Float, ExtFloat
@@ -88,14 +92,15 @@ num = [ # enables all the `num` sub-features
 	num_niche_range = [] # Range* and NonRange* niche types
 sys = []
 time = []
-ui = [ # enables all the `ui` sub-features
-	 "ui_term",
+ui = [
+	 "ui_term", # "ui_gfx", "ui_pc", "ui_web",
 	]
 	ui_term = ["unicode-width", "unicode-segmentation"] # terminal functionality
 	# ui_window = ["miniquad"]
 
 
 #* safety features *#
+# ------------------------------------------------------------------------------
 
 # To use unsafe functionality:
 # 1. enable the desired `unsafe` feature.
@@ -134,19 +139,18 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 
 
 #* nightly features *#
+# ------------------------------------------------------------------------------
 
-nightly = [ # enables all the unstable features
+nightly = [
 	"nightly_coro", "nightly_doc", "nightly_simd",
-] # specific unstable features:
+] # enables all the following features:
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	nightly_doc = [] # doc_cfg
 	nightly_simd = [] # portable_simd
 
 
 #* capability features *#
-
-# Enabling extra capabilites can worsen compilation times.
-# Some relative compilation times are provided as a guide.
+# ------------------------------------------------------------------------------
 
 capability_max = [ # enables the maximum capabilities
 	"_tuple_arity_127", "cap_nums",
@@ -190,23 +194,35 @@ _fmt_len_32 = ["_fmt_len_16"]
 _fmt_len_64 = ["_fmt_len_32"]
 _fmt_len_128 = ["_fmt_len_64"]
 
+# (private introspections)
+# ------------------------------------------------------------------------------
+#
+#
+# There is no introspection for environment or safety.
+#
+
+# modules
+_-code-_ = []
+_-num-_ = []
+_-sys-_ = []
+_-ui-_ = []
+# nightly
+_-_nightly_-_ = []
+# these are not
+_-nums-_ = []
+_-ints-_ = []
+_-sints-_ = []
+_-uints-_ = []
+_-floats-_ = []
+
+
 
 #* dependency features *#
 
 dep_all = [ # enables all optional dependencies
-	"atomic",
-	"const-str",
-	"crossterm",
-	"hashbrown",
-	"libm",
-	"log",
-	"memchr",
-	"miniquad",
-	"portable-atomic",
-	"rand_core",
-	"unicode-segmentation",
-	"unicode-width",
-	"wide",
+	"atomic", "const-str", "crossterm", "hashbrown", "libm", "log",
+	"memchr", "miniquad", "portable-atomic", "rand_core",
+	"unicode-segmentation", "unicode-width", "wide",
 ] # enable groups of dependencies:
 	dep_exec = ["atomic", "portable-atomic"]
 	dep_lex = ["const-str", "memchr", "unicode-segmentation", "unicode-width"]
