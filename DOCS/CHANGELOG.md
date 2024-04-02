@@ -8,12 +8,14 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Unreleased [0.21.0-wip]
 
 ### Added
-- add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`.
-- add features: `i8`, `i16`, `i32`, `i64`, `i128`, `isize`, `u8`, `u16`, `u32`, `u64`, `u128`, `usize`, `f32`, `f64`, `cap_float`, `cap_int`, `cap_i`, `cap_u`, `cap_nums`, `_docsrs_nums`.
+- add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`, `unsafe_thread`.
+- add features: `_i8`, `_i16`, `_i32`, `_i64`, `_i128`, `_isize`, `_u8`, `_u16`, `_u32`, `_u64`, `_u128`, `_usize`, `_f32`, `_f64`, `_nums`, `_floats`, `_ints`, `_sints`, `_uints`, `_default`, `_max`, `_docsrs_max`, `_docsrs_stable`.
+- add private features for reflection purpoess.
 - add traits: `ExtFuture`, `ExtFloatConst`, `NumVector`.
 - add function: `future_block`.
-- add type: `Timecode`.
 - add type: `Prompt`.
+- add type: `Timecode`.
+- add types: `LoggerSimple`, `Logging`.
 - add types: `GcdExt`, `ValueQuant`.
 - add types: `Extent`, `Extent2d`, `Extent3d`.
 - add types: `Angle`, `AngleDirection`, `AngleKind`
@@ -27,6 +29,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add new arms to `array_init:` `init`, `init_heap`.
 - add methods for casting to `[iu]size_[up|down]` to `Cast` and `PrimitiveCast`.
 - add methods to `Int`, `NumInt`, `NumRefInt`: `midpoint`.
+- reexport more `std::io` items.
 
 ### Removed
 - remove features: `num_all`, `ui_all`, `num_niche_impls`, `result`, `safe_result`, `mem`, `safe_mem`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`.
@@ -46,9 +49,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `Mem` trait to `ExtMem`.
 - rename `Text` trait to `StrOwn`.
 - rename `_docs` module to `_info`.
+- rename `copy` function to `io_copy`.
 - rename `os` module to `sys`, make submodules private.
 - rename `work` module to `exec`, make submodules private.
 - rename `Floating` wrapper to `Float` and make it own `self`.
+- rename `is_aarch64_feature_detected` to `detect_aarch64`.
+- rename `is_x86_feature_detected` to `detect_x86`.
 - improve `cdbg`, allow to customize the location path and print fmt.
 - change `TaskWakerNoop` struct into `task_waker_noop` fn.
 - add more consts to `Float` and `ExtFloat`.
@@ -59,8 +65,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Fixed
 - fix `exec` re-exports.
 - fix `Bitsize` impl for niche types.
-- add missing `NumInt` `sqrt` implementations.
+- fix feature-gating of `Compare` methods: `is_normal`, `is_subnormal`.
 - make `_info/examples` parseable by `rustfmt`.
+- add missing `NumInt` `sqrt` implementations.
+- make no-std io `memrchr` function private.
 
 
 ## [0.20.0]
