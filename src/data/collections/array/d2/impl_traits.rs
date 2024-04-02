@@ -7,9 +7,9 @@
 use crate::data::Boxed;
 use crate::{
     code::ConstDefault,
-    data::{Array, Array2d, Bare, DataCollection, DataResult as Result, Storage},
+    data::{Array, Array2d, Bare, Storage},
 };
-use core::{cmp::Ordering, fmt};
+use core::fmt;
 
 /* Clone, Copy */
 

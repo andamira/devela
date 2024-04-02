@@ -21,8 +21,6 @@
 //! [`vec`]: mod@std::vec
 //
 
-// warnings:
-#![cfg_attr(not(feature = "data"), allow(unused_imports))]
 // safety:
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
@@ -33,7 +31,7 @@ mod error;
 mod mem;
 mod sort;
 
-#[allow(unused)]
+#[allow(unused_imports)]
 pub use {bit::all::*, error::*, mem::*, sort::Sort};
 
 pub mod collections;

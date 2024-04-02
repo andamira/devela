@@ -5,8 +5,6 @@
 // TOC
 // - reexport!
 
-#![allow(unused)]
-
 /// Macro helper for documentation of re-exported items.
 macro_rules! reexport {
     /* re-exports from normal modules */

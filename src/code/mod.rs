@@ -17,23 +17,18 @@
 //! [`result`]: std::result
 //
 
-// warnings:
-#![cfg_attr(not(feature = "code"), allow(unused_imports))]
 // safety:
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 
-/* hidden re-exports */
+/* always compiled */
 
+// hidden re-exports
 #[doc(hidden)]
 pub use paste::__paste;
 
-/* always compiled, crate-private modules */
-
+// crate private
 mod _private;
-
 pub(crate) use _private::*;
-
-/* always compiled, non-public modules */
 
 mod any; // dynamic typing and reflection
 mod asserts; // assertion macros
@@ -48,7 +43,6 @@ mod paste; // paste![] wrapped for docs
 mod reexports; // re-exported items
 mod result; // std::{error, option, panic, result}
 mod skip_format; // sf![]
-
 pub use {
     any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*,
     iif::*, paste::*, reexports::*, result::all::*, skip_format::*,

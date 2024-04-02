@@ -5,8 +5,6 @@
 //! Always available for internal use.
 //
 
-#![allow(unused)]
-
 /// Returns the number of bytes needed to store the given unicode scalar `code`,
 /// already UTF-8 encoded in 2 bytes.
 #[inline]

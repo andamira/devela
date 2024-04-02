@@ -4,14 +4,12 @@
 //! `std::`[`panic`][mod@std::panic].
 //
 
-// re-export private sub-modules
-#[allow(unused)]
-pub use reexports::*;
-
 pub(crate) mod all {
     pub use super::reexports::*;
 }
 
+#[allow(unused_imports)]
+pub use reexports::*;
 mod reexports {
     use crate::code::reexport;
 

@@ -9,7 +9,7 @@
 // safety:
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
-/* always compiled, private modules */
+/* always compiled */
 
 mod calendar;
 mod error;
@@ -17,7 +17,6 @@ mod fmt;
 mod reexports;
 mod split;
 mod unix;
-
 pub use {calendar::*, error::*, fmt::*, reexports::*, split::*, unix::*};
 
 pub(crate) mod all {

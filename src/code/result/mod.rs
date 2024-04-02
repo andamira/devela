@@ -14,10 +14,7 @@
 //! It re-exports the error and result types defined in other modules.
 //
 
-// safety:
-#![cfg_attr(feature = "safe_result", forbid(unsafe_code))]
-
-/* always compiled, non-public modules */
+/* always compiled */
 
 mod ext_result;
 mod mismatch;
@@ -29,17 +26,17 @@ mod reexports;
 mod traits;
 mod unwrap;
 mod value_quant;
-
+#[allow(unused_imports)]
 pub use {
     ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexports::*,
     traits::*, unwrap::*, value_quant::*,
 };
 
-/* feature-gated, non-public modules */
+/* feature-gated */
 
 #[cfg(not(feature = "std"))]
 mod define_no_std_error;
-
+#[allow(unused_imports)]
 #[cfg(not(feature = "std"))]
 pub use define_no_std_error::*;
 

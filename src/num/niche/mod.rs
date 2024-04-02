@@ -3,14 +3,13 @@
 //! Numeric types with niche memory layout optimization.
 //
 
-/* always compiled, non-public modules */
+/* always compiled */
 
 mod non_specific;
 mod reexports;
-
 pub use {non_specific::*, reexports::*};
 
-/* feature-gated, non-public modules */
+/* feature-gated */
 
 #[cfg(all(feature = "num_niche_range", feature = "i8", test))]
 mod tests;

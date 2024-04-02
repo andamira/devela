@@ -15,10 +15,12 @@ use crate::{
     data::{
         cswap,
         error::{DataError, DataResult as Result},
-        Array, Bare, Stack, Storage,
+        Bare, Stack,
     },
 };
-use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};
+#[cfg(doc)]
+use DataError::OutOfBounds;
+use DataError::{NotEnoughElements, NotEnoughSpace};
 
 // helper macro to impl methods for a Stack with custom index size.
 //

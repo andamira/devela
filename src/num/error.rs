@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{code::Mismatch, num::Sign};
+use crate::num::Sign;
 
 /// A numerical result.
 pub type NumResult<T> = core::result::Result<T, NumError>;

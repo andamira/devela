@@ -4,7 +4,6 @@
 //
 
 use crate::data::{
-    array_init,
     error::{DataError, DataResult as Result},
     Array, Bare, Destaque, DestaqueIter, Storage,
 };
@@ -14,7 +13,6 @@ use crate::{
     data::Boxed,
 };
 use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};
-// IMPROVE use array_init
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};
 

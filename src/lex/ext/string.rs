@@ -5,7 +5,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::_alloc::string::{String, ToString};
-#[allow(unused)] // IMPROVE: impl for ArrayString, …
+#[allow(unused_imports)] // IMPROVE: impl for ArrayString, …
 use crate::lex::AsciiChar;
 
 // Marker trait to prevent downstream implementations of the `ExtString` trait.

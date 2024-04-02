@@ -40,7 +40,6 @@ pub(crate) mod all {
 
     // feature-gated
     #[doc(inline)]
-    // #[allow(unused_imports)]
     #[cfg(feature = "std")]
     pub use super::block::*;
 }

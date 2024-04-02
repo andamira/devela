@@ -9,7 +9,7 @@ use crate::{
     data::{Box, Boxed},
 };
 use crate::{
-    code::{iif, Mismatch},
+    code::Mismatch,
     data::{
         error::{DataError, DataResult as Result},
         Array, Array2d, Bare, Storage,

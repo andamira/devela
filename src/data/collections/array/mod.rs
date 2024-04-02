@@ -8,13 +8,13 @@
 //! homogeneous data structures.
 //
 
-/* always compiled, non-public mdules */
+/* always compiled */
 
 mod array_init;
 mod d1; // 1-dimensional
 mod d2; // 2-dimensional
 mod ext; // ExtArray, ArrayFmt
-
+#[allow(unused_imports)]
 pub use {array_init::*, d1::all::*, d2::all::*, ext::*};
 
 pub(crate) mod all {

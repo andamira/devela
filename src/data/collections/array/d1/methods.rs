@@ -5,7 +5,7 @@
 
 use crate::data::{array_init, Array, Bare, BareBox, Storage};
 
-#[allow(unused)]
+#[allow(unused_imports)]
 #[cfg(feature = "alloc")]
 use crate::{
     _alloc::{boxed::Box, vec::Vec},

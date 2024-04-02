@@ -8,8 +8,7 @@
 /* always compiled */
 
 mod always_fns;
-
-#[allow(unused)]
+#[allow(unused_imports)]
 pub use always_fns::*;
 
 /* feature-gated */
@@ -21,14 +20,13 @@ mod core_impls;
 mod impls;
 #[cfg(all(feature = "lex", test))]
 mod tests;
-
+// with re-exports
 #[cfg(feature = "lex")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
 mod definitions;
 #[cfg(feature = "lex")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
 mod fns;
-
 #[cfg(feature = "lex")]
 pub use {definitions::*, fns::*};
 
@@ -37,6 +35,7 @@ pub(crate) mod all {
     #[doc(inline)]
     pub use super::always_fns::*;
 
+    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "lex")]
     pub use super::{definitions::*, fns::*};

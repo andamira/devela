@@ -3,7 +3,7 @@
 //! 2-dimensional array definitions
 //
 
-use crate::data::{Array, Bare, DataResult as Result, Storage};
+use crate::data::{Array, Bare, Storage};
 #[cfg(feature = "alloc")]
 use crate::{_alloc::vec::Vec, data::Boxed};
 

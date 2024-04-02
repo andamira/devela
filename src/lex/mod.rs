@@ -23,7 +23,6 @@ mod fmt;
 mod helpers;
 mod reexports;
 mod string_u;
-
 #[allow(unused_imports)]
 pub use {ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, reexports::*, string_u::*};
 
@@ -32,11 +31,9 @@ pub use {ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, reexports::
 #[cfg(feature = "lex")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
 mod egc;
-
 #[cfg(feature = "lex")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
 mod nonul;
-
 #[cfg(feature = "lex")]
 pub use {egc::all::*, nonul::*};
 

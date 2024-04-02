@@ -5,9 +5,9 @@
 //! [`iter`]: std::iter
 //
 
-/* always compiled, non-public modules */
-mod reexports;
+/* always compiled */
 
+mod reexports;
 #[allow(unused_imports)]
 pub use reexports::*;
 

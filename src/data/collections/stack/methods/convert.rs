@@ -4,11 +4,11 @@
 //
 
 use crate::{
-    code::{sf, ConstDefault, Own},
+    code::{ConstDefault, Own},
     data::{
-        array_init, cswap,
+        array_init,
         error::{DataError, DataResult as Result},
-        Array, Bare, Stack, Storage,
+        Array, Bare, Stack,
     },
     num::Compare,
 };
@@ -17,7 +17,7 @@ use crate::{
     data::Vec,
     data::{Box, Boxed},
 };
-use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};
+use DataError::{NotEnoughSpace, OutOfBounds};
 
 // helper macro to impl methods for a Stack with custom index size.
 //

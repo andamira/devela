@@ -4,10 +4,9 @@
 //! `std::`[`path`][std::path].
 //
 
-/* feature-gated, non-public modules */
+/* feature-gated */
 #[cfg(feature = "sys")]
 mod project;
-
 #[cfg(feature = "sys")]
 pub use project::*;
 

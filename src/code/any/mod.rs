@@ -5,11 +5,10 @@
 //! [`any`]: std::any
 //
 
-/* always compiled, non public modules */
+/* always compiled */
 
 mod ext;
 mod reexports;
-
 #[allow(unused_imports)]
 pub use {ext::*, reexports::*};
 

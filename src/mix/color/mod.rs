@@ -3,7 +3,7 @@
 //! Chromatic functionality.
 //
 
-/* feature-gated, non-public modules */
+/* feature-gated */
 
 #[cfg(feature = "mix")]
 mod error;
@@ -13,7 +13,6 @@ mod fns;
 // mod rgb;
 #[cfg(feature = "mix")]
 mod r#trait;
-
 #[cfg(feature = "mix")]
 pub use {error::*, fns::*, r#trait::* /*rgb::* */};
 

@@ -3,15 +3,16 @@
 //! 2-dimensional array
 //
 
-/* always compiled, non-public modules */
+/* always compiled */
 
 // without re-exports
 mod impl_traits;
 mod methods;
 #[cfg(test)]
 mod tests;
-
+// with re-exports
 mod definitions;
+#[allow(unused_imports)]
 pub use definitions::*;
 
 pub(crate) mod all {
