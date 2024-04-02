@@ -3,13 +3,18 @@
 //!
 //
 
-#[cfg(not(feature = "std"))]
+#[cfg(all(feature = "_-floats-_", not(feature = "std")))]
 use crate::code::iif;
 use crate::code::paste;
-use crate::num::{niche::*, Num, NumError as Error, NumResult as Result};
+#[cfg(feature = "_-nums-_")]
+use crate::num::{Num, NumResult as Result};
+#[cfg(feature = "_-floats-_")]
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
-//
-use Error::{Invalid, Unspecified};
+#[cfg(feature = "_-ints-_")]
+use {
+    crate::num::{niche::*, NumError},
+    NumError::{Invalid, Unspecified},
+};
 
 // $p:   the primitive type
 // $cap:  the capability feature that enables the given implementation. E.g "_i8".
@@ -95,11 +100,11 @@ macro_rules! impl_num {
             #[inline]
             fn num_is_one(&self) -> Result<bool> { self.get().num_is_one() }
             #[inline]
-            fn num_get_zero() -> Result<Self> { Error::ni() }
+            fn num_get_zero() -> Result<Self> { NumError::ni() }
             #[inline]
             fn num_get_one() -> Result<Self> { Ok(Self::new(1).unwrap()) }
             #[inline]
-            fn num_set_zero(&mut self) -> Result<()> { Error::ni() }
+            fn num_set_zero(&mut self) -> Result<()> { NumError::ni() }
 
             /// # Features
             /// Makes use of the `unsafe_niche` feature if enabled.
@@ -232,11 +237,11 @@ macro_rules! impl_num {
             #[inline]
             fn num_is_one(&self) -> Result<bool> { Ok(self.get() == 1) }
             #[inline]
-            fn num_get_zero() -> Result<Self> { Error::ni() }
+            fn num_get_zero() -> Result<Self> { NumError::ni() }
             #[inline]
             fn num_get_one() -> Result<Self> { Ok(Self::new(1).unwrap()) }
             #[inline]
-            fn num_set_zero(&mut self) -> Result<()> { Error::ni() }
+            fn num_set_zero(&mut self) -> Result<()> { NumError::ni() }
             /// # Features
             /// Makes use of the `unsafe_niche` feature if enabled.
             #[inline]
@@ -428,19 +433,19 @@ macro_rules! impl_num {
     };
     (@op1_none $Self:ty => $op:ident) => { paste! {
         #[inline]
-        fn [<num_ $op>](self) -> Result<$Self::Out> { Error::ni() }
+        fn [<num_ $op>](self) -> Result<$Self::Out> { NumError::ni() }
         #[inline]
-        fn [<num_ref_ $op>](&self) -> Result<$Self::Out> { Error::ni() }
+        fn [<num_ref_ $op>](&self) -> Result<$Self::Out> { NumError::ni() }
     }};
     (op2_none $Self:ty => $($op:ident),+) => {
         $( impl_num![@op2_none $Self => $op]; )+ };
     (@op2_none $Self:ty => $op:ident) => {
         #[inline]
-        fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> { Error::ni() }
+        fn [<num_ $op>](self, other: $Self) -> Result<$Self::Out> { NumError::ni() }
         #[inline]
-        fn [<num_ref_ $op>](&self, other: &$Self) -> Result<$Self::Out> { Error::ni() }
+        fn [<num_ref_ $op>](&self, other: &$Self) -> Result<$Self::Out> { NumError::ni() }
         #[inline]
-        fn [<num_ref_ $op _assign>](&mut self, other: &$Self) -> Result<()> { Error::ni() }
+        fn [<num_ref_ $op _assign>](&mut self, other: &$Self) -> Result<()> { NumError::ni() }
     };
 
     /* ops that call .checked() for i*, u*, and few for NonZero* */

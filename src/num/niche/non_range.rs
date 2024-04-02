@@ -3,13 +3,18 @@
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //
 
+#[cfg(feature = "_-ints-_")]
 use crate::{
-    code::{iif, paste},
+    _core::{fmt, num::*, str::FromStr},
+    code::iif,
     data::{bit_size, ByteSize},
 };
-use core::{fmt, num::*, str::FromStr};
 
-#[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
+#[cfg(all(
+    feature = "_-ints-_",
+    feature = "unsafe_niche",
+    not(feature = "safe_num")
+))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 
 impl_non_range![NonRange];
@@ -30,7 +35,7 @@ macro_rules! impl_non_range {
     // $s:    the sign identifier, lowercase: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
     // $cap:  the capability feature that enables the given implementation. E.g "_i8".
-    (@$name:ident, $doc:literal, $s:ident, $b:tt : $cap:literal) => { paste! {
+    (@$name:ident, $doc:literal, $s:ident, $b:tt : $cap:literal) => { $crate::paste! {
         /* definition */
 
         #[doc = $doc " integer that is known to be excluded from some inclusive range." ]

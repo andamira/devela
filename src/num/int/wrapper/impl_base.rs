@@ -11,10 +11,8 @@
 //   - digital_root
 //   - digital_root_base
 
-use crate::{
-    code::{iif, paste},
-    num::Int,
-};
+#[cfg(feature = "_-ints-_")]
+use crate::{code::iif, num::Int};
 
 // $t:  the integer primitive input/output type, and the niche inner type
 // $cap: the capability feature that enables the given implementation. E.g "_i8".
@@ -28,7 +26,7 @@ macro_rules! impl_int {
     };
 
     // implements ops on signed primitives
-    (@prim_signed $t:ty : $cap:literal : $d:literal) => { paste! {
+    (@prim_signed $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
         /* signed digits */
 
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
@@ -168,7 +166,7 @@ macro_rules! impl_int {
     }};
 
     // implements ops on unsigned primitives
-    (@prim_unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
+    (@prim_unsigned $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
         #[doc = "- [digits](#method.digits" $d ")"]
         #[doc = "- [digits_sign](#method.digits_sign" $d ")"]

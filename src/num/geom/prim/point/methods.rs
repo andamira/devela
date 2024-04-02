@@ -5,8 +5,7 @@
 
 use super::{Point, Point2d, Point3d};
 
-#[cfg(feature = "num_geom")]
-use crate::num::geom::Vector;
+// use crate::num::geom::Vector;
 
 impl<T, const D: usize> Point<T, D> {
     /// Returns a new `Point` from the given `array`.

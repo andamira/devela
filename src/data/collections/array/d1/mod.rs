@@ -18,6 +18,7 @@ pub use definitions::*;
 #[cfg(feature = "unsafe_array")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_array")))]
 mod uninit;
+#[allow(unused_imports)]
 #[cfg(feature = "unsafe_array")]
 pub use uninit::*;
 

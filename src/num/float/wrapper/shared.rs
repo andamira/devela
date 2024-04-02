@@ -1,15 +1,20 @@
-// devela::num::float::wrapper::impl_shared
+// devela::num::float::wrapper::shared
 //
 //! Shared methods
 //
 
+#[cfg(feature = "_-floats-_")]
 use crate::{
+    _core::{concat as cc, stringify as sfy},
     code::{iif, paste},
     num::{Compare, Float, Sign},
 };
-#[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+#[cfg(all(
+    feature = "_-floats-_",
+    not(feature = "safe_num"),
+    feature = "unsafe_const"
+))]
 use core::mem::transmute;
-use core::{concat as cc, stringify as sfy};
 
 // Implements methods independently of any features
 //

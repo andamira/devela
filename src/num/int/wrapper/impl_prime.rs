@@ -9,11 +9,18 @@
 //   - prime_pi
 //   - totient
 
-use crate::{
-    code::{iif, paste},
-    num::{isize_up, usize_up, Int, NumError, NumResult as Result},
+#[cfg(feature = "_isize")]
+use crate::num::isize_up;
+#[cfg(feature = "_usize")]
+use crate::num::usize_up;
+#[cfg(feature = "_-ints-_")]
+use {
+    crate::{
+        code::iif,
+        num::{Int, NumError, NumResult as Result},
+    },
+    NumError::Overflow,
 };
-use NumError::Overflow;
 
 // $t:   the input/output type
 // $cap: the capability feature that enables the given implementation. E.g "_i8".
@@ -28,7 +35,7 @@ macro_rules! impl_int {
     };
 
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $up: ty : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $up: ty : $d:literal) => { $crate::paste! {
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
@@ -166,7 +173,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $up:ty : $d:literal) => { $crate::paste! {
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]

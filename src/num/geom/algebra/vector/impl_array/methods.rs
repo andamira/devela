@@ -6,9 +6,10 @@
 #![allow(clippy::needless_range_loop)]
 
 use crate::num::geom::Vector;
-#[cfg(all(not(feature = "std"), feature = "num_float"))]
+#[allow(unused_imports)]
+#[cfg(all(feature = "num_float", not(feature = "std")))]
 use crate::num::ExtFloat;
-#[cfg(feature = "num_int")]
+#[cfg(all(feature = "num_int", feature = "_-ints-_"))]
 use crate::{code::unwrap, num::Int};
 
 /* common methods */

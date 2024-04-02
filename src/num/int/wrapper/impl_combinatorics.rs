@@ -10,11 +10,14 @@
 //   - permute
 //   - permute_rep
 
-use crate::{
-    code::{cfor, iif, paste},
-    num::{Cast, Int, NumError, NumResult as Result},
+#[cfg(feature = "_-ints-_")]
+use {
+    crate::{
+        code::{cfor, iif},
+        num::{Cast, Int, NumError, NumResult as Result},
+    },
+    NumError::{MismatchedSizes, NonNegativeRequired, Overflow},
 };
-use NumError::{MismatchedSizes, NonNegativeRequired, Overflow};
 
 // $t:   the input/output type
 // $cap: the capability feature that enables the given implementation. E.g "_i8".
@@ -28,7 +31,7 @@ macro_rules! impl_int {
     };
 
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
         #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $d ")"]
         #[doc = "- [subfactorial](#method.subfactorial" $d ")"]
@@ -306,7 +309,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
         #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $d ")"]
         #[doc = "- [subfactorial](#method.subfactorial" $d ")"]

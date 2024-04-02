@@ -12,10 +12,8 @@
 //   - div_ties_even
 //   - div_ties_odd
 
-use crate::{
-    code::{iif, paste},
-    num::Int,
-};
+#[cfg(feature = "_-ints-_")]
+use crate::{code::iif, num::Int};
 
 // $t:   the input/output type
 // $cap: the capability feature that enables the given implementation. E.g "_i8".
@@ -29,7 +27,7 @@ macro_rules! impl_int {
     };
 
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
         /* signed division */
 
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
@@ -227,7 +225,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $d ")"]
         #[doc = "- [div_ceil](#method.div_ceil" $d ")"]

@@ -6,6 +6,7 @@
 mod num_trait;
 mod wrapper;
 
+#[allow(unused_imports)]
 #[cfg(all(not(feature = "std"), feature = "num_float"))]
 use crate::num::ExtFloat;
 pub use {num_trait::*, wrapper::*};

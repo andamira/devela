@@ -3,12 +3,12 @@
 //!
 //
 
-#[cfg(feature = "alloc")]
+#[cfg(all(feature = "_-ints-_", feature = "alloc"))]
 use crate::_alloc::vec::Vec;
-use crate::{
-    code::paste,
-    num::{isize_up, GcdExt, Int, NumError as E, NumInt, NumResult as Result},
-};
+#[cfg(feature = "_usize")]
+use crate::num::isize_up;
+#[cfg(feature = "_-ints-_")]
+use crate::num::{GcdExt, Int, NumInt, NumResult as Result};
 
 // $t:     the primitive type
 // $cap:   the capability feature that enables the given implementation. E.g "_i8".
@@ -24,7 +24,7 @@ macro_rules! impl_int {
     (signed $($t:ident : $cap:literal | $ut:ident : $ucap:literal),+) => {
         $( impl_int![@signed $t:$cap | $ut:$ucap]; )+
     };
-    (@signed $t:ident : $cap:literal | $ut:ident:$ucap:literal) => { paste! {
+    (@signed $t:ident : $cap:literal | $ut:ident:$ucap:literal) => { $crate::paste! {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl NumInt for $t {
@@ -84,7 +84,7 @@ macro_rules! impl_int {
     (unsigned $($t:ident : $cap:literal | $io:ident : $iocap:literal),+) => {
         $( impl_int![@unsigned $t:$cap | $io:$iocap]; )+
     };
-    (@unsigned $t:ident : $cap:literal | $io:ident : $iocap:literal) => { paste! {
+    (@unsigned $t:ident : $cap:literal | $io:ident : $iocap:literal) => { $crate::paste! {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl NumInt for $t {

@@ -5,8 +5,6 @@
 //! <https://en.wikipedia.org/wiki/Stack_(abstract_data_type)>
 //
 
-#[cfg(feature = "alloc")]
-use crate::data::Boxed;
 use crate::data::{Array, Bare, Storage};
 
 /* types */

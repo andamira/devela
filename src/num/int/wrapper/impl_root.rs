@@ -11,19 +11,27 @@
 // - root_ceil
 // - root_floor
 
+#[cfg(any(feature = "_isize", feature = "_usize"))]
+use crate::num::isize_up;
+#[cfg(feature = "_usize")]
+use crate::num::usize_up;
+#[cfg(feature = "_-ints-_")]
 use crate::{
-    code::{iif, paste, unwrap},
-    num::{isize_up, upcasted_op, usize_up, Compare, Int, NumError as E, NumResult as Result},
+    code::{iif, unwrap},
+    num::{upcasted_op, Compare, Int, NumError, NumResult as Result},
 };
-#[cfg(doc)]
-use E::Overflow;
-use E::{NonNegativeRequired, NonZeroRequired};
+#[cfg(feature = "_-sints-_")]
+use NumError::NonNegativeRequired;
+#[cfg(feature = "_-ints-_")]
+use NumError::NonZeroRequired;
+#[cfg(all(doc, feature = "_-ints-_"))]
+use NumError::Overflow;
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.
-#[cold] #[inline(never)] #[rustfmt::skip] #[allow(dead_code)]
+#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(feature = "_-ints-_")]
 const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 // helper function to be called from the cold path branches with an ok result.
-#[cold] #[inline(never)] #[rustfmt::skip] #[allow(dead_code)]
+#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(feature = "_-ints-_")]
 const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 
 // $t:   the input/output type
@@ -38,7 +46,7 @@ macro_rules! impl_int {
     };
 
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $up:ty : $d:literal) => { $crate::paste! {
         /* sqrt (signed) */
 
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
@@ -294,7 +302,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $up:ty : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $up:ty : $d:literal) => { $crate::paste! {
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]

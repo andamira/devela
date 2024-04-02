@@ -1,4 +1,4 @@
-// devela::num::float::wrapper::impl_consts
+// devela::num::float::wrapper::consts
 //
 //! Constants
 //!

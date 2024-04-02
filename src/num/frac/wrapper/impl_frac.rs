@@ -14,9 +14,10 @@
 //   - lcm
 //   - add
 
+#[cfg(feature = "_-ints-_")]
 use crate::num::{Frac, Int, NumResult as Result};
 #[cfg(doc)]
-use {crate::num::NumError as E, E::Overflow};
+use {crate::num::NumError, NumError::Overflow};
 
 // $i:    the integer type.
 // $self: the fractional self type.

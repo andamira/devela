@@ -12,10 +12,7 @@ use crate::data::{
     mem_size_of, Array, Bare, Stack, StackIter, Storage,
 };
 #[cfg(feature = "alloc")]
-use crate::{
-    _alloc::{vec, vec::Vec},
-    data::Boxed,
-};
+use crate::{_alloc::vec::Vec, data::Boxed};
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};
 use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};

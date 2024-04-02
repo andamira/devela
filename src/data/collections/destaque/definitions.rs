@@ -4,8 +4,6 @@
 //! either end.
 //
 
-#[cfg(feature = "alloc")]
-use crate::data::Boxed;
 use crate::data::{Array, Bare, Storage};
 
 /* types */

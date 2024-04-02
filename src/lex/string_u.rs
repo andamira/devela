@@ -750,7 +750,7 @@ impl_sized_alias![
 
 #[cfg(test)]
 mod tests {
-    use super::{String32, StringU8};
+    use super::*;
 
     #[test]
     fn push() {

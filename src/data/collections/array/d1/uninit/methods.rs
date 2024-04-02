@@ -2,12 +2,9 @@
 
 use crate::{
     code::iif,
-    data::{Array, DataError, DataResult as Result, MaybeUninit, Storage, UninitArray},
+    data::{mem_replace, DataError, DataResult as Result, MaybeUninit, Storage, UninitArray},
 };
-use core::{
-    ptr::{replace, swap},
-    slice::{from_raw_parts, from_raw_parts_mut},
-};
+use core::ptr::swap as ptr_swap;
 use DataError::{NotEnoughSpace, OutOfBounds, PartiallyAdded};
 
 impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {
@@ -138,10 +135,8 @@ impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {
     pub fn replace(&mut self, index: usize, value: T) -> Result<T> {
         let index = self.verify_index(index)?;
         // SAFETY: If the index is verified, the value is initialized
-        unsafe {
-            let slot = self.data[index].assume_init_mut();
-            Ok(replace(slot, value))
-        }
+        let slot = unsafe { self.data[index].assume_init_mut() };
+        Ok(mem_replace(slot, value))
     }
 
     /// Swaps the values at two indices.
@@ -152,7 +147,7 @@ impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {
         let idx2 = self.verify_index(index2)?;
         // SAFETY: If the indices are verified, the values are initialized
         unsafe {
-            swap(
+            ptr_swap(
                 self.data[idx1].assume_init_mut(),
                 self.data[idx2].assume_init_mut(),
             );

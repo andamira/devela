@@ -20,16 +20,19 @@
 //     - factors_prime_unique_exp_buf
 //     - factors_prime_unique_plus_buf
 
-#[cfg(feature = "alloc")]
+#[cfg(all(feature = "_-ints-_", feature = "alloc"))]
 use crate::{
     _alloc::{collections::BTreeSet, vec, vec::Vec},
     code::Also,
 };
-use crate::{
-    code::{iif, paste},
-    num::{Int, NumError, NumResult as Result},
+#[cfg(feature = "_-ints-_")]
+use {
+    crate::{
+        code::iif,
+        num::{Int, NumError, NumResult as Result},
+    },
+    NumError::MismatchedSizes,
 };
-use NumError::MismatchedSizes;
 
 // $t:   the input/output type
 // $cap: the capability feature that enables the given implementation. E.g "_i8".
@@ -43,7 +46,7 @@ macro_rules! impl_int {
     };
 
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $d:literal) => { paste! {
+    (@signed $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
         #[doc = "   - [factors](#method.factors" $d ")"]
@@ -599,7 +602,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
+    (@unsigned $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
         #[doc = "   - [factors](#method.factors" $d ")"]

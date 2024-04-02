@@ -63,6 +63,9 @@ impl Logging {
     /// A thread-unsafe version of set_logger.
     ///
     /// Calls [`set_logger_racy`].
+    ///
+    /// # Safety
+    /// See the related documentation in `set_logger_racy`.
     #[inline]
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
     #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_thread")))]

@@ -1,8 +1,9 @@
-// devela::num::float::wrapper::impl_libm_std
+// devela::num::float::wrapper::libm_std
 //
 //! Methods depending on libm, std, or their absence
 //
 
+#[cfg(feature = "_-floats-_")]
 use super::Float;
 
 // macro helper for implementing methods for `Float`, from either `libm` or `std`.
@@ -58,7 +59,8 @@ use impl_fp;
 #[cfg(feature = "libm")]
 mod _libm {
     use super::{impl_fp, Float};
-    use crate::{_deps::libm::Libm, code::iif};
+    use crate::_deps::libm::Libm;
+
     // custom implementations are commented out
     impl_fp![libm:f*:
         r"The largest integer less than or equal to `x`.
@@ -390,7 +392,7 @@ mod _std {
     custom_impls![(f32, i32):"_f32", (f64, i32):"_f64"];
 }
 
-#[cfg(all(not(feature = "libm"), not(feature = "std")))]
+#[cfg(all(feature = "_-floats-_", not(feature = "libm"), not(feature = "std")))]
 mod _no_std_no_libm {
     use super::Float;
     use crate::code::iif;
