@@ -42,6 +42,7 @@ publish = true
 # Sintax:
 # - ["name"]: Normal public-facing features starting with a letter.
 # - ["_name"]: Capability features can be publicly selected.
+# - ["_-name-_"]: Private, automatic features for reflexion.
 #
 
 #* miscellaneous features *#
@@ -82,17 +83,23 @@ mix = []
 num = [
 	"num_float", "num_geom", "num_int", "num_niche_range"
 	]
-	num_float = [] # Float, ExtFloat
-	num_geom = [] # NumVector, Vector, VecVector
-	num_int = [] # Frac, Int, NumInt, NumRefInt
-	num_niche_range = [] # Range* and NonRange* niche types
+	num_float = ["_-num-_"] # Float, ExtFloat.
+	num_geom = ["_-num-_"] # NumVector, Vector, VecVector.
+	num_int = ["_-num-_"] # Frac, Int, NumInt, NumRefInt.
+	num_niche_range = ["_-num-_"] # Range* and NonRange* niche types.
 sys = []
 time = []
 ui = [
-	 "ui_term", # "ui_gfx", "ui_pc", "ui_web",
+	 "ui_term", # "ui_gfx", "ui_web",
 	]
-	ui_term = ["unicode-width", "unicode-segmentation"] # terminal functionality
-	# ui_window = ["miniquad"]
+	ui_term = ["_-ui-_", "unicode-width", "unicode-segmentation"]
+	# ui_gfx = ["_-ui-_"]
+	# ui_web = ["_-ui-_"]
+
+# (private reflexion)
+_-code-_ = []
+_-num-_ = []
+_-ui-_ = []
 
 
 #* safety features *#
@@ -116,7 +123,7 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 	safe_time = []
 	safe_ui = ["safe_ui_term"]
 		safe_ui_term = []
-		# safe_ui_window = []
+		# safe_ui_gfx = []
 
 unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	"unsafe_array", "unsafe_async", "unsafe_const", "unsafe_dyn",
@@ -140,9 +147,12 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 nightly = [
 	"nightly_coro", "nightly_doc", "nightly_simd",
 ] # enables all the following features:
-	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
-	nightly_doc = [] # doc_cfg
-	nightly_simd = [] # portable_simd
+	nightly_coro= ["_-nightly-_"] # coroutines, coroutine_trait, iter_from_coroutine
+	nightly_doc = ["_-nightly-_"] # doc_cfg
+	nightly_simd = ["_-nightly-_"] # portable_simd
+
+# (private reflexion)
+_-nightly-_ = []
 
 
 #* capability features *#
@@ -153,46 +163,55 @@ nightly = [
 # Some relative compilation times are provided as a guide.
 #
 
-_default = [ # the default capabilities
+_default = [ # default capabilities
 	"_f64", "_isize",
 ]
 _max = [ # the maximum capabilities
 	"_tuple_arity_127", "_nums",
 ]
 
-# the most complete versions of the documentation
+# the most complete versions of the documentation:
 _docsrs = ["nightly", "all", "std", "unsafe", "dep_all"]
 _docsrs_max = ["nightly", "all", "std", "unsafe", "dep_all", "_max"]
 _docsrs_stable = ["all", "std", "unsafe", "dep_all"]
 
 # numeric capabilities
-_nums = ["_floats", "_ints"] # All numeric types
-_floats = ["_f32", "_f64"] # All floating-point types
-_ints = ["_sints", "_uints"] # All integer types
-_sints = ["_i8", "_i16", "_i32", "_i64", "_i128", "_isize"] # All signed integers
-_uints = ["_u8", "_u16", "_u32", "_u64", "_u128", "_usize"] # All unsigned integers
-# Primitive type features for fine-grained control:
-_f32 = []
-_f64 = []
-_i8 = []
-_u8 = []
-_i16 = []
-_u16 = []
-_i32 = []
-_u32 = []
-_i64 = []
-_u64 = []
-_i128 = []
-_u128 = []
-_isize = []
-_usize = []
+_nums = ["_floats", "_ints"] # all numeric types
+_floats = ["_f32", "_f64"] # floating-points
+_ints = ["_sints", "_uints"] # integers
+_sints = ["_i8", "_i16", "_i32", "_i64", "_i128", "_isize"] # signed integers
+_uints = ["_u8", "_u16", "_u32", "_u64", "_u128", "_usize"] # unsigned integers
+# individual numeric types:
+_f32 = ["_-nums-_", "_-floats-_"]
+_f64 = ["_-nums-_", "_-floats-_"]
+_i8 = ["_-nums-_", "_-ints-_", "_-sints-_"]
+_u8 = ["_-nums-_", "_-ints-_", "_-uints-_"]
+_i16 = ["_-nums-_", "_-ints-_", "_-sints-_"]
+_u16 = ["_-nums-_", "_-ints-_", "_-uints-_"]
+_i32 = ["_-nums-_", "_-ints-_", "_-sints-_"]
+_u32 = ["_-nums-_", "_-ints-_", "_-uints-_"]
+_i64 = ["_-nums-_", "_-ints-_", "_-sints-_"]
+_u64 = ["_-nums-_", "_-ints-_", "_-uints-_"]
+_i128 = ["_-nums-_", "_-ints-_", "_-sints-_"]
+_u128 = ["_-nums-_", "_-ints-_", "_-uints-_"]
+_isize = ["_-nums-_", "_-ints-_", "_-sints-_"]
+_usize = ["_-nums-_", "_-ints-_", "_-uints-_"]
 
+# data capabilities
+#
 # The maximum tuple arity supported by ExtTuple:
 # By default tuple arity is 15         # compile  4.9s
 _tuple_arity_31 = []                   # compile  5.3s
 _tuple_arity_63 = ["_tuple_arity_31"]  # compile  7.5s
 _tuple_arity_95 = ["_tuple_arity_63"]  # compile 10.5s
 _tuple_arity_127 = ["_tuple_arity_95"] # compile 14.9s
+
+# (private reflexion)
+_-nums-_ = []
+_-ints-_ = []
+_-sints-_ = []
+_-uints-_ = []
+_-floats-_ = []
 
 
 #* dependency features *#
