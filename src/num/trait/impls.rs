@@ -12,12 +12,12 @@ use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
 use Error::{Invalid, Unspecified};
 
 // $p:   the primitive type
-// $cap:  the capability feature that enables the given implementation. E.g "i8".
+// $cap:  the capability feature that enables the given implementation. E.g "_i8".
 macro_rules! impl_num {
     [] => {
-        impl_num![i i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize"];
-        impl_num![u u8:"u8", u16:"u16", u32:"u32", u64:"u64", u128:"u128", usize:"usize"];
-        impl_num![f f32:"f32", f64:"f64"];
+        impl_num![i i8:"_i8", i16:"_i16", i32:"_i32", i64:"_i64", i128:"_i128", isize:"_isize"];
+        impl_num![u u8:"_u8", u16:"_u16", u32:"_u32", u64:"_u64", u128:"_u128", usize:"_usize"];
+        impl_num![f f32:"_f32", f64:"_f64"];
     };
 
     // Implements `Num` for signed integer types

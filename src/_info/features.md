@@ -9,7 +9,7 @@ Features are grouped in the following categories:
 - *Capability*
 - *Dependency*
 
-All features are disabled by default.
+Only the `_default` capabilities are enabled by default.
 
 Features from different categories are designed to be mostly independent from
 each other, and composable, except from the miscellaneous features.
@@ -111,20 +111,21 @@ In order to use any unsafe functionality:
 These semi-hidden features allows to fine-tune extra capabilities.
 Enabling them will likely worsen compilation times.
 
-- `capability_max`: enables the maximum capabilities.
+- `_default`: enables default capabilities.
+- `_max`: enables the maximum capabilities.
 - `_tuple_arity_[31|63|96|127]`: increased arity support for [`ExtTuple`].
 
 The following is a tree of features that allows fine-grained control over
 for which primitive types several generic implementations will compile.
 That's the case for example of [`Float`], [`Int`], or the [`niche`] types.
-- `cap_nums:` enables all the numeric types implementations.
-  - `cap_floats:` e
-    - `f32`, `f64`.
-  - `cap_ints:`
-    - `cap_signed_ints:`
-      - `i8`, `i16`, `i32`, `i64`, `i128`, `isize`.
-    - `cap_unsigned_ints:`
-      - `u8`, `u16`, `u32`, `u64`, `u128`, `usize`.
+- `_nums:` enables all the numeric types implementations.
+  - `_floats:`
+    - `_f32`, `_f64`.
+  - `_ints:`
+    - `_sints:`
+      - `_i8`, `_i16`, `_i32`, `_i64`, `_i128`, `_isize`.
+    - `_uints:`
+      - `_u8`, `_u16`, `_u32`, `_u64`, `_u128`, `_usize`.
 
 [`ExtTuple`]: crate::data::collections::ExtTuple
 [`Float`]: crate::num::Float

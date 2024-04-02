@@ -11,7 +11,7 @@ pub use {non_specific::*, reexports::*};
 
 /* feature-gated */
 
-#[cfg(all(feature = "num_niche_range", feature = "i8", test))]
+#[cfg(all(feature = "num_niche_range", feature = "_i8", test))]
 mod tests;
 //
 #[cfg(feature = "num_niche_range")]

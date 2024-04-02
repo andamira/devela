@@ -41,19 +41,15 @@ publish = true
 #
 # Sintax:
 # - ["name"]: Normal public-facing features starting with a letter.
+# - ["_name"]: Capability features can be publicly selected.
 #
 
 #* miscellaneous features *#
 # ------------------------------------------------------------------------------
 
-# default = [] # no default features
+default = ["_default"] # includes default capabilities
 
 _exclude_example = [] # from testing
-
-# enables the most complete versions of the documentation:
-_docsrs = ["nightly", "all", "std", "unsafe", "dep_all", "cap_nums"]
-_docsrs_max = ["nightly", "all", "std", "unsafe", "dep_all", "capability_max"]
-_docsrs_stable = ["all", "std", "unsafe", "dep_all"]
 
 
 #* environment features *#
@@ -81,7 +77,7 @@ all = [ # enables all the modules and submodules
 code = []
 data = []
 exec = ["bytemuck/zeroable_atomics"]
-lex = ["u8", "u16"]
+lex = ["_u8", "_u16"]
 mix = []
 num = [
 	"num_float", "num_geom", "num_int", "num_niche_range"
@@ -151,31 +147,45 @@ nightly = [
 
 #* capability features *#
 # ------------------------------------------------------------------------------
+# They all start with a single underscore.
+#
+# Enabling extra capabilites can worsen compilation times.
+# Some relative compilation times are provided as a guide.
+#
 
-capability_max = [ # enables the maximum capabilities
-	"_tuple_arity_127", "cap_nums",
+_default = [ # the default capabilities
+	"_f64", "_isize",
+]
+_max = [ # the maximum capabilities
+	"_tuple_arity_127", "_nums",
 ]
 
-cap_nums = ["cap_floats", "cap_ints"] # Enables all numeric types
-cap_floats = ["f32", "f64"] # Enables all floating-point types
-cap_ints = ["cap_signed_ints", "cap_unsigned_ints"] # Enables all integer types
-cap_signed_ints = ["i8", "i16", "i32", "i64", "i128", "isize"] # All signed integers
-cap_unsigned_ints = ["u8", "u16", "u32", "u64", "u128", "usize"] # All unsigned integers
+# the most complete versions of the documentation
+_docsrs = ["nightly", "all", "std", "unsafe", "dep_all"]
+_docsrs_max = ["nightly", "all", "std", "unsafe", "dep_all", "_max"]
+_docsrs_stable = ["all", "std", "unsafe", "dep_all"]
+
+# numeric capabilities
+_nums = ["_floats", "_ints"] # All numeric types
+_floats = ["_f32", "_f64"] # All floating-point types
+_ints = ["_sints", "_uints"] # All integer types
+_sints = ["_i8", "_i16", "_i32", "_i64", "_i128", "_isize"] # All signed integers
+_uints = ["_u8", "_u16", "_u32", "_u64", "_u128", "_usize"] # All unsigned integers
 # Primitive type features for fine-grained control:
-f32 = []
-f64 = []
-i8 = []
-u8 = []
-i16 = []
-u16 = []
-i32 = []
-u32 = []
-i64 = []
-u64 = []
-i128 = []
-u128 = []
-isize = []
-usize = []
+_f32 = []
+_f64 = []
+_i8 = []
+_u8 = []
+_i16 = []
+_u16 = []
+_i32 = []
+_u32 = []
+_i64 = []
+_u64 = []
+_i128 = []
+_u128 = []
+_isize = []
+_usize = []
 
 # The maximum tuple arity supported by ExtTuple:
 # By default tuple arity is 15         # compile  4.9s
@@ -184,40 +194,9 @@ _tuple_arity_63 = ["_tuple_arity_31"]  # compile  7.5s
 _tuple_arity_95 = ["_tuple_arity_63"]  # compile 10.5s
 _tuple_arity_127 = ["_tuple_arity_95"] # compile 14.9s
 
-# IDEA MAYBE custom Debug with a dynamic limit on the number of elements
-# TODO MAYBE
-# The maximum number of elements to Display or Debug for data collections. E.g.
-# for Array, Array2d, Stack, Destaque, Vector, Matrix…
-# The default length is unlimited
-_fmt_len_16 = []
-_fmt_len_32 = ["_fmt_len_16"]
-_fmt_len_64 = ["_fmt_len_32"]
-_fmt_len_128 = ["_fmt_len_64"]
-
-# (private introspections)
-# ------------------------------------------------------------------------------
-#
-#
-# There is no introspection for environment or safety.
-#
-
-# modules
-_-code-_ = []
-_-num-_ = []
-_-sys-_ = []
-_-ui-_ = []
-# nightly
-_-_nightly_-_ = []
-# these are not
-_-nums-_ = []
-_-ints-_ = []
-_-sints-_ = []
-_-uints-_ = []
-_-floats-_ = []
-
-
 
 #* dependency features *#
+# ------------------------------------------------------------------------------
 
 dep_all = [ # enables all optional dependencies
 	"atomic", "const-str", "crossterm", "hashbrown", "libm", "log",

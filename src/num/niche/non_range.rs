@@ -17,9 +17,9 @@ macro_rules! impl_non_range {
     // Entry point, generates NonRange structures for each sign and size.
     ($name:ident) => {
         impl_non_range![$name, "A signed", i,
-        8:"i8", 16:"i16", 32:"i32", 64:"i64", 128:"i128", size:"isize"];
+        8:"_i8", 16:"_i16", 32:"_i32", 64:"_i64", 128:"_i128", size:"_isize"];
         impl_non_range![$name, "An unsigned", u,
-        8:"u8", 16:"u16", 32:"u32", 64:"u64", 128:"u128", size:"usize"];
+        8:"_u8", 16:"_u16", 32:"_u32", 64:"_u64", 128:"_u128", size:"_usize"];
     };
     ($name:ident, $doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
         $( impl_non_range![@$name, $doc, $s, $b : $cap]; )+
@@ -29,7 +29,7 @@ macro_rules! impl_non_range {
     // $doc:  the specific beginning of the documentation.
     // $s:    the sign identifier, lowercase: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
-    // $cap:  the capability feature that enables the given implementation. E.g "i8".
+    // $cap:  the capability feature that enables the given implementation. E.g "_i8".
     (@$name:ident, $doc:literal, $s:ident, $b:tt : $cap:literal) => { paste! {
         /* definition */
 

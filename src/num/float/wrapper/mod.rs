@@ -9,7 +9,7 @@ mod libm_std;
 
 mod consts;
 
-#[cfg(all(feature = "f32", test))]
+#[cfg(all(test, feature = "_f32"))]
 mod tests;
 
 /// Provides comprehensive floating-point operations for `T`, some of them *const*.
@@ -36,7 +36,7 @@ mod tests;
 #[repr(transparent)]
 pub struct Float<T>(pub T);
 
-crate::num::impl_ops![Float: f32:"f32", f64:"f64"];
+crate::num::impl_ops![Float: f32:"_f32", f64:"_f64"];
 
 #[rustfmt::skip]
 mod core_impls {

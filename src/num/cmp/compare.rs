@@ -148,7 +148,7 @@ macro_rules! impl_comparing {
     };
 
     // $f:    the floating-point type
-    // $fcap: the capability feature associated with the `$f` type. E.g "f32".
+    // $fcap: the capability feature associated with the `$f` type. E.g "_f32".
     // $b:    the bits of the floating-point primitive
     // $sh:   the shift amount for the given bits ($b - 1)
     (float: $($f:ty:$fcap:literal:$b:literal:$sh:literal),+) => {
@@ -395,7 +395,7 @@ macro_rules! impl_comparing {
     }};
 }
 impl_comparing![int: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
-impl_comparing![float: f32:"f32":32:31, f64:"f64":64:63];
+impl_comparing![float: f32:"_f32":32:31, f64:"_f64":64:63];
 
 #[cfg(test)]
 mod test_min_max_clamp {
@@ -444,7 +444,7 @@ mod test_min_max_clamp {
         assert![!neginf.is_positive()];
 
         #[cfg(any(
-            all(not(feature = "safe_num"), feature = "unsafe_const", feature = "f32"),
+            all(not(feature = "safe_num"), feature = "unsafe_const", feature = "_f32"),
             any(feature = "safe_num", not(feature = "unsafe_const"))
         ))]
         {

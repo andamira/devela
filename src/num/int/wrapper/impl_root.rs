@@ -27,7 +27,7 @@ const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 
 // $t:   the input/output type
-// $cap: the capability feature that enables the given implementation. E.g "i8".
+// $cap: the capability feature that enables the given implementation. E.g "_i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
     (signed $( $t:ty : $cap:literal : $up:ty : $d:literal ),+) => {
@@ -510,13 +510,28 @@ macro_rules! impl_int {
                 }
             }
         }
+
+        // WIP TODO
+        // ///
+        // #[inline]
+        // const fn root_round_u(self, nth: u32) -> Option<u32> {
+        //     let floor_root = unwrap![ok? self.root_floor_u(nth)];
+        //     let ceil_root_value = (floor_root + 1).pow(nth);
+        //     let floor_root_value = floor_root.pow(nth);
+        //     let midpoint = floor_root_value + ((ceil_root_value - floor_root_value) / 2);
+        //     if self.0 > midpoint {
+        //         Some(floor_root + 1)
+        //     } else {
+        //         Some(floor_root)
+        //     }
+        // }
     }};
 }
 impl_int![signed
-    i8:"i8":i16:"", i16:"i16":i32:"-1", i32:"i32":i64:"-2", i64:"i64":i128:"-3",
-    i128:"i128":i128:"-4", isize:"isize":isize_up:"-5"
+    i8:"_i8":i16:"", i16:"_i16":i32:"-1", i32:"_i32":i64:"-2", i64:"_i64":i128:"-3",
+    i128:"_i128":i128:"-4", isize:"_isize":isize_up:"-5"
 ];
 impl_int![unsigned
-    u8:"u8":u16:"-6", u16:"u16":u32:"-7", u32:"u32":u64:"-8", u64:"u64":u128:"-9",
-    u128:"u128":u128:"-10", usize:"usize":usize_up:"-11"
+    u8:"_u8":u16:"-6", u16:"_u16":u32:"-7", u32:"_u32":u64:"-8", u64:"_u64":u128:"-9",
+    u128:"_u128":u128:"-10", usize:"_usize":usize_up:"-11"
 ];

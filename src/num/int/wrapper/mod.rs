@@ -46,9 +46,9 @@ mod impl_root;
 pub struct Int<T>(pub T);
 
 crate::num::impl_ops![Int:
-    i8:"i8", i16:"i16", i32:"i32", i64:"i64", i128:"i128", isize:"isize"];
+    i8:"_i8", i16:"_i16", i32:"_i32", i64:"_i64", i128:"_i128", isize:"_isize"];
 crate::num::impl_ops![Int: (no_neg)
-    u8:"i8", u16:"u16", u32:"u32", u64:"u64", u128:"u128", usize:"usize"];
+    u8:"_i8", u16:"_u16", u32:"_u32", u64:"_u64", u128:"_u128", usize:"_usize"];
 
 #[rustfmt::skip]
 mod core_impls {

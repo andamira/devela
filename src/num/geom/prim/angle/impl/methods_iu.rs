@@ -17,13 +17,13 @@ use crate::{
 // - integer common methods
 // - signed integers specific methods
 // - unsigned integers specific methods
+//
+// $t: the inner integer primitive type
+// $f: the associated floating point type
+// $tcap: the capability feature that enables the given integer implementation. E.g "_i8".
+// $fcap: the capability feature that enables the given floating implementation. E.g "_f32".
 macro_rules! impl_angle {
     // integers common methods
-    //
-    // $t: the inner integer primitive type
-    // $f: the associated floating point type
-    // $tcap: the capability feature that enables the given integer implementation. E.g "i8".
-    // $fcap: the capability feature that enables the given floating implementation. E.g "f32".
     (int $($t:ty : $f:ty ; $tcap:literal : $fcap:literal),+) => {
         $( impl_angle![@int $t:$f ; $tcap:$fcap]; )+
     };
@@ -298,19 +298,19 @@ macro_rules! impl_angle {
     };
 }
 impl_angle![sint
-    i8:f32;"i8":"f32", i16:f32;"i16":"f32", i32:f32;"i32":"f32",
-    i64:f64;"i64":"f64", i128:f64;"i128":"f64"
+    i8:f32;"_i8":"_f32", i16:f32;"_i16":"_f32", i32:f32;"_i32":"_f32",
+    i64:f64;"_i64":"_f64", i128:f64;"_i128":"_f64"
 ];
 #[cfg(target_pointer_width = "32")]
-impl_angle![sint isize:fsize;"isize":"f32"];
+impl_angle![sint isize:fsize;"_isize":"_f32"];
 #[cfg(target_pointer_width = "64")]
-impl_angle![sint isize:fsize;"isize":"f64"];
+impl_angle![sint isize:fsize;"_isize":"_f64"];
 
 impl_angle![uint
-    u8:f32;"u8":"f32", u16:f32;"u16":"f32", u32:f32;"u32":"f32",
-    u64:f64;"u64":"f64", u128:f64;"u128":"f64"
+    u8:f32;"_u8":"_f32", u16:f32;"_u16":"_f32", u32:f32;"_u32":"_f32",
+    u64:f64;"_u64":"_f64", u128:f64;"_u128":"_f64"
 ];
 #[cfg(target_pointer_width = "32")]
-impl_angle![uint usize:fsize;"usize":"f32"];
+impl_angle![uint usize:fsize;"_usize":"_f32"];
 #[cfg(target_pointer_width = "64")]
-impl_angle![uint usize:fsize;"usize":"f64"];
+impl_angle![uint usize:fsize;"_usize":"_f64"];

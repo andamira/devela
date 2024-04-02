@@ -16,7 +16,7 @@ use core::{concat as cc, stringify as sfy};
 // $f:   the floating-point type.
 // $uf:  unsigned int type with the same bit-size.
 // $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
-// $cap: the capability feature enables the given implementation. E.g "f32".
+// $cap: the capability feature enables the given implementation. E.g "_f32".
 macro_rules! custom_impls {
     ($( ($f:ty:$uf:ty, $ue:ty) : $cap:literal ),+) => {
         $( custom_impls![@$f:$uf, $ue, $cap]; )+
@@ -1061,12 +1061,12 @@ macro_rules! custom_impls {
         }
     };
 }
-custom_impls![(f32:u32, u32):"f32", (f64:u64, u32):"f64"];
+custom_impls![(f32:u32, u32):"_f32", (f64:u64, u32):"_f64"];
 
 /* private helpers */
 
 #[rustfmt::skip]
-#[cfg(feature = "f32")]
+#[cfg(feature = "_f32")]
 impl Float<f32> {
     #[inline] #[must_use]
     pub(super) fn asin_acos_series_terms_f32(x: f32) -> u32 {
@@ -1142,7 +1142,7 @@ impl Float<f32> {
 }
 
 #[rustfmt::skip]
-#[cfg(feature = "f64")]
+#[cfg(feature = "_f64")]
 impl Float<f64> {
     #[inline] #[must_use]
     pub(super) fn asin_acos_series_terms_f64(x: f64) -> u32 {

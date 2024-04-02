@@ -22,7 +22,7 @@ sf! { macro_rules! LUMINANCE_BLUE { () => { 0.072192 }; } }
 pub(crate) use LUMINANCE_BLUE;
 
 // $t:   the floating-point primitive
-// $cap: the capability feature that enables the given implementation. E.g "i8".
+// $cap: the capability feature that enables the given implementation. E.g "_f32".
 macro_rules! color_gamma_fns {
     ($($t:ty : $cap:literal),+) => { $( color_gamma_fns![@$t:$cap]; )+ };
     (@$t:ty : $cap:literal) => { paste! {
@@ -67,4 +67,4 @@ macro_rules! color_gamma_fns {
         }
     }};
 }
-color_gamma_fns![f32:"f32", f64:"f64"];
+color_gamma_fns![f32:"_f32", f64:"_f64"];

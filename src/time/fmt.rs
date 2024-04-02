@@ -21,7 +21,7 @@ use crate::{
 /// # Examples
 /// ```
 /// # use devela::time::Timecode;
-/// #[cfg(any(feature = "std", all(feature = "num_float", feature = "f64")))]
+/// #[cfg(any(feature = "std", all(feature = "num_float", feature = "_f64")))]
 /// assert_eq!(Timecode::secs_f64(3661.5), "01:01:01.500");
 ///
 /// assert_eq!(Timecode::nanos_u64(1_002_003_004), "001s 002ms 003µs 00004ns");
@@ -38,10 +38,10 @@ impl Timecode {
     // -> 64 bits
     #[inline]
     #[must_use]
-    #[cfg(any(feature = "std", all(feature = "num_float", feature = "f64")))]
+    #[cfg(any(feature = "std", all(feature = "num_float", feature = "_f64")))]
     #[cfg_attr(
         feature = "nightly_doc",
-        doc(cfg(any(feature = "std", all(feature = "num_float", feature = "f64"))))
+        doc(cfg(any(feature = "std", all(feature = "num_float", feature = "_f64"))))
     )]
     pub fn split_secs_f64(seconds: f64) -> HourMilliSplit<u32, u8, u8, u16> {
         let ms = (seconds.fract() * 1000.) as u16;
@@ -89,10 +89,10 @@ impl Timecode {
     /// Makes use of the `unsafe_str` feature if enabled.
     //
     // -> 96 bits
-    #[cfg(any(feature = "std", all(feature = "num_float", feature = "f64")))]
+    #[cfg(any(feature = "std", all(feature = "num_float", feature = "_f64")))]
     #[cfg_attr(
         feature = "nightly_doc",
-        doc(cfg(any(feature = "std", all(feature = "num_float", feature = "f64"))))
+        doc(cfg(any(feature = "std", all(feature = "num_float", feature = "_f64"))))
     )]
     pub fn secs_f64(seconds: f64) -> StringU8<12> {
         let HourMilliSplit { h, m, s, ms } = Self::split_secs_f64(seconds);
@@ -188,7 +188,7 @@ mod tests {
     use super::*;
 
     #[test]
-    #[cfg(any(feature = "std", all(feature = "num_float", feature = "f64")))]
+    #[cfg(any(feature = "std", all(feature = "num_float", feature = "_f64")))]
     fn timecode_split_secs_f64() {
         let result = Timecode::split_secs_f64(3661.500);
         assert_eq!(result, HourMilliSplit { h: 1, m: 1, s: 1, ms: 500 });
@@ -207,7 +207,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(any(feature = "std", all(feature = "num_float", feature = "f64")))]
+    #[cfg(any(feature = "std", all(feature = "num_float", feature = "_f64")))]
     fn timecode_secs_f64() {
         let formatted = Timecode::secs_f64(3661.5);
         assert_eq!(formatted, "01:01:01.500");

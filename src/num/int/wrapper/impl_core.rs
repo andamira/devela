@@ -25,7 +25,7 @@ use {
 };
 
 // $t:    the input/output type
-// $cap:  the capability feature that enables the given implementation. E.g "u8".
+// $cap:  the capability feature that enables the given implementation. E.g "_u8".
 //
 // $ut:   the unsigned type of the same size as $t (only for signed)
 // $ucap: the feature that enables some methods related to `$ut`. (signed midpoint)
@@ -33,7 +33,7 @@ use {
 // $up:   the upcasted type to do the operations on (for lcm). E.g u8.
 //
 // $iup:  the signed upcasted type for some methods (gcd_ext). E.g. i16. (only for unsigned)
-// $icap: the feature that enables some methods related to `$iup`. E.g "i16". (only for unsigned)
+// $icap: the feature that enables some methods related to `$iup`. E.g "_i16". (only for unsigned)
 //
 // $d:    the doclink suffix for the method name
 macro_rules! impl_int {
@@ -262,7 +262,8 @@ macro_rules! impl_int {
             /// # use devela::num::Int;
             #[doc = "assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
-            /// assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow"]
+            /// # #[cfg(feature = "_i8")]
+            /// assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
                 let v = self.0 as $up;
@@ -297,7 +298,8 @@ macro_rules! impl_int {
             /// # use devela::num::Int;
             #[doc = "assert_eq![Int(40), Int(60_" $t ").scale_wrap(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Int(112), Int(100_" $t ").scale_wrap(0, 80, 0, 90)]; // extrapolate"]
-            /// assert_eq![Int(-76), Int(100_i8).scale_wrap(0, 50, 0, 90)]; // extrapolate and wrap"]
+            /// # #[cfg(feature = "_i8")]
+            /// assert_eq![Int(-76), Int(100_i8).scale_wrap(0, 50, 0, 90)]; // extrapolate and wrap
             /// ```
             pub const fn scale_wrap(self, min: $t, max: $t, a: $t, b: $t) -> Int<$t> {
                 let v = self.0 as $up;
@@ -569,7 +571,8 @@ macro_rules! impl_int {
             /// # use devela::num::Int;
             #[doc = "assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
-            /// // assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow"]
+            /// # #[cfg(feature = "_u8")]
+            /// assert![Int(200_u8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
                 let v = self.0 as $up;
@@ -604,7 +607,8 @@ macro_rules! impl_int {
             /// # use devela::num::Int;
             #[doc = "assert_eq![Int(40), Int(60_" $t ").scale_wrap(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Int(112), Int(100_" $t ").scale_wrap(0, 80, 0, 90)]; // extrapolate"]
-            /// assert_eq![Int(104), Int(200_u8).scale_wrap(0, 50, 0, 90)]; // extrapolate and wrap"]
+            /// # #[cfg(feature = "_u8")]
+            /// assert_eq![Int(104), Int(200_u8).scale_wrap(0, 50, 0, 90)]; // extrapolate and wrap
             /// ```
             pub const fn scale_wrap(self, min: $t, max: $t, a: $t, b: $t) -> Int<$t> {
                 let v = self.0 as $up;
@@ -635,15 +639,15 @@ macro_rules! impl_int {
     }};
 }
 impl_int![signed
-    i8:"i8":u8:"u8"|i16:"", i16:"i16":u16:"u16"|i32:"-1", i32:"i32":u32:"u32"|i64:"-2",
-    i64:"i64":u64:"u64"|i128:"-3", i128:"i128":u128:"u128"|i128:"-4",
-    isize:"isize":usize:"usize"|isize_up:"-5"
+    i8:"_i8":u8:"_u8"|i16:"", i16:"_i16":u16:"_u16"|i32:"-1", i32:"_i32":u32:"_u32"|i64:"-2",
+    i64:"_i64":u64:"_u64"|i128:"-3", i128:"_i128":u128:"_u128"|i128:"-4",
+    isize:"_isize":usize:"_usize"|isize_up:"-5"
 ];
 impl_int![unsigned
-    u8:"u8":u16|i16:"i16":"-6", u16:"u16":u32|i32:"i32":"-7", u32:"u32":u64|i64:"i64":"-8",
-    u64:"u64":u128|i128:"i128":"-9", u128:"u128":u128|i128:"i128":"-10"
+    u8:"_u8":u16|i16:"_i16":"-6", u16:"_u16":u32|i32:"_i32":"-7", u32:"_u32":u64|i64:"_i64":"-8",
+    u64:"_u64":u128|i128:"_i128":"-9", u128:"_u128":u128|i128:"_i128":"-10"
 ];
 #[cfg(target_pointer_width = "32")]
-impl_int![unsigned usize:"usize":usize_up|isize_up:"i64":"-11"];
+impl_int![unsigned usize:"_usize":usize_up|isize_up:"_i64":"-11"];
 #[cfg(target_pointer_width = "64")]
-impl_int![unsigned usize:"usize":usize_up|isize_up:"i128":"-11"];
+impl_int![unsigned usize:"_usize":usize_up|isize_up:"_i128":"-11"];

@@ -11,10 +11,10 @@ use crate::{
 };
 
 // $t:     the primitive type
-// $cap:   the capability feature that enables the given implementation. E.g "i8".
+// $cap:   the capability feature that enables the given implementation. E.g "_i8".
 //
 // $ut:    the unsigned type of the same size as $t, only for signed (used for midpoint).
-// $ucap:  the feature that enables some methods related to `$ut`. E.g "i8". (only for signed)
+// $ucap:  the feature that enables some methods related to `$ut`. E.g "_i8". (only for signed)
 //
 // $io:    the signed output primitive type (upcasted for unsigned, same as $t for signed).
 // $iocap: the capability feature that enables some ops with signed output primitive type.
@@ -393,14 +393,14 @@ macro_rules! impl_int {
     };
 }
 impl_int![signed
-    i8:"i8"|u8:"u8", i16:"i16"|u16:"u16", i32:"i32"|u32:"u32", i64:"i64"|u64:"u64",
-    i128:"i128"|u128:"u128", isize:"isize"|usize:"usize"
+    i8:"_i8"|u8:"_u8", i16:"_i16"|u16:"_u16", i32:"_i32"|u32:"_u32", i64:"_i64"|u64:"_u64",
+    i128:"_i128"|u128:"_u128", isize:"_isize"|usize:"_usize"
 ];
 impl_int![unsigned
-    u8:"u8"|i16:"i16", u16:"u16"|i32:"i32", u32:"u32"|i64:"i64",
-    u64:"u64"|i128:"i128", u128:"u128"|i128:"i128"
+    u8:"_u8"|i16:"_i16", u16:"_u16"|i32:"_i32", u32:"_u32"|i64:"_i64",
+    u64:"_u64"|i128:"_i128", u128:"_u128"|i128:"_i128"
 ];
 #[cfg(target_pointer_width = "32")]
-impl_int![unsigned usize:"usize"|isize_up:"i64"];
+impl_int![unsigned usize:"_usize"|isize_up:"_i64"];
 #[cfg(target_pointer_width = "64")]
-impl_int![unsigned usize:"usize"|isize_up:"i128"];
+impl_int![unsigned usize:"_usize"|isize_up:"_i128"];

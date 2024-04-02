@@ -165,7 +165,7 @@ mod _libm {
     ];
     // $f:   the floating-point type.
     // $e:   the integer type for integer exponentiation.
-    // $cap: the capability feature enables the given implementation. E.g "f32".
+    // $cap: the capability feature enables the given implementation. E.g "_f32".
     macro_rules! custom_impls {
         ($( ($f:ty, $e:ty): $cap:literal ),+) => {
             $( custom_impls![@$f, $e, $cap]; )+
@@ -254,7 +254,7 @@ mod _libm {
             }
         };
     }
-    custom_impls![(f32, i32):"f32", (f64, i32):"f64"];
+    custom_impls![(f32, i32):"_f32", (f64, i32):"_f64"];
 }
 
 #[cfg(all(not(feature = "libm"), feature = "std"))]
@@ -357,7 +357,7 @@ mod _std {
 
     // $f:   the floating-point type.
     // $e:   the integer type for integer exponentiation.
-    // $cap: the capability feature that enables the given implementation. E.g "f32".
+    // $cap: the capability feature that enables the given implementation. E.g "_f32".
     macro_rules! custom_impls {
         ($( ($f:ty, $e:ty): $cap:literal ),+) => {
             $( custom_impls![@$f, $e, $cap]; )+
@@ -387,7 +387,7 @@ mod _std {
             }
         };
     }
-    custom_impls![(f32, i32):"f32", (f64, i32):"f64"];
+    custom_impls![(f32, i32):"_f32", (f64, i32):"_f64"];
 }
 
 #[cfg(all(not(feature = "libm"), not(feature = "std")))]
@@ -398,7 +398,7 @@ mod _no_std_no_libm {
     // $f:   the floating-point type.
     // $ub:  unsigned int type with the same bit-size.
     // $ie:  the integer type for integer exponentiation.
-    // $cap: the capability feature that enables the given implementation. E.g "f32".
+    // $cap: the capability feature that enables the given implementation. E.g "_f32".
     macro_rules! custom_impls {
         ($( ($f:ty, $ub:ty, $ie:ty) : $cap:literal ),+) => {
             $( custom_impls![@$f, $ub, $ie, $cap]; )+
@@ -581,5 +581,5 @@ mod _no_std_no_libm {
             }
         };
     }
-    custom_impls![(f32, u32, i32):"f32", (f64, u64, i32):"f64"];
+    custom_impls![(f32, u32, i32):"_f32", (f64, u64, i32):"_f64"];
 }
