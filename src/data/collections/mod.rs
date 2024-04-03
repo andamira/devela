@@ -15,7 +15,7 @@ mod destaque;
 mod reexports;
 mod stack;
 mod traits;
-mod tuple; // ExtTuple, TupleFmt
+mod tuple; // Tuple, TupleFmt
 #[allow(unused_imports)]
 pub use {array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*, tuple::*};
 

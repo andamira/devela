@@ -5,15 +5,15 @@
 
 use core::fmt;
 
-/// A formatting wrapper for [`ExtTuple`]s, implementing `Display` and `Debug`.
+/// A formatting wrapper for [`Tuple`]s, implementing `Display` and `Debug`.
 #[repr(transparent)]
-pub struct TupleFmt<'a, T: ExtTuple>(&'a T);
+pub struct TupleFmt<'a, T: Tuple>(&'a T);
 
 // Private traits for tuples with elements that implement Debug or Display.
-trait TupleDebug: ExtTuple {
+trait TupleDebug: Tuple {
     fn fmt_debug(&self, f: &mut fmt::Formatter) -> fmt::Result;
 }
-trait TupleDisplay: ExtTuple {
+trait TupleDisplay: Tuple {
     fn fmt_display(&self, f: &mut fmt::Formatter) -> fmt::Result;
 }
 
@@ -28,7 +28,7 @@ impl<'a, T: TupleDisplay> fmt::Display for TupleFmt<'a, T> {
     }
 }
 
-// Marker trait to prevent downstream implementations of the `ExtTuple` trait.
+// Marker trait to prevent downstream implementations of the `Tuple` trait.
 #[rustfmt::skip]
 mod private { pub trait Sealed {} }
 
@@ -39,9 +39,8 @@ mod private { pub trait Sealed {} }
 /// # Features
 /// By default it's implemented for tuples of arity of 15 or less.
 /// It supports increased arities of 31, 63, 95 and 127 by enabling the
-/// corresponding feature: `_tuple_arity_[31|63|95|127]`,
-/// which in turn will increase compilation times.
-pub trait ExtTuple: private::Sealed {
+/// corresponding capability feature: `_tuple_arity_[31|63|95|127]`.
+pub trait Tuple: private::Sealed {
     /// The first element of this tuple.
     type Head;
     /// The last element of this tuple.
@@ -115,15 +114,15 @@ pub trait ExtTuple: private::Sealed {
     fn prepend<T>(self, value: T) -> Self::Prepend<T>;
 }
 
-// Manual impls for arities <= 2 of: ExtTuple, TupleDebug, TupleDisplay.
+// Manual impls for arities <= 2 of: Tuple, TupleDebug, TupleDisplay.
 #[rustfmt::skip]
 mod manual_impls {
-    use super::{ExtTuple, private::Sealed, TupleDebug, TupleDisplay};
+    use super::{Tuple, private::Sealed, TupleDebug, TupleDisplay};
     use core::fmt;
 
     // arity 0
     impl Sealed for () {}
-    impl ExtTuple for () {
+    impl Tuple for () {
         const ARITY: usize = 0;
         type Head = ();
         type Tail = ();
@@ -155,7 +154,7 @@ mod manual_impls {
 
     // arity 1
     impl<HEADTAIL> Sealed for (HEADTAIL,) {}
-    impl<HEADTAIL> ExtTuple for (HEADTAIL,) {
+    impl<HEADTAIL> Tuple for (HEADTAIL,) {
         const ARITY: usize = 1;
         type Head = HEADTAIL;
         type Tail = HEADTAIL;
@@ -187,7 +186,7 @@ mod manual_impls {
 
     // arity 2
     impl<HEAD, TAIL> super::private::Sealed for (HEAD, TAIL) {}
-    impl<HEAD, TAIL> ExtTuple for (HEAD, TAIL) {
+    impl<HEAD, TAIL> Tuple for (HEAD, TAIL) {
         const ARITY: usize = 2;
         type Head = HEAD;
         type Tail = TAIL;
@@ -218,7 +217,7 @@ mod manual_impls {
     }
 }
 
-// Helper macro to implement ExtTuple for arities >2
+// Helper macro to implement `Tuple` for arities >2
 //
 // $t1: the first generic argument after the HEAD
 // $tn: the rest of the generic arguments before the TAIL
@@ -227,7 +226,7 @@ macro_rules! impl_tuple {
 	($t1:ident $(, $tn:ident )*) => {
 		impl<HEAD, $t1 $(, $tn)*, TAIL> private::Sealed for (HEAD, $t1, $($tn,)* TAIL) {}
         #[allow(non_snake_case)]
-		impl<HEAD, $t1 $(, $tn)*, TAIL> ExtTuple for (HEAD, $t1, $($tn,)* TAIL) {
+		impl<HEAD, $t1 $(, $tn)*, TAIL> Tuple for (HEAD, $t1, $($tn,)* TAIL) {
 			const ARITY: usize = { $crate::code::ident_total![$($tn)*] + 3};
 
             type Head = HEAD;

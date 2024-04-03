@@ -3,7 +3,7 @@ This project includes the following derived works:
 - A [modified][1] version of [stack_dst] by John Hodge, licensed as MIT OR Apache-2.0,
   in the [`data::dst`] module.
 - A [modified][2] version of [tupl] by *Dragoteryx*, licensed as MIT or Apache-2.0,
-  as part of the [`ExtTuple`] trait.
+  as part of the [`Tuple`] trait.
 - Adaptation of [opt_reduce] by Waffle Lapkin, licensed as MIT,
   as part of the [`ExtOption`] trait.
 - Adaptation of [fmtor] by Tyler Ruckinger, licensed as MIT OR Apache-2.0,
