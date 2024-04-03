@@ -29,7 +29,7 @@ use super::char::{
     char_utf8_2bytes_len, char_utf8_3bytes_len, Char16, Char24, Char32, Char7, Char8,
 };
 #[cfg(feature = "alloc")]
-use crate::_alloc::{ffi::CString, string::ToString};
+use crate::_liballoc::{ffi::CString, string::ToString};
 #[cfg(feature = "unsafe_str")]
 use core::str::from_utf8_unchecked;
 

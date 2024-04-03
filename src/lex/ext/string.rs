@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::_alloc::string::{String, ToString};
+use crate::_liballoc::string::{String, ToString};
 #[allow(unused_imports)] // IMPROVE: impl for ArrayString, …
 use crate::lex::AsciiChar;
 

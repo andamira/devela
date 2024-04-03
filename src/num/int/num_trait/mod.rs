@@ -14,7 +14,7 @@
 // - trait NumIntRef
 
 #[cfg(feature = "alloc")]
-use crate::_alloc::vec::Vec;
+use crate::_liballoc::vec::Vec;
 use crate::num::{GcdExt, Num, NumError as E, NumResult as Result};
 #[cfg(doc)]
 use E::{MismatchedSizes, NonNegativeRequired, NotImplemented, NotSupported, Overflow};

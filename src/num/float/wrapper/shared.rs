@@ -4,7 +4,7 @@
 //
 
 use crate::{
-    _core::{concat as cc, stringify as sfy},
+    _libcore::{concat as cc, stringify as sfy},
     code::{iif, paste},
     num::{Compare, Float, Sign},
 };

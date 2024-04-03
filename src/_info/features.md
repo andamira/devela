@@ -18,10 +18,6 @@ each other, and composable, except from the miscellaneous features.
 
 In this category there are features with varied purposes mostly for internal use.
 
-- `_docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
-  - Enables: `std`, `all`, `unsafe`, `nightly`, `dep_all`, `libm`.
-- `_docsrs_max`: like `_docsrs` but also enables `capability_max`.
-- `_docsrs_stable`: like `_docsrs` but without enabling `nightly`.
 
 
 ### Environment features
@@ -44,8 +40,11 @@ Single modules:
 - [`code`]
 - [`data`]
   - `data_bit`: enables `BitOps`, `Biting`, `bitfield!`.
+  - `data_collections`:
 - [`exec`]: enables `exec` functionality.
 - [`lex`]: enables `Char*`, `Egc`, `Nonul`.
+- [`mem`]
+  - `mem_bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
     - `num_float`: `Float`, `ExtFloat`.
     - `num_geom`: enables geometric types and operations.
@@ -134,6 +133,10 @@ That's the case for example of [`Float`], [`Int`], or the [`niche`] types.
 [`ExtTuple`]: crate::data::collections::ExtTuple
 [`Float`]: crate::num::Float
 [`Int`]: crate::num::Int
+
+- `_docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
+- `_docsrs_max`: like `_docsrs` but also enables `capability_max`.
+- `_docsrs_stable`: like `_docsrs` but without enabling `nightly`.
 
 
 ### Dependency features

@@ -6,7 +6,7 @@
 #[allow(unused_imports)]
 #[cfg(feature = "alloc")]
 use crate::{
-    _alloc::{boxed::Box, vec::Vec},
+    _liballoc::{boxed::Box, vec::Vec},
     mem::Boxed,
 };
 use crate::{

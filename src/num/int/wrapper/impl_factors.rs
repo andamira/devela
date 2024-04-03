@@ -22,7 +22,7 @@
 
 #[cfg(all(feature = "_-ints-_", feature = "alloc"))]
 use crate::{
-    _alloc::{collections::BTreeSet, vec, vec::Vec},
+    _liballoc::{collections::BTreeSet, vec, vec::Vec},
     code::Also,
 };
 #[cfg(feature = "_-ints-_")]

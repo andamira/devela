@@ -20,9 +20,9 @@ impl_cdef![Self::new() => String];
 /* alloc, std */
 
 #[cfg(all(feature = "alloc", not(feature = "std")))]
-pub use crate::_alloc::string::{String, ToString};
+pub use crate::_liballoc::string::{String, ToString};
 #[cfg(feature = "std")]
-pub use crate::_std::string::{String, ToString};
+pub use crate::_libstd::string::{String, ToString};
 
 /* const-str */
 

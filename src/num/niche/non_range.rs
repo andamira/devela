@@ -7,7 +7,7 @@
 use crate::mem::{bit_size, ByteSize};
 #[cfg(feature = "_-ints-_")]
 use crate::{
-    _core::{fmt, num::*, str::FromStr},
+    _libcore::{fmt, num::*, str::FromStr},
     code::iif,
 };
 

@@ -2,9 +2,13 @@
 //
 //!
 //
+// IMPROVE:
+// - secs_f64: make a version with fixed format, and another custom reducible.
+// - nanos_u64: to not show leading zeros for seconds.
+// - nanos_u64: not just clamp the seconds but all to 999?
 
 #[cfg(feature = "alloc")]
-use crate::_alloc::{format, string::String};
+use crate::_liballoc::{format, string::String};
 #[cfg(feature = "num_float")]
 #[allow(unused_imports)]
 use crate::num::ExtFloat;

@@ -1,4 +1,4 @@
-// devela::mix::color::fns
+// devela::rend::color::fns
 //
 //! Standalone color functions and constants.
 

@@ -9,7 +9,7 @@
 use core::any::{type_name_of_val, Any, TypeId};
 
 #[cfg(feature = "alloc")]
-use crate::_alloc::boxed::Box;
+use crate::_liballoc::boxed::Box;
 
 // Marker trait to prevent downstream implementations of the `ExtAny` trait.
 mod private {

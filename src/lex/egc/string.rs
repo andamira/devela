@@ -4,13 +4,13 @@
 //
 
 use super::Egc;
+#[cfg(feature = "unicode-segmentation")]
+use crate::_deps::unicode_segmentation::UnicodeSegmentation;
 #[allow(unused_imports)]
-use crate::_alloc::{
+use crate::_liballoc::{
     str::{self, Chars as CharIterator},
     string::String,
 };
-#[cfg(feature = "unicode-segmentation")]
-use crate::_deps::unicode_segmentation::UnicodeSegmentation;
 #[cfg(feature = "unicode-segmentation")]
 use crate::lex::{Char16, Char24, Char32, Char7, Char8};
 

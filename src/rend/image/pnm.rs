@@ -23,7 +23,7 @@
 use crate::rend::{RendError as E, RendResult as Result};
 
 #[cfg(feature = "alloc")]
-use crate::_alloc::string::String;
+use crate::_liballoc::string::String;
 use crate::code::Mismatch;
 use core::fmt::{self, Write};
 

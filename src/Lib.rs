@@ -74,18 +74,18 @@ pub mod _deps;
 /// *Re-exported Rust `alloc` library environment.*
 #[doc(inline)]
 #[cfg(feature = "alloc")]
-pub extern crate alloc as _alloc;
+pub extern crate alloc as _liballoc;
 
 /// <span class='stab portability' title='re-exported `core`'>`core`</span>
 /// *Re-exported Rust `core` library environment.*
 #[doc(inline)]
-pub use ::core as _core;
+pub use ::core as _libcore;
 
 /// <span class='stab portability' title='re-exported `std`'>`std`</span>
 /// *Re-exported Rust `std` library environment.*
 #[cfg(feature = "std")]
 #[doc(inline)]
-pub use ::std as _std;
+pub use ::std as _libstd;
 
 /// Information about the library
 pub mod _info {

@@ -7,7 +7,7 @@
 
 use super::{check_fat_pointer, decompose_pointer, store_metadata, DstArray, DstBuf};
 use crate::{
-    _core::{marker, mem, ptr},
+    _libcore::{marker, mem, ptr},
     mem::MemAligned,
 };
 

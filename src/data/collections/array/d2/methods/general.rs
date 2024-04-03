@@ -5,7 +5,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::{
-    _alloc::vec::Vec,
+    _liballoc::vec::Vec,
     mem::{Box, Boxed},
 };
 use crate::{

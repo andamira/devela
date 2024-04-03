@@ -27,10 +27,12 @@
 // // fn main() {}
 // // ```
 
+#[cfg(feature = "data_bit")]
 #[cfg_attr(any(doc, test), path = "examples/bitfield.rs")]
 #[cfg_attr(not(any(doc, test)), path = "../../examples/bitfield.rs")]
 pub mod bitfield;
 
+#[cfg(feature = "data_bit")]
 #[cfg_attr(any(doc, test), path = "examples/enumset.rs")]
 #[cfg_attr(not(any(doc, test)), path = "../../examples/enumset.rs")]
 pub mod enumset;

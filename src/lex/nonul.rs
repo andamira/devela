@@ -14,7 +14,7 @@ use core::{fmt, ops::Deref, str::Chars};
 use LexError::{InvalidNul, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds};
 
 #[cfg(feature = "alloc")]
-use crate::_alloc::{ffi::CString, string::ToString};
+use crate::_liballoc::{ffi::CString, string::ToString};
 
 use super::char::*;
 

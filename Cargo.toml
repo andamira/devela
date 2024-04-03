@@ -350,6 +350,7 @@ maintenance = { status = "experimental" }
 
 [[example]]
 name = "bitfield"
+required-features = ["data_bit"]
 [[example]]
 name = "cargo_script"
 required-features = ["__excluded"]
@@ -358,6 +359,7 @@ name = "coro_run"
 required-features = ["unsafe_async", "alloc"]
 [[example]]
 name = "enumset"
+required-features = ["data_bit"]
 [[example]]
 name = "cli_prompt"
 required-features = ["ui_term", "crossterm", "std"]
