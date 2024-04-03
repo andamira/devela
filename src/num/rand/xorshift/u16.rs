@@ -4,8 +4,8 @@
 //
 
 use crate::{
+    code::{ConstDefault, Own},
     num::Cast,
-    {code::ConstDefault, Own},
 };
 
 /// The `XorShift16` pseudo-random number generator.

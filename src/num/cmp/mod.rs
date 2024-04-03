@@ -12,12 +12,12 @@
 
 mod compare;
 mod reexports;
-
-#[allow(unused)]
+#[allow(unused_imports)]
 pub use {compare::*, reexports::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{compare::*, reexports::*};
 }

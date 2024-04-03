@@ -24,17 +24,20 @@ pub use {array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 mod vec;
+#[allow(unused_imports)]
 #[cfg(feature = "alloc")]
 pub use vec::*;
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{
         array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*, tuple::*,
     };
 
     // feature-gated
+    #[allow(unused_imports)]
     #[cfg(feature = "alloc")]
     pub use super::vec::*;
 }

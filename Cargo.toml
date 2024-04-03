@@ -79,7 +79,9 @@ all = [ # enables all the modules and submodules
 	"code", "data", "exec", "lex", "mix", "num", "sys", "time", "ui"
 	]
 code = []
-data = []
+data = ["data_bit"]
+	data_bit = ["_-data-_"] # BitOps, Biting, bitfield!.
+	data_collections = ["_-data-_"] # ...
 exec = ["bytemuck/zeroable_atomics"]
 lex = ["_u8", "_u16"]
 mix = []
@@ -87,13 +89,14 @@ num = [
 	"num_float", "num_geom", "num_int", "num_niche_range"
 	]
 	num_float = ["_-num-_"] # Float, ExtFloat.
-	num_geom = ["_-num-_"] # NumVector, Vector, VecVector.
+	num_geom = ["_-num-_"] # geometric types and operations.
 	num_int = ["_-num-_"] # Frac, Int, NumInt, NumRefInt.
 	num_niche_range = ["_-num-_"] # Range* and NonRange* niche types.
 sys = []
 time = []
 ui = [
 	 "ui_term", # "ui_gfx", "ui_web",
+	 "num_geom",
 	]
 	ui_term = ["_-ui-_", "unicode-width", "unicode-segmentation"]
 	# ui_gfx = ["_-ui-_"]
@@ -101,6 +104,7 @@ ui = [
 
 # (private reflexion)
 # auto-enabled by module sub-features
+_-data-_ = []
 _-num-_ = []
 _-ui-_ = []
 

@@ -7,34 +7,29 @@
 //! [`num`]: std::num
 //
 
-// warnings:
-#![cfg_attr(not(feature = "num"), allow(unused_imports))]
 // safety:
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
 /* always compiled */
 
 mod _private;
+#[allow(unused_imports)]
 pub(crate) use _private::*;
 
 mod alias;
 mod cmp;
 mod error;
 mod float;
-mod gcd;
 mod no;
 mod primitive;
 mod sign;
 mod r#trait;
-pub use {
-    alias::*, cmp::all::*, error::*, float::*, gcd::*, no::*, primitive::*, r#trait::*, sign::*,
-};
+pub use {alias::*, cmp::*, error::*, float::*, no::*, primitive::*, r#trait::*, sign::*};
 
-pub mod geom;
 pub mod niche;
 pub mod rand;
 #[doc(no_inline)]
-pub use {geom::all::*, niche::all::*, rand::all::*};
+pub use {niche::all::*, rand::all::*};
 
 /* feature-gated */
 
@@ -44,19 +39,28 @@ mod frac;
 #[cfg(feature = "num_int")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
 mod int;
-
 #[cfg(feature = "num_int")]
 pub use {frac::*, int::*};
+
+#[cfg(feature = "num_geom")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_geom")))]
+pub mod geom;
+#[cfg(feature = "num_geom")]
+pub use geom::*;
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{
-        alias::*, cmp::all::*, error::*, float::*, gcd::*, niche::all::*, no::*, primitive::*,
-        r#trait::*, rand::all::*, sign::*,
+        alias::*, cmp::all::*, error::*, float::*, niche::all::*, no::*, primitive::*, r#trait::*,
+        rand::all::*, sign::*,
     };
 
     // feature-gated
+    #[doc(inline)]
+    #[cfg(feature = "num_geom")]
+    pub use super::geom::all::*;
     #[doc(inline)]
     #[cfg(feature = "num_int")]
     pub use super::{frac::*, int::*};

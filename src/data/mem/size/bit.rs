@@ -24,12 +24,11 @@ use std::{
     time::{Instant, SystemTime},
 };
 
-use crate::num::{
+use core::num::{
     NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
     NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
 };
 
-use crate::lex::AsciiChar;
 #[cfg(feature = "lex")]
 use crate::lex::{Char16, Char24, Char32, Char7, Char8};
 
@@ -153,7 +152,7 @@ pub trait BitSize<const LEN: usize>: ByteSize {
 macro_rules! bit_size {
     /* primitives */
 
-    (= $bits:expr; for $($t:ty),+) => { $( impl BitSize<$bits> for $t {} )+ };
+    (= $bits:expr; for $($t:ty),+) => { $( impl $crate::data::BitSize<$bits> for $t {} )+ };
 
     /* primitives generic on $T */
 
@@ -236,8 +235,6 @@ bit_size![= 64; for i64, u64, f64];
 bit_size![= 128; for i128, u128, Duration];
 #[cfg(feature = "std")]
 bit_size![= 128; for Instant, SystemTime];
-
-bit_size![= 7; for AsciiChar];
 
 #[cfg(feature = "lex")]
 bit_size![= 7; for Char7];

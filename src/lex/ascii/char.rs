@@ -6,8 +6,11 @@
 // - https://doc.rust-lang.org/stable/core/ascii/enum.Char.html
 // - WAIT: [ascii::Char](https://github.com/rust-lang/rust/issues/110998)
 
-use crate::code::ConstDefault;
-use core::fmt;
+use crate::{
+    _core::fmt,
+    code::ConstDefault,
+    data::bit_size,
+};
 #[cfg(feature = "unsafe_str")]
 use core::mem::transmute;
 
@@ -592,3 +595,6 @@ impl fmt::Display for AsciiChar {
 impl ConstDefault for AsciiChar {
     const DEFAULT: Self = AsciiChar::Null;
 }
+
+bit_size![= 7; for AsciiChar];
+

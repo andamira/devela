@@ -43,12 +43,13 @@ Modules can be enabled independently of *environment*, *dependency* or *safety*.
 Single modules:
 - [`code`]
 - [`data`]
+  - `data_bit`: enables `BitOps`, `Biting`, `bitfield!`.
 - [`exec`]: enables `exec` functionality.
 - [`lex`]: enables `Char*`, `Egc`, `Nonul`.
 - [`mix`]: enables audio, colors, images…
 - [`num`]: enables all of the `num` sub-features:
     - `num_float`: `Float`, `ExtFloat`.
-    - `num_geom`: `NumVector`, `Vector`, `VecVector`.
+    - `num_geom`: enables geometric types and operations.
     - `num_int`: `Frac`, `Int`, `NumInt`, `NumRefInt`.
     - `num_niche_range`: `Range*` and `NonRange*` niche types.
 - [`sys`]

@@ -43,11 +43,13 @@ pub use path::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{arch::all::*, ffi::all::*, io::all::*};
 
     // feature-gated
     #[doc(inline)]
     #[cfg(feature = "log")]
+    #[allow(unused_imports)]
     pub use super::log::all::*;
     #[doc(inline)]
     #[allow(unused_imports)]

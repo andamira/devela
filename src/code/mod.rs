@@ -43,6 +43,7 @@ mod paste; // paste![] wrapped for docs
 mod reexports; // re-exported items
 mod result; // std::{error, option, panic, result}
 mod skip_format; // sf![]
+#[allow(unused_imports)]
 pub use {
     any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*,
     iif::*, paste::*, reexports::*, result::all::*, skip_format::*,
@@ -51,6 +52,7 @@ pub use {
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{
         any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*,
         iif::*, paste::*, reexports::*, result::all::*, skip_format::*,

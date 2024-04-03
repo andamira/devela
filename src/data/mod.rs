@@ -26,27 +26,32 @@
 
 /* always compiled */
 
-mod bit;
 mod error;
 mod mem;
 mod sort;
-
 #[allow(unused_imports)]
-pub use {bit::all::*, error::*, mem::*, sort::Sort};
+pub use {error::*, mem::*, sort::*};
 
-pub mod collections;
 pub mod hash;
 pub mod iter;
-
 #[doc(no_inline)]
-pub use {collections::all::*, hash::all::*, iter::all::*};
+pub use {hash::*, iter::*};
 
 /* feature-gated */
+
+#[cfg(feature = "data_bit")]
+mod bit;
+#[cfg(feature = "data_bit")]
+pub use bit::*;
+
+#[cfg(feature = "data_collections")]
+pub mod collections;
+#[cfg(feature = "data_collections")]
+pub use collections::*;
 
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_dyn"))]
 pub mod dst;
-
 #[doc(no_inline)]
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_dyn"))]
 pub use dst::*;
@@ -54,12 +59,22 @@ pub use dst::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{
-        bit::all::*, collections::all::*, error::*, hash::all::*, iter::all::*, mem::all::*,
+        error::*, hash::all::*, iter::all::*, mem::all::*, sort::*,
     };
 
     // feature-gated
     #[doc(inline)]
+    #[allow(unused_imports)]
+    #[cfg(feature = "data_bit")]
+    pub use super::bit::all::*;
+    #[doc(inline)]
+    #[allow(unused_imports)]
+    #[cfg(feature = "data_collections")]
+    pub use super::collections::all::*;
+    #[doc(inline)]
+    #[allow(unused_imports)]
     #[cfg(all(not(feature = "safe_data"), feature = "unsafe_dyn"))]
     pub use super::dst::*;
 }

@@ -22,5 +22,6 @@ pub use {calendar::*, error::*, fmt::*, reexports::*, split::*, unix::*};
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{calendar::*, error::*, fmt::*, reexports::*, split::*, unix::*};
 }
