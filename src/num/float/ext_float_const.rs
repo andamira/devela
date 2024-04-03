@@ -5,7 +5,7 @@
 
 #![allow(clippy::excessive_precision)]
 
-/// Extension trait for floating-point types. Associated onstants.
+/// Extension trait for floating-point types. Associated constants.
 ///
 /// # Constants
 ///

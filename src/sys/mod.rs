@@ -36,6 +36,7 @@ pub use log::*;
 #[cfg(feature = "sys")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
 mod path;
+#[allow(unused_imports)]
 #[cfg(feature = "sys")]
 pub use path::*;
 
@@ -49,6 +50,7 @@ pub(crate) mod all {
     #[cfg(feature = "log")]
     pub use super::log::all::*;
     #[doc(inline)]
+    #[allow(unused_imports)]
     #[cfg(feature = "sys")]
     pub use super::path::all::*;
 }
