@@ -1,16 +1,16 @@
-// devela::mix::error
+// devela::rend::error
 //
 //!
 //
 
 use crate::code::Mismatch;
 
-/// A mixed-media result.
-pub type MixResult<T> = core::result::Result<T, MixError>;
+/// A rend media result.
+pub type RendResult<T> = core::result::Result<T, RendError>;
 
-/// A mixed-media error.
+/// A rend media error.
 #[derive(Clone, Copy, Debug)]
-pub enum MixError {
+pub enum RendError {
     /// Invalid image size, with an optional width and height.
     // InvalidImageSize(Mismatch<SizeUsize, SizeUsize>), // TODO
     InvalidImageSize(Option<(usize, usize)>), // TEMP
@@ -23,7 +23,7 @@ pub enum MixError {
 }
 
 mod core_impls {
-    use super::MixError as E;
+    use super::RendError as E;
     use core::fmt;
 
     impl crate::code::Error for E {}

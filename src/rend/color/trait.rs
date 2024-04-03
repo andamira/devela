@@ -1,4 +1,4 @@
-// devela::mix::color::trait
+// devela::rend::color::trait
 //
 //!
 //

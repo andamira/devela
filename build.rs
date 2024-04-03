@@ -3,7 +3,7 @@
 //! Shows debugging information if the `__debug` feature is enabled.
 //
 
-#![allow(dead_code, unused_imports)]
+#![allow(dead_code, unused)]
 
 #[cfg(feature = "__debug")]
 fn main() {
@@ -23,8 +23,8 @@ fn main() {
         "safe_data", "safe_data_collections",
         "safe_exec",
         "safe_lex",
-        "safe_mix", "safe_mix_audio", "safe_mix_image",
         "safe_num",
+        "safe_rend", "safe_rend_audio", "safe_rend_image",
         "safe_sys",
         "safe_time",
         "safe_ui", "safe_ui_term",
@@ -40,8 +40,8 @@ fn main() {
         "data", "_-data-_", "data_bit", "data_collections",
         "exec",
         "lex",
-        "mix",
         "num", "_-num-_", "num_float", "num_geom", "num_int",
+        "rend", "_-rend-_", "rend_audio", "rend_color", "rend_image",
         "sys",
         "time",
         "ui", "_-ui-_", "ui_term",

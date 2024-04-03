@@ -1,12 +1,12 @@
-// devela::mix
+// devela::rend
 //
-//! Mixed media types and functionality, audio, color, image, midi, video.
+//! Rendering multimedia: audio, color, image, music, video.
 //
 
 // warnings:
 #![allow(unused_imports)]
 // safety:
-#![cfg_attr(feature = "safe_mix", forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_rend", forbid(unsafe_code))]
 
 /* always-compiled */
 
@@ -14,15 +14,15 @@ mod error;
 pub use error::*;
 
 /* feature-gated */
-#[cfg(feature = "mix")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mix")))]
+#[cfg(feature = "rend")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend")))]
 pub mod color;
-#[cfg(feature = "mix")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "mix")))]
+#[cfg(feature = "rend")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend")))]
 pub mod image;
 
 #[doc(no_inline)]
-#[cfg(feature = "mix")]
+#[cfg(feature = "rend")]
 pub use {color::all::*, image::all::*};
 
 pub(crate) mod all {
@@ -31,6 +31,6 @@ pub(crate) mod all {
 
     // feature-gated
     #[doc(inline)]
-    #[cfg(feature = "mix")]
+    #[cfg(feature = "rend")]
     pub use super::{color::all::*, image::all::*};
 }

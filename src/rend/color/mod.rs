@@ -1,24 +1,24 @@
-// devela::mix::color
+// devela::rend::color
 //
 //! Chromatic functionality.
 //
 
 /* feature-gated */
 
-#[cfg(feature = "mix")]
+#[cfg(feature = "rend")]
 mod error;
-#[cfg(feature = "mix")]
+#[cfg(feature = "rend")]
 mod fns;
-// #[cfg(feature = "mix")]
+// #[cfg(feature = "rend")]
 // mod rgb;
-#[cfg(feature = "mix")]
+#[cfg(feature = "rend")]
 mod r#trait;
-#[cfg(feature = "mix")]
+#[cfg(feature = "rend")]
 pub use {error::*, fns::*, r#trait::* /*rgb::* */};
 
 pub(crate) mod all {
     // feature-gated
     #[doc(inline)]
-    #[cfg(feature = "mix")]
+    #[cfg(feature = "rend")]
     pub use super::{error::*, fns::*, r#trait::* /*rgb::* */};
 }

@@ -46,12 +46,15 @@ Single modules:
   - `data_bit`: enables `BitOps`, `Biting`, `bitfield!`.
 - [`exec`]: enables `exec` functionality.
 - [`lex`]: enables `Char*`, `Egc`, `Nonul`.
-- [`mix`]: enables audio, colors, images…
 - [`num`]: enables all of the `num` sub-features:
     - `num_float`: `Float`, `ExtFloat`.
     - `num_geom`: enables geometric types and operations.
     - `num_int`: `Frac`, `Int`, `NumInt`, `NumRefInt`.
     - `num_niche_range`: `Range*` and `NonRange*` niche types.
+- [`rend`]
+    - `rend_audio`
+    - `rend_color`
+    - `rend_image`
 - [`sys`]
 - [`time`]
 - [`ui`]: enables all of the `ui` sub-features:
@@ -62,8 +65,8 @@ Single modules:
 [`data`]: crate::data
 [`exec`]: crate::exec
 [`lex`]: crate::lex
-[`mix`]: crate::mix
 [`num`]: crate::num
+[`rend`]: crate::rend
 [`niche`]: crate::num::niche
 [`sys`]: crate::sys
 [`time`]: crate::time
@@ -81,11 +84,11 @@ In order to use any unsafe functionality:
   - `safe_code`
   - `safe_data`
   - `safe_lex`
-  - `safe_mix`
   - `safe_num`
+  - `safe_rend`
   - `safe_sys`
   - `safe_time`
-  - `safe_ui`
+  - `safe_ui`, `safe_ui_term`
   - `safe_work`
 
 - `unsafe`: enables `unsafe` (as long as it isn't forbidden in the module), includes:

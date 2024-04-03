@@ -1,20 +1,20 @@
-// devela::mix::image
+// devela::rend::image
 //
 //! Image formats and manipulation.
 //
 
 /* feature-gated */
 
-#[cfg(feature = "mix")]
+#[cfg(feature = "rend")]
 mod pnm;
 
-#[cfg(feature = "mix")]
+#[cfg(feature = "rend")]
 #[allow(unused_imports)]
 pub use pnm::*;
 
 pub(crate) mod all {
     #[doc(inline)]
-    #[cfg(feature = "mix")]
+    #[cfg(feature = "rend")]
     #[allow(unused_imports)]
     pub use super::pnm::*;
 }

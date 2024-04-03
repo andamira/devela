@@ -77,15 +77,16 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	"code", "data", "exec", "lex", "mix", "num", "sys", "time", "ui"
+	"code", "data", "exec", "lex", "num", "rend", "sys", "time", "ui"
 	]
 code = []
-data = ["data_bit", "data_collections"]
+data = [
+	"data_bit", "data_collections"
+	]
 	data_bit = ["_-data-_"] # BitOps, Biting, bitfield!.
 	data_collections = ["_-data-_"] # ...
 exec = ["bytemuck/zeroable_atomics"]
 lex = ["_u8", "_u16"]
-mix = []
 num = [
 	"num_float", "num_geom", "num_int", "num_niche_range"
 	]
@@ -93,6 +94,12 @@ num = [
 	num_geom = ["_-num-_"] # geometric types and operations.
 	num_int = ["_-num-_"] # Frac, Int, NumInt, NumRefInt.
 	num_niche_range = ["_-num-_"] # Range* and NonRange* niche types.
+rend = [
+	"rend_audio", "rend_color", "rend_image"
+	]
+	rend_audio = ["_-rend-_"]
+	rend_color = ["_-rend-_"]
+	rend_image = ["_-rend-_"]
 sys = []
 time = []
 ui = [
@@ -107,6 +114,7 @@ ui = [
 # auto-enabled by module sub-features
 _-data-_ = []
 _-num-_ = []
+_-rend-_ = []
 _-ui-_ = []
 
 
@@ -118,15 +126,15 @@ _-ui-_ = []
 # 2. don't enable the `safe` feature for that module.
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_exec", "safe_lex", "safe_mix",
-	"safe_num", "safe_sys", "safe_time", "safe_ui",
+	"safe_code", "safe_data", "safe_exec", "safe_lex", "safe_num",
+	"safe_rend", "safe_sys", "safe_time", "safe_ui",
 ] # in specific modules:
 	safe_code = []
 	safe_data = []
 	safe_exec = []
 	safe_lex = []
-	safe_mix = []
 	safe_num = []
+	safe_rend = []
 	safe_sys = []
 	safe_time = []
 	safe_ui = ["safe_ui_term"]

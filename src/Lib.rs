@@ -58,8 +58,8 @@ pub mod code;
 pub mod data;
 pub mod exec;
 pub mod lex;
-pub mod mix;
 pub mod num;
+pub mod rend;
 pub mod sys;
 pub mod time;
 pub mod ui;
@@ -107,7 +107,7 @@ pub mod all {
     #[allow(unused_imports)]
     #[doc(inline)]
     pub use super::{
-        code::all::*, data::all::*, exec::all::*, lex::all::*, mix::all::*, num::all::*,
+        code::all::*, data::all::*, exec::all::*, lex::all::*, num::all::*, rend::all::*,
         sys::all::*, time::all::*, ui::all::*,
     };
 }
