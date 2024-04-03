@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Unreleased [0.21.0-wip]
 
 ### Added
-- add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`, `unsafe_thread`.
-- add features: `_i8`, `_i16`, `_i32`, `_i64`, `_i128`, `_isize`, `_u8`, `_u16`, `_u32`, `_u64`, `_u128`, `_usize`, `_f32`, `_f64`, `_nums`, `_floats`, `_ints`, `_sints`, `_uints`, `_default`, `_max`, `_docsrs_max`, `_docsrs_stable`.
+- add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`, `unsafe_thread`, `data_bit`, `data_collections`.
+- add features: `_i8`, `_i16`, `_i32`, `_i64`, `_i128`, `_isize`, `_u8`, `_u16`, `_u32`, `_u64`, `_u128`, `_usize`, `_f32`, `_f64`, `_nums`, `_floats`, `_ints`, `_sints`, `_uints`, `_default`, `_max`, `_docsrs_max`, `_docsrs_stable`, `rend_audio`, `rend_color`, `rend_image`.
 - add private features for reflection purpoess.
 - add traits: `ExtFuture`, `ExtFloatConst`, `NumVector`.
 - add function: `future_block`.
@@ -29,32 +29,35 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add new arms to `array_init:` `init`, `init_heap`.
 - add methods for casting to `[iu]size_[up|down]` to `Cast` and `PrimitiveCast`.
 - add methods to `Int`, `NumInt`, `NumRefInt`: `midpoint`.
-- reexport more `std::io` items.
+- re-export more items from: `std::io`, `core::ptr`.
+- re-export: `String`, `ToString`, `Rc`, `RcWeak`.
+- add build script for debugging purposes.
 
 ### Removed
-- remove features: `num_all`, `ui_all`, `num_niche_impls`, `result`, `safe_result`, `mem`, `safe_mem`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`.
+- remove features: `num_all`, `ui_all`, `num_niche_impls`, `result`, `safe_result`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`.
 - remove `Mem` trait bound from `ByteSize`.
 - remove deprecated `ident_total_count` macro.
 - remove `repr(C)` attribute from niche types.
 
 ### Changed
 - bump rust version to 1.77.1.
-- move `mem` module inside `data`.
 - move `result` module inside `code`.
 - move `io` moule and `os` submodules to `sys`.
 - move `rustdoc-header.html` file to `/DOCS/`.
-- move `_deps::{code, alloc, std}` to `::{_core, _alloc, _std}`.
-- rename `gfx` module to `mix`.
+- move `_deps::{code, alloc, std}` to `::{_libcore, _liballoc, _libstd}`.
+- rename `gfx` module to `rend`.
 - rename `text` module to `lex`.
 - rename `Mem` trait to `ExtMem`.
 - rename `Text` trait to `StrOwn`.
 - rename `_docs` module to `_info`.
+- rename `ExtTuple` trait to `Tuple`.
 - rename `copy` function to `io_copy`.
 - rename `os` module to `sys`, make submodules private.
 - rename `work` module to `exec`, make submodules private.
 - rename `Floating` wrapper to `Float` and make it own `self`.
 - rename `is_aarch64_feature_detected` to `detect_aarch64`.
 - rename `is_x86_feature_detected` to `detect_x86`.
+- rename private feature `_exclude_example` to `__excluded`.
 - improve `cdbg`, allow to customize the location path and print fmt.
 - change `TaskWakerNoop` struct into `task_waker_noop` fn.
 - add more consts to `Float` and `ExtFloat`.
