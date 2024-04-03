@@ -1,4 +1,5 @@
 # https://doc.rust-lang.org/cargo/reference/manifest.html
+# ==============================================================================
 
 [workspace]
 members = [".", "macros"]
@@ -18,10 +19,9 @@ repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
 include = [
+	"/src/**/*.rs", "/src/**/*.md",
 	"/Cargo.toml",
 	"/DOCS/*",
-	"/src/**/*.rs", "/src/**/*.md",
-	#
 	"/examples/bitfield.rs", "/examples/enumset.rs",
 	"/examples/cargo_script.rs", "/examples/coro_run.rs",
 	"/examples/cli_prompt.rs",
@@ -53,7 +53,7 @@ publish = true
 
 default = ["_default"] # includes default capabilities
 
-_exclude_example = [] # from testing
+__exclude = [] # to exclude examples from being tested
 
 
 #* environment features *#
@@ -246,9 +246,8 @@ unicode-width = ["dep:unicode-width"]
 wide = ["dep:wide"]
 
 
-# ------------------------------------------------------------------------------
-
 [dependencies]
+# ==============================================================================
 
 # non-optional:
 devela_macros = { version  = "0.9.0" }
@@ -296,10 +295,8 @@ optional = true
 default-features = false
 features = ["fallback", "float"]
 
-
-# ------------------------------------------------------------------------------
-
 [dev-dependencies]
+# ------------------------------------------------------------------------------
 
 devela = { path = ".", features = ["all"] }
 
@@ -307,6 +304,7 @@ devela = { path = ".", features = ["all"] }
 # ------------------------------------------------------------------------------
 
 [package.metadata.docs.rs]
+# ==============================================================================
 no-default-features = true
 features = ["_docsrs_max"]
 rustdoc-args = [ "--html-in-header", "./DOCS/rustdoc-header.html" ]
@@ -315,12 +313,32 @@ rustdoc-args = [ "--html-in-header", "./DOCS/rustdoc-header.html" ]
 maintenance = { status = "experimental" }
 
 
-# ------------------------------------------------------------------------------
-# examples
+# benchmarks
+# ==============================================================================
 
-# included examples
+[[bench]]
+name = "grid"
+harness = false
+[[bench]]
+name = "calendar"
+harness = false
+[[bench]]
+name = "timecode"
+harness = false
+required-features = ["alloc"]
+[[bench]]
+name = "gcd"
+harness = false
+
+
+# examples
+# ==============================================================================
+
 [[example]]
 name = "bitfield"
+[[example]]
+name = "cargo_script"
+required-features = ["__exclude"]
 [[example]]
 name = "coro_run"
 required-features = ["unsafe_async", "alloc"]
@@ -329,8 +347,3 @@ name = "enumset"
 [[example]]
 name = "cli_prompt"
 required-features = ["ui_term", "crossterm", "std"]
-
-# excluded examples
-[[example]]
-name = "cargo_script"
-required-features = ["_exclude_example"]
