@@ -1,10 +1,13 @@
-[workspace]
+# https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[workspace]
 members = [".", "macros"]
 
+[lib]
+path = "./src/Lib.rs"
+bench = false
 
 [package]
-
 name = "devela"
 description = "A cohesive Rust development layer."
 version = "0.21.0-wip"
