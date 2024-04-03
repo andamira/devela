@@ -22,5 +22,6 @@ pub(crate) mod all {
     // feature-gated
     #[doc(inline)]
     #[cfg(feature = "ui_term")]
+    #[allow(unused_imports)]
     pub use super::term::all::*;
 }

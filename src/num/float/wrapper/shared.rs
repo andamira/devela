@@ -3,17 +3,12 @@
 //! Shared methods
 //
 
-#[cfg(feature = "_-floats-_")]
 use crate::{
     _core::{concat as cc, stringify as sfy},
     code::{iif, paste},
     num::{Compare, Float, Sign},
 };
-#[cfg(all(
-    feature = "_-floats-_",
-    not(feature = "safe_num"),
-    feature = "unsafe_const"
-))]
+#[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
 use core::mem::transmute;
 
 // Implements methods independently of any features

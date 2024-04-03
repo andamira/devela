@@ -5,7 +5,6 @@
 
 #[cfg(feature = "alloc")]
 use crate::data::Vec;
-use crate::data::{Array, Bare, Storage};
 
 mod core_traits;
 mod methods;
@@ -25,9 +24,9 @@ pub type Point3d<T> = Point<T, 3>;
 /// A static sequence of `N` `D`-dimensional [`Point`]s.
 #[must_use]
 #[repr(transparent)]
-pub struct Points<T, const D: usize, const N: usize, S: Storage = Bare> {
+pub struct Points<T, const D: usize, const N: usize> {
     /// The array of points.
-    pub array: Array<Point<T, D>, N, S>,
+    pub array: [Point<T, D>; N],
 }
 
 /// A dynamic sequence of `D`-dimensional [`Point`]s.

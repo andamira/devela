@@ -26,8 +26,8 @@ use crate::NumError;
 #[cfg(feature = "_-ints-_")]
 use crate::{
     code::{cif, iif, unwrap, ValueQuant},
+    num::NumError::{NoInverse, NonZeroRequired, Overflow},
     num::{Int, NumResult as Result},
-    NumError::{NoInverse, NonZeroRequired, Overflow},
 };
 
 // helper function to be called from the cold path branch when modulus == 0.

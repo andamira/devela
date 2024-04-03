@@ -37,7 +37,7 @@ fn main() {
     }
     cr.push(move |mut c| async move {
         println!("> instance 4 NEW");
-        for n in 0..3 {
+        for _n in 0..3 {
             let _res = c.yield_err(format!["custom err"]).await?;
         }
         println!("  instance 4 BYE!");

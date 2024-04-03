@@ -1,4 +1,4 @@
-// devela::data::collections::array::array_init
+// devela::data::array::init
 //
 //!
 //

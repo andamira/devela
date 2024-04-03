@@ -26,11 +26,12 @@
 
 /* always compiled */
 
+mod array;
 mod error;
 mod mem;
 mod sort;
 #[allow(unused_imports)]
-pub use {error::*, mem::*, sort::*};
+pub use {array::*, error::*, mem::*, sort::*};
 
 pub mod hash;
 pub mod iter;
@@ -60,9 +61,7 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{
-        error::*, hash::all::*, iter::all::*, mem::all::*, sort::*,
-    };
+    pub use super::{array::*, error::*, hash::all::*, iter::all::*, mem::all::*, sort::*};
 
     // feature-gated
     #[doc(inline)]

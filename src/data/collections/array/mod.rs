@@ -10,15 +10,13 @@
 
 /* always compiled */
 
-mod array_init;
 mod d1; // 1-dimensional
 mod d2; // 2-dimensional
-mod ext; // ExtArray, ArrayFmt
 #[allow(unused_imports)]
-pub use {array_init::*, d1::all::*, d2::all::*, ext::*};
+pub use {d1::all::*, d2::all::*};
 
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
-    pub use super::{array_init::*, d1::all::*, d2::all::*, ext::*};
+    pub use super::{d1::all::*, d2::all::*};
 }

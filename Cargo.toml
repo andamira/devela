@@ -53,7 +53,8 @@ publish = true
 
 default = ["_default"] # includes default capabilities
 
-__exclude = [] # to exclude examples from being tested
+__debug = [] # for debugging purposes, shows enabled features
+__excluded = [] # allows to exclude examples from being tested
 
 
 #* environment features *#
@@ -79,7 +80,7 @@ all = [ # enables all the modules and submodules
 	"code", "data", "exec", "lex", "mix", "num", "sys", "time", "ui"
 	]
 code = []
-data = ["data_bit"]
+data = ["data_bit", "data_collections"]
 	data_bit = ["_-data-_"] # BitOps, Biting, bitfield!.
 	data_collections = ["_-data-_"] # ...
 exec = ["bytemuck/zeroable_atomics"]
@@ -305,7 +306,16 @@ features = ["fallback", "float"]
 devela = { path = ".", features = ["all"] }
 
 
-# ------------------------------------------------------------------------------
+# profiles
+# ==============================================================================
+
+# [profile.dev]
+# codegen-backend = "cranelift"
+
+# [profile.dev.package."*"]
+# codegen-backend = "llvm"
+# opt-level = 3
+
 
 [package.metadata.docs.rs]
 # ==============================================================================
@@ -320,20 +330,6 @@ maintenance = { status = "experimental" }
 # benchmarks
 # ==============================================================================
 
-[[bench]]
-name = "grid"
-harness = false
-[[bench]]
-name = "calendar"
-harness = false
-[[bench]]
-name = "timecode"
-harness = false
-required-features = ["alloc"]
-[[bench]]
-name = "gcd"
-harness = false
-
 
 # examples
 # ==============================================================================
@@ -342,7 +338,7 @@ harness = false
 name = "bitfield"
 [[example]]
 name = "cargo_script"
-required-features = ["__exclude"]
+required-features = ["__excluded"]
 [[example]]
 name = "coro_run"
 required-features = ["unsafe_async", "alloc"]

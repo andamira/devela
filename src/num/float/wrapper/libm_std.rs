@@ -3,7 +3,6 @@
 //! Methods depending on libm, std, or their absence
 //
 
-#[cfg(feature = "_-floats-_")]
 use super::Float;
 
 // macro helper for implementing methods for `Float`, from either `libm` or `std`.
@@ -392,7 +391,7 @@ mod _std {
     custom_impls![(f32, i32):"_f32", (f64, i32):"_f64"];
 }
 
-#[cfg(all(feature = "_-floats-_", not(feature = "libm"), not(feature = "std")))]
+#[cfg(all(not(feature = "libm"), not(feature = "std")))]
 mod _no_std_no_libm {
     use super::Float;
     use crate::code::iif;

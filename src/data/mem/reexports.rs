@@ -7,6 +7,10 @@
 use super::Boxed;
 use crate::code::reexport;
 
+#[cfg(feature = "alloc")]
+crate::code::impl_cdef![<T> Self::new() => crate::_alloc::rc::Weak<T>];
+// crate::code::impl_cdef![<T> Self::new() => RcWeak<T>]; ??
+
 /* type aliases */
 
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
@@ -100,4 +104,15 @@ reexport! { rust: core::pin,
 reexport! { rust: core::pin,
     doc: "A pointer which pins its pointee in place.",
     Pin
+}
+
+/* rc */
+
+reexport! { rust: alloc::rc,
+    doc: "A single-threaded reference-counting pointer.",
+    Rc
+}
+reexport! { rust: alloc::rc,
+    doc: "A version of `Rc` that holds a non-owning reference to the managed allocation.",
+    @Rc as RcWeak
 }

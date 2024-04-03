@@ -3,11 +3,10 @@
 //!
 //
 
-#[cfg(all(feature = "_-ints-_", feature = "alloc"))]
+#[cfg(feature = "alloc")]
 use crate::_alloc::vec::Vec;
 #[cfg(feature = "_usize")]
 use crate::num::isize_up;
-#[cfg(feature = "_-ints-_")]
 use crate::num::{GcdExt, Int, NumInt, NumResult as Result};
 
 // $t:     the primitive type

@@ -113,13 +113,13 @@ pub use core::sync::atomic::AtomicBool;
 
 #[cfg(feature = "atomic")]
 mod impl_const_default_for_atomic {
-    #![allow(clippy::declare_interior_mutable_const)]
+    #![allow(clippy::declare_interior_mutable_const, unused_imports)]
     use crate::code::{impl_cdef, ConstDefault};
     impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) => super::Atomic<T>];
 }
 #[cfg(feature = "portable-atomic")]
 mod impl_const_default_for_portable_atomic {
-    #![allow(clippy::declare_interior_mutable_const)]
+    #![allow(clippy::declare_interior_mutable_const, unused_imports)]
     use crate::code::{impl_cdef, ConstDefault};
 
     // there are no core alternatives
@@ -142,7 +142,7 @@ mod impl_const_default_for_portable_atomic {
 }
 #[cfg(not(feature = "portable-atomic"))]
 mod impl_const_default_for_core {
-    #![allow(clippy::declare_interior_mutable_const)]
+    #![allow(clippy::declare_interior_mutable_const, unused_imports)]
     use crate::code::{impl_cdef, ConstDefault};
 
     #[cfg(target_has_atomic = "16")]

@@ -18,82 +18,89 @@ pub trait ConstDefault {
 // macro helper to impl ConstDefault. Supports generics.
 macro_rules! impl_cdef {
     // <A>
-    (<$A:ident> $def:expr => $($t:ty),+) => { $( impl_cdef![@<$A> $def => $t]; )+ };
+    (<$A:ident> $def:expr => $($t:ty),+) => { $( $crate::code::impl_cdef![@<$A> $def => $t]; )+ };
     (@<$A:ident> $def:expr => $t:ty) => {
-        impl<$A> ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl<$A> $crate::code::ConstDefault for $t { const DEFAULT: Self = $def; }
     };
     // <A: A_> (bounded)
     (<$A:ident:$A_:ident> $def:expr => $($t:ty),+) => {
-        $( impl_cdef![@<$A:$A_> $def => $t]; )+
+        $( $crate::code::impl_cdef![@<$A:$A_> $def => $t]; )+
     };
     (@<$A:ident:$A_:ident> $def:expr => $t:ty) => {
-        impl<$A: ConstDefault> ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl<$A: $crate::code::ConstDefault> $crate::code::ConstDefault for $t {
+            const DEFAULT: Self = $def;
+        }
     };
     // <A, B>
-    (<$A:ident, $B:ident> $def:expr => $($t:ty),+) => { $( impl_cdef![@<$A, $B> $def => $t]; )+ };
+    (<$A:ident, $B:ident> $def:expr => $($t:ty),+) => {
+        $( $crate::code::impl_cdef![@<$A, $B> $def => $t]; )+
+    };
     (@<$A:ident, $B:ident> $def:expr => $t:ty) => {
-        impl<$A, $B> ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl<$A, $B> $crate::code::ConstDefault for $t { const DEFAULT: Self = $def; }
     };
     // <A: A_, B: B_> (bounded)
     (<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $($t:ty),+) => {
-        $( impl_cdef![@<$A:$A_, $B:$B_> $def => $t]; )+ };
+        $( $crate::code::impl_cdef![@<$A:$A_, $B:$B_> $def => $t]; )+ };
     (@<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $t:ty) => {
-        impl<$A:$A_, $B:$B_> ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl<$A:$A_, $B:$B_> $crate::code::ConstDefault for $t { const DEFAULT: Self = $def; }
     };
 
     // <A, B, C>
     (<$A:ident, $B:ident, $C:ident> $def:expr => $($t:ty),+) => {
-        $( impl_cdef![@<$A, $B, $C> $def => $t]; )+
+        $( $crate::code::impl_cdef![@<$A, $B, $C> $def => $t]; )+
     };
     (@<$A:ident, $B:ident, $C:ident> $def:expr => $t:ty) => {
-        impl<$A, $B, $C> ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl<$A, $B, $C> $crate::code::ConstDefault for $t { const DEFAULT: Self = $def; }
     };
     // <>
-    ($def:expr => $($t:ty),+) => { $( impl_cdef![@$def => $t]; )+ };
+    ($def:expr => $($t:ty),+) => { $( $crate::code::impl_cdef![@$def => $t]; )+ };
     (@$def:expr => $t:ty) => {
-        impl ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl $crate::code::ConstDefault for $t { const DEFAULT: Self = $def; }
     };
     // impl for arrays of the given $LEN lenghts
     (arrays <$A:ident:$BOUND:ident> $($LEN:literal),+) => {
-        $( impl_cdef![@array:$LEN <$A:$BOUND>]; )+
+        $( $crate::code::impl_cdef![@array:$LEN <$A:$BOUND>]; )+
     };
     (@array:$LEN:literal <$A:ident:$BOUND:ident>) => {
-        impl<$A: ConstDefault> ConstDefault for [$A; $LEN] {
+        impl<$A: $crate::code::ConstDefault> $crate::code::ConstDefault for [$A; $LEN] {
             const DEFAULT: Self = [$A::DEFAULT; $LEN];
         }
     };
     // impl for tuples of lenghts from 1 to 12
     (tuples <$A:ident:$BOUND:ident>) => {
-        impl_cdef![@tuple <$A:$BOUND> ($A,) => ($A::DEFAULT,)]; // 1
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,) => ($A::DEFAULT, $A::DEFAULT)]; // 2
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A) => ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT)]; // 3
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A) => // 4
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,) => // 1
+            ($A::DEFAULT,)];
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,) => // 2
+            ($A::DEFAULT, $A::DEFAULT)];
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A) => // 3
+            ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A) => // 4
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A) => // 5
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A) => // 5
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A) => // 6
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A) => // 6
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A) => // 7
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A) => // 7
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT)];
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A) => // 8
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A) => // 8
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT, $A::DEFAULT)];
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A) => // 9
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A) => // 9
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 10
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 10
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 11
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 11
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 12
+        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 12
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
     };
     (@tuple <$A:ident:$BOUND:ident> $type:ty => $value:expr) => {
-        impl<$A: ConstDefault> ConstDefault for $type {
+        impl<$A: $crate::code::ConstDefault> $crate::code::ConstDefault for $type {
             const DEFAULT: Self = $value;
         }
     };
@@ -139,15 +146,6 @@ mod impl_core {
     // WAIT: [const_mut_refs](https://github.com/rust-lang/rust/issues/57349)
     // impl_cdef![<T> &mut [] => &mut [T]];
 
-    impl_cdef!["" => &str];
-    // WAIT: [const_str_from_utf8_unchecked_mut](https://github.com/rust-lang/rust/issues/91005)
-    // #[cfg(feature = "unsafe_str")]
-    // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
-    // impl ConstDefault for &mut str {
-    //     // SAFETY: The empty string is valid UTF-8.
-    //     const DEFAULT: Self = unsafe { core::str::from_utf8_unchecked_mut(&mut []) };
-    // }
-
     impl ConstDefault for &CStr {
         const DEFAULT: Self = {
             if let Ok(s) = CStr::from_bytes_until_nul(&[0]) { s } else { unreachable![]; }
@@ -181,31 +179,19 @@ mod impl_core {
     // impl_cdef![<T> Self::MIN => Alignment];
 }
 
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-mod impl_alloc {
-    use super::ConstDefault;
-    use crate::{
-        _alloc::{rc::Weak as RcWeak, string::String},
-        data::collections::{AllocLinkedList, AllocOrdMap, AllocOrdSet, Vec, VecDeque},
-    };
-
-    impl_cdef![Self::new() => String];
-    impl_cdef![<T> Self::new() =>
-        AllocOrdSet<T>, AllocLinkedList<T>, Vec<T>, VecDeque<T>, RcWeak<T>];
-    impl_cdef![<K, V> Self::new() => AllocOrdMap<K, V>];
-
-    // TODO: fxhash, fnv, ahash
-    // #[cfg(feature = "hashbrown")]
-    // impl_cdef![<K, V> Self::with_hasher(TODO) => AllocMap<K, V>];
-    // #[cfg(feature = "hashbrown")]
-    // impl_cdef![<K> Self::with_hasher(TODO) => AllocSet<K>];
-}
+// #[cfg(feature = "alloc")]
+// #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+// mod impl_alloc {
+//     // TODO: fxhash, fnv, ahash
+//     // #[cfg(feature = "hashbrown")]
+//     // impl_cdef![<K, V> Self::with_hasher(TODO) => AllocMap<K, V>];
+//     // #[cfg(feature = "hashbrown")]
+//     // impl_cdef![<K> Self::with_hasher(TODO) => AllocSet<K>];
+// }
 
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 mod impl_std {
-    use super::ConstDefault;
     use std::{
         // collections::hash_map::DefaultHasher
         // io::{Cursor, Empty, Sink},

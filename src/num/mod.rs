@@ -60,8 +60,10 @@ pub(crate) mod all {
     // feature-gated
     #[doc(inline)]
     #[cfg(feature = "num_geom")]
+    #[allow(unused_imports)]
     pub use super::geom::all::*;
     #[doc(inline)]
     #[cfg(feature = "num_int")]
+    #[allow(unused_imports)]
     pub use super::{frac::*, int::*};
 }

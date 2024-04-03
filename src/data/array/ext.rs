@@ -1,4 +1,4 @@
-// devela::data::collections::array::ext
+// devela::data::array::ext
 //
 //!
 //

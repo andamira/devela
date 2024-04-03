@@ -5,6 +5,16 @@
 
 use crate::code::reexport;
 
+#[cfg(feature = "alloc")]
+mod impls_alloc {
+    use super::*;
+    use crate::code::impl_cdef;
+
+    // impl ConstDefault
+    impl_cdef![<T> Self::new() => AllocOrdSet<T>, AllocLinkedList<T>, Vec<T>, VecDeque<T>];
+    impl_cdef![<K, V> Self::new() => AllocOrdMap<K, V>];
+}
+
 /* from `array` */
 
 reexport! { rust: core::array,

@@ -48,5 +48,6 @@ pub(crate) mod all {
     // feature-gated
     #[doc(inline)]
     #[cfg(feature = "lex")]
+    #[allow(unused_imports)]
     pub use super::{egc::all::*, nonul::*};
 }
