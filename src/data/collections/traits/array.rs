@@ -7,7 +7,10 @@
 // - impl for:
 //   - Array
 
-use crate::data::{DataCollection, DataError as E, DataResult as Result, Storage};
+use crate::{
+    data::{DataCollection, DataError as E, DataResult as Result},
+    mem::Storage,
+};
 
 /// An abstract array data type.
 ///

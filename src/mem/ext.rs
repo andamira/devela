@@ -1,4 +1,4 @@
-// devela::data::mem::trait
+// devela::mem::trait
 //
 //! Functionality related to byte sizes.
 //

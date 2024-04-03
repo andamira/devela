@@ -4,15 +4,16 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::data::Boxed;
+use crate::mem::Boxed;
 use crate::{
+    _core::{cmp::Ordering, fmt},
     code::ConstDefault,
     data::{
-        Array, Bare, DataCollection, DataDeque, DataDesta, DataQueue, DataResult as Result,
-        DataStack, Destaque, DestaqueIter, Storage,
+        Array, DataCollection, DataDeque, DataDesta, DataQueue, DataResult as Result, DataStack,
+        Destaque, DestaqueIter,
     },
+    mem::{Bare, Storage},
 };
-use core::{cmp::Ordering, fmt};
 
 // helper macro for implementing traits for a Stack depending on the custom index size.
 macro_rules! impl_destaque {

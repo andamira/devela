@@ -8,8 +8,8 @@
 #![allow(unused)]
 
 use crate::code::{paste, ConstDefault};
-#[cfg(feature = "data_bit")]
-use crate::data::{bit_size, ByteSize};
+#[cfg(feature = "mem_bit")]
+use crate::mem::{bit_size, ByteSize};
 use core::{fmt, num::*, str::FromStr};
 
 #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
@@ -226,7 +226,7 @@ macro_rules! impl_non_specific {
             /* internal impls */
 
             // BitSize
-            #[cfg(feature = "data_bit")]
+            #[cfg(feature = "mem_bit")]
             bit_size![<const V: [<$s $b>]> =
                 { [<$s $b>]::BYTE_SIZE * 8}; for [<$name $s:upper $b>]<V>];
 

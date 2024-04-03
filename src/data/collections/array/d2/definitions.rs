@@ -3,7 +3,10 @@
 //! 2-dimensional array definitions
 //
 
-use crate::data::{Array, Bare, Storage};
+use crate::{
+    data::Array,
+    mem::{Bare, Storage},
+};
 
 /// A static 2-dimensional [`Array`].
 ///

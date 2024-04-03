@@ -3,7 +3,7 @@
 //! 1-dimensional array definitions
 //
 
-use crate::data::{Bare, Storage};
+use crate::mem::{Bare, Storage};
 
 /// A static 1-dimensional array backed by the core [array] primitive.
 ///

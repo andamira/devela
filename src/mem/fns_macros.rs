@@ -1,4 +1,4 @@
-// devela::data::mem::fns
+// devela::mem::fns_macros
 //
 //!
 //
@@ -23,7 +23,7 @@ use crate::code::iif;
 ///
 /// # Examples
 /// ```
-/// # use devela::data::mem_copy;
+/// # use devela::mem_copy;
 /// let result_from_ffi_function: Result<(), &i32> = Err(&1);
 /// let result_copied: Result<(), i32> = result_from_ffi_function.map_err(mem_copy);
 /// ```
@@ -45,8 +45,7 @@ pub const fn mem_copy<T: Copy>(x: &T) -> T { *x }
 ///
 /// # Examples
 /// ```
-/// use devela::data::ptr_in_stack;
-///
+/// # use devela::mem::ptr_in_stack;
 /// const STACK_SIZE: usize = 2 << 20; // assume a 2 MB stack size
 ///
 /// let in_stack: [i32; 10] = [0; 10];
@@ -76,7 +75,7 @@ mod unsafe_fns {
     /// This is a safer interface to [`slice::from_raw_parts`].
     /// # Examples
     /// ```
-    /// # use devela::data::mem_as_bytes;
+    /// # use devela::mem_as_bytes;
     /// #[repr(C)]
     /// struct Data(u32);
     ///
@@ -100,7 +99,7 @@ mod unsafe_fns {
     /// This is a safer interface to [`slice::from_raw_parts_mut`].
     /// # Examples
     /// ```
-    /// # use devela::data::mem_as_bytes_mut;
+    /// # use devela::mem_as_bytes_mut;
     /// #[repr(C)]
     /// struct Data(u32);
     ///
@@ -121,12 +120,12 @@ mod unsafe_fns {
         unsafe { slice::from_raw_parts_mut(v as *mut _ as *mut u8, mem::size_of_val(v)) }
     }
 
-    /// View any `T: Sync + Unpin + Sized` as `&[u8]` (const-compatible).
+    /// View any `T: Sync + Unpin + Sized` as `&[u8]` *compile-time* friendly.
     ///
     /// This is a safer interface to [`slice::from_raw_parts`], for `Sized` types.
     /// # Examples
     /// ```
-    /// # use devela::data::mem_as_bytes_sized;
+    /// # use devela::mem_as_bytes_sized;
     /// const DATA: u32 = 1234;
     /// const BYTES: &[u8] = mem_as_bytes_sized(&DATA);
     ///

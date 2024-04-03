@@ -4,10 +4,11 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::data::Boxed;
+use crate::mem::Boxed;
 use crate::{
     code::ConstDefault,
-    data::{Array, Array2d, Bare, Storage},
+    data::{Array, Array2d},
+    mem::{Bare, Storage},
 };
 use core::fmt;
 

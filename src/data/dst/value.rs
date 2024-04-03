@@ -8,7 +8,7 @@
 use super::{check_fat_pointer, decompose_pointer, store_metadata, DstArray, DstBuf};
 use crate::{
     _core::{marker, mem, ptr},
-    data::MemAligned,
+    mem::MemAligned,
 };
 
 /* public API */

@@ -3,14 +3,17 @@
 //! Double-ended queue + double-ended stack.
 //
 
-use crate::data::{
-    error::{DataError, DataResult as Result},
-    Array, Bare, Destaque, DestaqueIter, Storage,
-};
 #[cfg(feature = "alloc")]
 use crate::{
     _alloc::{vec, vec::Vec},
-    data::Boxed,
+    mem::Boxed,
+};
+use crate::{
+    data::{
+        error::{DataError, DataResult as Result},
+        Array, Destaque, DestaqueIter,
+    },
+    mem::{Bare, Storage},
 };
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};

@@ -1,11 +1,11 @@
-// devela::data::mem::size::byte
+// devela::mem::size::byte
 //
 //! Functionality related to byte sizes.
 //
 
 use crate::{
     code::iif,
-    data::{mem_align_of, mem_align_of_val, mem_size_of, mem_size_of_val},
+    mem::{mem_align_of, mem_align_of_val, mem_size_of, mem_size_of_val},
 };
 
 impl<T> ByteSize for T {}
@@ -47,7 +47,7 @@ pub trait ByteSize: Sized {
     ///
     /// # Examples
     /// ```
-    /// use devela::data::ByteSize;
+    /// use devela::mem::ByteSize;
     ///
     /// assert_eq![().ptr_size_ratio(), [1, 0]];
     /// assert_eq![1_usize.ptr_size_ratio(), [1, 1]];
@@ -81,7 +81,7 @@ pub trait ByteSize: Sized {
 ///
 /// # Examples
 /// ```
-/// use devela::data::{ptr_size_ratio, mem_size_of};
+/// use devela::mem::{ptr_size_ratio, mem_size_of};
 ///
 /// assert_eq![ptr_size_ratio(0), [1, 0]];
 /// assert_eq![ptr_size_ratio(mem_size_of::<usize>()), [1, 1]];

@@ -2,9 +2,9 @@
 
 use crate::{
     code::iif,
-    data::{mem_replace, DataError, DataResult as Result, MaybeUninit, Storage, UninitArray},
+    data::{DataError, DataResult as Result, UninitArray},
+    mem::{mem_replace, ptr_swap, MaybeUninit, Storage},
 };
-use core::ptr::swap as ptr_swap;
 use DataError::{NotEnoughSpace, OutOfBounds, PartiallyAdded};
 
 impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {

@@ -7,12 +7,15 @@ mod own;
 
 mod convert;
 
-use crate::data::{
-    error::{DataError, DataResult as Result},
-    mem_size_of, Array, Bare, Stack, StackIter, Storage,
-};
 #[cfg(feature = "alloc")]
-use crate::{_alloc::vec::Vec, data::Boxed};
+use crate::{data::Vec, mem::Boxed};
+use crate::{
+    data::{
+        error::{DataError, DataResult as Result},
+        Array, Stack, StackIter,
+    },
+    mem::{mem_size_of, Bare, Storage},
+};
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};
 use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};

@@ -1,4 +1,4 @@
-// devela::data::mem::size
+// devela::mem::size
 //
 //! Memory size functionality.
 //
@@ -9,9 +9,9 @@ mod reexports;
 #[allow(unused_imports)]
 pub use {byte::*, expr::*, reexports::*};
 
-#[cfg(feature = "data_bit")]
+#[cfg(feature = "mem_bit")]
 mod bit;
-#[cfg(feature = "data_bit")]
+#[cfg(feature = "mem_bit")]
 pub use bit::*;
 
 pub(crate) mod all {
@@ -21,6 +21,6 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[allow(unused_imports)]
-    #[cfg(feature = "data_bit")]
+    #[cfg(feature = "mem_bit")]
     pub use super::bit::*;
 }

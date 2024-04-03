@@ -1,4 +1,4 @@
-// devela::data::mem::slice
+// devela::mem::slice
 //
 //! Slices, extends `std::`[`slice`].
 //!

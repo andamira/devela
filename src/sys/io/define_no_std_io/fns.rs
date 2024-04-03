@@ -1,7 +1,7 @@
 // devela::sys::io::reimplement_no_std::fns
 
 use crate::{
-    data::MaybeUninit,
+    mem::MaybeUninit,
     sys::{IoErrorKind, IoResult, Read, Write},
 };
 

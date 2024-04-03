@@ -1,4 +1,4 @@
-// devela::data::mem::storage
+// devela::mem::storage
 //
 //! The [`Storage`] trait allows the data structure implementations to have
 //! specialized methods by storage type (specially useful for constructors).
@@ -29,7 +29,7 @@ pub use boxed::*;
 /// # Examples
 /// ```
 /// use core::{array, mem::size_of};
-/// use devela::data::Storage;
+/// use devela::mem::Storage;
 ///
 /// /// Generically store a generic array of generic size.
 /// pub struct MyStructure<T, S: Storage, const L: usize> {
@@ -52,7 +52,7 @@ pub use boxed::*;
 ///
 /// // The array is stored in the heap.
 /// #[cfg(feature = "alloc")]
-/// assert_eq![8, size_of::<MyStructure::<u8, devela::data::Boxed, 100>>()];
+/// assert_eq![8, size_of::<MyStructure::<u8, devela::mem::Boxed, 100>>()];
 ///
 /// ```
 pub trait Storage {

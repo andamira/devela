@@ -14,8 +14,8 @@
 // - [add benchmarks](https://github.com/zesterer/pollster/pull/20)
 
 use crate::{
-    data::pin,
     exec::{Arc, Condvar, Future, Mutex, TaskContext, TaskPoll, TaskWake, TaskWaker},
+    mem::pin,
 };
 
 /// Blocks the thread until the `future` is ready.

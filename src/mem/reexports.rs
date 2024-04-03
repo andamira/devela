@@ -1,4 +1,4 @@
-// devela::data::mem::reexports
+// devela::mem::reexports
 //
 //! Reexported items from `core`.
 //

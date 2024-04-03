@@ -12,11 +12,8 @@
 
 use crate::{
     code::{sf, Own},
-    data::{
-        cswap,
-        error::{DataError, DataResult as Result},
-        Bare, Stack,
-    },
+    data::{DataError, DataResult as Result, Stack},
+    mem::{cswap, Bare},
 };
 #[cfg(doc)]
 use DataError::OutOfBounds;

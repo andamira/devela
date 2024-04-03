@@ -13,7 +13,7 @@
 use crate::_alloc::{collections::BTreeMap, vec::Vec};
 use crate::{
     code::{cfor, iif, paste},
-    data::cswap,
+    mem::cswap,
     num::Compare,
 };
 

@@ -1,4 +1,4 @@
-// devela::data::mem::size::expr::test_coro
+// devela::mem::size::expr::test_coro
 
 use super::mem_size_of_expr;
 

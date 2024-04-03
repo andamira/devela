@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::data::{Bare, MaybeUninit, Storage};
+use crate::mem::{Bare, MaybeUninit, Storage};
 
 mod methods;
 

@@ -6,8 +6,10 @@
 
 use super::super::{check_fat_pointer, list_push_gen, make_fat_ptr};
 use super::{DstBuf, DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopHandle};
-use crate::data::MemAligned;
-use core::{marker, mem, ptr};
+use crate::{
+    _core::{marker, mem, ptr},
+    mem::MemAligned,
+};
 
 impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     /// Constructs a new (empty) queue.

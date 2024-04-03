@@ -6,8 +6,7 @@
 
 use super::super::{decompose_pointer, make_fat_ptr, store_metadata};
 use super::{DstBuf, DstQueue};
-use crate::data::{mem_size_of, mem_size_of_val, MaybeUninit};
-use core::ptr::drop_in_place;
+use crate::mem::{mem_size_of, mem_size_of_val, ptr_drop_in_place, MaybeUninit};
 
 pub(super) struct PushInnerInfo<'a, I> {
     // Buffer for value data.
@@ -132,7 +131,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
         unsafe {
             let ptr = &mut *self.front_raw_mut();
             let len = mem_size_of_val(ptr);
-            drop_in_place(ptr);
+            ptr_drop_in_place(ptr);
             let words = BUF::round_to_words(len);
             self.read_pos += Self::meta_words() + words;
         }

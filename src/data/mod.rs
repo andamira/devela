@@ -1,23 +1,13 @@
 // devela::data
 //
-//! Data and memory, <small>extends
-//! `std::{`[`alloc`], [`array`], [`borrow`], [`boxed`], [`cell`], [`collections`],
-//! [`hash`], [`iter`], [`mem`], [`pin`], [`ptr`], [`rc`], [`slice`], [`vec`]`}`.
+//! Data handling and manipulation, <small>extends
+//! `std::{`[`array`], [`collections`], [`hash`], [`iter`], [`vec`]`}`.
 //! </small>
 //!
-//! [`alloc`]: std::alloc
 //! [`array`]: mod@std::array
-//! [`borrow`]: std::borrow
-//! [`boxed`]: std::boxed
-//! [`cell`]: std::cell
 //! [`collections`]: std::collections
 //! [`hash`]: std::hash
 //! [`iter`]: std::iter
-//! [`mem`]: std::mem
-//! [`pin`]: std::pin
-//! [`ptr`]: std::ptr
-//! [`rc`]: std::rc
-//! [`slice`]: std::slice
 //! [`vec`]: mod@std::vec
 //
 
@@ -28,10 +18,9 @@
 
 mod array;
 mod error;
-mod mem;
 mod sort;
 #[allow(unused_imports)]
-pub use {array::*, error::*, mem::*, sort::*};
+pub use {array::*, error::*, sort::*};
 
 pub mod hash;
 pub mod iter;
@@ -61,7 +50,7 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{array::*, error::*, hash::all::*, iter::all::*, mem::all::*, sort::*};
+    pub use super::{array::*, error::*, hash::all::*, iter::all::*, sort::*};
 
     // feature-gated
     #[doc(inline)]

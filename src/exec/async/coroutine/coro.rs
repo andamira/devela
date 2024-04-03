@@ -19,8 +19,8 @@ use crate::{
 };
 use crate::{
     code::{serr, sok, OptRes},
-    data::Pin,
     exec::{Future, TaskContext, TaskPoll},
+    mem::Pin,
 };
 use core::fmt::Debug;
 

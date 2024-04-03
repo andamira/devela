@@ -1,4 +1,4 @@
-// devela::data::mem::size::bit
+// devela::mem::size::bit
 //
 //! Functionality related to memory bit size.
 //
@@ -8,13 +8,18 @@
 // - trait definition
 // - trait impls
 
-use crate::data::{BareBox, ByteSize};
-
-use core::{
-    cmp,
-    convert::Infallible,
-    marker::{PhantomData, PhantomPinned},
-    time::Duration,
+use crate::{
+    _core::{
+        cmp,
+        convert::Infallible,
+        marker::{PhantomData, PhantomPinned},
+        num::{
+            NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
+            NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
+        },
+        time::Duration,
+    },
+    mem::{BareBox, ByteSize},
 };
 #[cfg(feature = "std")]
 use std::{
@@ -22,11 +27,6 @@ use std::{
     rc::Rc,
     sync::{Arc, Mutex},
     time::{Instant, SystemTime},
-};
-
-use core::num::{
-    NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
-    NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
 };
 
 #[cfg(feature = "lex")]
@@ -152,24 +152,24 @@ pub trait BitSize<const LEN: usize>: ByteSize {
 macro_rules! bit_size {
     /* primitives */
 
-    (= $bits:expr; for $($t:ty),+) => { $( impl $crate::data::BitSize<$bits> for $t {} )+ };
+    (= $bits:expr; for $($t:ty),+) => { $( impl $crate::mem::BitSize<$bits> for $t {} )+ };
 
     /* primitives generic on $T */
 
     (<$T:ident> = $bits:expr; for $($t:ty),+) => {
-        $( impl<$T> $crate::data::BitSize<$bits> for $t {} )+
+        $( impl<$T> $crate::mem::BitSize<$bits> for $t {} )+
     };
     (<const $T:ident: $Tt:ty> = $bits:expr; for $($t:ty),+) => {
-        $( impl<const $T: $Tt> $crate::data::BitSize<$bits> for $t {} )+
+        $( impl<const $T: $Tt> $crate::mem::BitSize<$bits> for $t {} )+
     };
 
     /* primitives generic on $K, $V */
 
     (<$K:ident, $V:ident> = $bits:expr; for $($t:ty),+) => {
-        $( impl<$K, $V> $crate::data::BitSize<$bits> for $t {} )+
+        $( impl<$K, $V> $crate::mem::BitSize<$bits> for $t {} )+
     };
     (<const $K:ident: $Kt:ty, const $V:ident: $Vt:ty> = $bits:expr; for $($t:ty),+) => {
-        $( impl<const $K: $Kt, const $V: $Vt> $crate::data::BitSize<$bits> for $t {} )+
+        $( impl<const $K: $Kt, const $V: $Vt> $crate::mem::BitSize<$bits> for $t {} )+
     };
 
     /* pointer primitives */
@@ -214,7 +214,7 @@ macro_rules! bit_size {
 
     (array = $bits:literal * len for T: $tsize:literal * len: $($len:literal),+) => {
         $(
-        impl<T: $crate::data::BitSize<$tsize>> $crate::data::BitSize<{$bits*$len}> for [T; $len] {}
+        impl<T: $crate::mem::BitSize<$tsize>> $crate::mem::BitSize<{$bits*$len}> for [T; $len] {}
         )+
     };
 }

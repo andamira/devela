@@ -8,14 +8,15 @@ use crate::{
     data::{
         array_init,
         error::{DataError, DataResult as Result},
-        Array, Bare, Stack,
+        Array, Stack,
     },
+    mem::Bare,
     num::Compare,
 };
 #[cfg(feature = "alloc")]
 use crate::{
     data::Vec,
-    data::{Box, Boxed},
+    mem::{Box, Boxed},
 };
 use DataError::{NotEnoughSpace, OutOfBounds};
 

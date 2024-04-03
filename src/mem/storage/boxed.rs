@@ -1,11 +1,14 @@
-// devela::data::mem::storage::boxed
+// devela::mem::storage::boxed
 //
 //! *Boxed* storage
 //
 
 #[cfg(doc)]
-use crate::data::{Bare, BareBox};
-use crate::{_alloc::boxed::Box, code::ConstDefault, data::Storage};
+use crate::mem::{Bare, BareBox};
+use crate::{
+    code::ConstDefault,
+    mem::{Box, Storage},
+};
 
 /// A marker struct for a [`Storage`] type that wraps its data in a [`Box`].
 ///

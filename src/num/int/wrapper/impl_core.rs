@@ -26,7 +26,7 @@ use crate::num::usize_up;
 use {
     crate::{
         code::iif,
-        data::cswap,
+        mem::cswap,
         num::{Cast, GcdExt, Int, NumError, NumResult as Result},
     },
     NumError::Overflow,
