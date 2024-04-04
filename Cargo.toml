@@ -51,29 +51,30 @@ publish = true
 #* miscellaneous features *#
 # ------------------------------------------------------------------------------
 
-default = ["_default"] # includes default capabilities
+# default = []
 
-__debug = [] # for debugging purposes, shows enabled features
-__excluded = [] # allows to exclude examples from being tested
+__dbg = [] # for debugging purposes, shows enabled features
+__excluded = [] # allows excluding examples from being tested
 
 
 #* environment features *#
 # ------------------------------------------------------------------------------
 
-std = [ # disables `no_std` compatibility and enables `std` functionality
-	"alloc", "either/use_std", "log/std",
-	"atomic?/std", "bytemuck/extern_crate_std", "memchr?/std", "rand_core?/std",
-	"wide?/std",
-]
 alloc = [ # enables `alloc` functionality
 	"bytemuck/extern_crate_alloc",
 	"memchr?/alloc", "rand_core?/alloc"
+]
+std = [ # disables `no_std` compatibility and enables `std` functionality
+	"alloc",
+	"either/use_std", "log/std",
+	"atomic?/std", "bytemuck/extern_crate_std", "memchr?/std", "rand_core?/std",
+	"wide?/std",
 ]
 no_std = [ # enables functionality incompatible with or substitute of `std`
 ]
 
 
-#* module features *#
+#* module features trees *#
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
@@ -123,7 +124,7 @@ _-rend-_ = []
 _-ui-_ = []
 
 
-#* safety features *#
+#* safety features trees *#
 # ------------------------------------------------------------------------------
 
 # To use unsafe functionality:
@@ -163,7 +164,7 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	unsafe_thread = [] # Logging::set_logger_racy.
 
 
-#* nightly features *#
+#* nightly features tree *#
 # ------------------------------------------------------------------------------
 
 nightly = [
@@ -252,12 +253,12 @@ dep_all = [ # enables all optional dependencies
 
 atomic = ["dep:atomic"]
 const-str = ["dep:const-str"]
-crossterm = ["dep:crossterm"]
+crossterm = ["dep:crossterm", "std", "ui_service"]
 hashbrown = ["dep:hashbrown"]
 libm = ["dep:libm"]
 log = ["dep:log"]
 memchr = ["dep:memchr"]
-miniquad = ["dep:miniquad"] # std
+miniquad = ["dep:miniquad", "std", "ui_service"]
 portable-atomic = ["dep:portable-atomic"]
 rand_core = ["dep:rand_core"]
 unicode-segmentation = ["dep:unicode-segmentation"]
@@ -302,7 +303,7 @@ features = ["fallback"]
 version = "0.27.0"
 optional = true
 default-features = false
-features = ["events", "windows"]
+features = ["events", "windows", "bracketed-paste"]
 [dependencies.hashbrown]
 version = "0.14.1"
 optional = true
