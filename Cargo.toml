@@ -107,12 +107,12 @@ rend = [
 sys = []
 time = []
 ui = [
-	 "ui_term", # "ui_gfx", "ui_web",
-	 "num_geom",
+	 "ui_service",
 	]
-	ui_term = ["_-ui-_", "unicode-width", "unicode-segmentation"]
-	# ui_gfx = ["_-ui-_"]
-	# ui_web = ["_-ui-_"]
+	ui_service = ["_-ui-_", "data_bit"]
+		ui_term = ["ui_service", "unicode-width", "unicode-segmentation"]
+		# ui_gfx = ["ui_service"]
+		# ui_web = ["ui_service"]
 
 # (private reflexion)
 # auto-enabled by module sub-features
