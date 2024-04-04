@@ -1,5 +1,10 @@
 // devela::data::bit::ops::trait
+//
+// TOC
+// - definition
+// - impls
 
+#[cfg(feature = "_-ints-_")]
 use super::Biting;
 #[cfg(doc)]
 use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
@@ -298,8 +303,19 @@ where
 }
 
 macro_rules! impl_bit_ops {
-    ($($t:ty),+) => { $( impl_bit_ops![@$t]; )+ };
-    (@$t:ty) => {
+    () => {
+        impl_bit_ops![
+            i8:"_i8", i16:"_i16", i32:"_i32", i64:"_i64", i128:"_i128", isize:"_isize",
+            u8:"_u8", u16:"_u16", u32:"_u32", u64:"_u64", u128:"_u128", usize:"_usize"
+        ];
+    };
+
+    // `$t`: the type to implement the trait for.
+    // $cap: the capability feature that enables the given implementation. E.g "_u8".
+    ($($t:ty : $cap:literal),+) => { $( impl_bit_ops![@$t:$cap]; )+ };
+    (@$t:ty : $cap:literal) => {
+        #[cfg(feature = $cap )]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl BitOps for $t {
             type Inner = $t;
 
@@ -406,4 +422,4 @@ macro_rules! impl_bit_ops {
         }
     };
 }
-impl_bit_ops![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+impl_bit_ops![];

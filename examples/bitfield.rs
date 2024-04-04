@@ -20,10 +20,10 @@ bitfield! {
     ///
     ///     /// An example created with [`bitfield!`],
     ///     /// with public extra methods but no custom fields.
-    ///     pub struct ExampleBitfieldExtra(u16) {}
+    ///     pub struct ExampleBitfieldExtra(u8) {}
     /// }
     /// ```
-    pub struct ExampleBitfieldExtra(u16) {}
+    pub struct ExampleBitfieldExtra(u8) {}
 }
 
 bitfield! {
@@ -40,7 +40,7 @@ bitfield! {
     ///
     ///     /// An example created with [`bitfield!`],
     ///     /// with public custom fields but no extra methods.
-    ///     pub struct ExampleBitfieldCustom(u16) {
+    ///     pub struct ExampleBitfieldCustom(u8) {
     ///         /// Documentation for the first field.
     ///         FLAG1: 0;
     ///         /// Documentation for the second field.
@@ -55,7 +55,7 @@ bitfield! {
     /// assert![b.is_field_flag2()];
     /// let _c = b.unset_field_flag1();
     /// ```
-    pub struct ExampleBitfieldCustom(u16) {
+    pub struct ExampleBitfieldCustom(u8) {
         /// Documentation for the first field.
         FLAG1: 0;
         /// Documentation for the first field.
@@ -73,7 +73,7 @@ bitfield! {
     ///
     /// bitfield! {
     ///     /// An example created with [`bitfield!`], everything public.
-    ///     pub struct ExampleBitfield(u16) {
+    ///     pub struct ExampleBitfield(u8) {
     ///         /// Documentation for the first field.
     ///         FLAG1: 0;
     ///         /// Documentation for the second field.
@@ -88,7 +88,7 @@ bitfield! {
     /// assert![b.is_field_flag2()];
     /// let _c = b.unset_field_flag1();
     /// ```
-    pub struct ExampleBitfield(u16) {
+    pub struct ExampleBitfield(u8) {
         /// Documentation for the first field.
         FLAG1: 0;
         /// Documentation for the first field.

@@ -8,6 +8,7 @@
 mod field;
 mod r#trait;
 mod wrapper;
+#[allow(unused_imports)]
 pub use {field::*, r#trait::BitOps, wrapper::Biting};
 
 pub(crate) mod all {
