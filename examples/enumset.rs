@@ -12,7 +12,10 @@
 //!     #[allow(dead_code)]
 //!     #[derive(Clone, Default)]
 //!     #[repr(u64)]
-//!     pub enum ExampleEnum<'a, 'b, T>(ExampleEnumSet: u8)
+//!     pub enum ExampleEnum<'a, 'b, T>(
+//!         /// Represents a set of [`ExampleEnum`] variants.
+//!         pub ExampleEnumSet: u8
+//!     )
 //!         [where T: Clone] // supports where clauses (between [])
 //!     {
 //!         #[default]
@@ -46,7 +49,10 @@ enumset! {
     #[allow(dead_code)]
     #[derive(Clone, Default)]
     #[repr(u64)]
-    pub enum ExampleEnum<'a, 'b, T>(ExampleEnumSet: u8)
+    pub enum ExampleEnum<'a, 'b, T>(
+        /// Represents a set of [`ExampleEnum`] variants.
+        pub ExampleEnumSet: u8
+    )
         [where T: Clone] // supports where clauses (between [])
     {
         /// A default unit variant.

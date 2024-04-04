@@ -15,7 +15,7 @@
 /// ```
 /// # use devela::code::enumset;
 /// enumset! {
-///     enum MyEnum(MyEnumSet: u8) {
+///     pub enum MyEnum(pub MyEnumSet: u8) {
 ///         Variant1,
 ///         Variant2(bool),
 ///         Variant3{a: u8, b: u16},
@@ -32,14 +32,18 @@
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data_bit")))]
 macro_rules! enumset {
     (
-        // $enum_vis: the visibility for the enum and the set
+        // $enum_attr: the attributes of the enum.
+        // $enum_vis:  the visibility of the enum.
         // $enum_name: the name of the new enum.
-        // $set_name: the name of the associated set
-        // $set_ty: the inner integer primitive type for the bitfield (u8, i32, …).
+        // $set_attr:  the attributes of the set.
+        // $set_vis:   the visibility of the set.
+        // $set_name:  the name of the associated set.
+        // $set_ty:    the inner integer primitive type for the bitfield (u8, i32, …).
         $( #[$enum_attr:meta] )*
         $enum_vis:vis enum $enum_name:ident
             $( < $($gen:tt),* $(,)? > )? // optional generics and lifetimes
-            ($set_name:ident: $set_ty:ty) // name and inner type of the set, between ()
+            // attributes, visibility, name and inner type of the set, between ():
+            ( $( #[$set_attr:meta] )* $set_vis:vis $set_name:ident: $set_ty:ty )
             $([where $($where:tt)+ $(,)? ] $(,)? )? // optional where clauses, between []
         {
             $(
@@ -55,7 +59,7 @@ macro_rules! enumset {
         /* define enum */
 
         $( #[$enum_attr] )*
-        #[doc = "\n\nSee also the associated type set of variants [`" $set_name "`]."]
+        // #[doc = "\n\nSee also the associated type set of variants [`" $set_name "`]."]
         $enum_vis enum $enum_name $( < $($gen),* > )? $(where $($where)+)? {
             $(
                 $( #[$variant_attr] )*
@@ -70,32 +74,33 @@ macro_rules! enumset {
 
         #[allow(non_snake_case)]
         mod [<_$enum_name _private>] {
-            pub(super) const ENUM_VARIANTS: usize =
-                $crate::code::ident_total!($($variant_name)*);
+            pub(super) const ENUM_VARIANTS: usize = $crate::code::ident_total!($($variant_name)*);
             $crate::code::ident_const_index!(pub(super), ENUM_VARIANTS; $($variant_name)*);
         }
 
         /// # `enumset` methods
+        #[allow(dead_code)]
         impl $( < $($gen),* > )? $enum_name $( < $($gen),* > )? $( where $($where)* )? {
             /// Returns the total number of variants.
-            pub const ENUM_VARIANTS: usize = [<_$enum_name _private>]::ENUM_VARIANTS;
+            $set_vis const ENUM_VARIANTS: usize = [<_$enum_name _private>]::ENUM_VARIANTS;
 
             /// Returns the total number of variants.
-            pub const fn enum_variants(&self) -> usize { Self::ENUM_VARIANTS }
+            $set_vis const fn enum_variants(&self) -> usize { Self::ENUM_VARIANTS }
 
             /// Returns the associated empty set.
-            pub const fn new_empty_set() -> $set_name {
+            $set_vis const fn new_empty_set() -> $set_name {
                 $set_name::without_fields()
             }
             /// Returns the associated full set.
-            pub const fn new_full_set() -> $set_name {
+            $set_vis const fn new_full_set() -> $set_name {
                 $set_name::with_all_fields()
             }
         }
 
         $crate::data::bitfield! {
-            #[doc = "Represents a set of [`" $enum_name "`] variants."]
-            $enum_vis struct $set_name($set_ty) {
+            $( #[$set_attr] )*
+            // #[doc = "Represents a set of [`" $enum_name "`] variants."]
+            $set_vis struct $set_name($set_ty) {
                 $(
                     #[doc = "The bit index that corresponds to `" $enum_name "::`[`"
                         $variant_name "`][" $enum_name "::" $variant_name "]."]
