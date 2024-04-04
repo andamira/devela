@@ -22,14 +22,13 @@ mod never;
 mod option;
 mod own;
 mod panic;
-mod reexports;
 mod traits;
 mod unwrap;
 mod value_quant;
 #[allow(unused_imports)]
 pub use {
-    ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexports::*,
-    traits::*, unwrap::*, value_quant::*,
+    ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, traits::*,
+    unwrap::*, value_quant::*,
 };
 
 /* feature-gated */
@@ -43,9 +42,10 @@ pub use define_no_std_error::*;
 pub(crate) mod all {
     // always compiled
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{
-        ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexports::*,
-        traits::*, unwrap::*, value_quant::*,
+        ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, traits::*,
+        unwrap::*, value_quant::*,
     };
 
     // feature-gated

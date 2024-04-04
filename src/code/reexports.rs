@@ -115,3 +115,18 @@ pub use core::marker::Sized;
 pub use core::marker::Sync;
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 pub use core::marker::Unpin;
+
+/* `core::result` re-exports */
+
+#[cfg(feature = "std")]
+pub use std::*;
+#[cfg(feature = "std")]
+mod std {
+    use super::reexport;
+
+    // In sync with define_no_std_error::Error
+    reexport! { rust: not(std)|std::error,
+        doc: "A trait representing the basic expectations for error values.",
+        Error
+    }
+}
