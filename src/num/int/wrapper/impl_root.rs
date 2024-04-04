@@ -38,6 +38,17 @@ const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 // $cap: the capability feature that enables the given implementation. E.g "_i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
+    () => {
+        impl_int![signed
+            i8:"_i8":i16:"", i16:"_i16":i32:"-1", i32:"_i32":i64:"-2",
+            i64:"_i64":i128:"-3", i128:"_i128":i128:"-4", isize:"_isize":isize_up:"-5"
+        ];
+        impl_int![unsigned
+            u8:"_u8":u16:"-6", u16:"_u16":u32:"-7", u32:"_u32":u64:"-8",
+            u64:"_u64":u128:"-9", u128:"_u128":u128:"-10", usize:"_usize":usize_up:"-11"
+        ];
+    };
+
     (signed $( $t:ty : $cap:literal : $up:ty : $d:literal ),+) => {
         $( impl_int![@signed $t:$cap:$up:$d]; )+
     };
@@ -535,11 +546,4 @@ macro_rules! impl_int {
         // }
     }};
 }
-impl_int![signed
-    i8:"_i8":i16:"", i16:"_i16":i32:"-1", i32:"_i32":i64:"-2", i64:"_i64":i128:"-3",
-    i128:"_i128":i128:"-4", isize:"_isize":isize_up:"-5"
-];
-impl_int![unsigned
-    u8:"_u8":u16:"-6", u16:"_u16":u32:"-7", u32:"_u32":u64:"-8", u64:"_u64":u128:"-9",
-    u128:"_u128":u128:"-10", usize:"_usize":usize_up:"-11"
-];
+impl_int!();

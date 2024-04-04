@@ -38,6 +38,17 @@ use {
 // $cap: the capability feature that enables the given implementation. E.g "_i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
+    () => {
+        impl_int![signed
+            i8:"_i8":"", i16:"_i16":"-1", i32:"_i32":"-2",
+            i64:"_i64":"-3", i128:"_i128":"-4", isize:"_isize":"-5"
+        ];
+        impl_int![unsigned
+            u8:"_u8":"-6", u16:"_u16":"-7", u32:"_u32":"-8",
+            u64:"_u64":"-9", u128:"_u128":"-10", usize:"_usize":"-11"
+        ];
+    };
+
     (signed $( $t:ty : $cap:literal : $d:literal ),+) => {
         $( impl_int![@signed $t:$cap:$d]; )+
     };
@@ -1150,11 +1161,4 @@ macro_rules! impl_int {
         }
     }};
 }
-impl_int![signed
-    i8:"_i8":"", i16:"_i16":"-1", i32:"_i32":"-2", i64:"_i64":"-3",
-    i128:"_i128":"-4", isize:"_isize":"-5"
-];
-impl_int![unsigned
-    u8:"_u8":"-6", u16:"_u16":"-7", u32:"_u32":"-8", u64:"_u64":"-9",
-    u128:"_u128":"-10", usize:"_usize":"-11"
-];
+impl_int!();

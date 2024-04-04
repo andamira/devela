@@ -87,6 +87,23 @@ macro_rules! upcastop {
 // $icap:  the feature that enables some methods related to `$iup`. E.g "_i16".
 // $is_up: [Y|N]. `Y` if bitsize of $up|$iup > $t; `N` if bitsize $up|$iup == $t.
 macro_rules! impl_int {
+    () => {
+        impl_int![signed
+            (i8:"_i8", i16:Y, ""), (i16:"_i16", i32:Y, "-1"),
+            (i32:"_i32", i64:Y, "-2"), (i64:"_i64", i128:Y, "-3"),
+            (i128:"_i128", i128:N, "-4"), (isize:"_isize", isize_up:Y, "-5")
+        ];
+        impl_int![unsigned
+            (u8:"_u8", u16|i16:"_i16":Y, "-6"), (u16:"_u16", u32|i32:"_i32":Y, "-7"),
+            (u32:"_u32", u64|i64:"_i64":Y, "-8"), (u64:"_u64", u128|i128:"_i128":Y, "-9"),
+            (u128:"_u128", u128|i128:"_i128":N, "-10")
+        ];
+        #[cfg(target_pointer_width = "32")]
+        impl_int![unsigned (usize:"_usize", usize_up|isize_up:"_i64":Y, "-11")];
+        #[cfg(target_pointer_width = "64")]
+        impl_int![unsigned (usize:"_usize", usize_up|isize_up:"_i128":Y, "-11")];
+    };
+
     (signed $( ($t:ty : $cap:literal, $up:ty:$is_up:ident, $d:literal) ),+) => {
         $( impl_int![@signed ($t:$cap, $up:$is_up, $d)]; )+
     };
@@ -1471,17 +1488,4 @@ macro_rules! impl_int {
         }
     }};
 }
-impl_int![signed
-    (i8:"_i8", i16:Y, ""), (i16:"_i16", i32:Y, "-1"), (i32:"_i32", i64:Y, "-2"),
-    (i64:"_i64", i128:Y, "-3"), (i128:"_i128", i128:N, "-4"),
-    (isize:"_isize", isize_up:Y, "-5")
-];
-impl_int![unsigned
-    (u8:"_u8", u16|i16:"_i16":Y, "-6"), (u16:"_u16", u32|i32:"_i32":Y, "-7"),
-    (u32:"_u32", u64|i64:"_i64":Y, "-8"), (u64:"_u64", u128|i128:"_i128":Y, "-9"),
-    (u128:"_u128", u128|i128:"_i128":N, "-10")
-];
-#[cfg(target_pointer_width = "32")]
-impl_int![unsigned (usize:"_usize", usize_up|isize_up:"_i64":Y, "-11")];
-#[cfg(target_pointer_width = "64")]
-impl_int![unsigned (usize:"_usize", usize_up|isize_up:"_i128":Y, "-11")];
+impl_int!();

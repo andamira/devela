@@ -45,6 +45,23 @@ use {
 //
 // $d:    the doclink suffix for the method name
 macro_rules! impl_int {
+    () => {
+        impl_int![signed
+            i8:"_i8":u8:"_u8"|i16:"", i16:"_i16":u16:"_u16"|i32:"-1",
+            i32:"_i32":u32:"_u32"|i64:"-2", i64:"_i64":u64:"_u64"|i128:"-3",
+            i128:"_i128":u128:"_u128"|i128:"-4", isize:"_isize":usize:"_usize"|isize_up:"-5"
+        ];
+        impl_int![unsigned
+            u8:"_u8":u16|i16:"_i16":"-6", u16:"_u16":u32|i32:"_i32":"-7",
+            u32:"_u32":u64|i64:"_i64":"-8", u64:"_u64":u128|i128:"_i128":"-9",
+            u128:"_u128":u128|i128:"_i128":"-10"
+        ];
+        #[cfg(target_pointer_width = "32")]
+        impl_int![unsigned usize:"_usize":usize_up|isize_up:"_i64":"-11"];
+        #[cfg(target_pointer_width = "64")]
+        impl_int![unsigned usize:"_usize":usize_up|isize_up:"_i128":"-11"];
+    };
+
     (signed $( $t:ty : $cap:literal : $ut:ty : $ucap:literal | $up:ty : $d:literal ),+) => {
         $( impl_int![@signed $t:$cap:$ut:$ucap:$up:$d]; )+
     };
@@ -646,16 +663,4 @@ macro_rules! impl_int {
         }
     }};
 }
-impl_int![signed
-    i8:"_i8":u8:"_u8"|i16:"", i16:"_i16":u16:"_u16"|i32:"-1", i32:"_i32":u32:"_u32"|i64:"-2",
-    i64:"_i64":u64:"_u64"|i128:"-3", i128:"_i128":u128:"_u128"|i128:"-4",
-    isize:"_isize":usize:"_usize"|isize_up:"-5"
-];
-impl_int![unsigned
-    u8:"_u8":u16|i16:"_i16":"-6", u16:"_u16":u32|i32:"_i32":"-7", u32:"_u32":u64|i64:"_i64":"-8",
-    u64:"_u64":u128|i128:"_i128":"-9", u128:"_u128":u128|i128:"_i128":"-10"
-];
-#[cfg(target_pointer_width = "32")]
-impl_int![unsigned usize:"_usize":usize_up|isize_up:"_i64":"-11"];
-#[cfg(target_pointer_width = "64")]
-impl_int![unsigned usize:"_usize":usize_up|isize_up:"_i128":"-11"];
+impl_int!();
