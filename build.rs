@@ -1,16 +1,17 @@
 // devela build script
 //
-//! Shows debugging information if the `__debug` feature is enabled.
+//! Shows debugging information if the `__dbg` feature is enabled.
 //
 
 #![allow(dead_code, unused)]
 
-#[cfg(feature = "__debug")]
+#[cfg(feature = "__dbg")]
 fn main() {
     /* information about the enabled features */
 
-    printfeat![msg: "Enabled miscellaneous features:", features:
-        "default", "__debug", "__excluded",
+    printfeat![msg: "Enabled miscellaneous features (other than `__dbg`:", features:
+        "default", "__excluded",
+        // "__dbg",
     ];
 
     printfeat![msg: "Enabled environment features:", features:
@@ -46,7 +47,7 @@ fn main() {
         "rend", "_-rend-_", "rend_audio", "rend_color", "rend_image",
         "sys",
         "time",
-        "ui", "_-ui-_", "ui_term",
+        "ui", "_-ui-_", "ui_term", "ui_service",
     ];
 
     printfeat![msg: "Enabled *nightly* features:", features:
@@ -81,7 +82,7 @@ fn main() {
         "wide",
     ];
 }
-#[cfg(not(feature = "__debug"))]
+#[cfg(not(feature = "__dbg"))]
 fn main() {}
 
 // private helpers
@@ -89,7 +90,7 @@ fn main() {}
 macro_rules! printfeat {
     // if any of the features are enabled, prints the msg and the features
     (msg: $msg:literal, features: $($feature:literal),+ $(,)?) => {
-        #[cfg(feature = "__debug")]
+        // #[cfg(feature = "__dbg")]
         {
             if cfg!(any($(feature = $feature),+)) { println($msg); }
             $( if cfg!(feature = $feature) { println(&format!["  {}", $feature]); } )+
