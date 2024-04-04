@@ -5,14 +5,14 @@
 // - impls
 
 #[cfg(feature = "_-ints-_")]
-use super::Biting;
+use super::Bitwise;
 #[cfg(doc)]
 use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
 use crate::data::DataResult as Result;
 
 /// Provides bitwise operations on `T`.
 ///
-/// See also [`Biting`] for the equivalent const wrapper.
+/// See also [`Bitwise`] for the equivalent const wrapper.
 pub trait BitOps
 where
     Self: Sized,
@@ -321,103 +321,103 @@ macro_rules! impl_bit_ops {
 
             // new mask
             fn bit_mask_range(start: u32, end: u32) -> Self {
-                Biting::<$t>::mask_range(start, end).0
+                Bitwise::<$t>::mask_range(start, end).0
             }
             fn bit_mask_checked_range(start: u32, end: u32) -> Result<Self> {
-                Ok(Biting::<$t>::mask_checked_range(start, end)?.0)
+                Ok(Bitwise::<$t>::mask_checked_range(start, end)?.0)
             }
             // get
             fn bit_get_range(self, start: u32, end: u32) -> Self {
-                Biting(self).get_range(start, end).0
+                Bitwise(self).get_range(start, end).0
             }
             fn bit_get_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                Ok(Biting(self).get_checked_range(start, end)?.0)
+                Ok(Bitwise(self).get_checked_range(start, end)?.0)
             }
             // get value
             fn bit_get_value_range(self, start: u32, end: u32) -> Self {
-                Biting(self).get_value_range(start, end).0
+                Bitwise(self).get_value_range(start, end).0
             }
             fn bit_get_value_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                Ok(Biting(self).get_value_checked_range(start, end)?.0)
+                Ok(Bitwise(self).get_value_checked_range(start, end)?.0)
             }
             // set
             fn bit_set_range(self, start: u32, end: u32) -> Self {
-                Biting(self).set_range(start, end).0
+                Bitwise(self).set_range(start, end).0
             }
             fn bit_set_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                Ok(Biting(self).set_checked_range(start, end)?.0)
+                Ok(Bitwise(self).set_checked_range(start, end)?.0)
             }
             // set value
             fn bit_set_value_range(self, value: Self::Inner, start: u32, end: u32) -> Self {
-                Biting(self).set_value_range(value, start, end).0
+                Bitwise(self).set_value_range(value, start, end).0
             }
             fn bit_set_value_checked_range(self, value: Self::Inner, start: u32, end: u32)
                 -> Result<Self> {
-                Ok(Biting(self).set_value_checked_range(value, start, end)?.0)
+                Ok(Bitwise(self).set_value_checked_range(value, start, end)?.0)
             }
             fn bit_set_checked_value_checked_range(self, value: Self::Inner, start: u32, end: u32)
                 -> Result<Self> {
-                Ok(Biting(self).set_checked_value_checked_range(value, start, end)?.0)
+                Ok(Bitwise(self).set_checked_value_checked_range(value, start, end)?.0)
             }
             // unset
             fn bit_unset_range(self, start: u32, end: u32) -> Self {
-                Biting(self).unset_range(start, end).0
+                Bitwise(self).unset_range(start, end).0
             }
             fn bit_unset_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                Ok(Biting(self).unset_checked_range(start, end)?.0)
+                Ok(Bitwise(self).unset_checked_range(start, end)?.0)
             }
             // flip
             fn bit_flip_range(self, start: u32, end: u32) -> Self {
-                Biting(self).flip_range(start, end).0
+                Bitwise(self).flip_range(start, end).0
             }
             fn bit_flip_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                Ok(Biting(self).flip_checked_range(start, end)?.0)
+                Ok(Bitwise(self).flip_checked_range(start, end)?.0)
             }
             // reverse
             fn bit_reverse_range(self, start: u32, end: u32) -> Self {
-                Biting(self).reverse_range(start, end).0
+                Bitwise(self).reverse_range(start, end).0
             }
             fn bit_reverse_checked_range(self, start: u32, end: u32) -> Result<Self> {
-                Ok(Biting(self).reverse_checked_range(start, end)?.0)
+                Ok(Bitwise(self).reverse_checked_range(start, end)?.0)
             }
             // count
             fn bit_count_ones_range(self, start: u32, end: u32) -> u32 {
-                Biting(self).count_ones_range(start, end)
+                Bitwise(self).count_ones_range(start, end)
             }
             fn bit_count_ones_checked_range(self, start: u32, end: u32) -> Result<u32> {
-                Biting(self).count_ones_checked_range(start, end)
+                Bitwise(self).count_ones_checked_range(start, end)
             }
             fn bit_count_zeros_range(self, start: u32, end: u32) -> u32 {
-                Biting(self).count_zeros_range(start, end)
+                Bitwise(self).count_zeros_range(start, end)
             }
             fn bit_count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32> {
-                Biting(self).count_zeros_checked_range(start, end)
+                Bitwise(self).count_zeros_checked_range(start, end)
             }
             // find first
             fn bit_find_first_one_range(self, start: u32, end: u32) -> Option<u32> {
-                Biting(self).find_first_one_range(start, end)
+                Bitwise(self).find_first_one_range(start, end)
             }
             fn bit_find_first_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
-                Biting(self).find_first_one_checked_range(start, end)
+                Bitwise(self).find_first_one_checked_range(start, end)
             }
             fn bit_find_first_zero_range(self, start: u32, end: u32) -> Option<u32> {
-                Biting(self).find_first_zero_range(start, end)
+                Bitwise(self).find_first_zero_range(start, end)
             }
             fn bit_find_first_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
-                Biting(self).find_first_zero_checked_range(start, end)
+                Bitwise(self).find_first_zero_checked_range(start, end)
             }
             // find last
             fn bit_find_last_one_range(self, start: u32, end: u32) -> Option<u32> {
-                Biting(self).find_last_one_range(start, end)
+                Bitwise(self).find_last_one_range(start, end)
             }
             fn bit_find_last_one_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
-                Biting(self).find_last_one_checked_range(start, end)
+                Bitwise(self).find_last_one_checked_range(start, end)
             }
             fn bit_find_last_zero_range(self, start: u32, end: u32) -> Option<u32> {
-                Biting(self).find_last_zero_range(start, end)
+                Bitwise(self).find_last_zero_range(start, end)
             }
             fn bit_find_last_zero_checked_range(self, start: u32, end: u32) -> Result<Option<u32>> {
-                Biting(self).find_last_zero_checked_range(start, end)
+                Bitwise(self).find_last_zero_checked_range(start, end)
             }
         }
     };

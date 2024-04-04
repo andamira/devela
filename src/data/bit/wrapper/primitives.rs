@@ -1,6 +1,6 @@
 // devela::data::bit::ops::wrapper::primitives
 //
-//! Implements `Biting` for the integer primitives
+//! Implements `Bitwise` for the integer primitives
 //
 
 #[cfg(doc)]
@@ -8,7 +8,7 @@ use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
 #[cfg(feature = "_-ints-_")]
 use crate::{
     code::iif,
-    data::{Biting, DataError as E, DataResult as Result},
+    data::{Bitwise, DataError as E, DataResult as Result},
 };
 
 macro_rules! impl_bits_wrapper {
@@ -28,7 +28,7 @@ macro_rules! impl_bits_wrapper {
         #[doc = concat!["# Implementation for `", stringify!($t), "`."]]
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        impl Biting::<$t> {
+        impl Bitwise::<$t> {
             /* constants */
 
             /// The size in bits.

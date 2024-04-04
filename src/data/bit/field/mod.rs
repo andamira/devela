@@ -122,7 +122,7 @@ macro_rules! bitfield {
                     assert![$field_end < <$T>::BITS,
                         "There are more fields than available bits in the inner primitive type."];
                     Self {
-                        bits: $crate::data::Biting::<$T>::mask_range($field_start, $field_end).0
+                        bits: $crate::data::Bitwise::<$T>::mask_range($field_start, $field_end).0
                     }
                 };
             )*
@@ -141,7 +141,7 @@ macro_rules! bitfield {
             #[must_use] #[inline]
             $vis_custom const fn with_all_fields() -> Self {
                 Self {
-                    bits: 0 $(| $crate::data::Biting::<$T>::mask_range($field_start, $field_end).0)*
+                    bits: 0 $(| $crate::data::Bitwise::<$T>::mask_range($field_start, $field_end).0)*
                 }
             }
 
@@ -520,7 +520,7 @@ macro_rules! bitfield {
             /// Panics if `start >= BITS || end >= BITS || start > end`.
             #[must_use] #[inline]
             $vis_extra const fn mask_range(start: u32, end: u32) -> Self {
-                Self { bits: $crate::data::Biting::<$T>::mask_range(start, end).0 }
+                Self { bits: $crate::data::Bitwise::<$T>::mask_range(start, end).0 }
             }
             /// Returns a new bitmask of ones from the `[start..=end]` checked range.
             ///
@@ -532,7 +532,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra const fn mask_checked_range(start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
-                match $crate::data::Biting::<$T>::mask_checked_range(start, end) {
+                match $crate::data::Bitwise::<$T>::mask_checked_range(start, end) {
                     Ok(bits) => Ok(Self { bits: bits.0 } ),
                     Err(e) => Err(e),
                 }
@@ -545,7 +545,7 @@ macro_rules! bitfield {
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
             #[must_use] #[inline]
             $vis_extra const fn get_range(self, start: u32, end: u32) -> Self {
-                Self { bits: $crate::data::Biting(self.bits).get_range(start, end).0 }
+                Self { bits: $crate::data::Bitwise(self.bits).get_range(start, end).0 }
             }
             /// Gets a copy of `self` with only the bits from the `[start..=end]` checked range.
             /// # Errors
@@ -554,7 +554,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra const fn get_checked_range(self, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
-                match $crate::data::Biting(self.bits).get_checked_range(start, end) {
+                match $crate::data::Bitwise(self.bits).get_checked_range(start, end) {
                     Ok(bits) => Ok(Self { bits: bits.0 } ),
                     Err(e) => Err(e),
                 }
@@ -568,7 +568,7 @@ macro_rules! bitfield {
             /// Panics if `start >= BITS || end >= BITS || start > end`.
             #[must_use] #[inline]
             $vis_extra const fn get_value_range(self, start: u32, end: u32) -> Self {
-                Self { bits: $crate::data::Biting(self.bits).get_value_range(start, end).0 }
+                Self { bits: $crate::data::Bitwise(self.bits).get_value_range(start, end).0 }
             }
 
             /// Gets the value of the bits from the `[start..=end]` checked range.
@@ -584,7 +584,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra const fn get_value_checked_range(self, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
-                match $crate::data::Biting(self.bits).get_value_checked_range(start, end) {
+                match $crate::data::Bitwise(self.bits).get_value_checked_range(start, end) {
                     Ok(bits) => Ok(Self { bits: bits.0 } ),
                     Err(e) => Err(e),
                 }
@@ -598,7 +598,7 @@ macro_rules! bitfield {
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
             #[must_use] #[inline]
             $vis_extra const fn set_range(self, start: u32, end: u32) -> Self {
-                Self { bits: $crate::data::Biting(self.bits).set_range(start, end).0 }
+                Self { bits: $crate::data::Bitwise(self.bits).set_range(start, end).0 }
             }
             /// Get a copy of `self` with bits set to 1 from the `[start..=end]` checked range.
             /// # Errors
@@ -607,7 +607,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra const fn set_checked_range(self, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
-                match $crate::data::Biting(self.bits).set_checked_range(start, end) {
+                match $crate::data::Bitwise(self.bits).set_checked_range(start, end) {
                     Ok(bits) => Ok(Self { bits: bits.0 } ),
                     Err(e) => Err(e),
                 }
@@ -618,7 +618,7 @@ macro_rules! bitfield {
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
             #[inline]
             $vis_extra fn mut_set_range(&mut self, start: u32, end: u32) {
-                self.bits = $crate::data::Biting(self.bits).set_range(start, end).0;
+                self.bits = $crate::data::Bitwise(self.bits).set_range(start, end).0;
             }
             /// Sets the bits from the `[start..=end]` checked range.
             /// # Errors
@@ -627,7 +627,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra fn mut_set_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::data::DataResult<()> {
-                match $crate::data::Biting(self.bits).set_checked_range(start, end) {
+                match $crate::data::Bitwise(self.bits).set_checked_range(start, end) {
                     Ok(bits) => { self.bits = bits.0; Ok(()) },
                     Err(e) => Err(e),
                 }
@@ -646,7 +646,7 @@ macro_rules! bitfield {
             /// Panics if `start >= BITS || end >= BITS || start > end`.
             #[must_use] #[inline]
             $vis_extra const fn set_value_range(self, value: $T, start: u32, end: u32) -> Self {
-                Self { bits: $crate::data::Biting(self.bits).set_value_range(value, start, end).0 }
+                Self { bits: $crate::data::Bitwise(self.bits).set_value_range(value, start, end).0 }
             }
 
             /// Gets a copy of `self` with the given `value` set into the `[start..=end]`
@@ -659,7 +659,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra const fn set_value_checked_range(self, value: $T, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
-                match $crate::data::Biting(self.bits).set_value_checked_range(value, start, end) {
+                match $crate::data::Bitwise(self.bits).set_value_checked_range(value, start, end) {
                     Ok(bits) => Ok(Self { bits: bits.0 } ),
                     Err(e) => Err(e),
                 }
@@ -676,7 +676,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra const fn set_checked_value_checked_range(self,
                 value: $T, start: u32, end: u32) -> $crate::data::DataResult<Self> {
-                match $crate::data::Biting(self.bits)
+                match $crate::data::Bitwise(self.bits)
                     .set_checked_value_checked_range(value, start, end) {
                     Ok(bits) => Ok(Self { bits: bits.0 } ),
                     Err(e) => Err(e),
@@ -689,7 +689,7 @@ macro_rules! bitfield {
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
             #[inline]
             $vis_extra fn mut_set_value_range(&mut self, value: $T, start: u32, end: u32) {
-                self.bits = $crate::data::Biting(self.bits).set_value_range(value, start, end).0;
+                self.bits = $crate::data::Bitwise(self.bits).set_value_range(value, start, end).0;
             }
             /// Sets the given `value` into the `[start..=end]` checked range.
             /// # Errors
@@ -698,7 +698,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra fn mut_set_value_checked_range(&mut self,
                 value: $T, start: u32, end: u32) -> $crate::data::DataResult<()> {
-                match $crate::data::Biting(self.bits).set_value_checked_range(value, start, end) {
+                match $crate::data::Bitwise(self.bits).set_value_checked_range(value, start, end) {
                     Ok(bits) => { self.bits = bits.0; Ok(()) },
                     Err(e) => Err(e),
                 }
@@ -711,7 +711,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra fn mut_set_checked_value_checked_range(&mut self,
                 value: $T, start: u32, end: u32) -> $crate::data::DataResult<()> {
-                match $crate::data::Biting(self.bits)
+                match $crate::data::Bitwise(self.bits)
                     .set_checked_value_checked_range(value, start, end) {
                     Ok(bits) => { self.bits = bits.0; Ok(()) },
                     Err(e) => Err(e),
@@ -725,7 +725,7 @@ macro_rules! bitfield {
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
             #[must_use] #[inline]
             $vis_extra const fn unset_range(self, start: u32, end: u32) -> Self {
-                Self { bits: $crate::data::Biting(self.bits).unset_range(start, end).0 }
+                Self { bits: $crate::data::Bitwise(self.bits).unset_range(start, end).0 }
             }
             /// Returns a copy of `self` with unset bits to 0 from the `[start..=end]`
             /// checked range.
@@ -735,7 +735,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra const fn unset_checked_range(self, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
-                match $crate::data::Biting(self.bits).unset_checked_range(start, end) {
+                match $crate::data::Bitwise(self.bits).unset_checked_range(start, end) {
                     Ok(bits) => Ok(Self { bits: bits.0 } ),
                     Err(e) => Err(e),
                 }
@@ -746,7 +746,7 @@ macro_rules! bitfield {
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
             #[inline]
             $vis_extra fn mut_unset_range(&mut self, start: u32, end: u32) {
-                self.bits = $crate::data::Biting(self.bits).unset_range(start, end).0;
+                self.bits = $crate::data::Bitwise(self.bits).unset_range(start, end).0;
             }
             /// Unsets the bits from the `[start..=end]` checked range.
             /// # Errors
@@ -755,7 +755,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra fn mut_unset_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::data::DataResult<()> {
-                match $crate::data::Biting(self.bits).unset_checked_range(start, end) {
+                match $crate::data::Bitwise(self.bits).unset_checked_range(start, end) {
                     Ok(bits) => { self.bits = bits.0; Ok(()) },
                     Err(e) => Err(e),
                 }
@@ -768,7 +768,7 @@ macro_rules! bitfield {
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
             #[must_use] #[inline]
             $vis_extra const fn flip_range(self, start: u32, end: u32) -> Self {
-                Self { bits: $crate::data::Biting(self.bits).flip_range(start, end).0 }
+                Self { bits: $crate::data::Bitwise(self.bits).flip_range(start, end).0 }
             }
             /// Returns a copy of `self` with flipped bits from the `[start..=end]` checked range.
             /// # Errors
@@ -777,7 +777,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra const fn flip_checked_range(self, start: u32, end: u32)
                 -> $crate::data::DataResult<Self> {
-                match $crate::data::Biting(self.bits).flip_checked_range(start, end) {
+                match $crate::data::Bitwise(self.bits).flip_checked_range(start, end) {
                     Ok(bits) => Ok(Self { bits: bits.0 } ),
                     Err(e) => Err(e),
                 }
@@ -788,7 +788,7 @@ macro_rules! bitfield {
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
             #[inline]
             $vis_extra fn mut_flip_range(&mut self, start: u32, end: u32) {
-                self.bits = $crate::data::Biting(self.bits).flip_range(start, end).0;
+                self.bits = $crate::data::Bitwise(self.bits).flip_range(start, end).0;
             }
             /// Flips the bits from the `[start..=end]` checked range.
             /// # Errors
@@ -797,7 +797,7 @@ macro_rules! bitfield {
             #[inline]
             $vis_extra fn mut_flip_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::data::DataResult<()> {
-                match $crate::data::Biting(self.bits).flip_checked_range(start, end) {
+                match $crate::data::Bitwise(self.bits).flip_checked_range(start, end) {
                     Ok(bits) => { self.bits = bits.0; Ok(()) },
                     Err(e) => Err(e),
                 }

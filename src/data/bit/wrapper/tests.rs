@@ -4,26 +4,26 @@
 // - bit_mask_range
 // - bit_ops
 
-use super::{Biting, Biting as Bg};
+use super::{Bitwise, Bitwise as Bg};
 
 #[test] #[rustfmt::skip]
 fn bit_mask_range() {
-    assert_eq![0b_0000_0001, Biting::<u8>::mask_range(0, 0).0];
-    assert_eq![0b_0000_0001, Biting::<u8>::mask_checked_range(0, 0).unwrap().0];
-    assert_eq![0b_1000_0000, Biting::<u8>::mask_range(7, 7).0];
-    assert_eq![0b_1000_0000, Biting::<u8>::mask_checked_range(7, 7).unwrap().0];
-    assert_eq![0b_0111_1110, Biting::<u8>::mask_range(1, 6).0];
-    assert_eq![0b_0111_1110, Biting::<u8>::mask_checked_range(1, 6).unwrap().0];
+    assert_eq![0b_0000_0001, Bitwise::<u8>::mask_range(0, 0).0];
+    assert_eq![0b_0000_0001, Bitwise::<u8>::mask_checked_range(0, 0).unwrap().0];
+    assert_eq![0b_1000_0000, Bitwise::<u8>::mask_range(7, 7).0];
+    assert_eq![0b_1000_0000, Bitwise::<u8>::mask_checked_range(7, 7).unwrap().0];
+    assert_eq![0b_0111_1110, Bitwise::<u8>::mask_range(1, 6).0];
+    assert_eq![0b_0111_1110, Bitwise::<u8>::mask_checked_range(1, 6).unwrap().0];
 
-    debug_assert![Biting::<u8>::mask_checked_range(8, 8).is_err()];
-    debug_assert![Biting::<u8>::mask_checked_range(0, 8).is_err()];
-    debug_assert![Biting::<u8>::mask_checked_range(4, 1).is_err()];
+    debug_assert![Bitwise::<u8>::mask_checked_range(8, 8).is_err()];
+    debug_assert![Bitwise::<u8>::mask_checked_range(0, 8).is_err()];
+    debug_assert![Bitwise::<u8>::mask_checked_range(4, 1).is_err()];
     #[cfg(feature = "std")]
     {
         use std::panic::catch_unwind;
-        debug_assert![catch_unwind(|| { let _ = Biting::<u8>::mask_range(8, 8); }).is_err()];
-        debug_assert![catch_unwind(|| { let _ = Biting::<u8>::mask_range(0, 8); }).is_err()];
-        debug_assert![catch_unwind(|| { let _ = Biting::<u8>::mask_range(4, 1); }).is_err()];
+        debug_assert![catch_unwind(|| { let _ = Bitwise::<u8>::mask_range(8, 8); }).is_err()];
+        debug_assert![catch_unwind(|| { let _ = Bitwise::<u8>::mask_range(0, 8); }).is_err()];
+        debug_assert![catch_unwind(|| { let _ = Bitwise::<u8>::mask_range(4, 1); }).is_err()];
     }
 }
 #[test] #[rustfmt::skip]
@@ -54,7 +54,7 @@ fn bit_ops() {
     assert_eq!(0b_1000_0111, b.reverse_range(0, 3).0);
     //                 ----
 
-    let b = Biting(0b_1111_0000_u8);
+    let b = Bitwise(0b_1111_0000_u8);
     // count
     assert_eq![2, b.count_ones_range(3, 5)];
     assert_eq![1, b.count_zeros_range(3, 5)];
