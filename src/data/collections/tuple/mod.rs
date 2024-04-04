@@ -34,7 +34,10 @@ mod private { pub trait Sealed {} }
 
 /// Extension trait providing convenience methods for [tuples][tuple].
 ///
-/// This trait is sealed and cannot be implemented for any other type.
+/// Tuples are random-access, sequentially allocated, statically sized,
+/// heterogeneous data structures.
+///
+/// They enable structured grouping and access to a sequence of different types.
 ///
 /// # Features
 /// By default it's implemented for tuples of arity of 15 or less.

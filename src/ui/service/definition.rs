@@ -7,8 +7,8 @@ pub trait UiService {
     /// Returns the service capabilities.
     fn capabilities(&self) -> UiCap;
 
-    /// Returns the service inner version numbers [major, minor, patch].
-    fn version(&self) -> [u32; 3];
+    /// Returns the service inner version numbers (major, minor, patch).
+    fn version(&self) -> (u32, u32, u32);
 
     /* auto impls */
 

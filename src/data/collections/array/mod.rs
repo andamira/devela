@@ -6,6 +6,8 @@
 //!
 //! Arrays are random-access, sequentially allocated, statically sized,
 //! homogeneous data structures.
+//!
+//! They enable efficient iterable storage over a sequence of the same type.
 //
 
 /* always compiled */

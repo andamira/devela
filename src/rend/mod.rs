@@ -1,6 +1,6 @@
 // devela::rend
 //
-//! Rendering multimedia: audio, color, image, music, video.
+//! Renderizable multimedia: audio, color, image, music, video.
 //
 
 // warnings:
