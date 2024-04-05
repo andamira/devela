@@ -31,7 +31,7 @@ keywords = ["dev", "helper", "library", "std", "extension"]
 publish = true
 
 
-[features]
+[features] # 170
 # ==============================================================================
 # Features are grouped in the following categories:
 # - Miscellaneous
@@ -86,7 +86,7 @@ data = [
 	data_bit = ["_-data-_"] # BitOps, Biting, bitfield!.
 	data_collections = ["_-data-_"] # ...
 exec = ["bytemuck/zeroable_atomics"]
-lex = ["_u8", "_u16"]
+lex = ["_non_specific_u8", "_non_specific_u16"]
 mem = [
 	"mem_bit",
 	]
@@ -188,69 +188,133 @@ _-nightly-_ = []
 
 _default = [ # default capabilities
 ]
+_min_docs = [ # the minimum capabilities to document all methods
+	"_float_f32", "_int_u8",
+	"_bit_u8",
+	"_non_specific_u8", "_non_range_u8", "_range_u8",
+]
 _max = [ # the maximum capabilities
-	"_tuple_arity_127", "_num_all",
+	"_num_all",
+	"_bit_all",
+	"_niche_all",
+	"_tuple_arity_127",
 ]
 
 # The most complete versions of the documentation:
 _docsrs = ["nightly", "_docsrs_stable"]
 _docsrs_max = ["_docsrs", "_max"]
-_docsrs_stable = ["all", "std", "unsafe", "dep_all"]
+_docsrs_stable = ["all", "std", "unsafe", "dep_all", "_min_docs"]
 
-# Enable specific implementations for `Int`, `Float`, `Frac`,
+# Specific numeric implementations for `Int`, `Float`, `Frac`,
 # the respective traits, and for `Point`, `Angle`, `Vector`.
 _num_all = ["_int_all", "_float_all"]
-_float_all = ["_float_f32", "_float_f64"]
-_float_f32 = ["_-num_any-_", "_-float_any-_"]
-_float_f64 = ["_-num_any-_", "_-float_any-_"]
-_int_all = ["_int_all_i", "_int_all_u"]
-_int_all_i = ["_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize"]
-_int_all_u = ["_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize"]
-_int_i8 = ["_-int_iany-_"]
-_int_u8 = ["_-int_uany-_"]
-_int_i16 = ["_-int_iany-_"]
-_int_u16 = ["_-int_uany-_"]
-_int_i32 = ["_-int_iany-_"]
-_int_u32 = ["_-int_uany-_"]
-_int_i64 = ["_-int_iany-_"]
-_int_u64 = ["_-int_uany-_"]
-_int_i128 = ["_-int_iany-_"]
-_int_u128 = ["_-int_uany-_"]
-_int_isize = ["_-int_iany-_"]
-_int_usize = ["_-int_uany-_"]
+	_float_all = ["_float_f32", "_float_f64"]
+		_float_f32 = ["_-num_any-_", "_-float_any-_"]
+		_float_f64 = ["_-num_any-_", "_-float_any-_"]
+	_int_all = ["_int_all_i", "_int_all_u"]
+		_int_all_i = ["_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize"]
+			_int_i8 = ["_-int_iany-_"]
+			_int_i16 = ["_-int_iany-_"]
+			_int_i32 = ["_-int_iany-_"]
+			_int_i64 = ["_-int_iany-_"]
+			_int_i128 = ["_-int_iany-_"]
+			_int_isize = ["_-int_iany-_"]
+		_int_all_u = ["_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize"]
+			_int_u8 = ["_-int_uany-_"]
+			_int_u16 = ["_-int_uany-_"]
+			_int_u32 = ["_-int_uany-_"]
+			_int_u64 = ["_-int_uany-_"]
+			_int_u128 = ["_-int_uany-_"]
+			_int_usize = ["_-int_uany-_"]
+# (private reflexion)
+_-num_any-_ = []
+	_-float_any-_ = ["_-num_any-_"]
+	_-int_any-_ = ["_-num_any-_"]
+		_-int_iany-_ = ["_-int_any-_"]
+		_-int_uany-_ = ["_-int_any-_"]
 
-# numeric capabilities
-_f32 = ["_-float_any-_"]
-_f64 = ["_-float_any-_"]
-_i8 = ["_-int_iany-_"]
-_u8 = ["_-int_uany-_"]
-_i16 = ["_-int_iany-_"]
-_u16 = ["_-int_uany-_"]
-_i32 = ["_-int_iany-_"]
-_u32 = ["_-int_uany-_"]
-_i64 = ["_-int_iany-_"]
-_u64 = ["_-int_uany-_"]
-_i128 = ["_-int_iany-_"]
-_u128 = ["_-int_uany-_"]
-_isize = ["_-int_iany-_"]
-_usize = ["_-int_uany-_"]
-
-# Specific implementations for `Bitwise`, `bitfield`, `enumset`.
+# Specific bitwise implementations for `Bitwise`, `bitfield`, `enumset`.
 _bit_all = [
 	"_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
-	"_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize"]
-_bit_i8 = ["_-bit_any-_"]
-_bit_u8 = ["_-bit_any-_"]
-_bit_i16 = ["_-bit_any-_"]
-_bit_u16 = ["_-bit_any-_"]
-_bit_i32 = ["_-bit_any-_"]
-_bit_u32 = ["_-bit_any-_"]
-_bit_i64 = ["_-bit_any-_"]
-_bit_u64 = ["_-bit_any-_"]
-_bit_i128 = ["_-bit_any-_"]
-_bit_u128 = ["_-bit_any-_"]
-_bit_isize = ["_-bit_any-_"]
-_bit_usize = ["_-bit_any-_"]
+	"_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize"
+	]
+	_bit_i8 = ["_-bit_any-_"]
+	_bit_i16 = ["_-bit_any-_"]
+	_bit_i32 = ["_-bit_any-_"]
+	_bit_i64 = ["_-bit_any-_"]
+	_bit_i128 = ["_-bit_any-_"]
+	_bit_isize = ["_-bit_any-_"]
+	_bit_u8 = ["_-bit_any-_"]
+	_bit_u16 = ["_-bit_any-_"]
+	_bit_u32 = ["_-bit_any-_"]
+	_bit_u64 = ["_-bit_any-_"]
+	_bit_u128 = ["_-bit_any-_"]
+	_bit_usize = ["_-bit_any-_"]
+# (private reflexion)
+_-bit_any-_ = []
+
+# Specific niche implementations for `NonSpecific*`, `NonEdge*`, `NonRange*`, `Range*`.
+_niche_all = [
+	"_non_specific_all", "_non_range_all", "_range_all",
+	]
+	_non_specific_all = [
+		"_non_specific_i8", "_non_specific_i16", "_non_specific_i32",
+		"_non_specific_i64", "_non_specific_i128", "_non_specific_isize",
+		"_non_specific_u8", "_non_specific_u16", "_non_specific_u32",
+		"_non_specific_u64", "_non_specific_u128", "_non_specific_usize",
+		]
+		_non_specific_i8 = ["_-non_specific_any-_"]
+		_non_specific_u8 = ["_-non_specific_any-_"]
+		_non_specific_i16 = ["_-non_specific_any-_"]
+		_non_specific_u16 = ["_-non_specific_any-_"]
+		_non_specific_i32 = ["_-non_specific_any-_"]
+		_non_specific_u32 = ["_-non_specific_any-_"]
+		_non_specific_i64 = ["_-non_specific_any-_"]
+		_non_specific_u64 = ["_-non_specific_any-_"]
+		_non_specific_i128 = ["_-non_specific_any-_"]
+		_non_specific_u128 = ["_-non_specific_any-_"]
+		_non_specific_isize = ["_-non_specific_any-_"]
+		_non_specific_usize = ["_-non_specific_any-_"]
+	_non_range_all = [
+		"_non_range_i8", "_non_range_i16", "_non_range_i32",
+		"_non_range_i64", "_non_range_i128", "_non_range_isize",
+		"_non_range_u8", "_non_range_u16", "_non_range_u32",
+		"_non_range_u64", "_non_range_u128", "_non_range_usize",
+		]
+		_non_range_i8 = ["_-non_range_any-_"]
+		_non_range_u8 = ["_-non_range_any-_"]
+		_non_range_i16 = ["_-non_range_any-_"]
+		_non_range_u16 = ["_-non_range_any-_"]
+		_non_range_i32 = ["_-non_range_any-_"]
+		_non_range_u32 = ["_-non_range_any-_"]
+		_non_range_i64 = ["_-non_range_any-_"]
+		_non_range_u64 = ["_-non_range_any-_"]
+		_non_range_i128 = ["_-non_range_any-_"]
+		_non_range_u128 = ["_-non_range_any-_"]
+		_non_range_isize = ["_-non_range_any-_"]
+		_non_range_usize = ["_-non_range_any-_"]
+	_range_all = [
+		"_range_i8", "_range_i16", "_range_i32", "_range_i64", "_range_i128", "_range_isize",
+		"_range_u8", "_range_u16", "_range_u32", "_range_u64", "_range_u128", "_range_usize",
+		]
+		_range_i8 = ["_-range_any-_"]
+		_range_u8 = ["_-range_any-_"]
+		_range_i16 = ["_-range_any-_"]
+		_range_u16 = ["_-range_any-_"]
+		_range_i32 = ["_-range_any-_"]
+		_range_u32 = ["_-range_any-_"]
+		_range_i64 = ["_-range_any-_"]
+		_range_u64 = ["_-range_any-_"]
+		_range_i128 = ["_-range_any-_"]
+		_range_u128 = ["_-range_any-_"]
+		_range_isize = ["_-range_any-_"]
+		_range_usize = ["_-range_any-_"]
+# (private reflexion)
+_-niche_any-_ = []
+	_-non_specific_any-_ = ["_-niche_any-_"]
+	_-non_range_any-_ = ["_-niche_any-_"]
+	_-range_any-_ = ["_-niche_any-_"]
+
 
 # data capabilities
 #
@@ -260,24 +324,6 @@ _tuple_arity_31 = []                   # compile  5.3s
 _tuple_arity_63 = ["_tuple_arity_31"]  # compile  7.5s
 _tuple_arity_95 = ["_tuple_arity_63"]  # compile 10.5s
 _tuple_arity_127 = ["_tuple_arity_95"] # compile 14.9s
-
-# MAYBE custom Debug with a dynamic limit on the number of elements
-# The maximum number of elements to Display or Debug for data collections. E.g.
-# for Array, Array2d, Stack, Destaque, Vector, Matrix…
-# The default length is unlimited
-_fmt_len_16 = []
-_fmt_len_32 = ["_fmt_len_16"]
-_fmt_len_64 = ["_fmt_len_32"]
-_fmt_len_128 = ["_fmt_len_64"]
-
-# (private reflexion)
-# auto-enabled by capability sub-features
-_-num_any-_ = []
-_-float_any-_ = ["_-num_any-_"]
-_-int_any-_ = ["_-num_any-_"]
-_-int_iany-_ = ["_-int_any-_"]
-_-int_uany-_ = ["_-int_any-_"]
-_-bit_any-_ = []
 
 
 #* dependency features *#

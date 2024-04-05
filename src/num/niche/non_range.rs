@@ -3,29 +3,30 @@
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //
 
-#[cfg(feature = "mem_bit")]
-use crate::mem::{bit_size, ByteSize};
-#[cfg(feature = "_-int_any-_")]
-use crate::{
-    _libcore::{fmt, num::*, str::FromStr},
-    code::iif,
-};
-
 #[cfg(all(
-    feature = "_-int_any-_",
+    feature = "_-non_range_any-_",
     feature = "unsafe_niche",
     not(feature = "safe_num")
 ))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
+#[cfg(all(feature = "_-non_range_any-_", feature = "mem_bit"))]
+use crate::mem::{bit_size, ByteSize};
+#[cfg(feature = "_-non_range_any-_")]
+use crate::{
+    _libcore::{fmt, num::*, str::FromStr},
+    code::iif,
+};
 
 impl_non_range![NonRange];
 macro_rules! impl_non_range {
     // Entry point, generates NonRange structures for each sign and size.
     ($name:ident) => {
         impl_non_range![$name, "A signed", i,
-        8:"_i8", 16:"_i16", 32:"_i32", 64:"_i64", 128:"_i128", size:"_isize"];
+        8:"_non_range_i8", 16:"_non_range_i16", 32:"_non_range_i32",
+        64:"_non_range_i64", 128:"_non_range_i128", size:"_non_range_isize"];
         impl_non_range![$name, "An unsigned", u,
-        8:"_u8", 16:"_u16", 32:"_u32", 64:"_u64", 128:"_u128", size:"_usize"];
+        8:"_non_range_u8", 16:"_non_range_u16", 32:"_non_range_u32",
+        64:"_non_range_u64", 128:"_non_range_u128", size:"_non_range_usize"];
     };
     ($name:ident, $doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
         $( impl_non_range![@$name, $doc, $s, $b : $cap]; )+

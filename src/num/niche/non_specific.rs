@@ -7,21 +7,28 @@
 
 #![allow(unused)]
 
-use crate::code::{paste, ConstDefault};
-#[cfg(feature = "mem_bit")]
-use crate::mem::{bit_size, ByteSize};
-use core::{fmt, num::*, str::FromStr};
-
-#[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
+#[cfg(all(
+    feature = "_-non_specific_any-_",
+    feature = "unsafe_niche",
+    not(feature = "safe_num")
+))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
+use crate::code::{paste, ConstDefault};
+#[cfg(all(feature = "_-non_specific_any-_", feature = "mem_bit"))]
+use crate::{
+    _libcore::{fmt, num::*, str::FromStr},
+    mem::{bit_size, ByteSize},
+};
 
 macro_rules! impl_non_specific {
     // Entry point, generates NonSpecific structures for each sign and size.
     ($name:ident) => {
         impl_non_specific![$name, MIN, "A signed", i,
-        8:"_i8", 16:"_i16", 32:"_i32", 64:"_i64", 128:"_i128", size:"_isize"];
+        8:"_non_specific_i8", 16:"_non_specific_i16", 32:"_non_specific_i32",
+        64:"_non_specific_i64", 128:"_non_specific_i128", size:"_non_specific_isize"];
         impl_non_specific![$name, MAX, "An unsigned", u,
-        8:"_u8", 16:"_u16", 32:"_u32", 64:"_u64", 128:"_u128", size:"_usize"];
+        8:"_non_specific_u8", 16:"_non_specific_u16", 32:"_non_specific_u32",
+        64:"_non_specific_u64", 128:"_non_specific_u128", size:"_non_specific_usize"];
     };
     ($name:ident, $abs:ident, $doc:literal, $s:ident, $( $b:tt: $cap:literal ),+) => {
         $( impl_non_specific![@$name, $abs, $doc, $s, $b : $cap]; )+
@@ -32,7 +39,7 @@ macro_rules! impl_non_specific {
     // $doc:  the specific beginning of the documentation.
     // $s:    the sign identifier: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
-    // $cap:  the capability feature that enables the given implementation. E.g "_i8".
+    // $cap:  the capability feature that enables the given implementation. E.g "_non_specific_i8".
     (@$name:ident, $abs:ident, $doc:literal, $s:ident, $b:tt : $cap:literal) => { paste! {
         /* definition */
 

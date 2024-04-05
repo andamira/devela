@@ -5,14 +5,14 @@
 //
 
 #[cfg(all(
-    feature = "_-int_any-_",
+    feature = "_-range_any-_",
     feature = "unsafe_niche",
     not(feature = "safe_num")
 ))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
-#[cfg(feature = "mem_bit")]
+#[cfg(all(feature = "_-range_any-_", feature = "mem_bit"))]
 use crate::mem::{bit_size, ByteSize};
-#[cfg(feature = "_-int_any-_")]
+#[cfg(feature = "_-range_any-_")]
 use crate::{
     _libcore::{fmt, num::*, str::FromStr},
     code::iif,
@@ -23,9 +23,11 @@ macro_rules! impl_range {
     // Entry point, generates Range structures for each sign and size.
     ($name:ident) => {
         impl_range![$name, "A signed", i,
-        8:"_i8", 16:"_i16", 32:"_i32", 64:"_i64", 128:"_i128", size:"_isize"];
+        8:"_range_i8", 16:"_range_i16", 32:"_range_i32",
+        64:"_range_i64", 128:"_range_i128", size:"_range_isize"];
         impl_range![$name, "An unsigned", u,
-        8:"_u8", 16:"_u16", 32:"_u32", 64:"_u64", 128:"_u128", size:"_usize"];
+        8:"_range_u8", 16:"_range_u16", 32:"_range_u32",
+        64:"_range_u64", 128:"_range_u128", size:"_range_usize"];
 
     };
     ($name:ident, $doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
@@ -36,7 +38,7 @@ macro_rules! impl_range {
     // $doc:  the specific beginning of the documentation.
     // $s:    the sign identifier, lowercase: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
-    // $cap:  the capability feature that enables the given implementation. E.g "_i8".
+    // $cap:  the capability feature that enables the given implementation. E.g "_range_i8".
     (@$name:ident, $doc:literal, $s:ident, $b:tt : $cap:literal) => { $crate::paste! {
         /* definition */
 

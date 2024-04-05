@@ -59,16 +59,31 @@ fn main() {
 
         "_docsrs", "_docsrs_max", "_docsrs_stable",
 
-        "_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize",
-        "_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize",
+        "_-num_any-_",
+        "_-float_any-_",
         "_float_f32", "_float_f64",
+        "_-int_any-_", "_-int_iany-_",
+        "_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize",
+        "_-int_uany-_",
+        "_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize",
 
-        "_-num_any-_", "_-int_any-_", "_-int_iany-_", "_-int_uany-_", "_-float_any-_",
-
+        "_-bit_any-_",
         "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
         "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
 
-        "_-bit_any-_",
+        "_-niche_any-_", "_-non_specific_any-_",
+        "_non_specific_i8", "_non_specific_i16", "_non_specific_i32",
+        "_non_specific_i64", "_non_specific_i128", "_non_specific_isize",
+        "_non_specific_u8", "_non_specific_u16", "_non_specific_u32",
+        "_non_specific_u64", "_non_specific_u128", "_non_specific_usize",
+        "_-non_range_any-_",
+        "_non_range_i8", "_non_range_i16", "_non_range_i32",
+        "_non_range_i64", "_non_range_i128", "_non_range_isize",
+        "_non_range_u8", "_non_range_u16", "_non_range_u32",
+        "_non_range_u64", "_non_range_u128", "_non_range_usize",
+        "_-range_any-_",
+        "_range_i8", "_range_i16", "_range_i32", "_range_i64", "_range_i128", "_range_isize",
+        "_range_u8", "_range_u16", "_range_u32", "_range_u64", "_range_u128", "_range_usize",
 
         "_tuple_arity_31", "_tuple_arity_63", "_tuple_arity_95", "_tuple_arity_127",
     ];
