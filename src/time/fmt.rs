@@ -129,7 +129,7 @@ impl Timecode {
     ///
     /// The seconds are clamped to 999 (more than 16 minutes).
     #[cfg(feature = "alloc")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     // -> 192 bits in "64", 92 bits in "32"
     pub fn nanos_u64_alloc(ns: u64) -> String {
         let (us, ns_rem) = (ns / 1_000, ns % 1_000);

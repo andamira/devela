@@ -82,7 +82,7 @@ macro_rules! impl_destaque {
 
         // S:Boxed + T:Clone
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Boxed> {
             /// Returns an empty destaque, allocated in the heap,
             /// cloning `element` to fill the remaining free data.
@@ -405,7 +405,7 @@ macro_rules! impl_destaque {
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[inline]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn pop_front(&mut self) -> Result<T> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -426,7 +426,7 @@ macro_rules! impl_destaque {
             /// This is the habitual *dequeue* operation for a single-ended **queue**.
             #[inline]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn dequeue(&mut self) -> Result<T> {
                 self.pop_front()
             }
@@ -451,7 +451,7 @@ macro_rules! impl_destaque {
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[inline]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
-            #[cfg_attr(feature = "nightly", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn pop_back(&mut self) -> Result<T> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -1172,7 +1172,7 @@ macro_rules! impl_destaque {
             /// # Ok(()) }
             /// ```
             #[cfg(feature = "alloc")]
-            #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn to_vec(&self) -> Vec<T> {
                 if self.is_empty() {
                     vec![]

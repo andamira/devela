@@ -68,7 +68,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 
 // S:Boxed + T:Clone
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Boxed>
 {

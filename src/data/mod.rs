@@ -30,7 +30,7 @@ pub use {hash::*, iter::*};
 /* feature-gated */
 
 #[cfg(feature = "data_bit")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "data_bit")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data_bit")))]
 mod bit;
 #[cfg(feature = "data_bit")]
 pub use bit::*;
