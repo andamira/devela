@@ -10,7 +10,7 @@ bench = false
 
 [package]
 name = "devela"
-description = "A cohesive Rust development layer."
+description = "A cohesive development foundation."
 version = "0.21.0-wip"
 edition = "2021"
 rust-version = "1.77.1" # sync with readme & .github/*/check.yml

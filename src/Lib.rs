@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A cohesive Rust development layer.
+//! A cohesive development foundation.
 //
 
 //* global config *//
