@@ -5,7 +5,7 @@
 
 mod primitives;
 
-#[cfg(all(test, feature = "_u8"))]
+#[cfg(all(test, feature = "_bit_u8"))]
 mod tests;
 
 /// Provides constant bitwise operations on `T`.

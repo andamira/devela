@@ -235,6 +235,23 @@ _u128 = ["_-int_uany-_"]
 _isize = ["_-int_iany-_"]
 _usize = ["_-int_uany-_"]
 
+# Specific implementations for `Bitwise`, `bitfield`, `enumset`.
+_bit_all = [
+	"_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
+	"_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize"]
+_bit_i8 = ["_-bit_any-_"]
+_bit_u8 = ["_-bit_any-_"]
+_bit_i16 = ["_-bit_any-_"]
+_bit_u16 = ["_-bit_any-_"]
+_bit_i32 = ["_-bit_any-_"]
+_bit_u32 = ["_-bit_any-_"]
+_bit_i64 = ["_-bit_any-_"]
+_bit_u64 = ["_-bit_any-_"]
+_bit_i128 = ["_-bit_any-_"]
+_bit_u128 = ["_-bit_any-_"]
+_bit_isize = ["_-bit_any-_"]
+_bit_usize = ["_-bit_any-_"]
+
 # data capabilities
 #
 # The maximum tuple arity supported by ExtTuple:
@@ -260,6 +277,7 @@ _-float_any-_ = ["_-num_any-_"]
 _-int_any-_ = ["_-num_any-_"]
 _-int_iany-_ = ["_-int_any-_"]
 _-int_uany-_ = ["_-int_any-_"]
+_-bit_any-_ = []
 
 
 #* dependency features *#

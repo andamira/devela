@@ -9,7 +9,7 @@
 #[cfg(doc)]
 use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
 
-#[cfg(test)]
+#[cfg(all(test, feature = "_bit_u8"))]
 mod tests;
 
 /// Creates a custom bit field struct.

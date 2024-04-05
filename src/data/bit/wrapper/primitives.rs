@@ -5,7 +5,7 @@
 
 #[cfg(doc)]
 use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
-#[cfg(feature = "_-int_any-_")]
+#[cfg(feature = "_-bit_any-_")]
 use crate::{
     code::iif,
     data::{Bitwise, DataError as E, DataResult as Result},
@@ -14,14 +14,16 @@ use crate::{
 macro_rules! impl_bits_wrapper {
     () => {
         impl_bits_wrapper![
-            i8:"_i8", i16:"_i16", i32:"_i32", i64:"_i64", i128:"_i128", isize:"_isize",
-            u8:"_u8", u16:"_u16", u32:"_u32", u64:"_u64", u128:"_u128", usize:"_usize"
+            i8:"_bit_i8", i16:"_bit_i16", i32:"_bit_i32",
+            i64:"_bit_i64", i128:"_bit_i128", isize:"_bit_isize",
+            u8:"_bit_u8", u16:"_bit_u16", u32:"_bit_u32",
+            u64:"_bit_u64", u128:"_bit_u128", usize:"_bit_usize"
         ];
     };
     ( $( $t:ty : $cap:literal ),+ ) => { $( impl_bits_wrapper![@$t : $cap]; )+ };
 
     // `$t`: the primitive type
-    // $cap: the capability feature that enables the given implementation. E.g "_u8".
+    // $cap: the capability feature that enables the given implementation. E.g "_bit_u8".
     (@$t:ty : $cap:literal) => {
         /* impl traits */
 

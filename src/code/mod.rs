@@ -20,8 +20,6 @@
 // safety:
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 
-/* always compiled */
-
 // hidden re-exports
 #[doc(hidden)]
 pub use paste::__paste;
@@ -36,7 +34,6 @@ mod cdbg; // cdbg![]
 mod cfor; // cfor![]
 mod default; // ConstDefault, Default
 mod deprecate; // deprecate_feature![]
-mod enumset; // enumset![]
 mod ident; // identifier related macros
 mod iif; // iif![]
 mod paste; // paste![] wrapped for docs
@@ -45,16 +42,24 @@ mod result; // std::{error, option, panic, result}
 mod skip_format; // sf![]
 #[allow(unused_imports)]
 pub use {
-    any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*,
-    iif::*, paste::*, reexports::*, result::all::*, skip_format::*,
+    any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, ident::*, iif::*,
+    paste::*, reexports::*, result::all::*, skip_format::*,
 };
 
+#[cfg(all(feature = "data_bit", feature = "_-bit_any-_"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data_bit")))]
+mod enumset; // enumset![]
+#[cfg(all(feature = "data_bit", feature = "_-bit_any-_"))]
+pub use enumset::*;
+
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, enumset::*, ident::*,
-        iif::*, paste::*, reexports::*, result::all::*, skip_format::*,
+        any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, ident::*, iif::*,
+        paste::*, reexports::*, result::all::*, skip_format::*,
     };
+
+    #[cfg(all(feature = "data_bit", feature = "_-bit_any-_"))]
+    pub use super::enumset::*;
 }

@@ -28,8 +28,6 @@
 /// assert![eset.is_field_variant1()];
 /// ```
 #[macro_export]
-#[cfg(feature = "data_bit")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data_bit")))]
 macro_rules! enumset {
     (
         // $enum_attr: the attributes of the enum.
@@ -112,5 +110,4 @@ macro_rules! enumset {
         }
     }};
 }
-#[cfg(feature = "data_bit")]
 pub use enumset;

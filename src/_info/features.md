@@ -137,6 +137,19 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`],
 [`Point`]: crate::num::Point
 [`Vector`]: crate::num::Vector
 
+Enable specific implementations for [`Bitwise`], [`bitfield`], [`enumset`]:
+- `_bit_all`:
+  - `_bit_all_i`:
+    - `_bit_i8`, `_bit_i16`, `_bit_i32`,
+      `_bit_i64`, `_bit_i128`, `_bit_isize`.
+  - `_bit_all_u`:
+    - `_bit_u8`, `_bit_u16`, `_bit_u32`,
+      `_bit_u64`, `_bit_u128`, `_bit_usize`.
+
+[`Bitwise`]: crate::num::Bitwise
+[`bitfield`]: crate::num::bitfield
+[`enumset`]: crate::num::enumset
+
  Documentation capabilities:
 - `_docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
 - `_docsrs_max`: like `_docsrs` but also enables `capability_max`.

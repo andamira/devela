@@ -65,6 +65,11 @@ fn main() {
 
         "_-num_any-_", "_-int_any-_", "_-int_iany-_", "_-int_uany-_", "_-float_any-_",
 
+        "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
+        "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
+
+        "_-bit_any-_",
+
         "_tuple_arity_31", "_tuple_arity_63", "_tuple_arity_95", "_tuple_arity_127",
     ];
 
