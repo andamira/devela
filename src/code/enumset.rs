@@ -9,6 +9,9 @@
 ///
 /// You have to give unique names both to the enum and to the associated set.
 ///
+/// # Features
+/// This macro depends on enabling any of the `_bit` features. E.g. `_bit_u8`.
+///
 /// # Examples
 /// See also the [enumset][crate::_info::examples::enumset] example.
 ///

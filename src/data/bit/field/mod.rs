@@ -19,6 +19,9 @@ mod tests;
 /// The new struct already derives
 /// `Clone`, `Copy`, `Debug`, `Default`, `PartialEq`, `Eq` and `Hash`.
 ///
+/// # Features
+/// This macro depends on enabling any of the `_bit` features. E.g. `_bit_u8`.
+///
 /// # Examples
 /// See also the [bitfield][crate::_info::examples::bitfield] example.
 ///
@@ -39,6 +42,8 @@ mod tests;
 /// let b = MyBf::new_zeroed();
 /// assert![b.is_empty()];
 /// ```
+///
+/// See also the [`enumset!`][crate::code::enumset] macro.
 #[macro_export]
 macro_rules! bitfield {
     {

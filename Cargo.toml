@@ -31,7 +31,7 @@ keywords = ["dev", "helper", "library", "std", "extension"]
 publish = true
 
 
-[features] # 182
+[features] # 179
 # ==============================================================================
 # Features are grouped in the following categories:
 # - Miscellaneous
@@ -80,11 +80,7 @@ all = [ # enables all the modules and submodules
 	"code", "data", "exec", "lex", "mem", "num", "rend", "sys", "time", "ui"
 	]
 code = []
-data = [
-	"data_bit", "data_collections"
-	]
-	data_bit = ["_-data-_"] # BitOps, Biting, bitfield!.
-	data_collections = ["_-data-_"] # ...
+data = []
 exec = ["bytemuck/zeroable_atomics"]
 lex = ["_non_specific_u8", "_non_specific_u16"]
 mem = [
@@ -109,12 +105,11 @@ time = []
 ui = [
 	 "ui_service",
 	]
-	ui_service = ["_-ui-_"] # data_bit
+	ui_service = ["_-ui-_"]
 		ui_term = ["ui_service", "unicode-width", "unicode-segmentation"]
 		ui_gfx = ["ui_service"]
 		# ui_web = ["ui_service"]
 # private, refective:
-_-data-_ = []
 _-mem-_ = []
 _-num-_ = []
 _-rend-_ = []
@@ -452,7 +447,7 @@ maintenance = { status = "experimental" }
 
 [[example]]
 name = "bitfield"
-required-features = ["data_bit", "_bit_u8"]
+required-features = ["_bit_u8"]
 [[example]]
 name = "cargo_script"
 required-features = ["__excluded"]
@@ -461,7 +456,7 @@ name = "coro_run"
 required-features = ["unsafe_async", "alloc"]
 [[example]]
 name = "enumset"
-required-features = ["data_bit", "_bit_u8"]
+required-features = ["_bit_u8"]
 [[example]]
 name = "cli_prompt"
 required-features = ["ui_term", "crossterm", "std"]

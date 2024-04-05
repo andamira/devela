@@ -39,7 +39,7 @@ fn main() {
     printfeat![msg: "Enabled module features:", features:
         "all",
         "code",
-        "data", "_-data-_", "data_bit", "data_collections",
+        "data",
         "exec",
         "lex",
         "mem",

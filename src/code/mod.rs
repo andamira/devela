@@ -46,10 +46,9 @@ pub use {
     paste::*, reexports::*, result::all::*, skip_format::*,
 };
 
-#[cfg(all(feature = "data_bit", feature = "_-bit_any-_"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data_bit")))]
+#[cfg(feature = "_-bit_any-_")]
 mod enumset; // enumset![]
-#[cfg(all(feature = "data_bit", feature = "_-bit_any-_"))]
+#[cfg(feature = "_-bit_any-_")]
 pub use enumset::*;
 
 pub(crate) mod all {
@@ -60,6 +59,6 @@ pub(crate) mod all {
         paste::*, reexports::*, result::all::*, skip_format::*,
     };
 
-    #[cfg(all(feature = "data_bit", feature = "_-bit_any-_"))]
+    #[cfg(feature = "_-bit_any-_")]
     pub use super::enumset::*;
 }
