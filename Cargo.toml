@@ -109,9 +109,9 @@ time = []
 ui = [
 	 "ui_service",
 	]
-	ui_service = ["_-ui-_", "data_bit"]
+	ui_service = ["_-ui-_"] # data_bit
 		ui_term = ["ui_service", "unicode-width", "unicode-segmentation"]
-		# ui_gfx = ["ui_service"]
+		ui_gfx = ["ui_service"]
 		# ui_web = ["ui_service"]
 # private, refective:
 _-data-_ = []
@@ -355,12 +355,12 @@ dep_all = [ # enables all optional dependencies
 
 atomic = ["dep:atomic"]
 const-str = ["dep:const-str"]
-crossterm = ["dep:crossterm", "std", "ui_service"]
+crossterm = ["dep:crossterm", "ui_term", "std"]
 hashbrown = ["dep:hashbrown"]
 libm = ["dep:libm"]
 log = ["dep:log"]
 memchr = ["dep:memchr"]
-miniquad = ["dep:miniquad", "std", "ui_service"]
+miniquad = ["dep:miniquad", "ui_gfx", "std"]
 portable-atomic = ["dep:portable-atomic"]
 rand_core = ["dep:rand_core"]
 unicode-segmentation = ["dep:unicode-segmentation"]
@@ -452,7 +452,7 @@ maintenance = { status = "experimental" }
 
 [[example]]
 name = "bitfield"
-required-features = ["data_bit", "_u8"]
+required-features = ["data_bit", "_bit_u8"]
 [[example]]
 name = "cargo_script"
 required-features = ["__excluded"]
@@ -461,7 +461,7 @@ name = "coro_run"
 required-features = ["unsafe_async", "alloc"]
 [[example]]
 name = "enumset"
-required-features = ["data_bit", "_u8"]
+required-features = ["data_bit", "_bit_u8"]
 [[example]]
 name = "cli_prompt"
 required-features = ["ui_term", "crossterm", "std"]
