@@ -31,7 +31,7 @@ keywords = ["dev", "helper", "library", "std", "extension"]
 publish = true
 
 
-[features] # 170
+[features] # 182
 # ==============================================================================
 # Features are grouped in the following categories:
 # - Miscellaneous
@@ -43,8 +43,8 @@ publish = true
 # - Dependency
 #
 # Sintax:
-# - ["name"]: Normal public-facing features starting with a letter.
-# - ["_name"]: Capability features can be publicly selected.
+# - ["name"]: Normal public-facing features.
+# - ["_name"]: Capability features for customization.
 # - ["_-name-_"]: Private, automatic features for reflexion.
 #
 
@@ -113,9 +113,7 @@ ui = [
 		ui_term = ["ui_service", "unicode-width", "unicode-segmentation"]
 		# ui_gfx = ["ui_service"]
 		# ui_web = ["ui_service"]
-
-# (private reflexion)
-# auto-enabled by module sub-features
+# private, refective:
 _-data-_ = []
 _-mem-_ = []
 _-num-_ = []
@@ -173,7 +171,7 @@ nightly = [
 	nightly_doc = ["_-nightly-_"] # doc_cfg
 	nightly_simd = ["_-nightly-_"] # portable_simd
 
-# (private reflexion)
+# private, refective:
 # auto-enabled by nightly sub-features
 _-nightly-_ = []
 
@@ -189,13 +187,15 @@ _-nightly-_ = []
 _default = [ # default capabilities
 ]
 _min_docs = [ # the minimum capabilities to document all methods
-	"_float_f32", "_int_u8",
 	"_bit_u8",
+	"_stack_u8", "_destaque_u8",
+	"_float_f32", "_int_u8",
 	"_non_specific_u8", "_non_range_u8", "_range_u8",
 ]
 _max = [ # the maximum capabilities
-	"_num_all",
 	"_bit_all",
+	"_stack_all", "_destaque_all",
+	"_num_all",
 	"_niche_all",
 	"_tuple_arity_127",
 ]
@@ -204,6 +204,21 @@ _max = [ # the maximum capabilities
 _docsrs = ["nightly", "_docsrs_stable"]
 _docsrs_max = ["_docsrs", "_max"]
 _docsrs_stable = ["all", "std", "unsafe", "dep_all", "_min_docs"]
+
+# Specific data collection implementations for `Stack`, `Destaque`.
+_stack_all = ["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"]
+	_stack_u8 = ["_-stack_any-_"]
+	_stack_u16 = ["_-stack_any-_"]
+	_stack_u32 = ["_-stack_any-_"]
+	_stack_usize = ["_-stack_any-_"]
+_destaque_all = ["_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize"]
+	_destaque_u8 = ["_-destaque_any-_"]
+	_destaque_u16 = ["_-destaque_any-_"]
+	_destaque_u32 = ["_-destaque_any-_"]
+	_destaque_usize = ["_-destaque_any-_"]
+# private, refective:
+_-stack_any-_ = []
+_-destaque_any-_ = []
 
 # Specific numeric implementations for `Int`, `Float`, `Frac`,
 # the respective traits, and for `Point`, `Angle`, `Vector`.
@@ -226,7 +241,7 @@ _num_all = ["_int_all", "_float_all"]
 			_int_u64 = ["_-int_uany-_"]
 			_int_u128 = ["_-int_uany-_"]
 			_int_usize = ["_-int_uany-_"]
-# (private reflexion)
+# private, refective:
 _-num_any-_ = []
 	_-float_any-_ = ["_-num_any-_"]
 	_-int_any-_ = ["_-num_any-_"]
@@ -250,7 +265,7 @@ _bit_all = [
 	_bit_u64 = ["_-bit_any-_"]
 	_bit_u128 = ["_-bit_any-_"]
 	_bit_usize = ["_-bit_any-_"]
-# (private reflexion)
+# private, refective:
 _-bit_any-_ = []
 
 # Specific niche implementations for `NonSpecific*`, `NonEdge*`, `NonRange*`, `Range*`.
@@ -309,7 +324,7 @@ _niche_all = [
 		_range_u128 = ["_-range_any-_"]
 		_range_isize = ["_-range_any-_"]
 		_range_usize = ["_-range_any-_"]
-# (private reflexion)
+# private, refective:
 _-niche_any-_ = []
 	_-non_specific_any-_ = ["_-niche_any-_"]
 	_-non_range_any-_ = ["_-niche_any-_"]

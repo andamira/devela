@@ -24,11 +24,30 @@ use DataError::{NotEnoughSpace, OutOfBounds};
 //
 // $IDX : the index type. E.g. u8, usize
 macro_rules! impl_stack {
-    ($IDX:ty : $( $NEW_IDX:ty ),+ ) => { crate::code::paste! {
+    () => {
+        #[cfg(feature = "_stack_u8")]
+        impl_stack![u8:"_stack_u8"
+            => u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
+
+        #[cfg(feature = "_stack_u16")]
+        impl_stack![u16:"_stack_u16"
+            => u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
+
+        #[cfg(feature = "_stack_u32")]
+        impl_stack![u32:"_stack_u32"
+            => u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
+
+        #[cfg(feature = "_stack_usize")]
+        impl_stack![usize:"_stack_usize"
+            => u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
+    };
+
+    ($IDX:ty : $cap:literal => $( $NEW_IDX:ty : $new_cap:literal ),+ ) => { crate::code::paste! {
         /* resize */
 
         /// # Stack resize.
         // S: ()
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: Default, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             /// Converts the current stack to a different capacity while preserving all existing elements.
             ///
@@ -106,7 +125,8 @@ macro_rules! impl_stack {
 
         // S: Boxed
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: Default, const CAP: usize> Stack<T, CAP, $IDX, Boxed> {
             /// Converts the current stack to a different capacity while preserving all existing elements.
             ///
@@ -190,8 +210,8 @@ macro_rules! impl_stack {
         }
 
         // S: ()
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: ConstDefault + Copy, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
-
             /// Converts the current stack to a different capacity while preserving all existing elements.
             ///
             /// This method creates a new stack with the specified new capacity and moves the
@@ -277,6 +297,7 @@ macro_rules! impl_stack {
 
         // S: Bare
         /// # Stack index-size conversion.
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             $(
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
@@ -292,6 +313,8 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), t.as_slice()];
             /// ```
             #[inline]
+            #[cfg(feature = $new_cap)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $new_cap)))]
             pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, CAP, $NEW_IDX, Bare>> {
                 if CAP <= $NEW_IDX::MAX as usize {
                     Ok(Stack { data: self.data, len: self.len as $NEW_IDX })
@@ -303,7 +326,8 @@ macro_rules! impl_stack {
         }
         // S: Boxed
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T, const CAP: usize> Stack<T, CAP, $IDX, Boxed> {
             $(
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
@@ -319,6 +343,8 @@ macro_rules! impl_stack {
             /// assert_eq![t.as_slice(), &[1, 2, 3]];
             /// ```
             #[inline]
+            #[cfg(feature = $new_cap)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $new_cap)))]
             pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, CAP, $NEW_IDX, Boxed>> {
                 if CAP <= $NEW_IDX::MAX as usize {
                     Ok(Stack { data: self.data, len: self.len as $NEW_IDX })
@@ -329,6 +355,7 @@ macro_rules! impl_stack {
             )+
         }
         // S: Bare, T: Copy
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: Copy, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             $(
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
@@ -346,7 +373,10 @@ macro_rules! impl_stack {
             /// assert_eq![S.as_slice(), T.as_slice()];
             /// ```
             #[inline]
-            pub const fn [<own_to_idx_ $NEW_IDX>](self) -> Own<Result<Stack<T, CAP, $NEW_IDX, Bare>>, ()> {
+            #[cfg(feature = $new_cap)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $new_cap)))]
+            pub const fn [<own_to_idx_ $NEW_IDX>](self)
+                -> Own<Result<Stack<T, CAP, $NEW_IDX, Bare>>, ()> {
                 if CAP <= $NEW_IDX::MAX as usize {
                     Own::empty(Ok(Stack { data: self.data, len: self.len as $NEW_IDX }))
                 } else {
@@ -357,7 +387,4 @@ macro_rules! impl_stack {
         }
     }};
 }
-impl_stack![u8: u8, u16, u32, usize];
-impl_stack![u16: u8, u16, u32, usize];
-impl_stack![u32: u8, u16, u32, usize];
-impl_stack![usize: u8, u16, u32, usize];
+impl_stack!();

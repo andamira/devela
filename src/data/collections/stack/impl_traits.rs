@@ -15,14 +15,19 @@ use crate::{
 // helper macro for implementing traits for a Stack depending on the custom index size.
 macro_rules! impl_stack {
     () => {
-        impl_stack![u8];
-        impl_stack![u16];
-        impl_stack![u32];
-        impl_stack![usize];
+        impl_stack![u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
     };
 
     // $IDX : the index type. E.g. u8, usize
-    ( $IDX:ty ) => { crate::code::paste! {
+    // $cap:  the capability feature that enables the given implementation. E.g "_stack_u8".
+    ($( $IDX:ty: $cap:literal ),+) => {
+        $(
+            #[cfg(feature = $cap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+            impl_stack![@$IDX:$cap];
+        )+
+    };
+    (@$IDX:ty : $cap:literal) => { crate::code::paste! {
 
         /* impl data traits */
 
@@ -83,7 +88,7 @@ macro_rules! impl_stack {
         }
 
         #[cfg(feature = "alloc")]
-        #[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         impl<T: Default, I, const CAP: usize> From<I> for Stack<T, CAP, $IDX, Boxed>
         where
             I: IntoIterator<Item = T>,
@@ -237,7 +242,7 @@ impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
 
 // S:Boxed + T:Default
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, CAP, IDX, Boxed> {
     /// Returns an empty stack, allocated in the heap,
     /// using the default value to fill the remaining free data.

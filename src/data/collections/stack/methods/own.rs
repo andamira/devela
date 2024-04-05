@@ -23,10 +23,21 @@ use DataError::{NotEnoughElements, NotEnoughSpace};
 //
 // $IDX : the index type. E.g. u8, usize
 macro_rules! impl_stack {
-    (own $( $IDX:ty ),+ ) => { $( impl_stack![@own $IDX]; )+ };
+    () => {
+        impl_stack![own u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
+    };
 
     // general own_ ops
-    (@own $IDX:ty ) => { crate::code::paste! {
+    //
+    // $IDX : the index type. E.g. u8, usize
+    // $cap:  the capability feature that enables the given implementation. E.g "_stack_u8".
+    (own $( $IDX:ty: $cap:literal ),+) => {
+        $(
+            #[cfg(feature = $cap )]
+            impl_stack![@own $IDX:$cap];
+        )+
+    };
+    (@own $IDX:ty : $cap:literal) => { crate::code::paste! {
         /// # Chainable *const* operations depending on `T: Copy`
         ///
         /// Every method is *const* and returns [`Own`][crate::Own]`<Self, V>`.
@@ -1011,4 +1022,4 @@ macro_rules! impl_stack {
         }
     }};
 }
-impl_stack![own u8, u16, u32, usize];
+impl_stack!();

@@ -13,13 +13,17 @@
 mod array;
 mod destaque;
 mod reexports;
-mod stack;
 mod traits;
 mod tuple; // Tuple, TupleFmt
 #[allow(unused_imports)]
-pub use {array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*, tuple::*};
+pub use {array::all::*, destaque::all::*, reexports::*, traits::*, tuple::*};
 
 /* feature-gated */
+
+#[cfg(feature = "_-stack_any-_")]
+mod stack;
+#[cfg(feature = "_-stack_any-_")]
+pub use stack::*;
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
@@ -32,11 +36,11 @@ pub(crate) mod all {
     // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{
-        array::all::*, destaque::all::*, reexports::*, stack::all::*, traits::*, tuple::*,
-    };
+    pub use super::{array::all::*, destaque::all::*, reexports::*, traits::*, tuple::*};
 
     // feature-gated
+    #[cfg(feature = "_-stack_any-_")]
+    pub use super::stack::*;
     #[allow(unused_imports)]
     #[cfg(feature = "alloc")]
     pub use super::vec::*;
