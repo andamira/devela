@@ -18,15 +18,20 @@ use crate::{
 // helper macro for implementing traits for a Stack depending on the custom index size.
 macro_rules! impl_destaque {
     () => {
-        impl_destaque![u8];
-        impl_destaque![u16];
-        impl_destaque![u32];
-        impl_destaque![usize];
+        impl_destaque![
+            u8:"_destaque_u8", u16:"_destaque_u16", u32:"_destaque_u32", usize:"_destaque_usize"];
     };
 
     // $IDX : the index type. E.g. u8, usize
-    ( $IDX:ty ) => { crate::code::paste! {
-
+    // $cap:  the capability feature that enables the given implementation. E.g "_destaque_u8".
+    ($( $IDX:ty: $cap:literal ),+) => {
+        $(
+            #[cfg(feature = $cap )]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+            impl_destaque![@$IDX:$cap];
+        )+
+    };
+    (@$IDX:ty : $cap:literal) => { crate::code::paste! {
         /* impl data traits */
 
         /* collection */

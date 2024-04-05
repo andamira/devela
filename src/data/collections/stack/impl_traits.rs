@@ -15,7 +15,8 @@ use crate::{
 // helper macro for implementing traits for a Stack depending on the custom index size.
 macro_rules! impl_stack {
     () => {
-        impl_stack![u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
+        impl_stack![
+            u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
     };
 
     // $IDX : the index type. E.g. u8, usize
@@ -28,7 +29,6 @@ macro_rules! impl_stack {
         )+
     };
     (@$IDX:ty : $cap:literal) => { crate::code::paste! {
-
         /* impl data traits */
 
         impl<T, const LEN: usize, S: Storage> DataCollection for Stack<T, LEN, $IDX, S> {

@@ -105,12 +105,23 @@ pub struct Destaque<T, const CAP: usize, IDX, S: Storage = Bare> {
 }
 
 /// A [`Destaque`] with an 8-bit index size.
+#[cfg(feature = "_destaque_u8")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_destaque_u8")))]
 pub type DestaqueU8<T, const CAP: usize, S = Bare> = Destaque<T, CAP, u8, S>;
+
 /// A [`Destaque`] with a 16-bit index size.
+#[cfg(feature = "_destaque_u16")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_destaque_u16")))]
 pub type DestaqueU16<T, const CAP: usize, S = Bare> = Destaque<T, CAP, u16, S>;
+
 /// A [`Destaque`] with a 32-bit index size.
+#[cfg(feature = "_destaque_u32")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_destaque_u32")))]
 pub type DestaqueU32<T, const CAP: usize, S = Bare> = Destaque<T, CAP, u32, S>;
+
 /// A [`Destaque`] with a pointer-sized index size.
+#[cfg(feature = "_destaque_usize")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_destaque_usize")))]
 pub type DestaqueUsize<T, const CAP: usize, S = Bare> = Destaque<T, CAP, usize, S>;
 
 /* iterators */

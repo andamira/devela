@@ -24,7 +24,8 @@ use DataError::{NotEnoughElements, NotEnoughSpace};
 // $IDX : the index type. E.g. u8, usize
 macro_rules! impl_stack {
     () => {
-        impl_stack![own u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
+        impl_stack![own
+            u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
     };
 
     // general own_ ops
