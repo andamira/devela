@@ -9,11 +9,11 @@
 //   - prime_pi
 //   - totient
 
-#[cfg(feature = "_isize")]
+#[cfg(feature = "_int_isize")]
 use crate::num::isize_up;
-#[cfg(feature = "_usize")]
+#[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 use {
     crate::{
         code::iif,
@@ -23,18 +23,20 @@ use {
 };
 
 // $t:   the input/output type
-// $cap: the capability feature that enables the given implementation. E.g "_i8".
+// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 // $up:  the upcasted type to do the operations on (for prime_pi)
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
     () => {
         impl_int![signed
-            i8:"_i8":i16:"", i16:"_i16":i32:"-1", i32:"_i32":i64:"-2",
-            i64:"_i64":i128:"-3", i128:"_i128":i128:"-4", isize:"_isize":isize_up:"-5"
+            i8:"_int_i8":i16:"", i16:"_int_i16":i32:"-1",
+            i32:"_int_i32":i64:"-2", i64:"_int_i64":i128:"-3",
+            i128:"_int_i128":i128:"-4", isize:"_int_isize":isize_up:"-5"
         ];
         impl_int![unsigned
-            u8:"_u8":u16:"-6", u16:"_u16":u32:"-7", u32:"_u32":u64:"-8",
-            u64:"_u64":u128:"-9", u128:"_u128":u128:"-10", usize:"_usize":usize_up:"-11"
+            u8:"_int_u8":u16:"-6", u16:"_int_u16":u32:"-7",
+            u32:"_int_u32":u64:"-8", u64:"_int_u64":u128:"-9",
+            u128:"_int_u128":u128:"-10", usize:"_int_usize":usize_up:"-11"
         ];
     };
 
@@ -101,7 +103,7 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Ok(Int(3)), Int(1_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(127)), Int(30_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(127)), Int(-30_" $t ").prime_nth()];"]
-            /// # #[cfg(feature = "_i8")]
+            /// # #[cfg(feature = "_int_i8")]
             /// assert![Int(31_i8).prime_nth().is_err()];
             /// ```
             #[inline]

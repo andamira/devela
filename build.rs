@@ -56,11 +56,15 @@ fn main() {
 
     printfeat![msg: "Enabled capability features:", features:
         "_default", "_max",
+
         "_docsrs", "_docsrs_max", "_docsrs_stable",
-        "_i8", "_i16", "_i32", "_i64", "_i128", "_isize",
-        "_u8", "_u16", "_u32", "_u64", "_u128", "_usize",
-        "_f32", "_f64",
-        "_-nums-_", "_-ints-_", "_-sints-_", "_-uints-_", "_-floats-_",
+
+        "_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize",
+        "_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize",
+        "_float_f32", "_float_f64",
+
+        "_-num_any-_", "_-int_any-_", "_-int_iany-_", "_-int_uany-_", "_-float_any-_",
+
         "_tuple_arity_31", "_tuple_arity_63", "_tuple_arity_95", "_tuple_arity_127",
     ];
 

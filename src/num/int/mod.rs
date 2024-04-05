@@ -42,10 +42,10 @@ pub use {gcd::*, num_trait::*, wrapper::*};
 //
 // IMPROVE: use big int and big float.
 #[must_use]
-#[cfg(any(feature = "std", all(feature = "num_float", feature = "_f64")))]
+#[cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64")))]
 #[cfg_attr(
     feature = "nightly_doc",
-    doc(cfg(any(feature = "std", all(feature = "num_float", feature = "_f64"))))
+    doc(cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64"))))
 )]
 pub fn prime_number_theorem(n: u128) -> u128 {
     #[allow(clippy::cast_precision_loss)]

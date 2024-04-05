@@ -104,7 +104,7 @@ pub(crate) use upcasted_op;
 // # Arguments:
 // $W:   the outer wrapper
 // $T:   the inner type
-// $cap: the capability feature that enables the given implementation. E.g "_i8".
+// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 //
 // # Invoked from:
 // - num/int/wrapper/mod.rs

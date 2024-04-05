@@ -19,7 +19,7 @@ use crate::num::{GcdExt, Num, NumError as E, NumResult as Result};
 #[cfg(doc)]
 use E::{MismatchedSizes, NonNegativeRequired, NotImplemented, NotSupported, Overflow};
 
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 mod impls;
 mod r#ref;
 pub use r#ref::NumRefInt;

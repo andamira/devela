@@ -12,21 +12,21 @@
 //   - div_ties_even
 //   - div_ties_odd
 
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 use crate::{code::iif, num::Int};
 
 // $t:   the input/output type
-// $cap: the capability feature that enables the given implementation. E.g "_i8".
+// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
     () => {
         impl_int![signed
-            i8:"_i8":"", i16:"_i16":"-1", i32:"_i32":"-2",
-            i64:"_i64":"-3", i128:"_i128":"-4", isize:"_isize":"-5"
+            i8:"_int_i8":"", i16:"_int_i16":"-1", i32:"_int_i32":"-2",
+            i64:"_int_i64":"-3", i128:"_int_i128":"-4", isize:"_int_isize":"-5"
         ];
         impl_int![unsigned
-            u8:"_u8":"-6", u16:"_u16":"-7", u32:"_u32":"-8",
-            u64:"_u64":"-9", u128:"_u128":"-10", usize:"_usize":"-11"
+            u8:"_int_u8":"-6", u16:"_int_u16":"-7", u32:"_int_u32":"-8",
+            u64:"_int_u64":"-9", u128:"_int_u128":"-10", usize:"_int_usize":"-11"
         ];
     };
 

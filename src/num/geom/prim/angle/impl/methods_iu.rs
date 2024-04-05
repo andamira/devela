@@ -20,9 +20,31 @@ use crate::{
 //
 // $t: the inner integer primitive type
 // $f: the associated floating point type
-// $tcap: the capability feature that enables the given integer implementation. E.g "_i8".
-// $fcap: the capability feature that enables the given floating implementation. E.g "_f32".
+// $tcap: the capability feature that enables the given integer implementation. E.g "_int_i8".
+// $fcap: the capability feature that enables the given floating implementation. E.g "_float_f32".
 macro_rules! impl_angle {
+    () => {
+        impl_angle![sint
+            i8:f32;"_int_i8":"_float_f32", i16:f32;"_int_i16":"_float_f32",
+            i32:f32;"_int_i32":"_float_f32", i64:f64;"_int_i64":"_float_f64",
+            i128:f64;"_int_i128":"_float_f64"
+        ];
+        #[cfg(target_pointer_width = "32")]
+        impl_angle![sint isize:fsize;"_int_isize":"_float_f32"];
+        #[cfg(target_pointer_width = "64")]
+        impl_angle![sint isize:fsize;"_int_isize":"_float_f64"];
+
+        impl_angle![uint
+            u8:f32;"_int_u8":"_float_f32", u16:f32;"_int_u16":"_float_f32",
+            u32:f32;"_int_u32":"_float_f32", u64:f64;"_int_u64":"_float_f64",
+            u128:f64;"_int_u128":"_float_f64"
+        ];
+        #[cfg(target_pointer_width = "32")]
+        impl_angle![uint usize:fsize;"_int_usize":"_float_f32"];
+        #[cfg(target_pointer_width = "64")]
+        impl_angle![uint usize:fsize;"_int_usize":"_float_f64"];
+    };
+
     // integers common methods
     (int $($t:ty : $f:ty ; $tcap:literal : $fcap:literal),+) => {
         $( impl_angle![@int $t:$f ; $tcap:$fcap]; )+
@@ -297,20 +319,4 @@ macro_rules! impl_angle {
         }
     };
 }
-impl_angle![sint
-    i8:f32;"_i8":"_f32", i16:f32;"_i16":"_f32", i32:f32;"_i32":"_f32",
-    i64:f64;"_i64":"_f64", i128:f64;"_i128":"_f64"
-];
-#[cfg(target_pointer_width = "32")]
-impl_angle![sint isize:fsize;"_isize":"_f32"];
-#[cfg(target_pointer_width = "64")]
-impl_angle![sint isize:fsize;"_isize":"_f64"];
-
-impl_angle![uint
-    u8:f32;"_u8":"_f32", u16:f32;"_u16":"_f32", u32:f32;"_u32":"_f32",
-    u64:f64;"_u64":"_f64", u128:f64;"_u128":"_f64"
-];
-#[cfg(target_pointer_width = "32")]
-impl_angle![uint usize:fsize;"_usize":"_f32"];
-#[cfg(target_pointer_width = "64")]
-impl_angle![uint usize:fsize;"_usize":"_f64"];
+impl_angle!();

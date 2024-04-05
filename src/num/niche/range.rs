@@ -5,14 +5,14 @@
 //
 
 #[cfg(all(
-    feature = "_-ints-_",
+    feature = "_-int_any-_",
     feature = "unsafe_niche",
     not(feature = "safe_num")
 ))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 #[cfg(feature = "mem_bit")]
 use crate::mem::{bit_size, ByteSize};
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 use crate::{
     _libcore::{fmt, num::*, str::FromStr},
     code::iif,

@@ -4,7 +4,7 @@
 // - definition
 // - impls
 
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 use super::Bitwise;
 #[cfg(doc)]
 use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};

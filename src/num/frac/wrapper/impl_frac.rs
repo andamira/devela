@@ -14,7 +14,7 @@
 //   - lcm
 //   - add
 
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 use crate::num::{Frac, Int, NumResult as Result};
 #[cfg(doc)]
 use {crate::num::NumError, NumError::Overflow};
@@ -22,12 +22,14 @@ use {crate::num::NumError, NumError::Overflow};
 // $i:    the integer type.
 // $self: the fractional self type.
 // $fout: the fractionsl output type.
-// $cap:  the capability feature that enables the given implementation. E.g "_i8".
+// $cap:  the capability feature that enables the given implementation. E.g "_int_i8".
 macro_rules! impl_frac {
     [] => {
         impl_frac![
-            i8:"_i8", i16:"_i16", i32:"_i32", i64:"_i64", i128:"_i128", isize:"_isize",
-            u8:"_u8", u16:"_u16", u32:"_u32", u64:"_u64", u128:"_u128", usize:"_usize"
+            i8:"_int_i8", i16:"_int_i16", i32:"_int_i32",
+            i64:"_int_i64", i128:"_int_i128", isize:"_int_isize",
+            u8:"_int_u8", u16:"_int_u16", u32:"_int_u32",
+            u64:"_int_u64", u128:"_int_u128", usize:"_int_usize"
         ];
     };
 
@@ -194,4 +196,4 @@ macro_rules! impl_frac {
         }
     }};
 }
-impl_frac![];
+impl_frac!();

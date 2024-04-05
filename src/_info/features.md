@@ -118,22 +118,26 @@ Enabling them will likely worsen compilation times.
 - `_max`: enables the maximum capabilities.
 - `_tuple_arity_[31|63|96|127]`: increased arity support for [`ExtTuple`].
 
-The following is a tree of features that allows fine-grained control over
-for which primitive types several generic implementations will compile.
-That's the case for example of [`Float`], [`Int`], or the [`niche`] types.
-- `_nums:` enables all the numeric types implementations.
-  - `_floats:`
-    - `_f32`, `_f64`.
-  - `_ints:`
-    - `_sints:`
-      - `_i8`, `_i16`, `_i32`, `_i64`, `_i128`, `_isize`.
-    - `_uints:`
-      - `_u8`, `_u16`, `_u32`, `_u64`, `_u128`, `_usize`.
+Enable specific implementations for [`Int`], [`Float`], [`Frac`],
+[`Angle`], [`Point`], [`Vector`]:
+- `_num_all`:
+  - `_float_all`:
+    - `_float_f32`, `_float_f64`.
+  - `_int_all`:
+    - `_int_all_i`:
+      - `_int_i8`, `_int_i16`, `_int_i32`, `_int_i64`, `_int_i128`, `_int_isize`.
+    - `_int_all_u`:
+      - `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
 
 [`ExtTuple`]: crate::data::collections::ExtTuple
 [`Float`]: crate::num::Float
+[`Frac`]: crate::num::Frac
 [`Int`]: crate::num::Int
+[`Angle`]: crate::num::Angle
+[`Point`]: crate::num::Point
+[`Vector`]: crate::num::Vector
 
+ Documentation capabilities:
 - `_docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
 - `_docsrs_max`: like `_docsrs` but also enables `capability_max`.
 - `_docsrs_stable`: like `_docsrs` but without enabling `nightly`.

@@ -21,7 +21,7 @@ use crate::code::{iif, paste};
     feature = "unsafe_const",
     feature = "num_float"
 ))]
-#[cfg(feature = "_-floats-_")]
+#[cfg(feature = "_-float_any-_")]
 use crate::num::Float;
 use core::cmp::Ordering::{self, *};
 
@@ -111,6 +111,11 @@ impl<T: PartialOrd> Compare<T> {
 
 // implement for primitives
 macro_rules! impl_comparing {
+    () => {
+        impl_comparing![int: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
+        impl_comparing![float: f32:"_float_f32":32:31, f64:"_float_f64":64:63];
+    };
+
     // $p: the integer type
     (int: $($p:ty),+) => { $( impl_comparing![@int: $p]; )+ };
     (@int: $p:ty) => {
@@ -149,7 +154,7 @@ macro_rules! impl_comparing {
     };
 
     // $f:    the floating-point type
-    // $fcap: the capability feature associated with the `$f` type. E.g "_f32".
+    // $fcap: the capability feature associated with the `$f` type. E.g "_float_f32".
     // $b:    the bits of the floating-point primitive
     // $sh:   the shift amount for the given bits ($b - 1)
     (float: $($f:ty:$fcap:literal:$b:literal:$sh:literal),+) => {
@@ -395,8 +400,7 @@ macro_rules! impl_comparing {
         }
     }};
 }
-impl_comparing![int: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
-impl_comparing![float: f32:"_f32":32:31, f64:"_f64":64:63];
+impl_comparing!();
 
 #[cfg(test)]
 mod test_min_max_clamp {

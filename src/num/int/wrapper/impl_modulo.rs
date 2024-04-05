@@ -17,13 +17,13 @@
 //   - modulo_div (uc)
 
 use crate::code::paste;
-#[cfg(any(feature = "_isize", feature = "_usize"))]
+#[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::num::isize_up;
-#[cfg(feature = "_usize")]
+#[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
-#[cfg(all(doc, feature = "_-ints-_"))]
+#[cfg(all(doc, feature = "_-int_any-_"))]
 use crate::NumError;
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 use crate::{
     code::{cif, iif, unwrap, ValueQuant},
     num::NumError::{NoInverse, NonZeroRequired, Overflow},
@@ -31,10 +31,10 @@ use crate::{
 };
 
 // helper function to be called from the cold path branch when modulus == 0.
-#[cold] #[inline(never)] #[cfg(feature = "_-ints-_")] #[rustfmt::skip]
+#[cold] #[inline(never)] #[cfg(feature = "_-int_any-_")] #[rustfmt::skip]
 const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 // helper function to be called from the cold path branch for rare i128 overflow.
-#[cold] #[inline(never)] #[cfg(feature = "_-ints-_")] #[rustfmt::skip]
+#[cold] #[inline(never)] #[cfg(feature = "_-int_any-_")] #[rustfmt::skip]
 const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 
 // helper macro to deal with the case when we can't upcast (i.e. for 128-bits).
@@ -81,27 +81,29 @@ macro_rules! upcastop {
 }
 
 // $t:     the input/output type
-// $cap:   the capability feature that enables the given implementation. E.g "_u8".
+// $cap:   the capability feature that enables the given implementation. E.g "_int_u8".
 // $up:    the upcasted type to do the operations on (the ones that can overflow) E.g. u16.
 // $iup:   the signed upcasted type for some methods. E.g. i16.
-// $icap:  the feature that enables some methods related to `$iup`. E.g "_i16".
+// $icap:  the feature that enables some methods related to `$iup`. E.g "_int_i16".
 // $is_up: [Y|N]. `Y` if bitsize of $up|$iup > $t; `N` if bitsize $up|$iup == $t.
 macro_rules! impl_int {
     () => {
         impl_int![signed
-            (i8:"_i8", i16:Y, ""), (i16:"_i16", i32:Y, "-1"),
-            (i32:"_i32", i64:Y, "-2"), (i64:"_i64", i128:Y, "-3"),
-            (i128:"_i128", i128:N, "-4"), (isize:"_isize", isize_up:Y, "-5")
+            (i8:"_int_i8", i16:Y, ""), (i16:"_int_i16", i32:Y, "-1"),
+            (i32:"_int_i32", i64:Y, "-2"), (i64:"_int_i64", i128:Y, "-3"),
+            (i128:"_int_i128", i128:N, "-4"), (isize:"_int_isize", isize_up:Y, "-5")
         ];
         impl_int![unsigned
-            (u8:"_u8", u16|i16:"_i16":Y, "-6"), (u16:"_u16", u32|i32:"_i32":Y, "-7"),
-            (u32:"_u32", u64|i64:"_i64":Y, "-8"), (u64:"_u64", u128|i128:"_i128":Y, "-9"),
-            (u128:"_u128", u128|i128:"_i128":N, "-10")
+            (u8:"_int_u8", u16|i16:"_int_i16":Y, "-6"),
+            (u16:"_int_u16", u32|i32:"_int_i32":Y, "-7"),
+            (u32:"_int_u32", u64|i64:"_int_i64":Y, "-8"),
+            (u64:"_int_u64", u128|i128:"_int_i128":Y, "-9"),
+            (u128:"_int_u128", u128|i128:"_int_i128":N, "-10")
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_int![unsigned (usize:"_usize", usize_up|isize_up:"_i64":Y, "-11")];
+        impl_int![unsigned (usize:"_int_usize", usize_up|isize_up:"_int_i64":Y, "-11")];
         #[cfg(target_pointer_width = "64")]
-        impl_int![unsigned (usize:"_usize", usize_up|isize_up:"_i128":Y, "-11")];
+        impl_int![unsigned (usize:"_int_usize", usize_up|isize_up:"_int_i128":Y, "-11")];
     };
 
     (signed $( ($t:ty : $cap:literal, $up:ty:$is_up:ident, $d:literal) ),+) => {
@@ -178,11 +180,11 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(" $t "::MAX).modulo(" $t "::MIN)?, " $t "::MAX];"]
             #[doc = "assert_eq![Int(" $t "::MIN).modulo(" $t "::MAX)?, " $t "::MAX - 1];"]
             #[doc = "assert_eq![Int(" $t "::MIN).modulo(" $t "::MIN)?, 0];"]
-            /// # #[cfg(feature = "_i64")]
+            /// # #[cfg(feature = "_int_i64")]
             #[doc = "assert![Int(i64::MIN).modulo(-1).is_ok()];"]
             ///
             #[doc = "assert_eq![Int(1_" $t ").modulo(0), Err(NumError::NonZeroRequired)];"]
-            /// # #[cfg(feature = "_i128")]
+            /// # #[cfg(feature = "_int_i128")]
             #[doc = "assert_eq![Int(i128::MIN).modulo(-1), Err(NumError::Overflow(None))];"]
             /// # Ok(()) }
             /// ```
@@ -231,12 +233,12 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(" $t "::MIN).modulo_unchecked(" $t "::MAX), " $t "::MAX - 1];"]
             #[doc = "assert_eq![Int(" $t "::MIN).modulo_unchecked(" $t "::MIN), 0];"]
             ///
-            /// # #[cfg(feature = "_i64")]
+            /// # #[cfg(feature = "_int_i64")]
             #[doc = "assert_eq![Int(i64::MIN).modulo_unchecked(-1), 0];"]
             /// ```
             /// ```should_panic
             /// # use devela::num::Int;
-            #[cfg(feature = "_i128")]
+            #[cfg(feature = "_int_i128")]
             #[doc = "let _ = Int(i128::MIN).modulo_unchecked(-1); // i128 could overflow"]
             /// ```
             /// ```should_panic

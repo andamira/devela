@@ -5,7 +5,7 @@
 
 #[cfg(doc)]
 use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 use crate::{
     code::iif,
     data::{Bitwise, DataError as E, DataResult as Result},

@@ -15,37 +15,39 @@
 use crate::num::isize_up;
 #[cfg(feature = "_usize")]
 use crate::num::usize_up;
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 use crate::{
     code::{iif, unwrap},
     num::{upcasted_op, Compare, Int, NumError, NumResult as Result},
 };
-#[cfg(feature = "_-sints-_")]
+#[cfg(feature = "_-int_iany-_")]
 use NumError::NonNegativeRequired;
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 use NumError::NonZeroRequired;
-#[cfg(all(doc, feature = "_-ints-_"))]
+#[cfg(all(doc, feature = "_-int_any-_"))]
 use NumError::Overflow;
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.
-#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(feature = "_-ints-_")]
+#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(feature = "_-int_any-_")]
 const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 // helper function to be called from the cold path branches with an ok result.
-#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(feature = "_-ints-_")]
+#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(feature = "_-int_any-_")]
 const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 
 // $t:   the input/output type
-// $cap: the capability feature that enables the given implementation. E.g "_i8".
+// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
     () => {
         impl_int![signed
-            i8:"_i8":i16:"", i16:"_i16":i32:"-1", i32:"_i32":i64:"-2",
-            i64:"_i64":i128:"-3", i128:"_i128":i128:"-4", isize:"_isize":isize_up:"-5"
+            i8:"_int_i8":i16:"", i16:"_int_i16":i32:"-1",
+            i32:"_int_i32":i64:"-2", i64:"_int_i64":i128:"-3",
+            i128:"_int_i128":i128:"-4", isize:"_int_isize":isize_up:"-5"
         ];
         impl_int![unsigned
-            u8:"_u8":u16:"-6", u16:"_u16":u32:"-7", u32:"_u32":u64:"-8",
-            u64:"_u64":u128:"-9", u128:"_u128":u128:"-10", usize:"_usize":usize_up:"-11"
+            u8:"_int_u8":u16:"-6", u16:"_int_u16":u32:"-7",
+            u32:"_int_u32":u64:"-8", u64:"_int_u64":u128:"-9",
+            u128:"_int_u128":u128:"-10", usize:"_int_usize":usize_up:"-11"
         ];
     };
 

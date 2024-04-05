@@ -3,7 +3,7 @@
 //! Extention trait for floatin-point methods.
 //
 
-#[cfg(feature = "_-floats-_")]
+#[cfg(feature = "_-float_any-_")]
 use crate::num::Float;
 use crate::num::{ExtFloatConst, Sign};
 
@@ -421,10 +421,14 @@ pub trait ExtFloat: ExtFloatConst + Sized {
 }
 
 macro_rules! impl_float_ext {
+    () => {
+        impl_float_ext![(f32, u32 | i32):"_float_f32", (f64, u32 | i32):"_float_f64"];
+    };
+
     // $f:   the floating-point type.
     // $ue:  unsigned int type with the same bit-size.
     // $ie:  the integer type for integer exponentiation.
-    // $cap: the capability feature that enables the given implementation. E.g "_f32".
+    // $cap: the capability feature that enables the given implementation. E.g "_float_f32".
     ($( ($f:ty, $ue:ty|$ie:ty): $cap:literal ),+) => {
         $( impl_float_ext![@$f, $ue|$ie, $cap]; )+
     };
@@ -711,4 +715,4 @@ macro_rules! impl_float_ext {
         }
     }
 }
-impl_float_ext![(f32, u32 | i32):"_f32", (f64, u32 | i32):"_f64"];
+impl_float_ext!();

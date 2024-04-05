@@ -3,26 +3,28 @@
 //!
 //
 
-#[cfg(all(feature = "_-floats-_", not(feature = "std")))]
+#[cfg(all(feature = "_-float_any-_", not(feature = "std")))]
 use crate::code::iif;
 use crate::code::paste;
-#[cfg(feature = "_-nums-_")]
+#[cfg(feature = "_-num_any-_")]
 use crate::num::{Num, NumResult as Result};
-#[cfg(feature = "_-floats-_")]
+#[cfg(feature = "_-float_any-_")]
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
-#[cfg(feature = "_-ints-_")]
+#[cfg(feature = "_-int_any-_")]
 use {
     crate::num::{niche::*, NumError},
     NumError::{Invalid, Unspecified},
 };
 
 // $p:   the primitive type
-// $cap:  the capability feature that enables the given implementation. E.g "_i8".
+// $cap:  the capability feature that enables the given implementation. E.g "_int_i8".
 macro_rules! impl_num {
     [] => {
-        impl_num![i i8:"_i8", i16:"_i16", i32:"_i32", i64:"_i64", i128:"_i128", isize:"_isize"];
-        impl_num![u u8:"_u8", u16:"_u16", u32:"_u32", u64:"_u64", u128:"_u128", usize:"_usize"];
-        impl_num![f f32:"_f32", f64:"_f64"];
+        impl_num![i i8:"_int_i8", i16:"_int_i16", i32:"_int_i32",
+            i64:"_int_i64", i128:"_int_i128", isize:"_int_isize"];
+        impl_num![u u8:"_int_u8", u16:"_int_u16", u32:"_int_u32",
+            u64:"_int_u64", u128:"_int_u128", usize:"_int_usize"];
+        impl_num![f f32:"_float_f32", f64:"_float_f64"];
     };
 
     // Implements `Num` for signed integer types
@@ -540,4 +542,4 @@ macro_rules! impl_num {
     // ============================================================================================
     // ...
 }
-impl_num![];
+impl_num!();

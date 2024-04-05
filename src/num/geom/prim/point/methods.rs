@@ -57,8 +57,16 @@ impl<T> Point3d<T> {
 }
 
 // $t: the inner integer primitive type
-// $cap:  the capability feature that enables the given implementation. E.g "_i8".
+// $cap:  the capability feature that enables the given implementation. E.g "_int_i8".
 macro_rules! impl_point {
+    () => {
+        impl_point![sint i8:"_int_i8", i16:"_int_i16", i32:"_int_i32",
+            i64:"_int_i64", i128:"_int_i128", isize:"_int_isize"];
+        impl_point![uint u8:"_int_u8", u16:"_int_u16", u32:"_int_u32",
+            u64:"_int_u64", u128:"_int_u128", usize:"_int_usize"];
+        impl_point![float f32:"_float_f32", f64:"_float_f64"];
+    };
+
     // integers common methods
     (int $($t:ty : $cap:literal),+) => { $( impl_point![@int $t:$cap]; )+ };
     (@int $t:ty : $cap:literal) => {
@@ -115,6 +123,4 @@ macro_rules! impl_point {
         }
     };
 }
-impl_point![sint i8:"_i8", i16:"_i16", i32:"_i32", i64:"_i64", i128:"_i128", isize:"_isize"];
-impl_point![uint u8:"_u8", u16:"_u16", u32:"_u32", u64:"_u64", u128:"_u128", usize:"_usize"];
-impl_point![float f32:"_f32", f64:"_f64"];
+impl_point!();

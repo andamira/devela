@@ -5,19 +5,36 @@
 
 #[cfg(feature = "alloc")]
 use crate::_liballoc::vec::Vec;
-#[cfg(feature = "_usize")]
+#[cfg(feature = "_int_usize")]
 use crate::num::isize_up;
 use crate::num::{GcdExt, Int, NumInt, NumResult as Result};
 
 // $t:     the primitive type
-// $cap:   the capability feature that enables the given implementation. E.g "_i8".
+// $cap:   the capability feature that enables the given implementation. E.g "_int_i8".
 //
 // $ut:    the unsigned type of the same size as $t, only for signed (used for midpoint).
-// $ucap:  the feature that enables some methods related to `$ut`. E.g "_i8". (only for signed)
+// $ucap:  the feature that enables some methods related to `$ut`. E.g "_int_i8". (only for signed)
 //
 // $io:    the signed output primitive type (upcasted for unsigned, same as $t for signed).
 // $iocap: the capability feature that enables some ops with signed output primitive type.
 macro_rules! impl_int {
+    () => {
+        impl_int![signed
+            i8:"_int_i8"|u8:"_int_u8", i16:"_int_i16"|u16:"_int_u16",
+            i32:"_int_i32"|u32:"_int_u32", i64:"_int_i64"|u64:"_int_u64",
+            i128:"_int_i128"|u128:"_int_u128", isize:"_int_isize"|usize:"_int_usize"
+        ];
+        impl_int![unsigned
+            u8:"_int_u8"|i16:"_int_i16", u16:"_int_u16"|i32:"_int_i32",
+            u32:"_int_u32"|i64:"_int_i64", u64:"_int_u64"|i128:"_int_i128",
+            u128:"_int_u128"|i128:"_int_i128"
+        ];
+        #[cfg(target_pointer_width = "32")]
+        impl_int![unsigned usize:"_int_usize"|isize_up:"_int_i64"];
+        #[cfg(target_pointer_width = "64")]
+        impl_int![unsigned usize:"_int_usize"|isize_up:"_int_i128"];
+    };
+
     // Implements `NumInt` for signed integer types
     // --------------------------------------------------------------------------------------------
     (signed $($t:ident : $cap:literal | $ut:ident : $ucap:literal),+) => {
@@ -391,15 +408,4 @@ macro_rules! impl_int {
             Int(*self).root_floor(nth).map(|n|n.0) }
     };
 }
-impl_int![signed
-    i8:"_i8"|u8:"_u8", i16:"_i16"|u16:"_u16", i32:"_i32"|u32:"_u32", i64:"_i64"|u64:"_u64",
-    i128:"_i128"|u128:"_u128", isize:"_isize"|usize:"_usize"
-];
-impl_int![unsigned
-    u8:"_u8"|i16:"_i16", u16:"_u16"|i32:"_i32", u32:"_u32"|i64:"_i64",
-    u64:"_u64"|i128:"_i128", u128:"_u128"|i128:"_i128"
-];
-#[cfg(target_pointer_width = "32")]
-impl_int![unsigned usize:"_usize"|isize_up:"_i64"];
-#[cfg(target_pointer_width = "64")]
-impl_int![unsigned usize:"_usize"|isize_up:"_i128"];
+impl_int!();

@@ -9,7 +9,7 @@ use crate::num::geom::Vector;
 #[allow(unused_imports)]
 #[cfg(all(feature = "num_float", not(feature = "std")))]
 use crate::num::ExtFloat;
-#[cfg(all(feature = "num_int", feature = "_-ints-_"))]
+#[cfg(all(feature = "num_int", feature = "_-int_any-_"))]
 use crate::{code::unwrap, num::Int};
 
 /* common methods */
@@ -26,8 +26,16 @@ impl<T, const D: usize> Vector<T, D> {
 // helper for methods
 //
 // $t: the inner integer primitive type
-// $cap:  the capability feature that enables the given implementation. E.g "_i8".
+// $cap:  the capability feature that enables the given implementation. E.g "_int_i8".
 macro_rules! impl_vector {
+    () => {
+        impl_vector![sint i8:"_int_i8", i16:"_int_i16", i32:"_int_i32",
+            i64:"_int_i64", i128:"_int_i128", isize:"_int_isize"];
+        impl_vector![uint u8:"_int_u8", u16:"_int_u16", u32:"_int_u32",
+            u64:"_int_u64", u128:"_int_u128", usize:"_int_usize"];
+        impl_vector![float f32:"_float_f32", f64:"_float_f64"];
+    };
+
     // integers common methods
     (int $($t:ty : $cap:literal),+) => { $( impl_vector![@int $t:$cap]; )+ };
     (@int $t:ty : $cap:literal) => {
@@ -376,6 +384,4 @@ macro_rules! impl_vector {
         }
     };
 }
-impl_vector![sint i8:"_i8", i16:"_i16", i32:"_i32", i64:"_i64", i128:"_i128", isize:"_isize"];
-impl_vector![uint u8:"_u8", u16:"_u16", u32:"_u32", u64:"_u64", u128:"_u128", usize:"_usize"];
-impl_vector![float f32:"_f32", f64:"_f64"];
+impl_vector!();

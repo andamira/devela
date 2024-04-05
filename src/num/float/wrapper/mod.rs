@@ -3,15 +3,15 @@
 //! Floating-point wrapper struct.
 //
 
-#[cfg(feature = "_-floats-_")]
+#[cfg(feature = "_-float_any-_")]
 mod shared;
 
-#[cfg(feature = "_-floats-_")]
+#[cfg(feature = "_-float_any-_")]
 mod libm_std;
 
 mod consts;
 
-#[cfg(all(test, feature = "_f32"))]
+#[cfg(all(test, feature = "_float_f32"))]
 mod tests;
 
 /// Provides comprehensive floating-point operations for `T`, some of them *const*.
@@ -38,7 +38,7 @@ mod tests;
 #[repr(transparent)]
 pub struct Float<T>(pub T);
 
-crate::num::impl_ops![Float: f32:"_f32", f64:"_f64"];
+crate::num::impl_ops![Float: f32:"_float_f32", f64:"_float_f64"];
 
 #[rustfmt::skip]
 mod core_impls {
