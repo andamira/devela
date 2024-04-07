@@ -11,9 +11,9 @@
 // - root_ceil
 // - root_floor
 
-#[cfg(any(feature = "_isize", feature = "_usize"))]
+#[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::num::isize_up;
-#[cfg(feature = "_usize")]
+#[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
 #[cfg(feature = "_-int_any-_")]
 use crate::{
