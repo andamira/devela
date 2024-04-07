@@ -2,10 +2,9 @@
 
 use super::{Char16, Char24, Char32, Char7, Char8};
 use crate::lex::{
-    char_is_7bit, char_is_noncharacter, char_to_utf8_bytes, AsciiChar, LexError,
+    char_is_7bit, char_is_noncharacter, char_to_utf8_bytes, AsciiChar, LexError::CharConversion,
     LexResult as Result,
 };
-use LexError::CharConversion;
 
 impl Char32 {
     /* constants */

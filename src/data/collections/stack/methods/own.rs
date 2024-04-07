@@ -10,14 +10,16 @@
 // - adjusting its length if necessary.
 // - returning it.
 
+#[cfg(doc)]
+use crate::data::DataError::OutOfBounds;
 use crate::{
     code::{sf, Own},
-    data::{DataError, DataResult as Result, Stack},
+    data::{
+        DataError::{NotEnoughElements, NotEnoughSpace},
+        DataResult as Result, Stack,
+    },
     mem::{cswap, Bare},
 };
-#[cfg(doc)]
-use DataError::OutOfBounds;
-use DataError::{NotEnoughElements, NotEnoughSpace};
 
 // helper macro to impl methods for a Stack with custom index size.
 //

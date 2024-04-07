@@ -23,13 +23,10 @@ use crate::num::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
 #[cfg(feature = "_-int_any-_")]
-use {
-    crate::{
-        code::iif,
-        mem::cswap,
-        num::{Cast, GcdExt, Int, NumError, NumResult as Result},
-    },
-    NumError::Overflow,
+use crate::{
+    code::iif,
+    mem::cswap,
+    num::{Cast, GcdExt, Int, NumError::Overflow, NumResult as Result},
 };
 
 // $t:    the input/output type

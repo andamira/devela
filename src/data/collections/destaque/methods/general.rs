@@ -7,14 +7,16 @@ use crate::{
 };
 use crate::{
     data::{
-        error::{DataError, DataResult as Result},
+        error::{
+            DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds},
+            DataResult as Result,
+        },
         Array, Destaque, DestaqueIter,
     },
     mem::{Bare, Storage},
 };
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};
-use DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds};
 
 // helper macro to impl methods for a Destque with custom index size.
 macro_rules! impl_destaque {

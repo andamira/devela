@@ -7,10 +7,9 @@
 
 use crate::{
     data::Vec,
-    num::{NumError, NumResult as Result, VecVector},
+    num::{NumError::MismatchedSizes, NumResult as Result, VecVector},
 };
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
-use NumError::MismatchedSizes;
 
 /* ops between vectors */
 

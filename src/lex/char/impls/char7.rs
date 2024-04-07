@@ -1,8 +1,9 @@
 // devela::lex::char::impls::char7
 
 use super::{Char16, Char24, Char32, Char7, Char8};
-use crate::lex::{char::NonEdgeU8, char_is_7bit, AsciiChar, LexError, LexResult as Result};
-use LexError::CharConversion;
+use crate::lex::{
+    char::NonEdgeU8, char_is_7bit, AsciiChar, LexError::CharConversion, LexResult as Result,
+};
 
 impl Char7 {
     /* private helper fns */

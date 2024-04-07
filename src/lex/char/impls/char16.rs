@@ -5,10 +5,9 @@
 
 use super::{Char16, Char24, Char32, Char7, Char8};
 use crate::lex::{
-    char::NonSurrogateU16, char_byte_len, char_is_7bit, char_is_noncharacter, AsciiChar, LexError,
-    LexResult as Result,
+    char::NonSurrogateU16, char_byte_len, char_is_7bit, char_is_noncharacter, AsciiChar,
+    LexError::CharConversion, LexResult as Result,
 };
-use LexError::CharConversion;
 
 impl Char16 {
     /* private helper fns */

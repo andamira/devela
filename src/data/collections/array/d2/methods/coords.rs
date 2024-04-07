@@ -6,12 +6,11 @@
 use crate::{
     code::iif,
     data::{
-        error::{DataError, DataResult as Result},
+        error::{DataError::Overflow, DataResult as Result},
         Array2d,
     },
     mem::Storage,
 };
-use DataError::Overflow;
 
 // Helper macro for implementing common methods generic on storage order
 macro_rules! impl_maj {

@@ -8,7 +8,7 @@
 //   - VecDeque
 
 #[cfg(feature = "alloc")]
-use crate::data::DataError;
+use crate::data::DataError::NotEnoughElements;
 use crate::data::{DataCollection, DataResult as Result};
 
 /// An abstract *queue* data type.
@@ -42,7 +42,7 @@ pub trait DataDeque: DataQueue {
 #[cfg(feature = "alloc")]
 impl<T> DataQueue for crate::data::collections::reexports::VecDeque<T> {
     fn queue_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
-        self.pop_front().ok_or(DataError::NotEnoughElements(Some(1)))
+        self.pop_front().ok_or(NotEnoughElements(Some(1)))
     }
     fn queue_push(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
         self.push_back(element); Ok(())
@@ -52,7 +52,7 @@ impl<T> DataQueue for crate::data::collections::reexports::VecDeque<T> {
 #[cfg(feature = "alloc")]
 impl<T> DataDeque for crate::data::collections::reexports::VecDeque<T> {
     fn queue_pop_back(&mut self) -> Result<<Self as DataCollection>::Element> {
-        self.pop_back().ok_or(DataError::NotEnoughElements(Some(1)))
+        self.pop_back().ok_or(NotEnoughElements(Some(1)))
     }
     fn queue_push_front(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
         self.push_front(element); Ok(())

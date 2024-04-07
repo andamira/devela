@@ -11,12 +11,13 @@
 //   - permute_rep
 
 #[cfg(feature = "_-int_any-_")]
-use {
-    crate::{
-        code::{cfor, iif},
-        num::{Cast, Int, NumError, NumResult as Result},
+use crate::{
+    code::{cfor, iif},
+    num::{
+        Cast, Int,
+        NumError::{MismatchedSizes, NonNegativeRequired, Overflow},
+        NumResult as Result,
     },
-    NumError::{MismatchedSizes, NonNegativeRequired, Overflow},
 };
 
 // $t:   the input/output type

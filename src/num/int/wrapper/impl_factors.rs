@@ -26,12 +26,9 @@ use crate::{
     code::Also,
 };
 #[cfg(feature = "_-int_any-_")]
-use {
-    crate::{
-        code::iif,
-        num::{Int, NumError, NumResult as Result},
-    },
-    NumError::MismatchedSizes,
+use crate::{
+    code::iif,
+    num::{Int, NumError::MismatchedSizes, NumResult as Result},
 };
 
 // $t:   the input/output type

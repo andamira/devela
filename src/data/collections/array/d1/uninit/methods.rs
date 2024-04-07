@@ -2,10 +2,12 @@
 
 use crate::{
     code::iif,
-    data::{DataError, DataResult as Result, UninitArray},
+    data::{
+        DataError::{NotEnoughSpace, OutOfBounds, PartiallyAdded},
+        DataResult as Result, UninitArray,
+    },
     mem::{mem_replace, ptr_swap, MaybeUninit, Storage},
 };
-use DataError::{NotEnoughSpace, OutOfBounds, PartiallyAdded};
 
 impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {
     /* construct */

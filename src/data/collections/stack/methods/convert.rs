@@ -7,7 +7,10 @@ use crate::{
     code::{ConstDefault, Own},
     data::{
         array_init,
-        error::{DataError, DataResult as Result},
+        error::{
+            DataError::{NotEnoughSpace, OutOfBounds},
+            DataResult as Result,
+        },
         Array, Stack,
     },
     mem::Bare,
@@ -18,7 +21,6 @@ use crate::{
     data::Vec,
     mem::{Box, Boxed},
 };
-use DataError::{NotEnoughSpace, OutOfBounds};
 
 // helper macro to impl methods for a Stack with custom index size.
 //

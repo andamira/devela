@@ -11,12 +11,14 @@ use crate::{
 use crate::{
     code::Mismatch,
     data::{
-        error::{DataError, DataResult as Result},
+        error::{
+            DataError::{MismatchedLength, Overflow},
+            DataResult as Result,
+        },
         Array, Array2d,
     },
     mem::{Bare, Storage},
 };
-use DataError::{MismatchedLength, Overflow};
 
 /* constructors */
 

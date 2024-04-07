@@ -11,7 +11,8 @@
 use super::{
     char::{char_to_utf8_bytes, char_utf8_4bytes_len},
     helpers::impl_sized_alias,
-    LexError, LexResult as Result,
+    LexError::{self, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
+    LexResult as Result,
 };
 use crate::{
     code::{cfor, unwrap},
@@ -22,7 +23,6 @@ use core::{
     ops::Deref,
     str::{from_utf8, Chars},
 };
-use LexError::{InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds};
 
 #[cfg(feature = "lex")]
 use super::char::{

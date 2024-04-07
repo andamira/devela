@@ -3,12 +3,14 @@
 //! Implements `Bitwise` for the integer primitives
 //
 
-#[cfg(doc)]
-use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};
 #[cfg(feature = "_-bit_any-_")]
 use crate::{
     code::iif,
-    data::{Bitwise, DataError as E, DataResult as Result},
+    data::{
+        Bitwise,
+        DataError::{MismatchedIndices, OutOfBounds, Overflow},
+        DataResult as Result,
+    },
 };
 
 macro_rules! impl_bits_wrapper {
@@ -65,11 +67,11 @@ macro_rules! impl_bits_wrapper {
             #[inline]
             pub const fn mask_checked_range(start: u32, end: u32) -> Result<Self> {
                 if start >= <$t>::BITS {
-                    Err(E::OutOfBounds(Some(start as usize)))
+                    Err(OutOfBounds(Some(start as usize)))
                 } else if end >= <$t>::BITS {
-                    Err(E::OutOfBounds(Some(end as usize)))
+                    Err(OutOfBounds(Some(end as usize)))
                 } else if start > end {
-                    Err(E::MismatchedIndices)
+                    Err(MismatchedIndices)
                 } else {
                     // create a mask with all bits set, from 0 to end:
                     let mask_end = iif![end == <$t>::BITS -1; !0; (1 << (end + 1)) - 1];
@@ -211,7 +213,7 @@ macro_rules! impl_bits_wrapper {
                 -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => {
-                        iif![value >= (1 << (end - start)); return Err(E::Overflow)];
+                        iif![value >= (1 << (end - start)); return Err(Overflow)];
                         let value_shifted = (value << start) & mask.0;
                         Ok(Self((self.0 & !mask.0) | value_shifted))
                     },
@@ -303,11 +305,11 @@ macro_rules! impl_bits_wrapper {
             #[inline]
             pub const fn reverse_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 if start >= Self::BITS {
-                    Err(E::OutOfBounds(Some(start as usize)))
+                    Err(OutOfBounds(Some(start as usize)))
                 } else if end >= <$t>::BITS {
-                    Err(E::OutOfBounds(Some(end as usize)))
+                    Err(OutOfBounds(Some(end as usize)))
                 } else if start > end {
-                    Err(E::MismatchedIndices)
+                    Err(MismatchedIndices)
                 } else {
                     // If the entire range of bits is selected, simply reverse all bits
                     let range_bits = end - start + 1;

@@ -9,9 +9,11 @@
 
 use crate::{
     code::ConstDefault,
-    num::{NumError, NumResult as Result},
+    num::{
+        NumError::{self, Invalid},
+        NumResult as Result,
+    },
 };
-use NumError::Invalid;
 
 /// Represents the sign of a number.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]

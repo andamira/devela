@@ -8,7 +8,7 @@
 //   - Array
 
 use crate::{
-    data::{DataCollection, DataError as E, DataResult as Result},
+    data::{DataCollection, DataError::OutOfBounds, DataResult as Result},
     mem::Storage,
 };
 
@@ -42,14 +42,14 @@ impl<T, const LEN: usize, S: Storage> DataArray for crate::data::Array<T, LEN, S
         if let Some(e) = self.get(idx) {
             Ok(e)
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
     fn array_mut_get(&mut self, idx: usize) -> Result<&mut <Self as DataCollection>::Element> {
         if let Some(e) = self.get_mut(idx) {
             Ok(e)
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
     fn array_set(&mut self, idx: usize, value: <Self as DataCollection>::Element) -> Result<()> {
@@ -57,7 +57,7 @@ impl<T, const LEN: usize, S: Storage> DataArray for crate::data::Array<T, LEN, S
             *e = value;
             Ok(())
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
     fn array_set_ref(&mut self, idx: usize, value: &<Self as DataCollection>::Element) -> Result<()>
@@ -68,7 +68,7 @@ impl<T, const LEN: usize, S: Storage> DataArray for crate::data::Array<T, LEN, S
             *e = value.clone();
             Ok(())
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
 }
@@ -80,14 +80,14 @@ impl<T, const LEN: usize> DataArray for [T; LEN] {
         if let Some(e) = self.get(idx) {
             Ok(e)
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
     fn array_mut_get(&mut self, idx: usize) -> Result<&mut <Self as DataCollection>::Element> {
         if let Some(e) = self.get_mut(idx) {
             Ok(e)
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
     fn array_set(&mut self, idx: usize, value: <Self as DataCollection>::Element) -> Result<()> {
@@ -95,7 +95,7 @@ impl<T, const LEN: usize> DataArray for [T; LEN] {
             *e = value;
             Ok(())
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
     fn array_set_ref(&mut self, idx: usize, value: &<Self as DataCollection>::Element) -> Result<()>
@@ -106,7 +106,7 @@ impl<T, const LEN: usize> DataArray for [T; LEN] {
             *e = value.clone();
             Ok(())
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
 }
@@ -119,14 +119,14 @@ impl<T> DataArray for crate::data::collections::reexports::Vec<T> {
         if let Some(e) = self.get(idx) {
             Ok(e)
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
     fn array_mut_get(&mut self, idx: usize) -> Result<&mut <Self as DataCollection>::Element> {
         if let Some(e) = self.get_mut(idx) {
             Ok(e)
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
     fn array_set(&mut self, idx: usize, value: <Self as DataCollection>::Element) -> Result<()> {
@@ -134,7 +134,7 @@ impl<T> DataArray for crate::data::collections::reexports::Vec<T> {
             *e = value;
             Ok(())
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
     fn array_set_ref(&mut self, idx: usize, value: &<Self as DataCollection>::Element) -> Result<()>
@@ -145,7 +145,7 @@ impl<T> DataArray for crate::data::collections::reexports::Vec<T> {
             *e = value.clone();
             Ok(())
         } else {
-            Err(E::OutOfBounds(Some(idx)))
+            Err(OutOfBounds(Some(idx)))
         }
     }
 }

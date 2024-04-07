@@ -8,10 +8,15 @@
 
 use crate::{
     code::{cfor, unwrap},
-    lex::{helpers::impl_sized_alias, LexError, LexResult as Result},
+    lex::{
+        helpers::impl_sized_alias,
+        LexError::{
+            self, InvalidNul, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds,
+        },
+        LexResult as Result,
+    },
 };
 use core::{fmt, ops::Deref, str::Chars};
-use LexError::{InvalidNul, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds};
 
 #[cfg(feature = "alloc")]
 use crate::_liballoc::{ffi::CString, string::ToString};

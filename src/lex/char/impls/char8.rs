@@ -2,9 +2,9 @@
 
 use super::{Char16, Char24, Char32, Char7, Char8};
 use crate::lex::{
-    char_byte_len, char_is_7bit, char_is_noncharacter, AsciiChar, LexError, LexResult as Result,
+    char_byte_len, char_is_7bit, char_is_noncharacter, AsciiChar, LexError::CharConversion,
+    LexResult as Result,
 };
-use LexError::CharConversion;
 
 impl Char8 {
     /* private helper fns */
