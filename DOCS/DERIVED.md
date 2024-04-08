@@ -6,6 +6,8 @@ This project includes the following derived works:
   as part of the [`Tuple`] trait.
 - A [modified][3] version of [fxhash] by Christopher Breeden, licensed as MIT OR Apache-2.0,
   as the [`HasherFx`], [`HasherFx32`] and [`HasherFx64`] hashers.
+- Adaptation of [pengyhash] v0.2 by Alberto Fajardo, licensed as BSD-2,
+  as the [`hash_pengy`] hasher function.
 - Adaptation of [opt_reduce] by Waffle Lapkin, licensed as MIT,
   as part of the [`ExtOption`] trait.
 - Adaptation of [fmtor] by Tyler Ruckinger, licensed as MIT OR Apache-2.0,
@@ -39,6 +41,8 @@ This project includes the following derived works:
 [2]: https://github.com/andamira/devela/blob/main/src/data/collections/tuple/MODIFICATIONS.md
 [fxhash]: https://crates.io/crates/fxhash/0.2.1
 [3]: https://github.com/andamira/devela/blob/main/src/data/hash/fx/MODIFICATIONS.md
+[pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
+[`hash_pengy`]: https://docs.rs/devela/latest/devela/data/hash/fn.hash_pengy.html
 [tupl]: https://crates.io/crates/tupl/0.4.0
 [opt_reduce]: https://crates.io/crates/opt_reduce/1.0.0
 [fmtor]: https://crates.io/crates/fmtor/0.1.2

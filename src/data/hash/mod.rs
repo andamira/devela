@@ -6,9 +6,10 @@
 //
 
 mod fx;
+mod pengy;
 mod reexports;
 #[allow(unused_imports)]
-pub use {fx::*, reexports::*};
+pub use {fx::*, pengy::*, reexports::*};
 
 pub(crate) mod all {
     #[doc(inline)]
