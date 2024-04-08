@@ -13,7 +13,7 @@ use crate::{
         },
         Array, Stack,
     },
-    mem::Bare,
+    mem::{mem_size_of, Bare},
     num::Compare,
 };
 #[cfg(feature = "alloc")]
@@ -60,7 +60,9 @@ macro_rules! impl_stack {
             /// current number of elements.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds(Some(NEW_CAP))`][OutOfBounds] if `NEW_CAP < self.len()`.
+            /// Returns [`OutOfBounds(Some(NEW_CAP))`][OutOfBounds] if `NEW_CAP < self.len()`,
+            #[doc = "if `CAP > `[`" $IDX "::MAX`]"]
+            /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
             /// ```
@@ -74,7 +76,9 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Bare>> {
-                if NEW_CAP < (self.len() as usize) {
+                if NEW_CAP < (self.len() as usize) ||
+                    NEW_CAP > $IDX::MAX as usize ||
+                    NEW_CAP > isize::MAX as usize / mem_size_of::<T>() {
                     Err(OutOfBounds(Some(NEW_CAP)))
                 } else {
                     let old_arr: [T; CAP] = self.data.into_array();
@@ -139,7 +143,9 @@ macro_rules! impl_stack {
             /// current number of elements.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds(Some(NEW_CAP))`][OutOfBounds] if `NEW_CAP < self.len()`.
+            /// Returns [`OutOfBounds(Some(NEW_CAP))`][OutOfBounds] if `NEW_CAP < self.len()`,
+            #[doc = "if `CAP > `[`" $IDX "::MAX`]"]
+            /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
             /// ```
@@ -153,7 +159,9 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Boxed>> {
-                if NEW_CAP < (self.len as usize) {
+                if NEW_CAP < (self.len() as usize) ||
+                    NEW_CAP > $IDX::MAX as usize ||
+                    NEW_CAP > isize::MAX as usize / mem_size_of::<T>() {
                     Err(OutOfBounds(Some(NEW_CAP)))
                 } else {
                     let old_arr = self.data.into_vec();
@@ -223,7 +231,9 @@ macro_rules! impl_stack {
             /// current number of elements.
             ///
             /// # Errors
-            /// Returns [`OutOfBounds(Some(NEW_CAP))`][OutOfBounds] if `NEW_CAP < self.len()`.
+            /// Returns [`OutOfBounds(Some(NEW_CAP))`][OutOfBounds] if `NEW_CAP < self.len()`,
+            #[doc = "if `CAP > `[`" $IDX "::MAX`]"]
+            /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
             /// ```
@@ -236,7 +246,9 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_resize_default<const NEW_CAP: usize>(self) -> Own<Result<Stack<T, NEW_CAP, $IDX, Bare>>, ()> {
-                if NEW_CAP < (self.len as usize) {
+                if NEW_CAP < (self.len as usize) ||
+                    NEW_CAP > $IDX::MAX as usize ||
+                    NEW_CAP > isize::MAX as usize / mem_size_of::<T>() {
                     Own::empty(Err(OutOfBounds(Some(NEW_CAP))))
                 } else {
                     let old_arr: [T; CAP] = self.data.into_array_const();
@@ -305,7 +317,7 @@ macro_rules! impl_stack {
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX:camel "::MAX`]."]
+            #[doc = "Returns [`NotEnoughSpace`] if `CAP > `[`" $NEW_IDX:camel "::MAX`]."]
             ///
             /// # Examples
             /// ```
@@ -318,10 +330,10 @@ macro_rules! impl_stack {
             #[cfg(feature = $new_cap)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $new_cap)))]
             pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, CAP, $NEW_IDX, Bare>> {
-                if CAP <= $NEW_IDX::MAX as usize {
-                    Ok(Stack { data: self.data, len: self.len as $NEW_IDX })
-                } else {
+                if CAP > $NEW_IDX::MAX as usize {
                     Err(NotEnoughSpace(Some($NEW_IDX::MAX as usize - CAP)))
+                } else {
+                    Ok(Stack { data: self.data, len: self.len as $NEW_IDX })
                 }
             }
             )+
@@ -335,7 +347,7 @@ macro_rules! impl_stack {
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX:camel "::MAX`]."]
+            #[doc = "Returns [`NotEnoughSpace`] if `CAP > `[`" $NEW_IDX:camel "::MAX`]."]
             ///
             /// # Examples
             /// ```
@@ -348,10 +360,10 @@ macro_rules! impl_stack {
             #[cfg(feature = $new_cap)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $new_cap)))]
             pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, CAP, $NEW_IDX, Boxed>> {
-                if CAP <= $NEW_IDX::MAX as usize {
-                    Ok(Stack { data: self.data, len: self.len as $NEW_IDX })
-                } else {
+                if CAP > $NEW_IDX::MAX as usize {
                     Err(NotEnoughSpace(Some($NEW_IDX::MAX as usize - CAP)))
+                } else {
+                    Ok(Stack { data: self.data, len: self.len as $NEW_IDX })
                 }
             }
             )+
@@ -363,7 +375,7 @@ macro_rules! impl_stack {
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX:camel "::MAX`]."]
+            #[doc = "Returns [`NotEnoughSpace`] if `CAP > `[`" $NEW_IDX:camel "::MAX`]."]
             ///
             /// # Examples
             /// ```
@@ -379,10 +391,10 @@ macro_rules! impl_stack {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $new_cap)))]
             pub const fn [<own_to_idx_ $NEW_IDX>](self)
                 -> Own<Result<Stack<T, CAP, $NEW_IDX, Bare>>, ()> {
-                if CAP <= $NEW_IDX::MAX as usize {
-                    Own::empty(Ok(Stack { data: self.data, len: self.len as $NEW_IDX }))
-                } else {
+                if CAP > $NEW_IDX::MAX as usize {
                     Own::empty(Err(NotEnoughSpace(Some($NEW_IDX::MAX as usize - CAP))))
+                } else {
+                    Own::empty(Ok(Stack { data: self.data, len: self.len as $NEW_IDX }))
                 }
             }
             )+

@@ -10,7 +10,7 @@ use crate::{
         },
         Array, Stack, StackIter,
     },
-    mem::{Bare, Storage},
+    mem::{mem_size_of, Bare, Storage},
 };
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};
@@ -45,7 +45,8 @@ macro_rules! impl_stack {
             /// cloning `element` to fill the remaining free data.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
+            /// or if `CAP > isize::MAX / mem_size_of::<T>()`.
             ///
             /// # Examples
             /// ```
@@ -54,7 +55,7 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub fn new(element: T) -> Result<Self> {
-                if CAP > $IDX::MAX as usize {
+                if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / mem_size_of::<T>() {
                     Err(OutOfBounds(Some(CAP)))
                 } else {
                     Ok(Self {
@@ -71,7 +72,8 @@ macro_rules! impl_stack {
             /// copying `element` to fill the remaining free data, in compile-time.
             ///
             /// # Errors
-            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]."]
+            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
+            /// or if `CAP > isize::MAX / mem_size_of::<T>()`.
             ///
             /// # Examples
             /// ```
@@ -81,11 +83,11 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn new_copied(element: T) -> Result<Self> {
-                if CAP <= $IDX::MAX as usize {
+                if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / mem_size_of::<T>() {
+                    Err(OutOfBounds(Some(CAP)))
+                } else {
                     let data = Array::with_copied(element);
                     Ok(Self { data, len: 0 })
-                } else {
-                    Err(OutOfBounds(Some(CAP)))
                 }
             }
         }
@@ -96,6 +98,7 @@ macro_rules! impl_stack {
         impl<T: Clone, const CAP: usize> Stack<T, CAP, $IDX, Boxed> {
             /// Returns an empty stack, allocated in the heap,
             /// cloning `element` to fill the remaining free data.
+            ///
             /// # Examples
             /// ```
             #[doc = "# use devela::all::{Boxed, Stack" $IDX:camel "};"]
@@ -113,6 +116,7 @@ macro_rules! impl_stack {
         // S:Bare
         impl<T, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             /// Converts an array into a [`full`][Self::is_full] stack.
+            ///
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]
@@ -130,6 +134,7 @@ macro_rules! impl_stack {
 
         impl<T, const CAP: usize, S: Storage> Stack<T, CAP, $IDX, S> {
             /// Converts an array into a [`full`][Self::is_full] stack.
+            ///
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]

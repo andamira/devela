@@ -13,7 +13,7 @@ use crate::{
         },
         Array, Destaque, DestaqueIter,
     },
-    mem::{Bare, Storage},
+    mem::{mem_size_of, Bare, Storage},
 };
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};
@@ -47,21 +47,26 @@ macro_rules! impl_destaque {
         impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {
             /// Returns an empty destaque, allocated in the stack,
             /// cloning `element` to fill the remaining free data.
+            ///
+            /// # Errors
+            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
+            /// or if `CAP > isize::MAX / mem_size_of::<T>()`.
+            ///
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
             pub fn new(element: T) -> Result<Self> {
-                if CAP <= $IDX::MAX as usize {
+                if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / mem_size_of::<T>() {
+                    Err(OutOfBounds(Some(CAP)))
+                } else {
                     Ok(Self {
                         data: Array::<T, CAP, Bare>::with_cloned(element),
                         front: 0,
                         back: 0,
                         len: 0,
                     })
-                } else {
-                    Err(OutOfBounds(Some(CAP)))
                 }
             }
         }
@@ -70,6 +75,11 @@ macro_rules! impl_destaque {
         impl<T: Copy, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {
             /// Returns an empty destaque, allocated in the stack,
             /// copying `element` to fill the remaining free data, in compile-time.
+            ///
+            /// # Errors
+            #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
+            /// or if `CAP > isize::MAX / mem_size_of::<T>()`.
+            ///
             /// # Examples
             /// ```
             #[doc = "# use devela::all::{Destaque" $IDX:camel ", unwrap};"]
@@ -77,11 +87,11 @@ macro_rules! impl_destaque {
                 "<i32, 16> = unwrap![ok Destaque" $IDX:camel "::new_copied(0)];"]
             /// ```
             pub const fn new_copied(element: T) -> Result<Self> {
-                if CAP <= $IDX::MAX as usize {
+                if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / mem_size_of::<T>() {
+                    Err(OutOfBounds(Some(CAP)))
+                } else {
                     let data = Array::with_copied(element);
                     Ok(Self { data, front: 0, back: 0, len: 0 })
-                } else {
-                    Err(OutOfBounds(Some(CAP)))
                 }
             }
         }
@@ -92,6 +102,7 @@ macro_rules! impl_destaque {
         impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Boxed> {
             /// Returns an empty destaque, allocated in the heap,
             /// cloning `element` to fill the remaining free data.
+            ///
             /// # Examples
             /// ```
             #[doc = "# use devela::all::{Boxed, Destaque" $IDX:camel "};"]
@@ -109,7 +120,8 @@ macro_rules! impl_destaque {
 
         // S:Bare
         impl<T, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {
-            /// Converts an array into a [`full`][Self::is_full] stack.
+            /// Converts an array into a [`full`][Self::is_full] destaque.
+            ///
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
@@ -127,6 +139,7 @@ macro_rules! impl_destaque {
 
         impl<T, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Converts an array into a [`full`][Self::is_full] destaque.
+            ///
             /// # Examples
             /// ```
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
