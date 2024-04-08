@@ -4,6 +4,8 @@ This project includes the following derived works:
   in the [`data::dst`] module.
 - A [modified][2] version of [tupl] by *Dragoteryx*, licensed as MIT or Apache-2.0,
   as part of the [`Tuple`] trait.
+- A [modified][3] version of [fxhash] by Christopher Breeden, licensed as MIT OR Apache-2.0,
+  as the [`HasherFx`], [`HasherFx32`] and [`HasherFx64`] hashers.
 - Adaptation of [opt_reduce] by Waffle Lapkin, licensed as MIT,
   as part of the [`ExtOption`] trait.
 - Adaptation of [fmtor] by Tyler Ruckinger, licensed as MIT OR Apache-2.0,
@@ -35,6 +37,8 @@ This project includes the following derived works:
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
 [`data::dst`]: https://docs.rs/devela/latest/devela/data/dst/index.html
 [2]: https://github.com/andamira/devela/blob/main/src/data/collections/tuple/MODIFICATIONS.md
+[fxhash]: https://crates.io/crates/fxhash/0.2.1
+[3]: https://github.com/andamira/devela/blob/main/src/data/hash/fx/MODIFICATIONS.md
 [tupl]: https://crates.io/crates/tupl/0.4.0
 [opt_reduce]: https://crates.io/crates/opt_reduce/1.0.0
 [fmtor]: https://crates.io/crates/fmtor/0.1.2

@@ -5,15 +5,13 @@
 //! [`hash`]: std::hash
 //
 
-/* always compiled */
-
+mod fx;
 mod reexports;
 #[allow(unused_imports)]
-pub use reexports::*;
+pub use {fx::*, reexports::*};
 
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::reexports::*;
+    pub use super::{fx::*, reexports::*};
 }
