@@ -15,10 +15,9 @@
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 use crate::code::{paste, ConstDefault};
 #[cfg(all(feature = "_-non_specific_any-_", feature = "mem_bit"))]
-use crate::{
-    _libcore::{fmt, num::*, str::FromStr},
-    mem::{bit_size, ByteSize},
-};
+use crate::mem::{bit_size, ByteSize};
+#[cfg(feature = "_-non_specific_any-_")]
+use core::{fmt, num::*, str::FromStr};
 
 macro_rules! impl_non_specific {
     // Entry point, generates NonSpecific structures for each sign and size.
