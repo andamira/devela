@@ -8,14 +8,11 @@
 //! homogeneous data structures.
 //
 
-/* always compiled */
-
 mod ext;
 #[allow(unused_imports)]
 pub use ext::*;
 
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::ext::*;

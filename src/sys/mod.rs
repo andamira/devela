@@ -18,14 +18,10 @@
 // safety:
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
-/* always compiled */
-
 mod arch;
 mod ffi;
 mod io;
 pub use {arch::*, ffi::*, io::*};
-
-/* feature-gated */
 
 #[cfg(feature = "log")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "log")))]
@@ -41,12 +37,10 @@ mod path;
 pub use path::*;
 
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{arch::all::*, ffi::all::*, io::all::*};
 
-    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "log")]
     #[allow(unused_imports)]

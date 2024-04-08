@@ -14,8 +14,6 @@
 //! It re-exports the error and result types defined in other modules.
 //
 
-/* always compiled */
-
 mod ext_result;
 mod mismatch;
 mod never;
@@ -31,8 +29,6 @@ pub use {
     unwrap::*, value_quant::*,
 };
 
-/* feature-gated */
-
 #[cfg(not(feature = "std"))]
 mod define_no_std_error;
 #[allow(unused_imports)]
@@ -40,7 +36,6 @@ mod define_no_std_error;
 pub use define_no_std_error::*;
 
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
@@ -48,7 +43,6 @@ pub(crate) mod all {
         unwrap::*, value_quant::*,
     };
 
-    // feature-gated
     #[doc(inline)]
     #[cfg(not(feature = "std"))]
     pub use super::define_no_std_error::*;

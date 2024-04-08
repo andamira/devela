@@ -14,8 +14,6 @@
 // safety:
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
-/* always compiled */
-
 mod array;
 mod bit;
 mod error;
@@ -29,8 +27,6 @@ pub mod iter;
 #[doc(no_inline)]
 pub use {collections::*, hash::*, iter::*};
 
-/* feature-gated */
-
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_dyn"))]
 pub mod dst;
@@ -39,14 +35,12 @@ pub mod dst;
 pub use dst::*;
 
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
         array::*, bit::all::*, collections::all::*, error::*, hash::all::*, iter::all::*, sort::*,
     };
 
-    // feature-gated
     #[doc(inline)]
     #[allow(unused_imports)]
     #[cfg(all(not(feature = "safe_data"), feature = "unsafe_dyn"))]

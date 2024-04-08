@@ -3,8 +3,6 @@
 //! Abstract data types
 //
 
-/* always compiled */
-
 mod array;
 mod collection;
 mod queues;

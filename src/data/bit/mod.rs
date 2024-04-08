@@ -3,8 +3,6 @@
 //! Bit-focused types and traits.
 //
 
-/* always compiled */
-
 mod r#trait;
 mod wrapper;
 #[allow(unused_imports)]

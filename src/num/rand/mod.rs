@@ -13,15 +13,12 @@
 //! [`RngCore`]: https://docs.rs/rand_core/latest/rand_core/trait.RngCore.html
 //
 
-/* always compiled */
-
 mod xabc;
 mod xorshift;
 mod xyza8;
 pub use {xabc::*, xorshift::*, xyza8::*};
 
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     pub use super::{xabc::*, xorshift::*, xyza8::*};
 }

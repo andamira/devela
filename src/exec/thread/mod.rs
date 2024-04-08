@@ -5,8 +5,6 @@
 //! [`thread`]: std::thread
 //
 
-/* always compiled */
-
 mod reexports;
 mod sleep;
 
@@ -14,7 +12,6 @@ mod sleep;
 pub use {reexports::*, sleep::*};
 
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{reexports::*, sleep::*};

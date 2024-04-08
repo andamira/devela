@@ -13,8 +13,6 @@
 // safety:
 #![cfg_attr(feature = "safe_lex", forbid(unsafe_code))]
 
-/* always compiled */
-
 mod ascii;
 mod char;
 mod error;
@@ -26,8 +24,6 @@ mod string_u;
 #[allow(unused_imports)]
 pub use {ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, reexports::*, string_u::*};
 
-/* feature-gated */
-
 #[cfg(feature = "lex")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
 mod egc;
@@ -38,14 +34,12 @@ mod nonul;
 pub use {egc::all::*, nonul::*};
 
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
         ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, reexports::*, string_u::*,
     };
 
-    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "lex")]
     #[allow(unused_imports)]

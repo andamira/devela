@@ -10,8 +10,6 @@
 // safety:
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
-/* always compiled */
-
 mod _private;
 #[allow(unused_imports)]
 pub(crate) use _private::*;
@@ -31,8 +29,6 @@ pub mod rand;
 #[doc(no_inline)]
 pub use {niche::all::*, rand::all::*};
 
-/* feature-gated */
-
 #[cfg(feature = "num_int")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
 mod frac;
@@ -49,7 +45,6 @@ pub mod geom;
 pub use geom::*;
 
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
@@ -57,7 +52,6 @@ pub(crate) mod all {
         rand::all::*, sign::*,
     };
 
-    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "num_geom")]
     #[allow(unused_imports)]

@@ -1,23 +1,15 @@
 // devela::_deps
 //
-//!
-//! # Dependencies
-//!
-//! Several minimal optional dependencies are included, providing useful
-//! functionality missing from the standard library.
+//! Library dependencies.
 //
 
 #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
 
 use crate::code::reexport;
 
-/* always compiled */
-
 reexport! { crate "bytemuck" | bytemuck,
     doc: "Small utilities for casting between plain data types."
 }
-
-/* feature-gated */
 
 reexport! { optional_crate "atomic" | atomic,
     doc: "A generic atomic wrapper type."

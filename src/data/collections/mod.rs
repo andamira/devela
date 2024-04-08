@@ -8,16 +8,12 @@
 //! [`vec`]: std::vec
 //
 
-/* always compiled */
-
 mod array;
 mod reexports;
 mod traits;
 mod tuple; // Tuple, TupleFmt
 #[allow(unused_imports)]
 pub use {array::all::*, reexports::*, traits::*, tuple::*};
-
-/* feature-gated */
 
 #[cfg(feature = "_-destaque_any-_")]
 mod destaque;
@@ -36,12 +32,10 @@ mod vec;
 pub use vec::*;
 
 pub(crate) mod all {
-    // always compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{array::all::*, reexports::*, traits::*, tuple::*};
 
-    // feature-gated
     #[cfg(feature = "_-destaque_any-_")]
     pub use super::destaque::all::*;
     #[cfg(feature = "_-stack_any-_")]
