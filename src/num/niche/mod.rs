@@ -3,10 +3,10 @@
 //! Numeric types with niche memory layout optimization.
 //
 
-mod non_specific;
+mod non_value;
 mod reexports;
 #[allow(unused_imports)]
-pub use {non_specific::*, reexports::*};
+pub use {non_value::*, reexports::*};
 
 #[cfg(all(feature = "num_niche_range", feature = "_i8", test))]
 mod tests;
@@ -24,7 +24,7 @@ pub use {non_range::*, range::*};
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{non_specific::*, reexports::*};
+    pub use super::{non_value::*, reexports::*};
 
     #[doc(inline)]
     #[allow(unused_imports)]

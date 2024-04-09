@@ -6,10 +6,10 @@
 // - Char* struct definitions
 // - UnicodeScalar trait definition
 
-pub(super) use crate::num::{NonEdgeU8, NonSpecificU16};
+pub(super) use crate::num::{NonEdgeU8, NonValueU16};
 
 // This is a surrogate UTF-16 code point that can't ever be a unicode scalar.
-pub(super) type NonSurrogateU16 = NonSpecificU16<0xDFFF>;
+pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 
 /* public types */
 

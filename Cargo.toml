@@ -82,7 +82,7 @@ all = [ # enables all the modules and submodules
 code = []
 data = []
 exec = ["bytemuck/zeroable_atomics"]
-lex = ["_non_specific_u8", "_non_specific_u16"]
+lex = ["_non_value_u8", "_non_value_u16"]
 mem = [
 	"mem_bit",
 	]
@@ -185,7 +185,7 @@ _min_docs = [ # the minimum capabilities to document all methods
 	"_bit_u8",
 	"_stack_u8", "_destaque_u8",
 	"_float_f32", "_int_u8",
-	"_non_specific_u8", "_non_range_u8", "_range_u8",
+	"_non_value_u8", "_non_range_u8", "_range_u8",
 ]
 _max = [ # the maximum capabilities
 	"_bit_all",
@@ -263,28 +263,28 @@ _bit_all = [
 # private, refective:
 _-bit_any-_ = []
 
-# Specific niche implementations for `NonSpecific*`, `NonEdge*`, `NonRange*`, `Range*`.
+# Specific niche implementations for `NonValue*`, `NonEdge*`, `NonRange*`, `Range*`.
 _niche_all = [
-	"_non_specific_all", "_non_range_all", "_range_all",
+	"_non_value_all", "_non_range_all", "_range_all",
 	]
-	_non_specific_all = [
-		"_non_specific_i8", "_non_specific_i16", "_non_specific_i32",
-		"_non_specific_i64", "_non_specific_i128", "_non_specific_isize",
-		"_non_specific_u8", "_non_specific_u16", "_non_specific_u32",
-		"_non_specific_u64", "_non_specific_u128", "_non_specific_usize",
+	_non_value_all = [
+		"_non_value_i8", "_non_value_i16", "_non_value_i32",
+		"_non_value_i64", "_non_value_i128", "_non_value_isize",
+		"_non_value_u8", "_non_value_u16", "_non_value_u32",
+		"_non_value_u64", "_non_value_u128", "_non_value_usize",
 		]
-		_non_specific_i8 = ["_-non_specific_any-_"]
-		_non_specific_u8 = ["_-non_specific_any-_"]
-		_non_specific_i16 = ["_-non_specific_any-_"]
-		_non_specific_u16 = ["_-non_specific_any-_"]
-		_non_specific_i32 = ["_-non_specific_any-_"]
-		_non_specific_u32 = ["_-non_specific_any-_"]
-		_non_specific_i64 = ["_-non_specific_any-_"]
-		_non_specific_u64 = ["_-non_specific_any-_"]
-		_non_specific_i128 = ["_-non_specific_any-_"]
-		_non_specific_u128 = ["_-non_specific_any-_"]
-		_non_specific_isize = ["_-non_specific_any-_"]
-		_non_specific_usize = ["_-non_specific_any-_"]
+		_non_value_i8 = ["_-non_value_any-_"]
+		_non_value_u8 = ["_-non_value_any-_"]
+		_non_value_i16 = ["_-non_value_any-_"]
+		_non_value_u16 = ["_-non_value_any-_"]
+		_non_value_i32 = ["_-non_value_any-_"]
+		_non_value_u32 = ["_-non_value_any-_"]
+		_non_value_i64 = ["_-non_value_any-_"]
+		_non_value_u64 = ["_-non_value_any-_"]
+		_non_value_i128 = ["_-non_value_any-_"]
+		_non_value_u128 = ["_-non_value_any-_"]
+		_non_value_isize = ["_-non_value_any-_"]
+		_non_value_usize = ["_-non_value_any-_"]
 	_non_range_all = [
 		"_non_range_i8", "_non_range_i16", "_non_range_i32",
 		"_non_range_i64", "_non_range_i128", "_non_range_isize",
@@ -321,7 +321,7 @@ _niche_all = [
 		_range_usize = ["_-range_any-_"]
 # private, refective:
 _-niche_any-_ = []
-	_-non_specific_any-_ = ["_-niche_any-_"]
+	_-non_value_any-_ = ["_-niche_any-_"]
 	_-non_range_any-_ = ["_-niche_any-_"]
 	_-range_any-_ = ["_-niche_any-_"]
 

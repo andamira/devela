@@ -1,4 +1,4 @@
-// devela::num::niche::non_specific
+// devela::num::niche::non_value
 //
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //!
@@ -8,37 +8,37 @@
 #![allow(unused)]
 
 #[cfg(all(
-    feature = "_-non_specific_any-_",
+    feature = "_-non_value_any-_",
     feature = "unsafe_niche",
     not(feature = "safe_num")
 ))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 use crate::code::{paste, ConstDefault};
-#[cfg(all(feature = "_-non_specific_any-_", feature = "mem_bit"))]
+#[cfg(all(feature = "_-non_value_any-_", feature = "mem_bit"))]
 use crate::mem::{bit_size, ByteSize};
-#[cfg(feature = "_-non_specific_any-_")]
+#[cfg(feature = "_-non_value_any-_")]
 use core::{fmt, num::*, str::FromStr};
 
-macro_rules! impl_non_specific {
-    // Entry point, generates NonSpecific structures for each sign and size.
+macro_rules! impl_non_value {
+    // Entry point, generates NonValue structures for each sign and size.
     ($name:ident) => {
-        impl_non_specific![$name, MIN, "A signed", i,
-        8:"_non_specific_i8", 16:"_non_specific_i16", 32:"_non_specific_i32",
-        64:"_non_specific_i64", 128:"_non_specific_i128", size:"_non_specific_isize"];
-        impl_non_specific![$name, MAX, "An unsigned", u,
-        8:"_non_specific_u8", 16:"_non_specific_u16", 32:"_non_specific_u32",
-        64:"_non_specific_u64", 128:"_non_specific_u128", size:"_non_specific_usize"];
+        impl_non_value![$name, MIN, "A signed", i,
+        8:"_non_value_i8", 16:"_non_value_i16", 32:"_non_value_i32",
+        64:"_non_value_i64", 128:"_non_value_i128", size:"_non_value_isize"];
+        impl_non_value![$name, MAX, "An unsigned", u,
+        8:"_non_value_u8", 16:"_non_value_u16", 32:"_non_value_u32",
+        64:"_non_value_u64", 128:"_non_value_u128", size:"_non_value_usize"];
     };
     ($name:ident, $abs:ident, $doc:literal, $s:ident, $( $b:tt: $cap:literal ),+) => {
-        $( impl_non_specific![@$name, $abs, $doc, $s, $b : $cap]; )+
+        $( impl_non_value![@$name, $abs, $doc, $s, $b : $cap]; )+
     };
 
-    // $name: the base name of the new type. E.g. NonSpecific.
+    // $name: the base name of the new type. E.g. NonValue.
     // $abs:  the absolute maximum value constant for this type
     // $doc:  the specific beginning of the documentation.
     // $s:    the sign identifier: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
-    // $cap:  the capability feature that enables the given implementation. E.g "_non_specific_i8".
+    // $cap:  the capability feature that enables the given implementation. E.g "_non_value_i8".
     (@$name:ident, $abs:ident, $doc:literal, $s:ident, $b:tt : $cap:literal) => { paste! {
         /* definition */
 
@@ -67,7 +67,7 @@ macro_rules! impl_non_specific {
         #[doc = $doc " integer that is known not to equal its edgemost value ([`"
             $abs "`][" [<$s $b>] "::" $abs "])."]
         ///
-        /// Unlike the `NonSpecific*` types in general, this type alias implements
+        /// Unlike the `NonValue*` types in general, this type alias implements
         /// the [`Default`] and [`ConstDefault`][crate::code::ConstDefault] traits.
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -264,4 +264,4 @@ macro_rules! impl_non_specific {
         }
     }};
 }
-impl_non_specific![NonSpecific];
+impl_non_value![NonValue];

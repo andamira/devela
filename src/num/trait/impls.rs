@@ -126,14 +126,14 @@ macro_rules! impl_num {
             impl_num![op2_get_checked Self => add, sub, div, rem];
         }
 
-        // NonSpecificI*
+        // NonValueI*
         #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))]
         #[cfg_attr(feature = "nightly_doc",
             doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))))]
-        impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
+        impl<const V: $p> Num for [<NonValue $p:camel>]<V> {
             type Inner = $p;
-            type Out =  [<NonSpecific $p:camel>]<V>;
-            type Rhs =  [<NonSpecific $p:camel>]<V>;
+            type Out =  [<NonValue $p:camel>]<V>;
+            type Rhs =  [<NonValue $p:camel>]<V>;
             impl_num![custom_i_body];
         }
 
@@ -266,15 +266,15 @@ macro_rules! impl_num {
             fn num_ref_abs(&self) -> Result<Self> { Ok(*self) }
         }
 
-        // NonSpecificU*
+        // NonValueU*
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         #[cfg(feature = "num_niche_impls")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_niche_impls")))]
-        impl<const V: $p> Num for [<NonSpecific $p:camel>]<V> {
+        impl<const V: $p> Num for [<NonValue $p:camel>]<V> {
             type Inner = $p;
-            type Out = [<NonSpecific $p:camel>]<V>;
-            type Rhs = [<NonSpecific $p:camel>]<V>;
+            type Out = [<NonValue $p:camel>]<V>;
+            type Rhs = [<NonValue $p:camel>]<V>;
             impl_num![custom_u_body]; }
 
         // NonRangeU*
@@ -370,7 +370,7 @@ macro_rules! impl_num {
         }}
     };
 
-    // Inner helpers for the identical body of NonSpecific, NonRange, Range
+    // Inner helpers for the identical body of NonValue, NonRange, Range
     // with a common body and different ops for signed and unsigned
     // ============================================================================================
     (custom_i_body) => {
@@ -482,7 +482,7 @@ macro_rules! impl_num {
         }
     }};
 
-    /* ops that call .get().checked() for: NonZero*, NonSpecific*, (Non)Range* */
+    /* ops that call .get().checked() for: NonZero*, NonValue*, (Non)Range* */
 
     (op1_get_checked $Self:ty => $($op:ident),+) => {
         $( impl_num![@op1_get_checked $Self => $op]; )+ };
