@@ -28,6 +28,7 @@ include = [
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
+build = "tools/build.rs"
 publish = true
 
 
