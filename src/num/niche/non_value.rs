@@ -7,17 +7,14 @@
 
 #![allow(unused)]
 
-#[cfg(all(
-    feature = "_-non_value_any-_",
-    feature = "unsafe_niche",
-    not(feature = "safe_num")
-))]
+#[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
-use crate::code::{paste, ConstDefault};
-#[cfg(all(feature = "_-non_value_any-_", feature = "mem_bit"))]
+#[cfg(feature = "mem_bit")]
 use crate::mem::{bit_size, ByteSize};
-#[cfg(feature = "_-non_value_any-_")]
-use core::{fmt, num::*, str::FromStr};
+use crate::{
+    _libcore::{fmt, num::*, str::FromStr},
+    code::{paste, ConstDefault},
+};
 
 macro_rules! impl_non_value {
     // Entry point, generates NonValue structures for each sign and size.

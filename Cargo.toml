@@ -89,12 +89,11 @@ mem = [
 	]
 	mem_bit = ["_-mem-_"]
 num = [
-	"num_float", "num_geom", "num_int", "num_niche_range"
+	"num_float", "num_geom", "num_int",
 	]
 	num_float = ["_-num-_"] # Float, ExtFloat.
 	num_geom = ["_-num-_"] # geometric types and operations.
 	num_int = ["_-num-_"] # Frac, Int, NumInt, NumRefInt.
-	num_niche_range = ["_-num-_"] # Range* and NonRange* niche types.
 rend = [
 	"rend_audio", "rend_color", "rend_image"
 	]
