@@ -14,8 +14,6 @@
 // safety:
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
-/* feature-gated */
-
 #[cfg(not(feature = "std"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
 mod define_no_std_io;
@@ -29,7 +27,6 @@ pub use define_no_std_io::*;
 pub use reexport_std::*;
 
 pub(crate) mod all {
-    // feature-gated
     #[doc(inline)]
     #[cfg(not(feature = "std"))]
     pub use super::define_no_std_io::*;

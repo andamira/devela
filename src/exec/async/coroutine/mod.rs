@@ -3,8 +3,6 @@
 //! Coroutine implementations.
 //
 
-/* feature-gated */
-
 #[cfg(feature = "nightly_coro")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_coro")))]
 mod reexports;
@@ -22,7 +20,6 @@ pub use reexports::*;
 pub use coro::*;
 
 pub(crate) mod all {
-    // feature-gated
     #[doc(inline)]
     #[allow(unused_imports)]
     #[cfg(feature = "nightly_coro")]

@@ -4,7 +4,6 @@
 //! `std::`[`path`][std::path].
 //
 
-/* feature-gated */
 #[cfg(feature = "sys")]
 mod project;
 #[allow(unused_imports)]
@@ -12,7 +11,6 @@ mod project;
 pub use project::*;
 
 pub(crate) mod all {
-    // feature-gated
     #[doc(inline)]
     #[allow(unused_imports)]
     #[cfg(feature = "sys")]

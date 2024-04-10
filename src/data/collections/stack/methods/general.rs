@@ -21,7 +21,7 @@ macro_rules! impl_stack {
         impl_stack![u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
     };
 
-    // $IDX : the index type. E.g. u8, usize
+    // $IDX:  the index type. E.g. u8, usize
     // $cap:  the capability feature that enables the given implementation. E.g "_stack_u8".
     ($( $IDX:ty: $cap:literal ),+) => {
         $(

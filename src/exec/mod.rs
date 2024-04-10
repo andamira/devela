@@ -13,8 +13,6 @@
 // safety:
 #![cfg_attr(feature = "safe_exec", forbid(unsafe_code))]
 
-/* always-compiled */
-
 mod r#async;
 mod sync;
 mod thread;
@@ -22,7 +20,6 @@ mod thread;
 pub use {r#async::all::*, sync::all::*, thread::all::*};
 
 pub(crate) mod all {
-    // always-compiled
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{r#async::all::*, sync::all::*, thread::all::*};

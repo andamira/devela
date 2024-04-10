@@ -192,6 +192,8 @@ macro_rules! custom_impls {
             }
 
             /// The euclidean division.
+            // NOTE: [Floating point modulo producing incorrect
+            // computations](https://github.com/rust-lang/rust/issues/107904)
             #[inline] #[must_use]
             pub fn div_euclid(self, other: $f) -> Float<$f> {
                 let q = (self / other).trunc();
@@ -202,7 +204,9 @@ macro_rules! custom_impls {
                 }
             }
 
-            /// The least nonnegative remainder of `self` % `other`.
+            /// The least non-negative remainder of `self` % `other`.
+            // NOTE: [div_euclid, rem_euclid yield inconsistent
+            // results](https://github.com/rust-lang/rust/issues/111405)
             #[inline] #[must_use]
             pub fn rem_euclid(self, other: $f) -> Float<$f> {
                 let r = self % other;

@@ -3,8 +3,6 @@
 //! Image formats and manipulation.
 //
 
-/* feature-gated */
-
 #[cfg(feature = "rend")]
 mod pnm;
 

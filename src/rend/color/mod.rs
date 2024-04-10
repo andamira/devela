@@ -3,8 +3,6 @@
 //! Chromatic functionality.
 //
 
-/* feature-gated */
-
 #[cfg(feature = "rend")]
 mod error;
 #[cfg(feature = "rend")]
@@ -17,7 +15,6 @@ mod r#trait;
 pub use {error::*, fns::*, r#trait::* /*rgb::* */};
 
 pub(crate) mod all {
-    // feature-gated
     #[doc(inline)]
     #[cfg(feature = "rend")]
     pub use super::{error::*, fns::*, r#trait::* /*rgb::* */};
