@@ -2,7 +2,7 @@
 
 [![Crate](https://img.shields.io/crates/v/devela.svg)](https://crates.io/crates/devela)
 [![API](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
-[![MSRV: 1.77.1](https://flat.badgen.net/badge/MSRV/1.77.1/purple)](https://releases.rs/docs/1.77.1/)
+[![MSRV: 1.77.2](https://flat.badgen.net/badge/MSRV/1.77.2/purple)](https://releases.rs/docs/1.77.2/)
 
 A cohesive development foundation.
 
