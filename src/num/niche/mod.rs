@@ -11,13 +11,10 @@ pub use reexports::*;
 mod tests;
 //
 #[cfg(feature = "_-non_range_any-_")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_-non_range_any-_")))]
 mod non_range;
 #[cfg(feature = "_-non_value_any-_")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_-non_value_any-_")))]
 mod non_value;
 #[cfg(feature = "_-range_any-_")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_-range_any-_")))]
 mod range;
 #[cfg(feature = "_-non_range_any-_")]
 pub use non_range::*;

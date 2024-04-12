@@ -18,7 +18,7 @@ use core::mem::{transmute_copy, MaybeUninit};
 // helper macro to impl methods for a Stack with custom index size.
 macro_rules! impl_stack {
     () => {
-        impl_stack![u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize"];
+        impl_stack!(u8:"_stack_u8", u16:"_stack_u16", u32:"_stack_u32", usize:"_stack_usize");
     };
 
     // $IDX:  the index type. E.g. u8, usize
@@ -26,7 +26,7 @@ macro_rules! impl_stack {
     ($( $IDX:ty: $cap:literal ),+) => {
         $(
             #[cfg(feature = $cap )]
-            impl_stack![@$IDX:$cap];
+            impl_stack!(@$IDX:$cap);
         )+
     };
     (@$IDX:ty : $cap:literal) => { crate::code::paste! {

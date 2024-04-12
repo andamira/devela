@@ -9,13 +9,8 @@
 mod error;
 pub use error::*;
 
-#[cfg(feature = "data_bit")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ui_service")))]
 mod cap;
-#[cfg(feature = "data_bit")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ui_service")))]
 mod service;
-#[cfg(feature = "data_bit")]
 pub use {cap::*, service::*};
 
 #[cfg(feature = "ui_term")]
@@ -32,7 +27,6 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[allow(unused_imports)]
-    #[cfg(feature = "data_bit")]
     pub use super::{cap::*, service::*};
 
     #[doc(inline)]
