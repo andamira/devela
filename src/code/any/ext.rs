@@ -116,4 +116,77 @@ pub trait ExtAny: Any + private::Sealed {
     #[must_use]
     #[cfg(feature = "alloc")]
     fn as_any_box(self: Box<Self>) ->  Box<dyn Any> where Self: Sized { self }
+
+    /* downcasts */
+
+    /// Returns some shared reference to the inner value if it is of type `T`.
+    ///
+    /// This method is only needed when not dealing directly with `dyn Any` trait objects,
+    /// since it's [already implemented for `dyn Any`](Any#method.downcast_ref).
+    ///
+    /// # Examples
+    /// ```
+    /// use core::fmt::Display;
+    /// use devela::{Any, DstArray, DstStack, DstValue, ExtAny};
+    ///
+    /// trait Trait: Any + Display {}
+    /// impl Trait for i32 {}
+    /// impl Trait for char {}
+    /// impl Trait for bool {}
+    ///
+    /// # #[cfg(feature = "alloc")]
+    /// // in the heap:
+    /// {
+    ///     # use devela::all::{Box, Vec};
+    ///     let b: Box<dyn Trait> = Box::new(5);
+    ///     if let Some(n) = (*b).downcast_ref::<i32>() {
+    ///         assert_eq![n, &5_i32];
+    ///     }
+    ///
+    ///     let bb: Vec<Box<dyn Trait>> = vec![Box::new(true), Box::new(6), Box::new('c')];
+    ///     for b in bb {
+    ///         if let Some(n) = (*b).downcast_ref::<i32>() {
+    ///             assert_eq![n, &6_i32];
+    ///         }
+    ///     }
+    /// }
+    /// // in the stack:
+    /// {
+    ///     let v = DstValue::<dyn Trait, DstArray<usize, 2>>::new(7, |v| v as _).unwrap();
+    ///     if let Some(n) = (*v).downcast_ref::<i32>() {
+    ///         assert_eq![n, &7_i32];
+    ///     }
+    ///
+    ///     let mut vv = DstStack::<dyn Trait, DstArray<u32, 12>>::new();
+    ///     vv.push(true, |v| v).unwrap();
+    ///     vv.push(8_i32, |v| v).unwrap();
+    ///     vv.push('c', |v| v).unwrap();
+    ///     for v in vv.iter() {
+    ///         if let Some(n) = (*v).downcast_ref::<i32>() {
+    ///             assert_eq![n, &8_i32];
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    #[inline]
+    #[must_use]
+    #[cfg(feature = "unsafe_dyn")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
+    fn downcast_ref<T: 'static>(&self) -> Option<&T> {
+        // SAFETY: We verify T is of the right type before downcasting
+        unsafe { (*self).type_is::<T>().then(|| &*<*const _>::cast(self)) }
+    }
+
+    /// Returns some exclusive reference to the inner value if it is of type `T`.
+    ///
+    /// This method is only needed when not dealing directly with `dyn Any` trait objects,
+    /// since it's [already implemented for `dyn Any`][Any#method.downcast_mut].
+    #[inline]
+    #[must_use]
+    #[cfg(feature = "unsafe_dyn")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
+    fn downcast_mut<T: 'static>(&mut self) -> Option<&mut T> {
+        // SAFETY: We verify T is of the right type before downcasting
+        unsafe { (*self).type_is::<T>().then(|| &mut *<*mut _>::cast(self)) }
+    }
 }
