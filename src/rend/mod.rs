@@ -1,6 +1,6 @@
 // devela::rend
 //
-//! Renderizable multimedia: audio, color, font, image, music, video.
+//! Renderizable multimedia: audio, color, font, image, video.
 //
 
 // warnings:
@@ -11,12 +11,18 @@
 mod error;
 pub use error::*;
 
-#[cfg(feature = "rend")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend")))]
+#[cfg(feature = "rend_color")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_color")))]
 pub mod color;
-#[cfg(feature = "rend")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend")))]
+#[cfg(feature = "rend_font")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_font")))]
+pub mod font;
+#[cfg(feature = "rend_image")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_image")))]
 pub mod image;
+#[cfg(feature = "rend_video")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_video")))]
+pub mod video;
 
 #[doc(no_inline)]
 #[cfg(feature = "rend")]

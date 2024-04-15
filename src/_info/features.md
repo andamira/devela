@@ -53,7 +53,9 @@ Single modules:
 - [`rend`]
     - `rend_audio`
     - `rend_color`
+    - `rend_font`
     - `rend_image`
+    - `rend_video`
 - [`sys`]
 - [`time`]
 - [`ui`]: enables all of the `ui` sub-features:

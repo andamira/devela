@@ -95,11 +95,13 @@ num = [
 	num_geom = ["_-num-_"] # geometric types and operations.
 	num_int = ["_-num-_"] # Frac, Int, NumInt, NumRefInt.
 rend = [
-	"rend_audio", "rend_color", "rend_image"
+	"rend_audio", "rend_color", "rend_font", "rend_image", "rend_video",
 	]
 	rend_audio = ["_-rend-_"]
 	rend_color = ["_-rend-_"]
+	rend_font = ["_-rend-_"]
 	rend_image = ["_-rend-_"]
+	rend_video = ["_-rend-_"]
 sys = []
 time = []
 ui = [
