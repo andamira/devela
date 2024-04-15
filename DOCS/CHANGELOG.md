@@ -8,11 +8,16 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Unreleased [0.21.0-wip]
 
 ### Added
-- add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`, `unsafe_thread`, `data_bit`, `data_collections`.
-- add features: `_i8`, `_i16`, `_i32`, `_i64`, `_i128`, `_isize`, `_u8`, `_u16`, `_u32`, `_u64`, `_u128`, `_usize`, `_f32`, `_f64`, `_nums`, `_floats`, `_ints`, `_sints`, `_uints`, `_default`, `_max`, `_docsrs_max`, `_docsrs_stable`, `rend_audio`, `rend_color`, `rend_image`.
-- add private features for reflection purpoess.
-- add traits: `ExtFuture`, `ExtFloatConst`, `NumVector`.
-- add function: `future_block`.
+- add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`, `unsafe_thread`, `rend_audio`, `rend_color`, `rend_image`, `ui_service`.
+- add features: `_num_all`, `_float_all`, `_float_f32`, `_float_f64`, `_int_all`, `_int_iall`, `_int_uall`, `_int_i8`, `_int_i16`, `_int_i32`, `_int_i64`, `_int_i128`, `_int_isize`, `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
+- add features: `_bit_all`, `_bit_i8`, `_bit_i16`, `_bit_i32`, `_bit_i64`, `_bit_i128`, `_bit_isize`, `_bit_u8`, `_bit_u16`, `_bit_u32`, `_bit_u64`, `_bit_u128`, `_bit_usize`.
+- add features: `_non_value_all`, `_non_value_i8`, `_non_value_i16`, `_non_value_i32`, `_non_value_i64`, `_non_value_i128`, `_non_value_isize`, `_non_value_u8`, `_non_value_u16`, `_non_value_u32`, `_non_value_u64`, `_non_value_u128`, `_non_value_usize`.
+- add features: `_non_range_all`, `_non_range_i8`, `_non_range_i16`, `_non_range_i32`, `_non_range_i64`, `_non_range_i128`, `_non_range_isize`, `_non_range_u8`, `_non_range_u16`, `_non_range_u32`, `_non_range_u64`, `_non_range_u128`, `_non_range_usize`.
+- add features: `_range_all`, `_range_i8`, `_range_i16`, `_range_i32`, `_range_i64`, `_range_i128`, `_range_isize`, `_range_u8`, `_range_u16`, `_range_u32`, `_range_u64`, `_range_u128`, `_range_usize`.
+- add features: `_default`, `_max`, `_docsrs_max`, `_docsrs_stable`,`__dbg`.
+- add private features for reflection purposes.
+- add traits: `ExtFuture`, `ExtFloatConst`, `NumVector`, `UiCap`.
+- add functions: `future_block`, `hash_pengy`.
 - add type: `Prompt`.
 - add type: `Timecode`.
 - add types: `LoggerSimple`, `Logging`.
@@ -21,6 +26,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add types: `Angle`, `AngleDirection`, `AngleKind`
 - add types: `Vector`, `Vector2d`, `Vector3d`, `VecVector`.
 - add types: `Point`, `Point2d`, `Point3d`, `Points`, `VecPoints`.
+- add types: `HasherFx`, `HasherFx32`, `HasherFx64`.
 - add `Floating` and `ExtFloat` method: `neg_abs`.
 - add methods to `Int`: `midpoint`, `modulo*`.
 - add unsigned `gcd_ext` and `gcd_ext_euc` methods to `Int`.
@@ -29,15 +35,17 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add new arms to `array_init:` `init`, `init_heap`.
 - add methods for casting to `[iu]size_[up|down]` to `Cast` and `PrimitiveCast`.
 - add methods to `Int`, `NumInt`, `NumRefInt`: `midpoint`.
+- add methods to `ExtAny`: `downcast_ref`, `downcast_mut`.
 - re-export more items from: `std::io`, `core::ptr`.
 - re-export: `String`, `ToString`, `Rc`, `RcWeak`.
 - add build script for debugging purposes.
 
 ### Removed
-- remove features: `num_all`, `ui_all`, `num_niche_impls`, `result`, `safe_result`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`.
+- remove features: `num_all`, `ui_all`, `num_niche_impls`, `num_niche_range`, `result`, `safe_result`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`.
 - remove `Mem` trait bound from `ByteSize`.
 - remove deprecated `ident_total_count` macro.
 - remove `repr(C)` attribute from niche types.
+- remove dependency `either`.
 
 ### Changed
 - bump rust version to 1.77.1.
@@ -45,6 +53,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move `io` moule and `os` submodules to `sys`.
 - move `rustdoc-header.html` file to `/DOCS/`.
 - move `_deps::{code, alloc, std}` to `::{_libcore, _liballoc, _libstd}`.
+- rename `Biting` to `Bitwise`.
 - rename `gfx` module to `rend`.
 - rename `text` module to `lex`.
 - rename `Mem` trait to `ExtMem`.
@@ -52,6 +61,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `_docs` module to `_info`.
 - rename `ExtTuple` trait to `Tuple`.
 - rename `copy` function to `io_copy`.
+- rename `NonSpecific*` to `NonValue*`.
 - rename `os` module to `sys`, make submodules private.
 - rename `work` module to `exec`, make submodules private.
 - rename `Floating` wrapper to `Float` and make it own `self`.
@@ -59,8 +69,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `is_x86_feature_detected` to `detect_x86`.
 - rename private feature `_exclude_example` to `__excluded`.
 - improve `cdbg`, allow to customize the location path and print fmt.
+- improve `enumset`, allow to specify the visibility and attributes of the set.
 - change `TaskWakerNoop` struct into `task_waker_noop` fn.
 - add more consts to `Float` and `ExtFloat`.
+- add the `?Sized` trait bound for `ExtAny` auto-impls.
 - change `From<float>` for `Sign` to return the zero sign.
 - add bounds for `color_gamma_*` functions.
 - move the enabling of all module's sub-features to the root module feature.
