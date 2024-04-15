@@ -15,8 +15,8 @@ use crate::_liballoc::boxed::Box;
 mod private {
     pub trait Sealed {}
 }
-impl<T: Any> private::Sealed for T {}
-impl<T: Any> ExtAny for T {}
+impl<T: ?Sized + Any> private::Sealed for T {}
+impl<T: ?Sized + Any> ExtAny for T {}
 
 /// Extension trait providing convenience methods for `T: Any`.
 ///
