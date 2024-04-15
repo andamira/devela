@@ -94,7 +94,7 @@ In order to use any unsafe functionality:
 	- `unsafe_array` faster array initialization.
 	- `unsafe_async` custom task waker, coroutine impls.
 	- `unsafe_const` extra const methods.
-	- `unsafe_dyn` DSTs in the stack, `no_std` Error dyn impls.
+	- `unsafe_dyn` DSTs in the stack, `no_std` Error dyn impls, `ExtAny::downcast*`.
 	- `unsafe_niche` unchecked niche constructors.
 	- `unsafe_ptr` pop methods without `Clone`.
 	- `unsafe_slice` extra slice methods, avoid bound checks.

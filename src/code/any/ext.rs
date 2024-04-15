@@ -5,6 +5,7 @@
 // MAYBE:
 // - WAIT: (const) [type_name](https://github.com/rust-lang/rust/issues/63084)
 // - WAIT: [TypeId equality unsoundness](https://github.com/rust-lang/rust/issues/97156)
+// - WAIT: [trait_upcasting](https://github.com/rust-lang/rust/issues/65991)
 
 use core::any::{type_name_of_val, Any, TypeId};
 
