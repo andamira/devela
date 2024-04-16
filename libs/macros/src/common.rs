@@ -113,7 +113,10 @@ pub(crate) fn deindent(s: &str) -> String {
 pub(crate) fn compile_eval(arg: String) -> bool {
     /* unary */
 
-    if arg == "true" {
+    if arg.is_empty() || arg == "false" {
+        false
+
+    } else if arg == "true" {
         true
 
     } else if arg.starts_with("not(") && arg.ends_with(')') {

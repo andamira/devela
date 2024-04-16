@@ -4,14 +4,18 @@ use devela_macros::compile;
 
 #[compile(true)]
 fn compiled() {}
-#[compile(other_than_true)]
+#[compile(false)]
 fn not_compiled() {}
+// #[compile(something_unrecognized)]
+// fn panics() {}
 
 // not()
-#[compile(not(other_than_true))]
+#[compile(not(false))]
 fn compiled_not() {}
 #[compile(not(true))]
 fn not_compiled_not() {}
+// #[compile(not(something_unrecognized))]
+// fn panics() {}
 
 /* binary */
 
