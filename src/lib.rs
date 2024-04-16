@@ -15,12 +15,18 @@
 //! There is also the [`#[compile_doc]`][compile_doc()] macro to conditionally
 //! compile documentation blocks depending on predicates.
 //!
+//! ### Panics
+//! Compilation macros will panic if they encounter an unrecognized predicate.
+//! As opposed to configuration macros (`cfg!`) that return `false`
+//! for unrecognized predicates without signaling an error.
+//!
 //! ### Compilation predicates
 //!
 //! The following compilation predicates are supported:
 //!
 //! - unary:
-//!   - A bare predicate returns `true` only if it is the **`true`** literal
+//!   - A bare predicate returns `true` only if it is the **`true`** literal.
+//!   - A bare predicate returns `false` if it's the **`false`** literal or it's *empty*.
 //!   - `not()`: returns `true` only if the predicate does **not** evaluate to **`true`**.
 //!
 //! - binary:
