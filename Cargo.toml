@@ -369,7 +369,7 @@ wide = ["dep:wide"]
 # ==============================================================================
 
 # non-optional:
-devela_macros = { version  = "0.9.0" }
+devela_macros = { version  = "0.10.0" }
 #devela_macros = { path = "./macros" }
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 
