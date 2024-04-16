@@ -7,6 +7,19 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.10.0] - 2024-04-16
+
+### Changed
+- conditional compilation macros now panic when encountering an unrecognized compilation predicate, instead of returning `false`.
+  - add explicit compilation eval branches for `"true"`, `"false"` and `""`.
+
+### Added
+- add compilation predicates: `pointer_width_eq`, `pointer_width_ne`, `pointer_width_ge`, `pointer_width_gt`, `pointer_width_le`, `pointer_width_lt`.
+- add compilation predicates: `little_endian`, `big_endian`.
+
+### Fixed
+- add missing `alloc` feature gate attribute.
+
 ## [0.9.0] - 2024-02-26
 
 ### Added
