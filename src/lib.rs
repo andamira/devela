@@ -53,6 +53,10 @@
 //!   - `pointer_width_le(width)`: returns `true` if current pointer width **<=** the given width.
 //!   - `pointer_width_lt(width)`: returns `true` if current pointer width **<** the given width.
 //!
+//! - endianness:
+//!   - `little_endian()`: returns `true` if current architecture is little-endian.
+//!   - `big_endian()`: returns `true` if current architecture is big-endian.
+//!
 //! When more than 1 predicate is supported, they are separated by commas.
 //!
 //! [1]: https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg-attribute
