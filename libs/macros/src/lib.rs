@@ -45,6 +45,14 @@
 //!   - `xodd()`: returns `true` if there is an **odd number** of `true` predicates.
 //!   - `xone()`: returns `true` if there is just **one `true`** predicate, but **no more**.
 //!
+//! - pointer width:
+//!   - `pointer_width_eq(width)`: returns `true` if current pointer width **==** the given width.
+//!   - `pointer_width_ne(width)`: returns `true` if current pointer width **!=** the given width.
+//!   - `pointer_width_ge(width)`: returns `true` if current pointer width **>=** the given width.
+//!   - `pointer_width_gt(width)`: returns `true` if current pointer width **>** the given width.
+//!   - `pointer_width_le(width)`: returns `true` if current pointer width **<=** the given width.
+//!   - `pointer_width_lt(width)`: returns `true` if current pointer width **<** the given width.
+//!
 //! When more than 1 predicate is supported, they are separated by commas.
 //!
 //! [1]: https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg-attribute
