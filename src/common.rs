@@ -32,6 +32,7 @@ pub(crate) fn split_args(arg: &str) -> Vec<String> {
 }
 
 // splits a tuple of two elements; used for the `compile_doc` macro
+#[cfg(feature = "alloc")]
 pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
     let tuple = tuple.trim();
     if !tuple.starts_with('(') {
