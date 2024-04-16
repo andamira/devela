@@ -90,10 +90,9 @@ macro_rules! math_const_impls {
 
             pub const MIN_10_EXP: i32 = <$f>::MIN_10_EXP;
             pub const MAX_10_EXP: i32 = <$f>::MAX_10_EXP;
-        }
 
-        /// # *Mathematical constants related to Pi (π).*
-        impl Float<$f> {
+            /* Mathematical constants related to Pi (π) */
+
             pub const PI: Float<$f> = Float(<$f>::PI);
             pub const FRAC_PI_2: Float<$f> = Float(<$f>::FRAC_PI_2);
             pub const FRAC_PI_3: Float<$f> = Float(<$f>::FRAC_PI_3);
