@@ -240,6 +240,6 @@ pub(crate) fn compile_eval(arg: String) -> bool {
         trues == 1
 
     } else {
-        false
+        panic!["Unrecognized compilation predicate: {:?}", arg];
     }
 }
