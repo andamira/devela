@@ -6,11 +6,16 @@
 mod gcd;
 mod num_trait;
 mod wrapper;
+pub use {gcd::*, num_trait::*, wrapper::*};
+
+#[cfg(feature = "_-int_any-_")]
+mod divisor;
+#[cfg(feature = "_-int_any-_")]
+pub use divisor::*;
 
 #[allow(unused_imports)]
 #[cfg(all(not(feature = "std"), feature = "num_float"))]
 use crate::num::ExtFloat;
-pub use {gcd::*, num_trait::*, wrapper::*};
 
 /// The prime number theorem formula.
 ///

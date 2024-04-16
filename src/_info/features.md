@@ -48,7 +48,7 @@ Single modules:
 - [`num`]: enables all of the `num` sub-features:
     - `num_float`: `Float`, `ExtFloat`.
     - `num_geom`: enables geometric types and operations.
-    - `num_int`: `Frac`, `Int`, `NumInt`, `NumRefInt`.
+    - `num_int`: `Divisor`, `Frac`, `Int`, `NumInt`, `NumRefInt`.
     - `num_niche_range`: `Range*` and `NonRange*` niche types.
 - [`rend`]
     - `rend_audio`
@@ -120,7 +120,7 @@ Enabling them will likely worsen compilation times.
 - `_max`: enables the maximum capabilities.
 - `_tuple_arity_[31|63|96|127]`: increased arity support for [`ExtTuple`].
 
-Enable specific implementations for [`Int`], [`Float`], [`Frac`],
+Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
 [`Angle`], [`Point`], [`Vector`]:
 - `_num_all`:
   - `_float_all`:
@@ -135,6 +135,7 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`],
 [`Float`]: crate::num::Float
 [`Frac`]: crate::num::Frac
 [`Int`]: crate::num::Int
+[`Divisor`]: crate::num::Divisor
 [`Angle`]: crate::num::Angle
 [`Point`]: crate::num::Point
 [`Vector`]: crate::num::Vector
