@@ -262,6 +262,12 @@ pub(crate) fn compile_eval(arg: String) -> bool {
         let width_arg = &arg[18..arg.len() - 1];
         width_arg.parse::<u32>().map_or(false, |w| w < usize::BITS)
 
+    // target endian
+    } else if arg == "little_endian()" {
+        cfg!(target_endian = "little")
+    } else if arg == "big_endian()" {
+        cfg!(target_endian = "big")
+
     /* _ */
 
     } else {
