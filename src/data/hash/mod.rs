@@ -5,11 +5,12 @@
 //! [`hash`]: std::hash
 //
 
+mod fnv;
 mod fx;
 mod pengy;
 mod reexports;
 #[allow(unused_imports)]
-pub use {fx::*, pengy::*, reexports::*};
+pub use {fnv::*, fx::*, pengy::*, reexports::*};
 
 pub(crate) mod all {
     #[doc(inline)]
