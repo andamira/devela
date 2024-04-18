@@ -608,6 +608,15 @@ macro_rules! impl_cast_fns {
 
         /* dependent on pointer width */
 
+        #[cfg(target_pointer_width = "16")]
+        impl_cast_fns![can_overunderflow
+            // from bigger signed to unsigned
+            isize|usize:u8,
+            i32|u32:usize, i64|u64:usize, i128|u128:usize,
+            // from bigger signed to signed
+            isize|usize:i8,
+            i32|u32:isize, i64|u64:isize, i128|u128:isize
+        ];
         #[cfg(target_pointer_width = "32")]
         impl_cast_fns![can_overunderflow
             // from bigger signed to unsigned
@@ -616,6 +625,27 @@ macro_rules! impl_cast_fns {
             // from bigger signed to signed
             isize|usize:i8, isize|usize:i16,
             i64|u64:isize, i128|u128:isize
+        ];
+        #[cfg(target_pointer_width = "64")]
+        impl_cast_fns![can_overunderflow
+            // from bigger signed to unsigned
+            isize|usize:u8, isize|usize:u16, isize|usize:u32,
+            i128|u128:usize,
+            // from bigger signed to signed
+            isize|usize:i8, isize|usize:i16, isize|usize:i32,
+            i128|u128:isize
+        ];
+
+        #[cfg(target_pointer_width = "16")]
+        impl_cast_fns![can_overflow
+            // from bigger unsigned to unsigned
+            usize:u8,
+            u32:usize, u64:usize, u128:usize,
+            // from bigger unsigned to signed
+            usize:i8,
+            u32:isize, u64:isize, u128:isize,
+            // from equalsized unsigned to signed
+            u16:isize, usize:i16
         ];
         #[cfg(target_pointer_width = "32")]
         impl_cast_fns![can_overflow
@@ -628,6 +658,26 @@ macro_rules! impl_cast_fns {
             // from equalsized unsigned to signed
             u32:isize, usize:i32
         ];
+        #[cfg(target_pointer_width = "64")]
+        impl_cast_fns![can_overflow
+            // from bigger unsigned to unsigned
+            usize:u8, usize:u16, usize:u32,
+            u128:usize,
+            // from bigger unsigned to signed
+            usize:i8, usize:i16, usize:i32,
+            u128:isize,
+            // from equalsized unsigned to signed
+            u64:isize, usize:i64
+        ];
+
+        #[cfg(target_pointer_width = "16")]
+        impl_cast_fns![can_underflow
+            // from smaller signed to unsigned
+            isize:u32, isize:u64, isize:u128,
+            i8:usize,
+            // from equalsized signed to unsigned
+            i16:usize, isize:u16
+        ];
         #[cfg(target_pointer_width = "32")]
         impl_cast_fns![can_underflow
             // from smaller signed to unsigned
@@ -635,6 +685,31 @@ macro_rules! impl_cast_fns {
             i8:usize, i16:usize,
             // from equalsized signed to unsigned
             i32:usize, isize:u32
+        ];
+        #[cfg(target_pointer_width = "64")]
+        impl_cast_fns![can_underflow
+            // from smaller signed to unsigned
+            isize:u128,
+            i8:usize, i16:usize, i32:usize,
+            // from equalsized signed to unsigned
+            i64:usize, isize:u64
+        ];
+
+        #[cfg(target_pointer_width = "16")]
+        impl_cast_fns![cant_fail ptr:16
+            // from smaller unsigned to unsigned
+            usize:u32, usize:u64, usize:u128,
+            u8:usize,
+            // from smaller unsigned to signed
+            usize:i32, usize:i64, usize:i128,
+            u8:isize,
+            // from smaller signed to signed
+            isize:i32, isize:i64, isize:i128,
+            i8:isize,
+            // from equalsized unsigned to unsigned
+            usize:u16, u16:usize,
+            // from equalsized signed to signed
+            isize:i16, i16:isize
         ];
         #[cfg(target_pointer_width = "32")]
         impl_cast_fns![cant_fail ptr:32
@@ -651,35 +726,6 @@ macro_rules! impl_cast_fns {
             usize:u32, u32:usize,
             // from equalsized signed to signed
             isize:i32, i32:isize
-        ];
-
-        #[cfg(target_pointer_width = "64")]
-        impl_cast_fns![can_overunderflow
-            // from bigger signed to unsigned
-            isize|usize:u8, isize|usize:u16, isize|usize:u32,
-            i128|u128:usize,
-            // from bigger signed to signed
-            isize|usize:i8, isize|usize:i16, isize|usize:i32,
-            i128|u128:isize
-        ];
-        #[cfg(target_pointer_width = "64")]
-        impl_cast_fns![can_overflow
-            // from bigger unsigned to unsigned
-            usize:u8, usize:u16, usize:u32,
-            u128:usize,
-            // from bigger unsigned to signed
-            usize:i8, usize:i16, usize:i32,
-            u128:isize,
-            // from equalsized unsigned to signed
-            u64:isize, usize:i64
-        ];
-        #[cfg(target_pointer_width = "64")]
-        impl_cast_fns![can_underflow
-            // from smaller signed to unsigned
-            isize:u128,
-            i8:usize, i16:usize, i32:usize,
-            // from equalsized signed to unsigned
-            i64:usize, isize:u64
         ];
         #[cfg(target_pointer_width = "64")]
         impl_cast_fns![cant_fail ptr:64
@@ -799,6 +845,11 @@ impl_cast_fns![];
 // `$t`: the type to cast to (real type)
 macro_rules! impl_cast_fns_alias {
     () => {
+        #[cfg(target_pointer_width = "16")] impl_cast_fns_alias![@to isize_up|i32];
+        #[cfg(target_pointer_width = "16")] impl_cast_fns_alias![@to usize_up|u32];
+        #[cfg(target_pointer_width = "16")] impl_cast_fns_alias![@to isize_down|i8];
+        #[cfg(target_pointer_width = "16")] impl_cast_fns_alias![@to usize_down|u8];
+        //
         #[cfg(target_pointer_width = "32")] impl_cast_fns_alias![@to isize_up|i64];
         #[cfg(target_pointer_width = "32")] impl_cast_fns_alias![@to usize_up|u64];
         #[cfg(target_pointer_width = "32")] impl_cast_fns_alias![@to isize_down|i16];
