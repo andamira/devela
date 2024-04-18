@@ -1,16 +1,17 @@
 // devela::data::hash::fnv
-//
-//! Fowler–Noll–Vo hash function
-//!
-//! - <https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function>
-//! - <http://www.isthe.com/chongo/tech/comp/fnv>
-//
 
 use crate::{
-    _libcore::{concat as cc, stringify as fy},
+    _libcore::{
+        concat as cc,
+        hash::{BuildHasherDefault, Hasher},
+        stringify as fy,
+    },
     code::ConstDefault,
     num::PrimitiveCast,
 };
+
+/// A builder for default Fnv hashers.
+pub type HasherBuildFnv = BuildHasherDefault<HasherFnv<usize>>;
 
 /// A Fowler–Noll–Vo hasher.
 ///
@@ -18,33 +19,39 @@ use crate::{
 /// [u32](#impl-HasherFnv<u32>),
 /// [u64](#impl-HasherFnv<u64>),
 /// [u128](#impl-HasherFnv<u128>).
+/// [usize](#impl-HasherFnv<usize>).
 ///
 /// It uses the `fnv-1a` variation which gives better avalanche characteristics.
+///
+/// See
+/// - <https://en.wikipedia.org/wiki/Fowler–Noll–Vo_hash_function>
+/// - <http://www.isthe.com/chongo/tech/comp/fnv>
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct HasherFnv<T> {
     state: T,
 }
 
+const BASIS32: u32 = 0x811c9dc5;
+const PRIME32: u32 = 0x1000193;
+const BASIS64: u64 = 0x00000100000001B3;
+const PRIME64: u64 = 0xcbf29ce484222325;
+const BASIS128: u128 = 0x0000000001000000000000000000013B;
+const PRIME128: u128 = 0x6c62272e07bb014262b821756295c58d;
+
 macro_rules! impl_fnv {
     () => {
-        impl_fnv![
-            u32:
-                0x811c9dc5:
-                0x1000193,
-            u64:
-                0x00000100000001B3:
-                0xcbf29ce484222325,
-            u128:
-                0x0000000001000000000000000000013B:
-                0x6c62272e07bb014262b821756295c58d
-        ];
+        impl_fnv![u32:BASIS32:PRIME32, u64:BASIS64:PRIME64, u128:BASIS128:PRIME128];
+        #[cfg(target_pointer_width = "32")]
+        impl_fnv![usize:BASIS32:PRIME32];
+        #[cfg(target_pointer_width = "64")]
+        impl_fnv![usize:BASIS64:PRIME64];
     };
 
-    ($($t:ty:$basis:literal:$prime:literal),+) =>  { $( impl_fnv![@$t:$basis:$prime]; )+ };
-    (@$t:ty:$basis:literal:$prime:literal) =>  {
+    ($($t:ty:$basis:ident:$prime:ident),+) =>  { $( impl_fnv![@$t:$basis:$prime]; )+ };
+    (@$t:ty:$basis:ident:$prime:ident) =>  {
 
-        impl ConstDefault for HasherFnv<$t> { const DEFAULT: Self = Self { state: $basis }; }
+        impl ConstDefault for HasherFnv<$t> { const DEFAULT: Self = Self { state: $basis as $t }; }
         impl Default for HasherFnv<$t> { #[inline] fn default() -> Self { Self::DEFAULT } }
 
         impl HasherFnv<$t> {
@@ -90,14 +97,14 @@ macro_rules! impl_fnv {
             pub fn update(&mut self, input: &[u8]) {
                 for &byte in input {
                     self.state ^= <$t>::from(byte);
-                    self.state = self.state.wrapping_mul($prime);
+                    self.state = self.state.wrapping_mul($prime as $t);
                 }
             }
 
             /// Resets the inner state to the default basis value.
             #[inline]
             pub fn reset(&mut self) {
-                self.state = $basis;
+                self.state = $basis as $t;
             }
 
             /* state-less methods */
@@ -105,11 +112,11 @@ macro_rules! impl_fnv {
             /// Computes the FNV hash of the provided byte slice.
             #[inline] #[must_use]
             pub const fn hash(input: &[u8]) -> $t {
-                let mut hash = $basis;
+                let mut hash = $basis as $t;
                 let mut i = 0;
                 while i < input.len() {
                     hash ^= input[i] as $t;
-                    hash = hash.wrapping_mul($prime);
+                    hash = hash.wrapping_mul($prime as $t);
                     i += 1;
                 }
                 hash
@@ -130,7 +137,7 @@ macro_rules! impl_fnv {
                 let mut hash = Self::hash(input);
                 let retry_level = (<$t>::MAX / range) * range;
                 while hash >= retry_level {
-                    hash = (hash.wrapping_mul($prime)).wrapping_add($basis);
+                    hash = (hash.wrapping_mul($prime as $t)).wrapping_add($basis as $t);
                 }
                 hash % range
             }
@@ -168,18 +175,18 @@ macro_rules! impl_fnv {
             pub const fn mod_retry_hash(mut hash: $t, range: $t) -> $t {
                 let retry_level = (<$t>::MAX / range) * range;
                 while hash >= retry_level {
-                    hash = (hash.wrapping_mul($prime)).wrapping_add($basis);
+                    hash = (hash.wrapping_mul($prime as $t)).wrapping_add($basis as $t);
                 }
                 hash % range
             }
         }
 
-        impl core::hash::Hasher for HasherFnv<$t> {
+        impl Hasher for HasherFnv<$t> {
             #[inline]
             fn write(&mut self, bytes: &[u8]) {
                 for byte in bytes {
                     self.state ^= <$t>::from(*byte);
-                    self.state = self.state.wrapping_mul($prime);
+                    self.state = self.state.wrapping_mul($prime as $t);
                 }
             }
 
