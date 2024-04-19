@@ -1,7 +1,18 @@
-// devela build script
+// devela construct::dbg
 //
 //! Shows debugging information if the `__dbg` feature is enabled.
 //
+
+use super::println;
+macro_rules! printfeat {
+    // if any of the features are enabled, prints the msg and the features
+    (msg: $msg:literal, features: $($feature:literal),+ $(,)?) => {
+        {
+            if cfg!(any($(feature = $feature),+)) { println($msg); }
+            $( if cfg!(feature = $feature) { println(&format!["  {}", $feature]); } )+
+        }
+    };
+}
 
 /// Prints debugging information about the enabled features.
 pub(super) fn print_features() {
@@ -125,16 +136,3 @@ pub(super) fn print_features() {
         "wide",
     ];
 }
-
-// private helpers
-#[rustfmt::skip] fn println(msg: &str) { println!("cargo:warning={}", msg); }
-macro_rules! printfeat {
-    // if any of the features are enabled, prints the msg and the features
-    (msg: $msg:literal, features: $($feature:literal),+ $(,)?) => {
-        {
-            if cfg!(any($(feature = $feature),+)) { println($msg); }
-            $( if cfg!(feature = $feature) { println(&format!["  {}", $feature]); } )+
-        }
-    };
-}
-use printfeat;

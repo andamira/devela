@@ -118,7 +118,7 @@ Enabling them will likely worsen compilation times.
 
 - `_default`: enables default capabilities.
 - `_max`: enables the maximum capabilities.
-- `_tuple_arity_[31|63|96|127]`: increased arity support for [`ExtTuple`].
+- `_tuple_arity_[15|31|63|96|127]`: increased arity support for [`Tuple`].
 
 Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
 [`Angle`], [`Point`], [`Vector`]:
@@ -131,7 +131,7 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
     - `_int_all_u`:
       - `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
 
-[`ExtTuple`]: crate::data::collections::ExtTuple
+[`Tuple`]: crate::data::collections::Tuple
 [`Float`]: crate::num::Float
 [`Frac`]: crate::num::Frac
 [`Int`]: crate::num::Int

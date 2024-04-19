@@ -330,12 +330,13 @@ _-niche_any-_ = []
 
 # data capabilities
 #
-# The maximum tuple arity supported by ExtTuple:
-# By default tuple arity is 15         # compile  4.9s
-_tuple_arity_31 = []                   # compile  5.3s
-_tuple_arity_63 = ["_tuple_arity_31"]  # compile  7.5s
-_tuple_arity_95 = ["_tuple_arity_63"]  # compile 10.5s
-_tuple_arity_127 = ["_tuple_arity_95"] # compile 14.9s
+# The maximum tuple arity supported by the Tuple trait:
+# The default tuple arity is 7
+_tuple_arity_15 = [] # time: 3s, codegen: 25k
+_tuple_arity_31 = ["_tuple_arity_15"] # time: 6s, codegen: 70k
+_tuple_arity_63 = ["_tuple_arity_31"] # time: 13s, codegen: 232k
+_tuple_arity_95 = ["_tuple_arity_63"] # time: 31s, codegen: 1.9MB
+_tuple_arity_127 = ["_tuple_arity_95"] # time: 62s, codegen: 4.5MB
 
 
 #* dependency features *#
