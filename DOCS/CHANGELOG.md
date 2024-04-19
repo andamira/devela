@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Unreleased [0.21.0-wip]
 
 ### Added
-- add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`, `unsafe_thread`, `rend_audio`, `rend_color`, `rend_image`, `ui_service`.
-- add features: `_num_all`, `_float_all`, `_float_f32`, `_float_f64`, `_int_all`, `_int_iall`, `_int_uall`, `_int_i8`, `_int_i16`, `_int_i32`, `_int_i64`, `_int_i128`, `_int_isize`, `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
+- add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`, `unsafe_thread`, `rend_audio`, `rend_color`, `rend_font`, `rend_image`, `rend_video`, `ui_service`.
+- add features: `_num_all`, `_float_all`, `_float_f32`, `_float_f64`, `_int_all`, `_int_iall`, `_int_uall`, `_int_i8`, `_int_i16`, `_int_i32`, `_int_i64`, `_int_i128`, `_int_isize`, `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`, `_tuple_arity_15`.
 - add features: `_bit_all`, `_bit_i8`, `_bit_i16`, `_bit_i32`, `_bit_i64`, `_bit_i128`, `_bit_isize`, `_bit_u8`, `_bit_u16`, `_bit_u32`, `_bit_u64`, `_bit_u128`, `_bit_usize`.
 - add features: `_non_value_all`, `_non_value_i8`, `_non_value_i16`, `_non_value_i32`, `_non_value_i64`, `_non_value_i128`, `_non_value_isize`, `_non_value_u8`, `_non_value_u16`, `_non_value_u32`, `_non_value_u64`, `_non_value_u128`, `_non_value_usize`.
 - add features: `_non_range_all`, `_non_range_i8`, `_non_range_i16`, `_non_range_i32`, `_non_range_i64`, `_non_range_i128`, `_non_range_isize`, `_non_range_u8`, `_non_range_u16`, `_non_range_u32`, `_non_range_u64`, `_non_range_u128`, `_non_range_usize`.
@@ -21,21 +21,23 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add type: `Prompt`.
 - add type: `Timecode`.
 - add types: `LoggerSimple`, `Logging`.
-- add types: `GcdExt`, `ValueQuant`.
+- add types: `TupleEnumRef`, `TupleEnumMut`.
+- add types: `Divisor`, `GcdExt`, `ValueQuant`.
 - add types: `Extent`, `Extent2d`, `Extent3d`.
 - add types: `Angle`, `AngleDirection`, `AngleKind`
 - add types: `Vector`, `Vector2d`, `Vector3d`, `VecVector`.
 - add types: `Point`, `Point2d`, `Point3d`, `Points`, `VecPoints`.
-- add types: `HasherFx`, `HasherFx32`, `HasherFx64`.
+- add types: `HasherFnv`, `HasherFx`, `HasherFx32`, `HasherFx64`, `HasherBuildFnv`, `HasherBuildFx`.
 - add `Floating` and `ExtFloat` method: `neg_abs`.
-- add methods to `Int`: `midpoint`, `modulo*`.
 - add unsigned `gcd_ext` and `gcd_ext_euc` methods to `Int`.
 - add `NumError` variant: `NoInverse`.
 - add `*_assign` methods to `Num` and `NumRef`.
 - add new arms to `array_init:` `init`, `init_heap`.
-- add methods for casting to `[iu]size_[up|down]` to `Cast` and `PrimitiveCast`.
+- add methods to `Tuple:`: `nth_ref`, `nth_mut`.
+- add methods to `Int`: `midpoint`, `modulo*`.
 - add methods to `Int`, `NumInt`, `NumRefInt`: `midpoint`.
 - add methods to `ExtAny`: `downcast_ref`, `downcast_mut`.
+- add methods to `Cast` and `PrimitiveCast`: `wrapping_cast_*`, for `[iu]size_[up|down]`.
 - re-export more items from: `std::io`, `core::ptr`.
 - re-export: `String`, `ToString`, `Rc`, `RcWeak`.
 - add build script for debugging purposes.
@@ -74,8 +76,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add more consts to `Float` and `ExtFloat`.
 - add the `?Sized` trait bound for `ExtAny` auto-impls.
 - change `From<float>` for `Sign` to return the zero sign.
+- change default `Tuple` arity to 7.
 - add bounds for `color_gamma_*` functions.
 - move the enabling of all module's sub-features to the root module feature.
+- update `devela_macros`.
 
 ### Fixed
 - fix `exec` re-exports.
@@ -86,7 +90,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - make no-std io `memrchr` function private.
 
 
-## [0.20.0]
+## [0.20.0] 2024-03-12
 
 ### Added
 - add traits: `NumToStr`, `ConstDefault`, `DataQueue`, `DataDeque`, `DataStack`, `DataDesta`, `ExtTuple`, `ExtArray`.
