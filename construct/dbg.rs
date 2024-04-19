@@ -3,12 +3,8 @@
 //! Shows debugging information if the `__dbg` feature is enabled.
 //
 
-#![allow(dead_code, unused)]
-
-#[cfg(feature = "__dbg")]
-fn main() {
-    /* information about the enabled features */
-
+/// Prints debugging information about the enabled features.
+pub(super) fn print_features() {
     printfeat![msg: "Enabled miscellaneous features (other than `__dbg`:", features:
         "default", "__excluded",
         // "__dbg",
@@ -63,12 +59,18 @@ fn main() {
         "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
         "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
 
-        "_-stack_any-_",
-        // "_stack_all",
-        "_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize",
-        "_-destaque_any-_",
-        // "_destaque_all",
-        "_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize",
+        "_-collections_any-_",
+        // "_collections_all",
+            "_-destaque_any-_",
+            // "_destaque_all",
+            "_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize",
+            "_-list_any-_",
+            // "_list_all",
+            "_list1_u8", "_list1_u16", "_list1_u32", "_list1_usize",
+            // "_list2_u8", "_list2_u16", "_list2_u32", "_list2_usize",
+            "_-stack_any-_",
+            // "_stack_all",
+            "_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize",
 
         "_-num_any-_",
         // "_-num_all",
@@ -123,15 +125,12 @@ fn main() {
         "wide",
     ];
 }
-#[cfg(not(feature = "__dbg"))]
-fn main() {}
 
 // private helpers
 #[rustfmt::skip] fn println(msg: &str) { println!("cargo:warning={}", msg); }
 macro_rules! printfeat {
     // if any of the features are enabled, prints the msg and the features
     (msg: $msg:literal, features: $($feature:literal),+ $(,)?) => {
-        // #[cfg(feature = "__dbg")]
         {
             if cfg!(any($(feature = $feature),+)) { println($msg); }
             $( if cfg!(feature = $feature) { println(&format!["  {}", $feature]); } )+
