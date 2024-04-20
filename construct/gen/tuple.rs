@@ -37,8 +37,8 @@ pub(super) fn generate() -> Result<(), Error> {
     ///
     /// # Features
     /// By default it's implemented for tuples of arity of 15 or less.
-    /// It supports increased arities of 31, 63, 95 and 127 by enabling the
-    /// corresponding capability feature: `_tuple_arity_[31|63|95|127]`.
+    /// It supports increased arities of 15, 31, 63, 95 and 127 by enabling the
+    /// corresponding capability feature: `_tuple_arity_[15|31|63|95|127]`.
     "#)?;
     w!(f, "pub trait Tuple {{")?;
 
@@ -143,6 +143,10 @@ pub(super) fn generate() -> Result<(), Error> {
 
 
     // auto-implementations
+
+    w!(f, "/// Returns the arity (number of elements) of this tuple.
+        #[must_use]
+        fn arity(&self) -> usize {{ Self::ARITY }}")?;
 
     w!(f, "/// Wraps the tuple in a [`TupleFmt`] for formatting purposes.
         fn fmt(&self) -> TupleFmt<Self> where Self: Sized {{ TupleFmt(self) }}")?;
