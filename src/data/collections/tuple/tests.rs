@@ -76,19 +76,32 @@ fn tuple_prepend() {
 
 #[test]
 fn tuple_nth() {
-    assert![matches![TUPLE.nth(2), TupleElement::_2("Hello")]];
+    assert![matches![TUPLE.nth(2), Some(TupleElement::_2("Hello"))]];
 
-    // match TUPLE.nth(2) {
-    //     TupleElement::_2(value) => assert_eq!(value, "Hello"),
-    //     _ => panic!("Unexpected result"),
-    // }
+    // alternative form
+    match TUPLE.nth(2) {
+        Some(TupleElement::_2(value)) => assert_eq!(value, "Hello"),
+        _ => panic!("Unexpected result"),
+    }
+}
+#[test] #[rustfmt::skip]
+fn tuple_nth_clone() {
+    #[derive(Clone, Debug)]
+    struct Clonable;
+    let tuple = (10, 20.5, Clonable, true);
+
+    assert![matches![tuple.nth_cloned(2), Some(TupleElement::_2(Clonable))]];
+    assert![matches![tuple.nth_cloned(2), Some(TupleElement::_2(Clonable))]];
 }
 #[test]
 fn tuple_nth_ref() {
-    assert![matches![TUPLE.nth_ref(2), TupleElementRef::_2(&"Hello")]];
+    assert![matches![
+        TUPLE.nth_ref(2),
+        Some(TupleElementRef::_2(&"Hello"))
+    ]];
 }
 #[test] #[rustfmt::skip]
 fn tuple_nth_mut() {
     let mut tuple = TUPLE;
-    assert![matches![tuple.nth_mut(2), TupleElementMut::_2(&mut "Hello")]];
+    assert![matches![tuple.nth_mut(2), Some(TupleElementMut::_2(&mut "Hello"))]];
 }

@@ -114,15 +114,15 @@ pub(super) fn generate() -> Result<(), Error> {
 
     w!(f, "/// Returns the `nth` element, or `None` if `nth >= ARITY`.
     #[allow(clippy::type_complexity)]
-    fn nth(self, nth: usize) -> TupleElement<")?;
+    fn nth(self, nth: usize) -> Option<TupleElement<")?;
         for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; }
-        w!(f, ">;")?;
+        w!(f, ">>;")?;
 
     w!(f, "/// Returns the `nth` element cloned, or `None` if `nth >= ARITY`.
     #[allow(clippy::type_complexity)]
-    fn nth_cloned(&self, nth: usize) -> TupleElement<")?;
+    fn nth_cloned(&self, nth: usize) -> Option<TupleElement<")?;
         for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; }
-        w!(f, "> where ")?;
+        w!(f, ">> where ")?;
         for i in 0..MAX_ARITY {
             w!(f, "Self::_{i}: Clone")?;
             if i == MAX_ARITY-1 { w!(f, ";")?; } else { w!(f, ",")?; }
@@ -131,16 +131,16 @@ pub(super) fn generate() -> Result<(), Error> {
     w!(f, "/// Returns a shared reference to the `nth` element,
     /// or `None` if `nth >= ARITY`.
     #[allow(clippy::type_complexity)]
-    fn nth_ref(&self, nth: usize) -> TupleElementRef<")?;
+    fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<")?;
         for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; }
-        w!(f, ">;")?;
+        w!(f, ">>;")?;
 
     w!(f, "/// Returns an exclusive reference to the `nth` element,
     /// or `None` if `nth >= ARITY`.
     #[allow(clippy::type_complexity)]
-    fn nth_mut(&mut self, nth: usize) -> TupleElementMut<")?;
+    fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<")?;
         for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; }
-        w!(f, ">;")?;
+        w!(f, ">>;")?;
 
 
     // auto-implementations
@@ -165,8 +165,6 @@ pub(super) fn generate() -> Result<(), Error> {
     for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
     w!(f, "> {{")?;
     // variants
-    w!(f, "/// No element.")?;
-    w!(f, "None,")?;
     for i in 0..MAX_ARITY {
         w!(f, "/// The tuple element at index {i}.")?;
         w!(f, "_{i}(_{i}),")?;
@@ -180,8 +178,6 @@ pub(super) fn generate() -> Result<(), Error> {
     for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
     w!(f, "> {{")?;
     // variants
-    w!(f, "/// No element.")?;
-    w!(f, "None,")?;
     for i in 0..MAX_ARITY {
         w!(f, "/// A shared reference to the tuple element at index {i}.")?;
         w!(f, "_{i}(&'a _{i}),")?;
@@ -195,8 +191,6 @@ pub(super) fn generate() -> Result<(), Error> {
     for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
     w!(f, "> {{")?;
     // variants
-    w!(f, "/// No element.")?;
-    w!(f, "None,")?;
     for i in 0..MAX_ARITY {
         w!(f, "/// An exclusive reference to the tuple element at index {i}.")?;
         w!(f, "_{i}(&'a mut _{i}),")?;
@@ -234,26 +228,26 @@ pub(super) fn generate() -> Result<(), Error> {
         for i in 0..MAX_ARITY { w!(f, "type _{i} = ();")?; }
 
         // methods
-        w!(f, "fn nth(self, _nth: usize) -> TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, "> {{")?;
-            w!(f, "TupleElement::None")?;
+        w!(f, "fn nth(self, _nth: usize) -> Option<TupleElement<")?;
+        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
+            w!(f, "None")?;
         w!(f, "}}")?;
 
-        w!(f, "fn nth_cloned(&self, _nth: usize) -> TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, "> where ")?;
+        w!(f, "fn nth_cloned(&self, _nth: usize) -> Option<TupleElement<")?;
+        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
             for i in 0..MAX_ARITY { w!(f, "Self::_{i}: Clone,")?; }
             w!(f, "{{")?;
-                w!(f, "TupleElement::None")?;
+                w!(f, "None")?;
         w!(f, "}}")?;
 
-        w!(f, "fn nth_ref(&self, _nth: usize) -> TupleElementRef<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, "> {{")?;
-            w!(f, "TupleElementRef::None")?;
+        w!(f, "fn nth_ref(&self, _nth: usize) -> Option<TupleElementRef<")?;
+        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
+            w!(f, "None")?;
         w!(f, "}}")?;
 
-        w!(f, "fn nth_mut(&mut self, _nth: usize) -> TupleElementMut<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, "> {{")?;
-            w!(f, "TupleElementMut::None")?;
+        w!(f, "fn nth_mut(&mut self, _nth: usize) -> Option<TupleElementMut<")?;
+        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
+            w!(f, "None")?;
             w!(f, "}}")?;
 
 
@@ -301,37 +295,37 @@ pub(super) fn generate() -> Result<(), Error> {
         for i in 1..MAX_ARITY { w!(f, "type _{i} = ();")?; }
 
         // methods
-        w!(f, "fn nth(self, nth: usize) -> TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, "> {{")?;
+        w!(f, "fn nth(self, nth: usize) -> Option<TupleElement<")?;
+        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
-                w!(f, "0 => TupleElement::_0(self.0),")?;
-                w!(f, "_ => TupleElement::None,")?;
+                w!(f, "0 => Some(TupleElement::_0(self.0)),")?;
+                w!(f, "_ => None,")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
 
-        w!(f, "fn nth_cloned(&self, nth: usize) -> TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, "> where ")?;
+        w!(f, "fn nth_cloned(&self, nth: usize) -> Option<TupleElement<")?;
+        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
             for i in 0..MAX_ARITY { w!(f, "Self::_{i}: Clone,")?; }
             w!(f, "{{")?;
             w!(f, "match nth {{")?;
-                w!(f, "0 => TupleElement::_0(self.0.clone()),")?;
-                w!(f, "_ => TupleElement::None,")?;
+                w!(f, "0 => Some(TupleElement::_0(self.0.clone())),")?;
+                w!(f, "_ => None,")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
 
-        w!(f, "fn nth_ref(&self, nth: usize) -> TupleElementRef<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, "> {{")?;
+        w!(f, "fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<")?;
+        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
-                w!(f, "0 => TupleElementRef::_0(&self.0),")?;
-                w!(f, "_ => TupleElementRef::None,")?;
+                w!(f, "0 => Some(TupleElementRef::_0(&self.0)),")?;
+                w!(f, "_ => None,")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
 
-        w!(f, "fn nth_mut(&mut self, nth: usize) -> TupleElementMut<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, "> {{")?;
+        w!(f, "fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<")?;
+        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
-                w!(f, "0 => TupleElementMut::_0(&mut self.0),")?;
-                w!(f, "_ => TupleElementMut::None,")?;
+                w!(f, "0 => Some(TupleElementMut::_0(&mut self.0)),")?;
+                w!(f, "_ => None,")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
 
@@ -423,40 +417,40 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, ") }}")?;
 
         // nth*
-        w!(f, "fn nth(self, nth: usize) -> TupleElement<")?;
+        w!(f, "fn nth(self, nth: usize) -> Option<TupleElement<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
-        w!(f, "> {{")?;
+        w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
-                for i in 0..arity { w0!(f, "{i} => TupleElement::_{i}(self.{i}),")?; }
-                w!(f, "_ => TupleElement::None")?;
+                for i in 0..arity { w0!(f, "{i} => Some(TupleElement::_{i}(self.{i})),")?; }
+                w!(f, "_ => None")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
 
-        w!(f, "fn nth_cloned(&self, nth: usize) -> TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, "> where ")?;
+        w!(f, "fn nth_cloned(&self, nth: usize) -> Option<TupleElement<")?;
+        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
             for i in 0..MAX_ARITY { w!(f, "Self::_{i}: Clone,")?; }
             w!(f, "{{")?;
             w!(f, "match nth {{")?;
-                for i in 0..arity { w0!(f, "{i} => TupleElement::_{i}(self.{i}.clone()),")?; }
-                w!(f, "_ => TupleElement::None")?;
+                for i in 0..arity { w0!(f, "{i} => Some(TupleElement::_{i}(self.{i}.clone())),")?; }
+                w!(f, "_ => None")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
 
-        w!(f, "fn nth_ref(&self, nth: usize) -> TupleElementRef<")?;
+        w!(f, "fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
-        w!(f, "> {{")?;
+        w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
-                for i in 0..arity { w0!(f, "{i} => TupleElementRef::_{i}(&self.{i}),")?; }
-                w!(f, "_ => TupleElementRef::None")?;
+                for i in 0..arity { w0!(f, "{i} => Some(TupleElementRef::_{i}(&self.{i})),")?; }
+                w!(f, "_ => None")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
 
-        w!(f, "fn nth_mut(&mut self, nth: usize) -> TupleElementMut<")?;
+        w!(f, "fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
-        w!(f, "> {{")?;
+        w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
-                for i in 0..arity { w0!(f, "{i} => TupleElementMut::_{i}(&mut self.{i}),")?; }
-                w!(f, "_ => TupleElementMut::None")?;
+                for i in 0..arity { w0!(f, "{i} => Some(TupleElementMut::_{i}(&mut self.{i})),")?; }
+                w!(f, "_ => None")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
 
