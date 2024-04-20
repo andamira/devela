@@ -2,8 +2,11 @@
 //
 //!
 //
-// We're generating code here because declarative macros are too limited.
-// This also seem to offer better performance for large arities.
+// TOC
+// - Tuple trait definition
+// - manual Tuple impls for arities < 2
+// - automatic Tuple impls for arities >= 2
+// - enums definitions
 
 use std::fs::{create_dir_all, File};
 use std::io::{Error, Write};
@@ -25,7 +28,7 @@ pub(super) fn generate() -> Result<(), Error> {
     let path = "construct/out/tuple.rs";
     let mut f = File::create(path)?;
 
-    /* trait definition */
+    /* Tuple trait definition */
     // --------------------------------------------------------------------------
 
     w!(f, r#"
@@ -155,50 +158,7 @@ pub(super) fn generate() -> Result<(), Error> {
     w!(f, "}}")?; // end impl Tuple
 
 
-    /* enum definitions */
-    // --------------------------------------------------------------------------
-
-    w!(f, "/// An element of a [`Tuple`].")?;
-    w!(f, "#[non_exhaustive]")?;
-    w!(f, "#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]")?;
-    w!(f, "pub enum TupleElement<")?;
-    for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
-    w!(f, "> {{")?;
-    // variants
-    for i in 0..MAX_ARITY {
-        w!(f, "/// The tuple element at index {i}.")?;
-        w!(f, "_{i}(_{i}),")?;
-    }
-    w!(f, "}}")?;
-
-    w!(f, "/// A shared reference to an element of a [`Tuple`].")?;
-    w!(f, "#[non_exhaustive]")?;
-    w!(f, "#[derive(Debug, PartialEq, Eq, Hash)]")?;
-    w!(f, "pub enum TupleElementRef<'a, ")?;
-    for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
-    w!(f, "> {{")?;
-    // variants
-    for i in 0..MAX_ARITY {
-        w!(f, "/// A shared reference to the tuple element at index {i}.")?;
-        w!(f, "_{i}(&'a _{i}),")?;
-    }
-    w!(f, "}}")?;
-
-    w!(f, "/// An exclusive reference to an element of a [`Tuple`].")?;
-    w!(f, "#[non_exhaustive]")?;
-    w!(f, "#[derive(Debug, PartialEq, Eq, Hash)]")?;
-    w!(f, "pub enum TupleElementMut<'a, ")?;
-    for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
-    w!(f, "> {{")?;
-    // variants
-    for i in 0..MAX_ARITY {
-        w!(f, "/// An exclusive reference to the tuple element at index {i}.")?;
-        w!(f, "_{i}(&'a mut _{i}),")?;
-    }
-    w!(f, "}}")?;
-
-
-    /* manual implementations for arities of 0 and 1 */
+    /* manual implementations of Tuple for arities of 0 and 1 */
     // --------------------------------------------------------------------------
 
     /* arity 0 */
@@ -265,7 +225,6 @@ pub(super) fn generate() -> Result<(), Error> {
         }}
     }}
     "#)?;
-
 
     /* arity 1 */
     w!(f, r#"impl<_0> Tuple for (_0,) {{
@@ -345,16 +304,13 @@ pub(super) fn generate() -> Result<(), Error> {
     "#)?;
 
 
-    /* auto implementations for arities >= 2 */
+    /* auto implementations of Tuple for arities >= 2 */
     // --------------------------------------------------------------------------
 
     for arity in 2..=MAX_ARITY {
-        w0!(f,
-            "
-            // #[rustfmt::skip]
-            impl<{0}> Tuple for ({0}) {{",
-            (0..arity).map(|i| format!("_{}", i)).collect::<Vec<_>>().join(", ")
-        )?;
+        w0!(f, "impl<")?; for i in 0..arity { w0!(f, "_{i},")?; }
+        w0!(f, "> Tuple for (")?; for i in 0..arity { w0!(f, "_{i},")?; }
+        w!(f, ") {{")?;
 
         // constants
         w!(f, "const ARITY: usize = {arity};")?;
@@ -455,7 +411,6 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "}}")?;
 
 
-        // -----------------------------
         w!(f, "}}")?; // end impl Tuple
 
         /* impl other traits */
@@ -478,6 +433,49 @@ pub(super) fn generate() -> Result<(), Error> {
             w!(f, "write!(f, \")\")")?;
         w!(f, "}}\n }}")?;
     }
+
+
+    /* enums definitions */
+    // --------------------------------------------------------------------------
+
+    w!(f, "/// An element of a [`Tuple`].")?;
+    w!(f, "#[non_exhaustive]")?;
+    w!(f, "#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]")?;
+    w!(f, "pub enum TupleElement<")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        // variants
+        for i in 0..MAX_ARITY {
+            w!(f, "/// The tuple element at index {i}.")?;
+            w!(f, "_{i}(_{i}),")?;
+        }
+    w!(f, "}}")?;
+
+    w!(f, "/// A shared reference to an element of a [`Tuple`].")?;
+    w!(f, "#[non_exhaustive]")?;
+    w!(f, "#[derive(Debug, PartialEq, Eq, Hash)]")?;
+    w!(f, "pub enum TupleElementRef<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        // variants
+        for i in 0..MAX_ARITY {
+            w!(f, "/// A shared reference to the tuple element at index {i}.")?;
+            w!(f, "_{i}(&'a _{i}),")?;
+        }
+    w!(f, "}}")?;
+
+    w!(f, "/// An exclusive reference to an element of a [`Tuple`].")?;
+    w!(f, "#[non_exhaustive]")?;
+    w!(f, "#[derive(Debug, PartialEq, Eq, Hash)]")?;
+    w!(f, "pub enum TupleElementMut<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        // variants
+        for i in 0..MAX_ARITY {
+            w!(f, "/// An exclusive reference to the tuple element at index {i}.")?;
+            w!(f, "_{i}(&'a mut _{i}),")?;
+        }
+    w!(f, "}}")?;
+
+
+    // --------------------------------------------------------------------------
 
     #[cfg(doc)] // format the source if we're building the docs
     crate::rustfmt_file(path);
