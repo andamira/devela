@@ -3,7 +3,7 @@ This project includes the following derived works:
 - A [modified][1] version of [stack_dst] by John Hodge, licensed as MIT OR Apache-2.0,
   in the [`data::dst`] module.
 - A [modified][2] version of [tupl] by *Dragoteryx*, licensed as MIT or Apache-2.0,
-  as part of the [`Tuple`] trait.
+  as part of the [`Tuple`] trait and other items.
 - A [modified][3] version of [fxhash] by Christopher Breeden, licensed as MIT OR Apache-2.0,
   as the [`HasherFx`], [`HasherFx32`] and [`HasherFx64`] hashers.
 - Adaptation of [`quickdiv`] v0.1.1 by Darko Trifunovski, licensed as Zlib OR MIT OR Apache-2.0,

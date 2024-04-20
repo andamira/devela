@@ -14,19 +14,19 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add features: `_non_value_all`, `_non_value_i8`, `_non_value_i16`, `_non_value_i32`, `_non_value_i64`, `_non_value_i128`, `_non_value_isize`, `_non_value_u8`, `_non_value_u16`, `_non_value_u32`, `_non_value_u64`, `_non_value_u128`, `_non_value_usize`.
 - add features: `_non_range_all`, `_non_range_i8`, `_non_range_i16`, `_non_range_i32`, `_non_range_i64`, `_non_range_i128`, `_non_range_isize`, `_non_range_u8`, `_non_range_u16`, `_non_range_u32`, `_non_range_u64`, `_non_range_u128`, `_non_range_usize`.
 - add features: `_range_all`, `_range_i8`, `_range_i16`, `_range_i32`, `_range_i64`, `_range_i128`, `_range_isize`, `_range_u8`, `_range_u16`, `_range_u32`, `_range_u64`, `_range_u128`, `_range_usize`.
-- add features: `_default`, `_max`, `_docsrs_max`, `_docsrs_stable`,`__dbg`.
+- add features: `_default`, `_min_docs`, `_max_docs`, `_max`, `_docsrs_stable`,`__dbg`.
 - add private features for reflection purposes.
 - add traits: `ExtFuture`, `ExtFloatConst`, `NumVector`, `UiCap`.
 - add functions: `future_block`, `hash_pengy`.
 - add type: `Prompt`.
 - add type: `Timecode`.
 - add types: `LoggerSimple`, `Logging`.
-- add types: `TupleEnumRef`, `TupleEnumMut`.
 - add types: `Divisor`, `GcdExt`, `ValueQuant`.
 - add types: `Extent`, `Extent2d`, `Extent3d`.
 - add types: `Angle`, `AngleDirection`, `AngleKind`
 - add types: `Vector`, `Vector2d`, `Vector3d`, `VecVector`.
 - add types: `Point`, `Point2d`, `Point3d`, `Points`, `VecPoints`.
+- add types: `TupleElement`, `TupleElementRef`, `TupleElementMut`.
 - add types: `HasherFnv`, `HasherFx`, `HasherFx32`, `HasherFx64`, `HasherBuildFnv`, `HasherBuildFx`.
 - add `Floating` and `ExtFloat` method: `neg_abs`.
 - add unsigned `gcd_ext` and `gcd_ext_euc` methods to `Int`.
@@ -76,7 +76,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add more consts to `Float` and `ExtFloat`.
 - add the `?Sized` trait bound for `ExtAny` auto-impls.
 - change `From<float>` for `Sign` to return the zero sign.
-- change default `Tuple` arity to 7.
+- change default `Tuple` arity to 12.
+- change tuple capability features to: `_tuple_arity_24`, `_tuple_arity_36`, `_tuple_arity_48`, `_tuple_arity_60`, `_tuple_arity_72`, `_tuple_arity_96`.
 - add bounds for `color_gamma_*` functions.
 - move the enabling of all module's sub-features to the root module feature.
 - update `devela_macros`.
