@@ -5,6 +5,9 @@
 
 use core::fmt::{self, Debug, Display};
 
+#[cfg(test)]
+mod tests;
+
 // Marker trait to prevent downstream implementations of the `Tuple` trait.
 #[rustfmt::skip] mod private { pub trait Sealed {} }
 
