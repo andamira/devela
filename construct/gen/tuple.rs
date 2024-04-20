@@ -10,12 +10,13 @@ use std::io::{Error, Write};
 use std::{write as w0, writeln as w};
 
 #[rustfmt::skip] const MAX_ARITY: usize = {
-    if cfg!(not(feature = "_tuple_arity_15")) { 7
-    } else if cfg!(all(feature = "_tuple_arity_15", not(feature = "_tuple_arity_31"))) { 15
-    } else if cfg!(all(feature = "_tuple_arity_31", not(feature = "_tuple_arity_63"))) { 31
-    } else if cfg!(all(feature = "_tuple_arity_63", not(feature = "_tuple_arity_95"))) { 63
-    } else if cfg!(all(feature = "_tuple_arity_95", not(feature = "_tuple_arity_127"))) { 95
-    } else { 127 }
+    if cfg!(not(feature = "_tuple_arity_24")) { 12
+    } else if cfg!(all(feature = "_tuple_arity_24", not(feature = "_tuple_arity_36"))) { 24
+    } else if cfg!(all(feature = "_tuple_arity_36", not(feature = "_tuple_arity_48"))) { 36
+    } else if cfg!(all(feature = "_tuple_arity_48", not(feature = "_tuple_arity_60"))) { 48
+    } else if cfg!(all(feature = "_tuple_arity_60", not(feature = "_tuple_arity_72"))) { 60
+    } else if cfg!(all(feature = "_tuple_arity_72", not(feature = "_tuple_arity_96"))) { 72
+    } else { 96 }
 };
 
 #[rustfmt::skip]
@@ -36,9 +37,9 @@ pub(super) fn generate() -> Result<(), Error> {
     /// They enable structured grouping and access to a sequence of different types.
     ///
     /// # Features
-    /// By default it's implemented for tuples of arity of 15 or less.
-    /// It supports increased arities of 15, 31, 63, 95 and 127 by enabling the
-    /// corresponding capability feature: `_tuple_arity_[15|31|63|95|127]`.
+    /// By default it's implemented for tuples of arity of 12 or less.
+    /// It supports increased arities of 24, 36, 48, 60, 72 and 96 by enabling the
+    /// corresponding capability feature: `_tuple_arity_[24|36|48|60|72|96]`.
     "#)?;
     w!(f, "pub trait Tuple {{")?;
 
