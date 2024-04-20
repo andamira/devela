@@ -64,7 +64,7 @@ pub(super) fn print_features() {
     printfeat![msg: "Enabled capability features:", features:
         "_default", "_max",
 
-        "_docsrs", "_docsrs_max", "_docsrs_stable",
+        "_docsrs", "_docsrs_stable",
 
         "_-bit_any-_",
         "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",

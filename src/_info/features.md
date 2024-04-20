@@ -155,7 +155,6 @@ Enable specific implementations for [`Bitwise`], [`bitfield`], [`enumset`]:
 
  Documentation capabilities:
 - `_docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
-- `_docsrs_max`: like `_docsrs` but also enables `capability_max`.
 - `_docsrs_stable`: like `_docsrs` but without enabling `nightly`.
 
 

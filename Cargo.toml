@@ -189,17 +189,19 @@ _min_docs = [ # the minimum capabilities to document all methods
 	"_float_f32", "_int_u8",
 	"_non_value_u8", "_non_range_u8", "_range_u8",
 ]
-_max = [ # the maximum capabilities
+_max_docs = [ # the maximum capabities relevant for documentation
 	"_bit_all",
 	"_stack_all", "_destaque_all",
 	"_num_all",
 	"_niche_all",
+]
+_max = [ # the maximum capabilities, including non-relevant for documentation
+	"_max_docs",
 	"_tuple_arity_96",
 ]
 
-# The most complete versions of the documentation:
+# The more complete versions of the documentation:
 _docsrs = ["nightly", "_docsrs_stable"]
-_docsrs_max = ["_docsrs", "_max"]
 _docsrs_stable = ["all", "std", "unsafe", "dep_all", "_min_docs"]
 
 # Specific data collection implementations for `Stack`, `Destaque`.
@@ -436,7 +438,7 @@ devela = { path = ".", features = ["all"] }
 [package.metadata.docs.rs]
 # ==============================================================================
 no-default-features = true
-features = ["_docsrs_max"]
+features = ["_docsrs", "_max_docs"]
 rustdoc-args = [ "--html-in-header", "./DOCS/rustdoc-header.html" ]
 
 [badges]
