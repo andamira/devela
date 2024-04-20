@@ -155,11 +155,12 @@ pub(super) fn generate() -> Result<(), Error> {
 
     w!(f, "/// An element of a [`Tuple`].")?;
     w!(f, "#[non_exhaustive]")?;
+    w!(f, "#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]")?;
     w!(f, "pub enum TupleElement<")?;
     for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
     w!(f, "> {{")?;
     // variants
-    w!(f, "/// No type.")?;
+    w!(f, "/// No element.")?;
     w!(f, "None,")?;
     for i in 0..MAX_ARITY {
         w!(f, "/// The tuple element at index {i}.")?;
@@ -169,11 +170,12 @@ pub(super) fn generate() -> Result<(), Error> {
 
     w!(f, "/// A shared reference to an element of a [`Tuple`].")?;
     w!(f, "#[non_exhaustive]")?;
+    w!(f, "#[derive(Debug, PartialEq, Eq, Hash)]")?;
     w!(f, "pub enum TupleElementRef<'a, ")?;
     for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
     w!(f, "> {{")?;
     // variants
-    w!(f, "/// No type.")?;
+    w!(f, "/// No element.")?;
     w!(f, "None,")?;
     for i in 0..MAX_ARITY {
         w!(f, "/// A shared reference to the tuple element at index {i}.")?;
@@ -183,11 +185,12 @@ pub(super) fn generate() -> Result<(), Error> {
 
     w!(f, "/// An exclusive reference to an element of a [`Tuple`].")?;
     w!(f, "#[non_exhaustive]")?;
+    w!(f, "#[derive(Debug, PartialEq, Eq, Hash)]")?;
     w!(f, "pub enum TupleElementMut<'a, ")?;
     for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
     w!(f, "> {{")?;
     // variants
-    w!(f, "/// No type.")?;
+    w!(f, "/// No element.")?;
     w!(f, "None,")?;
     for i in 0..MAX_ARITY {
         w!(f, "/// An exclusive reference to the tuple element at index {i}.")?;
