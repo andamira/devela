@@ -9,7 +9,7 @@
 // - enums definitions
 
 use std::fs::{create_dir_all, File};
-use std::io::{Error, Write};
+use std::io::{BufWriter, Error, Write};
 use std::{write as w0, writeln as w};
 
 #[rustfmt::skip] const MAX_ARITY: usize = {
@@ -26,7 +26,10 @@ use std::{write as w0, writeln as w};
 pub(super) fn generate() -> Result<(), Error> {
     create_dir_all("construct/out/").unwrap();
     let path = "construct/out/tuple.rs";
-    let mut f = File::create(path)?;
+
+    let file = File::create(path)?;
+    let mut f = BufWriter::new(file);
+    // let mut f = BufWriter::with_capacity(100 * 1024, file);
 
     /* Tuple trait definition */
     // --------------------------------------------------------------------------
@@ -476,6 +479,11 @@ pub(super) fn generate() -> Result<(), Error> {
 
 
     // --------------------------------------------------------------------------
+
+    if let Err(e) = f.flush() {
+        eprintln!("Failed to write to file: {}", e);
+        std::process::exit(1);
+    }
 
     #[cfg(doc)] // format the source if we're building the docs
     crate::rustfmt_file(path);
