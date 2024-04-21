@@ -118,34 +118,35 @@ pub(super) fn generate() -> Result<(), Error> {
         #[must_use]
         fn prepend<T>(self, value: T) -> Self::Prepend<T>;")?;
 
+    // nth
     w!(f, "/// Returns the `nth` element, or `None` if `nth >= ARITY`.
     #[allow(clippy::type_complexity)]
     fn nth(self, nth: usize) -> Option<TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; }
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">>;")?;
 
     w!(f, "/// Returns the `nth` element cloned, or `None` if `nth >= ARITY`.
     #[allow(clippy::type_complexity)]
     fn nth_cloned(&self, nth: usize) -> Option<TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; }
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">> where ")?;
         for i in 0..MAX_ARITY {
-            w!(f, "Self::_{i}: Clone")?;
-            if i == MAX_ARITY-1 { w!(f, ";")?; } else { w!(f, ",")?; }
+            w0!(f, "Self::_{i}: Clone")?;
+            if i == MAX_ARITY-1 { w!(f, ";")?; } else { w0!(f, ",")?; }
         }
 
     w!(f, "/// Returns a shared reference to the `nth` element,
     /// or `None` if `nth >= ARITY`.
     #[allow(clippy::type_complexity)]
     fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; }
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">>;")?;
 
     w!(f, "/// Returns an exclusive reference to the `nth` element,
     /// or `None` if `nth >= ARITY`.
     #[allow(clippy::type_complexity)]
     fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; }
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">>;")?;
 
 
@@ -187,29 +188,32 @@ pub(super) fn generate() -> Result<(), Error> {
         fn append<T>(self, value: T) -> Self::Append<T> {{ (value,) }}
         fn prepend<T>(self, value: T) -> Self::Prepend<T> {{ (value,) }}
     "#)?;
+
         // index types
         for i in 0..MAX_ARITY { w!(f, "type _{i} = ();")?; }
 
         // methods
+
+        // nth*
         w!(f, "fn nth(self, _nth: usize) -> Option<TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "None")?;
         w!(f, "}}")?;
 
         w!(f, "fn nth_cloned(&self, _nth: usize) -> Option<TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
-            for i in 0..MAX_ARITY { w!(f, "Self::_{i}: Clone,")?; }
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
+            for i in 0..MAX_ARITY { w0!(f, "Self::_{i}: Clone,")?; }
             w!(f, "{{")?;
                 w!(f, "None")?;
         w!(f, "}}")?;
 
         w!(f, "fn nth_ref(&self, _nth: usize) -> Option<TupleElementRef<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "None")?;
         w!(f, "}}")?;
 
         w!(f, "fn nth_mut(&mut self, _nth: usize) -> Option<TupleElementMut<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "None")?;
             w!(f, "}}")?;
 
@@ -252,13 +256,16 @@ pub(super) fn generate() -> Result<(), Error> {
         fn append<T>(self, value: T) -> Self::Append<T> {{ (self.0, value) }}
         fn prepend<T>(self, value: T) -> Self::Prepend<T> {{ (value, self.0) }}
     "#)?;
+
         // index types
         w!(f, "type _0 = _0;")?;
         for i in 1..MAX_ARITY { w!(f, "type _{i} = ();")?; }
 
         // methods
+
+        // nth*
         w!(f, "fn nth(self, nth: usize) -> Option<TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
                 w!(f, "0 => Some(TupleElement::_0(self.0)),")?;
                 w!(f, "_ => None,")?;
@@ -266,7 +273,7 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "}}")?;
 
         w!(f, "fn nth_cloned(&self, nth: usize) -> Option<TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
             for i in 0..MAX_ARITY { w!(f, "Self::_{i}: Clone,")?; }
             w!(f, "{{")?;
             w!(f, "match nth {{")?;
@@ -276,7 +283,7 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "}}")?;
 
         w!(f, "fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
                 w!(f, "0 => Some(TupleElementRef::_0(&self.0)),")?;
                 w!(f, "_ => None,")?;
@@ -284,7 +291,7 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "}}")?;
 
         w!(f, "fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
                 w!(f, "0 => Some(TupleElementMut::_0(&mut self.0)),")?;
                 w!(f, "_ => None,")?;
@@ -386,8 +393,8 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "}}")?;
 
         w!(f, "fn nth_cloned(&self, nth: usize) -> Option<TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
-            for i in 0..MAX_ARITY { w!(f, "Self::_{i}: Clone,")?; }
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
+            for i in 0..MAX_ARITY { w0!(f, "Self::_{i}: Clone,")?; }
             w!(f, "{{")?;
             w!(f, "match nth {{")?;
                 for i in 0..arity { w0!(f, "{i} => Some(TupleElement::_{i}(self.{i}.clone())),")?; }
@@ -419,7 +426,7 @@ pub(super) fn generate() -> Result<(), Error> {
         /* impl other traits */
 
         w!(f, "#[rustfmt::skip]")?;
-        w!(f, "impl<")?; for i in 0..arity { w0!(f, "_{i}: Debug,")?; }
+        w!(f, "impl<")?; for i in 0..arity { w0!(f, "_{i}: Debug, ")?; }
         w!(f, "> TupleDebug for (")?; for i in 0..arity { w0!(f, "_{i},")?; }
         w!(f, ") {{\n fn fmt_debug(&self, f: &mut fmt::Formatter) -> fmt::Result {{")?;
             w!(f, "f.debug_tuple(\"\")")?;
@@ -428,7 +435,7 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "}}\n }}")?;
 
         w!(f, "#[rustfmt::skip]")?;
-        w!(f, "impl<")?; for i in 0..arity { w0!(f, "_{i}: Display,")?; }
+        w!(f, "impl<")?; for i in 0..arity { w0!(f, "_{i}: Display, ")?; }
         w!(f, "> TupleDisplay for (")?; for i in 0..arity { w0!(f, "_{i},")?; }
         w!(f, ") {{\n fn fmt_display(&self, f: &mut fmt::Formatter) -> fmt::Result {{")?;
             w!(f, "write!(f, \"({{}}\", &self.0)?;")?;
@@ -445,7 +452,7 @@ pub(super) fn generate() -> Result<(), Error> {
     w!(f, "#[non_exhaustive]")?;
     w!(f, "#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]")?;
     w!(f, "pub enum TupleElement<")?;
-        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w0!(f, "> {{")?;
         // variants
         for i in 0..MAX_ARITY {
             w!(f, "/// The tuple element at index {i}.")?;
@@ -457,7 +464,7 @@ pub(super) fn generate() -> Result<(), Error> {
     w!(f, "#[non_exhaustive]")?;
     w!(f, "#[derive(Debug, PartialEq, Eq, Hash)]")?;
     w!(f, "pub enum TupleElementRef<'a, ")?;
-        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w0!(f, "> {{")?;
         // variants
         for i in 0..MAX_ARITY {
             w!(f, "/// A shared reference to the tuple element at index {i}.")?;
