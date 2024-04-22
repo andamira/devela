@@ -36,6 +36,8 @@ pub(super) fn generate() -> Result<(), Error> {
     w!(f, r#"
     /// Extension trait providing convenience methods for [tuples][tuple].
     ///
+    /// This trait is sealed and cannot be implemented for any other type.
+    ///
     /// Tuples are random-access, sequentially allocated, statically sized,
     /// heterogeneous data structures.
     ///
@@ -46,7 +48,7 @@ pub(super) fn generate() -> Result<(), Error> {
     /// It supports increased arities of 24, 36, 48 and 72 by enabling the
     /// corresponding capability feature: `_tuple_arity_[24|36|48|72]`.
     "#)?;
-    w!(f, "pub trait Tuple {{")?;
+    w!(f, "pub trait Tuple: private::Sealed {{")?;
 
     // constants
     w!(f, "/// The arity of this tuple (the number of contained elements)")?;
@@ -181,6 +183,9 @@ pub(super) fn generate() -> Result<(), Error> {
     // --------------------------------------------------------------------------
 
     /* arity 0 */
+
+    w!(f, "impl private::Sealed for () {{}}")?;
+
     w!(f, r#"impl Tuple for () {{
         const ARITY: usize = 0;
 
@@ -274,6 +279,9 @@ pub(super) fn generate() -> Result<(), Error> {
     "#)?;
 
     /* arity 1 */
+
+    w!(f, "impl<_0> private::Sealed for (_0,) {{}}")?;
+
     w!(f, r#"impl<_0> Tuple for (_0,) {{
         const ARITY: usize = 1;
 
@@ -390,6 +398,10 @@ pub(super) fn generate() -> Result<(), Error> {
     // --------------------------------------------------------------------------
 
     for arity in 2..=MAX_ARITY {
+        w0!(f, "impl<")?; for i in 0..arity { w0!(f, "_{i},")?; }
+        w0!(f, "> private::Sealed for (")?; for i in 0..arity { w0!(f, "_{i},")?; }
+        w!(f, ") {{}}")?;
+
         w0!(f, "impl<")?; for i in 0..arity { w0!(f, "_{i},")?; }
         w0!(f, "> Tuple for (")?; for i in 0..arity { w0!(f, "_{i},")?; }
         w!(f, ") {{")?;
