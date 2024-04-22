@@ -197,7 +197,7 @@ _max_docs = [ # the maximum capabities relevant for documentation
 ]
 _max = [ # the maximum capabilities, including non-relevant for documentation
 	"_max_docs",
-	"_tuple_arity_96",
+	"_tuple_arity_72",
 ]
 
 # The more complete versions of the documentation:
@@ -334,13 +334,12 @@ _-niche_any-_ = []
 #
 # The maximum tuple arity supported by the Tuple trait:
 
-# The default tuple arity is 12 # time: 3.5s, codegen: 65K
-_tuple_arity_24 = [] # time: 4.3s, codegen: 202K
-_tuple_arity_36 = ["_tuple_arity_24"] # time: 5s, codegen: 416K
-_tuple_arity_48 = ["_tuple_arity_36"] # time: 6s, codegen: 708K
-_tuple_arity_60 = ["_tuple_arity_48"] # time: 16s, codegen: 1.1M
-_tuple_arity_72 = ["_tuple_arity_60"] # time: 24s, codegen: 1.5M
-_tuple_arity_96 = ["_tuple_arity_72"] # time: 48s, codegen: 2.7M
+# The default tuple arity is 12       # time:  3.5s, codegen: 132K
+_tuple_arity_24 = []                  # time:  4.3s, codegen: 420K
+_tuple_arity_36 = ["_tuple_arity_24"] # time:  5.6s, codegen: 864K
+_tuple_arity_48 = ["_tuple_arity_36"] # time:  6.8s, codegen: 1.5M
+_tuple_arity_72 = ["_tuple_arity_48"] # time: 11.1s, codegen: 3.1M
+
 
 
 #* dependency features *#

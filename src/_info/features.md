@@ -118,7 +118,7 @@ Enabling them will likely worsen compilation times.
 
 - `_default`: enables default capabilities.
 - `_max`: enables the maximum capabilities.
-- `_tuple_arity_[24|36|48|60|72|96]`: increased arity support for [`Tuple`].
+- `_tuple_arity_[24|36|48|72]`: increased arity support for [`Tuple`].
 
 Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
 [`Angle`], [`Point`], [`Vector`]:

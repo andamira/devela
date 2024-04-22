@@ -17,10 +17,8 @@ use std::{write as w0, writeln as w};
     if cfg!(not(feature = "_tuple_arity_24")) { 12
     } else if cfg!(all(feature = "_tuple_arity_24", not(feature = "_tuple_arity_36"))) { 24
     } else if cfg!(all(feature = "_tuple_arity_36", not(feature = "_tuple_arity_48"))) { 36
-    } else if cfg!(all(feature = "_tuple_arity_48", not(feature = "_tuple_arity_60"))) { 48
-    } else if cfg!(all(feature = "_tuple_arity_60", not(feature = "_tuple_arity_72"))) { 60
-    } else if cfg!(all(feature = "_tuple_arity_72", not(feature = "_tuple_arity_96"))) { 72
-    } else { 96 }
+    } else if cfg!(all(feature = "_tuple_arity_48", not(feature = "_tuple_arity_72"))) { 48
+    } else { 72 }
 };
 
 #[rustfmt::skip]
@@ -45,8 +43,8 @@ pub(super) fn generate() -> Result<(), Error> {
     ///
     /// # Features
     /// By default it's implemented for tuples of arity of 12 or less.
-    /// It supports increased arities of 24, 36, 48, 60, 72 and 96 by enabling the
-    /// corresponding capability feature: `_tuple_arity_[24|36|48|60|72|96]`.
+    /// It supports increased arities of 24, 36, 48 and 72 by enabling the
+    /// corresponding capability feature: `_tuple_arity_[24|36|48|72]`.
     "#)?;
     w!(f, "pub trait Tuple {{")?;
 
