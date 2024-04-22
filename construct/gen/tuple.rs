@@ -48,6 +48,7 @@ pub(super) fn generate() -> Result<(), Error> {
     /// It supports increased arities of 24, 36, 48 and 72 by enabling the
     /// corresponding capability feature: `_tuple_arity_[24|36|48|72]`.
     "#)?;
+    w!(f, "#[cfg_attr(feature = \"nightly_doc\", doc(notable_trait))]")?;
     w!(f, "pub trait Tuple: private::Sealed {{")?;
 
     // constants

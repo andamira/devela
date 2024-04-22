@@ -99,6 +99,7 @@ mod auto_impls {
 ///     [`sqrt_round`][Self::int_sqrt_round],
 ///
 /// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.
+#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait NumInt: Num {
     /// Specifically signed output type for some operations (▶ `int_gcd_ext`).

@@ -29,7 +29,8 @@
 //
 // nightly:
 // WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
-#![cfg_attr(feature = "nightly_doc", feature(doc_cfg))]
+// WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
+#![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
 // WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 #![cfg_attr(
     feature = "nightly_coro",

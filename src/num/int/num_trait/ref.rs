@@ -22,6 +22,7 @@ use core::ops::Deref;
 /// # Notes
 /// - This is automatically implemented for references of types implementing [`NumInt`].
 /// - Mutable operations are only available for exclusive (`&mut`) references.
+#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[rustfmt::skip] #[allow(unused_variables)]
 pub trait NumRefInt<'a>: NumRef<'a>
 where

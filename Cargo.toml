@@ -165,7 +165,7 @@ nightly = [
 	"nightly_coro", "nightly_doc", "nightly_simd",
 ] # enables all the following features:
 	nightly_coro= ["_-nightly-_"] # coroutines, coroutine_trait, iter_from_coroutine
-	nightly_doc = ["_-nightly-_"] # doc_cfg
+	nightly_doc = ["_-nightly-_"] # doc_cfg, doc_notable_trait
 	nightly_simd = ["_-nightly-_"] # portable_simd
 
 # private, refective:
