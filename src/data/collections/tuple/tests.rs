@@ -105,3 +105,35 @@ fn tuple_nth_mut() {
     let mut tuple = TUPLE;
     assert![matches![tuple.nth_mut(2), Some(TupleElementMut::_2(&mut "Hello"))]];
 }
+
+#[test] #[rustfmt::skip]
+fn tuple_into_iter() {
+    let mut ti = TUPLE.into_iter();
+    assert_eq![ti.next(), Some(TupleElement::_0(10))];
+    assert_eq![ti.next_back(), Some(TupleElement::_3(true))];
+    assert_eq![ti.next(), Some(TupleElement::_1(20.5))];
+    assert_eq![ti.next_back(), Some(TupleElement::_2("Hello"))];
+    assert_eq![ti.next(), None];
+    assert_eq![ti.next_back(), None];
+}
+#[test] #[rustfmt::skip]
+fn tuple_iter_ref() {
+    let mut ti = TUPLE.iter_ref();
+    assert_eq![ti.next(), Some(TupleElementRef::_0(&10))];
+    assert_eq![ti.next_back(), Some(TupleElementRef::_3(&true))];
+    assert_eq![ti.next(), Some(TupleElementRef::_1(&20.5))];
+    assert_eq![ti.next_back(), Some(TupleElementRef::_2(&"Hello"))];
+    assert_eq![ti.next(), None];
+    assert_eq![ti.next_back(), None];
+}
+#[test] #[rustfmt::skip]
+fn tuple_iter_mut() {
+    let mut tuple = TUPLE;
+    let mut ti = tuple.iter_mut();
+    assert_eq![ti.next(), Some(TupleElementMut::_0(&mut 10))];
+    assert_eq![ti.next_back(), Some(TupleElementMut::_3(&mut true))];
+    assert_eq![ti.next(), Some(TupleElementMut::_1(&mut 20.5))];
+    assert_eq![ti.next_back(), Some(TupleElementMut::_2(&mut "Hello"))];
+    assert_eq![ti.next(), None];
+    assert_eq![ti.next_back(), None];
+}

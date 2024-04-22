@@ -7,6 +7,7 @@
 // - manual Tuple impls for arities < 2
 // - automatic Tuple impls for arities >= 2
 // - enums definitions
+// - iterators definitions and implementations
 
 use std::fs::{create_dir_all, File};
 use std::io::{BufWriter, Error, Write};
@@ -81,7 +82,7 @@ pub(super) fn generate() -> Result<(), Error> {
     "#)?;
     w!(f, "const MAX_ARITY: usize = {MAX_ARITY};")?;
 
-    // methods
+    /* Tuple methods */
 
     w!(f, "/// Returns a shared reference to the head of this tuple.
         #[must_use]
@@ -149,8 +150,24 @@ pub(super) fn generate() -> Result<(), Error> {
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">>;")?;
 
+    // iter
+    w!(f, "/// Returns an iterator over elements of the tuple.
+    #[allow(clippy::type_complexity)]
+    fn into_iter(self) -> TupleIter<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, ">;")?;
+    w!(f, "/// Returns an iterator over shared references to elements of the tuple.
+    #[allow(clippy::type_complexity)]
+    fn iter_ref(&self) -> TupleIterRef<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, ">;")?;
+    w!(f, "/// Returns an iterator over exclusive reference to elements of the tuple.
+    #[allow(clippy::type_complexity)]
+    fn iter_mut(&mut self) -> TupleIterMut<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, ">;")?;
 
-    // auto-implementations
+    /* Tuple auto-implemented methods */
 
     w!(f, "/// Returns the arity (number of elements) of this tuple.
         #[must_use]
@@ -192,31 +209,56 @@ pub(super) fn generate() -> Result<(), Error> {
         // index types
         for i in 0..MAX_ARITY { w!(f, "type _{i} = ();")?; }
 
-        // methods
+        /* methods */
 
-        // nth*
+        // nth
         w!(f, "fn nth(self, _nth: usize) -> Option<TupleElement<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "None")?;
         w!(f, "}}")?;
-
         w!(f, "fn nth_cloned(&self, _nth: usize) -> Option<TupleElement<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
             for i in 0..MAX_ARITY { w0!(f, "Self::_{i}: Clone,")?; }
             w!(f, "{{")?;
                 w!(f, "None")?;
         w!(f, "}}")?;
-
         w!(f, "fn nth_ref(&self, _nth: usize) -> Option<TupleElementRef<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "None")?;
         w!(f, "}}")?;
-
         w!(f, "fn nth_mut(&mut self, _nth: usize) -> Option<TupleElementMut<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "None")?;
             w!(f, "}}")?;
 
+        // iter
+        w!(f, "fn into_iter(self) -> TupleIter<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, "> {{
+            TupleIter {{
+                tuple: (")?; for _ in 0..MAX_ARITY { w0!(f, "None, ")?; } w!(f, "),
+                front_index: 0,
+                back_index: 0,
+            }}
+        }}")?;
+        w!(f, "fn iter_ref(&self) -> TupleIterRef<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, "> {{
+            TupleIterRef {{
+                tuple: (")?; for _ in 0..MAX_ARITY { w0!(f, "&(), ")?; } w!(f, "),
+                front_index: 0,
+                back_index: 0,
+            }}
+        }}")?;
+        w!(f, "fn iter_mut(&mut self) -> TupleIterMut<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, "> {{
+            TupleIterMut {{
+                tuple: (")?; for _ in 0..MAX_ARITY { w0!(f, "None, ")?; } w!(f, "),
+                front_index: 0,
+                back_index: 0,
+            }}
+        }}")?;
 
     w!(f, "}}")?;
 
@@ -261,9 +303,9 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "type _0 = _0;")?;
         for i in 1..MAX_ARITY { w!(f, "type _{i} = ();")?; }
 
-        // methods
+        /* methods */
 
-        // nth*
+        // nth
         w!(f, "fn nth(self, nth: usize) -> Option<TupleElement<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
@@ -271,7 +313,6 @@ pub(super) fn generate() -> Result<(), Error> {
                 w!(f, "_ => None,")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
-
         w!(f, "fn nth_cloned(&self, nth: usize) -> Option<TupleElement<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> where ")?;
             for i in 0..MAX_ARITY { w!(f, "Self::_{i}: Clone,")?; }
@@ -281,7 +322,6 @@ pub(super) fn generate() -> Result<(), Error> {
                 w!(f, "_ => None,")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
-
         w!(f, "fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
@@ -289,7 +329,6 @@ pub(super) fn generate() -> Result<(), Error> {
                 w!(f, "_ => None,")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
-
         w!(f, "fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; } w!(f, ">> {{")?;
             w!(f, "match nth {{")?;
@@ -297,6 +336,41 @@ pub(super) fn generate() -> Result<(), Error> {
                 w!(f, "_ => None,")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
+
+        // iter
+        w!(f, "fn into_iter(self) -> TupleIter<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, "> {{
+            TupleIter {{
+                tuple: (Some(self.0), ")?;
+                    for _ in 1..MAX_ARITY { w0!(f, "None, ")?; }
+                    w!(f, "),
+                front_index: 0,
+                back_index: 0,
+            }}
+        }}")?;
+        w!(f, "fn iter_ref(&self) -> TupleIterRef<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, "> {{
+            TupleIterRef {{
+                tuple: (&self.0, ")?;
+                    for _ in 1..MAX_ARITY { w0!(f, "&(), ")?; }
+                    w!(f, "),
+                front_index: 0,
+                back_index: 0,
+            }}
+        }}")?;
+        w!(f, "fn iter_mut(&mut self) -> TupleIterMut<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, "> {{
+            TupleIterMut {{
+                tuple: (Some(&mut self.0), ")?;
+                    for _ in 1..MAX_ARITY { w0!(f, "None, ")?; }
+                    w!(f, "),
+                front_index: 0,
+                back_index: 0,
+            }}
+        }}")?;
 
     w!(f, "}}")?;
 
@@ -353,7 +427,7 @@ pub(super) fn generate() -> Result<(), Error> {
             w!(f, "type _{i} = ();")?;
         }
 
-        /* impl trait methods */
+        /* Tuple methods */
 
         w!(f, "fn head(&self) -> &Self::Head {{ &self.0 }}")?;
         w!(f, "fn tail(&self) -> &Self::Tail {{ &self.{} }}", arity-1)?;
@@ -382,7 +456,7 @@ pub(super) fn generate() -> Result<(), Error> {
             for i in 0..arity { w0!(f, "self.{i},")?; }
         w!(f, ") }}")?;
 
-        // nth*
+        // nth
         w!(f, "fn nth(self, nth: usize) -> Option<TupleElement<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">> {{")?;
@@ -401,7 +475,6 @@ pub(super) fn generate() -> Result<(), Error> {
                 w!(f, "_ => None")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
-
         w!(f, "fn nth_ref(&self, nth: usize) -> Option<TupleElementRef<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">> {{")?;
@@ -410,7 +483,6 @@ pub(super) fn generate() -> Result<(), Error> {
                 w!(f, "_ => None")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
-
         w!(f, "fn nth_mut(&mut self, nth: usize) -> Option<TupleElementMut<")?;
         for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
         w!(f, ">> {{")?;
@@ -419,6 +491,47 @@ pub(super) fn generate() -> Result<(), Error> {
                 w!(f, "_ => None")?;
             w!(f, "}}")?;
         w!(f, "}}")?;
+
+        // iter
+        w!(f, "fn into_iter(self) -> TupleIter<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, "> {{
+            let back_index = self.arity() - 1;
+            TupleIter {{
+                tuple: (Some(self.0), Some(self.1), ")?;
+                    for i in 2..arity { w0!(f, "Some(self.{i}), ")?; }
+                    for _ in arity..MAX_ARITY { w0!(f, "None, ")?; }
+                    w!(f, "),
+                front_index: 0,
+                back_index,
+            }}
+        }}")?;
+        w!(f, "fn iter_ref(&self) -> TupleIterRef<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, "> {{
+            let back_index = self.arity() - 1;
+            TupleIterRef {{
+                tuple: (&self.0, &self.1, ")?;
+                    for i in 2..arity { w0!(f, "&self.{i}, ")?; }
+                    for _ in arity..MAX_ARITY { w0!(f, "&(), ")?; }
+                    w!(f, "),
+                front_index: 0,
+                back_index,
+            }}
+        }}")?;
+        w!(f, "fn iter_mut(&mut self) -> TupleIterMut<")?;
+        for i in 0..MAX_ARITY { w0!(f, "Self::_{i},")?; }
+        w!(f, "> {{
+            let back_index = self.arity() - 1;
+            TupleIterMut {{
+                tuple: (Some(&mut self.0), Some(&mut self.1), ")?;
+                    for i in 2..arity { w0!(f, "Some(&mut self.{i}), ")?; }
+                    for _ in arity..MAX_ARITY { w0!(f, "None, ")?; }
+                    w!(f, "),
+                front_index: 0,
+                back_index,
+            }}
+        }}")?;
 
 
         w!(f, "}}")?; // end impl Tuple
@@ -485,6 +598,248 @@ pub(super) fn generate() -> Result<(), Error> {
     w!(f, "}}")?;
 
 
+    /* iterators definitions */
+    // --------------------------------------------------------------------------
+
+    // into
+    w!(f, "/// An iterator over elements of a [`Tuple`].")?;
+    w!(f, "#[derive(Clone)]")?;
+    w!(f, "pub struct TupleIter<")?;
+        for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w!(f, "> {{")?;
+        // fields
+        w!(f, "#[allow(clippy::type_complexity)]")?;
+        w!(f, "tuple: (")?;
+            for i in 0..MAX_ARITY { w0!(f, "Option<_{i}>,")?; } w!(f, "),")?;
+        w!(f, "front_index: usize,")?;
+        w!(f, "back_index: usize,")?;
+    w!(f, "}}")?;
+    // methods
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> TupleIter<")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "/// Returns the remaining elements in the iterator.
+        pub const fn remaining(&self) -> usize {{ self.back_index + 1 - self.front_index }}
+    }}")?;
+
+    // ref
+    w!(f, "/// An iterator over shared references to elements of a [`Tuple`].")?;
+    w!(f, "#[derive(Clone)]")?;
+    w!(f, "pub struct TupleIterRef<'a, ")?;
+        for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w!(f, "> {{")?;
+        // fields
+        w!(f, "#[allow(clippy::type_complexity)]")?;
+        w!(f, "tuple: (")?;
+            for i in 0..MAX_ARITY { w0!(f, "&'a _{i},")?; } w!(f, "),")?;
+        w!(f, "front_index: usize,")?;
+        w!(f, "back_index: usize,")?;
+    w!(f, "}}")?;
+    // methods
+    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> TupleIterRef<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "/// Returns the remaining elements in the iterator.
+        pub const fn remaining(&self) -> usize {{ self.back_index + 1 - self.front_index }}
+    }}")?;
+
+    // mut
+    w!(f, "/// An iterator over exclusive references to elements of a [`Tuple`].")?;
+    w!(f, "pub struct TupleIterMut<'a, ")?;
+        for i in 0..MAX_ARITY { w0!(f, "_{i},")?; } w!(f, "> {{")?;
+        // fields
+        w!(f, "#[allow(clippy::type_complexity)]")?;
+        w!(f, "tuple: (")?;
+            for i in 0..MAX_ARITY { w0!(f, "Option<&'a mut _{i}>,")?; } w!(f, "),")?;
+        w!(f, "front_index: usize,")?;
+        w!(f, "back_index: usize,")?;
+    w!(f, "}}")?;
+    // methods
+    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> TupleIterMut<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "/// Returns the remaining elements in the iterator.
+        pub const fn remaining(&self) -> usize {{ self.back_index + 1 - self.front_index }}
+    }}")?;
+
+    /* iterators traits implementations */
+    // --------------------------------------------------------------------------
+
+    // Into
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> Iterator for TupleIter<")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "type Item = TupleElement<")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, ">;")?;
+        //
+        w!(f, "fn next(&mut self) -> Option<Self::Item> {{
+            #[allow(clippy::never_loop)]
+            if self.front_index > self.back_index {{
+                None
+            }} else {{
+                let result = match self.front_index {{")?;
+                    for i in 0..MAX_ARITY {
+                        w!(f, "{i} => self.tuple.{i}.take().map(TupleElement::_{i}),")?;
+                    }
+                    w!(f, "_ => None,
+                }};
+                self.front_index += 1;
+                result
+            }}
+        }}
+        fn size_hint(&self) -> (usize, Option<usize>) {{
+            (self.remaining(), Some(self.remaining()))
+        }}
+        fn count(self) -> usize {{ self.remaining() }}
+    }}")?;
+    //
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> DoubleEndedIterator for TupleIter<")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "fn next_back(&mut self) -> Option<Self::Item> {{
+            #[allow(clippy::never_loop)]
+            if self.front_index > self.back_index {{
+                None
+            }} else {{
+                let result = match self.back_index {{")?;
+                    for i in 0..MAX_ARITY {
+                        w!(f, "{i} => self.tuple.{i}.take().map(TupleElement::_{i}),")?;
+                    }
+                    w!(f, "_ => None,
+                }};
+                if self.back_index == 0 {{
+                    self.front_index = self.back_index + 1; // Ensure iteration stops
+                }} else {{
+                    self.back_index -= 1;
+                }}
+                result
+            }}
+        }}
+    }}")?;
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> ExactSizeIterator for TupleIter<")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "fn len(&self) -> usize {{ self.remaining() }}
+    }}")?;
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> core::iter::FusedIterator for TupleIter<")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{}}")?;
+
+    // Ref
+    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> Iterator for TupleIterRef<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "type Item = TupleElementRef<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, ">;")?;
+        //
+        w!(f, "fn next(&mut self) -> Option<Self::Item> {{
+            #[allow(clippy::never_loop)]
+            if self.front_index > self.back_index {{
+                None
+            }} else {{
+                let result = match self.front_index {{")?;
+                    for i in 0..MAX_ARITY {
+                        w!(f, "{i} => Some(TupleElementRef::_{i}(self.tuple.{i})),")?;
+                    }
+                    w!(f, "_ => None,
+                }};
+                self.front_index += 1;
+                result
+            }}
+        }}
+        fn size_hint(&self) -> (usize, Option<usize>) {{
+            (self.remaining(), Some(self.remaining()))
+        }}
+        fn count(self) -> usize {{ self.remaining() }}
+    }}")?;
+    //
+    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> DoubleEndedIterator for TupleIterRef<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "fn next_back(&mut self) -> Option<Self::Item> {{
+            #[allow(clippy::never_loop)]
+            if self.front_index > self.back_index {{
+                None
+            }} else {{
+                let result = match self.back_index {{")?;
+                    for i in 0..MAX_ARITY {
+                        w!(f, "{i} => Some(TupleElementRef::_{i}(self.tuple.{i})),")?;
+                    }
+                    w!(f, "_ => None,
+                }};
+                if self.back_index == 0 {{
+                    self.front_index = self.back_index + 1; // Ensure iteration stops
+                }} else {{
+                    self.back_index -= 1;
+                }}
+                result
+            }}
+        }}
+    }}")?;
+    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> ExactSizeIterator for TupleIterRef<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "fn len(&self) -> usize {{ self.remaining() }}
+    }}")?;
+    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> core::iter::FusedIterator for TupleIterRef<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{}}")?;
+
+    // Mut
+    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> Iterator for TupleIterMut<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "type Item = TupleElementMut<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, ">;")?;
+        //
+        w!(f, "fn next(&mut self) -> Option<Self::Item> {{
+            #[allow(clippy::never_loop)]
+            if self.front_index > self.back_index {{
+                None
+            }} else {{
+                let result = match self.front_index {{")?;
+                    for i in 0..MAX_ARITY {
+                        w!(f, "{i} => self.tuple.{i}.take().map(TupleElementMut::_{i}),")?;
+                    }
+                    w!(f, "_ => None,
+                }};
+                self.front_index += 1;
+                result
+            }}
+        }}
+        fn size_hint(&self) -> (usize, Option<usize>) {{
+            (self.remaining(), Some(self.remaining()))
+        }}
+        fn count(self) -> usize {{ self.remaining() }}
+    }}")?;
+    //
+    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> DoubleEndedIterator for TupleIterMut<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "fn next_back(&mut self) -> Option<Self::Item> {{
+            #[allow(clippy::never_loop)]
+            if self.front_index > self.back_index {{
+                None
+            }} else {{
+                let result = match self.back_index {{")?;
+                    for i in 0..MAX_ARITY {
+                        w!(f, "{i} => self.tuple.{i}.take().map(TupleElementMut::_{i}),")?;
+                    }
+                    w!(f, "_ => None,
+                }};
+                if self.back_index == 0 {{
+                    self.front_index = self.back_index + 1; // Ensure iteration stops
+                }} else {{
+                    self.back_index -= 1;
+                }}
+                result
+            }}
+        }}
+    }}")?;
+    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> ExactSizeIterator for TupleIterMut<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
+        w!(f, "fn len(&self) -> usize {{ self.remaining() }}
+    }}")?;
+    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> core::iter::FusedIterator for TupleIterMut<'a, ")?;
+        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{}}")?;
+
     // --------------------------------------------------------------------------
 
     if let Err(e) = f.flush() {
@@ -492,7 +847,7 @@ pub(super) fn generate() -> Result<(), Error> {
         std::process::exit(1);
     }
 
-    #[cfg(doc)] // format the source if we're building the docs
+    // #[cfg(doc)] // format the source if we're building the docs
     crate::rustfmt_file(path);
     Ok(())
 }
