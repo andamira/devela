@@ -859,6 +859,6 @@ pub(super) fn generate() -> Result<(), Error> {
     }
 
     // #[cfg(doc)] // format the source if we're building the docs
-    crate::rustfmt_file(path);
+    // crate::rustfmt_file(path);
     Ok(())
 }

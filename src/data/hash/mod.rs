@@ -15,5 +15,5 @@ pub use {fnv::*, fx::*, pengy::*, reexports::*};
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{fx::*, reexports::*};
+    pub use super::{fnv::*, fx::*, reexports::*};
 }

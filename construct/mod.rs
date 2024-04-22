@@ -24,13 +24,20 @@ pub(crate) fn println(msg: &str) {
 
 #[allow(dead_code)]
 fn rustfmt_file(file_path: &str) {
-    let output = std::process::Command::new("rustfmt")
-        .arg(file_path)
-        .output()
-        .expect("failed to execute rustfmt");
+    use std::process::Command;
 
-    if !output.status.success() {
-        let error_message = String::from_utf8_lossy(&output.stderr);
-        panic!("rustfmt failed: {}", error_message);
+    // for now, only call rustfmt if we can find it, on unix systems
+    if match Command::new("which").arg("rustfmt").output() {
+        Ok(output) => output.status.success(),
+        Err(e) => false,
+    } {
+        let output = Command::new("rustfmt")
+            .arg(file_path)
+            .output()
+            .expect("failed to execute rustfmt");
+        if !output.status.success() {
+            let error_message = String::from_utf8_lossy(&output.stderr);
+            panic!("rustfmt failed: {}", error_message);
+        }
     }
 }
