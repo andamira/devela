@@ -29,7 +29,7 @@ fn rustfmt_file(file_path: &str) {
     // for now, only call rustfmt if we can find it, on unix systems
     if match Command::new("which").arg("rustfmt").output() {
         Ok(output) => output.status.success(),
-        Err(e) => false,
+        Err(_) => false,
     } {
         let output = Command::new("rustfmt")
             .arg(file_path)

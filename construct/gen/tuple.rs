@@ -787,9 +787,10 @@ pub(super) fn generate() -> Result<(), Error> {
         for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
         w!(f, "fn len(&self) -> usize {{ self.remaining() }}
     }}")?;
-    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
-    w!(f, "> core::iter::FusedIterator for TupleIterRef<'a, ")?;
-        for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{}}")?;
+    // NOTE: better not to implement FusedIterator
+    // w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    // w!(f, "> core::iter::FusedIterator for TupleIterRef<'a, ")?;
+    //     for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{}}")?;
 
     // Mut
     w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
