@@ -153,6 +153,16 @@ Enable specific implementations for [`Bitwise`], [`bitfield`], [`enumset`]:
 [`bitfield`]: crate::num::bitfield
 [`enumset`]: crate::num::enumset
 
+Enable specific implementations for data collections [`Destaque`], [`Stack`].
+- `_collections_all`:
+	- `_destaque_all`:
+    - `_destaque_u8`, `_destaque_u16`, `_destaque_u32`, `_destaque_usize`.
+	`_stack_all`:
+		`_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
+
+[`Destaque`]: crate::data::Destaque
+[`Stack`]: crate::data::Stack
+
  Documentation capabilities:
 - `_docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).
 - `_docsrs_stable`: like `_docsrs` but without enabling `nightly`.
