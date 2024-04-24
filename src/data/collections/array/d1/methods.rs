@@ -125,6 +125,22 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     pub fn contains(&self, element: &T) -> bool {
         self.iter().any(|n| n == element)
     }
+
+    /// Finds the index of the first occurrence of `element` in the array.
+    /// # Examples
+    /// ```
+    /// # use devela::all::Array;
+    /// let a = Array::<_, 5>::new([5, 78, 42, 33, 9]);
+    /// assert_eq![a.find_index(&9), Some(4)];
+    /// assert_eq![a.find_index(&8), None];
+    /// ```
+    #[inline]
+    #[must_use]
+    pub fn find_index(&self, element: &T) -> Option<usize> {
+        self.iter()
+            .enumerate()
+            .find_map(|(i, n)| if n == element { Some(i) } else { None })
+    }
 }
 
 impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
