@@ -59,7 +59,7 @@ pub enum DataError {
     KeyAlreadyExists,
 
     /// The node is empty.
-    EmptyNode,
+    EmptyNode(Option<usize>),
 }
 
 #[allow(dead_code)]
@@ -117,7 +117,10 @@ mod core_impls {
                     None => write!(f, "Only a subset of elements could be added."),
                 },
                 E::KeyAlreadyExists => write!(f, "The key already exists."),
-                E::EmptyNode => write!(f, "The node is empty."),
+                E::EmptyNode(n) => match n {
+                    Some(n) => write!(f, "The given node `{n}` is empty."),
+                    None => write!(f, "The node is empty."),
+                },
             }
         }
     }
