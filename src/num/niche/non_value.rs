@@ -17,17 +17,16 @@ use crate::{
 };
 
 macro_rules! impl_non_value {
-    // Entry point, generates NonValue structures for each sign and size.
-    ($name:ident) => {
-        impl_non_value![$name, MIN, "A signed", i,
-        8:"_non_value_i8", 16:"_non_value_i16", 32:"_non_value_i32",
-        64:"_non_value_i64", 128:"_non_value_i128", size:"_non_value_isize"];
-        impl_non_value![$name, MAX, "An unsigned", u,
-        8:"_non_value_u8", 16:"_non_value_u16", 32:"_non_value_u32",
-        64:"_non_value_u64", 128:"_non_value_u128", size:"_non_value_usize"];
+    () => {
+        impl_non_value![MIN, "A signed", i,
+            8:"_non_value_i8", 16:"_non_value_i16", 32:"_non_value_i32",
+            64:"_non_value_i64", 128:"_non_value_i128", size:"_non_value_isize"];
+        impl_non_value![MAX, "An unsigned", u,
+            8:"_non_value_u8", 16:"_non_value_u16", 32:"_non_value_u32",
+            64:"_non_value_u64", 128:"_non_value_u128", size:"_non_value_usize"];
     };
-    ($name:ident, $abs:ident, $doc:literal, $s:ident, $( $b:tt: $cap:literal ),+) => {
-        $( impl_non_value![@$name, $abs, $doc, $s, $b : $cap]; )+
+    ($abs:ident, $doc:literal, $s:ident, $( $b:tt: $cap:literal ),+) => {
+        $( impl_non_value![@NonValue, $abs, $doc, $s, $b : $cap]; )+
     };
 
     // $name: the base name of the new type. E.g. NonValue.
@@ -81,7 +80,7 @@ macro_rules! impl_non_value {
                 return [<NonExtreme $s:upper $b>]::new([<$s $b>]::default()).unwrap();
 
                 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
-                // SAFETY: the default numeric primitive value is always 0, and their MAX is never 0.
+                // SAFETY: the default primitive value is always 0, and their MAX is never 0.
                 unsafe { return [<NonExtreme $s:upper $b>]::new_unchecked([<$s $b>]::default()); }
             }
         }
@@ -95,7 +94,7 @@ macro_rules! impl_non_value {
                 if let Some(v) = Self::new([<$s $b>]::DEFAULT) { v } else { unreachable![] }
 
                 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
-                // SAFETY: the default numeric primitive value is always 0, and their MAX is never 0.
+                // SAFETY: the default primitive value is always 0, and their MAX is never 0.
                 unsafe { [<NonExtreme $s:upper $b>]::new_unchecked([<$s $b>]::DEFAULT) }
             };
         }
@@ -261,4 +260,4 @@ macro_rules! impl_non_value {
         }
     }};
 }
-impl_non_value![NonValue];
+impl_non_value!();

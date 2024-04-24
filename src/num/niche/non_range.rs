@@ -12,19 +12,17 @@ use crate::{
     code::iif,
 };
 
-impl_non_range![NonRange];
 macro_rules! impl_non_range {
-    // Entry point, generates NonRange structures for each sign and size.
-    ($name:ident) => {
-        impl_non_range![$name, "A signed", i,
-        8:"_non_range_i8", 16:"_non_range_i16", 32:"_non_range_i32",
-        64:"_non_range_i64", 128:"_non_range_i128", size:"_non_range_isize"];
-        impl_non_range![$name, "An unsigned", u,
-        8:"_non_range_u8", 16:"_non_range_u16", 32:"_non_range_u32",
-        64:"_non_range_u64", 128:"_non_range_u128", size:"_non_range_usize"];
+    () => {
+        impl_non_range!["A signed", i,
+            8:"_non_range_i8", 16:"_non_range_i16", 32:"_non_range_i32",
+            64:"_non_range_i64", 128:"_non_range_i128", size:"_non_range_isize"];
+        impl_non_range!["An unsigned", u,
+            8:"_non_range_u8", 16:"_non_range_u16", 32:"_non_range_u32",
+            64:"_non_range_u64", 128:"_non_range_u128", size:"_non_range_usize"];
     };
-    ($name:ident, $doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
-        $( impl_non_range![@$name, $doc, $s, $b : $cap]; )+
+    ($doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
+        $( impl_non_range![@NonRange, $doc, $s, $b : $cap]; )+
     };
 
     // $name: the base name of the new type. E.g. NonRange.
@@ -293,4 +291,4 @@ macro_rules! impl_non_range {
         }
     }};
 }
-use impl_non_range;
+impl_non_range![];

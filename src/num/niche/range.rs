@@ -13,20 +13,18 @@ use crate::{
     code::iif,
 };
 
-impl_range![Range];
 macro_rules! impl_range {
     // Entry point, generates Range structures for each sign and size.
-    ($name:ident) => {
-        impl_range![$name, "A signed", i,
-        8:"_range_i8", 16:"_range_i16", 32:"_range_i32",
-        64:"_range_i64", 128:"_range_i128", size:"_range_isize"];
-        impl_range![$name, "An unsigned", u,
-        8:"_range_u8", 16:"_range_u16", 32:"_range_u32",
-        64:"_range_u64", 128:"_range_u128", size:"_range_usize"];
-
+    () => {
+        impl_range!["A signed", i,
+            8:"_range_i8", 16:"_range_i16", 32:"_range_i32",
+            64:"_range_i64", 128:"_range_i128", size:"_range_isize"];
+        impl_range!["An unsigned", u,
+            8:"_range_u8", 16:"_range_u16", 32:"_range_u32",
+            64:"_range_u64", 128:"_range_u128", size:"_range_usize"];
     };
-    ($name:ident, $doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
-        $( impl_range![@$name, $doc, $s, $b : $cap]; )+
+    ($doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
+        $( impl_range![@Range, $doc, $s, $b : $cap]; )+
     };
 
     // $name: the base name of the new type. E.g. Range.
@@ -284,4 +282,4 @@ macro_rules! impl_range {
         }
     }};
 }
-use impl_range;
+impl_range!();
