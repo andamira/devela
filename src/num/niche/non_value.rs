@@ -53,7 +53,7 @@ macro_rules! impl_non_value {
         #[doc = "assert![" [<$name $s:upper $b>] "::<13>::new(12).unwrap().get() == 12];"]
         /// ```
         ///
-        #[doc = "See also [`NonEdge" $s:upper $b "`]."]
+        #[doc = "See also [`NonExtreme" $s:upper $b "`]."]
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -61,33 +61,33 @@ macro_rules! impl_non_value {
 
         /* aliases */
 
-        #[doc = $doc " integer that is known not to equal its edgemost value ([`"
+        #[doc = $doc " integer that is known not to equal its most extreme value ([`"
             $abs "`][" [<$s $b>] "::" $abs "])."]
         ///
         /// Unlike the `NonValue*` types in general, this type alias implements
         /// the [`Default`] and [`ConstDefault`][crate::code::ConstDefault] traits.
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        pub type [<NonEdge $s:upper $b>] = [<$name $s:upper $b>]<{[<$s $b>]::$abs}>;
+        pub type [<NonExtreme $s:upper $b>] = [<$name $s:upper $b>]<{[<$s $b>]::$abs}>;
 
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        impl Default for [<NonEdge $s:upper $b>] {
+        impl Default for [<NonExtreme $s:upper $b>] {
             /// # Features
             /// Makes use of the `unsafe_niche` feature if enabled.
             #[inline] #[must_use]
             fn default() -> Self {
                 #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
-                return [<NonEdge $s:upper $b>]::new([<$s $b>]::default()).unwrap();
+                return [<NonExtreme $s:upper $b>]::new([<$s $b>]::default()).unwrap();
 
                 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                 // SAFETY: the default numeric primitive value is always 0, and their MAX is never 0.
-                unsafe { return [<NonEdge $s:upper $b>]::new_unchecked([<$s $b>]::default()); }
+                unsafe { return [<NonExtreme $s:upper $b>]::new_unchecked([<$s $b>]::default()); }
             }
         }
 
         #[cfg(feature = $cap )]
-        impl ConstDefault for [<NonEdge $s:upper $b>] {
+        impl ConstDefault for [<NonExtreme $s:upper $b>] {
             /// # Features
             /// Makes use of the `unsafe_niche` feature if enabled.
             const DEFAULT: Self = {
@@ -96,7 +96,7 @@ macro_rules! impl_non_value {
 
                 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
                 // SAFETY: the default numeric primitive value is always 0, and their MAX is never 0.
-                unsafe { [<NonEdge $s:upper $b>]::new_unchecked([<$s $b>]::DEFAULT) }
+                unsafe { [<NonExtreme $s:upper $b>]::new_unchecked([<$s $b>]::DEFAULT) }
             };
         }
 

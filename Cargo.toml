@@ -274,7 +274,8 @@ _bit_all = [
 # private, refective:
 _-bit_any-_ = []
 
-# Specific niche implementations for `NonValue*`, `NonEdge*`, `NonRange*`, `Range*`.
+# Specific niche implementations for types: `NonValue*`, `NonRange*`, `Range*`,
+# and aliases: `NonExtreme*`.
 _niche_all = [
 	"_non_value_all", "_non_range_all", "_range_all",
 	]
@@ -346,7 +347,6 @@ _tuple_arity_24 = []                  # time:  4.3s, codegen: 420K
 _tuple_arity_36 = ["_tuple_arity_24"] # time:  5.6s, codegen: 864K
 _tuple_arity_48 = ["_tuple_arity_36"] # time:  6.8s, codegen: 1.5M
 _tuple_arity_72 = ["_tuple_arity_48"] # time: 11.1s, codegen: 3.1M
-
 
 
 #* dependency features *#

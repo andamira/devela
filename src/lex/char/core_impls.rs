@@ -3,7 +3,7 @@
 //! implementations of core traits
 //
 
-use super::{Char16, Char24, Char32, Char7, Char8, NonEdgeU8, NonSurrogateU16};
+use super::{Char16, Char24, Char32, Char7, Char8, NonExtremeU8, NonSurrogateU16};
 use crate::{
     code::{paste, unwrap, ConstDefault},
     lex::{LexError, LexResult as Result},
@@ -66,10 +66,10 @@ macro_rules! core_impls {
     }};
 }
 core_impls![Char:
-    7+Self(unwrap![some NonEdgeU8::new(0)]),
+    7+Self(unwrap![some NonExtremeU8::new(0)]),
     8+Self(0),
     16+Self(unwrap![some NonSurrogateU16::new(0)]),
-    24+Self{ hi: unwrap![some NonEdgeU8::new(0)], mi: 0, lo: 0 },
+    24+Self{ hi: unwrap![some NonExtremeU8::new(0)], mi: 0, lo: 0 },
     32+Self('\x00')
 ];
 

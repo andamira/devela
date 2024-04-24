@@ -2,7 +2,7 @@
 
 use super::{Char16, Char24, Char32, Char7, Char8};
 use crate::lex::{
-    char::NonEdgeU8, char_is_7bit, char_is_noncharacter, AsciiChar, LexError::CharConversion,
+    char::NonExtremeU8, char_is_7bit, char_is_noncharacter, AsciiChar, LexError::CharConversion,
     LexResult as Result,
 };
 
@@ -13,16 +13,16 @@ impl Char24 {
     // by this module for a few selected operations.
     #[inline]
     #[must_use]
-    const fn new_unchecked_hi(value: u8) -> NonEdgeU8 {
+    const fn new_unchecked_hi(value: u8) -> NonExtremeU8 {
         #[cfg(any(feature = "safe_lex", not(feature = "unsafe_niche")))]
-        if let Some(c) = NonEdgeU8::new(value) {
+        if let Some(c) = NonExtremeU8::new(value) {
             c
         } else {
             unreachable![]
         }
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_niche"))]
         unsafe {
-            NonEdgeU8::new_unchecked(value)
+            NonExtremeU8::new_unchecked(value)
         }
     }
 
