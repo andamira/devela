@@ -16,9 +16,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add features: `_range_all`, `_range_i8`, `_range_i16`, `_range_i32`, `_range_i64`, `_range_i128`, `_range_isize`, `_range_u8`, `_range_u16`, `_range_u32`, `_range_u64`, `_range_u128`, `_range_usize`.
 - add features: `_default`, `_min_docs`, `_max_docs`, `_max`, `_docsrs_stable`,`__dbg`.
 - add private features for reflection purposes.
+- enable `doc_notable_trait` unstable feature with `nightly_doc`.
 - add traits: `ExtFuture`, `ExtFloatConst`, `NumVector`, `UiCap`.
 - add functions: `future_block`, `hash_pengy`.
 - add type: `Prompt`.
+- add type: `Pinned`.
 - add type: `Timecode`.
 - add types: `LoggerSimple`, `Logging`.
 - add types: `Divisor`, `GcdExt`, `ValueQuant`.
@@ -26,17 +28,18 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add types: `Angle`, `AngleDirection`, `AngleKind`
 - add types: `Vector`, `Vector2d`, `Vector3d`, `VecVector`.
 - add types: `Point`, `Point2d`, `Point3d`, `Points`, `VecPoints`.
-- add types: `TupleElement`, `TupleElementRef`, `TupleElementMut`.
 - add types: `HasherFnv`, `HasherFx`, `HasherFx32`, `HasherFx64`, `HasherBuildFnv`, `HasherBuildFx`.
-- add `Floating` and `ExtFloat` method: `neg_abs`.
+- add types: `TupleIter`, `TupleIterRef`, `TupleIterMut`, `TupleElement`, `TupleElementRef`, `TupleElementMut`.
+- add `ByteSize` constants: `PTR_BITS`, `LITTLE_ENDIAN`, `BIG_ENDIAN`.
 - add unsigned `gcd_ext` and `gcd_ext_euc` methods to `Int`.
-- add `NumError` variant: `NoInverse`.
+- add `Floating` and `ExtFloat` method: `neg_abs`.
 - add `*_assign` methods to `Num` and `NumRef`.
+- add `NumError` variant: `NoInverse`.
 - add new arms to `array_init:` `init`, `init_heap`.
-- add methods to `Tuple:`: `nth_ref`, `nth_mut`.
 - add methods to `Int`: `midpoint`, `modulo*`.
 - add methods to `Int`, `NumInt`, `NumRefInt`: `midpoint`.
 - add methods to `ExtAny`: `downcast_ref`, `downcast_mut`.
+- add methods to `Tuple:`: `nth_ref`, `nth_mut`, `into_iter`, `iter_ref`, `iter_mut`.
 - add methods to `Cast` and `PrimitiveCast`: `wrapping_cast_*`, for `[iu]size_[up|down]`.
 - re-export more items from: `std::io`, `core::ptr`.
 - re-export: `String`, `ToString`, `Rc`, `RcWeak`.
@@ -64,6 +67,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `ExtTuple` trait to `Tuple`.
 - rename `copy` function to `io_copy`.
 - rename `NonSpecific*` to `NonValue*`.
+- rename `ByteSize::PTR_SIZE` to `PTR_BYTES`.
 - rename `os` module to `sys`, make submodules private.
 - rename `work` module to `exec`, make submodules private.
 - rename `Floating` wrapper to `Float` and make it own `self`.
