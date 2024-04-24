@@ -18,7 +18,7 @@ use crate::{
 /// elements (`T`),
 /// capacity (`CAP`),
 /// index size (`IDX`)
-/// and storage (`S`),
+/// and storage (`S`).
 ///
 /// The index size will upper-bound the capacity to the maximum for that type,
 /// e.g. `u8::MAX` for [`StackU8`].

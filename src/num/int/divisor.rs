@@ -10,9 +10,12 @@
 // - specific implementations are feature-gated.
 // - misc. refactoring and code compression.
 
-use crate::code::{compile, iif, paste};
-use crate::num::{isize_up, usize_up};
-use core::{fmt, hash, ops};
+#[allow(unused_imports)]
+use crate::{
+    _libcore::{fmt, hash, ops},
+    code::{compile, iif, paste},
+    num::{isize_up, usize_up},
+};
 
 /// Faster divisor for division and modulo operations.
 ///
@@ -42,7 +45,9 @@ enum Inner<T> {
     Shift(T, u8),
     MultiplyShift(T, T, u8),
     MultiplyAddShift(T, T, u8),
-    ShiftAndNegate(T, u8),            // only used for signed
+    #[allow(dead_code)]
+    ShiftAndNegate(T, u8), // only used for signed
+    #[allow(dead_code)]
     MultiplyAddShiftNegate(T, T, u8), // only used for signed
 }
 
