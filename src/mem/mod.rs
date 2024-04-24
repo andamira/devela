@@ -27,10 +27,19 @@ mod storage;
 #[allow(unused_imports)]
 pub use {aligned::*, ext::*, fns_macros::*, reexports::*, size::*, slice::*, storage::*};
 
+#[cfg(feature = "unsafe_ptr")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
+mod pin;
+#[cfg(feature = "unsafe_ptr")]
+pub use pin::Pinned;
+
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
         aligned::*, ext::*, fns_macros::*, reexports::*, size::all::*, slice::all::*, storage::*,
     };
+
+    #[cfg(feature = "unsafe_ptr")]
+    pub use super::pin::Pinned;
 }

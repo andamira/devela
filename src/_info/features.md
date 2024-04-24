@@ -98,7 +98,7 @@ In order to use any unsafe functionality:
 	- `unsafe_const` extra const methods.
 	- `unsafe_dyn` DSTs in the stack, `no_std` Error dyn impls, `ExtAny::downcast*`.
 	- `unsafe_niche` unchecked niche constructors.
-	- `unsafe_ptr` pop methods without `Clone`.
+	- `unsafe_ptr` `Pinned`, pop methods without `Clone`.
 	- `unsafe_slice` extra slice methods, avoid bound checks.
 	- `unsafe_str` unchecked utf-8 char and &str conversions.
 	- `unsafe_thread` `Logging::set_logger_racy`.
