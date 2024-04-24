@@ -22,7 +22,16 @@ pub trait ByteSize: Sized {
     const BYTE_SIZE: usize = mem_size_of::<Self>();
 
     /// The size of a pointer in bytes, for the current platform.
-    const PTR_SIZE: usize = mem_size_of::<usize>();
+    const PTR_BYTES: usize = mem_size_of::<usize>();
+
+    /// The size of a pointer in bits, for the current platform.
+    const PTR_BITS: usize = usize::BITS as usize;
+
+    /// True if the system's architecture is little-endian.
+    const LITTLE_ENDIAN: bool = cfg!(target_endian = "little");
+
+    /// True if the system's architecture is big-endian.
+    const BIG_ENDIAN: bool = cfg!(target_endian = "big");
 
     /// Returns the alignment of this type in bytes.
     #[inline]
@@ -38,7 +47,7 @@ pub trait ByteSize: Sized {
         mem_size_of_val(self)
     }
 
-    /// Returns the size ratio between [`PTR_SIZE`][Self#associatedconstant.PTR_SIZE]
+    /// Returns the size ratio between [`PTR_BYTES`][Self#associatedconstant.PTR_BYTES]
     /// and [`BYTE_SIZE`][Self#associatedconstant.BYTE_SIZE].
     ///
     /// For example: the ratio will be (1, 1) if both sizes are the same,
