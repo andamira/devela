@@ -197,7 +197,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
 {
     /// Returns the inner [`BareBox`]ed primitive array in compile-time.
     #[inline] #[must_use]
-    pub const fn into_array_const(self) -> [T; CR] { self.data.into_array_const() }
+    pub const fn into_array_copy(self) -> [T; CR] { self.data.into_array_copy() }
 }
 
 // S:Boxed

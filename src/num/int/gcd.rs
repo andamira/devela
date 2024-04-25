@@ -38,7 +38,7 @@ impl<G: Copy, C: Copy> GcdExt<G, C> {
     /// Returns the values as a tuple, in compile-time.
     #[inline]
     #[must_use]
-    pub const fn as_tuple_const(self) -> (G, C, C) {
+    pub const fn as_tuple_copy(self) -> (G, C, C) {
         (self.gcd, self.x, self.y)
     }
 }
@@ -55,7 +55,7 @@ impl<T: Copy> GcdExt<T, T> {
     /// Returns the values as an array, if all are of the same type.
     #[inline]
     #[must_use]
-    pub const fn as_array_const(self) -> [T; 3] {
+    pub const fn as_array_copy(self) -> [T; 3] {
         [self.gcd, self.x, self.y]
     }
 }

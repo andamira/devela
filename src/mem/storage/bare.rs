@@ -36,7 +36,7 @@ impl<T> BareBox<T> {
     #[inline]
     #[must_use]
     pub const fn new(t: T) -> Self {
-        BareBox(t)
+        Self(t)
     }
 
     /// Returns the inner stored type.
@@ -50,7 +50,7 @@ impl<T: Copy> BareBox<T> {
     /// Returns the inner stored type in compile-time.
     #[inline]
     #[must_use]
-    pub const fn into_inner_const(self) -> T {
+    pub const fn into_inner_copy(self) -> T {
         self.0
     }
 }

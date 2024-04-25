@@ -241,7 +241,7 @@ macro_rules! impl_int {
                 if a == 0 {
                     GcdExt::new(Int(b), Int(0), Int(1))
                 } else {
-                    let (g, x, y) = Int(b % a).gcd_ext_euc(a).as_tuple_const();
+                    let (g, x, y) = Int(b % a).gcd_ext_euc(a).as_tuple_copy();
                     GcdExt::new(g, Int(y.0 - (b / a) * x.0), x)
                 }
             }
@@ -552,7 +552,7 @@ macro_rules! impl_int {
                 if a == 0 {
                     Ok(GcdExt::new(Int(b as $t), Int(0), Int(1)))
                 } else {
-                    let (g, x, y) = Int(b % a).gcd_ext_euc(a).as_tuple_const();
+                    let (g, x, y) = Int(b % a).gcd_ext_euc(a).as_tuple_copy();
                     Ok(GcdExt::new(Int(g.0 as $t), Int(y.0 - (b / a) * x.0), x))
                 }
             }

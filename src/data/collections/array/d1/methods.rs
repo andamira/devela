@@ -210,7 +210,14 @@ impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns the inner [`BareBox`]ed primitive array in compile-time.
     #[inline]
     #[must_use]
-    pub const fn into_array_const(self) -> [T; LEN] {
-        self.data.into_inner_const()
+    pub const fn into_array_copy(self) -> [T; LEN] {
+        self.data.into_inner_copy()
+    }
+
+    /// Returns a slice containing the entire array in compile-time.
+    #[inline]
+    #[must_use]
+    pub fn as_slice_copy(&self) -> &[T] {
+        self.data.as_slice()
     }
 }

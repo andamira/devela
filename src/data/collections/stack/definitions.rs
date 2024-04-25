@@ -50,7 +50,7 @@ use crate::{
 /// - Construct:
 ///   [`new`][Self::new],
 ///   [`new_copied`][Self::new_copied],
-///   [`from_array`][Self::from_array]*([`const`](Self::from_array_const))*.
+///   [`from_array`][Self::from_array]*([`copy`](Self::from_array_copy))*.
 /// - Deconstruct:
 ///   [`to_array`][Self::to_array],
 ///   [`to_vec`][Self::to_vec]*(`alloc`)*.

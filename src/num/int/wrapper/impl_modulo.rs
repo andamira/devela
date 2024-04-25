@@ -767,7 +767,7 @@ macro_rules! impl_int {
                 if modulus == 0 {
                     cold_err_zero()
                 } else {
-                    let (gcd, x, _) = self.gcd_ext(modulus).as_tuple_const();
+                    let (gcd, x, _) = self.gcd_ext(modulus).as_tuple_copy();
                     if gcd.0 != 1 {
                         Err(NoInverse)
                     } else {
@@ -789,7 +789,7 @@ macro_rules! impl_int {
             /// Panics if `modulus == 0`, and if there's no inverse.
             #[inline]
             pub const fn modulo_mul_inv_unchecked(self, modulus: $t) -> Int<$t> {
-                let (gcd, x, _) = self.gcd_ext(modulus).as_tuple_const();
+                let (gcd, x, _) = self.gcd_ext(modulus).as_tuple_copy();
                 if gcd.0 != 1 {
                     panic!["No inverse"];
                 } else {
@@ -1395,7 +1395,7 @@ macro_rules! impl_int {
                 if modulus == 0 {
                     cold_err_zero()
                 } else {
-                    let (gcd, x, _) = unwrap![ok? self.gcd_ext(modulus)].as_tuple_const();
+                    let (gcd, x, _) = unwrap![ok? self.gcd_ext(modulus)].as_tuple_copy();
                     if gcd.0 != 1 {
                         Err(NoInverse)
                     } else {
@@ -1423,7 +1423,7 @@ macro_rules! impl_int {
             #[cfg(feature = $icap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn modulo_mul_inv_unchecked(self, modulus: $t) -> Int<$t> {
-                let (gcd, x, _) = unwrap![ok self.gcd_ext(modulus)].as_tuple_const();
+                let (gcd, x, _) = unwrap![ok self.gcd_ext(modulus)].as_tuple_copy();
                 if gcd.0 != 1 {
                     panic!["no inverse"]; // CHECK without checking
                 } else {

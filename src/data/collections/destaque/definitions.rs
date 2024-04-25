@@ -49,7 +49,8 @@ use crate::{
 /// [`capacity`][Self::capacity], [`remaining_capacity`][Self::remaining_capacity].
 ///   - [`iter`][Self::iter],
 /// [`extend_back`][Self::extend_back], [`extend_front`][Self::extend_front],
-/// [`from_array`][Self::from_array], [`to_array`][Self::to_array],
+/// [`from_array`][Self::from_array]*([`copy`][Self::from_array_copy])*,
+/// [`to_array`][Self::to_array],
 /// [`to_vec`][Self::to_vec].
 ///
 /// - Queue and stack methods:

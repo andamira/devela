@@ -32,7 +32,7 @@ use crate::{
 /// - Deconstruct:
 ///   [`as_slice`][Self::as_slice],
 ///   [`as_mut_slice`][Self::as_mut_slice],
-///   [`into_array`][Self::into_array]*([`const`][Self::into_array_const])*,
+///   [`into_array`][Self::into_array]*([`const`][Self::into_array_copy])*,
 ///   [`into_slice`][Self::into_slice]*(`alloc`)*,
 ///   [`into_vec`][Self::into_vec]*(`alloc`)*.
 /// - Query:

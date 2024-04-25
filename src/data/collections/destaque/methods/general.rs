@@ -127,7 +127,7 @@ macro_rules! impl_destaque {
             #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from_array([1, 2, 3]);"]
             /// ```
-            pub const fn from_array_const(arr: [T; CAP]) -> Destaque<T, CAP, $IDX, Bare> {
+            pub const fn from_array_copy(arr: [T; CAP]) -> Destaque<T, CAP, $IDX, Bare> {
                 Self {
                     data: Array::new_bare(arr),
                     front: 0,
