@@ -19,11 +19,12 @@ use crate::mem::{Bare, Storage};
 /// - Constructors:
 ///   [`new`][Self::new],
 ///   [`new_boxed`][Self::new_boxed]*(`alloc`)*,
-///   [`new_bare`][Self::new_bare].
+///   [`new_bare`][Self::new_bare](*const*).
 ///   [`with_cloned`][Self::with_cloned].
 ///   [`with_copied`][Self::with_copied].
 /// - Deconstructors:
-///   [`as_slice`][Self::as_slice]*([`copy`][Self::as_slice_copy])*,
+///   [`as_slice`][Self::as_slice],
+///   [`as_bare_slice`][Self::as_bare_slice](*const*),
 ///   [`as_mut_slice`][Self::as_mut_slice],
 ///   [`into_array`][Self::into_array]*([`copy`][Self::into_array_copy])*,
 ///   [`into_slice`][Self::into_slice]*(`alloc`)*,

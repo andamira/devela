@@ -45,6 +45,13 @@ impl<T> BareBox<T> {
     pub fn into_inner(self) -> T {
         self.0
     }
+
+    /// Returns a shared reference to the inner stored type in compile-time.
+    #[inline]
+    #[must_use]
+    pub const fn as_ref(&self) -> &T {
+        &self.0
+    }
 }
 impl<T: Copy> BareBox<T> {
     /// Returns the inner stored type in compile-time.
@@ -58,7 +65,7 @@ impl<T: Copy> BareBox<T> {
 mod core_impls {
     use super::BareBox;
     use crate::code::ConstDefault;
-    use core::{cmp, fmt, hash, ops};
+    use core::{cmp, convert, fmt, hash, ops};
 
     impl<T> ops::Deref for BareBox<T> {
         type Target = T;
@@ -67,11 +74,24 @@ mod core_impls {
             &self.0
         }
     }
-
     impl<T> ops::DerefMut for BareBox<T> {
         #[inline]
         #[must_use]
         fn deref_mut(&mut self) -> &mut T {
+            &mut self.0
+        }
+    }
+
+    impl<T> convert::AsRef<T> for BareBox<T> {
+        #[inline]
+        fn as_ref(&self) -> &T {
+            &self.0
+        }
+    }
+    impl<T> convert::AsMut<T> for BareBox<T> {
+        #[inline]
+        #[must_use]
+        fn as_mut(&mut self) -> &mut T {
             &mut self.0
         }
     }

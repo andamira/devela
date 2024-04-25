@@ -158,7 +158,7 @@ impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
         LEN == 0
     }
 
-    /// Returns a slice containing the entire array.
+    /// Returns a shared slice containing the entire array.
     #[inline]
     #[must_use]
     pub fn as_slice(&self) -> &[T] {
@@ -204,6 +204,13 @@ impl<T, const LEN: usize> Array<T, LEN, Bare> {
     pub fn into_array(self) -> [T; LEN] {
         self.data.into_inner()
     }
+
+    /// Returns a slice containing the entire array in compile time.
+    #[inline]
+    #[must_use]
+    pub const fn as_bare_slice(&self) -> &[T] {
+        self.data.as_ref() // const method on BareBox
+    }
 }
 // S:Bare, T:Copy
 impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
@@ -212,12 +219,5 @@ impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     #[must_use]
     pub const fn into_array_copy(self) -> [T; LEN] {
         self.data.into_inner_copy()
-    }
-
-    /// Returns a slice containing the entire array in compile-time.
-    #[inline]
-    #[must_use]
-    pub fn as_slice_copy(&self) -> &[T] {
-        self.data.as_slice()
     }
 }
