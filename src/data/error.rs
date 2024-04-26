@@ -59,7 +59,13 @@ pub enum DataError {
     KeyAlreadyExists,
 
     /// The node is empty.
-    EmptyNode(Option<usize>),
+    NodeEmpty(Option<usize>),
+
+    /// The link is not set.
+    NodeLinkNotSet(Option<usize>),
+
+    /// The link is not unique.
+    NodeLinkNotUnique(Option<usize>),
 }
 
 #[allow(dead_code)]
@@ -117,9 +123,17 @@ mod core_impls {
                     None => write!(f, "Only a subset of elements could be added."),
                 },
                 E::KeyAlreadyExists => write!(f, "The key already exists."),
-                E::EmptyNode(n) => match n {
+                E::NodeEmpty(n) => match n {
                     Some(n) => write!(f, "The given node `{n}` is empty."),
                     None => write!(f, "The node is empty."),
+                },
+                E::NodeLinkNotSet(n) => match n {
+                    Some(n) => write!(f, "The given node link `{n}` is not set."),
+                    None => write!(f, "The node link is not set."),
+                },
+                E::NodeLinkNotUnique(n) => match n {
+                    Some(n) => write!(f, "The given node link `{n}` is not unique."),
+                    None => write!(f, "The node link is not unique."),
                 },
             }
         }
