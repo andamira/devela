@@ -43,7 +43,7 @@ macro_rules! impl_destaque {
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {}
 
-        // S:Bare + T:Clone
+        // T: Clone, S: Bare
         impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {
             /// Returns an empty destaque, allocated in the stack,
             /// cloning `element` to fill the remaining free data.
@@ -71,7 +71,7 @@ macro_rules! impl_destaque {
             }
         }
 
-        // S:Bare + T:Copy
+        // T: Copy, S: Bare
         impl<T: Copy, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {
             /// Returns an empty destaque, allocated in the stack,
             /// copying `element` to fill the remaining free data, in compile-time.
@@ -96,7 +96,7 @@ macro_rules! impl_destaque {
             }
         }
 
-        // S:Boxed + T:Clone
+        // T: Clone, S: Boxed
         #[cfg(feature = "alloc")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         impl<T: Clone, const CAP: usize> Destaque<T, CAP, $IDX, Boxed> {
@@ -118,7 +118,7 @@ macro_rules! impl_destaque {
             }
         }
 
-        // S:Bare
+        // S: Bare
         impl<T, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {
             /// Converts an array into a [`full`][Self::is_full] destaque.
             ///
@@ -1053,7 +1053,7 @@ macro_rules! impl_destaque {
             }
         }
 
-        // T:Clone
+        // T: Clone
         impl<T: Clone, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Pops the front element.
             ///
@@ -1751,7 +1751,7 @@ macro_rules! impl_destaque {
 
         }
 
-        // T:PartialEq
+        // T: PartialEq
         impl<T: PartialEq, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Returns true if the destaque contains `element`.
             /// # Examples

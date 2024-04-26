@@ -59,7 +59,7 @@ impl<T, const LEN: usize, S: Storage> BorrowMut<[T; LEN]> for Array<T, LEN, S> {
     }
 }
 
-// T:Clone
+// T: Clone
 impl<T: Clone, const LEN: usize, S: Storage> Clone for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Clone,
@@ -71,11 +71,11 @@ where
     }
 }
 
-// T:Copy
+// T: Copy
 impl<T: Copy, const LEN: usize, S: Storage> Copy for Array<T, LEN, S> where S::Stored<[T; LEN]>: Copy
 {}
 
-// T:Debug
+// T: Debug
 impl<T: fmt::Debug, const LEN: usize, S: Storage> fmt::Debug for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: fmt::Debug,
@@ -98,7 +98,7 @@ where
         debug.finish()
     }
 }
-// T:PartialEq
+// T: PartialEq
 impl<T: PartialEq, const LEN: usize, S: Storage> PartialEq for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: PartialEq,
@@ -107,9 +107,9 @@ where
         self.data == other.data && self.len() == other.len()
     }
 }
-// T:Eq
+// T: Eq
 impl<T: Eq, const LEN: usize, S: Storage> Eq for Array<T, LEN, S> where S::Stored<[T; LEN]>: Eq {}
-// T:PartialOrd
+// T: PartialOrd
 impl<T: PartialOrd, const LEN: usize, S: Storage> PartialOrd for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: PartialOrd,
@@ -118,7 +118,7 @@ where
         self.data.partial_cmp(&other.data)
     }
 }
-// T:Ord
+// T: Ord
 impl<T: Ord, const LEN: usize, S: Storage> Ord for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Ord,
@@ -127,7 +127,7 @@ where
         self.data.cmp(&other.data)
     }
 }
-// T:Hash
+// T: Hash
 impl<T: Hash, const LEN: usize, S: Storage> Hash for Array<T, LEN, S>
 where
     S::Stored<[T; LEN]>: Hash,
@@ -137,7 +137,7 @@ where
     }
 }
 
-// S:Bare + T:Default
+// T: Default, S: Bare
 impl<T: Default, const LEN: usize> Default for Array<T, LEN, Bare> {
     /// Returns an array, allocated in the stack,
     /// using the default value to fill the data.
@@ -146,7 +146,7 @@ impl<T: Default, const LEN: usize> Default for Array<T, LEN, Bare> {
         Array { data }
     }
 }
-// S:Bare + T:ConstDefault
+// T: ConstDefault, S: Bare
 impl<T: ConstDefault, const LEN: usize> ConstDefault for Array<T, LEN, Bare> {
     /// Returns an array, allocated in the stack,
     /// using the default value to fill the data.
@@ -157,7 +157,7 @@ impl<T: ConstDefault, const LEN: usize> ConstDefault for Array<T, LEN, Bare> {
     };
 }
 
-// S:Boxed + T:Default
+// T: Default, S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Default, const LEN: usize> Default for Array<T, LEN, Boxed> {

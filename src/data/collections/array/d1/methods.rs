@@ -22,7 +22,7 @@ impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     }
 }
 
-// S:Bare
+// S: Bare
 impl<T, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns a new [`Array`] allocated in the stack,
     /// from the given primitive `array` in compile-time.
@@ -34,7 +34,7 @@ impl<T, const LEN: usize> Array<T, LEN, Bare> {
     }
 }
 
-// S:Bare + T:Clone
+// T: Clone, S: Bare
 impl<T: Clone, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns an array, allocated in the stack, filled with `element`, cloned.
     /// # Examples
@@ -49,7 +49,7 @@ impl<T: Clone, const LEN: usize> Array<T, LEN, Bare> {
     }
 }
 
-// S:Bare + T:Copy
+// T: Copy, S: Bare
 impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns an array, allocated in the stack, filled with `element`, copied, in compile-time.
     /// # Examples
@@ -64,7 +64,7 @@ impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     }
 }
 
-// S:Boxed
+// S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T, const LEN: usize> Array<T, LEN, Boxed> {
@@ -75,7 +75,7 @@ impl<T, const LEN: usize> Array<T, LEN, Boxed> {
     }
 }
 
-// S:Boxed + T:Clone
+// T:Clone, S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const LEN: usize> Array<T, LEN, Boxed> {
@@ -92,7 +92,7 @@ impl<T: Clone, const LEN: usize> Array<T, LEN, Boxed> {
     }
 }
 
-// T:Clone
+// T: Clone
 impl<T: Clone, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Fills all elements of the array with the given `element`.
     #[inline]
@@ -101,7 +101,7 @@ impl<T: Clone, const LEN: usize, S: Storage> Array<T, LEN, S> {
     }
 }
 
-// T:Default
+// T: Default
 impl<T: Default, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Fills all elements of the array with the default value.
     #[inline]
@@ -110,7 +110,7 @@ impl<T: Default, const LEN: usize, S: Storage> Array<T, LEN, S> {
     }
 }
 
-// T:PartialEq
+// T: PartialEq
 impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Returns true if the array contains `element`.
     /// # Examples
@@ -173,7 +173,7 @@ impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     }
 }
 
-// S:Boxed
+// S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T, const LEN: usize> Array<T, LEN, Boxed> {
@@ -196,7 +196,7 @@ impl<T, const LEN: usize> Array<T, LEN, Boxed> {
         self.into_slice().into_vec()
     }
 }
-// S:Bare
+// S: Bare
 impl<T, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns the inner [`BareBox`]ed primitive array.
     #[inline]
@@ -212,7 +212,7 @@ impl<T, const LEN: usize> Array<T, LEN, Bare> {
         self.data.as_ref() // const method on BareBox
     }
 }
-// S:Bare, T:Copy
+// T:Copy, S: Bare
 impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns the inner [`BareBox`]ed primitive array in compile-time.
     #[inline]

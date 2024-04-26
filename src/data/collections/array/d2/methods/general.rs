@@ -22,7 +22,7 @@ use crate::{
 
 /* constructors */
 
-// S:Bare + T:Clone
+// T: Clone, S: Bare
 impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Bare>
 {
@@ -43,7 +43,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
         })
     }
 }
-// S:Bare + T:Copy
+// T: Copy, S: Bare
 impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Bare>
 {
@@ -68,7 +68,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     }
 }
 
-// S:Boxed + T:Clone
+// T: Clone, S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
@@ -180,7 +180,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     pub fn as_mut_slice(&mut self) -> &mut [T] { self.data.as_mut_slice() }
 }
 
-// S:Bare
+// S: Bare
 #[rustfmt::skip]
 impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Bare>
@@ -190,7 +190,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     pub fn into_array(self) -> [T; CR] { self.data.into_array() }
 }
 
-// S:Bare, T:Copy
+// T: Copy, S: Bare
 #[rustfmt::skip]
 impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Bare>
@@ -200,7 +200,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     pub const fn into_array_copy(self) -> [T; CR] { self.data.into_array_copy() }
 }
 
-// S:Boxed
+// S: Boxed
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
@@ -230,7 +230,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     pub fn fill(&mut self, element: T) { self.data.fill(element) }
 }
 
-// T:PartialEq
+// T: PartialEq
 impl<
         T: PartialEq,
         const C: usize,

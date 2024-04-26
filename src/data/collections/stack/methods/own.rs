@@ -1,7 +1,7 @@
 // devela::data::collections::stack::methods_own
 //
 //! owning stack const operations, in compile-time
-//! depends on S:(), T:Copy
+//! depends on T: Copy, S: Bare
 //
 // Algorithms are implemented in the unchecked versions by:
 // - creating a copy of the inner array.

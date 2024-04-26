@@ -142,7 +142,7 @@ macro_rules! impl_stack {
 
         /* PartialOrd, Ord */
 
-        // T:PartialOrd
+        // T: PartialOrd
         impl<T: PartialOrd, const CAP: usize, S: Storage> PartialOrd for Stack<T, CAP, $IDX, S>
         where
             S::Stored<[T; CAP]>: PartialOrd,
@@ -153,7 +153,7 @@ macro_rules! impl_stack {
             }
         }
 
-        // T:Ord
+        // T: Ord
         impl<T: Ord, const CAP: usize, S: Storage> Ord for Stack<T, CAP, $IDX, S>
         where
             S::Stored<[T; CAP]>: Ord,
@@ -167,7 +167,7 @@ macro_rules! impl_stack {
 }
 impl_stack!();
 
-// T:Clone
+// T: Clone
 impl<T: Clone, const CAP: usize, IDX: Copy, S: Storage> Clone for Stack<T, CAP, IDX, S>
 where
     S::Stored<[T; CAP]>: Clone,
@@ -180,13 +180,13 @@ where
     }
 }
 
-// T:Copy
+// T: Copy
 impl<T: Copy, const CAP: usize, IDX: Copy, S: Storage> Copy for Stack<T, CAP, IDX, S> where
     S::Stored<[T; CAP]>: Copy
 {
 }
 
-// T:Debug
+// T: Debug
 impl<T: fmt::Debug, const CAP: usize, IDX: fmt::Debug, S: Storage> fmt::Debug
     for Stack<T, CAP, IDX, S>
 where
@@ -201,7 +201,7 @@ where
     }
 }
 
-// T:PartialEq
+// T: PartialEq
 impl<T: PartialEq, const CAP: usize, IDX: PartialEq, S: Storage> PartialEq for Stack<T, CAP, IDX, S>
 where
     S::Stored<[T; CAP]>: PartialEq,
@@ -210,13 +210,13 @@ where
         self.data == other.data && self.len == other.len
     }
 }
-// T:Eq
+// T: Eq
 impl<T: Eq, const CAP: usize, IDX: Eq, S: Storage> Eq for Stack<T, CAP, IDX, S> where
     S::Stored<[T; CAP]>: Eq
 {
 }
 
-// S:Bare + T:Default
+// T: Default, S: Bare
 impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, CAP, IDX, Bare> {
     /// Returns an empty stack, allocated in the stack,
     /// using the default value to fill the remaining free data.
@@ -228,7 +228,7 @@ impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, CAP, IDX, 
     }
 }
 
-// S:Bare + T:ConstDefault
+// T: ConstDefault, S: Bare
 impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
     for Stack<T, CAP, IDX, Bare>
 {
@@ -240,7 +240,7 @@ impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
     };
 }
 
-// S:Boxed + T:Default
+// T: Default, S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, CAP, IDX, Boxed> {

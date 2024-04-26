@@ -35,8 +35,9 @@ macro_rules! impl_non_range {
 
         #[doc = $doc " integer that is known to be excluded from some inclusive range." ]
         ///
-        /// It has an optimized memory layout, so that
-        #[doc = "`Option<"[<$name $s:upper $b>]">` is the same size as `"[<$name $s:upper $b>]"`."]
+        #[doc = "It has the same memory layout optimization as [`NonZero" $s:upper $b "`],"]
+        #[doc = " so that `Option<"[<$name $s:upper $b>]">` is the same size as `"
+            [<$name $s:upper $b>]"`."]
         ///
         /// # Examples
         /// ```

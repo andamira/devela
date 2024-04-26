@@ -14,7 +14,7 @@ use core::fmt;
 
 /* Clone, Copy */
 
-// T:Clone
+// T: Clone
 impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: Storage> Clone
     for Array2d<T, C, R, CR, RMAJ, S>
 where
@@ -27,7 +27,7 @@ where
     }
 }
 
-// T:Copy
+// T: Copy
 impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: Storage> Copy
     for Array2d<T, C, R, CR, RMAJ, S>
 where
@@ -37,7 +37,7 @@ where
 
 /* Default, ConstDefault */
 
-// S:Bare + T:Default
+// T: Default, S: Bare
 impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bool> Default
     for Array2d<T, C, R, CR, RMAJ, Bare>
 {
@@ -53,7 +53,7 @@ impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bo
     }
 }
 
-// S:Bare + T:ConstDefault
+// T: ConstDefault, S: Bare
 impl<T: ConstDefault, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     ConstDefault for Array2d<T, C, R, CR, RMAJ, Bare>
 {
@@ -69,7 +69,7 @@ impl<T: ConstDefault, const C: usize, const R: usize, const CR: usize, const RMA
     };
 }
 
-// S:Boxed + T:Default
+// T: Default, S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bool> Default
@@ -91,7 +91,7 @@ impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bo
     }
 }
 
-// T:Debug
+// T: Debug
 impl<
         T: fmt::Debug,
         const C: usize,

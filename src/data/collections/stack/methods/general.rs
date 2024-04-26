@@ -39,7 +39,7 @@ macro_rules! impl_stack {
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: Clone, const CAP: usize> Stack<T, CAP, $IDX, Bare> {}
 
-        // S:Bare + T:Clone
+        // T: Clone, S: Bare
         impl<T: Clone, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             /// Returns an empty stack, allocated in the stack,
             /// cloning `element` to fill the remaining free data.
@@ -66,7 +66,7 @@ macro_rules! impl_stack {
             }
         }
 
-        // S:Bare + T:Copy
+        //  T: Copy, S: Bare
         impl<T: Copy, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             /// Returns an empty stack, allocated in the stack,
             /// copying `element` to fill the remaining free data, in compile-time.
@@ -92,7 +92,7 @@ macro_rules! impl_stack {
             }
         }
 
-        // S:Boxed + T:Clone
+        // T: Clone, S: Boxed
         #[cfg(feature = "alloc")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         impl<T: Clone, const CAP: usize> Stack<T, CAP, $IDX, Boxed> {
@@ -113,7 +113,7 @@ macro_rules! impl_stack {
             }
         }
 
-        // S:Bare
+        // S: Bare
         impl<T, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             /// Converts an array into a [`full`][Self::is_full] stack.
             ///
@@ -132,6 +132,7 @@ macro_rules! impl_stack {
             }
         }
 
+        // T
         impl<T, const CAP: usize, S: Storage> Stack<T, CAP, $IDX, S> {
             /// Converts an array into a [`full`][Self::is_full] stack.
             ///
@@ -662,10 +663,10 @@ macro_rules! impl_stack {
             }
         }
 
+        // T: Clone
         /// # Operations depending on `T: Clone`
         ///
         /// Every method is *const* and returns [`Own`][crate::Own]`<Self, V>`.
-        // T:Clone
         impl<T: Clone, const CAP: usize, S: Storage> Stack<T, CAP, $IDX, S> {
             /* pop (safe) */
 
@@ -969,6 +970,7 @@ macro_rules! impl_stack {
 
         /* iterators */
 
+        // T
         impl<T, const CAP: usize, S: Storage> Stack<T, CAP, $IDX, S> {
             /// Returns an iterator.
             #[inline]
@@ -1013,7 +1015,7 @@ macro_rules! impl_stack {
             // TODO: extend_override
         }
 
-        // T:PartialEq
+        // T: PartialEq
         impl<T: PartialEq, const CAP: usize, S: Storage> Stack<T, CAP, $IDX, S> {
             /// Returns true if the stack contains `element`.
             /// # Examples
@@ -1031,7 +1033,7 @@ macro_rules! impl_stack {
             }
         }
 
-        // T:Default
+        // T: Default
         impl<T: Default, const CAP: usize, S: Storage> Stack<T, CAP, $IDX, S> {
             /// Drops the top of stack element,
             /// replacing the underlying data with the default value.

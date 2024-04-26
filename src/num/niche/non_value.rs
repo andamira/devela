@@ -40,8 +40,8 @@ macro_rules! impl_non_value {
 
         #[doc = $doc " integer that is known not to equal some specific value." ]
         ///
-        /// It has an optimized memory layout, so that
-        #[doc = "`Option<"[<$name $s:upper $b>]">` is the same size as `"
+        #[doc = "It has the same memory layout optimization as [`NonZero" $s:upper $b "`],"]
+        #[doc = " so that `Option<"[<$name $s:upper $b>]">` is the same size as `"
             [<$name $s:upper $b>]"`."]
         ///
         /// # Examples
