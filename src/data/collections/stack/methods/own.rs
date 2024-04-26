@@ -73,7 +73,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 3> = Stack" $IDX:camel
-                "::from_array_const([1, 2, 3]).own_clear().s;"]
+                "::from_array_copy([1, 2, 3]).own_clear().s;"]
             /// assert![S.is_empty()];
             /// ```
             pub const fn own_clear(self) -> Own<Self, ()> {
@@ -123,9 +123,9 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_push_unchecked(self, element: T) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 arr[self.len as usize] = element;
-                let mut sta = Self::from_array_const(arr);
+                let mut sta = Self::from_array_copy(arr);
                 sta.len = self.len + 1;
                 Own::empty(sta)
             }
@@ -141,7 +141,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{DataResult, Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Own<Stack" $IDX:camel "<i32, 3>, DataResult<i32>> =\n"]
-            #[doc = "    Stack" $IDX:camel "::from_array_const([1, 2, 3]).own_pop();"]
+            #[doc = "    Stack" $IDX:camel "::from_array_copy([1, 2, 3]).own_pop();"]
             /// S.s_assert(|s| s.as_slice() == &[1, 2]).v_assert_eq(&Ok(3));
             /// ```
             #[inline]
@@ -162,14 +162,14 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{DataResult, Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Own<Stack" $IDX:camel "<i32, 3>, i32> =\n"]
-            #[doc = "    Stack" $IDX:camel "::from_array_const([1, 2, 3]).own_pop_unchecked();"]
+            #[doc = "    Stack" $IDX:camel "::from_array_copy([1, 2, 3]).own_pop_unchecked();"]
             /// S.s_assert(|s| s.as_slice() == &[1, 2]).v_assert_eq(&3);
             /// ```
             #[inline]
             pub const fn own_pop_unchecked(self) -> Own<Self, T> {
-                let arr = self.data.into_array_const();
+                let arr = self.data.into_array_copy();
                 let e = arr[self.len as usize - 1];
-                let mut sta = Self::from_array_const(arr);
+                let mut sta = Self::from_array_copy(arr);
                 sta.len = self.len - 1;
                 Own::new(sta, e)
             }
@@ -185,7 +185,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{DataResult, Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Own<Stack" $IDX:camel "<i32, 3>, DataResult<i32>> =\n"]
-            #[doc = "   Stack" $IDX:camel "::from_array_const([1, 2, 3]).own_peek();"]
+            #[doc = "   Stack" $IDX:camel "::from_array_copy([1, 2, 3]).own_peek();"]
             /// S.s_assert(|s| s.as_slice() == &[1, 2, 3]).v_assert_eq(&Ok(3));
             /// ```
             #[inline]
@@ -206,15 +206,15 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{DataResult, Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Own<Stack" $IDX:camel "<i32, 3>, i32> = Stack" $IDX:camel
-                "::from_array_const([1, 2, 3])"]
+                "::from_array_copy([1, 2, 3])"]
             ///     .own_peek_unchecked();
             /// S.s_assert(|s| s.as_slice() == &[1, 2, 3]).v_assert_eq(&3);
             /// ```
             #[inline]
             pub const fn own_peek_unchecked(self) -> Own<Self, T> {
-                let arr = self.data.into_array_const();
+                let arr = self.data.into_array_copy();
                 let e = arr[self.len as usize - 1];
-                let sta = Self::from_array_const(arr);
+                let sta = Self::from_array_copy(arr);
                 Own::new(sta, e)
             }
 
@@ -229,7 +229,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
-                "::from_array_const([1, 2])"]
+                "::from_array_copy([1, 2])"]
             ///     .own_drop().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[1]];
             ///
@@ -255,7 +255,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
-                "::from_array_const([1, 2])"]
+                "::from_array_copy([1, 2])"]
             ///     .own_drop_unchecked().s;
             /// assert_eq![S.as_slice(), &[1]];
             /// ```
@@ -276,7 +276,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([1, 2, 3, 4])"]
+                "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_drop_n(3).v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[1]];
             /// ```
@@ -297,7 +297,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([1, 2, 3, 4])"]
+                "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_drop_n_unchecked(3).s;
             /// assert_eq![S.as_slice(), &[1]];
             /// ```
@@ -320,7 +320,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
-                "::from_array_const([1, 2])"]
+                "::from_array_copy([1, 2])"]
             ///     .own_nip().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[2]];
             ///
@@ -347,15 +347,15 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
-                "::from_array_const([1, 2])"]
+                "::from_array_copy([1, 2])"]
             ///     .own_nip_unchecked().s;
             /// assert_eq![S.as_slice(), &[2]];
             /// ```
             #[inline]
             pub const fn own_nip_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
-                let mut sta = Self::from_array_const(arr);
+                let mut sta = Self::from_array_copy(arr);
                 sta.len -= 1;
                 Own::empty(sta)
             }
@@ -370,7 +370,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([1, 2, 3, 4])"]
+                "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_nip2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[3, 4]];
             /// ```
@@ -392,16 +392,16 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([1, 2, 3, 4])"]
+                "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_nip2_unchecked().s;
             /// assert_eq![S.as_slice(), &[3, 4]];
             /// ```
             #[inline]
             pub const fn own_nip2_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
                 cswap![arr[self.len as usize - 3], arr[self.len as usize - 1]];
-                let mut sta = Self::from_array_const(arr);
+                let mut sta = Self::from_array_copy(arr);
                 sta.len -= 2;
                 Own::empty(sta)
             }
@@ -418,12 +418,12 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{DataResult, Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
-                "::from_array_const([1, 2])"]
+                "::from_array_copy([1, 2])"]
             ///     .own_swap().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[2, 1]];
             ///
             #[doc = "const T: Stack" $IDX:camel "<i32, 1> = Stack" $IDX:camel
-                "::from_array_const([1])"]
+                "::from_array_copy([1])"]
             ///     .own_swap().v_assert_err().s;
             /// assert_eq![T.as_slice(), &[1]];
             /// ```
@@ -444,15 +444,15 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
-                "::from_array_const([1, 2])"]
+                "::from_array_copy([1, 2])"]
             ///     .own_swap_unchecked().s;
             /// assert_eq![S.as_slice(), &[2, 1]];
             /// ```
             #[inline]
             pub const fn own_swap_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
-                Own::empty(Self::from_array_const(arr))
+                Own::empty(Self::from_array_copy(arr))
             }
 
             /// Swaps the top two pair stack elements in compile-time.
@@ -465,12 +465,12 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([1, 2, 3, 4])"]
+                "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_swap2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[3, 4, 1, 2]];
             ///
             #[doc = "const T: Stack" $IDX:camel "<i32, 3> = Stack" $IDX:camel
-                "::from_array_const([1, 2, 3])"]
+                "::from_array_copy([1, 2, 3])"]
             ///     .own_swap2().v_assert_err().s;
             /// assert_eq![T.as_slice(), &[1, 2, 3]];
             /// ```
@@ -491,16 +491,16 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([1, 2, 3, 4])"]
+                "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_swap2_unchecked().s;
             /// assert_eq![S.as_slice(), &[3, 4, 1, 2]];
             /// ```
             #[inline]
             pub const fn own_swap2_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
                 cswap![arr[self.len as usize - 3], arr[self.len as usize - 1]];
-                Own::new(Self::from_array_const(arr), ())
+                Own::new(Self::from_array_copy(arr), ())
             }
 
             /* rot */
@@ -515,7 +515,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3])"]
+                "::from_array_copy([0, 1, 2, 3])"]
             ///     .own_rot().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 2, 3, 1]];
             /// ```
@@ -538,7 +538,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3])"]
+                "::from_array_copy([0, 1, 2, 3])"]
             ///     .own_rot_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 2, 3, 1]];
             /// ```
@@ -546,12 +546,12 @@ macro_rules! impl_stack {
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 let [a, b, c] = [arr[len - 3], arr[len - 2], arr[len - 1]];
                 arr[len - 3] = b;
                 arr[len - 2] = c;
                 arr[len - 1] = a;
-                let sta = Self::from_array_const(arr);
+                let sta = Self::from_array_copy(arr);
                 Own::empty(sta)
             }
 
@@ -565,7 +565,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3])"]
+                "::from_array_copy([0, 1, 2, 3])"]
             ///     .own_rot_cc().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 3, 1, 2]];
             /// ```
@@ -587,7 +587,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3])"]
+                "::from_array_copy([0, 1, 2, 3])"]
             ///     .own_rot_cc_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 1, 2]];
             /// ```
@@ -595,12 +595,12 @@ macro_rules! impl_stack {
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot_cc_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 let [a, b, c] = [arr[len - 3], arr[len - 2], arr[len - 1]];
                 arr[len - 3] = c;
                 arr[len - 2] = a;
                 arr[len - 1] = b;
-                let sta = Self::from_array_const(arr);
+                let sta = Self::from_array_copy(arr);
                 Own::empty(sta)
             }
 
@@ -614,7 +614,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3, 4, 5, 6])"]
+                "::from_array_copy([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 5, 6, 1, 2]];
             /// ```
@@ -635,7 +635,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3, 4, 5, 6])"]
+                "::from_array_copy([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 5, 6, 1, 2]];
             /// ```
@@ -643,7 +643,7 @@ macro_rules! impl_stack {
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot2_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 let [a, b, c, d, e, f] = sf! {[
                     arr[len - 6], arr[len - 5], arr[len - 4], arr[len - 3], arr[len - 2], arr[len - 1],
                 ]};
@@ -653,7 +653,7 @@ macro_rules! impl_stack {
                 arr[len - 3] = f;
                 arr[len - 2] = a;
                 arr[len - 1] = b;
-                let sta = Self::from_array_const(arr);
+                let sta = Self::from_array_copy(arr);
                 Own::empty(sta)
             }
 
@@ -667,7 +667,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3, 4, 5, 6])"]
+                "::from_array_copy([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2_cc().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 5, 6, 1, 2, 3, 4]];
             /// ```
@@ -688,7 +688,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3, 4, 5, 6])"]
+                "::from_array_copy([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2_cc_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 5, 6, 1, 2, 3, 4]];
             /// ```
@@ -696,7 +696,7 @@ macro_rules! impl_stack {
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot2_cc_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 let [a, b, c, d, e, f] = sf! {[
                     arr[len - 6], arr[len - 5], arr[len - 4], arr[len - 3], arr[len - 2], arr[len - 1]
                 ]};
@@ -706,7 +706,7 @@ macro_rules! impl_stack {
                 arr[len - 3] = b;
                 arr[len - 2] = c;
                 arr[len - 1] = d;
-                let sta = Self::from_array_const(arr);
+                let sta = Self::from_array_copy(arr);
                 Own::empty(sta)
             }
 
@@ -751,9 +751,9 @@ macro_rules! impl_stack {
             /// ```
             #[inline]
             pub const fn own_dup_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 arr[self.len as usize] = arr[self.len as usize - 1];
-                let mut sta = Self::from_array_const(arr);
+                let mut sta = Self::from_array_copy(arr);
                 sta.len = self.len + 1;
                 Own::empty(sta)
             }
@@ -770,7 +770,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 6> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 0, 0, 0])"]
+                "::from_array_copy([0, 1, 2, 0, 0, 0])"]
             ///     .own_drop_n(3).s.own_dup2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1, 2]];
             /// ```
@@ -794,18 +794,18 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 6> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 0, 0, 0])"]
+                "::from_array_copy([0, 1, 2, 0, 0, 0])"]
             ///     .own_drop_n(3).s.own_dup2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1, 2]];
             /// ```
             #[inline]
             pub const fn own_dup2_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 let a = arr[self.len as usize - 2];
                 let b = arr[self.len as usize - 1];
                 arr[self.len as usize] = a;
                 arr[self.len as usize + 1] = b;
-                let mut sta = Self::from_array_const(arr);
+                let mut sta = Self::from_array_copy(arr);
                 sta.len = self.len + 2;
                 Own::empty(sta)
             }
@@ -824,7 +824,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 0])"]
+                "::from_array_copy([0, 1, 2, 0])"]
             ///     .own_drop().s.own_over().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1]];
             /// ```
@@ -848,15 +848,15 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 0])"]
+                "::from_array_copy([0, 1, 2, 0])"]
             ///     .own_drop().s.own_over_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1]];
             /// ```
             #[inline]
             pub const fn own_over_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 arr[self.len as usize] = arr[self.len as usize - 2];
-                let mut sta = Self::from_array_const(arr);
+                let mut sta = Self::from_array_copy(arr);
                 sta.len = self.len + 1;
                 Own::empty(sta)
             }
@@ -873,7 +873,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3, 4, 0, 0])"]
+                "::from_array_copy([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).s.own_over2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
             /// ```
@@ -897,18 +897,18 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3, 4, 0, 0])"]
+                "::from_array_copy([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).s.own_over2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
             /// ```
             #[inline]
             pub const fn own_over2_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 let a = arr[self.len as usize - 4];
                 let b = arr[self.len as usize - 3];
                 arr[self.len as usize] = a;
                 arr[self.len as usize + 1] = b;
-                let mut sta = Self::from_array_const(arr);
+                let mut sta = Self::from_array_copy(arr);
                 sta.len = self.len + 2;
                 Own::empty(sta)
             }
@@ -927,7 +927,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 0])"]
+                "::from_array_copy([0, 1, 2, 0])"]
             ///     .own_drop().s.own_tuck().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 2, 1, 2]];
             /// ```
@@ -951,17 +951,17 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 0])"]
+                "::from_array_copy([0, 1, 2, 0])"]
             ///     .own_drop().s.own_tuck_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 2, 1, 2]];
             /// ```
             #[inline]
             pub const fn own_tuck_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 let a = arr[self.len as usize - 1];
                 cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
                 arr[self.len as usize] = a;
-                let mut sta = Self::from_array_const(arr);
+                let mut sta = Self::from_array_copy(arr);
                 sta.len = self.len + 1;
                 Own::empty(sta)
             }
@@ -978,7 +978,7 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3, 4, 0, 0])"]
+                "::from_array_copy([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).s.own_tuck2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 1, 2, 3, 4]];
             /// ```
@@ -1003,13 +1003,13 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::{Own,Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
-                "::from_array_const([0, 1, 2, 3, 4, 0, 0])"]
+                "::from_array_copy([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).s.own_tuck2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 1, 2, 3, 4]];
             /// ```
             #[inline]
             pub const fn own_tuck2_unchecked(self) -> Own<Self, ()> {
-                let mut arr = self.data.into_array_const();
+                let mut arr = self.data.into_array_copy();
                 // swap2
                 cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
                 cswap![arr[self.len as usize - 3], arr[self.len as usize - 1]];
@@ -1018,7 +1018,7 @@ macro_rules! impl_stack {
                 let b = arr[self.len as usize - 3];
                 arr[self.len as usize] = a;
                 arr[self.len as usize + 1] = b;
-                let mut sta = Self::from_array_const(arr);
+                let mut sta = Self::from_array_copy(arr);
                 sta.len = self.len + 2;
                 Own::empty(sta)
             }

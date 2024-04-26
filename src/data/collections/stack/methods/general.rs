@@ -121,10 +121,10 @@ macro_rules! impl_stack {
             /// ```
             #[doc = "# use devela::all::Stack" $IDX:camel ";"]
             #[doc = "const S: " Stack $IDX:camel
-                "<i32, 3> = Stack" $IDX:camel "::from_array_const([1, 2, 3]);"]
+                "<i32, 3> = Stack" $IDX:camel "::from_array_copy([1, 2, 3]);"]
             /// ```
             #[inline]
-            pub const fn from_array_const(arr: [T; CAP]) -> Stack<T, CAP, $IDX, Bare> {
+            pub const fn from_array_copy(arr: [T; CAP]) -> Stack<T, CAP, $IDX, Bare> {
                 Self {
                     data: Array::new_bare(arr),
                     len: CAP as $IDX,

@@ -251,7 +251,7 @@ macro_rules! impl_stack {
                     NEW_CAP > isize::MAX as usize / mem_size_of::<T>() {
                     Own::empty(Err(OutOfBounds(Some(NEW_CAP))))
                 } else {
-                    let old_arr: [T; CAP] = self.data.into_array_const();
+                    let old_arr: [T; CAP] = self.data.into_array_copy();
                     let mut new_arr = array_init![const_default [T; NEW_CAP]];
 
                     let mut i = 0;
@@ -291,7 +291,7 @@ macro_rules! impl_stack {
                     0
                 };
                 let new_len = Compare(NEW_CAP).min(self.len as usize);
-                let old_arr: [T; CAP] = self.data.into_array_const();
+                let old_arr: [T; CAP] = self.data.into_array_copy();
                 let mut new_arr = array_init![const_default [T; NEW_CAP]];
 
                 let mut i = 0;
