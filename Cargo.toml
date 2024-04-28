@@ -162,11 +162,13 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 # ------------------------------------------------------------------------------
 
 nightly = [
-	"nightly_coro", "nightly_doc", "nightly_simd",
+	"nightly_coro", "nightly_doc", "nightly_simd", "nightly_stabilized",
 ] # enables all the following features:
 	nightly_coro= ["_-nightly-_"] # coroutines, coroutine_trait, iter_from_coroutine
 	nightly_doc = ["_-nightly-_"] # doc_cfg, doc_notable_trait
 	nightly_simd = ["_-nightly-_"] # portable_simd
+	nightly_stabilized = ["_-nightly-_"] # stabilized features to be released soon
+		# inline_const (1.79), associated_type_bounds (1.79)
 
 # private, refective:
 # auto-enabled by nightly sub-features

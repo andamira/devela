@@ -10,6 +10,7 @@
 #![cfg_attr(not(feature = "deps"), allow(rustdoc::broken_intra_doc_links))]
 #![allow(
     unknown_lints,
+    stable_features, // e.g. for associated_type_bounds
     clippy::empty_docs,
     clippy::mixed_attributes_style,
     //
@@ -38,6 +39,9 @@
 )]
 // WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
+// WAIT:1.79 [inline_const](https://github.com/rust-lang/rust/pull/104087)
+// WAIT:1.79 [associated_type_bounds](https://github.com/rust-lang/rust/pull/122055)
+#![cfg_attr(feature = "nightly_stabilized", feature(inline_const, associated_type_bounds))]
 
 // safeguard environment:
 #[cfg(all(feature = "std", feature = "no_std"))]
