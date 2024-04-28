@@ -1,6 +1,6 @@
 // devela construct::gen::tuple
 //
-//!
+//! Code generator for the `Tuple` trait, `TupleElement*` enums and `TupleIter*` structs.
 //
 // TOC
 // - Tuple trait definition

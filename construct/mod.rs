@@ -1,6 +1,6 @@
 // devela construct
 //
-//!
+//! The build script.
 //
 
 #[cfg(feature = "__dbg")]

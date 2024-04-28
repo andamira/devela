@@ -125,7 +125,7 @@ macro_rules! impl_primitive {
                     self = match self.checked_abs() {
                         Some(value) => value,
                         None => {
-                            let value = <$t>::max_value();
+                            let value = <$t>::MAX;
                             string[index] = LOOKUP[((value % base + 1) % base) as usize];
                             index -= 1;
                             value / base + ((value % base == base - 1) as $t)
@@ -224,7 +224,7 @@ impl NumToStr<i8> for i8 {
             self = match self.checked_abs() {
                 Some(value) => value,
                 None => {
-                    let value = <i8>::max_value();
+                    let value = <i8>::MAX;
                     string[index] = LOOKUP[((value % base + 1) % base) as usize];
                     index -= 1;
                     value / base + ((value % base == base - 1) as i8)
