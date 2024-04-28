@@ -41,7 +41,10 @@
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
 // WAIT:1.79 [inline_const](https://github.com/rust-lang/rust/pull/104087)
 // WAIT:1.79 [associated_type_bounds](https://github.com/rust-lang/rust/pull/122055)
-#![cfg_attr(feature = "nightly_stabilized", feature(inline_const, associated_type_bounds))]
+#![cfg_attr(
+    feature = "nightly_stabilized",
+    feature(inline_const, associated_type_bounds)
+)]
 
 // safeguard environment:
 #[cfg(all(feature = "std", feature = "no_std"))]

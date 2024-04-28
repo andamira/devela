@@ -23,7 +23,7 @@ use crate::code::{iif, paste};
 ))]
 #[cfg(feature = "_-float_any-_")]
 use crate::num::Float;
-use core::cmp::Ordering::{self, *};
+use core::cmp::Ordering::{self, Equal, Greater, Less};
 
 /// Provides comparing methods for `T`, most of them *const*.
 ///
@@ -77,36 +77,67 @@ mod core_impls {
 #[rustfmt::skip]
 impl<T: PartialOrd> Compare<T> {
     /// Compares and returns a [`PartialOrd`]ered `value` clamped between `min` and `max`.
+    ///
+    /// Returns `None` if comparisons are indeterminate.
+    ///
     /// # Examples
     /// ```
     /// # use devela::num::Compare;
-    /// assert_eq![0.4, Compare(1.0).pclamp(0.2, 0.4)];
-    /// assert_eq![0.2, Compare(0.0).pclamp(0.2, 0.4)];
+    /// assert_eq![Some(0.4), Compare(1.0).pclamp(0.2, 0.4)];
+    /// assert_eq![Some(0.2), Compare(0.0).pclamp(0.2, 0.4)];
+    /// //
+    /// assert_eq![None, Compare(1.0).pclamp(f32::NAN, f32::NAN)];
+    /// assert_eq![None, Compare(1.0).pclamp(f32::NAN, 0.4)];
+    /// assert_eq![None, Compare(1.0).pclamp(0.2, f32::NAN)];
     /// ```
     #[inline] #[must_use]
-    pub fn pclamp(self, min: T, max: T) -> T { Self(self.pmax(min)).pmin(max) }
+    pub fn pclamp(self, min: T, max: T) -> Option<T> {
+        Compare(self.pmax(min)?).pmin(max)
+    }
 
     /// Compares and returns the maximum of two [`PartialOrd`]ered values.
+    ///
+    /// Returns `None` if comparisons are indeterminate.
     ///
     /// Complements `core::cmp::`[`max`][`core::cmp::max] which requires [`Ord`]
     /// # Examples
     /// ```
     /// # use devela::num::Compare;
-    /// assert_eq![0.4, Compare(0.2).pmax(0.4)];
+    /// assert_eq![Some(0.4), Compare(0.2).pmax(0.4)];
+    /// //
+    /// assert_eq![None, Compare(0.2).pmax(f32::NAN)];
+    /// assert_eq![None, Compare(f32::NAN).pmax(0.4)];
     /// ```
     #[inline] #[must_use]
-    pub fn pmax(self, other: T) -> T { if self.0 > other { self.0 } else { other } }
+    pub fn pmax(self, other: T) -> Option<T> {
+        match self.0.partial_cmp(&other) {
+            Some(Less) => Some(other),
+            Some(Greater) | Some(Equal) => Some(self.0),
+            None => None,
+        }
+    }
 
     /// Compares and returns the minimum of two [`PartialOrd`]ered values.
+    ///
+    /// Returns `None` if comparisons are indeterminate.
     ///
     /// Complements `core::cmp::`[`min`][`core::cmp::min] which requires [`Ord`]
     /// # Example
     /// ```
     /// # use devela::num::Compare;
-    /// assert_eq![0.2, Compare(0.2).pmin(0.4)];
+    /// assert_eq![Some(0.2), Compare(0.2).pmin(0.4)];
+    /// //
+    /// assert_eq![None, Compare(0.2).pmin(f32::NAN)];
+    /// assert_eq![None, Compare(f32::NAN).pmin(0.4)];
     /// ```
     #[inline] #[must_use]
-    pub fn pmin(self, other: T) -> T { if self.0 < other { self.0 } else { other } }
+    pub fn pmin(self, other: T) -> Option<T> {
+        match self.0.partial_cmp(&other) {
+            Some(Greater) => Some(other),
+            Some(Less) | Some(Equal) => Some(self.0),
+            None => None,
+        }
+    }
 }
 
 // implement for primitives
@@ -408,18 +439,18 @@ mod test_min_max_clamp {
 
     #[test]
     fn min_max_clamp() {
-        assert_eq![2, C(2).pmin(5)];
-        assert_eq![2, C(5).pmin(2)];
-        assert_eq![2., C(2.).pmin(5.)];
+        assert_eq![Some(2), C(2).pmin(5)];
+        assert_eq![Some(2), C(5).pmin(2)];
+        assert_eq![Some(2.), C(2.).pmin(5.)];
 
-        assert_eq![5, C(2).pmax(5)];
-        assert_eq![5, C(5).pmax(2)];
-        assert_eq![5., C(2.).pmax(5.)];
+        assert_eq![Some(5), C(2).pmax(5)];
+        assert_eq![Some(5), C(5).pmax(2)];
+        assert_eq![Some(5.), C(2.).pmax(5.)];
 
-        assert_eq![3, C(3).pclamp(2, 5)];
-        assert_eq![3., C(3.).pclamp(2., 5.)];
-        assert_eq![2, C(1).pclamp(2, 5)];
-        assert_eq![5, C(7).pclamp(2, 5)];
+        assert_eq![Some(3), C(3).pclamp(2, 5)];
+        assert_eq![Some(3.), C(3.).pclamp(2., 5.)];
+        assert_eq![Some(2), C(1).pclamp(2, 5)];
+        assert_eq![Some(5), C(7).pclamp(2, 5)];
     }
 
     #[test]
