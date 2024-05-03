@@ -42,7 +42,7 @@ impl Logging {
     /// Calls [`set_logger`].
     #[inline]
     #[cfg(target_has_atomic = "ptr")]
-    #[cfg_attr(feature = "nightly", doc(cfg(target_has_atomic = "ptr")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(target_has_atomic = "ptr")))]
     pub fn set_logger(logger: &'static dyn Log) -> Result<(), SetLoggerError> {
         set_logger(logger)
     }
@@ -53,7 +53,7 @@ impl Logging {
     #[inline]
     #[cfg(all(feature = "std", target_has_atomic = "ptr"))]
     #[cfg_attr(
-        feature = "nightly",
+        feature = "nightly_doc",
         doc(cfg(all(feature = "std", target_has_atomic = "ptr")))
     )]
     pub fn set_boxed_logger(logger: Box<dyn Log>) -> Result<(), SetLoggerError> {
@@ -68,7 +68,7 @@ impl Logging {
     /// See the related documentation in `set_logger_racy`.
     #[inline]
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "unsafe_thread")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_thread")))]
     pub unsafe fn set_logger_racy(logger: &'static dyn Log) -> Result<(), SetLoggerError> {
         set_logger_racy(logger)
     }
