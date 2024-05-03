@@ -10,10 +10,10 @@ bench = false
 
 [package]
 name = "devela"
-description = "A cohesive development foundation."
+description = "A development foundation."
 version = "0.21.0-wip"
 edition = "2021"
-rust-version = "1.77.2" # sync with readme & .github/*/check.yml
+rust-version = "1.78.0" # sync with readme & .github/*/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"

@@ -2,9 +2,9 @@
 
 [![Crate](https://img.shields.io/crates/v/devela.svg)](https://crates.io/crates/devela)
 [![API](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
-[![MSRV: 1.77.2](https://flat.badgen.net/badge/MSRV/1.77.2/purple)](https://releases.rs/docs/1.77.2/)
+[![MSRV: 1.78.0](https://flat.badgen.net/badge/MSRV/1.78.0/purple)](https://releases.rs/docs/1.78.0/)
 
-A cohesive development foundation.
+A development foundation.
 
 ## Status
 This project is currently in an experimental stage of development.

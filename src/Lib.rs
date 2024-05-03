@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A cohesive development foundation.
+//! A development foundation.
 //
 
 //* global config *//
