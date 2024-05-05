@@ -416,6 +416,8 @@ fn rust_setup_arches(msrv: &str) -> Result<()> {
         sf! { let _ = Command::new("rustup").args(["override", "set", msrv]).status()?; }
         println!("rustup component add clippy");
         sf! { let _ = Command::new("rustup").args(["component", "add", "clippy"]).status()?; }
+        println!("rustup component add rustfmt");
+        sf! { let _ = Command::new("rustup").args(["component", "add", "rustfmt"]).status()?; }
     }
 
     for ref arch in STD_ARCHES.into_iter().chain(NO_STD_ARCHES.into_iter()) {
