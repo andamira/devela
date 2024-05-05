@@ -525,10 +525,9 @@ macro_rules! generate_array_string {
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
             #[inline]
-            pub fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
+            pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
                 let length = Compare(length).min(CAP as $t);
-                // IMPROVE make const. Limited by slice indexing
-                match from_utf8(&bytes[0..length as usize]) {
+                match from_utf8(bytes.split_at(length as usize).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(InvalidUtf8(Some(e))),
                 }
@@ -560,15 +559,14 @@ macro_rules! generate_array_string {
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
             #[inline]
-            pub fn from_bytes_nright(mut bytes: [u8; CAP], length: $t) -> Result<Self> {
+            pub const fn from_bytes_nright(mut bytes: [u8; CAP], length: $t) -> Result<Self> {
                 let length = Compare(length).min(CAP as $t);
                 let ulen = length as usize;
                 let start = CAP - ulen;
                 cfor![i in 0..ulen => {
                     bytes[i] = bytes[start + i];
                 }];
-                // IMPROVE make const. Limited by slice indexing
-                match core::str::from_utf8(&bytes[0..ulen]) {
+                match from_utf8(bytes.split_at(ulen).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(InvalidUtf8(Some(e))),
                 }

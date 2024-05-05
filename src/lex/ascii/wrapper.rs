@@ -89,7 +89,7 @@ impl Ascii<usize> {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
-    pub fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
+    pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
         let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
         #[cfg(any(feature = "safe_lex", not(feature = "unsafe_str")))]
@@ -163,7 +163,7 @@ impl Ascii<u8> {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
-    pub fn digits_str(self, width: u8) -> StringU8<3> {
+    pub const fn digits_str(self, width: u8) -> StringU8<3> {
         let width = Compare(width).clamp(self.count_digits(), 3);
 
         #[cfg(any(feature = "safe_lex", not(feature = "unsafe_str")))]
@@ -261,7 +261,7 @@ impl Ascii<u16> {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
-    pub fn digits_str(self, width: u8) -> StringU8<5> {
+    pub const fn digits_str(self, width: u8) -> StringU8<5> {
         let width = Compare(width).clamp(self.count_digits(), 5);
 
         #[cfg(any(feature = "safe_lex", not(feature = "unsafe_str")))]
@@ -373,7 +373,7 @@ impl Ascii<u32> {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
-    pub fn digits_str(self, width: u8) -> StringU8<10> {
+    pub const fn digits_str(self, width: u8) -> StringU8<10> {
         let width = Compare(width).clamp(self.count_digits(), 10);
 
         #[cfg(any(feature = "safe_lex", not(feature = "unsafe_str")))]
@@ -463,7 +463,7 @@ impl Ascii<u64> {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
-    pub fn digits_str(self, width: u8) -> StringU8<20> {
+    pub const fn digits_str(self, width: u8) -> StringU8<20> {
         let width = Compare(width).clamp(self.count_digits(), 20);
 
         #[cfg(any(feature = "safe_lex", not(feature = "unsafe_str")))]
@@ -572,7 +572,7 @@ impl Ascii<u128> {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
-    pub fn digits_str(self, width: u8) -> StringU8<39> {
+    pub const fn digits_str(self, width: u8) -> StringU8<39> {
         let width = Compare(width).clamp(self.count_digits(), 39);
 
         #[cfg(any(feature = "safe_lex", not(feature = "unsafe_str")))]

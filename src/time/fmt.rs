@@ -64,7 +64,7 @@ impl Timecode {
     // -> 80 bits
     #[inline]
     #[must_use]
-    pub fn split_nanos_u64(nanos: u64) -> SecNanoSplit<u32, u16, u16, u16> {
+    pub const fn split_nanos_u64(nanos: u64) -> SecNanoSplit<u32, u16, u16, u16> {
         let (us_tmp, ns) = (nanos / 1000, (nanos % 1000) as u16);
         let (ms_tmp, us) = (us_tmp / 1000, (us_tmp % 1000) as u16);
         let (s, ms) = ((ms_tmp / 1000) as u32, (ms_tmp % 1000) as u16);
@@ -78,7 +78,7 @@ impl Timecode {
     // -> 56 bits
     #[inline]
     #[must_use]
-    pub fn split_nanos_u32(nanos: u32) -> SecNanoSplit<u8, u16, u16, u16> {
+    pub const fn split_nanos_u32(nanos: u32) -> SecNanoSplit<u8, u16, u16, u16> {
         let (us_tmp, ns) = (nanos / 1000, (nanos % 1000) as u16);
         let (ms_tmp, us) = (us_tmp / 1000, (us_tmp % 1000) as u16);
         let (s, ms) = ((ms_tmp / 1000) as u8, (ms_tmp % 1000) as u16);
