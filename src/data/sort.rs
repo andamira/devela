@@ -11,10 +11,13 @@
 
 #[cfg(feature = "alloc")]
 use crate::_liballoc::{collections::BTreeMap, vec::Vec};
+use crate::code::iif;
+#[cfg(any(feature = "_sort_f32", feature = "_sort_f64"))]
+use crate::num::Compare;
+#[cfg(feature = "_-sort_any-_")]
 use crate::{
-    code::{cfor, iif, paste},
+    code::{cfor, paste},
     mem::cswap,
-    num::Compare,
 };
 
 /// Provides sorting methods for arrays and slices of `T`.
@@ -445,14 +448,25 @@ mod helper {
 
 /* impl Sort on primitives */
 
+#[cfg(feature = "_-sort_any-_")]
 macro_rules! impl_sort {
-    // $t: the input/output primitive type
-    (signed $( $t:ty ),+) => { $( impl_sort![@signed $t]; )+ };
-    (unsigned $( $t:ty ),+) => { $( impl_sort![@unsigned $t]; )+ };
-    (float $( $t:ty ),+) => { $( impl_sort![@float $t]; )+ };
+    () => {
+        impl_sort![signed i8:"_sort_i8", i16:"_sort_i16", i32:"_sort_i32",
+            i64:"_sort_i64", i128:"_sort_i128", isize:"_sort_isize"];
+        impl_sort![unsigned u8:"_sort_u8", u16:"_sort_u16", u32:"_sort_u32",
+            u64:"_sort_u64", u128:"_sort_u128", usize:"_sort_usize"];
+        impl_sort![float f32:"_sort_f32", f64:"_sort_f64"];
+    };
 
-    (@signed $t:ty) => { paste! {
+    // $t: the input/output primitive type
+    (signed   $( $t:ty : $cap:literal ),+) => { $( impl_sort![@signed $t:$cap]; )+ };
+    (unsigned $( $t:ty : $cap:literal ),+) => { $( impl_sort![@unsigned $t:$cap]; )+ };
+    (float    $( $t:ty : $cap:literal ),+) => { $( impl_sort![@float $t:$cap]; )+ };
+
+    (@signed $t:ty : $cap:literal) => { paste! {
         /// Implement const sorting methods for arrays of primitives.
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg(feature = $cap)]
         impl<const N: usize> Sort<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
             #[inline] #[must_use]
@@ -496,7 +510,9 @@ macro_rules! impl_sort {
         }
     }};
 
-    (@unsigned $t:ty) => { paste! {
+    (@unsigned $t:ty : $cap:literal) => { paste! {
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg(feature = $cap)]
         impl<const N: usize> Sort<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
             #[inline] #[must_use]
@@ -540,7 +556,9 @@ macro_rules! impl_sort {
         }
     }};
 
-    (@float $t:ty) => { paste! {
+    (@float $t:ty : $cap:literal) => { paste! {
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg(feature = $cap)]
         impl<const N: usize> Sort<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
             #[inline] #[must_use]
@@ -627,6 +645,5 @@ macro_rules! impl_sort {
         }
     }};
 }
-impl_sort![signed i8, i16, i32, i64, i128, isize];
-impl_sort![unsigned u8, u16, u32, u64, u128, usize];
-impl_sort![float f32, f64];
+#[cfg(feature = "_-sort_any-_")]
+impl_sort![];
