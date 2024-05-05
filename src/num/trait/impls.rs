@@ -6,7 +6,7 @@
 #[cfg(all(feature = "_-float_any-_", not(feature = "std")))]
 use crate::code::iif;
 use crate::code::paste;
-#[cfg(feature = "_-num_any-_")]
+#[cfg(feature = "_-nums_any-_")]
 use crate::num::{Num, NumResult as Result};
 #[cfg(feature = "_-float_any-_")]
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
