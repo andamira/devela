@@ -7,7 +7,9 @@
 use crate::_liballoc::vec::Vec;
 #[cfg(feature = "_int_usize")]
 use crate::num::isize_up;
-use crate::num::{GcdExt, Int, NumInt, NumResult as Result};
+#[allow(unused_imports)]
+use crate::num::GcdExt;
+use crate::num::{Int, NumInt, NumResult as Result};
 
 // $t:     the primitive type
 // $cap:   the capability feature that enables the given implementation. E.g "_int_i8".

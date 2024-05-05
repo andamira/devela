@@ -12,7 +12,6 @@
 //   - div_ties_even
 //   - div_ties_odd
 
-#[cfg(feature = "_-int_any-_")]
 use crate::{code::iif, num::Int};
 
 // $t:   the input/output type

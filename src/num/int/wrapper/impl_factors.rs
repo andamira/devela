@@ -20,12 +20,11 @@
 //     - factors_prime_unique_exp_buf
 //     - factors_prime_unique_plus_buf
 
-#[cfg(all(feature = "_-int_any-_", feature = "alloc"))]
+#[cfg(feature = "alloc")]
 use crate::{
     _liballoc::{collections::BTreeSet, vec, vec::Vec},
     code::Also,
 };
-#[cfg(feature = "_-int_any-_")]
 use crate::{
     code::iif,
     num::{Int, NumError::MismatchedSizes, NumResult as Result},

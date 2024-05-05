@@ -8,23 +8,25 @@
 // - sqrt_ceil
 // - sqrt_floor
 // - sqrt_round
+// - is_power TODO
 // - root_ceil
 // - root_floor
+// - root_round TODO
+
+#![allow(unused_imports)] // TEMP WIP unwrap
 
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::num::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
-#[cfg(feature = "_-int_any-_")]
 use crate::{
     code::{iif, unwrap},
     num::{upcasted_op, Compare, Int, NumError, NumResult as Result},
 };
 #[cfg(feature = "_-int_iany-_")]
 use NumError::NonNegativeRequired;
-#[cfg(feature = "_-int_any-_")]
 use NumError::NonZeroRequired;
-#[cfg(all(doc, feature = "_-int_any-_"))]
+#[cfg(doc)]
 use NumError::Overflow;
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.

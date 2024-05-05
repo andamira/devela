@@ -10,12 +10,13 @@
 //   - permute
 //   - permute_rep
 
-#[cfg(feature = "_-int_any-_")]
+#[cfg(feature = "_-int_iany-_")]
+use crate::num::NumError::NonNegativeRequired;
 use crate::{
     code::{cfor, iif},
     num::{
         Cast, Int,
-        NumError::{MismatchedSizes, NonNegativeRequired, Overflow},
+        NumError::{MismatchedSizes, Overflow},
         NumResult as Result,
     },
 };

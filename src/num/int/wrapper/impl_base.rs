@@ -11,7 +11,6 @@
 //   - digital_root
 //   - digital_root_base
 
-#[cfg(feature = "_-int_any-_")]
 use crate::{code::iif, num::Int};
 
 // $t:  the integer primitive input/output type, and the niche inner type

@@ -13,7 +13,6 @@
 use crate::num::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
-#[cfg(feature = "_-int_any-_")]
 use crate::{
     code::iif,
     num::{Int, NumError::Overflow, NumResult as Result},
