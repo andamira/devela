@@ -190,6 +190,7 @@ _min_docs = [ # the minimum capabilities to document all methods
 	"_stack_u8", "_destaque_u8",
 	"_float_f32", "_int_u8",
 	"_non_value_u8", "_non_range_u8", "_range_u8",
+	"_tuple",
 ]
 _max_docs = [ # the maximum capabities relevant for documentation
 	"_bit_all",
@@ -199,14 +200,14 @@ _max_docs = [ # the maximum capabities relevant for documentation
 ]
 _max = [ # the maximum capabilities, including non-relevant for documentation
 	"_max_docs",
-	"_tuple_arity_72",
+	"_tuple_72",
 ]
 
 # The more complete versions of the documentation:
 _docsrs = ["nightly", "_docsrs_stable"]
 _docsrs_stable = ["all", "std", "unsafe", "dep_all", "_min_docs"]
 
-_collections_all = [ "_destaque_all", "_graph_all", "_stack_all" ]
+_collections_all = [ "_destaque_all", "_graph_all", "_stack_all", "_tuple" ]
 	_destaque_all = ["_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize"]
 		_destaque_u8 = ["_-destaque_any-_"]
 		_destaque_u16 = ["_-destaque_any-_"]
@@ -222,6 +223,14 @@ _collections_all = [ "_destaque_all", "_graph_all", "_stack_all" ]
 		_stack_u16 = ["_-stack_any-_"]
 		_stack_u32 = ["_-stack_any-_"]
 		_stack_usize = ["_-stack_any-_"]
+
+# The maximum tuple arity supported by the Tuple trait:
+_tuple = [] # arity 12    # time:  3.5s, codegen: 132K
+_tuple_24 = ["_tuple"]    # time:  4.3s, codegen: 420K
+_tuple_36 = ["_tuple_24"] # time:  5.6s, codegen: 864K
+_tuple_48 = ["_tuple_36"] # time:  6.8s, codegen: 1.5M
+_tuple_72 = ["_tuple_48"] # time: 11.1s, codegen: 3.1M
+
 # private, refective:
 _-collections_any-_ = []
 _-destaque_any-_ = ["_-collections_any-_"]
@@ -338,17 +347,6 @@ _-niche_any-_ = []
 	_-non_value_any-_ = ["_-niche_any-_"]
 	_-non_range_any-_ = ["_-niche_any-_"]
 	_-range_any-_ = ["_-niche_any-_"]
-
-
-# data capabilities
-#
-# The maximum tuple arity supported by the Tuple trait:
-
-# The default tuple arity is 12       # time:  3.5s, codegen: 132K
-_tuple_arity_24 = []                  # time:  4.3s, codegen: 420K
-_tuple_arity_36 = ["_tuple_arity_24"] # time:  5.6s, codegen: 864K
-_tuple_arity_48 = ["_tuple_arity_36"] # time:  6.8s, codegen: 1.5M
-_tuple_arity_72 = ["_tuple_arity_48"] # time: 11.1s, codegen: 3.1M
 
 
 #* dependency features *#

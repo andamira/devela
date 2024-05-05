@@ -14,10 +14,10 @@ use std::io::{BufWriter, Error, Write};
 use std::{write as w0, writeln as w};
 
 #[rustfmt::skip] const MAX_ARITY: usize = {
-    if cfg!(not(feature = "_tuple_arity_24")) { 12
-    } else if cfg!(all(feature = "_tuple_arity_24", not(feature = "_tuple_arity_36"))) { 24
-    } else if cfg!(all(feature = "_tuple_arity_36", not(feature = "_tuple_arity_48"))) { 36
-    } else if cfg!(all(feature = "_tuple_arity_48", not(feature = "_tuple_arity_72"))) { 48
+    if cfg!(not(feature = "_tuple_24")) { 12
+    } else if cfg!(all(feature = "_tuple_24", not(feature = "_tuple_36"))) { 24
+    } else if cfg!(all(feature = "_tuple_36", not(feature = "_tuple_48"))) { 36
+    } else if cfg!(all(feature = "_tuple_48", not(feature = "_tuple_72"))) { 48
     } else { 72 }
 };
 

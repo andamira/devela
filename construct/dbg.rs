@@ -115,7 +115,7 @@ pub(super) fn print_features() {
         "_range_i8", "_range_i16", "_range_i32", "_range_i64", "_range_i128", "_range_isize",
         "_range_u8", "_range_u16", "_range_u32", "_range_u64", "_range_u128", "_range_usize",
 
-        "_tuple_arity_31", "_tuple_arity_63", "_tuple_arity_95", "_tuple_arity_127",
+        "_tuple", "_tuple_24", "_tuple_36", "_tuple_48", "_tuple_72",
     ];
 
     printfeat![msg: "Enabled dependency features:", features:

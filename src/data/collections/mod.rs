@@ -11,9 +11,8 @@
 mod array;
 mod reexports;
 mod traits;
-mod tuple; // Tuple, TupleFmt
 #[allow(unused_imports)]
-pub use {array::all::*, reexports::*, traits::*, tuple::*};
+pub use {array::all::*, reexports::*, traits::*};
 
 #[cfg(feature = "_-destaque_any-_")]
 mod destaque;
@@ -23,6 +22,11 @@ pub use destaque::*;
 mod stack;
 #[cfg(feature = "_-stack_any-_")]
 pub use stack::*;
+
+#[cfg(feature = "_tuple")]
+mod tuple; // Tuple, TupleFmt
+#[cfg(feature = "_tuple")]
+pub use tuple::*;
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
@@ -34,12 +38,16 @@ pub use vec::*;
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{array::all::*, reexports::*, traits::*, tuple::*};
+    pub use super::{array::all::*, reexports::*, traits::*};
 
     #[cfg(feature = "_-destaque_any-_")]
     pub use super::destaque::all::*;
     #[cfg(feature = "_-stack_any-_")]
     pub use super::stack::all::*;
+
+    #[cfg(feature = "_tuple")]
+    pub use super::tuple::*;
+
     #[allow(unused_imports)]
     #[cfg(feature = "alloc")]
     pub use super::vec::*;
