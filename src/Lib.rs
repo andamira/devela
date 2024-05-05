@@ -73,10 +73,30 @@ pub mod sys;
 pub mod time;
 pub mod ui;
 
+/// All the library items.
+pub mod all {
+    #[allow(unused_imports)]
+    #[rustfmt::skip]
+    #[doc(inline)]
+    pub use super::{
+        code::all::*,
+        data::all::*,
+        exec::all::*,
+        lex::all::*,
+        mem::all::*,
+        num::all::*,
+        rend::all::*,
+        sys::all::*,
+        time::all::*,
+        ui::all::*,
+    };
+}
+#[doc(no_inline)]
+#[allow(unused_imports)]
+pub use all::*;
+
 /// External dependencies.
 pub mod _deps;
-
-/* environment */
 
 /// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
 /// *Re-exported Rust `alloc` library environment.*
@@ -107,20 +127,3 @@ pub mod _info {
         #![doc = include_str!("./_info/features.md")]
     }
 }
-
-/// All the library items are re-exported here.
-///
-/// Note that any item tagged with [`dep`] can also be enabled by
-/// manually enabling the associated optional dependency.
-pub mod all {
-    #[allow(unused_imports)]
-    #[doc(inline)]
-    pub use super::{
-        code::all::*, data::all::*, exec::all::*, lex::all::*, mem::all::*, num::all::*,
-        rend::all::*, sys::all::*, time::all::*, ui::all::*,
-    };
-}
-// and from the root
-#[doc(no_inline)]
-#[allow(unused_imports)]
-pub use all::*;

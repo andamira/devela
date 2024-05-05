@@ -24,10 +24,17 @@ use crate::{
 /// In the case of floating-point primitives it uses total ordering and the
 /// methods will only be const if the `unsafe_const` feature is enabled.
 ///
-/// It also implements the following methods for sorting generic exclusive slices,
-/// depending on at least the [`Ord`] bound and for some on `alloc`:
-/// `bubble`, `counting`, `counting_buf`, `insertion`, `merge`, `quick_lomuto`,
-/// `quick_hoare`, `quick_3way`, `quick_selection`, `quick_shaker`.
+/// It also implements the following methods for sorting exclusive slices:
+/// [`bubble`][Sort#bubble],
+/// [`counting`][Sort#counting],
+/// [`counting_buf`][Sort#counting_buf],
+/// [`insertion`][Sort#insertion],
+/// [`merge`][Sort#merge],
+/// [`quick_lomuto`][Sort#quick_lomuto],
+/// [`quick_hoare`][Sort#quick_hoare],
+/// [`quick_3way`][Sort#quick_3way],
+/// [`quick_selection`][Sort#quick_selection],
+/// [`quick_shaker`][Sort#quick_shaker].
 ///
 /// # Examples
 /// Sort copied arrays of primitives:

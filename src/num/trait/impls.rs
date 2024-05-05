@@ -330,15 +330,15 @@ macro_rules! impl_num {
             }
 
             // ident
-            #[doc = "This implementation has a tolerance of 5 × [`EPSILON`][core::" $p "::EPSILON]"]
+            #[doc = "This implementation has a tolerance of 5 × [`EPSILON`][" $p "::EPSILON]"]
             #[inline]
             fn num_is_zero(&self) -> Result<bool> {
-                Ok(self.num_ref_abs()? < 5.0 * core::$p::EPSILON)
+                Ok(self.num_ref_abs()? < 5.0 * <$p>::EPSILON)
             }
-            #[doc = "This implementation has a tolerance of 5 × [`EPSILON`][core::" $p "::EPSILON]"]
+            #[doc = "This implementation has a tolerance of 5 × [`EPSILON`][" $p "::EPSILON]"]
             #[inline]
             fn num_is_one(&self) -> Result<bool> {
-                Ok(self.num_sub(1.0)?.num_ref_abs()? < 5.0 * core::$p::EPSILON)
+                Ok(self.num_sub(1.0)?.num_ref_abs()? < 5.0 * <$p>::EPSILON)
             }
             #[inline]
             fn num_get_zero() -> Result<Self> { Self::num_from(0.0) }

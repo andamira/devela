@@ -1,6 +1,6 @@
 // devela::sys::log::ext
 
-use super::{Log, LoggerConfig, LogLevelFilter};
+use super::{Log, LogLevelFilter, LoggerConfig};
 #[cfg(feature = "alloc")]
 use crate::mem::Box;
 

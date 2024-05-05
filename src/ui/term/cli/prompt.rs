@@ -89,7 +89,7 @@ impl Prompt {
 
     /// Set a prompt suffix. Default: `: `.
     pub fn suffix(mut self, suffix: &str) -> Self {
-        self.options.prompt_suffix = suffix.to_owned();
+        suffix.clone_into(&mut self.options.prompt_suffix);
         self
     }
 
