@@ -32,7 +32,7 @@ build = "construct/mod.rs"
 publish = true
 
 
-[features] # 179
+[features] # 196
 # ==============================================================================
 # Features are grouped in the following categories:
 # - Miscellaneous
@@ -391,15 +391,15 @@ devela_macros = { version  = "0.10.0" }
 paste_crate = { package = "paste", version = "1.0.14", default-features = false }
 
 # optional:
-const-str = { version = "0.5.6", default-features = false, optional = true }
+const-str = { version = "0.5.7", default-features = false, optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
 log = { version = "0.4.21", default-features = false, optional = true }
-memchr = { version = "2.7.1", optional = true, default-features = false }
+memchr = { version = "2.7.2", optional = true, default-features = false }
 miniquad = { version = "0.4.0", default-features = false, optional = true }
 rand_core = { version = "0.6.4", default-features = false, optional = true }
-unicode-segmentation = { version = "1.10.1", default-features = false, optional = true }
-unicode-width = { version = "0.1.11", default-features = false, optional = true }
-wide = { version = "0.7.15", optional = true, default-features = false }
+unicode-segmentation = { version = "1.11.0", default-features = false, optional = true }
+unicode-width = { version = "0.1.12", default-features = false, optional = true }
+wide = { version = "0.7.17", optional = true, default-features = false }
 
 # non-optional:
 [dependencies.bytemuck]
@@ -420,12 +420,12 @@ optional = true
 default-features = false
 features = ["events", "windows", "bracketed-paste"]
 [dependencies.hashbrown]
-version = "0.14.1"
+version = "0.14.5"
 optional = true
 default-features = false
 features = ["ahash", "inline-more"]
 [dependencies.portable-atomic]
-version = "1.4.3"
+version = "1.6.0"
 optional = true
 default-features = false
 features = ["fallback", "float"]
