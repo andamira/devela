@@ -118,7 +118,6 @@ Enabling them will likely worsen compilation times.
 
 - `_default`: enables default capabilities.
 - `_max`: enables the maximum capabilities.
-- `_tuple[_24|_36|_48|_72]`: [`Tuple`] impl for tuples of arity 12 or more.
 
 Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
 [`Angle`], [`Point`], [`Vector`]:
@@ -126,12 +125,11 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
   - `_float_all`:
     - `_float_f32`, `_float_f64`.
   - `_int_all`:
-    - `_int_all_i`:
+    - `_int_iall`:
       - `_int_i8`, `_int_i16`, `_int_i32`, `_int_i64`, `_int_i128`, `_int_isize`.
-    - `_int_all_u`:
+    - `_int_uall`:
       - `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
 
-[`Tuple`]: crate::data::collections::Tuple
 [`Float`]: crate::num::Float
 [`Frac`]: crate::num::Frac
 [`Int`]: crate::num::Int
@@ -142,26 +140,28 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
 
 Enable specific implementations for [`Bitwise`], [`bitfield`], [`enumset`]:
 - `_bit_all`:
-  - `_bit_all_i`:
-    - `_bit_i8`, `_bit_i16`, `_bit_i32`,
-      `_bit_i64`, `_bit_i128`, `_bit_isize`.
-  - `_bit_all_u`:
-    - `_bit_u8`, `_bit_u16`, `_bit_u32`,
-      `_bit_u64`, `_bit_u128`, `_bit_usize`.
+    - `_bit_i8`, `_bit_i16`, `_bit_i32`, `_bit_i64`, `_bit_i128`, `_bit_isize`.
+    - `_bit_u8`, `_bit_u16`, `_bit_u32`, `_bit_u64`, `_bit_u128`, `_bit_usize`.
 
 [`Bitwise`]: crate::num::Bitwise
 [`bitfield`]: crate::num::bitfield
 [`enumset`]: crate::num::enumset
 
-Enable specific implementations for data collections [`Destaque`], [`Stack`].
+Enable specific implementations of data collections
+[`Destaque`], [`NodeU8`]+, [`Stack`], [`Tuple`]:
 - `_collections_all`:
 	- `_destaque_all`:
     - `_destaque_u8`, `_destaque_u16`, `_destaque_u32`, `_destaque_usize`.
+	- `_node_all`:
+    - `_node_u8`, `_node_u16`, `_node_u32`, `_node_usize`.
 	`_stack_all`:
 		`_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
+- `_tuple[_24|_36|_48|_72]`.
 
 [`Destaque`]: crate::data::Destaque
 [`Stack`]: crate::data::Stack
+[`NodeU8`]: crate::data::NodeU8
+[`Tuple`]: crate::data::collections::Tuple
 
  Documentation capabilities:
 - `_docsrs`: enables the most complete version of the documentation for [docs.rs](https://docs.rs).

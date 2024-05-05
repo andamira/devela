@@ -207,7 +207,7 @@ _max = [ # the maximum capabilities, including non-relevant for documentation
 _docsrs = ["nightly", "_docsrs_stable"]
 _docsrs_stable = ["all", "std", "unsafe", "dep_all", "_min_docs"]
 
-_collections_all = [ "_destaque_all", "_graph_all", "_stack_all", "_tuple" ]
+_collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "_tuple" ]
 	_destaque_all = ["_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize"]
 		_destaque_u8 = ["_-destaque_any-_"]
 		_destaque_u16 = ["_-destaque_any-_"]
@@ -218,6 +218,11 @@ _collections_all = [ "_destaque_all", "_graph_all", "_stack_all", "_tuple" ]
 		_graph_u16 = ["_-graph_any-_", "_non_value_u16"]
 		_graph_u32 = ["_-graph_any-_", "_non_value_u32"]
 		_graph_usize = ["_-graph_any-_", "_non_value_usize"]
+	_node_all = ["_node_u8", "_node_u16", "_node_u32", "_node_usize"]
+		_node_u8 = ["_-node_any-_", "_non_value_u8"]
+		_node_u16 = ["_-node_any-_", "_non_value_u16"]
+		_node_u32 = ["_-node_any-_", "_non_value_u32"]
+		_node_usize = ["_-node_any-_", "_non_value_usize"]
 	_stack_all = ["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"]
 		_stack_u8 = ["_-stack_any-_"]
 		_stack_u16 = ["_-stack_any-_"]
@@ -235,6 +240,7 @@ _tuple_72 = ["_tuple_48"] # time: 11.1s, codegen: 3.1M
 _-collections_any-_ = []
 _-destaque_any-_ = ["_-collections_any-_"]
 _-graph_any-_ = ["_-collections_any-_"]
+_-node_any-_ = ["_-collections_any-_"]
 _-stack_any-_ = ["_-collections_any-_"]
 
 # Specific numeric implementations for `Int`, `Float`, `Frac`,
