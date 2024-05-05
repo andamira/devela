@@ -3,12 +3,12 @@
 //! A simple logger.
 //
 
-use super::{Log, LogLevel, LogLevelFilter, LogMetadata, LogRecord, Logging};
+use super::{Log, LogLevel, LogLevelFilter, LogMetadata, LogRecord, LoggerConfig, Logging};
 
-/// A simple logger.
-pub struct LoggerSimple;
+/// A logger that prints out the logs.
+pub struct LoggerPrint;
 
-impl LoggerSimple {
+impl LoggerPrint {
     /// Sets itself as the global logger.
     ///
     /// This function should be called very early in the program.
@@ -23,7 +23,7 @@ impl LoggerSimple {
     /// For now it only prints out to stderr if the `std` feature is enabled.
     #[allow(unused_mut)]
     pub fn init(mut level: LogLevelFilter) -> Result<(), ::log::SetLoggerError> {
-        static LOGGER: LoggerSimple = LoggerSimple {};
+        static LOGGER: LoggerPrint = LoggerPrint {};
 
         #[cfg(feature = "std")]
         if let Ok(rust_log_var) = std::env::var("RUST_LOG") {
@@ -37,7 +37,7 @@ impl LoggerSimple {
     }
 }
 
-impl Log for LoggerSimple {
+impl Log for LoggerPrint {
     fn enabled(&self, metadata: &LogMetadata) -> bool {
         metadata.level() <= Logging::max_level()
     }

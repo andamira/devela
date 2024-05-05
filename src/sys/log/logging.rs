@@ -13,6 +13,8 @@ use ::log::{logger, max_level, set_logger, set_max_level, SetLoggerError, STATIC
 pub struct Logging;
 
 impl Logging {
+    /* log crate */
+
     /// The statically resolved maximum log level.
     ///
     /// Returns [`STATIC_MAX_LEVEL`].
@@ -72,4 +74,6 @@ impl Logging {
     pub unsafe fn set_logger_racy(logger: &'static dyn Log) -> Result<(), SetLoggerError> {
         set_logger_racy(logger)
     }
+
+    /* */
 }

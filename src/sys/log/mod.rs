@@ -3,15 +3,17 @@
 //!
 //
 
+mod config; // `LoggerConfig` struct
+mod ext; // `ExtLog` trait
 mod logging; // `Logging` namespace
+mod print; // `LoggerPrint` logger
 mod reexports; // items from the `log` crate
-mod simple; // `LoggerSimple` logger
 
 #[allow(unused_imports)]
-pub use {logging::*, reexports::*, simple::*};
+pub use {config::*, ext::*, logging::*, print::*, reexports::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{logging::*, reexports::*, simple::*};
+    pub use super::{config::*, ext::*, logging::*, print::*, reexports::*};
 }
