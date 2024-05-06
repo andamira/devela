@@ -7,7 +7,7 @@
 // - trait impls
 
 use crate::{
-    code::{cfor, unwrap},
+    code::{cfor, iif, unwrap, ConstDefault},
     lex::{
         helpers::impl_sized_alias,
         LexError::{
@@ -20,6 +20,8 @@ use core::{fmt, ops::Deref, str::Chars};
 
 #[cfg(feature = "alloc")]
 use crate::_liballoc::{ffi::CString, string::ToString};
+#[allow(unused_imports)]
+use core::str::{from_utf8, from_utf8_unchecked};
 
 use super::char::*;
 
@@ -93,21 +95,42 @@ impl<const CAP: usize> StringNonul<CAP> {
 
     /// Returns the remaining capacity.
     #[inline] #[must_use] #[rustfmt::skip]
-    pub fn remaining_capacity(&self) -> usize { CAP - self.len() }
+    pub const fn remaining_capacity(&self) -> usize { CAP - self.len() }
 
     /// Returns the current length.
-    #[inline] #[must_use] #[rustfmt::skip]
-    pub fn len(&self) -> usize {
-        self.arr.iter().position(|&x| x == 0).unwrap_or(self.arr.len())
+    ///
+    /// # Examples
+    /// ```
+    /// # use devela::lex::{LexResult, StringNonul};
+    /// # fn main() -> LexResult<()> {
+    /// let mut s = StringNonul::<4>::new()?;
+    /// assert_eq![0, s.len()];
+    ///
+    /// assert_eq![1, s.push('a')];
+    /// assert_eq![1, s.len()];
+    ///
+    /// assert_eq![3, s.push('€')];
+    /// assert_eq![4, s.len()];
+    /// # Ok(()) }
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn len(&self) -> usize {
+        let mut position = 0;
+        while position < CAP {
+            iif![self.arr[position] == 0; break];
+            position += 1;
+        }
+        position
     }
 
     /// Returns `true` if the current length is 0.
     #[inline] #[must_use] #[rustfmt::skip]
-    pub fn is_empty(&self) -> bool { self.len() == 0 }
+    pub const fn is_empty(&self) -> bool { self.len() == 0 }
 
     /// Returns `true` if the current remaining capacity is 0.
     #[inline] #[must_use] #[rustfmt::skip]
-    pub fn is_full(&self) -> bool { self.len() == CAP }
+    pub const fn is_full(&self) -> bool { self.len() == CAP }
 
     /* deconstruct */
 
@@ -128,14 +151,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Features
     /// Makes use of the `unsafe_slice` feature if enabled.
     #[inline] #[must_use] #[rustfmt::skip]
-    pub fn as_bytes(&self) -> &[u8] {
-        #[cfg(any(feature = "safe_lex", not(feature = "unsafe_slice")))]
-        return self.arr.get(0..self.len()).unwrap();
-
-        #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_slice"))]
-        // SAFETY: self.len() is always <= arr.len()
-        return unsafe { self.arr.get_unchecked(0..self.len()) };
-    }
+    pub const fn as_bytes(&self) -> &[u8] { self.arr.split_at(self.len()).0 }
 
     /// Returns a mutable byte slice of the inner string slice.
     ///
@@ -156,18 +172,14 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// Returns the inner string slice.
     /// # Features
     /// Makes use of the `unsafe_slice` feature if enabled.
-    #[inline]
-    #[must_use]
-    pub fn as_str(&self) -> &str {
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn as_str(&self) -> &str {
         #[cfg(any(feature = "safe_lex", not(feature = "unsafe_slice")))]
-        return core::str::from_utf8(self.arr.get(0..self.len()).unwrap())
-            .expect("must be valid utf-8");
+        return unwrap![ok_expect from_utf8(self.as_bytes()), "Invalid UTF-8"];
 
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_slice"))]
         // SAFETY: we ensure to contain only valid UTF-8
-        unsafe {
-            return core::str::from_utf8_unchecked(self.arr.get_unchecked(0..self.len()));
-        }
+        unsafe { from_utf8_unchecked(self.as_bytes()) }
     }
 
     /// Returns the mutable inner string slice.
@@ -374,7 +386,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and `CAP` < `c.`[`len_utf8()`][Char32#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
-    #[inline]
+    #[inline] #[rustfmt::skip]
     pub const fn from_char(c: char) -> Result<Self> {
         let mut new = unwrap![ok? Self::new()];
 
@@ -383,15 +395,9 @@ impl<const CAP: usize> StringNonul<CAP> {
             let len = char_utf8_4bytes_len(bytes);
 
             new.arr[0] = bytes[0];
-            if len > 1 {
-                new.arr[1] = bytes[1];
-            }
-            if len > 2 {
-                new.arr[2] = bytes[2];
-            }
-            if len > 3 {
-                new.arr[3] = bytes[3];
-            }
+            if len > 1 { new.arr[1] = bytes[1]; }
+            if len > 2 { new.arr[2] = bytes[2]; }
+            if len > 3 { new.arr[3] = bytes[3]; }
         }
         Ok(new)
     }
@@ -426,7 +432,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and `CAP` < `c.`[`len_utf8()`][Char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
-    #[inline]
+    #[inline] #[rustfmt::skip]
     #[cfg(feature = "lex")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
     pub const fn from_char8(c: Char8) -> Result<Self> {
@@ -436,9 +442,7 @@ impl<const CAP: usize> StringNonul<CAP> {
             let len = char_utf8_2bytes_len(bytes);
 
             new.arr[0] = bytes[0];
-            if len > 1 {
-                new.arr[1] = bytes[1];
-            }
+            if len > 1 { new.arr[1] = bytes[1]; }
         }
         Ok(new)
     }
@@ -453,7 +457,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and `CAP` < `c.`[`len_utf8()`][Char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
-    #[inline]
+    #[inline] #[rustfmt::skip]
     #[cfg(feature = "lex")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
     pub const fn from_char16(c: Char16) -> Result<Self> {
@@ -463,12 +467,8 @@ impl<const CAP: usize> StringNonul<CAP> {
             let len = char_utf8_3bytes_len(bytes);
 
             new.arr[0] = bytes[0];
-            if len > 1 {
-                new.arr[1] = bytes[1];
-            }
-            if len > 2 {
-                new.arr[2] = bytes[2];
-            }
+            if len > 1 { new.arr[1] = bytes[1]; }
+            if len > 2 { new.arr[2] = bytes[2]; }
         }
         Ok(new)
     }
@@ -483,7 +483,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and `CAP` < `c.`[`len_utf8()`][Char24#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
-    #[inline]
+    #[inline] #[rustfmt::skip]
     #[cfg(feature = "lex")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
     pub const fn from_char24(c: Char24) -> Result<Self> {
@@ -493,15 +493,9 @@ impl<const CAP: usize> StringNonul<CAP> {
             let len = char_utf8_4bytes_len(bytes);
 
             new.arr[0] = bytes[0];
-            if len > 1 {
-                new.arr[1] = bytes[1];
-            }
-            if len > 2 {
-                new.arr[2] = bytes[2];
-            }
-            if len > 3 {
-                new.arr[3] = bytes[3];
-            }
+            if len > 1 { new.arr[1] = bytes[1]; }
+            if len > 2 { new.arr[2] = bytes[2]; }
+            if len > 3 { new.arr[3] = bytes[3]; }
         }
         Ok(new)
     }
@@ -532,12 +526,10 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and [`InvalidNul`] if the bytes contains a NUL character.
     #[inline]
     pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self> {
-        match core::str::from_utf8(&bytes) {
+        match from_utf8(&bytes) {
             Ok(_) => {
                 cfor![index in 0..CAP => {
-                    if bytes[index] == 0 {
-                        return Err(InvalidNul);
-                    }
+                    iif![bytes[index] == 0; return Err(InvalidNul)];
                 }];
                 Ok(Self { arr: bytes })
             }
@@ -572,6 +564,13 @@ impl<const CAP: usize> Default for StringNonul<CAP> {
         Self::new().unwrap()
     }
 }
+impl<const CAP: usize> ConstDefault for StringNonul<CAP> {
+    /// Returns an empty string.
+    ///
+    /// # Panics
+    /// Panics if `CAP > 255`.
+    const DEFAULT: Self = unwrap![ok Self::new()];
+}
 
 impl<const CAP: usize> fmt::Display for StringNonul<CAP> {
     #[inline]
@@ -587,43 +586,28 @@ impl<const CAP: usize> fmt::Debug for StringNonul<CAP> {
 }
 
 impl<const CAP: usize> PartialEq<&str> for StringNonul<CAP> {
-    #[inline]
-    #[must_use]
-    fn eq(&self, slice: &&str) -> bool {
-        self.as_str() == *slice
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
 }
 impl<const CAP: usize> PartialEq<StringNonul<CAP>> for &str {
-    #[inline]
-    #[must_use]
-    fn eq(&self, string: &StringNonul<CAP>) -> bool {
-        *self == string.as_str()
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    fn eq(&self, string: &StringNonul<CAP>) -> bool { *self == string.as_str() }
 }
 
 impl<const CAP: usize> Deref for StringNonul<CAP> {
     type Target = str;
-    #[inline]
-    #[must_use]
-    fn deref(&self) -> &Self::Target {
-        self.as_str()
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    fn deref(&self) -> &Self::Target { self.as_str() }
 }
 
 impl<const CAP: usize> AsRef<str> for StringNonul<CAP> {
-    #[inline]
-    #[must_use]
-    fn as_ref(&self) -> &str {
-        self.as_str()
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    fn as_ref(&self) -> &str { self.as_str() }
 }
 
 impl<const CAP: usize> AsRef<[u8]> for StringNonul<CAP> {
-    #[inline]
-    #[must_use]
-    fn as_ref(&self) -> &[u8] {
-        self.as_bytes()
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    fn as_ref(&self) -> &[u8] { self.as_bytes() }
 }
 
 impl<const CAP: usize> TryFrom<&str> for StringNonul<CAP> {
@@ -657,7 +641,7 @@ impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
     /// [`NotEnoughCapacity`] if `CAP < bytes.len()`
     /// or [`InvalidUtf8`] if the `bytes` are not valid UTF-8.
     fn try_from(bytes: &[u8]) -> Result<Self> {
-        match core::str::from_utf8(bytes) {
+        match from_utf8(bytes) {
             Ok(_) => {
                 let mut arr = [0; CAP];
                 let mut idx = 0;
