@@ -26,6 +26,7 @@ use crate::time::SecNanoSplit;
 /// #[cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64")))]
 /// assert_eq!(Timecode::secs_f64(3661.5), "01:01:01.500");
 ///
+/// #[cfg(feature = "_string_u8")]
 /// assert_eq!(Timecode::nanos_u64(1_002_003_004), "001s 002ms 003µs 004ns");
 /// ```
 pub struct Timecode;
@@ -227,6 +228,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "_string_u8")]
     fn timecode_nanos_u64() {
         let formatted = Timecode::nanos_u64(1_002_003_004);
         assert_eq!(formatted, "001s 002ms 003µs 004ns");

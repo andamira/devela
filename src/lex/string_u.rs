@@ -10,11 +10,7 @@
 
 #[cfg(feature = "_-string_uany-_")]
 use crate::{
-    _libcore::{
-        fmt,
-        ops::Deref,
-        str::{from_utf8, Chars},
-    },
+    _libcore::{fmt, ops::Deref, str::Chars},
     code::{iif, paste, unwrap, ConstDefault},
     lex::{
         char::{char_to_utf8_bytes, char_utf8_4bytes_len},
@@ -31,8 +27,8 @@ use super::char::{
 };
 #[cfg(all(feature = "alloc", feature = "_-string_uany-_"))]
 use crate::_liballoc::{ffi::CString, string::ToString};
-#[cfg(feature = "unsafe_str")]
-use core::str::from_utf8_unchecked;
+#[allow(unused_imports)]
+use core::str::{from_utf8, from_utf8_unchecked};
 
 macro_rules! impl_string_u {
     () => {
@@ -770,8 +766,9 @@ mod tests {
     use super::*;
 
     #[test]
+    #[cfg(feature = "_string_u8")]
     fn push() {
-        let mut s = String32::new().unwrap(); // max capacity == 3
+        let mut s = StringU8::<3>::new().unwrap();
         assert![s.try_push('ñ').is_ok()];
         assert_eq![2, s.len()];
         assert![s.try_push('ñ').is_err()];
@@ -781,8 +778,9 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "_string_u8")]
     fn pop() {
-        let mut s = String32::new().unwrap(); // max capacity == 3
+        let mut s = StringU8::<3>::new().unwrap();
         s.push('ñ');
         s.push('a');
         assert_eq![Some('a'), s.pop()];

@@ -18,7 +18,7 @@ use crate::{
     },
 };
 #[cfg(feature = "lex")]
-use core::lex::char::*;
+use crate::lex::char::*;
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */

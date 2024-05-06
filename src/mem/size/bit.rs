@@ -43,7 +43,7 @@ use crate::_liballoc::{
 };
 #[cfg(all(feature = "lex", feature = "alloc"))]
 use crate::lex::EgcString;
-#[cfg(feature = "string_nonul")]
+#[cfg(feature = "_string_nonul")]
 use crate::lex::{EgcNonul, StringNonul};
 
 #[cfg(feature = "portable-atomic")]

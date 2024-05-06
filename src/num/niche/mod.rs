@@ -7,6 +7,7 @@ mod reexports;
 #[allow(unused_imports)]
 pub use reexports::*;
 
+#[cfg(feature = "_-niche_any-_")]
 #[cfg(test)]
 mod tests;
 //
