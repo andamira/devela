@@ -3,6 +3,7 @@
 //! Slice functionality wrapper struct.
 //
 
+#[cfg(feature = "_cmp_usize")]
 use crate::num::Compare;
 
 /// Provides slicing operations on `&[T]`, many of them *const*.
@@ -20,6 +21,7 @@ impl<T> Slice<T> {
     /// Returns the leftmost sub-`slice` with the given maximum `len`.
     ///
     /// If `len > self.len()` it returns the full slice.
+    ///
     /// # Examples
     /// ```
     /// # use devela::mem::Slice;
@@ -28,10 +30,19 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::lsplit(&v, 0), &[]);
     /// assert_eq!(Slice::lsplit(&v, 10), &[1, 2, 3, 4, 5, 6]);
     /// ```
-    #[inline]
-    #[must_use]
+    /// # Features
+    /// This method will only be const if the `_cmp_usize` feature is enabled.
+    // WAIT: [const_cmp](https://github.com/rust-lang/rust/issues/92391)
+    #[inline] #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
     pub const fn lsplit(slice: &[T], len: usize) -> &[T] {
         let end_idx = Compare(len).clamp(0, slice.len());
+        let (left, _) = slice.split_at(end_idx);
+        left
+    }
+    #[allow(missing_docs)]
+    #[inline] #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
+    pub fn lsplit(slice: &[T], len: usize) -> &[T] {
+        let end_idx = len.clamp(0, slice.len());
         let (left, _) = slice.split_at(end_idx);
         left
     }
@@ -39,6 +50,7 @@ impl<T> Slice<T> {
     /// Returns the leftmost exclusive sub-`slice` with the given maximum `len`.
     ///
     /// If `left_len > slice.len()` it returns the full slice.
+    ///
     /// # Examples
     /// ```
     /// # use devela::mem::Slice;
@@ -50,7 +62,7 @@ impl<T> Slice<T> {
     #[inline]
     #[must_use]
     pub fn lsplit_mut(slice: &mut [T], len: usize) -> &mut [T] {
-        let end_idx = Compare(len).clamp(0, slice.len());
+        let end_idx = len.clamp(0, slice.len());
         let (left, _) = slice.split_at_mut(end_idx);
         left
     }
@@ -60,6 +72,7 @@ impl<T> Slice<T> {
     /// Returns the rightmost sub-`slice` with the given maximum `len`.
     ///
     /// If `left_len > slice.len()` it returns the full slice.
+    ///
     /// # Examples
     /// ```
     /// # use devela::mem::Slice;
@@ -104,6 +117,7 @@ impl<T> Slice<T> {
     /// on the left.
     ///
     /// If `len > slice.len()` returns the full `slice`.
+    ///
     /// # Examples
     /// ```
     /// use devela::mem::Slice;
@@ -117,12 +131,27 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::msplit_left(&v, 10), &[1, 2, 3, 4, 5, 6]);
     /// ```
     /// See also [`Slice::msplit_right`].
-    #[must_use]
+    ///
+    /// # Features
+    /// This method will only be const if the `_cmp_usize` feature is enabled.
+    // WAIT: [const_cmp](https://github.com/rust-lang/rust/issues/92391)
+    #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
     pub const fn msplit_left(slice: &[T], len: usize) -> &[T] {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
         let end_idx = Compare(mid_idx + half_len).min(slice.len());
+        let (_, right) = slice.split_at(start_idx);
+        let (middle, _) = right.split_at(end_idx - start_idx);
+        middle
+    }
+    #[allow(missing_docs)]
+    #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
+    pub fn msplit_left(slice: &[T], len: usize) -> &[T] {
+        let mid_idx = slice.len() / 2;
+        let half_len = len / 2;
+        let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
+        let end_idx = (mid_idx + half_len).min(slice.len());
         let (_, right) = slice.split_at(start_idx);
         let (middle, _) = right.split_at(end_idx - start_idx);
         middle
@@ -135,6 +164,7 @@ impl<T> Slice<T> {
     /// on the left.
     ///
     /// If `len > slice.len()` returns the full `slice`.
+    ///
     /// # Examples
     /// ```
     /// use devela::mem::Slice;
@@ -153,7 +183,7 @@ impl<T> Slice<T> {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-        let end_idx = Compare(mid_idx + half_len).min(slice.len());
+        let end_idx = (mid_idx + half_len).min(slice.len());
         let (_, right) = slice.split_at_mut(start_idx);
         let (middle, _) = right.split_at_mut(end_idx - start_idx);
         middle
@@ -167,6 +197,7 @@ impl<T> Slice<T> {
     /// on the right.
     ///
     /// If `len > slice.len()` returns the full `slice`.
+    ///
     /// # Examples
     /// ```
     /// # use devela::mem::Slice;
@@ -180,13 +211,27 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::msplit_right(&v, 10), &[1, 2, 3, 4, 5, 6]);
     /// ```
     /// See also [`Slice::msplit_left`].
-    #[inline]
-    #[must_use]
+    ///
+    /// # Features
+    /// This method will only be const if the `_cmp_usize` feature is enabled.
+    #[inline] #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
+    // WAIT: [const_cmp](https://github.com/rust-lang/rust/issues/92391)
     pub const fn msplit_right(slice: &[T], len: usize) -> &[T] {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len);
         let end_idx = Compare(mid_idx + half_len + (len % 2)).min(slice.len());
+        let (_, right) = slice.split_at(start_idx);
+        let (middle, _) = right.split_at(end_idx - start_idx);
+        middle
+    }
+    #[allow(missing_docs)]
+    #[inline] #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
+    pub fn msplit_right(slice: &[T], len: usize) -> &[T] {
+        let mid_idx = slice.len() / 2;
+        let half_len = len / 2;
+        let start_idx = mid_idx.saturating_sub(half_len);
+        let end_idx = (mid_idx + half_len + (len % 2)).min(slice.len());
         let (_, right) = slice.split_at(start_idx);
         let (middle, _) = right.split_at(end_idx - start_idx);
         middle
@@ -218,7 +263,7 @@ impl<T> Slice<T> {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len);
-        let end_idx = Compare(mid_idx + half_len + (len % 2)).min(slice.len());
+        let end_idx = (mid_idx + half_len + (len % 2)).min(slice.len());
         let (_, right) = slice.split_at_mut(start_idx);
         let (middle, _) = right.split_at_mut(end_idx - start_idx);
         middle
