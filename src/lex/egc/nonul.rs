@@ -10,11 +10,13 @@
 use super::Egc;
 #[cfg(feature = "alloc")]
 use crate::_liballoc::ffi::CString;
+#[cfg(feature = "lex")]
+use crate::lex::char::*;
 #[cfg(doc)]
 use crate::lex::LexError::{NotEnoughCapacity, OutOfBounds};
 use crate::{
-    code::unwrap,
-    lex::{char::*, helpers::impl_sized_alias, LexResult as Result, StringNonul},
+    code::{unwrap, ConstDefault},
+    lex::{helpers::impl_sized_alias, LexResult as Result, StringNonul},
 };
 use core::str::Chars;
 // use unicode_segmentation::UnicodeSegmentation;
@@ -60,6 +62,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 1.
     #[inline]
+    #[cfg(feature = "lex")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
     pub const fn from_char7(c: Char7) -> Result<Self> {
         Ok(Self(unwrap![ok? StringNonul::from_char7(c)]))
     }
@@ -75,6 +79,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 2.
     #[inline]
+    #[cfg(feature = "lex")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
     pub const fn from_char8(c: Char8) -> Result<Self> {
         Ok(Self(unwrap![ok? StringNonul::from_char8(c)]))
     }
@@ -90,6 +96,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 3.
     #[inline]
+    #[cfg(feature = "lex")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
     pub const fn from_char16(c: Char16) -> Result<Self> {
         Ok(Self(unwrap![ok? StringNonul::from_char16(c)]))
     }
@@ -105,6 +113,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 4.
     #[inline]
+    #[cfg(feature = "lex")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
     pub const fn from_char24(c: Char24) -> Result<Self> {
         Ok(Self(unwrap![ok? StringNonul::from_char24(c)]))
     }
@@ -120,6 +130,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 4.
     #[inline]
+    #[cfg(feature = "lex")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
     pub const fn from_char32(c: Char32) -> Result<Self> {
         Ok(Self(unwrap![ok? StringNonul::from_char32(c)]))
     }
@@ -142,58 +154,38 @@ impl<const CAP: usize> EgcNonul<CAP> {
     //
 
     /// Returns the length in bytes.
-    #[inline]
-    #[must_use]
-    pub fn len(&self) -> usize {
-        self.0.len()
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn len(&self) -> usize { self.0.len() }
 
     /// Returns `true` if the current length is 0.
-    #[inline]
-    #[must_use]
-    pub fn is_empty(&self) -> bool {
-        self.0.len() == 0
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn is_empty(&self) -> bool { self.0.len() == 0 }
 
     /// Returns the total capacity in bytes.
-    #[inline]
-    #[must_use]
-    pub const fn capacity() -> usize {
-        CAP
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn capacity() -> usize { CAP }
 
     /// Returns the remaining capacity.
-    #[inline]
-    #[must_use]
-    pub fn remaining_capacity(&self) -> usize {
-        CAP - self.len()
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn remaining_capacity(&self) -> usize { CAP - self.len() }
 
     /// Returns `true` if the current remaining capacity is 0.
-    #[inline]
-    #[must_use]
-    pub fn is_full(&self) -> bool {
-        self.len() == CAP
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn is_full(&self) -> bool { self.len() == CAP }
 
     /// Sets the length to 0, by resetting all bytes to 0.
-    #[inline]
-    pub fn clear(&mut self) {
-        self.0.clear();
-    }
+    #[inline] #[rustfmt::skip]
+    pub fn clear(&mut self) { self.0.clear(); }
 
     //
 
     /// Returns a byte slice of the inner string slice.
-    #[inline]
-    #[must_use]
-    pub fn as_bytes(&self) -> &[u8] {
-        self.0.as_bytes()
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn as_bytes(&self) -> &[u8] { self.0.as_bytes() }
 
     /// Returns a mutable byte slice of the inner string slice.
     /// # Safety
-    /// TODO
+    /// The content must be valid UTF-8.
     #[inline]
     #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_slice"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
@@ -204,54 +196,37 @@ impl<const CAP: usize> EgcNonul<CAP> {
     /// Returns a copy of the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[inline]
-    #[must_use]
-    pub fn as_array(&self) -> [u8; CAP] {
-        self.0.as_array()
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn as_array(&self) -> [u8; CAP] { self.0.as_array() }
 
     /// Returns the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[inline]
-    #[must_use]
-    pub fn into_array(self) -> [u8; CAP] {
-        self.0.into_array()
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn into_array(self) -> [u8; CAP] { self.0.into_array() }
 
     /// Returns the inner string slice.
-    #[inline]
-    #[must_use]
-    pub fn as_str(&self) -> &str {
-        self.0.as_str()
-    }
+    #[inline] #[must_use] #[rustfmt::skip]
+    pub const fn as_str(&self) -> &str { self.0.as_str() }
 
     /// Returns the mutable inner string slice.
     /// # Safety
-    /// TODO
-    #[inline]
-    #[must_use]
+    /// The content must be valid UTF-8.
+    #[inline] #[must_use] #[rustfmt::skip]
     #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_slice"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
-    pub unsafe fn as_mut_str(&mut self) -> &mut str {
-        self.0.as_mut_str()
-    }
+    pub unsafe fn as_mut_str(&mut self) -> &mut str { self.0.as_mut_str() }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
-    #[inline]
+    #[inline] #[rustfmt::skip]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    pub fn chars(&self) -> Chars {
-        self.0.chars()
-    }
+    pub fn chars(&self) -> Chars { self.0.chars() }
 
     /// Returns a new allocated C-compatible, nul-terminanted string.
-    #[inline]
-    #[must_use]
+    #[inline] #[must_use] #[rustfmt::skip]
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    pub fn to_cstring(&self) -> CString {
-        self.0.to_cstring()
-    }
+    pub fn to_cstring(&self) -> CString { self.0.to_cstring() }
 }
 
 /* traits */
@@ -264,23 +239,24 @@ mod core_impls {
 
     impl<const CAP: usize> Default for EgcNonul<CAP> {
         /// Returns an empty extended grapheme character.
-        #[inline]
-        fn default() -> Self {
-            Self::new().unwrap()
-        }
+        #[inline] #[rustfmt::skip]
+        fn default() -> Self { Self::new().unwrap() }
+    }
+    impl<const CAP: usize> ConstDefault for EgcNonul<CAP> {
+        /// Returns an empty string.
+        ///
+        /// # Panics
+        /// Panics if `CAP > 255`.
+        const DEFAULT: Self = unwrap![ok Self::new()];
     }
 
     impl<const CAP: usize> fmt::Display for EgcNonul<CAP> {
-        #[inline]
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            write!(f, "{}", self.0)
-        }
+        #[inline] #[rustfmt::skip]
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{}", self.0) }
     }
     impl<const CAP: usize> fmt::Debug for EgcNonul<CAP> {
-        #[inline]
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            write!(f, "{:?}", self.0)
-        }
+        #[inline] #[rustfmt::skip]
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{:?}", self.0) }
     }
 
     // TODO
