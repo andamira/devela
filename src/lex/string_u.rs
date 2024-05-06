@@ -15,7 +15,7 @@ use crate::{
         ops::Deref,
         str::{from_utf8, Chars},
     },
-    code::{iif, unwrap},
+    code::{iif, paste, unwrap, ConstDefault},
     lex::{
         char::{char_to_utf8_bytes, char_utf8_4bytes_len},
         LexError::{self, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
@@ -44,17 +44,19 @@ macro_rules! impl_string_u {
         ];
     };
 
-    // $t:   the length type. E.g.: u8.
-    // $cap: the capability that enables the implementation. E.g. _string_u8.
-    // $cmp: the capability associated to optional const methods. E.g. _cmp_u8.
+    // $t:    the length type. E.g.: u8.
+    // $cap:  the capability that enables the implementation. E.g. _string_u8.
+    // $cmp:  the capability associated to optional const methods. E.g. _cmp_u8.
+    //
+    // $name: the name of the type. E.g.: StringU8.
     ($( $t:ty : $cap:literal : $cmp:literal ),+) => {
         $(
             #[cfg(feature = $cap)]
-            impl_string_u![@$t:$cap:$cmp];
+            paste! { impl_string_u![@[<String $t:camel>], $t:$cap:$cmp]; }
         )+
     };
 
-    (@$t:ty : $cap:literal : $cmp:literal) => { $crate::code::paste! {
+    (@$name:ty, $t:ty : $cap:literal : $cmp:literal) => { paste! {
         /* definitions */
 
         #[doc = "A UTF-8–encoded string, backed by an array with [`" $t "::MAX`] bytes of capacity."]
@@ -99,13 +101,13 @@ macro_rules! impl_string_u {
         #[must_use]
         #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        pub struct [<String $t:camel>]<const CAP: usize> {
+        pub struct $name<const CAP: usize> {
             // WAITING for when we can use CAP: u8 for panic-less const boundary check.
             arr: [u8; CAP],
             len: $t,
         }
 
-        impl<const CAP: usize> [<String $t:camel>]<CAP> {
+        impl<const CAP: usize> $name<CAP> {
             /* construct */
 
             #[doc = "Creates a new empty `String" $t:camel "` with a capacity of `CAP` bytes."]
@@ -158,18 +160,10 @@ macro_rules! impl_string_u {
             pub const fn as_array(&self) -> [u8; CAP] { self.arr }
 
             /// Returns a byte slice of the inner string slice.
-            ///
-            /// # Features
-            /// Makes use of the `unsafe_slice` feature if enabled.
+            // WAIT: [split_at_unchecked](https://github.com/rust-lang/rust/issues/76014)
             #[inline] #[must_use] #[rustfmt::skip]
-            pub fn as_bytes(&self) -> &[u8] {
-                #[cfg(any(feature = "safe_lex", not(feature = "unsafe_slice")))]
-                return self.arr.get(0..self.len as usize).expect("len must be <= arr.len()");
+            pub const fn as_bytes(&self) -> &[u8] { self.arr.split_at(self.len as usize).0 }
 
-                #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_slice"))]
-                // SAFETY: we ensure len is always <= arr.len()
-                unsafe { self.arr.get_unchecked(0..self.len as usize) }
-            }
             /// Returns an exclusive byte slice of the inner string slice.
             ///
             /// # Safety
@@ -191,24 +185,13 @@ macro_rules! impl_string_u {
             /// Makes use of the `unsafe_str` feature if enabled.
             #[inline]
             #[must_use]
-            pub fn as_str(&self) -> &str {
+            pub const fn as_str(&self) -> &str {
                 #[cfg(any(feature = "safe_lex", not(feature = "unsafe_str")))]
-                return from_utf8(
-                    self.arr
-                        .get(0..self.len as usize)
-                        .expect("len must be <= arr.len()"),
-                )
-                .expect("must be valid UTF-8");
+                return unwrap![ok_expect from_utf8(self.as_bytes()), "Invalid UTF-8"];
 
                 #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
                 // SAFETY: we ensure to contain only valid UTF-8
-                unsafe {
-                    from_utf8_unchecked(
-                        self.arr
-                            .get(0..self.len as usize)
-                            .expect("len must be <= arr.len()"),
-                    )
-                }
+                unsafe { from_utf8_unchecked(self.as_bytes()) }
             }
 
             /// Returns the exclusive inner string slice.
@@ -646,73 +629,63 @@ macro_rules! impl_string_u {
 
         /* traits implementations */
 
-        impl<const CAP: usize> Default for [<String $t:camel>]<CAP> {
+        impl<const CAP: usize> Default for $name<CAP> {
             /// Returns an empty string.
             ///
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
-            #[inline]
-            fn default() -> Self {
-                Self::new().unwrap()
-            }
+            #[inline] #[rustfmt::skip]
+            fn default() -> Self { Self::new().unwrap() }
+        }
+        impl<const CAP: usize> ConstDefault for $name<CAP> {
+            /// Returns an empty string.
+            ///
+            /// # Panics
+            #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
+            const DEFAULT: Self = unwrap![ok Self::new()];
         }
 
-        impl<const CAP: usize> fmt::Display for [<String $t:camel>]<CAP> {
+        impl<const CAP: usize> fmt::Display for $name<CAP> {
             #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(f, "{}", self.as_str())
             }
         }
 
-        impl<const CAP: usize> fmt::Debug for [<String $t:camel>]<CAP> {
+        impl<const CAP: usize> fmt::Debug for $name<CAP> {
             #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(f, "{:?}", self.as_str())
             }
         }
 
-        impl<const CAP: usize> PartialEq<&str> for [<String $t:camel>]<CAP> {
-            #[inline]
-            #[must_use]
-            fn eq(&self, slice: &&str) -> bool {
-                self.as_str() == *slice
-            }
+        impl<const CAP: usize> PartialEq<&str> for $name<CAP> {
+            #[inline] #[must_use] #[rustfmt::skip]
+            fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
         }
         // and for when &str is on the left-hand side of the comparison
-        impl<const CAP: usize> PartialEq<[<String $t:camel>]<CAP>> for &str {
-            #[inline]
-            #[must_use]
-            fn eq(&self, string: & [<String $t:camel>]<CAP>) -> bool {
-                *self == string.as_str()
-            }
+        impl<const CAP: usize> PartialEq<$name<CAP>> for &str {
+            #[inline] #[must_use] #[rustfmt::skip]
+            fn eq(&self, string: & $name<CAP>) -> bool { *self == string.as_str() }
         }
 
-        impl<const CAP: usize> Deref for [<String $t:camel>]<CAP> {
+        impl<const CAP: usize> Deref for $name<CAP> {
             type Target = str;
-            #[inline]
-            #[must_use]
-            fn deref(&self) -> &Self::Target {
-                self.as_str()
-            }
+            #[inline] #[must_use] #[rustfmt::skip]
+            fn deref(&self) -> &Self::Target { self.as_str() }
         }
 
-        impl<const CAP: usize> AsRef<str> for [<String $t:camel>]<CAP> {
-            #[inline]
-            #[must_use]
-            fn as_ref(&self) -> &str {
-                self.as_str()
-            }
+        impl<const CAP: usize> AsRef<str> for $name<CAP> {
+            #[inline] #[must_use] #[rustfmt::skip]
+            fn as_ref(&self) -> &str { self.as_str() }
         }
 
-        impl<const CAP: usize> AsRef<[u8]> for [<String $t:camel>]<CAP> {
-            #[inline]
-            #[must_use]
-            fn as_ref(&self) -> &[u8] {
-                self.as_bytes()
-            }
+        impl<const CAP: usize> AsRef<[u8]> for $name<CAP> {
+            #[inline] #[must_use] #[rustfmt::skip]
+            fn as_ref(&self) -> &[u8] { self.as_bytes() }
         }
 
-        impl<const CAP: usize> TryFrom<&str> for [<String $t:camel>]<CAP> {
+        impl<const CAP: usize> TryFrom<&str> for $name<CAP> {
             type Error = LexError;
 
             #[doc = "Tries to create a new `String" $t:camel "` from the given `string` slice."]
@@ -732,7 +705,7 @@ macro_rules! impl_string_u {
             }
         }
 
-        impl<const CAP: usize> TryFrom<&[u8]> for [<String $t:camel>]<CAP> {
+        impl<const CAP: usize> TryFrom<&[u8]> for $name<CAP> {
             type Error = LexError;
 
             #[doc = "Tries to create a new `String" $t:camel "` from the given slice of bytes."]
@@ -758,10 +731,9 @@ macro_rules! impl_string_u {
             }
         }
 
-
         #[cfg(all(feature = "std", any(unix, target_os = "wasi")))]
         mod [< std_impls_ $t >] {
-            use super::[<String $t:camel>];
+            use super::$name;
             use std::ffi::OsStr;
 
             #[cfg(unix)]
@@ -772,7 +744,7 @@ macro_rules! impl_string_u {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(
                 all(feature = "std", any(unix, target_os = "wasi"))
             )))]
-            impl<const CAP: usize> AsRef<OsStr> for [<String $t:camel>]<CAP> {
+            impl<const CAP: usize> AsRef<OsStr> for $name<CAP> {
             #[must_use]
                 fn as_ref(&self) -> &OsStr {
                     OsStr::from_bytes(self.as_bytes())
