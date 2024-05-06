@@ -25,7 +25,7 @@ use crate::{
 #[cfg(feature = "_-cmp_any-_")]
 use crate::{code::cfor, num::Compare};
 
-#[cfg(feature = "lex")]
+#[cfg(all(feature = "_-string_uany-_", feature = "lex"))]
 use super::char::{
     char_utf8_2bytes_len, char_utf8_3bytes_len, Char16, Char24, Char32, Char7, Char8,
 };

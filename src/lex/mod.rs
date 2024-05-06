@@ -17,19 +17,18 @@ pub(crate) mod helpers;
 
 mod ascii;
 mod char;
+mod egc;
 mod error;
 mod ext;
 mod fmt;
 mod reexports;
 mod string_u;
-#[allow(unused_imports)]
-pub use {ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, reexports::*, string_u::*};
 
-#[cfg(feature = "lex")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
-mod egc;
-#[cfg(feature = "lex")]
-pub use egc::all::*;
+#[allow(unused_imports)]
+pub use {
+    ascii::all::*, char::all::*, egc::all::*, error::*, ext::*, fmt::all::*, reexports::*,
+    string_u::*,
+};
 
 #[cfg(feature = "_string_nonul")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_nonul")))]
@@ -41,13 +40,9 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, reexports::*, string_u::*,
+        ascii::all::*, char::all::*, egc::all::*, error::*, ext::*, fmt::all::*, reexports::*,
+        string_u::*,
     };
-
-    #[doc(inline)]
-    #[cfg(feature = "lex")]
-    #[allow(unused_imports)]
-    pub use super::egc::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "_string_nonul")]

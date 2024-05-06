@@ -42,8 +42,8 @@ use crate::_liballoc::{
     vec::Vec,
 };
 #[cfg(all(feature = "lex", feature = "alloc"))]
-use crate::lex::StringEgc;
-#[cfg(feature = "lex")]
+use crate::lex::EgcString;
+#[cfg(feature = "string_nonul")]
 use crate::lex::{EgcNonul, StringNonul};
 
 #[cfg(feature = "portable-atomic")]
@@ -195,7 +195,7 @@ macro_rules! bit_size {
         bit_size![= {$PTR_BITS * 3}; for String];
 
         #[cfg(all(feature = "alloc", feature = "lex"))]
-        bit_size![= {$PTR_BITS * 3}; for StringEgc];
+        bit_size![= {$PTR_BITS * 3}; for EgcString];
 
         #[cfg(feature = "alloc")]
         bit_size![<T> = {$PTR_BITS * 3};
@@ -284,8 +284,8 @@ bit_size![= 64; for AtomicF64];
 #[cfg(feature = "portable-atomic")]
 bit_size![= 128; for AtomicI128, AtomicU128];
 
-#[cfg(feature = "lex")]
-bit_size![<const LEN: usize> = LEN; for StringNonul<LEN>, EgcNonul<LEN>];
+#[cfg(feature = "_string_nonul")]
+bit_size![<const LEN: usize> = LEN; for EgcNonul<LEN>, StringNonul<LEN>];
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // bit_size![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, EgcU8<LEN>];
 // bit_size![<const LEN: usize> = { LEN + 16 }; for StringU16<LEN>];
