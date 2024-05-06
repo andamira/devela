@@ -32,7 +32,8 @@ build = "construct/mod.rs"
 publish = true
 
 
-[features] # 230 (300 max)
+[features] # 238 (300 max)
+# https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
 # - Miscellaneous
@@ -192,10 +193,9 @@ _min_docs = [ # the minimum capabilities to document all methods
 	"_tuple",
 ]
 _max_docs = [ # the maximum capabities relevant for documentation
-	"_bit_all",
-	"_stack_all", "_destaque_all",
+	"_data_all",
+	"_lex_all",
 	"_num_all",
-	"_niche_all",
 ]
 _max = [ # the maximum capabilities, including non-relevant for documentation
 	"_max_docs",
@@ -207,6 +207,7 @@ _docsrs = ["nightly", "_docsrs_stable"]
 _docsrs_stable = ["all", "std", "unsafe", "dep_all", "_min_docs"]
 
 #* data capabilities *#
+# ---------------------
 
 _data_all = ["_bit_all", "_collections_all", "_tuple", "_sort_all"]
 
@@ -289,7 +290,26 @@ _sort_all = [
 	_sort_f32 = ["_-sort_any-_", "_cmp_f32"]
 	_sort_f64 = ["_-sort_any-_", "_cmp_f64"]
 
+#* lex capabilities *#
+# ---------------------
+
+_lex_all = ["_string_all"]
+
+# private reflexion:
+_-string_any-_ = []
+_-string_uany-_ = ["_-string_any-_"]
+
+ # StringU*, StringNonul:
+_string_all = ["_string_u8", "_string_u16", "_string_u32", "_string_usize", "_string_nonul"]
+	_string_u8 = ["_-string_uany-_"]
+	_string_u16 = ["_-string_uany-_"]
+	_string_u32 = ["_-string_uany-_"]
+	_string_usize = ["_-string_uany-_"]
+
+	_string_nonul = ["_-string_any-_"]
+
 #* num capabilities *#
+# ---------------------
 
 _num_all = ["_nums_all", "_cmp_all", "_niche_all"]
 

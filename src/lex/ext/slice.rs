@@ -1,6 +1,6 @@
 // devela::lex::ext::slice
 //
-//!
+//! trait ExtStr
 //
 
 #[cfg(any(feature = "safe_lex", not(feature = "unsafe_str")))]

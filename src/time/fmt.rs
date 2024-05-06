@@ -9,16 +9,14 @@
 
 #[cfg(feature = "alloc")]
 use crate::_liballoc::{format, string::String};
+#[cfg(feature = "_string_u8")]
+use crate::lex::{format_buf, Ascii, StringU8};
 #[cfg(feature = "num_float")]
 #[allow(unused_imports)]
 use crate::num::ExtFloat;
 #[allow(unused_imports)]
 use crate::time::HourMilliSplit;
-use crate::{
-    lex::{format_buf, Ascii, StringU8},
-    num::Compare,
-    time::SecNanoSplit,
-};
+use crate::time::SecNanoSplit;
 
 /// Timecode splitting and formatting.
 ///
@@ -98,17 +96,19 @@ impl Timecode {
         feature = "nightly_doc",
         doc(cfg(any(feature = "std", all(feature = "num_float", feature = "_f64"))))
     )]
+    #[cfg(feature = "_string_u8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_u8")))]
     pub fn secs_f64(seconds: f64) -> StringU8<12> {
         let HourMilliSplit { h, m, s, ms } = Self::split_secs_f64(seconds);
-        let m = Ascii(m).digits_str(2);
-        let s = Ascii(s).digits_str(2);
-        let ms = Ascii(ms).digits_str(3);
+        let m = Ascii(m as u32).digits_str(2);
+        let s = Ascii(s as u32).digits_str(2);
+        let ms = Ascii(ms as u32).digits_str(3);
 
         let mut buf = [0; 12];
         let mut buf_len = 12;
 
         if h > 0 {
-            let h = Ascii(Compare(h).min(99)).digits_str(2);
+            let h = Ascii(h.min(99)).digits_str(2);
             let _str = format_buf![&mut buf, "{h}:{m}:{s}.{ms}"];
         } else {
             buf_len = 9;
@@ -135,7 +135,7 @@ impl Timecode {
         let (us, ns_rem) = (ns / 1_000, ns % 1_000);
         let (ms, us_rem) = (us / 1_000, us % 1_000);
         let (s, ms_rem) = (ms / 1_000, ms % 1_000);
-        let s = Compare(s).min(999);
+        let s = s.min(999);
 
         if s > 0 {
             format!["{s}s {ms_rem:03}ms {us_rem:03}µs {ns_rem:06}ns"]
@@ -152,12 +152,14 @@ impl Timecode {
     ///
     /// The seconds are clamped to 999 (more than 16 minutes).
     // -> 208 bits
+    #[cfg(feature = "_string_u8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_u8")))]
     pub fn nanos_u64(nanos: u64) -> StringU8<25> {
         let SecNanoSplit { s, ms, us, ns } = Self::split_nanos_u64(nanos);
-        let s_str = Ascii(Compare(s).min(999)).digits_str(3);
-        let ms_str = Ascii(ms).digits_str(3);
-        let us_str = Ascii(us).digits_str(3);
-        let ns_str = Ascii(ns).digits_str(6);
+        let s_str = Ascii(s.min(999)).digits_str(3);
+        let ms_str = Ascii(ms as u32).digits_str(3);
+        let us_str = Ascii(us as u32).digits_str(3);
+        let ns_str = Ascii(ns as u32).digits_str(6);
 
         let mut buf = [0; 25]; // max
         let mut buf_len = 25;

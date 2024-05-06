@@ -3,11 +3,18 @@
 //! Ascii functionality wrapper struct.
 //
 
-#[cfg(any(feature = "safe_lex", not(feature = "unsafe_str")))]
+use crate::code::iif;
+
+// imports for the `digits_str` method
+#[cfg(all(
+    feature = "_string_u8",
+    any(feature = "safe_lex", not(feature = "unsafe_str"))
+))]
 use crate::code::unwrap;
-#[cfg(feature = "_cmp_u8")]
+#[cfg(feature = "_string_u8")]
+use crate::lex::StringU8;
+#[cfg(all(feature = "_string_u8", feature = "_cmp_u8"))]
 use crate::num::Compare;
-use crate::{code::iif, lex::StringU8};
 
 /// Provides ASCII operations on `T`, most of them *const*.
 #[derive(Clone, Copy)]
@@ -91,7 +98,10 @@ impl Ascii<usize> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline] #[cfg(feature = "_cmp_u8")] #[rustfmt::skip]
+    #[inline]
+    #[cfg(feature = "_cmp_u8")] // const
+    #[cfg(feature = "_string_u8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
         let width = Compare(width).clamp(self.count_digits(), Self::MAX_DIGITS as u8);
 
@@ -99,9 +109,14 @@ impl Ascii<usize> {
         return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
-    #[inline] #[cfg(not(feature = "_cmp_u8"))] #[rustfmt::skip]
+    #[inline]
+    #[allow(missing_docs)]
+    #[cfg(not(feature = "_cmp_u8"))] // !const
+    #[cfg(feature = "_string_u8")]
     pub fn digits_str(self, width: u8) -> StringU8<{ Self::MAX_DIGITS }> {
         let width = width.max(self.count_digits()).min(Self::MAX_DIGITS as u8);
 
@@ -109,7 +124,9 @@ impl Ascii<usize> {
         return unwrap![ok StringU8::<{Self::MAX_DIGITS}>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
 }
 
@@ -173,7 +190,10 @@ impl Ascii<u8> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline] #[cfg(feature = "_cmp_u8")] #[rustfmt::skip]
+    #[inline]
+    #[cfg(feature = "_cmp_u8")] // const
+    #[cfg(feature = "_string_u8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<3> {
         let width = Compare(width).clamp(self.count_digits(), 3);
 
@@ -181,9 +201,14 @@ impl Ascii<u8> {
         return unwrap![ok StringU8::<3>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<3>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<3>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
-    #[inline] #[cfg(not(feature = "_cmp_u8"))] #[rustfmt::skip]
+    #[inline]
+    #[allow(missing_docs)]
+    #[cfg(not(feature = "_cmp_u8"))] // !const
+    #[cfg(feature = "_string_u8")]
     pub fn digits_str(self, width: u8) -> StringU8<3> {
         let width = width.max(self.count_digits()).min(3);
 
@@ -191,7 +216,9 @@ impl Ascii<u8> {
         return unwrap![ok StringU8::<3>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<3>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<3>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
 
     /// Converts a one-digit number to the corresponding `1` ASCII digit.
@@ -279,7 +306,10 @@ impl Ascii<u16> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline] #[cfg(feature = "_cmp_u8")] #[rustfmt::skip]
+    #[inline]
+    #[cfg(feature = "_cmp_u8")] // const
+    #[cfg(feature = "_string_u8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<5> {
         let width = Compare(width).clamp(self.count_digits(), 5);
 
@@ -287,9 +317,14 @@ impl Ascii<u16> {
         return unwrap![ok StringU8::<5>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<5>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<5>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
-    #[inline] #[cfg(not(feature = "_cmp_u8"))] #[rustfmt::skip]
+    #[inline]
+    #[allow(missing_docs)]
+    #[cfg(not(feature = "_cmp_u8"))] // !const
+    #[cfg(feature = "_string_u8")]
     pub fn digits_str(self, width: u8) -> StringU8<5> {
         let width = width.max(self.count_digits()).min(5);
 
@@ -297,7 +332,9 @@ impl Ascii<u16> {
         return unwrap![ok StringU8::<5>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<5>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<5>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
 
     /// Converts a three-digit number to the corresponding `3` ASCII digits.
@@ -399,7 +436,10 @@ impl Ascii<u32> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline] #[cfg(feature = "_cmp_u8")] #[rustfmt::skip]
+    #[inline]
+    #[cfg(feature = "_cmp_u8")] // const
+    #[cfg(feature = "_string_u8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<10> {
         let width = Compare(width).clamp(self.count_digits(), 10);
 
@@ -407,9 +447,14 @@ impl Ascii<u32> {
         return unwrap![ok StringU8::<10>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<10>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<10>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
-    #[inline] #[cfg(not(feature = "_cmp_u8"))] #[rustfmt::skip]
+    #[inline]
+    #[allow(missing_docs)]
+    #[cfg(not(feature = "_cmp_u8"))] // !const
+    #[cfg(feature = "_string_u8")]
     pub fn digits_str(self, width: u8) -> StringU8<10> {
         let width = width.max(self.count_digits()).min(10);
 
@@ -417,7 +462,9 @@ impl Ascii<u32> {
         return unwrap![ok StringU8::<10>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<10>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<10>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
 }
 
@@ -497,7 +544,10 @@ impl Ascii<u64> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline] #[cfg(feature = "_cmp_u8")] #[rustfmt::skip]
+    #[inline]
+    #[cfg(feature = "_cmp_u8")] // const
+    #[cfg(feature = "_string_u8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<20> {
         let width = Compare(width).clamp(self.count_digits(), 20);
 
@@ -505,9 +555,14 @@ impl Ascii<u64> {
         return unwrap![ok StringU8::<20>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<20>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<20>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
-    #[inline] #[cfg(not(feature = "_cmp_u8"))] #[rustfmt::skip]
+    #[inline]
+    #[allow(missing_docs)]
+    #[cfg(not(feature = "_cmp_u8"))] // !const
+    #[cfg(feature = "_string_u8")]
     pub fn digits_str(self, width: u8) -> StringU8<20> {
         let width = width.max(self.count_digits()).min(20);
 
@@ -515,7 +570,9 @@ impl Ascii<u64> {
         return unwrap![ok StringU8::<20>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<20>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<20>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
 }
 
@@ -614,7 +671,10 @@ impl Ascii<u128> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline] #[cfg(feature = "_cmp_u8")] #[rustfmt::skip]
+    #[inline]
+    #[cfg(feature = "_cmp_u8")] // const
+    #[cfg(feature = "_string_u8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
     pub const fn digits_str(self, width: u8) -> StringU8<39> {
         let width = Compare(width).clamp(self.count_digits(), 39);
 
@@ -622,9 +682,14 @@ impl Ascii<u128> {
         return unwrap![ok StringU8::<39>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<39>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<39>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
-    #[inline] #[cfg(not(feature = "_cmp_u8"))] #[rustfmt::skip]
+    #[inline]
+    #[cfg(not(feature = "_cmp_u8"))] // !const
+    #[cfg(feature = "_string_u8")]
+    #[allow(missing_docs)]
     pub fn digits_str(self, width: u8) -> StringU8<39> {
         let width = width.max(self.count_digits()).min(39);
 
@@ -632,6 +697,8 @@ impl Ascii<u128> {
         return unwrap![ok StringU8::<39>::from_bytes_nright(self.digits(), width)];
         #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
-        unsafe { StringU8::<39>::from_bytes_nright_unchecked(self.digits(), width) }
+        unsafe {
+            StringU8::<39>::from_bytes_nright_unchecked(self.digits(), width)
+        }
     }
 }

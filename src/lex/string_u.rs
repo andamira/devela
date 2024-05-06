@@ -3,50 +3,69 @@
 //! `String` backed by an array.
 //
 // TOC
-// - generate_array_string!
+// - impl_string_u!
 //   - definitions
 //   - trait impls
 // - tests
 
-use super::{
-    char::{char_to_utf8_bytes, char_utf8_4bytes_len},
-    helpers::impl_sized_alias,
-    LexError::{self, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
-    LexResult as Result,
-};
+#[cfg(feature = "_-string_uany-_")]
 use crate::{
-    code::{cfor, unwrap},
-    num::Compare,
+    _libcore::{
+        fmt,
+        ops::Deref,
+        str::{from_utf8, Chars},
+    },
+    code::{iif, unwrap},
+    lex::{
+        char::{char_to_utf8_bytes, char_utf8_4bytes_len},
+        LexError::{self, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
+        LexResult as Result,
+    },
 };
-use core::{
-    fmt,
-    ops::Deref,
-    str::{from_utf8, Chars},
-};
+#[cfg(feature = "_-cmp_any-_")]
+use crate::{code::cfor, num::Compare};
 
 #[cfg(feature = "lex")]
 use super::char::{
     char_utf8_2bytes_len, char_utf8_3bytes_len, Char16, Char24, Char32, Char7, Char8,
 };
-#[cfg(feature = "alloc")]
+#[cfg(all(feature = "alloc", feature = "_-string_uany-_"))]
 use crate::_liballoc::{ffi::CString, string::ToString};
 #[cfg(feature = "unsafe_str")]
 use core::str::from_utf8_unchecked;
 
-macro_rules! generate_array_string {
-    ($($t:ty),+ $(,)?) => {
-        $( generate_array_string![@$t]; )+
+macro_rules! impl_string_u {
+    () => {
+        impl_string_u![
+            u8:"_string_u8":"_cmp_u8",
+            u16:"_string_u16":"_cmp_u16",
+            u32:"_string_u32":"_cmp_u32",
+            usize:"_string_usize":"_cmp_usize"
+        ];
     };
-    (@$t:ty) => { $crate::code::paste! {
 
+    // $t:   the length type. E.g.: u8.
+    // $cap: the capability that enables the implementation. E.g. _string_u8.
+    // $cmp: the capability associated to optional const methods. E.g. _cmp_u8.
+    ($( $t:ty : $cap:literal : $cmp:literal ),+) => {
+        $(
+            #[cfg(feature = $cap)]
+            impl_string_u![@$t:$cap:$cmp];
+        )+
+    };
+
+    (@$t:ty : $cap:literal : $cmp:literal) => { $crate::code::paste! {
         /* definitions */
 
         #[doc = "A UTF-8–encoded string, backed by an array with [`" $t "::MAX`] bytes of capacity."]
         ///
-        #[doc = "Internally, the current length is stored as a [`" u8 "`]."]
+        #[doc = "Internally, the current length is stored as a [`" $t "`]."]
+        ///
+        /// # Features
+        /// It will be implemented if the corresponding feature is enabled:
+        /// `_string_u[8|16|32|size]`.
         ///
         /// ## Methods
-        ///
         /// - Construct:
         ///   [`new`][Self::new],
         ///   [`from_char`][Self::from_char]*(
@@ -79,6 +98,7 @@ macro_rules! generate_array_string {
         ///   [`try_push_str_complete`][Self::try_push_str_complete].
         #[must_use]
         #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         pub struct [<String $t:camel>]<const CAP: usize> {
             // WAITING for when we can use CAP: u8 for panic-less const boundary check.
             arr: [u8; CAP],
@@ -227,13 +247,9 @@ macro_rules! generate_array_string {
 
             /// Removes the last character and returns it, or `None` if
             /// the string is empty.
-            #[inline]
-            #[must_use]
+            #[inline] #[must_use] #[rustfmt::skip]
             pub fn pop(&mut self) -> Option<char> {
-                self.as_str().chars().last().map(|c| {
-                    self.len -= c.len_utf8() as $t;
-                    c
-                })
+                self.as_str().chars().last().map(|c| { self.len -= c.len_utf8() as $t; c })
             }
 
             /// Tries to remove the last character and returns it, or `None` if
@@ -242,15 +258,9 @@ macro_rules! generate_array_string {
             /// # Errors
             /// Returns a [`NotEnoughElements`] error
             /// if the capacity is not enough to hold the `character`.
-            #[inline]
+            #[inline] #[rustfmt::skip]
             pub fn try_pop(&mut self) -> Result<char> {
-                self.as_str()
-                    .chars()
-                    .last()
-                    .map(|c| {
-                        self.len -= c.len_utf8() as $t;
-                        c
-                    })
+                self.as_str().chars().last().map(|c| { self.len -= c.len_utf8() as $t; c })
                     .ok_or(NotEnoughElements(1))
             }
 
@@ -301,7 +311,6 @@ macro_rules! generate_array_string {
             /// if not even the first non-nul character can fit.
             pub fn push_str(&mut self, string: &str) -> usize {
                 let mut bytes_written = 0;
-
                 for character in string.chars() {
                     let char_len = character.len_utf8();
                     if self.len as usize + char_len <= CAP {
@@ -324,9 +333,7 @@ macro_rules! generate_array_string {
             /// Returns [`NotEnoughCapacity`] if the capacity is not enough
             /// to hold even the first character.
             pub fn try_push_str(&mut self, string: &str) -> Result<usize> {
-                if string.is_empty() {
-                    return Ok(0);
-                }
+                iif![string.is_empty(); return Ok(0)];
                 let first_char_len = string.chars().next().unwrap().len_utf8();
                 if self.remaining_capacity() < first_char_len {
                     Err(NotEnoughCapacity(first_char_len))
@@ -359,7 +366,7 @@ macro_rules! generate_array_string {
             /// `CAP < c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
             ///
             #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            #[inline]
+            #[inline] #[rustfmt::skip]
             pub const fn from_char(c: char) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
 
@@ -367,15 +374,9 @@ macro_rules! generate_array_string {
                 new.len = char_utf8_4bytes_len(bytes) as $t;
 
                 new.arr[0] = bytes[0];
-                if new.len > 1 {
-                    new.arr[1] = bytes[1];
-                }
-                if new.len > 2 {
-                    new.arr[2] = bytes[2];
-                }
-                if new.len > 3 {
-                    new.arr[3] = bytes[3];
-                }
+                if new.len > 1 { new.arr[1] = bytes[1]; }
+                if new.len > 2 { new.arr[2] = bytes[2]; }
+                if new.len > 3 { new.arr[3] = bytes[3]; }
                 Ok(new)
             }
 
@@ -403,7 +404,7 @@ macro_rules! generate_array_string {
             /// or [`NotEnoughCapacity`] if `CAP < 2.
             ///
             #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
-            #[inline]
+            #[inline] #[rustfmt::skip]
             #[cfg(feature = "lex")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
             pub const fn from_char8(c: Char8) -> Result<Self> {
@@ -413,9 +414,7 @@ macro_rules! generate_array_string {
                 new.len = char_utf8_2bytes_len(bytes) as $t;
 
                 new.arr[0] = bytes[0];
-                if new.len > 1 {
-                    new.arr[1] = bytes[1];
-                }
+                if new.len > 1 { new.arr[1] = bytes[1]; }
                 Ok(new)
             }
 
@@ -426,7 +425,7 @@ macro_rules! generate_array_string {
                 "::MAX`]` || CAP < c.`[`len_utf8()`][Char16#method.len_utf8]."]
             ///
             #[doc = "Will never panic if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
-            #[inline]
+            #[inline] #[rustfmt::skip]
             #[cfg(feature = "lex")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
             pub const fn from_char16(c: Char16) -> Result<Self> {
@@ -436,12 +435,8 @@ macro_rules! generate_array_string {
                 new.len = char_utf8_3bytes_len(bytes) as $t;
 
                 new.arr[0] = bytes[0];
-                if new.len > 1 {
-                    new.arr[1] = bytes[1];
-                }
-                if new.len > 2 {
-                    new.arr[2] = bytes[2];
-                }
+                if new.len > 1 { new.arr[1] = bytes[1]; }
+                if new.len > 2 { new.arr[2] = bytes[2]; }
                 Ok(new)
             }
 
@@ -452,7 +447,7 @@ macro_rules! generate_array_string {
                 "::MAX`]` || CAP < c.`[`len_utf8()`][Char24#method.len_utf8]."]
             ///
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            #[inline]
+            #[inline] #[rustfmt::skip]
             #[cfg(feature = "lex")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
             pub const fn from_char24(c: Char24) -> Result<Self> {
@@ -462,15 +457,9 @@ macro_rules! generate_array_string {
                 new.len = char_utf8_4bytes_len(bytes) as $t;
 
                 new.arr[0] = bytes[0];
-                if new.len > 1 {
-                    new.arr[1] = bytes[1];
-                }
-                if new.len > 2 {
-                    new.arr[2] = bytes[2];
-                }
-                if new.len > 3 {
-                    new.arr[3] = bytes[3];
-                }
+                if new.len > 1 { new.arr[1] = bytes[1]; }
+                if new.len > 2 { new.arr[2] = bytes[2]; }
+                if new.len > 3 { new.arr[3] = bytes[3]; }
                 Ok(new)
             }
 
@@ -524,9 +513,23 @@ macro_rules! generate_array_string {
             ///
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
+            ///
+            /// # Features
+            /// This method will only be *const* if the `_cmp_usize` feature is enabled.
             #[inline]
+            #[cfg(feature = $cmp)] // const
             pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
                 let length = Compare(length).min(CAP as $t);
+                match from_utf8(bytes.split_at(length as usize).0) {
+                    Ok(_) => Ok(Self { arr: bytes, len: length }),
+                    Err(e) => Err(InvalidUtf8(Some(e))),
+                }
+            }
+            #[inline]
+            #[allow(missing_docs)]
+            #[cfg(not(feature = $cmp))] // !const
+            pub fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
+                let length = length.min(CAP as $t);
                 match from_utf8(bytes.split_at(length as usize).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(InvalidUtf8(Some(e))),
@@ -539,15 +542,26 @@ macro_rules! generate_array_string {
             ///
             /// The new `length` is maxed out at `CAP`.
             ///
+            /// # Features
+            /// This method will only be *const* if the `_cmp_usize` feature is enabled.
+            ///
             /// # Safety
             /// The caller must ensure that the content of the truncated slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
             #[inline]
+            #[cfg(feature = $cmp)] // const
             #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
                 Self { arr: bytes, len: Compare(length).min(CAP as $t) }
+            }
+            #[inline]
+            #[allow(missing_docs, clippy::missing_safety_doc)]
+            #[cfg(not(feature = $cmp))] // !const
+            #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
+            pub unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
+                Self { arr: bytes, len: length.min(CAP as $t) }
             }
 
             /// Returns a string from an array of `bytes`,
@@ -558,7 +572,11 @@ macro_rules! generate_array_string {
             ///
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
+            ///
+            /// # Features
+            /// This method will only be *const* if the `_cmp_usize` feature is enabled.
             #[inline]
+            #[cfg(feature = $cmp)] // const
             pub const fn from_bytes_nright(mut bytes: [u8; CAP], length: $t) -> Result<Self> {
                 let length = Compare(length).min(CAP as $t);
                 let ulen = length as usize;
@@ -566,6 +584,20 @@ macro_rules! generate_array_string {
                 cfor![i in 0..ulen => {
                     bytes[i] = bytes[start + i];
                 }];
+                match from_utf8(bytes.split_at(ulen).0) {
+                    Ok(_) => Ok(Self { arr: bytes, len: length }),
+                    Err(e) => Err(InvalidUtf8(Some(e))),
+                }
+            }
+            #[allow(missing_docs)]
+            #[cfg(not(feature = $cmp))] // !const
+            pub fn from_bytes_nright(mut bytes: [u8; CAP], length: $t) -> Result<Self> {
+                let length = length.min(CAP as $t);
+                let ulen = length as usize;
+                let start = CAP - ulen;
+                for i in 0..ulen {
+                    bytes[i] = bytes[start + i];
+                }
                 match from_utf8(bytes.split_at(ulen).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(InvalidUtf8(Some(e))),
@@ -584,6 +616,7 @@ macro_rules! generate_array_string {
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
             #[inline]
+            #[cfg(feature = $cmp)] // const
             #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nright_unchecked(mut bytes: [u8; CAP], length: $t)
@@ -594,6 +627,19 @@ macro_rules! generate_array_string {
                 cfor![i in 0..ulen => {
                     bytes[i] = bytes[start + i];
                 }];
+                Self { arr: bytes, len: length }
+            }
+            #[allow(missing_docs, clippy::missing_safety_doc)]
+            #[cfg(not(feature = $cmp))] // !const
+            #[cfg(all(not(feature = "safe_lex"), feature = "unsafe_str"))]
+            pub unsafe fn from_bytes_nright_unchecked(mut bytes: [u8; CAP], length: $t)
+                -> Self {
+                let length = length.min(CAP as $t);
+                let ulen = length as usize;
+                let start = CAP - ulen;
+                for i in 0..ulen {
+                    bytes[i] = bytes[start + i];
+                }
                 Self { arr: bytes, len: length }
             }
         }
@@ -735,9 +781,10 @@ macro_rules! generate_array_string {
         }
     }};
 }
-generate_array_string![u8, u16, u32];
+impl_string_u!();
 
-impl_sized_alias![
+#[cfg(feature = "_string_u8")]
+super::helpers::impl_sized_alias![
     String, StringU8,
     "UTF-8–encoded string, backed by an array of ", ".":
     "A" 16, 1 "";

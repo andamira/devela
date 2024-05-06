@@ -13,12 +13,13 @@
 // safety:
 #![cfg_attr(feature = "safe_lex", forbid(unsafe_code))]
 
+pub(crate) mod helpers;
+
 mod ascii;
 mod char;
 mod error;
 mod ext;
 mod fmt;
-mod helpers;
 mod reexports;
 mod string_u;
 #[allow(unused_imports)]
@@ -28,10 +29,13 @@ pub use {ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, reexports::
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
 mod egc;
 #[cfg(feature = "lex")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "lex")))]
+pub use egc::all::*;
+
+#[cfg(feature = "_string_nonul")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_nonul")))]
 mod nonul;
-#[cfg(feature = "lex")]
-pub use {egc::all::*, nonul::*};
+#[cfg(feature = "_string_nonul")]
+pub use nonul::*;
 
 pub(crate) mod all {
     #[doc(inline)]
@@ -43,5 +47,9 @@ pub(crate) mod all {
     #[doc(inline)]
     #[cfg(feature = "lex")]
     #[allow(unused_imports)]
-    pub use super::{egc::all::*, nonul::*};
+    pub use super::egc::all::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "_string_nonul")]
+    pub use super::nonul::*;
 }
