@@ -230,12 +230,12 @@ impl Slice<u8> {
     /// Returns a subslice without the given leading `byte`s.
     #[inline]
     #[must_use]
-    pub fn trim_leading_bytes(slice: &[u8], byte: u8) -> &[u8] {
+    pub const fn trim_leading_bytes(slice: &[u8], byte: u8) -> &[u8] {
         let mut start = 0;
         while start < slice.len() && slice[start] == byte {
             start += 1;
         }
-        &slice[start..]
+        slice.split_at(start).1 // == &slice[start..]
     }
 
     /// Replaces the `old` leading byte with a `new` byte.
