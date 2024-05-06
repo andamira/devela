@@ -4,20 +4,27 @@
 //
 
 use super::super::{Angle, AngleDirection, AngleKind};
-use crate::num::{fsize, Compare, ExtFloatConst};
+use crate::num::{fsize, ExtFloatConst};
 #[cfg(feature = "num_float")]
 use crate::num::{ExtFloat, Float};
 
 // impl Angle methods with a floating-point representation
 //
 // $f: the inner floating-point type
-// $cap:  the capability feature that enables the given implementation. E.g "_f32".
+// $cap: the capability that enables the implementation. E.g "_float_f32".
+// $cmp: the capability associated to some methods. E.g. _cmp_f32.
 macro_rules! impl_angle {
-    (float $($f:ty : $cap:literal),+) => { $( impl_angle![@float $f : $cap]; )+ };
-    (@float $f:ty : $cap:literal) => {
+    () => {
+        impl_angle![float f32:"_float_f32":"_cmp_f32", f64:"_float_f64":"_cmp_f64"];
+    };
+
+    (float $($f:ty : $cap:literal : $cmp:literal),+) => {
+        $( impl_angle![@float $f:$cap:$cmp]; )+
+    };
+    (@float $f:ty : $cap:literal : $cmp:literal) => {
         #[doc = concat!("# Methods for angles represented using `", stringify!($f), "`.")]
-        #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        #[cfg(feature = $cap )]
         impl Angle<$f> {
             /* construct */
 
@@ -75,8 +82,10 @@ macro_rules! impl_angle {
 
             /// Returns `true` if the angle is between -1 and 1 (non-inclusive).
             #[inline]
+            #[cfg(feature = $cmp)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub fn is_normalized(self) -> bool {
-                Compare(self.0).gt(-1.0) && Compare(self.0).lt(1.0)
+                crate::Compare(self.0).gt(-1.0) && crate::Compare(self.0).lt(1.0)
             }
 
             /// Returns the angle normalized to the non-inclusive range -1 to 1.
@@ -247,8 +256,10 @@ macro_rules! impl_angle {
             /// Returns the kind of the normalized angle.
             // BLOCKED: const by normalize
             #[inline]
+            #[cfg(feature = $cmp)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub fn kind(self) -> AngleKind {
-                let angle = Compare(self.normalize().positive().0);
+                let angle = crate::Compare(self.normalize().positive().0);
                 use AngleKind::{Full, Acute, Right, Obtuse, Straight, Reflex};
                 if angle.eq(0.0) { // 1 turn (0' or 360º)
                     Full
@@ -267,9 +278,11 @@ macro_rules! impl_angle {
 
             /// Returns `true` if the angle is of the given `kind`.
             #[inline] #[must_use]
+            #[cfg(feature = $cmp)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             // BLOCKED: const by normalize
             pub fn is_kind(self, kind: AngleKind) -> bool {
-                let angle = Compare(self.normalize().positive().0);
+                let angle = crate::Compare(self.normalize().positive().0);
                 use AngleKind::{Full, Acute, Right, Obtuse, Straight, Reflex};
                 match kind {
                     Full => angle.eq(0.0),
@@ -283,4 +296,4 @@ macro_rules! impl_angle {
         }
     };
 }
-impl_angle![float f32:"_f32", f64:"_f64"];
+impl_angle!();
