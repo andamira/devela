@@ -3,7 +3,7 @@
 //! Shows debugging information if the `__dbg` feature is enabled.
 //
 
-use super::println;
+use super::super::println;
 macro_rules! printfeat {
     // if any of the features are enabled, prints the msg and the features
     (msg: $msg:literal, features: $($feature:literal),+ $(,)?) => {

@@ -3,15 +3,14 @@
 //! The build script.
 //
 
-#[cfg(feature = "__dbg")]
-mod dbg; // debugging
-mod gen; // code generation
+mod features;
+mod generate;
 
 fn main() -> Result<(), std::io::Error> {
-    #[cfg(feature = "__dbg")]
-    dbg::print_features();
+    features::main()?;
+    generate::main()?;
 
-    gen::generate()
+    Ok(())
 }
 
 /* helpers */
@@ -22,6 +21,7 @@ pub(crate) fn println(msg: &str) {
     println!("cargo:warning={}", msg);
 }
 
+// FIXME for CI
 #[allow(dead_code)]
 fn rustfmt_file(file_path: &str) {
     use std::process::Command;
