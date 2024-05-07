@@ -188,7 +188,7 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
     - `_int_uall`:
       - `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
 
-Enable specific implementations for niche [`NonValue*`], [`NonRange*`], [`Range*`].
+Enable specific implementations for niche [`NonValue*`], [`NonRange*`], [`InRange*`].
 - `_niche_all`:
   - `_non_value_all`:
     - `_non_value_i8`, `_non_value_i16`, `_non_value_i32`,
@@ -212,7 +212,7 @@ Enable specific implementations for niche [`NonValue*`], [`NonRange*`], [`Range*
 [`Angle`]: crate::num::Angle
 [`Point`]: crate::num::Point
 [`Vector`]: crate::num::Vector
-[`Range*`]: crate::num::RangeU8
+[`InRange*`]: crate::num::InRangeU8
 [`NonRange*`]: crate::num::NonRangeU8
 [`NonValue*`]: crate::num::NonValueU8
 

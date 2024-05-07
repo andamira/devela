@@ -1,4 +1,4 @@
-// devela::num::niche::range
+// devela::num::niche::in_range
 //
 //! Creates const generic customizable wrappers over the `NonZero` numbers,
 //! that represents a numeric range.
@@ -13,21 +13,21 @@ use crate::{
     code::iif,
 };
 
-macro_rules! impl_range {
-    // Entry point, generates Range structures for each sign and size.
+macro_rules! impl_in_range {
+    // Entry point, generates InRange structures for each sign and size.
     () => {
-        impl_range!["A signed", i,
+        impl_in_range!["A signed", i,
             8:"_range_i8", 16:"_range_i16", 32:"_range_i32",
             64:"_range_i64", 128:"_range_i128", size:"_range_isize"];
-        impl_range!["An unsigned", u,
+        impl_in_range!["An unsigned", u,
             8:"_range_u8", 16:"_range_u16", 32:"_range_u32",
             64:"_range_u64", 128:"_range_u128", size:"_range_usize"];
     };
     ($doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
-        $( impl_range![@Range, $doc, $s, $b : $cap]; )+
+        $( impl_in_range![@InRange, $doc, $s, $b : $cap]; )+
     };
 
-    // $name: the base name of the new type. E.g. Range.
+    // $name: the base name of the new type. E.g. InRange.
     // $doc:  the specific beginning of the documentation.
     // $s:    the sign identifier, lowercase: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
@@ -283,4 +283,4 @@ macro_rules! impl_range {
         }
     }};
 }
-impl_range!();
+impl_in_range!();

@@ -145,9 +145,11 @@ pub(super) fn print_features() {
         "_non_range_u8", "_non_range_u16", "_non_range_u32",
         "_non_range_u64", "_non_range_u128", "_non_range_usize",
         // "_range_all",
-        "_-range_any-_",
-        "_range_i8", "_range_i16", "_range_i32", "_range_i64", "_range_i128", "_range_isize",
-        "_range_u8", "_range_u16", "_range_u32", "_range_u64", "_range_u128", "_range_usize",
+        "_-in_range_any-_",
+        "_in_range_i8", "_in_range_i16", "_in_range_i32",
+        "_in_range_i64", "_in_range_i128", "_in_range_isize",
+        "_in_range_u8", "_in_range_u16", "_in_range_u32",
+        "_in_range_u64", "_in_range_u128", "_in_range_usize",
 
     ];
 

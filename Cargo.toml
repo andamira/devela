@@ -193,7 +193,7 @@ _min_docs = [ # the minimum capabilities to document all methods
 	"_bit_u8",
 	"_stack_u8", "_destaque_u8",
 	"_float_f32", "_int_u8",
-	"_non_value_u8", "_non_range_u8", "_range_u8",
+	"_non_value_u8", "_non_range_u8", "_in_range_u8",
 	"_tuple",
 ]
 _max_docs = [ # the maximum capabities relevant for documentation
@@ -359,8 +359,8 @@ _-nums_any-_ = []
 			_int_u128 = ["_-int_uany-_"]
 			_int_usize = ["_-int_uany-_"]
 
-# `NonValue*`+`NonExtreme*`, `NonRange*`, `Range*`:
-_niche_all = ["_non_value_all", "_non_range_all", "_range_all"]
+# `NonValue*`+`NonExtreme*`, `NonRange*`, `InRange*`:
+_niche_all = ["_non_value_all", "_non_range_all", "_in_range_all"]
 _-niche_any-_ = []
 	_non_value_all = [
 		"_non_value_i8", "_non_value_i16", "_non_value_i32",
@@ -398,22 +398,24 @@ _-niche_any-_ = []
 		_non_range_u128 = ["_-non_range_any-_"]
 		_non_range_isize = ["_-non_range_any-_"]
 		_non_range_usize = ["_-non_range_any-_"]
-	_range_all = [
-		"_range_i8", "_range_i16", "_range_i32", "_range_i64", "_range_i128", "_range_isize",
-		"_range_u8", "_range_u16", "_range_u32", "_range_u64", "_range_u128", "_range_usize"]
-	_-range_any-_ = ["_-niche_any-_"]
-		_range_i8 = ["_-range_any-_"]
-		_range_u8 = ["_-range_any-_"]
-		_range_i16 = ["_-range_any-_"]
-		_range_u16 = ["_-range_any-_"]
-		_range_i32 = ["_-range_any-_"]
-		_range_u32 = ["_-range_any-_"]
-		_range_i64 = ["_-range_any-_"]
-		_range_u64 = ["_-range_any-_"]
-		_range_i128 = ["_-range_any-_"]
-		_range_u128 = ["_-range_any-_"]
-		_range_isize = ["_-range_any-_"]
-		_range_usize = ["_-range_any-_"]
+	_in_range_all = [
+		"_in_range_i8", "_in_range_i16", "_in_range_i32",
+		"_in_range_i64", "_in_range_i128", "_in_range_isize",
+		"_in_range_u8", "_in_range_u16", "_in_range_u32",
+		"_in_range_u64", "_in_range_u128", "_in_range_usize"]
+	_-in_range_any-_ = ["_-niche_any-_"]
+		_in_range_i8 = ["_-in_range_any-_"]
+		_in_range_u8 = ["_-in_range_any-_"]
+		_in_range_i16 = ["_-in_range_any-_"]
+		_in_range_u16 = ["_-in_range_any-_"]
+		_in_range_i32 = ["_-in_range_any-_"]
+		_in_range_u32 = ["_-in_range_any-_"]
+		_in_range_i64 = ["_-in_range_any-_"]
+		_in_range_u64 = ["_-in_range_any-_"]
+		_in_range_i128 = ["_-in_range_any-_"]
+		_in_range_u128 = ["_-in_range_any-_"]
+		_in_range_isize = ["_-in_range_any-_"]
+		_in_range_usize = ["_-in_range_any-_"]
 
 
 #* dependency features *#

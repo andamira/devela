@@ -370,7 +370,7 @@ macro_rules! impl_num {
         }}
     };
 
-    // Inner helpers for the identical body of NonValue, NonRange, Range
+    // Inner helpers for the identical body of NonValue, NonRange, InRange
     // with a common body and different ops for signed and unsigned
     // ============================================================================================
     (custom_i_body) => {
@@ -482,7 +482,7 @@ macro_rules! impl_num {
         }
     }};
 
-    /* ops that call .get().checked() for: NonZero*, NonValue*, (Non)Range* */
+    /* ops that call .get().checked() for: NonZero*, NonValue*, [Non|In]Range* */
 
     (op1_get_checked $Self:ty => $($op:ident),+) => {
         $( impl_num![@op1_get_checked $Self => $op]; )+ };
