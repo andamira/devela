@@ -7,7 +7,6 @@
 mod tuple;
 
 pub(super) fn generate() -> Result<(), std::io::Error> {
-
     #[cfg(feature = "_tuple")]
     tuple::generate()?;
 

@@ -32,7 +32,7 @@ build = "construct/mod.rs"
 publish = true
 
 
-[features] # 238 (300 max)
+[features] # 239 (300 max)
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -94,7 +94,7 @@ num = [
 	]
 	num_float = ["_-num-_"] # Float, ExtFloat.
 	num_geom = ["_-num-_"] # geometric types and operations.
-	num_int = ["_-num-_"] # Frac, Int, NumInt, NumRefInt.
+	num_int = ["_-num-_"] # Divisor, Frac, Int, NumInt, NumRefInt.
 rend = [
 	"rend_audio", "rend_color", "rend_font", "rend_image", "rend_video",
 	]
@@ -168,8 +168,12 @@ nightly = [
 	nightly_coro= ["_-nightly-_"] # coroutines, coroutine_trait, iter_from_coroutine
 	nightly_doc = ["_-nightly-_"] # doc_cfg, doc_notable_trait
 	nightly_simd = ["_-nightly-_"] # portable_simd
-	nightly_stabilized = ["_-nightly-_"] # stabilized features to be released soon
-		# inline_const (1.79), associated_type_bounds (1.79)
+	nightly_stabilized = ["_-nightly-_"] # stabilized features to be released soon:
+		# - https://github.com/rust-lang/rust/milestones
+		# - https://releases.rs/
+		#
+		# 1.79: associated_type_bounds, inline_const
+		# 1.80: exclusive_range_pattern, split_at_checked, ±macro_metavar_expr?
 
 # private reflexion:
 # auto-enabled by nightly sub-features
@@ -193,9 +197,7 @@ _min_docs = [ # the minimum capabilities to document all methods
 	"_tuple",
 ]
 _max_docs = [ # the maximum capabities relevant for documentation
-	"_data_all",
-	"_lex_all",
-	"_num_all",
+	"_data_all", "_lex_all", "_num_all",
 ]
 _max = [ # the maximum capabilities, including non-relevant for documentation
 	"_max_docs",
@@ -211,21 +213,11 @@ _docsrs_stable = ["all", "std", "unsafe", "dep_all", "_min_docs"]
 
 _data_all = ["_bit_all", "_collections_all", "_tuple", "_sort_all"]
 
-# private reflexion:
-_-bit_any-_ = []
-_-collections_any-_ = []
-	_-destaque_any-_ = ["_-collections_any-_"]
-	_-graph_any-_ = ["_-collections_any-_"]
-	#_-list_any-_ = ["_-collections_any-_"]
-	_-node_any-_ = ["_-collections_any-_"]
-	_-stack_any-_ = ["_-collections_any-_"]
-_-sort_any-_ = []
-
 # `Bitwise`, `bitfield`, `enumset`:
 _bit_all = [
 	"_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
-	"_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize"
-	]
+	"_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize"]
+_-bit_any-_ = []
 	_bit_i8 = ["_-bit_any-_"]
 	_bit_i16 = ["_-bit_any-_"]
 	_bit_i32 = ["_-bit_any-_"]
@@ -241,22 +233,29 @@ _bit_all = [
 
 # `Destaque*`, `Graph*`, `Node*`, `Stack*`, `Tuple`:
 _collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "_tuple" ]
+_-collections_any-_ = []
 	_destaque_all = ["_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize"]
+	_-destaque_any-_ = ["_-collections_any-_"]
 		_destaque_u8 = ["_-destaque_any-_"]
 		_destaque_u16 = ["_-destaque_any-_"]
 		_destaque_u32 = ["_-destaque_any-_"]
 		_destaque_usize = ["_-destaque_any-_"]
+
 	_graph_all = ["_graph_u8", "_graph_u16", "_graph_u32", "_graph_usize"]
+	_-graph_any-_ = ["_-collections_any-_"]
 		_graph_u8 = ["_-graph_any-_", "_non_value_u8"]
 		_graph_u16 = ["_-graph_any-_", "_non_value_u16"]
 		_graph_u32 = ["_-graph_any-_", "_non_value_u32"]
 		_graph_usize = ["_-graph_any-_", "_non_value_usize"]
 	_node_all = ["_node_u8", "_node_u16", "_node_u32", "_node_usize"]
+	_-node_any-_ = ["_-collections_any-_"]
 		_node_u8 = ["_-node_any-_", "_non_value_u8"]
 		_node_u16 = ["_-node_any-_", "_non_value_u16"]
 		_node_u32 = ["_-node_any-_", "_non_value_u32"]
 		_node_usize = ["_-node_any-_", "_non_value_usize"]
+
 	_stack_all = ["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"]
+	_-stack_any-_ = ["_-collections_any-_"]
 		_stack_u8 = ["_-stack_any-_"]
 		_stack_u16 = ["_-stack_any-_"]
 		_stack_u32 = ["_-stack_any-_"]
@@ -273,8 +272,8 @@ _tuple_72 = ["_tuple_48"] # time: 11.1s, codegen: 3.1M
 _sort_all = [
 	"_sort_i8", "_sort_i16", "_sort_i32", "_sort_i64", "_sort_i128", "_sort_isize",
 	"_sort_u8", "_sort_u16", "_sort_u32", "_sort_u64", "_sort_u128", "_sort_usize",
-	"_sort_f32", "_sort_f64",
-	]
+	"_sort_f32", "_sort_f64"]
+_-sort_any-_ = []
 	_sort_i8 = ["_-sort_any-_"]
 	_sort_i16 = ["_-sort_any-_"]
 	_sort_i32 = ["_-sort_any-_"]
@@ -296,11 +295,11 @@ _sort_all = [
 _lex_all = ["_string_all"]
 
 # private reflexion:
+
+# StringU*, StringNonul:
+_string_all = ["_string_u8", "_string_u16", "_string_u32", "_string_usize", "_string_nonul"]
 _-string_any-_ = []
 _-string_uany-_ = ["_-string_any-_"]
-
- # StringU*, StringNonul:
-_string_all = ["_string_u8", "_string_u16", "_string_u32", "_string_usize", "_string_nonul"]
 	_string_u8 = ["_-string_uany-_"]
 	_string_u16 = ["_-string_uany-_"]
 	_string_u32 = ["_-string_uany-_"]
@@ -313,24 +312,12 @@ _string_all = ["_string_u8", "_string_u16", "_string_u32", "_string_usize", "_st
 
 _num_all = ["_nums_all", "_cmp_all", "_niche_all"]
 
-# private reflexion:
-_-cmp_any-_ = []
-_-nums_any-_ = []
-	_-float_any-_ = ["_-nums_any-_"]
-	_-int_any-_ = ["_-nums_any-_"]
-		_-int_iany-_ = ["_-int_any-_"]
-		_-int_uany-_ = ["_-int_any-_"]
-_-niche_any-_ = []
-	_-non_value_any-_ = ["_-niche_any-_"]
-	_-non_range_any-_ = ["_-niche_any-_"]
-	_-range_any-_ = ["_-niche_any-_"]
-
 # `Compare`:
 _cmp_all = [
 	"_cmp_i8", "_cmp_i16", "_cmp_i32", "_cmp_i64", "_cmp_i128", "_cmp_isize",
 	"_cmp_u8", "_cmp_u16", "_cmp_u32", "_cmp_u64", "_cmp_u128", "_cmp_usize",
-	"_cmp_f32", "_cmp_f64",
-	]
+	"_cmp_f32", "_cmp_f64"]
+_-cmp_any-_ = []
 	_cmp_i8 = ["_-cmp_any-_"]
 	_cmp_i16 = ["_-cmp_any-_"]
 	_cmp_i32 = ["_-cmp_any-_"]
@@ -348,11 +335,15 @@ _cmp_all = [
 
 # `[Num]Int`, `[Num]Float`, `[Num]Frac`, `Point`, `Angle`, `Vector`:
 _nums_all = ["_float_all", "_int_all"]
+_-nums_any-_ = []
 	_float_all = ["_float_f32", "_float_f64"]
+	_-float_any-_ = ["_-nums_any-_"]
 		_float_f32 = ["_-float_any-_"]
 		_float_f64 = ["_-float_any-_"]
 	_int_all = ["_int_iall", "_int_uall"]
+	_-int_any-_ = ["_-nums_any-_"]
 		_int_iall = ["_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize"]
+		_-int_iany-_ = ["_-int_any-_"]
 			_int_i8 = ["_-int_iany-_"]
 			_int_i16 = ["_-int_iany-_"]
 			_int_i32 = ["_-int_iany-_"]
@@ -360,6 +351,7 @@ _nums_all = ["_float_all", "_int_all"]
 			_int_i128 = ["_-int_iany-_"]
 			_int_isize = ["_-int_iany-_"]
 		_int_uall = ["_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize"]
+		_-int_uany-_ = ["_-int_any-_"]
 			_int_u8 = ["_-int_uany-_"]
 			_int_u16 = ["_-int_uany-_"]
 			_int_u32 = ["_-int_uany-_"]
@@ -368,15 +360,14 @@ _nums_all = ["_float_all", "_int_all"]
 			_int_usize = ["_-int_uany-_"]
 
 # `NonValue*`+`NonExtreme*`, `NonRange*`, `Range*`:
-_niche_all = [
-	"_non_value_all", "_non_range_all", "_range_all",
-	]
+_niche_all = ["_non_value_all", "_non_range_all", "_range_all"]
+_-niche_any-_ = []
 	_non_value_all = [
 		"_non_value_i8", "_non_value_i16", "_non_value_i32",
 		"_non_value_i64", "_non_value_i128", "_non_value_isize",
 		"_non_value_u8", "_non_value_u16", "_non_value_u32",
-		"_non_value_u64", "_non_value_u128", "_non_value_usize",
-		]
+		"_non_value_u64", "_non_value_u128", "_non_value_usize"]
+	_-non_value_any-_ = ["_-niche_any-_"]
 		_non_value_i8 = ["_-non_value_any-_"]
 		_non_value_u8 = ["_-non_value_any-_"]
 		_non_value_i16 = ["_-non_value_any-_"]
@@ -393,8 +384,8 @@ _niche_all = [
 		"_non_range_i8", "_non_range_i16", "_non_range_i32",
 		"_non_range_i64", "_non_range_i128", "_non_range_isize",
 		"_non_range_u8", "_non_range_u16", "_non_range_u32",
-		"_non_range_u64", "_non_range_u128", "_non_range_usize",
-		]
+		"_non_range_u64", "_non_range_u128", "_non_range_usize"]
+	_-non_range_any-_ = ["_-niche_any-_"]
 		_non_range_i8 = ["_-non_range_any-_"]
 		_non_range_u8 = ["_-non_range_any-_"]
 		_non_range_i16 = ["_-non_range_any-_"]
@@ -409,8 +400,8 @@ _niche_all = [
 		_non_range_usize = ["_-non_range_any-_"]
 	_range_all = [
 		"_range_i8", "_range_i16", "_range_i32", "_range_i64", "_range_i128", "_range_isize",
-		"_range_u8", "_range_u16", "_range_u32", "_range_u64", "_range_u128", "_range_usize",
-		]
+		"_range_u8", "_range_u16", "_range_u32", "_range_u64", "_range_u128", "_range_usize"]
+	_-range_any-_ = ["_-niche_any-_"]
 		_range_i8 = ["_-range_any-_"]
 		_range_u8 = ["_-range_any-_"]
 		_range_i16 = ["_-range_any-_"]

@@ -163,19 +163,19 @@ impl Timecode {
         let us_str = Ascii(us as u32).digits_str(3);
         let ns_str = Ascii(ns as u32).digits_str(3);
 
-        let mut buf = [0; 23]; // max
-        let mut buf_len = 23;
+        let mut buf = [0; 23];
+        let mut buf_len = 23; // = 18 + 3digits + 1name(s) + 1space
 
-        if s > 0 { // +3digits +1name(s) + 1space = 23
+        if s > 0 {
             let _ = format_buf![&mut buf, "{s_str}s {ms_str}ms {us_str}µs {ns_str}ns"];
         } else if ms > 0 {
-            buf_len = 21; // +3digits + 2name(ms) + 1space = 18
+            buf_len = 18; // = 18 + 3digits + 2name(ms) + 1space
             let _ = format_buf![&mut buf, "{ms_str}ms {us_str}µs {ns_str}ns"];
         } else if us > 0 {
-            buf_len = 12; // + 3digits + 3name(µs) + 1space = 12
+            buf_len = 12; // = 5 + 3digits + 3name(µs) + 1space
             let _ = format_buf![&mut buf, "{us_str}µs {ns_str}ns"];
         } else {
-            buf_len = 5; // + 3digits + 2name(ns) = 5
+            buf_len = 5; // = 0 + 3digits + 2name(ns)
             let _ = format_buf![&mut buf, "{ns_str}ns"];
         }
 

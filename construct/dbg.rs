@@ -62,60 +62,93 @@ pub(super) fn print_features() {
     ];
 
     printfeat![msg: "Enabled capability features:", features:
-        "_default", "_max",
+        "_default", "_min_docs", "_max_docs", "_max",
 
         "_docsrs", "_docsrs_stable",
 
+        /* data capabilities */
+
+        // "_data_all",
+
+        // "_bit_all",
         "_-bit_any-_",
         "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
         "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
 
-        "_-collections_any-_",
         // "_collections_all",
-            "_-destaque_any-_",
+        "_-collections_any-_",
             // "_destaque_all",
+            "_-destaque_any-_",
             "_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize",
-            "_-list_any-_",
-            // "_list_all",
-            "_list1_u8", "_list1_u16", "_list1_u32", "_list1_usize",
-            // "_list2_u8", "_list2_u16", "_list2_u32", "_list2_usize",
-            "_-stack_any-_",
+            // "_graph_all",
+            "_-graph_any-_",
+            "_graph_u8", "_graph_u16", "_graph_u32", "_graph_usize",
+            // "_node_all",
+            "_-node_any-_",
+            "_node_u8", "_node_u16", "_node_u32", "_node_usize",
             // "_stack_all",
+            "_-stack_any-_",
             "_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize",
 
+        // "_sort_all",
+        "_-sort_any-_",
+        "_sort_i8", "_sort_i16", "_sort_i32", "_sort_i64", "_sort_i128", "_sort_isize",
+        "_sort_u8", "_sort_u16", "_sort_u32", "_sort_u64", "_sort_u128", "_sort_usize",
+        "_sort_f32", "_sort_f64",
+
+        "_tuple", "_tuple_24", "_tuple_36", "_tuple_48", "_tuple_72",
+
+        /* lex capabilities */
+
+        // "_lex_all",
+
+        "_-string_any-_",
+        "_-string_uany-_",
+        // "_string_all",
+        "_string_u8", "_string_u16", "_string_u32", "_string_usize",
+        "_string_nonul",
+
+        /* num capabilities */
+
+        // "_cmp_all",
+        "_-cmp_any-_",
+        "_cmp_i8", "_cmp_i16", "_cmp_i32", "_cmp_i64", "_cmp_i128", "_cmp_isize",
+        "_cmp_u8", "_cmp_u16", "_cmp_u32", "_cmp_u64", "_cmp_u128", "_cmp_usize",
+        "_cmp_f32", "_cmp_f64",
+
+        // "_num_all",
         "_-num_any-_",
-        // "_-num_all",
+        // "_float_all"
         "_-float_any-_",
         "_float_f32", "_float_f64",
+        // "_int_all",
         "_-int_any-_",
-        // "_-int_all",
+        // "_int_iall",
         "_-int_iany-_",
-        // "_-int_iall-_",
         "_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize",
+        // "_int_uall",
         "_-int_uany-_",
-        // "_-int_uall-_",
         "_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize",
 
+        // "_niche_all",
         "_-niche_any-_",
-        // "_-niche_all",
+        // "_non_value_all",
         "_-non_value_any-_",
-        // "_-non_value_all",
         "_non_value_i8", "_non_value_i16", "_non_value_i32",
         "_non_value_i64", "_non_value_i128", "_non_value_isize",
         "_non_value_u8", "_non_value_u16", "_non_value_u32",
         "_non_value_u64", "_non_value_u128", "_non_value_usize",
+        // "_non_range_all",
         "_-non_range_any-_",
-        // "_-non_range_all",
         "_non_range_i8", "_non_range_i16", "_non_range_i32",
         "_non_range_i64", "_non_range_i128", "_non_range_isize",
         "_non_range_u8", "_non_range_u16", "_non_range_u32",
         "_non_range_u64", "_non_range_u128", "_non_range_usize",
+        // "_range_all",
         "_-range_any-_",
-        // "_-range_all",
         "_range_i8", "_range_i16", "_range_i32", "_range_i64", "_range_i128", "_range_isize",
         "_range_u8", "_range_u16", "_range_u32", "_range_u64", "_range_u128", "_range_usize",
 
-        "_tuple", "_tuple_24", "_tuple_36", "_tuple_48", "_tuple_72",
     ];
 
     printfeat![msg: "Enabled dependency features:", features:
