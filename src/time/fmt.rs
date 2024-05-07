@@ -23,6 +23,7 @@ use crate::time::SecNanoSplit;
 /// # Examples
 /// ```
 /// # use devela::time::Timecode;
+/// #[cfg(feature = "_string_u8")]
 /// #[cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64")))]
 /// assert_eq!(Timecode::secs_f64(3661.5), "01:01:01.500");
 ///
@@ -214,6 +215,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "_string_u8")]
     #[cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64")))]
     fn timecode_secs_f64() {
         let formatted = Timecode::secs_f64(3661.5);

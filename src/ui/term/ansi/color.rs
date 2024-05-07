@@ -4,7 +4,9 @@
 //
 
 use super::Ansi;
-use crate::{lex::Ascii, num::Compare};
+use crate::lex::Ascii;
+#[cfg(feature = "_cmp_u8")]
+use crate::num::Compare;
 
 /// ANSI 3-bit color codes, 8 colors.
 #[repr(u8)]
@@ -452,9 +454,8 @@ impl Ansi {
     /// Code to set the foreground and background to 24-point grayscale.
     ///
     /// A value of 0 is almost black, and 24 (or more) is almost white.
-    #[inline]
-    #[must_use]
-    #[rustfmt::skip]
+    #[cfg(feature = "_cmp_u8")]
+    #[inline] #[must_use] #[rustfmt::skip]
     pub const fn GRAY(fg: u8, bg: u8) -> [u8; 19] {
         const X: [u8; 4] = C::C8;
         let cf = Ascii(Compare(fg).min(23)).digits();
@@ -468,101 +469,152 @@ impl Ansi {
     }
 
     /// ANSI gray foreground 0/23 8-bit color (4% white, 96% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY0: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(0));
     /// ANSI gray foreground 1/23 8-bit color (8% white, 92% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY1: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(1));
     /// ANSI gray foreground 2/23 8-bit color (12% white, 88% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY2: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(2));
     /// ANSI gray foreground 3/23 8-bit color (16% white, 84% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY3: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(3));
     /// ANSI gray foreground 4/23 8-bit color (20% white, 80% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY4: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(4));
     /// ANSI gray foreground 5/23 8-bit color (24% white, 76% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY5: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(5));
     /// ANSI gray foreground 6/23 8-bit color (28% white, 72% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY6: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(6));
     /// ANSI gray foreground 7/23 8-bit color (32% white, 68% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY7: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(7));
     /// ANSI gray foreground 8/23 8-bit color (36% white, 64% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY8: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(8));
     /// ANSI gray foreground 9/23 8-bit color (40% white, 60% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY9: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(9));
     /// ANSI gray foreground 10/23 8-bit color (44% white, 56% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY10: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(10));
     /// ANSI gray foreground 11/23 8-bit color (48% white, 52% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY11: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(11));
     /// ANSI gray foreground 12/23 8-bit color (52% white, 48% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY12: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(12));
     /// ANSI gray foreground 13/23 8-bit color (56% white, 44% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY13: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(13));
     /// ANSI gray foreground 14/23 8-bit color (60% white, 40% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY14: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(14));
     /// ANSI gray foreground 15/23 8-bit color (64% white, 36% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY15: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(15));
     /// ANSI gray foreground 16/23 8-bit color (68% white, 32% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY16: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(16));
     /// ANSI gray foreground 17/23 8-bit color (72% white, 28% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY17: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(17));
     /// ANSI gray foreground 18/23 8-bit color (76% white, 24% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY18: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(18));
     /// ANSI gray foreground 19/23 8-bit color (80% white, 20% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY19: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(19));
     /// ANSI gray foreground 20/23 8-bit color (84% white, 16% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY20: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(20));
     /// ANSI gray foreground 21/23 8-bit color (88% white, 12% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY21: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(21));
     /// ANSI gray foreground 22/23 8-bit color (92% white, 8% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY22: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(22));
     /// ANSI gray foreground 23/23 8-bit color (96% white, 4% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY23: [u8; 11] = Self::COLOR8_FG(AnsiColor8b::gray_unchecked(23));
 
     /// ANSI gray background 0/23 8-bit color (4% white, 96% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY0_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(0));
     /// ANSI gray background 1/23 8-bit color (8% white, 92% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY1_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(1));
     /// ANSI gray background 2/23 8-bit color (12% white, 88% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY2_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(2));
     /// ANSI gray background 3/23 8-bit color (16% white, 84% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY3_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(3));
     /// ANSI gray background 4/23 8-bit color (20% white, 80% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY4_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(4));
     /// ANSI gray background 5/23 8-bit color (24% white, 76% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY5_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(5));
     /// ANSI gray background 6/23 8-bit color (28% white, 72% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY6_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(6));
     /// ANSI gray background 7/23 8-bit color (32% white, 68% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY7_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(7));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 8/23 8-bit color (36% white, 64% black).
     pub const GRAY8_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(8));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 9/23 8-bit color (40% white, 60% black).
     pub const GRAY9_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(9));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 10/23 8-bit color (44% white, 56% black).
     pub const GRAY10_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(10));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 11/23 8-bit color (48% white, 52% black).
     pub const GRAY11_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(11));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 12/23 8-bit color (52% white, 48% black).
     pub const GRAY12_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(12));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 13/23 8-bit color (56% white, 44% black).
     pub const GRAY13_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(13));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 14/23 8-bit color (60% white, 40% black).
     pub const GRAY14_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(14));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 15/23 8-bit color (64% white, 36% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY15_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(15));
     /// ANSI gray background 16/23 8-bit color (68% white, 32% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY16_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(16));
     /// ANSI gray background 17/23 8-bit color (72% white, 28% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY17_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(17));
     /// ANSI gray background 18/23 8-bit color (76% white, 24% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY18_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(18));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 19/23 8-bit color (80% white, 20% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY19_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(19));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 20/23 8-bit color (84% white, 16% black).
     pub const GRAY20_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(20));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 21/23 8-bit color (88% white, 12% black).
     pub const GRAY21_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(21));
+    #[cfg(feature = "_cmp_u8")]
     /// ANSI gray background 22/23 8-bit color (92% white, 8% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY22_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(22));
     /// ANSI gray background 23/23 8-bit color (96% white, 4% black).
+    #[cfg(feature = "_cmp_u8")]
     pub const GRAY23_BG: [u8; 11] = Self::COLOR8_BG(AnsiColor8b::gray_unchecked(23));
 }
 

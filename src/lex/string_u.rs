@@ -763,6 +763,7 @@ super::helpers::impl_sized_alias![
 
 #[cfg(test)]
 mod tests {
+    #[allow(unused_imports)]
     use super::*;
 
     #[test]
