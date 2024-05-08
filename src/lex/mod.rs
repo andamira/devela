@@ -23,9 +23,7 @@ mod error;
 mod ext;
 mod fmt;
 mod reexports;
-pub use {
-    ascii::all::*, char::all::*, egc::all::*, error::*, ext::*, fmt::all::*, reexports::*,
-};
+pub use {ascii::all::*, char::all::*, egc::all::*, error::*, ext::*, fmt::all::*, reexports::*};
 
 #[cfg(_string_u_some)]
 mod string_u;
