@@ -3,7 +3,7 @@
 //! Extention trait for floatin-point methods.
 //
 
-#[cfg(feature = "_-float_any-_")]
+#[cfg(_float_some)]
 use crate::num::Float;
 use crate::num::{ExtFloatConst, Sign};
 
@@ -408,31 +408,46 @@ pub trait ExtFloat: ExtFloatConst + Sized {
     fn min_nan(self, other: Self) -> Self;
 
     /// The clamped value, using total order.
+    ///
+    /// # Features
+    /// This will only work if the corresponding `_cmp_[f32|f64]` feature is enabled,
+    /// otherwise it will return `NaN`.
     #[must_use]
     fn clamp_total(self, min: Self, max: Self) -> Self;
 
     /// The maximum of two numbers using total order.
+    ///
+    /// # Features
+    /// This will only work if the corresponding `_cmp_[f32|f64]` feature is enabled,
+    /// otherwise it will return `NaN`.
     #[must_use]
     fn max_total(self, other: Self) -> Self;
 
     /// The minimum of two numbers using total order.
+    ///
+    /// # Features
+    /// This will only work if the corresponding `_cmp_[f32|f64]` feature is enabled,
+    /// otherwise it will return `NaN`.
     #[must_use]
     fn min_total(self, other: Self) -> Self;
 }
 
 macro_rules! impl_float_ext {
     () => {
-        impl_float_ext![(f32, u32 | i32):"_float_f32", (f64, u32 | i32):"_float_f64"];
+        impl_float_ext![
+            (f32, u32 | i32):"_float_f32":"_cmp_f32",
+            (f64, u32 | i32):"_float_f64":"_cmp_f32"];
     };
 
     // $f:   the floating-point type.
     // $ue:  unsigned int type with the same bit-size.
     // $ie:  the integer type for integer exponentiation.
     // $cap: the capability feature that enables the given implementation. E.g "_float_f32".
-    ($( ($f:ty, $ue:ty|$ie:ty): $cap:literal ),+) => {
-        $( impl_float_ext![@$f, $ue|$ie, $cap]; )+
+    // $cmp: the feature that enables the given implementation. E.g "_cmp_f32".
+    ($( ($f:ty, $ue:ty|$ie:ty): $cap:literal : $cmp:literal ),+) => {
+        $( impl_float_ext![@$f, $ue|$ie, $cap:$cmp]; )+
     };
-    (@$f:ty, $ue:ty|$ie:ty, $cap:literal) => {
+    (@$f:ty, $ue:ty|$ie:ty, $cap:literal : $cmp:literal) => {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl ExtFloat for $f {
@@ -702,16 +717,23 @@ macro_rules! impl_float_ext {
             #[inline]
             fn min_nan(self, other: Self) -> Self { Float(self).min_nan(other).0 }
 
-            #[inline]
+            #[inline] #[cfg(feature = "$cmp")]
             fn clamp_total(self, min: Self, max: Self) -> Self {
                 Float(self).clamp_total(min, max).0
             }
+            #[inline] #[cfg(not(feature = "$cmp"))]
+            fn clamp_total(self, _: Self, _: Self) -> Self { <$f>::NAN }
 
-            #[inline]
+            #[inline] #[cfg(feature = "$cmp")]
             fn max_total(self, other: Self) -> Self { Float(self).max_total(other).0 }
+            #[inline] #[cfg(not(feature = "$cmp"))]
+            fn max_total(self, _: Self) -> Self { <$f>::NAN }
 
             #[inline]
+            #[cfg(feature = "$cmp")]
             fn min_total(self, other: Self) -> Self { Float(self).min_total(other).0 }
+            #[inline] #[cfg(not(feature = "$cmp"))]
+            fn min_total(self, _: Self) -> Self { <$f>::NAN }
         }
     }
 }

@@ -21,7 +21,7 @@ use crate::code::paste;
 use crate::num::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
-#[cfg(feature = "_-int_iany-_")]
+#[cfg(_int_i_some)]
 use crate::{code::unwrap, num::NumError::NoInverse};
 use crate::{
     code::{cif, iif, ValueQuant},
@@ -30,10 +30,10 @@ use crate::{
 };
 
 // helper function to be called from the cold path branch when modulus == 0.
-#[cold] #[inline(never)] #[cfg(feature = "_-int_any-_")] #[rustfmt::skip]
+#[cold] #[inline(never)] #[cfg(_int_some)] #[rustfmt::skip]
 const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 // helper function to be called from the cold path branch for rare i128 overflow.
-#[cold] #[inline(never)] #[cfg(feature = "_-int_iany-_")] #[rustfmt::skip]
+#[cold] #[inline(never)] #[cfg(_int_i_some)] #[rustfmt::skip]
 const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 
 // helper macro to deal with the case when we can't upcast (i.e. for 128-bits).

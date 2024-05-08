@@ -17,11 +17,11 @@ macro_rules! impl_in_range {
     // Entry point, generates InRange structures for each sign and size.
     () => {
         impl_in_range!["A signed", i,
-            8:"_range_i8", 16:"_range_i16", 32:"_range_i32",
-            64:"_range_i64", 128:"_range_i128", size:"_range_isize"];
+            8:"_in_range_i8", 16:"_in_range_i16", 32:"_in_range_i32",
+            64:"_in_range_i64", 128:"_in_range_i128", size:"_in_range_isize"];
         impl_in_range!["An unsigned", u,
-            8:"_range_u8", 16:"_range_u16", 32:"_range_u32",
-            64:"_range_u64", 128:"_range_u128", size:"_range_usize"];
+            8:"_in_range_u8", 16:"_in_range_u16", 32:"_in_range_u32",
+            64:"_in_range_u64", 128:"_in_range_u128", size:"_in_range_usize"];
     };
     ($doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
         $( impl_in_range![@InRange, $doc, $s, $b : $cap]; )+
@@ -31,7 +31,7 @@ macro_rules! impl_in_range {
     // $doc:  the specific beginning of the documentation.
     // $s:    the sign identifier, lowercase: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
-    // $cap:  the capability feature that enables the given implementation. E.g "_range_i8".
+    // $cap:  the capability feature that enables the given implementation. E.g "_in_range_i8".
     (@$name:ident, $doc:literal, $s:ident, $b:tt : $cap:literal) => { $crate::paste! {
         /* definition */
 

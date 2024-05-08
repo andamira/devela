@@ -6,7 +6,7 @@
 use crate::{
     _libcore::{concat as cc, stringify as sfy},
     code::{iif, paste},
-    num::{Compare, Float, Sign},
+    num::{Float, Sign},
 };
 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
 use core::mem::transmute;
@@ -16,16 +16,20 @@ use core::mem::transmute;
 // $f:   the floating-point type.
 // $uf:  unsigned int type with the same bit-size.
 // $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
-// $cap: the capability feature enables the given implementation. E.g "_float_f32".
+// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
+// $cmp: the feature that enables some methods depending on Compare. E.g "_cmp_f32".
 macro_rules! custom_impls {
     () => {
-        custom_impls![(f32:u32, u32):"_float_f32", (f64:u64, u32):"_float_f64"];
+        custom_impls![
+            (f32:u32, u32):"_float_f32":"_cmp_f32",
+            (f64:u64, u32):"_float_f64":"_cmp_f64"
+        ];
     };
 
-    ($( ($f:ty:$uf:ty, $ue:ty) : $cap:literal ),+) => {
-        $( custom_impls![@$f:$uf, $ue, $cap]; )+
+    ($( ($f:ty:$uf:ty, $ue:ty) : $cap:literal : $cmp:literal ),+) => {
+        $( custom_impls![@$f:$uf, $ue, $cap:$cmp]; )+
     };
-    (@$f:ty:$uf:ty, $ue:ty, $cap:literal) => {
+    (@$f:ty:$uf:ty, $ue:ty, $cap:literal : $cmp:literal) => {
         /// # *Common implementations with or without `std` or `libm`*.
         /// # Features
         /// Several methods will only be *const* with the `unsafe_const` feature enabled.
@@ -984,16 +988,20 @@ macro_rules! custom_impls {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            #[cfg(feature = $cmp)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub const fn clamp_total(self, min: $f, max: $f) -> Float<$f> {
-                Float(Compare(self.0).clamp(min, max))
+                Float(crate::Compare(self.0).clamp(min, max))
             }
             /// Returns itself clamped between `min` and `max`, using total order.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            #[cfg(feature = $cmp)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub fn clamp_total(self, min: $f, max: $f) -> Float<$f> {
-                Float(Compare(self.0).clamp(min, max))
+                Float(crate::Compare(self.0).clamp(min, max))
             }
 
             /// Returns the maximum between itself and `other`, using total order.
@@ -1001,16 +1009,20 @@ macro_rules! custom_impls {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            #[cfg(feature = $cmp)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub const fn max_total(self, other: $f) -> Float<$f> {
-                Float(Compare(self.0).max(other))
+                Float(crate::Compare(self.0).max(other))
             }
             /// Returns the maximum between itself and `other`, using total order.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            #[cfg(feature = $cmp)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub fn max_total(self, other: $f) -> Float<$f> {
-                Float(Compare(self.0).max(other))
+                Float(crate::Compare(self.0).max(other))
             }
 
             /// Returns the minimum between itself and `other`, using total order.
@@ -1018,16 +1030,20 @@ macro_rules! custom_impls {
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            #[cfg(feature = $cmp)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub const fn min_total(self, other: $f) -> Float<$f> {
-                Float(Compare(self.0).min(other))
+                Float(crate::Compare(self.0).min(other))
             }
             /// Returns the minimum between itself and `other`, using total order.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
+            #[cfg(feature = $cmp)]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub fn min_total(self, other: $f) -> Float<$f> {
-                Float(Compare(self.0).min(other))
+                Float(crate::Compare(self.0).min(other))
             }
 
             /// Returns itself clamped between `min` and `max`, propagating `NaN`.

@@ -3,10 +3,10 @@
 //! Floating-point wrapper struct.
 //
 
-#[cfg(feature = "_-float_any-_")]
+#[cfg(_float_some)]
 mod shared;
 
-#[cfg(feature = "_-float_any-_")]
+#[cfg(_float_some)]
 mod libm_std;
 
 mod consts;

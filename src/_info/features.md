@@ -192,17 +192,19 @@ Enable specific implementations for niche [`NonValue*`], [`NonRange*`], [`InRang
 - `_niche_all`:
   - `_non_value_all`:
     - `_non_value_i8`, `_non_value_i16`, `_non_value_i32`,
-    - `_non_value_i64`, `_non_value_i128`, `_non_value_isize`.
+      `_non_value_i64`, `_non_value_i128`, `_non_value_isize`.
     - `_non_value_u8`, `_non_value_u16`, `_non_value_u32`,
-    - `_non_value_u64`, `_non_value_u128`, `_non_value_usize`.
+      `_non_value_u64`, `_non_value_u128`, `_non_value_usize`.
   - `_non_range_all`:
     - `_non_range_i8`, `_non_range_i16`, `_non_range_i32`,
-    - `_non_range_i64`, `_non_range_i128`, `_non_range_isize`.
+      `_non_range_i64`, `_non_range_i128`, `_non_range_isize`.
     - `_non_range_u8`, `_non_range_u16`, `_non_range_u32`,
-    - `_non_range_u64`, `_non_range_u128`, `_non_range_usize`.
-  - `_range_all`:
-    - `_range_i8`, `_range_i16`, `_range_i32`, - `_range_i64`, `_range_i128`, `_range_isize`.
-    - `_range_u8`, `_range_u16`, `_range_u32`, - `_range_u64`, `_range_u128`, `_range_usize`.
+      `_non_range_u64`, `_non_range_u128`, `_non_range_usize`.
+  - `_in_range_all`:
+    - `_in_range_i8`, `_in_range_i16`, `_in_range_i32`,
+      `_in_range_i64`, `_in_range_i128`, `_in_range_isize`.
+    - `_in_range_u8`, `_in_range_u16`, `_in_range_u32`,
+      `_in_range_u64`, `_in_range_u128`, `_in_range_usize`.
 
 [`Compare`]: crate::num::Compare
 [`Float`]: crate::num::Float

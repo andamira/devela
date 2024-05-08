@@ -14,7 +14,6 @@ use crate::{
         Array, Stack,
     },
     mem::{mem_size_of, Bare},
-    num::Compare,
 };
 #[cfg(feature = "alloc")]
 use crate::{
@@ -283,6 +282,8 @@ macro_rules! impl_stack {
             /// assert_eq![U.as_slice(), &[2, 3]];
             /// ```
             #[inline]
+            #[cfg(feature = "_cmp_usize")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_cmp_usize")))]
             pub const fn own_resize_default_truncate<const NEW_CAP: usize>(self)
                 -> Own<Stack<T, NEW_CAP, $IDX, Bare>, ()> {
                 let start_idx = if self.len as usize > NEW_CAP {
@@ -290,7 +291,7 @@ macro_rules! impl_stack {
                 } else {
                     0
                 };
-                let new_len = Compare(NEW_CAP).min(self.len as usize);
+                let new_len = crate::num::Compare(NEW_CAP).min(self.len as usize);
                 let old_arr: [T; CAP] = self.data.into_array_copy();
                 let mut new_arr = array_init![const_default [T; NEW_CAP]];
 

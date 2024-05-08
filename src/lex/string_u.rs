@@ -8,7 +8,6 @@
 //   - trait impls
 // - tests
 
-#[cfg(feature = "_-string_uany-_")]
 use crate::{
     _libcore::{fmt, ops::Deref, str::Chars},
     code::{iif, paste, unwrap, ConstDefault},
@@ -18,14 +17,14 @@ use crate::{
         LexResult as Result,
     },
 };
-#[cfg(feature = "_-cmp_any-_")]
+#[cfg(_cmp_some)]
 use crate::{code::cfor, num::Compare};
 
-#[cfg(all(feature = "_-string_uany-_", feature = "lex"))]
+#[cfg(feature = "lex")]
 use super::char::{
     char_utf8_2bytes_len, char_utf8_3bytes_len, Char16, Char24, Char32, Char7, Char8,
 };
-#[cfg(all(feature = "alloc", feature = "_-string_uany-_"))]
+#[cfg(all(_string_u_some, feature = "alloc"))]
 use crate::_liballoc::{ffi::CString, string::ToString};
 #[allow(unused_imports)]
 use core::str::{from_utf8, from_utf8_unchecked};

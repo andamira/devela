@@ -8,9 +8,9 @@ mod num_trait;
 mod wrapper;
 pub use {gcd::*, num_trait::*, wrapper::*};
 
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 mod divisor;
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 pub use divisor::*;
 
 #[allow(unused_imports)]

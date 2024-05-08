@@ -12,9 +12,9 @@
 #[cfg(feature = "alloc")]
 use crate::_liballoc::{collections::BTreeMap, vec::Vec};
 use crate::code::iif;
-#[cfg(any(feature = "_sort_f32", feature = "_sort_f64"))]
+#[cfg(_sort_float_some)]
 use crate::num::Compare;
-#[cfg(feature = "_-sort_any-_")]
+#[cfg(_sort_some)]
 use crate::{
     code::{cfor, paste},
     mem::cswap,
@@ -459,7 +459,7 @@ mod helper {
 
 /* impl Sort on primitives */
 
-#[cfg(feature = "_-sort_any-_")]
+#[cfg(_sort_some)]
 macro_rules! impl_sort {
     () => {
         impl_sort![signed i8:"_sort_i8", i16:"_sort_i16", i32:"_sort_i32",
@@ -656,5 +656,5 @@ macro_rules! impl_sort {
         }
     }};
 }
-#[cfg(feature = "_-sort_any-_")]
+#[cfg(_sort_some)]
 impl_sort![];

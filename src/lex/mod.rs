@@ -10,6 +10,7 @@
 //! [`string`]: std::string
 //
 
+#![allow(unused_imports)]
 // safety:
 #![cfg_attr(feature = "safe_lex", forbid(unsafe_code))]
 
@@ -22,13 +23,14 @@ mod error;
 mod ext;
 mod fmt;
 mod reexports;
-mod string_u;
-
-#[allow(unused_imports)]
 pub use {
     ascii::all::*, char::all::*, egc::all::*, error::*, ext::*, fmt::all::*, reexports::*,
-    string_u::*,
 };
+
+#[cfg(_string_u_some)]
+mod string_u;
+#[cfg(_string_u_some)]
+pub use string_u::*;
 
 #[cfg(feature = "_string_nonul")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_nonul")))]
@@ -38,11 +40,12 @@ pub use nonul::*;
 
 pub(crate) mod all {
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{
         ascii::all::*, char::all::*, egc::all::*, error::*, ext::*, fmt::all::*, reexports::*,
-        string_u::*,
     };
+
+    #[cfg(_string_u_some)]
+    pub use super::string_u::*;
 
     #[doc(inline)]
     #[cfg(feature = "_string_nonul")]

@@ -10,7 +10,7 @@
 //   - permute
 //   - permute_rep
 
-#[cfg(feature = "_-int_iany-_")]
+#[cfg(_int_i_some)]
 use crate::num::NumError::NonNegativeRequired;
 use crate::{
     code::{cfor, iif},

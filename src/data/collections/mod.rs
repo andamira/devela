@@ -14,19 +14,19 @@ mod traits;
 #[allow(unused_imports)]
 pub use {array::all::*, reexports::*, traits::*};
 
-#[cfg(feature = "_-destaque_any-_")]
+#[cfg(_destaque_some)]
 mod destaque;
-#[cfg(feature = "_-destaque_any-_")]
+#[cfg(_destaque_some)]
 pub use destaque::*;
 
-#[cfg(feature = "_-node_any-_")]
+#[cfg(_node_some)]
 mod node;
-#[cfg(feature = "_-node_any-_")]
+#[cfg(_node_some)]
 pub use node::*;
 
-#[cfg(feature = "_-stack_any-_")]
+#[cfg(_stack_some)]
 mod stack;
-#[cfg(feature = "_-stack_any-_")]
+#[cfg(_stack_some)]
 pub use stack::*;
 
 #[cfg(feature = "_tuple")]
@@ -46,13 +46,13 @@ pub(crate) mod all {
     #[allow(unused_imports)]
     pub use super::{array::all::*, reexports::*, traits::*};
 
-    #[cfg(feature = "_-destaque_any-_")]
+    #[cfg(_destaque_some)]
     pub use super::destaque::all::*;
 
-    #[cfg(feature = "_-node_any-_")]
+    #[cfg(_node_some)]
     pub use super::node::*;
 
-    #[cfg(feature = "_-stack_any-_")]
+    #[cfg(_stack_some)]
     pub use super::stack::all::*;
 
     #[cfg(feature = "_tuple")]

@@ -21,7 +21,7 @@ use crate::code::{iif, paste};
     feature = "unsafe_const",
     feature = "num_float"
 ))]
-#[cfg(feature = "_-float_any-_")]
+#[cfg(_float_some)]
 use crate::num::Float;
 use core::cmp::Ordering::{self, Equal, Greater, Less};
 
@@ -143,13 +143,29 @@ impl<T: PartialOrd> Compare<T> {
 // implement for primitives
 macro_rules! impl_comparing {
     () => {
-        impl_comparing![int: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
-        impl_comparing![float: f32:"_float_f32":32:31, f64:"_float_f64":64:63];
+        impl_comparing![int:
+            u8:"_cmp_u8",
+            u16:"_cmp_u16",
+            u32:"_cmp_u32",
+            u64:"_cmp_u64",
+            u128:"cmp_u128",
+            usize:"_cmp_usize",
+            i8:"_cmp_i8",
+            i16:"_cmp_i16",
+            i32:"_cmp_i32",
+            i64:"_cmp_i64",
+            i128:"_cmp_i128",
+            isize:"cmp_isize"];
+        impl_comparing![float:
+            f32:"_cmp_f32":32:31,
+            f64:"_cmp_f64":64:63];
     };
 
     // $p: the integer type
-    (int: $($p:ty),+) => { $( impl_comparing![@int: $p]; )+ };
-    (@int: $p:ty) => {
+    // $cap: the capability feature associated with the `$f` type. E.g "_cmp_usize".
+    (int: $($p:ty : $cap:literal),+) => { $( impl_comparing![@int: $p:$cap]; )+ };
+    (@int: $p:ty : $cap:literal) => {
+        #[cfg(feature = $cap)]
         impl Compare<$p> {
             /// Compares and returns `self` clamped between `min` and `max`.
             #[inline] #[must_use]
@@ -185,13 +201,14 @@ macro_rules! impl_comparing {
     };
 
     // $f:    the floating-point type
-    // $fcap: the capability feature associated with the `$f` type. E.g "_float_f32".
+    // $fcap: the capability feature associated with the `$f` type. E.g "_cmp_f32".
     // $b:    the bits of the floating-point primitive
     // $sh:   the shift amount for the given bits ($b - 1)
     (float: $($f:ty:$fcap:literal:$b:literal:$sh:literal),+) => {
         $( impl_comparing![@float: $f:$fcap:$b:$sh]; )+
     };
     (@float: $f:ty:$fcap:literal:$b:literal:$sh:literal) => { paste! {
+        #[cfg(feature = $cap)]
         impl Compare<$f> {
             #[doc = "A (`const`) port of `" $f "::`[`total_cmp`][" $f "#method.total_cmp]."]
             /// # Features

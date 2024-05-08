@@ -46,9 +46,9 @@ pub use {
     paste::*, reexports::*, result::all::*, skip_format::*,
 };
 
-#[cfg(feature = "_-bit_any-_")]
+#[cfg(_bit_some)]
 mod enumset; // enumset![]
-#[cfg(feature = "_-bit_any-_")]
+#[cfg(_bit_some)]
 pub use enumset::*;
 
 pub(crate) mod all {
@@ -59,6 +59,6 @@ pub(crate) mod all {
         paste::*, reexports::*, result::all::*, skip_format::*,
     };
 
-    #[cfg(feature = "_-bit_any-_")]
+    #[cfg(_bit_some)]
     pub use super::enumset::*;
 }

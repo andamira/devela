@@ -6,21 +6,21 @@
 // - define Int struct
 // - implement core traits
 
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 mod impl_base;
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 mod impl_combinatorics;
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 mod impl_core;
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 mod impl_div;
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 mod impl_factors;
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 mod impl_modulo;
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 mod impl_prime;
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 mod impl_root;
 
 /// Provides comprehensive integer operations on `T`, most of them *const*.

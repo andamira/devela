@@ -3,14 +3,14 @@
 //!
 //
 
-#[cfg(all(feature = "_-float_any-_", not(feature = "std")))]
+#[cfg(all(_float_some, not(feature = "std")))]
 use crate::code::iif;
 use crate::code::paste;
-#[cfg(feature = "_-nums_any-_")]
+#[cfg(_nums_some)]
 use crate::num::{Num, NumResult as Result};
-#[cfg(feature = "_-float_any-_")]
+#[cfg(_float_some)]
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
-#[cfg(feature = "_-int_any-_")]
+#[cfg(_int_some)]
 use {
     crate::num::{niche::*, NumError},
     NumError::{Invalid, Unspecified},

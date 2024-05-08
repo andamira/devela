@@ -14,37 +14,44 @@ use crate::num::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
 use crate::{
-    code::iif,
+    code::{iif, paste},
     num::{Int, NumError::Overflow, NumResult as Result},
 };
 
 // $t:   the input/output type
-// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 // $up:  the upcasted type to do the operations on (for prime_pi)
+// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
+// $cmp: the feature that enables the given implementation. E.g "_cmp_i8".
 // $d:  the doclink suffix for the method name
 macro_rules! impl_int {
     () => {
         impl_int![signed
-            i8:"_int_i8":i16:"", i16:"_int_i16":i32:"-1",
-            i32:"_int_i32":i64:"-2", i64:"_int_i64":i128:"-3",
-            i128:"_int_i128":i128:"-4", isize:"_int_isize":isize_up:"-5"
+            i8|i16:"_int_i8":"_cmp_i8":"",
+            i16|i32:"_int_i16":"_cmp_i16":"-1",
+            i32|i64:"_int_i32":"_cmp_i32":"-2",
+            i64|i128:"_int_i64":"_cmp_i64":"-3",
+            i128|i128:"_int_i128":"_cmp_i128":"-4",
+            isize|isize_up:"_int_isize":"_cmp_isize":"-5"
         ];
         impl_int![unsigned
-            u8:"_int_u8":u16:"-6", u16:"_int_u16":u32:"-7",
-            u32:"_int_u32":u64:"-8", u64:"_int_u64":u128:"-9",
-            u128:"_int_u128":u128:"-10", usize:"_int_usize":usize_up:"-11"
+            u8|u16:"_int_u8":"_cmp_u8":"-6",
+            u16|u32:"_int_u16":"_cmp_u16":"-7",
+            u32|u64:"_int_u32":"_cmp_u32":"-8",
+            u64|u128:"_int_u64":"_cmp_u64":"-9",
+            u128|u128:"_int_u128":"_cmp_u128":"-10",
+            usize|usize_up:"_int_usize":"_cmp_usize":"-11"
         ];
     };
 
-    (signed $( $t:ty : $cap:literal : $up:ty : $d:literal ),+) => {
-        $( impl_int![@signed $t:$cap:$up:$d]; )+
+    (signed $( $t:ty | $up:ty : $cap:literal : $cmp:literal : $d:literal ),+) => {
+        $( impl_int![@signed $t|$up:$cap:$cmp:$d]; )+
     };
-    (unsigned $( $t:ty : $cap:literal : $up:ty : $d:literal ),+) => {
-        $( impl_int![@unsigned $t:$cap:$up:$d]; )+
+    (unsigned $( $t:ty | $up:ty : $cap:literal : $cmp:literal : $d:literal ),+) => {
+        $( impl_int![@unsigned $t|$up:$cap:$cmp:$d]; )+
     };
 
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $up: ty : $d:literal) => { $crate::paste! {
+    (@signed $t:ty | $up:ty : $cap:literal : $cmp:literal : $d:literal) => { paste! {
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
@@ -70,8 +77,25 @@ macro_rules! impl_int {
             #[doc = "assert![!Int(1_" $t ").is_prime()];"]
             #[doc = "assert![!Int(-2_" $t ").is_prime()];"]
             /// ```
+            /// # Features
+            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
             #[must_use] #[inline]
+            #[cfg(feature = $cmp)]
             pub const fn is_prime(self) -> bool {
+                match self.0 {
+                    ..=1 =>  false,
+                    2..=3 => true,
+                    _ => {
+                        iif![self.0 % 2 == 0; return false];
+                        let limit = iif![let Ok(s) = self.sqrt_floor(); s.0; unreachable!()];
+                        let mut i = 3;
+                        while i <= limit { iif![self.0 % i == 0; return false]; i += 2; }
+                        true
+                    }
+                }
+            }
+            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
+            pub fn is_prime(self) -> bool {
                 match self.0 {
                     ..=1 =>  false,
                     2..=3 => true,
@@ -102,8 +126,22 @@ macro_rules! impl_int {
             /// # #[cfg(feature = "_int_i8")]
             /// assert![Int(31_i8).prime_nth().is_err()];
             /// ```
+            /// # Features
+            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
             #[inline]
+            #[cfg(feature = $cmp)]
             pub const fn prime_nth(self) -> Result<Int<$t>> {
+                let [nth, mut count, mut i] = [self.0.abs(), 1, 2];
+                loop {
+                    if Int(i).is_prime() {
+                        iif![count - 1 == nth; return Ok(Int(i))];
+                        count += 1;
+                    }
+                    i = iif![let Some(i) = i.checked_add(1); i; return Err(Overflow(None))];
+                }
+            }
+            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
+            pub fn prime_nth(self) -> Result<Int<$t>> {
                 let [nth, mut count, mut i] = [self.0.abs(), 1, 2];
                 loop {
                     if Int(i).is_prime() {
@@ -133,8 +171,20 @@ macro_rules! impl_int {
             /// # Links
             /// - <https://mathworld.wolfram.com/PrimeCountingFunction.html>.
             /// - <https://en.wikipedia.org/wiki/Prime-counting_function>.
+            /// # Features
+            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
             #[inline]
+            #[cfg(feature = $cmp)]
             pub const fn prime_pi(self) -> usize {
+                let (mut prime_count, mut i) = (0_usize, 0 as $up);
+                while i <= self.0 as $up {
+                    iif![Int(i as $t).is_prime(); prime_count += 1];
+                    i += 1;
+                }
+                prime_count
+            }
+            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
+            pub fn prime_pi(self) -> usize {
                 let (mut prime_count, mut i) = (0_usize, 0 as $up);
                 while i <= self.0 as $up {
                     iif![Int(i as $t).is_prime(); prime_count += 1];
@@ -182,7 +232,7 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $up:ty : $d:literal) => { $crate::paste! {
+    (@unsigned $t:ty | $up:ty : $cap:literal : $cmp:literal : $d:literal) => { paste! {
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
@@ -207,8 +257,25 @@ macro_rules! impl_int {
             #[doc = "assert![Int(2_" $t ").is_prime()];"]
             #[doc = "assert![!Int(1_" $t ").is_prime()];"]
             /// ```
+            /// # Features
+            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
             #[must_use] #[inline]
+            #[cfg(feature = $cmp)]
             pub const fn is_prime(self) -> bool {
+                match self.0 {
+                    ..=1 =>  false,
+                    2..=3 => true,
+                    _ => {
+                        iif![self.0 % 2 == 0; return false];
+                        let limit = self.sqrt_floor().0;
+                        let mut i = 3;
+                        while i <= limit { iif![self.0 % i == 0; return false]; i += 2; }
+                        true
+                    }
+                }
+            }
+            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
+            pub fn is_prime(self) -> bool {
                 match self.0 {
                     ..=1 =>  false,
                     2..=3 => true,
@@ -233,8 +300,22 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Ok(Int(251)), Int(53_" $t ").prime_nth()];"]
             /// assert![Int(54_u8).prime_nth().is_err()];
             /// ```
+            /// # Features
+            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
             #[inline]
+            #[cfg(feature = $cmp)]
             pub const fn prime_nth(self) -> Result<Int<$t>> {
+                let [nth, mut count, mut i] = [self.0, 1, 2];
+                loop {
+                    if Int(i).is_prime() {
+                        iif![count - 1 == nth; return Ok(Int(i))];
+                        count += 1;
+                    }
+                    i = iif![let Some(i) = i.checked_add(1); i; return Err(Overflow(None))];
+                }
+            }
+            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
+            pub fn prime_nth(self) -> Result<Int<$t>> {
                 let [nth, mut count, mut i] = [self.0, 1, 2];
                 loop {
                     if Int(i).is_prime() {
@@ -263,8 +344,20 @@ macro_rules! impl_int {
             /// # Links
             /// - <https://mathworld.wolfram.com/PrimeCountingFunction.html>.
             /// - <https://en.wikipedia.org/wiki/Prime-counting_function>.
+            /// # Features
+            #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
             #[inline]
+            #[cfg(feature = $cmp)]
             pub const fn prime_pi(self) -> usize {
+                let (mut prime_count, mut i) = (0_usize, 0 as $up);
+                while i <= self.0 as $up {
+                    iif![Int(i as $t).is_prime(); prime_count += 1];
+                    i += 1;
+                }
+                prime_count
+            }
+            #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
+            pub fn prime_pi(self) -> usize {
                 let (mut prime_count, mut i) = (0_usize, 0 as $up);
                 while i <= self.0 as $up {
                     iif![Int(i as $t).is_prime(); prime_count += 1];

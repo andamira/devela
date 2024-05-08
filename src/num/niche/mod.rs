@@ -7,21 +7,21 @@ mod reexports;
 #[allow(unused_imports)]
 pub use reexports::*;
 
-#[cfg(feature = "_-niche_any-_")]
+#[cfg(_niche_some)]
 #[cfg(test)]
 mod tests;
 //
-#[cfg(feature = "_-in_range_any-_")]
+#[cfg(_in_range_some)]
 mod in_range;
-#[cfg(feature = "_-non_range_any-_")]
+#[cfg(_non_range_some)]
 mod non_range;
-#[cfg(feature = "_-non_value_any-_")]
+#[cfg(_non_value_some)]
 mod non_value;
-#[cfg(feature = "_-in_range_any-_")]
+#[cfg(_in_range_some)]
 pub use in_range::*;
-#[cfg(feature = "_-non_range_any-_")]
+#[cfg(_non_range_some)]
 pub use non_range::*;
-#[cfg(feature = "_-non_value_any-_")]
+#[cfg(_non_value_some)]
 pub use non_value::*;
 
 pub(crate) mod all {
@@ -30,12 +30,12 @@ pub(crate) mod all {
     pub use super::reexports::*;
 
     #[doc(inline)]
-    #[cfg(feature = "_-in_range_any-_")]
+    #[cfg(_in_range_some)]
     pub use super::in_range::*;
     #[doc(inline)]
-    #[cfg(feature = "_-non_range_any-_")]
+    #[cfg(_non_range_some)]
     pub use super::non_range::*;
     #[doc(inline)]
-    #[cfg(feature = "_-non_value_any-_")]
+    #[cfg(_non_value_some)]
     pub use super::non_value::*;
 }

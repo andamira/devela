@@ -5,13 +5,20 @@
 //! [`cmp`]: std::cmp
 //
 
-mod compare;
 mod reexports;
 #[allow(unused_imports)]
-pub use {compare::*, reexports::*};
+pub use reexports::*;
+
+#[cfg(_cmp_some)]
+mod compare; // `Compare`
+#[cfg(_cmp_some)]
+pub use compare::*;
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{compare::*, reexports::*};
+    pub use super::reexports::*;
+
+    #[cfg(_cmp_some)]
+    pub use super::compare::*;
 }
