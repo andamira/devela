@@ -208,7 +208,7 @@ macro_rules! impl_comparing {
         $( impl_comparing![@float: $f:$fcap:$b:$sh]; )+
     };
     (@float: $f:ty:$fcap:literal:$b:literal:$sh:literal) => { paste! {
-        #[cfg(feature = $cap)]
+        #[cfg(feature = $fcap)]
         impl Compare<$f> {
             #[doc = "A (`const`) port of `" $f "::`[`total_cmp`][" $f "#method.total_cmp]."]
             /// # Features
