@@ -3,7 +3,7 @@
 //! ANSI codes.
 //
 
-use crate::lex::Ascii;
+use crate::text::Ascii;
 
 /// ANSI escape codes.
 ///
@@ -94,9 +94,7 @@ impl Ansi {
     /// Code to move the cursor to the specified 1-digit position (row, col).
     /// # Panics
     /// Panics in debug if either `row` or `col` > 9.
-    #[inline]
-    #[must_use]
-    #[rustfmt::skip]
+    #[inline] #[must_use] #[rustfmt::skip]
     pub const fn CURSOR_MOVE1(row: u8, col: u8) -> [u8; 6] {
         [ b'\x1b', b'[', Ascii(row).digits_1(), b';', Ascii(col).digits_1(), b'H' ]
     }

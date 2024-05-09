@@ -9,10 +9,10 @@
 
 #[cfg(feature = "alloc")]
 use crate::_liballoc::{format, string::String};
-#[cfg(feature = "_string_u8")]
-use crate::lex::{format_buf, Ascii, StringU8};
 #[cfg(feature = "_float_f64")]
 use crate::num::ExtFloat;
+#[cfg(feature = "_string_u8")]
+use crate::text::{format_buf, Ascii, StringU8};
 #[allow(unused_imports)]
 use crate::time::HourMilliSplit;
 use crate::time::SecNanoSplit;

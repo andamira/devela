@@ -4,9 +4,9 @@
 //
 
 use super::Ansi;
-use crate::lex::Ascii;
 #[cfg(feature = "_cmp_u8")]
 use crate::num::Compare;
+use crate::text::Ascii;
 
 /// ANSI 3-bit color codes, 8 colors.
 #[repr(u8)]

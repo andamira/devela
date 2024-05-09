@@ -36,11 +36,11 @@ mod reflection {
         "safe_code",
         "safe_data", "safe_data_collections",
         "safe_exec",
-        "safe_lex",
         "safe_mem",
         "safe_num",
         "safe_rend", "safe_rend_audio", "safe_rend_image",
         "safe_sys",
+        "safe_text",
         "safe_time",
         "safe_ui", "safe_ui_term",
 
@@ -113,15 +113,6 @@ mod reflection {
         "_sort_f32", "_sort_f64"
     ]);
 
-    /* lex */
-
-    pub const STRING_U: FlagsFeatures = (&["_some_string", "_some_string_u"], &[
-        "_string_u8", "_string_u16", "_string_u32", "_string_usize",
-    ]);
-    pub const STRING: FlagsFeatures = (&["_some_string"], &[
-        "_string_nonul",
-    ]);
-
     /* num */
 
     pub const CMP: FlagsFeatures = (&["_some_cmp"], &[
@@ -165,6 +156,16 @@ mod reflection {
         "_in_range_u64", "_in_range_u128", "_in_range_usize",
     ]);
 
+    /* text */
+
+    pub const STRING_U: FlagsFeatures = (&["_some_string", "_some_string_u"], &[
+        "_string_u8", "_string_u16", "_string_u32", "_string_usize",
+    ]);
+    pub const STRING: FlagsFeatures = (&["_some_string"], &[
+        "_string_nonul",
+    ]);
+
+
     // funtion helpers
     // -------------------------------------------------------------------------
 
@@ -189,7 +190,7 @@ mod reflection {
             BIT,
             DESTAQUE, NODE, STACK, // collections
             SORT_INT, SORT_FLOAT,
-            // lex
+            // text
             STRING, STRING_U,
             // num
             CMP,

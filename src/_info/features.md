@@ -42,7 +42,6 @@ Single modules:
 - [`code`]
 - [`data`]
 - [`exec`]: enables `exec` functionality.
-- [`lex`]: enables `Char*`, `Egc`, `Nonul`.
 - [`mem`]
   - `mem_bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
@@ -54,6 +53,7 @@ Single modules:
     - `rend_image`
     - `rend_video`
 - [`sys`]
+- [`text`]: enables `Char*`, `Egc`, `Nonul`.
 - [`time`]
 - [`ui`]: enables all of the `ui` sub-features:
     - `ui_events`: extra support for events.
@@ -65,10 +65,10 @@ Enabling `mem`, `num`, `rend`, `ui` or their submodules, sets the corresponding 
 [`code`]: crate::code
 [`data`]: crate::data
 [`exec`]: crate::exec
-[`lex`]: crate::lex
 [`num`]: crate::num
 [`rend`]: crate::rend
 [`sys`]: crate::sys
+[`text`]: crate::text
 [`time`]: crate::time
 [`ui`]: crate::ui
 [`ui_term`]: crate::ui_term
@@ -83,10 +83,10 @@ In order to use any unsafe functionality:
 - `safe`: forbids `unsafe` (and overrides unsafe features), includes:
   - `safe_code`
   - `safe_data`
-  - `safe_lex`
   - `safe_num`
   - `safe_rend`
   - `safe_sys`
+  - `safe_text`
   - `safe_time`
   - `safe_ui`, `safe_ui_term`
   - `safe_work`
@@ -171,20 +171,6 @@ Implement the [`Tuple`] trait for some maximum arity (12 by default).
 [`NodeU*`]: crate::data::NodeU8
 [`Tuple`]: crate::data::collections::Tuple
 
-#### `lex` capabilities
-
-Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
-- `_string_all`:
-  - `_string_uall`:
-    - `_string_u8`, `_string_u16`, `_string_u32`, `_string_usize`.
-  - `_string_nonul`.
-
-They also set the corresponding flags:
-`_some_string`, `_some_string_u`.
-
-[`StringU*`]: crate::lex::StringU8
-[`StringNonul`]: crate::lex::StringNonul
-
 #### `num` capabilities
 
 Enable specific implementations for [`Compare`]:
@@ -244,6 +230,20 @@ They also set the corresponding flags:
 [`NonRange*`]: crate::num::NonRangeU8
 [`NonValue*`]: crate::num::NonValueU8
 
+#### `text` capabilities
+
+Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
+- `_string_all`:
+  - `_string_uall`:
+    - `_string_u8`, `_string_u16`, `_string_u32`, `_string_usize`.
+  - `_string_nonul`.
+
+They also set the corresponding flags:
+`_some_string`, `_some_string_u`.
+
+[`StringU*`]: crate::text::StringU8
+[`StringNonul`]: crate::text::StringNonul
+
 
 ### Dependency features
 
@@ -251,5 +251,5 @@ Enabling any of them sets the `_some_dep` flag.
 
 - `dep_all`: enables all the optional dependencies
   - `dep_exec`: enables `atomic`, `portable-atomic`.
-  - `dep_lex`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
+  - `dep_text`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
   - `dep_ui_term`: enables `const-str`, `crossterm`.

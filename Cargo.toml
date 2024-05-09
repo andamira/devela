@@ -5,7 +5,7 @@
 members = [".", "macros"]
 
 [lib]
-path = "./src/Lib.rs"
+# path = "./src/lib.rs"
 bench = false
 
 [package]
@@ -79,12 +79,11 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	"code", "data", "exec", "lex", "mem", "num", "rend", "sys", "time", "ui"
+	"code", "data", "exec", "mem", "num", "rend", "sys", "text", "time", "ui"
 	]
 code = []
 data = []
 exec = ["bytemuck/zeroable_atomics"]
-lex = ["_non_value_u8", "_non_value_u16"]
 mem = [
 	"mem_bit",
 	]
@@ -102,6 +101,7 @@ rend = [
 	rend_image = []
 	rend_video = []
 sys = []
+text = ["_non_value_u8", "_non_value_u16"]
 time = []
 ui = [
 	 "ui_service",
@@ -119,17 +119,17 @@ ui = [
 # 2. don't enable the `safe` feature for that module.
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_exec", "safe_lex", "safe_mem",
-	"safe_num", "safe_rend", "safe_sys", "safe_time", "safe_ui",
+	"safe_code", "safe_data", "safe_exec", "safe_mem", "safe_num",
+	"safe_rend", "safe_sys", "safe_text", "safe_time", "safe_ui",
 ] # in specific modules:
 	safe_code = []
 	safe_data = []
 	safe_exec = []
-	safe_lex = []
 	safe_mem = []
 	safe_num = []
 	safe_rend = []
 	safe_sys = []
+	safe_text = []
 	safe_time = []
 	safe_ui = ["safe_ui_term"]
 		safe_ui_term = []
@@ -186,7 +186,7 @@ _min_docs = [ # the minimum capabilities to document all methods
 	"_non_value_u8", "_non_range_u8", "_in_range_u8",
 	"_tuple"]
 _max_docs = [ # the maximum capabities relevant for documentation
-	"_data_all", "_lex_all", "_num_all"]
+	"_data_all", "_num_all", "_text_all"]
 _max = [ # the maximum capabilities, including non-relevant for documentation
 	"_max_docs",
 	"_tuple_72"]
@@ -266,23 +266,6 @@ _sort_all = [
 	_sort_usize = []
 	_sort_f32 = ["_cmp_f32"]
 	_sort_f64 = ["_cmp_f64"]
-
-#* lex capabilities *#
-# ---------------------
-
-_lex_all = ["_string_all"]
-
-# private reflexion:
-
-# StringU*, StringNonul:
-_string_all = [
-	"_string_u8", "_string_u16", "_string_u32", "_string_usize",
-	"_string_nonul"]
-	_string_u8 = []
-	_string_u16 = []
-	_string_u32 = []
-	_string_usize = []
-	_string_nonul = []
 
 #* num capabilities *#
 # ---------------------
@@ -384,6 +367,23 @@ _niche_all = ["_non_value_all", "_non_range_all", "_in_range_all"]
 		_in_range_isize = []
 		_in_range_usize = []
 
+#* text capabilities *#
+# ---------------------
+
+_text_all = ["_string_all"]
+
+# private reflexion:
+
+# StringU*, StringNonul:
+_string_all = [
+	"_string_u8", "_string_u16", "_string_u32", "_string_usize",
+	"_string_nonul"]
+	_string_u8 = []
+	_string_u16 = []
+	_string_u32 = []
+	_string_usize = []
+	_string_nonul = []
+
 
 #* Dependency features *#
 # ------------------------------------------------------------------------------
@@ -394,7 +394,7 @@ dep_all = [ # enables all optional dependencies
 	"unicode-segmentation", "unicode-width", "wide",
 ] # enable groups of dependencies:
 	dep_exec = ["atomic", "portable-atomic"]
-	dep_lex = ["const-str", "memchr", "unicode-segmentation", "unicode-width"]
+	dep_text = ["const-str", "memchr", "unicode-segmentation", "unicode-width"]
 	dep_ui_term = ["const-str", "crossterm"]
 
 atomic = ["dep:atomic"]
