@@ -36,15 +36,6 @@ macro_rules! custom_impls {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Float<$f> {
-            /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
-            // WAIT:1.77 [round_ties_even](https://github.com/rust-lang/rust/issues/96710)
-            #[inline] #[must_use]
-            pub fn round_ties_even(self) -> Float<$f> {
-                let r = self.round_ties_away();
-                iif![r.0 % 2.0 == 0.0; r;
-                    iif![(self - r).abs() == 0.5; r - self.signum(); r]]
-            }
-
             /// Returns the nearest integer, rounding ties to the nearest odd integer.
             #[inline] #[must_use]
             pub fn round_ties_odd(self) -> Float<$f> {

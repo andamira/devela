@@ -2,6 +2,10 @@
 //
 //! Methods depending on libm, std, or their absence
 //
+// TOC
+// - impls for libm
+// - impls for std && not(libm)
+// - impls for not(std) && not(libm)
 
 use super::Float;
 
@@ -59,6 +63,7 @@ use impl_fp;
 mod _libm {
     use super::{impl_fp, Float};
     use crate::_deps::libm::Libm;
+    use crate::code::iif;
 
     // custom implementations are commented out
     impl_fp![libm:f*:
@@ -205,6 +210,14 @@ mod _libm {
                     }
                 }
 
+                /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
+                #[inline] #[must_use]
+                pub fn round_ties_even(self) -> Float<$f> {
+                    let r = self.round_ties_away();
+                    iif![r.0 % 2.0 == 0.0; r;
+                        iif![(self - r).abs() == 0.5; r - self.signum(); r]]
+                }
+
                 /// Raises `x` to the `p` integer power.
                 #[must_use] #[inline]
                 pub fn powi(self, p: $e) -> Float<$f> { self.powf(p as $f) }
@@ -275,6 +288,8 @@ mod _std {
         ceil = ceil: ;
         "The nearest integer to `x`, rounding ties away from `0.0`."
         round = round_ties_away: ;
+        "The nearest integer to `x`, rounding ties to the nearest even integer."
+        round_ties_even = round_ties_even: ;
         r"The integral part.
         $$ \text{trunc}(x) = \begin{cases}
         \lfloor x \rfloor, & \text{if } x \geq 0 \\
@@ -464,6 +479,14 @@ mod _no_std_no_libm {
                 #[must_use] #[inline]
                 pub fn round_ties_away(self) -> Float<$f> {
                     Float(self.0 + Float(0.5 - 0.25 * <$f>::EPSILON).copysign(self.0).0).trunc()
+                }
+
+                /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
+                #[inline] #[must_use]
+                pub fn round_ties_even(self) -> Float<$f> {
+                    let r = self.round_ties_away();
+                    iif![r.0 % 2.0 == 0.0; r;
+                        iif![(self - r).abs() == 0.5; r - self.signum(); r]]
                 }
 
                 /// The integral part.
