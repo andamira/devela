@@ -45,7 +45,6 @@ Single modules:
   - `mem_bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
     - `num_geom`: enables geometric types and operations.
-    - `num_int`: `Divisor`, `Frac`, `Int`, `NumInt`, `NumRefInt`.
 - [`rend`]
     - `rend_audio`
     - `rend_color`

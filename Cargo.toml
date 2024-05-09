@@ -32,7 +32,7 @@ build = "construct/mod.rs"
 publish = true
 
 
-[features] # 214 (300 max)
+[features] # 213 (300 max)
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -89,10 +89,9 @@ mem = [
 	]
 	mem_bit = []
 num = [
-	"num_geom", "num_int",
+	"num_geom",
 	]
 	num_geom = [] # geometric types and operations.
-	num_int = [] # Divisor, Frac, Int, NumInt, NumRefInt.
 rend = [
 	"rend_audio", "rend_color", "rend_font", "rend_image", "rend_video",
 	]

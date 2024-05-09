@@ -9,7 +9,7 @@ use crate::num::geom::Vector;
 #[allow(unused_imports)]
 #[cfg(all(not(feature = "std"), _float_some))]
 use crate::num::ExtFloat;
-#[cfg(all(feature = "num_int", _int_some))]
+#[cfg(_int_some)]
 use crate::{code::unwrap, num::Int};
 use core::{concat as cc, stringify as fy};
 
@@ -73,8 +73,6 @@ macro_rules! impl_vector {
             /// \bm{n} = \widehat{\bm{a}} = \frac{1}{d}\thinspace\bm{a} =
             /// \frac{\bm{a}}{|\bm{a}|}
             /// $$
-            #[cfg(feature = "num_int")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
             pub const fn c_normalize_with(self, magnitude: $t) -> Self {
                 let mut normalized = [0; D];
                 let mut i = 0;
@@ -206,8 +204,6 @@ macro_rules! impl_vector {
             ///
             /// # Features
             #[doc = cc!("This will only be *const* if the ", fy!($cmp), " feature is enabled.")]
-            #[cfg(feature = "num_int")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
             #[cfg(feature = $cmp)]
             pub const fn c_magnitude_floor(self) -> $t {
                 unwrap![ok Int(self.c_dot(self).abs()).sqrt_floor()].0
@@ -223,8 +219,6 @@ macro_rules! impl_vector {
             ///
             /// # Features
             #[doc = cc!("This will only be *const* if the ", fy!($cmp), " feature is enabled.")]
-            #[cfg(feature = "num_int")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
             #[cfg(feature = $cmp)]
             pub const fn c_magnitude_ceil(self) -> $t {
                 unwrap![ok Int(self.c_dot(self).abs()).sqrt_ceil()].0
@@ -237,8 +231,6 @@ macro_rules! impl_vector {
             /// Calculates the rounded magnitude of the vector.
             /// # Panics
             /// Can panic if we reach a `i128` value close to its maximum during operations.
-            #[cfg(feature = "num_int")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
             pub const fn c_magnitude_round(self) -> $t {
                 unwrap![ok Int(self.c_dot(self).abs()).sqrt_round()].0
             }
@@ -262,8 +254,6 @@ macro_rules! impl_vector {
             ///
             /// # Features
             #[doc = cc!("This will only be *const* if the ", fy!($cmp), " feature is enabled.")]
-            #[cfg(feature = "num_int")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
             #[cfg(feature = $cmp)]
             pub const fn c_magnitude_floor(self) -> $t {
                 Int(self.c_dot(self)).sqrt_floor().0
@@ -279,8 +269,6 @@ macro_rules! impl_vector {
             ///
             /// # Features
             #[doc = cc!("This will only be *const* if the ", fy!($cmp), " feature is enabled.")]
-            #[cfg(feature = "num_int")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
             #[cfg(feature = $cmp)]
             pub const fn c_magnitude_ceil(self) -> $t {
                 Int(self.c_dot(self)).sqrt_ceil().0
@@ -293,8 +281,6 @@ macro_rules! impl_vector {
             /// Calculates the rounded magnitude of the vector.
             /// # Panics
             /// Can panic if we reach a `u128` value close to its maximum during operations.
-            #[cfg(feature = "num_int")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_int")))]
             pub const fn c_magnitude_round(self) -> $t {
                 unwrap![ok Int(self.c_dot(self)).sqrt_round()].0
             }
