@@ -87,7 +87,7 @@ lex = ["_non_value_u8", "_non_value_u16"]
 mem = [
 	"mem_bit",
 	]
-	mem_bit = []
+	mem_bit = [] # BitSize
 num = [
 	"num_geom",
 	]
@@ -412,7 +412,7 @@ wide = ["dep:wide"]
 # non-optional:
 devela_macros = { version  = "0.10.0" }
 #devela_macros = { path = "./macros" }
-paste_crate = { package = "paste", version = "1.0.14", default-features = false }
+paste_crate = { package = "paste", version = "1.0.15", default-features = false }
 
 # optional:
 const-str = { version = "0.5.7", default-features = false, optional = true }
