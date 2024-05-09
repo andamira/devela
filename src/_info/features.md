@@ -44,7 +44,6 @@ Single modules:
 - [`mem`]
   - `mem_bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
-    - `num_float`: `Float`, `ExtFloat`.
     - `num_geom`: enables geometric types and operations.
     - `num_int`: `Divisor`, `Frac`, `Int`, `NumInt`, `NumRefInt`.
 - [`rend`]

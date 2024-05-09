@@ -16,12 +16,14 @@ mod tests;
 
 /// Provides comprehensive floating-point operations for `T`, some of them *const*.
 ///
-/// See also the [`ExtFloat`][super::ExtFloat] and [ExtFloatConst][super::ExtFloatConst] traits.
+/// See also the [`ExtFloat`][super::ExtFloat] and [`ExtFloatConst`][super::ExtFloatConst] traits.
 ///
 /// # Methods
 /// TODO
 ///
 /// # Features
+/// It depends on having any `_float_f[32|64]` features enabled.
+///
 /// The wrapper leverages `std` or `libm` if enabled, otherwise implements fallbacks.
 /// It also favors `std` style for method's names, but changes a few like `minimum`
 /// for `min_nan` and `maximum` for `max_nan`, for consistency.

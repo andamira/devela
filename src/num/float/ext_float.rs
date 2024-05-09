@@ -12,6 +12,9 @@ use crate::num::{ExtFloatConst, Sign};
 /// This trait can be more convenient to use than the [`Float`] struct,
 /// for non-const operations over primitive floating-point types.
 ///
+/// # Features
+/// It depends on having any `_float_f[32|64]` features enabled.
+///
 /// `Float` has a few more methods implemented if the `libm` feature is enabled,
 /// and some of its methods are *const* if the `unsafe_const` feature is enabled.
 #[rustfmt::skip]

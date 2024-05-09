@@ -76,7 +76,7 @@ mod reflection {
         "mem_bit",
     ]);
     pub const NUM: FlagsFeatures = (&["_num_some"], &[
-        "num_float", "num_geom", "num_int",
+        "num_geom", "num_int",
     ]);
     pub const REND: FlagsFeatures = (&["_rend_some"], &[
         "rend_audio", "rend_color", "rend_font", "rend_image", "rend_video",

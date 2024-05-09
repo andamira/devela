@@ -6,5 +6,5 @@
 mod core_traits;
 mod methods_iu;
 
-#[cfg(any(feature = "std", feature = "num_float"))]
+#[cfg(any(feature = "std", _float_some))]
 mod methods_f;

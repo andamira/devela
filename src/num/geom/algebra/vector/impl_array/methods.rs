@@ -7,7 +7,7 @@
 
 use crate::num::geom::Vector;
 #[allow(unused_imports)]
-#[cfg(all(feature = "num_float", not(feature = "std")))]
+#[cfg(all(not(feature = "std"), _float_some))]
 use crate::num::ExtFloat;
 #[cfg(all(feature = "num_int", _int_some))]
 use crate::{code::unwrap, num::Int};
@@ -323,9 +323,7 @@ macro_rules! impl_vector {
             /// \bm{n} = \widehat{\bm{a}} = \frac{1}{d}\thinspace\bm{a} =
             /// \frac{\bm{a}}{|\bm{a}|}
             /// $$
-            #[cfg(any(feature = "std", feature = "num_float"))]
-            #[cfg_attr(feature = "nightly_doc",
-                doc(cfg(any(feature = "std", feature = "num_int"))))]
+            #[inline]
             pub fn normalize(&self) -> Self {
                 let mag = self.magnitude();
                 let mut normalized = [0.0; D];
@@ -340,9 +338,6 @@ macro_rules! impl_vector {
             /// # Formula
             /// $$ \large |\vec{V}| = \sqrt{V_0^2 + ... + V_n^2} $$
             #[inline]
-            #[cfg(any(feature = "std", feature = "num_float"))]
-            #[cfg_attr(feature = "nightly_doc",
-                doc(cfg(any(feature = "std", feature = "num_int"))))]
             pub fn magnitude(self) -> $f { self.dot(self).sqrt() }
 
             /// Calculates the squared magnitude of the vector.

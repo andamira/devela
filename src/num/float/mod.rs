@@ -5,15 +5,12 @@
 
 #![cfg_attr(not(feature = "num"), allow(unused))]
 
-mod ext_float_const;
-pub use ext_float_const::*;
+mod constants; // ExtFloatConst
+pub use constants::*;
 
-#[cfg(feature = "num_float")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_float")))]
-mod ext_float;
-#[cfg(feature = "num_float")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_float")))]
-mod wrapper;
-
-#[cfg(feature = "num_float")]
+#[cfg(_float_some)]
+mod ext_float; // ExtFloat
+#[cfg(_float_some)]
+mod wrapper; // Float
+#[cfg(_float_some)]
 pub use {ext_float::*, wrapper::*};

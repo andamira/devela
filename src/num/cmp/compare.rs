@@ -16,12 +16,7 @@
 // - WAIT: [const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/issues/57241)
 
 use crate::code::{iif, paste};
-#[cfg(all(
-    not(feature = "safe_num"),
-    feature = "unsafe_const",
-    feature = "num_float"
-))]
-#[cfg(_float_some)]
+#[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", _float_some))]
 use crate::num::Float;
 use core::cmp::Ordering::{self, Equal, Greater, Less};
 
@@ -211,8 +206,9 @@ macro_rules! impl_comparing {
         #[cfg(feature = $fcap)]
         impl Compare<$f> {
             #[doc = "A (`const`) port of `" $f "::`[`total_cmp`][" $f "#method.total_cmp]."]
+            ///
             /// # Features
-            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            /// It will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn total_cmp(self, other: $f) -> Ordering {
@@ -243,8 +239,10 @@ macro_rules! impl_comparing {
             }
 
             /// Compares and returns a clamped *total ordered* `self` between `min` and `max`.
+            ///
             /// # Features
-            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            /// It will only be `const` with the `unsafe_const` feature enabled.
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Compare;
@@ -260,8 +258,10 @@ macro_rules! impl_comparing {
             pub fn clamp(self, min: $f, max: $f) -> $f { Self(self.max(min)).min(max) }
 
             /// Compares and returns the *total ordered* maximum between `self` and `other`.
+            ///
             /// # Features
-            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            /// It will only be `const` with the `unsafe_const` feature enabled.
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Compare;
@@ -284,8 +284,10 @@ macro_rules! impl_comparing {
             }
 
             /// Compares and returns the *total ordered* minimum between `self` and `other`.
+            ///
             /// # Features
-            /// This function will only be `const` with the `unsafe_const` feature enabled.
+            /// It will only be `const` with the `unsafe_const` feature enabled.
+            ///
             /// # Examples
             /// ```
             /// # use devela::num::Compare;
@@ -409,11 +411,9 @@ macro_rules! impl_comparing {
             /// Returns `true` if `self` is subnormal.
             ///
             /// # Features
-            #[doc = "This function will only be const with the `unsafe_const`, `" $fcap "`,"]
-            /// and `num_float` features enabled.
+            #[doc = "It will only be *const* with `unsafe_const` and `" $fcap "` features enabled."]
             #[inline] #[must_use]
-            #[cfg(all(not(feature = "safe_num"),
-                feature = "unsafe_const", feature = "num_float", feature = $fcap))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", feature = $fcap))]
             pub const fn is_subnormal(self) -> bool {
                 // check whether it's between 0 and the smallest finite value
                 (matches![self.total_cmp($f::MIN_POSITIVE), Less] &&
@@ -423,17 +423,15 @@ macro_rules! impl_comparing {
             }
             #[inline] #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num",
-                not(any(feature = "unsafe_const", feature = "num_float", feature = $fcap ))))]
+                not(any(feature = "unsafe_const", feature = $fcap ))))]
             pub fn is_subnormal(self) -> bool { self.0.is_subnormal() }
 
             /// Returns `true` if `self` is neither zero, infinite, subnormal, or NaN.
             ///
             /// # Features
-            #[doc = "This function will only be const with the `unsafe_const` and `" $fcap "`,"]
-            /// and `num_float` features enabled.
+            #[doc = "It will only be *const* with `unsafe_const` and `" $fcap "` features enabled."]
             #[inline] #[must_use]
-            #[cfg(all(not(feature = "safe_num"),
-                feature = "unsafe_const", feature = "num_float", feature = $fcap))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", feature = $fcap))]
             pub const fn is_normal(self) -> bool {
                 (matches![self.total_cmp($f::MIN_POSITIVE), Greater | Equal]  &&
                 matches![self.total_cmp($f::INFINITY), Less]) ||
@@ -443,7 +441,7 @@ macro_rules! impl_comparing {
             }
             #[inline] #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num",
-                not(any(feature = "unsafe_const", feature = "num_float", feature = $fcap))))]
+                not(any(feature = "unsafe_const", feature = $fcap))))]
             pub fn is_normal(self) -> bool { self.0.is_normal() }
         }
     }};

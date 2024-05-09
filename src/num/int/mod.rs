@@ -14,7 +14,7 @@ mod divisor;
 pub use divisor::*;
 
 #[allow(unused_imports)]
-#[cfg(all(not(feature = "std"), feature = "num_float"))]
+#[cfg(all(not(feature = "std"), feature = "_float_f64"))]
 use crate::num::ExtFloat;
 
 /// The prime number theorem formula.
@@ -47,10 +47,10 @@ use crate::num::ExtFloat;
 //
 // IMPROVE: use big int and big float.
 #[must_use]
-#[cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64")))]
+#[cfg(any(feature = "std", feature = "_float_f64"))]
 #[cfg_attr(
     feature = "nightly_doc",
-    doc(cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64"))))
+    doc(cfg(any(feature = "std", feature = "_float_f64")))
 )]
 pub fn prime_number_theorem(n: u128) -> u128 {
     #[allow(clippy::cast_precision_loss)]

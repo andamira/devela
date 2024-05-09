@@ -11,8 +11,7 @@
 use crate::_liballoc::{format, string::String};
 #[cfg(feature = "_string_u8")]
 use crate::lex::{format_buf, Ascii, StringU8};
-#[cfg(feature = "num_float")]
-#[allow(unused_imports)]
+#[cfg(feature = "_float_f64")]
 use crate::num::ExtFloat;
 #[allow(unused_imports)]
 use crate::time::HourMilliSplit;
@@ -24,7 +23,7 @@ use crate::time::SecNanoSplit;
 /// ```
 /// # use devela::time::Timecode;
 /// #[cfg(feature = "_string_u8")]
-/// #[cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64")))]
+/// #[cfg(any(feature = "std", feature = "_float_f64"))]
 /// assert_eq!(Timecode::secs_f64(3661.5), "01:01:01.500");
 ///
 /// #[cfg(feature = "_string_u8")]
@@ -42,10 +41,10 @@ impl Timecode {
     // -> 64 bits
     #[inline]
     #[must_use]
-    #[cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64")))]
+    #[cfg(any(feature = "std", feature = "_float_f64"))]
     #[cfg_attr(
         feature = "nightly_doc",
-        doc(cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64"))))
+        doc(cfg(any(feature = "std", feature = "_float_f64")))
     )]
     pub fn split_secs_f64(seconds: f64) -> HourMilliSplit<u32, u8, u8, u16> {
         let ms = (seconds.fract() * 1000.) as u16;
@@ -93,10 +92,10 @@ impl Timecode {
     /// Makes use of the `unsafe_str` feature if enabled.
     //
     // -> 96 bits
-    #[cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64")))]
+    #[cfg(any(feature = "std", feature = "_float_f64"))]
     #[cfg_attr(
         feature = "nightly_doc",
-        doc(cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64"))))
+        doc(cfg(any(feature = "std", feature = "_float_f64")))
     )]
     #[cfg(feature = "_string_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_u8")))]
@@ -196,7 +195,7 @@ mod tests {
     use super::*;
 
     #[test]
-    #[cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64")))]
+    #[cfg(any(feature = "std", feature = "_float_f64"))]
     fn timecode_split_secs_f64() {
         let result = Timecode::split_secs_f64(3661.500);
         assert_eq!(result, HourMilliSplit { h: 1, m: 1, s: 1, ms: 500 });
@@ -216,7 +215,7 @@ mod tests {
 
     #[test]
     #[cfg(feature = "_string_u8")]
-    #[cfg(any(feature = "std", all(feature = "num_float", feature = "_float_f64")))]
+    #[cfg(any(feature = "std", feature = "_float_f64"))]
     fn timecode_secs_f64() {
         let formatted = Timecode::secs_f64(3661.5);
         assert_eq!(formatted, "01:01:01.500");

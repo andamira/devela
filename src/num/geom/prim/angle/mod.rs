@@ -19,6 +19,12 @@ mod r#impl;
 /// For floating-point primitives the range from -1 to 1 (non-inclusive) represents
 /// the normalized full turn, and anything beyond that are non-normalied angles.
 ///
+/// # Features
+/// It will be implemented for primitive floating point types when either the
+/// `std` or `_float_f[32|64]` features are enabled.
+/// And it will implemented for primitive integer types when its corresponding
+/// feature capability is enabled (e.g. `_int_i32`).
+///
 /// # Methods
 ///
 /// Methods are implemented the same for each main angle representation, using:
