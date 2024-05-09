@@ -9,20 +9,25 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`, `unsafe_thread`, `rend_audio`, `rend_color`, `rend_font`, `rend_image`, `rend_video`, `ui_service`.
-- add features: `_num_all`, `_float_all`, `_float_f32`, `_float_f64`, `_int_all`, `_int_iall`, `_int_uall`, `_int_i8`, `_int_i16`, `_int_i32`, `_int_i64`, `_int_i128`, `_int_isize`, `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`, `_tuple_arity_15`.
-- add features: `_bit_all`, `_bit_i8`, `_bit_i16`, `_bit_i32`, `_bit_i64`, `_bit_i128`, `_bit_isize`, `_bit_u8`, `_bit_u16`, `_bit_u32`, `_bit_u64`, `_bit_u128`, `_bit_usize`.
-- add features: `_non_value_all`, `_non_value_i8`, `_non_value_i16`, `_non_value_i32`, `_non_value_i64`, `_non_value_i128`, `_non_value_isize`, `_non_value_u8`, `_non_value_u16`, `_non_value_u32`, `_non_value_u64`, `_non_value_u128`, `_non_value_usize`.
-- add features: `_non_range_all`, `_non_range_i8`, `_non_range_i16`, `_non_range_i32`, `_non_range_i64`, `_non_range_i128`, `_non_range_isize`, `_non_range_u8`, `_non_range_u16`, `_non_range_u32`, `_non_range_u64`, `_non_range_u128`, `_non_range_usize`.
-- add features: `_range_all`, `_range_i8`, `_range_i16`, `_range_i32`, `_range_i64`, `_range_i128`, `_range_isize`, `_range_u8`, `_range_u16`, `_range_u32`, `_range_u64`, `_range_u128`, `_range_usize`.
-- add features: `_default`, `_min_docs`, `_max_docs`, `_max`, `_docsrs_stable`,`__dbg`.
-- add private features for reflection purposes.
+- add features: `_num_all`, `_float_all`, `_float_f[32|64]`, `_int_all`, `_int_[iu][all|8|16|32|64|128|size]`.
+- add features: `_bit_all`, `_bit_[iu][8|16|32|64|128|size]`.
+- add features: `_ascii_all`, `_ascii_u[8|16|32|64|128|size]`.
+- add features: `_non_value_all`, `_non_value_[iu][8|16|32|64|128|size]`.
+- add features: `_non_range_all`, `_non_range_[iu][8|16|32|64|128|size]`.
+- add features: `_range_all`, `_non_range_[iu][8|16|32|64|128|size]`.
+- add features: `_sort_all`, `_sort_[iu][8|16|32|64|128|size]`.
+- add features: `_cmp_all`, `_cmp_[iu][8|16|32|64|128|size]`.
+- add features: `_default`, `_min_docs`, `_max_docs`, `_max`, `_docsrs_stable`,`__dbg`, `nightly_stabilized`.
+- add features: `_node_all`, `_node_u[8|16|32|64|128|size]`.
+- add compilation flags for reflection purposes.
 - enable `doc_notable_trait` unstable feature with `nightly_doc`.
-- add traits: `ExtFuture`, `ExtFloatConst`, `NumVector`, `UiCap`.
+- add traits: `ExtFuture`, `ExtFloatConst`, `ExtLog`, `NumVector`, `UiCap`.
 - add functions: `future_block`, `hash_pengy`.
 - add type: `Prompt`.
 - add type: `Pinned`.
 - add type: `Timecode`.
-- add types: `LoggerSimple`, `Logging`.
+- add types: `Node*`.
+- add types: `LoggerConfig`, `LoggerPrint`, `Logging`.
 - add types: `Divisor`, `GcdExt`, `ValueQuant`.
 - add types: `Extent`, `Extent2d`, `Extent3d`.
 - add types: `Angle`, `AngleDirection`, `AngleKind`
@@ -35,7 +40,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add `Floating` and `ExtFloat` method: `neg_abs`.
 - add `*_assign` methods to `Num` and `NumRef`.
 - add `NumError` variant: `NoInverse`.
+- add `DataError` variants: `NodeLinkNotSet`, `NodeLinkNotUnique`.
 - add new arms to `array_init:` `init`, `init_heap`.
+- add methods to `BareBox`: `as_ref`.
+- add methods to `Array`: `as_bare_slice`.
 - add methods to `Int`: `midpoint`, `modulo*`.
 - add methods to `Int`, `NumInt`, `NumRefInt`: `midpoint`.
 - add methods to `ExtAny`: `downcast_ref`, `downcast_mut`.
@@ -46,18 +54,19 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add build script for debugging purposes.
 
 ### Removed
-- remove features: `num_all`, `ui_all`, `num_niche_impls`, `num_niche_range`, `result`, `safe_result`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`.
+- remove features: `num_all`, `ui_all`, `num_float`, `num_int`, `num_niche_impls`, `num_niche_range`, `result`, `safe_result`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`.
 - remove `Mem` trait bound from `ByteSize`.
 - remove deprecated `ident_total_count` macro.
 - remove `repr(C)` attribute from niche types.
 - remove dependency `either`.
 
 ### Changed
-- bump rust version to 1.77.1.
+- bump rust version to 1.78.0.
 - move `result` module inside `code`.
 - move `io` moule and `os` submodules to `sys`.
 - move `rustdoc-header.html` file to `/DOCS/`.
 - move `_deps::{code, alloc, std}` to `::{_libcore, _liballoc, _libstd}`.
+- rename `Range` to `InRange`.
 - rename `Biting` to `Bitwise`.
 - rename `gfx` module to `rend`.
 - rename `text` module to `lex`.
@@ -66,16 +75,21 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `_docs` module to `_info`.
 - rename `ExtTuple` trait to `Tuple`.
 - rename `copy` function to `io_copy`.
+- rename `StringEgc` to `EgcString`.
 - rename `NonSpecific*` to `NonValue*`.
-- rename `ByteSize::PTR_SIZE` to `PTR_BYTES`.
+- rename `NonEdge*` aliases to `NonExtreme*`.
+- rename `ByteSize::PTR_SIZE` constant to `PTR_BYTES`.
 - rename `os` module to `sys`, make submodules private.
 - rename `work` module to `exec`, make submodules private.
 - rename `Floating` wrapper to `Float` and make it own `self`.
 - rename `is_aarch64_feature_detected` to `detect_aarch64`.
 - rename `is_x86_feature_detected` to `detect_x86`.
+- rename `DataError` variant: `EmptyNode` to `NodeEmpty`.
 - rename private feature `_exclude_example` to `__excluded`.
+- rename methods: `into_array_const` to `into_array_copy`, `into_inner_const` to `into_inner_copy`, `from_array_const` to `from_array_copy`, `as_array_const` to `as_array_copy`, `as_tuple_const` to `as_tuple_copy`.
 - improve `cdbg`, allow to customize the location path and print fmt.
 - improve `enumset`, allow to specify the visibility and attributes of the set.
+- make `Compare` methods: `pmin`, `pmax` and `pclamp` return `Option`.
 - change `TaskWakerNoop` struct into `task_waker_noop` fn.
 - add more consts to `Float` and `ExtFloat`.
 - add the `?Sized` trait bound for `ExtAny` auto-impls.
@@ -83,7 +97,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 - change default `Tuple` arity to 12.
 - change tuple capability features to: `_tuple_arity_24`, `_tuple_arity_36`, `_tuple_arity_48`, `_tuple_arity_60`, `_tuple_arity_72`, `_tuple_arity_96`.
 - add bounds for `color_gamma_*` functions.
+- make some methods const: `Slice::<u8>::trim_leading_bytes`, `StringU*::from_bytes_n[left|right]`, `Timecode::split_nanos_u[32|64]`.
+- make some methods *optionally* const: `Slice::{lsplit, msplit_[left|right]}`, `Ascii::digits_str`, `StringU*::from_bytes_n[left|right][_unchecked]`.
+- feature-gate `Compare` impls for primitives.
+- feature-gate `StackU*` method `own_resize_default_truncate`.
+- feature-gate `Float` methods: `clamp_total`, `max_total`, `min_total`.
+- feature-gate `ExtFloat` methods: `clamp_total`, `max_total`, `min_total`.
+- make optionally *const* `Int` methods: `is_prime`, `prime_nth`, `prime_pi`,
 - move the enabling of all module's sub-features to the root module feature.
+- update CI actions/checkout@v3 -> v4.
 - update `devela_macros`.
 
 ### Fixed
