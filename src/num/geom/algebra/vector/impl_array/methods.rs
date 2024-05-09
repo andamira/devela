@@ -7,9 +7,9 @@
 
 use crate::num::geom::Vector;
 #[allow(unused_imports)]
-#[cfg(all(not(feature = "std"), _float_some))]
+#[cfg(all(not(feature = "std"), _some_float))]
 use crate::num::ExtFloat;
-#[cfg(_int_some)]
+#[cfg(_some_int)]
 use crate::{code::unwrap, num::Int};
 use core::{concat as cc, stringify as fy};
 

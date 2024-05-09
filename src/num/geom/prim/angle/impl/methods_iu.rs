@@ -4,7 +4,7 @@
 //
 
 use super::super::{Angle, AngleDirection, AngleKind};
-#[cfg(all(not(feature = "std"), _float_some))]
+#[cfg(all(not(feature = "std"), _some_float))]
 use crate::num::ExtFloat;
 use crate::{
     code::compile,
@@ -112,8 +112,8 @@ macro_rules! impl_angle {
 
             /// Converts the angle to radians.
             #[inline] #[must_use]
-            #[cfg(any(feature = "std", _float_some))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", _float_some))))]
+            #[cfg(any(feature = "std", _some_float))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", _some_float))))]
             pub fn to_rad(self) -> $f { self.to_float_normalized() * <$f>::TAU }
             /// Converts the angle to degrees.
             #[inline] #[must_use]

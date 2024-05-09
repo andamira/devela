@@ -8,9 +8,9 @@
 mod constants; // ExtFloatConst
 pub use constants::*;
 
-#[cfg(_float_some)]
+#[cfg(_some_float)]
 mod ext_float; // ExtFloat
-#[cfg(_float_some)]
+#[cfg(_some_float)]
 mod wrapper; // Float
-#[cfg(_float_some)]
+#[cfg(_some_float)]
 pub use {ext_float::*, wrapper::*};

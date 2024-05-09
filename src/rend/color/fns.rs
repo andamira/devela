@@ -3,7 +3,7 @@
 //! Standalone color functions and constants.
 
 use crate::code::{iif, paste, sf};
-#[cfg(_float_some)]
+#[cfg(_some_float)]
 use crate::num::ExtFloat;
 
 /// The coefficient used for calculating the red luminance.

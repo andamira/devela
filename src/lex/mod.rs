@@ -25,9 +25,9 @@ mod fmt;
 mod reexports;
 pub use {ascii::all::*, char::all::*, egc::all::*, error::*, ext::*, fmt::all::*, reexports::*};
 
-#[cfg(_string_u_some)]
+#[cfg(_some_string_u)]
 mod string_u;
-#[cfg(_string_u_some)]
+#[cfg(_some_string_u)]
 pub use string_u::*;
 
 #[cfg(feature = "_string_nonul")]
@@ -42,7 +42,7 @@ pub(crate) mod all {
         ascii::all::*, char::all::*, egc::all::*, error::*, ext::*, fmt::all::*, reexports::*,
     };
 
-    #[cfg(_string_u_some)]
+    #[cfg(_some_string_u)]
     pub use super::string_u::*;
 
     #[doc(inline)]

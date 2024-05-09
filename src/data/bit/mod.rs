@@ -8,9 +8,9 @@ mod wrapper;
 #[allow(unused_imports)]
 pub use {r#trait::BitOps, wrapper::Bitwise};
 
-#[cfg(_bit_some)]
+#[cfg(_some_bit)]
 mod field;
-#[cfg(_bit_some)]
+#[cfg(_some_bit)]
 pub use field::*;
 
 pub(crate) mod all {
@@ -19,6 +19,6 @@ pub(crate) mod all {
     pub use super::{r#trait::BitOps, wrapper::Bitwise};
 
     #[doc(inline)]
-    #[cfg(_bit_some)]
+    #[cfg(_some_bit)]
     pub use super::field::*;
 }

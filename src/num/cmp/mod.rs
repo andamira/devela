@@ -9,9 +9,9 @@ mod reexports;
 #[allow(unused_imports)]
 pub use reexports::*;
 
-#[cfg(_cmp_some)]
+#[cfg(_some_cmp)]
 mod compare; // `Compare`
-#[cfg(_cmp_some)]
+#[cfg(_some_cmp)]
 pub use compare::*;
 
 pub(crate) mod all {
@@ -19,6 +19,6 @@ pub(crate) mod all {
     #[allow(unused_imports)]
     pub use super::reexports::*;
 
-    #[cfg(_cmp_some)]
+    #[cfg(_some_cmp)]
     pub use super::compare::*;
 }

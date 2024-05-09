@@ -50,11 +50,11 @@ mod reflection {
         "unsafe_thread",
     ]);
 
-    pub const NIGHTLY: FlagsFeatures = (&["_nightly_some"], &[
+    pub const NIGHTLY: FlagsFeatures = (&["_some_nightly"], &[
         "nightly_coro", "nightly_doc", "nightly_simd", "nightly_stabilized",
     ]);
 
-    pub const DEPENDENCY: FlagsFeatures = (&["_dep_some"], &[
+    pub const DEPENDENCY: FlagsFeatures = (&["_some_dep"], &[
         "atomic",
         "const-str",
         "crossterm",
@@ -72,16 +72,16 @@ mod reflection {
 
     //* modules *//
 
-    pub const MEM: FlagsFeatures = (&["_mem_some"], &[
+    pub const MEM: FlagsFeatures = (&["_some_mem"], &[
         "mem_bit",
     ]);
-    pub const NUM: FlagsFeatures = (&["_num_some"], &[
-        "num_geom", "num_int",
+    pub const NUM: FlagsFeatures = (&["_some_num"], &[
+        "num_geom",
     ]);
-    pub const REND: FlagsFeatures = (&["_rend_some"], &[
+    pub const REND: FlagsFeatures = (&["_some_rend"], &[
         "rend_audio", "rend_color", "rend_font", "rend_image", "rend_video",
     ]);
-    pub const UI: FlagsFeatures = (&["_ui_some"], &[
+    pub const UI: FlagsFeatures = (&["_some_ui"], &[
         "ui_service",
     ]);
 
@@ -89,75 +89,77 @@ mod reflection {
 
     /* data */
 
-    pub const BIT: FlagsFeatures = (&["_bit_some"], &[
+    pub const BIT: FlagsFeatures = (&["_some_bit"], &[
         "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
         "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
     ]);
 
     // collections
-    pub const DESTAQUE: FlagsFeatures = (&["_destaque_some"], &[
+    pub const DESTAQUE: FlagsFeatures = (&["_some_destaque"], &[
         "_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize",
     ]);
-    pub const NODE: FlagsFeatures = (&["_node_some"], &[
+    pub const NODE: FlagsFeatures = (&["_some_node"], &[
         "_node_u8", "_node_u16", "_node_u32", "_node_usize",
     ]);
-    pub const STACK: FlagsFeatures = (&["_stack_some"], &[
+    pub const STACK: FlagsFeatures = (&["_some_stack"], &[
         "_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize",
     ]);
 
-    pub const SORT_INT: FlagsFeatures = (&["_sort_some", "_sort_int_some"], &[
+    pub const SORT_INT: FlagsFeatures = (&["_some_sort", "_some_sort_int"], &[
         "_sort_i8", "_sort_i16", "_sort_i32", "_sort_i64", "_sort_i128", "_sort_isize",
         "_sort_u8", "_sort_u16", "_sort_u32", "_sort_u64", "_sort_u128", "_sort_usize",
     ]);
-    pub const SORT_FLOAT: FlagsFeatures = (&["_sort_some", "_sort_float_some"], &[
+    pub const SORT_FLOAT: FlagsFeatures = (&["_some_sort", "_some_sort_float"], &[
         "_sort_f32", "_sort_f64"
     ]);
 
     /* lex */
 
-    pub const STRING_U: FlagsFeatures = (&["_string_some", "_string_u_some"], &[
+    pub const STRING_U: FlagsFeatures = (&["_some_string", "_some_string_u"], &[
         "_string_u8", "_string_u16", "_string_u32", "_string_usize",
     ]);
-    pub const STRING: FlagsFeatures = (&["_string_some"], &[
+    pub const STRING: FlagsFeatures = (&["_some_string"], &[
         "_string_nonul",
     ]);
 
     /* num */
 
-    pub const CMP: FlagsFeatures = (&["_cmp_some"], &[
+    pub const CMP: FlagsFeatures = (&["_some_cmp"], &[
         "_cmp_i8", "_cmp_i16", "_cmp_i32", "_cmp_i64", "_cmp_i128", "_cmp_isize",
         "_cmp_u8", "_cmp_u16", "_cmp_u32", "_cmp_u64", "_cmp_u128", "_cmp_usize",
         "_cmp_f32", "_cmp_f64"
     ]);
 
     // numbers
-    pub const FLOAT: FlagsFeatures = (&["_float_some", "_nums_some"], &[
+    pub const FLOAT: FlagsFeatures = (&["_some_float", "_some_nums"], &[
         "_float_f32", "_float_f64"
     ]);
-    pub const INT: FlagsFeatures = (&["_int_i_some", "_int_some", "_nums_some"], &[
+    pub const INT: FlagsFeatures = (&["_some_int_i", "_some_int", "_some_nums"], &[
         "_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize",
     ]);
-    pub const UINT: FlagsFeatures = (&["_int_u_some", "_int_some", "_nums_some"], &[
+    pub const UINT: FlagsFeatures = (&["_some_int_u", "_some_int", "_some_nums"], &[
         "_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize",
     ]);
 
     // niche
     pub const NON_VALUE_I: FlagsFeatures = (
-        &["_non_value_some", "_non_value_i_some", "_niche_some"],
+        &["_some_non_value", "_some_non_value_i", "_some_niche"],
         &["_non_value_i8", "_non_value_i16", "_non_value_i32",
           "_non_value_i64", "_non_value_i128", "_non_value_isize" ]);
     pub const NON_VALUE_U: FlagsFeatures = (
-        &["_non_value_some", "_non_value_u_some", "_niche_some"],
+        &["_some_non_value", "_some_non_value_u", "_some_niche"],
         &["_non_value_u8", "_non_value_u16", "_non_value_u32",
           "_non_value_u64", "_non_value_u128", "_non_value_usize"]);
-    pub const NON_RANGE: FlagsFeatures = (&["_non_range_some", "_niche_some"], &[
-        "_non_range_i8", "_non_range_i16", "_non_range_i32",
+    pub const NON_RANGE: FlagsFeatures = (
+        &["_some_non_range", "_some_niche"],
+        &["_non_range_i8", "_non_range_i16", "_non_range_i32",
         "_non_range_i64", "_non_range_i128", "_non_range_isize",
         "_non_range_u8", "_non_range_u16", "_non_range_u32",
         "_non_range_u64", "_non_range_u128", "_non_range_usize",
     ]);
-    pub const IN_RANGE: FlagsFeatures = (&["_in_range_some", "_niche_some"], &[
-        "_in_range_i8", "_in_range_i16", "_in_range_i32",
+    pub const IN_RANGE: FlagsFeatures = (
+        &["_some_in_range", "_some_niche"],
+        &["_in_range_i8", "_in_range_i16", "_in_range_i32",
         "_in_range_i64", "_in_range_i128", "_in_range_isize",
         "_in_range_u8", "_in_range_u16", "_in_range_u32",
         "_in_range_u64", "_in_range_u128", "_in_range_usize",

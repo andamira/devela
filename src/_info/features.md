@@ -18,6 +18,8 @@ each other, and composable, except from the miscellaneous features.
 
 In this category there are features with varied purposes mostly for internal use.
 
+- `__dbg`: for debugging purposes, shows enabled features and reflection flags.
+- `__notest`: allows excluding examples from being tested.
 
 
 ### Environment features
@@ -56,6 +58,9 @@ Single modules:
 - [`ui`]: enables all of the `ui` sub-features:
     - `ui_events`: extra support for events.
     - `ui_term`: enables the terminal functionality.
+
+Enabling `mem`, `num`, `rend`, `ui` or their submodules, sets the corresponding flags:
+`_some_mem`, `_some_num`, `_some_rend`, `_some_ui`.
 
 [`code`]: crate::code
 [`data`]: crate::data
@@ -100,6 +105,8 @@ In order to use any unsafe functionality:
 
 ### Nightly features
 
+Enabling any of them sets the `_some_nightly` flag.
+
 - `nightly`: enables nightly features.
   - `nightly_coro`: enables `coroutines`, `coroutine_trait`, `iter_from_coroutine`.
   - `nightly_doc`: enables `doc_cfg`.
@@ -124,6 +131,9 @@ Enable specific implementations for [`Bitwise`], [`bitfield`], [`enumset`]:
     - `_bit_i8`, `_bit_i16`, `_bit_i32`, `_bit_i64`, `_bit_i128`, `_bit_isize`.
     - `_bit_u8`, `_bit_u16`, `_bit_u32`, `_bit_u64`, `_bit_u128`, `_bit_usize`.
 
+They also set the corresponding flag:
+`_some_bit`.
+
 [`Bitwise`]: crate::num::Bitwise
 [`bitfield`]: crate::num::bitfield
 [`enumset`]: crate::num::enumset
@@ -140,11 +150,17 @@ Enable specific implementations of data collections
 	`_stack_all`:
 		`_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
 
+They also set the corresponding flags:
+`_some_destaque`, `_some_graph`, `_some_node`, `_some_stack`.
+
 Enable specific implementations for [`Sort`].
 `_sort_all`:
   `_sort_u8`, `_sort_u16`, `_sort_u32`, `_sort_u64`, `_sort_u128`, `_sort_usize`,
   `_sort_i8`, `_sort_i16`, `_sort_i32`, `_sort_i64`, `_sort_i128`, `_sort_isize`,
   `_sort_f32`, `_sort_f64`.
+
+They also set the corresponding flags:
+`_some_sort`, `_some_sort_int`, `_some_sort_float`.
 
 Implement the [`Tuple`] trait for some maximum arity (12 by default).
 - `_tuple[_24|_36|_48|_72]`.
@@ -163,6 +179,9 @@ Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
     - `_string_u8`, `_string_u16`, `_string_u32`, `_string_usize`.
   - `_string_nonul`.
 
+They also set the corresponding flags:
+`_some_string`, `_some_string_u`.
+
 [`StringU*`]: crate::lex::StringU8
 [`StringNonul`]: crate::lex::StringNonul
 
@@ -174,6 +193,8 @@ Enable specific implementations for [`Compare`]:
   - `_cmp_i8`, `_cmp_i16`, `_cmp_i32`, `_cmp_i64`, `_cmp_i128`, `_cmp_isize`.
   - `_cmp_u8`, `_cmp_u16`, `_cmp_u32`, `_cmp_u64`, `_cmp_u128`, `_cmp_usize`.
 
+They also set the corresponding flag:
+`_some_cmp`.
 
 Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
 [`Angle`], [`Point`], [`Vector`]:
@@ -185,6 +206,9 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
       - `_int_i8`, `_int_i16`, `_int_i32`, `_int_i64`, `_int_i128`, `_int_isize`.
     - `_int_uall`:
       - `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
+
+They also set the corresponding flags:
+`_some_nums`, `_some_float`, `_some_int`, `_some_int_i`, `_some_int_u`.
 
 Enable specific implementations for niche [`NonValue*`], [`NonRange*`], [`InRange*`].
 - `_niche_all`:
@@ -204,6 +228,10 @@ Enable specific implementations for niche [`NonValue*`], [`NonRange*`], [`InRang
     - `_in_range_u8`, `_in_range_u16`, `_in_range_u32`,
       `_in_range_u64`, `_in_range_u128`, `_in_range_usize`.
 
+They also set the corresponding flags:
+`_some_niche`, `_some_non_value`, `_some_non_value_i`, `_some_non_value_u`,
+`_some_non_range`, `_some_in_range`.
+
 [`Compare`]: crate::num::Compare
 [`Float`]: crate::num::Float
 [`Frac`]: crate::num::Frac
@@ -218,6 +246,8 @@ Enable specific implementations for niche [`NonValue*`], [`NonRange*`], [`InRang
 
 
 ### Dependency features
+
+Enabling any of them sets the `_some_dep` flag.
 
 - `dep_all`: enables all the optional dependencies
   - `dep_exec`: enables `atomic`, `portable-atomic`.

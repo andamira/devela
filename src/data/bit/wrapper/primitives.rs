@@ -3,7 +3,7 @@
 //! Implements `Bitwise` for the integer primitives
 //
 
-#[cfg(_bit_some)]
+#[cfg(_some_bit)]
 use crate::{
     code::iif,
     data::{

@@ -14,7 +14,7 @@
 //   - lcm
 //   - add
 
-#[cfg(_int_some)]
+#[cfg(_some_int)]
 use crate::num::{Frac, Int, NumResult as Result};
 #[cfg(doc)]
 use {crate::num::NumError, NumError::Overflow};

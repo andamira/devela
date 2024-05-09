@@ -29,13 +29,13 @@ pub mod rand;
 #[doc(no_inline)]
 pub use {niche::all::*, rand::all::*};
 
-#[cfg(_int_some)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_int_some)))]
+#[cfg(_some_int)]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_some_int)))]
 mod frac;
-#[cfg(_int_some)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_int_some)))]
+#[cfg(_some_int)]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_some_int)))]
 mod int;
-#[cfg(_int_some)]
+#[cfg(_some_int)]
 pub use {frac::*, int::*};
 
 #[cfg(feature = "num_geom")]
@@ -57,7 +57,7 @@ pub(crate) mod all {
     #[allow(unused_imports)]
     pub use super::geom::all::*;
     #[doc(inline)]
-    #[cfg(_int_some)]
+    #[cfg(_some_int)]
     #[allow(unused_imports)]
     pub use super::{frac::*, int::*};
 }

@@ -17,14 +17,14 @@ use crate::{
         LexResult as Result,
     },
 };
-#[cfg(_cmp_some)]
+#[cfg(_some_cmp)]
 use crate::{code::cfor, num::Compare};
 
 #[cfg(feature = "lex")]
 use super::char::{
     char_utf8_2bytes_len, char_utf8_3bytes_len, Char16, Char24, Char32, Char7, Char8,
 };
-#[cfg(all(_string_u_some, feature = "alloc"))]
+#[cfg(all(_some_string_u, feature = "alloc"))]
 use crate::_liballoc::{ffi::CString, string::ToString};
 #[allow(unused_imports)]
 use core::str::{from_utf8, from_utf8_unchecked};

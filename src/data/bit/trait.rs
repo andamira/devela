@@ -4,7 +4,7 @@
 // - definition
 // - impls
 
-#[cfg(_bit_some)]
+#[cfg(_some_bit)]
 use super::Bitwise;
 #[cfg(doc)]
 use crate::data::DataError::{MismatchedIndices, OutOfBounds, Overflow};

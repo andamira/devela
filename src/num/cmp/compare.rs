@@ -16,7 +16,7 @@
 // - WAIT: [const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/issues/57241)
 
 use crate::code::{iif, paste};
-#[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", _float_some))]
+#[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", _some_float))]
 use crate::num::Float;
 use core::cmp::Ordering::{self, Equal, Greater, Less};
 

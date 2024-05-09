@@ -49,16 +49,16 @@ publish = true
 # - ["_name"]: Hidden extra capability features.
 # - ["__name"]: Hidden miscellaneous features.
 
-#* miscellaneous features *#
+#* Miscellaneous features *#
 # ------------------------------------------------------------------------------
 
 # default = []
 
 __dbg = [] # for debugging purposes, shows enabled features
-__excluded = [] # allows excluding examples from being tested
+__notest = [] # allows excluding examples from being tested
 
 
-#* environment features *#
+#* Environment features *#
 # ------------------------------------------------------------------------------
 
 alloc = [ # enables `alloc` functionality
@@ -74,7 +74,8 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 ]
 
 
-#* module features trees *#
+
+#* Module features trees *#
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
@@ -110,7 +111,7 @@ ui = [
 		ui_gfx = ["ui_service"]
 		# ui_web = ["ui_service"]
 
-#* safety features trees *#
+#* Safety features trees *#
 # ------------------------------------------------------------------------------
 
 # To use unsafe functionality:
@@ -150,7 +151,7 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	unsafe_thread = [] # Logging::set_logger_racy.
 
 
-#* nightly features tree *#
+#* Nightly features tree *#
 # ------------------------------------------------------------------------------
 
 nightly = [
@@ -167,9 +168,14 @@ nightly = [
 		# 1.80: exclusive_range_pattern, split_at_checked, ±macro_metavar_expr?
 
 
-#* capability features *#
+#* Capability features *#
 # ------------------------------------------------------------------------------
-# Every extra capability feature increases compilation times.
+# These features are prefixed with an underscore (_) and therefore semi-hidden.
+#
+# Enabling them enables extra implementations which increases compilation times.
+#
+# They also set automatic compile flags named `_some_*`, used for reflection.
+# E.g.: the flag `_some_stack` will be set if some _stack_* feature is enabled.
 
 _default = [ # default capabilities
 ]
@@ -379,7 +385,7 @@ _niche_all = ["_non_value_all", "_non_range_all", "_in_range_all"]
 		_in_range_usize = []
 
 
-#* dependency features *#
+#* Dependency features *#
 # ------------------------------------------------------------------------------
 
 dep_all = [ # enables all optional dependencies
@@ -493,7 +499,7 @@ name = "bitfield"
 required-features = ["_bit_u8"]
 [[example]]
 name = "cargo_script"
-required-features = ["__excluded"]
+required-features = ["__notest"]
 [[example]]
 name = "coro_run"
 required-features = ["unsafe_async", "alloc"]
