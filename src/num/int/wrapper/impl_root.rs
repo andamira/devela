@@ -215,7 +215,7 @@ macro_rules! impl_int {
             }
             #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
             pub fn sqrt_floor(self) -> Result<Int<$t>> {
-                let a = crate::Compare(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
+                let a = self.0.min(<$t>::MAX - 1); // avoid overflow on MAX
                 if a.is_negative() {
                     Err(NonNegativeRequired)
                 } else if a < 2 {

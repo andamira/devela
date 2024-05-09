@@ -15,6 +15,7 @@
 // - WAIT: [const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
 // - WAIT: [const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/issues/57241)
 
+#[allow(unused_imports)]
 use crate::code::{iif, paste};
 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", _some_float))]
 use crate::num::Float;
@@ -143,14 +144,14 @@ macro_rules! impl_comparing {
             u16:"_cmp_u16",
             u32:"_cmp_u32",
             u64:"_cmp_u64",
-            u128:"cmp_u128",
+            u128:"_cmp_u128",
             usize:"_cmp_usize",
             i8:"_cmp_i8",
             i16:"_cmp_i16",
             i32:"_cmp_i32",
             i64:"_cmp_i64",
             i128:"_cmp_i128",
-            isize:"cmp_isize"];
+            isize:"_cmp_isize"];
         impl_comparing![float:
             f32:"_cmp_f32":32:31,
             f64:"_cmp_f64":64:63];

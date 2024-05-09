@@ -9,7 +9,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::_liballoc::{format, string::String};
-#[cfg(feature = "_float_f64")]
+#[cfg(all(feature = "_float_f64", not(feature = "std")))]
 use crate::num::ExtFloat;
 #[cfg(feature = "_string_u8")]
 use crate::text::{format_buf, Ascii, StringU8};

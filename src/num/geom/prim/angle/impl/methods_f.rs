@@ -5,7 +5,7 @@
 
 use super::super::{Angle, AngleDirection, AngleKind};
 use crate::num::{fsize, ExtFloatConst};
-#[cfg(not(feature = "std"))]
+#[cfg(_some_float)]
 use crate::num::{ExtFloat, Float};
 
 // impl Angle methods with a floating-point representation
