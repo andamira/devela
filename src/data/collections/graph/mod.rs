@@ -156,35 +156,40 @@ macro_rules! impl_graph {
             }
         }
 
-        /* methods */
+        /* methods: vertices */
+
+        impl<const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, Bare> {
+            /// Adds a vertex to the graph without data.
+            ///
+            /// Errors
+            /// Returns [`NotEnoughSpace`] if there's no space left for the new vertex.
+            #[inline]
+            pub fn add_vertex(&mut self) -> Result<$IDX> {
+                for (idx, vertex) in self.verts.iter_mut().enumerate() {
+                    if vertex.is_none() {
+                        *vertex = Some(());
+                        return Ok(idx as $IDX);
+                    }
+                }
+                Err(NotEnoughSpace(Some(1)))
+            }
+        }
 
         // S: Bare
-        impl<const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, Bare> {
-            /// Returns `true` if there's no space left for edges.
+        impl<V, const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, V, Bare> {
+            /// Adds a vertex to the graph with the given `data`.
+            ///
+            /// Errors
+            /// Returns [`NotEnoughSpace`] if there's no space left for the new vertex.
             #[inline]
-            pub const fn is_edges_full(&self) -> bool {
-                self.remaining_edges_capacity() == 0
-            }
-            /// Returns the remaining capacity for additional edges.
-            #[inline]
-            pub const fn remaining_edges_capacity(&self) -> $IDX {
-                ECAP as $IDX - self.edges_count()
-            }
-            /// Returns the number of existing edges.
-            #[inline]
-            pub const fn edges_count(&self) -> $IDX {
-                let mut i = 0;
-                let mut count = 0;
-                while i < ECAP {
-                    count += self.edges.as_bare_slice()[i].is_some() as $IDX;
-                    i += 1;
+            pub fn add_vertex_with(&mut self, data: V) -> Result<$IDX> {
+                for (idx, vertex) in self.verts.iter_mut().enumerate() {
+                    if vertex.is_none() {
+                        *vertex = Some(data);
+                        return Ok(idx as $IDX);
+                    }
                 }
-                count
-            }
-            /// Returns `true` if a given `edge` id exists.
-            #[inline]
-            pub const fn edge_exists(&self, edge: $IDX) -> bool {
-                self.edges.as_bare_slice()[edge as usize].is_some()
+                Err(NotEnoughSpace(Some(1)))
             }
 
             /// Returns `true` if there's no space left for vertices.
@@ -208,15 +213,63 @@ macro_rules! impl_graph {
                 }
                 count
             }
+
             /// Returns `true` if a given `vertex` id exists.
             #[inline]
             pub const fn vertex_exists(&self, vertex: $IDX) -> bool {
                 self.verts.as_bare_slice()[vertex as usize].is_some()
             }
 
+            /// Removes a vertex from the graph, with the given `id`.
+            ///
+            /// Errors
+            /// Returns [`NodeEmpty`] if the vertex didn't exist.
+            #[inline]
+            pub fn remove_vertex(&mut self, id: $IDX) -> Result<()> {
+                Self::check_vertex_bounds(id)?;
+                let id = id as usize;
+                if self.verts[id].is_none() {
+                    Err(NodeEmpty(Some(id)))
+                } else {
+                    self.verts[id] = None;
+                    Ok(())
+                }
+            }
+
+            /* methods: edges */
+
+            /// Returns `true` if there's no space left for edges.
+            #[inline]
+            pub const fn is_edges_full(&self) -> bool {
+                self.remaining_edges_capacity() == 0
+            }
+            /// Returns the remaining capacity for additional edges.
+            #[inline]
+            pub const fn remaining_edges_capacity(&self) -> $IDX {
+                ECAP as $IDX - self.edges_count()
+            }
+
+            /// Returns the number of existing edges.
+            #[inline]
+            pub const fn edges_count(&self) -> $IDX {
+                let mut i = 0;
+                let mut count = 0;
+                while i < ECAP {
+                    count += self.edges.as_bare_slice()[i].is_some() as $IDX;
+                    i += 1;
+                }
+                count
+            }
+
+            /// Returns `true` if a given `edge` id exists.
+            #[inline]
+            pub const fn edge_exists(&self, edge: $IDX) -> bool {
+                self.edges.as_bare_slice()[edge as usize].is_some()
+            }
+
             /// Adds an edge to the graph, connecting the given `orig` and `dest` vertices.
             ///
-            /// Returns the new edge index, if there was space for it.
+            /// Returns the new edge id, if there was space for it.
             ///
             /// Errors
             #[doc = "Returns [`OutOfBounds`] if `(ECAP|VCAP) >= `[`" $IDX "::MAX`]."]
@@ -226,73 +279,21 @@ macro_rules! impl_graph {
                 Self::check_vertex_bounds(orig)?;
                 Self::check_vertex_bounds(dest)?;
 
-                // make sure the referred vertices exist
-                if self.verts[orig as usize].is_none() {
-                    Err(NodeEmpty(Some(orig as usize)))
-                } else if self.verts[dest as usize].is_none() {
-                    Err(NodeEmpty(Some(dest as usize)))
-
-                } else {
+                if !self.vertex_exists(orig) { Err(NodeEmpty(Some(orig as usize))) }
+                else if !self.vertex_exists(dest) { Err(NodeEmpty(Some(dest as usize))) }
+                else {
                     // These can't fail since we've already checked their bounds
                     let orig = <$Index>::new(orig).unwrap();
                     let dest = <$Index>::new(dest).unwrap();
 
-                    for (index, edge) in self.edges.iter_mut().enumerate() {
+                    for (id, edge) in self.edges.iter_mut().enumerate() {
                         if edge.is_none() {
                             *edge = Some($Edge::new_some_valid(orig, dest));
-                            return Ok(index as $IDX);
+                            return Ok(id as $IDX);
                         }
                     }
                     Err(NotEnoughSpace(Some(1)))
                 }
-            }
-
-            /// Adds a vertex to the graph with the given `data`.
-            ///
-            /// Errors
-            /// Returns [`NotEnoughSpace`] if there's no space left for the new vertex.
-            #[inline]
-            pub fn add_vertex(&mut self) -> Result<$IDX> {
-                for (idx, vertex) in self.verts.iter_mut().enumerate() {
-                    if vertex.is_none() {
-                        *vertex = Some(());
-                        return Ok(idx as $IDX);
-                    }
-                }
-                Err(NotEnoughSpace(Some(1))) // MAYBE Option
-            }
-
-            /// Removes a vertex from the graph, at the given `index`.
-            ///
-            /// Errors
-            /// Returns [`NodeEmpty`] if the vertex didn't exist.
-            #[inline]
-            pub fn remove_vertex(&mut self, index: $IDX) -> Result<()> {
-                Self::check_vertex_bounds(index)?;
-                let index = index as usize;
-                if self.verts[index].is_none() {
-                    Err(NodeEmpty(Some(index)))
-                } else {
-                    self.verts[index] = None;
-                    Ok(())
-                }
-            }
-        }
-
-        impl<V, const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, V, Bare> {
-            /// Adds a vertex to the graph with the given `data`.
-            ///
-            /// Errors
-            /// Returns [`NotEnoughSpace`] if there's no space left for the new vertex.
-            #[inline]
-            pub fn add_vertex_with(&mut self, data: V) -> Result<$IDX> {
-                for (idx, vertex) in self.verts.iter_mut().enumerate() {
-                    if vertex.is_none() {
-                        *vertex= Some(data);
-                        return Ok(idx as $IDX);
-                    }
-                }
-                Err(NotEnoughSpace(Some(1))) // MAYBE Option
             }
         }
 
@@ -304,26 +305,26 @@ macro_rules! impl_graph {
             /// or returns [`KeyAlreadyExists`] if there's already a vertex with the same data.
             #[inline]
             pub fn add_vertex_unique(&mut self, data: V) -> Result<$IDX> {
-                let (found_data, free_index) = self.find_vertex_and_first_free(&data);
+                let (found, free) = self.find_vertex_and_first_free(&data);
 
-                if free_index.is_none() {
+                if free.is_none() {
                     return Err(NotEnoughSpace(Some(1)));
-                } else if found_data.is_none() {
-                    if let Some(index) = free_index {
-                        self.verts[index] = Some(data);
-                        return Ok(index as $IDX);
+                } else if found.is_none() {
+                    if let Some(id) = free {
+                        self.verts[id] = Some(data);
+                        return Ok(id as $IDX);
                     }
                 }
                 Err(KeyAlreadyExists)
             }
 
-            /// Checks for the presence of the given vertex `data` and returns its index.
+            /// Checks for the presence of the given vertex `data` and returns its id.
             #[inline] #[must_use]
             pub fn find_vertex(&self, data: &V) -> Option<$IDX> {
-                for (index, vertex) in self.verts.iter().enumerate() {
+                for (id, vertex) in self.verts.iter().enumerate() {
                     if let Some(v) = vertex {
                         if v == data {
-                            return Some(index as $IDX);
+                            return Some(id as $IDX);
                         }
                     }
                 }
@@ -331,31 +332,23 @@ macro_rules! impl_graph {
             }
         }
 
-        /* graph helpers */
+        /* methods: helpers */
 
         impl<V: PartialEq, const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, V> {
-            // Checks for the presence of the given vertex `data` and returns its index,
-            // as well as the first free vertex index.
-            //
-            // returns usizes
+            // Tries to find the given vertex `data` and returns its id,
+            // as well as the first free vertex id.
             fn find_vertex_and_first_free(&self, data: &V) -> (Option<usize>, Option<usize>) {
-                let mut found_data = None;
-                let mut free_index = None;
+                let mut found = None;
+                let mut free = None;
 
-                for (index, vertex) in self.verts.iter().enumerate() {
-                    if found_data.is_none() {
-                        if vertex.as_ref() == Some(data) {
-                            found_data = Some(index);
-                        }
-                    } else if free_index.is_some() { break; }
+                for (id, vertex) in self.verts.iter().enumerate() {
+                    if found.is_none() && vertex.as_ref() == Some(data) { found = Some(id); }
+                    else if free.is_some() { break; }
 
-                    if free_index.is_none() {
-                        if vertex.is_none() {
-                            free_index = Some(index);
-                        }
-                    } else if found_data.is_some() { break; }
+                    if free.is_none() && vertex.is_none() { free = Some(id); }
+                    else if found.is_some() { break; }
                 }
-                (found_data, free_index)
+                (found, free)
             }
         }
 
