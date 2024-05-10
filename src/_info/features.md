@@ -45,7 +45,8 @@ Single modules:
 - [`mem`]
   - `mem_bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
-    - `num_geom`: enables geometric types and operations.
+    - [`num_geom`]: enables geometric types and operations.
+    - [`num_rand`]: enables random number generators.
 - [`rend`]
     - `rend_audio`
     - `rend_color`
@@ -66,6 +67,8 @@ Enabling `mem`, `num`, `rend`, `ui` or their submodules, sets the corresponding 
 [`data`]: crate::data
 [`exec`]: crate::exec
 [`num`]: crate::num
+[`num_geom`]: crate::num::geom
+[`num_rand`]: crate::num::rand
 [`rend`]: crate::rend
 [`sys`]: crate::sys
 [`text`]: crate::text

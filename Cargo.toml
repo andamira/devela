@@ -32,7 +32,7 @@ build = "construct/mod.rs"
 publish = true
 
 
-[features] # 213 (300 max)
+[features] # 214 (300 max)
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -48,6 +48,8 @@ publish = true
 # - ["name"]: Normal public-facing features.
 # - ["_name"]: Hidden extra capability features.
 # - ["__name"]: Hidden miscellaneous features.
+#
+# Features are in sync with: construct/features.rs and src/_info/features.md
 
 #* Miscellaneous features *#
 # ------------------------------------------------------------------------------
@@ -90,8 +92,10 @@ mem = [
 	mem_bit = [] # BitSize
 num = [
 	"num_geom",
+	"num_rand",
 	]
 	num_geom = [] # geometric types and operations.
+	num_rand = [] # random number generators.
 rend = [
 	"rend_audio", "rend_color", "rend_font", "rend_image", "rend_video",
 	]
