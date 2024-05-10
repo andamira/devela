@@ -181,23 +181,28 @@ nightly = [
 # They also set automatic compile flags named `_some_*`, used for reflection.
 # E.g.: the flag `_some_stack` will be set if some _stack_* feature is enabled.
 
-_default = [ # default capabilities
-]
-_min_docs = [ # the minimum capabilities to document all methods
+_default = [] # default capabilities
+_max = [ # the maximum capabilities
+	"_max_docs", "_tuple_72"]
+
+_min_docs = [ # the minimum capabilities to document all library items
+	"all",
+	# data:
 	"_bit_u8",
-	"_stack_u8", "_destaque_u8",
+	"_destaque_u8", "_stack_u8", "_graph_u8",
+	"_tuple",
+	# num:
 	"_float_f32", "_int_u8",
 	"_non_value_u8", "_non_range_u8", "_in_range_u8",
-	"_tuple"]
+	# text:
+	"_string_u8", "_string_nonul",
+]
 _max_docs = [ # the maximum capabities relevant for documentation
 	"_data_all", "_num_all", "_text_all"]
-_max = [ # the maximum capabilities, including non-relevant for documentation
-	"_max_docs",
-	"_tuple_72"]
 
 # The most complete versions of the documentation:
 _docsrs = ["nightly", "_docsrs_stable"]
-_docsrs_stable = ["all", "std", "unsafe", "dep_all", "_min_docs"]
+_docsrs_stable = ["std", "unsafe", "dep_all", "_min_docs"]
 
 #* data capabilities *#
 # ---------------------
@@ -229,10 +234,10 @@ _collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "
 		_destaque_u32 = []
 		_destaque_usize = []
 	_graph_all = ["_graph_u8", "_graph_u16", "_graph_u32", "_graph_usize"]
-		_graph_u8 = ["_non_value_u8"]
-		_graph_u16 = ["_non_value_u16"]
-		_graph_u32 = ["_non_value_u32"]
-		_graph_usize = ["_non_value_usize"]
+		_graph_u8 = ["_node_u8"]
+		_graph_u16 = ["_node_u16"]
+		_graph_u32 = ["_node_u32"]
+		_graph_usize = ["_node_usize"]
 	_node_all = ["_node_u8", "_node_u16", "_node_u32", "_node_usize"]
 		_node_u8 = ["_non_value_u8"]
 		_node_u16 = ["_non_value_u16"]
@@ -386,6 +391,7 @@ _string_all = [
 	_string_u16 = []
 	_string_u32 = []
 	_string_usize = []
+	#
 	_string_nonul = []
 
 

@@ -98,6 +98,9 @@ mod reflection {
     pub const DESTAQUE: FlagsFeatures = (&["_some_destaque"], &[
         "_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize",
     ]);
+    pub const GRAPH: FlagsFeatures = (&["_some_graph"], &[
+        "_graph_u8", "_graph_u16", "_graph_u32", "_graph_usize",
+    ]);
     pub const NODE: FlagsFeatures = (&["_some_node"], &[
         "_node_u8", "_node_u16", "_node_u32", "_node_usize",
     ]);
@@ -188,7 +191,7 @@ mod reflection {
 
             // data
             BIT,
-            DESTAQUE, NODE, STACK, // collections
+            DESTAQUE, GRAPH, NODE, STACK, // collections
             SORT_INT, SORT_FLOAT,
             // text
             STRING, STRING_U,
