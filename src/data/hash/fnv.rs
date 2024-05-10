@@ -18,7 +18,7 @@ pub type HasherBuildFnv = BuildHasherDefault<HasherFnv<usize>>;
 /// It's implemented for
 /// [u32](#impl-HasherFnv<u32>),
 /// [u64](#impl-HasherFnv<u64>),
-/// [u128](#impl-HasherFnv<u128>).
+/// [u128](#impl-HasherFnv<u128>) and
 /// [usize](#impl-HasherFnv<usize>).
 ///
 /// It uses the `fnv-1a` variation which gives better avalanche characteristics.

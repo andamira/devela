@@ -2,8 +2,7 @@ This is derived work from the
 [`tupl`](https://crates.io/crates/tupl/0.4.0) crate,
 including the following modifications:
 
-- implement for tuples of arity 12 by default.
-- support arities of 24, 36, 48, 60, 72 or 96 via features.
+- impl for tuples of arity 12, 24, 36, 48 or 72, via features.
 - add the `ARITY` associated constant with the arity of the tuple.
 - add the `MAX_ARITY` associated constant with the maximum supported arity.
 - add a method `fmt` to wrap it in `TupleFmt` allowing to `Display` and `Debug` tuples.
