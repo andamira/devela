@@ -1,4 +1,4 @@
-// examples/coro.rs
+// examples/coro_run.rs
 
 use devela::{
     code::{serr, sok},
@@ -9,7 +9,7 @@ fn main() {
     let mut cr = CoroRun::<char, String>::new();
 
     for i in 1..=3 {
-        cr.push(move |mut c| async move {
+        cr.push(|mut c| async move {
             println!("> instance {i} NEW");
 
             let mut count = 0;
@@ -35,7 +35,7 @@ fn main() {
             }
         });
     }
-    cr.push(move |mut c| async move {
+    cr.push(|mut c| async move {
         println!("> instance 4 NEW");
         for _n in 0..3 {
             let _res = c.yield_err(format!["custom err"]).await?;

@@ -171,8 +171,8 @@ impl<T, E: 'static + Debug> CoroRun<T, E> {
     /// Adds a closure to the runner.
     pub fn push<C, F>(&mut self, closure: C)
     where
-        F: Future<Output = OptRes<T, E>> + 'static,
         C: FnOnce(Coro<T, E>) -> F,
+        F: Future<Output = OptRes<T, E>> + 'static,
     {
         self.coros.push_back(Box::pin(closure(Coro::new())));
     }
