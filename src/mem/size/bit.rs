@@ -48,33 +48,33 @@ use crate::text::{EgcNonul, StringNonul};
 
 #[cfg(feature = "portable-atomic")]
 use crate::_deps::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
-#[cfg(feature = "work")]
-use crate::work::sync::atomic::{AtomicBool, AtomicOrdering};
+#[cfg(feature = "exec")]
+use crate::exec::{AtomicBool, AtomicOrdering};
 #[cfg(all(
-    feature = "work",
+    feature = "exec",
     any(feature = "portable-atomic", target_has_atomic = "16")
 ))]
-use crate::work::sync::atomic::{AtomicI16, AtomicU16};
+use crate::exec::{AtomicI16, AtomicU16};
 #[cfg(all(
-    feature = "work",
+    feature = "exec",
     any(feature = "portable-atomic", target_has_atomic = "32")
 ))]
-use crate::work::sync::atomic::{AtomicI32, AtomicU32};
+use crate::exec::{AtomicI32, AtomicU32};
 #[cfg(all(
-    feature = "work",
+    feature = "exec",
     any(feature = "portable-atomic", target_has_atomic = "64")
 ))]
-use crate::work::sync::atomic::{AtomicI64, AtomicU64};
+use crate::exec::{AtomicI64, AtomicU64};
 #[cfg(all(
-    feature = "work",
+    feature = "exec",
     any(feature = "portable-atomic", target_has_atomic = "8")
 ))]
-use crate::work::sync::atomic::{AtomicI8, AtomicU8};
+use crate::exec::{AtomicI8, AtomicU8};
 #[cfg(all(
-    feature = "work",
+    feature = "exec",
     any(feature = "portable-atomic", target_has_atomic = "ptr")
 ))]
-use crate::work::sync::atomic::{AtomicIsize, AtomicPtr, AtomicUsize};
+use crate::exec::{AtomicIsize, AtomicPtr, AtomicUsize};
 
 /* fn definitions */
 
@@ -180,9 +180,9 @@ macro_rules! bit_size {
 
         bit_size![= $PTR_BITS; for NonZeroIsize, NonZeroUsize];
 
-        #[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "ptr")))]
+        #[cfg(all(feature = "exec", any(feature = "portable-atomic", target_has_atomic = "ptr")))]
         bit_size![= $PTR_BITS; for AtomicIsize, AtomicUsize];
-        #[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "ptr")))]
+        #[cfg(all(feature = "exec", any(feature = "portable-atomic", target_has_atomic = "ptr")))]
         bit_size![<T> = $PTR_BITS; for AtomicPtr<T>];
 
         #[cfg(feature = "std")]
@@ -253,27 +253,27 @@ bit_size![= 32; for NonZeroI32, NonZeroU32];
 bit_size![= 64; for NonZeroI64, NonZeroU64];
 bit_size![= 128; for NonZeroI128, NonZeroU128];
 
-#[cfg(feature = "work")]
+#[cfg(feature = "exec")]
 bit_size![= 1; for AtomicBool];
-#[cfg(feature = "work")]
+#[cfg(feature = "exec")]
 bit_size![= 8; for AtomicOrdering];
 #[cfg(all(
-    feature = "work",
+    feature = "exec",
     any(feature = "portable-atomic", target_has_atomic = "8")
 ))]
 bit_size![= 8; for AtomicI8, AtomicU8];
 #[cfg(all(
-    feature = "work",
+    feature = "exec",
     any(feature = "portable-atomic", target_has_atomic = "16")
 ))]
 bit_size![= 16; for AtomicI16, AtomicU16];
 #[cfg(all(
-    feature = "work",
+    feature = "exec",
     any(feature = "portable-atomic", target_has_atomic = "32")
 ))]
 bit_size![= 32; for AtomicI32, AtomicU32];
 #[cfg(all(
-    feature = "work",
+    feature = "exec",
     any(feature = "portable-atomic", target_has_atomic = "64")
 ))]
 bit_size![= 64; for AtomicI64, AtomicU64];
