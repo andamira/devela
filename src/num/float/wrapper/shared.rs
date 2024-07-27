@@ -927,7 +927,7 @@ macro_rules! custom_impls {
                 let mask = <$uf>::MAX / 2;
                 unsafe {
                     let bits: $uf = transmute(self.0);
-                    Float(transmute(bits & mask))
+                    Float(transmute::<$uf, $f>(bits & mask))
                 }
             }
 
@@ -957,7 +957,7 @@ macro_rules! custom_impls {
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 unsafe {
                     let bits: $uf = transmute(self.0);
-                    Float(transmute(bits ^ sign_bit_mask))
+                    Float(transmute::<$uf, $f>(bits ^ sign_bit_mask))
                 }
             }
             /// Flips its sign.
