@@ -39,7 +39,7 @@ macro_rules! color_gamma_fns {
         /// \end{align}
         /// $$
         #[inline]
-        #[cfg(any(feature = "std", feature = "$cap"))]
+        #[cfg(any(feature = "std", feature = $cap))]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $cap))))]
         pub fn [<color_gamma_apply_ $t>](c: $t, gamma: $t) -> $t {
             iif![c <= 0.0031308; 12.92 * c; 1.055 * c.powf(1.0 / gamma) - 0.055]
