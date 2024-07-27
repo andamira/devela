@@ -19,7 +19,7 @@ mod reflection {
     /// (flags, features)
     type FlagsFeatures<'a> = (&'a [&'a str], &'a [&'a str]);
 
-    //* misc. *//
+    /* # misc. */
 
     pub const MISC: FlagsFeatures = (&[], &[
         "_default", "_max",
@@ -70,7 +70,7 @@ mod reflection {
         "wide",
     ]);
 
-    //* modules *//
+    /* # modules */
 
     pub const MEM: FlagsFeatures = (&["_some_mem"], &[
         "mem_bit",
@@ -85,16 +85,16 @@ mod reflection {
         "ui_service",
     ]);
 
-    //* capabilities *//
+    /* # capabilities */
 
-    /* data */
+    /* ## data */
 
     pub const BIT: FlagsFeatures = (&["_some_bit"], &[
         "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
         "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
     ]);
 
-    // collections
+    // ### collections
     pub const DESTAQUE: FlagsFeatures = (&["_some_destaque"], &[
         "_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize",
     ]);
@@ -116,7 +116,7 @@ mod reflection {
         "_sort_f32", "_sort_f64"
     ]);
 
-    /* num */
+    /* ## num */
 
     pub const CMP: FlagsFeatures = (&["_some_cmp"], &[
         "_cmp_i8", "_cmp_i16", "_cmp_i32", "_cmp_i64", "_cmp_i128", "_cmp_isize",
@@ -124,7 +124,7 @@ mod reflection {
         "_cmp_f32", "_cmp_f64"
     ]);
 
-    // numbers
+    // ### numbers
     pub const FLOAT: FlagsFeatures = (&["_some_float", "_some_nums"], &[
         "_float_f32", "_float_f64"
     ]);
@@ -135,7 +135,7 @@ mod reflection {
         "_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize",
     ]);
 
-    // niche
+    // ### niche
     pub const NON_VALUE_I: FlagsFeatures = (
         &["_some_non_value", "_some_non_value_i", "_some_niche"],
         &["_non_value_i8", "_non_value_i16", "_non_value_i32",
@@ -159,7 +159,7 @@ mod reflection {
         "_in_range_u64", "_in_range_u128", "_in_range_usize",
     ]);
 
-    /* text */
+    /* ## text */
 
     pub const STRING_U: FlagsFeatures = (&["_some_string", "_some_string_u"], &[
         "_string_u8", "_string_u16", "_string_u32", "_string_usize",
@@ -169,10 +169,12 @@ mod reflection {
     ]);
 
 
-    // funtion helpers
+    // function helpers
     // -------------------------------------------------------------------------
 
     /// Set the flags for all the corresponding enabled features from the list.
+    ///
+    /// This is the list of the constants defined above.
     pub(super) fn set_flags() {
         for ff in [
             /* misc. */

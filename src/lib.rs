@@ -7,11 +7,11 @@
 //
 // warnings:
 #![warn(missing_docs, clippy::all)]
-#![cfg_attr(not(feature = "deps"), allow(rustdoc::broken_intra_doc_links))]
 #![allow(
     unknown_lints,
     stable_features, // e.g. for associated_type_bounds
     clippy::empty_docs,
+    clippy::doc_lazy_continuation, // don't be markdown picky
     clippy::mixed_attributes_style,
     //
     clippy::module_inception, // allow modules with the same name as its parent

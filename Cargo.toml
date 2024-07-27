@@ -13,7 +13,7 @@ name = "devela"
 description = "A development foundation."
 version = "0.21.0-wip"
 edition = "2021"
-rust-version = "1.80.0" # sync with readme & .github/*/check.yml
+rust-version = "1.80.0" # sync with readme & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
@@ -496,11 +496,31 @@ features = ["_docsrs", "_max_docs"]
 rustdoc-args = [ "--html-in-header", "./DOCS/rustdoc-header.html" ]
 
 [badges]
+# ==============================================================================
 maintenance = { status = "experimental" }
 
 
-# benchmarks
+[lints.rust]
 # ==============================================================================
+# https://dev-doc.rust-lang.org/nightly/unstable-book/compiler-flags/check-cfg.html
+# https://doc.rust-lang.org/rustc/check-cfg.html
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+check-cfg = [
+	# Expect more pointer widths
+	'cfg(target_pointer_width, values("8", "128"))',
+	#
+	# These compilation flags for reflection are enabled in: "/construction/features.rs"
+    "cfg(_some_nightly, _some_dep)",
+	'cfg(_some_mem, _some_num, _some_rend, _some_ui)',
+	'cfg(_some_bit, _some_destaque, _some_graph, _some_node, _some_stack)',
+	'cfg(_some_sort, _some_sort_int, _some_sort_float)',
+	'cfg(_some_nums, _some_cmp, _some_float, _some_int, _some_int_i, _some_int_u)',
+	'cfg(_some_niche, _some_in_range, _some_non_range)',
+	'cfg(_some_non_value, _some_non_value_i, _some_non_value_u)',
+    'cfg(_some_string, _some_string_u)',
+]
 
 
 # examples
