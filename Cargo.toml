@@ -435,17 +435,17 @@ paste_crate = { package = "paste", version = "1.0.15", default-features = false 
 # optional:
 const-str = { version = "0.5.7", default-features = false, optional = true }
 libm = { version = "0.2.8", default-features = false, optional = true }
-log = { version = "0.4.21", default-features = false, optional = true }
-memchr = { version = "2.7.2", optional = true, default-features = false }
-miniquad = { version = "0.4.0", default-features = false, optional = true }
+log = { version = "0.4.22", default-features = false, optional = true }
+memchr = { version = "2.7.4", optional = true, default-features = false }
+miniquad = { version = "0.4.5", default-features = false, optional = true }
 rand_core = { version = "0.6.4", default-features = false, optional = true }
 unicode-segmentation = { version = "1.11.0", default-features = false, optional = true }
-unicode-width = { version = "0.1.12", default-features = false, optional = true }
-wide = { version = "0.7.17", optional = true, default-features = false }
+unicode-width = { version = "0.1.13", default-features = false, optional = true }
+wide = { version = "0.7.26", optional = true, default-features = false }
 
 # non-optional:
 [dependencies.bytemuck]
-version = "1.14.0"
+version = "1.16.0"
 optional = false
 default-features = false
 features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
@@ -467,7 +467,7 @@ optional = true
 default-features = false
 features = ["ahash", "inline-more"]
 [dependencies.portable-atomic]
-version = "1.6.0"
+version = "1.7.0"
 optional = true
 default-features = false
 features = ["fallback", "float"]
