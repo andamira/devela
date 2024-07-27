@@ -720,22 +720,22 @@ macro_rules! impl_float_ext {
             #[inline]
             fn min_nan(self, other: Self) -> Self { Float(self).min_nan(other).0 }
 
-            #[inline] #[cfg(feature = "$cmp")]
+            #[inline] #[cfg(feature = $cmp)]
             fn clamp_total(self, min: Self, max: Self) -> Self {
                 Float(self).clamp_total(min, max).0
             }
-            #[inline] #[cfg(not(feature = "$cmp"))]
+            #[inline] #[cfg(not(feature = $cmp))]
             fn clamp_total(self, _: Self, _: Self) -> Self { <$f>::NAN }
 
-            #[inline] #[cfg(feature = "$cmp")]
+            #[inline] #[cfg(feature = $cmp)]
             fn max_total(self, other: Self) -> Self { Float(self).max_total(other).0 }
-            #[inline] #[cfg(not(feature = "$cmp"))]
+            #[inline] #[cfg(not(feature = $cmp))]
             fn max_total(self, _: Self) -> Self { <$f>::NAN }
 
             #[inline]
-            #[cfg(feature = "$cmp")]
+            #[cfg(feature = $cmp)]
             fn min_total(self, other: Self) -> Self { Float(self).min_total(other).0 }
-            #[inline] #[cfg(not(feature = "$cmp"))]
+            #[inline] #[cfg(not(feature = $cmp))]
             fn min_total(self, _: Self) -> Self { <$f>::NAN }
         }
     }
