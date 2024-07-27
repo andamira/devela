@@ -102,7 +102,7 @@ fn non_range_bytemuck() {
 }
 
 #[test]
-#[cfg(feature = "_range_i8")]
+#[cfg(feature = "_in_range_i8")]
 fn range() {
     // a positive range
     type R1 = InRangeI8<1, 10>;
@@ -150,7 +150,7 @@ fn range() {
 }
 
 #[test]
-#[cfg(feature = "_range_i8")]
+#[cfg(feature = "_in_range_i8")]
 #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
 fn range_bytemuck() {
     use crate::_deps::bytemuck::CheckedBitPattern;
