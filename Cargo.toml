@@ -13,7 +13,7 @@ name = "devela"
 description = "A development foundation."
 version = "0.21.0-wip"
 edition = "2021"
-rust-version = "1.78.0" # sync with readme & .github/*/check.yml
+rust-version = "1.80.0" # sync with readme & .github/*/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
@@ -168,8 +168,10 @@ nightly = [
 		# - https://github.com/rust-lang/rust/milestones
 		# - https://releases.rs/
 		#
-		# 1.79: associated_type_bounds, inline_const
-		# 1.80: exclusive_range_pattern, split_at_checked, ±macro_metavar_expr?
+		# WAIT:
+		# ? [noop_waker](https://github.com/rust-lang/rust/issues/98286) exec::async::waker
+		# ? [macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
+		# ? [impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 
 
 #* Capability features *#
