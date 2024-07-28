@@ -56,12 +56,9 @@ Single modules:
 - [`sys`]
 - [`text`]: enables `Char*`, `Egc`, `Nonul`.
 - [`time`]
-- [`ui`]: enables all of the `ui` sub-features:
-    - `ui_events`: extra support for events.
-    - `ui_term`: enables the terminal functionality.
 
-Enabling `mem`, `num`, `rend`, `ui` or their submodules, sets the corresponding flags:
-`_some_mem`, `_some_num`, `_some_rend`, `_some_ui`.
+Enabling `mem`, `num`, `rend`, or their submodules, sets the corresponding flags:
+`_some_mem`, `_some_num`, `_some_rend`,
 
 [`code`]: crate::code
 [`data`]: crate::data
@@ -74,8 +71,6 @@ Enabling `mem`, `num`, `rend`, `ui` or their submodules, sets the corresponding 
 [`sys`]: crate::sys
 [`text`]: crate::text
 [`time`]: crate::time
-[`ui`]: crate::ui
-[`ui_term`]: crate::ui_term
 
 
 ### Safety features
@@ -92,7 +87,6 @@ In order to use any unsafe functionality:
   - `safe_sys`
   - `safe_text`
   - `safe_time`
-  - `safe_ui`, `safe_ui_term`
   - `safe_work`
 
 - `unsafe`: enables `unsafe` (as long as it isn't forbidden in the module), includes:
@@ -257,4 +251,3 @@ Enabling any of them sets the `_some_dep` flag.
 - `dep_all`: enables all the optional dependencies
   - `dep_exec`: enables `atomic`, `portable-atomic`.
   - `dep_text`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
-  - `dep_ui_term`: enables `const-str`, `crossterm`.

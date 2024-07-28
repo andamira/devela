@@ -73,7 +73,6 @@ pub mod rend;
 pub mod sys;
 pub mod text;
 pub mod time;
-pub mod ui;
 
 /// All the library items.
 pub mod all {
@@ -90,7 +89,6 @@ pub mod all {
         sys::all::*,
         text::all::*,
         time::all::*,
-        ui::all::*,
     };
 }
 #[doc(no_inline)]

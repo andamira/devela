@@ -17,9 +17,6 @@ reexport! { optional_crate "atomic" | atomic,
 reexport! { optional_crate "const-str" | const_str,
     doc: "Compile-time string operations."
 }
-reexport! { optional_crate "crossterm" | crossterm,
-    doc: "A cross-platform terminal library for manipulating terminals."
-}
 reexport! { optional_crate "hashbrown" | hashbrown,
     doc: "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`.",
     features: "alloc"
@@ -32,9 +29,6 @@ reexport! { optional_crate "log" | log,
 }
 reexport! { optional_crate "memchr" | memchr,
     doc: "Optimized routines for string search primitives."
-}
-reexport! { optional_crate "miniquad" | miniquad,
-    doc: "Cross-platform window context and rendering library."
 }
 reexport! { optional_crate "portable-atomic" | portable_atomic,
     doc: "Portable atomic types including 128-bit atomics, floats, etc."

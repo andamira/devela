@@ -49,7 +49,6 @@ mod reflection {
             "safe_sys",
             "safe_text",
             "safe_time",
-            "safe_ui", "safe_ui_term",
 
             "unsafe",
             "unsafe_array", "unsafe_async", "unsafe_const", "unsafe_dyn",
@@ -96,9 +95,6 @@ mod reflection {
         flags: &["_some_rend"],
         features: &["rend_audio", "rend_color", "rend_font", "rend_image", "rend_video"]
     };
-    pub const UI: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_ui"],
-        features: &["ui_service"] };
 
     /* # capabilities */
 
@@ -225,7 +221,7 @@ mod reflection {
 
             /* modules */
 
-            MEM, NUM, REND, UI,
+            MEM, NUM, REND,
 
             /* capabilities */
 
