@@ -3,10 +3,7 @@
 //! Functionality related to byte sizes.
 //
 
-use crate::{
-    code::iif,
-    mem::{mem_align_of, mem_align_of_val, mem_size_of, mem_size_of_val},
-};
+use crate::code::iif;
 
 impl<T> ByteSize for T {}
 
@@ -16,13 +13,13 @@ impl<T> ByteSize for T {}
 // (this allows to have associated constants depending on Self)
 pub trait ByteSize: Sized {
     /// The alignment of this type in bytes.
-    const BYTE_ALIGN: usize = mem_align_of::<Self>();
+    const BYTE_ALIGN: usize = align_of::<Self>();
 
     /// The size of this type in bytes.
-    const BYTE_SIZE: usize = mem_size_of::<Self>();
+    const BYTE_SIZE: usize = size_of::<Self>();
 
     /// The size of a pointer in bytes, for the current platform.
-    const PTR_BYTES: usize = mem_size_of::<usize>();
+    const PTR_BYTES: usize = size_of::<usize>();
 
     /// The size of a pointer in bits, for the current platform.
     const PTR_BITS: usize = usize::BITS as usize;
@@ -36,7 +33,7 @@ pub trait ByteSize: Sized {
     /// Returns the alignment of this type in bytes.
     #[inline]
     fn byte_align(&self) -> usize {
-        mem_align_of_val(self)
+        align_of_val(self)
     }
 
     /// Returns the size of this type in bytes.
@@ -44,7 +41,7 @@ pub trait ByteSize: Sized {
     /// Ignores any allocated resources in the heap.
     #[inline]
     fn byte_size(&self) -> usize {
-        mem_size_of_val(self)
+        size_of_val(self)
     }
 
     /// Returns the size ratio between [`PTR_BYTES`][Self#associatedconstant.PTR_BYTES]
@@ -90,15 +87,15 @@ pub trait ByteSize: Sized {
 ///
 /// # Examples
 /// ```
-/// use devela::mem::{ptr_size_ratio, mem_size_of};
+/// use devela::mem::{ptr_size_ratio, size_of};
 ///
 /// assert_eq![ptr_size_ratio(0), [1, 0]];
-/// assert_eq![ptr_size_ratio(mem_size_of::<usize>()), [1, 1]];
-/// assert_eq![ptr_size_ratio(mem_size_of::<&str>()), [1, 2]];
-/// assert_eq![ptr_size_ratio(mem_size_of::<String>()), [1, 3]];
+/// assert_eq![ptr_size_ratio(size_of::<usize>()), [1, 1]];
+/// assert_eq![ptr_size_ratio(size_of::<&str>()), [1, 2]];
+/// assert_eq![ptr_size_ratio(size_of::<String>()), [1, 3]];
 ///
 /// #[cfg(target_pointer_width = "64")]
-/// assert_eq![ptr_size_ratio(mem_size_of::<char>()), [2,1]];
+/// assert_eq![ptr_size_ratio(size_of::<char>()), [2,1]];
 /// ```
 ///
 /// Note that when `other_size == 0` it returns `(1, 0)` which is an invalid ratio.
@@ -110,6 +107,6 @@ pub const fn ptr_size_ratio(other_size: usize) -> [usize; 2] {
     const fn gcd(m: usize, n: usize) -> usize {
         iif![n == 0; m; gcd(n, m % n)]
     }
-    let g = gcd(mem_size_of::<usize>(), other_size);
-    [mem_size_of::<usize>() / g, other_size / g]
+    let g = gcd(size_of::<usize>(), other_size);
+    [size_of::<usize>() / g, other_size / g]
 }

@@ -68,7 +68,7 @@ pub fn ptr_in_stack<T>(address: *const T, stack_size: usize) -> bool {
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_slice"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
 mod unsafe_fns {
-    use core::{mem, slice};
+    use core::slice;
 
     /// View any `T: Sync + Unpin + ?Sized` as `&[u8]`.
     ///
@@ -91,7 +91,7 @@ mod unsafe_fns {
     #[inline]
     #[must_use]
     pub fn mem_as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
-        unsafe { slice::from_raw_parts(v as *const _ as *const u8, mem::size_of_val(v)) }
+        unsafe { slice::from_raw_parts(v as *const _ as *const u8, size_of_val(v)) }
     }
 
     /// View any `T: Sync + Unpin + ?Sized` as `&mut [u8]`.
@@ -117,7 +117,7 @@ mod unsafe_fns {
     #[inline]
     #[must_use]
     pub fn mem_as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
-        unsafe { slice::from_raw_parts_mut(v as *mut _ as *mut u8, mem::size_of_val(v)) }
+        unsafe { slice::from_raw_parts_mut(v as *mut _ as *mut u8, size_of_val(v)) }
     }
 
     /// View any `T: Sync + Unpin + Sized` as `&[u8]` *compile-time* friendly.
@@ -138,7 +138,7 @@ mod unsafe_fns {
     #[inline]
     #[must_use]
     pub const fn mem_as_bytes_sized<T: Sync + Unpin>(v: &T) -> &[u8] {
-        unsafe { slice::from_raw_parts(v as *const T as *const u8, mem::size_of::<T>()) }
+        unsafe { slice::from_raw_parts(v as *const T as *const u8, size_of::<T>()) }
     }
 }
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_slice"))]

@@ -13,7 +13,7 @@ use crate::{
         },
         Array, Stack,
     },
-    mem::{mem_size_of, Bare},
+    mem::Bare,
 };
 #[cfg(feature = "alloc")]
 use crate::{
@@ -77,7 +77,7 @@ macro_rules! impl_stack {
             pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Bare>> {
                 if NEW_CAP < (self.len() as usize) ||
                     NEW_CAP > $IDX::MAX as usize ||
-                    NEW_CAP > isize::MAX as usize / mem_size_of::<T>() {
+                    NEW_CAP > isize::MAX as usize / size_of::<T>() {
                     Err(OutOfBounds(Some(NEW_CAP)))
                 } else {
                     let old_arr: [T; CAP] = self.data.into_array();
@@ -160,7 +160,7 @@ macro_rules! impl_stack {
             pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Boxed>> {
                 if NEW_CAP < (self.len() as usize) ||
                     NEW_CAP > $IDX::MAX as usize ||
-                    NEW_CAP > isize::MAX as usize / mem_size_of::<T>() {
+                    NEW_CAP > isize::MAX as usize / size_of::<T>() {
                     Err(OutOfBounds(Some(NEW_CAP)))
                 } else {
                     let old_arr = self.data.into_vec();
@@ -247,7 +247,7 @@ macro_rules! impl_stack {
             pub const fn own_resize_default<const NEW_CAP: usize>(self) -> Own<Result<Stack<T, NEW_CAP, $IDX, Bare>>, ()> {
                 if NEW_CAP < (self.len as usize) ||
                     NEW_CAP > $IDX::MAX as usize ||
-                    NEW_CAP > isize::MAX as usize / mem_size_of::<T>() {
+                    NEW_CAP > isize::MAX as usize / size_of::<T>() {
                     Own::empty(Err(OutOfBounds(Some(NEW_CAP))))
                 } else {
                     let old_arr: [T; CAP] = self.data.into_array_copy();

@@ -504,7 +504,6 @@ impl_node!();
 #[cfg(test)]
 mod tests {
     use super::*;
-    use core::mem::size_of;
 
     #[test]
     fn node_size() {

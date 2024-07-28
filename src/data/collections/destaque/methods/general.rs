@@ -13,7 +13,7 @@ use crate::{
         },
         Array, Destaque, DestaqueIter,
     },
-    mem::{mem_size_of, Bare, Storage},
+    mem::{Bare, Storage},
 };
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};
@@ -50,7 +50,7 @@ macro_rules! impl_destaque {
             ///
             /// # Errors
             #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
-            /// or if `CAP > isize::MAX / mem_size_of::<T>()`.
+            /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
             /// ```
@@ -58,7 +58,7 @@ macro_rules! impl_destaque {
             #[doc = "let q = Destaque" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
             pub fn new(element: T) -> Result<Self> {
-                if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / mem_size_of::<T>() {
+                if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
                     Err(OutOfBounds(Some(CAP)))
                 } else {
                     Ok(Self {
@@ -78,7 +78,7 @@ macro_rules! impl_destaque {
             ///
             /// # Errors
             #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $IDX "::MAX`]"]
-            /// or if `CAP > isize::MAX / mem_size_of::<T>()`.
+            /// or if `CAP > isize::MAX / size_of::<T>()`.
             ///
             /// # Examples
             /// ```
@@ -87,7 +87,7 @@ macro_rules! impl_destaque {
                 "<i32, 16> = unwrap![ok Destaque" $IDX:camel "::new_copied(0)];"]
             /// ```
             pub const fn new_copied(element: T) -> Result<Self> {
-                if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / mem_size_of::<T>() {
+                if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
                     Err(OutOfBounds(Some(CAP)))
                 } else {
                     let data = Array::with_copied(element);

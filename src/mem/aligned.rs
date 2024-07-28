@@ -5,8 +5,6 @@
 //! Always available for internal use.
 //
 
-use core::mem::align_of;
-
 // Marker trait to prevent downstream implementations of the `MemAligned` trait.
 mod private {
     pub trait Sealed {}

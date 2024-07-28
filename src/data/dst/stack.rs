@@ -120,7 +120,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
             assert!(self.next_ofs > 0);
             // SAFETY: Pointer is valid, and will never be accessed after this point.
             let words = unsafe {
-                let size = mem::size_of_val(&*ptr);
+                let size = size_of_val(&*ptr);
                 ptr::drop_in_place(ptr);
                 BUF::round_to_words(size)
             };
@@ -231,7 +231,7 @@ where
                 ptr::copy(
                     slice.as_ptr() as *const u8,
                     pii.data.as_mut_ptr() as *mut u8,
-                    mem::size_of_val(slice),
+                    size_of_val(slice),
                 )
             })
         }
@@ -259,7 +259,7 @@ where
         <(DST, BUF::Inner) as MemAligned>::assert_compatibility();
         // SAFETY: API used correctly.
         unsafe {
-            let pii = self.push_inner_raw(iter.len() * mem::size_of::<DST>(), &[0])?;
+            let pii = self.push_inner_raw(iter.len() * size_of::<DST>(), &[0])?;
             list_push_gen(
                 pii.meta,
                 pii.data,
@@ -291,7 +291,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     #[must_use]
     #[inline(always)]
     fn meta_words() -> usize {
-        BUF::round_to_words(mem::size_of::<&DST>() - mem::size_of::<usize>())
+        BUF::round_to_words(size_of::<&DST>() - size_of::<usize>())
     }
 
     #[must_use]
@@ -339,7 +339,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     // See `push_inner_raw`.
     #[inline]
     unsafe fn push_inner(&mut self, fat_ptr: &DST) -> Result<PushInnerInfo<BUF::Inner>, ()> {
-        let bytes = mem::size_of_val(fat_ptr);
+        let bytes = size_of_val(fat_ptr);
         let (_data_ptr, len, v) = decompose_pointer(fat_ptr);
         self.push_inner_raw(bytes, &v[..len])
     }
@@ -353,7 +353,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
         bytes: usize,
         metadata: &[usize],
     ) -> Result<PushInnerInfo<BUF::Inner>, ()> {
-        assert!(BUF::round_to_words(mem::size_of_val(metadata)) == Self::meta_words());
+        assert!(BUF::round_to_words(size_of_val(metadata)) == Self::meta_words());
         let words = BUF::round_to_words(bytes) + Self::meta_words();
 
         let req_space = self.next_ofs + words;
@@ -441,7 +441,7 @@ mod core_impls {
                 // SAFETY: Bounds checked, aliasing enforced by API.
                 let rv = unsafe { &*self.0.raw_at(self.1) };
                 self.1 -=
-                    DstStack::<DST, BUF>::meta_words() + BUF::round_to_words(mem::size_of_val(rv));
+                    DstStack::<DST, BUF>::meta_words() + BUF::round_to_words(size_of_val(rv));
                 Some(rv)
             }
         }
@@ -458,7 +458,7 @@ mod core_impls {
                 // SAFETY: Bounds checked, aliasing enforced by API.
                 let rv = unsafe { &mut *self.0.raw_at_mut(self.1) };
                 self.1 -=
-                    DstStack::<DST, BUF>::meta_words() + BUF::round_to_words(mem::size_of_val(rv));
+                    DstStack::<DST, BUF>::meta_words() + BUF::round_to_words(size_of_val(rv));
                 Some(rv)
             }
         }

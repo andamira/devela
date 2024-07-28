@@ -176,7 +176,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
                 let (meta, data) = meta.split_at_mut(mw);
                 &mut *make_fat_ptr(data.as_mut_ptr() as *mut (), meta)
             };
-            let words = Self::meta_words() + BUF::round_to_words(mem::size_of_val(v));
+            let words = Self::meta_words() + BUF::round_to_words(size_of_val(v));
             if cb(v) {
                 if writeback_pos != ofs {
                     let d = self.data.as_mut();
@@ -242,7 +242,7 @@ where
                 ptr::copy(
                     slice.as_ptr() as *const u8,
                     pii.data.as_mut_ptr() as *mut u8,
-                    mem::size_of_val(slice),
+                    size_of_val(slice),
                 )
             })
         }
@@ -265,7 +265,7 @@ where
         <(DST, BUF::Inner) as MemAligned>::assert_compatibility();
         // SAFETY: API used correctly.
         unsafe {
-            let pii = self.push_inner_raw(iter.len() * mem::size_of::<DST>(), &[0])?;
+            let pii = self.push_inner_raw(iter.len() * size_of::<DST>(), &[0])?;
             list_push_gen(
                 pii.meta,
                 pii.data,

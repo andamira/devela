@@ -3,7 +3,7 @@
 #[cfg(test)]
 mod tests;
 
-use core::{mem::size_of, str};
+use core::str;
 
 /// Converts a number into a string representation, storing the conversion into
 /// a mutable byte slice.

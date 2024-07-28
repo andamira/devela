@@ -1,9 +1,9 @@
 // helper functions
 
 use crate::_deps::bytemuck::Pod;
-use core::{mem, ptr, slice};
+use core::{mem::MaybeUninit, ptr, slice};
 
-type BufSlice<T> = [mem::MaybeUninit<T>];
+type BufSlice<T> = [MaybeUninit<T>];
 
 pub(crate) fn decompose_pointer<T: ?Sized>(mut ptr: *const T) -> (*const (), usize, [usize; 3]) {
     let addr = ptr as *const ();
@@ -18,9 +18,9 @@ pub(crate) fn decompose_pointer<T: ?Sized>(mut ptr: *const T) -> (*const (), usi
 }
 
 pub(crate) fn mem_as_slice<T>(ptr: &mut T) -> &mut [usize] {
-    assert!(mem::size_of::<T>() % mem::size_of::<usize>() == 0);
-    assert!(mem::align_of::<T>() % mem::align_of::<usize>() == 0);
-    let words = mem::size_of::<T>() / mem::size_of::<usize>();
+    assert!(size_of::<T>() % size_of::<usize>() == 0);
+    assert!(align_of::<T>() % align_of::<usize>() == 0);
+    let words = size_of::<T>() / size_of::<usize>();
     // SAFETY: Points to valid memory (a raw pointer)
     unsafe { slice::from_raw_parts_mut(ptr as *mut _ as *mut usize, words) }
 }
@@ -46,12 +46,12 @@ pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: Pod>(
             meta: [0; 4],
         },
     };
-    assert!(meta_vals.len() * mem::size_of::<W>() % mem::size_of::<usize>() == 0);
-    assert!(meta_vals.len() * mem::size_of::<W>() <= 4 * mem::size_of::<usize>());
+    assert!(meta_vals.len() * size_of::<W>() % size_of::<usize>() == 0);
+    assert!(meta_vals.len() * size_of::<W>() <= 4 * size_of::<usize>());
     ptr::copy(
         meta_vals.as_ptr() as *const u8,
         rv.raw.meta.as_mut_ptr() as *mut u8,
-        meta_vals.len() * mem::size_of::<W>(),
+        meta_vals.len() * size_of::<W>(),
     );
     let rv = rv.ptr;
     assert_eq!(rv as *const (), data_ptr as *const ());
@@ -60,13 +60,13 @@ pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: Pod>(
 
 /// Write metadata (abstraction around `ptr::copy`)
 pub(crate) fn store_metadata<W: Pod>(dst: &mut BufSlice<W>, meta_words: &[usize]) {
-    let n_bytes = core::mem::size_of_val(meta_words);
+    let n_bytes = size_of_val(meta_words);
     assert!(
-        n_bytes <= dst.len() * mem::size_of::<W>(),
+        n_bytes <= dst.len() * size_of::<W>(),
         "nbytes [{}] <= dst.len() [{}] * sizeof [{}]",
         n_bytes,
         dst.len(),
-        mem::size_of::<W>()
+        size_of::<W>()
     );
     unsafe {
         ptr::copy(
@@ -78,7 +78,7 @@ pub(crate) fn store_metadata<W: Pod>(dst: &mut BufSlice<W>, meta_words: &[usize]
 }
 
 pub(crate) fn round_to_words<T>(len: usize) -> usize {
-    (len + mem::size_of::<T>() - 1) / mem::size_of::<T>()
+    (len + size_of::<T>() - 1) / size_of::<T>()
 }
 
 /// Calls a provided function to get a fat pointer version of `v` (and checks that the returned pointer is sane)
@@ -89,8 +89,8 @@ pub(crate) fn check_fat_pointer<U, T: ?Sized>(v: &U, get_ref: impl FnOnce(&U) ->
         "MISUSE: Closure returned different pointer"
     );
     assert_eq!(
-        mem::size_of_val(ptr),
-        mem::size_of::<U>(),
+        size_of_val(ptr),
+        size_of::<U>(),
         "MISUSE: Closure returned a subset pointer"
     );
     ptr
@@ -126,7 +126,7 @@ pub(crate) unsafe fn list_push_gen<T, W: Pod>(
             unsafe {
                 while self.1 != 0 {
                     ptr::drop_in_place(&mut *self.0);
-                    ptr::write_bytes(self.0 as *mut u8, 0, mem::size_of::<T>());
+                    ptr::write_bytes(self.0 as *mut u8, 0, size_of::<T>());
                     self.0 = self.0.offset(1);
                     self.1 -= 1;
                 }

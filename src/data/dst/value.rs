@@ -8,7 +8,7 @@
 use super::{check_fat_pointer, decompose_pointer, store_metadata, DstArray, DstBuf};
 use crate::{
     _libcore::{marker, mem, ptr},
-    mem::MemAligned,
+    mem::{mem_forget, ManuallyDrop, MaybeUninit, MemAligned},
 };
 
 /* public API */
@@ -75,7 +75,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use {devela::data::DstValue, core::{fmt::Display, mem::MaybeUninit}};
+    /// # use {devela::data::DstValue, core::{fmt::Display, MaybeUninit}};
     /// let val = DstValue::<dyn Display, _>::in_buffer([MaybeUninit::new(0u64); 2], 1234, |v| v)
     ///     .expect("Insufficient size");
     /// assert_eq!( format!("{}", val), "1234" );
@@ -97,14 +97,14 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
             DstValue::new_raw(
                 &meta[..meta_len],
                 raw_ptr as *mut _,
-                mem::size_of::<VAL>(),
+                size_of::<VAL>(),
                 buffer,
             )
         };
         match rv {
             Some(r) => {
                 // Prevent the destructor from running, now that we've copied it away
-                mem::forget(val);
+                mem_forget(val);
                 Ok(r)
             }
             None => Err(val),
@@ -122,17 +122,17 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
         size: usize,
         mut buffer: BUF,
     ) -> Option<DstValue<DST, BUF>> {
-        let req_words = BUF::round_to_words(mem::size_of_val(info)) + BUF::round_to_words(size);
+        let req_words = BUF::round_to_words(size_of_val(info)) + BUF::round_to_words(size);
         if buffer.extend(req_words).is_err() {
             return None;
         }
 
-        let mut rv = mem::ManuallyDrop::new(DstValue::<DST, BUF> {
+        let mut rv = ManuallyDrop::new(DstValue::<DST, BUF> {
             _pd: marker::PhantomData,
             data: buffer,
         });
         rv.write_value(data, size, info);
-        Some(mem::ManuallyDrop::into_inner(rv))
+        Some(ManuallyDrop::into_inner(rv))
     }
 
     /// Replace the contents without dropping the backing allocation
@@ -152,19 +152,19 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     {
         <(VAL, BUF::Inner) as MemAligned>::assert_compatibility();
 
-        let size = mem::size_of::<VAL>();
+        let size = size_of::<VAL>();
         let (raw_ptr, meta_len, meta) = decompose_pointer(check_fat_pointer(&val, get_ref));
         let info = &meta[..meta_len];
 
         // Check size requirements (allow resizing)
-        let req_words = BUF::round_to_words(mem::size_of_val(info)) + BUF::round_to_words(size);
+        let req_words = BUF::round_to_words(size_of_val(info)) + BUF::round_to_words(size);
         if self.data.extend(req_words).is_err() {
             return Err(val);
         }
         // If met, drop the existing item and move in the new item
         unsafe {
             ptr::drop_in_place::<DST>(&mut **self);
-            self.write_value(raw_ptr, mem::size_of::<VAL>(), info);
+            self.write_value(raw_ptr, size_of::<VAL>(), info);
         }
         Ok(())
     }
@@ -215,7 +215,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use {devela::data::DstValue, core::{fmt::Display, mem::MaybeUninit}};
+    /// # use {devela::data::DstValue, core::{fmt::Display, MaybeUninit}};
     /// let val = DstValue::new_str_in_buffer([MaybeUninit::new(0u8); 32], "Hello, World")
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );
@@ -228,7 +228,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
             DstValue::new_raw(
                 &meta[..meta_len],
                 raw_ptr as *mut (),
-                mem::size_of_val(val),
+                size_of_val(val),
                 buffer,
             )
         };
@@ -248,7 +248,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     /// assert_eq!(&s[..], "FooBar");
     /// ```
     pub fn append_str(&mut self, val: &str) -> Result<(), ()> {
-        let info_words = BUF::round_to_words(mem::size_of::<usize>());
+        let info_words = BUF::round_to_words(size_of::<usize>());
 
         let ofs = self.len();
 
@@ -288,7 +288,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
         if len < self.len() {
             let _ = &self[..][len..]; // Index to force a panic if the index isn't char-aligned
 
-            let info_words = BUF::round_to_words(mem::size_of::<usize>());
+            let info_words = BUF::round_to_words(size_of::<usize>());
             let data = self.data.as_mut();
             let info_ofs = data.len() - info_words;
             store_metadata(&mut data[info_ofs..], &[len]);
@@ -313,7 +313,7 @@ where
     pub fn empty_slice_with_buffer(mut buffer: BUF) -> Result<Self, ()> {
         <(I, BUF::Inner) as MemAligned>::assert_compatibility();
 
-        let info_words = BUF::round_to_words(mem::size_of::<usize>());
+        let info_words = BUF::round_to_words(size_of::<usize>());
         let req_words = info_words;
         if buffer.extend(req_words).is_err() {
             return Err(());
@@ -335,12 +335,12 @@ where
 
     /// Append an item to the end of the slice (similar to `Vec::push`)
     pub fn append(&mut self, v: I) -> Result<(), I> {
-        let info_words = BUF::round_to_words(mem::size_of::<usize>());
+        let info_words = BUF::round_to_words(size_of::<usize>());
 
         let ofs = self.len();
 
         // Check/expand sufficient space
-        let req_words = BUF::round_to_words((ofs + 1) * mem::size_of::<I>()) + info_words;
+        let req_words = BUF::round_to_words((ofs + 1) * size_of::<I>()) + info_words;
         if self.data.extend(req_words).is_err() {
             return Err(v);
         }
@@ -392,7 +392,7 @@ where
         if self.len() > 0 {
             let ofs = self.len() - 1;
             let data = self.data.as_mut();
-            let info_words = BUF::round_to_words(mem::size_of::<usize>());
+            let info_words = BUF::round_to_words(size_of::<usize>());
             let info_ofs = data.len() - info_words;
             unsafe {
                 store_metadata(&mut data[info_ofs..], &[ofs]);
@@ -408,7 +408,7 @@ where
 
 impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     unsafe fn write_value(&mut self, data: *const (), size: usize, info: &[usize]) {
-        let info_words = BUF::round_to_words(mem::size_of_val(info));
+        let info_words = BUF::round_to_words(size_of_val(info));
         let req_words = info_words + BUF::round_to_words(size);
         let buf = self.data.as_mut();
         assert!(req_words <= buf.len());
@@ -427,8 +427,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     // Obtain raw pointer to the contained data
     unsafe fn as_ptr(&self) -> *mut DST {
         let data = self.data.as_ref();
-        let info_size = mem::size_of::<*mut DST>() / mem::size_of::<usize>() - 1;
-        let info_ofs = data.len() - BUF::round_to_words(info_size * mem::size_of::<usize>());
+        let info_size = size_of::<*mut DST>() / size_of::<usize>() - 1;
+        let info_ofs = data.len() - BUF::round_to_words(info_size * size_of::<usize>());
         let (data, meta) = data.split_at(info_ofs);
         super::make_fat_ptr(data.as_ptr() as *mut (), meta)
     }
@@ -436,8 +436,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     // Obtain raw pointer to the contained data
     unsafe fn as_ptr_mut(&mut self) -> *mut DST {
         let data = self.data.as_mut();
-        let info_size = mem::size_of::<*mut DST>() / mem::size_of::<usize>() - 1;
-        let info_ofs = data.len() - BUF::round_to_words(info_size * mem::size_of::<usize>());
+        let info_size = size_of::<*mut DST>() / size_of::<usize>() - 1;
+        let info_ofs = data.len() - BUF::round_to_words(info_size * size_of::<usize>());
         let (data, meta) = data.split_at_mut(info_ofs);
         super::make_fat_ptr(data.as_mut_ptr() as *mut (), meta)
     }
