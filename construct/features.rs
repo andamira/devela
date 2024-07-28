@@ -45,7 +45,6 @@ mod reflection {
             "safe_exec",
             "safe_mem",
             "safe_num",
-            "safe_rend", "safe_rend_audio", "safe_rend_image",
             "safe_sys",
             "safe_text",
             "safe_time",
@@ -90,10 +89,6 @@ mod reflection {
     pub const NUM: FlagsFeatures = FlagsFeatures {
         flags: &["_some_num"],
         features: &["num_geom", "num_rand"]
-    };
-    pub const REND: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_rend"],
-        features: &["rend_audio", "rend_color", "rend_font", "rend_image", "rend_video"]
     };
 
     /* # capabilities */
@@ -221,7 +216,7 @@ mod reflection {
 
             /* modules */
 
-            MEM, NUM, REND,
+            MEM, NUM,
 
             /* capabilities */
 

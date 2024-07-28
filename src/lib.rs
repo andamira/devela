@@ -69,7 +69,6 @@ pub mod data;
 pub mod exec;
 pub mod mem;
 pub mod num;
-pub mod rend;
 pub mod sys;
 pub mod text;
 pub mod time;
@@ -85,7 +84,6 @@ pub mod all {
         exec::all::*,
         mem::all::*,
         num::all::*,
-        rend::all::*,
         sys::all::*,
         text::all::*,
         time::all::*,

@@ -32,7 +32,7 @@ build = "construct/mod.rs"
 publish = true
 
 
-[features] # 205 (300 max)
+[features] # 198 (300 max)
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -71,21 +71,16 @@ std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
 	"atomic?/std", "bytemuck/extern_crate_std", "log?/std", "memchr?/std", "rand_core?/std",
 	"wide?/std",
-	# "wasm-bindgen?/std", "wide?/std",
 ]
 no_std = [ # enables functionality incompatible with or substitute of `std`
 ]
-
-# RETHINK where
-# wasm = ["wasm-bindgen"]
-# web = ["wasm"]
 
 
 #* Module features trees *#
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	"code", "data", "exec", "mem", "num", "rend", "sys", "text", "time",
+	"code", "data", "exec", "mem", "num", "sys", "text", "time",
 	]
 code = []
 data = []
@@ -100,14 +95,6 @@ num = [
 	]
 	num_geom = [] # geometric types and operations.
 	num_rand = [] # random number generators.
-rend = [
-	"rend_audio", "rend_color", "rend_font", "rend_image", "rend_video",
-	]
-	rend_audio = []
-	rend_color = []
-	rend_font = []
-	rend_image = []
-	rend_video = []
 sys = []
 text = ["_non_value_u8", "_non_value_u16"]
 time = []
@@ -120,15 +107,14 @@ time = []
 # 2. don't enable the `safe` feature for that module.
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_exec", "safe_mem", "safe_num",
-	"safe_rend", "safe_sys", "safe_text", "safe_time",
+	"safe_code", "safe_data", "safe_exec", "safe_mem",
+	"safe_num", "safe_sys", "safe_text", "safe_time",
 ] # in specific modules:
 	safe_code = []
 	safe_data = []
 	safe_exec = []
 	safe_mem = []
 	safe_num = []
-	safe_rend = []
 	safe_sys = []
 	safe_text = []
 	safe_time = []
@@ -499,7 +485,7 @@ check-cfg = [
 	#
 	# These compilation flags for reflection are enabled in: "/construction/features.rs"
     "cfg(_some_nightly, _some_dep)",
-	'cfg(_some_mem, _some_num, _some_rend)',
+	'cfg(_some_mem, _some_num)',
 	'cfg(_some_bit, _some_destaque, _some_graph, _some_node, _some_stack)',
 	'cfg(_some_sort, _some_sort_int, _some_sort_float)',
 	'cfg(_some_nums, _some_cmp, _some_float, _some_int, _some_int_i, _some_int_u)',

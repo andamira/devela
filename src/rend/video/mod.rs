@@ -1,4 +1,0 @@
-// devela::rend::video
-//
-//! Video
-//

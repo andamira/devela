@@ -47,18 +47,12 @@ Single modules:
 - [`num`]: enables all of the `num` sub-features:
     - [`num_geom`]: enables geometric types and operations.
     - [`num_rand`]: enables random number generators.
-- [`rend`]
-    - `rend_audio`
-    - `rend_color`
-    - `rend_font`
-    - `rend_image`
-    - `rend_video`
 - [`sys`]
 - [`text`]: enables `Char*`, `Egc`, `Nonul`.
 - [`time`]
 
-Enabling `mem`, `num`, `rend`, or their submodules, sets the corresponding flags:
-`_some_mem`, `_some_num`, `_some_rend`,
+Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
+`_some_mem`, `_some_num`.
 
 [`code`]: crate::code
 [`data`]: crate::data
@@ -67,7 +61,6 @@ Enabling `mem`, `num`, `rend`, or their submodules, sets the corresponding flags
 [`num`]: crate::num
 [`num_geom`]: crate::num::geom
 [`num_rand`]: crate::num::rand
-[`rend`]: crate::rend
 [`sys`]: crate::sys
 [`text`]: crate::text
 [`time`]: crate::time
@@ -83,7 +76,6 @@ In order to use any unsafe functionality:
   - `safe_code`
   - `safe_data`
   - `safe_num`
-  - `safe_rend`
   - `safe_sys`
   - `safe_text`
   - `safe_time`
