@@ -11,8 +11,6 @@
 
 // warnings:
 #![allow(unused_imports)]
-// safety:
-#![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
 #[cfg(not(feature = "std"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]

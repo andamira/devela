@@ -17,9 +17,9 @@
 //   - UnorderedSet
 
 #[cfg(all(feature = "alloc", feature = "hashbrown"))]
-use crate::data::collections::{AllocMap, AllocSet, Vec, VecDeque};
+use crate::data::collections::{AllocMap, AllocSet};
 #[cfg(feature = "alloc")]
-use crate::data::collections::{AllocOrdMap, AllocOrdSet, AllocPrioQueue};
+use crate::data::collections::{AllocOrdMap, AllocOrdSet, AllocPrioQueue, Vec, VecDeque};
 use crate::{
     data::{Array, DataError as E, DataResult as Result},
     mem::Storage,

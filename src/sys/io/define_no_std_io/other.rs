@@ -3,6 +3,7 @@
 use super::error::{IoError as Error, IoErrorKind, IoResult as Result};
 #[cfg(feature = "alloc")]
 use crate::_liballoc::vec::Vec;
+use crate::code::sf;
 use core::{cmp, fmt, slice};
 
 #[cfg(feature = "alloc")]
@@ -24,7 +25,7 @@ mod alloc_impls {
         read_to_end_with_reservation(r, buf, |_| 32)
     }
 
-    #[cfg(not(feature = "unsafe_sys"))] // SAFE version
+    #[cfg(any(feature = "safe_sys", not(feature = "unsafe_slice")))]
     pub(super) fn read_to_end_with_reservation<R, F>(
         r: &mut R,
         buf: &mut Vec<u8>,
@@ -87,7 +88,7 @@ mod alloc_impls {
         }
     }
 
-    #[cfg(feature = "unsafe_sys")] // UNSAFE version
+    #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_slice"))]
     pub(super) fn read_to_end_with_reservation<R, F>(
         r: &mut R,
         buf: &mut Vec<u8>,
@@ -134,9 +135,10 @@ mod alloc_impls {
             }
 
             let buf_len = buf.len(); // capture the length of the buffer.
-            unsafe {
-                buf.set_len(buf.capacity());
-            }
+
+            // SAFETY: We ensure that the buffer length is set to its capacity.
+            // This avoids zeroing out uninitialized memory.
+            sf! { unsafe { buf.set_len(buf.capacity()); }}
 
             let read_result = {
                 let spare = &mut buf[buf_len..];
@@ -145,18 +147,18 @@ mod alloc_impls {
 
             match read_result {
                 Ok(0) => {
-                    unsafe {
-                        buf.set_len(buf_len);
-                    }
+                    // SAFETY: Revert the buffer length to its previous value,
+                    // ensuring no uninitialized memory is exposed.
+                    sf! { unsafe { buf.set_len(buf_len); }}
                     return Ok(buf_len - start_len);
                 }
-                Ok(read_bytes) => unsafe {
-                    buf.set_len(buf_len + read_bytes);
-                },
+                // SAFETY: Adjust the buffer length to account for the bytes read,
+                // ensuring that we do not include any uninitialized memory.
+                Ok(read_bytes) => sf! { unsafe { buf.set_len(buf_len + read_bytes); }},
                 Err(e) => {
-                    unsafe {
-                        buf.set_len(buf_len);
-                    }
+                    // SAFETY: Revert the buffer length to its previous value on error,
+                    // ensuring no uninitialized memory is exposed.
+                    sf! { unsafe { buf.set_len(buf_len); }}
                     return Err(e);
                 }
             }
