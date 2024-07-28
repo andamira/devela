@@ -3,6 +3,8 @@
 //! 2-dimensional array general methods
 //
 
+#[cfg(doc)]
+use crate::mem::BareBox;
 #[cfg(feature = "alloc")]
 use crate::{
     _liballoc::vec::Vec,

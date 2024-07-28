@@ -17,7 +17,9 @@
 use crate::_liballoc::vec::Vec;
 use crate::num::{GcdExt, Num, NumError as E, NumResult as Result};
 #[cfg(doc)]
-use E::{MismatchedSizes, NonNegativeRequired, NotImplemented, NotSupported, Overflow};
+use E::{
+    MismatchedSizes, NonNegativeRequired, NonZeroRequired, NotImplemented, NotSupported, Overflow,
+};
 
 #[cfg(_some_int)]
 mod impls;
@@ -535,9 +537,9 @@ pub trait NumInt: Num {
     /// In that case the function will return the number of unique factors found.
     ///
     /// # Errors
-    /// Returns [`MismatchedSizes`] if the unique number of factors is greater
-    /// than the length of the `buffer`. In that case the buffer will only contain the
-    /// non-unique factors that can fit, like [`factors_prime_buf`][Self::factors_prime_buf].
+    /// Returns [`MismatchedSizes`] if the unique number of factors is greater than the
+    /// length of the `buffer`. In that case the buffer will only contain the non-unique
+    /// factors that can fit, like [`int_factors_prime_buf`][Self::int_factors_prime_buf].
     ///
     /// # Examples
     /// ```ignore

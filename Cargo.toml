@@ -194,6 +194,7 @@ _min_docs = [ # the minimum capabilities to document all library items
 	"_destaque_u8", "_stack_u8", "_graph_u8",
 	"_tuple",
 	# num:
+	"_cmp_u8",
 	"_float_f32", "_int_u8",
 	"_non_value_u8", "_non_range_u8", "_in_range_u8",
 	# text:
@@ -203,8 +204,8 @@ _max_docs = [ # the maximum capabities relevant for documentation
 	"_data_all", "_num_all", "_text_all"]
 
 # The most complete versions of the documentation:
-_docsrs = ["nightly", "_docsrs_stable"]
 _docsrs_stable = ["std", "unsafe", "dep_all", "_min_docs"]
+_docsrs = ["_docsrs_stable", "nightly"]
 
 #* data capabilities *#
 # ---------------------

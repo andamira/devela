@@ -5,7 +5,7 @@
 //!
 //! [`array`]: mod@std::array
 //! [`collections`]: std::collections
-//! [`vec`]: std::vec
+//! [`vec`]: mod@std::vec
 //
 
 mod array;

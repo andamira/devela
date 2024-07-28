@@ -329,7 +329,7 @@ macro_rules! impl_destaque {
 
             /// Pushes a new `element` to the back of the destaque.
             ///
-            /// This is the habitual *[`enqueue`]* operation for a single-ended **queue**.
+            /// This is the habitual *enqueue* operation for a single-ended **queue**.
             ///
             /// `( 1 2 -- 1 2 3 )`
             /// # Errors

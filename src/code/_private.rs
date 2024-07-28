@@ -60,6 +60,7 @@ macro_rules! reexport {
       $(,)?
     ) => { $crate::code::paste! {
         #[doc(inline)]
+        #[allow(rustdoc::broken_intra_doc_links)] // TEM FIXME unresolved link to alloc
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`alloc`'>`alloc`</span>"]
         #[doc = $description]

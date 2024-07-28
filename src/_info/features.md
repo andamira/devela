@@ -66,6 +66,7 @@ Enabling `mem`, `num`, `rend`, `ui` or their submodules, sets the corresponding 
 [`code`]: crate::code
 [`data`]: crate::data
 [`exec`]: crate::exec
+[`mem`]: crate::mem
 [`num`]: crate::num
 [`num_geom`]: crate::num::geom
 [`num_rand`]: crate::num::rand
@@ -137,9 +138,9 @@ Enable specific implementations for [`Bitwise`], [`bitfield`], [`enumset`]:
 They also set the corresponding flag:
 `_some_bit`.
 
-[`Bitwise`]: crate::num::Bitwise
-[`bitfield`]: crate::num::bitfield
-[`enumset`]: crate::num::enumset
+[`Bitwise`]: crate::data::Bitwise
+[`bitfield`]: crate::data::bitfield
+[`enumset`]: crate::code::enumset
 
 Enable specific implementations of data collections
 [`Destaque`], [`GraphU*`]+, [`NodeU*`]+, [`Stack`]:
@@ -172,7 +173,8 @@ Implement the [`Tuple`] trait for some maximum arity (12 by default).
 [`Stack`]: crate::data::Stack
 [`GraphU*`]: crate::data::GraphU8
 [`NodeU*`]: crate::data::NodeU8
-[`Tuple`]: crate::data::collections::Tuple
+[`Sort`]: crate::data::Sort
+[`Tuple`]: crate::data::Tuple
 
 #### `num` capabilities
 

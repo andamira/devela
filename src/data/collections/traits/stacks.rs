@@ -26,11 +26,12 @@ pub trait DataDesta: DataStack {
     /// Add an element to the front of the stack.
     fn stack_push_front(&mut self, element: <Self as DataCollection>::Element) -> Result<()>;
 
-    /// Remove an element from the back of the stack (calls [`stack_pop`]).
+    /// Remove an element from the back of the stack (calls [`DataStack::stack_pop`]).
     fn stack_pop_back(&mut self) -> Result<<Self as DataCollection>::Element> {
         self.stack_pop()
     }
-    /// Remove an element from the back of the stack (calls [`stack_push`]).
+    /// Remove an element from the back of the stack (calls [`DataStack::stack_push`]).
+    ///
     fn stack_push_back(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
         self.stack_push(element)
     }

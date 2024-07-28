@@ -16,6 +16,10 @@
 //   - UnorderedMap
 //   - UnorderedSet
 
+#[cfg(all(feature = "alloc", feature = "hashbrown"))]
+use crate::data::collections::{AllocMap, AllocSet, Vec, VecDeque};
+#[cfg(feature = "alloc")]
+use crate::data::collections::{AllocOrdMap, AllocOrdSet, AllocPrioQueue};
 use crate::{
     data::{Array, DataError as E, DataResult as Result},
     mem::Storage,
@@ -90,7 +94,7 @@ impl<T, const N: usize> DataCollection for [T; N] {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataCollection for crate::data::collections::reexports::Vec<T> {
+impl<T> DataCollection for Vec<T> {
     type Element = T;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -106,7 +110,7 @@ impl<T> DataCollection for crate::data::collections::reexports::Vec<T> {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataCollection for crate::data::collections::reexports::VecDeque<T> {
+impl<T> DataCollection for VecDeque<T> {
     type Element = T;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -122,7 +126,7 @@ impl<T> DataCollection for crate::data::collections::reexports::VecDeque<T> {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataCollection for crate::data::collections::AllocPrioQueue<T> {
+impl<T> DataCollection for AllocPrioQueue<T> {
     type Element = T;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -134,7 +138,7 @@ impl<T> DataCollection for crate::data::collections::AllocPrioQueue<T> {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<K, V> DataCollection for crate::data::collections::AllocOrdMap<K, V> {
+impl<K, V> DataCollection for AllocOrdMap<K, V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -149,7 +153,7 @@ impl<K, V> DataCollection for crate::data::collections::AllocOrdMap<K, V> {
 }
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<V> DataCollection for crate::data::collections::AllocOrdSet<V> {
+impl<V> DataCollection for AllocOrdSet<V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -167,7 +171,7 @@ impl<V> DataCollection for crate::data::collections::AllocOrdSet<V> {
 
 #[rustfmt::skip]
 #[cfg(all(feature = "alloc", feature = "hashbrown"))]
-impl<K, V> DataCollection for crate::data::collections::AllocMap<K, V> {
+impl<K, V> DataCollection for AllocMap<K, V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
@@ -182,7 +186,7 @@ impl<K, V> DataCollection for crate::data::collections::AllocMap<K, V> {
 }
 #[rustfmt::skip]
 #[cfg(all(feature = "alloc", feature = "hashbrown"))]
-impl<V> DataCollection for crate::data::collections::AllocSet<V> {
+impl<V> DataCollection for AllocSet<V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }

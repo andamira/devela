@@ -24,7 +24,7 @@ impl<S, V, E> Own<S, Result<V, E>> {
         Own::new(self.s, self.v.map_err(op))
     }
 
-    /// Returns `res` if the result [`is`] Ok, otherwise returns the [`Err`] value of `self`.
+    /// Returns `res` if the result is [`Ok`], otherwise returns the [`Err`] value of `self`.
     #[inline]
     pub fn v_and<W>(self, res: Result<W, E>) -> Own<S, Result<W, E>> {
         Own::new(self.s, self.v.and(res))

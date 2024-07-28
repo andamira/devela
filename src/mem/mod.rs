@@ -1,6 +1,7 @@
 // devela::mem
 //
-//! Memory management, <small>extends
+//! Memory management,
+//! <br/><small>extends
 //! `std::{`[`alloc`], [`borrow`], [`boxed`], [`cell`], [`mem`], [`pin`],
 //! [`ptr`], [`rc`], [`slice`]`}`.</small>
 //!

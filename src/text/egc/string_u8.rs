@@ -11,6 +11,8 @@ use super::Egc;
 use crate::_liballoc::ffi::CString;
 #[cfg(feature = "text")]
 use crate::text::char::*;
+#[cfg(doc)]
+use crate::text::TextError::OutOfBounds;
 use crate::{
     _libcore::str::Chars,
     code::{unwrap, ConstDefault},

@@ -110,7 +110,7 @@ impl<'a, T, E> Future for CoroYield<'a, T, E> {
 /// they are all complete.
 ///
 /// When a coroutine is polled and returns [`TaskPoll::Pending`], it is put back
-/// into the queue to be run again later. If it returns [`Poll::Ready`]
+/// into the queue to be run again later. If it returns [`TaskPoll::Ready`]
 /// it is considered complete and is not put back into the queue.
 ///
 /// # Examples

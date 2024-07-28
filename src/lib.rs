@@ -7,6 +7,10 @@
 //
 // warnings:
 #![warn(missing_docs, clippy::all)]
+#![cfg_attr(
+    not(all(doc, feature = "_docsrs_stable")),
+    allow(rustdoc::broken_intra_doc_links)
+)]
 #![allow(
     unknown_lints,
     stable_features, // e.g. for associated_type_bounds
@@ -93,7 +97,7 @@ pub mod all {
 #[allow(unused_imports)]
 pub use all::*;
 
-/// External dependencies.
+/// Dependencies.
 pub mod _deps;
 
 /// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>

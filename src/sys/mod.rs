@@ -1,6 +1,6 @@
 // devela::sys
 //
-//! System interfaces and hardware abstractions, <small>extends
+//! System interfaces and hardware abstractions, <br/><small>extends
 //! `std::{`[`arch`], [`env`], [`ffi`], [`fs`], [`io`], [`net`], [`os`],
 //! [`path`], [`simd`]`}`.</small>
 //!

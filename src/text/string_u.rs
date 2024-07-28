@@ -97,7 +97,7 @@ macro_rules! impl_string_u {
         #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         pub struct $name<const CAP: usize> {
-            // WAITING for when we can use CAP: u8 for panic-less const boundary check.
+            // WAIT: for when we can use CAP: u8 for panic-less const boundary check.
             arr: [u8; CAP],
             len: $t,
         }
@@ -341,7 +341,7 @@ macro_rules! impl_string_u {
             /// # Errors
             #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`]."]
             /// or [`NotEnoughCapacity`] if
-            /// `CAP < c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
+            /// `CAP < c.`[`len_utf8()`][super::UnicodeScalar#method.len_utf8].
             ///
             #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[inline] #[rustfmt::skip]

@@ -318,7 +318,7 @@ macro_rules! impl_stack {
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
             ///
             /// # Errors
-            #[doc = "Returns [`NotEnoughSpace`] if `CAP > `[`" $NEW_IDX:camel "::MAX`]."]
+            #[doc = "Returns [`NotEnoughSpace`] if `CAP > `[`" $NEW_IDX "::MAX`]."]
             ///
             /// # Examples
             /// ```
@@ -348,7 +348,7 @@ macro_rules! impl_stack {
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
             ///
             /// # Errors
-            #[doc = "Returns [`NotEnoughSpace`] if `CAP > `[`" $NEW_IDX:camel "::MAX`]."]
+            #[doc = "Returns [`NotEnoughSpace`] if `CAP > `[`" $NEW_IDX "::MAX`]."]
             ///
             /// # Examples
             /// ```
@@ -376,7 +376,7 @@ macro_rules! impl_stack {
             /// Converts the current stack index size `IDX` to a `NEW_IDX`.
             ///
             /// # Errors
-            #[doc = "Returns [`NotEnoughSpace`] if `CAP > `[`" $NEW_IDX:camel "::MAX`]."]
+            #[doc = "Returns [`NotEnoughSpace`] if `CAP > `[`" $NEW_IDX "::MAX`]."]
             ///
             /// # Examples
             /// ```

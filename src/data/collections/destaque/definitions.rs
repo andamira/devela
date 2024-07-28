@@ -31,6 +31,7 @@ use crate::{
 /// could only be significant for small capacities, as only one index is stored.
 ///
 /// See also the related aliases that specify `IDX`:
+#[allow(rustdoc::broken_intra_doc_links)]
 /// [`DestaqueU8`], [`DestaqueU16`], [`DestaqueU32`], [`DestaqueUsize`],
 /// and the related traits:
 /// [`DataQueue`][crate::DataQueue], [`DataDeque`][crate::DataDeque],

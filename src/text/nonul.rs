@@ -62,7 +62,7 @@ const NUL_CHAR: char = '\0';
 ///   [`capacity`][Self::capacity],
 ///   [`remaining_capacity`][Self::remaining_capacity].
 /// - Operations:
-///   [`clear`][Self::clear], [`reset`][Self::reset],
+///   [`clear`][Self::clear],
 ///   [`pop`][Self::pop]*([try][Self::try_pop])*,
 ///   [`push`][Self::push]*([try][Self::try_push])*.
 ///   [`push_str`][Self::push]*([try][Self::try_push_str])*,

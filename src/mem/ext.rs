@@ -50,7 +50,8 @@ pub trait ExtMem {
 
     /// View a `Sync + Unpin` `self` as `&[u8]`.
     ///
-    /// For the `const` version for sized types see [`mem_as_bytes_sized`].
+    /// For the `const` version for sized types see 
+    /// [`mem_as_bytes_sized`][super::mem_as_bytes_sized].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     fn mem_as_bytes(&self) -> &[u8] where Self: Sync + Unpin { mem_as_bytes(self) }

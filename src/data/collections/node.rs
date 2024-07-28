@@ -49,7 +49,7 @@ macro_rules! impl_node {
         #[doc = "and have the same memory layout optimization as a [`NonZero" $ID:camel "`]."]
         ///
         /// The `LCAP` const-generic argument determines the capacity for links.
-        /// If `LCAP == 0` the [`link`][Self::link] field will occupy 0 memory.
+        #[doc = "If `LCAP == 0` the [`link`][" $Node ".link] field will occupy 0 memory."]
         ///
         /// Links have a unique local *ID* associated corresponding to their index in the
         /// `link` field array.
@@ -305,7 +305,7 @@ macro_rules! impl_node {
             ///
             /// # Errors
             /// Returns [`OutOfBounds`] if `link >= LCAP`
-            /// or [`NotEnoughSpace`] if all links are already set.
+            /// or [`NotEnoughSpace`] if all potential links are already set.
             ///
             /// # Examples
             /// ```

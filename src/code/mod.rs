@@ -1,6 +1,6 @@
 // devela::code
 //
-//! Code reflective synthesis, <small>extends
+//! Code reflective synthesis, <small>extends <br/>
 //! `std::{`[`any`], [`clone`], [`convert`], [`default`], [`error`], [`hint`],
 //! [`marker`], [`ops`], [`option`], [`panic`], [`result`]`}`.</small>
 //!

@@ -307,6 +307,7 @@ macro_rules! custom_impls {
                 Float(y * (three_halfs - (x2 * y * y)))
             }
 
+            #[allow(rustdoc::broken_intra_doc_links)] // fix sqrt[3]
             /// $ \sqrt[3]{x} $ The cubic root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             #[inline] #[must_use]

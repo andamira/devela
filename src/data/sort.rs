@@ -73,6 +73,8 @@ use crate::{
 /// # Performance
 /// The `_array` suffixed methods calls the [`cswap`] macro using the xor swap
 /// algorithm, excep for the floting-point version which uses a temporary variable.
+///
+/// [`cswap`]: crate::mem::cswap
 #[repr(transparent)]
 pub struct Sort<T>(pub T);
 

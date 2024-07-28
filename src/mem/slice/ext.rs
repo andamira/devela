@@ -28,7 +28,7 @@ pub trait ExtSlice<T>: private::Sealed {
     ///
     /// If `left_len > slice.len()` it returns the full slice.
     ///
-    /// See also [`slice_lsplit`] for the standalone `const` version.
+    /// See also [`Slice::lsplit`] for the standalone `const` version.
     #[must_use]
     fn slice_lsplit(&self, len: usize) -> &[T];
 
@@ -36,7 +36,7 @@ pub trait ExtSlice<T>: private::Sealed {
     ///
     /// If `left_len > slice.len()` it returns the full slice.
     ///
-    /// See also [`slice_rsplit`] for the standalone `const` version.
+    /// See also [`Slice::rsplit`] for the standalone `const` version.
     #[must_use]
     fn slice_rsplit(&self, len: usize) -> &[T];
 
@@ -48,7 +48,7 @@ pub trait ExtSlice<T>: private::Sealed {
     ///
     /// If `len > slice.len()` returns the full `slice`.
     ///
-    /// See also [`slice_msplit_left`] for the standalone `const` version.
+    /// See also [`Slice::msplit_left`] for the standalone `const` version.
     #[must_use]
     fn slice_msplit_left(&self, len: usize) -> &[T];
 
@@ -60,7 +60,7 @@ pub trait ExtSlice<T>: private::Sealed {
     ///
     /// If `len > slice.len()` returns the full `slice`.
     ///
-    /// See also [`slice_msplit_right`] for the standalone `const` version.
+    /// See also [`Slice::msplit_right`] for the standalone `const` version.
     #[must_use]
     fn slice_msplit_right(&self, len: usize) -> &[T];
 

@@ -127,7 +127,7 @@ pub trait BitSize<const LEN: usize>: ByteSize {
     /// Returns the bit size of this type (only the relevant data part, without padding).
     ///
     /// # Panics
-    /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][Size::BYTE_SIZE],
+    /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][ByteSize::BYTE_SIZE],
     #[must_use]
     #[inline]
     fn bit_size(&self) -> usize {

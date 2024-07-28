@@ -12,9 +12,9 @@ pub type TimeResult<T> = core::result::Result<T, TimeError>;
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum TimeError {
-    /// The `Duration` from a [`SystemTimeError`].
+    /// The `Duration` from a [`SystemTimeError`][std::time::SystemTimeError].
     ///
-    /// Used to learn how far in the opposite direction a [`SystemTime`] lies.
+    /// Used to learn how far in the opposite direction a [`SystemTime`][super::SystemTime] lies.
     // IMPROVE: generalize.
     SystemTimeError(Duration),
 
