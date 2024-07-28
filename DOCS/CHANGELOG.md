@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Unreleased [0.21.0-wip]
 
 ### Added
-- add features: `num_geom`, `num_float`, `num_int`, `sys`, `safe_sys`, `unsafe_thread`, `rend_audio`, `rend_color`, `rend_font`, `rend_image`, `rend_video`, `ui_service`.
+- add features: `num_geom`, `num_float`, `num_int`, `num_rand`, `sys`, `safe_sys`, `unsafe_thread`.
 - add features: `_num_all`, `_float_all`, `_float_f[32|64]`, `_int_all`, `_int_[iu][all|8|16|32|64|128|size]`.
 - add features: `_bit_all`, `_bit_[iu][8|16|32|64|128|size]`.
 - add features: `_ascii_all`, `_ascii_u[8|16|32|64|128|size]`.
@@ -19,14 +19,14 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add features: `_cmp_all`, `_cmp_[iu][8|16|32|64|128|size]`.
 - add features: `_default`, `_min_docs`, `_max_docs`, `_max`, `_docsrs_stable`,`__dbg`, `nightly_stabilized`.
 - add features: `_node_all`, `_node_u[8|16|32|64|128|size]`.
-- add compilation flags for reflection purposes.
+- add compilation flags for reflection purposes, named `_some_*`.
 - enable `doc_notable_trait` unstable feature with `nightly_doc`.
-- add traits: `ExtFuture`, `ExtFloatConst`, `ExtLog`, `NumVector`, `UiCap`.
+- add traits: `ExtFuture`, `ExtFloatConst`, `ExtLog`, `NumVector`.
 - add functions: `future_block`, `hash_pengy`.
 - add type: `Prompt`.
 - add type: `Pinned`.
 - add type: `Timecode`.
-- add types: `Node*`.
+- add types: `NodeU*`, `EdgeU*` `GraphU*`.
 - add types: `LoggerConfig`, `LoggerPrint`, `Logging`.
 - add types: `Divisor`, `GcdExt`, `ValueQuant`.
 - add types: `Extent`, `Extent2d`, `Extent3d`.
@@ -52,24 +52,24 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export more items from: `std::io`, `core::ptr`.
 - re-export: `String`, `ToString`, `Rc`, `RcWeak`.
 - add build script for debugging purposes.
+- add lints table in manifest.
 
 ### Removed
-- remove features: `num_all`, `ui_all`, `num_float`, `num_int`, `num_niche_impls`, `num_niche_range`, `result`, `safe_result`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`.
-- remove `Mem` trait bound from `ByteSize`.
+- remove features: `num_all`, `ui`, `ui_all`, `num_float`, `num_int`, `num_niche_impls`, `num_niche_range`, `result`, `safe_result`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`, `rend`, `safe_rend`, `safe_ui`, `safe_ui_term`.
+- remove dependencies: `either`, `crossterm`, `miniquad`.
 - remove deprecated `ident_total_count` macro.
 - remove `repr(C)` attribute from niche types.
-- remove dependency `either`.
+- remove `Mem` trait bound from `ByteSize`.
+- remove `gfx` module.
 
 ### Changed
-- bump rust version to 1.78.0.
+- bump rust version to 1.80.0.
 - move `result` module inside `code`.
 - move `io` moule and `os` submodules to `sys`.
 - move `rustdoc-header.html` file to `/DOCS/`.
 - move `_deps::{code, alloc, std}` to `::{_libcore, _liballoc, _libstd}`.
 - rename `Range` to `InRange`.
 - rename `Biting` to `Bitwise`.
-- rename `gfx` module to `rend`.
-- rename `text` module to `lex`.
 - rename `Mem` trait to `ExtMem`.
 - rename `Text` trait to `StrOwn`.
 - rename `_docs` module to `_info`.
