@@ -3,11 +3,11 @@
 Features are grouped in the following categories:
 - *Miscellaneous*
 - *Environment*
-- *Module*
+- *Modules*
 - *Safety*
 - *Nightly*
 - *Capability*
-- *Dependency*
+- *Dependencies*
 
 Only the `_default` capabilities are enabled by default.
 
@@ -32,9 +32,9 @@ By default the crate is `no_std` compatible without allocation.
   - enables the `libm` optional dependency.
 
 
-### Module features
+### Modules features
 
-Modules can be enabled independently of *environment*, *dependency* or *safety*.
+Modules can be enabled independently of *environment*, *dependencies* or *safety*.
 
 - `all`: enables all the root modules and extra submodules:
 
@@ -82,25 +82,26 @@ In order to use any unsafe functionality:
   - `safe_work`
 
 - `unsafe`: enables `unsafe` (as long as it isn't forbidden in the module), includes:
-	- `unsafe_array` faster array initialization.
-	- `unsafe_async` custom task waker, coroutine impls.
-	- `unsafe_const` extra const methods.
-	- `unsafe_dyn` DSTs in the stack, `no_std` Error dyn impls, `ExtAny::downcast*`.
-	- `unsafe_niche` unchecked niche constructors.
-	- `unsafe_ptr` `Pinned`, pop methods without `Clone`.
-	- `unsafe_slice` extra slice methods, avoid bound checks.
-	- `unsafe_str` unchecked utf-8 char and &str conversions.
-	- `unsafe_thread` `Logging::set_logger_racy`.
+	- `unsafe_array`: faster array initialization.
+	- `unsafe_async`: custom task waker, coroutine impls.
+	- `unsafe_const`: extra const methods.
+	- `unsafe_dyn`: DSTs in the stack, `no_std` Error dyn impls, `ExtAny::downcast*`.
+	- `unsafe_niche`: unchecked niche constructors.
+	- `unsafe_ptr`: `Pinned`, pop methods without `Clone`.
+	- `unsafe_slice`: extra slice methods, avoid bound checks.
+	- `unsafe_str`: unchecked utf-8 char and &str conversions.
+	- `unsafe_thread`: `Logging::set_logger_racy`.
 
 
 ### Nightly features
 
 Enabling any of them sets the `_some_nightly` flag.
 
-- `nightly`: enables nightly features.
+- `nightly`: enables the nightly features.
   - `nightly_coro`: enables `coroutines`, `coroutine_trait`, `iter_from_coroutine`.
   - `nightly_doc`: enables `doc_cfg`.
-
+  - `nightly_simd`: enables `portable_simd`.
+  - `nightly_stabilized`: enables stabilized features to be released soon.
 
 ### Capability features
 
@@ -236,7 +237,7 @@ They also set the corresponding flags:
 [`StringNonul`]: crate::text::StringNonul
 
 
-### Dependency features
+### Dependencies features
 
 Enabling any of them sets the `_some_dep` flag.
 

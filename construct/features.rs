@@ -24,9 +24,9 @@ mod reflection {
         features: &'a [&'a str],
     }
 
-    /* # misc. */
+    /* # miscellaneous */
 
-    pub const MISC: FlagsFeatures = FlagsFeatures {
+    pub const MISCELLANEOUS: FlagsFeatures = FlagsFeatures {
         flags: &[],
         features: &[ "_default", "_max", "_min_docs", "_max_docs", "_docsrs", "_docsrs_stable"]
     };
@@ -206,9 +206,9 @@ mod reflection {
     /// This is the list of the constants defined above.
     pub(super) fn set_flags() {
         for ff in [
-            /* misc. */
+            /* miscellaneous */
 
-            MISC,
+            MISCELLANEOUS,
             ENVIRONMENT,
             SAFETY,
             NIGHTLY,

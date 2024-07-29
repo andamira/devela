@@ -6,9 +6,11 @@
 // - core_impls
 
 use super::{check_fat_pointer, decompose_pointer, store_metadata, DstArray, DstBuf};
+#[cfg(doc)]
+use crate::mem::MaybeUninit;
 use crate::{
-    _libcore::{marker, mem, ptr},
-    mem::{mem_forget, ManuallyDrop, MaybeUninit, MemAligned},
+    _libcore::{marker, ptr},
+    mem::{mem_forget, ManuallyDrop, MemAligned},
 };
 
 /* public API */
@@ -75,7 +77,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use {devela::data::DstValue, core::{fmt::Display, MaybeUninit}};
+    /// # use {devela::data::DstValue, core::{fmt::Display, mem::MaybeUninit}};
     /// let val = DstValue::<dyn Display, _>::in_buffer([MaybeUninit::new(0u64); 2], 1234, |v| v)
     ///     .expect("Insufficient size");
     /// assert_eq!( format!("{}", val), "1234" );
@@ -215,7 +217,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use {devela::data::DstValue, core::{fmt::Display, MaybeUninit}};
+    /// # use {devela::data::DstValue, core::{fmt::Display, mem::MaybeUninit}};
     /// let val = DstValue::new_str_in_buffer([MaybeUninit::new(0u8); 32], "Hello, World")
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );

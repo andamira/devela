@@ -393,7 +393,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
 
 mod core_impls {
     use super::{DstBuf, DstStack, DstStackIter, DstStackIterMut};
-    use core::{fmt, iter, mem, ops};
+    use core::{fmt, iter, ops};
 
     impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstStack<DST, BUF> {
         #[inline(always)]

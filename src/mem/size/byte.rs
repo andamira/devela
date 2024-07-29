@@ -87,7 +87,7 @@ pub trait ByteSize: Sized {
 ///
 /// # Examples
 /// ```
-/// use devela::mem::{ptr_size_ratio, size_of};
+/// use devela::mem::ptr_size_ratio;
 ///
 /// assert_eq![ptr_size_ratio(0), [1, 0]];
 /// assert_eq![ptr_size_ratio(size_of::<usize>()), [1, 1]];
