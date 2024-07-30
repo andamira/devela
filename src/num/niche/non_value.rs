@@ -10,7 +10,7 @@
 #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 #[cfg(feature = "mem_bit")]
-use crate::mem::{bit_size, ByteSize};
+use crate::mem::{bit_sized, ByteSized};
 use crate::{
     _libcore::{fmt, num::*, str::FromStr},
     code::{paste, ConstDefault},
@@ -227,9 +227,9 @@ macro_rules! impl_non_value {
 
             /* internal impls */
 
-            // BitSize
+            // BitSized
             #[cfg(feature = "mem_bit")]
-            bit_size![<const V: [<$s $b>]> =
+            bit_sized![<const V: [<$s $b>]> =
                 { [<$s $b>]::BYTE_SIZE * 8}; for [<$name $s:upper $b>]<V>];
 
             /* external impls*/

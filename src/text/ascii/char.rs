@@ -593,4 +593,4 @@ impl ConstDefault for AsciiChar {
 }
 
 #[cfg(feature = "mem_bit")]
-crate::mem::bit_size![= 7; for AsciiChar];
+crate::mem::bit_sized![= 7; for AsciiChar];

@@ -5,13 +5,13 @@
 
 use crate::code::iif;
 
-impl<T> ByteSize for T {}
+impl<T> ByteSized for T {}
 
 /// Type size information in bytes.
 ///
 /// This trait is automatically implemented for every `Sized` type.
 // (this allows to have associated constants depending on Self)
-pub trait ByteSize: Sized {
+pub trait ByteSized: Sized {
     /// The alignment of this type in bytes.
     const BYTE_ALIGN: usize = align_of::<Self>();
 
@@ -53,7 +53,7 @@ pub trait ByteSize: Sized {
     ///
     /// # Examples
     /// ```
-    /// use devela::mem::ByteSize;
+    /// use devela::mem::ByteSized;
     ///
     /// assert_eq![().ptr_size_ratio(), [1, 0]];
     /// assert_eq![1_usize.ptr_size_ratio(), [1, 1]];
