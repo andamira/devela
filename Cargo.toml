@@ -58,7 +58,7 @@ publish = true
 # default = []
 
 __dbg = [] # for debugging purposes, shows enabled features
-__notest = [] # allows excluding examples from being tested
+__no_test = [] # allows excluding examples from being tested
 
 
 #* Environment features *#
@@ -506,7 +506,7 @@ name = "bitfield"
 required-features = ["_bit_u8"]
 [[example]]
 name = "cargo_script"
-required-features = ["__notest"]
+required-features = ["__no_test"]
 [[example]]
 name = "coro_run"
 required-features = ["unsafe_async", "alloc"]

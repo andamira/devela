@@ -19,7 +19,7 @@ each other, and composable, except from the miscellaneous features.
 In this category there are features with varied purposes mostly for internal use.
 
 - `__dbg`: for debugging purposes, shows enabled features and reflection flags.
-- `__notest`: allows excluding examples from being tested.
+- `__no_test`: allows excluding examples from being tested.
 
 
 ### Environment features
