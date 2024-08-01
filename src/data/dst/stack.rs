@@ -440,8 +440,7 @@ mod core_impls {
             } else {
                 // SAFETY: Bounds checked, aliasing enforced by API.
                 let rv = unsafe { &*self.0.raw_at(self.1) };
-                self.1 -=
-                    DstStack::<DST, BUF>::meta_words() + BUF::round_to_words(size_of_val(rv));
+                self.1 -= DstStack::<DST, BUF>::meta_words() + BUF::round_to_words(size_of_val(rv));
                 Some(rv)
             }
         }
@@ -457,8 +456,7 @@ mod core_impls {
             } else {
                 // SAFETY: Bounds checked, aliasing enforced by API.
                 let rv = unsafe { &mut *self.0.raw_at_mut(self.1) };
-                self.1 -=
-                    DstStack::<DST, BUF>::meta_words() + BUF::round_to_words(size_of_val(rv));
+                self.1 -= DstStack::<DST, BUF>::meta_words() + BUF::round_to_words(size_of_val(rv));
                 Some(rv)
             }
         }
