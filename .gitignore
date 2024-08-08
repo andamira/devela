@@ -1,6 +1,5 @@
 /target
 /Cargo.lock
 /macros
-/build/out
 /tools/*.rs
 /tools/*.txt

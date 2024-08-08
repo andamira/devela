@@ -22,7 +22,7 @@ include = [
 	"/Cargo.toml",
 	"/DOCS/*",
 
-	"/build/*.rs", "/build/generate/*.rs",
+	"/build/**/*.rs",
 	"/src/**/*.rs", "/src/**/*.md",
 
 	"/examples/bitfield.rs", "/examples/enumset.rs",

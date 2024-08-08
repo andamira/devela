@@ -9,9 +9,12 @@
 // - enums definitions
 // - iterators definitions and implementations
 
-use std::fs::{create_dir_all, File};
-use std::io::{BufWriter, Error, Write};
-use std::{write as w0, writeln as w};
+use crate::utils::*;
+use std::{
+    fs::{create_dir_all, File},
+    io::{BufWriter, Error, Write},
+    write as w0, writeln as w,
+};
 
 #[rustfmt::skip] const MAX_ARITY: usize = {
     if cfg!(not(feature = "_tuple_24")) { 12
@@ -23,8 +26,13 @@ use std::{write as w0, writeln as w};
 
 #[rustfmt::skip]
 pub(super) fn generate() -> Result<(), Error> {
-    create_dir_all("build/out/").unwrap();
-    let path = "build/out/tuple.rs";
+    let build_out_dir = out_dir_path().join("build/");
+    create_dir_all(&build_out_dir)?;
+    let path = build_out_dir.join("tuple.rs");
+
+    // the generated file will be imported from /src/data/collections/tuple/mod.rs
+    #[cfg(feature = "__dbg")]
+    println(&format!("generate: {}", path.display()));
 
     let file = File::create(path)?;
     let mut f = BufWriter::new(file);

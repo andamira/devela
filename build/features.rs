@@ -14,6 +14,8 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 // https://doc.rust-lang.org/reference/conditional-compilation.html#set-configuration-options
 #[rustfmt::skip]
 mod reflection {
+    #[cfg(feature = "__dbg")]
+    use crate::println;
     use std::env::var;
 
     /// A type that associates a list of flags with a list of features.
@@ -266,7 +268,4 @@ mod reflection {
             println("---------------------------");
         }
     }
-
-    #[cfg(feature = "__dbg")]
-    pub(crate) fn println(msg: &str) { println!("cargo:warning={}", msg); }
 }

@@ -14,7 +14,7 @@ mod tests;
 // NOTE: we import the generated code for the Tuple trait,
 // and their implementations for tuples of many arities,
 // As well as the enums TupleEnumRef and TupleEnumMut.
-include!["../../../../build/out/tuple.rs"];
+include!(concat!(env!("OUT_DIR"), "/build/tuple.rs"));
 
 /// A formatting wrapper for [`Tuple`]s, implementing `Display` and `Debug`.
 #[repr(transparent)]
