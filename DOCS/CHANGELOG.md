@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
-## Unreleased [0.21.0-wip]
+## Unreleased [0.22.0-wip]
+
+### Added
+
+### Removed
+
+### Changed
+
+### Fixed
+
+## [0.21.0] 2024-08-08
 
 ### Added
 - add features: `num_geom`, `num_float`, `num_int`, `num_rand`, `sys`, `safe_sys`, `unsafe_thread`.
@@ -17,7 +27,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add features: `_range_all`, `_non_range_[iu][8|16|32|64|128|size]`.
 - add features: `_sort_all`, `_sort_[iu][8|16|32|64|128|size]`.
 - add features: `_cmp_all`, `_cmp_[iu][8|16|32|64|128|size]`.
-- add features: `_default`, `_min_docs`, `_max_docs`, `_max`, `_docsrs_stable`,`__dbg`, `nightly_stabilized`.
+- add features: `_default`, `_min_docs`, `_max_docs`, `_max`, `_docsrs_stable`,`__dbg`, `__no_test` `nightly_stabilized`.
 - add features: `_node_all`, `_node_u[8|16|32|64|128|size]`.
 - add compilation flags for reflection purposes, named `_some_*`.
 - enable `doc_notable_trait` unstable feature with `nightly_doc`.
@@ -35,7 +45,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add types: `Point`, `Point2d`, `Point3d`, `Points`, `VecPoints`.
 - add types: `HasherFnv`, `HasherFx`, `HasherFx32`, `HasherFx64`, `HasherBuildFnv`, `HasherBuildFx`.
 - add types: `TupleIter`, `TupleIterRef`, `TupleIterMut`, `TupleElement`, `TupleElementRef`, `TupleElementMut`.
-- add `ByteSize` constants: `PTR_BITS`, `LITTLE_ENDIAN`, `BIG_ENDIAN`.
+- add `ByteSized` constants: `PTR_BITS`, `LITTLE_ENDIAN`, `BIG_ENDIAN`.
 - add unsigned `gcd_ext` and `gcd_ext_euc` methods to `Int`.
 - add `Floating` and `ExtFloat` method: `neg_abs`.
 - add `*_assign` methods to `Num` and `NumRef`.
@@ -59,11 +69,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove dependencies: `either`, `crossterm`, `miniquad`.
 - remove deprecated `ident_total_count` macro.
 - remove `repr(C)` attribute from niche types.
-- remove `Mem` trait bound from `ByteSize`.
+- remove `Mem` trait bound from `ByteSized`.
 - remove `gfx` module.
 
 ### Changed
-- bump rust version to 1.80.0.
+- bump rust version to 1.80.1.
 - move `result` module inside `code`.
 - move `io` moule and `os` submodules to `sys`.
 - move `rustdoc-header.html` file to `/DOCS/`.
@@ -77,8 +87,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `copy` function to `io_copy`.
 - rename `StringEgc` to `EgcString`.
 - rename `NonSpecific*` to `NonValue*`.
+- rename mem::`BitSize` to mem::`BitSized`.
+- rename mem::`ByteSize` to mem::`ByteSized`.
 - rename `NonEdge*` aliases to `NonExtreme*`.
-- rename `ByteSize::PTR_SIZE` constant to `PTR_BYTES`.
+- rename `ByteSized::PTR_SIZE` constant to `PTR_BYTES`.
 - rename `os` module to `sys`, make submodules private.
 - rename `work` module to `exec`, make submodules private.
 - rename `Floating` wrapper to `Float` and make it own `self`.
@@ -110,7 +122,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Fixed
 - fix `exec` re-exports.
-- fix `Bitsize` impl for niche types.
+- fix `Bitsized` impl for niche types.
 - fix feature-gating of `Compare` methods: `is_normal`, `is_subnormal`.
 - make `_info/examples` parseable by `rustfmt`.
 - add missing `NumInt` `sqrt` implementations.
@@ -820,7 +832,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.20.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.21.0...HEAD
+[0.21.0]: https://github.com/andamira/devela/releases/tag/v0.21.0
 [0.20.0]: https://github.com/andamira/devela/releases/tag/v0.20.0
 [0.19.0]: https://github.com/andamira/devela/releases/tag/v0.19.0
 [0.18.1]: https://github.com/andamira/devela/releases/tag/v0.18.1
