@@ -1,4 +1,4 @@
-// devela construct::gen::tuple
+// devela build::generate::tuple
 //
 //! Code generator for the `Tuple` trait, `TupleElement*` enums and `TupleIter*` structs.
 //
@@ -23,8 +23,8 @@ use std::{write as w0, writeln as w};
 
 #[rustfmt::skip]
 pub(super) fn generate() -> Result<(), Error> {
-    create_dir_all("construct/out/").unwrap();
-    let path = "construct/out/tuple.rs";
+    create_dir_all("build/out/").unwrap();
+    let path = "build/out/tuple.rs";
 
     let file = File::create(path)?;
     let mut f = BufWriter::new(file);

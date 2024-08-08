@@ -1,4 +1,4 @@
-// devela construct::generate
+// devela build::generate
 //
 //! Code generation during the build process.
 //

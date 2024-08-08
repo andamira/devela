@@ -1,4 +1,4 @@
-// devela construct
+// devela build
 //
 //! The build script.
 //

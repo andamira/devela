@@ -107,7 +107,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add the `?Sized` trait bound for `ExtAny` auto-impls.
 - change `From<float>` for `Sign` to return the zero sign.
 - change default `Tuple` arity to 12.
-- change tuple capability features to: `_tuple_arity_24`, `_tuple_arity_36`, `_tuple_arity_48`, `_tuple_arity_60`, `_tuple_arity_72`, `_tuple_arity_96`.
+- change tuple capability features to: `_tuple_arity_24`, `_tuple_arity_36`, `_tuple_arity_48`, `_tuple_arity_72`.
 - add bounds for `color_gamma_*` functions.
 - make some methods const: `Slice::<u8>::trim_leading_bytes`, `StringU*::from_bytes_n[left|right]`, `Timecode::split_nanos_u[32|64]`.
 - make some methods *optionally* const: `Slice::{lsplit, msplit_[left|right]}`, `Ascii::digits_str`, `StringU*::from_bytes_n[left|right][_unchecked]`.
