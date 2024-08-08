@@ -15,6 +15,21 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Fixed
 
+## [0.21.2] 2024-08-09
+
+### Added
+- add convenience fns: `out_dir` and `out_dir_path` to the build script.
+- add new `build::utils` module.
+
+### Changed
+- move build codegen output from `/build/out/` to `{OUT_DIR}/build/`.
+- show debug information about `OUT_DIR` and the code-generated files.
+- move `println` to the `utils` module.
+- update `.gitignore`.
+
+### Fixed
+- this should fix compilation in *docs.rs*.
+
 ## [0.21.1] 2024-08-08
 
 ### Changed
@@ -842,7 +857,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.21.1...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.21.2...HEAD
+[0.21.2]: https://github.com/andamira/devela/releases/tag/v0.21.2
 [0.21.1]: https://github.com/andamira/devela/releases/tag/v0.21.1
 [0.21.0]: https://github.com/andamira/devela/releases/tag/v0.21.0
 [0.20.0]: https://github.com/andamira/devela/releases/tag/v0.20.0
