@@ -1,12 +1,9 @@
 // devela::data::collections::graph
 //
-//! Graphs are node-based, dynamically sized, heterogeneous data structures.
+//! Graphs are collections of vertices and edges, backed by two arrays or two `Vec`s.
 //!
-//! They enable efficient representation of relationships between pairs of elements,
-//! with nodes that may contain different types and sets of edges that connect these nodes.
-//!
-//! Edges are potentially ordered, with optional data.
-//!
+//! They enable efficient representation of complex relationships and structures between
+//! pairs of nodes, with edges being potentially ordered and carrying optional data.
 //
 
 mod edge;
@@ -62,10 +59,10 @@ macro_rules! impl_graph {
         /// and two [`Array`]s for vertices and edges.
         ///
         /// It is generic in respect to the
+        /// - vertices *const* capacity (`VCAP`),
+        /// - edges *const* capacity (`ECAP`)
         /// - vertices data type (`V`),
-        /// - vertices capacity (`VCAP`),
         /// - edges data type (`E`),
-        /// - edges capacity (`ECAP`)
         /// - storage (`S`).
         ///
         #[doc = "Edges are represented with the [`" $Edge "`]s type."]

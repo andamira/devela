@@ -19,6 +19,11 @@ mod destaque;
 #[cfg(_some_destaque)]
 pub use destaque::*;
 
+#[cfg(_some_graph)]
+mod graph;
+#[cfg(_some_graph)]
+pub use graph::*;
+
 #[cfg(_some_node)]
 mod node;
 #[cfg(_some_node)]
