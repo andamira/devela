@@ -15,6 +15,16 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Fixed
 
+## [0.21.1] 2024-08-08
+
+### Changed
+- rename build script's `construct` folder to `build`.
+- update `.gitignore`.
+
+### Fixed
+- include `build` folder.
+- fix docs.
+
 ## [0.21.0] 2024-08-08
 
 ### Added
@@ -832,7 +842,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add macro `iif`.
 
 
-[unreleased]: https://github.com/andamira/devela/compare/v0.21.0...HEAD
+[unreleased]: https://github.com/andamira/devela/compare/v0.21.1...HEAD
+[0.21.1]: https://github.com/andamira/devela/releases/tag/v0.21.1
 [0.21.0]: https://github.com/andamira/devela/releases/tag/v0.21.0
 [0.20.0]: https://github.com/andamira/devela/releases/tag/v0.20.0
 [0.19.0]: https://github.com/andamira/devela/releases/tag/v0.19.0
