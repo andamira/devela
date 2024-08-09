@@ -8,12 +8,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Unreleased [0.22.0-wip]
 
 ### Added
+- show build environment variables if `__dbg` feature is enabled.
 
 ### Removed
 
 ### Changed
+- refactor build script.
 
 ### Fixed
+- fix build script utility call paths, add missing `_tuple*` features.
 
 ## [0.21.2] 2024-08-09
 
