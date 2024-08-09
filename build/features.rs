@@ -4,6 +4,9 @@
 //
 
 pub(crate) fn main() -> Result<(), std::io::Error> {
+    #[cfg(feature = "__dbg")]
+    crate::utils::println_heading("Features:");
+
     reflection::set_flags();
 
     Ok(())
@@ -15,7 +18,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 #[rustfmt::skip]
 mod reflection {
     #[cfg(feature = "__dbg")]
-    use crate::println;
+    use crate::utils::println;
     use std::env::var;
 
     /// A type that associates a list of flags with a list of features.
@@ -68,12 +71,10 @@ mod reflection {
         features: &[
             "atomic",
             "const-str",
-            "crossterm",
             "hashbrown",
             "libm",
             "log",
             "memchr",
-            "miniquad",
             "portable-atomic",
             "rand_core",
             "unicode-segmentation",
@@ -103,6 +104,11 @@ mod reflection {
             "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
             "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
         ]
+    };
+
+    pub const TUPLE: FlagsFeatures = FlagsFeatures {
+        flags: &[],
+        features: &["_tuple", "_tuple_24", "_tuple_36", "_tuple_48", "_tuple_72"]
     };
 
     // ### collections
@@ -223,7 +229,7 @@ mod reflection {
             /* capabilities */
 
             // data
-            BIT,
+            BIT, TUPLE,
             DESTAQUE, GRAPH, NODE, STACK, // collections
             SORT_INT, SORT_FLOAT,
             // text
@@ -239,7 +245,7 @@ mod reflection {
     /// Sets configuration flags for reflection if some features are enabled.
     ///
     /// - flag_names: The name of the cfg flag to set if any feature is enabled.
-    /// - features:  The feature names to check.
+    /// - features:   The feature names to check.
     #[cfg(not(feature = "__dbg"))]
     fn set_flags_dbg_features(flags: &[&str], features: &[&str]) {
         let is_enabled = features
@@ -265,7 +271,7 @@ mod reflection {
                 println!("cargo:rustc-cfg={}", flag);
                 println(flag);
             }
-            println("---------------------------");
+            println("");
         }
     }
 }

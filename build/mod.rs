@@ -3,14 +3,13 @@
 //! The build script.
 //
 
+mod environment;
 mod features;
 mod generate;
 mod utils;
 
 fn main() -> Result<(), std::io::Error> {
-    #[cfg(feature = "__dbg")]
-    utils::println(&format!("OUT_DIR: {}", out_dir()));
-
+    environment::main()?;
     features::main()?;
     generate::main()?;
 

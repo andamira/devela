@@ -32,7 +32,7 @@ pub(super) fn generate() -> Result<(), Error> {
 
     // the generated file will be imported from /src/data/collections/tuple/mod.rs
     #[cfg(feature = "__dbg")]
-    println(&format!("generate: {}", path.display()));
+    println(&format!("generated: {}", path.display()));
 
     let file = File::create(path)?;
     let mut f = BufWriter::new(file);
