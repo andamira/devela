@@ -153,11 +153,22 @@ nightly = [
 		# - https://github.com/rust-lang/rust/milestones
 		# - https://releases.rs/
 		#
-		# WAIT:
-		# ? [noop_waker](https://github.com/rust-lang/rust/issues/98286) exec::async::waker
-		# ? [macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
-		# ? [impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
-		# ? [offset_of_nested](https://github.com/rust-lang/rust/pull/128284)
+		# Included features, soon to be stabilized:
+		#
+		#
+		# NOT included features, soon to be stabilized:
+		# 1.81: [expect, lint_reasons](https://github.com/rust-lang/rust/pull/120924)
+		# 1.81: [error_in_core](https://github.com/rust-lang/rust/pull/125951)
+		#
+		# 1.82: [const_int_from_str](https://github.com/rust-lang/rust/pull/124941)
+		# 1.82: [const_waker](https://github.com/rust-lang/rust/pull/128228)
+		# 1.82: [is_sorted](https://github.com/rust-lang/rust/issues/53485)
+		# 1.82: [offset_of_nested](https://github.com/rust-lang/rust/pull/128284)
+		# 1.82: [unsafe_extern_blocks](https://github.com/rust-lang/rust/pull/127921)
+		#
+		# 1.?? [impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
+		# 1.?? [macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
+		# 1.?? [noop_waker](https://github.com/rust-lang/rust/issues/98286) exec::async::waker
 
 
 #* Capability features *#
