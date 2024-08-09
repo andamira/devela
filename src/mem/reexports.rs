@@ -8,8 +8,7 @@ use super::Boxed;
 use crate::code::reexport;
 
 #[cfg(feature = "alloc")]
-crate::code::impl_cdef![<T> Self::new() => crate::_liballoc::rc::Weak<T>];
-// crate::code::impl_cdef![<T> Self::new() => RcWeak<T>]; ??
+crate::code::impl_cdef![<T: ConstDefault> Self::new() => crate::_liballoc::rc::Weak<T>];
 
 /* type aliases */
 

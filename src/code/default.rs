@@ -3,10 +3,6 @@
 //!
 //
 
-// for Condvar and Once:
-// https://rust-lang.github.io/rust-clippy/master/index.html#/declare_interior_mutable_const
-#![allow(clippy::declare_interior_mutable_const)]
-
 /* definitions */
 
 /// A trait for giving a type a useful default value in *compile-time*.
@@ -20,7 +16,10 @@ macro_rules! impl_cdef {
     // <A>
     (<$A:ident> $def:expr => $($t:ty),+) => { $( $crate::code::impl_cdef![@<$A> $def => $t]; )+ };
     (@<$A:ident> $def:expr => $t:ty) => {
-        impl<$A> $crate::code::ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl<$A> $crate::code::ConstDefault for $t {
+            #[allow(clippy::declare_interior_mutable_const)]
+            const DEFAULT: Self = $def;
+        }
     };
     // <A: A_> (bounded)
     (<$A:ident:$A_:ident> $def:expr => $($t:ty),+) => {
@@ -28,6 +27,7 @@ macro_rules! impl_cdef {
     };
     (@<$A:ident:$A_:ident> $def:expr => $t:ty) => {
         impl<$A: $crate::code::ConstDefault> $crate::code::ConstDefault for $t {
+            #[allow(clippy::declare_interior_mutable_const)]
             const DEFAULT: Self = $def;
         }
     };
@@ -36,13 +36,19 @@ macro_rules! impl_cdef {
         $( $crate::code::impl_cdef![@<$A, $B> $def => $t]; )+
     };
     (@<$A:ident, $B:ident> $def:expr => $t:ty) => {
-        impl<$A, $B> $crate::code::ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl<$A, $B> $crate::code::ConstDefault for $t {
+            #[allow(clippy::declare_interior_mutable_const)] //
+            const DEFAULT: Self = $def;
+        }
     };
     // <A: A_, B: B_> (bounded)
     (<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $($t:ty),+) => {
         $( $crate::code::impl_cdef![@<$A:$A_, $B:$B_> $def => $t]; )+ };
     (@<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $t:ty) => {
-        impl<$A:$A_, $B:$B_> $crate::code::ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl<$A:$A_, $B:$B_> $crate::code::ConstDefault for $t {
+            #[allow(clippy::declare_interior_mutable_const)] //
+            const DEFAULT: Self = $def;
+        }
     };
 
     // <A, B, C>
@@ -50,12 +56,18 @@ macro_rules! impl_cdef {
         $( $crate::code::impl_cdef![@<$A, $B, $C> $def => $t]; )+
     };
     (@<$A:ident, $B:ident, $C:ident> $def:expr => $t:ty) => {
-        impl<$A, $B, $C> $crate::code::ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl<$A, $B, $C> $crate::code::ConstDefault for $t {
+            #[allow(clippy::declare_interior_mutable_const)] //
+            const DEFAULT: Self = $def;
+        }
     };
     // <>
     ($def:expr => $($t:ty),+) => { $( $crate::code::impl_cdef![@$def => $t]; )+ };
     (@$def:expr => $t:ty) => {
-        impl $crate::code::ConstDefault for $t { const DEFAULT: Self = $def; }
+        impl $crate::code::ConstDefault for $t {
+            #[allow(clippy::declare_interior_mutable_const)]
+            const DEFAULT: Self = $def;
+        }
     };
     // impl for arrays of the given $LEN lenghts
     (arrays <$A:ident:$BOUND:ident> $($LEN:literal),+) => {
@@ -63,6 +75,7 @@ macro_rules! impl_cdef {
     };
     (@array:$LEN:literal <$A:ident:$BOUND:ident>) => {
         impl<$A: $crate::code::ConstDefault> $crate::code::ConstDefault for [$A; $LEN] {
+            #[allow(clippy::declare_interior_mutable_const)] //
             const DEFAULT: Self = [$A::DEFAULT; $LEN];
         }
     };
@@ -159,20 +172,18 @@ mod impl_core {
     // this one has private fields
     impl_cdef![<T: ConstDefault>Self::new(T::DEFAULT, T::DEFAULT) => RangeInclusive<T>];
 
-    impl_cdef![<T> Self::new() => OnceCell<T>];
+    impl_cdef![<T: ConstDefault> Self::new() => OnceCell<T>];
     impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) =>
         Cell<T>, ManuallyDrop<T>, RefCell<T>, UnsafeCell<T>
     ];
     impl_cdef![<T: ConstDefault> Self(T::DEFAULT) =>
         AssertUnwindSafe<T>, Reverse<T>, Saturating<T>, Wrapping<T>
     ];
-    impl_cdef![<T> Self => PhantomData<T>];
+    impl_cdef![<T> Self => PhantomData<T>]; // no need for T: ConstDefault here
     impl_cdef![<T: ConstDefault> Some(T::DEFAULT) => Option<T>];
 
     // WAIT: [exclusive_wrapper](https://github.com/rust-lang/rust/issues/98407)
-    // impl_cdef![<T> Self::new(T::DEFAULT) => Exclusive<T>];
-    // WAIT: [lazy_cell](https://github.com/rust-lang/rust/issues/109736)
-    // impl_cdef![<T> Self::new(|| T::DEFAULT) => LazyCell<T>, LazyLock<T>];
+    // impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) => Exclusive<T>];
     // WAIT: [sync_unsafe_cell](https://github.com/rust-lang/rust/issues/95439)
     // impl_cdef![<T> Self::new(|| T::DEFAULT) => SyncUnsafeCell<T>];
     // WAIT: [ptr_alignment_type](https://github.com/rust-lang/rust/issues/102070)
@@ -193,10 +204,11 @@ mod impl_core {
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 mod impl_std {
     use std::{
+        cell::LazyCell,
         // collections::hash_map::DefaultHasher
         // io::{Cursor, Empty, Sink},
         process::ExitCode,
-        sync::{Condvar, Mutex, Once, OnceLock, RwLock, Weak as ArcWeak},
+        sync::{Condvar, LazyLock, Mutex, Once, OnceLock, RwLock, Weak as ArcWeak},
     };
     // Types that don't implement Default:
     // - OsString: OsString { inner: Buf::from_string(String::new()) }
@@ -205,6 +217,7 @@ mod impl_std {
     impl_cdef![Self::new() => Condvar, Once];
     impl_cdef![<T: ConstDefault> Self::new() => ArcWeak<T>, OnceLock<T>];
     impl_cdef![<T: ConstDefault> Self::new(T::DEFAULT) => Mutex<T>, RwLock<T>];
+    impl_cdef![<T: ConstDefault> Self::new(|| T::DEFAULT) => LazyCell<T>, LazyLock<T>];
 
     // WAIT: [const_hash](https://github.com/rust-lang/rust/issues/104061)
     // #[cfg(feature = "hashbrown")]
