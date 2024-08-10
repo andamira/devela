@@ -55,7 +55,7 @@ mod reflection {
             "safe_time",
 
             "unsafe",
-            "unsafe_array", "unsafe_async", "unsafe_const", "unsafe_dyn",
+            "unsafe_array", "unsafe_async", "unsafe_const", "unsafe_layout",
             "unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
             "unsafe_thread",
         ]

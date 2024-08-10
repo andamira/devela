@@ -27,11 +27,11 @@ pub mod iter;
 #[doc(no_inline)]
 pub use {collections::*, hash::*, iter::*};
 
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_dyn")))]
-#[cfg(all(not(feature = "safe_data"), feature = "unsafe_dyn"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
 pub mod dst;
 #[doc(no_inline)]
-#[cfg(all(not(feature = "safe_data"), feature = "unsafe_dyn"))]
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
 pub use dst::*;
 
 pub(crate) mod all {
@@ -43,6 +43,6 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[allow(unused_imports)]
-    #[cfg(all(not(feature = "safe_data"), feature = "unsafe_dyn"))]
+    #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
     pub use super::dst::*;
 }
