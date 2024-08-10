@@ -2,6 +2,9 @@
 //
 //!
 //
+// See also: <https://docs.rs/bytemuck/latest/bytemuck/trait.Pod.html>
+
+use core::num::*;
 
 /// Indicates a type is Plain Old Data, and meets specific memory layout guarantees.
 ///
@@ -16,11 +19,17 @@
 ///
 /// 1. **No Padding:** The type must not contain any padding bytes. This ensures that the
 ///    memory representation of the type is fully defined by its fields.
+///
 /// 2. **Safe to Transmute:** The type must be safe to transmute to and from a byte slice
 ///    (`&[u8]`). This requires that the type's memory layout is consistent and well-defined
 ///    across different platforms.
+///
 /// 3. **Copyable:** The type must implement `Copy`, meaning it can be duplicated simply by
 ///    copying its bits. This is a fundamental property of POD types.
+///
+/// 4. **Valid Bit Patterns:** Any bit pattern must represent a valid instance of the type.
+///    This means that transmuting arbitrary bytes into the type must always produce a valid
+///    value, and no bit pattern can cause undefined behavior when interpreted as this type.
 ///
 /// # Implementing `MemPod`
 ///
@@ -57,12 +66,31 @@
 /// unsafe impl MemPod for MyStruct {}
 /// ```
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
-pub unsafe trait MemPod: Copy + Clone + Sized {}
+pub unsafe trait MemPod: Copy + 'static {}
 
 // Implement MemPod
 #[rustfmt::skip]
 macro_rules! mem_pod {
+    // impl for types that are always POD.
     ($($t:ty),+) => { $( mem_pod![@$t]; )+ };
     (@$t:ty) => { unsafe impl MemPod for $t {} };
+
+    // impl for types that are POD only when wrapped in an Option.
+    (option: $($t:ty),+) => { $( mem_pod![@option: $t]; )+ };
+    (@option: $t:ty) => { unsafe impl MemPod for Option<$t> {} };
 }
-mem_pod![u8, u16, u32, u64, u128, i8, i16, i32, i64, i128, f32, f64];
+pub(crate) use mem_pod;
+
+mem_pod![(), u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize, f32, f64];
+
+unsafe impl<T: MemPod, const N: usize> MemPod for [T; N] {}
+unsafe impl<T: MemPod> MemPod for core::mem::MaybeUninit<T> {}
+unsafe impl<T: MemPod> MemPod for core::mem::ManuallyDrop<T> {}
+unsafe impl<T: MemPod> MemPod for core::num::Wrapping<T> {}
+unsafe impl<T: ?Sized + 'static> MemPod for core::marker::PhantomData<T> {}
+
+unsafe impl<T: MemPod> MemPod for Option<T> {}
+mem_pod![option:
+    NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
+    NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize
+];

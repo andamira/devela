@@ -13,6 +13,8 @@
     not(feature = "safe_num")
 ))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
+#[cfg(feature = "unsafe_layout")]
+use crate::mem::MemPod;
 #[cfg(feature = "mem_bit")]
 use crate::mem::{bit_sized, ByteSized};
 use crate::{
@@ -235,6 +237,9 @@ macro_rules! impl_non_value {
             #[cfg(feature = "mem_bit")]
             bit_sized![<const V: [<$s $b>]> =
                 { [<$s $b>]::BYTE_SIZE * 8}; for [<$name $s:upper $b>]<V>];
+
+            #[cfg(feature = "unsafe_layout")]
+            unsafe impl<const V: [<$s $b>]> MemPod for Option<[<$name $s:upper $b>]<V>> {}
 
             /* external impls*/
 

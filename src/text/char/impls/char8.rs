@@ -213,3 +213,7 @@ impl Char8 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
     }
 }
+
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+#[cfg(all(not(feature = "safe_text"), feature = "unsafe_layout"))]
+unsafe impl crate::mem::MemPod for Char8 {}
