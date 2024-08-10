@@ -34,6 +34,12 @@ mod pin;
 #[cfg(feature = "unsafe_ptr")]
 pub use pin::Pinned;
 
+#[cfg(feature = "unsafe_layout")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+mod pod;
+#[cfg(feature = "unsafe_layout")]
+pub use pod::MemPod;
+
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
@@ -43,4 +49,7 @@ pub(crate) mod all {
 
     #[cfg(feature = "unsafe_ptr")]
     pub use super::pin::Pinned;
+
+    #[cfg(feature = "unsafe_layout")]
+    pub use super::pod::MemPod;
 }
