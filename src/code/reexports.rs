@@ -14,7 +14,6 @@ pub use devela_macros::{
     ident_unique,
 };
 
-/// <span class="stab portability" title="re-exported from the `paste crate`">`paste`</span>
 pub use super::paste::paste;
 
 /* `core` re-exports */

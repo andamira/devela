@@ -5,7 +5,7 @@
 
 use core::fmt;
 
-/// A formatting wrapper for [`ExtArray`]s, implementing `Display` and `Debug`.
+/// A formatting wrapper for [arrays][array], implementing `Display` and `Debug`.
 #[repr(transparent)]
 pub struct ArrayFmt<'a, T: ExtArray>(&'a T);
 

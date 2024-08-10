@@ -30,8 +30,8 @@
 /// let _ = cdbg![# &a];
 /// let _ = cdbg![0# &a];    // same as cdbg![# &a]
 /// let _ = cdbg![1# &a];
-/// let _ = cdbg![f # &a];   // same as `dbg!` macro
-/// let _ = cdbg![fln # &a]; // notice the required whitespace
+/// let _ = cdbg![f # &a];   // same as `dbg!` macro (notice the required whitespace)
+/// let _ = cdbg![fln # &a]; // same as before, but separates the path in a new line
 /// ```
 // Source code is based on Rust std `dbg!` implementation
 #[macro_export]

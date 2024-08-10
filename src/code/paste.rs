@@ -1,6 +1,7 @@
 // devela::code::paste
 //
 
+/// <span class="stab portability" title="re-exported from the `paste` crate">`paste`</span>
 /// Allows to paste identifiers together.
 ///
 #[doc = "*Reexported from the [`paste`](https://docs.rs/paste)* crate.\n\n---"]
