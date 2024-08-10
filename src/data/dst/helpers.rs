@@ -1,7 +1,7 @@
 // helper functions
 
-use crate::_deps::bytemuck::Pod;
-use core::{mem::MaybeUninit, ptr, slice};
+use crate::mem::{MaybeUninit, MemPod};
+use core::{ptr, slice};
 
 type BufSlice<T> = [MaybeUninit<T>];
 
@@ -26,7 +26,7 @@ pub(crate) fn mem_as_slice<T>(ptr: &mut T) -> &mut [usize] {
 }
 
 /// Re-construct a fat pointer
-pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: Pod>(
+pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: MemPod>(
     data_ptr: *mut (),
     meta_vals: &BufSlice<W>,
 ) -> *mut T {
@@ -59,7 +59,7 @@ pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: Pod>(
 }
 
 /// Write metadata (abstraction around `ptr::copy`)
-pub(crate) fn store_metadata<W: Pod>(dst: &mut BufSlice<W>, meta_words: &[usize]) {
+pub(crate) fn store_metadata<W: MemPod>(dst: &mut BufSlice<W>, meta_words: &[usize]) {
     let n_bytes = size_of_val(meta_words);
     assert!(
         n_bytes <= dst.len() * size_of::<W>(),
@@ -105,7 +105,7 @@ pub(crate) fn check_fat_pointer<U, T: ?Sized>(v: &U, get_ref: impl FnOnce(&U) ->
 /// - `reset_value` - Value used in `reset_slot`
 ///
 /// This provides a panic-safe push as long as `reset_slot` and `reset_value` undo the allocation operation
-pub(crate) unsafe fn list_push_gen<T, W: Pod>(
+pub(crate) unsafe fn list_push_gen<T, W: MemPod>(
     meta: &mut BufSlice<W>,
     data: &mut BufSlice<W>,
     count: usize,

@@ -7,7 +7,7 @@ including the following modifications:
 - removed the features: `unsize`, `const_generics`, `full_const_generics`.
 - renamed `Value*` to `DstValue*`, `Fifo*` to `DstQueue*`, `Stack*` to `DstStack*`.
 - renamed `ConstArrayBuf` to `DstArray` and reimplemented as an `Array` wrapper.
-- replaced custom `Pod` trait for `bytemuck`'s `Pod` trait.
+- replaced custom `Pod` trait for crate's `MemPod` trait.
 - changed using a raw pointer to `usize` for alignment.
 - refactored and updated the code to 2021 edition.
 

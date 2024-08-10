@@ -1,7 +1,6 @@
 // devela::data::dst
 
-use crate::_deps::bytemuck::Pod;
-use crate::data::Array;
+use crate::{data::Array, mem::MemPod};
 use core::{
     mem::MaybeUninit,
     ops::{Deref, DerefMut},
@@ -19,7 +18,7 @@ use core::{
 ///   (but may extend with unspecified values).
 pub unsafe trait DstBuf {
     /// Inner type of the buffer
-    type Inner: Pod;
+    type Inner: MemPod;
 
     /// Get the buffer slice as shared reference.
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>];
@@ -38,7 +37,7 @@ pub unsafe trait DstBuf {
 
 // impl for an exclusive reference
 #[rustfmt::skip]
-unsafe impl<T, U> DstBuf for &mut T where U: Pod, T: DstBuf<Inner = U> {
+unsafe impl<T, U> DstBuf for &mut T where U: MemPod, T: DstBuf<Inner = U> {
     type Inner = T::Inner;
 
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
@@ -53,7 +52,7 @@ unsafe impl<T, U> DstBuf for &mut T where U: Pod, T: DstBuf<Inner = U> {
 }
 
 // impl for array
-unsafe impl<T: Pod, const N: usize> DstBuf for [MaybeUninit<T>; N] {
+unsafe impl<T: MemPod, const N: usize> DstBuf for [MaybeUninit<T>; N] {
     type Inner = T;
 
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
@@ -86,7 +85,7 @@ unsafe impl<T: Pod, const N: usize> DstBuf for [MaybeUninit<T>; N] {
 /// ```
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-unsafe impl<T: Pod> DstBuf for crate::_liballoc::vec::Vec<MaybeUninit<T>> {
+unsafe impl<T: MemPod> DstBuf for crate::_liballoc::vec::Vec<MaybeUninit<T>> {
     type Inner = T;
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
         self
@@ -122,11 +121,11 @@ impl<T, const N: usize> DerefMut for DstArray<T, N> {
     }
 }
 #[rustfmt::skip]
-impl<T: Pod, const N: usize> Default for DstArray<T, N> {
+impl<T: MemPod, const N: usize> Default for DstArray<T, N> {
     fn default() -> Self { Self { inner: Array::new([MaybeUninit::uninit(); N]) } }
 }
 #[rustfmt::skip]
-unsafe impl<T: Pod, const N: usize> DstBuf for DstArray<T, N> {
+unsafe impl<T: MemPod, const N: usize> DstBuf for DstArray<T, N> {
     type Inner = T;
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
         &self.inner
@@ -153,15 +152,15 @@ pub type DstVecUsize = crate::_liballoc::vec::Vec<MaybeUninit<usize>>;
 // /// A DST buffer backing onto a Vec.
 // #[cfg(feature = "alloc")]
 // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-// pub struct DstVec<T: Pod>(crate::_liballoc::vec::Vec<MaybeUninit<T>>);
-// impl<T: Pod> Deref for DstVec<T> {
+// pub struct DstVec<T: MemPod>(crate::_liballoc::vec::Vec<MaybeUninit<T>>);
+// impl<T: MemPod> Deref for DstVec<T> {
 //     type Target = Vec<MaybeUninit<T>>;
 //
 //     fn deref(&self) -> &Self::Target {
 //         &self.0
 //     }
 // }
-// impl<T: Pod> DerefMut for DstVec<T> {
+// impl<T: MemPod> DerefMut for DstVec<T> {
 //     fn deref_mut(&mut self) -> &mut Self::Target {
 //         &mut self.0
 //     }
