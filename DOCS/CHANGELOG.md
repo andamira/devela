@@ -9,11 +9,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - show build environment variables if `__dbg` feature is enabled.
+- new traits: `MemPod`.
 
 ### Removed
 
 ### Changed
 - refactor build script.
+- rename `unsafe_dyn` feature to `unsafe_layout`.
+- make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
+- make `bytemuck` an optional dependency.
 
 ### Fixed
 - fix build script utility call paths, add missing `_tuple*` features.
