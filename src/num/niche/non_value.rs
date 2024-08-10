@@ -7,7 +7,11 @@
 
 #![allow(unused)]
 
-#[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
+#[cfg(all(
+    feature = "bytemuck",
+    feature = "unsafe_niche",
+    not(feature = "safe_num")
+))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 #[cfg(feature = "mem_bit")]
 use crate::mem::{bit_sized, ByteSized};
@@ -234,27 +238,23 @@ macro_rules! impl_non_value {
 
             /* external impls*/
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const V: [<$s $b>]> ZeroableInOption for [<$name $s:upper $b>]<V> {}
+            #[cfg(all(feature = "bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
+            #[cfg_attr(feature = "nightly_doc",
+                doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
+            mod [<$name $s $b>] {
+                use super::*;
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const V: [<$s $b>]> PodInOption for [<$name $s:upper $b>]<V> {}
+                unsafe impl<const V: [<$s $b>]> ZeroableInOption for [<$name $s:upper $b>]<V> {}
+                unsafe impl<const V: [<$s $b>]> PodInOption for [<$name $s:upper $b>]<V> {}
+                unsafe impl<const V: [<$s $b>]> NoUninit for [<$name $s:upper $b>]<V> {}
+                unsafe impl<const V: [<$s $b>]> CheckedBitPattern for [<$name $s:upper $b>]<V> {
+                    type Bits = [<$s $b>];
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const V: [<$s $b>]> NoUninit for [<$name $s:upper $b>]<V> {}
-
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const V: [<$s $b>]> CheckedBitPattern for [<$name $s:upper $b>]<V> {
-                type Bits = [<$s $b>];
-
-                #[inline]
-                fn is_valid_bit_pattern(bits: &Self::Bits) -> bool {
-                    // Since inner repr is NonZero, 0 is the only invalid bit pattern
-                    *bits != 0
+                    #[inline]
+                    fn is_valid_bit_pattern(bits: &Self::Bits) -> bool {
+                        // Since inner repr is NonZero, 0 is the only invalid bit pattern
+                        *bits != 0
+                    }
                 }
             }
         }

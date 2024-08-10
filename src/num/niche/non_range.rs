@@ -3,7 +3,11 @@
 //! Creates const generic customizable wrappers over the `NonZero` primitives.
 //
 
-#[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
+#[cfg(all(
+    feature = "bytemuck",
+    feature = "unsafe_niche",
+    not(feature = "safe_num")
+))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 #[cfg(feature = "mem_bit")]
 use crate::mem::{bit_sized, ByteSized};
@@ -254,38 +258,37 @@ macro_rules! impl_non_range {
             bit_sized![<const RMIN: [<$s $b>], const RMAX: [<$s $b>]> =
                 { [<$s $b>]::BYTE_SIZE * 8}; for [<$name $s:upper $b>]<RMIN, RMAX>];
 
-            /* external impls*/
+            /* external impls */
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                ZeroableInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
+            #[cfg(all(feature = "bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
+            #[cfg_attr(feature = "nightly_doc",
+                doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
+            mod [<$name $s $b>] {
+                use super::*;
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                PodInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
+                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                    ZeroableInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                NoUninit for [<$name $s:upper $b>]<RMIN, RMAX> {}
+                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                    PodInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                CheckedBitPattern for [<$name $s:upper $b>]<RMIN, RMAX> {
-                type Bits = [<$s $b>];
+                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                    NoUninit for [<$name $s:upper $b>]<RMIN, RMAX> {}
 
-                #[inline]
-                fn is_valid_bit_pattern(bits: &Self::Bits) -> bool {
-                    // if RMAX bit representation wraps around its type's MAX value
-                    // (e.g between 0_i8 and i8::MAX or - i8::MIN and Self::RMAX_BITS):
-                    if Self::RMAX_BITS < Self::RMIN_BITS {
-                        !(*bits >= Self::RMIN_BITS || *bits <= Self::RMAX_BITS)
-                    // if it doesn't (e.g. between 0_i8 and Self::RMAX_BITS):
-                    } else {
-                        !(*bits >= Self::RMIN_BITS && *bits <= Self::RMAX_BITS)
+                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                    CheckedBitPattern for [<$name $s:upper $b>]<RMIN, RMAX> {
+                    type Bits = [<$s $b>];
+
+                    #[inline]
+                    fn is_valid_bit_pattern(bits: &Self::Bits) -> bool {
+                        // if RMAX bit representation wraps around its type's MAX value
+                        // (e.g between 0_i8 and i8::MAX or - i8::MIN and Self::RMAX_BITS):
+                        if Self::RMAX_BITS < Self::RMIN_BITS {
+                            !(*bits >= Self::RMIN_BITS || *bits <= Self::RMAX_BITS)
+                        // if it doesn't (e.g. between 0_i8 and Self::RMAX_BITS):
+                        } else {
+                            !(*bits >= Self::RMIN_BITS && *bits <= Self::RMAX_BITS)
+                        }
                     }
                 }
             }

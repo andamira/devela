@@ -68,12 +68,12 @@ __no_test = [] # allows excluding examples from being tested
 # ------------------------------------------------------------------------------
 
 alloc = [ # enables `alloc` functionality
-	"bytemuck/extern_crate_alloc",
+	"bytemuck?/extern_crate_alloc",
 	"memchr?/alloc", "rand_core?/alloc"
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
-	"atomic?/std", "bytemuck/extern_crate_std", "log?/std", "memchr?/std", "rand_core?/std",
+	"atomic?/std", "bytemuck?/extern_crate_std", "log?/std", "memchr?/std", "rand_core?/std",
 	"wide?/std",
 ]
 no_std = [ # enables functionality incompatible with or substitute of `std`
@@ -88,7 +88,7 @@ all = [ # enables all the modules and submodules
 	]
 code = []
 data = []
-exec = ["bytemuck/zeroable_atomics"]
+exec = ["bytemuck?/zeroable_atomics"]
 mem = [
 	"mem_bit",
 	]
@@ -437,19 +437,17 @@ unicode-segmentation = { version = "1.11.0", default-features = false, optional 
 unicode-width = { version = "0.1.13", default-features = false, optional = true }
 wide = { version = "0.7.26", optional = true, default-features = false }
 
-# non-optional:
-[dependencies.bytemuck]
-version = "1.16.0"
-optional = false
-default-features = false
-features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
-
 # optional:
 [dependencies.atomic]
 version = "0.6.0"
 optional = true
 default-features = false
 features = ["fallback"]
+[dependencies.bytemuck]
+version = "1.16.0"
+optional = true
+default-features = false
+features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
 [dependencies.hashbrown]
 version = "0.14.5"
 optional = true

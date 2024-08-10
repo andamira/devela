@@ -67,6 +67,7 @@ fn non_range() {
 }
 
 #[test]
+#[cfg(feature = "bytemuck")]
 #[cfg(feature = "_non_range_i8")]
 #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
 fn non_range_bytemuck() {
@@ -150,6 +151,7 @@ fn range() {
 }
 
 #[test]
+#[cfg(feature = "bytemuck")]
 #[cfg(feature = "_in_range_i8")]
 #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
 fn range_bytemuck() {

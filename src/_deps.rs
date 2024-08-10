@@ -7,12 +7,11 @@
 
 use crate::code::reexport;
 
-reexport! { crate "bytemuck" | bytemuck,
-    doc: "Small utilities for casting between plain data types."
-}
-
 reexport! { optional_crate "atomic" | atomic,
     doc: "A generic atomic wrapper type."
+}
+reexport! { optional_crate "bytemuck" | bytemuck,
+    doc: "Small utilities for casting between plain data types."
 }
 reexport! { optional_crate "const-str" | const_str,
     doc: "Compile-time string operations."

@@ -4,7 +4,11 @@
 //! that represents a numeric range.
 //
 
-#[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
+#[cfg(all(
+    feature = "bytemuck",
+    feature = "unsafe_niche",
+    not(feature = "safe_num")
+))]
 use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 #[cfg(feature = "mem_bit")]
 use crate::mem::{bit_sized, ByteSized};
@@ -250,34 +254,30 @@ macro_rules! impl_in_range {
             bit_sized![<const RMIN: [<$s $b>], const RMAX: [<$s $b>]> =
                 { [<$s $b>]::BYTE_SIZE * 8}; for [<$name $s:upper $b>]<RMIN, RMAX>];
 
-            /* external impls*/
+            /* external impls */
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                ZeroableInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
+            #[cfg(all(feature = "bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
+            #[cfg_attr(feature = "nightly_doc",
+                doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
+            mod [<$name $s $b>] {
+                use super::*;
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                PodInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
+                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                    ZeroableInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
+                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                    PodInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
+                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                    NoUninit for [<$name $s:upper $b>]<RMIN, RMAX> {}
+                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                    CheckedBitPattern for [<$name $s:upper $b>]<RMIN, RMAX> {
+                    type Bits = [<$s $b>];
 
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                NoUninit for [<$name $s:upper $b>]<RMIN, RMAX> {}
-
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
-            unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                CheckedBitPattern for [<$name $s:upper $b>]<RMIN, RMAX> {
-                type Bits = [<$s $b>];
-
-                #[inline]
-                fn is_valid_bit_pattern(bits: &Self::Bits) -> bool {
-                    // check if it's within the range after shifting the bit value
-                    let value = bits ^ Self::XOR_VALUE;
-                    RMIN <= value && value <= RMAX
+                    #[inline]
+                    fn is_valid_bit_pattern(bits: &Self::Bits) -> bool {
+                        // check if it's within the range after shifting the bit value
+                        let value = bits ^ Self::XOR_VALUE;
+                        RMIN <= value && value <= RMAX
+                    }
                 }
             }
         }
