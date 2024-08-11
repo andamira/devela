@@ -12,7 +12,7 @@ use crate::_liballoc::{
     string::String,
 };
 #[cfg(feature = "unicode-segmentation")]
-use crate::text::{Char16, Char24, Char32, Char7, Char8};
+use crate::text::*;
 
 /// An <abbr title="Extended Grapheme Cluster">EGC</abbr> backed by a [`String`].
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -31,6 +31,8 @@ impl EgcString {
     /// Creates a new `EgcString` from a `Char7`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char7(c: Char7) -> EgcString {
@@ -40,6 +42,8 @@ impl EgcString {
     /// Creates a new `EgcString` from a `Char8`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char8(c: Char8) -> EgcString {
@@ -49,6 +53,8 @@ impl EgcString {
     /// Creates a new `EgcString` from a `Char16`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char16(c: Char16) -> EgcString {
@@ -58,6 +64,8 @@ impl EgcString {
     /// Creates a new `EgcString` from a `Char24`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char24(c: Char24) -> EgcString {
@@ -69,6 +77,8 @@ impl EgcString {
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char32(c: Char32) -> EgcString {

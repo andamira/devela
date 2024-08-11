@@ -1,6 +1,6 @@
 // devela::text::char::impls::char32
 
-use super::{Char16, Char24, Char32, Char7, Char8};
+use super::*;
 use crate::text::{
     char_is_7bit, char_is_noncharacter, char_to_utf8_bytes, AsciiChar, TextError::CharConversion,
     TextResult as Result,
@@ -27,24 +27,32 @@ impl Char32 {
     /// Converts a `Char7` to `Char32`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
     pub const fn from_char7(c: Char7) -> Char32 {
         Char32(c.to_char())
     }
     /// Converts a `Char8` to `Char32`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     pub const fn from_char8(c: Char8) -> Char32 {
         Char32(c.to_char())
     }
     /// Converts a `Char16` to `Char32`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn from_char16(c: Char16) -> Char32 {
         Char32(c.to_char())
     }
     /// Converts a `Char24` to `Char32`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn from_char24(c: Char24) -> Char32 {
         Char32(c.to_char())
     }
@@ -80,22 +88,30 @@ impl Char32 {
 
     /// Tries to convert this `Char32` to `Char7`.
     #[inline]
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
     pub const fn try_to_char7(self) -> Result<Char7> {
         Char7::try_from_char32(self)
     }
     /// Tries to convert this `Char32` to `Char8`.
     #[inline]
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     pub const fn try_to_char8(self) -> Result<Char8> {
         Char8::try_from_char32(self)
     }
     /// Tries to convert this `Char32` to `Char16`.
     #[inline]
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn try_to_char16(self) -> Result<Char16> {
         Char16::try_from_char32(self)
     }
     /// Converts this `Char32` to `Char24`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn to_char24(self) -> Char24 {
         Char24::from_char32(self)
     }

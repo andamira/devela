@@ -9,7 +9,7 @@
 use super::Egc;
 #[cfg(feature = "alloc")]
 use crate::_liballoc::ffi::CString;
-#[cfg(feature = "text")]
+#[cfg(_some_char)]
 use crate::text::char::*;
 #[cfg(doc)]
 use crate::text::TextError::OutOfBounds;
@@ -59,8 +59,8 @@ impl<const CAP: usize> EgcU8<CAP> {
     ///
     /// Will always succeed if `CAP` >= 1 and <= 255.
     #[inline]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
     pub const fn from_char7(c: Char7) -> Result<Self> {
         Ok(Self(unwrap![ok? StringU8::from_char7(c)]))
     }
@@ -72,8 +72,8 @@ impl<const CAP: usize> EgcU8<CAP> {
     ///
     /// Will always succeed if `CAP` >= 2 and <= 255.
     #[inline]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     pub const fn from_char8(c: Char8) -> Result<Self> {
         Ok(Self(unwrap![ok? StringU8::from_char8(c)]))
     }
@@ -85,8 +85,8 @@ impl<const CAP: usize> EgcU8<CAP> {
     ///
     /// Will always succeed if `CAP` >= 3 and <= 255.
     #[inline]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn from_char16(c: Char16) -> Result<Self> {
         Ok(Self(unwrap![ok? StringU8::from_char16(c)]))
     }
@@ -98,8 +98,8 @@ impl<const CAP: usize> EgcU8<CAP> {
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
     #[inline]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn from_char24(c: Char24) -> Result<Self> {
         Ok(Self(unwrap![ok? StringU8::from_char24(c)]))
     }
@@ -111,8 +111,8 @@ impl<const CAP: usize> EgcU8<CAP> {
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
     #[inline]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
     pub const fn from_char32(c: Char32) -> Result<Self> {
         Ok(Self(unwrap![ok? StringU8::from_char32(c)]))
     }

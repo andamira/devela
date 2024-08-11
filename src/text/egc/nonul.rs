@@ -10,7 +10,6 @@
 use super::Egc;
 #[cfg(feature = "alloc")]
 use crate::_liballoc::ffi::CString;
-#[cfg(feature = "text")]
 use crate::text::char::*;
 #[cfg(doc)]
 use crate::text::TextError::{NotEnoughCapacity, OutOfBounds};
@@ -62,8 +61,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 1.
     #[inline]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
     pub const fn from_char7(c: Char7) -> Result<Self> {
         Ok(Self(unwrap![ok? StringNonul::from_char7(c)]))
     }
@@ -79,8 +78,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 2.
     #[inline]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
     pub const fn from_char8(c: Char8) -> Result<Self> {
         Ok(Self(unwrap![ok? StringNonul::from_char8(c)]))
     }
@@ -96,8 +95,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 3.
     #[inline]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
     pub const fn from_char16(c: Char16) -> Result<Self> {
         Ok(Self(unwrap![ok? StringNonul::from_char16(c)]))
     }
@@ -113,8 +112,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 4.
     #[inline]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
     pub const fn from_char24(c: Char24) -> Result<Self> {
         Ok(Self(unwrap![ok? StringNonul::from_char24(c)]))
     }
@@ -130,8 +129,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     ///
     /// Will always succeed if `CAP` >= 4.
     #[inline]
-    #[cfg(feature = "text")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
     pub const fn from_char32(c: Char32) -> Result<Self> {
         Ok(Self(unwrap![ok? StringNonul::from_char32(c)]))
     }

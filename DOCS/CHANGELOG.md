@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - show build environment variables if `__dbg` feature is enabled.
+- new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`.
 - new traits: `MemPod`.
 
 ### Removed
@@ -16,6 +17,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Changed
 - refactor build script.
 - rename `unsafe_dyn` feature to `unsafe_layout`.
+- modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
 - make `bytemuck` an optional dependency.
 

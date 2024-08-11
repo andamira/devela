@@ -204,6 +204,9 @@ mod reflection {
     pub const STRING: FlagsFeatures = FlagsFeatures {
         flags: &["_some_string"],
         features: &["_string_nonul"] };
+    pub const CHAR: FlagsFeatures = FlagsFeatures {
+        flags: &["_some_char"],
+        features: &["_char7", "_char8", "_char16", "_char24", "_char32"] };
 
 
     // function helpers
@@ -233,7 +236,7 @@ mod reflection {
             DESTAQUE, GRAPH, NODE, STACK, // collections
             SORT_INT, SORT_FLOAT,
             // text
-            STRING, STRING_U,
+            CHAR, STRING, STRING_U,
             // num
             CMP,
             FLOAT, INT, UINT, // numbers

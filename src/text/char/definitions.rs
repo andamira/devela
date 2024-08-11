@@ -6,9 +6,13 @@
 // - Char* struct definitions
 // - UnicodeScalar trait definition
 
-pub(super) use crate::num::{NonExtremeU8, NonValueU16};
+#[cfg(any(feature = "_char7", feature = "_char24"))]
+pub(super) use crate::num::NonExtremeU8;
+#[cfg(feature = "_char16")]
+pub(super) use crate::num::NonValueU16;
 
 // This is a surrogate UTF-16 code point that can't ever be a unicode scalar.
+#[cfg(feature = "_char16")]
 pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 
 /* public types */
@@ -23,6 +27,7 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
 #[repr(transparent)]
+#[cfg(feature = "_char7")]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char7(pub(super) NonExtremeU8);
 
@@ -56,6 +61,7 @@ pub struct Char8(pub(super) u8);
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
 #[repr(transparent)]
+#[cfg(feature = "_char16")]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char16(pub(super) NonSurrogateU16);
 
@@ -69,6 +75,7 @@ pub struct Char16(pub(super) NonSurrogateU16);
 /// See also: [`Char7`], [`Char8`], [`Char16`], [`Char32`], [`char`].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
+#[cfg(feature = "_char24")]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char24 {
     pub(super) hi: NonExtremeU8, // highest byte
@@ -88,6 +95,7 @@ pub struct Char24 {
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 #[repr(transparent)]
+#[cfg(feature = "_char32")]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char32(pub char);
 

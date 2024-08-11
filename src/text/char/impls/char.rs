@@ -1,9 +1,11 @@
 // devela::text::char::impls::char
 //
+//!
+//
 // `char` can only implement the trait, not the associated const methods,
 // (and that's the main reason we have the Char32 wrapper type).
 
-use crate::text::{char_byte_len, char_is_noncharacter, Char32, UnicodeScalar};
+use crate::text::{char_byte_len, char_is_noncharacter, char_to_utf8_bytes, UnicodeScalar};
 
 impl UnicodeScalar for char {
     const MAX: Self = Self::MAX;
@@ -28,7 +30,7 @@ impl UnicodeScalar for char {
     }
     #[inline]
     fn to_utf8_bytes(self) -> [u8; 4] {
-        Char32(self).to_utf8_bytes()
+        char_to_utf8_bytes(self)
     }
     #[inline]
     fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] {

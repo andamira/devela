@@ -6,22 +6,31 @@
 // - specific implementations
 // - common implementations
 
-use super::{char_byte_len, Char16, Char24, Char32, Char7, Char8, UnicodeScalar};
+use super::*;
 use crate::code::paste;
 
 /* specific implementations */
 
 mod char;
+#[cfg(feature = "_char16")]
 mod char16;
+#[cfg(feature = "_char24")]
 mod char24;
+#[cfg(feature = "_char32")]
 mod char32;
+#[cfg(feature = "_char7")]
 mod char7;
+#[cfg(feature = "_char8")]
 mod char8;
 
 /* common implementations */
 
+// implement UnicodeScalar for custom char types
 macro_rules! impl_char {
-    ($( $bits:literal ),+ ) => { $( impl_char![@$bits]; )+ };
+    ($( $bits:literal | $feature:literal ),+ ) => { $(
+        #[cfg(feature = $feature)]
+        impl_char![@$bits];
+    )+ };
     (@$bits:literal) => { paste! {
 
         /* impl traits */
@@ -144,4 +153,10 @@ macro_rules! impl_char {
         }
     }};
 }
-impl_char![7, 8, 16, 24, 32];
+impl_char![
+    7 | "_char7",
+    8 | "_char8",
+    16 | "_char16",
+    24 | "_char24",
+    32 | "_char32"
+];

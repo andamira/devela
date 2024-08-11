@@ -100,7 +100,7 @@ num = [
 	num_geom = [] # geometric types and operations.
 	num_rand = [] # random number generators.
 sys = []
-text = ["_non_value_u8", "_non_value_u16"]
+text = []
 time = []
 
 
@@ -196,6 +196,7 @@ _min_docs = [ # the minimum capabilities to document all library items
 	"_non_value_u8", "_non_range_u8", "_in_range_u8",
 	# text:
 	"_string_u8", "_string_nonul",
+	"_char7", "_char8", "_char16", "_char24", "_char32",
 ]
 _max_docs = [ # the maximum capabities relevant for documentation
 	"_data_all", "_num_all", "_text_all"]
@@ -379,9 +380,15 @@ _niche_all = ["_non_value_all", "_non_range_all", "_in_range_all"]
 #* text capabilities *#
 # ---------------------
 
-_text_all = ["_string_all"]
+_text_all = ["_char_all", "_string_all"]
 
-# private reflexion:
+# Char*
+_char_all = ["_char7", "_char8", "_char16", "_char24", "_char32"]
+	_char7 = ["_non_value_u8"]
+	_char8 = []
+	_char16 = ["_non_value_u16"]
+	_char24 = ["_non_value_u8"]
+	_char32 = []
 
 # StringU*, StringNonul:
 _string_all = [

@@ -20,10 +20,7 @@ use crate::{
 #[cfg(_some_cmp)]
 use crate::{code::cfor, num::Compare};
 
-#[cfg(feature = "text")]
-use super::char::{
-    char_utf8_2bytes_len, char_utf8_3bytes_len, Char16, Char24, Char32, Char7, Char8,
-};
+use super::char::*;
 #[cfg(all(_some_string_u, feature = "alloc"))]
 use crate::_liballoc::{ffi::CString, string::ToString};
 #[allow(unused_imports)]
@@ -366,8 +363,8 @@ macro_rules! impl_string_u {
             ///
             #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
-            #[cfg(feature = "text")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+            #[cfg(feature = "_char7")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
             pub const fn from_char7(c: Char7) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
                 new.arr[0] = c.to_utf8_bytes()[0];
@@ -383,8 +380,8 @@ macro_rules! impl_string_u {
             ///
             #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
             #[inline] #[rustfmt::skip]
-            #[cfg(feature = "text")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+            #[cfg(feature = "_char8")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
             pub const fn from_char8(c: Char8) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
 
@@ -404,8 +401,8 @@ macro_rules! impl_string_u {
             ///
             #[doc = "Will never panic if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
             #[inline] #[rustfmt::skip]
-            #[cfg(feature = "text")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+            #[cfg(feature = "_char16")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
             pub const fn from_char16(c: Char16) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
 
@@ -426,8 +423,8 @@ macro_rules! impl_string_u {
             ///
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[inline] #[rustfmt::skip]
-            #[cfg(feature = "text")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+            #[cfg(feature = "_char24")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
             pub const fn from_char24(c: Char24) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
 
@@ -449,8 +446,8 @@ macro_rules! impl_string_u {
             ///
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[inline]
-            #[cfg(feature = "text")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+            #[cfg(feature = "_char32")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
             pub const fn from_char32(c: Char32) -> Result<Self> {
                 Ok(unwrap![ok? Self::from_char(c.0)])
             }

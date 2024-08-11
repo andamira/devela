@@ -1,6 +1,6 @@
 // devela::text::char::impls::char8
 
-use super::{Char16, Char24, Char32, Char7, Char8};
+use super::*;
 use crate::text::{
     char_byte_len, char_is_7bit, char_is_noncharacter, AsciiChar, TextError::CharConversion,
     TextResult as Result,
@@ -34,11 +34,15 @@ impl Char8 {
     /// Converts a `Char7` to `Char8`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
     pub const fn from_char7(c: Char7) -> Char8 {
         Char8(c.0.get())
     }
     /// Tries to convert a `Char16` to `Char8`.
     #[inline]
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn try_from_char16(c: Char16) -> Result<Char8> {
         if char_byte_len(c.to_u32()) == 1 {
             Ok(Char8(c.to_u32() as u8))
@@ -48,6 +52,8 @@ impl Char8 {
     }
     /// Tries to convert a `Char24` to `Char8`.
     #[inline]
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn try_from_char24(c: Char24) -> Result<Char8> {
         let c = c.to_u32();
         if char_byte_len(c) == 1 {
@@ -58,6 +64,8 @@ impl Char8 {
     }
     /// Tries to convert a `Char32` to `Char8`.
     #[inline]
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
     pub const fn try_from_char32(c: Char32) -> Result<Char8> {
         if char_byte_len(c.to_u32()) == 1 {
             Ok(Char8(c.to_u32() as u8))
@@ -100,24 +108,32 @@ impl Char8 {
 
     /// Tries to convert this `Char8` to `Char7`.
     #[inline]
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
     pub const fn try_to_char7(self) -> Result<Char7> {
         Char7::try_from_char8(self)
     }
     /// Converts this `Char8` to `Char16`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn to_char16(self) -> Char16 {
         Char16::from_char8(self)
     }
     /// Converts this `Char8` to `Char24`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn to_char24(self) -> Char24 {
         Char24::from_char8(self)
     }
     /// Converts this `Char8` to `Char32`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
     pub const fn to_char32(self) -> Char32 {
         Char32::from_char8(self)
     }
@@ -214,6 +230,6 @@ impl Char8 {
     }
 }
 
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_layout"))]
 unsafe impl crate::mem::MemPod for Char8 {}

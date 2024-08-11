@@ -29,9 +29,6 @@ use std::{
     time::{Instant, SystemTime},
 };
 
-#[cfg(feature = "text")]
-use crate::text::{Char16, Char24, Char32, Char7, Char8};
-
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // #[cfg(feature = "text")]
 // use crate::text::{StringU16, StringU32, EgcU8, StringU8};
@@ -41,7 +38,7 @@ use crate::_liballoc::{
     string::String,
     vec::Vec,
 };
-#[cfg(all(feature = "text", feature = "alloc"))]
+#[cfg(feature = "alloc")]
 use crate::text::EgcString;
 #[cfg(feature = "_string_nonul")]
 use crate::text::{EgcNonul, StringNonul};
@@ -194,7 +191,7 @@ macro_rules! bit_sized {
         #[cfg(feature = "alloc")]
         bit_sized![= {$PTR_BITS * 3}; for String];
 
-        #[cfg(all(feature = "alloc", feature = "text"))]
+        #[cfg(feature = "alloc")]
         bit_sized![= {$PTR_BITS * 3}; for EgcString];
 
         #[cfg(feature = "alloc")]
@@ -236,16 +233,16 @@ bit_sized![= 128; for i128, u128, Duration];
 #[cfg(feature = "std")]
 bit_sized![= 128; for Instant, SystemTime];
 
-#[cfg(feature = "text")]
-bit_sized![= 7; for Char7];
-#[cfg(feature = "text")]
-bit_sized![= 8; for Char8];
-#[cfg(feature = "text")]
-bit_sized![= 16; for Char16];
-#[cfg(feature = "text")]
-bit_sized![= 24; for Char24];
-#[cfg(feature = "text")]
-bit_sized![= 32; for Char32];
+#[cfg(feature = "_char7")]
+bit_sized![= 7; for crate::text::Char7];
+#[cfg(feature = "_char8")]
+bit_sized![= 8; for crate::text::Char8];
+#[cfg(feature = "_char16")]
+bit_sized![= 16; for crate::text::Char16];
+#[cfg(feature = "_char24")]
+bit_sized![= 24; for crate::text::Char24];
+#[cfg(feature = "_char32")]
+bit_sized![= 32; for crate::text::Char32];
 
 bit_sized![= 8; for NonZeroI8, NonZeroU8];
 bit_sized![= 16; for NonZeroI16, NonZeroU16];

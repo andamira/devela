@@ -1,6 +1,6 @@
 // devela::text::char::impls::char7
 
-use super::{Char16, Char24, Char32, Char7, Char8};
+use super::*;
 use crate::text::{
     char::NonExtremeU8, char_is_7bit, AsciiChar, TextError::CharConversion, TextResult as Result,
 };
@@ -49,6 +49,8 @@ impl Char7 {
 
     /// Tries to convert a `Char8` to `Char7`.
     #[inline]
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     pub const fn try_from_char8(c: Char8) -> Result<Char7> {
         if char_is_7bit(c.to_u32()) {
             Ok(Char7::new_unchecked(c.to_u32() as u8))
@@ -58,6 +60,8 @@ impl Char7 {
     }
     /// Tries to convert a `Char16` to `Char7`.
     #[inline]
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn try_from_char16(c: Char16) -> Result<Char7> {
         if char_is_7bit(c.to_u32()) {
             Ok(Char7::new_unchecked(c.to_u32() as u8))
@@ -67,6 +71,8 @@ impl Char7 {
     }
     /// Tries to convert a `Char24` to `Char7`.
     #[inline]
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn try_from_char24(c: Char24) -> Result<Char7> {
         let c = c.to_u32();
         if char_is_7bit(c) {
@@ -77,6 +83,8 @@ impl Char7 {
     }
     /// Tries to convert a `Char32` to `Char8`.
     #[inline]
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
     pub const fn try_from_char32(c: Char32) -> Result<Char7> {
         if char_is_7bit(c.to_u32()) {
             Ok(Char7::new_unchecked(c.to_u32() as u8))
@@ -84,7 +92,7 @@ impl Char7 {
             Err(CharConversion)
         }
     }
-    /// Tries to convert a `char` to `Char8`.
+    /// Tries to convert a `char` to `Char7`.
     #[inline]
     pub const fn try_from_char(c: char) -> Result<Char7> {
         if char_is_7bit(c as u32) {
@@ -116,31 +124,38 @@ impl Char7 {
     /// Converts this `Char7` to `Char8`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     pub const fn to_char8(self) -> Char8 {
         Char8::from_char7(self)
     }
     /// Converts this `Char7` to `Char16`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn to_char16(self) -> Char16 {
         Char16::from_char7(self)
     }
     /// Converts this `Char7` to `Char24`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn to_char24(self) -> Char24 {
         Char24::from_char7(self)
     }
     /// Converts this `Char7` to `Char32`.
     #[inline]
     #[must_use]
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
     pub const fn to_char32(self) -> Char32 {
         Char32::from_char7(self)
     }
     /// Converts this `Char7` to `char`.
     #[inline]
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_char(self) -> char {
         self.0.get() as char
     }
