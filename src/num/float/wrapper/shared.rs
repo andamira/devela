@@ -125,7 +125,7 @@ macro_rules! custom_impls {
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn is_sign_negative(self) -> bool { self.0.is_sign_negative() }
 
-            /// Returns `true` if `x` is 0.0 or -0.0.
+            /// Returns `true` if `self` is 0.0 or -0.0.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
@@ -136,7 +136,7 @@ macro_rules! custom_impls {
                 let non_sign_bits_mask = !(<$uf>::MAX / 2 + 1);
                 (bits & non_sign_bits_mask) == 0
             }
-            /// Returns `true` if `x` is 0.0 or -0.0.
+            /// Returns `true` if `self` is 0.0 or -0.0.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
@@ -146,7 +146,7 @@ macro_rules! custom_impls {
                 (self.0.to_bits() & non_sign_bits_mask) == 0
             }
 
-            /// Returns `true` if `x` has a positive sign and is not zero.
+            /// Returns `true` if `self` has a positive sign and is not zero.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
@@ -154,7 +154,7 @@ macro_rules! custom_impls {
             pub const fn is_sign_positive_nonzero(self) -> bool {
                 !self.is_zero() && self.is_sign_positive()
             }
-            /// Returns `true` if `x` has a positive sign and is not zero.
+            /// Returns `true` if `self` has a positive sign and is not zero.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
@@ -163,7 +163,7 @@ macro_rules! custom_impls {
                 !self.is_zero() && self.is_sign_positive()
             }
 
-            /// Returns `true` if `x` has a negative sign and is not zero.
+            /// Returns `true` if `self` has a negative sign and is not zero.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
@@ -171,7 +171,7 @@ macro_rules! custom_impls {
             pub const fn is_sign_negative_nonzero(self) -> bool {
                 !self.is_zero() && self.is_sign_negative()
             }
-            /// Returns `true` if `x` has a negative sign and is not zero.
+            /// Returns `true` if `self` has a negative sign and is not zero.
             /// # Features
             /// This function will only be `const` with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
@@ -243,7 +243,7 @@ macro_rules! custom_impls {
             /// # Examples
             /// ```
             /// # use devela::num::Float;
-            #[doc = cc!{"assert_eq![Float(0.5_", sfy![$f], ").lerp(40., 80.), 60.];"}]
+            #[doc = cc!["assert_eq![Float(0.5_", sfy![$f], ").lerp(40., 80.), 60.];"]]
             /// ```
             #[inline] #[must_use]
             pub fn lerp(self, u: $f, v: $f) -> Float<$f> {
@@ -447,9 +447,9 @@ macro_rules! custom_impls {
                 Self::[<exp2_series_terms_ $f>](self.0)
             }}
 
-            /// Computes the natural logarithm of `x` using a Taylor-Mercator series expansion.
+            /// Computes the natural logarithm of `self` using a Taylor-Mercator series expansion.
             ///
-            /// This method is more efficient for values of `x` near 1. Values too
+            /// This method is more efficient for values of `self` near 1. Values too
             /// small or too big could be impractical to calculate with precision.
             ///
             /// $$
@@ -658,7 +658,7 @@ macro_rules! custom_impls {
             /// $$ \tan(x) = \frac{\sin(x)}{\cos(x)} $$
             ///
             /// The tangent function has singularities and is not defined for
-            /// `cos(x) = 0`. This function clamps `x` within an appropriate range
+            /// `cos(x) = 0`. This function clamps `self` within an appropriate range
             /// to avoid such issues.
             ///
             /// The Taylor series for sine and cosine converge relatively quickly
@@ -697,7 +697,7 @@ macro_rules! custom_impls {
             /// asin is undefined for $ |x| > 1 $ and in that case returns `NaN`.
             ///
             /// The series converges more slowly near the edges of the domain
-            /// (i.e., as `x` approaches -1 or 1). For more accurate results,
+            /// (i.e., as `self` approaches -1 or 1). For more accurate results,
             /// especially near these boundary values, a higher number of terms
             /// may be necessary.
             ///
@@ -767,7 +767,7 @@ macro_rules! custom_impls {
             /// $$ \arctan(x) = \frac{\pi}{2} - \arctan(\frac{1}{x}) $$
             ///
             /// The series converges more slowly near the edges of the domain
-            /// (i.e., as `x` approaches -1 or 1). For more accurate results,
+            /// (i.e., as `self` approaches -1 or 1). For more accurate results,
             /// especially near these boundary values, a higher number of terms
             /// may be necessary.
             ///

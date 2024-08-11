@@ -68,6 +68,28 @@ fn mul_add_fallback() {
     assert_eq!(Float(2.0_f32).mul_add_fallback(3.0, 4.0), 10.0);
 }
 #[test]
+fn div_euclid() {
+    assert_eq!(Float(17.0_f32).div_euclid(3.0), 5.0);
+    assert_eq!(Float(17.0_f32).div_euclid(-3.0), -5.0);
+    assert_eq!(Float(-17.0_f32).div_euclid(3.0), -6.0);
+    assert_eq!(Float(-17.0_f32).div_euclid(-3.0), 6.0);
+}
+#[test]
+fn rem_euclid() {
+    assert_eq!(Float(17.0_f32).rem_euclid(3.0), 2.0);
+    assert_eq!(Float(17.0_f32).rem_euclid(-3.0), 2.0);
+    assert_eq!(Float(-17.0_f32).rem_euclid(3.0), 1.0);
+    assert_eq!(Float(-17.0_f32).rem_euclid(-3.0), 1.0);
+}
+#[test]
+fn scale() {
+    assert_eq![Float(45_f32).scale(0., 360., 0., 1.), 0.125];
+}
+#[test]
+fn lerp() {
+    assert_eq![Float(0.5_f32).lerp(40., 80.), 60.];
+}
+#[test]
 fn eval_poly() {
     assert_eq![Float(3.0_f64).eval_poly(&[]), 0.0];
     assert_eq![Float(3.0_f64).eval_poly(&[0.]), 0.0];
