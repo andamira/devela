@@ -67,3 +67,10 @@ fn is_zero() {
 fn mul_add_fallback() {
     assert_eq!(Float(2.0_f32).mul_add_fallback(3.0, 4.0), 10.0);
 }
+#[test]
+fn eval_poly() {
+    assert_eq![Float(3.0_f64).eval_poly(&[]), 0.0];
+    assert_eq![Float(3.0_f64).eval_poly(&[0.]), 0.0];
+    assert_eq![Float(3.0_f64).eval_poly(&[1.]), 1.0];
+    assert_eq![Float(3.0_f64).eval_poly(&[2.0, -6.0, 2.0, -1.0]), 5.0];
+}

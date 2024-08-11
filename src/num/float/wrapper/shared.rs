@@ -1074,6 +1074,36 @@ macro_rules! custom_impls {
                     Float(self.0 + other)
                 }
             }
+
+            /// Evaluates a polynomial at the `self` point value, using [Horner's method].
+            ///
+            /// Expects a slice of coefficients $[a_n, a_{n-1}, ..., a_1, a_0]$
+            /// representing the polynomial $ a_n * x^n + a_{n-1} * x^{(n-1)} + ... + a_1 * x + a_0 $.
+            ///
+            /// # Examples
+            /// ```
+            /// # use devela::num::Float;
+            /// let coefficients = [2.0, -6.0, 2.0, -1.0];
+            #[doc = cc!["assert_eq![Float(3.0_", sfy![$f], ").eval_poly(&coefficients), 5.0];"]]
+            #[doc = cc!["assert_eq![Float(3.0_", sfy![$f], ").eval_poly(&[]), 0.0];"]]
+            /// ```
+            ///
+            /// [Horner's method]: https://en.wikipedia.org/wiki/Horner%27s_method#Polynomial_evaluation_and_long_division
+            #[inline]
+            #[must_use]
+            pub fn eval_poly(self, coefficients: &[$f]) -> $f {
+                match coefficients.len() {
+                    0 => 0.0,
+                    1 => coefficients[0],
+                    _ => {
+                        let mut result = coefficients[0];
+                        for &coefficient in &coefficients[1..] {
+                            result = result * self.0 + coefficient;
+                        }
+                        result
+                    }
+                }
+            }
         }
     };
 }
