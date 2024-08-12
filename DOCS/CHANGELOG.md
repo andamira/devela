@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - show build environment variables if `__dbg` feature is enabled.
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`.
-- new `Float` method `eval_poly` to evaluate polynomials.
+- new `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
 - new traits: `MemPod`.
 
 ### Removed

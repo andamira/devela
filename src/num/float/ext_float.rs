@@ -433,6 +433,12 @@ pub trait ExtFloat: ExtFloatConst + Sized {
     /// otherwise it will return `NaN`.
     #[must_use]
     fn min_total(self, other: Self) -> Self;
+
+    /// Evaluates a polynomial at the `self` point value, using [Horner's method].
+    ///
+    /// [Horner's method]: https://en.wikipedia.org/wiki/Horner%27s_method#Polynomial_evaluation_and_long_division
+    #[must_use]
+    fn eval_poly(self, coefficients: &[Self]) -> Self;
 }
 
 macro_rules! impl_float_ext {
@@ -737,6 +743,11 @@ macro_rules! impl_float_ext {
             fn min_total(self, other: Self) -> Self { Float(self).min_total(other).0 }
             #[inline] #[cfg(not(feature = $cmp))]
             fn min_total(self, _: Self) -> Self { <$f>::NAN }
+
+            #[inline]
+            fn eval_poly(self, coefficients: &[Self]) -> Self {
+                Float(self).eval_poly(coefficients).0
+            }
         }
     }
 }
