@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - show build environment variables if `__dbg` feature is enabled.
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`.
 - new `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
+- new struct `Env` that namespaces `std::env` functions and constants.
 - new traits: `MemPod`.
 
 ### Removed

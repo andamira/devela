@@ -19,9 +19,11 @@
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
 mod arch;
+mod env;
 mod ffi;
 mod io;
-pub use {arch::*, ffi::*, io::*};
+#[allow(unused_imports)]
+pub use {arch::*, env::*, ffi::*, io::*};
 
 #[cfg(feature = "log")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "log")))]
@@ -39,7 +41,7 @@ pub use path::*;
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{arch::all::*, ffi::all::*, io::all::*};
+    pub use super::{arch::all::*, env::all::*, ffi::all::*, io::all::*};
 
     #[doc(inline)]
     #[cfg(feature = "log")]
