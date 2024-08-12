@@ -40,11 +40,16 @@ mod pod;
 #[cfg(feature = "unsafe_layout")]
 pub use pod::MemPod;
 
+pub mod cell;
+#[doc(no_inline)]
+pub use cell::*;
+
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        aligned::*, ext::*, fns_macros::*, reexports::*, size::all::*, slice::all::*, storage::*,
+        aligned::*, cell::*, ext::*, fns_macros::*, reexports::*, size::all::*, slice::all::*,
+        storage::*,
     };
 
     #[cfg(feature = "unsafe_ptr")]

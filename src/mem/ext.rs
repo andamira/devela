@@ -1,6 +1,6 @@
-// devela::mem::trait
+// devela::mem::ext
 //
-//! Functionality related to byte sizes.
+//! An extension trait for memory management over `T`.
 //
 
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_slice"))]
