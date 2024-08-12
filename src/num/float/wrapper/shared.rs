@@ -1091,16 +1091,16 @@ macro_rules! custom_impls {
             /// [Horner's method]: https://en.wikipedia.org/wiki/Horner%27s_method#Polynomial_evaluation_and_long_division
             #[inline]
             #[must_use]
-            pub fn eval_poly(self, coefficients: &[$f]) -> $f {
+            pub fn eval_poly(self, coefficients: &[$f]) -> Float<$f> {
                 match coefficients.len() {
-                    0 => 0.0,
-                    1 => coefficients[0],
+                    0 => Float(0.0),
+                    1 => Float(coefficients[0]),
                     _ => {
                         let mut result = coefficients[0];
                         for &coefficient in &coefficients[1..] {
                             result = result * self.0 + coefficient;
                         }
-                        result
+                        Float(result)
                     }
                 }
             }
