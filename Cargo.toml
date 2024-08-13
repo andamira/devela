@@ -137,7 +137,7 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	unsafe_ptr = [] # Pinned, pop methods without Clone.
 	unsafe_slice = [] # extra slice methods, avoid bound checks.
 	unsafe_str = [] # unchecked utf-8 char and &str conversions.
-	unsafe_thread = [] # Logging::set_logger_racy.
+	unsafe_thread = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
 
 #* Nightly features tree *#
@@ -157,15 +157,24 @@ nightly = [
 		#
 		#
 		# NOT included features, soon to be stabilized:
+		# > 1.81 will be stable on 2024-09-05:
+		# 1.81: [atomic_bool_fetch_not](https://github.com/rust-lang/rust/pull/127204)
+		# 1.81: [const_char_from_u32_unchecked](https://github.com/rust-lang/rust/issues/89259)
+		# 1.81: [const_cstr_from_ptr](https://github.com/rust-lang/rust/pull/127433)
+		# 1.81: [duration_abs_diff](https://github.com/rust-lang/rust/pull/127128)
 		# 1.81: [expect, lint_reasons](https://github.com/rust-lang/rust/pull/120924)
 		# 1.81: [error_in_core](https://github.com/rust-lang/rust/pull/125951)
-		#
+		# 1.81: [hint::assert_unchecked](https://github.com/rust-lang/rust/pull/123588)
+		# 1.81: [PanicInfo::message()](https://github.com/rust-lang/rust/pull/126732)
+		# 1.81: [path_try_exists](https://github.com/rust-lang/rust/pull/126140)
+		# > 1.82 will be stable on 2024-10-17:
 		# 1.82: [const_int_from_str](https://github.com/rust-lang/rust/pull/124941)
 		# 1.82: [const_waker](https://github.com/rust-lang/rust/pull/128228)
 		# 1.82: [is_sorted](https://github.com/rust-lang/rust/issues/53485)
+		# 1.82: [min_exhaustive_patterns(https://github.com/rust-lang/rust/pull/122792)
 		# 1.82: [offset_of_nested](https://github.com/rust-lang/rust/pull/128284)
 		# 1.82: [unsafe_extern_blocks](https://github.com/rust-lang/rust/pull/127921)
-		#
+		# >
 		# 1.?? [impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 		# 1.?? [macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 		# 1.?? [noop_waker](https://github.com/rust-lang/rust/issues/98286) exec::async::waker
@@ -444,7 +453,6 @@ unicode-segmentation = { version = "1.11.0", default-features = false, optional 
 unicode-width = { version = "0.1.13", default-features = false, optional = true }
 wide = { version = "0.7.26", optional = true, default-features = false }
 
-# optional:
 [dependencies.atomic]
 version = "0.6.0"
 optional = true
@@ -508,12 +516,15 @@ check-cfg = [
 	# These compilation flags for reflection are enabled in: "/build/features.rs"
     "cfg(_some_nightly, _some_dep)",
 	'cfg(_some_mem, _some_num)',
+	# data:
 	'cfg(_some_bit, _some_destaque, _some_graph, _some_node, _some_stack)',
+	# num:
 	'cfg(_some_sort, _some_sort_int, _some_sort_float)',
 	'cfg(_some_nums, _some_cmp, _some_float, _some_int, _some_int_i, _some_int_u)',
 	'cfg(_some_niche, _some_in_range, _some_non_range)',
 	'cfg(_some_non_value, _some_non_value_i, _some_non_value_u)',
-    'cfg(_some_string, _some_string_u)',
+	# text:
+    'cfg(_some_char, _some_string, _some_string_u)',
 ]
 
 
