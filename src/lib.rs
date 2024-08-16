@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A development foundation.
+//! A cohesive & modular development layer, designed for clarity and low-level control.
 //
 
 //* global config *//

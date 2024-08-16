@@ -4,7 +4,7 @@
 [![API](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
 [![MSRV: 1.80.1](https://flat.badgen.net/badge/MSRV/1.80.1/purple)](https://releases.rs/docs/1.80.1/)
 
-A development foundation.
+A cohesive & modular development layer, designed for clarity and low-level control.
 
 ## Status
 This project is currently in an experimental stage of development.

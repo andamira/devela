@@ -10,7 +10,7 @@ bench = false
 
 [package]
 name = "devela"
-description = "A development foundation."
+description = "A cohesive & modular development layer, designed for clarity and low-level control."
 version = "0.22.0-wip"
 edition = "2021"
 rust-version = "1.80.1" # sync with readme & .github/workflows/check.yml
