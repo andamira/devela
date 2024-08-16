@@ -1,9 +1,9 @@
-// devela::num::geom::algebra::vector::impl_vec::core_traits
+// devela::num::algebra::linear::vector::impl_vec::core_traits
 //
 //!
 //
 
-use crate::num::geom::VecVector;
+use crate::num::algebra::linear::VecVector;
 use core::fmt;
 
 /* Clone, Copy */

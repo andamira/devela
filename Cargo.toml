@@ -94,10 +94,8 @@ mem = [
 	]
 	mem_bit = [] # BitSize
 num = [
-	"num_geom",
 	"num_rand",
 	]
-	num_geom = [] # geometric types and operations.
 	num_rand = [] # random number generators.
 sys = []
 text = []

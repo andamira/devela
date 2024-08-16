@@ -1,9 +1,9 @@
-// devela::num::geom::algebra::vector::impl_array::core_traits
+// devela::num::algebra::linear::vector::impl_array::core_traits
 //
 //!
 //
 
-use crate::{code::ConstDefault, data::array_init, num::geom::Vector};
+use crate::{code::ConstDefault, data::array_init, num::algebra::linear::Vector};
 use core::{
     fmt,
     hash::{Hash, Hasher},

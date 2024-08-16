@@ -1,4 +1,4 @@
-// devela::num::geom::algebra::vector::impl_array
+// devela::num::algebra::linear::vector::impl_array
 //
 //!
 //

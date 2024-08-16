@@ -1,11 +1,11 @@
-// devela::num::geom::algebra::vector::impl_array::methods
+// devela::num::algebra::linear::vector::impl_array::methods
 //
 //! impl methods for Vector
 //
 
 #![allow(clippy::needless_range_loop)]
 
-use crate::num::geom::Vector;
+use crate::num::algebra::linear::Vector;
 #[allow(unused_imports)]
 #[cfg(all(not(feature = "std"), _some_float))]
 use crate::num::ExtFloat;

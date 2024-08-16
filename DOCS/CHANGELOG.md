@@ -13,16 +13,20 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
 - new struct `Env` that namespaces `std::env` functions and constants.
 - reexport `core::cell` types.
+- new `num::algebra` module.
 - new `CellOption` trait.
 - new traits: `MemPod`.
 
 ### Removed
+- remove feature `num_geom`.
+- move `num::geom::prim` submodule to separate crate `cuadra`.
 
 ### Changed
 - refactor build script.
 - rename `unsafe_dyn` feature to `unsafe_layout`.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
+- move `num::geom::algebra` to `num::algebra::linear`.
 - make `bytemuck` an optional dependency.
 
 ### Fixed

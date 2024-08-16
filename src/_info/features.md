@@ -45,7 +45,6 @@ Single modules:
 - [`mem`]
   - `mem_bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
-    - [`num_geom`]: enables geometric types and operations.
     - [`num_rand`]: enables random number generators.
 - [`sys`]
 - [`text`]: enables `Char*`, `Egc`, `Nonul`.
@@ -59,7 +58,6 @@ Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 [`exec`]: crate::exec
 [`mem`]: crate::mem
 [`num`]: crate::num
-[`num_geom`]: crate::num::geom
 [`num_rand`]: crate::num::rand
 [`sys`]: crate::sys
 [`text`]: crate::text
@@ -174,8 +172,7 @@ Enable specific implementations for [`Compare`]:
 They also set the corresponding flag:
 `_some_cmp`.
 
-Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`],
-[`Angle`], [`Point`], [`Vector`]:
+Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`], [`Vector`]:
 - `_num_all`:
   - `_float_all`:
     - `_float_f32`, `_float_f64`.
@@ -215,8 +212,6 @@ They also set the corresponding flags:
 [`Frac`]: crate::num::Frac
 [`Int`]: crate::num::Int
 [`Divisor`]: crate::num::Divisor
-[`Angle`]: crate::num::Angle
-[`Point`]: crate::num::Point
 [`Vector`]: crate::num::Vector
 [`InRange*`]: crate::num::InRangeU8
 [`NonRange*`]: crate::num::NonRangeU8
