@@ -9,17 +9,17 @@
 
 # Maximum width of an array literal before falling back to vertical formatting.
 # https://rust-lang.github.io/rustfmt/?search=#array_width
-array_width = 60 # *60
+array_width = 60 # *60 IMPROVE 100
 
 # Maximum width of the args of a function-like attributes before falling back
 # to vertical formatting.
 # https://rust-lang.github.io/rustfmt/?search=#attr_fn_like_width
-attr_fn_like_width = 70 # *70
+attr_fn_like_width = 70 # *70 IMPROVE 100?
 
 
 # Maximum width of a chain to fit on one line.
 # https://rust-lang.github.io/rustfmt/?search=#chain_width
-chain_width = 60 # *60
+chain_width = 60 # *60 IMPROVE 100?
 
 # Specifies which edition is used by the parser.
 # https://rust-lang.github.io/rustfmt/?search=#
@@ -32,7 +32,7 @@ fn_params_layout = "Tall" # *"Tall", "Compressed", "Vertical"
 # Maximum width of the args of a function call before falling back to vertical
 # formatting.
 # https://rust-lang.github.io/rustfmt/?search=#fn_call_width
-fn_call_width = 60 # *60
+fn_call_width = 60 # *60 IMPROVE 100?
 
 # Always print the abi for extern items.
 # https://rust-lang.github.io/rustfmt/?search=#force_explicit_abi
@@ -56,7 +56,7 @@ merge_derives = true # *true
 
 # Unix or Windows line endings.
 # https://rust-lang.github.io/rustfmt/?search=#newline_style
-newline_style = "Auto" # *Auto,Native,Unix,Windows
+newline_style = "Unix" # *Auto,Native,Unix,Windows CHECK
 
 # Remove nested parens.
 # https://rust-lang.github.io/rustfmt/?search=#remove_nested_parens
@@ -69,7 +69,7 @@ reorder_imports = true # *true
 
 # Reorder mod declarations alphabetically in group.
 # https://rust-lang.github.io/rustfmt/?search=#reorder_modules
-reorder_modules = true # *true
+reorder_modules = false # *true false CHECK
 
 # Maximum line length for single line if-else expressions. A value of 0 (zero)
 # results in if-else expressions always being broken into multiple lines. Note
