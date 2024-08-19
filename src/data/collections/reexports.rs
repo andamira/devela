@@ -57,6 +57,7 @@ pub use hashbrown_reexports::*;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "hashbrown")))]
 mod hashbrown_reexports {
     use super::reexport;
+    use crate::data::hash::HasherBuildFx;
 
     reexport! { "hashbrown" | hashbrown, features: "alloc",
         doc: "An unordered hash map implemented with quadratic probing and SIMD lookup.",
@@ -66,4 +67,16 @@ mod hashbrown_reexports {
         doc: "An unordered hash set implemented as a `AllocMap` where the value is `()`.",
         @HashSet as AllocSet
     }
+
+    /// An [`AllocMap`] using a default Fx hasher.
+    ///
+    /// To create with a reserved capacity,
+    /// use `AllocMapFx::with_capacity_and_hasher(num, Default::default())`.
+    pub type AllocMapFx<K, V> = crate::_deps::hashbrown::HashMap<K, V, HasherBuildFx>;
+
+    /// An [`AllocSet`] using a default Fx hasher.
+    ///
+    /// To create with a reserved capacity,
+    /// use `AllocSetFx::with_capacity_and_hasher(num, Default::default())`.
+    pub type AllocSetFx<K, V> = crate::_deps::hashbrown::HashSet<K, V, HasherBuildFx>;
 }
