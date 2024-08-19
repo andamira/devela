@@ -166,7 +166,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
         let len = self.len();
-        self.arr.get_unchecked_mut(0..len)
+        // SAFETY: caller must ensure safety
+        unsafe { self.arr.get_unchecked_mut(0..len) }
     }
 
     /// Returns the inner string slice.
@@ -193,7 +194,8 @@ impl<const CAP: usize> StringNonul<CAP> {
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_mut_str(&mut self) -> &mut str {
-        &mut *(self.as_bytes_mut() as *mut [u8] as *mut str)
+        // SAFETY: caller must ensure safety
+        unsafe { &mut *(self.as_bytes_mut() as *mut [u8] as *mut str) }
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.

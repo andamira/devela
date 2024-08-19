@@ -48,12 +48,16 @@ pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: MemPod>(
     };
     assert!(meta_vals.len() * size_of::<W>() % size_of::<usize>() == 0);
     assert!(meta_vals.len() * size_of::<W>() <= 4 * size_of::<usize>());
-    ptr::copy(
-        meta_vals.as_ptr() as *const u8,
-        rv.raw.meta.as_mut_ptr() as *mut u8,
-        meta_vals.len() * size_of::<W>(),
-    );
-    let rv = rv.ptr;
+    // SAFETY: caller must ensure safety
+    unsafe {
+        ptr::copy(
+            meta_vals.as_ptr() as *const u8,
+            rv.raw.meta.as_mut_ptr() as *mut u8,
+            meta_vals.len() * size_of::<W>(),
+        );
+    }
+    // SAFETY: caller must ensure safety
+    let rv = unsafe { rv.ptr };
     assert_eq!(rv as *const (), data_ptr as *const ());
     rv
 }
@@ -138,8 +142,12 @@ pub(crate) unsafe fn list_push_gen<T, W: MemPod>(
     let mut clr = PanicState(ptr, 0, reset_slot, reset_value);
     for i in 0..count {
         let val = gen(i);
-        ptr::write(ptr, val);
-        ptr = ptr.offset(1);
+        // SAFETY: caller must ensure safety
+        unsafe {
+            ptr::write(ptr, val);
+        }
+        // SAFETY: caller must ensure safety
+        ptr = unsafe { ptr.offset(1) };
         clr.1 += 1;
     }
     // Prevent drops and prevent reset

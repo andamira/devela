@@ -168,7 +168,8 @@ macro_rules! impl_string_u {
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
             pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
-                self.arr.get_unchecked_mut(0..self.len as usize)
+                // SAFETY: caller must ensure safety
+                unsafe { self.arr.get_unchecked_mut(0..self.len as usize) }
             }
 
             /// Returns the inner string slice.

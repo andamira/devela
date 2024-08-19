@@ -133,7 +133,10 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
             _pd: marker::PhantomData,
             data: buffer,
         });
-        rv.write_value(data, size, info);
+        // SAFETY: caller must ensure safety
+        unsafe {
+            rv.write_value(data, size, info);
+        }
         Some(ManuallyDrop::into_inner(rv))
     }
 
@@ -423,7 +426,10 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
             store_metadata(info_dst, info);
         }
 
-        ptr::copy_nonoverlapping(data as *const u8, buf.as_mut_ptr() as *mut u8, size);
+        // SAFETY: caller must ensure safety
+        unsafe {
+            ptr::copy_nonoverlapping(data as *const u8, buf.as_mut_ptr() as *mut u8, size);
+        }
     }
 
     // Obtain raw pointer to the contained data
@@ -432,7 +438,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
         let info_size = size_of::<*mut DST>() / size_of::<usize>() - 1;
         let info_ofs = data.len() - BUF::round_to_words(info_size * size_of::<usize>());
         let (data, meta) = data.split_at(info_ofs);
-        super::make_fat_ptr(data.as_ptr() as *mut (), meta)
+        // SAFETY: caller must ensure safety
+        unsafe { super::make_fat_ptr(data.as_ptr() as *mut (), meta) }
     }
 
     // Obtain raw pointer to the contained data
@@ -441,7 +448,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
         let info_size = size_of::<*mut DST>() / size_of::<usize>() - 1;
         let info_ofs = data.len() - BUF::round_to_words(info_size * size_of::<usize>());
         let (data, meta) = data.split_at_mut(info_ofs);
-        super::make_fat_ptr(data.as_mut_ptr() as *mut (), meta)
+        // SAFETY: caller must ensure safety
+        unsafe { super::make_fat_ptr(data.as_mut_ptr() as *mut (), meta) }
     }
 }
 

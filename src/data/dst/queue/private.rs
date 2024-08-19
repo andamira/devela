@@ -30,7 +30,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ) -> Result<PushInnerInfo<BUF::Inner>, ()> {
         let bytes = mem_size_of_val(fat_ptr);
         let (_data_ptr, len, v) = decompose_pointer(fat_ptr);
-        self.push_inner_raw(bytes, &v[..len])
+        // SAFETY: caller must ensure safety
+        unsafe { self.push_inner_raw(bytes, &v[..len]) }
     }
 
     // SAFETY: TODO
@@ -102,7 +103,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
         let meta = &self.data.as_ref()[pos..];
         let mw = Self::meta_words();
         let (meta, data) = meta.split_at(mw);
-        make_fat_ptr(data.as_ptr() as *mut (), meta)
+        // SAFETY: caller must ensure safety
+        unsafe { make_fat_ptr(data.as_ptr() as *mut (), meta) }
     }
 
     #[must_use]
@@ -122,7 +124,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
         let meta = &mut self.data.as_mut()[pos..];
         let mw = Self::meta_words();
         let (meta, data) = meta.split_at_mut(mw);
-        make_fat_ptr(data.as_mut_ptr() as *mut (), meta)
+        // SAFETY: caller must ensure safety
+        unsafe { make_fat_ptr(data.as_mut_ptr() as *mut (), meta) }
     }
 
     #[inline]

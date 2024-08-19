@@ -10,7 +10,9 @@
 // - https://rust-lang.github.io/rust-clippy/rust-1.80.0/index.html
 // - https://doc.rust-lang.org/rustdoc/lints.html
 #![deny(
-    type_alias_bounds, // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
+    // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
+    type_alias_bounds, // detects bounds in type aliases
+    unsafe_op_in_unsafe_fn, // unsafe operations in unsafe functions without explicit unsafe block
     clippy::missing_safety_doc, // deny if there's no # Safety section in public unsafe fns
 )]
 #![warn(

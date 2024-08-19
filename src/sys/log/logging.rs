@@ -72,7 +72,8 @@ impl Logging {
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_thread")))]
     pub unsafe fn set_logger_racy(logger: &'static dyn Log) -> Result<(), SetLoggerError> {
-        set_logger_racy(logger)
+        // SAFETY: caller must ensure safety
+        unsafe { set_logger_racy(logger) }
     }
 
     /* */

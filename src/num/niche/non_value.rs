@@ -134,7 +134,8 @@ macro_rules! impl_non_value {
                 #[cfg(debug_assertions)]
                 if value == V { panic!("The given value was specifically prohibited.") }
 
-                Self([<NonZero $s:upper $b>]::new_unchecked(value ^ V))
+                // SAFETY: caller must ensure safety
+                Self(unsafe { [<NonZero $s:upper $b>]::new_unchecked(value ^ V) })
             }
 
             /// Returns the value as a primitive type.

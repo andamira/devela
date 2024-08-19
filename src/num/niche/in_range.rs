@@ -111,7 +111,8 @@ macro_rules! impl_in_range {
                 if value < RMIN || value > RMAX {
                     panic!("The given value was outside the given range.")
                 }
-                Self([<NonZero $s:upper $b>]::new_unchecked(value ^ Self::XOR_VALUE))
+                // SAFETY: caller must ensure safety
+                Self(unsafe { [<NonZero $s:upper $b>]::new_unchecked(value ^ Self::XOR_VALUE) })
             }
 
             /// Returns the value as a primitive type.

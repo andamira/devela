@@ -189,7 +189,8 @@ impl<const CAP: usize> EgcNonul<CAP> {
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
-        self.0.as_bytes_mut()
+        // SAFETY: unsafe fn
+        unsafe { self.0.as_bytes_mut() }
     }
 
     /// Returns a copy of the inner array with the full contents.
@@ -214,7 +215,10 @@ impl<const CAP: usize> EgcNonul<CAP> {
     #[inline] #[must_use] #[rustfmt::skip]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
-    pub unsafe fn as_mut_str(&mut self) -> &mut str { self.0.as_mut_str() }
+    pub unsafe fn as_mut_str(&mut self) -> &mut str {
+        // SAFETY: caller must ensure safety
+        unsafe { self.0.as_mut_str() }
+    }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[inline] #[rustfmt::skip]

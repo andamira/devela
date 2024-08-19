@@ -301,7 +301,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
         let meta = &dar[dar.len() - ofs..];
         let mw = Self::meta_words();
         let (meta, data) = meta.split_at(mw);
-        super::make_fat_ptr(data.as_ptr() as *mut (), meta)
+        // SAFETY: caller must ensure safety
+        unsafe { super::make_fat_ptr(data.as_ptr() as *mut (), meta) }
     }
     #[must_use]
     #[inline]
@@ -311,7 +312,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
         let meta = &mut dar[ofs..];
         let mw = Self::meta_words();
         let (meta, data) = meta.split_at_mut(mw);
-        super::make_fat_ptr(data.as_mut_ptr() as *mut (), meta)
+        // SAFETY: caller must ensure safety
+        unsafe { super::make_fat_ptr(data.as_mut_ptr() as *mut (), meta) }
     }
     // Get a raw pointer to the top of the stack.
     #[must_use]
@@ -341,7 +343,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     unsafe fn push_inner(&mut self, fat_ptr: &DST) -> Result<PushInnerInfo<BUF::Inner>, ()> {
         let bytes = size_of_val(fat_ptr);
         let (_data_ptr, len, v) = decompose_pointer(fat_ptr);
-        self.push_inner_raw(bytes, &v[..len])
+        // SAFETY: caller must ensure safety
+        unsafe { self.push_inner_raw(bytes, &v[..len]) }
     }
 
     // Returns:

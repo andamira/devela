@@ -162,10 +162,14 @@ impl<const CAP: usize> EgcU8<CAP> {
     /// Returns a mutable byte slice of the inner string slice.
     /// # Safety
     /// The content must be valid UTF-8.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[inline]
+    #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
-    pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] { self.0.as_bytes_mut() }
+    pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
+        // SAFETY: caller must ensure safety
+        unsafe { self.0.as_bytes_mut() }
+    }
 
     /// Returns a copy of the inner array with the full contents.
     ///
