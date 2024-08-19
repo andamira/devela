@@ -2,9 +2,9 @@
 //! ```cargo
 //! [dependencies]
 //! toml_edit = "0.20"
-//! itertools = "0.11"
+//! itertools = "0.13"
 //! lexopt = "0.3"
-//! devela = { version = "0.20.0", features = ["std", "code", "io"] }
+//! devela = { version = "0.21.2", features = ["std", "sys"] }
 //! ```
 // This script needs [rusts-cript](https://crates.io/crates/rust-script) to run.
 
