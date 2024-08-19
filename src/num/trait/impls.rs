@@ -25,6 +25,21 @@ macro_rules! impl_num {
         impl_num![u u8:"_int_u8", u16:"_int_u16", u32:"_int_u32",
             u64:"_int_u64", u128:"_int_u128", usize:"_int_usize"];
         impl_num![f f32:"_float_f32", f64:"_float_f64"];
+
+        // niche types
+        impl_num![non_value i i8:"_non_value_i8", i16:"_non_value_i16", i32:"_non_value_i32",
+            i64:"_non_value_i64", i128:"_non_value_i128", isize:"_non_value_isize"];
+        impl_num![non_range i i8:"_non_range_i8", i16:"_non_range_i16", i32:"_non_range_i32",
+            i64:"_non_range_i64", i128:"_non_range_i128", isize:"_non_range_isize"];
+        impl_num![in_range i i8:"_in_range_i8", i16:"_in_range_i16", i32:"_in_range_i32",
+            i64:"_in_range_i64", i128:"_in_range_i128", isize:"_in_range_isize"];
+        //
+        impl_num![non_value u u8:"_non_value_u8", u16:"_non_value_u16", u32:"_non_value_u32",
+            u64:"_non_value_u64", u128:"_non_value_u128", usize:"_non_value_usize"];
+        impl_num![non_range u u8:"_non_range_u8", u16:"_non_range_u16", u32:"_non_range_u32",
+            u64:"_non_range_u64", u128:"_non_range_u128", usize:"_non_range_usize"];
+        impl_num![in_range u u8:"_in_range_u8", u16:"_in_range_u16", u32:"_in_range_u32",
+            u64:"_in_range_u64", u128:"_in_range_u128", usize:"_in_range_usize"];
     };
 
     // Implements `Num` for signed integer types
@@ -125,39 +140,45 @@ macro_rules! impl_num {
             impl_num![op1_checked Self => neg, abs];
             impl_num![op2_get_checked Self => add, sub, div, rem];
         }
+    }};
 
-        // // NonValueI*
-        // #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))]
-        // #[cfg_attr(feature = "nightly_doc",
-        //     doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))))]
-        // impl<const V: $p> Num for [<NonValue $p:camel>]<V> {
-        //     type Inner = $p;
-        //     type Out =  [<NonValue $p:camel>]<V>;
-        //     type Rhs =  [<NonValue $p:camel>]<V>;
-        //     impl_num![custom_i_body];
-        // }
-        //
-        // // NonRangeI*
-        // #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))]
-        // #[cfg_attr(feature = "nightly_doc",
-        //     doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))))]
-        // impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
-        //     type Inner = $p;
-        //     type Out = [<NonRange $p:camel>]<RMIN, RMAX>;
-        //     type Rhs = [<NonRange $p:camel>]<RMIN, RMAX>;
-        //     impl_num![custom_i_body];
-        // }
-        //
-        // // RangeI*
-        // #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))]
-        // #[cfg_attr(feature = "nightly_doc",
-        //     doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls", feature = $cap))))]
-        // impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
-        //     type Inner = $p;
-        //     type Out = [<Range $p:camel>]<RMIN, RMAX>;
-        //     type Rhs = [<Range $p:camel>]<RMIN, RMAX>;
-        //     impl_num![custom_i_body];
-        // }
+    // Implements `Num` for signed integer niche types
+    // --------------------------------------------------------------------------------------------
+    (non_value i $($p:ident : $cap:literal),+) => { $( impl_num![@non_value i $p : $cap]; )+ };
+    (@non_value i $p:ident : $cap:literal) => { paste! {
+        // NonValueI*
+        #[cfg(feature = $cap)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        impl<const V: $p> Num for [<NonValue $p:camel>]<V> {
+            type Inner = $p;
+            type Out =  [<NonValue $p:camel>]<V>;
+            type Rhs =  [<NonValue $p:camel>]<V>;
+            impl_num![custom_i_body];
+        }
+    }};
+    (non_range i $($p:ident : $cap:literal),+) => { $( impl_num![@non_range i $p : $cap]; )+ };
+    (@non_range i $p:ident : $cap:literal) => { paste! {
+        // NonRangeI*
+        #[cfg(feature = $cap)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
+            type Inner = $p;
+            type Out = [<NonRange $p:camel>]<RMIN, RMAX>;
+            type Rhs = [<NonRange $p:camel>]<RMIN, RMAX>;
+            impl_num![custom_i_body];
+        }
+    }};
+    (in_range i $($p:ident : $cap:literal),+) => { $( impl_num![@in_range i $p : $cap]; )+ };
+    (@in_range i $p:ident : $cap:literal) => { paste! {
+        // InRangeI*
+        #[cfg(feature = $cap)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        impl<const RMIN: $p, const RMAX: $p> Num for [<InRange $p:camel>]<RMIN, RMAX> {
+            type Inner = $p;
+            type Out = [<InRange $p:camel>]<RMIN, RMAX>;
+            type Rhs = [<InRange $p:camel>]<RMIN, RMAX>;
+            impl_num![custom_i_body];
+        }
     }};
 
     // Implements `Num` for unsigned integer types
@@ -265,42 +286,43 @@ macro_rules! impl_num {
             #[inline]
             fn num_ref_abs(&self) -> Result<Self> { Ok(*self) }
         }
+    }};
 
-        // // NonValueU*
-        // #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        // #[cfg(feature = "num_niche_impls")]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_niche_impls")))]
-        // impl<const V: $p> Num for [<NonValue $p:camel>]<V> {
-        //     type Inner = $p;
-        //     type Out = [<NonValue $p:camel>]<V>;
-        //     type Rhs = [<NonValue $p:camel>]<V>;
-        //     impl_num![custom_u_body]; }
-        //
-        // // NonRangeU*
-        // #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        // #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))]
-        // #[cfg_attr( feature = "nightly_doc",
-        //     doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))))]
-        // impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
-        //     type Inner = $p;
-        //     type Out = [<NonRange $p:camel>]<RMIN, RMAX>;
-        //     type Rhs = [<NonRange $p:camel>]<RMIN, RMAX>;
-        //     impl_num![custom_u_body];
-        // }
-        //
-        // // RangeU*
-        // #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        // #[cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))]
-        // #[cfg_attr( feature = "nightly_doc",
-        //     doc(cfg(all(feature = "num_niche_range", feature = "num_niche_impls"))))]
-        // impl<const RMIN: $p, const RMAX: $p> Num for [<Range $p:camel>]<RMIN, RMAX> {
-        //     type Inner = $p;
-        //     type Out = [<Range $p:camel>]<RMIN, RMAX>;
-        //     type Rhs = [<Range $p:camel>]<RMIN, RMAX>;
-        //     impl_num![custom_u_body]; }
+    // Implements `Num` for unsigned integer types
+    // --------------------------------------------------------------------------------------------
+    (non_value u $($p:ident : $cap:literal),+) => { $( impl_num![@non_value u $p : $cap]; )+ };
+    (@non_value u $p:ident : $cap:literal) => { paste! {
+        // NonValueU*
+        #[cfg(feature = $cap)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        impl<const V: $p> Num for [<NonValue $p:camel>]<V> {
+            type Inner = $p;
+            type Out = [<NonValue $p:camel>]<V>;
+            type Rhs = [<NonValue $p:camel>]<V>;
+            impl_num![custom_u_body]; }
+    }};
+    (non_range u $($p:ident : $cap:literal),+) => { $( impl_num![@non_range u $p : $cap]; )+ };
+    (@non_range u $p:ident : $cap:literal) => { paste! {
+        // NonRangeU*
+        #[cfg(feature = $cap)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        impl<const RMIN: $p, const RMAX: $p> Num for [<NonRange $p:camel>]<RMIN, RMAX> {
+            type Inner = $p;
+            type Out = [<NonRange $p:camel>]<RMIN, RMAX>;
+            type Rhs = [<NonRange $p:camel>]<RMIN, RMAX>;
+            impl_num![custom_u_body];
+        }
+    }};
+    (in_range u $($p:ident : $cap:literal),+) => { $( impl_num![@in_range u $p : $cap]; )+ };
+    (@in_range u $p:ident : $cap:literal) => { paste! {
+        // InRangeU*
+        #[cfg(feature = $cap)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        impl<const RMIN: $p, const RMAX: $p> Num for [<InRange $p:camel>]<RMIN, RMAX> {
+            type Inner = $p;
+            type Out = [<InRange $p:camel>]<RMIN, RMAX>;
+            type Rhs = [<InRange $p:camel>]<RMIN, RMAX>;
+            impl_num![custom_u_body]; }
     }};
 
     // Implements `Num` for the floating-point types
