@@ -32,12 +32,12 @@ pub struct HasherFnv<T> {
     state: T,
 }
 
-const BASIS32: u32 = 0x811c9dc5;
-const PRIME32: u32 = 0x1000193;
-const BASIS64: u64 = 0x00000100000001B3;
-const PRIME64: u64 = 0xcbf29ce484222325;
-const BASIS128: u128 = 0x0000000001000000000000000000013B;
-const PRIME128: u128 = 0x6c62272e07bb014262b821756295c58d;
+const BASIS32: u32 = 0x811c_9dc5;
+const PRIME32: u32 = 0x0100_0193;
+const BASIS64: u64 = 0x0000_0100_0000_01B3;
+const PRIME64: u64 = 0xcbf2_9ce4_8422_2325;
+const BASIS128: u128 = 0x0000_0000_0100_0000_0000_0000_0000_013B;
+const PRIME128: u128 = 0x6c62_272e_07bb_0142_62b8_2175_6295_c58d;
 
 macro_rules! impl_fnv {
     () => {

@@ -27,7 +27,6 @@ pub struct Frac<T>(pub T);
 #[rustfmt::skip]
 mod core_impls {
     use {super::Frac, core::{fmt, hash}};
-    // use core::cmp::Ordering; // TODO
 
     impl<T: Clone> Clone for Frac<T> {
         #[inline] #[must_use]

@@ -32,10 +32,12 @@ macro_rules! impl_non_value {
             64:"_non_value_u64", 128:"_non_value_u128", size:"_non_value_usize"];
     };
     ($abs:ident, $doc:literal, $s:ident, $( $b:tt: $cap:literal ),+) => {
-        $( impl_non_value![@NonValue, $abs, $doc, $s, $b : $cap]; )+
+        $( paste!{
+            impl_non_value![@[<NonValue $s:upper $b>], $abs, $doc, $s, $b : $cap];
+        })+
     };
 
-    // $name: the base name of the new type. E.g. NonValue.
+    // $name: the full name of the new type. E.g. NonValueI8.
     // $abs:  the absolute maximum value constant for this type
     // $doc:  the specific beginning of the documentation.
     // $s:    the sign identifier: i or u.
@@ -47,22 +49,21 @@ macro_rules! impl_non_value {
         #[doc = $doc " integer that is known not to equal some specific value." ]
         ///
         #[doc = "It has the same memory layout optimization as [`NonZero" $s:upper $b "`],"]
-        #[doc = " so that `Option<"[<$name $s:upper $b>]">` is the same size as `"
-            [<$name $s:upper $b>]"`."]
+        #[doc = " so that `Option<" $name ">` is the same size as `" $name "`."]
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::" [<$name $s:upper $b>] ";"]
+        #[doc = "use devela::num::" $name ";"]
         ///
-        #[doc = "assert![" [<$name $s:upper $b>] "::<13>::new(13).is_none()];"]
-        #[doc = "assert![" [<$name $s:upper $b>] "::<13>::new(12).unwrap().get() == 12];"]
+        #[doc = "assert![" $name "::<13>::new(13).is_none()];"]
+        #[doc = "assert![" $name "::<13>::new(12).unwrap().get() == 12];"]
         /// ```
         ///
         #[doc = "See also [`NonExtreme" $s:upper $b "`]."]
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        pub struct [<$name $s:upper $b>]<const V: [<$s $b>]>([<NonZero $s:upper $b>]);
+        pub struct $name <const V: [<$s $b>]>([<NonZero $s:upper $b>]);
 
         /* aliases */
 
@@ -73,7 +74,7 @@ macro_rules! impl_non_value {
         /// the [`Default`] and [`ConstDefault`][crate::code::ConstDefault] traits.
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        pub type [<NonExtreme $s:upper $b>] = [<$name $s:upper $b>]<{[<$s $b>]::$abs}>;
+        pub type [<NonExtreme $s:upper $b>] = $name <{[<$s $b>]::$abs}>;
 
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -109,8 +110,8 @@ macro_rules! impl_non_value {
 
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        impl<const V: [<$s $b>]> [<$name $s:upper $b>]<V> {
-            #[doc = "Returns a `" [<$name $s:upper $b>] "` with the given `value`,"
+        impl<const V: [<$s $b>]> $name<V> {
+            #[doc = "Returns a `" $name "` with the given `value`,"
                 " if it is not equal to `V`."]
             #[must_use]
             pub const fn new(value: [<$s $b>]) -> Option<Self> {
@@ -120,8 +121,7 @@ macro_rules! impl_non_value {
                 }
             }
 
-            #[doc = "Returns a `" [<$name $s:upper $b>] "` if the given `value`"
-                " if it is not equal to `V`."]
+            #[doc = "Returns a `" $name "` if the given `value`" " if it is not equal to `V`."]
             ///
             /// # Panics
             /// Panics in debug if the given `value` is equal to `V`.
@@ -159,44 +159,44 @@ macro_rules! impl_non_value {
 
             /* core impls */
 
-            impl<const V: [<$s $b>]> fmt::Display for [<$name $s:upper $b>]<V> {
+            impl<const V: [<$s $b>]> fmt::Display for $name <V> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     write!(f, "{}", self.get())
                 }
             }
-            impl<const V: [<$s $b>]> fmt::Debug for [<$name $s:upper $b>]<V> {
+            impl<const V: [<$s $b>]> fmt::Debug for $name <V> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    write!(f, "{}::<{}>({})", stringify!([<$name $s:upper $b>]), V, self.get())
+                    write!(f, "{}::<{}>({})", stringify!($name), V, self.get())
                 }
             }
-            impl<const V: [<$s $b>]> fmt::Binary for [<$name $s:upper $b>]<V> {
+            impl<const V: [<$s $b>]> fmt::Binary for $name<V> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::Binary::fmt(&self.get(), f)
                 }
             }
-            impl<const V: [<$s $b>]> fmt::Octal for [<$name $s:upper $b>]<V> {
+            impl<const V: [<$s $b>]> fmt::Octal for $name<V> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::Octal::fmt(&self.get(), f)
                 }
             }
-            impl<const V: [<$s $b>]> fmt::LowerHex for [<$name $s:upper $b>]<V> {
+            impl<const V: [<$s $b>]> fmt::LowerHex for $name<V> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::LowerHex::fmt(&self.get(), f)
                 }
             }
-            impl<const V: [<$s $b>]> fmt::UpperHex for [<$name $s:upper $b>]<V> {
+            impl<const V: [<$s $b>]> fmt::UpperHex for $name<V> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::UpperHex::fmt(&self.get(), f)
                 }
             }
 
-            impl<const V: [<$s $b>]> FromStr for [<$name $s:upper $b>]<V> {
+            impl<const V: [<$s $b>]> FromStr for $name<V> {
                 type Err = ParseIntError;
                 #[inline]
                 fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -206,15 +206,15 @@ macro_rules! impl_non_value {
 
             /* conversions */
 
-            impl<const V: [<$s $b>]> From<[<$name $s:upper $b>]<V>> for [<$s $b>] {
+            impl<const V: [<$s $b>]> From<$name<V>> for [<$s $b>] {
                 #[inline]
                 #[must_use]
-                fn from(value: [<$name $s:upper $b>]<V>) -> [<$s $b>] {
+                fn from(value: $name<V>) -> [<$s $b>] {
                     value.get()
                 }
             }
 
-            impl<const V: [<$s $b>]> TryFrom<[<$s $b>]> for [<$name $s:upper $b>]<V> {
+            impl<const V: [<$s $b>]> TryFrom<[<$s $b>]> for $name<V> {
                 type Error = core::num::TryFromIntError;
 
                 /// # Features
@@ -236,23 +236,23 @@ macro_rules! impl_non_value {
             // BitSized
             #[cfg(feature = "mem_bit")]
             bit_sized![<const V: [<$s $b>]> =
-                { [<$s $b>]::BYTE_SIZE * 8}; for [<$name $s:upper $b>]<V>];
+                { [<$s $b>]::BYTE_SIZE * 8}; for $name<V>];
 
             #[cfg(feature = "unsafe_layout")]
-            unsafe impl<const V: [<$s $b>]> MemPod for Option<[<$name $s:upper $b>]<V>> {}
+            unsafe impl<const V: [<$s $b>]> MemPod for Option<$name<V>> {}
 
             /* external impls*/
 
             #[cfg(all(feature = "bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
             #[cfg_attr(feature = "nightly_doc",
                 doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
-            mod [<$name $s $b>] {
+            mod [<$name $s:lower $b>] {
                 use super::*;
 
-                unsafe impl<const V: [<$s $b>]> ZeroableInOption for [<$name $s:upper $b>]<V> {}
-                unsafe impl<const V: [<$s $b>]> PodInOption for [<$name $s:upper $b>]<V> {}
-                unsafe impl<const V: [<$s $b>]> NoUninit for [<$name $s:upper $b>]<V> {}
-                unsafe impl<const V: [<$s $b>]> CheckedBitPattern for [<$name $s:upper $b>]<V> {
+                unsafe impl<const V: [<$s $b>]> ZeroableInOption for $name<V> {}
+                unsafe impl<const V: [<$s $b>]> PodInOption for $name<V> {}
+                unsafe impl<const V: [<$s $b>]> NoUninit for $name<V> {}
+                unsafe impl<const V: [<$s $b>]> CheckedBitPattern for $name<V> {
                     type Bits = [<$s $b>];
 
                     #[inline]

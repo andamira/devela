@@ -1,6 +1,6 @@
 // devela::data::dst
 //
-//! Dynamically-sized types stored in the stack.
+//! Dynamically-sized types stored without need of heap allocation.
 //!
 #![doc = include_str!("./Mod.md")]
 //!

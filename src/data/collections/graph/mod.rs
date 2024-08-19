@@ -258,7 +258,7 @@ macro_rules! impl_graph {
                 count
             }
 
-            /// Returns `true` if a given `edge` id exists.
+            /// Returns `true` if a given edge `id` exists.
             #[inline]
             pub const fn edge_exists(&self, edge: $IDX) -> bool {
                 self.edges.as_bare_slice()[edge as usize].is_some()
@@ -294,6 +294,7 @@ macro_rules! impl_graph {
             }
         }
 
+        // V: PartialEq
         impl<V: PartialEq, const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, V> {
             /// Adds a vertex to the graph with the given `data`, but only if the data is unique.
             ///
@@ -351,20 +352,20 @@ macro_rules! impl_graph {
 
         #[allow(dead_code)]
         impl<V, E, const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, V, E, Bare> {
-            // Makes sure the given `vertex` is in bounds,
+            // Makes sure the given vertex `id` is in bounds,
             #[inline]
-            const fn check_vertex_bounds(vertex: $IDX) -> Result<()> {
-                if vertex == $IDX::MAX || vertex >= VCAP as $IDX {
-                    Err(OutOfBounds(Some(vertex as usize)))
+            const fn check_vertex_bounds(id: $IDX) -> Result<()> {
+                if id == $IDX::MAX || id >= VCAP as $IDX {
+                    Err(OutOfBounds(Some(id as usize)))
                 } else {
                     Ok(())
                 }
             }
-            // Makes sure the given `edge` is in bounds,
+            // Makes sure the given edge `id` is in bounds,
             #[inline]
-            const fn check_edge_bounds(edge: $IDX) -> Result<()> {
-                if edge == $IDX::MAX || edge >= ECAP as $IDX {
-                    Err(OutOfBounds(Some(edge as usize)))
+            const fn check_edge_bounds(id: $IDX) -> Result<()> {
+                if id == $IDX::MAX || id >= ECAP as $IDX {
+                    Err(OutOfBounds(Some(id as usize)))
                 } else {
                     Ok(())
                 }

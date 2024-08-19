@@ -35,7 +35,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 198 (300 max)
+[features] # 204 (300 max)
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -491,9 +491,12 @@ devela = { path = ".", features = ["all"] }
 
 [package.metadata.docs.rs]
 # ==============================================================================
+# https://docs.rs/about/metadata
+
 no-default-features = true
 features = ["_docsrs", "_max_docs"]
 rustdoc-args = [ "--html-in-header", "./DOCS/rustdoc-header.html" ]
+
 
 [badges]
 # ==============================================================================
@@ -524,6 +527,10 @@ check-cfg = [
 	# text:
     'cfg(_some_char, _some_string, _some_string_u)',
 ]
+
+
+# [[bench]]
+# ==============================================================================
 
 
 # examples

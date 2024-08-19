@@ -52,11 +52,3 @@ pub(crate) mod all {
     #[cfg(feature = "sys")]
     pub use super::path::all::*;
 }
-
-// WIP
-// mod simd;
-// pub use simd::*;
-
-// WIP
-// #[doc(inline)]
-// pub use super::simd::*;

@@ -51,11 +51,19 @@ reexport! { rust: alloc::collections,
 
 /* from `hashbrown` */
 
-reexport! { "hashbrown" | hashbrown, features: "alloc",
-    doc: "An unordered hash map implemented with quadratic probing and SIMD lookup.",
-    @HashMap as AllocMap
-}
-reexport! { "hashbrown" | hashbrown, features: "alloc",
-    doc: "An unordered hash set implemented as a `AllocMap` where the value is `()`.",
-    @HashSet as AllocSet
+#[cfg(feature = "hashbrown")]
+pub use hashbrown_reexports::*;
+#[cfg(feature = "hashbrown")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "hashbrown")))]
+mod hashbrown_reexports {
+    use super::reexport;
+
+    reexport! { "hashbrown" | hashbrown, features: "alloc",
+        doc: "An unordered hash map implemented with quadratic probing and SIMD lookup.",
+        @HashMap as AllocMap
+    }
+    reexport! { "hashbrown" | hashbrown, features: "alloc",
+        doc: "An unordered hash set implemented as a `AllocMap` where the value is `()`.",
+        @HashSet as AllocSet
+    }
 }

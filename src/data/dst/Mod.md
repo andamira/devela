@@ -1,5 +1,5 @@
 This module adds support for storing dynamically-sized types within fixed-size
-allocations
+allocations.
 
 - The `DstValue` type provides a fixed size (7 word in the current version)
   buffer in which a trait object or array can be stored, without resorting
@@ -10,8 +10,8 @@ allocations
 # Examples
 
 ## An unboxed any
-As a quick example - The following wraps a 64-bit integer up in an inline DST
-using the `Any` trait.
+The following example wraps a 64-bit integer up in an inline DST using the `Any`
+trait:
 
 ```rust
 # use devela::all::{Any, DstArray, DstValue};
@@ -23,7 +23,7 @@ println!("dst as i8 = {:?}", dst.downcast_ref::<i8>());
 
 ## Stack-allocated closures
 The following snippet shows how small (`'static`) closures can be returned using
-this crate
+this crate:
 
 ```rust
 # use devela::all::{DstArrayUsize, DstQueue, DstValue};
@@ -41,16 +41,16 @@ assert_eq![5, q.pop_front().unwrap()(8)];
 
 ## Custom allocation sizes/types
 If you need larger alignment, you can use a different type for the backing array.
-(Note, that metadata uses at least one slot in the array)
+(Note: that metadata uses at least one slot in the array).
 
-This code panics, because i128 requires 8/16 byte alignment (usually)
+This code panics, because `i128` requires 8/16 byte alignment (usually):
 ```should_panic
 # use devela::all::{Any, DstArray, DstValue};
 let v: DstValue<dyn Any, DstArray<u8, 32>> =
     DstValue::new(123i128, |p| p as _).unwrap();
 ```
 
-This works, because the backing buffer has sufficient alignment
+This works, because the backing buffer has sufficient alignment:
 ```rust
 # use devela::all::{Any, DstArray, DstValue};
 let v: DstValue<dyn Any, DstArray<u128, 2>> =

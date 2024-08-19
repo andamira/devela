@@ -13,7 +13,7 @@ use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableI
 use crate::mem::{bit_sized, ByteSized};
 use crate::{
     _libcore::{fmt, num::*, str::FromStr},
-    code::iif,
+    code::{iif, paste},
 };
 
 macro_rules! impl_non_range {
@@ -26,50 +26,51 @@ macro_rules! impl_non_range {
             64:"_non_range_u64", 128:"_non_range_u128", size:"_non_range_usize"];
     };
     ($doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
-        $( impl_non_range![@NonRange, $doc, $s, $b : $cap]; )+
+        $( paste!{
+            impl_non_range![@[<NonRange $s:upper $b>], $doc, $s, $b : $cap];
+        })+
     };
 
-    // $name: the base name of the new type. E.g. NonRange.
+    // $name: the full name of the new type. E.g. NonRangeI8.
     // $doc:  the specific beginning of the documentation.
     // $s:    the sign identifier, lowercase: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
     // $cap:  the capability feature that enables the given implementation. E.g "_i8".
-    (@$name:ident, $doc:literal, $s:ident, $b:tt : $cap:literal) => { $crate::paste! {
+    (@$name:ident, $doc:literal, $s:ident, $b:tt : $cap:literal) => { paste! {
         /* definition */
 
         #[doc = $doc " integer that is known to be excluded from some inclusive range." ]
         ///
         #[doc = "It has the same memory layout optimization as [`NonZero" $s:upper $b "`],"]
-        #[doc = " so that `Option<"[<$name $s:upper $b>]">` is the same size as `"
-            [<$name $s:upper $b>]"`."]
+        #[doc = " so that `Option<" $name ">` is the same size as `" $name "`."]
         ///
         /// # Examples
         /// ```
-        #[doc = "use devela::num::" [<$name $s:upper $b>] ";"]
+        #[doc = "use devela::num::" $name ";"]
         ///
-        #[doc = "assert![" [<$name $s:upper $b>] "::<5, 25>::new(5).is_none()];"]
-        #[doc = "assert![" [<$name $s:upper $b>] "::<5, 25>::new(25).is_none()];"]
-        #[doc = "assert![" [<$name $s:upper $b>] "::<5, 25>::new(4).unwrap().get() == 4];"]
-        #[doc = "assert![" [<$name $s:upper $b>] "::<5, 25>::new(26).unwrap().get() == 26];"]
+        #[doc = "assert![" $name "::<5, 25>::new(5).is_none()];"]
+        #[doc = "assert![" $name "::<5, 25>::new(25).is_none()];"]
+        #[doc = "assert![" $name "::<5, 25>::new(4).unwrap().get() == 4];"]
+        #[doc = "assert![" $name "::<5, 25>::new(26).unwrap().get() == 26];"]
         ///
         #[doc = "// Self::INVALID_VALUES + Self::VALID_VALUES == "[<u $b>]"::MAX + 1."]
-        #[doc = "assert![" [<$name $s:upper $b>] "::<5, 25>::VALID_VALUES == "
+        #[doc = "assert![" $name "::<5, 25>::VALID_VALUES == "
             [<u $b>]"::MAX - 21 + 1];"]
-        #[doc = "assert![" [<$name $s:upper $b>] "::<5, 25>::INVALID_VALUES == 21];"]
+        #[doc = "assert![" $name "::<5, 25>::INVALID_VALUES == 21];"]
         /// ```
         ///
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        pub struct [<$name $s:upper $b>]<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+        pub struct $name<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
             ([<NonZero $s:upper $b>]);
 
         /* methods */
 
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]> [<$name $s:upper $b>]<RMIN, RMAX> {
-            #[doc = "Returns a `" [<$name $s:upper $b>] "` with the given `value`,"
+        impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]> $name<RMIN, RMAX> {
+            #[doc = "Returns a `" $name "` with the given `value`,"
             " only if it's **not** between `RMIN` and `RMAX`."]
             ///
             /// Returns `None` if `value` is between `RMIN` and `RMAX`, inclusive,
@@ -86,7 +87,7 @@ macro_rules! impl_non_range {
                 }
             }
 
-            #[doc = "Returns a `" [<$name $s:upper $b>]
+            #[doc = "Returns a `" $name
             "` if the given value is **not** between `RMIN` and `RMAX`."]
             ///
             /// # Panics
@@ -151,7 +152,7 @@ macro_rules! impl_non_range {
             /// bit-size can't be represented using the same number of bits.
             /// In this case `VALID_VALUES` will also be `== 0`.
             ///
-            #[doc = "This doesn't matter as much because a [`"[<$name $s:upper $b>]"`] with the"]
+            #[doc = "This doesn't matter as much because a [`" $name "`] with the"]
             /// largest range of invalid values can't ever be constructed.
             ///
             #[doc = "Remember that `INVALID_VALUES + VALID_VALUES == "[<u $b>]"::MAX + 1`,"]
@@ -170,43 +171,43 @@ macro_rules! impl_non_range {
             /* core impls */
 
             impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                fmt::Display for [<$name $s:upper $b>]<RMIN, RMAX> {
+                fmt::Display for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     write!(f, "{}", self.get())
                 }
             }
             impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                fmt::Debug for [<$name $s:upper $b>]<RMIN, RMAX> {
+                fmt::Debug for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     write!(f, "{}::<{}, {}>({})",
-                        stringify!([<$name $s:upper $b>]), RMIN, RMAX, self.get())
+                        stringify!($name), RMIN, RMAX, self.get())
                 }
             }
             impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                fmt::Binary for [<$name $s:upper $b>]<RMIN, RMAX> {
+                fmt::Binary for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::Binary::fmt(&self.get(), f)
                 }
             }
             impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                fmt::Octal for [<$name $s:upper $b>]<RMIN, RMAX> {
+                fmt::Octal for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::Octal::fmt(&self.get(), f)
                 }
             }
             impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                fmt::LowerHex for [<$name $s:upper $b>]<RMIN, RMAX> {
+                fmt::LowerHex for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::LowerHex::fmt(&self.get(), f)
                 }
             }
             impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                fmt::UpperHex for [<$name $s:upper $b>]<RMIN, RMAX> {
+                fmt::UpperHex for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::UpperHex::fmt(&self.get(), f)
@@ -214,7 +215,7 @@ macro_rules! impl_non_range {
             }
 
             impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                FromStr for [<$name $s:upper $b>]<RMIN, RMAX> {
+                FromStr for $name<RMIN, RMAX> {
                 type Err = ParseIntError;
                 #[inline]
                 fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -225,16 +226,16 @@ macro_rules! impl_non_range {
             /* conversions */
 
             impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                From<[<$name $s:upper $b>]<RMIN, RMAX>> for [<$s $b>] {
+                From<$name<RMIN, RMAX>> for [<$s $b>] {
                 #[inline]
                 #[must_use]
-                fn from(value: [<$name $s:upper $b>]<RMIN, RMAX>) -> [<$s $b>] {
+                fn from(value: $name<RMIN, RMAX>) -> [<$s $b>] {
                     value.get()
                 }
             }
 
             impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                TryFrom<[<$s $b>]> for [<$name $s:upper $b>]<RMIN, RMAX> {
+                TryFrom<[<$s $b>]> for $name<RMIN, RMAX> {
                 type Error = core::num::TryFromIntError;
 
                 /// # Features
@@ -256,27 +257,27 @@ macro_rules! impl_non_range {
             // BitSized
             #[cfg(feature = "mem_bit")]
             bit_sized![<const RMIN: [<$s $b>], const RMAX: [<$s $b>]> =
-                { [<$s $b>]::BYTE_SIZE * 8}; for [<$name $s:upper $b>]<RMIN, RMAX>];
+                { [<$s $b>]::BYTE_SIZE * 8}; for $name<RMIN, RMAX>];
 
             /* external impls */
 
             #[cfg(all(feature = "bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
             #[cfg_attr(feature = "nightly_doc",
                 doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
-            mod [<$name $s $b>] {
+            mod [<$name $s:lower $b>] {
                 use super::*;
 
                 unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                    ZeroableInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
+                    ZeroableInOption for $name<RMIN, RMAX> {}
 
                 unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                    PodInOption for [<$name $s:upper $b>]<RMIN, RMAX> {}
+                    PodInOption for $name<RMIN, RMAX> {}
 
                 unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                    NoUninit for [<$name $s:upper $b>]<RMIN, RMAX> {}
+                    NoUninit for $name<RMIN, RMAX> {}
 
                 unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                    CheckedBitPattern for [<$name $s:upper $b>]<RMIN, RMAX> {
+                    CheckedBitPattern for $name<RMIN, RMAX> {
                     type Bits = [<$s $b>];
 
                     #[inline]

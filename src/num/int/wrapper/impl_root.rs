@@ -616,21 +616,6 @@ macro_rules! impl_int {
                 }
             }
         }
-
-        // WIP TODO
-        // ///
-        // #[inline]
-        // const fn root_round_u(self, nth: u32) -> Option<u32> {
-        //     let floor_root = unwrap![ok? self.root_floor_u(nth)];
-        //     let ceil_root_value = (floor_root + 1).pow(nth);
-        //     let floor_root_value = floor_root.pow(nth);
-        //     let midpoint = floor_root_value + ((ceil_root_value - floor_root_value) / 2);
-        //     if self.0 > midpoint {
-        //         Some(floor_root + 1)
-        //     } else {
-        //         Some(floor_root)
-        //     }
-        // }
     }};
 }
 impl_int!();

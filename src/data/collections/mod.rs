@@ -54,6 +54,9 @@ pub(crate) mod all {
     #[cfg(_some_destaque)]
     pub use super::destaque::all::*;
 
+    #[cfg(_some_graph)]
+    pub use super::graph::*;
+
     #[cfg(_some_node)]
     pub use super::node::*;
 

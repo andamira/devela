@@ -2,12 +2,6 @@
 //
 //! # Fx Hash
 //
-// MODIFICATIONS:
-// - refactored standalone functions.
-//
-// TODO
-// - impl Default manually with different value (41? prime?)
-// - new with seed
 
 use core::hash::{BuildHasherDefault, Hash, Hasher};
 

@@ -128,7 +128,7 @@ macro_rules! impl_primitive {
                             let value = <$t>::MAX;
                             string[index] = LOOKUP[((value % base + 1) % base) as usize];
                             index -= 1;
-                            value / base + ((value % base == base - 1) as $t)
+                            value / base + <$t>::from(value % base == base -1)
                         }
                     };
                 } else if self == 0 {
