@@ -337,6 +337,7 @@ macro_rules! impl_vector {
             pub fn magnitude_sq(self) -> $f { self.dot(self) }
 
             /// Adds two vectors together.
+            #[allow(clippy::should_implement_trait)]
             pub fn add(self, other: Self) -> Self {
                 let mut result = [0.0; D];
                 let mut i = 0;
@@ -348,6 +349,7 @@ macro_rules! impl_vector {
             }
 
             /// Subtracts another vector from this vector.
+            #[allow(clippy::should_implement_trait)]
             pub fn sub(self, other: Self) -> Self {
                 let mut result = [0.0; D];
                 let mut i = 0;

@@ -5,25 +5,32 @@
 
 //* global config *//
 //
-// warnings:
-#![warn(missing_docs, clippy::all)]
+// lints: (deny, warn, allow)
+// - https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/index.html#constants
+// - https://rust-lang.github.io/rust-clippy/rust-1.80.0/index.html
+// - https://doc.rust-lang.org/rustdoc/lints.html
+#![deny(
+    type_alias_bounds, // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
+    clippy::missing_safety_doc, // deny if there's no # Safety section in public unsafe fns
+)]
+#![warn(
+    missing_docs, // missing docs for public items
+    clippy::all, // (the default set of clippy lints)
+    // from clippy::pedantic:
+    clippy::trivially_copy_pass_by_ref, // fns with ref args that could be passed by value
+)]
 #![cfg_attr(
-    not(all(doc, feature = "_docsrs_stable")),
-    allow(rustdoc::broken_intra_doc_links)
+    not(all(doc, feature = "_docsrs_stable")), // if docs are incomplete
+    allow(rustdoc::broken_intra_doc_links) // allow broken intra-doc links
 )]
 #![allow(
-    unknown_lints,
-    stable_features, // e.g. for associated_type_bounds
-    clippy::empty_docs,
-    clippy::doc_lazy_continuation, // don't be markdown picky
-    clippy::mixed_attributes_style,
-    //
-    clippy::module_inception, // allow modules with the same name as its parent
-    clippy::wrong_self_convention, // allow `is_` methods having an owned self
-)]
-#![deny(
-    // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
-    type_alias_bounds,
+    unknown_lints, // unrecognized lint attributes
+    //stable_features, // a feature attribute that has since been made stable
+    clippy::empty_docs, // empty documentation
+    clippy::doc_lazy_continuation, // markdown lazy paragraph continuations
+    clippy::mixed_attributes_style, // items with mixed (inner/outer) attributes
+    clippy::module_inception, // modules with the same name as its parent
+    clippy::wrong_self_convention, // `is_` methods having an owned self
 )]
 //
 // environment:

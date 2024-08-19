@@ -3,7 +3,7 @@
 //! A simple logger.
 //
 
-use super::{Log, LogLevel, LogLevelFilter, LogMetadata, LogRecord, LoggerConfig, Logging};
+use super::{Log, LogLevel, LogLevelFilter, LogMetadata, LogRecord, Logging};
 
 /// A logger that prints out the logs.
 pub struct LoggerPrint;

@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - show build environment variables if `__dbg` feature is enabled.
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`.
+- new warn lints: `clippy::trivially_copy_pass_by_ref`.
+- new deny lints: `clippy::missing_safety_doc`.
 - new `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
 - new struct `Env` that namespaces `std::env` functions and constants.
 - new `Graph` methods: `edge_exists_unchecked`, `edge_remove`.

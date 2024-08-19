@@ -123,8 +123,8 @@ pub enum IoErrorKind {
 }
 
 impl IoErrorKind {
-    pub(crate) fn as_str(&self) -> &'static str {
-        match *self {
+    pub(crate) fn as_str(self) -> &'static str {
+        match self {
             IoErrorKind::NotFound => "entity not found",
             IoErrorKind::PermissionDenied => "permission denied",
             IoErrorKind::ConnectionRefused => "connection refused",

@@ -17,7 +17,12 @@
 
 #[allow(unused_imports)]
 use crate::code::{iif, paste};
-#[cfg(all(not(feature = "safe_num"), feature = "unsafe_const", _some_float))]
+#[cfg(all(
+    not(feature = "safe_num"),
+    not(feature = "std"),
+    feature = "unsafe_const",
+    _some_float
+))]
 use crate::num::Float;
 use core::cmp::Ordering::{self, Equal, Greater, Less};
 
