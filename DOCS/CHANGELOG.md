@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`.
 - new `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
 - new struct `Env` that namespaces `std::env` functions and constants.
+- new `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
 - new type aliases: `AllocMapFx`, `AllocSetFx`.
 - reexport `core::cell` types.
 - new `num::algebra` module.
@@ -25,6 +26,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Changed
 - refactor build script.
 - rename `unsafe_dyn` feature to `unsafe_layout`.
+- method `Graph::edge_exists` no loger panics.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
 - move `num::geom::algebra` to `num::algebra::linear`.

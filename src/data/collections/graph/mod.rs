@@ -82,6 +82,9 @@ macro_rules! impl_graph {
             /// Returns a disconnected graph, allocated in the stack,
             /// with the given array of `vertices`,
             /// where `E: Copy`.
+            ///
+            /// # Errors
+            #[doc = "Returns [`OutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
             #[inline]
             pub fn with_vertices(vertices: [Option<V>; VCAP]) -> Result<Self> {
                 let _ = unwrap![ok? Self::check_capacity_bounds()];
@@ -97,6 +100,9 @@ macro_rules! impl_graph {
             /// Returns a disconnected graph, allocated in the stack,
             /// with the given array of `vertices`,
             /// where `E: Clone`.
+            ///
+            /// # Errors
+            #[doc = "Returns [`OutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
             #[inline]
             pub fn with_vertices_clone(vertices: [Option<V>; VCAP]) -> Result<Self> {
                 let _ = unwrap![ok? Self::check_capacity_bounds()];
@@ -158,7 +164,7 @@ macro_rules! impl_graph {
         impl<const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, Bare> {
             /// Adds a vertex to the graph without data.
             ///
-            /// Errors
+            /// # Errors
             /// Returns [`NotEnoughSpace`] if there's no space left for the new vertex.
             #[inline]
             pub fn add_vertex(&mut self) -> Result<$IDX> {
@@ -176,7 +182,7 @@ macro_rules! impl_graph {
         impl<V, const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, V, Bare> {
             /// Adds a vertex to the graph with the given `data`.
             ///
-            /// Errors
+            /// # Errors
             /// Returns [`NotEnoughSpace`] if there's no space left for the new vertex.
             #[inline]
             pub fn add_vertex_with(&mut self, data: V) -> Result<$IDX> {
@@ -219,8 +225,9 @@ macro_rules! impl_graph {
 
             /// Removes a vertex from the graph, with the given `id`.
             ///
-            /// Errors
-            /// Returns [`NodeEmpty`] if the vertex didn't exist.
+            /// # Errors
+            /// Returns [`OutOfBounds`] if `id >= VCAP`,
+            /// or [`NodeEmpty`] if the vertex didn't exist.
             #[inline]
             pub fn remove_vertex(&mut self, id: $IDX) -> Result<()> {
                 Self::check_vertex_bounds(id)?;
@@ -260,16 +267,28 @@ macro_rules! impl_graph {
 
             /// Returns `true` if a given edge `id` exists.
             #[inline]
-            pub const fn edge_exists(&self, edge: $IDX) -> bool {
-                self.edges.as_bare_slice()[edge as usize].is_some()
+            pub const fn edge_exists(&self, id: $IDX) -> bool {
+                if id as usize >= ECAP || self.edges.as_bare_slice()[id as usize].is_none() {
+                    false
+                } else {
+                    true
+                }
+            }
+            /// Returns `true` if a given edge `id` exists.
+            ///
+            /// # Panics
+            /// Panics if `id >= ECAP`.
+            #[inline]
+            pub const fn edge_exists_unchecked(&self, id: $IDX) -> bool {
+                self.edges.as_bare_slice()[id as usize].is_some()
             }
 
             /// Adds an edge to the graph, connecting the given `orig` and `dest` vertices.
             ///
             /// Returns the new edge id, if there was space for it.
             ///
-            /// Errors
-            #[doc = "Returns [`OutOfBounds`] if `(ECAP|VCAP) >= `[`" $IDX "::MAX`]."]
+            /// # Errors
+            /// Returns [`OutOfBounds`] if `orig|dest >= VCAP`,
             /// or [`NodeEmpty`] if any of the given vertices is empty,
             /// or [`NotEnoughSpace`] if the array of edges is full.
             pub fn add_edge(&mut self, orig: $IDX, dest: $IDX) -> Result<$IDX> {
@@ -292,13 +311,24 @@ macro_rules! impl_graph {
                     Err(NotEnoughSpace(Some(1)))
                 }
             }
+
+            /// Removes the edge with the given `id`.
+            ///
+            /// # Errors
+            /// Returns [`OutOfBounds`] if `id >= ECAP`.
+            #[inline]
+            pub fn remove_edge(&mut self, id: $IDX) -> Result<()> {
+                Self::check_edge_bounds(id)?;
+                self.edges[id as usize] = None;
+                Ok(())
+            }
         }
 
         // V: PartialEq
         impl<V: PartialEq, const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, V> {
             /// Adds a vertex to the graph with the given `data`, but only if the data is unique.
             ///
-            /// Errors
+            /// # Errors
             /// Returns [`NotEnoughSpace`] if there's no space left for the new vertex,
             /// or returns [`KeyAlreadyExists`] if there's already a vertex with the same data.
             #[inline]
