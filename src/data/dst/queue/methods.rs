@@ -243,7 +243,7 @@ where
                     slice.as_ptr() as *const u8,
                     pii.data.as_mut_ptr() as *mut u8,
                     size_of_val(slice),
-                )
+                );
             })
         }
     }
@@ -290,7 +290,7 @@ impl<BUF: DstBuf> DstQueue<str, BUF> {
                     string.as_bytes().as_ptr(),
                     pii.data.as_mut_ptr() as *mut u8,
                     string.len(),
-                )
+                );
             })
         }
     }

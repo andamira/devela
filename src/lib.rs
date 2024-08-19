@@ -17,6 +17,8 @@
     missing_docs, // missing docs for public items
     clippy::all, // (the default set of clippy lints)
     // from clippy::pedantic:
+    clippy::semicolon_if_nothing_returned, // expression returns () not followed by a semicolon
+    clippy::single_match_else, // matches with two arms where an if let else will usually suffice
     clippy::trivially_copy_pass_by_ref, // fns with ref args that could be passed by value
 )]
 #![cfg_attr(

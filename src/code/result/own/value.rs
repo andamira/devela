@@ -43,10 +43,7 @@ impl<S, V, E> Own<S, Result<V, E>> {
     /// Panics if the `value` is `Err`.
     #[inline]
     pub const fn v_assert_ok(self) -> Self {
-        match self.v {
-            Ok(_) => self,
-            Err(_) => panic![],
-        }
+        iif![let Ok(_) = self.v; self; panic![]]
     }
 
     /// Asserts the `value` is [`Ok`] and returns `self`, otherwise panics with `message`.
@@ -54,10 +51,7 @@ impl<S, V, E> Own<S, Result<V, E>> {
     /// Panics if the `value` is `Err`.
     #[inline]
     pub const fn v_assert_ok_or(self, message: &'static str) -> Self {
-        match self.v {
-            Ok(_) => self,
-            Err(_) => panic!["{}", message],
-        }
+        iif![let Ok(_) = self.v; self; panic!["{}", message]]
     }
 
     /// Asserts the `value` is [`Err`] and returns `self`, otherwise panics.
@@ -65,10 +59,7 @@ impl<S, V, E> Own<S, Result<V, E>> {
     /// Panics if the `value` is `Ok`.
     #[inline]
     pub const fn v_assert_err(self) -> Self {
-        match self.v {
-            Err(_) => self,
-            Ok(_) => panic![],
-        }
+        iif![let Err(_) = self.v; self; panic![]]
     }
     /// Asserts the `value` is [`Err`] and returns `self`, otherwise panics with `message`.
     ///
@@ -76,10 +67,7 @@ impl<S, V, E> Own<S, Result<V, E>> {
     /// Panics if the `value` is `Ok`.
     #[inline]
     pub const fn v_assert_err_or(self, message: &'static str) -> Self {
-        match self.v {
-            Err(_) => self,
-            Ok(_) => panic!["{}", message],
-        }
+        iif![let Err(_) = self.v; self; panic!["{}", message]]
     }
 
     /* unwrap (3) */
@@ -168,11 +156,7 @@ impl<S, V> Own<S, Option<V>> {
     /// Panics if the value is `None`.
     #[inline]
     pub const fn v_assert_some(self) -> Self {
-        match self.v {
-            Some(_) => (),
-            None => panic![],
-        }
-        self
+        iif![let Some(_) = self.v; self; panic![]]
     }
 
     /// Asserts the value is [`Some`] and returns `self`, otherwise panics with `message`.
@@ -180,11 +164,7 @@ impl<S, V> Own<S, Option<V>> {
     /// Panics if the value is `None`.
     #[inline]
     pub const fn v_assert_some_or(self, message: &'static str) -> Self {
-        match self.v {
-            Some(_) => (),
-            None => panic!["{}", message],
-        }
-        self
+        iif![let Some(_) = self.v; self; panic!["{}", message]]
     }
 
     /// Asserts the value is [`None`] and returns `self`, otherwise panics.
@@ -192,10 +172,7 @@ impl<S, V> Own<S, Option<V>> {
     /// Panics if the value is `Some`.
     #[inline]
     pub const fn v_assert_none(self) -> Self {
-        match self.v {
-            None => self,
-            Some(_) => panic![],
-        }
+        iif![let None = self.v; self; panic![]]
     }
 
     /// Asserts the value is [`None`] and returns `self`, otherwise panics with `message`.
@@ -204,10 +181,7 @@ impl<S, V> Own<S, Option<V>> {
     /// Panics if the value is `Some`.
     #[inline]
     pub const fn v_assert_none_or(self, message: &'static str) -> Self {
-        match self.v {
-            None => self,
-            Some(_) => panic!["{}", message],
-        }
+        iif![let None = self.v; self; panic!["{}", message]]
     }
 
     /* unwrap (3) */

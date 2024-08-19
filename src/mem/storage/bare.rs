@@ -183,7 +183,7 @@ mod core_impls {
         }
         #[inline]
         fn write(&mut self, bytes: &[u8]) {
-            self.0.write(bytes)
+            self.0.write(bytes);
         }
     }
 

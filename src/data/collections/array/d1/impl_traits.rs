@@ -133,7 +133,7 @@ where
     S::Stored<[T; LEN]>: Hash,
 {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        self.data.hash(state)
+        self.data.hash(state);
     }
 }
 

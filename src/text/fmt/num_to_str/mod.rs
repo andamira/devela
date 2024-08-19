@@ -221,14 +221,13 @@ impl NumToStr<i8> for i8 {
         #[allow(clippy::comparison_chain)]
         if self < 0 {
             is_negative = true;
-            self = match self.checked_abs() {
-                Some(value) => value,
-                None => {
-                    let value = <i8>::MAX;
-                    string[index] = LOOKUP[((value % base + 1) % base) as usize];
-                    index -= 1;
-                    value / base + ((value % base == base - 1) as i8)
-                }
+            self = if let Some(value) = self.checked_abs() {
+                value
+            } else {
+                let value = <i8>::MAX;
+                string[index] = LOOKUP[((value % base + 1) % base) as usize];
+                index -= 1;
+                value / base + ((value % base == base - 1) as i8)
             };
         } else if self == 0 {
             string[index] = b'0';

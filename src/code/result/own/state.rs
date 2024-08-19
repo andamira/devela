@@ -46,10 +46,7 @@ impl<S, E, V> Own<Result<S, E>, V> {
     /// Panics if the state is `Err`.
     #[inline]
     pub const fn s_assert_ok(self) -> Self {
-        match self.s {
-            Ok(_) => self,
-            Err(_) => panic![],
-        }
+        iif![let Ok(_) = self.s; self; panic![]]
     }
 
     /// Asserts the `state` is [`Ok`] and returns `self`, otherwise panics with `message`.
@@ -57,10 +54,7 @@ impl<S, E, V> Own<Result<S, E>, V> {
     /// Panics if the `state` is `Err`.
     #[inline]
     pub const fn s_assert_ok_or(self, message: &'static str) -> Self {
-        match self.s {
-            Ok(_) => self,
-            Err(_) => panic!["{}", message],
-        }
+        iif![let Ok(_) = self.s; self; panic!["{}", message]]
     }
 
     /// Asserts the `state` is [`Err`] and returns `self`, otherwise panics.
@@ -68,20 +62,14 @@ impl<S, E, V> Own<Result<S, E>, V> {
     /// Panics if the `state` is `Ok`.
     #[inline]
     pub const fn s_assert_err(self) -> Self {
-        match self.s {
-            Err(_) => self,
-            Ok(_) => panic![],
-        }
+        iif![let Err(_) = self.s; self; panic![]]
     }
     /// Asserts the `state` is [`Err`] and returns `self`, otherwise panics with `message`.
     /// # Panics
     /// Panics if the `state` is `Ok`.
     #[inline]
     pub const fn s_assert_err_or(self, message: &'static str) -> Self {
-        match self.s {
-            Err(_) => self,
-            Ok(_) => panic!["{}", message],
-        }
+        iif![let Err(_) = self.s; self; panic!["{}", message]]
     }
 
     /* unwrap (3) */
@@ -174,10 +162,7 @@ impl<S, V> Own<Option<S>, V> {
     /// Panics if the state is `None`.
     #[inline]
     pub const fn s_assert_some(self) -> Self {
-        match self.s {
-            Some(_) => self,
-            None => panic![],
-        }
+        iif![let Some(_) = self.s; self; panic![]]
     }
 
     /// Asserts the state is [`Some`] and returns `self`, otherwise panics with `message`.
@@ -185,10 +170,7 @@ impl<S, V> Own<Option<S>, V> {
     /// Panics if the state is `None`.
     #[inline]
     pub const fn s_assert_some_or(self, message: &'static str) -> Self {
-        match self.s {
-            Some(_) => self,
-            None => panic!["{}", message],
-        }
+        iif![let Some(_) = self.s; self; panic!["{}", message]]
     }
 
     /// Asserts the state is [`None`] and returns `self`, otherwise panics.
@@ -196,10 +178,7 @@ impl<S, V> Own<Option<S>, V> {
     /// Panics if the state is `Some`.
     #[inline]
     pub const fn s_assert_none(self) -> Self {
-        match self.s {
-            None => self,
-            Some(_) => panic![],
-        }
+        iif![let None = self.s; self; panic![]]
     }
 
     /// Asserts the state is [`None`] and returns `self`, otherwise panics with `message`.
@@ -208,10 +187,7 @@ impl<S, V> Own<Option<S>, V> {
     /// Panics if the state is `Some`.
     #[inline]
     pub const fn s_assert_none_or(self, message: &'static str) -> Self {
-        match self.s {
-            None => self,
-            Some(_) => panic!["{}", message],
-        }
+        iif![let None = self.s; self; panic!["{}", message]]
     }
 
     /* unwrap (3) */

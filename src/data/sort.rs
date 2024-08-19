@@ -431,11 +431,11 @@ mod helper {
                 Ordering::Less => {
                     slice.swap(lt, i);
                     lt += 1;
-                    i += 1
+                    i += 1;
                 }
                 Ordering::Greater => {
                     gt -= 1;
-                    slice.swap(i, gt)
+                    slice.swap(i, gt);
                 }
                 Ordering::Equal => i += 1,
             }
