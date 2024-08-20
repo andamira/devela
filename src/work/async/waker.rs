@@ -1,4 +1,4 @@
-// devela::exec::async::waker
+// devela::work::async::waker
 //
 //!
 //
@@ -7,7 +7,7 @@
 // WAIT: [task::Waker::noop](https://github.com/rust-lang/rust/pull/98286)
 #[inline]
 #[must_use]
-#[cfg(all(not(feature = "safe_exec"), feature = "unsafe_async"))]
+#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_async")))]
 pub fn task_waker_noop() -> super::TaskWaker {
     const RAW_WAKER: super::TaskRawWaker = super::TaskRawWaker::new(core::ptr::null(), &VTABLE);

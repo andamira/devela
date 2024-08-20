@@ -84,12 +84,11 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	"code", "data", "error", "exec", "mem", "num", "sys", "text",
+	"code", "data", "error", "mem", "num", "sys", "text", "work",
 	]
 code = []
 data = []
 error = []
-exec = ["bytemuck?/zeroable_atomics"]
 mem = [
 	"mem_bit",
 	]
@@ -100,6 +99,7 @@ num = [
 	num_rand = [] # random number generators.
 sys = []
 text = []
+work = ["bytemuck?/zeroable_atomics"]
 
 
 #* Safety features trees *#
@@ -110,18 +110,18 @@ text = []
 # 2. don't enable the `safe` feature for that module.
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_error", "safe_exec", "safe_mem",
-	"safe_num", "safe_sys", "safe_time", "safe_text",
+	"safe_code", "safe_data", "safe_error", "safe_mem",
+	"safe_num", "safe_sys", "safe_time", "safe_text", "safe_work",
 ] # in specific modules:
 	safe_code = []
 	safe_data = []
 	safe_error = []
-	safe_exec = []
 	safe_mem = []
 	safe_num = []
 	safe_sys = ["safe_time"]
 		safe_time = []
 	safe_text = []
+	safe_work = []
 
 unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	"unsafe_array", "unsafe_async", "unsafe_const", "unsafe_layout",
@@ -176,7 +176,7 @@ nightly = [
 		# >
 		# 1.?? [impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 		# 1.?? [macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
-		# 1.?? [noop_waker](https://github.com/rust-lang/rust/issues/98286) exec::async::waker
+		# 1.?? [noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
 
 
 #* Capability features *#
@@ -418,7 +418,7 @@ dep_all = [ # enables all optional dependencies
 	"log", "memchr", "portable-atomic", "rand_core",
 	"unicode-segmentation", "unicode-width", "wide",
 ] # enable groups of dependencies:
-	dep_exec = ["atomic", "portable-atomic"]
+	dep_work = ["atomic", "portable-atomic"]
 	dep_text = ["const-str", "memchr", "unicode-segmentation", "unicode-width"]
 
 atomic = ["dep:atomic"]

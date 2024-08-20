@@ -1,4 +1,4 @@
-// devela::exec::async
+// devela::work::async
 //
 //! Asynchrony.
 #![doc = crate::code::doc_extends!(future, task)]

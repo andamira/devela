@@ -46,13 +46,13 @@ mod reflection {
         features: &[
             "safe",
             "safe_code",
-            "safe_data", "safe_data_collections",
-            "safe_exec",
+            "safe_data",
+            "safe_error",
             "safe_mem",
             "safe_num",
-            "safe_sys",
+            "safe_sys", "safe_time",
             "safe_text",
-            "safe_time",
+            "safe_work",
 
             "unsafe",
             "unsafe_array", "unsafe_async", "unsafe_const", "unsafe_layout",

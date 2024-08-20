@@ -83,11 +83,11 @@ compile_error!("You can't enable `safe` and any `unsafe*` features at the same t
 pub mod code;
 pub mod data;
 pub mod error;
-pub mod exec;
 pub mod mem;
 pub mod num;
 pub mod sys;
 pub mod text;
+pub mod work;
 
 /// All the library items.
 pub mod all {
@@ -98,11 +98,11 @@ pub mod all {
         code::all::*,
         data::all::*,
         error::all::*,
-        exec::all::*,
         mem::all::*,
         num::all::*,
         sys::all::*,
         text::all::*,
+        work::all::*,
     };
 }
 #[doc(no_inline)]

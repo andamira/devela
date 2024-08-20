@@ -1,4 +1,4 @@
-// devela::exec::async::block_on
+// devela::work::async::block_on
 //
 // Original source code by Joshua Barretto, licensed as MIT OR Apache-2.0
 // https://crates.io/crates/pollster/0.3.0
@@ -14,8 +14,8 @@
 // - [add benchmarks](https://github.com/zesterer/pollster/pull/20)
 
 use crate::{
-    exec::{Arc, Condvar, Future, Mutex, TaskContext, TaskPoll, TaskWake, TaskWaker},
     mem::pin,
+    work::{Arc, Condvar, Future, Mutex, TaskContext, TaskPoll, TaskWake, TaskWaker},
 };
 
 /// Blocks the thread until the `future` is ready.
@@ -25,7 +25,7 @@ use crate::{
 /// # Examples
 /// ```
 /// let future = async {};
-/// let result = devela::exec::future_block(future);
+/// let result = devela::work::future_block(future);
 /// ```
 pub fn future_block<F: Future>(mut future: F) -> F::Output {
     // Pin the future so that it can be polled.

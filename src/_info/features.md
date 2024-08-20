@@ -42,13 +42,13 @@ Single modules:
 - [`code`]
 - [`data`]
 - [`error`]
-- [`exec`]: enables `exec` functionality.
 - [`mem`]
   - `mem_bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
     - [`num_rand`]: enables random number generators.
 - [`sys`]
 - [`text`]: enables `Char*`, `Egc`, `Nonul`.
+- [`work`]: enables `work` functionality.
 
 Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 `_some_mem`, `_some_num`.
@@ -56,12 +56,12 @@ Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 [`code`]: crate::code
 [`data`]: crate::data
 [`error`]: mod@crate::error
-[`exec`]: crate::exec
 [`mem`]: crate::mem
 [`num`]: crate::num
 [`num_rand`]: crate::num::rand
 [`sys`]: crate::sys
 [`text`]: crate::text
+[`work`]: crate::work
 
 
 ### Safety features
@@ -237,5 +237,5 @@ They also set the corresponding flags:
 Enabling any of them sets the `_some_dep` flag.
 
 - `dep_all`: enables all the optional dependencies
-  - `dep_exec`: enables `atomic`, `portable-atomic`.
   - `dep_text`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
+  - `dep_work`: enables `atomic`, `portable-atomic`.

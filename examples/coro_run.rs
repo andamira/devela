@@ -2,7 +2,7 @@
 
 use devela::{
     error::{serr, sok},
-    exec::CoroRun,
+    work::CoroRun,
 };
 
 fn main() {

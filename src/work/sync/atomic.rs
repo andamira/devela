@@ -1,4 +1,4 @@
-// devela::exec::sync::atomic
+// devela::work::sync::atomic
 //
 //! Atomic types.
 //!
@@ -29,22 +29,22 @@ reexport! { rust: core::sync::atomic,
 
 /* from the `atomic` crate */
 
-reexport! { "atomic" | atomic, features: "exec",
+reexport! { "atomic" | atomic, features: "work",
     doc: "A generic atomic wrapper type.",
     Atomic
 }
 
 /* from `portable-atomic` */
 
-reexport! { "portable-atomic" | portable_atomic, features: "exec",
+reexport! { "portable-atomic" | portable_atomic, features: "work",
     doc: "A floating point type which can be safely shared between threads.",
     AtomicF32, AtomicF64
 }
-reexport! { "portable-atomic" | portable_atomic, features: "exec",
+reexport! { "portable-atomic" | portable_atomic, features: "work",
     doc: "A signed integer type which can be safely shared between threads.",
     AtomicI128
 }
-reexport! { "portable-atomic" | portable_atomic, features: "exec",
+reexport! { "portable-atomic" | portable_atomic, features: "work",
     doc: "An unsigned integer type which can be safely shared between threads.",
     AtomicU128
 }
@@ -58,7 +58,7 @@ reexport! { "portable-atomic" | portable_atomic, features: "exec",
 #[doc = "A signed integer type which can be safely shared between threads.\n\n"]
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(feature = "portable-atomic")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use crate::_deps::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
 
 /// <span class="stab portability" title="re-exported either from `core` or from the
@@ -66,23 +66,23 @@ pub use crate::_deps::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI
 #[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(feature = "portable-atomic")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use crate::_deps::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
 
 #[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "16"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::{AtomicI16, AtomicU16};
 #[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "32"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::{AtomicI32, AtomicU32};
 #[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "64"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::{AtomicI64, AtomicU64};
 #[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "8"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::{AtomicI8, AtomicU8};
 #[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "ptr"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
 
 /// <span class="stab portability" title="re-exported either from `core` or from the
@@ -90,11 +90,11 @@ pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
 #[doc = "A raw pointer type which can be safely shared between threads.\n\n"]
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(feature = "portable-atomic")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use crate::_deps::portable_atomic::AtomicPtr;
 //
 #[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "ptr"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::AtomicPtr;
 
 /// <span class="stab portability" title="re-exported either from `core` or from the
@@ -102,11 +102,11 @@ pub use core::sync::atomic::AtomicPtr;
 #[doc = "A boolean type which can be safely shared between threads.\n\n"]
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(feature = "portable-atomic")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use crate::_deps::portable_atomic::AtomicBool;
 //
 #[cfg(not(feature = "portable-atomic"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::AtomicBool;
 
 /* impl ConstDefaut */

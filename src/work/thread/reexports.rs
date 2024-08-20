@@ -1,4 +1,4 @@
-// devela::exec::thread::reexports
+// devela::work::thread::reexports
 //
 //! Reexported items.
 //

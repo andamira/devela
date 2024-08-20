@@ -1,4 +1,4 @@
-// devela::exec::sync::reexports
+// devela::work::sync::reexports
 //
 //! Reexported items.
 //

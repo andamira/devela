@@ -56,7 +56,7 @@ impl<B: BufRead + ?Sized> BufRead for &mut B {
 
     #[inline]
     fn consume(&mut self, amt: usize) {
-        (**self).consume(amt)
+        (**self).consume(amt);
     }
 }
 

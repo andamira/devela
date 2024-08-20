@@ -1,4 +1,4 @@
-// devela::exec::reexports
+// devela::work::reexports
 //
 //! Reexported items.
 //
@@ -12,7 +12,7 @@ reexport! { rust: core::future,
     @Pending as FuturePending
 }
 reexport! { rust: core::future,
-    doc: "A Future that wraps a function returning [`TaskPoll`][crate::exec::TaskPoll].",
+    doc: "A Future that wraps a function returning [`TaskPoll`][crate::work::TaskPoll].",
     @PollFn as FuturePollFn
 }
 reexport! { rust: core::future,

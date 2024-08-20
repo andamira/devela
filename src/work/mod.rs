@@ -1,12 +1,12 @@
-// devela::exec
+// devela::work
 //
-//! Execution strategies and concurrency management.
+//! Work management, concurrency strategies, and execution control.
 #![doc = crate::code::doc_extends!(future, process, sync, task, thread)]
 //!
 //
 
 // safety:
-#![cfg_attr(feature = "safe_exec", forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_work", forbid(unsafe_code))]
 
 mod r#async;
 mod sync;

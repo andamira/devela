@@ -490,9 +490,9 @@ impl<T: BufRead, U: BufRead> BufRead for Chain<T, U> {
 
     fn consume(&mut self, amt: usize) {
         if !self.done_first {
-            self.first.consume(amt)
+            self.first.consume(amt);
         } else {
-            self.second.consume(amt)
+            self.second.consume(amt);
         }
     }
 }

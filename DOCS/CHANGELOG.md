@@ -29,8 +29,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Changed
 - refactor build script.
 - make `bytemuck` an optional dependency.
-- rename `unsafe_dyn` feature to `unsafe_layout`.
 - method `Graph::edge_exists` no loger panics.
+- rename `unsafe_dyn` feature to `unsafe_layout`.
+- rename `exec` module to `work`, and related features.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
 - move `num::geom::algebra` module to `num::algebra::linear`.
@@ -39,6 +40,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Fixed
 - fix build script utility call paths, add missing `_tuple*` features.
+- fix `f64::NR_TOLERANCE` from 1e-14 to 1e-12.
 
 ## [0.21.2] 2024-08-09
 

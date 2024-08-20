@@ -1,4 +1,4 @@
-// devela::exec::thread
+// devela::work::thread
 //
 //! Native threads.
 #![doc = crate::code::doc_extends!(thread)]

@@ -1,4 +1,4 @@
-// devela::exec::sync
+// devela::work::sync
 //
 //! Synchronization primitives.
 #![doc = crate::code::doc_extends!(sync)]
@@ -9,11 +9,11 @@ mod reexports;
 #[allow(unused_imports)]
 pub use reexports::*;
 
-#[cfg(feature = "exec")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "exec")))]
+#[cfg(feature = "work")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 mod atomic;
 #[allow(unused_imports)]
-#[cfg(feature = "exec")]
+#[cfg(feature = "work")]
 pub use atomic::*;
 
 pub(crate) mod all {
@@ -22,6 +22,6 @@ pub(crate) mod all {
     pub use super::reexports::*;
 
     #[doc(inline)]
-    #[cfg(feature = "exec")]
+    #[cfg(feature = "work")]
     pub use super::atomic::*;
 }
