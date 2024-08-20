@@ -28,12 +28,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Changed
 - refactor build script.
+- make `bytemuck` an optional dependency.
 - rename `unsafe_dyn` feature to `unsafe_layout`.
 - method `Graph::edge_exists` no loger panics.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
-- move `num::geom::algebra` to `num::algebra::linear`.
-- make `bytemuck` an optional dependency.
+- move `num::geom::algebra` module to `num::algebra::linear`.
+- move `time` module inside `sys`.
 
 ### Fixed
 - fix build script utility call paths, add missing `_tuple*` features.

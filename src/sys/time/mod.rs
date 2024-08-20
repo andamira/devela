@@ -1,4 +1,4 @@
-// devela::time
+// devela::sys::time
 //
 //! Time and calendar types and operations, <small>extends
 //! `std::`[`time`].</small>

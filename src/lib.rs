@@ -87,7 +87,6 @@ pub mod mem;
 pub mod num;
 pub mod sys;
 pub mod text;
-pub mod time;
 
 /// All the library items.
 pub mod all {
@@ -102,7 +101,6 @@ pub mod all {
         num::all::*,
         sys::all::*,
         text::all::*,
-        time::all::*,
     };
 }
 #[doc(no_inline)]

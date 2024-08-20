@@ -1,4 +1,4 @@
-// devela::time::fmt
+// devela::sys::time::fmt
 //
 //!
 //
@@ -11,17 +11,17 @@
 use crate::_liballoc::{format, string::String};
 #[cfg(all(feature = "_float_f64", not(feature = "std")))]
 use crate::num::ExtFloat;
+#[allow(unused_imports)]
+use crate::sys::time::HourMilliSplit;
+use crate::sys::time::SecNanoSplit;
 #[cfg(feature = "_string_u8")]
 use crate::text::{format_buf, Ascii, StringU8};
-#[allow(unused_imports)]
-use crate::time::HourMilliSplit;
-use crate::time::SecNanoSplit;
 
 /// Timecode splitting and formatting.
 ///
 /// # Examples
 /// ```
-/// # use devela::time::Timecode;
+/// # use devela::sys::time::Timecode;
 /// #[cfg(feature = "_string_u8")]
 /// #[cfg(any(feature = "std", feature = "_float_f64"))]
 /// assert_eq!(Timecode::secs_f64(3661.5), "01:01:01.500");

@@ -1,4 +1,4 @@
-// devela::time::calendar::month
+// devela::sys::time::calendar::month
 //
 //!
 //
@@ -298,7 +298,7 @@ impl Month {
     ///
     /// # Examples
     /// ```
-    /// # use devela::time::Month;
+    /// # use devela::sys::time::Month;
     /// assert_eq![Month::July.zodiac_start(), '♋'];
     /// ```
     pub const fn zodiac_start(self) -> char {
@@ -337,7 +337,7 @@ impl Month {
     ///
     /// # Examples
     /// ```
-    /// # use devela::time::Month;
+    /// # use devela::sys::time::Month;
     /// assert_eq![Month::July.zodiac_start_name(), "Cancer"];
     /// ```
     pub const fn zodiac_start_name(self) -> &'static str {
@@ -363,7 +363,7 @@ impl Month {
     ///
     /// # Examples
     /// ```
-    /// # use devela::time::Month;
+    /// # use devela::sys::time::Month;
     /// assert_eq![Month::July.zodiac_end(), '♌'];
     /// ```
     pub const fn zodiac_end(self) -> char {
@@ -377,7 +377,7 @@ impl Month {
     ///
     /// # Examples
     /// ```
-    /// # use devela::time::Month;
+    /// # use devela::sys::time::Month;
     /// assert_eq![Month::July.zodiac_end_name(), "Leo"];
     /// ```
     pub const fn zodiac_end_name(self) -> &'static str {

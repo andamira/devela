@@ -2,7 +2,7 @@
 //
 //! System interfaces and hardware abstractions, <br/><small>extends
 //! `std::{`[`arch`], [`env`], [`ffi`], [`fs`], [`io`], [`net`], [`os`],
-//! [`path`], [`simd`]`}`.</small>
+//! [`path`], [`simd`], [`time`]`}`.</small>
 //!
 //! [`arch`]: std::arch
 //! [`env`]: mod@std::env
@@ -13,6 +13,7 @@
 //! [`os`]: std::os
 //! [`path`]: std::path
 //! [`simd`]: std::simd
+//! [`time`]: std::time
 //
 
 // safety:
@@ -38,6 +39,9 @@ mod path;
 #[cfg(feature = "sys")]
 pub use path::*;
 
+pub mod time;
+pub use time::*;
+
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
@@ -51,4 +55,7 @@ pub(crate) mod all {
     #[allow(unused_imports)]
     #[cfg(feature = "sys")]
     pub use super::path::all::*;
+
+    #[doc(inline)]
+    pub use super::time::all::*;
 }
