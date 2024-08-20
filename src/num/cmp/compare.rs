@@ -475,7 +475,6 @@ mod test_min_max_clamp {
     }
 
     #[test]
-    #[cfg(feature = "_float_f32")]
     fn float() {
         let (zero, negzero, one, negone) = (C(0.0_f32), C(-0.0_f32), C(1.0_f32), C(-1.0_f32));
         let (nan1, nan2) = (C(f32::NAN), C(0.0_f32 / 0.0_f32));
@@ -483,34 +482,34 @@ mod test_min_max_clamp {
         let sub = C(1.401298464e-45_f32);
         let (min, negmin) = (C(f32::MIN_POSITIVE), C(-f32::MIN_POSITIVE));
 
-        assert![nan1.is_nan()];
-        assert![nan2.is_nan()];
-        assert![!zero.is_nan()];
-        assert![!negzero.is_nan()];
-        assert![!one.is_nan()];
-        assert![!negone.is_nan()];
-        assert![!inf.is_nan()];
-        assert![!neginf.is_nan()];
-        assert![!min.is_nan()];
-        assert![!negmin.is_nan()];
+        assert![nan1.0.is_nan()];
+        assert![nan2.0.is_nan()];
+        assert![!zero.0.is_nan()];
+        assert![!negzero.0.is_nan()];
+        assert![!one.0.is_nan()];
+        assert![!negone.0.is_nan()];
+        assert![!inf.0.is_nan()];
+        assert![!neginf.0.is_nan()];
+        assert![!min.0.is_nan()];
+        assert![!negmin.0.is_nan()];
 
-        assert![negone.is_negative()];
-        assert![negzero.is_negative()];
-        assert![neginf.is_negative()];
-        assert![!negone.is_positive()];
-        assert![!negzero.is_positive()];
-        assert![!neginf.is_positive()];
+        assert![negone.0.is_sign_negative()];
+        assert![negzero.0.is_sign_negative()];
+        assert![neginf.0.is_sign_negative()];
+        assert![!negone.0.is_sign_positive()];
+        assert![!negzero.0.is_sign_positive()];
+        assert![!neginf.0.is_sign_positive()];
 
         #[cfg(any(
             all(not(feature = "safe_num"), feature = "unsafe_const"),
             any(feature = "safe_num", not(feature = "unsafe_const"))
         ))]
         {
-            assert![sub.is_subnormal() && !sub.is_normal()];
-            assert![!zero.is_subnormal() && !zero.is_normal()];
-            assert![one.is_normal() && !one.is_subnormal()];
-            assert![min.is_normal() && !min.is_subnormal()];
-            assert![negmin.is_normal() && !negmin.is_subnormal()];
+            assert![sub.0.is_subnormal() && !sub.0.is_normal()];
+            assert![!zero.0.is_subnormal() && !zero.0.is_normal()];
+            assert![one.0.is_normal() && !one.0.is_subnormal()];
+            assert![min.0.is_normal() && !min.0.is_subnormal()];
+            assert![negmin.0.is_normal() && !negmin.0.is_subnormal()];
         }
     }
 }
