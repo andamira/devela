@@ -149,7 +149,7 @@ macro_rules! impl_destaque {
             /// Returns a queue filled with an iterator, in the stack.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q: Destaque" $IDX:camel "<_, 3> = [1, 2, 3].into();"]
             /// ```
             fn from(iterator: I) -> Destaque<T, CAP, $IDX, Bare> {
@@ -167,7 +167,7 @@ macro_rules! impl_destaque {
             /// Returns a queue filled with an iterator, in the heap.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::{Boxed, Destaque" $IDX:camel "};"]
+            #[doc = "# use devela::{Boxed, Destaque" $IDX:camel "};"]
             #[doc = "let q: Destaque" $IDX:camel "<_, 3, Boxed> = [1, 2, 3].into();"]
             /// ```
             fn from(iterator: I) -> Destaque<T, CAP, $IDX, Boxed> {
@@ -184,7 +184,7 @@ macro_rules! impl_destaque {
             /// Iterates over shared references.
             /// # Example
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 4>::from([1, 2]);"]
             /// q.pop_front();
             /// q.push_back(3);
@@ -216,7 +216,7 @@ macro_rules! impl_destaque {
             /// Iterates over shared references.
             /// # Example
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 4>::from([1, 2]);"]
             /// q.pop_front();
             /// q.push_back(3);
@@ -363,7 +363,7 @@ impl<T: Default, const CAP: usize, IDX: Default> Default for Destaque<T, CAP, ID
     /// using the default value to fill the remaining free data.
     /// # Examples
     /// ```
-    /// # use devela::all::{Boxed, DestaqueU8};
+    /// # use devela::{Boxed, DestaqueU8};
     /// let mut q = DestaqueU8::<i32, 100, Boxed>::default();
     /// ```
     fn default() -> Self {

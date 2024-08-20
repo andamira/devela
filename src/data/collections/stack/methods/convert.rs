@@ -66,7 +66,7 @@ macro_rules! impl_stack {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             #[doc = "let less_cap: Stack" $IDX:camel "::<_, 4> = s.resize_default().unwrap();"]
             /// assert_eq![s.as_slice(), less_cap.as_slice()];
@@ -100,7 +100,7 @@ macro_rules! impl_stack {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             #[doc = "let less_cap: Stack" $IDX:camel "::<_, 4> = s.resize_default_truncate();"]
             /// assert_eq![less_cap.as_slice(), s.as_slice()];
@@ -149,7 +149,7 @@ macro_rules! impl_stack {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::{Boxed, Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Boxed, Stack" $IDX:camel "};"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 8, Boxed>::from([1, 2, 3, 4]);"]
             #[doc = "let less_cap: Stack" $IDX:camel "::<_, 4, Boxed> = s.clone().resize_default().unwrap();"]
             /// assert_eq![s.as_slice(), less_cap.as_slice()];
@@ -188,7 +188,7 @@ macro_rules! impl_stack {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::{Boxed, Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Boxed, Stack" $IDX:camel "};"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 8, Boxed>::from([1, 2, 3, 4]);"]
             #[doc = "let less_cap: Stack" $IDX:camel "::<_, 4, Boxed> = s.clone().resize_default_truncate();"]
             /// assert_eq![less_cap.as_slice(), s.as_slice()];
@@ -237,7 +237,7 @@ macro_rules! impl_stack {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 8> = Stack" $IDX:camel "::own_new(0)"]
             ///     .s_const_unwrap().s.own_push(1).s.own_push(2).s.own_push(3).s;
             #[doc = "const T: Stack" $IDX:camel "<i32, 4> = S.own_resize_default().s_const_unwrap().s;"]
@@ -274,7 +274,7 @@ macro_rules! impl_stack {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Stack" $IDX:camel ";"]
+            #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 8> = Stack" $IDX:camel "::own_new(0)"]
             ///     .s_const_unwrap().s.own_push(1).s.own_push(2).s.own_push(3).s;
             #[doc = "const T: Stack" $IDX:camel "<i32, 4> = S.own_resize_default_truncate().s;"]
@@ -353,7 +353,7 @@ macro_rules! impl_stack {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::*;"]
+            #[doc = "# use devela::*;"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 6, Boxed>::from([1, 2, 3]);"]
             #[doc = "let t: Stack" $NEW_IDX:camel "::<_, 6, Boxed> = s.to_idx_" $NEW_IDX "().unwrap();"]
             /// assert_eq![t.as_slice(), &[1, 2, 3]];

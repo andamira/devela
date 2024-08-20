@@ -56,7 +56,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
-    /// # use devela::all::{DataResult, Array2d};
+    /// # use devela::{DataResult, Array2d};
     /// const GRID: DataResult<Array2d::<char, 4, 4, {4 * 4}>> = Array2d::with_copied('.');
     /// assert![GRID.is_ok()];
     /// ```
@@ -83,7 +83,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
-    /// # use devela::all::{Boxed, Array2d};
+    /// # use devela::{Boxed, Array2d};
     /// let g = Array2d::<_, 4, 4, {4 * 4}, true, Boxed>::with_cloned(String::from("·"));
     /// ```
     pub fn with_cloned(element: T) -> Result<Self> {
@@ -116,7 +116,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     /// Returns `true` if the stack is empty (has 0 length).
     /// # Examples
     /// ```
-    /// # use devela::all::Array2d;
+    /// # use devela::Array2d;
     /// let g1 = Array2d::<i32, 3, 3, 9>::default();
     /// assert![!g1.is_empty()];
     ///
@@ -164,7 +164,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     /// Returns a slice containing the full grid.
     // /// # Examples
     // /// ```
-    // /// # use devela::all::Array2d;
+    // /// # use devela::Array2d;
     // /// let g = Array2d::from([1, 2, 3]);
     // /// assert_eq![s.as_slice(), &[1, 2, 3]];
     // /// ```
@@ -174,7 +174,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     /// Returns the stack as an exclusive slice.
     // /// # Examples
     // /// ```
-    // /// # use devela::all::Array2d;
+    // /// # use devela::Array2d;
     // /// let mut g = Array2d::<_, (), 2, 2, 4>::from([1, 2, 3]);
     // /// assert_eq![s.as_mut_slice(), &mut [1, 2, 3]];
     // /// ```
@@ -245,7 +245,7 @@ impl<
     /// Returns true if the array contains `element`.
     /// # Examples
     // /// ```
-    // /// # use devela::all::Array2d;
+    // /// # use devela::Array2d;
     // /// let a = Array2d::<_, 5, 5, 25>::new([5, 78, 42, 33, 9]);
     // /// assert![a.contains(&9)];
     // /// assert![!a.contains(&8)];

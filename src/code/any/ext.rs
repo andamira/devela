@@ -138,7 +138,7 @@ pub trait ExtAny: Any + private::Sealed {
     /// # #[cfg(feature = "alloc")]
     /// // in the heap:
     /// {
-    ///     # use devela::all::{Box, Vec};
+    ///     # use devela::{Box, Vec};
     ///     let b: Box<dyn Trait> = Box::new(5);
     ///     if let Some(n) = (*b).downcast_ref::<i32>() {
     ///         assert_eq![n, &5_i32];

@@ -54,7 +54,7 @@ macro_rules! impl_destaque {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
             pub fn new(element: T) -> Result<Self> {
@@ -82,7 +82,7 @@ macro_rules! impl_destaque {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::{Destaque" $IDX:camel ", unwrap};"]
+            #[doc = "# use devela::{Destaque" $IDX:camel ", unwrap};"]
             #[doc = "const S: Destaque" $IDX:camel
                 "<i32, 16> = unwrap![ok Destaque" $IDX:camel "::new_copied(0)];"]
             /// ```
@@ -105,7 +105,7 @@ macro_rules! impl_destaque {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::{Boxed, Destaque" $IDX:camel "};"]
+            #[doc = "# use devela::{Boxed, Destaque" $IDX:camel "};"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 3, Boxed>::new(0);"]
             /// ```
             pub fn new(element: T) -> Self {
@@ -124,7 +124,7 @@ macro_rules! impl_destaque {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from_array([1, 2, 3]);"]
             /// ```
             pub const fn from_array_copy(arr: [T; CAP]) -> Destaque<T, CAP, $IDX, Bare> {
@@ -142,7 +142,7 @@ macro_rules! impl_destaque {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from_array([1, 2, 3]);"]
             /// ```
             pub fn from_array(arr: [T; CAP]) -> Destaque<T, CAP, $IDX, S> {
@@ -165,7 +165,7 @@ macro_rules! impl_destaque {
             /// Returns `true` if the destaque is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<i32, 8>::default();"]
             /// assert![q.is_empty()];
             /// ```
@@ -177,7 +177,7 @@ macro_rules! impl_destaque {
             /// Returns `true` if the destaque is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert![q.is_full()];
             /// ```
@@ -189,7 +189,7 @@ macro_rules! impl_destaque {
             /// Returns the destaque's total capacity.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<i32, 3>::default();"]
             /// assert_eq![3, q.capacity()];
             /// ```
@@ -201,7 +201,7 @@ macro_rules! impl_destaque {
             /// Returns the destaque's remaining capacity.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 3>::default();"]
             /// assert_eq![3, q.remaining_capacity()];
@@ -220,7 +220,7 @@ macro_rules! impl_destaque {
             /// the contents of the destaque.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert_eq![q.as_slices(), (&[1, 2, 3][..], &[][..])];
             /// ```
@@ -243,7 +243,7 @@ macro_rules! impl_destaque {
             /// Returns `true` if the destaque is contiguous.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert_eq![q.as_slices(), (&[1, 2, 3][..], &[][..])];
@@ -268,7 +268,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughSpace`] if the destaque is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 3>::default();"]
             /// q.push_front(1)?;
@@ -306,7 +306,7 @@ macro_rules! impl_destaque {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 3>::from([1, 2]);"]
             /// assert_eq!(q.push_front_override(3), false);
             /// assert_eq![q.to_array(), Some([3, 1, 2])];
@@ -336,7 +336,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughSpace`] if the destaque is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 3>::default();"]
             /// q.push_back(1)?;
@@ -378,7 +378,7 @@ macro_rules! impl_destaque {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 3>::from([1, 2]);"]
             /// assert_eq!(q.push_back_override(3), false);
             /// assert_eq![q.to_array(), Some([1, 2, 3])];
@@ -410,7 +410,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the queue is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             ///
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
@@ -457,7 +457,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![3, q.pop_back()?];
@@ -493,7 +493,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&3, q.peek_back()?];
@@ -514,7 +514,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&mut 3, q.peek_back_mut()?];
@@ -535,7 +535,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't have at least `nth` elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&1, q.peek_nth_back(2)?];
@@ -556,7 +556,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't have at least `nth` elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&mut 1, q.peek_nth_back_mut(2)?];
@@ -577,7 +577,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&1, q.peek_front()?];
@@ -598,7 +598,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![&mut 1, q.peek_front_mut()?];
@@ -619,7 +619,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't have at least `nth` elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             /// assert_eq![&3, q.peek_nth_front(2)?];
@@ -640,7 +640,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't have at least `nth` elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             /// assert_eq![&mut 3, q.peek_nth_front_mut(2)?];
@@ -663,7 +663,7 @@ macro_rules! impl_destaque {
             /// `( 1 2 -- )`
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             /// q.clear();
             /// assert![q.is_empty()];
@@ -683,7 +683,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2]);"]
             /// q.drop_back()?;
@@ -707,7 +707,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2]);"]
             /// q.drop_front()?;
@@ -731,7 +731,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least `nth` elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             /// q.drop_n_back(3)?;
@@ -755,7 +755,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least `nth` elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3, 4]);"]
             /// q.drop_n_front(3)?;
@@ -781,7 +781,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 4>::from([1, 2, 3, 4]);"]
             /// q.swap_back();
             /// assert_eq![q.to_array(), Some([1, 2, 4, 3])];
@@ -812,7 +812,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 4>::from([1, 2, 3, 4]);"]
             /// q.swap_front();
             /// assert_eq![q.to_array(), Some([2, 1, 3, 4])];
@@ -843,7 +843,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);"]
             /// q.swap2_back();
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 7, 8, 5, 6])];
@@ -875,7 +875,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);"]
             /// q.swap2_front();
             /// assert_eq![q.to_array(), Some([3, 4, 1, 2, 5, 6, 7, 8])];
@@ -909,7 +909,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 6>::from([1, 2, 3, 4, 5]);"]
             /// q.swap_ends();
             /// assert_eq![q.to_array(), Some([5, 2, 3, 4, 1])];
@@ -932,7 +932,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 16>::from([1, 2, 3, 4, 5, 6, 7, 8]);"]
             /// q.swap2_ends();
             /// assert_eq![q.to_array(), Some([7, 8, 3, 4, 5, 6, 1, 2])];
@@ -959,7 +959,7 @@ macro_rules! impl_destaque {
             /// `( 1 2 3 4 --  4 1 2 3 )`
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 8>::from([2, 3]);"]
             /// q.push_front(1)?;
@@ -983,7 +983,7 @@ macro_rules! impl_destaque {
             /// `( 1 2 3 4 --  2 3 4 1 )` for `n = 3`
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 8>::from([2, 3]);"]
             /// q.push_front(1)?;
@@ -1008,7 +1008,7 @@ macro_rules! impl_destaque {
             /// `( 1 2 3 4 --  2 3 4 1 )`
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 8>::from([2, 3]);"]
             /// q.push_front(1)?;
@@ -1032,7 +1032,7 @@ macro_rules! impl_destaque {
             /// `( 1 2 3 4 --  4 1 2 3 )` for `nth = 3`
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<i32, 8>::from([2, 3]);"]
             /// q.push_front(1)?;
@@ -1062,7 +1062,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![1, q.pop_front()?];
@@ -1099,7 +1099,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughElements`] if the destaque is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 8>::from([1, 2, 3]);"]
             /// assert_eq![3, q.pop_back()?];
@@ -1136,7 +1136,7 @@ macro_rules! impl_destaque {
             /// # Examples
             ///
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             ///
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 5>::new(0).unwrap();"]
             /// q.push_back(1);
@@ -1181,7 +1181,7 @@ macro_rules! impl_destaque {
             /// Returns the destaqued elements as a vector.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 5>::from([3, 4]);"]
             /// q.push_front(2)?;
@@ -1219,7 +1219,7 @@ macro_rules! impl_destaque {
             /// Panics if the new `LEN` sized array can't be allocated.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 5>::from([3, 4]);"]
             /// q.push_front(2)?;
@@ -1272,7 +1272,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 4>::from([1, 2, 3]);"]
             /// q.dup_back()?;
@@ -1299,7 +1299,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 4>::from([1, 2, 3]);"]
             /// q.dup_front()?;
@@ -1326,7 +1326,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 6>::from([1, 2, 3, 4]);"]
             /// q.dup2_back()?;
@@ -1356,7 +1356,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 6>::from([1, 2, 3, 4]);"]
             /// q.dup2_front()?;
@@ -1388,7 +1388,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4]);"]
             /// q.over_back()?;
@@ -1415,7 +1415,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4]);"]
             /// q.over_front()?;
@@ -1442,7 +1442,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 8>::from([1, 2, 3, 4, 5, 6]);"]
             /// q.over2_back()?;
@@ -1472,7 +1472,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 8>::from([1, 2, 3, 4, 5, 6]);"]
             /// q.over2_front()?;
@@ -1504,7 +1504,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             ///
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4, 5]);"]
@@ -1534,7 +1534,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4, 5]);"]
             /// q.tuck_front()?;
@@ -1564,7 +1564,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4, 5]);"]
             /// q.tuck2_back()?;
@@ -1596,7 +1596,7 @@ macro_rules! impl_destaque {
             /// or [`NotEnoughSpace`] if it doesn't have space for 2 additional elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             /// # fn main() -> devela::data::DataResult<()> {
             #[doc = "let mut q = Destaque" $IDX:camel "::<u8, 7>::from([1, 2, 3, 4, 5]);"]
             /// q.tuck2_front()?;
@@ -1640,7 +1640,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughSpace`] if the destaque becomes full before the iterator finishes.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 6>::from([1, 2, 3]);"]
             /// q.extend_back([4, 5, 6, 7, 8]);
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 5, 6])];
@@ -1666,7 +1666,7 @@ macro_rules! impl_destaque {
             /// `( 1 2 3 -- 3 4 5 6)` for `[4 5 6]` and `CAP = 4`
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 4>::from([1, 2, 3]);"]
             /// assert_eq![q.extend_back_override([4, 5, 6]), true];
             /// assert_eq![q.to_array(), Some([3, 4, 5, 6])];
@@ -1698,7 +1698,7 @@ macro_rules! impl_destaque {
             /// Returns [`NotEnoughSpace`] if the destaque becomes full before the iterator finishes.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 6>::from([1, 2, 3]);"]
             /// q.extend_front([4, 5, 6, 7, 8]);
             /// assert_eq![q.to_array(), Some([6, 5, 4, 1, 2, 3])];
@@ -1724,7 +1724,7 @@ macro_rules! impl_destaque {
             /// `( 1 2 3 -- 6 5 4 1)` for `[4 5 6]` and `CAP = 4`
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let mut q = Destaque" $IDX:camel "::<_, 4>::from([1, 2, 3]);"]
             /// assert_eq![q.extend_front_override([4, 5, 6]), true];
             /// assert_eq![q.to_array(), Some([6, 5, 4, 1])];
@@ -1756,7 +1756,7 @@ macro_rules! impl_destaque {
             /// Returns true if the destaque contains `element`.
             /// # Examples
             /// ```
-            #[doc = "# use devela::all::Destaque" $IDX:camel ";"]
+            #[doc = "# use devela::Destaque" $IDX:camel ";"]
             #[doc = "let q = Destaque" $IDX:camel "::<_, 6>::from([5, 78, 42, 33, 9]);"]
             ///
             /// assert![q.contains(&9)];

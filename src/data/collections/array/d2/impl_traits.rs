@@ -80,7 +80,7 @@ impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bo
     ///
     /// # Examples
     /// ```
-    /// # use devela::all::{Boxed, Array2d};
+    /// # use devela::{Boxed, Array2d};
     /// let g = Array2d::<String, 4, 4, {4 * 4}, true, Boxed>::default();
     /// ```
     fn default() -> Self {

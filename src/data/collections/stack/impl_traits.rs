@@ -96,7 +96,7 @@ macro_rules! impl_stack {
             /// Returns a stack filled with an iterator, in the heap.
             /// # Examples
             /// ```
-            /// # use devela::all::{Boxed, StackU32};
+            /// # use devela::{Boxed, StackU32};
             /// let s: StackU32<_, 3, Boxed> = [1, 2, 3].into();
             /// ```
             fn from(iterator: I) -> Stack<T, CAP, $IDX, Boxed> {
@@ -249,8 +249,10 @@ impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, CAP, IDX, 
     ///
     /// # Examples
     /// ```
-    /// use devela::all::{Boxed, StackU32};
+    /// # #[cfg(feature = "_stack_u32")] {
+    /// use devela::{Boxed, StackU32};
     /// let mut s = StackU32::<i32, 100, Boxed>::default();
+    /// # }
     /// ```
     fn default() -> Self {
         Self {

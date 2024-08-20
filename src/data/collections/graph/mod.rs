@@ -124,8 +124,8 @@ macro_rules! impl_graph {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::data::" $Graph ";"]
-            #[doc = "let g = " $Graph "::<(), 10, 5>::new_copy().unwrap();"]
+            #[doc = "use devela::" $Graph ";"]
+            #[doc = "let g = " $Graph "::<10, 5, bool>::new_copy().unwrap();"]
             /// ```
             #[inline]
             pub const fn new_copy() -> Result<Self> {
@@ -147,8 +147,8 @@ macro_rules! impl_graph {
             ///
             /// # Examples
             /// ```
-            #[doc = "# use devela::data::" $Graph ";"]
-            #[doc = "let g = " $Graph "::<(), 10, 5>::new_clone().unwrap();"]
+            #[doc = "# use devela::" $Graph ";"]
+            #[doc = "let g = " $Graph "::<10, 5, char>::new_clone().unwrap();"]
             /// ```
             #[inline]
             pub fn new_clone() -> Result<Self> {

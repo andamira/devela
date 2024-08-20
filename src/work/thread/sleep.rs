@@ -6,7 +6,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::all::sleep4;
+/// # use devela::sleep4;
 /// sleep4![1, 0, 500]; // sleeps for 1 second + 500 microseconds
 /// ```
 #[macro_export]

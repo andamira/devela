@@ -166,7 +166,7 @@ impl<T: Default, const LEN: usize> Default for Array<T, LEN, Boxed> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::all::{Array, Boxed};
+    /// # use devela::{Array, Boxed};
     /// let mut s = Array::<i32, 100, Boxed>::default();
     /// ```
     fn default() -> Self {
@@ -221,7 +221,7 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::all::{Array, Boxed};
+    /// # use devela::{Array, Boxed};
     /// let s: Array<_, 4, Boxed> = [1, 2, 3].into();
     ///
     /// assert_eq![s.as_slice(), &[1, 2, 3, 0]];

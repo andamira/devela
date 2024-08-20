@@ -82,7 +82,7 @@ impl<T: Clone, const LEN: usize> Array<T, LEN, Boxed> {
     /// Returns an array, allocated in the heap, filled with `element`, cloned.
     /// # Examples
     /// ```
-    /// # use devela::all::{Array, Boxed};
+    /// # use devela::{Array, Boxed};
     /// let mut a = Array::<_, 1_000, Boxed>::with_cloned(0);
     /// ```
     #[inline]
@@ -115,7 +115,7 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Returns true if the array contains `element`.
     /// # Examples
     /// ```
-    /// # use devela::all::Array;
+    /// # use devela::Array;
     /// let a = Array::<_, 5>::new([5, 78, 42, 33, 9]);
     /// assert![a.contains(&9)];
     /// assert![!a.contains(&8)];
@@ -129,7 +129,7 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Finds the index of the first occurrence of `element` in the array.
     /// # Examples
     /// ```
-    /// # use devela::all::Array;
+    /// # use devela::Array;
     /// let a = Array::<_, 5>::new([5, 78, 42, 33, 9]);
     /// assert_eq![a.find_index(&9), Some(4)];
     /// assert_eq![a.find_index(&8), None];
