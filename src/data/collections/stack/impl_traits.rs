@@ -246,14 +246,6 @@ impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
 impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, CAP, IDX, Boxed> {
     /// Returns an empty stack, allocated in the heap,
     /// using the default value to fill the remaining free data.
-    ///
-    /// # Examples
-    /// ```
-    /// # #[cfg(feature = "_stack_u32")] {
-    /// use devela::{Boxed, StackU32};
-    /// let mut s = StackU32::<i32, 100, Boxed>::default();
-    /// # }
-    /// ```
     fn default() -> Self {
         Self {
             data: Array::default(),
