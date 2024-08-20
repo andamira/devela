@@ -55,7 +55,7 @@ Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 
 [`code`]: crate::code
 [`data`]: crate::data
-[`error`]: crate::error
+[`error`]: mod@crate::error
 [`exec`]: crate::exec
 [`mem`]: crate::mem
 [`num`]: crate::num

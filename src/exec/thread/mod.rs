@@ -1,8 +1,8 @@
 // devela::exec::thread
 //
-//! Native threads, extends `std::`[`thread`].
+//! Native threads.
+#![doc = crate::code::doc_extends!(thread)]
 //!
-//! [`thread`]: std::thread
 //
 
 mod reexports;

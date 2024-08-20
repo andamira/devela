@@ -1,19 +1,8 @@
 // devela::sys
 //
-//! System interfaces and hardware abstractions, <br/><small>extends
-//! `std::{`[`arch`], [`env`], [`ffi`], [`fs`], [`io`], [`net`], [`os`],
-//! [`path`], [`simd`], [`time`]`}`.</small>
+//! System interfaces and hardware abstractions.
+#![doc = crate::code::doc_extends!(arch, env, ffi, fs, io, net, os, path, simd, time)]
 //!
-//! [`arch`]: std::arch
-//! [`env`]: mod@std::env
-//! [`ffi`]: std::ffi
-//! [`fs`]: std::fs
-//! [`io`]: std::io
-//! [`net`]: std::net
-//! [`os`]: std::os
-//! [`path`]: std::path
-//! [`simd`]: std::simd
-//! [`time`]: std::time
 //
 
 // safety:

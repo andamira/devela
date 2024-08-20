@@ -1,8 +1,7 @@
 // devela::data::collections::array
 //
-//! Arrays, extends `std::`[`array`].
-//!
-//! [`array`]: mod@std::array
+//! Arrays.
+#![doc = crate::code::doc_extends!(array)]
 //!
 //! Arrays are random-access, sequentially allocated, statically sized,
 //! homogeneous data structures.

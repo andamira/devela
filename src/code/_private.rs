@@ -4,6 +4,7 @@
 //
 // TOC
 // - reexport!
+// - doc_extends!
 
 /// Macro helper for documentation of re-exported items.
 macro_rules! reexport {
@@ -259,7 +260,7 @@ macro_rules! reexport {
     // - Supports multiple re-exported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
     //
-    // used for: result::Either
+    // in the past it was used for: result::Either
     (non-optional $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
       $( local_module: $module_feature:literal ,)?
@@ -292,3 +293,27 @@ macro_rules! reexport {
     // TODO: new branch for: either a crate or core (for portable-atomic types)
 }
 pub(crate) use reexport;
+
+// Generates a formatted documentation string for Rust modules,
+// including a list of standard library modules it extends.
+macro_rules! doc_extends {
+    ($($mod:ident),+ $(,)?) => {
+        concat!(
+            // "<small>Extends ",
+            "<br/><i style='margin-left:0.618em;'></i><small style='color:#999'>Extends ",
+            "`std::{`", crate::code::doc_extends!(@inner $($mod),+), "`}`",
+            "</small>"
+        )
+    };
+    // Handles the list of modules ensuring commas are only added between elements.
+    (@inner $first:ident $(, $rest:ident)*) => {
+        concat!(
+            // "[`", stringify!($first), "`]",
+            // $( ", [`", stringify!($rest), "`]" ),*
+            "[`", stringify!($first), "`](mod@std::", stringify!($first), ")",
+            $( ", [`", stringify!($rest), "`](mod@std::", stringify!($rest), ")" ),*
+
+        )
+    };
+}
+pub(crate) use doc_extends;

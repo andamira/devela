@@ -1,9 +1,8 @@
 // devela::sys::env
 //
-//! Inspection and manipulation of the process’s environment, extends
-//! `std::`[`env`].
+//! Inspection and manipulation of the process’s environment.
+#![doc = crate::code::doc_extends!(env)]
 //!
-//! [`env`]: std::env
 //
 
 #[cfg(feature = "std")]

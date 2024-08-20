@@ -1,7 +1,8 @@
 // devela::error::panic
 //
-//! Panic support, extends
-//! `std::`[`panic`][mod@std::panic].
+//! Panic support,
+#![doc = crate::code::doc_extends!(panic)]
+//!
 //
 
 pub(crate) mod all {

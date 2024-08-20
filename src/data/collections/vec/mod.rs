@@ -1,8 +1,7 @@
 // devela::data::collections::vec
 //
-//! Vectors, extends `std::`[`vec`].
-//!
-//! [`vec`]: mod@std::vec
+//! Vectors,
+#![doc = crate::code::doc_extends!(vec)]
 //!
 //! Vectors are random-access, sequentially allocated, *dynamically* sized,
 //! homogeneous data structures.

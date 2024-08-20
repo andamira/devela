@@ -1,15 +1,9 @@
 // devela::error
 //
-//! Error management, result handling and utility enhancements,
-//! <br/><small>extends `std::{`[`error`], [`option`], [`panic`], [`result`]`}`.</small>
+//! Error management, result handling and utility enhancements.
+#![doc = crate::code::doc_extends!(error, option, panic, result)]
 //!
-//! [`error`]: std::error
-//! [`option`]: std::option
-//! [`panic`]: mod@std::panic
-//! [`result`]: std::result
-//!
-//! Streamlines error management, result chaining, and introduces utility types
-//! and macros.
+//! Streamlines error management, result chaining, and introduces utility types and macros.
 //!
 //! It re-exports the error and result types defined in other modules.
 //

@@ -1,13 +1,8 @@
 // devela::data
 //
-//! Data handling and manipulation, <br/><small>
-//! extends `std::{`[`array`], [`collections`], [`hash`], [`iter`], [`vec`]`}`. </small>
+//! Data handling and manipulation.
+#![doc = crate::code::doc_extends!(array, collections, hash, iter, vec)]
 //!
-//! [`array`]: mod@std::array
-//! [`collections`]: std::collections
-//! [`hash`]: std::hash
-//! [`iter`]: std::iter
-//! [`vec`]: mod@std::vec
 //
 
 // safety:

@@ -1,9 +1,8 @@
 // devela::sys::ffi
 //
-//! Platform-specific types, as defined by C, extends
-//! `std::`[`ffi`].
+//! Foreign function interfaces and languages bindings.
+#![doc = crate::code::doc_extends!(ffi)]
 //!
-//! [`ffi`]: std::ffi
 //
 
 mod reexports;

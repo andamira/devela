@@ -1,8 +1,8 @@
 // devela::text::fmt
 //
-//! Formatting, extends `std::`[`fmt`].
+//! Formatting strings.
+#![doc = crate::code::doc_extends!(fmt)]
 //!
-//! [`fmt`]: std::fmt
 //
 
 mod misc;

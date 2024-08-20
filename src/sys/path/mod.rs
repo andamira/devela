@@ -1,7 +1,8 @@
 // devela::sys::path
 //
-//! Paths, extends
-//! `std::`[`path`][std::path].
+//! Paths.
+#![doc = crate::code::doc_extends!(path)]
+//!
 //
 
 #[cfg(feature = "sys")]

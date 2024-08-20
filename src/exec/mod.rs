@@ -1,13 +1,8 @@
 // devela::exec
 //
-//! Execution strategies and concurrency management, <br/><small>extends
-//! `std::{`[`future`], [`process`], [`sync`], [`task`], [`thread`]`}`.</small>
+//! Execution strategies and concurrency management.
+#![doc = crate::code::doc_extends!(future, process, sync, task, thread)]
 //!
-//! [`future`]: std::future
-//! [`process`]: std::process
-//! [`sync`]: std::sync
-//! [`task`]: std::task
-//! [`thread`]: std::thread
 //
 
 // safety:

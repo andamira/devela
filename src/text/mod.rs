@@ -1,13 +1,8 @@
 // devela::text
 //
-//! Text types and operations, text processing, <small>extends
-//! `std::{`[`ascii`], [`char`], [`fmt`], [`str`], [`string`]`}`.</small>
+//! Text types and operations, text processing.
+#![doc = crate::code::doc_extends!(ascii, char, fmt, str, string)]
 //!
-//! [`ascii`]: std::ascii
-//! [`char`]: std::char
-//! [`fmt`]: std::fmt
-//! [`str`]: std::str
-//! [`string`]: std::string
 //
 
 #![allow(unused_imports)]

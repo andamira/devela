@@ -1,8 +1,8 @@
 // devela::data::hash
 //
-//! Generic hashing support, extends `std::`[`hash`].
+//! Generic hashing support.
+#![doc = crate::code::doc_extends!(hash)]
 //!
-//! [`hash`]: std::hash
 //
 
 mod fnv;

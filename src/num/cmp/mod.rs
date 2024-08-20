@@ -1,8 +1,8 @@
 // devela::data::cmp
 //
-//! Comparing and ordering values, extends `std::`[`cmp`].
+//! Comparing and ordering values.
+#![doc = crate::code::doc_extends!(cmp)]
 //!
-//! [`cmp`]: std::cmp
 //
 
 mod reexports;

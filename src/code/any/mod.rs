@@ -1,8 +1,8 @@
 // devela::code::any
 //
-//! Dynamic typing and reflection, extends `std::`[`any`].
+//! Dynamic typing and reflection.
+#![doc = crate::code::doc_extends!(any)]
 //!
-//! [`any`]: std::any
 //
 
 mod ext;

@@ -1,12 +1,8 @@
 // devela::io
 //
-//! I/O functionality, extends `std::{`[`env`], [`fs`], [`io`], [`net`]`}`.
+//! I/O functionality.
+#![doc = crate::code::doc_extends!(io)]
 //!
-//! [`env`]: mod@std::env
-//! [`fs`]: std::fs
-//! [`io`]: std::io
-//! [`net`]: std::net
-//! [`path`]: std::path
 //
 
 // warnings:

@@ -1,8 +1,8 @@
 // devela::data::iter
 //
-//! Composable external iteration, extends `std::`[`iter`].
+//! Composable external iteration.
+#![doc = crate::code::doc_extends!(iter)]
 //!
-//! [`iter`]: std::iter
 //
 
 mod reexports;

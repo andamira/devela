@@ -1,10 +1,8 @@
 // devela::num
 //
-//! Numerical types and operations, algebra,
-//! <br/><small>extends `std::{`[`cmp`], [`num`]`}`.</small>
+//! Numerical types and operations, algebra.
+#![doc = crate::code::doc_extends!(cmp, num)]
 //!
-//! [`cmp`]: std::cmp
-//! [`num`]: std::num
 //
 
 // safety:

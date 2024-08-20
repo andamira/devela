@@ -1,9 +1,7 @@
 // devela::exec::async
 //
-//! Asynchrony, extends `std::{`[`future`], [`task`]`}`.
-//!
-//! [`future`]: std::future
-//! [`task`]: std::task
+//! Asynchrony.
+#![doc = crate::code::doc_extends!(future, task)]
 //!
 //! See also the fundamental [`async`] and [`await`] keywords and the
 //! [async book](https://rust-lang.github.io/async-book/).

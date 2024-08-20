@@ -1,19 +1,9 @@
 // devela::mem
 //
-//! Memory management,
-//! <br/><small>extends
-//! `std::{`[`alloc`], [`borrow`], [`boxed`], [`cell`], [`mem`], [`pin`],
-//! [`ptr`], [`rc`], [`slice`]`}`.</small>
+//! Memory management.
+#![doc = crate::code::doc_extends!(alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
 //!
-//! [`alloc`]: std::alloc
-//! [`borrow`]: std::borrow
-//! [`boxed`]: std::boxed
-//! [`cell`]: std::cell
-//! [`mem`]: std::mem
-//! [`pin`]: std::pin
-//! [`ptr`]: std::ptr
-//! [`rc`]: std::rc
-//! [`slice`]: std::slice
+//
 
 // safety:
 #![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]

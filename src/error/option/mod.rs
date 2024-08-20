@@ -1,7 +1,8 @@
 // devela::error::option
 //
-//! Option, extends
-//! `std::`[`option`][std::option].
+//! Optional values.
+#![doc = crate::code::doc_extends!(option)]
+//!
 //
 
 mod ext;

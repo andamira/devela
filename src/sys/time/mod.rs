@@ -1,9 +1,8 @@
 // devela::sys::time
 //
-//! Time and calendar types and operations, <small>extends
-//! `std::`[`time`].</small>
+//! Time and calendar types and operations.
+#![doc = crate::code::doc_extends!(time)]
 //!
-//! [`time`]: std::time
 //
 
 // safety:

@@ -1,8 +1,8 @@
 // devela::text::ascii
 //
-//! ASCII strings and characters, extends `std::`[`ascii`].
+//! ASCII strings and characters.
+#![doc = crate::code::doc_extends!(ascii)]
 //!
-//! [`ascii`]: std::ascii
 //
 
 mod char;

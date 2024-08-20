@@ -1,9 +1,8 @@
 // devela::sys::arch
 //
-//! SIMD and vendor intrinsics, extends
-//! `std::`[`arch`].
+//! SIMD and vendor intrinsics.
+#![doc = crate::code::doc_extends!(arch)]
 //!
-//! [`arch`]: std::arch
 //
 
 mod reexports;

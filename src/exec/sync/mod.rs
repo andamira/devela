@@ -1,8 +1,8 @@
 // devela::exec::sync
 //
-//! Synchronization, extends `std::`[`sync`].
+//! Synchronization primitives.
+#![doc = crate::code::doc_extends!(sync)]
 //!
-//! [`sync`]: std::sync
 //
 
 mod reexports;

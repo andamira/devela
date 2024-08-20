@@ -1,8 +1,8 @@
 // devela::mem::slice
 //
-//! Slices, extends `std::`[`slice`].
+//! Slices of memory.
+#![doc = crate::code::doc_extends!(slice)]
 //!
-//! [`slice`]: std::slice
 //
 
 mod ext;

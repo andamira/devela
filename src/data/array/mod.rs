@@ -1,8 +1,8 @@
 // devela::data::array
 //
-//! Primitive arrays, extends `std::`[`array`].
+//! Primitive arrays.
+#![doc = crate::code::doc_extends!(array)]
 //!
-//! [`array`]: std::array
 //
 
 mod ext; // ExtArray, ArrayFmt

@@ -1,16 +1,8 @@
 // devela::code
 //
-//! Code reflective synthesis, <small>extends <br/>
-//! `std::{`[`any`], [`clone`], [`convert`], [`default`], [`hint`], [`marker`],
-//! [`ops`] `}`.</small>
+//! Code reflective synthesis.
+#![doc = crate::code::doc_extends!(any, clone, convert, default, hint, marker, ops)]
 //!
-//! [`any`]: std::any
-//! [`clone`]: std::clone
-//! [`convert`]: std::convert
-//! [`default`]: std::default
-//! [`hint`]: std::hint
-//! [`marker`]: std::marker
-//! [`ops`]: std::ops
 //
 
 // safety:

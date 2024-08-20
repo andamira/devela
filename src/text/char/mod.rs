@@ -1,8 +1,8 @@
 // devela::text::char
 //
-//! Unicode scalars, extends `std::`[`char`].
+//! Unicode scalars.
+#![doc = crate::code::doc_extends!(char)]
 //!
-//! [`char`]: std::char
 //
 
 mod always_fns;

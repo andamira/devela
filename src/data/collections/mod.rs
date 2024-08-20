@@ -1,11 +1,8 @@
 // devela::data::collections
 //
-//! Data collections, extends
-//! `std::{`[`array`], [`collections`], [`vec`]`}`.
+//! Data collections.
+#![doc = crate::code::doc_extends!(array, collections, vec)]
 //!
-//! [`array`]: mod@std::array
-//! [`collections`]: std::collections
-//! [`vec`]: mod@std::vec
 //
 
 mod array;
