@@ -9,7 +9,7 @@
 // - trait impls
 
 use crate::{
-    _dep::_libcore::{
+    _dep::_core::{
         cmp,
         convert::Infallible,
         marker::{PhantomData, PhantomPinned},
@@ -33,7 +33,7 @@ use std::{
 // #[cfg(feature = "text")]
 // use crate::text::{StringU16, StringU32, EgcU8, StringU8};
 #[cfg(feature = "alloc")]
-use crate::_dep::_liballoc::{
+use crate::_dep::_alloc::{
     collections::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, VecDeque},
     string::String,
     vec::Vec,

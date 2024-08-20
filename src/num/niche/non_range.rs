@@ -12,7 +12,7 @@ use crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableIn
 #[cfg(feature = "mem_bit")]
 use crate::mem::{bit_sized, ByteSized};
 use crate::{
-    _dep::_libcore::{fmt, num::*, str::FromStr},
+    _dep::_core::{fmt, num::*, str::FromStr},
     code::{iif, paste},
 };
 

@@ -20,7 +20,7 @@ use crate::{
 use core::{fmt, ops::Deref, str::Chars};
 
 #[cfg(feature = "alloc")]
-use crate::_dep::_liballoc::{ffi::CString, string::ToString};
+use crate::_dep::_alloc::{ffi::CString, string::ToString};
 #[allow(unused_imports)]
 use core::str::{from_utf8, from_utf8_unchecked};
 

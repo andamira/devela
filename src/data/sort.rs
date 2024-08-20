@@ -10,7 +10,7 @@
 // - impl Sort for primitives
 
 #[cfg(feature = "alloc")]
-use crate::_dep::_liballoc::{collections::BTreeMap, vec::Vec};
+use crate::_dep::_alloc::{collections::BTreeMap, vec::Vec};
 use crate::code::iif;
 #[cfg(_some_sort_float)]
 use crate::num::Compare;

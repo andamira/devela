@@ -16,18 +16,18 @@ use crate::code::reexport;
 /// *Re-exported Rust `alloc` library environment.*
 #[doc(inline)]
 #[cfg(feature = "alloc")]
-pub extern crate alloc as _liballoc;
+pub extern crate alloc as _alloc;
 
 /// <span class='stab portability' title='re-exported `core`'>`core`</span>
 /// *Re-exported Rust `core` library environment.*
 #[doc(inline)]
-pub use ::core as _libcore;
+pub use ::core as _core;
 
 /// <span class='stab portability' title='re-exported `std`'>`std`</span>
 /// *Re-exported Rust `std` library environment.*
 #[cfg(feature = "std")]
 #[doc(inline)]
-pub use ::std as _libstd;
+pub use ::std as _std;
 
 /* external dependencies */
 

@@ -8,13 +8,13 @@
 
 use super::Egc;
 #[cfg(feature = "alloc")]
-use crate::_dep::_liballoc::ffi::CString;
+use crate::_dep::_alloc::ffi::CString;
 #[cfg(_some_char)]
 use crate::text::char::*;
 #[cfg(doc)]
 use crate::text::TextError::OutOfBounds;
 use crate::{
-    _dep::_libcore::str::Chars,
+    _dep::_core::str::Chars,
     code::ConstDefault,
     error::unwrap,
     text::{

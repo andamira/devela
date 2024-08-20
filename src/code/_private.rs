@@ -79,7 +79,7 @@ macro_rules! reexport {
         )]
 
         #[cfg(feature = "alloc")]
-        pub use crate::_dep::_liballoc :: $($( $alloc_path :: )+)? {
+        pub use crate::_dep::_alloc :: $($( $alloc_path :: )+)? {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
         };

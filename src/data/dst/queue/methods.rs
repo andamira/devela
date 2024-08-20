@@ -7,7 +7,7 @@
 use super::super::{check_fat_pointer, list_push_gen, make_fat_ptr};
 use super::{DstBuf, DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopHandle};
 use crate::{
-    _dep::_libcore::{marker, ptr},
+    _dep::_core::{marker, ptr},
     mem::MemAligned,
 };
 

@@ -3,10 +3,10 @@
 //! Shared methods
 //
 
-#[allow(unused_import)]
+#[allow(unused_imports)]
 use crate::num::ExtFloat;
 use crate::{
-    _dep::_libcore::{concat as cc, stringify as sfy},
+    _dep::_core::{concat as cc, stringify as sfy},
     code::{iif, paste},
     num::{Float, Sign},
 };

@@ -5,7 +5,7 @@
 
 use super::Egc;
 #[allow(unused_imports)]
-use crate::_dep::_liballoc::{
+use crate::_dep::_alloc::{
     str::{self, Chars as CharIterator},
     string::String,
 };
