@@ -41,6 +41,7 @@ Modules can be enabled independently of *environment*, *dependencies* or *safety
 Single modules:
 - [`code`]
 - [`data`]
+- [`error`]
 - [`exec`]: enables `exec` functionality.
 - [`mem`]
   - `mem_bit`: `BitSize`.
@@ -48,20 +49,19 @@ Single modules:
     - [`num_rand`]: enables random number generators.
 - [`sys`]
 - [`text`]: enables `Char*`, `Egc`, `Nonul`.
-- [`time`]
 
 Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 `_some_mem`, `_some_num`.
 
 [`code`]: crate::code
 [`data`]: crate::data
+[`error`]: crate::error
 [`exec`]: crate::exec
 [`mem`]: crate::mem
 [`num`]: crate::num
 [`num_rand`]: crate::num::rand
 [`sys`]: crate::sys
 [`text`]: crate::text
-[`time`]: crate::time
 
 
 ### Safety features
@@ -75,8 +75,8 @@ In order to use any unsafe functionality:
   - `safe_data`
   - `safe_num`
   - `safe_sys`
+    - `safe_time`
   - `safe_text`
-  - `safe_time`
   - `safe_work`
 
 - `unsafe`: enables `unsafe` (as long as it isn't forbidden in the module), includes:

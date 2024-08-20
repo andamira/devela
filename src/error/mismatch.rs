@@ -1,4 +1,4 @@
-// devela::code::result::mismatch
+// devela::error::mismatch
 //
 //!
 //

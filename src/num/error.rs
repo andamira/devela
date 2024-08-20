@@ -58,7 +58,7 @@ impl NumError {
     }
 }
 
-impl crate::code::Error for NumError {}
+impl crate::error::Error for NumError {}
 
 mod core_impls {
     use super::{NumError as E, Sign};

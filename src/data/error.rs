@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::code::Mismatch;
+use crate::error::Mismatch;
 
 /// A data-related result.
 pub type DataResult<T> = core::result::Result<T, DataError>;
@@ -82,7 +82,7 @@ mod core_impls {
     use super::DataError as E;
     use core::fmt;
 
-    impl crate::code::Error for E {}
+    impl crate::error::Error for E {}
 
     impl fmt::Display for E {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

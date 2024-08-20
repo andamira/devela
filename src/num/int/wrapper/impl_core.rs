@@ -17,7 +17,7 @@
 
 use crate::code::paste;
 #[allow(unused_imports)]
-use crate::code::unwrap;
+use crate::error::unwrap;
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::num::isize_up;
 #[cfg(feature = "_int_usize")]

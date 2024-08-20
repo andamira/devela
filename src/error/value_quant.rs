@@ -1,4 +1,4 @@
-// devela::code::result::value_quant
+// devela::error::value_quant
 //
 //!
 //

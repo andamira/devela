@@ -1,7 +1,7 @@
 // devela::num
 //
-//! Numerical types and operations, algebra, <small>extends
-//! `std::{`[`cmp`], [`num`]`}`.</small>
+//! Numerical types and operations, algebra,
+//! <br/><small>extends `std::{`[`cmp`], [`num`]`}`.</small>
 //!
 //! [`cmp`]: std::cmp
 //! [`num`]: std::num

@@ -15,7 +15,8 @@ use crate::text::char::*;
 use crate::text::TextError::OutOfBounds;
 use crate::{
     _libcore::str::Chars,
-    code::{unwrap, ConstDefault},
+    code::ConstDefault,
+    error::unwrap,
     text::{
         TextResult as Result,
         {helpers::impl_sized_alias, StringU8},

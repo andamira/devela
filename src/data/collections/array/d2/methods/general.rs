@@ -11,7 +11,6 @@ use crate::{
     mem::{Box, Boxed},
 };
 use crate::{
-    code::Mismatch,
     data::{
         error::{
             DataError::{MismatchedLength, Overflow},
@@ -19,6 +18,7 @@ use crate::{
         },
         Array, Array2d,
     },
+    error::Mismatch,
     mem::{Bare, Storage},
 };
 

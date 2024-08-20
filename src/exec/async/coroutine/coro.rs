@@ -18,7 +18,7 @@ use crate::{
     exec::task_waker_noop,
 };
 use crate::{
-    code::{serr, sok, OptRes},
+    error::{serr, sok, OptRes},
     exec::{Future, TaskContext, TaskPoll},
     mem::Pin,
 };

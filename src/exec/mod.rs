@@ -1,6 +1,6 @@
 // devela::exec
 //
-//! Execution strategies and concurrency management, <small>extends <br/>
+//! Execution strategies and concurrency management, <br/><small>extends
 //! `std::{`[`future`], [`process`], [`sync`], [`task`], [`thread`]`}`.</small>
 //!
 //! [`future`]: std::future

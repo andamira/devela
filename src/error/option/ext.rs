@@ -1,4 +1,4 @@
-// devela::code::code::result::option::ext
+// devela::error::option::ext
 //
 //!
 //
@@ -16,7 +16,7 @@ impl<T> private::Sealed for Option<T> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ExtResult`][crate::code::ExtResult].
+/// See also [`ExtResult`][crate::error::ExtResult].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
@@ -27,7 +27,7 @@ pub trait ExtOption<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::code::ExtOption;
+    /// use devela::error::ExtOption;
     ///
     /// let x: Option<u32> = Some(2);
     /// assert_eq!(x.contains(&2), true);
@@ -52,7 +52,7 @@ pub trait ExtOption<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::code::ExtOption;
+    /// use devela::error::ExtOption;
     /// use core::{cmp::min, ops::Add};
     ///
     /// let x = Some(2);
@@ -75,7 +75,7 @@ pub trait ExtOption<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::code::ExtOption;
+    /// use devela::error::ExtOption;
     ///
     /// let foo: Option<u32> = Some(0x42);
     /// let bar: Option<u32> = None;
@@ -93,7 +93,7 @@ pub trait ExtOption<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::code::ExtOption;
+    /// use devela::error::ExtOption;
     ///
     /// let foo: Option<Box<u32>> = Some(Box::new(42));
     /// let bar: Option<Box<u32>> = None;
@@ -117,7 +117,7 @@ pub trait ExtOption<T>: private::Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::code::ExtOption;
+    /// use devela::error::ExtOption;
     ///
     /// let foo: Option<u32> = Some(42);
     /// let bar: Option<u32> = None;

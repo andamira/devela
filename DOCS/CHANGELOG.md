@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
 - move `num::geom::algebra` module to `num::algebra::linear`.
+- move `code::result` module to `error`.
 - move `time` module inside `sys`.
 
 ### Fixed

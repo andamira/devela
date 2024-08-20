@@ -14,7 +14,8 @@ use crate::text::char::*;
 #[cfg(doc)]
 use crate::text::TextError::{NotEnoughCapacity, OutOfBounds};
 use crate::{
-    code::{unwrap, ConstDefault},
+    code::ConstDefault,
+    error::unwrap,
     text::{helpers::impl_sized_alias, StringNonul, TextResult as Result},
 };
 use core::str::Chars;

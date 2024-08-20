@@ -24,7 +24,8 @@ use crate::num::usize_up;
 #[cfg(_some_int_i)]
 use crate::{code::unwrap, num::NumError::NoInverse};
 use crate::{
-    code::{cif, iif, ValueQuant},
+    code::{cif, iif},
+    error::ValueQuant,
     num::NumError::{NonZeroRequired, Overflow},
     num::{Int, NumResult as Result},
 };

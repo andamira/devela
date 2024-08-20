@@ -10,7 +10,8 @@
 
 use crate::{
     _libcore::{fmt, ops::Deref, str::Chars},
-    code::{iif, paste, unwrap, ConstDefault},
+    code::{iif, paste, ConstDefault},
+    error::unwrap,
     text::{
         char::{char_to_utf8_bytes, char_utf8_4bytes_len},
         TextError::{self, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},

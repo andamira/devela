@@ -1,4 +1,4 @@
-// devela::code::result::own::general
+// devela::error::own::general
 //
 //!
 //

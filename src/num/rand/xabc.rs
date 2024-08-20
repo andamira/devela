@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::code::{ConstDefault, Own};
+use crate::{code::ConstDefault, error::Own};
 
 /// X ABC Algorithm Random Number Generator for 8-bit Devices.
 ///

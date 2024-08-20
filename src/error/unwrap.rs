@@ -1,4 +1,4 @@
-// devela::code::code::result::unwrap
+// devela::error::result::unwrap
 //
 //!
 //
@@ -185,8 +185,8 @@ pub use unwrap;
 #[cfg(test)]
 mod tests {
     #[cfg(feature = "std")]
-    use crate::code::panic_catch;
-    use crate::code::{serr, sok, unwrap, OptRes};
+    use crate::error::panic_catch;
+    use crate::error::{serr, sok, unwrap, OptRes};
 
     const OPTION_SOME: Option<bool> = Some(true);
     const OPTION_NONE: Option<bool> = None;

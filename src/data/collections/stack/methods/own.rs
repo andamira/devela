@@ -13,11 +13,12 @@
 #[cfg(doc)]
 use crate::data::DataError::OutOfBounds;
 use crate::{
-    code::{sf, Own},
+    code::sf,
     data::{
         DataError::{NotEnoughElements, NotEnoughSpace},
         DataResult as Result, Stack,
     },
+    error::Own,
     mem::{cswap, Bare},
 };
 

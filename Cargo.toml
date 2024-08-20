@@ -84,10 +84,11 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	"code", "data", "exec", "mem", "num", "sys", "text",
+	"code", "data", "error", "exec", "mem", "num", "sys", "text",
 	]
 code = []
 data = []
+error = []
 exec = ["bytemuck?/zeroable_atomics"]
 mem = [
 	"mem_bit",
@@ -109,11 +110,12 @@ text = []
 # 2. don't enable the `safe` feature for that module.
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_exec", "safe_mem",
+	"safe_code", "safe_data", "safe_error", "safe_exec", "safe_mem",
 	"safe_num", "safe_sys", "safe_time", "safe_text",
 ] # in specific modules:
 	safe_code = []
 	safe_data = []
+	safe_error = []
 	safe_exec = []
 	safe_mem = []
 	safe_num = []

@@ -1,20 +1,16 @@
 // devela::code
 //
 //! Code reflective synthesis, <small>extends <br/>
-//! `std::{`[`any`], [`clone`], [`convert`], [`default`], [`error`], [`hint`],
-//! [`marker`], [`ops`], [`option`], [`panic`], [`result`]`}`.</small>
+//! `std::{`[`any`], [`clone`], [`convert`], [`default`], [`hint`], [`marker`],
+//! [`ops`] `}`.</small>
 //!
 //! [`any`]: std::any
 //! [`clone`]: std::clone
 //! [`convert`]: std::convert
 //! [`default`]: std::default
-//! [`error`]: std::error
 //! [`hint`]: std::hint
 //! [`marker`]: std::marker
 //! [`ops`]: std::ops
-//! [`option`]: std::option
-//! [`panic`]: mod@std::panic
-//! [`result`]: std::result
 //
 
 // safety:
@@ -38,12 +34,11 @@ mod ident; // identifier related macros
 mod iif; // iif![]
 mod paste; // paste![] wrapped for docs
 mod reexports; // re-exported items
-mod result; // std::{error, option, panic, result}
 mod skip_format; // sf![]
 #[allow(unused_imports)]
 pub use {
     any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, ident::*, iif::*,
-    paste::*, reexports::*, result::all::*, skip_format::*,
+    paste::*, reexports::*, skip_format::*,
 };
 
 #[cfg(_some_bit)]
@@ -56,7 +51,7 @@ pub(crate) mod all {
     #[allow(unused_imports)]
     pub use super::{
         any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, ident::*, iif::*,
-        paste::*, reexports::*, result::all::*, skip_format::*,
+        paste::*, reexports::*, skip_format::*,
     };
 
     #[cfg(_some_bit)]

@@ -39,7 +39,7 @@ mod core_impls {
     use super::TimeError as E;
     use core::fmt;
 
-    impl crate::code::Error for E {}
+    impl crate::error::Error for E {}
 
     impl fmt::Display for E {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

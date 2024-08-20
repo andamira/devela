@@ -1,4 +1,4 @@
-// devela::code::result::chain::traits
+// devela::error::chain::traits
 //
 //! Free function chaining traits helpers.
 //
@@ -7,7 +7,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::code::Apply;
+/// use devela::error::Apply;
 ///
 /// let s = 1
 ///     .apply(|s| s * 2)
@@ -17,7 +17,7 @@
 /// ```
 ///
 /// ```compile_fail
-/// use devela::code::Apply;
+/// use devela::error::Apply;
 ///
 /// // We can sort it, but we don't receive the new vec.
 /// let v: Vec<i32> = vec![3, 2, 1, 5].apply_mut(|it| it.sort());
@@ -62,7 +62,7 @@ impl<T: ?Sized, Res> Apply<Res> for T {}
 ///
 /// # Examples
 /// ```
-/// use devela::code::Also;
+/// use devela::error::Also;
 ///
 /// let v = vec![3, 2, 1, 5]
 ///     .also_mut(|v| v.sort())

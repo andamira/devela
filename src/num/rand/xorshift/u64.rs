@@ -3,10 +3,7 @@
 //! 64-bit versions of XorShift generators.
 //
 
-use crate::{
-    code::{ConstDefault, Own},
-    num::Cast,
-};
+use crate::{code::ConstDefault, error::Own, num::Cast};
 
 /// The `XorShift64` pseudo-random number generator.
 ///

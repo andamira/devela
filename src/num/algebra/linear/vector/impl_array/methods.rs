@@ -10,7 +10,7 @@ use crate::num::algebra::linear::Vector;
 #[cfg(all(not(feature = "std"), _some_float))]
 use crate::num::ExtFloat;
 #[cfg(_some_int)]
-use crate::{code::unwrap, num::Int};
+use crate::{error::unwrap, num::Int};
 use core::{concat as cc, stringify as fy};
 
 /* common methods */

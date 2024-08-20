@@ -4,7 +4,7 @@
 //
 
 use crate::{
-    code::{ConstDefault, Own},
+    code::ConstDefault,
     data::{
         array_init,
         error::{
@@ -13,6 +13,7 @@ use crate::{
         },
         Array, Stack,
     },
+    error::Own,
     mem::Bare,
 };
 #[cfg(feature = "alloc")]

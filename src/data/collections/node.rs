@@ -5,11 +5,12 @@
 //
 
 use crate::{
-    code::{paste, unwrap, ConstDefault, Own},
+    code::{paste, ConstDefault},
     data::{
         DataError::{NodeLinkNotSet, NodeLinkNotUnique, NotEnoughSpace, OutOfBounds},
         DataResult as Result,
     },
+    error::{unwrap, Own},
     mem::mem_replace,
     num::niche::*,
 };

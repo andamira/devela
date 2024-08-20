@@ -1,7 +1,7 @@
-// devela::code::result
+// devela::error
 //
-//! Result handling and functional enhancements, extends
-//! `std::{`[`error`], [`option`], [`panic`], [`result`]`}`.
+//! Error management, result handling and utility enhancements,
+//! <br/><small>extends `std::{`[`error`], [`option`], [`panic`], [`result`]`}`.</small>
 //!
 //! [`error`]: std::error
 //! [`option`]: std::option
@@ -20,13 +20,14 @@ mod never;
 mod option;
 mod own;
 mod panic;
+mod reexports;
 mod traits;
 mod unwrap;
 mod value_quant;
 #[allow(unused_imports)]
 pub use {
-    ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, traits::*,
-    unwrap::*, value_quant::*,
+    ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexports::*,
+    traits::*, unwrap::*, value_quant::*,
 };
 
 #[cfg(not(feature = "std"))]
@@ -39,8 +40,8 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, traits::*,
-        unwrap::*, value_quant::*,
+        ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexports::*,
+        traits::*, unwrap::*, value_quant::*,
     };
 
     #[doc(inline)]

@@ -20,7 +20,8 @@ use crate::num::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
 use crate::{
-    code::{iif, unwrap},
+    code::iif,
+    error::unwrap,
     num::{upcasted_op, Int, NumError, NumResult as Result},
 };
 #[cfg(_some_int_i)]

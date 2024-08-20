@@ -1,7 +1,7 @@
 // examples/coro_run.rs
 
 use devela::{
-    code::{serr, sok},
+    error::{serr, sok},
     exec::CoroRun,
 };
 

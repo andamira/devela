@@ -62,7 +62,7 @@ crate::num::impl_ops![Int: (no_neg) u8:"_int_i8", u16:"_int_u16", u32:"_int_u32"
 mod core_impls {
     use super::Int;
     use core::{fmt, cmp, hash};
-    use crate::code::ValueQuant;
+    use crate::error::ValueQuant;
 
     impl<T: Clone> Clone for Int<T> {
         #[inline] #[must_use]

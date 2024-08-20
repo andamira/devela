@@ -3,7 +3,7 @@
 //! 8-bit versions of XorShift generators.
 //
 
-use crate::code::{ConstDefault, Own};
+use crate::{code::ConstDefault, error::Own};
 
 /// The `XorShift8` pseudo-random number generator.
 ///

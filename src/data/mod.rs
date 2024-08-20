@@ -1,8 +1,7 @@
 // devela::data
 //
-//! Data handling and manipulation, <small>extends
-//! `std::{`[`array`], [`collections`], [`hash`], [`iter`], [`vec`]`}`.
-//! </small>
+//! Data handling and manipulation, <br/><small>
+//! extends `std::{`[`array`], [`collections`], [`hash`], [`iter`], [`vec`]`}`. </small>
 //!
 //! [`array`]: mod@std::array
 //! [`collections`]: std::collections

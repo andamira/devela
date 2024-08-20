@@ -5,7 +5,8 @@
 
 use super::*;
 use crate::{
-    code::{paste, unwrap, ConstDefault},
+    code::{paste, ConstDefault},
+    error::unwrap,
     text::{TextError, TextResult as Result},
 };
 use core::fmt;

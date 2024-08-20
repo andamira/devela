@@ -10,12 +10,13 @@ mod edge;
 use edge::impl_graph_edge;
 
 use crate::{
-    code::{paste, unwrap, ConstDefault},
+    code::{paste, ConstDefault},
     data::{
         Array,
         DataError::{KeyAlreadyExists, NodeEmpty, NotEnoughSpace, OutOfBounds},
         DataResult as Result,
     },
+    error::unwrap,
     mem::{Bare, Storage},
     num::niche::*,
 };

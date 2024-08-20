@@ -7,7 +7,8 @@
 // - trait impls
 
 use crate::{
-    code::{cfor, iif, unwrap, ConstDefault},
+    code::{cfor, iif, ConstDefault},
+    error::unwrap,
     text::{
         helpers::impl_sized_alias,
         TextError::{
