@@ -391,7 +391,7 @@ macro_rules! custom_impls {
                 if self < 0.0 {
                     Float(1.0 / (-self).exp_m1_series(terms).0)
                 } else if self > 0.001 {
-                    self.exp_series(terms)- 1.0
+                    self.exp_series(terms) - 1.0
                 } else {
                     let (mut result, mut term, mut factorial) = (0.0, self.0, 1.0);
                     for i in 1..=terms {
@@ -514,7 +514,9 @@ macro_rules! custom_impls {
             pub fn log_series(self, base: $f, terms: $ue) -> Float<$f> {
                 if base <= 0.0 {
                     Self::NAN
-                } else if base == 1.0 {
+                // The logarithm with a base of 1 is undefined except when the argument is also 1.
+                } else if (base - 1.0).abs() < Self::MEDIUM_MARGIN.0 { // + arithmetically robust
+                // } else if base == 1.0 { // good enough for direct input
                     iif![self == 1.0; Self::NAN; Self::NEG_INFINITY]
                 } else {
                     self.ln_series(terms) / Float(base).ln_series(terms)

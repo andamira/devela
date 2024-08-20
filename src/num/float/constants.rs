@@ -170,7 +170,16 @@ pub trait ExtFloatConst: Sized {
     const MAX_10_EXP: i32;
 
     /// Machine epsilon value.
+    ///
+    /// This is the smallest difference detectable between 1.0 and the next
+    /// representable number in the floating-point format.
     const EPSILON: Self;
+    /// Allows for minimal deviation; use for high precision needs.
+    const LOW_MARGIN: Self;
+    /// Accommodates moderate deviation; balances precision and flexibility.
+    const MEDIUM_MARGIN: Self;
+    /// Permits generous deviation; suitable for less precise scenarios.
+    const HIGH_MARGIN: Self;
 
     /// The radix or base of the internal representation.
     const RADIX: u32;
@@ -533,6 +542,26 @@ pub trait ExtFloatConst: Sized {
     const LN_10: Self;
 }
 
+// Private helper struct to define manual, type-dependendent constants.
+struct TempFloat<T> {
+    _marker: core::marker::PhantomData<T>,
+}
+macro_rules! impl_temp_float {
+    () => {
+        impl_temp_float![f32: 1e-7, 1e-6, 1e-5];
+        impl_temp_float![f64: 1e-12, 1e-9, 1e-6];
+    };
+    ($f:ty: $lm:literal, $mm:literal, $hm:literal) => {
+        impl TempFloat<$f> {
+            // Practical margins of error.
+            pub const LOW_MARGIN: $f = $lm;
+            pub const MEDIUM_MARGIN: $f = $mm;
+            pub const HIGH_MARGIN: $f = $hm;
+        }
+    };
+}
+impl_temp_float![];
+
 // impl mathematical constants
 //
 // $f: the floating-point type.
@@ -553,6 +582,9 @@ macro_rules! math_const_impls {
             const NEG_INFINITY: $f = <$f>::NEG_INFINITY;
 
             const EPSILON: $f = <$f>::EPSILON;
+            const LOW_MARGIN: $f = TempFloat::<$f>::LOW_MARGIN;
+            const MEDIUM_MARGIN: $f = TempFloat::<$f>::MEDIUM_MARGIN;
+            const HIGH_MARGIN: $f = TempFloat::<$f>::HIGH_MARGIN;
 
             const RADIX: u32 = <$f>::RADIX;
             const DIGITS: u32 = <$f>::DIGITS;

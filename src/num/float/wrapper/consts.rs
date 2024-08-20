@@ -21,8 +21,7 @@ macro_rules! technical_const_impls {
         $( technical_const_impls![@$f:$u[$bias, $exp, $sig, $fisr, $nrt]]; )+
     };
     (@$f:ty:$u:ty
-     [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal]
-     ) => {
+        [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal] ) => {
         #[allow(unused)]
         impl Float<$f> {
             // Bias value used in the exponent to allow representation of both positive
@@ -49,7 +48,7 @@ technical_const_impls![
     // Uses Lomont's double precision magic number for fisqrt
     // f64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-15],
     // Uses Matthew Robertson's double precision magic number
-    f64:u64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-14]
+    f64:u64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-12]
     // Matthew Robertson's quadruple precision magic number
     // f128:u128[, , , 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf, ]
 ];
@@ -76,6 +75,10 @@ macro_rules! math_const_impls {
             pub const NEG_INFINITY: Float<$f> = Float(<$f>::NEG_INFINITY);
 
             pub const EPSILON: Float<$f> = Float(<$f>::EPSILON);
+
+            pub const LOW_MARGIN: Float<$f> = Float(<$f>::LOW_MARGIN);
+            pub const MEDIUM_MARGIN: Float<$f> = Float(<$f>::MEDIUM_MARGIN);
+            pub const HIGH_MARGIN: Float<$f> = Float(<$f>::HIGH_MARGIN);
 
             pub const RADIX: u32 = <$f>::RADIX;
             pub const DIGITS: u32 = <$f>::DIGITS;
