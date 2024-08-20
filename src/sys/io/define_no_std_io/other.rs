@@ -2,14 +2,14 @@
 
 use super::error::{IoError as Error, IoErrorKind, IoResult as Result};
 #[cfg(feature = "alloc")]
-use crate::_liballoc::vec::Vec;
+use crate::_dep::_liballoc::vec::Vec;
 use crate::code::sf;
 use core::{cmp, fmt, slice};
 
 #[cfg(feature = "alloc")]
 mod alloc_impls {
     use super::*;
-    use crate::_liballoc::vec;
+    use crate::_dep::_liballoc::vec;
 
     /// Reads all bytes from a reader into the given buffer, adapting the buffer size as needed.
     ///

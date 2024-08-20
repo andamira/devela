@@ -65,7 +65,7 @@ impl Error for core::convert::Infallible {}
 #[cfg(feature = "alloc")]
 mod impl_alloc {
     use super::{Debug, Display, Error};
-    use crate::_liballoc::{
+    use crate::_dep::_liballoc::{
         borrow::Cow,
         boxed::Box,
         string::{FromUtf16Error, FromUtf8Error, String},

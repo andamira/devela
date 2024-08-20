@@ -7,7 +7,7 @@
 use crate::mem::BareBox;
 #[cfg(feature = "alloc")]
 use crate::{
-    _liballoc::vec::Vec,
+    _dep::_liballoc::vec::Vec,
     mem::{Box, Boxed},
 };
 use crate::{

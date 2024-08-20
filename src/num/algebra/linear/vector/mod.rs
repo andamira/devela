@@ -11,7 +11,7 @@
 use crate::num::Num;
 #[cfg(feature = "alloc")]
 use crate::{
-    _liballoc::{boxed::Box, vec::Vec},
+    _dep::_liballoc::{boxed::Box, vec::Vec},
     num::{NumError, NumResult as Result},
 };
 

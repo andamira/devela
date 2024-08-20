@@ -22,7 +22,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::{
-    _liballoc::{collections::BTreeSet, vec, vec::Vec},
+    _dep::_liballoc::{collections::BTreeSet, vec, vec::Vec},
     error::Also,
 };
 use crate::{

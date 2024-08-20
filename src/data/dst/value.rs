@@ -9,7 +9,7 @@ use super::{check_fat_pointer, decompose_pointer, store_metadata, DstArray, DstB
 #[cfg(doc)]
 use crate::mem::MaybeUninit;
 use crate::{
-    _libcore::{marker, ptr},
+    _dep::_libcore::{marker, ptr},
     mem::{mem_forget, ManuallyDrop, MemAligned},
 };
 

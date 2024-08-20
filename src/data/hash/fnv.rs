@@ -1,7 +1,7 @@
 // devela::data::hash::fnv
 
 use crate::{
-    _libcore::{
+    _dep::_libcore::{
         concat as cc,
         hash::{BuildHasherDefault, Hasher},
         stringify as fy,

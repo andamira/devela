@@ -2,7 +2,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::{
-    _liballoc::{vec, vec::Vec},
+    _dep::_liballoc::{vec, vec::Vec},
     mem::Boxed,
 };
 use crate::{

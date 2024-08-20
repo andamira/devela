@@ -13,7 +13,7 @@
 //   - sqrt
 
 #[cfg(feature = "alloc")]
-use crate::_liballoc::vec::Vec;
+use crate::_dep::_liballoc::vec::Vec;
 use crate::num::{GcdExt, Num, NumInt, NumRef, NumResult as Result};
 use core::ops::Deref;
 

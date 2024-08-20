@@ -6,7 +6,7 @@
 #[cfg(feature = "alloc")]
 use crate::mem::Boxed;
 use crate::{
-    _libcore::{cmp::Ordering, fmt},
+    _dep::_libcore::{cmp::Ordering, fmt},
     code::ConstDefault,
     data::{
         Array, DataCollection, DataDeque, DataDesta, DataQueue, DataResult as Result, DataStack,

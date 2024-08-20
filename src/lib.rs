@@ -5,7 +5,7 @@
 
 //* global config *//
 //
-// lints: (deny, warn, allow)
+// lints: (builtin, clippy, rustdoc) & (deny, warn, allow)
 // - https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/index.html#constants
 // - https://rust-lang.github.io/rust-clippy/rust-1.80.0/index.html
 // - https://doc.rust-lang.org/rustdoc/lints.html
@@ -18,7 +18,7 @@
 #![warn(
     missing_docs, // missing docs for public items
     clippy::all, // (the default set of clippy lints)
-    // from clippy::pedantic:
+    // a selection from clippy::pedantic:
     clippy::bool_to_int_with_if, // using an if statement to convert a bool to an int
     clippy::cloned_instead_of_copied, // usage of cloned() where copied() could be used
     clippy::default_union_representation, // union declared without #[repr(C)]
@@ -111,23 +111,6 @@ pub use all::*;
 
 /// Dependencies.
 pub mod _dep;
-
-/// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
-/// *Re-exported Rust `alloc` library environment.*
-#[doc(inline)]
-#[cfg(feature = "alloc")]
-pub extern crate alloc as _liballoc;
-
-/// <span class='stab portability' title='re-exported `core`'>`core`</span>
-/// *Re-exported Rust `core` library environment.*
-#[doc(inline)]
-pub use ::core as _libcore;
-
-/// <span class='stab portability' title='re-exported `std`'>`std`</span>
-/// *Re-exported Rust `std` library environment.*
-#[cfg(feature = "std")]
-#[doc(inline)]
-pub use ::std as _libstd;
 
 /// Information about the library
 pub mod _info {

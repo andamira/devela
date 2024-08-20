@@ -18,7 +18,7 @@ use crate::mem::MemPod;
 #[cfg(feature = "mem_bit")]
 use crate::mem::{bit_sized, ByteSized};
 use crate::{
-    _libcore::{fmt, num::*, str::FromStr},
+    _dep::_libcore::{fmt, num::*, str::FromStr},
     code::{paste, ConstDefault},
 };
 

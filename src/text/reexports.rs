@@ -19,10 +19,14 @@ impl_cdef![Self::new() => String];
 
 /* alloc, std */
 
-#[cfg(all(feature = "alloc", not(feature = "std")))]
-pub use crate::_liballoc::string::{String, ToString};
-#[cfg(feature = "std")]
-pub use crate::_libstd::string::{String, ToString};
+reexport! { rust: alloc::string,
+    doc: "A UTF-8–encoded, growable string.",
+    String
+}
+reexport! { rust: alloc::string,
+    doc: "A trait for converting a value to a String.",
+    ToString
+}
 
 /* const-str */
 

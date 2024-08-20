@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::_liballoc::vec::Vec;
+use crate::_dep::_liballoc::vec::Vec;
 #[cfg(feature = "_int_usize")]
 use crate::num::isize_up;
 #[allow(unused_imports)]

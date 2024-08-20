@@ -8,7 +8,7 @@
 // - nanos_u64: not just clamp the seconds but all to 999?
 
 #[cfg(feature = "alloc")]
-use crate::_liballoc::{format, string::String};
+use crate::_dep::_liballoc::{format, string::String};
 #[cfg(all(feature = "_float_f64", not(feature = "std")))]
 use crate::num::ExtFloat;
 #[allow(unused_imports)]

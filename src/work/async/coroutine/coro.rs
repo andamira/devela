@@ -14,7 +14,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::{
-    _liballoc::{boxed::Box, collections::VecDeque},
+    _dep::_liballoc::{boxed::Box, collections::VecDeque},
     work::task_waker_noop,
 };
 use crate::{
