@@ -12,7 +12,7 @@ mod libm_std;
 mod consts;
 
 #[cfg(all(test, feature = "_float_f32"))]
-mod tests;
+mod tests_f32;
 
 /// Provides comprehensive floating-point operations for `T`, some of them *const*.
 ///

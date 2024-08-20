@@ -89,8 +89,10 @@ pub mod sys;
 pub mod text;
 pub mod work;
 
+/* utility modules */
+
 /// All the library items.
-pub mod all {
+pub mod _all {
     #[allow(unused_imports)]
     #[rustfmt::skip]
     #[doc(inline)]
@@ -107,12 +109,12 @@ pub mod all {
 }
 #[doc(no_inline)]
 #[allow(unused_imports)]
-pub use all::*;
+pub use _all::*;
 
-/// Dependencies.
+/// Library dependencies.
 pub mod _dep;
 
-/// Information about the library
+/// Information about the library.
 pub mod _info {
     /// Documented examples.
     #[cfg(any(doc, test))]

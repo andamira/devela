@@ -1,7 +1,8 @@
 // devela::_dep
 //
-//! Library dependencies.
+//!
 //
+// TOC
 // - standard libraries
 // - external dependencies
 

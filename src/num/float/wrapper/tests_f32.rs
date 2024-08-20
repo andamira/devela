@@ -1,5 +1,6 @@
 // devela::num::float::wrapper::tests
-//!
+//
+//! All the examples use f32
 //
 
 use crate::num::{Float, Sign};
@@ -91,8 +92,8 @@ fn lerp() {
 }
 #[test]
 fn eval_poly() {
-    assert_eq![Float(3.0_f64).eval_poly(&[]), 0.0];
-    assert_eq![Float(3.0_f64).eval_poly(&[0.]), 0.0];
-    assert_eq![Float(3.0_f64).eval_poly(&[1.]), 1.0];
-    assert_eq![Float(3.0_f64).eval_poly(&[2.0, -6.0, 2.0, -1.0]), 5.0];
+    assert_eq![Float(3.0_f32).eval_poly(&[]), 0.0];
+    assert_eq![Float(3.0_f32).eval_poly(&[0.]), 0.0];
+    assert_eq![Float(3.0_f32).eval_poly(&[1.]), 1.0];
+    assert_eq![Float(3.0_f32).eval_poly(&[2.0, -6.0, 2.0, -1.0]), 5.0];
 }

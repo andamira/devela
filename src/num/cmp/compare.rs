@@ -475,11 +475,11 @@ mod test_min_max_clamp {
     }
 
     #[test]
+    #[cfg(feature = "_float_f32")]
     fn float() {
         let (zero, negzero, one, negone) = (C(0.0_f32), C(-0.0_f32), C(1.0_f32), C(-1.0_f32));
         let (nan1, nan2) = (C(f32::NAN), C(0.0_f32 / 0.0_f32));
         let (inf, neginf) = (C(f32::INFINITY), C(f32::NEG_INFINITY));
-        #[cfg(feature = "_f32")]
         let sub = C(1.401298464e-45_f32);
         let (min, negmin) = (C(f32::MIN_POSITIVE), C(-f32::MIN_POSITIVE));
 
@@ -501,7 +501,6 @@ mod test_min_max_clamp {
         assert![!negzero.is_positive()];
         assert![!neginf.is_positive()];
 
-        #[cfg(feature = "_f32")]
         #[cfg(any(
             all(not(feature = "safe_num"), feature = "unsafe_const"),
             any(feature = "safe_num", not(feature = "unsafe_const"))
