@@ -142,7 +142,7 @@ impl XorShift64 {
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand_core")))]
 mod impl_rand {
     use super::XorShift64;
-    use crate::_deps::rand_core::{Error, RngCore, SeedableRng};
+    use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
 
     impl RngCore for XorShift64 {
         /// Returns the next random `u32`,

@@ -12,7 +12,7 @@
     feature = "unsafe_niche",
     not(feature = "safe_num")
 ))]
-use crate::_deps::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
+use crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 #[cfg(feature = "unsafe_layout")]
 use crate::mem::MemPod;
 #[cfg(feature = "mem_bit")]

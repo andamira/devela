@@ -110,7 +110,7 @@ pub mod all {
 pub use all::*;
 
 /// Dependencies.
-pub mod _deps;
+pub mod _dep;
 
 /// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
 /// *Re-exported Rust `alloc` library environment.*

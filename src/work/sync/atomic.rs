@@ -59,7 +59,7 @@ reexport! { "portable-atomic" | portable_atomic, features: "work",
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(feature = "portable-atomic")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
-pub use crate::_deps::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
+pub use crate::_dep::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
 
 /// <span class="stab portability" title="re-exported either from `core` or from the
 /// `portable-atomic` crate">`*`</span>
@@ -67,7 +67,7 @@ pub use crate::_deps::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(feature = "portable-atomic")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
-pub use crate::_deps::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
+pub use crate::_dep::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
 
 #[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "16"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
@@ -91,7 +91,7 @@ pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(feature = "portable-atomic")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
-pub use crate::_deps::portable_atomic::AtomicPtr;
+pub use crate::_dep::portable_atomic::AtomicPtr;
 //
 #[cfg(all(not(feature = "portable-atomic"), target_has_atomic = "ptr"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
@@ -103,7 +103,7 @@ pub use core::sync::atomic::AtomicPtr;
 #[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
 #[cfg(feature = "portable-atomic")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
-pub use crate::_deps::portable_atomic::AtomicBool;
+pub use crate::_dep::portable_atomic::AtomicBool;
 //
 #[cfg(not(feature = "portable-atomic"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]

@@ -150,7 +150,7 @@ impl Xabc {
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand_core")))]
 mod impl_rand {
     use super::Xabc;
-    use crate::_deps::rand_core::{Error, RngCore, SeedableRng};
+    use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
 
     impl RngCore for Xabc {
         /// Returns the next 4 × random `u8` combined as a single `u32`.

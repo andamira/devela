@@ -240,7 +240,7 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand_core")))]
 mod impl_rand {
     use super::{XorShift8, XorShift8Custom};
-    use crate::_deps::rand_core::{Error, RngCore, SeedableRng};
+    use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
 
     impl RngCore for XorShift8 {
         /// Returns the next 4 × random `u8` combined as a single `u32`.

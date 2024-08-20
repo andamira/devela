@@ -249,7 +249,7 @@ macro_rules! reexport {
         #[cfg(any(
             all(feature = $dep_str $(, $(feature = $f),+ )? )
         ))]
-        pub use crate::_deps::$dep $( ::$dep_path )? :: {
+        pub use crate::_dep::$dep $( ::$dep_path )? :: {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
         };

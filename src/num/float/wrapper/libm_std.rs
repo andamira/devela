@@ -44,7 +44,7 @@ macro_rules! impl_fp {
         $(#[doc = $doc])?
         #[inline]
         pub fn $op(self, $($arg: $f),*) -> Float<$f> {
-            Float($crate::_deps::libm::Libm::<$f>::$opfn(self.0, $($arg),*))
+            Float($crate::_dep::libm::Libm::<$f>::$opfn(self.0, $($arg),*))
         }
     };
     // Matches a single operation and implements it using the `std` library.
@@ -62,7 +62,7 @@ use impl_fp;
 #[cfg(feature = "libm")]
 mod _libm {
     use super::{impl_fp, Float};
-    use crate::_deps::libm::Libm;
+    use crate::_dep::libm::Libm;
     use crate::code::iif;
 
     // custom implementations are commented out

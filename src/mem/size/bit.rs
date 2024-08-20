@@ -44,7 +44,7 @@ use crate::text::EgcString;
 use crate::text::{EgcNonul, StringNonul};
 
 #[cfg(feature = "portable-atomic")]
-use crate::_deps::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
+use crate::_dep::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
 #[cfg(feature = "work")]
 use crate::work::{AtomicBool, AtomicOrdering};
 #[cfg(all(

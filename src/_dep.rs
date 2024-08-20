@@ -1,4 +1,4 @@
-// devela::_deps
+// devela::_dep
 //
 //! Library dependencies.
 //

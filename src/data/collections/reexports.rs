@@ -72,11 +72,11 @@ mod hashbrown_reexports {
     ///
     /// To create with a reserved capacity,
     /// use `AllocMapFx::with_capacity_and_hasher(num, Default::default())`.
-    pub type AllocMapFx<K, V> = crate::_deps::hashbrown::HashMap<K, V, HasherBuildFx>;
+    pub type AllocMapFx<K, V> = crate::_dep::hashbrown::HashMap<K, V, HasherBuildFx>;
 
     /// An [`AllocSet`] using a default Fx hasher.
     ///
     /// To create with a reserved capacity,
     /// use `AllocSetFx::with_capacity_and_hasher(num, Default::default())`.
-    pub type AllocSetFx<K, V> = crate::_deps::hashbrown::HashSet<K, V, HasherBuildFx>;
+    pub type AllocSetFx<K, V> = crate::_dep::hashbrown::HashSet<K, V, HasherBuildFx>;
 }

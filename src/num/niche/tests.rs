@@ -71,7 +71,7 @@ fn non_range() {
 #[cfg(feature = "_non_range_i8")]
 #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
 fn non_range_bytemuck() {
-    use crate::_deps::bytemuck::CheckedBitPattern;
+    use crate::_dep::bytemuck::CheckedBitPattern;
 
     // a range that doesn't wrap around
     type R1 = NonRangeI8<-10, 10>;
@@ -155,7 +155,7 @@ fn range() {
 #[cfg(feature = "_in_range_i8")]
 #[cfg(all(feature = "unsafe_niche", not(feature = "safe_num")))]
 fn range_bytemuck() {
-    use crate::_deps::bytemuck::CheckedBitPattern;
+    use crate::_dep::bytemuck::CheckedBitPattern;
 
     // a positive range
     type R1 = InRangeI8<1, 10>;

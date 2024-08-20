@@ -267,7 +267,7 @@ impl Xyza8b {
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand_core")))]
 mod impl_rand {
     use super::{Xyza8a, Xyza8b};
-    use crate::_deps::rand_core::{Error, RngCore, SeedableRng};
+    use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
 
     impl RngCore for Xyza8a {
         /// Returns the next 4 × random `u8` combined as a single `u32`.

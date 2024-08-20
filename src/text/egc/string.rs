@@ -5,7 +5,7 @@
 
 use super::Egc;
 #[cfg(feature = "unicode-segmentation")]
-use crate::_deps::unicode_segmentation::UnicodeSegmentation;
+use crate::_dep::unicode_segmentation::UnicodeSegmentation;
 #[allow(unused_imports)]
 use crate::_liballoc::{
     str::{self, Chars as CharIterator},
