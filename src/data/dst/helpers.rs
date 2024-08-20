@@ -31,11 +31,12 @@ pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: MemPod>(
     meta_vals: &BufSlice<W>,
 ) -> *mut T {
     #[repr(C)]
-    #[derive(Copy, Clone)]
+    #[derive(Clone, Copy)]
     struct Raw {
         ptr: *const (),
         meta: [usize; 4],
     }
+    #[repr(C)]
     union Inner<T: ?Sized> {
         ptr: *mut T,
         raw: Raw,

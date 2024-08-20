@@ -4,6 +4,7 @@
 //
 
 use core::{fmt, str::FromStr};
+#[allow(clippy::enum_glob_use)]
 use Weekday::*;
 
 /// The days of the week.

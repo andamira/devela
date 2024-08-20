@@ -165,7 +165,7 @@ impl<V> DataCollection for AllocOrdSet<V> {
     }
     /// This is less efficent than [`AllocOrdSet::contains`] for not having [`Ord`].
     fn collection_count(&self, element: &Self::Element) -> Result<usize> where V: PartialEq {
-        Ok(if self.iter().any(|e| e == element) { 1 } else { 0 })
+        Ok(usize::from(self.iter().any(|e| e == element)))
     }
 }
 
@@ -198,6 +198,6 @@ impl<V> DataCollection for AllocSet<V> {
     }
     /// This is less efficent than [`AllocSet::contains`] for not having [`Hash`] and [`Eq`].
     fn collection_count(&self, element: &Self::Element) -> Result<usize> where V: PartialEq {
-        Ok(if self.iter().any(|e| e == element) { 1 } else { 0 })
+        Ok(usize::from(self.iter().any(|e| e == element)))
     }
 }

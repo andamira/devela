@@ -123,7 +123,7 @@ impl<T: Ord> Sort<&mut [T]> {
             let count = counts.entry(item.clone()).or_insert(0);
             *count += 1;
         }
-        let freq: Vec<usize> = counts.values().cloned().collect();
+        let freq: Vec<usize> = counts.values().copied().collect();
         // Reconstruct the sorted slice
         let mut i = 0;
         for (item, &count) in counts.iter() {

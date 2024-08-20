@@ -19,6 +19,11 @@
     missing_docs, // missing docs for public items
     clippy::all, // (the default set of clippy lints)
     // from clippy::pedantic:
+    clippy::bool_to_int_with_if, // using an if statement to convert a bool to an int
+    clippy::cloned_instead_of_copied, // usage of cloned() where copied() could be used
+    clippy::default_union_representation, // union declared without #[repr(C)]
+    clippy::empty_structs_with_brackets, // structs without fields, with brackets
+    clippy::enum_glob_use, // checks for `use Enum::*`
     clippy::semicolon_if_nothing_returned, // expression returns () not followed by a semicolon
     clippy::single_match_else, // matches with two arms where an if let else will usually suffice
     clippy::trivially_copy_pass_by_ref, // fns with ref args that could be passed by value
