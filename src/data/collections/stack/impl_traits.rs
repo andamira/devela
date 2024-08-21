@@ -24,7 +24,6 @@ macro_rules! impl_stack {
     ($( $IDX:ty: $cap:literal ),+) => {
         $(
             #[cfg(feature = $cap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl_stack![@$IDX:$cap];
         )+
     };
@@ -96,8 +95,8 @@ macro_rules! impl_stack {
             /// Returns a stack filled with an iterator, in the heap.
             /// # Examples
             /// ```
-            /// # use devela::{Boxed, StackU32};
-            /// let s: StackU32<_, 3, Boxed> = [1, 2, 3].into();
+            /// # use devela::{Boxed, StackU8};
+            /// let s: StackU8<_, 3, Boxed> = [1, 2, 3].into();
             /// ```
             fn from(iterator: I) -> Stack<T, CAP, $IDX, Boxed> {
                 let mut s = Stack::<T, CAP, $IDX, Boxed>::default();

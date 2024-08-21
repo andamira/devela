@@ -1,7 +1,7 @@
 // devela::error
 //
-//! Error management, result handling and utility enhancements.
-#![doc = crate::code::doc_extends!(error, option, panic, result)]
+//! Error management, result handling.
+#![doc = crate::code::doc_extends!(backtrace, error, option, panic, result)]
 //!
 //! Streamlines error management, result chaining, and introduces utility types and macros.
 //!

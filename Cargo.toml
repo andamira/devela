@@ -3,6 +3,7 @@
 
 [workspace]
 members = [".", "macros"]
+resolver = "2"
 
 [lib]
 # path = "./src/lib.rs"

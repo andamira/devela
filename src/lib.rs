@@ -91,7 +91,7 @@ pub mod work;
 
 /* utility modules */
 
-/// All the library items.
+/// All the items.
 pub mod _all {
     #[allow(unused_imports)]
     #[rustfmt::skip]
@@ -114,7 +114,7 @@ pub use _all::*;
 /// Library dependencies.
 pub mod _dep;
 
-/// Information about the library.
+/// Information about the library.<br/><hr>
 pub mod _info {
     /// Documented examples.
     #[cfg(any(doc, test))]

@@ -27,7 +27,6 @@ macro_rules! impl_destaque {
     ($( $IDX:ty: $cap:literal ),+) => {
         $(
             #[cfg(feature = $cap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl_destaque![@$IDX:$cap];
         )+
     };

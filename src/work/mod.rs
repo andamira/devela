@@ -1,6 +1,6 @@
 // devela::work
 //
-//! Work management, concurrency strategies, and execution control.
+//! Work management, concurrency handling.
 #![doc = crate::code::doc_extends!(future, process, sync, task, thread)]
 //!
 //

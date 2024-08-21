@@ -10,7 +10,7 @@ use crate::code::iif;
     feature = "_string_u8",
     any(feature = "safe_text", not(feature = "unsafe_str"))
 ))]
-use crate::code::unwrap;
+use crate::error::unwrap;
 #[cfg(all(feature = "_string_u8", feature = "_cmp_u8"))]
 use crate::num::Compare;
 #[cfg(feature = "_string_u8")]

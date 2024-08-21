@@ -1,6 +1,6 @@
 // devela::num
 //
-//! Numerical types and operations, algebra.
+//! Numerical types and math operations.
 #![doc = crate::code::doc_extends!(cmp, num)]
 //!
 //
