@@ -20,4 +20,12 @@ mod std {
         doc: "A trait representing the basic expectations for error values.",
         Error
     }
+    reexport! { rust: std::backtrace,
+        doc: "A captured OS thread stack backtrace.",
+        Backtrace
+    }
+    reexport! { rust: std::backtrace,
+        doc: "The current status of a backtrace.",
+        BacktraceStatus
+    }
 }

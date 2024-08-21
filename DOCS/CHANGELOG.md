@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new struct `Env` that namespaces `std::env` functions and constants.
 - new `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
 - new type aliases: `AllocMapFx`, `AllocSetFx`.
+- reexport `std::backtrace` types.
 - reexport `core::cell` types.
 - impl `Num` for niche types.
 - new `num::algebra` module.
