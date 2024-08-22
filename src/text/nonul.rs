@@ -349,8 +349,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         let first_char_len = string
             .chars()
             .find(|&c| c != NUL_CHAR)
-            .map(|c| c.len_utf8())
-            .unwrap_or(0);
+            .map_or(0, |c| c.len_utf8());
         if self.remaining_capacity() < first_char_len {
             Err(NotEnoughCapacity(first_char_len))
         } else {

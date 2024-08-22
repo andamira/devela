@@ -28,6 +28,9 @@
     clippy::ignored_unit_patterns, // Checks for usage of _ in patterns of type ()
     clippy::float_cmp, // (in-)equality comparisons on floating-point values
     clippy::float_cmp_const, // (in-)equality comparisons on const floating-point values
+    clippy::manual_let_else, // cases where let...else could be used
+    clippy::manual_string_new, // usage of "" to create a String
+    clippy::map_unwrap_or, // usage of result|option.map(_).unwrap_or[_else](_)
     clippy::semicolon_if_nothing_returned, // expression returns () not followed by a semicolon
     clippy::single_match_else, // matches with two arms where an if let else will usually suffice
     clippy::trivially_copy_pass_by_ref, // fns with ref args that could be passed by value

@@ -49,10 +49,10 @@ macro_rules! impl_graph_edge {
             /// # Errors
             #[doc = "Returns [`OutOfBounds`] if `(orig|dest) >= `[`" $IDX "::MAX`]."]
             pub const fn new_some(orig: $IDX, dest: $IDX) -> Result<Self> {
-                let orig = if let Some(n) = <$Index>::new(orig) { n } else {
+                let Some(orig) = <$Index>::new(orig) else {
                     return Err(OutOfBounds(Some(orig as usize)));
                 };
-                let dest = if let Some(n) = <$Index>::new(dest) { n } else {
+                let Some(dest) = <$Index>::new(dest) else {
                     return Err(OutOfBounds(Some(dest as usize)));
                 };
                 Ok(Self($Node { data: (), links: [Some(orig), Some(dest)] }))
