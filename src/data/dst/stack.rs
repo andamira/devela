@@ -23,7 +23,7 @@ use core::{marker, mem, ptr};
 /// stack.push_copied(&[1]);
 /// ```
 // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792) ↓DENIED
-pub type DstStackUsize<DST /*: ?Sized*/, const N: usize> = DstStack<DST, DstArray<usize, N>>;
+pub type DstStackUsize<DST /*: ?Sized*/, const CAP: usize> = DstStack<DST, DstArray<usize, CAP>>;
 
 // Implementation Notes
 // -----

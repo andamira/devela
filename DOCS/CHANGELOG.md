@@ -40,6 +40,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `_deps` module to `_dep`.
 - rename `_lib*` libs removing the `lib` prefix.
 - rename `unsafe_dyn` feature to `unsafe_layout`.
+- rename `Dst*` types const-generic `N` to `CAP`.
 - rename `all` module to `_all`.
 - rename `exec` module to `work`, and related features.
 

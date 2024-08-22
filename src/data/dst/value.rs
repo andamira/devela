@@ -24,7 +24,7 @@ use crate::{
 /// let v = DstValueUsize::<[u8], 16>::new([1,2,3], |v| v);
 /// ```
 // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792) ↓DENIED
-pub type DstValueUsize<DST /*: ?Sized*/, const N: usize> = DstValue<DST, DstArray<usize, N>>;
+pub type DstValueUsize<DST /*: ?Sized*/, const CAP: usize> = DstValue<DST, DstArray<usize, CAP>>;
 
 /// A statically allocated <abbr title="Dynamically sized type">DST</abbr> value.
 ///

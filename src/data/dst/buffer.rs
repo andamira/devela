@@ -52,7 +52,7 @@ unsafe impl<T, U> DstBuf for &mut T where U: MemPod, T: DstBuf<Inner = U> {
 }
 
 // impl for array
-unsafe impl<T: MemPod, const N: usize> DstBuf for [MaybeUninit<T>; N] {
+unsafe impl<T: MemPod, const CAP: usize> DstBuf for [MaybeUninit<T>; CAP] {
     type Inner = T;
 
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
@@ -62,7 +62,7 @@ unsafe impl<T: MemPod, const N: usize> DstBuf for [MaybeUninit<T>; N] {
         self
     }
     fn extend(&mut self, len: usize) -> Result<(), ()> {
-        if len > N {
+        if len > CAP {
             Err(())
         } else {
             Ok(())
@@ -85,7 +85,7 @@ unsafe impl<T: MemPod, const N: usize> DstBuf for [MaybeUninit<T>; N] {
 /// ```
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-unsafe impl<T: MemPod> DstBuf for crate::_dep::_alloc::vec::Vec<MaybeUninit<T>> {
+unsafe impl<T: MemPod> DstBuf for crate::Vec<MaybeUninit<T>> {
     type Inner = T;
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
         self
@@ -105,27 +105,27 @@ unsafe impl<T: MemPod> DstBuf for crate::_dep::_alloc::vec::Vec<MaybeUninit<T>> 
 
 /// A static array for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s.
-pub struct DstArray<T, const N: usize> {
-    inner: Array<MaybeUninit<T>, N>,
+pub struct DstArray<T, const CAP: usize> {
+    inner: Array<MaybeUninit<T>, CAP>,
 }
-impl<T, const N: usize> Deref for DstArray<T, N> {
-    type Target = Array<MaybeUninit<T>, N>;
+impl<T, const CAP: usize> Deref for DstArray<T, CAP> {
+    type Target = Array<MaybeUninit<T>, CAP>;
 
     fn deref(&self) -> &Self::Target {
         &self.inner
     }
 }
-impl<T, const N: usize> DerefMut for DstArray<T, N> {
+impl<T, const CAP: usize> DerefMut for DstArray<T, CAP> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.inner
     }
 }
 #[rustfmt::skip]
-impl<T: MemPod, const N: usize> Default for DstArray<T, N> {
-    fn default() -> Self { Self { inner: Array::new([MaybeUninit::uninit(); N]) } }
+impl<T: MemPod, const CAP: usize> Default for DstArray<T, CAP> {
+    fn default() -> Self { Self { inner: Array::new([MaybeUninit::uninit(); CAP]) } }
 }
 #[rustfmt::skip]
-unsafe impl<T: MemPod, const N: usize> DstBuf for DstArray<T, N> {
+unsafe impl<T: MemPod, const CAP: usize> DstBuf for DstArray<T, CAP> {
     type Inner = T;
     fn as_ref(&self) -> &[MaybeUninit<Self::Inner>] {
         &self.inner
@@ -134,25 +134,25 @@ unsafe impl<T: MemPod, const N: usize> DstBuf for DstArray<T, N> {
         &mut self.inner
     }
     fn extend(&mut self, len: usize) -> Result<(), ()> {
-        if len > N { Err(()) } else { Ok(()) }
+        if len > CAP { Err(()) } else { Ok(()) }
     }
 }
 
 /// A statically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
-pub type DstArrayUsize<const N: usize> = DstArray<usize, N>;
+pub type DstArrayUsize<const CAP: usize> = DstArray<usize, CAP>;
 
 /// A dynamically allocated buffer for storing <abbr title="Dynamically sized
 /// type">DST</abbr>s with pointer alignment.
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub type DstVecUsize = crate::_dep::_alloc::vec::Vec<MaybeUninit<usize>>;
+pub type DstVecUsize = crate::Vec<MaybeUninit<usize>>;
 
 // MAYBE
 // /// A DST buffer backing onto a Vec.
 // #[cfg(feature = "alloc")]
 // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-// pub struct DstVec<T: MemPod>(crate::_dep::_alloc::vec::Vec<MaybeUninit<T>>);
+// pub struct DstVec<T: MemPod>(crate::Vec<MaybeUninit<T>>);
 // impl<T: MemPod> Deref for DstVec<T> {
 //     type Target = Vec<MaybeUninit<T>>;
 //

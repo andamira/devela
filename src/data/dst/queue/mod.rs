@@ -37,7 +37,7 @@ pub struct DstQueue<DST: ?Sized, BUF: DstBuf> {
 /// queue.push_copied(&[1]);
 /// ```
 // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792) ↓DENIED
-pub type DstQueueUsize<DST /*: ?Sized*/, const N: usize> = DstQueue<DST, DstArray<usize, N>>;
+pub type DstQueueUsize<DST /*: ?Sized*/, const CAP: usize> = DstQueue<DST, DstArray<usize, CAP>>;
 
 /// Handle returned by [`DstQueue::pop`][DstQueue#method.pop]
 /// (does the actual pop on drop).
