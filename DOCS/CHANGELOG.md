@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - show build environment variables if `__dbg` feature is enabled.
-- new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`.
+- new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
 - new `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
 - new `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
 - new struct `Env` that namespaces `std::env` functions and constants.

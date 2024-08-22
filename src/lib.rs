@@ -9,13 +9,13 @@
 // - https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/index.html#constants
 // - https://rust-lang.github.io/rust-clippy/master/index.html
 // - https://doc.rust-lang.org/rustdoc/lints.html
-#![deny(
+#![cfg_attr(feature = "__lints", deny(
     // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
     type_alias_bounds, // detects bounds in type aliases
     unsafe_op_in_unsafe_fn, // unsafe operations in unsafe functions without explicit unsafe block
     clippy::missing_safety_doc, // deny if there's no # Safety section in public unsafe fns
-)]
-#![warn(
+))]
+#![cfg_attr(feature = "__lints", warn(
     missing_docs, // missing docs for public items
     clippy::all, // (the default set of clippy lints)
     // a selection from clippy::pedantic:
@@ -31,7 +31,7 @@
     clippy::semicolon_if_nothing_returned, // expression returns () not followed by a semicolon
     clippy::single_match_else, // matches with two arms where an if let else will usually suffice
     clippy::trivially_copy_pass_by_ref, // fns with ref args that could be passed by value
-)]
+))]
 #![cfg_attr(
     not(all(doc, feature = "_docsrs_stable")), // if docs are incomplete
     allow(rustdoc::broken_intra_doc_links) // allow broken intra-doc links

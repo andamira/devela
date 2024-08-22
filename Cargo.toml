@@ -62,6 +62,7 @@ publish = true
 # default = []
 
 __dbg = [] # for debugging purposes, shows enabled features
+__lints = [] # enables extra lints (enabled on cl* aliases)
 __no_test = [] # allows excluding examples from being tested
 
 

@@ -14,13 +14,13 @@ cn = "check -F=no_std,safe"
 cnu = "check -F=unsafe"
 
 # CLIPPY
-cl = "clippy"
-clb = "clippy --bin"
-cle = "clippy --example"
-clr = "clippy --release"
-clu = "clippy -F=std,unsafe"
-cln = "clippy -F=no_std"
-clnu = "clippy -F=no_std,unsafe"
+cl = "clippy -F=__lints"
+clb = "clippy -F=__lints --bin"
+cle = "clippy -F=__lints --example"
+clr = "clippy -F=__lints --release"
+clu = "clippy -F=__lints,std,unsafe"
+cln = "clippy -F=__lints,no_std"
+clnu = "clippy -F=__lints,no_std,unsafe"
 
 # BUILD
 b = "build"
