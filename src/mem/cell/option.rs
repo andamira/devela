@@ -81,10 +81,9 @@ impl<T> CellOption<T> for Cell<Option<T>> {
     where
         T: Clone,
     {
-        self.replace(None).map(|v| {
+        self.replace(None).inspect(|v| {
             let new_value = func(v.clone());
             self.set(Some(new_value));
-            v
         })
     }
 

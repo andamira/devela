@@ -58,5 +58,5 @@ pub fn crate_root<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 pub fn crate_root_string<P: AsRef<Path>>(path: P) -> String {
-    crate_root(Path::new(path.as_ref())).map_or("".into(), |p| p.to_str().unwrap().to_owned())
+    crate_root(Path::new(path.as_ref())).map_or(String::new(), |p| p.to_str().unwrap().to_owned())
 }

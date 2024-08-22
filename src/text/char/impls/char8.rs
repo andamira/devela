@@ -159,7 +159,7 @@ impl Char8 {
     // https://en.wikipedia.org/wiki/UTF-8#Encoding
     #[inline]
     #[must_use]
-    #[allow(clippy::unusual_byte_groupings)]
+    #[allow(clippy::unusual_byte_groupings, clippy::single_match_else)]
     pub const fn to_utf8_bytes(self) -> [u8; 2] {
         let c = self.0;
         match c {

@@ -38,7 +38,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
                     ptr::write(pii.data.as_mut_ptr() as *mut VAL, value);
                     Ok(())
                 }
-                Err(_) => Err(value),
+                Err(()) => Err(value),
             }
         }
     }

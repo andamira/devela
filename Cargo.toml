@@ -168,13 +168,16 @@ nightly = [
 		# 1.81: [PanicInfo::message()](https://github.com/rust-lang/rust/pull/126732)
 		# 1.81: [path_try_exists](https://github.com/rust-lang/rust/pull/126140)
 		# > 1.82 will be stable on 2024-10-17:
+		# 1.82: [asm_const](https://github.com/rust-lang/rust/pull/128570)
 		# 1.82: [const_int_from_str](https://github.com/rust-lang/rust/pull/124941)
 		# 1.82: [const_waker](https://github.com/rust-lang/rust/pull/128228)
 		# 1.82: [is_sorted](https://github.com/rust-lang/rust/issues/53485)
 		# 1.82: [min_exhaustive_patterns(https://github.com/rust-lang/rust/pull/122792)
 		# 1.82: [offset_of_nested](https://github.com/rust-lang/rust/pull/128284)
 		# 1.82: [unsafe_extern_blocks](https://github.com/rust-lang/rust/pull/127921)
-		# >
+		# 1.82: [unsafe_attributes](https://github.com/rust-lang/rust/pull/128771)
+		# > ??
+		# 1.?? [const_mut_refs](https://github.com/rust-lang/rust/pull/129195)
 		# 1.?? [impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 		# 1.?? [macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 		# 1.?? [noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker

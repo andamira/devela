@@ -367,7 +367,7 @@ where
     /// Inline append an item (See Self::append)
     pub fn appended(mut self, v: I) -> Result<Self, (Self, I)> {
         match self.append(v) {
-            Ok(_) => Ok(self),
+            Ok(()) => Ok(self),
             Err(v) => Err((self, v)),
         }
     }
@@ -377,7 +377,7 @@ where
     pub fn extend<It: Iterator<Item = I>>(&mut self, mut iter: It) -> Result<(), (I, It)> {
         while let Some(v) = iter.next() {
             match self.append(v) {
-                Ok(_) => {}
+                Ok(()) => {}
                 Err(v) => return Err((v, iter)),
             }
         }
@@ -387,7 +387,7 @@ where
     #[inline(always)]
     pub fn extended<It: Iterator<Item = I>>(mut self, iter: It) -> Result<Self, (Self, I, It)> {
         match self.extend(iter) {
-            Ok(_) => Ok(self),
+            Ok(()) => Ok(self),
             Err((v, iter)) => Err((self, v, iter)),
         }
     }

@@ -90,21 +90,15 @@ impl<'a> WriteTo<'a> {
 
     #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
     fn as_str(self) -> Option<&'a str> {
-        if self.len <= self.buf.len() {
-            Some(from_utf8(&self.buf[..self.len]).expect("invalid utf-8"))
-        } else {
-            None
-        }
+        (self.len <= self.buf.len())
+            .then(|| from_utf8(&self.buf[..self.len]).expect("invalid utf-8"))
     }
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     fn as_str(self) -> Option<&'a str> {
-        if self.len <= self.buf.len() {
+        (self.len <= self.buf.len())
             // SAFETY: the buffer is always filled from a previous &str
-            Some(unsafe { from_utf8_unchecked(&self.buf[..self.len]) })
-        } else {
-            None
-        }
+            .then(|| unsafe { from_utf8_unchecked(&self.buf[..self.len]) })
     }
 }

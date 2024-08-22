@@ -62,7 +62,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     /// ```
     pub const fn with_copied(element: T) -> Result<Self> {
         match Self::check_CR() {
-            Ok(_) => Ok(Self {
+            Ok(()) => Ok(Self {
                 data: Array::<T, CR, Bare>::with_copied(element),
             }),
             Err(e) => Err(e),

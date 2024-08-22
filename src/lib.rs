@@ -7,7 +7,7 @@
 //
 // lints: (builtin, clippy, rustdoc) & (deny, warn, allow)
 // - https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/index.html#constants
-// - https://rust-lang.github.io/rust-clippy/rust-1.80.0/index.html
+// - https://rust-lang.github.io/rust-clippy/master/index.html
 // - https://doc.rust-lang.org/rustdoc/lints.html
 #![deny(
     // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
@@ -24,6 +24,10 @@
     clippy::default_union_representation, // union declared without #[repr(C)]
     clippy::empty_structs_with_brackets, // structs without fields, with brackets
     clippy::enum_glob_use, // checks for `use Enum::*`
+    clippy::if_then_some_else_none, // if-else that could be written using bool::then[_some]
+    clippy::ignored_unit_patterns, // Checks for usage of _ in patterns of type ()
+    clippy::float_cmp, // (in-)equality comparisons on floating-point values
+    clippy::float_cmp_const, // (in-)equality comparisons on const floating-point values
     clippy::semicolon_if_nothing_returned, // expression returns () not followed by a semicolon
     clippy::single_match_else, // matches with two arms where an if let else will usually suffice
     clippy::trivially_copy_pass_by_ref, // fns with ref args that could be passed by value
@@ -78,7 +82,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     )
 ))]
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
-// but you can enable `safe_*` features to prevent `unsafe` use in specific modules.
+// (note: you can enable `safe_*` features to prevent `unsafe` use in specific modules)
 
 pub mod code;
 pub mod data;

@@ -94,7 +94,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
                     ptr::write(pii.data.as_mut_ptr() as *mut VAL, v);
                     Ok(())
                 }
-                Err(_) => Err(v),
+                Err(()) => Err(v),
             }
         }
     }

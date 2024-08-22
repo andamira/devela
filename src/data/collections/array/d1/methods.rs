@@ -139,7 +139,7 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     pub fn find_index(&self, element: &T) -> Option<usize> {
         self.iter()
             .enumerate()
-            .find_map(|(i, n)| if n == element { Some(i) } else { None })
+            .find_map(|(i, n)| (n == element).then_some(i))
     }
 }
 
