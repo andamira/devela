@@ -155,7 +155,7 @@ nightly = [
 		# - https://releases.rs/
 		#
 		# Included features, soon to be stabilized:
-		#
+		# …
 		#
 		# NOT included features, soon to be stabilized:
 		# > 1.81 will be stable on 2024-09-05:
@@ -182,6 +182,9 @@ nightly = [
 		# 1.?? [impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 		# 1.?? [macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 		# 1.?? [noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
+		#
+		# Experimental features
+		# [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 
 
 #* Capability features *#

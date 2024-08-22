@@ -81,9 +81,8 @@ impl Char32 {
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0 as u8) });
-        } else {
-            Err(CharConversion)
         }
+        Err(CharConversion)
     }
 
     /// Tries to convert this `Char32` to `Char7`.

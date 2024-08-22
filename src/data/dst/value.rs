@@ -98,7 +98,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
 
             DstValue::new_raw(
                 &meta[..meta_len],
-                raw_ptr as *mut _,
+                raw_ptr.cast_mut(),
                 size_of::<VAL>(),
                 buffer,
             )
@@ -192,7 +192,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
         let rv = unsafe {
             let (raw_ptr, meta_len, meta) = decompose_pointer("");
 
-            DstValue::new_raw(&meta[..meta_len], raw_ptr as *mut (), 0, buffer)
+            DstValue::new_raw(&meta[..meta_len], raw_ptr.cast_mut(), 0, buffer)
         };
         match rv {
             Some(r) => Ok(r),
@@ -232,7 +232,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
 
             DstValue::new_raw(
                 &meta[..meta_len],
-                raw_ptr as *mut (),
+                raw_ptr.cast_mut(),
                 size_of_val(val),
                 buffer,
             )

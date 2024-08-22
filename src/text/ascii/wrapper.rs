@@ -411,6 +411,7 @@ impl Ascii<u32> {
     /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
     #[inline]
     #[must_use]
+    #[allow(clippy::unreadable_literal)]
     pub const fn digits(self) -> [u8; 10] {
         [
             //              0987654321
@@ -509,6 +510,7 @@ impl Ascii<u64> {
     /// You can trim the leading zeros with
     /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
     #[must_use]
+    #[allow(clippy::unreadable_literal)]
     pub const fn digits(self) -> [u8; 20] {
         [
             //              0987654321_987654321
@@ -617,6 +619,7 @@ impl Ascii<u128> {
     /// You can trim the leading zeros with
     /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
     #[must_use]
+    #[allow(clippy::unreadable_literal)]
     pub const fn digits(self) -> [u8; 39] {
         [
             //              987654321_987654321_987654321_987654321

@@ -39,9 +39,8 @@ pub fn crate_root<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
         let has_cargo = fs::read_dir(p)?.any(|p| p.unwrap().file_name() == *"Cargo.toml");
         if has_cargo {
             return Ok(root_path.join(path.as_ref()));
-        } else {
-            root_path.pop();
         }
+        root_path.pop();
     }
     Err(io::Error::new(
         io::ErrorKind::NotFound,

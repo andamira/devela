@@ -27,7 +27,7 @@ impl ConstDefault for XorShift32 {
 
 // private associated items
 impl XorShift32 {
-    const DEFAULT_SEED: u32 = 0xDEFA0017;
+    const DEFAULT_SEED: u32 = 0xDEFA_0017;
 
     #[cold]
     #[inline]

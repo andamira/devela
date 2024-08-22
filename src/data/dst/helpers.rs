@@ -59,7 +59,7 @@ pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: MemPod>(
     }
     // SAFETY: caller must ensure safety
     let rv = unsafe { rv.ptr };
-    assert_eq!(rv as *const (), data_ptr as *const ());
+    assert_eq!(rv as *const (), data_ptr.cast_const());
     rv
 }
 

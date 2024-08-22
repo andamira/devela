@@ -66,6 +66,8 @@ macro_rules! iif {
         }
     };
     ($if:expr ; $true:expr ; $($false:expr)?) => {
+        // WAIT: [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
+        // #[allow(clippy::redundant_else)]
         if $if {
             $true
         } else {

@@ -27,7 +27,7 @@ impl ConstDefault for XorShift64 {
 
 // private associated items
 impl XorShift64 {
-    const DEFAULT_SEED: u64 = 0xDEFA0017_DEFA0017;
+    const DEFAULT_SEED: u64 = 0xDEFA_0017_DEFA_0017;
 
     #[cold]
     #[inline]

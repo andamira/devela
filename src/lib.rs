@@ -31,17 +31,24 @@
     clippy::manual_let_else, // cases where let...else could be used
     clippy::manual_string_new, // usage of "" to create a String
     clippy::map_unwrap_or, // usage of result|option.map(_).unwrap_or[_else](_)
+    clippy::ptr_cast_constness, // as casts between raw pointers that change their constness
+    // not compatible with the iif! macro without being able to ignore it in an expression:
+    // WAIT: [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
+    // clippy::redundant_else, // else blocks that can be removed without changing semantics
+    clippy::same_functions_in_if_condition, // consecutive ifs with the same function call
     clippy::semicolon_if_nothing_returned, // expression returns () not followed by a semicolon
     clippy::single_match_else, // matches with two arms where an if let else will usually suffice
     clippy::trivially_copy_pass_by_ref, // fns with ref args that could be passed by value
+    clippy::unnested_or_patterns, // unnested or-patterns, (Some(a)|Some(b) vs Some(a|b))
+    clippy::unreadable_literal, //  long integral does not contain underscores
 ))]
 #![cfg_attr(
     not(all(doc, feature = "_docsrs_stable")), // if docs are incomplete
     allow(rustdoc::broken_intra_doc_links) // allow broken intra-doc links
 )]
 #![allow(
+    stable_features, // a feature attribute that has since been made stable
     unknown_lints, // unrecognized lint attributes
-    //stable_features, // a feature attribute that has since been made stable
     clippy::empty_docs, // empty documentation
     clippy::doc_lazy_continuation, // markdown lazy paragraph continuations
     clippy::mixed_attributes_style, // items with mixed (inner/outer) attributes

@@ -96,9 +96,9 @@ impl Char24 {
     #[inline]
     #[must_use]
     pub const fn from_char(c: char) -> Char24 {
-        let hi = ((c as u32 & 0x001F0000) >> 16) as u8;
-        let mi = ((c as u32 & 0x0000FF00) >> 8) as u8;
-        let lo = (c as u32 & 0x000000FF) as u8;
+        let hi = ((c as u32 & 0x001F_0000) >> 16) as u8;
+        let mi = ((c as u32 & 0x0000_FF00) >> 8) as u8;
+        let lo = (c as u32 & 0x000_000FF) as u8;
         Char24 {
             hi: Self::new_unchecked_hi(hi),
             mi,
@@ -122,9 +122,8 @@ impl Char24 {
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.lo) });
-        } else {
-            Err(CharConversion)
         }
+        Err(CharConversion)
     }
 
     /// Tries to convert this `Char24` to `Char7`.

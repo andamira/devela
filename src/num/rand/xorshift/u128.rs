@@ -24,7 +24,7 @@ impl ConstDefault for XorShift128 {
 
 // private associated items
 impl XorShift128 {
-    const DEFAULT_SEED: [u32; 4] = [0xDEFA0017; 4];
+    const DEFAULT_SEED: [u32; 4] = [0xDEFA_0017; 4];
 
     #[cold]
     #[inline]
@@ -195,7 +195,7 @@ impl ConstDefault for XorShift128p {
 
 // private associated items
 impl XorShift128p {
-    const DEFAULT_SEED: [u64; 2] = [0xDEFA0017_DEFA0017; 2];
+    const DEFAULT_SEED: [u64; 2] = [0xDEFA_0017_DEFA_0017; 2];
 
     #[cold]
     #[inline]

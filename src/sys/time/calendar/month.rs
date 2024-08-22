@@ -415,107 +415,59 @@ impl From<Month> for u8 {
 impl FromStr for Month {
     type Err = &'static str;
 
+    #[rustfmt::skip]
     fn from_str(s: &str) -> Result<Month, Self::Err> {
-        if s.eq_ignore_ascii_case("January") {
-            Ok(January)
-        } else if s.eq_ignore_ascii_case("February") {
-            Ok(February)
-        } else if s.eq_ignore_ascii_case("March") {
-            Ok(March)
-        } else if s.eq_ignore_ascii_case("April") {
-            Ok(April)
-        } else if s.eq_ignore_ascii_case("May") {
-            Ok(May)
-        } else if s.eq_ignore_ascii_case("June") {
-            Ok(June)
-        } else if s.eq_ignore_ascii_case("July") {
-            Ok(July)
-        } else if s.eq_ignore_ascii_case("August") {
-            Ok(August)
-        } else if s.eq_ignore_ascii_case("September") {
-            Ok(September)
-        } else if s.eq_ignore_ascii_case("October") {
-            Ok(October)
-        } else if s.eq_ignore_ascii_case("November") {
-            Ok(November)
-        } else if s.eq_ignore_ascii_case("December") {
-            Ok(December)
+        if s.eq_ignore_ascii_case("January") { Ok(January)
+        } else if s.eq_ignore_ascii_case("February") { Ok(February)
+        } else if s.eq_ignore_ascii_case("March") { Ok(March)
+        } else if s.eq_ignore_ascii_case("April") { Ok(April)
+        } else if s.eq_ignore_ascii_case("May") { Ok(May)
+        } else if s.eq_ignore_ascii_case("June") { Ok(June)
+        } else if s.eq_ignore_ascii_case("July") { Ok(July)
+        } else if s.eq_ignore_ascii_case("August") { Ok(August)
+        } else if s.eq_ignore_ascii_case("September") { Ok(September)
+        } else if s.eq_ignore_ascii_case("October") { Ok(October)
+        } else if s.eq_ignore_ascii_case("November") { Ok(November)
+        } else if s.eq_ignore_ascii_case("December") { Ok(December)
         //
-        } else if s.eq_ignore_ascii_case("Jan") {
-            Ok(January)
-        } else if s.eq_ignore_ascii_case("Feb") {
-            Ok(February)
-        } else if s.eq_ignore_ascii_case("Mar") {
-            Ok(March)
-        } else if s.eq_ignore_ascii_case("Apr") {
-            Ok(April)
-        // } else if s.eq_ignore_ascii_case("May") { // repeated
-        //     Ok(May)
-        } else if s.eq_ignore_ascii_case("Jun") {
-            Ok(June)
-        } else if s.eq_ignore_ascii_case("Jul") {
-            Ok(July)
-        } else if s.eq_ignore_ascii_case("Aug") {
-            Ok(August)
-        } else if s.eq_ignore_ascii_case("Sep") {
-            Ok(September)
-        } else if s.eq_ignore_ascii_case("Oct") {
-            Ok(October)
-        } else if s.eq_ignore_ascii_case("Nov") {
-            Ok(November)
-        } else if s.eq_ignore_ascii_case("Dec") {
-            Ok(December)
+        } else if s.eq_ignore_ascii_case("Jan") { Ok(January)
+        } else if s.eq_ignore_ascii_case("Feb") { Ok(February)
+        } else if s.eq_ignore_ascii_case("Mar") { Ok(March)
+        } else if s.eq_ignore_ascii_case("Apr") { Ok(April)
+        // } else if s.eq_ignore_ascii_case("May") { Ok(May) // repeated
+        } else if s.eq_ignore_ascii_case("Jun") { Ok(June)
+        } else if s.eq_ignore_ascii_case("Jul") { Ok(July)
+        } else if s.eq_ignore_ascii_case("Aug") { Ok(August)
+        } else if s.eq_ignore_ascii_case("Sep") { Ok(September)
+        } else if s.eq_ignore_ascii_case("Oct") { Ok(October)
+        } else if s.eq_ignore_ascii_case("Nov") { Ok(November)
+        } else if s.eq_ignore_ascii_case("Dec") { Ok(December)
         // abbr2
-        } else if s.eq_ignore_ascii_case("JA") {
-            Ok(January)
-        } else if s.eq_ignore_ascii_case("FE") {
-            Ok(February)
-        } else if s.eq_ignore_ascii_case("MR") {
-            Ok(March)
-        } else if s.eq_ignore_ascii_case("AP") {
-            Ok(April)
-        } else if s.eq_ignore_ascii_case("MY") {
-            Ok(May)
-        } else if s.eq_ignore_ascii_case("JN") {
-            Ok(June)
-        } else if s.eq_ignore_ascii_case("JL") {
-            Ok(July)
-        } else if s.eq_ignore_ascii_case("AU") {
-            Ok(August)
-        } else if s.eq_ignore_ascii_case("SE") {
-            Ok(September)
-        } else if s.eq_ignore_ascii_case("OC") {
-            Ok(October)
-        } else if s.eq_ignore_ascii_case("NV") {
-            Ok(November)
-        } else if s.eq_ignore_ascii_case("DE") {
-            Ok(December)
+        } else if s.eq_ignore_ascii_case("JA") { Ok(January)
+        } else if s.eq_ignore_ascii_case("FE") { Ok(February)
+        } else if s.eq_ignore_ascii_case("MR") { Ok(March)
+        } else if s.eq_ignore_ascii_case("AP") { Ok(April)
+        } else if s.eq_ignore_ascii_case("MY") { Ok(May)
+        } else if s.eq_ignore_ascii_case("JN") { Ok(June)
+        } else if s.eq_ignore_ascii_case("JL") { Ok(July)
+        } else if s.eq_ignore_ascii_case("AU") { Ok(August)
+        } else if s.eq_ignore_ascii_case("SE") { Ok(September)
+        } else if s.eq_ignore_ascii_case("OC") { Ok(October)
+        } else if s.eq_ignore_ascii_case("NV") { Ok(November)
+        } else if s.eq_ignore_ascii_case("DE") { Ok(December)
         // abbr1
-        } else if s.eq_ignore_ascii_case("J") {
-            Ok(January)
-        } else if s.eq_ignore_ascii_case("F") {
-            Ok(February)
-        } else if s.eq_ignore_ascii_case("R") {
-            Ok(March)
-        } else if s.eq_ignore_ascii_case("P") {
-            Ok(April)
-        } else if s.eq_ignore_ascii_case("Y") {
-            Ok(May)
-        } else if s.eq_ignore_ascii_case("N") {
-            Ok(June)
-        } else if s.eq_ignore_ascii_case("L") {
-            Ok(July)
-        } else if s.eq_ignore_ascii_case("U") {
-            Ok(August)
-        } else if s.eq_ignore_ascii_case("S") {
-            Ok(September)
-        } else if s.eq_ignore_ascii_case("O") {
-            Ok(October)
-        } else if s.eq_ignore_ascii_case("N") {
-            Ok(November)
-        } else if s.eq_ignore_ascii_case("D") {
-            Ok(December)
-
+        } else if s.eq_ignore_ascii_case("J") { Ok(January)
+        } else if s.eq_ignore_ascii_case("F") { Ok(February)
+        } else if s.eq_ignore_ascii_case("R") { Ok(March)
+        } else if s.eq_ignore_ascii_case("P") { Ok(April)
+        } else if s.eq_ignore_ascii_case("Y") { Ok(May)
+        } else if s.eq_ignore_ascii_case("N") { Ok(June)
+        } else if s.eq_ignore_ascii_case("L") { Ok(July)
+        } else if s.eq_ignore_ascii_case("U") { Ok(August)
+        } else if s.eq_ignore_ascii_case("S") { Ok(September)
+        } else if s.eq_ignore_ascii_case("O") { Ok(October)
+        } else if s.eq_ignore_ascii_case("V") { Ok(November)
+        } else if s.eq_ignore_ascii_case("D") { Ok(December)
         //
         } else {
             Err("Invalid month name.")

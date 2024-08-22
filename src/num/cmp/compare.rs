@@ -109,7 +109,7 @@ impl<T: PartialOrd> Compare<T> {
     pub fn pmax(self, other: T) -> Option<T> {
         match self.0.partial_cmp(&other) {
             Some(Less) => Some(other),
-            Some(Greater) | Some(Equal) => Some(self.0),
+            Some(Greater | Equal) => Some(self.0),
             None => None,
         }
     }
@@ -131,7 +131,7 @@ impl<T: PartialOrd> Compare<T> {
     pub fn pmin(self, other: T) -> Option<T> {
         match self.0.partial_cmp(&other) {
             Some(Greater) => Some(other),
-            Some(Less) | Some(Equal) => Some(self.0),
+            Some(Less | Equal) => Some(self.0),
             None => None,
         }
     }

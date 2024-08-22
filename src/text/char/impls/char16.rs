@@ -119,9 +119,8 @@ impl Char16 {
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
             // SAFETY: we've already checked it's in range.
             return Ok(unsafe { AsciiChar::from_u8_unchecked(self.0.get() as u8) });
-        } else {
-            Err(CharConversion)
         }
+        Err(CharConversion)
     }
 
     /// Tries to convert this `Char16` to `Char7`.
