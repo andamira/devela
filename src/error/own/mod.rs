@@ -135,10 +135,7 @@ mod core_impls {
     impl<S: fmt::Debug, V: fmt::Debug> fmt::Debug for Own<S, V> {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             let mut debug = f.debug_struct("Own");
-            debug
-                .field("state", &self.s)
-                .field("value", &self.v)
-                .finish()
+            debug.field("state", &self.s).field("value", &self.v).finish()
         }
     }
     impl<S: fmt::Display, V: fmt::Display> fmt::Display for Own<S, V> {

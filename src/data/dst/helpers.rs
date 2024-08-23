@@ -9,10 +9,7 @@ pub(crate) fn decompose_pointer<T: ?Sized>(mut ptr: *const T) -> (*const (), usi
     let addr = ptr as *const ();
     let rv = mem_as_slice(&mut ptr);
     let mut vals = [0; 3];
-    assert!(
-        rv[0] == addr as usize,
-        "BUG: Pointer layout is not (data_ptr, info...)"
-    );
+    assert!(rv[0] == addr as usize, "BUG: Pointer layout is not (data_ptr, info...)");
     vals[..rv.len() - 1].copy_from_slice(&rv[1..]);
     (addr, rv.len() - 1, vals)
 }
@@ -41,12 +38,7 @@ pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: MemPod>(
         ptr: *mut T,
         raw: Raw,
     }
-    let mut rv = Inner {
-        raw: Raw {
-            ptr: data_ptr,
-            meta: [0; 4],
-        },
-    };
+    let mut rv = Inner { raw: Raw { ptr: data_ptr, meta: [0; 4] } };
     assert!(meta_vals.len() * size_of::<W>() % size_of::<usize>() == 0);
     assert!(meta_vals.len() * size_of::<W>() <= 4 * size_of::<usize>());
     // SAFETY: caller must ensure safety
@@ -74,11 +66,7 @@ pub(crate) fn store_metadata<W: MemPod>(dst: &mut BufSlice<W>, meta_words: &[usi
         size_of::<W>()
     );
     unsafe {
-        ptr::copy(
-            meta_words.as_ptr() as *const u8,
-            dst.as_mut_ptr() as *mut u8,
-            n_bytes,
-        );
+        ptr::copy(meta_words.as_ptr() as *const u8, dst.as_mut_ptr() as *mut u8, n_bytes);
     }
 }
 
@@ -93,11 +81,7 @@ pub(crate) fn check_fat_pointer<U, T: ?Sized>(v: &U, get_ref: impl FnOnce(&U) ->
         ptr as *const _ as *const u8, v as *const _ as *const u8,
         "MISUSE: Closure returned different pointer"
     );
-    assert_eq!(
-        size_of_val(ptr),
-        size_of::<U>(),
-        "MISUSE: Closure returned a subset pointer"
-    );
+    assert_eq!(size_of_val(ptr), size_of::<U>(), "MISUSE: Closure returned a subset pointer");
     ptr
 }
 

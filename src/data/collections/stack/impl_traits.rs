@@ -172,10 +172,7 @@ where
     S::Stored<[T; CAP]>: Clone,
 {
     fn clone(&self) -> Self {
-        Self {
-            data: self.data.clone(),
-            len: self.len,
-        }
+        Self { data: self.data.clone(), len: self.len }
     }
 }
 
@@ -220,10 +217,7 @@ impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, CAP, IDX, 
     /// Returns an empty stack, allocated in the stack,
     /// using the default value to fill the remaining free data.
     fn default() -> Self {
-        Self {
-            data: Array::default(),
-            len: IDX::default(),
-        }
+        Self { data: Array::default(), len: IDX::default() }
     }
 }
 
@@ -233,10 +227,7 @@ impl<T: ConstDefault, const CAP: usize, IDX: ConstDefault> ConstDefault
 {
     /// Returns an empty stack, allocated in the stack,
     /// using the default value to fill the remaining free data.
-    const DEFAULT: Self = Self {
-        data: Array::DEFAULT,
-        len: IDX::DEFAULT,
-    };
+    const DEFAULT: Self = Self { data: Array::DEFAULT, len: IDX::DEFAULT };
 }
 
 // T: Default, S: Boxed
@@ -246,9 +237,6 @@ impl<T: Default, const CAP: usize, IDX: Default> Default for Stack<T, CAP, IDX, 
     /// Returns an empty stack, allocated in the heap,
     /// using the default value to fill the remaining free data.
     fn default() -> Self {
-        Self {
-            data: Array::default(),
-            len: IDX::default(),
-        }
+        Self { data: Array::default(), len: IDX::default() }
     }
 }

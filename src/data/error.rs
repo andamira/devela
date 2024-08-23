@@ -112,10 +112,9 @@ mod core_impls {
                     None => write!(f, "Not enough elements."),
                 },
                 E::NotEnoughSpace(n) => match n {
-                    Some(n) => write!(
-                        f,
-                        "Not enough space. Needs at least `{n}` free space for elements."
-                    ),
+                    Some(n) => {
+                        write!(f, "Not enough space. Needs at least `{n}` free space for elements.")
+                    }
                     None => write!(f, "Not enough space."),
                 },
                 E::PartiallyAdded(n) => match n {

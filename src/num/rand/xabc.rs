@@ -155,12 +155,7 @@ mod impl_rand {
     impl RngCore for Xabc {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
-            u32::from_le_bytes([
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-            ])
+            u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
         }
 
         /// Returns the next 8 × random `u8` combined as a single `u64`.

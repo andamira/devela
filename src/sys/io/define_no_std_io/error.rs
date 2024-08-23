@@ -156,9 +156,7 @@ impl From<IoErrorKind> for IoError {
     /// See <https://doc.rust-lang.org/std/io/struct.Error.html#impl-From%3CErrorKind%3E-for-Error>.
     #[inline]
     fn from(kind: IoErrorKind) -> IoError {
-        IoError {
-            repr: Repr::Simple(kind),
-        }
+        IoError { repr: Repr::Simple(kind) }
     }
 }
 
@@ -171,9 +169,7 @@ impl IoError {
     }
 
     fn _new(kind: IoErrorKind, error: &'static str) -> IoError {
-        IoError {
-            repr: Repr::Custom(Custom { kind, error }),
-        }
+        IoError { repr: Repr::Custom(Custom { kind, error }) }
     }
 
     /// Returns a reference to the inner error wrapped by this error (if any).

@@ -54,9 +54,7 @@ impl UnixTimeI64 {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     // all(feature = "no_std", feature = "unsafe", feature = "libc")
     pub fn now() -> Self {
-        Self {
-            seconds: Self::unix_time_64(),
-        }
+        Self { seconds: Self::unix_time_64() }
     }
 
     /// Splits the `UnixTimeI64` into `{ y, mo, d, h, m, s }`.
@@ -182,9 +180,7 @@ impl UnixTimeU32 {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     // all(feature = "no_std", feature = "unsafe", feature = "libc")
     pub fn now() -> Self {
-        Self {
-            seconds: Self::unix_time_32(),
-        }
+        Self { seconds: Self::unix_time_32() }
     }
 
     /// Splits the `UnixTimeU32` into `{ y, mo, d, h, m, s }`.
@@ -277,10 +273,7 @@ impl fmt::Display for UnixTimeI64 {
 impl fmt::Debug for UnixTimeI64 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let YearSecSplit { y, mo, d, h, m, s } = self.split();
-        write![
-            f,
-            "UnixTimeI64 {{ {y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02} }}"
-        ]
+        write![f, "UnixTimeI64 {{ {y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02} }}"]
     }
 }
 
@@ -294,18 +287,13 @@ impl fmt::Display for UnixTimeU32 {
 impl fmt::Debug for UnixTimeU32 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let YearSecSplit { y, mo, d, h, m, s } = self.split();
-        write![
-            f,
-            "UnixTimeU32 {{ {y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02} }}"
-        ]
+        write![f, "UnixTimeU32 {{ {y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02} }}"]
     }
 }
 
 impl From<UnixTimeU32> for UnixTimeI64 {
     fn from(ut: UnixTimeU32) -> UnixTimeI64 {
-        UnixTimeI64 {
-            seconds: ut.seconds.into(),
-        }
+        UnixTimeI64 { seconds: ut.seconds.into() }
     }
 }
 
@@ -313,9 +301,7 @@ impl TryFrom<UnixTimeI64> for UnixTimeU32 {
     type Error = TryFromIntError;
 
     fn try_from(ut: UnixTimeI64) -> Result<UnixTimeU32, Self::Error> {
-        Ok(UnixTimeU32 {
-            seconds: u32::try_from(ut.seconds)?,
-        })
+        Ok(UnixTimeU32 { seconds: u32::try_from(ut.seconds)? })
     }
 }
 

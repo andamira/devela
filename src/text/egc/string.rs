@@ -97,9 +97,7 @@ impl EgcString {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
     pub fn from_char(c: char) -> EgcString {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return str::from_utf8(&crate::text::char_to_utf8_bytes(c))
-            .unwrap()
-            .into();
+        return str::from_utf8(&crate::text::char_to_utf8_bytes(c)).unwrap().into();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         unsafe {
             str::from_utf8_unchecked(&crate::text::char_to_utf8_bytes(c)).into()

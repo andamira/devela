@@ -54,10 +54,7 @@ impl Logging {
     /// Calls [`set_boxed_logger`].
     #[inline]
     #[cfg(all(feature = "std", target_has_atomic = "ptr"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(all(feature = "std", target_has_atomic = "ptr")))
-    )]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "std", target_has_atomic = "ptr"))))]
     pub fn set_boxed_logger(logger: Box<dyn Log>) -> Result<(), SetLoggerError> {
         set_boxed_logger(logger)
     }

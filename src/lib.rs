@@ -67,10 +67,7 @@
 // WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
 // WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
-#![cfg_attr(
-    feature = "nightly_coro",
-    feature(coroutines, coroutine_trait, iter_from_coroutine)
-)]
+#![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
 // WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
 // #![cfg_attr(

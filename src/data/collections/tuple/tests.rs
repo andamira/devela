@@ -95,10 +95,7 @@ fn tuple_nth_clone() {
 }
 #[test]
 fn tuple_nth_ref() {
-    assert![matches![
-        TUPLE.nth_ref(2),
-        Some(TupleElementRef::_2(&"Hello"))
-    ]];
+    assert![matches![TUPLE.nth_ref(2), Some(TupleElementRef::_2(&"Hello"))]];
 }
 #[test] #[rustfmt::skip]
 fn tuple_nth_mut() {

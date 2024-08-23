@@ -14,9 +14,7 @@ use core::{
 // T:Clone
 impl<T: Clone, const D: usize> Clone for Vector<T, D> {
     fn clone(&self) -> Self {
-        Self {
-            array: self.array.clone(),
-        }
+        Self { array: self.array.clone() }
     }
 }
 
@@ -47,10 +45,7 @@ impl<T: ConstDefault, const D: usize> ConstDefault for Vector<T, D> {
 // T:Debug
 impl<T: fmt::Debug, const D: usize> fmt::Debug for Vector<T, D> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("Vector")
-            .field("D", &D)
-            .field("array", &self.array)
-            .finish()
+        f.debug_struct("Vector").field("D", &D).field("array", &self.array).finish()
     }
 }
 

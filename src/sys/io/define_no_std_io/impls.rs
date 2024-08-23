@@ -89,10 +89,7 @@ impl Read for &[u8] {
     #[inline]
     fn read_exact(&mut self, buf: &mut [u8]) -> Result<()> {
         if buf.len() > self.len() {
-            return Err(IoError::new(
-                IoErrorKind::UnexpectedEof,
-                "failed to fill whole buffer",
-            ));
+            return Err(IoError::new(IoErrorKind::UnexpectedEof, "failed to fill whole buffer"));
         }
         let (a, b) = self.split_at(buf.len());
 
@@ -142,10 +139,7 @@ impl Write for &mut [u8] {
         if self.write(data)? == data.len() {
             Ok(())
         } else {
-            Err(IoError::new(
-                IoErrorKind::WriteZero,
-                "failed to write whole buffer",
-            ))
+            Err(IoError::new(IoErrorKind::WriteZero, "failed to write whole buffer"))
         }
     }
 

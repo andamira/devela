@@ -28,9 +28,7 @@ impl<T, const LEN: usize> Array<T, LEN, Bare> {
     /// from the given primitive `array` in compile-time.
     #[inline]
     pub const fn new_bare(array: [T; LEN]) -> Self {
-        Self {
-            data: BareBox::new(array),
-        }
+        Self { data: BareBox::new(array) }
     }
 }
 
@@ -137,9 +135,7 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     #[inline]
     #[must_use]
     pub fn find_index(&self, element: &T) -> Option<usize> {
-        self.iter()
-            .enumerate()
-            .find_map(|(i, n)| (n == element).then_some(i))
+        self.iter().enumerate().find_map(|(i, n)| (n == element).then_some(i))
     }
 }
 

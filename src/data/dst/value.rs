@@ -96,12 +96,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
             let ptr: *const _ = check_fat_pointer(&val, get_ref);
             let (raw_ptr, meta_len, meta) = decompose_pointer(ptr);
 
-            DstValue::new_raw(
-                &meta[..meta_len],
-                raw_ptr.cast_mut(),
-                size_of::<VAL>(),
-                buffer,
-            )
+            DstValue::new_raw(&meta[..meta_len], raw_ptr.cast_mut(), size_of::<VAL>(), buffer)
         };
         match rv {
             Some(r) => {
@@ -129,10 +124,8 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
             return None;
         }
 
-        let mut rv = ManuallyDrop::new(DstValue::<DST, BUF> {
-            _pd: marker::PhantomData,
-            data: buffer,
-        });
+        let mut rv =
+            ManuallyDrop::new(DstValue::<DST, BUF> { _pd: marker::PhantomData, data: buffer });
         // SAFETY: caller must ensure safety
         unsafe {
             rv.write_value(data, size, info);
@@ -230,12 +223,7 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
         let rv = unsafe {
             let (raw_ptr, meta_len, meta) = decompose_pointer(val);
 
-            DstValue::new_raw(
-                &meta[..meta_len],
-                raw_ptr.cast_mut(),
-                size_of_val(val),
-                buffer,
-            )
+            DstValue::new_raw(&meta[..meta_len], raw_ptr.cast_mut(), size_of_val(val), buffer)
         };
         match rv {
             Some(r) => Ok(r),
@@ -325,10 +313,7 @@ where
         }
         assert!(req_words <= buffer.as_ref().len());
 
-        let mut rv = DstValue {
-            _pd: marker::PhantomData,
-            data: buffer,
-        };
+        let mut rv = DstValue { _pd: marker::PhantomData, data: buffer };
 
         let data = rv.data.as_mut();
         let info_ofs = data.len() - info_words;

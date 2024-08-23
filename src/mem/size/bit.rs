@@ -47,30 +47,15 @@ use crate::text::{EgcNonul, StringNonul};
 use crate::_dep::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
 #[cfg(feature = "work")]
 use crate::work::{AtomicBool, AtomicOrdering};
-#[cfg(all(
-    feature = "work",
-    any(feature = "portable-atomic", target_has_atomic = "16")
-))]
+#[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "16")))]
 use crate::work::{AtomicI16, AtomicU16};
-#[cfg(all(
-    feature = "work",
-    any(feature = "portable-atomic", target_has_atomic = "32")
-))]
+#[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "32")))]
 use crate::work::{AtomicI32, AtomicU32};
-#[cfg(all(
-    feature = "work",
-    any(feature = "portable-atomic", target_has_atomic = "64")
-))]
+#[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "64")))]
 use crate::work::{AtomicI64, AtomicU64};
-#[cfg(all(
-    feature = "work",
-    any(feature = "portable-atomic", target_has_atomic = "8")
-))]
+#[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "8")))]
 use crate::work::{AtomicI8, AtomicU8};
-#[cfg(all(
-    feature = "work",
-    any(feature = "portable-atomic", target_has_atomic = "ptr")
-))]
+#[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "ptr")))]
 use crate::work::{AtomicIsize, AtomicPtr, AtomicUsize};
 
 /* fn definitions */
@@ -254,25 +239,13 @@ bit_sized![= 128; for NonZeroI128, NonZeroU128];
 bit_sized![= 1; for AtomicBool];
 #[cfg(feature = "work")]
 bit_sized![= 8; for AtomicOrdering];
-#[cfg(all(
-    feature = "work",
-    any(feature = "portable-atomic", target_has_atomic = "8")
-))]
+#[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "8")))]
 bit_sized![= 8; for AtomicI8, AtomicU8];
-#[cfg(all(
-    feature = "work",
-    any(feature = "portable-atomic", target_has_atomic = "16")
-))]
+#[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "16")))]
 bit_sized![= 16; for AtomicI16, AtomicU16];
-#[cfg(all(
-    feature = "work",
-    any(feature = "portable-atomic", target_has_atomic = "32")
-))]
+#[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "32")))]
 bit_sized![= 32; for AtomicI32, AtomicU32];
-#[cfg(all(
-    feature = "work",
-    any(feature = "portable-atomic", target_has_atomic = "64")
-))]
+#[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "64")))]
 bit_sized![= 64; for AtomicI64, AtomicU64];
 #[cfg(feature = "portable-atomic")]
 bit_sized![= 32; for AtomicF32];

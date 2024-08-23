@@ -21,9 +21,7 @@ where
     S::Stored<[T; CR]>: Clone,
 {
     fn clone(&self) -> Self {
-        Self {
-            data: self.data.clone(),
-        }
+        Self { data: self.data.clone() }
     }
 }
 
@@ -47,9 +45,7 @@ impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bo
     /// Panics if `C * R > usize::MAX` or if `C * R != CR`.
     fn default() -> Self {
         Self::panic_check_CR();
-        Self {
-            data: Array::<T, CR, Bare>::default(),
-        }
+        Self { data: Array::<T, CR, Bare>::default() }
     }
 }
 
@@ -63,9 +59,7 @@ impl<T: ConstDefault, const C: usize, const R: usize, const CR: usize, const RMA
     /// Panics if `C * R > usize::MAX` or if `C * R != CR`.
     const DEFAULT: Self = {
         Self::panic_check_CR();
-        Self {
-            data: Array::<T, CR, Bare>::DEFAULT,
-        }
+        Self { data: Array::<T, CR, Bare>::DEFAULT }
     };
 }
 
@@ -85,9 +79,7 @@ impl<T: Default, const C: usize, const R: usize, const CR: usize, const RMAJ: bo
     /// ```
     fn default() -> Self {
         Self::panic_check_CR();
-        Self {
-            data: Array::<T, CR, Boxed>::default(),
-        }
+        Self { data: Array::<T, CR, Boxed>::default() }
     }
 }
 

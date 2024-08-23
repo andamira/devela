@@ -42,10 +42,7 @@ impl Timecode {
     #[inline]
     #[must_use]
     #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "std", feature = "_float_f64")))
-    )]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn split_secs_f64(seconds: f64) -> HourMilliSplit<u32, u8, u8, u16> {
         let ms = (seconds.fract() * 1000.) as u16;
         let mut ts = seconds.trunc() as u64;
@@ -93,10 +90,7 @@ impl Timecode {
     //
     // -> 96 bits
     #[cfg(any(feature = "std", feature = "_float_f64"))]
-    #[cfg_attr(
-        feature = "nightly_doc",
-        doc(cfg(any(feature = "std", feature = "_float_f64")))
-    )]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     #[cfg(feature = "_string_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_u8")))]
     pub fn secs_f64(seconds: f64) -> StringU8<12> {

@@ -6,10 +6,7 @@
 use crate::code::iif;
 
 // imports for the `digits_str` method
-#[cfg(all(
-    feature = "_string_u8",
-    any(feature = "safe_text", not(feature = "unsafe_str"))
-))]
+#[cfg(all(feature = "_string_u8", any(feature = "safe_text", not(feature = "unsafe_str"))))]
 use crate::error::unwrap;
 #[cfg(all(feature = "_string_u8", feature = "_cmp_u8"))]
 use crate::num::Compare;
@@ -345,11 +342,7 @@ impl Ascii<u16> {
     #[must_use]
     pub const fn digits_3(self) -> [u8; 3] {
         debug_assert![self.0 <= 999];
-        [
-            self.calc_digit(100),
-            self.calc_digit(10),
-            self.calc_digit(1),
-        ]
+        [self.calc_digit(100), self.calc_digit(10), self.calc_digit(1)]
     }
 
     /// Converts a four-digit number to the corresponding `4` ASCII digits.
@@ -360,12 +353,7 @@ impl Ascii<u16> {
     #[must_use]
     pub const fn digits_4(self) -> [u8; 4] {
         debug_assert![self.0 <= 9999];
-        [
-            self.calc_digit(1000),
-            self.calc_digit(100),
-            self.calc_digit(10),
-            self.calc_digit(1),
-        ]
+        [self.calc_digit(1000), self.calc_digit(100), self.calc_digit(10), self.calc_digit(1)]
     }
 }
 

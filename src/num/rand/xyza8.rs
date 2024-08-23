@@ -75,12 +75,7 @@ impl Xyza8a {
     /// Returns a seeded `Xyza8a` generator from the given 4 × 8-bit seeds.
     #[inline]
     pub const fn new(seeds: [u8; 4]) -> Self {
-        Self {
-            x: seeds[0],
-            y: seeds[1],
-            z: seeds[2],
-            a: seeds[3],
-        }
+        Self { x: seeds[0], y: seeds[1], z: seeds[2], a: seeds[3] }
     }
 
     /// Returns the current random `u8`.
@@ -189,12 +184,7 @@ impl Xyza8b {
     /// This is the fastest constructor.
     #[inline]
     pub const fn new(seeds: [u8; 4]) -> Self {
-        Self {
-            x: seeds[0],
-            y: seeds[1],
-            z: seeds[2],
-            a: seeds[3],
-        }
+        Self { x: seeds[0], y: seeds[1], z: seeds[2], a: seeds[3] }
     }
 
     /// Returns the current random `u8`.
@@ -272,12 +262,7 @@ mod impl_rand {
     impl RngCore for Xyza8a {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
-            u32::from_le_bytes([
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-            ])
+            u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
         }
 
         /// Returns the next 8 × random `u8` combined as a single `u64`.
@@ -317,12 +302,7 @@ mod impl_rand {
     impl RngCore for Xyza8b {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
         fn next_u32(&mut self) -> u32 {
-            u32::from_le_bytes([
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-                self.next_u8(),
-            ])
+            u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
         }
 
         /// Returns the next 8 × random `u8` combined as a single `u64`.

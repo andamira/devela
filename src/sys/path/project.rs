@@ -42,10 +42,7 @@ pub fn crate_root<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
         }
         root_path.pop();
     }
-    Err(io::Error::new(
-        io::ErrorKind::NotFound,
-        "Ran out of places to find Cargo.toml",
-    ))
+    Err(io::Error::new(io::ErrorKind::NotFound, "Ran out of places to find Cargo.toml"))
 }
 
 /// Like [`crate_root`] but returns a [`String`].

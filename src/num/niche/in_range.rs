@@ -4,11 +4,7 @@
 //! that represents a numeric range.
 //
 
-#[cfg(all(
-    feature = "bytemuck",
-    feature = "unsafe_niche",
-    not(feature = "safe_num")
-))]
+#[cfg(all(feature = "bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
 use crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 #[cfg(feature = "mem_bit")]
 use crate::mem::{bit_sized, ByteSized};

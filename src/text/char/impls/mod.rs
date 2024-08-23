@@ -153,10 +153,4 @@ macro_rules! impl_char {
         }
     }};
 }
-impl_char![
-    7 | "_char7",
-    8 | "_char8",
-    16 | "_char16",
-    24 | "_char24",
-    32 | "_char32"
-];
+impl_char![7 | "_char7", 8 | "_char8", 16 | "_char16", 24 | "_char24", 32 | "_char32"];

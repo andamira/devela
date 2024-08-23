@@ -109,11 +109,7 @@ impl Char7 {
     #[must_use]
     pub const fn to_ascii_char(c: Char7) -> AsciiChar {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
-        return if let Some(c) = AsciiChar::from_u8(c.0.get()) {
-            c
-        } else {
-            unreachable!()
-        };
+        return if let Some(c) = AsciiChar::from_u8(c.0.get()) { c } else { unreachable!() };
 
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
         unsafe {

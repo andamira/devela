@@ -207,10 +207,7 @@ pub trait Read {
             }
         }
         if !buf.is_empty() {
-            Err(Error::new(
-                IoErrorKind::UnexpectedEof,
-                "failed to fill whole buffer",
-            ))
+            Err(Error::new(IoErrorKind::UnexpectedEof, "failed to fill whole buffer"))
         } else {
             Ok(())
         }
@@ -243,11 +240,7 @@ pub trait Read {
     where
         Self: Sized,
     {
-        Chain {
-            first: self,
-            second: next,
-            done_first: false,
-        }
+        Chain { first: self, second: next, done_first: false }
     }
 
     /// Creates an adaptor which will read at most `limit` bytes from it.
@@ -282,10 +275,7 @@ pub trait Write {
         while !buf.is_empty() {
             match self.write(buf) {
                 Ok(0) => {
-                    return Err(Error::new(
-                        IoErrorKind::WriteZero,
-                        "failed to write whole buffer",
-                    ));
+                    return Err(Error::new(IoErrorKind::WriteZero, "failed to write whole buffer"));
                 }
                 Ok(n) => buf = &buf[n..],
                 Err(ref e) if e.kind() == IoErrorKind::Interrupted => {}
@@ -318,10 +308,7 @@ pub trait Write {
             }
         }
 
-        let mut output = Adaptor {
-            inner: self,
-            error: Ok(()),
-        };
+        let mut output = Adaptor { inner: self, error: Ok(()) };
         match fmt::write(&mut output, fmt) {
             Ok(()) => Ok(()),
             Err(..) => {
@@ -456,10 +443,7 @@ impl<T, U> Chain<T, U> {
 
 impl<T: fmt::Debug, U: fmt::Debug> fmt::Debug for Chain<T, U> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("Chain")
-            .field("t", &self.first)
-            .field("u", &self.second)
-            .finish()
+        f.debug_struct("Chain").field("t", &self.first).field("u", &self.second).finish()
     }
 }
 

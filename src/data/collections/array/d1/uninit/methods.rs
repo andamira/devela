@@ -149,10 +149,7 @@ impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {
         let idx2 = self.verify_index(index2)?;
         // SAFETY: If the indices are verified, the values are initialized
         unsafe {
-            ptr_swap(
-                self.data[idx1].assume_init_mut(),
-                self.data[idx2].assume_init_mut(),
-            );
+            ptr_swap(self.data[idx1].assume_init_mut(), self.data[idx2].assume_init_mut());
         }
         Ok(())
     }

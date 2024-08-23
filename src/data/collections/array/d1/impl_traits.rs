@@ -65,9 +65,7 @@ where
     S::Stored<[T; LEN]>: Clone,
 {
     fn clone(&self) -> Self {
-        Self {
-            data: self.data.clone(),
-        }
+        Self { data: self.data.clone() }
     }
 }
 
@@ -82,10 +80,7 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut debug = f.debug_struct("Array");
-        debug
-            .field("T", &core::any::type_name::<T>())
-            .field("S", &S::name())
-            .field("LEN", &LEN);
+        debug.field("T", &core::any::type_name::<T>()).field("S", &S::name()).field("LEN", &LEN);
 
         const MAX: usize = 16;
         if LEN <= MAX {
@@ -150,11 +145,7 @@ impl<T: Default, const LEN: usize> Default for Array<T, LEN, Bare> {
 impl<T: ConstDefault, const LEN: usize> ConstDefault for Array<T, LEN, Bare> {
     /// Returns an array, allocated in the stack,
     /// using the default value to fill the data.
-    const DEFAULT: Self = {
-        Array {
-            data: BareBox::new([T::DEFAULT; LEN]),
-        }
-    };
+    const DEFAULT: Self = { Array { data: BareBox::new([T::DEFAULT; LEN]) } };
 }
 
 // T: Default, S: Boxed

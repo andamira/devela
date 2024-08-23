@@ -47,10 +47,7 @@ impl<T, E> Coro<T, E> {
     #[inline]
     #[allow(unused)]
     fn new() -> Self {
-        Coro {
-            status: CoroStatus::Running,
-            result: None,
-        }
+        Coro { status: CoroStatus::Running, result: None }
     }
 
     /// Yields an [`Ok`] `value` and returns an awaitable CoroYield.
@@ -163,9 +160,7 @@ pub struct CoroRun<T, E> {
 impl<T, E: 'static + Debug> CoroRun<T, E> {
     /// Returns a new empty runner.
     pub fn new() -> Self {
-        CoroRun {
-            coros: VecDeque::new(),
-        }
+        CoroRun { coros: VecDeque::new() }
     }
 
     /// Adds a closure to the runner.

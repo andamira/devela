@@ -29,12 +29,7 @@ impl<R: Read, const S: usize> BufReader<R, S> {
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html#method.new>.
     pub fn new(inner: R) -> BufReader<R, S> {
-        BufReader {
-            inner,
-            buf: [0; S],
-            pos: 0,
-            cap: 0,
-        }
+        BufReader { inner, buf: [0; S], pos: 0, cap: 0 }
     }
 }
 
@@ -599,9 +594,7 @@ impl<W: Write, const S: usize> LineWriter<W, S> {
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.LineWriter.html#method.new>.
     pub fn new(inner: W) -> LineWriter<W, S> {
-        LineWriter {
-            inner: BufWriter::new(inner),
-        }
+        LineWriter { inner: BufWriter::new(inner) }
     }
 
     /// Gets a reference to the underlying writer.

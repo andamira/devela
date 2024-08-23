@@ -39,11 +39,7 @@ impl Char24 {
     #[inline]
     #[must_use]
     pub const fn from_ascii_char(c: AsciiChar) -> Char24 {
-        Char24 {
-            hi: Self::new_unchecked_hi(0),
-            mi: 0,
-            lo: c as u8,
-        }
+        Char24 { hi: Self::new_unchecked_hi(0), mi: 0, lo: c as u8 }
     }
 
     /// Converts a `Char7` to `Char24`.
@@ -64,11 +60,7 @@ impl Char24 {
     #[cfg(feature = "_char8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     pub const fn from_char8(c: Char8) -> Char24 {
-        Char24 {
-            hi: Self::new_unchecked_hi(0),
-            mi: 0,
-            lo: c.0,
-        }
+        Char24 { hi: Self::new_unchecked_hi(0), mi: 0, lo: c.0 }
     }
     /// Converts a `Char16` to `Char24`.
     #[inline]
@@ -78,11 +70,7 @@ impl Char24 {
     pub const fn from_char16(c: Char16) -> Char24 {
         let mi = ((c.0.get() & 0xFF00) >> 8) as u8;
         let lo = (c.0.get() & 0x00FF) as u8;
-        Char24 {
-            hi: Self::new_unchecked_hi(0),
-            mi,
-            lo,
-        }
+        Char24 { hi: Self::new_unchecked_hi(0), mi, lo }
     }
     /// Converts a `Char32` to `Char24`.
     #[inline]
@@ -99,11 +87,7 @@ impl Char24 {
         let hi = ((c as u32 & 0x001F_0000) >> 16) as u8;
         let mi = ((c as u32 & 0x0000_FF00) >> 8) as u8;
         let lo = (c as u32 & 0x000_000FF) as u8;
-        Char24 {
-            hi: Self::new_unchecked_hi(hi),
-            mi,
-            lo,
-        }
+        Char24 { hi: Self::new_unchecked_hi(hi), mi, lo }
     }
 
     //

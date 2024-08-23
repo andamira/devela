@@ -75,9 +75,7 @@ pub const fn hash_pengy(data: &[u8], seed: u32) -> u64 {
         s[1] = s[2] ^ (s[1].wrapping_shl(40) | s[1].wrapping_shr(24));
         _i += 1;
     }
-    s[0].wrapping_add(s[1])
-        .wrapping_add(s[2])
-        .wrapping_add(s[3])
+    s[0].wrapping_add(s[1]).wrapping_add(s[2]).wrapping_add(s[3])
 }
 
 // /// non-const, non-wrapping version, most similar to the original.

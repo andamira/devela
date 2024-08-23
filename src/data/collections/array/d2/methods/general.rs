@@ -40,9 +40,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// ```
     pub fn with_cloned(element: T) -> Result<Self> {
         Self::check_CR()?;
-        Ok(Self {
-            data: Array::<T, CR, Bare>::with_cloned(element),
-        })
+        Ok(Self { data: Array::<T, CR, Bare>::with_cloned(element) })
     }
 }
 // T: Copy, S: Bare
@@ -62,9 +60,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     /// ```
     pub const fn with_copied(element: T) -> Result<Self> {
         match Self::check_CR() {
-            Ok(()) => Ok(Self {
-                data: Array::<T, CR, Bare>::with_copied(element),
-            }),
+            Ok(()) => Ok(Self { data: Array::<T, CR, Bare>::with_copied(element) }),
             Err(e) => Err(e),
         }
     }
@@ -88,9 +84,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// ```
     pub fn with_cloned(element: T) -> Result<Self> {
         Self::check_CR()?;
-        Ok(Self {
-            data: Array::<T, CR, Boxed>::with_cloned(element),
-        })
+        Ok(Self { data: Array::<T, CR, Boxed>::with_cloned(element) })
     }
 }
 

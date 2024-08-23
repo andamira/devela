@@ -73,9 +73,8 @@ fn closure() {
     use crate::_dep::_alloc::{format, string::String};
 
     let v1 = 1234u64;
-    let c: DstValue8w<dyn Fn() -> String> = DstValue8w::new(|| format!("{}", v1), |p| p as _)
-        .map_err(|_| "Oops")
-        .unwrap();
+    let c: DstValue8w<dyn Fn() -> String> =
+        DstValue8w::new(|| format!("{}", v1), |p| p as _).map_err(|_| "Oops").unwrap();
     assert_eq!(c(), "1234");
 }
 

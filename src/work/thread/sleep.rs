@@ -20,9 +20,7 @@ macro_rules! sleep4 {
         std::thread::sleep(core::time::Duration::from_millis($s * 1000 + $ms));
     };
     ($s:expr, $ms:expr, $us:expr) => {
-        std::thread::sleep(core::time::Duration::from_micros(
-            $s * 1_000_000 + $ms * 1_000 + $us,
-        ));
+        std::thread::sleep(core::time::Duration::from_micros($s * 1_000_000 + $ms * 1_000 + $us));
     };
     ($s:expr, $ms:expr, $us:expr, $ns:expr) => {
         std::thread::sleep(core::time::Duration::from_nanos(

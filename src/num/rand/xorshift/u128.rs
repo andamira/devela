@@ -63,10 +63,7 @@ impl XorShift128 {
     /// Panics in debug if the seeds are all `0`.
     #[inline]
     pub const fn new_unchecked(seeds: [u32; 4]) -> Self {
-        debug_assert![
-            (seeds[0] | seeds[1] | seeds[2] | seeds[3]) != 0,
-            "Seeds must be non-zero"
-        ];
+        debug_assert![(seeds[0] | seeds[1] | seeds[2] | seeds[3]) != 0, "Seeds must be non-zero"];
         Self(seeds)
     }
 

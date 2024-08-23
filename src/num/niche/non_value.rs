@@ -7,11 +7,7 @@
 
 #![allow(unused)]
 
-#[cfg(all(
-    feature = "bytemuck",
-    feature = "unsafe_niche",
-    not(feature = "safe_num")
-))]
+#[cfg(all(feature = "bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
 use crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 #[cfg(feature = "unsafe_layout")]
 use crate::mem::MemPod;

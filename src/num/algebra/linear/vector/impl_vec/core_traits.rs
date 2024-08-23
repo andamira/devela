@@ -11,9 +11,7 @@ use core::fmt;
 // T:Clone
 impl<T: Clone> Clone for VecVector<T> {
     fn clone(&self) -> Self {
-        Self {
-            vec: self.vec.clone(),
-        }
+        Self { vec: self.vec.clone() }
     }
 }
 
@@ -22,9 +20,7 @@ impl<T: Clone> Clone for VecVector<T> {
 impl<T: Default> Default for VecVector<T> {
     /// Returns a `VecVector`, using the default value to fill the data.
     fn default() -> Self {
-        Self {
-            vec: Default::default(),
-        }
+        Self { vec: Default::default() }
     }
 }
 

@@ -62,10 +62,7 @@ mod core_impls {
     impl<V: Clone, Q: Clone> Clone for ValueQuant<V, Q> {
         #[inline]
         fn clone(&self) -> Self {
-            Self {
-                v: self.v.clone(),
-                q: self.q.clone(),
-            }
+            Self { v: self.v.clone(), q: self.q.clone() }
         }
     }
     impl<V: Copy, Q: Copy> Copy for ValueQuant<V, Q> {}
@@ -74,10 +71,7 @@ mod core_impls {
         /// Returns an empty ValueQuant with `None` for both fields.
         #[inline]
         fn default() -> Self {
-            Self {
-                v: Default::default(),
-                q: Default::default(),
-            }
+            Self { v: Default::default(), q: Default::default() }
         }
     }
 
