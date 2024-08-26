@@ -5,7 +5,7 @@
 
 pub(crate) fn main() -> Result<(), std::io::Error> {
     #[cfg(feature = "__dbg")]
-    crate::utils::println_heading("Features:");
+    crate::utils::println_heading("Features & Flags:");
 
     reflection::set_flags();
 
@@ -272,7 +272,7 @@ mod reflection {
         if is_enabled {
             for flag in flags {
                 println!("cargo:rustc-cfg={}", flag);
-                println(flag);
+                println(&format!["  flag = \"{flag}\""]);
             }
             println("");
         }
