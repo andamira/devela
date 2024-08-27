@@ -35,7 +35,7 @@ mod private {
 /// accessing that error via [`Error::source()`]. This makes it possible for the
 /// high-level module to provide its own errors while also revealing some of the
 /// implementation for debugging.
-// WAIT: [error_in_core](https://github.com/rust-lang/rust/issues/103765)
+// WAIT:1.81 [error_in_core](https://github.com/rust-lang/rust/pull/125951)
 pub trait Error: Debug + Display {
     /// The lower-level source of this error, if any.
     ///
