@@ -22,9 +22,13 @@ license = "MIT OR Apache-2.0"
 include = [
 	"/Cargo.toml",
 	"/DOCS/*",
-	"/examples/*.rs",
 	"/build/**/*.rs",
 	"/src/**/*.rs", "/src/**/*.md",
+
+	# examples used in docs:
+	"/examples/bitfield.rs",
+	"/examples/enumset.rs",
+	"/examples/id_seq.rs",
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
