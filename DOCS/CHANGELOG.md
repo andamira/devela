@@ -21,6 +21,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `num::algebra` module.
 - new `CellOption` trait.
 - new traits: `MemPod`.
+- new macro: `id_seq`.
+- new example: `id_seq`, and type `ExampleIdSeqUsize`.
 - new lints.
 
 ### Removed

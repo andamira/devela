@@ -37,6 +37,10 @@ pub mod bitfield;
 #[cfg_attr(not(any(doc, test)), path = "../../examples/enumset.rs")]
 pub mod enumset;
 
+#[cfg_attr(any(doc, test), path = "examples/id_seq.rs")]
+#[cfg_attr(not(any(doc, test)), path = "../../examples/id_seq.rs")]
+pub mod id_seq;
+
 // /// Shows how to document an out-crate standalone example.
 // #[path = "examples/separate_crate"]
 // pub mod example_separate_crate {

@@ -17,9 +17,10 @@ pub use {array::*, bit::*, error::*, sort::*};
 
 pub mod collections;
 pub mod hash;
+pub mod id;
 pub mod iter;
 #[doc(no_inline)]
-pub use {collections::*, hash::*, iter::*};
+pub use {collections::*, hash::*, id::*, iter::*};
 
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
@@ -32,7 +33,8 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        array::*, bit::all::*, collections::all::*, error::*, hash::all::*, iter::all::*, sort::*,
+        array::*, bit::all::*, collections::all::*, error::*, hash::all::*, id::all::*,
+        iter::all::*, sort::*,
     };
 
     #[doc(inline)]

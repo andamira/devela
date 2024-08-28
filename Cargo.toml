@@ -553,3 +553,6 @@ required-features = ["unsafe_async", "alloc"]
 [[example]]
 name = "enumset"
 required-features = ["_bit_u8"]
+[[example]]
+name = "id_seq"
+required-features = []
