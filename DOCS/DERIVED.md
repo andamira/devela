@@ -6,6 +6,8 @@ This project includes the following derived works:
   as part of the [`Tuple`] trait and other items.
 - A [modified][3] version of [fxhash] by Christopher Breeden, licensed as MIT OR Apache-2.0,
   as the [`HasherFx`], [`HasherFx32`] and [`HasherFx64`] hashers.
+- A [modified][4] version of [object-id] by *Altertech*, licensed as MIT,
+  as part of the `IdPinBox` and `IdPin` structs.
 - Adaptation of [quickdiv] v0.1.1 by Darko Trifunovski, licensed as Zlib OR MIT OR Apache-2.0,
   as the [`Divisor`] struct.
 - Adaptation of [pengyhash] v0.2 by Alberto Fajardo, licensed as BSD-2,
@@ -42,6 +44,7 @@ This project includes the following derived works:
 [`data::dst`]: https://docs.rs/devela/latest/devela/data/dst/index.html
 [2]: https://github.com/andamira/devela/blob/main/src/data/collections/tuple/MODIFICATIONS.md
 [fxhash]: https://crates.io/crates/fxhash/0.2.1
+[object-id]: https://crates.io/crates/object-id/0.1.4
 [3]: https://github.com/andamira/devela/blob/main/src/data/hash/fx/MODIFICATIONS.md
 [quickdiv]: https://crates.io/crates/quickdiv/0.1.1
 [`Divisor`]: https://docs.rs/devela/latest/devela/num/struct.Divisor.html
