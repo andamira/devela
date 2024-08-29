@@ -18,32 +18,30 @@ pub(crate) use _private::*;
 
 mod any; // dynamic typing and reflection
 mod asserts; // assertion macros
-mod cdbg; // cdbg![]
-mod cfor; // cfor![]
+mod cdbg; // cdbg!
+mod cfor; // cfor!
 mod default; // ConstDefault, Default
-mod deprecate; // deprecate_feature![]
+mod deprecate; // deprecate_feature!
 mod ident; // identifier related macros
-mod iif; // iif![]
-mod paste; // paste![] wrapped for docs
+mod iif; // iif!
+mod items; // items!, sf!
+mod paste; // paste! wrapped for docs
 mod reexports; // re-exported items
-mod skip_format; // sf![]
 #[allow(unused_imports)]
 pub use {
     any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, ident::*, iif::*,
-    paste::*, reexports::*, skip_format::*,
+    items::*, paste::*, reexports::*,
 };
 
 #[cfg(_some_bit)]
-mod enumset; // enumset![]
-#[cfg(_some_bit)]
-pub use enumset::*;
+items! { mod enumset; pub use enumset::*; } // enumset!
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
         any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, ident::*, iif::*,
-        paste::*, reexports::*, skip_format::*,
+        items::*, paste::*, reexports::*,
     };
 
     #[cfg(_some_bit)]

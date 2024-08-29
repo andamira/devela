@@ -23,3 +23,24 @@
 #[macro_export]
 macro_rules! sf { ( $($line:tt)+ ) => { $($line)+ }; }
 pub use sf;
+
+/// Groups items together and expands them as if they were written directly.
+///
+/// It can be useful to apply an attribute to a group of items.
+///
+/// It can also preserve the formatting of the code provided as arguments,
+/// but the [`sf`] macro is better for that, since it works with any arbitrary
+/// code sequences like statements, expressions… instead of with just Rust items.
+///
+/// # Examples
+/// ```
+/// # use devela::code::items;
+/// #[cfg(feature = "std")]
+/// items! {
+///     mod something;
+///     pub use something::*;
+/// }
+/// ```
+#[macro_export]
+macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
+pub use items;
