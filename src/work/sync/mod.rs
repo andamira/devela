@@ -11,10 +11,11 @@ pub use reexports::*;
 
 #[cfg(feature = "work")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
-mod atomic;
-#[allow(unused_imports)]
-#[cfg(feature = "work")]
-pub use atomic::*;
+crate::items! {
+    mod atomic;
+    #[allow(unused_imports)]
+    pub use atomic::*;
+}
 
 pub(crate) mod all {
     #[doc(inline)]

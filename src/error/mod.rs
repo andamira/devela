@@ -8,6 +8,9 @@
 //! It re-exports the error and result types defined in other modules.
 //
 
+#[allow(unused_imports)]
+use crate::code::items;
+
 mod ext_result;
 mod mismatch;
 mod never;
@@ -25,10 +28,11 @@ pub use {
 };
 
 #[cfg(not(feature = "std"))]
-mod define_no_std_error;
-#[allow(unused_imports)]
-#[cfg(not(feature = "std"))]
-pub use define_no_std_error::*;
+items! {
+    mod define_no_std_error;
+    #[allow(unused_imports)]
+    pub use define_no_std_error::*;
+}
 
 pub(crate) mod all {
     #[doc(inline)]

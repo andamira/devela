@@ -8,6 +8,9 @@
 // safety:
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
+#[allow(unused_imports)]
+use crate::code::items;
+
 mod arch;
 mod env;
 mod ffi;
@@ -17,16 +20,18 @@ pub use {arch::*, env::*, ffi::*, io::*};
 
 #[cfg(feature = "log")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "log")))]
-mod log;
-#[cfg(feature = "log")]
-pub use log::*;
+items! {
+    mod log;
+    pub use log::*;
+}
 
 #[cfg(feature = "sys")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
-mod path;
-#[allow(unused_imports)]
-#[cfg(feature = "sys")]
-pub use path::*;
+items! {
+    mod path;
+    #[allow(unused_imports)]
+    pub use path::*;
+}
 
 pub mod time;
 pub use time::*;

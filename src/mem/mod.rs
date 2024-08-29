@@ -8,6 +8,9 @@
 // safety:
 #![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]
 
+#[allow(unused_imports)]
+use crate::code::items;
+
 mod aligned;
 mod ext;
 mod fns_macros;
@@ -20,15 +23,17 @@ pub use {aligned::*, ext::*, fns_macros::*, reexports::*, size::*, slice::*, sto
 
 #[cfg(feature = "unsafe_ptr")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-mod pin;
-#[cfg(feature = "unsafe_ptr")]
-pub use pin::Pinned;
+items! {
+    mod pin;
+    pub use pin::Pinned;
+}
 
 #[cfg(feature = "unsafe_layout")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
-mod pod;
-#[cfg(feature = "unsafe_layout")]
-pub use pod::MemPod;
+items! {
+    mod pod;
+    pub use pod::MemPod;
+}
 
 pub mod cell;
 #[doc(no_inline)]

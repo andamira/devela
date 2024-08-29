@@ -3,21 +3,21 @@
 //! Coroutine implementations.
 //
 
-#[cfg(feature = "nightly_coro")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_coro")))]
-mod reexports;
-//
 // NOTE: it depends on unsafe_async because of task_waker_noop
 #[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_async")))]
-mod coro;
+crate::items! {
+    mod coro;
+    pub use coro::*;
+}
 
-#[allow(unused_imports)]
 #[cfg(feature = "nightly_coro")]
-pub use reexports::*;
-//
-#[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
-pub use coro::*;
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_coro")))]
+crate::items! {
+    mod reexports;
+    #[allow(unused_imports)]
+    pub use reexports::*;
+}
 
 pub(crate) mod all {
     #[doc(inline)]

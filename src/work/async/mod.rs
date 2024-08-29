@@ -19,10 +19,11 @@ pub use {coroutine::*, ext::*, reexports::*, waker::*};
 
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
-mod block;
-#[allow(unused_imports)]
-#[cfg(feature = "std")]
-pub use block::*;
+crate::items! {
+    mod block;
+    #[allow(unused_imports)]
+    pub use block::*;
+}
 
 pub(crate) mod all {
     #[doc(inline)]

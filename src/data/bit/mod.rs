@@ -9,9 +9,10 @@ mod wrapper;
 pub use {r#trait::BitOps, wrapper::Bitwise};
 
 #[cfg(_some_bit)]
-mod field;
-#[cfg(_some_bit)]
-pub use field::*;
+crate::items! {
+    mod field;
+    pub use field::*;
+}
 
 pub(crate) mod all {
     #[doc(inline)]

@@ -5,11 +5,11 @@
 //!
 //
 
-#![allow(unused_imports)]
 // safety:
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 
-pub(crate) mod helpers;
+#[allow(unused_imports)]
+use crate::code::items;
 
 mod ascii;
 mod char;
@@ -18,20 +18,23 @@ mod ext;
 mod grapheme;
 mod fmt;
 mod reexports;
+#[allow(unused_imports)]
 pub use {
     ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, grapheme::all::*, reexports::*,
 };
 
 #[cfg(_some_string_u)]
-mod string_u;
-#[cfg(_some_string_u)]
-pub use string_u::*;
+items! {
+    mod string_u;
+    pub use string_u::*;
+}
 
 #[cfg(feature = "_string_nonul")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_nonul")))]
-mod nonul;
-#[cfg(feature = "_string_nonul")]
-pub use nonul::*;
+items! {
+    mod nonul;
+    pub use nonul::*;
+}
 
 pub(crate) mod all {
     #[doc(inline)]

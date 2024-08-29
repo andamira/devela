@@ -5,6 +5,9 @@
 //!
 //
 
+#[allow(unused_imports)]
+use crate::code::items;
+
 mod array;
 mod reexports;
 mod traits;
@@ -12,36 +15,27 @@ mod traits;
 pub use {array::all::*, reexports::*, traits::*};
 
 #[cfg(_some_destaque)]
-mod destaque;
-#[cfg(_some_destaque)]
-pub use destaque::*;
+items! { mod destaque; pub use destaque::*; }
 
 #[cfg(_some_graph)]
-mod graph;
-#[cfg(_some_graph)]
-pub use graph::*;
+items! { mod graph; pub use graph::*; }
 
 #[cfg(_some_node)]
-mod node;
-#[cfg(_some_node)]
-pub use node::*;
+items! { mod node; pub use node::*; }
 
 #[cfg(_some_stack)]
-mod stack;
-#[cfg(_some_stack)]
-pub use stack::*;
+items! { mod stack; pub use stack::*; }
 
 #[cfg(feature = "_tuple")]
-mod tuple; // Tuple, TupleFmt
-#[cfg(feature = "_tuple")]
-pub use tuple::*;
+items! { mod tuple; pub use tuple::*; } // Tuple, TupleFmt
 
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-mod vec;
-#[allow(unused_imports)]
-#[cfg(feature = "alloc")]
-pub use vec::*;
+items! {
+    mod vec;
+    #[allow(unused_imports)]
+    pub use vec::*;
+}
 
 pub(crate) mod all {
     #[doc(inline)]

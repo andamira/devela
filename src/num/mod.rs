@@ -8,6 +8,9 @@
 // safety:
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
+#[allow(unused_imports)]
+use crate::code::items;
+
 mod _private;
 #[allow(unused_imports)]
 pub(crate) use _private::*;
@@ -29,19 +32,19 @@ pub use {algebra::all::*, niche::all::*};
 
 #[cfg(_some_int)]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(_some_int)))]
-mod frac;
-#[cfg(_some_int)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_some_int)))]
-mod int;
-#[cfg(_some_int)]
-pub use {frac::*, int::*};
+items! {
+    mod frac;
+    mod int;
+    pub use {frac::*, int::*};
+}
 
 #[cfg(feature = "num_rand")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_rand")))]
-pub mod rand;
-#[doc(no_inline)]
-#[cfg(feature = "num_rand")]
-pub use rand::all::*;
+items! {
+    pub mod rand;
+    #[doc(no_inline)]
+    pub use rand::all::*;
+}
 
 pub(crate) mod all {
     #[doc(inline)]

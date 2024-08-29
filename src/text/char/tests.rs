@@ -3,8 +3,8 @@
 //! These fns tests all the character types
 //
 
-use super::*;
-use core::mem::size_of_val as size;
+#[cfg(feature = "_char_all")]
+crate::items! { use {super::*, size_of_val as size}; }
 
 #[test]
 #[cfg(feature = "_char_all")]

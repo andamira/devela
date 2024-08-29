@@ -3,13 +3,13 @@
 //! implementations of core traits
 //
 
-use super::*;
+#[allow(unused_imports)]
 use crate::{
+    _dep::_core::fmt,
     code::{paste, ConstDefault},
     error::unwrap,
-    text::{TextError, TextResult as Result},
+    text::{char::*, TextError, TextResult as Result},
 };
-use core::fmt;
 
 /* Default, Display, Debug */
 
