@@ -1,4 +1,4 @@
-// devela::text::macros
+// devela::text::helpers
 //
 //! Private macros.
 //
