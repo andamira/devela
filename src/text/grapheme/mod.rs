@@ -1,4 +1,4 @@
-// devela::text::egc
+// devela::text::grapheme
 //
 //! Extended Grapheme Clusters.
 //!
@@ -8,7 +8,7 @@
 //! [0]: https://www.unicode.org/reports/tr29/
 //
 
-mod r#trait; // Egc
+mod r#trait; // Grapheme
 #[allow(unused_imports)]
 pub use r#trait::*;
 

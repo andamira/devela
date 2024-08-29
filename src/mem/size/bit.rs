@@ -31,7 +31,7 @@ use std::{
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // #[cfg(feature = "text")]
-// use crate::text::{StringU16, StringU32, EgcU8, StringU8};
+// use crate::text::{StringU16, StringU32, GraphemeU8, StringU8};
 #[cfg(feature = "alloc")]
 use crate::_dep::_alloc::{
     collections::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, VecDeque},
@@ -39,9 +39,9 @@ use crate::_dep::_alloc::{
     vec::Vec,
 };
 #[cfg(feature = "alloc")]
-use crate::text::EgcString;
+use crate::text::GraphemeString;
 #[cfg(feature = "_string_nonul")]
-use crate::text::{EgcNonul, StringNonul};
+use crate::text::{GraphemeNonul, StringNonul};
 
 #[cfg(feature = "portable-atomic")]
 use crate::_dep::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
@@ -177,7 +177,7 @@ macro_rules! bit_sized {
         bit_sized![= {$PTR_BITS * 3}; for String];
 
         #[cfg(feature = "alloc")]
-        bit_sized![= {$PTR_BITS * 3}; for EgcString];
+        bit_sized![= {$PTR_BITS * 3}; for GraphemeString];
 
         #[cfg(feature = "alloc")]
         bit_sized![<T> = {$PTR_BITS * 3};
@@ -255,9 +255,9 @@ bit_sized![= 64; for AtomicF64];
 bit_sized![= 128; for AtomicI128, AtomicU128];
 
 #[cfg(feature = "_string_nonul")]
-bit_sized![<const LEN: usize> = LEN; for EgcNonul<LEN>, StringNonul<LEN>];
+bit_sized![<const LEN: usize> = LEN; for GraphemeNonul<LEN>, StringNonul<LEN>];
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
-// bit_sized![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, EgcU8<LEN>];
+// bit_sized![<const LEN: usize> = { LEN + 8 }; for StringU8<LEN>, GraphemeU8<LEN>];
 // bit_sized![<const LEN: usize> = { LEN + 16 }; for StringU16<LEN>];
 // bit_sized![<const LEN: usize> = { LEN + 32 }; for StringU32<LEN>];
 

@@ -13,12 +13,14 @@ pub(crate) mod helpers;
 
 mod ascii;
 mod char;
-mod egc;
 mod error;
 mod ext;
+mod grapheme;
 mod fmt;
 mod reexports;
-pub use {ascii::all::*, char::all::*, egc::all::*, error::*, ext::*, fmt::all::*, reexports::*};
+pub use {
+    ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, grapheme::all::*, reexports::*,
+};
 
 #[cfg(_some_string_u)]
 mod string_u;
@@ -34,7 +36,7 @@ pub use nonul::*;
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
-        ascii::all::*, char::all::*, egc::all::*, error::*, ext::*, fmt::all::*, reexports::*,
+        ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, grapheme::all::*, reexports::*,
     };
 
     #[cfg(_some_string_u)]

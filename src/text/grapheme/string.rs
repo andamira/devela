@@ -1,9 +1,9 @@
-// devela::text::egc::string
+// devela::text::grapheme::string
 //
 //!
 //
 
-use super::Egc;
+use super::Grapheme;
 #[allow(unused_imports)]
 use crate::_dep::_alloc::{
     str::{self, Chars as CharIterator},
@@ -16,61 +16,61 @@ use crate::{_dep::unicode_segmentation::UnicodeSegmentation, text::*};
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 #[repr(transparent)]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub struct EgcString(String);
+pub struct GraphemeString(String);
 
-impl EgcString {
+impl GraphemeString {
     /// Creates a new empty extended grapheme cluster.
     #[inline]
     #[must_use]
-    pub const fn new() -> EgcString {
+    pub const fn new() -> GraphemeString {
         Self(String::new())
     }
 
-    /// Creates a new `EgcString` from a `Char7`.
+    /// Creates a new `GraphemeString` from a `Char7`.
     #[inline]
     #[must_use]
     #[cfg(feature = "_char7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
-    pub fn from_char7(c: Char7) -> EgcString {
+    pub fn from_char7(c: Char7) -> GraphemeString {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
-    /// Creates a new `EgcString` from a `Char8`.
+    /// Creates a new `GraphemeString` from a `Char8`.
     #[inline]
     #[must_use]
     #[cfg(feature = "_char8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
-    pub fn from_char8(c: Char8) -> EgcString {
+    pub fn from_char8(c: Char8) -> GraphemeString {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
-    /// Creates a new `EgcString` from a `Char16`.
+    /// Creates a new `GraphemeString` from a `Char16`.
     #[inline]
     #[must_use]
     #[cfg(feature = "_char16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
-    pub fn from_char16(c: Char16) -> EgcString {
+    pub fn from_char16(c: Char16) -> GraphemeString {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
-    /// Creates a new `EgcString` from a `Char24`.
+    /// Creates a new `GraphemeString` from a `Char24`.
     #[inline]
     #[must_use]
     #[cfg(feature = "_char24")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
-    pub fn from_char24(c: Char24) -> EgcString {
+    pub fn from_char24(c: Char24) -> GraphemeString {
         str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
-    /// Creates a new `EgcString` from a `Char32`.
+    /// Creates a new `GraphemeString` from a `Char32`.
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
@@ -79,7 +79,7 @@ impl EgcString {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
-    pub fn from_char32(c: Char32) -> EgcString {
+    pub fn from_char32(c: Char32) -> GraphemeString {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return str::from_utf8(&c.to_utf8_bytes()).unwrap().into();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
@@ -88,14 +88,14 @@ impl EgcString {
         }
     }
 
-    /// Creates a new `EgcString` from a `char`.
+    /// Creates a new `GraphemeString` from a `char`.
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
     #[must_use]
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
-    pub fn from_char(c: char) -> EgcString {
+    pub fn from_char(c: char) -> GraphemeString {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return str::from_utf8(&crate::text::char_to_utf8_bytes(c)).unwrap().into();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
@@ -134,13 +134,13 @@ impl EgcString {
 
 /* traits */
 
-impl Egc for EgcString {}
+impl Grapheme for GraphemeString {}
 
 mod core_impls {
     use super::*;
     use core::fmt;
 
-    impl Default for EgcString {
+    impl Default for GraphemeString {
         /// Returns a new empty extended grapheme cluster.
         #[inline]
         fn default() -> Self {
@@ -148,14 +148,14 @@ mod core_impls {
         }
     }
 
-    impl fmt::Display for EgcString {
+    impl fmt::Display for GraphemeString {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(f, "{}", self.0)
         }
     }
 
-    impl fmt::Debug for EgcString {
+    impl fmt::Debug for GraphemeString {
         #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(f, "{:?}", self.0)
@@ -164,25 +164,25 @@ mod core_impls {
 
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
-    impl From<String> for EgcString {
+    impl From<String> for GraphemeString {
         #[inline]
-        fn from(s: String) -> EgcString {
-            EgcString(s.graphemes(true).take(1).collect())
+        fn from(s: String) -> GraphemeString {
+            GraphemeString(s.graphemes(true).take(1).collect())
         }
     }
     #[cfg(feature = "unicode-segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unicode-segmentation")))]
-    impl From<&str> for EgcString {
+    impl From<&str> for GraphemeString {
         #[inline]
         #[must_use]
-        fn from(s: &str) -> EgcString {
-            EgcString(s.graphemes(true).take(1).collect())
+        fn from(s: &str) -> GraphemeString {
+            GraphemeString(s.graphemes(true).take(1).collect())
         }
     }
-    impl From<char> for EgcString {
+    impl From<char> for GraphemeString {
         #[inline]
-        fn from(s: char) -> EgcString {
-            EgcString(s.into())
+        fn from(s: char) -> GraphemeString {
+            GraphemeString(s.into())
         }
     }
 }

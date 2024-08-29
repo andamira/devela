@@ -1,4 +1,4 @@
-// devela::text::egc::string_u8
+// devela::text::grapheme::string_u8
 //
 //!
 //
@@ -6,7 +6,7 @@
 // - definitions
 // - trait impls
 
-use super::Egc;
+use super::Grapheme;
 #[cfg(feature = "alloc")]
 use crate::_dep::_alloc::ffi::CString;
 #[cfg(_some_char)]
@@ -31,10 +31,10 @@ use crate::{
 #[derive(Clone, PartialEq, Eq, Hash)]
 #[repr(transparent)]
 #[must_use]
-pub struct EgcU8<const CAP: usize>(StringU8<CAP>);
+pub struct GraphemeU8<const CAP: usize>(StringU8<CAP>);
 
 impl_sized_alias![
-    Egc, EgcU8,
+    Grapheme, GraphemeU8,
     "<abbr title='Extended Grapheme Cluster'>EGC</abbr>, backed by an array of ",
     ".":
     "A" 16, 1 "";
@@ -43,8 +43,8 @@ impl_sized_alias![
     "A" 128, 15 "s"
 ];
 
-impl<const CAP: usize> EgcU8<CAP> {
-    /// Creates a new empty `EgcU8`.
+impl<const CAP: usize> GraphemeU8<CAP> {
+    /// Creates a new empty `GraphemeU8`.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP > 255.
@@ -53,7 +53,7 @@ impl<const CAP: usize> EgcU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::new()]))
     }
 
-    /// Creates a new `EgcU8` from a `Char7`.
+    /// Creates a new `GraphemeU8` from a `Char7`.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP > 255.
@@ -66,7 +66,7 @@ impl<const CAP: usize> EgcU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::from_char7(c)]))
     }
 
-    /// Creates a new `EgcU8` from a `Char8`.
+    /// Creates a new `GraphemeU8` from a `Char8`.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][Char8#method.len_utf8].
@@ -79,7 +79,7 @@ impl<const CAP: usize> EgcU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::from_char8(c)]))
     }
 
-    /// Creates a new `EgcU8` from a `Char16`.
+    /// Creates a new `GraphemeU8` from a `Char16`.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][Char16#method.len_utf8].
@@ -92,7 +92,7 @@ impl<const CAP: usize> EgcU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::from_char16(c)]))
     }
 
-    /// Creates a new `EgcU8` from a `Char24`.
+    /// Creates a new `GraphemeU8` from a `Char24`.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][Char24#method.len_utf8].
@@ -105,7 +105,7 @@ impl<const CAP: usize> EgcU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::from_char24(c)]))
     }
 
-    /// Creates a new `EgcU8` from a `Char32`.
+    /// Creates a new `GraphemeU8` from a `Char32`.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][Char32#method.len_utf8].
@@ -118,7 +118,7 @@ impl<const CAP: usize> EgcU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::from_char32(c)]))
     }
 
-    /// Creates a new `EgcU8` from a `char`.
+    /// Creates a new `GraphemeU8` from a `char`.
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
     ///
@@ -210,13 +210,13 @@ impl<const CAP: usize> EgcU8<CAP> {
 
 /* traits */
 
-impl<const CAP: usize> Egc for EgcU8<CAP> {}
+impl<const CAP: usize> Grapheme for GraphemeU8<CAP> {}
 
 mod core_impls {
     use super::*;
     use core::fmt;
 
-    impl<const CAP: usize> Default for EgcU8<CAP> {
+    impl<const CAP: usize> Default for GraphemeU8<CAP> {
         /// Returns an empty extended grapheme character.
         ///
         /// # Panics
@@ -224,7 +224,7 @@ mod core_impls {
         #[inline] #[rustfmt::skip]
         fn default() -> Self { unwrap![ok Self::new()] }
     }
-    impl<const CAP: usize> ConstDefault for EgcU8<CAP> {
+    impl<const CAP: usize> ConstDefault for GraphemeU8<CAP> {
         /// Returns an empty string.
         ///
         /// # Panics
@@ -232,28 +232,28 @@ mod core_impls {
         const DEFAULT: Self = unwrap![ok Self::new()];
     }
 
-    impl<const CAP: usize> fmt::Display for EgcU8<CAP> {
+    impl<const CAP: usize> fmt::Display for GraphemeU8<CAP> {
         #[inline] #[rustfmt::skip]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{}", self.0) }
     }
-    impl<const CAP: usize> fmt::Debug for EgcU8<CAP> {
+    impl<const CAP: usize> fmt::Debug for GraphemeU8<CAP> {
         #[inline] #[rustfmt::skip]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{:?}", self.0) }
     }
 
-    // impl From<String> for EgcU8 {
-    //     fn from(s: String) -> EgcU8 {
-    //         EgcU8(s.graphemes(true).take(1).collect())
+    // impl From<String> for GraphemeU8 {
+    //     fn from(s: String) -> GraphemeU8 {
+    //         GraphemeU8(s.graphemes(true).take(1).collect())
     //     }
     // }
-    // impl From<&str> for EgcU8 {
-    //     fn from(s: &str) -> EgcU8 {
-    //         EgcU8(s.graphemes(true).take(1).collect())
+    // impl From<&str> for GraphemeU8 {
+    //     fn from(s: &str) -> GraphemeU8 {
+    //         GraphemeU8(s.graphemes(true).take(1).collect())
     //     }
     // }
-    // impl From<char> for EgcU8 {
-    //     fn from(s: char) -> EgcU8 {
-    //         EgcU8(s.into())
+    // impl From<char> for GraphemeU8 {
+    //     fn from(s: char) -> GraphemeU8 {
+    //         GraphemeU8(s.into())
     //     }
     // }
 }

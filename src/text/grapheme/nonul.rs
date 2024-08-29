@@ -1,4 +1,4 @@
-// devela::text::egc::nonul
+// devela::text::grapheme::nonul
 //
 //!
 //
@@ -7,7 +7,7 @@
 // - trait impls
 // - conversions
 
-use super::Egc;
+use super::Grapheme;
 #[cfg(feature = "alloc")]
 use crate::_dep::_alloc::ffi::CString;
 use crate::text::char::*;
@@ -27,10 +27,10 @@ use core::str::Chars;
 #[must_use]
 #[repr(transparent)]
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub struct EgcNonul<const CAP: usize>(StringNonul<CAP>);
+pub struct GraphemeNonul<const CAP: usize>(StringNonul<CAP>);
 
 impl_sized_alias![
-    EgcNonul, EgcNonul,
+    GraphemeNonul, GraphemeNonul,
     "<abbr title='Extended Grapheme Cluster'>EGC</abbr>, backed by an array of ",
     ". Can't contain nul chars.":
     "An" 8, 1 "";
@@ -42,7 +42,7 @@ impl_sized_alias![
 
 /* impls */
 
-impl<const CAP: usize> EgcNonul<CAP> {
+impl<const CAP: usize> GraphemeNonul<CAP> {
     /// Creates a new empty `StringNonul`.
     ///
     /// # Errors
@@ -52,9 +52,9 @@ impl<const CAP: usize> EgcNonul<CAP> {
         Ok(Self(unwrap![ok? StringNonul::new()]))
     }
 
-    /// Creates a new `EgcNonul` from a `Char7`.
+    /// Creates a new `GraphemeNonul` from a `Char7`.
     ///
-    /// If `c`.[`is_nul()`][Char7#method.is_nul] an empty egc will be returned.
+    /// If `c`.[`is_nul()`][Char7#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
@@ -68,9 +68,9 @@ impl<const CAP: usize> EgcNonul<CAP> {
         Ok(Self(unwrap![ok? StringNonul::from_char7(c)]))
     }
 
-    /// Creates a new `EgcNonul` from a `Char8`.
+    /// Creates a new `GraphemeNonul` from a `Char8`.
     ///
-    /// If `c`.[`is_nul()`][Char8#method.is_nul] an empty egc will be returned.
+    /// If `c`.[`is_nul()`][Char8#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
@@ -85,9 +85,9 @@ impl<const CAP: usize> EgcNonul<CAP> {
         Ok(Self(unwrap![ok? StringNonul::from_char8(c)]))
     }
 
-    /// Creates a new `EgcNonul` from a `Char16`.
+    /// Creates a new `GraphemeNonul` from a `Char16`.
     ///
-    /// If `c`.[`is_nul()`][Char16#method.is_nul] an empty egc will be returned.
+    /// If `c`.[`is_nul()`][Char16#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
@@ -102,9 +102,9 @@ impl<const CAP: usize> EgcNonul<CAP> {
         Ok(Self(unwrap![ok? StringNonul::from_char16(c)]))
     }
 
-    /// Creates a new `EgcNonul` from a `Char24`.
+    /// Creates a new `GraphemeNonul` from a `Char24`.
     ///
-    /// If `c`.[`is_nul()`][Char24#method.is_nul] an empty egc will be returned.
+    /// If `c`.[`is_nul()`][Char24#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
@@ -119,9 +119,9 @@ impl<const CAP: usize> EgcNonul<CAP> {
         Ok(Self(unwrap![ok? StringNonul::from_char24(c)]))
     }
 
-    /// Creates a new `EgcNonul` from a `Char32`.
+    /// Creates a new `GraphemeNonul` from a `Char32`.
     ///
-    /// If `c`.[`is_nul()`][Char32#method.is_nul] an empty egc will be returned.
+    /// If `c`.[`is_nul()`][Char32#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
@@ -136,9 +136,9 @@ impl<const CAP: usize> EgcNonul<CAP> {
         Ok(Self(unwrap![ok? StringNonul::from_char32(c)]))
     }
 
-    /// Creates a new `EgcNonul` from a `char`.
+    /// Creates a new `GraphemeNonul` from a `char`.
     ///
-    /// If `c`.[`is_nul()`][UnicodeScalar#method.is_nul] an empty egc will be returned.
+    /// If `c`.[`is_nul()`][UnicodeScalar#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
@@ -235,18 +235,18 @@ impl<const CAP: usize> EgcNonul<CAP> {
 
 /* traits */
 
-impl<const CAP: usize> Egc for EgcNonul<CAP> {}
+impl<const CAP: usize> Grapheme for GraphemeNonul<CAP> {}
 
 mod core_impls {
     use super::*;
     use core::fmt;
 
-    impl<const CAP: usize> Default for EgcNonul<CAP> {
+    impl<const CAP: usize> Default for GraphemeNonul<CAP> {
         /// Returns an empty extended grapheme character.
         #[inline] #[rustfmt::skip]
         fn default() -> Self { Self::new().unwrap() }
     }
-    impl<const CAP: usize> ConstDefault for EgcNonul<CAP> {
+    impl<const CAP: usize> ConstDefault for GraphemeNonul<CAP> {
         /// Returns an empty string.
         ///
         /// # Panics
@@ -254,29 +254,29 @@ mod core_impls {
         const DEFAULT: Self = unwrap![ok Self::new()];
     }
 
-    impl<const CAP: usize> fmt::Display for EgcNonul<CAP> {
+    impl<const CAP: usize> fmt::Display for GraphemeNonul<CAP> {
         #[inline] #[rustfmt::skip]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{}", self.0) }
     }
-    impl<const CAP: usize> fmt::Debug for EgcNonul<CAP> {
+    impl<const CAP: usize> fmt::Debug for GraphemeNonul<CAP> {
         #[inline] #[rustfmt::skip]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{:?}", self.0) }
     }
 
     // TODO
-    // impl<const CAP: usize> From<String> for EgcNonul<CAP> {
-    //     fn from(s: String) -> EgcNonul<CAP> {
-    //         EgcNonul(s.graphemes(true).take(1).collect())
+    // impl<const CAP: usize> From<String> for GraphemeNonul<CAP> {
+    //     fn from(s: String) -> GraphemeNonul<CAP> {
+    //         GraphemeNonul(s.graphemes(true).take(1).collect())
     //     }
     // }
-    // impl From<&str> for EgcNonul {
-    //     fn from(s: &str) -> EgcNonul {
-    //         EgcNonul(s.graphemes(true).take(1).collect())
+    // impl From<&str> for GraphemeNonul {
+    //     fn from(s: &str) -> GraphemeNonul {
+    //         GraphemeNonul(s.graphemes(true).take(1).collect())
     //     }
     // }
-    // impl From<char> for EgcNonul {
-    //     fn from(s: char) -> EgcNonul {
-    //         EgcNonul(s.into())
+    // impl From<char> for GraphemeNonul {
+    //     fn from(s: char) -> GraphemeNonul {
+    //         GraphemeNonul(s.into())
     //     }
     // }
 }

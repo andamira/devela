@@ -44,6 +44,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `Dst*` types const-generic `N` to `CAP`.
 - rename `all` module to `_all`.
 - rename `exec` module to `work`, and related features.
+- rename `Egc` to `Grapheme`
+- rename `EgcString` to `GraphemeString`.
+- rename `EgcNonul` to `GraphemeNonul`.
+- rename `EgcU8` to `GraphemeU8`.
 
 ### Fixed
 - fix build script utility call paths, add missing `_tuple*` features.

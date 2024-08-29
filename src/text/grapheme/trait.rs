@@ -1,7 +1,7 @@
-// devela::text::egc::trait
+// devela::text::grapheme::trait
 //
 //!
 //
 
 /// Common trait for extended grapheme cluster types.
-pub trait Egc {}
+pub trait Grapheme {}
