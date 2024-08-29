@@ -93,7 +93,7 @@ impl Char8 {
         if char_is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             if let Some(c) = AsciiChar::from_u8(self.0) {
-                Ok(c)
+                return Ok(c);
             } else {
                 unreachable![]
             }
