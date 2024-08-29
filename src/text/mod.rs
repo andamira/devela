@@ -40,6 +40,7 @@ items! {
 
 pub(crate) mod all {
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{
         ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, grapheme::all::*, reexports::*,
     };

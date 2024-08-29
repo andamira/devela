@@ -17,6 +17,7 @@ mod tests;
 // with re-exports
 mod definitions;
 mod fns;
+#[allow(unused_imports)]
 pub use {definitions::*, fns::*};
 
 pub(crate) mod all {

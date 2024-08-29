@@ -6,8 +6,8 @@
 // - specific implementations
 // - common implementations
 
+#[allow(unused_imports)]
 use super::*;
-use crate::code::paste;
 
 /* specific implementations */
 
@@ -31,7 +31,7 @@ macro_rules! impl_char {
         #[cfg(feature = $feature)]
         impl_char![@$bits];
     )+ };
-    (@$bits:literal) => { paste! {
+    (@$bits:literal) => { crate::paste! {
 
         /* impl traits */
 
