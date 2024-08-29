@@ -42,6 +42,7 @@ mod tests;
 ///
 /// See also the [`enumset!`][crate::code::enumset] macro.
 #[macro_export]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_some_bit)))]
 macro_rules! bitfield {
     {
         /* full syntax */
