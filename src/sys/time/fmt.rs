@@ -9,7 +9,8 @@
 
 #[cfg(feature = "alloc")]
 use crate::_dep::_alloc::{format, string::String};
-#[cfg(all(feature = "_float_f64", not(feature = "std")))]
+#[allow(unused_imports)]
+#[cfg(feature = "_float_f64")]
 use crate::num::ExtFloat;
 #[allow(unused_imports)]
 use crate::sys::time::HourMilliSplit;

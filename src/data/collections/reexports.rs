@@ -49,6 +49,19 @@ reexport! { rust: alloc::collections,
     VecDeque
 }
 
+// NOTE: the macro and the module have the same name
+//
+/// <span class='stab portability' title='re-exported from rust&#39;s `alloc`'>`alloc`</span>
+/// Creates a [`Vec`] containing the arguments.
+///
+#[doc = "*Re-exported from [`alloc::vec`][macro@crate::_dep::_alloc::vec]*."]
+#[doc = "\n\n---"]
+#[macro_export]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+macro_rules! vec { ($($tt:tt)*) => { crate::_dep::_alloc::vec![$($tt)*] } }
+pub use vec;
+
 /* from `hashbrown` */
 
 #[cfg(feature = "hashbrown")]

@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new aliases: `AllocMapFx`, `AllocSetFx`.
 - reexport `std::backtrace` types.
 - reexport `core::cell` types.
+- reexport `vec!` macro.
 - impl `Num` for niche types.
 - new `num::algebra` module.
 - new lints.
