@@ -5,8 +5,7 @@ use super::mem_size_of_expr;
 #[cfg(not(miri))]
 #[test]
 fn api_coro() {
-    use crate::_dep::_alloc::{string::String, vec};
-    use crate::work::Coroutine;
+    use crate::{data::vec, text::String, work::Coroutine};
 
     pub(super) trait Foo<'a, 'b> {}
     impl<'a> Foo<'a, 'static> for () {}

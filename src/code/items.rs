@@ -37,8 +37,10 @@ pub use sf;
 /// # use devela::code::items;
 /// #[cfg(feature = "std")]
 /// items! {
-///     mod something;
-///     pub use something::*;
+///     mod something {
+///         pub struct SomeThing;
+///     }
+///     pub use something::SomeThing;
 /// }
 /// ```
 #[macro_export]

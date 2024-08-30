@@ -18,7 +18,7 @@ use core::{
 };
 
 #[cfg(feature = "alloc")]
-use crate::{_dep::_alloc::boxed::Box, mem::Boxed};
+use crate::mem::{Box, Boxed};
 
 // Deref
 impl<T, const LEN: usize, S: Storage> Deref for Array<T, LEN, S> {

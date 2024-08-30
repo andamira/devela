@@ -1,15 +1,15 @@
 // devela::sys::io::reimplement_no_std::traits
 
 use super::error::{IoError as Error, IoErrorKind, IoResult as Result};
-#[cfg(feature = "alloc")]
-use crate::_dep::_alloc::vec::Vec;
 use crate::code::sf;
+#[cfg(feature = "alloc")]
+use crate::data::Vec;
 use core::{cmp, fmt, slice};
 
 #[cfg(feature = "alloc")]
 mod alloc_impls {
     use super::*;
-    use crate::_dep::_alloc::vec;
+    use crate::data::vec;
 
     /// Reads all bytes from a reader into the given buffer, adapting the buffer size as needed.
     ///

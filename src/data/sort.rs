@@ -9,9 +9,9 @@
 // - helper fns
 // - impl Sort for primitives
 
-#[cfg(feature = "alloc")]
-use crate::_dep::_alloc::{collections::BTreeMap, vec::Vec};
 use crate::code::iif;
+#[cfg(feature = "alloc")]
+use crate::data::{AllocOrdMap, Vec};
 #[cfg(_some_sort_float)]
 use crate::num::Compare;
 #[cfg(_some_sort)]
@@ -117,7 +117,7 @@ impl<T: Ord> Sort<&mut [T]> {
     where
         T: Clone,
     {
-        let mut counts = BTreeMap::new();
+        let mut counts = AllocOrdMap::new();
         // Calculate the frequencies and save them
         for item in self.0.iter() {
             let count = counts.entry(item.clone()).or_insert(0);

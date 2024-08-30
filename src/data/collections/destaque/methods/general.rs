@@ -1,10 +1,5 @@
 // devela::data::collections::destaque::methods::general
 
-#[cfg(feature = "alloc")]
-use crate::{
-    _dep::_alloc::{vec, vec::Vec},
-    mem::Boxed,
-};
 use crate::{
     data::{
         error::{
@@ -14,6 +9,11 @@ use crate::{
         Array, Destaque, DestaqueIter,
     },
     mem::{Bare, Storage},
+};
+#[cfg(feature = "alloc")]
+use crate::{
+    data::{vec, Vec},
+    mem::Boxed,
 };
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};

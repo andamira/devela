@@ -8,7 +8,7 @@
 //
 
 #[cfg(all(doc, feature = "alloc"))]
-use crate::_dep::_alloc::boxed::Box;
+use crate::mem::Box;
 use core::ops::DerefMut;
 
 mod bare;

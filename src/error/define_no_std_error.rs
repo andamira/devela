@@ -65,10 +65,10 @@ impl Error for core::convert::Infallible {}
 #[cfg(feature = "alloc")]
 mod impl_alloc {
     use super::{Debug, Display, Error};
+    use crate::{mem::Box, text::String};
     use crate::_dep::_alloc::{
         borrow::Cow,
-        boxed::Box,
-        string::{FromUtf16Error, FromUtf8Error, String},
+        string::{FromUtf16Error, FromUtf8Error},
     };
 
     impl<'a, E: Error + 'a> From<E> for Box<dyn Error + 'a> {

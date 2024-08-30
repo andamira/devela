@@ -13,10 +13,7 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::{
-    _dep::_alloc::{boxed::Box, collections::VecDeque},
-    work::task_waker_noop,
-};
+use crate::{data::VecDeque, mem::Box, work::task_waker_noop};
 use crate::{
     error::{serr, sok, OptRes},
     mem::Pin,
