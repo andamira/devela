@@ -22,8 +22,9 @@ mod float;
 mod no;
 mod primitive;
 mod sign;
+mod unit;
 mod r#trait;
-pub use {alias::*, cmp::*, error::*, float::*, no::*, primitive::*, r#trait::*, sign::*};
+pub use {alias::*, cmp::*, error::*, float::*, no::*, primitive::*, r#trait::*, sign::*, unit::*};
 
 pub mod algebra;
 pub mod niche;
@@ -51,7 +52,7 @@ pub(crate) mod all {
     #[allow(unused_imports)]
     pub use super::{
         algebra::all::*, alias::*, cmp::all::*, error::*, float::*, niche::all::*, no::*,
-        primitive::*, r#trait::*, sign::*,
+        primitive::*, r#trait::*, sign::*, unit::*,
     };
 
     #[doc(inline)]
