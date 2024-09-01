@@ -6,5 +6,6 @@
 mod bi;
 mod si;
 mod helpers;
+mod traits;
 
-pub use {bi::*, si::*};
+pub use {bi::*, si::*, traits::*};

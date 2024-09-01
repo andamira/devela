@@ -78,7 +78,7 @@ impl UnitBi {
 }
 
 impl UnitBi {
-    /// Returns the symbol of the unit.
+    /// Returns the symbol of the prefix.
     ///
     /// # Example
     /// ```
@@ -99,16 +99,14 @@ impl UnitBi {
             UnitBi::None => "",
         }
     }
+    /// Returns the ASCII symbol of the prefix.
+    #[inline]
+    #[must_use]
+    pub const fn symbol_ascii(&self) -> &str {
+        self.symbol()
+    }
 
-    // MAYBE
-    // /// Returns the binary prefix symbol with the given `unit`.
-    // #[inline]
-    // #[must_use]
-    // pub const fn symbol_concat<'a>(&'a self, unit: &'a str) -> [&'a str; 2] {
-    //     [self.symbol(), unit]
-    // }
-
-    /// Returns the name of the unit.
+    /// Returns the name of the prefix.
     #[must_use]
     pub const fn name(&self) -> &str {
         match self {
@@ -124,11 +122,15 @@ impl UnitBi {
         }
     }
 
-    /// Returns the exponent associated with the binary unit prefix.
+    /// The base value for binary unit prefixes.
+    pub const BASE: i32 = 2;
+
+    /// Returns the exponent corresponding to the binary unit prefix.
     ///
-    /// E.g. Mebi exp = 20; 2^20 = 1_048_576.
+    /// For example, `Mebi` corresponds to an exponent of 20, meaning
+    /// `Self::BASE^self.exp() = 1_048_576`.
     #[must_use]
-    pub const fn exp(&self) -> i8 {
+    pub const fn exp(&self) -> i32 {
         match self {
             UnitBi::Yobi => 80,
             UnitBi::Zebi => 70,
@@ -205,7 +207,7 @@ impl UnitBi {
     /// returning the converted value.
     #[inline]
     #[must_use]
-    pub fn convert(value: f64, from: UnitBi, to: UnitBi) -> f64 {
+    pub fn convert(value: f64, from: Self, to: Self) -> f64 {
         if from == to {
             return value;
         }
@@ -216,7 +218,7 @@ impl UnitBi {
     /// Converts a value from one binary prefix to another,
     /// returning the converted value and the remainder.
     #[must_use]
-    pub fn convert_i64(value: i64, from: UnitBi, to: UnitBi) -> (i64, i64) {
+    pub fn convert_i64(value: i64, from: Self, to: Self) -> (i64, i64) {
         if from == to {
             return (value, 0);
         }
@@ -229,7 +231,7 @@ impl UnitBi {
     /// Converts a value from one binary prefix to another,
     /// returning the converted value and the remainder.
     #[must_use]
-    pub fn convert_i128(value: i128, from: UnitBi, to: UnitBi) -> (i128, i128) {
+    pub fn convert_i128(value: i128, from: Self, to: Self) -> (i128, i128) {
         if from == to {
             return (value, 0);
         }
@@ -239,7 +241,7 @@ impl UnitBi {
         (converted, remainder)
     }
 
-    /// Reduces the given `value` to the most appropriate binary prefix as a f64,
+    /// Reduces the given `value` to the most appropriate binary prefix as an f64,
     /// returning a tuple of the reduced size and the prefix.
     ///
     /// The input `value` is assumed to be non-negative, and in base units,
@@ -247,10 +249,9 @@ impl UnitBi {
     ///
     /// This method simplifies large numerical values by scaling them down
     /// to the largest appropriate binary prefix (e.g., Kibi, Mebi, Gibi, etc.).
-    ///
-    #[cfg(any(feature = "std", feature = "_float_f64"))]
     #[must_use]
-    pub fn reduce(value: f64) -> (f64, UnitBi) {
+    #[cfg(any(feature = "std", feature = "_float_f64"))]
+    pub fn reduce(value: f64) -> (f64, Self) {
         match value.abs() {
             value if value >= UnitBi::Yobi.factor() => {
                 (value / UnitBi::Yobi.factor(), UnitBi::Yobi)
@@ -280,7 +281,7 @@ impl UnitBi {
         }
     }
 
-    /// Reduces the given value to the most appropriate binary prefix as a i64,
+    /// Reduces the given value to the most appropriate binary prefix as an i64,
     /// returning a tuple of the reduced size, the prefix, and the remainder.
     ///
     /// The input `value` is assumed to be non-negative, and in base units,
@@ -289,7 +290,7 @@ impl UnitBi {
     /// This method simplifies large numerical values by scaling them down
     /// to the largest appropriate binary prefix (e.g., Kibi, Mebi, Gibi, etc.).
     #[must_use]
-    pub const fn reduce_i64(value: i64) -> (i64, UnitBi, i64) {
+    pub const fn reduce_i64(value: i64) -> (i64, Self, i64) {
         match value {
             value if value >= UnitBi::Exbi.factor_i64() => {
                 (value / UnitBi::Exbi.factor_i64(), UnitBi::Exbi, value % UnitBi::Exbi.factor_i64())
@@ -313,7 +314,7 @@ impl UnitBi {
         }
     }
 
-    /// Reduces the given value to the most appropriate binary prefix as a i128,
+    /// Reduces the given value to the most appropriate binary prefix as an i128,
     /// returning a tuple of the reduced size, the prefix, and the remainder.
     ///
     /// The input `value` is assumed to be non-negative, and in base units,
@@ -322,7 +323,7 @@ impl UnitBi {
     /// This method simplifies large numerical values by scaling them down
     /// to the largest appropriate binary prefix (e.g., Kibi, Mebi, Gibi, etc.).
     #[must_use]
-    pub const fn reduce_i128(value: i128) -> (i128, UnitBi, i128) {
+    pub const fn reduce_i128(value: i128) -> (i128, Self, i128) {
         match value {
             value if value >= UnitBi::Yobi.factor_i128() => (
                 value / UnitBi::Yobi.factor_i128(),
@@ -348,9 +349,9 @@ impl UnitBi {
 
     /// Reduces the given value to a chain of appropriate binary prefixes as f64,
     /// stopping when the remainder is less than the given threshold.
-    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
     #[must_use]
-    pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, UnitBi)> {
+    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+    pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)> {
         if value == 0.0 {
             return vec![(0.0, UnitBi::None)];
         }
@@ -382,9 +383,9 @@ impl UnitBi {
 
     /// Reduces the given value to a chain of appropriate binary prefixes as i64,
     /// stopping when the remainder is less than the given threshold.
-    #[cfg(feature = "alloc")]
     #[must_use]
-    pub fn reduce_chain_i64(value: i64, threshold: i64) -> Vec<(i64, UnitBi)> {
+    #[cfg(feature = "alloc")]
+    pub fn reduce_chain_i64(value: i64, threshold: i64) -> Vec<(i64, Self)> {
         let mut result = Vec::new();
         let mut remainder = value;
 
@@ -405,9 +406,9 @@ impl UnitBi {
 
     /// Reduces the given value to a chain of appropriate binary prefixes as i128,
     /// stopping when the remainder is less than the given threshold.
-    #[cfg(feature = "alloc")]
     #[must_use]
-    pub fn reduce_chain_i128(value: i128, threshold: i128) -> Vec<(i128, UnitBi)> {
+    #[cfg(feature = "alloc")]
+    pub fn reduce_chain_i128(value: i128, threshold: i128) -> Vec<(i128, Self)> {
         let mut result = Vec::new();
         let mut remainder = value;
 
@@ -429,7 +430,7 @@ impl UnitBi {
 
 impl UnitBi {
     /// Returns an iterator in ascending order of magnitude.
-    pub fn asc_iter() -> impl Iterator<Item = UnitBi> {
+    pub fn asc_iter() -> impl Iterator<Item = Self> {
         const UNITS: [UnitBi; 9] = [
             UnitBi::Kibi,
             UnitBi::Mebi,
@@ -445,7 +446,7 @@ impl UnitBi {
     }
 
     /// Returns an iterator in descending order of magnitude.
-    pub fn desc_iter() -> impl Iterator<Item = UnitBi> {
+    pub fn desc_iter() -> impl Iterator<Item = Self> {
         const UNITS: [UnitBi; 9] = [
             UnitBi::Yobi,
             UnitBi::Zebi,

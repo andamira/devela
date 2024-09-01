@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
 - new macro: `id_seq`, example `id_seq` and type `ExampleIdSeqUsize`.
 - new types: `IdPinBox`, `IdPin`.
-- new types: `UnitBi`, `UnitSi`.
+- new types: `UnitBi`, `UnitSi` and trait: `Unit`.
 - new traits: `MemPod`, `CellOption`.
 - new aliases: `AllocMapFx`, `AllocSetFx`.
 - reexport `std::backtrace` types.

@@ -133,7 +133,7 @@ impl UnitSi {
 }
 
 impl UnitSi {
-    /// Returns the symbol of the unit.
+    /// Returns the symbol of the prefix.
     ///
     /// # Example
     /// ```
@@ -171,8 +171,9 @@ impl UnitSi {
             UnitSi::Quecto => "q",
         }
     }
-    /// Returns the ASCII symbol of the unit.
+    /// Returns the ASCII symbol of the prefix.
     #[inline]
+    #[must_use]
     pub const fn symbol_ascii(&self) -> &str {
         match self {
             UnitSi::Micro => "u",
@@ -180,7 +181,8 @@ impl UnitSi {
         }
     }
 
-    /// Returns the name of the unit.
+    /// Returns the name of the prefix.
+    #[must_use]
     pub const fn name(&self) -> &str {
         match self {
             UnitSi::Quetta => "quetta",
@@ -211,8 +213,11 @@ impl UnitSi {
         }
     }
 
-    /// Returns the exponent associated with the decimal unit prefix.
-    pub const fn exp(&self) -> i8 {
+    /// The base value for SI unit prefixes.
+    pub const BASE: i32 = 10;
+
+    /// Returns the exponent associated with the SI unit prefix.
+    pub const fn exp(&self) -> i32 {
         match self {
             UnitSi::Quetta => 30,
             UnitSi::Ronna => 27,
@@ -273,7 +278,7 @@ impl UnitSi {
         }
     }
 
-    /// Returns the multiplication factor for the decimal prefix as an i64.
+    /// Returns the multiplication factor for the SI prefix as an i64.
     ///
     /// Negative values represent reciprocal factors, indicating
     /// that the unit corresponds to a fractional multiplier
@@ -304,7 +309,7 @@ impl UnitSi {
         }
     }
 
-    /// Returns the multiplication factor for the decimal prefix as an i128.
+    /// Returns the multiplication factor for the SI prefix as an i128.
     pub const fn factor_i128(&self) -> i128 {
         match self {
             UnitSi::Quetta => 1_000_000_000_000_000_000_000_000_000_000,
@@ -319,10 +324,88 @@ impl UnitSi {
         }
     }
 
-    /// Reduces the given value to the most appropriate SI prefix as a f64,
+    /// Converts a value from one SI prefix to another,
+    /// returning the converted value.
+    #[inline]
+    #[must_use]
+    pub fn convert(value: f64, from: Self, to: Self) -> f64 {
+        if from == to {
+            return value;
+        }
+        let (from_factor, to_factor) = (from.factor(), to.factor());
+        value * (from_factor / to_factor)
+    }
+
+    /// Converts a value from one SI prefix to another,
+    /// returning the converted value and the remainder.
+    #[must_use]
+    pub fn convert_i64(value: i64, from: Self, to: Self) -> (i64, i64) {
+        if from == to {
+            return (value, 0);
+        }
+        let (from_factor, to_factor) = (from.factor_i64(), to.factor_i64());
+
+        // Determine the absolute conversion and handle positive/negative factors
+        let converted = if from_factor > 0 && to_factor > 0 {
+            value * from_factor / to_factor
+        } else if from_factor > 0 && to_factor < 0 {
+            value * from_factor * to_factor.abs()
+        } else if from_factor < 0 && to_factor > 0 {
+            value * from_factor.abs() / to_factor
+        } else {
+            value * from_factor.abs() * to_factor.abs()
+        };
+
+        let remainder = if from_factor > 0 && to_factor > 0 {
+            value * from_factor % to_factor
+        } else if from_factor > 0 && to_factor < 0 {
+            value * from_factor
+        } else if from_factor < 0 && to_factor > 0 {
+            value % to_factor
+        } else {
+            0 // No remainder calculation needed for reciprocal to reciprocal conversion
+        };
+
+        (converted, remainder)
+    }
+
+    /// Converts a value from one SI prefix to another,
+    /// returning the converted value and the remainder.
+    #[must_use]
+    pub fn convert_i128(value: i128, from: Self, to: Self) -> (i128, i128) {
+        if from == to {
+            return (value, 0);
+        }
+        let (from_factor, to_factor) = (from.factor_i128(), to.factor_i128());
+
+        // Determine the absolute conversion and handle positive/negative factors
+        let converted = if from_factor > 0 && to_factor > 0 {
+            value * from_factor / to_factor
+        } else if from_factor > 0 && to_factor < 0 {
+            value * from_factor * to_factor.abs()
+        } else if from_factor < 0 && to_factor > 0 {
+            value * from_factor.abs() / to_factor
+        } else {
+            value * from_factor.abs() * to_factor.abs()
+        };
+
+        let remainder = if from_factor > 0 && to_factor > 0 {
+            value * from_factor % to_factor
+        } else if from_factor > 0 && to_factor < 0 {
+            value * from_factor
+        } else if from_factor < 0 && to_factor > 0 {
+            value % to_factor
+        } else {
+            0 // No remainder calculation needed for reciprocal to reciprocal conversion
+        };
+
+        (converted, remainder)
+    }
+
+    /// Reduces the given value to the most appropriate SI prefix as an f64,
     /// returning a tuple of the reduced size and the prefix.
     #[cfg(any(feature = "std", feature = "_float_f64"))]
-    pub fn reduce(value: f64) -> (f64, UnitSi) {
+    pub fn reduce(value: f64) -> (f64, Self) {
         match value.abs() {
             value if value >= UnitSi::Quetta.factor() => {
                 (value / UnitSi::Quetta.factor(), UnitSi::Quetta)
@@ -399,9 +482,9 @@ impl UnitSi {
         }
     }
 
-    /// Reduces the given value to the most appropriate decimal prefix as an i64,
+    /// Reduces the given value to the most appropriate SI prefix as an i64,
     /// returning a tuple of the reduced size, the prefix, and the remainder.
-    pub const fn reduce_i64(value: i64) -> (i64, UnitSi, i64) {
+    pub const fn reduce_i64(value: i64) -> (i64, Self, i64) {
         match value {
             value if value >= UnitSi::Exa.factor_i64() => {
                 (value / UnitSi::Exa.factor_i64(), UnitSi::Exa, value % UnitSi::Exa.factor_i64())
@@ -457,9 +540,9 @@ impl UnitSi {
         }
     }
 
-    /// Reduces the given value to the most appropriate decimal prefix as an i128,
+    /// Reduces the given value to the most appropriate SI prefix as an i128,
     /// returning a tuple of the reduced size, the prefix, and the remainder.
-    pub const fn reduce_i128(value: i128) -> (i128, UnitSi, i128) {
+    pub const fn reduce_i128(value: i128) -> (i128, Self, i128) {
         match value {
             value if value >= UnitSi::Quetta.factor_i128() => (
                 value / UnitSi::Quetta.factor_i128(),
@@ -500,11 +583,11 @@ impl UnitSi {
         }
     }
 
-    /// Reduces the given value to a chain of appropriate decimal prefixes as f64,
+    /// Reduces the given value to a chain of appropriate SI prefixes as f64,
     /// stopping when the remainder is less than the given threshold.
-    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
     #[must_use]
-    pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, UnitSi)> {
+    #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+    pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)> {
         if value == 0.0 {
             return vec![(0.0, UnitSi::None)];
         }
@@ -522,7 +605,7 @@ impl UnitSi {
             let integer_part = size.trunc();
             let fractional_part = size - integer_part;
             result.push((integer_part, unit));
-            remainder = fractional_part * unit.factor() as f64;
+            remainder = fractional_part * unit.factor();
 
             if remainder.abs() < effective_threshold {
                 break;
@@ -534,11 +617,11 @@ impl UnitSi {
         result
     }
 
-    /// Reduces the given value to a chain of appropriate binary prefixes as i64,
+    /// Reduces the given value to a chain of appropriate SI prefixes as i64,
     /// stopping when the remainder is less than the given threshold.
-    #[cfg(feature = "alloc")]
     #[must_use]
-    pub fn reduce_chain_i64(value: i64, threshold: i64) -> Vec<(i64, UnitSi)> {
+    #[cfg(feature = "alloc")]
+    pub fn reduce_chain_i64(value: i64, threshold: i64) -> Vec<(i64, Self)> {
         let mut result = Vec::new();
         let mut remainder = value;
 
@@ -556,11 +639,34 @@ impl UnitSi {
         }
         result
     }
+
+    /// Reduces the given value to a chain of appropriate SI prefixes as i128,
+    /// stopping when the remainder is less than the given threshold.
+    #[must_use]
+    #[cfg(feature = "alloc")]
+    pub fn reduce_chain_i128(value: i128, threshold: i128) -> Vec<(i128, Self)> {
+        let mut result = Vec::new();
+        let mut remainder = value;
+
+        while remainder.abs() > threshold.abs() {
+            let (size, unit, new_remainder) = Self::reduce_i128(remainder);
+            result.push((size, unit));
+            remainder = new_remainder;
+
+            if remainder.abs() < threshold.abs() {
+                break;
+            }
+        }
+        if remainder.abs() >= threshold.abs() {
+            result.push((remainder, UnitSi::None));
+        }
+        result
+    }
 }
 
 impl UnitSi {
     /// Returns an iterator in ascending order of magnitude.
-    pub fn asc_iter() -> impl Iterator<Item = UnitSi> {
+    pub fn asc_iter() -> impl Iterator<Item = Self> {
         const UNITS: [UnitSi; 25] = [
             UnitSi::Quecto,
             UnitSi::Ronto,
@@ -592,7 +698,7 @@ impl UnitSi {
     }
 
     /// Returns an iterator in descending order of magnitude.
-    pub fn desc_iter() -> impl Iterator<Item = UnitSi> {
+    pub fn desc_iter() -> impl Iterator<Item = Self> {
         const UNITS: [UnitSi; 25] = [
             UnitSi::Quetta,
             UnitSi::Ronna,
@@ -653,6 +759,7 @@ impl_try_from![UnitSi, i128 => u128];
 
 #[cfg(test)]
 mod tests {
+    #![allow(unused_imports)]
     use super::{
         UnitSi,
         UnitSi::{
@@ -660,7 +767,6 @@ mod tests {
             Yotta, Zetta,
         },
     };
-    #[allow(unused_imports)]
     #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
     use crate::data::vec;
     use crate::{code::sf, num::ExtFloatConst};
