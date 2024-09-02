@@ -17,7 +17,7 @@ pub enum NumError {
     /// This is the default implementation of every numeric trait method.
     NotImplemented,
 
-    /// The requested numerical functionality is not supported by this number type.
+    /// The requested numerical functionality is not supported.
     NotSupported,
 
     /// Unspecified error.

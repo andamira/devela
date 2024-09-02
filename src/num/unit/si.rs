@@ -247,7 +247,7 @@ impl UnitSi {
         }
     }
 
-    /// Returns the multiplication factor for the SI prefix as an f64.
+    /// Returns the multiplication factor for the SI prefix as an `f64`.
     pub const fn factor(&self) -> f64 {
         match self {
             UnitSi::Quetta => 1e30,
@@ -278,7 +278,7 @@ impl UnitSi {
         }
     }
 
-    /// Returns the multiplication factor for the SI prefix as an i64.
+    /// Returns the multiplication factor for the SI prefix as an `i64`.
     ///
     /// Negative values represent reciprocal factors, indicating
     /// that the unit corresponds to a fractional multiplier
@@ -309,7 +309,7 @@ impl UnitSi {
         }
     }
 
-    /// Returns the multiplication factor for the SI prefix as an i128.
+    /// Returns the multiplication factor for the SI prefix as an `i128`.
     pub const fn factor_i128(&self) -> i128 {
         match self {
             UnitSi::Quetta => 1_000_000_000_000_000_000_000_000_000_000,
@@ -402,9 +402,10 @@ impl UnitSi {
         (converted, remainder)
     }
 
-    /// Reduces the given value to the most appropriate SI prefix as an f64,
+    /// Reduces the given value to the most appropriate SI prefix as an `f64`,
     /// returning a tuple of the reduced size and the prefix.
     #[cfg(any(feature = "std", feature = "_float_f64"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn reduce(value: f64) -> (f64, Self) {
         match value.abs() {
             value if value >= UnitSi::Quetta.factor() => {
@@ -482,7 +483,7 @@ impl UnitSi {
         }
     }
 
-    /// Reduces the given value to the most appropriate SI prefix as an i64,
+    /// Reduces the given value to the most appropriate SI prefix as an `i64`,
     /// returning a tuple of the reduced size, the prefix, and the remainder.
     pub const fn reduce_i64(value: i64) -> (i64, Self, i64) {
         match value {
@@ -540,7 +541,7 @@ impl UnitSi {
         }
     }
 
-    /// Reduces the given value to the most appropriate SI prefix as an i128,
+    /// Reduces the given value to the most appropriate SI prefix as an `i128`,
     /// returning a tuple of the reduced size, the prefix, and the remainder.
     pub const fn reduce_i128(value: i128) -> (i128, Self, i128) {
         match value {
@@ -583,10 +584,14 @@ impl UnitSi {
         }
     }
 
-    /// Reduces the given value to a chain of appropriate SI prefixes as f64,
+    /// Reduces the given value to a chain of appropriate SI prefixes as an `f64`,
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
     #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+    #[cfg_attr(
+        feature = "nightly_doc",
+        doc(cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64"))))
+    )]
     pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)> {
         if value == 0.0 {
             return vec![(0.0, UnitSi::None)];
@@ -617,10 +622,11 @@ impl UnitSi {
         result
     }
 
-    /// Reduces the given value to a chain of appropriate SI prefixes as i64,
+    /// Reduces the given value to a chain of appropriate SI prefixes as an `i64`,
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
     #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn reduce_chain_i64(value: i64, threshold: i64) -> Vec<(i64, Self)> {
         let mut result = Vec::new();
         let mut remainder = value;
@@ -640,10 +646,11 @@ impl UnitSi {
         result
     }
 
-    /// Reduces the given value to a chain of appropriate SI prefixes as i128,
+    /// Reduces the given value to a chain of appropriate SI prefixes as an `i128`,
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
     #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn reduce_chain_i128(value: i128, threshold: i128) -> Vec<(i128, Self)> {
         let mut result = Vec::new();
         let mut remainder = value;
@@ -819,6 +826,10 @@ mod tests {
 
     #[test]
     #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+    #[cfg_attr(
+        feature = "nightly_doc",
+        doc(cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64"))))
+    )]
     fn unit_si_reduce_chain() {
         let margin = f64::MEDIUM_MARGIN;
 

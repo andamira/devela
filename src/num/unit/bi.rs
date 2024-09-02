@@ -144,7 +144,7 @@ impl UnitBi {
         }
     }
 
-    /// Returns the multiplication factor for the binary prefix as an f64.
+    /// Returns the multiplication factor for the binary prefix as an `f64`.
     #[must_use]
     pub const fn factor(&self) -> f64 {
         match self {
@@ -160,7 +160,7 @@ impl UnitBi {
         }
     }
 
-    /// Returns the multiplication factor for the binary prefix as an i64.
+    /// Returns the multiplication factor for the binary prefix as an `i64`.
     ///
     /// Only supports the range up to `Exbi`, returning `None` for `Zebi` and `Yobi`.
     #[must_use]
@@ -177,7 +177,7 @@ impl UnitBi {
         }
     }
 
-    /// Returns the multiplication factor for the binary prefix as an i64.
+    /// Returns the multiplication factor for the binary prefix as an `i64`.
     ///
     /// Only supports the range up to `Exbi`, returning 0 for `Zebi` and `Yobi`.
     #[must_use]
@@ -194,7 +194,7 @@ impl UnitBi {
         }
     }
 
-    /// Returns the multiplication factor for the binary prefix as an i128.
+    /// Returns the multiplication factor for the binary prefix as an `i128`.
     pub const fn factor_i128(&self) -> i128 {
         match self {
             UnitBi::Yobi => 1_208_925_819_614_629_174_706_176,
@@ -241,7 +241,7 @@ impl UnitBi {
         (converted, remainder)
     }
 
-    /// Reduces the given `value` to the most appropriate binary prefix as an f64,
+    /// Reduces the given `value` to the most appropriate binary prefix as an `f64`,
     /// returning a tuple of the reduced size and the prefix.
     ///
     /// The input `value` is assumed to be non-negative, and in base units,
@@ -251,6 +251,7 @@ impl UnitBi {
     /// to the largest appropriate binary prefix (e.g., Kibi, Mebi, Gibi, etc.).
     #[must_use]
     #[cfg(any(feature = "std", feature = "_float_f64"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
     pub fn reduce(value: f64) -> (f64, Self) {
         match value.abs() {
             value if value >= UnitBi::Yobi.factor() => {
@@ -281,7 +282,7 @@ impl UnitBi {
         }
     }
 
-    /// Reduces the given value to the most appropriate binary prefix as an i64,
+    /// Reduces the given value to the most appropriate binary prefix as an `i64`,
     /// returning a tuple of the reduced size, the prefix, and the remainder.
     ///
     /// The input `value` is assumed to be non-negative, and in base units,
@@ -314,7 +315,7 @@ impl UnitBi {
         }
     }
 
-    /// Reduces the given value to the most appropriate binary prefix as an i128,
+    /// Reduces the given value to the most appropriate binary prefix as an `i128`,
     /// returning a tuple of the reduced size, the prefix, and the remainder.
     ///
     /// The input `value` is assumed to be non-negative, and in base units,
@@ -347,10 +348,14 @@ impl UnitBi {
         }
     }
 
-    /// Reduces the given value to a chain of appropriate binary prefixes as f64,
+    /// Reduces the given value to a chain of appropriate binary prefixes as an `f64`,
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
     #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+    #[cfg_attr(
+        feature = "nightly_doc",
+        doc(cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64"))))
+    )]
     pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)> {
         if value == 0.0 {
             return vec![(0.0, UnitBi::None)];
@@ -381,10 +386,11 @@ impl UnitBi {
         result
     }
 
-    /// Reduces the given value to a chain of appropriate binary prefixes as i64,
+    /// Reduces the given value to a chain of appropriate binary prefixes as an `i64`,
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
     #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn reduce_chain_i64(value: i64, threshold: i64) -> Vec<(i64, Self)> {
         let mut result = Vec::new();
         let mut remainder = value;
@@ -404,10 +410,11 @@ impl UnitBi {
         result
     }
 
-    /// Reduces the given value to a chain of appropriate binary prefixes as i128,
+    /// Reduces the given value to a chain of appropriate binary prefixes as an `i128`,
     /// stopping when the remainder is less than the given threshold.
     #[must_use]
     #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn reduce_chain_i128(value: i128, threshold: i128) -> Vec<(i128, Self)> {
         let mut result = Vec::new();
         let mut remainder = value;
@@ -542,6 +549,10 @@ mod tests {
 
     #[test]
     #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
+    #[cfg_attr(
+        feature = "nightly_doc",
+        doc(cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64"))))
+    )]
     fn unit_bi_reduce_chain() {
         let margin = f64::MEDIUM_MARGIN;
 
