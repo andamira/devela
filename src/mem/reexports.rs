@@ -21,6 +21,25 @@ crate::code::impl_cdef![<T: ConstDefault> Self::new() => crate::_dep::_alloc::rc
 /// ---
 pub type Bare = ();
 
+/* borrow */
+
+reexport! { rust: core::borrow,
+    doc: "A trait for borrowing data.",
+    Borrow
+}
+reexport! { rust: core::borrow,
+    doc: "A trait for mutably borrowing data.",
+    BorrowMut
+}
+reexport! { rust: alloc::borrow,
+    doc: "A clone-on-write smart pointer.",
+    Cow
+}
+reexport! { rust: alloc::borrow,
+    doc: "A generalization of Clone to borrowed data.",
+    ToOwned
+}
+
 /* box */
 
 reexport! { rust: alloc::boxed,
