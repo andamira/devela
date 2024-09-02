@@ -439,6 +439,7 @@ impl UnitBi {
     /// Returns an iterator in ascending order of magnitude.
     pub fn asc_iter() -> impl Iterator<Item = Self> {
         const UNITS: [UnitBi; 9] = [
+            UnitBi::None,
             UnitBi::Kibi,
             UnitBi::Mebi,
             UnitBi::Gibi,
@@ -447,7 +448,6 @@ impl UnitBi {
             UnitBi::Exbi,
             UnitBi::Zebi,
             UnitBi::Yobi,
-            UnitBi::None,
         ];
         UNITS.iter().copied()
     }
