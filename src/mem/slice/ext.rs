@@ -8,20 +8,19 @@ use super::Slice;
 use crate::data::Vec;
 
 // Marker trait to prevent downstream implementations of the `ExtSlice` trait.
-mod private {
-    pub trait Sealed {}
-}
-impl<T> private::Sealed for [T] {}
-impl<T> private::Sealed for &[T] {}
-impl<T> private::Sealed for &mut [T] {}
-impl<T, const LEN: usize> private::Sealed for [T; LEN] {}
+trait Sealed {}
+impl<T> Sealed for [T] {}
+impl<T> Sealed for &[T] {}
+impl<T> Sealed for &mut [T] {}
+impl<T, const LEN: usize> Sealed for [T; LEN] {}
 #[cfg(feature = "alloc")]
-impl<T> private::Sealed for Vec<T> {}
+impl<T> Sealed for Vec<T> {}
 
 /// Extension trait providing additional methods for [`&[T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-pub trait ExtSlice<T>: private::Sealed {
+#[allow(private_bounds)]
+pub trait ExtSlice<T>: Sealed {
     /* split */
 
     /// Returns a left subslice of `slice` with the given maximum `len`.
@@ -120,7 +119,8 @@ pub trait ExtSlice<T>: private::Sealed {
 /// Extension trait providing additional methods for [`&mut [T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-pub trait ExtSliceMut<T>: private::Sealed + ExtSlice<T> {
+#[allow(private_bounds)]
+pub trait ExtSliceMut<T>: Sealed + ExtSlice<T> {
     /* split */
 
     /// Returns a mutable left subslice of `slice` with the given maximum `len`.

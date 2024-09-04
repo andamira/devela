@@ -32,12 +32,14 @@ impl<'a, T: ArrayDebug> fmt::Debug for ArrayFmt<'a, T> {
 }
 
 // Marker trait to prevent downstream implementations of the `ExtArray` trait.
-#[rustfmt::skip] mod private { pub trait Sealed {} }
+trait Sealed {}
+impl<T, const LEN: usize> Sealed for [T; LEN] {}
 
 /// Extension trait providing convenience methods for [arrays][array].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-pub trait ExtArray: private::Sealed {
+#[allow(private_bounds)]
+pub trait ExtArray: Sealed {
     /// The length of this array.
     const LEN: usize;
 
@@ -46,7 +48,6 @@ pub trait ExtArray: private::Sealed {
     fn fmt(&self) -> ArrayFmt<Self> where Self: Sized { ArrayFmt(self) }
 }
 
-impl<T, const LEN: usize> private::Sealed for [T; LEN] {}
 impl<T, const LEN: usize> ExtArray for [T; LEN] {
     const LEN: usize = LEN;
 }

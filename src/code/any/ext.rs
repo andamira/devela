@@ -13,17 +13,17 @@ use core::any::{type_name_of_val, Any, TypeId};
 use crate::mem::Box;
 
 // Marker trait to prevent downstream implementations of the `ExtAny` trait.
-mod private {
-    pub trait Sealed {}
-}
-impl<T: ?Sized + Any> private::Sealed for T {}
+trait Sealed {}
+impl<T: ?Sized + Any> Sealed for T {}
 impl<T: ?Sized + Any> ExtAny for T {}
 
 /// Extension trait providing convenience methods for `T: Any`.
 ///
 /// This trait is sealed and cannot be implemented manually.
 #[rustfmt::skip]
-pub trait ExtAny: Any + private::Sealed {
+// WAIT:1.81 [lint_reasons] expect
+#[allow(private_bounds)]
+pub trait ExtAny: Any + Sealed {
 
     /* type */
 

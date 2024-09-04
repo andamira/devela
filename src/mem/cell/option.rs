@@ -6,14 +6,12 @@
 use core::cell::Cell;
 
 // Marker trait to prevent downstream implementations of the `ExtCell` trait.
-impl<T> private::Sealed for Cell<Option<T>> {}
-mod private {
-    #[allow(dead_code)]
-    pub trait Sealed {}
-}
+trait Sealed {}
+impl<T> Sealed for Cell<Option<T>> {}
 
 /// A trait that provides additional methods for `Cell<Option>`.
-pub trait CellOption<T> {
+#[allow(private_bounds)]
+pub trait CellOption<T>: Sealed {
     /// Modifies the value inside the `Cell<Option<T>>` by applying the provided closure
     /// to a mutable reference of the current value if present.
     ///

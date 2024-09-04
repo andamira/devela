@@ -10,10 +10,8 @@ use core::{
 
 // Marker struct to prevent downstream implementations to override the
 // `Error::type_id` method, since that can enable unsound downcasting.
-mod private {
-    #[derive(Debug)]
-    pub struct Sealed;
-}
+#[derive(Debug)]
+pub struct Sealed;
 
 /// <span class='stab portability' title='re-exported from rust&#39;s `std`
 /// or recreated if `not(std)`'>`?std`</span>
@@ -36,6 +34,8 @@ mod private {
 /// high-level module to provide its own errors while also revealing some of the
 /// implementation for debugging.
 // WAIT:1.81 [error_in_core](https://github.com/rust-lang/rust/pull/125951)
+// WAIT:1.81 [lint_reasons] expect
+#[allow(private_bounds)]
 pub trait Error: Debug + Display {
     /// The lower-level source of this error, if any.
     ///
@@ -46,7 +46,7 @@ pub trait Error: Debug + Display {
 
     /// Gets the `TypeId` of `self`.
     #[doc(hidden)]
-    fn type_id(&self, _: private::Sealed) -> TypeId
+    fn type_id(&self, _: Sealed) -> TypeId
     where
         Self: 'static,
     {
@@ -236,7 +236,7 @@ impl dyn Error + 'static {
         let t = TypeId::of::<T>();
 
         // Get `TypeId` of the type in the trait object.
-        let boxed = self.type_id(private::Sealed);
+        let boxed = self.type_id(Sealed);
 
         // Compare both `TypeId`s on equality.
         t == boxed

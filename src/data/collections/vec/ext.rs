@@ -6,13 +6,14 @@
 use crate::data::Vec;
 
 // Marker trait to prevent downstream implementations of the `ExtVec` trait.
-#[rustfmt::skip] mod private { pub trait Sealed {} }
-impl<T> private::Sealed for Vec<T> {}
+trait Sealed {}
+impl<T> Sealed for Vec<T> {}
 
 /// Extension trait providing additional methods for [`Vec`].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-pub trait ExtVec<T>: private::Sealed {
+#[allow(private_bounds)]
+pub trait ExtVec<T>: Sealed {
     /* convert */
 
     /// Converts `Vec<T>` to `Vec<U>` when `U` implements `From<T>`.

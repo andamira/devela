@@ -4,10 +4,8 @@
 //
 
 // Marker trait to prevent downstream implementations of the `ExtResult` trait.
-impl<T, E> private::Sealed for Result<T, E> {}
-mod private {
-    pub trait Sealed {}
-}
+trait Sealed {}
+impl<T, E> Sealed for Result<T, E> {}
 
 /// Extension trait providing additional methods for [`Result`].
 ///
@@ -18,7 +16,8 @@ mod private {
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
 // - https://crates.io/crates/result-ext/0.2.0 by Simon Ochsenreither
-pub trait ExtResult<T, E>: private::Sealed {
+#[allow(private_bounds)]
+pub trait ExtResult<T, E>: Sealed {
     /// Returns `true` if the result is an [`Ok`] value containing the given value.
     ///
     /// # Examples

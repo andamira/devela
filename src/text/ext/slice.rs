@@ -14,13 +14,12 @@ use crate::{code::iif, text::AsciiChar};
 use crate::{mem::Slice, text::Ascii};
 
 // Marker trait to prevent downstream implementations of the `ExtStr` trait.
-impl private::Sealed for str {}
-mod private {
-    pub trait Sealed {}
-}
+trait Sealed {}
+impl Sealed for str {}
 
 /// Extension trait providing additional methods for [`&str`].
-pub trait ExtStr: private::Sealed {
+#[allow(private_bounds)]
+pub trait ExtStr: Sealed {
     /// Repeats a string a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.
     /// # Examples

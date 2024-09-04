@@ -9,7 +9,7 @@ use core::fmt::{self, Debug, Display};
 mod tests;
 
 // Marker trait to prevent downstream implementations of the `Tuple` trait.
-#[rustfmt::skip] mod private { pub trait Sealed {} }
+trait Sealed {}
 
 // NOTE: we import the generated code for the Tuple trait,
 // and their implementations for tuples of many arities,

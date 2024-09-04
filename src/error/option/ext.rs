@@ -7,10 +7,8 @@ use super::{OptionFmt, OptionFmtOr, OptionFmtOrElse};
 use core::fmt::Display;
 
 // Marker trait to prevent downstream implementations of the `ExtOption` trait.
-mod private {
-    pub trait Sealed {}
-}
-impl<T> private::Sealed for Option<T> {}
+trait Sealed {}
+impl<T> Sealed for Option<T> {}
 
 /// Extension trait providing additional methods for [`Option`].
 ///
@@ -22,7 +20,8 @@ impl<T> private::Sealed for Option<T> {}
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
 // - https://crates.io/crates/option-ext/0.2.0 by Simon Ochsenreither.
 // - https://crates.io/crates/opt_reduce/1.0.0 by Waffle Lapkin.
-pub trait ExtOption<T>: private::Sealed {
+#[allow(private_bounds)]
+pub trait ExtOption<T>: Sealed {
     /// Returns `true` if the option is a [`Some`] value containing the given value.
     ///
     /// # Examples

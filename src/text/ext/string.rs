@@ -10,16 +10,15 @@ use crate::text::{String, ToString};
 
 // Marker trait to prevent downstream implementations of the `ExtString` trait.
 #[cfg(feature = "alloc")]
-impl private::Sealed for String {}
+trait Sealed {}
 #[cfg(feature = "alloc")]
-mod private {
-    pub trait Sealed {}
-}
+impl Sealed for String {}
 
 /// Extension trait providing additional methods for [`String`].
+#[allow(private_bounds)]
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-pub trait ExtString: private::Sealed {
+pub trait ExtString: Sealed {
     /// Returns a [`String`] where you always know each character's position.
     ///
     /// A [*counter string*][0] is a graduated string of arbitrary `length`,
