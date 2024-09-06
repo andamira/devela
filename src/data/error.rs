@@ -82,7 +82,7 @@ mod core_impls {
     use super::DataError as E;
     use core::fmt;
 
-    impl crate::error::Error for E {}
+    impl core::error::Error for E {}
 
     impl fmt::Display for E {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

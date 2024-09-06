@@ -9,17 +9,17 @@ use crate::code::reexport;
 
 /* `core::result` re-exports */
 
+reexport! { rust: core::error,
+    doc: "A trait representing the basic expectations for error values.",
+    Error
+}
+
 #[cfg(feature = "std")]
 pub use std::*;
 #[cfg(feature = "std")]
 mod std {
     use super::reexport;
 
-    // In sync with define_no_std_error::Error
-    reexport! { rust: not(std)|std::error,
-        doc: "A trait representing the basic expectations for error values.",
-        Error
-    }
     reexport! { rust: std::backtrace,
         doc: "A captured OS thread stack backtrace.",
         Backtrace

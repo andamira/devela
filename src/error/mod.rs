@@ -27,13 +27,6 @@ pub use {
     traits::*, unwrap::*, value_quant::*,
 };
 
-#[cfg(not(feature = "std"))]
-items! {
-    mod define_no_std_error;
-    #[allow(unused_imports)]
-    pub use define_no_std_error::*;
-}
-
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
@@ -41,8 +34,4 @@ pub(crate) mod all {
         ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexports::*,
         traits::*, unwrap::*, value_quant::*,
     };
-
-    #[doc(inline)]
-    #[cfg(not(feature = "std"))]
-    pub use super::define_no_std_error::*;
 }

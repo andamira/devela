@@ -28,11 +28,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Removed
 - remove feature `num_geom`.
+- remove custom no_std `Error` definition.
 - move `num::geom::prim` submodule to separate crate `cuadra`.
 
 ### Changed
 - bump rust version to 1.81.0.
 - refactor build script.
+- start using `core::error::Error`.
 - make `bytemuck` an optional dependency.
 - method `Graph::edge_exists` no loger panics.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
