@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - reexport `core::cell` types.
 - reexport `vec!` macro.
 - reexport `assert_unchecked!` macro.
+- reexport `format!`, `format_args!` macros.
 - impl `Num` for niche types.
 - new `num::algebra` module.
 - new lints.
