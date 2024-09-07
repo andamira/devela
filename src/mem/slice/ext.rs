@@ -19,7 +19,8 @@ impl<T> Sealed for Vec<T> {}
 /// Extension trait providing additional methods for [`&[T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-#[allow(private_bounds)]
+#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[expect(private_bounds, reason = "Sealed")]
 pub trait ExtSlice<T>: Sealed {
     /* split */
 
@@ -119,8 +120,8 @@ pub trait ExtSlice<T>: Sealed {
 /// Extension trait providing additional methods for [`&mut [T]`][slice].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-#[allow(private_bounds)]
-pub trait ExtSliceMut<T>: Sealed + ExtSlice<T> {
+#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+pub trait ExtSliceMut<T>: ExtSlice<T> {
     /* split */
 
     /// Returns a mutable left subslice of `slice` with the given maximum `len`.

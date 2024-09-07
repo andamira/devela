@@ -3,7 +3,7 @@
 //! A simple logger.
 //
 
-use super::{Log, LogLevel, LogLevelFilter, LogMetadata, LogRecord, Logging};
+use super::{Log, LogLevelFilter, LogMetadata, LogRecord, Logging};
 
 /// A logger that prints out the logs.
 pub struct LoggerPrint;
@@ -21,7 +21,7 @@ impl LoggerPrint {
     /// the `RUST_LOG` env variable.
     ///
     /// For now it only prints out to stderr if the `std` feature is enabled.
-    #[allow(unused_mut)]
+    #[allow(unused_mut, reason = "only mutated with std enabled")]
     pub fn init(mut level: LogLevelFilter) -> Result<(), ::log::SetLoggerError> {
         static LOGGER: LoggerPrint = LoggerPrint {};
 
@@ -44,16 +44,18 @@ impl Log for LoggerPrint {
 
     fn log(&self, record: &LogRecord) {
         if self.enabled(record.metadata()) {
-            #[allow(unused_variables)]
-            let lvl = match record.level() {
-                LogLevel::Error => "Error",
-                LogLevel::Warn => "Warn ",
-                LogLevel::Info => "Info ",
-                LogLevel::Debug => "Debug",
-                LogLevel::Trace => "Trace",
-            };
             #[cfg(feature = "std")]
-            eprintln!("{} {}", lvl, record.args());
+            {
+                use super::LogLevel;
+                let lvl = match record.level() {
+                    LogLevel::Error => "Error",
+                    LogLevel::Warn => "Warn ",
+                    LogLevel::Info => "Info ",
+                    LogLevel::Debug => "Debug",
+                    LogLevel::Trace => "Trace",
+                };
+                eprintln!("{} {}", lvl, record.args());
+            }
         }
     }
 

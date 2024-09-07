@@ -228,9 +228,7 @@ macro_rules! impl_int {
                 iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
                 let (mut num, mut den): ($t, $t) = (1, 1);
                 cfor![i in 0..r => {
-                    let factor = if let Some(res) = n.checked_add(r - 1 - i) {
-                        res
-                    } else {
+                    let Some(factor) = n.checked_add(r - 1 - i) else {
                         return Err(Overflow(None))
                     };
                     num = if let Some(res) = num.checked_mul(factor) {
@@ -306,9 +304,7 @@ macro_rules! impl_int {
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
-                let r_u32 = if let Ok(res) = Cast(r).checked_cast_to_u32() {
-                    res
-                } else {
+                let Ok(r_u32) = Cast(r).checked_cast_to_u32() else {
                     return Err(Overflow(None));
                 };
                 if let Some(res) = n.checked_pow(r_u32) {

@@ -20,7 +20,8 @@ impl<T> Sealed for Option<T> {}
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
 // - https://crates.io/crates/option-ext/0.2.0 by Simon Ochsenreither.
 // - https://crates.io/crates/opt_reduce/1.0.0 by Waffle Lapkin.
-#[allow(private_bounds)]
+#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[allow(private_bounds, reason = "Sealed")]
 pub trait ExtOption<T>: Sealed {
     /// Returns `true` if the option is a [`Some`] value containing the given value.
     ///

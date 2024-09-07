@@ -15,9 +15,9 @@ trait Sealed {}
 impl Sealed for String {}
 
 /// Extension trait providing additional methods for [`String`].
-#[allow(private_bounds)]
+#[allow(private_bounds, reason = "Sealed")]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(notable_trait, cfg(feature = "alloc")))]
 pub trait ExtString: Sealed {
     /// Returns a [`String`] where you always know each character's position.
     ///

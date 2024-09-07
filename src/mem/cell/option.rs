@@ -10,7 +10,8 @@ trait Sealed {}
 impl<T> Sealed for Cell<Option<T>> {}
 
 /// A trait that provides additional methods for `Cell<Option>`.
-#[allow(private_bounds)]
+#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[allow(private_bounds, reason = "Sealed")]
 pub trait CellOption<T>: Sealed {
     /// Modifies the value inside the `Cell<Option<T>>` by applying the provided closure
     /// to a mutable reference of the current value if present.

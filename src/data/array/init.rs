@@ -55,7 +55,7 @@ macro_rules! array_init {
 
     // safe array initialization in the stack
     safe_init [$T:ty; $LEN:expr], $init:expr) => {{
-        #[allow(clippy::redundant_closure_call)] // macro arg isn't redundant
+        #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
         core::array::from_fn(|i| $init(i))
     }};
     (
@@ -63,7 +63,7 @@ macro_rules! array_init {
     safe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
         let mut v = $crate::data::Vec::<$T>::with_capacity($LEN);
         for i in 0..$LEN {
-            #[allow(clippy::redundant_closure_call)] // macro arg isn't redundant
+            #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
             v.push($init(i));
         }
         v.into_boxed_slice().try_into().unwrap_or_else(|_| {
@@ -92,7 +92,7 @@ macro_rules! array_init {
             // SAFETY: array will be fully initialized in the subsequent loop
             unsafe { core::mem::MaybeUninit::uninit().assume_init() };
         for (i, e) in &mut arr[..].iter_mut().enumerate() {
-            #[allow(clippy::redundant_closure_call)] // macro arg isn't redundant
+            #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
             let _ = e.write($init(i));
         }
         // Can't use transmute for now, have to use transmute_copy:
@@ -106,7 +106,7 @@ macro_rules! array_init {
     // unsafe array initialization in the heap
     unsafe_init_heap [$T:ty; $LEN:expr], $init:expr) => {{
         let mut v = $crate::data::Vec::<$T>::with_capacity($LEN);
-        #[allow(clippy::redundant_closure_call)] // macro arg isn't redundant
+        #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
         for i in 0..$LEN { v.push($init(i)); }
         let slice = v.into_boxed_slice();
         let raw_slice = Box::into_raw(slice);

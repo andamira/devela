@@ -21,8 +21,7 @@ impl<T: ?Sized + Any> ExtAny for T {}
 ///
 /// This trait is sealed and cannot be implemented manually.
 #[rustfmt::skip]
-// WAIT:1.81 [lint_reasons] expect
-#[allow(private_bounds)]
+#[expect(private_bounds, reason = "Sealed")]
 pub trait ExtAny: Any + Sealed {
 
     /* type */

@@ -13,6 +13,7 @@
 /// ident_const_index![pub(crate), 2; fourth fifth]; // without commas
 /// assert![0 == fourth && 1 == fifth];
 /// ```
+// USEDBY: enumset macro
 #[macro_export]
 macro_rules! ident_const_index {
     ( // without commas:

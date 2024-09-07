@@ -18,7 +18,8 @@ trait Sealed {}
 impl Sealed for str {}
 
 /// Extension trait providing additional methods for [`&str`].
-#[allow(private_bounds)]
+#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+#[allow(private_bounds, reason = "Sealed")]
 pub trait ExtStr: Sealed {
     /// Repeats a string a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.

@@ -10,10 +10,10 @@ use E::{NotImplemented, NotSupported};
 
 mod impls;
 
-#[rustfmt::skip]
-impl<'a, T: Num> NumRef<'a> for &T { type Own = T; }
-#[rustfmt::skip]
-impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
+crate::sf! {
+    impl<'a, T: Num> NumRef<'a> for &T { type Own = T; }
+    impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
+}
 
 /// Common trait for numeric types.
 ///
@@ -31,8 +31,9 @@ impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
 /// E.g. `num_abs` for unsigned types is only valid for `0`.
 ///
 /// See also [`NumRef`] which is automatically implemented for `Num` references.
+#[rustfmt::skip]
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[rustfmt::skip] #[allow(unused_variables)]
+#[allow(unused_variables, reason = "default implementation is not implemented")]
 pub trait Num {
     /// The internal representation of this numeric type.
     type Inner;
@@ -127,12 +128,9 @@ pub trait Num {
 ///
 /// It is automatically implemented for references of types implementing [`Num`].
 /// Mutable operations are only available for exclusive (`&mut`) references.
+#[rustfmt::skip]
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[rustfmt::skip] #[allow(unused_variables)]
-pub trait NumRef<'a>
-where
-    Self: Deref<Target = Self::Own>,
-{
+pub trait NumRef<'a> where Self: Deref<Target = Self::Own> {
     /// The owned version of this numeric type.
     type Own: Num;
 

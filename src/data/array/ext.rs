@@ -38,7 +38,7 @@ impl<T, const LEN: usize> Sealed for [T; LEN] {}
 /// Extension trait providing convenience methods for [arrays][array].
 ///
 /// This trait is sealed and cannot be implemented for any other type.
-#[allow(private_bounds)]
+#[expect(private_bounds, reason = "Sealed")]
 pub trait ExtArray: Sealed {
     /// The length of this array.
     const LEN: usize;

@@ -48,7 +48,7 @@ macro_rules! impl_into_sign {
                 match n {
                     0 => Sign::None,
                     1.. => Sign::Positive,
-                    #[allow(unreachable_patterns)] // for unsigned
+                    #[allow(unreachable_patterns, reason = "for unsigned")]
                     _ => Sign::Negative,
                 }
             }
