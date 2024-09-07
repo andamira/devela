@@ -84,6 +84,8 @@ pub use core::default::Default;
 /* `core::hint` re-exports */
 
 reexport! { rust: core::hint,
+doc: "Makes a *soundness* promise to the compiler that `cond` holds.", assert_unchecked }
+reexport! { rust: core::hint,
 doc: "Hints the compiler to be maximally pessimistic about what black_box could do.", black_box }
 reexport! { rust: core::hint,
 doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_loop }

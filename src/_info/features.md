@@ -80,15 +80,16 @@ In order to use any unsafe functionality:
   - `safe_work`
 
 - `unsafe`: enables `unsafe` (as long as it isn't forbidden in the module), includes:
-	- `unsafe_array`: faster array initialization.
-	- `unsafe_async`: custom task waker, coroutine impls.
+	- `unsafe_array`: faster array initialization, `UninitArray`.
+	- `unsafe_async`: task_waker_noop, `CoroRun`.
 	- `unsafe_const`: extra const methods.
-	- `unsafe_dyn`: DSTs in the stack, `no_std` Error dyn impls, `ExtAny::downcast*`.
+	- `unsafe_hint`: unreachable_unchecked, assert_unchecked.
+	- `unsafe_layout`: `MemPod`, DSTs in the stack, `no_std` Error dyn impls, `ExtAny::downcast*`.
 	- `unsafe_niche`: unchecked niche constructors.
 	- `unsafe_ptr`: `Pinned`, pop methods without `Clone`.
 	- `unsafe_slice`: extra slice methods, avoid bound checks.
-	- `unsafe_str`: unchecked utf-8 char and &str conversions.
-	- `unsafe_thread`: `Logging::set_logger_racy`.
+	- `unsafe_str`: unchecked utf-8 `char` and `&str` conversions.
+	- `unsafe_thread`: `Logging::set_logger_racy`, `Env::{remove_var, set_var}`.
 
 
 ### Nightly features

@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - reexport `std::backtrace` types.
 - reexport `core::cell` types.
 - reexport `vec!` macro.
+- reexport `assert_unchecked!` macro.
 - impl `Num` for niche types.
 - new `num::algebra` module.
 - new lints.

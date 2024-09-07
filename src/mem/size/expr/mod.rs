@@ -18,6 +18,10 @@
 /// const SIZE: usize = mem_size_of_expr!(f());
 /// assert_eq!(SIZE, 2);
 /// ```
+///
+/// # Features
+/// Makes use of [`unreachable_unchecked`][core::hint::unreachable_unchecked]
+/// if the `unsafe_hint` feature is enabled.
 #[macro_export]
 macro_rules! mem_size_of_expr {
     ($expr: expr) => {
@@ -27,8 +31,14 @@ macro_rules! mem_size_of_expr {
             if true {
                 []
             } else {
+                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_hint")))]
                 loop {}
-                #[allow(unreachable_code)]
+                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_hint"))]
+                unsafe {
+                    core::hint::unreachable_unchecked()
+                }
+
+                #[expect(unreachable_code, reason = "avoid evaluating this branch")]
                 {
                     [|| [$expr; 0]; 0]
                 }
