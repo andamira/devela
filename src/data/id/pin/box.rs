@@ -1,6 +1,6 @@
 // devela::data::id::pin::box
 //
-//!
+//! Pinned memory-based unique IDs.
 //
 
 use crate::mem::Box;
