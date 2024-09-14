@@ -18,8 +18,8 @@ crate::sf! {
 /// Common trait for numeric types.
 ///
 /// # Notes
-/// - Every method in this trait returns [`NotImplemented`] by default.
-/// - Any concrete implementation must implement the operations it wants to support.
+/// - Every method has a default implementation that returns [`NotImplemented`].
+/// - Specific implementations can customize the operations it wants to support.
 /// - Any operations specifically not supported should ideally return [`NotSupported`].
 ///
 /// - Most methods come in two variants, starting with different prefixes:

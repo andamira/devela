@@ -1081,7 +1081,7 @@ macro_rules! custom_impls {
 
             /// Evaluates a polynomial at the `self` point value, using [Horner's method].
             ///
-            /// Expects a slice of coefficients $[a_n, a_{n-1}, ..., a_1, a_0]$
+            /// Expects a slice of `coefficients` $[a_n, a_{n-1}, ..., a_1, a_0]$
             /// representing the polynomial $ a_n * x^n + a_{n-1} * x^{(n-1)} + ... + a_1 * x + a_0 $.
             ///
             /// # Examples

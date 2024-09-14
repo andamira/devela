@@ -81,7 +81,9 @@ impl<T, const N: usize> DataCollection for [T; N] {
     fn collection_capacity(&self) -> Result<usize> { Ok(N) }
     fn collection_len(&self) -> Result<usize> { Ok(N) }
     // A fixed-size array is never empty nor full.
+    /// Returns [`NotSupported`][E::NotSupported] since a fixed-size array is never empty or full.
     fn collection_is_empty(&self) -> Result<bool> { E::ns() }
+    /// Returns [`NotSupported`][E::NotSupported] since a fixed-size array is never empty or full.
     fn collection_is_full(&self) -> Result<bool> { E::ns() }
 
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
@@ -132,7 +134,9 @@ impl<T> DataCollection for AllocPrioQueue<T> {
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
     fn collection_is_full(&self) -> Result<bool> { Ok(self.len() >= self.capacity()) }
+    /// Returns [`NotSupported`][E::NotSupported].
     fn collection_contains(&self, _: Self::Element) -> Result<bool> { E::ns() }
+    /// Returns [`NotSupported`][E::NotSupported].
     fn collection_count(&self, _: &Self::Element) -> Result<usize> { E::ns() }
 }
 
@@ -140,9 +144,11 @@ impl<T> DataCollection for AllocPrioQueue<T> {
 #[cfg(feature = "alloc")]
 impl<K, V> DataCollection for AllocOrdMap<K, V> {
     type Element = V;
+    /// Returns [`NotSupported`][E::NotSupported].
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
+    /// Returns [`NotSupported`][E::NotSupported].
     fn collection_is_full(&self) -> Result<bool> { E::ns() }
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where V: PartialEq {
         Ok(self.values().any(|value| *value == element))
@@ -155,9 +161,11 @@ impl<K, V> DataCollection for AllocOrdMap<K, V> {
 #[cfg(feature = "alloc")]
 impl<V> DataCollection for AllocOrdSet<V> {
     type Element = V;
+    /// Returns [`NotSupported`][E::NotSupported].
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
+    /// Returns [`NotSupported`][E::NotSupported].
     fn collection_is_full(&self) -> Result<bool> { E::ns() }
     /// This is less efficent than [`AllocOrdSet::contains`] for not having [`Ord`].
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where V: PartialEq {
@@ -173,9 +181,11 @@ impl<V> DataCollection for AllocOrdSet<V> {
 #[cfg(all(feature = "alloc", feature = "hashbrown"))]
 impl<K, V> DataCollection for AllocMap<K, V> {
     type Element = V;
+    /// Returns [`NotSupported`][E::NotSupported].
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
+    /// Returns [`NotSupported`][E::NotSupported].
     fn collection_is_full(&self) -> Result<bool> { E::ns() }
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where V: PartialEq {
         Ok(self.values().any(|value| *value == element))
@@ -188,7 +198,7 @@ impl<K, V> DataCollection for AllocMap<K, V> {
 #[cfg(all(feature = "alloc", feature = "hashbrown"))]
 impl<V> DataCollection for AllocSet<V> {
     type Element = V;
-    fn collection_capacity(&self) -> Result<usize> { E::ns() }
+    fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
     fn collection_is_full(&self) -> Result<bool> { E::ns() }

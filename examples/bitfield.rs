@@ -58,7 +58,7 @@ bitfield! {
     pub struct ExampleBitfieldCustom(u8) {
         /// Documentation for the first field.
         FLAG1: 0;
-        /// Documentation for the first field.
+        /// Documentation for the second field.
         FLAG2: 1;
         #[allow(missing_docs)]
         MASK0: 0, 1;
@@ -91,7 +91,7 @@ bitfield! {
     pub struct ExampleBitfield(u8) {
         /// Documentation for the first field.
         FLAG1: 0;
-        /// Documentation for the first field.
+        /// Documentation for the second field.
         FLAG2: 1;
         #[allow(missing_docs)]
         MASK0: 0, 1;
