@@ -53,6 +53,7 @@
     clippy::doc_lazy_continuation, // markdown lazy paragraph continuations
     clippy::mixed_attributes_style, // items with mixed (inner/outer) attributes
     clippy::module_inception, // modules with the same name as its parent
+    clippy::too_long_first_doc_paragraph, // reason: root modules doc_extends!
     clippy::wrong_self_convention, // `is_` methods having an owned self
 )]
 //

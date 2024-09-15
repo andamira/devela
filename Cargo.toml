@@ -141,7 +141,6 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	unsafe_str = [] # unchecked utf-8 char and &str conversions.
 	unsafe_thread = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
-
 #* Nightly features tree *#
 # ------------------------------------------------------------------------------
 
@@ -457,7 +456,6 @@ rand_core = { version = "0.6.4", default-features = false, optional = true }
 unicode-segmentation = { version = "1.11.0", default-features = false, optional = true }
 unicode-width = { version = "0.1.13", default-features = false, optional = true }
 wide = { version = "0.7.26", optional = true, default-features = false }
-
 [dependencies.atomic]
 version = "0.6.0"
 optional = true

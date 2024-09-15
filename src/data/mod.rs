@@ -22,10 +22,10 @@ pub mod iter;
 #[doc(no_inline)]
 pub use {collections::*, hash::*, id::*, iter::*};
 
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
 #[cfg(not(miri))] // FIX
 crate::items! {
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
     pub mod dst;
     #[doc(no_inline)]
     pub use dst::*;
