@@ -20,7 +20,7 @@ use crate::num::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
 use crate::{
-    code::iif,
+    code::{iif, paste},
     error::unwrap,
     num::{upcasted_op, Int, NumError, NumResult as Result},
 };
@@ -70,16 +70,18 @@ macro_rules! impl_int {
     };
 
     // implements signed ops
-    (@signed $t:ty | $up:ty : $cap:literal : $cmp:literal : $d:literal) => { $crate::paste! {
+    (@signed $t:ty | $up:ty : $cap:literal : $cmp:literal : $d:literal) => { paste! {
         /* sqrt (signed) */
 
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns `true` if it's a perfect square.
             ///
@@ -367,14 +369,16 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty | $up:ty : $cap:literal : $cmp:literal : $d:literal) => { $crate::paste! {
+    (@unsigned $t:ty | $up:ty : $cap:literal : $cmp:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer root related methods for `" $t "`\n\n"]
         #[doc = "- [is_square](#method.is_square" $d ")"]
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* sqrt (unsigned) */
 

@@ -117,7 +117,8 @@ macro_rules! impl_int {
 
     // implements signed ops
     (@signed ($t:ty : $cap:literal, $up:ty:$is_up:ident, $d:literal) ) => { paste! {
-
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d
             ") *([uc](#method.modulo_unchecked" $d ")*)"]
@@ -147,7 +148,7 @@ macro_rules! impl_int {
             ") *([uc](#method.modulo_div_unchecked" $d "))*"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* modulo (signed) */
 
@@ -857,6 +858,8 @@ macro_rules! impl_int {
     (@unsigned
          ($t:ty : $cap:literal, $up:ty | $iup:ty : $icap:literal : $is_up:ident, $d:literal)
     ) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer modulo related methods for `" $t "`\n\n"]
         #[doc = "- [modulo](#method.modulo" $d
             ") *([uc](#method.modulo_unchecked" $d ")*)"]
@@ -886,7 +889,7 @@ macro_rules! impl_int {
             ") *([uc](#method.modulo_div_unchecked" $d "))*"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* modulo (unsigned) */
 

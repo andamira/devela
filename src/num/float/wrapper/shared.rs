@@ -32,11 +32,13 @@ macro_rules! custom_impls {
         $( custom_impls![@$f:$uf, $ue, $cap:$cmp]; )+
     };
     (@$f:ty:$uf:ty, $ue:ty, $cap:literal : $cmp:literal) => {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         /// # *Common implementations with or without `std` or `libm`*.
         /// # Features
         /// Several methods will only be *const* with the `unsafe_const` feature enabled.
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Float<$f> {
             /// Returns the nearest integer, rounding ties to the nearest odd integer.
             #[inline] #[must_use]

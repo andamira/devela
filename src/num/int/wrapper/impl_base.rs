@@ -11,7 +11,10 @@
 //   - digital_root
 //   - digital_root_base
 
-use crate::{code::iif, num::Int};
+use crate::{
+    code::{iif, paste},
+    num::Int,
+};
 
 // $t:  the integer primitive input/output type, and the niche inner type
 // $cap: the capability feature that enables the given implementation. E.g "_int_i8".
@@ -36,9 +39,9 @@ macro_rules! impl_int {
     };
 
     // implements ops on signed primitives
-    (@prim_signed $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
-        /* signed digits */
-
+    (@prim_signed $t:ty : $cap:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
         #[doc = "- [digits](#method.digits" $d ")"]
         #[doc = "- [digits_sign](#method.digits_sign" $d ")"]
@@ -48,7 +51,7 @@ macro_rules! impl_int {
         #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the number of digits in base 10.
             /// # Examples
@@ -176,7 +179,9 @@ macro_rules! impl_int {
     }};
 
     // implements ops on unsigned primitives
-    (@prim_unsigned $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
+    (@prim_unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
         #[doc = "- [digits](#method.digits" $d ")"]
         #[doc = "- [digits_sign](#method.digits_sign" $d ")"]
@@ -186,7 +191,7 @@ macro_rules! impl_int {
         #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned digits */
 

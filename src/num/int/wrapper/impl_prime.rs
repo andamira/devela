@@ -52,6 +52,8 @@ macro_rules! impl_int {
 
     // implements signed ops
     (@signed $t:ty | $up:ty : $cap:literal : $cmp:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
@@ -59,7 +61,7 @@ macro_rules! impl_int {
         #[doc = "- [totient](#method.totient" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns `true` if `n` is prime.
             ///
@@ -233,6 +235,8 @@ macro_rules! impl_int {
 
     // implements unsigned ops
     (@unsigned $t:ty | $up:ty : $cap:literal : $cmp:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer prime-related methods for `" $t "`\n\n"]
         #[doc = "- [is_prime](#method.is_prime" $d ")"]
         #[doc = "- [prime_nth](#method.prime_nth" $d ")"]
@@ -240,7 +244,7 @@ macro_rules! impl_int {
         #[doc = "- [totient](#method.totient" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns `true` if `n` is prime.
             ///

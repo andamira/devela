@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
 - new macro `id_seq!`, example `id_seq` and type `ExampleIdSeqUsize`.
 - new macro `id_resource!`, trait `IdResourced`, and type `IdResource`.
+- new private macro `doc_availability!`.
 - new types: `IdPinBox`, `IdPin`.
 - new traits: `MemPod`, `CellOption`.
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
@@ -59,6 +60,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Fixed
 - fix build script utility call paths, add missing `_tuple*` features.
+- reduce noise from required features on methods from `Divisor`, `Int`, `Float`, `Frac`.
 - fix `f64::NR_TOLERANCE` from 1e-14 to 1e-12.
 - fix a few tests and examples.
 

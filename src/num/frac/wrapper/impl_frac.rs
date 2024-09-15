@@ -43,21 +43,25 @@ macro_rules! impl_frac {
 
     // both for signed and unsigned
     (@array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::code::paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Fraction related methods for `[" $i "; 2]`\n\n"]
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
             #[must_use] #[inline]
             pub const fn numerator(self) -> $i { self.0[0] }
             /// Alias of [`numerator`][Self::numerator].
-            #[must_use] #[inline] pub const fn num(self) -> $i { self.0[0] }
+            #[must_use] #[inline]
+            pub const fn num(self) -> $i { self.0[0] }
 
             /// Returns the denominator (the second number of the sequence).
             #[must_use] #[inline]
             pub const fn denominator(self) -> $i { self.0[1] }
             /// Alias of [`denominator`][Self::denominator].
-            #[must_use] #[inline] pub const fn den(self) -> $i { self.0[0] }
+            #[must_use] #[inline]
+            pub const fn den(self) -> $i { self.0[0] }
 
             /// Retuns `true` if the fraction is valid `(denominator != 0)`.
             /// # Examples
@@ -78,9 +82,11 @@ macro_rules! impl_frac {
             #[doc = "assert![!Frac([3_" $i ", 3]).is_proper()];"]
             #[doc = "assert![!Frac([4_" $i ", 3]).is_proper()];"]
             /// ```
+            #[must_use] #[inline]
             pub const fn is_proper(self) -> bool { Int(self.0[0]).abs().0 < Int(self.0[1]).abs().0 }
 
             /// Retuns `true` if the fraction is in the simplest possible form `(gcd() == 1)`.
+            #[must_use] #[inline]
             pub const fn is_reduced(self) -> bool { self.gcd() == 1 }
 
             /// Simplify a fraction.
@@ -122,9 +128,11 @@ macro_rules! impl_frac {
     }};
 
     (@int_array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::code::paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Fraction related methods for `[Int<" $i ">; 2]`\n\n"]
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
             #[must_use] #[inline]
@@ -153,9 +161,11 @@ macro_rules! impl_frac {
             #[doc = "assert![!Frac([Int(3_" $i "), Int(3)]).is_proper()];"]
             #[doc = "assert![!Frac([Int(4_" $i "), Int(3)]).is_proper()];"]
             /// ```
+            #[must_use] #[inline]
             pub const fn is_proper(self) -> bool { self.0[0].abs().0 < self.0[1].abs().0 }
 
             /// Retuns `true` if the fraction is in the simplest possible form `(gcd() == 1)`.
+            #[must_use] #[inline]
             pub const fn is_reduced(self) -> bool { self.gcd().0 == 1 }
 
             /// Simplify a fraction.

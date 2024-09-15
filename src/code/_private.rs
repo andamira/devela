@@ -317,3 +317,75 @@ macro_rules! doc_extends {
     };
 }
 pub(crate) use doc_extends;
+
+// Generates a formatted documentation string for conditional availability.
+//
+// It's intended to be used like this:
+// ```
+// #[doc = crate::code::doc_availability!(feature = "one"]
+// #[doc = crate::code::doc_availability!(all(feature = "one", feature = "two")]
+// #[doc = crate::code::doc_availability!(any(feature = "one", feature = "two")]
+// ```
+macro_rules! doc_availability {
+    (feature = $feat:literal) => {
+        $crate::code::doc_availability!{@wrap
+            "Available on <strong>crate feature ",
+            $crate::code::doc_availability!{@code $feat},
+            "</strong> only."
+        }
+    };
+
+    // Handle one or more required features
+    ( all( $(feature = $feat:literal),+ ) ) => {
+        $crate::code::doc_availability!{@wrap
+            "Available on <strong>crate features ",
+            $crate::code::doc_availability!{@join_features_and $($feat),+},
+            "</strong> only."
+        }
+    };
+    // Handle one or more alternative features
+    ( any( $(feature = $feat:literal),+ ) ) => {
+        $crate::code::doc_availability!{@wrap
+            "Available on <strong>crate features ",
+            $crate::code::doc_availability!{@join_features_or $($feat),+},
+            "</strong> only."
+        }
+    };
+
+    /* helper arms */
+
+    // Outer wrap
+    (@wrap $($strings:tt)+) => {
+        concat!(
+            "<div class='item-info' style='margin-left:0;'>",
+            "<div class='stab portability'>",
+            $($strings)+,
+            "</div></div>"
+        )
+    };
+
+    // code-formatted literal
+    (@code $string:literal) => {
+        concat!("<code style='background:none'>", $string, "</code>")
+    };
+
+    // single arm for joining features with "and"
+    (@join_features_and $first:literal $(, $rest:literal)*) => {
+        concat!(
+            $crate::code::doc_availability!{@code $first}
+            $(
+                , " and ", $crate::code::doc_availability!{@code $rest}
+            )*
+        )
+    };
+    // single arm for joining features with "or"
+    (@join_features_or $first:literal $(, $rest:literal)*) => {
+        concat!(
+            $crate::code::doc_availability!{@code $first}
+            $(
+                , " or ", $crate::code::doc_availability!{@code $rest}
+            )*
+        )
+    };
+}
+pub(crate) use doc_availability;

@@ -26,7 +26,7 @@ use crate::{
     error::Also,
 };
 use crate::{
-    code::iif,
+    code::{iif, paste},
     num::{Int, NumError::MismatchedSizes, NumResult as Result},
 };
 
@@ -53,7 +53,9 @@ macro_rules! impl_int {
     };
 
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
+    (@signed $t:ty : $cap:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
         #[doc = "   - [factors](#method.factors" $d ")"]
@@ -67,7 +69,7 @@ macro_rules! impl_int {
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* signed factors alloc */
 
@@ -609,7 +611,9 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
+    (@unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer factors related methods for `" $t "`\n\n"]
         /// - Allocating:
         #[doc = "   - [factors](#method.factors" $d ")"]
@@ -623,7 +627,7 @@ macro_rules! impl_int {
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned factors alloc */
 

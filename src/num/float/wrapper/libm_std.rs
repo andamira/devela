@@ -181,9 +181,11 @@ mod _libm {
             $( custom_impls![@$f, $e, $cap]; )+
         };
         (@$f:ty, $e:ty, $cap:literal) => {
+            #[doc = crate::code::doc_availability!(feature = $cap)]
+            ///
             /// # *Implementations using the `libm` feature*.
             #[cfg(feature = $cap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+            // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The fractional part.
                 ///
@@ -386,9 +388,11 @@ mod _std {
             $( custom_impls![@$f, $e, $cap]; )+
         };
         (@$f:ty, $e:ty, $cap:literal) => {
+            #[doc = crate::code::doc_availability!(feature = $cap)]
+            ///
             /// # *Implementations using the `std` feature*.
             #[cfg(feature = $cap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+            // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// Raises itself to the `p` integer power.
                 #[inline]
@@ -430,9 +434,11 @@ mod _no_std_no_libm {
             $( custom_impls![@$f, $ub, $ie, $cap]; )+
         };
         (@$f:ty, $ub:ty, $ie:ty, $cap:literal) => {
+            #[doc = crate::code::doc_availability!(feature = $cap)]
+            ///
             /// # *Implementations without `std` or `libm`*.
             #[cfg(feature = $cap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+            // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The largest integer less than or equal to itself.
                 ///

@@ -15,7 +15,6 @@
 //   - scale_wrap
 //   - midpoint
 
-use crate::code::paste;
 #[allow(unused_imports)]
 use crate::error::unwrap;
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
@@ -25,7 +24,7 @@ use crate::num::usize_up;
 #[allow(unused_imports)]
 use crate::num::GcdExt;
 use crate::{
-    code::iif,
+    code::{iif, paste},
     mem::cswap,
     num::{Cast, Int, NumError::Overflow, NumResult as Result},
 };
@@ -70,6 +69,8 @@ macro_rules! impl_int {
 
     // implements signed ops
     (@signed $t:ty : $cap:literal : $ut:ty : $ucap:literal : $up:ty : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $d ")"]
         #[doc = "- [is_even](#method.is_even" $d ")"]
@@ -83,7 +84,7 @@ macro_rules! impl_int {
         #[doc = "- [midpoint](#method.midpoint" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the absolute value of `self`.
             #[inline] #[must_use]
@@ -366,6 +367,8 @@ macro_rules! impl_int {
 
     // implements unsigned ops
     (@unsigned $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer core methods for `" $t "`\n\n"]
         #[doc = "- [abs](#method.abs" $d ")"]
         #[doc = "- [is_even](#method.is_even" $d ")"]
@@ -379,7 +382,7 @@ macro_rules! impl_int {
         #[doc = "- [midpoint](#method.midpoint" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the absolute value of `self` (no-op).
             #[inline] #[must_use]

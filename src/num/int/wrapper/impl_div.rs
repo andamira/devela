@@ -12,7 +12,10 @@
 //   - div_ties_even
 //   - div_ties_odd
 
-use crate::{code::iif, num::Int};
+use crate::{
+    code::{iif, paste},
+    num::Int,
+};
 
 // $t:   the input/output type
 // $cap: the capability feature that enables the given implementation. E.g "_int_i8".
@@ -37,9 +40,9 @@ macro_rules! impl_int {
     };
 
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
-        /* signed division */
-
+    (@signed $t:ty : $cap:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $d ")"]
         #[doc = "- [div_ceil](#method.div_ceil" $d ")"]
@@ -235,7 +238,9 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
+    (@unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer division related methods for `" $t "`\n\n"]
         #[doc = "- [div_rem](#method.div_rem" $d ")"]
         #[doc = "- [div_ceil](#method.div_ceil" $d ")"]
@@ -246,7 +251,7 @@ macro_rules! impl_int {
         #[doc = "- [div_ties_odd](#method.div_ties_odd" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned division */
 

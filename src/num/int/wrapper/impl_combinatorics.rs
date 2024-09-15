@@ -13,7 +13,7 @@
 #[cfg(_some_int_i)]
 use crate::num::NumError::NonNegativeRequired;
 use crate::{
-    code::{cfor, iif},
+    code::{cfor, iif, paste},
     num::{
         Cast, Int,
         NumError::{MismatchedSizes, Overflow},
@@ -43,7 +43,9 @@ macro_rules! impl_int {
     };
 
     // implements signed ops
-    (@signed $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
+    (@signed $t:ty : $cap:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $d ")"]
         #[doc = "- [subfactorial](#method.subfactorial" $d ")"]
@@ -53,7 +55,7 @@ macro_rules! impl_int {
         #[doc = "- [combine_rep](#method.combine_rep" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the factorial.
             ///
@@ -317,7 +319,9 @@ macro_rules! impl_int {
     }};
 
     // implements unsigned ops
-    (@unsigned $t:ty : $cap:literal : $d:literal) => { $crate::paste! {
+    (@unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
+        #[doc = crate::code::doc_availability!(feature = $cap)]
+        ///
         #[doc = "# Integer combinatorics related methods for `" $t "`\n\n"]
         #[doc = "- [factorial](#method.factorial" $d ")"]
         #[doc = "- [subfactorial](#method.subfactorial" $d ")"]
@@ -327,7 +331,7 @@ macro_rules! impl_int {
         #[doc = "- [permute_rep](#method.permute_rep" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
+        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the factorial.
             ///
