@@ -8,6 +8,7 @@
 /// Similar to [`assert_eq`] but supports more than 2 terms to test for equality.
 ///
 /// # Panics
+// TODO
 #[macro_export]
 macro_rules! assert_eq_all {
     ($first:expr, $($rest:expr),+ $(,)?) => {{
@@ -33,6 +34,9 @@ pub use assert_eq_all;
 /// subtraction, including signed and unsigned integers and floating-point numbers.
 ///
 /// The given `$tolerance` must be a non-negative number.
+///
+/// # Panics
+// TODO
 ///
 /// # Examples
 /// The following examples compile:
