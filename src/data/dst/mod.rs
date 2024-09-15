@@ -1,7 +1,9 @@
 // devela::data::dst
 //
+#![doc = crate::code::doc_miri_warn!(tag)]
 //! Dynamically-sized types stored without need of heap allocation.
 //!
+#![doc = crate::code::doc_miri_warn!(body)]
 #![doc = include_str!("./Mod.md")]
 //!
 //! # Derived Work

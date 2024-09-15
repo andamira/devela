@@ -24,6 +24,7 @@ pub use {collections::*, hash::*, id::*, iter::*};
 
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
+#[cfg(not(miri))] // FIX
 crate::items! {
     pub mod dst;
     #[doc(no_inline)]
@@ -41,5 +42,6 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
+    #[cfg(not(miri))]
     pub use super::dst::*;
 }

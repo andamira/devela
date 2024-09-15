@@ -49,7 +49,8 @@ pub(crate) unsafe fn make_fat_ptr<T: ?Sized, W: MemPod>(
             meta_vals.len() * size_of::<W>(),
         );
     }
-    // SAFETY: caller must ensure safety
+    // SAFETY: FIXME: miri complains
+    // WAIT:FIX: https://github.com/thepowersgang/stack_dst-rs/issues/14
     let rv = unsafe { rv.ptr };
     assert_eq!(rv as *const (), data_ptr.cast_const());
     rv
