@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
 - new macro `id_seq!`, example `id_seq` and type `ExampleIdSeqUsize`.
 - new macro `id_resource!`, trait `IdResourced`, and type `IdResource`.
+- new macros: `capture_first`, `capture_last`, `capture_tail_tuple`.
 - new private macro `doc_availability!`.
 - new types: `IdPinBox`, `IdPin`.
 - new traits: `MemPod`, `CellOption`.

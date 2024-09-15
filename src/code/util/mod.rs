@@ -3,14 +3,14 @@
 //! Utility macros
 //
 
-mod capture; // capture_[head|tail|last]!
+mod capture; // capture_[first|last|tail]!
 mod ident; // ident_const_index!
 mod items; // items!, sf!
 #[allow(unused_imports)]
-pub use {ident::*, items::*};
+pub use {capture::*, ident::*, items::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{capture::*, ident::*, items::*};
+    pub use super::{ident::*, items::*};
 }
