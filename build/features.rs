@@ -70,7 +70,13 @@ mod reflection {
 
     pub const NIGHTLY: FlagsFeatures = FlagsFeatures {
         flags: &["_some_nightly"],
-        features: &[ "nightly_coro", "nightly_doc", "nightly_simd", "nightly_stabilized"]
+        features: &[
+            "nightly_coro",
+            "nightly_doc",
+            "nightly_ptr",
+            "nightly_simd",
+            "nightly_stabilized",
+        ]
     };
 
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {

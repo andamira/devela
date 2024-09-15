@@ -70,6 +70,8 @@
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
 // WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
+// WAIT: [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
+#![cfg_attr(feature = "nightly_ptr", feature(ptr_metadata))]
 // #![cfg_attr(
 //     feature = "nightly_stabilized",
 //     feature()
