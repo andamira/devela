@@ -391,3 +391,24 @@ macro_rules! doc_availability {
 }
 #[allow(unused_imports)]
 pub(crate) use doc_availability;
+
+// Generates a formatted documentation string for a miri warning
+#[allow(unused_macros)]
+macro_rules! doc_miri_warn {
+    (tag) => {
+        concat!(
+            "<span class='stab portability' ",
+            "title='Fails to compile under Miri due to potential undefined behavior'>",
+            "<code>⚠️miri</code></span>"
+        )
+    };
+    (body) => {
+        concat!(
+            "<div class='warning'>",
+            "Fails to compile under Miri due to potential undefined behavior.",
+            "</div>"
+        )
+    };
+}
+#[allow(unused_imports)]
+pub(crate) use doc_miri_warn;
