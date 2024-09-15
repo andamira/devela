@@ -65,6 +65,8 @@ __dbg = [] # for debugging purposes, shows enabled features
 __lints = [] # enables extra lints (enabled on cl* aliases)
 __no_test = [] # allows excluding examples from being tested
 
+__force_miri_dst = [] # inhibits disabling miri on the data::dst module
+
 
 #* Environment features *#
 # ------------------------------------------------------------------------------

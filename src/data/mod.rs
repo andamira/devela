@@ -23,7 +23,7 @@ pub mod iter;
 pub use {collections::*, hash::*, id::*, iter::*};
 
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
-#[cfg(not(miri))] // FIX
+#[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))] // FIX
 crate::items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
     pub mod dst;
@@ -42,6 +42,6 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     #[cfg(all(not(feature = "safe_data"), feature = "unsafe_layout"))]
-    #[cfg(not(miri))]
+    #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
     pub use super::dst::*;
 }
