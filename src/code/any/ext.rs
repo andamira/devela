@@ -127,7 +127,7 @@ pub trait ExtAny: Any + Sealed {
     /// # Examples
     /// ```
     /// use core::fmt::Display;
-    /// use devela::{Any, DstArray, DstStack, DstValue, ExtAny};
+    /// use devela::{Any, ExtAny};
     ///
     /// trait Trait: Any + Display {}
     /// impl Trait for i32 {}
@@ -151,7 +151,9 @@ pub trait ExtAny: Any + Sealed {
     ///     }
     /// }
     /// // in the stack:
+    /// # #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))] // FIX
     /// {
+    ///     use devela::{Any, DstArray, DstStack, DstValue, ExtAny};
     ///     let v = DstValue::<dyn Trait, DstArray<usize, 2>>::new(7, |v| v as _).unwrap();
     ///     if let Some(n) = (*v).downcast_ref::<i32>() {
     ///         assert_eq![n, &7_i32];
