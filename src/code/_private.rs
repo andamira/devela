@@ -326,6 +326,7 @@ pub(crate) use doc_extends;
 // #[doc = crate::code::doc_availability!(all(feature = "one", feature = "two")]
 // #[doc = crate::code::doc_availability!(any(feature = "one", feature = "two")]
 // ```
+#[allow(unused_macros)]
 macro_rules! doc_availability {
     (feature = $feat:literal) => {
         $crate::code::doc_availability!{@wrap
@@ -388,4 +389,5 @@ macro_rules! doc_availability {
         )
     };
 }
+#[allow(unused_imports)]
 pub(crate) use doc_availability;
