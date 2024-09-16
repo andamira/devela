@@ -33,12 +33,17 @@ mod reflection {
 
     pub const MISCELLANEOUS: FlagsFeatures = FlagsFeatures {
         flags: &[],
-        features: &[ "_default", "_max", "_min_docs", "_max_docs", "_docsrs", "_docsrs_stable"]
+        features: &["_default", "_max", "_min_docs", "_max_docs", "_docsrs", "_docsrs_stable"]
     };
 
     pub const ENVIRONMENT: FlagsFeatures = FlagsFeatures {
         flags: &[],
-        features: &[ "std", "alloc", "no_std"]
+        features: &["std", "alloc", "no_std"]
+    };
+
+    pub const PLATFORM: FlagsFeatures = FlagsFeatures {
+        flags: &[],
+        features: &["linux"]
     };
 
     pub const SAFETY: FlagsFeatures = FlagsFeatures {
@@ -234,6 +239,7 @@ mod reflection {
 
             MISCELLANEOUS,
             ENVIRONMENT,
+            PLATFORM,
             SAFETY,
             NIGHTLY,
             DEPENDENCY,

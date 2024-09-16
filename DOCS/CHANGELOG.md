@@ -7,11 +7,14 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## Unreleased [0.22.0-wip]
 
+
 ### Added
 - show build environment variables if `__dbg` feature is enabled.
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
 - new feature `nightly_ptr` enabling `ptr_metadata` experimental feature.
+- new features: `linux`, `platforms`, `unsafe_syscall`.
 - new feature `__force_miri_dst`.
+- new feature section `Platform`.
 - new `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
 - new `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
 - new struct `Env` that namespaces `std::env` functions and constants.
@@ -30,6 +33,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - reexport `assert_unchecked!` macro.
 - reexport `format!`, `format_args!` macros.
 - impl `Num` for niche types.
+- new `sys::os::linux` module.
 - new `num::algebra` module.
 - new lints.
 

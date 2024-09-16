@@ -3,6 +3,7 @@
 Features are grouped in the following categories:
 - *Miscellaneous*
 - *Environment*
+- *Platform*
 - *Modules*
 - *Safety*
 - *Nightly*
@@ -32,9 +33,22 @@ By default the crate is `no_std` compatible without allocation.
   - enables the `libm` optional dependency.
 
 
+### Platform features
+
+Platform-specific functionality is not automatically enabled since *OS* detection
+depends on `std`, and we want to use it from `no_std`.
+
+Platform features are `os` submodules that have to be explicitly enabled:
+
+- `platforms`: enables all the platform features:
+
+Single platforms:
+- `linux`: enables `sys::os::linux` functionality.
+
+
 ### Modules features
 
-Modules can be enabled independently of *environment*, *dependencies* or *safety*.
+Modules can be enabled independently of *environment*, *platform*, *dependencies* or *safety*.
 
 - `all`: enables all the root modules and extra submodules:
 
@@ -84,11 +98,12 @@ In order to use any unsafe functionality:
 	- `unsafe_async`: task_waker_noop, `CoroRun`.
 	- `unsafe_const`: extra const methods.
 	- `unsafe_hint`: unreachable_unchecked, assert_unchecked.
-	- `unsafe_layout`: `MemPod`, DSTs in the stack, `no_std` Error dyn impls, `ExtAny::downcast*`.
+	- `unsafe_layout`: `MemPod`, DSTs in the stack, `ExtAny::downcast*`.
 	- `unsafe_niche`: unchecked niche constructors.
 	- `unsafe_ptr`: `Pinned`, pop methods without `Clone`.
 	- `unsafe_slice`: extra slice methods, avoid bound checks.
 	- `unsafe_str`: unchecked utf-8 `char` and `&str` conversions.
+	- `unsafe_syscall`: os syscalls.
 	- `unsafe_thread`: `Logging::set_logger_racy`, `Env::{remove_var, set_var}`.
 
 

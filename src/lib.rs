@@ -87,8 +87,9 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
     feature = "safe",
     any(feature = "unsafe", // includes all below:
         feature = "unsafe_array", feature = "unsafe_async", feature = "unsafe_const",
-        feature = "unsafe_layout", feature = "unsafe_niche", feature = "unsafe_ptr",
-        feature = "unsafe_slice", feature = "unsafe_str",
+        feature = "unsafe_hint", feature = "unsafe_layout", feature = "unsafe_niche",
+        feature = "unsafe_ptr", feature = "unsafe_slice", feature = "unsafe_str",
+        feature = "unsafe_thread", feature = "unsafe_syscall",
     )
 ))]
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
