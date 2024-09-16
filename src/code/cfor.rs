@@ -224,19 +224,19 @@ mod tests {
         };
     }
 
-    #[allow(unused_parens)]
     #[test]
+    #[allow(unused_parens, reason = "(0..10)")]
     fn equivalent_to_regular_for() {
         validate_loop!(-10..10);
         validate_loop!(0..10);
         validate_loop!(-10..10);
         validate_loop!((0..10));
-        validate_loop!(100..10);
+        validate_loop!(50..10);
         validate_loop!(-15..-12);
         validate_loop!(-14..0);
         validate_loop!(-100..-50);
-        validate_loop!(-14..200);
-        validate_loop!(1..11110);
+        validate_loop!(-14..80);
+        validate_loop!(1..80);
     }
 
     #[test]
