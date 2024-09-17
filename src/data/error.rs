@@ -50,6 +50,9 @@ pub enum DataError {
     /// Optionally contains the number of free spaces needed.
     NotEnoughSpace(Option<usize>),
 
+    /// The requested element has not been found.
+    ElementNotFound,
+
     /// The operation could only add a subset of the elements.
     ///
     /// Optionally contains the number of elements added.
@@ -117,6 +120,7 @@ mod core_impls {
                     }
                     None => write!(f, "Not enough space."),
                 },
+                E::ElementNotFound => write!(f, "The requested element has not been found."),
                 E::PartiallyAdded(n) => match n {
                     Some(n) => write!(f, "Only `{n}` elements could be added."),
                     None => write!(f, "Only a subset of elements could be added."),

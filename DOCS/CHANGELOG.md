@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
 - new method `Array::from_fn`.
 - new aliases: `AllocMapFx`, `AllocSetFx`.
+- new `DataError` variant: `ElementNotFound`.
 - reexport `std::backtrace` types.
 - reexport `core::cell` types.
 - reexport `vec!` macro.
