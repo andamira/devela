@@ -25,7 +25,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new macros: `capture_first`, `capture_last`, `capture_tail_tuple`.
 - new private macro `doc_availability!`.
 - new types: `IdPinBox`, `IdPin`.
-- new traits: `MemPod`, `CellOption`.
+- new traits: `MemPod`, `CellOption`, `ExtOptRes`.
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
 - new method `Array::from_fn`.
 - new methods for `Array` when storing `Option<T>`.

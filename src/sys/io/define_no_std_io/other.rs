@@ -1,9 +1,9 @@
 // devela::sys::io::reimplement_no_std::traits
 
 use super::error::{IoError as Error, IoErrorKind, IoResult as Result};
-use crate::code::sf;
 #[cfg(feature = "alloc")]
 use crate::data::Vec;
+use crate::{code::sf, error::OptRes};
 use core::{cmp, fmt, slice};
 
 #[cfg(feature = "alloc")]
@@ -378,7 +378,7 @@ pub struct Bytes<R> {
 impl<R: Read> Iterator for Bytes<R> {
     type Item = Result<u8>;
 
-    fn next(&mut self) -> Option<Result<u8>> {
+    fn next(&mut self) -> OptRes<u8, Error> {
         let mut byte = 0;
         loop {
             return match self.inner.read(slice::from_mut(&mut byte)) {
