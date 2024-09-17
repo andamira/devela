@@ -48,6 +48,8 @@
 /// For the `const_init`, `clone`, `default` and `iter` versions, if the given
 /// `$funsafe` is enabled and the given `$fsafe` is disabled, it will use unsafe
 /// initialization.
+// WAIT [array_repeat](https://github.com/rust-lang/rust/issues/126695)
+// WAIT [array_try_from_fn](https://github.com/rust-lang/rust/issues/89379)
 #[macro_export]
 macro_rules! array_init {
     (

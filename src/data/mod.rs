@@ -8,12 +8,11 @@
 // safety:
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
-mod array;
 mod bit;
 mod error;
 mod sort;
 #[allow(unused_imports)]
-pub use {array::*, bit::*, error::*, sort::*};
+pub use {bit::*, error::*, sort::*};
 
 pub mod collections;
 pub mod hash;
@@ -35,8 +34,7 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        array::*, bit::all::*, collections::all::*, error::*, hash::all::*, id::all::*,
-        iter::all::*, sort::*,
+        bit::all::*, collections::all::*, error::*, hash::all::*, id::all::*, iter::all::*, sort::*,
     };
 
     #[doc(inline)]
