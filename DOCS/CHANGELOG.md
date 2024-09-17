@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new types: `IdPinBox`, `IdPin`.
 - new traits: `MemPod`, `CellOption`.
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
+- new method `Array::from_fn`.
 - new aliases: `AllocMapFx`, `AllocSetFx`.
 - reexport `std::backtrace` types.
 - reexport `core::cell` types.

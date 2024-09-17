@@ -10,7 +10,7 @@ use crate::{
     mem::{Box, Boxed},
 };
 use crate::{
-    data::{array_init, Array},
+    data::{array_from_fn, array_init, Array},
     mem::{Bare, BareBox, Storage},
 };
 
@@ -20,6 +20,18 @@ impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     pub fn new(array: [T; LEN]) -> Self {
         Self { data: array.into() }
     }
+
+    /// Returns a new `Array`, where each element `T` is the returned value from `f`.
+    ///
+    /// See: `array::`[`from_fn`][core::array::from_fn]
+    #[inline]
+    pub fn from_fn<F>(f: F) -> Self
+    where
+        F: FnMut(usize) -> T,
+    {
+        Self { data: array_from_fn(f).into() }
+    }
+    // WAIT [array_try_from_fn](https://github.com/rust-lang/rust/issues/89379)
 }
 
 // S: Bare
