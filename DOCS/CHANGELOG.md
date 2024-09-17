@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new traits: `MemPod`, `CellOption`.
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
 - new method `Array::from_fn`.
+- new methods for `Array` when storing `Option<T>`.
 - new aliases: `AllocMapFx`, `AllocSetFx`.
 - new `DataError` variant: `ElementNotFound`.
 - reexport `std::backtrace` types.
@@ -51,6 +52,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - refactor build script.
 - start using `core::error::Error`.
 - make `bytemuck` an optional dependency.
+- rename method `Array::len` to `capacity`.
 - method `Graph::edge_exists` no loger panics.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.

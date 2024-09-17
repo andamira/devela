@@ -2,19 +2,25 @@
 //
 //! 1-dimensional array methods
 //
+// TOC
+// - constructors
+// - methods
+// - methods for Option<T>
 
+use crate::{
+    code::iif,
+    data::{array_from_fn, array_init, Array, DataError::ElementNotFound, DataResult as Result},
+    mem::{Bare, BareBox, Storage},
+};
 #[allow(unused_imports)]
 #[cfg(feature = "alloc")]
 use crate::{
     data::Vec,
     mem::{Box, Boxed},
 };
-use crate::{
-    data::{array_from_fn, array_init, Array, DataError::ElementNotFound, DataResult as Result},
-    mem::{Bare, BareBox, Storage},
-};
 
 /* constructors */
+// -----------------------------------------------------------------------------
 
 // S
 impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
@@ -106,6 +112,7 @@ impl<T: Clone, const CAP: usize> Array<T, CAP, Boxed> {
 }
 
 /* methods */
+// -----------------------------------------------------------------------------
 
 // T: Clone, S
 impl<T: Clone, const CAP: usize, S: Storage> Array<T, CAP, S> {
@@ -233,5 +240,140 @@ impl<T: Copy, const CAP: usize> Array<T, CAP, Bare> {
     #[must_use]
     pub const fn into_array_copy(self) -> [T; CAP] {
         self.data.into_inner_copy()
+    }
+}
+
+/* methods for Option<T> */
+// -----------------------------------------------------------------------------
+
+// Option<T>, S
+impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
+    /// Takes out some element at `index`, leaving `None` in its place.
+    #[inline]
+    #[must_use]
+    pub fn take(&mut self, index: usize) -> Option<T> {
+        self.get_mut(index)?.take()
+    }
+
+    /// Replaces some element at `index` with `value`, returning the old one.
+    #[inline]
+    #[must_use]
+    pub fn replace(&mut self, index: usize, value: T) -> Option<T> {
+        self.get_mut(index)?.replace(value)
+    }
+
+    /// Sets the element at `index` to `None`.
+    #[inline]
+    pub fn unset(&mut self, index: usize) {
+        self[index] = None;
+    }
+
+    /// Clears the array by setting all elements to `None`.
+    #[inline]
+    pub fn clear(&mut self) {
+        self.iter_mut().for_each(|i| *i = None);
+    }
+
+    /// Returns the number of `Some` elements in the array.
+    #[inline]
+    #[must_use]
+    pub fn count_some(&self) -> usize {
+        self.iter().filter(|opt| opt.is_some()).count()
+    }
+    /// Returns the number of `None` elements in the array.
+    #[inline]
+    #[must_use]
+    pub fn count_none(&self) -> usize {
+        self.iter().filter(|opt| opt.is_none()).count()
+    }
+
+    /// Returns the number of `None` elements in the array.
+    #[inline]
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        self.iter().all(|opt| opt.is_some())
+    }
+
+    /// Returns the number of `None` elements in the array.
+    #[inline]
+    #[must_use]
+    pub fn is_full(&self) -> bool {
+        self.iter().all(|opt| opt.is_some())
+    }
+
+    /// Returns the index of the first `None` element.
+    #[inline]
+    pub fn first_none(&self) -> Result<usize> {
+        self.iter().position(|opt| opt.is_none()).ok_or(ElementNotFound)
+    }
+    /// Returns some reference to the first `None` element.
+    #[inline]
+    pub fn first_none_ref(&self) -> Result<&Option<T>> {
+        self.iter().find(|opt| opt.is_none()).ok_or(ElementNotFound)
+    }
+    /// Returns some exclusive reference to the first `None` element.
+    ///
+    /// # Errors
+    /// Returns [`ElementNotFound`] if the array is full.
+    #[inline]
+    pub fn first_none_mut(&mut self) -> Result<&mut Option<T>> {
+        self.iter_mut().find(|opt| opt.is_none()).ok_or(ElementNotFound)
+    }
+
+    /// Returns the index of the first `Some` element.
+    ///
+    /// # Errors
+    /// Returns [`ElementNotFound`] if the array is full.
+    #[inline]
+    pub fn first_some(&self) -> Result<usize> {
+        self.iter().position(|opt| opt.is_some()).ok_or(ElementNotFound)
+    }
+    /// Returns some reference to the first `Some` element
+    ///
+    /// # Errors
+    /// Returns [`ElementNotFound`] if the array is full.
+    #[inline]
+    pub fn first_some_ref(&self) -> Result<&Option<T>> {
+        self.iter().find(|opt| opt.is_some()).ok_or(ElementNotFound)
+    }
+    /// Returns some exclusive reference to the first `Some` element.
+    ///
+    /// # Errors
+    /// Returns [`ElementNotFound`] if the array is full.
+    #[inline]
+    pub fn first_some_mut(&mut self) -> Result<&mut Option<T>> {
+        self.iter_mut().find(|opt| opt.is_some()).ok_or(ElementNotFound)
+    }
+}
+
+// Option<T: Clone>, S
+impl<T: Clone, const CAP: usize> Array<Option<T>, CAP, Bare> {
+    /// Fills all `None` elements of the array with the given cloned `value`.
+    #[inline]
+    pub fn fill_none(&mut self, value: T) {
+        self.iter_mut().filter(|opt| opt.is_none()).for_each(|opt| *opt = Some(value.clone()));
+    }
+}
+
+// Option<T>, S: Bare
+impl<T, const CAP: usize> Array<Option<T>, CAP, Bare> {
+    /// Checks if all elements are `None`, returning early if a `Some` is found.
+    pub const fn is_empty_bare(&self) -> bool {
+        let mut n = 0;
+        while n <= CAP {
+            iif![self.as_bare_slice()[n].is_some(); return false];
+            n += 1;
+        }
+        true
+    }
+
+    /// Checks if all elements are `Some`, returning early if a `None` is found.
+    pub const fn is_full_bare(&self) -> bool {
+        let mut n = 0;
+        while n <= CAP {
+            iif![self.as_bare_slice()[n].is_none(); return false];
+            n += 1;
+        }
+        true
     }
 }
