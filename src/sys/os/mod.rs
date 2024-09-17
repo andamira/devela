@@ -5,11 +5,9 @@
 //!
 //
 
-use crate::code::items;
-
 #[cfg(feature = "linux")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
-items! {
+crate::code::items! {
     pub mod linux;
     #[doc(no_inline)]
     pub use linux::all::*;

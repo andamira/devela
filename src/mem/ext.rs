@@ -9,7 +9,7 @@ use super::{mem_drop, mem_forget, mem_needs_drop, mem_replace, mem_swap, mem_tak
 
 impl<T: ?Sized> ExtMem for T {}
 
-/// A trait for type memory information and manipulation.
+/// Extension trait for type memory information and manipulation.
 ///
 /// This trait is automatically implemented for every `?Sized` type,
 /// although most methods are only available where `Self: Sized`.

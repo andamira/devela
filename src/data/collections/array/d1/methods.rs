@@ -151,10 +151,10 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Finds the index of the first occurrence of `element` in the array.
     /// # Examples
     /// ```
-    /// # use devela::Array;
+    /// # use devela::{Array, DataError::ElementNotFound};
     /// let a = Array::<_, 5>::new([5, 78, 42, 33, 9]);
-    /// assert_eq![a.find_index(&9), Some(4)];
-    /// assert_eq![a.find_index(&8), None];
+    /// assert_eq![a.find_index(&9), Ok(4)];
+    /// assert_eq![a.find_index(&8), Err(ElementNotFound)];
     /// ```
     ///
     /// # Errors

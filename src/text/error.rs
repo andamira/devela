@@ -5,10 +5,10 @@
 
 use core::str::Utf8Error;
 
-/// A lexical-related result.
+/// A text-related result.
 pub type TextResult<T> = core::result::Result<T, TextError>;
 
-/// A lexical-related error.
+/// A text-related error.
 #[non_exhaustive]
 #[derive(Debug)]
 pub enum TextError {

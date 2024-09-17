@@ -2,12 +2,12 @@
 
 use crate::{
     data::{
+        array_from_fn,
         error::{
             DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds},
             DataResult as Result,
         },
         Array, Destaque, DestaqueIter,
-        array_from_fn,
     },
     mem::{Bare, Storage},
 };

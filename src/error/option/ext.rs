@@ -14,7 +14,8 @@ impl<T> Sealed for Option<T> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ExtResult`][crate::error::ExtResult].
+/// See also [`ExtResult`][crate::error::ExtResult],
+/// [`ExtOptRes`][crate::error::ExtOptRes].
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
