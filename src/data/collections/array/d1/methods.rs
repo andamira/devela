@@ -10,10 +10,13 @@ use crate::{
     mem::{Box, Boxed},
 };
 use crate::{
-    data::{array_from_fn, array_init, Array},
+    data::{array_from_fn, array_init, Array, DataError::ElementNotFound, DataResult as Result},
     mem::{Bare, BareBox, Storage},
 };
 
+/* constructors */
+
+// S
 impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Returns a new `Array` from the given primitive `array`.
     #[inline]
@@ -34,7 +37,7 @@ impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     // WAIT [array_try_from_fn](https://github.com/rust-lang/rust/issues/89379)
 }
 
-// S: Bare
+// T, S: Bare
 impl<T, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns a new [`Array`] allocated in the stack,
     /// from the given primitive `array` in compile-time.
@@ -74,7 +77,7 @@ impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     }
 }
 
-// S: Boxed
+// T, S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T, const LEN: usize> Array<T, LEN, Boxed> {
@@ -102,7 +105,9 @@ impl<T: Clone, const LEN: usize> Array<T, LEN, Boxed> {
     }
 }
 
-// T: Clone
+/* methods */
+
+// T: Clone, S
 impl<T: Clone, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Fills all elements of the array with the given `element`.
     #[inline]
@@ -111,7 +116,7 @@ impl<T: Clone, const LEN: usize, S: Storage> Array<T, LEN, S> {
     }
 }
 
-// T: Default
+// T: Default, S
 impl<T: Default, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Fills all elements of the array with the default value.
     #[inline]
@@ -120,7 +125,7 @@ impl<T: Default, const LEN: usize, S: Storage> Array<T, LEN, S> {
     }
 }
 
-// T: PartialEq
+// T: PartialEq, S
 impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Returns true if the array contains `element`.
     /// # Examples
@@ -144,13 +149,19 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// assert_eq![a.find_index(&9), Some(4)];
     /// assert_eq![a.find_index(&8), None];
     /// ```
+    ///
+    /// # Errors
+    /// Returns [`ElementNotFound`] if the `element` can't be found.
     #[inline]
-    #[must_use]
-    pub fn find_index(&self, element: &T) -> Option<usize> {
-        self.iter().enumerate().find_map(|(i, n)| (n == element).then_some(i))
+    pub fn find_index(&self, element: &T) -> Result<usize> {
+        self.iter()
+            .enumerate()
+            .find_map(|(i, n)| (n == element).then_some(i))
+            .ok_or(ElementNotFound)
     }
 }
 
+// T, S
 impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     /// Returns the number of elements in the array.
     #[inline]
@@ -181,7 +192,7 @@ impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
     }
 }
 
-// S: Boxed
+// T, S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T, const LEN: usize> Array<T, LEN, Boxed> {
@@ -204,7 +215,7 @@ impl<T, const LEN: usize> Array<T, LEN, Boxed> {
         self.into_slice().into_vec()
     }
 }
-// S: Bare
+// T, S: Bare
 impl<T, const LEN: usize> Array<T, LEN, Bare> {
     /// Returns the inner [`BareBox`]ed primitive array.
     #[inline]
@@ -214,6 +225,8 @@ impl<T, const LEN: usize> Array<T, LEN, Bare> {
     }
 
     /// Returns a slice containing the entire array in compile time.
+    ///
+    /// It allows to sidestep `Deref` coercion for indexing purposes.
     #[inline]
     #[must_use]
     pub const fn as_bare_slice(&self) -> &[T] {
