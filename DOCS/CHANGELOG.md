@@ -33,6 +33,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - reexport `vec!` macro.
 - reexport `assert_unchecked!` macro.
 - reexport `format!`, `format_args!` macros.
+- reexport fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
 - impl `Num` for niche types.
 - new `sys::os::linux` module.
 - new `num::algebra` module.

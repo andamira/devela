@@ -178,7 +178,7 @@ macro_rules! impl_ext_slice {
                 if self.len() >= N {
                     #[cfg(any(feature = "safe_data", not(feature = "unsafe_array")))]
                     {
-                        let mut array: [U; N] = core::array::from_fn(|i| U::from(self[i].clone()));
+                        let mut array: [U; N] = crate::array_from_fn(|i| U::from(self[i].clone()));
                         for (i, item) in self.iter().take(N).enumerate() {
                             array[i] = U::from(item.clone());
                         }

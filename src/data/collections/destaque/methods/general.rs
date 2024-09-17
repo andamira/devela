@@ -7,6 +7,7 @@ use crate::{
             DataResult as Result,
         },
         Array, Destaque, DestaqueIter,
+        array_from_fn,
     },
     mem::{Bare, Storage},
 };
@@ -1155,7 +1156,7 @@ macro_rules! impl_destaque {
                 }
 
                 // Create a temporary array filled with clones of the default_element
-                let mut temp: [T; CAP] = core::array::from_fn(|_| element.clone());
+                let mut temp: [T; CAP] = array_from_fn(|_| element.clone());
 
                 // IMPROVE: use the new array to construct the new self? BENCH
 
@@ -1253,7 +1254,7 @@ macro_rules! impl_destaque {
                     };
 
                     #[cfg(any(feature = "safe_data", not(feature = "unsafe_array")))]
-                    let arr = core::array::from_fn(|n| {
+                    let arr = array_from_fn(|n| {
                         let index = (self.front as usize + n) % CAP;
                         self.data[index].clone()
                     });
