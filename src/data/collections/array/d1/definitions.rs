@@ -10,7 +10,7 @@ use crate::mem::{Bare, Storage};
 /// It is generic in respect to its
 /// elements (`T`),
 /// storage (`S`)
-/// and length (`LEN`).
+/// and capacity (`CAP`).
 ///
 /// See also the related trait: [`DataArray`][crate::DataArray].
 ///
@@ -30,9 +30,9 @@ use crate::mem::{Bare, Storage};
 ///   [`into_slice`][Self::into_slice]*(`alloc`)*,
 ///   [`into_vec`][Self::into_vec]*(`alloc`)*.
 /// - Queries:
-///   [`len`][Self::len], [`is_empty`][Self::is_empty],
+///   [`capacity`][Self::capacity],
 ///   [`contains`][Self::contains].
 #[must_use]
-pub struct Array<T, const LEN: usize, S: Storage = Bare> {
-    pub(crate) data: S::Stored<[T; LEN]>,
+pub struct Array<T, const CAP: usize, S: Storage = Bare> {
+    pub(crate) data: S::Stored<[T; CAP]>,
 }

@@ -17,10 +17,10 @@ use crate::{
 /* constructors */
 
 // S
-impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
+impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Returns a new `Array` from the given primitive `array`.
     #[inline]
-    pub fn new(array: [T; LEN]) -> Self {
+    pub fn new(array: [T; CAP]) -> Self {
         Self { data: array.into() }
     }
 
@@ -38,17 +38,17 @@ impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
 }
 
 // T, S: Bare
-impl<T, const LEN: usize> Array<T, LEN, Bare> {
+impl<T, const CAP: usize> Array<T, CAP, Bare> {
     /// Returns a new [`Array`] allocated in the stack,
     /// from the given primitive `array` in compile-time.
     #[inline]
-    pub const fn new_bare(array: [T; LEN]) -> Self {
+    pub const fn new_bare(array: [T; CAP]) -> Self {
         Self { data: BareBox::new(array) }
     }
 }
 
 // T: Clone, S: Bare
-impl<T: Clone, const LEN: usize> Array<T, LEN, Bare> {
+impl<T: Clone, const CAP: usize> Array<T, CAP, Bare> {
     /// Returns an array, allocated in the stack, filled with `element`, cloned.
     /// # Examples
     /// ```
@@ -57,13 +57,13 @@ impl<T: Clone, const LEN: usize> Array<T, LEN, Bare> {
     /// ```
     #[inline]
     pub fn with_cloned(element: T) -> Self {
-        let data = BareBox::new(array_init!(clone [T; LEN], "safe_data", "unsafe_array", element));
+        let data = BareBox::new(array_init!(clone [T; CAP], "safe_data", "unsafe_array", element));
         Self { data }
     }
 }
 
 // T: Copy, S: Bare
-impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
+impl<T: Copy, const CAP: usize> Array<T, CAP, Bare> {
     /// Returns an array, allocated in the stack, filled with `element`, copied, in compile-time.
     /// # Examples
     /// ```
@@ -72,7 +72,7 @@ impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
     /// ```
     #[inline]
     pub const fn with_copied(element: T) -> Self {
-        let data = BareBox::new([element; LEN]);
+        let data = BareBox::new([element; CAP]);
         Self { data }
     }
 }
@@ -80,10 +80,10 @@ impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
 // T, S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T, const LEN: usize> Array<T, LEN, Boxed> {
+impl<T, const CAP: usize> Array<T, CAP, Boxed> {
     /// Returns a new `Array` from the given `boxed_array`.
     #[inline]
-    pub fn new_boxed(boxed_array: Box<[T; LEN]>) -> Self {
+    pub fn new_boxed(boxed_array: Box<[T; CAP]>) -> Self {
         Array { data: boxed_array }
     }
 }
@@ -91,7 +91,7 @@ impl<T, const LEN: usize> Array<T, LEN, Boxed> {
 // T:Clone, S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T: Clone, const LEN: usize> Array<T, LEN, Boxed> {
+impl<T: Clone, const CAP: usize> Array<T, CAP, Boxed> {
     /// Returns an array, allocated in the heap, filled with `element`, cloned.
     /// # Examples
     /// ```
@@ -100,7 +100,7 @@ impl<T: Clone, const LEN: usize> Array<T, LEN, Boxed> {
     /// ```
     #[inline]
     pub fn with_cloned(element: T) -> Self {
-        let data = array_init!(clone_heap [T; LEN], "safe_data", "unsafe_array", element);
+        let data = array_init!(clone_heap [T; CAP], "safe_data", "unsafe_array", element);
         Self { data }
     }
 }
@@ -108,7 +108,7 @@ impl<T: Clone, const LEN: usize> Array<T, LEN, Boxed> {
 /* methods */
 
 // T: Clone, S
-impl<T: Clone, const LEN: usize, S: Storage> Array<T, LEN, S> {
+impl<T: Clone, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Fills all elements of the array with the given `element`.
     #[inline]
     pub fn fill(&mut self, element: T) {
@@ -117,7 +117,7 @@ impl<T: Clone, const LEN: usize, S: Storage> Array<T, LEN, S> {
 }
 
 // T: Default, S
-impl<T: Default, const LEN: usize, S: Storage> Array<T, LEN, S> {
+impl<T: Default, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Fills all elements of the array with the default value.
     #[inline]
     pub fn fill_default(&mut self) {
@@ -162,19 +162,12 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
 }
 
 // T, S
-impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
-    /// Returns the number of elements in the array.
+impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
+    /// Returns the capacity of the array.
     #[inline]
     #[must_use]
-    pub const fn len(&self) -> usize {
-        LEN
-    }
-
-    /// Returns `true` if the array has a length of 0.
-    #[inline]
-    #[must_use]
-    pub const fn is_empty(&self) -> bool {
-        LEN == 0
+    pub const fn capacity(&self) -> usize {
+        CAP
     }
 
     /// Returns a shared slice containing the entire array.
@@ -195,11 +188,11 @@ impl<T, const LEN: usize, S: Storage> Array<T, LEN, S> {
 // T, S: Boxed
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T, const LEN: usize> Array<T, LEN, Boxed> {
+impl<T, const CAP: usize> Array<T, CAP, Boxed> {
     /// Returns the inner [`Box`]ed primitive array.
     #[inline]
     #[must_use]
-    pub fn into_array(self) -> Box<[T; LEN]> {
+    pub fn into_array(self) -> Box<[T; CAP]> {
         self.data
     }
     /// Returns the inner [`Box`]ed primitive array as a slice.
@@ -216,11 +209,11 @@ impl<T, const LEN: usize> Array<T, LEN, Boxed> {
     }
 }
 // T, S: Bare
-impl<T, const LEN: usize> Array<T, LEN, Bare> {
+impl<T, const CAP: usize> Array<T, CAP, Bare> {
     /// Returns the inner [`BareBox`]ed primitive array.
     #[inline]
     #[must_use]
-    pub fn into_array(self) -> [T; LEN] {
+    pub fn into_array(self) -> [T; CAP] {
         self.data.into_inner()
     }
 
@@ -234,11 +227,11 @@ impl<T, const LEN: usize> Array<T, LEN, Bare> {
     }
 }
 // T:Copy, S: Bare
-impl<T: Copy, const LEN: usize> Array<T, LEN, Bare> {
+impl<T: Copy, const CAP: usize> Array<T, CAP, Bare> {
     /// Returns the inner [`BareBox`]ed primitive array in compile-time.
     #[inline]
     #[must_use]
-    pub const fn into_array_copy(self) -> [T; LEN] {
+    pub const fn into_array_copy(self) -> [T; CAP] {
         self.data.into_inner_copy()
     }
 }
