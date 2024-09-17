@@ -195,6 +195,9 @@ nightly = [
 		# Experimental features
 		# [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 		# [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
+		#
+		# 2024 edition:
+		# https://doc.rust-lang.org/edition-guide/rust-2024/index.html
 
 
 #* Capability features *#
@@ -440,6 +443,7 @@ dep_all = [ # enables all optional dependencies
 	dep_work = ["atomic", "portable-atomic"]
 	dep_text = ["const-str", "memchr", "unicode-segmentation", "unicode-width"]
 
+# https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 atomic = ["dep:atomic"]
 const-str = ["dep:const-str"]
 hashbrown = ["dep:hashbrown", "alloc"]
