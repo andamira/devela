@@ -10,17 +10,6 @@ use crate::code::reexport;
 #[cfg(feature = "alloc")]
 crate::code::impl_cdef![<T: ConstDefault> Self::new() => crate::_dep::_alloc::rc::Weak<T>];
 
-/* type aliases */
-
-/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-/// A marker struct for a [`Storage`][super::Storage] type that wraps its data in a
-/// [`BareBox`][super::BareBox]. Alias of [`()`][unit].
-///
-/// Equivalent to the [`Boxed`] marker struct which uses a [`Box`] for the underlying storage.
-///
-/// ---
-pub type Bare = ();
-
 /* borrow */
 
 reexport! { rust: core::borrow,

@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
 - new method `Array::from_fn`.
 - new methods for `Array` when storing `Option<T>`.
+- new methods for `BareBox`.
 - new aliases: `AllocMapFx`, `AllocSetFx`.
 - new `DataError` variant: `ElementNotFound`.
 - reexport `std::backtrace` types.

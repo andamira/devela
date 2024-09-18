@@ -10,7 +10,7 @@ use crate::{
     mem::{Box, Storage},
 };
 
-/// A marker struct for a [`Storage`] type that wraps its data in a [`Box`].
+/// A zero-sized marker for a [`Storage`] type that wraps its data in a [`Box`].
 ///
 /// Equivalent to the [`Bare`] marker struct which uses a [`BareBox`] for the underlying storage.
 #[derive(Clone, Copy, Default, PartialEq, Eq)]
