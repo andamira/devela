@@ -15,15 +15,16 @@ mod impls;
 mod tests;
 
 // with re-exports
-mod definitions;
+mod define_trait;
+mod define_types;
 mod fns;
 #[allow(unused_imports)]
-pub use {definitions::*, fns::*};
+pub use {define_trait::*, define_types::*, fns::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     pub use super::always_fns::*;
 
     #[doc(inline)]
-    pub use super::{definitions::*, fns::*};
+    pub use super::{define_trait::*, define_types::*, fns::*};
 }
