@@ -247,6 +247,7 @@ impl<T: Copy, const CAP: usize> Array<T, CAP, Bare> {
 // -----------------------------------------------------------------------------
 
 // Option<T>, S
+/// # Operations depending on `Option<T>`.
 impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     /// Takes out some element at `index`, leaving `None` in its place.
     #[inline]
@@ -302,11 +303,17 @@ impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     }
 
     /// Returns the index of the first `None` element.
+    ///
+    /// # Errors
+    /// Returns [`ElementNotFound`] if the array is full.
     #[inline]
     pub fn first_none(&self) -> Result<usize> {
         self.iter().position(|opt| opt.is_none()).ok_or(ElementNotFound)
     }
     /// Returns some reference to the first `None` element.
+    ///
+    /// # Errors
+    /// Returns [`ElementNotFound`] if the array is full.
     #[inline]
     pub fn first_none_ref(&self) -> Result<&Option<T>> {
         self.iter().find(|opt| opt.is_none()).ok_or(ElementNotFound)
@@ -347,6 +354,7 @@ impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
 }
 
 // Option<T: Clone>, S
+/// # Methods depending on `Option<T: Clone>`.
 impl<T: Clone, const CAP: usize> Array<Option<T>, CAP, Bare> {
     /// Fills all `None` elements of the array with the given cloned `value`.
     #[inline]
@@ -356,9 +364,10 @@ impl<T: Clone, const CAP: usize> Array<Option<T>, CAP, Bare> {
 }
 
 // Option<T>, S: Bare
+/// # Methods depending on `Option<T: Copy>`.
 impl<T, const CAP: usize> Array<Option<T>, CAP, Bare> {
     /// Checks if all elements are `None`, returning early if a `Some` is found.
-    pub const fn is_empty_bare(&self) -> bool {
+    pub const fn is_bare_empty(&self) -> bool {
         let mut n = 0;
         while n <= CAP {
             iif![self.as_bare_slice()[n].is_some(); return false];
@@ -368,7 +377,7 @@ impl<T, const CAP: usize> Array<Option<T>, CAP, Bare> {
     }
 
     /// Checks if all elements are `Some`, returning early if a `None` is found.
-    pub const fn is_full_bare(&self) -> bool {
+    pub const fn is_bare_full(&self) -> bool {
         let mut n = 0;
         while n <= CAP {
             iif![self.as_bare_slice()[n].is_none(); return false];
