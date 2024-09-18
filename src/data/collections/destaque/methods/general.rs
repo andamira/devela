@@ -119,7 +119,7 @@ macro_rules! impl_destaque {
             }
         }
 
-        // S: Bare
+        // T, S: Bare
         impl<T, const CAP: usize> Destaque<T, CAP, $IDX, Bare> {
             /// Converts an array into a [`full`][Self::is_full] destaque.
             ///
@@ -138,6 +138,7 @@ macro_rules! impl_destaque {
             }
         }
 
+        // T, S
         impl<T, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Converts an array into a [`full`][Self::is_full] destaque.
             ///
@@ -1054,7 +1055,7 @@ macro_rules! impl_destaque {
             }
         }
 
-        // T: Clone
+        // T: Clone, S
         impl<T: Clone, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Pops the front element.
             ///
@@ -1623,6 +1624,7 @@ macro_rules! impl_destaque {
 
         /* iterators */
 
+        // T, S
         impl<T, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Returns an iterator.
             pub const fn iter(&self) -> DestaqueIter<'_, T, CAP, $IDX, S> {
@@ -1752,7 +1754,7 @@ macro_rules! impl_destaque {
 
         }
 
-        // T: PartialEq
+        // T: PartialEq, S
         impl<T: PartialEq, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             /// Returns true if the destaque contains `element`.
             /// # Examples
@@ -1772,6 +1774,7 @@ macro_rules! impl_destaque {
 
         /* private helpers */
 
+        // T, S
         impl<T, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             // Returns the `nth` element's index counting from the back.
             #[inline]

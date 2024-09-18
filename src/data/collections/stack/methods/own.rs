@@ -42,6 +42,7 @@ macro_rules! impl_stack {
         )+
     };
     (@own $IDX:ty : $cap:literal) => { crate::code::paste! {
+        // T: Copy, S: Bare
         /// # Chainable *const* operations depending on `T: Copy`
         ///
         /// Every method is *const* and returns [`Own`][crate::Own]`<Self, V>`.

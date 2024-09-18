@@ -89,6 +89,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
 }
 
 // Order-independent
+// T, S
 #[rustfmt::skip]
 impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: Storage>
     Array2d<T, C, R, CR, RMAJ, S>
@@ -176,7 +177,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     pub fn as_mut_slice(&mut self) -> &mut [T] { self.data.as_mut_slice() }
 }
 
-// S: Bare
+// T, S: Bare
 #[rustfmt::skip]
 impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Bare>
@@ -196,7 +197,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     pub const fn into_array_copy(self) -> [T; CR] { self.data.into_array_copy() }
 }
 
-// S: Boxed
+// T, S: Boxed
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
@@ -216,7 +217,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     pub fn into_vec(self) -> Vec<T> { self.data.into_vec() }
 }
 
-// T: Clone
+// T: Clone, S
 #[rustfmt::skip]
 impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: Storage>
     Array2d<T, C, R, CR, RMAJ, S>
@@ -226,7 +227,7 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     pub fn fill(&mut self, element: T) { self.data.fill(element) }
 }
 
-// T: PartialEq
+// T: PartialEq, S
 impl<
         T: PartialEq,
         const C: usize,

@@ -48,7 +48,7 @@ macro_rules! impl_stack {
         /* resize */
 
         /// # Stack resize.
-        // S: ()
+        // T, S: Bare
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: Default, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             /// Converts the current stack to a different capacity while preserving all existing elements.
@@ -129,7 +129,7 @@ macro_rules! impl_stack {
             }
         }
 
-        // S: Boxed
+        // T, S: Boxed
         #[cfg(feature = "alloc")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -219,7 +219,7 @@ macro_rules! impl_stack {
             }
         }
 
-        // S: ()
+        // T, S: Bare
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: ConstDefault + Copy, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             /// Converts the current stack to a different capacity while preserving all existing elements.
@@ -311,7 +311,7 @@ macro_rules! impl_stack {
 
         /* convert */
 
-        // S: Bare
+        // T, S: Bare
         /// # Stack index-size conversion.
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
@@ -340,7 +340,7 @@ macro_rules! impl_stack {
             }
             )+
         }
-        // S: Boxed
+        // T, S: Boxed
         #[cfg(feature = "alloc")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -370,7 +370,7 @@ macro_rules! impl_stack {
             }
             )+
         }
-        // S: Bare, T: Copy
+        // T: Copy, S: Bare
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<T: Copy, const CAP: usize> Stack<T, CAP, $IDX, Bare> {
             $(

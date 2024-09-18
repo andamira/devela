@@ -28,6 +28,7 @@ macro_rules! impl_maj {
     ( $RMAJ:literal:$D1:ident:$D1long:literal,
       $CMAJ:literal:$D2:ident:$D2long:literal) => { crate::code::paste! {
 
+        // T, S
         #[doc = "# Single element indexing (" $D1long "-major order)"]
         impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
             Array2d<T, C, R, CR, $RMAJ, S>
@@ -95,6 +96,7 @@ macro_rules! impl_maj {
             }
         }
 
+        // T: Clone, S
         // # Single element clone
         impl<T: Clone, const C: usize, const R: usize, const CR: usize, S: Storage>
             Array2d<T, C, R, CR, $RMAJ, S>
@@ -122,6 +124,7 @@ macro_rules! impl_maj {
 
         /* methods in opposite-order */
 
+        // T, S
         #[doc = "# Single element indexing (using opposite " $D2long "-major order)"]
         impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
             Array2d<T, C, R, CR, $RMAJ, S>
@@ -222,6 +225,7 @@ macro_rules! impl_maj {
             }
         }
 
+        // T: Clone, S
         impl<T: Clone, const C: usize, const R: usize, const CR: usize, S: Storage>
             Array2d<T, C, R, CR, $RMAJ, S>
         {
@@ -251,6 +255,7 @@ impl_maj![];
 
 /* storage order specific implementations */
 
+// T, S
 /// # Fundamental indexing methods in row-major order.
 impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, C, R, CR, true, S> {
     /// Calculates the 1D array index from the given 2D coordinates
@@ -295,6 +300,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     }
 }
 
+// T, S
 /// # Fundamental indexing methods in column-major order.
 impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     Array2d<T, C, R, CR, false, S>

@@ -9,6 +9,7 @@ use crate::{
     mem::{mem_replace, ptr_swap, MaybeUninit, Storage},
 };
 
+// T, S
 impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {
     /* construct */
 
