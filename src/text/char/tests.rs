@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "_char_all")]
-crate::items! { use {super::*, size_of_val as size}; }
+use {super::*, size_of_val as size};
 
 #[test]
 #[cfg(feature = "_char_all")]

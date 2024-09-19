@@ -503,7 +503,7 @@ mod tests {
         UnitBi::{Exbi, Gibi, Kibi, Mebi, Yobi, Zebi},
     };
     #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
-    use crate::data::vec;
+    use crate::data::vec_;
     #[allow(unused_imports)]
     use crate::num::ExtFloatConst;
 
@@ -559,37 +559,37 @@ mod tests {
         assert_eq![
             // single unit: 1Gi
             UnitBi::reduce_chain(Gibi.factor(), margin),
-            vec![(1.0, Gibi)]
+            vec_![(1.0, Gibi)]
         ];
         assert_eq![
             // multiple unit: 1.5Gi
             UnitBi::reduce_chain(1.5 * Gibi.factor(), margin),
-            vec![(1.0, Gibi), (512.0, Mebi)]
+            vec_![(1.0, Gibi), (512.0, Mebi)]
         ];
         assert_eq![
             // 1Gi + 1Ki
             UnitBi::reduce_chain(Gibi.factor() + Kibi.factor(), margin),
-            vec![(1., Gibi), (1., Kibi)]
+            vec_![(1., Gibi), (1., Kibi)]
         ];
         assert_eq![
             // Small value (only 512Ki)
             UnitBi::reduce_chain(Mebi.factor() / 2., margin),
-            vec![(512., Kibi)]
+            vec_![(512., Kibi)]
         ];
         assert_eq![
             // Very large value (3Yi + 2Zi + 1Gi)
             UnitBi::reduce_chain(3. * Yobi.factor() + 2. * Zebi.factor() + Gibi.factor(), margin),
-            vec![(3.0, Yobi), (2.0, Zebi), (1.0, Gibi)]
+            vec_![(3.0, Yobi), (2.0, Zebi), (1.0, Gibi)]
         ];
         assert_eq![
             // Zero value
             UnitBi::reduce_chain(0.0, margin),
-            vec![(0.0, UnitBi::None)]
+            vec_![(0.0, UnitBi::None)]
         ];
         assert_eq![
             // Fractional value (0.5 Gi)
             UnitBi::reduce_chain(Gibi.factor() / 2., margin),
-            vec![(512., Mebi)]
+            vec_![(512., Mebi)]
         ];
     }
 }

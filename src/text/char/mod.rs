@@ -12,6 +12,7 @@ pub use always_fns::*;
 // without re-exports
 mod core_impls;
 mod impls;
+#[cfg(test)]
 mod tests;
 
 // with re-exports

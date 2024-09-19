@@ -188,7 +188,7 @@ pub use cfor;
 #[cfg(all(test, feature = "alloc"))]
 mod tests {
     use super::cfor;
-    use crate::data::{vec, Vec};
+    use crate::data::{vec_, Vec};
 
     macro_rules! validate_loop {
         (@impl $($loop:tt)*) => {
@@ -306,6 +306,6 @@ mod tests {
     fn signed_can_go_negative() {
         let mut actual = Vec::new();
         cfor!(i in (-10..11).rev().step_by(5) => actual.push(i));
-        assert_eq!(actual, vec![10, 5, 0, -5, -10]);
+        assert_eq!(actual, vec_![10, 5, 0, -5, -10]);
     }
 }
