@@ -17,6 +17,14 @@ impl_cdef!["" => &str];
 #[cfg(feature = "alloc")]
 impl_cdef![Self::new() => String];
 
+/* from other modules */
+
+pub use crate::sys::ffi::CStr;
+#[cfg(feature = "alloc")]
+pub use crate::sys::ffi::CString;
+#[cfg(feature = "std")]
+crate::items! { pub use crate::sys::ffi::{OsStr, OsString}; }
+
 /* core, alloc */
 
 reexport! { rust: core,

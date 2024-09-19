@@ -8,9 +8,9 @@
 // - conversions
 
 use super::Grapheme;
-#[cfg(feature = "alloc")]
-use crate::_dep::_alloc::ffi::CString;
 use crate::text::char::*;
+#[cfg(feature = "alloc")]
+use crate::text::CString;
 #[cfg(doc)]
 use crate::text::TextError::{NotEnoughCapacity, OutOfBounds};
 use crate::{

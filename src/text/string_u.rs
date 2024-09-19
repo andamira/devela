@@ -23,7 +23,7 @@ use crate::{code::cfor, num::Compare};
 
 use super::char::*;
 #[cfg(all(_some_string_u, feature = "alloc"))]
-use crate::_dep::_alloc::{ffi::CString, string::ToString};
+use crate::text::{CString, ToString};
 #[allow(unused_imports)]
 use core::str::{from_utf8, from_utf8_unchecked};
 

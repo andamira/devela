@@ -35,11 +35,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `DataError` variant: `ElementNotFound`.
 - re-export `std::backtrace` types.
 - re-export `core::cell` types.
-- re-export `vec!` macro.
 - re-export `assert_unchecked!` macro.
 - re-export `format!`, `format_args!` macros.
+- re-export `OsStr`, `OsString`
 - re-export fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
-- re-export macros: `compile_error`, `env`, `option_env`.
+- re-export macros: `compile_error`, `option_env`.
+- re-export wrapped macros: `env`, `vec`.
 - impl `Num` for niche types.
 - new `sys::os::linux` module.
 - new `num::algebra` module.
