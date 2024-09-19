@@ -21,15 +21,13 @@ mod asserts; // assertion macros
 mod cdbg; // cdbg!
 mod cfor; // cfor!
 mod default; // ConstDefault, Default
-mod deprecate; // deprecate_feature!
 mod iif; // iif!
 mod paste; // paste! wrapped for docs
 mod reexports; // re-exported items
 mod util; // utility macros: head, items, sf.
 #[allow(unused_imports)]
 pub use {
-    any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, iif::*, paste::*,
-    reexports::*, util::*,
+    any::all::*, asserts::*, cdbg::*, cfor::*, default::*, iif::*, paste::*, reexports::*, util::*,
 };
 
 #[cfg(_some_bit)]
@@ -39,8 +37,8 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        any::all::*, asserts::*, cdbg::*, cfor::*, default::*, deprecate::*, iif::*, paste::*,
-        reexports::*, util::*,
+        any::all::*, asserts::*, cdbg::*, cfor::*, default::*, iif::*, paste::*, reexports::*,
+        util::*,
     };
 
     #[cfg(_some_bit)]
