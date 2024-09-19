@@ -3,6 +3,9 @@
 //! UnicodeScalar trait definition
 //
 
+#[cfg(doc)]
+use super::*;
+
 /// Common trait for unicode scalar types.
 ///
 /// It's implemented for: [`Char7`], [`Char8`], [`Char16`], [`Char24`], [`Char32`] and [`char`].

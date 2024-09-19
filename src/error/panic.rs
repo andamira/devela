@@ -62,8 +62,8 @@ mod reexports {
         @set_hook as panic_set_hook
     }
     reexport! { rust: std::panic,
-        doc: "Unregisters the current panic hook and returns it,
-        registering the default hook in its place",
+        doc: "Unregisters the current panic hook, returns it and registers
+        the default hook in its place.",
         @take_hook as panic_unset_hook
     }
 
