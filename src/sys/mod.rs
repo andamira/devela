@@ -15,8 +15,9 @@ mod arch;
 mod env;
 mod ffi;
 mod io;
+mod os;
 #[allow(unused_imports)]
-pub use {arch::*, env::*, ffi::*, io::*};
+pub use {arch::*, env::*, ffi::*, io::*, os::all::*};
 
 #[cfg(feature = "log")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "log")))]
@@ -39,7 +40,7 @@ pub use time::*;
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{arch::all::*, env::all::*, ffi::all::*, io::all::*};
+    pub use super::{arch::all::*, env::all::*, ffi::all::*, io::all::*, os::all::*};
 
     #[doc(inline)]
     #[cfg(feature = "log")]
