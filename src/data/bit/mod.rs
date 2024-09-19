@@ -4,22 +4,21 @@
 //
 
 mod r#trait;
-mod wrapper;
-#[allow(unused_imports)]
-pub use {r#trait::BitOps, wrapper::Bitwise};
+pub use r#trait::BitOps;
 
 #[cfg(_some_bit)]
 crate::items! {
     mod field;
-    pub use field::*;
+    mod wrapper;
+    #[doc(inline)]
+    pub use {field::bitfield, wrapper::Bitwise};
 }
 
 pub(crate) mod all {
     #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::{r#trait::BitOps, wrapper::Bitwise};
+    pub use super::r#trait::BitOps;
 
     #[doc(inline)]
     #[cfg(_some_bit)]
-    pub use super::field::*;
+    pub use super::{field::bitfield, wrapper::Bitwise};
 }

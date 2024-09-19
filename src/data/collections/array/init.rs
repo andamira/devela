@@ -3,7 +3,7 @@
 //!
 //
 
-/// Initializes a `[$T; $LEN]` core [`array`] in multiple ways.
+/// Initializes a [`[$T; $LEN]`][array] array in multiple ways.
 ///
 /// # Arguments
 /// - `[$T; $LEN]`: the array's elements' type and length.

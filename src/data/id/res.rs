@@ -14,7 +14,6 @@
 /// Defines a zero-sized struct per each `$name`, implements [`IdResourced`]
 /// for it, and a `new` constructor that returns [`IdResource`].
 ///
-///
 /// # Example
 /// ```
 /// # use devela::id_resource;
@@ -81,7 +80,7 @@ pub trait IdResourced {
 /// assert_eq!(id1, id2); // type mismatch compile error
 /// ```
 ///
-/// See also: [`id_resource!`].
+/// See also: [`id_resource!`], [`IdResourced`].
 #[repr(transparent)]
 #[must_use]
 pub struct IdResource<T: IdResourced> {
