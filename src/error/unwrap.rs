@@ -7,6 +7,7 @@
 ///
 /// It supports unwrapping [`Option`], [`Result`] and [`OptRes`][super::OptRes].
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! unwrap {
     (
 
@@ -180,6 +181,7 @@ macro_rules! unwrap {
         }
     };
 }
+#[doc(inline)]
 pub use unwrap;
 
 #[cfg(test)]

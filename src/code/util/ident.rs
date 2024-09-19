@@ -15,6 +15,7 @@
 /// ```
 // USEDBY: enumset macro
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! ident_const_index {
     ( // without commas:
         // $vis: the visibility of the constants (pub, pub(super), …).
@@ -37,4 +38,5 @@ macro_rules! ident_const_index {
         $( $crate::code::ident_const_index!($vis, $total; $($rest),*); )?
     }};
 }
+#[doc(inline)]
 pub use ident_const_index;

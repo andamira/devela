@@ -59,6 +59,7 @@
 /// }
 /// ```
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! iif {
     ($if:expr; $true:expr) => {
         if $if {
@@ -89,6 +90,7 @@ macro_rules! iif {
         }
     };
 }
+#[doc(inline)]
 pub use iif;
 
 #[cfg(test)]

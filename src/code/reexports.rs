@@ -14,8 +14,6 @@ pub use devela_macros::{
     ident_unique,
 };
 
-pub use super::paste::paste;
-
 /* `core` re-exports */
 
 // source code

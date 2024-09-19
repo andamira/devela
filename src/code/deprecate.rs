@@ -16,6 +16,7 @@
 /// deprecate_feature![old: "old-feature-4", new: "new_feature_4", since: "4.0.0"];
 /// ```
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! deprecate_feature {
     (     old:   $old_feature:literal
       $(, new:   $new_feature:literal )?
@@ -61,4 +62,5 @@ macro_rules! deprecate_feature {
         }
     };
 }
+#[doc(inline)]
 pub use deprecate_feature;

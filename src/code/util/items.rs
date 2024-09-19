@@ -21,7 +21,9 @@
 /// sf! { println!(); for i in 0..3 { print!{"{i} "} } println!(); }
 /// ```
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! sf { ( $($line:tt)+ ) => { $($line)+ }; }
+#[doc(inline)]
 pub use sf;
 
 /// Groups items together and expands them as if they were written directly.
@@ -44,5 +46,7 @@ pub use sf;
 /// }
 /// ```
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
+#[doc(inline)]
 pub use items;

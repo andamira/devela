@@ -12,6 +12,7 @@
 #[macro_export]
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! sleep4 {
     ($s:expr) => {
         std::thread::sleep(core::time::Duration::from_secs($s));
@@ -29,4 +30,5 @@ macro_rules! sleep4 {
     };
 }
 #[cfg(feature = "std")]
+#[doc(inline)]
 pub use sleep4;

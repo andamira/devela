@@ -32,6 +32,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(_some_bit)))]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! enumset {
     (
         // $enum_attr: the attributes of the enum.
@@ -114,4 +115,5 @@ macro_rules! enumset {
         }
     }};
 }
+#[doc(inline)]
 pub use enumset;

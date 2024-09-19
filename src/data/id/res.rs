@@ -23,6 +23,7 @@
 /// id_resource![Id3,Id4:u32; Id5:u64; Id6,Id7:i8]; // diferent resources
 /// ```
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! id_resource {
     // One or multiple resources share the same ID data type
     ($($name:ident),+ : $inner:ty) => {
@@ -51,6 +52,7 @@ macro_rules! id_resource {
         $( id_resource!($($name),+ : $inner); )+
     };
 }
+#[doc(inline)]
 pub use id_resource;
 
 /// Represents an association between a resource and its inner data type.

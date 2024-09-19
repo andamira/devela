@@ -74,6 +74,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `EgcU8` to `GraphemeU8`.
 
 ### Fixed
+- hide public macros from the crate root when `cfg(cargo_primary_package)`.
 - fix build script utility call paths, add missing `_tuple*` features.
 - reduce noise from required features on methods from `Divisor`, `Int`, `Float`, `Frac`.
 - fix `f64::NR_TOLERANCE` from 1e-14 to 1e-12.

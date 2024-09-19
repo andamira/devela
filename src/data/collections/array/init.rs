@@ -51,6 +51,7 @@
 // WAIT [array_repeat](https://github.com/rust-lang/rust/issues/126695)
 // WAIT [array_try_from_fn](https://github.com/rust-lang/rust/issues/89379)
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! array_init {
     (
     /* safe initializations */
@@ -255,4 +256,5 @@ macro_rules! array_init {
         }
     }};
 }
+#[doc(inline)]
 pub use array_init;

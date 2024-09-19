@@ -10,6 +10,7 @@
 /// # Panics
 // TODO
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! assert_eq_all {
     ($first:expr, $($rest:expr),+ $(,)?) => {{
         let first_val = &$first;
@@ -26,6 +27,7 @@ macro_rules! assert_eq_all {
         )+
     }};
 }
+#[doc(inline)]
 pub use assert_eq_all;
 
 /// Asserts the approximate equality of a series of expressions within `tolerance`.
@@ -71,6 +73,7 @@ pub use assert_eq_all;
 /// assert_approx_eq_all![tolerance: -1_i32, 4, 3, 5]; // tolerance: -1 < 0
 /// ```
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! assert_approx_eq_all {
     (tolerance: $tolerance:expr, $first:expr, $($rest:expr),+ $(,)?) => {{
         let first_val = $first;
@@ -91,4 +94,5 @@ macro_rules! assert_approx_eq_all {
         )+
     }};
 }
+#[doc(inline)]
 pub use assert_approx_eq_all;

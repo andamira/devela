@@ -27,6 +27,7 @@
 ///
 /// See also the [id_seq][crate::_info::examples::id_seq] example.
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! id_seq {
     (
         // $name: the name of the sequential ID generator. E.g. AppId1.
@@ -416,6 +417,7 @@ macro_rules! id_seq {
         }
     };
 }
+#[doc(inline)]
 pub use id_seq;
 
 mod test {

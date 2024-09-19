@@ -15,6 +15,7 @@
 /// ```
 #[macro_export]
 #[rustfmt::skip]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! capture_first {
     (block $first:block $(, $tail:block)* $(,)?) => { $first };
     (expr $first:expr $(, $tail:expr)* $(,)?) => { $first };
@@ -26,11 +27,13 @@ macro_rules! capture_first {
     (ty $first:ty $(, $tail:ty)* $(,)?) => { $first };
     (tt $first:tt $(, $tail:tt)* $(,)?) => { $first };
 }
+#[doc(inline)]
 pub use capture_first;
 
 /// Captures all the tokens except the first one, as a tuple.
 #[macro_export]
 #[rustfmt::skip]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! capture_tail_tuple {
     (block $first:block, $($tail:block),* $(,)?) => { ($($tail),*) };
     (expr $first:expr, $($tail:expr),* $(,)?) => { ($($tail),*) };
@@ -45,6 +48,7 @@ macro_rules! capture_tail_tuple {
     // Handles the case where there is no tail (optional trailing comma)
     ($cat:tt $first:tt) => { () };
 }
+#[doc(inline)]
 pub use capture_tail_tuple;
 
 // /// Captures all the tokens except the first one.
@@ -66,6 +70,7 @@ pub use capture_tail_tuple;
 ///
 #[macro_export]
 #[rustfmt::skip]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! capture_last {
     // Base case: when there is only one item left, return it
     (block $first:block) => { $first };
@@ -98,6 +103,7 @@ macro_rules! capture_last {
     (ty $first:ty, $($tail:ty),* $(,)?) => {
         $crate::code::capture_last!(ty $($tail),*) };
 }
+#[doc(inline)]
 pub use capture_last;
 
 #[cfg(test)]

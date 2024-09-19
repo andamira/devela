@@ -49,11 +49,13 @@ pub fn format_buf_args<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a
 /// assert_eq!(Ok("Test: foo 42"), s);
 /// ```
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! format_buf {
     ($buf:expr, $($args:tt)*) => {
         $crate::text::format_buf_args($buf, format_args![$($args)*])
     };
 }
+#[doc(inline)]
 pub use format_buf;
 
 #[derive(Debug)]

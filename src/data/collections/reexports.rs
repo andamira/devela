@@ -71,8 +71,10 @@ reexport! { rust: alloc::collections,
 #[macro_export]
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! vec { ($($tt:tt)*) => { $crate::_dep::_alloc::vec![$($tt)*] } }
 #[cfg(feature = "alloc")]
+#[doc(inline)]
 pub use vec;
 
 /* from `hashbrown` */

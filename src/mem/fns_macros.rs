@@ -154,6 +154,7 @@ pub use unsafe_fns::*;
 //
 // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cswap {
     (
         // swaps two values using a temporary variable
@@ -172,4 +173,5 @@ macro_rules! cswap {
         }
     }};
 }
+#[doc(inline)]
 pub use cswap;

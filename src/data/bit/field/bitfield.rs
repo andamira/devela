@@ -44,6 +44,7 @@
 /// See also the [`enumset!`][crate::code::enumset] macro.
 #[macro_export]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(_some_bit)))]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! bitfield {
     {
         /* full syntax */
@@ -1018,4 +1019,5 @@ macro_rules! bitfield {
     { // everything public
         $($tt:tt)+ } => { $crate::data::bitfield![ (custom:pub, extra:pub) $($tt)+ ]; };
 }
+#[doc(inline)]
 pub use bitfield;

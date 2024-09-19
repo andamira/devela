@@ -23,6 +23,7 @@
 /// Makes use of [`unreachable_unchecked`][core::hint::unreachable_unchecked]
 /// if the `unsafe_hint` feature is enabled.
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! mem_size_of_expr {
     ($expr: expr) => {
         $crate::mem::__mem_size_of_expr(

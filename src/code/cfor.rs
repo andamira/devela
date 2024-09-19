@@ -113,6 +113,7 @@
 /// });
 /// ```
 #[macro_export]
+#[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cfor {
     ($var:pat_param in ($range:expr).step_by($step:expr) => $body:stmt) => {
         {
@@ -181,6 +182,7 @@ macro_rules! cfor {
         cfor!($var in ($range).step_by(1) => $body)
     };
 }
+#[doc(inline)]
 pub use cfor;
 
 #[cfg(all(test, feature = "alloc"))]

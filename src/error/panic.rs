@@ -81,6 +81,8 @@ mod reexports {
     #[doc = "*Re-exported from [`core::panic`][macro@crate::_dep::_core::panic]*."]
     #[doc = "\n\n---"]
     #[macro_export]
+    #[cfg_attr(cargo_primary_package, doc(hidden))]
     macro_rules! panic { ($($tt:tt)*) => { core::panic![$($tt)*] } }
+    #[doc(inline)]
     pub use panic;
 }
