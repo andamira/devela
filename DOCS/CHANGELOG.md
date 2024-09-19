@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new features: `linux`, `platforms`, `unsafe_syscall`.
 - new feature `__force_miri_dst`.
 - new feature section `Platform`.
+- new cfg flag `cargo_primary_package`.
 - new tools and github actions: `get_errno`, `get_syscall`.
 - new `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
 - new `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.

@@ -534,6 +534,9 @@ maintenance = { status = "experimental" }
 [lints.rust.unexpected_cfgs]
 level = "warn"
 check-cfg = [
+	# Set if the library is compiled as the primary package (not a dependency).
+	'cfg(cargo_primary_package)',
+	#
 	# Expect more pointer widths
 	'cfg(target_pointer_width, values("8", "128"))',
 	#
