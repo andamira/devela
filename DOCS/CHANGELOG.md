@@ -33,12 +33,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new methods for `BareBox`.
 - new aliases: `AllocMapFx`, `AllocSetFx`.
 - new `DataError` variant: `ElementNotFound`.
-- reexport `std::backtrace` types.
-- reexport `core::cell` types.
-- reexport `vec!` macro.
-- reexport `assert_unchecked!` macro.
-- reexport `format!`, `format_args!` macros.
-- reexport fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
+- re-export `std::backtrace` types.
+- re-export `core::cell` types.
+- re-export `vec!` macro.
+- re-export `assert_unchecked!` macro.
+- re-export `format!`, `format_args!` macros.
+- re-export fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
+- re-export macros: `compile_error`, `env`, `option_env`.
 - impl `Num` for niche types.
 - new `sys::os::linux` module.
 - new `num::algebra` module.

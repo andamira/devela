@@ -7,7 +7,12 @@
 
 use crate::code::reexport;
 
-/* `core::result` re-exports */
+/* `core` re-exports */
+
+reexport! { rust: core,
+    doc: "Causes compilation to fail with the given error message when encountered.",
+    compile_error
+}
 
 reexport! { rust: core::error,
     doc: "A trait representing the basic expectations for error values.",
