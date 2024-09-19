@@ -243,7 +243,8 @@ macro_rules! impl_non_value {
             #[cfg(all(feature = "bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
             #[cfg_attr(feature = "nightly_doc",
                 doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
-            mod [<$name $s:lower $b>] {
+            #[allow(non_snake_case)]
+            mod [<$name $s $b>] {
                 use super::*;
 
                 unsafe impl<const V: [<$s $b>]> ZeroableInOption for $name<V> {}
