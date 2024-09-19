@@ -69,6 +69,7 @@ mod reflection {
             "unsafe_ptr",
             "unsafe_slice",
             "unsafe_str",
+            "unsafe_sync",
             "unsafe_thread",
         ]
     };

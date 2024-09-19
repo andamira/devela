@@ -140,7 +140,7 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	"unsafe_array", "unsafe_async", "unsafe_const", "unsafe_hint",
 	"unsafe_layout", "unsafe_niche", "unsafe_ptr", "unsafe_slice",
-	"unsafe_str", "unsafe_syscall", "unsafe_thread",
+	"unsafe_str", "unsafe_sync", "unsafe_syscall", "unsafe_thread",
 ] # for specific purposes:
 	unsafe_array = [] # faster array initialization, UninitArray.
 	unsafe_async = [] # task_waker_noop, CoroRun.
@@ -151,6 +151,7 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	unsafe_ptr = [] # Pinned, pop methods without Clone.
 	unsafe_slice = [] # extra slice methods, avoid bound checks.
 	unsafe_str = [] # unchecked utf-8 char and &str conversions.
+	unsafe_sync = [] # Send and Sync impls.
 	unsafe_syscall = [] # os syscalls.
 	unsafe_thread = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 

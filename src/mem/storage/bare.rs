@@ -314,4 +314,12 @@ mod core_impls {
             self.0.last()
         }
     }
+
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
+    unsafe impl<T: Send> Send for BareBox<T> {}
+
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
+    unsafe impl<T: Sync> Sync for BareBox<T> {}
 }

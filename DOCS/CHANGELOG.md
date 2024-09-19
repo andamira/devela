@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - show build environment variables if `__dbg` feature is enabled.
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
 - new feature `nightly_ptr` enabling `ptr_metadata` experimental feature.
-- new features: `linux`, `platforms`, `unsafe_syscall`.
+- new features: `linux`, `platforms`, `unsafe_syscall`, `unsafe_async`.
 - new feature `__force_miri_dst`.
 - new feature section `Platform`.
 - new cfg flag `cargo_primary_package`.
