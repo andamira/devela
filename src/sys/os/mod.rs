@@ -7,9 +7,10 @@
 
 #[cfg(feature = "linux")]
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
-crate::code::items! {
+crate::items! {
     pub mod linux;
     #[doc(no_inline)]
+    #[allow(unused_imports)]
     pub use linux::all::*;
 }
 

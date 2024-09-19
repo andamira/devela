@@ -19,7 +19,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
         if let Some(v) = cargo_primary_package {
             println(&format!["· CARGO_PRIMARY_PACKAGE={v}"]);
         } else {
-            println(&format!["x CARGO_PRIMARY_PACKAGE"]);
+            println("x CARGO_PRIMARY_PACKAGE");
         }
 
         println_var("CARGO_MANIFEST_DIR");
