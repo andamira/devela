@@ -13,11 +13,10 @@ use crate::code::items;
 
 mod arch;
 mod env;
-mod ffi;
 mod io;
 mod os;
 #[allow(unused_imports)]
-pub use {arch::*, env::*, ffi::*, io::*, os::all::*};
+pub use {arch::*, env::*, io::*, os::all::*};
 
 #[cfg(feature = "log")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "log")))]
@@ -34,13 +33,15 @@ items! {
     pub use path::*;
 }
 
+pub mod ffi;
 pub mod time;
-pub use time::*;
+#[doc(no_inline)]
+pub use {ffi::*, time::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{arch::all::*, env::all::*, ffi::all::*, io::all::*, os::all::*};
+    pub use super::{arch::all::*, env::all::*, ffi::all::*, io::all::*, os::all::*, time::all::*};
 
     #[doc(inline)]
     #[cfg(feature = "log")]
@@ -50,7 +51,4 @@ pub(crate) mod all {
     #[allow(unused_imports)]
     #[cfg(feature = "sys")]
     pub use super::path::all::*;
-
-    #[doc(inline)]
-    pub use super::time::all::*;
 }
