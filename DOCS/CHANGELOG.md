@@ -41,6 +41,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
 - re-export macros: `compile_error`, `option_env`.
 - re-export wrapped macros: `env`, `vec`.
+- re-export crate types from multiple related modules, like errors and strings.
 - impl `Num` for niche types.
 - new `sys::os::linux` module.
 - new `num::algebra` module.

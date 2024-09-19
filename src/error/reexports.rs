@@ -7,6 +7,17 @@
 
 use crate::code::reexport;
 
+/* from other modules */
+
+#[doc(inline)] // MAYBE?
+pub use crate::{
+    data::{DataError, DataResult},
+    num::{NumError, NumResult},
+    sys::time::{TimeError, TimeResult},
+    sys::{IoError, IoResult},
+    text::{TextError, TextResult},
+};
+
 /* `core` re-exports */
 
 reexport! { rust: core,
