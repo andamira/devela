@@ -6,7 +6,7 @@
 use super::helpers::impl_try_from;
 #[cfg(feature = "alloc")]
 #[allow(unused_imports)]
-use crate::data::{vec, Vec};
+use crate::data::{vec_, Vec};
 #[cfg(feature = "_float_f64")]
 #[allow(unused_imports)]
 use crate::num::ExtFloat;
@@ -358,7 +358,7 @@ impl UnitBi {
     )]
     pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)> {
         if value == 0.0 {
-            return vec![(0.0, UnitBi::None)];
+            return vec_![(0.0, UnitBi::None)];
         }
 
         let mut result = Vec::new();

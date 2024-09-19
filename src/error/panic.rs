@@ -80,9 +80,16 @@ mod reexports {
     ///
     #[doc = "*Re-exported from [`core::panic`][macro@crate::_dep::_core::panic]*."]
     #[doc = "\n\n---"]
+    ///
+    /// The reason of the `_` suffix is to avoid conflicting with the prelude
+    /// when glob importing from this crate. Since this macro has the same name
+    /// as its sibling module `core::panic`, in order to be able to re-export
+    /// only the macro we have to wrap it with our own.
+    ///
+    /// This is for completion purposes. You can keep using the `panic!` macro.
     #[macro_export]
     #[cfg_attr(cargo_primary_package, doc(hidden))]
-    macro_rules! panic { ($($tt:tt)*) => { core::panic![$($tt)*] } }
+    macro_rules! panic_ { ($($tt:tt)*) => { core::panic![$($tt)*] } }
     #[doc(inline)]
-    pub use panic;
+    pub use panic_;
 }

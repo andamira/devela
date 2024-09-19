@@ -13,7 +13,7 @@ use crate::{
 };
 #[cfg(feature = "alloc")]
 use crate::{
-    data::{vec, Vec},
+    data::{vec_, Vec},
     mem::Boxed,
 };
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
@@ -1196,7 +1196,7 @@ macro_rules! impl_destaque {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn to_vec(&self) -> Vec<T> {
                 if self.is_empty() {
-                    vec![]
+                    vec_![]
                 } else {
                     let mut vec = Vec::with_capacity(self.len() as usize);
                     let mut index = self.front as usize;

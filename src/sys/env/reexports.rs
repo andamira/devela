@@ -17,8 +17,15 @@ reexport! { rust: core,
 ///
 #[doc = "*Re-exported from [`core::env`][macro@crate::_dep::_core::env]*."]
 #[doc = "\n\n---"]
+///
+/// The reason of the `_` suffix is to avoid conflicting with the prelude
+/// when glob importing from this crate. Since this macro has the same name
+/// as its sibling module `core::env`, in order to be able to re-export
+/// only the macro we have to wrap it with our own.
+///
+/// This is for completion purposes. You can keep using the `env!` macro.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! env { ($($tt:tt)*) => { core::env![$($tt)*] } }
+macro_rules! env_ { ($($tt:tt)*) => { core::env![$($tt)*] } }
 #[doc(inline)]
-pub use env;
+pub use env_;

@@ -73,6 +73,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `EgcString` to `GraphemeString`.
 - rename `EgcNonul` to `GraphemeNonul`.
 - rename `EgcU8` to `GraphemeU8`.
+- rename re-wrapped macros to avoid prelude collision when glob importing:
+  - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
 
 ### Fixed
 - hide public macros from the crate root when `cfg(cargo_primary_package)`.

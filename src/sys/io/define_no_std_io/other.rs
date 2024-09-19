@@ -9,7 +9,7 @@ use core::{cmp, fmt, slice};
 #[cfg(feature = "alloc")]
 mod alloc_impls {
     use super::*;
-    use crate::data::vec;
+    use crate::data::vec_;
 
     /// Reads all bytes from a reader into the given buffer, adapting the buffer size as needed.
     ///
@@ -42,7 +42,7 @@ mod alloc_impls {
             buf: &mut Vec<u8>,
             probe_size: usize,
         ) -> Result<usize> {
-            let mut probe = vec![0u8; probe_size];
+            let mut probe = vec_![0u8; probe_size];
             match r.read(&mut probe) {
                 Ok(n) => {
                     probe.truncate(n);
