@@ -25,16 +25,24 @@ macro_rules! impl_in_range {
     };
     ($doc:literal, $s:ident, $( $b:tt : $cap:literal),+) => {
         $( paste!{
-            impl_in_range![@[<InRange $s:upper $b>], $doc, $s, $b : $cap];
+            impl_in_range![@
+                [<InRange $s:upper $b>], // $name
+                $doc,
+                [<$s $b>], // $IP
+                $s,
+                $b:
+                $cap
+            ];
         })+
     };
 
     // $name: the full name of the new type. E.g. InRange.
     // $doc:  the specific beginning of the documentation.
+    // $IP:   the type of the corresponding integer primitive. E.g. i8
     // $s:    the sign identifier, lowercase: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
     // $cap:  the capability feature that enables the given implementation. E.g "_in_range_i8".
-    (@$name:ident, $doc:literal, $s:ident, $b:tt : $cap:literal) => { paste! {
+    (@$name:ident, $doc:literal, $IP:ty, $s:ident, $b:tt : $cap:literal) => { paste! {
         /* definition */
 
         #[doc = $doc " integer that is known to be included in some inclusive range." ]
@@ -60,16 +68,16 @@ macro_rules! impl_in_range {
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        pub struct $name<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+        pub struct $name<const RMIN: $IP, const RMAX: $IP>
             ([<NonZero $s:upper $b>]);
 
         /* methods */
 
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]> $name<RMIN, RMAX> {
+        impl<const RMIN: $IP, const RMAX: $IP> $name<RMIN, RMAX> {
             // The constant value used to shift the range of values away from 0,
-            const XOR_VALUE: [<$s $b>] = RMIN.wrapping_sub(1);
+            const XOR_VALUE: $IP = RMIN.wrapping_sub(1);
 
             #[doc = "Returns a `" $name "` with the given `value`,"
             " only if it's between `RMIN` and `RMAX`."]
@@ -77,7 +85,7 @@ macro_rules! impl_in_range {
             /// Returns `None` if `value` is not between `RMIN` and `RMAX`, inclusive,
             /// or if `RMIN > RMAX`.
             #[must_use]
-            pub const fn new(value: [<$s $b>]) -> Option<Self> {
+            pub const fn new(value: $IP) -> Option<Self> {
                 if RMIN <= value && value <= RMAX {
                     match [<NonZero $s:upper $b>]::new(value ^ Self::XOR_VALUE) {
                         None => None,
@@ -98,7 +106,7 @@ macro_rules! impl_in_range {
             #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
-            pub const unsafe fn new_unchecked(value: [<$s $b>]) -> Self {
+            pub const unsafe fn new_unchecked(value: $IP) -> Self {
                 #[cfg(debug_assertions)]
                 if RMIN > RMAX {
                     panic!("RMIN must be less or equal than RMAX.")
@@ -114,7 +122,7 @@ macro_rules! impl_in_range {
             /// Returns the value as a primitive type.
             #[inline]
             #[must_use]
-            pub const fn get(&self) -> [<$s $b>] {
+            pub const fn get(&self) -> $IP {
                 self.0.get() ^ Self::XOR_VALUE
             }
 
@@ -124,14 +132,14 @@ macro_rules! impl_in_range {
             /// # Notice
             /// A range where `RMAX == RMIN` will result in `VALID_VALUES == 1`, as expected.
             ///
-            #[doc = "But a range from [`"[<$s $b>]"::MIN`] to [`"[<$s $b>]"::MAX`] will result"
+            #[doc = "But a range from [`" $IP "::MIN`] to [`" $IP "::MAX`] will result"
             " in `VALID_VALUES == 0`, instead of [`"[<u $b>]"::MAX`]` + 1`,"]
             /// This is because the maximum number of representable values for a given
             /// bit-size can't be represented using the same number of bits.
             /// In this case `INVALID_VALUES` will also be `== 0`.
             ///
             #[doc = "This doesn't matter as much because a [`" $name "`] with"
-            " the largest range of values is really just a [`" [<$s $b>] "`]."]
+            " the largest range of values is really just a [`" $IP "`]."]
             ///
             #[doc = "Remember that `INVALID_VALUES + VALID_VALUES == "[<u $b>]"::MAX + 1`,"]
             /// which would wrap to `0`.
@@ -147,7 +155,7 @@ macro_rules! impl_in_range {
             /// A range where `RMAX == RMIN` will result in `INVALID_VALUES ==
             #[doc = "`[`" [<u $b>]"::MAX`], as expected."]
             ///
-            #[doc = "A range from [`"[<$s $b>]"::MIN`] to [`"[<$s $b>]"::MAX`] will result"]
+            #[doc = "A range from [`" $IP "::MIN`] to [`" $IP "::MAX`] will result"]
             /// in `INVALID_VALUES == 0`, also as expected.
             /// Just be aware that in this case `VALID_VALUES` will also be `== 0` instead of
             #[doc = " [`" [<u $b>]"::MAX`]` + 1`."]
@@ -162,14 +170,14 @@ macro_rules! impl_in_range {
 
             /* core impls */
 
-            impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+            impl<const RMIN: $IP, const RMAX: $IP>
                 fmt::Display for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     write!(f, "{}", self.get())
                 }
             }
-            impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+            impl<const RMIN: $IP, const RMAX: $IP>
                 fmt::Debug for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -177,28 +185,28 @@ macro_rules! impl_in_range {
                         stringify!($name), RMIN, RMAX, self.get())
                 }
             }
-            impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+            impl<const RMIN: $IP, const RMAX: $IP>
                 fmt::Binary for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::Binary::fmt(&self.get(), f)
                 }
             }
-            impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+            impl<const RMIN: $IP, const RMAX: $IP>
                 fmt::Octal for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::Octal::fmt(&self.get(), f)
                 }
             }
-            impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+            impl<const RMIN: $IP, const RMAX: $IP>
                 fmt::LowerHex for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::LowerHex::fmt(&self.get(), f)
                 }
             }
-            impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+            impl<const RMIN: $IP, const RMAX: $IP>
                 fmt::UpperHex for $name<RMIN, RMAX> {
                 #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -206,34 +214,34 @@ macro_rules! impl_in_range {
                 }
             }
 
-            impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+            impl<const RMIN: $IP, const RMAX: $IP>
                 FromStr for $name<RMIN, RMAX> {
                 type Err = ParseIntError;
                 #[inline]
                 fn from_str(s: &str) -> Result<Self, Self::Err> {
-                    Self::new([<$s $b>]::from_str(s)?).ok_or_else(||"".parse::<i32>().unwrap_err())
+                    Self::new($IP::from_str(s)?).ok_or_else(||"".parse::<i32>().unwrap_err())
                 }
             }
 
             /* conversions */
 
-            impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                From<$name<RMIN, RMAX>> for [<$s $b>] {
+            impl<const RMIN: $IP, const RMAX: $IP>
+                From<$name<RMIN, RMAX>> for $IP {
                 #[inline]
                 #[must_use]
-                fn from(value: $name<RMIN, RMAX>) -> [<$s $b>] {
+                fn from(value: $name<RMIN, RMAX>) -> $IP {
                     value.get()
                 }
             }
 
-            impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
-                TryFrom<[<$s $b>]> for $name<RMIN, RMAX> {
+            impl<const RMIN: $IP, const RMAX: $IP>
+                TryFrom<$IP> for $name<RMIN, RMAX> {
                 type Error = core::num::TryFromIntError;
 
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
                 #[inline]
-                fn try_from(value: [<$s $b>]) -> Result<Self, Self::Error> {
+                fn try_from(value: $IP) -> Result<Self, Self::Error> {
                     // We generate a TryFromIntError by intentionally causing a failed conversion.
                     #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
                     return Self::new(value).ok_or_else(|| i8::try_from(255_u8).unwrap_err());
@@ -248,8 +256,8 @@ macro_rules! impl_in_range {
 
             // BitSized
             #[cfg(feature = "mem_bit")]
-            bit_sized![<const RMIN: [<$s $b>], const RMAX: [<$s $b>]> =
-                { [<$s $b>]::BYTE_SIZE * 8}; for $name<RMIN, RMAX>];
+            bit_sized![<const RMIN: $IP, const RMAX: $IP> =
+                { $IP::BYTE_SIZE * 8}; for $name<RMIN, RMAX>];
 
             /* external impls */
 
@@ -260,15 +268,15 @@ macro_rules! impl_in_range {
             mod [<$name $s $b>] {
                 use super::*;
 
-                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                unsafe impl<const RMIN: $IP, const RMAX: $IP>
                     ZeroableInOption for $name<RMIN, RMAX> {}
-                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                unsafe impl<const RMIN: $IP, const RMAX: $IP>
                     PodInOption for $name<RMIN, RMAX> {}
-                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                unsafe impl<const RMIN: $IP, const RMAX: $IP>
                     NoUninit for $name<RMIN, RMAX> {}
-                unsafe impl<const RMIN: [<$s $b>], const RMAX: [<$s $b>]>
+                unsafe impl<const RMIN: $IP, const RMAX: $IP>
                     CheckedBitPattern for $name<RMIN, RMAX> {
-                    type Bits = [<$s $b>];
+                    type Bits = $IP;
 
                     #[inline]
                     fn is_valid_bit_pattern(bits: &Self::Bits) -> bool {
