@@ -43,6 +43,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export wrapped macros: `env`, `vec`.
 - re-export crate types from multiple related modules, like errors and strings.
 - impl `Num` for niche types.
+- new `NonValue*` constants `MAX`, `MIN`.
 - new `sys::os::linux` module.
 - new `num::algebra` module.
 - new lints.
