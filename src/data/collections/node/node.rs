@@ -23,14 +23,14 @@ macro_rules! impl_node {
     // $IP:  the index primitive type. E.g. u8.
     // $cap:  the capability feature that enables the given implementation. E.g "_node_u8".
     //
-    // $Index: the index type name. E.g. NonExtremeU8.
+    // $NodeIndex: the index type name. E.g. NonExtremeU8.
     // $Node:  the node name. E.g. NodeU8.
-    // $Links: the links field type. E.g. [Option<$Index>; LCAP].
+    // $Links: the links field type. E.g. [Option<$NodeIndex>; LCAP].
     ($( $IP:ty : $cap:literal ),+) => { paste! {
         $(
             #[cfg(feature = $cap )]
             impl_node!(@
-                [<NonExtreme $IP:camel>],                 // $Index
+                [<NonExtreme $IP:camel>],                 // $NodeIndex
                 [<Node $IP:camel>],                       // $Node
                 [Option<[<NonExtreme $IP:camel>]>; LCAP], // $Links
                 $IP,
@@ -38,7 +38,7 @@ macro_rules! impl_node {
             );
         )+
     }};
-    (@$Index:ty, $Node:ty, $Links:ty, $IP:ty, $cap:literal) => { paste! {
+    (@$NodeIndex:ty, $Node:ty, $Links:ty, $IP:ty, $cap:literal) => { paste! {
         /// A generic node with a configurable capacity for links.
         ///
         /// It's designed to be used in graphs, linked lists, and other node-based data structures.
@@ -58,7 +58,7 @@ macro_rules! impl_node {
         ///
         #[doc = "A link *ID* can range from `0..min(LCAP, " $IP "::MAX)` (exclusive)."]
         ///
-        #[doc = "The provided methods for links use " $IP " instead of " $Index ","]
+        #[doc = "The provided methods for links use " $IP " instead of " $NodeIndex ","]
         /// for convinience. It's also possible to access the links field directly.
         ///
         /// ## Features
@@ -256,7 +256,7 @@ macro_rules! impl_node {
             pub fn set_link_unchecked(&mut self, id: $IP, link: impl Into<Option<$IP>>) {
                 let id = id as usize;
                 let link = match link.into() {
-                    Some(link) => $Index::new(link),
+                    Some(link) => $NodeIndex::new(link),
                     None => None,
                 };
                 self.links[id] = link;
@@ -275,7 +275,7 @@ macro_rules! impl_node {
                     Some(link) => Some(Self::validate_into(link)?),
                     None => None,
                 };
-                match mem_replace::<Option<$Index>>(&mut self.links[id], link) {
+                match mem_replace::<Option<$NodeIndex>>(&mut self.links[id], link) {
                     None => Ok(None),
                     Some(link) => Ok(Some(link.get()))
                 }
@@ -294,10 +294,10 @@ macro_rules! impl_node {
                 -> Option<$IP> {
                 let id = id as usize;
                 let link = match link.into() {
-                    Some(link) => $Index::new(link),
+                    Some(link) => $NodeIndex::new(link),
                     None => None,
                 };
-                match mem_replace::<Option<$Index>>(&mut self.links[id], link) {
+                match mem_replace::<Option<$NodeIndex>>(&mut self.links[id], link) {
                     None => None,
                     Some(link) => Some(link.get())
                 }
@@ -467,11 +467,11 @@ macro_rules! impl_node {
             }
             // Validates the `link` bounds and returns it converted, or `Err(OutOfBounds)`.
             #[inline]
-            const fn validate_into(link: $IP) -> Result<$Index> {
+            const fn validate_into(link: $IP) -> Result<$NodeIndex> {
                 if link as usize >= LCAP || link == $IP::MAX {
                     Err(OutOfBounds(Some(link as usize)))
                 } else {
-                    Ok(unwrap![some $Index::new(link)])
+                    Ok(unwrap![some $NodeIndex::new(link)])
                 }
             }
         }
