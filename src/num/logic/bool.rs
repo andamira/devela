@@ -11,12 +11,8 @@ use crate::code::sf;
 
 /// Allows to convert compile-time constants into type-level booleans.
 ///
-/// For that, it uses the size array trick:
-/// - Arrays of size `[(); 0]` are mapped to False.
-/// - Arrays of size `[(); 1]` are mapped to True.
-///
-/// See also the [`const_bool`] macro, the [`Bool`] enum,
-/// and the [`True`] and [`False`] types.
+
+/// See also the [`const_bool`] macro, and the [`True`] and [`False`] types.
 #[rustfmt::skip]
 pub trait ConstBool: Sized {
     /// The resulting type-level boolean (`True` or `False`).
@@ -31,9 +27,21 @@ sf! {
     impl ConstBool for True { type Value = True; const VALUE: True = True; }
 }
 
-/// Converts a `const bool` to a type-level boolean ([`True`] or [`False`]).
+/// Converts a *const* `bool` expression to a type-level boolean.
 ///
-/// See also the [`ConstBool`] trait, the [`Bool`] enum and the [`True`] and [`False`] types.
+/// Internally, it leverages the [`ConstBool`] trait and a trick related to array sizes:
+/// - Arrays of size `[(); 0]` are mapped to [`False`].
+/// - Arrays of size `[(); 1]` are mapped to [`True`].
+///
+/// # Examples
+/// ```
+/// # use devela::{const_bool, True};
+/// const _: True = const_bool![4 == 4];
+/// ```
+/// ```compile_fail
+/// # use devela::{const_bool, True};
+/// const _: True = const_bool![3 == 4];
+/// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! const_bool {
@@ -46,14 +54,12 @@ pub use const_bool;
 
 /// A type-level logical true.
 ///
-/// See also the [`Bool`] enum, the [`ConstBool`] trait, the [`const_bool`] macro,
-/// and the [`False`] type.
+/// See also the [`ConstBool`] trait, the [`const_bool`] macro, and the [`False`] type.
 pub struct True;
 
 /// A type-level logical false.
 ///
-/// See also the [`Bool`] enum, the [`ConstBool`] trait, the [`const_bool`] macro,
-/// and the [`True`] type.
+/// See also the [`ConstBool`] trait, the [`const_bool`] macro, and the [`True`] type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct False;
 

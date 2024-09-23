@@ -24,9 +24,7 @@ mod primitive;
 mod sign;
 mod unit;
 mod r#trait;
-pub use {
-    alias::*, cmp::*, error::*, float::*, no::*, primitive::*, r#trait::*, sign::*, unit::*,
-};
+pub use {alias::*, cmp::*, error::*, float::*, no::*, primitive::*, r#trait::*, sign::*, unit::*};
 
 pub mod algebra;
 pub mod logic;
