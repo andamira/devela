@@ -24,6 +24,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new macro `id_marker!`.
 - new macro `id_seq!`, example `id_seq` and type `ExampleIdSeqUsize`.
 - new macro `id_resource!`, trait `IdResourced`, and type `IdResource`.
+- new macro `const_bool!`, trait `ConstBool`, and types: `True`, `False`.
 - new macros: `capture_first`, `capture_last`, `capture_tail_tuple`.
 - new private macro `doc_availability!`.
 - new types: `IdPinBox`, `IdPin`.

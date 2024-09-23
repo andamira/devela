@@ -24,12 +24,15 @@ mod primitive;
 mod sign;
 mod unit;
 mod r#trait;
-pub use {alias::*, cmp::*, error::*, float::*, no::*, primitive::*, r#trait::*, sign::*, unit::*};
+pub use {
+    alias::*, cmp::*, error::*, float::*, no::*, primitive::*, r#trait::*, sign::*, unit::*,
+};
 
 pub mod algebra;
+pub mod logic;
 pub mod niche;
 #[doc(no_inline)]
-pub use {algebra::all::*, niche::all::*};
+pub use {algebra::all::*, logic::all::*, niche::all::*};
 
 #[cfg(_some_int)]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(_some_int)))]
@@ -51,8 +54,8 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        algebra::all::*, alias::*, cmp::all::*, error::*, float::*, niche::all::*, no::*,
-        primitive::*, r#trait::*, sign::*, unit::*,
+        algebra::all::*, alias::*, cmp::all::*, error::*, float::*, logic::all::*, niche::all::*,
+        no::*, primitive::*, r#trait::*, sign::*, unit::*,
     };
 
     #[doc(inline)]
