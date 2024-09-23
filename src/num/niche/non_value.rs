@@ -15,8 +15,12 @@ use crate::mem::MemPod;
 use crate::mem::{bit_sized, ByteSized};
 use crate::{
     _dep::_core::{fmt, num::*, str::FromStr},
-    code::{paste, ConstDefault},
-    error::unwrap,
+    code::{iif, paste, ConstDefault},
+    error::{
+        unwrap,
+        NumError::{Invalid, Overflow},
+        NumResult,
+    },
 };
 
 macro_rules! impl_non_value {
@@ -136,6 +140,12 @@ macro_rules! impl_non_value {
                 }
             };
 
+            /// Returns the number of valid values.
+            pub const VALID_VALUES: [<u $b>] = [<u $b>]::MAX;
+
+            /// Returns the number of invalid values.
+            pub const INVALID_VALUES: [<u $b>] = 1;
+
             /* methods */
 
             #[doc = "Returns a `" $name "` with the given `value`,"
@@ -166,19 +176,93 @@ macro_rules! impl_non_value {
             }
 
             /// Returns the value as a primitive type.
-            #[inline]
-            #[must_use]
+            #[inline] #[must_use]
             pub const fn get(&self) -> $IP {
                 self.0.get() ^ V
             }
 
-            /// Returns the number of valid values.
-            pub const VALID_VALUES: [<u $b>] = [<u $b>]::MAX;
+            /// Returns `true` if it is equal to the maximum value ([`MAX`][Self::MAX]).
+            #[inline] #[must_use]
+            pub const fn is_max(&self) -> bool {
+                self.get() == $IP::MAX
+            }
 
-            /// Returns the number of invalid values.
-            pub const INVALID_VALUES: [<u $b>] = 1;
+            /// Returns `true` if it is equal to the minimum value ([`MIN`][Self::MIN]).
+            #[inline] #[must_use]
+            pub const fn is_min(&self) -> bool {
+                self.get() == $IP::MIN
+            }
+
+            /// Checked integer addition. Computes `self + rhs`.
+            ///
+            /// # Errors
+            /// Returns [`Overflow`] if the operations overflows, or
+            /// [`Invalid`] if the result equals the forbidden value `V`.
+            pub const fn checked_add(&self, other: $IP) -> NumResult<Self> {
+                let res = unwrap![some_ok_or? self.get().checked_add(other), Overflow(None)];
+                unwrap![some_ok_or Self::new(res), Invalid]
+            }
+            /// Checked integer substration. Computes `self - rhs`.
+            ///
+            /// # Errors
+            /// Returns [`Overflow`] if the operations overflows, or
+            /// [`Invalid`] if the result equals the forbidden value `V`.
+            pub const fn checked_sub(&self, other: $IP) -> NumResult<Self> {
+                let res = unwrap![some_ok_or? self.get().checked_sub(other), Overflow(None)];
+                unwrap![some_ok_or Self::new(res), Invalid]
+            }
+
+            /// Strict integer addition. Computes `self + rhs`.
+            ///
+            /// # Panics
+            /// Panics on overflow or if the result equals the forbidden value `V`.
+            pub const fn strict_add(&self, other: $IP) -> Self {
+                let res = unwrap![some self.get().checked_add(other)];
+                unwrap![some Self::new(res)]
+            }
+            /// Strict integer substration. Computes `self - rhs`.
+            ///
+            /// # Panics
+            /// Panics on overflow or if the result equals the forbidden value `V`.
+            pub const fn strict_sub(&self, other: $IP) -> Self {
+                let res = unwrap![some self.get().checked_sub(other)];
+                unwrap![some Self::new(res)]
+            }
+
+            /// Saturating integer addition. Computes `self + rhs`.
+            ///
+            /// Saturates at the numeric bounds instead of overflowing.
+            /// If the result would equal `V` it will return `V - 1`.
+            pub const fn saturating_add(&self, other: $IP) -> Self {
+                let res = self.get().saturating_add(other);
+                unwrap![some Self::new(iif![res == V; res - 1; res])]
+            }
+            /// Saturating integer substration. Computes `self - rhs`.
+            ///
+            /// Saturates at the numeric bounds instead of overflowing.
+            /// If the result would equal `V` it will return `V + 1`.
+            pub const fn saturating_sub(&self, other: $IP) -> Self {
+                let res = self.get().saturating_sub(other);
+                unwrap![some Self::new(iif![res == V; res + 1; res])]
+            }
+
+            /// Wraping integer addition. Computes `self + rhs`.
+            ///
+            /// Wraps at the numeric bounds instead of overflowing.
+            /// If the result would equal `V` it will return `V + 1`.
+            pub const fn wrapping_add(&self, other: $IP) -> Self {
+                let res = self.get().wrapping_add(other);
+                unwrap![some Self::new(iif![res == V; res + 1; res])]
+            }
+            /// Wraping integer subtraction. Computes `self - rhs`.
+            ///
+            /// Wraps at the numeric bounds instead of overflowing.
+            /// If the result would equal `V` it will return `V - 1`.
+            pub const fn wrapping_sub(&self, other: $IP) -> Self {
+                let res = self.get().wrapping_sub(other);
+                unwrap![some Self::new(iif![res == V; res - 1; res])]
+            }
         }
-
 
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]

@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new types: `IdPinBox`, `IdPin`.
 - new traits: `ExtCellOption`, `ExtOptRes`, `MemPod`.
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
+- new methods for `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
 - new methods for `Array`: `from_fn`, `contains_[from|to|between]`.
 - new methods for `Array` when storing `Option<T>`.
 - new methods for `BareBox`.
