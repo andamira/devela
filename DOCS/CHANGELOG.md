@@ -148,7 +148,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add `*_assign` methods to `Num` and `NumRef`.
 - add `NumError` variant: `NoInverse`.
 - add `DataError` variants: `NodeLinkNotSet`, `NodeLinkNotUnique`.
-- add new arms to `array_init:` `init`, `init_heap`.
+- add new arms to `unwrap!`: `some_ok_or[?]`, `ok_some[?]`, `err_some[?]`.
+- add new arms to `array_init!`: `init`, `init_heap`.
 - add methods to `BareBox`: `as_ref`.
 - add methods to `Array`: `as_bare_slice`.
 - add methods to `Int`: `midpoint`, `modulo*`.

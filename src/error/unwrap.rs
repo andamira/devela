@@ -46,6 +46,23 @@ macro_rules! unwrap {
         }
     };
     (
+      // Transforms the `Option` into a `Result`, mapping `Some(T)` to `Ok(T)`,
+      // and `None` to `Err($err)`.
+      some_ok_or $value:expr, $err:expr) => {
+        match $value {
+            Some(v) => Ok(v),
+            None => Err($err),
+        }
+    };
+    (
+      // Unwraps the contained `Some` value or otherwise returns Err($err).
+      some_ok_or? $value:expr, $err:expr) => {
+        match $value {
+            Some(v) => v,
+            None => return Err($err),
+        }
+    };
+    (
 
       // Result<T, E>
       // ------------
@@ -82,6 +99,24 @@ macro_rules! unwrap {
         }
     };
     (
+      // Transforms the `Result` into an `Option`, mapping `Ok(T)` to `Some(T)`,
+      // and `Err(_)` to `None`.
+      ok_some $value:expr) => {
+        match $value {
+            Ok(v) => Some(v),
+            Err(_) => None,
+        }
+    };
+    (
+      // Unwraps the contained `Ok` value, otherwise returns `None`.
+      ok_some? $value:expr) => {
+        match $value {
+            Ok(v) => v,
+            Err(_) => return None,
+        }
+    };
+
+    (
       // Unwraps the contained `Err` value, or panics if it's `Ok`.
       err $value:expr ) => {
         match $value {
@@ -103,6 +138,23 @@ macro_rules! unwrap {
         match $value {
             Ok(_) => $default,
             Err(v) => v,
+        }
+    };
+    (
+      // Transforms the `Result` into an `Option`, mapping `Err(E)` to `Some(E)`,
+      // and `Ok(_)` to `None`.
+      err_some $value:expr) => {
+        match $value {
+            Ok(_) => None,
+            Err(e) => Some(e),
+        }
+    };
+    (
+      // Unwraps the contained `Err` value, otherwise returns `None`.
+      err_some? $value:expr) => {
+        match $value {
+            Ok(_) => return None,
+            Err(e) => e,
         }
     };
     (
