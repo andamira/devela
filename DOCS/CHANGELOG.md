@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
 - new struct `Env` that namespaces `std::env` functions and constants.
 - new `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
+- new macro `id_marker!`.
 - new macro `id_seq!`, example `id_seq` and type `ExampleIdSeqUsize`.
 - new macro `id_resource!`, trait `IdResourced`, and type `IdResource`.
 - new macros: `capture_first`, `capture_last`, `capture_tail_tuple`.
