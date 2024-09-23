@@ -37,7 +37,9 @@ sf! {
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! const_bool {
-    ($bool:expr) => {{ <[(); {$bool as usize}] as $crate::ConstBool>::VALUE }};
+    ($bool:expr) => {{
+        <[(); { $bool as usize }] as $crate::ConstBool>::VALUE
+    }};
 }
 #[doc(inline)]
 pub use const_bool;

@@ -67,7 +67,7 @@ pub use capture_tail_tuple;
 // }
 // pub use capture_tail;
 
-///
+/// Captures the last token from a list of inputs.
 #[macro_export]
 #[rustfmt::skip]
 #[cfg_attr(cargo_primary_package, doc(hidden))]

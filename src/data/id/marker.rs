@@ -47,7 +47,7 @@ macro_rules! id_marker {
 
         impl $name {
             #[doc = concat!("Creates a new `", stringify!($name), "`.")]
-            #[inline]
+            #[inline] #[allow(dead_code)]
             pub fn new() -> Self { Self }
         }
 
@@ -69,8 +69,7 @@ macro_rules! id_marker {
 
         impl<$($gen),+> $name<$($gen),+> {
             #[doc = concat!("Creates a new `", stringify!($name), "`.")]
-            #[inline]
-            #[allow(unused)]
+            #[inline] #[allow(dead_code)]
             pub fn new() -> Self {
                 Self { _marker: core::marker::PhantomData }
             }
