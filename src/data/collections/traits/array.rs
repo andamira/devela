@@ -12,7 +12,7 @@ use crate::{
     mem::Storage,
 };
 
-/// An abstract array data type.
+/// An abstract *array+ data type.
 ///
 /// - <https://en.wikipedia.org/wiki/Array_(data_type)#Abstract_arrays>
 pub trait DataArray: DataCollection {

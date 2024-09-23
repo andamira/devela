@@ -9,7 +9,11 @@
 
 use crate::{
     code::iif,
-    data::{array_from_fn, array_init, Array, DataError::ElementNotFound, DataResult as Result},
+    data::{
+        array_from_fn, array_init, Array,
+        DataError::{ElementNotFound, MismatchedIndices, OutOfBounds},
+        DataResult as Result,
+    },
     mem::{Bare, BareBox, Storage},
 };
 #[allow(unused_imports)]
@@ -56,6 +60,7 @@ impl<T, const CAP: usize> Array<T, CAP, Bare> {
 // T: Clone, S: Bare
 impl<T: Clone, const CAP: usize> Array<T, CAP, Bare> {
     /// Returns an array, allocated in the stack, filled with `element`, cloned.
+    ///
     /// # Examples
     /// ```
     /// # use devela::data::Array;
@@ -71,6 +76,7 @@ impl<T: Clone, const CAP: usize> Array<T, CAP, Bare> {
 // T: Copy, S: Bare
 impl<T: Copy, const CAP: usize> Array<T, CAP, Bare> {
     /// Returns an array, allocated in the stack, filled with `element`, copied, in compile-time.
+    ///
     /// # Examples
     /// ```
     /// # use devela::data::Array;
@@ -99,6 +105,7 @@ impl<T, const CAP: usize> Array<T, CAP, Boxed> {
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 impl<T: Clone, const CAP: usize> Array<T, CAP, Boxed> {
     /// Returns an array, allocated in the heap, filled with `element`, cloned.
+    ///
     /// # Examples
     /// ```
     /// # use devela::{Array, Boxed};
@@ -134,7 +141,8 @@ impl<T: Default, const CAP: usize, S: Storage> Array<T, CAP, S> {
 
 // T: PartialEq, S
 impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
-    /// Returns true if the array contains `element`.
+    /// Returns `true` if the array contains `element`.
+    ///
     /// # Examples
     /// ```
     /// # use devela::Array;
@@ -148,7 +156,44 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
         self.iter().any(|n| n == element)
     }
 
+    /// Returns `true` if the array contains `element`,
+    /// from the `start` index (inclusive).
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `start >= CAP`.
+    #[inline]
+    pub fn contains_from(&self, element: &T, start: usize) -> Result<bool> {
+        iif![start >= CAP; return Err(OutOfBounds(Some(start)))];
+        Ok(self.iter().skip(start).any(|n| n == element))
+    }
+
+    /// Returns `true` if the array contains `element`,
+    /// from the `start` index (inclusive).
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if `end >= CAP`.
+    #[inline]
+    pub fn contains_until(&self, element: &T, end: usize) -> Result<bool> {
+        iif![end >= CAP; return Err(OutOfBounds(Some(end)))];
+        Ok(self.iter().take(end + 1).any(|n| n == element))
+    }
+
+    /// Returns `true` if the array contains `element`,
+    /// between the range `start..=end` (inclusive).
+    ///
+    /// # Errors
+    /// Returns [`OutOfBounds`] if either `start` or `end` `>= CAP`,
+    /// or [`MismatchedIndices`] if `start > end`.
+    #[inline]
+    pub fn contains_between(&self, element: &T, start: usize, end: usize) -> Result<bool> {
+        iif![start >= CAP; return Err(OutOfBounds(Some(start)))];
+        iif![end >= CAP; return Err(OutOfBounds(Some(end)))];
+        iif![start > end; return Err(MismatchedIndices)];
+        Ok(self.iter().skip(start).take(end - start + 1).any(|n| n == element))
+    }
+
     /// Finds the index of the first occurrence of `element` in the array.
+    ///
     /// # Examples
     /// ```
     /// # use devela::{Array, DataError::ElementNotFound};

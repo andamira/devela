@@ -35,7 +35,7 @@ impl<'a, T: ArrayDebug> fmt::Debug for ArrayFmt<'a, T> {
 trait Sealed {}
 impl<T, const LEN: usize> Sealed for [T; LEN] {}
 
-/// Extension trait providing convenience methods for [`[T; N]`] arrays.
+/// Extension trait providing convenience methods for [`[T; N]`][array] arrays.
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 #[expect(private_bounds, reason = "Sealed")]
