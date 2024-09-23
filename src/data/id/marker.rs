@@ -8,26 +8,34 @@
 
 /// Defines zero-cost, generic marker IDs.
 ///
+/// Supports attributes and generics without bounds, in which case also
+/// defines a `new` constructor method.
+///
 /// # Example
 /// ```
 /// # use devela::id_marker;
-/// id_marker![Id0]; // single definition and resource
-/// id_resource![Id1,Id2:u16]; // multiple definitions, same resource
-/// id_resource![Id3,Id4:u32; Id5:u64; Id6,Id7:i8]; // diferent resources
+/// id_marker![Id0];
+/// id_marker![Id1<A>];
+/// id_marker![Id2<A, B>; Id3<A>; Id4];
 ///
 /// id_marker![
-///     /// can pass attributes
-///     Type0;
+///     /// supports attributes
+///     TypeA;
 ///
-///     /// For each one
+///     /// on each type
+///     #[repr(transparent)]
+///     TypeB<A, B, C>;
 /// ];
+///
+/// impl Id0 { fn hi() {} }
+/// impl<A, B> Id2<A, B> { fn hi() {} }
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! id_marker {
     (
-        // case with no generics
-
+        // no generics
+        //
         // $meta: an optional list of attributes
         // $name: the name of the marker type
         $(#[$meta:meta])*
@@ -36,10 +44,18 @@ macro_rules! id_marker {
         $(#[$meta])*
         #[derive(Clone, Copy, Default, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct $name;
+
+        impl $name {
+            #[doc = concat!("Creates a new `", stringify!($name), "`.")]
+            #[inline]
+            pub fn new() -> Self { Self }
+        }
+
     };
     (
-        // case with one or more generics
-
+        // one or more generics
+        //
+        // ...
         // $gen:  a list of generics (>= 1)
         $(#[$meta:meta])*
         $name:ident< $($gen:ident),+ >
@@ -62,6 +78,8 @@ macro_rules! id_marker {
     };
     (
         // multiple types separated by a semicolon (;)
+        //
+        // ...
         $(
             $(#[$meta:meta])*
             $name:ident $(< $($gen:ident),* >)?
