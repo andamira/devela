@@ -40,6 +40,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `DataError` variant: `ElementNotFound`.
 - re-export `std::backtrace` types.
 - re-export `core::cell` types.
+- re-export `core::ops` types.
 - re-export `assert_unchecked!` macro.
 - re-export `format!`, `format_args!` macros.
 - re-export `OsStr`, `OsString`

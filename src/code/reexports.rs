@@ -52,7 +52,17 @@ doc: "Includes a file as a reference to a byte array.", include_bytes }
 reexport! { rust: core,
 doc: "Includes a UTF-8 encoded file as a string.", include_str }
 
+/* `core::clone` re-exports */
+
+// NOTE: the trait and the derive macro have the same name
+/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
+pub use core::clone::Clone;
+
 /* `core::convert` re-exports */
+
+// enums
+reexport! { rust: core::convert,
+doc: "The error type for errors that can never happen.", Infallible }
 
 // traits
 reexport! { rust: core::convert,
@@ -64,10 +74,10 @@ doc: "Used to do value-to-value conversions while consuming the input value.", F
 reexport! { rust: core::convert,
 doc: "A value-to-value conversion that consumes the input value.", Into }
 reexport! { rust: core::convert,
-doc: "Simple and safe type conversions that may fail in a controlled way under some circumstances",
-TryFrom }
+doc: "Simple and safe type conversions that may fail in a controlled way.", TryFrom }
 reexport! { rust: core::convert,
-doc: "An attempted conversion that consumes self, which may or may not be expensive.", TryInto }
+doc: "An attempted conversion that consumes self, which may or may not be expensive.",
+    TryInto }
 
 // functions
 reexport! { rust: core::convert,
@@ -90,12 +100,6 @@ doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_
 reexport! { rust: core::hint,
 doc: "Informs the compiler that the current calling site is not reachable.", unreachable_unchecked }
 
-/* `core::clone` re-exports */
-
-// NOTE: the trait and the derive macro have the same name
-/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-pub use core::clone::Clone;
-
 /* `core::marker` re-exports */
 
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
@@ -115,3 +119,55 @@ pub use core::marker::Sized;
 pub use core::marker::Sync;
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 pub use core::marker::Unpin;
+
+/* `core::ops` re-exports */
+
+// enums
+reexport! { rust: core::ops, doc: "An endpoint of a range of keys.", Bound }
+reexport! { rust: core::ops,
+doc: "Used to tell an operation whether it should exit early or go on as usual.", ControlFlow }
+
+// structs
+reexport! { rust: core::ops,
+doc: "A range bounded inclusively below and exclusively above (`start..end`).", Range }
+reexport! { rust: core::ops, doc: "A range only bounded inclusively below (`start..`).",
+RangeFrom }
+reexport! { rust: core::ops, doc: "An unbounded range (`..`).",
+RangeFull }
+reexport! { rust: core::ops, doc: "A range bounded inclusively below and above (`start..=end`).",
+RangeInclusive }
+reexport! { rust: core::ops, doc: "A range only bounded exclusively above (`..end`).",
+RangeTo }
+reexport! { rust: core::ops, doc: "A range only bounded inclusively above (`..=end`).",
+RangeToInclusive }
+
+// traits
+reexport! { rust: core::ops, doc: "The addition operator `+`.", Add }
+reexport! { rust: core::ops, doc: "The addition assignment operator `+=`.", AddAssign }
+reexport! { rust: core::ops, doc: "The bitwise AND operator `&`.", BitAnd }
+reexport! { rust: core::ops, doc: "The bitwise AND assignment operator `&=`.", BitAndAssign }
+reexport! { rust: core::ops, doc: "The bitwise OR operator `|`.", BitOr }
+reexport! { rust: core::ops, doc: "The bitwise OR assignment operator `|=`.", BitOrAssign }
+reexport! { rust: core::ops, doc: "The bitwise XOR operator `^`.", BitXor }
+reexport! { rust: core::ops, doc: "The bitwise XOR assignment operator `^=`.", BitXorAssign }
+reexport! { rust: core::ops, doc: "Used for immutable dereferencing operations, like `*v`.", Deref }
+reexport! { rust: core::ops, doc: "Used for mutable dereferencing operations, like in `*v = 1;`.",
+DerefMut }
+reexport! { rust: core::ops, doc: "The division operator `/`.", Div }
+reexport! { rust: core::ops, doc: "The division assignment operator `/=`.", DivAssign }
+reexport! { rust: core::ops, doc: "Custom code within the destructor.", Drop }
+reexport! { rust: core::ops,
+doc: "The version of the call operator that takes an immutable receiver.", Fn }
+reexport! { rust: core::ops,
+doc: "The version of the call operator that takes a mutable receiver.", FnMut }
+reexport! { rust: core::ops,
+doc: "The version of the call operator that takes a by-value receiver.", FnOnce }
+reexport! { rust: core::ops,
+doc: "Used for indexing operations (container[index]) in immutable contexts.", Index }
+reexport! { rust: core::ops,
+doc: "Used for indexing operations (container[index]) in mutable contexts.", IndexMut }
+reexport! { rust: core::ops, doc: "The multiplication operator `*`.", Mul }
+reexport! { rust: core::ops, doc: "The multiplication assignment operator `*=`.", MulAssign }
+reexport! { rust: core::ops, doc: "The unary negation operator `-`.", Neg }
+reexport! { rust: core::ops, doc: "The unary logical negation operator `!`.", Not }
+reexport! { rust: core::ops, doc: "Implemented by Rust’s built-in range types", RangeBounds }
