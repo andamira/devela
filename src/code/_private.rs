@@ -5,6 +5,7 @@
 // TOC
 // - reexport!
 // - doc_extends!
+// - namespace_fn!
 
 /// Macro helper for documentation of re-exported items.
 macro_rules! reexport {
