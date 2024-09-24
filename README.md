@@ -9,6 +9,8 @@ A cohesive & modular development layer, designed for clarity and low-level contr
 ## Status
 This project is currently in an experimental stage of development.
 
+The api docs for the unpublished WIP version is in: https://andamira.github.io/libera/doc/devela/
+
 ## License
 This project is dual licensed under either [MIT](DOCS/LICENSE-MIT)
 or [Apache-2.0](DOCS/LICENSE-APACHE), and includes includes several

@@ -25,6 +25,7 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
 #[repr(transparent)]
 #[cfg(feature = "_char7")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char7(pub(super) NonExtremeU8);
 
@@ -41,6 +42,8 @@ pub struct Char7(pub(super) NonExtremeU8);
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
 /// [1w]: https://en.wikipedia.org/wiki/Latin-1_Supplement
 #[repr(transparent)]
+#[cfg(feature = "_char8")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char8(pub(super) u8);
 
@@ -59,6 +62,7 @@ pub struct Char8(pub(super) u8);
 /// [0w]: https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
 #[repr(transparent)]
 #[cfg(feature = "_char16")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char16(pub(super) NonSurrogateU16);
 
@@ -73,6 +77,7 @@ pub struct Char16(pub(super) NonSurrogateU16);
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 #[cfg(feature = "_char24")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char24 {
     pub(super) hi: NonExtremeU8, // highest byte
@@ -93,5 +98,6 @@ pub struct Char24 {
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 #[repr(transparent)]
 #[cfg(feature = "_char32")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Char32(pub char);
