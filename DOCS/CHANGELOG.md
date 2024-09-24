@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new struct `Env` that namespaces `std::env` functions and constants.
 - new `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
 - new macro `id_marker!`.
-- new macro `const_assert!.
+- new macro `assert_const!.
 - new macro `namespace_fns!`.
 - new macro `id_seq!`, example `id_seq` and type `ExampleIdSeqUsize`.
 - new macro `id_resource!`, trait `IdResourced`, and type `IdResource`.
