@@ -55,6 +55,7 @@ pub use const_bool;
 /// A type-level logical true.
 ///
 /// See also the [`ConstBool`] trait, the [`const_bool`] macro, and the [`False`] type.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct True;
 
 /// A type-level logical false.
