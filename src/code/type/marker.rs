@@ -1,9 +1,9 @@
-// devela::data::id::marker
+// devela::code::type::marker
 //
 //! Zero-cost generic marker IDs.
 //
 // TOC
-// - macro id_marker!
+// - macro type_marker!
 // - tests
 
 /// Defines zero-cost, generic marker IDs.
@@ -13,12 +13,12 @@
 ///
 /// # Example
 /// ```
-/// # use devela::id_marker;
-/// id_marker![Id0];
-/// id_marker![Id1<A>];
-/// id_marker![Id2<A, B>; Id3<A>; Id4];
+/// # use devela::type_marker;
+/// type_marker![Id0];
+/// type_marker![Id1<A>];
+/// type_marker![Id2<A, B>; Id3<A>; Id4];
 ///
-/// id_marker![
+/// type_marker![
 ///     /// supports attributes
 ///     TypeA;
 ///
@@ -32,7 +32,7 @@
 /// ```
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! id_marker {
+macro_rules! type_marker {
     (
         // no generics
         //
@@ -85,7 +85,7 @@ macro_rules! id_marker {
         );+ $(;)?
     ) => {
         $(
-            id_marker! {
+            type_marker! {
                 $(#[$meta])*
                 $name $(< $($gen),* >)?
             }
@@ -93,16 +93,16 @@ macro_rules! id_marker {
     };
 }
 #[doc(inline)]
-pub use id_marker;
+pub use type_marker;
 
 #[cfg(test)]
 mod tests {
-    use super::id_marker;
+    use super::type_marker;
     use core::any::TypeId;
 
     #[test]
-    fn id_marker_multiple() {
-        id_marker![ZeroG; OneG<A>];
+    fn type_marker_multiple() {
+        type_marker![ZeroG; OneG<A>];
 
         let zero = ZeroG;
         let one = OneG::<char>::new();
@@ -112,8 +112,8 @@ mod tests {
     }
 
     #[test]
-    fn id_marker_no_generics() {
-        id_marker![ZeroG];
+    fn type_marker_no_generics() {
+        type_marker![ZeroG];
 
         let zero = ZeroG;
 
@@ -121,8 +121,8 @@ mod tests {
     }
 
     #[test]
-    fn id_marker_generics() {
-        id_marker![Two<A, B>];
+    fn type_marker_generics() {
+        type_marker![Two<A, B>];
 
         let two = Two::<i32, i64>::new();
 

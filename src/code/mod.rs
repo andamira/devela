@@ -24,10 +24,12 @@ mod default; // ConstDefault, Default
 mod iif; // iif!
 mod paste; // paste! wrapped for docs
 mod reexports; // re-exported items
+mod r#type; // type_marker!, type_resource, TypeResource, TypeResourced
 mod util; // utility macros: head, items, sf.
 #[allow(unused_imports)]
 pub use {
-    any::all::*, asserts::*, cdbg::*, cfor::*, default::*, iif::*, paste::*, reexports::*, util::*,
+    any::all::*, asserts::*, cdbg::*, cfor::*, default::*, iif::*, paste::*, r#type::*,
+    reexports::*, util::*,
 };
 
 #[cfg(_some_bit)]
@@ -37,8 +39,8 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        any::all::*, asserts::*, cdbg::*, cfor::*, default::*, iif::*, paste::*, reexports::*,
-        util::*,
+        any::all::*, asserts::*, cdbg::*, cfor::*, default::*, iif::*, paste::*, r#type::*,
+        reexports::*, util::*,
     };
 
     #[cfg(_some_bit)]

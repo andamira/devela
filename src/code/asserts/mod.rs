@@ -1,10 +1,10 @@
 // devela::code::asserts
 //
-//! Asserts
+//! Asserts.
 //
 
 mod dynamic;
-mod r#static; // WIP
+mod r#static;
 #[allow(unused_imports)]
 pub use {dynamic::*, r#static::*};
 
