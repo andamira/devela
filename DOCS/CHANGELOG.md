@@ -57,6 +57,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Removed
 - remove feature `num_geom`.
+- remove `NeverOk`, `NeverErr`.
 - remove custom no_std `Error` definition.
 - move `num::geom::prim` submodule to separate crate `cuadra`.
 

@@ -13,7 +13,6 @@ use crate::code::items;
 
 mod ext_result;
 mod mismatch;
-mod never;
 mod option;
 mod own;
 mod panic;
@@ -23,15 +22,15 @@ mod unwrap;
 mod value_quant;
 #[allow(unused_imports)]
 pub use {
-    ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexports::*,
-    traits::*, unwrap::*, value_quant::*,
+    ext_result::*, mismatch::*, option::all::*, own::*, panic::all::*, reexports::*, traits::*,
+    unwrap::*, value_quant::*,
 };
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        ext_result::*, mismatch::*, never::*, option::all::*, own::*, panic::all::*, reexports::*,
-        traits::*, unwrap::*, value_quant::*,
+        ext_result::*, mismatch::*, option::all::*, own::*, panic::all::*, reexports::*, traits::*,
+        unwrap::*, value_quant::*,
     };
 }
