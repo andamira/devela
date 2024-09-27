@@ -42,6 +42,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export `std::backtrace` types.
 - re-export `core::cell` types.
 - re-export `core::ops` types.
+- re-export `std::fmt` items.
 - re-export `assert_unchecked!` macro.
 - re-export `format!`, `format_args!` macros.
 - re-export `OsStr`, `OsString`
@@ -67,6 +68,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - start using `core::error::Error`.
 - make `bytemuck` an optional dependency.
 - make `sys::ffi` module public.
+- make `text::fmt` module public.
 - rename method `Array::len` to `capacity`.
 - method `Graph::edge_exists` no loger panics.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.

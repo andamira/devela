@@ -18,12 +18,15 @@ mod char;
 mod error;
 mod ext;
 mod grapheme;
-mod fmt;
 mod reexports;
 #[allow(unused_imports)]
 pub use {
-    ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, grapheme::all::*, reexports::*,
+    ascii::all::*, char::all::*, error::*, ext::*, grapheme::all::*, reexports::*,
 };
+
+pub mod fmt;
+#[doc(no_inline)]
+pub use fmt::all::*;
 
 #[cfg(_some_string_u)]
 items! {

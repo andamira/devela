@@ -27,15 +27,6 @@ crate::items! { pub use crate::sys::ffi::{OsStr, OsString}; }
 
 /* core, alloc */
 
-reexport! { rust: core,
-    doc: "Constructs parameters for the other string-formatting macros.",
-    format_args
-}
-reexport! { rust: alloc,
-    doc: "Creates a String using interpolation of runtime expressions.",
-    format
-}
-
 reexport! { rust: alloc::string,
     doc: "A UTF-8–encoded, growable string.",
     String

@@ -5,8 +5,7 @@ mod tests;
 
 use core::str;
 
-/// Converts a number into a string representation, storing the conversion into
-/// a mutable byte slice.
+/// Converts a number into a string representation, storing it into a byte slice.
 ///
 /// # Features
 /// It makes use of the `unsafe_str` feature for faster unchecked conversion of
