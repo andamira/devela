@@ -20,9 +20,7 @@ mod ext;
 mod grapheme;
 mod reexports;
 #[allow(unused_imports)]
-pub use {
-    ascii::all::*, char::all::*, error::*, ext::*, grapheme::all::*, reexports::*,
-};
+pub use {ascii::all::*, char::all::*, error::*, ext::*, grapheme::all::*, reexports::*};
 
 pub mod fmt;
 #[doc(no_inline)]

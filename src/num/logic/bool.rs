@@ -89,9 +89,9 @@ impl True {
 
 #[rustfmt::skip]
 impl False {
-    /// Applies the `not` operation, (returns `False`).
+    /// Applies the `not` operation, (returns `True`).
     pub const fn not(self) -> True { True }
-    /// Applies the `not` operation, (returns `False`).
+    /// Applies the `not` operation, (returns `True`).
     pub const fn not_ref(&self) -> &'static True { &True }
 
     /// Applies the `and` operation to `_other`, (returns `False`).
@@ -104,8 +104,8 @@ impl False {
     /// Applies the `or` operation to `other`, (returns `other`).
     pub const fn or_ref<'a, T>(&self, other: &'a T) -> &'a T { other }
 
-    /// Returns the value as `bool` (returns `true`).
+    /// Returns the value as `bool` (returns `false`).
     pub const fn value(self) -> bool { false }
-    /// Returns the value as `bool` (returns `true`).
+    /// Returns the value as `bool` (returns `false`).
     pub const fn value_ref(&self) -> bool { false }
 }

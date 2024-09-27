@@ -27,5 +27,6 @@ pub(crate) mod all {
     pub use super::always_fns::*;
 
     #[doc(inline)]
+    #[allow(unused_imports)]
     pub use super::{define_trait::*, define_types::*, fns::*};
 }
