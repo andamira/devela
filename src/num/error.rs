@@ -35,6 +35,9 @@ pub enum NumError {
     /// The provided values are not compatible in size.
     MismatchedSizes,
 
+    /// The given bounds are not compatible.
+    IncompatibleBounds,
+
     /// A non-negative value is required.
     NonNegativeRequired,
 
@@ -72,6 +75,7 @@ mod core_impls {
                 E::Unspecified => write!(f, "Unspecified."),
                 E::Invalid => write!(f, "Invalid value."),
                 E::NoInverse => write!(f, "An inverse doesn't exist."),
+                E::IncompatibleBounds => { write!(f, "The given bounds are incompatible.") }
                 E::MismatchedSizes => {
                     write!(f, "The provided values are not compatible in size.")
                 }
