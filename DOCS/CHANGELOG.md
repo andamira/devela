@@ -7,7 +7,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## Unreleased [0.22.0-wip]
 
-
 ### Added
 - show build environment variables if `__dbg` feature is enabled.
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
@@ -29,7 +28,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new macro `const_bool!`, trait `ConstBool`, and types: `True`, `False`.
 - new macros: `capture_first`, `capture_last`, `capture_tail_tuple`.
 - new private macro `doc_availability!`.
-- new types: `IdPinBox`, `IdPin`.
+- new types: `IdPinBox`, `IdPin` and example `id_pin`.
 - new traits: `ExtCellOption`, `ExtOptRes`, `MemPod`.
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
 - new type: `Interval`.
@@ -52,7 +51,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export crate types from multiple related modules, like errors and strings.
 - impl `Num` for niche types.
 - new `NonValue*` constants `MAX`, `MIN`.
-- new `sys::os::linux` module.
+- new `sys::os::linux` module and example `linux`.
 - new `num::algebra` module.
 - new lints.
 
