@@ -6,10 +6,10 @@
 // - https://www.gnu.org/software/libc/manual/html_node/Unpredictable-Bytes.html
 
 use crate::code::{iif, paste};
+use crate::sys::ffi::c_uint;
 use crate::sys::os::linux::{
     linux_print, linux_sys_exit, linux_sys_getrandom, LINUX_ERRNO as ERRNO,
 };
-use core::ffi::c_uint;
 
 // from `sys/random.h`
 const GRND_NONBLOCK: c_uint = 0x0001;

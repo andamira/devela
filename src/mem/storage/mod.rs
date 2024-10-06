@@ -13,12 +13,13 @@ use core::ops::DerefMut;
 
 mod bare;
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-mod boxed;
-
+crate::items! {
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    mod boxed;
+    mod ext_box; // WIP
+    pub use {boxed::*, ext_box::*};
+}
 pub use bare::*;
-#[cfg(feature = "alloc")]
-pub use boxed::*;
 
 /// Allows to be generic in respect of the data storage.
 ///
