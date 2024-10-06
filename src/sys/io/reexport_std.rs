@@ -9,34 +9,42 @@ use crate::code::reexport;
 
 reexport! { rust: not(std)|std::io,
     doc: "A type of `Read`er which has an internal buffer.",
-    BufRead
+    @BufRead as IoBufRead
 }
 reexport! { rust: not(std)|std::io,
     doc: "Allows for reading bytes from a source.",
-    Read
+    @Read as IoRead
 }
 reexport! { rust: not(std)|std::io,
     doc: "Provides a cursor which can be moved within a stream of bytes.",
-    Seek
+    @Seek as IoSeek
 }
 reexport! { rust: not(std)|std::io,
     doc: "A trait for objects which are byte-oriented sinks.",
-    Write
+    @Write as IoWrite
 }
 
 /* io structs and enums */
 
 reexport! { rust: not(std)|std::io,
     doc: "Adds buffering to any reader.",
-    BufReader
+    @BufReader as IoBufReader
 }
 reexport! { rust: not(std)|std::io,
     doc: "Wraps a writer and buffers its output.",
-    BufWriter
+    @BufWriter as IoBufWriter
+}
+reexport! { rust: not(std)|std::io,
+    doc: "An iterator over `u8` values of a reader.",
+    @Bytes as IoBytes
+}
+reexport! { rust: not(std)|std::io,
+    doc: "Adapter to chain together two readers.",
+    @Chain as IoChain
 }
 reexport! { rust: not(std)|std::io,
     doc: "Wraps an in-memory buffer and provides it with a [`Seek`] implementation.",
-    Cursor
+    @Cursor as IoCursor
 }
 reexport! { rust: not(std)|std::io,
     doc: "The error type for I/O operations of [`Read`], [`Write`], [`Seek`],
@@ -49,11 +57,15 @@ reexport! { rust: not(std)|std::io,
 }
 reexport! { rust: not(std)|std::io,
     doc: "Like `BufWriter`, but flushing whenever a newline (`0x0a`, `'\n'`) is detected.",
-    LineWriter
+    @LineWriter as IoLineWriter
 }
 reexport! { rust: not(std)|std::io,
     doc: "A specialized [`Result`] type for I/O operations.",
     @Result as IoResult
+}
+reexport! { rust: not(std)|std::io,
+    doc: "Reader adapter which limits the bytes read from an underlying reader.",
+    @Take as IoTake
 }
 
 /* io functions */
