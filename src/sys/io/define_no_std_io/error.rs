@@ -42,6 +42,7 @@ struct Custom {
 /// It is used with the [`IoError`] type.
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[non_exhaustive]
+// WAIT:1.83 [io_error_more](https://github.com/rust-lang/rust/pull/128316/files)
 pub enum IoErrorKind {
     /// An entity was not found, often a file.
     NotFound,
@@ -51,6 +52,10 @@ pub enum IoErrorKind {
     ConnectionRefused,
     /// The connection was reset by the remote server.
     ConnectionReset,
+    /// The remote host is not reachable.
+    HostUnreachable,
+    /// The network containing the remote host is not reachable.
+    NetworkUnreachable,
     /// The connection was aborted (terminated) by the remote server.
     ConnectionAborted,
     /// The network operation failed because it was not connected yet.
@@ -60,6 +65,8 @@ pub enum IoErrorKind {
     AddrInUse,
     /// A nonexistent interface was requested or the requested address was not local.
     AddrNotAvailable,
+    /// The system's networking is down.
+    NetworkDown,
     /// The operation failed because a pipe was closed.
     BrokenPipe,
     /// An entity already exists, often a file.
@@ -67,6 +74,24 @@ pub enum IoErrorKind {
     /// The operation needs to block to complete, but the blocking operation was
     /// requested to not occur.
     WouldBlock,
+    /// A filesystem object is, unexpectedly, not a directory.
+    ///
+    /// For example, a filesystem path was specified where one of the intermediate directory
+    /// components was, in fact, a plain file.
+    NotADirectory,
+    /// The filesystem object is, unexpectedly, a directory.
+    ///
+    /// A directory was specified when a non-directory was expected.
+    IsADirectory,
+    /// A non-empty directory was specified where an empty directory was expected.
+    DirectoryNotEmpty,
+    /// The filesystem or storage medium is read-only, but a write operation was attempted.
+    ReadOnlyFilesystem,
+    /// Stale network file handle.
+    ///
+    /// With some network filesystems, notably NFS, an open file (or directory) can be invalidated
+    /// by problems with the network or server.
+    StaleNetworkFileHandle,
     /// A parameter was incorrect.
     InvalidInput,
     /// Data not valid for the operation were encountered.
@@ -89,9 +114,45 @@ pub enum IoErrorKind {
     /// particular number of bytes but only a smaller number of bytes could be
     /// written.
     ///
-    /// [`write`]: crate::io::Write::write
+    /// [`write`]: crate::sys::io::IoWrite::write
     /// [`Ok(0)`]: Ok
     WriteZero,
+    /// The underlying storage (typically, a filesystem) is full.
+    ///
+    /// This does not include out of quota errors.
+    StorageFull,
+    /// Seek on unseekable file.
+    ///
+    /// Seeking was attempted on an open file handle which is not suitable for seeking - for
+    /// example, on Unix, a named pipe opened with `File::open`.
+    NotSeekable,
+    /// File larger than allowed or supported.
+    ///
+    /// This might arise from a hard limit of the underlying filesystem or file access API, or from
+    /// an administratively imposed resource limitation.  Simple disk full, and out of quota, have
+    /// their own errors.
+    FileTooLarge,
+    /// Resource is busy.
+    ResourceBusy,
+    /// Executable file is busy.
+    ///
+    /// An attempt was made to write to a file which is also in use as a running program.  (Not all
+    /// operating systems detect this situation.)
+    ExecutableFileBusy,
+    /// Deadlock (avoided).
+    ///
+    /// A file locking operation would result in deadlock.  This situation is typically detected, if
+    /// at all, on a best-effort basis.
+    Deadlock,
+    /// Too many (hard) links to the same filesystem object.
+    ///
+    /// The filesystem does not support making so many hardlinks to the same file.
+    TooManyLinks,
+    /// Program argument list too long.
+    ///
+    /// When trying to run an external program, a system or process limit on the size of the
+    /// arguments would have been exceeded.
+    ArgumentListTooLong,
     /// This operation was interrupted.
     ///
     /// Interrupted operations can typically be retried.
@@ -128,17 +189,33 @@ impl IoErrorKind {
             IoErrorKind::PermissionDenied => "permission denied",
             IoErrorKind::ConnectionRefused => "connection refused",
             IoErrorKind::ConnectionReset => "connection reset",
+            IoErrorKind::HostUnreachable => "remote host unreachable",
+            IoErrorKind::NetworkUnreachable => "network unreachable",
             IoErrorKind::ConnectionAborted => "connection aborted",
             IoErrorKind::NotConnected => "not connected",
             IoErrorKind::AddrInUse => "address in use",
             IoErrorKind::AddrNotAvailable => "address not available",
+            IoErrorKind::NetworkDown => "network is down",
             IoErrorKind::BrokenPipe => "broken pipe",
             IoErrorKind::AlreadyExists => "entity already exists",
             IoErrorKind::WouldBlock => "operation would block",
+            IoErrorKind::NotADirectory => "filesystem object is not a directory",
+            IoErrorKind::IsADirectory => "filesystem object is a directory",
+            IoErrorKind::DirectoryNotEmpty => "directory is not empty",
+            IoErrorKind::ReadOnlyFilesystem => "read-only filesystem",
+            IoErrorKind::StaleNetworkFileHandle => "stale network file handle",
             IoErrorKind::InvalidInput => "invalid input parameter",
             IoErrorKind::InvalidData => "invalid data",
             IoErrorKind::TimedOut => "timed out",
             IoErrorKind::WriteZero => "write zero",
+            IoErrorKind::StorageFull => "storage full",
+            IoErrorKind::NotSeekable => "file not seekable",
+            IoErrorKind::FileTooLarge => "file too large",
+            IoErrorKind::ResourceBusy => "resource busy",
+            IoErrorKind::ExecutableFileBusy => "executable file busy",
+            IoErrorKind::Deadlock => "deadlock (avoided)",
+            IoErrorKind::TooManyLinks => "too many hard links",
+            IoErrorKind::ArgumentListTooLong => "argument list too long",
             IoErrorKind::Interrupted => "operation interrupted",
             IoErrorKind::Other => "other os error",
             IoErrorKind::UnexpectedEof => "unexpected end of file",
