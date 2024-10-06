@@ -2,7 +2,7 @@
 //
 //! System interfaces and hardware abstractions.
 #![doc = crate::code::doc_!(extends: arch, env, ffi, fs, io, net, os, path, simd, time)]
-#![doc = crate::code::doc_!(modules: crate; sys: ffi, os, time)]
+#![doc = crate::code::doc_!(modules: crate; sys: ffi, io, os, time)]
 #![doc = crate::code::doc_!(newline)]
 //!
 //
@@ -15,9 +15,8 @@ use crate::code::items;
 
 mod arch;
 mod env;
-mod io;
 #[allow(unused_imports)]
-pub use {arch::*, env::*, io::*};
+pub use {arch::*, env::*};
 
 #[cfg(feature = "log")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "log")))]
@@ -35,10 +34,12 @@ items! {
 }
 
 pub mod ffi;
+pub mod io;
 pub mod os;
 pub mod time;
 #[doc(no_inline)]
-pub use {ffi::*, os::all::*, time::*};
+#[allow(unused_imports)]
+pub use {ffi::*, io::all::*, os::all::*, time::*};
 
 pub(crate) mod all {
     #[doc(inline)]
