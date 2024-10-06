@@ -1,7 +1,9 @@
 // devela::data::collections::array
 //
 //! Arrays.
-#![doc = crate::code::doc_extends!(array)]
+#![doc = crate::code::doc_!(extends: array)]
+#![doc = crate::code::doc_!(modules: crate::data::collections; array)]
+#![doc = crate::code::doc_!(newline)]
 //!
 //! Arrays are random-access, sequentially allocated, statically sized,
 //! homogeneous data structures.

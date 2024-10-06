@@ -1,7 +1,9 @@
 // devela::sys::time
 //
 //! Time and calendar types and operations.
-#![doc = crate::code::doc_extends!(time)]
+#![doc = crate::code::doc_!(extends: time)]
+#![doc = crate::code::doc_!(modules: crate::sys; time)]
+// #![doc = crate::code::doc_!(newline)]
 //!
 //
 

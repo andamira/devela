@@ -1,7 +1,9 @@
 // devela::work::thread
 //
 //! Native threads.
-#![doc = crate::code::doc_extends!(thread)]
+#![doc = crate::code::doc_!(extends: thread)]
+#![doc = crate::code::doc_!(modules: crate::work; thread)]
+#![doc = crate::code::doc_!(newline)]
 //!
 //
 

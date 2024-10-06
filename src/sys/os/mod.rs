@@ -1,7 +1,9 @@
 // devela::sys::os
 //
 //! OS-specific.
-#![doc = crate::code::doc_extends!(os)]
+#![doc = crate::code::doc_!(extends: os)]
+#![doc = crate::code::doc_!(modules: crate::sys; os: linux)]
+#![doc = crate::code::doc_!(newline)]
 //!
 //
 

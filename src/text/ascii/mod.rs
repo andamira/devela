@@ -1,7 +1,9 @@
 // devela::text::ascii
 //
 //! ASCII strings and characters.
-#![doc = crate::code::doc_extends!(ascii)]
+#![doc = crate::code::doc_!(extends: ascii)]
+#![doc = crate::code::doc_!(modules: crate::text; ascii)]
+#![doc = crate::code::doc_!(newline)]
 //!
 //
 

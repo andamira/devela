@@ -1,6 +1,7 @@
 // devela::data::id
 //
 //! Data identifiers.
+#![doc = crate::code::doc_!(newline)]
 //
 
 mod pin; // pinned memory-based ids

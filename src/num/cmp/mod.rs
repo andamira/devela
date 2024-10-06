@@ -1,7 +1,9 @@
-// devela::data::cmp
+// devela::num::cmp
 //
 //! Comparing and ordering values.
-#![doc = crate::code::doc_extends!(cmp)]
+#![doc = crate::code::doc_!(extends: cmp)]
+#![doc = crate::code::doc_!(modules: crate::num; cmp)]
+#![doc = crate::code::doc_!(newline)]
 //!
 //
 

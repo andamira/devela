@@ -1,7 +1,9 @@
 // devela::code::any
 //
 //! Dynamic typing and reflection.
-#![doc = crate::code::doc_extends!(any)]
+#![doc = crate::code::doc_!(extends: any)]
+#![doc = crate::code::doc_!(modules: crate::code; any)]
+#![doc = crate::code::doc_!(newline)]
 //!
 //
 

@@ -163,9 +163,9 @@ doc: "The version of the call operator that takes a mutable receiver.", FnMut }
 reexport! { rust: core::ops,
 doc: "The version of the call operator that takes a by-value receiver.", FnOnce }
 reexport! { rust: core::ops,
-doc: "Used for indexing operations (container[index]) in immutable contexts.", Index }
+doc: "Used for indexing operations (`container[index]`) in immutable contexts.", Index }
 reexport! { rust: core::ops,
-doc: "Used for indexing operations (container[index]) in mutable contexts.", IndexMut }
+doc: "Used for indexing operations (`container[index]`) in mutable contexts.", IndexMut }
 reexport! { rust: core::ops, doc: "The multiplication operator `*`.", Mul }
 reexport! { rust: core::ops, doc: "The multiplication assignment operator `*=`.", MulAssign }
 reexport! { rust: core::ops, doc: "The unary negation operator `-`.", Neg }

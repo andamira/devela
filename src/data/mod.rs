@@ -1,7 +1,9 @@
 // devela::data
 //
 //! Data handling and manipulation.
-#![doc = crate::code::doc_extends!(array, collections, hash, iter, vec)]
+#![doc = crate::code::doc_!(extends: array, collections, hash, iter, vec)]
+#![doc = crate::code::doc_!(modules: crate; data: collections, hash, id, iter)]
+#![doc = crate::code::doc_!(newline)]
 //!
 //
 

@@ -4,10 +4,18 @@
 //
 // TOC
 // - reexport!
-// - doc_extends!
-// - namespace_fn!
+// - doc_!
+// - doc_availability!
+// - doc_miri_warn!
 
 /// Macro helper for documentation of re-exported items.
+//
+// FIX: unresolved link to `alloc`.
+// IMPROVE: rendered paths with trailing `::`. E.g.:
+// - Re-exported from std::backtrace:: .
+// - Re-exported from [alloc]::boxed:: .
+// - Re-exported from core::array:: IntoIter→ArrayIntoIter.
+// MAYBE: new branch for: either a crate or core (for portable-atomic types).
 macro_rules! reexport {
     /* re-exports from normal modules */
 
@@ -62,7 +70,7 @@ macro_rules! reexport {
       $(,)?
     ) => { $crate::code::paste! {
         #[doc(inline)]
-        #[allow(rustdoc::broken_intra_doc_links)] // TEMP FIXME unresolved link to alloc
+        #[allow(rustdoc::broken_intra_doc_links)] // TEMP FIX unresolved link to alloc
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`alloc`'>`alloc`</span>"]
         #[doc = $description]
@@ -290,34 +298,63 @@ macro_rules! reexport {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
-
-    // TODO: new branch for: either a crate or core (for portable-atomic types)
 }
 pub(crate) use reexport;
 
-// Generates a formatted documentation string for Rust modules,
-// including a list of standard library modules it extends.
-macro_rules! doc_extends {
-    ($($mod:ident),+ $(,)?) => {
+// Generates a formatted meta-documentation string.
+macro_rules! doc_ {
+    (@meta_start) => { "<br/><i style='margin-left:0.618em;'></i><small style='color:#777'>" };
+    (@meta_end) => { "</small>" };
+    (newline) => { "<br/><br/>" };
+
+    /* list of submodules */
+
+    (modules: $path:path; $self:ident) => {
         concat!(
-            // "<small>Extends ",
-            "<br/><i style='margin-left:0.618em;'></i><small style='color:#999'>Extends ",
-            "`std::{`", crate::code::doc_extends!(@inner $($mod),+), "`}`",
-            "</small>"
+            crate::code::doc_!(@meta_start), "Modules: ",
+            "[`", stringify!($self), "`][mod@", stringify!($path), "::", stringify!($self), "]",
+            crate::code::doc_!(@meta_end),
+        )
+    };
+    (modules: $path:path; $self:ident: $($mod:ident),+ $(,)?) => {
+        concat!(
+            crate::code::doc_!(@meta_start), "Modules: ",
+            "[`", stringify!($self), "`][mod@", stringify!($path), "::", stringify!($self), "]`::{`",
+            crate::code::doc_!(@modules: $path; $self: $($mod),+), "`}`",
+            crate::code::doc_!(@meta_end),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.
-    (@inner $first:ident $(, $rest:ident)*) => {
+    (@modules: $path:path; $self:ident: $first:ident $(, $rest:ident)*) => {
         concat!(
-            // "[`", stringify!($first), "`]",
-            // $( ", [`", stringify!($rest), "`]" ),*
+            "[`", stringify!($first), "`](",
+                stringify!($path), "::", stringify!($self), "::",
+                stringify!($first), ")",
+            $(
+                ", [`", stringify!($rest), "`](", stringify!($path), "::",
+                stringify!($self), "::", stringify!($rest), ")"
+            ),*
+        )
+    };
+
+    /* list of std modules */
+
+    (extends: $($mod:ident),+ $(,)?) => {
+        concat!(
+            crate::code::doc_!(@meta_start), "Extends ",
+            "`std::{`", crate::code::doc_!(@extends: $($mod),+), "`}`",
+            crate::code::doc_!(@meta_end),
+        )
+    };
+    // Handles the list of modules ensuring commas are only added between elements.
+    (@extends: $first:ident $(, $rest:ident)*) => {
+        concat!(
             "[`", stringify!($first), "`](mod@std::", stringify!($first), ")",
             $( ", [`", stringify!($rest), "`](mod@std::", stringify!($rest), ")" ),*
-
         )
     };
 }
-pub(crate) use doc_extends;
+pub(crate) use doc_;
 
 // Generates a formatted documentation string for conditional availability.
 //

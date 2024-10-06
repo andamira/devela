@@ -1,7 +1,9 @@
 // devela::work::sync
 //
 //! Synchronization primitives.
-#![doc = crate::code::doc_extends!(sync)]
+#![doc = crate::code::doc_!(extends: sync)]
+#![doc = crate::code::doc_!(modules: crate::work; sync)]
+#![doc = crate::code::doc_!(newline)]
 //!
 //
 

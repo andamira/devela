@@ -1,7 +1,9 @@
 // devela::sys::path
 //
 //! Paths.
-#![doc = crate::code::doc_extends!(path)]
+#![doc = crate::code::doc_!(extends: path)]
+#![doc = crate::code::doc_!(modules: crate::sys; path)]
+#![doc = crate::code::doc_!(newline)]
 //!
 //
 

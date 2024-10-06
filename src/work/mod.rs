@@ -1,7 +1,9 @@
 // devela::work
 //
 //! Work management, concurrency handling.
-#![doc = crate::code::doc_extends!(future, process, sync, task, thread)]
+#![doc = crate::code::doc_!(extends: future, process, sync, task, thread)]
+#![doc = crate::code::doc_!(modules: crate; work)]
+#![doc = crate::code::doc_!(newline)]
 //!
 //
 
