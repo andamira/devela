@@ -19,7 +19,7 @@ use crate::{
         },
         time::Duration,
     },
-    mem::{BareBox, ByteSized},
+    mem::{bytes_from_bits, BareBox, ByteSized},
 };
 #[cfg(feature = "std")]
 use std::{
@@ -57,19 +57,6 @@ use crate::work::{AtomicI64, AtomicU64};
 use crate::work::{AtomicI8, AtomicU8};
 #[cfg(all(feature = "work", any(feature = "portable-atomic", target_has_atomic = "ptr")))]
 use crate::work::{AtomicIsize, AtomicPtr, AtomicUsize};
-
-/* fn definitions */
-
-/// Returns the rounded up size in bytes from a size in bits.
-#[must_use]
-#[inline]
-pub const fn bytes_from_bits(bit_size: usize) -> usize {
-    if let Some(t) = bit_size.checked_add(8 - 1) {
-        t / 8
-    } else {
-        usize::MAX / 8
-    }
-}
 
 /* trait definition */
 
