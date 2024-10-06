@@ -9,9 +9,10 @@ use crate::code::reexport;
 
 /* from other modules */
 
-#[doc(inline)] // MAYBE?
+#[doc(inline)]
 pub use crate::{
     data::{DataError, DataResult},
+    gfx::{GfxError, GfxResult},
     num::{NumError, NumResult},
     sys::time::{TimeError, TimeResult},
     sys::{IoError, IoResult},

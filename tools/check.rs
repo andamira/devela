@@ -24,8 +24,8 @@ use toml_edit::Document;
 /* global configuration */
 
 #[rustfmt::skip]
-const ROOT_MODULES: [&str; 9] = [
-    "code", "data", "error", "mem", "num", "sys", "text", "work",
+const ROOT_MODULES: [&str; 10] = [
+    "code", "data", "error", "gfx", "mem", "num", "sys", "text", "work",
 
     // sys::os submodules (platforms)
     "linux"

@@ -56,6 +56,8 @@ Single modules:
 - [`code`]
 - [`data`]
 - [`error`]
+- [`gfx`]
+  - `gfx_image`
 - [`mem`]
   - `mem_bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
@@ -70,6 +72,8 @@ Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 [`code`]: crate::code
 [`data`]: crate::data
 [`error`]: mod@crate::error
+[`gfx`]: mod@crate::gfx
+[`num_rand`]: crate::gfx::image
 [`mem`]: crate::mem
 [`num`]: crate::num
 [`num_rand`]: crate::num::rand
@@ -87,6 +91,9 @@ In order to use any unsafe functionality:
 - `safe`: forbids `unsafe` (and overrides unsafe features), includes:
   - `safe_code`
   - `safe_data`
+  - `safe_error`
+  - `safe_gfx`
+  - `safe_mem`
   - `safe_num`
   - `safe_sys`
     - `safe_time`
