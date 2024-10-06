@@ -2,7 +2,9 @@
 //
 //! Buffering wrappers for I/O traits
 
-use super::{BufRead, IoError, IoErrorKind, IoResult as Result, Read, Seek, SeekFrom, Write};
+use super::{
+    IoBufRead, IoError, IoErrorKind, IoRead, IoResult as Result, IoSeek, IoSeekFrom, IoWrite,
+};
 use core::{cmp, fmt};
 
 #[cfg(feature = "memchr")]
@@ -14,26 +16,26 @@ fn memrchr(needle: u8, haystack: &[u8]) -> Option<usize> {
         |(index, &byte)| crate::iif![byte == needle; Some(index); None])
 }
 
-/// The `BufReader<R, S>` struct adds buffering to any reader.
+/// The `IoBufReader<R, S>` struct adds buffering to any reader.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html>.
-pub struct BufReader<R, const S: usize> {
+pub struct IoBufReader<R, const S: usize> {
     inner: R,
     buf: [u8; S],
     pos: usize,
     cap: usize,
 }
 
-impl<R: Read, const S: usize> BufReader<R, S> {
-    /// Creates a new `BufReader<R, S>` with a default buffer capacity.
+impl<R: IoRead, const S: usize> IoBufReader<R, S> {
+    /// Creates a new `IoBufReader<R, S>` with a default buffer capacity.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html#method.new>.
-    pub fn new(inner: R) -> BufReader<R, S> {
-        BufReader { inner, buf: [0; S], pos: 0, cap: 0 }
+    pub fn new(inner: R) -> IoBufReader<R, S> {
+        IoBufReader { inner, buf: [0; S], pos: 0, cap: 0 }
     }
 }
 
-impl<R, const S: usize> BufReader<R, S> {
+impl<R, const S: usize> IoBufReader<R, S> {
     /// Gets a reference to the underlying reader.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html#method.get_ref>.
@@ -62,7 +64,7 @@ impl<R, const S: usize> BufReader<R, S> {
         S
     }
 
-    /// Unwraps this `BufReader<R, S>`, returning the underlying reader.
+    /// Unwraps this `IoBufReader<R, S>`, returning the underlying reader.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html#method.into_inner>.
     pub fn into_inner(self) -> R {
@@ -77,7 +79,7 @@ impl<R, const S: usize> BufReader<R, S> {
     }
 }
 
-impl<R: Read, const S: usize> Read for BufReader<R, S> {
+impl<R: IoRead, const S: usize> IoRead for IoBufReader<R, S> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         // If we don't have any buffered data and we're doing a massive read
         // (larger than our internal buffer), bypass our internal buffer
@@ -95,7 +97,7 @@ impl<R: Read, const S: usize> Read for BufReader<R, S> {
     }
 }
 
-impl<R: Read, const S: usize> BufRead for BufReader<R, S> {
+impl<R: IoRead, const S: usize> IoBufRead for IoBufReader<R, S> {
     fn fill_buf(&mut self) -> Result<&[u8]> {
         // If we've reached the end of our internal buffer then we need to fetch
         // some more data from the underlying reader.
@@ -114,25 +116,25 @@ impl<R: Read, const S: usize> BufRead for BufReader<R, S> {
     }
 }
 
-impl<R, const S: usize> fmt::Debug for BufReader<R, S>
+impl<R, const S: usize> fmt::Debug for IoBufReader<R, S>
 where
     R: fmt::Debug,
 {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct("BufReader")
+        fmt.debug_struct("IoBufReader")
             .field("reader", &self.inner)
             .field("buffer", &format_args!("{}/{}", self.cap - self.pos, S))
             .finish()
     }
 }
 
-impl<R: Seek, const S: usize> Seek for BufReader<R, S> {
+impl<R: IoSeek, const S: usize> IoSeek for IoBufReader<R, S> {
     /// Seek to an offset, in bytes, in the underlying reader.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufReader.html#method.seek>.
-    fn seek(&mut self, pos: SeekFrom) -> Result<u64> {
+    fn seek(&mut self, pos: IoSeekFrom) -> Result<u64> {
         let result: u64;
-        if let SeekFrom::Current(n) = pos {
+        if let IoSeekFrom::Current(n) = pos {
             let remainder = (self.cap - self.pos) as i64;
             // it should be safe to assume that remainder fits within an i64 as the alternative
             // means we managed to allocate 8 exbibytes and that's absurd.
@@ -140,12 +142,12 @@ impl<R: Seek, const S: usize> Seek for BufReader<R, S> {
             // support seeking by i64::MIN so we need to handle underflow when subtracting
             // remainder.
             if let Some(offset) = n.checked_sub(remainder) {
-                result = self.inner.seek(SeekFrom::Current(offset))?;
+                result = self.inner.seek(IoSeekFrom::Current(offset))?;
             } else {
                 // seek backwards by our remainder, and then by the offset
-                self.inner.seek(SeekFrom::Current(-remainder))?;
+                self.inner.seek(IoSeekFrom::Current(-remainder))?;
                 self.discard_buffer();
-                result = self.inner.seek(SeekFrom::Current(n))?;
+                result = self.inner.seek(IoSeekFrom::Current(n))?;
             }
         } else {
             // Seeking with Start/End doesn't care about our buffer length.
@@ -159,17 +161,17 @@ impl<R: Seek, const S: usize> Seek for BufReader<R, S> {
 /// Wraps a writer and buffers its output.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.BufWriter.html>.
-pub struct BufWriter<W: Write, const S: usize> {
+pub struct IoBufWriter<W: IoWrite, const S: usize> {
     inner: Option<W>,
     buf: [u8; S],
     len: usize,
     // #30888: If the inner writer panics in a call to write, we don't want to
-    // write the buffered data a second time in BufWriter's destructor. This
+    // write the buffered data a second time in IoBufWriter's destructor. This
     // flag tells the Drop impl if it should skip the flush.
     panicked: bool,
 }
 
-/// An error returned by [`BufWriter::into_inner`] which combines an error that
+/// An error returned by [`IoBufWriter::into_inner`] which combines an error that
 /// happened while writing out the buffer, and the buffered writer object
 /// which may be used to recover from the condition.
 ///
@@ -177,16 +179,16 @@ pub struct BufWriter<W: Write, const S: usize> {
 #[derive(Debug)]
 pub struct IntoInnerError<W>(W, IoError);
 
-impl<W, const S: usize> BufWriter<W, S>
+impl<W, const S: usize> IoBufWriter<W, S>
 where
-    W: Write,
+    W: IoWrite,
 {
-    /// Creates a new `BufWriter<W>` with a default buffer capacity. The default is currently 8 KB,
+    /// Creates a new `IoBufWriter<W>` with a default buffer capacity. The default is currently 8 KB,
     /// but may change in the future.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufWriter.html#method.new>.
-    pub fn new(inner: W) -> BufWriter<W, S> {
-        BufWriter {
+    pub fn new(inner: W) -> IoBufWriter<W, S> {
+        IoBufWriter {
             inner: Some(inner),
             buf: [0; S],
             len: 0,
@@ -299,10 +301,10 @@ where
         S
     }
 
-    /// Unwraps this `BufWriter<W>`, returning the underlying writer.
+    /// Unwraps this `IoBufWriter<W>`, returning the underlying writer.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufWriter.html#method.into_inner>.
-    pub fn into_inner(mut self) -> core::result::Result<W, IntoInnerError<BufWriter<W, S>>> {
+    pub fn into_inner(mut self) -> core::result::Result<W, IntoInnerError<IoBufWriter<W, S>>> {
         match self.flush_buf() {
             Err(e) => Err(IntoInnerError(self, e)),
             Ok(()) => Ok(self.inner.take().unwrap()),
@@ -310,7 +312,7 @@ where
     }
 }
 
-impl<W: Write, const S: usize> Write for BufWriter<W, S> {
+impl<W: IoWrite, const S: usize> IoWrite for IoBufWriter<W, S> {
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
         if self.len + buf.len() > S {
             self.flush_buf()?;
@@ -353,29 +355,29 @@ impl<W: Write, const S: usize> Write for BufWriter<W, S> {
     }
 }
 
-impl<W: Write, const S: usize> fmt::Debug for BufWriter<W, S>
+impl<W: IoWrite, const S: usize> fmt::Debug for IoBufWriter<W, S>
 where
     W: fmt::Debug,
 {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct("BufWriter")
+        fmt.debug_struct("IoBufWriter")
             .field("writer", &self.inner.as_ref().unwrap())
             .field("buffer", &format_args!("{}/{}", self.buf.len(), S))
             .finish()
     }
 }
 
-impl<W: Write + Seek, const S: usize> Seek for BufWriter<W, S> {
+impl<W: IoWrite + IoSeek, const S: usize> IoSeek for IoBufWriter<W, S> {
     /// Seek to the offset, in bytes, in the underlying writer.
     ///
     /// Seeking always writes out the internal buffer before seeking.
-    fn seek(&mut self, pos: SeekFrom) -> Result<u64> {
+    fn seek(&mut self, pos: IoSeekFrom) -> Result<u64> {
         self.flush_buf()?;
         self.get_mut().seek(pos)
     }
 }
 
-impl<W: Write, const S: usize> Drop for BufWriter<W, S> {
+impl<W: IoWrite, const S: usize> Drop for IoBufWriter<W, S> {
     fn drop(&mut self) {
         if self.inner.is_some() && !self.panicked {
             // dtors should not panic, so we ignore a failed flush
@@ -385,7 +387,7 @@ impl<W: Write, const S: usize> Drop for BufWriter<W, S> {
 }
 
 impl<W> IntoInnerError<W> {
-    /// Returns the error which caused the call to [`BufWriter::into_inner()`]
+    /// Returns the error which caused the call to [`IoBufWriter::into_inner()`]
     /// to fail.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.IntoInnerError.html#method.error>.
@@ -414,26 +416,26 @@ impl<W> fmt::Display for IntoInnerError<W> {
 }
 
 /// Private helper struct for implementing the line-buffered writing logic.
-/// This shim temporarily wraps a BufWriter, and uses its internals to
+/// This shim temporarily wraps an `IoBufWriter`, and uses its internals to
 /// implement a line-buffered writer (specifically by using the internal
 /// methods like write_to_buf and flush_buf). In this way, a more
 /// efficient abstraction can be created than one that only had access to
 /// `write` and `flush`, without needlessly duplicating a lot of the
-/// implementation details of BufWriter. This also allows existing
+/// implementation details of `IoBufWriter`. This also allows existing
 /// `BufWriters` to be temporarily given line-buffering logic; this is what
 /// enables Stdout to be alternately in line-buffered or block-buffered mode.
 #[derive(Debug)]
-pub(super) struct LineWriterShim<'a, W: Write, const S: usize> {
-    buffer: &'a mut BufWriter<W, S>,
+pub(super) struct LineWriterShim<'a, W: IoWrite, const S: usize> {
+    buffer: &'a mut IoBufWriter<W, S>,
 }
 
-impl<'a, W: Write, const S: usize> LineWriterShim<'a, W, S> {
-    pub fn new(buffer: &'a mut BufWriter<W, S>) -> Self {
+impl<'a, W: IoWrite, const S: usize> LineWriterShim<'a, W, S> {
+    pub fn new(buffer: &'a mut IoBufWriter<W, S>) -> Self {
         Self { buffer }
     }
 
     /// Get a mutable reference to the inner writer (that is, the writer
-    /// wrapped by the BufWriter). Be careful with this writer, as writes to
+    /// wrapped by the `IoBufWriter`). Be careful with this writer, as writes to
     /// it will bypass the buffer.
     fn inner_mut(&mut self) -> &mut W {
         self.buffer.get_mut()
@@ -455,8 +457,8 @@ impl<'a, W: Write, const S: usize> LineWriterShim<'a, W, S> {
     }
 }
 
-impl<'a, W: Write, const S: usize> Write for LineWriterShim<'a, W, S> {
-    /// Write some data into this BufReader with line buffering. This means
+impl<'a, W: IoWrite, const S: usize> IoWrite for LineWriterShim<'a, W, S> {
+    /// Write some data into this `IoBufReader` with line buffering. This means
     /// that, if any newlines are present in the data, the data up to the last
     /// newline is sent directly to the underlying writer, and data after it
     /// is buffered. Returns the number of bytes written.
@@ -496,7 +498,7 @@ impl<'a, W: Write, const S: usize> Write for LineWriterShim<'a, W, S> {
 
         // Write `lines` directly to the inner writer. In keeping with the
         // `write` convention, make at most one attempt to add new (unbuffered)
-        // data. Because this write doesn't touch the BufWriter state directly,
+        // data. Because this write doesn't touch the IoBufWriter state directly,
         // and the buffer is known to be empty, we don't need to worry about
         // self.buffer.panicked here.
         let flushed = self.inner_mut().write(lines)?;
@@ -542,7 +544,7 @@ impl<'a, W: Write, const S: usize> Write for LineWriterShim<'a, W, S> {
         self.buffer.flush()
     }
 
-    /// Write some data into this BufReader with line buffering. This means
+    /// Write some data into this `IoBufReader` with line buffering. This means
     /// that, if any newlines are present in the data, the data up to the last
     /// newline is sent directly to the underlying writer, and data after it
     /// is buffered.
@@ -585,16 +587,16 @@ impl<'a, W: Write, const S: usize> Write for LineWriterShim<'a, W, S> {
 /// (`0x0a`, `'\n'`) is detected.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.LineWriter.html>.
-pub struct LineWriter<W: Write, const S: usize> {
-    inner: BufWriter<W, S>,
+pub struct IoLineWriter<W: IoWrite, const S: usize> {
+    inner: IoBufWriter<W, S>,
 }
 
-impl<W: Write, const S: usize> LineWriter<W, S> {
-    /// Creates a new `LineWriter`.
+impl<W: IoWrite, const S: usize> IoLineWriter<W, S> {
+    /// Creates a new `IoLineWriter`.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.LineWriter.html#method.new>.
-    pub fn new(inner: W) -> LineWriter<W, S> {
-        LineWriter { inner: BufWriter::new(inner) }
+    pub fn new(inner: W) -> IoLineWriter<W, S> {
+        IoLineWriter { inner: IoBufWriter::new(inner) }
     }
 
     /// Gets a reference to the underlying writer.
@@ -611,17 +613,17 @@ impl<W: Write, const S: usize> LineWriter<W, S> {
         self.inner.get_mut()
     }
 
-    /// Unwraps this `LineWriter`, returning the underlying writer.
+    /// Unwraps this `IoLineWriter`, returning the underlying writer.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.LineWriter.html#method.into_inner>.
-    pub fn into_inner(self) -> core::result::Result<W, IntoInnerError<LineWriter<W, S>>> {
+    pub fn into_inner(self) -> core::result::Result<W, IntoInnerError<IoLineWriter<W, S>>> {
         self.inner
             .into_inner()
-            .map_err(|IntoInnerError(buf, e)| IntoInnerError(LineWriter { inner: buf }, e))
+            .map_err(|IntoInnerError(buf, e)| IntoInnerError(IoLineWriter { inner: buf }, e))
     }
 }
 
-impl<W: Write, const S: usize> Write for LineWriter<W, S> {
+impl<W: IoWrite, const S: usize> IoWrite for IoLineWriter<W, S> {
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
         LineWriterShim::new(&mut self.inner).write(buf)
     }
@@ -639,12 +641,12 @@ impl<W: Write, const S: usize> Write for LineWriter<W, S> {
     }
 }
 
-impl<W: Write, const S: usize> fmt::Debug for LineWriter<W, S>
+impl<W: IoWrite, const S: usize> fmt::Debug for IoLineWriter<W, S>
 where
     W: fmt::Debug,
 {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt.debug_struct("LineWriter")
+        fmt.debug_struct("IoLineWriter")
             .field("writer", &self.inner.inner)
             .field("buffer", &format_args!("{}/{}", self.inner.len, S))
             .finish()

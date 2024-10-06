@@ -10,10 +10,10 @@ mod fns;
 mod impls;
 mod other;
 
-pub use buffered::{BufReader, BufWriter, LineWriter}; // traits
-pub use cursor::Cursor; // struct
+pub use buffered::{IoBufReader, IoBufWriter, IoLineWriter}; // structs
+pub use cursor::IoCursor; // struct
 pub use error::{IoError, IoErrorKind, IoResult}; // struct, enum, type
 pub use fns::io_copy; // fn
-pub use other::SeekFrom; // enum
-pub use other::{BufRead, Read, Seek, Write}; // traits
-pub use other::{Bytes, Chain, Take}; // structs
+pub use other::IoSeekFrom; // enum
+pub use other::{IoBufRead, IoRead, IoSeek, IoWrite}; // traits
+pub use other::{IoBytes, IoChain, IoTake}; // structs

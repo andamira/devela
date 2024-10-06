@@ -1,24 +1,26 @@
 // devela::sys::io::reimplement_no_std::cursor
 
-use super::{BufRead, IoError, IoErrorKind, IoResult as Result, Read, Seek, SeekFrom, Write};
+use super::{
+    IoBufRead, IoError, IoErrorKind, IoRead, IoResult as Result, IoSeek, IoSeekFrom, IoWrite,
+};
 use core::cmp;
 
-/// A `Cursor` wraps an in-memory buffer and provides it with a
-/// [`Seek`] implementation.
+/// An `IoCursor` wraps an in-memory buffer and provides it with a
+/// [`IoSeek`] implementation.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Cursor.html>.
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
-pub struct Cursor<T> {
+pub struct IoCursor<T> {
     inner: T,
     pos: u64,
 }
 
-impl<T> Cursor<T> {
+impl<T> IoCursor<T> {
     /// Creates a new cursor wrapping the provided underlying in-memory buffer.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.Cursor.html#method.new>.
-    pub fn new(inner: T) -> Cursor<T> {
-        Cursor { pos: 0, inner }
+    pub fn new(inner: T) -> IoCursor<T> {
+        IoCursor { pos: 0, inner }
     }
 
     /// Consumes this cursor, returning the underlying value.
@@ -57,18 +59,18 @@ impl<T> Cursor<T> {
     }
 }
 
-impl<T> Seek for Cursor<T>
+impl<T> IoSeek for IoCursor<T>
 where
     T: AsRef<[u8]>,
 {
-    fn seek(&mut self, style: SeekFrom) -> Result<u64> {
+    fn seek(&mut self, style: IoSeekFrom) -> Result<u64> {
         let (base_pos, offset) = match style {
-            SeekFrom::Start(n) => {
+            IoSeekFrom::Start(n) => {
                 self.pos = n;
                 return Ok(n);
             }
-            SeekFrom::End(n) => (self.inner.as_ref().len() as u64, n),
-            SeekFrom::Current(n) => (self.pos, n),
+            IoSeekFrom::End(n) => (self.inner.as_ref().len() as u64, n),
+            IoSeekFrom::Current(n) => (self.pos, n),
         };
         let new_pos = if offset >= 0 {
             base_pos.checked_add(offset as u64)
@@ -88,25 +90,25 @@ where
     }
 }
 
-impl<T> Read for Cursor<T>
+impl<T> IoRead for IoCursor<T>
 where
     T: AsRef<[u8]>,
 {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
-        let n = Read::read(&mut self.fill_buf()?, buf)?;
+        let n = IoRead::read(&mut self.fill_buf()?, buf)?;
         self.pos += n as u64;
         Ok(n)
     }
 
     fn read_exact(&mut self, buf: &mut [u8]) -> Result<()> {
         let n = buf.len();
-        Read::read_exact(&mut self.fill_buf()?, buf)?;
+        IoRead::read_exact(&mut self.fill_buf()?, buf)?;
         self.pos += n as u64;
         Ok(())
     }
 }
 
-impl<T> BufRead for Cursor<T>
+impl<T> IoBufRead for IoCursor<T>
 where
     T: AsRef<[u8]>,
 {
@@ -128,7 +130,7 @@ fn slice_write(pos_mut: &mut u64, slice: &mut [u8], buf: &[u8]) -> Result<usize>
     Ok(amt)
 }
 
-impl Write for Cursor<&mut [u8]> {
+impl IoWrite for IoCursor<&mut [u8]> {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
         slice_write(&mut self.pos, self.inner, buf)

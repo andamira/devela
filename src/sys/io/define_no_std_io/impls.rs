@@ -1,13 +1,13 @@
 // devela::sys::io::reimplement_no_std::impls
 
 use super::error::{IoError, IoErrorKind, IoResult as Result};
-use super::other::{BufRead, Read, Seek, SeekFrom, Write};
+use super::other::{IoBufRead, IoRead, IoSeek, IoSeekFrom, IoWrite};
 use core::{cmp, fmt, mem};
 
 // =============================================================================
 // Forwarding implementations
 
-impl<R: Read + ?Sized> Read for &mut R {
+impl<R: IoRead + ?Sized> IoRead for &mut R {
     #[inline]
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         (**self).read(buf)
@@ -19,7 +19,7 @@ impl<R: Read + ?Sized> Read for &mut R {
     }
 }
 
-impl<W: Write + ?Sized> Write for &mut W {
+impl<W: IoWrite + ?Sized> IoWrite for &mut W {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
         (**self).write(buf)
@@ -41,14 +41,14 @@ impl<W: Write + ?Sized> Write for &mut W {
     }
 }
 
-impl<S: Seek + ?Sized> Seek for &mut S {
+impl<S: IoSeek + ?Sized> IoSeek for &mut S {
     #[inline]
-    fn seek(&mut self, pos: SeekFrom) -> Result<u64> {
+    fn seek(&mut self, pos: IoSeekFrom) -> Result<u64> {
         (**self).seek(pos)
     }
 }
 
-impl<B: BufRead + ?Sized> BufRead for &mut B {
+impl<B: IoBufRead + ?Sized> IoBufRead for &mut B {
     #[inline]
     fn fill_buf(&mut self) -> Result<&[u8]> {
         (**self).fill_buf()
@@ -63,11 +63,11 @@ impl<B: BufRead + ?Sized> BufRead for &mut B {
 // =============================================================================
 // In-memory buffer implementations
 
-/// Read is implemented for `&[u8]` by copying from the slice.
+/// `IoRead` is implemented for `&[u8]` by copying from the slice.
 ///
 /// Note that reading updates the slice to point to the yet unread part.
 /// The slice will be empty when EOF is reached.
-impl Read for &[u8] {
+impl IoRead for &[u8] {
     #[inline]
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         let amt = cmp::min(buf.len(), self.len());
@@ -107,7 +107,7 @@ impl Read for &[u8] {
     }
 }
 
-impl BufRead for &[u8] {
+impl IoBufRead for &[u8] {
     #[inline]
     fn fill_buf(&mut self) -> Result<&[u8]> {
         Ok(*self)
@@ -124,7 +124,7 @@ impl BufRead for &[u8] {
 ///
 /// Note that writing updates the slice to point to the yet unwritten part.
 /// The slice will be empty when it has been completely overwritten.
-impl Write for &mut [u8] {
+impl IoWrite for &mut [u8] {
     #[inline]
     fn write(&mut self, data: &[u8]) -> Result<usize> {
         let amt = cmp::min(data.len(), self.len());
@@ -152,7 +152,7 @@ impl Write for &mut [u8] {
 /// Write is implemented for `Vec<u8>` by appending to the vector.
 /// The vector will grow as needed.
 #[cfg(feature = "alloc")]
-impl Write for crate::data::Vec<u8> {
+impl IoWrite for crate::data::Vec<u8> {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
         self.extend_from_slice(buf);

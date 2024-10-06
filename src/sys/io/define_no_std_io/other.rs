@@ -21,7 +21,7 @@ mod alloc_impls {
     /// For safety, this function ensures that any allocated but uninitialized part of the buffer
     /// is truncated in case of a panic, preventing exposure of uninitialized data.
     ///
-    pub(super) fn read_to_end<R: Read + ?Sized>(r: &mut R, buf: &mut Vec<u8>) -> Result<usize> {
+    pub(super) fn read_to_end<R: IoRead + ?Sized>(r: &mut R, buf: &mut Vec<u8>) -> Result<usize> {
         read_to_end_with_reservation(r, buf, |_| 32)
     }
 
@@ -32,12 +32,12 @@ mod alloc_impls {
         mut reservation_size: F,
     ) -> Result<usize>
     where
-        R: Read + ?Sized,
+        R: IoRead + ?Sized,
         F: FnMut(&R) -> usize,
     {
         const PROBE_SIZE: usize = 32;
 
-        fn small_probe_read<R: Read + ?Sized>(
+        fn small_probe_read<R: IoRead + ?Sized>(
             r: &mut R,
             buf: &mut Vec<u8>,
             probe_size: usize,
@@ -95,12 +95,12 @@ mod alloc_impls {
         mut reservation_size: F,
     ) -> Result<usize>
     where
-        R: Read + ?Sized,
+        R: IoRead + ?Sized,
         F: FnMut(&R) -> usize,
     {
         const PROBE_SIZE: usize = 32;
 
-        fn small_probe_read<R: Read + ?Sized>(
+        fn small_probe_read<R: IoRead + ?Sized>(
             r: &mut R,
             buf: &mut Vec<u8>,
             _probe_size: usize,
@@ -173,10 +173,10 @@ mod alloc_impls {
     }
 }
 
-/// The `Read` trait allows for reading bytes from a source.
+/// The `IoRead` trait allows for reading bytes from a source.
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.Read.html>.
-pub trait Read {
+pub trait IoRead {
     /// Pull some bytes from this source into the specified buffer, returning
     /// how many bytes were read.
     ///
@@ -213,7 +213,7 @@ pub trait Read {
         }
     }
 
-    /// Creates a "by reference" adaptor for this instance of `Read`.
+    /// Creates a "by reference" adaptor for this instance of `IoRead`.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Read.html#method.by_ref>.
     fn by_ref(&mut self) -> &mut Self
@@ -223,40 +223,40 @@ pub trait Read {
         self
     }
 
-    /// Transforms this `Read` instance to an [`Iterator`] over its bytes.
+    /// Transforms this `IoRead` instance to an [`Iterator`] over its bytes.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Read.html#method.bytes>.
-    fn bytes(self) -> Bytes<Self>
+    fn bytes(self) -> IoBytes<Self>
     where
         Self: Sized,
     {
-        Bytes { inner: self }
+        IoBytes { inner: self }
     }
 
     /// Creates an adaptor which will chain this stream with another.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Read.html#method.chain>.
-    fn chain<R: Read>(self, next: R) -> Chain<Self, R>
+    fn chain<R: IoRead>(self, next: R) -> IoChain<Self, R>
     where
         Self: Sized,
     {
-        Chain { first: self, second: next, done_first: false }
+        IoChain { first: self, second: next, done_first: false }
     }
 
     /// Creates an adaptor which will read at most `limit` bytes from it.
     ///
-    fn take(self, limit: u64) -> Take<Self>
+    fn take(self, limit: u64) -> IoTake<Self>
     where
         Self: Sized,
     {
-        Take { inner: self, limit }
+        IoTake { inner: self, limit }
     }
 }
 
 /// A trait for objects which are byte-oriented sinks.
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.Write.html>.
-pub trait Write {
+pub trait IoWrite {
     /// Write a buffer into this writer, returning how many bytes were written.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Write.html#method.write>.
@@ -289,14 +289,14 @@ pub trait Write {
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Write.html#method.write_fmt>.
     fn write_fmt(&mut self, fmt: fmt::Arguments<'_>) -> Result<()> {
-        // Create a shim which translates a Write to a fmt::Write and saves
+        // Create a shim which translates an IoWrite to a fmt::Write and saves
         // off I/O errors. instead of discarding them
         struct Adaptor<'a, T: ?Sized + 'a> {
             inner: &'a mut T,
             error: Result<()>,
         }
 
-        impl<T: Write + ?Sized> fmt::Write for Adaptor<'_, T> {
+        impl<T: IoWrite + ?Sized> fmt::Write for Adaptor<'_, T> {
             fn write_str(&mut self, s: &str) -> fmt::Result {
                 match self.inner.write_all(s.as_bytes()) {
                     Ok(()) => Ok(()),
@@ -312,7 +312,7 @@ pub trait Write {
         match fmt::write(&mut output, fmt) {
             Ok(()) => Ok(()),
             Err(..) => {
-                // check if the error came from the underlying `Write` or not
+                // check if the error came from the underlying `IoWrite` or not
                 if output.error.is_err() {
                     output.error
                 } else {
@@ -322,7 +322,7 @@ pub trait Write {
         }
     }
 
-    /// Creates a "by reference" adaptor for this instance of `Write`.
+    /// Creates a "by reference" adaptor for this instance of `IoWrite`.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Write.html#method.by_ref>.
     fn by_ref(&mut self) -> &mut Self
@@ -333,22 +333,22 @@ pub trait Write {
     }
 }
 
-/// The `Seek` trait provides a cursor which can be moved within a stream of
+/// The `IoSeek` trait provides a cursor which can be moved within a stream of
 /// bytes.
 ///
-/// This struct is generally created by calling [`bytes`][Read::bytes] on a reader.
-pub trait Seek {
+/// This struct is generally created by calling [`bytes`][IoRead::bytes] on a reader.
+pub trait IoSeek {
     /// Seek to an offset, in bytes, in a stream.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Seek.html#method.seek>.
-    fn seek(&mut self, pos: SeekFrom) -> Result<u64>;
+    fn seek(&mut self, pos: IoSeekFrom) -> Result<u64>;
 }
 
 /// Enumeration of possible methods to seek within an I/O object.
 ///
-/// It is used by the [`Seek`] trait.
+/// It is used by the [`IoSeek`] trait.
 #[derive(Copy, PartialEq, Eq, Clone, Debug)]
-pub enum SeekFrom {
+pub enum IoSeekFrom {
     /// Sets the offset to the provided number of bytes.
     Start(u64),
 
@@ -371,11 +371,11 @@ pub enum SeekFrom {
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.Bytes.html>.
 #[derive(Debug)]
-pub struct Bytes<R> {
+pub struct IoBytes<R> {
     inner: R,
 }
 
-impl<R: Read> Iterator for Bytes<R> {
+impl<R: IoRead> Iterator for IoBytes<R> {
     type Item = Result<u8>;
 
     fn next(&mut self) -> OptRes<u8, Error> {
@@ -391,11 +391,11 @@ impl<R: Read> Iterator for Bytes<R> {
     }
 }
 
-/// A `BufRead` is a type of `Read`er which has an internal buffer, allowing it
+/// An `IoBufRead` is a type of `IoRead`er which has an internal buffer, allowing it
 /// to perform extra ways of reading.
 ///
 /// See <https://doc.rust-lang.org/std/io/trait.BufRead.html>.
-pub trait BufRead: Read {
+pub trait IoBufRead: IoRead {
     /// Returns the contents of the internal buffer, filling it with more data
     /// from the inner reader if it is empty.
     ///
@@ -411,14 +411,14 @@ pub trait BufRead: Read {
 
 /// Adaptor to chain together two readers.
 ///
-/// This struct is generally created by calling [`chain`][Read::chain] on a reader.
-pub struct Chain<T, U> {
+/// This struct is generally created by calling [`chain`][IoRead::chain] on a reader.
+pub struct IoChain<T, U> {
     first: T,
     second: U,
     done_first: bool,
 }
 
-impl<T, U> Chain<T, U> {
+impl<T, U> IoChain<T, U> {
     /// Consumes the `Chain`, returning the wrapped readers.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Chain.html#method.into_inner>.
@@ -441,13 +441,13 @@ impl<T, U> Chain<T, U> {
     }
 }
 
-impl<T: fmt::Debug, U: fmt::Debug> fmt::Debug for Chain<T, U> {
+impl<T: fmt::Debug, U: fmt::Debug> fmt::Debug for IoChain<T, U> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("Chain").field("t", &self.first).field("u", &self.second).finish()
+        f.debug_struct("IoChain").field("t", &self.first).field("u", &self.second).finish()
     }
 }
 
-impl<T: Read, U: Read> Read for Chain<T, U> {
+impl<T: IoRead, U: IoRead> IoRead for IoChain<T, U> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         if !self.done_first {
             match self.first.read(buf)? {
@@ -459,7 +459,7 @@ impl<T: Read, U: Read> Read for Chain<T, U> {
     }
 }
 
-impl<T: BufRead, U: BufRead> BufRead for Chain<T, U> {
+impl<T: IoBufRead, U: IoBufRead> IoBufRead for IoChain<T, U> {
     fn fill_buf(&mut self) -> Result<&[u8]> {
         if !self.done_first {
             match self.first.fill_buf()? {
@@ -483,14 +483,14 @@ impl<T: BufRead, U: BufRead> BufRead for Chain<T, U> {
 
 /// Reader adaptor which limits the bytes read from an underlying reader.
 ///
-/// This struct is generally created by calling [`take`][Read::take] on a reader.
+/// This struct is generally created by calling [`take`][IoRead::take] on a reader.
 #[derive(Debug)]
-pub struct Take<T> {
+pub struct IoTake<T> {
     inner: T,
     limit: u64,
 }
 
-impl<T> Take<T> {
+impl<T> IoTake<T> {
     /// Returns the number of bytes that can be read before this instance will
     /// return EOF.
     ///
@@ -507,7 +507,7 @@ impl<T> Take<T> {
         self.limit = limit;
     }
 
-    /// Consumes the `Take`, returning the wrapped reader.
+    /// Consumes the `IoTake`, returning the wrapped reader.
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Take.html#method.into_inner>.
     pub fn into_inner(self) -> T {
@@ -529,7 +529,7 @@ impl<T> Take<T> {
     }
 }
 
-impl<T: Read> Read for Take<T> {
+impl<T: IoRead> IoRead for IoTake<T> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         // Don't call into inner reader at all at EOF because it may still block
         if self.limit == 0 {
@@ -553,7 +553,7 @@ impl<T: Read> Read for Take<T> {
     }
 }
 
-impl<T: BufRead> BufRead for Take<T> {
+impl<T: IoBufRead> IoBufRead for IoTake<T> {
     fn fill_buf(&mut self) -> Result<&[u8]> {
         // Don't call into inner reader at all at EOF because it may still block
         if self.limit == 0 {

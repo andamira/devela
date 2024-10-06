@@ -2,7 +2,7 @@
 
 use crate::{
     mem::MaybeUninit,
-    sys::{IoErrorKind, IoResult, Read, Write},
+    sys::{IoErrorKind, IoRead, IoResult, IoWrite},
 };
 
 /// Copies the entire contents of a reader into a writer.
@@ -11,8 +11,8 @@ use crate::{
 /// Makes use of the `unsafe_array` feature to employ [`MaybeUninit`].
 pub fn io_copy<R, W, const S: usize>(reader: &mut R, writer: &mut W) -> IoResult<u64>
 where
-    R: ?Sized + Read,
-    W: ?Sized + Write,
+    R: ?Sized + IoRead,
+    W: ?Sized + IoWrite,
 {
     #[cfg(not(feature = "unsafe_array"))]
     let mut buf = [0u8; S];

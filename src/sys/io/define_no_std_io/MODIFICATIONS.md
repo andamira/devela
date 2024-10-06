@@ -4,6 +4,7 @@ This is derived work from the
 including the following modifications:
 
 - removed `memchr` dependency.
+- prefix items with `Io` and `io_`.
 - replace not very sound implementations using `Initializer` with safer ones.
 - add safe and unsafe internal implementations of previously only unsafe ones.
 - replaced extensive documentation copied from `std` by links to original docs.

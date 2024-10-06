@@ -1,4 +1,4 @@
-// devela::sys::io::reimplement_no_std::error
+// devela::sys::io::error
 
 use core::{convert::From, fmt, result};
 
@@ -58,8 +58,7 @@ pub enum IoErrorKind {
     /// A socket address could not be bound because the address is already in
     /// use elsewhere.
     AddrInUse,
-    /// A nonexistent interface was requested or the requested address was not
-    /// local.
+    /// A nonexistent interface was requested or the requested address was not local.
     AddrNotAvailable,
     /// The operation failed because a pipe was closed.
     BrokenPipe,
