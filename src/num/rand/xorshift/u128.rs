@@ -26,18 +26,10 @@ impl ConstDefault for XorShift128 {
 impl XorShift128 {
     const DEFAULT_SEED: [u32; 4] = [0xDEFA_0017; 4];
 
-    #[cold]
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
-    }
-
-    #[cold]
-    #[inline]
-    #[allow(dead_code)]
-    const fn cold_path_default() -> Self {
-        Self::new_unchecked(Self::DEFAULT_SEED)
-    }
+    #[cold] #[rustfmt::skip]
+    const fn cold_path_result() -> Option<Self> { None }
+    #[cold] #[allow(dead_code)] #[rustfmt::skip]
+    const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
 }
 
 impl XorShift128 {
@@ -194,18 +186,10 @@ impl ConstDefault for XorShift128p {
 impl XorShift128p {
     const DEFAULT_SEED: [u64; 2] = [0xDEFA_0017_DEFA_0017; 2];
 
-    #[cold]
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
-    }
-
-    #[cold]
-    #[inline]
-    #[allow(dead_code)]
-    const fn cold_path_default() -> Self {
-        Self::new_unchecked(Self::DEFAULT_SEED)
-    }
+    #[cold] #[rustfmt::skip]
+    const fn cold_path_result() -> Option<Self> { None }
+    #[cold] #[allow(dead_code)] #[rustfmt::skip]
+    const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
 }
 
 impl XorShift128p {

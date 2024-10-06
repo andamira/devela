@@ -13,6 +13,10 @@ use crate::{code::iif, text::AsciiChar};
 // IMPROVE: use NumToStr
 use crate::{mem::Slice, text::Ascii};
 
+// the cold path that returns an empty string slice
+#[cold] #[rustfmt::skip]
+const fn cold_empty_string() -> &'static str { "" }
+
 // Marker trait to prevent downstream implementations of the `ExtStr` trait.
 trait Sealed {}
 impl Sealed for str {}
@@ -94,10 +98,6 @@ impl ExtStr for str {
     fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str {
         assert![buffer.len() >= length];
         if length == 0 {
-            // the cold path that returns an empty string slice
-            #[cold] #[inline] #[rustfmt::skip]
-            fn cold_empty_string() -> &'static str { "" }
-
             cold_empty_string()
         } else {
             let separator = separator.as_u8();

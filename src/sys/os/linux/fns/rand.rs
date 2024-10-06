@@ -77,7 +77,7 @@ pub fn linux_random_bytes(buffer: &mut [u8]) {
 }
 
 // the cold path for trying again
-#[cold] #[inline] #[must_use] #[rustfmt::skip]
+#[cold] #[must_use] #[rustfmt::skip]
 fn getrandom_try_again(attempts: &mut usize) -> bool {
     // if *attempts >= MAX_ATTEMPTS { getrandom_failed(); }
     *attempts += 1;
@@ -85,7 +85,7 @@ fn getrandom_try_again(attempts: &mut usize) -> bool {
 }
 
 // the cold path for some other error
-#[cold] #[inline] #[rustfmt::skip]
+#[cold] #[rustfmt::skip]
 fn getrandom_failed() {
     linux_print("getrandom failed");
     unsafe { linux_sys_exit(12); }

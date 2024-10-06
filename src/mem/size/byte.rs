@@ -125,7 +125,5 @@ pub const fn bytes_from_bits(bit_size: usize) -> usize {
         bytes_from_bits_cold()
     }
 }
-#[cold]
-const fn bytes_from_bits_cold() -> usize {
-    usize::MAX / 8
-}
+#[cold] #[rustfmt::skip]
+const fn bytes_from_bits_cold() -> usize { usize::MAX / 8 }

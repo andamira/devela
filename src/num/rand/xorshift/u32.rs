@@ -29,18 +29,10 @@ impl ConstDefault for XorShift32 {
 impl XorShift32 {
     const DEFAULT_SEED: u32 = 0xDEFA_0017;
 
-    #[cold]
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
-    }
-
-    #[cold]
-    #[inline]
-    #[allow(dead_code)]
-    const fn cold_path_default() -> Self {
-        Self::new_unchecked(Self::DEFAULT_SEED)
-    }
+    #[cold] #[rustfmt::skip]
+    const fn cold_path_result() -> Option<Self> { None }
+    #[cold] #[allow(dead_code)] #[rustfmt::skip]
+    const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
 }
 
 impl XorShift32 {

@@ -28,17 +28,10 @@ impl ConstDefault for XorShift8 {
 impl XorShift8 {
     const DEFAULT_SEED: u8 = 0xDE;
 
-    #[cold]
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
-    }
-    #[cold]
-    #[inline]
-    #[allow(dead_code)]
-    const fn cold_path_default() -> Self {
-        Self::new_unchecked(Self::DEFAULT_SEED)
-    }
+    #[cold] #[rustfmt::skip]
+    const fn cold_path_result() -> Option<Self> { None }
+    #[cold] #[allow(dead_code)] #[rustfmt::skip]
+    const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
 }
 
 impl XorShift8 {
@@ -137,18 +130,10 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> ConstDefault
 impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, SH2, SH3> {
     const DEFAULT_SEED: u8 = 0xDE;
 
-    #[cold]
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
-    }
-
-    #[cold]
-    #[inline]
-    #[allow(dead_code)]
-    const fn cold_path_default() -> Self {
-        Self::new_unchecked(Self::DEFAULT_SEED)
-    }
+    #[cold] #[rustfmt::skip]
+    const fn cold_path_result() -> Option<Self> { None }
+    #[cold] #[allow(dead_code)] #[rustfmt::skip]
+    const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
 }
 
 impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, SH2, SH3> {

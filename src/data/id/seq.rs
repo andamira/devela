@@ -365,10 +365,8 @@ macro_rules! id_seq {
                     Some(Self { id })
                 }
             }
-            #[cold]
-            fn none_on_overflow() -> Option<Self> {
-                None
-            }
+            #[cold] #[rustfmt::skip]
+            fn none_on_overflow() -> Option<Self> { None }
 
             #[inline]
             fn new_custom_unchecked(ordering: core::sync::atomic::Ordering) -> Self {
@@ -378,10 +376,8 @@ macro_rules! id_seq {
                 }
                 Self { id }
             }
-            #[cold]
-            fn panic_on_overflow() -> ! {
-                panic!("ID counter overflowed");
-            }
+            #[cold] #[rustfmt::skip]
+            fn panic_on_overflow() -> ! { panic!("ID counter overflowed"); }
         }
 
         /* trait impls */
