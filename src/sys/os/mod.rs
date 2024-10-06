@@ -6,8 +6,8 @@
 //
 
 #[cfg(feature = "linux")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
 crate::items! {
+    #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
     pub mod linux;
     #[doc(no_inline)]
     #[allow(unused_imports)]
