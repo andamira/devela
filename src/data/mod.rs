@@ -41,7 +41,10 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[allow(unused_imports)]
-    #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
+    #[cfg(all(
+        not(any(feature = "safe_data", feature = "safe_mem")),
+        feature = "unsafe_layout"
+    ))]
     #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
     pub use super::dst::*;
 }

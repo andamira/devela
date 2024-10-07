@@ -3,6 +3,8 @@
 //! Memory size functionality.
 //
 
+use crate::code::items;
+
 mod byte;
 mod expr;
 mod reexports;
@@ -10,9 +12,7 @@ mod reexports;
 pub use {byte::*, expr::*, reexports::*};
 
 #[cfg(feature = "mem_bit")]
-mod bit;
-#[cfg(feature = "mem_bit")]
-pub use bit::*;
+items! { mod bit; pub use bit::*; }
 
 pub(crate) mod all {
     #[doc(inline)]

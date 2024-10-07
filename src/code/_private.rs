@@ -341,7 +341,7 @@ macro_rules! doc_ {
 
     (extends: $($mod:ident),+ $(,)?) => {
         concat!(
-            crate::code::doc_!(@meta_start), "Extends ",
+            crate::code::doc_!(@meta_start), "Extends: ",
             "`std::{`", crate::code::doc_!(@extends: $($mod),+), "`}`",
             crate::code::doc_!(@meta_end),
         )

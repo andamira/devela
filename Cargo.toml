@@ -207,6 +207,7 @@ nightly = [
 		# 1.83: [MaybeUninit::as_mut_ptr](https://github.com/rust-lang/rust/pull/130542)
 		# 1.83: [waker_getters](https://github.com/rust-lang/rust/pull/129919)
 		# > ??
+		# 1.?? [box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 		# 1.?? [const_array_from_ref|const_slice_from_ref](https://github.com/rust-lang/rust/issues/90206)
 		# 1.?? [const_cell_into_inner](https://github.com/rust-lang/rust/pull/130972)
 		# 1.?? [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
@@ -215,6 +216,7 @@ nightly = [
 		# 1.?? [const_slice_split_at_mut](https://github.com/rust-lang/rust/pull/130428)
 		# 1.?? [impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 		# 1.?? [macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
+		# 1.?? [new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 		# 1.?? [noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
 		#
 		# Experimental features
@@ -553,9 +555,10 @@ maintenance = { status = "experimental" }
 
 [lints.rust]
 # ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/manifest.html#the-lints-section
+
 # https://dev-doc.rust-lang.org/nightly/unstable-book/compiler-flags/check-cfg.html
 # https://doc.rust-lang.org/rustc/check-cfg.html
-
 [lints.rust.unexpected_cfgs]
 level = "warn"
 check-cfg = [

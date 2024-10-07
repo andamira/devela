@@ -15,7 +15,7 @@ pub use crate::{
     gfx::{GfxError, GfxResult},
     num::{NumError, NumResult},
     sys::time::{TimeError, TimeResult},
-    sys::{IoError, IoResult},
+    sys::{IoError, IoErrorKind, IoResult},
     text::{TextError, TextResult},
 };
 
