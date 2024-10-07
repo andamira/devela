@@ -11,7 +11,7 @@
 
 use crate::code::iif;
 #[cfg(feature = "alloc")]
-use crate::data::{AllocOrdMap, Vec};
+use crate::data::{BTreeMap, Vec};
 #[cfg(_some_sort_float)]
 use crate::num::Compare;
 #[cfg(_some_sort)]
@@ -117,7 +117,7 @@ impl<T: Ord> Sort<&mut [T]> {
     where
         T: Clone,
     {
-        let mut counts = AllocOrdMap::new();
+        let mut counts = BTreeMap::new();
         // Calculate the frequencies and save them
         for item in self.0.iter() {
             let count = counts.entry(item.clone()).or_insert(0);

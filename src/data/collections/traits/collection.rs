@@ -19,7 +19,7 @@
 #[cfg(all(feature = "alloc", feature = "hashbrown"))]
 use crate::data::collections::{AllocMap, AllocSet};
 #[cfg(feature = "alloc")]
-use crate::data::collections::{AllocOrdMap, AllocOrdSet, AllocPrioQueue, Vec, VecDeque};
+use crate::data::collections::{AllocPrioQueue, BTreeMap, BTreeSet, Vec, VecDeque};
 use crate::{
     data::{Array, DataError as E, DataResult as Result},
     mem::Storage,
@@ -142,7 +142,7 @@ impl<T> DataCollection for AllocPrioQueue<T> {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<K, V> DataCollection for AllocOrdMap<K, V> {
+impl<K, V> DataCollection for BTreeMap<K, V> {
     type Element = V;
     /// Returns [`NotSupported`][E::NotSupported].
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
@@ -159,7 +159,7 @@ impl<K, V> DataCollection for AllocOrdMap<K, V> {
 }
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<V> DataCollection for AllocOrdSet<V> {
+impl<V> DataCollection for BTreeSet<V> {
     type Element = V;
     /// Returns [`NotSupported`][E::NotSupported].
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
@@ -167,11 +167,11 @@ impl<V> DataCollection for AllocOrdSet<V> {
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
     /// Returns [`NotSupported`][E::NotSupported].
     fn collection_is_full(&self) -> Result<bool> { E::ns() }
-    /// This is less efficent than [`AllocOrdSet::contains`] for not having [`Ord`].
+    /// This is less efficent than [`BTreeSet::contains`] for not having [`Ord`].
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where V: PartialEq {
         Ok(self.iter().any(|value| *value == element))
     }
-    /// This is less efficent than [`AllocOrdSet::contains`] for not having [`Ord`].
+    /// This is less efficent than [`BTreeSet::contains`] for not having [`Ord`].
     fn collection_count(&self, element: &Self::Element) -> Result<usize> where V: PartialEq {
         Ok(usize::from(self.iter().any(|e| e == element)))
     }

@@ -26,7 +26,7 @@ use crate::{
 };
 #[cfg(feature = "alloc")]
 use crate::{
-    data::{vec_, AllocOrdSet, Vec},
+    data::{vec_, BTreeSet, Vec},
     error::Also,
 };
 
@@ -91,7 +91,7 @@ macro_rules! impl_int {
                 let n = self.0.abs();
                 iif![n == 0; return vec_![];
                 iif![n == 1; return vec_![1]]];
-                let mut set = AllocOrdSet::new();
+                let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
                     let temp = set.clone();
@@ -124,7 +124,7 @@ macro_rules! impl_int {
             pub fn factors_proper(self) -> Vec<$t> {
                 let n = self.0.abs();
                 iif![n == 0; return vec_![]];
-                let mut set = AllocOrdSet::new();
+                let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
                     let temp = set.clone();
@@ -647,7 +647,7 @@ macro_rules! impl_int {
             pub fn factors(self) -> Vec<$t> {
                 let n = self.0;
                 iif![n == 0; return vec_![]; iif![n == 1; return vec_![1]]];
-                let mut set = AllocOrdSet::new();
+                let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
                     let temp = set.clone();
@@ -681,7 +681,7 @@ macro_rules! impl_int {
             pub fn factors_proper(self) -> Vec<$t> {
                 let n = self.0;
                 iif![n == 0; return vec_![]];
-                let mut set = AllocOrdSet::new();
+                let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
                     let temp = set.clone();

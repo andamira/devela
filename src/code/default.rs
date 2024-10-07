@@ -221,7 +221,7 @@ mod impl_std {
 
     // WAIT: [const_hash](https://github.com/rust-lang/rust/issues/104061)
     // #[cfg(feature = "hashbrown")]
-    // impl_cdef![<K, V> Self::with_hasher(DefaulHashher) => AllocOrdMap<K, V>];
+    // impl_cdef![<K, V> Self::with_hasher(DefaulHashher) => BTreeMap<K, V>];
     // WAIT: [const_io_structs](https://github.com/rust-lang/rust/issues/78812)
     // impl_cdef![Self => Cursor, Empty, Sink];
 }

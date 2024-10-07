@@ -11,8 +11,8 @@ mod impls_alloc {
     use crate::code::impl_cdef;
 
     // impl ConstDefault
-    impl_cdef![<T> Self::new() => AllocOrdSet<T>, AllocLinkedList<T>, Vec<T>, VecDeque<T>];
-    impl_cdef![<K, V> Self::new() => AllocOrdMap<K, V>];
+    impl_cdef![<T> Self::new() => BTreeSet<T>, AllocLinkedList<T>, Vec<T>, VecDeque<T>];
+    impl_cdef![<K, V> Self::new() => BTreeMap<K, V>];
 }
 
 /* from `array` */
@@ -42,11 +42,15 @@ reexport! { rust: alloc::collections,
 }
 reexport! { rust: alloc::collections,
     doc: "An ordered map based on a B-Tree.",
-    @BTreeMap as AllocOrdMap
+    BTreeMap
+}
+reexport! { rust: alloc::collections::btree_map,
+    doc: "An ordered map based on a B-Tree.",
+    @Entry as BTreeMapEntry
 }
 reexport! { rust: alloc::collections,
     doc: "An ordered set based on a B-Tree.",
-    @BTreeSet as AllocOrdSet
+    BTreeSet
 }
 reexport! { rust: alloc::collections,
     doc: "A priority queue implemented with a binary heap.",
