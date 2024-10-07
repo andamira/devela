@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
 - new items: `GfxError`, `GfxResult`, `Pnm`.
 - new type: `Interval`.
+- new tye: `FatPtr`.
 - new methods for `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
 - new methods for `Array`: `from_fn`, `contains_[from|to|between]`.
 - new methods for `Array` when storing `Option<T>`.
@@ -50,6 +51,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
 - re-export macros: `compile_error`, `option_env`.
 - re-export wrapped macros: `env`, `vec`.
+- re-export structs: `NonZero`, `Saturating`, `Wrapping`.
 - re-export crate types from multiple related modules, like errors and strings.
 - impl `Num` for niche types.
 - new `NonValue*` constants `MAX`, `MIN`.
@@ -68,8 +70,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - refactor build script.
 - start using `core::error::Error`.
 - make `bytemuck` an optional dependency.
-- make `sys::ffi` module public.
-- make `text::fmt` module public.
+- make modules public: `mem::ptr`, `sys::ffi`, `text::fmt`.
 - rename method `Array::len` to `capacity`.
 - method `Graph::edge_exists` no loger panics.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
@@ -84,6 +85,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `Dst*` types const-generic `N` to `CAP`.
 - rename `all` module to `_all`.
 - rename `exec` module to `work`, and related features.
+- rename `sys::io` items by prefixing them with `Io`.
 - rename `Egc` to `Grapheme`
 - rename `EgcString` to `GraphemeString`.
 - rename `EgcNonul` to `GraphemeNonul`.
