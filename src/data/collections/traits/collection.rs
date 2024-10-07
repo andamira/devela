@@ -19,7 +19,7 @@
 #[cfg(all(feature = "alloc", feature = "hashbrown"))]
 use crate::data::collections::{AllocMap, AllocSet};
 #[cfg(feature = "alloc")]
-use crate::data::collections::{AllocPrioQueue, BTreeMap, BTreeSet, Vec, VecDeque};
+use crate::data::collections::{BinaryHeap, BTreeMap, BTreeSet, Vec, VecDeque};
 use crate::{
     data::{Array, DataError as E, DataResult as Result},
     mem::Storage,
@@ -128,7 +128,7 @@ impl<T> DataCollection for VecDeque<T> {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataCollection for AllocPrioQueue<T> {
+impl<T> DataCollection for BinaryHeap<T> {
     type Element = T;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
