@@ -2,7 +2,7 @@
 //
 //! Memory management.
 #![doc = crate::code::doc_!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
-#![doc = crate::code::doc_!(modules: crate; mem: cell)]
+#![doc = crate::code::doc_!(modules: crate; mem: cell, ptr)]
 #![doc = crate::code::doc_!(newline)]
 //!
 //
@@ -38,14 +38,15 @@ items! {
 }
 
 pub mod cell;
+pub mod ptr;
 #[doc(no_inline)]
-pub use cell::*;
+pub use {cell::*, ptr::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        aligned::*, cell::*, ext::*, fns_macros::*, reexports::*, size::all::*, slice::all::*,
+        aligned::*, cell::*, ext::*, fns_macros::*, ptr::all::*, reexports::*, size::all::*, slice::all::*,
         storage::*,
     };
 
