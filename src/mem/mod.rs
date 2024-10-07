@@ -23,17 +23,17 @@ mod storage;
 #[allow(unused_imports)]
 pub use {aligned::*, ext::*, fns_macros::*, reexports::*, size::*, slice::*, storage::*};
 
-#[cfg(feature = "unsafe_ptr")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
+#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
 items! {
     mod pin;
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     pub use pin::Pinned;
 }
 
-#[cfg(feature = "unsafe_layout")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 items! {
     mod pod;
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
     pub use pod::MemPod;
 }
 
@@ -46,13 +46,13 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        aligned::*, cell::*, ext::*, fns_macros::*, ptr::all::*, reexports::*, size::all::*, slice::all::*,
-        storage::*,
+        aligned::*, cell::*, ext::*, fns_macros::*, ptr::all::*, reexports::*, size::all::*,
+        slice::all::*, storage::*,
     };
 
-    #[cfg(feature = "unsafe_ptr")]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub use super::pin::Pinned;
 
-    #[cfg(feature = "unsafe_layout")]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
     pub use super::pod::MemPod;
 }

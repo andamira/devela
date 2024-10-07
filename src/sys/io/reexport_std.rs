@@ -43,11 +43,11 @@ reexport! { rust: not(std)|std::io,
     @Chain as IoChain
 }
 reexport! { rust: not(std)|std::io,
-    doc: "Wraps an in-memory buffer and provides it with a [`Seek`] implementation.",
+    doc: "Wraps an in-memory buffer and provides it with a [`IoSeek`] implementation.",
     @Cursor as IoCursor
 }
 reexport! { rust: not(std)|std::io,
-    doc: "The error type for I/O operations of [`Read`], [`Write`], [`Seek`],
+    doc: "The error type for I/O operations of [`IoRead`], [`IoWrite`], [`IoSeek`],
     and associated traits.",
     @Error as IoError
 }

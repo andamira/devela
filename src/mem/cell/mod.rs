@@ -2,9 +2,6 @@
 //
 //! Shareable mutable containers.
 #![doc = crate::code::doc_!(extends: cell)]
-#![doc = crate::code::doc_!(modules: crate::mem; cell)]
-#![doc = crate::code::doc_!(newline)]
-//!
 //
 
 mod option;
