@@ -88,34 +88,89 @@ macro_rules! vec_ { ($($tt:tt)*) => { $crate::_dep::_alloc::vec![$($tt)*] } }
 #[doc(inline)]
 pub use vec_;
 
-/* from `hashbrown` */
+/* from `hashbrown` or `std` */
 
+macro_rules! hashbrown_or_std {
+    (start) => {
+        "<span class='stab portability'
+        title='re-exported from either `hashbrown` or `std`'>`std?`</span>"
+    };
+    (end) => {
+        "\n\n*Re-exported from either the [`hashmap`](https://docs.rs/hasmap) crate
+        or from [`std::collections`](https::doc.rust-lang.org/std/collections)*.
+        \n\n---"
+    };
+}
+use hashbrown_or_std;
+
+// types from hashbrown have preference over those from std.
 #[cfg(feature = "hashbrown")]
 pub use hashbrown_reexports::*;
 #[cfg(feature = "hashbrown")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "hashbrown")))]
 mod hashbrown_reexports {
-    use super::reexport;
+    use super::{hashbrown_or_std, reexport};
+
+    #[doc = hashbrown_or_std!(start)]
+    /// An unordered hash map implemented with quadratic probing and SIMD lookup.
+    #[doc = hashbrown_or_std!(end)]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "hashbrown", feature = "std"))))]
+    pub use crate::_dep::hashbrown::HashMap;
+
+    #[doc = hashbrown_or_std!(start)]
+    /// A view into a single entry in a map, which may either be vacant or occupied.
+    #[doc = hashbrown_or_std!(end)]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "hashbrown", feature = "std"))))]
+    pub use crate::_dep::hashbrown::hash_map::Entry as HashMapEntry;
+
+    #[doc = hashbrown_or_std!(start)]
+    /// An unordered hash set implemented as a `HashMap` where the value is `()`
+    #[doc = hashbrown_or_std!(end)]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "hashbrown", feature = "std"))))]
+    pub use crate::_dep::hashbrown::HashSet;
+}
+
+#[cfg(all(not(feature = "hashbrown"), feature = "std"))]
+pub use std_reexports::*;
+#[cfg(all(not(feature = "hashbrown"), feature = "std"))]
+mod std_reexports {
+    use super::{hashbrown_or_std, reexport};
+
+    #[doc = hashbrown_or_std!(start)]
+    /// An unordered hash map implemented with quadratic probing and SIMD lookup.
+    #[doc = hashbrown_or_std!(end)]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "hashbrown", feature = "std"))))]
+    pub use std::collections::HashMap;
+
+    #[doc = hashbrown_or_std!(start)]
+    /// A view into a single entry in a map, which may either be vacant or occupied.
+    #[doc = hashbrown_or_std!(end)]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "hashbrown", feature = "std"))))]
+    pub use std::collections::hash_map::Entry as HashMapEntry;
+
+    #[doc = hashbrown_or_std!(start)]
+    /// An unordered hash set implemented as a `HashMap` where the value is `()`
+    #[doc = hashbrown_or_std!(end)]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "hashbrown", feature = "std"))))]
+    pub use std::collections::HashSet;
+}
+
+#[cfg(any(feature = "std", feature = "hashbrown"))]
+pub use aliases::*;
+#[cfg(any(feature = "std", feature = "hashbrown"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "hashbrown", feature = "std"))))]
+mod aliases {
+    use super::{HashMap, HashSet};
     use crate::data::hash::HasherBuildFx;
 
-    reexport! { "hashbrown" | hashbrown, features: "alloc",
-        doc: "An unordered hash map implemented with quadratic probing and SIMD lookup.",
-        @HashMap as AllocMap
-    }
-    reexport! { "hashbrown" | hashbrown, features: "alloc",
-        doc: "An unordered hash set implemented as a `AllocMap` where the value is `()`.",
-        @HashSet as AllocSet
-    }
-
-    /// An [`AllocMap`] using a default Fx hasher.
+    /// A [`HashMap`] using a default Fx hasher.
     ///
     /// To create with a reserved capacity,
-    /// use `AllocMapFx::with_capacity_and_hasher(num, Default::default())`.
-    pub type AllocMapFx<K, V> = crate::_dep::hashbrown::HashMap<K, V, HasherBuildFx>;
+    /// use `HashMapFx::with_capacity_and_hasher(num, Default::default())`.
+    pub type HashMapFx<K, V> = HashMap<K, V, HasherBuildFx>;
 
-    /// An [`AllocSet`] using a default Fx hasher.
+    /// An [`HashSet`] using a default Fx hasher.
     ///
     /// To create with a reserved capacity,
-    /// use `AllocSetFx::with_capacity_and_hasher(num, Default::default())`.
-    pub type AllocSetFx<K, V> = crate::_dep::hashbrown::HashSet<K, V, HasherBuildFx>;
+    /// use `HashSetFx::with_capacity_and_hasher(num, Default::default())`.
+    pub type HashSetFx<T> = HashSet<T, HasherBuildFx>;
 }

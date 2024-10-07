@@ -195,9 +195,9 @@ mod impl_core {
 // mod impl_alloc {
 //     // TODO: fxhash, fnv, ahash
 //     // #[cfg(feature = "hashbrown")]
-//     // impl_cdef![<K, V> Self::with_hasher(TODO) => AllocMap<K, V>];
+//     // impl_cdef![<K, V> Self::with_hasher(TODO) => HashMap<K, V>];
 //     // #[cfg(feature = "hashbrown")]
-//     // impl_cdef![<K> Self::with_hasher(TODO) => AllocSet<K>];
+//     // impl_cdef![<K> Self::with_hasher(TODO) => HashSet<K>];
 // }
 
 #[cfg(feature = "std")]

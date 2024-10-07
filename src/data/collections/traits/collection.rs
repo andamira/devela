@@ -16,10 +16,10 @@
 //   - UnorderedMap
 //   - UnorderedSet
 
-#[cfg(all(feature = "alloc", feature = "hashbrown"))]
-use crate::data::collections::{AllocMap, AllocSet};
 #[cfg(feature = "alloc")]
-use crate::data::collections::{BinaryHeap, BTreeMap, BTreeSet, Vec, VecDeque};
+use crate::data::collections::{BTreeMap, BTreeSet, BinaryHeap, Vec, VecDeque};
+#[cfg(all(feature = "alloc", feature = "hashbrown"))]
+use crate::data::collections::{HashMap, HashSet};
 use crate::{
     data::{Array, DataError as E, DataResult as Result},
     mem::Storage,
@@ -179,7 +179,7 @@ impl<V> DataCollection for BTreeSet<V> {
 
 #[rustfmt::skip]
 #[cfg(all(feature = "alloc", feature = "hashbrown"))]
-impl<K, V> DataCollection for AllocMap<K, V> {
+impl<K, V> DataCollection for HashMap<K, V> {
     type Element = V;
     /// Returns [`NotSupported`][E::NotSupported].
     fn collection_capacity(&self) -> Result<usize> { E::ns() }
@@ -196,17 +196,17 @@ impl<K, V> DataCollection for AllocMap<K, V> {
 }
 #[rustfmt::skip]
 #[cfg(all(feature = "alloc", feature = "hashbrown"))]
-impl<V> DataCollection for AllocSet<V> {
+impl<V> DataCollection for HashSet<V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }
     fn collection_len(&self) -> Result<usize> { Ok(self.len()) }
     fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
     fn collection_is_full(&self) -> Result<bool> { E::ns() }
-    /// This is less efficent than [`AllocSet::contains`] for not having [`Hash`] and [`Eq`].
+    /// This is less efficent than [`HashSet::contains`] for not having [`Hash`] and [`Eq`].
     fn collection_contains(&self, element: Self::Element) -> Result<bool> where V: PartialEq {
         Ok(self.iter().any(|value| *value == element))
     }
-    /// This is less efficent than [`AllocSet::contains`] for not having [`Hash`] and [`Eq`].
+    /// This is less efficent than [`HashSet::contains`] for not having [`Hash`] and [`Eq`].
     fn collection_count(&self, element: &Self::Element) -> Result<usize> where V: PartialEq {
         Ok(usize::from(self.iter().any(|e| e == element)))
     }
