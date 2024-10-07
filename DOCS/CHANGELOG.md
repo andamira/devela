@@ -48,6 +48,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export `assert_unchecked!` macro.
 - re-export `format!`, `format_args!` macros.
 - re-export `OsStr`, `OsString`
+- re-export `HashMapEntry` and `BTreeMapEntry`.
+- re-export `HashMap` and `BTreeMap` from `std` if `hashbrown` is disabled.
 - re-export fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
 - re-export macros: `compile_error`, `option_env`.
 - re-export wrapped macros: `env`, `vec`.
@@ -80,6 +82,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move `time` module inside `sys`.
 - move `_lib*` libs inside `_dep`.
 - rename `_deps` module to `_dep`.
+- rename `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.
+- rename `AllocOrdMap` to `BTreeMap` and `AllocOrdSet` to `BTreeSet`.
+- rename `AllocPrioQueue` to `BinaryHeap`.
+- rename `AllocLinkedList` to `LinkedList`.
 - rename `_lib*` libs removing the `lib` prefix.
 - rename `unsafe_dyn` feature to `unsafe_layout`.
 - rename `Dst*` types const-generic `N` to `CAP`.
@@ -94,11 +100,12 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
 
 ### Fixed
+- reduce noise from required features on methods from `Divisor`, `Int`, `Float`, `Frac`.
 - hide public macros from the crate root when `cfg(cargo_primary_package)`.
 - fix build script utility call paths, add missing `_tuple*` features.
-- reduce noise from required features on methods from `Divisor`, `Int`, `Float`, `Frac`.
 - fix `f64::NR_TOLERANCE` from 1e-14 to 1e-12.
 - fix a few tests and examples.
+- fix `HashSetFx` alias.
 
 ## [0.21.2] 2024-08-09
 
