@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new feature `nightly_ptr` enabling `ptr_metadata` experimental feature.
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
 - new features: `linux`, `platforms`, `unsafe_syscall`, `unsafe_async`.
-- new features: `gfx`, `gfx_image`, `safe_gfx`.
+- new features: `rend`, `rend_image`, `safe_rend`.
 - new feature `__force_miri_dst`.
 - new feature section `Platform`.
 - new cfg flag `cargo_primary_package`.
@@ -32,7 +32,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new types: `IdPinBox`, `IdPin` and example `id_pin`.
 - new traits: `ExtCellOption`, `ExtOptRes`, `MemPod`.
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
-- new items: `GfxError`, `GfxResult`, `Pnm`.
+- new items: `RendError`, `RendResult`, `Pnm`.
 - new type: `Interval`.
 - new tye: `FatPtr`.
 - new methods for `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.

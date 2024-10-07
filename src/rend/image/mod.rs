@@ -1,7 +1,7 @@
-// devela::gfx::image
+// devela::rend::image
 //
 //! Image manipulation.
-// #![doc = crate::code::doc_!(modules: crate::gfx; image: pnm)]
+// #![doc = crate::code::doc_!(modules: crate::rend; image: pnm)]
 // #![doc = crate::code::doc_!(newline)]
 //
 

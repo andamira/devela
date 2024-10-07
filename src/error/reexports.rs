@@ -12,8 +12,8 @@ use crate::code::reexport;
 #[doc(inline)]
 pub use crate::{
     data::{DataError, DataResult},
-    gfx::{GfxError, GfxResult},
     num::{NumError, NumResult},
+    rend::{RendError, RendResult},
     sys::time::{TimeError, TimeResult},
     sys::{IoError, IoErrorKind, IoResult},
     text::{TextError, TextResult},

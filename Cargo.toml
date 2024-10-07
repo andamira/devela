@@ -98,15 +98,11 @@ platforms = [ # enables all the platforms
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	"code", "data", "error", "gfx", "mem", "num", "sys", "text", "work",
+	"code", "data", "error", "mem", "num", "rend", "sys", "text", "work",
 ]
 code = []
 data = []
 error = []
-gfx = [
-	"gfx_image",
-	]
-	gfx_image = []
 mem = [
 	"mem_bit",
 	]
@@ -115,6 +111,10 @@ num = [
 	"num_rand",
 	]
 	num_rand = [] # random number generators.
+rend = [
+	"rend_image",
+	]
+	rend_image = []
 sys = []
 text = []
 work = ["bytemuck?/zeroable_atomics"]
@@ -128,15 +128,15 @@ work = ["bytemuck?/zeroable_atomics"]
 # 2. don't enable the `safe` feature for that module.
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_error", "safe_gfx", "safe_mem",
-	"safe_num", "safe_sys", "safe_time", "safe_text", "safe_work",
+	"safe_code", "safe_data", "safe_error", "safe_mem", "safe_num",
+	"safe_rend", "safe_sys", "safe_time", "safe_text", "safe_work",
 ] # in specific modules:
 	safe_code = []
 	safe_data = []
 	safe_error = []
-	safe_gfx = []
 	safe_mem = []
 	safe_num = []
+	safe_rend = []
 	safe_sys = ["safe_time"]
 		safe_time = []
 	safe_text = []
@@ -569,7 +569,7 @@ check-cfg = [
 	'cfg(target_pointer_width, values("8", "128"))',
 	#
 	# These compilation flags for reflection are enabled in: "/build/features.rs"
-    "cfg(_some_nightly, _some_dep)",
+	"cfg(_some_nightly, _some_dep)",
 	'cfg(_some_mem, _some_num)',
 	# data:
 	'cfg(_some_bit, _some_destaque, _some_graph, _some_node, _some_stack)',
@@ -578,8 +578,10 @@ check-cfg = [
 	'cfg(_some_nums, _some_cmp, _some_float, _some_int, _some_int_i, _some_int_u)',
 	'cfg(_some_niche, _some_in_range, _some_non_range)',
 	'cfg(_some_non_value, _some_non_value_i, _some_non_value_u)',
+	# rend:
+	 'cfg(_some_rend)',
 	# text:
-    'cfg(_some_char, _some_string, _some_string_u)',
+	'cfg(_some_char, _some_string, _some_string_u)',
 ]
 
 

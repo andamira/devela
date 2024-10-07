@@ -100,9 +100,9 @@ compile_error!("You can't enable `safe` and any `unsafe*` features at the same t
 pub mod code;
 pub mod data;
 pub mod error;
-pub mod gfx;
 pub mod mem;
 pub mod num;
+pub mod rend;
 pub mod sys;
 pub mod text;
 pub mod work;
@@ -118,9 +118,9 @@ pub mod _all {
         code::all::*,
         data::all::*,
         error::all::*,
-        gfx::all::*,
         mem::all::*,
         num::all::*,
+        rend::all::*,
         sys::all::*,
         text::all::*,
         work::all::*,

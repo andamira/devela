@@ -53,9 +53,9 @@ mod reflection {
             "safe_code",
             "safe_data",
             "safe_error",
-            "safe_gfx",
             "safe_mem",
             "safe_num",
+            "safe_rend",
             "safe_sys", "safe_time",
             "safe_text",
             "safe_work",
@@ -105,10 +105,6 @@ mod reflection {
 
     /* # modules */
 
-    pub const GFX: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_gfx"],
-        features: &["gfx_image"]
-    };
     pub const MEM: FlagsFeatures = FlagsFeatures {
         flags: &["_some_mem"],
         features: &["mem_bit"]
@@ -116,6 +112,10 @@ mod reflection {
     pub const NUM: FlagsFeatures = FlagsFeatures {
         flags: &["_some_num"],
         features: &["num_geom", "num_rand"]
+    };
+    pub const REND: FlagsFeatures = FlagsFeatures {
+        flags: &["_some_rend"],
+        features: &["rend_image"]
     };
 
     /* # capabilities */
@@ -252,7 +252,7 @@ mod reflection {
 
             /* modules */
 
-            GFX, MEM, NUM,
+            MEM, NUM, REND,
 
             /* capabilities */
 

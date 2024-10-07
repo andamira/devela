@@ -1,4 +1,4 @@
-// devela::gfx::image::pnm
+// devela::rend::image::pnm
 //
 //! PNM is the portable anymap format Netpbm image format family (PBM, PGM, PPM)
 
@@ -8,11 +8,11 @@ use crate::gfx::GfxError::CoreFmt;
 use crate::text::String;
 use crate::{
     code::iif,
-    gfx::{
+    rend::{
         // color::*;
-        GfxError,
-        GfxError::{InvalidImageSize, InvalidPixel},
-        GfxResult as Result,
+        RendError,
+        RendError::{InvalidImageSize, InvalidPixel},
+        RendResult as Result,
     },
     mem::bytes_from_bits,
     text::TextWrite,
@@ -20,7 +20,7 @@ use crate::{
 
 // Helper function: Returns `InvalidPixel` as the cold path.
 #[cold] #[rustfmt::skip]
-const fn invalid_pixel<T>() -> core::result::Result<T, GfxError> { Err(InvalidPixel) }
+const fn invalid_pixel<T>() -> core::result::Result<T, RendError> { Err(InvalidPixel) }
 
 /// A collection of methods for encoding and decoding
 /// <abbr title="Portable anymap format">PNM</abbr> bitmap formats.

@@ -1,12 +1,12 @@
-// devela::gfx
+// devela::rend
 //
-//! Graphics related functionality.
-#![doc = crate::code::doc_!(modules: crate; gfx: image)]
+//! Rendering multi-media functionality.
+#![doc = crate::code::doc_!(modules: crate; rend: image)]
 #![doc = crate::code::doc_!(newline)]
 //
 
 // safety:
-#![cfg_attr(feature = "safe_gfx", forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_rend", forbid(unsafe_code))]
 
 mod error;
 pub use error::*;
@@ -15,9 +15,9 @@ pub use error::*;
 // pub mod draw;
 // pub mod fonts;
 
-#[cfg(feature = "gfx_image")]
+#[cfg(feature = "rend_image")]
 crate::code::items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "gfx_image")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_image")))]
     pub mod image;
     #[doc(no_inline)]
     #[allow(unused_imports)]
@@ -31,6 +31,6 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[allow(unused_imports)]
-    #[cfg(feature = "gfx_image")]
+    #[cfg(feature = "rend_image")]
     pub use super::image::all::*;
 }

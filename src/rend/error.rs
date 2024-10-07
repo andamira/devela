@@ -1,4 +1,4 @@
-// devela::gfx::error
+// devela::rend::error
 //
 //!
 //
@@ -6,11 +6,11 @@
 // use crate::error::Mismatch;
 
 /// A rend media result.
-pub type GfxResult<T> = core::result::Result<T, GfxError>;
+pub type RendResult<T> = core::result::Result<T, RendError>;
 
 /// A rend media error.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum GfxError {
+pub enum RendError {
     /// Invalid image size, with an optional width and height.
     // InvalidImageSize(Mismatch<SizeUsize, SizeUsize>), // TODO
     InvalidImageSize(Option<(usize, usize)>), // TEMP
@@ -23,7 +23,7 @@ pub enum GfxError {
 }
 
 mod core_impls {
-    use super::GfxError as E;
+    use super::RendError as E;
     use core::fmt;
 
     impl crate::error::Error for E {}
