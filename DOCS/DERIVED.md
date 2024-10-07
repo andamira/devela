@@ -8,9 +8,12 @@ This project includes the following derived works:
   as the [`HasherFx`], [`HasherFx32`] and [`HasherFx64`] hashers.
 - A [modified][4] version of [object-id] by *Altertech*, licensed as MIT,
   as part of the `IdPinBox` and `IdPin` structs.
-- A [modified][5] version of [static_assertions] by *Nikolai Vazquez*,
+- A [modified][5] version of [static_assertions] by Nikolai Vazquez,
   licensed as MIT or Apache-2.0,
   as part of the [`const_assert`] macro, and  [`ConstBool`] trait.
+- A modified version of [unsized-stack] by *storycraft*,
+  licensed as MIT,
+  as the [`FatPtr`] struct.
 - Adaptation of [quickdiv] v0.1.1 by Darko Trifunovski, licensed as Zlib OR MIT OR Apache-2.0,
   as the [`Divisor`] struct.
 - Adaptation of [pengyhash] v0.2 by Alberto Fajardo, licensed as BSD-2,
@@ -52,6 +55,7 @@ This project includes the following derived works:
 [4]: https://github.com/andamira/devela/blob/main/src/data/id/pin/MODIFICATIONS.md
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
 [5]: https://github.com/andamira/devela/blob/main/src/code/asserts/static/MODIFICATIONS.md
+[unsized-stack]: https://crates.io/crates/unsized-stack/0.2.0
 [quickdiv]: https://crates.io/crates/quickdiv/0.1.1
 [`Divisor`]: https://docs.rs/devela/latest/devela/num/struct.Divisor.html
 [pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
