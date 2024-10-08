@@ -3,18 +3,18 @@
 //! PNM is the portable anymap format Netpbm image format family (PBM, PGM, PPM)
 
 #[cfg(doc)]
-use crate::gfx::GfxError::CoreFmt;
+use crate::rend::RendError::CoreFmt;
 #[cfg(feature = "alloc")]
 use crate::text::String;
 use crate::{
     code::iif,
+    mem::bytes_from_bits,
     rend::{
         // color::*;
         RendError,
         RendError::{InvalidImageSize, InvalidPixel},
         RendResult as Result,
     },
-    mem::bytes_from_bits,
     text::TextWrite,
 };
 

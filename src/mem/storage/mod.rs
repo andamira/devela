@@ -16,8 +16,7 @@ mod bare;
 crate::items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     mod boxed;
-    mod ext_box; // WIP
-    pub use {boxed::*, ext_box::*};
+    pub use boxed::*;
 }
 pub use bare::*;
 

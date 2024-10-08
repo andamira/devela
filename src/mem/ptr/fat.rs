@@ -89,9 +89,9 @@ mod tests {
     use super::FatPtr;
 
     #[test]
-    fn decompose() {
+    fn from_raw_ptr() {
         let slice: &[usize] = &[0_usize];
-        let fat_ptr = FatPtr::decompose(slice as *const [usize]);
+        let fat_ptr = FatPtr::from_raw_ptr(slice as *const [usize]);
         assert_eq!(fat_ptr.metadata(), 1 as *const ());
     }
 }

@@ -101,6 +101,7 @@ macro_rules! hashbrown_or_std {
         \n\n---"
     };
 }
+#[allow(unused_imports)]
 use hashbrown_or_std;
 
 // types from hashbrown have preference over those from std.
