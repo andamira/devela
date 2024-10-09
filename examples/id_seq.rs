@@ -12,8 +12,7 @@
 //! ```
 //
 
-#[rustfmt::skip]     #[cfg(any(test,doc))]  use crate::id_seq;
-#[rustfmt::skip] #[cfg(not(any(test,doc)))] use devela::id_seq;
+use devela::id_seq;
 
 id_seq![ExampleIdSeqUsize, usize];
 

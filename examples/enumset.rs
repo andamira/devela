@@ -41,8 +41,7 @@
 //! ```
 //
 
-#[rustfmt::skip]     #[cfg(any(test,doc))]  use crate::enumset;
-#[rustfmt::skip] #[cfg(not(any(test,doc)))] use devela::enumset;
+use devela::code::enumset;
 
 enumset! {
     /// An example created with [`enumset!`].

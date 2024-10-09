@@ -97,6 +97,8 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
 // (note: you can enable `safe_*` features to prevent `unsafe` use in specific modules)
 
+extern crate self as devela;
+
 pub mod code;
 pub mod data;
 pub mod error;
@@ -107,9 +109,7 @@ pub mod sys;
 pub mod text;
 pub mod work;
 
-/* utility modules */
-
-/// All the items.
+/// All the items, flat.
 pub mod _all {
     #[allow(unused_imports)]
     #[rustfmt::skip]

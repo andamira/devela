@@ -3,8 +3,7 @@
 //! Shows how to use the [`bitfield!`] declarative macro.
 //
 
-#[rustfmt::skip]     #[cfg(any(test,doc))]  use crate::bitfield;
-#[rustfmt::skip] #[cfg(not(any(test,doc)))] use devela::bitfield;
+use devela::data::bitfield;
 
 bitfield! {
     (extra)

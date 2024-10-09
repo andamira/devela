@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - reduce noise from required features on methods from `Divisor`, `Int`, `Float`, `Frac`.
 - hide public macros from the crate root when `cfg(cargo_primary_package)`.
 - fix build script utility call paths, add missing `_tuple*` features.
+- simplify system of documentable & testable examples.
 - fix `f64::NR_TOLERANCE` from 1e-14 to 1e-12.
 - fix a few tests and examples.
 - fix `HashSetFx` alias.
