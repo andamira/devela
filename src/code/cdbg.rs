@@ -1,6 +1,6 @@
 // devela::code::cdbg
 //
-//!
+//! Custom debug macro.
 //
 
 /// *`c`ustomizable [`dbg!`]* macro.
@@ -15,6 +15,8 @@
 /// let a = vec![1, 2, 3];
 ///
 /// let _ = cdbg![&a];
+/// let _ = cdbg![@ &a];
+/// let _ = cdbg![0@ &a];
 /// //      ^-- prints: &a = [1, 2, 3]
 /// let _ = cdbg![1@ &a];
 /// //      ^-- prints: [main.rs:6:10] &a = [1, 2, 3]
@@ -39,16 +41,17 @@
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cdbg {
     (
-     // doesn't show the location (pretty-print)
+     // shows no location                                           cdbg![x];
+     //                                                             cdbg![@ x];
+     $(@)? $v:expr $(,)?) => { match $v { v => { eprintln!("{} = {:?}", stringify!($v), &v); v } } };
+    ($($v:expr),+ $(,)?) => { ($($crate::code::cdbg![$v]),+,) };
+    (
+     // (pretty-print)                                              cdbg![# x];
      # $v:expr $(,)?) => { match $v { v => { eprintln!("{} = {:#?}", stringify!($v), &v); v } } };
     (# $($v:expr),+ $(,)?) => { ($($crate::code::cdbg![# $v]),+,) };
     (
-     // doesn't show the location
-     $v:expr $(,)?) => { match $v { v => { eprintln!("{} = {:?}", stringify!($v), &v); v } } };
-    ($($v:expr),+ $(,)?) => { ($($crate::code::cdbg![$v]),+,) };
-    (
 
-     // shows the last $n location components
+     // shows the last $n location components                       cdbg![1@ x];
      // ($n=0 no location, $n=1 just the filename)
      $n:literal @ $v:expr $(,)?) => {{
         if $crate::code::cif!(diff($n, 0)) {
@@ -66,7 +69,7 @@ macro_rules! cdbg {
             new_path.push(c.as_os_str()); }
         eprintln!("[{}:{}:{}]", new_path.display(), line!(), column!())
     }};
-    ( // shows the last $n location components (pretty-print)
+    (// (pretty-print)                                              cdbg![1# x];
      $n:literal # $v:expr $(,)?) => {{
         if $crate::code::cif!(diff($n, 0)) {
             let (path, mut new_path) = (std::path::Path::new(file!()), std::path::PathBuf::new());
@@ -85,14 +88,14 @@ macro_rules! cdbg {
     }};
     (
 
-     // shows the full path location
+     // shows the full path location                                cdbg![f@ x];
      f @ $v:expr $(,)?) => {{
         eprint!("[{}:{}:{}] ", file!(), line!(), column!());
         $crate::code::cdbg![$v]
     }};
     (f @ $($v:expr),+ $(,)?) => { ($($crate::code::cdbg![f @ $v]),+,) };
     (f @) => { eprintln!("[{}:{}:{}]", file!(), line!(), column!()) };
-    ( // shows the full path location (pretty-print) (same as `dbg!`)
+    (// (pretty-print) (equivalent to `dbg!`)                       cdbg![f# x];
      f # $v:expr $(,)?) => {{
         eprint!("[{}:{}:{}] ", file!(), line!(), column!());
         $crate::code::cdbg![# $v]
@@ -100,14 +103,14 @@ macro_rules! cdbg {
     (f # $($v:expr),+ $(,)?) => { ($($crate::code::cdbg![f # $v]),+,) };
     (f #) => { eprintln!("[{}:{}:{}]", file!(), line!(), column!()) };
     (
-     // shows the full path location in a separate line
+     // shows the full path location in a separate line             cdbg![fln@ x];
      fln @ $v:expr $(,)?) => {{
         eprintln!("[{}:{}:{}]", file!(), line!(), column!());
         $crate::code::cdbg![$v]
     }};
     (fln @ $($v:expr),+ $(,)?) => { ($($crate::code::cdbg![fln @ $v]),+,) };
     (fln @) => { eprintln!("[{}:{}:{}]", file!(), line!(), column!()) };
-    ( // shows the full path location in a separate line (pretty-print)
+    (// (pretty-print)                                              cdbg![fln# x];
      fln # $v:expr $(,)?) => {{
         eprintln!("[{}:{}:{}]", file!(), line!(), column!());
         $crate::code::cdbg![# $v]
