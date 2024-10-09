@@ -90,6 +90,7 @@ pub use vec_;
 
 /* from `hashbrown` or `std` */
 
+#[allow(unused_macros)]
 macro_rules! hashbrown_or_std {
     (start) => {
         "<span class='stab portability'

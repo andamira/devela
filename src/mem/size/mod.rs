@@ -3,6 +3,7 @@
 //! Memory size functionality.
 //
 
+#[allow(unused_imports)]
 use crate::code::items;
 
 mod byte;

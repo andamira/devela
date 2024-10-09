@@ -36,7 +36,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 213 (300 max)
+[features] # 216 (300 max)
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -214,10 +214,13 @@ nightly = [
 		# 1.?? [const_mut_refs](https://github.com/rust-lang/rust/pull/129195)
 		# 1.?? [const_slice_from_raw_parts_mut](https://github.com/rust-lang/rust/pull/130403)
 		# 1.?? [const_slice_split_at_mut](https://github.com/rust-lang/rust/pull/130428)
+		# 1.?? [duration_consts_float](https://github.com/rust-lang/rust/pull/131289)
 		# 1.?? [impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
+		# 1.?? [isqrt](https://github.com/rust-lang/rust/issues/116226)
 		# 1.?? [macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 		# 1.?? [new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 		# 1.?? [noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
+		# 1.?? [unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 		#
 		# Experimental features
 		# [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
@@ -464,14 +467,15 @@ _string_all = [
 
 dep_all = [ # enables all optional dependencies
 	"atomic", "bytemuck", "const-str", "hashbrown",
-	"libm", "log", "memchr", "portable-atomic",
-	"rand_core", "unicode-segmentation", "unicode-width", "wide",
+	"libm", "log", "memchr", "portable-atomic", "rand_core",
+	"unicode-segmentation", "unicode-width", "wide",
 ] # enable groups of dependencies:
 	dep_work = ["atomic", "portable-atomic"]
 	dep_text = ["const-str", "memchr", "unicode-segmentation", "unicode-width"]
 
 # https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 atomic = ["dep:atomic"]
+bytemuck = ["dep:bytemuck"]
 const-str = ["dep:const-str"]
 hashbrown = ["dep:hashbrown", "alloc"]
 libm = ["dep:libm"]
@@ -493,13 +497,13 @@ devela_macros = { version  = "0.10.0" }
 paste_crate = { package = "paste", version = "1.0.15", default-features = false }
 
 # optional:
-const-str = { version = "0.5.7", default-features = false, optional = true }
-libm = { version = "0.2.8", default-features = false, optional = true }
-log = { version = "0.4.22", default-features = false, optional = true }
+const-str = { version = "0.5.7", optional = true, default-features = false }
+libm = { version = "0.2.8", optional = true, default-features = false }
+log = { version = "0.4.22", optional = true, default-features = false }
 memchr = { version = "2.7.4", optional = true, default-features = false }
-rand_core = { version = "0.6.4", default-features = false, optional = true }
-unicode-segmentation = { version = "1.12.0", default-features = false, optional = true }
-unicode-width = { version = "0.1.13", default-features = false, optional = true }
+rand_core = { version = "0.6.4", optional = true, default-features = false }
+unicode-segmentation = { version = "1.12.0", optional = true, default-features = false }
+unicode-width = { version = "0.1.13", optional = true, default-features = false }
 wide = { version = "0.7.26", optional = true, default-features = false }
 [dependencies.atomic]
 version = "0.6.0"
@@ -521,6 +525,7 @@ version = "1.7.0"
 optional = true
 default-features = false
 features = ["fallback", "float"]
+
 
 [dev-dependencies]
 # ------------------------------------------------------------------------------
