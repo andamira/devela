@@ -7,10 +7,10 @@ use super::{
 };
 use core::{cmp, fmt};
 
-#[cfg(feature = "memchr")]
+#[cfg(feature = "dep_memchr")]
 use memchr::memrchr;
 #[rustfmt::skip]
-#[cfg(not(feature = "memchr"))]
+#[cfg(not(feature = "dep_memchr"))]
 fn memrchr(needle: u8, haystack: &[u8]) -> Option<usize> {
     haystack.iter().enumerate().rev().find_map(
         |(index, &byte)| crate::iif![byte == needle; Some(index); None])

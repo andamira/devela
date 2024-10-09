@@ -253,8 +253,8 @@ impl Xyza8b {
     }
 }
 
-#[cfg(feature = "rand_core")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand_core")))]
+#[cfg(feature = "dep_rand_core")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::{Xyza8a, Xyza8b};
     use crate::_dep::rand_core::{Error, RngCore, SeedableRng};

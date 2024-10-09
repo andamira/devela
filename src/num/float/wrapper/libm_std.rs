@@ -16,7 +16,7 @@ use super::Float;
 // $doc: an optional documentation string.
 // $opfn: the original operation function name.
 // $op: the new operation function name in Float.
-#[cfg(any(feature = "libm", feature = "std"))]
+#[cfg(any(feature = "dep_libm", feature = "std"))]
 macro_rules! impl_fp {
     // Matches a wildcard floating-point type (f*).
     // Expands to specific floating-point types (f32, f64).
@@ -56,10 +56,10 @@ macro_rules! impl_fp {
         }
     };
 }
-#[cfg(any(feature = "libm", feature = "std"))]
+#[cfg(any(feature = "dep_libm", feature = "std"))]
 use impl_fp;
 
-#[cfg(feature = "libm")]
+#[cfg(feature = "dep_libm")]
 mod _libm {
     use super::{impl_fp, Float};
     use crate::_dep::libm::Libm;
@@ -277,7 +277,7 @@ mod _libm {
     custom_impls!();
 }
 
-#[cfg(all(not(feature = "libm"), feature = "std"))]
+#[cfg(all(not(feature = "dep_libm"), feature = "std"))]
 mod _std {
     use super::{impl_fp, Float};
     // custom implementations are commented out:
@@ -417,7 +417,7 @@ mod _std {
     custom_impls!();
 }
 
-#[cfg(all(not(feature = "libm"), not(feature = "std")))]
+#[cfg(all(not(feature = "dep_libm"), not(feature = "std")))]
 mod _no_std_no_libm {
     use super::Float;
     use crate::code::iif;

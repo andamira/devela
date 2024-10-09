@@ -18,7 +18,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::data::collections::{BTreeMap, BTreeSet, BinaryHeap, Vec, VecDeque};
-#[cfg(all(feature = "alloc", feature = "hashbrown"))]
+#[cfg(all(feature = "alloc", feature = "dep_hashbrown"))]
 use crate::data::collections::{HashMap, HashSet};
 use crate::{
     data::{Array, DataError as E, DataResult as Result},
@@ -178,7 +178,7 @@ impl<V> DataCollection for BTreeSet<V> {
 }
 
 #[rustfmt::skip]
-#[cfg(all(feature = "alloc", feature = "hashbrown"))]
+#[cfg(all(feature = "alloc", feature = "dep_hashbrown"))]
 impl<K, V> DataCollection for HashMap<K, V> {
     type Element = V;
     /// Returns [`NotSupported`][E::NotSupported].
@@ -195,7 +195,7 @@ impl<K, V> DataCollection for HashMap<K, V> {
     }
 }
 #[rustfmt::skip]
-#[cfg(all(feature = "alloc", feature = "hashbrown"))]
+#[cfg(all(feature = "alloc", feature = "dep_hashbrown"))]
 impl<V> DataCollection for HashSet<V> {
     type Element = V;
     fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity()) }

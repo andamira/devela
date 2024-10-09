@@ -194,9 +194,9 @@ mod impl_core {
 // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 // mod impl_alloc {
 //     // TODO: fxhash, fnv, ahash
-//     // #[cfg(feature = "hashbrown")]
+//     // #[cfg(feature = "dep_hashbrown")]
 //     // impl_cdef![<K, V> Self::with_hasher(TODO) => HashMap<K, V>];
-//     // #[cfg(feature = "hashbrown")]
+//     // #[cfg(feature = "dep_hashbrown")]
 //     // impl_cdef![<K> Self::with_hasher(TODO) => HashSet<K>];
 // }
 
@@ -220,7 +220,7 @@ mod impl_std {
     impl_cdef![<T: ConstDefault> Self::new(|| T::DEFAULT) => LazyCell<T>, LazyLock<T>];
 
     // WAIT: [const_hash](https://github.com/rust-lang/rust/issues/104061)
-    // #[cfg(feature = "hashbrown")]
+    // #[cfg(feature = "dep_hashbrown")]
     // impl_cdef![<K, V> Self::with_hasher(DefaulHashher) => BTreeMap<K, V>];
     // WAIT: [const_io_structs](https://github.com/rust-lang/rust/issues/78812)
     // impl_cdef![Self => Cursor, Empty, Sink];

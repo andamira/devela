@@ -116,8 +116,8 @@ impl XorShift16 {
     }
 }
 
-#[cfg(feature = "rand_core")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand_core")))]
+#[cfg(feature = "dep_rand_core")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
 mod impl_rand {
     use super::{Cast, XorShift16};
     use crate::_dep::rand_core::{Error, RngCore, SeedableRng};

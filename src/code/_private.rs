@@ -203,31 +203,44 @@ macro_rules! reexport {
     }};
 
     // Re-exports an optional crate
-    (optional_crate $dep_str:literal | $dep:ident,
+    //
+    // $dep_feat:    the dependency feature
+    // $dep_name:    the dependency name
+    // $dep_mod:     the dependency module
+    // $description: the dependency decription
+    // $f:           additional features needed
+    (optional_crate $dep_feat:literal, $dep_name:literal, $dep_mod:ident,
      doc: $description:literal
      $(, features: $( $f:literal ),+ )?
     ) => { $crate::code::paste! {
-        #[doc = "<span class='stab portability' title='re-exported `" $dep_str
-            "`'>`" $dep_str "`</span>"]
+        #[doc = "<span class='stab portability' title='re-exported `" $dep_name
+            "`'>`" $dep_name "`</span>"]
         #[doc = $description "\n\n---" ]
         #[cfg_attr(
             feature = "nightly_doc",
             doc(cfg(all(
-                feature = $dep_str $(, $(feature = $f)+ )?
+                feature = $dep_feat $(, $(feature = $f)+ )?
             )))
         )]
-        #[cfg(any(
-            all(feature = $dep_str $(, $(feature = $f),+ )? )
-        ))]
+        #[cfg(all(feature = $dep_feat $(, $(feature = $f),+ )? ))]
         #[doc(inline)]
-        pub use ::$dep;
+        pub use ::$dep_mod;
     }};
 
     // re-exports items from an external optional dependency, from any normal module.
     //
     // - Supports multiple re-exported items.
     // - Renamed items must be all at the end, and each one prefixed with @.
-    ( $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
+    //
+    // $dep_feat:    the dependency feature
+    // $dep_name:    the dependency name
+    // $dep_mod:     the dependency module
+    // $f:           additional features needed
+    // $description: the dependency decription
+    // $item:
+    // $item_to_rename:
+    // $item_renamed:
+    ( $dep_feat:literal, $dep_name:literal, $dep_mod:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
       doc: $description:literal,
       $( $item:ident ),*
@@ -236,10 +249,10 @@ macro_rules! reexport {
     ) => { $crate::code::paste! {
         #[doc(inline)]
         #[doc = "<span class='stab portability' title='re-exported from `"
-            $dep_str "`'>`" $dep_str "`</span>"]
+            $dep_name "`'>`" $dep_name "`</span>"]
         #[doc = $description]
-        #[doc = "\n\n*Re-exported from the [`" $dep_str
-            "`](https://docs.rs/" $dep_str " ) crate*"]
+        #[doc = "\n\n*Re-exported from the [`" $dep_name
+            "`](https://docs.rs/" $dep_name " ) crate*"]
 
         #[doc = $("`" $item_to_rename "`→[`" $item_renamed "`]")* ".\n\n---"]
 
@@ -251,14 +264,12 @@ macro_rules! reexport {
         #[cfg_attr(
             feature = "nightly_doc",
             doc(cfg(all(
-                feature = $dep_str $(, $(feature = $f)+ )?
+                feature = $dep_feat $(, $(feature = $f)+ )?
             )))
         )]
 
-        #[cfg(any(
-            all(feature = $dep_str $(, $(feature = $f),+ )? )
-        ))]
-        pub use crate::_dep::$dep $( ::$dep_path )? :: {
+        #[cfg(all(feature = $dep_feat $(, $(feature = $f),+ )? ))]
+        pub use crate::_dep::$dep_mod $( ::$dep_path )? :: {
             $( $item ),*
             $( $item_to_rename as $item_renamed ),*
         };

@@ -7,7 +7,7 @@
 
 #![allow(unused)]
 
-#[cfg(all(feature = "bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
+#[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
 use crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
 #[cfg(feature = "unsafe_layout")]
 use crate::mem::MemPod;
@@ -355,9 +355,9 @@ macro_rules! impl_non_value {
 
             /* external impls*/
 
-            #[cfg(all(feature = "bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
+            #[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
             #[cfg_attr(feature = "nightly_doc",
-                doc(cfg(all(feature = "bytemuck", feature = "unsafe_niche"))))]
+                doc(cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche"))))]
             #[allow(non_snake_case)]
             mod [<$name $s $b>] {
                 use super::*;

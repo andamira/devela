@@ -18,8 +18,8 @@ mod env;
 #[allow(unused_imports)]
 pub use {arch::*, env::*};
 
-#[cfg(feature = "log")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "log")))]
+#[cfg(feature = "dep_log")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_log")))]
 items! {
     mod log;
     pub use log::*;
@@ -47,7 +47,7 @@ pub(crate) mod all {
     pub use super::{arch::all::*, env::all::*, ffi::all::*, io::all::*, os::all::*, time::all::*};
 
     #[doc(inline)]
-    #[cfg(feature = "log")]
+    #[cfg(feature = "dep_log")]
     #[allow(unused_imports)]
     pub use super::log::all::*;
     #[doc(inline)]

@@ -38,9 +38,9 @@ pub struct LinuxTermios {
 
 #[cfg_attr(
     feature = "nightly_doc",
-    doc(cfg(all(feature = "unsafe_syscall", feature = "bytemuck")))
+    doc(cfg(all(feature = "unsafe_syscall", feature = "dep_bytemuck")))
 )]
-#[cfg(all(feature = "unsafe_syscall", feature = "bytemuck"))]
+#[cfg(all(feature = "unsafe_syscall", feature = "dep_bytemuck"))]
 unsafe impl crate::_dep::bytemuck::NoUninit for LinuxTermios {}
 
 impl LinuxTermios {

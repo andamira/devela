@@ -78,8 +78,8 @@ alloc = [ # enables `alloc` functionality
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
-	"atomic?/std", "bytemuck?/extern_crate_std", "log?/std", "memchr?/std", "rand_core?/std",
-	"wide?/std",
+	"atomic?/std", "bytemuck?/extern_crate_std", "log?/std", "memchr?/std",
+	"rand_core?/std", "wide?/std",
 ]
 no_std = [ # enables functionality incompatible with or substitute of `std`
 ]
@@ -466,26 +466,26 @@ _string_all = [
 # ------------------------------------------------------------------------------
 
 dep_all = [ # enables all optional dependencies
-	"atomic", "bytemuck", "const-str", "hashbrown",
-	"libm", "log", "memchr", "portable-atomic", "rand_core",
-	"unicode-segmentation", "unicode-width", "wide",
+	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown",
+	"dep_libm", "dep_log", "dep_memchr", "dep_portable_atomic", "dep_rand_core",
+	"dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
 ] # enable groups of dependencies:
-	dep_work = ["atomic", "portable-atomic"]
-	dep_text = ["const-str", "memchr", "unicode-segmentation", "unicode-width"]
+	dep_work = ["dep_atomic", "dep_portable_atomic"]
+	dep_text = ["dep_const_str", "dep_memchr", "dep_unicode_segmentation", "dep_unicode_width"]
 
 # https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
-atomic = ["dep:atomic"]
-bytemuck = ["dep:bytemuck"]
-const-str = ["dep:const-str"]
-hashbrown = ["dep:hashbrown", "alloc"]
-libm = ["dep:libm"]
-log = ["dep:log"]
-memchr = ["dep:memchr"]
-portable-atomic = ["dep:portable-atomic"]
-rand_core = ["dep:rand_core"]
-unicode-segmentation = ["dep:unicode-segmentation"]
-unicode-width = ["dep:unicode-width"]
-wide = ["dep:wide"]
+dep_atomic = ["dep:atomic"]
+dep_bytemuck = ["dep:bytemuck"]
+dep_const_str = ["dep:const-str"]
+dep_hashbrown = ["dep:hashbrown", "alloc"]
+dep_libm = ["dep:libm"]
+dep_log = ["dep:log"]
+dep_memchr = ["dep:memchr"]
+dep_portable_atomic = ["dep:portable-atomic"]
+dep_rand_core = ["dep:rand_core"]
+dep_unicode_segmentation = ["dep:unicode-segmentation"]
+dep_unicode_width = ["dep:unicode-width"]
+dep_wide = ["dep:wide"]
 
 
 [dependencies]

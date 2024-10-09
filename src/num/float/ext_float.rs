@@ -15,7 +15,7 @@ use crate::num::{ExtFloatConst, Sign};
 /// # Features
 /// It depends on having any `_float_f[32|64]` features enabled.
 ///
-/// `Float` has a few more methods implemented if the `libm` feature is enabled,
+/// `Float` has a few more methods implemented if the `dep_libm` feature is enabled,
 /// and some of its methods are *const* if the `unsafe_const` feature is enabled.
 #[rustfmt::skip]
 pub trait ExtFloat: ExtFloatConst + Sized {
@@ -153,7 +153,7 @@ pub trait ExtFloat: ExtFloatConst + Sized {
 
     /// Fused multiply-add. Computes `(self * mul) + add` with only one rounding error.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// With either `std` or `dep_libm` enabled it leverages compiler intrinsics,
     /// otherwise it uses [`mul_add_fallback`][Float::mul_add_fallback].
     #[must_use]
     fn mul_add(self, mul: Self, add: Self) -> Self;
@@ -193,7 +193,7 @@ pub trait ExtFloat: ExtFloatConst + Sized {
 
     /// The square root.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// With either `std` or `dep_libm` enabled it leverages compiler intrinsics,
     /// otherwise it's equal to [`sqrt_nr`][Float::sqrt_nr].
     #[must_use]
     fn sqrt(self) -> Self;
@@ -210,14 +210,14 @@ pub trait ExtFloat: ExtFloatConst + Sized {
 
     /// The cubic root.
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// With either `std` or `dep_libm` enabled it leverages compiler intrinsics,
     /// otherwise it's equal to [`cbrt_nr`][Float::cbrt_nr].
     #[must_use]
     fn cbrt(self) -> Self;
 
     /// The hypothenuse (the euclidean distance).
     ///
-    /// With either `std` or `libm` enabled it leverages compiler intrinsics,
+    /// With either `std` or `dep_libm` enabled it leverages compiler intrinsics,
     /// otherwise it's equal to [`hypot_nr`][Float::hypot_nr].
     #[must_use]
     fn hypot(self, rhs: Self) -> Self;
@@ -227,56 +227,56 @@ pub trait ExtFloat: ExtFloatConst + Sized {
     /// The maximum values with a representable result are:
     /// 88.722… for `f32` and 709.782… for `f64`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp_series`][Float::exp_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`exp_series`][Float::exp_series]
     /// with [`exp_series_terms`][Float::exp_series_terms].
     #[must_use]
     fn exp(self) -> Self;
 
     /// $2^x$.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp2_series`][Float::exp2_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`exp2_series`][Float::exp2_series]
     /// with [`exp2_series_terms`][Float::exp2_series_terms].
     #[must_use]
     fn exp2(self) -> Self;
 
     /// The exponential minus 1, more accurately.
     ///
-    /// With both `std` and `libm` disabled it leverages [`exp_m1_series`][Float::exp_m1_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`exp_m1_series`][Float::exp_m1_series]
     /// with [`exp_series_terms`][Float::exp_series_terms].
     #[must_use]
     fn exp_m1(self) -> Self;
 
     /// The natural logarithm of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`ln_series`][Float::ln_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`ln_series`][Float::ln_series]
     /// with [`ln_series_terms`][Float::ln_series_terms].
     #[must_use]
     fn ln(self) -> Self;
 
     /// The natural logarithm of `self` plus 1, more accurately.
     ///
-    /// With both `std` and `libm` disabled it leverages [`ln_1p_series`][Float::ln_1p_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`ln_1p_series`][Float::ln_1p_series]
     /// with [`ln_series_terms`][Float::ln_series_terms].
     #[must_use]
     fn ln_1p(self) -> Self;
 
     /// The logarithm of `self` with respect to an arbitrary `base`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`log_series`][Float::log_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`log_series`][Float::log_series]
     /// with [`ln_series_terms`][Float::ln_series_terms].
     #[must_use]
     fn log(self, base: Self) -> Self;
 
     /// The base 2 logarithm of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`log2_series`][Float::log2_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`log2_series`][Float::log2_series]
     /// with [`ln_series_terms`][Float::ln_series_terms].
     #[must_use]
     fn log2(self) -> Self;
 
     /// The base 10 logarithm of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`log10_series`][Float::log10_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`log10_series`][Float::log10_series]
     /// with [`ln_series_terms`][Float::ln_series_terms].
     #[must_use]
     fn log10(self) -> Self;
@@ -290,98 +290,98 @@ pub trait ExtFloat: ExtFloatConst + Sized {
 
     /// The sine.
     ///
-    /// With both `std` and `libm` disabled it leverages
+    /// With both `std` and `dep_libm` disabled it leverages
     /// [`sin_series`][Float::sin_series] with 8 terms.
     #[must_use]
     fn sin(self) -> Self;
 
     /// The cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages
+    /// With both `std` and `dep_libm` disabled it leverages
     /// [`cos_series`][Float::cos_series] with 8 terms.
     #[must_use]
     fn cos(self) -> Self;
 
     /// Both the sine and cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages
+    /// With both `std` and `dep_libm` disabled it leverages
     /// [`sin_cos_series`][Float::sin_cos_series] with 8 terms.
     #[must_use]
     fn sin_cos(self) -> (Self, Self);
 
     /// The tangent.
     ///
-    /// With both `std` and `libm` disabled it leverages
+    /// With both `std` and `dep_libm` disabled it leverages
     /// [`tan_series`][Float::tan_series] with 8 terms.
     #[must_use]
     fn tan(self) -> Self;
 
     /// The arc sine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`asin_series`][Float::asin_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`asin_series`][Float::asin_series]
     /// with [`asin_series_terms`][Float::asin_series_terms].
     #[must_use]
     fn asin(self) -> Self;
 
     /// The arc cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`acos_series`][Float::acos_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`acos_series`][Float::acos_series]
     /// with [`acos_series_terms`][Float::acos_series_terms].
     #[must_use]
     fn acos(self) -> Self;
 
     /// The arc tangent.
     ///
-    /// With both `std` and `libm` disabled it leverages [`atan_series`][Float::atan_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`atan_series`][Float::atan_series]
     /// with [`atan_series_terms`][Float::atan_series_terms].
     #[must_use]
     fn atan(self) -> Self;
 
     /// The arc tangent of two variables.
     ///
-    /// With both `std` and `libm` disabled it leverages [`atan2_series`][Float::atan2_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`atan2_series`][Float::atan2_series]
     /// with [`atan_series_terms`][Float::atan_series_terms].
     #[must_use]
     fn atan2(self, other: Self) -> Self;
 
     /// The hyperbolic sine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`sinh_series`][Float::sinh_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`sinh_series`][Float::sinh_series]
     /// with [`exp_series_terms`][Float::exp_series_terms].
     #[must_use]
     fn sinh(self) -> Self;
 
     /// The hyperbolic cosine.
     ///
-    /// With both `std` and `libm` disabled it leverages [`cosh_series`][Float::cosh_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`cosh_series`][Float::cosh_series]
     /// with [`exp_series_terms`][Float::exp_series_terms].
     #[must_use]
     fn cosh(self) -> Self;
 
     /// The hyperbolic tangent.
     ///
-    /// With both `std` and `libm` disabled it leverages [`cosh_series`][Float::cosh_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`cosh_series`][Float::cosh_series]
     /// with [`exp_series_terms`][Float::exp_series_terms].
     #[must_use]
     fn tanh(self) -> Self;
 
     /// The inverse hyperbolic sine of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`asinh_series`][Float::asinh_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`asinh_series`][Float::asinh_series]
     /// with [`ln_series_terms`][Float::ln_series_terms].
     #[must_use]
     fn asinh(self) -> Self;
 
     /// The inverse hyperbolic cosine of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`acosh_series`][Float::acosh_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`acosh_series`][Float::acosh_series]
     /// with [`ln_series_terms`][Float::ln_series_terms].
     #[must_use]
     fn acosh(self) -> Self;
 
     /// The inverse hyperbolic tangent of `self`.
     ///
-    /// With both `std` and `libm` disabled it leverages [`atanh_series`][Float::atanh_series]
+    /// With both `std` and `dep_libm` disabled it leverages [`atanh_series`][Float::atanh_series]
     /// with [`ln_series_terms`][Float::ln_series_terms].
     #[must_use]
     fn atanh(self) -> Self;
@@ -525,10 +525,10 @@ macro_rules! impl_float_ext {
             #[inline]
             fn copysign(self, sign: Self) -> Self { Float(self).copysign(sign).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn mul_add(self, mul: Self, add: Self) -> Self {
                 Float(self).mul_add(mul, add).0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn mul_add(self, mul: Self, add: Self) -> Self {
                 Float(self).mul_add_fallback(mul, add).0
             }
@@ -545,9 +545,9 @@ macro_rules! impl_float_ext {
             #[inline]
             fn lerp(self, u: Self, v: Self) -> Self { Float(self).lerp(u, v).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn powf(self, y: Self) -> Self { Float(self).powf(y).0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn powf(self, y: Self) -> Self {
                 Float(self).powf_series(y, Float(self).ln_series_terms()).0
             }
@@ -555,9 +555,9 @@ macro_rules! impl_float_ext {
             #[inline]
             fn powi(self, p: $ie) -> Self { Float(self).powi(p).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sqrt(self) -> Self { Float(self).sqrt().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn sqrt(self) -> Self { Float(self).sqrt_nr().0 }
 
             #[inline]
@@ -566,145 +566,145 @@ macro_rules! impl_float_ext {
             #[inline]
             fn fisr(self) -> Self { Float(self).fisr().0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn cbrt(self) -> Self { Float(self).cbrt().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn cbrt(self) -> Self { Float(self).cbrt_nr().0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn hypot(self, rhs: Self) -> Self { Float(self).hypot(rhs).0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn hypot(self, rhs: Self) -> Self { Float(self).hypot_nr(rhs).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn exp(self) -> Self { Float(self).exp().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn exp(self) -> Self {
                 Float(self).exp_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn exp2(self) -> Self { Float(self).exp2().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn exp2(self) -> Self {
                 Float(self).exp2_series(Float(self).exp2_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn exp_m1(self) -> Self { Float(self).exp_m1().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn exp_m1(self) -> Self {
                 Float(self).exp_m1_series(Float(self).exp_series_terms()).0
             }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn ln(self) -> Self { Float(self).ln().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn ln(self) -> Self {
                 Float(self).ln_series(Float(self).ln_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn ln_1p(self) -> Self { Float(self).ln_1p().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn ln_1p(self) -> Self {
                 Float(self).ln_1p_series(Float(self).ln_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn log(self, base: Self) -> Self { Float(self).log(base).0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn log(self, base: Self) -> Self {
                 Float(self).log_series(base, Float(self).ln_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn log2(self) -> Self { Float(self).log2().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn log2(self) -> Self {
                 Float(self).log2_series(Float(self).ln_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn log10(self) -> Self { Float(self).log10().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn log10(self) -> Self {
                 Float(self).log10_series(Float(self).ln_series_terms()).0 }
 
             #[inline]
             fn factorial(a: $ue) -> Self { Float::<Self>::factorial(a).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sin(self) -> Self { Float(self).sin().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn sin(self) -> Self { Float(self).sin_series(8).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn cos(self) -> Self { Float(self).cos().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn cos(self) -> Self { Float(self).cos_series(8).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sin_cos(self) -> (Self, Self) { let (s, c) = Float(self).sin_cos(); (s.0, c.0) }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn sin_cos(self) -> (Self, Self) {
                 let (s, c) = Float(self).sin_cos_series(8); (s.0, c.0) }
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn tan(self) -> Self { Float(self).tan().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn tan(self) -> Self { Float(self).tan_series(8).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn asin(self) -> Self { Float(self).asin().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn asin(self) -> Self {
                 Float(self).asin_series(Float(self).asin_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn acos(self) -> Self { Float(self).acos().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn acos(self) -> Self {
                 Float(self).acos_series(Float(self).acos_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn atan(self) -> Self { Float(self).atan().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn atan(self) -> Self {
                 Float(self).atan_series(Float(self).atan_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn atan2(self, other: Self) -> Self { Float(self).atan2(other).0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn atan2(self, other: Self) -> Self {
                 Float(self).atan2_series(other, Float(self).atan_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sinh(self) -> Self { Float(self).sinh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn sinh(self) -> Self {
                 Float(self).sinh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn cosh(self) -> Self { Float(self).cosh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn cosh(self) -> Self {
                 Float(self).cosh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn tanh(self) -> Self { Float(self).tanh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn tanh(self) -> Self {
                 Float(self).tanh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn asinh(self) -> Self { Float(self).asinh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn asinh(self) -> Self {
                 Float(self).asinh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn acosh(self) -> Self { Float(self).acosh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn acosh(self) -> Self {
                 Float(self).acosh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "libm"))]
+            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn atanh(self) -> Self { Float(self).atanh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "libm")))]
+            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn atanh(self) -> Self {
                 Float(self).atanh_series(Float(self).exp_series_terms()).0 }
 

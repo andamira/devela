@@ -5,7 +5,7 @@
 
 use super::{LinuxTerminalSize, LinuxTermios};
 
-#[cfg(all(feature = "atomic", feature = "bytemuck"))]
+#[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
 use crate::_dep::atomic::{Atomic, Ordering as AtomicOrdering};
 
 /// State of the terminal saved globally, that can be restored from anywhere.
@@ -25,8 +25,11 @@ use crate::_dep::atomic::{Atomic, Ordering as AtomicOrdering};
 ///
 /// [`atomic`]: crate::_dep::atomic
 /// [`bytemuck`]: crate::_dep::bytemuck
-#[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "atomic", feature = "bytemuck"))))]
-#[cfg(all(feature = "atomic", feature = "bytemuck"))]
+#[cfg_attr(
+    feature = "nightly_doc",
+    doc(cfg(all(feature = "dep_atomic", feature = "dep_bytemuck")))
+)]
+#[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
 pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios::new());
 
 /// Linux terminal manager.
@@ -38,8 +41,11 @@ pub static LINUX_TERMINAL_STATE: Atomic<LinuxTermios> = Atomic::new(LinuxTermios
 #[derive(Debug, Default)]
 pub struct LinuxTerminal;
 
-#[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "atomic", feature = "bytemuck"))))]
-#[cfg(all(feature = "atomic", feature = "bytemuck"))]
+#[cfg_attr(
+    feature = "nightly_doc",
+    doc(cfg(all(feature = "dep_atomic", feature = "dep_bytemuck")))
+)]
+#[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
 impl Drop for LinuxTerminal {
     fn drop(&mut self) {
         // If we are here, this should work
@@ -56,7 +62,7 @@ impl LinuxTerminal {
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
     #[inline]
     pub fn new() -> Result<Self, isize> {
-        #[cfg(all(feature = "atomic", feature = "bytemuck"))]
+        #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
         Self::save_state()?;
         Ok(Self)
     }
@@ -71,7 +77,7 @@ impl LinuxTerminal {
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
     #[inline]
     pub fn new_raw() -> Result<Self, isize> {
-        #[cfg(all(feature = "atomic", feature = "bytemuck"))]
+        #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
         Self::save_state()?;
 
         let new = Self::new()?;
@@ -80,8 +86,11 @@ impl LinuxTerminal {
     }
 
     /// Saves the current terminal state into [`LINUX_TERMINAL_STATE`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "bytemuck", feature = "atomic"))))]
-    #[cfg(all(feature = "atomic", feature = "bytemuck"))]
+    #[cfg_attr(
+        feature = "nightly_doc",
+        doc(cfg(all(feature = "dep_bytemuck", feature = "dep_atomic")))
+    )]
+    #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
     #[inline]
     pub fn save_state() -> Result<(), isize> {
         LINUX_TERMINAL_STATE.store(LinuxTermios::get_state()?, AtomicOrdering::Relaxed);
@@ -89,8 +98,11 @@ impl LinuxTerminal {
     }
 
     /// Restores the current terminal state into [`LINUX_TERMINAL_STATE`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "bytemuck", feature = "atomic"))))]
-    #[cfg(all(feature = "atomic", feature = "bytemuck"))]
+    #[cfg_attr(
+        feature = "nightly_doc",
+        doc(cfg(all(feature = "dep_bytemuck", feature = "dep_atomic")))
+    )]
+    #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
     #[inline]
     pub fn restore_saved_state() -> Result<(), isize> {
         LinuxTermios::set_state(LINUX_TERMINAL_STATE.load(AtomicOrdering::Relaxed))
