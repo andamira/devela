@@ -110,7 +110,7 @@ use hashbrown_or_std;
 pub use hashbrown_reexports::*;
 #[cfg(feature = "dep_hashbrown")]
 mod hashbrown_reexports {
-    use super::{hashbrown_or_std, reexport};
+    use super::hashbrown_or_std;
 
     #[doc = hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.
