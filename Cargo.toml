@@ -62,12 +62,12 @@ nightly = ["nightly_doc"]
 # ------------------------------------------------------------------------------
 
 # The most complete version of the documentation:
-docsrs = ["nightly", "std", "unsafe"]
+_docsrs = ["nightly", "std", "unsafe"]
 
 [package.metadata.docs.rs]
 # ==============================================================================
 no-default-features = true
-features = ["docsrs"]
+features = ["_docsrs"]
 
 
 [badges]
