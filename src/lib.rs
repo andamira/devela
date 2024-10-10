@@ -109,8 +109,9 @@ pub mod sys;
 pub mod text;
 pub mod work;
 
-/// All the items, flat.
-pub mod _all {
+/// All the crate's items.
+/// <br/><hr>
+pub mod all {
     #[allow(unused_imports)]
     #[rustfmt::skip]
     #[doc(inline)]
@@ -128,12 +129,14 @@ pub mod _all {
 }
 #[doc(no_inline)]
 #[allow(unused_imports)]
-pub use _all::*;
+pub use all::*;
 
 /// Library dependencies.
+/// <br/><hr>
 pub mod _dep;
 
-/// Information about the library.<br/><hr>
+/// Information about the library.
+/// <br/><hr>
 pub mod _info {
     /// Documented examples.
     #[cfg(any(doc, test))]
