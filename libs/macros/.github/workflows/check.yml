@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
             submodules: true
 
@@ -41,7 +41,7 @@ jobs:
         # toolchain: [stable, beta]
     steps:
       - name: "checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
             submodules: true
 
@@ -70,9 +70,9 @@ jobs:
         uses: dtolnay/rust-toolchain@nightly
 
       - name: "cargo doc"
-        run: cargo doc --features=nightly_docs
+        run: cargo doc --features=nightly_doc
         env:
-          RUSTDOCFLAGS: --cfg docsrs
+          RUSTDOCFLAGS: --cfg _docsrs
 
   # 4. minimum supported Rust version
   msrv:
@@ -82,7 +82,7 @@ jobs:
     # https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
     strategy:
       matrix:
-        msrv: [1.72.1] # sync with ../../{readme, Cargo.toml, check.sh}
+        msrv: [1.72.1] # sync with ../../{README.md, Cargo.toml, check.sh}
     steps:
       - name: "checkout"
         uses: actions/checkout@v3
