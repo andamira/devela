@@ -74,6 +74,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - make `bytemuck` an optional dependency.
 - make modules public: `mem::ptr`, `sys::ffi`, `text::fmt`.
 - rename method `Array::len` to `capacity`.
+- update `cdbg` macro to support a single `@`.
 - method `Graph::edge_exists` no loger panics.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.

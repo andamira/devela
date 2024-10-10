@@ -2,7 +2,7 @@
 //
 //! Data collections.
 #![doc = crate::code::doc_!(extends: array, collections, vec)]
-#![doc = crate::code::doc_!(modules: crate::data; collections)]
+// #![doc = crate::code::doc_!(modules: crate::data; collections)]
 #![doc = crate::code::doc_!(newline)]
 //!
 //

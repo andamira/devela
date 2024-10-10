@@ -2,7 +2,7 @@
 //
 //! Generic hashing support.
 #![doc = crate::code::doc_!(extends: hash)]
-#![doc = crate::code::doc_!(modules: crate::data; hash)]
+// #![doc = crate::code::doc_!(modules: crate::data; hash)]
 #![doc = crate::code::doc_!(newline)]
 //!
 //
