@@ -46,7 +46,8 @@ safe = [] # forbids `unsafe` in this crate
 
 #* nightly features *#
 
-nightly = [] # enables nightly features
+nightly = ["nightly_doc"]
+	nightly_doc = [] # doc_cfg
 
 
 # ------------------------------------------------------------------------------
