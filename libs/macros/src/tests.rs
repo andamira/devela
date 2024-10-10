@@ -70,14 +70,8 @@ fn test_compile_eval() {
     assert_eq!(compile_eval("any(false, false, false)".to_string()), false);
 
     // all()
-    assert_eq!(
-        compile_eval("all(true, true, true, true)".to_string()),
-        true
-    );
-    assert_eq!(
-        compile_eval("all(true, true, true, false)".to_string()),
-        false
-    );
+    assert_eq!(compile_eval("all(true, true, true, true)".to_string()), true);
+    assert_eq!(compile_eval("all(true, true, true, false)".to_string()), false);
 
     // none()
     assert_eq!(compile_eval("none()".to_string()), true);
