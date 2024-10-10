@@ -87,6 +87,7 @@ pub fn compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+#[doc(hidden)]
 pub fn compile_doc(args: TokenStream, input: TokenStream) -> TokenStream {
     let args = args.to_string();
     let doc_conditions = split_args(&args);
@@ -163,6 +164,8 @@ pub fn coalesce(input: TokenStream) -> TokenStream {
 /// assert_eq![ident_total!(a, a 東 r#true; a3 != 3a), 5];
 /// ```
 #[proc_macro]
+#[cfg(feature = "alloc")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn ident_total(input: TokenStream) -> TokenStream {
     let mut count = 0;
     for token in input {
