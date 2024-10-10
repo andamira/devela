@@ -75,7 +75,7 @@
 // environment
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
-#![cfg_attr(feature = "nightly", feature(doc_cfg))]
+#![cfg_attr(feature = "nightly_doc", feature(doc_cfg))]
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
@@ -105,7 +105,7 @@ use common::{compile_eval, deindent, split_args, split_compile_doc_tuple};
 /// ```
 #[proc_macro_attribute]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn compile(argument: TokenStream, input: TokenStream) -> TokenStream {
     if compile_eval(argument.to_string()) {
         input
@@ -123,7 +123,7 @@ pub fn compile(argument: TokenStream, input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro_attribute]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
     let args = args.to_string();
     let mut args = split_args(&args);
@@ -152,7 +152,7 @@ pub fn compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro_attribute]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn compile_doc(args: TokenStream, input: TokenStream) -> TokenStream {
     let args = args.to_string();
     let doc_conditions = split_args(&args);
@@ -181,7 +181,7 @@ pub fn compile_doc(args: TokenStream, input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn cif(input: TokenStream) -> TokenStream {
     let input = input.to_string();
     let result = compile_eval(input);
@@ -201,7 +201,7 @@ pub fn cif(input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "alloc")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn coalesce(input: TokenStream) -> TokenStream {
     let input = input.to_string();
     let args = split_args(&input);
@@ -264,7 +264,7 @@ pub fn ident_total(input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 pub fn ident_unique(input: TokenStream) -> TokenStream {
     let mut unique = std::collections::HashSet::new();
     for token in input {
@@ -297,7 +297,7 @@ pub fn ident_unique(input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 #[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly", doc(cfg(feature = "std")))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 pub fn ident_total_unique(input: TokenStream) -> TokenStream {
     let mut unique = std::collections::HashSet::new();
     let mut total = 0;
