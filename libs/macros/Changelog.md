@@ -7,6 +7,19 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Changed
+- rename feature `docsrs` to `_docsrs`.
+
+### Added
+- new features: `nightly_doc`, `__lints`.
+- new macro `enumint`.
+- add `.rustfmt.toml`.
+
+### Fixed
+- refactor manifest.
+- reformat crate.
+- update CI.
+
 ## [0.10.0] - 2024-04-16
 
 ### Changed
