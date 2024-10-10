@@ -1,12 +1,6 @@
 // examples/id_pin.rs
 
-// #!/usr/bin/env rust-script
-// //! ```cargo
-// //! [dependencies]
-// //! devela = { path = "..", features = ["alloc"] }
-// //! ```
-
-use devela::_all::*;
+use devela::all::*;
 
 fn main() {
     let mut data1 = 0u8;
