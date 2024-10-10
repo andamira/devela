@@ -36,7 +36,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 216 (300 max)
+[features] # total: 216/300, visible: 153, hidden: 63
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -50,11 +50,13 @@ publish = true
 # - Dependencies
 #
 # Sintax:
-# - ["name"]: Normal public-facing features.
+# - ["name"]: Visible public-facing features.
 # - ["_name"]: Hidden extra capability features.
 # - ["__name"]: Hidden miscellaneous features.
 #
-# Features are in sync with: build/features.rs and src/_info/features.md
+# Files:
+# - Features are in sync with: build/features.rs and src/_info/features.md
+# - We can use the tools/features.sh script to list and count the features
 
 
 #* Miscellaneous features *#
@@ -166,10 +168,15 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 nightly = [
 	"nightly_coro", "nightly_doc", "nightly_ptr", "nightly_simd", "nightly_stabilized",
 ] # enables all the following features:
+	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
-	nightly_doc = [] # doc_cfg, doc_notable_trait
-	nightly_ptr = [] # ptr_metadata
-	nightly_simd = [] # portable_simd
+	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
+	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
+	nightly_doc = []
+	# WAIT: [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
+	nightly_ptr = []
+	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
+	nightly_simd = []
 	nightly_stabilized = [] # stabilized features to be released soon:
 		# - https://github.com/rust-lang/rust/milestones
 		# - https://releases.rs/
@@ -206,7 +213,19 @@ nightly = [
 		# 1.83: [r#ident](https://github.com/rust-lang/rust/pull/126452)
 		# 1.83: [MaybeUninit::as_mut_ptr](https://github.com/rust-lang/rust/pull/130542)
 		# 1.83: [waker_getters](https://github.com/rust-lang/rust/pull/129919)
-		# > ??
+		# > 1.84 will be stable on 2024-11-28
+		# > 1.85 will be stable on 2025-01-09
+		# > 1.86 will be stable on 2025-02-20
+		# > 1.87 will be stable on 2025-04-03
+		# > 1.88 will be stable on 2025-05-15
+		# > 1.89 will be stable on 2025-05-15
+		# > 1.90 will be stable on 2025-06-26
+		# > 1.91 will be stable on 2025-08-07
+		# > 1.92 will be stable on 2025-09-18
+		# > 1.93 will be stable on 2025-10-30
+		# > 1.94 will be stable on 2025-12-11
+		# > 1.95 will be stable on 2026-01-22
+		# > ...…
 		# 1.?? [box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 		# 1.?? [const_array_from_ref|const_slice_from_ref](https://github.com/rust-lang/rust/issues/90206)
 		# 1.?? [const_cell_into_inner](https://github.com/rust-lang/rust/pull/130972)

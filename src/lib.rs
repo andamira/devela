@@ -64,21 +64,13 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
 // nightly:
-// WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
-// WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(all(feature = "nightly_doc", miri), allow(unused_attributes))]
 #![cfg_attr(all(feature = "nightly_doc", not(doc)), allow(unused_attributes))]
-// WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
-// WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
-// WAIT: [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
 #![cfg_attr(feature = "nightly_ptr", feature(ptr_metadata))]
-// #![cfg_attr(
-//     feature = "nightly_stabilized",
-//     feature()
-// )]
+// #![cfg_attr(feature = "nightly_stabilized", feature())]
 
 // safeguard environment:
 #[cfg(all(feature = "std", feature = "no_std"))]
