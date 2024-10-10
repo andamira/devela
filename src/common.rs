@@ -90,7 +90,7 @@ pub(crate) fn deindent(s: &str) -> String {
     let min_indent = lines
         .iter()
         .filter(|line| !line.trim().is_empty())
-        .map(|line| line.len() - line.trim_start_matches(|c| c == ' ' || c == '\t').len())
+        .map(|line| line.len() - line.trim_start_matches([' ', '\t']).len())
         .min()
         .unwrap_or(0);
 
