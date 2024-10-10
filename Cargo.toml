@@ -32,6 +32,8 @@ default = ["std", "safe"]
 # enables the most complete version of the documentation:
 docsrs = ["nightly", "std", "unsafe"]
 
+__lints = [] # enables extra lints (enabled on cl* aliases)
+
 #* environment features *#
 
 std = ["alloc"]
