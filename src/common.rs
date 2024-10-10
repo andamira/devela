@@ -36,15 +36,9 @@ pub(crate) fn split_args(arg: &str) -> Vec<String> {
 pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
     let tuple = tuple.trim();
     if !tuple.starts_with('(') {
-        panic!(
-            "Tuple must start with '(', but starts with {:?})",
-            tuple.chars().next()
-        );
+        panic!("Tuple must start with '(', but starts with {:?})", tuple.chars().next());
     } else if !tuple.ends_with(')') {
-        panic!(
-            "Tuple must end with ')', but ends with {:?})",
-            tuple.chars().last()
-        );
+        panic!("Tuple must end with ')', but ends with {:?})", tuple.chars().last());
     }
 
     let mut level = 0;
@@ -67,9 +61,7 @@ pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
     let split_index = split_index.expect("Could not find split point in tuple");
 
     let condition = &tuple[1..split_index].trim();
-    let comment = &tuple[split_index + 1..tuple.len() - 1]
-        .trim()
-        .trim_matches('"');
+    let comment = &tuple[split_index + 1..tuple.len() - 1].trim().trim_matches('"');
 
     if condition.is_empty() || comment.is_empty() {
         panic!("Both condition and comment must be present in the tuple");
@@ -96,13 +88,7 @@ pub(crate) fn deindent(s: &str) -> String {
 
     lines
         .iter()
-        .map(|line| {
-            if line.len() > min_indent {
-                &line[min_indent..]
-            } else {
-                &line[..]
-            }
-        })
+        .map(|line| if line.len() > min_indent { &line[min_indent..] } else { &line[..] })
         .map(|line| line.trim_end())
         .collect::<Vec<&str>>()
         .join("\n")
