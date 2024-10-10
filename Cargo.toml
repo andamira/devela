@@ -27,36 +27,49 @@ proc-macro = true
 # ------------------------------------------------------------------------------
 
 [features]
+# ==============================================================================
+
+#* Miscellaneous features *#
+# ------------------------------------------------------------------------------
 
 default = ["std", "safe"]
-# enables the most complete version of the documentation:
-docsrs = ["nightly", "std", "unsafe"]
 
 __lints = [] # enables extra lints (enabled on cl* aliases)
 
-#* environment features *#
+
+#* Environment features *#
+# ------------------------------------------------------------------------------
 
 std = ["alloc"]
 alloc = []
 
 
-#* safety features *#
+#* Safety features *#
+# ------------------------------------------------------------------------------
 
 unsafe = [] # enables unsafe features in this crate (unused)
 safe = [] # forbids `unsafe` in this crate
 
 
-#* nightly features *#
+#* Nightly features tree *#
+# ------------------------------------------------------------------------------
 
 nightly = ["nightly_doc"]
 	nightly_doc = [] # doc_cfg
 
 
+#* Capability features *#
 # ------------------------------------------------------------------------------
 
+# The most complete version of the documentation:
+docsrs = ["nightly", "std", "unsafe"]
+
 [package.metadata.docs.rs]
+# ==============================================================================
 no-default-features = true
 features = ["docsrs"]
 
+
 [badges]
+# ==============================================================================
 maintenance = { status = "experimental" }
