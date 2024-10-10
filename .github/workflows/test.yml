@@ -20,7 +20,7 @@ jobs:
         # toolchain: [stable, beta]
     steps:
       - name: "checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
             submodules: true
 
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
             submodules: true
 
@@ -74,7 +74,7 @@ jobs:
         os: [macos-latest, windows-latest]
     steps:
       - name: "checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
             submodules: true
 
@@ -94,7 +94,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   name: ubuntu / stable / coverage
   #   steps:
-  #     - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v4
   #       with:
   #         submodules: true
   #     - name: Install stable
@@ -109,6 +109,6 @@ jobs:
   #     - name: cargo llvm-cov
   #       run: cargo llvm-cov --locked --lcov --output-path lcov.info
   #     - name: Upload to codecov.io
-  #       uses: codecov/codecov-action@v3
+  #       uses: codecov/codecov-action@v4
   #       with:
   #         fail_ci_if_error: true
