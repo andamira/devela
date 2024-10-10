@@ -34,7 +34,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
 - new items: `RendError`, `RendResult`, `Pnm`.
 - new type: `Interval`.
-- new tye: `FatPtr`.
+- new type: `FatPtr`.
 - new methods for `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
 - new methods for `Array`: `from_fn`, `contains_[from|to|between]`.
 - new methods for `Array` when storing `Option<T>`.
@@ -56,9 +56,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export structs: `NonZero`, `Saturating`, `Wrapping`.
 - re-export crate types from multiple related modules, like errors and strings.
 - impl `Num` for niche types.
+- new `num::algebra` module.
 - new `NonValue*` constants `MAX`, `MIN`.
 - new `sys::os::linux` module and example `linux`.
-- new `num::algebra` module.
+- new script `tool/features.sh`.
 - new lints.
 
 ### Removed
@@ -90,7 +91,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `_lib*` libs removing the `lib` prefix.
 - rename `unsafe_dyn` feature to `unsafe_layout`.
 - rename `Dst*` types const-generic `N` to `CAP`.
-- rename `all` module to `_all`.
 - rename `exec` module to `work`, and related features.
 - rename `sys::io` items by prefixing them with `Io`.
 - rename `Egc` to `Grapheme`
