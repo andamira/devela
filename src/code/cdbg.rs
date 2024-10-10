@@ -40,15 +40,16 @@
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cdbg {
+    // has to be the first arm
+    (
+     // shows no location (pretty-print)                            cdbg![# x];
+     # $v:expr $(,)?) => { match $v { v => { eprintln!("{} = {:#?}", stringify!($v), &v); v } } };
+    (# $($v:expr),+ $(,)?) => { ($($crate::code::cdbg![# $v]),+,) };
     (
      // shows no location                                           cdbg![x];
      //                                                             cdbg![@ x];
      $(@)? $v:expr $(,)?) => { match $v { v => { eprintln!("{} = {:?}", stringify!($v), &v); v } } };
     ($($v:expr),+ $(,)?) => { ($($crate::code::cdbg![$v]),+,) };
-    (
-     // (pretty-print)                                              cdbg![# x];
-     # $v:expr $(,)?) => { match $v { v => { eprintln!("{} = {:#?}", stringify!($v), &v); v } } };
-    (# $($v:expr),+ $(,)?) => { ($($crate::code::cdbg![# $v]),+,) };
     (
 
      // shows the last $n location components                       cdbg![1@ x];
