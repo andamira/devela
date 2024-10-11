@@ -36,7 +36,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # total: 216/300, visible: 153, hidden: 63
+[features] # total: 216/300, visible: 63, hidden: 153
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
