@@ -1,6 +1,6 @@
-// devela_macros::tests
+// devela_macros::bodies::tests
 
-use super::compile_eval;
+use super::common::compile_eval;
 
 use alloc::string::ToString;
 
