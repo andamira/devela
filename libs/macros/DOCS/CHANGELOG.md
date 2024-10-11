@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Changed
 - rename feature `docsrs` to `_docsrs`.
+- make `compile_doc` hidden.
 
 ### Added
 - new features: `nightly_doc`, `__lints`.
@@ -16,8 +17,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add `.rustfmt.toml`.
 
 ### Fixed
-- refactor manifest.
-- reformat crate.
+- multiple refactorings:
+  - modularize macros bodies.
+  - refactor manifest.
+  - reformat crate.
 - update CI.
 
 ## [0.10.0] - 2024-04-16
