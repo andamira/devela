@@ -448,13 +448,14 @@ macro_rules! doc_miri_warn {
         concat!(
             "<span class='stab portability' ",
             "title='Fails to compile under Miri due to potential undefined behavior'>",
-            "<code>⚠️miri</code></span>"
+            "<code>⚠️</code></span>"
         )
     };
-    (body) => {
+    (body $(, url: $url:literal)?) => {
         concat!(
             "<div class='warning'>",
             "Fails to compile under Miri due to potential undefined behavior.",
+            $( "<p><em>See <a href = '", $url, "'>", $url, "</a>.</em></p>", )?
             "</div>"
         )
     };

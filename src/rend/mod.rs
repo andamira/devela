@@ -9,6 +9,7 @@
 #![cfg_attr(feature = "safe_rend", forbid(unsafe_code))]
 
 mod error;
+#[doc(inline)]
 pub use error::*;
 
 // pub mod color;
