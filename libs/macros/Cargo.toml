@@ -9,12 +9,12 @@ repository = "https://github.com/andamira/devela_macros"
 documentation = "https://docs.rs/devela_macros"
 license = "MIT OR Apache-2.0"
 include = [
-	"/src/**/*.rs",
-	"/src/**/*.md",
-	"/examples/*.rs",
 	"/Cargo.toml",
-	"/README.md",
-	"/LICENSE-*",
+	"/DOCS/*",
+	"/src/**/*.rs", "/src/**/*.md",
+
+	# examples used in docs:
+	"/examples/*.rs",
 ]
 categories = ["rust-patterns", "development-tools::procedural-macro-helpers"]
 keywords = ["dev", "helper", "helpers", "extension", "code-generation"]
@@ -24,9 +24,7 @@ publish = true
 proc-macro = true
 
 
-# ------------------------------------------------------------------------------
-
-[features]
+[features] # total: 9/300, visible: 7, hidden: 2
 # ==============================================================================
 
 #* Miscellaneous features *#
@@ -63,6 +61,14 @@ nightly = ["nightly_doc"]
 
 # The most complete version of the documentation:
 _docsrs = ["nightly", "std", "unsafe"]
+
+
+[dependencies]
+# ==============================================================================
+
+[dev-dependencies]
+# ------------------------------------------------------------------------------
+
 
 [package.metadata.docs.rs]
 # ==============================================================================
