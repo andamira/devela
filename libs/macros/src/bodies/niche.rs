@@ -23,9 +23,8 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
     let repr_str = parts[0].trim();
     let enum_name_str = parts[1].trim();
     let enum_name = Ident::new(enum_name_str, Span::call_site()); // will panic if invalid
-    let start: u64 = parts[2].trim().parse().expect("Invalid start value");
-    let end: u64 = parts[3].trim().parse().expect("Invalid end value");
-
+    let start: i128 = parts[2].trim().parse().expect("Invalid start value");
+    let end: i128 = parts[3].trim().parse().expect("Invalid end value");
     if start > end {
         panic!("Start value must be less than or equal to end value");
     }
@@ -33,38 +32,77 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
     // Validate the provided representation against the range length
     let range_length = end - start + 1;
     let repr = match repr_str {
+        // unsigned reprs
         "u8" => {
-            if range_length > u8::MAX as u64 {
+            if range_length > u8::MAX as i128 {
                 panic!("u8 cannot represent the range [{start}, {end}]")
             }
             quote! { u8 }
         }
         "u16" => {
-            if range_length > u16::MAX as u64 {
+            if range_length > u16::MAX as i128 {
                 panic!("u16 cannot represent the range [{start}, {end}]")
             }
             quote! { u16 }
         }
         "u32" => {
-            if range_length > u32::MAX as u64 {
+            if range_length > u32::MAX as i128 {
                 panic!("u32 cannot represent the range [{start}, {end}]")
             }
             quote! { u32 }
         }
         "usize" => {
-            if range_length > usize::MAX as u64 {
+            if range_length > usize::MAX as i128 {
                 panic!("usize cannot represent the range [{start}, {end}]")
             }
             quote! { usize }
         }
-        "u64" => quote! { u64 }, // u64 can always represent the range
+        "u64" => quote! { u64 },
+        // signed reprs
+        "i8" => {
+            if range_length > i8::MAX as i128 {
+                panic!("u8 cannot represent the range [{start}, {end}]")
+            }
+            quote! { i8 }
+        }
+        "i16" => {
+            if range_length > i16::MAX as i128 {
+                panic!("u8 cannot represent the range [{start}, {end}]")
+            }
+            quote! { i16 }
+        }
+        "i32" => {
+            if range_length > i32::MAX as i128 {
+                panic!("u8 cannot represent the range [{start}, {end}]")
+            }
+            quote! { i32 }
+        }
+        "isize" => {
+            if range_length > isize::MAX as i128 {
+                panic!("u8 cannot represent the range [{start}, {end}]")
+            }
+            quote! { isize }
+        }
+        "i64" => quote! { i64 },
         _ => panic!("Invalid representation type: {}", repr_str),
     };
+    let unsigned_repr = match repr_str {
+        "i8" => quote! { u8 },
+        "i16" => quote! { u16 },
+        "i32" => quote! { u32 },
+        "isize" => quote! { usize },
+        "i64" => quote! { u64 },
+        _ => repr.clone(), // For unsigned types, use the same repr
+    };
 
-    // Generate the enum variants
+    // Generate the enum variants, handling negative and positive values.
     let mut enum_variants = Vec::new();
     for i in start..=end {
-        let variant = Ident::new(&format!("_{}", i), Span::call_site());
+        let variant = if i < 0 {
+            Ident::new(&format!("N{}", i.abs()), Span::call_site())
+        } else {
+            Ident::new(&format!("P{}", i), Span::call_site())
+        };
         enum_variants.push(quote! { #variant = #i as #repr });
     }
 
@@ -83,11 +121,11 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
         impl #enum_name {
             /* constants */
 
-            /// Returns the number of valid values.
-            pub const VALID_VALUES: #repr = #range_length as #repr;
+            /// Returns the number of valid values, as an unsigned primitive.
+            pub const VALID_VALUES: #unsigned_repr = #range_length as #unsigned_repr;
 
-            /// Returns the number of invalid values.
-            pub const NICHE_VALUES: #repr = #repr::MAX - Self::VALID_VALUES + 1;
+            /// Returns the number of invalid values, as an unsigned primitive.
+            pub const NICHE_VALUES: #unsigned_repr = #unsigned_repr::MAX - Self::VALID_VALUES + 1;
 
             /// Returns the minimum possible value.
             pub const MIN: #repr = #start as #repr;
