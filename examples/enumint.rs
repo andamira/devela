@@ -1,6 +1,6 @@
 use devela_macros::enumint;
 
-enumint!(u8, UEnum, 2, 5); // Generates the following enum:
+enumint![u8, pub UEnum, 2, 5]; // Generates the following enum:
 
 /*
 #[repr(u8)]
@@ -13,7 +13,7 @@ enum UEnum {
 }
 */
 
-enumint!(i16, IEnum, -2, 3); // Generates the following enum:
+enumint!(i16, pub IEnum, -2, 3); // Generates the following enum:
 
 /*
 #[repr(i16)]
