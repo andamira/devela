@@ -15,15 +15,14 @@ use quote::quote;
 pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
     let input_str = input.to_string();
 
-    // Split the input into 4 parts: repr, enum_name, start, end
     let parts: Vec<&str> = input_str.split(',').collect();
     if parts.len() != 4 {
-        panic!("Expected format: repr, [visibility] enum_name, start, end");
+        panic!("Expected format: [visibility] enum_name, repr, start, end");
     }
 
-    let repr_str = parts[0].trim();
-    let enum_name_str = parts[1].trim();
+    let enum_name_str = parts[0].trim();
     let (visibility, enum_name) = parse_vis_ident(enum_name_str);
+    let repr_str = parts[1].trim();
 
     let start: i128 = parts[2].trim().parse().expect("Invalid start value");
     let end: i128 = parts[3].trim().parse().expect("Invalid end value");
