@@ -179,21 +179,32 @@ pub fn ident_unique(input: TokenStream) -> TokenStream {
 
 /* niche */
 
-/// Generates an enum with variants corresponding to values within a specified range.
+/// Generates a unit-only enum with variants associated to a specified range.
 ///
-/// This macro generates an enum with integer variants named `_` followed by the value.
-/// The enum is automatically assigned an appropriate `#[repr(u8 | u16 | u32 | u64)]`
-/// based on the size of the range.
+/// This macro generates an enum with integer variants named `P#` for positive
+/// vales and `N#` for negative values.
+///
+/// It allows to represent integers with valid range of values, and where the
+/// invalid values can be used by the compiler for memory niche optimization.
+///
+/// # Usage
+/// ```
+/// # use devela_macros::enumint;
+/// // [visibility] name, repr, start, end
+/// enumint![pub MyEnum, i8, -10, 10];
+/// ```
 ///
 /// # Parameters
-/// - `enum_name`: The name of the enum to be created.
+/// - `visibility`: Optional visibility indicator. E.g. `pub(crate)`.
+/// - `name`: The name of the enum to be created.
+/// - `repr`: the data representation. E.g `u8`.
 /// - `start`: The starting value for the range of variants (inclusive).
 /// - `end`: The ending value for the range of variants (inclusive).
 ///
 /// # Panics
-/// - Panics if the provided enum name is not a valid Rust identifier.
+/// - Panics if any given value is not of the kind expected.
+/// - Panics if `start` or `end` are outside the `repr` representable range.
 /// - Panics if `start` is greater than `end`.
-/// - Panics if the `start` or `end` values are invalid integers.
 ///
 /// # Example
 /// ```
