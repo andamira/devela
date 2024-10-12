@@ -210,26 +210,17 @@ nightly = [
 		# 1.83: [const_mut_refs|const_refs_to_cell](https://github.com/rust-lang/rust/pull/129195)
 		# 1.82: [const_refs_to_static](https://github.com/rust-lang/rust/pull/129759)
 		# 1.83: [io_error_more](https://github.com/rust-lang/rust/pull/128316)
+		# 1.83: [mpmc](https://github.com/rust-lang/rust/pull/126839)
 		# 1.83: [r#ident](https://github.com/rust-lang/rust/pull/126452)
 		# 1.83: [MaybeUninit::as_mut_ptr](https://github.com/rust-lang/rust/pull/130542)
 		# 1.83: [waker_getters](https://github.com/rust-lang/rust/pull/129919)
-		# > 1.84 will be stable on 2024-11-28
-		# > 1.85 will be stable on 2025-01-09
-		# > 1.86 will be stable on 2025-02-20
-		# > 1.87 will be stable on 2025-04-03
-		# > 1.88 will be stable on 2025-05-15
-		# > 1.89 will be stable on 2025-05-15
-		# > 1.90 will be stable on 2025-06-26
-		# > 1.91 will be stable on 2025-08-07
-		# > 1.92 will be stable on 2025-09-18
-		# > 1.93 will be stable on 2025-10-30
-		# > 1.94 will be stable on 2025-12-11
-		# > 1.95 will be stable on 2026-01-22
 		# > ...…
 		# 1.?? [box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 		# 1.?? [const_array_from_ref|const_slice_from_ref](https://github.com/rust-lang/rust/issues/90206)
 		# 1.?? [const_cell_into_inner](https://github.com/rust-lang/rust/pull/130972)
+		# 1.?? [const_char_encode_utf8](https://github.com/rust-lang/rust/pull/131463)
 		# 1.?? [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
+		# 1.?? [const_make_ascii](https://github.com/rust-lang/rust/pull/131496)
 		# 1.?? [const_mut_refs](https://github.com/rust-lang/rust/pull/129195)
 		# 1.?? [const_slice_from_raw_parts_mut](https://github.com/rust-lang/rust/pull/130403)
 		# 1.?? [const_slice_split_at_mut](https://github.com/rust-lang/rust/pull/130428)
@@ -241,12 +232,22 @@ nightly = [
 		# 1.?? [noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
 		# 1.?? [unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 		#
-		# Experimental features
+		# Experimental features:
 		# [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 		# [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
 		#
 		# 2024 edition:
 		# https://doc.rust-lang.org/edition-guide/rust-2024/index.html
+		#
+		# Future releases:
+		# https://calendar.google.com/calendar/u/0/embed?src=mozilla.com_ts4qudb88i0tbjef8rche4a6v4@group.calendar.google.com
+		#  1.84_2025-01-09,  1.85_2025-02-20,  1.86_2025-04-03,  1.87_2025-05-15,
+		#  1.88_2025-06-26,  1.89_2025-08-07,  1.90_2025-09-18,  1.91_2025-10-30,
+		#  1.92_2025-12-11,  1.93_2026-01-22,  1.94_2026-03-05,  1.95_2026-04-16,
+		#  1.96_2026-05-28,  1.97_2026-07-09,  1.98_2027-08-20,  1.99_2026-10-01,
+		# 1.100_2026-11-12, 1.101_2026-12-24, 1.102_2027-02-04, 1.103_2027-03-18,
+		# 1.104_2027-04-29, 1.105_2027-06-10, 1.106_2027-07-22, 1.107_2027-09-02,
+		# 1.108_2027-10-14, 1.109_2027-11-25, 1.110_2028-01-06, 1.111_2028-02-17,
 
 
 #* Capability features *#
