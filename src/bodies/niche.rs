@@ -61,26 +61,26 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
         "u64" => quote! { u64 },
         // signed reprs
         "i8" => {
-            if range_length > i8::MAX as i128 {
-                panic!("u8 cannot represent the range [{start}, {end}]")
+            if start < i8::MIN as i128 || end > i8::MAX as i128 {
+                panic!("i8 cannot represent the range [{start}, {end}]")
             }
             quote! { i8 }
         }
         "i16" => {
-            if range_length > i16::MAX as i128 {
-                panic!("u8 cannot represent the range [{start}, {end}]")
+            if start < i16::MIN as i128 || end > i16::MAX as i128 {
+                panic!("i16 cannot represent the range [{start}, {end}]")
             }
             quote! { i16 }
         }
         "i32" => {
-            if range_length > i32::MAX as i128 {
-                panic!("u8 cannot represent the range [{start}, {end}]")
+            if start < i32::MIN as i128 || end > i32::MAX as i128 {
+                panic!("i32 cannot represent the range [{start}, {end}]")
             }
             quote! { i32 }
         }
         "isize" => {
-            if range_length > isize::MAX as i128 {
-                panic!("u8 cannot represent the range [{start}, {end}]")
+            if start < isize::MIN as i128 || end > isize::MAX as i128 {
+                panic!("isize cannot represent the range [{start}, {end}]")
             }
             quote! { isize }
         }
