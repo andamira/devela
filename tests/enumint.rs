@@ -8,28 +8,30 @@ enumint!(EnumI4, i8, -2, 3);
 fn enumint_niches() {
     /* positive repr */
 
-    assert_eq!(4, Enum4::VALID_VALUES);
-    assert_eq!(252, Enum4::NICHE_VALUES);
-    assert_eq!(1, size_of::<Enum4>());
-    assert_eq!(1, size_of::<Option<Enum4>>());
-    assert_eq!(1, size_of::<Option<Option<Enum4>>>());
-    // ...we could nest 252 times before increasing memory size
+    assert_eq!(Enum4::VALID_VALUES, 4);
+    assert_eq!(Enum4::NICHE_VALUES, 252);
+    // We could nest 252 Options before the memory representation increases
+    assert_eq!(size_of::<Enum4>(), 1);
+    assert_eq!(size_of::<Option<Enum4>>(), 1);
+    assert_eq!(size_of::<Option<Option<Enum4>>>(), 1);
+    // ...
 
-    assert_eq!(253, Enum253::VALID_VALUES);
-    assert_eq!(3, Enum253::NICHE_VALUES);
-    assert_eq!(1, size_of::<Enum253>()); // 0 niches used
-    assert_eq!(1, size_of::<Option<Enum253>>()); // 1 niche used
-    assert_eq!(1, size_of::<Option<Option<Enum253>>>()); // 2 niches used
-    assert_eq!(1, size_of::<Option<Option<Option<Enum253>>>>()); // all 3 niches used
-    assert_eq!(2, size_of::<Option<Option<Option<Option<Enum253>>>>>()); // increased
+    assert_eq!(Enum253::VALID_VALUES, 253);
+    assert_eq!(Enum253::NICHE_VALUES, 3);
+    // We can nest 3 Options before the memory representation increases:
+    assert_eq!(size_of::<Enum253>(), 1); // 0 niches used
+    assert_eq!(size_of::<Option<Enum253>>(), 1); // 1 niche used
+    assert_eq!(size_of::<Option<Option<Enum253>>>(), 1); // 2 niches used
+    assert_eq!(size_of::<Option<Option<Option<Enum253>>>>(), 1); // all 3 niches used
+    assert_eq!(size_of::<Option<Option<Option<Option<Enum253>>>>>(), 2); // increased
 
     /* negative repr */
 
-    assert_eq!(6, EnumI4::VALID_VALUES);
-    assert_eq!(250, EnumI4::NICHE_VALUES);
-    assert_eq!(1, size_of::<EnumI4>());
-    assert_eq!(1, size_of::<Option<EnumI4>>());
-    assert_eq!(1, size_of::<Option<Option<EnumI4>>>());
+    assert_eq!(EnumI4::VALID_VALUES, 6);
+    assert_eq!(EnumI4::NICHE_VALUES, 250);
+    assert_eq!(size_of::<EnumI4>(), 1);
+    assert_eq!(size_of::<Option<EnumI4>>(), 1);
+    assert_eq!(size_of::<Option<Option<EnumI4>>>(), 1);
 }
 
 #[test]
