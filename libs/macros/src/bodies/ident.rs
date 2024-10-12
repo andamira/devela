@@ -8,7 +8,7 @@
 // - ident_total_unique
 // - ident_unique
 
-use super::common::split_args;
+use super::shared::split_args;
 use proc_macro::{TokenStream, TokenTree};
 
 #[inline(always)]

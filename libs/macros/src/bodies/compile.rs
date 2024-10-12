@@ -8,7 +8,7 @@
 // - compile_attr
 // - compile_doc
 
-use super::common::{compile_eval, deindent, split_args, split_compile_doc_tuple};
+use super::shared::{compile_eval, deindent, split_args, split_compile_doc_tuple};
 #[cfg(feature = "alloc")]
 use alloc::{
     format,

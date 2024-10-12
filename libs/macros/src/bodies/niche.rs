@@ -5,6 +5,7 @@
 // TOC
 // - enumint
 
+use super::shared::parse_vis_ident;
 use proc_macro::TokenStream;
 use proc_macro2::{Ident, Span};
 use quote::quote;
@@ -17,12 +18,13 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
     // Split the input into 4 parts: repr, enum_name, start, end
     let parts: Vec<&str> = input_str.split(',').collect();
     if parts.len() != 4 {
-        panic!("Expected format: repr, enum_name, start, end");
+        panic!("Expected format: repr, [visibility] enum_name, start, end");
     }
 
     let repr_str = parts[0].trim();
     let enum_name_str = parts[1].trim();
-    let enum_name = Ident::new(enum_name_str, Span::call_site()); // will panic if invalid
+    let (visibility, enum_name) = parse_vis_ident(enum_name_str);
+
     let start: i128 = parts[2].trim().parse().expect("Invalid start value");
     let end: i128 = parts[3].trim().parse().expect("Invalid end value");
     if start > end {
@@ -111,7 +113,7 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
         /// An auto-generated enum for values between #start and #end.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[repr(#repr)]
-        enum #enum_name {
+        #visibility enum #enum_name {
             #(#enum_variants),*
         }
 

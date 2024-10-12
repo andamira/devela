@@ -3,7 +3,7 @@
 //! The bodies of the proc_macro functions defined in `lib.rs`.
 //
 
-mod common;
+mod shared;
 
 #[cfg(feature = "alloc")]
 #[cfg(test)]

@@ -1,13 +1,21 @@
-// devela_macros::common
+// devela_macros::shared
 //
-//! Common functionality for procedural macros.
+//! Shared functionality for procedural macros.
 //
+// TOC
+// - split_args
+// - split_compile_doc_tuple
+// - deindent
+// - compile_eval
+// - parse_vis_ident
 
 #[cfg(feature = "alloc")]
 use alloc::{
     string::{String, ToString},
     vec::Vec,
 };
+use proc_macro2::{Ident, TokenStream, TokenTree};
+use quote::quote;
 
 // Argument parser that correctly deals with nested arguments with commas.
 #[cfg(feature = "alloc")]
@@ -262,4 +270,50 @@ pub(crate) fn compile_eval(arg: String) -> bool {
     } else {
         panic!["Unrecognized compilation predicate: {:?}", arg];
     }
+}
+
+// Helper function for parsing visibility and ident
+pub(crate) fn parse_vis_ident(enum_name_str: &str) -> (Option<TokenStream>, Ident) {
+    let enum_name_tokens: TokenStream = enum_name_str.parse().expect("Failed to parse ident");
+    let mut tokens_iter = enum_name_tokens.into_iter();
+
+    let mut visibility = None;
+    let identifier;
+
+    if let Some(first_token) = tokens_iter.next() {
+        match first_token {
+            TokenTree::Ident(ident) if ident == "pub" => {
+                // Handle pub visibility
+                if let Some(next_token) = tokens_iter.next() {
+                    match next_token {
+                        TokenTree::Group(group) => {
+                            // Use the entire `pub(crate)` or `pub(self)` as a single token
+                            visibility = Some(quote! { pub #group });
+                        }
+                        TokenTree::Ident(ident) => {
+                            visibility = Some(quote! { pub });
+                            identifier = ident;
+                            return (visibility, identifier);
+                        }
+                        _ => panic!("Expected ident after pub"),
+                    }
+                }
+
+                // Handle the case when the next token after pub(crate) is the enum name
+                if let Some(TokenTree::Ident(ident)) = tokens_iter.next() {
+                    identifier = ident;
+                } else {
+                    panic!("Expected ident after visibility");
+                }
+            }
+            TokenTree::Ident(ident) => {
+                identifier = ident;
+            }
+            _ => panic!("Invalid token: expected visibility specifier or ident"),
+        }
+    } else {
+        panic!("No tokens found for the ident");
+    }
+
+    (visibility, identifier)
 }
