@@ -13,31 +13,52 @@ use proc_macro::{Ident, Span, TokenStream};
 pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
     let input_str = input.to_string();
 
+    // Split the input into 4 parts: repr, enum_name, start, end
     let parts: Vec<&str> = input_str.split(',').collect();
-    if parts.len() != 3 {
-        panic!("Expected format: enum_name, start, end");
+    if parts.len() != 4 {
+        panic!("Expected format: repr, enum_name, start, end");
     }
 
-    let enum_name_str = parts[0].trim();
+    let repr = parts[0].trim();
+    let enum_name_str = parts[1].trim();
     let enum_name = Ident::new(enum_name_str, Span::call_site()); // will panic if invalid
-    let start: u64 = parts[1].trim().parse().expect("Invalid start value");
-    let end: u64 = parts[2].trim().parse().expect("Invalid end value");
+    let start: u64 = parts[2].trim().parse().expect("Invalid start value");
+    let end: u64 = parts[3].trim().parse().expect("Invalid end value");
     if start > end {
         panic!("Start value must be less than or equal to end value");
     }
 
     let range_length = end - start + 1;
-    let repr = if range_length <= u8::MAX as u64 {
-        "u8"
-    } else if range_length <= u16::MAX as u64 {
-        "u16"
-    } else if range_length <= u32::MAX as u64 {
-        "u32"
-    } else {
-        "u64"
-    };
+    match repr {
+        "u8" => {
+            if range_length > u8::MAX as u64 {
+                panic!("u8 cannot represent the range [{start}, {end}]")
+            }
+        }
+        "u16" => {
+            if range_length > u16::MAX as u64 {
+                panic!("u16 cannot represent the range [{start}, {end}]")
+            }
+        }
+        "u32" => {
+            if range_length > u32::MAX as u64 {
+                panic!("u32 cannot represent the range [{start}, {end}]")
+            }
+        }
+        "usize" => {
+            if range_length > usize::MAX as u64 {
+                panic!("usize cannot represent the range [{start}, {end}]")
+            }
+        }
+        "u64" => {} // u64 can always represent the range
+        _ => panic!("Invalid representation type: {}", repr),
+    }
 
-    let mut enum_variants = String::new();
+    // Initialize the string with capacity based on the estimated size
+    let num_variants = end - start + 1;
+    let max_digits = end.to_string().len();
+    let estimated_size = num_variants as usize * (2 * max_digits + 3);
+    let mut enum_variants = String::with_capacity(estimated_size);
     for i in start..=end {
         write!(enum_variants, "_{} = {},", i, i).unwrap();
     }
