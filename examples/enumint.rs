@@ -1,6 +1,6 @@
 use devela_macros::enumint;
 
-enumint!(MyEnum, 2, 5);
+enumint!(u8, MyEnum, 2, 5);
 
 /* This generates the following enum:
 
