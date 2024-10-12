@@ -1,38 +1,69 @@
 use devela_macros::enumint;
 
-enumint!(u8, MyEnum, 2, 5);
+enumint!(u8, UEnum, 2, 5); // Generates the following enum:
 
-/* This generates the following enum:
-
+/*
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-enum MyEnum {
-    _2 = 2,
-    _3 = 3,
-    _4 = 4,
-    _5 = 5,
+enum UEnum {
+    P2 = 2,
+    P3 = 3,
+    P4 = 4,
+    P5 = 5,
+}
+*/
+
+enumint!(i16, IEnum, -2, 3); // Generates the following enum:
+
+/*
+#[repr(i16)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+enum IEnum {
+    N2 = -2,
+    N1 = -1,
+    P0 = 0,
+    P1 = 1,
+    P2 = 2,
+    P3 = 3,
 }
 */
 
 fn main() {
+    /* UNSIGNED */
+
     // constants
-    assert_eq![2, MyEnum::MIN];
-    assert_eq![5, MyEnum::MAX];
-    assert_eq![4, MyEnum::VALID_VALUES];
-    assert_eq![252, MyEnum::NICHE_VALUES];
-
+    assert_eq![UEnum::MIN, 2];
+    assert_eq![UEnum::MAX, 5];
+    assert_eq![UEnum::VALID_VALUES, 4];
+    assert_eq![UEnum::NICHE_VALUES, 252];
     // cast
-    assert_eq![2, MyEnum::_2.get()];
-    assert_eq![2, MyEnum::_2 as u8];
-
+    assert_eq![UEnum::P2.get(), 2];
+    assert_eq![UEnum::P2 as u8, 2];
     // construct
-    assert_eq![Some(MyEnum::_3), MyEnum::new(3)];
-    assert_eq![None, MyEnum::new(1)];
-    assert_eq![None, MyEnum::new(6)];
+    assert_eq![UEnum::new(3), Some(UEnum::P3)];
+    assert_eq![UEnum::new(1), None];
+    assert_eq![UEnum::new(6), None];
+    assert_eq![UEnum::new_saturated(1), UEnum::P2];
+    assert_eq![UEnum::new_saturated(6), UEnum::P5];
+    assert_eq![UEnum::new_wrapped(1), UEnum::P5];
+    assert_eq![UEnum::new_wrapped(6), UEnum::P2];
 
-    assert_eq![MyEnum::_2, MyEnum::new_saturated(1)];
-    assert_eq![MyEnum::_5, MyEnum::new_saturated(6)];
+    /* SIGNED */
 
-    assert_eq![MyEnum::_5, MyEnum::new_wrapped(1)];
-    assert_eq![MyEnum::_2, MyEnum::new_wrapped(6)];
+    // constants
+    assert_eq![IEnum::MIN, -2];
+    assert_eq![IEnum::MAX, 3];
+    assert_eq![IEnum::VALID_VALUES, 6];
+    assert_eq![IEnum::NICHE_VALUES, 65_530];
+    // cast
+    assert_eq![IEnum::N1.get(), -1];
+    assert_eq![IEnum::N1 as i8, -1];
+    // construct
+    assert_eq![IEnum::new(3), Some(IEnum::P3)];
+    assert_eq![IEnum::new(-3), None];
+    assert_eq![IEnum::new(4), None];
+    assert_eq![IEnum::new_saturated(-3), IEnum::N2];
+    assert_eq![IEnum::new_saturated(4), IEnum::P3];
+    assert_eq![IEnum::new_wrapped(-3), IEnum::P3];
+    assert_eq![IEnum::new_wrapped(4), IEnum::N2];
 }
