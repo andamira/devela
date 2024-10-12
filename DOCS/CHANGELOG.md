@@ -12,8 +12,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - make `compile_doc` hidden.
 
 ### Added
-- new features: `nightly_doc`, `__lints`.
 - new macro `enumint`.
+- new features: `nightly_doc`, `__lints`.
+- new dependencies: `quote`, `proc_macro2`.
 - add `.rustfmt.toml`.
 
 ### Fixed
