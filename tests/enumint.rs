@@ -1,8 +1,8 @@
 use devela_macros::enumint;
 
-enumint!(u8, Enum253, 1, 253);
-enumint!(u8, Enum4, 2, 5);
-enumint!(i8, EnumI4, -2, 3);
+enumint!(Enum253, u8, 1, 253);
+enumint!(Enum4, u8, 2, 5);
+enumint!(EnumI4, i8, -2, 3);
 
 #[test]
 fn enumint_niches() {
