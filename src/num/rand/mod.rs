@@ -14,11 +14,12 @@
 //
 
 mod xabc;
+mod xoroshiro;
 mod xorshift;
 mod xyza8;
-pub use {xabc::*, xorshift::*, xyza8::*};
+pub use {xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{xabc::*, xorshift::*, xyza8::*};
+    pub use super::{xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
 }

@@ -33,6 +33,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new traits: `ExtCellOption`, `ExtOptRes`, `MemPod`.
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
 - new items: `RendError`, `RendResult`, `Pnm`.
+- new type: `Xoroshiro128pp`.
 - new type: `Interval`.
 - new type: `FatPtr`.
 - new methods for `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
