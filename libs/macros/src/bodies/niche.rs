@@ -48,6 +48,9 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
         #[repr({repr})]
         enum {enum_name} {{ {enum_variants} }}
 
+        unsafe impl Send for {enum_name} {{}}
+        unsafe impl Sync for {enum_name} {{}}
+
         impl {enum_name} {{
             /* constants */
 
@@ -65,59 +68,73 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
 
             /* methods */
 
-            /// Try to create an enum from the underlying representation.
-            #[inline]
+            /// Returns the appropriate variant from the given `value`.
+            ///
+            /// Returns `None` if it's out of range.
+            #[inline] #[must_use]
             pub const fn new(value: {repr}) -> Option<Self> {{
                 if value >= {start} && value <= {end} {{
+                    // SAFETY: The check ensures that `value` is within the valid range,
+                    // so the `transmute` will always produce a valid enum variant.
                     Some(unsafe {{ core::mem::transmute(value) }})
                 }} else {{
                     None
                 }}
             }}
 
-            /// Cast the enum to its underlying representation.
-            #[inline]
+            /// Returns the appropriate variant if the given `value` is within bounds.
+            ///
+            /// # Panics
+            /// Panics in debug if `value < {start} || value > {end}`.
+            /// # Safety
+            /// The given `value` must always be `value >= {start} && value <= {end}`.
             #[must_use]
+            pub const unsafe fn new_unchecked(value: {repr}) -> Self {{
+                debug_assert!(value >= {start} && value <= {end}, \"Value out of range\");
+                // SAFETY: caller must ensure safety
+                unsafe {{ core::mem::transmute(value) }}
+            }}
+
+            /// Returns the appropriate variant from the given `value`,
+            /// saturating at the type bounds.
+            #[inline] #[must_use]
+            pub const fn new_saturated(value: {repr}) -> Self {{
+                // SAFETY: The `clamp` function ensures that the value is within the valid range,
+                // so the `transmute` will always produce a valid enum variant.
+                unsafe {{ core::mem::transmute(Self::clamp(value, {start}, {end})) }}
+            }}
+
+            /// Returns the appropriate variant from the given `value`,
+            /// wrapping around within the type bounds.
+            #[inline] #[must_use]
+            pub const fn new_wrapped(value: {repr}) -> Self {{
+                let range_size = {end} - {start} + 1;
+                let wrapped_value = if value >= {start} {{
+                    (value - {start}) % range_size + {start}  // Upward wrapping
+                }} else {{
+                    let diff = {start} - value;
+                    {end} - ((diff - 1) % range_size)  // Downward wrapping
+                }};
+                // SAFETY: The `wrapped_value` is guaranteed to be within the valid range,
+                // so `transmute` will always produce a valid enum variant.
+                unsafe {{ core::mem::transmute(wrapped_value) }}
+            }}
+
+            /// Cast the enum to its underlying representation.
+            #[inline] #[must_use]
             pub const fn get(self) -> {repr} {{
                 self as {repr}
             }}
 
-            /* arithmetic */
+            /* helpers */
 
-            /// Checked addition. Returns `None` if overflow occurs.
-            #[inline] #[must_use]
-            pub const fn checked_add(self, other: Self) -> Option<Self> {{
-                let result = self.get().checked_add(other.get());
-                if let Some(result) = result {{
-                    Self::new(result)
-                }} else {{
-                    None
-                }}
-            }}
-
-            /// Saturating addition. Returns the maximum value if overflow occurs.
-            #[inline] #[must_use]
-            pub const fn saturating_add(self, other: Self) -> Self {{
-                let result = self.get().saturating_add(other.get());
-                match Self::new(result) {{
-                    Some(value) => value,
-                    None => match Self::new(Self::_{end}.get()) {{
-                        Some(max) => max,
-                        None => Self::_{end}, // Fallback to end (shouldn't happen)
-                    }},
-                }}
-            }}
-
-            /// Wrapping (modular) addition. Wraps around on overflow.
-            #[inline] #[must_use]
-            pub const fn wrapping_add(self, other: Self) -> Self {{
-                let range_size = Self::_{end}.get() - Self::_{start}.get() + 1;
-                let result = (self.get() - Self::_{start}.get() + other.get())
-                                % range_size + Self::_{start}.get();
-                match Self::new(result) {{
-                    Some(value) => value,
-                    None => Self::_{start},  // Fallback to start (shouldn't happen)
-                }}
+            // #[inline]
+            // const fn min(a: {repr}) -> {repr} {{ if a < b {{ a }} else {{ b }} }}
+            // #[inline]
+            // const fn max(a: {repr}) -> {repr} {{ if a > b {{ a }} else {{ b }} }}
+            #[inline]
+            const fn clamp(v: {repr}, min: {repr}, max: {repr}) -> {repr} {{
+                if v < min {{ min }} else if v > max {{ max }} else {{ v }}
             }}
         }}"
     );
