@@ -22,18 +22,45 @@ fn enumint_niches() {
 }
 
 #[test]
-fn enumint_add() {
+fn enumint_new() {
     {
-        use Enum4::{_2, _3, _5};
+        use Enum4::{_2, _3, _4, _5};
         assert_eq![Enum4::MAX, _5.get()];
 
-        assert_eq!(_2.checked_add(_3), Some(_5)); // 2 + 3 = 5
-        assert_eq!(_2.checked_add(_5), None); // 2 + 5 overflows, should return None
+        // checked
+        assert_eq![Enum4::new(0), None];
+        assert_eq![Enum4::new(1), None];
+        //
+        assert_eq![Enum4::new(2), Some(_2)];
+        assert_eq![Enum4::new(3), Some(_3)];
+        assert_eq![Enum4::new(4), Some(_4)];
+        assert_eq![Enum4::new(5), Some(_5)];
+        //
+        assert_eq![Enum4::new(6), None];
+        assert_eq![Enum4::new(7), None];
 
-        assert_eq!(_2.saturating_add(_3), _5); // 2 + 3 = 5
-        assert_eq!(_2.saturating_add(_5), _5); // 2 + 5 overflows, should return max (_5)
+        // saturating
+        assert_eq![Enum4::new_saturated(0), _2];
+        assert_eq![Enum4::new_saturated(1), _2];
+        //
+        assert_eq![Enum4::new_saturated(2), _2];
+        assert_eq![Enum4::new_saturated(3), _3];
+        assert_eq![Enum4::new_saturated(4), _4];
+        assert_eq![Enum4::new_saturated(5), _5];
+        //
+        assert_eq![Enum4::new_saturated(6), _5];
+        assert_eq![Enum4::new_saturated(7), _5];
 
-        assert_eq!(_2.wrapping_add(_3), _5); // 2 + 3 = 5
-        assert_eq!(_2.wrapping_add(_5), _3); // 2 + 5 wraps around to 3
+        // wrapping
+        assert_eq![Enum4::_4, Enum4::new_wrapped(0)];
+        assert_eq![Enum4::_5, Enum4::new_wrapped(1)];
+        //
+        assert_eq![Enum4::_2, Enum4::new_wrapped(2)];
+        assert_eq![Enum4::_3, Enum4::new_wrapped(3)];
+        assert_eq![Enum4::_4, Enum4::new_wrapped(4)];
+        assert_eq![Enum4::_5, Enum4::new_wrapped(5)];
+        //
+        assert_eq![Enum4::_2, Enum4::new_wrapped(6)];
+        assert_eq![Enum4::_3, Enum4::new_wrapped(7)];
     }
 }

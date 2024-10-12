@@ -196,21 +196,8 @@ pub fn ident_unique(input: TokenStream) -> TokenStream {
 /// - Panics if the `start` or `end` values are invalid integers.
 ///
 /// # Example
-/// ```rust
-/// # use devela_macros::enumint;
-/// enumint!(MyEnum, 2, 5);
-/// assert_eq![2, MyEnum::_2 as u8];
 /// ```
-/// This will generate the following enum:
-/// ```ignore
-/// #[repr(u8)]
-/// #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
-/// enum MyEnum {
-///     _2 = 2,
-///     _3 = 3,
-///     _4 = 4,
-///     _5 = 5,
-/// }
+#[doc = include_str!("../examples/enumint.rs")]
 /// ```
 #[proc_macro]
 #[cfg(feature = "alloc")]
