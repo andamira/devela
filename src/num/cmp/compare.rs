@@ -89,7 +89,15 @@ impl<T: PartialOrd> Compare<T> {
     /// ```
     #[inline] #[must_use]
     pub fn pclamp(self, min: T, max: T) -> Option<T> {
-        Compare(self.pmax(min)?).pmin(max)
+        match self.0.partial_cmp(&min) {
+            Some(Less) => Some(min),
+            Some(Greater | Equal) => match self.0.partial_cmp(&max) {
+                Some(Greater) => Some(max),
+                Some(Less | Equal) => Some(self.0),
+                None => None,
+            },
+            None => None,
+        }
     }
 
     /// Compares and returns the maximum of two [`PartialOrd`]ered values.
@@ -166,7 +174,9 @@ macro_rules! impl_comparing {
         impl Compare<$p> {
             /// Compares and returns `self` clamped between `min` and `max`.
             #[inline] #[must_use]
-            pub const fn clamp(self, min: $p, max: $p) -> $p { Self(self.max(min)).min(max) }
+            pub const fn clamp(self, min: $p, max: $p) -> $p {
+                if self.0 < min { min } else if self.0 > max { max } else { self.0 }
+            }
 
             /// Compares and returns the maximum between `self` and `other`.
             #[inline] #[must_use]
@@ -253,11 +263,27 @@ macro_rules! impl_comparing {
             /// ```
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn clamp(self, min: $f, max: $f) -> $f { Self(self.max(min)).min(max) }
+            pub const fn clamp(self, min: $f, max: $f) -> $f {
+                match self.0.total_cmp(&min) {
+                    Less => min,
+                    _ => match self.0.total_cmp(&max) {
+                        Greater => max,
+                        _ => self.0,
+                    }
+                }
+            }
             // safe, non-const version (undocumented)
             #[inline] #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn clamp(self, min: $f, max: $f) -> $f { Self(self.max(min)).min(max) }
+            pub fn clamp(self, min: $f, max: $f) -> $f {
+                match self.0.total_cmp(&min) {
+                    Less => min,
+                    _ => match self.0.total_cmp(&max) {
+                        Greater => max,
+                        _ => self.0,
+                    }
+                }
+            }
 
             /// Compares and returns the *total ordered* maximum between `self` and `other`.
             ///
