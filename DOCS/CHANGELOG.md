@@ -32,6 +32,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new types: `IdPinBox`, `IdPin` and example `id_pin`.
 - new traits: `ExtCellOption`, `ExtOptRes`, `MemPod`.
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
+- new types: `CompressionMode`, `EncodingMode`.
 - new items: `RendError`, `RendResult`, `Pnm`.
 - new type: `Xoroshiro128pp`.
 - new type: `Interval`.

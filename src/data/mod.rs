@@ -12,9 +12,10 @@
 
 mod bit;
 mod error;
+mod fmt;
 mod sort;
 #[allow(unused_imports)]
-pub use {bit::*, error::*, sort::*};
+pub use {bit::*, error::*, fmt::all::*, sort::*};
 
 pub mod collections;
 pub mod hash;
@@ -36,7 +37,8 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        bit::all::*, collections::all::*, error::*, hash::all::*, id::all::*, iter::all::*, sort::*,
+        bit::all::*, collections::all::*, error::*, fmt::*, hash::all::*, id::all::*, iter::all::*,
+        sort::*,
     };
 
     #[doc(inline)]
