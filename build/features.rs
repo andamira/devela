@@ -80,7 +80,6 @@ mod reflection {
         features: &[
             "nightly_coro",
             "nightly_doc",
-            "nightly_ptr",
             "nightly_simd",
             "nightly_stabilized",
         ]

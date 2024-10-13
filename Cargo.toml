@@ -166,15 +166,13 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 # ------------------------------------------------------------------------------
 
 nightly = [
-	"nightly_coro", "nightly_doc", "nightly_ptr", "nightly_simd", "nightly_stabilized",
+	"nightly_coro", "nightly_doc", "nightly_simd", "nightly_stabilized",
 ] # enables all the following features:
 	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 	nightly_doc = []
-	# WAIT: [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
-	nightly_ptr = []
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 	nightly_simd = []
 	nightly_stabilized = [] # stabilized features to be released soon:

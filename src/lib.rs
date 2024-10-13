@@ -69,7 +69,6 @@
 #![cfg_attr(all(feature = "nightly_doc", not(doc)), allow(unused_attributes))]
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
-#![cfg_attr(feature = "nightly_ptr", feature(ptr_metadata))]
 // #![cfg_attr(feature = "nightly_stabilized", feature())]
 
 // safeguard environment:

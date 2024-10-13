@@ -9,7 +9,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 - show build environment variables if `__dbg` feature is enabled.
-- new feature `nightly_ptr` enabling `ptr_metadata` experimental feature.
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
 - new features: `linux`, `platforms`, `unsafe_syscall`, `unsafe_async`.
 - new features: `rend`, `rend_image`, `safe_rend`.
