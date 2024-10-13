@@ -457,7 +457,7 @@ impl<'a, W: IoWrite, const S: usize> LineWriterShim<'a, W, S> {
     }
 }
 
-impl<'a, W: IoWrite, const S: usize> IoWrite for LineWriterShim<'a, W, S> {
+impl<W: IoWrite, const S: usize> IoWrite for LineWriterShim<'_, W, S> {
     /// Write some data into this `IoBufReader` with line buffering. This means
     /// that, if any newlines are present in the data, the data up to the last
     /// newline is sent directly to the underlying writer, and data after it

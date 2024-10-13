@@ -11,8 +11,8 @@ use E::{NotImplemented, NotSupported};
 mod impls;
 
 crate::sf! {
-    impl<'a, T: Num> NumRef<'a> for &T { type Own = T; }
-    impl<'a, T: Num> NumRef<'a> for &mut T { type Own = T; }
+    impl<T: Num> NumRef<'_> for &T { type Own = T; }
+    impl<T: Num> NumRef<'_> for &mut T { type Own = T; }
 }
 
 /// Common trait for numeric types.

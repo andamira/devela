@@ -20,12 +20,12 @@ trait ArrayDebug: ExtArray {
     fn fmt_debug(&self, f: &mut fmt::Formatter) -> fmt::Result;
 }
 
-impl<'a, T: ArrayDisplay> fmt::Display for ArrayFmt<'a, T> {
+impl<T: ArrayDisplay> fmt::Display for ArrayFmt<'_, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt_display(f)
     }
 }
-impl<'a, T: ArrayDebug> fmt::Debug for ArrayFmt<'a, T> {
+impl<T: ArrayDebug> fmt::Debug for ArrayFmt<'_, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt_debug(f)
     }

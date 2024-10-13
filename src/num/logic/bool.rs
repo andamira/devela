@@ -11,7 +11,6 @@ use crate::code::sf;
 
 /// Allows to convert compile-time constants into type-level booleans.
 ///
-
 /// See also the [`const_bool`] macro, and the [`True`] and [`False`] types.
 #[rustfmt::skip]
 pub trait ConstBool: Sized {

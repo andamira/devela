@@ -533,8 +533,8 @@ macro_rules! impl_stack {
             /// Rotates the top three stack elements, clockwise, unchecked version.
             ///
             /// `( 1 2 3 -- 2 3 1 ) `
-            /// # Errors
-            /// Returns `Own<self,`[`NotEnoughElements`]`>`
+            /// # Panics
+            /// Panics if the stack doesn’t contain at least 6 elements.
             /// if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```

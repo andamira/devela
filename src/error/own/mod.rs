@@ -18,7 +18,7 @@ mod value;
 /// `self` to be passed along a chain of operations.
 ///
 /// ## Methods
-
+///
 /// ### [General methods](#impl-Own<S,+V>)
 /// Additional [*const* methods](#impl-Own<S,+V>-1) are available when both types are `Copy`.
 /// - Construct:
@@ -52,7 +52,7 @@ mod value;
 ///     [eq](#method.v_assert_eq), [eq_or](#method.v_assert_eq_or))*,
 ///   [`sv_assert`](#method.sv_assert)*([or](#method.sv_assert_or),
 ///     [eq](#method.sv_assert_eq), [eq_or](#method.sv_assert_eq_or))*.
-
+///
 /// ### [Methods for when `state` is a `Result`](#impl-Own<Result<S,+E>,+V>)
 /// - Map:
 ///   [`s_map_ok`](#method.s_map_ok),
@@ -66,7 +66,7 @@ mod value;
 ///   [`s_unwrap`](#method.s_unwrap)*([const](#method.s_const_unwrap))*,
 ///   [`s_unwrap_or`](#method.s_unwrap_or)*([const](#method.s_const_unwrap_or))*,
 ///   [`s_expect`](#method.s_expect)*([const](#method.s_const_expect))*.
-
+///
 /// ### [Methods for when `state` is an `Option`](#impl-Own<Option<S>,+V>)
 /// - Map:
 ///   [`s_map_some`](#method.s_map_some),
@@ -80,7 +80,6 @@ mod value;
 ///   [`s_unwrap_or`](#method.s_unwrap_or-1)*([const](#method.s_const_unwrap_or-1))*,
 ///   [`s_expect`](#method.s_expect-1)*([const](#method.s_const_expect-1))*.
 ///
-
 /// ### [Methods for when `value` is a `Result`](#impl-Own<S,+Result<V,+E>>)
 /// - Map:
 ///   [`v_map_ok`](#method.v_map_ok),
@@ -94,7 +93,7 @@ mod value;
 ///   [`v_unwrap`](#method.v_unwrap)*([const](#method.v_const_unwrap))*,
 ///   [`v_unwrap_or`](#method.v_unwrap_or)*([const](#method.v_const_unwrap_or))*,
 ///   [`v_expect`](#method.v_expect)*([const](#method.v_const_expect))*.
-
+///
 /// ### [Methods for when `value` is an `Option`](#impl-Own<S,+Option<V>>)
 /// - Map:
 ///   [`v_map_some`](#method.v_map_some),

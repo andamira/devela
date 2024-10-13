@@ -19,22 +19,22 @@ pub struct OptionFmtOr<'t, T, U>(pub(super) &'t Option<T>, pub(super) U);
 /// The type returned from [`ExtOption::fmt_or_else`].
 pub struct OptionFmtOrElse<'t, T, F>(pub(super) &'t Option<T>, pub(super) F);
 
-impl<'t, T> Copy for OptionFmt<'t, T> {}
-impl<'t, T> Clone for OptionFmt<'t, T> {
+impl<T> Copy for OptionFmt<'_, T> {}
+impl<T> Clone for OptionFmt<'_, T> {
     fn clone(&self) -> Self {
         *self
     }
 }
 
-impl<'t, T, U: Copy> Copy for OptionFmtOr<'t, T, U> {}
-impl<'t, T, U: Clone> Clone for OptionFmtOr<'t, T, U> {
+impl<T, U: Copy> Copy for OptionFmtOr<'_, T, U> {}
+impl<T, U: Clone> Clone for OptionFmtOr<'_, T, U> {
     fn clone(&self) -> Self {
         Self(self.0, self.1.clone())
     }
 }
 
-impl<'t, T, F: Copy> Copy for OptionFmtOrElse<'t, T, F> {}
-impl<'t, T, F: Clone> Clone for OptionFmtOrElse<'t, T, F> {
+impl<T, F: Copy> Copy for OptionFmtOrElse<'_, T, F> {}
+impl<T, F: Clone> Clone for OptionFmtOrElse<'_, T, F> {
     fn clone(&self) -> Self {
         Self(self.0, self.1.clone())
     }
@@ -43,7 +43,7 @@ impl<'t, T, F: Clone> Clone for OptionFmtOrElse<'t, T, F> {
 macro_rules! impl_option_fmt {
     ($($trait:ident),*$(,)?) => { $(
 
-        impl<'t, T> $trait for OptionFmt<'t, T>
+        impl<T> $trait for OptionFmt<'_, T>
         where
             T: $trait,
         {
