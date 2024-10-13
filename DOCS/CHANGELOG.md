@@ -60,7 +60,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `num::algebra` module.
 - new `NonValue*` constants `MAX`, `MIN`.
 - new `sys::os::linux` module and example `linux`.
-- new script `tool/features.sh`.
+- new scripts: `tools/features.sh`, `tools/release_dates.rs`.
 - new lints.
 
 ### Removed
