@@ -63,7 +63,7 @@ impl LinuxSigset {
     // The hardcoded number of system signals defined in `LINUX_SIGNAL`.
     const NSIG: usize = 36;
     // The size of the array is the number of signals divided by the bits of an usize.
-    const LEN: usize = { (Self::NSIG + Self::BITS_PER_USIZE - 1) / Self::BITS_PER_USIZE };
+    const LEN: usize = { Self::NSIG.div_ceil(Self::BITS_PER_USIZE) };
 
     /// Returns the size in bytes of `LinuxSigset`.
     #[inline]

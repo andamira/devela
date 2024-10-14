@@ -88,8 +88,7 @@ pub(super) fn generate() -> Result<(), Error> {
     w!(f, r#"
     /// The maximum arity supported by the current compilation options.
     ///
-    /// See the available [features](#features) to increase this number.
-    "#)?;
+    /// See the available [features](#features) to increase this number."#)?;
     w!(f, "const MAX_ARITY: usize = {MAX_ARITY};")?;
 
     /* Tuple methods */
@@ -653,7 +652,7 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "back_index: usize,")?;
     w!(f, "}}")?;
     // methods
-    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> TupleIterRef<'a, ")?;
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> TupleIterRef<'_, ")?;
         for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
         w!(f, "/// Returns the remaining elements in the iterator.
         pub const fn remaining(&self) -> usize {{ self.back_index + 1 - self.front_index }}
@@ -671,7 +670,7 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "back_index: usize,")?;
     w!(f, "}}")?;
     // methods
-    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> TupleIterMut<'a, ")?;
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> TupleIterMut<'_, ")?;
         for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
         w!(f, "/// Returns the remaining elements in the iterator.
         pub const fn remaining(&self) -> usize {{ self.back_index + 1 - self.front_index }}
@@ -768,8 +767,8 @@ pub(super) fn generate() -> Result<(), Error> {
         fn count(self) -> usize {{ self.remaining() }}
     }}")?;
     //
-    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
-    w!(f, "> DoubleEndedIterator for TupleIterRef<'a, ")?;
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> DoubleEndedIterator for TupleIterRef<'_, ")?;
         for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
         w!(f, "fn next_back(&mut self) -> Option<Self::Item> {{
             #[allow(clippy::never_loop)]
@@ -791,14 +790,14 @@ pub(super) fn generate() -> Result<(), Error> {
             }}
         }}
     }}")?;
-    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
-    w!(f, "> ExactSizeIterator for TupleIterRef<'a, ")?;
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> ExactSizeIterator for TupleIterRef<'_, ")?;
         for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
         w!(f, "fn len(&self) -> usize {{ self.remaining() }}
     }}")?;
     // NOTE: better not to implement FusedIterator
-    // w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
-    // w!(f, "> core::iter::FusedIterator for TupleIterRef<'a, ")?;
+    // w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    // w!(f, "> core::iter::FusedIterator for TupleIterRef<'_, ")?;
     //     for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{}}")?;
 
     // Mut
@@ -829,8 +828,8 @@ pub(super) fn generate() -> Result<(), Error> {
         fn count(self) -> usize {{ self.remaining() }}
     }}")?;
     //
-    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
-    w!(f, "> DoubleEndedIterator for TupleIterMut<'a, ")?;
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> DoubleEndedIterator for TupleIterMut<'_, ")?;
         for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
         w!(f, "fn next_back(&mut self) -> Option<Self::Item> {{
             #[allow(clippy::never_loop)]
@@ -852,13 +851,13 @@ pub(super) fn generate() -> Result<(), Error> {
             }}
         }}
     }}")?;
-    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
-    w!(f, "> ExactSizeIterator for TupleIterMut<'a, ")?;
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> ExactSizeIterator for TupleIterMut<'_, ")?;
         for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{")?;
         w!(f, "fn len(&self) -> usize {{ self.remaining() }}
     }}")?;
-    w!(f, "impl<'a, ")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
-    w!(f, "> core::iter::FusedIterator for TupleIterMut<'a, ")?;
+    w!(f, "impl<")?; for i in 0..MAX_ARITY { w!(f, "_{i},")?; }
+    w!(f, "> core::iter::FusedIterator for TupleIterMut<'_, ")?;
         for i in 0..MAX_ARITY { w!(f, "_{i},")?; } w!(f, "> {{}}")?;
 
     // --------------------------------------------------------------------------

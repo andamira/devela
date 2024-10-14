@@ -28,12 +28,12 @@ trait TupleDisplay: Tuple {
     fn fmt_display(&self, f: &mut fmt::Formatter) -> fmt::Result;
 }
 
-impl<'a, T: TupleDebug> fmt::Debug for TupleFmt<'a, T> {
+impl<T: TupleDebug> fmt::Debug for TupleFmt<'_, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt_debug(f)
     }
 }
-impl<'a, T: TupleDisplay> fmt::Display for TupleFmt<'a, T> {
+impl<T: TupleDisplay> fmt::Display for TupleFmt<'_, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt_display(f)
     }

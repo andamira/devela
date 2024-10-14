@@ -35,20 +35,20 @@ impl<BUF: DstBuf, DST: ?Sized + fmt::Debug> fmt::Debug for DstQueue<DST, BUF> {
 
 /* pop handle */
 
-impl<'a, DST: ?Sized, BUF: DstBuf> ops::Deref for DstQueuePopHandle<'a, DST, BUF> {
+impl<DST: ?Sized, BUF: DstBuf> ops::Deref for DstQueuePopHandle<'_, DST, BUF> {
     type Target = DST;
     #[inline(always)]
     fn deref(&self) -> &DST {
         unsafe { &*self.parent.front_raw() }
     }
 }
-impl<'a, DST: ?Sized, BUF: DstBuf> ops::DerefMut for DstQueuePopHandle<'a, DST, BUF> {
+impl<DST: ?Sized, BUF: DstBuf> ops::DerefMut for DstQueuePopHandle<'_, DST, BUF> {
     #[inline(always)]
     fn deref_mut(&mut self) -> &mut DST {
         unsafe { &mut *self.parent.front_raw_mut() }
     }
 }
-impl<'a, DST: ?Sized, BUF: DstBuf> ops::Drop for DstQueuePopHandle<'a, DST, BUF> {
+impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstQueuePopHandle<'_, DST, BUF> {
     #[inline(always)]
     fn drop(&mut self) {
         self.parent.pop_front_inner();

@@ -72,7 +72,7 @@ pub struct CoroYield<'a, T, E> {
     cor: &'a mut Coro<T, E>,
 }
 
-impl<'a, T, E> Future for CoroYield<'a, T, E> {
+impl<T, E> Future for CoroYield<'_, T, E> {
     type Output = OptRes<T, E>;
 
     fn poll(mut self: Pin<&mut Self>, _cx: &mut TaskContext) -> TaskPoll<OptRes<T, E>> {

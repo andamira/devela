@@ -72,7 +72,7 @@ pub(crate) fn store_metadata<W: MemPod>(dst: &mut BufSlice<W>, meta_words: &[usi
 }
 
 pub(crate) fn round_to_words<T>(len: usize) -> usize {
-    (len + size_of::<T>() - 1) / size_of::<T>()
+    len.div_ceil(size_of::<T>())
 }
 
 /// Calls a provided function to get a fat pointer version of `v` (and checks that the returned pointer is sane)
@@ -105,7 +105,7 @@ pub(crate) unsafe fn list_push_gen<T, W: MemPod>(
 ) {
     /// Helper to drop/zero all pushed items, and reset data structure state if there's a panic
     struct PanicState<'a, T>(*mut T, usize, &'a mut usize, usize);
-    impl<'a, T> core::ops::Drop for PanicState<'a, T> {
+    impl<T> core::ops::Drop for PanicState<'_, T> {
         fn drop(&mut self) {
             if self.0.is_null() {
                 return;

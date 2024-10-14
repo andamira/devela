@@ -30,9 +30,9 @@ mod auto_impls {
     use super::{NumInt, NumRefInt};
 
     #[rustfmt::skip]
-    impl<'a, T: NumInt> NumRefInt<'a> for &T {}
+    impl<T: NumInt> NumRefInt<'_> for &T {}
     #[rustfmt::skip]
-    impl<'a, T: NumInt> NumRefInt<'a> for &mut T {}
+    impl<T: NumInt> NumRefInt<'_> for &mut T {}
 }
 
 /// Common auto-trait for integer types.
