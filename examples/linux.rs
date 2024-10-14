@@ -6,7 +6,7 @@
 // //! devela = { path = "..", features = ["linux", "unsafe_syscall"] }
 // //! ```
 
-use devela::_all::*;
+use devela::all::*;
 
 fn main() {
     /* terminal */

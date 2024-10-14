@@ -144,7 +144,7 @@ mod hashbrown_reexports {
 pub use std_reexports::*;
 #[cfg(all(not(feature = "dep_hashbrown"), feature = "std"))]
 mod std_reexports {
-    use super::{hashbrown_or_std, reexport};
+    use super::hashbrown_or_std;
 
     #[doc = hashbrown_or_std!(start)]
     /// An unordered hash map implemented with quadratic probing and SIMD lookup.

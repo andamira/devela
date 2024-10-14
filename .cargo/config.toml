@@ -1,4 +1,5 @@
 [build]
+# https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 rustdocflags = ["--html-in-header", "./DOCS/rustdoc-header.html"]
 
 
