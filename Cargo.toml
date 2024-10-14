@@ -580,9 +580,12 @@ maintenance = { status = "experimental" }
 # https://doc.rust-lang.org/rustc/check-cfg.html
 [lints.rust.unexpected_cfgs]
 level = "warn"
-check-cfg = [
+check-cfg = [ # Allowed config flags:
 	# Set if the library is compiled as the primary package (not a dependency).
 	'cfg(cargo_primary_package)',
+	#
+	# Allows excluding tests from being run, more concisely.
+	'cfg(__no_test)',
 	#
 	# Expect more pointer widths
 	'cfg(target_pointer_width, values("8", "128"))',
@@ -591,7 +594,8 @@ check-cfg = [
 	"cfg(_some_nightly, _some_dep)",
 	'cfg(_some_mem, _some_num)',
 	# data:
-	'cfg(_some_bit, _some_destaque, _some_graph, _some_node, _some_stack)',
+	'cfg(_some_bit, _some_destaque, _some_stack)',
+	'cfg(_some_graph, _some_node)',
 	# num:
 	'cfg(_some_sort, _some_sort_int, _some_sort_float)',
 	'cfg(_some_nums, _some_cmp, _some_float, _some_int, _some_int_i, _some_int_u)',
