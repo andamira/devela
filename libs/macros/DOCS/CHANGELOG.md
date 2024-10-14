@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+## [0.11.0] - 2024-10-14
+
 ### Changed
 - rename feature `docsrs` to `_docsrs`.
 - make `compile_doc` hidden.
@@ -165,7 +167,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - new attribute macro `include_block`.
 
-[unreleased]: https://github.com/andamira/devela_macros/compare/v0.9.0...HEAD
+[unreleased]: https://github.com/andamira/devela_macros/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/andamira/devela_macros/releases/tag/v0.11.0
+[0.10.0]: https://github.com/andamira/devela_macros/releases/tag/v0.10.0
 [0.9.0]: https://github.com/andamira/devela_macros/releases/tag/v0.9.0
 [0.8.0]: https://github.com/andamira/devela_macros/releases/tag/v0.8.0
 [0.7.0]: https://github.com/andamira/devela_macros/releases/tag/v0.7.0

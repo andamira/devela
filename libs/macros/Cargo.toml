@@ -1,9 +1,9 @@
 [package]
 name = "devela_macros"
 description = "procedural macros for devela"
-version = "0.10.0"
+version = "0.11.0"
 edition = "2021"
-rust-version = "1.72.1" # sync with readme, check.sh & .github/workflows/check.yml
+rust-version = "1.72.1" # sync with README.md, check.sh & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela_macros"
 documentation = "https://docs.rs/devela_macros"
