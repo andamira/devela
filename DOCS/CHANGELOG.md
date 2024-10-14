@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
 - new features: `linux`, `platforms`, `unsafe_syscall`, `unsafe_async`.
 - new features: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_soon`.
+- new features: `_docsrs_max` to `_docsrs_stable_max`.
 - new features: `rend`, `rend_image`, `safe_rend`.
 - new feature `__force_miri_dst`.
 - new feature section `Platform`.
@@ -66,6 +67,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Removed
 - remove feature `num_geom`.
+- remove features: `_default`, `_max`.
 - remove `NeverOk`, `NeverErr`.
 - remove custom no_std `Error` definition.
 - move `num::geom::prim` submodule to separate crate `cuadra`.
@@ -76,7 +78,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 - start using `core::error::Error`.
 - make `bytemuck` an optional dependency.
 - make modules public: `mem::ptr`, `sys::ffi`, `text::fmt`.
-- rename method `Array::len` to `capacity`.
 - update `cdbg` macro to support a single `@`.
 - method `Graph::edge_exists` no loger panics.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
@@ -85,7 +86,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move `code::result` module to `error`.
 - move `time` module inside `sys`.
 - move `_lib*` libs inside `_dep`.
+- rename method `Array::len` to `capacity`.
 - rename `_deps` module to `_dep`.
+- rename features: `_min_docs` to `_docs_min`, `_max_docs` to `_docs_max`.
 - rename `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.
 - rename `AllocOrdMap` to `BTreeMap` and `AllocOrdSet` to `BTreeSet`.
 - rename `AllocPrioQueue` to `BinaryHeap`.

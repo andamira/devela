@@ -253,15 +253,14 @@ nightly = [
 # They also set automatic compile flags named `_some_*`, used for reflection.
 # E.g.: the flag `_some_stack` will be set if some _stack_* feature is enabled.
 
-_default = [] # default capabilities
-_max = [ # the maximum capabilities
-	"_max_docs", "_tuple_72"]
+# _default = [] # default capabilities
 
 # The most complete versions of the documentation:
-_docsrs_stable = ["std", "unsafe", "dep_all", "_min_docs"]
 _docsrs = ["_docsrs_stable", "nightly"]
-
-_min_docs = [ # the minimum capabilities to document all library items
+_docsrs_max = ["_docsrs", "_docs_max"]
+_docsrs_stable = ["std", "unsafe", "dep_all", "_docs_min"]
+_docsrs_stable_max = ["_docsrs_stable", "_docs_max"]
+_docs_min = [ # the minimum capabilities that document all library items
 	"all",
 	"platforms",
 	# data:
@@ -276,8 +275,8 @@ _min_docs = [ # the minimum capabilities to document all library items
 	"_string_u8", "_string_nonul",
 	"_char7", "_char8", "_char16", "_char24", "_char32",
 ]
-_max_docs = [ # the maximum capabities relevant for documentation
-	"_data_all", "_num_all", "_text_all"]
+_docs_max = [ # the maximum capabities relevant for documentation
+	"_data_all", "_num_all", "_text_all"] # _tuple_72
 
 #* data capabilities *#
 # ---------------------
@@ -563,7 +562,7 @@ devela = { path = ".", features = ["all"] }
 # https://docs.rs/about/metadata
 
 no-default-features = true
-features = ["_docsrs", "_max_docs"]
+features = ["_docsrs_max"]
 rustdoc-args = [ "--html-in-header", "./DOCS/rustdoc-header.html" ]
 
 
