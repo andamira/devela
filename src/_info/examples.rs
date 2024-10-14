@@ -15,10 +15,12 @@
 #[cfg(all(feature = "mem_bit", feature = "_bit_u8"))]
 #[path = "../../examples/bitfield.rs"]
 pub mod bitfield;
-
 #[cfg(all(feature = "mem_bit", feature = "_bit_u8"))]
 #[path = "../../examples/enumset.rs"]
 pub mod enumset;
+
+#[path = "../../examples/enumint.rs"]
+pub mod enumint;
 
 #[path = "../../examples/id_seq.rs"]
 pub mod id_seq;

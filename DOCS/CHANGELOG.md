@@ -54,7 +54,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export `HashMapEntry` and `BTreeMapEntry`.
 - re-export `HashMap` and `BTreeMap` from `std` if `hashbrown` is disabled.
 - re-export fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
-- re-export macros: `compile_error`, `option_env`.
+- re-export macros: `compile_error`, `option_env`, `enumint`.
 - re-export wrapped macros: `env`, `vec`.
 - re-export structs: `NonZero`, `Saturating`, `Wrapping`.
 - re-export crate types from multiple related modules, like errors and strings.
@@ -63,6 +63,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `NonValue*` constants `MAX`, `MIN`.
 - new `sys::os::linux` module and example `linux`.
 - new scripts: `tools/features.sh`, `tools/release_dates.rs`.
+- new example `enumint`.
 - new lints.
 
 ### Removed

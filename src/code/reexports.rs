@@ -10,7 +10,7 @@ use super::reexport;
 /// <span class="stab portability" title="re-exported from `devela_macros`
 /// crate">`devela_macros`</span>
 pub use devela_macros::{
-    cif, coalesce, compile, compile_attr, compile_doc, ident_total, ident_total_unique,
+    cif, coalesce, compile, compile_attr, compile_doc, enumint, ident_total, ident_total_unique,
     ident_unique,
 };
 
