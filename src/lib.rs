@@ -69,7 +69,64 @@
 #![cfg_attr(all(feature = "nightly_doc", not(doc)), allow(unused_attributes))]
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
-// #![cfg_attr(feature = "nightly_stabilized", feature())]
+// "nightly_stable_soon" includes:
+#![cfg_attr(
+    feature = "nightly_stable_next1", // 1.82
+    feature(
+        asm_const,
+        char_indices_offset,
+        const_fn_floating_point_arithmetic,
+        const_int_from_str,
+        const_waker,
+        is_none_or,
+        is_sorted,
+        min_exhaustive_patterns,
+        new_uninit,
+        iter_repeat_n,
+        offset_of_nested,
+        raw_ref_op,
+        ready_into_inner,
+        unsafe_extern_blocks,
+        unsafe_attributes,
+    )
+)]
+#![cfg_attr(
+    feature = "nightly_stable_next2", // 1.83
+    feature(
+        const_cell_into_inner,
+        const_char_encode_utf8,
+        const_extern_fn,
+        const_float_bits_conv,
+        const_float_classify,
+        const_intrinsic_copy,
+        const_maybe_uninit_as_mut_ptr,
+        const_mut_refs,
+        const_refs_to_cell,
+        const_refs_to_static,
+        const_slice_from_raw_parts_mut,
+        const_slice_split_at_mut,
+        duration_consts_float,
+        entry_insert,
+        io_error_more,
+        mpmc_channel,
+        waker_getters,
+    )
+)]
+#![cfg_attr(
+    feature = "nightly_stable_wip", // 1.??
+    feature(
+        box_uninit_write,
+        const_array_from_ref,
+        const_slice_from_ref,
+        const_make_ascii,
+        impl_trait_in_assoc_type,
+        isqrt,
+        macro_metavar_expr,
+        new_zeroed_alloc,
+        noop_waker,
+        unsafe_cell_from_mut,
+    )
+)]
 
 // safeguard environment:
 #[cfg(all(feature = "std", feature = "no_std"))]

@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - show build environment variables if `__dbg` feature is enabled.
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
 - new features: `linux`, `platforms`, `unsafe_syscall`, `unsafe_async`.
+- new features: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_soon`.
 - new features: `rend`, `rend_image`, `safe_rend`.
 - new feature `__force_miri_dst`.
 - new feature section `Platform`.
@@ -98,6 +99,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `EgcString` to `GraphemeString`.
 - rename `EgcNonul` to `GraphemeNonul`.
 - rename `EgcU8` to `GraphemeU8`.
+- rename feature `nightly_stabilized` to `nightly_stable_soon`.
 - rename re-wrapped macros to avoid prelude collision when glob importing:
   - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
 
