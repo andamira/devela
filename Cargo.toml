@@ -187,6 +187,7 @@ nightly = [
 	# 1.82: [const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/pull/128596)
 	# 1.82: [const_int_from_str](https://github.com/rust-lang/rust/pull/124941)
 	# 1.82: [const_waker](https://github.com/rust-lang/rust/pull/128228)
+	# 1.82: [debug_more_non_exhaustive](https://github.com/rust-lang/rust/pull/131109)
 	# 1.82: [iter::repeat_n](https://github.com/rust-lang/rust/pull/129294)
 	# 1.82: [is_none_or](https://github.com/rust-lang/rust/pull/129086)
 	# 1.82: [is_sorted](https://github.com/rust-lang/rust/pull/128279)
@@ -219,10 +220,16 @@ nightly = [
 	# 1.83: [rustdoc: table of contents](https://github.com/rust-lang/rust/pull/120736)
 	# 1.83: [waker_getters](https://github.com/rust-lang/rust/pull/129919)
 	#
+	##1.84 will be stable on 2024-01-09:
+	# 1.84  [const_make_ascii](https://github.com/rust-lang/rust/pull/131496)
+	# 1.84  [const_maybe_uninit_assume_init](https://github.com/rust-lang/rust/pull/131274)
+	# 1.84  [pin_deref_mut](https://github.com/rust-lang/rust/pull/129424)
+	#
 	##1.‥…
 	# 1.??: ✗[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 	# 1.??: ✗[const_array_from_ref|const_slice_from_ref](https://github.com/rust-lang/rust/issues/90206)
-	# 1.??: ✗[const_make_ascii](https://github.com/rust-lang/rust/pull/131496)
+	# 1.??: ✗[const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
+	# 1.??: ✗[const_maybe_uninit_write](https://github.com/rust-lang/rust/pull/131713)
 	# 1.??: ✗[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 	# 1.??: ✗[isqrt](https://github.com/rust-lang/rust/pull/131391)
 	# 1.??: ✗[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)

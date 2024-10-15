@@ -70,18 +70,18 @@
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
 // "nightly_stable_soon" includes:
-#![cfg_attr(
-    feature = "nightly_stable_next1", // 1.82
+#![cfg_attr( // 1.82
+    feature = "nightly_stable_next1",
     feature(
         asm_const,
         char_indices_offset,
         const_fn_floating_point_arithmetic,
         const_int_from_str,
         const_waker,
+        debug_more_non_exhaustive,
         is_none_or,
         is_sorted,
         min_exhaustive_patterns,
-        new_uninit,
         iter_repeat_n,
         offset_of_nested,
         raw_ref_op,
@@ -90,8 +90,14 @@
         unsafe_attributes,
     )
 )]
-#![cfg_attr(
-    feature = "nightly_stable_next2", // 1.83
+#![cfg_attr( // 1.82 not(miri)
+    all(not(miri), feature = "nightly_stable_next1"),
+    feature(
+        new_uninit,
+    )
+)]
+#![cfg_attr( // 1.83
+    feature = "nightly_stable_next2",
     feature(
         const_cell_into_inner,
         const_char_encode_utf8,
@@ -106,25 +112,35 @@
         const_slice_from_raw_parts_mut,
         const_slice_split_at_mut,
         duration_consts_float,
-        entry_insert,
-        io_error_more,
-        mpmc_channel,
         waker_getters,
     )
 )]
-#![cfg_attr(
-    feature = "nightly_stable_wip", // 1.??
+#![cfg_attr( // 1.83 not(miri)
+    all(not(miri), feature = "nightly_stable_next2"),
     feature(
-        box_uninit_write,
+        io_error_more,
+        entry_insert,
+        mpmc_channel,
+    )
+)]
+#![cfg_attr( // 1.??
+    feature = "nightly_stable_wip",
+    feature(
         const_array_from_ref,
         const_slice_from_ref,
         const_make_ascii,
         impl_trait_in_assoc_type,
         isqrt,
         macro_metavar_expr,
-        new_zeroed_alloc,
         noop_waker,
         unsafe_cell_from_mut,
+    )
+)]
+#![cfg_attr( // 1.?? not(miri)
+    all(not(miri), feature = "nightly_stable_wip"),
+    feature(
+        box_uninit_write,
+        new_zeroed_alloc,
     )
 )]
 
