@@ -12,8 +12,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
 - new features: `linux`, `platforms`, `unsafe_syscall`, `unsafe_async`.
 - new features: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_soon`.
+- new features: `rend`, `rend_audio`, `rend_color`, `rend_draw`, `rend_font`, `rend_image`, `rend_layout`, `safe_rend`.
 - new features: `_docsrs_max` to `_docsrs_stable_max`.
-- new features: `rend`, `rend_image`, `safe_rend`.
 - new feature `__force_miri_dst`.
 - new feature section `Platform`.
 - new cfg flag `cargo_primary_package`.

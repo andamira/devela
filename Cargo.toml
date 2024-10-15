@@ -36,7 +36,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # total: 219/300, visible: 66, hidden: 153
+[features] # total: 223/300, visible: 70, hidden: 153
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -112,11 +112,16 @@ mem = [
 num = [
 	"num_rand",
 	]
-	num_rand = [] # random number generators.
+	num_rand = [] # random number generators
 rend = [
-	"rend_image",
+	"rend_audio", "rend_color", "rend_draw", "rend_font", "rend_image", "rend_layout",
 	]
+	rend_audio = []
+	rend_draw = []
+	rend_color = []
+	rend_font = []
 	rend_image = []
+	rend_layout = []
 sys = []
 text = []
 work = ["bytemuck?/zeroable_atomics"]

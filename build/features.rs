@@ -115,7 +115,7 @@ mod reflection {
     };
     pub const REND: FlagsFeatures = FlagsFeatures {
         flags: &["_some_rend"],
-        features: &["rend_image"]
+        features: &["rend_audio", "rend_color", "rend_draw", "rend_font", "rend_image", "rend_layout"]
     };
 
     /* # capabilities */
