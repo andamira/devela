@@ -110,6 +110,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Fixed
 - reduce noise from required features on methods from `Divisor`, `Int`, `Float`, `Frac`.
+- make `tools/check.rs` not compile with `all_dep` when cross-compiling certain arches.
 - hide public macros from the crate root when `cfg(cargo_primary_package)`.
 - fix build script utility call paths, add missing `_tuple*` features.
 - simplify system of documentable & testable examples.

@@ -33,23 +33,51 @@ const ROOT_MODULES: [&str; 10] = [
 
 const STD_ARCHES: &[&str] = &[
     // Linux 64-bit
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
     "x86_64-unknown-linux-gnu",
+    //
     // Windows Cygwin 64-bit
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
     "x86_64-pc-windows-msvc",
-    // MacOs 64-bit
-    "x86_64-apple-darwin",
+];
+const STD_ARCHES_NO_CROSS_COMPILE: &[&str] = &[
     // Linux i686, 32-bit, std, little-endian, (kernel 3.2+, glibc 2.17+)
     // may need to install `libc6-dev-amd64-i386-cross` for testing
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
     "i686-unknown-linux-gnu",
+    //
+    // MacOs 64-bit
+    // https://doc.rust-lang.org/rustc/platform-support/x86_64h-apple-darwin.html
+    // NOTE: Build fails cross-compiling the coreaudio-sys transitive dependency.
+    "x86_64-apple-darwin",
+    //
+    // https://doc.rust-lang.org/nightly/rustc/platform-support/riscv64gc-unknown-linux-gnu.html
+    "riscv64gc-unknown-linux-gnu",
 ];
 const NO_STD_ARCHES: &[&str] = &[
     // Bare x86_64, softfloat, 64-bit, no_std
     // https://doc.rust-lang.org/nightly/rustc/platform-support/x86_64-unknown-none.html
     "x86_64-unknown-none",
+    //
     // Bare ARM64, hardfloat, 64-bit, no_std, little-endian, A64 set, (M1, M2 processors)
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-2-without-host-tools
     "aarch64-unknown-none",
+    //
     // Bare ARMv7-M, 32-bit, no_std, little-endian, Thumb set, (Cortex-M processors)
+    // https://doc.rust-lang.org/rustc/platform-support/thumbv7m-none-eabi.html
     "thumbv7m-none-eabi",
+    //
+    // https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip1.html
+    "wasm32-wasip1",
+    //
+    // https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip1-threads.html
+    // "wasm32-wasip1-threads",
+    //
+    // https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip2.html
+    // "wasm32-wasip2",
+    //
+    // https://doc.rust-lang.org/rustc/platform-support/wasm32-unknown-unknown.html
+    "wasm32-unknown-unknown",
 ];
 
 type Result<T> = core::result::Result<T, Box<dyn std::error::Error>>;
@@ -108,28 +136,51 @@ fn main() -> Result<()> {
     if args.arches {
         let cmd = "clippy";
 
-        let arch_total: usize = STD_ARCHES.len() + NO_STD_ARCHES.len();
+        let arch_total: usize =
+            NO_STD_ARCHES.len() + STD_ARCHES.len() * 2 + STD_ARCHES_NO_CROSS_COMPILE.len() * 2;
         let mut arch_count = 1_usize;
 
         sf! { headline(0, &format!["`all` checking in each architecture ({arch_total}):"]); }
 
         rust_setup_arches(&msrv)?;
 
+        // no-std
+        for arch in NO_STD_ARCHES {
+            sf! { headline(1, &format!("no_std,unsafe: arch {arch_count}/{arch_total}")); }
+            run_cargo(&msrv, cmd, &["--target", arch, "-F all,no_std,unsafe"])?;
+            arch_count += 1;
+        }
+
+        // std, no dependencies
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe: arch {arch_count}/{arch_total}")); }
             run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe"])?;
             arch_count += 1;
         }
+        // std, all dependencies
         for arch in STD_ARCHES {
             sf! { headline(1, &format!("std,unsafe,dep_all: arch {arch_count}/{arch_total}")); }
             run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe,dep_all"])?;
             arch_count += 1;
         }
 
-        for arch in NO_STD_ARCHES {
-            sf! { headline(1, &format!("no_std,unsafe: arch {arch_count}/{arch_total}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F all,no_std,unsafe"])?;
+        // std, no dependencies, no-cross-compile (at least for all the dependencies)
+        for arch in STD_ARCHES_NO_CROSS_COMPILE {
+            // if is_current_host_compatible(arch) {
+            sf! { headline(1, &format!("std,unsafe (no cross-compile): arch {arch_count}/{arch_total}")); }
+            run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe"])?;
             arch_count += 1;
+            // }
+        }
+        // std, all dependencies, no-cross-compile
+        for arch in STD_ARCHES_NO_CROSS_COMPILE {
+            if is_current_host_compatible(arch) {
+                sf! { headline(1, &format!("std,unsafe,dep_all (no cross-compile): arch {arch_count}/{arch_total}")); }
+                run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe,dep_all"])?;
+                arch_count += 1;
+            } else {
+                sf! { headline(1, &format!("std,unsafe,dep_all (no cross-compiling): {arch} {arch_count}/{arch_total}")); }
+            }
         }
     }
 
@@ -444,8 +495,47 @@ fn rust_setup_nightly() -> Result<()> {
 /// Prints a headline
 fn headline(level: usize, text: &str) {
     match level {
-        0 => println!("\n{text}\n{}", "-".repeat(80)),
-        1 => println!["\n> {text}"],
+        0 => println!("\n{text}\n{}", "=".repeat(80)),
+        1 => println!("\n> {text}\n{}", "-".repeat(60)),
         _ => println!("\nUNKNOWN HEADLINE LEVEL\n{text}\n"),
     }
+}
+
+/// Checks if the current host is compatible with the provided target architecture.
+fn is_current_host_compatible(target_arch: &str) -> bool {
+    let is_arch_compatible = {
+        #[cfg(target_arch = "x86_64")]
+        {
+            target_arch.contains("x86_64")
+        }
+        #[cfg(target_arch = "aarch64")]
+        {
+            target_arch.contains("aarch64")
+        }
+        #[cfg(not(any(target_arch = "x86_64", target_arch = "aarch64")))]
+        {
+            false
+        }
+    };
+
+    let is_os_compatible = {
+        #[cfg(target_os = "macos")]
+        {
+            target_arch.contains("apple-darwin")
+        }
+        #[cfg(target_os = "linux")]
+        {
+            target_arch.contains("linux")
+        }
+        #[cfg(target_os = "windows")]
+        {
+            target_arch.contains("windows")
+        }
+        #[cfg(not(any(target_os = "macos", target_os = "linux", target_os = "windows")))]
+        {
+            false
+        }
+    };
+
+    is_arch_compatible && is_os_compatible
 }
