@@ -4,7 +4,7 @@
 //!
 //! # Examples
 //!
-//! This will create the [`ExampleEnum`] and [`ExampleEnumSet`] interrelated types.
+//! This will create the [`ExampleEnumIntU8`] type.
 //! ```
 //! # use devela::code::enumint;
 //! enumint![pub ExampleEnumIntU8, i8, -126, 125];
