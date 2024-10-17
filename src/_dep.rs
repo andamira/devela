@@ -40,6 +40,9 @@ reexport! { optional_crate "dep_bytemuck", "bytemuck", bytemuck,
 reexport! { optional_crate "dep_const_str", "const-str", const_str,
     doc: "Compile-time string operations."
 }
+reexport! { optional_crate "dep_cpal", "cpal", cpal,
+    doc: "Low-level cross-platform audio I/O library in pure Rust."
+}
 reexport! { optional_crate "dep_hashbrown", "hashbrown", hashbrown,
     doc: "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`.",
     features: "alloc"

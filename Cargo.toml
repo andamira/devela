@@ -122,7 +122,10 @@ rend = [
 	rend_font = []
 	rend_image = []
 	rend_layout = []
-sys = []
+sys = [
+	"sys_sound",
+]
+	sys_sound = ["dep_cpal"]
 text = []
 work = ["bytemuck?/zeroable_atomics"]
 
@@ -502,6 +505,7 @@ dep_all = [ # enables all optional dependencies
 dep_atomic = ["dep:atomic"]
 dep_bytemuck = ["dep:bytemuck"]
 dep_const_str = ["dep:const-str"]
+dep_cpal = ["dep:cpal"]
 dep_hashbrown = ["dep:hashbrown", "alloc"]
 dep_libm = ["dep:libm"]
 dep_log = ["dep:log"]
@@ -514,6 +518,7 @@ dep_wide = ["dep:wide"]
 
 
 [dependencies]
+# https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 # ==============================================================================
 
 # non-optional:
@@ -523,6 +528,7 @@ paste_crate = { package = "paste", version = "1.0.15", default-features = false 
 
 # optional:
 const-str = { version = "0.5.7", optional = true, default-features = false }
+cpal = { version = "0.15.3", optional = true, default-features = false }
 libm = { version = "0.2.8", optional = true, default-features = false }
 log = { version = "0.4.22", optional = true, default-features = false }
 memchr = { version = "2.7.4", optional = true, default-features = false }
@@ -553,9 +559,15 @@ features = ["fallback", "float"]
 
 
 [dev-dependencies]
+# Used for benchmarks, examples and tests. They inherit from [dependencies].
 # ------------------------------------------------------------------------------
 
 devela = { path = ".", features = ["all"] }
+
+
+[build-dependencies]
+# Used for the build scripts. They do not inherit from [dependencies].
+# ------------------------------------------------------------------------------
 
 
 # profiles

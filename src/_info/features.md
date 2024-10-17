@@ -63,6 +63,7 @@ Single modules:
 - [`rend`]
   - `rend_image`
 - [`sys`]
+  - `sys_sound`
 - [`text`]: enables `Char*`, `Egc`, `Nonul`.
 - [`work`]: enables `work` functionality.
 

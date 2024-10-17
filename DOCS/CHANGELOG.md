@@ -60,7 +60,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - re-export structs: `NonZero`, `Saturating`, `Wrapping`.
 - re-export crate types from multiple related modules, like errors and strings.
 - impl `Num` for niche types.
-- new `num::algebra` module.
+- new modules: `num::algebra`, `sys::sound`, `rend::{audio, color, draw, font, image, layout}`.
 - new `NonValue*` constants `MAX`, `MIN`.
 - new `sys::os::linux` module and example `linux`.
 - new scripts: `tools/features.sh`, `tools/release_dates.rs`.

@@ -24,13 +24,19 @@ items! {
     mod log;
     pub use log::*;
 }
-
 #[cfg(feature = "sys")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
 items! {
     mod path;
     #[allow(unused_imports)]
     pub use path::*;
+}
+#[cfg(feature = "sys_sound")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys_sound")))]
+items! {
+    mod sound;
+    #[allow(unused_imports)]
+    pub use sound::*;
 }
 
 pub mod ffi;
@@ -54,4 +60,8 @@ pub(crate) mod all {
     #[allow(unused_imports)]
     #[cfg(feature = "sys")]
     pub use super::path::all::*;
+    #[doc(inline)]
+    #[allow(unused_imports)]
+    #[cfg(feature = "sys_sound")]
+    pub use super::sound::all::*;
 }
