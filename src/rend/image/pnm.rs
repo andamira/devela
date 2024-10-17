@@ -3,7 +3,7 @@
 //! PNM is the portable anymap format Netpbm image format family (PBM, PGM, PPM)
 
 #[cfg(doc)]
-use crate::rend::RendError::CoreFmt;
+use crate::rend::ImageError::FmtError;
 #[cfg(feature = "alloc")]
 use crate::text::String;
 use crate::{
@@ -11,16 +11,16 @@ use crate::{
     mem::bytes_from_bits,
     rend::{
         // color::*;
-        RendError,
-        RendError::{InvalidImageSize, InvalidPixel},
-        RendResult as Result,
+        ImageError,
+        ImageError::{InvalidImageSize, InvalidPixel},
+        ImageResult as Result,
     },
     text::TextWrite,
 };
 
 // Helper function: Returns `InvalidPixel` as the cold path.
 #[cold] #[rustfmt::skip]
-const fn invalid_pixel<T>() -> core::result::Result<T, RendError> { Err(InvalidPixel) }
+const fn invalid_pixel<T>() -> core::result::Result<T, ImageError> { Err(InvalidPixel) }
 
 /// A collection of methods for encoding and decoding
 /// <abbr title="Portable anymap format">PNM</abbr> bitmap formats.
@@ -52,7 +52,7 @@ impl Pnm {
     /// # Errors
     /// Returns [`InvalidImageSize`] if the `bitmap` slice doesn't contain exactly
     /// `width` * `height` elements, [`InvalidPixel`] if any pixel value is invalid
-    /// and [`CoreFmt`] if the string writing fails.
+    /// and [`FmtError`] if the string writing fails.
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn p1_encode_bytes(bitmap: &[u8], width: usize, height: usize) -> Result<String> {
@@ -93,7 +93,7 @@ impl Pnm {
     /// # Errors
     /// Returns [`InvalidImageSize`] if the `bitmap` slice doesn't contain exactly
     /// the number of expected bytes `width` * `height` elements
-    /// and [`CoreFmt`] if the string writing fails.
+    /// and [`FmtError`] if the string writing fails.
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn p1_encode_bits(bitmap: &[u8], width: usize, height: usize) -> Result<String> {

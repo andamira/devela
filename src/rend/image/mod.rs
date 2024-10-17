@@ -5,11 +5,12 @@
 // #![doc = crate::code::doc_!(newline)]
 //
 
+mod error;
 mod pnm;
-pub use pnm::*;
+pub use {error::*, pnm::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::pnm::*;
+    pub use super::{error::*, pnm::*};
 }
