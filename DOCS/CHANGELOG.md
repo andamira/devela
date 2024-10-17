@@ -75,7 +75,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move `num::geom::prim` submodule to separate crate `cuadra`.
 
 ### Changed
-- bump rust version to 1.81.0.
+- bump rust version to 1.82.0.
 - refactor build script.
 - start using `core::error::Error`.
 - make `bytemuck` an optional dependency.
