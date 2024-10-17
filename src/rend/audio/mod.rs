@@ -1,6 +1,11 @@
 // devela::rend::audio
 //
-//! Audio functionality.
+//! Audio rendering functionality.
 //
 
-pub(crate) mod all {}
+mod error;
+pub use error::*;
+
+pub(crate) mod all {
+    pub use super::error::*;
+}

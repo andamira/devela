@@ -4,8 +4,8 @@
 //
 
 // use crate::error::Mismatch;
+// use core::num::IntErrorKind;
 use crate::error::IoErrorKind;
-use core::num::IntErrorKind;
 
 /// An image rendering result.
 pub type ImageResult<T> = core::result::Result<T, ImageError>;

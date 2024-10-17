@@ -3,4 +3,9 @@
 //! Drawing functionality.
 //
 
-pub(crate) mod all {}
+mod error;
+pub use error::*
+
+pub(crate) mod all {
+    pub use super::error::*;
+}

@@ -34,7 +34,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new traits: `ExtCellOption`, `ExtOptRes`, `MemPod`.
 - new types: `UnitBi`, `UnitSi` and trait: `Unit`.
 - new types: `CompressionMode`, `EncodingMode`.
-- new items: `Pnm`, `RendError`, `RendResult`, `ImageError`, `ImageResult`.
+- new items: `Pnm`, `RendError`, `RendResult`.
+- new items: `ImageError`, `ImageResult`, `ColorError`, `ColorResult`, `AudioError`, `AudioResult`, `DrawError`, `DrawResult`, `FontError`, `FontResult`, `LayoutError`, `LayoutResult`.
 - new type: `Xoroshiro128pp`.
 - new type: `Interval`.
 - new type: `FatPtr`.
