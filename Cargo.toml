@@ -251,13 +251,13 @@ nightly = [
 	# [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 	# [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
 	#
-	# # 2024 edition:
+	## 2024 edition:
 	# - https://doc.rust-lang.org/edition-guide/rust-2024/index.html
 	#
-	# # Future releases:
+	## Future releases:
 	# - ./tools/release_dates.rs
-	# - https://github.com/rust-lang/rust/milestones
 	# - https://releases.rs/
+	# - https://github.com/rust-lang/rust/milestones
 	# - https://calendar.google.com/calendar/u/0/embed?src=mozilla.com_ts4qudb88i0tbjef8rche4a6v4@group.calendar.google.com
 
 
@@ -494,16 +494,16 @@ _string_all = [
 
 #* Dependencies features *#
 # ------------------------------------------------------------------------------
+# https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 dep_all = [ # enables all optional dependencies
-	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown",
+	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_cpal", "dep_hashbrown",
 	"dep_libm", "dep_log", "dep_memchr", "dep_portable_atomic", "dep_rand_core",
 	"dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
 ] # enable groups of dependencies:
 	dep_work = ["dep_atomic", "dep_portable_atomic"]
 	dep_text = ["dep_const_str", "dep_memchr", "dep_unicode_segmentation", "dep_unicode_width"]
 
-# https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 dep_atomic = ["dep:atomic"]
 dep_bytemuck = ["dep:bytemuck"]
 dep_const_str = ["dep:const-str"]
