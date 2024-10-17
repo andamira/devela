@@ -61,7 +61,12 @@ Single modules:
 - [`num`]: enables all of the `num` sub-features:
     - [`num_rand`]: enables random number generators.
 - [`rend`]
-  - `rend_image`
+  - [`rend_audio`]
+  - [`rend_color`]
+  - [`rend_draw`]
+  - [`rend_font`]
+  - [`rend_image`]
+  - [`rend_layout`]
 - [`sys`]
   - `sys_sound`
 - [`text`]: enables `Char*`, `Egc`, `Nonul`.
@@ -74,7 +79,12 @@ Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 [`data`]: crate::data
 [`error`]: mod@crate::error
 [`rend`]: mod@crate::rend
+[`rend_audio`]: crate::rend::audio
+[`rend_color`]: crate::rend::color
+[`rend_draw`]: crate::rend::draw
+[`rend_font`]: crate::rend::font
 [`rend_image`]: crate::rend::image
+[`rend_layout`]: crate::rend::layout
 [`mem`]: crate::mem
 [`num`]: crate::num
 [`num_rand`]: crate::num::rand

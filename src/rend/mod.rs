@@ -4,16 +4,21 @@
 #![doc = crate::code::doc_!(modules: crate; rend: audio, color, draw, font, image, layout)]
 #![doc = crate::code::doc_!(newline)]
 //
-
 // safety:
 #![cfg_attr(feature = "safe_rend", forbid(unsafe_code))]
 
-mod error;
-#[doc(inline)]
-pub use error::*;
+use crate::code::items;
+
+#[cfg(_some_rend)]
+items! {
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(_some_rend)))]
+    mod error;
+    #[doc(inline)]
+    pub use error::*;
+}
 
 #[cfg(feature = "rend_audio")]
-crate::code::items! {
+items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_audio")))]
     pub mod audio;
     #[doc(no_inline)]
@@ -21,7 +26,7 @@ crate::code::items! {
     pub use audio::all::*;
 }
 #[cfg(feature = "rend_color")]
-crate::code::items! {
+items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_color")))]
     pub mod color;
     #[doc(no_inline)]
@@ -29,7 +34,7 @@ crate::code::items! {
     pub use color::all::*;
 }
 #[cfg(feature = "rend_draw")]
-crate::code::items! {
+items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_draw")))]
     pub mod draw;
     #[doc(no_inline)]
@@ -37,7 +42,7 @@ crate::code::items! {
     pub use draw::all::*;
 }
 #[cfg(feature = "rend_font")]
-crate::code::items! {
+items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_font")))]
     pub mod font;
     #[doc(no_inline)]
@@ -45,7 +50,7 @@ crate::code::items! {
     pub use font::all::*;
 }
 #[cfg(feature = "rend_image")]
-crate::code::items! {
+items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_image")))]
     pub mod image;
     #[doc(no_inline)]
@@ -53,7 +58,7 @@ crate::code::items! {
     pub use image::all::*;
 }
 #[cfg(feature = "rend_layout")]
-crate::code::items! {
+items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_layout")))]
     pub mod layout;
     #[doc(no_inline)]
@@ -65,6 +70,7 @@ pub(crate) mod all {
     #![allow(unused_imports)]
 
     #[doc(inline)]
+    #[cfg(_some_rend)]
     pub use super::error::*;
 
     #[doc(inline)]
