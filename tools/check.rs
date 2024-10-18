@@ -92,6 +92,41 @@ const NO_STD_ARCHES: &[&str] = &[
     // https://doc.rust-lang.org/rustc/platform-support/wasm32-unknown-unknown.html
     "wasm32-unknown-unknown",
 ];
+// For testing sys::linux
+const LINUX_ARCHES: &[&str] = &[
+    //* Tier 1 *
+    //----------
+    // https://doc.rust-lang.org/nightly/rustc/platform-support.html#tier-1-with-host-tools
+    //
+    // Linux 64-bit
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
+    "x86_64-unknown-linux-gnu",
+    // Linux i686, 32-bit, std, little-endian, (kernel 3.2+, glibc 2.17+)
+    // may need to install `libc6-dev-amd64-i386-cross` for testing
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
+    "i686-unknown-linux-gnu",
+    //
+    // https://doc.rust-lang.org/nightly/rustc/platform-support/riscv64gc-unknown-linux-gnu.html
+    "aarch64-unknown-linux-gnu",
+    //
+    //* Tier 2 with host tools *
+    //--------------------------
+    // https://doc.rust-lang.org/nightly/rustc/platform-support.html#tier-2-with-host-tools
+    //
+    // https://doc.rust-lang.org/nightly/rustc/platform-support/riscv64gc-unknown-linux-gnu.html
+    "riscv64gc-unknown-linux-gnu",
+    //
+    "arm-unknown-linux-gnueabihf",
+    //
+    "armv7-unknown-linux-gnueabihf",
+
+    //* Tier 3 *
+    //--------------------------
+    // https://doc.rust-lang.org/nightly/rustc/platform-support.html#tier-3
+    //
+    // WAIT?: https://github.com/rust-lang/rust/issues/88995
+    // "riscv32gc-unknown-linux-gnu", // not available
+];
 
 type Result<T> = core::result::Result<T, Box<dyn std::error::Error>>;
 
@@ -149,13 +184,22 @@ fn main() -> Result<()> {
     if args.arches {
         let cmd = "clippy";
 
-        let atotal: usize =
-            NO_STD_ARCHES.len() + STD_ARCHES.len() * 2 + STD_ARCHES_NO_CROSS_COMPILE.len() * 2;
+        let atotal: usize = LINUX_ARCHES.len()
+            + NO_STD_ARCHES.len()
+            + STD_ARCHES.len() * 2
+            + STD_ARCHES_NO_CROSS_COMPILE.len() * 2;
         let mut a = 1_usize;
 
         sf! { headline(0, &format!["`all` checking in each architecture ({atotal}):"]); }
 
         rust_setup_arches(&msrv)?;
+
+        // linux
+        for arch in LINUX_ARCHES {
+            sf! { headline(1, &format!("all,linux,dep_linux,unsafe_syscall: arch {a}/{atotal}")); }
+            run_cargo(&msrv, cmd, &["--target", arch, "-F all,linux,dep_linux,unsafe_syscall"])?;
+            a += 1;
+        }
 
         // no-std
         for arch in NO_STD_ARCHES {
@@ -499,6 +543,7 @@ fn rust_setup_arches(msrv: &str) -> Result<()> {
 
     for ref arch in STD_ARCHES
         .into_iter()
+        .chain(LINUX_ARCHES.into_iter())
         .chain(NO_STD_ARCHES.into_iter())
         .chain(STD_ARCHES_NO_CROSS_COMPILE.into_iter())
     {

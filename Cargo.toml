@@ -496,12 +496,12 @@ _string_all = [
 # ------------------------------------------------------------------------------
 # https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-dep_all = [ # enables all optional dependencies
+dep_all = [ # enables all optional dependencies (in sync with tools/check.rs::DEP_ALL)
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_cpal", "dep_hashbrown",
 	"dep_libm", "dep_log", "dep_memchr", "dep_portable_atomic", "dep_rand_core",
 	"dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
-] # enable groups of dependencies:
-	dep_work = ["dep_atomic", "dep_portable_atomic"]
+] # enable groups of dependencies (unlocking extra functionality in certain modules):
+	dep_linux = ["dep_atomic", "dep_bytemuck"]
 	dep_text = ["dep_const_str", "dep_memchr", "dep_unicode_segmentation", "dep_unicode_width"]
 
 dep_atomic = ["dep:atomic"]
