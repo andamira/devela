@@ -31,6 +31,19 @@ const ROOT_MODULES: [&str; 10] = [
     "linux"
 ];
 
+// All the dependencies. In sync with Cargo.toml::dep_all
+#[rustfmt::skip]
+const DEP_ALL: [&str; 14] = [
+	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_cpal", "dep_hashbrown",
+	"dep_libm", "dep_log", "dep_memchr", "dep_portable_atomic", "dep_rand_core",
+	"dep_tinyaudio", "dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
+];
+// Dependencies that
+#[rustfmt::skip]
+const DEP_NO_CROSS_COMPILE: [&str; 2] = [
+	"dep_cpal", "dep_tinyaudio"
+];
+
 const STD_ARCHES: &[&str] = &[
     // Linux 64-bit
     // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
@@ -136,50 +149,60 @@ fn main() -> Result<()> {
     if args.arches {
         let cmd = "clippy";
 
-        let arch_total: usize =
+        let atotal: usize =
             NO_STD_ARCHES.len() + STD_ARCHES.len() * 2 + STD_ARCHES_NO_CROSS_COMPILE.len() * 2;
-        let mut arch_count = 1_usize;
+        let mut a = 1_usize;
 
-        sf! { headline(0, &format!["`all` checking in each architecture ({arch_total}):"]); }
+        sf! { headline(0, &format!["`all` checking in each architecture ({atotal}):"]); }
 
         rust_setup_arches(&msrv)?;
 
         // no-std
         for arch in NO_STD_ARCHES {
-            sf! { headline(1, &format!("no_std,unsafe: arch {arch_count}/{arch_total}")); }
+            sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
             run_cargo(&msrv, cmd, &["--target", arch, "-F all,no_std,unsafe"])?;
-            arch_count += 1;
+            a += 1;
         }
 
         // std, no dependencies
         for arch in STD_ARCHES {
-            sf! { headline(1, &format!("std,unsafe: arch {arch_count}/{arch_total}")); }
+            sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
             run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe"])?;
-            arch_count += 1;
+            a += 1;
         }
-        // std, all dependencies
-        for arch in STD_ARCHES {
-            sf! { headline(1, &format!("std,unsafe,dep_all: arch {arch_count}/{arch_total}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe,dep_all"])?;
-            arch_count += 1;
+        for arch in STD_ARCHES_NO_CROSS_COMPILE {
+            sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
+            run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe"])?;
+            a += 1;
         }
 
-        // std, no dependencies, no-cross-compile (at least for all the dependencies)
-        for arch in STD_ARCHES_NO_CROSS_COMPILE {
-            // if is_current_host_compatible(arch) {
-            sf! { headline(1, &format!("std,unsafe (no cross-compile): arch {arch_count}/{arch_total}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe"])?;
-            arch_count += 1;
-            // }
+        // std, all dependencies
+        for arch in STD_ARCHES {
+            sf! { headline(1, &format!("std,unsafe,dep_all: arch {a}/{atotal}")); }
+            run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe,dep_all"])?;
+            a += 1;
         }
-        // std, all dependencies, no-cross-compile
+        // std, (almost) all dependencies, when cross-compiling
         for arch in STD_ARCHES_NO_CROSS_COMPILE {
             if is_current_host_compatible(arch) {
-                sf! { headline(1, &format!("std,unsafe,dep_all (no cross-compile): arch {arch_count}/{arch_total}")); }
+                sf! { headline(1, &format!("std,unsafe,dep_all: arch {a}/{atotal}")); }
                 run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe,dep_all"])?;
-                arch_count += 1;
+                a += 1;
             } else {
-                sf! { headline(1, &format!("std,unsafe,dep_all (no cross-compiling): {arch} {arch_count}/{arch_total}")); }
+                // alternative
+                // sf! { headline(1, &format!("std,unsafe,dep_all (no cross-compiling): {arch} {a}/{atotal}")); }
+
+                // Filter out incompatible dependencies and build a filtered list
+                let enabled_dependencies: Vec<&str> = DEP_ALL
+                    .iter()
+                    .filter(|&&dep| !DEP_NO_CROSS_COMPILE.contains(&dep))
+                    .copied()
+                    .collect();
+                let feature_flags = format!("all,std,unsafe,{}", enabled_dependencies.join(","));
+
+                sf! { headline(1, &format!("std,unsafe,dep_all(filtered) (no cross-compile): arch {a}/{atotal}")); }
+                run_cargo(&msrv, cmd, &["--target", arch, "-F", &feature_flags])?;
+                a += 1;
             }
         }
     }
@@ -187,10 +210,10 @@ fn main() -> Result<()> {
     /* miri */
 
     if args.miri {
-        let arch_total: usize = STD_ARCHES.len() + NO_STD_ARCHES.len();
-        let mut arch_count = 1_usize;
+        let atotal: usize = STD_ARCHES.len() + NO_STD_ARCHES.len();
+        let mut a = 1_usize;
 
-        sf! { headline(0, &format!["miri testing in each architecture ({arch_total}):"]); }
+        sf! { headline(0, &format!["miri testing in each architecture ({atotal}):"]); }
 
         rust_setup_arches(&msrv)?;
         rust_setup_nightly()?;
@@ -198,28 +221,28 @@ fn main() -> Result<()> {
         // std
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
-            sf! { headline(1, &format!("std,unsafe: arch {arch_count}/{arch_total}")); }
+            sf! { headline(1, &format!("std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
             "-F all,std,unsafe,nightly"])?; }
-            arch_count += 1;
+            a += 1;
         }
 
         // std + dep_all
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
-            sf! { headline(1, &format!("std,unsafe,dep_all: arch {arch_count}/{arch_total}")); }
+            sf! { headline(1, &format!("std,unsafe,dep_all: arch {a}/{atotal}")); }
             sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
             "-F all,std,unsafe,nightly,dep_all"])?; }
-            arch_count += 1;
+            a += 1;
         }
 
         // no_std
         env::remove_var("MIRIFLAGS");
         for arch in STD_ARCHES {
-            sf! { headline(1, &format!("no_std,unsafe: arch {arch_count}/{arch_total}")); }
+            sf! { headline(1, &format!("no_std,unsafe: arch {a}/{atotal}")); }
             sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
             "-F all,no_std,unsafe,nightly"])?; }
-            arch_count += 1;
+            a += 1;
         }
         // WAITING for FIX: https://github.com/rust-lang/wg-cargo-std-aware/issues/69
         // for arch in NO_STD_ARCHES {}
@@ -474,7 +497,11 @@ fn rust_setup_arches(msrv: &str) -> Result<()> {
         sf! { let _ = Command::new("rustup").args(["component", "add", "rustfmt"]).status()?; }
     }
 
-    for ref arch in STD_ARCHES.into_iter().chain(NO_STD_ARCHES.into_iter()) {
+    for ref arch in STD_ARCHES
+        .into_iter()
+        .chain(NO_STD_ARCHES.into_iter())
+        .chain(STD_ARCHES_NO_CROSS_COMPILE.into_iter())
+    {
         println!("rustup target add {arch}");
         sf! { let _ = Command::new("rustup").args(["target", "add", arch]).status()?; }
     }
