@@ -31,8 +31,6 @@ items! {
     #[allow(unused_imports)]
     pub use path::*;
 }
-#[cfg(feature = "sys_sound")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys_sound")))]
 items! {
     mod sound;
     #[allow(unused_imports)]
@@ -62,6 +60,5 @@ pub(crate) mod all {
     pub use super::path::all::*;
     #[doc(inline)]
     #[allow(unused_imports)]
-    #[cfg(feature = "sys_sound")]
     pub use super::sound::all::*;
 }
