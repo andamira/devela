@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Added
 - show build environment variables if `__dbg` feature is enabled.
 - new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
-- new features: `linux`, `dep_linux`, `platforms`, `unsafe_syscall`, `unsafe_async`.
+- new features: `linux`, `dep_linux`, `unsafe_syscall`, `unsafe_async`.
 - new features: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_soon`.
 - new features: `rend`, `rend_audio`, `rend_color`, `rend_draw`, `rend_font`, `rend_image`, `rend_layout`, `safe_rend`.
 - new features: `_docsrs_max` to `_docsrs_stable_max`.

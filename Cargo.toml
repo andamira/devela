@@ -90,10 +90,7 @@ no_std = [ # enables functionality incompatible with or substitute of `std`
 #* Platform features *#
 # ------------------------------------------------------------------------------
 
-platforms = [ # enables all the platforms
-	"linux",
-	]
-	linux = [] # sys::os::linux functionality
+linux = [] # sys::os::linux functionality
 
 
 #* Modules features trees *#
@@ -122,10 +119,7 @@ rend = [
 	rend_font = []
 	rend_image = []
 	rend_layout = []
-sys = [
-	"sys_sound",
-]
-	sys_sound = ["dep_cpal"]
+sys = []
 text = []
 work = ["bytemuck?/zeroable_atomics"]
 
@@ -279,7 +273,7 @@ _docsrs_stable = ["std", "unsafe", "dep_all", "_docs_min"]
 _docsrs_stable_max = ["_docsrs_stable", "_docs_max"]
 _docs_min = [ # the minimum capabilities that document all library items
 	"all",
-	"platforms",
+	"linux",
 	# data:
 	"_bit_u8",
 	"_destaque_u8", "_stack_u8", "_graph_u8",

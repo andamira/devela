@@ -40,9 +40,6 @@ depends on `std`, and we want to use it from `no_std`.
 
 Platform features are `os` submodules that have to be explicitly enabled:
 
-- `platforms`: enables all the platform features:
-
-Single platforms:
 - `linux`: enables `sys::os::linux` functionality.
 
 
@@ -68,7 +65,6 @@ Single modules:
   - [`rend_image`]
   - [`rend_layout`]
 - [`sys`]
-  - `sys_sound`
 - [`text`]: enables `Char*`, `Egc`, `Nonul`.
 - [`work`]: enables `work` functionality.
 
@@ -272,5 +268,6 @@ They also set the corresponding flags:
 Enabling any of them sets the `_some_dep` flag.
 
 - `dep_all`: enables all the optional dependencies
+  - `dep_linux`: enables: `atomic`, `bytemuck`.
   - `dep_text`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
   - `dep_work`: enables `atomic`, `portable-atomic`.
