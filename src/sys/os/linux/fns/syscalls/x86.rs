@@ -13,8 +13,9 @@ use core::{
 pub unsafe fn linux_sys_exit(status: c_int) -> ! {
     unsafe {
         asm!(
+            "mov eax, {EXIT}",
             "int 0x80",
-            in("eax") SYS::EXIT,
+            EXIT = const SYS::EXIT,
             in("ebx") status,
             options(noreturn)
         );
@@ -24,100 +25,112 @@ pub unsafe fn linux_sys_exit(status: c_int) -> ! {
 #[doc = include_str!("./doc/Sys_read.md")]
 #[must_use]
 pub unsafe fn linux_sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov eax, {READ}",
             "int 0x80",
-            inlateout("eax") SYS::READ => r0,
+            READ = const SYS::READ,
             in("ebx") fd,
             in("ecx") buf,
             in("edx") count,
-            options(nostack, preserves_flags)
+            lateout("eax") result,
+            options(nostack)
         );
     }
-    r0
+    result
 }
 
 #[doc = include_str!("./doc/Sys_write.md")]
 #[must_use]
 pub unsafe fn linux_sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov eax, {WRITE}",
             "int 0x80",
-            inlateout("eax") SYS::WRITE => r0,
+            WRITE = const SYS::WRITE,
             in("ebx") fd,
             in("ecx") buf,
             in("edx") count,
-            options(nostack, preserves_flags)
+            lateout("eax") result,
+            options(nostack)
         );
     }
-    r0
+    result
 }
 
 #[doc = include_str!("./doc/Sys_nanosleep.md")]
 #[must_use]
 pub unsafe fn linux_sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov eax, {NANOSLEEP}",
             "int 0x80",
-            inlateout("eax") SYS::NANOSLEEP => r0,
+            NANOSLEEP = const SYS::NANOSLEEP,
             in("ebx") req,
             in("ecx") rem,
             lateout("edx") _,
-            options(nostack, preserves_flags)
+            lateout("eax") result,
+            options(nostack)
         );
     }
-    r0
+    result
 }
 
 #[doc = include_str!("./doc/Sys_ioctl.md")]
 #[must_use]
 pub unsafe fn linux_sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov eax, {IOCTL}",
             "int 0x80",
-            inlateout("eax") SYS::IOCTL => r0,
+            IOCTL = const SYS::IOCTL,
             in("ebx") fd,
             in("ecx") request,
             in("edx") argp,
-            options(nostack, preserves_flags)
+            lateout("eax") result,
+            options(nostack)
         );
     }
-    r0
+    result
 }
 
 #[doc = include_str!("./doc/Sys_getrandom.md")]
 #[must_use]
 pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov eax, {GETRANDOM}",
             "int 0x80",
-            inlateout("eax") SYS::GETRANDOM => r0,
+            GETRANDOM = const SYS::GETRANDOM,
             in("ebx") buffer,
             in("ecx") size,
             in("edx") flags,
-            options(nostack, preserves_flags)
+            lateout("eax") result,
+            options(nostack)
         );
     }
-    r0
+    result
 }
 
 #[doc = include_str!("./doc/Sys_getpid.md")]
 #[must_use]
 pub unsafe fn linux_sys_getpid() -> i32 {
-    let r0: isize;
+    let result: isize;
     unsafe {
         asm!(
+            "mov eax, {GETPID}",
             "int0x80",
-            inlateout("ebx") SYS::GETPID => r0,
-            options(nostack, preserves_flags)
+            GETPID = const SYS::GETPID,
+            lateout("eax") result,
+            options(nostack)
         );
     }
-    r0 as i32
+    result as i32
 }
 
 #[doc = include_str!("./doc/Sys_rt_sigaction.md")]
@@ -128,17 +141,19 @@ pub unsafe fn linux_sys_rt_sigaction(
     oact: *mut LinuxSigaction,
     sigsetsize: usize,
 ) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov eax, {RT_SIGACTION}",
             "int 0x80",
-            inlateout("eax") SYS::RT_SIGACTION => r0,
+            RT_SIGACTION = const SYS::RT_SIGACTION,
             in("ebx") sig,
             in("ecx") act,
             in("edx") oact,
             in("edi") sigsetsize,
-            options(nostack, preserves_flags)
+            lateout("eax") result,
+            options(nostack)
         );
     }
-    r0
+    result
 }

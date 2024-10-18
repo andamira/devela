@@ -113,6 +113,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - make `tools/check.rs` not compile with `all_dep` when cross-compiling certain arches.
 - hide public macros from the crate root when `cfg(cargo_primary_package)`.
 - fix build script utility call paths, add missing `_tuple*` features.
+- several fixes for linux syscalls on multiple architectures.
 - simplify system of documentable & testable examples.
 - fix `f64::NR_TOLERANCE` from 1e-14 to 1e-12.
 - fix a few tests and examples.

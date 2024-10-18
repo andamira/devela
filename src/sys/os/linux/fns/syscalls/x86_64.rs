@@ -14,8 +14,9 @@ use core::{
 pub unsafe fn linux_sys_exit(status: c_int) -> ! {
     unsafe {
         asm!(
+            "mov rax, {EXIT}",
             "syscall",
-            in("rax") SYS::EXIT,
+            EXIT = const SYS::EXIT,
             in("rdi") status,
             options(noreturn)
         );
@@ -25,109 +26,121 @@ pub unsafe fn linux_sys_exit(status: c_int) -> ! {
 #[doc = include_str!("./doc/Sys_read.md")]
 #[must_use]
 pub unsafe fn linux_sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov rax, {READ}",
             "syscall",
-            inlateout("rax") SYS::READ => r0,
+            READ = const SYS::READ,
             in("rdi") fd,
             in("rsi") buf,
             in("rdx") count,
+            lateout("rax") result,
             lateout("rcx") _,
             lateout("r11") _,
-            options(nostack, preserves_flags)
+            options(nostack)
         );
     }
-    r0
+    result
 }
 
 #[doc = include_str!("./doc/Sys_write.md")]
 #[must_use]
 pub unsafe fn linux_sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov rax, {WRITE}",
             "syscall",
-            inlateout("rax") SYS::WRITE => r0,
+            WRITE = const SYS::WRITE,
             in("rdi") fd,
             in("rsi") buf,
             in("rdx") count,
+            lateout("rax") result,
             lateout("rcx") _,
             lateout("r11") _,
-            options(nostack, preserves_flags)
+            options(nostack)
         );
     }
-    r0
+    result
 }
 
 #[doc = include_str!("./doc/Sys_nanosleep.md")]
 #[must_use]
 pub unsafe fn linux_sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov rax, {NANOSLEEP}",
             "syscall",
-            inlateout("rax") SYS::NANOSLEEP => r0,
+            NANOSLEEP = const SYS::NANOSLEEP,
             in("rdi") req,
             in("rsi") rem,
+            lateout("rax") result,
             lateout("rcx") _,
             lateout("r11") _,
-            options(nostack, preserves_flags)
+            options(nostack)
         );
     }
-    r0
+    result
 }
 
 #[doc = include_str!("./doc/Sys_ioctl.md")]
 #[must_use]
 pub unsafe fn linux_sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov rax, {IOCTL}",
             "syscall",
-            inlateout("rax") SYS::IOCTL => r0,
+            IOCTL = const SYS::IOCTL,
             in("rdi") fd,
             in("rsi") request,
             in("rdx") argp,
+            lateout("rax") result,
             lateout("rcx") _,
             lateout("r11") _,
-            options(nostack, preserves_flags)
+            options(nostack)
         );
     }
-    r0
+    result
 }
 
 #[doc = include_str!("./doc/Sys_getrandom.md")]
 #[must_use]
 pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov rax, {GETRANDOM}",
             "syscall",
-            inlateout("rax") SYS::GETRANDOM => r0,
+            GETRANDOM = const SYS::GETRANDOM,
             in("rdi") buffer,
             in("rsi") size,
             in("rdx") flags,
+            lateout("rax") result,
             lateout("rcx") _,
             lateout("r11") _,
-            options(nostack, preserves_flags)
+            options(nostack)
         );
     }
-    r0
+    result
 }
 
 #[doc = include_str!("./doc/Sys_getpid.md")]
 #[must_use]
 pub unsafe fn linux_sys_getpid() -> i32 {
-    let r0: isize;
+    let result: isize;
     unsafe {
         asm!(
+            "mov rax, {GETPID}",
             "syscall",
-            inlateout("rax") SYS::GETPID => r0,
-            options(nostack, preserves_flags)
+            GETPID = const SYS::GETPID,
+            lateout("rax") result,
+            options(nostack)
         );
     }
-    r0 as i32
+    result as i32
 }
 
 #[doc = include_str!("./doc/Sys_rt_sigaction.md")]
@@ -138,19 +151,21 @@ pub unsafe fn linux_sys_rt_sigaction(
     oact: *mut LinuxSigaction,
     sigsetsize: usize,
 ) -> isize {
-    let r0;
+    let result;
     unsafe {
         asm!(
+            "mov rax, {RT_SIGACTION}",
             "syscall",
-            inlateout("rax") SYS::RT_SIGACTION => r0,
+            RT_SIGACTION = const SYS::RT_SIGACTION,
             in("rdi") sig,
             in("rsi") act,
             in("rdx") oact,
             in("r10") sigsetsize,
+            lateout("rax") result,
             lateout("rcx") _,
             lateout("r11") _,
-            options(nostack, preserves_flags)
+            options(nostack)
         );
     }
-    r0
+    result
 }
