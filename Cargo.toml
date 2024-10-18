@@ -36,23 +36,22 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 226/300 (74 remaining), 73 visible, 153 hidden
+[features] # 224/300 (76 remaining), 71 visible, 153 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
-# - Miscellaneous
-# - Environment
-# - Platform
-# - Modules
-# - Safety
-# - Nightly
-# - Capability
-# - Dependencies
-#
+# - Miscellaneous    __[dbg,…]
+# - Environment      alloc,[no_]std
+# - Modules          
+# - Safety           [safe|unsafe]_
+# - Nightly          nightly_[coro|simd|stable]
+# - Capability       _[data,…]
+# - Dependencies     (dep_[all|linux|text|…]
+#    4   8   2   6   0    
 # Sintax:
 # - ["name"]: Visible public-facing features.
 # - ["_name"]: Hidden extra capability features.
-# - ["__name"]: Hidden miscellaneous features.
+# - ["__name"]: Miscellaneous maintenance features.
 #
 # Files:
 # - Features are in sync with: build/features.rs and src/_info/features.md
@@ -83,17 +82,10 @@ std = [ # disables `no_std` compatibility and enables `std` functionality
 	"atomic?/std", "bytemuck?/extern_crate_std", "log?/std", "memchr?/std",
 	"rand_core?/std", "wide?/std",
 ]
-no_std = [ # enables functionality incompatible with or substitute of `std`
-]
+no_std = [] # enables functionality incompatible with or substitute of `std`
 
 
-#* Platform features *#
-# ------------------------------------------------------------------------------
-
-linux = [] # sys::os::linux functionality
-
-
-#* Modules features trees *#
+#* Modules features *#
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
@@ -120,16 +112,21 @@ rend = [
 	rend_image = []
 	rend_layout = []
 sys = []
+	# os
+		linux = [] # sys::os::linux functionality
 text = []
 work = ["bytemuck?/zeroable_atomics"]
 
 
-#* Safety features trees *#
+#* Safety features *#
 # ------------------------------------------------------------------------------
-
-# To use unsafe functionality:
+# They are prefixed with either `safe_` or `unsafe_`.
+# Safe features are associated to *modules*, and unsafe features to *purposes*.
+#
+# Usage:
 # 1. enable the desired `unsafe` feature.
 # 2. don't enable the `safe` feature for that module.
+#
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
 	"safe_code", "safe_data", "safe_error", "safe_mem", "safe_num",
@@ -164,26 +161,29 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	unsafe_syscall = [] # os syscalls.
 	unsafe_thread = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
-#* Nightly features tree *#
+#* Nightly features *#
 # ------------------------------------------------------------------------------
+# They are prefixed with `nightly_`.
+#
 
 nightly = [
 	"nightly_coro", "nightly_doc", "nightly_simd", "nightly_stable_soon",
 ] # enables all the following features:
-	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
-	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 	nightly_doc = []
+	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
+	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 	nightly_simd = []
+	# WAIT: https://releases.rs/
 	nightly_stable_soon = [ # a selection of nightly features that will become stable soon:
 		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_wip"]
-		nightly_stable_next1 = [] # 1.82
-		nightly_stable_next2 = [] # 1.83
+		nightly_stable_next1 = [] # 1.83
+		nightly_stable_next2 = [] # 1.84
 		nightly_stable_wip = []  # 1.?? stable soon enough
 	#
-	##1.82 will be stable on 2024-10-17:
+	##1.82 became stable on 2024-10-17:
 	# 1.82: [asm_const](https://github.com/rust-lang/rust/pull/128570)
 	# 1.82: [char_indices_offset](https://github.com/rust-lang/rust/pull/129276)
 	# 1.82: [const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/pull/128596)
@@ -238,6 +238,7 @@ nightly = [
 	# 1.??: ✗[isqrt](https://github.com/rust-lang/rust/pull/131391)
 	# 1.??: ✗[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 	# 1.??: ✗[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
+	# 1.??: ✗[num_midpoint|const_num_midpoint](https://github.com/rust-lang/rust/pull/131784)
 	# 1.??: ✗[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
 	# 1.??: ✗[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 	#
@@ -248,9 +249,8 @@ nightly = [
 	## 2024 edition:
 	# - https://doc.rust-lang.org/edition-guide/rust-2024/index.html
 	#
-	## Future releases:
+	## Links and scripts for the next releases:
 	# - ./tools/release_dates.rs
-	# - https://releases.rs/
 	# - https://github.com/rust-lang/rust/milestones
 	# - https://calendar.google.com/calendar/u/0/embed?src=mozilla.com_ts4qudb88i0tbjef8rche4a6v4@group.calendar.google.com
 
@@ -263,31 +263,6 @@ nightly = [
 #
 # They also set automatic compile flags named `_some_*`, used for reflection.
 # E.g.: the flag `_some_stack` will be set if some _stack_* feature is enabled.
-
-# _default = [] # default capabilities
-
-# The most complete versions of the documentation:
-_docsrs = ["_docsrs_stable", "nightly"]
-_docsrs_max = ["_docsrs", "_docs_max"]
-_docsrs_stable = ["std", "unsafe", "dep_all", "_docs_min"]
-_docsrs_stable_max = ["_docsrs_stable", "_docs_max"]
-_docs_min = [ # the minimum capabilities that document all library items
-	"all",
-	"linux",
-	# data:
-	"_bit_u8",
-	"_destaque_u8", "_stack_u8", "_graph_u8",
-	"_tuple",
-	# num:
-	"_cmp_u8",
-	"_float_f32", "_int_u8",
-	"_non_value_u8", "_non_range_u8", "_in_range_u8",
-	# text:
-	"_string_u8", "_string_nonul",
-	"_char7", "_char8", "_char16", "_char24", "_char32",
-]
-_docs_max = [ # the maximum capabities relevant for documentation
-	"_data_all", "_num_all", "_text_all"] # _tuple_72
 
 #* data capabilities *#
 # ---------------------
@@ -485,10 +460,42 @@ _string_all = [
 	#
 	_string_nonul = []
 
+#* default and docs *#
+# ------------------------------
+
+# _default = [] # default capabilities
+
+# The most complete versions of the documentation:
+_docsrs = ["_docsrs_stable", "nightly"]
+_docsrs_max = ["_docsrs", "_docs_max"]
+_docsrs_stable = ["std", "unsafe", "dep_all", "_docs_min"]
+_docsrs_stable_max = ["_docsrs_stable", "_docs_max"]
+_docs_min = [ # the minimum capabilities that document all library items
+	"all",
+	"linux",
+	# data:
+	"_bit_u8",
+	"_destaque_u8", "_stack_u8", "_graph_u8",
+	"_tuple",
+	# num:
+	"_cmp_u8",
+	"_float_f32", "_int_u8",
+	"_non_value_u8", "_non_range_u8", "_in_range_u8",
+	# text:
+	"_string_u8", "_string_nonul",
+	"_char7", "_char8", "_char16", "_char24", "_char32",
+]
+_docs_max = [ # the maximum capabities relevant for documentation
+	"_data_all", "_num_all", "_text_all"] # _tuple_72
+
 
 #* Dependencies features *#
 # ------------------------------------------------------------------------------
-# https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
+# The names are prefixed with `dep_`, and don't have dashes.
+# They are associated to optional dependencies and groups of modules.
+#
+##Links
+# - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 dep_all = [ # enables all optional dependencies (in sync with tools/check.rs::DEP_ALL)
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_cpal", "dep_hashbrown",
