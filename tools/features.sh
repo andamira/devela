@@ -17,4 +17,6 @@ visible=$(cargo metadata --format-version=1 --no-deps | jq ".packages[] | select
 hidden=$(cargo metadata --format-version=1 --no-deps | jq ".packages[] | select(.name == \"$crate_name\") | .features | keys" \
 	| rg '"_' | wc -l)
 
-echo "[features] # total: $total/300, visible: $visible, hidden: $hidden"
+remaining=$((300 - total))
+
+echo "[features] # $total/300 ($remaining remaining), $visible visible, $hidden hidden"
