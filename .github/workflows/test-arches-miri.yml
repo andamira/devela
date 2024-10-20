@@ -29,6 +29,11 @@ jobs:
         with:
           toolchain: ${{ matrix.toolchain }}
 
+      - name: "Install libraries via APT"
+        run: |
+          sudo apt update
+          sudo apt install -y libasound2-dev
+
       - name: "cargo generate-lockfile"
         if: hashFiles('Cargo.lock') == ''
         run: cargo generate-lockfile
