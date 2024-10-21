@@ -40,9 +40,6 @@ reexport! { optional_crate "dep_bytemuck", "bytemuck", bytemuck,
 reexport! { optional_crate "dep_const_str", "const-str", const_str,
     doc: "Compile-time string operations."
 }
-reexport! { optional_crate "dep_cpal", "cpal", cpal,
-    doc: "Low-level cross-platform audio I/O library in pure Rust."
-}
 reexport! { optional_crate "dep_hashbrown", "hashbrown", hashbrown,
     doc: "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`.",
     features: "alloc"
@@ -61,6 +58,13 @@ reexport! { optional_crate "dep_portable_atomic", "portable-atomic", portable_at
 }
 reexport! { optional_crate "dep_rand_core", "rand_core", rand_core,
     doc: "Random number generation traits."
+}
+reexport! { optional_crate "dep_rodio", "rodio", rodio,
+    doc: "Audio playback library."
+}
+reexport! { optional_crate "dep_tinyaudio", "tinyaudio", tinyaudio,
+    doc: "A cross-platform, easy-to-use, low-level, audio output library.",
+    features: "alloc"
 }
 reexport! { optional_crate "dep_unicode_segmentation", "unicode-segmentation", unicode_segmentation,
     doc: "Split strings on Grapheme Clusters, Words or Sentences."

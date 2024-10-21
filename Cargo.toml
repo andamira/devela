@@ -36,7 +36,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 224/300 (76 remaining), 71 visible, 153 hidden
+[features] # 226/300 (74 remaining), 73 visible, 153 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -492,27 +492,34 @@ _docs_max = [ # the maximum capabities relevant for documentation
 # The names are prefixed with `dep_`, and don't have dashes.
 # They are associated to optional dependencies and groups of modules.
 #
+# It is in sync with ./tools/check.rs::DEP_ALL and build/features.rs
+#
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-dep_all = [ # enables all optional dependencies (in sync with tools/check.rs::DEP_ALL)
-	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_cpal", "dep_hashbrown",
-	"dep_libm", "dep_log", "dep_memchr", "dep_portable_atomic", "dep_rand_core",
+dep_all = [ # enables all optional dependencies:
+	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_libm",
+	"dep_log", "dep_macroquad", "dep_miniquad", "dep_memchr", "dep_miniquad",
+	"dep_portable_atomic", "dep_rand_core", "dep_rodio", "dep_tinyaudio",
 	"dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 	dep_linux = ["dep_atomic", "dep_bytemuck"]
 	dep_text = ["dep_const_str", "dep_memchr", "dep_unicode_segmentation", "dep_unicode_width"]
+	dep_work = ["dep_atomic", "dep_portable_atomic"]
 
 dep_atomic = ["dep:atomic"]
 dep_bytemuck = ["dep:bytemuck"]
 dep_const_str = ["dep:const-str"]
-dep_cpal = ["dep:cpal"]
 dep_hashbrown = ["dep:hashbrown", "alloc"]
 dep_libm = ["dep:libm"]
 dep_log = ["dep:log"]
+dep_macroquad = ["dep:macroquad"]
 dep_memchr = ["dep:memchr"]
+dep_miniquad = ["dep:miniquad"]
 dep_portable_atomic = ["dep:portable-atomic"]
 dep_rand_core = ["dep:rand_core"]
+dep_rodio = ["dep:rodio"]
+dep_tinyaudio = ["dep:tinyaudio"]
 dep_unicode_segmentation = ["dep:unicode-segmentation"]
 dep_unicode_width = ["dep:unicode-width"]
 dep_wide = ["dep:wide"]
@@ -529,11 +536,13 @@ paste_crate = { package = "paste", version = "1.0.15", default-features = false 
 
 # optional:
 const-str = { version = "0.5.7", optional = true, default-features = false }
-cpal = { version = "0.15.3", optional = true, default-features = false }
 libm = { version = "0.2.8", optional = true, default-features = false }
 log = { version = "0.4.22", optional = true, default-features = false }
+macroquad = { version = "0.4.13", optional = true, default-features = false }
 memchr = { version = "2.7.4", optional = true, default-features = false }
+miniquad = { version = "0.4.6", optional = true, default-features = false }
 rand_core = { version = "0.6.4", optional = true, default-features = false }
+tinyaudio = { version = "1.0.0", optional = true, default-features = false }
 unicode-segmentation = { version = "1.12.0", optional = true, default-features = false }
 unicode-width = { version = "0.1.13", optional = true, default-features = false }
 wide = { version = "0.7.26", optional = true, default-features = false }
@@ -557,7 +566,11 @@ version = "1.9.0"
 optional = true
 default-features = false
 features = ["fallback", "float"]
-
+[dependencies.rodio]
+version = "0.19.0"
+optional = true
+default-features = false
+# features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"]
 
 [dev-dependencies]
 # Used for benchmarks, examples and tests. They inherit from [dependencies].

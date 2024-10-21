@@ -88,18 +88,10 @@ mod reflection {
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
         flags: &["_some_dep"],
         features: &[
-            "dep_atomic",
-            "dep_bytemuck",
-            "dep_const_str",
-            "dep_hashbrown",
-            "dep_libm",
-            "dep_log",
-            "dep_memchr",
-            "dep_portable_atomic",
-            "dep_rand_core",
-            "dep_unicode_segmentation",
-            "dep_unicode_width",
-            "dep_wide",
+            "dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_libm",
+            "dep_log", "dep_macroquad", "dep_miniquad", "dep_memchr", "dep_miniquad",
+            "dep_portable_atomic", "dep_rand_core", "dep_rodio", "dep_tinyaudio",
+            "dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
         ]
     };
 
