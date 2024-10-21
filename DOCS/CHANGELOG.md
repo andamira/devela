@@ -8,69 +8,73 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Unreleased [0.22.0-wip]
 
 ### Added
-- show build environment variables if `__dbg` feature is enabled.
-- new features: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`, `__lints`.
-- new features: `linux`, `dep_linux`, `unsafe_syscall`, `unsafe_async`.
-- new features: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_soon`.
-- new features: `rend`, `rend_audio`, `rend_color`, `rend_draw`, `rend_font`, `rend_image`, `rend_layout`, `safe_rend`.
-- new features: `_docsrs_max` to `_docsrs_stable_max`.
-- new feature `__force_miri_dst`.
-- new feature section `Platform`.
+
+#### Features & flags
+- new features for:
+  - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
+  - sys::os `linux`, `dep_linux`, `unsafe_syscall`.
+  - nightly: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`,
+  - render: `rend`, `rend_[audio|color|draw|font|image|layout]`, `safe_rend`.
+  - other  `unsafe_async`, `__lints`, `__force_miri_dst`.
+- rename features:
+  - `nightly_stabilized` to `nightly_stable`.
+  - `_[max|min]_docs` to `_docs_[max|min]`, `_docsrs_max` to `_docsrs_stable_max`.
+- show build *env* variables if `__dbg` feature is enabled.
 - new cfg flag `cargo_primary_package`.
-- new tools and github actions: `get_errno`, `get_syscall`.
-- new `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
-- new `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
-- new struct `Env` that namespaces `std::env` functions and constants.
-- new `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
-- new macro `type_marker!`.
-- new macro `assert_const!.
-- new macro `namespace_fns!`.
-- new macro `id_seq!`, example `id_seq` and type `ExampleIdSeqUsize`.
-- new macro `type_resource!`, trait `TypeResourced`, and type `TypeResource`.
-- new macro `const_bool!`, trait `ConstBool`, and types: `True`, `False`.
-- new macros: `capture_first`, `capture_last`, `capture_tail_tuple`.
-- new private macro `doc_availability!`.
-- new types: `IdPinBox`, `IdPin` and example `id_pin`.
-- new traits: `ExtCellOption`, `ExtOptRes`, `MemPod`.
-- new types: `UnitBi`, `UnitSi` and trait: `Unit`.
-- new types: `CompressionMode`, `EncodingMode`.
-- new items: `Pnm`, `RendError`, `RendResult`.
-- new items: `ImageError`, `ImageResult`, `ColorError`, `ColorResult`, `AudioError`, `AudioResult`, `DrawError`, `DrawResult`, `FontError`, `FontResult`, `LayoutError`, `LayoutResult`.
-- new type: `Xoroshiro128pp`.
-- new type: `Interval`.
-- new type: `FatPtr`.
-- new methods for `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
-- new methods for `Array`: `from_fn`, `contains_[from|to|between]`.
-- new methods for `Array` when storing `Option<T>`.
-- new methods for `BareBox`.
-- new aliases: `AllocMapFx`, `AllocSetFx`.
-- new `DataError` variant: `ElementNotFound`.
-- re-export `std::backtrace` types.
-- re-export `core::cell` types.
-- re-export `core::ops` types.
-- re-export `std::fmt` items.
-- re-export `assert_unchecked!` macro.
-- re-export `format!`, `format_args!` macros.
-- re-export `OsStr`, `OsString`
-- re-export `HashMapEntry` and `BTreeMapEntry`.
-- re-export `HashMap` and `BTreeMap` from `std` if `hashbrown` is disabled.
-- re-export fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
-- re-export macros: `compile_error`, `option_env`, `enumint`.
-- re-export wrapped macros: `env`, `vec`.
-- re-export structs: `NonZero`, `Saturating`, `Wrapping`.
-- re-export crate types from multiple related modules, like errors and strings.
-- impl `Num` for niche types.
+
+#### New Items
+- structs:
+  - `Env` namespaces `std::env` functions and constants.
+  - `FatPtr`, `IdPinBox`, `IdPin`, `TypeResource`.
+  - `False`, `True`, `UnitBi`, `UnitSi`.
+  - `CompressionMode`, `EncodingMode`, `Pnm`,
+  - `RendError`, - `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
+- aliases:
+  - `AllocMapFx`, `AllocSetFx`,
+  - `RendResult`, `ColorResult`, `AudioResult`, `DrawResult`, `FontResult`,`ImageResult`, `LayoutResult`.
+- enum variants:
+  - `DataError::ElementNotFound`.
+- traits:
+  - `ConstBool`,  `ExtCellOption`, `ExtOptRes`, `MemPod`, `TypeResourced`, `Unit`.
+- associated methods and constants for:
+  - `Array`: `from_fn`, `contains_[from|to|between]`.
+  - `Array` when storing `Option<T>`.
+  - `BareBox`.
+  - `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
+  - `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
+  - `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
+  - `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
+- macros:
+  - `type_marker!`, `assert_const!`, `namespace_fns!` `id_seq!`, `type_resource!`,
+  - `const_bool!`, `capture_first`, `capture_last`, `capture_tail_tuple`.
+  - private: `doc_availability!`.
+- re-export:
+  - items from: `std::backtrace`, `core::cell`, `core::ops`, `std::fmt`.
+  - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
+  - macros:
+    - `compile_error`, `option_env`, `enumint`, `assert_unchecked!`, `format!`, `format_args!`.
+    - wrapped: `env!`, as `env_!`, `vec!` as `vec_!`.
+  - structs:
+    - `NonZero`, `Saturating`, `Wrapping`, `OsStr`, `OsString`.
+    - `HashMapEntry` and `BTreeMapEntry`.
+    - `HashMap` and `BTreeMap` from `std` if `hashbrown` is disabled.
+  - crate items from multiple related modules, like errors and strings.
 - new modules: `num::algebra`, `sys::sound`, `rend::{audio, color, draw, font, image, layout}`.
 - new `NonValue*` constants `MAX`, `MIN`.
 - new `sys::os::linux` module and example `linux`.
-- new scripts: `tools/features.sh`, `tools/release_dates.rs`.
-- new example `enumint`.
 - new lints.
 
+#### Examples and tools
+- new example `id_pin`.
+- new example `id_seq` and type `ExampleIdSeqUsize`.
+- new example `enumint` and type `ExampleEnumIntU8`.
+- new scripts in `tools/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`.
+- new github workflows: `get_errno.yml`, `get_syscall.yml`.
+
 ### Removed
+- remove items: `NeverOk`, `NeverErr`.
 - remove feature `num_geom`.
 - remove features: `_default`, `_max`.
-- remove `NeverOk`, `NeverErr`.
 - remove custom no_std `Error` definition.
 - move `num::geom::prim` submodule to separate crate `cuadra`.
 
@@ -88,9 +92,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move `code::result` module to `error`.
 - move `time` module inside `sys`.
 - move `_lib*` libs inside `_dep`.
+- impl `Num` for niche types.
 - rename method `Array::len` to `capacity`.
 - rename `_deps` module to `_dep`.
-- rename features: `_min_docs` to `_docs_min`, `_max_docs` to `_docs_max`.
 - rename `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.
 - rename `AllocOrdMap` to `BTreeMap` and `AllocOrdSet` to `BTreeSet`.
 - rename `AllocPrioQueue` to `BinaryHeap`.
@@ -104,7 +108,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `EgcString` to `GraphemeString`.
 - rename `EgcNonul` to `GraphemeNonul`.
 - rename `EgcU8` to `GraphemeU8`.
-- rename feature `nightly_stabilized` to `nightly_stable_soon`.
 - rename re-wrapped macros to avoid prelude collision when glob importing:
   - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
 
@@ -963,6 +966,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 
 [unreleased]: https://github.com/andamira/devela/compare/v0.21.2...HEAD
+[0.22.0]: https://github.com/andamira/devela/releases/tag/v0.22.0
 [0.21.2]: https://github.com/andamira/devela/releases/tag/v0.21.2
 [0.21.1]: https://github.com/andamira/devela/releases/tag/v0.21.1
 [0.21.0]: https://github.com/andamira/devela/releases/tag/v0.21.0
