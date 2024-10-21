@@ -10,6 +10,8 @@
 // - https://github.com/rust-lang/rust/issues/53495
 // - https://github.com/rust-lang/rust/pull/52234
 
+#![allow(unused)]
+
 /* in-crate integrated examples */
 
 #[cfg(all(feature = "mem_bit", feature = "_bit_u8"))]

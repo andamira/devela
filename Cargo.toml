@@ -167,7 +167,7 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 #
 
 nightly = [
-	"nightly_coro", "nightly_doc", "nightly_simd", "nightly_stable_soon",
+	"nightly_coro", "nightly_doc", "nightly_simd", "nightly_stable",
 ] # enables all the following features:
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
@@ -177,11 +177,11 @@ nightly = [
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 	nightly_simd = []
 	# WAIT: https://releases.rs/
-	nightly_stable_soon = [ # a selection of nightly features that will become stable soon:
-		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_wip"]
+	nightly_stable = [ # a selection of nightly features that will become stable soon:
+		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"]
 		nightly_stable_next1 = [] # 1.83
 		nightly_stable_next2 = [] # 1.84
-		nightly_stable_wip = []  # 1.?? stable soon enough
+		nightly_stable_later = [] # 1.?? stable soon enough
 	#
 	##1.82 became stable on 2024-10-17:
 	# 1.82: [asm_const](https://github.com/rust-lang/rust/pull/128570)
@@ -229,7 +229,7 @@ nightly = [
 	# 1.84  [const_maybe_uninit_assume_init](https://github.com/rust-lang/rust/pull/131274)
 	# 1.84  [pin_deref_mut](https://github.com/rust-lang/rust/pull/129424)
 	#
-	##1.‥…
+	##1.‥… later
 	# 1.??: ✗[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 	# 1.??: ✗[const_array_from_ref|const_slice_from_ref](https://github.com/rust-lang/rust/issues/90206)
 	# 1.??: ✗[const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
@@ -242,16 +242,14 @@ nightly = [
 	# 1.??: ✗[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
 	# 1.??: ✗[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 	#
-	# # Experimental features:
+	## Experimental features:
 	# [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 	# [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
 	#
-	## 2024 edition:
-	# - https://doc.rust-lang.org/edition-guide/rust-2024/index.html
-	#
-	## Links and scripts for the next releases:
+	## Links for next releases:
 	# - ./tools/release_dates.rs
 	# - https://github.com/rust-lang/rust/milestones
+	# - https://doc.rust-lang.org/edition-guide/rust-2024/index.html
 	# - https://calendar.google.com/calendar/u/0/embed?src=mozilla.com_ts4qudb88i0tbjef8rche4a6v4@group.calendar.google.com
 
 

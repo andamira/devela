@@ -124,7 +124,7 @@
     )
 )]
 #![cfg_attr( // 1.??
-    feature = "nightly_stable_wip",
+    feature = "nightly_stable",
     feature(
         const_array_from_ref,
         const_slice_from_ref,
@@ -137,7 +137,7 @@
     )
 )]
 #![cfg_attr( // 1.?? not(miri)
-    all(not(miri), feature = "nightly_stable_wip"),
+    all(not(miri), feature = "nightly_stable"),
     feature(
         box_uninit_write,
         new_zeroed_alloc,
