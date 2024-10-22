@@ -7,22 +7,22 @@
 
 // Centralized automatic definitions based on enabled features & flags
 #[cfg(any(doc, test))]
-impl_non_value![i 8];
+impl_non_value![I 8];
 #[cfg(any(feature = "_char7", feature = "_char24"))]
-impl_non_value![u 8];
+impl_non_value![U 8];
 #[cfg(feature = "_char16")]
-impl_non_value![u 16];
+impl_non_value![U 16];
 
-/// Implements a `NonValue[I|U]B<V>`,
+/// Implements a `NonValue[I|U]B<V>`.
 ///
-/// - `i` or `u` represents signed or unsigned, respectively.
+/// - `I` or `U` means a signed or unsigned type, respectively.
 /// - `B` represents the bit-size, from [8, 16, 32, 64, 128].
 /// - `V` is the prohibited value in the bit-sized range.
 ///
 /// # Example
 /// ```
 /// # use devela::impl_non_value;
-/// impl_non_value![i 8];
+/// impl_non_value![I 8];
 ///
 /// assert![NonValueI8::<3>::new(2).is_some()];
 /// assert![NonValueI8::<3>::new(3).is_none()];
@@ -39,13 +39,13 @@ macro_rules! impl_non_value{
     (
         // Defines a new signed non-value type. E.g.: impl_non_value![i 32]
         // would generate NonValueI32 and NonExtremeI32
-        i $bits:literal) => {
+        I $bits:literal) => {
         $crate::impl_non_value![@MIN, "A signed", i, $bits];
     };
     (
         // Defines a new signed non-value type. E.g.: impl_non_value![u 32]
         // would generate NonValueU32 and NonExtremeU32
-        u $bits:literal) => {
+        U $bits:literal) => {
         $crate::impl_non_value![@MAX, "An unsigned", u, $bits];
     };
     (

@@ -7,7 +7,7 @@
 //! # Example
 //! ```
 //! # use devela::impl_non_value;
-//! impl_non_value!(i 8);
+//! impl_non_value!(I 8);
 //!
 //! let a = NonValueI8::<3>::new(2);
 //! ```
@@ -15,7 +15,7 @@
 
 use devela::impl_non_value;
 
-impl_non_value!(i 8);
+impl_non_value!(I 8);
 
 fn main() {
     assert![NonValueI8::<3>::new(2).is_some()];
