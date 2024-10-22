@@ -37,7 +37,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 213/300 (87 remaining), 73 visible, 140 hidden
+[features] # 186/300 (114 remaining), 73 visible, 113 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -338,7 +338,7 @@ _sort_all = [
 #* num capabilities *#
 # ---------------------
 
-_num_all = ["_nums_all", "_cmp_all", "_niche_all"]
+_num_all = ["_nums_all", "_cmp_all"]
 
 # `Compare`:
 _cmp_all = [
@@ -380,43 +380,6 @@ _nums_all = ["_float_all", "_int_all"]
 			_int_u64 = []
 			_int_u128 = []
 			_int_usize = []
-
-# `NonValue*`+`NonExtreme*`, `NonRange*`, `InRange*`:
-_niche_all = ["_non_range_all", "_in_range_all"]
-	_non_range_all = [
-		"_non_range_i8", "_non_range_i16", "_non_range_i32",
-		"_non_range_i64", "_non_range_i128", "_non_range_isize",
-		"_non_range_u8", "_non_range_u16", "_non_range_u32",
-		"_non_range_u64", "_non_range_u128", "_non_range_usize"]
-		_non_range_i8 = []
-		_non_range_u8 = []
-		_non_range_i16 = []
-		_non_range_u16 = []
-		_non_range_i32 = []
-		_non_range_u32 = []
-		_non_range_i64 = []
-		_non_range_u64 = []
-		_non_range_i128 = []
-		_non_range_u128 = []
-		_non_range_isize = []
-		_non_range_usize = []
-	_in_range_all = [
-		"_in_range_i8", "_in_range_i16", "_in_range_i32",
-		"_in_range_i64", "_in_range_i128", "_in_range_isize",
-		"_in_range_u8", "_in_range_u16", "_in_range_u32",
-		"_in_range_u64", "_in_range_u128", "_in_range_usize"]
-		_in_range_i8 = []
-		_in_range_u8 = []
-		_in_range_i16 = []
-		_in_range_u16 = []
-		_in_range_i32 = []
-		_in_range_u32 = []
-		_in_range_i64 = []
-		_in_range_u64 = []
-		_in_range_i128 = []
-		_in_range_u128 = []
-		_in_range_isize = []
-		_in_range_usize = []
 
 #* text capabilities *#
 # ---------------------
@@ -462,7 +425,6 @@ _docs_min = [ # the minimum capabilities that document all library items
 	# num:
 	"_cmp_u8",
 	"_float_f32", "_int_u8",
-	"_non_range_u8", "_in_range_u8",
 	# text:
 	"_string_u8", "_string_nonul",
 	"_char7", "_char8", "_char16", "_char24", "_char32",
@@ -620,7 +582,6 @@ check-cfg = [ # Allowed config flags:
 	# num:
 	'cfg(_some_sort, _some_sort_int, _some_sort_float)',
 	'cfg(_some_nums, _some_cmp, _some_float, _some_int, _some_int_i, _some_int_u)',
-	'cfg(_some_niche, _some_in_range, _some_non_range)',
 	'cfg(_some_non_value, _some_non_value_i, _some_non_value_u)',
 	# rend:
 	 'cfg(_some_rend)',

@@ -5,7 +5,7 @@
 //! Always available for internal use.
 //
 
-// Centralized automatic definitions based on enabled features
+// Centralized automatic definitions based on enabled features & flags
 #[cfg(any(doc, test))]
 impl_non_value![i 8];
 #[cfg(any(feature = "_char7", feature = "_char24"))]

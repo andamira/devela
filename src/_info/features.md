@@ -216,32 +216,12 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`], [
 They also set the corresponding flags:
 `_some_nums`, `_some_float`, `_some_int`, `_some_int_i`, `_some_int_u`.
 
-Enable specific implementations for niche [`NonValue*`], [`NonRange*`], [`InRange*`].
-- `_niche_all`:
-  - `_non_range_all`:
-    - `_non_range_i8`, `_non_range_i16`, `_non_range_i32`,
-      `_non_range_i64`, `_non_range_i128`, `_non_range_isize`.
-    - `_non_range_u8`, `_non_range_u16`, `_non_range_u32`,
-      `_non_range_u64`, `_non_range_u128`, `_non_range_usize`.
-  - `_in_range_all`:
-    - `_in_range_i8`, `_in_range_i16`, `_in_range_i32`,
-      `_in_range_i64`, `_in_range_i128`, `_in_range_isize`.
-    - `_in_range_u8`, `_in_range_u16`, `_in_range_u32`,
-      `_in_range_u64`, `_in_range_u128`, `_in_range_usize`.
-
-They also set the corresponding flags:
-`_some_niche`,
-  `_some_non_range`, `_some_in_range`.
-
 [`Compare`]: crate::num::Compare
 [`Float`]: crate::num::Float
 [`Frac`]: crate::num::Frac
 [`Int`]: crate::num::Int
 [`Divisor`]: crate::num::Divisor
 [`Vector`]: crate::num::Vector
-[`InRange*`]: crate::num::InRangeU8
-[`NonRange*`]: crate::num::NonRangeU8
-[`NonValue*`]: crate::num::NonValueU8
 
 #### `text` capabilities
 

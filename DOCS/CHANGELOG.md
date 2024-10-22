@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - sys::os `linux`, `dep_linux`, `unsafe_syscall`.
   - nightly: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`,
   - render: `rend`, `rend_[audio|color|draw|font|image|layout]`, `safe_rend`.
-  - other  `unsafe_async`, `__lints`, `__force_miri_dst`.
+  - other  `dep_work`, `unsafe_async`, `__lints`, `__force_miri_dst`.
 - rename features:
   - `nightly_stabilized` to `nightly_stable`.
   - `_[max|min]_docs` to `_docs_[max|min]`, `_docsrs_max` to `_docsrs_stable_max`.
@@ -74,7 +74,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Removed
 - remove items: `NeverOk`, `NeverErr`.
 - remove custom no_std `Error` definition.
-- remove features: `_default`, `_max`, `_non_value_*`, `num_geom`.
+- remove types: `InRange*`, `NonRanbe*`.
+- remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`.
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
 - move `num::geom::prim` submodule to separate crate `cuadra`.
 
