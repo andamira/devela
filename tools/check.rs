@@ -144,11 +144,11 @@ fn main() -> Result<()> {
         let cmd = "test";
         sf! { headline(0, &format!["`all` test checking [alloc|std] + [safe|unsafe]):"]); }
 
-        // WAITING: https://github.com/rust-lang/cargo/issues/1983 (colored output)
+        // WAIT: https://github.com/rust-lang/cargo/issues/1983 (colored output)
 
-        // std (un)safe
-        run_cargo(&msrv, cmd, &["-F all,std,safe", "--", "--color=always"])?;
-        run_cargo(&msrv, cmd, &["-F all,std,unsafe", "--", "--color=always"])?;
+        // std (un)safe (max capabilities)
+        run_cargo(&msrv, cmd, &["-F all,std,safe,_docs_max", "--", "--color=always"])?;
+        run_cargo(&msrv, cmd, &["-F all,std,unsafe,_docs_max", "--", "--color=always"])?;
 
         // std (un)safe + dep_all
         sf! { run_cargo(&msrv, cmd, &["-F all,std,safe,dep_all", "--", "--color=always"])?; }
