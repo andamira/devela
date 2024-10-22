@@ -264,9 +264,9 @@ macro_rules! impl_comparing {
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn clamp(self, min: $f, max: $f) -> $f {
-                match self.0.total_cmp(&min) {
+                match self.total_cmp(min) {
                     Less => min,
-                    _ => match self.0.total_cmp(&max) {
+                    _ => match self.total_cmp(max) {
                         Greater => max,
                         _ => self.0,
                     }

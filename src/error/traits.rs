@@ -1,4 +1,4 @@
-// devela::error::chain::traits
+// devela::error::traits
 //
 //! Free function chaining traits helpers.
 //
