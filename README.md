@@ -4,7 +4,7 @@
 [![API](https://docs.rs/devela/badge.svg)](https://docs.rs/devela/)
 [![MSRV: 1.82.0](https://flat.badgen.net/badge/MSRV/1.82.0/purple)](https://releases.rs/docs/1.82.0/)
 
-A cohesive & modular development layer, designed for clarity and low-level control.
+A cohesive, multi-disciplinary development layer.
 
 ## Status
 This project is currently in an experimental stage of development.

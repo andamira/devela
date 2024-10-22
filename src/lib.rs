@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A cohesive & modular development layer, designed for clarity and low-level control.
+//! A cohesive, multi-disciplinary development layer.
 //
 
 //* global config *//
