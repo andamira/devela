@@ -218,11 +218,6 @@ They also set the corresponding flags:
 
 Enable specific implementations for niche [`NonValue*`], [`NonRange*`], [`InRange*`].
 - `_niche_all`:
-  - `_non_value_all`:
-    - `_non_value_i8`, `_non_value_i16`, `_non_value_i32`,
-      `_non_value_i64`, `_non_value_i128`, `_non_value_isize`.
-    - `_non_value_u8`, `_non_value_u16`, `_non_value_u32`,
-      `_non_value_u64`, `_non_value_u128`, `_non_value_usize`.
   - `_non_range_all`:
     - `_non_range_i8`, `_non_range_i16`, `_non_range_i32`,
       `_non_range_i64`, `_non_range_i128`, `_non_range_isize`.
@@ -235,8 +230,8 @@ Enable specific implementations for niche [`NonValue*`], [`NonRange*`], [`InRang
       `_in_range_u64`, `_in_range_u128`, `_in_range_usize`.
 
 They also set the corresponding flags:
-`_some_niche`, `_some_non_value`, `_some_non_value_i`, `_some_non_value_u`,
-`_some_non_range`, `_some_in_range`.
+`_some_niche`,
+  `_some_non_range`, `_some_in_range`.
 
 [`Compare`]: crate::num::Compare
 [`Float`]: crate::num::Float

@@ -173,7 +173,7 @@ pub mod sys;
 pub mod text;
 pub mod work;
 
-/// All the crate's items.
+/// All the crate's items re-exported flat.
 /// <br/><hr>
 pub mod all {
     #[allow(unused_imports)]
@@ -206,7 +206,7 @@ pub mod _info {
     #[cfg(any(doc, test))]
     pub mod examples;
 
-    /// Cargo features.
+    /// Library features explained.
     pub mod features {
         #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
         #![doc = include_str!("./_info/features.md")]

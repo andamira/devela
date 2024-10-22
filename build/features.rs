@@ -179,20 +179,6 @@ mod reflection {
         features: &["_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize"] };
 
     // ### niche
-    pub const NON_VALUE_I: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_non_value", "_some_non_value_i", "_some_niche"],
-        features: &[
-            "_non_value_i8", "_non_value_i16", "_non_value_i32",
-            "_non_value_i64", "_non_value_i128", "_non_value_isize"
-        ]
-    };
-    pub const NON_VALUE_U: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_non_value", "_some_non_value_u", "_some_niche"],
-        features: &[
-            "_non_value_u8", "_non_value_u16", "_non_value_u32",
-            "_non_value_u64", "_non_value_u128", "_non_value_usize"
-        ]
-    };
     pub const NON_RANGE: FlagsFeatures = FlagsFeatures {
         flags: &["_some_non_range", "_some_niche"],
         features: &[
@@ -257,7 +243,7 @@ mod reflection {
             // num
             CMP,
             FLOAT, INT, UINT, // numbers
-            NON_VALUE_I, NON_VALUE_U, NON_RANGE, IN_RANGE, // niche
+            NON_RANGE, IN_RANGE, // niche
 
         ] { set_flags_dbg_features(ff.flags, ff.features); }
     }

@@ -46,7 +46,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
 - macros:
   - `type_marker!`, `assert_const!`, `namespace_fns!` `id_seq!`, `type_resource!`,
-  - `const_bool!`, `capture_first`, `capture_last`, `capture_tail_tuple`.
+  - `const_bool!`, `capture_first`, `capture_last`, `capture_tail_tuple`, `impl_non_value`.
   - private: `doc_availability!`.
 - re-export:
   - items from: `std::backtrace`, `core::cell`, `core::ops`, `std::fmt`.
@@ -73,9 +73,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Removed
 - remove items: `NeverOk`, `NeverErr`.
-- remove feature `num_geom`.
-- remove features: `_default`, `_max`.
 - remove custom no_std `Error` definition.
+- remove features: `_default`, `_max`, `_non_value_*`, `num_geom`.
+- disable `Graph*`, `Node*`, and `NodeIndex*` types.
 - move `num::geom::prim` submodule to separate crate `cuadra`.
 
 ### Changed

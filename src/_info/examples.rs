@@ -27,6 +27,9 @@ pub mod enumint;
 #[path = "../../examples/id_seq.rs"]
 pub mod id_seq;
 
+#[path = "../../examples/niche.rs"]
+pub mod niche;
+
 /* out-crate standalone examples */
 
 // #[path = "examples/separate_crate"]

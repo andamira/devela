@@ -25,15 +25,15 @@ macro_rules! impl_num {
         impl_num![f f32:"_float_f32", f64:"_float_f64"];
 
         // niche types
-        impl_num![non_value i i8:"_non_value_i8", i16:"_non_value_i16", i32:"_non_value_i32",
-            i64:"_non_value_i64", i128:"_non_value_i128", isize:"_non_value_isize"];
+        // impl_num![non_value i i8:"_non_value_i8", i16:"_non_value_i16", i32:"_non_value_i32",
+        //     i64:"_non_value_i64", i128:"_non_value_i128", isize:"_non_value_isize"];
         impl_num![non_range i i8:"_non_range_i8", i16:"_non_range_i16", i32:"_non_range_i32",
             i64:"_non_range_i64", i128:"_non_range_i128", isize:"_non_range_isize"];
         impl_num![in_range i i8:"_in_range_i8", i16:"_in_range_i16", i32:"_in_range_i32",
             i64:"_in_range_i64", i128:"_in_range_i128", isize:"_in_range_isize"];
         //
-        impl_num![non_value u u8:"_non_value_u8", u16:"_non_value_u16", u32:"_non_value_u32",
-            u64:"_non_value_u64", u128:"_non_value_u128", usize:"_non_value_usize"];
+        // impl_num![non_value u u8:"_non_value_u8", u16:"_non_value_u16", u32:"_non_value_u32",
+        //     u64:"_non_value_u64", u128:"_non_value_u128", usize:"_non_value_usize"];
         impl_num![non_range u u8:"_non_range_u8", u16:"_non_range_u16", u32:"_non_range_u32",
             u64:"_non_range_u64", u128:"_non_range_u128", usize:"_non_range_usize"];
         impl_num![in_range u u8:"_in_range_u8", u16:"_in_range_u16", u32:"_in_range_u32",

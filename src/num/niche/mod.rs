@@ -7,7 +7,6 @@ mod reexports;
 #[allow(unused_imports)]
 pub use reexports::*;
 
-#[cfg(_some_niche)]
 #[cfg(test)]
 mod tests;
 //
@@ -15,13 +14,11 @@ mod tests;
 mod in_range;
 #[cfg(_some_non_range)]
 mod non_range;
-#[cfg(_some_non_value)]
 mod non_value;
 #[cfg(_some_in_range)]
 pub use in_range::*;
 #[cfg(_some_non_range)]
 pub use non_range::*;
-#[cfg(_some_non_value)]
 pub use non_value::*;
 
 pub(crate) mod all {
@@ -36,6 +33,5 @@ pub(crate) mod all {
     #[cfg(_some_non_range)]
     pub use super::non_range::*;
     #[doc(inline)]
-    #[cfg(_some_non_value)]
     pub use super::non_value::*;
 }

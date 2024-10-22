@@ -29,6 +29,7 @@ include = [
 	"/examples/bitfield.rs",
 	"/examples/enumset.rs",
 	"/examples/id_seq.rs",
+	"/examples/niche.rs",
 ]
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
@@ -36,18 +37,18 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 226/300 (74 remaining), 73 visible, 153 hidden
+[features] # 213/300 (87 remaining), 73 visible, 140 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
 # - Miscellaneous    __[dbg,…]
 # - Environment      alloc,[no_]std
-# - Modules          
+# - Modules
 # - Safety           [safe|unsafe]_
-# - Nightly          nightly_[coro|simd|stable]
-# - Capability       _[data,…]
+# - Nightly          nightly_[coro|simd|stable[_…]]
+# - Capability       _[data,num,…]
 # - Dependencies     (dep_[all|linux|text|…]
-#    4   8   2   6   0    
+#
 # Sintax:
 # - ["name"]: Visible public-facing features.
 # - ["_name"]: Hidden extra capability features.
@@ -297,10 +298,10 @@ _collections_all = [ "_destaque_all", "_graph_all", "_node_all", "_stack_all", "
 		_graph_u32 = ["_node_u32"]
 		_graph_usize = ["_node_usize"]
 	_node_all = ["_node_u8", "_node_u16", "_node_u32", "_node_usize"]
-		_node_u8 = ["_non_value_u8"]
-		_node_u16 = ["_non_value_u16"]
-		_node_u32 = ["_non_value_u32"]
-		_node_usize = ["_non_value_usize"]
+		_node_u8 = []
+		_node_u16 = []
+		_node_u32 = []
+		_node_usize = []
 	_stack_all = ["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"]
 		_stack_u8 = []
 		_stack_u16 = []
@@ -381,24 +382,7 @@ _nums_all = ["_float_all", "_int_all"]
 			_int_usize = []
 
 # `NonValue*`+`NonExtreme*`, `NonRange*`, `InRange*`:
-_niche_all = ["_non_value_all", "_non_range_all", "_in_range_all"]
-	_non_value_all = [
-		"_non_value_i8", "_non_value_i16", "_non_value_i32",
-		"_non_value_i64", "_non_value_i128", "_non_value_isize",
-		"_non_value_u8", "_non_value_u16", "_non_value_u32",
-		"_non_value_u64", "_non_value_u128", "_non_value_usize"]
-		_non_value_i8 = []
-		_non_value_u8 = []
-		_non_value_i16 = []
-		_non_value_u16 = []
-		_non_value_i32 = []
-		_non_value_u32 = []
-		_non_value_i64 = []
-		_non_value_u64 = []
-		_non_value_i128 = []
-		_non_value_u128 = []
-		_non_value_isize = []
-		_non_value_usize = []
+_niche_all = ["_non_range_all", "_in_range_all"]
 	_non_range_all = [
 		"_non_range_i8", "_non_range_i16", "_non_range_i32",
 		"_non_range_i64", "_non_range_i128", "_non_range_isize",
@@ -441,10 +425,10 @@ _text_all = ["_char_all", "_string_all"]
 
 # Char*
 _char_all = ["_char7", "_char8", "_char16", "_char24", "_char32"]
-	_char7 = ["_non_value_u8"]
+	_char7 = []
 	_char8 = []
-	_char16 = ["_non_value_u16"]
-	_char24 = ["_non_value_u8"]
+	_char16 = []
+	_char24 = []
 	_char32 = []
 
 # StringU*, StringNonul:
@@ -478,7 +462,7 @@ _docs_min = [ # the minimum capabilities that document all library items
 	# num:
 	"_cmp_u8",
 	"_float_f32", "_int_u8",
-	"_non_value_u8", "_non_range_u8", "_in_range_u8",
+	"_non_range_u8", "_in_range_u8",
 	# text:
 	"_string_u8", "_string_nonul",
 	"_char7", "_char8", "_char16", "_char24", "_char32",

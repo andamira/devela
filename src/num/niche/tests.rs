@@ -7,7 +7,6 @@
 use super::*;
 
 #[test]
-#[cfg(feature = "_non_value_i8")]
 fn non_value() {
     // a positive value
     type S1 = NonValueI8<120>;

@@ -19,11 +19,11 @@ pub use {array::all::*, reexports::*, traits::*};
 #[cfg(_some_destaque)]
 items! { mod destaque; pub use destaque::*; }
 
-#[cfg(_some_graph)]
-items! { mod graph; pub use graph::*; }
+// #[cfg(_some_graph)]
+// items! { mod graph; pub use graph::*; }
 
-#[cfg(_some_node)]
-items! { mod node; pub use node::*; }
+// #[cfg(_some_node)]
+// items! { mod node; pub use node::*; }
 
 #[cfg(_some_stack)]
 items! { mod stack; pub use stack::*; }
@@ -47,11 +47,11 @@ pub(crate) mod all {
     #[cfg(_some_destaque)]
     pub use super::destaque::all::*;
 
-    #[cfg(_some_graph)]
-    pub use super::graph::*;
+    // #[cfg(_some_graph)]
+    // pub use super::graph::*;
 
-    #[cfg(_some_node)]
-    pub use super::node::*;
+    // #[cfg(_some_node)]
+    // pub use super::node::*;
 
     #[cfg(_some_stack)]
     pub use super::stack::all::*;
