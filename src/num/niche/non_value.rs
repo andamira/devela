@@ -191,7 +191,7 @@ macro_rules! impl_non_value{
                 /// The given `value` must never be equal to `V`.
                 #[must_use]
                 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
-                #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_niche")))]
+                #[cfg_attr(all(feature = "nightly_doc", not(miri)), doc(cfg(feature = "unsafe_niche")))]
                 pub const unsafe fn new_unchecked(value: $IP) -> Self {
                     #[cfg(debug_assertions)]
                     if value == V { panic!("The given value was specifically prohibited.") }
@@ -377,7 +377,7 @@ macro_rules! impl_non_value{
             /* external impls*/
 
             #[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
-            #[cfg_attr(feature = "nightly_doc",
+            #[cfg_attr(all(feature = "nightly_doc", not(miri)),
                 doc(cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche"))))]
             #[allow(non_snake_case)]
             mod [<$name $s $b>] {

@@ -3,6 +3,7 @@
 //!
 //
 
+#[cfg(not(miri))]
 #[cfg(feature = "std")]
 use std::{
     convert::AsRef,

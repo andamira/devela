@@ -1,7 +1,6 @@
 // devela::sys::log::config
 
-#![allow(dead_code, unused_imports)] // TEMP
-
+#[expect(unused_imports, reason = "wip")]
 use super::{LogLevel, LogLevelFilter};
 
 ///

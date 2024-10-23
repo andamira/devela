@@ -1,10 +1,9 @@
 // devela::mem::size::expr::test_coro
 
-use super::mem_size_of_expr;
-
 #[cfg(not(miri))]
 #[test]
 fn api_coro() {
+    use super::mem_size_of_expr;
     use crate::{data::vec, text::String, work::Coroutine};
 
     pub(super) trait Foo<'a, 'b> {}

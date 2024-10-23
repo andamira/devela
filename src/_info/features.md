@@ -159,14 +159,10 @@ They also set the corresponding flag:
 [`enumset`]: crate::code::enumset
 
 Enable specific implementations of data collections
-[`Destaque`], [`GraphU*`]+, [`NodeU*`]+, [`Stack`]:
+[`Destaque`], [`Stack`]:
 - `_collections_all`:
 	- `_destaque_all`:
     - `_destaque_u8`, `_destaque_u16`, `_destaque_u32`, `_destaque_usize`.
-	- `_graph_all`:
-    - `_graph_u8`, `_graph_u16`, `_graph_u32`, `_graph_usize`.
-	- `_node_all`:
-    - `_node_u8`, `_node_u16`, `_node_u32`, `_node_usize`.
 	`_stack_all`:
 		`_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
 
@@ -187,8 +183,6 @@ Implement the [`Tuple`] trait for some maximum arity (12 by default).
 
 [`Destaque`]: crate::data::Destaque
 [`Stack`]: crate::data::Stack
-[`GraphU*`]: crate::data::GraphU8
-[`NodeU*`]: crate::data::NodeU8
 [`Sort`]: crate::data::Sort
 [`Tuple`]: crate::data::Tuple
 
