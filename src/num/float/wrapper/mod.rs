@@ -4,10 +4,12 @@
 //
 
 #[cfg(_some_float)]
-mod shared;
+crate::items! {
+    mod shared;
+    mod shared_helpers;
 
-#[cfg(_some_float)]
-mod libm_std;
+    mod libm_std;
+}
 
 mod consts;
 
