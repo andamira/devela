@@ -33,7 +33,17 @@ mod reflection {
 
     pub const MISCELLANEOUS: FlagsFeatures = FlagsFeatures {
         flags: &[],
-        features: &["_default", "_max", "_min_docs", "_max_docs", "_docsrs", "_docsrs_stable"]
+        features: &[
+            "__dbg",
+            "__lints",
+            "__no_test",
+            "__force_miri_dst",
+            // "default",
+            // "_default",
+            "_docsrs", "_docsrs_min",
+            "_docsrs_stable", "_docsrs_stable_min",
+            "_docs_max", "_docs_min",
+        ]
     };
 
     pub const ENVIRONMENT: FlagsFeatures = FlagsFeatures {

@@ -225,6 +225,10 @@ nightly = [ # sync with src/lib.rs
 	# 1.??: ✗[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
 	# 1.??: ✗[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 	#
+	##.‥… much later
+	# 1.?? [const_for](https://github.com/rust-lang/rust/issues/87575) depends on const_trait_impl
+	# 1.?? [const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
+	#
 	## Experimental features:
 	# [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 	# [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
@@ -393,10 +397,12 @@ _string_all = [
 # _default = [] # default capabilities
 
 # The most complete versions of the documentation:
-_docsrs = ["_docsrs_stable", "nightly"]
-_docsrs_max = ["_docsrs", "_docs_max"]
-_docsrs_stable = ["std", "unsafe", "dep_all", "_docs_min"]
-_docsrs_stable_max = ["_docsrs_stable", "_docs_max"]
+_docsrs = ["_docsrs_min", "_docs_max"]
+_docsrs_min = ["_docsrs_stable_min", "nightly"]
+
+_docsrs_stable = ["_docsrs_stable_min", "_docs_max"]
+_docsrs_stable_min = ["std", "unsafe", "dep_all", "_docs_min"]
+
 _docs_min = [ # the minimum capabilities that document all library items
 	"all",
 	"linux",
@@ -528,7 +534,7 @@ devela = { path = ".", features = ["all"] }
 # https://docs.rs/about/metadata
 
 no-default-features = true
-features = ["_docsrs_max"]
+features = ["_docsrs"]
 rustdoc-args = [ "--html-in-header", "./DOCS/rustdoc-header.html" ]
 
 
