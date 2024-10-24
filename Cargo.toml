@@ -66,7 +66,7 @@ _docsrs = ["nightly", "std", "unsafe"]
 [dependencies]
 # ==============================================================================
 # WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
-proc-macro2 = "1.0.87"
+proc-macro2 = "1.0.88"
 quote = "1.0.37"
 
 [dev-dependencies]
