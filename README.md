@@ -3,6 +3,11 @@
 [![Crate](https://img.shields.io/crates/v/devela_macros.svg)](https://crates.io/crates/devela_macros)
 [![API](https://docs.rs/devela_macros/badge.svg)](https://docs.rs/devela_macros/)
 [![MSRV: 1.72.1](https://flat.badgen.net/badge/MSRV/1.72.1/purple)](https://releases.rs/docs/1.72.1/)
+<br/>
+[![Code](https://tokei.rs/b1/github/andamira/devela_macros?category=code)](https://github.com/andamira/devela_macros)
+[![Documentation](https://tokei.rs/b1/github/andamira/devela_macros?category=comments)](https://docs.rs/devela_macros/)
+[![Files](https://tokei.rs/b1/github/andamira/devela_macros?category=files)](https://github.com/andamira/devela_macros/tree/main/)
+---
 
 Procedural macros for [`devela`](https://crates.io/crates/devela).
 
