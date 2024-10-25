@@ -24,8 +24,8 @@ jobs:
         with:
           components: rustfmt
 
-      - name: "./tools/rustfmt check all exclude"
-        run: ./tools/rustfmt check all exclude
+      - name: "./utils/rustfmt check all exclude"
+        run: ./utils/rustfmt check all exclude
 
   # 2. clippy lints
   clippy:
