@@ -11,8 +11,7 @@ This project includes the following derived works:
 - A [modified][5] version of [static_assertions] by Nikolai Vazquez,
   licensed as MIT or Apache-2.0,
   as part of the [`const_assert`] macro, and  [`ConstBool`] trait.
-- A modified version of [unsized-stack] by *storycraft*,
-  licensed as MIT,
+- A modified version of [unsized-stack] by *storycraft*, licensed as MIT,
   as the [`FatPtr`] struct.
 - Adaptation of [quickdiv] v0.1.1 by Darko Trifunovski, licensed as Zlib OR MIT OR Apache-2.0,
   as the [`Divisor`] struct.

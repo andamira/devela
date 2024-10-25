@@ -17,8 +17,8 @@ This project is currently in an experimental stage of development.
 The api docs for the unpublished WIP version is in: https://andamira.github.io/libera/doc/devela/
 
 ## License
-This project is dual licensed under either [MIT](DOCS/LICENSE-MIT)
-or [Apache-2.0](DOCS/LICENSE-APACHE), and includes includes several
+This project is dual licensed under either [MIT](LICENSE-MIT)
+or [Apache-2.0](LICENSE-APACHE), and includes includes several
 [derived works](DOCS/DERIVED.md).
 
 ## Contributing

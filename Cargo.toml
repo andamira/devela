@@ -21,7 +21,7 @@ documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
 include = [
 	"/Cargo.toml",
-	"/DOCS/*",
+	"/DOCS/*", "/LICENSE*",
 	"/build/**/*.rs",
 	"/src/**/*.rs", "/src/**/*.md",
 
