@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - other  `dep_work`, `unsafe_async`, `__lints`, `__force_miri_dst`.
 - rename features:
   - `nightly_stabilized` to `nightly_stable`.
-  - `_[max|min]_docs` to `_docs_[max|min]`, `_docsrs_max` to `_docsrs_stable_max`.
+  - `_[max|min]_docs` to `_docs_[max|min]`, `_docsrs_max` to `_docsrs`.
 - show build *env* variables if `__dbg` feature is enabled.
 - new cfg flag `cargo_primary_package`.
 
@@ -64,11 +64,11 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `sys::os::linux` module and example `linux`.
 - new lints.
 
-#### Examples and tools
+#### Examples and utilities
 - new example `id_pin`.
 - new example `id_seq` and type `ExampleIdSeqUsize`.
 - new example `enumint` and type `ExampleEnumIntU8`.
-- new scripts in `tools/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`.
+- new scripts in `utils/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`.
 - new github workflows: `get_errno.yml`, `get_syscall.yml`.
 
 ### Removed
@@ -109,12 +109,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename `EgcString` to `GraphemeString`.
 - rename `EgcNonul` to `GraphemeNonul`.
 - rename `EgcU8` to `GraphemeU8`.
+- rename the `tools` directory to `utils`.
 - rename re-wrapped macros to avoid prelude collision when glob importing:
   - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
+- make const `Float` methods: `eval_poly`, `factorial`, `mul_add_fallback`, `scale`, `lerp`, `ln*_series`, `log[10|2]_series`.
+- make const versions of Float methods: `clamp_nan`, `fisr`, `hypot_fisr`, `max_nan`, `min_nan`, `cbrt_nr`, `sqrt_nr`, `hypot_nr`, `rem_euclid`, `*_series`, `*_series_terms*`.
 
 ### Fixed
 - reduce noise from required features on methods from `Divisor`, `Int`, `Float`, `Frac`.
-- make `tools/check.rs` not compile with `all_dep` when cross-compiling certain arches.
+- make `utils/check.rs` not compile with `all_dep` when cross-compiling certain arches.
 - hide public macros from the crate root when `cfg(cargo_primary_package)`.
 - fix build script utility call paths, add missing `_tuple*` features.
 - several fixes for linux syscalls on multiple architectures.
