@@ -1,21 +1,12 @@
 // devela::data::collections::destaque::methods::general
 
 use crate::{
-    data::{
-        array_from_fn,
-        error::{
-            DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds},
-            DataResult as Result,
-        },
-        Array, Destaque, DestaqueIter,
-    },
-    mem::{Bare, Storage},
+    array_from_fn, Array, Bare,
+    DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds},
+    DataResult as Result, Destaque, DestaqueIter, Storage,
 };
 #[cfg(feature = "alloc")]
-use crate::{
-    data::{vec_, Vec},
-    mem::Boxed,
-};
+use crate::{mem::Boxed, vec_ as vec, Vec};
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
 use core::mem::{transmute_copy, MaybeUninit};
 
@@ -1196,7 +1187,7 @@ macro_rules! impl_destaque {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn to_vec(&self) -> Vec<T> {
                 if self.is_empty() {
-                    vec_![]
+                    vec![]
                 } else {
                     let mut vec = Vec::with_capacity(self.len() as usize);
                     let mut index = self.front as usize;

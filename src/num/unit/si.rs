@@ -5,11 +5,11 @@
 
 use super::helpers::impl_try_from;
 #[allow(unused_imports)]
-#[cfg(feature = "alloc")]
-use crate::data::{vec_, Vec};
-#[allow(unused_imports)]
 #[cfg(feature = "_float_f64")]
-use crate::num::ExtFloat;
+use crate::ExtFloat;
+#[allow(unused_imports)]
+#[cfg(feature = "alloc")]
+use crate::{vec_ as vec, Vec};
 
 /// SI (metric) prefixes.
 ///
@@ -594,7 +594,7 @@ impl UnitSi {
     )]
     pub fn reduce_chain(value: f64, threshold: f64) -> Vec<(f64, Self)> {
         if value == 0.0 {
-            return vec_![(0.0, UnitSi::None)];
+            return vec![(0.0, UnitSi::None)];
         }
 
         let mut result = Vec::new();
@@ -775,7 +775,7 @@ mod tests {
         },
     };
     #[cfg(any(feature = "std", all(feature = "alloc", feature = "_float_f64")))]
-    use crate::data::vec_;
+    use crate::vec_ as vec;
     use crate::{code::sf, num::ExtFloatConst};
 
     /* reduce */
@@ -836,18 +836,18 @@ mod tests {
         assert_eq![
             // single unit: 1G
             UnitSi::reduce_chain(Giga.factor(), margin),
-            vec_![(1.0, Giga)]
+            vec![(1.0, Giga)]
         ];
         assert_eq![
             // multiple units: 1.5G
             UnitSi::reduce_chain(1.5 * Giga.factor(), margin),
-            vec_![(1.0, Giga), (500.0, Mega)]
+            vec![(1.0, Giga), (500.0, Mega)]
         ];
         assert_eq![
             // 1G + 1K
             UnitSi::reduce_chain(Giga.factor() + Kilo.factor(), margin),
-            // vec_![(1.0, Giga), (1.0, Kilo)] NOTE: rounding error:
-            sf! { vec_![
+            // vec![(1.0, Giga), (1.0, Kilo)] NOTE: rounding error:
+            sf! { vec![
                 (1.0, Giga), (9.0, Hecto), (9.0, Deca), (99.0, Deci),
                 (9.0, Centi), (9.0, Milli), (999.0, Micro), (917.0, Nano)
             ]}
@@ -855,13 +855,13 @@ mod tests {
         assert_eq![
             // Small value (only 512K)
             UnitSi::reduce_chain(Mega.factor() / 2.0, margin),
-            vec_![(500.0, Kilo)]
+            vec![(500.0, Kilo)]
         ];
         assert_eq![
             // Very large value (1Y + 1Z + 1G)
             UnitSi::reduce_chain(Yotta.factor() + Zetta.factor() + Giga.factor(), margin),
-            // vec_![(1.0, Yotta), (1.0, Zetta), (1.0, Giga)] // NOTE: rounding error:
-            sf! { vec_![
+            // vec![(1.0, Yotta), (1.0, Zetta), (1.0, Giga)] // NOTE: rounding error:
+            sf! { vec![
                 (1.0, Yotta), (1.0, Zetta), (1.0, Giga), (88.0, Kilo), (9.0, Hecto),
                 (5.0, Deci), (8.0, Centi), (2.0, Milli), (341.0, Micro), (11.0, Nano)
             ]}
@@ -869,12 +869,12 @@ mod tests {
         assert_eq![
             // Zero value
             UnitSi::reduce_chain(0.0, margin),
-            vec_![(0.0, UnitSi::None)]
+            vec![(0.0, UnitSi::None)]
         ];
         assert_eq![
             // Fractional value (0.5G)
             UnitSi::reduce_chain(Giga.factor() / 2., margin),
-            vec_![(500., Mega)]
+            vec![(500., Mega)]
         ];
     }
 }

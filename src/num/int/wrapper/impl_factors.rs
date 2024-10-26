@@ -20,15 +20,9 @@
 //     - factors_prime_unique_exp_buf
 //     - factors_prime_unique_plus_buf
 
-use crate::{
-    code::{iif, paste},
-    num::{Int, NumError::MismatchedSizes, NumResult as Result},
-};
+use crate::{iif, paste, Int, NumError::MismatchedSizes, NumResult as Result};
 #[cfg(feature = "alloc")]
-use crate::{
-    data::{vec_, BTreeSet, Vec},
-    error::Also,
-};
+use crate::{vec_ as vec, Also, BTreeSet, Vec};
 
 // $t:   the input/output type
 // $cap: the capability feature that enables the given implementation. E.g "_int_i8".
@@ -89,8 +83,8 @@ macro_rules! impl_int {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors(self) -> Vec<$t> {
                 let n = self.0.abs();
-                iif![n == 0; return vec_![];
-                iif![n == 1; return vec_![1]]];
+                iif![n == 0; return vec![];
+                iif![n == 1; return vec![1]]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
@@ -123,7 +117,7 @@ macro_rules! impl_int {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_proper(self) -> Vec<$t> {
                 let n = self.0.abs();
-                iif![n == 0; return vec_![]];
+                iif![n == 0; return vec![]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
@@ -646,7 +640,7 @@ macro_rules! impl_int {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors(self) -> Vec<$t> {
                 let n = self.0;
-                iif![n == 0; return vec_![]; iif![n == 1; return vec_![1]]];
+                iif![n == 0; return vec![]; iif![n == 1; return vec![1]]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
@@ -680,7 +674,7 @@ macro_rules! impl_int {
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_proper(self) -> Vec<$t> {
                 let n = self.0;
-                iif![n == 0; return vec_![]];
+                iif![n == 0; return vec![]];
                 let mut set = BTreeSet::new();
                 set.insert(1);
                 for p in self.factors_prime_unique() {
