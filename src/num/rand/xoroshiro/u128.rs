@@ -5,10 +5,14 @@
 // TOC
 // - Xoroshiro128pp
 //   - public definitions
-//   - private items and helpers
 //   - trait implementations
+//   - private items and helpers
 
-use crate::{code::ConstDefault, error::Own, num::Cast};
+#[cfg(feature = "alloc")]
+use crate::Box;
+use crate::{Cast, ConstDefault, Own};
+#[cfg(feature = "std")]
+use crate::{Hasher, HasherBuild, RandomState};
 
 /* public definitions */
 
@@ -20,29 +24,76 @@ use crate::{code::ConstDefault, error::Own, num::Cast};
 pub struct Xoroshiro128pp([u32; 4]);
 
 impl Xoroshiro128pp {
-    /// Creates a new `Xoroshiro128pp` generator with the given seed.
+    /// Creates a new Xoroshiro128++ PRNG with the given `seed`.
     ///
-    /// Returns `None` if all seeds are zero.
+    /// Returns `None` if the seed parts are all zero.
     #[inline]
     #[must_use]
-    pub const fn new(seeds: [u32; 4]) -> Option<Self> {
-        if (seeds[0] | seeds[1] | seeds[2] | seeds[3]) == 0 {
+    pub const fn new(seed: [u32; 4]) -> Option<Self> {
+        if (seed[0] | seed[1] | seed[2] | seed[3]) == 0 {
             Self::cold_path_result()
         } else {
-            Some(Self(seeds))
+            Some(Self(seed))
         }
     }
 
     /// Creates a new Xoroshiro128++ PRNG with the given seed without any checks.
     ///
     /// # Panics
-    /// Panics in debug mode if the seeds are all `0`.
+    /// Panics in debug mode if the seed parts are all `0`.
     #[inline]
-    pub const fn new_unchecked(seeds: [u32; 4]) -> Self {
-        debug_assert!((seeds[0] | seeds[1] | seeds[2] | seeds[3]) != 0, "Seeds must be non-zero");
-        Self(seeds)
+    pub const fn new_unchecked(seed: [u32; 4]) -> Self {
+        debug_assert!((seed[0] | seed[1] | seed[2] | seed[3]) != 0, "Seed must be non-zero");
+        Self(seed)
     }
 
+    /// Creates a new Xoroshiro128++ PRNG, seeded from addresses of stack variables.
+    ///
+    /// This is a very poor source of randomness.
+    #[inline(never)]
+    pub fn from_stack() -> Self {
+        let (a, b, c, d) = (0, 0, 0, 0);
+        let seed: [u32; 4] = [
+            &a as *const _ as u32,
+            &b as *const _ as u32,
+            &c as *const _ as u32,
+            &d as *const _ as u32,
+        ];
+        Self::new_unchecked(seed)
+    }
+
+    /// Creates a new Xoroshiro128++ PRNG, seeded from addresses of heap and stack variables.
+    ///
+    /// This is a very poor source of randomness.
+    #[inline(never)]
+    #[cfg(feature = "alloc")]
+    pub fn from_heap() -> Self {
+        let (a, b, c, d) = (0, Box::new(0), Box::new(0), 0);
+        let seed: [u32; 4] = [
+            &a as *const _ as u32,
+            &b as *const _ as u32,
+            &c as *const _ as u32,
+            &d as *const _ as u32,
+        ];
+        Self::new_unchecked(seed)
+    }
+
+    /// Creates a new Xoroshiro128++ PRNG, seeded from [`RandomState`].
+    #[inline(never)]
+    #[cfg(feature = "std")]
+    pub fn from_randomstate() -> Self {
+        let h = RandomState::new();
+        let (mut hasher1, mut hasher2) = (h.build_hasher(), h.build_hasher());
+        hasher1.write_u32(Self::DEFAULT_SEED[0]);
+        hasher2.write_u32(Self::DEFAULT_SEED[0]);
+        let (hash1, hash2) = (hasher1.finish(), hasher2.finish());
+        let seed = [(hash1 >> 32) as u32, hash1 as u32, (hash2 >> 32) as u32, hash2 as u32];
+        Self::new_unchecked(seed)
+    }
+}
+
+/// # Methods taking `&mut self`
+impl Xoroshiro128pp {
     /// Generates the next random `u32` value.
     // Note how the output of the RNG is computed before updating the state.
     // unlike on Xorshift128, for example.
@@ -60,6 +111,21 @@ impl Xoroshiro128pp {
         result
     }
 
+    /// The jump function for the generator, equivalent to 2^64 `next_u32` calls.
+    #[inline]
+    pub fn jump(&mut self) {
+        self.jump_with_constant(Self::JUMP);
+    }
+
+    /// The long jump function for the generator, equivalent to 2^96 `next_u32` calls.
+    #[inline]
+    pub fn long_jump(&mut self) {
+        self.jump_with_constant(Self::LONG_JUMP);
+    }
+}
+
+/// # Methods taking `self`
+impl Xoroshiro128pp {
     /// Returns the current random `u32`, without updating the state.
     #[inline]
     #[must_use]
@@ -83,22 +149,10 @@ impl Xoroshiro128pp {
 
     /// Returns both the next random state and the `u32` value in a tuple.
     #[inline]
-    pub fn own_next_u32(self) -> Own<Self, u32> {
+    pub const fn own_next_u32(self) -> Own<Self, u32> {
         let next_state = self.copy_next_state();
         let next_value = next_state.current_u32();
         Own::new(next_state, next_value)
-    }
-
-    /// The jump function for the generator, equivalent to 2^64 `next_u32` calls.
-    #[inline]
-    pub fn jump(&mut self) {
-        self.jump_with_constant(Self::JUMP);
-    }
-
-    /// The long jump function for the generator, equivalent to 2^96 `next_u32` calls.
-    #[inline]
-    pub fn long_jump(&mut self) {
-        self.jump_with_constant(Self::LONG_JUMP);
     }
 
     /// Returns a copy of the state jumped ahead by 2^64 steps.
@@ -166,64 +220,6 @@ impl Xoroshiro128pp {
             Cast::<u32>::from_u8_le([seeds[8], seeds[9], seeds[10], seeds[11]]),
             Cast::<u32>::from_u8_le([seeds[12], seeds[13], seeds[14], seeds[15]]),
         ])
-    }
-}
-
-/* private items and helpers */
-
-impl Xoroshiro128pp {
-    const DEFAULT_SEED: [u32; 4] = [0xDEFA_0017; 4];
-    const JUMP: [u32; 4] = [0x8764_000b, 0xf542_d2d3, 0x6fa0_35c3, 0x77f2_db5b];
-    const LONG_JUMP: [u32; 4] = [0xb523_952e, 0x0b6f_099f, 0xccf_5a0ef, 0x1c58_0662];
-
-    #[cold] #[rustfmt::skip]
-    const fn cold_path_result() -> Option<Self> { None }
-    #[cold] #[allow(dead_code)] #[rustfmt::skip]
-    const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
-
-    // rotates `x` left by `k` bits.
-    #[inline]
-    const fn rotl(x: u32, k: i32) -> u32 {
-        (x << k) | (x >> (32 - k))
-    }
-
-    #[inline]
-    fn jump_with_constant(&mut self, jump: [u32; 4]) {
-        let (mut s0, mut s1, mut s2, mut s3) = (0, 0, 0, 0);
-        for &j in jump.iter() {
-            for b in 0..32 {
-                if (j & (1 << b)) != 0 {
-                    s0 ^= self.0[0];
-                    s1 ^= self.0[1];
-                    s2 ^= self.0[2];
-                    s3 ^= self.0[3];
-                }
-                let _ = self.next_u32();
-            }
-        }
-        self.0 = [s0, s1, s2, s3];
-    }
-
-    #[inline]
-    const fn copy_jump_with_constant(self, jump: [u32; 4]) -> Self {
-        let (mut s0, mut s1, mut s2, mut s3) = (0, 0, 0, 0);
-        let mut state = self;
-        let mut i = 0;
-        while i < jump.len() {
-            let mut b = 0;
-            while b < 32 {
-                if (jump[i] & (1 << b)) != 0 {
-                    s0 ^= state.0[0];
-                    s1 ^= state.0[1];
-                    s2 ^= state.0[2];
-                    s3 ^= state.0[3];
-                }
-                state = state.copy_next_state();
-                b += 1;
-            }
-            i += 1;
-        }
-        Self([s0, s1, s2, s3])
     }
 }
 
@@ -305,5 +301,63 @@ mod impl_rand {
                 Self::new_unchecked(seed_u32s)
             }
         }
+    }
+}
+
+/* private items and helpers */
+
+impl Xoroshiro128pp {
+    const DEFAULT_SEED: [u32; 4] = [0xDEFA_0017; 4];
+    const JUMP: [u32; 4] = [0x8764_000b, 0xf542_d2d3, 0x6fa0_35c3, 0x77f2_db5b];
+    const LONG_JUMP: [u32; 4] = [0xb523_952e, 0x0b6f_099f, 0xccf_5a0ef, 0x1c58_0662];
+
+    #[cold] #[rustfmt::skip]
+    const fn cold_path_result() -> Option<Self> { None }
+    #[cold] #[allow(dead_code)] #[rustfmt::skip]
+    const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
+
+    // rotates `x` left by `k` bits.
+    #[inline]
+    const fn rotl(x: u32, k: i32) -> u32 {
+        (x << k) | (x >> (32 - k))
+    }
+
+    #[inline]
+    fn jump_with_constant(&mut self, jump: [u32; 4]) {
+        let (mut s0, mut s1, mut s2, mut s3) = (0, 0, 0, 0);
+        for &j in jump.iter() {
+            for b in 0..32 {
+                if (j & (1 << b)) != 0 {
+                    s0 ^= self.0[0];
+                    s1 ^= self.0[1];
+                    s2 ^= self.0[2];
+                    s3 ^= self.0[3];
+                }
+                let _ = self.next_u32();
+            }
+        }
+        self.0 = [s0, s1, s2, s3];
+    }
+
+    #[inline]
+    const fn copy_jump_with_constant(self, jump: [u32; 4]) -> Self {
+        let (mut s0, mut s1, mut s2, mut s3) = (0, 0, 0, 0);
+        let mut state = self;
+        let mut i = 0;
+        while i < jump.len() {
+            let mut b = 0;
+            while b < 32 {
+                if (jump[i] & (1 << b)) != 0 {
+                    s0 ^= state.0[0];
+                    s1 ^= state.0[1];
+                    s2 ^= state.0[2];
+                    s3 ^= state.0[3];
+                }
+                state = state.copy_next_state();
+                b += 1;
+            }
+            i += 1;
+        }
+        Self([s0, s1, s2, s3])
     }
 }
