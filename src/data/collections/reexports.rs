@@ -153,7 +153,7 @@ mod std_reexports {
         feature = "nightly_doc",
         doc(cfg(any(feature = "dep_hashbrown", feature = "std")))
     )]
-    pub use std::collections::HashMap;
+    pub use std::collections::hash_map::HashMap;
 
     #[doc = hashbrown_or_std!(start)]
     /// A view into a single entry in a map, which may either be vacant or occupied.
@@ -174,6 +174,13 @@ mod std_reexports {
     pub use std::collections::HashSet;
 }
 
+/// The `HashMap` in the standard library.
+#[cfg(feature = "std")]
+pub type HashMapStd<K, V> = std::collections::HashMap<K, V>;
+/// The `HashSet` in the standard library.
+#[cfg(feature = "std")]
+pub type HashSetStd<T> = std::collections::HashSet<T>;
+
 #[cfg(any(feature = "std", feature = "dep_hashbrown"))]
 pub use aliases::*;
 #[cfg(any(feature = "std", feature = "dep_hashbrown"))]
@@ -188,7 +195,7 @@ mod aliases {
     /// use `HashMapFx::with_capacity_and_hasher(num, Default::default())`.
     pub type HashMapFx<K, V> = HashMap<K, V, HasherBuildFx>;
 
-    /// An [`HashSet`] using a default Fx hasher.
+    /// A [`HashSet`] using a default Fx hasher.
     ///
     /// To create with a reserved capacity,
     /// use `HashSetFx::with_capacity_and_hasher(num, Default::default())`.

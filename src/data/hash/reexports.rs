@@ -18,6 +18,10 @@ reexport! { rust: core::hash,
     doc: "A trait for hashing an arbitrary stream of bytes.",
     Hasher
 }
+reexport! { rust: std::hash,
+    doc: "The default state for [`HashMapStd`][crate::HashMapStd].",
+    RandomState
+}
 
 // NOTE: the trait and the derive macro have the same name:
 // reexport! { rust: core::hash, doc: "A hashable type.", Hash }
