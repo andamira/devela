@@ -314,35 +314,40 @@ pub(crate) use reexport;
 
 // Generates a formatted meta-documentation string.
 macro_rules! doc_ {
-    (@meta_start) => { "<br/><i style='margin-left:0.618em;'></i><small style='color:#777'>" };
-    (@meta_end) => { "</small>" };
-    (newline) => { "<br/><br/>" };
+    // (@meta_start) => { "<br/><i style='margin-left:0.618em;'></i><small style='color:#777'>" };
+    // (@meta_end) => { "</small>" };
+    (@meta_start) => {
+        "<br/><i style='margin-left:0.618em;'></i><span style='color:#777;font-size:90%;word-spacing:0px'>"
+    };
+    (@meta_end) => { "</span>" };
+    // (newline) => { "<br/><br/>" };
+    (newline) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />" };
 
     /* list of submodules */
 
     (modules: $path:path; $self:ident) => {
         concat!(
             crate::code::doc_!(@meta_start), "Modules: ",
-            "[`", stringify!($self), "`][mod@", stringify!($path), "::", stringify!($self), "]",
+            "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]",
             crate::code::doc_!(@meta_end),
         )
     };
     (modules: $path:path; $self:ident: $($mod:ident),+ $(,)?) => {
         concat!(
             crate::code::doc_!(@meta_start), "Modules: ",
-            "[`", stringify!($self), "`][mod@", stringify!($path), "::", stringify!($self), "]`::{`",
-            crate::code::doc_!(@modules: $path; $self: $($mod),+), "`}`",
+            "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]::{",
+            crate::code::doc_!(@modules: $path; $self: $($mod),+), "}",
             crate::code::doc_!(@meta_end),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.
     (@modules: $path:path; $self:ident: $first:ident $(, $rest:ident)*) => {
         concat!(
-            "[`", stringify!($first), "`](",
+            "[", stringify!($first), "](",
                 stringify!($path), "::", stringify!($self), "::",
                 stringify!($first), ")",
             $(
-                ", [`", stringify!($rest), "`](", stringify!($path), "::",
+                ", [", stringify!($rest), "](", stringify!($path), "::",
                 stringify!($self), "::", stringify!($rest), ")"
             ),*
         )
@@ -353,15 +358,15 @@ macro_rules! doc_ {
     (extends: $($mod:ident),+ $(,)?) => {
         concat!(
             crate::code::doc_!(@meta_start), "Extends: ",
-            "`std::{`", crate::code::doc_!(@extends: $($mod),+), "`}`",
+            "std::{", crate::code::doc_!(@extends: $($mod),+), "}",
             crate::code::doc_!(@meta_end),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.
     (@extends: $first:ident $(, $rest:ident)*) => {
         concat!(
-            "[`", stringify!($first), "`](mod@std::", stringify!($first), ")",
-            $( ", [`", stringify!($rest), "`](mod@std::", stringify!($rest), ")" ),*
+            "[", stringify!($first), "](mod@std::", stringify!($first), ")",
+            $( ", [", stringify!($rest), "](mod@std::", stringify!($rest), ")" ),*
         )
     };
 }
