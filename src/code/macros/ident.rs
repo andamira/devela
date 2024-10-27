@@ -1,4 +1,4 @@
-// devela::code::ident
+// devela::code::macros::ident
 //
 //! identifier related macro functionality
 //

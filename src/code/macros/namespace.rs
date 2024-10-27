@@ -1,4 +1,4 @@
-// devela::code::util::namespace
+// devela::code::macros::namespace
 //
 //! namespacing functionality
 //

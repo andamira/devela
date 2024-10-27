@@ -1,4 +1,4 @@
-// devela::code::paste
+// devela::code::macros::paste
 //
 
 /// <span class="stab portability" title="re-exported from the `paste` crate">`paste`</span>

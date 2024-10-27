@@ -1,4 +1,4 @@
-// devela::code::asserts
+// devela::code::macros::asserts
 //
 //! Asserts.
 //

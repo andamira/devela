@@ -1,7 +1,4 @@
-// devela::code::deprecate
-//
-//!
-//
+// devela::code::macros::deprecate
 
 /// Configures a feature as deprecated, warning if it is enabled.
 ///

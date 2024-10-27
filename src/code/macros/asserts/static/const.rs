@@ -1,4 +1,4 @@
-// devela::code::asserts::static::const
+// devela::code::macros::asserts::static::const
 //
 //! Compile-time assertions.
 //
@@ -49,10 +49,10 @@ macro_rules! assert_const {
         $crate::code::assert_const!(@build $x, $($y),+; >=);
     };
 
-    /* private arms */
-
     // receives the expressions and the operator, and performs the appropriate comparison.
     (
+    /* private arms*/
+
         @build $x:expr, $($y:expr),+; $op:tt) => {
         $crate::code::assert_const!($x $op $crate::code::capture_first!(expr $($y),+));
         $crate::code::assert_const!(@build $($y),+; $op);

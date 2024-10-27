@@ -1,4 +1,4 @@
-// devela::code::cdbg
+// devela::code::macros::cdbg
 //
 //! Custom debug macro.
 //
