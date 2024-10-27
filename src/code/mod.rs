@@ -10,10 +10,6 @@
 // safety:
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 
-// crate private
-mod _private;
-pub(crate) use _private::*;
-
 mod any; // dynamic typing and reflection
 mod default; // ConstDefault, Default
 mod macros; // macros: assert*, cdbg, head, items, paste, sf…
