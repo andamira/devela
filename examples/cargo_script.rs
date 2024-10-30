@@ -1,6 +1,8 @@
 #!/usr/bin/env -S cargo +nightly -Zscript
-## [dependencies]
-## devela = { path = ".." }
+---cargo
+[dependencies]
+devela = { path = ".." }
+---
 //
 // devela::examples::cargo_script
 //
