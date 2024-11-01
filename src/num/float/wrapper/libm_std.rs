@@ -181,7 +181,7 @@ mod _libm {
             $( custom_impls![@$f, $e, $cap]; )+
         };
         (@$f:ty, $e:ty, $cap:literal) => {
-            #[doc = crate::code::doc_availability!(feature = $cap)]
+            #[doc = crate::doc_availability!(feature = $cap)]
             ///
             /// # *Implementations using the `libm` feature*.
             #[cfg(feature = $cap )]
@@ -388,7 +388,7 @@ mod _std {
             $( custom_impls![@$f, $e, $cap]; )+
         };
         (@$f:ty, $e:ty, $cap:literal) => {
-            #[doc = crate::code::doc_availability!(feature = $cap)]
+            #[doc = crate::doc_availability!(feature = $cap)]
             ///
             /// # *Implementations using the `std` feature*.
             #[cfg(feature = $cap )]
@@ -434,7 +434,7 @@ mod _no_std_no_libm {
             $( custom_impls![@$f, $ub, $ie, $cap]; )+
         };
         (@$f:ty, $ub:ty, $ie:ty, $cap:literal) => {
-            #[doc = crate::code::doc_availability!(feature = $cap)]
+            #[doc = crate::doc_availability!(feature = $cap)]
             ///
             /// # *Implementations without `std` or `libm`*.
             #[cfg(feature = $cap )]

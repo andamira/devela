@@ -40,7 +40,7 @@ macro_rules! impl_int {
 
     // implements ops on signed primitives
     (@prim_signed $t:ty : $cap:literal : $d:literal) => { paste! {
-        #[doc = crate::code::doc_availability!(feature = $cap)]
+        #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
         #[doc = "- [digits](#method.digits" $d ")"]
@@ -180,7 +180,7 @@ macro_rules! impl_int {
 
     // implements ops on unsigned primitives
     (@prim_unsigned $t:ty : $cap:literal : $d:literal) => { paste! {
-        #[doc = crate::code::doc_availability!(feature = $cap)]
+        #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Integer base related methods for `" $t "`\n\n"]
         #[doc = "- [digits](#method.digits" $d ")"]

@@ -1,9 +1,9 @@
 // devela::data::collections
 //
 //! Data collections.
-#![doc = crate::code::doc_!(extends: array, collections, vec)]
-// #![doc = crate::code::doc_!(modules: crate::data; collections)]
-#![doc = crate::code::doc_!(newline)]
+#![doc = crate::doc_!(extends: array, collections, vec)]
+// #![doc = crate::doc_!(modules: crate::data; collections)]
+#![doc = crate::doc_!(newline)]
 //!
 //
 

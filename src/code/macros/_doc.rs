@@ -22,17 +22,17 @@ macro_rules! doc_ {
 
     (modules: $path:path; $self:ident) => {
         concat!(
-            crate::code::doc_!(@meta_start), "Modules: ",
+            $crate::code::doc_!(@meta_start), "Modules: ",
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]",
-            crate::code::doc_!(@meta_end),
+            $crate::code::doc_!(@meta_end),
         )
     };
     (modules: $path:path; $self:ident: $($mod:ident),+ $(,)?) => {
         concat!(
-            crate::code::doc_!(@meta_start), "Modules: ",
+            $crate::code::doc_!(@meta_start), "Modules: ",
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]::{",
-            crate::code::doc_!(@modules: $path; $self: $($mod),+), "}",
-            crate::code::doc_!(@meta_end),
+            $crate::code::doc_!(@modules: $path; $self: $($mod),+), "}",
+            $crate::code::doc_!(@meta_end),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.
@@ -52,9 +52,9 @@ macro_rules! doc_ {
 
     (extends: $($mod:ident),+ $(,)?) => {
         concat!(
-            crate::code::doc_!(@meta_start), "Extends: ",
-            "std::{", crate::code::doc_!(@extends: $($mod),+), "}",
-            crate::code::doc_!(@meta_end),
+            $crate::code::doc_!(@meta_start), "Extends: ",
+            "std::{", $crate::code::doc_!(@extends: $($mod),+), "}",
+            $crate::code::doc_!(@meta_end),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.
@@ -70,10 +70,10 @@ pub(crate) use doc_;
 /// Generates a formatted documentation string for conditional availability.
 ///
 /// It's intended to be used like this:
-/// ```
-/// #[doc = crate::code::doc_availability!(feature = "one"]
-/// #[doc = crate::code::doc_availability!(all(feature = "one", feature = "two")]
-/// #[doc = crate::code::doc_availability!(any(feature = "one", feature = "two")]
+/// ```ignore
+/// #[doc = crate::doc_availability!(feature = "one")]
+/// #[doc = crate::doc_availability!(all(feature = "one", feature = "two")]
+/// #[doc = crate::doc_availability!(any(feature = "one", feature = "two")]
 /// ```
 #[allow(unused_macros)]
 macro_rules! doc_availability {

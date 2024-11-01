@@ -1,9 +1,9 @@
 // devela::error::option
 //
 //! Optional values.
-#![doc = crate::code::doc_!(extends: option)]
-#![doc = crate::code::doc_!(modules: crate::error; option)]
-#![doc = crate::code::doc_!(newline)]
+#![doc = crate::doc_!(extends: option)]
+#![doc = crate::doc_!(modules: crate::error; option)]
+#![doc = crate::doc_!(newline)]
 //!
 //
 

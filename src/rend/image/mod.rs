@@ -1,8 +1,8 @@
 // devela::rend::image
 //
 //! Image manipulation.
-// #![doc = crate::code::doc_!(modules: crate::rend; image: pnm)]
-// #![doc = crate::code::doc_!(newline)]
+// #![doc = crate::doc_!(modules: crate::rend; image: pnm)]
+// #![doc = crate::doc_!(newline)]
 //
 
 mod error;

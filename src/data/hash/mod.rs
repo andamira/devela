@@ -1,9 +1,9 @@
 // devela::data::hash
 //
 //! Generic hashing support.
-#![doc = crate::code::doc_!(extends: hash)]
-// #![doc = crate::code::doc_!(modules: crate::data; hash)]
-#![doc = crate::code::doc_!(newline)]
+#![doc = crate::doc_!(extends: hash)]
+// #![doc = crate::doc_!(modules: crate::data; hash)]
+#![doc = crate::doc_!(newline)]
 //!
 //
 

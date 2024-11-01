@@ -1,9 +1,9 @@
 // devela::text
 //
 //! Text types and operations, text processing.
-#![doc = crate::code::doc_!(extends: ascii, char, fmt, str, string)]
-#![doc = crate::code::doc_!(modules: crate; text: fmt)]
-#![doc = crate::code::doc_!(newline)]
+#![doc = crate::doc_!(extends: ascii, char, fmt, str, string)]
+#![doc = crate::doc_!(modules: crate; text: fmt)]
+#![doc = crate::doc_!(newline)]
 //!
 //
 

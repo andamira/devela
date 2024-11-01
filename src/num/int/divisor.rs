@@ -82,7 +82,7 @@ macro_rules! impl_divisor {
         impl_divisor![@traits $t];
 
         #[cfg(feature = $cap )]
-        #[doc = crate::code::doc_availability!(feature = $cap)]
+        #[doc = crate::doc_availability!(feature = $cap)]
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Divisor<$t> {
             impl_divisor![@shared $t|$un|$up|$unup:$is_up:$cap]; // shared methods
@@ -235,7 +235,7 @@ macro_rules! impl_divisor {
         impl_divisor![@traits $t];
 
         #[cfg(feature = $cap )]
-        #[doc = crate::code::doc_availability!(feature = $cap)]
+        #[doc = crate::doc_availability!(feature = $cap)]
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Divisor<$t> {
             impl_divisor![@shared $t|$t|$up|$up:$is_up:$cap]; // shared methods

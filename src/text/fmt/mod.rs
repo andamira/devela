@@ -1,8 +1,8 @@
 // devela::text::fmt
 //
 //! Formatting strings.
-#![doc = crate::code::doc_!(extends: fmt)]
-#![doc = crate::code::doc_!(newline)]
+#![doc = crate::doc_!(extends: fmt)]
+#![doc = crate::doc_!(newline)]
 //!
 //
 

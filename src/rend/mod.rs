@@ -1,12 +1,13 @@
 // devela::rend
 //
 //! Rendering multi-media functionality.
-#![doc = crate::code::doc_!(modules: crate; rend: audio, color, draw, font, image, layout)]
-#![doc = crate::code::doc_!(newline)]
+#![doc = crate::doc_!(modules: crate; rend: audio, color, draw, font, image, layout)]
+#![doc = crate::doc_!(newline)]
 //
 // safety:
 #![cfg_attr(feature = "safe_rend", forbid(unsafe_code))]
 
+#[cfg(_some_rend)]
 use crate::code::items;
 
 #[cfg(_some_rend)]

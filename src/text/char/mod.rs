@@ -1,9 +1,9 @@
 // devela::text::char
 //
 //! Unicode scalars.
-#![doc = crate::code::doc_!(extends: char)]
-#![doc = crate::code::doc_!(modules: crate::text; char)]
-#![doc = crate::code::doc_!(newline)]
+#![doc = crate::doc_!(extends: char)]
+#![doc = crate::doc_!(modules: crate::text; char)]
+#![doc = crate::doc_!(newline)]
 //!
 //
 

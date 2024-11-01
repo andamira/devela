@@ -1,7 +1,7 @@
 // devela::sys::env
 //
 //! Inspection and manipulation of the process’s environment.
-#![doc = crate::code::doc_!(extends: env)]
+#![doc = crate::doc_!(extends: env)]
 //!
 //
 

@@ -1,7 +1,7 @@
 // devela::mem::cell
 //
 //! Shareable mutable containers.
-#![doc = crate::code::doc_!(extends: cell)]
+#![doc = crate::doc_!(extends: cell)]
 //
 
 mod option;

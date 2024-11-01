@@ -1,9 +1,9 @@
 // devela::mem::slice
 //
 //! Slices of memory.
-#![doc = crate::code::doc_!(extends: slice)]
-#![doc = crate::code::doc_!(modules: crate::mem; slice)]
-#![doc = crate::code::doc_!(newline)]
+#![doc = crate::doc_!(extends: slice)]
+#![doc = crate::doc_!(modules: crate::mem; slice)]
+#![doc = crate::doc_!(newline)]
 //!
 //
 
