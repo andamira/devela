@@ -1,4 +1,4 @@
-// devela::code::util::macros::constant
+// devela::code::macros::const
 //
 //!
 //

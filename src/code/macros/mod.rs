@@ -3,8 +3,10 @@
 //! Utility macros
 //
 
-mod _private;
-pub(crate) use _private::*;
+// private
+mod _doc;
+mod _reexport;
+pub(crate) use {_doc::*, _reexport::*};
 
 #[doc(hidden)]
 pub use paste::__paste;
