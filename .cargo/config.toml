@@ -88,24 +88,14 @@ Crp = "clean --release --package"
 # DOC
 d = "doc --no-deps"
 do = "doc --no-deps --open"
+dp = "doc --no-deps --document-private-items"
+dpo = "doc --no-deps --open --document-private-items"
 # +nightly
 nd = "doc --no-deps -F=nightly_doc"
-ndd = "doc --no-deps -F=nightly_doc,dep"
-ndf = "doc --no-deps -F=nightly_doc,all"
-nds = "doc --no-deps -F=nightly_doc,std"
-ndfd = "doc --no-deps -F=nightly_doc,all,dep"
-ndsd = "doc --no-deps -F=nightly_doc,std,dep"
-ndsf = "doc --no-deps -F=nightly_doc,std,all"
-ndsfd = "doc --no-deps -F=nightly_doc,std,all,dep"
+ndp = "doc --no-deps -F=nightly_doc --document-private-items"
 #
 ndo = "doc --open --no-deps -F=nightly_doc"
-nddo = "doc --open --no-deps -F=nightly_doc,dep"
-ndfo = "doc --open --no-deps -F=nightly_doc,all"
-ndso = "doc --open --no-deps -F=nightly_doc,std"
-ndfdo = "doc --open --no-deps -F=nightly_doc,all,dep"
-ndsdo = "doc --open --no-deps -F=nightly_doc,std,dep"
-ndsfo = "doc --open --no-deps -F=nightly_doc,std,all"
-ndsfdo = "doc --open --no-deps -F=nightly_doc,std,all,dep"
+ndpo = "doc --open --no-deps -F=nightly_doc --document-private-items"
 
 # TREE
 tr = "tree"
@@ -131,6 +121,7 @@ Aue = "asm --simplify -p devela --features=unsafe,std --example"
 Aul = "asm --simplify -p devela --features=unsafe,std --lib"
 
 # additional targets
+# TODO: IMPROVE: SIMPLIFY
 # 1: x86_64-unknown-linux-gnu (std)
 AbT1 = "asm --simplify -p devela --target x86_64-unknown-linux-gnu --features=std,safe --bin"
 AubT1 = "asm --simplify -p devela --target x86_64-unknown-linux-gnu --features=std,unsafe --bin"
