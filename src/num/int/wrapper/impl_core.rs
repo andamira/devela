@@ -22,7 +22,7 @@ use crate::num::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::num::usize_up;
 #[allow(unused_imports)]
-use crate::num::GcdExt;
+use crate::num::GcdReturn;
 use crate::{
     code::{iif, paste},
     mem::cswap,
@@ -176,10 +176,10 @@ macro_rules! impl_int {
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
             #[inline]
-            pub const fn gcd_ext(self, b: $t) -> GcdExt<Int<$t>, Int<$t>> {
+            pub const fn gcd_ext(self, b: $t) -> GcdReturn<Int<$t>, Int<$t>> {
                 let [mut a, mut b] = [self.0.abs(), b.abs()];
-                if a == 0 { return GcdExt::new(Int(b), Int(0), Int(1)); }
-                if b == 0 { return GcdExt::new(Int(a), Int(1), Int(0)); }
+                if a == 0 { return GcdReturn::new(Int(b), Int(0), Int(1)); }
+                if b == 0 { return GcdReturn::new(Int(a), Int(1), Int(0)); }
 
                 let mut k = 0;
                 while ((a | b) & 1) == 0 {
@@ -217,7 +217,7 @@ macro_rules! impl_int {
                     ta -= sa;
                     tb -= sb;
                 }
-                GcdExt::new(Int(a << k), Int(sa), Int(sb))
+                GcdReturn::new(Int(a << k), Int(sa), Int(sb))
             }
 
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
@@ -238,13 +238,13 @@ macro_rules! impl_int {
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
             #[inline]
-            pub const fn gcd_ext_euc(self, b: $t) -> GcdExt<Int<$t>, Int<$t>> {
+            pub const fn gcd_ext_euc(self, b: $t) -> GcdReturn<Int<$t>, Int<$t>> {
                 let a = self.0;
                 if a == 0 {
-                    GcdExt::new(Int(b), Int(0), Int(1))
+                    GcdReturn::new(Int(b), Int(0), Int(1))
                 } else {
                     let (g, x, y) = Int(b % a).gcd_ext_euc(a).as_tuple_copy();
-                    GcdExt::new(g, Int(y.0 - (b / a) * x.0), x)
+                    GcdReturn::new(g, Int(y.0 - (b / a) * x.0), x)
                 }
             }
 
@@ -477,9 +477,9 @@ macro_rules! impl_int {
             #[inline]
             #[cfg(feature = $icap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
-            pub const fn gcd_ext(self, b: $t) -> Result<GcdExt<Int<$t>, Int<$iup>>> {
-                if self.0 == 0 { return Ok(GcdExt::new(Int(b), Int(0), Int(1))); }
-                if b == 0 { return Ok(GcdExt::new(self, Int(1), Int(0))); }
+            pub const fn gcd_ext(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
+                if self.0 == 0 { return Ok(GcdReturn::new(Int(b), Int(0), Int(1))); }
+                if b == 0 { return Ok(GcdReturn::new(self, Int(1), Int(0))); }
 
                 let mut a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
                 let mut b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
@@ -520,7 +520,7 @@ macro_rules! impl_int {
                     ta -= sa;
                     tb -= sb;
                 }
-                Ok(GcdExt::new(Int((a << k) as $t), Int(sa), Int(sb)))
+                Ok(GcdReturn::new(Int((a << k) as $t), Int(sa), Int(sb)))
             }
 
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
@@ -549,15 +549,15 @@ macro_rules! impl_int {
             #[inline]
             #[cfg(feature = $icap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
-            pub const fn gcd_ext_euc(self, b: $t) -> Result<GcdExt<Int<$t>, Int<$iup>>> {
+            pub const fn gcd_ext_euc(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
                 let a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
                 let b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
 
                 if a == 0 {
-                    Ok(GcdExt::new(Int(b as $t), Int(0), Int(1)))
+                    Ok(GcdReturn::new(Int(b as $t), Int(0), Int(1)))
                 } else {
                     let (g, x, y) = Int(b % a).gcd_ext_euc(a).as_tuple_copy();
-                    Ok(GcdExt::new(Int(g.0 as $t), Int(y.0 - (b / a) * x.0), x))
+                    Ok(GcdReturn::new(Int(g.0 as $t), Int(y.0 - (b / a) * x.0), x))
                 }
             }
 

@@ -14,7 +14,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::data::Vec;
-use crate::num::{GcdExt, Num, NumInt, NumRef, NumResult as Result};
+use crate::num::{GcdReturn, Num, NumInt, NumRef, NumResult as Result};
 use core::ops::Deref;
 
 /// Common trait for referenced integer types.
@@ -70,7 +70,7 @@ where
     /// *Calls `NumInt::`[`int_ref_gcd_ext`][NumInt::int_ref_gcd_ext]*.
     #[allow(clippy::type_complexity)]
     fn int_ref_gcd_ext(&self, other: &<Self::Own as Num>::Rhs)
-        -> Result<GcdExt<<Self::Own as Num>::Out, <Self::Own as NumInt>::OutI>> {
+        -> Result<GcdReturn<<Self::Own as Num>::Out, <Self::Own as NumInt>::OutI>> {
             self.deref().int_ref_gcd_ext(other) }
 
     /// *Calls `NumInt::`[`int_ref_lcm`][NumInt::int_ref_lcm]*.

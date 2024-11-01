@@ -8,7 +8,7 @@ use crate::data::Vec;
 #[cfg(feature = "_int_usize")]
 use crate::num::isize_up;
 #[allow(unused_imports)]
-use crate::num::GcdExt;
+use crate::num::GcdReturn;
 use crate::num::{Int, NumInt, NumResult as Result};
 
 // $t:     the primitive type
@@ -53,13 +53,13 @@ macro_rules! impl_int {
             /* core */
 
             #[inline]
-            fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdExt<Self::Out, Self::OutI>> {
+            fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 let g = Int(self).gcd_ext(other);
-                Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
+                Ok(GcdReturn::new(g.gcd.0, g.x.0, g.y.0)) }
             #[inline]
-            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdExt<Self::Out, Self::OutI>> {
+            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 let g = Int(*self).gcd_ext(*other);
-                Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
+                Ok(GcdReturn::new(g.gcd.0, g.x.0, g.y.0)) }
 
             #[inline]
             #[cfg(feature = $ucap )]
@@ -115,15 +115,15 @@ macro_rules! impl_int {
             #[inline]
             #[cfg(feature = $iocap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $iocap)))]
-            fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdExt<Self::Out, Self::OutI>> {
+            fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 let g = Int(self).gcd_ext(other)?;
-                Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
+                Ok(GcdReturn::new(g.gcd.0, g.x.0, g.y.0)) }
             #[inline]
             #[cfg(feature = $iocap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $iocap)))]
-            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdExt<Self::Out, Self::OutI>> {
+            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 let g = Int(*self).gcd_ext(*other)?;
-                Ok(GcdExt::new(g.gcd.0, g.x.0, g.y.0)) }
+                Ok(GcdReturn::new(g.gcd.0, g.x.0, g.y.0)) }
 
             #[inline]
             fn int_midpoint(self, other: Self::Rhs) -> Result<Self::Out> {

@@ -1,6 +1,6 @@
 // devela::num::gcd
 //
-//! Extended GCD return type.
+//! (Extended) Greatest Common Divisor return type.
 //
 
 use core::fmt;
@@ -10,8 +10,8 @@ use core::fmt;
 ///
 /// The coefficients are the solutions to the equation $ \text{gcd}(a, b) = a*x + b*y $.
 #[must_use]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct GcdExt<G, C> {
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub struct GcdReturn<G, C> {
     /// The greatest common divisor.
     pub gcd: G,
     /// The first Bézout's coefficient `x`.
@@ -20,11 +20,11 @@ pub struct GcdExt<G, C> {
     pub y: C,
 }
 
-impl<G, C> GcdExt<G, C> {
-    /// Constructs a new `GcdExt`.
+impl<G, C> GcdReturn<G, C> {
+    /// Constructs a new `GcdReturn`.
     #[inline]
     pub const fn new(gcd: G, x: C, y: C) -> Self {
-        GcdExt { gcd, x, y }
+        GcdReturn { gcd, x, y }
     }
 
     /// Returns the values as a tuple.
@@ -34,7 +34,7 @@ impl<G, C> GcdExt<G, C> {
         (self.gcd, self.x, self.y)
     }
 }
-impl<G: Copy, C: Copy> GcdExt<G, C> {
+impl<G: Copy, C: Copy> GcdReturn<G, C> {
     /// Returns the values as a tuple, in compile-time.
     #[inline]
     #[must_use]
@@ -43,7 +43,7 @@ impl<G: Copy, C: Copy> GcdExt<G, C> {
     }
 }
 
-impl<T> GcdExt<T, T> {
+impl<T> GcdReturn<T, T> {
     /// Returns the values as an array, if all are of the same type.
     #[inline]
     #[must_use]
@@ -51,7 +51,7 @@ impl<T> GcdExt<T, T> {
         [self.gcd, self.x, self.y]
     }
 }
-impl<T: Copy> GcdExt<T, T> {
+impl<T: Copy> GcdReturn<T, T> {
     /// Returns the values as an array, if all are of the same type.
     #[inline]
     #[must_use]
@@ -60,7 +60,7 @@ impl<T: Copy> GcdExt<T, T> {
     }
 }
 
-impl<G: fmt::Display, C: fmt::Display> fmt::Display for GcdExt<G, C> {
+impl<G: fmt::Display, C: fmt::Display> fmt::Display for GcdReturn<G, C> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "gcd: {}, x: {}, y: {}", self.gcd, self.x, self.y)
     }
