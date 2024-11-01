@@ -3,6 +3,7 @@
 //! private reexport meta helper
 //
 
+#[doc = doc_private!()]
 /// Macro helper for documentation of re-exported items.
 //
 // FIX: unresolved link to `alloc`.

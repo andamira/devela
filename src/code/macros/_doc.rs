@@ -7,6 +7,7 @@
 // - doc_availability!
 // - doc_miri_warn!
 
+#[doc = doc_private!()]
 /// Generates a formatted meta-documentation string.
 macro_rules! doc_ {
     // (@meta_start) => { "<br/><i style='margin-left:0.618em;'></i><small style='color:#777'>" };
@@ -67,10 +68,11 @@ macro_rules! doc_ {
 }
 pub(crate) use doc_;
 
+#[doc = doc_private!()]
 /// Generates a formatted documentation string for conditional availability.
 ///
 /// It's intended to be used like this:
-/// ```ignore
+/// ```txt
 /// #[doc = crate::doc_availability!(feature = "one")]
 /// #[doc = crate::doc_availability!(all(feature = "one", feature = "two")]
 /// #[doc = crate::doc_availability!(any(feature = "one", feature = "two")]
@@ -141,6 +143,7 @@ macro_rules! doc_availability {
 #[allow(unused_imports)]
 pub(crate) use doc_availability;
 
+#[doc = doc_private!()]
 /// Generates a formatted documentation string for a miri warning.
 #[allow(unused_macros)]
 macro_rules! doc_miri_warn {
@@ -162,3 +165,13 @@ macro_rules! doc_miri_warn {
 }
 #[allow(unused_imports)]
 pub(crate) use doc_miri_warn;
+
+/// Generates a doc tag for private items.
+#[allow(unused_macros)]
+macro_rules! doc_private {
+    () => {
+        concat!("<span class='stab portability' ", "title='Private item'>", "🔒</span>")
+    };
+}
+#[allow(unused_imports)]
+pub(crate) use doc_private;
