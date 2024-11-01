@@ -23,7 +23,7 @@ pub use bare::*;
 /// Allows to be generic in respect of the data storage.
 ///
 /// There are two reference implementations:
-/// - [`Bare`][super::Bare], which wraps the data in a [`BareBox`].
+/// - [`Bare`], which wraps the data in a [`BareBox`].
 /// - [`Boxed`], which wraps the data in a [`Box`].
 ///
 /// # Examples

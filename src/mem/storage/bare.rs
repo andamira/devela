@@ -9,8 +9,7 @@ use crate::mem::Storage;
 use crate::mem::{Box, Boxed};
 
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-/// A zero-sized marker for a [`Storage`][super::Storage] type that wraps its data in a
-/// [`BareBox`][super::BareBox].
+/// A zero-sized marker for a [`Storage`] type that wraps its data in a [`BareBox`].
 ///
 /// Equivalent to the [`Boxed`] marker struct which uses a [`Box`] for the underlying storage.
 pub type Bare = ();

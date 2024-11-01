@@ -255,8 +255,8 @@ pub trait NumInt: Num {
     /// - 5 for `u8`, 8 for `u16`, 13 for `u32`, 20 for `u64` and 35 for `u128`.
     ///
     /// # Errors
-    /// Returns [`NonNegativeRequired`][E::NonNegativeRequired] if $n<0$,
-    /// and [`Overflow`][E::Overflow] if the result can't fit the type.
+    /// Returns [`NonNegativeRequired`] if $n<0$,
+    /// and [`Overflow`] if the result can't fit the type.
     /// # Links
     /// - The list of subfactorials is available in <https://oeis.org/A000166>.
     fn int_subfactorial(self) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -308,7 +308,7 @@ pub trait NumInt: Num {
     /// $$ \large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
     ///
     /// # Errors
-    /// Returns [`Overflow`][E::Overflow] if the result cant't fit the type.
+    /// Returns [`Overflow`] if the result cant't fit the type.
     fn int_combine_rep(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_combine_rep`][Self::int_combine_rep] but takes the arguments by reference.*
     fn int_ref_combine_rep(&self, r: &Self::Rhs) -> Result<Self::Out> { E::ni() }

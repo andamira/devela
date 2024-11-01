@@ -161,6 +161,7 @@ pub mod work;
 
 /// All the crate's items re-exported flat.
 /// <br/><hr>
+/// There's a more exhaustive list, including dependencies in: [All items](../all.html).
 pub mod all {
     #[allow(unused_imports)]
     #[rustfmt::skip]
