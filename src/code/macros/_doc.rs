@@ -7,7 +7,7 @@
 // - doc_availability!
 // - doc_miri_warn!
 
-// Generates a formatted meta-documentation string.
+/// Generates a formatted meta-documentation string.
 macro_rules! doc_ {
     // (@meta_start) => { "<br/><i style='margin-left:0.618em;'></i><small style='color:#777'>" };
     // (@meta_end) => { "</small>" };
@@ -67,14 +67,14 @@ macro_rules! doc_ {
 }
 pub(crate) use doc_;
 
-// Generates a formatted documentation string for conditional availability.
-//
-// It's intended to be used like this:
-// ```
-// #[doc = crate::code::doc_availability!(feature = "one"]
-// #[doc = crate::code::doc_availability!(all(feature = "one", feature = "two")]
-// #[doc = crate::code::doc_availability!(any(feature = "one", feature = "two")]
-// ```
+/// Generates a formatted documentation string for conditional availability.
+///
+/// It's intended to be used like this:
+/// ```
+/// #[doc = crate::code::doc_availability!(feature = "one"]
+/// #[doc = crate::code::doc_availability!(all(feature = "one", feature = "two")]
+/// #[doc = crate::code::doc_availability!(any(feature = "one", feature = "two")]
+/// ```
 #[allow(unused_macros)]
 macro_rules! doc_availability {
     (feature = $feat:literal) => {
@@ -141,7 +141,7 @@ macro_rules! doc_availability {
 #[allow(unused_imports)]
 pub(crate) use doc_availability;
 
-// Generates a formatted documentation string for a miri warning
+/// Generates a formatted documentation string for a miri warning.
 #[allow(unused_macros)]
 macro_rules! doc_miri_warn {
     (tag) => {

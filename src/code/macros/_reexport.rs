@@ -25,9 +25,8 @@ macro_rules! reexport {
     // reexport! { rust: core::any, local_module: "any",
     //     "Represents a globally unique identifier for a type.", TypeId }
     // ```
-    //
-    // when the item is available in `core`
-    ( rust : core $( :: $( $core_path:ident )::+)?,
+    ( // when the item is available in `core`
+      rust : core $( :: $( $core_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
       $( extra_features: $($extraf:literal),+ $(,)? )?
       doc: $description:literal,
@@ -88,8 +87,8 @@ macro_rules! reexport {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
-    // when the item is available in `std`
-    ( rust : std $( :: $( $std_path:ident )::+)?,
+    ( // when the item is available in `std`
+      rust : std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
       doc: $description:literal,
       $( $item:ident ),*
@@ -119,8 +118,8 @@ macro_rules! reexport {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
-    // when the item is available in either `no_std` or `std`
-    ( rust : no_std|std $( :: $( $std_path:ident )::+)?,
+    ( // when the item is available in either `no_std` or `std`
+      rust : no_std|std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
       doc: $description:literal,
       $( $item:ident ),*
@@ -151,8 +150,8 @@ macro_rules! reexport {
         };
     }};
 
-    // when the item is available in either `not(std)` or `std` (always, more transparent)
-    ( rust : not(std)|std $( :: $( $std_path:ident )::+)?,
+    ( // when the item is available in either `not(std)` or `std` (always, more transparent)
+      rust : not(std)|std $( :: $( $std_path:ident )::+)?,
       $( local_module: $module_feature:literal, )?
       doc: $description:literal,
       $( $item:ident ),*
@@ -181,14 +180,13 @@ macro_rules! reexport {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
+    (
+      /* external dependencies */
 
-
-    /* external dependencies */
-
-    // Re-exports a non-optional crate
-    (crate $dep_str:literal | $dep:ident,
-     doc: $description:literal
-     $(, features: $( $f:literal ),+ )?
+      // Re-exports a non-optional crate
+      crate $dep_str:literal | $dep:ident,
+      doc: $description:literal
+      $(, features: $( $f:literal ),+ )?
     ) => { $crate::code::paste! {
         #[doc = "<span class='stab portability' title='re-exported `" $dep_str
             "`'>`" $dep_str "`</span>"]
@@ -196,17 +194,17 @@ macro_rules! reexport {
         #[doc(inline)]
         pub use ::$dep;
     }};
-
-    // Re-exports an optional crate
-    //
-    // $dep_feat:    the dependency feature
-    // $dep_name:    the dependency name
-    // $dep_mod:     the dependency module
-    // $description: the dependency decription
-    // $f:           additional features needed
-    (optional_crate $dep_feat:literal, $dep_name:literal, $dep_mod:ident,
-     doc: $description:literal
-     $(, features: $( $f:literal ),+ )?
+    (
+      // Re-exports an optional crate
+      //
+      // $dep_feat:    the dependency feature
+      // $dep_name:    the dependency name
+      // $dep_mod:     the dependency module
+      // $description: the dependency decription
+      // $f:           additional features needed
+      optional_crate $dep_feat:literal, $dep_name:literal, $dep_mod:ident,
+      doc: $description:literal
+      $(, features: $( $f:literal ),+ )?
     ) => { $crate::code::paste! {
         #[doc = "<span class='stab portability' title='re-exported `" $dep_name
             "`'>`" $dep_name "`</span>"]
@@ -221,21 +219,21 @@ macro_rules! reexport {
         #[doc(inline)]
         pub use ::$dep_mod;
     }};
-
-    // re-exports items from an external optional dependency, from any normal module.
-    //
-    // - Supports multiple re-exported items.
-    // - Renamed items must be all at the end, and each one prefixed with @.
-    //
-    // $dep_feat:    the dependency feature
-    // $dep_name:    the dependency name
-    // $dep_mod:     the dependency module
-    // $f:           additional features needed
-    // $description: the dependency decription
-    // $item:
-    // $item_to_rename:
-    // $item_renamed:
-    ( $dep_feat:literal, $dep_name:literal, $dep_mod:ident $( :: $dep_path:path)?,
+    (
+      // re-exports items from an external optional dependency, from any normal module.
+      //
+      // - Supports multiple re-exported items.
+      // - Renamed items must be all at the end, and each one prefixed with @.
+      //
+      // $dep_feat:    the dependency feature
+      // $dep_name:    the dependency name
+      // $dep_mod:     the dependency module
+      // $f:           additional features needed
+      // $description: the dependency decription
+      // $item:
+      // $item_to_rename:
+      // $item_renamed:
+      $dep_feat:literal, $dep_name:literal, $dep_mod:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
       doc: $description:literal,
       $( $item:ident ),*
@@ -269,14 +267,14 @@ macro_rules! reexport {
             $( $item_to_rename as $item_renamed ),*
         };
     }};
-
-    // re-exports items from an external non-optional dependency, from any normal module.
-    //
-    // - Supports multiple re-exported items.
-    // - Renamed items must be all at the end, and each one prefixed with @.
-    //
-    // in the past it was used for: result::Either
-    (non-optional $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
+    (
+      // re-exports items from an external non-optional dependency, from any normal module.
+      //
+      // - Supports multiple re-exported items.
+      // - Renamed items must be all at the end, and each one prefixed with @.
+      //
+      // in the past it was used for: result::Either
+      non-optional $dep_str:literal | $dep:ident $( :: $dep_path:path)?,
       $( features: $( $f:literal ),+ ,)?
       $( local_module: $module_feature:literal ,)?
       doc: $description:literal,
