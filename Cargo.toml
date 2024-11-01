@@ -37,7 +37,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 186/300 (114 remaining), 73 visible, 113 hidden
+[features] # 184/300 (116 remaining), 71 visible, 113 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -90,11 +90,12 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	"code", "data", "error", "mem", "num", "rend", "sys", "text", "work",
+	# "code", "data", "error",
+	"mem", "num", "rend", "sys", "text", "work",
 ]
-code = []
-data = []
-error = []
+# code = []
+# data = []
+# error = []
 mem = [
 	"mem_bit",
 	]
