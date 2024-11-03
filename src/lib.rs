@@ -13,6 +13,7 @@
     // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
     type_alias_bounds, // detects bounds in type aliases
     unsafe_op_in_unsafe_fn, // unsafe operations in unsafe functions without explicit unsafe block
+    clippy::enum_glob_use, // checks for `use Enum::*`
     clippy::missing_safety_doc, // deny if there's no # Safety section in public unsafe fns
 ))]
 #![cfg_attr(feature = "__lints", warn(
@@ -23,7 +24,6 @@
     clippy::cloned_instead_of_copied, // usage of cloned() where copied() could be used
     clippy::default_union_representation, // union declared without #[repr(C)]
     clippy::empty_structs_with_brackets, // structs without fields, with brackets
-    clippy::enum_glob_use, // checks for `use Enum::*`
     clippy::if_then_some_else_none, // if-else that could be written using bool::then[_some]
     clippy::ignored_unit_patterns, // Checks for usage of _ in patterns of type ()
     clippy::float_cmp, // (in-)equality comparisons on floating-point values
