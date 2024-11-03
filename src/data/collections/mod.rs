@@ -11,16 +11,18 @@
 use crate::code::items;
 
 mod array;
+mod list;
 mod reexports;
 mod traits;
 #[allow(unused_imports)]
-pub use {array::all::*, reexports::*, traits::*};
+pub use {array::all::*, list::all::*, reexports::*, traits::*};
 
 #[cfg(_some_destaque)]
 items! { mod destaque; pub use destaque::*; }
 
 // #[cfg(_some_graph)]
 // items! { mod graph; pub use graph::*; }
+
 
 // #[cfg(_some_node)]
 // items! { mod node; pub use node::*; }
@@ -42,7 +44,7 @@ items! {
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{array::all::*, reexports::*, traits::*};
+    pub use super::{array::all::*, list::all::*, reexports::*, traits::*};
 
     #[cfg(_some_destaque)]
     pub use super::destaque::all::*;

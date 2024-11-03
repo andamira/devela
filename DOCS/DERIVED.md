@@ -11,6 +11,8 @@ This project includes the following derived works:
 - A [modified][5] version of [static_assertions] by Nikolai Vazquez,
   licensed as MIT or Apache-2.0,
   as part of the [`const_assert`] macro, and  [`ConstBool`] trait.
+- A modified version of [const_list] by Douglas Dwyer, licensed as MIT OR Apache-2.0,
+  as the [`ConstList`] struct.
 - A modified version of [unsized-stack] by *storycraft*, licensed as MIT,
   as the [`FatPtr`] struct.
 - Adaptation of [quickdiv] v0.1.1 by Darko Trifunovski, licensed as Zlib OR MIT OR Apache-2.0,
@@ -55,6 +57,7 @@ This project includes the following derived works:
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
 [5]: https://github.com/andamira/devela/blob/main/src/code/asserts/static/MODIFICATIONS.md
 [unsized-stack]: https://crates.io/crates/unsized-stack/0.2.0
+[const_list]: https://crates.io/crates/const_list/0.1.0
 [quickdiv]: https://crates.io/crates/quickdiv/0.1.1
 [`Divisor`]: https://docs.rs/devela/latest/devela/num/struct.Divisor.html
 [pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
