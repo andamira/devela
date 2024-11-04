@@ -46,6 +46,12 @@ items! {
     pub use {frac::*, int::*};
 }
 
+#[cfg(feature = "num_geom")]
+items! {
+    pub mod geom;
+    pub use geom::all::*;
+}
+
 #[cfg(feature = "num_rand")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_rand")))]
 items! {
@@ -66,6 +72,11 @@ pub(crate) mod all {
     #[cfg(_some_int)]
     #[allow(unused_imports)]
     pub use super::{frac::*, int::*};
+
+    #[doc(inline)]
+    #[allow(unused_imports)]
+    #[cfg(feature = "num_geom")]
+    pub use super::geom::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "num_rand")]
