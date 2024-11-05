@@ -1,9 +1,7 @@
-// devela::num::algebra::linear::vector::impl_array::methods
+// devela::num::algebra::linear::vector::array::methods
 //
 //! impl methods for Vector
 //
-
-#![allow(clippy::needless_range_loop)]
 
 use crate::num::algebra::linear::Vector;
 #[allow(unused_imports)]
@@ -16,19 +14,20 @@ use core::{concat as cc, stringify as fy};
 /* common methods */
 
 impl<T, const D: usize> Vector<T, D> {
-    /// Returns a new `Vector` from the given `array`.
-    pub const fn new(array: [T; D]) -> Self {
-        Self { array }
+    /// Returns a new `Vector` from the given `coords` array.
+    pub const fn new(coords: [T; D]) -> Self {
+        Self { coords }
     }
 }
 
 /* compile-time ops for primitives */
 
-// helper for methods
-//
-// $t: the inner integer primitive type
-// $cap:  the capability feature that enables the given implementation. E.g "_int_i8".
-// $cmp: the feature that enables the given implementation. E.g "_cmp_i8".
+#[doc = crate::doc_private!()]
+/// helper for implementing methods on `Vector`.
+///
+/// $t: the inner integer primitive type
+/// $cap:  the capability feature that enables the given implementation. E.g "_int_i8".
+/// $cmp: the feature that enables the given implementation. E.g "_cmp_i8".
 macro_rules! impl_vector {
     () => {
         impl_vector![sint
@@ -77,10 +76,10 @@ macro_rules! impl_vector {
                 let mut normalized = [0; D];
                 let mut i = 0;
                 while i < D {
-                    normalized[i] = self.array[i] / magnitude;
+                    normalized[i] = self.coords[i] / magnitude;
                     i += 1;
                 }
-                Vector { array: normalized }
+                Vector { coords: normalized }
             }
 
             /// Calculates the magnitude of the vector (squared).
@@ -98,7 +97,7 @@ macro_rules! impl_vector {
                 let mut result = [0; D];
                 let mut i = 0;
                 while i < D {
-                    result[i] = self.array[i] + other.array[i];
+                    result[i] = self.coords[i] + other.coords[i];
                     i += 1;
                 }
                 Vector::new(result)
@@ -109,7 +108,7 @@ macro_rules! impl_vector {
                 let mut result = [0; D];
                 let mut i = 0;
                 while i < D {
-                    result[i] = self.array[i] - other.array[i];
+                    result[i] = self.coords[i] - other.coords[i];
                     i += 1;
                 }
                 Vector::new(result)
@@ -120,7 +119,7 @@ macro_rules! impl_vector {
                 let mut result = 0;
                 let mut i = 0;
                 while i < D {
-                    result += self.array[i] * other.array[i];
+                    result += self.coords[i] * other.coords[i];
                     i += 1;
                 }
                 result
@@ -133,7 +132,7 @@ macro_rules! impl_vector {
                 let mut result = [0; D];
                 let mut i = 0;
                 while i < D {
-                    result[i] = self.array[i] * scalar;
+                    result[i] = self.coords[i] * scalar;
                     i += 1;
                 }
                 Vector::new(result)
@@ -144,7 +143,7 @@ macro_rules! impl_vector {
                 let mut result = [0; D];
                 let mut i = 0;
                 while i < D {
-                    result[i] = self.array[i] / scalar;
+                    result[i] = self.coords[i] / scalar;
                     i += 1;
                 }
                 Vector::new(result)
@@ -175,9 +174,9 @@ macro_rules! impl_vector {
             /// $$
             pub const fn c_cross(self, other: Self) -> Self {
                 let cross_product = [
-                    self.array[1] * other.array[2] - self.array[2] * other.array[1], // i
-                    self.array[2] * other.array[0] - self.array[0] * other.array[2], // j
-                    self.array[0] * other.array[1] - self.array[1] * other.array[0], // k
+                    self.coords[1] * other.coords[2] - self.coords[2] * other.coords[1], // i
+                    self.coords[2] * other.coords[0] - self.coords[0] * other.coords[2], // j
+                    self.coords[0] * other.coords[1] - self.coords[1] * other.coords[0], // k
                 ];
                 Vector::new(cross_product)
             }
@@ -314,9 +313,9 @@ macro_rules! impl_vector {
                 let mag = self.magnitude();
                 let mut normalized = [0.0; D];
                 for i in 0..D {
-                    normalized[i] = self.array[i] / mag;
+                    normalized[i] = self.coords[i] / mag;
                 }
-                Vector { array: normalized }
+                Vector { coords: normalized }
             }
 
             /// Calculates the magnitude of the vector.
@@ -342,7 +341,7 @@ macro_rules! impl_vector {
                 let mut result = [0.0; D];
                 let mut i = 0;
                 while i < D {
-                    result[i] = self.array[i] + other.array[i];
+                    result[i] = self.coords[i] + other.coords[i];
                     i += 1;
                 }
                 Vector::new(result)
@@ -354,7 +353,7 @@ macro_rules! impl_vector {
                 let mut result = [0.0; D];
                 let mut i = 0;
                 while i < D {
-                    result[i] = self.array[i] - other.array[i];
+                    result[i] = self.coords[i] - other.coords[i];
                     i += 1;
                 }
                 Vector::new(result)
@@ -377,7 +376,7 @@ macro_rules! impl_vector {
                 let mut result = 0.0;
                 let mut i = 0;
                 while i < D {
-                    result += self.array[i] * other.array[i];
+                    result += self.coords[i] * other.coords[i];
                     i += 1;
                 }
                 result
@@ -408,9 +407,9 @@ macro_rules! impl_vector {
             /// $$
             pub fn cross(self, other: Self) -> Self {
                 let cross_product = [
-                    self.array[1] * other.array[2] - self.array[2] * other.array[1], // i
-                    self.array[2] * other.array[0] - self.array[0] * other.array[2], // j
-                    self.array[0] * other.array[1] - self.array[1] * other.array[0], // k
+                    self.coords[1] * other.coords[2] - self.coords[2] * other.coords[1], // i
+                    self.coords[2] * other.coords[0] - self.coords[0] * other.coords[2], // j
+                    self.coords[0] * other.coords[1] - self.coords[1] * other.coords[0], // k
                 ];
                 Vector::new(cross_product)
             }

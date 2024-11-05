@@ -16,9 +16,9 @@ use crate::{
     num::{NumError, NumResult as Result},
 };
 
-mod impl_array;
+mod array;
 #[cfg(feature = "alloc")]
-mod impl_vec;
+mod vec;
 
 /* types */
 
@@ -26,7 +26,7 @@ mod impl_vec;
 #[repr(transparent)]
 pub struct Vector<T, const D: usize> {
     /// The vector coordinates in some basis.
-    pub array: [T; D],
+    pub coords: [T; D],
 }
 
 /// A static 2-dimensional vector.
@@ -41,7 +41,7 @@ pub type Vector3d<T> = Vector<T, 3>;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub struct VecVector<T> {
     /// The vector coordinates in some basis.
-    pub vec: Vec<T>,
+    pub coords: Vec<T>,
 }
 
 /* trait */

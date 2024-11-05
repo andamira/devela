@@ -7,10 +7,10 @@ use super::{Point, Point2d, Point3d};
 use crate::num::algebra::linear::Vector;
 
 impl<T, const D: usize> Point<T, D> {
-    /// Returns a new `Point` from the given `array`.
+    /// Returns a new `Point` from the given `coords` array.
     #[inline] #[must_use]
-    pub const fn new(array: [T; D]) -> Self {
-        Self { coords: array }
+    pub const fn new(coords: [T; D]) -> Self {
+        Self { coords }
     }
 
     /// Consumes this `Point` and converts it into a `Vector`.
@@ -27,12 +27,12 @@ impl<T, const D: usize> Point<T, D> {
     /// Creates a `Point` from a `Vector`.
     #[inline] #[must_use]
     pub fn from_vector(v: Vector<T, D>) -> Self {
-        Self::new(v.array)
+        Self::new(v.coords)
     }
     /// Creates a `Point` from a constant `Vector`.
     #[inline] #[must_use]
     pub const fn from_vector_const(v: Vector<T, D>) -> Self where T: Copy {
-        Self::new(v.array)
+        Self::new(v.coords)
     }
 }
 

@@ -1,4 +1,4 @@
-// devela::num::algebra::linear::vector::impl_vec::core_traits
+// devela::num::algebra::linear::vector::vec::impl_traits
 //
 //!
 //
@@ -11,7 +11,7 @@ use core::fmt;
 // T:Clone
 impl<T: Clone> Clone for VecVector<T> {
     fn clone(&self) -> Self {
-        Self { vec: self.vec.clone() }
+        Self { coords: self.coords.clone() }
     }
 }
 
@@ -20,21 +20,21 @@ impl<T: Clone> Clone for VecVector<T> {
 impl<T: Default> Default for VecVector<T> {
     /// Returns a `VecVector`, using the default value to fill the data.
     fn default() -> Self {
-        Self { vec: Default::default() }
+        Self { coords: Default::default() }
     }
 }
 
 // T:Debug
 impl<T: fmt::Debug> fmt::Debug for VecVector<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("VecVector").field("vec", &self.vec).finish()
+        f.debug_struct("VecVector").field("coords", &self.coords).finish()
     }
 }
 
 // T:PartialEq
 impl<T: PartialEq> PartialEq for VecVector<T> {
     fn eq(&self, other: &Self) -> bool {
-        self.vec == other.vec
+        self.coords == other.coords
     }
 }
 // T:Eq

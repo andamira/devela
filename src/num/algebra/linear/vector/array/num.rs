@@ -1,7 +1,8 @@
-// devela::num::algebra::linear::vector::impl_array::num
+// devela::num::algebra::linear::vector::array::num
 //
 //!
 //
+// IMPROVE
 
 use super::super::{NumVector, Vector};
 use crate::num::Num;
@@ -17,6 +18,6 @@ impl<T: Num, const D: usize> Num for Vector<T, D> {
 
     #[inline]
     fn num_into(self) -> Self::Inner {
-        self.array
+        self.coords
     }
 }

@@ -1,4 +1,4 @@
-// devela::num::algebra::linear::vector::impl_vec::num
+// devela::num::algebra::linear::vector::vec::num
 //
 //!
 //
@@ -18,6 +18,6 @@ impl<T: Num> Num for VecVector<T> {
 
     #[inline]
     fn num_into(self) -> Self::Inner {
-        self.vec
+        self.coords
     }
 }

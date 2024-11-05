@@ -1,4 +1,4 @@
-// devela::num::algebra::linear::vector::impl_vec::methods
+// devela::num::algebra::linear::vector::vec::methods
 //
 //! impl methods for VecVector
 //
@@ -11,9 +11,9 @@ use crate::data::Vec;
 /* common methods */
 
 impl<T> VecVector<T> {
-    /// Returns a new `VecVector` from the given `vec`.
-    pub const fn new(vec: Vec<T>) -> Self {
-        Self { vec }
+    /// Returns a new `VecVector` from the given `coords` vector.
+    pub const fn new(coords: Vec<T>) -> Self {
+        Self { coords }
     }
 }
 

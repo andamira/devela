@@ -1,4 +1,4 @@
-// devela::num::algebra::linear::vector::impl_vec::ops
+// devela::num::algebra::linear::vector::vec::ops
 //
 //! implement overloadable operators
 //
@@ -18,14 +18,14 @@ impl<T: Clone + Add<Output = T>> VecVector<T> {
     /// # Errors
     /// Returns [`MismatchedSizes`] if `self and `other` don't have the same length.
     pub fn clone_add(&self, other: &Self) -> Result<Self> {
-        if self.vec.len() != other.vec.len() {
+        if self.coords.len() != other.coords.len() {
             Err(MismatchedSizes)
         } else {
-            let mut vec = Vec::with_capacity(self.vec.len());
-            for i in 0..self.vec.len() {
-                vec.push(self.vec[i].clone() + other.vec[i].clone());
+            let mut coords = Vec::with_capacity(self.coords.len());
+            for i in 0..self.coords.len() {
+                coords.push(self.coords[i].clone() + other.coords[i].clone());
             }
-            Ok(VecVector { vec })
+            Ok(VecVector { coords })
         }
     }
 }
@@ -48,14 +48,14 @@ impl<T: Clone + Sub<Output = T>> VecVector<T> {
     /// # Errors
     /// Returns [`MismatchedSizes`] if `self and `other` don't have the same length.
     pub fn clone_sub(&self, other: &Self) -> Result<Self> {
-        if self.vec.len() != other.vec.len() {
+        if self.coords.len() != other.coords.len() {
             Err(MismatchedSizes)
         } else {
-            let mut vec = Vec::with_capacity(self.vec.len());
-            for i in 0..self.vec.len() {
-                vec.push(self.vec[i].clone() - other.vec[i].clone());
+            let mut coords = Vec::with_capacity(self.coords.len());
+            for i in 0..self.coords.len() {
+                coords.push(self.coords[i].clone() - other.coords[i].clone());
             }
-            Ok(VecVector { vec })
+            Ok(VecVector { coords })
         }
     }
 }
@@ -78,11 +78,11 @@ impl<T: Clone + Sub<Output = T>> SubAssign<&Self> for VecVector<T> {
 impl<T: Clone + Mul<Output = T>> VecVector<T> {
     /// Multiplies a vector by a scalar.
     pub fn clone_mul_scalar(&self, scalar: &T) -> Self {
-        let mut vec = Vec::with_capacity(self.vec.len());
-        for item in &self.vec {
-            vec.push(item.clone() * scalar.clone());
+        let mut coords = Vec::with_capacity(self.coords.len());
+        for item in &self.coords {
+            coords.push(item.clone() * scalar.clone());
         }
-        VecVector { vec }
+        VecVector { coords }
     }
 }
 impl<T: Clone + Mul<Output = T>> Mul<T> for VecVector<T> {
@@ -111,11 +111,11 @@ impl<T: Clone + Mul<Output = T>> MulAssign<&T> for VecVector<T> {
 impl<T: Clone + Div<Output = T>> VecVector<T> {
     /// Divides a vector by a scalar.
     pub fn clone_div_scalar(&self, scalar: &T) -> Self {
-        let mut vec = Vec::with_capacity(self.vec.len());
-        for item in &self.vec {
-            vec.push(item.clone() / scalar.clone());
+        let mut coords = Vec::with_capacity(self.coords.len());
+        for item in &self.coords {
+            coords.push(item.clone() / scalar.clone());
         }
-        VecVector { vec }
+        VecVector { coords }
     }
 }
 impl<T: Clone + Div<Output = T>> Div<T> for VecVector<T> {
