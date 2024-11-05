@@ -178,14 +178,13 @@ impl<T> Interval<T> {
     pub const fn is_upper_closed(&self) -> bool {
         matches!(self.upper, Bound::Included(_))
     }
+}
 
+impl<T: PartialOrd> Interval<T> {
     /// Validates that the interval is properly ordered.
     #[inline]
     #[must_use]
-    pub fn is_valid(&self) -> bool
-    where
-        T: PartialOrd,
-    {
+    pub fn is_valid(&self) -> bool {
         match (&self.lower, &self.upper) {
             (Bound::Unbounded, _) | (_, Bound::Unbounded) => true,
             (Bound::Included(a), Bound::Included(b)) => a <= b,
@@ -198,10 +197,7 @@ impl<T> Interval<T> {
     /// Checks if the interval contains the given value.
     #[inline]
     #[must_use]
-    pub fn contains(&self, value: &T) -> bool
-    where
-        T: PartialOrd,
-    {
+    pub fn contains(&self, value: &T) -> bool {
         let lower_check = match &self.lower {
             Bound::Included(ref lower) => *lower <= *value,
             Bound::Excluded(ref lower) => *lower < *value,
@@ -220,7 +216,7 @@ impl<T> Interval<T> {
     #[must_use]
     pub fn size(&self) -> Option<T>
     where
-        T: PartialOrd + core::ops::Sub<Output = T> + Clone,
+        T: Clone + core::ops::Sub<Output = T>,
     {
         match (&self.lower, &self.upper) {
             (Bound::Included(a), Bound::Included(b)) => {

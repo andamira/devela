@@ -102,7 +102,7 @@ macro_rules! custom_impls {
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn is_sign_positive(self) -> bool {
-                // WAIT: [const_float_classify](https://github.com/rust-lang/rust/issues/72505)
+                // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
                 let bits: $uf = unsafe { transmute(self.0) };
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 (bits & sign_bit_mask) == 0 // if sign bit is not set it's a positive number or +0
@@ -119,7 +119,7 @@ macro_rules! custom_impls {
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn is_sign_negative(self) -> bool {
-                // WAIT: [const_float_classify](https://github.com/rust-lang/rust/issues/72505)
+                // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
                 let bits: $uf = unsafe { transmute(self.0) };
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 (bits & sign_bit_mask) != 0 // if sign bit is set it's a negative number or -0
@@ -135,7 +135,7 @@ macro_rules! custom_impls {
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn is_zero(self) -> bool {
-                // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
+                // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
                 // let bits: $uf = self.0.to_bits();
                 let bits: $uf = unsafe { transmute(self.0) };
                 let non_sign_bits_mask = !(<$uf>::MAX / 2 + 1);
@@ -359,7 +359,7 @@ macro_rules! custom_impls {
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn fisr(self) -> Float<$f> {
-                // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
+                // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
                 let mut i: $uf = unsafe { transmute(self.0) };
                 let (three_halfs, x2) = (1.5, self.0 * 0.5);
                 i = Self::FISR_MAGIC - (i >> 1);
@@ -1365,7 +1365,7 @@ macro_rules! custom_impls {
             pub const fn const_abs(self) -> Float<$f> {
                 let mask = <$uf>::MAX / 2;
                 unsafe {
-                    // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
+                    // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
                     let bits: $uf = transmute(self.0);
                     Float(transmute::<$uf, $f>(bits & mask))
                 }
@@ -1393,7 +1393,7 @@ macro_rules! custom_impls {
             /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
+            // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
             pub const fn flip_sign(self) -> Float<$f> {
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 unsafe {
