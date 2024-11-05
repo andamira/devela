@@ -5,10 +5,11 @@
 
 mod angle;
 mod extent;
-pub use {angle::*, extent::*};
+mod point;
+pub use {angle::*, extent::*, point::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused)]
-    pub use super::{angle::*, extent::*};
+    pub use super::{angle::*, extent::*, point::*};
 }
