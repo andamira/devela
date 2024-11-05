@@ -6,9 +6,11 @@
 use super::{Point, Point2d, Point3d};
 use crate::num::algebra::linear::Vector;
 
+#[rustfmt::skip]
 impl<T, const D: usize> Point<T, D> {
     /// Returns a new `Point` from the given `coords` array.
-    #[inline] #[must_use]
+    #[inline]
+    #[must_use]
     pub const fn new(coords: [T; D]) -> Self {
         Self { coords }
     }
@@ -115,13 +117,11 @@ macro_rules! impl_point {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<const D: usize> Point<$t, D> {
-            // TODO
-            //
-            // /// Adds the given vector.
-            // #[inline]
-            // pub const fn c_add_vector(self, v: Vector<$t, D>) -> Self {
-            //     Self { coords: self.coords.c_add(v) }
-            // }
+            /// Adds the given vector.
+            #[inline] #[must_use]
+            pub const fn c_add_vector(self, v: Vector<$t, D>) -> Self {
+                Self { coords: Vector::new(self.coords).c_add(v).coords }
+            }
             // /// Subtracts the given vector.
             // #[inline]
             // pub const fn c_sub_vector(self, v: Vector<$t, D>) -> Self {

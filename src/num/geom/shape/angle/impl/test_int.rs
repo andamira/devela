@@ -1,6 +1,6 @@
 // devela::num::geom::shape:angle::impl::test_int
 
-use crate::{Angle, AngleDirection, AngleKind, assert_approx_eq_all};
+use crate::{assert_approx_eq_all, Angle, AngleDirection, AngleKind};
 
 #[cfg(feature = "_int_i16")]
 mod angle_i16 {

@@ -7,12 +7,12 @@
 //   and instead use integer scaling functions Int::scale.
 // - maybe use NonExtreme for the signed representation.
 
-use crate::{Angle, AngleDirection, AngleKind, doc_private};
 #[cfg(all(not(feature = "std"), _some_float))]
 use crate::num::ExtFloat;
 #[cfg(_some_float)]
 #[allow(unused_imports)]
 use crate::num::{fsize, ExtFloatConst};
+use crate::{doc_private, Angle, AngleDirection, AngleKind};
 
 #[doc = doc_private!()]
 /// impl `Angle` methods with an integer representation:

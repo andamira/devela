@@ -23,7 +23,6 @@ items! { mod destaque; pub use destaque::*; }
 // #[cfg(_some_graph)]
 // items! { mod graph; pub use graph::*; }
 
-
 // #[cfg(_some_node)]
 // items! { mod node; pub use node::*; }
 

@@ -5,6 +5,7 @@
 
 use crate::num::ExtFloatConst;
 #[cfg(_some_float)]
+#[allow(unused_imports)]
 use crate::num::{ExtFloat, Float};
 use crate::{doc_private, Angle, AngleDirection, AngleKind};
 
