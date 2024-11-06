@@ -187,6 +187,9 @@ pub fn ident_unique(input: TokenStream) -> TokenStream {
 /// It allows to represent integers with valid range of values, and where the
 /// invalid values can be used by the compiler for memory niche optimization.
 ///
+/// It only supports 8-bit and 16-bit representations to avoid excessive time
+/// and memory usage during compilation.
+///
 /// # Usage
 /// ```
 /// # use devela_macros::enumint;

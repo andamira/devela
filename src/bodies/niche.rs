@@ -46,19 +46,6 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
             }
             quote! { u16 }
         }
-        "u32" => {
-            if range_length > u32::MAX as i128 {
-                panic!("u32 cannot represent the range [{start}, {end}]")
-            }
-            quote! { u32 }
-        }
-        "usize" => {
-            if range_length > usize::MAX as i128 {
-                panic!("usize cannot represent the range [{start}, {end}]")
-            }
-            quote! { usize }
-        }
-        "u64" => quote! { u64 },
         // signed reprs
         "i8" => {
             if start < i8::MIN as i128 || end > i8::MAX as i128 {
@@ -72,27 +59,11 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
             }
             quote! { i16 }
         }
-        "i32" => {
-            if start < i32::MIN as i128 || end > i32::MAX as i128 {
-                panic!("i32 cannot represent the range [{start}, {end}]")
-            }
-            quote! { i32 }
-        }
-        "isize" => {
-            if start < isize::MIN as i128 || end > isize::MAX as i128 {
-                panic!("isize cannot represent the range [{start}, {end}]")
-            }
-            quote! { isize }
-        }
-        "i64" => quote! { i64 },
         _ => panic!("Invalid representation type: {}", repr_str),
     };
     let unsigned_repr = match repr_str {
         "i8" => quote! { u8 },
         "i16" => quote! { u16 },
-        "i32" => quote! { u32 },
-        "isize" => quote! { usize },
-        "i64" => quote! { u64 },
         _ => repr.clone(), // For unsigned types, use the same repr
     };
 
