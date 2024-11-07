@@ -25,6 +25,7 @@ pub use ::core as _core;
 
 /// <span class='stab portability' title='re-exported `std`'>`std`</span>
 /// *Re-exported Rust `std` library environment.*
+/// <br/><hr>
 #[cfg(feature = "std")]
 #[doc(inline)]
 pub use ::std as _std;

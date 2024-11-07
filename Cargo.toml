@@ -173,7 +173,7 @@ nightly = [ # sync with src/lib.rs
 ] # enables all the following features:
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-	nightly_doc = []
+	nightly_doc = [] # NO: doc_auto_cfg
 	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)

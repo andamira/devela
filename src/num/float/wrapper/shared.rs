@@ -375,12 +375,11 @@ macro_rules! custom_impls {
                 Float(y * (three_halfs - (x2 * y * y)))
             }
 
-            /// $ \sqrt[3]{x} $ The cubic root calculated using the
+            /// $ \sqrt\[3\]{x} $ The cubic root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             ///
             /// # Features
             /// This function will only be *const* with the `unsafe_const` feature enabled.
-            #[expect(rustdoc::broken_intra_doc_links, reason = "sqrt[3] 3 not found in scope")]
             #[inline] #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn cbrt_nr(self) -> Float<$f> {

@@ -9,16 +9,21 @@
 
 use scraper::{Html, Selector};
 use std::{
-    env, fs,
+    env,
+    error::Error,
+    fs,
     io::{self, BufWriter, Write},
     path::Path,
+    process::Command,
 };
 
 const TARGET_DIR: &str = env!("CARGO_TARGET_DIR");
 const IDS: [&str; 8] =
     ["structs", "enums", "macros", "statics", "traits", "functions", "attributes", "derives"];
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
+    compile_docs()?; // MAYBE:IMPROVE make optional
+
     header("All public items, except dependencies:");
     process_document("all/index.html", false)?;
 
@@ -30,8 +35,18 @@ and crate-private items (if compiled with --document-private-items)",
     Ok(())
 }
 
-/// Process the document at the given subpath, with optional `dep_split`
-fn process_document(subpath: &str, dep_split: bool) -> Result<(), Box<dyn std::error::Error>> {
+/// Compiles documentation running this command: `cargo +nightly nd -F _docsrs`
+fn compile_docs() -> Result<(), Box<dyn Error>> {
+    let status = Command::new("cargo").args(["+nightly", "nd", "-F", "_docsrs"]).status()?;
+    if !status.success() {
+        eprintln!("Failed to compile documentation.");
+        return Err("Documentation compilation failed".into());
+    }
+    Ok(())
+}
+
+/// Processes the document at the given subpath, with optional `dep_split`
+fn process_document(subpath: &str, dep_split: bool) -> Result<(), Box<dyn Error>> {
     let doc_path = format!("{}/doc/devela/{}", TARGET_DIR, subpath);
     if !Path::new(&doc_path).exists() {
         println!("Documentation file not found: {}", doc_path);
@@ -54,7 +69,7 @@ fn process_document(subpath: &str, dep_split: bool) -> Result<(), Box<dyn std::e
     Ok(())
 }
 
-/// Function to count <li> elements with _dep prefix split
+/// Counts `<li>` elements with `_dep` prefix split.
 fn count_list_items_with_split(document: &Html) -> Vec<String> {
     let anchor_selector = Selector::parse("a").unwrap();
     let mut hrefs = Vec::new();
@@ -100,7 +115,7 @@ fn count_list_items_with_split(document: &Html) -> Vec<String> {
     hrefs
 }
 
-/// Function to count <li> elements without _dep prefix split
+/// Counts `<li>` elements without `_dep` prefix split.
 fn count_list_items_no_split(document: &Html) -> Vec<String> {
     let mut hrefs = Vec::new();
 
@@ -126,7 +141,7 @@ fn count_list_items_no_split(document: &Html) -> Vec<String> {
     hrefs
 }
 
-/// Saves a list of hrefs to a text file
+/// Saves a list of hrefs to a text file.
 fn save_href_list(file_path: &str, hrefs: &[String]) -> io::Result<()> {
     let file = fs::File::create(file_path)?;
     let mut writer = BufWriter::new(file);

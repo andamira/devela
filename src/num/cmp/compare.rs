@@ -11,9 +11,8 @@
 //   - float
 // - tests
 //
-// - WAIT: [const_float_classify](https://github.com/rust-lang/rust/issues/72505)
-// - WAIT: [const_float_bits_conv](https://github.com/rust-lang/rust/issues/72447)
-// - WAIT: [const_fn_floating_point_arithmetic](https://github.com/rust-lang/rust/issues/57241)
+// - WAIT:1.83 [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
+// - WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
 
 #[allow(unused_imports)]
 use crate::code::{iif, paste};

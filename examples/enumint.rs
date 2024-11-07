@@ -10,6 +10,9 @@
 //! enumint![pub ExampleEnumIntU8, i8, -126, 125];
 //! ```
 //
+// Note that having a huge number of variants needs a lot of resources. E.g.:
+// enumint![pub ExampleEnumIntU16, u16, 0, 16384]; // +5s to compile
+// enumint![pub ExampleEnumIntU16, u16, -16384, 16384]; // +17s +25GB to compile
 
 use devela::code::enumint;
 

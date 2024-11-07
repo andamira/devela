@@ -5,6 +5,10 @@
 
 //* global config *//
 //
+// doc
+// https://doc.rust-lang.org/rustdoc/write-documentation/the-doc-attribute.html
+// #![doc(test(attr(warn(dead_code))))]
+//
 // lints: (builtin, clippy, rustdoc) & (deny, warn, allow)
 // - https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/index.html#constants
 // - https://rust-lang.github.io/rust-clippy/master/index.html
@@ -43,8 +47,8 @@
     clippy::unreadable_literal, //  long integral does not contain underscores
 ))]
 #![cfg_attr(
-    not(all(doc, feature = "_docsrs_stable")), // if docs are incomplete
-    allow(rustdoc::broken_intra_doc_links) // allow broken intra-doc links
+    not(all(doc, feature = "_docsrs_stable")), // if docs are incomplete...
+    allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links
 )]
 #![allow(
     stable_features, // a feature attribute that has since been made stable
@@ -105,7 +109,7 @@
         pin_deref_mut,
     )
 )]
-// #![cfg_attr( // 1.82 not(miri)
+// #![cfg_attr( // 1.84 not(miri)
 //     all(not(miri), feature = "nightly_stable_next1"),
 //     feature(
 //     )
@@ -146,6 +150,8 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 ))]
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
 // (note: you can enable `safe_*` features to prevent `unsafe` use in specific modules)
+
+//* root modules *//
 
 extern crate self as devela;
 
@@ -188,12 +194,14 @@ pub mod _dep;
 
 /// Information about the library.
 /// <br/><hr>
+#[cfg(any(doc, test))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(doc)))]
 pub mod _info {
     /// Documented examples.
-    #[cfg(any(doc, test))]
     pub mod examples;
 
     /// Library features explained.
+    #[cfg(doc)]
     pub mod features {
         #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
         #![doc = include_str!("./_info/features.md")]
