@@ -12,9 +12,9 @@
 use crate::code::iif;
 #[cfg(feature = "alloc")]
 use crate::data::{BTreeMap, Vec};
-#[cfg(_some_sort_float)]
+#[cfg(_sort_float_·)]
 use crate::num::Compare;
-#[cfg(_some_sort)]
+#[cfg(_sort_·)]
 use crate::{
     code::{cfor, paste},
     mem::cswap,
@@ -461,7 +461,7 @@ mod helper {
 
 /* impl Sort on primitives */
 
-#[cfg(_some_sort)]
+#[cfg(_sort_·)]
 macro_rules! impl_sort {
     () => {
         impl_sort![signed i8:"_sort_i8", i16:"_sort_i16", i32:"_sort_i32",
@@ -658,5 +658,5 @@ macro_rules! impl_sort {
         }
     }};
 }
-#[cfg(_some_sort)]
+#[cfg(_sort_·)]
 impl_sort![];

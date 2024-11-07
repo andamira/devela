@@ -21,7 +21,7 @@ use E::{
     MismatchedSizes, NonNegativeRequired, NonZeroRequired, NotImplemented, NotSupported, Overflow,
 };
 
-#[cfg(_some_int)]
+#[cfg(_int_·)]
 mod impls;
 mod r#ref;
 pub use r#ref::NumRefInt;

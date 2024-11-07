@@ -24,17 +24,17 @@ use crate::{
     error::unwrap,
     num::{upcasted_op, Int, NumError, NumResult as Result},
 };
-#[cfg(_some_int_i)]
+#[cfg(_int_i_·)]
 use NumError::NonNegativeRequired;
 use NumError::NonZeroRequired;
 #[cfg(doc)]
 use NumError::Overflow;
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.
-#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_some_int)]
+#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_int_·)]
 const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 // helper function to be called from the cold path branches with an ok result.
-#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_some_int)]
+#[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_int_·)]
 const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 
 // $t:   the input/output type. E.g. i8.

@@ -69,7 +69,7 @@ Single modules:
 - [`work`]: enables `work` functionality.
 
 Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
-`_some_mem`, `_some_num`.
+`_mem_·`, `_num_·`.
 
 [`code`]: crate::code
 [`data`]: crate::data
@@ -124,7 +124,7 @@ In order to use any unsafe functionality:
 
 ### Nightly features
 
-Enabling any of them sets the `_some_nightly` flag.
+Enabling any of them sets the `_nightly_·` flag.
 
 - `nightly`: enables the nightly features.
   - `nightly_coro`: enables `coroutines`, `coroutine_trait`, `iter_from_coroutine`.
@@ -152,7 +152,7 @@ Enable specific implementations for [`Bitwise`], [`bitfield`], [`enumset`]:
     - `_bit_u8`, `_bit_u16`, `_bit_u32`, `_bit_u64`, `_bit_u128`, `_bit_usize`.
 
 They also set the corresponding flag:
-`_some_bit`.
+`_bit_·`.
 
 [`Bitwise`]: crate::data::Bitwise
 [`bitfield`]: crate::data::bitfield
@@ -167,7 +167,7 @@ Enable specific implementations of data collections
 		`_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
 
 They also set the corresponding flags:
-`_some_destaque`, `_some_graph`, `_some_node`, `_some_stack`.
+`_destaque_·`, `_graph_·`, `_node_·`, `_stack_·`.
 
 Enable specific implementations for [`Sort`].
 `_sort_all`:
@@ -176,7 +176,7 @@ Enable specific implementations for [`Sort`].
   `_sort_f32`, `_sort_f64`.
 
 They also set the corresponding flags:
-`_some_sort`, `_some_sort_int`, `_some_sort_float`.
+`_sort_·`, `_sort_int_·`, `_sort_float_·`.
 
 Implement the [`Tuple`] trait for some maximum arity (12 by default).
 - `_tuple[_24|_36|_48|_72]`.
@@ -195,7 +195,7 @@ Enable specific implementations for [`Compare`]:
   - `_cmp_u8`, `_cmp_u16`, `_cmp_u32`, `_cmp_u64`, `_cmp_u128`, `_cmp_usize`.
 
 They also set the corresponding flag:
-`_some_cmp`.
+`_cmp_·`.
 
 Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`], [`Vector`]:
 - `_num_all`:
@@ -208,7 +208,7 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`], [
       - `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
 
 They also set the corresponding flags:
-`_some_nums`, `_some_float`, `_some_int`, `_some_int_i`, `_some_int_u`.
+`_nums_·`, `_float_·`, `_int_·`, `_int_i_·`, `_int_u_·`.
 
 [`Compare`]: crate::num::Compare
 [`Float`]: crate::num::Float
@@ -226,7 +226,7 @@ Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
   - `_string_nonul`.
 
 They also set the corresponding flags:
-`_some_string`, `_some_string_u`.
+`_string_·`, `_string_u_·`.
 
 [`StringU*`]: crate::text::StringU8
 [`StringNonul`]: crate::text::StringNonul
@@ -234,7 +234,7 @@ They also set the corresponding flags:
 
 ### Dependencies features
 
-Enabling any of them sets the `_some_dep` flag.
+Enabling any of them sets the `_dep_·` flag.
 
 - `dep_all`: enables all the optional dependencies
   - `dep_linux`: enables: `atomic`, `bytemuck`.

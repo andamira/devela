@@ -7,12 +7,12 @@
 // safety:
 #![cfg_attr(feature = "safe_rend", forbid(unsafe_code))]
 
-#[cfg(_some_rend)]
+#[cfg(_rend_·)]
 use crate::code::items;
 
-#[cfg(_some_rend)]
+#[cfg(_rend_·)]
 items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(_some_rend)))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(_rend_·)))]
     mod error;
     #[doc(inline)]
     pub use error::*;
@@ -71,7 +71,7 @@ pub(crate) mod all {
     #![allow(unused_imports)]
 
     #[doc(inline)]
-    #[cfg(_some_rend)]
+    #[cfg(_rend_·)]
     pub use super::error::*;
 
     #[doc(inline)]

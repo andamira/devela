@@ -31,7 +31,7 @@
 /// assert![eset.is_field_variant1()];
 /// ```
 #[macro_export]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_some_bit)))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_bit_·)))]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! enumset {
     (

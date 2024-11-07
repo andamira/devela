@@ -86,7 +86,7 @@ mod reflection {
     };
 
     pub const NIGHTLY: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_nightly"],
+        flags: &["_nightly_·"],
         features: &[
             "nightly_coro",
             "nightly_doc",
@@ -96,7 +96,7 @@ mod reflection {
     };
 
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_dep"],
+        flags: &["_dep_·"],
         features: &[
             "dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_libm",
             "dep_log", "dep_macroquad", "dep_miniquad", "dep_memchr", "dep_miniquad",
@@ -108,15 +108,15 @@ mod reflection {
     /* # modules */
 
     pub const MEM: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_mem"],
+        flags: &["_mem_·"],
         features: &["mem_bit"]
     };
     pub const NUM: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_num"],
+        flags: &["_num_·"],
         features: &["num_geom", "num_rand"]
     };
     pub const REND: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_rend"],
+        flags: &["_rend_·"],
         features: &["rend_audio", "rend_color", "rend_draw", "rend_font", "rend_image", "rend_layout"]
     };
 
@@ -125,7 +125,7 @@ mod reflection {
     /* ## data */
 
     pub const BIT: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_bit"],
+        flags: &["_bit_·"],
         features: &[
             "_bit_i8", "_bit_i16", "_bit_i32", "_bit_i64", "_bit_i128", "_bit_isize",
             "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
@@ -139,37 +139,37 @@ mod reflection {
 
     // ### collections
     pub const DESTAQUE: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_destaque"],
+        flags: &["_destaque_·"],
         features: &["_destaque_u8", "_destaque_u16", "_destaque_u32", "_destaque_usize"]
     };
     pub const GRAPH: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_graph"],
+        flags: &["_graph_·"],
         features: &["_graph_u8", "_graph_u16", "_graph_u32", "_graph_usize"]
     };
     pub const NODE: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_node"],
+        flags: &["_node_·"],
         features: &["_node_u8", "_node_u16", "_node_u32", "_node_usize"]
     };
     pub const STACK: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_stack"],
+        flags: &["_stack_·"],
         features: &["_stack_u8", "_stack_u16", "_stack_u32", "_stack_usize"] };
 
     pub const SORT_INT: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_sort", "_some_sort_int"],
+        flags: &["_sort_·", "_sort_int_·"],
         features: &[
             "_sort_i8", "_sort_i16", "_sort_i32", "_sort_i64", "_sort_i128", "_sort_isize",
             "_sort_u8", "_sort_u16", "_sort_u32", "_sort_u64", "_sort_u128", "_sort_usize",
         ]
     };
     pub const SORT_FLOAT: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_sort", "_some_sort_float"],
+        flags: &["_sort_·", "_sort_float_·"],
         features: &["_sort_f32", "_sort_f64"]
     };
 
     /* ## num */
 
     pub const CMP: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_cmp"],
+        flags: &["_cmp_·"],
         features: &[
             "_cmp_i8", "_cmp_i16", "_cmp_i32", "_cmp_i64", "_cmp_i128", "_cmp_isize",
             "_cmp_u8", "_cmp_u16", "_cmp_u32", "_cmp_u64", "_cmp_u128", "_cmp_usize",
@@ -179,25 +179,25 @@ mod reflection {
 
     // ### numbers
     pub const FLOAT: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_float", "_some_nums"],
+        flags: &["_float_·", "_nums_·"],
         features: &["_float_f32", "_float_f64"] };
     pub const INT: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_int_i", "_some_int", "_some_nums"],
+        flags: &["_int_i_·", "_int_·", "_nums_·"],
         features: &["_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize"] };
     pub const UINT: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_int_u", "_some_int", "_some_nums"],
+        flags: &["_int_u_·", "_int_·", "_nums_·"],
         features: &["_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize"] };
 
     /* ## text */
 
     pub const STRING_U: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_string", "_some_string_u"],
+        flags: &["_string_·", "_string_u_·"],
         features: &["_string_u8", "_string_u16", "_string_u32", "_string_usize"] };
     pub const STRING: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_string"],
+        flags: &["_string_·"],
         features: &["_string_nonul"] };
     pub const CHAR: FlagsFeatures = FlagsFeatures {
-        flags: &["_some_char"],
+        flags: &["_char_·"],
         features: &["_char7", "_char8", "_char16", "_char24", "_char32"] };
 
 

@@ -6,7 +6,7 @@
 mod r#trait;
 pub use r#trait::BitOps;
 
-#[cfg(_some_bit)]
+#[cfg(_bit_·)]
 crate::items! {
     mod field;
     mod wrapper;
@@ -19,6 +19,6 @@ pub(crate) mod all {
     pub use super::r#trait::BitOps;
 
     #[doc(inline)]
-    #[cfg(_some_bit)]
+    #[cfg(_bit_·)]
     pub use super::{field::bitfield, wrapper::Bitwise};
 }

@@ -18,8 +18,8 @@ impl super::Num for NoNum {
     fn num_into(self) -> Self::Inner {}
 }
 
-#[cfg(_some_int)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_some_int)))]
+#[cfg(_int_·)]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_int_·)))]
 impl super::NumInt for NoNum {
     type OutI = ();
 }

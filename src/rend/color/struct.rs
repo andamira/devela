@@ -5,7 +5,7 @@
 
 #[allow(unused_imports)]
 use crate::code::{iif, paste, sf};
-#[cfg(all(_some_float, not(feature = "std")))]
+#[cfg(all(_float_·, not(feature = "std")))]
 use crate::num::ExtFloat;
 
 /// color namespace for constants and methods

@@ -3,7 +3,7 @@
 //! Extention trait for floatin-point methods.
 //
 
-#[cfg(_some_float)]
+#[cfg(_float_·)]
 use crate::num::Float;
 use crate::num::{ExtFloatConst, Sign};
 

@@ -247,8 +247,8 @@ nightly = [ # sync with src/lib.rs
 #
 # Enabling them enables extra implementations which increases compilation times.
 #
-# They also set automatic compile flags named `_some_*`, used for reflection.
-# E.g.: the flag `_some_stack` will be set if some _stack_* feature is enabled.
+# They also set automatic compile flags named `_*_·`, used for reflection.
+# E.g.: the flag `_stack_·` will be set if any _stack_* feature is enabled.
 
 #* data capabilities *#
 # ---------------------
@@ -553,29 +553,29 @@ maintenance = { status = "experimental" }
 [lints.rust.unexpected_cfgs]
 level = "warn"
 check-cfg = [ # Allowed config flags:
-	# Set if the library is compiled as the primary package (not a dependency).
+	# Defined if the library is compiled as the primary package (not a dependency).
 	'cfg(cargo_primary_package)',
 	#
 	# Allows excluding tests from being run, more concisely.
 	'cfg(__no_test)',
 	#
-	# Expect more pointer widths
+	# Expect more pointer widths.
 	'cfg(target_pointer_width, values("8", "128"))',
 	#
-	# These compilation flags for reflection are enabled in: "/build/features.rs"
-	"cfg(_some_nightly, _some_dep)",
-	'cfg(_some_mem, _some_num)',
+	# Compilation flags for reflection are enabled in: "/build/features.rs"
+	"cfg(_nightly_·, _dep_·)",
+	'cfg(_mem_·, _num_·)',
 	# data:
-	'cfg(_some_bit, _some_destaque, _some_stack)',
-	'cfg(_some_graph, _some_node)',
+	'cfg(_bit_·, _destaque_·, _stack_·)',
+	'cfg(_graph_·, _node_·)',
 	# num:
-	'cfg(_some_sort, _some_sort_int, _some_sort_float)',
-	'cfg(_some_nums, _some_cmp, _some_float, _some_int, _some_int_i, _some_int_u)',
-	'cfg(_some_non_value, _some_non_value_i, _some_non_value_u)',
+	'cfg(_sort_·, _sort_int_·, _sort_float_·)',
+	'cfg(_nums_·, _cmp_·, _float_·, _int_·, _int_i_·, _int_u_·)',
+	'cfg(_non_value_·, _non_value_i_·, _non_value_u_·)',
 	# rend:
-	 'cfg(_some_rend)',
+	'cfg(_rend_·)',
 	# text:
-	'cfg(_some_char, _some_string, _some_string_u)',
+	'cfg(_char_·, _string_·, _string_u_·)',
 ]
 
 

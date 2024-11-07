@@ -3,7 +3,7 @@
 //! Floating-point wrapper struct.
 //
 
-#[cfg(_some_float)]
+#[cfg(_float_·)]
 crate::items! {
     mod shared;
     mod shared_helpers;

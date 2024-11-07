@@ -38,8 +38,8 @@ pub mod niche;
 #[doc(no_inline)]
 pub use {algebra::all::*, logic::all::*, niche::all::*};
 
-#[cfg(_some_int)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_some_int)))]
+#[cfg(_int_·)]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_int_·)))]
 items! {
     mod frac;
     mod int;
@@ -69,7 +69,7 @@ pub(crate) mod all {
     };
 
     #[doc(inline)]
-    #[cfg(_some_int)]
+    #[cfg(_int_·)]
     #[allow(unused_imports)]
     pub use super::{frac::*, int::*};
 

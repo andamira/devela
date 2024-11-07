@@ -5,12 +5,12 @@
 
 mod core_traits;
 
-#[cfg(all(_some_int, _some_float))]
+#[cfg(all(_int_·, _float_·))]
 crate::items! {
     mod int;
     #[cfg(test)]
     mod test_int;
 }
 
-#[cfg(any(feature = "std", _some_float))]
+#[cfg(any(feature = "std", _float_·))]
 mod float;

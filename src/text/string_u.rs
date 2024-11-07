@@ -18,11 +18,11 @@ use crate::{
         TextResult as Result,
     },
 };
-#[cfg(_some_cmp)]
+#[cfg(_cmp_·)]
 use crate::{code::cfor, num::Compare};
 
 use super::char::*;
-#[cfg(all(_some_string_u, feature = "alloc"))]
+#[cfg(all(_string_u_·, feature = "alloc"))]
 use crate::text::{CString, ToString};
 #[allow(unused_imports)]
 use core::str::{from_utf8, from_utf8_unchecked};

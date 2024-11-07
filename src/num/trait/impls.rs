@@ -3,10 +3,10 @@
 //!
 //
 
-#[cfg(all(_some_float, not(feature = "std")))]
+#[cfg(all(_float_·, not(feature = "std")))]
 use crate::code::iif;
 use crate::code::paste;
-#[cfg(_some_float)]
+#[cfg(_float_·)]
 use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
 #[allow(unused_imports)]
 use {

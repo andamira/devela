@@ -28,7 +28,7 @@ pub use crate::rend::{ImageError, ImageResult};
 #[cfg(feature = "rend_layout")]
 pub use crate::rend::{LayoutError, LayoutResult};
 #[doc(inline)]
-#[cfg(_some_rend)]
+#[cfg(_rend_·)]
 pub use crate::rend::{RendError, RendResult};
 #[doc(inline)]
 pub use crate::{

@@ -7,7 +7,7 @@
 // - trait impls
 
 use super::Grapheme;
-#[cfg(_some_char)]
+#[cfg(_char_·)]
 use crate::text::char::*;
 #[cfg(feature = "alloc")]
 use crate::text::CString;

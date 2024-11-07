@@ -27,14 +27,14 @@ use crate::{
     num::NumError::{NonZeroRequired, Overflow},
     num::{Int, NumResult as Result},
 };
-#[cfg(_some_int_i)]
+#[cfg(_int_i_·)]
 use crate::{error::unwrap, num::NumError::NoInverse};
 
 // helper function to be called from the cold path branch when modulus == 0.
-#[cold] #[inline(never)] #[cfg(_some_int)] #[rustfmt::skip]
+#[cold] #[inline(never)] #[cfg(_int_·)] #[rustfmt::skip]
 const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 // helper function to be called from the cold path branch for rare i128 overflow.
-#[cold] #[inline(never)] #[cfg(_some_int_i)] #[rustfmt::skip]
+#[cold] #[inline(never)] #[cfg(_int_i_·)] #[rustfmt::skip]
 const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 
 // helper macro to deal with the case when we can't upcast (i.e. for 128-bits).

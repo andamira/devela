@@ -17,7 +17,7 @@
 #[allow(unused_imports)]
 use crate::code::{iif, paste};
 #[allow(unused_imports)]
-#[cfg(_some_float)]
+#[cfg(_float_·)]
 use crate::num::Float;
 use core::cmp::Ordering::{self, Equal, Greater, Less};
 

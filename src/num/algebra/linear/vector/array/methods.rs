@@ -5,9 +5,9 @@
 
 use crate::num::algebra::linear::Vector;
 #[allow(unused_imports)]
-#[cfg(all(not(feature = "std"), _some_float))]
+#[cfg(all(not(feature = "std"), _float_·))]
 use crate::num::ExtFloat;
-#[cfg(_some_int)]
+#[cfg(_int_·)]
 use crate::{error::unwrap, num::Int};
 use core::{concat as cc, stringify as fy};
 

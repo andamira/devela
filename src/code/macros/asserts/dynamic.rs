@@ -88,7 +88,7 @@ macro_rules! assert_approx_eq_all {
             assert!(
                 difference <= $tolerance,
                 "Assertion failed: ({}) is not approximately equal to ({})
-  left: {}\n right: {}\n toler: {}",
+      left: {}\n     right: {}\n tolerance: {}",
                 stringify!($first), stringify!($rest), first_val, rest_val, $tolerance,
             );
         )+

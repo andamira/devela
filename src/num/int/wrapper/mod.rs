@@ -6,22 +6,17 @@
 // - define Int struct
 // - implement core traits
 
-#[cfg(_some_int)]
-mod impl_base;
-#[cfg(_some_int)]
-mod impl_combinatorics;
-#[cfg(_some_int)]
-mod impl_core;
-#[cfg(_some_int)]
-mod impl_div;
-#[cfg(_some_int)]
-mod impl_factors;
-#[cfg(_some_int)]
-mod impl_modulo;
-#[cfg(_some_int)]
-mod impl_prime;
-#[cfg(_some_int)]
-mod impl_root;
+#[cfg(_int_·)]
+crate::items! {
+    mod impl_base;
+    mod impl_combinatorics;
+    mod impl_core;
+    mod impl_div;
+    mod impl_factors;
+    mod impl_modulo;
+    mod impl_prime;
+    mod impl_root;
+}
 
 /// Provides comprehensive integer operations on `T`, most of them *const*.
 ///

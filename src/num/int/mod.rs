@@ -8,10 +8,11 @@ mod num_trait;
 mod wrapper;
 pub use {gcd::*, num_trait::*, wrapper::*};
 
-#[cfg(_some_int)]
-mod divisor;
-#[cfg(_some_int)]
-pub use divisor::*;
+#[cfg(_int_·)]
+crate::items! {
+    mod divisor;
+    pub use divisor::*;
+}
 
 #[allow(unused_imports)]
 #[cfg(all(not(feature = "std"), feature = "_float_f64"))]
