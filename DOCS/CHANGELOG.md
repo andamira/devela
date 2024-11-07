@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
-## Unreleased [0.22.0-wip]
+## [0.22.0-wip] - Unreleased
 
 ### Added
 
@@ -24,11 +24,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### New Items
 - structs:
-  - `Env` namespaces `std::env` functions and constants.
-  - `FatPtr`, `IdPinBox`, `IdPin`, `TypeResource`.
-  - `False`, `True`, `UnitBi`, `UnitSi`.
+  - `ConstList`.
   - `CompressionMode`, `EncodingMode`, `Pnm`,
-  - `RendError`, - `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
+  - `Env` namespace for `std::env` functions and constants.
+  - `False`, `True`, `UnitBi`, `UnitSi`.
+  - `FatPtr`, `IdPinBox`, `IdPin`, `TypeResource`.
+  - `RendError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
 - aliases:
   - `AllocMapFx`, `AllocSetFx`,
   - `RendResult`, `ColorResult`, `AudioResult`, `DrawResult`, `FontResult`,`ImageResult`, `LayoutResult`.
@@ -68,7 +69,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new example `id_pin`.
 - new example `id_seq` and type `ExampleIdSeqUsize`.
 - new example `enumint` and type `ExampleEnumIntU8`.
-- new scripts in `utils/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`.
+- new scripts in `utils/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`, `docs_coverage.sh`, `docs_items.rs`.
 - new github workflows: `get_errno.yml`, `get_syscall.yml`.
 
 ### Removed
@@ -77,6 +78,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove types: `InRange*`, `NonRanbe*`.
 - remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`.
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
+- comment out unused features: `code`, `data`, `error`.
 - move `num::geom::prim` submodule to separate crate `cuadra`.
 
 ### Changed
@@ -94,8 +96,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move `time` module inside `sys`.
 - move `_lib*` libs inside `_dep`.
 - impl `Num` for niche types.
-- rename method `Array::len` to `capacity`.
+- rename `GcdExt` to `GcdResult`.
 - rename `_deps` module to `_dep`.
+- rename method `Array::len` to `capacity`.
 - rename `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.
 - rename `AllocOrdMap` to `BTreeMap` and `AllocOrdSet` to `BTreeSet`.
 - rename `AllocPrioQueue` to `BinaryHeap`.
@@ -112,6 +115,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename the `tools` directory to `utils`.
 - rename re-wrapped macros to avoid prelude collision when glob importing:
   - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
+- rename compilation flags from `_some_*` to `_*_·`.
 - make const `Float` methods: `eval_poly`, `factorial`, `mul_add_fallback`, `scale`, `lerp`, `ln*_series`, `log[10|2]_series`.
 - make const versions of Float methods: `clamp_nan`, `fisr`, `hypot_fisr`, `max_nan`, `min_nan`, `cbrt_nr`, `sqrt_nr`, `hypot_nr`, `rem_euclid`, `*_series`, `*_series_terms*`.
 
