@@ -30,7 +30,7 @@ proc-macro = true
 #* Miscellaneous features *#
 # ------------------------------------------------------------------------------
 
-default = ["std", "safe"]
+default = ["safe", "dep_hashbrown"]
 
 __lints = [] # enables extra lints (enabled on cl* aliases)
 
