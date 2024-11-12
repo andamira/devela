@@ -1,10 +1,8 @@
 // devela::data::collections
 //
 //! Data collections.
-#![doc = crate::doc_!(extends: array, collections, vec)]
-// #![doc = crate::doc_!(modules: crate::data; collections)]
-#![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: array, collections, vec)]
 //
 
 #[allow(unused_imports)]

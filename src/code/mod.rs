@@ -1,10 +1,10 @@
 // devela::code
 //
 //! Code reflective synthesis.
-#![doc = crate::doc_!(extends: any, clone, convert, default, hint, marker, ops)]
 #![doc = crate::doc_!(modules: crate; code)]
 #![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: any, clone, convert, default, hint, marker, ops)]
 //
 
 // safety:

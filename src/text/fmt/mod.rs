@@ -1,9 +1,8 @@
 // devela::text::fmt
 //
 //! Formatting strings.
-#![doc = crate::doc_!(extends: fmt)]
-#![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: fmt)]
 //
 
 mod misc;

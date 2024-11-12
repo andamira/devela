@@ -1,10 +1,8 @@
 // devela::sys::ffi
 //
 //! Foreign function interfaces and languages bindings.
-#![doc = crate::doc_!(extends: ffi)]
-// #![doc = crate::doc_!(modules: crate::sys; ffi)]
-#![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: ffi)]
 //
 
 mod reexports;

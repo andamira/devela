@@ -1,10 +1,10 @@
 // devela::sys::os
 //
 //! OS-specific.
-#![doc = crate::doc_!(extends: os)]
 #![doc = crate::doc_!(modules: crate::sys; os: linux)]
 #![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: os)]
 //
 
 #[cfg(feature = "linux")]

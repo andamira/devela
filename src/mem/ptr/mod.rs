@@ -1,6 +1,7 @@
 // devela::mem::cell
 //
-//! Shareable mutable containers.
+//! Manually manage memory through raw pointers.
+//!
 #![doc = crate::doc_!(extends: ptr)]
 //
 

@@ -1,10 +1,10 @@
 // devela::work
 //
 //! Work management, concurrency handling.
-#![doc = crate::doc_!(extends: future, process, sync, task, thread)]
 #![doc = crate::doc_!(modules: crate; work)]
 #![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: future, process, sync, task, thread)]
 //
 
 // safety:

@@ -1,10 +1,10 @@
 // devela::mem
 //
 //! Memory management.
-#![doc = crate::doc_!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
 #![doc = crate::doc_!(modules: crate; mem: cell, ptr)]
 #![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
 //
 
 // safety:

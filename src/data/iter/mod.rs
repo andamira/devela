@@ -1,10 +1,8 @@
 // devela::data::iter
 //
 //! Composable external iteration.
-#![doc = crate::doc_!(extends: iter)]
-// #![doc = crate::doc_!(modules: crate::data; iter)]
-// #![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: iter)]
 //
 
 mod reexports;

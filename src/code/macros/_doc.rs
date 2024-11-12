@@ -15,7 +15,14 @@ macro_rules! doc_ {
     (@meta_start) => {
         "<br/><i style='margin-left:0.618em;'></i><span style='color:#777;font-size:90%;word-spacing:0px'>"
     };
+    (@meta_start_nobr) => {
+        concat!(
+            "<i style='margin-left:0.618em;margin-top:-2em;'></i>",
+            "<span style='color:#777;font-size:90%;word-spacing:0px'>",
+        )
+    };
     (@meta_end) => { "</span>" };
+    (@meta_end_hr) => { "</span><hr/>" };
     // (newline) => { "<br/><br/>" };
     (newline) => { "<br/><br style='display:block;content:\"\";margin-top:10px;' />" };
 
@@ -53,9 +60,9 @@ macro_rules! doc_ {
 
     (extends: $($mod:ident),+ $(,)?) => {
         concat!(
-            $crate::code::doc_!(@meta_start), "Extends: ",
+            $crate::code::doc_!(@meta_start_nobr), "Extends: ",
             "std::{", $crate::code::doc_!(@extends: $($mod),+), "}",
-            $crate::code::doc_!(@meta_end),
+            $crate::code::doc_!(@meta_end_hr),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.

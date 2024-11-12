@@ -1,10 +1,8 @@
 // devela::data::hash
 //
 //! Generic hashing support.
-#![doc = crate::doc_!(extends: hash)]
-// #![doc = crate::doc_!(modules: crate::data; hash)]
-#![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: hash)]
 //
 
 mod fnv;

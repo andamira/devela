@@ -1,10 +1,10 @@
 // devela::num
 //
 //! Numerical types and math operations.
-#![doc = crate::doc_!(extends: cmp, num)]
 #![doc = crate::doc_!(modules: crate; num: algebra, logic, niche, rand)]
 #![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: cmp, num)]
 //
 
 // safety:

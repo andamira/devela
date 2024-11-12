@@ -1,10 +1,8 @@
 // devela::sys::io
 //
 //! I/O functionality.
-#![doc = crate::doc_!(extends: io)]
-// #![doc = crate::doc_!(modules: crate::sys; io)]
-#![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: io)]
 //
 
 // warnings:

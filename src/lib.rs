@@ -167,7 +167,9 @@ pub mod work;
 
 /// All the crate's items re-exported flat.
 /// <br/><hr>
-/// There's a more exhaustive list, including dependencies in: [All items](../all.html).
+///
+/// There's a more exhaustive list that includes all of the dependencies items,
+/// without descriptions, in [All items](../all.html).
 pub mod all {
     #[allow(unused_imports)]
     #[rustfmt::skip]
@@ -188,11 +190,11 @@ pub mod all {
 #[allow(unused_imports)]
 pub use all::*;
 
-/// Library dependencies.
+/// Re-exported optional dependencies.
 /// <br/><hr>
 pub mod _dep;
 
-/// Information about the library.
+/// Documentation about the library.
 /// <br/><hr>
 #[cfg(any(doc, test))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(doc)))]
