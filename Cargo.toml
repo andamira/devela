@@ -129,6 +129,8 @@ work = ["bytemuck?/zeroable_atomics"]
 # 1. enable the desired `unsafe` feature.
 # 2. don't enable the `safe` feature for that module.
 #
+# The `safest` feature forbids unsafe transitively in dependencies
+# (except for `core`, `alloc` and `std`).
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
 	"safe_code", "safe_data", "safe_error", "safe_mem", "safe_num",
@@ -163,10 +165,14 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	unsafe_syscall = [] # os syscalls.
 	unsafe_thread = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
+safest = [ # forbids `unsafe` even in dependencies (except standard library)
+	"safe",
+]
+
+
 #* Nightly features *#
 # ------------------------------------------------------------------------------
 # They are prefixed with `nightly_`.
-#
 
 nightly = [ # sync with src/lib.rs
 	"nightly_coro", "nightly_doc", "nightly_simd", "nightly_stable",
@@ -459,43 +465,43 @@ dep_wide = ["dep:wide"]
 # ==============================================================================
 
 # non-optional:
-devela_macros = { version  = "0.11.0" }
+devela_macros = { version  = "0.11.0" } # safe
 #devela_macros = { path = "./macros" }
-paste_crate = { package = "paste", version = "1.0.15", default-features = false }
+paste_crate = { package = "paste", version = "1.0.15", default-features = false } # safe, archived
 
 # optional:
-const-str = { version = "0.5.7", optional = true, default-features = false }
-libm = { version = "0.2.8", optional = true, default-features = false }
-log = { version = "0.4.22", optional = true, default-features = false }
-macroquad = { version = "0.4.13", optional = true, default-features = false }
-memchr = { version = "2.7.4", optional = true, default-features = false }
-miniquad = { version = "0.4.6", optional = true, default-features = false }
-rand_core = { version = "0.6.4", optional = true, default-features = false }
-tinyaudio = { version = "1.0.0", optional = true, default-features = false }
-unicode-segmentation = { version = "1.12.0", optional = true, default-features = false }
-unicode-width = { version = "0.1.13", optional = true, default-features = false }
-wide = { version = "0.7.26", optional = true, default-features = false }
-[dependencies.atomic]
+const-str = { version = "0.5.7", optional = true, default-features = false } # unsafe
+libm = { version = "0.2.8", optional = true, default-features = false } # unsafe
+log = { version = "0.4.22", optional = true, default-features = false } # safe(optional_unsafe)
+macroquad = { version = "0.4.13", optional = true, default-features = false } # unsafe
+memchr = { version = "2.7.4", optional = true, default-features = false } # unsafe
+miniquad = { version = "0.4.6", optional = true, default-features = false } # unsafe
+rand_core = { version = "0.6.4", optional = true, default-features = false } # safe
+tinyaudio = { version = "1.0.0", optional = true, default-features = false } # unsafe
+unicode-segmentation = { version = "1.12.0", optional = true, default-features = false } # safe
+unicode-width = { version = "0.1.13", optional = true, default-features = false } # safe
+wide = { version = "0.7.26", optional = true, default-features = false } # unsafe
+[dependencies.atomic] # unsafe
 version = "0.6.0"
 optional = true
 default-features = false
 features = ["fallback"]
-[dependencies.bytemuck]
+[dependencies.bytemuck] # unsafe
 version = "1.19.0"
 optional = true
 default-features = false
 features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
-[dependencies.hashbrown]
-version = "0.14.5"
+[dependencies.hashbrown] # unsafe
+version = "0.14.0"
 optional = true
 default-features = false
 features = ["ahash", "inline-more"]
-[dependencies.portable-atomic]
+[dependencies.portable-atomic] # unsafe
 version = "1.9.0"
 optional = true
 default-features = false
 features = ["fallback", "float"]
-[dependencies.rodio]
+[dependencies.rodio] # unsafe_deps
 version = "0.19.0"
 optional = true
 default-features = false
