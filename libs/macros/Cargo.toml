@@ -60,7 +60,10 @@ nightly = ["nightly_doc"]
 # ------------------------------------------------------------------------------
 
 # The most complete version of the documentation:
-_docsrs = ["nightly", "std", "unsafe"]
+_docsrs = ["nightly", "std", "unsafe", "dep_hashbrown"]
+
+# dependencies
+dep_hashbrown = ["dep:hashbrown", "alloc"]
 
 
 [dependencies]
@@ -68,6 +71,13 @@ _docsrs = ["nightly", "std", "unsafe"]
 # WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
 proc-macro2 = "1.0.88"
 quote = "1.0.37"
+
+[dependencies.hashbrown]
+version = "0.15.1"
+optional = true
+default-features = false
+features = ["default-hasher", "inline-more"]
+
 
 [dev-dependencies]
 # ------------------------------------------------------------------------------

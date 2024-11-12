@@ -1,4 +1,4 @@
-// devela_macros::shared
+// devela_macros::bodies::shared
 //
 //! Shared functionality for procedural macros.
 //
@@ -9,7 +9,6 @@
 // - compile_eval
 // - parse_vis_ident
 
-#[cfg(feature = "alloc")]
 use alloc::{
     string::{String, ToString},
     vec::Vec,
@@ -18,7 +17,6 @@ use proc_macro2::{Ident, TokenStream, TokenTree};
 use quote::quote;
 
 // Argument parser that correctly deals with nested arguments with commas.
-#[cfg(feature = "alloc")]
 pub(crate) fn split_args(arg: &str) -> Vec<String> {
     let mut args = Vec::new();
     let (mut start, mut level) = (0, 0);
@@ -40,7 +38,6 @@ pub(crate) fn split_args(arg: &str) -> Vec<String> {
 }
 
 // splits a tuple of two elements; used for the `compile_doc` macro
-#[cfg(feature = "alloc")]
 pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
     let tuple = tuple.trim();
     if !tuple.starts_with('(') {
@@ -84,7 +81,6 @@ pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
 // and then removes that amount of leading whitespace from each line.
 //
 // should support spaces and tabs
-#[cfg(feature = "alloc")]
 pub(crate) fn deindent(s: &str) -> String {
     let lines: Vec<&str> = s.lines().collect();
     let min_indent = lines
@@ -103,7 +99,7 @@ pub(crate) fn deindent(s: &str) -> String {
 }
 
 // Evaluator of compilation predicates
-#[rustfmt::skip] #[cfg(feature = "alloc")]
+#[rustfmt::skip]
 pub(crate) fn compile_eval(arg: String) -> bool {
     /* unary */
 

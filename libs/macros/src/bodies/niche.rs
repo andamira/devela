@@ -9,6 +9,7 @@ use super::shared::parse_vis_ident;
 use proc_macro::TokenStream;
 use proc_macro2::{Ident, Span};
 use quote::quote;
+use alloc::{format, vec::Vec, string::ToString};
 
 #[inline(always)]
 #[cfg(feature = "alloc")]
