@@ -198,27 +198,37 @@ macro_rules! reexport {
     (
       // Re-exports an optional crate
       //
-      // $dep_feat:    the dependency feature
-      // $dep_name:    the dependency name
-      // $dep_mod:     the dependency module
+      // $dep_safe:    [safe|unsafe] (affects compilation with "safest" feature)
+      // $dep_feat:    the dependency feature name
+      // $dep_name:    the dependency real name
+      // $dep_mod:     the dependency module name
       // $description: the dependency decription
       // $f:           additional features needed
-      optional_crate $dep_feat:literal, $dep_name:literal, $dep_mod:ident,
+      optional_crate ($dep_safe:tt)
+      $dep_feat:literal, $dep_name:literal, $dep_mod:ident,
       doc: $description:literal
       $(, features: $( $f:literal ),+ )?
     ) => { $crate::code::paste! {
-        #[doc = "<span class='stab portability' title='re-exported `" $dep_name
-            "`'>`" $dep_name "`</span>"]
-        #[doc = $description "\n\n---" ]
-        #[cfg_attr(
-            feature = "nightly_doc",
-            doc(cfg(all(
-                feature = $dep_feat $(, $(feature = $f)+ )?
-            )))
-        )]
         #[cfg(all(feature = $dep_feat $(, $(feature = $f),+ )? ))]
-        #[doc(inline)]
-        pub use ::$dep_mod;
+        $crate::items! {
+            // safety-guard: panics if `safest` is enabled and dependency is not safe
+            #[cfg(feature = "safest")]
+            #[$crate::compile(diff($dep_safe, safe))]
+            const [<SAFEST_ $dep_name:upper>]: () = { panic![concat!["The `", $dep_name,
+            "` dependency is not compatible with the `safest` feature"]] };
+
+            #[doc = "<span class='stab portability' title='re-exported `" $dep_name
+                "`'>`" $dep_name "`</span>"]
+            #[doc = $description "\n\n---" ]
+            #[cfg_attr(
+                feature = "nightly_doc",
+                doc(cfg(all(
+                    feature = $dep_feat $(, $(feature = $f)+ )?
+                )))
+            )]
+            #[doc(inline)]
+            pub use ::$dep_mod;
+        }
     }};
     (
       // re-exports items from an external optional dependency, from any normal module.
