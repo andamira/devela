@@ -24,7 +24,7 @@ use crate::{
     error::unwrap,
     num::{upcasted_op, Int, NumError, NumResult as Result},
 };
-#[cfg(_int_i_·)]
+#[cfg(_int_i·)]
 use NumError::NonNegativeRequired;
 use NumError::NonZeroRequired;
 #[cfg(doc)]

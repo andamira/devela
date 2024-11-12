@@ -182,16 +182,16 @@ mod reflection {
         flags: &["_float_·", "_nums_·"],
         features: &["_float_f32", "_float_f64"] };
     pub const INT: FlagsFeatures = FlagsFeatures {
-        flags: &["_int_i_·", "_int_·", "_nums_·"],
+        flags: &["_int_i·", "_int_·", "_nums_·"],
         features: &["_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize"] };
     pub const UINT: FlagsFeatures = FlagsFeatures {
-        flags: &["_int_u_·", "_int_·", "_nums_·"],
+        flags: &["_int_u·", "_int_·", "_nums_·"],
         features: &["_int_u8", "_int_u16", "_int_u32", "_int_u64", "_int_u128", "_int_usize"] };
 
     /* ## text */
 
     pub const STRING_U: FlagsFeatures = FlagsFeatures {
-        flags: &["_string_·", "_string_u_·"],
+        flags: &["_string_·", "_string_u·"],
         features: &["_string_u8", "_string_u16", "_string_u32", "_string_usize"] };
     pub const STRING: FlagsFeatures = FlagsFeatures {
         flags: &["_string_·"],

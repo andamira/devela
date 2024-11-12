@@ -570,12 +570,12 @@ check-cfg = [ # Allowed config flags:
 	'cfg(_graph_·, _node_·)',
 	# num:
 	'cfg(_sort_·, _sort_int_·, _sort_float_·)',
-	'cfg(_nums_·, _cmp_·, _float_·, _int_·, _int_i_·, _int_u_·)',
+	'cfg(_nums_·, _cmp_·, _float_·, _int_·, _int_i·, _int_u·)',
 	'cfg(_non_value_·, _non_value_i_·, _non_value_u_·)',
 	# rend:
 	'cfg(_rend_·)',
 	# text:
-	'cfg(_char_·, _string_·, _string_u_·)',
+	'cfg(_char_·, _string_·, _string_u·)',
 ]
 
 

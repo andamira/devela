@@ -28,7 +28,7 @@ pub mod fmt;
 #[doc(no_inline)]
 pub use fmt::all::*;
 
-#[cfg(_string_u_·)]
+#[cfg(_string_u·)]
 items! {
     mod string_u;
     pub use string_u::*;
@@ -48,7 +48,7 @@ pub(crate) mod all {
         ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, grapheme::all::*, reexports::*,
     };
 
-    #[cfg(_string_u_·)]
+    #[cfg(_string_u·)]
     pub use super::string_u::*;
 
     #[doc(inline)]

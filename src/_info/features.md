@@ -65,7 +65,7 @@ Single modules:
   - [`rend_image`]
   - [`rend_layout`]
 - [`sys`]
-- [`text`]: enables `Char*`, `Egc`, `Nonul`.
+- [`text`]
 - [`work`]: enables `work` functionality.
 
 Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
@@ -208,7 +208,7 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`], [
       - `_int_u8`, `_int_u16`, `_int_u32`, `_int_u64`, `_int_u128`, `_int_usize`.
 
 They also set the corresponding flags:
-`_nums_·`, `_float_·`, `_int_·`, `_int_i_·`, `_int_u_·`.
+`_nums_·`, `_float_·`, `_int_·`, `_int_i·`, `_int_u·`.
 
 [`Compare`]: crate::num::Compare
 [`Float`]: crate::num::Float
@@ -219,6 +219,9 @@ They also set the corresponding flags:
 
 #### `text` capabilities
 
+Enable specific implementations for [`CharU*`]*:
+- `_char_u7`, `_char_u8`, `_char_u16`, `_char_u24`, `_char_u32`.
+
 Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
 - `_string_all`:
   - `_string_uall`:
@@ -226,8 +229,9 @@ Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
   - `_string_nonul`.
 
 They also set the corresponding flags:
-`_string_·`, `_string_u_·`.
+`_char_·`, `_string_·`, `_string_u·`.
 
+[`CharU*`]: crate::text::CharU8
 [`StringU*`]: crate::text::StringU8
 [`StringNonul`]: crate::text::StringNonul
 
