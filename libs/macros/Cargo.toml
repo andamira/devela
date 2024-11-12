@@ -92,3 +92,25 @@ features = ["_docsrs"]
 [badges]
 # ==============================================================================
 maintenance = { status = "experimental" }
+
+# examples
+# ==============================================================================
+
+[[example]]
+name = "cif"
+required-features = ["alloc"]
+[[example]]
+name = "coalesce"
+required-features = ["alloc"]
+[[example]]
+name = "compile_attr"
+required-features = ["alloc"]
+[[example]]
+name = "compile_doc"
+required-features = ["alloc"]
+[[example]]
+name = "compile"
+required-features = ["alloc"]
+[[example]]
+name = "enumint"
+required-features = ["alloc"]
