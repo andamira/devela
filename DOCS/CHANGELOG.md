@@ -9,20 +9,16 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 
-#### Features & flags
+#### New features & flags
 - new features for:
   - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
   - sys::os `linux`, `dep_linux`, `unsafe_syscall`.
   - nightly: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`,
   - render: `rend`, `rend_[audio|color|draw|font|image|layout]`, `safe_rend`.
-  - other  `dep_work`, `unsafe_async`, `__lints`, `__force_miri_dst`.
-- rename features:
-  - `nightly_stabilized` to `nightly_stable`.
-  - `_[max|min]_docs` to `_docs_[max|min]`, `_docsrs_max` to `_docsrs`.
-- show build *env* variables if `__dbg` feature is enabled.
+  - other  `dep_work`, `safest`, `unsafe_async`, `__lints`, `__force_miri_dst`.
 - new cfg flag `cargo_primary_package`.
 
-#### New Items
+#### New items
 - structs:
   - `ConstList`.
   - `CompressionMode`, `EncodingMode`, `Pnm`,
@@ -82,29 +78,46 @@ The format is based on [Keep a Changelog], and this project adheres to
 - move `num::geom::prim` submodule to separate crate `cuadra`.
 
 ### Changed
+
+#### Misc.
 - bump rust version to 1.82.0.
 - refactor build script.
-- start using `core::error::Error`.
+
+#### Features & flags
+- rename features:
+  - `unsafe_dyn` to `unsafe_layout`.
+  - `nightly_stabilized` to `nightly_stable`.
+  - `_[max|min]_docs` to `_docs_[max|min]`, `_docsrs_max` to `_docsrs`.
+  - `dep_linux` to `linux_deps`, `dep_text` to `text_deps`, `dep_work` to `work_deps`.
+  - `_char*` to `_char_u*`.
+- rename compilation flags:
+  - `_some_*` to `_*_·`.
+  - `_int_i_·` to `_int_i·`, `_int_u_·` to `_int_u·`, `_string_u_·` to `_string_u·`.
+- modify how features `_non_value_u8`, `_non_value_u16` are enabled for `CharU*` types.
+- show build *env* variables if `__dbg` feature is enabled.
+
+#### Items
 - make `bytemuck` an optional dependency.
 - make modules public: `mem::ptr`, `sys::ffi`, `text::fmt`.
+- start using `core::error::Error`.
 - update `cdbg` macro to support a single `@`.
 - method `Graph::edge_exists` no loger panics.
-- modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
 - move `num::geom::algebra` module to `num::algebra::linear`.
 - move `code::result` module to `error`.
 - move `time` module inside `sys`.
 - move `_lib*` libs inside `_dep`.
 - impl `Num` for niche types.
+- rename `Char*` to `CharU*`.
 - rename `GcdExt` to `GcdResult`.
 - rename `_deps` module to `_dep`.
+- rename `_info` module to `_doc`.
 - rename method `Array::len` to `capacity`.
 - rename `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.
 - rename `AllocOrdMap` to `BTreeMap` and `AllocOrdSet` to `BTreeSet`.
 - rename `AllocPrioQueue` to `BinaryHeap`.
 - rename `AllocLinkedList` to `LinkedList`.
 - rename `_lib*` libs removing the `lib` prefix.
-- rename `unsafe_dyn` feature to `unsafe_layout`.
 - rename `Dst*` types const-generic `N` to `CAP`.
 - rename `exec` module to `work`, and related features.
 - rename `sys::io` items by prefixing them with `Io`.
@@ -115,7 +128,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rename the `tools` directory to `utils`.
 - rename re-wrapped macros to avoid prelude collision when glob importing:
   - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
-- rename compilation flags from `_some_*` to `_*_·`.
 - make const `Float` methods: `eval_poly`, `factorial`, `mul_add_fallback`, `scale`, `lerp`, `ln*_series`, `log[10|2]_series`.
 - make const versions of Float methods: `clamp_nan`, `fisr`, `hypot_fisr`, `max_nan`, `min_nan`, `cbrt_nr`, `sqrt_nr`, `hypot_nr`, `rem_euclid`, `*_series`, `*_series_terms*`.
 
