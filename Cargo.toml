@@ -471,7 +471,7 @@ paste_crate = { package = "paste", version = "1.0.15", default-features = false 
 
 # optional:
 const-str = { version = "0.5.7", optional = true, default-features = false } # unsafe
-libm = { version = "0.2.8", optional = true, default-features = false } # unsafe
+libm = { version = "0.2.11", optional = true, default-features = false } # unsafe
 log = { version = "0.4.22", optional = true, default-features = false } # safe(optional_unsafe)
 macroquad = { version = "0.4.13", optional = true, default-features = false } # unsafe
 memchr = { version = "2.7.4", optional = true, default-features = false } # unsafe
@@ -492,17 +492,17 @@ optional = true
 default-features = false
 features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
 [dependencies.hashbrown] # unsafe
-version = "0.14.0"
+version = "0.15.1"
 optional = true
 default-features = false
-features = ["ahash", "inline-more"]
+features = ["default-hasher", "inline-more"]
 [dependencies.portable-atomic] # unsafe
 version = "1.9.0"
 optional = true
 default-features = false
 features = ["fallback", "float"]
 [dependencies.rodio] # unsafe_deps
-version = "0.19.0"
+version = "0.20.1"
 optional = true
 default-features = false
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"]
