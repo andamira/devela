@@ -21,7 +21,7 @@ use crate::{
 ///
 /// # Features
 /// It's implemented for the integer primitives enabled by the corresponding
-/// [capability features][crate::_info::features#capability-features]:
+/// [capability features][crate::_doc::features#capability-features]:
 /// [`_int_i8`][Self#impl-Divisor<i8>],
 /// [`_int_i16`][Self#impl-Divisor<i16>],
 /// [`_int_i32`][Self#impl-Divisor<i32>],

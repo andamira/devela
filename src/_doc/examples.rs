@@ -1,4 +1,4 @@
-// devela::_info::examples
+// devela::_doc::examples
 //
 //!
 //

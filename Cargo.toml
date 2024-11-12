@@ -55,8 +55,8 @@ publish = true
 # - ["__name"]: Miscellaneous maintenance features.
 #
 # Files:
-# - Features are in sync with: build/features.rs and src/_info/features.md
-# - We can use the tools/features.sh script to list and count the features
+# - Features are in sync with build/features.rs & src/_doc/features.md.
+# - We can use the utils/features.sh script to list and count features.
 
 
 #* Miscellaneous features *#
