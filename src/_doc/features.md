@@ -241,6 +241,6 @@ They also set the corresponding flags:
 Enabling any of them sets the `_dep_·` flag.
 
 - `dep_all`: enables all the optional dependencies
-  - `dep_linux`: enables: `atomic`, `bytemuck`.
-  - `dep_text`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
-  - `dep_work`: enables `atomic`, `portable-atomic`.
+  - `linux_deps`: enables: `atomic`, `bytemuck`.
+  - `text_deps`: enables: `const-str`, `memchr`, `unicode-segmentation`, `unicode-width`.
+  - `work_deps`: enables `atomic`, `portable-atomic`.

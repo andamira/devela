@@ -37,7 +37,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 184/300 (116 remaining), 71 visible, 113 hidden
+[features] # 186/300 (114 remaining), 73 visible, 113 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -463,6 +463,8 @@ dep_wide = ["dep:wide"]
 [dependencies]
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 # ==============================================================================
+# Crates using unsafe, even if transitively, are marked as so,
+# preventing enabling them if the `safest` feature is enabled.
 
 # non-optional:
 devela_macros = { version  = "0.11.0" } # safe
