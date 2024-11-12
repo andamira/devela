@@ -198,7 +198,7 @@ mod reflection {
         features: &["_string_nonul"] };
     pub const CHAR: FlagsFeatures = FlagsFeatures {
         flags: &["_char_·"],
-        features: &["_char7", "_char8", "_char16", "_char24", "_char32"] };
+        features: &["_char_u7", "_char_u8", "_char_u16", "_char_u24", "_char_u32"] };
 
 
     // function helpers

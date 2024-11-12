@@ -6,66 +6,66 @@ use crate::text::{
     TextResult as Result,
 };
 
-impl Char32 {
+impl CharU32 {
     /* constants */
 
-    /// The highest unicode scalar a `Char32` can represent, `'\u{10FFFF}'`.
-    pub const MAX: Char32 = Char32(char::MAX);
+    /// The highest unicode scalar a `CharU32` can represent, `'\u{10FFFF}'`.
+    pub const MAX: CharU32 = CharU32(char::MAX);
 
     /// `U+FFFD REPLACEMENT CHARACTER (�)` is used in Unicode to represent a decoding error.
-    pub const REPLACEMENT_CHARACTER: Char32 = Char32(char::REPLACEMENT_CHARACTER);
+    pub const REPLACEMENT_CHARACTER: CharU32 = CharU32(char::REPLACEMENT_CHARACTER);
 
     /* conversions */
 
-    /// Converts an `AsciiChar` to `Char32`.
+    /// Converts an `AsciiChar` to `CharU32`.
     #[inline]
     #[must_use]
-    pub const fn from_ascii_char(c: AsciiChar) -> Char32 {
-        Char32(c.as_char())
+    pub const fn from_ascii_char(c: AsciiChar) -> CharU32 {
+        CharU32(c.as_char())
     }
 
-    /// Converts a `Char7` to `Char32`.
+    /// Converts a `CharU7` to `CharU32`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char7")]
+    #[cfg(feature = "_char_u7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
-    pub const fn from_char7(c: Char7) -> Char32 {
-        Char32(c.to_char())
+    pub const fn from_char_u7(c: CharU7) -> CharU32 {
+        CharU32(c.to_char())
     }
-    /// Converts a `Char8` to `Char32`.
+    /// Converts a `CharU8` to `CharU32`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char8")]
+    #[cfg(feature = "_char_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
-    pub const fn from_char8(c: Char8) -> Char32 {
-        Char32(c.to_char())
+    pub const fn from_char_u8(c: CharU8) -> CharU32 {
+        CharU32(c.to_char())
     }
-    /// Converts a `Char16` to `Char32`.
+    /// Converts a `CharU16` to `CharU32`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char16")]
+    #[cfg(feature = "_char_u16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
-    pub const fn from_char16(c: Char16) -> Char32 {
-        Char32(c.to_char())
+    pub const fn from_char_u16(c: CharU16) -> CharU32 {
+        CharU32(c.to_char())
     }
-    /// Converts a `Char24` to `Char32`.
+    /// Converts a `CharU24` to `CharU32`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char24")]
+    #[cfg(feature = "_char_u24")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
-    pub const fn from_char24(c: Char24) -> Char32 {
-        Char32(c.to_char())
+    pub const fn from_char_u24(c: CharU24) -> CharU32 {
+        CharU32(c.to_char())
     }
-    /// Converts a `char` to `Char32`.
+    /// Converts a `char` to `CharU32`.
     #[inline]
     #[must_use]
-    pub const fn from_char(c: char) -> Char32 {
-        Char32(c)
+    pub const fn from_char(c: char) -> CharU32 {
+        CharU32(c)
     }
 
     //
 
-    /// Tries to convert this `Char32` to `AsciiChar`.
+    /// Tries to convert this `CharU32` to `AsciiChar`.
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[inline]
@@ -85,49 +85,49 @@ impl Char32 {
         Err(CharConversion)
     }
 
-    /// Tries to convert this `Char32` to `Char7`.
+    /// Tries to convert this `CharU32` to `CharU7`.
     #[inline]
-    #[cfg(feature = "_char7")]
+    #[cfg(feature = "_char_u7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
-    pub const fn try_to_char7(self) -> Result<Char7> {
-        Char7::try_from_char32(self)
+    pub const fn try_to_char_u7(self) -> Result<CharU7> {
+        CharU7::try_from_char_u32(self)
     }
-    /// Tries to convert this `Char32` to `Char8`.
+    /// Tries to convert this `CharU32` to `CharU8`.
     #[inline]
-    #[cfg(feature = "_char8")]
+    #[cfg(feature = "_char_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
-    pub const fn try_to_char8(self) -> Result<Char8> {
-        Char8::try_from_char32(self)
+    pub const fn try_to_char_u8(self) -> Result<CharU8> {
+        CharU8::try_from_char_u32(self)
     }
-    /// Tries to convert this `Char32` to `Char16`.
+    /// Tries to convert this `CharU32` to `CharU16`.
     #[inline]
-    #[cfg(feature = "_char16")]
+    #[cfg(feature = "_char_u16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
-    pub const fn try_to_char16(self) -> Result<Char16> {
-        Char16::try_from_char32(self)
+    pub const fn try_to_char_u16(self) -> Result<CharU16> {
+        CharU16::try_from_char_u32(self)
     }
-    /// Converts this `Char32` to `Char24`.
+    /// Converts this `CharU32` to `CharU24`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char24")]
+    #[cfg(feature = "_char_u24")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
-    pub const fn to_char24(self) -> Char24 {
-        Char24::from_char32(self)
+    pub const fn to_char_u24(self) -> CharU24 {
+        CharU24::from_char_u32(self)
     }
-    /// Converts this `Char32` to `char`.
+    /// Converts this `CharU32` to `char`.
     #[inline]
     #[must_use]
     pub const fn to_char(self) -> char {
         self.0
     }
-    /// Converts this `Char32` to `u32`.
+    /// Converts this `CharU32` to `u32`.
     #[inline]
     #[must_use]
     pub const fn to_u32(self) -> u32 {
         self.0 as u32
     }
 
-    /// Converts this `Char32` to an UTF-8 encoded sequence of bytes.
+    /// Converts this `CharU32` to an UTF-8 encoded sequence of bytes.
     ///
     /// Note that this function always returns a 4-byte array, but the actual
     /// UTF-8 sequence may be shorter. The unused bytes are set to 0.
@@ -148,8 +148,8 @@ impl Char32 {
     #[inline]
     #[must_use]
     #[rustfmt::skip]
-    pub const fn to_ascii_uppercase(self) -> Char32 {
-        Char32(char::to_ascii_uppercase(&self.0))
+    pub const fn to_ascii_uppercase(self) -> CharU32 {
+        CharU32(char::to_ascii_uppercase(&self.0))
     }
     /// Makes a copy of the value in its ASCII lower case equivalent.
     ///
@@ -158,8 +158,8 @@ impl Char32 {
     #[inline]
     #[must_use]
     #[rustfmt::skip]
-    pub const fn to_ascii_lowercase(self) -> Char32 {
-        Char32(char::to_ascii_lowercase(&self.0))
+    pub const fn to_ascii_lowercase(self) -> CharU32 {
+        CharU32(char::to_ascii_lowercase(&self.0))
     }
 
     /* queries */

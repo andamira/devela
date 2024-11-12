@@ -205,16 +205,16 @@ bit_sized![= 128; for i128, u128, Duration];
 #[cfg(feature = "std")]
 bit_sized![= 128; for Instant, SystemTime];
 
-#[cfg(feature = "_char7")]
-bit_sized![= 7; for crate::text::Char7];
-#[cfg(feature = "_char8")]
-bit_sized![= 8; for crate::text::Char8];
-#[cfg(feature = "_char16")]
-bit_sized![= 16; for crate::text::Char16];
-#[cfg(feature = "_char24")]
-bit_sized![= 24; for crate::text::Char24];
-#[cfg(feature = "_char32")]
-bit_sized![= 32; for crate::text::Char32];
+#[cfg(feature = "_char_u7")]
+bit_sized![= 7; for crate::text::CharU7];
+#[cfg(feature = "_char_u8")]
+bit_sized![= 8; for crate::text::CharU8];
+#[cfg(feature = "_char_u16")]
+bit_sized![= 16; for crate::text::CharU16];
+#[cfg(feature = "_char_u24")]
+bit_sized![= 24; for crate::text::CharU24];
+#[cfg(feature = "_char_u32")]
+bit_sized![= 32; for crate::text::CharU32];
 
 bit_sized![= 8; for NonZeroI8, NonZeroU8];
 bit_sized![= 16; for NonZeroI16, NonZeroU16];

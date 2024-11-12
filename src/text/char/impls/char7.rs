@@ -5,98 +5,98 @@ use crate::text::{
     char::NonExtremeU8, char_is_7bit, AsciiChar, TextError::CharConversion, TextResult as Result,
 };
 
-impl Char7 {
+impl CharU7 {
     /* private helper fns */
 
     // SAFETY: this is not marked as unsafe because it's only used privately
     // by this module for a few selected operations.
     #[inline]
     #[must_use]
-    const fn from_char_unchecked(c: char) -> Char7 {
-        Char7::new_unchecked(c as u32 as u8)
+    const fn from_char_unchecked(c: char) -> CharU7 {
+        CharU7::new_unchecked(c as u32 as u8)
     }
 
     // SAFETY: this is not marked as unsafe because it's only used privately
     // by this module for a few selected operations.
     #[inline]
     #[must_use]
-    const fn new_unchecked(value: u8) -> Char7 {
+    const fn new_unchecked(value: u8) -> CharU7 {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
         if let Some(c) = NonExtremeU8::new(value) {
-            Char7(c)
+            CharU7(c)
         } else {
             unreachable![]
         }
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
         unsafe {
-            Char7(NonExtremeU8::new_unchecked(value))
+            CharU7(NonExtremeU8::new_unchecked(value))
         }
     }
 
     /* constants */
 
-    /// The highest unicode scalar a `Char7` can represent, `'\u{7F}'`.
-    pub const MAX: Char7 = Char7::new_unchecked(0x7F);
+    /// The highest unicode scalar a `CharU7` can represent, `'\u{7F}'`.
+    pub const MAX: CharU7 = CharU7::new_unchecked(0x7F);
 
     /* conversions */
 
-    /// Converts an `AsciiChar` to `Char7`.
+    /// Converts an `AsciiChar` to `CharU7`.
     #[inline]
     #[must_use]
-    pub const fn from_ascii_char(c: AsciiChar) -> Char7 {
-        Char7::new_unchecked(c as u8)
+    pub const fn from_ascii_char(c: AsciiChar) -> CharU7 {
+        CharU7::new_unchecked(c as u8)
     }
 
-    /// Tries to convert a `Char8` to `Char7`.
+    /// Tries to convert a `CharU8` to `CharU7`.
     #[inline]
-    #[cfg(feature = "_char8")]
+    #[cfg(feature = "_char_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
-    pub const fn try_from_char8(c: Char8) -> Result<Char7> {
+    pub const fn try_from_char_u8(c: CharU8) -> Result<CharU7> {
         if char_is_7bit(c.to_u32()) {
-            Ok(Char7::new_unchecked(c.to_u32() as u8))
+            Ok(CharU7::new_unchecked(c.to_u32() as u8))
         } else {
             Err(CharConversion)
         }
     }
-    /// Tries to convert a `Char16` to `Char7`.
+    /// Tries to convert a `CharU16` to `CharU7`.
     #[inline]
-    #[cfg(feature = "_char16")]
+    #[cfg(feature = "_char_u16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
-    pub const fn try_from_char16(c: Char16) -> Result<Char7> {
+    pub const fn try_from_char_u16(c: CharU16) -> Result<CharU7> {
         if char_is_7bit(c.to_u32()) {
-            Ok(Char7::new_unchecked(c.to_u32() as u8))
+            Ok(CharU7::new_unchecked(c.to_u32() as u8))
         } else {
             Err(CharConversion)
         }
     }
-    /// Tries to convert a `Char24` to `Char7`.
+    /// Tries to convert a `CharU24` to `CharU7`.
     #[inline]
-    #[cfg(feature = "_char24")]
+    #[cfg(feature = "_char_u24")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
-    pub const fn try_from_char24(c: Char24) -> Result<Char7> {
+    pub const fn try_from_char_u24(c: CharU24) -> Result<CharU7> {
         let c = c.to_u32();
         if char_is_7bit(c) {
-            Ok(Char7::new_unchecked(c as u8))
+            Ok(CharU7::new_unchecked(c as u8))
         } else {
             Err(CharConversion)
         }
     }
-    /// Tries to convert a `Char32` to `Char8`.
+    /// Tries to convert a `CharU32` to `CharU8`.
     #[inline]
-    #[cfg(feature = "_char32")]
+    #[cfg(feature = "_char_u32")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
-    pub const fn try_from_char32(c: Char32) -> Result<Char7> {
+    pub const fn try_from_char_u32(c: CharU32) -> Result<CharU7> {
         if char_is_7bit(c.to_u32()) {
-            Ok(Char7::new_unchecked(c.to_u32() as u8))
+            Ok(CharU7::new_unchecked(c.to_u32() as u8))
         } else {
             Err(CharConversion)
         }
     }
-    /// Tries to convert a `char` to `Char7`.
+    /// Tries to convert a `char` to `CharU7`.
     #[inline]
-    pub const fn try_from_char(c: char) -> Result<Char7> {
+    pub const fn try_from_char(c: char) -> Result<CharU7> {
         if char_is_7bit(c as u32) {
-            Ok(Char7::new_unchecked(c as u32 as u8))
+            Ok(CharU7::new_unchecked(c as u32 as u8))
         } else {
             Err(CharConversion)
         }
@@ -104,10 +104,10 @@ impl Char7 {
 
     //
 
-    /// Converts a `Char7` to `AsciiChar`.
+    /// Converts a `CharU7` to `AsciiChar`.
     #[inline]
     #[must_use]
-    pub const fn to_ascii_char(c: Char7) -> AsciiChar {
+    pub const fn to_ascii_char(c: CharU7) -> AsciiChar {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
         return if let Some(c) = AsciiChar::from_u8(c.0.get()) { c } else { unreachable!() };
 
@@ -117,52 +117,52 @@ impl Char7 {
         }
     }
 
-    /// Converts this `Char7` to `Char8`.
+    /// Converts this `CharU7` to `CharU8`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char8")]
+    #[cfg(feature = "_char_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
-    pub const fn to_char8(self) -> Char8 {
-        Char8::from_char7(self)
+    pub const fn to_char_u8(self) -> CharU8 {
+        CharU8::from_char_u7(self)
     }
-    /// Converts this `Char7` to `Char16`.
+    /// Converts this `CharU7` to `CharU16`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char16")]
+    #[cfg(feature = "_char_u16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
-    pub const fn to_char16(self) -> Char16 {
-        Char16::from_char7(self)
+    pub const fn to_char_u16(self) -> CharU16 {
+        CharU16::from_char_u7(self)
     }
-    /// Converts this `Char7` to `Char24`.
+    /// Converts this `CharU7` to `CharU24`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char24")]
+    #[cfg(feature = "_char_u24")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
-    pub const fn to_char24(self) -> Char24 {
-        Char24::from_char7(self)
+    pub const fn to_char_u24(self) -> CharU24 {
+        CharU24::from_char_u7(self)
     }
-    /// Converts this `Char7` to `Char32`.
+    /// Converts this `CharU7` to `CharU32`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char32")]
+    #[cfg(feature = "_char_u32")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
-    pub const fn to_char32(self) -> Char32 {
-        Char32::from_char7(self)
+    pub const fn to_char_u32(self) -> CharU32 {
+        CharU32::from_char_u7(self)
     }
-    /// Converts this `Char7` to `char`.
+    /// Converts this `CharU7` to `char`.
     #[inline]
     #[must_use]
     pub const fn to_char(self) -> char {
         self.0.get() as char
     }
-    /// Converts this `Char7` to `u32`.
+    /// Converts this `CharU7` to `u32`.
     #[inline]
     #[must_use]
     pub const fn to_u32(self) -> u32 {
         self.0.get() as u32
     }
 
-    /// Converts this `Char7` to an UTF-8 encoded sequence of bytes.
+    /// Converts this `CharU7` to an UTF-8 encoded sequence of bytes.
     //
     // https://en.wikipedia.org/wiki/UTF-8#Encoding
     #[inline]
@@ -210,7 +210,7 @@ impl Char7 {
     #[inline]
     #[must_use]
     #[rustfmt::skip]
-    pub const fn to_ascii_uppercase(self) -> Char7 {
+    pub const fn to_ascii_uppercase(self) -> CharU7 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
     }
 
@@ -221,7 +221,7 @@ impl Char7 {
     #[inline]
     #[must_use]
     #[rustfmt::skip]
-    pub const fn to_ascii_lowercase(self) -> Char7 {
+    pub const fn to_ascii_lowercase(self) -> CharU7 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
     }
 }

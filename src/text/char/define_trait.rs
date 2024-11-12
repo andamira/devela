@@ -8,7 +8,7 @@ use super::*;
 
 /// Common trait for unicode scalar types.
 ///
-/// It's implemented for: [`Char7`], [`Char8`], [`Char16`], [`Char24`], [`Char32`] and [`char`].
+/// It's implemented for: [`CharU7`], [`CharU8`], [`CharU16`], [`CharU24`], [`CharU32`] and [`char`].
 pub trait UnicodeScalar {
     /// The highest unicode scalar that can be represented by this type.
     const MAX: Self;

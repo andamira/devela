@@ -9,93 +9,93 @@ use crate::text::{
     TextError::CharConversion, TextResult as Result,
 };
 
-impl Char16 {
+impl CharU16 {
     /* private helper fns */
 
     // SAFETY: this is not marked as unsafe because it's only used privately
     // by this module for a few selected operations.
     #[inline]
     #[must_use]
-    const fn from_char_unchecked(c: char) -> Char16 {
-        Char16::new_unchecked(c as u32 as u16)
+    const fn from_char_unchecked(c: char) -> CharU16 {
+        CharU16::new_unchecked(c as u32 as u16)
     }
 
     // useful because Option::<T>::unwrap is not yet stable as const fn
     #[inline]
     #[must_use]
-    const fn new_unchecked(value: u16) -> Char16 {
+    const fn new_unchecked(value: u16) -> CharU16 {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
         if let Some(c) = NonSurrogateU16::new(value) {
-            Char16(c)
+            CharU16(c)
         } else {
             unreachable![]
         }
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_niche"))]
         unsafe {
-            Char16(NonSurrogateU16::new_unchecked(value))
+            CharU16(NonSurrogateU16::new_unchecked(value))
         }
     }
 
     /* constants */
 
-    /// The highest unicode scalar a `Char16` can represent, `'\u{FFFF}'`.
+    /// The highest unicode scalar a `CharU16` can represent, `'\u{FFFF}'`.
     ///
     /// Note that `'\u{FFFF}'` is a *noncharacter*.
-    pub const MAX: Char16 = Char16::new_unchecked(0xFFFF);
+    pub const MAX: CharU16 = CharU16::new_unchecked(0xFFFF);
 
     /// `U+FFFD REPLACEMENT CHARACTER (�)` is used in Unicode to represent a decoding error.
-    pub const REPLACEMENT_CHARACTER: Char16 =
-        Char16::new_unchecked(char::REPLACEMENT_CHARACTER as u32 as u16);
+    pub const REPLACEMENT_CHARACTER: CharU16 =
+        CharU16::new_unchecked(char::REPLACEMENT_CHARACTER as u32 as u16);
 
     /* conversions */
 
-    /// Converts an `AsciiChar` to `Char16`.
+    /// Converts an `AsciiChar` to `CharU16`.
     #[inline]
     #[must_use]
-    pub const fn from_ascii_char(c: AsciiChar) -> Char16 {
-        Char16::new_unchecked(c as u8 as u16)
+    pub const fn from_ascii_char(c: AsciiChar) -> CharU16 {
+        CharU16::new_unchecked(c as u8 as u16)
     }
 
-    /// Converts a `Char7` to `Char16`.
+    /// Converts a `CharU7` to `CharU16`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char7")]
+    #[cfg(feature = "_char_u7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
-    pub const fn from_char7(c: Char7) -> Char16 {
-        Char16::new_unchecked(c.0.get() as u16)
+    pub const fn from_char_u7(c: CharU7) -> CharU16 {
+        CharU16::new_unchecked(c.0.get() as u16)
     }
-    /// Converts a `Char8` to `Char16`.
+    /// Converts a `CharU8` to `CharU16`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char8")]
+    #[cfg(feature = "_char_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
-    pub const fn from_char8(c: Char8) -> Char16 {
-        Char16::new_unchecked(c.0 as u16)
+    pub const fn from_char_u8(c: CharU8) -> CharU16 {
+        CharU16::new_unchecked(c.0 as u16)
     }
-    /// Tries to convert a `Char24` to `Char16`.
+    /// Tries to convert a `CharU24` to `CharU16`.
     #[inline]
-    #[cfg(feature = "_char24")]
+    #[cfg(feature = "_char_u24")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
-    pub const fn try_from_char24(c: Char24) -> Result<Char16> {
+    pub const fn try_from_char_u24(c: CharU24) -> Result<CharU16> {
         let c = c.to_u32();
         if char_byte_len(c) == 1 {
-            Ok(Char16::new_unchecked(c as u16))
+            Ok(CharU16::new_unchecked(c as u16))
         } else {
             Err(CharConversion)
         }
     }
-    /// Tries to convert a `Char32` to `Char16`.
+    /// Tries to convert a `CharU32` to `CharU16`.
     #[inline]
-    #[cfg(feature = "_char32")]
+    #[cfg(feature = "_char_u32")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
-    pub const fn try_from_char32(c: Char32) -> Result<Char16> {
+    pub const fn try_from_char_u32(c: CharU32) -> Result<CharU16> {
         Self::try_from_char(c.to_char())
     }
-    /// Tries to convert a `char` to `Char16`.
+    /// Tries to convert a `char` to `CharU16`.
     #[inline]
-    pub const fn try_from_char(c: char) -> Result<Char16> {
+    pub const fn try_from_char(c: char) -> Result<CharU16> {
         if char_byte_len(c as u32) <= 2 {
-            Ok(Char16::new_unchecked(c as u32 as u16))
+            Ok(CharU16::new_unchecked(c as u32 as u16))
         } else {
             Err(CharConversion)
         }
@@ -103,7 +103,7 @@ impl Char16 {
 
     //
 
-    /// Tries to convert this `Char16` to `AsciiChar`.
+    /// Tries to convert this `CharU16` to `AsciiChar`.
     /// # Features
     /// Makes use of the `unsafe_niche` feature if enabled.
     #[inline]
@@ -123,37 +123,37 @@ impl Char16 {
         Err(CharConversion)
     }
 
-    /// Tries to convert this `Char16` to `Char7`.
+    /// Tries to convert this `CharU16` to `CharU7`.
     #[inline]
-    #[cfg(feature = "_char7")]
+    #[cfg(feature = "_char_u7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
-    pub const fn try_to_char7(self) -> Result<Char7> {
-        Char7::try_from_char16(self)
+    pub const fn try_to_char_u7(self) -> Result<CharU7> {
+        CharU7::try_from_char_u16(self)
     }
-    /// Tries to convert this `Char16` to `Char8`.
+    /// Tries to convert this `CharU16` to `CharU8`.
     #[inline]
-    #[cfg(feature = "_char8")]
+    #[cfg(feature = "_char_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
-    pub const fn try_to_char8(self) -> Result<Char8> {
-        Char8::try_from_char16(self)
+    pub const fn try_to_char_u8(self) -> Result<CharU8> {
+        CharU8::try_from_char_u16(self)
     }
-    /// Converts this `Char16` to `Char24`.
+    /// Converts this `CharU16` to `CharU24`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char24")]
+    #[cfg(feature = "_char_u24")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
-    pub const fn to_char24(self) -> Char24 {
-        Char24::from_char16(self)
+    pub const fn to_char_u24(self) -> CharU24 {
+        CharU24::from_char_u16(self)
     }
-    /// Converts this `Char16` to `Char32`.
+    /// Converts this `CharU16` to `CharU32`.
     #[inline]
     #[must_use]
-    #[cfg(feature = "_char32")]
+    #[cfg(feature = "_char_u32")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
-    pub const fn to_char32(self) -> Char32 {
-        Char32::from_char16(self)
+    pub const fn to_char_u32(self) -> CharU32 {
+        CharU32::from_char_u16(self)
     }
-    /// Converts this `Char16` to `char`.
+    /// Converts this `CharU16` to `char`.
     #[inline]
     #[must_use]
     #[rustfmt::skip]
@@ -166,14 +166,14 @@ impl Char16 {
         // SAFETY: we've already checked we contain a valid char.
         // return unsafe { char::from_u32_unchecked(self.0 as u32) };
     }
-    /// Converts this `Char16` to `u32`.
+    /// Converts this `CharU16` to `u32`.
     #[inline]
     #[must_use]
     pub const fn to_u32(self) -> u32 {
         self.0.get() as u32
     }
 
-    /// Converts this `Char16` to an UTF-8 encoded sequence of bytes.
+    /// Converts this `CharU16` to an UTF-8 encoded sequence of bytes.
     ///
     /// Note that this function always returns a 3-byte array, but the actual
     /// UTF-8 sequence may be shorter. The unused bytes are set to 0.
@@ -218,7 +218,7 @@ impl Char16 {
     #[inline]
     #[must_use]
     #[rustfmt::skip]
-    pub const fn to_ascii_uppercase(self) -> Char16 {
+    pub const fn to_ascii_uppercase(self) -> CharU16 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
     }
 
@@ -229,7 +229,7 @@ impl Char16 {
     #[inline]
     #[must_use]
     #[rustfmt::skip]
-    pub const fn to_ascii_lowercase(self) -> Char16 {
+    pub const fn to_ascii_lowercase(self) -> CharU16 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
     }
 

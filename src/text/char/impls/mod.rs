@@ -12,30 +12,33 @@ use super::*;
 /* specific implementations */
 
 mod char;
-#[cfg(feature = "_char16")]
+#[cfg(feature = "_char_u16")]
 mod char16;
-#[cfg(feature = "_char24")]
+#[cfg(feature = "_char_u24")]
 mod char24;
-#[cfg(feature = "_char32")]
+#[cfg(feature = "_char_u32")]
 mod char32;
-#[cfg(feature = "_char7")]
+#[cfg(feature = "_char_u7")]
 mod char7;
-#[cfg(feature = "_char8")]
+#[cfg(feature = "_char_u8")]
 mod char8;
 
 /* common implementations */
 
-// implement UnicodeScalar for custom char types
+#[doc = crate::doc_private!()]
+/// implements `UnicodeScalar` for custom char types.
 macro_rules! impl_char {
-    ($( $bits:literal | $feature:literal ),+ ) => { $(
-        #[cfg(feature = $feature)]
-        impl_char![@$bits];
-    )+ };
-    (@$bits:literal) => { crate::paste! {
+    ($( $bits:literal | $feature:literal ),+ ) => { $crate::paste! {
+        $(
+            #[cfg(feature = $feature)]
+            impl_char!(@[<CharU $bits>]);
+        )+
+    }};
+    (@$name:ident) => {
 
         /* impl traits */
 
-        impl UnicodeScalar for [<Char $bits>] {
+        impl UnicodeScalar for $name {
             const MAX: Self = Self::MAX;
 
             /* encode */
@@ -100,7 +103,7 @@ macro_rules! impl_char {
 
         /* impl const fns */
 
-        impl [<Char $bits>] {
+        impl $name {
 
             /* encode */
 
@@ -151,6 +154,6 @@ macro_rules! impl_char {
                 if let Some(_) = self.to_digit(radix) { true } else { false }
             }
         }
-    }};
+    };
 }
-impl_char![7 | "_char7", 8 | "_char8", 16 | "_char16", 24 | "_char24", 32 | "_char32"];
+impl_char![7 | "_char_u7", 8 | "_char_u8", 16 | "_char_u16", 24 | "_char_u24", 32 | "_char_u32"];
