@@ -438,9 +438,9 @@ dep_all = [ # enables all optional dependencies:
 	"dep_portable_atomic", "dep_rand_core", "dep_rodio", "dep_tinyaudio",
 	"dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
-	dep_linux = ["dep_atomic", "dep_bytemuck"]
-	dep_text = ["dep_const_str", "dep_memchr", "dep_unicode_segmentation", "dep_unicode_width"]
-	dep_work = ["dep_atomic", "dep_portable_atomic"]
+	linux_deps = ["dep_atomic", "dep_bytemuck"]
+	text_deps = ["dep_const_str", "dep_memchr", "dep_unicode_segmentation", "dep_unicode_width"]
+	work_deps = ["dep_atomic", "dep_portable_atomic"]
 
 dep_atomic = ["dep:atomic"]
 dep_bytemuck = ["dep:bytemuck"]
