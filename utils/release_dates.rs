@@ -4,14 +4,21 @@
 //! jiff = "0.1"
 //! ```
 //
+// Links for next releases:
+// - https://releases.rs/
+// - https://github.com/rust-lang/rust/milestones
+// - https://doc.rust-lang.org/edition-guide/rust-2024/index.html
+// - https://calendar.google.com/calendar/u/0/embed?src=mozilla.com_ts4qudb88i0tbjef8rche4a6v4@group.calendar.google.com
 
 use jiff::{civil::Date, ToSpan, Zoned};
 use std::process::Command;
 
 /// Returns the date of release of the `nth` rust version.
+//
+// Rust 1.1 release was 6 weeks and 1 day after 1.0 (2015-05-15),
+// but after version 1.1 it's always 6 weeks in between releases.
+#[inline]
 fn nth_rust_version_date(nth: u32) -> Date {
-    // The release date of Rust 1.1 was 6 weeks and 1 day after 1.0 (2015-05-15).
-    // After version 1.1 it's going to always be 6 weeks between releases.
     Date::constant(2015, 6, 25) + 6.weeks() * (nth - 1) as i64
 }
 

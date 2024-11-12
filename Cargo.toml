@@ -178,7 +178,7 @@ nightly = [ # sync with src/lib.rs
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 	nightly_simd = []
-	# WAIT: https://releases.rs/
+	# WAIT: https://releases.rs/ ; See: ./tools/release_dates.rs
 	nightly_stable = [ # a selection of nightly features that will become stable soon:
 		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"]
 		nightly_stable_next1 = [] # 1.83
@@ -233,12 +233,6 @@ nightly = [ # sync with src/lib.rs
 	## Experimental features:
 	# [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 	# [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
-	#
-	## Links for next releases:
-	# - ./tools/release_dates.rs
-	# - https://github.com/rust-lang/rust/milestones
-	# - https://doc.rust-lang.org/edition-guide/rust-2024/index.html
-	# - https://calendar.google.com/calendar/u/0/embed?src=mozilla.com_ts4qudb88i0tbjef8rche4a6v4@group.calendar.google.com
 
 
 #* Capability features *#
