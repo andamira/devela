@@ -24,16 +24,33 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg))]
 
+/* imports */
+
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
 extern crate proc_macro;
+#[cfg(feature = "alloc")]
 use proc_macro::TokenStream;
 
+#[cfg(feature = "dep_hashbrown")]
+use hashbrown::HashSet;
+#[cfg(all(not(feature = "dep_hashbrown"), feature = "std"))]
+use std::collections::HashSet;
+
 mod bodies;
+#[cfg_attr(not(feature = "alloc"), allow(unused_imports))]
 use bodies::*;
 
-/* compile */
+/* inner helpers */
+
+// Allows a group of items to share the same cfg options.
+#[allow(unused_macros)]
+macro_rules! items { ( $($item:item)* ) => { $($item)* }; }
+#[allow(unused_imports)]
+use items;
+
+/* macros: compile */
 
 /// Evaluates to either a `true` of `false` literal based on the
 /// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
@@ -91,7 +108,7 @@ pub fn compile_doc(args: TokenStream, input: TokenStream) -> TokenStream {
     body_compile_doc(args, input)
 }
 
-/* ident */
+/* macros: ident */
 
 /// Returns the first non-empty argument.
 ///
@@ -128,7 +145,6 @@ pub fn coalesce(input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 #[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 pub fn ident_total(input: TokenStream) -> TokenStream {
     body_ident_total(input)
 }
@@ -149,8 +165,8 @@ pub fn ident_total(input: TokenStream) -> TokenStream {
 /// assert_eq![ident_total_unique!(a, a 東 r#true; a3 != 3a), [5, 4]];
 /// ```
 #[proc_macro]
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg(any(feature = "dep_hashbrown", feature = "std"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
 pub fn ident_total_unique(input: TokenStream) -> TokenStream {
     body_ident_total_unique(input)
 }
@@ -171,13 +187,13 @@ pub fn ident_total_unique(input: TokenStream) -> TokenStream {
 /// assert_eq![ident_unique!(a, a 東 r#true; a3 != 3a), 4];
 /// ```
 #[proc_macro]
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+#[cfg(any(feature = "dep_hashbrown", feature = "std"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
 pub fn ident_unique(input: TokenStream) -> TokenStream {
     body_ident_unique(input)
 }
 
-/* niche */
+/* macros: niche */
 
 /// Generates a unit-only enum with variants associated to a specified range.
 ///

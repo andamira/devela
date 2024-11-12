@@ -8,11 +8,11 @@
 // - ident_total_unique
 // - ident_unique
 
+use alloc::{format, string::ToString};
 use super::shared::split_args;
 use proc_macro::{TokenStream, TokenTree};
 
 #[inline(always)]
-#[cfg(feature = "alloc")]
 pub(crate) fn body_coalesce(input: TokenStream) -> TokenStream {
     let input = input.to_string();
     let args = split_args(&input);
@@ -25,7 +25,6 @@ pub(crate) fn body_coalesce(input: TokenStream) -> TokenStream {
 }
 
 #[inline(always)]
-#[cfg(feature = "alloc")]
 pub(crate) fn body_ident_total(input: TokenStream) -> TokenStream {
     let mut count = 0;
     for token in input {
@@ -40,9 +39,9 @@ pub(crate) fn body_ident_total(input: TokenStream) -> TokenStream {
 }
 
 #[inline(always)]
-#[cfg(feature = "alloc")]
+#[cfg(any(feature = "dep_hashbrown", feature = "std"))]
 pub(crate) fn body_ident_total_unique(input: TokenStream) -> TokenStream {
-    let mut unique = std::collections::HashSet::new();
+    let mut unique = crate::HashSet::new();
     let mut total = 0;
     for token in input {
         #[allow(clippy::single_match)]
@@ -59,9 +58,9 @@ pub(crate) fn body_ident_total_unique(input: TokenStream) -> TokenStream {
 }
 
 #[inline(always)]
-#[cfg(feature = "alloc")]
+#[cfg(any(feature = "dep_hashbrown", feature = "std"))]
 pub(crate) fn body_ident_unique(input: TokenStream) -> TokenStream {
-    let mut unique = std::collections::HashSet::new();
+    let mut unique = crate::HashSet::new();
     for token in input {
         #[allow(clippy::single_match)]
         match token {
