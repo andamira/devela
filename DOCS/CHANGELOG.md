@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 #### New features & flags
 - new features for:
   - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
+  - num: `num_geom`.
   - sys::os `linux`, `dep_linux`, `unsafe_syscall`.
   - nightly: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`,
   - render: `rend`, `rend_[audio|color|draw|font|image|layout]`, `safe_rend`.
