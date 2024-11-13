@@ -20,19 +20,18 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### New items
 - structs:
-  - `ConstList`.
   - `CompressionMode`, `EncodingMode`, `Pnm`,
   - `Env` namespace for `std::env` functions and constants.
   - `False`, `True`, `UnitBi`, `UnitSi`.
-  - `FatPtr`, `IdPinBox`, `IdPin`, `TypeResource`.
   - `RendError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
+  - `TypeResource`.
 - aliases:
   - `AllocMapFx`, `AllocSetFx`,
   - `RendResult`, `ColorResult`, `AudioResult`, `DrawResult`, `FontResult`,`ImageResult`, `LayoutResult`.
 - enum variants:
   - `DataError::ElementNotFound`.
 - traits:
-  - `ConstBool`,  `ExtCellOption`, `ExtOptRes`, `MemPod`, `TypeResourced`, `Unit`.
+  - `ExtCellOption`, `ExtOptRes`, `MemPod`, `TypeResourced`, `Unit`.
 - associated methods and constants for:
   - `Array`: `from_fn`, `contains_[from|to|between]`.
   - `Array` when storing `Option<T>`.
@@ -42,9 +41,15 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
   - `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
 - macros:
-  - `type_marker!`, `assert_const!`, `namespace_fns!` `id_seq!`, `type_resource!`,
+  - `type_marker!`, `namespace_fns!` `id_seq!`, `type_resource!`,
   - `const_bool!`, `capture_first`, `capture_last`, `capture_tail_tuple`, `impl_non_value`.
   - private: `doc_availability!`.
+- vendored:
+  - structs: `CachePadded`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`.
+  - macros: `assert_const!`.
+  - traits: `ConstBool`.
+- optional dependencies:
+  - `macroquad`, `rayon`, `rodio`, `tinyaudio`.
 - re-export:
   - items from: `std::backtrace`, `core::cell`, `core::ops`, `std::fmt`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
@@ -105,8 +110,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
 - move `num::geom::algebra` module to `num::algebra::linear`.
 - move `code::result` module to `error`.
-- move `time` module inside `sys`.
+- move `_dep::_core` module to `_core`.
 - move `_lib*` libs inside `_dep`.
+- move `time` module inside `sys`.
 - impl `Num` for niche types.
 - rename `Char*` to `CharU*`.
 - rename `GcdExt` to `GcdResult`.
