@@ -144,18 +144,10 @@ pub struct CachePadded<T> {
     value: T,
 }
 
-#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
-crate::items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
-    unsafe impl<T: Send> Send for CachePadded<T> {}
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
-    unsafe impl<T: Sync> Sync for CachePadded<T> {}
-}
-
 #[rustfmt::skip]
 impl<T> CachePadded<T> {
     /// The alignment of a cache line in the current platform.
-    pub const ALIGNMENT: usize = align_of::<Self>();
+    pub const ALIGN: usize = align_of::<Self>();
 
     /// Pads and aligns a value to the length of a cache line.
     ///
@@ -186,7 +178,7 @@ impl<T> CachePadded<T> {
 
 #[rustfmt::skip]
 mod impls {
-    use {super::CachePadded, core::fmt, crate::{Deref, DerefMut}};
+    use crate::{CachePadded, Debug, Deref, DerefMut, Display, FmtResult, Formatter};
 
     impl<T> From<T> for CachePadded<T> {
         fn from(t: T) -> Self { CachePadded::new(t) }
@@ -198,14 +190,22 @@ mod impls {
     impl<T> DerefMut for CachePadded<T> {
         fn deref_mut(&mut self) -> &mut T { &mut self.value }
     }
-    impl<T: fmt::Debug> fmt::Debug for CachePadded<T> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.debug_struct("CachePadded").field("value", &self.value).finish()
+    impl<T: Debug> Debug for CachePadded<T> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+            f.debug_struct("CachePadded")
+                .field("align", &Self::ALIGN)
+                .field("value", &self.value).finish()
         }
     }
-    impl<T: fmt::Display> fmt::Display for CachePadded<T> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            fmt::Display::fmt(&self.value, f)
+    impl<T: Display> Display for CachePadded<T> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+            Display::fmt(&self.value, f)
         }
     }
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
+    unsafe impl<T: Send> Send for CachePadded<T> {}
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
+    unsafe impl<T: Sync> Sync for CachePadded<T> {}
 }
