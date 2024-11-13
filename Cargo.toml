@@ -247,8 +247,8 @@ nightly = [ # sync with src/lib.rs
 #
 # Enabling them enables extra implementations which increases compilation times.
 #
-# They also set automatic compile flags named `_*_·`, used for reflection.
-# E.g.: the flag `_stack_·` will be set if any _stack_* feature is enabled.
+# They set automatic compile flags named `_*_·`, used for reflection.
+# For example, `_stack_·` will be set if any _stack_* feature is enabled.
 
 #* data capabilities *#
 # ---------------------
@@ -469,7 +469,7 @@ dep_wide = ["dep:wide"]
 
 # non-optional:
 devela_macros = { version  = "0.11.0" } # safe
-#devela_macros = { path = "./macros" }
+#devela_macros = { path = "./macros" } # , features = ["std"] }
 paste_crate = { package = "paste", version = "1.0.15", default-features = false } # safe, archived
 
 # optional:
@@ -560,13 +560,14 @@ check-cfg = [ # Allowed config flags:
 	# Defined if the library is compiled as the primary package (not a dependency).
 	'cfg(cargo_primary_package)',
 	#
-	# Allows excluding tests from being run, more concisely.
+	# Allows excluding tests from being run, more concisely:
 	'cfg(__no_test)',
 	#
 	# Expect more pointer widths.
 	'cfg(target_pointer_width, values("8", "128"))',
 	#
 	# Compilation flags for reflection are enabled in: "/build/features.rs"
+	# ---------------------------------------------------------------------
 	"cfg(_nightly_·, _dep_·)",
 	'cfg(_mem_·, _num_·)',
 	# data:
