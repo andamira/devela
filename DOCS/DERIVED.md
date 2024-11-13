@@ -10,13 +10,16 @@ This project includes the following derived works:
   as part of the `IdPinBox` and `IdPin` structs.
 - A [modified][5] version of [static_assertions] by Nikolai Vazquez,
   licensed as MIT or Apache-2.0,
-  as part of the [`const_assert`] macro, and  [`ConstBool`] trait.
+  as part of the [`assert_const`] macro, and  [`ConstBool`] trait.
 - A modified version of [const_list] by Douglas Dwyer, licensed as MIT OR Apache-2.0,
   as the [`ConstList`] struct.
 - A modified version of [unsized-stack] by *storycraft*, licensed as MIT,
   as the [`FatPtr`] struct.
 - Adaptation of [quickdiv] v0.1.1 by Darko Trifunovski, licensed as Zlib OR MIT OR Apache-2.0,
   as the [`Divisor`] struct.
+- Adaptation of [crossbeam-utils] v0.8.20 by The Crossbeam Project Developers,
+  licensed as MIT OR Apache-2.0,
+  as the [`CachePadded`] struct.
 - Adaptation of [pengyhash] v0.2 by Alberto Fajardo, licensed as BSD-2,
   as the [`hash_pengy`] hasher function.
 - Adaptation of [opt_reduce] by Waffle Lapkin, licensed as MIT,
@@ -60,6 +63,8 @@ This project includes the following derived works:
 [const_list]: https://crates.io/crates/const_list/0.1.0
 [quickdiv]: https://crates.io/crates/quickdiv/0.1.1
 [`Divisor`]: https://docs.rs/devela/latest/devela/num/struct.Divisor.html
+[crossbeam-utils]: https://crates.io/crates/crossbeam-utils/0.8.20
+[`CachePadded`]: https://docs.rs/devela/latest/devela/mem/struct.CachePadded.html
 [pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
 [`hash_pengy`]: https://docs.rs/devela/latest/devela/data/hash/fn.hash_pengy.html
 [tupl]: https://crates.io/crates/tupl/0.4.0
