@@ -63,6 +63,9 @@ reexport! { optional_crate (unsafe) "dep_portable_atomic", "portable-atomic", po
 reexport! { optional_crate (safe) "dep_rand_core", "rand_core", rand_core,
     doc: "Random number generation traits."
 }
+reexport! { optional_crate (safe) "dep_rayon", "rayon", rayon,
+    doc: "Simple work-stealing parallelism for Rust."
+}
 reexport! { optional_crate (unsafe) "dep_rodio", "rodio", rodio,
     doc: "Audio playback library."
 }

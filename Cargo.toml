@@ -37,7 +37,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 186/300 (114 remaining), 73 visible, 113 hidden
+[features] # 187/300 (113 remaining), 74 visible, 113 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -440,7 +440,7 @@ dep_all = [ # enables all optional dependencies:
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 	linux_deps = ["dep_atomic", "dep_bytemuck"]
 	text_deps = ["dep_const_str", "dep_memchr", "dep_unicode_segmentation", "dep_unicode_width"]
-	work_deps = ["dep_atomic", "dep_portable_atomic"]
+	work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 
 dep_atomic = ["dep:atomic"]
 dep_bytemuck = ["dep:bytemuck"]
@@ -453,6 +453,7 @@ dep_memchr = ["dep:memchr"]
 dep_miniquad = ["dep:miniquad"]
 dep_portable_atomic = ["dep:portable-atomic"]
 dep_rand_core = ["dep:rand_core"]
+dep_rayon = ["dep:rayon"]
 dep_rodio = ["dep:rodio"]
 dep_tinyaudio = ["dep:tinyaudio"]
 dep_unicode_segmentation = ["dep:unicode-segmentation"]
@@ -479,6 +480,7 @@ macroquad = { version = "0.4.13", optional = true, default-features = false } # 
 memchr = { version = "2.7.4", optional = true, default-features = false } # unsafe
 miniquad = { version = "0.4.6", optional = true, default-features = false } # unsafe
 rand_core = { version = "0.6.4", optional = true, default-features = false } # safe
+rayon = { version = "1.10.0", optional = true, default-features = false } # unsafe
 tinyaudio = { version = "1.0.0", optional = true, default-features = false } # unsafe
 unicode-segmentation = { version = "1.12.0", optional = true, default-features = false } # safe
 unicode-width = { version = "0.1.13", optional = true, default-features = false } # safe
