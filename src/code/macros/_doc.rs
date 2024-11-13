@@ -10,15 +10,13 @@
 #[doc = doc_private!()]
 /// Generates a formatted meta-documentation string.
 macro_rules! doc_ {
-    // (@meta_start) => { "<br/><i style='margin-left:0.618em;'></i><small style='color:#777'>" };
-    // (@meta_end) => { "</small>" };
     (@meta_start) => {
-        "<br/><i style='margin-left:0.618em;'></i><span style='color:#777;font-size:90%;word-spacing:0px'>"
+        "<br/><i style='margin-left:0em;'></i><span style='font-size:90%;word-spacing:0px'>"
     };
     (@meta_start_nobr) => {
         concat!(
-            "<i style='margin-left:0.618em;margin-top:-2em;'></i>",
-            "<span style='color:#777;font-size:90%;word-spacing:0px'>",
+            "<i style='margin-left:0em;margin-top:-2em;'></i>",
+            "<span style='font-size:90%;word-spacing:0px'>",
         )
     };
     (@meta_end) => { "</span>" };
@@ -30,14 +28,14 @@ macro_rules! doc_ {
 
     (modules: $path:path; $self:ident) => {
         concat!(
-            $crate::code::doc_!(@meta_start), "Modules: ",
+            $crate::code::doc_!(@meta_start),
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]",
             $crate::code::doc_!(@meta_end),
         )
     };
     (modules: $path:path; $self:ident: $($mod:ident),+ $(,)?) => {
         concat!(
-            $crate::code::doc_!(@meta_start), "Modules: ",
+            $crate::code::doc_!(@meta_start),
             "[", stringify!($self), "][mod@", stringify!($path), "::", stringify!($self), "]::{",
             $crate::code::doc_!(@modules: $path; $self: $($mod),+), "}",
             $crate::code::doc_!(@meta_end),

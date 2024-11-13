@@ -191,11 +191,9 @@ pub mod all {
 pub use all::*;
 
 /// Re-exported optional dependencies.
-/// <br/><hr>
 pub mod _dep;
 
 /// Documentation about the library.
-/// <br/><hr>
 #[cfg(any(doc, test))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(doc)))]
 pub mod _doc {
