@@ -80,7 +80,7 @@ mod reexports {
     /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
     /// Panics the current thread.
     ///
-    #[doc = "*Re-exported from [`core::panic`][macro@crate::_dep::_core::panic]*."]
+    #[doc = "*Re-exported from [`core::panic`][macro@crate::_core::panic]*."]
     #[doc = "\n\n---"]
     ///
     /// The reason of the `_` suffix is to avoid conflicting with the prelude

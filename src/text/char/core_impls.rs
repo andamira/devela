@@ -5,7 +5,7 @@
 
 #[allow(unused_imports)]
 use crate::{
-    _dep::_core::fmt,
+    _core::fmt,
     code::{paste, ConstDefault},
     error::unwrap,
     text::{char::*, TextError, TextResult as Result},

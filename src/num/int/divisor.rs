@@ -12,7 +12,7 @@
 
 #[allow(unused_imports)]
 use crate::{
-    _dep::_core::{fmt, hash, ops},
+    _core::{fmt, hash, ops},
     code::{compile, doc_private, iif, paste},
     num::{isize_up, usize_up},
 };

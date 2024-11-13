@@ -190,6 +190,11 @@ pub mod all {
 #[allow(unused_imports)]
 pub use all::*;
 
+/// <span class='stab portability' title='re-exported `core`'>`core`</span>
+/// *Re-exported Rust `core` library.*
+#[doc(inline)]
+pub use ::core as _core;
+
 /// Re-exported optional dependencies.
 pub mod _dep;
 

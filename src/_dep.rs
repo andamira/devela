@@ -12,20 +12,20 @@ use crate::code::reexport;
 
 /* standard libraries */
 
+#[doc(hidden)]
+pub use super::_core; // for completion
+
 /// <span class='stab portability' title='re-exported `alloc`'>`alloc`</span>
-/// *Re-exported Rust `alloc` library environment.*
-#[doc(inline)]
+/// *Re-exported Rust `alloc` library.*
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 #[cfg(feature = "alloc")]
+#[doc(inline)]
 pub extern crate alloc as _alloc;
 
-/// <span class='stab portability' title='re-exported `core`'>`core`</span>
-/// *Re-exported Rust `core` library environment.*
-#[doc(inline)]
-pub use ::core as _core;
-
 /// <span class='stab portability' title='re-exported `std`'>`std`</span>
-/// *Re-exported Rust `std` library environment.*
+/// *Re-exported Rust `std` library.*
 /// <br/><hr>
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 #[cfg(feature = "std")]
 #[doc(inline)]
 pub use ::std as _std;

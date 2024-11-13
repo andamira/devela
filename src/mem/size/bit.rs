@@ -9,7 +9,7 @@
 // - trait impls
 
 use crate::{
-    _dep::_core::{
+    _core::{
         cmp,
         convert::Infallible,
         marker::{PhantomData, PhantomPinned},

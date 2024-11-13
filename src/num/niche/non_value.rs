@@ -87,7 +87,7 @@ macro_rules! impl_non_value{
             #[cfg(feature = "mem_bit")]
             use $crate::mem::{BitSized, ByteSized};
             use $crate::{
-                _dep::_core::{fmt, num::*, str::FromStr},
+                _core::{fmt, num::*, str::FromStr},
                 code::{iif, ConstDefault},
                 error::{unwrap, NumError::{Invalid, Overflow}, NumResult},
             };

@@ -9,7 +9,7 @@
 // - tests
 
 use crate::{
-    _dep::_core::{fmt, ops::Deref, str::Chars},
+    _core::{fmt, ops::Deref, str::Chars},
     code::{iif, paste, ConstDefault},
     error::unwrap,
     text::{

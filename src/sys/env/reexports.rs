@@ -15,7 +15,7 @@ reexport! { rust: core,
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// Inspects an environment variable at compile time.
 ///
-#[doc = "*Re-exported from [`core::env`][macro@crate::_dep::_core::env]*."]
+#[doc = "*Re-exported from [`core::env`][macro@crate::_core::env]*."]
 #[doc = "\n\n---"]
 ///
 /// The reason of the `_` suffix is to avoid conflicting with the prelude

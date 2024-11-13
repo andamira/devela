@@ -14,7 +14,7 @@ use crate::text::CString;
 #[cfg(doc)]
 use crate::text::TextError::OutOfBounds;
 use crate::{
-    _dep::_core::str::Chars,
+    _core::str::Chars,
     code::ConstDefault,
     error::unwrap,
     text::{
