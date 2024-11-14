@@ -101,10 +101,11 @@ mem = [
 	]
 	mem_bit = [] # BitSize
 num = [
-	"num_geom", "num_rand",
+	"num_geom", "num_rand", "num_wave",
 	]
 	num_geom = [] # geometry, linear algebra
 	num_rand = [] # random number generators
+	num_wave = [] # wavelets
 rend = [
 	"rend_audio", "rend_color", "rend_draw", "rend_font", "rend_image", "rend_layout",
 	]

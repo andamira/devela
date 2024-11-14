@@ -1,7 +1,7 @@
 // devela::num
 //
 //! Numerical types and math operations.
-#![doc = crate::doc_!(modules: crate; num: algebra, logic, niche, rand)]
+#![doc = crate::doc_!(modules: crate; num: algebra, logic, niche, rand, wave)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: cmp, num)]
@@ -60,6 +60,14 @@ items! {
     pub use rand::all::*;
 }
 
+#[cfg(feature = "num_wave")]
+items! {
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_wave")))]
+    pub mod wave;
+    #[doc(no_inline)]
+    pub use wave::all::*;
+}
+
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
@@ -82,4 +90,8 @@ pub(crate) mod all {
     #[cfg(feature = "num_rand")]
     #[allow(unused_imports)]
     pub use super::rand::all::*;
+
+    #[doc(inline)]
+    #[cfg(feature = "num_wave")]
+    pub use super::wave::*;
 }
