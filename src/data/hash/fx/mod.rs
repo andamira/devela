@@ -1,47 +1,9 @@
 // devela::data::hash::fx
-//
-//! # Fx Hash
-//
 
-use core::hash::{BuildHasherDefault, Hash, Hasher};
+use crate::{ConstDefault, Hash, Hasher, HasherBuildDefault};
 
 /// A builder for default Fx hashers.
-pub type HasherBuildFx = BuildHasherDefault<HasherFx>;
-
-const DEFAULT32: u32 = 0;
-const DEFAULT64: u64 = 0;
-const DEFAULT: usize = 0;
-
-const ROTATE: u32 = 5;
-const SEED64: u64 = 0x51_7c_c1_b7_27_22_0a_95;
-const SEED32: u32 = 0x9e_37_79_b9;
-
-#[cfg(target_pointer_width = "32")]
-const SEED: usize = SEED32 as usize;
-#[cfg(target_pointer_width = "64")]
-const SEED: usize = SEED64 as usize;
-
-trait HashWord {
-    fn hash_word(&mut self, word: Self);
-}
-impl HashWord for u32 {
-    #[inline]
-    fn hash_word(&mut self, word: Self) {
-        *self = HasherFx32::hash_word_32(*self, word);
-    }
-}
-impl HashWord for u64 {
-    #[inline]
-    fn hash_word(&mut self, word: Self) {
-        *self = HasherFx64::hash_word_64(*self, word);
-    }
-}
-impl HashWord for usize {
-    #[inline]
-    fn hash_word(&mut self, word: Self) {
-        *self = HasherFx::hash_word(*self, word);
-    }
-}
+pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 
 /// This hashing algorithm was extracted from the Rustc compiler.
 ///
@@ -51,57 +13,80 @@ impl HashWord for usize {
 ///
 /// This hashing algorithm should not be used for cryptographic,
 /// or in scenarios where DOS attacks are a concern.
-#[derive(Clone, Debug)]
-pub struct HasherFx32 {
-    hash: u32,
+///
+/// It's implemented for
+/// [u32](#impl-HasherFx<u32>),
+/// [u64](#impl-HasherFx<u64>),
+/// [usize](#impl-Hasherx<usize>).
+///
+/// # Derived Work
+#[doc = include_str!("./MODIFICATIONS.md")]
+#[must_use]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct HasherFx<T> {
+    state: T,
 }
 
-impl Default for HasherFx32 {
-    #[inline]
-    fn default() -> HasherFx32 {
-        Self::default()
-    }
+const ROTATE: u32 = 5;
+const SEED32: u32 = 0x9e_37_79_b9;
+const SEED64: u64 = 0x51_7c_c1_b7_27_22_0a_95;
+#[cfg(target_pointer_width = "32")]
+const SEED: usize = SEED32 as usize;
+#[cfg(target_pointer_width = "64")]
+const SEED: usize = SEED64 as usize;
+
+#[doc = crate::doc_private!()]
+macro_rules! impl_fx {
+    () => { impl_fx![u32:SEED32, u64:SEED64, usize:SEED]; };
+
+    ($($t:ty:$seed:ident),+) =>  { $( impl_fx![@$t:$seed]; )+ };
+    (@$t:ty:$seed:ident) =>  {
+        impl ConstDefault for HasherFx<$t> { const DEFAULT: Self = Self { state: 0 }; }
+        impl Default for HasherFx<$t> { #[inline] fn default() -> Self { Self::DEFAULT } }
+
+        impl HasherFx<$t> {
+            /* state-full methods */
+
+            /// Returns a default Fx hasher.
+            #[inline]
+            pub const fn new() -> Self { Self::DEFAULT }
+
+            /// Returns a new Fx hasher with the given `seed`.
+            #[inline]
+            pub const fn with_seed(seed: $t) -> Self { Self { state: seed } }
+
+            /// A convenience method for when you need a quick hash.
+            #[inline]
+            pub fn hash<T: Hash + ?Sized>(v: &T) -> $t {
+                let mut state = Self::new();
+                v.hash(&mut state);
+                state.finish() as $t
+            }
+
+            /// A const method for when you need a hash of a byte slice.
+            #[inline]
+            pub const fn hash_bytes(v: &[u8]) -> $t {
+                Self::write(0, v)
+            }
+
+            #[inline]
+            const fn hash_word(mut hash: $t, word: $t) -> $t {
+                hash = hash.rotate_left(ROTATE);
+                hash ^= word;
+                hash = hash.wrapping_mul($seed);
+                hash
+            }
+        }
+    };
 }
+impl_fx!();
 
-impl HasherFx32 {
-    /// New 32-bit sized Fx hasher.
-    #[inline]
-    pub const fn default() -> Self {
-        Self { hash: DEFAULT32 }
-    }
+/* impl HasherFx::write */
 
-    /// New 32-bit sized Fx hasher with `seed`.
+impl HasherFx<u32> {
     #[inline]
-    pub const fn with_seed(seed: u32) -> HasherFx32 {
-        HasherFx32 { hash: seed }
-    }
-
-    /// A convenience method for when you need a quick 32-bit hash.
-    #[inline]
-    pub fn hash32<T: Hash + ?Sized>(v: &T) -> u32 {
-        let mut state = HasherFx32::default();
-        v.hash(&mut state);
-        state.finish() as u32
-    }
-
-    /// A const method for when you need a 32-bit hash of a byte array.
-    #[inline]
-    pub const fn hash32_bytes(v: &[u8]) -> u32 {
-        Self::write32(0, v)
-    }
-
-    #[inline]
-    const fn hash_word_32(mut hash: u32, word: u32) -> u32 {
-        hash = hash.rotate_left(ROTATE);
-        hash ^= word;
-        hash = hash.wrapping_mul(SEED32);
-        hash
-    }
-
-    #[inline]
-    const fn write32(mut hash: u32, bytes: &[u8]) -> u32 {
+    const fn write(mut hash: u32, bytes: &[u8]) -> u32 {
         let mut cursor = 0;
-
         while bytes.len() - cursor >= 4 {
             let word = u32::from_ne_bytes([
                 bytes[cursor],
@@ -109,128 +94,25 @@ impl HasherFx32 {
                 bytes[cursor + 2],
                 bytes[cursor + 3],
             ]);
-            hash = Self::hash_word_32(hash, word);
+            hash = Self::hash_word(hash, word);
             cursor += 4;
         }
-
         if bytes.len() - cursor >= 2 {
             let word = u16::from_ne_bytes([bytes[cursor], bytes[cursor + 1]]);
-            hash = Self::hash_word_32(hash, word as u32);
+            hash = Self::hash_word(hash, word as u32);
             cursor += 2;
         }
-
         if bytes.len() - cursor >= 1 {
-            hash = Self::hash_word_32(hash, bytes[cursor] as u32);
+            hash = Self::hash_word(hash, bytes[cursor] as u32);
         }
-
         hash
     }
 }
 
-impl Hasher for HasherFx32 {
+impl HasherFx<u64> {
     #[inline]
-    fn write(&mut self, bytes: &[u8]) {
-        self.hash = Self::write32(self.hash, bytes);
-    }
-
-    #[inline]
-    fn write_u8(&mut self, i: u8) {
-        self.hash.hash_word(u32::from(i));
-    }
-
-    #[inline]
-    fn write_u16(&mut self, i: u16) {
-        self.hash.hash_word(u32::from(i));
-    }
-
-    #[inline]
-    fn write_u32(&mut self, i: u32) {
-        self.hash.hash_word(i);
-    }
-
-    #[inline]
-    fn write_u64(&mut self, i: u64) {
-        self.hash.hash_word(i as u32);
-        self.hash.hash_word((i >> 32) as u32);
-    }
-
-    #[inline]
-    #[cfg(target_pointer_width = "32")]
-    fn write_usize(&mut self, i: usize) {
-        self.write_u32(i as u32);
-    }
-
-    #[inline]
-    #[cfg(target_pointer_width = "64")]
-    fn write_usize(&mut self, i: usize) {
-        self.write_u64(i as u64);
-    }
-
-    #[inline]
-    fn finish(&self) -> u64 {
-        u64::from(self.hash)
-    }
-}
-
-/// This hashing algorithm was extracted from the Rustc compiler.
-///
-/// This is the same hashing algorithm used for some internal operations in
-/// Firefox. The strength of this algorithm is in hashing 8 bytes at a time on
-/// any platform, where the FNV algorithm works on one byte at a time.
-///
-/// This hashing algorithm should not be used for cryptographic,
-/// or in scenarios where DOS attacks are a concern.
-#[derive(Clone, Debug)]
-pub struct HasherFx64 {
-    hash: u64,
-}
-
-impl Default for HasherFx64 {
-    #[inline]
-    fn default() -> HasherFx64 {
-        Self::default()
-    }
-}
-
-impl HasherFx64 {
-    /// New 64-bit sized Fx hasher.
-    #[inline]
-    pub const fn default() -> Self {
-        Self { hash: DEFAULT64 }
-    }
-
-    /// New 64-bit sized Fx hasher with `seed`.
-    #[inline]
-    pub const fn with_seed(seed: u64) -> HasherFx64 {
-        HasherFx64 { hash: seed }
-    }
-
-    /// A convenience method for when you need a quick 64-bit hash.
-    #[inline]
-    pub fn hash64<T: Hash + ?Sized>(v: &T) -> u64 {
-        let mut state = HasherFx64::default();
-        v.hash(&mut state);
-        state.finish()
-    }
-
-    /// A const method for when you need a 64-bit hash of a byte array.
-    #[inline]
-    pub const fn hash64_bytes(v: &[u8]) -> u64 {
-        Self::write64(0, v)
-    }
-
-    #[inline]
-    const fn hash_word_64(mut hash: u64, word: u64) -> u64 {
-        hash = hash.rotate_left(ROTATE);
-        hash ^= word;
-        hash = hash.wrapping_mul(SEED64);
-        hash
-    }
-
-    #[inline]
-    const fn write64(mut hash: u64, bytes: &[u8]) -> u64 {
+    const fn write(mut hash: u64, bytes: &[u8]) -> u64 {
         let mut cursor = 0;
-
         while bytes.len() - cursor >= 8 {
             let word = u64::from_ne_bytes([
                 bytes[cursor],
@@ -242,10 +124,9 @@ impl HasherFx64 {
                 bytes[cursor + 6],
                 bytes[cursor + 7],
             ]);
-            hash = Self::hash_word_64(hash, word);
+            hash = Self::hash_word(hash, word);
             cursor += 8;
         }
-
         while bytes.len() - cursor >= 4 {
             let word = u32::from_ne_bytes([
                 bytes[cursor],
@@ -253,169 +134,131 @@ impl HasherFx64 {
                 bytes[cursor + 2],
                 bytes[cursor + 3],
             ]);
-            hash = Self::hash_word_64(hash, word as u64);
+            hash = Self::hash_word(hash, word as u64);
             cursor += 4;
         }
-
         if bytes.len() - cursor >= 2 {
             let word = u16::from_ne_bytes([bytes[cursor], bytes[cursor + 1]]);
-            hash = Self::hash_word_64(hash, word as u64);
+            hash = Self::hash_word(hash, word as u64);
             cursor += 2;
         }
-
         if bytes.len() - cursor >= 1 {
-            hash = Self::hash_word_64(hash, bytes[cursor] as u64);
+            hash = Self::hash_word(hash, bytes[cursor] as u64);
         }
-
         hash
     }
 }
 
-impl Hasher for HasherFx64 {
+impl HasherFx<usize> {
+    #[inline]
+    const fn write(hash: usize, bytes: &[u8]) -> usize {
+        #[cfg(target_pointer_width = "32")]
+        return HasherFx::<u32>::write(hash as u32, bytes) as usize;
+        #[cfg(target_pointer_width = "64")]
+        return HasherFx::<u64>::write(hash as u64, bytes) as usize;
+    }
+}
+
+/* impl Hasher for HasherFx */
+
+impl Hasher for HasherFx<u32> {
     #[inline]
     fn write(&mut self, bytes: &[u8]) {
-        self.hash = Self::write64(self.hash, bytes);
+        self.state = Self::write(self.state, bytes);
     }
-
     #[inline]
     fn write_u8(&mut self, i: u8) {
-        self.hash.hash_word(u64::from(i));
+        self.state = Self::hash_word(self.state, u32::from(i));
     }
-
     #[inline]
     fn write_u16(&mut self, i: u16) {
-        self.hash.hash_word(u64::from(i));
+        self.state = Self::hash_word(self.state, u32::from(i));
     }
-
     #[inline]
     fn write_u32(&mut self, i: u32) {
-        self.hash.hash_word(u64::from(i));
+        self.state = Self::hash_word(self.state, i);
     }
-
+    #[inline]
     fn write_u64(&mut self, i: u64) {
-        self.hash.hash_word(i);
+        self.state = Self::hash_word(self.state, i as u32);
+        self.state = Self::hash_word(self.state, (i >> 32) as u32);
     }
-
     #[inline]
     fn write_usize(&mut self, i: usize) {
-        self.hash.hash_word(i as u64);
+        #[cfg(target_pointer_width = "32")]
+        self.write_u32(i as u32);
+        #[cfg(target_pointer_width = "64")]
+        self.write_u64(i as u64);
     }
-
     #[inline]
     fn finish(&self) -> u64 {
-        self.hash
+        u64::from(self.state)
     }
 }
-
-/// This hashing algorithm was extracted from the Rustc compiler.
-///
-/// This is the same hashing algorithm used for some internal operations in Firefox.
-/// The strength of this algorithm is in hashing 8 bytes at a time on 64-bit platforms,
-/// where the FNV algorithm works on one byte at a time.
-///
-/// This hashing algorithm should not be used for cryptographic, or in scenarios where
-/// DOS attacks are a concern.
-#[derive(Clone, Debug)]
-pub struct HasherFx {
-    hash: usize,
-}
-
-impl Default for HasherFx {
-    #[inline]
-    fn default() -> HasherFx {
-        Self::default()
-    }
-}
-
-impl HasherFx {
-    /// New `usize` sized Fx hasher.
-    #[inline]
-    pub const fn default() -> Self {
-        Self { hash: DEFAULT }
-    }
-
-    /// New `usize` sized Fx hasher with `seed`.
-    #[inline]
-    pub const fn with_seed(seed: usize) -> HasherFx {
-        HasherFx { hash: seed }
-    }
-
-    /// A convenience method for when you need a quick `usize` hash.
-    #[inline]
-    pub fn hash<T: Hash + ?Sized>(v: &T) -> usize {
-        let mut state = HasherFx::default();
-        v.hash(&mut state);
-        state.finish() as usize
-    }
-
-    /// A const method for when you need a usize hash of a byte array.
-    #[inline]
-    pub const fn hash_bytes(v: &[u8]) -> usize {
-        Self::write(0, v)
-    }
-
-    #[inline]
-    const fn hash_word(mut hash: usize, word: usize) -> usize {
-        hash = hash.rotate_left(ROTATE);
-        hash ^= word;
-        hash = hash.wrapping_mul(SEED);
-        hash
-    }
-
-    #[inline]
-    #[cfg(target_pointer_width = "32")]
-    const fn write(hash: usize, bytes: &[u8]) -> usize {
-        HasherFx32::write32(hash as u32, bytes) as usize
-    }
-
-    #[inline]
-    #[cfg(target_pointer_width = "64")]
-    const fn write(hash: usize, bytes: &[u8]) -> usize {
-        HasherFx64::write64(hash as u64, bytes) as usize
-    }
-}
-
-impl Hasher for HasherFx {
+impl Hasher for HasherFx<u64> {
     #[inline]
     fn write(&mut self, bytes: &[u8]) {
-        self.hash = Self::write(self.hash, bytes);
+        self.state = Self::write(self.state, bytes);
     }
-
     #[inline]
     fn write_u8(&mut self, i: u8) {
-        self.hash.hash_word(i as usize);
+        self.state = Self::hash_word(self.state, u64::from(i));
     }
-
     #[inline]
     fn write_u16(&mut self, i: u16) {
-        self.hash.hash_word(i as usize);
+        self.state = Self::hash_word(self.state, u64::from(i));
     }
-
     #[inline]
     fn write_u32(&mut self, i: u32) {
-        self.hash.hash_word(i as usize);
+        self.state = Self::hash_word(self.state, u64::from(i));
     }
-
+    #[inline]
+    fn write_u64(&mut self, i: u64) {
+        self.state = Self::hash_word(self.state, i);
+    }
+    #[inline]
+    fn write_usize(&mut self, i: usize) {
+        self.state = Self::hash_word(self.state, i as u64);
+    }
+    #[inline]
+    fn finish(&self) -> u64 {
+        self.state
+    }
+}
+impl Hasher for HasherFx<usize> {
+    #[inline]
+    fn write(&mut self, bytes: &[u8]) {
+        self.state = Self::write(self.state, bytes);
+    }
+    #[inline]
+    fn write_u8(&mut self, i: u8) {
+        self.state = Self::hash_word(self.state, i as usize);
+    }
+    #[inline]
+    fn write_u16(&mut self, i: u16) {
+        self.state = Self::hash_word(self.state, i as usize);
+    }
+    #[inline]
+    fn write_u32(&mut self, i: u32) {
+        self.state = Self::hash_word(self.state, i as usize);
+    }
     #[inline]
     #[cfg(target_pointer_width = "32")]
     fn write_u64(&mut self, i: u64) {
-        self.hash.hash_word(i as usize);
-        self.hash.hash_word((i >> 32) as usize);
+        self.state = Self::hash_word(self.state, i as usize);
+        self.state = Self::hash_word(self.state, (i >> 32) as usize);
     }
-
     #[inline]
     #[cfg(target_pointer_width = "64")]
     fn write_u64(&mut self, i: u64) {
-        self.hash.hash_word(i as usize);
+        self.state = Self::hash_word(self.state, i as usize);
     }
-
     #[inline]
     fn write_usize(&mut self, i: usize) {
-        self.hash.hash_word(i);
+        self.state = HasherFx::<usize>::hash_word(self.state, i);
     }
-
     #[inline]
     fn finish(&self) -> u64 {
-        self.hash as u64
+        self.state as u64
     }
 }
