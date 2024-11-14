@@ -3,8 +3,7 @@
 //!
 //
 
-use super::{Point, Point2d, Point3d};
-use crate::num::algebra::linear::Vector;
+use crate::{Point, Point2d, Point3d, Vector};
 
 #[rustfmt::skip]
 impl<T, const D: usize> Point<T, D> {

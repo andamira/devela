@@ -9,8 +9,9 @@
 //   - struct WaveletUnitVec
 // - impls for WaveletHaar
 
-use crate::{Vec, vec_ as vec, WaveletHaar, WaveletUnitRole};
+use crate::{vec_ as vec, Vec, WaveletHaar, WaveletUnitRole};
 
+#[cfg(feature = "_float_f64")]
 #[allow(unused_imports, reason = "!std: abs")]
 use crate::ExtFloat;
 

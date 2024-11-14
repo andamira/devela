@@ -87,7 +87,7 @@ impl<'a, T: 'a> ConstList<'a, T> {
     /// Removes the first item (if any) from this list, and produces
     /// the rest of the list.
     #[inline]
-    pub const fn pop(&'a self) -> (Option<&T>, &'a Self) {
+    pub const fn pop(&'a self) -> (Option<&'a T>, &'a Self) {
         if let Some(value) = &self.0 {
             (Some(&value.first), value.rest)
         } else {
