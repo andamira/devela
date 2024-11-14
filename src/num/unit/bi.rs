@@ -11,7 +11,7 @@ use crate::ExtFloat;
 #[allow(unused_imports)]
 use crate::{vec_ as vec, Vec};
 
-/// Binary prefixes.
+/// Binary unit prefixes.
 ///
 /// - <https://en.wikipedia.org/wiki/Binary_prefix>
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

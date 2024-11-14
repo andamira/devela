@@ -48,13 +48,15 @@ items! {
 
 #[cfg(feature = "num_geom")]
 items! {
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_geom")))]
     pub mod geom;
+    #[doc(no_inline)]
     pub use geom::all::*;
 }
 
 #[cfg(feature = "num_rand")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_rand")))]
 items! {
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_rand")))]
     pub mod rand;
     #[doc(no_inline)]
     pub use rand::all::*;

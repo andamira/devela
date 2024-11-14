@@ -11,7 +11,7 @@ use crate::ExtFloat;
 #[cfg(feature = "alloc")]
 use crate::{vec_ as vec, Vec};
 
-/// SI (metric) prefixes.
+/// SI (metric) unit prefixes.
 ///
 /// - <https://en.wikipedia.org/wiki/Metric_prefix>
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

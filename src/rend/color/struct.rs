@@ -5,7 +5,9 @@
 
 #[allow(unused_imports)]
 use crate::code::{iif, paste, sf};
+
 #[cfg(all(_float_·, not(feature = "std")))]
+#[allow(unused_imports, reason = "!std: powf, powi")]
 use crate::num::ExtFloat;
 
 /// color namespace for constants and methods

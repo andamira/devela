@@ -3,6 +3,9 @@
 //! I/O functionality.
 //!
 #![doc = crate::doc_!(extends: io)]
+//!
+//! # Derived work
+#![doc = include_str!("./define_no_std_io/MODIFICATIONS.md")]
 //
 
 // warnings:
