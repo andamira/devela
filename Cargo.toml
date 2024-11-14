@@ -37,7 +37,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 187/300 (113 remaining), 74 visible, 113 hidden
+[features] # 191/300 (109 remaining), 76 visible, 115 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -401,10 +401,12 @@ _string_all = [
 
 # The most complete versions of the documentation:
 _docsrs = ["_docsrs_min", "_docs_max"]
-_docsrs_min = ["_docsrs_stable_min", "nightly"]
+_docsrs_min = ["_docsrs_nodep", "dep_all"]
+_docsrs_nodep = ["_docsrs_stable_nodep", "nightly"]
 
 _docsrs_stable = ["_docsrs_stable_min", "_docs_max"]
-_docsrs_stable_min = ["std", "unsafe", "dep_all", "_docs_min"]
+_docsrs_stable_min = ["_docsrs_stable_nodep", "dep_all"]
+_docsrs_stable_nodep = ["std", "unsafe", "_docs_min"]
 
 _docs_min = [ # the minimum capabilities that document all library items
 	"all",
