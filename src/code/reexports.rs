@@ -52,6 +52,14 @@ doc: "Includes a file as a reference to a byte array.", include_bytes }
 reexport! { rust: core,
 doc: "Includes a UTF-8 encoded file as a string.", include_str }
 
+// concatenating
+reexport! { rust: core, doc: "Concatenates literals into a static string slice.", concat }
+reexport! { rust: core, doc: "Stringifies its arguments.", stringify }
+// WAIT: [concat_idents](https://github.com/rust-lang/rust/issues/29599)
+// reexport! { rust: core, doc: "Concatenates identifiers into one identifier.", concat_idents }
+// WAIT: [concat_bytes](https://github.com/rust-lang/rust/issues/87555)
+// reexport! { rust: core, doc: "Concatenates literals into a byte slice.", concat_bytes }
+
 /* `core::clone` re-exports */
 
 // NOTE: the trait and the derive macro have the same name

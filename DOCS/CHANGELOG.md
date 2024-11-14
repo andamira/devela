@@ -60,7 +60,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - items from: `std::backtrace`, `core::cell`, `core::ops`, `std::fmt`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
   - macros:
-    - `compile_error`, `option_env`, `enumint`, `assert_unchecked!`, `format!`, `format_args!`.
+    - `compile_error`, `option_env`, `enumint`, `assert_unchecked!`, `format!`, `format_args!`, `concat`, `stringify`.
     - wrapped: `env!`, as `env_!`, `vec!` as `vec_!`.
   - structs:
     - `NonZero`, `Saturating`, `Wrapping`, `OsStr`, `OsString`.
