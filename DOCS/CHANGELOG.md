@@ -11,13 +11,14 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### New features & flags
 - new features for:
-  - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
-  - num: `num_geom`.
-  - sys::os `linux`, `dep_linux`, `unsafe_syscall`.
-  - nightly: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`,
+  - doc: `_docsrs[_stable]_nodep`.
+  - num: `num_geom`, `num_wave`.
   - render: `rend`, `rend_[audio|color|draw|font|image|layout]`, `safe_rend`.
+  - sys::os `linux`, `dep_linux`, `unsafe_syscall`.
+  - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
+  - nightly: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`,
   - other  `dep_work`, `safest`, `unsafe_async`, `__lints`, `__force_miri_dst`.
-- new cfg flag `cargo_primary_package`.
+- new cfg flag: `cargo_primary_package`.
 
 #### New items
 - structs:
@@ -26,13 +27,17 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `RendError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
   - `TypeResource`.
+  - `WaveletHaar`, `WaveletUnitVec`.
 - aliases:
   - `AllocMapFx`, `AllocSetFx`,
   - `RendResult`, `ColorResult`, `AudioResult`, `DrawResult`, `FontResult`,`ImageResult`, `LayoutResult`.
+- enums:
+  - `WaveletUnitRole`.
 - enum variants:
   - `DataError::ElementNotFound`.
 - traits:
   - `ExtCellOption`, `ExtOptRes`, `MemPod`, `TypeResourced`, `Unit`.
+  - `WaveletCompressionVec`, `WaveletTransformVec`.
 - associated methods and constants for:
   - `Array`: `from_fn`, `contains_[from|to|between]`.
   - `Array` when storing `Option<T>`.
