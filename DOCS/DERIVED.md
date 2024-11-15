@@ -26,10 +26,6 @@ This project includes the following derived works:
   as part of the [`ExtOption`] trait.
 - Adaptation of [fmtor] by Tyler Ruckinger, licensed as MIT OR Apache-2.0,
   as part of the [`ExtOption`] trait.
-- Adaptation of [option-ext] by Simon Ochsenreither, licensed as MPL-2.0,
-  as part of the [`ExtOption`] trait.
-- Adaptation of [result-ext] by Simon Ochsenreither, licensed as MPL-2.0,
-  as part of the [`ExtResult`] trait.
 - Adaptation of [pollster] by Joshua Barretto, licensed as MIT OR Apache-2.0,
   as the [`future_block`] function.
 - Adaptation of [apply] by George Burton, licensed as Unlicense,
@@ -75,10 +71,7 @@ use without required attribution.
 [tupl]: https://crates.io/crates/tupl/0.4.0
 [opt_reduce]: https://crates.io/crates/opt_reduce/1.0.0
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
-[option-ext]: https://crates.io/crates/option-ext/0.2.0
-[result-ext]: https://crates.io/crates/result-ext/0.2.0
 [`ExtOption`]: https://docs.rs/devela/latest/devela/code/trait.ExtOption.html
-[`ExtResult`]: https://docs.rs/devela/latest/devela/code/trait.ExtResult.html
 [pollster]: https://crates.io/crates/pollster/0.3.0
 [`future_block`]: https://docs.rs/devela/latest/devela/exec/fn.future_block.html
 [apply]: https://crates.io/crates/apply/0.3.0

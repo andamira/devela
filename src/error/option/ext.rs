@@ -19,7 +19,6 @@ impl<T> Sealed for Option<T> {}
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
-// - https://crates.io/crates/option-ext/0.2.0 by Simon Ochsenreither.
 // - https://crates.io/crates/opt_reduce/1.0.0 by Waffle Lapkin.
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[allow(private_bounds, reason = "Sealed")]
@@ -28,21 +27,13 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ExtOption;
-    ///
-    /// let x: Option<u32> = Some(2);
-    /// assert_eq!(x.contains(&2), true);
-    ///
-    /// let x: Option<u32> = Some(3);
-    /// assert_eq!(x.contains(&2), false);
-    ///
-    /// let x: Option<u32> = None;
-    /// assert_eq!(x.contains(&2), false);
+    /// # use devela::ExtOption;
+    /// assert_eq!(Some(1).contains(&1), true);
+    /// assert_eq!(Some(1).contains(&2), false);
+    /// assert_eq!(None.contains(&1), false);
     /// ```
     #[must_use]
-    fn contains<U>(&self, x: &U) -> bool
-    where
-        U: PartialEq<T>;
+    fn contains<U: PartialEq<T>>(&self, x: &U) -> bool;
 
     /// Merges `self` with another `Option`.
     ///
@@ -53,11 +44,9 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ExtOption;
-    /// use core::{cmp::min, ops::Add};
-    ///
-    /// let x = Some(2);
-    /// let y = Some(4);
+    /// # use devela::ExtOption;
+    /// # use core::{cmp::min, ops::Add};
+    /// let (x, y) = (Some(2), Some(4));
     ///
     /// assert_eq!(x.reduce(y, Add::add), Some(6));
     /// assert_eq!(x.reduce(y, min), Some(2));
@@ -68,21 +57,15 @@ pub trait ExtOption<T>: Sealed {
     /// assert_eq!(None.reduce(None, i32::add), None);
     /// ```
     #[must_use]
-    fn reduce<F>(self, other: Option<T>, f: F) -> Option<T>
-    where
-        F: FnOnce(T, T) -> T;
+    fn reduce<F: FnOnce(T, T) -> T>(self, other: Option<T>, f: F) -> Option<T>;
 
     /// Format some value, or display an empty string if it's `None`.
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ExtOption;
-    ///
-    /// let foo: Option<u32> = Some(0x42);
-    /// let bar: Option<u32> = None;
-    ///
-    /// assert_eq!("0x42", format!("{:#x}", foo.fmt_or_empty()));
-    /// assert_eq!("", format!("{:#x}", bar.fmt_or_empty()));
+    /// # use devela::ExtOption;
+    /// assert_eq!("0x42", format!("{:#x}", Some(0x42).fmt_or_empty()));
+    /// assert_eq!("", format!("{:#x}", None::<u8>.fmt_or_empty()));
     /// ```
     #[must_use]
     fn fmt_or_empty(&self) -> OptionFmt<T>;
@@ -94,18 +77,12 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ExtOption;
-    ///
-    /// let foo: Option<Box<u32>> = Some(Box::new(42));
-    /// let bar: Option<Box<u32>> = None;
-    ///
-    /// assert_eq!("42", format!("{}", foo.fmt_or("Nothing")));
-    /// assert_eq!("Nothing", format!("{}", bar.fmt_or("Nothing")));
+    /// # use devela::error::ExtOption;
+    /// assert_eq!("42", format!("{}", Some(Box::new(42)).fmt_or("Nothing")));
+    /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or("Nothing")));
     /// ```
     #[must_use]
-    fn fmt_or<U>(&self, u: U) -> OptionFmtOr<T, U>
-    where
-        U: Display;
+    fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<T, U>;
 
     /// Format some value, or run an alternative closure if it's `None`.
     ///
@@ -118,38 +95,22 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ExtOption;
-    ///
-    /// let foo: Option<u32> = Some(42);
-    /// let bar: Option<u32> = None;
-    ///
-    /// assert_eq!("42", format!("{}", foo.fmt_or_else(|| "Nothing")));
-    /// assert_eq!("Nothing", format!("{}", bar.fmt_or_else(|| "Nothing")));
+    /// # use devela::error::ExtOption;
+    /// assert_eq!("42", format!("{}", Some(42).fmt_or_else(|| "Nothing")));
+    /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or_else(|| "Nothing")));
     /// ```
     #[must_use]
-    fn fmt_or_else<U, F>(&self, f: F) -> OptionFmtOrElse<T, F>
-    where
-        U: Display,
-        F: Fn() -> U;
+    fn fmt_or_else<U: Display, F: Fn() -> U>(&self, f: F) -> OptionFmtOrElse<T, F>;
 }
 
 impl<T> ExtOption<T> for Option<T> {
     #[inline]
-    fn contains<U>(&self, x: &U) -> bool
-    where
-        U: PartialEq<T>,
-    {
-        match *self {
-            Some(ref y) => x == y,
-            None => false,
-        }
+    fn contains<U: PartialEq<T>>(&self, x: &U) -> bool {
+        self.as_ref().map_or(false, |y| x == y)
     }
 
     #[inline]
-    fn reduce<F>(self, other: Option<T>, f: F) -> Option<T>
-    where
-        F: FnOnce(T, T) -> T,
-    {
+    fn reduce<F: FnOnce(T, T) -> T>(self, other: Option<T>, f: F) -> Option<T> {
         match (self, other) {
             (Some(l), Some(r)) => Some(f(l, r)),
             (x @ Some(_), None) | (None, x @ Some(_)) => x,
@@ -163,19 +124,12 @@ impl<T> ExtOption<T> for Option<T> {
     }
 
     #[inline]
-    fn fmt_or<U>(&self, u: U) -> OptionFmtOr<T, U>
-    where
-        U: Display,
-    {
+    fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<T, U> {
         OptionFmtOr(self, u)
     }
 
     #[inline]
-    fn fmt_or_else<U, F>(&self, f: F) -> OptionFmtOrElse<T, F>
-    where
-        U: Display,
-        F: Fn() -> U,
-    {
+    fn fmt_or_else<U: Display, F: Fn() -> U>(&self, f: F) -> OptionFmtOrElse<T, F> {
         OptionFmtOrElse(self, f)
     }
 }

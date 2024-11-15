@@ -15,7 +15,6 @@ impl<T, E> Sealed for Result<T, E> {}
 //
 // Based on work from:
 // - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
-// - https://crates.io/crates/result-ext/0.2.0 by Simon Ochsenreither
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[allow(private_bounds, reason = "Sealed")]
 pub trait ExtResult<T, E>: Sealed {
@@ -23,41 +22,25 @@ pub trait ExtResult<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ExtResult;
-    ///
-    /// let x: Result<u32, &str> = Ok(2);
-    /// assert_eq!(x.contains(&2), true);
-    ///
-    /// let x: Result<u32, &str> = Ok(3);
-    /// assert_eq!(x.contains(&2), false);
-    ///
-    /// let x: Result<u32, &str> = Err("Some error message");
-    /// assert_eq!(x.contains(&2), false);
+    /// # use devela::ExtResult;
+    /// assert_eq!(Ok::<_, ()>(1).contains(&1), true);
+    /// assert_eq!(Ok::<_, ()>(1).contains(&2), false);
+    /// assert_eq!(Err("err").contains(&1), false);
     /// ```
     #[must_use]
-    fn contains<U>(&self, x: &U) -> bool
-    where
-        U: PartialEq<T>;
+    fn contains<U: PartialEq<T>>(&self, x: &U) -> bool;
 
     /// Returns `true` if the result is an [`Err`] value containing the given value.
     ///
     /// # Examples
     /// ```
-    /// use devela::error::ExtResult;
-    ///
-    /// let x: Result<u32, &str> = Ok(2);
-    /// assert_eq!(x.contains_err(&"Some error message"), false);
-    ///
-    /// let x: Result<u32, &str> = Err("Some error message");
-    /// assert_eq!(x.contains_err(&"Some error message"), true);
-    ///
-    /// let x: Result<u32, &str> = Err("Some other error message");
-    /// assert_eq!(x.contains_err(&"Some error message"), false);
+    /// # use devela::ExtResult;
+    /// assert_eq!(Ok::<_, &str>(1).contains_err(&"Some error message"), false);
+    /// assert_eq!(Err::<u8, _>("err").contains_err(&"err"), true);
+    /// assert_eq!(Err::<u8, _>("err2").contains_err(&"err"), false);
     /// ```
     #[must_use]
-    fn contains_err<F>(&self, f: &F) -> bool
-    where
-        F: PartialEq<E>;
+    fn contains_err<F: PartialEq<E>>(&self, f: &F) -> bool;
 
     // WIP
     // /// Merges `self` with another `Result`.
@@ -68,9 +51,8 @@ pub trait ExtResult<T, E>: Sealed {
     // ///
     // /// # Examples
     // /// ```
-    // /// use devela::error::ExtOption;
-    // /// use core::{cmp::min, ops::Add};
-    // ///
+    // /// # use devela::ExtOption;
+    // /// # use core::{cmp::min, ops::Add};
     // /// let x = Some(2);
     // /// let y = Some(4);
     // ///
@@ -82,40 +64,23 @@ pub trait ExtResult<T, E>: Sealed {
     // ///
     // /// assert_eq!(None.reduce(None, i32::add), None);
     // /// ```
-    // fn reduce<F>(self, other: Result<T, E>, f: F) -> Result<T, E>
-    // where
-    //     F: FnOnce(T, T) -> T;
+    // fn reduce<F: FnOnce(T, T) -> T>(self, other: Result<T, E>, f: F) -> Result<T, E>;
 }
 
 impl<T, E> ExtResult<T, E> for Result<T, E> {
     #[inline]
-    fn contains<U>(&self, x: &U) -> bool
-    where
-        U: PartialEq<T>,
-    {
-        match *self {
-            Ok(ref y) => x == y,
-            Err(_) => false,
-        }
+    fn contains<U: PartialEq<T>>(&self, x: &U) -> bool {
+        self.as_ref().map_or(false, |y| x == y)
     }
 
     #[inline]
-    fn contains_err<F>(&self, f: &F) -> bool
-    where
-        F: PartialEq<E>,
-    {
-        match *self {
-            Ok(_) => false,
-            Err(ref e) => f == e,
-        }
+    fn contains_err<F: PartialEq<E>>(&self, f: &F) -> bool {
+        self.as_ref().err().map_or(false, |e| f == e)
     }
 
     // // WIP
     // #[inline]
-    // fn reduce<F>(self, other: Result<T, E>, f: F) -> Result<T, E>
-    // where
-    //     F: FnOnce(T, T) -> T,
-    // {
+    // fn reduce<F: FnOnce(T, T) -> T>(self, other: Result<T, E>, f: F) -> Result<T, E> {
     //     match (self, other) {
     //         (Some(l), Some(r)) => Some(f(l, r)),
     //         (x @ Some(_), None) | (None, x @ Some(_)) => x,
