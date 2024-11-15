@@ -5,13 +5,14 @@
 #![doc = crate::doc_!(extends: fmt)]
 //
 
-mod misc;
+mod buf;
 mod num_to_str;
 mod reexports;
 #[allow(unused_imports)]
-pub use {misc::*, num_to_str::*, reexports::*};
+pub use {buf::*, num_to_str::*, reexports::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{misc::*, num_to_str::*, reexports::*};
+    #[allow(unused_imports)]
+    pub use super::{buf::*, num_to_str::*, reexports::*};
 }
