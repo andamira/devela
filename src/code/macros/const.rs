@@ -24,17 +24,11 @@
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! CONST {
-    (
-    // accepts a literal
-    $NAME:ident = $literal:literal
-    ) => {
+    ($NAME:ident = $literal:literal) => {
         #[allow(unused_macro)]
         macro_rules! $NAME { () => {$literal} }
     };
-    (
-    // accepts a block
-    $NAME:ident = $block:block
-    ) => {
+    ($NAME:ident = $block:block) => {
         #[allow(unused_macro)]
         macro_rules! $NAME { () => {$block} }
     };

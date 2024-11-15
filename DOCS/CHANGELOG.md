@@ -72,17 +72,18 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `sys::os::linux` module and example `linux`.
 - new lints.
 
-#### Examples and utilities
+#### Examples, utilities, manifest
 - new example `id_pin`.
 - new example `id_seq` and type `ExampleIdSeqUsize`.
 - new example `enumint` and type `ExampleEnumIntU8`.
 - new scripts in `utils/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`, `docs_coverage.sh`, `docs_items.rs`.
 - new github workflows: `get_errno.yml`, `get_syscall.yml`.
+- new `patches` section in the manifest.
 
 ### Removed
-- remove items: `NeverOk`, `NeverErr`.
 - remove custom no_std `Error` definition.
-- remove types: `InRange*`, `NonRanbe*`.
+- remove items: `NeverOk`, `NeverErr`, `HasherFx32`, `HasherFx64`.
+- remove types: `InRange*`, `NonRange*`.
 - remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`.
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
 - comment out unused features: `code`, `data`, `error`.

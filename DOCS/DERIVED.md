@@ -49,6 +49,11 @@ This project includes the following derived works:
 - Integration of [Xabc] algorithm openly published by *EternityForest*,
   as the [`Xabc`] RNG.
 
+Additionally, some algorithms in this project are adapted from Graphics Gems (1985–1994),
+made available under a permissive [EULA][GG_EULA] allowing commercial and non-commercial
+use without required attribution.
+[GG_EULA]: https://github.com/erich666/GraphicsGems/blob/master/LICENSE.md
+
 [1]: https://github.com/andamira/devela/blob/main/src/data/dst/MODIFICATIONS.md
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
 [`data::dst`]: https://docs.rs/devela/latest/devela/data/dst/index.html
