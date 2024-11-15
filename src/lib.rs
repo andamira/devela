@@ -117,10 +117,14 @@
 #![cfg_attr( // 1.??
     feature = "nightly_stable",
     feature(
+        async_closure,
         const_array_from_ref,
+        const_atomic_from_ptr,
+        const_maybe_uninit_write,
         const_slice_from_ref,
         impl_trait_in_assoc_type,
         isqrt,
+        let_chains,
         macro_metavar_expr,
         noop_waker,
         unsafe_cell_from_mut,
