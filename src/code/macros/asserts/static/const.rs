@@ -15,7 +15,7 @@ macro_rules! assert_const {
     (
         // Asserts that constants are equal in value.
         eq $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::code::assert_const!($($x == $y)&&+);
+        $crate::assert_const!($($x == $y)&&+);
     };
     (
         // Asserts that constants of type `usize` are equal in value.
@@ -26,27 +26,27 @@ macro_rules! assert_const {
     (
         // Asserts that constants are not equal in value.
         ne $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::code::assert_const!($($x != $y)&&+);
+        $crate::assert_const!($($x != $y)&&+);
     };
    (
         // Asserts that constants are less than each other.
         lt $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::code::assert_const!(@build $x, $($y),+; <);
+        $crate::assert_const!(@build $x, $($y),+; <);
     };
     (
         // Asserts that constants are less than or equal to each other.
         le $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::code::assert_const!(@build $x, $($y),+; <=);
+        $crate::assert_const!(@build $x, $($y),+; <=);
     };
     (
         // Asserts that constants are greater than each other.
         gt $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::code::assert_const!(@build $x, $($y),+; >);
+        $crate::assert_const!(@build $x, $($y),+; >);
     };
     (
         // Asserts that constants are greater than or equal to each other.
         ge $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::code::assert_const!(@build $x, $($y),+; >=);
+        $crate::assert_const!(@build $x, $($y),+; >=);
     };
 
     // receives the expressions and the operator, and performs the appropriate comparison.
@@ -54,8 +54,8 @@ macro_rules! assert_const {
     /* private arms*/
 
         @build $x:expr, $($y:expr),+; $op:tt) => {
-        $crate::code::assert_const!($x $op $crate::code::capture_first!(expr $($y),+));
-        $crate::code::assert_const!(@build $($y),+; $op);
+        $crate::assert_const!($x $op $crate::capture_first!(expr $($y),+));
+        $crate::assert_const!(@build $($y),+; $op);
     };
     // terminates recursion when there’s only one expression left.
     (

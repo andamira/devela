@@ -34,7 +34,7 @@ macro_rules! reexport {
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[doc(inline)]
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`core`'>`core`</span>"]
@@ -63,7 +63,7 @@ macro_rules! reexport {
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[doc(inline)]
         #[allow(rustdoc::broken_intra_doc_links)] // TEMP FIX unresolved link to alloc
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
@@ -95,7 +95,7 @@ macro_rules! reexport {
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[doc(inline)]
         #[doc = "<span class='stab portability' title='re-exported from rust&#39;s "
         "`std`'>`std`</span>"]
@@ -126,7 +126,7 @@ macro_rules! reexport {
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[doc(inline)]
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated for `no_std`'>`[no_]std`</span>
@@ -158,7 +158,7 @@ macro_rules! reexport {
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[doc(inline)]
         /// <span class='stab portability' title='re-exported from rust&#39;s `std`
         /// or recreated if `not(std)`'>`?std`</span>
@@ -188,7 +188,7 @@ macro_rules! reexport {
       crate $dep_str:literal | $dep:ident,
       doc: $description:literal
       $(, features: $( $f:literal ),+ )?
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[doc = "<span class='stab portability' title='re-exported `" $dep_str
             "`'>`" $dep_str "`</span>"]
         #[doc = $description "\n\n---" ]
@@ -208,7 +208,7 @@ macro_rules! reexport {
       $dep_feat:literal, $dep_name:literal, $dep_mod:ident,
       doc: $description:literal
       $(, features: $( $f:literal ),+ )?
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[cfg(all(feature = $dep_feat $(, $(feature = $f),+ )? ))]
         $crate::items! {
             // safety-guard: panics if `safest` is enabled and dependency is not safe
@@ -250,7 +250,7 @@ macro_rules! reexport {
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[doc(inline)]
         #[doc = "<span class='stab portability' title='re-exported from `"
             $dep_name "`'>`" $dep_name "`</span>"]
@@ -292,7 +292,7 @@ macro_rules! reexport {
       $( $item:ident ),*
       $(@ $item_to_rename:ident as $item_renamed:ident),*
       $(,)?
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[doc(inline)]
         #[doc = "<span class='stab portability' title='re-exported from `" $dep_str
             "`'>`" $dep_str "`</span>"]

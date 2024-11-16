@@ -27,7 +27,7 @@ macro_rules! impl_cdef {
     };
     (@<$A:ident:$A_:ident> $def:expr => $t:ty) => {
         impl<$A: $crate::code::ConstDefault> $crate::code::ConstDefault for $t {
-            #[allow(clippy::declare_interior_mutable_const)]
+            #[allow(clippy::declare_interior_mutable_const, reason = "FIXME?")]
             const DEFAULT: Self = $def;
         }
     };

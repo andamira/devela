@@ -113,11 +113,13 @@ mod reflection {
     };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         flags: &["_num_·"],
-        features: &["num_geom", "num_rand"]
+        features: &["num_geom", "num_rand", "num_wave"]
     };
     pub const REND: FlagsFeatures = FlagsFeatures {
         flags: &["_rend_·"],
-        features: &["rend_audio", "rend_color", "rend_draw", "rend_font", "rend_image", "rend_layout"]
+        features: &[
+            "rend_audio", "rend_color", "rend_draw", "rend_font", "rend_image", "rend_layout"
+        ]
     };
 
     /* # capabilities */

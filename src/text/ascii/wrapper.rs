@@ -33,7 +33,6 @@ impl Ascii<usize> {
     /// assert_eq!(Ascii(12345_usize).calc_digit(10), b'4');
     /// assert_eq!(Ascii(12345_usize).calc_digit(1000), b'2');
     /// ```
-    #[inline]
     #[must_use]
     pub const fn calc_digit(self, divisor: usize) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
@@ -48,7 +47,6 @@ impl Ascii<usize> {
     /// assert_eq![1, Ascii(0_usize).count_digits()];
     /// assert_eq![4, Ascii(9876_usize).count_digits()];
     /// ```
-    #[inline]
     #[must_use]
     pub const fn count_digits(self) -> u8 {
         iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
@@ -60,7 +58,7 @@ impl Ascii<usize> {
     ///
     /// You can trim the leading zeros with
     /// [`slice_trim_leading_bytes`][crate::mem::slice_trim_leading_bytes].
-    #[inline] #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
+    #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         Ascii(self.0 as u16).digits()
     }
@@ -71,7 +69,7 @@ impl Ascii<usize> {
     ///
     /// You can trim the leading zeros with
     /// [`slice_trim_leading_bytes`][crate::mem::slice_trim_leading_bytes].
-    #[inline] #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
+    #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         Ascii(self.0 as u32).digits()
     }
@@ -82,7 +80,7 @@ impl Ascii<usize> {
     ///
     /// You can trim the leading zeros with
     /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
-    #[inline] #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
+    #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         Ascii(self.0 as u64).digits()
     }
@@ -95,7 +93,6 @@ impl Ascii<usize> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline]
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_string_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
@@ -110,7 +107,6 @@ impl Ascii<usize> {
             StringU8::<{ Self::MAX_DIGITS }>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
-    #[inline]
     #[allow(missing_docs)]
     #[cfg(not(feature = "_cmp_u8"))] // !const
     #[cfg(feature = "_string_u8")]
@@ -142,7 +138,6 @@ impl Ascii<u8> {
     /// assert_eq!(Ascii(123_u8).calc_digit(10), b'2');
     /// assert_eq!(Ascii(123_u8).calc_digit(100), b'1');
     /// ```
-    #[inline]
     #[must_use]
     pub const fn calc_digit(self, divisor: u8) -> u8 {
         (self.0 / divisor % 10) + b'0'
@@ -157,7 +152,6 @@ impl Ascii<u8> {
     /// assert_eq![1, Ascii(0_u8).count_digits()];
     /// assert_eq![3, Ascii(123_u8).count_digits()];
     /// ```
-    #[inline]
     #[must_use]
     pub const fn count_digits(self) -> u8 {
         iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
@@ -167,7 +161,6 @@ impl Ascii<u8> {
     ///
     /// You can trim the leading zeros with
     /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
-    #[inline]
     #[must_use]
     pub const fn digits(self) -> [u8; 3] {
         [
@@ -187,7 +180,6 @@ impl Ascii<u8> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline]
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_string_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
@@ -202,7 +194,6 @@ impl Ascii<u8> {
             StringU8::<3>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
-    #[inline]
     #[allow(missing_docs)]
     #[cfg(not(feature = "_cmp_u8"))] // !const
     #[cfg(feature = "_string_u8")]
@@ -222,7 +213,6 @@ impl Ascii<u8> {
     ///
     /// # Panics
     /// This function panics in debug if the given number is > 9.
-    #[inline]
     #[must_use]
     pub const fn digits_1(self) -> u8 {
         debug_assert![self.0 <= 9];
@@ -233,7 +223,6 @@ impl Ascii<u8> {
     ///
     /// # Panics
     /// This function panics in debug if the given number is > 99.
-    #[inline]
     #[must_use]
     pub const fn digits_2(self) -> [u8; 2] {
         debug_assert![self.0 <= 99];
@@ -256,7 +245,6 @@ impl Ascii<u16> {
     /// assert_eq!(Ascii(12345_u16).calc_digit(10), b'4');
     /// assert_eq!(Ascii(12345_u16).calc_digit(1000), b'2');
     /// ```
-    #[inline]
     #[must_use]
     pub const fn calc_digit(self, divisor: u16) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
@@ -271,7 +259,6 @@ impl Ascii<u16> {
     /// assert_eq![1, Ascii(0_u16).count_digits()];
     /// assert_eq![4, Ascii(9876_u16).count_digits()];
     /// ```
-    #[inline]
     #[must_use]
     pub const fn count_digits(self) -> u8 {
         iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
@@ -281,7 +268,6 @@ impl Ascii<u16> {
     ///
     /// You can trim the leading zeros with
     /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
-    #[inline]
     #[must_use]
     pub const fn digits(self) -> [u8; 5] {
         [
@@ -303,7 +289,6 @@ impl Ascii<u16> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline]
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_string_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
@@ -318,7 +303,6 @@ impl Ascii<u16> {
             StringU8::<5>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
-    #[inline]
     #[allow(missing_docs)]
     #[cfg(not(feature = "_cmp_u8"))] // !const
     #[cfg(feature = "_string_u8")]
@@ -338,7 +322,6 @@ impl Ascii<u16> {
     ///
     /// # Panics
     /// This function panics in debug if the given number is > 999.
-    #[inline]
     #[must_use]
     pub const fn digits_3(self) -> [u8; 3] {
         debug_assert![self.0 <= 999];
@@ -349,7 +332,6 @@ impl Ascii<u16> {
     ///
     /// # Panics
     /// This function panics in debug if the given number is > 9999.
-    #[inline]
     #[must_use]
     pub const fn digits_4(self) -> [u8; 4] {
         debug_assert![self.0 <= 9999];
@@ -372,7 +354,6 @@ impl Ascii<u32> {
     /// assert_eq!(Ascii(12345_u32).calc_digit(10), b'4');
     /// assert_eq!(Ascii(12345_u32).calc_digit(1000), b'2');
     /// ```
-    #[inline]
     #[must_use]
     pub const fn calc_digit(self, divisor: u32) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
@@ -387,7 +368,6 @@ impl Ascii<u32> {
     /// assert_eq![1, Ascii(0_u32).count_digits()];
     /// assert_eq![4, Ascii(9876_u32).count_digits()];
     /// ```
-    #[inline]
     #[must_use]
     pub const fn count_digits(self) -> u8 {
         iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
@@ -397,7 +377,6 @@ impl Ascii<u32> {
     ///
     /// You can trim the leading zeros with
     /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
-    #[inline]
     #[must_use]
     #[allow(clippy::unreadable_literal)]
     pub const fn digits(self) -> [u8; 10] {
@@ -425,7 +404,6 @@ impl Ascii<u32> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline]
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_string_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
@@ -440,7 +418,6 @@ impl Ascii<u32> {
             StringU8::<10>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
-    #[inline]
     #[allow(missing_docs)]
     #[cfg(not(feature = "_cmp_u8"))] // !const
     #[cfg(feature = "_string_u8")]
@@ -472,7 +449,6 @@ impl Ascii<u64> {
     /// assert_eq!(Ascii(12345_u64).calc_digit(10), b'4');
     /// assert_eq!(Ascii(12345_u64).calc_digit(1000), b'2');
     /// ```
-    #[inline]
     #[must_use]
     pub const fn calc_digit(self, divisor: u64) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
@@ -487,7 +463,6 @@ impl Ascii<u64> {
     /// assert_eq![1, Ascii(0_u64).count_digits()];
     /// assert_eq![4, Ascii(9876_u64).count_digits()];
     /// ```
-    #[inline]
     #[must_use]
     pub const fn count_digits(self) -> u8 {
         iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
@@ -534,7 +509,6 @@ impl Ascii<u64> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline]
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_string_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
@@ -549,7 +523,6 @@ impl Ascii<u64> {
             StringU8::<20>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
-    #[inline]
     #[allow(missing_docs)]
     #[cfg(not(feature = "_cmp_u8"))] // !const
     #[cfg(feature = "_string_u8")]
@@ -581,7 +554,6 @@ impl Ascii<u128> {
     /// assert_eq!(Ascii(12345_u128).calc_digit(10), b'4');
     /// assert_eq!(Ascii(12345_u128).calc_digit(1000), b'2');
     /// ```
-    #[inline]
     #[must_use]
     pub const fn calc_digit(self, divisor: u128) -> u8 {
         (self.0 / divisor % 10) as u8 + b'0'
@@ -596,7 +568,6 @@ impl Ascii<u128> {
     /// assert_eq![1, Ascii(0_u128).count_digits()];
     /// assert_eq![19, Ascii(9876543210987654321_u128).count_digits()];
     /// ```
-    #[inline]
     #[must_use]
     pub const fn count_digits(self) -> u8 {
         iif![self.0 == 0; 1; self.0.ilog10() as u8 + 1]
@@ -662,7 +633,6 @@ impl Ascii<u128> {
     /// # Features
     /// - Will only be *const* if the `_cmp_u8` feature is enabled.
     /// - Makes use of the `unsafe_str` feature if enabled.
-    #[inline]
     #[cfg(feature = "_cmp_u8")] // const
     #[cfg(feature = "_string_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "string_u8")))]
@@ -677,7 +647,6 @@ impl Ascii<u128> {
             StringU8::<39>::from_bytes_nright_unchecked(self.digits(), width)
         }
     }
-    #[inline]
     #[cfg(not(feature = "_cmp_u8"))] // !const
     #[cfg(feature = "_string_u8")]
     #[allow(missing_docs)]

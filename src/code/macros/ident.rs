@@ -6,7 +6,7 @@
 /// Defines a constant for every given identifier with a value of its index in the list.
 /// # Examples
 /// ```
-/// # use devela::code::ident_const_index;
+/// # use devela::ident_const_index;
 /// ident_const_index![pub, 3; first, second, third]; // with commas
 /// assert![0 == first && 1 == second && 2 == third];
 ///
@@ -22,20 +22,20 @@ macro_rules! ident_const_index {
         // $total: the total number of identifiers.
         // $ident, $($rest),*: the list of identifiers.
         $vis:vis, $total:expr; $ident:ident $($rest:ident)*
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[allow(non_upper_case_globals)]
-        $vis const $ident: usize = $total - $crate::code::ident_total!($($rest)*) - 1;
-        $( $crate::code::ident_const_index!($vis, $total; $rest); )*
+        $vis const $ident: usize = $total - $crate::ident_total!($($rest)*) - 1;
+        $( $crate::ident_const_index!($vis, $total; $rest); )*
     }};
     ( // with commas:
         // $vis: the visibility of the constants (pub, pub(super), …).
         // $total: the total number of identifiers.
         // $ident, $($rest),*: the list of identifiers.
         $vis:vis, $total:expr; $ident:ident $(, $($rest:ident),* $(,)? )?
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         #[allow(non_upper_case_globals)]
-        $vis const $ident: usize = $total - $crate::code::ident_total!( $($($rest)*)? ) - 1;
-        $( $crate::code::ident_const_index!($vis, $total; $($rest),*); )?
+        $vis const $ident: usize = $total - $crate::ident_total!( $($($rest)*)? ) - 1;
+        $( $crate::ident_const_index!($vis, $total; $($rest),*); )?
     }};
 }
 #[doc(inline)]
