@@ -12,9 +12,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 #### New features & flags
 - new features for:
   - doc: `_docsrs[_stable]_nodep`.
-  - num: `num_geom`, `num_wave`.
-  - render: `rend`, `rend_[audio|color|draw|font|image|layout]`, `safe_rend`.
-  - sys::os `linux`, `dep_linux`, `unsafe_syscall`.
+  - num: `geom`, `wave`.
+  - rend`rend`, `safe_rend`, `audio`, `color`, `draw`, `font`, `image`, `layout`.
+  - sys: `time`, `linux`, `dep_linux`, `unsafe_syscall`.
   - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
   - nightly: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`,
   - other  `dep_work`, `safest`, `unsafe_async`, `__lints`, `__force_miri_dst`.
@@ -26,11 +26,13 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Env` namespace for `std::env` functions and constants.
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `RendError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
+  - `TimeSplit`.
   - `TypeResource`.
   - `WaveletHaar`, `WaveletUnitVec`.
 - aliases:
-  - `AllocMapFx`, `AllocSetFx`,
-  - `RendResult`, `ColorResult`, `AudioResult`, `DrawResult`, `FontResult`,`ImageResult`, `LayoutResult`.
+  - `AllocMapFx`, `AllocSetFx`, `NoTime`.
+  - `AudioResult`, `ColorResult`, `DrawResult`,`FontResult`, `ImageResult`, `LayoutResult`, `RendResult`.
+  - `TimeSplitYearNano`, `TimeSplitYearDay`, `TimeSplitYearSec`, `TimeSplitHourSec`, `TimeSplitHourNano`, `TimeSplitMilliNano`.
 - enums:
   - `WaveletUnitRole`.
 - enum variants:
@@ -42,17 +44,18 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Array`: `from_fn`, `contains_[from|to|between]`.
   - `Array` when storing `Option<T>`.
   - `BareBox`.
+  - `ExtAny` method `type_id`.
   - `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
   - `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
   - `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
   - `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
 - macros:
-  - `type_marker!`, `namespace_fns!` `id_seq!`, `type_resource!`,
-  - `const_bool!`, `capture_first`, `capture_last`, `capture_tail_tuple`, `impl_non_value`.
+  - `id_seq!`, `namespace_fns!`, `type_marker!`, `type_resource!`,
+  - `const_bool!`, `capture_first`, `capture_last`, `capture_tail_tuple!`, `impl_non_value!`.
   - private: `doc_availability!`.
 - vendored:
   - structs: `CachePadded`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`.
-  - macros: `assert_const!`.
+  - macros: `assert_const!`, `format_lazy!`.
   - traits: `ConstBool`.
 - optional dependencies:
   - `macroquad`, `rayon`, `rodio`, `tinyaudio`.
@@ -83,7 +86,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Removed
 - remove custom no_std `Error` definition.
 - remove items: `NeverOk`, `NeverErr`, `HasherFx32`, `HasherFx64`.
-- remove types: `InRange*`, `NonRange*`.
+- remove types: `InRange*`, `NonRange*`, `HourMilliSplit`, `SecNanoSplit`, `YearSecSplit`.
 - remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`.
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
 - comment out unused features: `code`, `data`, `error`.
