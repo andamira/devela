@@ -121,6 +121,10 @@ mod reflection {
             "rend_audio", "rend_color", "rend_draw", "rend_font", "rend_image", "rend_layout"
         ]
     };
+    pub const SYS: FlagsFeatures = FlagsFeatures {
+        flags: &["_sys_·"],
+        features: &["time"] // THINK: sys::os::linux
+    };
 
     /* # capabilities */
 
@@ -222,7 +226,7 @@ mod reflection {
 
             /* modules */
 
-            MEM, NUM, REND,
+            MEM, NUM, REND, SYS,
 
             /* capabilities */
 

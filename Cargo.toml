@@ -37,7 +37,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 191/300 (109 remaining), 76 visible, 115 hidden
+[features] # 192/300 (108 remaining), 77 visible, 115 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -115,9 +115,10 @@ rend = [
 	rend_font = []
 	rend_image = []
 	rend_layout = []
-sys = []
+sys = ["time"]
 	# os
 		linux = [] # sys::os::linux functionality
+	time = [] # time-related functionality
 text = []
 work = ["bytemuck?/zeroable_atomics"]
 
@@ -583,7 +584,7 @@ check-cfg = [ # Allowed config flags:
 	# Compilation flags for reflection are enabled in: "/build/features.rs"
 	# ---------------------------------------------------------------------
 	"cfg(_nightly_·, _dep_·)",
-	'cfg(_mem_·, _num_·)',
+	'cfg(_mem_·, _num_·, _sys_·)',
 	# data:
 	'cfg(_bit_·, _destaque_·, _stack_·)',
 	'cfg(_graph_·, _node_·)',

@@ -64,7 +64,8 @@ Single modules:
   - [`rend_font`]
   - [`rend_image`]
   - [`rend_layout`]
-- [`sys`]
+- [`sys`]: enables all the sys subfeatures (except platform-specific).
+  - [`time`]: enables time-related functionality.
 - [`text`]
 - [`work`]: enables `work` functionality.
 
@@ -85,6 +86,7 @@ Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 [`num`]: crate::num
 [`num_rand`]: crate::num::rand
 [`sys`]: crate::sys
+  [`time`]: crate::sys::time
 [`text`]: crate::text
 [`work`]: crate::work
 
