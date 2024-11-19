@@ -9,7 +9,7 @@
 //! Unix time.
 //
 
-use crate::sys::time::{is_leap_year, Month, YearSecSplit};
+use crate::sys::time::{is_leap_year, Month, TimeSplitYearSec};
 use core::{fmt, num::TryFromIntError};
 
 /// 64-bit Unix time, supporting negative values.
@@ -65,7 +65,8 @@ impl UnixTimeI64 {
     /// assert_eq![(1970, 1, 1, 0, 0, 1), UnixTimeI64::new(1).split().as_tuple()];
     /// assert_eq![(1969, 12, 31, 23, 59, 59), UnixTimeI64::new(-1).split().as_tuple()];
     /// ```
-    pub const fn split(&self) -> YearSecSplit<i32, u8, u8, u8, u8, u8> {
+    // 72b
+    pub const fn split(&self) -> TimeSplitYearSec<i32, u8, u8, u8, u8, u8> {
         let seconds_per_minute: u32 = 60;
         let minutes_per_hour: u32 = 60;
         let hours_per_day: u32 = 24;
@@ -113,7 +114,7 @@ impl UnixTimeI64 {
         let second = seconds_left % seconds_per_minute as i64;
 
         if self.seconds >= 0 {
-            YearSecSplit {
+            TimeSplitYearSec {
                 y: year,
                 mo: month.number(),
                 d: day,
@@ -122,7 +123,7 @@ impl UnixTimeI64 {
                 s: second as u8,
             }
         } else {
-            YearSecSplit {
+            TimeSplitYearSec {
                 y: year,
                 mo: 13 - month.number(),
                 d: Month::December.previous_nth(month.index()).len(leap) - day + 1,
@@ -191,7 +192,7 @@ impl UnixTimeU32 {
     /// assert_eq![(1970, 1, 1, 0, 0, 1), UnixTimeU32::new(1).split().as_tuple()];
     /// assert_eq![(2038, 1, 19, 3, 14, 7), UnixTimeU32::new(i32::MAX as u32).split().as_tuple()];
     /// ```
-    pub const fn split(&self) -> YearSecSplit<u16, u8, u8, u8, u8, u8> {
+    pub const fn split(&self) -> TimeSplitYearSec<u16, u8, u8, u8, u8, u8> {
         let seconds_per_minute: u32 = 60;
         let minutes_per_hour: u32 = 60;
         let hours_per_day: u32 = 24;
@@ -228,7 +229,7 @@ impl UnixTimeU32 {
         let minute = seconds_left / seconds_per_minute;
         let second = seconds_left % seconds_per_minute;
 
-        YearSecSplit {
+        TimeSplitYearSec {
             y: year as u16,
             mo: month.number(),
             d: day as u8,
@@ -266,27 +267,27 @@ impl UnixTimeU32 {
 
 impl fmt::Display for UnixTimeI64 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let YearSecSplit { y, mo, d, h, m, s } = self.split();
+        let TimeSplitYearSec { y, mo, d, h, m, s } = self.split();
         write![f, "{y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02}"]
     }
 }
 impl fmt::Debug for UnixTimeI64 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let YearSecSplit { y, mo, d, h, m, s } = self.split();
+        let TimeSplitYearSec { y, mo, d, h, m, s } = self.split();
         write![f, "UnixTimeI64 {{ {y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02} }}"]
     }
 }
 
 impl fmt::Display for UnixTimeU32 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let YearSecSplit { y, mo, d, h, m, s } = self.split();
+        let TimeSplitYearSec { y, mo, d, h, m, s } = self.split();
         write![f, "{y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02}"]
     }
 }
 
 impl fmt::Debug for UnixTimeU32 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let YearSecSplit { y, mo, d, h, m, s } = self.split();
+        let TimeSplitYearSec { y, mo, d, h, m, s } = self.split();
         write![f, "UnixTimeU32 {{ {y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02} }}"]
     }
 }

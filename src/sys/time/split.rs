@@ -3,8 +3,7 @@
 //! Splitting and decomposing time.
 //
 
-use crate::code::paste;
-use core::time::Duration;
+use crate::Duration;
 
 /* decomposed */
 
@@ -19,18 +18,17 @@ pub struct TimeSplitYearDay<Y, MO, D> {
     /// Days.
     pub d: D,
 }
+// 80b
 impl TimeSplitYearDay<u64, u8, u8> {
     /// Converts a `Duration` into a time split representation in years, months, and days.
     ///
     /// This method assumes 365 days per year and 30 days per month for simplicity.
-    #[inline]
     pub const fn from_duration(duration: Duration) -> Self {
         let days = duration.as_secs() / 86400;
         let y = days / 365;
         let days_rem = days % 365;
         let mo = (days_rem / 30) as u8;
         let d = (days_rem % 30) as u8;
-
         TimeSplitYearDay { y, mo, d }
     }
 }
@@ -46,17 +44,16 @@ pub struct TimeSplitHourSec<H, M, S> {
     /// Seconds.
     pub s: S,
 }
+// 80b
 impl TimeSplitHourSec<u64, u8, u8> {
     /// Converts a `Duration` into a time split representation of hours, minutes and seconds.
     ///
     /// Excess days or longer periods are converted into additional hours.
-    #[inline]
     pub const fn from_duration(duration: Duration) -> Self {
         let secs = duration.as_secs();
         let h = secs / 3600;
         let m = ((secs % 3600) / 60) as u8;
         let s = (secs % 60) as u8;
-
         TimeSplitHourSec { h, m, s }
     }
 }
@@ -72,18 +69,17 @@ pub struct TimeSplitMilliNano<MS, US, NS> {
     /// Nanoseconds.
     pub ns: NS,
 }
+// 48 b
 impl TimeSplitMilliNano<u16, u16, u16> {
     /// Converts a `Duration`'s sub-second component into a compact time split representation.
     ///
     /// Extracts and segments the nanosecond portion of a `Duration`
     /// into milliseconds, microseconds, and nanoseconds.
-    #[inline]
     pub const fn from_duration(duration: Duration) -> Self {
         let nanos = duration.subsec_nanos();
         let ms = (nanos / 1_000_000) as u16;
         let us = ((nanos % 1_000_000) / 1_000) as u16;
         let ns = (nanos % 1_000) as u16;
-
         TimeSplitMilliNano { ms, us, ns }
     }
 }
@@ -114,11 +110,11 @@ pub struct TimeSplitYearNano<Y, MO, D, H, M, S, MS, US, NS> {
     /// Nanoseconds.
     pub ns: NS,
 }
+// 152b
 impl TimeSplitYearNano<u64, u8, u8, u8, u8, u8, u16, u16, u16> {
     /// Converts a `Duration` into a time split representation from years down to nanoseconds.
     ///
     /// It assumes non-leap years and 30-day months for simplicity in calendar calculations.
-    #[inline] #[rustfmt::skip]
     pub const fn from_duration(duration: Duration) -> Self {
         let secs = duration.as_secs();
         let total_days = secs / 86400;
@@ -157,11 +153,11 @@ pub struct TimeSplitYearSec<Y, MO, D, H, M, S> {
     /// Seconds.
     pub s: S,
 }
+// 104b
 impl TimeSplitYearSec<u64, u8, u8, u8, u8, u8> {
     /// Converts a `Duration` into a time split representation from years down to seconds.
     ///
     /// It assumes non-leap years and 30-day months for simplicity in calendar calculations.
-    #[inline]
     pub const fn from_duration(duration: Duration) -> Self {
         let secs = duration.as_secs();
         let total_days = secs / 86400;
@@ -195,9 +191,9 @@ pub struct TimeSplitHourNano<H, M, S, MS, US, NS> {
     /// Nanoseconds.
     pub ns: NS,
 }
+// 128b
 impl TimeSplitHourNano<u64, u8, u8, u16, u16, u16> {
     /// Converts a `Duration` into a time split representation from Hours down to nanoseconds.
-    #[inline] #[rustfmt::skip]
     pub const fn from_duration(duration: Duration) -> Self {
         let secs = duration.as_secs();
         let h = (secs % 86400) / 3600;
@@ -245,32 +241,13 @@ pub struct HourMilliSplit<H, M, S, MS> {
     pub ms: MS,
 }
 
-// TEMP
-/// A time split in years, months, days, hours, minutes and seconds.
-#[repr(Rust)]
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct YearSecSplit<Y, MO, D, H, M, S> {
-    /// Years.
-    pub y: Y,
-    /// Months.
-    pub mo: MO,
-    /// Days.
-    pub d: D,
-    /// Hours.
-    pub h: H,
-    /// Minutes.
-    pub m: M,
-    /// Seconds.
-    pub s: S,
-}
-
 // # Arguments
 // - $name: the type name
 // - $LEN:  the number of generics
 // - $T:    the generic T (repeated type)
 // - $G:    the generic type (different), and the field name (in lower case)
 macro_rules! impl_as_to {
-    ($name:ident: $LEN:literal, <$($T:ident+$G:ident),+>) => { paste! {
+    ($name:ident: $LEN:literal, <$($T:ident+$G:ident),+>) => { $crate::paste! {
         impl<$($G),+> $name<$($G),+> {
             /// Returns the fields as a tuple.
             #[inline] #[must_use]
@@ -313,4 +290,3 @@ impl_as_to![TimeSplitHourNano: 6, <T+H, T+M, T+S, T+MS, T+US, T+NS>];
 // TEMP
 impl_as_to![SecNanoSplit: 4, <T+S, T+MS, T+US, T+NS>];
 impl_as_to![HourMilliSplit: 4, <T+H, T+M, T+S, T+MS>];
-impl_as_to![YearSecSplit: 6, <T+Y, T+MO, T+D, T+H, T+M, T+S>];
