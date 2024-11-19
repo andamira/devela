@@ -12,7 +12,7 @@ use crate::_dep::_alloc::{format, string::String};
 #[allow(unused_imports)]
 #[cfg(feature = "_float_f64")]
 use crate::num::ExtFloat;
-use crate::sys::time::TimeSplitHourNano;
+use crate::sys::time::{NoTime, TimeSplitHourNano};
 #[cfg(feature = "_string_u8")]
 use crate::text::{format_buf, Ascii, StringU8};
 
@@ -42,7 +42,7 @@ impl Timecode {
     #[must_use]
     #[cfg(any(feature = "std", feature = "_float_f64"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
-    pub fn split_secs_f64(seconds: f64) -> TimeSplitHourNano<u32, u8, u8, u16, (), ()> {
+    pub fn split_secs_f64(seconds: f64) -> TimeSplitHourNano<u32, u8, u8, u16, NoTime, NoTime> {
         let ms = (seconds.fract() * 1000.) as u16;
         let mut ts = seconds.trunc() as u64;
         let h = (ts / 3600) as u32;
@@ -59,7 +59,9 @@ impl Timecode {
     // -> 80 bits
     #[inline]
     #[must_use]
-    pub const fn split_nanos_u64(nanos: u64) -> TimeSplitHourNano<(), (), u32, u16, u16, u16> {
+    pub const fn split_nanos_u64(
+        nanos: u64,
+    ) -> TimeSplitHourNano<NoTime, NoTime, u32, u16, u16, u16> {
         let (us_tmp, ns) = (nanos / 1000, (nanos % 1000) as u16);
         let (ms_tmp, us) = (us_tmp / 1000, (us_tmp % 1000) as u16);
         let (s, ms) = ((ms_tmp / 1000) as u32, (ms_tmp % 1000) as u16);
@@ -73,7 +75,9 @@ impl Timecode {
     // -> 56 bits
     #[inline]
     #[must_use]
-    pub const fn split_nanos_u32(nanos: u32) -> TimeSplitHourNano<(), (), u8, u16, u16, u16> {
+    pub const fn split_nanos_u32(
+        nanos: u32,
+    ) -> TimeSplitHourNano<NoTime, NoTime, u8, u16, u16, u16> {
         let (us_tmp, ns) = (nanos / 1000, (nanos % 1000) as u16);
         let (ms_tmp, us) = (us_tmp / 1000, (us_tmp % 1000) as u16);
         let (s, ms) = ((ms_tmp / 1000) as u8, (ms_tmp % 1000) as u16);
@@ -93,7 +97,7 @@ impl Timecode {
     #[cfg(feature = "_string_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_u8")))]
     pub fn secs_f64(seconds: f64) -> StringU8<12> {
-        let TimeSplitHourNano { h, m, s, ms } = Self::split_secs_f64(seconds);
+        let TimeSplitHourNano { h, m, s, ms, .. } = Self::split_secs_f64(seconds);
         let m = Ascii(m as u32).digits_str(2);
         let s = Ascii(s as u32).digits_str(2);
         let ms = Ascii(ms as u32).digits_str(3);
@@ -149,7 +153,7 @@ impl Timecode {
     #[cfg(feature = "_string_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_u8")))]
     pub fn nanos_u64(nanos: u64) -> StringU8<23> {
-        let TimeSplitHourNano { s, ms, us, ns } = Self::split_nanos_u64(nanos);
+        let TimeSplitHourNano { s, ms, us, ns, .. } = Self::split_nanos_u64(nanos);
         let s_str = Ascii(s.min(999)).digits_str(3);
         let ms_str = Ascii(ms as u32).digits_str(3);
         let us_str = Ascii(us as u32).digits_str(3);
