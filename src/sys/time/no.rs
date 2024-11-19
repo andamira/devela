@@ -14,7 +14,7 @@
 ///
 /// # Example
 /// ```
-/// # use crate::{NoTime, TimeSplitHourNano};
+/// # use devela::{NoTime, TimeSplitHourNano};
 /// let split = TimeSplitHourNano::new(12u8, 30u8, 45u8, 500u16, (), ());
 /// ```
 pub type NoTime = ();

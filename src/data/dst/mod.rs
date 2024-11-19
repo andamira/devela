@@ -2,7 +2,6 @@
 //
 #![doc = crate::doc_miri_warn!(tag)]
 //! Dynamically-sized types stored without need of heap allocation.
-#![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_miri_warn!(body,
     url: "https://github.com/thepowersgang/stack_dst-rs/issues/14")]
@@ -27,7 +26,9 @@ mod queue;
 mod stack;
 mod value;
 
-pub use buffer::*;
-pub use queue::{DstQueue, DstQueueIter, DstQueueIterMut, DstQueuePopHandle, DstQueueUsize};
-pub use stack::{DstStack, DstStackIter, DstStackIterMut, DstStackUsize};
-pub use value::{DstValue, DstValueUsize};
+pub use all::*;
+pub(crate) mod all {
+    #[doc(inline)]
+    #[allow(unused_imports)]
+    pub use super::{buffer::*, queue::*, stack::*, value::*};
+}

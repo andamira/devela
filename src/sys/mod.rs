@@ -18,12 +18,6 @@ mod env;
 #[allow(unused_imports)]
 pub use {arch::*, env::*};
 
-#[cfg(feature = "dep_log")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_log")))]
-items! {
-    mod log;
-    pub use log::*;
-}
 #[cfg(feature = "sys")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
 items! {
@@ -36,24 +30,27 @@ items! {
     #[allow(unused_imports)]
     pub use sound::*;
 }
+#[cfg(feature = "time")]
+items! {
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
+    pub mod time;
+    #[allow(unused_imports)]
+    pub use time::all::*;
+}
 
 pub mod ffi;
+pub mod log;
 pub mod io;
 pub mod os;
-pub mod time;
 #[doc(no_inline)]
 #[allow(unused_imports)]
-pub use {ffi::*, io::all::*, os::all::*, time::*};
+pub use {ffi::all::*, io::all::*, os::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{arch::all::*, env::all::*, ffi::all::*, io::all::*, os::all::*, time::all::*};
+    pub use super::{arch::all::*, env::all::*, ffi::all::*, io::all::*, log::all::*, os::all::*};
 
-    #[doc(inline)]
-    #[cfg(feature = "dep_log")]
-    #[allow(unused_imports)]
-    pub use super::log::all::*;
     #[doc(inline)]
     #[allow(unused_imports)]
     #[cfg(feature = "sys")]
@@ -61,4 +58,8 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::sound::all::*;
+    #[doc(inline)]
+    #[allow(unused_imports)]
+    #[cfg(feature = "time")]
+    pub use super::time::all::*;
 }
