@@ -14,7 +14,7 @@
 ///
 /// # Example
 /// ```
-/// # use devela::{NoTime, TimeSplitHourNano};
-/// let split = TimeSplitHourNano::new(12u8, 30u8, 45u8, 500u16, (), ());
+/// # use devela::{NoTime, TimeSplit};
+/// let split = TimeSplit::new_hour_nano(12u8, 30u8, 45u8, 500u16, (), ());
 /// ```
 pub type NoTime = ();

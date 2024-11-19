@@ -12,7 +12,7 @@ use crate::_dep::_alloc::{format, string::String};
 #[allow(unused_imports)]
 #[cfg(feature = "_float_f64")]
 use crate::num::ExtFloat;
-use crate::sys::time::{NoTime, TimeSplitHourNano};
+use crate::sys::time::{NoTime, TimeSplit, TimeSplitHourNano};
 #[cfg(feature = "_string_u8")]
 use crate::text::{format_buf, Ascii, StringU8};
 
@@ -49,7 +49,7 @@ impl Timecode {
         ts %= 3600;
         let m = (ts / 60) as u8;
         let s = (ts % 60) as u8;
-        TimeSplitHourNano::new(h, m, s, ms, (), ())
+        TimeSplit::new_hour_nano(h, m, s, ms, (), ())
     }
 
     /// Splits a number of `nanoseconds` in `{ s, ms, µs, ns }`.
@@ -65,7 +65,7 @@ impl Timecode {
         let (us_tmp, ns) = (nanos / 1000, (nanos % 1000) as u16);
         let (ms_tmp, us) = (us_tmp / 1000, (us_tmp % 1000) as u16);
         let (s, ms) = ((ms_tmp / 1000) as u32, (ms_tmp % 1000) as u16);
-        TimeSplitHourNano::new((), (), s, ms, us, ns)
+        TimeSplit::new_hour_nano((), (), s, ms, us, ns)
     }
 
     /// Splits a number of `nanoseconds` in `{ s, ms, µs, ns }`.
@@ -81,7 +81,7 @@ impl Timecode {
         let (us_tmp, ns) = (nanos / 1000, (nanos % 1000) as u16);
         let (ms_tmp, us) = (us_tmp / 1000, (us_tmp % 1000) as u16);
         let (s, ms) = ((ms_tmp / 1000) as u8, (ms_tmp % 1000) as u16);
-        TimeSplitHourNano::new((), (), s, ms, us, ns)
+        TimeSplit::new_hour_nano((), (), s, ms, us, ns)
     }
 
     /// Returns the time code as `HH:MM:SS:MIL` or `MM:SS:MIL`.
@@ -195,21 +195,21 @@ mod tests {
     fn timecode_split_secs_f64() {
         let result = Timecode::split_secs_f64(3661.500);
         assert_eq!(8, size_of_val(&result)); //
-        assert_eq!(result, TimeSplitHourNano { h: 1, m: 1, s: 1, ms: 500, us: (), ns: () });
+        assert_eq!(result, TimeSplit::new_hour_nano(1, 1, 1, 500, (), ()));
     }
 
     #[test]
     fn timecode_split_nanos_u64() {
         let result = Timecode::split_nanos_u64(1_002_003_004);
         assert_eq!(12, size_of_val(&result));
-        assert_eq!(result, TimeSplitHourNano { h: (), m: (), s: 1, ms: 2, us: 3, ns: 4 });
+        assert_eq!(result, TimeSplit::new_hour_nano((), (), 1, 2, 3, 4));
     }
 
     #[test]
     fn timecode_split_nanos_u32() {
         let result = Timecode::split_nanos_u32(1_002_003);
         assert_eq!(8, size_of_val(&result));
-        assert_eq!(result, TimeSplitHourNano { h: (), m: (), s: 0, ms: 1, us: 2, ns: 3 });
+        assert_eq!(result, TimeSplit::new_hour_nano((), (), 0, 1, 2, 3));
     }
 
     #[test]
