@@ -3,18 +3,18 @@
 //! Splitting and decomposing time.
 //
 
-use crate::Duration;
+use crate::{Duration, ExtAny, _core::fmt};
 
-/// A full time split from years, down to nanoseconds.
+/// A full time split from years to nanoseconds.
 ///
 /// See also the related aliases:
-/// - [`TimeSplitYearNano`]`/`[`Norm`][TimeSplitYearNanoNorm],
+/// - [`TimeSplitNorm`][TimeSplitNorm],
 ///   [`TimeSplitYearDay`]`/`[`Norm`][TimeSplitYearDayNorm],
 ///   [`TimeSplitYearSec`]`/`[`Norm`][TimeSplitYearSecNorm],
 ///   [`TimeSplitHourSec`]`/`[`Norm`][TimeSplitHourSecNorm],
 ///   [`TimeSplitHourNano`]`/`[`Norm`][TimeSplitHourNanoNorm],
 ///   [`TimeSplitMilliNano`]`/`[`Norm`][TimeSplitMilliNanoNorm].
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct TimeSplit<Y, MO, D, H, M, S, MS, US, NS> {
     /// Years.
     pub y: Y,
@@ -38,11 +38,8 @@ pub struct TimeSplit<Y, MO, D, H, M, S, MS, US, NS> {
 
 /* aliases */
 
-/// A time split from years to nanoseconds.
-pub type TimeSplitYearNano<Y, MO, D, H, M, S, MS, US, NS> =
-    TimeSplit<Y, MO, D, H, M, S, MS, US, NS>;
 /// A time split from years to nanoseconds, normalized *(192b size, 152b payload)*.
-pub type TimeSplitYearNanoNorm = TimeSplit<u64, u8, u8, u8, u8, u8, u16, u16, u16>;
+pub type TimeSplitNorm = TimeSplit<u64, u8, u8, u8, u8, u8, u16, u16, u16>;
 
 /// A time split from years to days.
 pub type TimeSplitYearDay<Y, MO, D> = TimeSplit<Y, MO, D, (), (), (), (), (), ()>;
@@ -77,25 +74,9 @@ impl<Y, MO, D, H, M, S, MS, US, NS> TimeSplit<Y, MO, D, H, M, S, MS, US, NS> {
     pub const fn new(y: Y, mo: MO, d: D, h: H, m: M, s: S, ms: MS, us: US, ns: NS) -> Self {
         Self { y, mo, d, h, m, s, ms, us, ns }
     }
-
-    /// Aalias of [`Self::new`]. Returns a new [`TimeSplitYearNano`].
-    #[allow(clippy::too_many_arguments)]
-    pub const fn new_year_nano(
-        y: Y,
-        mo: MO,
-        d: D,
-        h: H,
-        m: M,
-        s: S,
-        ms: MS,
-        us: US,
-        ns: NS,
-    ) -> Self {
-        Self::new(y, mo, d, h, m, s, ms, us, ns)
-    }
 }
-impl TimeSplitYearNanoNorm {
-    /// Converts a `Duration` into a [`TimeSplitYearNano`].
+impl TimeSplitNorm {
+    /// Converts a `Duration` into a full [`TimeSplit`].
     ///
     /// It assumes non-leap years and 30-day months for simplicity in calendar calculations.
     pub const fn from_duration(duration: Duration) -> Self {
@@ -105,17 +86,14 @@ impl TimeSplitYearNanoNorm {
         let days_remaining = total_days % 365;
         let mo = (days_remaining / 30) as u8;
         let d = (days_remaining % 30) as u8;
-
         let h = ((secs % 86400) / 3600) as u8;
         let m = ((secs % 3600) / 60) as u8;
         let s = (secs % 60) as u8;
-
         let nanos = duration.subsec_nanos();
         let ms = (nanos / 1_000_000) as u16;
         let us = ((nanos % 1_000_000) / 1_000) as u16;
         let ns = (nanos % 1_000) as u16;
-
-        TimeSplitYearNano { y, mo, d, h, m, s, ms, us, ns }
+        TimeSplit { y, mo, d, h, m, s, ms, us, ns }
     }
 }
 
@@ -135,7 +113,6 @@ impl TimeSplitYearDayNorm {
         let days_rem = days % 365;
         let mo = (days_rem / 30) as u8;
         let d = (days_rem % 30) as u8;
-
         Self::new_year_day(y, mo, d)
     }
 }
@@ -157,11 +134,9 @@ impl TimeSplitYearSecNorm {
         let days_remaining = total_days % 365;
         let mo = (days_remaining / 30) as u8;
         let d = (days_remaining % 30) as u8;
-
         let h = ((secs % 86400) / 3600) as u8;
         let m = ((secs % 3600) / 60) as u8;
         let s = (secs % 60) as u8;
-
         Self::new_year_sec(y, mo, d, h, m, s)
     }
 }
@@ -218,13 +193,34 @@ impl TimeSplitHourNano<u64, u8, u8, u16, u16, u16> {
         let h = (secs % 86400) / 3600;
         let m = ((secs % 3600) / 60) as u8;
         let s = (secs % 60) as u8;
-
         let nanos = duration.subsec_nanos();
         let ms = (nanos / 1_000_000) as u16;
         let us = ((nanos % 1_000_000) / 1_000) as u16;
         let ns = (nanos % 1_000) as u16;
-
         Self::new_hour_nano(h, m, s, ms, us, ns)
+    }
+}
+
+#[rustfmt::skip]
+impl<Y, MO, D, H, M, S, MS, US, NS> fmt::Debug for TimeSplit<Y, MO, D, H, M, S, MS, US, NS>
+where
+    Y: 'static + fmt::Debug, MO: 'static + fmt::Debug, D: 'static + fmt::Debug,
+    H: 'static + fmt::Debug, M: 'static + fmt::Debug, S: 'static + fmt::Debug,
+    MS: 'static + fmt::Debug, US: 'static + fmt::Debug, NS: 'static + fmt::Debug,
+{
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let notime = ().type_of();
+        let mut debug_struct = f.debug_struct("TimeSplit");
+        if Y::type_id() != notime { debug_struct.field("y", &self.mo); }
+        if MO::type_id() != notime { debug_struct.field("mo", &self.mo); }
+        if D::type_id() != notime { debug_struct.field("d", &self.d); }
+        if H::type_id() != notime { debug_struct.field("h", &self.h); }
+        if M::type_id() != notime { debug_struct.field("m", &self.m); }
+        if S::type_id() != notime { debug_struct.field("s", &self.s); }
+        if MS::type_id() != notime { debug_struct.field("ms", &self.ms); }
+        if US::type_id() != notime { debug_struct.field("us", &self.us); }
+        if NS::type_id() != notime { debug_struct.field("ns", &self.ns); }
+        debug_struct.finish()
     }
 }
 
@@ -233,15 +229,23 @@ mod tests {
     use super::*;
 
     #[test]
+    fn split_debug() {
+        assert_eq![
+            "TimeSplit { h: 1, m: 2, s: 3 }",
+            &format!["{:?}", TimeSplit::new_hour_sec(1, 2, 3)]
+        ];
+    }
+
+    #[test]
     fn split_size() {
         assert_eq!(0, size_of::<TimeSplit<(), (), (), (), (), (), (), (), ()>>());
 
         /* normalized inner reprs */
 
+        assert_eq!(24, size_of::<TimeSplitNorm>()); // 5 bytes padded
         assert_eq!(16, size_of::<TimeSplitYearDayNorm>()); // 6 bytes padded
         assert_eq![16, size_of::<TimeSplitHourSecNorm>()]; // 6 bytes padded
         assert_eq![6, size_of::<TimeSplitMilliNanoNorm>()]; // 0 padding
-        assert_eq!(24, size_of::<TimeSplitYearNanoNorm>()); // 5 bytes padded:
         assert_eq!(16, size_of::<TimeSplitYearSecNorm>()); // 3 bytes padded
         assert_eq!(16, size_of::<TimeSplitHourNanoNorm>()); // 0 padding
     }
