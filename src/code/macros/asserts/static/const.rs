@@ -54,7 +54,7 @@ macro_rules! assert_const {
     /* private arms*/
 
         @build $x:expr, $($y:expr),+; $op:tt) => {
-        $crate::assert_const!($x $op $crate::capture_first!(expr $($y),+));
+        $crate::assert_const!($x $op $crate::code::capture_first!(expr $($y),+)); // keep code path
         $crate::assert_const!(@build $($y),+; $op);
     };
     // terminates recursion when there’s only one expression left.

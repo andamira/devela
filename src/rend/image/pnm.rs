@@ -7,7 +7,6 @@ use crate::rend::ImageError::FmtError;
 #[cfg(feature = "alloc")]
 use crate::text::String;
 use crate::{
-    code::iif,
     mem::bytes_from_bits,
     rend::{
         // color::*;

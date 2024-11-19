@@ -3,13 +3,11 @@
 //!
 //
 
-use crate::num::ExtFloatConst;
 #[cfg(_float_·)]
 #[allow(unused_imports)]
-use crate::num::{ExtFloat, Float};
-use crate::{doc_private, Angle, AngleDirection, AngleKind};
+use crate::{Angle, AngleDirection, AngleKind, ExtFloat, ExtFloatConst, Float};
 
-#[doc = doc_private!()]
+#[doc = crate::doc_private!()]
 /// impl `Angle` methods with a floating-point representation.
 ///
 /// # Macro arguments
