@@ -62,8 +62,9 @@ impl UnixTimeI64 {
     /// # Examples
     /// ```
     /// # use devela::sys::time::UnixTimeI64;
-    /// assert_eq![(1970, 1, 1, 0, 0, 1), UnixTimeI64::new(1).split().as_tuple()];
-    /// assert_eq![(1969, 12, 31, 23, 59, 59), UnixTimeI64::new(-1).split().as_tuple()];
+    /// assert_eq![(1970, 1, 1, 0, 0, 1), UnixTimeI64::new(1).split().to_tuple_y_s().unwrap()];
+    /// assert_eq![(1969, 12, 31, 23, 59, 59),
+    ///     UnixTimeI64::new(-1).split().to_tuple_y_s().unwrap()];
     /// ```
     // 72b
     pub const fn split(&self) -> TimeSplitYearSec<i32, u8, u8, u8, u8, u8> {
@@ -189,8 +190,9 @@ impl UnixTimeU32 {
     /// # Examples
     /// ```
     /// # use devela::sys::time::UnixTimeU32;
-    /// assert_eq![(1970, 1, 1, 0, 0, 1), UnixTimeU32::new(1).split().as_tuple()];
-    /// assert_eq![(2038, 1, 19, 3, 14, 7), UnixTimeU32::new(i32::MAX as u32).split().as_tuple()];
+    /// assert_eq![(1970, 1, 1, 0, 0, 1), UnixTimeU32::new(1).split().to_tuple_y_s().unwrap()];
+    /// assert_eq![(2038, 1, 19, 3, 14, 7),
+    ///     UnixTimeU32::new(i32::MAX as u32).split().to_tuple_y_s().unwrap()];
     /// ```
     pub const fn split(&self) -> TimeSplitYearSec<u16, u8, u8, u8, u8, u8> {
         let seconds_per_minute: u32 = 60;

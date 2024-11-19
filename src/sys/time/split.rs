@@ -201,6 +201,191 @@ impl TimeSplitHourNano<u64, u8, u8, u16, u16, u16> {
     }
 }
 
+/// # Structural introspection
+impl<Y, MO, D, H, M, S, MS, US, NS> TimeSplit<Y, MO, D, H, M, S, MS, US, NS> {
+    /// Indicates whether the [`y`][Self::y] field is enabled.
+    pub const Y: bool = size_of::<Y>() != 0;
+    /// Indicates whether the [`mo`][Self::mo] field is enabled.
+    pub const MO: bool = size_of::<MO>() != 0;
+    /// Indicates whether the [`d`][Self::d] field is enabled.
+    pub const D: bool = size_of::<D>() != 0;
+    /// Indicates whether the [`h`][Self::h] field is enabled.
+    pub const H: bool = size_of::<H>() != 0;
+    /// Indicates whether the [`m`][Self::m] field is enabled.
+    pub const M: bool = size_of::<M>() != 0;
+    /// Indicates whether the [`s`][Self::s] field is enabled.
+    pub const S: bool = size_of::<S>() != 0;
+    /// Indicates whether the [`ms`][Self::ms] field is enabled.
+    pub const MS: bool = size_of::<MS>() != 0;
+    /// Indicates whether the [`us`][Self::us] field is enabled.
+    pub const US: bool = size_of::<US>() != 0;
+    /// Indicates whether the [`ns`][Self::ns] field is enabled.
+    pub const NS: bool = size_of::<NS>() != 0;
+
+    /// Indicates whether the 3 fields from [`y`][Self::y] to [`d`][Self::d] are enabled.
+    pub const Y_D: bool = Self::Y && Self::MO && Self::D;
+    /// Indicates whether the 3 fields from [`h`][Self::h] to [`s`][Self::s] are enabled.
+    pub const H_S: bool = Self::H && Self::M && Self::S;
+    /// Indicates whether the 3 fields from [`ms`][Self::ms] to [`ns`][Self::ns] are enabled.
+    pub const MS_NS: bool = Self::MS && Self::US && Self::NS;
+
+    /// Indicates whether the 6 fields from [`y`][Self::y] to [`s`][Self::s] are enabled.
+    pub const Y_S: bool = Self::Y_D && Self::H_S;
+    /// Indicates whether the 6 fields from [`h`][Self::h] to [`ns`][Self::ns] are enabled.
+    pub const H_NS: bool = Self::H_S && Self::MS_NS;
+
+    /// Indicates whether all the 9 fields from [`y`][Self::y] to [`ns`][Self::ns] are enabled.
+    pub const Y_NS: bool = Self::Y_D && Self::H_S && Self::MS_NS;
+
+    /// Indicates whether *only* the 3 fields from [`y`][Self::y] to [`d`][Self::d] are enabled.
+    pub const IS_YEAR_DAY: bool = Self::Y_D && !Self::H_NS;
+    /// Indicates whether *only* the 3 fields from [`h`][Self::h] to [`s`][Self::s] are enabled.
+    pub const IS_HOUR_SEC: bool = Self::H_S && !Self::Y_D && !Self::MS_NS;
+    /// Indicates whether the 3 fields from [`ms`][Self::ms] to [`ns`][Self::ns] are enabled.
+    pub const IS_MILLI_NANO: bool = Self::MS_NS && !Self::Y_S;
+
+    /// Indicates whether *only* the 6 fields from [`y`][Self::y] to [`s`][Self::s] are enabled.
+    pub const IS_YEAR_SEC: bool = Self::Y_S && !Self::MS_NS;
+    /// Indicates whether *only* the 6 fields from [`h`][Self::h] to [`ns`][Self::ns] are enabled.
+    pub const IS_HOUR_NANO: bool = Self::H_NS && !Self::Y_D;
+
+    /// Indicates whether all the 9 fields from [`y`][Self::y] to [`ns`][Self::ns] are enabled.
+    pub const IS_YEAR_NANO: bool = Self::Y_NS;
+}
+
+/// # Instance introspection
+#[rustfmt::skip]
+impl<Y, MO, D, H, M, S, MS, US, NS> TimeSplit<Y, MO, D, H, M, S, MS, US, NS> {
+    /// Indicates whether the [`y`][Self::y] field is enabled.
+    pub const fn has_y(&self) -> bool { Self::Y }
+    /// Indicates whether the [`mo`][Self::mo] field is enabled.
+    pub const fn has_mo(&self) -> bool { Self::MO }
+    /// Indicates whether the [`d`][Self::d] field is enabled.
+    pub const fn has_d(&self) -> bool { Self::D }
+    /// Indicates whether the [`h`][Self::h] field is enabled.
+    pub const fn has_h(&self) -> bool { Self::H }
+    /// Indicates whether the [`s`][Self::s] field is enabled.
+    pub const fn has_s(&self) -> bool { Self::S }
+    /// Indicates whether the [`ms`][Self::ms] field is enabled.
+    pub const fn has_ms(&self) -> bool { Self::MS }
+    /// Indicates whether the [`us`][Self::us] field is enabled.
+    pub const fn has_us(&self) -> bool { Self::US }
+    /// Indicates whether the [`ns`][Self::ns] field is enabled.
+    pub const fn has_ns(&self) -> bool { Self::NS }
+
+    /// Indicates whether the 3 fields from [`y`][Self::y] to [`d`][Self::d] are enabled.
+    pub const fn has_y_d(&self) -> bool { Self::Y_D }
+    /// Indicates whether the 3 fields from [`h`][Self::h] to [`s`][Self::s] are enabled.
+    pub const fn has_h_s(&self) -> bool { Self::H_S }
+    /// Indicates whether the 3 fields from [`ms`][Self::ms] to [`ns`][Self::ns] are enabled.
+    pub const fn has_ms_ns(&self) -> bool { Self::MS_NS }
+
+    /// Indicates whether the 6 fields from [`y`][Self::y] to [`s`][Self::s] are enabled.
+    pub const fn has_y_s(&self) -> bool { Self::Y_S }
+    /// Indicates whether the 6 fields from [`h`][Self::h] to [`ns`][Self::ns] are enabled.
+    pub const fn has_h_ns(&self) -> bool { Self::H_NS }
+
+    /// Indicates whether all the 9 fields from [`y`][Self::y] to [`ns`][Self::ns] are enabled.
+    pub const fn has_y_ns(&self) -> bool { Self::Y_NS }
+
+    /// Indicates whether *only* the 3 fields from [`y`][Self::y] to [`d`][Self::d] are enabled.
+    pub const fn is_year_day(&self) -> bool { Self::IS_YEAR_DAY }
+    /// Indicates whether *only* the 3 fields from [`h`][Self::h] to [`s`][Self::s] are enabled.
+    pub const fn is_hour_sec(&self) -> bool { Self::IS_HOUR_SEC }
+    /// Indicates whether the 3 fields from [`ms`][Self::ms] to [`ns`][Self::ns] are enabled.
+    pub const fn is_milli_nano(&self) -> bool { Self::IS_MILLI_NANO }
+
+    /// Indicates whether *only* the 6 fields from [`y`][Self::y] to [`s`][Self::s] are enabled.
+    pub const fn is_year_sec(&self) -> bool { Self::IS_YEAR_SEC }
+    /// Indicates whether *only* the 6 fields from [`h`][Self::h] to [`ns`][Self::ns] are enabled.
+    pub const fn is_hour_nano(&self) -> bool { Self::IS_HOUR_NANO }
+
+    /// Indicates whether all the 9 fields from [`y`][Self::y] to [`ns`][Self::ns] are enabled.
+    pub const fn is_year_nano(&self) -> bool { Self::IS_YEAR_NANO }
+}
+
+#[rustfmt::skip]
+#[allow(clippy::if_then_some_else_none)]
+impl<Y, MO, D, H, M, S, MS, US, NS> TimeSplit<Y, MO, D, H, M, S, MS, US, NS> {
+    /// Returns a (9) tuple with all the elements.
+    pub fn as_tuple(self) -> (Y, MO, D, H, M, S, MS, US, NS) {
+        (self.y, self.mo, self.d, self.h, self.m, self.s, self.ms, self.us, self.ns)
+    }
+    /// Returns a (9) tuple with all the elements.
+    pub const fn to_tuple(&self) -> (Y, MO, D, H, M, S, MS, US, NS)
+        where Y: Copy, MO: Copy, D: Copy, H: Copy, M: Copy, S: Copy, MS: Copy, US: Copy, NS: Copy {
+        (self.y, self.mo, self.d, self.h, self.m, self.s, self.ms, self.us, self.ns)
+    }
+
+    /// Returns a (3) tuple if the 3 fields from [`y`][Self::y] to [`d`][Self::d] are enabled.
+    pub fn as_tuple_y_d(self) -> Option<(Y, MO, D)> {
+        if self.has_y_d() { Some((self.y, self.mo, self.d)) } else { None }
+    }
+    /// Returns a (3) tuple if the 3 fields from [`y`][Self::y] to [`d`][Self::d] are enabled.
+    pub const fn to_tuple_y_d(&self) -> Option<(Y, MO, D)>
+        where Y: Copy, MO: Copy, D: Copy {
+        if self.has_y_d() { Some((self.y, self.mo, self.d)) } else { None }
+    }
+
+    /// Returns a (3) tuple if the 3 fields from [`h`][Self::h] to [`s`][Self::s] are enabled.
+    pub fn as_tuple_h_s(self) -> Option<(H, M, S)> {
+        if self.has_h_s() { Some((self.h, self.m, self.s)) } else { None }
+    }
+    /// Returns a (3) tuple if the 3 fields from [`h`][Self::h] to [`s`][Self::s] are enabled.
+    pub const fn to_tuple_h_s(&self) -> Option<(H, M, S)>
+        where H: Copy, M: Copy, S: Copy {
+        if self.has_h_s() { Some((self.h, self.m, self.s)) } else { None }
+    }
+
+    /// Returns a (3) tuple if the 3 fields from [`ms`][Self::ms] to [`ns`][Self::ns] are enabled.
+    pub fn as_tuple_ms_ns(self) -> Option<(MS, US, NS)> {
+        if self.has_ms_ns() { Some((self.ms, self.us, self.ns)) } else { None }
+    }
+    /// Returns a (3) tuple if the 3 fields from [`ms`][Self::ms] to [`ns`][Self::ns] are enabled.
+    pub const fn to_tuple_ms_ns(&self) -> Option<(MS, US, NS)>
+        where MS: Copy, US: Copy, NS: Copy {
+        if self.has_ms_ns() { Some((self.ms, self.us, self.ns)) } else { None }
+    }
+
+    /// Returns a (6) tuple if the 6 fields from [`y`][Self::y] to [`s`][Self::s] are enabled.
+    pub fn as_tuple_y_s(self) -> Option<(Y, MO, D, H, M, S)> {
+        if self.has_y_s() { Some((self.y, self.mo, self.d, self.h, self.m, self.s)) } else { None }
+    }
+    /// Returns a (6) tuple if the 6 fields from [`y`][Self::y] to [`s`][Self::s] are enabled.
+    pub const fn to_tuple_y_s(&self) -> Option<(Y, MO, D, H, M, S)>
+        where Y: Copy, MO: Copy, D: Copy, H: Copy, M: Copy, S: Copy {
+        if self.has_y_s() { Some((self.y, self.mo, self.d, self.h, self.m, self.s)) } else { None }
+    }
+
+    /// Returns a (6) tuple if the 6 fields from [`h`][Self::h] to [`ns`][Self::ns] are enabled.
+    pub fn as_tuple_h_ns(self) -> Option<(H, M, S, MS, US, NS)> {
+        if self.has_h_ns() { Some((self.h, self.m, self.s, self.ms, self.us, self.ns))
+        } else { None }
+    }
+    /// Returns a (6) tuple if the 6 fields from [`h`][Self::h] to [`ns`][Self::ns] are enabled.
+    pub const fn to_tuple_h_ns(&self) -> Option<(H, M, S, MS, US, NS)>
+        where H: Copy, M: Copy, S: Copy, MS: Copy, US: Copy, NS: Copy {
+        if self.has_h_ns() { Some((self.h, self.m, self.s, self.ms, self.us, self.ns))
+        } else { None }
+    }
+
+    /// Returns a (9) tuple if the 9 fields from [`y`][Self::y] to [`ns`][Self::ns] are enabled.
+    #[allow(clippy::type_complexity)]
+    pub fn as_tuple_y_ns(self) -> Option<(Y, MO, D, H, M, S, MS, US, NS)> {
+        if self.has_y_ns() {
+            Some((self.y, self.mo, self.d, self.h, self.m, self.s, self.ms, self.us, self.ns))
+        } else { None }
+    }
+    /// Returns a (9) tuple if the 9 fields from [`y`][Self::y] to [`ns`][Self::ns] are enabled.
+    #[allow(clippy::type_complexity)]
+    pub const fn to_tuple_y_ns(&self) -> Option<(Y, MO, D, H, M, S, MS, US, NS)>
+        where Y: Copy, MO: Copy, D: Copy, H: Copy, M: Copy, S: Copy, MS: Copy, US: Copy, NS: Copy {
+        if self.has_y_ns() {
+            Some((self.y, self.mo, self.d, self.h, self.m, self.s, self.ms, self.us, self.ns))
+        } else { None }
+    }
+}
+
 #[rustfmt::skip]
 impl<Y, MO, D, H, M, S, MS, US, NS> fmt::Debug for TimeSplit<Y, MO, D, H, M, S, MS, US, NS>
 where
