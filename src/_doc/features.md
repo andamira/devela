@@ -56,18 +56,20 @@ Single modules:
 - [`mem`]
   - `mem_bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
-    - [`num_rand`]: enables random number generators.
+    - [`geom`]: geometry, linear algebra.
+    - [`rand`]: random number generators.
+    - [`wave`]: wavelets.
 - [`rend`]
-  - [`rend_audio`]
-  - [`rend_color`]
-  - [`rend_draw`]
-  - [`rend_font`]
-  - [`rend_image`]
-  - [`rend_layout`]
+  - [`audio`]
+  - [`color`]
+  - [`draw`]
+  - [`font`]
+  - [`image`]
+  - [`layout`]
 - [`sys`]: enables all the sys subfeatures (except platform-specific).
   - [`time`]: enables time-related functionality.
 - [`text`]
-- [`work`]: enables `work` functionality.
+- [`work`]: enables work-related functionality.
 
 Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 `_mem_·`, `_num_·`.
@@ -76,15 +78,17 @@ Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 [`data`]: crate::data
 [`error`]: mod@crate::error
 [`rend`]: mod@crate::rend
-[`rend_audio`]: crate::rend::audio
-[`rend_color`]: crate::rend::color
-[`rend_draw`]: crate::rend::draw
-[`rend_font`]: crate::rend::font
-[`rend_image`]: crate::rend::image
-[`rend_layout`]: crate::rend::layout
+  [`audio`]: crate::rend::audio
+  [`color`]: crate::rend::color
+  [`draw`]: crate::rend::draw
+  [`font`]: crate::rend::font
+  [`image`]: crate::rend::image
+  [`layout`]: crate::rend::layout
 [`mem`]: crate::mem
 [`num`]: crate::num
-[`num_rand`]: crate::num::rand
+  [`geom`]: crate::num::geom
+  [`rand`]: crate::num::rand
+  [`wave`]: crate::num::wave
 [`sys`]: crate::sys
   [`time`]: crate::sys::time
 [`text`]: crate::text

@@ -101,20 +101,20 @@ mem = [
 	]
 	mem_bit = [] # BitSize
 num = [
-	"num_geom", "num_rand", "num_wave",
+	"geom", "rand", "wave",
 	]
-	num_geom = [] # geometry, linear algebra
-	num_rand = [] # random number generators
-	num_wave = [] # wavelets
+	geom = [] # geometry, linear algebra
+	rand = [] # random number generators
+	wave = [] # wavelets
 rend = [
-	"rend_audio", "rend_color", "rend_draw", "rend_font", "rend_image", "rend_layout",
+	"audio", "color", "draw", "font", "image", "layout",
 	]
-	rend_audio = []
-	rend_draw = []
-	rend_color = []
-	rend_font = []
-	rend_image = []
-	rend_layout = []
+	audio = []
+	draw = []
+	color = []
+	font = []
+	image = []
+	layout = []
 sys = ["time"]
 	# os
 		linux = [] # sys::os::linux functionality

@@ -18,49 +18,49 @@ items! {
     pub use error::*;
 }
 
-#[cfg(feature = "rend_audio")]
+#[cfg(feature = "audio")]
 items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_audio")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "audio")))]
     pub mod audio;
     #[doc(no_inline)]
     #[allow(unused_imports)]
     pub use audio::all::*;
 }
-#[cfg(feature = "rend_color")]
+#[cfg(feature = "color")]
 items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_color")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "color")))]
     pub mod color;
     #[doc(no_inline)]
     #[allow(unused_imports)]
     pub use color::all::*;
 }
-#[cfg(feature = "rend_draw")]
+#[cfg(feature = "draw")]
 items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_draw")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "draw")))]
     pub mod draw;
     #[doc(no_inline)]
     #[allow(unused_imports)]
     pub use draw::all::*;
 }
-#[cfg(feature = "rend_font")]
+#[cfg(feature = "font")]
 items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_font")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "font")))]
     pub mod font;
     #[doc(no_inline)]
     #[allow(unused_imports)]
     pub use font::all::*;
 }
-#[cfg(feature = "rend_image")]
+#[cfg(feature = "image")]
 items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_image")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "image")))]
     pub mod image;
     #[doc(no_inline)]
     #[allow(unused_imports)]
     pub use image::all::*;
 }
-#[cfg(feature = "rend_layout")]
+#[cfg(feature = "layout")]
 items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rend_layout")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "layout")))]
     pub mod layout;
     #[doc(no_inline)]
     #[allow(unused_imports)]
@@ -75,21 +75,21 @@ pub(crate) mod all {
     pub use super::error::*;
 
     #[doc(inline)]
-    #[cfg(feature = "rend_audio")]
+    #[cfg(feature = "audio")]
     pub use super::audio::all::*;
     #[doc(inline)]
-    #[cfg(feature = "rend_color")]
+    #[cfg(feature = "color")]
     pub use super::color::all::*;
     #[doc(inline)]
-    #[cfg(feature = "rend_draw")]
+    #[cfg(feature = "draw")]
     pub use super::draw::all::*;
     #[doc(inline)]
-    #[cfg(feature = "rend_font")]
+    #[cfg(feature = "font")]
     pub use super::font::all::*;
     #[doc(inline)]
-    #[cfg(feature = "rend_image")]
+    #[cfg(feature = "image")]
     pub use super::image::all::*;
     #[doc(inline)]
-    #[cfg(feature = "rend_layout")]
+    #[cfg(feature = "layout")]
     pub use super::layout::all::*;
 }

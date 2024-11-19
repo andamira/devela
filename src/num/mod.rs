@@ -46,25 +46,25 @@ items! {
     pub use {frac::*, int::*};
 }
 
-#[cfg(feature = "num_geom")]
+#[cfg(feature = "geom")]
 items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_geom")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "geom")))]
     pub mod geom;
     #[doc(no_inline)]
     pub use geom::all::*;
 }
 
-#[cfg(feature = "num_rand")]
+#[cfg(feature = "rand")]
 items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_rand")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
     pub mod rand;
     #[doc(no_inline)]
     pub use rand::all::*;
 }
 
-#[cfg(feature = "num_wave")]
+#[cfg(feature = "wave")]
 items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "num_wave")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "wave")))]
     pub mod wave;
     #[doc(no_inline)]
     pub use wave::all::*;
@@ -85,15 +85,15 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[allow(unused_imports)]
-    #[cfg(feature = "num_geom")]
+    #[cfg(feature = "geom")]
     pub use super::geom::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "num_rand")]
+    #[cfg(feature = "rand")]
     #[allow(unused_imports)]
     pub use super::rand::all::*;
 
     #[doc(inline)]
-    #[cfg(feature = "num_wave")]
+    #[cfg(feature = "wave")]
     pub use super::wave::*;
 }

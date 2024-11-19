@@ -10,22 +10,22 @@ use crate::code::reexport;
 /* from other modules */
 
 #[doc(inline)]
-#[cfg(feature = "rend_audio")]
+#[cfg(feature = "audio")]
 pub use crate::rend::{AudioError, AudioResult};
 #[doc(inline)]
-#[cfg(feature = "rend_color")]
+#[cfg(feature = "color")]
 pub use crate::rend::{ColorError, ColorResult};
 #[doc(inline)]
-#[cfg(feature = "rend_draw")]
+#[cfg(feature = "draw")]
 pub use crate::rend::{DrawError, DrawResult};
 #[doc(inline)]
-#[cfg(feature = "rend_font")]
+#[cfg(feature = "font")]
 pub use crate::rend::{FontError, FontResult};
 #[doc(inline)]
-#[cfg(feature = "rend_image")]
+#[cfg(feature = "image")]
 pub use crate::rend::{ImageError, ImageResult};
 #[doc(inline)]
-#[cfg(feature = "rend_layout")]
+#[cfg(feature = "layout")]
 pub use crate::rend::{LayoutError, LayoutResult};
 #[doc(inline)]
 #[cfg(_rend_·)]
