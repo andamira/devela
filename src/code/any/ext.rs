@@ -2,9 +2,7 @@
 //
 //!
 //
-// MAYBE:
 // - WAIT: (const) [type_name](https://github.com/rust-lang/rust/issues/63084)
-// - WAIT: [TypeId equality unsoundness](https://github.com/rust-lang/rust/issues/97156)
 // - WAIT: [trait_upcasting](https://github.com/rust-lang/rust/issues/65991)
 
 use core::any::{type_name_of_val, Any, TypeId};
@@ -26,14 +24,27 @@ pub trait ExtAny: Any + Sealed {
 
     /* type */
 
+    /// Returns the `TypeId` of `Self`.
+    ///
+    /// # Example
+    /// ```
+    /// use devela::ExtAny;
+    ///
+    /// let x = 5;
+    /// assert_eq!(x.type_of(), i32::type_id());
+    /// ```
+    #[inline]
+    #[must_use]
+    fn type_id() -> TypeId { TypeId::of::<Self>() }
+
     /// Returns the `TypeId` of `self`.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// use devela::code::{ExtAny, TypeId};
+    /// use devela::ExtAny;
     ///
-    ///  let x = 5;
-    ///  assert_eq!(x.type_of(), TypeId::of::<i32>());
+    /// let x = 5;
+    /// assert_eq!(x.type_of(), i32::type_id());
     /// ```
     #[inline]
     #[must_use]
@@ -41,7 +52,7 @@ pub trait ExtAny: Any + Sealed {
 
     /// Returns the type name of `self`.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use devela::code::ExtAny;
     ///
@@ -54,9 +65,9 @@ pub trait ExtAny: Any + Sealed {
 
     /// Returns `true` if `Self` is of type `T`.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// use devela::code::ExtAny;
+    /// use devela::ExtAny;
     ///
     /// let val = 5;
     /// assert!(val.type_is::<i32>());
@@ -76,9 +87,9 @@ pub trait ExtAny: Any + Sealed {
 
     /// Upcasts `&self` as `&dyn Any`.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// use devela::code::{Any, ExtAny};
+    /// use devela::{Any, ExtAny};
     ///
     /// let val = 5;
     /// let any: &dyn Any = &val as &dyn Any;
@@ -90,9 +101,9 @@ pub trait ExtAny: Any + Sealed {
 
     /// Upcasts `&mut self` as `&mut dyn Any`.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// use devela::code::{Any, ExtAny};
+    /// use devela::{Any, ExtAny};
     ///
     /// let mut x = 5;
     /// let any: &mut dyn Any = x.as_any_mut();
@@ -104,9 +115,9 @@ pub trait ExtAny: Any + Sealed {
 
     /// Upcasts `Box<self>` as `Box<dyn Any>`.
     ///
-    /// # Examples
+    /// # Example
     /// ```
-    /// use devela::code::{Any, ExtAny};
+    /// use devela::{Any, ExtAny};
     ///
     /// let x = Box::new(5);
     /// let any: Box<dyn Any> = x.as_any_box();
@@ -124,7 +135,7 @@ pub trait ExtAny: Any + Sealed {
     /// This method is only needed when not dealing directly with `dyn Any` trait objects,
     /// since it's [already implemented for `dyn Any`](Any#method.downcast_ref).
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use core::fmt::Display;
     /// use devela::{Any, ExtAny};
