@@ -3,10 +3,8 @@
 //! trait ExtStr
 //
 
-#[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-use core::str::from_utf8;
-#[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-use core::str::from_utf8_unchecked;
+#[allow(unused_imports, reason = "complementary")]
+use crate::{str_from_utf8, str_from_utf8_unchecked};
 
 use crate::{code::iif, text::AsciiChar};
 
@@ -87,11 +85,11 @@ impl ExtStr for str {
         }
 
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return from_utf8(&buffer[..index]).unwrap();
+        return str_from_utf8(&buffer[..index]).unwrap();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: since self is a valid &str, checks are unneeded.
         unsafe {
-            from_utf8_unchecked(&buffer[..index])
+            str_from_utf8_unchecked(&buffer[..index])
         }
     }
 
@@ -134,10 +132,10 @@ impl ExtStr for str {
             }
 
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            return from_utf8(&buffer[..length]).unwrap();
+            return str_from_utf8(&buffer[..length]).unwrap();
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: TODO
-            return unsafe { from_utf8_unchecked(&buffer[..length]) };
+            return unsafe { str_from_utf8_unchecked(&buffer[..length]) };
         }
     }
 }

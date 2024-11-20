@@ -3,13 +3,9 @@
 //! Non-allocating formatting backed by a buffer.
 //
 
-use crate::iif;
-#[allow(unused_imports)]
-use core::{
-    cmp::min,
-    fmt,
-    str::{from_utf8, from_utf8_unchecked},
-};
+use crate::{fmt_write, iif, FmtArguments, FmtError, FmtResult, TextWrite, _core::cmp::min};
+#[allow(unused_imports, reason = "complementary")] // NOTE: `expect` requires *all* to lint
+use crate::{str_from_utf8, str_from_utf8_unchecked};
 
 /// Returns a formatted [`str`] slice backed by a buffer, `no_std` compatible.
 ///
@@ -48,39 +44,36 @@ pub use format_buf;
 ///
 /// # Features
 /// Makes use of the `unsafe_str` feature if enabled.
-pub fn format_buf_args<'a>(buf: &'a mut [u8], arg: fmt::Arguments) -> Result<&'a str, fmt::Error> {
+pub fn format_buf_args<'a>(buf: &'a mut [u8], arg: FmtArguments) -> Result<&'a str, FmtError> {
     let mut w = WriteTo::new(buf);
-    fmt::write(&mut w, arg)?;
+    fmt_write(&mut w, arg)?;
     w.as_str()
 }
 
+#[doc = crate::doc_private!()]
 #[derive(Debug)]
 struct WriteTo<'a> {
     buf: &'a mut [u8],
     len: usize,
 }
+#[rustfmt::skip]
 impl<'a> WriteTo<'a> {
-    fn new(buf: &'a mut [u8]) -> Self {
-        WriteTo { buf, len: 0 }
-    }
-    fn as_str(self) -> Result<&'a str, fmt::Error> {
+    fn new(buf: &'a mut [u8]) -> Self { WriteTo { buf, len: 0 } }
+    fn as_str(self) -> Result<&'a str, FmtError> {
         if self.len <= self.buf.len() {
-            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            {
-                // SAFETY: the buffer is always filled from a previous &str
-                Ok(unsafe { from_utf8_unchecked(&self.buf[..self.len]) })
-            }
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            {
-                from_utf8(&self.buf[..self.len]).map_err(|_| fmt::Error)
-            }
+            { str_from_utf8(&self.buf[..self.len]).map_err(|_| FmtError) }
+            #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
+            // SAFETY: the buffer is always filled from a previous &str
+            { Ok(unsafe { str_from_utf8_unchecked(&self.buf[..self.len]) }) }
         } else {
-            Err(fmt::Error)
+            Err(FmtError)
         }
     }
 }
-impl fmt::Write for WriteTo<'_> {
-    fn write_str(&mut self, s: &str) -> fmt::Result {
+impl TextWrite for WriteTo<'_> {
+    fn write_str(&mut self, s: &str) -> FmtResult {
+        // IMPROVE
         let rem = &mut self.buf[self.len..];
         let raw_s = s.as_bytes();
         let num = min(raw_s.len(), rem.len());
@@ -88,6 +81,6 @@ impl fmt::Write for WriteTo<'_> {
         rem[..num].copy_from_slice(&raw_s[..num]);
         self.len += num;
 
-        iif![num < raw_s.len(); Err(fmt::Error); Ok(())]
+        iif![num < raw_s.len(); Err(FmtError); Ok(())]
     }
 }
