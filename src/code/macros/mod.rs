@@ -19,13 +19,12 @@ mod deprecate; // deprecate_feature!
 mod iif; // iif!
 mod ident; // ident_const_index!
 mod items; // items!, sf!
-mod namespace; // namespace_fns!
 mod paste; // paste! wrapped for docs
 mod r#const; // CONST!
 #[allow(unused_imports)]
 pub use {
-    asserts::*, capture::*, cdbg::*, cfor::*, deprecate::*, ident::*, iif::*, items::*,
-    namespace::*, paste::*, r#const::*,
+    asserts::*, capture::*, cdbg::*, cfor::*, deprecate::*, ident::*, iif::*, items::*, paste::*,
+    r#const::*,
 };
 
 pub(crate) mod all {
@@ -33,6 +32,6 @@ pub(crate) mod all {
     #[allow(unused_imports)]
     pub use super::{
         asserts::*, capture::*, cdbg::*, cfor::*, deprecate::*, ident::*, iif::*, items::*,
-        namespace::*, paste::*, r#const::*,
+        paste::*, r#const::*,
     };
 }
