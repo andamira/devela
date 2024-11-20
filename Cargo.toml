@@ -54,9 +54,9 @@ publish = true
 # - ["_name"]: Hidden extra capability features.
 # - ["__name"]: Miscellaneous maintenance features.
 #
-# Files:
+# Notes:
 # - Features are in sync with build/features.rs & src/_doc/features.md.
-# - We can use the utils/features.sh script to list and count features.
+# - List and count features with the utils/manifest_features.sh script.
 
 
 #* Miscellaneous features *#
