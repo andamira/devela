@@ -15,14 +15,22 @@ reexport! { rust: alloc,
     doc: "Creates a String using interpolation of runtime expressions.",
     format
 }
+reexport! { rust: core,
+    doc: "Writes formatted data into a buffer.",
+    write
+}
+reexport! { rust: core,
+    doc: "Writes formatted data into a buffer, with a newline appended.",
+    writeln
+}
 
 /* functions */
 
-reexport! { rust: alloc,
+reexport! { rust: alloc::fmt,
     doc: "Takes an [`FmtArguments`] struct and returns the resulting formatted string.",
     @format as fmt_format
 }
-reexport! { rust: core,
+reexport! { rust: core::fmt,
     doc: "Takes an output stream, and an [`FmtArguments`] struct.",
     @write as fmt_write
 }
@@ -79,6 +87,7 @@ reexport! { rust: core::fmt,
 
 /* aliases */
 
+// NOTE it defines T = ()
 reexport! { rust: core::fmt,
     doc: "The type returned by formatter methods.",
     @Result as FmtResult
