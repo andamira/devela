@@ -7,7 +7,7 @@
 use crate::code::{impl_cdef, reexport};
 
 impl_cdef!["" => &str];
-// WAIT: [const_str_from_utf8_unchecked_mut](https://github.com/rust-lang/rust/issues/91005)
+// WAIT:1.83 [const_str_from_utf8_unchecked_mut](https://github.com/rust-lang/rust/pull/131177)
 // #[cfg(feature = "unsafe_str")]
 // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
 // impl ConstDefault for &mut str {
@@ -25,8 +25,32 @@ pub use crate::sys::ffi::CString;
 #[cfg(feature = "std")]
 crate::items! { pub use crate::sys::ffi::{OsStr, OsString}; }
 
-/* core, alloc */
+/* core */
 
+reexport! { rust: core::str,
+    doc: "Converts a slice of bytes to a string slice.",
+    @from_utf8 as str_from_utf8
+}
+reexport! { rust: core::str,
+    doc: "Converts a mutable slice of bytes to a mutable string slice",
+    @from_utf8_mut as str_from_utf8_mut
+}
+reexport! { rust: core::str,
+    doc: "Converts a slice of bytes to a string slice without checking valid UTF-8.",
+    @from_utf8_unchecked as str_from_utf8_unchecked
+}
+reexport! { rust: core::str,
+    doc:
+        "Converts a mutable slice of bytes to a mutable string slice without checking valid UTF-8.",
+    @from_utf8_unchecked_mut as str_from_utf8_unchecked_mut
+}
+
+/* alloc */
+
+reexport! { rust: alloc::str,
+    doc: "Converts a boxed slice of bytes to a boxed string slice without checking valid UTF-8.",
+    @from_boxed_utf8_unchecked as str_from_boxed_utf8_unchecked
+}
 reexport! { rust: alloc::string,
     doc: "A UTF-8–encoded, growable string.",
     String
