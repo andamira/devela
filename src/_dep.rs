@@ -45,6 +45,9 @@ reexport! { optional_crate (unsafe) "dep_hashbrown", "hashbrown", hashbrown,
     doc: "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`.",
     features: "alloc"
 }
+reexport! { optional_crate (safe) "dep_jiff", "jiff", jiff,
+    doc: "A high level datetime library that is secure and performant."
+}
 reexport! { optional_crate (unsafe) "dep_libm", "libm", libm,
     doc: "A port of [`MUSL`](https://musl.libc.org/)'s libm to Rust."
 }
