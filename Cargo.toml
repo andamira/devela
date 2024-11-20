@@ -187,7 +187,7 @@ nightly = [ # sync with src/lib.rs
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 	nightly_simd = []
-	# WAIT: https://releases.rs/ ; See: ./tools/release_dates.rs
+	# WAIT: https://releases.rs/ ; See: ./utils/release_dates.rs
 	nightly_stable = [ # a selection of nightly features that will become stable soon:
 		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"]
 		nightly_stable_next1 = [] # 1.83
@@ -434,7 +434,7 @@ _docs_max = [ # the maximum capabities relevant for documentation
 # The names are prefixed with `dep_`, and don't have dashes.
 # They are associated to optional dependencies and groups of modules.
 #
-# It is in sync with ./tools/check.rs::DEP_ALL and build/features.rs
+# It is in sync with ./utils/check.rs::DEP_ALL and build/features.rs
 #
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
