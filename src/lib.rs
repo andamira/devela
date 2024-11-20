@@ -1,6 +1,6 @@
 // devela::lib
 //
-//! A cohesive, multi-disciplinary development layer.
+//! A cohesive development layer.
 //
 
 //* global config *//

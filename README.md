@@ -9,7 +9,7 @@
 [![Files](https://tokei.rs/b1/github/andamira/devela?category=files)](https://github.com/andamira/devela/tree/main/)
 ---
 
-A meta-cohesive development layer.
+*A cohesive development layer.*
 
 Devela is a project shaped by the search for clarity and flow,
 aiming to create an enduring foundation.
@@ -53,10 +53,30 @@ For detailed information about each module, see the
 [`all`]: https://docs.rs/devela/latest/devela/all/index.html
 
 ### Dependencies
-The features that enable a dependency are prefixed with `dep_` and dashes are
-replaced with underscores. For example, to enable the `portable-atomic` crate
-you have to enable the `dep_portable_atomic` feature and it will be available
-in the `crate::_dep::portable_atomic` module.
+Features that enable an optional dependency are prefixed with `dep_`, replacing
+dashes with underscores. For example, for the `x-y` crate you'll have to enable
+the `dep_x_y` feature, and it will become available under `crate::_dep::x_y`.
+
+There are currently 18 optional dependencies:
+[`atomic`](https://crates.io/crates/atomic),
+[`bytemuck`](https://crates.io/crates/bytemuck),
+[`const-str`](https://crates.io/crates/const-str),
+[`hashbrown`](https://crates.io/crates/hashbrown),
+[`jiff`](https://crates.io/crates/jiff),
+[`libm`](https://crates.io/crates/libm),
+[`log`](https://crates.io/crates/log),
+[`macroquad`](https://crates.io/crates/macroquad),
+[`memchr`](https://crates.io/crates/memchr),
+[`miniquad`](https://crates.io/crates/miniquad),
+[`portable-atomic`](https://crates.io/crates/portable-atomic),
+[`rand_core`](https://crates.io/crates/rand_core),
+[`rayon`](https://crates.io/crates/rayon),
+[`rodio`](https://crates.io/crates/rodio),
+[`tinyaudio`](https://crates.io/crates/tinyaudio),
+[`unicode-segmentation`](https://crates.io/crates/unicode-segmentation),
+[`unicode-width`](https://crates.io/crates/unicode-width),
+[`wide`](https://crates.io/crates/wide).
+
 
 ## Status
 This project is currently in an experimental stage of development.
