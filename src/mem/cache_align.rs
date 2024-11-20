@@ -3,9 +3,10 @@
 // This is derived work from the `CachePadded` struct in the
 // [crossbeam-utils](https://crates.io/crates/crossbeam-utils/0.8.20) crate,
 // including the following modifications:
+// - rename to CacheAlign.
 // - add missing attributes.
 // - add fn into_inner_copy.
-// - add const ALIGNMENT.
+// - add const ALIGN.
 // - bound `unsafe` use.
 // - misc. refactor.
 
@@ -14,7 +15,7 @@
 /// In concurrent programming, sometimes it is desirable to make sure commonly accessed pieces of
 /// data are not placed into the same cache line. Updating an atomic value invalidates the whole
 /// cache line it belongs to, which makes the next access to the same cache line slower for other
-/// CPU cores. Use `CachePadded` to ensure updating one piece of data doesn't invalidate other
+/// CPU cores. Use `CacheAlign` to ensure updating one piece of data doesn't invalidate other
 /// cached data.
 ///
 /// # Size and alignment
@@ -30,16 +31,16 @@
 /// prefetcher is pulling pairs of 64-byte cache lines at a time, so we pessimistically assume that
 /// cache lines are 128 bytes long.
 ///
-/// The size of `CachePadded<T>` is the smallest multiple of N bytes large enough to accommodate
+/// The size of `CacheAlign<T>` is the smallest multiple of N bytes large enough to accommodate
 /// a value of type `T`.
 ///
-/// The alignment of `CachePadded<T>` is the maximum of N bytes and the alignment of `T`.
+/// The alignment of `CacheAlign<T>` is the maximum of N bytes and the alignment of `T`.
 ///
 /// # Examples
 /// Alignment and padding:
 /// ```
-/// # use devela::CachePadded;
-/// let array = [CachePadded::new(1i8), CachePadded::new(2i8)];
+/// # use devela::CacheAlign;
+/// let array = [CacheAlign::new(1i8), CacheAlign::new(2i8)];
 /// let addr1 = &*array[0] as *const i8 as usize;
 /// let addr2 = &*array[1] as *const i8 as usize;
 ///
@@ -52,10 +53,10 @@
 /// different cache lines so that concurrent threads pushing and popping elements don't invalidate
 /// each other's cache lines:
 /// ```
-/// # use devela::{CachePadded, AtomicUsize};
+/// # use devela::{CacheAlign, AtomicUsize};
 /// struct Queue<T> {
-///     head: CachePadded<AtomicUsize>,
-///     tail: CachePadded<AtomicUsize>,
+///     head: CacheAlign<AtomicUsize>,
+///     tail: CacheAlign<AtomicUsize>,
 ///     buffer: *mut T,
 /// }
 /// ```
@@ -140,12 +141,12 @@
     repr(align(64))
 )]
 #[derive(Clone, Copy, Default, Hash, PartialEq, Eq)]
-pub struct CachePadded<T> {
+pub struct CacheAlign<T> {
     value: T,
 }
 
 #[rustfmt::skip]
-impl<T> CachePadded<T> {
+impl<T> CacheAlign<T> {
     /// The alignment of a cache line in the current platform.
     pub const ALIGN: usize = align_of::<Self>();
 
@@ -153,18 +154,18 @@ impl<T> CachePadded<T> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::CachePadded;
-    /// let padded_value = CachePadded::new(1);
+    /// # use devela::CacheAlign;
+    /// let padded_value = CacheAlign::new(1);
     /// ```
     #[inline]
-    pub const fn new(t: T) -> CachePadded<T> { CachePadded::<T> { value: t } }
+    pub const fn new(t: T) -> CacheAlign<T> { CacheAlign::<T> { value: t } }
 
     /// Returns the inner value.
     ///
     /// # Examples
     /// ```
-    /// # use devela::CachePadded;
-    /// let padded_value = CachePadded::new(7);
+    /// # use devela::CacheAlign;
+    /// let padded_value = CacheAlign::new(7);
     /// let value = padded_value.into_inner();
     /// assert_eq!(value, 7);
     /// ```
@@ -178,34 +179,34 @@ impl<T> CachePadded<T> {
 
 #[rustfmt::skip]
 mod impls {
-    use crate::{CachePadded, Debug, Deref, DerefMut, Display, FmtResult, Formatter};
+    use crate::{CacheAlign, Debug, Deref, DerefMut, Display, FmtResult, Formatter};
 
-    impl<T> From<T> for CachePadded<T> {
-        fn from(t: T) -> Self { CachePadded::new(t) }
+    impl<T> From<T> for CacheAlign<T> {
+        fn from(t: T) -> Self { CacheAlign::new(t) }
     }
-    impl<T> Deref for CachePadded<T> {
+    impl<T> Deref for CacheAlign<T> {
         type Target = T;
         fn deref(&self) -> &T { &self.value }
     }
-    impl<T> DerefMut for CachePadded<T> {
+    impl<T> DerefMut for CacheAlign<T> {
         fn deref_mut(&mut self) -> &mut T { &mut self.value }
     }
-    impl<T: Debug> Debug for CachePadded<T> {
+    impl<T: Debug> Debug for CacheAlign<T> {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-            f.debug_struct("CachePadded")
+            f.debug_struct("CacheAlign")
                 .field("align", &Self::ALIGN)
                 .field("value", &self.value).finish()
         }
     }
-    impl<T: Display> Display for CachePadded<T> {
+    impl<T: Display> Display for CacheAlign<T> {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             Display::fmt(&self.value, f)
         }
     }
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
-    unsafe impl<T: Send> Send for CachePadded<T> {}
+    unsafe impl<T: Send> Send for CacheAlign<T> {}
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_sync"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_sync")))]
-    unsafe impl<T: Sync> Sync for CachePadded<T> {}
+    unsafe impl<T: Sync> Sync for CacheAlign<T> {}
 }

@@ -14,7 +14,7 @@
 use crate::code::items;
 
 mod aligned;
-mod cache_padded;
+mod cache_align;
 mod ext;
 mod fns_macros;
 mod reexports;
@@ -23,7 +23,7 @@ mod slice;
 mod storage;
 #[allow(unused_imports)]
 pub use {
-    aligned::*, cache_padded::*, ext::*, fns_macros::*, reexports::*, size::*, slice::*, storage::*,
+    aligned::*, cache_align::*, ext::*, fns_macros::*, reexports::*, size::*, slice::*, storage::*,
 };
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
@@ -49,7 +49,7 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        aligned::*, cache_padded::*, cell::*, ext::*, fns_macros::*, ptr::all::*, reexports::*,
+        aligned::*, cache_align::*, cell::*, ext::*, fns_macros::*, ptr::all::*, reexports::*,
         size::all::*, slice::all::*, storage::*,
     };
 
