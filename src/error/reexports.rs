@@ -30,6 +30,7 @@ pub use crate::rend::{LayoutError, LayoutResult};
 #[doc(inline)]
 #[cfg(_rend_·)]
 pub use crate::rend::{RendError, RendResult};
+#[doc(inline)]
 #[cfg(feature = "time")]
 pub use crate::sys::time::{TimeError, TimeResult};
 #[doc(inline)]

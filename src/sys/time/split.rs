@@ -412,13 +412,13 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::format_buf;
 
     #[test]
     fn split_debug() {
-        assert_eq![
-            "TimeSplit { h: 1, m: 2, s: 3 }",
-            &format!["{:?}", TimeSplit::new_hour_sec(1, 2, 3)]
-        ];
+        let mut buf = [0; 32];
+        let _str = format_buf![&mut buf, "{:?}", TimeSplit::new_hour_sec(1, 2, 3)].unwrap();
+        assert_eq!["TimeSplit { h: 1, m: 2, s: 3 }", _str];
     }
 
     #[test]

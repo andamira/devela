@@ -2,6 +2,8 @@
 //
 //! PNM is the portable anymap format Netpbm image format family (PBM, PGM, PPM)
 
+#![allow(unused, reason = "WIP")]
+
 #[cfg(doc)]
 use crate::rend::ImageError::FmtError;
 #[cfg(feature = "alloc")]
