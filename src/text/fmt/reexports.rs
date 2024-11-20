@@ -87,11 +87,11 @@ reexport! { rust: core::fmt,
 
 /* aliases */
 
-// NOTE it defines T = ()
-reexport! { rust: core::fmt,
-    doc: "The type returned by formatter methods.",
-    @Result as FmtResult
-}
+/// The type returned by formatter methods.
+///
+/// Note that this is not the same as [`core::fmt::Result`], since this one
+/// doesn't hardcode the returned type to `()`.
+pub type FmtResult<T> = Result<T, FmtError>;
 
 /* structs */
 

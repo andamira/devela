@@ -72,8 +72,8 @@ impl<'a> WriteTo<'a> {
     }
 }
 impl TextWrite for WriteTo<'_> {
-    fn write_str(&mut self, s: &str) -> FmtResult {
-        // IMPROVE
+    fn write_str(&mut self, s: &str) -> FmtResult<()> {
+        // IMPROVE?
         let rem = &mut self.buf[self.len..];
         let raw_s = s.as_bytes();
         let num = min(raw_s.len(), rem.len());
