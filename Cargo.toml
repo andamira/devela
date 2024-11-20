@@ -468,55 +468,98 @@ dep_unicode_width = ["dep:unicode-width"]
 dep_wide = ["dep:wide"]
 
 
-[dependencies]
+[dependencies] # 19 (2 required, 17 optional)
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 # ==============================================================================
+# Links to each crate's crates.io page are provided alongside the entries,
+# as well as to the changelogs (✓), if available, or commit histories (✗).
+#
 # Crates using unsafe, even if transitively, are marked as so,
 # preventing enabling them if the `safest` feature is enabled.
 
-# non-optional:
-devela_macros = { version  = "0.11.0" } # safe
-#devela_macros = { path = "./macros" } # , features = ["std"] }
-paste_crate = { package = "paste", version = "1.0.15", default-features = false } # safe, archived
+[dependencies.devela_macros] # https://crates.io/crates/devela_macros
+version  = "0.11.0" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
+# path = "./macros" # safe
+[dependencies.paste_crate] # https://crates.io/crates/paste
+version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
+package = "paste" # safe, ARCHIVED
 
-# optional:
-const-str = { version = "0.5.7", optional = true, default-features = false } # unsafe
-libm = { version = "0.2.11", optional = true, default-features = false } # unsafe
-log = { version = "0.4.22", optional = true, default-features = false } # safe(optional_unsafe)
-macroquad = { version = "0.4.13", optional = true, default-features = false } # unsafe
-memchr = { version = "2.7.4", optional = true, default-features = false } # unsafe
-miniquad = { version = "0.4.6", optional = true, default-features = false } # unsafe
-rand_core = { version = "0.6.4", optional = true, default-features = false } # safe
-rayon = { version = "1.10.0", optional = true, default-features = false } # unsafe
-tinyaudio = { version = "1.0.0", optional = true, default-features = false } # unsafe
-unicode-segmentation = { version = "1.12.0", optional = true, default-features = false } # safe
-unicode-width = { version = "0.1.13", optional = true, default-features = false } # safe
-wide = { version = "0.7.26", optional = true, default-features = false } # unsafe
-[dependencies.atomic] # unsafe
-version = "0.6.0"
-optional = true
+#* optional dependencies *#
+
+[dependencies.atomic] # https://crates.io/crates/atomic
+version = "0.6.0" # ✗ https://github.com/Amanieu/atomic-rs/commits/master/
+optional = true # unsafe
 default-features = false
 features = ["fallback"]
-[dependencies.bytemuck] # unsafe
-version = "1.19.0"
-optional = true
+[dependencies.bytemuck] # https://crates.io/crates/bytemuck
+version = "1.19.0" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
+optional = true # unsafe
 default-features = false
 features = ["align_offset", "min_const_generics", "must_cast", "zeroable_maybe_uninit"]
-[dependencies.hashbrown] # unsafe
-version = "0.15.1"
-optional = true
+[dependencies.const-str] # https://crates.io/crates/const-str
+version = "0.5.7" # ✗ https://github.com/Nugine/const-str/commits/main/
+optional = true # unsafe
+default-features = false
+[dependencies.hashbrown] # https://crates.io/crates/hashbrown
+version = "0.15.1" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md
+optional = true # unsafe
 default-features = false
 features = ["default-hasher", "inline-more"]
-[dependencies.portable-atomic] # unsafe
-version = "1.9.0"
-optional = true
+[dependencies.libm] # https://crates.io/crates/libm
+version = "0.2.11" # ✓ https://github.com/rust-lang/libm/blob/master/CHANGELOG.md
+optional = true # unsafe
+default-features = false
+[dependencies.log] # https://crates.io/crates/log
+version = "0.4.22" # ✓ https://github.com/rust-lang/log/blob/master/CHANGELOG.md
+optional = true # safe (optional unsafe)
+default-features = false
+[dependencies.macroquad] # https://crates.io/crates/macroquad
+version = "0.4.13" # ✗ https://github.com/not-fl3/macroquad/commits/master/
+optional = true # unsafe
+default-features = false
+[dependencies.memchr] # https://crates.io/crates/memchr
+version = "2.7.4" # ✗ https://github.com/BurntSushi/memchr/commits/master/
+optional = true # unsafe
+default-features = false
+[dependencies.miniquad] # https://crates.io/crates/miniquad
+version = "0.4.6" # ✗ https://github.com/not-fl3/miniquad/commits/master/
+optional = true # unsafe
+default-features = false
+[dependencies.rand_core] # https://crates.io/crates/rand_core
+version = "0.6.4" # ✓ https://github.com/rust-random/rand/blob/master/rand_core/CHANGELOG.md
+optional = true # safe
+default-features = false
+[dependencies.portable-atomic] # https://crates.io/crates/portable-atomic
+version = "1.9.0" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
+optional = true # unsafe
 default-features = false
 features = ["fallback", "float"]
-[dependencies.rodio] # unsafe_deps
-version = "0.20.1"
-optional = true
+[dependencies.rayon] # https://crates.io/crates/rayon
+version = "1.10.0" # ✗ https://github.com/rayon-rs/rayon/commits/main/
+optional = true # unsafe
+default-features = false
+[dependencies.rodio] # https://crates.io/crates/rodio
+version = "0.20.1" # ✓ https://github.com/RustAudio/rodio/blob/master/CHANGELOG.md
+optional = true # unsafe (unsafe dependencies)
 default-features = false
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"]
+[dependencies.tinyaudio] # https://crates.io/crates/tinyaudio
+version = "1.0.0" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
+optional = true # unsafe
+default-features = false
+[dependencies.unicode-segmentation] # https://crates.io/crates/unicode-segmentation
+version = "1.12.0" # ✓ https://github.com/unicode-rs/unicode-segmentation?tab=readme-ov-file#change-log
+optional = true # safe
+default-features = false
+[dependencies.unicode-width] # https://crates.io/crates/unicode-width
+version = "0.1.13" # ✓ https://github.com/unicode-rs/unicode-width?tab=readme-ov-file#changelog
+optional = true # safe
+default-features = false
+[dependencies.wide] # https://crates.io/crates/wide
+version = "0.7.26" # ✗ https://github.com/Lokathor/wide/commits/main/
+optional = true # unsafe
+default-features = false
+
 
 [dev-dependencies]
 # Used for benchmarks, examples and tests. They inherit from [dependencies].
