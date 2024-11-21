@@ -1,8 +1,6 @@
 // devela::text::str
 //
-//! Strings.
-#![doc = crate::doc_!(modules: crate; str)]
-// #![doc = crate::doc_!(newline)]
+//! String types and related functionality.
 //!
 #![doc = crate::doc_!(extends: str, string)]
 

@@ -1,7 +1,7 @@
 // devela::text
 //
 //! Text types and operations, text processing.
-#![doc = crate::doc_!(modules: crate; text: fmt)]
+#![doc = crate::doc_!(modules: crate; text: fmt, str)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: ascii, char, fmt, str, string)]
@@ -20,13 +20,13 @@ mod char;
 mod error;
 mod ext;
 mod grapheme;
-mod str;
 #[allow(unused_imports)]
-pub use {ascii::all::*, char::all::*, error::*, ext::*, grapheme::all::*, str::all::*};
+pub use {ascii::all::*, char::all::*, error::*, ext::*, grapheme::all::*};
 
 pub mod fmt;
+pub mod str;
 #[doc(no_inline)]
-pub use fmt::all::*;
+pub use {fmt::all::*, str::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
