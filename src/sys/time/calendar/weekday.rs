@@ -3,7 +3,7 @@
 //!
 //
 
-use core::{fmt, str::FromStr};
+use crate::{Display, FmtResult, Formatter, FromStr};
 #[allow(clippy::enum_glob_use)]
 use Weekday::*;
 
@@ -381,8 +381,8 @@ impl Weekday {
     }
 }
 
-impl fmt::Display for Weekday {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl Display for Weekday {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         f.write_str(match self {
             Monday => "Monday",
             Tuesday => "Tuesday",

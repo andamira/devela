@@ -85,11 +85,11 @@ macro_rules! impl_non_value{
             // #[cfg(feature = "unsafe_layout")]
             // use $crate::mem::MemPod;
             #[cfg(feature = "mem_bit")]
-            use $crate::mem::{BitSized, ByteSized};
+            use $crate::{BitSized, ByteSized};
             use $crate::{
-                _core::{fmt, num::*, str::FromStr},
-                code::{iif, ConstDefault},
-                error::{unwrap, NumError::{Invalid, Overflow}, NumResult},
+                _core::{fmt, num::*},
+                iif, unwrap, ConstDefault, FromStr,
+                NumError::{Invalid, Overflow}, NumResult,
             };
 
             /* definition */

@@ -28,10 +28,13 @@ crate::items! { pub use crate::sys::ffi::{OsStr, OsString}; }
 /* core */
 
 reexport! { rust: core::str,
+    doc: "Parse a value from a string.",
+    FromStr
+}
+reexport! { rust: core::str,
     doc: "An iterator over the [`char`]s of a string slice.",
     @Chars as IterChars
 }
-
 // TODO: IMPROVE: recreate and impl conversion methods:
 // - https://doc.rust-lang.org/src/core/str/error.rs.html#47-50
 reexport! { rust: core::str,
@@ -46,7 +49,7 @@ reexport! { rust: alloc::string,
     String
 }
 reexport! { rust: alloc::string,
-    doc: "A trait for converting a value to a String.",
+    doc: "A trait for converting a value to a [`String`].",
     ToString
 }
 

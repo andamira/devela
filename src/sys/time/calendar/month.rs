@@ -3,7 +3,7 @@
 //!
 //
 
-use core::{fmt, str::FromStr};
+use crate::{Display, FmtResult, Formatter, FromStr};
 #[allow(clippy::enum_glob_use)]
 use Month::*;
 
@@ -385,8 +385,8 @@ impl Month {
     }
 }
 
-impl fmt::Display for Month {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl Display for Month {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         f.write_str(match self {
             January => "January",
             February => "February",
