@@ -27,30 +27,15 @@ crate::items! { pub use crate::sys::ffi::{OsStr, OsString}; }
 
 /* core */
 
+// TODO: IMPROVE: recreate and impl conversion methods:
+// - https://doc.rust-lang.org/src/core/str/error.rs.html#47-50
 reexport! { rust: core::str,
-    doc: "Converts a slice of bytes to a string slice.",
-    @from_utf8 as str_from_utf8
-}
-reexport! { rust: core::str,
-    doc: "Converts a mutable slice of bytes to a mutable string slice",
-    @from_utf8_mut as str_from_utf8_mut
-}
-reexport! { rust: core::str,
-    doc: "Converts a slice of bytes to a string slice without checking valid UTF-8.",
-    @from_utf8_unchecked as str_from_utf8_unchecked
-}
-reexport! { rust: core::str,
-    doc:
-        "Converts a mutable slice of bytes to a mutable string slice without checking valid UTF-8.",
-    @from_utf8_unchecked_mut as str_from_utf8_unchecked_mut
+    doc: "Errors which can occur when attempting to interpret a sequence of u8 as a string.",
+    Utf8Error
 }
 
 /* alloc */
 
-reexport! { rust: alloc::str,
-    doc: "Converts a boxed slice of bytes to a boxed string slice without checking valid UTF-8.",
-    @from_boxed_utf8_unchecked as str_from_boxed_utf8_unchecked
-}
 reexport! { rust: alloc::string,
     doc: "A UTF-8–encoded, growable string.",
     String

@@ -2,8 +2,7 @@
 
 #[cfg(test)]
 mod tests;
-#[allow(unused_imports, reason = "complementary")]
-use crate::{str_from_utf8, str_from_utf8_unchecked};
+use crate::Str;
 
 /// Converts a number into a string representation, storing it into a byte slice.
 ///
@@ -155,11 +154,11 @@ macro_rules! impl_primitive {
             }
             fn to_str_base(self, base: $t, buf: &mut [u8]) -> &str {
                 #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-                return str_from_utf8(self.to_bytes_base(base, buf)).unwrap();
+                return Str::from_utf8(self.to_bytes_base(base, buf)).unwrap();
 
                 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
                 // SAFETY: the bytes are valid utf-8
-                unsafe { str_from_utf8_unchecked(self.to_bytes_base(base, buf)) }
+                unsafe { Str::from_utf8_unchecked(self.to_bytes_base(base, buf)) }
             }
         }
     };
@@ -200,11 +199,11 @@ macro_rules! impl_primitive {
             }
             fn to_str_base(self, base: $t, buf: &mut [u8]) -> &str {
                 #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-                return str_from_utf8(self.to_bytes_base(base, buf)).unwrap();
+                return Str::from_utf8(self.to_bytes_base(base, buf)).unwrap();
 
                 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
                 // SAFETY: the bytes are valid utf-8
-                unsafe { str_from_utf8_unchecked(self.to_bytes_base(base, buf)) }
+                unsafe { Str::from_utf8_unchecked(self.to_bytes_base(base, buf)) }
             }
         }
     };
@@ -267,12 +266,12 @@ impl NumToStr<i8> for i8 {
 
     fn to_str_base(self, base: Self, buf: &mut [u8]) -> &str {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return str_from_utf8(self.to_bytes_base(base, buf)).unwrap();
+        return Str::from_utf8(self.to_bytes_base(base, buf)).unwrap();
 
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            str_from_utf8_unchecked(self.to_bytes_base(base, buf))
+            Str::from_utf8_unchecked(self.to_bytes_base(base, buf))
         }
     }
 }
@@ -316,11 +315,11 @@ impl NumToStr<u8> for u8 {
 
     fn to_str_base(self, base: Self, buf: &mut [u8]) -> &str {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return str_from_utf8(self.to_bytes_base(base, buf)).unwrap();
+        return Str::from_utf8(self.to_bytes_base(base, buf)).unwrap();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         // SAFETY: the bytes are valid utf-8
         unsafe {
-            str_from_utf8_unchecked(self.to_bytes_base(base, buf))
+            Str::from_utf8_unchecked(self.to_bytes_base(base, buf))
         }
     }
 }

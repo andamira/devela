@@ -4,11 +4,9 @@
 //
 
 use super::Grapheme;
-#[allow(unused_imports)]
-use crate::{
-    _dep::_alloc::str::{self, Chars as CharIterator},
-    str_from_utf8, str_from_utf8_unchecked, String,
-};
+use crate::Str;
+#[cfg(feature = "alloc")]
+use crate::{String, _dep::_alloc::str::Chars as CharIterator};
 #[cfg(feature = "dep_unicode_segmentation")]
 use crate::{_dep::unicode_segmentation::UnicodeSegmentation, text::*};
 
@@ -34,7 +32,7 @@ impl GraphemeString {
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char_u7(c: CharU7) -> GraphemeString {
-        str_from_utf8(&c.to_utf8_bytes()).unwrap().into()
+        Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
     /// Creates a new `GraphemeString` from a `CharU8`.
@@ -45,7 +43,7 @@ impl GraphemeString {
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char_u8(c: CharU8) -> GraphemeString {
-        str_from_utf8(&c.to_utf8_bytes()).unwrap().into()
+        Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
     /// Creates a new `GraphemeString` from a `CharU16`.
@@ -56,7 +54,7 @@ impl GraphemeString {
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char_u16(c: CharU16) -> GraphemeString {
-        str_from_utf8(&c.to_utf8_bytes()).unwrap().into()
+        Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
     /// Creates a new `GraphemeString` from a `CharU24`.
@@ -67,7 +65,7 @@ impl GraphemeString {
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char_u24(c: CharU24) -> GraphemeString {
-        str_from_utf8(&c.to_utf8_bytes()).unwrap().into()
+        Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
     /// Creates a new `GraphemeString` from a `CharU32`.
@@ -81,10 +79,10 @@ impl GraphemeString {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char_u32(c: CharU32) -> GraphemeString {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return str_from_utf8(&c.to_utf8_bytes()).unwrap().into();
+        return Str::from_utf8(&c.to_utf8_bytes()).unwrap().into();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         unsafe {
-            str_from_utf8_unchecked(&c.to_utf8_bytes()).into()
+            Str::from_utf8_unchecked(&c.to_utf8_bytes()).into()
         }
     }
 
@@ -97,10 +95,10 @@ impl GraphemeString {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char(c: char) -> GraphemeString {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return str_from_utf8(&crate::text::char_to_utf8_bytes(c)).unwrap().into();
+        return Str::from_utf8(&crate::text::char_to_utf8_bytes(c)).unwrap().into();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         unsafe {
-            str_from_utf8_unchecked(&crate::text::char_to_utf8_bytes(c)).into()
+            Str::from_utf8_unchecked(&crate::text::char_to_utf8_bytes(c)).into()
         }
     }
 

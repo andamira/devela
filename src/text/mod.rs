@@ -21,8 +21,9 @@ mod error;
 mod ext;
 mod grapheme;
 mod reexports;
+mod str;
 #[allow(unused_imports)]
-pub use {ascii::all::*, char::all::*, error::*, ext::*, grapheme::all::*, reexports::*};
+pub use {ascii::all::*, char::all::*, error::*, ext::*, grapheme::all::*, reexports::*, str::*};
 
 pub mod fmt;
 #[doc(no_inline)]
@@ -46,6 +47,7 @@ pub(crate) mod all {
     #[allow(unused_imports)]
     pub use super::{
         ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, grapheme::all::*, reexports::*,
+        str::*,
     };
 
     #[cfg(_string_u·)]
