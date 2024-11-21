@@ -156,7 +156,7 @@ mod impl_core {
     impl_cdef![<T> core::ptr::null_mut() => *mut T];
 
     impl_cdef![<T> &[] => &[T]];
-    // WAIT: [const_mut_refs](https://github.com/rust-lang/rust/issues/57349)
+    // WAIT:1.83 [const_mut_refs](https://github.com/rust-lang/rust/issues/57349)
     // impl_cdef![<T> &mut [] => &mut [T]];
 
     impl ConstDefault for &CStr {

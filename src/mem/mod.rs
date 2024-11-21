@@ -1,7 +1,7 @@
 // devela::mem
 //
 //! Memory management.
-#![doc = crate::doc_!(modules: crate; mem: cell, ptr)]
+#![doc = crate::doc_!(modules: crate; mem: cell)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
@@ -18,14 +18,15 @@ mod cache_align;
 mod ext;
 mod fns_macros;
 mod namespace;
+mod ptr;
 mod reexports;
 mod size;
 mod slice;
 mod storage;
 #[allow(unused_imports)]
 pub use {
-    aligned::*, cache_align::*, ext::*, fns_macros::*, namespace::*, reexports::*, size::*,
-    slice::*, storage::*,
+    aligned::*, cache_align::*, ext::*, fns_macros::*, namespace::*, ptr::all::*, reexports::*,
+    size::*, slice::*, storage::*,
 };
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
@@ -43,9 +44,8 @@ items! {
 }
 
 pub mod cell;
-pub mod ptr;
 #[doc(no_inline)]
-pub use {cell::all::*, ptr::all::*};
+pub use cell::all::*;
 
 pub(crate) mod all {
     #[doc(inline)]

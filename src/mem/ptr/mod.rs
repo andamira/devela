@@ -1,13 +1,14 @@
-// devela::mem::cell
+// devela::mem::ptr
 //
 //! Manually manage memory through raw pointers.
 //!
-#![doc = crate::doc_!(extends: ptr)]
+// #![doc = crate::doc_!(extends: ptr)]
 //
 
+mod namespace;
 mod reexports;
 #[allow(unused_imports)]
-pub use reexports::*;
+pub use {namespace::Ptr, reexports::*};
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 crate::code::items! {
@@ -19,7 +20,7 @@ crate::code::items! {
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::reexports::*;
+    pub use super::{namespace::Ptr, reexports::*};
 
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
     pub use super::fat::FatPtr;
