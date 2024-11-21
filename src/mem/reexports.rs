@@ -8,7 +8,10 @@ use super::Boxed;
 use crate::code::reexport;
 
 #[cfg(feature = "alloc")]
-crate::code::impl_cdef![<T: ConstDefault> Self::new() => crate::_dep::_alloc::rc::Weak<T>];
+crate::code::impl_cdef![<T: ConstDefault> Self::new() => RcWeak<T>];
+
+#[doc(inline)]
+pub use crate::Sized;
 
 /* borrow */
 
@@ -63,10 +66,15 @@ reexport! { rust: core::mem,
     @discriminant as enum_discriminant
 }
 
+reexport! { rust: core::mem,
+    doc: "Expands to the offset in bytes of a field from the beginning of the given type.",
+    offset_of
+}
+
 // NOTE: can't namespace this in `Mem`.
 reexport! { rust: core::mem,
     doc: "Reinterprets the bits of a value of one type as another type.",
-    @transmute as mem_transmute
+    transmute
 }
 
 /* pin */
@@ -88,5 +96,5 @@ reexport! { rust: alloc::rc,
 }
 reexport! { rust: alloc::rc,
     doc: "A version of `Rc` that holds a non-owning reference to the managed allocation.",
-    @Rc as RcWeak
+    @Weak as RcWeak
 }

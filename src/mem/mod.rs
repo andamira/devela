@@ -45,7 +45,7 @@ items! {
 pub mod cell;
 pub mod ptr;
 #[doc(no_inline)]
-pub use {cell::*, ptr::*};
+pub use {cell::all::*, ptr::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]

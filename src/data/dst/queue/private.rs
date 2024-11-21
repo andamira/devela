@@ -6,7 +6,7 @@
 
 use super::super::{decompose_pointer, make_fat_ptr, store_metadata};
 use super::{DstBuf, DstQueue};
-use crate::mem::{mem_size_of, mem_size_of_val, ptr_drop_in_place, MaybeUninit};
+use crate::{ptr_drop_in_place, MaybeUninit};
 
 pub(super) struct PushInnerInfo<'a, I> {
     // Buffer for value data.
@@ -28,7 +28,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
         &mut self,
         fat_ptr: &DST,
     ) -> Result<PushInnerInfo<BUF::Inner>, ()> {
-        let bytes = mem_size_of_val(fat_ptr);
+        let bytes = size_of_val(fat_ptr);
         let (_data_ptr, len, v) = decompose_pointer(fat_ptr);
         // SAFETY: caller must ensure safety
         unsafe { self.push_inner_raw(bytes, &v[..len]) }
@@ -77,7 +77,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     #[must_use]
     #[inline(always)]
     pub(super) fn meta_words() -> usize {
-        BUF::round_to_words(mem_size_of::<&DST>() - mem_size_of::<usize>())
+        BUF::round_to_words(size_of::<&DST>() - size_of::<usize>())
     }
 
     #[must_use]
@@ -133,7 +133,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
         // SAFETY: `front_raw_mut` asserts that there's an item, rest is correct.
         unsafe {
             let ptr = &mut *self.front_raw_mut();
-            let len = mem_size_of_val(ptr);
+            let len = size_of_val(ptr);
             ptr_drop_in_place(ptr);
             let words = BUF::round_to_words(len);
             self.read_pos += Self::meta_words() + words;

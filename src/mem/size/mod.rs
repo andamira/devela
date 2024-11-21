@@ -8,9 +8,8 @@ use crate::code::items;
 
 mod byte;
 mod expr;
-mod reexports;
 #[allow(unused_imports)]
-pub use {byte::*, expr::*, reexports::*};
+pub use {byte::*, expr::*};
 
 #[cfg(feature = "mem_bit")]
 items! { mod bit; pub use bit::*; }
@@ -18,7 +17,7 @@ items! { mod bit; pub use bit::*; }
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{byte::*, expr::mem_size_of_expr, reexports::*};
+    pub use super::{byte::*, expr::size_of_expr};
 
     #[doc(inline)]
     #[allow(unused_imports)]
