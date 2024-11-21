@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
-## [0.22.0-wip] - Unreleased
+## [0.22.0-wip] - (TBD)
 
 ### Added
 
@@ -22,15 +22,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### New items
 - structs:
+  - namespaces: `Env`, `Mem`, `Str`.
   - `CompressionMode`, `EncodingMode`, `Pnm`,
-  - `Env` namespace for `std::env` functions and constants.
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `RendError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
   - `TimeSplit`.
   - `TypeResource`.
   - `WaveletHaar`, `WaveletUnitVec`.
 - aliases:
-  - `AllocMapFx`, `AllocSetFx`, `NoTime`.
+  - `AllocMapFx`, `AllocSetFx`, `FmtResult`, `NoTime`.
   - `AudioResult`, `ColorResult`, `DrawResult`,`FontResult`, `ImageResult`, `LayoutResult`, `RendResult`.
   - `TimeSplitYearNano`, `TimeSplitYearDay`, `TimeSplitYearSec`, `TimeSplitHourSec`, `TimeSplitHourNano`, `TimeSplitMilliNano`.
 - enums:
@@ -50,25 +50,26 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
   - `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
 - macros:
-  - `id_seq!`, `namespace_fns!`, `type_marker!`, `type_resource!`,
+  - `id_seq!`, `type_marker!`, `type_resource!`,
   - `const_bool!`, `capture_first`, `capture_last`, `capture_tail_tuple!`, `impl_non_value!`.
   - private: `doc_availability!`.
 - vendored:
-  - structs: `CachePadded`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`.
-  - macros: `assert_const!`, `format_lazy!`.
+  - structs: `CacheAlign`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`.
+  - macros: `assert_const!`.
   - traits: `ConstBool`.
 - optional dependencies:
-  - `macroquad`, `rayon`, `rodio`, `tinyaudio`.
+  - `jiff`, `macroquad`, `rayon`, `rodio`, `tinyaudio`.
 - re-export:
   - items from: `std::backtrace`, `core::cell`, `core::ops`, `std::fmt`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
   - macros:
-    - `compile_error`, `option_env`, `enumint`, `assert_unchecked!`, `format!`, `format_args!`, `concat`, `stringify`.
+    - `compile_error`, `option_env`, `enumint`, `assert_unchecked!`, `format!`, `format_args!`, `concat`, `stringify`, `write!`, `writeln!`.
     - wrapped: `env!`, as `env_!`, `vec!` as `vec_!`.
   - structs:
     - `NonZero`, `Saturating`, `Wrapping`, `OsStr`, `OsString`.
     - `HashMapEntry` and `BTreeMapEntry`.
     - `HashMap` and `BTreeMap` from `std` if `hashbrown` is disabled.
+    - `FromStr`, `IterChars`, `Utf8Error`.
   - crate items from multiple related modules, like errors and strings.
 - new modules: `num::algebra`, `sys::sound`, `rend::{audio, color, draw, font, image, layout}`.
 - new `NonValue*` constants `MAX`, `MIN`.
@@ -88,6 +89,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove items: `NeverOk`, `NeverErr`, `HasherFx32`, `HasherFx64`.
 - remove types: `InRange*`, `NonRange*`, `HourMilliSplit`, `SecNanoSplit`, `YearSecSplit`.
 - remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`.
+- remove most re-exported fns from `std::mem` (namespaced in `Mem`).
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
 - comment out unused features: `code`, `data`, `error`.
 - move `num::geom::prim` submodule to separate crate `cuadra`.
@@ -96,7 +98,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### Misc.
 - bump rust version to 1.82.0.
-- refactor build script.
+- start using `core::error::Error`.
 
 #### Features & flags
 - rename features:
@@ -112,40 +114,55 @@ The format is based on [Keep a Changelog], and this project adheres to
 - show build *env* variables if `__dbg` feature is enabled.
 
 #### Items
-- make `bytemuck` an optional dependency.
-- make modules public: `mem::ptr`, `sys::ffi`, `text::fmt`.
-- start using `core::error::Error`.
-- update `cdbg` macro to support a single `@`.
-- method `Graph::edge_exists` no loger panics.
-- make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
-- move `num::geom::algebra` module to `num::algebra::linear`.
-- move `code::result` module to `error`.
-- move `_dep::_core` module to `_core`.
-- move `_lib*` libs inside `_dep`.
-- move `time` module inside `sys`.
-- impl `Num` for niche types.
-- rename `Char*` to `CharU*`.
-- rename `GcdExt` to `GcdResult`.
-- rename `_deps` module to `_dep`.
-- rename `_info` module to `_doc`.
-- rename method `Array::len` to `capacity`.
-- rename `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.
-- rename `AllocOrdMap` to `BTreeMap` and `AllocOrdSet` to `BTreeSet`.
-- rename `AllocPrioQueue` to `BinaryHeap`.
-- rename `AllocLinkedList` to `LinkedList`.
-- rename `_lib*` libs removing the `lib` prefix.
-- rename `Dst*` types const-generic `N` to `CAP`.
-- rename `exec` module to `work`, and related features.
-- rename `sys::io` items by prefixing them with `Io`.
-- rename `Egc` to `Grapheme`
-- rename `EgcString` to `GraphemeString`.
-- rename `EgcNonul` to `GraphemeNonul`.
-- rename `EgcU8` to `GraphemeU8`.
+- structs:
+  - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
+  - rename:
+    - `Char*` to `CharU*`.
+    - `GcdExt` to `GcdResult`.
+    - `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.
+    - `AllocOrdMap` to `BTreeMap` and `AllocOrdSet` to `BTreeSet`.
+    - `AllocPrioQueue` to `BinaryHeap`.
+    - `AllocLinkedList` to `LinkedList`.
+    - `Dst*` types const-generic `N` to `CAP`.
+    - `sys::io` items by prefixing them with `Io`.
+    - `Egc` to `Grapheme`
+    - `EgcString` to `GraphemeString`.
+    - `EgcNonul` to `GraphemeNonul`.
+    - `EgcU8` to `GraphemeU8`.
+- associated methods and constant:
+  - `Graph::edge_exists` no loger panics.
+  - rename:
+    - `Array::len` to `capacity`.
+    - `mem_*` prefixed fns as `Mem` methods.
+  - make *const* the following `Float` methods:
+    `eval_poly`, `factorial`, `mul_add_fallback`, `scale`, `lerp`, `ln*_series`, `log[10|2]_series`.
+  - make *const* versions of the following `Float` methods:
+    `clamp_nan`, `fisr`, `hypot_fisr`, `max_nan`, `min_nan`, `cbrt_nr`, `sqrt_nr`, `hypot_nr`, `rem_euclid`, `*_series`, `*_series_terms*`.
+- macros:
+  - update `cdbg!` to support a single `@`.
+  - rename `mem_size_of_expr!` to `size_of_expr!`.
+  - rename re-wrapped macros to avoid prelude collision when glob importing:
+    - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
+- modules:
+  - make modules public: `mem::ptr`, `sys::ffi`, `text::fmt`.
+  - rename:
+    - `num::geom::algebra` module to `num::algebra::linear`.
+    - `code::result` module to `error`.
+    - `_dep::_core` module to `_core`.
+    - `_alloc` & `_std` inside `_dep`.
+    - `time` module to `sys::time`.
+    - `_deps` module to `_dep`.
+    - `_info` module to `_doc`.
+    - `_lib*` libs removing the `lib` prefix.
+    - `exec` module to `work`, and related features.
+- traits:
+  - impl `Num` for niche types.
+- dependencies:
+  - make `bytemuck` an optional dependency.
+
+#### Examples, utilities, manifest
 - rename the `tools` directory to `utils`.
-- rename re-wrapped macros to avoid prelude collision when glob importing:
-  - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
-- make const `Float` methods: `eval_poly`, `factorial`, `mul_add_fallback`, `scale`, `lerp`, `ln*_series`, `log[10|2]_series`.
-- make const versions of Float methods: `clamp_nan`, `fisr`, `hypot_fisr`, `max_nan`, `min_nan`, `cbrt_nr`, `sqrt_nr`, `hypot_nr`, `rem_euclid`, `*_series`, `*_series_terms*`.
+- refactor the build script.
 
 ### Fixed
 - reduce noise from required features on methods from `Divisor`, `Int`, `Float`, `Frac`.
@@ -154,8 +171,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - fix build script utility call paths, add missing `_tuple*` features.
 - several fixes for linux syscalls on multiple architectures.
 - simplify system of documentable & testable examples.
+- fix reexported fns: `fmt_format`, `fmt_write`.
 - fix `f64::NR_TOLERANCE` from 1e-14 to 1e-12.
 - fix a few tests and examples.
+- fix `RcWeak` re-export.
 - fix `HashSetFx` alias.
 
 ## [0.21.2] 2024-08-09
