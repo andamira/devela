@@ -3,9 +3,9 @@
 //! An extension trait for memory management over `T`.
 //
 
+use super::Mem;
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_slice"))]
 use super::{mem_as_bytes, mem_as_bytes_mut};
-use super::{mem_drop, mem_forget, mem_needs_drop, mem_replace, mem_swap, mem_take};
 
 impl<T: ?Sized> ExtMem for T {}
 
@@ -16,47 +16,96 @@ impl<T: ?Sized> ExtMem for T {}
 #[rustfmt::skip]
 pub trait ExtMem {
     /// Know whether dropping values of this type matters, in compile-time.
-    const NEEDS_DROP: bool = mem_needs_drop::<Self>();
+    const NEEDS_DROP: bool = Mem::needs_drop::<Self>();
+
+    /// Returns the minimum alignment of the type in bytes.
+    ///
+    /// See [`Mem::align_of`].
+    #[must_use]
+    fn mem_align_of<T>() -> usize { Mem::align_of::<T>() }
+
+    /// Returns the alignment of the pointed-to value in bytes.
+    ///
+    /// See [`Mem::align_of_val`].
+    #[must_use]
+    fn mem_align_of_val(&self) -> usize { Mem::align_of_val(self) }
+
+    /// Returns the size of a type in bytes.
+    ///
+    /// See [`Mem::size_of`].
+    #[must_use]
+    fn mem_size_of<T>() -> usize { Mem::size_of::<T>() }
+
+    /// Returns the size of the pointed-to value in bytes.
+    ///
+    /// See [`Mem::size_of_val`].
+    #[must_use]
+    fn mem_size_of_val(&self) -> usize { Mem::size_of_val(self) }
 
     /// Returns `true` if dropping values of this type matters.
     ///
-    /// See [`mem_needs_drop`].
+    /// See [`Mem::needs_drop`].
+    #[must_use]
     fn mem_needs_drop(&self) -> bool { Self::NEEDS_DROP }
 
     /// Drops `self` by running its destructor.
     ///
-    /// See [`mem_drop`].
-    fn mem_drop(self) where Self: Sized { mem_drop(self) }
+    /// See [`Mem::drop`].
+    fn mem_drop(self) where Self: Sized { Mem::drop(self) }
 
     /// Forgets about `self` *without running its destructor*.
     ///
-    /// See [`mem_forget`].
-    fn mem_forget(self) where Self: Sized { mem_forget(self) }
+    /// See [`Mem::forget`].
+    fn mem_forget(self) where Self: Sized { Mem::forget(self) }
 
     /// Replaces `self` with other, returning the previous value of `self`.
     ///
-    /// See [`mem_replace`].
-    fn mem_replace(&mut self, other: Self) -> Self where Self: Sized { mem_replace(self, other) }
+    /// See [`Mem::replace`].
+    #[must_use]
+    fn mem_replace(&mut self, other: Self) -> Self where Self: Sized { Mem::replace(self, other) }
 
     /// Replaces `self` with its default value, returning the previous value of `self`.
     ///
-    /// See [`mem_take`].
-    fn mem_take(&mut self) -> Self where Self: Default, { mem_take(self) }
+    /// See [`Mem::take`].
+    #[must_use]
+    fn mem_take(&mut self) -> Self where Self: Default, { Mem::take(self) }
 
     /// Swaps the value of `self` and `other` without deinitializing either one.
     ///
-    /// See [`mem_swap`].
-    fn mem_swap(&mut self, other: &mut Self) where Self: Sized { mem_swap(self, other); }
+    /// See [`Mem::swap`].
+    fn mem_swap(&mut self, other: &mut Self) where Self: Sized { Mem::swap(self, other); }
+
+    /// Returns the value of type `T` represented by the all-zero byte-pattern.
+    ///
+    /// # Safety
+    /// See [`Mem::zeroed`].
+    #[must_use]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
+    unsafe fn mem_zeroed<T>() -> T { unsafe { Mem::zeroed::<T>() } }
+
+    /// Returns the value of type `T` represented by the all-zero byte-pattern.
+    ///
+    /// # Safety
+    /// See [`Mem::transmute_copy`].
+    #[must_use]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
+    unsafe fn mem_transmute_copy<Src, Dst>(src: &Src) -> Dst {
+        unsafe { Mem::transmute_copy::<Src, Dst>(src) }
+    }
 
     /// View a `Sync + Unpin` `self` as `&[u8]`.
     ///
     /// For the `const` version for sized types see
     /// [`mem_as_bytes_sized`][super::mem_as_bytes_sized].
+    #[must_use]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     fn mem_as_bytes(&self) -> &[u8] where Self: Sync + Unpin { mem_as_bytes(self) }
 
     /// View a `Sync + Unpin` `self` as `&mut [u8]`.
+    #[must_use]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     fn mem_as_bytes_mut(&mut self) -> &mut [u8] where Self: Sync + Unpin { mem_as_bytes_mut(self) }

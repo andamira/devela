@@ -9,8 +9,8 @@ use super::{check_fat_pointer, decompose_pointer, store_metadata, DstArray, DstB
 #[cfg(doc)]
 use crate::mem::MaybeUninit;
 use crate::{
+    ManuallyDrop, Mem, MemAligned,
     _core::{marker, ptr},
-    mem::{mem_forget, ManuallyDrop, MemAligned},
 };
 
 /* public API */
@@ -101,7 +101,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
         match rv {
             Some(r) => {
                 // Prevent the destructor from running, now that we've copied it away
-                mem_forget(val);
+                Mem::forget(val);
                 Ok(r)
             }
             None => Err(val),

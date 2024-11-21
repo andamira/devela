@@ -4,9 +4,9 @@
 //
 // API based on https://doc.rust-lang.org/alloc/boxed/struct.Box.html
 
-use crate::mem::Storage;
 #[cfg(all(doc, feature = "alloc"))]
-use crate::mem::{Box, Boxed};
+use crate::{Box, Boxed};
+use crate::{Mem, Storage};
 
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 /// A zero-sized marker for a [`Storage`] type that wraps its data in a [`BareBox`].
@@ -21,7 +21,7 @@ pub type Bare = ();
 ///
 /// # Examples
 /// ```
-/// # use devela::mem::BareBox;
+/// # use devela::BareBox;
 /// let byte = BareBox::new(0_u8);
 /// ```
 pub struct BareBox<T>(pub T);
@@ -77,7 +77,7 @@ impl<T> BareBox<T> {
     /// ```
     #[inline] #[must_use]
     pub fn replace(&mut self, mut new: T) -> T {
-        crate::mem_swap(&mut self.0, &mut new); new
+        Mem::swap(&mut self.0, &mut new); new
     }
 
     /// Checks if the stored value is the default.
@@ -165,8 +165,7 @@ impl<T: Copy, E: Copy> BareBox<Result<T, E>> {
 }
 
 mod core_impls {
-    use super::BareBox;
-    use crate::code::ConstDefault;
+    use crate::{BareBox, ConstDefault};
     use core::{cmp, convert, fmt, hash, ops};
 
     impl<T> ops::Deref for BareBox<T> {
