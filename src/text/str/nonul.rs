@@ -8,7 +8,7 @@
 
 use crate::{
     cfor, iif,
-    text::helpers::impl_sized_alias,
+    text::{char::*, helpers::impl_sized_alias},
     unwrap, ConstDefault, Deref, IterChars, Str,
     TextError::{self, InvalidNul, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
     TextResult as Result,
@@ -17,8 +17,6 @@ use crate::{
 
 #[cfg(feature = "alloc")]
 use crate::text::{CString, ToString};
-
-use super::char::*;
 
 /* definitions */
 

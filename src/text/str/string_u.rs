@@ -9,8 +9,9 @@
 // - tests
 
 #[cfg(_cmp_·)]
-use crate::{code::cfor, num::Compare};
+use crate::{cfor, Compare};
 use crate::{
+    text::char::*,
     Deref, IterChars,
     _core::fmt,
     char_to_utf8_bytes, char_utf8_4bytes_len, iif, paste, unwrap, ConstDefault, Str,
@@ -18,9 +19,8 @@ use crate::{
     TextResult as Result,
 };
 
-use super::char::*;
 #[cfg(all(_string_u·, feature = "alloc"))]
-use crate::text::{CString, ToString};
+use crate::{CString, ToString};
 
 macro_rules! impl_string_u {
     () => {
@@ -745,7 +745,7 @@ macro_rules! impl_string_u {
 impl_string_u!();
 
 #[cfg(feature = "_string_u8")]
-super::helpers::impl_sized_alias![
+crate::text::helpers::impl_sized_alias![
     String, StringU8,
     "UTF-8–encoded string, backed by an array of ", ".":
     "A" 16, 1 "";

@@ -1,11 +1,12 @@
-// devela::text::str
+// devela::text::str::namespace
 //
 //! `Str` namespace.
 //
 
+#[allow(unused_imports, reason = "+unsafe_str")]
 #[cfg(feature = "alloc")]
 use crate::_dep::_alloc::str::from_boxed_utf8_unchecked;
-#[allow(unused_imports)]
+#[allow(unused_imports, reason = "+unsafe_str")]
 use crate::{
     Utf8Error,
     _core::str::{from_utf8, from_utf8_mut, from_utf8_unchecked, from_utf8_unchecked_mut},

@@ -20,40 +20,18 @@ mod char;
 mod error;
 mod ext;
 mod grapheme;
-mod reexports;
 mod str;
 #[allow(unused_imports)]
-pub use {ascii::all::*, char::all::*, error::*, ext::*, grapheme::all::*, reexports::*, str::*};
+pub use {ascii::all::*, char::all::*, error::*, ext::*, grapheme::all::*, str::all::*};
 
 pub mod fmt;
 #[doc(no_inline)]
 pub use fmt::all::*;
 
-#[cfg(_string_u·)]
-items! {
-    mod string_u;
-    pub use string_u::*;
-}
-
-#[cfg(feature = "_string_nonul")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_nonul")))]
-items! {
-    mod nonul;
-    pub use nonul::*;
-}
-
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, grapheme::all::*, reexports::*,
-        str::*,
+        ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, grapheme::all::*, str::all::*,
     };
-
-    #[cfg(_string_u·)]
-    pub use super::string_u::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "_string_nonul")]
-    pub use super::nonul::*;
 }
