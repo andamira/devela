@@ -9,7 +9,7 @@
 use crate::{
     cfor, iif,
     text::helpers::impl_sized_alias,
-    unwrap, ConstDefault, Deref, IterChars,
+    unwrap, ConstDefault, Deref, IterChars, Str,
     TextError::{self, InvalidNul, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
     TextResult as Result,
     _core::fmt,
@@ -17,8 +17,6 @@ use crate::{
 
 #[cfg(feature = "alloc")]
 use crate::text::{CString, ToString};
-#[allow(unused_imports)]
-use core::str::{from_utf8, from_utf8_unchecked};
 
 use super::char::*;
 
@@ -173,11 +171,11 @@ impl<const CAP: usize> StringNonul<CAP> {
     #[inline] #[must_use] #[rustfmt::skip]
     pub const fn as_str(&self) -> &str {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_slice")))]
-        return unwrap![ok_expect from_utf8(self.as_bytes()), "Invalid UTF-8"];
+        return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
 
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
         // SAFETY: we ensure to contain only valid UTF-8
-        unsafe { from_utf8_unchecked(self.as_bytes()) }
+        unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
     }
 
     /// Returns the mutable inner string slice.
@@ -521,7 +519,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and [`InvalidNul`] if the bytes contains a NUL character.
     #[inline]
     pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self> {
-        match from_utf8(&bytes) {
+        match Str::from_utf8(&bytes) {
             Ok(_) => {
                 cfor![index in 0..CAP => {
                     iif![bytes[index] == 0; return Err(InvalidNul)];
@@ -636,7 +634,7 @@ impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
     /// [`NotEnoughCapacity`] if `CAP < bytes.len()`
     /// or [`InvalidUtf8`] if the `bytes` are not valid UTF-8.
     fn try_from(bytes: &[u8]) -> Result<Self> {
-        match from_utf8(bytes) {
+        match Str::from_utf8(bytes) {
             Ok(_) => {
                 let mut arr = [0; CAP];
                 let mut idx = 0;

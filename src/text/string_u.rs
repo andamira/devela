@@ -13,7 +13,7 @@ use crate::{code::cfor, num::Compare};
 use crate::{
     Deref, IterChars,
     _core::fmt,
-    char_to_utf8_bytes, char_utf8_4bytes_len, iif, paste, unwrap, ConstDefault,
+    char_to_utf8_bytes, char_utf8_4bytes_len, iif, paste, unwrap, ConstDefault, Str,
     TextError::{self, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
     TextResult as Result,
 };
@@ -21,8 +21,6 @@ use crate::{
 use super::char::*;
 #[cfg(all(_string_u·, feature = "alloc"))]
 use crate::text::{CString, ToString};
-#[allow(unused_imports)]
-use core::str::{from_utf8, from_utf8_unchecked};
 
 macro_rules! impl_string_u {
     () => {
@@ -178,11 +176,11 @@ macro_rules! impl_string_u {
             #[must_use]
             pub const fn as_str(&self) -> &str {
                 #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-                return unwrap![ok_expect from_utf8(self.as_bytes()), "Invalid UTF-8"];
+                return unwrap![ok_expect Str::from_utf8(self.as_bytes()), "Invalid UTF-8"];
 
                 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
                 // SAFETY: we ensure to contain only valid UTF-8
-                unsafe { from_utf8_unchecked(self.as_bytes()) }
+                unsafe { Str::from_utf8_unchecked(self.as_bytes()) }
             }
 
             /// Returns the exclusive inner string slice.
@@ -459,7 +457,7 @@ macro_rules! impl_string_u {
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
             #[inline]
             pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self> {
-                match from_utf8(&bytes) {
+                match Str::from_utf8(&bytes) {
                     Ok(_) => {
                         Ok(Self { arr: bytes, len: CAP as $t })
                     },
@@ -494,7 +492,7 @@ macro_rules! impl_string_u {
             #[cfg(feature = $cmp)] // const
             pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
                 let length = Compare(length).min(CAP as $t);
-                match from_utf8(bytes.split_at(length as usize).0) {
+                match Str::from_utf8(bytes.split_at(length as usize).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(InvalidUtf8(Some(e))),
                 }
@@ -504,7 +502,7 @@ macro_rules! impl_string_u {
             #[cfg(not(feature = $cmp))] // !const
             pub fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
                 let length = length.min(CAP as $t);
-                match from_utf8(bytes.split_at(length as usize).0) {
+                match Str::from_utf8(bytes.split_at(length as usize).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(InvalidUtf8(Some(e))),
                 }
@@ -558,7 +556,7 @@ macro_rules! impl_string_u {
                 cfor![i in 0..ulen => {
                     bytes[i] = bytes[start + i];
                 }];
-                match from_utf8(bytes.split_at(ulen).0) {
+                match Str::from_utf8(bytes.split_at(ulen).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(InvalidUtf8(Some(e))),
                 }
@@ -572,7 +570,7 @@ macro_rules! impl_string_u {
                 for i in 0..ulen {
                     bytes[i] = bytes[start + i];
                 }
-                match from_utf8(bytes.split_at(ulen).0) {
+                match Str::from_utf8(bytes.split_at(ulen).0) {
                     Ok(_) => Ok(Self { arr: bytes, len: length }),
                     Err(e) => Err(InvalidUtf8(Some(e))),
                 }
@@ -710,7 +708,7 @@ macro_rules! impl_string_u {
                     Err(NotEnoughCapacity(bytes.len()))
                 } else {
                     // Check if the byte slice is valid UTF-8
-                    match from_utf8(bytes) {
+                    match Str::from_utf8(bytes) {
                         Ok(_) => {
                             let mut arr = [0; CAP];
                             arr[..bytes.len()].copy_from_slice(bytes);

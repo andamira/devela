@@ -3,7 +3,7 @@
 //!
 //
 
-use core::str::Utf8Error;
+use crate::Utf8Error;
 
 /// A text-related result.
 pub type TextResult<T> = core::result::Result<T, TextError>;
