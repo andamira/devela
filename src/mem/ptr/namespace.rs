@@ -5,7 +5,7 @@
 
 #[allow(unused_imports, reason = "±unsafe")]
 use crate::{
-    Hasher,
+    iif, Hasher,
     _core::ptr::{
         addr_eq, copy, copy_nonoverlapping, drop_in_place, eq, from_mut, from_ref, hash, null,
         null_mut, read, read_unaligned, read_volatile, replace, slice_from_raw_parts,
@@ -65,6 +65,39 @@ impl Ptr {
     /// See std's [`eq`].
     pub fn eq<T: ?Sized>(a: *const T, b: *const T) -> bool {
         eq(a, b)
+    }
+
+    /// Returns `true` if it's probable the given `address` is in the stack, for a
+    /// given `stack_size`.
+    ///
+    /// # Stack size
+    /// - <https://doc.rust-lang.org/std/thread/#stack-size>.
+    ///
+    /// The default stack size is platform-dependent and subject to change.
+    /// Currently, it is 2 MiB on all Tier-1 platforms.
+    /// Note that the stack size of the main thread is *not* determined by Rust.
+    ///
+    /// If the address is close to a stack variable address it might be stack allocated.
+    ///
+    /// # Example
+    /// ```
+    /// # use devela::Ptr;
+    /// const STACK_SIZE: usize = 2 << 20; // assume a 2 MB stack size
+    ///
+    /// let in_stack: [i32; 10] = [0; 10];
+    /// let in_heap = vec![0; 10];
+    ///
+    /// assert_eq!(true, Ptr::in_stack(in_stack.as_ptr(), STACK_SIZE));
+    /// assert_eq!(false, Ptr::in_stack(in_heap.as_ptr(), STACK_SIZE));
+    /// ```
+    #[cfg(not(miri))] // The addresses in Miri are not real addresses
+    #[must_use]
+    pub fn in_stack<T>(address: *const T, stack_size: usize) -> bool {
+        let local_var = 0;
+        let local_addr = &local_var as *const _ as usize;
+        let obj_addr = address as *const _ as usize;
+        let addr_diff = iif![local_addr > obj_addr; local_addr - obj_addr; obj_addr - local_addr];
+        addr_diff < stack_size
     }
 
     /// Convert an exclusive reference to a raw pointer.
