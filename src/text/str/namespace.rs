@@ -5,7 +5,7 @@
 
 #[allow(unused_imports, reason = "+unsafe_str")]
 #[cfg(feature = "alloc")]
-use crate::_dep::_alloc::str::from_boxed_utf8_unchecked;
+use crate::{Box, _dep::_alloc::str::from_boxed_utf8_unchecked};
 #[allow(unused_imports, reason = "+unsafe_str")]
 use crate::{
     Utf8Error,

@@ -1,5 +1,7 @@
-// devela::text::reexports
+// devela::text::str:reexports
 //
+//! String related re-exports.
+//!
 //! Reexport the *const-str* crate macros related to string slices,
 //! prefixed with `str_` and with a new first line of documentation.
 //
@@ -30,16 +32,6 @@ crate::items! { pub use crate::sys::ffi::{OsStr, OsString}; }
 reexport! { rust: core::str,
     doc: "Parse a value from a string.",
     FromStr
-}
-reexport! { rust: core::str,
-    doc: "An iterator over the [`char`]s of a string slice.",
-    @Chars as IterChars
-}
-// TODO: IMPROVE: recreate and impl conversion methods:
-// - https://doc.rust-lang.org/src/core/str/error.rs.html#47-50
-reexport! { rust: core::str,
-    doc: "Errors which can occur when attempting to interpret a sequence of u8 as a string.",
-    Utf8Error
 }
 
 /* alloc */

@@ -18,10 +18,10 @@ mod helpers; // impl_sized_alias!
 mod ascii;
 mod char;
 mod error;
-mod ext;
 mod grapheme;
+mod reexports;
 #[allow(unused_imports)]
-pub use {ascii::all::*, char::all::*, error::*, ext::*, grapheme::all::*};
+pub use {ascii::all::*, char::all::*, error::*, grapheme::all::*, reexports::*};
 
 pub mod fmt;
 pub mod str;
@@ -32,6 +32,7 @@ pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        ascii::all::*, char::all::*, error::*, ext::*, fmt::all::*, grapheme::all::*, str::all::*,
+        ascii::all::*, char::all::*, error::*, fmt::all::*, grapheme::all::*, reexports::*,
+        str::all::*,
     };
 }
