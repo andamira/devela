@@ -4,8 +4,6 @@
 //
 
 use super::Mem;
-#[cfg(all(not(feature = "safe_data"), feature = "unsafe_slice"))]
-use super::{mem_as_bytes, mem_as_bytes_mut};
 
 impl<T: ?Sized> ExtMem for T {}
 
@@ -41,6 +39,15 @@ pub trait ExtMem {
     /// See [`Mem::size_of_val`].
     #[must_use]
     fn mem_size_of_val(&self) -> usize { Mem::size_of_val(self) }
+
+    /// Bitwise-copies a value.
+    ///
+    /// It is useful when you want to pass a function pointer to a combinator,
+    /// rather than defining a new closure.
+    ///
+    /// See [`Mem::copy`].
+    #[must_use]
+    fn mem_copy(&self) -> Self where Self: Copy { Mem::copy(self) }
 
     /// Returns `true` if dropping values of this type matters.
     ///
@@ -97,16 +104,18 @@ pub trait ExtMem {
 
     /// View a `Sync + Unpin` `self` as `&[u8]`.
     ///
-    /// For the `const` version for sized types see
-    /// [`mem_as_bytes_sized`][super::mem_as_bytes_sized].
+    /// See [`Mem::as_bytes`], and for the `const` version for sized types
+    /// see [`Mem::as_bytes_sized`].
     #[must_use]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
-    fn mem_as_bytes(&self) -> &[u8] where Self: Sync + Unpin { mem_as_bytes(self) }
+    fn mem_as_bytes(&self) -> &[u8] where Self: Sync + Unpin { Mem::as_bytes(self) }
 
     /// View a `Sync + Unpin` `self` as `&mut [u8]`.
+    ///
+    /// See [`Mem::as_bytes_mut`].
     #[must_use]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
-    fn mem_as_bytes_mut(&mut self) -> &mut [u8] where Self: Sync + Unpin { mem_as_bytes_mut(self) }
+    fn mem_as_bytes_mut(&mut self) -> &mut [u8] where Self: Sync + Unpin { Mem::as_bytes_mut(self) }
 }
