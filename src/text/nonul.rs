@@ -7,17 +7,13 @@
 // - trait impls
 
 use crate::{
-    code::{cfor, iif, ConstDefault},
-    error::unwrap,
-    text::{
-        helpers::impl_sized_alias,
-        TextError::{
-            self, InvalidNul, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds,
-        },
-        TextResult as Result,
-    },
+    cfor, iif,
+    text::helpers::impl_sized_alias,
+    unwrap, ConstDefault, Deref, IterChars,
+    TextError::{self, InvalidNul, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
+    TextResult as Result,
+    _core::fmt,
 };
-use core::{fmt, ops::Deref, str::Chars};
 
 #[cfg(feature = "alloc")]
 use crate::text::{CString, ToString};
@@ -201,7 +197,7 @@ impl<const CAP: usize> StringNonul<CAP> {
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[inline]
-    pub fn chars(&self) -> Chars {
+    pub fn chars(&self) -> IterChars {
         self.as_str().chars()
     }
 

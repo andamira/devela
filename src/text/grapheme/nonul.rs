@@ -15,11 +15,9 @@ use crate::text::CString;
 #[cfg(doc)]
 use crate::text::TextError::{NotEnoughCapacity, OutOfBounds};
 use crate::{
-    code::ConstDefault,
-    error::unwrap,
-    text::{helpers::impl_sized_alias, StringNonul, TextResult as Result},
+    text::helpers::impl_sized_alias, unwrap, ConstDefault, IterChars, StringNonul,
+    TextResult as Result,
 };
-use core::str::Chars;
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
@@ -225,7 +223,7 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[inline] #[rustfmt::skip]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    pub fn chars(&self) -> Chars { self.0.chars() }
+    pub fn chars(&self) -> IterChars { self.0.chars() }
 
     /// Returns a new allocated C-compatible, nul-terminanted string.
     #[inline] #[must_use] #[rustfmt::skip]

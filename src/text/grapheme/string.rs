@@ -4,9 +4,10 @@
 //
 
 use super::Grapheme;
+#[allow(unused)]
 use crate::Str;
 #[cfg(feature = "alloc")]
-use crate::{String, _dep::_alloc::str::Chars as CharIterator};
+use crate::{IterChars, String};
 #[cfg(feature = "dep_unicode_segmentation")]
 use crate::{_dep::unicode_segmentation::UnicodeSegmentation, text::*};
 
@@ -125,7 +126,7 @@ impl GraphemeString {
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[inline]
     #[cfg(feature = "alloc")]
-    pub fn chars(&self) -> CharIterator {
+    pub fn chars(&self) -> IterChars {
         self.0.chars()
     }
 }

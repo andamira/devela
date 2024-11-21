@@ -14,13 +14,8 @@ use crate::text::CString;
 #[cfg(doc)]
 use crate::text::TextError::OutOfBounds;
 use crate::{
-    _core::str::Chars,
-    code::ConstDefault,
-    error::unwrap,
-    text::{
-        TextResult as Result,
-        {helpers::impl_sized_alias, StringU8},
-    },
+    text::helpers::impl_sized_alias, unwrap, ConstDefault, IterChars, StringU8,
+    TextResult as Result,
 };
 // use unicode_segmentation::UnicodeSegmentation;
 
@@ -199,7 +194,7 @@ impl<const CAP: usize> GraphemeU8<CAP> {
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
     #[inline] #[rustfmt::skip]
-    pub fn chars(&self) -> Chars { self.0.chars() }
+    pub fn chars(&self) -> IterChars { self.0.chars() }
 
     /// Returns a new allocated C-compatible, nul-terminanted string.
     #[inline] #[rustfmt::skip]

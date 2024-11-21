@@ -8,18 +8,15 @@
 //   - trait impls
 // - tests
 
-use crate::{
-    _core::{fmt, ops::Deref, str::Chars},
-    code::{iif, paste, ConstDefault},
-    error::unwrap,
-    text::{
-        char::{char_to_utf8_bytes, char_utf8_4bytes_len},
-        TextError::{self, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
-        TextResult as Result,
-    },
-};
 #[cfg(_cmp_·)]
 use crate::{code::cfor, num::Compare};
+use crate::{
+    Deref, IterChars,
+    _core::fmt,
+    char_to_utf8_bytes, char_utf8_4bytes_len, iif, paste, unwrap, ConstDefault,
+    TextError::{self, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
+    TextResult as Result,
+};
 
 use super::char::*;
 #[cfg(all(_string_u·, feature = "alloc"))]
@@ -199,7 +196,7 @@ macro_rules! impl_string_u {
 
             /// Returns an iterator over the `chars` of this grapheme cluster.
             #[inline] #[rustfmt::skip]
-            pub fn chars(&self) -> Chars { self.as_str().chars() }
+            pub fn chars(&self) -> IterChars { self.as_str().chars() }
 
             /// Returns a new allocated C-compatible, nul-terminanted string.
             #[inline] #[must_use] #[rustfmt::skip]
