@@ -1,7 +1,7 @@
 // devela::data::collections:array::d1::uninit::methods
 
 use crate::{
-    iif, ptr_swap,
+    iif, Ptr,
     DataError::{NotEnoughSpace, OutOfBounds, PartiallyAdded},
     DataResult as Result, MaybeUninit, Mem, Storage, UninitArray,
 };
@@ -147,7 +147,7 @@ impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {
         let idx2 = self.verify_index(index2)?;
         // SAFETY: If the indices are verified, the values are initialized
         unsafe {
-            ptr_swap(self.data[idx1].assume_init_mut(), self.data[idx2].assume_init_mut());
+            Ptr::swap(self.data[idx1].assume_init_mut(), self.data[idx2].assume_init_mut());
         }
         Ok(())
     }

@@ -11,9 +11,7 @@ use crate::_core::mem::{
 
 /// A memory-related functionality namespace.
 ///
-/// See also:
-/// - the [`ExtMem`][crate::ExtMem] trait.
-/// - <https://doc.rust-lang.org/std/mem/#functions>.
+/// See also: [`ExtMem`][crate::ExtMem].
 pub struct Mem;
 
 impl Mem {

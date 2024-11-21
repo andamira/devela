@@ -7,15 +7,9 @@
 
 mod namespace;
 mod reexports;
-#[allow(unused_imports)]
-pub use {namespace::Ptr, reexports::*};
 
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
-crate::code::items! {
-    mod fat;
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
-    pub use fat::FatPtr;
-}
+mod fat;
 
 pub(crate) mod all {
     #[doc(inline)]
