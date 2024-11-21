@@ -242,8 +242,21 @@ nightly = [ # sync with src/lib.rs
 	# 1.?? [const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
 	#
 	## Experimental features:
-	# [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
-	# [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
+	# - [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
+	# - [offset_of_enum](https://github.com/rust-lang/rust/issues/120141)
+	# - [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
+	# - [type_alias_impl_trait|impl_trait_in_assoc_type](https://github.com/rust-lang/rust/issues/63063)
+	#
+	## Meta tracking issues:
+	# - [2024 edition](https://github.com/rust-lang/rust/issues/117258)
+	# - [arbitrary_self_types](https://github.com/rust-lang/rust/issues/44874)
+	# - [const fn](https://github.com/rust-lang/rust/issues/57563)
+	# - [impl Trait](https://github.com/rust-lang/rust/issues/63066)
+	# - [MaybeUninit methods for arrays](https://github.com/rust-lang/rust/issues/96097)
+	# - [Reproducible Build bugs](https://github.com/rust-lang/rust/issues/129080)
+	#
+	## Rust projet Goals:
+	# - https://rust-lang.github.io/rust-project-goals/
 
 
 #* Capability features *#
