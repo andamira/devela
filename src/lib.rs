@@ -1,6 +1,8 @@
 // devela::lib
 //
 //! A cohesive development layer.
+//!
+#![doc = include_str!("./Lib.md")]
 //
 
 //* global config *//
