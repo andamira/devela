@@ -99,7 +99,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 // safeguard safety:
 #[cfg(all(
     feature = "safe",
-    any(feature = "unsafe", // includes all below:
+    any(feature = "unsafe", // includes all 12 specific purposes below:
         feature = "unsafe_array", feature = "unsafe_async", feature = "unsafe_const",
         feature = "unsafe_hint", feature = "unsafe_layout", feature = "unsafe_niche",
         feature = "unsafe_ptr", feature = "unsafe_slice", feature = "unsafe_str",

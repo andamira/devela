@@ -1,5 +1,43 @@
 # https://doc.rust-lang.org/cargo/reference/manifest.html
 # ==============================================================================
+#
+# TOC
+# - [workspace]
+# - [lib]
+# - [package]
+#
+# - [features]
+#   * miscellaneous
+#   * environment
+#   * module
+#   * safety
+#   * nightly
+#   * capability
+#     * data
+#     * num
+#     * text
+#     * docs/default
+#   * dependencies
+#
+# - [dependencies]
+#   * required
+#   * optional
+#   - [dev-dependencies]
+#   - [build-dependencies]
+#
+# - [patch]
+# - [profile.*]
+# - [package.metadata.*]
+# - [badges]
+#
+# - lints
+#   - [lints.rust]
+#   - [lints.rustdoc]
+#   - [lints.clippy]
+#   - [lints.rust.unexpected_cfgs]
+#
+# - [[bench]]
+# - [[example]]
 
 [workspace]
 members = [".", "macros"]
@@ -153,7 +191,7 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	"unsafe_array", "unsafe_async", "unsafe_const", "unsafe_hint",
 	"unsafe_layout", "unsafe_niche", "unsafe_ptr", "unsafe_slice",
 	"unsafe_str", "unsafe_sync", "unsafe_syscall", "unsafe_thread",
-] # for specific purposes:
+] # for 12 specific purposes:
 	unsafe_array = [] # faster array initialization, UninitArray.
 	unsafe_async = [] # task_waker_noop, CoroRun.
 	unsafe_const = [] # extra const methods.
@@ -219,6 +257,7 @@ nightly = [ # sync with src/lib.rs
 	# 1.84:  [const_make_ascii](https://github.com/rust-lang/rust/pull/131496)
 	# 1.84:  [const_maybe_uninit_assume_init](https://github.com/rust-lang/rust/pull/131274)
 	# 1.84:  [pin_deref_mut](https://github.com/rust-lang/rust/pull/129424)
+	# 1.84:  [Do not run lints that cannot emit](https://github.com/rust-lang/rust/pull/125116)
 	#
 	##1.‥… later
 	# 1.??: ✗[async_closure](https://github.com/rust-lang/rust/pull/132706)
@@ -256,6 +295,14 @@ nightly = [ # sync with src/lib.rs
 	#
 	## Rust projet Goals:
 	# - https://rust-lang.github.io/rust-project-goals/
+	# - [const traits](https://github.com/rust-lang/rust-project-goals/issues/106)
+	# - [expanded const generics](https://github.com/rust-lang/rust-project-goals/issues/100)
+	# - [Linux building on stable](https://github.com/rust-lang/rust-project-goals/issues/116)
+	# - [next generation trait solver](https://github.com/rust-lang/rust-project-goals/issues/113)
+	# - [optimize clippy & linting](https://github.com/rust-lang/rust-project-goals/issues/114)
+	# - [Rust 2024 Edition](https://github.com/rust-lang/rust-project-goals/issues/117)
+	# - [stabilize cargo-script](https://github.com/rust-lang/rust-project-goals/issues/119)
+	# - [stabilize doc_cfg](https://github.com/rust-lang/rust-project-goals/issues/120)
 
 
 #* Capability features *#
@@ -612,8 +659,8 @@ devela = { path = './' }
 
 
 [package.metadata.docs.rs]
-# ==============================================================================
 # https://docs.rs/about/metadata
+# ==============================================================================
 
 no-default-features = true
 features = ["_docsrs"]
@@ -644,7 +691,7 @@ unknown_lints = "allow" # unrecognized lint attributes
 [lints.rustdoc]
 # https://doc.rust-lang.org/rustdoc/lints.html
 # ------------------------------------------------------------------------------
-# broken_intra_doc_links = "allow" # NOTE: conditionally in lib.rs
+# broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs
 
 [lints.clippy]
 # https://rust-lang.github.io/rust-clippy/master/index.html
@@ -683,7 +730,6 @@ module_inception = "allow" # modules with the same name as its parent
 too_long_first_doc_paragraph = "allow" # reason: root modules doc_extends!
 wrong_self_convention = "allow" # `is_` methods having an owned self
 
-
 [lints.rust.unexpected_cfgs]
 # https://dev-doc.rust-lang.org/nightly/unstable-book/compiler-flags/check-cfg.html
 # https://doc.rust-lang.org/rustc/check-cfg.html
@@ -715,7 +761,6 @@ check-cfg = [ # Allowed config flags:
 	# text:
 	'cfg(_char_·, _string_·, _string_u·)',
 ]
-
 
 # [[bench]]
 # ==============================================================================
