@@ -85,7 +85,10 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[repr(#repr)]
         #visibility enum #enum_name {
-            #(#enum_variants),*
+            #(
+                /// .
+                #enum_variants
+            ),*
         }
 
         unsafe impl Send for #enum_name {}
