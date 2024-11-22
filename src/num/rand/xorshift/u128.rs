@@ -3,7 +3,7 @@
 //! 128-bit versions of XorShift generators.
 //
 
-use crate::{code::ConstDefault, error::Own, num::Cast};
+use crate::{Cast, ConstDefault, Own};
 
 /// The `XorShift128` pseudo-random number generator.
 ///

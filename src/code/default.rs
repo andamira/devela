@@ -14,38 +14,38 @@ pub trait ConstDefault {
 // macro helper to impl ConstDefault. Supports generics.
 macro_rules! impl_cdef {
     // <A>
-    (<$A:ident> $def:expr => $($t:ty),+) => { $( $crate::code::impl_cdef![@<$A> $def => $t]; )+ };
+    (<$A:ident> $def:expr => $($t:ty),+) => { $( $crate::impl_cdef![@<$A> $def => $t]; )+ };
     (@<$A:ident> $def:expr => $t:ty) => {
-        impl<$A> $crate::code::ConstDefault for $t {
+        impl<$A> $crate::ConstDefault for $t {
             #[allow(clippy::declare_interior_mutable_const)]
             const DEFAULT: Self = $def;
         }
     };
     // <A: A_> (bounded)
     (<$A:ident:$A_:ident> $def:expr => $($t:ty),+) => {
-        $( $crate::code::impl_cdef![@<$A:$A_> $def => $t]; )+
+        $( $crate::impl_cdef![@<$A:$A_> $def => $t]; )+
     };
     (@<$A:ident:$A_:ident> $def:expr => $t:ty) => {
-        impl<$A: $crate::code::ConstDefault> $crate::code::ConstDefault for $t {
+        impl<$A: $crate::ConstDefault> $crate::ConstDefault for $t {
             #[allow(clippy::declare_interior_mutable_const, reason = "FIXME?")]
             const DEFAULT: Self = $def;
         }
     };
     // <A, B>
     (<$A:ident, $B:ident> $def:expr => $($t:ty),+) => {
-        $( $crate::code::impl_cdef![@<$A, $B> $def => $t]; )+
+        $( $crate::impl_cdef![@<$A, $B> $def => $t]; )+
     };
     (@<$A:ident, $B:ident> $def:expr => $t:ty) => {
-        impl<$A, $B> $crate::code::ConstDefault for $t {
+        impl<$A, $B> $crate::ConstDefault for $t {
             #[allow(clippy::declare_interior_mutable_const)] //
             const DEFAULT: Self = $def;
         }
     };
     // <A: A_, B: B_> (bounded)
     (<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $($t:ty),+) => {
-        $( $crate::code::impl_cdef![@<$A:$A_, $B:$B_> $def => $t]; )+ };
+        $( $crate::impl_cdef![@<$A:$A_, $B:$B_> $def => $t]; )+ };
     (@<$A:ident:$A_:ident, $B:ident:$B_:ident> $def:expr => $t:ty) => {
-        impl<$A:$A_, $B:$B_> $crate::code::ConstDefault for $t {
+        impl<$A:$A_, $B:$B_> $crate::ConstDefault for $t {
             #[allow(clippy::declare_interior_mutable_const)] //
             const DEFAULT: Self = $def;
         }
@@ -53,67 +53,67 @@ macro_rules! impl_cdef {
 
     // <A, B, C>
     (<$A:ident, $B:ident, $C:ident> $def:expr => $($t:ty),+) => {
-        $( $crate::code::impl_cdef![@<$A, $B, $C> $def => $t]; )+
+        $( $crate::impl_cdef![@<$A, $B, $C> $def => $t]; )+
     };
     (@<$A:ident, $B:ident, $C:ident> $def:expr => $t:ty) => {
-        impl<$A, $B, $C> $crate::code::ConstDefault for $t {
+        impl<$A, $B, $C> $crate::ConstDefault for $t {
             #[allow(clippy::declare_interior_mutable_const)] //
             const DEFAULT: Self = $def;
         }
     };
     // <>
-    ($def:expr => $($t:ty),+) => { $( $crate::code::impl_cdef![@$def => $t]; )+ };
+    ($def:expr => $($t:ty),+) => { $( $crate::impl_cdef![@$def => $t]; )+ };
     (@$def:expr => $t:ty) => {
-        impl $crate::code::ConstDefault for $t {
+        impl $crate::ConstDefault for $t {
             #[allow(clippy::declare_interior_mutable_const)]
             const DEFAULT: Self = $def;
         }
     };
     // impl for arrays of the given $LEN lenghts
     (arrays <$A:ident:$BOUND:ident> $($LEN:literal),+) => {
-        $( $crate::code::impl_cdef![@array:$LEN <$A:$BOUND>]; )+
+        $( $crate::impl_cdef![@array:$LEN <$A:$BOUND>]; )+
     };
     (@array:$LEN:literal <$A:ident:$BOUND:ident>) => {
-        impl<$A: $crate::code::ConstDefault> $crate::code::ConstDefault for [$A; $LEN] {
+        impl<$A: $crate::ConstDefault> $crate::ConstDefault for [$A; $LEN] {
             #[allow(clippy::declare_interior_mutable_const)] //
             const DEFAULT: Self = [$A::DEFAULT; $LEN];
         }
     };
     // impl for tuples of lenghts from 1 to 12
     (tuples <$A:ident:$BOUND:ident>) => {
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,) => // 1
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,) => // 1
             ($A::DEFAULT,)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,) => // 2
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,) => // 2
             ($A::DEFAULT, $A::DEFAULT)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A) => // 3
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A) => // 3
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A) => // 4
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A) => // 4
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A) => // 5
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A) => // 5
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A) => // 6
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A) => // 6
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A) => // 7
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A) => // 7
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A) => // 8
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A) => // 8
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT, $A::DEFAULT)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A) => // 9
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A) => // 9
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 10
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 10
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 11
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 11
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
-        $crate::code::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 12
+        $crate::impl_cdef![@tuple <$A:$BOUND> ($A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A,$A) => // 12
             ($A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT,
              $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT, $A::DEFAULT)];
     };
     (@tuple <$A:ident:$BOUND:ident> $type:ty => $value:expr) => {
-        impl<$A: $crate::code::ConstDefault> $crate::code::ConstDefault for $type {
+        impl<$A: $crate::ConstDefault> $crate::ConstDefault for $type {
             const DEFAULT: Self = $value;
         }
     };

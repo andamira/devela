@@ -3,14 +3,13 @@
 //!
 //
 
-use crate::num::{NumError as E, NumResult as Result};
-use core::ops::{Deref, DerefMut};
+use crate::{sf, Deref, DerefMut, NumError as E, NumResult as Result};
 #[cfg(doc)]
 use E::{NotImplemented, NotSupported};
 
 mod impls;
 
-crate::sf! {
+sf! {
     impl<T: Num> NumRef<'_> for &T { type Own = T; }
     impl<T: Num> NumRef<'_> for &mut T { type Own = T; }
 }

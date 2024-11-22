@@ -2,7 +2,7 @@
 
 #![allow(non_camel_case_types, unused)]
 
-use crate::code::paste;
+use crate::paste;
 
 /// An alias for a pointer-sized floating-point primitive.
 ///

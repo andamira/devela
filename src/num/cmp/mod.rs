@@ -1,10 +1,9 @@
 // devela::num::cmp
 //
 //! Comparing and ordering values.
-#![doc = crate::doc_!(extends: cmp)]
-#![doc = crate::doc_!(modules: crate::num; cmp)]
-#![doc = crate::doc_!(newline)]
-//!
+// #![doc = crate::doc_!(extends: cmp)]
+// #![doc = crate::doc_!(modules: crate::num; cmp)]
+// #![doc = crate::doc_!(newline)]
 //
 
 mod reexports;

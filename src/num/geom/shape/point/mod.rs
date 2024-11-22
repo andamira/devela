@@ -4,7 +4,7 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::data::Vec;
+use crate::Vec;
 
 mod impl_traits;
 mod methods;

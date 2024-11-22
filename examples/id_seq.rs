@@ -4,7 +4,7 @@
 //!
 //! # Example
 //! ```
-//! # use devela::data::id_seq;
+//! # use devela::id_seq;
 //! // Construct an id generator for a maximum of 254 unsigned 8-bit unique Ids.
 //! id_seq![IdU8, u8];
 //!

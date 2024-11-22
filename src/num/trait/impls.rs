@@ -4,10 +4,10 @@
 //
 
 #[cfg(all(_float_·, not(feature = "std")))]
-use crate::code::iif;
-use crate::code::paste;
+use crate::iif;
+use crate::paste;
 #[cfg(_float_·)]
-use core::ops::{Add, Div, Mul, Neg, Rem, Sub};
+use crate::{Add, Div, Mul, Neg, Rem, Sub};
 #[allow(unused_imports)]
 use {
     crate::num::{niche::*, Num, NumError, NumResult as Result},

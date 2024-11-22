@@ -179,3 +179,7 @@ reexport! { rust: core::ops, doc: "The multiplication assignment operator `*=`."
 reexport! { rust: core::ops, doc: "The unary negation operator `-`.", Neg }
 reexport! { rust: core::ops, doc: "The unary logical negation operator `!`.", Not }
 reexport! { rust: core::ops, doc: "Implemented by Rust’s built-in range types", RangeBounds }
+reexport! { rust: core::ops, doc: "The remainder operator `%`.", Rem }
+reexport! { rust: core::ops, doc: "The remainder assignment operator `%=`.", RemAssign }
+reexport! { rust: core::ops, doc: "The subtraction operator `-`.", Sub }
+reexport! { rust: core::ops, doc: "The subtraction assignment operator `-=`.", SubAssign }

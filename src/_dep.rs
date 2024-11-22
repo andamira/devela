@@ -1,7 +1,5 @@
 // devela::_dep
 //
-//!
-//
 // TOC
 // - standard libraries
 // - external dependencies

@@ -7,7 +7,7 @@
 // - implement core traits
 
 #[cfg(doc)]
-use crate::num::Int;
+use crate::Int;
 
 mod impl_frac;
 

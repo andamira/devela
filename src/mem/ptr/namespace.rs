@@ -30,7 +30,7 @@ impl Ptr {
 
     /// Compares raw pointer addresses for equality, ignoring any metadata in fat pointers.
     ///
-    /// See [`core::ptr::addr_eq`].
+    /// See `core::ptr::`[`addr_eq`].
     pub fn addr_eq<T: ?Sized, U: ?Sized>(p: *const T, q: *const U) -> bool {
         addr_eq(p, q)
     }
@@ -38,7 +38,7 @@ impl Ptr {
     /// Copies `count * size_of::<T>()` bytes from `src` to `dst`. Can overlap.
     ///
     /// # Safety
-    /// See [`core::ptr::copy`].
+    /// See `core::ptr::`[`copy`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
@@ -51,7 +51,7 @@ impl Ptr {
     /// Copies `count * size_of::<T>()` bytes from `src` to `dst`. Must *not* overlap.
     ///
     /// # Safety
-    /// See [`core::ptr::copy_nonoverlapping`].
+    /// See `core::ptr::`[`copy_nonoverlapping`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
@@ -64,7 +64,7 @@ impl Ptr {
     /// Executes the destructor (if any) of the pointed-to value.
     ///
     /// # Safety
-    /// See [`core::ptr::drop_in_place`].
+    /// See `core::ptr::`[`drop_in_place`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn drop_in_place<T: ?Sized>(to_drop: *mut T) {
@@ -76,7 +76,7 @@ impl Ptr {
 
     /// Compares raw pointers for equality.
     ///
-    /// See [`core::ptr::eq`].
+    /// See `core::ptr::`[`eq`].
     pub fn eq<T: ?Sized>(a: *const T, b: *const T) -> bool {
         eq(a, b)
     }
@@ -116,7 +116,7 @@ impl Ptr {
 
     /// Convert an exclusive reference to a raw pointer.
     ///
-    /// See [`core::ptr::from_mut`].
+    /// See `core::ptr::`[`from_mut`].
     // WAIT:1.83: [const_mut_refs|const_refs_to_cell](https://github.com/rust-lang/rust/pull/129195)
     pub fn from_mut<T: ?Sized>(r: &mut T) -> *mut T {
         from_mut(r)
@@ -124,21 +124,21 @@ impl Ptr {
 
     /// Convert a shared reference to a raw pointer.
     ///
-    /// See [`core::ptr::from_ref`].
+    /// See `core::ptr::`[`from_ref`].
     pub const fn from_ref<T: ?Sized>(r: &T) -> *const T {
         from_ref(r)
     }
 
     /// Hash a raw pointer.
     ///
-    /// See [`core::ptr::hash`].
+    /// See `core::ptr::`[`hash`].
     pub fn hash<T: ?Sized, S: Hasher>(hashee: *const T, into: &mut S) {
         hash(hashee, into);
     }
 
     /// Creates a null raw pointer.
     ///
-    /// See [`core::ptr::null`].
+    /// See `core::ptr::`[`null`].
     // WAIT: [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
     // T: Thin + ?Sized https://doc.rust-lang.org/core/ptr/traitalias.Thin.html
     pub const fn null<T>() -> *const T {
@@ -147,7 +147,7 @@ impl Ptr {
 
     /// Creates a null mutable raw pointer.
     ///
-    /// See [`core::ptr::null_mut`].
+    /// See `core::ptr::`[`null_mut`].
     // WAIT: [ptr_metadata](https://github.com/rust-lang/rust/issues/81513)
     // T: Thin + ?Sized https://doc.rust-lang.org/core/ptr/traitalias.Thin.html
     pub const fn null_mut<T>() -> *mut T {
@@ -157,7 +157,7 @@ impl Ptr {
     /// Reads the value from src without moving it.
     ///
     /// # Safety
-    /// See [`core::ptr::read`].
+    /// See `core::ptr::`[`read`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub const unsafe fn read<T>(src: *const T) -> T {
@@ -168,7 +168,7 @@ impl Ptr {
     /// Reads the value from src without moving it.
     ///
     /// # Safety
-    /// See [`core::ptr::read_unaligned`].
+    /// See `core::ptr::`[`read_unaligned`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub const unsafe fn read_unaligned<T>(src: *const T) -> T {
@@ -179,7 +179,7 @@ impl Ptr {
     /// Performs a volatile read of the value from src without moving it.
     ///
     /// # Safety
-    /// See [`core::ptr::read_volatile`].
+    /// See `core::ptr::`[`read_volatile`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn read_volatile<T>(src: *const T) -> T {
@@ -190,7 +190,7 @@ impl Ptr {
     /// Moves src into the pointed dst, returning the previous dst value.
     ///
     /// # Safety
-    /// See [`core::ptr::replace`].
+    /// See `core::ptr::`[`replace`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn replace<T>(dst: *mut T, src: T) -> T {
@@ -228,14 +228,14 @@ impl Ptr {
 
     /// Forms a raw slice from a pointer and a length.
     ///
-    /// See [`core::ptr::slice_from_raw_parts`].
+    /// See `core::ptr::`[`slice_from_raw_parts`].
     pub const fn slice_from_raw_parts<T>(data: *const T, len: usize) -> *const [T] {
         slice_from_raw_parts(data, len)
     }
 
     /// Forms a mutable raw slice from a mutable pointer and a length.
     ///
-    /// See [`core::ptr::slice_from_raw_parts_mut`].
+    /// See `core::ptr::`[`slice_from_raw_parts_mut`].
     // WAIT:1.83: [const_slice_from_raw_parts_mut](https://github.com/rust-lang/rust/pull/130403)
     pub fn slice_from_raw_parts_mut<T>(data: *mut T, len: usize) -> *mut [T] {
         slice_from_raw_parts_mut(data, len)
@@ -244,7 +244,7 @@ impl Ptr {
     /// Swaps the values at two mutable locations of the same type, without deinitializing.
     ///
     /// # Safety
-    /// See [`core::ptr::swap`].
+    /// See `core::ptr::`[`swap`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn swap<T>(x: *mut T, y: *mut T) {
@@ -257,7 +257,7 @@ impl Ptr {
     /// Swaps the two regions of memory beginning at `x` and `y`. Must *not* overlap.
     ///
     /// # Safety
-    /// See [`core::ptr::swap_nonoverlapping`].
+    /// See `core::ptr::`[`swap_nonoverlapping`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn swap_nonoverlapping<T>(x: *mut T, y: *mut T, count: usize) {
@@ -268,7 +268,7 @@ impl Ptr {
     /// Overwrites a memory location with `src` without reading or dropping.
     ///
     /// # Safety
-    /// See [`core::ptr::write`].
+    /// See `core::ptr::`[`write`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn write<T>(dst: *mut T, src: T) {
@@ -281,7 +281,7 @@ impl Ptr {
     /// Sets `count * size_of::<T>()` bytes of memory starting at `dst` to `val`.
     ///
     /// # Safety
-    /// See [`core::ptr::write_bytes`].
+    /// See `core::ptr::`[`write_bytes`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn write_bytes<T>(dst: *mut T, val: u8, count: usize) {
@@ -294,7 +294,7 @@ impl Ptr {
     /// Overwrites a memory location with `src` without reading or dropping.
     ///
     /// # Safety
-    /// See [`core::ptr::write_unaligned`].
+    /// See `core::ptr::`[`write_unaligned`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn write_unaligned<T>(dst: *mut T, src: T) {
@@ -307,7 +307,7 @@ impl Ptr {
     /// Performs a volatile write of a memory location with `src` without reading or dropping.
     ///
     /// # Safety
-    /// See [`core::ptr::write_volatile`].
+    /// See `core::ptr::`[`write_volatile`].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn write_volatile<T>(dst: *mut T, src: T) {

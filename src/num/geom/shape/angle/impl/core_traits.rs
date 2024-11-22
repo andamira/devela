@@ -3,8 +3,7 @@
 //!
 //
 
-use crate::{Angle, ConstDefault};
-use core::{cmp::Ordering, fmt};
+use crate::{Angle, ConstDefault, Debug, FmtResult, Formatter, Ordering};
 
 /* Clone, Copy */
 
@@ -36,8 +35,8 @@ impl<T: ConstDefault> ConstDefault for Angle<T> {
 }
 
 // T:Debug
-impl<T: fmt::Debug> fmt::Debug for Angle<T> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl<T: Debug> Debug for Angle<T> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         write!(f, "Angle({:?})", self.0)
     }
 }

@@ -8,11 +8,9 @@
 // - impl (Try)From Sign
 
 use crate::{
-    code::ConstDefault,
-    num::{
-        NumError::{self, Invalid},
-        NumResult as Result,
-    },
+    ConstDefault,
+    NumError::{self, Invalid},
+    NumResult as Result,
 };
 
 /// Represents the sign of a number.

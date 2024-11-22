@@ -3,11 +3,10 @@
 //! Linear algebra and symbolic computation.
 //
 
-mod linear;
-// mod symbolic;
-
+pub mod linear;
+#[doc(hidden)]
+#[allow(unused_imports)]
 pub use linear::*;
-// pub use symbolic::*;
 
 pub(crate) mod all {
     #[doc(inline)]

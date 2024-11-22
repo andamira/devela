@@ -3,9 +3,7 @@
 //!
 //
 
-use crate::code::{
-    iif, Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
-};
+use crate::{iif, Bound, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive};
 
 /// An interval type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

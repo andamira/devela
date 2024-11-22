@@ -15,10 +15,10 @@
 // - WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
 
 #[allow(unused_imports)]
-use crate::code::{iif, paste};
+use crate::{iif, paste};
 #[allow(unused_imports)]
 #[cfg(_float_·)]
-use crate::num::Float;
+use crate::Float;
 use core::cmp::Ordering::{self, Equal, Greater, Less};
 
 /// Provides comparing methods for `T`, most of them *const*.

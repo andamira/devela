@@ -109,22 +109,23 @@ impl<T: TypeResourced> TypeResource<T> {
 
 #[rustfmt::skip]
 mod impls {
-    use core::{cmp::Ordering, fmt, hash};
-    use super::{TypeResource, TypeResourced};
-    use crate::ConstDefault;
     #[cfg(feature = "alloc")]
     use crate::String;
+    use crate::{
+        ConstDefault, Debug, Display, FmtResult, Formatter, Hash, Hasher, Ordering, TypeResource,
+        TypeResourced,
+    };
 
     impl<T> Clone for TypeResource<T> where T: TypeResourced, T::TypeData: Clone {
         fn clone(&self) -> Self { TypeResource::new(self.data.clone()) }
     }
     impl<T> Copy for TypeResource<T> where T: TypeResourced, T::TypeData: Copy {}
 
-    impl<T> fmt::Debug for TypeResource<T> where T: TypeResourced, T::TypeData: fmt::Debug {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self.data) }
+    impl<T> Debug for TypeResource<T> where T: TypeResourced, T::TypeData: Debug {
+        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> { write!(f, "{:?}", self.data) }
     }
-    impl<T> fmt::Display for TypeResource<T> where T: TypeResourced, T::TypeData: fmt::Display {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{}", self.data) }
+    impl<T> Display for TypeResource<T> where T: TypeResourced, T::TypeData: Display {
+        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> { write!(f, "{}", self.data) }
     }
 
     impl<T> PartialEq for TypeResource<T> where T: TypeResourced, T::TypeData: PartialEq {
@@ -141,8 +142,8 @@ mod impls {
         fn cmp(&self, other: &Self) -> Ordering { self.data.cmp(&other.data) }
     }
 
-    impl<T> hash::Hash for TypeResource<T> where T: TypeResourced, T::TypeData: hash::Hash {
-        fn hash<H: hash::Hasher>(&self, state: &mut H) { self.data.hash(state); }
+    impl<T> Hash for TypeResource<T> where T: TypeResourced, T::TypeData: Hash {
+        fn hash<H: Hasher>(&self, state: &mut H) { self.data.hash(state); }
     }
     impl<T> Default for TypeResource<T> where T: TypeResourced, T::TypeData: Default {
         fn default() -> Self { TypeResource::new(T::TypeData::default()) }

@@ -14,10 +14,10 @@
 //   - lcm
 //   - add
 
-#[cfg(_int_·)]
-use crate::num::{Frac, Int, NumResult as Result};
 #[cfg(doc)]
-use {crate::num::NumError, NumError::Overflow};
+use crate::NumError::{self, Overflow};
+#[cfg(_int_·)]
+use crate::{Frac, Int, NumResult as Result};
 
 // $i:    the integer type.
 // $self: the fractional self type.
@@ -42,7 +42,7 @@ macro_rules! impl_frac {
     };
 
     // both for signed and unsigned
-    (@array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::code::paste! {
+    (@array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Fraction related methods for `[" $i "; 2]`\n\n"]
@@ -127,7 +127,7 @@ macro_rules! impl_frac {
         }
     }};
 
-    (@int_array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::code::paste! {
+    (@int_array $i:ty : $cap:literal, $self:ty, $fout:ty) => { $crate::paste! {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         #[doc = "# Fraction related methods for `[Int<" $i ">; 2]`\n\n"]

@@ -3,7 +3,7 @@
 //! Reexported items from `core`.
 //
 
-use crate::code::reexport;
+use crate::reexport;
 
 reexport! { rust: core::num,
     doc: "A signed integer that is known not to equal zero.",

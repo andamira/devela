@@ -1,6 +1,9 @@
 // examples/id_pin.rs
+//
+//! Shows how to use the [`IdPin`] and [`IdPinBox`][devela::IdPinBox] items.
+//
 
-use devela::all::*;
+use devela::IdPin;
 
 fn main() {
     let mut data1 = 0u8;
@@ -16,7 +19,7 @@ fn main() {
     #[cfg(feature = "alloc")]
     {
         println!("IdPinBox (heap)");
-        let id3 = IdPinBox::new();
+        let id3 = devela::IdPinBox::new();
         let id4 = id3.clone();
         println!("id3: {id3:?}");
         println!("id4: {id4:?}");

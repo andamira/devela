@@ -1,9 +1,9 @@
 // devela::data::collections:array::d1::uninit::methods
 
 use crate::{
-    iif, Ptr,
+    iif,
     DataError::{NotEnoughSpace, OutOfBounds, PartiallyAdded},
-    DataResult as Result, MaybeUninit, Mem, Storage, UninitArray,
+    DataResult as Result, MaybeUninit, Mem, Ptr, Storage, UninitArray,
 };
 
 // T, S

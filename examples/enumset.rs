@@ -6,7 +6,7 @@
 //!
 //! This will create the [`ExampleEnum`] and [`ExampleEnumSet`] interrelated types.
 //! ```
-//! # use devela::code::enumset;
+//! # use devela::enumset;
 //! enumset! {
 //!     /// An example created with [`enumset!`].
 //!     #[allow(dead_code)]
@@ -41,7 +41,7 @@
 //! ```
 //
 
-use devela::code::enumset;
+use devela::enumset;
 
 enumset! {
     /// An example created with [`enumset!`].

@@ -7,8 +7,7 @@
 // - trait implementation
 // - wrapper implementations
 
-use super::Cast;
-use crate::code::paste;
+use crate::{paste, Cast};
 
 /// Offers methods to construct a primitive from an array or slice of smaller primitives.
 ///

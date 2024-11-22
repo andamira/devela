@@ -8,10 +8,10 @@
 // - maybe use NonExtreme for the signed representation.
 
 #[cfg(all(not(feature = "std"), _float_·))]
-use crate::num::ExtFloat;
+use crate::ExtFloat;
 #[cfg(_float_·)]
 #[allow(unused_imports)]
-use crate::num::{fsize, ExtFloatConst};
+use crate::{fsize, ExtFloatConst};
 use crate::{doc_private, Angle, AngleDirection, AngleKind};
 
 #[doc = doc_private!()]

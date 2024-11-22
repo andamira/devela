@@ -29,7 +29,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
 
-use crate::{code::ConstDefault, error::Own, num::Cast};
+use crate::{Cast, ConstDefault, Own};
 
 /// A simple 8-bit pseudo-random number generator with 32-bit of state,
 /// based on the *XorShift* algorithm.

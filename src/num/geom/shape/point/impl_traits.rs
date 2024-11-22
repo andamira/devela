@@ -3,15 +3,9 @@
 //!
 //
 
-use super::Point;
 use crate::{
-    code::ConstDefault,
-    data::{array_init, ExtArray},
-};
-use core::{
-    cmp::Ordering,
-    fmt,
-    hash::{Hash, Hasher},
+    array_init, ConstDefault, Debug, Display, ExtArray, FmtResult, Formatter, Hash, Hasher,
+    Ordering, Point,
 };
 
 impl<T: Clone, const D: usize> Clone for Point<T, D> {
@@ -32,13 +26,13 @@ impl<T: ConstDefault, const D: usize> ConstDefault for Point<T, D> {
     const DEFAULT: Self = Self::new(array_init![const_default [T; D]]);
 }
 
-impl<T: fmt::Debug, const D: usize> fmt::Debug for Point<T, D> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl<T: Debug, const D: usize> Debug for Point<T, D> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         f.debug_tuple("Point").field(&self.coords).finish()
     }
 }
-impl<T: fmt::Display, const D: usize> fmt::Display for Point<T, D> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl<T: Display, const D: usize> Display for Point<T, D> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         write!(f, "Point {{ coords: {} }}", self.coords.fmt())
     }
 }

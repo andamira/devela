@@ -7,6 +7,7 @@
 /// Macro helper for documentation of re-exported items.
 //
 // FIX: unresolved link to `alloc`.
+// IMPROVE: make dependencies safety related to features.
 // IMPROVE: rendered paths with trailing `::`. E.g.:
 // - Re-exported from std::backtrace:: .
 // - Re-exported from [alloc]::boxed:: .

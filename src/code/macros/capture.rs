@@ -84,6 +84,7 @@ macro_rules! capture_last {
     (ty $first:ty) => { $first };
 
     // Recursive case: discard the first item and continue with the rest
+    // NOTE: using long path because: https://github.com/rust-lang/rust/pull/52234
     (block $first:block, $($tail:block),* $(,)?) => {
         $crate::code::capture_last!(block $($tail),*) };
     (expr $first:expr, $($tail:expr),* $(,)?) => {

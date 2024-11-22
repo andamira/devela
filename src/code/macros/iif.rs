@@ -11,8 +11,7 @@
 ///
 /// Replacing `if`:
 /// ```
-/// use devela::code::iif;
-///
+/// # use devela::iif;
 /// // This
 /// let s = iif![1 > 0; true; false];
 ///
@@ -26,8 +25,7 @@
 ///
 /// Replacing `if let`:
 /// ```
-/// use devela::code::iif;
-///
+/// # use devela::iif;
 /// let num = Some(123);
 ///
 /// // This
@@ -43,8 +41,7 @@
 ///
 /// Nested:
 /// ```
-/// use devela::code::iif;
-///
+/// # use devela::iif;
 /// let mut s = String::new();
 /// let is_premium = Some(true);
 ///
@@ -95,7 +92,7 @@ pub use iif;
 
 #[cfg(test)]
 mod test_iif {
-    use crate::code::iif;
+    use crate::iif;
 
     #[test]
     fn iif() {

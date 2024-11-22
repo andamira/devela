@@ -17,7 +17,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::code::cfor;
+/// # use devela::cfor;
 /// let mut a = 0;
 /// cfor!(i in 0..5 => {
 ///     a += i
@@ -37,7 +37,7 @@
 /// ## Custom step size
 /// A custom step size can be set:
 /// ```
-/// # use devela::code::cfor;
+/// # use devela::cfor;
 /// let mut v = Vec::new();
 /// cfor!(i in (0..5).step_by(2) => {
 ///     v.push(i)
@@ -50,7 +50,7 @@
 /// ## Reversed
 /// Iteration can be reversed:
 /// ```
-/// # use devela::code::cfor;
+/// # use devela::cfor;
 /// let mut v = Vec::new();
 /// cfor!(i in (0..5).rev() => {
 ///     v.push(i)
@@ -63,7 +63,7 @@
 /// It is possible to combine rev and step_by, but each can only be appended once.
 /// So the following two examples are the only legal combinations.
 /// ```
-/// # use devela::code::cfor;
+/// # use devela::cfor;
 /// // Reverse, then change step size
 /// let mut v = Vec::new();
 /// cfor!(i in (0..10).rev().step_by(4) => {
@@ -84,7 +84,7 @@
 ///
 /// ```
 /// // Mutable variable
-/// # use devela::code::cfor;
+/// # use devela::cfor;
 /// let mut v = Vec::new();
 /// cfor!(mut i in (0..4) => {
 ///     i *= 2;
@@ -103,7 +103,7 @@
 /// The body of the loop can be any statement. This means that the following is legal,
 /// even though it is not in a regular for loop.
 /// ```
-/// # use devela::code::cfor;
+/// # use devela::cfor;
 /// let mut a = 0;
 /// cfor!(_ in 0..5 => a += 1);
 ///

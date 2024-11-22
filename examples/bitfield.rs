@@ -3,7 +3,7 @@
 //! Shows how to use the [`bitfield!`] declarative macro.
 //
 
-use devela::data::bitfield;
+use devela::bitfield;
 
 bitfield! {
     (extra)
@@ -12,7 +12,7 @@ bitfield! {
     /// with public extra methods but no custom fields.
     ///
     /// ```
-    /// use devela::data::bitfield;
+    /// use devela::bitfield;
     ///
     /// bitfield! {
     ///     (extra)
@@ -32,7 +32,7 @@ bitfield! {
     /// with public custom fields but no extra methods.
     ///
     /// ```
-    /// use devela::data::bitfield;
+    /// use devela::bitfield;
     ///
     /// bitfield! {
     ///     (custom)
@@ -68,7 +68,7 @@ bitfield! {
     /// An example created with [`bitfield!`], everything public.
     ///
     /// ```
-    /// use devela::data::bitfield;
+    /// use devela::bitfield;
     ///
     /// bitfield! {
     ///     /// An example created with [`bitfield!`], everything public.

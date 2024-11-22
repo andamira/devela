@@ -128,8 +128,11 @@ pub mod work;
 /// All the crate's items re-exported flat.
 /// <br/><hr>
 ///
+/// Note that these items are already re-exported (hidden) from the root,
+/// as is every other public module from its parent.
+///
 /// There's a more exhaustive list that includes all of the dependencies items,
-/// without descriptions, in [All items](../all.html).
+/// without their descriptions, in [All items](../all.html).
 pub mod all {
     #[allow(unused_imports)]
     #[rustfmt::skip]
@@ -146,7 +149,7 @@ pub mod all {
         work::all::*,
     };
 }
-#[doc(no_inline)]
+#[doc(hidden)]
 #[allow(unused_imports)]
 pub use all::*;
 

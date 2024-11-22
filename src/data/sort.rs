@@ -9,16 +9,13 @@
 // - helper fns
 // - impl Sort for primitives
 
-use crate::code::iif;
-#[cfg(feature = "alloc")]
-use crate::data::{BTreeMap, Vec};
+use crate::iif;
 #[cfg(_sort_float_·)]
-use crate::num::Compare;
+use crate::Compare;
 #[cfg(_sort_·)]
-use crate::{
-    code::{cfor, paste},
-    mem::cswap,
-};
+use crate::{cfor, cswap, paste};
+#[cfg(feature = "alloc")]
+use crate::{BTreeMap, Vec};
 
 /// Provides sorting methods for arrays and slices of `T`.
 ///
@@ -380,8 +377,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
 
 // private helper fns
 mod helper {
-    use crate::code::{iif, sf};
-    use core::cmp::Ordering;
+    use crate::{iif, sf, Ordering};
 
     #[inline]
     #[cfg(feature = "alloc")]

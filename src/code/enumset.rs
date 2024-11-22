@@ -16,7 +16,7 @@
 /// See also the [enumset][crate::_doc::examples::enumset] example.
 ///
 /// ```
-/// # use devela::code::enumset;
+/// # use devela::enumset;
 /// enumset! {
 ///     pub enum MyEnum(pub MyEnumSet: u8) {
 ///         Variant1,
@@ -30,10 +30,10 @@
 /// eset.mut_set_field_variant1();
 /// assert![eset.is_field_variant1()];
 /// ```
+// NOTE: Fixed to use it from the root: https://github.com/rust-lang/rust/pull/52234
+#[doc(hidden)]
 #[macro_export]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_bit_·)))]
-#[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! enumset {
+macro_rules! _enumset {
     (
         // $enum_attr: the attributes of the enum.
         // $enum_vis:  the visibility of the enum.
@@ -58,7 +58,7 @@ macro_rules! enumset {
                 $(,)?
             )*
         }
-    ) => { $crate::code::paste! {
+    ) => { $crate::paste! {
         /* define enum */
 
         $( #[$enum_attr] )*
@@ -77,8 +77,8 @@ macro_rules! enumset {
 
         #[allow(non_snake_case)]
         mod [<_$enum_name _private>] {
-            pub(super) const ENUM_VARIANTS: usize = $crate::code::ident_total!($($variant_name)*);
-            $crate::code::ident_const_index!(pub(super), ENUM_VARIANTS; $($variant_name)*);
+            pub(super) const ENUM_VARIANTS: usize = $crate::ident_total!($($variant_name)*);
+            $crate::ident_const_index!(pub(super), ENUM_VARIANTS; $($variant_name)*);
         }
 
         /// # `enumset` methods
@@ -100,7 +100,7 @@ macro_rules! enumset {
             }
         }
 
-        $crate::data::bitfield! {
+        $crate::data::bitfield! { // NOTE: need the long path
             $( #[$set_attr] )*
             // #[doc = "Represents a set of [`" $enum_name "`] variants."]
             $set_vis struct $set_name($set_ty) {
@@ -116,4 +116,5 @@ macro_rules! enumset {
     }};
 }
 #[doc(inline)]
-pub use enumset;
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_bit_·)))]
+pub use _enumset as enumset;

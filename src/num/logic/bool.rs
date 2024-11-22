@@ -7,7 +7,7 @@
 // - macro const_bool!
 // - types True, False
 
-use crate::code::sf;
+use crate::sf;
 
 /// Allows to convert compile-time constants into type-level booleans.
 ///

@@ -97,8 +97,7 @@ pub use type_marker;
 
 #[cfg(test)]
 mod tests {
-    use super::type_marker;
-    use core::any::TypeId;
+    use crate::{type_marker, TypeId};
 
     #[test]
     fn type_marker_multiple() {
