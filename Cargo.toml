@@ -682,15 +682,18 @@ maintenance = { status = "experimental" }
 # WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
 type_alias_bounds = "deny" # detects bounds in type aliases
 unsafe_op_in_unsafe_fn = "deny" # unsafe use inside unsafe fn without unsafe block
-#
+
 missing_docs = "warn" # missing docs for public items
-#
+
 stable_features = "allow" # a feature attribute that has since been made stable
 unknown_lints = "allow" # unrecognized lint attributes
 
 [lints.rustdoc]
 # https://doc.rust-lang.org/rustdoc/lints.html
 # ------------------------------------------------------------------------------
+
+missing_crate_level_docs = "deny" # no documentation at the crate root
+
 # broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs
 
 [lints.clippy]
@@ -698,7 +701,7 @@ unknown_lints = "allow" # unrecognized lint attributes
 # ------------------------------------------------------------------------------
 enum_glob_use = "deny" # `use Enum::*`
 missing_safety_doc = "deny" # no `# Safety` section in public unsafe fns
-#
+
 all = { level = "warn", priority = -1 } # (the default set of clippy lints)
 # a selection from pedantic:
 bool_to_int_with_if = "warn" # using an if statement to convert a bool to an int
@@ -722,7 +725,7 @@ unreadable_literal = "warn" #  long integral or float does not contain underscor
 # NOTE: not compatible with the iif! macro w/o being able to ignore it in an expr:
 # WAIT: [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
 # redundant_else = "warn" // else blocks that can be removed without changing semantics
-#
+
 empty_docs = "allow" # empty documentation
 doc_lazy_continuation = "allow" # markdown lazy paragraph continuations
 mixed_attributes_style = "allow" # items with mixed (inner/outer) attributes

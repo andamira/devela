@@ -1,0 +1,7 @@
+# Note: The configuration file is unstable and may be deprecated in the future.
+#
+# https://doc.rust-lang.org/stable/clippy/lint_configuration.html
+
+# check-private-items = true # FIX: data::dst (13)
+upper-case-acronyms-aggressive = true
+
