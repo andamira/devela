@@ -13,16 +13,16 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new features for:
   - doc: `_docsrs[_stable]_nodep`.
   - num: `geom`, `wave`.
-  - rend`rend`, `safe_rend`, `audio`, `color`, `draw`, `font`, `image`, `layout`.
+  - rend: `rend`, `safe_rend`, `audio`, `color`, `draw`, `font`, `image`, `layout`.
   - sys: `time`, `linux`, `dep_linux`, `unsafe_syscall`.
   - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
   - nightly: `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`,
-  - other  `dep_work`, `safest`, `unsafe_async`, `__lints`, `__force_miri_dst`.
+  - other  `work_deps`, `safest`, `unsafe_async`, `__force_miri_dst`.
 - new cfg flag: `cargo_primary_package`.
 
 #### New items
 - structs:
-  - namespaces: `Env`, `Mem`, `Str`.
+  - namespaces: `Env`, `Mem`, `Ptr`, `Str`.
   - `CompressionMode`, `EncodingMode`, `Pnm`,
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `RendError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
@@ -77,12 +77,17 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new lints.
 
 #### Examples, utilities, manifest
-- new example `id_pin`.
-- new example `id_seq` and type `ExampleIdSeqUsize`.
-- new example `enumint` and type `ExampleEnumIntU8`.
-- new scripts in `utils/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`, `docs_coverage.sh`, `docs_items.rs`.
+- new examples:
+  - `id_pin`.
+  - `id_seq` and type `ExampleIdSeqUsize`.
+  - `enumint` and type `ExampleEnumIntU8`.
+- update manifest:
+  - add `patches` section.
+  - add table of contents.
+- new `.clippy.toml` configuration file.
 - new github workflows: `get_errno.yml`, `get_syscall.yml`.
-- new `patches` section in the manifest.
+- new scripts in `utils/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`, `docs_coverage.sh`, `docs_items.rs`.
+- hide `no_inline` items re-exports.
 
 ### Removed
 - remove custom no_std `Error` definition.
@@ -90,9 +95,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove types: `InRange*`, `NonRange*`, `HourMilliSplit`, `SecNanoSplit`, `YearSecSplit`.
 - remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`.
 - remove most re-exported fns from `std::mem` (namespaced in `Mem`).
+- remove re-exported fns from `std::ptr` (namespaced in `Ptr`).
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
 - comment out unused features: `code`, `data`, `error`.
-- move `num::geom::prim` submodule to separate crate `cuadra`.
 
 ### Changed
 
@@ -129,22 +134,24 @@ The format is based on [Keep a Changelog], and this project adheres to
     - `EgcString` to `GraphemeString`.
     - `EgcNonul` to `GraphemeNonul`.
     - `EgcU8` to `GraphemeU8`.
-- associated methods and constant:
+- functions and constant:
   - `Graph::edge_exists` no loger panics.
   - rename:
     - `Array::len` to `capacity`.
     - `mem_*` prefixed fns as `Mem` methods.
+    - `ptr_*` prefixed fns as `Ptr` methods.
   - make *const* the following `Float` methods:
     `eval_poly`, `factorial`, `mul_add_fallback`, `scale`, `lerp`, `ln*_series`, `log[10|2]_series`.
   - make *const* versions of the following `Float` methods:
     `clamp_nan`, `fisr`, `hypot_fisr`, `max_nan`, `min_nan`, `cbrt_nr`, `sqrt_nr`, `hypot_nr`, `rem_euclid`, `*_series`, `*_series_terms*`.
+  - remove all `inline` attributes for most functions
 - macros:
   - update `cdbg!` to support a single `@`.
   - rename `mem_size_of_expr!` to `size_of_expr!`.
   - rename re-wrapped macros to avoid prelude collision when glob importing:
     - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
 - modules:
-  - make modules public: `mem::ptr`, `sys::ffi`, `text::fmt`.
+  - make modules public: `sys::ffi`, `text::fmt`.
   - rename:
     - `num::geom::algebra` module to `num::algebra::linear`.
     - `code::result` module to `error`.
@@ -169,6 +176,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - make `utils/check.rs` not compile with `all_dep` when cross-compiling certain arches.
 - hide public macros from the crate root when `cfg(cargo_primary_package)`.
 - fix build script utility call paths, add missing `_tuple*` features.
+- fix `bitfield` and `enumset` being able to be called from the root.
 - several fixes for linux syscalls on multiple architectures.
 - simplify system of documentable & testable examples.
 - fix reexported fns: `fmt_format`, `fmt_write`.
@@ -1021,7 +1029,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 
 [unreleased]: https://github.com/andamira/devela/compare/v0.21.2...HEAD
-[0.22.0]: https://github.com/andamira/devela/releases/tag/v0.22.0
+[0.22.0]: https://github.com/andamira/devela/releases/tag/v0.22.0 (TBD)
 [0.21.2]: https://github.com/andamira/devela/releases/tag/v0.21.2
 [0.21.1]: https://github.com/andamira/devela/releases/tag/v0.21.1
 [0.21.0]: https://github.com/andamira/devela/releases/tag/v0.21.0
