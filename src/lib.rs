@@ -13,14 +13,14 @@
 // - https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/index.html#constants
 // - https://rust-lang.github.io/rust-clippy/master/index.html
 // - https://doc.rust-lang.org/rustdoc/lints.html
-#![cfg_attr(feature = "__lints", deny(
+#![deny(
     // WAIT: [lazy_type_alias](https://github.com/rust-lang/rust/issues/112792)
     type_alias_bounds, // detects bounds in type aliases
     unsafe_op_in_unsafe_fn, // unsafe operations in unsafe functions without explicit unsafe block
     clippy::enum_glob_use, // checks for `use Enum::*`
     clippy::missing_safety_doc, // deny if there's no # Safety section in public unsafe fns
-))]
-#![cfg_attr(feature = "__lints", warn(
+)]
+#![warn(
     missing_docs, // missing docs for public items
     clippy::all, // (the default set of clippy lints)
     // a selection from clippy::pedantic:
@@ -45,7 +45,7 @@
     clippy::trivially_copy_pass_by_ref, // fns with ref args that could be passed by value
     clippy::unnested_or_patterns, // unnested or-patterns, (Some(a)|Some(b) vs Some(a|b))
     clippy::unreadable_literal, //  long integral does not contain underscores
-))]
+)]
 #![cfg_attr(
     not(all(doc, feature = "_docsrs_stable")), // if docs are incomplete...
     allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links

@@ -37,7 +37,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 192/300 (108 remaining), 77 visible, 115 hidden
+[features] # 191/300 (109 remaining), 77 visible, 114 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -65,7 +65,6 @@ publish = true
 # default = []
 
 __dbg = [] # for debugging purposes, shows enabled features
-__lints = [] # enables extra lints (enabled on cl* aliases)
 __no_test = [] # allows excluding examples from being tested
 
 __force_miri_dst = [] # inhibits disabling miri on the data::dst module

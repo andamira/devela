@@ -35,7 +35,6 @@ mod reflection {
         flags: &[],
         features: &[
             "__dbg",
-            "__lints",
             "__no_test",
             "__force_miri_dst",
             // "default",
