@@ -25,7 +25,7 @@ pub trait ExtResult<T, E>: Sealed {
     /// # use devela::ExtResult;
     /// assert_eq!(Ok::<_, ()>(1).contains(&1), true);
     /// assert_eq!(Ok::<_, ()>(1).contains(&2), false);
-    /// assert_eq!(Err("err").contains(&1), false);
+    /// assert_eq!(Err::<u8, _>("err").contains(&1), false);
     /// ```
     #[must_use]
     fn contains<U: PartialEq<T>>(&self, x: &U) -> bool;

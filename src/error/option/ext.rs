@@ -30,7 +30,7 @@ pub trait ExtOption<T>: Sealed {
     /// # use devela::ExtOption;
     /// assert_eq!(Some(1).contains(&1), true);
     /// assert_eq!(Some(1).contains(&2), false);
-    /// assert_eq!(None.contains(&1), false);
+    /// assert_eq!(None::<u8>.contains(&1), false);
     /// ```
     #[must_use]
     fn contains<U: PartialEq<T>>(&self, x: &U) -> bool;
