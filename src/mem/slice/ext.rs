@@ -162,18 +162,13 @@ macro_rules! impl_ext_slice {
         impl<$($impl)*> ExtSlice<$t> for $for {
             /* split */
 
-            #[inline]
             fn slice_lsplit(&self, len: usize) -> &[T] { Slice::lsplit(self, len) }
-            #[inline]
             fn slice_rsplit(&self, len: usize) -> &[T] { Slice::rsplit(self, len) }
-            #[inline]
             fn slice_msplit_left(&self, len: usize) -> &[T] { Slice::msplit_left(self, len) }
-            #[inline]
             fn slice_msplit_right(&self, len: usize) -> &[T] { Slice::msplit_right(self, len) }
 
             /* collection */
 
-            #[inline]
             fn slice_into_array<U, const N: usize>(&self) -> [U; N] where T: Clone, U: From<T> {
                 if self.len() >= N {
                     #[cfg(any(feature = "safe_data", not(feature = "unsafe_array")))]
@@ -197,11 +192,11 @@ macro_rules! impl_ext_slice {
                     panic!("Slice length is less than the requested array size")
                 }
             }
-            #[inline] #[cfg(feature = "alloc")]
+            #[cfg(feature = "alloc")]
             fn slice_into_vec<U>(&self) -> Vec<U> where T: Clone, U: From<T> {
                 self.iter().map(|t| U::from(t.clone())).collect::<Vec<_>>().into_iter().collect()
             }
-            #[inline] #[cfg(feature = "alloc")]
+            #[cfg(feature = "alloc")]
             fn slice_try_into_vec<E, U>(&self) -> Result<Vec<U>, E>
                 where T: Clone, U: TryFrom<T, Error = E> {
                     self
@@ -221,14 +216,10 @@ macro_rules! impl_ext_slice {
         impl<$($impl)*> ExtSliceMut<$t> for $for {
             /* split */
 
-            #[inline]
             fn slice_lsplit_mut(&mut self, len: usize) -> &mut [T] { Slice::lsplit_mut(self, len) }
-            #[inline]
             fn slice_rsplit_mut(&mut self, len: usize) -> &mut [T] { Slice::rsplit_mut(self, len) }
-            #[inline]
             fn slice_msplit_left_mut(&mut self, len: usize) -> &mut [T] {
                 Slice::msplit_left_mut(self, len) }
-            #[inline]
             fn slice_msplit_right_mut(&mut self, len: usize) -> &mut [T] {
                 Slice::msplit_right_mut(self, len) }
         }

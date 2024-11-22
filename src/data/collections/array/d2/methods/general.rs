@@ -97,16 +97,16 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     /* general queries */
 
     /// Returns the total length of the array, equals `C * R`.
-    #[inline] #[must_use]
+    #[must_use]
     pub const fn len(&self) -> usize { CR }
 
     /// Returns the length of the C axis.
     /// (AKA width, number of columns or row length).
-    #[inline] #[must_use] pub const fn x_len(&self) -> usize { C }
+    #[must_use] pub const fn x_len(&self) -> usize { C }
 
     /// Returns the length of the R axis
     /// (AKA height, number of rows or column length).
-    #[inline] #[must_use] pub const fn y_len(&self) -> usize { C }
+    #[must_use] pub const fn y_len(&self) -> usize { C }
 
     /// Returns `true` if the stack is empty (has 0 length).
     /// # Examples
@@ -118,14 +118,14 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     /// let g2 = Array2d::<i32, 0, 0, 0>::default();
     /// assert![g2.is_empty()];
     /// ```
-    #[inline] #[must_use]
+    #[must_use]
     pub const fn is_empty(&self) -> bool { CR == 0 }
 
     /// Checks the geometry of the columns, rows and their product length.
     /// # Errors
     /// Returns [`Overflow`] if `C * R > usize::MAX`
     /// or [`MismatchedLength`] if `C * R != CR`.
-    #[inline] #[allow(non_snake_case)]
+    #[allow(non_snake_case)]
     pub(crate) const fn check_CR() -> Result<()> {
         if let Some(len) = C.checked_mul(R) {
             if len == CR {
@@ -141,7 +141,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     /// Checks the geometry of the columns, rows and their product length.
     /// # Panics
     /// Panics if `C * R > usize::MAX` or if `C * R != CR`.
-    #[inline] #[allow(non_snake_case)]
+    #[allow(non_snake_case)]
     pub(crate) const fn panic_check_CR() {
         if let Some(len) = C.checked_mul(R) {
             if len != CR {
@@ -163,7 +163,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     // /// let g = Array2d::from([1, 2, 3]);
     // /// assert_eq![s.as_slice(), &[1, 2, 3]];
     // /// ```
-    #[inline] #[must_use]
+    #[must_use]
     pub fn as_slice(&self) -> &[T] { self.data.as_slice() }
 
     /// Returns the stack as an exclusive slice.
@@ -173,7 +173,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     // /// let mut g = Array2d::<_, (), 2, 2, 4>::from([1, 2, 3]);
     // /// assert_eq![s.as_mut_slice(), &mut [1, 2, 3]];
     // /// ```
-    #[inline] #[must_use]
+    #[must_use]
     pub fn as_mut_slice(&mut self) -> &mut [T] { self.data.as_mut_slice() }
 }
 
@@ -183,7 +183,7 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Bare>
 {
     /// Returns the inner [`BareBox`]ed primitive array.
-    #[inline] #[must_use]
+    #[must_use]
     pub fn into_array(self) -> [T; CR] { self.data.into_array() }
 }
 
@@ -193,7 +193,7 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Bare>
 {
     /// Returns the inner [`BareBox`]ed primitive array in compile-time.
-    #[inline] #[must_use]
+    #[must_use]
     pub const fn into_array_copy(self) -> [T; CR] { self.data.into_array_copy() }
 }
 
@@ -205,15 +205,15 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     Array2d<T, C, R, CR, RMAJ, Boxed>
 {
     /// Returns the inner [`Box`]ed primitive array.
-    #[inline] #[must_use]
+    #[must_use]
     pub fn into_array(self) -> Box<[T; CR]> { self.data.into_array() }
 
     /// Returns the inner [`Box`]ed primitive array as a slice.
-    #[inline] #[must_use]
+    #[must_use]
     pub fn into_slice(self) -> Box<[T]> { self.data.into_slice() }
 
     /// Returns the inner [`Box`]ed primitive array as a `Vec`.
-    #[inline] #[must_use]
+    #[must_use]
     pub fn into_vec(self) -> Vec<T> { self.data.into_vec() }
 }
 
@@ -223,7 +223,6 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     Array2d<T, C, R, CR, RMAJ, S>
 {
     /// Fills all elements of the grid with the given `element`.
-    #[inline]
     pub fn fill(&mut self, element: T) { self.data.fill(element) }
 }
 
@@ -245,7 +244,6 @@ impl<
     // /// assert![a.contains(&9)];
     // /// assert![!a.contains(&8)];
     // /// ```
-    #[inline]
     #[must_use]
     pub fn contains(&self, element: &T) -> bool {
         self.data.iter().any(|n| n == element)

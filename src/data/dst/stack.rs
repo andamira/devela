@@ -57,18 +57,17 @@ pub struct DstStackIterMut<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(
 
 impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     /// Constructs a new (empty) stack.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub fn new() -> Self where BUF: Default { Self::with_buffer(BUF::default()) }
 
     /// Constructs a new (empty) stack using the given `buffer`.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub fn with_buffer(buffer: BUF) -> Self {
         DstStack { _pd: marker::PhantomData, next_ofs: 0, data: buffer }
     }
 
     /// Returns `true` if the stack is empty.
     #[must_use]
-    #[inline(always)]
     pub const fn is_empty(&self) -> bool {
         self.next_ofs == 0
     }
@@ -80,7 +79,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push([1, 2,3], |v| v);
     /// ```
-    #[inline]
     pub fn push<VAL, F: FnOnce(&VAL) -> &DST>(&mut self, v: VAL, f: F) -> Result<(), VAL>
     where
         (VAL, BUF::Inner): MemAligned,
@@ -101,20 +99,17 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
 
     /// Returns a shared reference to the top item on the stack.
     #[must_use]
-    #[inline(always)]
     pub fn top(&self) -> Option<&DST> {
         self.top_raw().map(|x| unsafe { &*x })
     }
 
     /// Returns an exclusive reference to the top item on the stack.
     #[must_use]
-    #[inline(always)]
     pub fn top_mut(&mut self) -> Option<&mut DST> {
         self.top_raw_mut().map(|x| unsafe { &mut *x })
     }
 
     /// Pops the top item off the stack.
-    #[inline]
     pub fn pop(&mut self) {
         if let Some(ptr) = self.top_raw_mut() {
             assert!(self.next_ofs > 0);
@@ -143,7 +138,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     /// assert_eq!(it.next(), None);
     /// ```
     #[must_use]
-    #[inline(always)]
     pub const fn iter(&self) -> DstStackIter<DST, BUF> {
         DstStackIter(self, self.next_ofs)
     }
@@ -165,7 +159,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     /// assert_eq!(it.next(), None);
     /// ```
     #[must_use]
-    #[inline]
     pub fn iter_mut(&mut self) -> DstStackIterMut<DST, BUF> {
         DstStackIterMut(self, self.next_ofs)
     }
@@ -180,7 +173,6 @@ impl<BUF: DstBuf> DstStack<str, BUF> {
     /// let mut stack = DstStack::<str, DstArray<u8, 32>>::new();
     /// stack.push_str("Hello!");
     /// ```
-    #[inline]
     pub fn push_str(&mut self, string: &str) -> Result<(), ()> {
         unsafe {
             self.push_inner(string).map(|pii| {
@@ -206,7 +198,6 @@ where
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push_cloned(&[1, 2, 3]);
     /// ```
-    #[inline]
     pub fn push_cloned(&mut self, slice: &[DST]) -> Result<(), ()> {
         <(DST, BUF::Inner) as MemAligned>::assert_compatibility();
         self.push_from_iter(slice.iter().cloned())
@@ -219,7 +210,6 @@ where
     /// let mut stack = DstStack::<[u8], DstArray<u64, 8>>::new();
     /// stack.push_copied(&[1, 2, 3]);
     /// ```
-    #[inline]
     pub fn push_copied(&mut self, slice: &[DST]) -> Result<(), ()>
     where
         DST: Copy,
@@ -251,7 +241,6 @@ where
     /// stack.push_from_iter(0..10);
     /// assert_eq!(stack.top().unwrap(), &[0,1,2,3,4,5,6,7,8,9]);
     /// ```
-    #[inline]
     pub fn push_from_iter(
         &mut self,
         mut iter: impl ExactSizeIterator<Item = DST>,
@@ -289,13 +278,11 @@ struct PushInnerInfo<'a, DInner> {
 
 impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     #[must_use]
-    #[inline(always)]
     fn meta_words() -> usize {
         BUF::round_to_words(size_of::<&DST>() - size_of::<usize>())
     }
 
     #[must_use]
-    #[inline]
     unsafe fn raw_at(&self, ofs: usize) -> *mut DST {
         let dar = self.data.as_ref();
         let meta = &dar[dar.len() - ofs..];
@@ -305,7 +292,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
         unsafe { super::make_fat_ptr(data.as_ptr() as *mut (), meta) }
     }
     #[must_use]
-    #[inline]
     unsafe fn raw_at_mut(&mut self, ofs: usize) -> *mut DST {
         let dar = self.data.as_mut();
         let ofs = dar.len() - ofs;
@@ -317,7 +303,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     }
     // Get a raw pointer to the top of the stack.
     #[must_use]
-    #[inline]
     fn top_raw(&self) -> Option<*mut DST> {
         if self.next_ofs == 0 {
             None
@@ -328,7 +313,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     }
     // Get a raw pointer to the top of the stack
     #[must_use]
-    #[inline]
     fn top_raw_mut(&mut self) -> Option<*mut DST> {
         if self.next_ofs == 0 {
             None
@@ -339,7 +323,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     }
 
     // See `push_inner_raw`.
-    #[inline]
     unsafe fn push_inner(&mut self, fat_ptr: &DST) -> Result<PushInnerInfo<BUF::Inner>, ()> {
         let bytes = size_of_val(fat_ptr);
         let (_data_ptr, len, v) = decompose_pointer(fat_ptr);
@@ -399,7 +382,6 @@ mod core_impls {
     use core::{fmt, iter, ops};
 
     impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstStack<DST, BUF> {
-        #[inline(always)]
         fn drop(&mut self) {
             while !self.is_empty() {
                 self.pop();
@@ -408,7 +390,6 @@ mod core_impls {
     }
     impl<DST: ?Sized, BUF: DstBuf + Default> Default for DstStack<DST, BUF> {
         #[must_use]
-        #[inline(always)]
         fn default() -> Self {
             DstStack::new()
         }
@@ -436,7 +417,6 @@ mod core_impls {
     impl<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> iter::Iterator for DstStackIter<'a, DST, BUF> {
         type Item = &'a DST;
         #[must_use]
-        #[inline]
         fn next(&mut self) -> Option<&'a DST> {
             if self.1 == 0 {
                 None
@@ -452,7 +432,6 @@ mod core_impls {
     impl<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> iter::Iterator for DstStackIterMut<'a, DST, BUF> {
         type Item = &'a mut DST;
         #[must_use]
-        #[inline]
         fn next(&mut self) -> Option<&'a mut DST> {
             if self.1 == 0 {
                 None

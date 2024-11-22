@@ -19,12 +19,9 @@ pub use {casts::*, join::*, split::*};
 pub struct Cast<T>(pub T);
 
 mod core_impls {
-    use super::Cast;
-    use crate::code::ConstDefault;
-    use core::{cmp, fmt};
+    use crate::{Cast, ConstDefault, Ordering, _core::fmt};
 
     impl<T: Clone> Clone for Cast<T> {
-        #[inline]
         #[must_use]
         fn clone(&self) -> Self {
             Cast(self.0.clone())
@@ -33,7 +30,6 @@ mod core_impls {
     impl<T: Copy> Copy for Cast<T> {}
 
     impl<T: Default> Default for Cast<T> {
-        #[inline]
         #[must_use]
         fn default() -> Self {
             Cast(T::default())
@@ -45,7 +41,6 @@ mod core_impls {
     }
 
     impl<T: PartialEq> PartialEq for Cast<T> {
-        #[inline]
         #[must_use]
         fn eq(&self, other: &Self) -> bool {
             self.0.eq(&other.0)
@@ -54,28 +49,24 @@ mod core_impls {
     impl<T: Eq> Eq for Cast<T> {}
 
     impl<T: PartialOrd> PartialOrd for Cast<T> {
-        #[inline]
         #[must_use]
-        fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
+        fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             self.0.partial_cmp(&other.0)
         }
     }
     impl<T: Ord> Ord for Cast<T> {
-        #[inline]
         #[must_use]
-        fn cmp(&self, other: &Self) -> cmp::Ordering {
+        fn cmp(&self, other: &Self) -> Ordering {
             self.0.cmp(&other.0)
         }
     }
 
     impl<T: fmt::Debug> fmt::Debug for Cast<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Debug::fmt(&self.0, f)
         }
     }
     impl<T: fmt::Display> fmt::Display for Cast<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Display::fmt(&self.0, f)
         }

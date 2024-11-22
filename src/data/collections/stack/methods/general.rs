@@ -53,7 +53,6 @@ macro_rules! impl_stack {
             #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
-            #[inline]
             pub fn new(element: T) -> Result<Self> {
                 if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
                     Err(OutOfBounds(Some(CAP)))
@@ -81,7 +80,6 @@ macro_rules! impl_stack {
             #[doc = "const S: Stack" $IDX:camel
                 "<i32, 16> = unwrap![ok Stack" $IDX:camel "::new_copied(0)];"]
             /// ```
-            #[inline]
             pub const fn new_copied(element: T) -> Result<Self> {
                 if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
                     Err(OutOfBounds(Some(CAP)))
@@ -104,7 +102,6 @@ macro_rules! impl_stack {
             #[doc = "# use devela::{Boxed, Stack" $IDX:camel "};"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 100, Boxed>::new(0);"]
             /// ```
-            #[inline]
             pub fn new(element: T) -> Self {
                 Self {
                     data: Array::<T, CAP, Boxed>::with_cloned(element),
@@ -123,7 +120,6 @@ macro_rules! impl_stack {
             #[doc = "const S: " Stack $IDX:camel
                 "<i32, 3> = Stack" $IDX:camel "::from_array_copy([1, 2, 3]);"]
             /// ```
-            #[inline]
             pub const fn from_array_copy(arr: [T; CAP]) -> Stack<T, CAP, $IDX, Bare> {
                 Self {
                     data: Array::new_bare(arr),
@@ -141,7 +137,6 @@ macro_rules! impl_stack {
             #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 3>::from_array([1, 2, 3]);"]
             /// ```
-            #[inline]
             pub fn from_array(arr: [T; CAP]) -> Stack<T, CAP, $IDX, S> {
                 Self {
                     data: Array::new(arr),
@@ -152,7 +147,6 @@ macro_rules! impl_stack {
             /* queries */
 
             /// Returns the number of stacked elements.
-            #[inline]
             #[must_use]
             pub const fn len(&self) -> $IDX {
                 self.len
@@ -165,7 +159,6 @@ macro_rules! impl_stack {
             #[doc = "let s = Stack" $IDX:camel "::<i32, 8>::default();"]
             /// assert![s.is_empty()];
             /// ```
-            #[inline]
             #[must_use]
             pub const fn is_empty(&self) -> bool {
                 self.len() == 0
@@ -178,7 +171,6 @@ macro_rules! impl_stack {
             #[doc = "let s = Stack" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert![s.is_full()];
             /// ```
-            #[inline]
             #[must_use]
             pub const fn is_full(&self) -> bool {
                 self.len() as usize == CAP
@@ -191,7 +183,6 @@ macro_rules! impl_stack {
             #[doc = "let s = Stack" $IDX:camel "::<i32, 3>::default();"]
             /// assert_eq![3, s.capacity()];
             /// ```
-            #[inline]
             #[must_use]
             pub const fn capacity(&self) -> $IDX {
                 CAP as $IDX
@@ -208,7 +199,6 @@ macro_rules! impl_stack {
             /// assert_eq![2, s.remaining_capacity()];
             /// # Ok(()) }
             /// ```
-            #[inline]
             #[must_use]
             pub const fn remaining_capacity(&self) -> $IDX {
                 CAP as $IDX - self.len()
@@ -223,7 +213,6 @@ macro_rules! impl_stack {
             #[doc = "let s = Stack" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert_eq![s.as_slice(), &[1, 2, 3]];
             /// ```
-            #[inline]
             #[must_use]
             pub fn as_slice(&self) -> &[T] {
                 &self.data[..self.len as usize]
@@ -236,7 +225,6 @@ macro_rules! impl_stack {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert_eq![s.as_mut_slice(), &mut [1, 2, 3]];
             /// ```
-            #[inline]
             #[must_use]
             pub fn as_mut_slice(&mut self) -> &mut [T] {
                 &mut self.data[..self.len as usize]
@@ -254,7 +242,6 @@ macro_rules! impl_stack {
             /// s.clear();
             /// assert![s.is_empty()];
             /// ```
-            #[inline]
             pub fn clear(&mut self) {
                 self.len = 0;
             }
@@ -277,7 +264,6 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), &[1, 2]];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn push(&mut self, element: T) -> Result<()> {
                 if self.is_full() {
                     Err(NotEnoughSpace(Some(1)))
@@ -307,7 +293,6 @@ macro_rules! impl_stack {
             /// ```
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
-            #[inline]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn pop(&mut self) -> Result<T> {
@@ -339,7 +324,6 @@ macro_rules! impl_stack {
             #[doc = "let s = Stack" $IDX:camel "::<_, 2>::from([1, 2]);"]
             /// assert_eq![s.peek(), Ok(&2)];
             /// ```
-            #[inline]
             pub fn peek(&self) -> Result<&T> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -362,7 +346,6 @@ macro_rules! impl_stack {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 2>::from([1, 2]);"]
             /// assert_eq![s.peek_mut(), Ok(&mut 2)];
             /// ```
-            #[inline]
             pub fn peek_mut(&mut self) -> Result<&mut T> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -387,7 +370,6 @@ macro_rules! impl_stack {
             /// assert_eq![s.peek_nth(0), Ok(&5)];
             /// assert_eq![s.peek_nth(4), Ok(&1)];
             /// ```
-            #[inline]
             pub fn peek_nth(&self, nth: $IDX) -> Result<&T> {
                 if self.len() <= nth {
                     Err(NotEnoughElements(Some(nth as usize)))
@@ -412,7 +394,6 @@ macro_rules! impl_stack {
             /// assert_eq![s.peek_nth_mut(0), Ok(&mut 5)];
             /// assert_eq![s.peek_nth_mut(4), Ok(&mut 1)];
             /// ```
-            #[inline]
             pub fn peek_nth_mut(&mut self, nth: $IDX) -> Result<&mut T> {
                 if self.len() <= nth {
                     Err(NotEnoughElements(Some(nth as usize)))
@@ -436,7 +417,6 @@ macro_rules! impl_stack {
             /// s.drop();
             /// assert_eq![s.as_slice(), &[1]];
             /// ```
-            #[inline]
             pub fn drop(&mut self) -> Result<()> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -458,7 +438,6 @@ macro_rules! impl_stack {
             /// s.drop_n(3);
             /// assert_eq![s.as_slice(), &[1]];
             /// ```
-            #[inline]
             pub fn drop_n(&mut self, n: $IDX) -> Result<()> {
                 if self.len() < n {
                     Err(NotEnoughElements(Some(n as usize)))
@@ -482,7 +461,6 @@ macro_rules! impl_stack {
             /// s.nip();
             /// assert_eq![s.as_slice(), &[2]];
             /// ```
-            #[inline]
             pub fn nip(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -505,7 +483,6 @@ macro_rules! impl_stack {
             /// s.nip2();
             /// assert_eq![s.as_slice(), &[3, 4]];
             /// ```
-            #[inline]
             pub fn nip2(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -531,7 +508,6 @@ macro_rules! impl_stack {
             /// s.swap();
             /// assert_eq![s.as_slice(), &[2, 1]];
             /// ```
-            #[inline]
             pub fn swap(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -553,7 +529,6 @@ macro_rules! impl_stack {
             /// s.swap2();
             /// assert_eq![s.as_slice(), &[3, 4, 1, 2]];
             /// ```
-            #[inline]
             pub fn swap2(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -580,7 +555,6 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), &['b', 'c', 'a']];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn rot(&mut self) -> Result<()> {
                 if self.len() < 3 {
                     Err(NotEnoughElements(Some(3)))
@@ -604,7 +578,6 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), &['c', 'a', 'b']];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn rot_cc(&mut self) -> Result<()> {
                 if self.len() < 3 {
                     Err(NotEnoughElements(Some(3)))
@@ -628,7 +601,6 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), &['c', 'd', 'e', 'f', 'a', 'b']];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn rot2(&mut self) -> Result<()> {
                 if self.len() < 6 {
                     Err(NotEnoughElements(Some(6)))
@@ -652,7 +624,6 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), &['c', 'd', 'e', 'f', 'a', 'b']];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn rot2_cc(&mut self) -> Result<()> {
                 if self.len() < 6 {
                     Err(NotEnoughElements(Some(6)))
@@ -687,7 +658,6 @@ macro_rules! impl_stack {
             /// ```
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
-            #[inline]
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             // safe-only version that depends on T: Clone
@@ -718,7 +688,6 @@ macro_rules! impl_stack {
             /// assert_eq![&[1, 1], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn dup(&mut self) -> Result<()> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -746,7 +715,6 @@ macro_rules! impl_stack {
             /// assert_eq![&[1, 2, 1, 2], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn dup2(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -779,7 +747,6 @@ macro_rules! impl_stack {
             /// assert_eq![&[1, 2, 1], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn over(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -807,7 +774,6 @@ macro_rules! impl_stack {
             /// assert_eq![&[1, 2, 3, 4, 1, 2], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn over2(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -840,7 +806,6 @@ macro_rules! impl_stack {
             /// assert_eq![&[2, 1, 2], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn tuck(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -870,7 +835,6 @@ macro_rules! impl_stack {
             /// assert_eq![&[3, 4, 1, 2, 3, 4], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn tuck2(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -908,7 +872,6 @@ macro_rules! impl_stack {
             /// ```
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-            #[inline]
             #[must_use]
             pub fn to_vec(&self) -> Vec<T> {
                 let mut vec = Vec::with_capacity(self.len as usize);
@@ -937,7 +900,6 @@ macro_rules! impl_stack {
             /// ```
             /// # Features
             /// Makes use of the `unsafe_array` feature if enabled.
-            #[inline]
             #[must_use]
             pub fn to_array<const LEN: usize>(&self) -> Option<[T; LEN]> {
                 // IMPROVE: use array_init
@@ -973,7 +935,6 @@ macro_rules! impl_stack {
         // T, S
         impl<T, const CAP: usize, S: Storage> Stack<T, CAP, $IDX, S> {
             /// Returns an iterator.
-            #[inline]
             pub const fn iter(&self) -> StackIter<'_, T, CAP, $IDX, S> {
                 StackIter {
                     stack: self,
@@ -996,7 +957,6 @@ macro_rules! impl_stack {
             /// s.extend([4, 5, 6, 7, 8]);
             /// assert_eq![s.as_slice(), &[1, 2, 3, 4, 5]];
             /// ```
-            #[inline]
             pub fn extend<I>(&mut self, iterator: I) -> Result<()>
             where
                 I: IntoIterator<Item = T>,
@@ -1026,7 +986,6 @@ macro_rules! impl_stack {
             /// assert![s.contains(&9)];
             /// assert![!s.contains(&8)];
             /// ```
-            #[inline]
             #[must_use]
             pub fn contains(&self, element: &T) -> bool {
                 self.iter().any(|n| n == element)
@@ -1048,7 +1007,6 @@ macro_rules! impl_stack {
             /// s.drop_replace_default();
             /// assert_eq![s.as_slice(), &[1]];
             /// ```
-            #[inline]
             pub fn drop_replace_default(&mut self) -> Result<()> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))

@@ -33,7 +33,6 @@ mod core_impls {
     };
 
     impl<N: Clone, H: Clone> Clone for Mismatch<N, H> {
-        #[inline]
         fn clone(&self) -> Self {
             Self {
                 need: self.need.clone(),
@@ -46,7 +45,6 @@ mod core_impls {
 
     impl<N: Default, H: Default> Default for Mismatch<N, H> {
         /// Returns an empty Mismatch with `None` for both fields.
-        #[inline]
         #[must_use]
         fn default() -> Self {
             Self {
@@ -78,7 +76,6 @@ mod core_impls {
     }
 
     impl<N: PartialEq, H: PartialEq> PartialEq for Mismatch<N, H> {
-        #[inline]
         fn eq(&self, other: &Self) -> bool {
             self.need == other.need && self.have == other.have && self.info == other.info
         }
@@ -111,7 +108,6 @@ mod core_impls {
     }
 
     impl<N: Hash, H: Hash> Hash for Mismatch<N, H> {
-        #[inline]
         fn hash<HR: Hasher>(&self, state: &mut HR) {
             self.need.hash(state);
             self.have.hash(state);

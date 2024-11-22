@@ -25,7 +25,6 @@ pub struct LinuxSigaction {
 
 impl LinuxSigaction {
     /// Retuns a new `LinuxSigation`.
-    #[inline]
     #[must_use]
     pub fn new(handler: extern "C" fn(i32), flags: usize, mask: LinuxSigset) -> Self {
         Self {
@@ -66,7 +65,6 @@ impl LinuxSigset {
     const LEN: usize = { Self::NSIG.div_ceil(Self::BITS_PER_USIZE) };
 
     /// Returns the size in bytes of `LinuxSigset`.
-    #[inline]
     #[must_use]
     pub const fn size() -> usize {
         core::mem::size_of::<Self>()

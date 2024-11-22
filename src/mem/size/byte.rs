@@ -18,7 +18,6 @@ pub trait ByteSized: Sized {
     const BYTE_SIZE: usize = size_of::<Self>();
 
     /// Returns the alignment of this type in bytes.
-    #[inline]
     fn byte_align(&self) -> usize {
         align_of_val(self)
     }
@@ -26,7 +25,6 @@ pub trait ByteSized: Sized {
     /// Returns the size of this type in bytes.
     ///
     /// Ignores any allocated resources in the heap.
-    #[inline]
     fn byte_size(&self) -> usize {
         size_of_val(self)
     }
@@ -60,7 +58,6 @@ pub trait ByteSized: Sized {
     /// ```
     ///
     /// For the `const` version see [`Ptr::size_ratio`].
-    #[inline]
     fn ptr_size_ratio(&self) -> [usize; 2] {
         Ptr::size_ratio(Self::BYTE_SIZE)
     }
@@ -69,7 +66,6 @@ pub trait ByteSized: Sized {
 /// Returns the rounded up size in bytes from a size in bits.
 ///
 /// This is equivalent to `(bit_size + 7) / 8` but handles potential overflow.
-#[inline]
 #[must_use]
 pub const fn bytes_from_bits(bit_size: usize) -> usize {
     if let Some(t) = bit_size.checked_add(8 - 1) {

@@ -96,7 +96,6 @@ pub trait UnicodeScalar {
     /// Returns `true` if this unicode scalar is an [abstract character][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#abstract_character
-    #[inline]
     #[must_use]
     fn is_character(self) -> bool
     where

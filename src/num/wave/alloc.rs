@@ -49,7 +49,6 @@ pub struct WaveletUnitVec {
 
 impl WaveletUnitVec {
     /// Creates a new wavelet component of a specified type, level, position, and values.
-    #[inline]
     pub fn new(
         component_type: WaveletUnitRole,
         level: usize,

@@ -52,7 +52,6 @@ impl<T: Eq> Eq for Angle<T> {}
 
 // T:PartialOrd
 impl<T: PartialOrd> PartialOrd for Angle<T> {
-    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.0.partial_cmp(&other.0)
     }
@@ -60,7 +59,6 @@ impl<T: PartialOrd> PartialOrd for Angle<T> {
 
 // T:Ord
 impl<T: Ord> Ord for Angle<T> {
-    #[inline]
     fn cmp(&self, other: &Self) -> Ordering {
         self.0.cmp(&other.0)
     }

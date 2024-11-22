@@ -32,7 +32,6 @@ macro_rules! type_resource {
 
             impl $name {
                 /// Creates a new `TypeResource`.
-                #[inline]
                 #[allow(unused)]
                 pub fn new(data: $inner) -> $crate::TypeResource<$name> {
                     $crate::TypeResource::new(data)
@@ -89,19 +88,16 @@ pub struct TypeResource<T: TypeResourced> {
 
 impl<T: TypeResourced> TypeResource<T> {
     /// Creates a new `TypeResource` instance with the given inner ID.
-    #[inline]
     pub const fn new(data: T::TypeData) -> Self {
         TypeResource { data }
     }
 
     /// Gets a reference to the ID data.
-    #[inline]
     pub const fn get(&self) -> &T::TypeData {
         &self.data
     }
 
     /// Takes ownership of the ID data.
-    #[inline]
     pub fn take(self) -> T::TypeData {
         self.data
     }

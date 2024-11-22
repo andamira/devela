@@ -42,21 +42,18 @@ macro_rules! impl_fx {
     ($($t:ty:$seed:ident),+) =>  { $( impl_fx![@$t:$seed]; )+ };
     (@$t:ty:$seed:ident) =>  {
         impl ConstDefault for HasherFx<$t> { const DEFAULT: Self = Self { state: 0 }; }
-        impl Default for HasherFx<$t> { #[inline] fn default() -> Self { Self::DEFAULT } }
+        impl Default for HasherFx<$t> { fn default() -> Self { Self::DEFAULT } }
 
         impl HasherFx<$t> {
             /* state-full methods */
 
             /// Returns a default Fx hasher.
-            #[inline]
             pub const fn new() -> Self { Self::DEFAULT }
 
             /// Returns a new Fx hasher with the given `seed`.
-            #[inline]
             pub const fn with_seed(seed: $t) -> Self { Self { state: seed } }
 
             /// A convenience method for when you need a quick hash.
-            #[inline]
             pub fn hash<T: Hash + ?Sized>(v: &T) -> $t {
                 let mut state = Self::new();
                 v.hash(&mut state);
@@ -64,12 +61,10 @@ macro_rules! impl_fx {
             }
 
             /// A const method for when you need a hash of a byte slice.
-            #[inline]
             pub const fn hash_bytes(v: &[u8]) -> $t {
                 Self::write(0, v)
             }
 
-            #[inline]
             const fn hash_word(mut hash: $t, word: $t) -> $t {
                 hash = hash.rotate_left(ROTATE);
                 hash ^= word;
@@ -84,7 +79,6 @@ impl_fx!();
 /* impl HasherFx::write */
 
 impl HasherFx<u32> {
-    #[inline]
     const fn write(mut hash: u32, bytes: &[u8]) -> u32 {
         let mut cursor = 0;
         while bytes.len() - cursor >= 4 {
@@ -110,7 +104,6 @@ impl HasherFx<u32> {
 }
 
 impl HasherFx<u64> {
-    #[inline]
     const fn write(mut hash: u64, bytes: &[u8]) -> u64 {
         let mut cursor = 0;
         while bytes.len() - cursor >= 8 {
@@ -150,7 +143,6 @@ impl HasherFx<u64> {
 }
 
 impl HasherFx<usize> {
-    #[inline]
     const fn write(hash: usize, bytes: &[u8]) -> usize {
         #[cfg(target_pointer_width = "32")]
         return HasherFx::<u32>::write(hash as u32, bytes) as usize;
@@ -162,102 +154,80 @@ impl HasherFx<usize> {
 /* impl Hasher for HasherFx */
 
 impl Hasher for HasherFx<u32> {
-    #[inline]
     fn write(&mut self, bytes: &[u8]) {
         self.state = Self::write(self.state, bytes);
     }
-    #[inline]
     fn write_u8(&mut self, i: u8) {
         self.state = Self::hash_word(self.state, u32::from(i));
     }
-    #[inline]
     fn write_u16(&mut self, i: u16) {
         self.state = Self::hash_word(self.state, u32::from(i));
     }
-    #[inline]
     fn write_u32(&mut self, i: u32) {
         self.state = Self::hash_word(self.state, i);
     }
-    #[inline]
     fn write_u64(&mut self, i: u64) {
         self.state = Self::hash_word(self.state, i as u32);
         self.state = Self::hash_word(self.state, (i >> 32) as u32);
     }
-    #[inline]
     fn write_usize(&mut self, i: usize) {
         #[cfg(target_pointer_width = "32")]
         self.write_u32(i as u32);
         #[cfg(target_pointer_width = "64")]
         self.write_u64(i as u64);
     }
-    #[inline]
     fn finish(&self) -> u64 {
         u64::from(self.state)
     }
 }
 impl Hasher for HasherFx<u64> {
-    #[inline]
     fn write(&mut self, bytes: &[u8]) {
         self.state = Self::write(self.state, bytes);
     }
-    #[inline]
     fn write_u8(&mut self, i: u8) {
         self.state = Self::hash_word(self.state, u64::from(i));
     }
-    #[inline]
     fn write_u16(&mut self, i: u16) {
         self.state = Self::hash_word(self.state, u64::from(i));
     }
-    #[inline]
     fn write_u32(&mut self, i: u32) {
         self.state = Self::hash_word(self.state, u64::from(i));
     }
-    #[inline]
     fn write_u64(&mut self, i: u64) {
         self.state = Self::hash_word(self.state, i);
     }
-    #[inline]
     fn write_usize(&mut self, i: usize) {
         self.state = Self::hash_word(self.state, i as u64);
     }
-    #[inline]
     fn finish(&self) -> u64 {
         self.state
     }
 }
 impl Hasher for HasherFx<usize> {
-    #[inline]
     fn write(&mut self, bytes: &[u8]) {
         self.state = Self::write(self.state, bytes);
     }
-    #[inline]
     fn write_u8(&mut self, i: u8) {
         self.state = Self::hash_word(self.state, i as usize);
     }
-    #[inline]
     fn write_u16(&mut self, i: u16) {
         self.state = Self::hash_word(self.state, i as usize);
     }
-    #[inline]
     fn write_u32(&mut self, i: u32) {
         self.state = Self::hash_word(self.state, i as usize);
     }
-    #[inline]
     #[cfg(target_pointer_width = "32")]
     fn write_u64(&mut self, i: u64) {
         self.state = Self::hash_word(self.state, i as usize);
         self.state = Self::hash_word(self.state, (i >> 32) as usize);
     }
-    #[inline]
     #[cfg(target_pointer_width = "64")]
     fn write_u64(&mut self, i: u64) {
         self.state = Self::hash_word(self.state, i as usize);
     }
-    #[inline]
     fn write_usize(&mut self, i: usize) {
         self.state = HasherFx::<usize>::hash_word(self.state, i);
     }
-    #[inline]
     fn finish(&self) -> u64 {
         self.state as u64
     }

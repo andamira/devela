@@ -167,109 +167,67 @@ macro_rules! impl_cast_methods {
     ($($t:ty),+) => { $( impl_cast_methods![@$t]; )+ };
     (@$t:ty) => { paste! {
         impl PrimitiveCast for $t {
-            #[inline]
             fn checked_cast_to_u8(self) -> Result<u8> { [<checked_cast_ $t _to_u8>](self) }
-            #[inline]
             fn checked_cast_to_u16(self) -> Result<u16> { [<checked_cast_ $t _to_u16>](self) }
-            #[inline]
             fn checked_cast_to_u32(self) -> Result<u32> { [<checked_cast_ $t _to_u32>](self) }
-            #[inline]
             fn checked_cast_to_u64(self) -> Result<u64> { [<checked_cast_ $t _to_u64>](self) }
-            #[inline]
             fn checked_cast_to_u128(self) -> Result<u128> { [<checked_cast_ $t _to_u128>](self) }
-            #[inline]
             fn checked_cast_to_usize(self) -> Result<usize> { [<checked_cast_ $t _to_usize>](self) }
-            #[inline]
             fn checked_cast_to_usize_up(self) -> Result<usize_up> {
                 [<checked_cast_ $t _to_usize_up>](self) }
             fn checked_cast_to_usize_down(self) -> Result<usize_down> {
                 [<checked_cast_ $t _to_usize_down>](self) }
 
-            #[inline]
             fn checked_cast_to_i8(self) -> Result<i8> { [<checked_cast_ $t _to_i8>](self) }
-            #[inline]
             fn checked_cast_to_i16(self) -> Result<i16> { [<checked_cast_ $t _to_i16>](self) }
-            #[inline]
             fn checked_cast_to_i32(self) -> Result<i32> { [<checked_cast_ $t _to_i32>](self) }
-            #[inline]
             fn checked_cast_to_i64(self) -> Result<i64> { [<checked_cast_ $t _to_i64>](self) }
-            #[inline]
             fn checked_cast_to_i128(self) -> Result<i128> { [<checked_cast_ $t _to_i128>](self) }
-            #[inline]
             fn checked_cast_to_isize(self) -> Result<isize> { [<checked_cast_ $t _to_isize>](self) }
-            #[inline]
             fn checked_cast_to_isize_up(self) -> Result<isize_up> {
                 [<checked_cast_ $t _to_isize_up>](self) }
             fn checked_cast_to_isize_down(self) -> Result<isize_down> {
                 [<checked_cast_ $t _to_isize_down>](self) }
 
-            #[inline]
             fn saturating_cast_to_u8(self) -> u8 { [<saturating_cast_ $t _to_u8>](self) }
-            #[inline]
             fn saturating_cast_to_u16(self) -> u16 { [<saturating_cast_ $t _to_u16>](self) }
-            #[inline]
             fn saturating_cast_to_u32(self) -> u32 { [<saturating_cast_ $t _to_u32>](self) }
-            #[inline]
             fn saturating_cast_to_u64(self) -> u64 { [<saturating_cast_ $t _to_u64>](self) }
-            #[inline]
             fn saturating_cast_to_u128(self) -> u128 { [<saturating_cast_ $t _to_u128>](self) }
-            #[inline]
             fn saturating_cast_to_usize(self) -> usize { [<saturating_cast_ $t _to_usize>](self) }
-            #[inline]
             fn saturating_cast_to_usize_up(self) -> usize_up {
                 [<saturating_cast_ $t _to_usize_up>](self) }
             fn saturating_cast_to_usize_down(self) -> usize_down {
                 [<saturating_cast_ $t _to_usize_down>](self) }
 
-            #[inline]
             fn saturating_cast_to_i8(self) -> i8 { [<saturating_cast_ $t _to_i8>](self) }
-            #[inline]
             fn saturating_cast_to_i16(self) -> i16 { [<saturating_cast_ $t _to_i16>](self) }
-            #[inline]
             fn saturating_cast_to_i32(self) -> i32 { [<saturating_cast_ $t _to_i32>](self) }
-            #[inline]
             fn saturating_cast_to_i64(self) -> i64 { [<saturating_cast_ $t _to_i64>](self) }
-            #[inline]
             fn saturating_cast_to_i128(self) -> i128 { [<saturating_cast_ $t _to_i128>](self) }
-            #[inline]
             fn saturating_cast_to_isize(self) -> isize { [<saturating_cast_ $t _to_isize>](self) }
-            #[inline]
             fn saturating_cast_to_isize_up(self) -> isize_up {
                 [<saturating_cast_ $t _to_isize_up>](self) }
             fn saturating_cast_to_isize_down(self) -> isize_down {
                 [<saturating_cast_ $t _to_isize_down>](self) }
 
-            #[inline]
             fn wrapping_cast_to_u8(self) -> u8 { [<wrapping_cast_ $t _to_u8>](self) }
-            #[inline]
             fn wrapping_cast_to_u16(self) -> u16 { [<wrapping_cast_ $t _to_u16>](self) }
-            #[inline]
             fn wrapping_cast_to_u32(self) -> u32 { [<wrapping_cast_ $t _to_u32>](self) }
-            #[inline]
             fn wrapping_cast_to_u64(self) -> u64 { [<wrapping_cast_ $t _to_u64>](self) }
-            #[inline]
             fn wrapping_cast_to_u128(self) -> u128 { [<wrapping_cast_ $t _to_u128>](self) }
-            #[inline]
             fn wrapping_cast_to_usize(self) -> usize { [<wrapping_cast_ $t _to_usize>](self) }
-            #[inline]
             fn wrapping_cast_to_usize_up(self) -> usize_up {
                 [<wrapping_cast_ $t _to_usize_up>](self) }
             fn wrapping_cast_to_usize_down(self) -> usize_down {
                 [<wrapping_cast_ $t _to_usize_down>](self) }
 
-            #[inline]
             fn wrapping_cast_to_i8(self) -> i8 { [<wrapping_cast_ $t _to_i8>](self) }
-            #[inline]
             fn wrapping_cast_to_i16(self) -> i16 { [<wrapping_cast_ $t _to_i16>](self) }
-            #[inline]
             fn wrapping_cast_to_i32(self) -> i32 { [<wrapping_cast_ $t _to_i32>](self) }
-            #[inline]
             fn wrapping_cast_to_i64(self) -> i64 { [<wrapping_cast_ $t _to_i64>](self) }
-            #[inline]
             fn wrapping_cast_to_i128(self) -> i128 { [<wrapping_cast_ $t _to_i128>](self) }
-            #[inline]
             fn wrapping_cast_to_isize(self) -> isize { [<wrapping_cast_ $t _to_isize>](self) }
-            #[inline]
             fn wrapping_cast_to_isize_up(self) -> isize_up {
                 [<wrapping_cast_ $t _to_isize_up>](self) }
             fn wrapping_cast_to_isize_down(self) -> isize_down {
@@ -284,83 +242,67 @@ macro_rules! impl_cast_methods {
             /* checked */
 
             #[doc = "Casts from `" $t "` to `u8` with range check."]
-            #[inline]
             pub const fn checked_cast_to_u8(self) -> Result<u8> {
                 [<checked_cast_ $t _to_u8>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u16` with range check."]
-            #[inline]
             pub const fn checked_cast_to_u16(self) -> Result<u16> {
                 [<checked_cast_ $t _to_u16>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u32` with range check."]
-            #[inline]
             pub const fn checked_cast_to_u32(self) -> Result<u32> {
                 [<checked_cast_ $t _to_u32>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u64` with range check."]
-            #[inline]
             pub const fn checked_cast_to_u64(self) -> Result<u64> {
                 [<checked_cast_ $t _to_u64>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u128` with range check."]
-            #[inline]
             pub const fn checked_cast_to_u128(self) -> Result<u128> {
                 [<checked_cast_ $t _to_u128>](self.0)
             }
             #[doc = "Casts from `" $t "` to `usize` with range check."]
-            #[inline]
             pub const fn checked_cast_to_usize(self) -> Result<usize> {
                 [<checked_cast_ $t _to_usize>](self.0)
             }
             #[doc = "Casts from `" $t "` to `usize_up` with range check."]
-            #[inline]
             pub const fn checked_cast_to_usize_up(self) -> Result<usize_up> {
                 [<checked_cast_ $t _to_usize_up>](self.0)
             }
             #[doc = "Casts from `" $t "` to `usize_down` with range check."]
-            #[inline]
             pub const fn checked_cast_to_usize_down(self) -> Result<usize_down> {
                 [<checked_cast_ $t _to_usize_down>](self.0)
             }
 
             #[doc = "Casts from `" $t "` to `i8` with range check."]
-            #[inline]
             pub const fn checked_cast_to_i8(self) -> Result<i8> {
                 [<checked_cast_ $t _to_i8>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i16` with range check."]
-            #[inline]
             pub const fn checked_cast_to_i16(self) -> Result<i16> {
                 [<checked_cast_ $t _to_i16>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i32` with range check."]
-            #[inline]
             pub const fn checked_cast_to_i32(self) -> Result<i32> {
                 [<checked_cast_ $t _to_i32>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i64` with range check."]
-            #[inline]
             pub const fn checked_cast_to_i64(self) -> Result<i64> {
                 [<checked_cast_ $t _to_i64>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i128` with range check."]
-            #[inline]
             pub const fn checked_cast_to_i128(self) -> Result<i128> {
                 [<checked_cast_ $t _to_i128>](self.0)
             }
             #[doc = "Casts from `" $t "` to `isize` with range check."]
-            #[inline]
             pub const fn checked_cast_to_isize(self) -> Result<isize> {
                 [<checked_cast_ $t _to_isize>](self.0)
             }
             #[doc = "Casts from `" $t "` to `isize_up` with range check."]
-            #[inline]
             pub const fn checked_cast_to_isize_up(self) -> Result<isize_up> {
                 [<checked_cast_ $t _to_isize_up>](self.0)
             }
             #[doc = "Casts from `" $t "` to `isize_down` with range check."]
-            #[inline]
             pub const fn checked_cast_to_isize_down(self) -> Result<isize_down> {
                 [<checked_cast_ $t _to_isize_down>](self.0)
             }
@@ -368,83 +310,83 @@ macro_rules! impl_cast_methods {
             /* saturating */
 
             #[doc = "Casts from `" $t "` to `u8` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_u8(self) -> u8 {
                 [<saturating_cast_ $t _to_u8>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u16` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_u16(self) -> u16 {
                 [<saturating_cast_ $t _to_u16>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u32` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_u32(self) -> u32 {
                 [<saturating_cast_ $t _to_u32>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u64` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_u64(self) -> u64 {
                 [<saturating_cast_ $t _to_u64>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u128` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_u128(self) -> u128 {
                 [<saturating_cast_ $t _to_u128>](self.0)
             }
             #[doc = "Casts from `" $t "` to `usize` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_usize(self) -> usize {
                 [<saturating_cast_ $t _to_usize>](self.0)
             }
             #[doc = "Casts from `" $t "` to `usize_up` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_usize_up(self) -> usize_up {
                 [<saturating_cast_ $t _to_usize_up>](self.0)
             }
             #[doc = "Casts from `" $t "` to `usize_down` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_usize_down(self) -> usize_down {
                 [<saturating_cast_ $t _to_usize_down>](self.0)
             }
 
             #[doc = "Casts from `" $t "` to `i8` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_i8(self) -> i8 {
                 [<saturating_cast_ $t _to_i8>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i16` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_i16(self) -> i16 {
                 [<saturating_cast_ $t _to_i16>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i32` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_i32(self) -> i32 {
                 [<saturating_cast_ $t _to_i32>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i64` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_i64(self) -> i64 {
                 [<saturating_cast_ $t _to_i64>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i128` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_i128(self) -> i128 {
                 [<saturating_cast_ $t _to_i128>](self.0)
             }
             #[doc = "Casts from `" $t "` to `isize` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_isize(self) -> isize {
                 [<saturating_cast_ $t _to_isize>](self.0)
             }
             #[doc = "Casts from `" $t "` to `isize_up` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_isize_up(self) -> isize_up {
                 [<saturating_cast_ $t _to_isize_up>](self.0)
             }
             #[doc = "Casts from `" $t "` to `isize_down` clamping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn saturating_cast_to_isize_down(self) -> isize_down {
                 [<saturating_cast_ $t _to_isize_down>](self.0)
             }
@@ -452,83 +394,83 @@ macro_rules! impl_cast_methods {
             /* wrapping */
 
             #[doc = "Casts from `" $t "` to `u8` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_u8(self) -> u8 {
                 [<wrapping_cast_ $t _to_u8>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u16` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_u16(self) -> u16 {
                 [<wrapping_cast_ $t _to_u16>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u32` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_u32(self) -> u32 {
                 [<wrapping_cast_ $t _to_u32>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u64` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_u64(self) -> u64 {
                 [<wrapping_cast_ $t _to_u64>](self.0)
             }
             #[doc = "Casts from `" $t "` to `u128` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_u128(self) -> u128 {
                 [<wrapping_cast_ $t _to_u128>](self.0)
             }
             #[doc = "Casts from `" $t "` to `usize` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_usize(self) -> usize {
                 [<wrapping_cast_ $t _to_usize>](self.0)
             }
             #[doc = "Casts from `" $t "` to `usize_up` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_usize_up(self) -> usize_up {
                 [<wrapping_cast_ $t _to_usize_up>](self.0)
             }
             #[doc = "Casts from `" $t "` to `usize_down` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_usize_down(self) -> usize_down {
                 [<wrapping_cast_ $t _to_usize_down>](self.0)
             }
 
             #[doc = "Casts from `" $t "` to `i8` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_i8(self) -> i8 {
                 [<wrapping_cast_ $t _to_i8>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i16` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_i16(self) -> i16 {
                 [<wrapping_cast_ $t _to_i16>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i32` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_i32(self) -> i32 {
                 [<wrapping_cast_ $t _to_i32>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i64` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_i64(self) -> i64 {
                 [<wrapping_cast_ $t _to_i64>](self.0)
             }
             #[doc = "Casts from `" $t "` to `i128` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_i128(self) -> i128 {
                 [<wrapping_cast_ $t _to_i128>](self.0)
             }
             #[doc = "Casts from `" $t "` to `isize` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_isize(self) -> isize {
                 [<wrapping_cast_ $t _to_isize>](self.0)
             }
             #[doc = "Casts from `" $t "` to `isize_up` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_isize_up(self) -> isize_up {
                 [<wrapping_cast_ $t _to_isize_up>](self.0)
             }
             #[doc = "Casts from `" $t "` to `isize_down` wrapping at the numeric bounds."]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn wrapping_cast_to_isize_down(self) -> isize_down {
                 [<wrapping_cast_ $t _to_isize_down>](self.0)
             }
@@ -745,7 +687,6 @@ macro_rules! impl_cast_fns {
         $( impl_cast_fns![@can_overunderflow $f|$fun:$t]; )+
     };
     (@can_overunderflow $f:ty | $fun:ty : $t:ty) => { paste! {
-        #[inline]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
             if p < <$t>::MIN as $f {
                 Err(Overflow(Some(Negative)))
@@ -755,7 +696,6 @@ macro_rules! impl_cast_fns {
                 Ok(p as $t)
             }
         }
-        #[must_use] #[inline]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
             if p < <$t>::MIN as $f {
                 <$t>::MIN
@@ -765,52 +705,42 @@ macro_rules! impl_cast_fns {
                 p as $t
             }
         }
-        #[must_use] #[inline]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
             (p as $fun % (<$t>::MAX as $fun + 1)) as $t
         }
     }};
     (can_overflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_overflow $f:$t]; )+ };
     (@can_overflow $f:ty:$t:ty) => { paste! {
-        #[inline]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
             iif![p > <$t>::MAX as $f; Err(Overflow(Some(Positive))); Ok(p as $t)]
         }
-        #[must_use] #[inline]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
             iif![p > <$t>::MAX as $f; <$t>::MAX; p as $t]
         }
-        #[must_use] #[inline]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
             (p % (<$t>::MAX as $f + 1)) as $t
         }
     }};
     (can_underflow $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@can_underflow $f:$t]; )+ };
     (@can_underflow $f:ty:$t:ty) => { paste! {
-        #[inline]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
             iif![p < 0; Err(Overflow(Some(Negative))); Ok(p as $t)]
         }
-        #[must_use] #[inline]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
             iif![p < 0; 0; p as $t]
         }
-        #[must_use] #[inline]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t
         }
     }};
     (cant_fail $( $f:ty:$t:ty ),+) => { $( impl_cast_fns![@cant_fail $f:$t]; )+ };
     (@cant_fail $f:ty:$t:ty) => { paste! {
-        #[inline]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
             Ok(p as $t)
         }
-        #[must_use] #[inline]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t
         }
-        #[must_use] #[inline]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t
         }
@@ -819,15 +749,12 @@ macro_rules! impl_cast_fns {
         $( impl_cast_fns![@cant_fail ptr:$ptr $f:$t]; )+
     };
     (@cant_fail ptr:$ptr:literal $f:ty:$t:ty) => { paste! {
-        #[inline]
         const fn [<checked_cast_ $f _to_ $t>](p: $f) -> Result<$t> {
             Ok(p as $t)
         }
-        #[must_use] #[inline]
         const fn [<saturating_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t
         }
-        #[must_use] #[inline]
         const fn [<wrapping_cast_ $f _to_ $t>](p: $f) -> $t {
             p as $t
         }
@@ -863,15 +790,12 @@ macro_rules! impl_cast_fns_alias {
     };
     (@to $a:ident|$t:ty : $($f:ty),+) => { $( impl_cast_fns_alias!(@impl $f, $a, $t);)+ };
     (@impl $f:ty, $a:ty, $t:ty) => { paste! {
-        #[inline]
         const fn [<checked_cast_ $f _to_ $a>](p: $f) -> Result<$a> {
             [<checked_cast_ $f _to_ $t>](p)
         }
-        #[inline]
         const fn [<saturating_cast_ $f _to_ $a>](p: $f) -> $a {
             [<saturating_cast_ $f _to_ $t>](p)
         }
-        #[inline]
         const fn [<wrapping_cast_ $f _to_ $a>](p: $f) -> $a {
             [<wrapping_cast_ $f _to_ $t>](p)
         }

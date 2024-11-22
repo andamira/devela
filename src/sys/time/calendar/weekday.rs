@@ -62,25 +62,21 @@ impl Weekday {
     pub const COUNT: usize = 7;
 
     /// Returns the previous weekday.
-    #[inline(always)]
     pub const fn previous(self) -> Weekday {
         self.previous_nth(1)
     }
 
     /// Returns the previous `nth` weekday.
-    #[inline]
     pub const fn previous_nth(self, nth: usize) -> Weekday {
         Self::from_monday_index_unchecked(self.index_from_monday().wrapping_sub(nth) % Self::COUNT)
     }
 
     /// Returns the next weekday,
-    #[inline(always)]
     pub const fn next(self) -> Weekday {
         self.next_nth(1)
     }
 
     /// Returns the next `nth` weekday.
-    #[inline]
     pub const fn next_nth(self, nth: usize) -> Weekday {
         Self::from_monday_index_unchecked(self.index_from_monday().wrapping_add(nth) % Self::COUNT)
     }
@@ -91,13 +87,11 @@ impl Weekday {
     /* to number */
 
     /// Returns the weekday number from `Monday=1` to `Sunday=7`.
-    #[inline(always)]
     pub const fn number_from_monday(self) -> u8 {
         self.index_from_monday() as u8 + 1
     }
 
     /// Returns the weekday index from `Monday=0` to `Sunday=6`.
-    #[inline(always)]
     pub const fn index_from_monday(self) -> usize {
         self as _
     }
@@ -106,7 +100,6 @@ impl Weekday {
     ///
     /// # Errors
     /// `if n < 1 || n > 7`
-    #[inline]
     pub const fn from_monday_number(n: u8) -> Result<Weekday, &'static str> {
         match n {
             1 => Ok(Monday),
@@ -124,7 +117,6 @@ impl Weekday {
     ///
     /// # Errors
     /// `if index > 6`
-    #[inline]
     pub const fn from_monday_index(index: usize) -> Result<Weekday, &'static str> {
         match index {
             0 => Ok(Monday),
@@ -142,7 +134,6 @@ impl Weekday {
     ///
     /// # Panics
     /// `if index > 6`
-    #[inline]
     pub const fn from_monday_index_unchecked(index: usize) -> Self {
         match index {
             0 => Monday,
@@ -160,13 +151,11 @@ impl Weekday {
 /// # from Sunday
 impl Weekday {
     /// Returns the weekday number from `Sunday=1` to `Monday=7`.
-    #[inline(always)]
     pub const fn number_from_sunday(self) -> u8 {
         self.index_from_sunday() as u8 + 1
     }
 
     /// Returns the weekday index from `Sunday=0` to `Monday=6`.
-    #[inline]
     pub const fn index_from_sunday(self) -> usize {
         match self {
             Monday => 1,
@@ -183,7 +172,6 @@ impl Weekday {
     ///
     /// # Errors
     /// `if n < 1 || n > 7`
-    #[inline]
     pub const fn from_sunday_number(n: u8) -> Result<Weekday, &'static str> {
         match n {
             1 => Ok(Sunday),
@@ -201,7 +189,6 @@ impl Weekday {
     ///
     /// # Errors
     /// `if index > 6`
-    #[inline]
     pub const fn from_sunday_index(index: usize) -> Result<Weekday, &'static str> {
         match index {
             0 => Ok(Sunday),
@@ -219,7 +206,6 @@ impl Weekday {
     ///
     /// # Panics
     /// `if index > 6`
-    #[inline]
     pub const fn from_sunday_index_unchecked(index: usize) -> Self {
         match index {
             0 => Sunday,

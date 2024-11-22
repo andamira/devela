@@ -7,14 +7,14 @@
 // - nanos_u64: to not show leading zeros for seconds.
 // - nanos_u64: not just clamp the seconds but all to 999?
 
-#[cfg(feature = "alloc")]
-use crate::_dep::_alloc::{format, string::String};
 #[allow(unused_imports)]
 #[cfg(feature = "_float_f64")]
-use crate::num::ExtFloat;
-use crate::sys::time::{NoTime, TimeSplit, TimeSplitHourNano};
+use crate::ExtFloat;
+#[cfg(feature = "alloc")]
+use crate::{format, String};
 #[cfg(feature = "_string_u8")]
-use crate::text::{format_buf, Ascii, StringU8};
+use crate::{format_buf, Ascii, StringU8};
+use crate::{NoTime, TimeSplit, TimeSplitHourNano};
 
 /// Timecode splitting and formatting.
 ///
@@ -38,7 +38,6 @@ impl Timecode {
     /// The maximum decomposition for [`u64::MAX`] is
     /// `{ h: 5_124_095_576_030_431, .. }` (more than 584_942_417 millenia).
     // -> 64 bits
-    #[inline]
     #[must_use]
     #[cfg(any(feature = "std", feature = "_float_f64"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = "_float_f64"))))]
@@ -57,7 +56,6 @@ impl Timecode {
     /// The maximum decomposition for [`u64::MAX`] is
     /// `{ s: 1_266_874_889, .. }` (more than 40 years).
     // -> 80 bits
-    #[inline]
     #[must_use]
     pub const fn split_nanos_u64(
         nanos: u64,
@@ -73,7 +71,6 @@ impl Timecode {
     /// The maximum decomposition for [`u32::MAX`] is
     /// `{ ns: 295, µs: 967, ms: 294, s: 4 }` (more than 4 seconds).
     // -> 56 bits
-    #[inline]
     #[must_use]
     pub const fn split_nanos_u32(
         nanos: u32,

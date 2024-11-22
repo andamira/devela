@@ -10,7 +10,6 @@ impl CharU24 {
 
     // SAFETY: this is not marked as unsafe because it's only used privately
     // by this module for a few selected operations.
-    #[inline]
     #[must_use]
     const fn new_unchecked_hi(value: u8) -> NonExtremeU8 {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
@@ -36,14 +35,12 @@ impl CharU24 {
     /* conversions */
 
     /// Converts an `AsciiChar` to `CharU24`.
-    #[inline]
     #[must_use]
     pub const fn from_ascii_char(c: AsciiChar) -> CharU24 {
         CharU24 { hi: Self::new_unchecked_hi(0), mi: 0, lo: c as u8 }
     }
 
     /// Converts a `CharU7` to `CharU24`.
-    #[inline]
     #[must_use]
     #[cfg(feature = "_char_u7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
@@ -55,7 +52,6 @@ impl CharU24 {
         }
     }
     /// Converts a `CharU8` to `CharU24`.
-    #[inline]
     #[must_use]
     #[cfg(feature = "_char_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
@@ -63,7 +59,6 @@ impl CharU24 {
         CharU24 { hi: Self::new_unchecked_hi(0), mi: 0, lo: c.0 }
     }
     /// Converts a `CharU16` to `CharU24`.
-    #[inline]
     #[must_use]
     #[cfg(feature = "_char_u16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
@@ -73,7 +68,6 @@ impl CharU24 {
         CharU24 { hi: Self::new_unchecked_hi(0), mi, lo }
     }
     /// Converts a `CharU32` to `CharU24`.
-    #[inline]
     #[must_use]
     #[cfg(feature = "_char_u32")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
@@ -81,7 +75,6 @@ impl CharU24 {
         CharU24::from_char(c.0)
     }
     /// Converts a `char` to `CharU24`.
-    #[inline]
     #[must_use]
     pub const fn from_char(c: char) -> CharU24 {
         let hi = ((c as u32 & 0x001F_0000) >> 16) as u8;
@@ -93,7 +86,6 @@ impl CharU24 {
     //
 
     /// Tries to convert this `CharU24` to `AsciiChar`.
-    #[inline]
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
         if char_is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
@@ -111,28 +103,24 @@ impl CharU24 {
     }
 
     /// Tries to convert this `CharU24` to `CharU7`.
-    #[inline]
     #[cfg(feature = "_char_u7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
     pub const fn try_to_char_u7(self) -> Result<CharU7> {
         CharU7::try_from_char_u24(self)
     }
     /// Tries to convert this `CharU24` to `CharU8`.
-    #[inline]
     #[cfg(feature = "_char_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     pub const fn try_to_char_u8(self) -> Result<CharU8> {
         CharU8::try_from_char_u24(self)
     }
     /// Tries to convert this `CharU24` to `CharU16`.
-    #[inline]
     #[cfg(feature = "_char_u16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn try_to_char_u16(self) -> Result<CharU16> {
         CharU16::try_from_char_u24(self)
     }
     /// Converts this `CharU24` to `CharU32`.
-    #[inline]
     #[must_use]
     #[cfg(feature = "_char_u32")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
@@ -140,13 +128,11 @@ impl CharU24 {
         CharU32(self.to_char())
     }
     /// Converts this `CharU24` to `u32`.
-    #[inline]
     #[must_use]
     pub const fn to_u32(self) -> u32 {
         (self.hi.get() as u32) << 16 | (self.mi as u32) << 8 | (self.lo as u32)
     }
     /// Converts this `CharU24` to `char`.
-    #[inline]
     #[must_use]
     #[rustfmt::skip]
     pub const fn to_char(self) -> char {
@@ -165,7 +151,6 @@ impl CharU24 {
     /// UTF-8 sequence may be shorter. The unused bytes are set to 0.
     //
     // https://en.wikipedia.org/wiki/UTF-8#Encoding
-    #[inline]
     #[must_use]
     #[allow(clippy::unusual_byte_groupings)]
     pub const fn to_utf8_bytes(self) -> [u8; 4] {
@@ -211,7 +196,6 @@ impl CharU24 {
     ///
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
-    #[inline]
     #[must_use]
     #[rustfmt::skip]
     pub const fn to_ascii_uppercase(self) -> CharU24 {
@@ -222,7 +206,6 @@ impl CharU24 {
     ///
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
-    #[inline]
     #[must_use]
     #[rustfmt::skip]
     pub const fn to_ascii_lowercase(self) -> CharU24 {
@@ -234,7 +217,6 @@ impl CharU24 {
     /// Returns `true` if this unicode scalar is a [noncharacter][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#noncharacter
-    #[inline]
     #[must_use]
     pub const fn is_noncharacter(self) -> bool {
         char_is_noncharacter(self.to_u32())
@@ -243,14 +225,12 @@ impl CharU24 {
     /// Returns `true` if this unicode scalar is an [abstract character][0].
     ///
     /// [0]: https://www.unicode.org/glossary/#abstract_character
-    #[inline]
     #[must_use]
     pub const fn is_character(self) -> bool {
         !self.is_noncharacter()
     }
 
     /// Checks if the value is within the ASCII range.
-    #[inline]
     #[must_use]
     pub const fn is_ascii(self) -> bool {
         self.to_u32() <= 0x7F

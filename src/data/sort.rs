@@ -85,7 +85,6 @@ impl<T: Ord> Sort<&mut [T]> {
     /// Sort(&mut data[..]).bubble();
     /// assert_eq![data, [-13, -5, 0, 1, 4, 7]];
     /// ```
-    #[inline]
     pub fn bubble(self) {
         for i in 0..self.0.len() {
             for j in 0..self.0.len() - i - 1 {
@@ -107,7 +106,6 @@ impl<T: Ord> Sort<&mut [T]> {
     /// assert_eq![data, [2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 64, 64]];
     /// assert_eq![freq, [3, 7, 5, 2]];
     /// ```
-    #[inline]
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn counting(self) -> Vec<usize>
@@ -160,7 +158,6 @@ impl<T: Ord> Sort<&mut [T]> {
     /// ```
     /// # Panics
     /// Panics in debug if the length of `freq` and `values` is not the same.
-    #[inline]
     pub fn counting_buf(self, freq: &mut [T], values: &[T]) -> Option<()>
     where
         T: Clone + TryInto<usize> + TryFrom<usize>,
@@ -195,7 +192,6 @@ impl<T: Ord> Sort<&mut [T]> {
     /// Sort(&mut arr[..]).insertion();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
-    #[inline]
     pub fn insertion(self) {
         for i in 1..self.0.len() {
             let mut j = i;
@@ -217,7 +213,6 @@ impl<T: Ord> Sort<&mut [T]> {
     /// Sort(&mut arr[..]).merge();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
-    #[inline]
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn merge(self)
@@ -239,7 +234,6 @@ impl<T: Ord> Sort<&mut [T]> {
     /// Sort(&mut arr[..]).selection();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
-    #[inline]
     pub fn selection(self) {
         let len = self.0.len();
         for i in 0..len - 1 {
@@ -262,7 +256,6 @@ impl<T: Ord> Sort<&mut [T]> {
     /// Sort(&mut arr[..]).shaker();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
-    #[inline]
     pub fn shaker(self)
     where
         T: Clone,
@@ -297,7 +290,6 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     /// Sort::quick_lomuto(&mut arr[..]);
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
-    #[inline]
     pub fn quick_lomuto(slice: &mut [T]) {
         iif![slice.len() < 2; return];
         let ipivot = helper::sort_quick_lomuto_partition(slice);
@@ -323,7 +315,6 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     /// Sort::quick_3way(&mut arr);
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
-    #[inline]
     pub fn quick_3way(slice: &mut [T])
     where
         T: Clone,
@@ -354,7 +345,6 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     /// Sort::quick_hoare(&mut arr);
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
     /// ```
-    #[inline]
     pub fn quick_hoare(slice: &mut [T])
     where
         T: Clone,
@@ -379,7 +369,6 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
 mod helper {
     use crate::{iif, sf, Ordering};
 
-    #[inline]
     #[cfg(feature = "alloc")]
     pub(super) fn sort_merge_internal<T: Ord + Copy>(slice: &mut [T], buffer: &mut [T]) {
         let len = slice.len();
@@ -390,7 +379,6 @@ mod helper {
         sort_merge_merge(&slice[..mid], &slice[mid..], &mut buffer[..len]);
         slice.copy_from_slice(&buffer[..len]);
     }
-    #[inline]
     #[cfg(feature = "alloc")]
     pub(super) fn sort_merge_merge<T: Ord + Copy>(left: &[T], right: &[T], slice: &mut [T]) {
         let (mut i, mut j, mut k) = (0, 0, 0);
@@ -404,7 +392,6 @@ mod helper {
         iif![i < left.len(); slice[k..].copy_from_slice(&left[i..])];
         iif![j < right.len(); slice[k..].copy_from_slice(&right[j..])];
     }
-    #[inline]
     pub(super) fn sort_quick_lomuto_partition<T: Ord>(slice: &mut [T]) -> usize {
         let len = slice.len();
         let ipivot = len / 2;
@@ -416,7 +403,6 @@ mod helper {
         slice.swap(i, len - 1);
         i
     }
-    #[inline]
     pub(super) fn sort_quick_3way_partition<T: Ord + Clone>(slice: &mut [T]) -> (usize, usize) {
         let len = slice.len();
         let ipivot = len / 2;
@@ -438,7 +424,6 @@ mod helper {
         }
         (lt, gt)
     }
-    #[inline]
     pub(super) fn sort_quick_hoare_partition<T: Ord + Clone>(slice: &mut [T]) -> usize {
         let len = slice.len();
         let ipivot = len / 2;
@@ -478,7 +463,7 @@ macro_rules! impl_sort {
         #[cfg(feature = $cap)]
         impl<const N: usize> Sort<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn bubble_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 0..N => {
@@ -490,7 +475,7 @@ macro_rules! impl_sort {
             }
 
             /// Returns a copied sorted array using insertion sort.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn insertion_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 1..N => {
@@ -504,7 +489,7 @@ macro_rules! impl_sort {
             }
 
             /// Returns a copied sorted array using insertion sort.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn selection_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 0..N-1 => {
@@ -524,7 +509,7 @@ macro_rules! impl_sort {
         #[cfg(feature = $cap)]
         impl<const N: usize> Sort<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn bubble_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 0..N => {
@@ -536,7 +521,7 @@ macro_rules! impl_sort {
             }
 
             /// Returns a copied sorted array using insertion sort.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn insertion_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 1..N => {
@@ -550,7 +535,7 @@ macro_rules! impl_sort {
             }
 
             /// Returns a copied sorted array using selection sort.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn selection_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 0..N-1 => {
@@ -570,7 +555,7 @@ macro_rules! impl_sort {
         #[cfg(feature = $cap)]
         impl<const N: usize> Sort<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn bubble_array(self) -> [$t; N] {
                 let mut arr = self.0;
@@ -582,7 +567,7 @@ macro_rules! impl_sort {
                 arr
             }
             // safe, non-const version (undocumented)
-            #[inline] #[must_use] #[allow(missing_docs)]
+            #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn bubble_array(self) -> [$t; N] {
                 let mut arr = self.0;
@@ -595,7 +580,7 @@ macro_rules! impl_sort {
             }
 
             /// Returns a copied sorted array using insertion sort.
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn insertion_array(self) -> [$t; N] {
                 let mut arr = self.0;
@@ -609,7 +594,7 @@ macro_rules! impl_sort {
                 arr
             }
             // safe, non-const version (undocumented)
-            #[inline] #[must_use] #[allow(missing_docs)]
+            #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn insertion_array(self) -> [$t; N] {
                 let mut arr = self.0;
@@ -624,7 +609,7 @@ macro_rules! impl_sort {
             }
 
             /// Returns a copied sorted array using selection sort.
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn selection_array(self) -> [$t; N] {
                 let mut arr = self.0;
@@ -638,7 +623,7 @@ macro_rules! impl_sort {
                 arr
             }
             // safe, non-const version (undocumented)
-            #[inline] #[must_use] #[allow(missing_docs)]
+            #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
             pub fn selection_array(self) -> [$t; N] {
                 let mut arr = self.0;

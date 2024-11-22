@@ -1,13 +1,11 @@
 // devela::text::char::fns
 
 /// Returns `true` if the given unicode scalar `code` is a 7bit ASCII code.
-#[inline]
 pub const fn char_is_7bit(code: u32) -> bool {
     code <= 0x7F
 }
 
 /// Returns the number of bytes necessary to store the given unicode scalar `code`.
-#[inline]
 pub const fn char_byte_len(code: u32) -> usize {
     match code {
         0..=0xFF => 1,
@@ -19,7 +17,6 @@ pub const fn char_byte_len(code: u32) -> usize {
 /// Returns `true` if the given unicode scalar `code` is a [noncharacter][0]
 ///
 /// [0]: https://www.unicode.org/glossary/#noncharacter
-#[inline]
 pub const fn char_is_noncharacter(code: u32) -> bool {
     // sub-block of 32 non-characters:
     (code >= 0xFDD0 && code <= 0xFDEF)

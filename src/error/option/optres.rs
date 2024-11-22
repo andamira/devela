@@ -79,7 +79,6 @@ pub type OptRes<T, E> = Option<Result<T, E>>;
 /// Wraps the given [`OptRes`] `value` in a [`Some`]`(`[`Ok`]`(value))`.
 ///
 /// See also: [`serr`].
-#[inline]
 pub const fn sok<T, E>(value: T) -> OptRes<T, E> {
     Some(Ok(value))
 }
@@ -87,7 +86,6 @@ pub const fn sok<T, E>(value: T) -> OptRes<T, E> {
 /// Wraps the given [`OptRes`] `value` in a [`Some`]`(`[`Err`]`(error))`.
 ///
 /// See also: [`sok`].
-#[inline]
 pub const fn serr<T, E>(error: E) -> OptRes<T, E> {
     Some(Err(error))
 }

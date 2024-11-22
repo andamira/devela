@@ -104,12 +104,10 @@ pub trait ExtOption<T>: Sealed {
 }
 
 impl<T> ExtOption<T> for Option<T> {
-    #[inline]
     fn contains<U: PartialEq<T>>(&self, x: &U) -> bool {
         self.as_ref().map_or(false, |y| x == y)
     }
 
-    #[inline]
     fn reduce<F: FnOnce(T, T) -> T>(self, other: Option<T>, f: F) -> Option<T> {
         match (self, other) {
             (Some(l), Some(r)) => Some(f(l, r)),
@@ -118,17 +116,14 @@ impl<T> ExtOption<T> for Option<T> {
         }
     }
 
-    #[inline]
     fn fmt_or_empty(&self) -> OptionFmt<T> {
         OptionFmt(self)
     }
 
-    #[inline]
     fn fmt_or<U: Display>(&self, u: U) -> OptionFmtOr<T, U> {
         OptionFmtOr(self, u)
     }
 
-    #[inline]
     fn fmt_or_else<U: Display, F: Fn() -> U>(&self, f: F) -> OptionFmtOrElse<T, F> {
         OptionFmtOrElse(self, f)
     }

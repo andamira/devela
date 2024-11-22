@@ -12,7 +12,6 @@ use crate::Str;
 ///
 /// # Error Handling
 /// If the read fails, it prints an error message and exits with status code 11.
-#[inline]
 pub fn linux_get_byte() -> u8 {
     let mut c = 0;
     loop {
@@ -32,7 +31,6 @@ pub fn linux_get_byte() -> u8 {
 ///
 /// # Error Handling
 /// If the read fails, it prints an error message and exits with status code 11.
-#[inline]
 pub fn linux_pause_until_char(list: &[char]) {
     loop {
         if list.contains(&linux_get_dirty_char()) {
@@ -46,7 +44,6 @@ pub fn linux_pause_until_char(list: &[char]) {
 ///
 /// # Error Handling
 /// If the read fails, it prints an error message and exits with status code 11.
-#[inline]
 pub fn linux_get_char() -> Option<char> {
     let bytes = linux_get_utf8_bytes()?;
     let s = unsafe { Str::from_utf8_unchecked(&bytes) };
@@ -60,7 +57,6 @@ pub fn linux_get_char() -> Option<char> {
 ///
 /// # Error Handling
 /// If the read fails, it prints an error message and exits with status code 11.
-#[inline]
 pub fn linux_get_dirty_char() -> char {
     match linux_get_utf8_bytes() {
         Some(bytes) => {
@@ -77,7 +73,6 @@ pub fn linux_get_dirty_char() -> char {
 ///
 /// # Error Handling
 /// If the read fails, it prints an error message and exits with status code 11.
-#[inline]
 pub fn linux_get_utf8_bytes() -> Option<[u8; 4]> {
     let mut bytes = [0u8; 4];
     let len;
@@ -123,7 +118,6 @@ pub fn linux_get_utf8_bytes() -> Option<[u8; 4]> {
 /// # Error Handling
 /// If the write fails, it prints an error message and exits with status code 10.
 /// If the read fails, it prints an error message and exits with status code 11.
-#[inline]
 pub fn linux_prompt<'input, const CAP: usize>(
     text: &str,
     buffer: &'input mut [u8; CAP],
@@ -144,7 +138,6 @@ pub fn linux_prompt<'input, const CAP: usize>(
 ///
 /// # Error handling
 /// If the read fails, it prints an error message and exits with status code 11.
-#[inline]
 pub fn linux_get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> &str {
     linux_get_str(buffer, '\n')
 }
@@ -159,7 +152,6 @@ pub fn linux_get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> &str {
 /// let mut buf = [0_u8; 32];
 /// let name: &str = linux_get_str::<32>(&mut buf, '\n');
 /// ```
-#[inline]
 pub fn linux_get_str<const CAP: usize>(buffer: &mut [u8; CAP], stop: char) -> &str {
     let mut index = 0;
     loop {

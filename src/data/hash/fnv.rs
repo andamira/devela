@@ -47,31 +47,29 @@ macro_rules! impl_fnv {
     (@$t:ty:$basis:ident:$prime:ident) =>  {
 
         impl ConstDefault for HasherFnv<$t> { const DEFAULT: Self = Self { state: $basis as $t }; }
-        impl Default for HasherFnv<$t> { #[inline] fn default() -> Self { Self::DEFAULT } }
+        impl Default for HasherFnv<$t> { fn default() -> Self { Self::DEFAULT } }
 
         impl HasherFnv<$t> {
             /* state-full methods */
 
             /// Returns a default FNV hasher.
-            #[inline]
             pub const fn new() -> Self { Self::DEFAULT }
 
             /// Returns an FNV hasher with the given `input` data.
-            #[inline]
             pub const fn with(input: &[u8]) -> Self { Self { state: Self::hash(input) } }
 
             /// Returns the current hash value.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn get(&self) -> $t { self.state }
 
             /// Returns the hash value with lazy mod mapping to the given `range`.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn get_hash_mod_lazy(&self, range: $t) -> $t {
                 self.state % range
             }
 
             /// Returns the hash value with retried mod mapping to the given `range`.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn get_hash_mod_retry(&self, range: $t) -> $t {
                 Self::mod_retry_hash(self.state, range)
             }
@@ -80,7 +78,7 @@ macro_rules! impl_fnv {
             ///
             /// # Panics
             #[doc =  cc!["Panics in debug if `n` exceeds [`", fy![$t], "::BITS`]."]]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn get_hash_n_bits(&self, n: usize) -> $t {
                 Self::fold_hash(self.state, n)
             }
@@ -88,7 +86,6 @@ macro_rules! impl_fnv {
             /// Updates the hasher with more data.
             ///
             /// Allows the hasher to receive additional bytes incrementally.
-            #[inline]
             pub fn update(&mut self, input: &[u8]) {
                 for &byte in input {
                     self.state ^= <$t>::from(byte);
@@ -97,7 +94,6 @@ macro_rules! impl_fnv {
             }
 
             /// Resets the inner state to the default basis value.
-            #[inline]
             pub fn reset(&mut self) {
                 self.state = $basis as $t;
             }
@@ -105,7 +101,7 @@ macro_rules! impl_fnv {
             /* state-less methods */
 
             /// Computes the FNV hash of the provided byte slice.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn hash(input: &[u8]) -> $t {
                 let mut hash = $basis as $t;
                 let mut i = 0;
@@ -121,13 +117,13 @@ macro_rules! impl_fnv {
             ///
             /// This method only does an additional mod at the end.
             /// But there's a small bias against the larger values.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn hash_mod_lazy(input: &[u8], range: $t) -> $t {
                 Self::hash(input) % range
             }
 
             /// Maps the computed FNV hash to the given `range` using retried mod mapping.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn hash_mod_retry(input: &[u8], range: $t) -> $t {
                 let mut hash = Self::hash(input);
                 let retry_level = (<$t>::MAX / range) * range;
@@ -141,7 +137,7 @@ macro_rules! impl_fnv {
             ///
             /// # Panics
             #[doc =  cc!["Panics in debug if `n` exceeds [`", fy![$t], "::BITS`]."]]
-            #[inline] #[must_use]
+            #[must_use]
             pub fn hash_n_bits(input: &[u8], n: usize) -> $t {
                 Self::fold_hash(Self::hash(input), n)
             }
@@ -152,7 +148,7 @@ macro_rules! impl_fnv {
             ///
             /// # Panics
             #[doc =  cc!["Panics in debug if `n` exceeds [`", fy![$t], "::BITS`]."]]
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn fold_hash(mut hash: $t, n: usize) -> $t {
                 debug_assert![n <= <$t>::BITS as usize];
                 let full_bits = <$t>::BITS as usize;
@@ -166,7 +162,7 @@ macro_rules! impl_fnv {
             /// Maps a hash to the given `range` using retried mod mapping.
             ///
             /// Ensures that the hash value is uniform and unbiased within the range.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn mod_retry_hash(mut hash: $t, range: $t) -> $t {
                 let retry_level = (<$t>::MAX / range) * range;
                 while hash >= retry_level {
@@ -177,15 +173,12 @@ macro_rules! impl_fnv {
         }
 
         impl Hasher for HasherFnv<$t> {
-            #[inline]
             fn write(&mut self, bytes: &[u8]) {
                 for byte in bytes {
                     self.state ^= <$t>::from(*byte);
                     self.state = self.state.wrapping_mul($prime as $t);
                 }
             }
-
-            #[inline]
             fn finish(&self) -> u64 {
                 self.state.wrapping_cast_to_u64()
             }

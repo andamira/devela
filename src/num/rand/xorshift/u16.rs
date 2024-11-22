@@ -16,7 +16,6 @@ use crate::{Cast, ConstDefault, Own};
 pub struct XorShift16(u16);
 
 impl Default for XorShift16 {
-    #[inline]
     fn default() -> Self {
         Self::DEFAULT
     }
@@ -39,7 +38,6 @@ impl XorShift16 {
     /// Returns a seeded `XorShift16` generator from the given 16-bit seed.
     ///
     /// Returns `None` if seed == `0`.
-    #[inline]
     #[must_use]
     pub const fn new(seed: u16) -> Option<Self> {
         if seed == 0 {
@@ -52,14 +50,12 @@ impl XorShift16 {
     /// Returns a seeded `XorShift16` generator from the given 8-bit seed, unchecked.
     ///
     /// The seed must not be `0`, otherwise every result will also be `0`.
-    #[inline]
     pub const fn new_unchecked(seed: u16) -> Self {
         debug_assert![seed != 0, "Seed must be non-zero"];
         Self(seed)
     }
 
     /// Returns the current random `u16`.
-    #[inline]
     #[must_use]
     pub const fn current_u16(&self) -> u16 {
         self.0
@@ -67,7 +63,6 @@ impl XorShift16 {
 
     /// Returns the next random `u16`.
     ///
-    #[inline]
     #[must_use]
     pub fn next_u16(&mut self) -> u16 {
         let mut x = self.0;
@@ -79,7 +74,6 @@ impl XorShift16 {
     }
 
     /// Returns a copy of the next new random state.
-    #[inline]
     pub const fn next_new(&self) -> Self {
         let mut x = self.0;
         x ^= x << 7;
@@ -101,7 +95,6 @@ impl XorShift16 {
     /// Returns a seeded `XorShift16` generator from the given 16-bit seed.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    #[inline]
     pub const fn new1_u16(seed: u16) -> Option<Self> {
         Self::new(seed)
     }
@@ -109,7 +102,6 @@ impl XorShift16 {
     /// Returns a seeded `XorShift16` generator from the given 2 × 8-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[inline]
     #[must_use]
     pub const fn new2_u8(seeds: [u8; 2]) -> Option<Self> {
         Self::new(Cast::<u16>::from_u8_le(seeds))
@@ -124,13 +116,10 @@ mod impl_rand {
 
     impl RngCore for XorShift16 {
         /// Returns the next 2 × random `u16` combined as a single `u32`.
-        #[inline]
         fn next_u32(&mut self) -> u32 {
             Cast::<u32>::from_u16_le([self.next_u16(), self.next_u16()])
         }
-
         /// Returns the next 4 × random `u16` combined as a single `u64`.
-        #[inline]
         fn next_u64(&mut self) -> u64 {
             Cast::<u64>::from_u16_le([
                 self.next_u16(),
@@ -139,8 +128,6 @@ mod impl_rand {
                 self.next_u16(),
             ])
         }
-
-        #[inline]
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             let mut i = 0;
             while i < dest.len() {
@@ -158,8 +145,6 @@ mod impl_rand {
                 }
             }
         }
-
-        #[inline]
         fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
             self.fill_bytes(dest);
             Ok(())
@@ -171,7 +156,6 @@ mod impl_rand {
 
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.
-        #[inline]
         fn from_seed(seed: Self::Seed) -> Self {
             if seed == [0; 2] {
                 Self::cold_path_default()

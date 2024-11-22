@@ -36,7 +36,7 @@ macro_rules! size_of_expr {
                 loop {}
                 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_hint"))]
                 unsafe {
-                    core::hint::unreachable_unchecked()
+                    $crate::unreachable_unchecked()
                 }
 
                 #[expect(unreachable_code, reason = "avoid evaluating this branch")]

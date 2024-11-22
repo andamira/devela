@@ -46,42 +46,40 @@ crate::num::impl_ops![Float: f32:"_float_f32", f64:"_float_f64"];
 
 #[rustfmt::skip]
 mod core_impls {
-    use {super::Float, core::{fmt, cmp}};
+    use crate::{_core::fmt, Float, Ordering};
 
     impl<T: Clone> Clone for Float<T> {
-        #[inline] #[must_use]
+        #[must_use]
         fn clone(&self) -> Self { Self(self.0.clone()) }
     }
     impl<T: Copy> Copy for Float<T> {}
     impl<T: fmt::Debug> fmt::Debug for Float<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
             f.debug_tuple("Float").field(&self.0).finish()
         }
     }
     impl<T: fmt::Display> fmt::Display for Float<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Display::fmt(&self.0, f) }
     }
 
     impl<T: PartialEq> PartialEq for Float<T> {
-        #[inline] #[must_use]
+        #[must_use]
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
     impl<T: PartialEq> PartialEq<T> for Float<T> {
-        #[inline] #[must_use]
+        #[must_use]
         fn eq(&self, other: &T) -> bool { self.0.eq(other) }
     }
 
     impl<T: PartialOrd> PartialOrd for Float<T> {
-        #[inline] #[must_use]
-        fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
+        #[must_use]
+        fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             self.0.partial_cmp(&other.0)
         }
     }
     impl<T: PartialOrd> PartialOrd<T> for Float<T> {
-        #[inline] #[must_use]
-        fn partial_cmp(&self, other: &T) -> Option<cmp::Ordering> {
+        #[must_use]
+        fn partial_cmp(&self, other: &T) -> Option<Ordering> {
             self.0.partial_cmp(other)
         }
     }

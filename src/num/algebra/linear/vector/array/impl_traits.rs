@@ -59,7 +59,6 @@ impl<T: PartialEq, const D: usize> PartialEq for Vector<T, D> {
 impl<T: Eq, const D: usize> Eq for Vector<T, D> {}
 
 impl<T: Hash, const D: usize> Hash for Vector<T, D> {
-    #[inline]
     fn hash<HR: Hasher>(&self, state: &mut HR) {
         self.coords.hash(state);
     }

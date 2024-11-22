@@ -2,12 +2,12 @@
 //
 //! private helpers
 
-use super::Float;
+use crate::Float;
 
 #[rustfmt::skip]
 #[cfg(feature = "_float_f32")]
 impl Float<f32> {
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
     pub(super) const fn asin_acos_series_terms_f32(x: f32) -> u32 {
         let abs_a = Float(x).const_abs().0;
@@ -20,7 +20,7 @@ impl Float<f32> {
         } else { 1989 // computed for 0.999
         }
     }
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
     pub(super) fn asin_acos_series_terms_f32(x: f32) -> u32 {
         let abs_a = Float(x).abs().0;
@@ -34,7 +34,7 @@ impl Float<f32> {
         }
     }
 
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
     pub(super) const fn atan_series_terms_f32(x: f32) -> u32 {
         let abs_a = Float(x).const_abs().0;
@@ -47,7 +47,7 @@ impl Float<f32> {
         } else { 4151 // computed for 0.999
         }
     }
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
     pub(super) fn atan_series_terms_f32(x: f32) -> u32 {
         let abs_a = Float(x).abs().0;
@@ -61,7 +61,7 @@ impl Float<f32> {
         }
     }
 
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
     pub(super) const fn exp_series_terms_f32(x: f32) -> u32 {
         let abs_a = Float(x).const_abs().0;
@@ -74,7 +74,7 @@ impl Float<f32> {
         } else { 143 // computed for max computable value f32::MAX.ln()
         }
     }
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
     pub(super) fn exp_series_terms_f32(x: f32) -> u32 {
         let abs_a = Float(x).abs().0;
@@ -88,7 +88,7 @@ impl Float<f32> {
         }
     }
 
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
     pub(super) const fn exp2_series_terms_f32(x: f32) -> u32 {
         let abs_a = Float(x).const_abs().0;
@@ -101,7 +101,7 @@ impl Float<f32> {
         } else { 144 // computed for max computable value f64::MAX.ln()
         }
     }
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
     pub(super) fn exp2_series_terms_f32(x: f32) -> u32 {
         let abs_a = Float(x).abs().0;
@@ -115,7 +115,7 @@ impl Float<f32> {
         }
     }
 
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
     pub(super) const fn ln_series_terms_f32(x: f32) -> u32 {
         let x = Float(x).const_abs().0;
@@ -139,7 +139,7 @@ impl Float<f32> {
         // 12578 * 7 = 88046
         // 81181 * 5 = 405905
     }
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
     pub(super) fn ln_series_terms_f32(x: f32) -> u32 {
         let x = Float(x).abs().0;
@@ -168,7 +168,7 @@ impl Float<f32> {
 #[rustfmt::skip]
 #[cfg(feature = "_float_f64")]
 impl Float<f64> {
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
     pub(super) const fn asin_acos_series_terms_f64(x: f64) -> u32 {
         let abs_a = Float(x).const_abs().0;
@@ -181,7 +181,7 @@ impl Float<f64> {
         } else { 10768 // computed for 0.999
         }
     }
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
     pub(super) fn asin_acos_series_terms_f64(x: f64) -> u32 {
         let abs_a = Float(x).abs().0;
@@ -195,7 +195,7 @@ impl Float<f64> {
         }
     }
 
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
     pub(super) const fn atan_series_terms_f64(x: f64) -> u32 {
         let abs_a = Float(x).const_abs().0;
@@ -208,7 +208,7 @@ impl Float<f64> {
         } else { 13604 // computed for 0.999
         }
     }
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
     pub(super) fn atan_series_terms_f64(x: f64) -> u32 {
         let abs_a = Float(x).abs().0;
@@ -222,7 +222,7 @@ impl Float<f64> {
         }
     }
 
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
     pub(super) const fn exp_series_terms_f64(x: f64) -> u32 {
         let abs_a = Float(x).const_abs().0;
@@ -239,7 +239,7 @@ impl Float<f64> {
         } else { 938 // computed for max computable value 709.782
         }
     }
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
     pub(super) fn exp_series_terms_f64(x: f64) -> u32 {
         let abs_a = Float(x).abs().0;
@@ -257,7 +257,7 @@ impl Float<f64> {
         }
     }
 
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
     pub(super) const fn exp2_series_terms_f64(x: f64) -> u32 {
         let abs_a = Float(x).const_abs().0;
@@ -273,7 +273,7 @@ impl Float<f64> {
         } else { 939 // computed for max computable value 1023.999
         }
     }
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
     pub(super) fn exp2_series_terms_f64(x: f64) -> u32 {
         let abs_a = Float(x).abs().0;
@@ -290,7 +290,7 @@ impl Float<f64> {
         }
     }
     
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
     pub(super) const fn ln_series_terms_f64(x: f64) -> u32 {
         let x = Float(x).const_abs().0;
@@ -311,7 +311,7 @@ impl Float<f64> {
         // 6639 * 9 = 59751
         // 59174 * 9 = 532566
     }
-    #[inline] #[must_use]
+    #[must_use]
     #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
     pub(super) fn ln_series_terms_f64(x: f64) -> u32 {
         let x = Float(x).abs().0;

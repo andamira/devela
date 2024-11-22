@@ -7,7 +7,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::error::Apply;
+/// use devela::Apply;
 ///
 /// let s = 1
 ///     .apply(|s| s * 2)
@@ -26,7 +26,6 @@
 // https://crates.io/crates/apply/0.3.0
 pub trait Apply<Res> {
     /// Apply a function which takes the parameter by value.
-    #[inline]
     #[must_use]
     fn apply<F: FnOnce(Self) -> Res>(self, f: F) -> Res
     where
@@ -36,14 +35,12 @@ pub trait Apply<Res> {
     }
 
     /// Apply a function which takes the parameter by shared reference.
-    #[inline]
     #[must_use]
     fn apply_ref<F: FnOnce(&Self) -> Res>(&self, f: F) -> Res {
         f(self)
     }
 
     /// Apply a function which takes the parameter by exclusive reference.
-    #[inline]
     #[must_use]
     fn apply_mut<F: FnOnce(&mut Self) -> Res>(&mut self, f: F) -> Res {
         f(self)
@@ -81,7 +78,6 @@ pub trait Also: Sized {
     /// since it has a different signature, returns it indirectly.
     ///
     /// [`apply`]: Apply::apply
-    #[inline]
     #[must_use]
     fn also_mut<F: FnOnce(&mut Self)>(mut self, f: F) -> Self {
         f(&mut self);
@@ -95,7 +91,6 @@ pub trait Also: Sized {
     /// since it has a different signature, returns it indirectly.
     ///
     /// [`apply`]: Apply::apply
-    #[inline]
     #[must_use]
     fn also_ref<F: FnOnce(&Self)>(self, f: F) -> Self {
         f(&self);

@@ -24,9 +24,10 @@ use crate::{iif, paste, Int, NumError::MismatchedSizes, NumResult as Result};
 #[cfg(feature = "alloc")]
 use crate::{vec_ as vec, Also, BTreeSet, Vec};
 
-// $t:   the input/output type
-// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
-// $d:  the doclink suffix for the method name
+#[doc = crate::doc_private!()]
+/// $t:   the input/output type
+/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
+/// $d:  the doclink suffix for the method name
 macro_rules! impl_int {
     () => {
         impl_int![signed
@@ -71,14 +72,14 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
             #[doc = "assert_eq![Int(0_" $t ").factors(), vec![]];"]
             #[doc = "assert_eq![Int(1_" $t ").factors(), vec![1]];"]
             #[doc = "assert_eq![Int(7_" $t ").factors(), vec![1, 7]];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors(self) -> Vec<$t> {
@@ -105,14 +106,14 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_proper(), vec![]];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_proper(), vec![]];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_proper(), vec![]];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_proper(self) -> Vec<$t> {
@@ -142,14 +143,14 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_prime(), vec![]];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_prime(), vec![]];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_prime(), vec![7]];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime(self) -> Vec<$t> {
@@ -180,11 +181,11 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique(), vec![2, 3]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique(), vec![2, 3]];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique(self) -> Vec<$t> {
@@ -195,14 +196,14 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_prime_unique_exp(), vec![]];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_prime_unique_exp(), vec![]];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_unique_exp(), vec![(7, 1)]];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique_exp(self) -> Vec<($t, u32)> {
@@ -236,14 +237,14 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_count(), 4];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_count(), 4];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_prime_count(), 0];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_prime_count(), 0];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_count(), 1];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub fn factors_prime_count(self) -> usize {
                 let mut n = self.0.abs();
                 iif![n == 0; return 0];
@@ -271,11 +272,11 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_count(), 2];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique_count(), 2];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub fn factors_prime_unique_count(self) -> usize {
                 let mut n = self.0.abs();
                 iif![n == 0; return 0];
@@ -314,14 +315,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t ").factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];"]
             ///
             /// assert_eq![fbuf[..8], [1, 2, 3, 4, 6, 8, 12, 24]];
             /// assert_eq![upbuf[..2], [2, 3]];
             /// ```
-            #[inline]
             pub fn factors_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t])
                 -> Result<(usize, usize)> {
                 let n = self.0.abs();
@@ -354,7 +354,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];"]
@@ -362,7 +362,6 @@ macro_rules! impl_int {
             /// assert_eq![fbuf[..6], [2, 3, 4, 6, 8, 12,]];
             /// assert_eq![upbuf[..2], [2, 3]];
             /// ```
-            #[inline]
             pub fn factors_proper_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t])
                 -> Result<(usize, usize)> {
                 let n = self.0.abs();
@@ -393,7 +392,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let mut buf = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_buf(&mut buf), Ok(4)];"]
             ///
@@ -406,7 +405,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_buf(&mut buf), Ok(1)];"]
             /// assert_eq![buf[..1], [7]];
             /// ```
-            #[inline]
             pub fn factors_prime_buf(self, buffer: &mut [$t]) -> Result<usize> {
                 iif![self.0 == 0; return Ok(0)];
                 let (mut n, mut idx) = (self.0.abs(), 0);
@@ -450,12 +448,11 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let mut uniq = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_buf(&mut uniq), Ok(2)];"]
             /// assert_eq![uniq, [2, 3, 2, 3, 0]];
             /// ```
-            #[inline]
             pub fn factors_prime_unique_buf(self, buffer: &mut [$t]) -> Result<usize> {
                 let prime_factors_count = self.factors_prime_buf(buffer)?;
                 let mut unique_count = 1;
@@ -490,7 +487,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let mut fbuf = [0; 4];
             /// let mut ebuf = [0; 2];
             #[doc = "assert_eq![Int(40_" $t
@@ -570,14 +567,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let (mut fac, mut uniq) = ([0; 5], [0; 5]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_prime_unique_plus_buf(&mut fac, &mut uniq), Ok((4, 2))];"]
             /// assert_eq![fac, [2, 2, 2, 3, 0]];
             /// assert_eq![uniq, [2, 3, 0, 0, 0]];
             /// ```
-            #[inline]
             pub fn factors_prime_unique_plus_buf(self, pfbuf: &mut [$t], upfbuf: &mut [$t]
             ) -> Result<(usize, usize)> {
                 let prime_factors_count = self.factors_prime_buf(pfbuf)?;
@@ -629,13 +625,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
             #[doc = "assert_eq![Int(0_" $t ").factors(), vec![]];"]
             #[doc = "assert_eq![Int(1_" $t ").factors(), vec![1]];"]
             #[doc = "assert_eq![Int(7_" $t ").factors(), vec![1, 7]];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors(self) -> Vec<$t> {
@@ -663,13 +659,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_proper(), vec![]];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_proper(), vec![]];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_proper(), vec![]];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_proper(self) -> Vec<$t> {
@@ -699,13 +695,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_prime(), vec![]];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_prime(), vec![]];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_prime(), vec![7]];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime(self) -> Vec<$t> {
@@ -736,10 +732,10 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique(), vec![2, 3]];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique(self) -> Vec<$t> {
@@ -750,13 +746,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_prime_unique_exp(), vec![]];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_prime_unique_exp(), vec![]];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_unique_exp(), vec![(7, 1)]];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique_exp(self) -> Vec<($t, u32)> {
@@ -790,13 +786,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_count(), 4];"]
             #[doc = "assert_eq![Int(0_" $t ").factors_prime_count(), 0];"]
             #[doc = "assert_eq![Int(1_" $t ").factors_prime_count(), 0];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_count(), 1];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub fn factors_prime_count(self) -> usize {
                 let mut n = self.0;
                 iif![n == 0; return 0];
@@ -824,10 +820,10 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_count(), 2];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub fn factors_prime_unique_count(self) -> usize {
                 let mut n = self.0;
                 iif![n == 0; return 0];
@@ -866,14 +862,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t ").factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];"]
             ///
             /// assert_eq![fbuf[..8], [1, 2, 3, 4, 6, 8, 12, 24]];
             /// assert_eq![upbuf[..2], [2, 3]];
             /// ```
-            #[inline]
             pub fn factors_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t]) -> Result<(usize, usize)> {
                 let n = self.0;
                 iif![n == 0; return Ok((0, 0))];
@@ -904,7 +899,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];"]
@@ -912,7 +907,6 @@ macro_rules! impl_int {
             /// assert_eq![fbuf[..6], [2, 3, 4, 6, 8, 12,]];
             /// assert_eq![upbuf[..2], [2, 3]];
             /// ```
-            #[inline]
             pub fn factors_proper_buf(self, fbuf: &mut [$t], upfbuf: &mut [$t]
             ) -> Result<(usize, usize)> {
                 let n = self.0;
@@ -943,7 +937,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let mut buf = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_buf(&mut buf), Ok(4)];"]
             ///
@@ -956,7 +950,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_buf(&mut buf), Ok(1)];"]
             /// assert_eq![buf[..1], [7]];
             /// ```
-            #[inline]
             pub fn factors_prime_buf(self, buffer: &mut [$t]) -> Result<usize> {
                 let n = self.0;
                 iif![n == 0; return Ok(0)];
@@ -1001,12 +994,11 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let mut uniq = [0; 5];
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_buf(&mut uniq), Ok(2)];"]
             /// assert_eq![uniq, [2, 3, 2, 3, 0]];
             /// ```
-            #[inline]
             pub fn factors_prime_unique_buf(self, buffer: &mut [$t]) -> Result<usize> {
                 let prime_factors_count = self.factors_prime_buf(buffer)?;
                 let mut unique_count = 1;
@@ -1041,7 +1033,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let mut fbuf = [0; 4];
             /// let mut ebuf = [0; 2];
             #[doc = "assert_eq![Int(40_" $t
@@ -1121,14 +1113,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let (mut fac, mut uniq) = ([0; 5], [0; 5]);
             #[doc = "assert_eq![Int(24_" $t
                 ").factors_prime_unique_plus_buf(&mut fac, &mut uniq), Ok((4, 2))];"]
             /// assert_eq![fac, [2, 2, 2, 3, 0]];
             /// assert_eq![uniq, [2, 3, 0, 0, 0]];
             /// ```
-            #[inline]
             pub fn factors_prime_unique_plus_buf(self, pfbuf: &mut [$t], upfbuf: &mut [$t]
                 ) -> Result<(usize, usize)> {
                 let prime_factors_count = self.factors_prime_buf(pfbuf)?;

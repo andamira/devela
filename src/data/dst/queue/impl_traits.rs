@@ -9,13 +9,11 @@ use core::{fmt, iter, mem, ops};
 /* queue */
 
 impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstQueue<DST, BUF> {
-    #[inline(always)]
     fn drop(&mut self) {
         while self.pop_front().is_some() {}
     }
 }
 impl<DST: ?Sized, BUF: DstBuf + Default> Default for DstQueue<DST, BUF> {
-    #[inline(always)]
     fn default() -> Self {
         DstQueue::new()
     }
@@ -37,19 +35,16 @@ impl<BUF: DstBuf, DST: ?Sized + fmt::Debug> fmt::Debug for DstQueue<DST, BUF> {
 
 impl<DST: ?Sized, BUF: DstBuf> ops::Deref for DstQueuePopHandle<'_, DST, BUF> {
     type Target = DST;
-    #[inline(always)]
     fn deref(&self) -> &DST {
         unsafe { &*self.parent.front_raw() }
     }
 }
 impl<DST: ?Sized, BUF: DstBuf> ops::DerefMut for DstQueuePopHandle<'_, DST, BUF> {
-    #[inline(always)]
     fn deref_mut(&mut self) -> &mut DST {
         unsafe { &mut *self.parent.front_raw_mut() }
     }
 }
 impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstQueuePopHandle<'_, DST, BUF> {
-    #[inline(always)]
     fn drop(&mut self) {
         self.parent.pop_front_inner();
     }

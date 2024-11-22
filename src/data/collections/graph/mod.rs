@@ -10,17 +10,13 @@ mod edge;
 use edge::impl_graph_edge;
 
 use crate::{
-    code::{paste, ConstDefault},
-    data::{
-        Array,
-        DataError::{KeyAlreadyExists, NodeEmpty, NotEnoughSpace, OutOfBounds},
-        DataResult as Result,
-    },
-    error::unwrap,
-    mem::{Bare, Storage},
     num::niche::*,
+    paste, unwrap, Array, Bare, ConstDefault,
+    DataError::{KeyAlreadyExists, NodeEmpty, NotEnoughSpace, OutOfBounds},
+    DataResult as Result, Storage,
 };
 
+#[doc = crate::doc_private!()]
 macro_rules! impl_graph {
     () => {
         impl_graph!(u8:"_graph_u8", u16:"_graph_u16", u32:"_graph_u32", usize:"_graph_usize");
@@ -86,7 +82,6 @@ macro_rules! impl_graph {
             ///
             /// # Errors
             #[doc = "Returns [`OutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
-            #[inline]
             pub fn with_vertices(vertices: [Option<V>; VCAP]) -> Result<Self> {
                 let _ = unwrap![ok? Self::check_capacity_bounds()];
                 Ok(Self {
@@ -104,7 +99,6 @@ macro_rules! impl_graph {
             ///
             /// # Errors
             #[doc = "Returns [`OutOfBounds`] if `(ECAP|VCAP) >= [`" $IDX "::MAX`]."]
-            #[inline]
             pub fn with_vertices_clone(vertices: [Option<V>; VCAP]) -> Result<Self> {
                 let _ = unwrap![ok? Self::check_capacity_bounds()];
                 Ok(Self {
@@ -127,7 +121,6 @@ macro_rules! impl_graph {
             #[doc = "use devela::" $Graph ";"]
             #[doc = "let g = " $Graph "::<10, 5, bool>::new_copy().unwrap();"]
             /// ```
-            #[inline]
             pub const fn new_copy() -> Result<Self> {
                 let _ = unwrap![ok? Self::check_capacity_bounds()];
                 Ok(Self {
@@ -150,7 +143,6 @@ macro_rules! impl_graph {
             #[doc = "# use devela::" $Graph ";"]
             #[doc = "let g = " $Graph "::<10, 5, char>::new_clone().unwrap();"]
             /// ```
-            #[inline]
             pub fn new_clone() -> Result<Self> {
                 Self::check_capacity_bounds()?;
                 Ok(Self {
@@ -167,7 +159,6 @@ macro_rules! impl_graph {
             ///
             /// # Errors
             /// Returns [`NotEnoughSpace`] if there's no space left for the new vertex.
-            #[inline]
             pub fn add_vertex(&mut self) -> Result<$IDX> {
                 for (idx, vertex) in self.verts.iter_mut().enumerate() {
                     if vertex.is_none() {
@@ -185,7 +176,6 @@ macro_rules! impl_graph {
             ///
             /// # Errors
             /// Returns [`NotEnoughSpace`] if there's no space left for the new vertex.
-            #[inline]
             pub fn add_vertex_with(&mut self, data: V) -> Result<$IDX> {
                 for (idx, vertex) in self.verts.iter_mut().enumerate() {
                     if vertex.is_none() {
@@ -197,17 +187,14 @@ macro_rules! impl_graph {
             }
 
             /// Returns `true` if there's no space left for vertices.
-            #[inline]
             pub const fn is_vertices_full(&self) -> bool {
                 self.remaining_vertices_capacity() == 0
             }
             /// Returns the remaining capacity for additional vertices.
-            #[inline]
             pub const fn remaining_vertices_capacity(&self) -> $IDX {
                 VCAP as $IDX - self.vertices_count()
             }
             /// Returns the number of existing vertices.
-            #[inline]
             pub const fn vertices_count(&self) -> $IDX {
                 let mut i = 0;
                 let mut count = 0;
@@ -219,7 +206,6 @@ macro_rules! impl_graph {
             }
 
             /// Returns `true` if a given `vertex` id exists.
-            #[inline]
             pub const fn vertex_exists(&self, vertex: $IDX) -> bool {
                 self.verts.as_bare_slice()[vertex as usize].is_some()
             }
@@ -229,7 +215,6 @@ macro_rules! impl_graph {
             /// # Errors
             /// Returns [`OutOfBounds`] if `id >= VCAP`,
             /// or [`NodeEmpty`] if the vertex didn't exist.
-            #[inline]
             pub fn remove_vertex(&mut self, id: $IDX) -> Result<()> {
                 Self::check_vertex_bounds(id)?;
                 let id = id as usize;
@@ -244,18 +229,15 @@ macro_rules! impl_graph {
             /* methods: edges */
 
             /// Returns `true` if there's no space left for edges.
-            #[inline]
             pub const fn is_edges_full(&self) -> bool {
                 self.remaining_edges_capacity() == 0
             }
             /// Returns the remaining capacity for additional edges.
-            #[inline]
             pub const fn remaining_edges_capacity(&self) -> $IDX {
                 ECAP as $IDX - self.edges_count()
             }
 
             /// Returns the number of existing edges.
-            #[inline]
             pub const fn edges_count(&self) -> $IDX {
                 let mut i = 0;
                 let mut count = 0;
@@ -267,7 +249,6 @@ macro_rules! impl_graph {
             }
 
             /// Returns `true` if a given edge `id` exists.
-            #[inline]
             pub const fn edge_exists(&self, id: $IDX) -> bool {
                 if id as usize >= ECAP || self.edges.as_bare_slice()[id as usize].is_none() {
                     false
@@ -279,7 +260,6 @@ macro_rules! impl_graph {
             ///
             /// # Panics
             /// Panics if `id >= ECAP`.
-            #[inline]
             pub const fn edge_exists_unchecked(&self, id: $IDX) -> bool {
                 self.edges.as_bare_slice()[id as usize].is_some()
             }
@@ -317,7 +297,6 @@ macro_rules! impl_graph {
             ///
             /// # Errors
             /// Returns [`OutOfBounds`] if `id >= ECAP`.
-            #[inline]
             pub fn remove_edge(&mut self, id: $IDX) -> Result<()> {
                 Self::check_edge_bounds(id)?;
                 self.edges[id as usize] = None;
@@ -332,7 +311,6 @@ macro_rules! impl_graph {
             /// # Errors
             /// Returns [`NotEnoughSpace`] if there's no space left for the new vertex,
             /// or returns [`KeyAlreadyExists`] if there's already a vertex with the same data.
-            #[inline]
             pub fn add_vertex_unique(&mut self, data: V) -> Result<$IDX> {
                 let (found, free) = self.find_vertex_and_first_free(&data);
 
@@ -348,7 +326,7 @@ macro_rules! impl_graph {
             }
 
             /// Checks for the presence of the given vertex `data` and returns its id.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn find_vertex(&self, data: &V) -> Option<$IDX> {
                 for (id, vertex) in self.verts.iter().enumerate() {
                     if let Some(v) = vertex {
@@ -384,7 +362,6 @@ macro_rules! impl_graph {
         #[allow(dead_code)]
         impl<V, E, const VCAP: usize, const ECAP: usize> $Graph<VCAP, ECAP, V, E, Bare> {
             // Makes sure the given vertex `id` is in bounds,
-            #[inline]
             const fn check_vertex_bounds(id: $IDX) -> Result<()> {
                 if id == $IDX::MAX || id >= VCAP as $IDX {
                     Err(OutOfBounds(Some(id as usize)))
@@ -393,7 +370,6 @@ macro_rules! impl_graph {
                 }
             }
             // Makes sure the given edge `id` is in bounds,
-            #[inline]
             const fn check_edge_bounds(id: $IDX) -> Result<()> {
                 if id == $IDX::MAX || id >= ECAP as $IDX {
                     Err(OutOfBounds(Some(id as usize)))
@@ -403,7 +379,6 @@ macro_rules! impl_graph {
             }
 
             // Makes sure the capacity const-generic arguments are in bounds.
-            #[inline]
             const fn check_capacity_bounds() -> Result<()> {
                 if ECAP >= $IDX::MAX as usize {
                     Err(OutOfBounds(Some(ECAP)))

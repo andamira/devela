@@ -2,7 +2,6 @@
 
 /// Creates a new `Waker` that does nothing when `wake` is called.
 // WAIT: [noop_waker](https://github.com/rust-lang/rust/pull/98286)
-#[inline]
 #[must_use]
 #[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_async")))]

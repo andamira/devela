@@ -89,7 +89,6 @@ macro_rules! impl_vector {
             ///
             /// # Formula
             /// $$ \large |\vec{V}|^2 = V_0^2 + ... + V_n^2 $$
-            #[inline]
             pub const fn c_magnitude_sq(self) -> $t { self.c_dot(self) }
 
             /// Adds two vectors together, in compile-time.
@@ -308,7 +307,6 @@ macro_rules! impl_vector {
             /// \bm{n} = \widehat{\bm{a}} = \frac{1}{d}\thinspace\bm{a} =
             /// \frac{\bm{a}}{|\bm{a}|}
             /// $$
-            #[inline]
             pub fn normalize(&self) -> Self {
                 let mag = self.magnitude();
                 let mut normalized = [0.0; D];
@@ -322,7 +320,6 @@ macro_rules! impl_vector {
             ///
             /// # Formula
             /// $$ \large |\vec{V}| = \sqrt{V_0^2 + ... + V_n^2} $$
-            #[inline]
             pub fn magnitude(self) -> $f { self.dot(self).sqrt() }
 
             /// Calculates the squared magnitude of the vector.
@@ -332,7 +329,6 @@ macro_rules! impl_vector {
             ///
             /// # Formula
             /// $$ \large |\vec{V}|^2 = V_0^2 + ... + V_n^2 $$
-            #[inline]
             pub fn magnitude_sq(self) -> $f { self.dot(self) }
 
             /// Adds two vectors together.

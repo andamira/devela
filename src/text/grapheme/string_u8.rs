@@ -10,9 +10,9 @@ use super::Grapheme;
 #[cfg(_char_·)]
 use crate::text::char::*;
 #[cfg(feature = "alloc")]
-use crate::text::CString;
+use crate::CString;
 #[cfg(doc)]
-use crate::text::TextError::OutOfBounds;
+use crate::TextError::OutOfBounds;
 use crate::{
     text::helpers::impl_sized_alias, unwrap, ConstDefault, IterChars, StringU8,
     TextResult as Result,
@@ -43,7 +43,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP > 255.
-    #[inline]
     pub const fn new() -> Result<Self> {
         Ok(Self(unwrap![ok? StringU8::new()]))
     }
@@ -54,7 +53,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Returns [`OutOfBounds`] if `CAP > 255.
     ///
     /// Will always succeed if `CAP` >= 1 and <= 255.
-    #[inline]
     #[cfg(feature = "_char_u7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
     pub const fn from_char_u7(c: CharU7) -> Result<Self> {
@@ -67,7 +65,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][CharU8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2 and <= 255.
-    #[inline]
     #[cfg(feature = "_char_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     pub const fn from_char_u8(c: CharU8) -> Result<Self> {
@@ -80,7 +77,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][CharU16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3 and <= 255.
-    #[inline]
     #[cfg(feature = "_char_u16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn from_char_u16(c: CharU16) -> Result<Self> {
@@ -93,7 +89,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][CharU24#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    #[inline]
     #[cfg(feature = "_char_u24")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn from_char_u24(c: CharU24) -> Result<Self> {
@@ -106,7 +101,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][CharU32#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    #[inline]
     #[cfg(feature = "_char_u32")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
     pub const fn from_char_u32(c: CharU32) -> Result<Self> {
@@ -118,7 +112,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
     ///
     /// Will never panic if `CAP` >= 4 and <= 255.
-    #[inline]
     pub const fn from_char(c: char) -> Result<Self> {
         Ok(Self(unwrap![ok? StringU8::from_char(c)]))
     }
@@ -126,39 +119,38 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     //
 
     /// Returns the length in bytes.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn len(&self) -> usize { self.0.len() }
 
     /// Returns `true` if the current length is 0.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn is_empty(&self) -> bool { self.0.len() == 0 }
 
     /// Returns the total capacity in bytes.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn capacity() -> usize { CAP }
 
     /// Returns the remaining capacity.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn remaining_capacity(&self) -> usize { CAP - self.len() }
 
     /// Returns `true` if the current remaining capacity is 0.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn is_full(&self) -> bool { self.len() == CAP }
 
     /// Sets the length to 0, by resetting all bytes to 0.
-    #[inline] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub fn clear(&mut self) { self.0.clear(); }
 
     //
 
     /// Returns a byte slice of the inner string slice.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn as_bytes(&self) -> &[u8] { self.0.as_bytes() }
 
     /// Returns a mutable byte slice of the inner string slice.
     /// # Safety
     /// The content must be valid UTF-8.
-    #[inline]
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
@@ -170,17 +162,17 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     /// Returns a copy of the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn as_array(&self) -> [u8; CAP] { self.0.as_array() }
 
     /// Returns the inner array with the full contents.
     ///
     /// The array contains all the bytes, including those outside the current length.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn into_array(self) -> [u8; CAP] { self.0.into_array() }
 
     /// Returns the inner string slice.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn as_str(&self) -> &str { self.0.as_str() }
 
     /// Returns the mutable inner string slice.
@@ -193,11 +185,11 @@ impl<const CAP: usize> GraphemeU8<CAP> {
     }
 
     /// Returns an iterator over the `chars` of this grapheme cluster.
-    #[inline] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub fn chars(&self) -> IterChars { self.0.chars() }
 
     /// Returns a new allocated C-compatible, nul-terminanted string.
-    #[inline] #[rustfmt::skip]
+    #[rustfmt::skip]
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     pub fn to_cstring(&self) -> CString { self.0.to_cstring() }
@@ -216,7 +208,7 @@ mod core_impls {
         ///
         /// # Panics
         /// Panics if `CAP` > 255.
-        #[inline] #[rustfmt::skip]
+        #[rustfmt::skip]
         fn default() -> Self { unwrap![ok Self::new()] }
     }
     impl<const CAP: usize> ConstDefault for GraphemeU8<CAP> {
@@ -228,11 +220,11 @@ mod core_impls {
     }
 
     impl<const CAP: usize> fmt::Display for GraphemeU8<CAP> {
-        #[inline] #[rustfmt::skip]
+        #[rustfmt::skip]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{}", self.0) }
     }
     impl<const CAP: usize> fmt::Debug for GraphemeU8<CAP> {
-        #[inline] #[rustfmt::skip]
+        #[rustfmt::skip]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{:?}", self.0) }
     }
 

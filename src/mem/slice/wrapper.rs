@@ -33,14 +33,14 @@ impl<T> Slice<T> {
     /// # Features
     /// This method will only be const if the `_cmp_usize` feature is enabled.
     // WAIT: [const_cmp](https://github.com/rust-lang/rust/issues/92391)
-    #[inline] #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
+    #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
     pub const fn lsplit(slice: &[T], len: usize) -> &[T] {
         let end_idx = Compare(len).clamp(0, slice.len());
         let (left, _) = slice.split_at(end_idx);
         left
     }
     #[allow(missing_docs)]
-    #[inline] #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
+    #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
     pub fn lsplit(slice: &[T], len: usize) -> &[T] {
         let end_idx = len.clamp(0, slice.len());
         let (left, _) = slice.split_at(end_idx);
@@ -59,7 +59,6 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::lsplit_mut(&mut v, 0), &mut [] as &mut [i32]);
     /// assert_eq!(Slice::lsplit_mut(&mut v, 10), &mut [1, 2, 3, 4, 5, 6]);
     /// ```
-    #[inline]
     #[must_use]
     pub fn lsplit_mut(slice: &mut [T], len: usize) -> &mut [T] {
         let end_idx = len.clamp(0, slice.len());
@@ -81,7 +80,6 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::rsplit(&v, 0), &[] as &[i32]);
     /// assert_eq!(Slice::rsplit(&v, 10), &[1, 2, 3, 4, 5, 6]);
     /// ```
-    #[inline]
     #[must_use]
     pub const fn rsplit(slice: &[T], len: usize) -> &[T] {
         let start_idx = slice.len().saturating_sub(len);
@@ -101,7 +99,6 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::rsplit_mut(&mut v, 0), &mut [] as &mut [i32]);
     /// assert_eq!(Slice::rsplit_mut(&mut v, 10), &mut [1, 2, 3, 4, 5, 6]);
     /// ```
-    #[inline]
     #[must_use]
     pub fn rsplit_mut(slice: &mut [T], len: usize) -> &mut [T] {
         let start_idx = slice.len().saturating_sub(len);
@@ -214,7 +211,7 @@ impl<T> Slice<T> {
     ///
     /// # Features
     /// This method will only be const if the `_cmp_usize` feature is enabled.
-    #[inline] #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
+    #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
     // WAIT: [const_cmp](https://github.com/rust-lang/rust/issues/92391)
     pub const fn msplit_right(slice: &[T], len: usize) -> &[T] {
         let mid_idx = slice.len() / 2;
@@ -226,7 +223,7 @@ impl<T> Slice<T> {
         middle
     }
     #[allow(missing_docs)]
-    #[inline] #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
+    #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
     pub fn msplit_right(slice: &[T], len: usize) -> &[T] {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
@@ -257,7 +254,6 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::msplit_right_mut(&mut v, 10), &mut [1, 2, 3, 4, 5, 6]);
     /// ```
     /// See also [`Slice::msplit_left_mut`].
-    #[inline]
     #[must_use]
     pub fn msplit_right_mut(slice: &mut [T], len: usize) -> &mut [T] {
         let mid_idx = slice.len() / 2;
@@ -273,7 +269,6 @@ impl<T> Slice<T> {
 /// # Methods for slices of bytes.
 impl Slice<u8> {
     /// Returns a subslice without the given leading `byte`s.
-    #[inline]
     #[must_use]
     pub const fn trim_leading_bytes(slice: &[u8], byte: u8) -> &[u8] {
         let mut start = 0;
@@ -284,7 +279,6 @@ impl Slice<u8> {
     }
 
     /// Replaces the `old` leading byte with a `new` byte.
-    #[inline]
     pub fn replace_leading_bytes(slice: &mut [u8], old: u8, new: u8) {
         let mut start = 0;
         while start < slice.len() && slice[start] == old {

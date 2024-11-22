@@ -16,17 +16,18 @@
 #![allow(unused_imports)] // TEMP WIP unwrap
 
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
-use crate::num::isize_up;
+use crate::isize_up;
 #[cfg(feature = "_int_usize")]
-use crate::num::usize_up;
+use crate::usize_up;
 use crate::{
-    code::{iif, paste},
-    error::unwrap,
-    num::{upcasted_op, Int, NumError, NumResult as Result},
+    iif,
+    num::upcasted_op,
+    paste, unwrap, Int,
+    NumError::{self, NonZeroRequired},
+    NumResult as Result,
 };
 #[cfg(_int_i·)]
 use NumError::NonNegativeRequired;
-use NumError::NonZeroRequired;
 #[cfg(doc)]
 use NumError::Overflow;
 
@@ -37,11 +38,12 @@ const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 #[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_int_·)]
 const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 
-// $t:   the input/output type. E.g. i8.
-// $up:  the upcasted input/output type. E.g. i16.
-// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
-// $cmp: the feature that enables the given implementation. E.g "_cmp_i8".
-// $d:   the doclink suffix for the method name
+#[doc = crate::doc_private!()]
+/// $t:   the input/output type. E.g. i8.
+/// $up:  the upcasted input/output type. E.g. i16.
+/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
+/// $cmp: the feature that enables the given implementation. E.g "_cmp_i8".
+/// $d:   the doclink suffix for the method name
 macro_rules! impl_int {
     () => {
         impl_int![signed
@@ -95,7 +97,7 @@ macro_rules! impl_int {
             /// $$
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc="assert_eq![Int(12_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(13_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(16_" $t ").is_square(), true];"]
@@ -105,7 +107,7 @@ macro_rules! impl_int {
             /// ```
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = $cmp)]
             pub const fn is_square(self) -> bool {
                 let a = self.0;
@@ -131,7 +133,7 @@ macro_rules! impl_int {
             /// $$
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, NumError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Ok(Int(4))];"]
@@ -141,7 +143,6 @@ macro_rules! impl_int {
             /// ```
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[inline]
             #[cfg(feature = $cmp)]
             pub const fn sqrt_ceil(self) -> Result<Int<$t>> {
                 let a = self.0;
@@ -189,7 +190,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, NumError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_floor(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_floor(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_floor(), Ok(Int(4))];"]
@@ -199,7 +200,6 @@ macro_rules! impl_int {
             /// ```
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[inline]
             #[cfg(feature = $cmp)]
             pub const fn sqrt_floor(self) -> Result<Int<$t>> {
                 let a = crate::Compare(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
@@ -235,7 +235,7 @@ macro_rules! impl_int {
 
             /// Returns the rounded integer square root.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative, or possibly [`Overflow`]
@@ -251,7 +251,7 @@ macro_rules! impl_int {
             /// $$
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, NumError::NonNegativeRequired};
             #[doc="assert_eq![Int(12_" $t ").sqrt_round(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Ok(Int(4))];"]
@@ -259,7 +259,6 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(21_" $t ").sqrt_round(), Ok(Int(5))];"]
             #[doc="assert_eq![Int(-4_" $t ").sqrt_round(), Err(NonNegativeRequired)];"]
             /// ```
-            #[inline]
             pub const fn sqrt_round(self) -> Result<Int<$t>> {
                 let a = self.0 as $up;
                 if a.is_negative() {
@@ -291,7 +290,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, NumError::NonNegativeRequired};
             #[doc="assert_eq![Int(48_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(70_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(81_" $t ").root_ceil(4), Ok(Int(3))];"]
@@ -334,7 +333,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, NumError::NonNegativeRequired};
             #[doc="assert_eq![Int(48_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(70_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(81_" $t ").root_floor(4), Ok(Int(3))];"]
@@ -343,7 +342,6 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(-81_" $t ").root_floor(4), Err(NonNegativeRequired)];"]
             #[doc="assert_eq![Int(" $t "::MAX).root_floor(1), Ok(Int(" $t "::MAX))];"]
             /// ```
-            #[inline]
             pub const fn root_floor(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()
@@ -392,7 +390,7 @@ macro_rules! impl_int {
             /// $$
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc="assert_eq![Int(12_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(13_" $t ").is_square(), false];"]
             #[doc="assert_eq![Int(16_" $t ").is_square(), true];"]
@@ -401,7 +399,7 @@ macro_rules! impl_int {
             /// ```
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = $cmp)]
             pub const fn is_square(self) -> bool {
                 let a = self.0;
@@ -427,7 +425,7 @@ macro_rules! impl_int {
             /// $$
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc="assert_eq![Int(12_" $t ").sqrt_ceil(), Int(4)];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_ceil(), Int(4)];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_ceil(), Int(4)];"]
@@ -436,7 +434,7 @@ macro_rules! impl_int {
             /// ```
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = $cmp)]
             pub const fn sqrt_ceil(self) -> Int<$t> {
                 let a = self.0; let floor = self.sqrt_floor();
@@ -471,7 +469,7 @@ macro_rules! impl_int {
             /// or equal to the square root of `a`.
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc="assert_eq![Int(12_" $t ").sqrt_floor(), Int(3)];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_floor(), Int(3)];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_floor(), Int(4)];"]
@@ -480,7 +478,7 @@ macro_rules! impl_int {
             /// ```
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = $cmp)]
             pub const fn sqrt_floor(self) -> Int<$t> {
                 let a = crate::Compare(self.0).min(<$t>::MAX - 1); // avoid overflow on MAX
@@ -512,7 +510,7 @@ macro_rules! impl_int {
 
             /// Returns the rounded integer square root.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Errors
             /// Can returns [`Overflow`] if there's no larger type to upcast and the value
@@ -528,14 +526,13 @@ macro_rules! impl_int {
             /// $$
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc="assert_eq![Int(12_" $t ").sqrt_round(), Ok(Int(3))];"]
             #[doc="assert_eq![Int(13_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(16_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(20_" $t ").sqrt_round(), Ok(Int(4))];"]
             #[doc="assert_eq![Int(21_" $t ").sqrt_round(), Ok(Int(5))];"]
             /// ```
-            #[inline]
             pub const fn sqrt_round(self) -> Result<Int<$t>> {
                 let a = self.0 as $up;
                 if a < 2 {
@@ -564,7 +561,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, NumError::NonNegativeRequired};
             #[doc="assert_eq![Int(48_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(70_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(81_" $t ").root_ceil(4), Ok(Int(3))];"]
@@ -572,7 +569,6 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(114_" $t ").root_ceil(4), Ok(Int(4))];"]
             #[doc="assert_eq![Int(" $t "::MAX).root_ceil(1), Ok(Int(" $t "::MAX))];"]
             /// ```
-            #[inline]
             pub const fn root_ceil(self, nth: u32) -> Result<Int<$t>> {
                 match self.root_floor(nth) {
                     Ok(floor_root) => {
@@ -593,7 +589,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumError::NonNegativeRequired};
+            /// # use devela::{Int, NumError::NonNegativeRequired};
             #[doc="assert_eq![Int(48_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(70_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(81_" $t ").root_floor(4), Ok(Int(3))];"]
@@ -601,7 +597,6 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(114_" $t ").root_floor(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(" $t "::MAX).root_floor(1), Ok(Int(" $t "::MAX))];"]
             /// ```
-            #[inline]
             pub const fn root_floor(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()

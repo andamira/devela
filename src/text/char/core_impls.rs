@@ -5,14 +5,12 @@
 
 #[allow(unused_imports)]
 use crate::{
-    _core::fmt,
-    code::{paste, ConstDefault},
-    error::unwrap,
-    text::{char::*, TextError, TextResult as Result},
+    _core::fmt, paste, text::char::*, unwrap, ConstDefault, TextError, TextResult as Result,
 };
 
 /* Default, Display, Debug */
 
+#[doc = crate::doc_private!()]
 macro_rules! core_impls {
     ($( $name:ident | $feature:literal + $default:expr ),+ ) => {
         $(
@@ -23,7 +21,6 @@ macro_rules! core_impls {
     (@$name:ident + $default:expr) => { paste! {
         impl Default for super::$name {
             /// Returns the default value of `\x00` (nul character).
-            #[inline]
             #[must_use]
             fn default() -> Self { $default }
         }
@@ -32,37 +29,31 @@ macro_rules! core_impls {
             const DEFAULT: Self = $default;
         }
         impl fmt::Display for super::$name {
-            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(f, "{}", self.to_char())
             }
         }
         impl fmt::Debug for super::$name {
-            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(f, "{:?}", self.to_char())
             }
         }
         impl fmt::Binary for super::$name {
-            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::Binary::fmt(&self.to_u32(), f)
             }
         }
         impl fmt::LowerHex for super::$name {
-            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::LowerHex::fmt(&self.to_u32(), f)
             }
         }
         impl fmt::UpperHex for super::$name {
-            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::UpperHex::fmt(&self.to_u32(), f)
             }
         }
         impl fmt::Octal for super::$name {
-            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 fmt::Octal::fmt(&self.to_u32(), f)
             }
@@ -85,7 +76,6 @@ mod char7 {
     use super::super::*;
 
     impl From<CharU7> for char {
-        #[inline]
         #[must_use]
         fn from(c: CharU7) -> char {
             c.to_char()
@@ -93,7 +83,6 @@ mod char7 {
     }
     #[cfg(feature = "_char_u8")]
     impl From<CharU7> for CharU8 {
-        #[inline]
         #[must_use]
         fn from(c: CharU7) -> CharU8 {
             c.to_char_u8()
@@ -101,7 +90,6 @@ mod char7 {
     }
     #[cfg(feature = "_char_u16")]
     impl From<CharU7> for CharU16 {
-        #[inline]
         #[must_use]
         fn from(c: CharU7) -> CharU16 {
             c.to_char_u16()
@@ -109,7 +97,6 @@ mod char7 {
     }
     #[cfg(feature = "_char_u24")]
     impl From<CharU7> for CharU24 {
-        #[inline]
         #[must_use]
         fn from(c: CharU7) -> CharU24 {
             c.to_char_u24()
@@ -117,7 +104,6 @@ mod char7 {
     }
     #[cfg(feature = "_char_u32")]
     impl From<CharU7> for CharU32 {
-        #[inline]
         #[must_use]
         fn from(c: CharU7) -> CharU32 {
             c.to_char_u32()
@@ -132,7 +118,6 @@ mod char8 {
     use super::*;
 
     impl From<CharU8> for char {
-        #[inline]
         #[must_use]
         fn from(c: CharU8) -> char {
             c.to_char()
@@ -141,14 +126,12 @@ mod char8 {
     #[cfg(feature = "_char_u7")]
     impl TryFrom<CharU8> for CharU7 {
         type Error = TextError;
-        #[inline]
         fn try_from(c: CharU8) -> Result<CharU7> {
             c.try_to_char_u7()
         }
     }
     #[cfg(feature = "_char_u16")]
     impl From<CharU8> for CharU16 {
-        #[inline]
         #[must_use]
         fn from(c: CharU8) -> CharU16 {
             c.to_char_u16()
@@ -156,7 +139,6 @@ mod char8 {
     }
     #[cfg(feature = "_char_u24")]
     impl From<CharU8> for CharU24 {
-        #[inline]
         #[must_use]
         fn from(c: CharU8) -> CharU24 {
             c.to_char_u24()
@@ -164,7 +146,6 @@ mod char8 {
     }
     #[cfg(feature = "_char_u32")]
     impl From<CharU8> for CharU32 {
-        #[inline]
         #[must_use]
         fn from(c: CharU8) -> CharU32 {
             c.to_char_u32()
@@ -179,7 +160,6 @@ mod char16 {
     use super::*;
 
     impl From<CharU16> for char {
-        #[inline]
         #[must_use]
         fn from(c: CharU16) -> char {
             c.to_char()
@@ -188,7 +168,6 @@ mod char16 {
     #[cfg(feature = "_char_u7")]
     impl TryFrom<CharU16> for CharU7 {
         type Error = TextError;
-        #[inline]
         fn try_from(c: CharU16) -> Result<CharU7> {
             c.try_to_char_u7()
         }
@@ -196,14 +175,12 @@ mod char16 {
     #[cfg(feature = "_char_u8")]
     impl TryFrom<CharU16> for CharU8 {
         type Error = TextError;
-        #[inline]
         fn try_from(c: CharU16) -> Result<CharU8> {
             c.try_to_char_u8()
         }
     }
     #[cfg(feature = "_char_u24")]
     impl From<CharU16> for CharU24 {
-        #[inline]
         #[must_use]
         fn from(c: CharU16) -> CharU24 {
             c.to_char_u24()
@@ -213,7 +190,6 @@ mod char16 {
     impl From<CharU16> for CharU32 {
         /// # Features
         /// Makes use of the `unsafe_str` feature if enabled.
-        #[inline]
         #[must_use]
         fn from(c: CharU16) -> CharU32 {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
@@ -233,7 +209,6 @@ mod char24 {
     use super::*;
 
     impl From<CharU24> for char {
-        #[inline]
         #[must_use]
         fn from(c: CharU24) -> char {
             c.to_char()
@@ -242,7 +217,6 @@ mod char24 {
     #[cfg(feature = "_char_u7")]
     impl TryFrom<CharU24> for CharU7 {
         type Error = TextError;
-        #[inline]
         fn try_from(c: CharU24) -> Result<CharU7> {
             c.try_to_char_u7()
         }
@@ -250,7 +224,6 @@ mod char24 {
     #[cfg(feature = "_char_u8")]
     impl TryFrom<CharU24> for CharU8 {
         type Error = TextError;
-        #[inline]
         fn try_from(c: CharU24) -> Result<CharU8> {
             c.try_to_char_u8()
         }
@@ -258,7 +231,6 @@ mod char24 {
     #[cfg(feature = "_char_u16")]
     impl TryFrom<CharU24> for CharU16 {
         type Error = TextError;
-        #[inline]
         fn try_from(c: CharU24) -> Result<CharU16> {
             c.try_to_char_u16()
         }
@@ -267,7 +239,6 @@ mod char24 {
     impl From<CharU24> for CharU32 {
         /// # Features
         /// Makes use of the `unsafe_str` feature if enabled.
-        #[inline]
         #[must_use]
         fn from(c: CharU24) -> CharU32 {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
@@ -287,7 +258,6 @@ mod char32 {
     use super::*;
 
     impl From<CharU32> for char {
-        #[inline]
         #[must_use]
         fn from(c: CharU32) -> char {
             c.to_char()
@@ -296,7 +266,6 @@ mod char32 {
     #[cfg(feature = "_char_u7")]
     impl TryFrom<CharU32> for CharU7 {
         type Error = TextError;
-        #[inline]
         fn try_from(c: CharU32) -> Result<CharU7> {
             c.try_to_char_u7()
         }
@@ -304,7 +273,6 @@ mod char32 {
     #[cfg(feature = "_char_u8")]
     impl TryFrom<CharU32> for CharU8 {
         type Error = TextError;
-        #[inline]
         fn try_from(c: CharU32) -> Result<CharU8> {
             c.try_to_char_u8()
         }
@@ -312,14 +280,12 @@ mod char32 {
     #[cfg(feature = "_char_u16")]
     impl TryFrom<CharU32> for CharU16 {
         type Error = TextError;
-        #[inline]
         fn try_from(c: CharU32) -> Result<CharU16> {
             c.try_to_char_u16()
         }
     }
     #[cfg(feature = "_char_u24")]
     impl From<CharU32> for CharU24 {
-        #[inline]
         #[must_use]
         fn from(c: CharU32) -> CharU24 {
             c.to_char_u24()
@@ -332,7 +298,6 @@ mod char32 {
 #[cfg(feature = "_char_u7")]
 impl TryFrom<char> for CharU7 {
     type Error = TextError;
-    #[inline]
     fn try_from(c: char) -> Result<CharU7> {
         CharU7::try_from_char(c)
     }
@@ -340,7 +305,6 @@ impl TryFrom<char> for CharU7 {
 #[cfg(feature = "_char_u8")]
 impl TryFrom<char> for CharU8 {
     type Error = TextError;
-    #[inline]
     fn try_from(c: char) -> Result<CharU8> {
         CharU8::try_from_char(c)
     }
@@ -348,14 +312,12 @@ impl TryFrom<char> for CharU8 {
 #[cfg(feature = "_char_u16")]
 impl TryFrom<char> for CharU16 {
     type Error = TextError;
-    #[inline]
     fn try_from(c: char) -> Result<CharU16> {
         CharU16::try_from_char(c)
     }
 }
 #[cfg(feature = "_char_u24")]
 impl From<char> for CharU24 {
-    #[inline]
     #[must_use]
     fn from(c: char) -> CharU24 {
         CharU24::from_char(c)
@@ -363,7 +325,6 @@ impl From<char> for CharU24 {
 }
 #[cfg(feature = "_char_u32")]
 impl From<char> for CharU32 {
-    #[inline]
     #[must_use]
     fn from(c: char) -> CharU32 {
         CharU32::from_char(c)

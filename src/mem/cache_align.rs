@@ -157,7 +157,6 @@ impl<T> CacheAlign<T> {
     /// # use devela::CacheAlign;
     /// let padded_value = CacheAlign::new(1);
     /// ```
-    #[inline]
     pub const fn new(t: T) -> CacheAlign<T> { CacheAlign::<T> { value: t } }
 
     /// Returns the inner value.
@@ -169,11 +168,9 @@ impl<T> CacheAlign<T> {
     /// let value = padded_value.into_inner();
     /// assert_eq!(value, 7);
     /// ```
-    #[inline]
     pub fn into_inner(self) -> T { self.value }
 
     /// Returns the copied inner value in compile-time.
-    #[inline]
     pub const fn into_inner_copy(self) -> T where Self: Copy { self.value }
 }
 

@@ -121,7 +121,7 @@ macro_rules! impl_non_value{
             impl Default for [<NonExtreme $s:upper $b>] {
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
-                #[inline] #[must_use]
+                #[must_use]
                 fn default() -> Self {
                     #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
                     return [<NonExtreme $s:upper $b>]::new($IP::default()).unwrap();
@@ -201,19 +201,19 @@ macro_rules! impl_non_value{
                 }
 
                 /// Returns the value as a primitive type.
-                #[inline] #[must_use]
+                #[must_use]
                 pub const fn get(&self) -> $IP {
                     self.0.get() ^ V
                 }
 
                 /// Returns `true` if it is equal to the maximum value ([`MAX`][Self::MAX]).
-                #[inline] #[must_use]
+                #[must_use]
                 pub const fn is_max(&self) -> bool {
                     self.get() == $IP::MAX
                 }
 
                 /// Returns `true` if it is equal to the minimum value ([`MIN`][Self::MIN]).
-                #[inline] #[must_use]
+                #[must_use]
                 pub const fn is_min(&self) -> bool {
                     self.get() == $IP::MIN
                 }
@@ -293,37 +293,31 @@ macro_rules! impl_non_value{
 
             impl<const V: $IP> fmt::Display for $name <V> {
 
-                #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     write!(f, "{}", self.get())
                 }
             }
             impl<const V: $IP> fmt::Debug for $name <V> {
-                #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     write!(f, "{}::<{}>({})", stringify!($name), V, self.get())
                 }
             }
             impl<const V: $IP> fmt::Binary for $name<V> {
-                #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::Binary::fmt(&self.get(), f)
                 }
             }
             impl<const V: $IP> fmt::Octal for $name<V> {
-                #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::Octal::fmt(&self.get(), f)
                 }
             }
             impl<const V: $IP> fmt::LowerHex for $name<V> {
-                #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::LowerHex::fmt(&self.get(), f)
                 }
             }
             impl<const V: $IP> fmt::UpperHex for $name<V> {
-                #[inline]
                 fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                     fmt::UpperHex::fmt(&self.get(), f)
                 }
@@ -331,7 +325,6 @@ macro_rules! impl_non_value{
 
             impl<const V: $IP> FromStr for $name<V> {
                 type Err = ParseIntError;
-                #[inline]
                 fn from_str(s: &str) -> Result<Self, Self::Err> {
                     Self::new($IP::from_str(s)?).ok_or_else(||"".parse::<i32>().unwrap_err())
                 }
@@ -340,7 +333,6 @@ macro_rules! impl_non_value{
             /* conversions */
 
             impl<const V: $IP> From<$name<V>> for $IP {
-                #[inline]
                 #[must_use]
                 fn from(value: $name<V>) -> $IP {
                     value.get()
@@ -352,7 +344,6 @@ macro_rules! impl_non_value{
 
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.
-                #[inline]
                 fn try_from(value: $IP) -> Result<Self, Self::Error> {
                     // We generate a TryFromIntError by intentionally causing a failed conversion.
                     #[cfg(any(feature = "safe_num", not(feature = "unsafe_niche")))]
@@ -389,7 +380,6 @@ macro_rules! impl_non_value{
                 unsafe impl<const V: $IP> CheckedBitPattern for $name<V> {
                     type Bits = $IP;
 
-                    #[inline]
                     fn is_valid_bit_pattern(bits: &Self::Bits) -> bool {
                         // Since inner repr is NonZero, 0 is the only invalid bit pattern
                         *bits != 0

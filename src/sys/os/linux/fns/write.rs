@@ -30,7 +30,6 @@ pub fn linux_print(s: &str) {
 ///
 /// # Error Handling
 /// If the write fails, it prints an error message and exits with status code 10.
-#[inline]
 pub fn linux_println(s: &str) {
     linux_print(s);
     linux_print("\n");
@@ -61,7 +60,6 @@ pub fn linux_eprint(s: &str) {
 ///
 /// # Error Handling
 /// If the write fails, it prints an error message and exits with status code 10.
-#[inline]
 pub fn linux_eprintln(s: &str) {
     linux_eprint(s);
     linux_eprint("\n");
@@ -73,7 +71,6 @@ pub fn linux_eprintln(s: &str) {
 ///
 /// # Error Handling
 /// If the write fails, it prints an error message and exits with status code 10.
-#[inline]
 pub fn linux_print_bytes(b: &[u8]) {
     let mut b = b;
     while !b.is_empty() {

@@ -26,13 +26,11 @@ impl Env {
     /// Returns the arguments that this program was started with.
     ///
     /// See [args].
-    #[inline]
     pub fn args() -> Args {
         args()
     }
 
     /// See [args_os].
-    #[inline]
     pub fn args_os() -> ArgsOs {
         args_os()
     }
@@ -45,7 +43,6 @@ impl Env {
     /// Fetches the environment variable key from the current process.
     ///
     /// See [var].
-    #[inline]
     pub fn var<K: AsRef<OsStr>>(key: K) -> Result<String, VarError> {
         var(key)
     }
@@ -54,7 +51,6 @@ impl Env {
     /// for all the environment variables of the current process.
     ///
     /// See [vars].
-    #[inline]
     pub fn vars() -> Vars {
         vars()
     }
@@ -62,7 +58,6 @@ impl Env {
     /// Fetches the environment variable key from the current process.
     ///
     /// See [var_os].
-    #[inline]
     pub fn var_os<K: AsRef<OsStr>>(key: K) -> Option<OsString> {
         var_os(key)
     }
@@ -71,7 +66,6 @@ impl Env {
     /// for all the environment variables of the current process.
     ///
     /// See [vars_os].
-    #[inline]
     pub fn vars_os() -> VarsOs {
         vars_os()
     }
@@ -81,7 +75,6 @@ impl Env {
     ///
     /// # Safety
     /// See [remove_var].
-    #[inline]
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
     pub unsafe fn remove_var<K: AsRef<OsStr>>(key: K) {
         unsafe { remove_var(key) }
@@ -92,7 +85,6 @@ impl Env {
     ///
     /// # Safety
     /// See [set_var].
-    #[inline]
     #[cfg(all(not(feature = "safe_sys"), feature = "unsafe_thread"))]
     pub unsafe fn set_var<K: AsRef<OsStr>, V: AsRef<OsStr>>(key: K, value: V) {
         unsafe { set_var(key, value) }
@@ -106,7 +98,6 @@ impl Env {
     /// Returns the full filesystem path of the current running executable.
     ///
     /// See [current_exe].
-    #[inline]
     pub fn current_exe() -> IoResult<PathBuf> {
         current_exe()
     }
@@ -114,7 +105,6 @@ impl Env {
     /// Returns the current working directory.
     ///
     /// See [current_dir].
-    #[inline]
     pub fn current_dir() -> IoResult<PathBuf> {
         current_dir()
     }
@@ -122,7 +112,6 @@ impl Env {
     /// Changes the current working directory to the specified path.
     ///
     /// See [set_current_dir].
-    #[inline]
     pub fn set_current_dir<P: AsRef<Path>>(path: P) -> IoResult<()> {
         set_current_dir(path)
     }
@@ -137,7 +126,6 @@ impl Env {
     /// Joins a collection of [Path]s appropriately for the `PATH` environment variable.
     ///
     /// See [join_paths].
-    #[inline]
     pub fn join_paths<I, T>(paths: I) -> Result<OsString, JoinPathsError>
     where
         I: IntoIterator<Item = T>,
@@ -149,7 +137,6 @@ impl Env {
     /// Parses input according to platform conventions for the `PATH` environment variable.
     ///
     /// See [split_paths].
-    #[inline]
     pub fn split_paths<T: AsRef<OsStr> + ?Sized>(unparsed: &T) -> SplitPaths<'_> {
         split_paths(unparsed)
     }

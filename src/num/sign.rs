@@ -41,7 +41,7 @@ macro_rules! impl_into_sign {
     (@int: $int:ty) => {
         impl From<$int> for Sign {
             /// Returns `None` if 0, `Positive` if > 0 and `Negative` if < 0.
-            #[must_use] #[inline]
+            #[must_use]
             fn from(n: $int) -> Sign {
                 match n {
                     0 => Sign::None,
@@ -57,7 +57,7 @@ macro_rules! impl_into_sign {
     (@float: $float:ty) => {
         impl From<$float> for Sign {
             /// Returns `None` if 0.0, `Positive` if > 0 and `Negative` if < 0.
-            #[must_use] #[inline]
+            #[must_use]
             fn from(n: $float) -> Sign {
                 if n.is_sign_positive() {
                     Sign::Positive
@@ -71,7 +71,7 @@ macro_rules! impl_into_sign {
     (bool) => {
         impl From<bool> for Sign {
             /// Returns `Positive` if `true` and `Negative` if `false`.
-            #[must_use] #[inline]
+            #[must_use]
             fn from(n: bool) -> Sign {
                 match n {
                     true => Sign::Positive,
@@ -94,7 +94,7 @@ macro_rules! impl_from_sign {
     (@sint: $sint:ty) => {
         impl From<Sign> for $sint {
             /// Returns 0 if `None`, 1 if `Positive` and -1 if `Negative`.
-            #[must_use] #[inline]
+            #[must_use]
             fn from(s: Sign) -> $sint {
                 match s {
                     Sign::None => 0,
@@ -114,7 +114,6 @@ macro_rules! impl_from_sign {
             ///
             /// # Errors
             /// Returns [`Invalid`] if the sign is `Negative`.
-            #[inline]
             fn try_from(s: Sign) -> Result<$uint> {
                 match s {
                     Sign::None => Ok(0),
@@ -129,7 +128,7 @@ macro_rules! impl_from_sign {
     (@float: $float:ty) => {
         impl From<Sign> for $float {
             /// Returns 0.0 if `None`, 1.0 if `Positive` and -1.0 if `Negative`.
-            #[must_use] #[inline]
+            #[must_use]
             fn from(s: Sign) -> $float {
                 match s {
                     Sign::None => 0.0,
@@ -148,7 +147,6 @@ macro_rules! impl_from_sign {
             ///
             /// # Errors
             /// Returns [`Invalid`] if the sign is `None`.
-            #[inline]
             fn try_from(s: Sign) -> Result<bool> {
                 match s {
                     Sign::Positive => Ok(true),

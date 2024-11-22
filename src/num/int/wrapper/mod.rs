@@ -55,84 +55,75 @@ crate::num::impl_ops![Int: (no_neg) u8:"_int_i8", u16:"_int_u16", u32:"_int_u32"
 
 #[rustfmt::skip]
 mod core_impls {
-    use super::Int;
-    use core::{fmt, cmp, hash};
-    use crate::error::ValueQuant;
+    use core::fmt;
+    use crate::{Hash, Hasher, Int, Ordering, ValueQuant};
 
     impl<T: Clone> Clone for Int<T> {
-        #[inline] #[must_use]
+        #[must_use]
         fn clone(&self) -> Self { Self(self.0.clone()) }
     }
     impl<T: Copy> Copy for Int<T> {}
     impl<T: fmt::Debug> fmt::Debug for Int<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
             f.debug_tuple("Int").field(&self.0).finish()
         }
     }
     impl<T: fmt::Display> fmt::Display for Int<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Display::fmt(&self.0, f) }
     }
     impl<T: fmt::Binary> fmt::Binary for Int<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Binary::fmt(&self.0, f) }
     }
     impl<T: fmt::Octal> fmt::Octal for Int<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::Octal::fmt(&self.0, f) }
     }
     impl<T: fmt::LowerHex> fmt::LowerHex for Int<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::LowerHex::fmt(&self.0, f) }
     }
     impl<T: fmt::UpperHex> fmt::UpperHex for Int<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::UpperHex::fmt(&self.0, f) }
     }
     impl<T: fmt::UpperExp> fmt::UpperExp for Int<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::UpperExp::fmt(&self.0, f) }
     }
     impl<T: fmt::LowerExp> fmt::LowerExp for Int<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { fmt::LowerExp::fmt(&self.0, f) }
     }
 
     /* eq */
 
     impl<T: PartialEq> PartialEq for Int<T> {
-        #[inline] #[must_use]
+        #[must_use]
         fn eq(&self, other: &Self) -> bool { self.0.eq(&other.0) }
     }
     impl<T: Eq> Eq for Int<T> {}
     // with the inner value:
     impl<T: PartialEq> PartialEq<T> for Int<T> {
-        #[inline] #[must_use]
+        #[must_use]
         fn eq(&self, other: &T) -> bool { self.0.eq(other) }
     }
     // with ValueQuant:
     impl<T: PartialEq> PartialEq<ValueQuant<T, T>> for ValueQuant<Int<T>, Int<T>> {
-        #[inline] #[must_use]
+        #[must_use]
         fn eq(&self, other: &ValueQuant<T, T>) -> bool {
             self.v.eq(&other.v) && self.q.eq(&other.q)
         }
     }
     impl<T: PartialEq> PartialEq<ValueQuant<Int<T>, Int<T>>> for ValueQuant<T, T> {
-        #[inline] #[must_use]
+        #[must_use]
         fn eq(&self, other: &ValueQuant<Int<T>, Int<T>>) -> bool {
             self.v.eq(&other.v.0) && self.q.eq(&other.q.0)
         }
     }
     // with ValueQuant and tuple:
     impl<T: PartialEq> PartialEq<(T, T)> for ValueQuant<Int<T>, Int<T>> {
-        #[inline] #[must_use]
+        #[must_use]
         fn eq(&self, other: &(T, T)) -> bool {
             self.v.eq(&other.0) && self.q.eq(&other.1)
         }
     }
     impl<T: PartialEq> PartialEq<(Int<T>, Int<T>)> for ValueQuant<T, T> {
-        #[inline] #[must_use]
+        #[must_use]
         fn eq(&self, other: &(Int<T>, Int<T>)) -> bool {
             self.v.eq(&other.0.0) && self.q.eq(&other.1.0)
         }
@@ -141,37 +132,35 @@ mod core_impls {
     /* ord*/
 
     impl<T: PartialOrd> PartialOrd for Int<T> {
-        #[inline] #[must_use]
-        fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
+        #[must_use]
+        fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
             self.0.partial_cmp(&other.0)
         }
     }
     impl<T: Ord> Ord for Int<T> {
-        #[inline] #[must_use]
-        fn cmp(&self, other: &Self) -> cmp::Ordering {
+        #[must_use]
+        fn cmp(&self, other: &Self) -> Ordering {
             self.0.cmp(&other.0)
         }
     }
     // with the inner value:
     impl<T: PartialOrd> PartialOrd<T> for Int<T> {
-        #[inline] #[must_use]
-        fn partial_cmp(&self, other: &T) -> Option<cmp::Ordering> {
+        #[must_use]
+        fn partial_cmp(&self, other: &T) -> Option<Ordering> {
             self.0.partial_cmp(other)
         }
     }
 
-    impl<T: hash::Hash> hash::Hash for Int<T> {
-        #[inline]
-        fn hash<H: hash::Hasher>(&self, state: &mut H) {
+    impl<T: Hash> Hash for Int<T> {
+        fn hash<H: Hasher>(&self, state: &mut H) {
             self.0.hash(state);
         }
     }
-    impl<T: hash::Hasher> hash::Hasher for Int<T> {
-        #[inline] #[must_use]
+    impl<T: Hasher> Hasher for Int<T> {
+        #[must_use]
         fn finish(&self) -> u64 {
             self.0.finish()
         }
-        #[inline]
         fn write(&mut self, bytes: &[u8]) {
             self.0.write(bytes);
         }

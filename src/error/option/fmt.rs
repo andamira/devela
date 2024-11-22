@@ -47,7 +47,6 @@ macro_rules! impl_option_fmt {
         where
             T: $trait,
         {
-            #[inline]
             fn fmt(&self, out: &mut Formatter<'_>) -> Result {
                 $trait::fmt(&self.0.fmt_or(""), out)
             }
@@ -58,7 +57,6 @@ macro_rules! impl_option_fmt {
             T: $trait,
             U: Display,
         {
-            #[inline]
             fn fmt(&self, out: &mut Formatter<'_>) -> Result {
                 $trait::fmt(&self.0.fmt_or_else(||&self.1), out)
             }
@@ -70,7 +68,6 @@ macro_rules! impl_option_fmt {
             F: Fn() -> U,
             U: Display,
         {
-            #[inline]
             fn fmt(&self, out: &mut Formatter<'_>) -> Result {
                 if let Some(t) = self.0 {
                     <T as $trait>::fmt(t, out)

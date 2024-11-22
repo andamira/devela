@@ -13,8 +13,7 @@
 #[allow(unused_imports)]
 use crate::{
     _core::{fmt, hash, ops},
-    code::{compile, doc_private, iif, paste},
-    num::{isize_up, usize_up},
+    compile, doc_private, iif, isize_up, paste, usize_up,
 };
 
 /// Faster divisor for division and modulo operations.
@@ -100,7 +99,7 @@ macro_rules! impl_divisor {
 
             #[doc = doc_private!()]
             /// Returns the absolute value of the signed primitive as its unsigned equivalent.
-            #[inline] #[must_use]
+            #[must_use]
             const fn abs(n: $t) -> $un {
                 iif![n < 0; ((-1i8) as $un).wrapping_mul(n as $un); n as $un]
             }
@@ -112,7 +111,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Divisor;
+            /// # use devela::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(-21).unwrap();"]]
             /// ```
             #[must_use]
@@ -150,11 +149,11 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Divisor;
+            /// # use devela::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(-15).unwrap();"]]
             /// assert_eq!(d.get(), -15);
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn get(&self) -> $t {
                 match self.inner {
                     DivisorInner::Shift(d, _) => d,
@@ -171,11 +170,11 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Divisor;
+            /// # use devela::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(-9).unwrap();"]]
             /// assert!(d.divides(27));
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn divides(&self, n: $t) -> bool {
                 self.rem_of(n) == 0
             }
@@ -184,12 +183,12 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Divisor;
+            /// # use devela::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(21).unwrap();"]]
             /// let rem = d.rem_of(-30);
             /// assert_eq!(rem, -9);
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn rem_of(&self, n: $t) -> $t {
                 n.wrapping_add((self.get().wrapping_mul(self.div_of(n))).wrapping_mul(-1))
             }
@@ -205,12 +204,12 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Divisor;
+            /// # use devela::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(13).unwrap();"]]
             /// let div = d.div_of(-30);
             /// assert_eq!(div, -2);
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn div_of(&self, n: $t) -> $t {
                 match self.inner {
                     DivisorInner::Shift(_, shift) => {
@@ -260,7 +259,7 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Divisor;
+            /// # use devela::Divisor;
             #[doc = concat!["let _d = Divisor::<", stringify![$t], ">::new(5);"]]
             /// ```
             #[must_use]
@@ -291,11 +290,11 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Divisor;
+            /// # use devela::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(7).unwrap();"]]
             /// assert_eq!(d.get(), 7);
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn get(&self) -> $t {
                 match self.inner {
                     DivisorInner::Shift(d, _) => d,
@@ -311,11 +310,11 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Divisor;
+            /// # use devela::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(17).unwrap();"]]
             /// assert!(d.divides(34));
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn divides(&self, n: $t) -> bool {
                 self.rem_of(n) == 0
             }
@@ -324,12 +323,12 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Divisor;
+            /// # use devela::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(11).unwrap();"]]
             /// let rem = d.rem_of(30);
             /// assert_eq!(rem, 8);
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn rem_of(&self, n: $t) -> $t {
                 n - self.get() * self.div_of(n)
             }
@@ -338,12 +337,12 @@ macro_rules! impl_divisor {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Divisor;
+            /// # use devela::Divisor;
             #[doc = concat!["let d = Divisor::<", stringify![$t], ">::new(17).unwrap();"]]
             /// let div = d.div_of(34);
             /// assert_eq!(div, 2);
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn div_of(&self, n: $t) -> $t {
                 match self.inner {
                     DivisorInner::Shift(_, shift) => n >> shift,
@@ -362,7 +361,6 @@ macro_rules! impl_divisor {
     (@shared $t:ty | $un:ty | $up:ty | $unup:ty : $is_up:ident : $cap:literal) => {
         paste!{
             /// Alias of [`new`][Self::new] with a unique name that helps type inference.
-            #[inline]
             pub const fn [<new_ $t>](d: $t) -> Option<Divisor<$t>> { Self::new(d) }
         }
 
@@ -376,7 +374,6 @@ macro_rules! impl_divisor {
         ///
         /// Works by extending the factors to 2N-bits, using the built-in 2N-by-2N-bit
         /// multiplication and shifting right to the top half only.
-        #[inline]
         #[compile(any(same($is_up, Y), all(same($is_up, PW), pointer_width_eq(64))))]
         const fn mulh(x: $t, y: $t) -> $t {
             (((x as $up) * (y as $up)) >> <$t>::BITS) as $t
@@ -458,7 +455,7 @@ macro_rules! impl_divisor {
 
     (@traits $t:ty) => {
         impl PartialEq for Divisor<$t> {
-            #[inline] fn eq(&self, other: &Self) -> bool { self.get() == other.get() }
+            fn eq(&self, other: &Self) -> bool { self.get() == other.get() }
         }
         impl Eq for Divisor<$t> {}
         impl fmt::Debug for Divisor<$t> {
@@ -468,21 +465,21 @@ macro_rules! impl_divisor {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, "{}", self.get()) }
         }
         impl hash::Hash for Divisor<$t> {
-            #[inline] fn hash<H: hash::Hasher>(&self, state: &mut H) { self.get().hash(state); }
+            fn hash<H: hash::Hasher>(&self, state: &mut H) { self.get().hash(state); }
         }
         impl ops::Div<Divisor<$t>> for $t {
             type Output = $t;
-            #[inline] fn div(self, rhs: Divisor<$t>) -> Self::Output { rhs.div_of(self) }
+            fn div(self, rhs: Divisor<$t>) -> Self::Output { rhs.div_of(self) }
         }
         impl ops::DivAssign<Divisor<$t>> for $t {
-            #[inline] fn div_assign(&mut self, rhs: Divisor<$t>) { *self = rhs.div_of(*self) }
+            fn div_assign(&mut self, rhs: Divisor<$t>) { *self = rhs.div_of(*self) }
         }
         impl ops::Rem<Divisor<$t>> for $t {
             type Output = $t;
-            #[inline] fn rem(self, rhs: Divisor<$t>) -> Self::Output { rhs.rem_of(self) }
+            fn rem(self, rhs: Divisor<$t>) -> Self::Output { rhs.rem_of(self) }
         }
         impl ops::RemAssign<Divisor<$t>> for $t {
-            #[inline] fn rem_assign(&mut self, rhs: Divisor<$t>) { *self = rhs.rem_of(*self) }
+            fn rem_assign(&mut self, rhs: Divisor<$t>) { *self = rhs.rem_of(*self) }
         }
     };
 }

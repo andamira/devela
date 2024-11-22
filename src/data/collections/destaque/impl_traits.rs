@@ -250,7 +250,6 @@ macro_rules! impl_destaque {
         where
             S::Stored<[T; CAP]>: PartialOrd,
         {
-            #[inline]
             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
                 self.iter().partial_cmp(other.iter())
             }
@@ -261,7 +260,6 @@ macro_rules! impl_destaque {
         where
             S::Stored<[T; CAP]>: Ord,
         {
-            #[inline]
             fn cmp(&self, other: &Self) -> Ordering {
                 self.iter().cmp(other.iter())
             }

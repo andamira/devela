@@ -23,13 +23,11 @@ impl<T: Clone + Add<Output = T>, const D: usize> Vector<T, D> {
 }
 impl<T: Clone + Add<Output = T>, const D: usize> Add for Vector<T, D> {
     type Output = Self;
-    #[inline]
     fn add(self, other: Self) -> Self::Output {
         Self::clone_add(&self, &other)
     }
 }
 impl<T: Clone + Add<Output = T>, const D: usize> AddAssign<&Self> for Vector<T, D> {
-    #[inline]
     fn add_assign(&mut self, other: &Self) {
         *self = Self::clone_add(self, other);
     }
@@ -47,13 +45,11 @@ impl<T: Clone + Sub<Output = T>, const D: usize> Vector<T, D> {
 }
 impl<T: Clone + Sub<Output = T>, const D: usize> Sub for Vector<T, D> {
     type Output = Self;
-    #[inline]
     fn sub(self, other: Self) -> Self::Output {
         Self::clone_sub(&self, &other)
     }
 }
 impl<T: Clone + Sub<Output = T>, const D: usize> SubAssign<&Self> for Vector<T, D> {
-    #[inline]
     fn sub_assign(&mut self, other: &Self) {
         *self = Self::clone_sub(self, other);
     }
@@ -73,26 +69,22 @@ impl<T: Clone + Mul<Output = T>, const D: usize> Vector<T, D> {
 }
 impl<T: Clone + Mul<Output = T>, const D: usize> Mul<T> for Vector<T, D> {
     type Output = Self;
-    #[inline]
     fn mul(self, scalar: T) -> Self::Output {
         Self::clone_mul_scalar(&self, &scalar)
     }
 }
 impl<T: Clone + Mul<Output = T>, const D: usize> MulAssign<T> for Vector<T, D> {
-    #[inline]
     fn mul_assign(&mut self, scalar: T) {
         *self = Self::clone_mul_scalar(self, &scalar);
     }
 }
 impl<T: Clone + Mul<Output = T>, const D: usize> Mul<&T> for Vector<T, D> {
     type Output = Self;
-    #[inline]
     fn mul(self, scalar: &T) -> Self::Output {
         Self::clone_mul_scalar(&self, scalar)
     }
 }
 impl<T: Clone + Mul<Output = T>, const D: usize> MulAssign<&T> for Vector<T, D> {
-    #[inline]
     fn mul_assign(&mut self, scalar: &T) {
         *self = Self::clone_mul_scalar(self, scalar);
     }
@@ -110,26 +102,22 @@ impl<T: Clone + Div<Output = T>, const D: usize> Vector<T, D> {
 }
 impl<T: Clone + Div<Output = T>, const D: usize> Div<T> for Vector<T, D> {
     type Output = Self;
-    #[inline]
     fn div(self, scalar: T) -> Self::Output {
         Self::clone_div_scalar(&self, &scalar)
     }
 }
 impl<T: Clone + Div<Output = T>, const D: usize> DivAssign<T> for Vector<T, D> {
-    #[inline]
     fn div_assign(&mut self, scalar: T) {
         *self = Self::clone_div_scalar(self, &scalar);
     }
 }
 impl<T: Clone + Div<Output = T>, const D: usize> Div<&T> for Vector<T, D> {
     type Output = Self;
-    #[inline]
     fn div(self, scalar: &T) -> Self::Output {
         Self::clone_div_scalar(&self, scalar)
     }
 }
 impl<T: Clone + Div<Output = T>, const D: usize> DivAssign<&T> for Vector<T, D> {
-    #[inline]
     fn div_assign(&mut self, scalar: &T) {
         *self = Self::clone_div_scalar(self, scalar);
     }

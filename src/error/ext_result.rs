@@ -68,18 +68,15 @@ pub trait ExtResult<T, E>: Sealed {
 }
 
 impl<T, E> ExtResult<T, E> for Result<T, E> {
-    #[inline]
     fn contains<U: PartialEq<T>>(&self, x: &U) -> bool {
         self.as_ref().map_or(false, |y| x == y)
     }
 
-    #[inline]
     fn contains_err<F: PartialEq<E>>(&self, f: &F) -> bool {
         self.as_ref().err().map_or(false, |e| f == e)
     }
 
     // // WIP
-    // #[inline]
     // fn reduce<F: FnOnce(T, T) -> T>(self, other: Result<T, E>, f: F) -> Result<T, E> {
     //     match (self, other) {
     //         (Some(l), Some(r)) => Some(f(l, r)),

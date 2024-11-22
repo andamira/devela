@@ -43,17 +43,12 @@ macro_rules! impl_char {
 
             /* encode */
 
-            #[inline]
             fn byte_len(self) -> usize { self.byte_len() }
-            #[inline]
             fn len_utf8(self) -> usize { self.len_utf8() }
-            #[inline]
             fn len_utf16(self) -> usize { self.len_utf16() }
-            #[inline]
             fn encode_utf8(self, dst: &mut [u8]) -> &mut str {
                 self.to_char().encode_utf8(dst)
             }
-            #[inline]
             fn to_utf8_bytes(self) -> [u8; 4] {
                 let dyn_array = self.to_utf8_bytes();
                 let mut array = [0u8; 4];
@@ -62,42 +57,27 @@ macro_rules! impl_char {
                 }
                 array
             }
-            #[inline]
             fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] {
                 self.to_char().encode_utf16(dst)
             }
-            #[inline]
             fn to_digit(self, radix: u32) -> Option<u32> { self.to_digit(radix) }
-            #[inline]
             fn to_ascii_uppercase(self) -> Self { self.to_ascii_uppercase() }
-            #[inline]
             fn to_ascii_lowercase(self) -> Self { self.to_ascii_lowercase() }
 
             /* queries */
 
-            #[inline]
             fn is_noncharacter(self) -> bool { self.is_noncharacter() }
-            #[inline]
             fn is_digit(self, radix: u32) -> bool { self.is_digit(radix) }
             //
-            #[inline]
             fn is_control(self) -> bool { self.to_char().is_control() }
-            #[inline]
             fn is_nul(self) -> bool { self.is_nul() }
-            #[inline]
             fn is_alphabetic(self) -> bool { self.to_char().is_alphabetic() }
-            #[inline]
             fn is_numeric(self) -> bool { self.to_char().is_numeric() }
-            #[inline]
             fn is_alphanumeric(self) -> bool { self.to_char().is_alphanumeric() }
-            #[inline]
             fn is_lowercase(self) -> bool { self.to_char().is_lowercase() }
-            #[inline]
             fn is_uppercase(self) -> bool { self.to_char().is_uppercase() }
-            #[inline]
             fn is_whitespace(self) -> bool { self.to_char().is_whitespace() }
             //
-            #[inline]
             fn is_ascii(self) -> bool { self.is_ascii() }
         }
 
@@ -108,17 +88,14 @@ macro_rules! impl_char {
             /* encode */
 
             /// Returns the number of bytes needed to represent the scalar value.
-            #[inline]
             #[must_use]
             pub const fn byte_len(self) -> usize { char_byte_len(self.to_u32()) }
 
             /// Returns the number of bytes needed to encode in UTF-8.
-            #[inline]
             #[must_use]
             pub const fn len_utf8(self) -> usize { self.to_char().len_utf8() }
 
             /// Returns the number of bytes needed to encode in UTF-16.
-            #[inline]
             #[must_use]
             pub const fn len_utf16(self) -> usize { self.to_char().len_utf16() }
 
@@ -132,7 +109,6 @@ macro_rules! impl_char {
             ///
             /// # Panics
             /// Panics if given a radix larger than 36.
-            #[inline]
             #[must_use]
             pub const fn to_digit(self, radix: u32) -> Option<u32> {
                 self.to_char().to_digit(radix)
@@ -141,14 +117,12 @@ macro_rules! impl_char {
             /* queries */
 
             /// Returns `true` if this is the nul character (`0x00`).
-            #[inline]
             #[must_use]
             pub const fn is_nul(self) -> bool { self.to_u32() == 0 }
 
             /// Checks if the unicode scalar is a digit in the given radix.
             ///
             /// See also [`to_digit`][Self#method.to_digit].
-            #[inline]
             #[must_use]
             pub const fn is_digit(self, radix: u32) -> bool {
                 if let Some(_) = self.to_digit(radix) { true } else { false }

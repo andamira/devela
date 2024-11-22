@@ -44,11 +44,11 @@ pub trait ExtVec<T>: Sealed {
 impl<T> ExtVec<T> for Vec<T> {
     /* convert */
 
-    #[inline] #[rustfmt::skip]
+    #[rustfmt::skip]
     fn vec_into_vec<U>(self) -> Vec<U> where U: From<T> {
         self.into_iter().map(|t| U::from(t)).collect::<Vec<_>>().into_iter().collect()
     }
-    #[inline] #[rustfmt::skip]
+    #[rustfmt::skip]
     fn vec_try_into_vec<E, U>(self) -> Result<Vec<U>, E> where U: TryFrom<T, Error = E> {
         self.into_iter()
             // 1. Vec<Result<_>>:

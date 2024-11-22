@@ -33,7 +33,6 @@ pub trait ExtAny: Any + Sealed {
     /// let x = 5;
     /// assert_eq!(x.type_of(), i32::type_id());
     /// ```
-    #[inline]
     #[must_use]
     fn type_id() -> TypeId { TypeId::of::<Self>() }
 
@@ -46,7 +45,6 @@ pub trait ExtAny: Any + Sealed {
     /// let x = 5;
     /// assert_eq!(x.type_of(), i32::type_id());
     /// ```
-    #[inline]
     #[must_use]
     fn type_of(&self) -> TypeId { TypeId::of::<Self>() }
 
@@ -59,7 +57,6 @@ pub trait ExtAny: Any + Sealed {
     /// let x = 5;
     /// assert_eq!(x.type_name(), "i32");
     /// ```
-    #[inline]
     #[must_use]
     fn type_name(&self) -> &'static str { type_name_of_val(self) }
 
@@ -79,7 +76,6 @@ pub trait ExtAny: Any + Sealed {
     /// // assert!(val.is::<i32>()); // doesn't work for T: Any
     /// assert!(any.is::<i32>()); // does work for &dyn Any
     /// ```
-    #[inline]
     #[must_use]
     fn type_is<T: 'static>(&self) -> bool { self.type_id() == TypeId::of::<T>() }
 
@@ -95,7 +91,6 @@ pub trait ExtAny: Any + Sealed {
     /// let any: &dyn Any = &val as &dyn Any;
     /// assert!(any.is::<i32>()); // works direcly for dyn Any
     /// ```
-    #[inline]
     #[must_use]
     fn as_any_ref(&self) -> &dyn Any where Self: Sized { self }
 
@@ -109,7 +104,6 @@ pub trait ExtAny: Any + Sealed {
     /// let any: &mut dyn Any = x.as_any_mut();
     /// assert!(any.is::<i32>());
     /// ```
-    #[inline]
     #[must_use]
     fn as_any_mut(&mut self) -> &mut dyn Any where Self: Sized { self }
 
@@ -123,7 +117,6 @@ pub trait ExtAny: Any + Sealed {
     /// let any: Box<dyn Any> = x.as_any_box();
     /// assert!(any.is::<i32>());
     /// ```
-    #[inline]
     #[must_use]
     #[cfg(feature = "alloc")]
     fn as_any_box(self: Box<Self>) ->  Box<dyn Any> where Self: Sized { self }
@@ -181,7 +174,6 @@ pub trait ExtAny: Any + Sealed {
     ///     }
     /// }
     /// ```
-    #[inline]
     #[must_use]
     #[cfg(feature = "unsafe_layout")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
@@ -194,7 +186,6 @@ pub trait ExtAny: Any + Sealed {
     ///
     /// This method is only needed when not dealing directly with `dyn Any` trait objects,
     /// since it's [already implemented for `dyn Any`][Any#method.downcast_mut].
-    #[inline]
     #[must_use]
     #[cfg(feature = "unsafe_layout")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]

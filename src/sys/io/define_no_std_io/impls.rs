@@ -8,53 +8,44 @@ use core::{cmp, fmt, mem};
 // Forwarding implementations
 
 impl<R: IoRead + ?Sized> IoRead for &mut R {
-    #[inline]
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         (**self).read(buf)
     }
 
-    #[inline]
     fn read_exact(&mut self, buf: &mut [u8]) -> Result<()> {
         (**self).read_exact(buf)
     }
 }
 
 impl<W: IoWrite + ?Sized> IoWrite for &mut W {
-    #[inline]
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
         (**self).write(buf)
     }
 
-    #[inline]
     fn flush(&mut self) -> Result<()> {
         (**self).flush()
     }
 
-    #[inline]
     fn write_all(&mut self, buf: &[u8]) -> Result<()> {
         (**self).write_all(buf)
     }
 
-    #[inline]
     fn write_fmt(&mut self, fmt: fmt::Arguments<'_>) -> Result<()> {
         (**self).write_fmt(fmt)
     }
 }
 
 impl<S: IoSeek + ?Sized> IoSeek for &mut S {
-    #[inline]
     fn seek(&mut self, pos: IoSeekFrom) -> Result<u64> {
         (**self).seek(pos)
     }
 }
 
 impl<B: IoBufRead + ?Sized> IoBufRead for &mut B {
-    #[inline]
     fn fill_buf(&mut self) -> Result<&[u8]> {
         (**self).fill_buf()
     }
 
-    #[inline]
     fn consume(&mut self, amt: usize) {
         (**self).consume(amt);
     }
@@ -68,7 +59,6 @@ impl<B: IoBufRead + ?Sized> IoBufRead for &mut B {
 /// Note that reading updates the slice to point to the yet unread part.
 /// The slice will be empty when EOF is reached.
 impl IoRead for &[u8] {
-    #[inline]
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         let amt = cmp::min(buf.len(), self.len());
         let (a, b) = self.split_at(amt);
@@ -86,7 +76,6 @@ impl IoRead for &[u8] {
         Ok(amt)
     }
 
-    #[inline]
     fn read_exact(&mut self, buf: &mut [u8]) -> Result<()> {
         if buf.len() > self.len() {
             return Err(IoError::new(IoErrorKind::UnexpectedEof, "failed to fill whole buffer"));
@@ -108,12 +97,10 @@ impl IoRead for &[u8] {
 }
 
 impl IoBufRead for &[u8] {
-    #[inline]
     fn fill_buf(&mut self) -> Result<&[u8]> {
         Ok(*self)
     }
 
-    #[inline]
     fn consume(&mut self, amt: usize) {
         *self = &self[amt..];
     }
@@ -125,7 +112,6 @@ impl IoBufRead for &[u8] {
 /// Note that writing updates the slice to point to the yet unwritten part.
 /// The slice will be empty when it has been completely overwritten.
 impl IoWrite for &mut [u8] {
-    #[inline]
     fn write(&mut self, data: &[u8]) -> Result<usize> {
         let amt = cmp::min(data.len(), self.len());
         let (a, b) = mem::take(self).split_at_mut(amt);
@@ -134,7 +120,6 @@ impl IoWrite for &mut [u8] {
         Ok(amt)
     }
 
-    #[inline]
     fn write_all(&mut self, data: &[u8]) -> Result<()> {
         if self.write(data)? == data.len() {
             Ok(())
@@ -143,7 +128,6 @@ impl IoWrite for &mut [u8] {
         }
     }
 
-    #[inline]
     fn flush(&mut self) -> Result<()> {
         Ok(())
     }
@@ -153,19 +137,16 @@ impl IoWrite for &mut [u8] {
 /// The vector will grow as needed.
 #[cfg(feature = "alloc")]
 impl IoWrite for crate::data::Vec<u8> {
-    #[inline]
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
         self.extend_from_slice(buf);
         Ok(buf.len())
     }
 
-    #[inline]
     fn write_all(&mut self, buf: &[u8]) -> Result<()> {
         self.extend_from_slice(buf);
         Ok(())
     }
 
-    #[inline]
     fn flush(&mut self) -> Result<()> {
         Ok(())
     }

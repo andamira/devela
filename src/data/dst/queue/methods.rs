@@ -13,17 +13,16 @@ use crate::{
 
 impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     /// Constructs a new (empty) queue.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub fn new() -> Self where BUF: Default { Self::with_buffer(BUF::default()) }
 
     /// Constructs a new (empty) queue using the given `buffer`.
-    #[must_use] #[inline(always)] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub fn with_buffer(data: BUF) -> Self {
         DstQueue { _pd: marker::PhantomData, read_pos: 0, write_pos: 0, data }
     }
 
     /// Pushes a value to the end of the queue.
-    #[inline]
     pub fn push_back<VAL, F>(&mut self, value: VAL, f: F) -> Result<(), VAL>
     where
         F: FnOnce(&VAL) -> &DST,
@@ -44,7 +43,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     }
 
     /// Compacts the queue (moving the read position to zero).
-    #[inline]
     pub fn compact(&mut self) {
         if self.read_pos != 0 {
             self.data.as_mut().rotate_left(self.read_pos);
@@ -55,14 +53,12 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
 
     /// Returns `true` if the queue is empty.
     #[must_use]
-    #[inline]
     pub const fn empty(&self) -> bool {
         self.read_pos == self.write_pos
     }
 
     /// Removes an item from the front of the queue.
     #[must_use]
-    #[inline]
     pub fn pop_front(&mut self) -> Option<DstQueuePopHandle<DST, BUF>> {
         if self.read_pos == self.write_pos {
             None
@@ -73,7 +69,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
 
     /// Returns an exclusive reference to the front element.
     #[must_use]
-    #[inline]
     pub fn front_mut(&mut self) -> Option<&mut DST> {
         if self.read_pos == self.write_pos {
             None
@@ -85,7 +80,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
 
     /// Returns a shared reference to the front element.
     #[must_use]
-    #[inline]
     pub fn front(&self) -> Option<&DST> {
         if self.read_pos == self.write_pos {
             None
@@ -100,7 +94,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
+    /// # use devela::{DstArray, DstQueue};
     /// let mut list = DstQueue::<str, DstArray<usize, 8>>::new();
     /// list.push_back_str("Hello");
     /// list.push_back_str("world");
@@ -110,7 +104,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     /// assert_eq!(it.next(), None);
     /// ```
     #[must_use]
-    #[inline(always)]
     pub const fn iter(&self) -> DstQueueIter<DST, BUF> {
         DstQueueIter(self, self.read_pos)
     }
@@ -119,7 +112,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
+    /// # use devela::{DstArray, DstQueue};
     /// let mut list = DstQueue::<[u8], DstArray<usize, 8>>::new();
     /// list.push_copied(&[1,2,3]);
     /// list.push_copied(&[9]);
@@ -132,7 +125,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     /// assert_eq!(it.next(), None);
     /// ```
     #[must_use]
-    #[inline]
     pub fn iter_mut(&mut self) -> DstQueueIterMut<DST, BUF> {
         DstQueueIterMut(self, self.read_pos)
     }
@@ -143,7 +135,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     ///
     /// # Examples
     /// ```
-    /// # use {devela::data::{DstArray, DstQueue}, core::{any::Any, fmt::Debug}};
+    /// # use {devela::{DstArray, DstQueue}, core::{any::Any, fmt::Debug}};
     /// trait DebugAny: 'static + Any + Debug { fn as_any(&self) -> &dyn Any; }
     /// impl<DST: Debug + Any + 'static> DebugAny for DST { fn as_any(&self) -> &dyn Any { self } }
     /// let mut list = {
@@ -209,11 +201,10 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
+    /// # use devela::{DstArray, DstQueue};
     /// let mut queue = DstQueue::<[String], DstArray<usize, 8>>::new();
     /// queue.push_cloned(&["1".to_owned()]);
     /// ```
-    #[inline]
     pub fn push_cloned(&mut self, slice: &[DST]) -> Result<(), ()>
     where
         DST: Clone,
@@ -226,11 +217,10 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
+    /// # use devela::{DstArray, DstQueue};
     /// let mut queue = DstQueue::<[usize], DstArray<usize, 8>>::new();
     /// queue.push_copied(&[1]);
     /// ```
-    #[inline]
     pub fn push_copied(&mut self, slice: &[DST]) -> Result<(), ()>
     where
         DST: Copy,
@@ -252,12 +242,11 @@ where
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::{DstArray, DstQueue};
+    /// # use devela::{DstArray, DstQueue};
     /// let mut stack = DstQueue::<[u8], DstArray<usize, 8>>::new();
     /// stack.push_from_iter(0..10);
     /// assert_eq!(stack.front().unwrap(), &[0,1,2,3,4,5,6,7,8,9]);
     /// ```
-    #[inline]
     pub fn push_from_iter(
         &mut self,
         mut iter: impl ExactSizeIterator<Item = DST>,
@@ -281,7 +270,6 @@ where
 
 impl<BUF: DstBuf> DstQueue<str, BUF> {
     /// Pushes the contents of a `string` slice as an item onto the stack.
-    #[inline]
     pub fn push_back_str(&mut self, string: &str) -> Result<(), ()> {
         // SAFETY TODO
         unsafe {

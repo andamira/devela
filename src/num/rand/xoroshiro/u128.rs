@@ -27,7 +27,6 @@ impl Xoroshiro128pp {
     /// Creates a new Xoroshiro128++ PRNG with the given `seed`.
     ///
     /// Returns `None` if the seed parts are all zero.
-    #[inline]
     #[must_use]
     pub const fn new(seed: [u32; 4]) -> Option<Self> {
         if (seed[0] | seed[1] | seed[2] | seed[3]) == 0 {
@@ -41,7 +40,6 @@ impl Xoroshiro128pp {
     ///
     /// # Panics
     /// Panics in debug mode if the seed parts are all `0`.
-    #[inline]
     pub const fn new_unchecked(seed: [u32; 4]) -> Self {
         debug_assert!((seed[0] | seed[1] | seed[2] | seed[3]) != 0, "Seed must be non-zero");
         Self(seed)
@@ -97,7 +95,6 @@ impl Xoroshiro128pp {
     /// Generates the next random `u32` value.
     // Note how the output of the RNG is computed before updating the state.
     // unlike on Xorshift128, for example.
-    #[inline]
     #[must_use]
     pub fn next_u32(&mut self) -> u32 {
         let result = self.current_u32();
@@ -127,14 +124,12 @@ impl Xoroshiro128pp {
 /// # Methods taking `self`
 impl Xoroshiro128pp {
     /// Returns the current random `u32`, without updating the state.
-    #[inline]
     #[must_use]
     pub const fn current_u32(self) -> u32 {
         Self::rotl(self.0[0].wrapping_add(self.0[3]), 7).wrapping_add(self.0[0])
     }
 
     /// Returns a copy of the next new random state.
-    #[inline]
     pub const fn copy_next_state(self) -> Self {
         let mut x = self.0;
         let t = x[1] << 9;
@@ -148,7 +143,6 @@ impl Xoroshiro128pp {
     }
 
     /// Returns both the next random state and the `u32` value in a tuple.
-    #[inline]
     pub const fn own_next_u32(self) -> Own<Self, u32> {
         let next_state = self.copy_next_state();
         let next_value = next_state.current_u32();
@@ -156,13 +150,11 @@ impl Xoroshiro128pp {
     }
 
     /// Returns a copy of the state jumped ahead by 2^64 steps.
-    #[inline]
     pub const fn copy_jump(self) -> Self {
         self.copy_jump_with_constant(Self::JUMP)
     }
 
     /// Returns a copy of the state long-jumped ahead by 2^96 steps.
-    #[inline]
     pub const fn copy_long_jump(self) -> Self {
         self.copy_jump_with_constant(Self::LONG_JUMP)
     }
@@ -173,7 +165,6 @@ impl Xoroshiro128pp {
     /// Returns a seeded `Xoroshiro128pp` generator from the given 128-bit seed.
     ///
     /// The seeds will be split in little endian order.
-    #[inline]
     pub const fn new1_u128(seed: u128) -> Option<Self> {
         Self::new(Cast(seed).into_u32_le())
     }
@@ -181,7 +172,6 @@ impl Xoroshiro128pp {
     /// Returns a seeded `Xoroshiro128pp` generator from the given 2 × 64-bit seeds.
     ///
     /// The seeds will be split in little endian order.
-    #[inline]
     pub const fn new2_u64(seeds: [u64; 2]) -> Option<Self> {
         let [x, y] = Cast(seeds[0]).into_u32_le();
         let [z, a] = Cast(seeds[1]).into_u32_le();
@@ -191,7 +181,6 @@ impl Xoroshiro128pp {
     /// Returns a seeded `Xoroshiro128pp` generator from the given 4 × 32-bit seeds.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    #[inline]
     pub const fn new4_u32(seeds: [u32; 4]) -> Option<Self> {
         Self::new(seeds)
     }
@@ -199,7 +188,6 @@ impl Xoroshiro128pp {
     /// Returns a seeded `Xoroshiro128pp` generator from the given 8 × 16-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[inline]
     pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
         Self::new([
             Cast::<u32>::from_u16_le([seeds[0], seeds[1]]),
@@ -212,7 +200,6 @@ impl Xoroshiro128pp {
     /// Returns a seeded `Xoroshiro128pp` generator from the given 16 × 8-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[inline]
     pub const fn new16_u8(seeds: [u8; 16]) -> Option<Self> {
         Self::new([
             Cast::<u32>::from_u8_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
@@ -226,7 +213,6 @@ impl Xoroshiro128pp {
 /* trait implementations */
 
 impl Default for Xoroshiro128pp {
-    #[inline]
     fn default() -> Self {
         Self::new_unchecked(Self::DEFAULT_SEED)
     }
@@ -243,18 +229,15 @@ mod impl_rand {
 
     impl RngCore for Xoroshiro128pp {
         /// Returns the next random `u32`.
-        #[inline]
         fn next_u32(&mut self) -> u32 {
             self.next_u32()
         }
 
         /// Returns the next random `u64`.
-        #[inline]
         fn next_u64(&mut self) -> u64 {
             Cast::<u64>::from_u32_le([self.next_u32(), self.next_u32()])
         }
 
-        #[inline]
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             let mut i = 0;
             while i < dest.len() {
@@ -272,7 +255,6 @@ mod impl_rand {
             }
         }
 
-        #[inline]
         fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
             self.fill_bytes(dest);
             Ok(())
@@ -284,7 +266,6 @@ mod impl_rand {
 
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.
-        #[inline]
         fn from_seed(seed: Self::Seed) -> Self {
             let mut seed_u32s = [0u32; 4];
             if seed == [0; 16] {
@@ -317,12 +298,10 @@ impl Xoroshiro128pp {
     const fn cold_path_default() -> Self { Self::new_unchecked(Self::DEFAULT_SEED) }
 
     // rotates `x` left by `k` bits.
-    #[inline]
     const fn rotl(x: u32, k: i32) -> u32 {
         (x << k) | (x >> (32 - k))
     }
 
-    #[inline]
     fn jump_with_constant(&mut self, jump: [u32; 4]) {
         let (mut s0, mut s1, mut s2, mut s3) = (0, 0, 0, 0);
         for &j in jump.iter() {
@@ -339,7 +318,6 @@ impl Xoroshiro128pp {
         self.0 = [s0, s1, s2, s3];
     }
 
-    #[inline]
     const fn copy_jump_with_constant(self, jump: [u32; 4]) -> Self {
         let (mut s0, mut s1, mut s2, mut s3) = (0, 0, 0, 0);
         let mut state = self;

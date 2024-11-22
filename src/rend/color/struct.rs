@@ -48,7 +48,6 @@ macro_rules! color_gamma_fns {
             ///   & \text{if } c > 0.0031308 \end{cases} \cr
             /// \end{align}
             /// $$
-            #[inline]
             #[cfg(any(feature = "std", feature = $cap))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $cap))))]
             pub fn [<color_gamma_apply_ $t>](c: $t, gamma: $t) -> $t {
@@ -67,7 +66,6 @@ macro_rules! color_gamma_fns {
             ///   & \text{if } c > 0.04045 \end{cases} \cr
             /// \end{align}
             /// $$
-            #[inline]
             #[cfg(any(feature = "std", feature = $cap))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $cap))))]
             pub fn [<color_gamma_remove_ $t>](c: $t, gamma: $t) -> $t {

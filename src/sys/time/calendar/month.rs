@@ -32,7 +32,6 @@ impl Month {
 
     /// Returns the length in days of the current month, taking into account
     /// whether it's a `leap` year, for february.
-    #[inline]
     #[allow(clippy::len_without_is_empty)]
     pub const fn len(self, leap: bool) -> u8 {
         match self {
@@ -52,25 +51,21 @@ impl Month {
     }
 
     /// Returns the previous month.
-    #[inline]
     pub const fn previous(self) -> Month {
         self.previous_nth(1)
     }
 
     /// Returns the previous `nth` month.
-    #[inline]
     pub const fn previous_nth(self, nth: usize) -> Month {
         Self::from_index_unchecked(self.index().wrapping_sub(nth) % Self::COUNT)
     }
 
     /// Returns the next month.
-    #[inline]
     pub const fn next(self) -> Month {
         self.next_nth(1)
     }
 
     /// Returns the next `nth` month.
-    #[inline]
     pub const fn next_nth(self, nth: usize) -> Month {
         Self::from_index_unchecked(self.index().wrapping_add(nth) % Self::COUNT)
     }
@@ -78,13 +73,11 @@ impl Month {
     /* numbers */
 
     /// Returns the Month number from `January=1` to `December=12`.
-    #[inline]
     pub const fn number(self) -> u8 {
         self.index() as u8 + 1
     }
 
     /// Returns the Month index from `January=0` to `December=11`.
-    #[inline]
     pub const fn index(self) -> usize {
         self as _
     }
@@ -93,7 +86,6 @@ impl Month {
     ///
     /// # Errors
     /// `if n < 1 || n > 12`
-    #[inline]
     pub const fn from_number(n: u8) -> Result<Month, &'static str> {
         match n {
             1 => Ok(January),
@@ -116,7 +108,6 @@ impl Month {
     ///
     /// # Errors
     /// `if index > 11`
-    #[inline]
     pub const fn from_index(index: usize) -> Result<Month, &'static str> {
         match index {
             0 => Ok(January),

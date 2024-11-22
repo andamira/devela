@@ -10,19 +10,17 @@
 //   - totient
 
 #[cfg(feature = "_int_isize")]
-use crate::num::isize_up;
+use crate::isize_up;
 #[cfg(feature = "_int_usize")]
-use crate::num::usize_up;
-use crate::{
-    code::{iif, paste},
-    num::{Int, NumError::Overflow, NumResult as Result},
-};
+use crate::usize_up;
+use crate::{iif, paste, Int, NumError::Overflow, NumResult as Result};
 
-// $t:   the input/output type
-// $up:  the upcasted type to do the operations on (for prime_pi)
-// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
-// $cmp: the feature that enables the given implementation. E.g "_cmp_i8".
-// $d:  the doclink suffix for the method name
+#[doc = crate::doc_private!()]
+/// $t:   the input/output type
+/// $up:  the upcasted type to do the operations on (for prime_pi)
+/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
+/// $cmp: the feature that enables the given implementation. E.g "_cmp_i8".
+/// $d:  the doclink suffix for the method name
 macro_rules! impl_int {
     () => {
         impl_int![signed
@@ -73,7 +71,7 @@ macro_rules! impl_int {
             /// already been checked in previous iterations.
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert![Int(127_" $t ").is_prime()];"]
             #[doc = "assert![Int(2_" $t ").is_prime()];"]
             #[doc = "assert![!Int(1_" $t ").is_prime()];"]
@@ -81,7 +79,7 @@ macro_rules! impl_int {
             /// ```
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[must_use] #[inline]
+            #[must_use]
             #[cfg(feature = $cmp)]
             pub const fn is_prime(self) -> bool {
                 match self.0 {
@@ -120,7 +118,7 @@ macro_rules! impl_int {
             /// Returns [`Overflow`] if the result can't fit the type.
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(2)), Int(0_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(1_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(127)), Int(30_" $t ").prime_nth()];"]
@@ -130,7 +128,6 @@ macro_rules! impl_int {
             /// ```
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[inline]
             #[cfg(feature = $cmp)]
             pub const fn prime_nth(self) -> Result<Int<$t>> {
                 let [nth, mut count, mut i] = [self.0.abs(), 1, 2];
@@ -164,7 +161,7 @@ macro_rules! impl_int {
             /// $$\pi(x)$$
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![1, Int(2_" $t ").prime_pi()];"]
             #[doc = "assert_eq![2, Int(3_" $t ").prime_pi()];"]
             #[doc = "assert_eq![31, Int(127_" $t ").prime_pi()];"]
@@ -175,7 +172,6 @@ macro_rules! impl_int {
             /// - <https://en.wikipedia.org/wiki/Prime-counting_function>.
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[inline]
             #[cfg(feature = $cmp)]
             pub const fn prime_pi(self) -> usize {
                 let (mut prime_count, mut i) = (0_usize, 0 as $up);
@@ -208,7 +204,7 @@ macro_rules! impl_int {
             /// $$\large\varphi(n) =n \prod_{p\mid |n|} \left(1-\frac{1}{p}\right)$$
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(2), Int(4_" $t ").totient()];"]
             #[doc = "assert_eq![Int(6), Int(9_" $t ").totient()];"]
             #[doc = "assert_eq![Int(12), Int(13_" $t ").totient()];"]
@@ -217,7 +213,7 @@ macro_rules! impl_int {
             /// ```
             /// # Links
             /// - <https://en.wikipedia.org/wiki/Euler%27s_totient_function>.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn totient(self) -> Int<$t> {
                 let (mut n, mut result, mut i) = (self.0.abs(), self.0.abs(), 2);
                 while i * i <= n {
@@ -256,14 +252,14 @@ macro_rules! impl_int {
             /// already been checked in previous iterations.
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert![Int(127_" $t ").is_prime()];"]
             #[doc = "assert![Int(2_" $t ").is_prime()];"]
             #[doc = "assert![!Int(1_" $t ").is_prime()];"]
             /// ```
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[must_use] #[inline]
+            #[must_use]
             #[cfg(feature = $cmp)]
             pub const fn is_prime(self) -> bool {
                 match self.0 {
@@ -298,7 +294,7 @@ macro_rules! impl_int {
             /// Returns [`Overflow`] if the result can't fit the type.
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(2)), Int(0_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(1_" $t ").prime_nth()];"]
             #[doc = "assert_eq![Ok(Int(251)), Int(53_" $t ").prime_nth()];"]
@@ -306,7 +302,6 @@ macro_rules! impl_int {
             /// ```
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[inline]
             #[cfg(feature = $cmp)]
             pub const fn prime_nth(self) -> Result<Int<$t>> {
                 let [nth, mut count, mut i] = [self.0, 1, 2];
@@ -340,7 +335,7 @@ macro_rules! impl_int {
             /// $$\pi(x)$$
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![1, Int(2_" $t ").prime_pi()];"]
             #[doc = "assert_eq![2, Int(3_" $t ").prime_pi()];"]
             #[doc = "assert_eq![31, Int(127_" $t ").prime_pi()];"]
@@ -350,7 +345,6 @@ macro_rules! impl_int {
             /// - <https://en.wikipedia.org/wiki/Prime-counting_function>.
             /// # Features
             #[doc = "This will only be *const* if the " $cmp " feature is enabled."]
-            #[inline]
             #[cfg(feature = $cmp)]
             pub const fn prime_pi(self) -> usize {
                 let (mut prime_count, mut i) = (0_usize, 0 as $up);
@@ -380,14 +374,14 @@ macro_rules! impl_int {
             /// $$\large\varphi(n) =n \prod_{p\mid n} \left(1-\frac{1}{p}\right)$$
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(2), Int(4_" $t ").totient()];"]
             #[doc = "assert_eq![Int(6), Int(9_" $t ").totient()];"]
             #[doc = "assert_eq![Int(12), Int(13_" $t ").totient()];"]
             /// ```
             /// # Links
             /// - <https://en.wikipedia.org/wiki/Euler%27s_totient_function>.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn totient(self) -> Int<$t> {
                 let (mut n, mut result, mut i) = (self.0, self.0, 2);
                 while i * i <= n {

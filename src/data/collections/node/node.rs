@@ -72,6 +72,7 @@ macro_rules! impl_node {
         /// - data_ref, data_mut,
         /// - replace_data
         #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         pub struct $Node<D = (), const LCAP: usize = 0> {
             /// The node data. Defaults to the [unit] type if not specified.
             pub data: D,
@@ -84,7 +85,7 @@ macro_rules! impl_node {
         // D: (), LCAP: 0
         impl $Node {
             /// Creates a new empty node with no data and no links.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn empty() -> $Node { Self { data: (), links: [] } }
         }
 
@@ -100,7 +101,6 @@ macro_rules! impl_node {
             #[doc = "use devela::data::" $Node " as Node;"]
             /// assert![Node::<(), 4>::new().is_ok()];
             /// ```
-            #[inline]
             pub fn new() -> Result<Self> {
                 let _ = unwrap![ok? Self::check_capacity_bounds()];
                 Ok(Self { data: (), links: [None; LCAP] })
@@ -111,7 +111,7 @@ macro_rules! impl_node {
             ///
             /// # Panics
             #[doc = "Panics if `LCAP >= " $IP "::MAX`."]
-            #[inline] #[must_use]
+            #[must_use]
             pub fn new_unchecked() -> Self {
                 Self::panic_capacity_outbounded();
                 Self { data: (), links: [None; LCAP] }
@@ -130,7 +130,6 @@ macro_rules! impl_node {
             #[doc = "use devela::data::" $Node " as Node;"]
             /// assert![Node::<&str, 4>::with("hello").is_ok()];
             /// ```
-            #[inline]
             pub fn with(data: D) -> Result<Self> {
                 let _ = unwrap![ok? Self::check_capacity_bounds()];
                 Ok(Self { data, links: [None; LCAP] })
@@ -141,7 +140,6 @@ macro_rules! impl_node {
             ///
             /// # Panics
             #[doc = "Panics if `LCAP >= " $IP "::MAX`."]
-            #[inline]
             pub const fn with_unchecked(data: D) -> Self {
                 Self::panic_capacity_outbounded();
                 Self { data, links: [None; LCAP] }
@@ -150,35 +148,35 @@ macro_rules! impl_node {
             /* field accesors and deconstructors */
 
             /// Returns a shared reference to the data.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn data_ref(&self) -> &D { &self.data }
             /// Returns an exclusive reference to the data.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn data_mut(&mut self) -> &mut D { &mut self.data }
             /// Returns the data, deconstructing the node in the process.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn into_data(self) -> D { self.data }
 
             /// Returns a shared reference to the links.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn links_ref(&self) -> &$Links { &self.links }
             /// Returns an exclusive reference to the links.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn links_mut(&mut self) -> &mut $Links { &mut self.links }
             /// Returns the links, deconstructing the node in the process.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn into_links(self) -> $Links { self.links }
 
             /// Returns a tupe with shared references to the data and links.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn data_links_ref(&self) -> (&D, &$Links) { (&self.data, &self.links) }
             /// Returns a tupe with exclisive references to the data and links.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn data_links_mut(&mut self) -> (&mut D, &mut $Links) {
                 (&mut self.data, &mut self.links)
             }
             /// Returns a tuple with the data and links, deconstructing the node in the process.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn into_data_links(self) -> (D, $Links) { (self.data, self.links) }
 
             /* methods: data */
@@ -192,7 +190,6 @@ macro_rules! impl_node {
             /// assert_eq!["hello", n.replace_data("world")];
             /// assert_eq!["world", n.replace_data(".")];
             /// ```
-            #[inline]
             pub fn replace_data(&mut self, data: D) -> D { mem_replace::<D>(&mut self.data, data) }
 
             /* methods: links */
@@ -215,7 +212,7 @@ macro_rules! impl_node {
             ///
             /// # Panics
             /// Panics if the `id` is out of bounds,
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn get_link_unchecked(&self, id: $IP) -> Option<$IP> {
                 if let Some(link) = self.links[id as usize] { Some(link.get()) } else { None }
             }
@@ -267,7 +264,6 @@ macro_rules! impl_node {
             /// # Errors
             /// Returns [`OutOfBounds`] if either `id` or `link`
             #[doc = "are `>= " $IP "::MAX` or `>= LCAP`."]
-            #[inline]
             pub fn replace_link(&mut self, id: $IP, link: impl Into<Option<$IP>>)
                 -> Result<Option<$IP>> {
                 let id = Self::validate(id)? as usize;
@@ -289,7 +285,6 @@ macro_rules! impl_node {
             ///
             /// # Panics
             /// Panics if `id >= LCAP`.
-            #[inline]
             pub fn replace_link_unchecked(&mut self, id: $IP, link: impl Into<Option<$IP>>)
                 -> Option<$IP> {
                 let id = id as usize;
@@ -321,7 +316,6 @@ macro_rules! impl_node {
             /// assert_eq![n.add_link(0), Err(DataError::NotEnoughSpace(Some(1)))];
             /// assert_eq![n.add_link(4), Err(DataError::OutOfBounds(Some(4)))];
             /// ```
-            #[inline]
             pub fn add_link(&mut self, link: $IP) -> Result<()> {
                 let link = Self::validate_into(link)?;
                 for slot in self.links.iter_mut() {
@@ -375,7 +369,6 @@ macro_rules! impl_node {
             ///
             /// # Errors
             /// Returns [`OutOfBounds`] if `id >= LCAP`.
-            #[inline]
             pub const fn is_link_set(&self, id: $IP) -> Result<bool> {
                 Ok(self.links[unwrap![ok? Self::validate(id)] as usize].is_some())
             }
@@ -383,13 +376,11 @@ macro_rules! impl_node {
             ///
             /// # Panics
             /// Panics if `id >= LCAP`.
-            #[inline]
             pub const fn is_link_set_unchecked(&self, id: $IP) -> bool {
                 self.links[id as usize].is_some()
             }
 
             /// Returns `true` if the node contains at least one `link` set to the given value.
-            #[inline]
             pub const fn contains_link(&self, link: $IP) -> bool {
                 let mut i = 0;
                 while i < LCAP {
@@ -414,7 +405,6 @@ macro_rules! impl_node {
             }
 
             /// Returns the number of links that are set to the given `value`.
-            #[inline]
             pub const fn count_links_with(&self, value: $IP) -> $IP {
                 let mut count = 0;
                 let mut i = 0;
@@ -448,16 +438,13 @@ macro_rules! impl_node {
             /* private helpers */
 
             // Makes sure the capacity const-generic arguments are in bounds.
-            #[inline]
             const fn check_capacity_bounds() -> Result<()> {
                 if LCAP >= $IP::MAX as usize { Err(OutOfBounds(Some(LCAP))) } else { Ok(()) }
             }
             // Panics if the capacity is out of bounds.
-            #[inline]
             const fn panic_capacity_outbounded() { assert![LCAP < $IP::MAX as usize]; }
 
             // Validates the `link` bounds and returns it, or `Err(OutOfBounds)`.
-            #[inline]
             const fn validate(link: $IP) -> Result<$IP> {
                 if link as usize >= LCAP || link == $IP::MAX {
                     Err(OutOfBounds(Some(link as usize)))
@@ -466,7 +453,6 @@ macro_rules! impl_node {
                 }
             }
             // Validates the `link` bounds and returns it converted, or `Err(OutOfBounds)`.
-            #[inline]
             const fn validate_into(link: $IP) -> Result<$NodeIndex> {
                 if link as usize >= LCAP || link == $IP::MAX {
                     Err(OutOfBounds(Some(link as usize)))
@@ -479,7 +465,6 @@ macro_rules! impl_node {
         // D: Copy
         impl<D: Copy, const LCAP: usize> $Node<D, LCAP> {
             /// Replaces the node's `data`, and returns the previous data.
-            #[inline]
             pub const fn own_replace_data(mut self, data: D) -> Own<Self, D> {
                 let old = self.data; self.data = data; Own::new(self, old)
             }
@@ -490,7 +475,6 @@ macro_rules! impl_node {
         // D: Default
         impl<D: Default, const LCAP: usize> Default for $Node<D, LCAP> {
             /// Returns a node with default data and unset links.
-            #[inline]
             fn default() -> Self { Self { data: D::default(), links: [None; LCAP] } }
         }
 

@@ -230,7 +230,6 @@ impl From<IoErrorKind> for IoError {
     /// Converts an [`IoErrorKind`] into an [`Error`].
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.Error.html#impl-From%3CErrorKind%3E-for-Error>.
-    #[inline]
     fn from(kind: IoErrorKind) -> IoError {
         IoError { repr: Repr::Simple(kind) }
     }

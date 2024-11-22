@@ -22,6 +22,7 @@ use crate::{
 #[cfg(all(_string_u·, feature = "alloc"))]
 use crate::{CString, ToString};
 
+#[doc = crate::doc_private!()]
 macro_rules! impl_string_u {
     () => {
         impl_string_u![
@@ -102,7 +103,6 @@ macro_rules! impl_string_u {
             ///
             /// # Errors
             #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`]."]
-            #[inline]
             pub const fn new() -> Result<Self> {
                 if CAP <= $t::MAX as usize {
                     Ok(Self { arr: [0; CAP], len: 0 })
@@ -114,23 +114,23 @@ macro_rules! impl_string_u {
             /* query */
 
             /// Returns the current string length in bytes.
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             pub const fn len(&self) -> usize { self.len as usize }
 
             /// Returns `true` if the current length is 0.
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             pub const fn is_empty(&self) -> bool { self.len == 0 }
 
             /// Returns `true` if the current remaining capacity is 0.
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             pub const fn is_full(&self) -> bool { self.len == CAP as $t }
 
             /// Returns the total capacity in bytes.
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             pub const fn capacity() -> usize { CAP }
 
             /// Returns the remaining capacity in bytes.
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             pub const fn remaining_capacity(&self) -> usize { CAP - self.len as usize }
 
             /* deconstruct */
@@ -138,18 +138,18 @@ macro_rules! impl_string_u {
             /// Returns the inner array with the full contents.
             ///
             /// The array contains all the bytes, including those outside the current length.
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             pub const fn into_array(self) -> [u8; CAP] { self.arr }
 
             /// Returns a copy of the inner array with the full contents.
             ///
             /// The array contains all the bytes, including those outside the current length.
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             pub const fn as_array(&self) -> [u8; CAP] { self.arr }
 
             /// Returns a byte slice of the inner string slice.
             // WAIT: [split_at_unchecked](https://github.com/rust-lang/rust/issues/76014)
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             pub const fn as_bytes(&self) -> &[u8] { self.arr.split_at(self.len as usize).0 }
 
             /// Returns an exclusive byte slice of the inner string slice.
@@ -159,7 +159,6 @@ macro_rules! impl_string_u {
             /// before the borrow ends and the underlying `str` is used.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[inline]
             #[must_use]
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_slice"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
@@ -172,7 +171,6 @@ macro_rules! impl_string_u {
             ///
             /// # Features
             /// Makes use of the `unsafe_str` feature if enabled.
-            #[inline]
             #[must_use]
             pub const fn as_str(&self) -> &str {
                 #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
@@ -193,11 +191,11 @@ macro_rules! impl_string_u {
             }
 
             /// Returns an iterator over the `chars` of this grapheme cluster.
-            #[inline] #[rustfmt::skip]
+            #[rustfmt::skip]
             pub fn chars(&self) -> IterChars { self.as_str().chars() }
 
             /// Returns a new allocated C-compatible, nul-terminanted string.
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn to_cstring(&self) -> CString { CString::new(self.to_string()).unwrap() }
@@ -205,13 +203,11 @@ macro_rules! impl_string_u {
             /* operations */
 
             /// Sets the length to 0.
-            #[inline]
             pub fn clear(&mut self) {
                 self.len = 0;
             }
 
             /// Sets the length to 0, and resets all the bytes to 0.
-            #[inline]
             pub fn reset(&mut self) {
                 self.arr = [0; CAP];
                 self.len = 0;
@@ -219,7 +215,7 @@ macro_rules! impl_string_u {
 
             /// Removes the last character and returns it, or `None` if
             /// the string is empty.
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             pub fn pop(&mut self) -> Option<char> {
                 self.as_str().chars().last().map(|c| { self.len -= c.len_utf8() as $t; c })
             }
@@ -230,7 +226,7 @@ macro_rules! impl_string_u {
             /// # Errors
             /// Returns a [`NotEnoughElements`] error
             /// if the capacity is not enough to hold the `character`.
-            #[inline] #[rustfmt::skip]
+            #[rustfmt::skip]
             pub fn try_pop(&mut self) -> Result<char> {
                 self.as_str().chars().last().map(|c| { self.len -= c.len_utf8() as $t; c })
                     .ok_or(NotEnoughElements(1))
@@ -338,7 +334,7 @@ macro_rules! impl_string_u {
             /// `CAP < c.`[`len_utf8()`][super::UnicodeScalar#method.len_utf8].
             ///
             #[doc = "It will always succeed if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            #[inline] #[rustfmt::skip]
+            #[rustfmt::skip]
             pub const fn from_char(c: char) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
 
@@ -359,7 +355,6 @@ macro_rules! impl_string_u {
             /// or [`NotEnoughCapacity`] if `CAP < 1.
             ///
             #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
-            #[inline]
             #[cfg(feature = "_char_u7")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u7")))]
             pub const fn from_char_u7(c: CharU7) -> Result<Self> {
@@ -376,7 +371,7 @@ macro_rules! impl_string_u {
             /// or [`NotEnoughCapacity`] if `CAP < 2.
             ///
             #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
-            #[inline] #[rustfmt::skip]
+            #[rustfmt::skip]
             #[cfg(feature = "_char_u8")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u8")))]
             pub const fn from_char_u8(c: CharU8) -> Result<Self> {
@@ -397,7 +392,7 @@ macro_rules! impl_string_u {
                 "::MAX`]` || CAP < c.`[`len_utf8()`][CharU16#method.len_utf8]."]
             ///
             #[doc = "Will never panic if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
-            #[inline] #[rustfmt::skip]
+            #[rustfmt::skip]
             #[cfg(feature = "_char_u16")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u16")))]
             pub const fn from_char_u16(c: CharU16) -> Result<Self> {
@@ -419,7 +414,7 @@ macro_rules! impl_string_u {
                 "::MAX`]` || CAP < c.`[`len_utf8()`][CharU24#method.len_utf8]."]
             ///
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            #[inline] #[rustfmt::skip]
+            #[rustfmt::skip]
             #[cfg(feature = "_char_u24")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u24")))]
             pub const fn from_char_u24(c: CharU24) -> Result<Self> {
@@ -442,7 +437,6 @@ macro_rules! impl_string_u {
                 "::MAX`]` || CAP < c.`[`len_utf8()`][CharU32#method.len_utf8]."]
             ///
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            #[inline]
             #[cfg(feature = "_char_u32")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u32")))]
             pub const fn from_char_u32(c: CharU32) -> Result<Self> {
@@ -455,7 +449,6 @@ macro_rules! impl_string_u {
             ///
             /// # Errors
             /// Returns [`InvalidUtf8`] if the bytes are not valid UTF-8.
-            #[inline]
             pub const fn from_bytes(bytes: [u8; CAP]) -> Result<Self> {
                 match Str::from_utf8(&bytes) {
                     Ok(_) => {
@@ -471,7 +464,6 @@ macro_rules! impl_string_u {
             /// The caller must ensure that the content of the slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[inline]
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_unchecked(bytes: [u8; CAP]) -> Self {
@@ -488,7 +480,6 @@ macro_rules! impl_string_u {
             ///
             /// # Features
             /// This method will only be *const* if the `_cmp_usize` feature is enabled.
-            #[inline]
             #[cfg(feature = $cmp)] // const
             pub const fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
                 let length = Compare(length).min(CAP as $t);
@@ -497,7 +488,6 @@ macro_rules! impl_string_u {
                     Err(e) => Err(InvalidUtf8(Some(e))),
                 }
             }
-            #[inline]
             #[allow(missing_docs)]
             #[cfg(not(feature = $cmp))] // !const
             pub fn from_bytes_nleft(bytes: [u8; CAP], length: $t) -> Result<Self> {
@@ -521,14 +511,12 @@ macro_rules! impl_string_u {
             /// The caller must ensure that the content of the truncated slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[inline]
             #[cfg(feature = $cmp)] // const
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
             pub const unsafe fn from_bytes_nleft_unchecked(bytes: [u8; CAP], length: $t) -> Self {
                 Self { arr: bytes, len: Compare(length).min(CAP as $t) }
             }
-            #[inline]
             #[allow(missing_docs, clippy::missing_safety_doc)]
             #[cfg(not(feature = $cmp))] // !const
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
@@ -547,7 +535,6 @@ macro_rules! impl_string_u {
             ///
             /// # Features
             /// This method will only be *const* if the `_cmp_usize` feature is enabled.
-            #[inline]
             #[cfg(feature = $cmp)] // const
             pub const fn from_bytes_nright(mut bytes: [u8; CAP], length: $t) -> Result<Self> {
                 let length = Compare(length).min(CAP as $t);
@@ -587,7 +574,6 @@ macro_rules! impl_string_u {
             /// The caller must ensure that the content of the truncated slice is valid UTF-8.
             ///
             /// Use of a `str` whose contents are not valid UTF-8 is undefined behavior.
-            #[inline]
             #[cfg(feature = $cmp)] // const
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
@@ -623,7 +609,7 @@ macro_rules! impl_string_u {
             ///
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t "::MAX`]."]
-            #[inline] #[rustfmt::skip]
+            #[rustfmt::skip]
             fn default() -> Self { Self::new().unwrap() }
         }
         impl<const CAP: usize> ConstDefault for $name<CAP> {
@@ -635,42 +621,40 @@ macro_rules! impl_string_u {
         }
 
         impl<const CAP: usize> fmt::Display for $name<CAP> {
-            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(f, "{}", self.as_str())
             }
         }
 
         impl<const CAP: usize> fmt::Debug for $name<CAP> {
-            #[inline]
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(f, "{:?}", self.as_str())
             }
         }
 
         impl<const CAP: usize> PartialEq<&str> for $name<CAP> {
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             fn eq(&self, slice: &&str) -> bool { self.as_str() == *slice }
         }
         // and for when &str is on the left-hand side of the comparison
         impl<const CAP: usize> PartialEq<$name<CAP>> for &str {
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             fn eq(&self, string: & $name<CAP>) -> bool { *self == string.as_str() }
         }
 
         impl<const CAP: usize> Deref for $name<CAP> {
             type Target = str;
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             fn deref(&self) -> &Self::Target { self.as_str() }
         }
 
         impl<const CAP: usize> AsRef<str> for $name<CAP> {
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             fn as_ref(&self) -> &str { self.as_str() }
         }
 
         impl<const CAP: usize> AsRef<[u8]> for $name<CAP> {
-            #[inline] #[must_use] #[rustfmt::skip]
+            #[must_use] #[rustfmt::skip]
             fn as_ref(&self) -> &[u8] { self.as_bytes() }
         }
 

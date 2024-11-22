@@ -16,7 +16,6 @@ impl<T: Num, const D: usize> Num for Vector<T, D> {
     type Out = Self;
     type Rhs = Self;
 
-    #[inline]
     fn num_into(self) -> Self::Inner {
         self.coords
     }

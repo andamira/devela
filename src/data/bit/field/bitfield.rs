@@ -76,41 +76,33 @@ macro_rules! _bitfield {
         /* core impls */
 
         impl Default for $name {
-            #[inline]
             fn default() -> Self { $name { bits: Default::default() } }
         }
         impl core::fmt::Display for $name {
-            #[inline]
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 core::fmt::Display::fmt(&self.bits, f)
             }}
         impl core::fmt::Binary for $name {
-            #[inline]
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 core::fmt::Binary::fmt(&self.bits, f)
             }}
         impl core::fmt::Octal for $name {
-            #[inline]
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 core::fmt::Octal::fmt(&self.bits, f)
             }}
         impl core::fmt::LowerHex for $name {
-            #[inline]
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 core::fmt::LowerHex::fmt(&self.bits, f)
             }}
         impl core::fmt::UpperHex for $name {
-            #[inline]
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 core::fmt::UpperHex::fmt(&self.bits, f)
             }}
         impl core::fmt::UpperExp for $name {
-            #[inline]
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 core::fmt::UpperExp::fmt(&self.bits, f)
         }}
         impl core::fmt::LowerExp for $name {
-            #[inline]
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 core::fmt::LowerExp::fmt(&self.bits, f)
         }}
@@ -137,13 +129,13 @@ macro_rules! _bitfield {
         #[allow(dead_code)]
         impl $name {
             #[doc = "Returns a new `" $name "` with none of the fields set."]
-            #[must_use] #[inline]
+            #[must_use]
             $vis_custom const fn without_fields() -> Self {
                 Self { bits: 0 }
             }
 
             #[doc = "Returns a new `" $name "` with all the fields set."]
-            #[must_use] #[inline]
+            #[must_use]
             $vis_custom const fn with_all_fields() -> Self {
                 Self {
                     bits: 0 $(| $crate::Bitwise::<$T>::mask_range($field_start, $field_end).0)*
@@ -151,7 +143,7 @@ macro_rules! _bitfield {
             }
 
             /// Returns `true` if it all the fields are set.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_custom const fn are_all_fields(self) -> bool {
                 self.bits == Self::with_all_fields().bits
             }
@@ -165,7 +157,7 @@ macro_rules! _bitfield {
 
                 #[doc = "Returns a new `" $name "` with [`" $field "`][Self::" $field
                     "] field set."]
-                #[must_use] #[inline]
+                #[must_use]
                 $vis_custom const fn [<with_field_ $field:lower>]() -> Self {
                     Self::$field
                 }
@@ -173,13 +165,13 @@ macro_rules! _bitfield {
                 /* query */
 
                 #[doc = "Returns `true` if the [`" $field "`][Self::" $field "] field is set."]
-                #[must_use] #[inline]
+                #[must_use]
                 $vis_custom const fn [<is_field_ $field:lower>](self) -> bool {
                     Self::contains_mask(self, Self::$field.bits)
                 }
 
                 /// Returns the size of the field in bits.
-                #[must_use] #[inline]
+                #[must_use]
                 $vis_custom const fn [<bits_field_ $field:lower>](self) -> u32 {
                     $field_end - $field_start + 1
                 }
@@ -188,7 +180,7 @@ macro_rules! _bitfield {
 
                 #[doc = "Gets a copy of `self` with only the bits of [`" $field "`][Self::" $field
                     "] field."]
-                #[must_use] #[inline]
+                #[must_use]
                 $vis_custom const fn [<get_field_ $field:lower>](self) -> Self {
                     Self::intersect_mask(self, Self::$field.bits)
                 }
@@ -196,7 +188,7 @@ macro_rules! _bitfield {
                 /* get value */
 
                 #[doc = "Gets the value of the bits of [`" $field "`][Self::" $field "] field."]
-                #[must_use] #[inline]
+                #[must_use]
                 $vis_custom const fn [<get_field_value_ $field:lower>](self) -> Self {
                     Self::get_value_range(self, $field_start, $field_end)
                 }
@@ -205,12 +197,11 @@ macro_rules! _bitfield {
 
                 #[doc = "Returns a copy of `self` with the [`"
                     $field "`][Self::" $field "] field set."]
-                #[must_use] #[inline]
+                #[must_use]
                 $vis_custom const fn [<set_field_ $field:lower>](self) -> Self {
                     Self::set_mask(self, Self::$field.bits)
                 }
                 #[doc = "Sets the [`" $field "`][Self::" $field "] field."]
-                #[inline]
                 $vis_custom fn [<mut_set_field_ $field:lower>](&mut self) {
                     Self::mut_set_mask(self, Self::$field.bits);
                 }
@@ -219,7 +210,6 @@ macro_rules! _bitfield {
 
                 #[doc = "Sets the given `value` into the bits of [`" $field "`][Self::" $field
                     "] field."]
-                #[inline]
                 $vis_custom const fn [<set_field_value_ $field:lower>](self, value: $T) -> Self {
                     Self::set_value_range(self, value, $field_start, $field_end)
                 }
@@ -228,12 +218,11 @@ macro_rules! _bitfield {
 
                 #[doc = "Returns a copy of `self` with the [`" $field "`][Self::" $field
                     "] field set."]
-                #[must_use] #[inline]
+                #[must_use]
                 $vis_custom const fn [<unset_field_ $field:lower>](self) -> Self {
                     Self::unset_mask(self, Self::$field.bits)
                 }
                 #[doc = "Unsets the [`" $field "`][Self::" $field "] field."]
-                #[inline]
                 $vis_custom fn [<mut_unset_field_ $field:lower>](&mut self) {
                     Self::mut_unset_mask(self, Self::$field.bits);
                 }
@@ -242,12 +231,11 @@ macro_rules! _bitfield {
 
                 #[doc = "Returns a copy of `self` with the [`" $field "`][Self::" $field
                     "] field flipped."]
-                #[must_use] #[inline]
+                #[must_use]
                 $vis_custom const fn [<flip_field_ $field:lower>](self) -> Self {
                     Self::flip_mask(self, Self::$field.bits)
                 }
                 #[doc = "Flips the [`" $field "`][Self::" $field "] field."]
-                #[inline]
                 $vis_custom fn [<mut_flip_field_ $field:lower>](&mut self) {
                     Self::mut_flip_mask(self, Self::$field.bits);
                 }
@@ -263,37 +251,37 @@ macro_rules! _bitfield {
             /* constructors & deconstructors */
 
             #[doc = "Returns a new `" $name "` with the given inner `bits`."]
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn with_bits(bits: $T) -> Self { Self { bits } }
 
             #[doc = "Returns a new `" $name "` with all bits set to 0."]
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn new_zeroed() -> Self { $name { bits: 0 } }
 
             #[doc = "Returns a new `" $name "` with all bits set to 1."]
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn new_oned() -> Self { Self::new_zeroed().flip() }
 
             #[doc = "Returns the inner `" $T "` bits."]
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn bits(self) -> $T { self.bits }
 
             /* queries */
 
             /// Returns the number of bits set (the number of ones).
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn count_ones(&self) -> u32 { self.bits.count_ones() }
 
             /// Returns the number of bits unset (the number of zeros).
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn count_zeros(&self) -> u32 { self.bits.count_zeros() }
 
             /// Returns `true` if all the bits are set to 0.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn is_empty(self) -> bool { self.bits == 0 }
 
             /// Returns `true` if all the bits are set to 1.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn is_full(self) -> bool { self.bits == Self::new_oned().bits }
 
             /* get */
@@ -302,7 +290,7 @@ macro_rules! _bitfield {
             ///
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn is_bit_set(self, index: u32) -> bool {
                 (self.bits & (1 << index)) != 0
             }
@@ -313,7 +301,6 @@ macro_rules! _bitfield {
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
-            #[inline]
             $vis_extra const fn is_checked_bit_set(self, index: u32)
                 -> $crate::DataResult<bool> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
@@ -326,7 +313,7 @@ macro_rules! _bitfield {
             /// Returns a copy of `self` with only the value of the bit at `index`.
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn get_bit(self, index: u32) -> Self {
                 Self { bits: self.bits & (1 << index) }
             }
@@ -336,7 +323,6 @@ macro_rules! _bitfield {
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
-            #[inline]
             $vis_extra const fn get_checked_bit(self, index: u32)
                 -> $crate::DataResult<Self> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
@@ -349,7 +335,7 @@ macro_rules! _bitfield {
             /// Returns a copy of `self` with only the value of the bit at `index` shifted.
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn get_shifted_bit(self, index: u32) -> Self {
                 Self { bits: (self.bits >> index) & 1 }
             }
@@ -358,7 +344,6 @@ macro_rules! _bitfield {
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
-            #[inline]
             $vis_extra const fn get_shifted_checked_bit(self, index: u32)
                 -> $crate::DataResult<Self> {
                 if let Some(shl) = self.bits.checked_shr(index) {
@@ -374,7 +359,7 @@ macro_rules! _bitfield {
             ///
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra fn set_bit(self, index: u32) -> Self {
                 Self { bits: self.bits | 1 << index }
             }
@@ -384,7 +369,6 @@ macro_rules! _bitfield {
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
-            #[inline]
             $vis_extra const fn set_checked_bit(self, index: u32)
                 -> $crate::DataResult<Self> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
@@ -398,7 +382,6 @@ macro_rules! _bitfield {
             ///
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[inline]
             #[allow(arithmetic_overflow)]
             $vis_extra fn mut_set_bit(&mut self, index: u32) {
                 self.bits |= 1 << index;
@@ -409,7 +392,6 @@ macro_rules! _bitfield {
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
-            #[inline]
             $vis_extra fn mut_set_checked_bit(&mut self, index: u32)
                 -> $crate::DataResult<()> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
@@ -426,7 +408,7 @@ macro_rules! _bitfield {
             ///
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra fn unset_bit(self, index: u32) -> Self {
                 Self { bits: self.bits & !(1 << index) }
             }
@@ -436,7 +418,6 @@ macro_rules! _bitfield {
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
-            #[inline]
             $vis_extra const fn unset_checked_bit(self, index: u32)
                 -> $crate::DataResult<Self> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
@@ -450,7 +431,6 @@ macro_rules! _bitfield {
             ///
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[inline]
             $vis_extra fn mut_unset_bit(&mut self, index: u32) {
                 self.bits &= !(1 << index);
             }
@@ -460,7 +440,6 @@ macro_rules! _bitfield {
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
-            #[inline]
             $vis_extra fn mut_unset_checked_bit(&mut self, index: u32)
                 -> $crate::DataResult<()> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
@@ -474,12 +453,11 @@ macro_rules! _bitfield {
             /* flip */
 
             /// Returns a copy of `self` with all its bits flipped.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn flip(self) -> Self {
                 Self { bits: !self.bits }
             }
             /// Flips all the bits of `self`.
-            #[inline]
             $vis_extra fn mut_flip(&mut self) {
                 self.bits = !self.bits;
             }
@@ -488,7 +466,7 @@ macro_rules! _bitfield {
             ///
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra fn flip_bit(self, index: u32) -> Self {
                 Self { bits: self.bits ^ 1 << index }
             }
@@ -498,7 +476,6 @@ macro_rules! _bitfield {
             /// Returns [`OutOfBounds`] if `index > MAX_BIT`.
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
-            #[inline]
             $vis_extra const fn flip_checked_bit(self, index: u32)
                 -> $crate::DataResult<Self> {
                 if let Some(shl) = [<1 $T>].checked_shl(index) {
@@ -512,7 +489,6 @@ macro_rules! _bitfield {
             ///
             /// # Panics
             /// Panics in debug if `index > MAX_BIT`.
-            #[inline]
             $vis_extra fn mut_flip_bit(&mut self, index: u32) {
                 self.bits ^= 1 << index;
             }
@@ -539,7 +515,7 @@ macro_rules! _bitfield {
             ///
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn mask_range(start: u32, end: u32) -> Self {
                 Self { bits: $crate::Bitwise::<$T>::mask_range(start, end).0 }
             }
@@ -553,7 +529,6 @@ macro_rules! _bitfield {
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
-            #[inline]
             $vis_extra const fn mask_checked_range(start: u32, end: u32)
                 -> $crate::DataResult<Self> {
                 match $crate::Bitwise::<$T>::mask_checked_range(start, end) {
@@ -567,7 +542,7 @@ macro_rules! _bitfield {
             /// Gets a copy of `self` with only the bits from the `[start..=end]` range.
             /// # Panics
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn get_range(self, start: u32, end: u32) -> Self {
                 Self { bits: $crate::Bitwise(self.bits).get_range(start, end).0 }
             }
@@ -578,7 +553,6 @@ macro_rules! _bitfield {
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
-            #[inline]
             $vis_extra const fn get_checked_range(self, start: u32, end: u32)
                 -> $crate::DataResult<Self> {
                 match $crate::Bitwise(self.bits).get_checked_range(start, end) {
@@ -593,7 +567,7 @@ macro_rules! _bitfield {
             ///
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn get_value_range(self, start: u32, end: u32) -> Self {
                 Self { bits: $crate::Bitwise(self.bits).get_value_range(start, end).0 }
             }
@@ -612,7 +586,6 @@ macro_rules! _bitfield {
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
             /// [`Overflow`]: crate::DataError::Overflow
-            #[inline]
             $vis_extra const fn get_value_checked_range(self, start: u32, end: u32)
                 -> $crate::DataResult<Self> {
                 match $crate::Bitwise(self.bits).get_value_checked_range(start, end) {
@@ -627,7 +600,7 @@ macro_rules! _bitfield {
             ///
             /// # Panics
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn set_range(self, start: u32, end: u32) -> Self {
                 Self { bits: $crate::Bitwise(self.bits).set_range(start, end).0 }
             }
@@ -638,7 +611,6 @@ macro_rules! _bitfield {
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
-            #[inline]
             $vis_extra const fn set_checked_range(self, start: u32, end: u32)
                 -> $crate::DataResult<Self> {
                 match $crate::Bitwise(self.bits).set_checked_range(start, end) {
@@ -650,7 +622,6 @@ macro_rules! _bitfield {
             /// Sets the bits from the `[start..=end]` range.
             /// # Panics
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
-            #[inline]
             $vis_extra fn mut_set_range(&mut self, start: u32, end: u32) {
                 self.bits = $crate::Bitwise(self.bits).set_range(start, end).0;
             }
@@ -661,7 +632,6 @@ macro_rules! _bitfield {
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
-            #[inline]
             $vis_extra fn mut_set_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::DataResult<()> {
                 match $crate::Bitwise(self.bits).set_checked_range(start, end) {
@@ -681,7 +651,7 @@ macro_rules! _bitfield {
             /// the existing bits in that range. The rest of the bits in `self` remain unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn set_value_range(self, value: $T, start: u32, end: u32) -> Self {
                 Self { bits: $crate::Bitwise(self.bits).set_value_range(value, start, end).0 }
             }
@@ -696,7 +666,6 @@ macro_rules! _bitfield {
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
-            #[inline]
             $vis_extra const fn set_value_checked_range(self, value: $T, start: u32, end: u32)
                 -> $crate::DataResult<Self> {
                 match $crate::Bitwise(self.bits).set_value_checked_range(value, start, end) {
@@ -717,7 +686,6 @@ macro_rules! _bitfield {
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
             /// [`Overflow`]: crate::DataError::Overflow
-            #[inline]
             $vis_extra const fn set_checked_value_checked_range(self,
                 value: $T, start: u32, end: u32) -> $crate::DataResult<Self> {
                 match $crate::Bitwise(self.bits)
@@ -731,7 +699,6 @@ macro_rules! _bitfield {
             /// Sets the bits from the `[start..=end]` range.
             /// # Panics
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
-            #[inline]
             $vis_extra fn mut_set_value_range(&mut self, value: $T, start: u32, end: u32) {
                 self.bits = $crate::Bitwise(self.bits).set_value_range(value, start, end).0;
             }
@@ -742,7 +709,6 @@ macro_rules! _bitfield {
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
-            #[inline]
             $vis_extra fn mut_set_value_checked_range(&mut self,
                 value: $T, start: u32, end: u32) -> $crate::DataResult<()> {
                 match $crate::Bitwise(self.bits).set_value_checked_range(value, start, end) {
@@ -759,7 +725,6 @@ macro_rules! _bitfield {
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
             /// [`Overflow`]: crate::DataError::Overflow
-            #[inline]
             $vis_extra fn mut_set_checked_value_checked_range(&mut self,
                 value: $T, start: u32, end: u32) -> $crate::DataResult<()> {
                 match $crate::Bitwise(self.bits)
@@ -774,7 +739,7 @@ macro_rules! _bitfield {
             /// Returns a copy of `self` with unset bits to 0 from the `[start..=end]` range.
             /// # Panics
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn unset_range(self, start: u32, end: u32) -> Self {
                 Self { bits: $crate::Bitwise(self.bits).unset_range(start, end).0 }
             }
@@ -786,7 +751,6 @@ macro_rules! _bitfield {
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
-            #[inline]
             $vis_extra const fn unset_checked_range(self, start: u32, end: u32)
                 -> $crate::DataResult<Self> {
                 match $crate::Bitwise(self.bits).unset_checked_range(start, end) {
@@ -798,7 +762,6 @@ macro_rules! _bitfield {
             /// Unsets the bits from the `[start..=end]` range.
             /// # Panics
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
-            #[inline]
             $vis_extra fn mut_unset_range(&mut self, start: u32, end: u32) {
                 self.bits = $crate::Bitwise(self.bits).unset_range(start, end).0;
             }
@@ -809,7 +772,6 @@ macro_rules! _bitfield {
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
-            #[inline]
             $vis_extra fn mut_unset_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::DataResult<()> {
                 match $crate::Bitwise(self.bits).unset_checked_range(start, end) {
@@ -823,7 +785,7 @@ macro_rules! _bitfield {
             /// Returns a copy of `self` with flipped bits from the `[start..=end]` range.
             /// # Panics
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn flip_range(self, start: u32, end: u32) -> Self {
                 Self { bits: $crate::Bitwise(self.bits).flip_range(start, end).0 }
             }
@@ -834,7 +796,6 @@ macro_rules! _bitfield {
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
-            #[inline]
             $vis_extra const fn flip_checked_range(self, start: u32, end: u32)
                 -> $crate::DataResult<Self> {
                 match $crate::Bitwise(self.bits).flip_checked_range(start, end) {
@@ -846,7 +807,6 @@ macro_rules! _bitfield {
             /// Flips the bits from the `[start..=end]` range.
             /// # Panics
             /// Panics in debug if `start > MAX_BIT || end > MAX_BIT` or if `start > end`.
-            #[inline]
             $vis_extra fn mut_flip_range(&mut self, start: u32, end: u32) {
                 self.bits = $crate::Bitwise(self.bits).flip_range(start, end).0;
             }
@@ -857,7 +817,6 @@ macro_rules! _bitfield {
             ///
             /// [`OutOfBounds`]: crate::DataError::OutOfBounds
             /// [`MismatchedIndices`]: crate::DataError::MismatchedIndices
-            #[inline]
             $vis_extra fn mut_flip_checked_range(&mut self, start: u32, end: u32)
                 -> $crate::DataResult<()> {
                 match $crate::Bitwise(self.bits).flip_checked_range(start, end) {
@@ -873,12 +832,12 @@ macro_rules! _bitfield {
             /* contains */
 
             /// Returns `true` if `self` contains all the same set bits that are set in `mask`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn contains_mask(self, mask: $T) -> bool {
                 (self.bits & mask) == mask
             }
             /// Returns `true` if `self` contains all the same set bits that are set in `other`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn contains_other(self, other: Self) -> bool {
                 (self.bits & other.bits) == other.bits
             }
@@ -886,12 +845,12 @@ macro_rules! _bitfield {
             /* overlaps */
 
             /// Returns `true` if there's at least one set bit in common between `self` and `mask`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn overlaps_mask(&self, mask: $T) -> bool {
                 (self.bits & mask) != 0
             }
             /// Returns `true` if there's at least one set bit in common between `self` and `other`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn overlaps_other(&self, other: Self) -> bool {
                 (self.bits & other.bits) != 0
             }
@@ -899,22 +858,20 @@ macro_rules! _bitfield {
             /* intersect */
 
             /// Returns a copy of `self` with only the bits both in `self` and the `mask`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn intersect_mask(self, mask: $T) -> Self {
                 Self { bits: self.bits & mask }
             }
             /// Returns a copy of `self` with only the bits both in `self` and `other`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn intersect_other(self, other: Self) -> Self {
                 Self { bits: self.bits & other.bits }
             }
             /// Only leaves the bits both in `self` and the `mask`.
-            #[inline]
             $vis_extra fn mut_intersect_mask(&mut self, mask: $T) {
                 self.bits &= mask;
             }
             /// Only leaves the bits both in `self` and `other`.
-            #[inline]
             $vis_extra fn mut_intersect_other(&mut self, other: Self) {
                 self.bits &= other.bits;
             }
@@ -922,22 +879,20 @@ macro_rules! _bitfield {
             /* set */
 
             /// Returns a copy of `self` setting the bits that are set in the `mask`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn set_mask(self, mask: $T) -> Self {
                 Self { bits: self.bits | mask }
             }
             /// Returns a copy of `self` setting the bits that are set in `other`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn set_other(self, other: Self) -> Self {
                 Self { bits: self.bits | other.bits }
             }
             /// Sets the bits that are set in the `mask`.
-            #[inline]
             $vis_extra fn mut_set_mask(&mut self, mask: $T) {
                 self.bits |= mask;
             }
             /// Sets the bits that are set in the `other`.
-            #[inline]
             $vis_extra fn mut_set_other(&mut self, other: Self) {
                 self.bits |= other.bits;
             }
@@ -945,22 +900,20 @@ macro_rules! _bitfield {
             /* unset */
 
             /// Returns a copy of `self` unsetting the bits that are set in the `mask`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn unset_mask(self, mask: $T) -> Self {
                 Self { bits: self.bits & !mask }
             }
             /// Returns a copy of `self` unsetting the bits that are set in `other`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn unset_other(self, other: Self) -> Self {
                 Self { bits: self.bits & !other.bits }
             }
             /// Unsets the bits that are set in the `mask`.
-            #[inline]
             $vis_extra fn mut_unset_mask(&mut self, mask: $T) {
                 self.bits &= !mask;
             }
             /// Unsets the bits that are set in `other`.
-            #[inline]
             $vis_extra fn mut_unset_other(&mut self, other: Self) {
                 self.bits &= !other.bits;
             }
@@ -968,22 +921,20 @@ macro_rules! _bitfield {
             /* flip */
 
             /// Returns a copy of `self` flipping the bits that are set in the `mask`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn flip_mask(self, mask: $T) -> Self {
                 Self { bits: self.bits ^ mask }
             }
             /// Returns a copy of `self` flipping the bits that are set in `other`.
-            #[must_use] #[inline]
+            #[must_use]
             $vis_extra const fn flip_other(self, other: Self) -> Self {
                 Self { bits: self.bits ^ other.bits }
             }
             /// Flips the bits that are set in the `mask`.
-            #[inline]
             $vis_extra fn mut_flip_mask(&mut self, mask: $T) {
                 self.bits ^= mask;
             }
             /// Flips the bits that are set in `other`.
-            #[inline]
             $vis_extra fn mut_flip_other(&mut self, other: Self) {
                 self.bits ^= other.bits;
             }

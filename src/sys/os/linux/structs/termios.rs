@@ -45,7 +45,6 @@ unsafe impl crate::_dep::bytemuck::NoUninit for LinuxTermios {}
 
 impl LinuxTermios {
     /// Returns a new empty struct.
-    #[inline]
     #[must_use]
     pub const fn new() -> Self {
         Self {
@@ -59,14 +58,12 @@ impl LinuxTermios {
     }
 
     /// Returns a raw byte pointer to self.
-    #[inline]
     #[must_use]
     pub const fn as_bytes_ptr(&self) -> *const u8 {
         self as *const Self as *const u8
     }
 
     /// Returns a raw mutable byte pointer to self.
-    #[inline]
     #[must_use]
     pub fn as_mut_bytes_ptr(&mut self) -> *mut u8 {
         self as *mut Self as *mut u8
@@ -113,7 +110,6 @@ impl LinuxTermios {
     }
 
     /// Returns `true` if we're in a terminal context.
-    #[inline]
     #[must_use]
     pub fn is_terminal() -> bool {
         match Self::get_state() {
@@ -173,20 +169,17 @@ pub struct LinuxTerminalSize {
 
 impl LinuxTerminalSize {
     /// Returns the number of `[horizontal, vertical]` pixels.
-    #[inline]
     #[must_use]
     pub const fn pixels(self) -> [u16; 2] {
         [self.x, self.y]
     }
     /// Returns the number of `[columns, rows]` of cells.
-    #[inline]
     #[must_use]
     pub const fn cells(self) -> [u16; 2] {
         [self.cols, self.rows]
     }
 
     /// Returns the number of pixels per cell `[horizontal, vertical]`.
-    #[inline]
     #[must_use]
     pub const fn pixels_per_cell(self) -> [u16; 2] {
         [self.x / self.cols, self.y / self.rows]

@@ -7,7 +7,6 @@
 
 /// Returns the number of bytes needed to store the given unicode scalar `code`,
 /// already UTF-8 encoded in 2 bytes.
-#[inline]
 #[must_use]
 pub const fn char_utf8_2bytes_len(code: [u8; 2]) -> u8 {
     1 + ((code[1] > 0) & (code[1] & 0b1100_0000 != 0b1000_0000)) as u8
@@ -15,7 +14,6 @@ pub const fn char_utf8_2bytes_len(code: [u8; 2]) -> u8 {
 
 /// Returns the number of bytes needed to store the given unicode scalar `code`,
 /// already UTF-8 encoded in 3 bytes.
-#[inline]
 #[must_use]
 pub const fn char_utf8_3bytes_len(code: [u8; 3]) -> u8 {
     1 + ((code[1] > 0) & (code[1] & 0b1100_0000 != 0b1000_0000)) as u8
@@ -24,7 +22,6 @@ pub const fn char_utf8_3bytes_len(code: [u8; 3]) -> u8 {
 
 /// Returns the number of bytes needed to store the given unicode scalar `code`,
 /// already UTF-8 encoded in 4 bytes.
-#[inline]
 #[must_use]
 pub const fn char_utf8_4bytes_len(code: [u8; 4]) -> u8 {
     1 + ((code[1] > 0) & (code[1] & 0b1100_0000 != 0b1000_0000)) as u8
@@ -34,7 +31,6 @@ pub const fn char_utf8_4bytes_len(code: [u8; 4]) -> u8 {
 
 /// Returns the number of bytes needed to encode the given unicode scalar `code`
 /// as UTF-8
-#[inline]
 pub const fn char_to_utf8_len(code: char) -> usize {
     let code = code as u32;
     if code < 0x80 {
@@ -52,7 +48,6 @@ pub const fn char_to_utf8_len(code: char) -> usize {
 ///
 /// Note that this function always returns a 4-byte array, but the actual
 /// UTF-8 sequence may be shorter. The unused bytes are set to 0.
-#[inline]
 #[must_use]
 #[allow(clippy::unusual_byte_groupings)]
 pub const fn char_to_utf8_bytes(c: char) -> [u8; 4] {

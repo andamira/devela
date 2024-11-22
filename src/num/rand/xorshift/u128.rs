@@ -13,7 +13,6 @@ use crate::{Cast, ConstDefault, Own};
 pub struct XorShift128([u32; 4]);
 
 impl Default for XorShift128 {
-    #[inline]
     fn default() -> Self {
         Self::DEFAULT
     }
@@ -36,7 +35,6 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 4 × 32-bit seeds.
     ///
     /// Returns `None` if all given seeds are `0`.
-    #[inline]
     #[must_use]
     pub const fn new(seeds: [u32; 4]) -> Option<Self> {
         if (seeds[0] | seeds[1] | seeds[2] | seeds[3]) == 0 {
@@ -53,21 +51,20 @@ impl XorShift128 {
     ///
     /// # Panics
     /// Panics in debug if the seeds are all `0`.
-    #[inline]
     pub const fn new_unchecked(seeds: [u32; 4]) -> Self {
         debug_assert![(seeds[0] | seeds[1] | seeds[2] | seeds[3]) != 0, "Seeds must be non-zero"];
         Self(seeds)
     }
 
     /// Returns the current random `u64`.
-    #[inline]
     #[must_use]
     pub const fn current_u64(&self) -> u64 {
         ((self.0[0] as u64) << 32) | (self.0[1] as u64)
     }
 
     /// Returns the next random `u64`.
-    #[inline]
+    // Note how the output of the RNG is computed before updating the state,
+    // unlike on Xoroshiro128pp, for example.
     #[must_use]
     pub fn next_u64(&mut self) -> u64 {
         let t = self.0[3];
@@ -112,7 +109,6 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 128-bit seed.
     ///
     /// The seeds will be split in little endian order.
-    #[inline]
     pub const fn new1_u128(seed: u128) -> Option<Self> {
         Self::new(Cast(seed).into_u32_le())
     }
@@ -120,7 +116,6 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 2 × 64-bit seeds.
     ///
     /// The seeds will be split in little endian order.
-    #[inline]
     pub const fn new2_u64(seeds: [u64; 2]) -> Option<Self> {
         let [x, y] = Cast(seeds[0]).into_u32_le();
         let [z, a] = Cast(seeds[1]).into_u32_le();
@@ -130,7 +125,6 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 4 × 32-bit seeds.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    #[inline]
     pub const fn new4_u32(seeds: [u32; 4]) -> Option<Self> {
         Self::new(seeds)
     }
@@ -138,7 +132,6 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 8 × 16-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[inline]
     pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
         Self::new([
             Cast::<u32>::from_u16_le([seeds[0], seeds[1]]),
@@ -151,7 +144,6 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 16 × 8-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[inline]
     pub const fn new16_u8(seeds: [u8; 16]) -> Option<Self> {
         Self::new([
             Cast::<u32>::from_u8_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
@@ -173,7 +165,6 @@ impl XorShift128 {
 pub struct XorShift128p([u64; 2]);
 
 impl Default for XorShift128p {
-    #[inline]
     fn default() -> Self {
         Self::DEFAULT
     }
@@ -196,7 +187,6 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 2 × 64-bit seeds.
     ///
     /// Returns `None` if all given seeds are `0`.
-    #[inline]
     #[must_use]
     pub const fn new(seeds: [u64; 2]) -> Option<Self> {
         if (seeds[0] | seeds[1]) == 0 {
@@ -213,21 +203,18 @@ impl XorShift128p {
     ///
     /// # Panics
     /// Panics in debug if the seeds are all `0`.
-    #[inline]
     pub const fn new_unchecked(seeds: [u64; 2]) -> Self {
         debug_assert![(seeds[0] | seeds[1]) != 0, "Seeds must be non-zero"];
         Self(seeds)
     }
 
     /// Returns the current random `u64`.
-    #[inline]
     #[must_use]
     pub const fn current_u64(&self) -> u64 {
         self.0[0].wrapping_add(self.0[1])
     }
 
     /// Returns the next random `u64`.
-    #[inline]
     #[must_use]
     pub fn next_u64(&mut self) -> u64 {
         let [s0, mut s1] = [self.0[0], self.0[1]];
@@ -266,7 +253,6 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 128-bit seed.
     ///
     /// The seeds will be split in little endian order.
-    #[inline]
     pub const fn new1_u128(seed: u128) -> Option<Self> {
         Self::new(Cast(seed).into_u64_le())
     }
@@ -274,7 +260,6 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 2 × 64-bit seeds.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    #[inline]
     pub const fn new2_u64(seeds: [u64; 2]) -> Option<Self> {
         Self::new(seeds)
     }
@@ -282,7 +267,6 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 4 × 32-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[inline]
     pub const fn new4_u32(seeds: [u32; 4]) -> Option<Self> {
         Self::new([
             Cast::<u64>::from_u32_le([seeds[0], seeds[1]]),
@@ -293,7 +277,6 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 8 × 16-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[inline]
     pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
         Self::new([
             Cast::<u64>::from_u16_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
@@ -304,7 +287,6 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128` generator from the given 4 × 8-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[inline]
     pub const fn new16_u8(seeds: [u8; 16]) -> Option<Self> {
         let s = seeds;
         Self::new([
@@ -323,18 +305,15 @@ mod impl_rand {
     impl RngCore for XorShift128 {
         /// Returns the next random `u32`,
         /// from the first 32-bits of `next_u64`.
-        #[inline]
         fn next_u32(&mut self) -> u32 {
             (self.next_u64() & 0xFFFF_FFFF) as u32
         }
 
         /// Returns the next random `u64`.
-        #[inline]
         fn next_u64(&mut self) -> u64 {
             self.next_u64()
         }
 
-        #[inline]
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             let mut i = 0;
             while i < dest.len() {
@@ -352,7 +331,6 @@ mod impl_rand {
             }
         }
 
-        #[inline]
         fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
             self.fill_bytes(dest);
             Ok(())
@@ -364,7 +342,6 @@ mod impl_rand {
 
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.
-        #[inline]
         fn from_seed(seed: Self::Seed) -> Self {
             let mut seed_u32s = [0u32; 4];
             if seed == [0; 16] {
@@ -386,18 +363,15 @@ mod impl_rand {
     impl RngCore for XorShift128p {
         /// Returns the next random `u32`,
         /// from the first 32-bits of `next_u64`.
-        #[inline]
         fn next_u32(&mut self) -> u32 {
             (self.next_u64() & 0xFFFF_FFFF) as u32
         }
 
         /// Returns the next random `u64`.
-        #[inline]
         fn next_u64(&mut self) -> u64 {
             self.next_u64()
         }
 
-        #[inline]
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             let mut i = 0;
             while i < dest.len() {
@@ -415,7 +389,6 @@ mod impl_rand {
             }
         }
 
-        #[inline]
         fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
             self.fill_bytes(dest);
             Ok(())
@@ -427,7 +400,6 @@ mod impl_rand {
 
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.
-        #[inline]
         fn from_seed(seed: Self::Seed) -> Self {
             let mut seed_u64s = [0u64; 2];
             if seed == [0; 16] {

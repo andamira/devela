@@ -30,31 +30,25 @@ macro_rules! impl_angle {
             /* construct */
 
             /// Creates a normalized full positive angle at 0 degrees.
-            #[inline]
             pub const fn new_full() -> Self { Self(0.0) }
 
             /// Creates a normalized right positive angle at 90 degrees (0.25).
-            #[inline]
             pub const fn new_right() -> Self { Self(0.25) }
 
             /// Creates a normalized straight positive angle at 180 degrees (0.5).
-            #[inline]
             pub const fn new_straight() -> Self { Self(0.5) }
 
             /// Creates a new angle from a `radians` value.
-            #[inline]
             pub fn from_rad(radians: $f) -> Self {
                 Self(radians / <$f>::TAU)
             }
 
             /// Creates a new angle from a `degrees` value.
-            #[inline]
             pub fn from_deg(degrees: $f) -> Self {
                 Self(degrees / 360.0)
             }
 
             /// Creates a new angle from a `value` in a `custom_unit` which represents a full turn.
-            #[inline]
             pub fn from_custom(value: $f, custom_unit: $f) -> Self {
                 Self(value / custom_unit)
             }
@@ -62,19 +56,19 @@ macro_rules! impl_angle {
             /* convert */
 
             /// Converts the angle to radians.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn to_rad(self) -> $f {
                 self.0 * <$f>::TAU
             }
 
             /// Converts the angle to degrees.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn to_deg(self) -> $f {
                 self.0 * 360.0
             }
 
             /// Converts the angle to a `custom_unit` which represents a full turn.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn to_custom(self, custom_unit: $f) -> $f {
                 self.0 * custom_unit
             }
@@ -82,7 +76,6 @@ macro_rules! impl_angle {
             /* normalize */
 
             /// Returns `true` if the angle is between -1 and 1 (non-inclusive).
-            #[inline]
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub fn is_normalized(self) -> bool {
@@ -91,13 +84,11 @@ macro_rules! impl_angle {
 
             /// Returns the angle normalized to the non-inclusive range -1 to 1.
             // BLOCKED: const by fract
-            #[inline]
             pub fn normalize(self) -> Self {
                 Self(self.0.fract())
             }
 
             /// Sets the angle normalized to the non-inclusive range -1 to 1.
-            #[inline]
             pub fn set_normalized(&mut self) {
                 self.0 = self.0.fract();
             }
@@ -110,12 +101,12 @@ macro_rules! impl_angle {
             /// the direction can't be undefined.
             /// # Features
             /// It will only be const with the `unsafe_const` feature enabled.
-            #[inline] #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn direction(self) -> AngleDirection {
                 use AngleDirection::{Clockwise, CounterClockwise};
                 if Float(self.0).is_sign_negative() { Clockwise } else { CounterClockwise }
             }
-            #[inline] #[allow(missing_docs)]
+            #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn direction(self) -> AngleDirection {
                 use AngleDirection::{Clockwise, CounterClockwise};
@@ -128,12 +119,12 @@ macro_rules! impl_angle {
             /// the direction can't be undefined, and it will return `false` in that case.
             /// # Features
             /// It will only be const with the `unsafe_const` feature enabled.
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn has_direction(self, direction: AngleDirection) -> bool {
                 direction as i8 == self.direction() as i8
             }
-            #[inline] #[must_use] #[allow(missing_docs)]
+            #[must_use] #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn has_direction(self, direction: AngleDirection) -> bool {
                 direction == self.direction()
@@ -144,7 +135,6 @@ macro_rules! impl_angle {
             /// An `Undefined` direction will be interpreted as counter-clockwise (positive).
             /// # Features
             /// It will only be const with the `unsafe_const` feature enabled.
-            #[inline]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn with_direction(self, direction: AngleDirection) -> Self {
                 use AngleDirection as D;
@@ -153,7 +143,7 @@ macro_rules! impl_angle {
                     D::Clockwise => Self(Float(self.0).neg_abs().0),
                 }
             }
-            #[inline] #[allow(missing_docs)]
+            #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn with_direction(self, direction: AngleDirection) -> Self {
                 use AngleDirection as D;
@@ -166,7 +156,6 @@ macro_rules! impl_angle {
             /// Sets the angle to the given `direction`.
             ///
             /// An `Undefined` direction will be interpreted as counter-clockwise (positive).
-            #[inline]
             pub fn set_direction(&mut self, direction: AngleDirection) {
                 use AngleDirection as D;
                 match direction {
@@ -178,12 +167,11 @@ macro_rules! impl_angle {
             /// Returns a version of the angle with inverted direction.
             /// # Features
             /// It will only be const with the `unsafe_const` feature enabled.
-            #[inline]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn invert_direction(self) -> Self {
                 Self(Float(self.0).flip_sign().0)
             }
-            #[inline] #[allow(missing_docs)]
+            #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn invert_direction(self) -> Self {
                 Self(Float(self.0).flip_sign().0)
@@ -192,17 +180,15 @@ macro_rules! impl_angle {
             /// Returns the negative version of the angle.
             /// # Features
             /// It will only be const with the `unsafe_const` feature enabled.
-            #[inline]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn negative(self) -> Self { Self(Float(self.0).neg_abs().0) }
-            #[inline] #[allow(missing_docs)]
+            #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn negative(self) -> Self {
                 return Self(Float(self.0).neg_abs().0);
             }
 
             /// Sets the angle as negative.
-            #[inline]
             pub fn set_negative(&mut self) {
                 { self.0 = Float(self.0).neg_abs().0; }
             }
@@ -210,15 +196,13 @@ macro_rules! impl_angle {
             /// Returns the positive version of the angle.
             /// # Features
             /// It will only be const with the `unsafe_const` feature enabled.
-            #[inline]
             #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn positive(self) -> Self { Self(Float(self.0).const_abs().0) }
-            #[inline] #[allow(missing_docs)]
+            #[allow(missing_docs)]
             #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             pub fn positive(self) -> Self { Self(self.0.abs()) }
 
             /// Sets the angle as positive.
-            #[inline]
             pub fn set_positive(&mut self) {
                 self.0 = self.0.abs();
             }
@@ -227,7 +211,6 @@ macro_rules! impl_angle {
 
             /// Returns the kind of the normalized angle.
             // BLOCKED: const by normalize
-            #[inline]
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub fn kind(self) -> AngleKind {
@@ -248,7 +231,6 @@ macro_rules! impl_angle {
                 }
             }
             /// Returns the kind of the angle using a custom tolerance for approximate matching.
-            #[inline]
             pub fn kind_approx(self, tolerance: $f) -> AngleKind {
                 let angle = self.normalize().positive().0;
                 use AngleKind::{Full, Acute, Right, Obtuse, Straight, Reflex};
@@ -268,7 +250,7 @@ macro_rules! impl_angle {
             }
 
             /// Returns `true` if the angle is of the given `kind`.
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             // BLOCKED: const by normalize
@@ -286,7 +268,7 @@ macro_rules! impl_angle {
             }
 
             /// Returns `true` if the angle is of the given `kind` using a custom tolerance.
-            #[inline] #[must_use]
+            #[must_use]
             pub fn is_kind_approx(self, kind: AngleKind, tolerance: $f) -> bool {
                 let angle = self.normalize().positive().0;
                 match kind {

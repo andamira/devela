@@ -22,13 +22,11 @@ pub struct GcdReturn<G, C> {
 
 impl<G, C> GcdReturn<G, C> {
     /// Constructs a new `GcdReturn`.
-    #[inline]
     pub const fn new(gcd: G, x: C, y: C) -> Self {
         GcdReturn { gcd, x, y }
     }
 
     /// Returns the values as a tuple.
-    #[inline]
     #[must_use]
     pub fn as_tuple(self) -> (G, C, C) {
         (self.gcd, self.x, self.y)
@@ -36,7 +34,6 @@ impl<G, C> GcdReturn<G, C> {
 }
 impl<G: Copy, C: Copy> GcdReturn<G, C> {
     /// Returns the values as a tuple, in compile-time.
-    #[inline]
     #[must_use]
     pub const fn as_tuple_copy(self) -> (G, C, C) {
         (self.gcd, self.x, self.y)
@@ -45,7 +42,6 @@ impl<G: Copy, C: Copy> GcdReturn<G, C> {
 
 impl<T> GcdReturn<T, T> {
     /// Returns the values as an array, if all are of the same type.
-    #[inline]
     #[must_use]
     pub fn as_array(self) -> [T; 3] {
         [self.gcd, self.x, self.y]
@@ -53,7 +49,6 @@ impl<T> GcdReturn<T, T> {
 }
 impl<T: Copy> GcdReturn<T, T> {
     /// Returns the values as an array, if all are of the same type.
-    #[inline]
     #[must_use]
     pub const fn as_array_copy(self) -> [T; 3] {
         [self.gcd, self.x, self.y]

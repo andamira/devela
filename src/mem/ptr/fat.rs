@@ -21,19 +21,16 @@ pub struct FatPtr {
 
 impl FatPtr {
     /// Creates a new `FatPtr` from a data pointer and metadata.
-    #[inline]
     pub const fn new<T>(ptr: *const T, metadata: *const ()) -> Self {
         Self { ptr: ptr as _, metadata }
     }
 
     /// Returns the raw pointer part of the fat pointer.
-    #[inline]
     pub const fn ptr(&self) -> *const () {
         self.ptr
     }
 
     /// Returns the metadata part of the fat pointer.
-    #[inline]
     pub const fn metadata(&self) -> *const () {
         self.metadata
     }

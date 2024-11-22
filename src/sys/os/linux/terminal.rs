@@ -60,7 +60,6 @@ impl LinuxTerminal {
     /// # Features
     /// With `atomic` and `bytemuck` enabled,
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
-    #[inline]
     pub fn new() -> Result<Self, isize> {
         #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
         Self::save_state()?;
@@ -75,7 +74,6 @@ impl LinuxTerminal {
     /// # Features
     /// With `atomic` and `bytemuck` enabled,
     /// it saves the initial terminal state in [`LINUX_TERMINAL_STATE`].
-    #[inline]
     pub fn new_raw() -> Result<Self, isize> {
         #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
         Self::save_state()?;
@@ -91,7 +89,6 @@ impl LinuxTerminal {
         doc(cfg(all(feature = "dep_bytemuck", feature = "dep_atomic")))
     )]
     #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
-    #[inline]
     pub fn save_state() -> Result<(), isize> {
         LINUX_TERMINAL_STATE.store(LinuxTermios::get_state()?, AtomicOrdering::Relaxed);
         Ok(())
@@ -103,20 +100,17 @@ impl LinuxTerminal {
         doc(cfg(all(feature = "dep_bytemuck", feature = "dep_atomic")))
     )]
     #[cfg(all(feature = "dep_atomic", feature = "dep_bytemuck"))]
-    #[inline]
     pub fn restore_saved_state() -> Result<(), isize> {
         LinuxTermios::set_state(LINUX_TERMINAL_STATE.load(AtomicOrdering::Relaxed))
     }
 
     /// Returns `true` if we are in a terminal context.
-    #[inline]
     #[must_use]
     pub fn is_terminal(&self) -> bool {
         LinuxTermios::is_terminal()
     }
 
     /// Returns the terminal dimensions.
-    #[inline]
     pub fn size(&self) -> Result<LinuxTerminalSize, isize> {
         LinuxTermios::get_winsize()
     }
@@ -125,13 +119,11 @@ impl LinuxTerminal {
     ///
     /// Raw mode is a way to configure the terminal so that it does not process or
     /// interpret any of the input but instead passes it directly to the program.
-    #[inline]
     pub fn enable_raw_mode(&self) -> Result<(), isize> {
         LinuxTermios::enable_raw_mode()
     }
 
     /// Disables raw mode.
-    #[inline]
     pub fn disable_raw_mode(&self) -> Result<(), isize> {
         LinuxTermios::disable_raw_mode()
     }

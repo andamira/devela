@@ -150,7 +150,6 @@ macro_rules! impl_destaque {
             /* queries */
 
             /// Returns the number of destaqued elements.
-            #[inline]
             pub const fn len(&self) -> $IDX {
                 self.len as $IDX
             }
@@ -162,7 +161,6 @@ macro_rules! impl_destaque {
             #[doc = "let q = Destaque" $IDX:camel "::<i32, 8>::default();"]
             /// assert![q.is_empty()];
             /// ```
-            #[inline]
             pub const fn is_empty(&self) -> bool {
                 self.len() == 0
             }
@@ -174,7 +172,6 @@ macro_rules! impl_destaque {
             #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert![q.is_full()];
             /// ```
-            #[inline]
             pub const fn is_full(&self) -> bool {
                 self.len() as usize == CAP
             }
@@ -186,7 +183,6 @@ macro_rules! impl_destaque {
             #[doc = "let q = Destaque" $IDX:camel "::<i32, 3>::default();"]
             /// assert_eq![3, q.capacity()];
             /// ```
-            #[inline]
             pub const fn capacity(&self) -> $IDX {
                 CAP as $IDX
             }
@@ -202,7 +198,6 @@ macro_rules! impl_destaque {
             /// assert_eq![2, q.remaining_capacity()];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn remaining_capacity(&self) -> $IDX {
                 CAP as $IDX - self.len()
             }
@@ -217,7 +212,6 @@ macro_rules! impl_destaque {
             #[doc = "let q = Destaque" $IDX:camel "::<_, 3>::from([1, 2, 3]);"]
             /// assert_eq![q.as_slices(), (&[1, 2, 3][..], &[][..])];
             /// ```
-            #[inline]
             pub fn as_slices(&self) -> (&[T], &[T]) {
                 if self.len == 0 {
                     (&[], &[])
@@ -247,7 +241,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.as_slices(), (&[4][..], &[1, 2][..])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn is_contiguous(&self) -> bool {
                 (self.front == 0 && self.back == 0) || (self.front < self.back)
             }
@@ -270,7 +263,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([3, 2, 1])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn push_front(&mut self, element: T) -> Result<()> {
                 if self.is_full() {
                     Err(NotEnoughSpace(Some(1)))
@@ -285,7 +277,6 @@ macro_rules! impl_destaque {
             /// Unchecked version of [`push_front`][Self::push_front].
             /// # Panics
             /// Panics if the destaque is full.
-            #[inline]
             pub fn push_front_unchecked(&mut self, element: T) {
                 self.front = (self.front + CAP as $IDX - 1) % CAP as $IDX;
                 self.data[self.front as usize] = element;
@@ -338,7 +329,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 2, 3])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn push_back(&mut self, element: T) -> Result<()> {
                 if self.is_full() {
                     Err(NotEnoughSpace(Some(1)))
@@ -349,7 +339,6 @@ macro_rules! impl_destaque {
             /// Alias of [`push_back`][Self::push_back].
             ///
             /// This is the habitual *enqueue* operation for a single-ended **queue**.
-            #[inline]
             pub fn enqueue(&mut self, element: T) -> Result<()> {
                 self.push_back(element)
             }
@@ -357,7 +346,6 @@ macro_rules! impl_destaque {
             /// Unchecked version of [`push_back`][Self::push_back].
             /// # Panics
             /// Panics if the destaque is full.
-            #[inline]
             pub fn push_back_unchecked(&mut self, element: T) {
                 self.data[self.back as usize] = element;
                 self.back = (self.back + 1) % CAP as $IDX;
@@ -415,7 +403,6 @@ macro_rules! impl_destaque {
             /// ```
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
-            #[inline]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn pop_front(&mut self) -> Result<T> {
@@ -436,7 +423,6 @@ macro_rules! impl_destaque {
             /// Alias of [`pop_front`][Self::pop_front].
             ///
             /// This is the habitual *dequeue* operation for a single-ended **queue**.
-            #[inline]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn dequeue(&mut self) -> Result<T> {
@@ -461,7 +447,6 @@ macro_rules! impl_destaque {
             /// ```
             /// # Features
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
-            #[inline]
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             pub fn pop_back(&mut self) -> Result<T> {
@@ -492,7 +477,6 @@ macro_rules! impl_destaque {
             /// assert_eq![&3, q.peek_back()?];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn peek_back(&self) -> Result<&T> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -513,7 +497,6 @@ macro_rules! impl_destaque {
             /// assert_eq![&mut 3, q.peek_back_mut()?];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn peek_back_mut(&mut self) -> Result<&mut T> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -534,7 +517,6 @@ macro_rules! impl_destaque {
             /// assert_eq![&1, q.peek_nth_back(2)?];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn peek_nth_back(&self, nth: $IDX) -> Result<&T> {
                 if self.len() <= nth {
                     Err(NotEnoughElements(Some(nth as usize)))
@@ -555,7 +537,6 @@ macro_rules! impl_destaque {
             /// assert_eq![&mut 1, q.peek_nth_back_mut(2)?];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn peek_nth_back_mut(&mut self, nth: $IDX) -> Result<&mut T> {
                 if self.len() <= nth {
                     Err(NotEnoughElements(Some(nth as usize)))
@@ -576,7 +557,6 @@ macro_rules! impl_destaque {
             /// assert_eq![&1, q.peek_front()?];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn peek_front(&self) -> Result<&T> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -597,7 +577,6 @@ macro_rules! impl_destaque {
             /// assert_eq![&mut 1, q.peek_front_mut()?];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn peek_front_mut(&mut self) -> Result<&mut T> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -618,7 +597,6 @@ macro_rules! impl_destaque {
             /// assert_eq![&3, q.peek_nth_front(2)?];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn peek_nth_front(&self, nth: $IDX) -> Result<&T> {
                 if self.len() <= nth {
                     Err(NotEnoughElements(Some(nth as usize)))
@@ -639,7 +617,6 @@ macro_rules! impl_destaque {
             /// assert_eq![&mut 3, q.peek_nth_front_mut(2)?];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn peek_nth_front_mut(&mut self, nth: $IDX) -> Result<&mut T> {
                 if self.len() <= nth {
                     Err(NotEnoughElements(Some(nth as usize)))
@@ -779,7 +756,6 @@ macro_rules! impl_destaque {
             /// q.swap_back();
             /// assert_eq![q.to_array(), Some([1, 2, 4, 3])];
             /// ```
-            #[inline]
             pub fn swap_back(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -791,7 +767,6 @@ macro_rules! impl_destaque {
             /// Unchecked version of [`swap_back`][Self::swap_back].
             /// # Panics
             /// Panics if the destaque doesn't contain at least 2 elements.
-            #[inline]
             pub fn swap_back_unchecked(&mut self) {
                 let bi0 = self.idx_back(0);
                 let bi1 = self.idx_back(1);
@@ -810,7 +785,6 @@ macro_rules! impl_destaque {
             /// q.swap_front();
             /// assert_eq![q.to_array(), Some([2, 1, 3, 4])];
             /// ```
-            #[inline]
             pub fn swap_front(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -822,7 +796,6 @@ macro_rules! impl_destaque {
             /// Unchecked version of [`swap_front`][Self::swap_front].
             /// # Panics
             /// Panics if the destaque doesn't contain at least 2 elements.
-            #[inline]
             pub fn swap_front_unchecked(&mut self) {
                 let fi0 = self.idx_front(0);
                 let fi1 = self.idx_front(1);
@@ -841,7 +814,6 @@ macro_rules! impl_destaque {
             /// q.swap2_back();
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 7, 8, 5, 6])];
             /// ```
-            #[inline]
             pub fn swap2_back(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -873,7 +845,6 @@ macro_rules! impl_destaque {
             /// q.swap2_front();
             /// assert_eq![q.to_array(), Some([3, 4, 1, 2, 5, 6, 7, 8])];
             /// ```
-            #[inline]
             pub fn swap2_front(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -885,7 +856,6 @@ macro_rules! impl_destaque {
             /// Unchecked version of [`swap2_back`][Self::swap2_back].
             /// # Panics
             /// Panics if the destaque doesn't contain at least 2 elements.
-            #[inline]
             pub fn swap2_front_unchecked(&mut self) {
                 let fi0 = self.idx_front(0);
                 let fi1 = self.idx_front(1);
@@ -907,7 +877,6 @@ macro_rules! impl_destaque {
             /// q.swap_ends();
             /// assert_eq![q.to_array(), Some([5, 2, 3, 4, 1])];
             /// ```
-            #[inline]
             pub fn swap_ends(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -930,7 +899,6 @@ macro_rules! impl_destaque {
             /// q.swap2_ends();
             /// assert_eq![q.to_array(), Some([7, 8, 3, 4, 5, 6, 1, 2])];
             /// ```
-            #[inline]
             pub fn swap2_ends(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -1064,7 +1032,6 @@ macro_rules! impl_destaque {
             /// assert![q.is_empty()];
             /// # Ok(()) }
             /// ```
-            #[inline]
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
             pub fn pop_front(&mut self) -> Result<T> {
                 if self.is_empty() {
@@ -1079,7 +1046,6 @@ macro_rules! impl_destaque {
             /// Alias of [`pop_front`][Self::pop_front].
             ///
             /// This is the habitual *dequeue* operation for a single-ended **queue**.
-            #[inline]
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
             pub fn dequeue(&mut self) -> Result<T> {
                 self.pop_front()
@@ -1101,7 +1067,6 @@ macro_rules! impl_destaque {
             /// assert![q.is_empty()];
             /// # Ok(()) }
             /// ```
-            #[inline]
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
             // safe-only version that depends on T: Clone
             pub fn pop_back(&mut self) -> Result<T> {
@@ -1272,7 +1237,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 2, 3, 3])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn dup_back(&mut self) -> Result<()> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -1299,7 +1263,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 1, 2, 3])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn dup_front(&mut self) -> Result<()> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
@@ -1326,7 +1289,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 3, 4])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn dup2_back(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -1356,7 +1318,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 2, 1, 2, 3, 4])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn dup2_front(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -1388,7 +1349,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 3])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn over_back(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -1415,7 +1375,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([2, 1, 2, 3, 4])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn over_front(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -1442,7 +1401,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 5, 6, 3, 4])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn over2_back(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -1472,7 +1430,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([3, 4, 1, 2, 3, 4, 5, 6])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn over2_front(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -1505,7 +1462,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 2, 3, 5, 4, 5])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn tuck_back(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -1534,7 +1490,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 2, 1, 3, 4, 5])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn tuck_front(&mut self) -> Result<()> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
@@ -1564,7 +1519,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 4, 5, 2, 3, 4, 5])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn tuck2_back(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -1596,7 +1550,6 @@ macro_rules! impl_destaque {
             /// assert_eq![q.to_array(), Some([1, 2, 3, 4, 1, 2, 5])];
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub fn tuck2_front(&mut self) -> Result<()> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
@@ -1768,13 +1721,11 @@ macro_rules! impl_destaque {
         // T, S
         impl<T, const CAP: usize, S: Storage> Destaque<T, CAP, $IDX, S> {
             // Returns the `nth` element's index counting from the back.
-            #[inline]
             #[must_use]
             pub(crate) const fn idx_back(&self, nth: $IDX) -> usize {
                 (self.back as usize + CAP - nth as usize - 1) % CAP
             }
             // Returns the `nth` element's index counting from the front.
-            #[inline]
             #[must_use]
             pub(crate) const fn idx_front(&self, nth: $IDX) -> usize {
                 (self.front as usize + nth as usize) % CAP

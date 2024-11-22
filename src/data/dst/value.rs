@@ -59,7 +59,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///     .expect("Insufficient size");
     /// assert_eq!( format!("{}", val), "1234" );
     /// ```
-    #[inline(always)]
     pub fn new<VAL, F>(val: VAL, get_ref: F) -> Result<DstValue<DST, BUF>, VAL>
     where
         F: FnOnce(&VAL) -> &DST,
@@ -112,7 +111,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
     ///
     /// # Safety
     /// `data` must point to `size` bytes, which shouldn't be freed if `Some` is returned.
-    #[inline]
     pub unsafe fn new_raw(
         info: &[usize],
         data: *mut (),
@@ -171,7 +169,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstValue<DST, BUF> {
 /// # Specialisations for `str` (allowing storage of strings with single-byte alignment)
 impl<BUF: DstBuf> DstValue<str, BUF> {
     /// Create a new empty string with a default buffer
-    #[inline(always)]
     pub fn empty_str() -> Result<Self, ()>
     where
         BUF: Default,
@@ -180,7 +177,6 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     }
 
     /// Create a new empty string with a provided buffer
-    #[inline]
     pub fn empty_str_in_buffer(buffer: BUF) -> Result<Self, ()> {
         let rv = unsafe {
             let (raw_ptr, meta_len, meta) = decompose_pointer("");
@@ -201,7 +197,6 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );
     /// ```
-    #[inline(always)]
     pub fn new_str(v: &str) -> Result<Self, &str>
     where
         BUF: Default,
@@ -218,7 +213,6 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     ///     .expect("Insufficient size");
     /// assert_eq!( &val[..], "Hello, World" );
     /// ```
-    #[inline]
     pub fn new_str_in_buffer(buffer: BUF, val: &str) -> Result<Self, &str> {
         let rv = unsafe {
             let (raw_ptr, meta_len, meta) = decompose_pointer(val);
@@ -276,7 +270,6 @@ impl<BUF: DstBuf> DstValue<str, BUF> {
     /// s.truncate(3);
     /// assert_eq!(&s[..], "Foo");
     /// ```
-    #[inline]
     pub fn truncate(&mut self, len: usize) {
         if len < self.len() {
             let _ = &self[..][len..]; // Index to force a panic if the index isn't char-aligned
@@ -294,15 +287,20 @@ impl<I, BUF: DstBuf> DstValue<[I], BUF>
 where
     (I, BUF::Inner): MemAligned,
 {
-    /// Create a new zero-sized slice (will error only if the metadata doesn't fit)
-    #[inline(always)]
+    /// Create a new zero-sized slice.
+    ///
+    /// # Errors
+    /// Will error only if the metadata doesn't fit.
     pub fn empty_slice() -> Result<Self, ()>
     where
         BUF: Default,
     {
         Self::empty_slice_with_buffer(Default::default())
     }
-    /// Create a new zero-sized slice in the provided buffer (will error only if the metadata doesn't fit)
+    /// Create a new zero-sized slice in the provided buffer.
+    ///
+    /// # Errors
+    /// Will error only if the metadata doesn't fit.
     pub fn empty_slice_with_buffer(mut buffer: BUF) -> Result<Self, ()> {
         <(I, BUF::Inner) as MemAligned>::assert_compatibility();
 
@@ -349,7 +347,7 @@ where
         Ok(())
     }
 
-    /// Inline append an item (See Self::append)
+    /// Inline append an item (See [`Self::append`]).
     pub fn appended(mut self, v: I) -> Result<Self, (Self, I)> {
         match self.append(v) {
             Ok(()) => Ok(self),
@@ -357,8 +355,7 @@ where
         }
     }
 
-    /// Extend a slice with an iterator
-    #[inline]
+    /// Extend a slice with an iterator.
     pub fn extend<It: Iterator<Item = I>>(&mut self, mut iter: It) -> Result<(), (I, It)> {
         while let Some(v) = iter.next() {
             match self.append(v) {
@@ -368,8 +365,7 @@ where
         }
         Ok(())
     }
-    /// Helper to extend during construction (see Self::extend)
-    #[inline(always)]
+    /// Helper to extend during construction (See [`Self::extend`]).
     pub fn extended<It: Iterator<Item = I>>(mut self, iter: It) -> Result<Self, (Self, I, It)> {
         match self.extend(iter) {
             Ok(()) => Ok(self),
@@ -377,7 +373,7 @@ where
         }
     }
 
-    /// Remove the last item from the slice
+    /// Remove the last item from the slice.
     pub fn pop(&mut self) -> Option<I> {
         if self.len() > 0 {
             let ofs = self.len() - 1;
@@ -445,20 +441,17 @@ mod core_impls {
     impl<DST: ?Sized, BUF: DstBuf> ops::Deref for DstValue<DST, BUF> {
         type Target = DST;
         #[must_use]
-        #[inline(always)]
         fn deref(&self) -> &DST {
             unsafe { &*self.as_ptr() }
         }
     }
     impl<DST: ?Sized, BUF: DstBuf> ops::DerefMut for DstValue<DST, BUF> {
         #[must_use]
-        #[inline(always)]
         fn deref_mut(&mut self) -> &mut DST {
             unsafe { &mut *self.as_ptr_mut() }
         }
     }
     impl<DST: ?Sized, BUF: DstBuf> ops::Drop for DstValue<DST, BUF> {
-        #[inline(always)]
         fn drop(&mut self) {
             unsafe { ptr::drop_in_place(&mut **self) }
         }
@@ -472,7 +465,6 @@ mod core_impls {
 
     impl_trait! { future::Future;
         type Output = DST::Output;
-        #[inline]
         fn poll(self: pin::Pin<&mut Self>, cx: &mut task::Context) -> task::Poll<Self::Output> {
             unsafe { pin::Pin::new_unchecked(&mut **self.get_unchecked_mut()).poll(cx) }
         }
@@ -480,14 +472,12 @@ mod core_impls {
     impl_trait! { iter::Iterator;
         type Item = DST::Item;
         #[must_use]
-        #[inline(always)]
         fn next(&mut self) -> Option<Self::Item> {
             (**self).next()
         }
     }
     impl_trait! { iter::DoubleEndedIterator;
         #[must_use]
-        #[inline(always)]
         fn next_back(&mut self) -> Option<Self::Item> {
             (**self).next_back()
         }

@@ -50,47 +50,47 @@ macro_rules! impl_frac {
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn numerator(self) -> $i { self.0[0] }
             /// Alias of [`numerator`][Self::numerator].
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn num(self) -> $i { self.0[0] }
 
             /// Returns the denominator (the second number of the sequence).
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn denominator(self) -> $i { self.0[1] }
             /// Alias of [`denominator`][Self::denominator].
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn den(self) -> $i { self.0[0] }
 
             /// Retuns `true` if the fraction is valid `(denominator != 0)`.
             /// # Examples
             /// ```
-            /// # use devela::num::Frac;
+            /// # use devela::Frac;
             #[doc = "assert![Frac([2_" $i ", 1]).is_valid()];"]
             #[doc = "assert![!Frac([2_" $i ", 0]).is_valid()];"]
             /// ```
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn is_valid(self) -> bool { self.0[1] != 0 }
 
             /// Returns `true` if the fraction is proper
             /// `(numerator.abs() < denominator.abs())`.
             /// # Examples
             /// ```
-            /// # use devela::num::Frac;
+            /// # use devela::Frac;
             #[doc = "assert![Frac([2_" $i ", 3]).is_proper()];"]
             #[doc = "assert![!Frac([3_" $i ", 3]).is_proper()];"]
             #[doc = "assert![!Frac([4_" $i ", 3]).is_proper()];"]
             /// ```
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn is_proper(self) -> bool { Int(self.0[0]).abs().0 < Int(self.0[1]).abs().0 }
 
             /// Retuns `true` if the fraction is in the simplest possible form `(gcd() == 1)`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn is_reduced(self) -> bool { self.gcd() == 1 }
 
             /// Simplify a fraction.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn reduce(self) -> $fout {
                 let g = self.gcd();
                 Frac([self.0[0] / g, self.0[1] / g])
@@ -98,14 +98,13 @@ macro_rules! impl_frac {
 
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
             /// between the numerator and the denominator.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn gcd(self) -> $i { Int(self.0[0]).gcd(self.0[1]).0 }
 
             /// Returns the <abbr title="Least Common Multiple">LCM</abbr>
             /// between the numerator and the denominator.
             /// # Errors
             /// Could [`Overflow`].
-            #[inline]
             pub const fn lcm(self) -> Result<$i> {
                 match Int(self.numerator()).lcm(self.denominator()) {
                     Ok(res) => Ok(res.0),
@@ -114,7 +113,7 @@ macro_rules! impl_frac {
             }
 
             /// Adds two fractions.
-            #[inline] #[allow(clippy::should_implement_trait)]
+            #[allow(clippy::should_implement_trait)]
             pub fn add(self, other: $self) -> Result<$fout> {
                 let [num1, den1, num2, den2] = [self.0[0], self.0[1], other[0], other[1]];
                 let lcm_denom = match Int(den1).lcm(den2) {
@@ -135,41 +134,41 @@ macro_rules! impl_frac {
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Frac<$self> {
             /// Returns the numerator (the first number of the sequence).
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn numerator(self) -> Int<$i> { self.0[0] }
 
             /// Returns the denominator (the second number of the sequence).
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn denominator(self) -> Int<$i> { self.0[1] }
 
             /// Retuns `true` if the fraction is valid `(denominator != 0)`.
             /// # Examples
             /// ```
-            /// # use devela::num::{Frac, Int};
+            /// # use devela::{Frac, Int};
             #[doc = "assert![Frac([Int(2_" $i "), Int(1)]).is_valid()];"]
             #[doc = "assert![!Frac([Int(2_" $i "), Int(0)]).is_valid()];"]
             /// ```
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn is_valid(self) -> bool { self.0[1].0 != 0 }
 
             /// Returns `true` if the fraction is proper
             /// `(numerator.abs() < denominator.abs())`.
             /// # Examples
             /// ```
-            /// # use devela::num::{Frac, Int};
+            /// # use devela::{Frac, Int};
             #[doc = "assert![Frac([Int(2_" $i "), Int(3)]).is_proper()];"]
             #[doc = "assert![!Frac([Int(3_" $i "), Int(3)]).is_proper()];"]
             #[doc = "assert![!Frac([Int(4_" $i "), Int(3)]).is_proper()];"]
             /// ```
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn is_proper(self) -> bool { self.0[0].abs().0 < self.0[1].abs().0 }
 
             /// Retuns `true` if the fraction is in the simplest possible form `(gcd() == 1)`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn is_reduced(self) -> bool { self.gcd().0 == 1 }
 
             /// Simplify a fraction.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn reduce(self) -> $fout {
                 let g = self.gcd().0;
                 Frac([Int(self.0[0].0 / g), Int(self.0[1].0 / g)])
@@ -177,14 +176,13 @@ macro_rules! impl_frac {
 
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
             /// between the numerator and the denominator.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn gcd(self) -> Int<$i> { self.0[0].gcd(self.0[1].0) }
 
             /// Returns the <abbr title="Least Common Multiple">LCM</abbr>
             /// between the numerator and the denominator.
             /// # Errors
             /// Could [`Overflow`].
-            #[inline]
             pub const fn lcm(self) -> Result<Int<$i>> {
                 match self.numerator().lcm(self.denominator().0) {
                     Ok(res) => Ok(res),
@@ -193,7 +191,7 @@ macro_rules! impl_frac {
             }
 
             /// Adds two fractions.
-            #[inline] #[allow(clippy::should_implement_trait)]
+            #[allow(clippy::should_implement_trait)]
             pub fn add(self, other: $self) -> Result<$fout> {
                 let [num1, den1, num2, den2] = [self.0[0].0, self.0[1].0, other[0].0, other[1].0];
                 let lcm_denom = match Int(den1).lcm(den2) {

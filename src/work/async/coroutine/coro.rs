@@ -41,21 +41,18 @@ enum CoroStatus {
 
 impl<T, E> Coro<T, E> {
     // Returns a new coroutine.
-    #[inline]
     #[allow(unused)]
     fn new() -> Self {
         Coro { status: CoroStatus::Running, result: None }
     }
 
     /// Yields an [`Ok`] `value` and returns an awaitable CoroYield.
-    #[inline]
     pub fn yield_ok(&mut self, value: T) -> CoroYield<'_, T, E> {
         self.result = sok(value);
         CoroYield { cor: self }
     }
 
     /// Yields an [`Err`] and returns an awaitable future.
-    #[inline]
     pub fn yield_err(&mut self, error: E) -> CoroYield<'_, T, E> {
         self.result = serr(error);
         CoroYield { cor: self }

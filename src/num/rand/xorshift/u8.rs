@@ -15,7 +15,6 @@ use crate::{ConstDefault, Own};
 pub struct XorShift8(u8);
 
 impl Default for XorShift8 {
-    #[inline]
     fn default() -> Self {
         Self::DEFAULT
     }
@@ -38,7 +37,6 @@ impl XorShift8 {
     /// Returns a seeded `XorShift8` generator from the given 8-bit seed.
     ///
     /// Returns `None` if seed == `0`.
-    #[inline]
     #[must_use]
     pub const fn new(seed: u8) -> Option<Self> {
         if seed == 0 {
@@ -51,21 +49,18 @@ impl XorShift8 {
     /// Returns a seeded `XorShift8` generator from the given 8-bit seed, unchecked.
     ///
     /// The seed must not be `0`, otherwise every result will also be `0`.
-    #[inline]
     pub const fn new_unchecked(seed: u8) -> Self {
         debug_assert![seed != 0, "Seed must be non-zero"];
         Self(seed)
     }
 
     /// Returns the current random `u8`.
-    #[inline]
     #[must_use]
     pub const fn current_u8(&self) -> u8 {
         self.0
     }
 
     /// Returns the next random `u8`.
-    #[inline]
     #[must_use]
     pub fn next_u8(&mut self) -> u8 {
         let mut x = self.0;
@@ -77,7 +72,6 @@ impl XorShift8 {
     }
 
     /// Returns a copy of the next new random state.
-    #[inline]
     pub const fn next_new(&self) -> Self {
         let mut x = self.0;
         x ^= x << 3;
@@ -99,7 +93,6 @@ impl XorShift8 {
     /// Returns a seeded `XorShift8` generator from the given 8-bit seed.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    #[inline]
     pub const fn new1_u8(seed: u8) -> Option<Self> {
         Self::new(seed)
     }
@@ -115,7 +108,6 @@ pub struct XorShift8Custom<const SH1: usize = 3, const SH2: usize = 4, const SH3
 impl<const SH1: usize, const SH2: usize, const SH3: usize> Default
     for XorShift8Custom<SH1, SH2, SH3>
 {
-    #[inline]
     fn default() -> Self {
         Self::new_unchecked(Self::DEFAULT_SEED)
     }
@@ -143,7 +135,6 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
     ///
     /// # Panics
     /// Panics in debug if either `SH1`, `SH2` or `SH3` are < 1 or > 7.
-    #[inline]
     pub const fn new(seed: u8) -> Option<Self> {
         debug_assert![SH1 > 0 && SH1 <= 7];
         debug_assert![SH2 > 0 && SH1 <= 7];
@@ -164,7 +155,6 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
     /// # Panics
     /// Panics in debug if either `SH1`, `SH2` or `SH3` are < 1 or > 7,
     /// or if the seed is `0`.
-    #[inline]
     pub const fn new_unchecked(seed: u8) -> Self {
         debug_assert![SH1 > 0 && SH1 <= 7];
         debug_assert![SH2 > 0 && SH1 <= 7];
@@ -174,7 +164,6 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
     }
 
     /// Returns the current random `u8`.
-    #[inline]
     #[must_use]
     pub const fn current_u8(&self) -> u8 {
         self.0
@@ -182,7 +171,6 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
 
     /// Updates the state and returns the next random `u8`.
     ///
-    #[inline]
     pub fn next_u8(&mut self) -> u8 {
         let mut x = self.0;
         x ^= x << SH1;
@@ -193,7 +181,6 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
     }
 
     /// Returns a copy of the next new random state.
-    #[inline]
     pub const fn next_new(&self) -> Self {
         let mut x = self.0;
         x ^= x << SH1;
@@ -215,7 +202,6 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
     /// Returns a seeded `XorShift8Custom` generator from the given 8-bit seed.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    #[inline]
     pub const fn new1_u8(seed: u8) -> Option<Self> {
         Self::new(seed)
     }
@@ -229,13 +215,11 @@ mod impl_rand {
 
     impl RngCore for XorShift8 {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
-        #[inline]
         fn next_u32(&mut self) -> u32 {
             u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
         }
 
         /// Returns the next 8 × random `u8` combined as a single `u64`.
-        #[inline]
         fn next_u64(&mut self) -> u64 {
             u64::from_le_bytes([
                 self.next_u8(),
@@ -249,14 +233,12 @@ mod impl_rand {
             ])
         }
 
-        #[inline]
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             for byte in dest {
                 *byte = self.next_u8();
             }
         }
 
-        #[inline]
         fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
             self.fill_bytes(dest);
             Ok(())
@@ -268,7 +250,6 @@ mod impl_rand {
 
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.
-        #[inline]
         fn from_seed(seed: Self::Seed) -> Self {
             if seed[0] == 0 {
                 Self::cold_path_default()
@@ -282,13 +263,11 @@ mod impl_rand {
         for XorShift8Custom<SH1, SH2, SH3>
     {
         /// Returns the next 4 × random `u8` combined as a single `u32`.
-        #[inline]
         fn next_u32(&mut self) -> u32 {
             u32::from_le_bytes([self.next_u8(), self.next_u8(), self.next_u8(), self.next_u8()])
         }
 
         /// Returns the next 8 × random `u8` combined as a single `u64`.
-        #[inline]
         fn next_u64(&mut self) -> u64 {
             u64::from_le_bytes([
                 self.next_u8(),
@@ -302,14 +281,12 @@ mod impl_rand {
             ])
         }
 
-        #[inline]
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             for byte in dest {
                 *byte = self.next_u8();
             }
         }
 
-        #[inline]
         fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
             self.fill_bytes(dest);
             Ok(())
@@ -323,7 +300,6 @@ mod impl_rand {
 
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.
-        #[inline]
         fn from_seed(seed: Self::Seed) -> Self {
             if seed[0] == 0 {
                 Self::cold_path_default()

@@ -98,7 +98,6 @@ pub trait BitSized<const LEN: usize>: ByteSized {
     /// # Panics
     /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][ByteSized::BYTE_SIZE],
     #[must_use]
-    #[inline]
     fn bit_size(&self) -> usize {
         Self::BIT_SIZE
     }
@@ -111,7 +110,6 @@ pub trait BitSized<const LEN: usize>: ByteSized {
     /// # Panics
     /// Panics if `MIN_BYTE_SIZE > `[`BYTE_SIZE`][ByteSized::BYTE_SIZE],
     #[must_use]
-    #[inline]
     fn min_byte_size(&self) -> usize {
         Self::MIN_BYTE_SIZE
     }

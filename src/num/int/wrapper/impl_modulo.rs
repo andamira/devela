@@ -16,19 +16,18 @@
 //   - modulo_mul_inv (uc)
 //   - modulo_div (uc)
 
-use crate::code::paste;
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
-use crate::num::isize_up;
+use crate::isize_up;
+use crate::paste;
 #[cfg(feature = "_int_usize")]
-use crate::num::usize_up;
+use crate::usize_up;
 use crate::{
-    code::{cif, iif},
-    error::ValueQuant,
-    num::NumError::{NonZeroRequired, Overflow},
-    num::{Int, NumResult as Result},
+    cif, iif, Int,
+    NumError::{NonZeroRequired, Overflow},
+    NumResult as Result, ValueQuant,
 };
 #[cfg(_int_i·)]
-use crate::{error::unwrap, num::NumError::NoInverse};
+use crate::{unwrap, NumError::NoInverse};
 
 // helper function to be called from the cold path branch when modulus == 0.
 #[cold] #[inline(never)] #[cfg(_int_·)] #[rustfmt::skip]
@@ -37,16 +36,16 @@ const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 #[cold] #[inline(never)] #[cfg(_int_i·)] #[rustfmt::skip]
 const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 
-// helper macro to deal with the case when we can't upcast (i.e. for 128-bits).
+#[doc = crate::doc_private!()]
+/// helper macro to deal with the case when we can't upcast (i.e. for 128-bits).
+///
+/// $op:  an overloadable operator (+, -, *, /)
+/// $fn:  the corresponding function (add, sub, mul, div)
+/// $lhs: the left hand side operator
+/// $rhs: the right hand side operator
+/// $is_up: whether we've upcasted (Y) or not (N), known at compile-time
 //
-// $op:  an overloadable operator (+, -, *, /)
-// $fn:  the corresponding function (add, sub, mul, div)
-// $lhs: the left hand side operator
-// $rhs: the right hand side operator
-// $is_up: whether we've upcasted (Y) or not (N), known at compile-time
-//
-// WAIT: [unchecked_add|mul](https://github.com/rust-lang/rust/issues/85122)
-//   [Stabilize unchecked_{add,sub,mul}](https://github.com/rust-lang/rust/pull/122520)
+// TODO:WAIT:1.79 [unchecked_add|mul](https://github.com/rust-lang/rust/issues/85122)
 //   let Some(x) = x.checked_add(y) else { unsafe { hint::unreachable_unchecked() }};
 #[rustfmt::skip] #[allow(unused_macros)]
 macro_rules! upcastop {
@@ -80,12 +79,13 @@ macro_rules! upcastop {
     }};
 }
 
-// $t:     the input/output type
-// $cap:   the capability feature that enables the given implementation. E.g "_int_u8".
-// $up:    the upcasted type to do the operations on (the ones that can overflow) E.g. u16.
-// $iup:   the signed upcasted type for some methods. E.g. i16.
-// $icap:  the feature that enables some methods related to `$iup`. E.g "_int_i16".
-// $is_up: [Y|N]. `Y` if bitsize of $up|$iup > $t; `N` if bitsize $up|$iup == $t.
+#[doc = crate::doc_private!()]
+/// $t:     the input/output type
+/// $cap:   the capability feature that enables the given implementation. E.g "_int_u8".
+/// $up:    the upcasted type to do the operations on (the ones that can overflow) E.g. u16.
+/// $iup:   the signed upcasted type for some methods. E.g. i16.
+/// $icap:  the feature that enables some methods related to `$iup`. E.g "_int_i16".
+/// $is_up: [Y|N]. `Y` if bitsize of $up|$iup > $t; `N` if bitsize $up|$iup == $t.
 macro_rules! impl_int {
     () => {
         impl_int![signed
@@ -189,7 +189,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(i128::MIN).modulo(-1), Err(NumError::Overflow(None))];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo(self, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -246,7 +245,6 @@ macro_rules! impl_int {
             /// # use devela::num::Int;
             #[doc = "let _ = Int(1_" $t ").modulo_unchecked(0); // panics if modulus == 0"]
             /// ```
-            #[inline]
             pub const fn modulo_unchecked(self, modulus: $t) -> Int<$t> {
                 let (v, m) = (self.0 as $up, modulus as $up);
                 Int(v.rem_euclid(m) as $t)
@@ -277,7 +275,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int( 3_" $t ").modulo_cycles(m)?, (0, 1)];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_cycles(self, modulus: $t) -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -302,7 +299,6 @@ macro_rules! impl_int {
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it can also panic
             /// if `self == MIN && modulus == ±1`.
-            #[inline]
             pub const fn modulo_cycles_unchecked(self, modulus: $t) -> ValueQuant<Int<$t>, Int<$t>> {
                 let (v, m) = (self.0 as $up, modulus as $up);
                 let modulo = Int(v.rem_euclid(m) as $t);
@@ -336,7 +332,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_add( 4, m)?, 2];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_add(self, other: $t, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -358,7 +353,6 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it could also panic on overflow.
-            #[inline]
             pub const fn modulo_add_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                 let sum = upcastop![reduce +add(a, b) % m, $is_up];
@@ -394,7 +388,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles( 4, m)?, (2, 2)];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_add_cycles(self, other: $t, modulus: $t)
                 -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
@@ -424,7 +417,6 @@ macro_rules! impl_int {
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
             /// more probably than in [`modulo_add_unchecked`][Self::modulo_add_unchecked]
             /// since we can't reduce the operands beforehand in order to calculate *times*.
-            #[inline]
             pub const fn modulo_add_cycles_unchecked(self, other: $t, modulus: $t)
                 -> ValueQuant<Int<$t>, Int<$t>> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
@@ -464,7 +456,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int( 3_" $t ").modulo_add_inv(m)?, 0];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_add_inv(self, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -485,7 +476,6 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`.
-            #[inline]
             pub const fn modulo_add_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let rem = (self.0.rem_euclid(modulus));
                 iif![rem == 0; Int(0); Int(modulus - rem)]
@@ -516,7 +506,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub( 4, m)?, 0];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_sub(self, other: $t, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -534,7 +523,6 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`.
-            #[inline]
             pub const fn modulo_sub_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                 let res = upcastop![reduce -sub(a, b) % m, $is_up];
@@ -569,7 +557,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles( 4, m)?, (0, 0)];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_sub_cycles(self, other: $t, modulus: $t)
                 -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
@@ -595,7 +582,7 @@ macro_rules! impl_int {
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
             /// more probably than in [`modulo_sub_unchecked`][Self::modulo_sub_unchecked]
             /// since we can't reduce the operands beforehand in order to calculate *times*.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn modulo_sub_cycles_unchecked(self, other: $t, modulus: $t)
                 -> (Int<$t>, Int<$t>) {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
@@ -633,7 +620,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul( 4, m)?, 1];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_mul(self, other: $t, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -655,7 +641,6 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it could also panic on overflow.
-            #[inline]
             pub const fn modulo_mul_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                 let sum = upcastop![reduce *mul(a, b) % m, $is_up];
@@ -691,7 +676,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles( 4, m)?, (1, 5)];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_mul_cycles(self, other: $t, modulus: $t)
                 -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
@@ -721,7 +705,6 @@ macro_rules! impl_int {
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
             /// more probably than in [`modulo_mul_unchecked`][Self::modulo_mul_unchecked]
             /// since we can't reduce the operands beforehand in order to calculate *times*.
-            #[inline]
             pub const fn modulo_mul_cycles_unchecked(self, other: $t, modulus: $t)
                 -> ValueQuant<Int<$t>, Int<$t>> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
@@ -763,7 +746,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int( 4_" $t ").modulo_mul_inv(m)?, 4];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_mul_inv(self, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -788,7 +770,6 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and if there's no inverse.
-            #[inline]
             pub const fn modulo_mul_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let (gcd, x, _) = self.gcd_ext(modulus).as_tuple_copy();
                 if gcd.0 != 1 {
@@ -828,7 +809,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int( 4_" $t ").modulo_div(2, m)?, 2];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_div(self, other: $t, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -846,7 +826,6 @@ macro_rules! impl_int {
             /// # Panics
             /// Panics if `modulus == 0`,
             /// and if there's no multiplicative inverse of `other`.
-            #[inline]
             pub const fn modulo_div_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let inverse = Int(other).modulo_mul_inv_unchecked(modulus);
                 self.modulo_mul_unchecked(inverse.0, modulus)
@@ -913,7 +892,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo(m)?, 1];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo(self, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -940,7 +918,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(3_" $t ").modulo_unchecked(m), 0];"]
             #[doc = "assert_eq![Int(4_" $t ").modulo_unchecked(m), 1];"]
             /// ```
-            #[inline]
             pub const fn modulo_unchecked(self, modulus: $t) -> Int<$t> {
                 Int(self.0 % modulus)
             }
@@ -964,7 +941,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(3_" $t ").modulo_cycles(m)?, (0, 1)];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_cycles(self, modulus: $t) -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -989,7 +965,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(2_" $t ").modulo_cycles_unchecked(m), (2, 0)];"]
             #[doc = "assert_eq![Int(3_" $t ").modulo_cycles_unchecked(m), (0, 1)];"]
             /// ```
-            #[inline]
             pub const fn modulo_cycles_unchecked(self, modulus: $t)
                 -> ValueQuant<Int<$t>, Int<$t>> {
                 ValueQuant::new(Int(self.0 % modulus), Int(self.0 / modulus))
@@ -1017,7 +992,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_add(4, m)?, 2];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_add(self, other: $t, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1035,7 +1009,6 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it could also panic on overflow.
-            #[inline]
             pub const fn modulo_add_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                 let sum = upcastop![reduce +add(a, b) % m, $is_up];
@@ -1067,7 +1040,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(4, m)?, (2, 2)];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_add_cycles(self, other: $t, modulus: $t)
                 -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
@@ -1093,7 +1065,6 @@ macro_rules! impl_int {
             /// Panics if `modulus == 0`, and for `u128` it can also panic on overflow,
             /// more probably than in [`modulo_add_unchecked`][Self::modulo_add_unchecked]
             /// since we can't reduce the operands beforehand in order to calculate *times*.
-            #[inline]
             pub const fn modulo_add_cycles_unchecked(self, other: $t, modulus: $t)
                 -> ValueQuant<Int<$t>, Int<$t>> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
@@ -1129,7 +1100,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(3_" $t ").modulo_add_inv(m)?, 0];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_add_inv(self, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1150,7 +1120,6 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`.
-            #[inline]
             pub const fn modulo_add_inv_unchecked(self, modulus: $t) -> Int<$t> {
                 let rem = (self.0.rem_euclid(modulus));
                 iif![rem == 0; Int(0); Int(modulus - rem)]
@@ -1176,7 +1145,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub(4, m)?, 0];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_sub(self, other: $t, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1194,7 +1162,6 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and if the result would be a negative value.
-            #[inline]
             pub const fn modulo_sub_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 Int(((self.0 - other) % modulus))
             }
@@ -1220,7 +1187,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(4, m)?, (0, 0)];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_sub_cycles(self, other: $t, modulus: $t)
                 -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
@@ -1242,7 +1208,6 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and if the result would be a negative value.
-            #[inline]
             pub const fn modulo_sub_cycles_unchecked(self, other: $t, modulus: $t)
                 -> ValueQuant<Int<$t>, Int<$t>> {
                 let res = self.0 - other;
@@ -1273,7 +1238,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(4, m)?, 1];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_mul(self, other: $t, modulus: $t) -> Result<Int<$t>> {
                 if modulus == 0 {
                     cold_err_zero()
@@ -1291,7 +1255,6 @@ macro_rules! impl_int {
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it could also panic on overflow.
-            #[inline]
             pub const fn modulo_mul_unchecked(self, other: $t, modulus: $t) -> Int<$t> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
                 let sum = upcastop![reduce *mul(a, b) % m, $is_up];
@@ -1323,7 +1286,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(4, m)?, (1, 5)];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             pub const fn modulo_mul_cycles(self, other: $t, modulus: $t)
                 -> Result<ValueQuant<Int<$t>, Int<$t>>> {
                 if modulus == 0 {
@@ -1349,7 +1311,6 @@ macro_rules! impl_int {
             /// Panics if `modulus == 0`, and for `u128` it can also panic on overflow,
             /// more probably than in [`modulo_mul_unchecked`][Self::modulo_mul_unchecked]
             /// since we can't reduce the operands beforehand in order to calculate *times*.
-            #[inline]
             pub const fn modulo_mul_cycles_unchecked(self, other: $t, modulus: $t)
                 -> ValueQuant<Int<$t>, Int<$t>> {
                 let (a, b, m) = (self.0 as $up, other as $up, modulus as $up);
@@ -1391,7 +1352,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_inv(m)?, 4];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             #[cfg(feature = $icap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn modulo_mul_inv(self, modulus: $t) -> Result<Int<$t>> {
@@ -1422,7 +1382,6 @@ macro_rules! impl_int {
             /// Panics if `modulus == 0`, if there's no inverse,
             /// and for `u128` it could overflow when casting
             /// in the [`gcd_ext`][Self::gcd_ext] calculation.
-            #[inline]
             #[cfg(feature = $icap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn modulo_mul_inv_unchecked(self, modulus: $t) -> Int<$t> {
@@ -1461,7 +1420,6 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(4_" $t ").modulo_div(2, m)?, 2];"]
             /// # Ok(()) }
             /// ```
-            #[inline]
             #[cfg(feature = $icap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn modulo_div(self, other: $t, modulus: $t) -> Result<Int<$t>> {
@@ -1483,7 +1441,6 @@ macro_rules! impl_int {
             /// if there's no multiplicative inverse of `other`.
             /// and for `u128` it could overflow when casting
             /// in the [`gcd_ext`][Self::gcd_ext] calculation.
-            #[inline]
             #[cfg(feature = $icap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn modulo_div_unchecked(self, other: $t, modulus: $t) -> Int<$t> {

@@ -61,7 +61,6 @@ macro_rules! impl_stack {
             #[doc = "const S: Stack" $IDX:camel "<i32, 16> = Stack" $IDX:camel
                 "::own_new(0).s_const_unwrap().s;"]
             /// ```
-            #[inline]
             pub const fn own_new(element: T) -> Own<Result<Self>, ()> {
                 Own::empty(Self::new_copied(element))
             }
@@ -101,7 +100,6 @@ macro_rules! impl_stack {
             /// assert_eq![S.as_slice(), &[1, 2]];
             /// assert![S.own_push(3).v.is_err_and(|e| matches![e, DataError::NotEnoughSpace(_)])];
             /// ```
-            #[inline]
             pub const fn own_push(self, element: T) -> Own<Self, Result<()>> {
                 if self.len as usize == CAP {
                     Own::new(self, Err(NotEnoughSpace(Some(1))))
@@ -123,7 +121,6 @@ macro_rules! impl_stack {
             ///     .own_push_unchecked(1).s.own_push_unchecked(2).s;
             /// assert_eq![S.as_slice(), &[1, 2]];
             /// ```
-            #[inline]
             pub const fn own_push_unchecked(self, element: T) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 arr[self.len as usize] = element;
@@ -146,7 +143,6 @@ macro_rules! impl_stack {
             #[doc = "    Stack" $IDX:camel "::from_array_copy([1, 2, 3]).own_pop();"]
             /// S.s_assert(|s| s.as_slice() == &[1, 2]).v_assert_eq(&Ok(3));
             /// ```
-            #[inline]
             pub const fn own_pop(self) -> Own<Self, Result<T>> {
                 if self.len == 0 {
                     Own::new(self, Err(NotEnoughElements(Some(1))))
@@ -167,7 +163,6 @@ macro_rules! impl_stack {
             #[doc = "    Stack" $IDX:camel "::from_array_copy([1, 2, 3]).own_pop_unchecked();"]
             /// S.s_assert(|s| s.as_slice() == &[1, 2]).v_assert_eq(&3);
             /// ```
-            #[inline]
             pub const fn own_pop_unchecked(self) -> Own<Self, T> {
                 let arr = self.data.into_array_copy();
                 let e = arr[self.len as usize - 1];
@@ -190,7 +185,6 @@ macro_rules! impl_stack {
             #[doc = "   Stack" $IDX:camel "::from_array_copy([1, 2, 3]).own_peek();"]
             /// S.s_assert(|s| s.as_slice() == &[1, 2, 3]).v_assert_eq(&Ok(3));
             /// ```
-            #[inline]
             pub const fn own_peek(self) -> Own<Self, Result<T>> {
                 if self.len == 0 {
                     Own::new(self, Err(NotEnoughElements(Some(1))))
@@ -212,7 +206,6 @@ macro_rules! impl_stack {
             ///     .own_peek_unchecked();
             /// S.s_assert(|s| s.as_slice() == &[1, 2, 3]).v_assert_eq(&3);
             /// ```
-            #[inline]
             pub const fn own_peek_unchecked(self) -> Own<Self, T> {
                 let arr = self.data.into_array_copy();
                 let e = arr[self.len as usize - 1];
@@ -240,7 +233,6 @@ macro_rules! impl_stack {
             ///     .own_drop().v_assert_err().s;
             /// assert![T.is_empty()];
             /// ```
-            #[inline]
             pub const fn own_drop(self) -> Own<Self, Result<()>> {
                 if self.len == 0 {
                     Own::new(self, Err(NotEnoughElements(Some(1))))
@@ -261,7 +253,6 @@ macro_rules! impl_stack {
             ///     .own_drop_unchecked().s;
             /// assert_eq![S.as_slice(), &[1]];
             /// ```
-            #[inline]
             pub const fn own_drop_unchecked(self) -> Own<Self, ()> {
                 let mut sta = self;
                 sta.len -= 1;
@@ -282,7 +273,6 @@ macro_rules! impl_stack {
             ///     .own_drop_n(3).v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[1]];
             /// ```
-            #[inline]
             pub const fn own_drop_n(self, n: $IDX) -> Own<Self, Result<()>> {
                 if self.len < n {
                     Own::new(self, Err(NotEnoughElements(Some(n as usize))))
@@ -303,7 +293,6 @@ macro_rules! impl_stack {
             ///     .own_drop_n_unchecked(3).s;
             /// assert_eq![S.as_slice(), &[1]];
             /// ```
-            #[inline]
             pub const fn own_drop_n_unchecked(self, n: $IDX) -> Own<Self, ()> {
                 let mut sta = self;
                 sta.len -= n;
@@ -331,7 +320,6 @@ macro_rules! impl_stack {
             ///     .own_push(1).v_assert_ok().s.own_nip().v_assert_err().s;
             /// assert_eq![T.as_slice(), &[1]];
             /// ```
-            #[inline]
             pub const fn own_nip(self) -> Own<Self, Result<()>> {
                 if self.len < 2 {
                     Own::new(self, Err(NotEnoughElements(Some(2))))
@@ -353,7 +341,6 @@ macro_rules! impl_stack {
             ///     .own_nip_unchecked().s;
             /// assert_eq![S.as_slice(), &[2]];
             /// ```
-            #[inline]
             pub const fn own_nip_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
@@ -376,7 +363,6 @@ macro_rules! impl_stack {
             ///     .own_nip2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[3, 4]];
             /// ```
-            #[inline]
             pub const fn own_nip2(self) -> Own<Self, Result<()>> {
                 if self.len < 4 {
                     Own::new(self, Err(NotEnoughElements(Some(4))))
@@ -398,7 +384,6 @@ macro_rules! impl_stack {
             ///     .own_nip2_unchecked().s;
             /// assert_eq![S.as_slice(), &[3, 4]];
             /// ```
-            #[inline]
             pub const fn own_nip2_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
@@ -429,7 +414,6 @@ macro_rules! impl_stack {
             ///     .own_swap().v_assert_err().s;
             /// assert_eq![T.as_slice(), &[1]];
             /// ```
-            #[inline]
             pub const fn own_swap(self) -> Own<Self, Result<()>> {
                 if self.len < 2 {
                     Own::new(self, Err(NotEnoughElements(Some(2))))
@@ -450,7 +434,6 @@ macro_rules! impl_stack {
             ///     .own_swap_unchecked().s;
             /// assert_eq![S.as_slice(), &[2, 1]];
             /// ```
-            #[inline]
             pub const fn own_swap_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 cswap![arr[self.len as usize - 2], arr[self.len as usize - 1]];
@@ -476,7 +459,6 @@ macro_rules! impl_stack {
             ///     .own_swap2().v_assert_err().s;
             /// assert_eq![T.as_slice(), &[1, 2, 3]];
             /// ```
-            #[inline]
             pub const fn own_swap2(self) -> Own<Self, Result<()>> {
                 if self.len < 4 {
                     Own::new(self, Err(NotEnoughElements(Some(4))))
@@ -497,7 +479,6 @@ macro_rules! impl_stack {
             ///     .own_swap2_unchecked().s;
             /// assert_eq![S.as_slice(), &[3, 4, 1, 2]];
             /// ```
-            #[inline]
             pub const fn own_swap2_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 cswap![arr[self.len as usize - 4], arr[self.len as usize - 2]];
@@ -521,7 +502,6 @@ macro_rules! impl_stack {
             ///     .own_rot().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 2, 3, 1]];
             /// ```
-            #[inline]
             pub const fn own_rot(self) -> Own<Self, Result<()>> {
                 if self.len < 3 {
                     Own::new(self, Err(NotEnoughElements(Some(3))))
@@ -544,7 +524,6 @@ macro_rules! impl_stack {
             ///     .own_rot_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 2, 3, 1]];
             /// ```
-            #[inline]
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
@@ -571,7 +550,6 @@ macro_rules! impl_stack {
             ///     .own_rot_cc().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 3, 1, 2]];
             /// ```
-            #[inline]
             pub const fn own_rot_cc(self) -> Own<Self, Result<()>> {
                 if self.len < 3 {
                     Own::new(self, Err(NotEnoughElements(Some(3))))
@@ -593,7 +571,6 @@ macro_rules! impl_stack {
             ///     .own_rot_cc_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 1, 2]];
             /// ```
-            #[inline]
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot_cc_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
@@ -620,7 +597,6 @@ macro_rules! impl_stack {
             ///     .own_rot2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 5, 6, 1, 2]];
             /// ```
-            #[inline]
             pub const fn own_rot2(self) -> Own<Self, Result<()>> {
                 if self.len < 6 {
                     Own::new(self, Err(NotEnoughElements(Some(6))))
@@ -641,7 +617,6 @@ macro_rules! impl_stack {
             ///     .own_rot2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 5, 6, 1, 2]];
             /// ```
-            #[inline]
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot2_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
@@ -673,7 +648,6 @@ macro_rules! impl_stack {
             ///     .own_rot2_cc().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 5, 6, 1, 2, 3, 4]];
             /// ```
-            #[inline]
             pub const fn own_rot2_cc(self) -> Own<Self, Result<()>> {
                 if self.len < 6 {
                     Own::new(self, Err(NotEnoughElements(Some(6))))
@@ -694,7 +668,6 @@ macro_rules! impl_stack {
             ///     .own_rot2_cc_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 5, 6, 1, 2, 3, 4]];
             /// ```
-            #[inline]
             // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
             pub const fn own_rot2_cc_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
@@ -728,7 +701,6 @@ macro_rules! impl_stack {
             ///     .own_push(1).s.own_dup().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[1, 1]];
             /// ```
-            #[inline]
             pub const fn own_dup(self) -> Own<Self, Result<()>> {
                 if self.len == 0 {
                     Own::new(self, Err(NotEnoughElements(Some(1))))
@@ -751,7 +723,6 @@ macro_rules! impl_stack {
             ///     .own_push(1).s.own_dup_unchecked().s;
             /// assert_eq![S.as_slice(), &[1, 1]];
             /// ```
-            #[inline]
             pub const fn own_dup_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 arr[self.len as usize] = arr[self.len as usize - 1];
@@ -776,7 +747,6 @@ macro_rules! impl_stack {
             ///     .own_drop_n(3).s.own_dup2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1, 2]];
             /// ```
-            #[inline]
             pub const fn own_dup2(self) -> Own<Self, Result<()>> {
                 if self.len < 2 {
                     Own::new(self, Err(NotEnoughElements(Some(2))))
@@ -800,7 +770,6 @@ macro_rules! impl_stack {
             ///     .own_drop_n(3).s.own_dup2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1, 2]];
             /// ```
-            #[inline]
             pub const fn own_dup2_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 let a = arr[self.len as usize - 2];
@@ -830,7 +799,6 @@ macro_rules! impl_stack {
             ///     .own_drop().s.own_over().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1]];
             /// ```
-            #[inline]
             pub const fn own_over(self) -> Own<Self, Result<()>> {
                 if self.len < 2 {
                     Own::new(self, Err(NotEnoughElements(Some(2))))
@@ -854,7 +822,6 @@ macro_rules! impl_stack {
             ///     .own_drop().s.own_over_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1]];
             /// ```
-            #[inline]
             pub const fn own_over_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 arr[self.len as usize] = arr[self.len as usize - 2];
@@ -879,7 +846,6 @@ macro_rules! impl_stack {
             ///     .own_drop_n(2).s.own_over2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
             /// ```
-            #[inline]
             pub const fn own_over2(self) -> Own<Self, Result<()>> {
                 if self.len < 4 {
                     Own::new(self, Err(NotEnoughElements(Some(4))))
@@ -903,7 +869,6 @@ macro_rules! impl_stack {
             ///     .own_drop_n(2).s.own_over2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
             /// ```
-            #[inline]
             pub const fn own_over2_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 let a = arr[self.len as usize - 4];
@@ -933,7 +898,6 @@ macro_rules! impl_stack {
             ///     .own_drop().s.own_tuck().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 2, 1, 2]];
             /// ```
-            #[inline]
             pub const fn own_tuck(self) -> Own<Self, Result<()>> {
                 if self.len < 2 {
                     Own::new(self, Err(NotEnoughElements(Some(2))))
@@ -957,7 +921,6 @@ macro_rules! impl_stack {
             ///     .own_drop().s.own_tuck_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 2, 1, 2]];
             /// ```
-            #[inline]
             pub const fn own_tuck_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 let a = arr[self.len as usize - 1];
@@ -984,7 +947,6 @@ macro_rules! impl_stack {
             ///     .own_drop_n(2).s.own_tuck2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 1, 2, 3, 4]];
             /// ```
-            #[inline]
             pub const fn own_tuck2(self) -> Own<Self, Result<()>> {
                 if self.len < 4 {
                     Own::new(self, Err(NotEnoughElements(Some(4))))
@@ -1009,7 +971,6 @@ macro_rules! impl_stack {
             ///     .own_drop_n(2).s.own_tuck2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 1, 2, 3, 4]];
             /// ```
-            #[inline]
             pub const fn own_tuck2_unchecked(self) -> Own<Self, ()> {
                 let mut arr = self.data.into_array_copy();
                 // swap2

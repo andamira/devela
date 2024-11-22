@@ -75,7 +75,6 @@ macro_rules! id_seq {
             /// Alias of [`new_balanced`][Self::new_balanced].
             ///
             /// Returns `None` on overflow.
-            #[inline]
             #[must_use]
             pub fn new() -> Option<Self> {
                 Self::new_balanced()
@@ -86,7 +85,6 @@ macro_rules! id_seq {
             ///
             /// # Panics
             /// Panics on overflow.
-            #[inline]
             pub fn new_unchecked() -> Self {
                 Self::new_balanced_unchecked()
             }
@@ -101,7 +99,6 @@ macro_rules! id_seq {
             /// Returns `None` on overflow.
             ///
             /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
-            #[inline]
             #[must_use]
             pub fn new_strong() -> Option<Self> {
                 Self::new_custom(core::sync::atomic::Ordering::SeqCst)
@@ -117,7 +114,6 @@ macro_rules! id_seq {
             /// Panics on overflow.
             ///
             /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
-            #[inline]
             pub fn new_strong_unchecked() -> Self {
                 Self::new_custom_unchecked(core::sync::atomic::Ordering::SeqCst)
             }
@@ -132,7 +128,6 @@ macro_rules! id_seq {
             /// Returns `None` on overflow.
             ///
             /// [`AcqRel`]: core::sync::atomic::Ordering::AcqRel
-            #[inline]
             #[must_use]
             pub fn new_balanced() -> Option<Self> {
                 Self::new_custom(core::sync::atomic::Ordering::AcqRel)
@@ -148,7 +143,6 @@ macro_rules! id_seq {
             /// Panics on overflow.
             ///
             /// [`AcqRel`]: core::sync::atomic::Ordering::AcqRel
-            #[inline]
             pub fn new_balanced_unchecked() -> Self {
                 Self::new_custom_unchecked(core::sync::atomic::Ordering::AcqRel)
             }
@@ -163,7 +157,6 @@ macro_rules! id_seq {
             /// Returns `None` on overflow.
             ///
             /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
-            #[inline]
             #[must_use]
             pub fn new_fast() -> Option<Self> {
                 Self::new_custom(core::sync::atomic::Ordering::Relaxed)
@@ -179,7 +172,6 @@ macro_rules! id_seq {
             /// Panics on overflow.
             ///
             /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
-            #[inline]
             pub fn new_fast_unchecked() -> Self {
                 Self::new_custom_unchecked(core::sync::atomic::Ordering::Relaxed)
             }
@@ -259,7 +251,6 @@ macro_rules! id_seq {
             ///
             /// The value is guaranteed to be a valid sequential identifier, from
             #[doc = concat!("`", stringify!($prim) ,"::MIN` to `", stringify!($prim), "::MAX`.")]
-            #[inline]
             pub fn value(&self) -> $prim {
                 self.id
             }
@@ -267,7 +258,6 @@ macro_rules! id_seq {
             /// Returns the number of IDs generated so far.
             ///
             /// Alias of [`generated_ids_balanced`][Self::generated_ids_balanced].
-            #[inline]
             #[must_use]
             pub fn generated_ids() -> $prim {
                 Self::generated_ids_balanced()
@@ -278,7 +268,6 @@ macro_rules! id_seq {
             /// even at the cost of performance.
             ///
             /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
-            #[inline]
             #[must_use]
             pub fn generated_ids_strong() -> $prim {
                 let current_id = $static.load(core::sync::atomic::Ordering::SeqCst);
@@ -290,7 +279,6 @@ macro_rules! id_seq {
             /// ensuring consistent visibility across threads.
             ///
             /// [`Acquire`]: core::sync::atomic::Ordering::Acquire
-            #[inline]
             #[must_use]
             pub fn generated_ids_balanced() -> $prim {
                 let current_id = $static.load(core::sync::atomic::Ordering::Acquire);
@@ -302,7 +290,6 @@ macro_rules! id_seq {
             /// where memory ordering is not a concern.
             ///
             /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
-            #[inline]
             #[must_use]
             pub fn generated_ids_fast() -> $prim {
                 let current_id = $static.load(core::sync::atomic::Ordering::Relaxed);
@@ -312,7 +299,6 @@ macro_rules! id_seq {
             /// Returns the number of remaining IDs.
             ///
             /// Alias of [`remaining_ids_balanced`][Self::remaining_ids_balanced].
-            #[inline]
             #[must_use]
             pub fn remaining_ids() -> $prim {
                 Self::remaining_ids_balanced()
@@ -323,7 +309,6 @@ macro_rules! id_seq {
             /// even at the cost of performance.
             ///
             /// [`SeqCst`]: core::sync::atomic::Ordering::SeqCst
-            #[inline]
             #[must_use]
             pub fn remaining_ids_strong() -> $prim {
                 let current_id = $static.load(core::sync::atomic::Ordering::SeqCst);
@@ -335,7 +320,6 @@ macro_rules! id_seq {
             /// ensuring consistent visibility across threads.
             ///
             /// [`Acquire`]: core::sync::atomic::Ordering::Acquire
-            #[inline]
             #[must_use]
             pub fn remaining_ids_balanced() -> $prim {
                 let current_id = $static.load(core::sync::atomic::Ordering::Acquire);
@@ -347,7 +331,6 @@ macro_rules! id_seq {
             /// where memory ordering is not a concern.
             ///
             /// [`Relaxed`]: core::sync::atomic::Ordering::Relaxed
-            #[inline]
             #[must_use]
             pub fn remaining_ids_fast() -> $prim {
                 let current_id = $static.load(core::sync::atomic::Ordering::Relaxed);
@@ -356,7 +339,6 @@ macro_rules! id_seq {
 
             /* private helpers */
 
-            #[inline]
             fn new_custom(ordering: core::sync::atomic::Ordering) -> Option<Self> {
                 let id = $static.fetch_add(1, ordering);
                 if id == <$prim>::MIN {
@@ -368,7 +350,6 @@ macro_rules! id_seq {
             #[cold] #[rustfmt::skip]
             fn none_on_overflow() -> Option<Self> { None }
 
-            #[inline]
             fn new_custom_unchecked(ordering: core::sync::atomic::Ordering) -> Self {
                 let id = $static.fetch_add(1, ordering);
                 if id == <$prim>::MIN {

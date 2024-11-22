@@ -8,6 +8,9 @@
 
 #![allow(unused, non_camel_case_types)]
 
+use crate::doc_private;
+
+#[doc = doc_private!()]
 /// helper macro to only do checked operations when we can't upcast (i.e. for 128-bits).
 ///
 /// Performs checked operations only if the upcasted type is the same
@@ -20,12 +23,15 @@
 /// `$ba`:       the base type
 /// `$up`:       the upcasted type
 ///
+/// # Invoked from:
+/// - num/int/wrapper/impl_root.rs
+///
 /// # Examples
 /// ```ignore
 /// let sum = upcasted_op![add_err(v, m) i32 => i64];
 /// let sum = upcasted_op![reduced_add_err(v, m) % 40; i32 => i64];
 /// ```
-// WAIT: [unchecked_add|mul](https://github.com/rust-lang/rust/issues/85122)
+// TODO:WAIT: [unchecked_add|mul](https://github.com/rust-lang/rust/issues/85122)
 macro_rules! upcasted_op {
     /* basic arithmetic ops */
     // if we've not upcasted, do checked operation and return err on overflow
@@ -99,16 +105,17 @@ macro_rules! upcasted_op {
 }
 pub(crate) use upcasted_op;
 
-// implement the arithmetic operators for a unit struct wrapper, based on the inner type
-//
-// # Arguments:
-// $W:   the outer wrapper
-// $T:   the inner type
-// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
-//
-// # Invoked from:
-// - num/int/wrapper/mod.rs
-// - num/float/wrapper/mod.rs
+#[doc = doc_private!()]
+/// implement the arithmetic operators for a unit struct wrapper, based on the inner type
+///
+/// # Arguments:
+/// $W:   the outer wrapper
+/// $T:   the inner type
+/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
+///
+/// # Invoked from:
+/// - num/int/wrapper/mod.rs
+/// - num/float/wrapper/mod.rs
 macro_rules! impl_ops {
     ($W:ident: $($T:ty : $cap:literal ),+) => { $(
         $crate::num::impl_ops![@common $W($T:$cap)];
@@ -135,15 +142,16 @@ macro_rules! impl_ops {
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl core::ops::Neg for $W<$T> {
             type Output = $W<$T>;
-            #[inline] fn neg(self) -> $W<$T> { $W(self.0.neg()) }
+            fn neg(self) -> $W<$T> { $W(self.0.neg()) }
         }
     };
 
+    (
     // $wrap:  the wrapper type
     // $T:     the inner type
     // $trait: the trait to implement
     // $fn:    the name of the method
-    (@op $W:ident($T:ty : $cap:literal), $trait:ident, $fn:ident) => {
+        @op $W:ident($T:ty : $cap:literal), $trait:ident, $fn:ident) => {
         /* $W<$T> op $W<$T> -> $W<$T> */
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -189,7 +197,6 @@ macro_rules! impl_ops {
     };
     (@op_body $W:ident($T:ty), $fn:ident, $other:ty $(, $other_field:tt)?) => {
         type Output = $W<$T>;
-        #[inline]
         fn $fn(self, other: $other) -> $W<$T> { $W(self.0.$fn(other$(. $other_field)?)) }
     };
 
@@ -198,23 +205,23 @@ macro_rules! impl_ops {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl core::ops::$trait for $W<$T> {
-            #[inline] fn $fn(&mut self, other: $W<$T>) { self.0.$fn(other.0); }
+            fn $fn(&mut self, other: $W<$T>) { self.0.$fn(other.0); }
         }
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<'o> core::ops::$trait<&'o $W<$T>> for $W<$T> {
-            #[inline] fn $fn(&mut self, other: &'o $W<$T>) { self.0.$fn(other.0); }
+            fn $fn(&mut self, other: &'o $W<$T>) { self.0.$fn(other.0); }
         }
         /* $W<$T> op_assign $T -> $W<$T> */
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl core::ops::$trait<$T> for $W<$T> {
-            #[inline] fn $fn(&mut self, other: $T) { self.0.$fn(other); }
+            fn $fn(&mut self, other: $T) { self.0.$fn(other); }
         }
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl<'o> core::ops::$trait<&'o $T> for $W<$T> {
-            #[inline] fn $fn(&mut self, other: &'o $T) { self.0.$fn(other); }
+            fn $fn(&mut self, other: &'o $T) { self.0.$fn(other); }
         }
     }};
 }

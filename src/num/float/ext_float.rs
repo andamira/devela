@@ -441,6 +441,7 @@ pub trait ExtFloat: ExtFloatConst + Sized {
     fn eval_poly(self, coefficients: &[Self]) -> Self;
 }
 
+#[doc = crate::doc_private!()]
 macro_rules! impl_float_ext {
     () => {
         impl_float_ext![
@@ -460,291 +461,254 @@ macro_rules! impl_float_ext {
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl ExtFloat for $f {
-            #[inline]
             fn floor(self) -> Self { Float(self).floor().0 }
 
-            #[inline]
             fn ceil(self) -> Self { Float(self).ceil().0 }
 
-            #[inline]
             fn round(self) -> Self { Float(self).round_ties_away().0 }
 
-            #[inline]
             fn round_ties_away(self) -> Self { Float(self).round_ties_away().0 }
 
-            #[inline]
             fn round_ties_even(self) -> Self { Float(self).round_ties_even().0 }
 
-            #[inline]
             fn round_ties_odd(self) -> Self { Float(self).round_ties_odd().0 }
 
-            #[inline]
             fn trunc(self) -> Self { Float(self).trunc().0 }
 
-            #[inline]
             fn fract(self) -> Self { Float(self).fract().0 }
 
-            #[inline]
             fn split(self) -> (Self, Self) { let (i, f) = Float(self).split(); (i.0, f.0) }
 
-            #[inline]
             fn abs(self) -> Self { Float(self).abs().0 }
 
-            #[inline]
             fn neg_abs(self) -> Self { Float(self).neg_abs().0 }
 
-            #[inline]
             fn sign(self) -> Sign { Float(self).sign() }
 
-            #[inline]
             fn sign_nonzero(self) -> Sign { Float(self).sign_nonzero() }
 
-            #[inline]
             fn signum(self) -> Self { Float(self).signum().0 }
 
-            #[inline]
             fn flip_sign(self) -> Self { Float(self).flip_sign().0 }
 
-            #[inline]
             fn is_sign_positive(self) -> bool { Float(self).is_sign_positive() }
 
-            #[inline]
             fn is_sign_negative(self) -> bool { Float(self).is_sign_negative() }
 
-            #[inline]
             fn is_zero(self) -> bool { Float(self).is_zero() }
 
-            #[inline]
             fn is_sign_positive_nonzero(self) -> bool {
                 Float(self).is_sign_positive_nonzero() }
 
-            #[inline]
             fn is_sign_negative_nonzero(self) -> bool {
                 Float(self).is_sign_negative_nonzero() }
 
-            #[inline]
             fn copysign(self, sign: Self) -> Self { Float(self).copysign(sign).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn mul_add(self, mul: Self, add: Self) -> Self {
                 Float(self).mul_add(mul, add).0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn mul_add(self, mul: Self, add: Self) -> Self {
                 Float(self).mul_add_fallback(mul, add).0
             }
 
-            #[inline]
             fn div_euclid(self, rhs: Self) -> Self { Float(self).div_euclid(rhs).0 }
 
-            #[inline]
             fn rem_euclid(self, rhs: Self) -> Self { Float(self).rem_euclid(rhs).0 }
 
-            #[inline]
             fn scale(self, min: Self, max: Self, u: Self, v: Self) -> Self {
                 Float(self).scale(min, max, u, v).0 }
-            #[inline]
             fn lerp(self, u: Self, v: Self) -> Self { Float(self).lerp(u, v).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn powf(self, y: Self) -> Self { Float(self).powf(y).0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn powf(self, y: Self) -> Self {
                 Float(self).powf_series(y, Float(self).ln_series_terms()).0
             }
 
-            #[inline]
             fn powi(self, p: $ie) -> Self { Float(self).powi(p).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sqrt(self) -> Self { Float(self).sqrt().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn sqrt(self) -> Self { Float(self).sqrt_nr().0 }
 
-            #[inline]
             fn sqrt_fisr(self) -> Self { Float(self).sqrt_fisr().0 }
 
-            #[inline]
             fn fisr(self) -> Self { Float(self).fisr().0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn cbrt(self) -> Self { Float(self).cbrt().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn cbrt(self) -> Self { Float(self).cbrt_nr().0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn hypot(self, rhs: Self) -> Self { Float(self).hypot(rhs).0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn hypot(self, rhs: Self) -> Self { Float(self).hypot_nr(rhs).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn exp(self) -> Self { Float(self).exp().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn exp(self) -> Self {
                 Float(self).exp_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn exp2(self) -> Self { Float(self).exp2().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn exp2(self) -> Self {
                 Float(self).exp2_series(Float(self).exp2_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn exp_m1(self) -> Self { Float(self).exp_m1().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn exp_m1(self) -> Self {
                 Float(self).exp_m1_series(Float(self).exp_series_terms()).0
             }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn ln(self) -> Self { Float(self).ln().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn ln(self) -> Self {
                 Float(self).ln_series(Float(self).ln_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn ln_1p(self) -> Self { Float(self).ln_1p().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn ln_1p(self) -> Self {
                 Float(self).ln_1p_series(Float(self).ln_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn log(self, base: Self) -> Self { Float(self).log(base).0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn log(self, base: Self) -> Self {
                 Float(self).log_series(base, Float(self).ln_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn log2(self) -> Self { Float(self).log2().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn log2(self) -> Self {
                 Float(self).log2_series(Float(self).ln_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn log10(self) -> Self { Float(self).log10().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn log10(self) -> Self {
                 Float(self).log10_series(Float(self).ln_series_terms()).0 }
 
-            #[inline]
             fn factorial(a: $ue) -> Self { Float::<Self>::factorial(a).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sin(self) -> Self { Float(self).sin().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn sin(self) -> Self { Float(self).sin_series(8).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn cos(self) -> Self { Float(self).cos().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn cos(self) -> Self { Float(self).cos_series(8).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sin_cos(self) -> (Self, Self) { let (s, c) = Float(self).sin_cos(); (s.0, c.0) }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn sin_cos(self) -> (Self, Self) {
                 let (s, c) = Float(self).sin_cos_series(8); (s.0, c.0) }
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn tan(self) -> Self { Float(self).tan().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn tan(self) -> Self { Float(self).tan_series(8).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn asin(self) -> Self { Float(self).asin().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn asin(self) -> Self {
                 Float(self).asin_series(Float(self).asin_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn acos(self) -> Self { Float(self).acos().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn acos(self) -> Self {
                 Float(self).acos_series(Float(self).acos_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn atan(self) -> Self { Float(self).atan().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn atan(self) -> Self {
                 Float(self).atan_series(Float(self).atan_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn atan2(self, other: Self) -> Self { Float(self).atan2(other).0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn atan2(self, other: Self) -> Self {
                 Float(self).atan2_series(other, Float(self).atan_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn sinh(self) -> Self { Float(self).sinh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn sinh(self) -> Self {
                 Float(self).sinh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn cosh(self) -> Self { Float(self).cosh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn cosh(self) -> Self {
                 Float(self).cosh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn tanh(self) -> Self { Float(self).tanh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn tanh(self) -> Self {
                 Float(self).tanh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn asinh(self) -> Self { Float(self).asinh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn asinh(self) -> Self {
                 Float(self).asinh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn acosh(self) -> Self { Float(self).acosh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn acosh(self) -> Self {
                 Float(self).acosh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline] #[cfg(any(feature = "std", feature = "dep_libm"))]
+            #[cfg(any(feature = "std", feature = "dep_libm"))]
             fn atanh(self) -> Self { Float(self).atanh().0 }
-            #[inline] #[cfg(not(any(feature = "std", feature = "dep_libm")))]
+            #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn atanh(self) -> Self {
                 Float(self).atanh_series(Float(self).exp_series_terms()).0 }
 
-            #[inline]
             fn clamp(self, min: Self, max: Self) -> Self { Float(self).clamp(min, max).0 }
 
-            #[inline]
             fn max(self, other: Self) -> Self { Float(self).max(other).0 }
 
-            #[inline]
             fn min(self, other: Self) -> Self { Float(self).min(other).0 }
 
-            #[inline]
             fn clamp_nan(self, min: Self, max: Self) -> Self { Float(self).clamp_nan(min, max).0 }
 
-            #[inline]
             fn max_nan(self, other: Self) -> Self { Float(self).max_nan(other).0 }
 
-            #[inline]
             fn min_nan(self, other: Self) -> Self { Float(self).min_nan(other).0 }
 
-            #[inline] #[cfg(feature = $cmp)]
+            #[cfg(feature = $cmp)]
             fn clamp_total(self, min: Self, max: Self) -> Self {
                 Float(self).clamp_total(min, max).0
             }
-            #[inline] #[cfg(not(feature = $cmp))]
+            #[cfg(not(feature = $cmp))]
             fn clamp_total(self, _: Self, _: Self) -> Self { <$f>::NAN }
 
-            #[inline] #[cfg(feature = $cmp)]
+            #[cfg(feature = $cmp)]
             fn max_total(self, other: Self) -> Self { Float(self).max_total(other).0 }
-            #[inline] #[cfg(not(feature = $cmp))]
+            #[cfg(not(feature = $cmp))]
             fn max_total(self, _: Self) -> Self { <$f>::NAN }
 
-            #[inline]
             #[cfg(feature = $cmp)]
             fn min_total(self, other: Self) -> Self { Float(self).min_total(other).0 }
-            #[inline] #[cfg(not(feature = $cmp))]
+            #[cfg(not(feature = $cmp))]
             fn min_total(self, _: Self) -> Self { <$f>::NAN }
 
-            #[inline]
             fn eval_poly(self, coefficients: &[Self]) -> Self {
                 Float(self).eval_poly(coefficients).0
             }

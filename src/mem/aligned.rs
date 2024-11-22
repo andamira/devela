@@ -45,12 +45,10 @@ pub trait MemAligned: Sealed {
 
 // #[cfg(not(feature = "nightly_const"))]
 impl<Candidate, Requirement> MemAligned for (Candidate, Requirement) {
-    #[inline]
     fn is_compatible() -> bool {
         align_of::<Candidate>() <= align_of::<Requirement>()
     }
 
-    #[inline]
     fn assert_compatibility() {
         assert!(
             Self::is_compatible(),

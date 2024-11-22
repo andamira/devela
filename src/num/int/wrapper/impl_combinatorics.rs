@@ -11,19 +11,17 @@
 //   - permute_rep
 
 #[cfg(_int_i·)]
-use crate::num::NumError::NonNegativeRequired;
+use crate::NumError::NonNegativeRequired;
 use crate::{
-    code::{cfor, iif, paste},
-    num::{
-        Cast, Int,
-        NumError::{MismatchedSizes, Overflow},
-        NumResult as Result,
-    },
+    cfor, iif, paste, Cast, Int,
+    NumError::{MismatchedSizes, Overflow},
+    NumResult as Result,
 };
 
-// $t:   the input/output type
-// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
-// $d:  the doclink suffix for the method name
+#[doc = crate::doc_private!()]
+/// $t:   the input/output type
+/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
+/// $d:  the doclink suffix for the method name
 macro_rules! impl_int {
     () => {
         impl_int![signed
@@ -75,14 +73,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(120)), Int(5_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
             #[doc = "assert![Int(-3_" $t ").factorial().is_err()];"]
             #[doc = "assert![Int(" $t "::MAX).factorial().is_err()];"]
             /// ```
-            #[inline]
             pub const fn factorial(self) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0; return Err(NonNegativeRequired)];
@@ -129,7 +126,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// # #[cfg(not(miri))] { // too slow for miri
             #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").subfactorial()];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").subfactorial()];"]
@@ -140,7 +137,6 @@ macro_rules! impl_int {
             /// ```
             /// # Links
             /// - The list of subfactorials is available in <https://oeis.org/A000166>.
-            #[inline]
             pub const fn subfactorial(self) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0; return Err(NonNegativeRequired)];
@@ -176,14 +172,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(1)), Int(3_" $t ").combine(3)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(1)];"]
             #[doc = "assert![Int(-3_" $t ").combine(3).is_err()];"]
             #[doc = "assert![Int(3_" $t ").combine(-2).is_err()];"]
             /// ```
-            #[inline]
             pub const fn combine(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
@@ -217,14 +212,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(10)), Int(3_" $t ").combine_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").combine_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine_rep(1)];"]
             #[doc = "assert![Int(-3_" $t ").combine_rep(3).is_err()];"]
             #[doc = "assert![Int(3_" $t ").combine_rep(-2).is_err()];"]
             /// ```
-            #[inline]
             pub const fn combine_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
@@ -261,14 +255,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute(1)];"]
             #[doc = "assert![Int(-3_" $t ").permute(3).is_err()];"]
             #[doc = "assert![Int(3_" $t ").permute(-2).is_err()];"]
             /// ```
-            #[inline]
             pub const fn permute(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
@@ -295,14 +288,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, Num};
+            /// # use devela::{Int, Num};
             #[doc = "assert_eq![Ok(Int(27)), Int(3_" $t ").permute_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(3_" $t ").permute_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute_rep(1)];"]
             #[doc = "assert![Int(-3_" $t ").permute_rep(3).is_err()];"]
             #[doc = "assert![Int(3_" $t ").permute_rep(-2).is_err()];"]
             /// ```
-            #[inline]
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![n < 0 || r < 0; return Err(NonNegativeRequired)];
@@ -350,13 +342,12 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(120)), Int(5_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").factorial()];"]
             #[doc = "assert_eq![Ok(Int(1)), Int(0_" $t ").factorial()];"]
             #[doc = "assert![Int(" $t "::MAX).factorial().is_err()];"]
             /// ```
-            #[inline]
             pub const fn factorial(self) -> Result<Int<$t>> {
                 let [mut n, mut result] = [self.0, 1];
                 while n > 1 {
@@ -400,7 +391,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// # #[cfg(not(miri))] { // too slow for miri
             #[doc = "assert_eq![Ok(Int(44)), Int(5_" $t ").subfactorial()];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(4_" $t ").subfactorial()];"]
@@ -410,7 +401,6 @@ macro_rules! impl_int {
             /// ```
             /// # Links
             /// - The list of subfactorials is available in <https://oeis.org/A000166>.
-            #[inline]
             pub const fn subfactorial(self) -> Result<Int<$t>> {
                 let n = self.0;
                 match n {
@@ -444,13 +434,12 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(1)), Int(3_" $t ").combine(3)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine(1)];"]
             #[doc = "assert![Int(" $t "::MAX).combine(" $t "::MAX).is_err()];"]
             /// ```
-            #[inline]
             pub const fn combine(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![r > n; return Err(MismatchedSizes)];
@@ -482,13 +471,12 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(10)), Int(3_" $t ").combine_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").combine_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").combine_rep(1)];"]
             #[doc = "assert![Int(" $t "::MAX).combine_rep(" $t "::MAX).is_err()];"]
             /// ```
-            #[inline]
             pub const fn combine_rep(self, r: $t) -> Result<Int<$t>> {
                 let [n, mut num, mut den] = [self.0, 1, 1];
                 cfor![i in 0..r => {
@@ -522,14 +510,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(3)];"]
             #[doc = "assert_eq![Ok(Int(6)), Int(3_" $t ").permute(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute(1)];"]
             #[doc = "assert![Int(3_" $t ").permute(4_" $t ").is_err()];"]
             #[doc = "assert![Int(" $t "::MAX).permute(" $t "::MAX).is_err()];"]
             /// ```
-            #[inline]
             pub const fn permute(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 iif![r > n; return Err(MismatchedSizes)];
@@ -554,13 +541,12 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(27)), Int(3_" $t ").permute_rep(3)];"]
             #[doc = "assert_eq![Ok(Int(9)), Int(3_" $t ").permute_rep(2)];"]
             #[doc = "assert_eq![Ok(Int(3)), Int(3_" $t ").permute_rep(1)];"]
             #[doc = "assert![Int(" $t "::MAX).permute_rep(" $t "::MAX).is_err()];"]
             /// ```
-            #[inline]
             pub const fn permute_rep(self, r: $t) -> Result<Int<$t>> {
                 let n = self.0;
                 let Ok(r_u32) = Cast(r).checked_cast_to_u32() else {

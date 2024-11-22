@@ -49,7 +49,6 @@ pub struct Xabc {
 }
 
 impl Default for Xabc {
-    #[inline]
     fn default() -> Self {
         Self::DEFAULT
     }
@@ -65,7 +64,6 @@ impl Xabc {
 
 impl Xabc {
     /// Returns a seeded `Xabc` generator from the given 3 × 8-bit seeds.
-    #[inline]
     #[must_use]
     pub const fn new(seeds: [u8; 3]) -> Self {
         let a = seeds[0];
@@ -79,7 +77,6 @@ impl Xabc {
     }
 
     /// Reseeds the generator from the given 3 × 8-bit seeds.
-    #[inline]
     pub fn reseed(&mut self, seeds: [u8; 3]) {
         // XOR new entropy into key state
         self.a ^= seeds[0];
@@ -93,14 +90,12 @@ impl Xabc {
     }
 
     /// Returns the current random `u8`.
-    #[inline(always)]
     #[must_use]
     pub const fn current_u8(&self) -> u8 {
         self.c
     }
 
     /// Returns the next random `u8`.
-    #[inline]
     #[must_use]
     pub fn next_u8(&mut self) -> u8 {
         // x is incremented every round and is not affected by any other variable
@@ -116,7 +111,6 @@ impl Xabc {
     }
 
     /// Returns a copy of the next new random state.
-    #[inline]
     #[must_use]
     pub const fn next_new(&self) -> Self {
         let [mut a, mut b, mut c, mut x] = [self.a, self.b, self.c, self.x];
@@ -140,7 +134,6 @@ impl Xabc {
     /// Returns a seeded `Xabc` generator from the given 3 × 8-bit seeds.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    #[inline]
     pub const fn new3_u8(seeds: [u8; 3]) -> Self {
         Self::new(seeds)
     }

@@ -14,40 +14,39 @@ pub struct ValueQuant<V, Q> {
 
 impl<V, Q> ValueQuant<V, Q> {
     /// A constructor with the given `value` and `quant`.
-    #[inline]
     pub const fn new(value: V, quant: Q) -> ValueQuant<V, Q> {
         ValueQuant { v: value, q: quant }
     }
 
     /// Constructs itself from a tuple.
-    #[inline] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub fn from_vq(tuple: (V, Q)) -> ValueQuant<V, Q> {
         ValueQuant { v: tuple.0, q: tuple.1, }
     }
 
     /// Transforms itself into a tuple.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub fn vq(self) -> (V, Q) { (self.v, self.q) }
 
     /// Returns a tuple of shared references to its fields.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub fn vq_ref(&self) -> (&V, &Q) { (&self.v, &self.q) }
 
     /// Returns a tuple of exclusive references to its fields.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub fn vq_mut(&mut self) -> (&mut V, &mut Q) { (&mut self.v, &mut self.q) }
 }
 
 impl<V: Copy, Q: Copy> ValueQuant<V, Q> {
     /// Constructs itself from a tuple, in compile-time.
-    #[inline] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub const fn from_vq_const(tuple: (V, Q)) -> ValueQuant<V, Q> {
         ValueQuant { v: tuple.0, q: tuple.1,
         }
     }
 
     /// Transforms itself into a tuple, in compile-time.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn vq_const(self) -> (V, Q) { (self.v, self.q) }
 }
 
@@ -60,7 +59,6 @@ mod core_impls {
     };
 
     impl<V: Clone, Q: Clone> Clone for ValueQuant<V, Q> {
-        #[inline]
         fn clone(&self) -> Self {
             Self { v: self.v.clone(), q: self.q.clone() }
         }
@@ -69,7 +67,6 @@ mod core_impls {
 
     impl<V: Default, Q: Default> Default for ValueQuant<V, Q> {
         /// Returns an empty ValueQuant with `None` for both fields.
-        #[inline]
         fn default() -> Self {
             Self { v: Default::default(), q: Default::default() }
         }
@@ -91,7 +88,6 @@ mod core_impls {
     }
 
     impl<V: PartialEq, Q: PartialEq> PartialEq for ValueQuant<V, Q> {
-        #[inline]
         fn eq(&self, other: &Self) -> bool {
             self.v == other.v && self.q == other.q
         }
@@ -99,7 +95,6 @@ mod core_impls {
     impl<V: Eq, Q: Eq> Eq for ValueQuant<V, Q> {}
     // with a tuple:
     impl<V: PartialEq, Q: PartialEq> PartialEq<(V, Q)> for ValueQuant<V, Q> {
-        #[inline]
         fn eq(&self, other: &(V, Q)) -> bool {
             self.v == other.0 && self.q == other.1
         }
@@ -125,7 +120,6 @@ mod core_impls {
     }
 
     impl<V: Hash, Q: Hash> Hash for ValueQuant<V, Q> {
-        #[inline]
         fn hash<HR: Hasher>(&self, state: &mut HR) {
             self.v.hash(state);
             self.q.hash(state);

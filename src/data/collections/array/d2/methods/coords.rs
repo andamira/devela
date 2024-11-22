@@ -39,7 +39,6 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
-            #[inline]
             pub fn get_ref(&self, col_row: [usize; 2]) -> Result<&T> {
                 Self::get_index(col_row).map(|idx| &self.data[idx])
             }
@@ -47,7 +46,6 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Panics
             /// Panics if the coordinates are out of bounds.
-            #[inline]
             #[must_use]
             pub fn get_ref_unchecked(&self, col_row: [usize; 2]) -> &T {
                 &self.data.data[Self::get_index_unchecked(col_row)]
@@ -59,7 +57,6 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
-            #[inline]
             pub fn get_mut(&mut self, col_row: [usize; 2]) -> Result<&mut T> {
                 Self::get_index(col_row).map(|idx| &mut self.data[idx])
             }
@@ -67,7 +64,6 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Panics
             /// Panics if the coordinates are out of bounds.
-            #[inline]
             #[must_use]
             pub fn get_mut_unchecked(&mut self, col_row: [usize; 2]) -> &mut T {
                 &mut self.data.data[Self::get_index_unchecked(col_row)]
@@ -79,7 +75,6 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
-            #[inline]
             pub fn set(&mut self, element: T, col_row: [usize; 2]) -> Result<()> {
                 self.get_mut(col_row).map(|e| {
                     *e = element;
@@ -89,7 +84,6 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Panics
             /// Panics if the coordinates are out of bounds.
-            #[inline]
             pub fn set_unchecked(&mut self, element: T, col_row: [usize; 2]) {
                 let e = self.get_mut_unchecked(col_row);
                 *e = element;
@@ -107,7 +101,6 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
-            #[inline]
             pub fn get(&self, col_row: [usize; 2]) -> Result<T> {
                 Self::get_index(col_row).map(|idx| self.data[idx].clone())
             }
@@ -115,7 +108,6 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Panics
             /// Panics if the coordinates are out of bounds.
-            #[inline]
             #[must_use]
             pub fn get_unchecked(&self, col_row: [usize; 2]) -> T {
                 self.data.data[Self::get_index_unchecked(col_row)].clone()
@@ -135,7 +127,6 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
-            #[inline]
             pub fn [<get_ref_ $D2 maj>](&self, col_row: [usize; 2]) -> Result<&T> {
                 Self::[<get_index_ $D2 maj>](col_row).map(|idx| &self.data[idx])
             }
@@ -143,7 +134,6 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Panics
             /// Panics if the coordinates are out of bounds.
-            #[inline]
             #[must_use]
             pub fn [<get_ref_ $D2 maj_unchecked>](&self, col_row: [usize; 2]) -> &T {
                 &self.data.data[Self::[<get_index_ $D2 maj_unchecked>](col_row)]
@@ -155,7 +145,6 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
-            #[inline]
             pub fn [<get_mut_ $D2 maj>](&mut self, col_row: [usize; 2]) -> Result<&mut T> {
                 Self::[<get_index_ $D2 maj>](col_row).map(|idx| &mut self.data[idx])
             }
@@ -163,7 +152,6 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Panics
             /// Panics if the coordinates are out of bounds.
-            #[inline]
             #[must_use]
             pub fn [<get_mut_ $D2 maj_unchecked>](&mut self, col_row: [usize; 2]) -> &mut T {
                 &mut self.data.data[Self::[<get_index_ $D2 maj_unchecked>](col_row)]
@@ -175,7 +163,6 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
-            #[inline]
             pub fn [<set_ $D2 maj>](&mut self, element: T, col_row: [usize; 2]) -> Result<()> {
                 self.[<get_mut_ $D2 maj>](col_row).map(|e| {
                     *e = element;
@@ -185,7 +172,6 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Panics
             /// Panics if the coordinates are out of bounds.
-            #[inline]
             pub fn [<set_ $D2 maj_unchecked>](&mut self, element: T, col_row: [usize; 2]) {
                 let e = self.[<get_mut_ $D2 maj_unchecked>](col_row);
                 *e = element;
@@ -197,13 +183,11 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the resulting index is `> CR`.
-            #[inline]
             pub const fn [<get_index_ $D2 maj>](col_row: [usize; 2]) -> Result<usize> {
                 Array2d::<T, C, R, CR, $CMAJ, S>::[<get_index>](col_row)
             }
             /// Calculates the 1D array index from the given 2D coordinates
             #[doc = "in the opposite " $D2long "-major order."]
-            #[inline]
             #[must_use]
             pub const fn [<get_index_ $D2 maj_unchecked>](col_row: [usize; 2]) -> usize {
                 Array2d::<T, C, R, CR, $CMAJ, S>::[<get_index_unchecked>](col_row)
@@ -213,13 +197,11 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if `index` is `> CR`.
-            #[inline]
             pub const fn [<get_coords_ $D2 maj>](index: usize) -> Result<[usize; 2]> {
                 Array2d::<T, C, R, CR, $CMAJ, S>::[<get_coords>](index)
             }
             /// Calculates the 2D coordinates from the given 1D array index
             #[doc = "in the opposite " $D2long "-major order."]
-            #[inline]
             pub const fn [<get_coords_ $D2 maj_unchecked>](index: usize) -> [usize; 2] {
                 Array2d::<T, C, R, CR, $CMAJ, S>::[<get_coords_unchecked>](index)
             }
@@ -235,7 +217,6 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
-            #[inline]
             pub fn [<get_ $D2 maj>](&self, col_row: [usize; 2]) -> Result<T> {
                 Self::[<get_index_ $D2 maj>](col_row).map(|idx| self.data[idx].clone())
             }
@@ -243,7 +224,6 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Panics
             /// Panics if the coordinates are out of bounds.
-            #[inline]
             #[must_use]
             pub fn [<get_ $D2 maj_unchecked>](&self, col_row: [usize; 2]) -> T {
                 self.data.data[Self::[<get_index_ $D2 maj_unchecked>](col_row)].clone()
@@ -262,7 +242,6 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     /// in the current row-major order.
     /// # Errors
     /// Returns [`Overflow`] if the resulting index is `>= CR`.
-    #[inline]
     pub const fn get_index(col_row: [usize; 2]) -> Result<usize> {
         let idx = Self::get_index_unchecked(col_row);
         iif![idx < CR; Ok(idx); Err(Overflow)]
@@ -273,7 +252,6 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     // This function seems to be 2x faster than
     // [`get_coords_unchecked`](#method.get_coords_unchecked).
     // BENCH: 0.63 ns
-    #[inline]
     #[must_use]
     pub const fn get_index_unchecked(col_row: [usize; 2]) -> usize {
         col_row[1] * R + col_row[0]
@@ -283,7 +261,6 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     /// in the current row-major order.
     /// # Errors
     /// Returns [`Overflow`] if `index` is `>= CR`.
-    #[inline]
     pub const fn get_coords(index: usize) -> Result<[usize; 2]> {
         iif![index < CR; Ok(Self::get_coords_unchecked(index)); Err(Overflow)]
     }
@@ -293,7 +270,6 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     // This function seems to be 2x slower than
     // [`get_index_unchecked`](#method.get_index_unchecked).
     // BENCH: 1.4 ns
-    #[inline]
     #[must_use]
     pub const fn get_coords_unchecked(index: usize) -> [usize; 2] {
         [index % R, index / R]
@@ -309,7 +285,6 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     /// in the current column-major order.
     /// # Errors
     /// Returns [`Overflow`] if the resulting index is `>= CR`.
-    #[inline]
     pub const fn get_index(col_row: [usize; 2]) -> Result<usize> {
         let idx = Self::get_index_unchecked(col_row);
         iif![idx < CR; Ok(idx); Err(Overflow)]
@@ -320,7 +295,6 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     // This function seems to be 1.5x faster than
     // [`get_coords_unchecked`](#method.get_coords_unchecked-1).
     // BENCH: 0.62 ns
-    #[inline]
     #[must_use]
     pub const fn get_index_unchecked(col_row: [usize; 2]) -> usize {
         col_row[0] * C + col_row[1]
@@ -330,7 +304,6 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     /// in the current column-major order.
     /// # Errors
     /// Returns [`Overflow`] if `index` is `>= CR`.
-    #[inline]
     pub const fn get_coords(index: usize) -> Result<[usize; 2]> {
         iif![index < CR; Ok(Self::get_coords_unchecked(index)); Err(Overflow)]
     }
@@ -340,7 +313,6 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     // This function seems to be 1.5x slower than
     // [`get_index_unchecked`](#method.get_index_unchecked-1).
     // BENCH: 0.94 ns
-    #[inline]
     #[must_use]
     pub const fn get_coords_unchecked(index: usize) -> [usize; 2] {
         [index / C, index % C]

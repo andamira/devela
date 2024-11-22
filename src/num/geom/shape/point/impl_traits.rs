@@ -9,7 +9,6 @@ use crate::{
 };
 
 impl<T: Clone, const D: usize> Clone for Point<T, D> {
-    #[inline]
     fn clone(&self) -> Self {
         Self::new(self.coords.clone())
     }
@@ -17,7 +16,6 @@ impl<T: Clone, const D: usize> Clone for Point<T, D> {
 impl<T: Copy, const D: usize> Copy for Point<T, D> {}
 
 impl<T: Default, const D: usize> Default for Point<T, D> {
-    #[inline]
     fn default() -> Self {
         Self::new(array_init![default [T; D], "safe_num", "unsafe_array"])
     }
@@ -38,7 +36,6 @@ impl<T: Display, const D: usize> Display for Point<T, D> {
 }
 
 impl<T: PartialEq, const D: usize> PartialEq for Point<T, D> {
-    #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.coords == other.coords
     }
@@ -46,20 +43,17 @@ impl<T: PartialEq, const D: usize> PartialEq for Point<T, D> {
 impl<T: Eq, const D: usize> Eq for Point<T, D> {}
 
 impl<T: PartialOrd, const D: usize> PartialOrd for Point<T, D> {
-    #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.coords.partial_cmp(&other.coords)
     }
 }
 impl<T: Ord, const D: usize> Ord for Point<T, D> {
-    #[inline]
     fn cmp(&self, other: &Self) -> Ordering {
         self.coords.cmp(&other.coords)
     }
 }
 
 impl<T: Hash, const D: usize> Hash for Point<T, D> {
-    #[inline]
     fn hash<HR: Hasher>(&self, state: &mut HR) {
         self.coords.hash(state);
     }

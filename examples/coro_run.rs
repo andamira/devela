@@ -1,4 +1,6 @@
 // examples/coro_run.rs
+//
+//!
 
 use devela::{
     error::{serr, sok},

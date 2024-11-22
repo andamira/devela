@@ -75,19 +75,16 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     }
 
     #[must_use]
-    #[inline(always)]
     pub(super) fn meta_words() -> usize {
         BUF::round_to_words(size_of::<&DST>() - size_of::<usize>())
     }
 
     #[must_use]
-    #[inline(always)]
     fn space_words(&self) -> usize {
         self.data.as_ref().len() - self.write_pos
     }
 
     #[must_use]
-    #[inline]
     pub(super) fn front_raw(&self) -> *mut DST {
         assert!(self.read_pos < self.write_pos);
         // SAFETY: Internal consistency maintains the metadata validity.
@@ -95,7 +92,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     }
 
     #[must_use]
-    #[inline]
     // SAFETY: Caller must ensure that `pos` is the start of an object.
     pub(super) unsafe fn raw_at(&self, pos: usize) -> *mut DST {
         assert!(pos >= self.read_pos);
@@ -108,7 +104,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     }
 
     #[must_use]
-    #[inline]
     pub(super) fn front_raw_mut(&mut self) -> *mut DST {
         assert!(self.read_pos < self.write_pos);
         // SAFETY: Internal consistency maintains the metadata validity.
@@ -116,7 +111,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
     }
 
     #[must_use]
-    #[inline]
     // SAFETY: Caller must ensure that `pos` is the start of an object.
     pub(super) unsafe fn raw_at_mut(&mut self, pos: usize) -> *mut DST {
         assert!(pos >= self.read_pos);
@@ -128,7 +122,6 @@ impl<DST: ?Sized, BUF: DstBuf> DstQueue<DST, BUF> {
         unsafe { make_fat_ptr(data.as_mut_ptr() as *mut (), meta) }
     }
 
-    #[inline]
     pub(super) fn pop_front_inner(&mut self) {
         // SAFETY: `front_raw_mut` asserts that there's an item, rest is correct.
         unsafe {

@@ -15,32 +15,28 @@
 //   - scale_wrap
 //   - midpoint
 
-#[allow(unused_imports)]
-use crate::error::unwrap;
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
-use crate::num::isize_up;
+use crate::isize_up;
 #[cfg(feature = "_int_usize")]
-use crate::num::usize_up;
+use crate::usize_up;
 #[allow(unused_imports)]
-use crate::num::GcdReturn;
 use crate::{
-    code::{iif, paste},
-    mem::cswap,
-    num::{Cast, Int, NumError::Overflow, NumResult as Result},
+    cswap, iif, paste, unwrap, Cast, GcdReturn, Int, NumError::Overflow, NumResult as Result,
 };
 
-// $t:    the input/output type
-// $cap:  the capability feature that enables the given implementation. E.g "_int_u8".
-//
-// $ut:   the unsigned type of the same size as $t (only for signed)
-// $ucap: the feature that enables some methods related to `$ut`. (signed midpoint)
-//
-// $up:   the upcasted type to do the operations on (for lcm). E.g u8.
-//
-// $iup:  the signed upcasted type for some methods (gcd_ext). E.g. i16. (only for unsigned)
-// $icap: the feature that enables some methods related to `$iup`. E.g "_int_i16". (only for unsigned)
-//
-// $d:    the doclink suffix for the method name
+#[doc = crate::doc_private!()]
+/// $t:    the input/output type
+/// $cap:  the capability feature that enables the given implementation. E.g "_int_u8".
+///
+/// $ut:   the unsigned type of the same size as $t (only for signed)
+/// $ucap: the feature that enables some methods related to `$ut`. (signed midpoint)
+///
+/// $up:   the upcasted type to do the operations on (for lcm). E.g u8.
+///
+/// $iup:  the signed upcasted type for some methods (gcd_ext). E.g. i16. (only for unsigned)
+/// $icap: the feature that enables some methods related to `$iup`. E.g "_int_i16". (only for unsigned)
+///
+/// $d:    the doclink suffix for the method name
 macro_rules! impl_int {
     () => {
         impl_int![signed
@@ -87,33 +83,33 @@ macro_rules! impl_int {
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the absolute value of `self`.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn abs(self) -> Int<$t> { Int(self.0.abs()) }
 
             /// Returns `true` if `self` is an even number.
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert![Int(2_" $t ").is_even()];"]
             #[doc = "assert![Int(-2_" $t ").is_even()];"]
             #[doc = "assert![!Int(3_" $t ").is_even()];"]
             #[doc = "assert![Int(0_" $t ").is_even()];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn is_even(self) -> bool { self.0 & 1 == 0 }
 
             /// Returns `true` if `self` is an odd number.
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert![Int(3_" $t ").is_odd()];"]
             #[doc = "assert![Int(-3_" $t ").is_odd()];"]
             #[doc = "assert![!Int(2_" $t ").is_odd()];"]
             #[doc = "assert![!Int(0_" $t ").is_odd()];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn is_odd(self) -> bool { self.0 & 1 == 1 }
 
             /* signed gcd, lcm */
@@ -124,7 +120,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(4), Int(64_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(4), Int(-64_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(4), Int(64_" $t ").gcd(-36)];"]
@@ -132,7 +128,7 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(36), Int(0_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(64), Int(64_" $t ").gcd(0)];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn gcd(self, b: $t) -> Int<$t> {
                 let [mut a, mut b] = [self.0.abs(), b.abs()];
                 iif![a == 0; return Int(b)];
@@ -170,12 +166,11 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext(36).as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
-            #[inline]
             pub const fn gcd_ext(self, b: $t) -> GcdReturn<Int<$t>, Int<$t>> {
                 let [mut a, mut b] = [self.0.abs(), b.abs()];
                 if a == 0 { return GcdReturn::new(Int(b), Int(0), Int(1)); }
@@ -232,12 +227,11 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext_euc(36).as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             /// assert_eq!(x.0 * 32 + y.0 * 36, gcd.0);
             /// ```
-            #[inline]
             pub const fn gcd_ext_euc(self, b: $t) -> GcdReturn<Int<$t>, Int<$t>> {
                 let a = self.0;
                 if a == 0 {
@@ -250,19 +244,18 @@ macro_rules! impl_int {
 
             /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "Performs operations internally as [`" $up "`] for the inner operations."]
             ///
             /// # Errors
             /// Can [`Overflow`].
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(12_" $t ").lcm(15), Ok(Int(60))];"]
             #[doc = "assert_eq![Int(-12_" $t ").lcm(15), Ok(Int(60))];"]
             #[doc = "assert_eq![Int(12_" $t ").lcm(-15), Ok(Int(60))];"]
             /// ```
-            #[inline]
             pub const fn lcm(self, b: $t) -> Result<Int<$t>> {
                 let (aup, bup) = (self.0 as $up, b as $up);
                 let res = (aup * bup).abs() / self.gcd(b).0 as $up;
@@ -271,7 +264,7 @@ macro_rules! impl_int {
 
             /// Returns a scaled value between `[min..=max]` to a new range `[a..=b]`.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the checked operations."]
+            #[doc = "Performs operations internally as [`" $up "`] for the checked operations."]
             ///
             /// If the value lies outside of `[min..=max]` it will result in extrapolation.
             ///
@@ -284,7 +277,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
             /// # #[cfg(feature = "_int_i8")]
@@ -307,7 +300,7 @@ macro_rules! impl_int {
 
             /// Returns a scaled value between `[min..=max]` to a new range `[a..=b]`.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the intermediate operations."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// If the value lies outside of `[min..=max]` it will result in extrapolation, and
             /// if the value doesn't fit in the type it will wrap around its boundaries.
@@ -320,7 +313,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(40), Int(60_" $t ").scale_wrap(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Int(112), Int(100_" $t ").scale_wrap(0, 80, 0, 90)]; // extrapolate"]
             /// # #[cfg(feature = "_int_i8")]
@@ -339,14 +332,13 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(4), 2];")]
             #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(-1), -1];")]
             #[doc = concat!("assert_eq![Int(-1_", stringify!($t), ").midpoint(0), -1];")]
             /// ```
             // WAIT: [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
             // NOTE: based on Rust's std implementation.
-            #[inline]
             #[cfg(feature = $ucap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $ucap)))]
             pub const fn midpoint(self, other: $t) -> Int<$t> {
@@ -385,31 +377,31 @@ macro_rules! impl_int {
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the absolute value of `self` (no-op).
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn abs(self) -> Int<$t> { self }
 
             /// Returns `true` if `self` is an even number.
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert![Int(2_" $t ").is_even()];"]
             #[doc = "assert![!Int(3_" $t ").is_even()];"]
             #[doc = "assert![Int(0_" $t ").is_even()];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn is_even(self) -> bool { self.0 & 1 == 0 }
 
             /// Returns `true` if `self` is an odd number.
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert![Int(3_" $t ").is_odd()];"]
             #[doc = "assert![!Int(2_" $t ").is_odd()];"]
             #[doc = "assert![!Int(0_" $t ").is_odd()];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn is_odd(self) -> bool { self.0 & 1 == 1 }
 
             /* unsigned gcd, lcm */
@@ -420,12 +412,12 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(4), Int(64_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(36), Int(0_" $t ").gcd(36)];"]
             #[doc = "assert_eq![Int(64), Int(64_" $t ").gcd(0)];"]
             /// ```
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn gcd(self, mut b: $t) -> Int<$t> {
                 let mut a = self.0;
                 iif![a == 0; return Int(b)];
@@ -450,8 +442,7 @@ macro_rules! impl_int {
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
             /// and the Bézout coeficients.
             ///
-            #[doc = "It upcasts to [`" $iup "`] for the inner operations,"]
-            /// and for the type of the returned coefficients.
+            #[doc = "Performs inner operations and returns coefficients as [`" $iup "`]."]
             ///
             /// This version uses the extended Stein's algorithm which is much more
             /// efficient to compute than Euclid's. It uses only simple arithmetic
@@ -469,12 +460,11 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, isize_up};
+            /// # use devela::{Int, isize_up};
             #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext(36).unwrap().as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
-            #[inline]
             #[cfg(feature = $icap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn gcd_ext(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
@@ -526,8 +516,7 @@ macro_rules! impl_int {
             /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>
             /// and the Bézout coeficients.
             ///
-            #[doc = "It upcasts to [`" $iup "`] for the inner operations,"]
-            /// and for the type of the returned coefficients.
+            #[doc = "Performs inner operations and returns coefficients as [`" $iup "`]."]
             ///
             /// This version uses the extended Euclids's algorithm, which uses a
             /// series of euclidean divisions and works by subtracting multiples
@@ -541,12 +530,11 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, isize_up};
+            /// # use devela::{Int, isize_up};
             #[doc = "let (gcd, x, y) = Int(32_" $t ").gcd_ext_euc(36).unwrap().as_tuple();"]
             /// assert_eq!(gcd.0, 4);
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
-            #[inline]
             #[cfg(feature = $icap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
             pub const fn gcd_ext_euc(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
@@ -563,17 +551,16 @@ macro_rules! impl_int {
 
             /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
+            #[doc = "Performs operations internally as [`" $up "`] for the inner operations."]
             ///
             /// # Errors
             /// Can [`Overflow`].
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(12_" $t ").lcm(15), Ok(Int(60))];"]
             /// ```
-            #[inline]
             pub const fn lcm(self, b: $t) -> Result<Int<$t>> {
                 let (aup, bup) = (self.0 as $up, b as $up);
                 let res = aup * bup / self.gcd(b).0 as $up;
@@ -582,7 +569,7 @@ macro_rules! impl_int {
 
             /// Returns a scaled value between `[min..=max]` to a new range `[a..=b]`.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the checked operations."]
+            #[doc = "Performs operations internally as [`" $up "`] for the checked operations."]
             ///
             /// If the value lies outside of `[min..=max]` it will result in extrapolation.
             ///
@@ -595,7 +582,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Ok(Int(40)), Int(60_" $t ").scale(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Ok(Int(112)), Int(100_" $t ").scale(0, 80, 0, 90)]; // extrapolate"]
             /// # #[cfg(feature = "_int_u8")]
@@ -618,7 +605,7 @@ macro_rules! impl_int {
 
             /// Returns a scaled value between `[min..=max]` to a new range `[a..=b]`.
             ///
-            #[doc = "It upcasts internally to [`" $up "`] for the intermediate operations."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// If the value lies outside of `[min..=max]` it will result in extrapolation, and
             /// if the value doesn't fit in the type it will wrap around its boundaries.
@@ -631,7 +618,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "assert_eq![Int(40), Int(60_" $t ").scale_wrap(0, 120, 30, 50)]; // interpolate"]
             #[doc = "assert_eq![Int(112), Int(100_" $t ").scale_wrap(0, 80, 0, 90)]; // extrapolate"]
             /// # #[cfg(feature = "_int_u8")]
@@ -650,13 +637,12 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(4), 2];")]
             #[doc = concat!("assert_eq![Int(1_", stringify!($t), ").midpoint(4), 2];")]
             /// ```
             // WAIT: [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
             // NOTE: based on Rust's std implementation.
-            #[inline]
             pub const fn midpoint(self, other: $t) -> Int<$t> {
                 // Use the well known branchless algorithm from Hacker's Delight to compute
                 // `(a + b) / 2` without overflowing: `((a ^ b) >> 1) + (a & b)`.

@@ -16,7 +16,6 @@ use crate::{Cast, ConstDefault, Own};
 pub struct XorShift32(u32);
 
 impl Default for XorShift32 {
-    #[inline]
     fn default() -> Self {
         Self::DEFAULT
     }
@@ -39,7 +38,6 @@ impl XorShift32 {
     /// Returns a seeded `XorShift32` generator from the given 32-bit seed.
     ///
     /// Returns `None` if seed == `0`.
-    #[inline]
     #[must_use]
     pub const fn new(seed: u32) -> Option<Self> {
         if seed == 0 {
@@ -52,14 +50,12 @@ impl XorShift32 {
     /// Returns a seeded `XorShift32` generator from the given 8-bit seed, unchecked.
     ///
     /// The seed must not be `0`, otherwise every result will also be `0`.
-    #[inline]
     pub const fn new_unchecked(seed: u32) -> Self {
         debug_assert![seed != 0, "Seed must be non-zero"];
         Self(seed)
     }
 
     /// Returns the current random `u32`.
-    #[inline]
     #[must_use]
     pub const fn current_u32(&self) -> u32 {
         self.0
@@ -68,7 +64,6 @@ impl XorShift32 {
     /// Returns the next random `u32`.
     //
     // Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs"
-    #[inline]
     #[must_use]
     pub fn next_u32(&mut self) -> u32 {
         let mut x = self.0;
@@ -80,7 +75,6 @@ impl XorShift32 {
     }
 
     /// Returns a copy of the next new random state.
-    #[inline]
     pub const fn next_new(&self) -> Self {
         let mut x = self.0;
         x ^= x << 13;
@@ -102,7 +96,6 @@ impl XorShift32 {
     /// Returns a seeded `XorShift32` generator from the given 32-bit seed.
     ///
     /// This is an alias of [`new`][Self#method.new].
-    #[inline]
     #[must_use]
     pub const fn new1_u32(seed: u32) -> Option<Self> {
         Self::new(seed)
@@ -111,7 +104,6 @@ impl XorShift32 {
     /// Returns a seeded `XorShift32` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[inline]
     #[must_use]
     pub const fn new2_u16(seeds: [u16; 2]) -> Option<Self> {
         Self::new(Cast::<u32>::from_u16_le(seeds))
@@ -120,7 +112,6 @@ impl XorShift32 {
     /// Returns a seeded `XorShift32` generator from the given 4 × 8-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
-    #[inline]
     #[must_use]
     pub const fn new4_u8(seeds: [u8; 4]) -> Option<Self> {
         Self::new(Cast::<u32>::from_u8_le(seeds))
@@ -135,18 +126,15 @@ mod impl_rand {
 
     impl RngCore for XorShift32 {
         /// Returns the next random `u32`.
-        #[inline]
         fn next_u32(&mut self) -> u32 {
             self.next_u32()
         }
 
         /// Returns the next 2 × random `u32` combined as a single `u64`.
-        #[inline]
         fn next_u64(&mut self) -> u64 {
             Cast::<u64>::from_u32_le([self.next_u32(), self.next_u32()])
         }
 
-        #[inline]
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             let mut i = 0;
             while i < dest.len() {
@@ -164,7 +152,6 @@ mod impl_rand {
             }
         }
 
-        #[inline]
         fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
             self.fill_bytes(dest);
             Ok(())
@@ -176,7 +163,6 @@ mod impl_rand {
 
         /// When seeded with zero this implementation uses the default seed
         /// value as the cold path.
-        #[inline]
         fn from_seed(seed: Self::Seed) -> Self {
             if seed == [0; 4] {
                 Self::cold_path_default()

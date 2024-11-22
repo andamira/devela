@@ -9,10 +9,10 @@
 
 #[cfg(all(not(feature = "std"), _float_·))]
 use crate::ExtFloat;
+use crate::{doc_private, Angle, AngleDirection, AngleKind};
 #[cfg(_float_·)]
 #[allow(unused_imports)]
 use crate::{fsize, ExtFloatConst};
-use crate::{doc_private, Angle, AngleDirection, AngleKind};
 
 #[doc = doc_private!()]
 /// impl `Angle` methods with an integer representation:
@@ -66,10 +66,8 @@ macro_rules! impl_angle {
             /* private helpers */
 
             // Returns the inner value normalized as a float between -1 and 1
-            #[inline]
             const fn to_float_normalized(self) -> $f { self.0 as $f / <$t>::MAX as $f }
             // Returns the `value` associated to the full turn `unit`, scaled to the full $t range.
-            #[inline]
             #[cfg(any(feature = "std", feature = $fcap))]
             fn from_float_normalized(value: $f, unit: $f) -> $t {
                 ((value / unit) * <$t>::MAX as $f).round() as $t
@@ -78,19 +76,15 @@ macro_rules! impl_angle {
             /* construct */
 
             /// Creates a normalized full positive angle at 0 degrees.
-            #[inline]
             pub const fn new_full() -> Self { Self(0) }
 
             /// Creates a normalized right positive angle at 90 degrees.
-            #[inline]
             pub const fn new_right() -> Self { Self(<$t>::MAX / 4) }
 
             /// Creates a normalized straight positive angle at 180 degrees.
-            #[inline]
             pub const fn new_straight() -> Self { Self(<$t>::MAX / 2) }
 
             /// Creates a new angle from a floating-point `radians` value.
-            #[inline]
             #[cfg(any(feature = "std", feature = $fcap))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $fcap))))]
             pub fn from_rad(radians: $f) -> Self {
@@ -98,7 +92,6 @@ macro_rules! impl_angle {
             }
 
             /// Creates a new angle from a floating-point `degrees` value.
-            #[inline]
             #[cfg(any(feature = "std", feature = $fcap))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $fcap))))]
             pub fn from_deg(degrees: $f) -> Self {
@@ -106,7 +99,6 @@ macro_rules! impl_angle {
             }
 
             /// Creates a new angle from a `value` in a `custom_unit` which represents a full turn.
-            #[inline]
             #[cfg(any(feature = "std", feature = $fcap))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", feature = $fcap))))]
             pub fn from_custom(value: $f, custom_unit: $f) -> Self {
@@ -116,17 +108,17 @@ macro_rules! impl_angle {
             /* convert */
 
             /// Converts the angle to radians.
-            #[inline] #[must_use]
+            #[must_use]
             #[cfg(any(feature = "std", _float_·))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "std", _float_·))))]
             pub const fn to_rad(self) -> $f { self.to_float_normalized() * <$f>::TAU }
 
             /// Converts the angle to degrees.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn to_deg(self) -> $f { self.to_float_normalized() * 360.0 }
 
             /// Converts the angle to a `custom_unit` which represents a full turn.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn to_custom(self, custom_unit: $f) -> $f {
                 self.to_float_normalized() * custom_unit
             }
@@ -134,19 +126,17 @@ macro_rules! impl_angle {
             /* normalize */
 
             /// Always returns `true` since integer representations are always normalized.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn is_normalized(self) -> bool { true }
 
             /// Returns the angle normalized (no-op for integer representation).
-            #[inline]
             pub const fn normalize(self) -> Self { self }
 
             /// Sets the angle normalized (no-op for integer representation).
-            #[inline]
             pub fn set_normalized(&mut self) {}
 
             /// Returns `true` if the angle has the given `direction`.
-            #[inline] #[must_use ]
+            #[must_use ]
             pub const fn has_direction(self, direction: AngleDirection) -> bool {
                 direction as i8 == self.direction() as i8
             }
@@ -176,7 +166,7 @@ macro_rules! impl_angle {
             }
 
             /// Returns `true` if the angle is of the given `kind`.
-            #[inline] #[must_use]
+            #[must_use]
             pub const fn is_kind(self, kind: AngleKind) -> bool {
                 let angle = self.positive().0;
                 let right = <$t>::MAX / 4;
@@ -212,7 +202,6 @@ macro_rules! impl_angle {
             /// Returns the angle direction.
             ///
             /// The direction will be `Undefined` if the angle kind is [`Full`][AngleKind::Full].
-            #[inline]
             pub const fn direction(self) -> AngleDirection {
                 use AngleDirection as D;
                 if self.0 == 0 {
@@ -227,7 +216,6 @@ macro_rules! impl_angle {
             /// Returns a version of the angle with the given `direction`.
             ///
             /// An `Undefined` direction will be interpreted as counter-clockwise (positive).
-            #[inline]
             pub const fn with_direction(self, direction: AngleDirection) -> Self {
                 use AngleDirection as D;
                 match direction {
@@ -239,7 +227,6 @@ macro_rules! impl_angle {
             /// Returns a version of the angle with the given `direction`.
             ///
             /// An `Undefined` direction will be interpreted as counter-clockwise (positive).
-            #[inline]
             pub fn set_direction(&mut self, direction: AngleDirection) {
                 use AngleDirection as D;
                 match direction {
@@ -249,25 +236,20 @@ macro_rules! impl_angle {
             }
 
             /// Returns a version of the angle with inverted direction.
-            #[inline]
             pub const fn invert_direction(self) -> Self {
                 Self(self.0.saturating_neg())
             }
 
             /// Returns the negative version of the angle.
-            #[inline]
             pub const fn negative(self) -> Self { Self(-self.0.saturating_abs()) }
 
             /// Sets the angle as negative.
-            #[inline]
             pub fn set_negative(&mut self) { self.0 = -self.0.saturating_abs(); }
 
             /// Returns the positive version of the angle.
-            #[inline]
             pub const fn positive(self) -> Self { Self(self.0.saturating_abs()) }
 
             /// Sets the angle as positive.
-            #[inline]
             pub fn set_positive(&mut self) { self.0 = self.0.saturating_abs(); }
         }
     };
@@ -288,41 +270,33 @@ macro_rules! impl_angle {
             /// Returns the angle direction.
             ///
             /// For unsigned integers the direction is always `CounterClockwise`.
-            #[inline]
             pub const fn direction(self) -> AngleDirection { AngleDirection::CounterClockwise }
 
             /// Returns a version of the angle with the given `direction` (no-op for unsigned).
             ///
             /// Unsigned integers can only have `CounterClockwise` direction.
-            #[inline]
             pub const fn with_direction(self, _direction: AngleDirection) -> Self { self }
 
             /// Returns a version of the angle with the given `direction` (no-op for unsigned).
             ///
             /// Unsigned integers can only have `CounterClockwise` direction.
-            #[inline]
             pub const fn set_direction(self, _direction: AngleDirection) {}
 
             /// Returns a version of the angle with inverted direction (no-op for unsigned).
             ///
             /// Unsigned integers can only have `CounterClockwise` direction.
-            #[inline]
             pub const fn invert_direction(self) -> Self { self }
 
             /// Returns the negative version of the angle (no-op for unsigned).
-            #[inline]
             pub const fn negative(self) -> Self { self }
 
             /// Sets the angle as negative (no-op for unsigned).
-            #[inline]
             pub fn set_negative(&mut self) {}
 
             /// Returns the positive version of the angle (no-op for unsigned).
-            #[inline]
             pub const fn positive(self) -> Self { self }
 
             /// Sets the angle as positive (no-op for unsigned).
-            #[inline]
             pub fn set_positive(&mut self) {}
 
         }

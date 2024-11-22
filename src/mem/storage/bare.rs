@@ -38,7 +38,7 @@ impl Storage for Bare {
 #[rustfmt::skip]
 impl<T> BareBox<T> {
     /// Creates a new `BareBox` storage for the given `t`.
-    #[inline] #[must_use]
+    #[must_use]
     pub const fn new(t: T) -> Self { Self(t) }
 
     /// Returns the inner stored type.
@@ -50,7 +50,7 @@ impl<T> BareBox<T> {
     /// let inner = b.into_inner();
     /// assert_eq!(42, inner);
     /// ```
-    #[inline] #[must_use]
+    #[must_use]
     pub fn into_inner(self) -> T { self.0 }
 
     /// Returns a shared reference to the inner stored type, in compile-time.
@@ -62,7 +62,7 @@ impl<T> BareBox<T> {
     /// const REF: &char = B.as_ref();
     /// assert_eq!('a', *REF);
     /// ```
-    #[inline] #[must_use]
+    #[must_use]
     pub const fn as_ref(&self) -> &T { &self.0 }
 
     /// Replaces the stored value with a `new` one, returning the old value.
@@ -75,7 +75,7 @@ impl<T> BareBox<T> {
     /// assert_eq!(42, old);
     /// assert_eq!(100, *b);
     /// ```
-    #[inline] #[must_use]
+    #[must_use]
     pub fn replace(&mut self, mut new: T) -> T {
         Mem::swap(&mut self.0, &mut new); new
     }
@@ -88,7 +88,7 @@ impl<T> BareBox<T> {
     /// let b = BareBox::new(0);
     /// assert!(b.is_default());
     /// ```
-    #[inline] #[must_use]
+    #[must_use]
     pub fn is_default(&self) -> bool where T: Default + PartialEq {
         self.0 == T::default()
     }
@@ -105,7 +105,7 @@ impl<T: Copy> BareBox<T> {
     /// const I: i32 = B.into_inner_copy();
     /// assert_eq!(42, I);
     /// ```
-    #[inline] #[must_use]
+    #[must_use]
     pub const fn into_inner_copy(self) -> T {
         self.0
     }
@@ -138,7 +138,7 @@ impl<T: Copy> BareBox<Option<T>> {
     /// // We could also auto-dereference to Option::unwrap_or():
     /// assert_eq!['a', B.unwrap_or('b')];
     /// ```
-    #[inline] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub const fn unwrap_copy_or(self, default: T) -> T {
         match self.0 { Some(val) => val, None => default }
     }
@@ -158,7 +158,7 @@ impl<T: Copy, E: Copy> BareBox<Result<T, E>> {
     /// // We could also auto-dereference to Result::unwrap_or():
     /// assert_eq!['a', B.unwrap_or('b')];
     /// ```
-    #[inline] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub const fn unwrap_copy_or(self, default: T) -> T {
         match self.0 { Ok(val) => val, Err(_) => default }
     }
@@ -170,13 +170,11 @@ mod core_impls {
 
     impl<T> ops::Deref for BareBox<T> {
         type Target = T;
-        #[inline]
         fn deref(&self) -> &T {
             &self.0
         }
     }
     impl<T> ops::DerefMut for BareBox<T> {
-        #[inline]
         #[must_use]
         fn deref_mut(&mut self) -> &mut T {
             &mut self.0
@@ -184,13 +182,11 @@ mod core_impls {
     }
 
     impl<T> convert::AsRef<T> for BareBox<T> {
-        #[inline]
         fn as_ref(&self) -> &T {
             &self.0
         }
     }
     impl<T> convert::AsMut<T> for BareBox<T> {
-        #[inline]
         #[must_use]
         fn as_mut(&mut self) -> &mut T {
             &mut self.0
@@ -198,7 +194,6 @@ mod core_impls {
     }
 
     impl<T> From<T> for BareBox<T> {
-        #[inline]
         #[must_use]
         fn from(t: T) -> Self {
             BareBox(t)
@@ -206,7 +201,6 @@ mod core_impls {
     }
 
     impl<T: Clone> Clone for BareBox<T> {
-        #[inline]
         #[must_use]
         fn clone(&self) -> Self {
             BareBox(self.0.clone())
@@ -215,7 +209,6 @@ mod core_impls {
     impl<T: Copy> Copy for BareBox<T> {}
 
     impl<T: Default> Default for BareBox<T> {
-        #[inline]
         #[must_use]
         fn default() -> Self {
             BareBox(T::default())
@@ -227,7 +220,6 @@ mod core_impls {
     }
 
     impl<T: PartialEq> PartialEq for BareBox<T> {
-        #[inline]
         #[must_use]
         fn eq(&self, other: &Self) -> bool {
             self.0.eq(&other.0)
@@ -236,14 +228,12 @@ mod core_impls {
     impl<T: Eq> Eq for BareBox<T> {}
 
     impl<T: PartialOrd> PartialOrd for BareBox<T> {
-        #[inline]
         #[must_use]
         fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
             self.0.partial_cmp(&other.0)
         }
     }
     impl<T: Ord> Ord for BareBox<T> {
-        #[inline]
         #[must_use]
         fn cmp(&self, other: &Self) -> cmp::Ordering {
             self.0.cmp(&other.0)
@@ -251,38 +241,32 @@ mod core_impls {
     }
 
     impl<T: fmt::Debug> fmt::Debug for BareBox<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Debug::fmt(&self.0, f)
         }
     }
     impl<T: fmt::Display> fmt::Display for BareBox<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Display::fmt(&self.0, f)
         }
     }
 
     impl<T: fmt::Pointer> fmt::Pointer for BareBox<T> {
-        #[inline]
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Pointer::fmt(&self.0, f)
         }
     }
 
     impl<T: hash::Hash> hash::Hash for BareBox<T> {
-        #[inline]
         fn hash<H: hash::Hasher>(&self, state: &mut H) {
             self.0.hash(state);
         }
     }
     impl<T: hash::Hasher> hash::Hasher for BareBox<T> {
-        #[inline]
         #[must_use]
         fn finish(&self) -> u64 {
             self.0.finish()
         }
-        #[inline]
         fn write(&mut self, bytes: &[u8]) {
             self.0.write(bytes);
         }
@@ -291,22 +275,18 @@ mod core_impls {
     impl<I: Iterator> Iterator for BareBox<I> {
         type Item = I::Item;
 
-        #[inline]
         #[must_use]
         fn next(&mut self) -> Option<I::Item> {
             self.0.next()
         }
-        #[inline]
         #[must_use]
         fn size_hint(&self) -> (usize, Option<usize>) {
             self.0.size_hint()
         }
-        #[inline]
         #[must_use]
         fn nth(&mut self, n: usize) -> Option<I::Item> {
             self.0.nth(n)
         }
-        #[inline]
         #[must_use]
         fn last(self) -> Option<I::Item> {
             self.0.last()

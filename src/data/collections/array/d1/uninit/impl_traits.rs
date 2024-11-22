@@ -31,7 +31,6 @@ impl<T, const CAP: usize, S: Storage> Drop for UninitArray<T, CAP, S> {
 // AsRef
 impl<T, const CAP: usize, S: Storage> AsRef<[T]> for UninitArray<T, CAP, S> {
     /// Returns a shared slice of the initialized elements.
-    #[inline]
     fn as_ref(&self) -> &[T] {
         // SAFETY: the slice is constructed from the initialized range
         unsafe { from_raw_parts(self.data.as_ptr() as *const T, self.init_len) }
@@ -40,7 +39,6 @@ impl<T, const CAP: usize, S: Storage> AsRef<[T]> for UninitArray<T, CAP, S> {
 // AsMut
 impl<T, const CAP: usize, S: Storage> AsMut<[T]> for UninitArray<T, CAP, S> {
     /// Returns an exclusive slice of the initialized elements.
-    #[inline]
     fn as_mut(&mut self) -> &mut [T] {
         // SAFETY: the slice  from the initialized range
         unsafe { from_raw_parts_mut(self.data.as_mut_ptr() as *mut T, self.init_len) }
@@ -49,7 +47,6 @@ impl<T, const CAP: usize, S: Storage> AsMut<[T]> for UninitArray<T, CAP, S> {
 // Borrow
 impl<T, const CAP: usize, S: Storage> Borrow<[T]> for UninitArray<T, CAP, S> {
     /// Returns a shared slice of the initialized elements.
-    #[inline]
     fn borrow(&self) -> &[T] {
         // SAFETY: we're only creating a slice from the initialized part
         unsafe { from_raw_parts(self.data.as_ptr() as *const T, self.init_len) }
@@ -58,7 +55,6 @@ impl<T, const CAP: usize, S: Storage> Borrow<[T]> for UninitArray<T, CAP, S> {
 // AsMut
 impl<T, const CAP: usize, S: Storage> BorrowMut<[T]> for UninitArray<T, CAP, S> {
     /// Returns an exclusive slice of the initialized elements.
-    #[inline]
     fn borrow_mut(&mut self) -> &mut [T] {
         // SAFETY: we're only creating a slice from the initialized part
         unsafe { from_raw_parts_mut(self.data.as_mut_ptr() as *mut T, self.init_len) }
@@ -69,7 +65,6 @@ impl<T: Clone, const CAP: usize, S: Storage> Clone for UninitArray<T, CAP, S>
 where
     S::Stored<[MaybeUninit<T>; CAP]>: Clone,
 {
-    #[inline]
     fn clone(&self) -> Self {
         Self {
             // Directly clone the data, including uninitialized parts.

@@ -100,7 +100,6 @@ impl UnitBi {
         }
     }
     /// Returns the ASCII symbol of the prefix.
-    #[inline]
     #[must_use]
     pub const fn symbol_ascii(&self) -> &str {
         self.symbol()
@@ -205,7 +204,6 @@ impl UnitBi {
 
     /// Converts a value from one binary prefix to another,
     /// returning the converted value.
-    #[inline]
     #[must_use]
     pub fn convert(value: f64, from: Self, to: Self) -> f64 {
         if from == to {
@@ -470,25 +468,21 @@ impl UnitBi {
 }
 
 impl From<UnitBi> for f32 {
-    #[inline]
     fn from(from: UnitBi) -> f32 {
         from.factor() as f32
     }
 }
 impl From<UnitBi> for f64 {
-    #[inline]
     fn from(from: UnitBi) -> f64 {
         from.factor()
     }
 }
 impl From<UnitBi> for i64 {
-    #[inline]
     fn from(from: UnitBi) -> i64 {
         from.factor_i64()
     }
 }
 impl From<UnitBi> for i128 {
-    #[inline]
     fn from(from: UnitBi) -> i128 {
         from.factor_i128()
     }

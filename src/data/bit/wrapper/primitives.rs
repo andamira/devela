@@ -47,7 +47,7 @@ macro_rules! impl_bits_wrapper {
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
             #[doc = include_str!("../benches/mask_range.md")]
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn mask_range(start: u32, end: u32) -> Self {
                 debug_assert![start <= end];
                 // a mask with all bits set, from 0 to end:
@@ -64,7 +64,6 @@ macro_rules! impl_bits_wrapper {
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
             #[doc = include_str!("../benches/mask_checked_range.md")]
-            #[inline]
             pub const fn mask_checked_range(start: u32, end: u32) -> Result<Self> {
                 if start >= <$t>::BITS {
                     Err(OutOfBounds(Some(start as usize)))
@@ -88,7 +87,7 @@ macro_rules! impl_bits_wrapper {
             /// Sets the rest of the bits to 0.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn get_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 & Self::mask_range(start, end).0)
             }
@@ -99,7 +98,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn get_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self(self.0 & mask.0)),
@@ -117,7 +115,7 @@ macro_rules! impl_bits_wrapper {
             /// significant bit (LSB) aligns with the units place, forming the integer value.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn get_value_range(self, start: u32, end: u32) -> Self {
                 Self((self.0 & Self::mask_range(start, end).0) >> start)
             }
@@ -131,7 +129,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn get_value_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self((self.0 & mask.0) >> start)),
@@ -146,7 +143,7 @@ macro_rules! impl_bits_wrapper {
             /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn set_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 | Self::mask_range(start, end).0)
             }
@@ -157,7 +154,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`
             /// and [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn set_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self(self.0 | mask.0)),
@@ -176,7 +172,7 @@ macro_rules! impl_bits_wrapper {
             /// the existing bits in that range. The rest of the bits in `self` remain unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn set_value_range(self, value: $t, start: u32, end: u32) -> Self {
                 let mask = Self::mask_range(start, end).0;
                 let value_shifted = (value << start) & mask;
@@ -189,7 +185,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`
             /// and [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn set_value_checked_range(self, value: $t, start: u32, end: u32)
                 -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
@@ -208,7 +203,6 @@ macro_rules! impl_bits_wrapper {
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`,
             /// [`MismatchedIndices`] if `start > end`, and
             /// [`Overflow`] if `value` does not fit within the specified bit range.
-            #[inline]
             pub const fn set_checked_value_checked_range(self, value: $t, start: u32, end: u32)
                 -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
@@ -228,7 +222,7 @@ macro_rules! impl_bits_wrapper {
             /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn unset_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 & !Self::mask_range(start, end).0)
             }
@@ -239,7 +233,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn unset_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self(self.0 & !mask.0)),
@@ -254,7 +247,7 @@ macro_rules! impl_bits_wrapper {
             /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn flip_range(self, start: u32, end: u32) -> Self {
                 Self(self.0 ^ Self::mask_range(start, end).0)
             }
@@ -265,7 +258,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn flip_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self(self.0 ^ mask.0)),
@@ -280,7 +272,7 @@ macro_rules! impl_bits_wrapper {
             /// Leaves the rest of the bits unchanged.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use ] #[inline]
+            #[must_use]
             pub const fn reverse_range(self, start: u32, end: u32) -> Self {
                 debug_assert![start <= end];
                 // If the entire range of bits is selected, simply reverse all bits
@@ -302,7 +294,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn reverse_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 if start >= Self::BITS {
                     Err(OutOfBounds(Some(start as usize)))
@@ -330,7 +321,7 @@ macro_rules! impl_bits_wrapper {
             /// Counts the number of 1s in `self` from the `[start..=end]` range.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn count_ones_range(self, start: u32, end: u32) -> u32 {
                 let masked_bits = self.0 & Self::mask_range(start, end).0;
                 masked_bits.count_ones()
@@ -339,7 +330,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn count_ones_checked_range(self, start: u32, end: u32) -> Result<u32> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok((self.0 & mask.0).count_ones()),
@@ -350,7 +340,7 @@ macro_rules! impl_bits_wrapper {
             /// Counts the number of 0s in `self` from the `[start..=end]` range.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn count_zeros_range(self, start: u32, end: u32) -> u32 {
                 let mask = Self::mask_range(start, end).0;
                 let masked_bits = self.0 & mask;
@@ -361,7 +351,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => {
@@ -381,7 +370,7 @@ macro_rules! impl_bits_wrapper {
             /// The index is relative to the entire sequence of `self`, not to the given `start`.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn find_first_one_range(self, start: u32, end: u32) -> Option<u32> {
                 let masked_bits = self.0 & Self::mask_range(start, end).0;
                 let mut idx = start;
@@ -400,7 +389,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn find_first_one_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>> {
                 match Self::mask_checked_range(start, end) {
@@ -424,7 +412,7 @@ macro_rules! impl_bits_wrapper {
             /// The index is relative to the entire sequence of `self`, not to the given `start`.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn find_first_zero_range(self, start: u32, end: u32)
                 -> Option<u32> {
                 let masked_bits = !(self.0 & Self::mask_range(start, end).0);
@@ -444,7 +432,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn find_first_zero_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>> {
                 match Self::mask_checked_range(start, end) {
@@ -470,7 +457,7 @@ macro_rules! impl_bits_wrapper {
             /// The index is relative to the entire sequence of `self`, not to the given `start`.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn find_last_one_range(self, start: u32, end: u32) -> Option<u32> {
                 let masked_bits = self.0 & Self::mask_range(start, end).0;
                 let mut idx = end;
@@ -490,7 +477,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn find_last_one_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>> {
                 match Self::mask_checked_range(start, end) {
@@ -515,7 +501,7 @@ macro_rules! impl_bits_wrapper {
             /// The index is relative to the entire sequence of `self`, not to the given `start`.
             /// # Panics
             /// Panics if `start >= BITS || end >= BITS || start > end`.
-            #[must_use] #[inline]
+            #[must_use]
             pub const fn find_last_zero_range(self, start: u32, end: u32) -> Option<u32> {
                 let masked_bits = !(self.0 & Self::mask_range(start, end).0);
                 let mut idx = end;
@@ -535,7 +521,6 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
-            #[inline]
             pub const fn find_last_zero_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>> {
                 match Self::mask_checked_range(start, end) {

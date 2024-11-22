@@ -57,7 +57,6 @@ pub struct Xyza8a {
 }
 
 impl Default for Xyza8a {
-    #[inline]
     fn default() -> Self {
         Self::DEFAULT
     }
@@ -73,20 +72,17 @@ impl Xyza8a {
 
 impl Xyza8a {
     /// Returns a seeded `Xyza8a` generator from the given 4 × 8-bit seeds.
-    #[inline]
     pub const fn new(seeds: [u8; 4]) -> Self {
         Self { x: seeds[0], y: seeds[1], z: seeds[2], a: seeds[3] }
     }
 
     /// Returns the current random `u8`.
-    #[inline(always)]
     #[must_use]
     pub const fn current_u8(&self) -> u8 {
         self.a
     }
 
     /// Updates the state and returns the next random `u8`.
-    #[inline]
     pub fn next_u8(&mut self) -> u8 {
         let t = self.x ^ (self.x << 4);
         self.x = self.y;
@@ -97,7 +93,6 @@ impl Xyza8a {
     }
 
     /// Returns a copy of the next new random state.
-    #[inline]
     #[must_use]
     pub const fn next_new(&self) -> Self {
         let mut new = *self;
@@ -123,7 +118,6 @@ impl Xyza8a {
     /// Returns a seeded `Xyza8a` generator from the given 32-bit seed.
     ///
     /// The seeds will be split in little endian order.
-    #[inline]
     pub const fn new1_u32(seed: u32) -> Self {
         Self::new(Cast(seed).into_u8_le())
     }
@@ -131,7 +125,6 @@ impl Xyza8a {
     /// Returns a seeded `Xyza8a` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be split in little endian order.
-    #[inline]
     pub const fn new2_u16(seeds: [u16; 2]) -> Self {
         let [x, y] = Cast(seeds[0]).into_u8_le();
         let [z, a] = Cast(seeds[1]).into_u8_le();
@@ -140,7 +133,6 @@ impl Xyza8a {
 
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
     /// This is an alias of [`new`][Self#method.new].
-    #[inline(always)]
     pub const fn new4_u8(seeds: [u8; 4]) -> Self {
         Self::new(seeds)
     }
@@ -165,7 +157,6 @@ pub struct Xyza8b {
 }
 
 impl Default for Xyza8b {
-    #[inline]
     fn default() -> Self {
         Self::DEFAULT
     }
@@ -182,19 +173,16 @@ impl Xyza8b {
 impl Xyza8b {
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
     /// This is the fastest constructor.
-    #[inline]
     pub const fn new(seeds: [u8; 4]) -> Self {
         Self { x: seeds[0], y: seeds[1], z: seeds[2], a: seeds[3] }
     }
 
     /// Returns the current random `u8`.
-    #[inline(always)]
     pub const fn current_u8(&self) -> u8 {
         self.a
     }
 
     /// Returns the next random `u8`.
-    #[inline]
     pub fn next_u8(&mut self) -> u8 {
         let t = self.x ^ (self.x >> 1);
         self.x = self.y;
@@ -205,7 +193,6 @@ impl Xyza8b {
     }
 
     /// Returns a copy of the next new random state.
-    #[inline]
     pub const fn next_new(&self) -> Self {
         let mut new = *self;
 
@@ -230,7 +217,6 @@ impl Xyza8b {
     /// Returns a seeded `Xyza8a` generator from the given 32-bit seed.
     ///
     /// The seeds will be split in little endian order.
-    #[inline]
     pub const fn new1_u32(seed: u32) -> Self {
         Self::new(Cast(seed).into_u8_le())
     }
@@ -238,7 +224,6 @@ impl Xyza8b {
     /// Returns a seeded `Xyza8a` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be split in little endian order.
-    #[inline]
     pub const fn new2_u16(seeds: [u16; 2]) -> Self {
         let [x, y] = Cast(seeds[0]).into_u8_le();
         let [z, b] = Cast(seeds[1]).into_u8_le();
@@ -247,7 +232,6 @@ impl Xyza8b {
 
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
     /// This is an alias of [`new`][Self#method.new].
-    #[inline(always)]
     pub const fn new4_u8(seeds: [u8; 4]) -> Self {
         Self::new(seeds)
     }

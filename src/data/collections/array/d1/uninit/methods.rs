@@ -40,22 +40,22 @@ impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {
     /* query */
 
     /// Returns the count of initialized elements.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn len(&self) -> usize { self.init_len }
 
     /// Returns `true` if no elements are yet initialized.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn is_empty(&self) -> bool { self.init_len == 0 }
 
     /// Returns `true` if all the elements are already initialized.
-    #[inline] #[must_use] #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn is_full(&self) -> bool { self.init_len >= CAP }
 
     /// Returns `index` back if it's within the range already initialized.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if the index is larger than the initialized length.
-    #[inline] #[rustfmt::skip]
+    #[rustfmt::skip]
     pub const fn verify_index(&self, index: usize) -> Result<usize> {
         iif![index < self.init_len; Ok(index); Err(OutOfBounds(Some(index)))]
     }
@@ -131,7 +131,6 @@ impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {
     /// Replaces the value at a given index with a new value and returns the old value.
     /// # Errors
     /// Returns [`OutOfBounds`] if the index is not within the range of initialized elements.
-    #[inline]
     pub fn replace(&mut self, index: usize, value: T) -> Result<T> {
         let index = self.verify_index(index)?;
         // SAFETY: If the index is verified, the value is initialized
