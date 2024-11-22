@@ -35,14 +35,14 @@ const ROOT_MODULES: [&str; 10] = [
 #[rustfmt::skip]
 const DEP_ALL: [&str; 18] = [
     "dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
-    "dep_libm", "dep_log", "dep_macroquad", "dep_memchr", "dep_macroquad",
+    "dep_libm", "dep_log", "dep_macroquad", "dep_memchr", "dep_miniquad",
     "dep_portable_atomic", "dep_rand_core", "dep_rayon", "dep_rodio", "dep_tinyaudio",
     "dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
 ];
-// Dependencies that
+// Dependencies that does not cross compile.
 #[rustfmt::skip]
 const DEP_NO_CROSS_COMPILE: [&str; 2] = [
-	"dep_cpal", "dep_tinyaudio"
+	"dep_rodio", "dep_tinyaudio", // alsa-sys
 ];
 
 const STD_ARCHES: &[&str] = &[

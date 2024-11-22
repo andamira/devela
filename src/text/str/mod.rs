@@ -4,8 +4,6 @@
 //!
 #![doc = crate::doc_!(extends: str, string)]
 
-use crate::items;
-
 mod ext_str;
 mod namespace;
 mod reexports;
@@ -13,21 +11,21 @@ mod reexports;
 pub use {ext_str::*, namespace::*, reexports::*};
 
 #[cfg(feature = "alloc")]
-items! {
+crate::items! {
     mod ext_string;
     pub use ext_string::*;
 }
 
 #[cfg(feature = "_string_nonul")] // RETHINK
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_nonul")))]
-items! {
+crate::items! {
     mod nonul;
     #[allow(unused_imports)]
     pub use nonul::*;
 }
 
 #[cfg(_string_u·)]
-items! {
+crate::items! {
     mod string_u;
     #[allow(unused_imports)]
     pub use string_u::*;

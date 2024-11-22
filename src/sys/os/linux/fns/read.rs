@@ -4,7 +4,7 @@
 //
 
 use super::{linux_print, linux_sys_exit, linux_sys_read, LINUX_FILENO as FILENO};
-use crate::Str;
+use core::str;
 
 /// Gets a single byte from *stdin*.
 ///
@@ -46,7 +46,7 @@ pub fn linux_pause_until_char(list: &[char]) {
 /// If the read fails, it prints an error message and exits with status code 11.
 pub fn linux_get_char() -> Option<char> {
     let bytes = linux_get_utf8_bytes()?;
-    let s = unsafe { Str::from_utf8_unchecked(&bytes) };
+    let s = unsafe { str::from_utf8_unchecked(&bytes) };
     Some(s.chars().next().unwrap())
 }
 
@@ -60,7 +60,7 @@ pub fn linux_get_char() -> Option<char> {
 pub fn linux_get_dirty_char() -> char {
     match linux_get_utf8_bytes() {
         Some(bytes) => {
-            let s = unsafe { Str::from_utf8_unchecked(&bytes) };
+            let s = unsafe { str::from_utf8_unchecked(&bytes) };
             s.chars().next().unwrap()
         }
         None => char::REPLACEMENT_CHARACTER,
@@ -172,5 +172,5 @@ pub fn linux_get_str<const CAP: usize>(buffer: &mut [u8; CAP], stop: char) -> &s
         }
     }
 
-    unsafe { Str::from_utf8_unchecked(&buffer[..index]) }
+    unsafe { str::from_utf8_unchecked(&buffer[..index]) }
 }
