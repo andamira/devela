@@ -10,7 +10,7 @@ mod ext_str;
 mod namespace;
 mod reexports;
 #[allow(unused_imports)]
-pub use {namespace::*, reexports::*, ext_str::*};
+pub use {ext_str::*, namespace::*, reexports::*};
 
 #[cfg(feature = "alloc")]
 items! {
@@ -36,7 +36,7 @@ items! {
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{namespace::*, reexports::*, ext_str::*};
+    pub use super::{ext_str::*, namespace::*, reexports::*};
 
     #[doc(inline)]
     #[cfg(feature = "alloc")]
