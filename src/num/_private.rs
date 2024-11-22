@@ -31,72 +31,126 @@ use crate::doc_private;
 /// let sum = upcasted_op![add_err(v, m) i32 => i64];
 /// let sum = upcasted_op![reduced_add_err(v, m) % 40; i32 => i64];
 /// ```
-// TODO:WAIT: [unchecked_add|mul](https://github.com/rust-lang/rust/issues/85122)
+/// # Features
+/// It makes use of `unsafe_hint` to optimize arithmetic ops when able to upcast.
+//
+// TODO IMPROVE: try to unify with impl_modulo::upcastop
 macro_rules! upcasted_op {
+    (
     /* basic arithmetic ops */
     // if we've not upcasted, do checked operation and return err on overflow
-    (add_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
-        if $crate::code::cif!(diff($ba, $up)) {
-            $lhs + $rhs
+    add_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
+        if $crate::cif!(diff($ba, $up)) {
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            {
+                $lhs + $rhs
+            }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe {
+                $lhs.unchecked_add($rhs)
+            }
         } else {
             if let Some(sum) = $lhs.checked_add($rhs) {
                 sum
             } else {
-                return Err($crate::num::NumError::Overflow(None));
+                return Err($crate::NumError::Overflow(None));
             }
         }
     };
     (mul_err($lhs:expr, $rhs:expr) $ba:ty => $up:ty) => {
-        if $crate::code::cif!(diff($ba, $up)) {
-            $lhs * $rhs
+        if $crate::cif!(diff($ba, $up)) {
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            {
+                $lhs * $rhs
+            }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe {
+                $lhs.unchecked_mul($rhs)
+            }
         } else {
             if let Some(product) = $lhs.checked_mul($rhs) {
                 product
             } else {
-                return Err($crate::num::NumError::Overflow(None));
+                return Err($crate::NumError::Overflow(None));
             }
         }
     };
-
+    (
     /* reduced (modulo) ops */
+
     // if we've not upcasted, first reduce the sumands with the given modulus,
     // then do checked operation and return err on overflow
-    (reduced_add_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
-        if $crate::code::cif!(diff($ba, $up)) {
-            $lhs + $rhs
+    reduced_add_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
+        if $crate::cif!(diff($ba, $up)) {
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            {
+                $lhs + $rhs
+            }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe {
+                $lhs.unchecked_add($rhs)
+            }
         } else {
             // reduce each sumand before checked operation
             if let Some(sum) = ($lhs % $modulus).checked_add($rhs % $modulus) {
                 sum
             } else {
-                return Err($crate::num::NumError::Overflow(None));
+                return Err($crate::NumError::Overflow(None));
             }
         }
     };
+    (
     // if we've not upcasted, just reduce the sumands with the given $modulus
-    (reduced_add($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
-        if $crate::code::cif!(diff($ba, $up)) {
-            $lhs + $rhs
+    reduced_add($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
+        if $crate::cif!(diff($ba, $up)) {
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            {
+                $lhs + $rhs
+            }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe {
+                $lhs.unchecked_add($rhs)
+            }
         } else {
             // reduce each operand before the operation that could panic
             ($lhs % $modulus) + ($rhs % $modulus)
         }
     };
     (reduced_mul_err($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
-        if $crate::code::cif!(diff($ba, $up)) {
-            $lhs * $rhs
+        if $crate::cif!(diff($ba, $up)) {
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            {
+                $lhs * $rhs
+            }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe {
+                $lhs.unchecked_mul($rhs)
+            }
         } else {
             // reduce each factor before checked operation
             if let Some(product) = ($lhs % $modulus).checked_mul($rhs % $modulus) {
                 product
             } else {
-                return Err($crate::num::NumError::Overflow(None));
+                return Err($crate::NumError::Overflow(None));
             }
         }
     };
     (reduced_mul($lhs:expr, $rhs:expr) % $modulus:expr; $ba:ty => $up:ty) => {
-        if $crate::code::cif!(diff($ba, $up)) {
-            $lhs * $rhs
+        if $crate::cif!(diff($ba, $up)) {
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            {
+                $lhs * $rhs
+            }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe {
+                $lhs.unchecked_mul($rhs)
+            }
         } else {
             // reduce each operand before the operation that could panic
             ($lhs % $modulus) + ($rhs % $modulus)

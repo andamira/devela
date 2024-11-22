@@ -6,9 +6,9 @@
 // - https://doc.rust-lang.org/stable/core/ascii/enum.Char.html
 // - WAIT: [ascii::Char](https://github.com/rust-lang/rust/issues/110998)
 
-use crate::{_core::fmt, code::ConstDefault};
 #[cfg(feature = "unsafe_str")]
-use core::mem::transmute;
+use crate::transmute;
+use crate::{ConstDefault, _core::fmt};
 
 /// One of the 128 Unicode characters from U+0000 through U+007F,
 /// often known as the [ASCII] subset.
@@ -471,10 +471,24 @@ impl AsciiChar {
     /// `'0'`, `'1'`, …, `'9'` respectively.
     ///
     /// If `d >= 10`, returns `None`.
+    ///
+    /// # Features
+    /// Uses `unsafe_hint` for performance optimizations.
     #[must_use]
     pub const fn digit(d: u8) -> Option<Self> {
         if d < 10 {
-            Self::from_u8(b'0' + d)
+            let sum = {
+                #[cfg(any(feature = "safe_text", not(feature = "unsafe_hint")))]
+                {
+                    b'0' + d
+                }
+                #[cfg(all(not(feature = "safe_text"), feature = "unsafe_hint"))]
+                // SAFETY: we've checked d < 10
+                unsafe {
+                    b'0'.unchecked_add(d)
+                }
+            };
+            Self::from_u8(sum)
         } else {
             None
         }
@@ -504,9 +518,7 @@ impl AsciiChar {
         // so because `d` must be 64 or less the addition can return at most
         // 112 (0x70), which doesn't overflow and is within the ASCII range.
         unsafe {
-            // WAIT: [const unchecked integer ops](https://github.com/rust-lang/rust/issues/85122)
-            // let byte = b'0'.unchecked_add(d);
-            let byte = b'0' + d;
+            let byte = b'0'.unchecked_add(d);
             Self::from_u8_unchecked(byte)
         }
     }
@@ -582,4 +594,4 @@ impl ConstDefault for AsciiChar {
 }
 
 #[cfg(feature = "mem_bit")]
-crate::mem::bit_sized![= 7; for AsciiChar];
+crate::bit_sized![= 7; for AsciiChar];

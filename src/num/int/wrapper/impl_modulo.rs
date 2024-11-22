@@ -18,11 +18,12 @@
 
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::isize_up;
-use crate::paste;
 #[cfg(feature = "_int_usize")]
 use crate::usize_up;
 use crate::{
-    cif, iif, Int,
+    cif, iif,
+    num::upcasted_op,
+    paste, Int,
     NumError::{NonZeroRequired, Overflow},
     NumResult as Result, ValueQuant,
 };
@@ -44,15 +45,20 @@ const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 /// $lhs: the left hand side operator
 /// $rhs: the right hand side operator
 /// $is_up: whether we've upcasted (Y) or not (N), known at compile-time
-//
-// TODO:WAIT:1.79 [unchecked_add|mul](https://github.com/rust-lang/rust/issues/85122)
-//   let Some(x) = x.checked_add(y) else { unsafe { hint::unreachable_unchecked() }};
+///
+/// # Features
+/// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
 #[rustfmt::skip] #[allow(unused_macros)]
 macro_rules! upcastop {
     // this is used for checked versions
     (err $op:tt $fn:ident($lhs:expr, $rhs:expr) $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            $lhs $op $rhs
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            { $lhs $op $rhs }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+
         } else { // otherwise do the checked operation:
             if let Some(result) = $lhs.[<checked_ $fn>]($rhs) {
                 result } else { return Err(Overflow(None));
@@ -62,7 +68,12 @@ macro_rules! upcastop {
     // this is used for checked versions that don't need to calculate cycles
     (reduce_err $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            $lhs $op $rhs
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            { $lhs $op $rhs }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+
         } else { // otherwise reduce each operand before the checked operation:
             if let Some(result) = ($lhs % $modulus).[<checked_ $fn>]($rhs % $modulus) {
                 result } else { return Err(Overflow(None));
@@ -72,7 +83,12 @@ macro_rules! upcastop {
     // this is used for unchecked versions that don't need to calculate cycles
     (reduce $op:tt $fn:ident($lhs:expr, $rhs:expr) % $modulus:expr, $is_up:ident) => { paste! {
         if cif!(same($is_up, Y)) { // can't overflow if upcasted
-            $lhs $op $rhs
+            #[cfg(any(feature = "safe_num", not(feature = "unsafe_hint")))]
+            { $lhs $op $rhs }
+            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_hint"))]
+            // SAFETY: can't overflow if upcasted
+            unsafe { $lhs.[<unchecked_ $fn>]($rhs) }
+
         } else { // otherwise reduce each operand before the unchecked operation:
             ($lhs % $modulus) $op ($rhs % $modulus)
         }
@@ -157,7 +173,7 @@ macro_rules! impl_int {
             /// The result is non-negative and less than the absolute value of `modulus`,
             /// i.e., in the range $ [0, |\text{modulus}|) $.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -165,7 +181,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(-4_" $t ").modulo(m)?, 2];"]
@@ -207,14 +223,14 @@ macro_rules! impl_int {
             /// The result is non-negative and less than the absolute value of `modulus`,
             /// i.e., in the range $ [0, |\text{modulus}|) $.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it could also panic on overflow.
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let m = 3;
             #[doc = "assert_eq![Int(-4_" $t ").modulo_unchecked(m), 2];"]
             #[doc = "assert_eq![Int(-3_" $t ").modulo_unchecked(m), 0];"]
@@ -237,12 +253,12 @@ macro_rules! impl_int {
             #[doc = "assert_eq![Int(i64::MIN).modulo_unchecked(-1), 0];"]
             /// ```
             /// ```should_panic
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[cfg(feature = "_int_i128")]
             #[doc = "let _ = Int(i128::MIN).modulo_unchecked(-1); // i128 could overflow"]
             /// ```
             /// ```should_panic
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             #[doc = "let _ = Int(1_" $t ").modulo_unchecked(0); // panics if modulus == 0"]
             /// ```
             pub const fn modulo_unchecked(self, modulus: $t) -> Int<$t> {
@@ -255,7 +271,7 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self` over |`modulus`|,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -263,7 +279,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(-3_" $t ").modulo_cycles(m)?, (0, 1)];"]
@@ -294,7 +310,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it can also panic
@@ -310,7 +326,10 @@ macro_rules! impl_int {
 
             /// Computes the non-negative modulo of `self + other` over |`modulus`|.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -318,7 +337,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_add(-4, m)?, 0];"]
@@ -349,7 +368,10 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it could also panic on overflow.
@@ -364,7 +386,10 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -374,7 +399,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(-4, m)?, (0, 0)];"]
@@ -411,7 +436,10 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
@@ -443,7 +471,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(-4_" $t ").modulo_add_inv(m)?, 1];"]
@@ -485,14 +513,17 @@ macro_rules! impl_int {
 
             /// Computes the modulo of `self - other` over |`modulus`|.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`.
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub(-4, m)?, 2];"]
@@ -519,7 +550,10 @@ macro_rules! impl_int {
             /// Computes the modulo of `self - other` over |`modulus`|,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Panics
             /// Panics if `modulus == 0`.
@@ -534,7 +568,10 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self - other` over |`modulus`|,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -543,7 +580,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(-4, m)?, (2, 2)];"]
@@ -576,7 +613,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
@@ -598,7 +635,10 @@ macro_rules! impl_int {
 
             /// Computes the non-negative modulo of `self + other` over |`modulus`|.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -606,7 +646,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(-4, m)?, 2];"]
@@ -637,7 +677,10 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it could also panic on overflow.
@@ -652,7 +695,10 @@ macro_rules! impl_int {
             /// Computes the non-negative modulo of `self + other` over |`modulus`|,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `i128`
@@ -662,7 +708,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(-4, m)?, (2, 5)];"]
@@ -699,7 +745,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `i128` it can also panic on overflow,
@@ -732,7 +778,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 5;
             #[doc = "assert_eq![Int(-4_" $t ").modulo_mul_inv(m)?, 4];"]
@@ -783,7 +829,7 @@ macro_rules! impl_int {
 
             /// Computes `self / other` over |`modulus`|.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// $a / b \mod m$ is equivalent to $a * b^{-1} \mod m$,
             /// where $b^{-1}$ is the modular multiplicative inverse
@@ -795,7 +841,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(-4_" $t ").modulo_div(2, m)?, 1];"]
@@ -821,7 +867,7 @@ macro_rules! impl_int {
             /// Computes `self / other` over |`modulus`|,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`,
@@ -882,7 +928,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(0_" $t ").modulo(m)?, 0];"]
@@ -910,7 +956,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let m = 3;
             #[doc = "assert_eq![Int(0_" $t ").modulo_unchecked(m), 0];"]
             #[doc = "assert_eq![Int(1_" $t ").modulo_unchecked(m), 1];"]
@@ -932,7 +978,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(0_" $t ").modulo_cycles(m)?, (0, 0)];"]
@@ -958,7 +1004,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Int;
+            /// # use devela::Int;
             /// let m = 3;
             #[doc = "assert_eq![Int(0_" $t ").modulo_cycles_unchecked(m), (0, 0)];"]
             #[doc = "assert_eq![Int(1_" $t ").modulo_cycles_unchecked(m), (1, 0)];"]
@@ -974,7 +1020,10 @@ macro_rules! impl_int {
 
             /// Computes the modulo of `self + other` over `modulus`.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `u128`
@@ -982,7 +1031,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_add(0, m)?, 1];"]
@@ -1005,7 +1054,10 @@ macro_rules! impl_int {
             /// Computes the modulo of `self + other` over `modulus`,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it could also panic on overflow.
@@ -1020,7 +1072,10 @@ macro_rules! impl_int {
             /// Computes the modulo of `self + other` over `modulus`,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `u128`
@@ -1030,7 +1085,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_add_cycles(0, m)?, (1, 1)];"]
@@ -1059,7 +1114,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it can also panic on overflow,
@@ -1091,7 +1146,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(0_" $t ").modulo_add_inv(m)?, 0];"]
@@ -1135,7 +1190,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub(0, m)?, 1];"]
@@ -1177,7 +1232,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_sub_cycles(0, m)?, (1, 1)];"]
@@ -1220,7 +1275,10 @@ macro_rules! impl_int {
 
             /// Computes the modulo of `self + other` over `modulus`.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `u128`
@@ -1228,7 +1286,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul(0, m)?, 0];"]
@@ -1251,7 +1309,10 @@ macro_rules! impl_int {
             /// Computes the modulo of `self + other` over `modulus`,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it could also panic on overflow.
@@ -1266,7 +1327,10 @@ macro_rules! impl_int {
             /// Computes the modulo of `self + other` over `modulus`,
             /// and the number of cycles the result is reduced.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `modulus == 0`, and for `u128`
@@ -1276,7 +1340,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(4_" $t ").modulo_mul_cycles(0, m)?, (0, 0)];"]
@@ -1305,7 +1369,7 @@ macro_rules! impl_int {
             /// and the number of cycles the result is reduced,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $up "`]."]
+            #[doc = "Performs operations internally as [`" $up "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`, and for `u128` it can also panic on overflow,
@@ -1326,7 +1390,7 @@ macro_rules! impl_int {
 
             /// Calculates the modular multiplicative inverse.
             ///
-            #[doc = "It upcasts internally to [`" $iup "`]."]
+            #[doc = "Performs operations internally as [`" $iup "`]."]
             ///
             /// The modular multiplicative inverse of *a* modulo *m*
             /// is an integer *b* such that $ ab \equiv 1 (\mod m) $.
@@ -1342,7 +1406,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 5;
             #[doc = "assert_eq![Int(0_" $t ").modulo_mul_inv(m), Err(NumError::NoInverse)];"]
@@ -1370,7 +1434,7 @@ macro_rules! impl_int {
             /// Calculates the modular multiplicative inverse,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $iup "`]."]
+            #[doc = "Performs operations internally as [`" $iup "`]."]
             ///
             /// The modular multiplicative inverse of *a* modulo *m*
             /// is an integer *b* such that $ ab \equiv 1 (\mod m) $.
@@ -1397,7 +1461,7 @@ macro_rules! impl_int {
 
             /// Computes `self / other` over `modulus`.
             ///
-            #[doc = "It upcasts internally to [`" $iup "`]."]
+            #[doc = "Performs operations internally as [`" $iup "`]."]
             ///
             /// $a / b \mod m$ is equivalent to $a * b^{-1} \mod m$,
             /// where $b^{-1}$ is the modular multiplicative inverse
@@ -1410,7 +1474,7 @@ macro_rules! impl_int {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::{Int, NumResult, NumError};
+            /// # use devela::{Int, NumResult, NumError};
             /// # fn main() -> NumResult<()> {
             /// let m = 3;
             #[doc = "assert_eq![Int(0_" $t ").modulo_div(2, m)?, 0];"]
@@ -1434,7 +1498,7 @@ macro_rules! impl_int {
             /// Computes `self / other` over `modulus`,
             /// unchecked version.
             ///
-            #[doc = "It upcasts internally to [`" $iup "`]."]
+            #[doc = "Performs operations internally as [`" $iup "`]."]
             ///
             /// # Panics
             /// Panics if `modulus == 0`,

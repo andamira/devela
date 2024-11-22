@@ -237,6 +237,9 @@ macro_rules! impl_int {
             ///
             #[doc = "Performs operations internally as [`" $up "`]."]
             ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
+            ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative, or possibly [`Overflow`]
             /// if there's no larger type to upcast and the value is close to its maximum.
@@ -511,6 +514,9 @@ macro_rules! impl_int {
             /// Returns the rounded integer square root.
             ///
             #[doc = "Performs operations internally as [`" $up "`]."]
+            ///
+            /// # Features
+            /// Uses `unsafe_hint` for performance optimizations with upcasted arithmetic.
             ///
             /// # Errors
             /// Can returns [`Overflow`] if there's no larger type to upcast and the value
