@@ -86,7 +86,7 @@ The api docs for the unpublished WIP version is in: https://andamira.github.io/l
 ## License
 This project is dual licensed under either [MIT](LICENSE-MIT)
 or [Apache-2.0](LICENSE-APACHE), and includes includes several
-[derived works](DOCS/DERIVED.md).
+[vendored works](DOCS/VENDORED.md).
 
 ## Contributing
 Contributions are welcome, see [CONTRIBUTING](DOCS/CONTRIBUTING.md)
