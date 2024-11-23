@@ -1,7 +1,7 @@
 // devela::data
 //
 //! Data handling and manipulation.
-#![doc = crate::doc_!(modules: crate; data: collections, hash, id, iter)]
+#![doc = crate::doc_!(modules: crate; data: collections, hash, iter)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: array, collections, hash, iter, vec)]
@@ -12,17 +12,17 @@
 
 mod bit;
 mod error;
+mod id;
 mod fmt;
 mod sort;
 #[allow(unused_imports)]
-pub use {bit::*, error::*, fmt::all::*, sort::*};
+pub use {bit::*, error::*, fmt::all::*, id::all::*, sort::*};
 
 pub mod collections;
 pub mod hash;
-pub mod id;
 pub mod iter;
 #[doc(no_inline)]
-pub use {collections::all::*, hash::all::*, id::all::*, iter::all::*};
+pub use {collections::all::*, hash::all::*, iter::all::*};
 
 #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
 #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))] // FIX
