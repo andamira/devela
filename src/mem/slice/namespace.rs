@@ -1,6 +1,6 @@
 // devela::mem::slice::wrapper
 //
-//! Slice functionality wrapper struct.
+//! `Slice` namespace.
 //
 
 #[cfg(feature = "_cmp_usize")]

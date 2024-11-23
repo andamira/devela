@@ -1,9 +1,7 @@
 // devela::text::char::impls::char24
 
 use super::*;
-use crate::text::{
-    char_is_7bit, char_is_noncharacter, AsciiChar, TextError::CharConversion, TextResult as Result,
-};
+use crate::{AsciiChar, Char, TextError::CharConversion, TextResult as Result};
 
 impl CharU24 {
     /* private helper fns */
@@ -87,7 +85,7 @@ impl CharU24 {
 
     /// Tries to convert this `CharU24` to `AsciiChar`.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
-        if char_is_7bit(self.to_u32()) {
+        if Char::is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             if let Some(c) = AsciiChar::from_u8(self.lo) {
                 return Ok(c);
@@ -197,7 +195,6 @@ impl CharU24 {
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_ascii_uppercase(self) -> CharU24 {
         Self::from_char(char::to_ascii_uppercase(&self.to_char()))
     }
@@ -207,7 +204,6 @@ impl CharU24 {
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_ascii_lowercase(self) -> CharU24 {
         Self::from_char(char::to_ascii_lowercase(&self.to_char()))
     }
@@ -219,7 +215,7 @@ impl CharU24 {
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
     pub const fn is_noncharacter(self) -> bool {
-        char_is_noncharacter(self.to_u32())
+        Char::is_noncharacter(self.to_u32())
     }
 
     /// Returns `true` if this unicode scalar is an [abstract character][0].

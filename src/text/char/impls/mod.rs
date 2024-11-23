@@ -84,12 +84,11 @@ macro_rules! impl_char {
         /* impl const fns */
 
         impl $name {
-
             /* encode */
 
             /// Returns the number of bytes needed to represent the scalar value.
             #[must_use]
-            pub const fn byte_len(self) -> usize { char_byte_len(self.to_u32()) }
+            pub const fn byte_len(self) -> usize { Char::byte_len(self.to_u32()) }
 
             /// Returns the number of bytes needed to encode in UTF-8.
             #[must_use]

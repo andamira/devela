@@ -1,8 +1,8 @@
 // devela::text::char::impls::char7
 
 use super::*;
-use crate::text::{
-    char::NonExtremeU8, char_is_7bit, AsciiChar, TextError::CharConversion, TextResult as Result,
+use crate::{
+    text::char::NonExtremeU8, AsciiChar, Char, TextError::CharConversion, TextResult as Result,
 };
 
 impl CharU7 {
@@ -48,7 +48,7 @@ impl CharU7 {
     #[cfg(feature = "_char_u8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
     pub const fn try_from_char_u8(c: CharU8) -> Result<CharU7> {
-        if char_is_7bit(c.to_u32()) {
+        if Char::is_7bit(c.to_u32()) {
             Ok(CharU7::new_unchecked(c.to_u32() as u8))
         } else {
             Err(CharConversion)
@@ -58,7 +58,7 @@ impl CharU7 {
     #[cfg(feature = "_char_u16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn try_from_char_u16(c: CharU16) -> Result<CharU7> {
-        if char_is_7bit(c.to_u32()) {
+        if Char::is_7bit(c.to_u32()) {
             Ok(CharU7::new_unchecked(c.to_u32() as u8))
         } else {
             Err(CharConversion)
@@ -69,7 +69,7 @@ impl CharU7 {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn try_from_char_u24(c: CharU24) -> Result<CharU7> {
         let c = c.to_u32();
-        if char_is_7bit(c) {
+        if Char::is_7bit(c) {
             Ok(CharU7::new_unchecked(c as u8))
         } else {
             Err(CharConversion)
@@ -79,7 +79,7 @@ impl CharU7 {
     #[cfg(feature = "_char_u32")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
     pub const fn try_from_char_u32(c: CharU32) -> Result<CharU7> {
-        if char_is_7bit(c.to_u32()) {
+        if Char::is_7bit(c.to_u32()) {
             Ok(CharU7::new_unchecked(c.to_u32() as u8))
         } else {
             Err(CharConversion)
@@ -87,7 +87,7 @@ impl CharU7 {
     }
     /// Tries to convert a `char` to `CharU7`.
     pub const fn try_from_char(c: char) -> Result<CharU7> {
-        if char_is_7bit(c as u32) {
+        if Char::is_7bit(c as u32) {
             Ok(CharU7::new_unchecked(c as u32 as u8))
         } else {
             Err(CharConversion)
@@ -189,7 +189,6 @@ impl CharU7 {
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_ascii_uppercase(self) -> CharU7 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
     }
@@ -199,7 +198,6 @@ impl CharU7 {
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_ascii_lowercase(self) -> CharU7 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
     }

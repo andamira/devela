@@ -1,10 +1,7 @@
 // devela::text::char::impls::char8
 
 use super::*;
-use crate::text::{
-    char_byte_len, char_is_7bit, char_is_noncharacter, AsciiChar, TextError::CharConversion,
-    TextResult as Result,
-};
+use crate::{AsciiChar, Char, TextError::CharConversion, TextResult as Result};
 
 impl CharU8 {
     /* private helper fns */
@@ -40,7 +37,7 @@ impl CharU8 {
     #[cfg(feature = "_char_u16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
     pub const fn try_from_char_u16(c: CharU16) -> Result<CharU8> {
-        if char_byte_len(c.to_u32()) == 1 {
+        if Char::byte_len(c.to_u32()) == 1 {
             Ok(CharU8(c.to_u32() as u8))
         } else {
             Err(CharConversion)
@@ -51,7 +48,7 @@ impl CharU8 {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn try_from_char_u24(c: CharU24) -> Result<CharU8> {
         let c = c.to_u32();
-        if char_byte_len(c) == 1 {
+        if Char::byte_len(c) == 1 {
             Ok(CharU8(c as u8))
         } else {
             Err(CharConversion)
@@ -61,7 +58,7 @@ impl CharU8 {
     #[cfg(feature = "_char_u32")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
     pub const fn try_from_char_u32(c: CharU32) -> Result<CharU8> {
-        if char_byte_len(c.to_u32()) == 1 {
+        if Char::byte_len(c.to_u32()) == 1 {
             Ok(CharU8(c.to_u32() as u8))
         } else {
             Err(CharConversion)
@@ -69,7 +66,7 @@ impl CharU8 {
     }
     /// Tries to convert a `char` to `CharU8`.
     pub const fn try_from_char(c: char) -> Result<CharU8> {
-        if char_byte_len(c as u32) == 1 {
+        if Char::byte_len(c as u32) == 1 {
             Ok(CharU8(c as u32 as u8))
         } else {
             Err(CharConversion)
@@ -82,7 +79,7 @@ impl CharU8 {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
-        if char_is_7bit(self.to_u32()) {
+        if Char::is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             if let Some(c) = AsciiChar::from_u8(self.0) {
                 return Ok(c);
@@ -125,7 +122,6 @@ impl CharU8 {
         CharU32::from_char_u8(self)
     }
     /// Converts this `CharU8` to `char`.
-    #[rustfmt::skip]
     #[must_use]
     pub const fn to_char(self) -> char {
         self.0 as char
@@ -171,7 +167,7 @@ impl CharU8 {
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
     pub const fn is_noncharacter(self) -> bool {
-        char_is_noncharacter(self.0 as u32)
+        Char::is_noncharacter(self.0 as u32)
     }
 
     /// Returns `true` if this unicode scalar is an [abstract character][0].
@@ -193,7 +189,6 @@ impl CharU8 {
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_ascii_uppercase(self) -> CharU8 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
     }
@@ -203,7 +198,6 @@ impl CharU8 {
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_ascii_lowercase(self) -> CharU8 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
     }

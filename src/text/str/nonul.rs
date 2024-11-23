@@ -372,8 +372,8 @@ impl<const CAP: usize> StringNonul<CAP> {
         let mut new = unwrap![ok? Self::new()];
 
         if c as u32 != 0 {
-            let bytes = char_to_utf8_bytes(c);
-            let len = char_utf8_4bytes_len(bytes);
+            let bytes = Char::to_utf8_bytes(c);
+            let len = Char::utf8_4bytes_len(bytes);
 
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
@@ -419,7 +419,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
-            let len = char_utf8_2bytes_len(bytes);
+            let len = Char::utf8_2bytes_len(bytes);
 
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
@@ -444,7 +444,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
-            let len = char_utf8_3bytes_len(bytes);
+            let len = Char::utf8_3bytes_len(bytes);
 
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
@@ -470,7 +470,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
-            let len = char_utf8_4bytes_len(bytes);
+            let len = Char::utf8_4bytes_len(bytes);
 
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }

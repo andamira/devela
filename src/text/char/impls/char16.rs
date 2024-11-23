@@ -4,9 +4,8 @@
 //
 
 use super::*;
-use crate::text::{
-    char::NonSurrogateU16, char_byte_len, char_is_7bit, char_is_noncharacter, AsciiChar,
-    TextError::CharConversion, TextResult as Result,
+use crate::{
+    text::char::NonSurrogateU16, AsciiChar, Char, TextError::CharConversion, TextResult as Result,
 };
 
 impl CharU16 {
@@ -72,7 +71,7 @@ impl CharU16 {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
     pub const fn try_from_char_u24(c: CharU24) -> Result<CharU16> {
         let c = c.to_u32();
-        if char_byte_len(c) == 1 {
+        if Char::byte_len(c) == 1 {
             Ok(CharU16::new_unchecked(c as u16))
         } else {
             Err(CharConversion)
@@ -86,7 +85,7 @@ impl CharU16 {
     }
     /// Tries to convert a `char` to `CharU16`.
     pub const fn try_from_char(c: char) -> Result<CharU16> {
-        if char_byte_len(c as u32) <= 2 {
+        if Char::byte_len(c as u32) <= 2 {
             Ok(CharU16::new_unchecked(c as u32 as u16))
         } else {
             Err(CharConversion)
@@ -99,7 +98,7 @@ impl CharU16 {
     /// # Features
     /// Makes use of the `unsafe_niche` feature if enabled.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
-        if char_is_7bit(self.to_u32()) {
+        if Char::is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
             if let Some(c) = AsciiChar::from_u8(self.0.get() as u8) {
                 return Ok(c);
@@ -200,7 +199,6 @@ impl CharU16 {
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_ascii_uppercase(self) -> CharU16 {
         Self::from_char_unchecked(char::to_ascii_uppercase(&self.to_char()))
     }
@@ -210,7 +208,6 @@ impl CharU16 {
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_ascii_lowercase(self) -> CharU16 {
         Self::from_char_unchecked(char::to_ascii_lowercase(&self.to_char()))
     }
@@ -222,7 +219,7 @@ impl CharU16 {
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
     pub const fn is_noncharacter(self) -> bool {
-        char_is_noncharacter(self.0.get() as u32)
+        Char::is_noncharacter(self.0.get() as u32)
     }
 
     /// Returns `true` if this unicode scalar is an [abstract character][0].

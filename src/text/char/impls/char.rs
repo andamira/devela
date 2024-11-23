@@ -5,7 +5,7 @@
 // `char` can only implement the trait, not the associated const methods,
 // (and that's the main reason we have the CharU32 wrapper type).
 
-use crate::text::{char_byte_len, char_is_noncharacter, char_to_utf8_bytes, UnicodeScalar};
+use crate::{Char, UnicodeScalar};
 
 impl UnicodeScalar for char {
     const MAX: Self = Self::MAX;
@@ -13,7 +13,7 @@ impl UnicodeScalar for char {
     /* encode */
 
     fn byte_len(self) -> usize {
-        char_byte_len(self as u32)
+        Char::byte_len(self as u32)
     }
     fn len_utf8(self) -> usize {
         self.len_utf8()
@@ -25,7 +25,7 @@ impl UnicodeScalar for char {
         self.encode_utf8(dst)
     }
     fn to_utf8_bytes(self) -> [u8; 4] {
-        char_to_utf8_bytes(self)
+        Char::to_utf8_bytes(self)
     }
     fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] {
         self.encode_utf16(dst)
@@ -43,7 +43,7 @@ impl UnicodeScalar for char {
     /* queries */
 
     fn is_noncharacter(self) -> bool {
-        char_is_noncharacter(self as u32)
+        Char::is_noncharacter(self as u32)
     }
     fn is_digit(self, radix: u32) -> bool {
         self.is_digit(radix)

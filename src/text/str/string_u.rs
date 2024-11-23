@@ -14,7 +14,7 @@ use crate::{
     text::char::*,
     Deref, IterChars,
     _core::fmt,
-    char_to_utf8_bytes, char_utf8_4bytes_len, iif, paste, unwrap, ConstDefault, Str,
+    iif, paste, unwrap, ConstDefault, Str,
     TextError::{self, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
     TextResult as Result,
 };
@@ -338,8 +338,8 @@ macro_rules! impl_string_u {
             pub const fn from_char(c: char) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
 
-                let bytes = char_to_utf8_bytes(c);
-                new.len = char_utf8_4bytes_len(bytes) as $t;
+                let bytes = Char::to_utf8_bytes(c);
+                new.len = Char::utf8_4bytes_len(bytes) as $t;
 
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
@@ -378,7 +378,7 @@ macro_rules! impl_string_u {
                 let mut new = unwrap![ok? Self::new()];
 
                 let bytes = c.to_utf8_bytes();
-                new.len = char_utf8_2bytes_len(bytes) as $t;
+                new.len = Char::utf8_2bytes_len(bytes) as $t;
 
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
@@ -399,7 +399,7 @@ macro_rules! impl_string_u {
                 let mut new = unwrap![ok? Self::new()];
 
                 let bytes = c.to_utf8_bytes();
-                new.len = char_utf8_3bytes_len(bytes) as $t;
+                new.len = Char::utf8_3bytes_len(bytes) as $t;
 
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
@@ -421,7 +421,7 @@ macro_rules! impl_string_u {
                 let mut new = unwrap![ok? Self::new()];
 
                 let bytes = c.to_utf8_bytes();
-                new.len = char_utf8_4bytes_len(bytes) as $t;
+                new.len = Char::utf8_4bytes_len(bytes) as $t;
 
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }

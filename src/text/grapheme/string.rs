@@ -3,9 +3,9 @@
 //!
 //
 
-use super::Grapheme;
+use crate::Grapheme;
 #[allow(unused)]
-use crate::Str;
+use crate::{Char, Str};
 #[cfg(feature = "alloc")]
 use crate::{IterChars, String};
 #[cfg(feature = "dep_unicode_segmentation")]
@@ -89,10 +89,10 @@ impl GraphemeString {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char(c: char) -> GraphemeString {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return Str::from_utf8(&crate::text::char_to_utf8_bytes(c)).unwrap().into();
+        return Str::from_utf8(&crate::Char::to_utf8_bytes(c)).unwrap().into();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         unsafe {
-            Str::from_utf8_unchecked(&crate::text::char_to_utf8_bytes(c)).into()
+            Str::from_utf8_unchecked(&crate::Char::to_utf8_bytes(c)).into()
         }
     }
 

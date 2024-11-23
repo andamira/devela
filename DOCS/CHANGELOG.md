@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### New items
 - structs:
-  - namespaces: `Env`, `Mem`, `Ptr`, `Str`.
+  - namespaces: `Char`, `Env`, `Mem`, `Ptr`, `Str`.
   - `CompressionMode`, `EncodingMode`, `Pnm`,
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `RendError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
@@ -97,6 +97,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove items: `NeverOk`, `NeverErr`, `HasherFx32`, `HasherFx64`.
 - remove types: `InRange*`, `NonRange*`, `HourMilliSplit`, `SecNanoSplit`, `YearSecSplit`.
 - remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`.
+- remove standalone `char_*` fns (namespaced in `Char`).
 - remove most re-exported fns from `std::mem` (namespaced in `Mem`).
 - remove re-exported fns from `std::ptr` (namespaced in `Ptr`).
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.

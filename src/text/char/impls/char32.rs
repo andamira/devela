@@ -1,10 +1,7 @@
 // devela::text::char::impls::char32
 
 use super::*;
-use crate::text::{
-    char_is_7bit, char_is_noncharacter, char_to_utf8_bytes, AsciiChar, TextError::CharConversion,
-    TextResult as Result,
-};
+use crate::{AsciiChar, Char, TextError::CharConversion, TextResult as Result};
 
 impl CharU32 {
     /* constants */
@@ -63,7 +60,7 @@ impl CharU32 {
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
-        if char_is_7bit(self.to_u32()) {
+        if Char::is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             if let Some(c) = AsciiChar::from_u8(self.0 as u8) {
                 return Ok(c);
@@ -122,7 +119,7 @@ impl CharU32 {
     // https://en.wikipedia.org/wiki/UTF-8#Encoding
     #[must_use]
     pub const fn to_utf8_bytes(self) -> [u8; 4] {
-        char_to_utf8_bytes(self.0)
+        Char::to_utf8_bytes(self.0)
     }
 
     //
@@ -132,7 +129,6 @@ impl CharU32 {
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_ascii_uppercase(self) -> CharU32 {
         CharU32(char::to_ascii_uppercase(&self.0))
     }
@@ -141,7 +137,6 @@ impl CharU32 {
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    #[rustfmt::skip]
     pub const fn to_ascii_lowercase(self) -> CharU32 {
         CharU32(char::to_ascii_lowercase(&self.0))
     }
@@ -153,7 +148,7 @@ impl CharU32 {
     /// [0]: https://www.unicode.org/glossary/#noncharacter
     #[must_use]
     pub const fn is_noncharacter(self) -> bool {
-        char_is_noncharacter(self.0 as u32)
+        Char::is_noncharacter(self.0 as u32)
     }
 
     /// Returns `true` if this unicode scalar is an [abstract character][0].
