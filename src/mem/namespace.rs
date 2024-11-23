@@ -16,9 +16,9 @@ use crate::{
     },
 };
 
-/// A memory-related functionality namespace.
+/// Memory-related operations.
 ///
-/// See also: [`ExtMem`][crate::ExtMem], [`Ptr`][crate::Ptr].
+/// See also: [`ExtMem`][crate::ExtMem], [`Ptr`][crate::Ptr], [`Slice`][crate::Slice].
 pub struct Mem;
 
 /// # Safe methods.

@@ -4,18 +4,64 @@
 //
 
 #[cfg(feature = "_cmp_usize")]
-use crate::num::Compare;
+use crate::Compare;
+use core::slice::{from_mut, from_ref};
+#[allow(unused_imports, reason = "unsafe feature-gated")]
+use core::slice::{from_raw_parts, from_raw_parts_mut};
 
-/// Provides slicing operations on `&[T]`, many of them *const*.
+/// Slice-related operations.
 ///
 /// It is designed as a utility namespace and does not hold or wrap data itself.
 /// Instead, it operates on slices provided directly as arguments to its static methods.
 ///
-/// See also the related trait: [`ExtSlice`][super::ExtSlice].
+/// See also: [`ExtSlice`][crate::ExtSlice], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
 #[repr(transparent)]
-pub struct Slice<T>(core::marker::PhantomData<T>);
+pub struct Slice<T>(crate::PhantomData<T>);
 
 impl<T> Slice<T> {
+    /// Converts a reference to `T` into a slice of length 1 (without copying).
+    ///
+    /// See `core::slice::`[`from_ref`].
+    #[must_use]
+    pub const fn from_ref(s: &T) -> &[T] {
+        from_ref(s)
+    }
+
+    /// Converts a reference to `T` into a slice of length 1 (without copying).
+    ///
+    /// See `core::slice::`[`from_mut`].
+    #[must_use]
+    pub fn from_mut(s: &mut T) -> &mut [T] {
+        from_mut(s)
+    }
+
+    /// Forms a shared slice from a pointer and a length.
+    ///
+    /// # Safety
+    /// See `core::slice::`[`from_raw_parts`]
+    ///
+    /// See also `Ptr::`[slice_from_raw_parts`][crate::Ptr::slice_from_raw_parts].
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+    pub const unsafe fn from_raw_parts<'a>(data: *const T, len: usize) -> &'a [T] {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { from_raw_parts(data, len) }
+    }
+
+    /// Forms an exclusive slice from a pointer and a length.
+    ///
+    /// # Safety
+    /// See `core::slice::`[`from_raw_parts_mut`].
+    ///
+    /// See also `Ptr::`[slice_from_raw_parts_mut`][crate::Ptr::slice_from_raw_parts_mut].
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
+    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+    // WAIT:1.83 [const_slice_from_raw_parts_mut](https://github.com/rust-lang/rust/issues/67456)
+    pub unsafe fn from_raw_parts_mut<'a>(data: *mut T, len: usize) -> &'a mut [T] {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { from_raw_parts_mut(data, len) }
+    }
+
     /* left split */
 
     /// Returns the leftmost sub-`slice` with the given maximum `len`.
@@ -131,7 +177,7 @@ impl<T> Slice<T> {
     ///
     /// # Features
     /// This method will only be const if the `_cmp_usize` feature is enabled.
-    // WAIT: [const_cmp](https://github.com/rust-lang/rust/issues/92391)
+    // WAIT:? [const_cmp](https://github.com/rust-lang/rust/issues/92391)
     #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
     pub const fn msplit_left(slice: &[T], len: usize) -> &[T] {
         let mid_idx = slice.len() / 2;

@@ -16,9 +16,9 @@ use crate::{
     },
 };
 
-/// A pointer-related functionality namespace.
+/// Pointer-related operations.
 ///
-/// See also [`Mem`][crate::Mem].
+/// See also [`Mem`][crate::Mem], [`Slice`][crate::Slice].
 pub struct Ptr;
 
 /// # Safe methods
@@ -150,14 +150,16 @@ impl Ptr {
 
     /// Forms a raw slice from a pointer and a length.
     ///
-    /// See `core::ptr::`[`slice_from_raw_parts`].
+    /// See `core::ptr::`[`slice_from_raw_parts`], and also
+    /// `Slice::`[from_raw_parts`][crate::Slice::from_raw_parts].
     pub const fn slice_from_raw_parts<T>(data: *const T, len: usize) -> *const [T] {
         slice_from_raw_parts(data, len)
     }
 
     /// Forms a mutable raw slice from a mutable pointer and a length.
     ///
-    /// See `core::ptr::`[`slice_from_raw_parts_mut`].
+    /// See `core::ptr::`[`slice_from_raw_parts_mut`], and also
+    /// `Slice::`[from_raw_parts_mut`][crate::Slice::from_raw_parts_mut].
     // WAIT:1.83: [const_slice_from_raw_parts_mut](https://github.com/rust-lang/rust/pull/130403)
     pub fn slice_from_raw_parts_mut<T>(data: *mut T, len: usize) -> *mut [T] {
         slice_from_raw_parts_mut(data, len)

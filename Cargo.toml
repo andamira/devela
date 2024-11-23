@@ -262,7 +262,7 @@ nightly = [ # sync with src/lib.rs
 	##1.‥… later
 	# 1.??: ✗[async_closure](https://github.com/rust-lang/rust/pull/132706)
 	# 1.??: ✗[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
-	# 1.??: ✗[const_array_from_ref|const_slice_from_ref](https://github.com/rust-lang/rust/issues/90206)
+	# 1.??: ✗[const_·array|slice·_from_ref](https://github.com/rust-lang/rust/issues/90206)
 	# 1.??: ✗[const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
 	# 1.??: ✗[const_maybe_uninit_write](https://github.com/rust-lang/rust/pull/131713)
 	# 1.??: ✗[diagnostic::do_not_recommend](https://github.com/rust-lang/rust/pull/132056)
