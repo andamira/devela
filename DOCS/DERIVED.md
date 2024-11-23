@@ -7,14 +7,15 @@ See linked files for detailed changes.
 - [const_list] by Douglas Dwyer, as [`ConstList`].
 - [crossbeam-utils] by The Crossbeam Project Developers, as the [`CachePadded`] struct.
 - [fmtor] by Tyler Ruckinger, as part of the [`ExtOption`] trait.
-- [fxhash] by Christopher Breeden, as the [`HasherFx`] struct ([*mod*][3]).
+- [fxhash] by Christopher Breeden, as the [`HasherFx`] struct ([*mod*][m1]).
 - [no_std_io]|[core2] by *Brendan Molloy*, as part of the [`io`] module.
 - [numtoa] by Michael Murphy, as the [`NumToStr`] trait.
 - [pollster] by Joshua Barretto, as the [`future_block`] fn.
-- [stack_dst] by John Hodge, as the [`data::dst`] module ([*mod*][1]).
+- [stack_dst] by John Hodge, as the [`data::dst`] module ([*mod*][m2]).
 - [static_assertions] by Nikolai Vazquez, as part of the [`assert_const`] macro
-  and the [`ConstBool`] trait ([*mod*][5]).
-- [tupl] by *Dragoteryx*, as part of the [`Tuple`] trait ([*mod*][2]).
+  and the [`ConstBool`] trait ([*mod*][m3]).
+- [tailcall-chunk] by Tushar Mathur, as the [`VecChunk`] struct ([*mod*][m4]).
+- [tupl] by *Dragoteryx*, as part of the [`Tuple`] trait ([*mod*][m5]).
 
 [const_list]: https://crates.io/crates/const_list/0.1.0
   [`ConstList`]: https://docs.rs/devela/latest/devela/data/collections/struct.ConstList.html
@@ -23,7 +24,7 @@ See linked files for detailed changes.
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
   [`ExtOption`]: https://docs.rs/devela/latest/devela/code/trait.ExtOption.html
 [fxhash]: https://crates.io/crates/fxhash/0.2.1
-  [3]: https://github.com/andamira/devela/blob/main/src/data/hash/fx/MODIFICATIONS.md
+  [m1]: https://github.com/andamira/devela/blob/main/src/data/hash/fx/MODIFICATIONS.md
 [no_std_io]: https://crates.io/crates/no_std_io/0.6.0
 [core2]: https://crates.io/crates/core2/0.4.0
   [`io`]: https://docs.rs/devela/latest/devela/sys/io/
@@ -31,20 +32,23 @@ See linked files for detailed changes.
   [`NumToStr`]: https://docs.rs/devela/latest/devela/text/fmt/trait.NumToStr.html
 [stack_dst]: https://crates.io/crates/stack_dst/0.8.1
   [`data::dst`]: https://docs.rs/devela/latest/devela/data/dst/index.html
-  [1]: https://github.com/andamira/devela/blob/main/src/data/dst/MODIFICATIONS.md
+  [m2]: https://github.com/andamira/devela/blob/main/src/data/dst/MODIFICATIONS.md
 [pollster]: https://crates.io/crates/pollster/0.3.0
   [`future_block`]: https://docs.rs/devela/latest/devela/exec/fn.future_block.html
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
   [`assert_const`]: https://docs.rs/devela/latest/devela/code/macro.assert_const.html
   [`ConstBool`]: https://docs.rs/devela/latest/devela/num/logic/trait.ConstBool.html
-  [5]: https://github.com/andamira/devela/blob/main/src/code/asserts/static/MODIFICATIONS.md
+  [m3]: https://github.com/andamira/devela/blob/main/src/code/asserts/static/MODIFICATIONS.md
+[tailcall-chunk]: https://crates.io/crates/tailcall-chunk/0.3.0
+  [`VecChunk`]: https://docs.rs/devela/latest/devela/data/collections/struct.VecChunk.html
+  [m4]: https://github.com/andamira/devela/blob/main/src/data/collections/vec/chunk/MODIFICATIONS.md
 [tupl]: https://crates.io/crates/tupl/0.4.0
   [`Tuple`]: https://docs.rs/devela/latest/devela/data/collections/trait.Tuple.html
-  [2]: https://github.com/andamira/devela/blob/main/src/data/collections/tuple/MODIFICATIONS.md
+  [m5]: https://github.com/andamira/devela/blob/main/src/data/collections/tuple/MODIFICATIONS.md
 
 ## Works under MIT License
 - [const_for] by Joachim Enggård Nebel, as the [`cfor`] macro.
-- [object-id] by *Altertech*, as part of the [`IdPinBox`] and [`IdPin`] structs ([*mod*][4]).
+- [object-id] by *Altertech*, as part of the [`IdPinBox`] and [`IdPin`] structs ([*mod*][m6]).
 - [opt_reduce] by *Waffle Lapkin*, as part of the [`ExtOption`] trait.
 - [rawbytes] by Frank Denis, as the [`mem_as_bytes`] and [`mem_as_bytes_mut`] fns.
 - [unsized-stack] by *storycraft*, as the [`FatPtr`] struct.
@@ -54,7 +58,7 @@ See linked files for detailed changes.
 [object-id]: https://crates.io/crates/object-id/0.1.4
   [`IdPin`]: https://docs.rs/devela/latest/devela/data/id/struct.IdPin.html
   [`IdPinBox`]: https://docs.rs/devela/latest/devela/data/id/struct.IdPinBox.html
-  [4]: https://github.com/andamira/devela/blob/main/src/data/id/pin/MODIFICATIONS.md
+  [m6]: https://github.com/andamira/devela/blob/main/src/data/id/pin/MODIFICATIONS.md
 [opt_reduce]: https://crates.io/crates/opt_reduce/1.0.0
 [rawbytes]: https://crates.io/crates/rawbytes/1.0.0
   [`mem_as_bytes`]: https://docs.rs/devela/latest/devela/data/fn.mem_as_bytes.html

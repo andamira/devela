@@ -54,7 +54,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `const_bool!`, `capture_first`, `capture_last`, `capture_tail_tuple!`, `impl_non_value!`.
   - private: `doc_availability!`.
 - vendored:
-  - structs: `CacheAlign`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`.
+  - structs: `CacheAlign`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`, `VecChunk`.
   - macros: `assert_const!`.
   - traits: `ConstBool`.
 - optional dependencies:
