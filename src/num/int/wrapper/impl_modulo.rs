@@ -22,7 +22,6 @@ use crate::isize_up;
 use crate::usize_up;
 use crate::{
     cif, iif,
-    num::upcasted_op,
     paste, Int,
     NumError::{NonZeroRequired, Overflow},
     NumResult as Result, ValueQuant,

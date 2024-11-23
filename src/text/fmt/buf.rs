@@ -5,7 +5,7 @@
 
 use crate::{fmt_write, iif, FmtArguments, FmtError, FmtResult, Str, TextWrite, _core::cmp::min};
 
-/// Returns a formatted [`str`] slice backed by a buffer, `no_std` compatible.
+/// Returns a formatted [`str`] slice backed by a buffer, non-allocating.
 ///
 /// It calls the [`format_buf_args`][format_buf_args()] function with the
 /// [`format_args`] macro.
@@ -28,7 +28,7 @@ macro_rules! format_buf {
 #[doc(inline)]
 pub use format_buf;
 
-/// Returns a formatted [`str`] slice backed by a buffer, `no_std` compatible.
+/// Returns a formatted [`str`] slice backed by a buffer, non-allocating.
 ///
 /// See also the slightly more convenient to use [`format_buf!`][crate::format_buf!] macro.
 ///

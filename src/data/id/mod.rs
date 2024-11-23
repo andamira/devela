@@ -5,7 +5,6 @@
 
 mod pin; // pinned memory-based ids
 mod seq; // static sequential ids
-pub use {pin::*, seq::*};
 
 pub(crate) mod all {
     #[doc(inline)]

@@ -60,7 +60,7 @@ impl Mem {
     /// Returns a value uniquely identifying the enum variant in v.
     #[must_use]
     pub const fn discriminant<T>(v: &T) -> Discriminant<T> {
-        discriminant(v);
+        discriminant(v)
     }
 
     /// Disposes of a value.
