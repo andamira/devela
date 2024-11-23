@@ -3,20 +3,25 @@
 //! `Ptr` namespace.
 //
 
-#[allow(unused_imports, reason = "±unsafe")]
+#[allow(unused_imports, reason = "unsafe feature-gated")]
+use crate::_core::ptr::{
+    copy, copy_nonoverlapping, drop_in_place, read, read_unaligned, read_volatile, replace, swap,
+    swap_nonoverlapping, write, write_bytes, write_unaligned, write_volatile,
+};
 use crate::{
     iif, Hasher,
     _core::ptr::{
-        addr_eq, copy, copy_nonoverlapping, drop_in_place, eq, from_mut, from_ref, hash, null,
-        null_mut, read, read_unaligned, read_volatile, replace, slice_from_raw_parts,
-        slice_from_raw_parts_mut, swap, swap_nonoverlapping, write, write_bytes, write_unaligned,
-        write_volatile,
+        addr_eq, eq, from_mut, from_ref, hash, null, null_mut, slice_from_raw_parts,
+        slice_from_raw_parts_mut,
     },
 };
 
 /// A pointer-related functionality namespace.
+///
+/// See also [`Mem`][crate::Mem].
 pub struct Ptr;
 
+/// # Safe methods
 impl Ptr {
     /// The size of a pointer in bits, for the current platform.
     pub const BITS: usize = usize::BITS as usize;
@@ -33,45 +38,6 @@ impl Ptr {
     /// See `core::ptr::`[`addr_eq`].
     pub fn addr_eq<T: ?Sized, U: ?Sized>(p: *const T, q: *const U) -> bool {
         addr_eq(p, q)
-    }
-
-    /// Copies `count * size_of::<T>()` bytes from `src` to `dst`. Can overlap.
-    ///
-    /// # Safety
-    /// See `core::ptr::`[`copy`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
-    pub unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
-        // SAFETY: Caller must uphold the safety contract.
-        unsafe {
-            copy(src, dst, count);
-        }
-    }
-
-    /// Copies `count * size_of::<T>()` bytes from `src` to `dst`. Must *not* overlap.
-    ///
-    /// # Safety
-    /// See `core::ptr::`[`copy_nonoverlapping`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
-    pub unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
-        // SAFETY: Caller must uphold the safety contract.
-        unsafe {
-            copy_nonoverlapping(src, dst, count);
-        }
-    }
-
-    /// Executes the destructor (if any) of the pointed-to value.
-    ///
-    /// # Safety
-    /// See `core::ptr::`[`drop_in_place`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
-    pub unsafe fn drop_in_place<T: ?Sized>(to_drop: *mut T) {
-        // SAFETY: Caller must uphold the safety contract.
-        unsafe {
-            drop_in_place(to_drop);
-        }
     }
 
     /// Compares raw pointers for equality.
@@ -154,50 +120,6 @@ impl Ptr {
         null_mut()
     }
 
-    /// Reads the value from src without moving it.
-    ///
-    /// # Safety
-    /// See `core::ptr::`[`read`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
-    pub const unsafe fn read<T>(src: *const T) -> T {
-        // SAFETY: Caller must uphold the safety contract.
-        unsafe { read(src) }
-    }
-
-    /// Reads the value from src without moving it.
-    ///
-    /// # Safety
-    /// See `core::ptr::`[`read_unaligned`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
-    pub const unsafe fn read_unaligned<T>(src: *const T) -> T {
-        // SAFETY: Caller must uphold the safety contract.
-        unsafe { read_unaligned(src) }
-    }
-
-    /// Performs a volatile read of the value from src without moving it.
-    ///
-    /// # Safety
-    /// See `core::ptr::`[`read_volatile`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
-    pub unsafe fn read_volatile<T>(src: *const T) -> T {
-        // SAFETY: Caller must uphold the safety contract.
-        unsafe { read_volatile(src) }
-    }
-
-    /// Moves src into the pointed dst, returning the previous dst value.
-    ///
-    /// # Safety
-    /// See `core::ptr::`[`replace`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
-    pub unsafe fn replace<T>(dst: *mut T, src: T) -> T {
-        // SAFETY: Caller must uphold the safety contract.
-        unsafe { replace(dst, src) }
-    }
-
     /// Returns the ratio of a `usize` in respect to `other_size`.
     ///
     /// For example: the ratio will be `(1, 1)` if both sizes are equal, `(2, 1)`
@@ -240,26 +162,89 @@ impl Ptr {
     pub fn slice_from_raw_parts_mut<T>(data: *mut T, len: usize) -> *mut [T] {
         slice_from_raw_parts_mut(data, len)
     }
+}
+
+/// # Unsafe methods gated by `unsafe_ptr`
+#[rustfmt::skip]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
+#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
+impl Ptr {
+    /// Copies `count * size_of::<T>()` bytes from `src` to `dst`. Can overlap.
+    ///
+    /// # Safety
+    /// See `core::ptr::`[`copy`].
+    pub unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { copy(src, dst, count); }
+    }
+
+    /// Copies `count * size_of::<T>()` bytes from `src` to `dst`. Must *not* overlap.
+    ///
+    /// # Safety
+    /// See `core::ptr::`[`copy_nonoverlapping`].
+    pub unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { copy_nonoverlapping(src, dst, count); }
+    }
+
+    /// Executes the destructor (if any) of the pointed-to value.
+    ///
+    /// # Safety
+    /// See `core::ptr::`[`drop_in_place`].
+    pub unsafe fn drop_in_place<T: ?Sized>(to_drop: *mut T) {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { drop_in_place(to_drop); }
+    }
+
+    /// Reads the value from src without moving it.
+    ///
+    /// # Safety
+    /// See `core::ptr::`[`read`].
+    pub const unsafe fn read<T>(src: *const T) -> T {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { read(src) }
+    }
+
+    /// Reads the value from src without moving it.
+    ///
+    /// # Safety
+    /// See `core::ptr::`[`read_unaligned`].
+    pub const unsafe fn read_unaligned<T>(src: *const T) -> T {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { read_unaligned(src) }
+    }
+
+    /// Performs a volatile read of the value from src without moving it.
+    ///
+    /// # Safety
+    /// See `core::ptr::`[`read_volatile`].
+    pub unsafe fn read_volatile<T>(src: *const T) -> T {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { read_volatile(src) }
+    }
+
+    /// Moves src into the pointed dst, returning the previous dst value.
+    ///
+    /// # Safety
+    /// See `core::ptr::`[`replace`].
+    pub unsafe fn replace<T>(dst: *mut T, src: T) -> T {
+        // SAFETY: Caller must uphold the safety contract.
+        unsafe { replace(dst, src) }
+    }
 
     /// Swaps the values at two mutable locations of the same type, without deinitializing.
     ///
     /// # Safety
     /// See `core::ptr::`[`swap`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn swap<T>(x: *mut T, y: *mut T) {
         // SAFETY: Caller must uphold the safety contract.
-        unsafe {
-            swap(x, y);
-        }
+        unsafe { swap(x, y); }
     }
 
     /// Swaps the two regions of memory beginning at `x` and `y`. Must *not* overlap.
     ///
     /// # Safety
     /// See `core::ptr::`[`swap_nonoverlapping`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn swap_nonoverlapping<T>(x: *mut T, y: *mut T, count: usize) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { swap_nonoverlapping(x, y, count) };
@@ -269,51 +254,35 @@ impl Ptr {
     ///
     /// # Safety
     /// See `core::ptr::`[`write`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn write<T>(dst: *mut T, src: T) {
         // SAFETY: Caller must uphold the safety contract.
-        unsafe {
-            write(dst, src);
-        };
+        unsafe { write(dst, src); };
     }
 
     /// Sets `count * size_of::<T>()` bytes of memory starting at `dst` to `val`.
     ///
     /// # Safety
     /// See `core::ptr::`[`write_bytes`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn write_bytes<T>(dst: *mut T, val: u8, count: usize) {
         // SAFETY: Caller must uphold the safety contract.
-        unsafe {
-            write_bytes(dst, val, count);
-        };
+        unsafe { write_bytes(dst, val, count); };
     }
 
     /// Overwrites a memory location with `src` without reading or dropping.
     ///
     /// # Safety
     /// See `core::ptr::`[`write_unaligned`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn write_unaligned<T>(dst: *mut T, src: T) {
         // SAFETY: Caller must uphold the safety contract.
-        unsafe {
-            write_unaligned(dst, src);
-        };
+        unsafe { write_unaligned(dst, src); };
     }
 
     /// Performs a volatile write of a memory location with `src` without reading or dropping.
     ///
     /// # Safety
     /// See `core::ptr::`[`write_volatile`].
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_ptr")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
     pub unsafe fn write_volatile<T>(dst: *mut T, src: T) {
         // SAFETY: Caller must uphold the safety contract.
-        unsafe {
-            write_volatile(dst, src);
-        };
+        unsafe { write_volatile(dst, src); };
     }
 }

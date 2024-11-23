@@ -3,7 +3,7 @@
 //! `Mem` namespace.
 //
 
-#[allow(unused_imports, reason = "unsafe features gated")]
+#[allow(unused_imports, reason = "unsafe feature-gated")]
 use crate::_core::{
     mem::{transmute_copy, zeroed},
     slice::{from_raw_parts, from_raw_parts_mut},
@@ -18,9 +18,10 @@ use crate::{
 
 /// A memory-related functionality namespace.
 ///
-/// See also: [`ExtMem`][crate::ExtMem].
+/// See also: [`ExtMem`][crate::ExtMem], [`Ptr`][crate::Ptr].
 pub struct Mem;
 
+/// # Safe methods.
 impl Mem {
     /// Returns the minimum alignment of the type in bytes.
     ///
@@ -125,6 +126,7 @@ impl Mem {
     }
 }
 
+/// # Unsafe methods gated by `unsafe_layout`
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
 #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
 impl Mem {
@@ -159,6 +161,7 @@ impl Mem {
     }
 }
 
+/// # Unsafe methods gated by `unsafe_slice`
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_slice"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
 impl Mem {
