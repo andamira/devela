@@ -73,7 +73,7 @@ See linked files for detailed changes.
 
 ## Other Licenses
 - [8bit_rng] by Edward Rosten, (BSD-2) as the [`Xyza8a`] and [`Xyza8b`] structs.
-- [apply] by GeorgeBurton (Unlicense) as part of the [`Also`] and [`Applỳ`] structs.
+- [apply] by GeorgeBurton (Unlicense) as part of the [`Also`] and [`Apply`] structs.
 - [pengyhash] by Alberto Fajardo (BSD-2), as the [`hash_pengy`] fn.
 - [size_of_trait] byt Joshua Nelson (BSD-3) as the [`mem_size_of_expr`] fn.
 - [Xabc] by *EternityForest* (openly shared) as the [`Xabc`] struct.

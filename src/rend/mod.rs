@@ -8,10 +8,9 @@
 #![cfg_attr(feature = "safe_rend", forbid(unsafe_code))]
 
 #[cfg(_rend_·)]
-use crate::code::items;
+crate::items! {
+    use crate::items;
 
-#[cfg(_rend_·)]
-items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(_rend_·)))]
     mod error;
     #[doc(inline)]

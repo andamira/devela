@@ -259,6 +259,9 @@ nightly = [ # sync with src/lib.rs
 	# 1.84:  [pin_deref_mut](https://github.com/rust-lang/rust/pull/129424)
 	# 1.84:  [Do not run lints that cannot emit](https://github.com/rust-lang/rust/pull/125116)
 	#
+	##1.85 will be stable on 2025-02-20:
+	# 1.85:  [2024 edition](https://github.com/rust-lang/rust/issues/117258)
+	#
 	##1.‥… later
 	# 1.??: ✗[async_closure](https://github.com/rust-lang/rust/pull/132706)
 	# 1.??: ✗[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
@@ -287,7 +290,6 @@ nightly = [ # sync with src/lib.rs
 	# - [type_alias_impl_trait|impl_trait_in_assoc_type](https://github.com/rust-lang/rust/issues/63063)
 	#
 	## Meta tracking issues:
-	# - [2024 edition](https://github.com/rust-lang/rust/issues/117258)
 	# - [arbitrary_self_types](https://github.com/rust-lang/rust/issues/44874)
 	# - [const fn](https://github.com/rust-lang/rust/issues/57563)
 	# - [impl Trait](https://github.com/rust-lang/rust/issues/63066)
