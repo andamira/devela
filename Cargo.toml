@@ -52,7 +52,7 @@ name = "devela"
 description = "A cohesive development layer."
 version = "0.22.0-wip"
 edition = "2021"
-rust-version = "1.82.0" # sync with README.md & .github/workflows/check.yml
+rust-version = "1.82.0" # In sync with README.md & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/devela"
 documentation = "https://docs.rs/devela"
@@ -496,14 +496,14 @@ _docs_max = [ # the maximum capabities relevant for documentation
 # The names are prefixed with `dep_`, and don't have dashes.
 # They are associated to optional dependencies and groups of modules.
 #
-# It is in sync with ./utils/check.rs::DEP_ALL and build/features.rs
+# In sync with ./utils/check.rs::DEP_ALL & build/features.rs
 #
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 dep_all = [ # enables all optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
-	"dep_libm", "dep_log", "dep_macroquad", "dep_memchr", "dep_miniquad",
+	"dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
 	"dep_portable_atomic", "dep_rand_core", "dep_rayon", "dep_rodio", "dep_tinyaudio",
 	"dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
@@ -518,7 +518,6 @@ dep_hashbrown = ["dep:hashbrown", "alloc"]
 dep_jiff = ["dep:jiff"]
 dep_libm = ["dep:libm"]
 dep_log = ["dep:log"]
-dep_macroquad = ["dep:macroquad"]
 dep_memchr = ["dep:memchr"]
 dep_miniquad = ["dep:miniquad"]
 dep_portable_atomic = ["dep:portable-atomic"]
@@ -581,10 +580,6 @@ default-features = false
 [dependencies.log] # https://crates.io/crates/log
 version = "0.4.22" # ✓ https://github.com/rust-lang/log/blob/master/CHANGELOG.md
 optional = true # safe (optional unsafe)
-default-features = false
-[dependencies.macroquad] # https://crates.io/crates/macroquad
-version = "0.4.13" # ✗ https://github.com/not-fl3/macroquad/commits/master/
-optional = true # unsafe
 default-features = false
 [dependencies.memchr] # https://crates.io/crates/memchr
 version = "2.7.4" # ✗ https://github.com/BurntSushi/memchr/commits/master/

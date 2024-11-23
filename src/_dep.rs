@@ -54,9 +54,6 @@ reexport! { optional_crate (unsafe) "dep_libm", "libm", libm,
 reexport! { optional_crate (safe) "dep_log", "log", log,
     doc: "A lightweight logging facade."
 }
-reexport! { optional_crate (unsafe) "dep_macroquad", "macroquad", macroquad,
-    doc: "Simple and easy to use graphics library."
-}
 reexport! { optional_crate (unsafe) "dep_memchr", "memchr", memchr,
     doc: "Optimized routines for string search primitives."
 }

@@ -59,7 +59,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - macros: `assert_const!`.
   - traits: `ConstBool`.
 - optional dependencies:
-  - `jiff`, `macroquad`, `rayon`, `rodio`, `tinyaudio`.
+  - `jiff`, `rayon`, `rodio`, `tinyaudio`.
 - re-export:
   - items from: `std::backtrace`, `core::cell`, `core::ops`, `std::fmt`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
