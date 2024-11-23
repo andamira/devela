@@ -3,14 +3,15 @@ This project includes code adapted from various permissively licensed sources.
 Below is a list of derived works, their origins, and modifications.
 See linked files for detailed changes.
 
-## Works under dual MIT OR Apache-2.0
+## Works under dual MIT OR Apache-2.0 licenses
 - [const_list] by Douglas Dwyer, as [`ConstList`].
-- [crossbeam-utils] by The Crossbeam Project Developers, as the [`CachePadded`] struct.
+- [crossbeam-utils] by The Crossbeam Project Developers, as the [`CacheAlign`] struct.
 - [fmtor] by Tyler Ruckinger, as part of the [`ExtOption`] trait.
 - [fxhash] by Christopher Breeden, as the [`HasherFx`] struct ([*mod*][m1]).
 - [no_std_io]|[core2] by *Brendan Molloy*, as part of the [`io`] module.
 - [numtoa] by Michael Murphy, as the [`NumToStr`] trait.
 - [pollster] by Joshua Barretto, as the [`future_block`] fn.
+- [quickdiv] by Darko Trifunovski, as the [`Divisor`] struct.
 - [stack_dst] by John Hodge, as the [`data::dst`] module ([*mod*][m2]).
 - [static_assertions] by Nikolai Vazquez, as part of the [`assert_const`] macro
   and the [`ConstBool`] trait ([*mod*][m3]).
@@ -20,10 +21,11 @@ See linked files for detailed changes.
 [const_list]: https://crates.io/crates/const_list/0.1.0
   [`ConstList`]: https://docs.rs/devela/latest/devela/data/collections/struct.ConstList.html
 [crossbeam-utils]: https://crates.io/crates/crossbeam-utils/0.8.20
-  [`CachePadded`]: https://docs.rs/devela/latest/devela/mem/struct.CachePadded.html
+  [`CacheAlign`]: https://docs.rs/devela/latest/devela/mem/struct.CacheAlign.html
 [fmtor]: https://crates.io/crates/fmtor/0.1.2
   [`ExtOption`]: https://docs.rs/devela/latest/devela/code/trait.ExtOption.html
 [fxhash]: https://crates.io/crates/fxhash/0.2.1
+  [`HasherFx`]: https://docs.rs/devela/latest/devela/data/hash/struct.HasherFx.html
   [m1]: https://github.com/andamira/devela/blob/main/src/data/hash/fx/MODIFICATIONS.md
 [no_std_io]: https://crates.io/crates/no_std_io/0.6.0
 [core2]: https://crates.io/crates/core2/0.4.0
@@ -35,6 +37,8 @@ See linked files for detailed changes.
   [m2]: https://github.com/andamira/devela/blob/main/src/data/dst/MODIFICATIONS.md
 [pollster]: https://crates.io/crates/pollster/0.3.0
   [`future_block`]: https://docs.rs/devela/latest/devela/exec/fn.future_block.html
+[quickdiv]: https://crates.io/crates/quickdiv/0.1.1
+  [`Divisor`]: https://docs.rs/devela/latest/devela/num/struct.Divisor.html
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
   [`assert_const`]: https://docs.rs/devela/latest/devela/code/macro.assert_const.html
   [`ConstBool`]: https://docs.rs/devela/latest/devela/num/logic/trait.ConstBool.html
@@ -50,7 +54,7 @@ See linked files for detailed changes.
 - [const_for] by Joachim Enggård Nebel, as the [`cfor`] macro.
 - [object-id] by *Altertech*, as part of the [`IdPinBox`] and [`IdPin`] structs ([*mod*][m6]).
 - [opt_reduce] by *Waffle Lapkin*, as part of the [`ExtOption`] trait.
-- [rawbytes] by Frank Denis, as the [`mem_as_bytes`] and [`mem_as_bytes_mut`] fns.
+- [rawbytes] by Frank Denis, as `Mem`'s [`as_bytes`] and [`as_bytes_mut`] methods.
 - [unsized-stack] by *storycraft*, as the [`FatPtr`] struct.
 
 [const_for]: https://crates.io/crates/const_for/0.1.4
@@ -61,16 +65,15 @@ See linked files for detailed changes.
   [m6]: https://github.com/andamira/devela/blob/main/src/data/id/pin/MODIFICATIONS.md
 [opt_reduce]: https://crates.io/crates/opt_reduce/1.0.0
 [rawbytes]: https://crates.io/crates/rawbytes/1.0.0
-  [`mem_as_bytes`]: https://docs.rs/devela/latest/devela/data/fn.mem_as_bytes.html
-  [`mem_as_bytes_mut`]: https://docs.rs/devela/latest/devela/data/fn.mem_as_bytes_mut.html
+  [`as_bytes`]: https://docs.rs/devela/latest/devela/mem/struct.Mem.html#method.as_bytes
+  [`as_bytes_mut`]: https://docs.rs/devela/latest/devela/mem/struct.Mem.html#method.as_bytes_mut
 [unsized-stack]: https://crates.io/crates/unsized-stack/0.2.0
-  [`FatPtr`]: https://docs.rs/devela/latest/devela/mem/ptr/struct.FatPtr.html
+  [`FatPtr`]: https://docs.rs/devela/latest/devela/mem/struct.FatPtr.html
 
 ## Other Licenses
 - [8bit_rng] by Edward Rosten, (BSD-2) as the [`Xyza8a`] and [`Xyza8b`] structs.
 - [apply] by GeorgeBurton (Unlicense) as part of the [`Also`] and [`Applỳ`] structs.
-- [pengyhash] by Alberto Fajardo (BSD-2), as the `hash_pengy` fn.
-- [quickdiv] by Darko Trifunovski (Zlib OR MIT OR Apache-2.0), as the [`Divisor`] struct.
+- [pengyhash] by Alberto Fajardo (BSD-2), as the [`hash_pengy`] fn.
 - [size_of_trait] byt Joshua Nelson (BSD-3) as the [`mem_size_of_expr`] fn.
 - [Xabc] by *EternityForest* (openly shared) as the [`Xabc`] struct.
 - Graphics Gems (1985–1994) (permissive [EULA]), as various algorithms.
@@ -79,14 +82,12 @@ See linked files for detailed changes.
   [`Xyza8a`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xyza8a.html
   [`Xyza8b`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xyza8b.html
 [apply]: https://crates.io/crates/apply/0.3.0
-  [`Also`]: https://docs.rs/devela/latest/devela/code/trait.Also.html
-  [`Apply`]: https://docs.rs/devela/latest/devela/code/trait.Apply.html
+  [`Also`]: https://docs.rs/devela/latest/devela/error/trait.Also.html
+  [`Apply`]: https://docs.rs/devela/latest/devela/error/trait.Apply.html
 [pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
   [`hash_pengy`]: https://docs.rs/devela/latest/devela/data/hash/fn.hash_pengy.html
-[quickdiv]: https://crates.io/crates/quickdiv/0.1.1
-  [`Divisor`]: https://docs.rs/devela/latest/devela/num/struct.Divisor.html
 [size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3
-  [`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/data/size/macro.mem_size_of_expr.html
+  [`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/mem/macro.size_of_expr.html
 [Xabc]: https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/
   [`Xabc`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xabc.html
 
