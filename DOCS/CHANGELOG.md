@@ -76,7 +76,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new `sys::os::linux` module and example `linux`.
 - new lints.
 
-#### Examples, utilities, manifest
+#### Examples, utilities, manifest, files
 - new examples:
   - `id_pin`.
   - `id_seq` and type `ExampleIdSeqUsize`.
@@ -88,6 +88,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new github workflows: `get_errno.yml`, `get_syscall.yml`.
 - new scripts in `utils/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`, `docs_coverage.sh`, `docs_items.rs`.
 - hide `no_inline` items re-exports.
+- new file `DOCS/VENDORED_rustdoc.md`
 
 ### Removed
 - remove custom no_std `Error` definition.
@@ -167,7 +168,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - dependencies:
   - make `bytemuck` an optional dependency.
 
-#### Examples, utilities, manifest
+#### Examples, utilities, files
+- rename `DOCS/DERIVED.md` to `VENDORED.md`.
 - rename the `tools` directory to `utils`.
 - refactor the build script.
 

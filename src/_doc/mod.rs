@@ -18,3 +18,9 @@ pub mod features {
     #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
     #![doc = include_str!("./features.md")]
 }
+
+/// Vendored work.
+pub mod vendored {
+    #![doc = include_str!("../../DOCS/VENDORED_rustdoc.md")]
+    #![doc = include_str!("../../DOCS/VENDORED.md")]
+}
