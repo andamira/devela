@@ -14,4 +14,3 @@ including the following modifications:
 - add one associated type per tuple index field.
 - rename the identifiers and other misc. refactoring.
 - replace the macro code generation with build script.
-

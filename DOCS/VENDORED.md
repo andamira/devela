@@ -48,7 +48,7 @@ See linked files for detailed changes.
   [m4]: https://github.com/andamira/devela/blob/main/src/data/collections/vec/chunk/MODIFICATIONS.md
   [`VecChunk`]: https://docs.rs/devela/latest/devela/data/collections/struct.VecChunk.html
 [tupl]: https://crates.io/crates/tupl/0.4.0
-  [m5]: https://github.com/andamira/devela/blob/main/src/data/collections/tuple/MODIFICATIONS.md
+  [m5]: https://github.com/andamira/devela/blob/main/build/generate/tuple/MODIFICATIONS.md
   [`Tuple`]: https://docs.rs/devela/latest/devela/data/collections/trait.Tuple.html
 
 ## Works under MIT License

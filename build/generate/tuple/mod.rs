@@ -11,7 +11,7 @@
 
 use crate::utils::*;
 use std::{
-    fs::{create_dir_all, File},
+    fs::{create_dir_all, read_to_string, File},
     io::{BufWriter, Error, Write},
     write as w0, writeln as w,
 };
@@ -55,7 +55,13 @@ pub(super) fn generate() -> Result<(), Error> {
     /// By default it's implemented for tuples of arity of 12 or less.
     /// It supports increased arities of 24, 36, 48 and 72 by enabling the
     /// corresponding capability feature: `_tuple_arity_[24|36|48|72]`.
+    ///
+    /// # Derived work
     "#)?;
+    let modifications = manifest_dir_path()
+        .join("build").join("generate").join("tuple").join("MODIFICATIONS.md");
+    w!(f, "#[doc = \"{}\"]", &read_to_string(modifications)?)?;
+    w!(f, "#[cfg_attr(feature = \"nightly_doc\", doc(notable_trait))]")?;
     w!(f, "#[cfg_attr(feature = \"nightly_doc\", doc(notable_trait))]")?;
     w!(f, "#[allow(private_bounds)]")?;
     w!(f, "pub trait Tuple: Sealed {{")?;
@@ -185,7 +191,7 @@ pub(super) fn generate() -> Result<(), Error> {
     w!(f, "/// Wraps the tuple in a [`TupleFmt`] for formatting purposes.
         fn fmt(&self) -> TupleFmt<Self> where Self: Sized {{ TupleFmt(self) }}")?;
 
-    w!(f, "}}")?; // end impl Tuple
+    w!(f, "}}")?; // end define Tuple
 
 
     /* manual implementations of Tuple for arities of 0 and 1 */
