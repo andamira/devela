@@ -3,10 +3,17 @@
 //! `Mem` namespace.
 //
 
-#[allow(unused_imports, reason = "±unsafe")]
-use crate::_core::mem::{
-    align_of, align_of_val, drop, forget, needs_drop, replace, size_of, size_of_val, swap, take,
-    transmute_copy, zeroed,
+#[allow(unused_imports, reason = "unsafe features gated")]
+use crate::_core::{
+    mem::{transmute_copy, zeroed},
+    slice::{from_raw_parts, from_raw_parts_mut},
+};
+use crate::{
+    Discriminant,
+    _core::mem::{
+        align_of, align_of_val, discriminant, drop, forget, needs_drop, replace, size_of,
+        size_of_val, swap, take,
+    },
 };
 
 /// A memory-related functionality namespace.
@@ -47,6 +54,12 @@ impl Mem {
     #[must_use]
     pub const fn copy<T: Copy>(x: &T) -> T {
         *x
+    }
+
+    /// Returns a value uniquely identifying the enum variant in v.
+    #[must_use]
+    pub const fn discriminant<T>(v: &T) -> Discriminant<T> {
+        discriminant(v);
     }
 
     /// Disposes of a value.
@@ -110,15 +123,17 @@ impl Mem {
     pub fn take<T: Default>(dest: &mut T) -> T {
         take::<T>(dest)
     }
+}
 
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
+#[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
+impl Mem {
     // NOTE: can't compile, errors with: error[E0512]:
     // cannot transmute between types of different sizes, or dependently-sized types
     //
     // /// Reinterprets the bits of a value of one type as another type.
     // ///
     // /// See `core::mem::`[`transmute`].
-    // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
-    // #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
     // pub const unsafe fn transmute<Src: Sized, Dst: Sized>(_src: Src) -> Dst {
     //     unsafe { transmute::<Src, Dst>(_src) }
     // }
@@ -128,8 +143,6 @@ impl Mem {
     /// # Safety
     /// See `core::mem::`[`transmute_copy`].
     #[must_use]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
     pub const unsafe fn transmute_copy<Src, Dst>(src: &Src) -> Dst {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { transmute_copy::<Src, Dst>(src) }
@@ -140,8 +153,6 @@ impl Mem {
     /// # Safety
     /// See `core::mem::`[`zeroed`].
     #[must_use]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_layout")))]
-    #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
     pub const unsafe fn zeroed<T>() -> T {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { zeroed::<T>() }
@@ -153,7 +164,7 @@ impl Mem {
 impl Mem {
     /// View any `T: Sync + Unpin + ?Sized` as `&[u8]`.
     ///
-    /// This is a safer interface to [`core::slice::from_raw_parts`].
+    /// This is a safer interface to `core::slice::`[`from_raw_parts`].
     /// # Example
     /// ```
     /// # use devela::Mem;
@@ -172,12 +183,12 @@ impl Mem {
     #[must_use]
     pub fn as_bytes<'t, T: Sync + Unpin + ?Sized + 't>(v: &T) -> &'t [u8] {
         // SAFETY:
-        unsafe { core::slice::from_raw_parts(v as *const _ as *const u8, size_of_val(v)) }
+        unsafe { from_raw_parts(v as *const _ as *const u8, size_of_val(v)) }
     }
 
     /// View any `T: Sync + Unpin + ?Sized` as `&mut [u8]`.
     ///
-    /// This is a safer interface to [`core::slice::from_raw_parts_mut`].
+    /// This is a safer interface to `core::slice::`[`from_raw_parts_mut`].
     /// # Examples
     /// ```
     /// # use devela::Mem;
@@ -198,12 +209,12 @@ impl Mem {
     #[must_use]
     pub fn as_bytes_mut<'t, T: Sync + Unpin + ?Sized + 't>(v: &mut T) -> &'t mut [u8] {
         // SAFETY:
-        unsafe { core::slice::from_raw_parts_mut(v as *mut _ as *mut u8, size_of_val(v)) }
+        unsafe { from_raw_parts_mut(v as *mut _ as *mut u8, size_of_val(v)) }
     }
 
     /// View any `T: Sync + Unpin + Sized` as `&[u8]` *compile-time* friendly.
     ///
-    /// This is a safer interface to [`core::slice::from_raw_parts`], for `Sized` types.
+    /// This is a safer interface to `core::slice::`[`from_raw_parts`], for `Sized` types.
     /// # Examples
     /// ```
     /// # use devela::Mem;
@@ -219,6 +230,6 @@ impl Mem {
     #[must_use]
     pub const fn as_bytes_sized<T: Sync + Unpin>(v: &T) -> &[u8] {
         // SAFETY:
-        unsafe { core::slice::from_raw_parts(v as *const T as *const u8, size_of::<T>()) }
+        unsafe { from_raw_parts(v as *const T as *const u8, size_of::<T>()) }
     }
 }

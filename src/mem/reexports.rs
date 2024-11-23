@@ -8,7 +8,7 @@ use super::Boxed;
 use crate::code::reexport;
 
 #[cfg(feature = "alloc")]
-crate::code::impl_cdef![<T: ConstDefault> Self::new() => RcWeak<T>];
+crate::impl_cdef![<T: ConstDefault> Self::new() => RcWeak<T>];
 
 #[doc(inline)]
 pub use crate::Sized;
@@ -59,11 +59,7 @@ reexport! { rust: core::mem,
 }
 reexport! { rust: core::mem,
     doc: "Opaque type representing the discriminant of an enum.",
-    @Discriminant as EnumDiscriminant
-}
-reexport! { rust: core::mem,
-    doc: "Returns a value uniquely identifying the enum variant in `v`.",
-    @discriminant as enum_discriminant
+    Discriminant
 }
 
 reexport! { rust: core::mem,
