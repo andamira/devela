@@ -586,7 +586,7 @@ version = "2.7.4" # ✗ https://github.com/BurntSushi/memchr/commits/master/
 optional = true # unsafe
 default-features = false
 [dependencies.miniquad] # https://crates.io/crates/miniquad
-version = "0.4.6" # ✗ https://github.com/not-fl3/miniquad/commits/master/
+version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
 optional = true # unsafe
 default-features = false
 [dependencies.rand_core] # https://crates.io/crates/rand_core
@@ -616,7 +616,7 @@ version = "1.12.0" # ✓ https://github.com/unicode-rs/unicode-segmentation?tab=
 optional = true # safe
 default-features = false
 [dependencies.unicode-width] # https://crates.io/crates/unicode-width
-version = "0.1.13" # ✓ https://github.com/unicode-rs/unicode-width?tab=readme-ov-file#changelog
+version = "0.2.0" # ✓ https://github.com/unicode-rs/unicode-width?tab=readme-ov-file#changelog
 optional = true # safe
 default-features = false
 [dependencies.wide] # https://crates.io/crates/wide
