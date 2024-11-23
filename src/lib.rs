@@ -158,20 +158,5 @@ pub use all::*;
 #[doc(inline)]
 pub use ::core as _core;
 
-/// Re-exported optional dependencies.
 pub mod _dep;
-
-/// Documentation about the library.
-#[cfg(any(doc, test))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(doc)))]
-pub mod _doc {
-    /// Documented examples.
-    pub mod examples;
-
-    /// Library features explained.
-    #[cfg(doc)]
-    pub mod features {
-        #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]
-        #![doc = include_str!("./_doc/features.md")]
-    }
-}
+pub mod _doc;

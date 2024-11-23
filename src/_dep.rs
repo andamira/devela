@@ -1,5 +1,7 @@
 // devela::_dep
 //
+//! Re-exported optional dependencies.
+//
 // TOC
 // - standard libraries
 // - external dependencies
