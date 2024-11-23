@@ -1,14 +1,4 @@
 // devela::num::int::divisor
-//
-//!
-//
-// This is derived work from the
-// [`quickdiv`](https://crates.io/crates/quickdiv/0.1.1) crate,
-// including the following modifications:
-// - unify all types in a single one with const-generic implementations.
-// - constructors return `Option` instead of panicking.
-// - specific implementations are feature-gated.
-// - misc. refactoring and code compression.
 
 #[allow(unused_imports)]
 use crate::{
@@ -33,6 +23,9 @@ use crate::{
 /// [`_int_u64`][Self#impl-Divisor<u64>],
 /// [`_int_u128`][Self#impl-Divisor<u128>],
 /// [`_int_usize`][Self#impl-Divisor<usize>].
+///
+/// # Derived Work
+#[doc = include_str!("./MODIFICATIONS.md")]
 #[must_use]
 #[derive(Clone, Copy)]
 pub struct Divisor<T> {
