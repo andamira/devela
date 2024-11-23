@@ -2,9 +2,6 @@
 //
 //! Additional library documentation.
 //
-// TOC
-// - standard libraries
-// - external dependencies
 
 #![cfg(any(doc, test))]
 #![cfg_attr(feature = "nightly_doc", doc(cfg(doc)))]
@@ -19,7 +16,7 @@ pub mod features {
     #![doc = include_str!("./features.md")]
 }
 
-/// Vendored work.
+/// Vendored and adapted work.
 pub mod vendored {
     #![doc = include_str!("../../DOCS/VENDORED_rustdoc.md")]
     #![doc = include_str!("../../DOCS/VENDORED.md")]

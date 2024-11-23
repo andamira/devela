@@ -16,8 +16,8 @@ pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 ///
 /// It's implemented for
 /// [u32](#impl-HasherFx<u32>),
-/// [u64](#impl-HasherFx<u64>),
-/// [usize](#impl-Hasherx<usize>).
+/// [u64](#impl-HasherFx<u64>) and
+/// [usize](##impl-HasherFx<usize>).
 ///
 /// # Derived Work
 #[doc = include_str!("./MODIFICATIONS.md")]

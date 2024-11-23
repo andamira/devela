@@ -1,14 +1,10 @@
 // devela::_doc::examples
 //
 //!
+//! These examples generate example structures for documentation purposes.
 //
 // NOTE1: rustdoc doesn't detect changes in the examples, only in the library,
 // so it's necessary to modify the library to rebuild the examples docs
-//
-// NOTE2: The examples can't import macros from the root, but from submodules.
-// (Triggers the lint MACRO_EXPANDED_MACRO_EXPORTS_ACCESSED_BY_ABSOLUTE_PATHS)
-// - https://github.com/rust-lang/rust/issues/53495
-// - https://github.com/rust-lang/rust/pull/52234
 
 #![allow(unused)]
 

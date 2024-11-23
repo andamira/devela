@@ -21,8 +21,7 @@ use crate::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::usize_up;
 use crate::{
-    cif, iif,
-    paste, Int,
+    cif, iif, paste, Int,
     NumError::{NonZeroRequired, Overflow},
     NumResult as Result, ValueQuant,
 };
