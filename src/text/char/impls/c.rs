@@ -3,7 +3,7 @@
 //!
 //
 // `char` can only implement the trait, not the associated const methods,
-// (and that's the main reason we have the CharU32 wrapper type).
+// (and that's the main reason we have the char32 wrapper type).
 
 use crate::{Char, UnicodeScalar};
 

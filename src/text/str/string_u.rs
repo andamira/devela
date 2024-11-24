@@ -60,11 +60,11 @@ macro_rules! impl_string_u {
         /// - Construct:
         ///   [`new`][Self::new],
         ///   [`from_char`][Self::from_char]*(
-        ///     [`7`](Self::from_char_u7),
-        ///     [`8`](Self::from_char_u8),
-        ///     [`16`](Self::from_char_u16),
-        ///     [`24`](Self::from_char_u24),
-        ///     [`32`](Self::from_char_u32)
+        ///     [`7`](Self::from_char7),
+        ///     [`8`](Self::from_char8),
+        ///     [`16`](Self::from_char16),
+        ///     [`24`](Self::from_char24),
+        ///     [`32`](Self::from_char32)
         ///   )*.
         /// - Deconstruct:
         ///   [`into_array`][Self::into_array],
@@ -348,23 +348,23 @@ macro_rules! impl_string_u {
                 Ok(new)
             }
 
-            #[doc = "Creates a new `String" $t:camel "` from a `CharU7`."]
+            #[doc = "Creates a new `String" $t:camel "` from a `char7`."]
             ///
             /// # Errors
             #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`]."]
             /// or [`NotEnoughCapacity`] if `CAP < 1.
             ///
             #[doc = "It will always succeed if `CAP >= 1 && CAP <= `[`" $t "::MAX`]."]
-            #[cfg(feature = "_char_u7")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u7")))]
-            pub const fn from_char_u7(c: CharU7) -> Result<Self> {
+            #[cfg(feature = "_char7")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+            pub const fn from_char7(c: char7) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
                 new.arr[0] = c.to_utf8_bytes()[0];
                 new.len = 1;
                 Ok(new)
             }
 
-            #[doc = "Creates a new `String" $t:camel "` from a `CharU8`."]
+            #[doc = "Creates a new `String" $t:camel "` from a `char8`."]
             ///
             /// # Errors
             #[doc = "Returns [`OutOfBounds`] if `CAP > `[`" $t "::MAX`]."]
@@ -372,9 +372,9 @@ macro_rules! impl_string_u {
             ///
             #[doc = "It will always succeed if `CAP >= 2 && CAP <= `[`" $t "::MAX`]."]
             #[rustfmt::skip]
-            #[cfg(feature = "_char_u8")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u8")))]
-            pub const fn from_char_u8(c: CharU8) -> Result<Self> {
+            #[cfg(feature = "_char8")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+            pub const fn from_char8(c: char8) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
 
                 let bytes = c.to_utf8_bytes();
@@ -385,17 +385,17 @@ macro_rules! impl_string_u {
                 Ok(new)
             }
 
-            #[doc = "Creates a new `String" $t:camel "` from a `CharU16`."]
+            #[doc = "Creates a new `String" $t:camel "` from a `char16`."]
             ///
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t
-                "::MAX`]` || CAP < c.`[`len_utf8()`][CharU16#method.len_utf8]."]
+                "::MAX`]` || CAP < c.`[`len_utf8()`][char16#method.len_utf8]."]
             ///
             #[doc = "Will never panic if `CAP >= 3 && CAP <= `[`" $t "::MAX`]."]
             #[rustfmt::skip]
-            #[cfg(feature = "_char_u16")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u16")))]
-            pub const fn from_char_u16(c: CharU16) -> Result<Self> {
+            #[cfg(feature = "_char16")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+            pub const fn from_char16(c: char16) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
 
                 let bytes = c.to_utf8_bytes();
@@ -407,17 +407,17 @@ macro_rules! impl_string_u {
                 Ok(new)
             }
 
-            #[doc = "Creates a new `String" $t:camel "` from a `CharU24`."]
+            #[doc = "Creates a new `String" $t:camel "` from a `char24`."]
             ///
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t
-                "::MAX`]` || CAP < c.`[`len_utf8()`][CharU24#method.len_utf8]."]
+                "::MAX`]` || CAP < c.`[`len_utf8()`][char24#method.len_utf8]."]
             ///
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
             #[rustfmt::skip]
-            #[cfg(feature = "_char_u24")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u24")))]
-            pub const fn from_char_u24(c: CharU24) -> Result<Self> {
+            #[cfg(feature = "_char24")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
+            pub const fn from_char24(c: char24) -> Result<Self> {
                 let mut new = unwrap![ok? Self::new()];
 
                 let bytes = c.to_utf8_bytes();
@@ -430,16 +430,16 @@ macro_rules! impl_string_u {
                 Ok(new)
             }
 
-            #[doc = "Creates a new `String" $t:camel "` from a `CharU32`."]
+            #[doc = "Creates a new `String" $t:camel "` from a `char32`."]
             ///
             /// # Panics
             #[doc = "Panics if `CAP > `[`" $t
-                "::MAX`]` || CAP < c.`[`len_utf8()`][CharU32#method.len_utf8]."]
+                "::MAX`]` || CAP < c.`[`len_utf8()`][char32#method.len_utf8]."]
             ///
             #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            #[cfg(feature = "_char_u32")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u32")))]
-            pub const fn from_char_u32(c: CharU32) -> Result<Self> {
+            #[cfg(feature = "_char32")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
+            pub const fn from_char32(c: char32) -> Result<Self> {
                 Ok(unwrap![ok? Self::from_char(c.0)])
             }
 

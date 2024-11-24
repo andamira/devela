@@ -8,7 +8,7 @@
 // - conversions
 
 use super::Grapheme;
-#[cfg(_char_·)]
+#[cfg(_char·)]
 use crate::text::char::*;
 #[cfg(feature = "alloc")]
 use crate::CString;
@@ -50,83 +50,83 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
         Ok(Self(unwrap![ok? StringNonul::new()]))
     }
 
-    /// Creates a new `GraphemeNonul` from a `CharU7`.
+    /// Creates a new `GraphemeNonul` from a `char7`.
     ///
-    /// If `c`.[`is_nul()`][CharU7#method.is_nul] an empty grapheme will be returned.
+    /// If `c`.[`is_nul()`][char7#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
-    #[cfg(feature = "_char_u7")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u7")))]
-    pub const fn from_char_u7(c: CharU7) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringNonul::from_char_u7(c)]))
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+    pub const fn from_char7(c: char7) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char7(c)]))
     }
 
-    /// Creates a new `GraphemeNonul` from a `CharU8`.
+    /// Creates a new `GraphemeNonul` from a `char8`.
     ///
-    /// If `c`.[`is_nul()`][CharU8#method.is_nul] an empty grapheme will be returned.
+    /// If `c`.[`is_nul()`][char8#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][CharU8#method.len_utf8].
+    /// and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
-    #[cfg(feature = "_char_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u8")))]
-    pub const fn from_char_u8(c: CharU8) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringNonul::from_char_u8(c)]))
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+    pub const fn from_char8(c: char8) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char8(c)]))
     }
 
-    /// Creates a new `GraphemeNonul` from a `CharU16`.
+    /// Creates a new `GraphemeNonul` from a `char16`.
     ///
-    /// If `c`.[`is_nul()`][CharU16#method.is_nul] an empty grapheme will be returned.
+    /// If `c`.[`is_nul()`][char16#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][CharU16#method.len_utf8].
+    /// and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
-    #[cfg(feature = "_char_u16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u16")))]
-    pub const fn from_char_u16(c: CharU16) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringNonul::from_char_u16(c)]))
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+    pub const fn from_char16(c: char16) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char16(c)]))
     }
 
-    /// Creates a new `GraphemeNonul` from a `CharU24`.
+    /// Creates a new `GraphemeNonul` from a `char24`.
     ///
-    /// If `c`.[`is_nul()`][CharU24#method.is_nul] an empty grapheme will be returned.
+    /// If `c`.[`is_nul()`][char24#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][CharU24#method.len_utf8].
+    /// and `CAP` < `c.`[`len_utf8()`][char24#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
-    #[cfg(feature = "_char_u24")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u24")))]
-    pub const fn from_char_u24(c: CharU24) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringNonul::from_char_u24(c)]))
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
+    pub const fn from_char24(c: char24) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char24(c)]))
     }
 
-    /// Creates a new `GraphemeNonul` from a `CharU32`.
+    /// Creates a new `GraphemeNonul` from a `char32`.
     ///
-    /// If `c`.[`is_nul()`][CharU32#method.is_nul] an empty grapheme will be returned.
+    /// If `c`.[`is_nul()`][char32#method.is_nul] an empty grapheme will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][CharU32#method.len_utf8].
+    /// and `CAP` < `c.`[`len_utf8()`][char32#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
-    #[cfg(feature = "_char_u32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u32")))]
-    pub const fn from_char_u32(c: CharU32) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringNonul::from_char_u32(c)]))
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
+    pub const fn from_char32(c: char32) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringNonul::from_char32(c)]))
     }
 
     /// Creates a new `GraphemeNonul` from a `char`.

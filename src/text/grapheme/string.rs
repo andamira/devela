@@ -24,55 +24,55 @@ impl GraphemeString {
         Self(String::new())
     }
 
-    /// Creates a new `GraphemeString` from a `CharU7`.
+    /// Creates a new `GraphemeString` from a `char7`.
     #[must_use]
-    #[cfg(feature = "_char_u7")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
-    pub fn from_char_u7(c: CharU7) -> GraphemeString {
+    pub fn from_char7(c: char7) -> GraphemeString {
         Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
-    /// Creates a new `GraphemeString` from a `CharU8`.
+    /// Creates a new `GraphemeString` from a `char8`.
     #[must_use]
-    #[cfg(feature = "_char_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
-    pub fn from_char_u8(c: CharU8) -> GraphemeString {
+    pub fn from_char8(c: char8) -> GraphemeString {
         Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
-    /// Creates a new `GraphemeString` from a `CharU16`.
+    /// Creates a new `GraphemeString` from a `char16`.
     #[must_use]
-    #[cfg(feature = "_char_u16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
-    pub fn from_char_u16(c: CharU16) -> GraphemeString {
+    pub fn from_char16(c: char16) -> GraphemeString {
         Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
-    /// Creates a new `GraphemeString` from a `CharU24`.
+    /// Creates a new `GraphemeString` from a `char24`.
     #[must_use]
-    #[cfg(feature = "_char_u24")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
-    pub fn from_char_u24(c: CharU24) -> GraphemeString {
+    pub fn from_char24(c: char24) -> GraphemeString {
         Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
-    /// Creates a new `GraphemeString` from a `CharU32`.
+    /// Creates a new `GraphemeString` from a `char32`.
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
     #[must_use]
-    #[cfg(feature = "_char_u32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
-    pub fn from_char_u32(c: CharU32) -> GraphemeString {
+    pub fn from_char32(c: char32) -> GraphemeString {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return Str::from_utf8(&c.to_utf8_bytes()).unwrap().into();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]

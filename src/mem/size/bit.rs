@@ -9,54 +9,37 @@
 // - trait impls
 
 use crate::{
-    _core::{
-        cmp,
-        convert::Infallible,
-        marker::{PhantomData, PhantomPinned},
-        num::{
-            NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128,
-            NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
-        },
-        time::Duration,
-    },
-    mem::{bytes_from_bits, BareBox, ByteSized},
+    bytes_from_bits, BareBox, ByteSized, Duration, Infallible, NonZeroI128, NonZeroI16, NonZeroI32,
+    NonZeroI64, NonZeroI8, NonZeroIsize, NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64,
+    NonZeroU8, NonZeroUsize, Ordering, PhantomData, PhantomPinned,
 };
 #[cfg(feature = "std")]
-use std::{
-    collections::{HashMap, HashSet},
-    rc::Rc,
-    sync::{Arc, Mutex},
-    time::{Instant, SystemTime},
-};
+use crate::{Arc, HashMap, HashSet, Mutex, Rc, SystemInstant, SystemTime};
 
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560#issuecomment-1202124275)
 // #[cfg(feature = "text")]
-// use crate::text::{StringU16, StringU32, GraphemeU8, StringU8};
+// use crate::{StringU16, StringU32, GraphemeU8, StringU8};
 #[cfg(feature = "alloc")]
-use crate::_dep::_alloc::{
-    collections::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, VecDeque},
-    string::String,
-    vec::Vec,
-};
+use crate::GraphemeString;
 #[cfg(feature = "alloc")]
-use crate::text::GraphemeString;
+use crate::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, String, Vec, VecDeque};
 #[cfg(feature = "_string_nonul")]
-use crate::text::{GraphemeNonul, StringNonul};
+use crate::{GraphemeNonul, StringNonul};
 
 #[cfg(feature = "dep_portable_atomic")]
 use crate::_dep::portable_atomic::{AtomicF32, AtomicF64, AtomicI128, AtomicU128};
 #[cfg(feature = "work")]
-use crate::work::{AtomicBool, AtomicOrdering};
+use crate::{AtomicBool, AtomicOrdering};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "16")))]
-use crate::work::{AtomicI16, AtomicU16};
+use crate::{AtomicI16, AtomicU16};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "32")))]
-use crate::work::{AtomicI32, AtomicU32};
+use crate::{AtomicI32, AtomicU32};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "64")))]
-use crate::work::{AtomicI64, AtomicU64};
+use crate::{AtomicI64, AtomicU64};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "8")))]
-use crate::work::{AtomicI8, AtomicU8};
+use crate::{AtomicI8, AtomicU8};
 #[cfg(all(feature = "work", any(feature = "dep_portable_atomic", target_has_atomic = "ptr")))]
-use crate::work::{AtomicIsize, AtomicPtr, AtomicUsize};
+use crate::{AtomicIsize, AtomicPtr, AtomicUsize};
 
 /* trait definition */
 
@@ -119,24 +102,24 @@ pub trait BitSized<const LEN: usize>: ByteSized {
 macro_rules! bit_sized {
     /* primitives */
 
-    (= $bits:expr; for $($t:ty),+) => { $( impl $crate::mem::BitSized<$bits> for $t {} )+ };
+    (= $bits:expr; for $($t:ty),+) => { $( impl $crate::BitSized<$bits> for $t {} )+ };
 
     /* primitives generic on $T */
 
     (<$T:ident> = $bits:expr; for $($t:ty),+) => {
-        $( impl<$T> $crate::mem::BitSized<$bits> for $t {} )+
+        $( impl<$T> $crate::BitSized<$bits> for $t {} )+
     };
     (<const $T:ident: $Tt:ty> = $bits:expr; for $($t:ty),+) => {
-        $( impl<const $T: $Tt> $crate::mem::BitSized<$bits> for $t {} )+
+        $( impl<const $T: $Tt> $crate::BitSized<$bits> for $t {} )+
     };
 
     /* primitives generic on $K, $V */
 
     (<$K:ident, $V:ident> = $bits:expr; for $($t:ty),+) => {
-        $( impl<$K, $V> $crate::mem::BitSized<$bits> for $t {} )+
+        $( impl<$K, $V> $crate::BitSized<$bits> for $t {} )+
     };
     (<const $K:ident: $Kt:ty, const $V:ident: $Vt:ty> = $bits:expr; for $($t:ty),+) => {
-        $( impl<const $K: $Kt, const $V: $Vt> $crate::mem::BitSized<$bits> for $t {} )+
+        $( impl<const $K: $Kt, const $V: $Vt> $crate::BitSized<$bits> for $t {} )+
     };
 
     /* pointer primitives */
@@ -181,7 +164,7 @@ macro_rules! bit_sized {
 
     (array = $bits:literal * len for T: $tsize:literal * len: $($len:literal),+) => {
         $(
-        impl<T: $crate::mem::BitSized<$tsize>> $crate::mem::BitSized<{$bits*$len}> for [T; $len] {}
+        impl<T: $crate::BitSized<$tsize>> $crate::BitSized<{$bits*$len}> for [T; $len] {}
         )+
     };
 }
@@ -195,24 +178,24 @@ impl<T: BitSized<LEN>, const LEN: usize> BitSized<LEN> for BareBox<T> {}
 bit_sized![<T> = 0; for PhantomData<T>];
 bit_sized![= 0; for (), Infallible, PhantomPinned];
 bit_sized![= 1; for bool];
-bit_sized![= 8; for i8, u8, cmp::Ordering];
+bit_sized![= 8; for i8, u8, Ordering];
 bit_sized![= 16; for i16, u16];
 bit_sized![= 32; for i32, u32, f32, char];
 bit_sized![= 64; for i64, u64, f64];
 bit_sized![= 128; for i128, u128, Duration];
 #[cfg(feature = "std")]
-bit_sized![= 128; for Instant, SystemTime];
+bit_sized![= 128; for SystemInstant, SystemTime];
 
-#[cfg(feature = "_char_u7")]
-bit_sized![= 7; for crate::text::CharU7];
-#[cfg(feature = "_char_u8")]
-bit_sized![= 8; for crate::text::CharU8];
-#[cfg(feature = "_char_u16")]
-bit_sized![= 16; for crate::text::CharU16];
-#[cfg(feature = "_char_u24")]
-bit_sized![= 24; for crate::text::CharU24];
-#[cfg(feature = "_char_u32")]
-bit_sized![= 32; for crate::text::CharU32];
+#[cfg(feature = "_char7")]
+bit_sized![= 7; for crate::char7];
+#[cfg(feature = "_char8")]
+bit_sized![= 8; for crate::char8];
+#[cfg(feature = "_char16")]
+bit_sized![= 16; for crate::char16];
+#[cfg(feature = "_char24")]
+bit_sized![= 24; for crate::char24];
+#[cfg(feature = "_char32")]
+bit_sized![= 32; for crate::char32];
 
 bit_sized![= 8; for NonZeroI8, NonZeroU8];
 bit_sized![= 16; for NonZeroI16, NonZeroU16];

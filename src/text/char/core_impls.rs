@@ -62,271 +62,271 @@ macro_rules! core_impls {
 }
 #[rustfmt::skip]
 core_impls![
-    CharU7 | "_char_u7" + Self(unwrap![some NonExtremeU8::new(0)]),
-    CharU8 | "_char_u8" + Self(0),
-    CharU16 | "_char_u16" + Self(unwrap![some NonSurrogateU16::new(0)]),
-    CharU24 | "_char_u24" + Self { hi: unwrap![some NonExtremeU8::new(0)], mi: 0, lo: 0 },
-    CharU32 | "_char_u32" + Self('\x00')
+    char7 | "_char7" + Self(unwrap![some NonExtremeU8::new(0)]),
+    char8 | "_char8" + Self(0),
+    char16 | "_char16" + Self(unwrap![some NonSurrogateU16::new(0)]),
+    char24 | "_char24" + Self { hi: unwrap![some NonExtremeU8::new(0)], mi: 0, lo: 0 },
+    char32 | "_char32" + Self('\x00')
 ];
 
-/* From CharU7 */
+/* From char7 */
 
-#[cfg(feature = "_char_u7")]
-mod char7 {
+#[cfg(feature = "_char7")]
+mod c7 {
     use super::super::*;
 
-    impl From<CharU7> for char {
+    impl From<char7> for char {
         #[must_use]
-        fn from(c: CharU7) -> char {
+        fn from(c: char7) -> char {
             c.to_char()
         }
     }
-    #[cfg(feature = "_char_u8")]
-    impl From<CharU7> for CharU8 {
+    #[cfg(feature = "_char8")]
+    impl From<char7> for char8 {
         #[must_use]
-        fn from(c: CharU7) -> CharU8 {
-            c.to_char_u8()
+        fn from(c: char7) -> char8 {
+            c.to_char8()
         }
     }
-    #[cfg(feature = "_char_u16")]
-    impl From<CharU7> for CharU16 {
+    #[cfg(feature = "_char16")]
+    impl From<char7> for char16 {
         #[must_use]
-        fn from(c: CharU7) -> CharU16 {
-            c.to_char_u16()
+        fn from(c: char7) -> char16 {
+            c.to_char16()
         }
     }
-    #[cfg(feature = "_char_u24")]
-    impl From<CharU7> for CharU24 {
+    #[cfg(feature = "_char24")]
+    impl From<char7> for char24 {
         #[must_use]
-        fn from(c: CharU7) -> CharU24 {
-            c.to_char_u24()
+        fn from(c: char7) -> char24 {
+            c.to_char24()
         }
     }
-    #[cfg(feature = "_char_u32")]
-    impl From<CharU7> for CharU32 {
+    #[cfg(feature = "_char32")]
+    impl From<char7> for char32 {
         #[must_use]
-        fn from(c: CharU7) -> CharU32 {
-            c.to_char_u32()
+        fn from(c: char7) -> char32 {
+            c.to_char32()
         }
     }
 }
 
-/* From CharU8 */
+/* From char8 */
 
-#[cfg(feature = "_char_u8")]
-mod char8 {
+#[cfg(feature = "_char8")]
+mod c8 {
     use super::*;
 
-    impl From<CharU8> for char {
+    impl From<char8> for char {
         #[must_use]
-        fn from(c: CharU8) -> char {
+        fn from(c: char8) -> char {
             c.to_char()
         }
     }
-    #[cfg(feature = "_char_u7")]
-    impl TryFrom<CharU8> for CharU7 {
+    #[cfg(feature = "_char7")]
+    impl TryFrom<char8> for char7 {
         type Error = TextError;
-        fn try_from(c: CharU8) -> Result<CharU7> {
-            c.try_to_char_u7()
+        fn try_from(c: char8) -> Result<char7> {
+            c.try_to_char7()
         }
     }
-    #[cfg(feature = "_char_u16")]
-    impl From<CharU8> for CharU16 {
+    #[cfg(feature = "_char16")]
+    impl From<char8> for char16 {
         #[must_use]
-        fn from(c: CharU8) -> CharU16 {
-            c.to_char_u16()
+        fn from(c: char8) -> char16 {
+            c.to_char16()
         }
     }
-    #[cfg(feature = "_char_u24")]
-    impl From<CharU8> for CharU24 {
+    #[cfg(feature = "_char24")]
+    impl From<char8> for char24 {
         #[must_use]
-        fn from(c: CharU8) -> CharU24 {
-            c.to_char_u24()
+        fn from(c: char8) -> char24 {
+            c.to_char24()
         }
     }
-    #[cfg(feature = "_char_u32")]
-    impl From<CharU8> for CharU32 {
+    #[cfg(feature = "_char32")]
+    impl From<char8> for char32 {
         #[must_use]
-        fn from(c: CharU8) -> CharU32 {
-            c.to_char_u32()
+        fn from(c: char8) -> char32 {
+            c.to_char32()
         }
     }
 }
 
-/* From CharU16 */
+/* From char16 */
 
-#[cfg(feature = "_char_u16")]
-mod char16 {
+#[cfg(feature = "_char16")]
+mod c16 {
     use super::*;
 
-    impl From<CharU16> for char {
+    impl From<char16> for char {
         #[must_use]
-        fn from(c: CharU16) -> char {
+        fn from(c: char16) -> char {
             c.to_char()
         }
     }
-    #[cfg(feature = "_char_u7")]
-    impl TryFrom<CharU16> for CharU7 {
+    #[cfg(feature = "_char7")]
+    impl TryFrom<char16> for char7 {
         type Error = TextError;
-        fn try_from(c: CharU16) -> Result<CharU7> {
-            c.try_to_char_u7()
+        fn try_from(c: char16) -> Result<char7> {
+            c.try_to_char7()
         }
     }
-    #[cfg(feature = "_char_u8")]
-    impl TryFrom<CharU16> for CharU8 {
+    #[cfg(feature = "_char8")]
+    impl TryFrom<char16> for char8 {
         type Error = TextError;
-        fn try_from(c: CharU16) -> Result<CharU8> {
-            c.try_to_char_u8()
+        fn try_from(c: char16) -> Result<char8> {
+            c.try_to_char8()
         }
     }
-    #[cfg(feature = "_char_u24")]
-    impl From<CharU16> for CharU24 {
+    #[cfg(feature = "_char24")]
+    impl From<char16> for char24 {
         #[must_use]
-        fn from(c: CharU16) -> CharU24 {
-            c.to_char_u24()
+        fn from(c: char16) -> char24 {
+            c.to_char24()
         }
     }
-    #[cfg(feature = "_char_u32")]
-    impl From<CharU16> for CharU32 {
+    #[cfg(feature = "_char32")]
+    impl From<char16> for char32 {
         /// # Features
         /// Makes use of the `unsafe_str` feature if enabled.
         #[must_use]
-        fn from(c: CharU16) -> CharU32 {
+        fn from(c: char16) -> char32 {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            return c.to_char_u32();
+            return c.to_char32();
 
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: we've already checked we contain a valid char.
-            return unsafe { CharU32(char::from_u32_unchecked(c.0.get() as u32)) };
+            return unsafe { char32(char::from_u32_unchecked(c.0.get() as u32)) };
         }
     }
 }
 
-/* From CharU24 */
+/* From char24 */
 
-#[cfg(feature = "_char_u24")]
-mod char24 {
+#[cfg(feature = "_char24")]
+mod c24 {
     use super::*;
 
-    impl From<CharU24> for char {
+    impl From<char24> for char {
         #[must_use]
-        fn from(c: CharU24) -> char {
+        fn from(c: char24) -> char {
             c.to_char()
         }
     }
-    #[cfg(feature = "_char_u7")]
-    impl TryFrom<CharU24> for CharU7 {
+    #[cfg(feature = "_char7")]
+    impl TryFrom<char24> for char7 {
         type Error = TextError;
-        fn try_from(c: CharU24) -> Result<CharU7> {
-            c.try_to_char_u7()
+        fn try_from(c: char24) -> Result<char7> {
+            c.try_to_char7()
         }
     }
-    #[cfg(feature = "_char_u8")]
-    impl TryFrom<CharU24> for CharU8 {
+    #[cfg(feature = "_char8")]
+    impl TryFrom<char24> for char8 {
         type Error = TextError;
-        fn try_from(c: CharU24) -> Result<CharU8> {
-            c.try_to_char_u8()
+        fn try_from(c: char24) -> Result<char8> {
+            c.try_to_char8()
         }
     }
-    #[cfg(feature = "_char_u16")]
-    impl TryFrom<CharU24> for CharU16 {
+    #[cfg(feature = "_char16")]
+    impl TryFrom<char24> for char16 {
         type Error = TextError;
-        fn try_from(c: CharU24) -> Result<CharU16> {
-            c.try_to_char_u16()
+        fn try_from(c: char24) -> Result<char16> {
+            c.try_to_char16()
         }
     }
-    #[cfg(feature = "_char_u32")]
-    impl From<CharU24> for CharU32 {
+    #[cfg(feature = "_char32")]
+    impl From<char24> for char32 {
         /// # Features
         /// Makes use of the `unsafe_str` feature if enabled.
         #[must_use]
-        fn from(c: CharU24) -> CharU32 {
+        fn from(c: char24) -> char32 {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            return c.to_char_u32();
+            return c.to_char32();
 
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: we've already checked we contain a valid char.
-            return unsafe { CharU32(char::from_u32_unchecked(c.to_u32())) };
+            return unsafe { char32(char::from_u32_unchecked(c.to_u32())) };
         }
     }
 }
 
-/* From CharU32 */
+/* From char32 */
 
-#[cfg(feature = "_char_u32")]
-mod char32 {
+#[cfg(feature = "_char32")]
+mod c32 {
     use super::*;
 
-    impl From<CharU32> for char {
+    impl From<char32> for char {
         #[must_use]
-        fn from(c: CharU32) -> char {
+        fn from(c: char32) -> char {
             c.to_char()
         }
     }
-    #[cfg(feature = "_char_u7")]
-    impl TryFrom<CharU32> for CharU7 {
+    #[cfg(feature = "_char7")]
+    impl TryFrom<char32> for char7 {
         type Error = TextError;
-        fn try_from(c: CharU32) -> Result<CharU7> {
-            c.try_to_char_u7()
+        fn try_from(c: char32) -> Result<char7> {
+            c.try_to_char7()
         }
     }
-    #[cfg(feature = "_char_u8")]
-    impl TryFrom<CharU32> for CharU8 {
+    #[cfg(feature = "_char8")]
+    impl TryFrom<char32> for char8 {
         type Error = TextError;
-        fn try_from(c: CharU32) -> Result<CharU8> {
-            c.try_to_char_u8()
+        fn try_from(c: char32) -> Result<char8> {
+            c.try_to_char8()
         }
     }
-    #[cfg(feature = "_char_u16")]
-    impl TryFrom<CharU32> for CharU16 {
+    #[cfg(feature = "_char16")]
+    impl TryFrom<char32> for char16 {
         type Error = TextError;
-        fn try_from(c: CharU32) -> Result<CharU16> {
-            c.try_to_char_u16()
+        fn try_from(c: char32) -> Result<char16> {
+            c.try_to_char16()
         }
     }
-    #[cfg(feature = "_char_u24")]
-    impl From<CharU32> for CharU24 {
+    #[cfg(feature = "_char24")]
+    impl From<char32> for char24 {
         #[must_use]
-        fn from(c: CharU32) -> CharU24 {
-            c.to_char_u24()
+        fn from(c: char32) -> char24 {
+            c.to_char24()
         }
     }
 }
 
 /* From char */
 
-#[cfg(feature = "_char_u7")]
-impl TryFrom<char> for CharU7 {
+#[cfg(feature = "_char7")]
+impl TryFrom<char> for char7 {
     type Error = TextError;
-    fn try_from(c: char) -> Result<CharU7> {
-        CharU7::try_from_char(c)
+    fn try_from(c: char) -> Result<char7> {
+        char7::try_from_char(c)
     }
 }
-#[cfg(feature = "_char_u8")]
-impl TryFrom<char> for CharU8 {
+#[cfg(feature = "_char8")]
+impl TryFrom<char> for char8 {
     type Error = TextError;
-    fn try_from(c: char) -> Result<CharU8> {
-        CharU8::try_from_char(c)
+    fn try_from(c: char) -> Result<char8> {
+        char8::try_from_char(c)
     }
 }
-#[cfg(feature = "_char_u16")]
-impl TryFrom<char> for CharU16 {
+#[cfg(feature = "_char16")]
+impl TryFrom<char> for char16 {
     type Error = TextError;
-    fn try_from(c: char) -> Result<CharU16> {
-        CharU16::try_from_char(c)
+    fn try_from(c: char) -> Result<char16> {
+        char16::try_from_char(c)
     }
 }
-#[cfg(feature = "_char_u24")]
-impl From<char> for CharU24 {
+#[cfg(feature = "_char24")]
+impl From<char> for char24 {
     #[must_use]
-    fn from(c: char) -> CharU24 {
-        CharU24::from_char(c)
+    fn from(c: char) -> char24 {
+        char24::from_char(c)
     }
 }
-#[cfg(feature = "_char_u32")]
-impl From<char> for CharU32 {
+#[cfg(feature = "_char32")]
+impl From<char> for char32 {
     #[must_use]
-    fn from(c: char) -> CharU32 {
-        CharU32::from_char(c)
+    fn from(c: char) -> char32 {
+        char32::from_char(c)
     }
 }

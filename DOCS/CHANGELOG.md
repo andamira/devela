@@ -116,18 +116,16 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `nightly_stabilized` to `nightly_stable`.
   - `_[max|min]_docs` to `_docs_[max|min]`, `_docsrs_max` to `_docsrs`.
   - `dep_linux` to `linux_deps`, `dep_text` to `text_deps`, `dep_work` to `work_deps`.
-  - `_char*` to `_char_u*`.
 - rename compilation flags:
   - `_some_*` to `_*_·`.
   - `_int_i_·` to `_int_i·`, `_int_u_·` to `_int_u·`, `_string_u_·` to `_string_u·`.
-- modify how features `_non_value_u8`, `_non_value_u16` are enabled for `CharU*` types.
+- modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
 - show build *env* variables if `__dbg` feature is enabled.
 
 #### Items
 - structs:
   - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
   - rename:
-    - `Char*` to `CharU*`.
     - `GcdExt` to `GcdResult`.
     - `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.
     - `AllocOrdMap` to `BTreeMap` and `AllocOrdSet` to `BTreeSet`.

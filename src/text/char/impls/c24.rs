@@ -3,7 +3,7 @@
 use super::*;
 use crate::{AsciiChar, Char, TextError::CharConversion, TextResult as Result};
 
-impl CharU24 {
+impl char24 {
     /* private helper fns */
 
     // SAFETY: this is not marked as unsafe because it's only used privately
@@ -24,66 +24,66 @@ impl CharU24 {
 
     /* constants */
 
-    /// The highest unicode scalar a `CharU24` can represent, `'\u{10FFFF}'`.
-    pub const MAX: CharU24 = CharU24::from_char('\u{10ffff}');
+    /// The highest unicode scalar a `char24` can represent, `'\u{10FFFF}'`.
+    pub const MAX: char24 = char24::from_char('\u{10ffff}');
 
     /// `U+FFFD REPLACEMENT CHARACTER (�)` is used in Unicode to represent a decoding error.
-    pub const REPLACEMENT_CHARACTER: CharU24 = CharU24::from_char(char::REPLACEMENT_CHARACTER);
+    pub const REPLACEMENT_CHARACTER: char24 = char24::from_char(char::REPLACEMENT_CHARACTER);
 
     /* conversions */
 
-    /// Converts an `AsciiChar` to `CharU24`.
+    /// Converts an `AsciiChar` to `char24`.
     #[must_use]
-    pub const fn from_ascii_char(c: AsciiChar) -> CharU24 {
-        CharU24 { hi: Self::new_unchecked_hi(0), mi: 0, lo: c as u8 }
+    pub const fn from_ascii_char(c: AsciiChar) -> char24 {
+        char24 { hi: Self::new_unchecked_hi(0), mi: 0, lo: c as u8 }
     }
 
-    /// Converts a `CharU7` to `CharU24`.
+    /// Converts a `char7` to `char24`.
     #[must_use]
-    #[cfg(feature = "_char_u7")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
-    pub const fn from_char_u7(c: CharU7) -> CharU24 {
-        CharU24 {
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+    pub const fn from_char7(c: char7) -> char24 {
+        char24 {
             hi: Self::new_unchecked_hi(0),
             mi: 0,
             lo: c.0.get(),
         }
     }
-    /// Converts a `CharU8` to `CharU24`.
+    /// Converts a `char8` to `char24`.
     #[must_use]
-    #[cfg(feature = "_char_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
-    pub const fn from_char_u8(c: CharU8) -> CharU24 {
-        CharU24 { hi: Self::new_unchecked_hi(0), mi: 0, lo: c.0 }
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+    pub const fn from_char8(c: char8) -> char24 {
+        char24 { hi: Self::new_unchecked_hi(0), mi: 0, lo: c.0 }
     }
-    /// Converts a `CharU16` to `CharU24`.
+    /// Converts a `char16` to `char24`.
     #[must_use]
-    #[cfg(feature = "_char_u16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
-    pub const fn from_char_u16(c: CharU16) -> CharU24 {
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+    pub const fn from_char16(c: char16) -> char24 {
         let mi = ((c.0.get() & 0xFF00) >> 8) as u8;
         let lo = (c.0.get() & 0x00FF) as u8;
-        CharU24 { hi: Self::new_unchecked_hi(0), mi, lo }
+        char24 { hi: Self::new_unchecked_hi(0), mi, lo }
     }
-    /// Converts a `CharU32` to `CharU24`.
+    /// Converts a `char32` to `char24`.
     #[must_use]
-    #[cfg(feature = "_char_u32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
-    pub const fn from_char_u32(c: CharU32) -> CharU24 {
-        CharU24::from_char(c.0)
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
+    pub const fn from_char32(c: char32) -> char24 {
+        char24::from_char(c.0)
     }
-    /// Converts a `char` to `CharU24`.
+    /// Converts a `char` to `char24`.
     #[must_use]
-    pub const fn from_char(c: char) -> CharU24 {
+    pub const fn from_char(c: char) -> char24 {
         let hi = ((c as u32 & 0x001F_0000) >> 16) as u8;
         let mi = ((c as u32 & 0x0000_FF00) >> 8) as u8;
         let lo = (c as u32 & 0x000_000FF) as u8;
-        CharU24 { hi: Self::new_unchecked_hi(hi), mi, lo }
+        char24 { hi: Self::new_unchecked_hi(hi), mi, lo }
     }
 
     //
 
-    /// Tries to convert this `CharU24` to `AsciiChar`.
+    /// Tries to convert this `char24` to `AsciiChar`.
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
         if Char::is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
@@ -100,37 +100,37 @@ impl CharU24 {
         Err(CharConversion)
     }
 
-    /// Tries to convert this `CharU24` to `CharU7`.
-    #[cfg(feature = "_char_u7")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
-    pub const fn try_to_char_u7(self) -> Result<CharU7> {
-        CharU7::try_from_char_u24(self)
+    /// Tries to convert this `char24` to `char7`.
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+    pub const fn try_to_char7(self) -> Result<char7> {
+        char7::try_from_char24(self)
     }
-    /// Tries to convert this `CharU24` to `CharU8`.
-    #[cfg(feature = "_char_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
-    pub const fn try_to_char_u8(self) -> Result<CharU8> {
-        CharU8::try_from_char_u24(self)
+    /// Tries to convert this `char24` to `char8`.
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+    pub const fn try_to_char8(self) -> Result<char8> {
+        char8::try_from_char24(self)
     }
-    /// Tries to convert this `CharU24` to `CharU16`.
-    #[cfg(feature = "_char_u16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
-    pub const fn try_to_char_u16(self) -> Result<CharU16> {
-        CharU16::try_from_char_u24(self)
+    /// Tries to convert this `char24` to `char16`.
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+    pub const fn try_to_char16(self) -> Result<char16> {
+        char16::try_from_char24(self)
     }
-    /// Converts this `CharU24` to `CharU32`.
+    /// Converts this `char24` to `char32`.
     #[must_use]
-    #[cfg(feature = "_char_u32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
-    pub const fn to_char_u32(self) -> CharU32 {
-        CharU32(self.to_char())
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
+    pub const fn to_char32(self) -> char32 {
+        char32(self.to_char())
     }
-    /// Converts this `CharU24` to `u32`.
+    /// Converts this `char24` to `u32`.
     #[must_use]
     pub const fn to_u32(self) -> u32 {
         (self.hi.get() as u32) << 16 | (self.mi as u32) << 8 | (self.lo as u32)
     }
-    /// Converts this `CharU24` to `char`.
+    /// Converts this `char24` to `char`.
     #[must_use]
     #[rustfmt::skip]
     pub const fn to_char(self) -> char {
@@ -143,7 +143,7 @@ impl CharU24 {
         // return unsafe { char::from_u32_unchecked(code_point) };
     }
 
-    /// Converts this `CharU24` to an UTF-8 encoded sequence of bytes.
+    /// Converts this `char24` to an UTF-8 encoded sequence of bytes.
     ///
     /// Note that this function always returns a 4-byte array, but the actual
     /// UTF-8 sequence may be shorter. The unused bytes are set to 0.
@@ -195,7 +195,7 @@ impl CharU24 {
     /// ASCII letters ‘a’ to ‘z’ are mapped to ‘A’ to ‘Z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    pub const fn to_ascii_uppercase(self) -> CharU24 {
+    pub const fn to_ascii_uppercase(self) -> char24 {
         Self::from_char(char::to_ascii_uppercase(&self.to_char()))
     }
 
@@ -204,7 +204,7 @@ impl CharU24 {
     /// ASCII letters ‘A’ to ‘Z’ are mapped to ‘a’ to ‘z’, but non-ASCII letters
     /// are unchanged.
     #[must_use]
-    pub const fn to_ascii_lowercase(self) -> CharU24 {
+    pub const fn to_ascii_lowercase(self) -> char24 {
         Self::from_char(char::to_ascii_lowercase(&self.to_char()))
     }
 

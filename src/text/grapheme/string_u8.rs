@@ -7,7 +7,7 @@
 // - trait impls
 
 use super::Grapheme;
-#[cfg(_char_·)]
+#[cfg(_char·)]
 use crate::text::char::*;
 #[cfg(feature = "alloc")]
 use crate::CString;
@@ -47,64 +47,64 @@ impl<const CAP: usize> GraphemeU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::new()]))
     }
 
-    /// Creates a new `GraphemeU8` from a `CharU7`.
+    /// Creates a new `GraphemeU8` from a `char7`.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP > 255.
     ///
     /// Will always succeed if `CAP` >= 1 and <= 255.
-    #[cfg(feature = "_char_u7")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_7")))]
-    pub const fn from_char_u7(c: CharU7) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringU8::from_char_u7(c)]))
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+    pub const fn from_char7(c: char7) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char7(c)]))
     }
 
-    /// Creates a new `GraphemeU8` from a `CharU8`.
+    /// Creates a new `GraphemeU8` from a `char8`.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][CharU8#method.len_utf8].
+    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2 and <= 255.
-    #[cfg(feature = "_char_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_8")))]
-    pub const fn from_char_u8(c: CharU8) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringU8::from_char_u8(c)]))
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+    pub const fn from_char8(c: char8) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char8(c)]))
     }
 
-    /// Creates a new `GraphemeU8` from a `CharU16`.
+    /// Creates a new `GraphemeU8` from a `char16`.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][CharU16#method.len_utf8].
+    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3 and <= 255.
-    #[cfg(feature = "_char_u16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_16")))]
-    pub const fn from_char_u16(c: CharU16) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringU8::from_char_u16(c)]))
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+    pub const fn from_char16(c: char16) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char16(c)]))
     }
 
-    /// Creates a new `GraphemeU8` from a `CharU24`.
+    /// Creates a new `GraphemeU8` from a `char24`.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][CharU24#method.len_utf8].
+    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][char24#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    #[cfg(feature = "_char_u24")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_24")))]
-    pub const fn from_char_u24(c: CharU24) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringU8::from_char_u24(c)]))
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
+    pub const fn from_char24(c: char24) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char24(c)]))
     }
 
-    /// Creates a new `GraphemeU8` from a `CharU32`.
+    /// Creates a new `GraphemeU8` from a `char32`.
     ///
     /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][CharU32#method.len_utf8].
+    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][char32#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4 and <= 255.
-    #[cfg(feature = "_char_u32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_32")))]
-    pub const fn from_char_u32(c: CharU32) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringU8::from_char_u32(c)]))
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
+    pub const fn from_char32(c: char32) -> Result<Self> {
+        Ok(Self(unwrap![ok? StringU8::from_char32(c)]))
     }
 
     /// Creates a new `GraphemeU8` from a `char`.

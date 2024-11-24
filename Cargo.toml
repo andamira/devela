@@ -441,13 +441,13 @@ _nums_all = ["_float_all", "_int_all"]
 
 _text_all = ["_char_all", "_string_all"]
 
-# Char*
-_char_all = ["_char_u7", "_char_u8", "_char_u16", "_char_u24", "_char_u32"]
-	_char_u7 = []
-	_char_u8 = []
-	_char_u16 = []
-	_char_u24 = []
-	_char_u32 = []
+# char*
+_char_all = ["_char7", "_char8", "_char16", "_char24", "_char32"]
+	_char7 = []
+	_char8 = []
+	_char16 = []
+	_char24 = []
+	_char32 = []
 
 # StringU*, StringNonul:
 _string_all = [
@@ -486,7 +486,7 @@ _docs_min = [ # the minimum capabilities that document all library items
 	"_float_f32", "_int_u8",
 	# text:
 	"_string_u8", "_string_nonul",
-	"_char_u7", "_char_u8", "_char_u16", "_char_u24", "_char_u32",
+	"_char7", "_char8", "_char16", "_char24", "_char32", # RETHINK
 ]
 _docs_max = [ # the maximum capabities relevant for documentation
 	"_data_all", "_num_all", "_text_all"] # _tuple_72
@@ -761,7 +761,7 @@ check-cfg = [ # Allowed config flags:
 	# rend:
 	'cfg(_rend_·)',
 	# text:
-	'cfg(_char_·, _string_·, _string_u·)',
+	'cfg(_char·, _string_·, _string_u·)',
 ]
 
 # [[bench]]

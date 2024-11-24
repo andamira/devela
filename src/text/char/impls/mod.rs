@@ -7,21 +7,21 @@
 // - common implementations
 
 #[allow(unused_imports)]
-use super::*;
+use super::*; // char*
 
 /* specific implementations */
 
-mod char;
-#[cfg(feature = "_char_u16")]
-mod char16;
-#[cfg(feature = "_char_u24")]
-mod char24;
-#[cfg(feature = "_char_u32")]
-mod char32;
-#[cfg(feature = "_char_u7")]
-mod char7;
-#[cfg(feature = "_char_u8")]
-mod char8;
+mod c;
+#[cfg(feature = "_char16")]
+mod c16;
+#[cfg(feature = "_char24")]
+mod c24;
+#[cfg(feature = "_char32")]
+mod c32;
+#[cfg(feature = "_char7")]
+mod c7;
+#[cfg(feature = "_char8")]
+mod c8;
 
 /* common implementations */
 
@@ -31,7 +31,7 @@ macro_rules! impl_char {
     ($( $bits:literal | $feature:literal ),+ ) => { $crate::paste! {
         $(
             #[cfg(feature = $feature)]
-            impl_char!(@[<CharU $bits>]);
+            impl_char!(@[<char $bits>]);
         )+
     }};
     (@$name:ident) => {
@@ -129,4 +129,4 @@ macro_rules! impl_char {
         }
     };
 }
-impl_char![7 | "_char_u7", 8 | "_char_u8", 16 | "_char_u16", 24 | "_char_u24", 32 | "_char_u32"];
+impl_char![7 | "_char7", 8 | "_char8", 16 | "_char16", 24 | "_char24", 32 | "_char32"];

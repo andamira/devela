@@ -225,8 +225,8 @@ They also set the corresponding flags:
 
 #### `text` capabilities
 
-Enable specific implementations for [`CharU*`]*:
-- `_char_u7`, `_char_u8`, `_char_u16`, `_char_u24`, `_char_u32`.
+Enable specific implementations for [`char*`]*:
+- `_char7`, `_char8`, `_char16`, `_char24`, `_char32`.
 
 Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
 - `_string_all`:
@@ -235,7 +235,7 @@ Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
   - `_string_nonul`.
 
 They also set the corresponding flags:
-`_char_·`, `_string_·`, `_string_u·`.
+`_char·`, `_string_·`, `_string_u·`.
 
 [`CharU*`]: crate::text::CharU8
 [`StringU*`]: crate::text::StringU8

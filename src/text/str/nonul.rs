@@ -33,11 +33,11 @@ const NUL_CHAR: char = '\0';
 /// - Construct:
 ///   [`new`][Self::new],
 ///   [`from_char`][Self::from_char]*(
-///     [`7`](Self::from_char_u7),
-///     [`8`](Self::from_char_u8),
-///     [`16`](Self::from_char_u16),
-///     [`24`](Self::from_char_u24),
-///     [`32`](Self::from_char_u32)
+///     [`7`](Self::from_char7),
+///     [`8`](Self::from_char8),
+///     [`16`](Self::from_char16),
+///     [`24`](Self::from_char24),
+///     [`32`](Self::from_char32)
 ///   )*.
 /// - Deconstruct:
 ///   [`into_array`][Self::into_array],
@@ -364,7 +364,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][CharU32#method.len_utf8].
+    /// and `CAP` < `c.`[`len_utf8()`][char32#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
     #[rustfmt::skip]
@@ -383,18 +383,18 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `CharU7`.
+    /// Creates a new `StringNonul` from a `char7`.
     ///
-    /// If `c`.[`is_nul()`][CharU7#method.is_nul] an empty string will be returned.
+    /// If `c`.[`is_nul()`][char7#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()` and `CAP` < 1.
     ///
     /// Will always succeed if `CAP` >= 1.
-    #[cfg(feature = "_char_u7")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u7")))]
-    pub const fn from_char_u7(c: CharU7) -> Result<Self> {
+    #[cfg(feature = "_char7")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+    pub const fn from_char7(c: char7) -> Result<Self> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             new.arr[0] = c.to_utf8_bytes()[0];
@@ -402,20 +402,20 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `CharU8`.
+    /// Creates a new `StringNonul` from a `char8`.
     ///
-    /// If `c`.[`is_nul()`][CharU8#method.is_nul] an empty string will be returned.
+    /// If `c`.[`is_nul()`][char8#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][CharU8#method.len_utf8].
+    /// and `CAP` < `c.`[`len_utf8()`][char8#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 2.
     #[rustfmt::skip]
-    #[cfg(feature = "_char_u8")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u8")))]
-    pub const fn from_char_u8(c: CharU8) -> Result<Self> {
+    #[cfg(feature = "_char8")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+    pub const fn from_char8(c: char8) -> Result<Self> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
@@ -427,20 +427,20 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `CharU16`.
+    /// Creates a new `StringNonul` from a `char16`.
     ///
-    /// If `c`.[`is_nul()`][CharU16#method.is_nul] an empty string will be returned.
+    /// If `c`.[`is_nul()`][char16#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][CharU16#method.len_utf8].
+    /// and `CAP` < `c.`[`len_utf8()`][char16#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 3.
     #[rustfmt::skip]
-    #[cfg(feature = "_char_u16")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u16")))]
-    pub const fn from_char_u16(c: CharU16) -> Result<Self> {
+    #[cfg(feature = "_char16")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+    pub const fn from_char16(c: char16) -> Result<Self> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
@@ -453,20 +453,20 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `CharU24`.
+    /// Creates a new `StringNonul` from a `char24`.
     ///
-    /// If `c`.[`is_nul()`][CharU24#method.is_nul] an empty string will be returned.
+    /// If `c`.[`is_nul()`][char24#method.is_nul] an empty string will be returned.
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][CharU24#method.len_utf8].
+    /// and `CAP` < `c.`[`len_utf8()`][char24#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
     #[rustfmt::skip]
-    #[cfg(feature = "_char_u24")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u24")))]
-    pub const fn from_char_u24(c: CharU24) -> Result<Self> {
+    #[cfg(feature = "_char24")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
+    pub const fn from_char24(c: char24) -> Result<Self> {
         let mut new = unwrap![ok? Self::new()];
         if !c.is_nul() {
             let bytes = c.to_utf8_bytes();
@@ -480,7 +480,7 @@ impl<const CAP: usize> StringNonul<CAP> {
         Ok(new)
     }
 
-    /// Creates a new `StringNonul` from a `CharU32`.
+    /// Creates a new `StringNonul` from a `char32`.
     ///
     /// If `c`.[`is_nul()`][UnicodeScalar#method.is_nul] an empty string will be returned.
     ///
@@ -490,9 +490,9 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// and `CAP` < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
-    #[cfg(feature = "_char_u32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char_u32")))]
-    pub const fn from_char_u32(c: CharU32) -> Result<Self> {
+    #[cfg(feature = "_char32")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
+    pub const fn from_char32(c: char32) -> Result<Self> {
         Ok(unwrap![ok? Self::from_char(c.0)])
     }
 

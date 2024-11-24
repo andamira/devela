@@ -16,11 +16,12 @@ mod tests;
 mod define_trait;
 mod define_types;
 mod namespace;
+mod reexports;
 #[allow(unused_imports)]
-pub use {define_trait::*, define_types::*, namespace::*};
+pub use {define_trait::*, define_types::*, namespace::*, reexports::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{define_trait::*, define_types::*, namespace::*};
+    pub use super::{define_trait::*, define_types::*, namespace::*, reexports::*};
 }
