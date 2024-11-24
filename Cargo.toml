@@ -596,7 +596,7 @@ version = "0.6.4" # ✓ https://github.com/rust-random/rand/blob/master/rand_cor
 optional = true # safe
 default-features = false
 [dependencies.portable-atomic] # https://crates.io/crates/portable-atomic
-version = "1.9.0" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
+version = "1.10.0" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false
 features = ["fallback", "float"]
