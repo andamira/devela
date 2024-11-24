@@ -36,8 +36,7 @@ const NUL_CHAR: char = '\0';
 ///     [`7`](Self::from_char7),
 ///     [`8`](Self::from_char8),
 ///     [`16`](Self::from_char16),
-///     [`24`](Self::from_char24),
-///     [`32`](Self::from_char32)
+///     [`24`](Self::from_char24).
 ///   )*.
 /// - Deconstruct:
 ///   [`into_array`][Self::into_array],
@@ -364,7 +363,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][char32#method.len_utf8].
+    /// and `CAP` < `c.`[`len_utf8()`].
     ///
     /// Will always succeed if `CAP` >= 4.
     #[rustfmt::skip]
@@ -478,22 +477,6 @@ impl<const CAP: usize> StringNonul<CAP> {
             if len > 3 { new.arr[3] = bytes[3]; }
         }
         Ok(new)
-    }
-
-    /// Creates a new `StringNonul` from a `char32`.
-    ///
-    /// If `c`.[`is_nul()`][UnicodeScalar#method.is_nul] an empty string will be returned.
-    ///
-    /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].
-    ///
-    /// Will always succeed if `CAP` >= 4.
-    #[cfg(feature = "_char32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
-    pub const fn from_char32(c: char32) -> Result<Self> {
-        Ok(unwrap![ok? Self::from_char(c.0)])
     }
 
     /* from bytes */

@@ -226,7 +226,7 @@ They also set the corresponding flags:
 #### `text` capabilities
 
 Enable specific implementations for [`char*`]*:
-- `_char7`, `_char8`, `_char16`, `_char24`, `_char32`.
+- `_char7`, `_char8`, `_char16`, `_char24`.
 
 Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
 - `_string_all`:

@@ -65,13 +65,6 @@ impl char24 {
         let lo = (c.0.get() & 0x00FF) as u8;
         char24 { hi: Self::new_unchecked_hi(0), mi, lo }
     }
-    /// Converts a `char32` to `char24`.
-    #[must_use]
-    #[cfg(feature = "_char32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
-    pub const fn from_char32(c: char32) -> char24 {
-        char24::from_char(c.0)
-    }
     /// Converts a `char` to `char24`.
     #[must_use]
     pub const fn from_char(c: char) -> char24 {
@@ -117,13 +110,6 @@ impl char24 {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
     pub const fn try_to_char16(self) -> Result<char16> {
         char16::try_from_char24(self)
-    }
-    /// Converts this `char24` to `char32`.
-    #[must_use]
-    #[cfg(feature = "_char32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
-    pub const fn to_char32(self) -> char32 {
-        char32(self.to_char())
     }
     /// Converts this `char24` to `u32`.
     #[must_use]

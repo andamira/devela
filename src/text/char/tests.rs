@@ -14,12 +14,6 @@ fn char_encodings() {
     let c3 = '\u{0020AC}'; // €
     let c4 = '\u{01D160}'; // 𝅘𝅥𝅮
 
-    // eprintln!("fn char_encodings():");
-    // eprintln!("{0:?} x{0:05X} utf8:{1} utf16:{2}", char32(c1), c1.len_utf8(), c1.len_utf16());
-    // eprintln!("{0:?} x{0:05X} utf8:{1} utf16:{2}", char32(c2), c2.len_utf8(), c2.len_utf16());
-    // eprintln!("{0:?} x{0:05X} utf8:{1} utf16:{2}", char32(c3), c3.len_utf8(), c3.len_utf16());
-    // eprintln!("{0:?} x{0:05X} utf8:{1} utf16:{2}", char32(c4), c4.len_utf8(), c4.len_utf16());
-
     assert![c1.byte_len() == 1 && c1.len_utf8() == 1 && c1.len_utf16() == 1];
     assert![c2.byte_len() == 1 && c2.len_utf8() == 2 && c2.len_utf16() == 1];
     assert![c3.byte_len() == 2 && c3.len_utf8() == 3 && c3.len_utf16() == 1];
@@ -47,38 +41,24 @@ fn char_encodings() {
     assert![char24::try_from(c3).is_ok()];
     assert![char24::try_from(c4).is_ok()];
 
-    assert![char32::try_from(c1).is_ok()];
-    assert![char32::try_from(c2).is_ok()];
-    assert![char32::try_from(c3).is_ok()];
-    assert![char32::try_from(c4).is_ok()];
-
     //
 
     let c7_1 = char7::try_from(c1).unwrap();
     let c8_1 = char8::try_from(c1).unwrap();
     let c16_1 = char16::try_from(c1).unwrap();
     let c24_1 = char24::from(c1);
-    let c32_1 = char32::from(c1);
 
     assert![c7_1.to_char() == c1];
     assert![c8_1.to_char() == c1];
     assert![c16_1.to_char() == c1];
     assert![c24_1.to_char() == c1];
-    assert![c32_1.to_char() == c1];
 
-    assert![
-        size(&c7_1) == 1
-            && size(&c8_1) == 1
-            && size(&c16_1) == 2
-            && size(&c24_1) == 3
-            && size(&c32_1) == 4
-    ];
+    assert![size(&c7_1) == 1 && size(&c8_1) == 1 && size(&c16_1) == 2 && size(&c24_1) == 3];
     assert![
         size(&Some(c7_1)) == 1
             && size(&Some(c8_1)) == 2
             && size(&Some(c16_1)) == 2
             && size(&Some(c24_1)) == 3
-            && size(&Some(c32_1)) == 4
     ];
 
     //
@@ -86,30 +66,24 @@ fn char_encodings() {
     let c8_2 = char8::try_from(c2).unwrap();
     let c16_2 = char16::try_from(c2).unwrap();
     let c24_2 = char24::from(c2);
-    let c32_2 = char32::from(c2);
 
     assert![c8_2.to_char() == c2];
     assert![c16_2.to_char() == c2];
     assert![c24_2.to_char() == c2];
-    assert![c32_2.to_char() == c2];
 
     //
 
     let c16_3 = char16::try_from(c3).unwrap();
     let c24_3 = char24::from(c3);
-    let c32_3 = char32::from(c3);
 
     assert![c16_3.to_char() == c3];
     assert![c24_3.to_char() == c3];
-    assert![c32_3.to_char() == c3];
 
     //
 
     let c24_4 = char24::from(c4);
-    let c32_4 = char32::from(c4);
 
     assert![c24_4.to_char() == c4];
-    assert![c32_4.to_char() == c4];
 
     //
 
@@ -118,14 +92,6 @@ fn char_encodings() {
     assert_eq![char16::from(char8::try_from(c1).unwrap()).to_char(), c1];
     assert_eq![char24::from(char8::try_from(c2).unwrap()).to_char(), c2];
     assert_eq![char24::from(char16::try_from(c3).unwrap()).to_char(), c3];
-    assert_eq![char24::from(char32::try_from(c4).unwrap()).to_char(), c4];
-    assert_eq![char32::from(char7::try_from(c1).unwrap()).to_char(), c1];
-    assert_eq![char32::from(char8::try_from(c1).unwrap()).to_char(), c1];
-    assert_eq![char32::from(char8::try_from(c2).unwrap()).to_char(), c2];
-    assert_eq![char32::from(char16::try_from(c2).unwrap()).to_char(), c2];
-    assert_eq![char32::from(char16::try_from(c3).unwrap()).to_char(), c3];
-    assert_eq![char32::from(char24::try_from(c3).unwrap()).to_char(), c3];
-    assert_eq![char32::from(char24::try_from(c4).unwrap()).to_char(), c4];
 }
 
 #[test]
@@ -166,13 +132,6 @@ fn char_to_utf8_bytes() {
             );
         }
         let our_bytes = char24::from_char(c).to_utf8_bytes();
-        assert_eq!(
-            std_bytes.as_bytes(),
-            &our_bytes[..std_bytes.len()],
-            "Mismatch for character '{}'",
-            c
-        );
-        let our_bytes = char32(c).to_utf8_bytes();
         assert_eq!(
             std_bytes.as_bytes(),
             &our_bytes[..std_bytes.len()],

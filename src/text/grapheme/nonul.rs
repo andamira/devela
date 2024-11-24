@@ -113,22 +113,6 @@ impl<const CAP: usize> GraphemeNonul<CAP> {
         Ok(Self(unwrap![ok? StringNonul::from_char24(c)]))
     }
 
-    /// Creates a new `GraphemeNonul` from a `char32`.
-    ///
-    /// If `c`.[`is_nul()`][char32#method.is_nul] an empty grapheme will be returned.
-    ///
-    /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][char32#method.len_utf8].
-    ///
-    /// Will always succeed if `CAP` >= 4.
-    #[cfg(feature = "_char32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
-    pub const fn from_char32(c: char32) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringNonul::from_char32(c)]))
-    }
-
     /// Creates a new `GraphemeNonul` from a `char`.
     ///
     /// If `c`.[`is_nul()`][UnicodeScalar#method.is_nul] an empty grapheme will be returned.

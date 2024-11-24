@@ -21,7 +21,7 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 ///
 /// `Option<char7>` is the same size as `char7` or `char8` (1 byte).
 ///
-/// See also: [`char8`], [`char16`], [`char24`], [`char32`], [`char`].
+/// See also: [`char8`], [`char16`], [`char24`], [`char`].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
@@ -38,7 +38,7 @@ pub struct char7(pub(super) NonExtremeU8);
 /// because each possible value is a valid unicode scalar. Therefore
 /// `Option<char8>` is the same size as `char16` or `Option<char16>` (2 bytes).
 ///
-/// See also: [`char7`], [`char16`], [`char24`], [`char32`], [`char`].
+/// See also: [`char7`], [`char16`], [`char24`], [`char`].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
@@ -58,7 +58,7 @@ pub struct char8(pub(super) u8);
 ///
 /// `Option<char16>` is the same size as `char16` (2 bytes).
 ///
-/// See also: [`char7`], [`char8`], [`char24`], [`char32`], [`char`].
+/// See also: [`char7`], [`char8`], [`char24`], [`char`].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
@@ -70,12 +70,12 @@ pub struct char16(pub(super) NonSurrogateU16);
 
 /// A 24-bit [unicode scalar value][scalar], unlimited value representation.
 ///
-/// It can represent each and every scalar the same as [`char32`],
+/// It can represent each and every scalar the same as [`char`],
 /// since the maximum value (`\u{10FFFF}`) needs only 21 bits.
 ///
 /// `Option<char24>` is the same size as `char24` (3 bytes).
 ///
-/// See also: [`char7`], [`char8`], [`char16`], [`char32`], [`char`].
+/// See also: [`char7`], [`char8`], [`char16`], [`char`].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 #[cfg(feature = "_char24")]
@@ -86,20 +86,3 @@ pub struct char24 {
     pub(super) mi: u8,           // middle byte
     pub(super) lo: u8,           // lowest byte
 }
-
-/// A 32-bit [unicode scalar value][scalar], unlimited value representation,
-/// wraps a [`char`].
-///
-/// This type wraps the default unicode scalar type in Rust.
-/// It can represent the same range of unicode scalars as [`char24`].
-///
-/// `Option<char32>` is the same size as `char32` or `char` (4 bytes).
-///
-/// See also: [`char7`], [`char8`], [`char16`], [`char24`], [`char`].
-///
-/// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
-#[repr(transparent)]
-#[cfg(feature = "_char32")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
-#[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct char32(pub char);

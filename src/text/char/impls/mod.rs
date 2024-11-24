@@ -16,8 +16,6 @@ mod c;
 mod c16;
 #[cfg(feature = "_char24")]
 mod c24;
-#[cfg(feature = "_char32")]
-mod c32;
 #[cfg(feature = "_char7")]
 mod c7;
 #[cfg(feature = "_char8")]
@@ -129,4 +127,4 @@ macro_rules! impl_char {
         }
     };
 }
-impl_char![7 | "_char7", 8 | "_char8", 16 | "_char16", 24 | "_char24", 32 | "_char32"];
+impl_char![7 | "_char7", 8 | "_char8", 16 | "_char16", 24 | "_char24"];

@@ -103,6 +103,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
 - comment out unused features: `code`, `data`, `error`.
 - remove convenience fn: `out_dir` from the build script.
+- remove redundant `char32` type.
 
 ### Changed
 

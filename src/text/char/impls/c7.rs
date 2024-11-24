@@ -75,16 +75,6 @@ impl char7 {
             Err(CharConversion)
         }
     }
-    /// Tries to convert a `char32` to `char8`.
-    #[cfg(feature = "_char32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
-    pub const fn try_from_char32(c: char32) -> Result<char7> {
-        if Char::is_7bit(c.to_u32()) {
-            Ok(char7::new_unchecked(c.to_u32() as u8))
-        } else {
-            Err(CharConversion)
-        }
-    }
     /// Tries to convert a `char` to `char7`.
     pub const fn try_from_char(c: char) -> Result<char7> {
         if Char::is_7bit(c as u32) {
@@ -128,13 +118,6 @@ impl char7 {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
     pub const fn to_char24(self) -> char24 {
         char24::from_char7(self)
-    }
-    /// Converts this `char7` to `char32`.
-    #[must_use]
-    #[cfg(feature = "_char32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
-    pub const fn to_char32(self) -> char32 {
-        char32::from_char7(self)
     }
     /// Converts this `char7` to `char`.
     #[must_use]

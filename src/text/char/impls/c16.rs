@@ -77,12 +77,6 @@ impl char16 {
             Err(CharConversion)
         }
     }
-    /// Tries to convert a `char32` to `char16`.
-    #[cfg(feature = "_char32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
-    pub const fn try_from_char32(c: char32) -> Result<char16> {
-        Self::try_from_char(c.to_char())
-    }
     /// Tries to convert a `char` to `char16`.
     pub const fn try_from_char(c: char) -> Result<char16> {
         if Char::byte_len(c as u32) <= 2 {
@@ -131,13 +125,6 @@ impl char16 {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
     pub const fn to_char24(self) -> char24 {
         char24::from_char16(self)
-    }
-    /// Converts this `char16` to `char32`.
-    #[must_use]
-    #[cfg(feature = "_char32")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char32")))]
-    pub const fn to_char32(self) -> char32 {
-        char32::from_char16(self)
     }
     /// Converts this `char16` to `char`.
     #[must_use]
