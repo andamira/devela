@@ -16,10 +16,10 @@ use crate::rend::ImageError;
 #[cfg(feature = "layout")]
 use crate::rend::LayoutError;
 
-/// A rend media result.
+/// A rendering media result.
 pub type RendResult<T> = core::result::Result<T, RendError>;
 
-/// A rend media error.
+/// A rendering media error.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum RendError {
     ///

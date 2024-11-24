@@ -1,6 +1,6 @@
 // devela::rend::audio
 //
-//! Audio rendering functionality.
+//! Audio functionality.
 //
 
 mod error;

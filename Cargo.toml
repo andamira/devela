@@ -1,27 +1,26 @@
 # https://doc.rust-lang.org/cargo/reference/manifest.html
 # ==============================================================================
 #
-# TOC
-# - [workspace]
-# - [lib]
-# - [package]
+## TOC
 #
-# - [features]
-#   * miscellaneous
-#   * environment
-#   * module
-#   * safety
-#   * nightly
-#   * capability
-#     * data
-#     * num
-#     * text
-#     * docs/default
-#   * dependencies
+# * [workspace]
+# * [lib]
+# * [package]
 #
-# - [dependencies]
-#   * required
-#   * optional
+# * [features]
+#   - misc.
+#   - environment          (std,alloc,no_std)
+#   - module               (mem,num,rend,sys,text,work…)
+#   - safety               (safe,unsafe,safest)
+#   - nightly              (
+#   - _capabilities:
+#     - data
+#     - num
+#     - text
+#     - docs/default
+#   - dependencies
+#
+# * [dependencies] (required|optional)
 #   - [dev-dependencies]
 #   - [build-dependencies]
 #
@@ -219,12 +218,12 @@ nightly = [ # sync with src/lib.rs
 ] # enables all the following features:
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-	nightly_doc = [] # NO: doc_auto_cfg
+	nightly_doc = [] # disabled: doc_auto_cfg
 	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 	nightly_simd = []
-	# WAIT: https://releases.rs/ ; See: ./utils/release_dates.rs
+	# See: ./utils/release_dates.rs ; https://releases.rs/
 	nightly_stable = [ # a selection of nightly features that will become stable soon:
 		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"]
 		nightly_stable_next1 = [] # 1.83
@@ -717,8 +716,8 @@ manual_string_new = "warn" # usage of "" to create a String
 map_unwrap_or = "warn" # usage of result|option.map(_).unwrap_or[_else](_)
 ptr_cast_constness = "warn" # as casts between raw pointers that change their constness
 same_functions_in_if_condition = "warn" # consecutive ifs with the same function call
-semicolon_if_nothing_returned = "warn" # expression returns () not followed by a semicolon
-single_match_else = "warn" # matches with two arms where an if let else will usually suffice
+semicolon_if_nothing_returned = "warn" # expr returns () but it's not followed by ;
+single_match_else = "warn" # 2 arms in match where an if let else will usually suffice
 trivially_copy_pass_by_ref = "warn" # fns with ref args that could be passed by value
 unnested_or_patterns = "warn" # unnested or-patterns, (Some(a)|Some(b) vs Some(a|b))
 unreadable_literal = "warn" #  long integral or float does not contain underscores
