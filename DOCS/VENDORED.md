@@ -4,7 +4,8 @@ Below is a list of derived works, their origins, and modifications.
 See linked files for detailed changes.
 
 ## Works under dual MIT OR Apache-2.0 licenses
-- [const_list] by Douglas Dwyer, as [`ConstList`].
+- [cfg_if] by Alex Crichton, as the [`cfg_if`] macro.
+- [const_list] by Douglas Dwyer, as the [`ConstList`] struct.
 - [crossbeam-utils] by The Crossbeam Project Developers, as the [`CacheAlign`] struct.
 - [fmtor] by Tyler Ruckinger, as part of the [`ExtOption`] trait.
 - [fxhash] by Christopher Breeden, as the [`HasherFx`] struct ([*mod*][m1]).
@@ -18,6 +19,8 @@ See linked files for detailed changes.
 - [tailcall-chunk] by Tushar Mathur, as the [`VecChunk`] struct ([*mod*][m4]).
 - [tupl] by *Dragoteryx*, as part of the [`Tuple`] trait ([*mod*][m5]).
 
+[cfg_if]: https://crates.io/crates/cfg_if/1.0.0
+  [`cfg_if`]: https://docs.rs/devela/latest/devela/code/macro.cfg_if.html
 [const_list]: https://crates.io/crates/const_list/0.1.0
   [`ConstList`]: https://docs.rs/devela/latest/devela/data/collections/struct.ConstList.html
 [crossbeam-utils]: https://crates.io/crates/crossbeam-utils/0.8.20

@@ -1,5 +1,6 @@
 <!-- Updated intra-doc links intended for: _doc::vendored -->
 
+  [`cfg_if`]: crate::cfg_if
   [`ConstList`]: crate::ConstList
   [`CacheAlign`]: crate::CacheAlign
   [`ExtOption`]: crate::ExtOption

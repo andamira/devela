@@ -56,7 +56,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - private: `doc_availability!`.
 - vendored:
   - structs: `CacheAlign`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`, `VecChunk`.
-  - macros: `assert_const!`.
+  - macros: `assert_const!`, `cfg_if!`.
   - traits: `ConstBool`.
 - optional dependencies:
   - `jiff`, `rayon`, `rodio`, `tinyaudio`.

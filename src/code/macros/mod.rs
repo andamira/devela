@@ -14,6 +14,7 @@ pub use paste::__paste;
 mod asserts; // assertion macros
 mod capture; // capture_[first|last|tail]!
 mod cdbg; // cdbg!
+mod cfg_if; // cfg_if!
 mod cfor; // cfor!
 mod deprecate; // deprecate_feature!
 mod iif; // iif!
@@ -23,15 +24,15 @@ mod paste; // paste! wrapped for docs
 mod r#const; // CONST!
 #[allow(unused_imports)]
 pub use {
-    asserts::*, capture::*, cdbg::*, cfor::*, deprecate::*, ident::*, iif::*, items::*, paste::*,
-    r#const::*,
+    asserts::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*, iif::*, items::*,
+    paste::*, r#const::*,
 };
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        asserts::*, capture::*, cdbg::*, cfor::*, deprecate::*, ident::*, iif::*, items::*,
-        paste::*, r#const::*,
+        asserts::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*, iif::*,
+        items::*, paste::*, r#const::*,
     };
 }
