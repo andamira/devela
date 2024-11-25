@@ -2,6 +2,10 @@
 //
 //! Utility macros
 //
+// # Documentation for declarative macros
+// - [The Little Book of Rust Macros](https://veykril.github.io/tlborm/decl-macros.html)
+// - [Macros By Example](https://doc.rust-lang.org/reference/macros-by-example.html)
+// - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
 // private
 mod _doc;

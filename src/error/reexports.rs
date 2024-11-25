@@ -5,7 +5,7 @@
 
 #![allow(unused_imports)]
 
-use crate::code::reexport;
+use crate::reexport;
 
 /* from other modules */
 

@@ -89,7 +89,7 @@ doc: "An attempted conversion that consumes self, which may or may not be expens
 
 // functions
 reexport! { rust: core::convert,
-doc: "The identity function.", identity }
+doc: "The identity function. Just returns back its input.", identity }
 
 /* `core::default` re-exports */
 
@@ -100,7 +100,7 @@ pub use core::default::Default;
 /* `core::hint` re-exports */
 
 reexport! { rust: core::hint,
-doc: "Makes a *soundness* promise to the compiler that `cond` holds.", assert_unchecked }
+doc: "Makes a *soundness* promise to the compiler that the `cond`ition holds.", assert_unchecked }
 reexport! { rust: core::hint,
 doc: "Hints the compiler to be maximally pessimistic about what black_box could do.", black_box }
 reexport! { rust: core::hint,

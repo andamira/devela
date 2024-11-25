@@ -530,7 +530,7 @@ dep_unicode_width = ["dep:unicode-width"]
 dep_wide = ["dep:wide"]
 
 
-[dependencies] # 20 (2 required, 18 optional)
+[dependencies] # 20 (2 required, 17 optional)
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 # ==============================================================================
 # Links to each crate's crates.io page are provided alongside the entries,
