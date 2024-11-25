@@ -3,14 +3,14 @@
 //! Chromatic functionality.
 //
 
+mod base;
 mod error;
-mod r#struct;
-mod r#trait;
+mod namespace;
 #[allow(unused_imports)]
-pub use {error::*, r#struct::*, r#trait::*};
+pub use {base::*, error::*, namespace::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{error::*, r#struct::*, r#trait::*};
+    pub use super::{base::*, error::*, namespace::*};
 }

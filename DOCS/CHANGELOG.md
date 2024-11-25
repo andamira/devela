@@ -38,7 +38,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - enum variants:
   - `DataError::ElementNotFound`.
 - traits:
-  - `ExtCellOption`, `ExtOptRes`, `MemPod`, `TypeResourced`, `Unit`.
+  - `ColorBase`, `ExtCellOption`, `ExtOptRes`, `MemPod`, `TypeResourced`, `Unit`.
   - `WaveletCompressionVec`, `WaveletTransformVec`.
 - associated methods and constants for:
   - `Array`: `from_fn`, `contains_[from|to|between]`.
@@ -127,6 +127,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - structs:
   - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
   - rename:
+    - `COLOR` to `Color`.
     - `GcdExt` to `GcdResult`.
     - `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.
     - `AllocOrdMap` to `BTreeMap` and `AllocOrdSet` to `BTreeSet`.
