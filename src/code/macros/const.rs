@@ -5,32 +5,51 @@
 
 /// A helper for constructing macro constants.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::CONST;
 /// // equal to a literal
-/// CONST!{A = 125}
+/// CONST!{LITERAL = 125}
 ///
-/// const A1: bool = A![] == 125_u8;
-/// const A2: bool = A![] == 125_i32;
-/// assert![A1];
-/// assert![A2];
+/// const L1: bool = LITERAL![] == 125_u8;
+/// const L2: bool = LITERAL![] == 125_i32;
+/// assert![L1];
+/// assert![L2];
 ///
 /// // equal to a block
-/// CONST!{B = {2 * 15 / 3}}
-/// assert_eq![B![], 10]
+/// CONST!{BLOCK = {2 * 15 / 3}}
+/// assert_eq![BLOCK![], 10];
+///
+///
+/// CONST!{
+///     /// Supports attributes and visibility.
+///     #[macro_export]
+///     pub(crate) ARRAY = {[1,2,3]}
+/// }
+/// assert_eq![ARRAY![], [1u8, 2, 3]];
+/// assert_eq![ARRAY![], [1i32, 2, 3]];
 /// ```
 #[rustfmt::skip]
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! CONST {
-    ($NAME:ident = $literal:literal) => {
+    (
+        $(#[$attrs:meta])*
+        $vis:vis $NAME:ident = $literal:literal
+    ) => {
+        $(#[$attrs])*
         #[allow(unused_macro)]
-        macro_rules! $NAME { () => {$literal} }
+        macro_rules! $NAME { () => { $literal } }
+        $vis use $NAME;
     };
-    ($NAME:ident = $block:block) => {
+    (
+        $(#[$attrs:meta])*
+        $vis:vis $NAME:ident = $block:block
+    ) => {
+        $(#[$attrs])*
         #[allow(unused_macro)]
-        macro_rules! $NAME { () => {$block} }
+        macro_rules! $NAME { () => { $block } }
+        $vis use $NAME;
     };
 }
 #[doc(inline)]
