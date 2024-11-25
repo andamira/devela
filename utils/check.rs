@@ -33,9 +33,9 @@ const ROOT_MODULES: [&str; 10] = [
 
 // All the dependencies. In sync with Cargo.toml::dep_all
 #[rustfmt::skip]
-const DEP_ALL: [&str; 18] = [
+const DEP_ALL: [&str; 17] = [
     "dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
-    "dep_libm", "dep_log", "dep_macroquad", "dep_memchr", "dep_miniquad",
+    "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
     "dep_portable_atomic", "dep_rand_core", "dep_rayon", "dep_rodio", "dep_tinyaudio",
     "dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
 ];
