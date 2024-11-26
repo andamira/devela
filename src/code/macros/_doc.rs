@@ -1,6 +1,6 @@
-// devela::code::macros::doc
+// devela::code::macros::_doc
 //
-//! private meta helpers
+//! private doc meta helpers
 //
 // TOC
 // - doc_!
