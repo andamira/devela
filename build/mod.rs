@@ -1,7 +1,11 @@
 // devela build
 //
-//! The build script.
+//! The build scripts.
 //
+// NOTE: use relative imports (super::*) instead of crate::*,
+// so that it also works when compiling private documentation.
+
+#![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
 
 mod environment;
 mod features;
@@ -14,8 +18,7 @@ fn main() {
     }
 }
 
-// WAIT:1.81 [error_in_core](https://github.com/rust-lang/rust/pull/125951)
-fn try_main() -> Result<(), Box<dyn std::error::Error>> {
+fn try_main() -> Result<(), Box<dyn core::error::Error>> {
     #[cfg(feature = "__dbg")]
     utils::println_start_end(true);
 

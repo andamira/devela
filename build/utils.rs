@@ -19,12 +19,14 @@ pub(crate) fn manifest_dir_path() -> PathBuf {
 
 /// Prints a message to *stdout* from the build script.
 #[cfg(feature = "__dbg")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "__dbg")))]
 pub(crate) fn println(msg: &str) {
     println!("cargo:warning={}", msg);
 }
 
 /// Prints a heading message to *stdout*, underlined.
 #[cfg(feature = "__dbg")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "__dbg")))]
 pub(crate) fn println_heading(msg: &str) {
     println("");
     println(msg);
@@ -33,6 +35,7 @@ pub(crate) fn println_heading(msg: &str) {
 
 /// Prints the value of an environment variable.
 #[cfg(feature = "__dbg")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "__dbg")))]
 pub(crate) fn println_var(var: &str) {
     if let Ok(v) = env::var(var) {
         println(&format!["· {var}: {v}"]);
@@ -44,6 +47,7 @@ pub(crate) fn println_var(var: &str) {
 
 /// Prints the build script `start` or end message to *stdout*.
 #[cfg(feature = "__dbg")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "__dbg")))]
 pub(crate) fn println_start_end(start: bool) {
     let msg = if start {
         "~ Start of build script ~"

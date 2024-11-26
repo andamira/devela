@@ -6,6 +6,10 @@
 #![cfg(any(doc, test))]
 #![cfg_attr(feature = "nightly_doc", doc(cfg(doc)))]
 
+#[cfg(feature = "std")]
+#[path = "../../build/mod.rs"]
+mod build;
+
 /// Documented examples.
 pub mod examples;
 

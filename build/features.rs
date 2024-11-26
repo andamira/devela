@@ -5,7 +5,7 @@
 
 pub(crate) fn main() -> Result<(), std::io::Error> {
     #[cfg(feature = "__dbg")]
-    crate::utils::println_heading("Features & Flags:");
+    super::utils::println_heading("Features & Flags:");
 
     reflection::set_flags();
 
@@ -18,7 +18,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 #[rustfmt::skip]
 mod reflection {
     #[cfg(feature = "__dbg")]
-    use crate::utils::println;
+    use super::super::utils::println;
     use std::env::var;
 
     /// A type that associates a list of flags with a list of features.

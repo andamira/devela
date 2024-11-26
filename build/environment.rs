@@ -1,6 +1,6 @@
 // devela build::utils
 //
-//! build script environment variables
+//! Build script environment variables.
 //
 
 pub(crate) fn main() -> Result<(), std::io::Error> {
@@ -11,7 +11,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 
     #[cfg(feature = "__dbg")]
     {
-        use crate::utils::{println, println_heading, println_var};
+        use super::utils::{println, println_heading, println_var};
 
         // https://doc.rust-lang.org/cargo/reference/environment-variables.html
         println_heading("Environment variables:");
@@ -39,7 +39,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
         // println_var("CARGO_ENCODED_RUSTFLAGS");
 
         // for (key, value) in std::env::vars() {
-        //     crate::utils::println(&format![">> {key}: {value}"]);
+        //     super::utils::println(&format![">> {key}: {value}"]);
         // }
     }
 

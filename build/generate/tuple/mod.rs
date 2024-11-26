@@ -9,7 +9,7 @@
 //! - enums definitions
 //! - iterators definitions and implementations
 
-use crate::utils::*;
+use super::super::utils::*;
 use std::{
     fs::{create_dir_all, read_to_string, File},
     io::{BufWriter, Error, Write},
@@ -25,7 +25,7 @@ use std::{
 };
 
 #[rustfmt::skip]
-pub(super) fn generate() -> Result<(), Error> {
+pub(crate) fn generate() -> Result<(), Error> {
     let build_out_dir = out_dir_path().join("build/");
     create_dir_all(&build_out_dir)?;
     let path = build_out_dir.join("tuple.rs");
@@ -874,6 +874,6 @@ pub(super) fn generate() -> Result<(), Error> {
     }
 
     // #[cfg(doc)] // format the source if we're building the docs
-    // crate::rustfmt_file(path);
+    // super::super::rustfmt_file(path);
     Ok(())
 }

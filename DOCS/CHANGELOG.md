@@ -92,6 +92,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new convenience fn: `manifest_dir` in `build::utils`.
 - hide `no_inline` items re-exports.
 - new file `DOCS/VENDORED_rustdoc.md`
+- show docs for the build scripts (private).
 
 ### Removed
 - remove custom no_std `Error` definition.
