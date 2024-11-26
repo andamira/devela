@@ -87,9 +87,9 @@ macro_rules! impl_non_value{
             #[cfg(feature = "mem_bit")]
             use $crate::{BitSized, ByteSized};
             use $crate::{
-                _core::{fmt, num::*},
-                iif, unwrap, ConstDefault, FromStr,
-                NumError::{Invalid, Overflow}, NumResult,
+                _core::num::*,
+                iif, unwrap, ConstDefault, FromStr, NumError::{Invalid, Overflow}, NumResult,
+                Debug, Display, FmtResult, Formatter, Binary, Octal, LowerHex, UpperHex,
             };
 
             /* definition */
@@ -291,35 +291,35 @@ macro_rules! impl_non_value{
 
             /* core impls */
 
-            impl<const V: $IP> fmt::Display for $name <V> {
+            impl<const V: $IP> Display for $name <V> {
 
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
                     write!(f, "{}", self.get())
                 }
             }
-            impl<const V: $IP> fmt::Debug for $name <V> {
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            impl<const V: $IP> Debug for $name <V> {
+                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
                     write!(f, "{}::<{}>({})", stringify!($name), V, self.get())
                 }
             }
-            impl<const V: $IP> fmt::Binary for $name<V> {
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    fmt::Binary::fmt(&self.get(), f)
+            impl<const V: $IP> Binary for $name<V> {
+                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+                    Binary::fmt(&self.get(), f)
                 }
             }
-            impl<const V: $IP> fmt::Octal for $name<V> {
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    fmt::Octal::fmt(&self.get(), f)
+            impl<const V: $IP> Octal for $name<V> {
+                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+                    Octal::fmt(&self.get(), f)
                 }
             }
-            impl<const V: $IP> fmt::LowerHex for $name<V> {
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    fmt::LowerHex::fmt(&self.get(), f)
+            impl<const V: $IP> LowerHex for $name<V> {
+                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+                    LowerHex::fmt(&self.get(), f)
                 }
             }
-            impl<const V: $IP> fmt::UpperHex for $name<V> {
-                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                    fmt::UpperHex::fmt(&self.get(), f)
+            impl<const V: $IP> UpperHex for $name<V> {
+                fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
+                    UpperHex::fmt(&self.get(), f)
                 }
             }
 
@@ -340,7 +340,7 @@ macro_rules! impl_non_value{
             }
 
             impl<const V: $IP> TryFrom<$IP> for $name<V> {
-                type Error = core::num::TryFromIntError;
+                type Error = $crate::TryFromIntError;
 
                 /// # Features
                 /// Makes use of the `unsafe_niche` feature if enabled.

@@ -9,8 +9,10 @@
 //! Unix time.
 //
 
-use crate::sys::time::{is_leap_year, Month, TimeSplit, TimeSplitYearSec};
-use core::{fmt, num::TryFromIntError};
+use crate::{
+    is_leap_year, Debug, Display, FmtResult, Formatter, Month, TimeSplit, TimeSplitYearSec,
+    TryFromIntError,
+};
 
 /// 64-bit Unix time, supporting negative values.
 ///
@@ -267,28 +269,28 @@ impl UnixTimeU32 {
     // }
 }
 
-impl fmt::Display for UnixTimeI64 {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl Display for UnixTimeI64 {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         let TimeSplit { y, mo, d, h, m, s, .. } = self.split();
         write![f, "{y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02}"]
     }
 }
-impl fmt::Debug for UnixTimeI64 {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl Debug for UnixTimeI64 {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         let TimeSplit { y, mo, d, h, m, s, .. } = self.split();
         write![f, "UnixTimeI64 {{ {y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02} }}"]
     }
 }
 
-impl fmt::Display for UnixTimeU32 {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl Display for UnixTimeU32 {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         let TimeSplit { y, mo, d, h, m, s, .. } = self.split();
         write![f, "{y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02}"]
     }
 }
 
-impl fmt::Debug for UnixTimeU32 {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl Debug for UnixTimeU32 {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         let TimeSplit { y, mo, d, h, m, s, .. } = self.split();
         write![f, "UnixTimeU32 {{ {y:04}-{mo:02}-{d:02}_{h:02}:{m:02}:{s:02} }}"]
     }

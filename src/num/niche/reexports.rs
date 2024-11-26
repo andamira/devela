@@ -25,3 +25,9 @@ reexport! { rust: core::num,
     doc: "Provides intentionally-wrapped arithmetic on T.",
     Wrapping
 }
+
+// IMPROVE: Make custom type
+reexport! { rust: core::num,
+    doc: "The error type returned when a checked integral type conversion fails.",
+    TryFromIntError
+}

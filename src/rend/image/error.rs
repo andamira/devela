@@ -24,6 +24,7 @@ pub enum ImageError {
 
     /* from std */
     ///
+    // WAIT: [Derive Copy and Hash for IntErrorKind](https://github.com/rust-lang/rust/pull/131923)
     // InvalidParsedInteger(IntErrorKind), // Does not implement Copy
     InvalidParsedInteger,
 
@@ -57,8 +58,8 @@ mod core_impls {
     }
 
     // IMPROVE
-    impl From<core::num::ParseIntError> for ImageError {
-        fn from(_: core::num::ParseIntError) -> Self {
+    impl From<crate::ParseIntError> for ImageError {
+        fn from(_: crate::ParseIntError) -> Self {
             // Self::InvalidParsedInteger(e.kind().clone())
             Self::InvalidParsedInteger
         }
