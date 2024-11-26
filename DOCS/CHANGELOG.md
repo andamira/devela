@@ -32,6 +32,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - aliases:
   - `AllocMapFx`, `AllocSetFx`, `FmtResult`, `NoTime`.
   - `AudioResult`, `ColorResult`, `DrawResult`,`FontResult`, `ImageResult`, `LayoutResult`, `RendResult`.
+  - re-exported primitives: `char`.
   - `TimeSplitYearNano`, `TimeSplitYearDay`, `TimeSplitYearSec`, `TimeSplitHourSec`, `TimeSplitHourNano`, `TimeSplitMilliNano`.
 - enums:
   - `WaveletUnitRole`.
@@ -52,8 +53,8 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Slice`: `from_mut`, `from_ref`, `from_raw_parts`, `from_raw_parts_mut`.
 - macros:
   - `id_seq!`, `type_marker!`, `type_resource!`,
-  - `const_bool!`, `capture_first`, `capture_last`, `capture_tail_tuple!`, `impl_non_value!`.
-  - private: `doc_availability!`.
+  - `const_bool!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `impl_non_value!`.
+  - private: `doc_availability!`, `doc_primitive!`, `doc_private!`.
 - vendored:
   - structs: `CacheAlign`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`, `VecChunk`.
   - macros: `assert_const!`, `cfg_if!`.

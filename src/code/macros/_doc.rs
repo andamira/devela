@@ -180,3 +180,13 @@ macro_rules! doc_private {
 }
 #[allow(unused_imports)]
 pub(crate) use doc_private;
+
+/// Generates a doc tag for Rust's primitive items.
+#[allow(unused_macros)]
+macro_rules! doc_primitive {
+    () => {
+        concat!("<span class='stab portability' ", "title='Rust primitive'>", "⚙️</span>")
+    };
+}
+#[allow(unused_imports)]
+pub(crate) use doc_primitive;

@@ -16,6 +16,7 @@ use crate::code::items;
 mod helpers; // impl_sized_alias!
 
 mod ascii;
+#[allow(hidden_glob_reexports, reason = "re-exported char")]
 mod char;
 mod error;
 mod grapheme;
