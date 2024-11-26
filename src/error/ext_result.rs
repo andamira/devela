@@ -12,7 +12,7 @@ impl<T, E> Sealed for Result<T, E> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ExtOption`][crate::error::ExtOption].
+/// See also [`ExtOption`][crate::ExtOption].
 ///
 /// Based on work from:
 /// - <https://github.com/rust-lang/rust/issues/62358> (contains).

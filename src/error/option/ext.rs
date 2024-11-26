@@ -3,8 +3,8 @@
 //!
 //
 
+use crate::Display;
 use super::{OptionFmt, OptionFmtOr, OptionFmtOrElse};
-use core::fmt::Display;
 
 #[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtOption`] trait.
@@ -15,8 +15,8 @@ impl<T> Sealed for Option<T> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ExtResult`][crate::error::ExtResult],
-/// [`ExtOptRes`][crate::error::ExtOptRes].
+/// See also [`ExtResult`][crate::ExtResult],
+/// [`ExtOptRes`][crate::ExtOptRes].
 ///
 /// Based on work from:
 /// - <https://github.com/rust-lang/rust/issues/62358> (contains).
@@ -78,7 +78,7 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// # use devela::error::ExtOption;
+    /// # use devela::ExtOption;
     /// assert_eq!("42", format!("{}", Some(Box::new(42)).fmt_or("Nothing")));
     /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or("Nothing")));
     /// ```
@@ -96,7 +96,7 @@ pub trait ExtOption<T>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// # use devela::error::ExtOption;
+    /// # use devela::ExtOption;
     /// assert_eq!("42", format!("{}", Some(42).fmt_or_else(|| "Nothing")));
     /// assert_eq!("Nothing", format!("{}", None::<u8>.fmt_or_else(|| "Nothing")));
     /// ```

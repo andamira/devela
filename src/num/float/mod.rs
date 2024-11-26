@@ -6,7 +6,8 @@
 #![cfg_attr(not(feature = "num"), allow(unused))]
 
 mod constants; // ExtFloatConst
-pub use constants::*;
+mod reexports;
+pub use {constants::*, reexports::*};
 
 #[cfg(_float_·)]
 crate::items! {

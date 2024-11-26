@@ -4,17 +4,9 @@
 //
 
 use crate::{
-    code::ConstDefault,
-    data::{array_init, Array},
-    mem::{Bare, BareBox, Storage},
-};
-use core::{
-    borrow::{Borrow, BorrowMut},
-    cmp::Ordering,
-    convert::{AsMut, AsRef},
-    fmt,
-    hash::{Hash, Hasher},
-    ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Deref, DerefMut, Not},
+    array_init, Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign,
+    BitXor, BitXorAssign, Borrow, BorrowMut, ConstDefault, Deref, DerefMut, Hash, Hasher, Not,
+    Ordering, Storage, _core::fmt,
 };
 
 impl<T, const CAP: usize, S: Storage> Drop for UninitArray<T, CAP, S> {

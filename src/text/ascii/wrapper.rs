@@ -7,11 +7,11 @@ use crate::code::iif;
 
 // imports for the `digits_str` method
 #[cfg(all(feature = "_string_u8", any(feature = "safe_text", not(feature = "unsafe_str"))))]
-use crate::error::unwrap;
+use crate::unwrap;
 #[cfg(all(feature = "_string_u8", feature = "_cmp_u8"))]
-use crate::num::Compare;
+use crate::Compare;
 #[cfg(feature = "_string_u8")]
-use crate::text::StringU8;
+use crate::StringU8;
 
 /// Provides ASCII operations on `T`, most of them *const*.
 #[derive(Clone, Copy)]
@@ -40,7 +40,7 @@ impl Ascii<usize> {
 
     /// Counts the number of decimal digits.
     ///
-    /// For more complex needs check the [`Int`][crate::num::Int] *base* methods.
+    /// For more complex needs check the [`Int`][crate::Int] *base* methods.
     /// # Examples
     /// ```
     /// # use devela::text::Ascii;
@@ -57,7 +57,7 @@ impl Ascii<usize> {
     /// The actual array length depends on the target platform's pointer size.
     ///
     /// You can trim the leading zeros with
-    /// [`slice_trim_leading_bytes`][crate::mem::slice_trim_leading_bytes].
+    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use] #[cfg(target_pointer_width = "16")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         Ascii(self.0 as u16).digits()
@@ -68,7 +68,7 @@ impl Ascii<usize> {
     /// The actual array length depends on the target platform's pointer size.
     ///
     /// You can trim the leading zeros with
-    /// [`slice_trim_leading_bytes`][crate::mem::slice_trim_leading_bytes].
+    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use] #[cfg(target_pointer_width = "32")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         Ascii(self.0 as u32).digits()
@@ -79,7 +79,7 @@ impl Ascii<usize> {
     /// The actual array length depends on the target platform's pointer size.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
+    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use] #[cfg(target_pointer_width = "64")] #[rustfmt::skip]
     pub const fn digits(self) -> [u8; Self::MAX_DIGITS] {
         Ascii(self.0 as u64).digits()
@@ -160,7 +160,7 @@ impl Ascii<u8> {
     /// Converts a `u8` into a byte array of `3` ASCII digits with leading zeros.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
+    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use]
     pub const fn digits(self) -> [u8; 3] {
         [
@@ -267,7 +267,7 @@ impl Ascii<u16> {
     /// Converts a `u16` into a byte array of `5` ASCII digits with leading zeros.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
+    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use]
     pub const fn digits(self) -> [u8; 5] {
         [
@@ -376,7 +376,7 @@ impl Ascii<u32> {
     /// Converts a `u32` into a byte array of `10` ASCII digits with leading zeros.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
+    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
     pub const fn digits(self) -> [u8; 10] {
@@ -471,7 +471,7 @@ impl Ascii<u64> {
     /// Converts a `u64` into a byte array of `20` ascii digits with leading zeros.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
+    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
     pub const fn digits(self) -> [u8; 20] {
@@ -576,7 +576,7 @@ impl Ascii<u128> {
     /// Converts a `u128` into a byte array of `39` ascii digits with leading zeros.
     ///
     /// You can trim the leading zeros with
-    /// [`trim_leading_bytes`][crate::mem::Slice::trim_leading_bytes].
+    /// [`trim_leading_bytes`][crate::Slice::trim_leading_bytes].
     #[must_use]
     #[allow(clippy::unreadable_literal)]
     pub const fn digits(self) -> [u8; 39] {

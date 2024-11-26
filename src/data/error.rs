@@ -3,10 +3,10 @@
 //!
 //
 
-use crate::error::Mismatch;
+use crate::Mismatch;
 
 /// A data-related result.
-pub type DataResult<T> = core::result::Result<T, DataError>;
+pub type DataResult<T> = crate::Result<T, DataError>;
 
 /// A data-related error.
 #[non_exhaustive]
@@ -83,12 +83,12 @@ impl DataError {
 
 mod core_impls {
     use super::DataError as E;
-    use core::fmt;
+    use crate::{Display, FmtResult, Formatter};
 
-    impl core::error::Error for E {}
+    impl crate::Error for E {}
 
-    impl fmt::Display for E {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for E {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             match self {
                 E::NotImplemented => write!(f, "Not implemented."),
                 E::NotSupported => write!(f, "Not supported."),

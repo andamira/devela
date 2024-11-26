@@ -47,10 +47,13 @@ reexport! { rust: core,
     doc: "Causes compilation to fail with the given error message when encountered.",
     compile_error
 }
-
 reexport! { rust: core::error,
     doc: "A trait representing the basic expectations for error values.",
     Error
+}
+reexport! { rust: core::result,
+    doc: "A type that represents either success ([`Ok`]) or failure ([`Err`]).",
+    Result
 }
 
 #[cfg(feature = "std")]

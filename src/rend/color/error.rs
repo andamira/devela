@@ -2,13 +2,14 @@
 //
 //!
 //
+// MAYBE: make it generic?
 
 /// A chromatic result.
 pub type ColorResult<T> = core::result::Result<T, ColorError>;
 
 /// A chromatic error.
 #[non_exhaustive]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)] // Hash
 pub enum ColorError {
     /// The requested chromatic functionality is not implemented.
     ///
@@ -37,9 +38,10 @@ mod core_impls {
 
     impl fmt::Display for ColorError {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            use ColorError as E;
             match self {
-                ColorError::NotImplemented => write!(f, "Not implemented."),
-                ColorError::NotSupported => write!(f, "Not supported."),
+                E::NotImplemented => write!(f, "Not implemented."),
+                E::NotSupported => write!(f, "Not supported."),
             }
         }
     }

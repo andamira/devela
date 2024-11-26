@@ -61,7 +61,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - optional dependencies:
   - `jiff`, `rayon`, `rodio`, `tinyaudio`.
 - re-export:
-  - items from: `std::backtrace`, `core::cell`, `core::ops`, `std::fmt`.
+  - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt}`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
   - macros:
     - `compile_error`, `option_env`, `enumint`, `assert_unchecked!`, `format!`, `format_args!`, `concat`, `stringify`, `write!`, `writeln!`.

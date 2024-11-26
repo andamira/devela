@@ -17,7 +17,7 @@ use crate::rend::ImageError;
 use crate::rend::LayoutError;
 
 /// A rendering media result.
-pub type RendResult<T> = core::result::Result<T, RendError>;
+pub type RendResult<T> = crate::Result<T, RendError>;
 
 /// A rendering media error.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -49,25 +49,24 @@ pub enum RendError {
 }
 
 mod core_impls {
-    use super::RendError;
     #[cfg(feature = "audio")]
-    use crate::rend::AudioError;
+    use crate::AudioError;
     #[cfg(feature = "color")]
-    use crate::rend::ColorError;
+    use crate::ColorError;
     #[cfg(feature = "draw")]
-    use crate::rend::DrawError;
+    use crate::DrawError;
     #[cfg(feature = "font")]
-    use crate::rend::FontError;
+    use crate::FontError;
     #[cfg(feature = "image")]
-    use crate::rend::ImageError;
+    use crate::ImageError;
     #[cfg(feature = "layout")]
-    use crate::rend::LayoutError;
-    use core::fmt;
+    use crate::LayoutError;
+    use crate::{Display, FmtResult, Formatter, RendError};
 
-    impl crate::error::Error for RendError {}
+    impl crate::Error for RendError {}
 
-    impl fmt::Display for RendError {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for RendError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             match self {
                 #[cfg(feature = "audio")]
                 RendError::AudioError(e) => write!(f, "{e:?}"),
