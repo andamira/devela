@@ -1,11 +1,11 @@
 // devela::sys::io::error
 
-use core::{convert::From, fmt, result};
+use crate::{doc_private, Debug, Display, FmtResult, Formatter, From, Result};
 
 /// A specialized [`Result`] type for I/O operations.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Result.html>.
-pub type IoResult<T> = result::Result<T, IoError>;
+pub type IoResult<T> = crate::Result<T, IoError>;
 
 /// The error type for I/O operations of [`Read`], [`Write`], [`Seek`], and
 /// associated traits.
@@ -14,20 +14,36 @@ pub type IoResult<T> = result::Result<T, IoError>;
 pub struct IoError {
     repr: Repr,
 }
-
-impl core::error::Error for IoError {}
-
-impl fmt::Debug for IoError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt::Debug::fmt(&self.repr, f)
+impl crate::Error for IoError {}
+impl Debug for IoError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+        Debug::fmt(&self.repr, f)
+    }
+}
+impl Display for IoError {
+    fn fmt(&self, fmt: &mut Formatter<'_>) -> FmtResult<()> {
+        match self.repr {
+            Repr::Custom(ref c) => Debug::fmt(&c, fmt),
+            Repr::Simple(kind) => write!(fmt, "{}", kind.as_str()),
+        }
     }
 }
 
+#[doc = doc_private!()]
 enum Repr {
-    Simple(IoErrorKind),
     Custom(Custom),
+    Simple(IoErrorKind),
+}
+impl Debug for Repr {
+    fn fmt(&self, fmt: &mut Formatter<'_>) -> FmtResult<()> {
+        match *self {
+            Repr::Custom(ref c) => Debug::fmt(&c, fmt),
+            Repr::Simple(kind) => fmt.debug_tuple("Kind").field(&kind).finish(),
+        }
+    }
 }
 
+#[doc = doc_private!()]
 #[derive(Debug)]
 struct Custom {
     kind: IoErrorKind,
@@ -184,42 +200,43 @@ pub enum IoErrorKind {
 
 impl IoErrorKind {
     pub(crate) fn as_str(self) -> &'static str {
+        use IoErrorKind as E;
         match self {
-            IoErrorKind::NotFound => "entity not found",
-            IoErrorKind::PermissionDenied => "permission denied",
-            IoErrorKind::ConnectionRefused => "connection refused",
-            IoErrorKind::ConnectionReset => "connection reset",
-            IoErrorKind::HostUnreachable => "remote host unreachable",
-            IoErrorKind::NetworkUnreachable => "network unreachable",
-            IoErrorKind::ConnectionAborted => "connection aborted",
-            IoErrorKind::NotConnected => "not connected",
-            IoErrorKind::AddrInUse => "address in use",
-            IoErrorKind::AddrNotAvailable => "address not available",
-            IoErrorKind::NetworkDown => "network is down",
-            IoErrorKind::BrokenPipe => "broken pipe",
-            IoErrorKind::AlreadyExists => "entity already exists",
-            IoErrorKind::WouldBlock => "operation would block",
-            IoErrorKind::NotADirectory => "filesystem object is not a directory",
-            IoErrorKind::IsADirectory => "filesystem object is a directory",
-            IoErrorKind::DirectoryNotEmpty => "directory is not empty",
-            IoErrorKind::ReadOnlyFilesystem => "read-only filesystem",
-            IoErrorKind::StaleNetworkFileHandle => "stale network file handle",
-            IoErrorKind::InvalidInput => "invalid input parameter",
-            IoErrorKind::InvalidData => "invalid data",
-            IoErrorKind::TimedOut => "timed out",
-            IoErrorKind::WriteZero => "write zero",
-            IoErrorKind::StorageFull => "storage full",
-            IoErrorKind::NotSeekable => "file not seekable",
-            IoErrorKind::FileTooLarge => "file too large",
-            IoErrorKind::ResourceBusy => "resource busy",
-            IoErrorKind::ExecutableFileBusy => "executable file busy",
-            IoErrorKind::Deadlock => "deadlock (avoided)",
-            IoErrorKind::TooManyLinks => "too many hard links",
-            IoErrorKind::ArgumentListTooLong => "argument list too long",
-            IoErrorKind::Interrupted => "operation interrupted",
-            IoErrorKind::Other => "other os error",
-            IoErrorKind::UnexpectedEof => "unexpected end of file",
-            IoErrorKind::Uncategorized => "uncategorized",
+            E::NotFound => "entity not found",
+            E::PermissionDenied => "permission denied",
+            E::ConnectionRefused => "connection refused",
+            E::ConnectionReset => "connection reset",
+            E::HostUnreachable => "remote host unreachable",
+            E::NetworkUnreachable => "network unreachable",
+            E::ConnectionAborted => "connection aborted",
+            E::NotConnected => "not connected",
+            E::AddrInUse => "address in use",
+            E::AddrNotAvailable => "address not available",
+            E::NetworkDown => "network is down",
+            E::BrokenPipe => "broken pipe",
+            E::AlreadyExists => "entity already exists",
+            E::WouldBlock => "operation would block",
+            E::NotADirectory => "filesystem object is not a directory",
+            E::IsADirectory => "filesystem object is a directory",
+            E::DirectoryNotEmpty => "directory is not empty",
+            E::ReadOnlyFilesystem => "read-only filesystem",
+            E::StaleNetworkFileHandle => "stale network file handle",
+            E::InvalidInput => "invalid input parameter",
+            E::InvalidData => "invalid data",
+            E::TimedOut => "timed out",
+            E::WriteZero => "write zero",
+            E::StorageFull => "storage full",
+            E::NotSeekable => "file not seekable",
+            E::FileTooLarge => "file too large",
+            E::ResourceBusy => "resource busy",
+            E::ExecutableFileBusy => "executable file busy",
+            E::Deadlock => "deadlock (avoided)",
+            E::TooManyLinks => "too many hard links",
+            E::ArgumentListTooLong => "argument list too long",
+            E::Interrupted => "operation interrupted",
+            E::Other => "other os error",
+            E::UnexpectedEof => "unexpected end of file",
+            E::Uncategorized => "uncategorized",
         }
     }
 }
@@ -236,37 +253,28 @@ impl From<IoErrorKind> for IoError {
 }
 
 impl IoError {
-    /// Creates a new I/O error from a known kind of error as well as an
-    /// arbitrary error payload.
-    ///
+    /// Creates a new I/O error from a known kind of error as well as an arbitrary error payload.
     pub fn new(kind: IoErrorKind, error: &'static str) -> IoError {
-        Self::_new(kind, error)
-    }
-
-    fn _new(kind: IoErrorKind, error: &'static str) -> IoError {
         IoError { repr: Repr::Custom(Custom { kind, error }) }
     }
 
     /// Returns a reference to the inner error wrapped by this error (if any).
-    ///
     pub fn get_ref(&self) -> Option<&&'static str> {
         match self.repr {
-            Repr::Simple(..) => None,
             Repr::Custom(ref c) => Some(&c.error),
+            Repr::Simple(..) => None,
         }
     }
 
     /// Consumes the `IoError`, returning its inner error (if any).
-    ///
     pub fn into_inner(self) -> Option<&'static str> {
         match self.repr {
-            Repr::Simple(..) => None,
             Repr::Custom(c) => Some(c.error),
+            Repr::Simple(..) => None,
         }
     }
 
     /// Returns the corresponding [`IoErrorKind`] for this error.
-    ///
     pub fn kind(&self) -> IoErrorKind {
         match self.repr {
             Repr::Custom(ref c) => c.kind,
@@ -275,25 +283,8 @@ impl IoError {
     }
 }
 
-impl fmt::Debug for Repr {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match *self {
-            Repr::Custom(ref c) => fmt::Debug::fmt(&c, fmt),
-            Repr::Simple(kind) => fmt.debug_tuple("Kind").field(&kind).finish(),
-        }
-    }
-}
-
-impl fmt::Display for IoError {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.repr {
-            Repr::Custom(ref c) => c.error.fmt(fmt),
-            Repr::Simple(kind) => write!(fmt, "{}", kind.as_str()),
-        }
-    }
-}
-
 // IMPROVE
+#[doc = doc_private!()]
 fn _assert_error_is_sync_send() {
     fn _is_sync_send<T: Sync + Send>() {}
     _is_sync_send::<IoError>();

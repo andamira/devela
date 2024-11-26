@@ -6,7 +6,7 @@
 use super::Duration;
 
 /// A time-related result.
-pub type TimeResult<T> = core::result::Result<T, TimeError>;
+pub type TimeResult<T> = crate::Result<T, TimeError>;
 
 /// A time-related error.
 #[non_exhaustive]
@@ -36,13 +36,13 @@ mod std_impls {
 }
 
 mod core_impls {
-    use super::TimeError as E;
-    use core::fmt;
+    use crate::{Display, FmtResult, Formatter, TimeError};
 
-    impl core::error::Error for E {}
+    impl crate::Error for TimeError {}
 
-    impl fmt::Display for E {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for TimeError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            use TimeError as E;
             match self {
                 E::SystemTimeError(d) => {
                     write!(f, "SystemTimeError({d:?})")

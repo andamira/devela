@@ -6,7 +6,7 @@
 use crate::Utf8Error;
 
 /// A text-related result.
-pub type TextResult<T> = core::result::Result<T, TextError>;
+pub type TextResult<T> = crate::Result<T, TextError>;
 
 /// A text-related error.
 #[non_exhaustive]
@@ -42,13 +42,13 @@ pub enum TextError {
 }
 
 mod core_impls {
-    use super::TextError as E;
-    use core::fmt;
+    use crate::{Display, FmtResult, Formatter, TextError};
 
-    impl core::error::Error for E {}
+    impl crate::Error for TextError {}
 
-    impl fmt::Display for E {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for TextError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            use TextError as E;
             match self {
                 E::NotEnoughCapacity(c) => write!(f, "Not enough capacity. Needed: {c}"),
                 E::NotEnoughElements(e) => write!(f, "Not enough elements. Needed: {e}"),

@@ -4,7 +4,7 @@
 //
 
 /// An audio rendering result.
-pub type AudioResult<T> = core::result::Result<T, AudioError>;
+pub type AudioResult<T> = crate::Result<T, AudioError>;
 
 /// An audio rendering error.
 #[non_exhaustive]
@@ -14,14 +14,13 @@ pub enum AudioError {
     AudioError,
 }
 
-impl crate::error::Error for AudioError {}
+impl crate::Error for AudioError {}
 
 mod core_impls {
-    use super::AudioError;
-    use core::fmt;
+    use crate::{AudioError, Display, FmtResult, Formatter};
 
-    impl fmt::Display for AudioError {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for AudioError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             write![f, "AudioError"]
         }
     }

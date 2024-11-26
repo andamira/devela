@@ -4,7 +4,7 @@
 //
 
 /// A drawing result.
-pub type DrawResult<T> = core::result::Result<T, DrawError>;
+pub type DrawResult<T> = crate::Result<T, DrawError>;
 
 /// A drawing error.
 #[non_exhaustive]
@@ -14,14 +14,13 @@ pub enum DrawError {
     DrawError,
 }
 
-impl crate::error::Error for DrawError {}
+impl crate::Error for DrawError {}
 
 mod core_impls {
-    use super::DrawError;
-    use core::fmt;
+    use crate::{Display, DrawError, FmtResult, Formatter};
 
-    impl fmt::Display for DrawError {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for DrawError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             write![f, "DrawError"]
         }
     }

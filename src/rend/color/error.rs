@@ -2,10 +2,9 @@
 //
 //!
 //
-// MAYBE: make it generic?
 
 /// A chromatic result.
-pub type ColorResult<T> = core::result::Result<T, ColorError>;
+pub type ColorResult<T> = crate::Result<T, ColorError>;
 
 /// A chromatic error.
 #[non_exhaustive]
@@ -30,14 +29,13 @@ impl ColorError {
     }
 }
 
-impl crate::error::Error for ColorError {}
+impl crate::Error for ColorError {}
 
 mod core_impls {
-    use super::ColorError;
-    use core::fmt;
+    use crate::{ColorError, Display, FmtResult, Formatter};
 
-    impl fmt::Display for ColorError {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for ColorError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             use ColorError as E;
             match self {
                 E::NotImplemented => write!(f, "Not implemented."),

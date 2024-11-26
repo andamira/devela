@@ -4,7 +4,7 @@
 //
 
 /// A font rendering result.
-pub type FontResult<T> = core::result::Result<T, FontError>;
+pub type FontResult<T> = crate::Result<T, FontError>;
 
 /// A font rendering error.
 #[non_exhaustive]
@@ -14,14 +14,13 @@ pub enum FontError {
     FontError,
 }
 
-impl crate::error::Error for FontError {}
+impl crate::Error for FontError {}
 
 mod core_impls {
-    use super::FontError;
-    use core::fmt;
+    use crate::{Display, FmtResult, FontError, Formatter};
 
-    impl fmt::Display for FontError {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for FontError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             write![f, "FontError"]
         }
     }

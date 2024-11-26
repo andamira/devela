@@ -303,7 +303,7 @@ where
     /// Unwraps this `IoBufWriter<W>`, returning the underlying writer.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.BufWriter.html#method.into_inner>.
-    pub fn into_inner(mut self) -> core::result::Result<W, IntoInnerError<IoBufWriter<W, S>>> {
+    pub fn into_inner(mut self) -> crate::Result<W, IntoInnerError<IoBufWriter<W, S>>> {
         match self.flush_buf() {
             Err(e) => Err(IntoInnerError(self, e)),
             Ok(()) => Ok(self.inner.take().unwrap()),
@@ -615,7 +615,7 @@ impl<W: IoWrite, const S: usize> IoLineWriter<W, S> {
     /// Unwraps this `IoLineWriter`, returning the underlying writer.
     ///
     /// See <https://doc.rust-lang.org/std/io/struct.LineWriter.html#method.into_inner>.
-    pub fn into_inner(self) -> core::result::Result<W, IntoInnerError<IoLineWriter<W, S>>> {
+    pub fn into_inner(self) -> crate::Result<W, IntoInnerError<IoLineWriter<W, S>>> {
         self.inner
             .into_inner()
             .map_err(|IntoInnerError(buf, e)| IntoInnerError(IoLineWriter { inner: buf }, e))

@@ -4,24 +4,19 @@
 
 #![allow(unused, reason = "WIP")]
 
-#[cfg(doc)]
-use crate::rend::ImageError::FmtError;
 #[cfg(feature = "alloc")]
 use crate::text::String;
+#[cfg(doc)]
+use crate::ImageError::FmtError;
 use crate::{
-    mem::bytes_from_bits,
-    rend::{
-        // color::*;
-        ImageError,
-        ImageError::{InvalidImageSize, InvalidPixel},
-        ImageResult as Result,
-    },
-    text::TextWrite,
+    bytes_from_bits, ImageError,
+    ImageError::{InvalidImageSize, InvalidPixel},
+    ImageResult as Result, TextWrite,
 };
 
 // Helper function: Returns `InvalidPixel` as the cold path.
 #[cold] #[rustfmt::skip]
-const fn invalid_pixel<T>() -> core::result::Result<T, ImageError> { Err(InvalidPixel) }
+const fn invalid_pixel<T>() -> crate::Result<T, ImageError> { Err(InvalidPixel) }
 
 /// A collection of methods for encoding and decoding
 /// <abbr title="Portable anymap format">PNM</abbr> bitmap formats.

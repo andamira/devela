@@ -3,8 +3,8 @@
 //!
 //
 
-use crate::Display;
 use super::{OptionFmt, OptionFmtOr, OptionFmtOrElse};
+use crate::Display;
 
 #[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtOption`] trait.

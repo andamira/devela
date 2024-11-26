@@ -4,7 +4,7 @@
 //
 
 /// A layout rendering result.
-pub type LayoutResult<T> = core::result::Result<T, LayoutError>;
+pub type LayoutResult<T> = crate::Result<T, LayoutError>;
 
 /// A layout rendering error.
 #[non_exhaustive]
@@ -14,14 +14,13 @@ pub enum LayoutError {
     LayoutError,
 }
 
-impl crate::error::Error for LayoutError {}
+impl crate::Error for LayoutError {}
 
 mod core_impls {
-    use super::LayoutError;
-    use core::fmt;
+    use crate::{Display, FmtResult, Formatter, LayoutError};
 
-    impl fmt::Display for LayoutError {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for LayoutError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             write![f, "LayoutError"]
         }
     }

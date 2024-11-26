@@ -20,7 +20,7 @@
 ///
 /// # Examples
 /// ```
-/// use devela::error::{sok, serr, OptRes};
+/// use devela::{sok, serr, OptRes};
 ///
 /// #[derive(Debug, PartialEq)]
 /// struct V(i32);
@@ -99,8 +99,8 @@ impl<T, E> Sealed for OptRes<T, E> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 ///
-/// See also [`ExtOption`][crate::error::ExtOption],
-/// [`ExtResult`][crate::error::ExtResult],
+/// See also [`ExtOption`][crate::ExtOption],
+/// [`ExtResult`][crate::ExtResult],
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[expect(private_bounds, reason = "Sealed")]
 pub trait ExtOptRes<T, E>: Sealed {
@@ -108,7 +108,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::{ExtOptRes, OptRes};
+    /// use devela::{ExtOptRes, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
     /// let b: OptRes<u8, &str> = Some(Ok(1));
@@ -128,7 +128,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::{ExtOptRes, OptRes};
+    /// use devela::{ExtOptRes, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
     /// let b: OptRes<u8, &str> = Some(Ok(1));
@@ -148,7 +148,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::{ExtOptRes, OptRes};
+    /// use devela::{ExtOptRes, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
     /// let b: OptRes<u8, &str> = Some(Ok(1));
@@ -168,7 +168,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::{ExtOptRes, OptRes};
+    /// use devela::{ExtOptRes, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
     /// let b: OptRes<u8, &str> = Some(Ok(1));
@@ -188,7 +188,7 @@ pub trait ExtOptRes<T, E>: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::error::{ExtOptRes, OptRes};
+    /// use devela::{ExtOptRes, OptRes};
     ///
     /// let a: OptRes<u8, &str> = None;
     /// let b: OptRes<u8, &str> = Some(Ok(1));

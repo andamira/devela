@@ -6,7 +6,7 @@
 use crate::Sign;
 
 /// A numerical result.
-pub type NumResult<T> = core::result::Result<T, NumError>;
+pub type NumResult<T> = crate::Result<T, NumError>;
 
 /// A numerical error.
 #[non_exhaustive]
@@ -61,14 +61,14 @@ impl NumError {
     }
 }
 
-impl core::error::Error for NumError {}
+impl crate::Error for NumError {}
 
 mod core_impls {
-    use super::{NumError as E, Sign};
-    use core::fmt;
+    use crate::{Display, FmtResult, Formatter, NumError, Sign};
 
-    impl fmt::Display for E {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for NumError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            use NumError as E;
             match self {
                 E::NotImplemented => write!(f, "Not implemented."),
                 E::NotSupported => write!(f, "Not supported."),

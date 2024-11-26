@@ -7,7 +7,7 @@
 use crate::IoErrorKind;
 
 /// An image rendering result.
-pub type ImageResult<T> = core::result::Result<T, ImageError>;
+pub type ImageResult<T> = crate::Result<T, ImageError>;
 
 /// An image rendering error.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -35,14 +35,14 @@ pub enum ImageError {
 }
 
 mod core_impls {
-    use super::ImageError as E;
-    use crate::error::IoError;
+    use crate::{Display, FmtResult, Formatter, ImageError, IoError};
     use core::fmt;
 
-    impl crate::error::Error for E {}
+    impl crate::Error for ImageError {}
 
-    impl fmt::Display for E {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl Display for ImageError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            use ImageError as E;
             match self {
                 E::InvalidImageSize(o) => write!(f, "InvalidImageSize: {o:?}"),
                 E::InvalidMagicNumber => write!(f, "Invalid magic number."),
@@ -56,18 +56,20 @@ mod core_impls {
         }
     }
 
-    impl From<core::num::ParseIntError> for E {
+    // IMPROVE
+    impl From<core::num::ParseIntError> for ImageError {
         fn from(_: core::num::ParseIntError) -> Self {
             // Self::InvalidParsedInteger(e.kind().clone())
             Self::InvalidParsedInteger
         }
     }
-    impl From<fmt::Error> for E {
+    // IMPROVE
+    impl From<fmt::Error> for ImageError {
         fn from(_: fmt::Error) -> Self {
             Self::FmtError
         }
     }
-    impl From<IoError> for E {
+    impl From<IoError> for ImageError {
         fn from(e: IoError) -> Self {
             Self::IoError(e.kind())
         }
