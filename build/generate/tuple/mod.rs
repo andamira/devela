@@ -1,13 +1,13 @@
 // devela build::generate::tuple
 //
 //! Code generator for the `Tuple` trait, `TupleElement*` enums and `TupleIter*` structs.
-//
-// TOC
-// - Tuple trait definition
-// - manual Tuple impls for arities < 2
-// - automatic Tuple impls for arities >= 2
-// - enums definitions
-// - iterators definitions and implementations
+//!
+//! TOC
+//! - Tuple trait definition
+//! - manual Tuple impls for arities < 2
+//! - automatic Tuple impls for arities >= 2
+//! - enums definitions
+//! - iterators definitions and implementations
 
 use crate::utils::*;
 use std::{
@@ -282,12 +282,12 @@ pub(super) fn generate() -> Result<(), Error> {
 
     w!(f, r#"
     impl TupleDebug for () {{
-        fn fmt_debug(&self, f: &mut fmt::Formatter) -> fmt::Result {{
+        fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()> {{
             f.debug_tuple("").finish()
         }}
     }}
     impl TupleDisplay for () {{
-        fn fmt_display(&self, f: &mut fmt::Formatter) -> fmt::Result {{
+        fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()> {{
             write!(f, "()")
         }}
     }}
@@ -397,12 +397,12 @@ pub(super) fn generate() -> Result<(), Error> {
 
     w!(f, r#"
     impl<_0: Debug> TupleDebug for (_0,) {{
-        fn fmt_debug(&self, f: &mut fmt::Formatter) -> fmt::Result {{
+        fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()> {{
             f.debug_tuple("").field(&self.0).finish()
         }}
     }}
     impl<_0: Display> TupleDisplay for (_0,) {{
-        fn fmt_display(&self, f: &mut fmt::Formatter) -> fmt::Result {{
+        fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()> {{
             write!(f, "({{}},)", &self.0)
         }}
     }}
@@ -566,7 +566,7 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "#[rustfmt::skip]")?;
         w!(f, "impl<")?; for i in 0..arity { w0!(f, "_{i}: Debug, ")?; }
         w!(f, "> TupleDebug for (")?; for i in 0..arity { w0!(f, "_{i},")?; }
-        w!(f, ") {{\n fn fmt_debug(&self, f: &mut fmt::Formatter) -> fmt::Result {{")?;
+        w!(f, ") {{\n fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()> {{")?;
             w!(f, "f.debug_tuple(\"\")")?;
                 for i in 0..arity { w!(f, ".field(&self.{i})")?; }
                 w!(f, ".finish()")?;
@@ -575,7 +575,7 @@ pub(super) fn generate() -> Result<(), Error> {
         w!(f, "#[rustfmt::skip]")?;
         w!(f, "impl<")?; for i in 0..arity { w0!(f, "_{i}: Display, ")?; }
         w!(f, "> TupleDisplay for (")?; for i in 0..arity { w0!(f, "_{i},")?; }
-        w!(f, ") {{\n fn fmt_display(&self, f: &mut fmt::Formatter) -> fmt::Result {{")?;
+        w!(f, ") {{\n fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()> {{")?;
             w!(f, "write!(f, \"({{}}\", &self.0)?;")?;
                 for i in 1..arity { w!(f, "write!(f, \", {{}}\", &self.{i})?;")?; }
             w!(f, "write!(f, \")\")")?;

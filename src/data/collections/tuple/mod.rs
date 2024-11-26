@@ -3,7 +3,7 @@
 //!
 //
 
-use crate::{self, Debug, Display, FmtResult, Formatter};
+use crate::{Debug, Display, FmtResult, Formatter};
 
 #[cfg(test)]
 mod tests;
