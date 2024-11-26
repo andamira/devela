@@ -693,6 +693,7 @@ unknown_lints = "allow" # unrecognized lint attributes
 missing_crate_level_docs = "deny" # no documentation at the crate root
 
 # broken_intra_doc_links = "allow" # NOTE: conditionally allowed in lib.rs
+redundant_explicit_links = "allow" # (primitive aliases (char) need the explicit reference)
 
 [lints.clippy]
 # https://rust-lang.github.io/rust-clippy/master/index.html

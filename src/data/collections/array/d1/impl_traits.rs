@@ -4,17 +4,14 @@
 //
 
 use crate::{
-    code::ConstDefault,
+    code::{
+        AsMut, AsRef, BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, ConstDefault,
+        Deref, DerefMut, Not,
+    },
     data::{array_init, Array},
-    mem::{Bare, BareBox, Storage},
-};
-use core::{
-    borrow::{Borrow, BorrowMut},
-    cmp::Ordering,
-    convert::{AsMut, AsRef},
-    fmt,
-    hash::{Hash, Hasher},
-    ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Deref, DerefMut, Not},
+    mem::{Bare, BareBox, Borrow, BorrowMut, Storage},
+    text::{FmtResult, Formatter},
+    Debug, Hash, Hasher, Ordering,
 };
 
 #[cfg(feature = "alloc")]
@@ -74,11 +71,11 @@ impl<T: Copy, const CAP: usize, S: Storage> Copy for Array<T, CAP, S> where S::S
 {}
 
 // T: Debug
-impl<T: fmt::Debug, const CAP: usize, S: Storage> fmt::Debug for Array<T, CAP, S>
+impl<T: Debug, const CAP: usize, S: Storage> Debug for Array<T, CAP, S>
 where
-    S::Stored<[T; CAP]>: fmt::Debug,
+    S::Stored<[T; CAP]>: Debug,
 {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
         let mut debug = f.debug_struct("Array");
         debug.field("T", &core::any::type_name::<T>()).field("S", &S::name()).field("CAP", &CAP);
 

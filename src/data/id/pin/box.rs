@@ -3,8 +3,7 @@
 //! Pinned memory-based unique IDs.
 //
 
-use crate::mem::Box;
-use core::{pin::Pin, ptr};
+use crate::{Box, addr_of, Pin};
 
 /// A unique identifier based on a pinned heap-allocated memory address.
 ///
@@ -23,13 +22,12 @@ impl IdPinBox {
 
     /// Returns the unique ID as a `usize`, derived from the memory address.
     pub fn as_usize(&self) -> usize {
-        ptr::addr_of!(*self.inner) as usize
+        addr_of!(*self.inner) as usize
     }
 }
 
 mod impl_traits {
-    use super::{Box, IdPinBox};
-    use core::{cmp::Ordering, fmt, hash, ptr};
+    use crate::{Box, Ordering, Hash, Hasher, Ptr, Formatter, FmtResult, Debug, IdPinBox};
 
     impl Default for IdPinBox {
         fn default() -> Self {
@@ -37,20 +35,20 @@ mod impl_traits {
         }
     }
 
-    impl fmt::Debug for IdPinBox {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    impl Debug for IdPinBox {
+        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
             write!(f, "{}", self.as_usize())
         }
     }
-    impl hash::Hash for IdPinBox {
-        fn hash<H: hash::Hasher>(&self, state: &mut H) {
+    impl Hash for IdPinBox {
+        fn hash<H: Hasher>(&self, state: &mut H) {
             self.as_usize().hash(state);
         }
     }
 
     impl PartialEq for IdPinBox {
         fn eq(&self, other: &Self) -> bool {
-            ptr::eq(&*self.inner, &*other.inner)
+            Ptr::eq(&*self.inner, &*other.inner)
         }
     }
     impl Eq for IdPinBox {}

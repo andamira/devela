@@ -31,7 +31,7 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 #[allow(non_camel_case_types)]
-pub type char = core::primitive::char;
+pub type char = crate::_core::primitive::char;
 
 /* public types */
 

@@ -8,7 +8,7 @@ mod r#box;
 #[cfg(feature = "alloc")]
 pub use r#box::IdPinBox;
 
-use core::{pin::Pin, ptr};
+use crate::{addr_of, Pin};
 
 /// A unique identifier based on a pinned stack-allocated reference.
 ///
@@ -39,28 +39,27 @@ impl<'a> IdPin<'a> {
 
     /// Returns the unique ID as a `usize`, derived from the stack memory address.
     pub fn as_usize(&self) -> usize {
-        ptr::addr_of!(*self.inner) as usize
+        addr_of!(*self.inner) as usize
     }
 }
 
 mod impl_traits {
-    use super::IdPin;
-    use core::{cmp::Ordering, fmt, hash, ptr};
+    use crate::{Debug, FmtResult, Formatter, Hash, Hasher, IdPin, Ordering, Ptr};
 
-    impl fmt::Debug for IdPin<'_> {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    impl Debug for IdPin<'_> {
+        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
             write!(f, "{}", self.as_usize())
         }
     }
-    impl hash::Hash for IdPin<'_> {
-        fn hash<H: hash::Hasher>(&self, state: &mut H) {
+    impl Hash for IdPin<'_> {
+        fn hash<H: Hasher>(&self, state: &mut H) {
             self.as_usize().hash(state);
         }
     }
 
     impl PartialEq for IdPin<'_> {
         fn eq(&self, other: &Self) -> bool {
-            ptr::eq(&*self.inner, &*other.inner)
+            Ptr::eq(&*self.inner, &*other.inner)
         }
     }
     impl Eq for IdPin<'_> {}

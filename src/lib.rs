@@ -18,6 +18,7 @@
 )]
 //
 // environment:
+// #![no_implicit_prelude] // WIP
 #![cfg_attr(not(feature = "std"), no_std)]
 //
 // safety:

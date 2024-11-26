@@ -51,12 +51,7 @@ impl<V: Copy, Q: Copy> ValueQuant<V, Q> {
 }
 
 mod core_impls {
-    use super::ValueQuant;
-    use core::{
-        cmp::Ordering,
-        fmt,
-        hash::{Hash, Hasher},
-    };
+    use crate::{text::fmt, Hash, Hasher, Ordering, ValueQuant};
 
     impl<V: Clone, Q: Clone> Clone for ValueQuant<V, Q> {
         fn clone(&self) -> Self {
@@ -73,7 +68,7 @@ mod core_impls {
     }
 
     impl<V: fmt::Debug, Q: fmt::Debug> fmt::Debug for ValueQuant<V, Q> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::FmtResult<()> {
             let mut debug = f.debug_struct("ValueQuant");
             debug.field("v", &self.v);
             debug.field("q", &self.q);
@@ -82,7 +77,7 @@ mod core_impls {
     }
 
     impl<V: fmt::Display, Q: fmt::Display> fmt::Display for ValueQuant<V, Q> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::FmtResult<()> {
             write!(f, "Value: {}, Quant: {}", self.v, self.q)
         }
     }

@@ -116,11 +116,7 @@ pub struct Own<S, V> {
 }
 
 mod core_impls {
-    use {
-        super::Own,
-        crate::code::ConstDefault,
-        core::{cmp::Ordering, fmt},
-    };
+    use crate::{ConstDefault, Debug, Display, FmtResult, Formatter, Ordering, Own};
 
     impl<S: Default, V: Default> Default for Own<S, V> {
         fn default() -> Self {
@@ -131,14 +127,14 @@ mod core_impls {
         const DEFAULT: Self = Own::new(S::DEFAULT, V::DEFAULT);
     }
 
-    impl<S: fmt::Debug, V: fmt::Debug> fmt::Debug for Own<S, V> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl<S: Debug, V: Debug> Debug for Own<S, V> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             let mut debug = f.debug_struct("Own");
             debug.field("state", &self.s).field("value", &self.v).finish()
         }
     }
-    impl<S: fmt::Display, V: fmt::Display> fmt::Display for Own<S, V> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl<S: Display, V: Display> Display for Own<S, V> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             write!(f, "State: {}, Value: {}", self.s, self.v)
         }
     }

@@ -183,7 +183,7 @@ macro_rules! impl_ext_slice {
                     // SAFETY: we make sure of initializing every array element
                     #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
                     {
-                        use core::mem::MaybeUninit;
+                        use crate::MaybeUninit;
                         let mut array: [MaybeUninit<U>; N] =
                             unsafe { MaybeUninit::uninit().assume_init() };
                         for i in 0..N { array[i] = MaybeUninit::new(U::from(self[i].clone())); }

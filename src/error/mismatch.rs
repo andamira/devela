@@ -25,11 +25,9 @@ pub struct Mismatch<N, H> {
 impl<N, H> Mismatch<N, H> {}
 
 mod core_impls {
-    use super::Mismatch;
-    use core::{
-        cmp::Ordering,
-        fmt,
-        hash::{Hash, Hasher},
+    use crate::{
+        data::{Hash, Hasher},
+        Debug, Display, FmtResult, Formatter, Mismatch, Ordering,
     };
 
     impl<N: Clone, H: Clone> Clone for Mismatch<N, H> {
@@ -55,8 +53,8 @@ mod core_impls {
         }
     }
 
-    impl<N: fmt::Debug, H: fmt::Debug> fmt::Debug for Mismatch<N, H> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl<N: Debug, H: Debug> Debug for Mismatch<N, H> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             let mut debug = f.debug_struct("Mismatch");
             debug.field("need", &self.need);
             debug.field("have", &self.have);
@@ -65,8 +63,8 @@ mod core_impls {
         }
     }
 
-    impl<N: fmt::Display, H: fmt::Display> fmt::Display for Mismatch<N, H> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    impl<N: Display, H: Display> Display for Mismatch<N, H> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             write!(
                 f,
                 "Mismatch {{ need: {}, have: {}, info: {} }}",
