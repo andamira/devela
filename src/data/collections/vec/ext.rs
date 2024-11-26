@@ -5,7 +5,8 @@
 
 use crate::data::Vec;
 
-// Marker trait to prevent downstream implementations of the `ExtVec` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`ExtVec`] trait.
 trait Sealed {}
 impl<T> Sealed for Vec<T> {}
 
@@ -13,7 +14,7 @@ impl<T> Sealed for Vec<T> {}
 ///
 /// This trait is sealed and cannot be implemented for any other type.
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[allow(private_bounds, reason = "Sealed")]
+#[expect(private_bounds, reason = "Sealed")]
 pub trait ExtVec<T>: Sealed {
     /* convert */
 

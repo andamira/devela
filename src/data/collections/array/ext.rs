@@ -3,35 +3,40 @@
 //!
 //
 
-use core::fmt;
+use crate::{Debug, Display, FmtResult, Formatter};
 
-/// A formatting wrapper for [arrays][array], implementing `Display` and `Debug`.
+/// A formatting wrapper for [arrays][array], implementing [`Display`] and [`Debug`].
 #[repr(transparent)]
 pub struct ArrayFmt<'a, T: ExtArray>(&'a T);
 
-// Private traits for arrays with elements that implement Debug or Display.
+#[doc = crate::doc_private!()]
+/// Private trait for arrays with elements that implement [`Display`].
 trait ArrayDisplay: ExtArray {
-    fn fmt_display(&self, f: &mut fmt::Formatter) -> fmt::Result;
+    fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()>;
 }
 
-// this one is a bit redundant since arrays of any size can impl Debug,
-// nevertheless it's better if we can offer the same api in both cases.
+#[doc = crate::doc_private!()]
+/// Private trait for arrays with elements that implement [`Debug`].
+///
+/// This trait is a bit redundant since arrays of any size can impl `Debug`,
+/// nevertheless it's better if we can offer the same api in both cases.
 trait ArrayDebug: ExtArray {
-    fn fmt_debug(&self, f: &mut fmt::Formatter) -> fmt::Result;
+    fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()>;
 }
 
-impl<T: ArrayDisplay> fmt::Display for ArrayFmt<'_, T> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+impl<T: ArrayDisplay> Display for ArrayFmt<'_, T> {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
         self.0.fmt_display(f)
     }
 }
-impl<T: ArrayDebug> fmt::Debug for ArrayFmt<'_, T> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+impl<T: ArrayDebug> Debug for ArrayFmt<'_, T> {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
         self.0.fmt_debug(f)
     }
 }
 
-// Marker trait to prevent downstream implementations of the `ExtArray` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`ExtArray`] trait.
 trait Sealed {}
 impl<T, const LEN: usize> Sealed for [T; LEN] {}
 
@@ -54,24 +59,24 @@ impl<T, const LEN: usize> ExtArray for [T; LEN] {
 
 impl<T, const LEN: usize> ArrayDisplay for [T; LEN]
 where
-    T: fmt::Display,
+    T: Display,
 {
-    fn fmt_display(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()> {
         write!(f, "[")?;
         for (index, element) in self.iter().enumerate() {
             if index > 0 {
                 write!(f, ", ")?;
             }
-            fmt::Display::fmt(element, f)?;
+            Display::fmt(element, f)?;
         }
         write!(f, "]")
     }
 }
 impl<T, const LEN: usize> ArrayDebug for [T; LEN]
 where
-    T: fmt::Debug,
+    T: Debug,
 {
-    fn fmt_debug(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()> {
         f.debug_list().entries(self.iter()).finish()
     }
 }

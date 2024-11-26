@@ -3,7 +3,8 @@
 //!
 //
 
-// Marker trait to prevent downstream implementations of the `ExtResult` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`ExtResult`] trait.
 trait Sealed {}
 impl<T, E> Sealed for Result<T, E> {}
 
@@ -12,11 +13,11 @@ impl<T, E> Sealed for Result<T, E> {}
 /// This trait is sealed and cannot be implemented for any other type.
 ///
 /// See also [`ExtOption`][crate::error::ExtOption].
-//
-// Based on work from:
-// - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
+///
+/// Based on work from:
+/// - <https://github.com/rust-lang/rust/issues/62358> (contains).
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[allow(private_bounds, reason = "Sealed")]
+#[expect(private_bounds, reason = "Sealed")]
 pub trait ExtResult<T, E>: Sealed {
     /// Returns `true` if the result is an [`Ok`] value containing the given value.
     ///

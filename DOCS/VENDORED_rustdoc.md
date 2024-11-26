@@ -1,5 +1,6 @@
-<!-- Updated intra-doc links intended for: _doc::vendored -->
+<!-- Updated intra-doc links, to be loaded from: _doc::vendored -->
 
+<!-- orig: Apache-2.0 OR MIT -->
   [`cfg_if`]: crate::cfg_if
   [`ConstList`]: crate::ConstList
   [`CacheAlign`]: crate::CacheAlign
@@ -15,6 +16,7 @@
   [`VecChunk`]: crate::VecChunk
   [`Tuple`]: crate::Tuple
 
+<!-- orig: MIT -->
   [`cfor`]: crate::cfor
   [`IdPin`]: crate::IdPin
   [`IdPinBox`]: crate::IdPinBox
@@ -22,6 +24,7 @@
   [`as_bytes_mut`]: crate::Mem#method.as_bytes_mut
   [`FatPtr`]: crate::FatPtr
 
+<!-- orig: OTHER -->
   [`Xyza8a`]: crate::Xyza8a
   [`Xyza8b`]: crate::Xyza8b
   [`Also`]: crate::Also

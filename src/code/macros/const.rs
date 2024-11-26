@@ -8,18 +8,14 @@
 /// # Examples
 /// ```
 /// # use devela::CONST;
-/// // equal to a literal
 /// CONST!{LITERAL = 125}
-///
 /// const L1: bool = LITERAL![] == 125_u8;
 /// const L2: bool = LITERAL![] == 125_i32;
 /// assert![L1];
 /// assert![L2];
 ///
-/// // equal to a block
 /// CONST!{BLOCK = {2 * 15 / 3}}
 /// assert_eq![BLOCK![], 10];
-///
 ///
 /// CONST!{
 ///     /// Supports attributes and visibility.

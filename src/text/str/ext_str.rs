@@ -8,17 +8,19 @@ use crate::{iif, AsciiChar, Str};
 // IMPROVE: use NumToStr
 use crate::{mem::Slice, text::Ascii};
 
-// the cold path that returns an empty string slice
+#[doc = crate::doc_private!()]
+/// The cold path that returns an empty string slice.
 #[cold] #[rustfmt::skip]
 const fn cold_empty_string() -> &'static str { "" }
 
-// Marker trait to prevent downstream implementations of the `ExtStr` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.
 trait Sealed {}
 impl Sealed for str {}
 
 /// Extension trait providing additional methods for [`&str`].
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[allow(private_bounds, reason = "Sealed")]
+#[expect(private_bounds, reason = "Sealed")]
 pub trait ExtStr: Sealed {
     /// Repeats a string a given number of times into the provided `buffer`.
     /// and returns a reference to the new `&str`.

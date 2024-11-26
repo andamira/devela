@@ -1,6 +1,6 @@
 This project includes code adapted from various permissively licensed sources.
 
-Below is a list of derived works, their origins, and modifications.
+Below is a list of derived works, their origins, and relevant modifications.
 See linked files for detailed changes.
 
 ## Works under dual MIT OR Apache-2.0 licenses
@@ -57,7 +57,6 @@ See linked files for detailed changes.
 ## Works under MIT License
 - [const_for] by Joachim Enggård Nebel, as the [`cfor`] macro.
 - [object-id] by *Altertech*, as part of the [`IdPinBox`] and [`IdPin`] structs ([*mod*][m6]).
-- [opt_reduce] by *Waffle Lapkin*, as part of the [`ExtOption`] trait.
 - [rawbytes] by Frank Denis, as `Mem`'s [`as_bytes`] and [`as_bytes_mut`] methods.
 - [unsized-stack] by *storycraft*, as the [`FatPtr`] struct.
 
@@ -67,7 +66,6 @@ See linked files for detailed changes.
   [m6]: https://github.com/andamira/devela/blob/main/src/data/id/pin/MODIFICATIONS.md
   [`IdPin`]: https://docs.rs/devela/latest/devela/data/id/struct.IdPin.html
   [`IdPinBox`]: https://docs.rs/devela/latest/devela/data/id/struct.IdPinBox.html
-[opt_reduce]: https://crates.io/crates/opt_reduce/1.0.0
 [rawbytes]: https://crates.io/crates/rawbytes/1.0.0
   [`as_bytes`]: https://docs.rs/devela/latest/devela/mem/struct.Mem.html#method.as_bytes
   [`as_bytes_mut`]: https://docs.rs/devela/latest/devela/mem/struct.Mem.html#method.as_bytes_mut

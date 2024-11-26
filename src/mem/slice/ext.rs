@@ -7,7 +7,8 @@ use super::Slice;
 #[cfg(feature = "alloc")]
 use crate::data::Vec;
 
-// Marker trait to prevent downstream implementations of the `ExtSlice` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`ExtSlice`] trait.
 trait Sealed {}
 impl<T> Sealed for [T] {}
 impl<T> Sealed for &[T] {}

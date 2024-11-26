@@ -10,7 +10,8 @@ use core::any::{type_name_of_val, Any, TypeId};
 #[cfg(feature = "alloc")]
 use crate::mem::Box;
 
-// Marker trait to prevent downstream implementations of the `ExtAny` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`ExtAny`] trait.
 trait Sealed {}
 impl<T: ?Sized + Any> Sealed for T {}
 impl<T: ?Sized + Any> ExtAny for T {}

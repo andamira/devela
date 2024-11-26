@@ -3,15 +3,16 @@
 //! Functionality related to byte sizes.
 //
 
-use core::cell::Cell;
+use crate::Cell;
 
-// Marker trait to prevent downstream implementations of the `ExtCell` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`ExtCell`] trait.
 trait Sealed {}
 impl<T> Sealed for Cell<Option<T>> {}
 
 /// A trait that provides additional methods for `Cell<Option>`.
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[allow(private_bounds, reason = "Sealed")]
+#[expect(private_bounds, reason = "Sealed")]
 pub trait ExtCellOption<T>: Sealed {
     /// Modifies the value inside the `Cell<Option<T>>` by applying the provided closure
     /// to a mutable reference of the current value if present.
@@ -68,6 +69,7 @@ pub trait ExtCellOption<T>: Sealed {
 }
 
 impl<T> ExtCellOption<T> for Cell<Option<T>> {
+    #[doc = crate::doc_private!()]
     fn modify<F: FnOnce(T) -> T>(&self, func: F) {
         let mut value = self.take();
         // If the value exists, apply the function and store it back
@@ -76,6 +78,7 @@ impl<T> ExtCellOption<T> for Cell<Option<T>> {
         }
     }
 
+    #[doc = crate::doc_private!()]
     fn modify_ret<F: FnOnce(T) -> T>(&self, func: F) -> Option<T>
     where
         T: Clone,
@@ -86,6 +89,7 @@ impl<T> ExtCellOption<T> for Cell<Option<T>> {
         })
     }
 
+    #[doc = crate::doc_private!()]
     fn modify_mut<R, F: FnOnce(&mut T) -> R>(&self, func: F) -> Option<R> {
         if let Some(mut v) = self.take() {
             // Apply the function to a mutable reference and capture the return value

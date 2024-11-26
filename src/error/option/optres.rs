@@ -90,7 +90,8 @@ pub const fn serr<T, E>(error: E) -> OptRes<T, E> {
     Some(Err(error))
 }
 
-// Marker trait to prevent downstream implementations of the `ExtOptRes` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`ExtOptRes`] trait.
 pub(super) trait Sealed {}
 impl<T, E> Sealed for OptRes<T, E> {}
 
@@ -101,7 +102,7 @@ impl<T, E> Sealed for OptRes<T, E> {}
 /// See also [`ExtOption`][crate::error::ExtOption],
 /// [`ExtResult`][crate::error::ExtResult],
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[allow(private_bounds, reason = "Sealed")]
+#[expect(private_bounds, reason = "Sealed")]
 pub trait ExtOptRes<T, E>: Sealed {
     /// Transposes `Option<Result<T, E>>` into `Result<Option<T>, E>`.
     ///

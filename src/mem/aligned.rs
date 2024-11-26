@@ -5,7 +5,8 @@
 //! Always available for internal use.
 //
 
-// Marker trait to prevent downstream implementations of the `MemAligned` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`MemAligned`] trait.
 trait Sealed {}
 impl<Candidate, Requirement> Sealed for (Candidate, Requirement) {}
 
@@ -15,12 +16,11 @@ impl<Candidate, Requirement> Sealed for (Candidate, Requirement) {}
 /// into a storage medium designed for the `Requirement` type, adhering to
 /// alignment requirements.
 //
-// WAIT: [ptr.is_aligned](https://github.com/rust-lang/rust/pull/121948)
-// WAIT: [pointer_is_aligned](https://github.com/rust-lang/rust/issues/96284)
+// WAIT:DONE:1.79 [ptr.is_aligned](https://github.com/rust-lang/rust/pull/121948)
+// WAIT: [pointer_is_aligned_to](https://github.com/rust-lang/rust/issues/96284)
 // WAIT: [const_pointer_is_aligned](https://github.com/rust-lang/rust/issues/104203)
-// WAIT: [ptr.is_aligned_to crate-private](https://github.com/rust-lang/rust/pull/121920)
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[allow(private_bounds, reason = "Sealed")]
+#[expect(private_bounds, reason = "Sealed")]
 pub trait MemAligned: Sealed {
     /// Checks if the `Candidate`'s alignment is compatible with the `Requirement`'s alignment.
     ///

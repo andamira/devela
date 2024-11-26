@@ -6,7 +6,8 @@
 use super::{OptionFmt, OptionFmtOr, OptionFmtOrElse};
 use core::fmt::Display;
 
-// Marker trait to prevent downstream implementations of the `ExtOption` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`ExtOption`] trait.
 trait Sealed {}
 impl<T> Sealed for Option<T> {}
 
@@ -16,12 +17,12 @@ impl<T> Sealed for Option<T> {}
 ///
 /// See also [`ExtResult`][crate::error::ExtResult],
 /// [`ExtOptRes`][crate::error::ExtOptRes].
-//
-// Based on work from:
-// - https://github.com/rust-lang/rust/issues/62358 (closed proposal).
-// - https://crates.io/crates/opt_reduce/1.0.0 by Waffle Lapkin.
+///
+/// Based on work from:
+/// - <https://github.com/rust-lang/rust/issues/62358> (contains).
+/// - <https://github.com/rust-lang/rust/pull/87036> (reduce).
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[allow(private_bounds, reason = "Sealed")]
+#[expect(private_bounds, reason = "Sealed")]
 pub trait ExtOption<T>: Sealed {
     /// Returns `true` if the option is a [`Some`] value containing the given value.
     ///

@@ -8,14 +8,15 @@ use crate::text::AsciiChar;
 #[cfg(feature = "alloc")]
 use crate::text::{String, ToString};
 
-// Marker trait to prevent downstream implementations of the `ExtString` trait.
+#[doc = crate::doc_private!()]
+/// Marker trait to prevent downstream implementations of the [`ExtString`] trait.
 #[cfg(feature = "alloc")]
 trait Sealed {}
 #[cfg(feature = "alloc")]
 impl Sealed for String {}
 
 /// Extension trait providing additional methods for [`String`].
-#[allow(private_bounds, reason = "Sealed")]
+#[expect(private_bounds, reason = "Sealed")]
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait, cfg(feature = "alloc")))]
 pub trait ExtString: Sealed {
