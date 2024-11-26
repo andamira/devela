@@ -51,7 +51,7 @@ impl<V: Copy, Q: Copy> ValueQuant<V, Q> {
 }
 
 mod core_impls {
-    use crate::{text::fmt, Hash, Hasher, Ordering, ValueQuant};
+    use crate::{impl_trait, Ordering, ValueQuant};
 
     impl<V: Clone, Q: Clone> Clone for ValueQuant<V, Q> {
         fn clone(&self) -> Self {
@@ -67,19 +67,11 @@ mod core_impls {
         }
     }
 
-    impl<V: fmt::Debug, Q: fmt::Debug> fmt::Debug for ValueQuant<V, Q> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::FmtResult<()> {
-            let mut debug = f.debug_struct("ValueQuant");
-            debug.field("v", &self.v);
-            debug.field("q", &self.q);
-            debug.finish()
-        }
+    impl_trait! { fmt::Debug for ValueQuant<V, Q> where V, Q |self, f|
+       f.debug_struct("ValueQuant").field("v", &self.v).field("q", &self.q).finish()
     }
-
-    impl<V: fmt::Display, Q: fmt::Display> fmt::Display for ValueQuant<V, Q> {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::FmtResult<()> {
-            write!(f, "Value: {}, Quant: {}", self.v, self.q)
-        }
+    impl_trait! { fmt::Display for ValueQuant<V, Q> where V, Q |self, f|
+        write!(f, "Value: {}, Quant: {}", self.v, self.q)
     }
 
     impl<V: PartialEq, Q: PartialEq> PartialEq for ValueQuant<V, Q> {
@@ -113,11 +105,7 @@ mod core_impls {
             }
         }
     }
-
-    impl<V: Hash, Q: Hash> Hash for ValueQuant<V, Q> {
-        fn hash<HR: Hasher>(&self, state: &mut HR) {
-            self.v.hash(state);
-            self.q.hash(state);
-        }
+    impl_trait! { Hash for ValueQuant<V, Q> where V, Q |self, state|
+        { self.v.hash(state); self.q.hash(state); }
     }
 }

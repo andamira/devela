@@ -44,18 +44,11 @@ impl<'a> IdPin<'a> {
 }
 
 mod impl_traits {
-    use crate::{Debug, FmtResult, Formatter, Hash, Hasher, IdPin, Ordering, Ptr};
+    use crate::{impl_trait, IdPin, Ordering, Ptr};
 
-    impl Debug for IdPin<'_> {
-        fn fmt(&self, f: &mut Formatter) -> FmtResult<()> {
-            write!(f, "{}", self.as_usize())
-        }
-    }
-    impl Hash for IdPin<'_> {
-        fn hash<H: Hasher>(&self, state: &mut H) {
-            self.as_usize().hash(state);
-        }
-    }
+    impl_trait![fmt::Debug for IdPin<'a> |self, f| write!(f, "{}", self.as_usize())];
+
+    impl_trait![Hash for IdPin<'a> |self, s| self.as_usize().hash(s)];
 
     impl PartialEq for IdPin<'_> {
         fn eq(&self, other: &Self) -> bool {

@@ -3,7 +3,7 @@
 //! Pinned memory-based unique IDs.
 //
 
-use crate::{Box, addr_of, Pin};
+use crate::{addr_of, Box, Pin};
 
 /// A unique identifier based on a pinned heap-allocated memory address.
 ///
@@ -27,7 +27,7 @@ impl IdPinBox {
 }
 
 mod impl_traits {
-    use crate::{Box, Ordering, Hash, Hasher, Ptr, Formatter, FmtResult, Debug, IdPinBox};
+    use crate::{Box, Debug, FmtResult, Formatter, Hash, Hasher, IdPinBox, Ordering, Ptr};
 
     impl Default for IdPinBox {
         fn default() -> Self {

@@ -1,6 +1,6 @@
 // devela::sys::io::error
 
-use crate::{doc_private, Debug, Display, FmtResult, Formatter, From, Result};
+use crate::{doc_private, impl_trait, Debug, From, Result};
 
 /// A specialized [`Result`] type for I/O operations.
 ///
@@ -15,33 +15,25 @@ pub struct IoError {
     repr: Repr,
 }
 impl crate::Error for IoError {}
-impl Debug for IoError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-        Debug::fmt(&self.repr, f)
+impl_trait![fmt::Debug for IoError |self, f| Debug::fmt(&self.repr, f)];
+impl_trait![fmt::Display for IoError |self, f|
+    match self.repr {
+        Repr::Custom(ref c) => Debug::fmt(&c, f),
+        Repr::Simple(kind) => write!(f, "{}", kind.as_str()),
     }
-}
-impl Display for IoError {
-    fn fmt(&self, fmt: &mut Formatter<'_>) -> FmtResult<()> {
-        match self.repr {
-            Repr::Custom(ref c) => Debug::fmt(&c, fmt),
-            Repr::Simple(kind) => write!(fmt, "{}", kind.as_str()),
-        }
-    }
-}
+];
 
 #[doc = doc_private!()]
 enum Repr {
     Custom(Custom),
     Simple(IoErrorKind),
 }
-impl Debug for Repr {
-    fn fmt(&self, fmt: &mut Formatter<'_>) -> FmtResult<()> {
-        match *self {
-            Repr::Custom(ref c) => Debug::fmt(&c, fmt),
-            Repr::Simple(kind) => fmt.debug_tuple("Kind").field(&kind).finish(),
-        }
+impl_trait![fmt::Debug for Repr |self, f|
+    match *self {
+        Repr::Custom(ref c) => Debug::fmt(&c, f),
+        Repr::Simple(kind) => f.debug_tuple("Kind").field(&kind).finish(),
     }
-}
+];
 
 #[doc = doc_private!()]
 #[derive(Debug)]

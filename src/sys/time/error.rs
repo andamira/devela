@@ -36,22 +36,20 @@ mod std_impls {
 }
 
 mod core_impls {
-    use crate::{Display, FmtResult, Formatter, TimeError};
+    use crate::{impl_trait, TimeError};
 
     impl crate::Error for TimeError {}
 
-    impl Display for TimeError {
-        fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
-            use TimeError as E;
-            match self {
-                E::SystemTimeError(d) => {
-                    write!(f, "SystemTimeError({d:?})")
-                }
-                E::OutOfBounds(v) => match v {
-                    Some(v) => write!(f, "The given value {v} is out of bounds."),
-                    None => write!(f, "The given value is out of bounds."),
-                },
+    impl_trait! { fmt::Display for TimeError |self, f| {
+        use TimeError as E;
+        match self {
+            E::SystemTimeError(d) => {
+                write!(f, "SystemTimeError({d:?})")
             }
+            E::OutOfBounds(v) => match v {
+                Some(v) => write!(f, "The given value {v} is out of bounds."),
+                None => write!(f, "The given value is out of bounds."),
+            },
         }
-    }
+    }}
 }
