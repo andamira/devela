@@ -65,7 +65,9 @@ mod reflection {
             "safe_mem",
             "safe_num",
             "safe_rend",
-            "safe_sys", "safe_time",
+                "safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image", "safe_layout",
+            "safe_sys",
+                "safe_io", "safe_time",
             "safe_text",
             "safe_work",
 
@@ -73,13 +75,14 @@ mod reflection {
             "unsafe_array",
             "unsafe_async",
             "unsafe_const",
-            "unsafe_layout",
             "unsafe_hint",
+            "unsafe_layout",
             "unsafe_niche",
             "unsafe_ptr",
             "unsafe_slice",
             "unsafe_str",
             "unsafe_sync",
+            "unsafe_syscall",
             "unsafe_thread",
         ]
     };
@@ -123,7 +126,7 @@ mod reflection {
     };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         flags: &["_sys_·"],
-        features: &["time"] // THINK: sys::os::linux
+        features: &["io", "time"] // THINK: sys::os::linux
     };
 
     /* # capabilities */

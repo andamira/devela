@@ -3,6 +3,9 @@
 //! Audio functionality.
 //
 
+// safety:
+#![cfg_attr(feature = "safe_audio", forbid(unsafe_code))]
+
 mod error;
 pub use error::*;
 

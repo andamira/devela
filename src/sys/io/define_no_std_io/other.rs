@@ -1,9 +1,11 @@
 // devela::sys::io::reimplement_no_std::traits
 
 use super::error::{IoError as Error, IoErrorKind, IoResult as Result};
+#[allow(unused_imports, reason = "±unsafe")]
+use crate::sf;
+use crate::OptRes;
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{sf, OptRes};
 use core::{cmp, fmt, slice};
 
 #[cfg(feature = "alloc")]

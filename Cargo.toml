@@ -74,7 +74,7 @@ build = "build/mod.rs"
 publish = true
 
 
-[features] # 191/300 (109 remaining), 77 visible, 114 hidden
+[features] # 197/300 (103 remaining), 84 visible, 113 hidden
 # https://doc.rust-lang.org/cargo/reference/features.html
 # ==============================================================================
 # Features are grouped in the following categories:
@@ -151,7 +151,8 @@ rend = [
 	font = []
 	image = []
 	layout = []
-sys = ["time"]
+sys = ["io", "time"]
+	io = []
 	# os
 		linux = [] # sys::os::linux functionality
 	time = [] # time-related functionality
@@ -173,15 +174,22 @@ work = ["bytemuck?/zeroable_atomics"]
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
 	"safe_code", "safe_data", "safe_error", "safe_mem", "safe_num",
-	"safe_rend", "safe_sys", "safe_time", "safe_text", "safe_work",
-] # in specific modules:
+	"safe_rend", "safe_sys", "safe_text", "safe_work",
+] # in 9 specific root modules:
 	safe_code = []
 	safe_data = []
 	safe_error = []
 	safe_mem = []
 	safe_num = []
-	safe_rend = []
-	safe_sys = ["safe_time"]
+	safe_rend = ["safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image", "safe_layout"]
+		safe_audio = []
+		safe_color = []
+		safe_draw = []
+		safe_font = []
+		safe_image = []
+		safe_layout = []
+	safe_sys = ["safe_io", "safe_time"]
+		safe_io = []
 		safe_time = []
 	safe_text = []
 	safe_work = []

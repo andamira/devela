@@ -5,6 +5,9 @@
 // #![doc = crate::doc_!(newline)]
 //
 
+// safety:
+#![cfg_attr(feature = "safe_image", forbid(unsafe_code))]
+
 mod error;
 mod pnm;
 pub use {error::*, pnm::*};

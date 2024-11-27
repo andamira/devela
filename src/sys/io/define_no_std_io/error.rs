@@ -5,7 +5,7 @@ use crate::{doc_private, impl_trait, Debug, From, Result};
 /// A specialized [`Result`] type for I/O operations.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Result.html>.
-pub type IoResult<T> = crate::Result<T, IoError>;
+pub type IoResult<T> = Result<T, IoError>;
 
 /// The error type for I/O operations of [`Read`], [`Write`], [`Seek`], and
 /// associated traits.

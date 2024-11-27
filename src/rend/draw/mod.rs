@@ -3,6 +3,9 @@
 //! Drawing functionality.
 //
 
+// safety:
+#![cfg_attr(feature = "safe_draw", forbid(unsafe_code))]
+
 mod error;
 pub use error::*;
 

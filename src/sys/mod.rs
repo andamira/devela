@@ -18,6 +18,13 @@ mod env;
 #[allow(unused_imports)]
 pub use {arch::*, env::*};
 
+#[cfg(feature = "io")]
+items! {
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
+    pub mod io;
+    #[allow(unused_imports)]
+    pub use io::all::*;
+}
 #[cfg(feature = "sys")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
 items! {
@@ -40,17 +47,20 @@ items! {
 
 pub mod ffi;
 pub mod log;
-pub mod io;
 pub mod os;
 #[doc(no_inline)]
 #[allow(unused_imports)]
-pub use {ffi::all::*, io::all::*, os::all::*};
+pub use {ffi::all::*, os::all::*};
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
-    pub use super::{arch::all::*, env::all::*, ffi::all::*, io::all::*, log::all::*, os::all::*};
+    pub use super::{arch::all::*, env::all::*, ffi::all::*, log::all::*, os::all::*};
 
+    #[doc(inline)]
+    #[allow(unused_imports)]
+    #[cfg(feature = "io")]
+    pub use super::io::all::*;
     #[doc(inline)]
     #[allow(unused_imports)]
     #[cfg(feature = "sys")]

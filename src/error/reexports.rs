@@ -8,36 +8,43 @@
 use crate::reexport;
 
 pub use crate_errors::*;
-mod crate_errors {
+pub(crate) mod crate_errors {
+    /* rend */
     #[doc(inline)]
     #[cfg(feature = "audio")]
-    pub use crate::rend::{AudioError, AudioResult};
+    pub use crate::rend::audio::{AudioError, AudioResult};
     #[doc(inline)]
     #[cfg(feature = "color")]
-    pub use crate::rend::{ColorError, ColorResult};
+    pub use crate::rend::color::{ColorError, ColorResult};
     #[doc(inline)]
     #[cfg(feature = "draw")]
-    pub use crate::rend::{DrawError, DrawResult};
+    pub use crate::rend::draw::{DrawError, DrawResult};
     #[doc(inline)]
     #[cfg(feature = "font")]
-    pub use crate::rend::{FontError, FontResult};
+    pub use crate::rend::font::{FontError, FontResult};
     #[doc(inline)]
     #[cfg(feature = "image")]
-    pub use crate::rend::{ImageError, ImageResult};
+    pub use crate::rend::image::{ImageError, ImageResult};
     #[doc(inline)]
     #[cfg(feature = "layout")]
-    pub use crate::rend::{LayoutError, LayoutResult};
+    pub use crate::rend::layout::{LayoutError, LayoutResult};
     #[doc(inline)]
     #[cfg(_rend_·)]
     pub use crate::rend::{RendError, RendResult};
+
+    /* sys */
+    #[doc(inline)]
+    #[cfg(feature = "io")]
+    pub use crate::sys::io::{IoError, IoErrorKind, IoResult};
     #[doc(inline)]
     #[cfg(feature = "time")]
     pub use crate::sys::time::{TimeError, TimeResult};
+
+    /* other */
     #[doc(inline)]
     pub use crate::{
         data::{DataError, DataResult},
         num::{NumError, NumResult},
-        sys::{IoError, IoErrorKind, IoResult},
         text::{TextError, TextResult},
     };
 }
