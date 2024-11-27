@@ -6,6 +6,7 @@
 // so that it also works when compiling private documentation.
 
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
+#![cfg_attr(test, allow(dead_code))]
 
 mod environment;
 mod features;

@@ -16,7 +16,7 @@ trait Sealed {}
 impl<T: ?Sized + Any> Sealed for T {}
 impl<T: ?Sized + Any> ExtAny for T {}
 
-/// Extension trait providing convenience methods for `T: Any`.
+/// Extension trait providing convenience methods for `T:`[`Any`].
 ///
 /// This trait is sealed and cannot be implemented manually.
 #[rustfmt::skip]

@@ -30,6 +30,8 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 /// See also: [`char7`], [`char8`], [`char16`], [`char24`].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
+// NOTE: this reexport type is not recognized implicity by rustdoc, is it a BUG?
+// TODO: minimal example and the search/make an ISSUE in rust-repo
 #[allow(non_camel_case_types)]
 pub type char = crate::_core::primitive::char;
 

@@ -18,7 +18,7 @@ pub struct Mismatch<N, H> {
     /// Information about something that was obtained, observed, or encountered.
     pub have: H,
 
-    /// Contextual information about the mismatch.
+    /// Contextual static information about the mismatch.
     pub info: &'static str,
 }
 
