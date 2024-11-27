@@ -10,7 +10,7 @@ pub type TextResult<T> = crate::Result<T, TextError>;
 
 /// A text-related error.
 #[non_exhaustive]
-#[derive(Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum TextError {
     /// Not enough capacity for the attempted operation.
     ///

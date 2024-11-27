@@ -11,6 +11,7 @@ pub type IoResult<T> = Result<T, IoError>;
 /// associated traits.
 ///
 /// See <https://doc.rust-lang.org/std/io/struct.Error.html>.
+// #[derive(Clone, Copy)] // std::io::Error derives no Clone, Copy or PartialEq…
 pub struct IoError {
     repr: Repr,
 }
@@ -24,6 +25,7 @@ impl_trait![fmt::Display for IoError |self, f|
 ];
 
 #[doc = doc_private!()]
+#[derive(Clone, Copy, PartialEq)]
 enum Repr {
     Custom(Custom),
     Simple(IoErrorKind),
@@ -36,7 +38,7 @@ impl_trait![fmt::Debug for Repr |self, f|
 ];
 
 #[doc = doc_private!()]
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 struct Custom {
     kind: IoErrorKind,
     error: &'static str,

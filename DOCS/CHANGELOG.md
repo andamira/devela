@@ -36,7 +36,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - re-exported primitives: `char`.
   - `TimeSplitYearNano`, `TimeSplitYearDay`, `TimeSplitYearSec`, `TimeSplitHourSec`, `TimeSplitHourNano`, `TimeSplitMilliNano`.
 - enums:
-  - `WaveletUnitRole`.
+  - `AllError`, `WaveletUnitRole`.
 - enum variants:
   - `DataError::ElementNotFound`.
 - traits:
