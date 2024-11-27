@@ -14,26 +14,25 @@
 #[allow(unused_imports)]
 use crate::code::items;
 
-mod ext_result;
 mod mismatch;
-mod option;
+mod opt_res;
 mod own;
 mod panic;
 mod reexports;
-mod traits;
+mod chain_hook;
 mod unwrap;
 mod value_quant;
 #[allow(unused_imports)]
 pub use {
-    ext_result::*, mismatch::*, option::all::*, own::*, panic::all::*, reexports::*, traits::*,
-    unwrap::*, value_quant::*,
+    chain_hook::*, mismatch::*, opt_res::all::*, own::*, panic::all::*, reexports::*, unwrap::*,
+    value_quant::*,
 };
 
 pub(crate) mod all {
     #[doc(inline)]
     #[allow(unused_imports)]
     pub use super::{
-        ext_result::*, mismatch::*, option::all::*, own::*, panic::all::*, reexports::*, traits::*,
+        chain_hook::*, mismatch::*, opt_res::all::*, own::*, panic::all::*, reexports::*,
         unwrap::*, value_quant::*,
     };
 }

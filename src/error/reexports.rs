@@ -7,39 +7,40 @@
 
 use crate::reexport;
 
-/* from other modules */
-
-#[doc(inline)]
-#[cfg(feature = "audio")]
-pub use crate::rend::{AudioError, AudioResult};
-#[doc(inline)]
-#[cfg(feature = "color")]
-pub use crate::rend::{ColorError, ColorResult};
-#[doc(inline)]
-#[cfg(feature = "draw")]
-pub use crate::rend::{DrawError, DrawResult};
-#[doc(inline)]
-#[cfg(feature = "font")]
-pub use crate::rend::{FontError, FontResult};
-#[doc(inline)]
-#[cfg(feature = "image")]
-pub use crate::rend::{ImageError, ImageResult};
-#[doc(inline)]
-#[cfg(feature = "layout")]
-pub use crate::rend::{LayoutError, LayoutResult};
-#[doc(inline)]
-#[cfg(_rend_·)]
-pub use crate::rend::{RendError, RendResult};
-#[doc(inline)]
-#[cfg(feature = "time")]
-pub use crate::sys::time::{TimeError, TimeResult};
-#[doc(inline)]
-pub use crate::{
-    data::{DataError, DataResult},
-    num::{NumError, NumResult},
-    sys::{IoError, IoErrorKind, IoResult},
-    text::{TextError, TextResult},
-};
+pub use crate_errors::*;
+mod crate_errors {
+    #[doc(inline)]
+    #[cfg(feature = "audio")]
+    pub use crate::rend::{AudioError, AudioResult};
+    #[doc(inline)]
+    #[cfg(feature = "color")]
+    pub use crate::rend::{ColorError, ColorResult};
+    #[doc(inline)]
+    #[cfg(feature = "draw")]
+    pub use crate::rend::{DrawError, DrawResult};
+    #[doc(inline)]
+    #[cfg(feature = "font")]
+    pub use crate::rend::{FontError, FontResult};
+    #[doc(inline)]
+    #[cfg(feature = "image")]
+    pub use crate::rend::{ImageError, ImageResult};
+    #[doc(inline)]
+    #[cfg(feature = "layout")]
+    pub use crate::rend::{LayoutError, LayoutResult};
+    #[doc(inline)]
+    #[cfg(_rend_·)]
+    pub use crate::rend::{RendError, RendResult};
+    #[doc(inline)]
+    #[cfg(feature = "time")]
+    pub use crate::sys::time::{TimeError, TimeResult};
+    #[doc(inline)]
+    pub use crate::{
+        data::{DataError, DataResult},
+        num::{NumError, NumResult},
+        sys::{IoError, IoErrorKind, IoResult},
+        text::{TextError, TextResult},
+    };
+}
 
 /* `core` re-exports */
 
