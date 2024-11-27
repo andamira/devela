@@ -11,28 +11,26 @@
 //! It re-exports the error and result types defined in other modules.
 //
 
-#[allow(unused_imports)]
-use crate::code::items;
-
-mod all_error;
-mod chain_hook;
-mod mismatch;
-mod opt_res;
-mod own;
+mod all_error; // AllError
+mod chain_hook; // Chain, Hook
+mod ext; // ExtError
+mod mismatch; // MisMatch
+mod opt_res; // ExtOption, ExtResult, OptRes, ExtOptRes, sok, serr, OptionFmt[Or[Else]]
+mod own; // Own
 mod panic;
 mod reexports;
-mod value_quant;
+mod value_quant; // ValueQuant
 #[allow(unused_imports)]
 pub use {
-    all_error::*, chain_hook::*, mismatch::*, opt_res::all::*, own::*, panic::all::*, reexports::*,
-    value_quant::*,
+    all_error::*, chain_hook::*, ext::*, mismatch::*, opt_res::all::*, own::*, panic::all::*,
+    reexports::*, value_quant::*,
 };
 
 pub(crate) mod all {
     #![allow(unused_imports)]
     #[doc(inline)]
     pub use super::{
-        all_error::*, chain_hook::*, mismatch::*, opt_res::all::*, own::*, panic::all::*,
+        all_error::*, chain_hook::*, ext::*, mismatch::*, opt_res::all::*, own::*, panic::all::*,
         reexports::*, value_quant::*,
     };
 }

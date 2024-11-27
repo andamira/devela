@@ -14,10 +14,17 @@ pub enum AudioError {
     AudioError,
 }
 
-impl crate::Error for AudioError {}
-
 mod core_impls {
     use crate::{AudioError, Display, FmtResult, Formatter};
+
+    impl crate::Error for AudioError {}
+    impl crate::ExtError for AudioError {
+        type Kind = ();
+        fn error_eq(&self, other: &Self) -> bool {
+            self == other
+        }
+        fn error_kind(&self) -> Self::Kind {}
+    }
 
     impl Display for AudioError {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {

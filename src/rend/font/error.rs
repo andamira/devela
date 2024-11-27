@@ -14,10 +14,17 @@ pub enum FontError {
     FontError,
 }
 
-impl crate::Error for FontError {}
-
 mod core_impls {
     use crate::{Display, FmtResult, FontError, Formatter};
+
+    impl crate::Error for FontError {}
+    impl crate::ExtError for FontError {
+        type Kind = ();
+        fn error_eq(&self, other: &Self) -> bool {
+            self == other
+        }
+        fn error_kind(&self) -> Self::Kind {}
+    }
 
     impl Display for FontError {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {

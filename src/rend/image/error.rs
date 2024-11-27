@@ -40,6 +40,13 @@ mod core_impls {
     use core::fmt;
 
     impl crate::Error for ImageError {}
+    impl crate::ExtError for ImageError {
+        type Kind = ();
+        fn error_eq(&self, other: &Self) -> bool {
+            self == other
+        }
+        fn error_kind(&self) -> Self::Kind {}
+    }
 
     impl Display for ImageError {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {

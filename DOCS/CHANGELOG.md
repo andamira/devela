@@ -26,7 +26,6 @@ The format is based on [Keep a Changelog], and this project adheres to
   - namespaces: `Char`, `Env`, `Mem`, `Ptr`, `Str`.
   - `CompressionMode`, `EncodingMode`, `Pnm`,
   - `False`, `True`, `UnitBi`, `UnitSi`.
-  - `RendError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
   - `TimeSplit`.
   - `TypeResource`.
   - `WaveletHaar`, `WaveletUnitVec`.
@@ -36,11 +35,13 @@ The format is based on [Keep a Changelog], and this project adheres to
   - re-exported primitives: `char`.
   - `TimeSplitYearNano`, `TimeSplitYearDay`, `TimeSplitYearSec`, `TimeSplitHourSec`, `TimeSplitHourNano`, `TimeSplitMilliNano`.
 - enums:
-  - `AllError`, `WaveletUnitRole`.
+  - `AllError`, `AllErrorKind`.
+  - `RendError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
+  - `WaveletUnitRole`.
 - enum variants:
   - `DataError::ElementNotFound`.
 - traits:
-  - `ColorBase`, `ExtCellOption`, `ExtOptRes`, `MemPod`, `TypeResourced`, `Unit`.
+  - `ColorBase`, `ExtCellOption`, `ExtOptRes`, `ExtError`, `MemPod`, `TypeResourced`, `Unit`.
   - `WaveletCompressionVec`, `WaveletTransformVec`.
 - associated methods and constants for:
   - `Array`: `from_fn`, `contains_[from|to|between]`.

@@ -45,6 +45,13 @@ mod core_impls {
     use crate::{Display, FmtResult, Formatter, TextError};
 
     impl crate::Error for TextError {}
+    impl crate::ExtError for TextError {
+        type Kind = ();
+        fn error_eq(&self, other: &Self) -> bool {
+            self == other
+        }
+        fn error_kind(&self) -> Self::Kind {}
+    }
 
     impl Display for TextError {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {

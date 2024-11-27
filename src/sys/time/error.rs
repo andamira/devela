@@ -39,7 +39,13 @@ mod core_impls {
     use crate::{impl_trait, TimeError};
 
     impl crate::Error for TimeError {}
-
+    impl crate::ExtError for TimeError {
+        type Kind = ();
+        fn error_eq(&self, other: &Self) -> bool {
+            self == other
+        }
+        fn error_kind(&self) -> Self::Kind {}
+    }
     impl_trait! { fmt::Display for TimeError |self, f| {
         use TimeError as E;
         match self {

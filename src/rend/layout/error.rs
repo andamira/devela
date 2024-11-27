@@ -14,10 +14,17 @@ pub enum LayoutError {
     LayoutError,
 }
 
-impl crate::Error for LayoutError {}
-
 mod core_impls {
     use crate::{Display, FmtResult, Formatter, LayoutError};
+
+    impl crate::Error for LayoutError {}
+    impl crate::ExtError for LayoutError {
+        type Kind = ();
+        fn error_eq(&self, other: &Self) -> bool {
+            self == other
+        }
+        fn error_kind(&self) -> Self::Kind {}
+    }
 
     impl Display for LayoutError {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {

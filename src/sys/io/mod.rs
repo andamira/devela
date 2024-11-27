@@ -11,6 +11,8 @@
 // safety:
 #![cfg_attr(feature = "safe_io", forbid(unsafe_code))]
 
+mod impls;
+
 #[cfg(not(feature = "std"))]
 crate::items! {
     mod define_no_std_io;

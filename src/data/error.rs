@@ -82,13 +82,20 @@ impl DataError {
 }
 
 mod core_impls {
-    use super::DataError as E;
-    use crate::{Display, FmtResult, Formatter};
+    use crate::{DataError, Display, FmtResult, Formatter};
 
-    impl crate::Error for E {}
+    impl crate::Error for DataError {}
+    impl crate::ExtError for DataError {
+        type Kind = (); // TODO
+        fn error_eq(&self, other: &Self) -> bool {
+            self == other
+        }
+        fn error_kind(&self) -> Self::Kind {}
+    }
 
-    impl Display for E {
+    impl Display for DataError {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
+            use super::DataError as E;
             match self {
                 E::NotImplemented => write!(f, "Not implemented."),
                 E::NotSupported => write!(f, "Not supported."),
