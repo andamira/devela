@@ -132,17 +132,16 @@ The format is based on [Keep a Changelog], and this project adheres to
   - rename:
     - `Also` to `Tap`, `Apply` to `Chain`.
     - `COLOR` to `Color`.
+    - `Color` to `ColorBase`.
     - `GcdExt` to `GcdResult`.
-    - `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.
-    - `AllocOrdMap` to `BTreeMap` and `AllocOrdSet` to `BTreeSet`.
+    - `AllocMap` to `HashMap`, `AllocSet` to `HashSet`.
+    - `AllocOrdMap` to `BTreeMap`, `AllocOrdSet` to `BTreeSet`.
     - `AllocPrioQueue` to `BinaryHeap`.
     - `AllocLinkedList` to `LinkedList`.
     - `Dst*` types const-generic `N` to `CAP`.
     - `sys::io` items by prefixing them with `Io`.
-    - `Egc` to `Grapheme`
-    - `EgcString` to `GraphemeString`.
-    - `EgcNonul` to `GraphemeNonul`.
-    - `EgcU8` to `GraphemeU8`.
+    - `Egc` to `Grapheme`, `EgcString` to `GraphemeString`.
+    - `EgcNonul` to `GraphemeNonul`, `EgcU8` to `GraphemeU8`.
 - functions and constant:
   - `Graph::edge_exists` no loger panics.
   - rename:
