@@ -22,7 +22,7 @@
 
 use crate::{iif, paste, Int, NumError::MismatchedSizes, NumResult as Result};
 #[cfg(feature = "alloc")]
-use crate::{vec_ as vec, Also, BTreeSet, Vec};
+use crate::{vec_ as vec, BTreeSet, Hook, Vec};
 
 #[doc = crate::doc_private!()]
 /// $t:   the input/output type
@@ -189,7 +189,7 @@ macro_rules! impl_int {
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique(self) -> Vec<$t> {
-                self.factors_prime().also_mut(|v| v.dedup())
+                self.factors_prime().hook_mut(|v| v.dedup())
             }
 
             /// Returns the unique prime factors with its exponent.
@@ -739,7 +739,7 @@ macro_rules! impl_int {
             #[cfg(feature = "alloc")]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
             pub fn factors_prime_unique(self) -> Vec<$t> {
-                self.factors_prime().also_mut(|v| v.dedup())
+                self.factors_prime().hook_mut(|v| v.dedup())
             }
 
             /// Returns the unique prime factors with its exponent.

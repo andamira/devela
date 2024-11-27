@@ -129,6 +129,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - structs:
   - make `data::dst` types use `MemPod` instead of `bytemuck::Pod`.
   - rename:
+    - `Also` to `Tap`, `Apply` to `Chain`.
     - `COLOR` to `Color`.
     - `GcdExt` to `GcdResult`.
     - `AllocMap` to `HashMap` and `AllocSet` to `HashSet`.

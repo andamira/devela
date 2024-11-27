@@ -14,12 +14,12 @@
 #[allow(unused_imports)]
 use crate::code::items;
 
+mod chain_hook;
 mod mismatch;
 mod opt_res;
 mod own;
 mod panic;
 mod reexports;
-mod chain_hook;
 mod unwrap;
 mod value_quant;
 #[allow(unused_imports)]
