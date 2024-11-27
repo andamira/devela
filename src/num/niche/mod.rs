@@ -12,7 +12,7 @@ mod reexports;
 pub use {non_value::*, reexports::*};
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{non_value::*, reexports::*};
 }

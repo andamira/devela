@@ -28,8 +28,9 @@ crate::items! {
 }
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
+
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{coroutine::*, ext::*, reexports::*, waker::*};
 
     #[doc(inline)]

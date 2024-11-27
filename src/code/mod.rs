@@ -18,14 +18,8 @@ mod r#type; // type_marker!, type_resource, TypeResource, TypeResourced
 #[allow(unused_imports)]
 pub use {any::all::*, default::*, macros::*, r#type::*, reexports::*};
 
-#[cfg(_bit_·)]
-items! { mod enumset; pub use enumset::*; } // enumset!
-
 pub(crate) mod all {
+    #![allow(unused_imports)]
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{any::all::*, default::*, macros::*, r#type::*, reexports::*};
-
-    #[cfg(_bit_·)]
-    pub use super::enumset::*;
 }

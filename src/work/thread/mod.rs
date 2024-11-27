@@ -12,7 +12,8 @@ mod sleep;
 pub use {reexports::*, sleep::*};
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
+
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{reexports::*, sleep::*};
 }

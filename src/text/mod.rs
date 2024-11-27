@@ -30,8 +30,8 @@ pub mod str;
 pub use {fmt::all::*, str::all::*};
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{
         ascii::all::*, char::all::*, error::*, fmt::all::*, grapheme::all::*, parse::*, str::all::*,
     };

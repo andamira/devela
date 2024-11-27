@@ -17,7 +17,7 @@ mod thread;
 pub use {r#async::all::*, sync::all::*, thread::all::*};
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{r#async::all::*, sync::all::*, thread::all::*};
 }

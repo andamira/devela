@@ -15,12 +15,12 @@ pub use {byte::*, expr::*};
 items! { mod bit; pub use bit::*; }
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
+
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{byte::*, expr::size_of_expr};
 
     #[doc(inline)]
-    #[allow(unused_imports)]
     #[cfg(feature = "mem_bit")]
     pub use super::bit::*;
 }

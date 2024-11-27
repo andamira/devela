@@ -33,11 +33,22 @@ pub use {
     impl_trait::*, items::*, paste::*, r#const::*,
 };
 
+#[cfg(_bit_·)]
+items! {
+    mod enumset;
+    pub use enumset::*; // enumset!
+}
+
 pub(crate) mod all {
+    #![allow(unused_imports)]
+
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{
         asserts::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*, iif::*,
         impl_trait::*, items::*, paste::*, r#const::*,
     };
+
+    #[cfg(_bit_·)]
+    #[doc(inline)]
+    pub use super::enumset::*;
 }

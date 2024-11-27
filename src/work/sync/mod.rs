@@ -20,8 +20,9 @@ crate::items! {
 }
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
+
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::reexports::*;
 
     #[doc(inline)]

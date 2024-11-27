@@ -48,8 +48,9 @@ pub mod cell;
 pub use cell::all::*;
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
+
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{
         aligned::*, cache_align::*, cell::all::*, cswap::*, ext::*, namespace::*, ptr::all::*,
         reexports::*, size::all::*, slice::all::*, storage::*,

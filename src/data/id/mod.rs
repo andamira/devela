@@ -7,7 +7,7 @@ mod pin; // pinned memory-based ids
 mod seq; // static sequential ids
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{pin::*, seq::*};
 }

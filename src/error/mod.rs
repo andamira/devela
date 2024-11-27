@@ -29,8 +29,8 @@ pub use {
 };
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{
         all_error::*, chain_hook::*, mismatch::*, opt_res::all::*, own::*, panic::all::*,
         reexports::*, value_quant::*,

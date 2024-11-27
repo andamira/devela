@@ -71,8 +71,9 @@ items! {
 }
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
+
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{
         algebra::all::*, alias::*, cmp::all::*, error::*, float::*, interval::*, logic::all::*,
         niche::all::*, no::*, primitive::*, r#trait::*, sign::*, unit::*,
@@ -80,17 +81,14 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(_int_·)]
-    #[allow(unused_imports)]
     pub use super::{frac::*, int::*};
 
     #[doc(inline)]
-    #[allow(unused_imports)]
     #[cfg(feature = "geom")]
     pub use super::geom::all::*;
 
     #[doc(inline)]
     #[cfg(feature = "rand")]
-    #[allow(unused_imports)]
     pub use super::rand::all::*;
 
     #[doc(inline)]

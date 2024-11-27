@@ -53,23 +53,20 @@ pub mod os;
 pub use {ffi::all::*, os::all::*};
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
+
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{arch::all::*, env::all::*, ffi::all::*, log::all::*, os::all::*};
 
     #[doc(inline)]
-    #[allow(unused_imports)]
     #[cfg(feature = "io")]
     pub use super::io::all::*;
     #[doc(inline)]
-    #[allow(unused_imports)]
     #[cfg(feature = "sys")]
     pub use super::path::all::*;
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::sound::all::*;
     #[doc(inline)]
-    #[allow(unused_imports)]
     #[cfg(feature = "time")]
     pub use super::time::all::*;
 }

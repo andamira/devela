@@ -34,15 +34,15 @@ crate::items! {
 }
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
+
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{
         bit::all::*, collections::all::*, error::*, fmt::*, hash::all::*, id::all::*, iter::all::*,
         sort::*,
     };
 
     #[doc(inline)]
-    #[allow(unused_imports)]
     #[cfg(all(
         not(any(feature = "safe_data", feature = "safe_mem")),
         feature = "unsafe_layout"

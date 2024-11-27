@@ -9,7 +9,8 @@ mod r#static;
 pub use {dynamic::*, r#static::*};
 
 pub(crate) mod all {
+    #![allow(unused_imports)]
+
     #[doc(inline)]
-    #[allow(unused_imports)]
     pub use super::{dynamic::*, r#static::*};
 }
