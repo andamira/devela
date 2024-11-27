@@ -47,7 +47,7 @@ See linked files for detailed changes.
   [m3]: https://github.com/andamira/devela/blob/main/src/code/asserts/static/MODIFICATIONS.md
   [`assert_const`]: https://docs.rs/devela/latest/devela/code/macro.assert_const.html
   [`ConstBool`]: https://docs.rs/devela/latest/devela/num/logic/trait.ConstBool.html
-[tailcall-chunk]: https://crates.io/crates/tailcall-chunk/0.3.0
+[tailcall-chunk]: https://crates.io/crates/tailcall-chunk/0.3.1
   [m4]: https://github.com/andamira/devela/blob/main/src/data/collections/vec/chunk/MODIFICATIONS.md
   [`VecChunk`]: https://docs.rs/devela/latest/devela/data/collections/struct.VecChunk.html
 [tupl]: https://crates.io/crates/tupl/0.4.0

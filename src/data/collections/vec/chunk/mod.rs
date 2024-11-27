@@ -328,10 +328,7 @@ impl<A> FromIterator<A> for VecChunk<A> {
     /// assert_eq!(chunk.as_vec(), vec![1, 2, 3]);
     /// ```
     fn from_iter<T: IntoIterator<Item = A>>(iter: T) -> Self {
-        let mut chunk = Vec::default();
-        for item in iter {
-            chunk.push(item);
-        }
-        VecChunk::Collect(Rc::new(RefCell::new(chunk)))
+        let vec: Vec<_> = iter.into_iter().collect();
+        VecChunk::Collect(Rc::new(RefCell::new(vec)))
     }
 }
