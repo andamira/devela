@@ -70,11 +70,11 @@ pub trait ExtResult<T, E>: Sealed {
 
 impl<T, E> ExtResult<T, E> for Result<T, E> {
     fn contains<U: PartialEq<T>>(&self, x: &U) -> bool {
-        self.as_ref().map_or(false, |y| x == y)
+        self.as_ref().is_ok_and(|y| x == y)
     }
 
     fn contains_err<F: PartialEq<E>>(&self, f: &F) -> bool {
-        self.as_ref().err().map_or(false, |e| f == e)
+        self.as_ref().err().is_some_and(|e| f == e)
     }
 
     // // WIP

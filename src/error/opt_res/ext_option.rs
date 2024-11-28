@@ -106,7 +106,7 @@ pub trait ExtOption<T>: Sealed {
 
 impl<T> ExtOption<T> for Option<T> {
     fn contains<U: PartialEq<T>>(&self, x: &U) -> bool {
-        self.as_ref().map_or(false, |y| x == y)
+        self.as_ref().is_some_and(|y| x == y)
     }
 
     fn reduce<F: FnOnce(T, T) -> T>(self, other: Option<T>, f: F) -> Option<T> {
