@@ -238,22 +238,22 @@ pub(crate) fn compile_eval(arg: String) -> bool {
     // target_pointer_width
     } else if arg.starts_with("pointer_width_eq(") && arg.ends_with(')') {
         let width_arg = &arg[17..arg.len() - 1];
-        width_arg.parse::<u32>().map_or(false, |w| w == usize::BITS)
+        width_arg.parse::<u32>() == Ok(usize::BITS)
     } else if arg.starts_with("pointer_width_ne(") && arg.ends_with(')') {
         let width_arg = &arg[18..arg.len() - 1];
-        width_arg.parse::<u32>().map_or(false, |w| w != usize::BITS)
+        width_arg.parse::<u32>().is_ok_and(|w| w != usize::BITS)
     } else if arg.starts_with("pointer_width_ge(") && arg.ends_with(')') {
         let width_arg = &arg[18..arg.len() - 1];
-        width_arg.parse::<u32>().map_or(false, |w| w >= usize::BITS)
+        width_arg.parse::<u32>().is_ok_and(|w| w >= usize::BITS)
     } else if arg.starts_with("pointer_width_gt(") && arg.ends_with(')') {
         let width_arg = &arg[18..arg.len() - 1];
-        width_arg.parse::<u32>().map_or(false, |w| w > usize::BITS)
+        width_arg.parse::<u32>().is_ok_and(|w| w > usize::BITS)
     } else if arg.starts_with("pointer_width_le(") && arg.ends_with(')') {
         let width_arg = &arg[18..arg.len() - 1];
-        width_arg.parse::<u32>().map_or(false, |w| w <= usize::BITS)
+        width_arg.parse::<u32>().is_ok_and(|w| w <= usize::BITS)
     } else if arg.starts_with("pointer_width_lt(") && arg.ends_with(')') {
         let width_arg = &arg[18..arg.len() - 1];
-        width_arg.parse::<u32>().map_or(false, |w| w < usize::BITS)
+        width_arg.parse::<u32>().is_ok_and(|w| w < usize::BITS)
 
     // target endian
     } else if arg == "little_endian()" {
