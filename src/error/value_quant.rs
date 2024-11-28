@@ -30,11 +30,11 @@ impl<V, Q> ValueQuant<V, Q> {
 
     /// Returns a tuple of shared references to its fields.
     #[must_use] #[rustfmt::skip]
-    pub fn vq_ref(&self) -> (&V, &Q) { (&self.v, &self.q) }
+    pub const fn vq_ref(&self) -> (&V, &Q) { (&self.v, &self.q) }
 
     /// Returns a tuple of exclusive references to its fields.
     #[must_use] #[rustfmt::skip]
-    pub fn vq_mut(&mut self) -> (&mut V, &mut Q) { (&mut self.v, &mut self.q) }
+    pub const fn vq_mut(&mut self) -> (&mut V, &mut Q) { (&mut self.v, &mut self.q) }
 }
 
 impl<V: Copy, Q: Copy> ValueQuant<V, Q> {

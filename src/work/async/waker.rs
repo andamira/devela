@@ -5,7 +5,7 @@
 #[must_use]
 #[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_async")))]
-pub fn task_waker_noop() -> crate::TaskWaker {
+pub const fn task_waker_noop() -> crate::TaskWaker {
     use crate::{Ptr, TaskRawWaker, TaskRawWakerVTable, TaskWaker};
     const RAW_WAKER: TaskRawWaker = TaskRawWaker::new(Ptr::null(), &VTABLE);
     const VTABLE: TaskRawWakerVTable = TaskRawWakerVTable::new(
