@@ -14,10 +14,11 @@ use core::slice::{from_raw_parts, from_raw_parts_mut};
 /// It is designed as a utility namespace and does not hold or wrap data itself.
 /// Instead, it operates on slices provided directly as arguments to its static methods.
 ///
+// TODO: # Methods
 /// See also: [`ExtSlice`][crate::ExtSlice], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
-#[repr(transparent)]
 pub struct Slice<T>(crate::PhantomData<T>);
 
+/// # `core::slice` namespaced methods
 impl<T> Slice<T> {
     /// Converts a reference to `T` into a slice of length 1 (without copying).
     ///
@@ -60,7 +61,114 @@ impl<T> Slice<T> {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_raw_parts_mut(data, len) }
     }
+}
 
+/// # Methods for shared subslicing using index-based splitting.
+impl<T> Slice<T> {
+    /// Returns a subslice up to the given `end` index.
+    ///
+    /// Equivalent to `&slice[..end]`.
+    pub const fn range_to(slice: &[T], end: usize) -> &[T] {
+        let (subslice, _) = slice.split_at(end);
+        subslice
+    }
+
+    /// Returns a subslice starting from the given `start` index.
+    ///
+    /// Equivalent to `&slice[start..]`.
+    pub const fn range_from(slice: &[T], start: usize) -> &[T] {
+        let (_, subslice) = slice.split_at(start);
+        subslice
+    }
+
+    /// Returns a subslice from `start` (inclusive) to `end` (exclusive).
+    ///
+    /// Equivalent to `&slice[start..end]`.
+    pub const fn range(slice: &[T], start: usize, end: usize) -> &[T] {
+        let (_, mid) = slice.split_at(start);
+        let (subslice, _) = mid.split_at(end - start);
+        subslice
+    }
+
+    /// Returns the first `n` elements of the slice.
+    ///
+    /// Equivalent to `&slice[..n]`.
+    pub const fn take(slice: &[T], n: usize) -> &[T] {
+        let (subslice, _) = slice.split_at(n);
+        subslice
+    }
+
+    /// Returns the last `n` elements of the slice.
+    ///
+    /// Equivalent to `&slice[slice.len() - n..]`.
+    pub const fn skip_to_last(slice: &[T], n: usize) -> &[T] {
+        let (_, subslice) = slice.split_at(slice.len() - n);
+        subslice
+    }
+
+    /// Returns the slice excluding the last `n` elements.
+    ///
+    /// Equivalent to `&slice[..slice.len() - n]`.
+    pub const fn skip_last(slice: &[T], n: usize) -> &[T] {
+        let (subslice, _) = slice.split_at(slice.len() - n);
+        subslice
+    }
+}
+
+/// # Methods for exclusive subslicing using index-based splitting.
+impl<T> Slice<T> {
+    /// Returns a subslice up to the given `end` index.
+    ///
+    /// Equivalent to `&mut slice[..end]`.
+    pub const fn range_to_mut(slice: &mut [T], end: usize) -> &mut [T] {
+        let (subslice, _) = slice.split_at_mut(end);
+        subslice
+    }
+
+    /// Returns a subslice starting from the given `start` index.
+    ///
+    /// Equivalent to `&mut slice[start..]`.
+    pub const fn range_from_mut(slice: &mut [T], start: usize) -> &mut [T] {
+        let (_, subslice) = slice.split_at_mut(start);
+        subslice
+    }
+
+    /// Returns a subslice from `start` (inclusive) to `end` (exclusive).
+    ///
+    /// Equivalent to `&mut slice[start..end]`.
+    pub const fn range_mut(slice: &mut [T], start: usize, end: usize) -> &mut [T] {
+        let (_, mid) = slice.split_at_mut(start);
+        let (subslice, _) = mid.split_at_mut(end - start);
+        subslice
+    }
+
+    /// Returns the first `n` elements of the slice.
+    ///
+    /// Equivalent to `&mut slice[..n]`.
+    pub const fn take_mut(slice: &mut [T], n: usize) -> &mut [T] {
+        let (subslice, _) = slice.split_at_mut(n);
+        subslice
+    }
+
+    /// Returns the last `n` elements of the slice.
+    ///
+    /// Equivalent to `&mut slice[slice.len() - n..]`.
+    pub const fn skip_to_last_mut(slice: &mut [T], n: usize) -> &mut [T] {
+        let (_, subslice) = slice.split_at_mut(slice.len() - n);
+        subslice
+    }
+
+    /// Returns the slice excluding the last `n` elements.
+    ///
+    /// Equivalent to `&mut slice[..slice.len() - n]`.
+    pub const fn skip_last_mut(slice: &mut [T], n: usize) -> &mut [T] {
+        let (subslice, _) = slice.split_at_mut(slice.len() - n);
+        subslice
+    }
+}
+
+/// # Methods for splitting.
+impl<T> Slice<T> {
     /* left split */
 
     /// Returns the leftmost sub-`slice` with the given maximum `len`.
