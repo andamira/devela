@@ -53,7 +53,7 @@ use items;
 /* macros: compile */
 
 /// Evaluates to either a `true` of `false` literal based on the
-/// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
+/// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
 ///
 /// # Examples
 /// ```
@@ -67,7 +67,7 @@ pub fn cif(input: TokenStream) -> TokenStream {
 }
 
 /// Conditionally compiles the thing it is attached to based on the
-/// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
+/// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
 ///
 /// # Examples
 /// ```
@@ -81,7 +81,7 @@ pub fn compile(args: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 /// Conditionally compiles the given attributes based on the
-/// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
+/// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
 ///
 /// # Examples
 /// ```
@@ -95,7 +95,7 @@ pub fn compile_attr(args: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 /// Conditionally compiles each doc comment based on the
-/// [compilation predicate](https://docs.rs/devela_macros/#compilation-predicates).
+/// [predicate](https://docs.rs/devela_macros/#compilation-predicates).
 /// # Examples
 /// ```
 #[doc = include_str!("../examples/compile_doc.rs")]
