@@ -31,33 +31,6 @@
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
 // "nightly_stable_soon" includes:
-#![cfg_attr( // 1.83
-    feature = "nightly_stable_next1",
-    feature(
-        const_cell_into_inner,
-        const_char_encode_utf8,
-        const_extern_fn,
-        const_float_bits_conv,
-        const_float_classify,
-        const_intrinsic_copy,
-        const_maybe_uninit_as_mut_ptr,
-        const_mut_refs,
-        const_refs_to_cell,
-        const_refs_to_static,
-        const_slice_from_raw_parts_mut,
-        const_slice_split_at_mut,
-        duration_consts_float,
-        waker_getters,
-    )
-)]
-#![cfg_attr( // 1.83 not(miri)
-    all(not(miri), feature = "nightly_stable_next1"),
-    feature(
-        io_error_more,
-        entry_insert,
-        mpmc_channel,
-    )
-)]
 #![cfg_attr( // 1.84
     feature = "nightly_stable_next1",
     feature(
@@ -67,6 +40,17 @@
     )
 )]
 // #![cfg_attr( // 1.84 not(miri)
+//     all(not(miri), feature = "nightly_stable_next1"),
+//     feature(
+//     )
+// )]
+#![cfg_attr( // 1.85
+    feature = "nightly_stable_next1",
+    feature(
+        const_float_methods,
+    )
+)]
+// #![cfg_attr( // 1.85 not(miri)
 //     all(not(miri), feature = "nightly_stable_next1"),
 //     feature(
 //     )
