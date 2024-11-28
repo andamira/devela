@@ -55,7 +55,7 @@ impl Str {
     #[must_use]
     #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_str")))]
-    pub unsafe fn from_utf8_unchecked_mut(v: &mut [u8]) -> &mut str {
+    pub const unsafe fn from_utf8_unchecked_mut(v: &mut [u8]) -> &mut str {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_utf8_unchecked_mut(v) }
     }

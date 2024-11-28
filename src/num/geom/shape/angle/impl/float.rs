@@ -99,57 +99,28 @@ macro_rules! impl_angle {
             ///
             /// Since the floating-point representation always maintains the sign
             /// the direction can't be undefined.
-            /// # Features
-            /// It will only be const with the `unsafe_const` feature enabled.
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn direction(self) -> AngleDirection {
                 use AngleDirection::{Clockwise, CounterClockwise};
                 if Float(self.0).is_sign_negative() { Clockwise } else { CounterClockwise }
-            }
-            #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn direction(self) -> AngleDirection {
-                use AngleDirection::{Clockwise, CounterClockwise};
-                if self.0.is_sign_negative() { Clockwise } else { CounterClockwise }
             }
 
             /// Returns `true` if the angle has the given `direction`.
             ///
             /// Since the floating-point representation always maintains the sign
             /// the direction can't be undefined, and it will return `false` in that case.
-            /// # Features
-            /// It will only be const with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn has_direction(self, direction: AngleDirection) -> bool {
                 direction as i8 == self.direction() as i8
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn has_direction(self, direction: AngleDirection) -> bool {
-                direction == self.direction()
             }
 
             /// Returns a version of the angle with the given `direction`.
             ///
             /// An `Undefined` direction will be interpreted as counter-clockwise (positive).
-            /// # Features
-            /// It will only be const with the `unsafe_const` feature enabled.
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn with_direction(self, direction: AngleDirection) -> Self {
                 use AngleDirection as D;
                 match direction {
                     D::CounterClockwise | D::Undefined => Self(Float(self.0).const_abs().0),
                     D::Clockwise => Self(Float(self.0).neg_abs().0),
-                }
-            }
-            #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn with_direction(self, direction: AngleDirection) -> Self {
-                use AngleDirection as D;
-                match direction {
-                    D::CounterClockwise | D::Undefined => Self(self.0.abs()),
-                    D::Clockwise => Self(-self.0.abs()),
                 }
             }
 
@@ -165,28 +136,12 @@ macro_rules! impl_angle {
             }
 
             /// Returns a version of the angle with inverted direction.
-            /// # Features
-            /// It will only be const with the `unsafe_const` feature enabled.
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn invert_direction(self) -> Self {
-                Self(Float(self.0).flip_sign().0)
-            }
-            #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn invert_direction(self) -> Self {
                 Self(Float(self.0).flip_sign().0)
             }
 
             /// Returns the negative version of the angle.
-            /// # Features
-            /// It will only be const with the `unsafe_const` feature enabled.
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn negative(self) -> Self { Self(Float(self.0).neg_abs().0) }
-            #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn negative(self) -> Self {
-                return Self(Float(self.0).neg_abs().0);
-            }
 
             /// Sets the angle as negative.
             pub fn set_negative(&mut self) {
@@ -194,13 +149,7 @@ macro_rules! impl_angle {
             }
 
             /// Returns the positive version of the angle.
-            /// # Features
-            /// It will only be const with the `unsafe_const` feature enabled.
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn positive(self) -> Self { Self(Float(self.0).const_abs().0) }
-            #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn positive(self) -> Self { Self(self.0.abs()) }
 
             /// Sets the angle as positive.
             pub fn set_positive(&mut self) {

@@ -74,7 +74,6 @@ mod reflection {
             "unsafe",
             "unsafe_array",
             "unsafe_async",
-            "unsafe_const",
             "unsafe_hint",
             "unsafe_layout",
             "unsafe_niche",

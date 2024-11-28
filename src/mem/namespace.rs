@@ -88,9 +88,8 @@ impl Mem {
     /// Moves `src` into `dest`, returning the previous `dest` value.
     ///
     /// See `core::mem::`[`replace`].
-    // WAIT:1.83 [const_mut_refs](https://github.com/rust-lang/rust/issues/129195)
     #[must_use]
-    pub fn replace<T>(dest: &mut T, src: T) -> T {
+    pub const fn replace<T>(dest: &mut T, src: T) -> T {
         replace::<T>(dest, src)
     }
 

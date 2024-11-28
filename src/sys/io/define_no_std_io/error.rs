@@ -52,7 +52,6 @@ struct Custom {
 /// It is used with the [`IoError`] type.
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[non_exhaustive]
-// WAIT:1.83 [io_error_more](https://github.com/rust-lang/rust/pull/128316/files)
 pub enum IoErrorKind {
     /// An entity was not found, often a file.
     NotFound,

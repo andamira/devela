@@ -8,6 +8,11 @@ use crate::num::{Float, Sign};
 /* shared */
 
 #[test]
+fn const_abs() {
+    assert_eq!(Float(7.5_f32).const_abs(), 7.5);
+    assert_eq!(Float(-7.5_f32).const_abs(), 7.5);
+}
+#[test]
 fn round_ties_even() {
     assert_eq!(Float(2.51_f32).round_ties_even(), 3.0);
     assert_eq!(Float(2.50_f32).round_ties_even(), 2.0);

@@ -6,9 +6,6 @@
 use crate::{cfor, concat as cc, iif, paste, stringify as sfy, Float, Sign};
 #[allow(unused_imports)]
 use {super::shared_helpers::*, crate::ExtFloat};
-// WAIT:1.83 [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
-#[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-use crate::transmute;
 
 #[doc = crate::doc_private!()]
 /// Implements methods independently of any features
@@ -33,9 +30,6 @@ macro_rules! custom_impls {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         /// # *Common implementations with or without `std` or `libm`*.
-        ///
-        /// # Features
-        /// Many methods will only be *const* with the `unsafe_const` feature enabled.
         #[cfg(feature = $cap )]
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Float<$f> {
@@ -48,40 +42,14 @@ macro_rules! custom_impls {
             }
 
             /// Returns the [`Sign`].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
-            // WAIT:1.83 [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn sign(self) -> Sign {
-                if self.is_sign_positive() { Sign::Positive } else { Sign::Negative }
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn sign(self) -> Sign {
                 if self.is_sign_positive() { Sign::Positive } else { Sign::Negative }
             }
 
             /// Returns the [`Sign`], returning [`None`][Sign::None] for zero
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
-            // WAIT:1.83 [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn sign_nonzero(self) -> Sign {
-                if self.is_zero() {
-                    Sign::None
-                } else if self.is_sign_positive() {
-                    Sign::Positive
-                } else {
-                    Sign::Negative
-                }
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn sign_nonzero(self) -> Sign {
                 if self.is_zero() {
                     Sign::None
                 } else if self.is_sign_positive() {
@@ -92,88 +60,29 @@ macro_rules! custom_impls {
             }
 
             /// Returns `true` if `self` has a positive sign.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
-            // WAIT:1.83 [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn is_sign_positive(self) -> bool {
-                // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
-                let bits: $uf = unsafe { transmute(self.0) };
-                let sign_bit_mask = <$uf>::MAX / 2 + 1;
-                (bits & sign_bit_mask) == 0 // if sign bit is not set it's a positive number or +0
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn is_sign_positive(self) -> bool { self.0.is_sign_positive() }
+            pub const fn is_sign_positive(self) -> bool { self.0.is_sign_positive() }
 
             /// Returns `true` if `self` has a negative sign.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
-            // WAIT:1.83 [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub const fn is_sign_negative(self) -> bool {
-                // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
-                let bits: $uf = unsafe { transmute(self.0) };
-                let sign_bit_mask = <$uf>::MAX / 2 + 1;
-                (bits & sign_bit_mask) != 0 // if sign bit is set it's a negative number or -0
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn is_sign_negative(self) -> bool { self.0.is_sign_negative() }
+            pub const fn is_sign_negative(self) -> bool { self.0.is_sign_negative() }
 
             /// Returns `true` if `self` is 0.0 or -0.0.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn is_zero(self) -> bool {
-                // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
-                // let bits: $uf = self.0.to_bits();
-                let bits: $uf = unsafe { transmute(self.0) };
-                let non_sign_bits_mask = !(<$uf>::MAX / 2 + 1);
-                (bits & non_sign_bits_mask) == 0
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn is_zero(self) -> bool {
                 let non_sign_bits_mask = !(<$uf>::MAX / 2 + 1);
                 (self.0.to_bits() & non_sign_bits_mask) == 0
             }
 
             /// Returns `true` if `self` has a positive sign and is not zero.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
-            // WAIT:1.83 [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn is_sign_positive_nonzero(self) -> bool {
-                !self.is_zero() && self.is_sign_positive()
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn is_sign_positive_nonzero(self) -> bool {
                 !self.is_zero() && self.is_sign_positive()
             }
 
             /// Returns `true` if `self` has a negative sign and is not zero.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
-            // WAIT:1.83 [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn is_sign_negative_nonzero(self) -> bool {
-                !self.is_zero() && self.is_sign_negative()
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn is_sign_negative_nonzero(self) -> bool {
                 !self.is_zero() && self.is_sign_negative()
             }
 
@@ -196,21 +105,12 @@ macro_rules! custom_impls {
             }
 
             /// The least non-negative remainder of `self` % `other`.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             // NOTE: [yield inconsistent results](https://github.com/rust-lang/rust/issues/111405)
+            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn rem_euclid(self, other: $f) -> Float<$f> {
                 let r = self.0 % other;
                 iif![r < 0.0; Float(r + Float(other).const_abs().0); Float(r)]
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn rem_euclid(self, other: $f) -> Float<$f> {
-                let r = self % other;
-                iif![r < 0.0; r + Float(other).abs(); r]
             }
 
             /// Returns `self` between `[min..=max]` scaled to a new range `[u..=v]`.
@@ -264,11 +164,8 @@ macro_rules! custom_impls {
             ///
             /// The terms for the exponential function are calculated using
             /// [`exp_series_terms`][Self::exp_series_terms] using $y\cdot\ln(x)$.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
+            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn powf_series(self, y: $f, ln_x_terms: $ue) -> Float<$f> {
                 let xabs = self.const_abs().0;
                 if xabs == 0.0 {
@@ -281,28 +178,10 @@ macro_rules! custom_impls {
                     iif![self.is_sign_negative(); Float(-result.0); result]
                 }
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn powf_series(self, y: $f, ln_x_terms: $ue) -> Float<$f> {
-                let xabs = self.abs();
-                if xabs == 0.0 {
-                    iif![Float(y).abs() == 0.0; Self::ONE; Self::ZERO]
-                } else {
-                    let ln_x = xabs.ln_series(ln_x_terms).0;
-                    let power = Float(y * ln_x);
-                    let exp_y_terms = power.exp_series_terms();
-                    let result = power.exp_series(exp_y_terms);
-                    iif![self.is_sign_negative(); -result; result]
-                }
-            }
 
             /// $ \sqrt{x} $ The square root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn sqrt_nr(self) -> Float<$f> {
                 if self.0 < 0.0 {
                     Self::NAN
@@ -318,54 +197,16 @@ macro_rules! custom_impls {
                     Float(guess_next)
                 }
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn sqrt_nr(self) -> Float<$f> {
-                if self < 0.0 {
-                    Self::NAN
-                } else if self == 0.0 {
-                    Self::ZERO
-                } else {
-                    let mut guess = self.0;
-                    let mut guess_next = 0.5 * (guess + self.0 / guess);
-                    while Self(guess - guess_next).abs() > Self::NR_TOLERANCE {
-                        guess = guess_next;
-                        guess_next = 0.5 * (guess + self.0 / guess);
-                    }
-                    Float(guess_next)
-                }
-            }
 
             /// $ \sqrt{x} $ the square root calculated using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn sqrt_fisr(self) -> Float<$f> { Float(1.0 / self.fisr().0) }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn sqrt_fisr(self) -> Float<$f> { Float(1.0 / self.fisr().0) }
 
             /// $ 1 / \sqrt{x} $ the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn fisr(self) -> Float<$f> {
-                // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
-                let mut i: $uf = unsafe { transmute(self.0) };
-                let (three_halfs, x2) = (1.5, self.0 * 0.5);
-                i = Self::FISR_MAGIC - (i >> 1);
-                let y = unsafe { transmute::<$uf, $f>(i) };
-                Float(y * (three_halfs - (x2 * y * y)))
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn fisr(self) -> Float<$f> {
                 let (mut i, three_halfs, x2) = (self.0.to_bits(), 1.5, self.0 * 0.5);
                 i = Self::FISR_MAGIC - (i >> 1);
                 let y = <$f>::from_bits(i);
@@ -374,11 +215,7 @@ macro_rules! custom_impls {
 
             /// $ \sqrt\[3\]{x} $ The cubic root calculated using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn cbrt_nr(self) -> Float<$f> {
                 iif![self.0 == 0.0; return self];
                 let mut guess = self.0;
@@ -390,48 +227,24 @@ macro_rules! custom_impls {
                     guess = next_guess;
                 }
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn cbrt_nr(self) -> Float<$f> {
-                iif![self.0 == 0.0; return self];
-                let mut guess = self.0;
-                loop {
-                    let next_guess = (2.0 * guess + self.0 / (guess * guess)) / 3.0;
-                    if Float(next_guess - guess).abs().0 < Self::NR_TOLERANCE {
-                        break Float(next_guess);
-                    }
-                    guess = next_guess;
-                }
-            }
 
             /// The hypothenuse (the euclidean distance) using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             ///
             /// $$ \text{hypot}(x, y) = \sqrt{x^2 + y^2} $$
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn hypot_nr(self, y: $f) -> Float<$f> {
                 Float(self.0 * self.0 + y * y).sqrt_nr()
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn hypot_nr(self, y: $f) -> Float<$f> { (self * self + y * y).sqrt_nr() }
 
             /// The hypothenuse (the euclidean distance) using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
             ///
             /// $$ \text{hypot}(x, y) = \sqrt{x^2 + y^2} $$
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn hypot_fisr(self, y: $f) -> Float<$f> {
                 Float(self.0 * self.0 + y * y).sqrt_fisr()
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn hypot_fisr(self, y: $f) -> Float<$f> { (self * self + y * y).sqrt_fisr() }
 
             /// Computes the exponential function $e^x$ using Taylor series expansion.
             ///
@@ -439,11 +252,7 @@ macro_rules! custom_impls {
             /// For values $ x < 0 $ it uses the identity: $$ e^x = \frac{1}{e^-x} $$
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn exp_series(self, terms: $ue) -> Float<$f> {
                 iif![self.0 < 0.0; return Float(1.0 / Float(-self.0).exp_series(terms).0)];
                 let (mut result, mut term) = (1.0, 1.0);
@@ -452,17 +261,6 @@ macro_rules! custom_impls {
                     term *= self.0 / i as $f;
                     result += term;
                     i += 1;
-                }
-                Float(result)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn exp_series(self, terms: $ue) -> Float<$f> {
-                iif![self < 0.0; return Float(1.0 / (-self).exp_series(terms).0)];
-                let (mut result, mut term) = (1.0, 1.0);
-                for i in 1..=terms {
-                    term *= self.0 / i as $f;
-                    result += term;
                 }
                 Float(result)
             }
@@ -487,17 +285,8 @@ macro_rules! custom_impls {
             /// ± 500.000 →   ---    692
             /// ± 709.782 →   ---    938  (max for f64 == f64:MAX.ln())
             /// ```
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn exp_series_terms(self) -> $ue { paste! {
-                Self::[<exp_series_terms_ $f>](self.0)
-            }}
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn exp_series_terms(self) -> $ue { paste! {
                 Self::[<exp_series_terms_ $f>](self.0)
             }}
 
@@ -508,11 +297,7 @@ macro_rules! custom_impls {
             /// For values $ x > 0.001 $ it uses [`exp_series`][Self::exp_series].
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn exp_m1_series(self, terms: $ue) -> Float<$f> {
                 if self.0 < 0.0 {
                     Float(1.0 / Float(-self.0).exp_m1_series(terms).0)
@@ -530,23 +315,6 @@ macro_rules! custom_impls {
                     Float(result)
                 }
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn exp_m1_series(self, terms: $ue) -> Float<$f> {
-                if self < 0.0 {
-                    Float(1.0 / (-self).exp_m1_series(terms).0)
-                } else if self > 0.001 {
-                    self.exp_series(terms) - 1.0
-                } else {
-                    let (mut result, mut term, mut factorial) = (0.0, self.0, 1.0);
-                    for i in 1..=terms {
-                        result += term;
-                        factorial *= (i + 1) as $f;
-                        term *= self.0 / factorial;
-                    }
-                    Float(result)
-                }
-            }
 
             /// Calculates $ 2^x $ using the Taylor series expansion.
             ///
@@ -558,11 +326,7 @@ macro_rules! custom_impls {
             ///
             /// The maximum values with a representable result are:
             /// 127 for `f32` and 1023 for `f64`.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn exp2_series(self, terms: $ue) -> Float<$f> {
                 let (mut result, mut term) = (1.0, self.0 * Self::LN_2.0);
                 let mut n = 1;
@@ -570,16 +334,6 @@ macro_rules! custom_impls {
                     result += term;
                     term *= self.0 * Self::LN_2.0 / (n as $f + 1.0);
                     n += 1;
-                }
-                Float(result)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn exp2_series(self, terms: $ue) -> Float<$f> {
-                let (mut result, mut term) = (1.0, self.0 * Self::LN_2.0);
-                for n in 1..terms {
-                    result += term;
-                    term *= self.0 * Self::LN_2.0 / (n as $f + 1.0);
                 }
                 Float(result)
             }
@@ -603,17 +357,8 @@ macro_rules! custom_impls {
             /// ± 511.0 →    ---    520
             /// ± 1023.999 → ---    939 (max for f64)
             /// ```
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub fn exp2_series_terms(self) -> $ue { paste! {
-                Self::[<exp2_series_terms_ $f>](self.0)
-            }}
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn exp2_series_terms(self) -> $ue { paste! {
+            pub const fn exp2_series_terms(self) -> $ue { paste! {
                 Self::[<exp2_series_terms_ $f>](self.0)
             }}
 
@@ -679,12 +424,8 @@ macro_rules! custom_impls {
             ///
             /// $$ \log_{\text{base}}(x) = \frac{\ln(x)}{\ln(\text{base})} $$
             ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
-            ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn log_series(self, base: $f, terms: $ue) -> Float<$f> {
                 if base <= 0.0 {
                     Self::NAN
@@ -695,19 +436,6 @@ macro_rules! custom_impls {
                     { iif![self.0 == 1.0; Self::NAN; Self::NEG_INFINITY] }
                 } else {
                     Float(self.ln_series(terms).0 / base).ln_series(terms)
-                }
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn log_series(self, base: $f, terms: $ue) -> Float<$f> {
-                if base <= 0.0 {
-                    Self::NAN
-                // The logarithm with a base of 1 is undefined except when the argument is also 1.
-                } else if (base - 1.0).abs() < Self::MEDIUM_MARGIN.0 { // + arithmetically robust
-                // } else if base == 1.0 { // good enough for direct input
-                    iif![self == 1.0; Self::NAN; Self::NEG_INFINITY]
-                } else {
-                    self.ln_series(terms) / Float(base).ln_series(terms)
                 }
             }
 
@@ -754,13 +482,7 @@ macro_rules! custom_impls {
             /// ± 100000. →  81181 536609
             /// ```
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn ln_series_terms(self) -> $ue { paste! {
-                Self::[<ln_series_terms_ $f>](self.0)
-            }}
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn ln_series_terms(self) -> $ue { paste! {
                 Self::[<ln_series_terms_ $f>](self.0)
             }}
 
@@ -802,12 +524,7 @@ macro_rules! custom_impls {
             /// ± 0.900 →      6     10
             /// ± 0.999 →      6     10
             /// ```
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
-            /// and using [`clamp_nan`][Self::clamp_nan] instead of [`clamp`][Self::clamp].
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn sin_series(self, terms: $ue) -> Float<$f> {
                 let x = self.clamp_nan(-Self::PI.0, Self::PI.0).0;
                 let (mut sin, mut term, mut factorial) = (x, x, 1.0);
@@ -817,18 +534,6 @@ macro_rules! custom_impls {
                     factorial *= ((2 * i + 1) * (2 * i)) as $f;
                     sin += term / factorial;
                     i += 1;
-                }
-                Float(sin)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn sin_series(self, terms: $ue) -> Float<$f> {
-                let x = self.clamp(-Self::PI.0, Self::PI.0).0;
-                let (mut sin, mut term, mut factorial) = (x, x, 1.0);
-                for i in 1..terms {
-                    term *= -x * x;
-                    factorial *= ((2 * i + 1) * (2 * i)) as $f;
-                    sin += term / factorial;
                 }
                 Float(sin)
             }
@@ -853,12 +558,7 @@ macro_rules! custom_impls {
             /// ± 0.900 →      7     10
             /// ± 0.999 →      7     11
             /// ```
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
-            /// and using [`clamp_nan`][Self::clamp_nan] instead of [`clamp`][Self::clamp].
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn cos_series(self, terms: $ue) -> Float<$f> {
                 let x = self.clamp_nan(-Self::PI.0, Self::PI.0).0;
                 let (mut cos, mut term, mut factorial) = (1.0, 1.0, 1.0);
@@ -871,32 +571,10 @@ macro_rules! custom_impls {
                 }
                 Float(cos)
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn cos_series(self, terms: $ue) -> Float<$f> {
-                let x = self.clamp(-Self::PI.0, Self::PI.0).0;
-                let (mut cos, mut term, mut factorial) = (1.0, 1.0, 1.0);
-                for i in 1..terms {
-                    term *= -x * x;
-                    factorial *= ((2 * i - 1) * (2 * i)) as $f;
-                    cos += term / factorial;
-                }
-                Float(cos)
-            }
 
             /// Computes the sine and the cosine using Taylor series expansion.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
-            /// and using [`clamp_nan`][Self::clamp_nan] instead of [`clamp`][Self::clamp].
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn sin_cos_series(self, terms: $ue) -> (Float<$f>, Float<$f>) {
-                (self.sin_series(terms), self.cos_series(terms))
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn sin_cos_series(self, terms: $ue) -> (Float<$f>, Float<$f>) {
                 (self.sin_series(terms), self.cos_series(terms))
             }
 
@@ -924,24 +602,11 @@ macro_rules! custom_impls {
             /// ± 0.900 →      7     10
             /// ± 0.999 →      7     11
             /// ```
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
-            /// and using [`clamp_nan`][Self::clamp_nan] instead of [`clamp`][Self::clamp].
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn tan_series(self, terms: $ue) -> Float<$f> {
                 let x = self.clamp_nan(-Self::PI.0 / 2.0 + 0.0001, Self::PI.0 / 2.0 - 0.0001);
                 let (sin, cos) = x.sin_cos_series(terms);
                 iif![cos.const_abs().0 < 0.0001; return Self::MAX];
-                Float(sin.0 / cos.0)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn tan_series(self, terms: $ue) -> Float<$f> {
-                let x = self.clamp(-Self::PI.0 / 2.0 + 0.0001, Self::PI.0 / 2.0 - 0.0001);
-                let (sin, cos) = x.sin_cos_series(terms);
-                iif![cos.abs() < 0.0001; return Self::MAX];
                 Float(sin.0 / cos.0)
             }
 
@@ -962,11 +627,7 @@ macro_rules! custom_impls {
             /// may be necessary.
             ///
             /// See also [`asin_series_terms`][Self::asin_series_terms].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn asin_series(self, terms: $ue) -> Float<$f> {
                 iif![self.const_abs().0 > 1.0; return Self::NAN];
                 let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, self.0);
@@ -978,20 +639,6 @@ macro_rules! custom_impls {
                     }
                     asin_approx += multiplier * power_x / (2 * i + 1) as $f;
                     i += 1;
-                }
-                Float(asin_approx)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn asin_series(self, terms: $ue) -> Float<$f> {
-                iif![self.abs() > 1.0; return Self::NAN];
-                let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, self.0);
-                for i in 0..terms {
-                    if i != 0 {
-                        multiplier *= (2 * i - 1) as $f / (2 * i) as $f;
-                        power_x *= self.0 * self.0;
-                    }
-                    asin_approx += multiplier * power_x / (2 * i + 1) as $f;
                 }
                 Float(asin_approx)
             }
@@ -1013,17 +660,8 @@ macro_rules! custom_impls {
             /// ± 0.990 →    333   1235
             /// ± 0.999 →   1989  10768
             /// ```
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn asin_series_terms(self) -> $ue { paste! {
-                Self::[<asin_acos_series_terms_ $f>](self.0)
-            }}
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn asin_series_terms(self) -> $ue { paste! {
                 Self::[<asin_acos_series_terms_ $f>](self.0)
             }}
 
@@ -1033,37 +671,18 @@ macro_rules! custom_impls {
             ///
             /// See the [`asin_series_terms`][Self#method.asin_series_terms] table for
             /// information about the number of `terms` needed.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            pub fn acos_series(self, terms: $ue) -> Float<$f> {
-                iif![self.const_abs() > 1.0; return Self::NAN];
-                Self::FRAC_PI_2 - self.asin_series(terms)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn acos_series(self, terms: $ue) -> Float<$f> {
-                iif![self.abs() > 1.0; return Self::NAN];
-                Self::FRAC_PI_2 - self.asin_series(terms)
+            pub const fn acos_series(self, terms: $ue) -> Float<$f> {
+                iif![self.const_abs().0 > 1.0; return Self::NAN];
+                Float(Self::FRAC_PI_2.0 - self.asin_series(terms).0)
             }
 
             /// Determines the number of terms needed for [`acos_series`][Self::acos_series]
             /// to reach a stable result based on the input value.
             ///
             /// The table is the same as [`asin_series_terms`][Self::asin_series_terms].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn acos_series_terms(self) -> $ue { paste! {
-                Self::[<asin_acos_series_terms_ $f>](self.0)
-            }}
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn acos_series_terms(self) -> $ue { paste! {
                 Self::[<asin_acos_series_terms_ $f>](self.0)
             }}
 
@@ -1080,11 +699,7 @@ macro_rules! custom_impls {
             /// may be necessary.
             ///
             /// See also [`atan_series_terms`][Self::atan_series_terms].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn atan_series(self, terms: $ue) -> Float<$f> {
                 if self.const_abs().0 > 1.0 {
                     if self.0 > 0.0 {
@@ -1106,27 +721,6 @@ macro_rules! custom_impls {
                     Float(atan_approx)
                 }
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn atan_series(self, terms: $ue) -> Float<$f> {
-                if self.abs() > 1.0 {
-                    if self > 0.0 {
-                        Self::FRAC_PI_2 - Float(1.0 / self.0).atan_series(terms)
-                    } else {
-                        -Self::FRAC_PI_2 - Float(1.0 / self.0).atan_series(terms)
-                    }
-                } else {
-                    let (mut atan_approx, mut num, mut sign) = (Self::ZERO, self, Self::ONE);
-                    for i in 0..terms {
-                        if i > 0 {
-                            num *= self * self;
-                            sign = -sign;
-                        }
-                        atan_approx += sign * num / (2.0 * i as $f + 1.0);
-                    }
-                    atan_approx
-                }
-            }
 
             /// Determines the number of terms needed for [`atan_series`][Self::atan_series]
             /// to reach a stable result based on the input value.
@@ -1145,17 +739,8 @@ macro_rules! custom_impls {
             /// ± 0.990 →    518   1466
             /// ± 0.999 →   4151  13604
             /// ```
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn atan_series_terms(self) -> $ue { paste! {
-                Self::[<atan_series_terms_ $f>](self.0)
-            }}
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn atan_series_terms(self) -> $ue { paste! {
                 Self::[<atan_series_terms_ $f>](self.0)
             }}
 
@@ -1163,11 +748,7 @@ macro_rules! custom_impls {
             /// using Taylor series expansion.
             ///
             /// See also [`atan_series_terms`][Self::atan_series_terms].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn atan2_series(self, other: $f, terms: $ue) -> Float<$f> {
                 if other > 0.0 {
                     Float(self.0 / other).atan_series(terms)
@@ -1184,24 +765,6 @@ macro_rules! custom_impls {
                     Self::NAN
                 }
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn atan2_series(self, other: $f, terms: $ue) -> Float<$f> {
-                if other > 0.0 {
-                    (self / other).atan_series(terms)
-                } else if self >= 0.0 && other < 0.0 {
-                    (self / other).atan_series(terms) + Self::PI
-                } else if self < 0.0 && other < 0.0 {
-                    (self / other).atan_series(terms) - Self::PI
-                } else if self > 0.0 && other == 0.0 {
-                    Self::PI / 2.0
-                } else if self < 0.0 && other == 0.0 {
-                    -Self::PI / 2.0
-                } else {
-                    // self and other are both zero, undefined behavior
-                    Self::NAN
-                }
-            }
 
             /// The hyperbolic sine calculated using Taylor series expansion
             /// via the exponent formula.
@@ -1210,18 +773,9 @@ macro_rules! custom_impls {
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn sinh_series(self, terms: $ue) -> Float<$f> {
                 Float((self.exp_series(terms).0 - -self.exp_series(terms).0) / 2.0)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn sinh_series(self, terms: $ue) -> Float<$f> {
-                (self.exp_series(terms) - -self.exp_series(terms)) / 2.0
             }
 
             /// The hyperbolic cosine calculated using Taylor series expansion
@@ -1231,18 +785,9 @@ macro_rules! custom_impls {
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn cosh_series(self, terms: $ue) -> Float<$f> {
                 Float((self.exp_series(terms).0 + -self.exp_series(terms).0) / 2.0)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn cosh_series(self, terms: $ue) -> Float<$f> {
-                (self.exp_series(terms) + -self.exp_series(terms)) / 2.0
             }
 
             /// Computes the hyperbolic tangent using Taylor series expansion of
@@ -1252,22 +797,11 @@ macro_rules! custom_impls {
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn tanh_series(self, terms: $ue) -> Float<$f> {
                 let sinh_approx = self.sinh_series(terms);
                 let cosh_approx = self.cosh_series(terms);
                 Float(sinh_approx.0 / cosh_approx.0)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn tanh_series(self, terms: $ue) -> Float<$f> {
-                let sinh_approx = self.sinh_series(terms);
-                let cosh_approx = self.cosh_series(terms);
-                sinh_approx / cosh_approx
             }
 
             /// Computes the inverse hyperbolic sine using the natural logarithm definition.
@@ -1275,20 +809,10 @@ macro_rules! custom_impls {
             /// $$ \text{asinh}(x) = \ln(x + \sqrt{x^2 + 1}) $$
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn asinh_series(self, terms: $ue) -> Float<$f> {
                 let sqrt = Float(self.0 * self.0 + 1.0).sqrt_nr().0;
                 Float(self.0 + sqrt).ln_series(terms)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn asinh_series(self, terms: $ue) -> Float<$f> {
-                let sqrt = (self * self + 1.0).sqrt_nr();
-                (self + sqrt).ln_series(terms)
             }
 
             /// Computes the inverse hyperbolic cosine using the natural logarithm definition.
@@ -1296,11 +820,7 @@ macro_rules! custom_impls {
             /// $$ \text{acosh}(x) = \ln(x + \sqrt{x^2 - 1}) $$
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn acosh_series(self, terms: $ue) -> Float<$f> {
                 if self.0 < 1.0 {
                     Self::NAN
@@ -1309,27 +829,13 @@ macro_rules! custom_impls {
                     Float(self.0 + sqrt).ln_series(terms)
                 }
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn acosh_series(self, terms: $ue) -> Float<$f> {
-                if self < 1.0 {
-                    Self::NAN
-                } else {
-                    let sqrt = (self * self - 1.0).sqrt_nr();
-                    (self + sqrt).ln_series(terms)
-                }
-            }
 
             /// Computes the inverse hyperbolic tangent using the natural logarithm definition.
             ///
             /// $$ \text{atanh}(x) = \frac{1}{2} \ln\left(\frac{1 + x}{1 - x}\right) $$
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled,
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn atanh_series(self, terms: $ue) -> Float<$f> {
                 if self.0 >= 1.0 {
                     Self::INFINITY
@@ -1339,67 +845,27 @@ macro_rules! custom_impls {
                     Float(Float((self.0 + 1.0) / (1.0 - self.0)).ln_series(terms).0 * 0.5)
                 }
             }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn atanh_series(self, terms: $ue) -> Float<$f> {
-                if self >= 1.0 {
-                    Self::INFINITY
-                } else if self <= -1.0 {
-                    Self::NEG_INFINITY
-                } else {
-                    ((self + 1.0) / (1.0 - self.0)).ln_series(terms) * 0.5
-                }
-            }
 
             /// The absolute value of `self` in constant-time.
             ///
             /// This is a separate function from [`abs`][Self::abs] because we also want to have
             /// the possibly more efficient `std` and `libm` implementations.
+            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_const")))]
             pub const fn const_abs(self) -> Float<$f> {
                 let mask = <$uf>::MAX / 2;
-                unsafe {
-                    // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
-                    let bits: $uf = transmute(self.0);
-                    Float(transmute::<$uf, $f>(bits & mask))
-                }
+                Float(<$f>::from_bits(self.0.to_bits() & mask))
             }
 
             /// The negative absolute value of `self` (sets its sign to be negative).
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            // WAIT:1.83 [const_float_classify](https://github.com/rust-lang/rust/pull/130157)
             pub const fn neg_abs(self) -> Float<$f> {
-                if self.is_sign_negative() { self } else { self.flip_sign() }
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn neg_abs(self) -> Float<$f> {
                 if self.is_sign_negative() { self } else { self.flip_sign() }
             }
 
             /// Flips its sign.
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            // WAIT:1.83 [const_float_bits_conv](https://github.com/rust-lang/rust/pull/129555)
             pub const fn flip_sign(self) -> Float<$f> {
-                let sign_bit_mask = <$uf>::MAX / 2 + 1;
-                unsafe {
-                    let bits: $uf = transmute(self.0);
-                    Float(transmute::<$uf, $f>(bits ^ sign_bit_mask))
-                }
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn flip_sign(self) -> Float<$f> {
                 let sign_bit_mask = <$uf>::MAX / 2 + 1;
                 Float(<$f>::from_bits(self.0.to_bits() ^ sign_bit_mask))
             }
@@ -1413,60 +879,27 @@ macro_rules! custom_impls {
             /// Returns itself clamped between `min` and `max`, using total order.
             ///
             /// See also: [`clamp`][Self::clamp], [`clamp_nan`][Self::clamp_nan].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub const fn clamp_total(self, min: $f, max: $f) -> Float<$f> {
-                Float(crate::Compare(self.0).clamp(min, max))
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            #[cfg(feature = $cmp)]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
-            pub fn clamp_total(self, min: $f, max: $f) -> Float<$f> {
                 Float(crate::Compare(self.0).clamp(min, max))
             }
 
             /// Returns the maximum between itself and `other`, using total order.
             ///
             /// See also: [`max_nan`][Self::max_nan].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub const fn max_total(self, other: $f) -> Float<$f> {
-                Float(crate::Compare(self.0).max(other))
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            #[cfg(feature = $cmp)]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
-            pub fn max_total(self, other: $f) -> Float<$f> {
                 Float(crate::Compare(self.0).max(other))
             }
 
             /// Returns the minimum between itself and `other`, using total order.
             ///
             /// See also: [`min_nan`][Self::min_nan].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
-            #[cfg(feature = $cmp)]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
-            pub const fn min_total(self, other: $f) -> Float<$f> {
-                Float(crate::Compare(self.0).min(other))
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
             #[cfg(feature = $cmp)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cmp)))]
             pub fn min_total(self, other: $f) -> Float<$f> {
@@ -1476,46 +909,18 @@ macro_rules! custom_impls {
             /// Returns itself clamped between `min` and `max`, propagating `NaN`.
             ///
             /// See also: [`clamp`][Self::clamp], [`clamp_total`][Self::clamp_total].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
             pub const fn clamp_nan(self, min: $f, max: $f) -> Float<$f> {
-                self.max_nan(min).min_nan(max)
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn clamp_nan(self, min: $f, max: $f) -> Float<$f> {
                 self.max_nan(min).min_nan(max)
             }
 
             /// Returns the maximum between itself and `other`, propagating `Nan`.
             ///
             /// See also: [`max_total`][Self::max_total].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
-            #[expect(clippy::float_cmp, reason = "CHECK")]
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            #[expect(clippy::float_cmp, reason = "TODO:CHECK:IMPROVE?")]
             pub const fn max_nan(self, other: $f) -> Float<$f> {
-                if self.0 > other {
-                    self
-                } else if self.0 < other {
-                    Float(other)
-                } else if self.0 == other {
-                    iif![self.is_sign_positive() && Float(other).is_sign_negative(); self; Float(other)]
-                } else {
-                    // At least one input is NaN. Use `+` to perform NaN propagation and quieting.
-                    Float(self.0 + other)
-                }
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[expect(clippy::float_cmp, reason = "CHECK")]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn max_nan(self, other: $f) -> Float<$f> {
                 if self.0 > other {
                     self
                 } else if self.0 < other {
@@ -1531,29 +936,10 @@ macro_rules! custom_impls {
             /// Returns the minimum between itself and `other`, propagating `Nan`.
             ///
             /// See also: [`min_total`][Self::min_total].
-            ///
-            /// # Features
-            /// This function will only be *const* with the `unsafe_const` feature enabled.
             // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
-            #[expect(clippy::float_cmp, reason = "CHECK")]
             #[must_use]
-            #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
+            #[expect(clippy::float_cmp, reason = "TODO:CHECK:IMPROVE?")]
             pub const fn min_nan(self, other: $f) -> Float<$f> {
-                if self.0 < other {
-                    self
-                } else if self.0 < other {
-                    Float(other)
-                } else if self.0 == other {
-                    iif![self.is_sign_negative() && Float(other).is_sign_positive(); self; Float(other)]
-                } else {
-                    // At least one input is NaN. Use `+` to perform NaN propagation and quieting.
-                    Float(self.0 + other)
-                }
-            }
-            #[must_use] #[allow(missing_docs)]
-            #[expect(clippy::float_cmp, reason = "CHECK")]
-            #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-            pub fn min_nan(self, other: $f) -> Float<$f> {
                 if self.0 < other {
                     self
                 } else if self.0 < other {
@@ -1580,6 +966,7 @@ macro_rules! custom_impls {
             /// ```
             ///
             /// [Horner's method]: https://en.wikipedia.org/wiki/Horner%27s_method#Polynomial_evaluation_and_long_division
+            // WAIT: [for-loops in constants](https://github.com/rust-lang/rust/issues/87575)
             #[must_use]
             pub const fn eval_poly(self, coefficients: &[$f]) -> Float<$f> {
                 let coef = coefficients;
@@ -1588,7 +975,7 @@ macro_rules! custom_impls {
                     1 => Float(coef[0]),
                     _ => {
                         let mut result = coef[0];
-                        // non-const version: WAIT:const_for
+                        // non-const version:
                         // for &c in &coef[1..] {
                         //     result = result * self.0 + c;
                         // }

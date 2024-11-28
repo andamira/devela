@@ -35,8 +35,7 @@ use crate::{BTreeMap, Vec};
 /// When the corresponding feature `_sort_f[32|64]` or `_sort_[iu][8|16|32|64|128]` is enabled,
 /// It implements the following *const* methods for sorting copied arrays of primitives:
 /// `bubble_array`, `insertion_array`, `selection_array`.
-/// In the case of floating-point primitives it uses total ordering and the
-/// methods will only be const if the `unsafe_const` feature is enabled.
+/// In the case of floating-point primitives it uses total ordering.
 ///
 /// # Examples
 /// Sort copied arrays of primitives:
@@ -556,20 +555,7 @@ macro_rules! impl_sort {
         impl<const N: usize> Sort<[$t; N]> {
             /// Returns a copied sorted array using bubble sort.
             #[must_use]
-            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn bubble_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 0..N => {
-                    cfor![j in 0..N-i-1 => {
-                        iif![Compare(arr[j]).gt(arr[j+1]); cswap!(arr[j], arr[j+1])];
-                    }];
-                }];
-                arr
-            }
-            // safe, non-const version (undocumented)
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
-            pub fn bubble_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 0..N => {
                     cfor![j in 0..N-i-1 => {
@@ -581,22 +567,7 @@ macro_rules! impl_sort {
 
             /// Returns a copied sorted array using insertion sort.
             #[must_use]
-            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn insertion_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 1..N => {
-                    let mut j = i;
-                    while j > 0 && Compare(arr[j-1]).gt(arr[j]) {
-                        cswap!(arr[j], arr[j-1]);
-                        j -= 1;
-                    }
-                }];
-                arr
-            }
-            // safe, non-const version (undocumented)
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
-            pub fn insertion_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 1..N => {
                     let mut j = i;
@@ -610,22 +581,7 @@ macro_rules! impl_sort {
 
             /// Returns a copied sorted array using selection sort.
             #[must_use]
-            #[cfg(all(not(feature = "safe_data"), feature = "unsafe_const"))]
             pub const fn selection_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 0..N-1 => {
-                    let mut min_index = i;
-                    cfor![j in (i+1)..N => {
-                        iif![Compare(arr[j]).lt(arr[min_index]); min_index = j];
-                    }];
-                    cswap!(arr[min_index], arr[i]);
-                }];
-                arr
-            }
-            // safe, non-const version (undocumented)
-            #[must_use] #[allow(missing_docs)]
-            #[cfg(any(feature = "safe_data", not(feature = "unsafe_const")))]
-            pub fn selection_array(self) -> [$t; N] {
                 let mut arr = self.0;
                 cfor![i in 0..N-1 => {
                     let mut min_index = i;

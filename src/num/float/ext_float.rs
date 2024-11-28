@@ -15,8 +15,7 @@ use crate::num::{ExtFloatConst, Sign};
 /// # Features
 /// It depends on having any `_float_f[32|64]` features enabled.
 ///
-/// `Float` has a few more methods implemented if the `dep_libm` feature is enabled,
-/// and some of its methods are *const* if the `unsafe_const` feature is enabled.
+/// `Float` has a few more methods implemented if the `dep_libm` feature is enabled.
 #[rustfmt::skip]
 pub trait ExtFloat: ExtFloatConst + Sized {
 

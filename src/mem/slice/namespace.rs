@@ -56,8 +56,7 @@ impl<T> Slice<T> {
     /// See also `Ptr::`[slice_from_raw_parts_mut`][crate::Ptr::slice_from_raw_parts_mut].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
-    // WAIT:1.83 [const_slice_from_raw_parts_mut](https://github.com/rust-lang/rust/issues/67456)
-    pub unsafe fn from_raw_parts_mut<'a>(data: *mut T, len: usize) -> &'a mut [T] {
+    pub const unsafe fn from_raw_parts_mut<'a>(data: *mut T, len: usize) -> &'a mut [T] {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { from_raw_parts_mut(data, len) }
     }

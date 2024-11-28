@@ -195,13 +195,12 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 	safe_work = []
 
 unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
-	"unsafe_array", "unsafe_async", "unsafe_const", "unsafe_hint",
-	"unsafe_layout", "unsafe_niche", "unsafe_ptr", "unsafe_slice",
-	"unsafe_str", "unsafe_sync", "unsafe_syscall", "unsafe_thread",
-] # for 12 specific purposes:
+	"unsafe_array", "unsafe_async", "unsafe_hint", "unsafe_layout",
+	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
+	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
+] # for 11 specific purposes:
 	unsafe_array = [] # faster array initialization, UninitArray.
 	unsafe_async = [] # task_waker_noop, CoroRun.
-	unsafe_const = [] # extra const methods.
 	unsafe_hint = [] # unreachable_unchecked, unchecked arithmetic.
 	unsafe_layout = [] # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*.
 	unsafe_niche = [] # unchecked niche constructors.

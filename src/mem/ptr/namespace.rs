@@ -83,8 +83,7 @@ impl Ptr {
     /// Convert an exclusive reference to a raw pointer.
     ///
     /// See `core::ptr::`[`from_mut`].
-    // WAIT:1.83: [const_mut_refs|const_refs_to_cell](https://github.com/rust-lang/rust/pull/129195)
-    pub fn from_mut<T: ?Sized>(r: &mut T) -> *mut T {
+    pub const fn from_mut<T: ?Sized>(r: &mut T) -> *mut T {
         from_mut(r)
     }
 
@@ -160,8 +159,7 @@ impl Ptr {
     ///
     /// See `core::ptr::`[`slice_from_raw_parts_mut`], and also
     /// `Slice::`[from_raw_parts_mut`][crate::Slice::from_raw_parts_mut].
-    // WAIT:1.83: [const_slice_from_raw_parts_mut](https://github.com/rust-lang/rust/pull/130403)
-    pub fn slice_from_raw_parts_mut<T>(data: *mut T, len: usize) -> *mut [T] {
+    pub const fn slice_from_raw_parts_mut<T>(data: *mut T, len: usize) -> *mut [T] {
         slice_from_raw_parts_mut(data, len)
     }
 }

@@ -116,7 +116,6 @@ In order to use any unsafe functionality:
 - `unsafe`: enables `unsafe` (as long as it isn't forbidden in the module), includes:
 	- `unsafe_array`: faster array initialization, `UninitArray`.
 	- `unsafe_async`: task_waker_noop, `CoroRun`.
-	- `unsafe_const`: extra const methods.
 	- `unsafe_hint`: unreachable_unchecked, assert_unchecked.
 	- `unsafe_layout`: `MemPod`, DSTs in the stack, `ExtAny::downcast*`.
 	- `unsafe_niche`: unchecked niche constructors.

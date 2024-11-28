@@ -550,27 +550,11 @@ mod _no_std_no_libm {
                 /// The absolute value.
                 ///
                 /// # Features
-                /// This function will only be `const` with the `unsafe_const` feature enabled,
-                /// and the `std` and `libm` features disabled.
+                /// This function will only be `const` with the `std` and `libm` features disabled.
                 ///
                 /// See also [`const_abs`][Self::const_abs].
                 #[must_use]
-                #[cfg(all(not(feature = "safe_num"), feature = "unsafe_const"))]
                 pub const fn abs(self) -> Float<$f> { self.const_abs() }
-                /// The absolute value.
-                ///
-                /// # Features
-                /// This function will only be `const` with the `unsafe_const` feature enabled,
-                /// and the `std` and `libm` features disabled.
-                ///
-                /// See also [`const_abs`][Self::const_abs].
-                #[must_use]
-                #[cfg(any(feature = "safe_num", not(feature = "unsafe_const")))]
-                pub fn abs(self) -> Float<$f> {
-                    let mask = <$ub>::MAX / 2;
-                    let bits: $ub = self.0.to_bits() & mask;
-                    Float(<$f>::from_bits(bits))
-                }
 
                 /// A number that represents its sign, propagating `NaN`.
                 #[must_use]
