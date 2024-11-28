@@ -4,7 +4,9 @@
 // #![doc = crate::doc_!(extends: slice)]
 // #![doc = crate::doc_!(modules: crate::mem; slice)]
 // #![doc = crate::doc_!(newline)]
-//
+
+#[cfg(test)]
+mod tests;
 
 mod ext;
 mod namespace;

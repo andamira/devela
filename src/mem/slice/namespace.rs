@@ -15,6 +15,10 @@ use core::slice::{from_raw_parts, from_raw_parts_mut};
 /// Instead, it operates on slices provided directly as arguments to its static methods.
 ///
 // TODO: # Methods
+// - namespaced from core::slice.
+// - shared subslicing.
+// - exclusive subslicing.
+// - splitting.
 /// See also: [`ExtSlice`][crate::ExtSlice], [`Mem`][crate::Mem], [`Ptr`][crate::Ptr].
 pub struct Slice<T>(crate::PhantomData<T>);
 
@@ -41,7 +45,7 @@ impl<T> Slice<T> {
     /// # Safety
     /// See `core::slice::`[`from_raw_parts`]
     ///
-    /// See also `Ptr::`[slice_from_raw_parts`][crate::Ptr::slice_from_raw_parts].
+    /// See also `Ptr::`[`slice_from_raw_parts`][crate::Ptr::slice_from_raw_parts].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     pub const unsafe fn from_raw_parts<'a>(data: *const T, len: usize) -> &'a [T] {
@@ -54,7 +58,7 @@ impl<T> Slice<T> {
     /// # Safety
     /// See `core::slice::`[`from_raw_parts_mut`].
     ///
-    /// See also `Ptr::`[slice_from_raw_parts_mut`][crate::Ptr::slice_from_raw_parts_mut].
+    /// See also `Ptr::`[`slice_from_raw_parts_mut`][crate::Ptr::slice_from_raw_parts_mut].
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_slice")))]
     #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
     pub const unsafe fn from_raw_parts_mut<'a>(data: *mut T, len: usize) -> &'a mut [T] {
@@ -65,105 +69,345 @@ impl<T> Slice<T> {
 
 /// # Methods for shared subslicing using index-based splitting.
 impl<T> Slice<T> {
+    /* panicking */
+
     /// Returns a subslice up to the given `end` index.
     ///
     /// Equivalent to `&slice[..end]`.
+    ///
+    /// # Panics
+    /// Panics if `end` > `slice.len()`.
+    #[must_use]
     pub const fn range_to(slice: &[T], end: usize) -> &[T] {
-        let (subslice, _) = slice.split_at(end);
-        subslice
+        slice.split_at(end).0
     }
-
     /// Returns a subslice starting from the given `start` index.
     ///
     /// Equivalent to `&slice[start..]`.
+    ///
+    /// # Panics
+    /// Panics if `start` > `slice.len()`.
+    #[must_use]
     pub const fn range_from(slice: &[T], start: usize) -> &[T] {
-        let (_, subslice) = slice.split_at(start);
-        subslice
+        slice.split_at(start).1
     }
-
     /// Returns a subslice from `start` (inclusive) to `end` (exclusive).
     ///
     /// Equivalent to `&slice[start..end]`.
+    ///
+    /// # Panics
+    /// Panics if `start` > len or `end` > `slice.len()`.
+    #[must_use]
     pub const fn range(slice: &[T], start: usize, end: usize) -> &[T] {
-        let (_, mid) = slice.split_at(start);
-        let (subslice, _) = mid.split_at(end - start);
-        subslice
+        slice.split_at(start).1.split_at(end - start).0
     }
 
     /// Returns the first `n` elements of the slice.
     ///
     /// Equivalent to `&slice[..n]`.
-    pub const fn take(slice: &[T], n: usize) -> &[T] {
-        let (subslice, _) = slice.split_at(n);
-        subslice
+    ///
+    /// # Panics
+    /// Panics if `n` > `slice.len()`.
+    #[must_use]
+    pub const fn take_first(slice: &[T], n: usize) -> &[T] {
+        slice.split_at(n).0
     }
-
     /// Returns the last `n` elements of the slice.
     ///
     /// Equivalent to `&slice[slice.len() - n..]`.
-    pub const fn skip_to_last(slice: &[T], n: usize) -> &[T] {
-        let (_, subslice) = slice.split_at(slice.len() - n);
-        subslice
+    ///
+    /// # Panics
+    /// Panics if `n` > `slice.len()`.
+    #[must_use]
+    pub const fn take_last(slice: &[T], n: usize) -> &[T] {
+        slice.split_at(slice.len() - n).1
     }
-
-    /// Returns the slice excluding the last `n` elements.
+    /// Returns the slice omitting the last `n` elements.
     ///
     /// Equivalent to `&slice[..slice.len() - n]`.
-    pub const fn skip_last(slice: &[T], n: usize) -> &[T] {
-        let (subslice, _) = slice.split_at(slice.len() - n);
-        subslice
+    ///
+    /// # Panics
+    /// Panics if `n` > `slice.len()`.
+    #[must_use]
+    pub const fn take_omit_last(slice: &[T], n: usize) -> &[T] {
+        slice.split_at(slice.len() - n).0
     }
+
+    /* Checked */
+
+    /// Returns a subslice up to the given `end` index.
+    ///
+    /// Equivalent to `&slice[..end]`.
+    ///
+    /// Returns `None` if `end` > `slice.len()`.
+    #[must_use]
+    pub const fn range_to_checked(slice: &[T], end: usize) -> Option<&[T]> {
+        match slice.split_at_checked(end) {
+            Some((subslice, _)) => Some(subslice),
+            None => None,
+        }
+    }
+    /// Returns a subslice starting from the given `start` index.
+    ///
+    /// Equivalent to `&slice[start..]`.
+    ///
+    /// Returns `None` if `start` > `slice.len()`.
+    #[must_use]
+    pub const fn range_from_checked(slice: &[T], start: usize) -> Option<&[T]> {
+        match slice.split_at_checked(start) {
+            Some((_, subslice)) => Some(subslice),
+            None => None,
+        }
+    }
+    /// Returns a subslice from `start` (inclusive) to `end` (exclusive).
+    ///
+    /// Equivalent to `&slice[start..end]`.
+    ///
+    /// Returns `None` if `start` > `slice.len()` or `end` > `slice.len()`.
+    ///
+    /// # Features
+    /// This method makes use of of the `unsafe_slice` feature is enabled.
+    #[must_use]
+    pub const fn range_checked(slice: &[T], start: usize, end: usize) -> Option<&[T]> {
+        if start <= end && end <= slice.len() {
+            #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+            return Some(slice.split_at(start).1.split_at(end - start).0);
+            #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+            // SAFETY: `start` and `end` are checked to be within bounds and valid
+            Some(unsafe { slice.split_at_unchecked(start).1.split_at_unchecked(end - start).0 })
+        } else {
+            None
+        }
+    }
+
+    /// Returns the first `n` elements of the slice.
+    ///
+    /// Equivalent to `&slice[..n]`.
+    ///
+    /// Returns `None` if `n` > `slice.len()`.
+    #[must_use]
+    pub const fn take_first_checked(slice: &[T], n: usize) -> Option<&[T]> {
+        match slice.split_at_checked(n) {
+            Some((subslice, _)) => Some(subslice),
+            None => None,
+        }
+    }
+    /// Returns the last `n` elements of the slice.
+    ///
+    /// Equivalent to `&slice[slice.len() - n..]`.
+    ///
+    /// Returns `None` if `n` > `slice.len()`.
+    ///
+    /// # Features
+    /// This method makes use of of the `unsafe_slice` feature is enabled.
+    #[must_use]
+    pub const fn take_last_checked(slice: &[T], n: usize) -> Option<&[T]> {
+        match slice.len().checked_sub(n) {
+            Some(index) => {
+                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+                return Some(slice.split_at(index).1);
+                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+                // SAFETY: `n` is checked to be within bounds and valid
+                return Some(unsafe { slice.split_at_unchecked(index).1 });
+            }
+            None => None,
+        }
+    }
+    /// Returns the slice omitting the last `n` elements.
+    ///
+    /// Equivalent to `&slice[..slice.len() - n]`.
+    ///
+    /// Returns `None` if `n` > `slice.len()`.
+    ///
+    /// # Features
+    /// This method makes use of of the `unsafe_slice` feature is enabled.
+    #[must_use]
+    pub const fn take_omit_last_checked(slice: &[T], n: usize) -> Option<&[T]> {
+        match slice.len().checked_sub(n) {
+            Some(index) => {
+                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+                return Some(slice.split_at(index).0);
+                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+                // SAFETY: `n` is checked to be within bounds and valid
+                return Some(unsafe { slice.split_at_unchecked(index).0 });
+            }
+            None => None,
+        }
+    }
+
+    /* TODO Unchecked */
+
+    /* TODO Saturating */
 }
 
 /// # Methods for exclusive subslicing using index-based splitting.
 impl<T> Slice<T> {
+    /* panicking */
+
     /// Returns a subslice up to the given `end` index.
     ///
     /// Equivalent to `&mut slice[..end]`.
+    ///
+    /// # Panics
+    /// Panics if `end` > `slice.len()`.
+    #[must_use]
     pub const fn range_to_mut(slice: &mut [T], end: usize) -> &mut [T] {
-        let (subslice, _) = slice.split_at_mut(end);
-        subslice
+        slice.split_at_mut(end).0
     }
-
     /// Returns a subslice starting from the given `start` index.
     ///
     /// Equivalent to `&mut slice[start..]`.
+    ///
+    /// # Panics
+    /// Panics if `start` > `slice.len()`.
+    #[must_use]
     pub const fn range_from_mut(slice: &mut [T], start: usize) -> &mut [T] {
-        let (_, subslice) = slice.split_at_mut(start);
-        subslice
+        slice.split_at_mut(start).1
     }
-
     /// Returns a subslice from `start` (inclusive) to `end` (exclusive).
     ///
     /// Equivalent to `&mut slice[start..end]`.
+    ///
+    /// # Panics
+    /// Panics if `start` > `slice.len()` or `end` > `slice.len()`.
+    #[must_use]
     pub const fn range_mut(slice: &mut [T], start: usize, end: usize) -> &mut [T] {
-        let (_, mid) = slice.split_at_mut(start);
-        let (subslice, _) = mid.split_at_mut(end - start);
-        subslice
+        slice.split_at_mut(start).1.split_at_mut(end - start).0
     }
 
     /// Returns the first `n` elements of the slice.
     ///
     /// Equivalent to `&mut slice[..n]`.
-    pub const fn take_mut(slice: &mut [T], n: usize) -> &mut [T] {
-        let (subslice, _) = slice.split_at_mut(n);
-        subslice
+    ///
+    /// # Panics
+    /// Panics if `n` > `slice.len()`.
+    #[must_use]
+    pub const fn take_first_mut(slice: &mut [T], n: usize) -> &mut [T] {
+        slice.split_at_mut(n).0
     }
-
     /// Returns the last `n` elements of the slice.
     ///
     /// Equivalent to `&mut slice[slice.len() - n..]`.
-    pub const fn skip_to_last_mut(slice: &mut [T], n: usize) -> &mut [T] {
-        let (_, subslice) = slice.split_at_mut(slice.len() - n);
-        subslice
+    ///
+    /// # Panics
+    /// Panics if `n` > `slice.len()`.
+    #[must_use]
+    pub const fn take_last_mut(slice: &mut [T], n: usize) -> &mut [T] {
+        slice.split_at_mut(slice.len() - n).1
     }
-
-    /// Returns the slice excluding the last `n` elements.
+    /// Returns the slice omitting the last `n` elements.
     ///
     /// Equivalent to `&mut slice[..slice.len() - n]`.
-    pub const fn skip_last_mut(slice: &mut [T], n: usize) -> &mut [T] {
-        let (subslice, _) = slice.split_at_mut(slice.len() - n);
-        subslice
+    ///
+    /// # Panics
+    /// Panics if `n` > `slice.len()`.
+    #[must_use]
+    pub const fn take_omit_last_mut(slice: &mut [T], n: usize) -> &[T] {
+        slice.split_at_mut(slice.len() - n).0
+    }
+
+    /* Checked */
+
+    /// Returns a subslice up to the given `end` index.
+    ///
+    /// Equivalent to `&mut slice[..end]`.
+    ///
+    /// Returns `None` if `end` > `slice.len()`.
+    #[must_use]
+    pub const fn range_to_mut_checked(slice: &mut [T], end: usize) -> Option<&mut [T]> {
+        match slice.split_at_mut_checked(end) {
+            Some((subslice, _)) => Some(subslice),
+            None => None,
+        }
+    }
+    /// Returns a subslice starting from the given `start` index.
+    ///
+    /// Equivalent to `&mut slice[start..]`.
+    ///
+    /// Returns `None` if `start` > `slice.len()`.
+    #[must_use]
+    pub const fn range_from_mut_checked(slice: &mut [T], start: usize) -> Option<&mut [T]> {
+        match slice.split_at_mut_checked(start) {
+            Some((_, subslice)) => Some(subslice),
+            None => None,
+        }
+    }
+    /// Returns a subslice from `start` (inclusive) to `end` (exclusive).
+    ///
+    /// Equivalent to `&mut slice[start..end]`.
+    ///
+    /// Returns `None` if `start` > `slice.len()` or `end` > `slice.len()`.
+    ///
+    /// # Features
+    /// This method makes use of of the `unsafe_slice` feature is enabled.
+    #[must_use]
+    pub const fn range_mut_checked(slice: &mut [T], start: usize, end: usize) -> Option<&mut [T]> {
+        if start <= end && end <= slice.len() {
+            #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+            return Some(slice.split_at_mut(start).1.split_at_mut(end - start).0);
+            #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+            // SAFETY: `start` and `end` are checked to be within bounds and valid
+            Some(unsafe {
+                slice.split_at_mut_unchecked(start).1.split_at_mut_unchecked(end - start).0
+            })
+        } else {
+            None
+        }
+    }
+
+    /// Returns the first `n` elements of the slice.
+    ///
+    /// Equivalent to `&mut slice[..n]`.
+    ///
+    /// Returns `None` if `n` > `slice.len()`.
+    #[must_use]
+    pub const fn take_first_mut_checked(slice: &mut [T], n: usize) -> Option<&mut [T]> {
+        match slice.split_at_mut_checked(n) {
+            Some((subslice, _)) => Some(subslice),
+            None => None,
+        }
+    }
+    /// Returns the last `n` elements of the slice.
+    ///
+    /// Equivalent to `&mut slice[slice.len() - n..]`.
+    ///
+    /// Returns `None` if `n` > `slice.len()`.
+    ///
+    /// # Features
+    /// This method makes use of of the `unsafe_slice` feature is enabled.
+    #[must_use]
+    pub const fn take_last_mut_checked(slice: &mut [T], n: usize) -> Option<&mut [T]> {
+        match slice.len().checked_sub(n) {
+            Some(index) => {
+                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+                return Some(slice.split_at_mut(index).1);
+                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+                // SAFETY: `n` is checked to be within bounds and valid
+                return Some(unsafe { slice.split_at_mut_unchecked(index).1 });
+            }
+            None => None,
+        }
+    }
+    /// Returns the slice omitting the last `n` elements.
+    ///
+    /// Equivalent to `&mut slice[..slice.len() - n]`.
+    ///
+    /// Returns `None` if `n` > `slice.len()`.
+    ///
+    /// # Features
+    /// This method makes use of of the `unsafe_slice` feature is enabled.
+    #[must_use]
+    pub const fn take_omit_last_mut_checked(slice: &mut [T], n: usize) -> Option<&mut [T]> {
+        match slice.len().checked_sub(n) {
+            Some(index) => {
+                #[cfg(any(feature = "safe_mem", not(feature = "unsafe_slice")))]
+                return Some(slice.split_at_mut(index).0);
+                #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_slice"))]
+                // SAFETY: `n` is checked to be within bounds and valid
+                return Some(unsafe { slice.split_at_mut_unchecked(index).0 });
+            }
+            None => None,
+        }
     }
 }
 

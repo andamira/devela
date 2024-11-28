@@ -52,7 +52,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
   - `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
   - `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
-  - `Slice`: `from_mut`, `from_ref`, `from_raw_parts`, `from_raw_parts_mut`, `range[_mut]`, `range_from[_mut]`, `range_to[_mut]`, `skip_last[_mut]`, `skip_to_last[_mut]`, `take[_mut]`.
+  - `Slice`: `from_mut`, `from_ref`, `from_raw_parts`, `from_raw_parts_mut`, `range[_mut][_checked]`, `range_from[_mut][_checked]`, `range_to[_mut][_checked]`, `take_first[_mut][_checked]`, `take_last[_mut][_checked]`, `take_omit_last[_mut][_checked]`.
 - macros:
   - `id_seq!`, `impl_trait!`, `type_marker!`, `type_resource!`,
   - `const_bool!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `impl_non_value!`.
