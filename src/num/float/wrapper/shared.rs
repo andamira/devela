@@ -110,7 +110,7 @@ macro_rules! custom_impls {
             #[must_use]
             pub const fn rem_euclid(self, other: $f) -> Float<$f> {
                 let r = self.0 % other;
-                iif![r < 0.0; Float(r + Float(other).const_abs().0); Float(r)]
+                iif![r < 0.0; Float(r + Float(other).abs().0); Float(r)]
             }
 
             /// Returns `self` between `[min..=max]` scaled to a new range `[u..=v]`.
@@ -167,9 +167,9 @@ macro_rules! custom_impls {
             // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
             pub const fn powf_series(self, y: $f, ln_x_terms: $ue) -> Float<$f> {
-                let xabs = self.const_abs().0;
+                let xabs = self.abs().0;
                 if xabs == 0.0 {
-                    iif![Float(y).const_abs().0 == 0.0; Self::ONE; Self::ZERO]
+                    iif![Float(y).abs().0 == 0.0; Self::ONE; Self::ZERO]
                 } else {
                     let ln_x = Float(xabs).ln_series(ln_x_terms).0;
                     let power = Float(y * ln_x);
@@ -190,7 +190,7 @@ macro_rules! custom_impls {
                 } else {
                     let mut guess = self.0;
                     let mut guess_next = 0.5 * (guess + self.0 / guess);
-                    while Self(guess - guess_next).const_abs().0 > Self::NR_TOLERANCE {
+                    while Self(guess - guess_next).abs().0 > Self::NR_TOLERANCE {
                         guess = guess_next;
                         guess_next = 0.5 * (guess + self.0 / guess);
                     }
@@ -221,7 +221,7 @@ macro_rules! custom_impls {
                 let mut guess = self.0;
                 loop {
                     let next_guess = (2.0 * guess + self.0 / (guess * guess)) / 3.0;
-                    if Float(next_guess - guess).const_abs().0 < Self::NR_TOLERANCE {
+                    if Float(next_guess - guess).abs().0 < Self::NR_TOLERANCE {
                         break Float(next_guess);
                     }
                     guess = next_guess;
@@ -430,7 +430,7 @@ macro_rules! custom_impls {
                 if base <= 0.0 {
                     Self::NAN
                 // The logarithm with a base of 1 is undefined except when the argument is also 1.
-                } else if Float(base - 1.0).const_abs().0 < Self::MEDIUM_MARGIN.0 { // + robust
+                } else if Float(base - 1.0).abs().0 < Self::MEDIUM_MARGIN.0 { // + robust
                 // } else if base == 1.0 { // good enough for direct input
                     #[expect(clippy::float_cmp, reason = "we've already checked it with a margin")]
                     { iif![self.0 == 1.0; Self::NAN; Self::NEG_INFINITY] }
@@ -606,7 +606,7 @@ macro_rules! custom_impls {
             pub const fn tan_series(self, terms: $ue) -> Float<$f> {
                 let x = self.clamp_nan(-Self::PI.0 / 2.0 + 0.0001, Self::PI.0 / 2.0 - 0.0001);
                 let (sin, cos) = x.sin_cos_series(terms);
-                iif![cos.const_abs().0 < 0.0001; return Self::MAX];
+                iif![cos.abs().0 < 0.0001; return Self::MAX];
                 Float(sin.0 / cos.0)
             }
 
@@ -629,7 +629,7 @@ macro_rules! custom_impls {
             /// See also [`asin_series_terms`][Self::asin_series_terms].
             #[must_use]
             pub const fn asin_series(self, terms: $ue) -> Float<$f> {
-                iif![self.const_abs().0 > 1.0; return Self::NAN];
+                iif![self.abs().0 > 1.0; return Self::NAN];
                 let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, self.0);
                 let mut i = 0;
                 while i < terms {
@@ -673,7 +673,7 @@ macro_rules! custom_impls {
             /// information about the number of `terms` needed.
             #[must_use]
             pub const fn acos_series(self, terms: $ue) -> Float<$f> {
-                iif![self.const_abs().0 > 1.0; return Self::NAN];
+                iif![self.abs().0 > 1.0; return Self::NAN];
                 Float(Self::FRAC_PI_2.0 - self.asin_series(terms).0)
             }
 
@@ -701,7 +701,7 @@ macro_rules! custom_impls {
             /// See also [`atan_series_terms`][Self::atan_series_terms].
             #[must_use]
             pub const fn atan_series(self, terms: $ue) -> Float<$f> {
-                if self.const_abs().0 > 1.0 {
+                if self.abs().0 > 1.0 {
                     if self.0 > 0.0 {
                         Float(Self::FRAC_PI_2.0 - Float(1.0 / self.0).atan_series(terms).0)
                     } else {
@@ -846,13 +846,10 @@ macro_rules! custom_impls {
                 }
             }
 
-            /// The absolute value of `self` in constant-time.
-            ///
-            /// This is a separate function from [`abs`][Self::abs] because we also want to have
-            /// the possibly more efficient `std` and `libm` implementations.
+            /// The absolute value of `self`.
             // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            pub const fn const_abs(self) -> Float<$f> {
+            pub const fn abs(self) -> Float<$f> {
                 let mask = <$uf>::MAX / 2;
                 Float(<$f>::from_bits(self.0.to_bits() & mask))
             }

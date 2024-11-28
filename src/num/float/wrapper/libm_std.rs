@@ -80,8 +80,7 @@ mod _libm {
         trunc = trunc: ;
         // fract
         // split == modf
-        "Its absolute value."
-        fabs = abs: ;
+        // abs
         // signum
         "A number composed of its magnitude and the `sign` of other."
         copysign = copysign: sign;
@@ -303,8 +302,7 @@ mod _std {
         $$ \text{fract}(x) = x - \text{trunc}(x) $$"
         fract = fract: ;
         // split == modf
-        "The absolute value of `x`."
-        abs = abs: ;
+        // abs
         "A number that represents the sign of `x`."
         signum = signum: ;
         "A number composed of a `magnitude` and a `sign`."
@@ -546,15 +544,6 @@ mod _no_std_no_libm {
                     let trunc = self.trunc();
                     (trunc, Float(self.0 - trunc.0))
                 }
-
-                /// The absolute value.
-                ///
-                /// # Features
-                /// This function will only be `const` with the `std` and `libm` features disabled.
-                ///
-                /// See also [`const_abs`][Self::const_abs].
-                #[must_use]
-                pub const fn abs(self) -> Float<$f> { self.const_abs() }
 
                 /// A number that represents its sign, propagating `NaN`.
                 #[must_use]
