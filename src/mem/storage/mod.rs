@@ -8,8 +8,8 @@
 //
 
 #[cfg(all(doc, feature = "alloc"))]
-use crate::mem::Box;
-use core::ops::DerefMut;
+use crate::Box;
+use crate::DerefMut;
 
 mod bare;
 #[cfg(feature = "alloc")]
@@ -28,21 +28,18 @@ pub use bare::*;
 ///
 /// # Examples
 /// ```
-/// use core::{array, mem::size_of};
-/// use devela::mem::Storage;
+/// use core::array::from_fn;
+/// use devela::Storage;
 ///
 /// /// Generically store a generic array of generic size.
 /// pub struct MyStructure<T, S: Storage, const L: usize> {
 ///     data: S::Stored<[T; L]>,
 /// }
 ///
-/// impl<T, S: Storage, const L: usize> MyStructure<T, S, L> {
-///     pub fn new() -> Self
-///     where
-///         T: Default,
-///     {
+/// impl<T: Default, S: Storage, const L: usize> MyStructure<T, S, L> {
+///     pub fn new() -> Self {
 ///         Self {
-///             data: S::Stored::from(array::from_fn(|_| T::default())),
+///             data: S::Stored::from(from_fn(|_| T::default())),
 ///         }
 ///     }
 /// }
@@ -52,7 +49,7 @@ pub use bare::*;
 ///
 /// // The array is stored in the heap.
 /// #[cfg(feature = "alloc")]
-/// assert_eq![8, size_of::<MyStructure::<u8, devela::mem::Boxed, 100>>()];
+/// assert_eq![8, size_of::<MyStructure::<u8, devela::Boxed, 100>>()];
 ///
 /// ```
 pub trait Storage {

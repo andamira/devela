@@ -26,7 +26,7 @@ use core::fmt::Debug;
 /// Represents a single thread stackless coroutine.
 ///
 /// It has a private status that can be either running or halted.
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct Coro<T, E> {
     status: CoroStatus,
     result: OptRes<T, E>,
@@ -42,7 +42,7 @@ enum CoroStatus {
 impl<T, E> Coro<T, E> {
     // Returns a new coroutine.
     #[allow(unused)]
-    fn new() -> Self {
+    const fn new() -> Self {
         Coro { status: CoroStatus::Running, result: None }
     }
 

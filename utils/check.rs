@@ -1,12 +1,12 @@
 #!/usr/bin/env -S rust-script -c
 //! ```cargo
 //! [dependencies]
-//! toml_edit = "0.20"
-//! itertools = "0.13"
-//! lexopt = "0.3"
 //! devela = { version = "0.21.2", features = ["std", "sys"] }
+//! lexopt = "0.3"
+//! itertools = "0.13"
+//! toml_edit = "0.20"
 //! ```
-// This script needs [rusts-cript](https://crates.io/crates/rust-script) to run.
+// This script needs [rust-script](https://crates.io/crates/rust-script) to run.
 
 use devela::all::{crate_root, iif, sf};
 use itertools::Itertools;

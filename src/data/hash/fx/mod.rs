@@ -57,7 +57,7 @@ macro_rules! impl_fx {
             pub fn hash<T: Hash + ?Sized>(v: &T) -> $t {
                 let mut state = Self::new();
                 v.hash(&mut state);
-                state.finish() as $t
+                state.state
             }
 
             /// A const method for when you need a hash of a byte slice.
@@ -177,7 +177,7 @@ impl Hasher for HasherFx<u32> {
         self.write_u64(i as u64);
     }
     fn finish(&self) -> u64 {
-        u64::from(self.state)
+        self.state as u64
     }
 }
 impl Hasher for HasherFx<u64> {

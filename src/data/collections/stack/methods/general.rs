@@ -1,19 +1,14 @@
 // devela::data::collections::stack::methods::general
 
-#[cfg(feature = "alloc")]
-use crate::{data::Vec, mem::Boxed};
-use crate::{
-    data::{
-        error::{
-            DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds},
-            DataResult as Result,
-        },
-        Array, Stack, StackIter,
-    },
-    mem::{Bare, Storage},
-};
 #[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
-use core::mem::{transmute_copy, MaybeUninit};
+use crate::Mem;
+use crate::{
+    Array, Bare,
+    DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds},
+    DataResult as Result, MaybeUninit, Slice, Stack, StackIter, Storage,
+};
+#[cfg(feature = "alloc")]
+use crate::{Boxed, Vec};
 
 // helper macro to impl methods for a Stack with custom index size.
 macro_rules! impl_stack {
@@ -919,7 +914,7 @@ macro_rules! impl_stack {
                             let _ = i.write(self.data[n].clone());
                         }
                         // SAFETY: we've initialized all the elements
-                        unsafe { transmute_copy::<_, [T; LEN]>(&unarr) }
+                        unsafe { Mem::transmute_copy::<_, [T; LEN]>(&unarr) }
                     };
 
                     #[cfg(any(feature = "safe_data", not(feature = "unsafe_array")))]

@@ -42,7 +42,7 @@
 /// ```
 ///
 /// # Features
-/// The unsafe version uses [`MaybeUninit`][core::mem::MaybeUninit] in the case
+/// The unsafe version uses [`MaybeUninit`][crate::MaybeUninit] in the case
 /// of stack allocation or [`Box::from_raw`] in the case of heap allocation.
 ///
 /// For the `const_init`, `clone`, `default` and `iter` versions, if the given
@@ -91,9 +91,9 @@ macro_rules! array_init {
 
     // unsafe array initialization in the stack
     unsafe_init [$T:ty; $LEN:expr], $init:expr) => {{
-        let mut arr: [core::mem::MaybeUninit<$T>; $LEN] =
+        let mut arr: [$crate::MaybeUninit<$T>; $LEN] =
             // SAFETY: array will be fully initialized in the subsequent loop
-            unsafe { core::mem::MaybeUninit::uninit().assume_init() };
+            unsafe { $crate::MaybeUninit::uninit().assume_init() };
         for (i, e) in &mut arr[..].iter_mut().enumerate() {
             #[allow(clippy::redundant_closure_call, reason  = "macro arg isn't redundant")]
             let _ = e.write($init(i));
@@ -101,9 +101,9 @@ macro_rules! array_init {
         // Can't use transmute for now, have to use transmute_copy:
         // - WAIT: [const generics transmute](https://github.com/rust-lang/rust/issues/61956)
         //   - https://github.com/rust-lang/rust/issues/62875 (duplicate)
-        // unsafe { core::mem::transmute::<_, [T; LEN]>(&arr) }
+        // unsafe { $crate::transmute::<_, [T; LEN]>(&arr) }
         // SAFETY: we've initialized all the elements
-        unsafe { core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
+        unsafe { $crate::Mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
     }};
     (
     // unsafe array initialization in the heap
@@ -120,16 +120,16 @@ macro_rules! array_init {
     // unsafe array initialization in the stack, compile-time friendly.
     unsafe_const_init [$T:ty; $LEN:expr], $const_init:expr) => {{
         // WAIT: [maybe_uninit_uninit_array](https://github.com/rust-lang/rust/issues/96097)
-        let mut arr: [core::mem::MaybeUninit<$T>; $LEN] =
+        let mut arr: [$crate::MaybeUninit<$T>; $LEN] =
             // SAFETY: array will be fully initialized in the subsequent loop
-            unsafe { core::mem::MaybeUninit::uninit().assume_init() };
+            unsafe { $crate::MaybeUninit::uninit().assume_init() };
         let mut i = 0;
         while i < $LEN {
-            arr[i] = core::mem::MaybeUninit::new($const_init(i));
+            arr[i] = $crate::MaybeUninit::new($const_init(i));
             i += 1;
         }
         // SAFETY: we've initialized all the elements
-        unsafe { core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
+        unsafe { $crate::Mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
     }};
     (
 
@@ -245,14 +245,14 @@ macro_rules! array_init {
         }
         #[cfg(all(not(feature = $fsafe), feature = $funsafe))]
         {
-            let mut arr: [core::mem::MaybeUninit<$T>; $LEN] =
+            let mut arr: [$crate::MaybeUninit<$T>; $LEN] =
                 // SAFETY: array will be fully initialized in the subsequent loop
-                unsafe { core::mem::MaybeUninit::uninit().assume_init() };
+                unsafe { $crate::MaybeUninit::uninit().assume_init() };
             for (i, data) in $op.enumerate() {
                 arr[i].write(data?);
             }
             // SAFETY: we've initialized all the elements
-            unsafe { core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
+            unsafe { $crate::Mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
         }
     }};
 }

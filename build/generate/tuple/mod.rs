@@ -56,8 +56,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     /// It supports increased arities of 24, 36, 48 and 72 by enabling the
     /// corresponding capability feature: `_tuple_arity_[24|36|48|72]`.
     ///
-    /// # Derived work
-    "#)?;
+    /// # Derived work"#)?;
     let modifications = manifest_dir_path()
         .join("build").join("generate").join("tuple").join("MODIFICATIONS.md");
     w!(f, "#[doc = \"{}\"]", &read_to_string(modifications)?)?;
