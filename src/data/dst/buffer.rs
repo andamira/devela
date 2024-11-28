@@ -1,10 +1,6 @@
 // devela::data::dst
 
-use crate::{data::Array, mem::MemPod};
-use core::{
-    mem::MaybeUninit,
-    ops::{Deref, DerefMut},
-};
+use crate::{Array, ConstDefault, Deref, DerefMut, MaybeUninit, MemPod};
 
 /// Represents the backing buffer for storing dynamically sized types.
 ///
@@ -120,9 +116,15 @@ impl<T, const CAP: usize> DerefMut for DstArray<T, CAP> {
         &mut self.inner
     }
 }
-#[rustfmt::skip]
 impl<T: MemPod, const CAP: usize> Default for DstArray<T, CAP> {
-    fn default() -> Self { Self { inner: Array::new([MaybeUninit::uninit(); CAP]) } }
+    fn default() -> Self {
+        Self { inner: Array::new([MaybeUninit::uninit(); CAP]) }
+    }
+}
+impl<T: MemPod, const CAP: usize> ConstDefault for DstArray<T, CAP> {
+    const DEFAULT: Self = Self {
+        inner: Array::new_bare([MaybeUninit::uninit(); CAP]),
+    };
 }
 #[rustfmt::skip]
 unsafe impl<T: MemPod, const CAP: usize> DstBuf for DstArray<T, CAP> {

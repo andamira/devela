@@ -14,7 +14,7 @@ pub(crate) fn decompose_pointer<T: ?Sized>(mut ptr: *const T) -> (*const (), usi
     (addr, rv.len() - 1, vals)
 }
 
-pub(crate) fn mem_as_slice<T>(ptr: &mut T) -> &mut [usize] {
+pub(crate) const fn mem_as_slice<T>(ptr: &mut T) -> &mut [usize] {
     assert!(size_of::<T>() % size_of::<usize>() == 0);
     assert!(align_of::<T>() % align_of::<usize>() == 0);
     let words = size_of::<T>() / size_of::<usize>();
@@ -71,11 +71,12 @@ pub(crate) fn store_metadata<W: MemPod>(dst: &mut BufSlice<W>, meta_words: &[usi
     }
 }
 
-pub(crate) fn round_to_words<T>(len: usize) -> usize {
+pub(crate) const fn round_to_words<T>(len: usize) -> usize {
     len.div_ceil(size_of::<T>())
 }
 
-/// Calls a provided function to get a fat pointer version of `v` (and checks that the returned pointer is sane)
+/// Calls a provided function to get a fat pointer version of `v`
+/// (and checks that the returned pointer is sane)
 pub(crate) fn check_fat_pointer<U, T: ?Sized>(v: &U, get_ref: impl FnOnce(&U) -> &T) -> &T {
     let ptr: &T = get_ref(v);
     assert_eq!(

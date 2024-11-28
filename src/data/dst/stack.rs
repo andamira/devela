@@ -8,8 +8,7 @@
 // - core_impls
 
 use super::{check_fat_pointer, decompose_pointer, list_push_gen, DstArray, DstBuf};
-use crate::mem::MemAligned;
-use core::{marker, mem, ptr};
+use crate::{ConstDefault, MaybeUninit, MemAligned, PhantomData, Ptr};
 
 /* public API */
 
@@ -39,7 +38,7 @@ pub type DstStackUsize<DST /*: ?Sized*/, const CAP: usize> = DstStack<DST, DstAr
 /// Note: Each item in the stack takes at least one slot in the buffer
 /// (to store the metadata)
 pub struct DstStack<DST: ?Sized, BUF: DstBuf> {
-    _pd: marker::PhantomData<*const DST>,
+    _pd: PhantomData<*const DST>,
     // Offset from the _back_ of `data` to the next free position.
     // I.e. data[data.len() - cur_ofs] is the first metadata word
     next_ofs: usize,
@@ -60,10 +59,14 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
     #[must_use] #[rustfmt::skip]
     pub fn new() -> Self where BUF: Default { Self::with_buffer(BUF::default()) }
 
+    /// Constructs a new (empty) stack, in compile-time.
+    #[must_use] #[rustfmt::skip]
+    pub const fn new_const() -> Self where BUF: ConstDefault { Self::with_buffer(BUF::DEFAULT) }
+
     /// Constructs a new (empty) stack using the given `buffer`.
     #[must_use] #[rustfmt::skip]
-    pub fn with_buffer(buffer: BUF) -> Self {
-        DstStack { _pd: marker::PhantomData, next_ofs: 0, data: buffer }
+    pub const fn with_buffer(buffer: BUF) -> Self {
+        DstStack { _pd: PhantomData, next_ofs: 0, data: buffer }
     }
 
     /// Returns `true` if the stack is empty.
@@ -89,7 +92,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
         unsafe {
             match self.push_inner(check_fat_pointer(&v, f)) {
                 Ok(pii) => {
-                    ptr::write(pii.data.as_mut_ptr() as *mut VAL, v);
+                    Ptr::write(pii.data.as_mut_ptr() as *mut VAL, v);
                     Ok(())
                 }
                 Err(()) => Err(v),
@@ -116,7 +119,7 @@ impl<DST: ?Sized, BUF: DstBuf> DstStack<DST, BUF> {
             // SAFETY: Pointer is valid, and will never be accessed after this point.
             let words = unsafe {
                 let size = size_of_val(&*ptr);
-                ptr::drop_in_place(ptr);
+                Ptr::drop_in_place(ptr);
                 BUF::round_to_words(size)
             };
             self.next_ofs -= words + Self::meta_words();
@@ -176,7 +179,7 @@ impl<BUF: DstBuf> DstStack<str, BUF> {
     pub fn push_str(&mut self, string: &str) -> Result<(), ()> {
         unsafe {
             self.push_inner(string).map(|pii| {
-                ptr::copy(
+                Ptr::copy(
                     string.as_bytes().as_ptr(),
                     pii.data.as_mut_ptr() as *mut u8,
                     string.len(),
@@ -218,7 +221,7 @@ where
         // SAFETY: Carefully constructed to maintain consistency.
         unsafe {
             self.push_inner(slice).map(|pii| {
-                ptr::copy(
+                Ptr::copy(
                     slice.as_ptr() as *const u8,
                     pii.data.as_mut_ptr() as *mut u8,
                     size_of_val(slice),
@@ -266,10 +269,10 @@ where
 
 struct PushInnerInfo<'a, DInner> {
     // Buffer for value data
-    data: &'a mut [mem::MaybeUninit<DInner>],
+    data: &'a mut [MaybeUninit<DInner>],
 
     // Buffer for metadata (length/vtable)
-    meta: &'a mut [mem::MaybeUninit<DInner>],
+    meta: &'a mut [MaybeUninit<DInner>],
 
     // Memory location for resetting the push
     reset_slot: &'a mut usize,
