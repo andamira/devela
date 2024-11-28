@@ -52,7 +52,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
   - `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
   - `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
-  - `Slice`: `from_mut`, `from_ref`, `from_raw_parts`, `from_raw_parts_mut`.
+  - `Slice`: `from_mut`, `from_ref`, `from_raw_parts`, `from_raw_parts_mut`, `range[_mut]`, `range_from[_mut]`, `range_to[_mut]`, `skip_last[_mut]`, `skip_to_last[_mut]`, `take[_mut]`.
 - macros:
   - `id_seq!`, `impl_trait!`, `type_marker!`, `type_resource!`,
   - `const_bool!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `impl_non_value!`.
@@ -100,7 +100,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove custom no_std `Error` definition.
 - remove items: `NeverOk`, `NeverErr`, `HasherFx32`, `HasherFx64`.
 - remove types: `InRange*`, `NonRange*`, `HourMilliSplit`, `SecNanoSplit`, `YearSecSplit`.
-- remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`.
+- remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`, `unsafe_const`.
 - remove standalone `char_*` fns (namespaced in `Char`).
 - remove most re-exported fns from `std::mem` (namespaced in `Mem`).
 - remove re-exported fns from `std::ptr` (namespaced in `Ptr`).
@@ -108,11 +108,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 - comment out unused features: `code`, `data`, `error`.
 - remove convenience fn: `out_dir` from the build script.
 - remove redundant `char32` type.
+- remove `Float::const_abs`.
 
 ### Changed
 
 #### Misc.
-- bump rust version to 1.82.0.
+- bump rust version to 1.83.0.
 - start using `core::error::Error`.
 
 #### Features & flags
@@ -149,7 +150,8 @@ The format is based on [Keep a Changelog], and this project adheres to
     - `Array::len` to `capacity`.
     - `mem_*` prefixed fns as `Mem` methods.
     - `ptr_*` prefixed fns as `Ptr` methods.
-  - make *const* the following `Float` methods:
+  - make *const* most of the `Angle` methods.
+  - make *const* all the `Float` methods that were previously feature-gated, and add:
     `eval_poly`, `factorial`, `mul_add_fallback`, `scale`, `lerp`, `ln*_series`, `log[10|2]_series`.
   - make *const* versions of the following `Float` methods:
     `clamp_nan`, `fisr`, `hypot_fisr`, `max_nan`, `min_nan`, `cbrt_nr`, `sqrt_nr`, `hypot_nr`, `rem_euclid`, `*_series`, `*_series_terms*`.
