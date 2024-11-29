@@ -23,6 +23,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
         }
 
         println_var("CARGO_MANIFEST_DIR");
+        println_var("CARGO_MANIFEST_PATH");
         println_var("OUT_DIR");
 
         println_var("HOST");

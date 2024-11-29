@@ -8,13 +8,18 @@
 use std::{env, path::PathBuf};
 
 /// Retuns the path of `OUT_DIR`.
-pub(crate) fn out_dir_path() -> PathBuf {
+pub(crate) fn out_dir() -> PathBuf {
     PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not set"))
 }
 
 /// Retuns the path of `CARGO_MANIFEST_DIR`.
-pub(crate) fn manifest_dir_path() -> PathBuf {
+pub(crate) fn manifest_dir() -> PathBuf {
     PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not set"))
+}
+
+/// Retuns the path of `CARGO_MANIFEST_PATH`.
+pub(crate) fn manifest_path() -> PathBuf {
+    PathBuf::from(env::var("CARGO_MANIFEST_PATH").expect("CARGO_MANIFEST_PATH not set"))
 }
 
 /// Prints a message to *stdout* from the build script.

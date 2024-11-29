@@ -26,7 +26,7 @@ use std::{
 
 #[rustfmt::skip]
 pub(crate) fn generate() -> Result<(), Error> {
-    let build_out_dir = out_dir_path().join("build/");
+    let build_out_dir = out_dir().join("build/");
     create_dir_all(&build_out_dir)?;
     let path = build_out_dir.join("tuple.rs");
 
@@ -57,7 +57,7 @@ pub(crate) fn generate() -> Result<(), Error> {
     /// corresponding capability feature: `_tuple_arity_[24|36|48|72]`.
     ///
     /// # Derived work"#)?;
-    let modifications = manifest_dir_path()
+    let modifications = manifest_dir()
         .join("build").join("generate").join("tuple").join("MODIFICATIONS.md");
     w!(f, "#[doc = \"{}\"]", &read_to_string(modifications)?)?;
     w!(f, "#[cfg_attr(feature = \"nightly_doc\", doc(notable_trait))]")?;
