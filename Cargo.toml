@@ -226,6 +226,8 @@ safest = [ # forbids `unsafe` even in dependencies (except standard library)
 nightly = [ # sync with src/lib.rs
 	"nightly_coro", "nightly_doc", "nightly_simd", "nightly_stable",
 ] # enables all the following features:
+	# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
+	nightly_autodiff = [] # autodiff
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 	nightly_doc = [] # disabled: doc_auto_cfg
