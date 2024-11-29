@@ -35,6 +35,9 @@ impl char16 {
 
     /* constants */
 
+    /// The lowest unicode scalar a `char16` can represent, `'\u{00}'`.
+    pub const MIN: char16 = char16::new_unchecked(0x0000);
+
     /// The highest unicode scalar a `char16` can represent, `'\u{FFFF}'`.
     ///
     /// Note that `'\u{FFFF}'` is a *noncharacter*.

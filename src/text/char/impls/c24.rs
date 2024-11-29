@@ -24,8 +24,11 @@ impl char24 {
 
     /* constants */
 
+    /// The lowest unicode scalar a `char24` can represent, `'\u{00}'`.
+    pub const MIN: char24 = char24::from_char('\u{00}');
+
     /// The highest unicode scalar a `char24` can represent, `'\u{10FFFF}'`.
-    pub const MAX: char24 = char24::from_char('\u{10ffff}');
+    pub const MAX: char24 = char24::from_char('\u{10FFFF}');
 
     /// `U+FFFD REPLACEMENT CHARACTER (�)` is used in Unicode to represent a decoding error.
     pub const REPLACEMENT_CHARACTER: char24 = char24::from_char(char::REPLACEMENT_CHARACTER);

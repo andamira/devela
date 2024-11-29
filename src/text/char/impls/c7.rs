@@ -33,6 +33,9 @@ impl char7 {
 
     /* constants */
 
+    /// The lowest unicode scalar a `char7` can represent, `'\u{00}'`.
+    pub const MIN: char7 = char7::new_unchecked(0x00);
+
     /// The highest unicode scalar a `char7` can represent, `'\u{7F}'`.
     pub const MAX: char7 = char7::new_unchecked(0x7F);
 

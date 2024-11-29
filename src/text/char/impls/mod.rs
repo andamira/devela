@@ -37,6 +37,7 @@ macro_rules! impl_char {
         /* impl traits */
 
         impl UnicodeScalar for $name {
+            const MIN: Self = Self::MIN;
             const MAX: Self = Self::MAX;
 
             /* encode */

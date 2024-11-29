@@ -15,6 +15,9 @@ impl char8 {
 
     /* constants */
 
+    /// The lowest unicode scalar a `char8` can represent, `'\u{00}'`.
+    pub const MIN: char8 = char8(0x00);
+
     /// The highest unicode scalar a `char8` can represent, `'\u{FF}'`.
     pub const MAX: char8 = char8(0xFF);
 

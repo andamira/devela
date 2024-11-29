@@ -7,6 +7,7 @@
 use crate::{Char, UnicodeScalar};
 
 impl UnicodeScalar for char {
+    const MIN: Self = Self::MIN;
     const MAX: Self = Self::MAX;
 
     /* encode */

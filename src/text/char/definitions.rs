@@ -113,7 +113,9 @@ pub struct char24 {
 /// It's implemented for: [`char7`], [`char8`], [`char16`], [`char24`],
 /// and [`char`][crate::char].
 pub trait UnicodeScalar {
-    /// The highest unicode scalar that can be represented by this type.
+    /// The lowest unicode scalar that can be represented.
+    const MIN: Self;
+    /// The highest unicode scalar that can be represented.
     const MAX: Self;
 
     /* encode */
