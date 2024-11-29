@@ -1,11 +1,11 @@
-# https://doc.rust-lang.org/cargo/reference/manifest.html
 # ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/manifest.html
 #
 ## TOC
 #
 # * [workspace]
-# * [lib]
 # * [package]
+# * [lib]
 #
 # * [features]
 #   - misc.
@@ -42,10 +42,6 @@
 members = [".", "macros"]
 resolver = "2"
 
-[lib]
-# path = "./src/lib.rs"
-bench = false
-
 [package]
 name = "devela"
 description = "A cohesive development layer."
@@ -73,10 +69,15 @@ keywords = ["dev", "helper", "library", "std", "extension"]
 build = "build/mod.rs"
 publish = true
 
+[lib]
+# path = "./src/lib.rs"
+bench = false
 
-[features] # 197/300 (103 remaining), 84 visible, 113 hidden
-# https://doc.rust-lang.org/cargo/reference/features.html
+
+[features] # 196/300 (104 remaining), 83 visible, 113 hidden
 # ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/features.html
+
 # Features are grouped in the following categories:
 # - Miscellaneous    __[dbg,…]
 # - Environment      alloc,[no_]std
@@ -219,6 +220,8 @@ safest = [ # forbids `unsafe` even in dependencies (except standard library)
 #* Nightly features *#
 # ------------------------------------------------------------------------------
 # They are prefixed with `nightly_`.
+#
+# - https://doc.rust-lang.org/unstable-book/library-features.html
 
 nightly = [ # sync with src/lib.rs
 	"nightly_coro", "nightly_doc", "nightly_simd", "nightly_stable",
@@ -314,7 +317,7 @@ nightly = [ # sync with src/lib.rs
 	# - [Reproducible Build bugs](https://github.com/rust-lang/rust/issues/129080)
 	# - [unchecked_* on integers](https://github.com/rust-lang/rust/issues/85122)
 	#
-	## Rust projet Goals:
+	## Rust project Goals:
 	# - https://rust-lang.github.io/rust-project-goals/
 	# - [const traits](https://github.com/rust-lang/rust-project-goals/issues/106)
 	# - [expanded const generics](https://github.com/rust-lang/rust-project-goals/issues/100)
@@ -548,13 +551,15 @@ dep_wide = ["dep:wide"]
 
 
 [dependencies] # 20 (2 required, 17 optional)
-# https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 # ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
+#
 # Links to each crate's crates.io page are provided alongside the entries,
 # as well as to the changelogs (✓), if available, or commit histories (✗).
 #
 # Crates using unsafe, even if transitively, are marked as so,
 # preventing enabling them if the `safest` feature is enabled.
+#
 
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
 version  = "0.11.0" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
@@ -674,8 +679,8 @@ devela = { path = './' }
 
 
 [package.metadata.docs.rs]
-# https://docs.rs/about/metadata
 # ==============================================================================
+# https://docs.rs/about/metadata
 
 no-default-features = true
 features = ["_docsrs"]
