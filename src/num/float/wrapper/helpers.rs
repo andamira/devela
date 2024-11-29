@@ -1,8 +1,144 @@
 // devela::num::float::wrapper::shared
 //
 //! private helpers
+//
+// TOC
+// - doc tables
+// - functions
 
 use crate::Float;
+
+crate::CONST! {
+pub(crate) TABLE_EXP_SERIES_TERMS = "
+The following table shows the required number of `terms` needed
+to reach the most precise result for both `f32` and `f64`:
+```txt
+  value     t_f32  t_f64
+-------------------------
+± 0.001 →       3     5
+± 0.100 →       6     10
+± 1.000 →      11     18
+± 10.000 →     32     46
+± 20.000 →     49     68
+± 50.000 →     92    119
+± 88.722 →    143    177  (max for f32 == f32::MAX.ln())
+± 150.000 →   ---    261
+± 300.000 →   ---    453
+± 500.000 →   ---    692
+± 709.782 →   ---    938  (max for f64 == f64:MAX.ln())
+```";
+
+pub(crate) TABLE_EXP2_SERIES_TERMS = "
+The following table shows the required number of `terms` needed
+to reach the most precise result for both `f32` and `f64`:
+```txt
+  value     t_f32  t_f64
+-------------------------
+± 0.3 →        8     13
+± 3.0 →       15     25
+± 7.0 →       22     34
+± 15.0 →      34     49
+± 31.0 →      52     71
+± 63.0 →      84    110
+± 127.999 →  144    178 (max for f32)
+± 255.0 →    ---    298
+± 511.0 →    ---    520
+± 1023.999 → ---    939 (max for f64)
+```";
+pub(crate) TABLE_LN_SERIES_TERMS = "
+The following table shows the required number of `terms` needed
+to reach the most precise result for both `f32` and `f64`:
+```txt
+  value      t_f32  t_f64
+--------------------------
+± 0.00001 →  81181 536609
+± 0.0001 →   12578  59174
+± 0.001 →     1923   6639
+± 0.01. →      245    720
+± 0.1 →         32     80
+± 0.5 →          8     17
+± 1. →           1      1
+± 2. →           8     17
+± 10. →         32     80
+± 100. →       245    720
+± 1000. →     1923   6639
+± 10000. →   12578  59174
+± 100000. →  81181 536609
+/// ```
+```";
+pub(crate) TABLE_SIN_SERIES_TERMS = "
+The following table shows the required number of `terms` needed
+to reach the most precise result for both `f32` and `f64`:
+```txt
+  value     t_f32  t_f64
+-------------------------
+± 0.001 →      3      4
+± 0.100 →      4      6
+± 0.300 →      5      7
+± 0.500 →      5      8
+± 0.700 →      6      9
+± 0.900 →      6     10
+± 0.999 →      6     10
+```";
+pub(crate) TABLE_COS_SERIES_TERMS = "
+The following table shows the required number of `terms` needed
+to reach the most precise result for both `f32` and `f64`:
+```txt
+  value     t_f32  t_f64
+-------------------------
+± 0.001 →      3      4
+± 0.100 →      4      6
+± 0.300 →      5      8
+± 0.500 →      6      9
+± 0.700 →      6     10
+± 0.900 →      7     10
+± 0.999 →      7     11
+```";
+pub(crate) TABLE_TAN_SERIES_TERMS = "
+The following table shows the required number of `terms` needed
+to reach the most precise result for both `f32` and `f64`:
+```txt
+  value     t_f32  t_f64
+-------------------------
+± 0.001 →      3      4
+± 0.100 →      4      6
+± 0.300 →      5      8
+± 0.500 →      6      9
+± 0.700 →      6     10
+± 0.900 →      7     10
+± 0.999 →      7     11
+```";
+pub(crate) TABLE_ASIN_SERIES_TERMS = "
+The following table shows the required number of `terms` needed
+to reach the most precise result for both `f32` and `f64`:
+```txt
+  value     t_f32  t_f64
+-------------------------
+± 0.001 →      3      4
+± 0.100 →      5      9
+± 0.300 →      7     15
+± 0.500 →     10     24
+± 0.700 →     18     44
+± 0.900 →     47    134
+± 0.990 →    333   1235
+± 0.999 →   1989  10768
+```";
+pub(crate) TABLE_ATAN_SERIES_TERMS = "
+The following table shows the required number of `terms` needed
+to reach the most precise result for both `f32` and `f64`:
+```txt
+  value     t_f32  t_f64
+-------------------------
+± 0.001 →      3      4
+± 0.100 →      5      9
+± 0.300 →      7     15
+± 0.500 →     12     26
+± 0.700 →     20     47
+± 0.900 →     61    152
+± 0.990 →    518   1466
+± 0.999 →   4151  13604
+```";
+}
 
 #[rustfmt::skip]
 #[cfg(feature = "_float_f32")]
@@ -145,7 +281,7 @@ impl Float<f64> {
         } else { 939 // computed for max computable value 1023.999
         }
     }
-    
+
     #[must_use]
     pub(super) const fn ln_series_terms_f64(x: f64) -> u32 {
         let x = Float(x).abs().0;
