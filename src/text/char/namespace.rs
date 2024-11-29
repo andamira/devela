@@ -8,7 +8,6 @@
 /// See also [`ExtMem`][crate::ExtMem],
 pub struct Char;
 
-/// # Safe methods.
 impl Char {
     /// Returns the number of bytes necessary to store the given unicode scalar `code`.
     #[must_use]
@@ -67,7 +66,7 @@ impl Char {
     }
 
     /// Returns the number of bytes needed to encode the given unicode scalar `code` as UTF-8
-    #[rustfmt::skip]
+    #[must_use] #[rustfmt::skip]
     pub const fn len_to_utf8(code: char) -> usize {
         let code = code as u32;
         if code < 0x80 { 1 } else if code < 0x800 { 2 } else if code < 0x10_000 { 3 } else { 4 }
@@ -77,6 +76,8 @@ impl Char {
     ///
     /// Note that this function always returns a 4-byte array, but the actual
     /// UTF-8 sequence may be shorter. The unused bytes are set to 0.
+    ///
+    /// See also [`char::encode_utf8`].
     #[must_use]
     #[allow(clippy::unusual_byte_groupings)]
     pub const fn to_utf8_bytes(c: char) -> [u8; 4] {
