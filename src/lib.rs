@@ -30,12 +30,19 @@
 #![cfg_attr(all(feature = "nightly_doc", not(doc)), allow(unused_attributes))]
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
-// "nightly_stable_soon" includes:
+// "nightly_stable" includes:
 #![cfg_attr( // 1.84
     feature = "nightly_stable_next1",
     feature(
+        const_atomic_from_ptr,
+        const_char_encode_utf16,
         const_make_ascii,
         const_maybe_uninit_assume_init,
+        const_option_ext,
+        // const_pin, // subset (_2)
+        const_ptr_is_null,
+        const_unicode_case_lookup,
+        // ip, // subset
         pin_deref_mut,
     )
 )]
@@ -45,39 +52,41 @@
 //     )
 // )]
 #![cfg_attr( // 1.85
-    feature = "nightly_stable_next1",
+    feature = "nightly_stable_next2",
     feature(
         const_float_methods,
     )
 )]
 // #![cfg_attr( // 1.85 not(miri)
-//     all(not(miri), feature = "nightly_stable_next1"),
+//     all(not(miri), feature = "nightly_stable_next2"),
 //     feature(
 //     )
 // )]
 #![cfg_attr( // 1.??
-    feature = "nightly_stable",
+    feature = "nightly_stable_later",
     feature(
         async_closure,
+        // box_uninit_write, // ?
         const_array_from_ref,
-        const_atomic_from_ptr,
         const_maybe_uninit_write,
         const_slice_from_ref,
+        do_not_recommend,
         impl_trait_in_assoc_type,
         isqrt,
         let_chains,
         macro_metavar_expr,
+        // new_zeroed_alloc, // ?
         noop_waker,
+        num_midpoint,
+        unbounded_shifts,
         unsafe_cell_from_mut,
     )
 )]
-#![cfg_attr( // 1.?? not(miri)
-    all(not(miri), feature = "nightly_stable"),
-    feature(
-        box_uninit_write,
-        new_zeroed_alloc,
-    )
-)]
+// #![cfg_attr( // 1.?? not(miri)
+//     all(not(miri), feature = "nightly_stable_later"),
+//     feature(
+//     )
+// )]
 
 // safeguard environment:
 #[cfg(all(feature = "std", feature = "no_std"))]
