@@ -3,9 +3,10 @@
 //! Extention trait for floatin-point methods.
 //
 
+use super::shared_docs::*;
 #[cfg(_float_·)]
-use crate::num::Float;
-use crate::num::{ExtFloatConst, Sign};
+use crate::Float;
+use crate::{ExtFloatConst, Sign};
 
 /// Extension trait for floating-point types. Associated methods.
 ///
@@ -21,13 +22,15 @@ pub trait ExtFloat: ExtFloatConst + Sized {
 
     /// The largest integer less than or equal to `self`.
     ///
-    /// $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$
+    /// # Formula
+    #[doc = FORMULA_FLOOR!()]
     #[must_use]
     fn floor(self) -> Self;
 
     /// The smallest integer greater than or equal to `self`.
     ///
-    /// $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$
+    /// # Formula
+    #[doc = FORMULA_CEIL!()]
     #[must_use]
     fn ceil(self) -> Self;
 
@@ -38,67 +41,43 @@ pub trait ExtFloat: ExtFloatConst + Sized {
 
     /// The nearest integer to `self`, rounding ties away from `0.0`.
     ///
-    /// $$
-    /// \text{round\\_ties\\_away}(x) = \begin{cases}
-    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \text{ or }
-    ///     (x - \lfloor x \rfloor = 0.5 \text{ and } x > 0) \cr
-    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor < 0.5 \text{ or }
-    ///     (x - \lfloor x \rfloor = 0.5 \text{ and } x < 0)
-    /// \end{cases}
-    /// $$
+    /// # Formula
+    #[doc = FORMULA_ROUND_TIES_AWAY!()]
     #[must_use]
     fn round_ties_away(self) -> Self;
 
     /// The nearest integer to `self`, rounding ties to the nearest even integer.
     ///
-    /// $$
-    /// \text{round\\_ties\\_even}(x) = \begin{cases}
-    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \cr
-    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor < 0.5 \cr
-    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and }
-    ///     \lfloor x \rfloor \text{ is even} \cr
-    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and }
-    ///     \lfloor x \rfloor \text{ is odd}
-    /// \end{cases}
-    /// $$
+    /// # Formula
+    #[doc = FORMULA_ROUND_TIES_EVEN!()]
     #[must_use]
     fn round_ties_even(self) -> Self;
 
     /// The nearest integer to `self`, rounding ties to the nearest odd integer.
     ///
-    /// $$
-    /// \text{round\\_ties\\_odd}(x) = \begin{cases}
-    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \cr
-    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor < 0.5 \cr
-    /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and }
-    ///     \lfloor x \rfloor \text{ is odd} \cr
-    /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor = 0.5 \text{ and }
-    ///     \lfloor x \rfloor \text{ is even}
-    /// \end{cases}
-    /// $$
+    /// # Formula
+    #[doc = FORMULA_ROUND_TIES_ODD!()]
     #[must_use]
     fn round_ties_odd(self) -> Self;
 
     /// The integral part of `self`.
     ///
-    /// $$
-    /// \text{trunc}(x) = \begin{cases}
-    /// \lfloor x \rfloor, & \text{if } x \geq 0 \\
-    /// \lceil x \rceil, & \text{if } x < 0
-    /// \end{cases}
-    /// $$
+    /// # Formula
+    #[doc = FORMULA_TRUNC!()]
     #[must_use]
     fn trunc(self) -> Self;
 
     /// The fractional part of `self`.
     ///
-    /// $$ \text{fract}(x) = x - \text{trunc}(x) $$
+    /// # Formula
+    #[doc = FORMULA_FRACT!()]
     #[must_use]
     fn fract(self) -> Self;
 
     /// The integral and fractional parts ox `self`.
     ///
-    /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
+    /// # Formula
+    #[doc = FORMULA_SPLIT!()]
     #[must_use]
     fn split(self) -> (Self, Self);
 
@@ -169,7 +148,7 @@ pub trait ExtFloat: ExtFloatConst + Sized {
     ///
     /// Values of `self` outside `[min..=max]` are not clamped and will result in extrapolation.
     /// # Formula
-    /// $$ \large \text{scale}(x, min, max, u, v) = (v - u) \frac{x - min}{max - min} + u $$
+    #[doc = FORMULA_SCALE!()]
     #[must_use]
     fn scale(self, min: Self, max: Self, u: Self, v: Self) -> Self;
 
@@ -178,11 +157,14 @@ pub trait ExtFloat: ExtFloatConst + Sized {
     ///
     /// Values of `self` outside `[0..=1]` are not clamped and will result in extrapolation.
     /// # Formula
-    /// $$ \large \text{lerp}(x, u, v) = (1 - x) \cdot u + x \cdot v $$
+    #[doc = FORMULA_LERP!()]
     #[must_use]
     fn lerp(self, u: Self, v: Self) -> Self;
 
     /// Raises `self` to the `y` floating point power.
+    ///
+    /// With either `std` or `dep_libm` enabled it leverages compiler intrinsics,
+    /// otherwise it's equal to [`powf_series`][Float::powf_series].
     #[must_use]
     fn powf(self, y: Self) -> Self;
 

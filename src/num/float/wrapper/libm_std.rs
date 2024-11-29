@@ -62,9 +62,8 @@ use impl_fp;
 
 #[cfg(feature = "dep_libm")]
 mod _libm {
-    use super::{impl_fp, Float};
-    use crate::_dep::libm::Libm;
-    use crate::code::iif;
+    use super::{super::super::shared_docs::*, impl_fp, Float};
+    use crate::{_dep::libm::Libm, iif};
 
     // custom implementations are commented out
     impl_fp![libm:f*:
@@ -188,14 +187,14 @@ mod _libm {
             // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The fractional part.
-                ///
-                /// $$ \text{fract}(x) = x - \lfloor x \rfloor $$
+                /// # Formula
+                #[doc = FORMULA_FRACT!()]
                 #[must_use]
                 pub fn fract(self) -> Float<$f> { Float(self.0 - Libm::<$f>::trunc(self.0)) }
 
                 /// The integral and fractional parts.
-                ///
-                /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
+                /// # Formula
+                #[doc = FORMULA_SPLIT!()]
                 #[must_use]
                 pub fn split(self) -> (Float<$f>, Float<$f>) {
                     let (i, f) = Libm::<$f>::modf(self.0);
@@ -279,7 +278,8 @@ mod _libm {
 
 #[cfg(all(not(feature = "dep_libm"), feature = "std"))]
 mod _std {
-    use super::{impl_fp, Float};
+    use super::{super::super::shared_docs::*, impl_fp, Float};
+
     // custom implementations are commented out:
     impl_fp![std:f*:
         r"The largest integer less than or equal to `x`.
@@ -404,8 +404,8 @@ mod _std {
                     (Float(sin), Float(cos))
                 }
                 /// The integral and fractional parts of `x`.
-                ///
-                /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
+                /// # Formula
+                #[doc = FORMULA_SPLIT!()]
                 #[must_use]
                 pub fn split(self) -> (Float<$f>, Float<$f>) {
                     let trunc = self.trunc();
@@ -419,8 +419,8 @@ mod _std {
 
 #[cfg(all(not(feature = "dep_libm"), not(feature = "std")))]
 mod _no_std_no_libm {
-    use super::Float;
-    use crate::code::iif;
+    use super::{super::super::shared_docs::*, Float};
+    use crate::iif;
 
     #[doc = crate::doc_private!()]
     /// $f:   the floating-point type.
@@ -442,8 +442,8 @@ mod _no_std_no_libm {
             // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The largest integer less than or equal to itself.
-                ///
-                /// $$ \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$
+                /// # Formula
+                #[doc = crate::FORMULA_FLOOR!()]
                 #[must_use]
                 pub fn floor(self) -> Float<$f> {
                     let mut result = self.trunc().0;
@@ -454,8 +454,8 @@ mod _no_std_no_libm {
                 }
 
                 /// The smallest integer greater than or equal to itself.
-                ///
-                /// $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$
+                /// # Formula
+                #[doc = FORMULA_CEIL!()]
                 #[must_use]
                 pub fn ceil(self) -> Float<$f> {
                     let mut result = self.trunc().0;
@@ -475,20 +475,16 @@ mod _no_std_no_libm {
                 ///
                 /// This is the default [`round`] implementation.
                 ///
-                /// $$
-                /// \text{round\\_ties\\_away}(x) = \begin{cases}
-                /// \lceil x \rceil, & \text{if } x - \lfloor x \rfloor > 0.5 \text{ or }
-                ///     (x - \lfloor x \rfloor = 0.5 \text{ and } x > 0) \cr
-                /// \lfloor x \rfloor, & \text{if } x - \lfloor x \rfloor < 0.5 \text{ or }
-                ///     (x - \lfloor x \rfloor = 0.5 \text{ and } x < 0)
-                /// \end{cases}
-                /// $$
+                /// # Formula
+                #[doc = FORMULA_ROUND_TIES_AWAY!()]
                 #[must_use]
                 pub fn round_ties_away(self) -> Float<$f> {
                     Float(self.0 + Float(0.5 - 0.25 * <$f>::EPSILON).copysign(self.0).0).trunc()
                 }
 
                 /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
+                /// # Formula
+                #[doc = FORMULA_ROUND_TIES_EVEN!()]
                 #[must_use]
                 pub fn round_ties_even(self) -> Float<$f> {
                     let r = self.round_ties_away();
@@ -499,12 +495,8 @@ mod _no_std_no_libm {
                 /// The integral part.
                 /// This means that non-integer numbers are always truncated towards zero.
                 ///
-                /// $$
-                /// \text{trunc}(x) = \begin{cases}
-                /// \lfloor x \rfloor, & \text{if } x \geq 0 \cr
-                /// \lceil x \rceil, & \text{if } x < 0
-                /// \end{cases}
-                /// $$
+                /// # Formula
+                #[doc = FORMULA_TRUNC!()]
                 ///
                 /// This implementation uses bitwise manipulation to remove the fractional part
                 /// of the floating-point number. The exponent is extracted, and a mask is
@@ -531,14 +523,14 @@ mod _no_std_no_libm {
                 }
 
                 /// The fractional part.
-                ///
-                /// $$ \text{fract}(x) = x - \text{trunc}(x) $$
+                /// # Formula
+                #[doc = FORMULA_FRACT!()]
                 #[must_use]
                 pub fn fract(self) -> Float<$f> { Float(self.0 - self.trunc().0) }
 
                 /// The integral and fractional parts.
-                ///
-                /// $$ \text{split}(x) = (\text{trunc}(x), \text{fract}(x)) $$
+                /// # Formula
+                #[doc = FORMULA_SPLIT!()]
                 #[must_use]
                 pub fn split(self) -> (Float<$f>, Float<$f>) {
                     let trunc = self.trunc();

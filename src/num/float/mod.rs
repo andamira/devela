@@ -13,5 +13,6 @@ pub use {constants::*, reexports::*};
 crate::items! {
     mod ext_float; // ExtFloat
     mod wrapper; // Float
-    pub use {ext_float::*, wrapper::*};
+    mod shared_docs; // FORMULA_*!()
+    pub use {ext_float::*, wrapper::*, shared_docs::*};
 }

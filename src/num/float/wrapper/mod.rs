@@ -5,8 +5,8 @@
 
 #[cfg(_float_·)]
 crate::items! {
+    mod helpers;
     mod shared;
-    mod shared_helpers;
 
     mod libm_std;
 }

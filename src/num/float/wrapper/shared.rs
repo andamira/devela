@@ -5,7 +5,7 @@
 
 use crate::{cfor, concat as cc, iif, paste, stringify as sfy, Float, Sign};
 #[allow(unused_imports)]
-use {super::shared_helpers::*, crate::ExtFloat};
+use {super::{helpers::*, super::shared_docs::*}, crate::ExtFloat};
 
 #[doc = crate::doc_private!()]
 /// Implements methods independently of any features
@@ -34,6 +34,8 @@ macro_rules! custom_impls {
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Float<$f> {
             /// Returns the nearest integer, rounding ties to the nearest odd integer.
+            /// # Formula
+            #[doc = FORMULA_ROUND_TIES_ODD!()]
             #[must_use]
             pub fn round_ties_odd(self) -> Float<$f> {
                 let r = self.round_ties_away();
@@ -119,13 +121,10 @@ macro_rules! custom_impls {
             /// and will result in extrapolation.
             ///
             /// # Formula
-            /// $$
-            /// \large \text{scale}(x, min, max, u, v) = (v - u) \frac{x - min}{max - min} + u
-            /// $$
-            ///
+            #[doc = FORMULA_SCALE!()]
             /// # Examples
             /// ```
-            /// # use devela::num::Float;
+            /// # use devela::Float;
             #[doc = cc!["assert_eq![Float(45_", sfy![$f], ").scale(0., 360., 0., 1.), 0.125];"]]
             #[doc = cc!["assert_eq![Float(45_", sfy![$f], ").scale(0., 360., -1., 1.), -0.75];"]]
             #[doc = cc!["assert_eq![Float(0.125_", sfy![$f], ").scale(0., 1., 0., 360.), 45.];"]]
@@ -143,11 +142,10 @@ macro_rules! custom_impls {
             /// and will result in extrapolation.
             ///
             /// # Formula
-            /// $$ \large \text{lerp}(x, u, v) = (1 - x) \cdot u + x \cdot v $$
-            ///
+            #[doc = FORMULA_LERP!()]
             /// # Examples
             /// ```
-            /// # use devela::num::Float;
+            /// # use devela::Float;
             #[doc = cc!["assert_eq![Float(0.5_", sfy![$f], ").lerp(40., 80.), 60.];"]]
             /// ```
             #[must_use]
@@ -158,7 +156,8 @@ macro_rules! custom_impls {
             /// Raises itself to the `y` floating point power using the Taylor series via the
             /// `exp` and `ln` functions.
             ///
-            /// $$ \large x^y = e^{y \cdot \ln(x)} $$
+            /// # Formula
+            #[doc = FORMULA_POWF_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
             ///
@@ -231,7 +230,8 @@ macro_rules! custom_impls {
             /// The hypothenuse (the euclidean distance) using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             ///
-            /// $$ \text{hypot}(x, y) = \sqrt{x^2 + y^2} $$
+            /// # Formula
+            #[doc = FORMULA_HYPOT_NR!()]
             #[must_use]
             pub const fn hypot_nr(self, y: $f) -> Float<$f> {
                 Float(self.0 * self.0 + y * y).sqrt_nr()
@@ -240,7 +240,8 @@ macro_rules! custom_impls {
             /// The hypothenuse (the euclidean distance) using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
             ///
-            /// $$ \text{hypot}(x, y) = \sqrt{x^2 + y^2} $$
+            /// # Formula
+            #[doc = FORMULA_HYPOT_FISR!()]
             #[must_use]
             pub const fn hypot_fisr(self, y: $f) -> Float<$f> {
                 Float(self.0 * self.0 + y * y).sqrt_fisr()
@@ -248,8 +249,8 @@ macro_rules! custom_impls {
 
             /// Computes the exponential function $e^x$ using Taylor series expansion.
             ///
-            /// $$ e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots $$
-            /// For values $ x < 0 $ it uses the identity: $$ e^x = \frac{1}{e^-x} $$
+            /// # Formula
+            #[doc = FORMULA_EXP_SERIES!()]
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
             #[must_use]
@@ -292,9 +293,8 @@ macro_rules! custom_impls {
 
             /// Calculates $ e^x - 1 $ using the Taylor series expansion.
             ///
-            /// $$ e^x -1 = x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots $$
-            /// For values $ x < 0 $ it uses the identity: $$ e^x -1 = -\frac{1}{e^{-x}+1} $$
-            /// For values $ x > 0.001 $ it uses [`exp_series`][Self::exp_series].
+            /// # Formula
+            #[doc = FORMULA_EXP_M1_SERIES!()]
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
             #[must_use]
@@ -318,11 +318,8 @@ macro_rules! custom_impls {
 
             /// Calculates $ 2^x $ using the Taylor series expansion.
             ///
-            /// The series based on the formula $ 2^x = e^{x \ln(2)} $ is:
-            /// $$
-            /// 2^x = 1 + x \ln(2) + \frac{(x \ln(2))^2}{2!} +
-            /// \frac{(x \ln(2))^3}{3!} + \frac{(x \ln(2))^4}{4!} + \cdots
-            /// $$
+            /// # Formula
+            #[doc = FORMULA_EXP2_SERIES!()]
             ///
             /// The maximum values with a representable result are:
             /// 127 for `f32` and 1023 for `f64`.
@@ -367,10 +364,8 @@ macro_rules! custom_impls {
             /// This method is more efficient for values of `self` near 1. Values too
             /// small or too big could be impractical to calculate with precision.
             ///
-            /// $$
-            /// \ln(x) = 2 \left( \frac{x-1}{x+1} + \frac{1}{3} \left( \frac{x-1}{x+1} \right)^3 +
-            /// \frac{1}{5} \left( \frac{x-1}{x+1} \right)^5 + \cdots \right)
-            /// $$
+            /// # Formula
+            #[doc = FORMULA_LN_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
             #[must_use]
@@ -422,7 +417,8 @@ macro_rules! custom_impls {
 
             /// Computes the logarithm to the given `base` using the change of base formula.
             ///
-            /// $$ \log_{\text{base}}(x) = \frac{\ln(x)}{\ln(\text{base})} $$
+            /// # Formula
+            #[doc = FORMULA_LOG_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
             #[must_use]
@@ -441,7 +437,8 @@ macro_rules! custom_impls {
 
             /// Computes the base-2 logarithm using the change of base formula.
             ///
-            /// $$ \log_{2}(x) = \frac{\ln(x)}{\ln(2)} $$
+            /// # Formula
+            #[doc = FORMULA_LOG2_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
             #[must_use]
@@ -451,7 +448,8 @@ macro_rules! custom_impls {
 
             /// Computes the base-10 logarithm using the change of base formula.
             ///
-            /// $$ \log_{10}(x) = \frac{\ln(x)}{\ln(10)} $$
+            /// # Formula
+            #[doc = FORMULA_LOG10_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
             #[must_use]
@@ -506,7 +504,8 @@ macro_rules! custom_impls {
 
             /// The sine calculated using Taylor series expansion.
             ///
-            /// $$ \sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots $$
+            /// # Formula
+            #[doc = FORMULA_SIN_SERIES!()]
             ///
             /// This Taylor series converges relatively quickly and uniformly
             /// over the entire domain.
@@ -540,7 +539,8 @@ macro_rules! custom_impls {
 
             /// Computes the cosine using taylor series expansion.
             ///
-            /// $$ \cos(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots $$
+            /// # Formula
+            #[doc = FORMULA_COS_SERIES!()]
             ///
             /// This Taylor series converges relatively quickly and uniformly
             /// over the entire domain.
@@ -580,7 +580,8 @@ macro_rules! custom_impls {
 
             /// Computes the tangent using Taylor series expansion of sine and cosine.
             ///
-            /// $$ \tan(x) = \frac{\sin(x)}{\cos(x)} $$
+            /// # Formula
+            #[doc = FORMULA_TAN_SERIES!()]
             ///
             /// The tangent function has singularities and is not defined for
             /// `cos(x) = 0`. This function clamps `self` within an appropriate range
@@ -612,12 +613,8 @@ macro_rules! custom_impls {
 
             /// Computes the arcsine using Taylor series expansion.
             ///
-            /// $$
-            /// \arcsin(x) = x + \left( \frac{1}{2} \right) \frac{x^3}{3} +
-            /// \left( \frac{1}{2} \cdot \frac{3}{4} \right) \frac{x^5}{5} +
-            /// \left( \frac{1}{2} \cdot \frac{3}{4} \cdot \frac{5}{6} \right) \frac{x^7}{7} +
-            /// \cdots
-            /// $$
+            /// # Formula
+            #[doc = FORMULA_ASIN_SERIES!()]
             ///
             /// asin is undefined for $ |x| > 1 $ and in that case returns `NaN`.
             ///
@@ -667,7 +664,8 @@ macro_rules! custom_impls {
 
             /// Computes the arccosine using the Taylor expansion of arcsine.
             ///
-            /// $$ \arccos(x)=2π-arcsin(x) $$
+            /// # Formula
+            #[doc = FORMULA_ACOS_SERIES!()]
             ///
             /// See the [`asin_series_terms`][Self#method.asin_series_terms] table for
             /// information about the number of `terms` needed.
@@ -688,10 +686,8 @@ macro_rules! custom_impls {
 
             /// Computes the arctangent using Taylor series expansion.
             ///
-            /// $$ \arctan(x) = x - \frac{x^3}{3} + \frac{x^5}{5} - \frac{x^7}{7} + \cdots $$
-            ///
-            /// For values $ |x| > 1 $ it uses the identity:
-            /// $$ \arctan(x) = \frac{\pi}{2} - \arctan(\frac{1}{x}) $$
+            /// # Formula
+            #[doc = FORMULA_ATAN_SERIES!()]
             ///
             /// The series converges more slowly near the edges of the domain
             /// (i.e., as `self` approaches -1 or 1). For more accurate results,
@@ -769,7 +765,8 @@ macro_rules! custom_impls {
             /// The hyperbolic sine calculated using Taylor series expansion
             /// via the exponent formula.
             ///
-            /// $$ \sinh(x) = \frac{e^x - e^{-x}}{2} $$
+            /// # Formula
+            #[doc = FORMULA_SINH_SERIES!()]
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
@@ -781,7 +778,8 @@ macro_rules! custom_impls {
             /// The hyperbolic cosine calculated using Taylor series expansion
             /// via the exponent formula.
             ///
-            /// $$ \cosh(x) = \frac{e^x + e^{-x}}{2} $$
+            /// # Formula
+            #[doc = FORMULA_COSH_SERIES!()]
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
@@ -793,7 +791,8 @@ macro_rules! custom_impls {
             /// Computes the hyperbolic tangent using Taylor series expansion of
             /// hyperbolic sine and cosine.
             ///
-            /// $$ \tanh(x) = \frac{\sinh(x)}{\cosh(x)} $$
+            /// # Formula
+            #[doc = FORMULA_TANH_SERIES!()]
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
             /// information about the number of `terms` needed.
@@ -806,7 +805,8 @@ macro_rules! custom_impls {
 
             /// Computes the inverse hyperbolic sine using the natural logarithm definition.
             ///
-            /// $$ \text{asinh}(x) = \ln(x + \sqrt{x^2 + 1}) $$
+            /// # Formula
+            #[doc = FORMULA_ASINH_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
             #[must_use]
@@ -817,7 +817,8 @@ macro_rules! custom_impls {
 
             /// Computes the inverse hyperbolic cosine using the natural logarithm definition.
             ///
-            /// $$ \text{acosh}(x) = \ln(x + \sqrt{x^2 - 1}) $$
+            /// # Formula
+            #[doc = FORMULA_ACOSH_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
             #[must_use]
@@ -832,7 +833,8 @@ macro_rules! custom_impls {
 
             /// Computes the inverse hyperbolic tangent using the natural logarithm definition.
             ///
-            /// $$ \text{atanh}(x) = \frac{1}{2} \ln\left(\frac{1 + x}{1 - x}\right) $$
+            /// # Formula
+            #[doc = FORMULA_ATANH_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
             #[must_use]
@@ -956,7 +958,7 @@ macro_rules! custom_impls {
             ///
             /// # Examples
             /// ```
-            /// # use devela::num::Float;
+            /// # use devela::Float;
             /// let coefficients = [2.0, -6.0, 2.0, -1.0];
             #[doc = cc!["assert_eq![Float(3.0_", sfy![$f], ").eval_poly(&coefficients), 5.0];"]]
             #[doc = cc!["assert_eq![Float(3.0_", sfy![$f], ").eval_poly(&[]), 0.0];"]]
@@ -992,12 +994,12 @@ macro_rules! custom_impls {
             /// Uses the [finite difference method].
             ///
             /// # Formula
-            /// $$ f'(x) \approx \frac{f(x + h) - f(x)}{h} $$
+            #[doc = FORMULA_DERIVATIVE!()]
             ///
-            /// See also the [`autodiff`][crate::autodiff] attr macro,
-            /// enabled with the `nightly_autodiff` feature.
+            /// See also the [`autodiff`] attr macro, enabled with the `nightly_autodiff` feature.
             ///
             /// [finite difference method]: https://en.wikipedia.org/wiki/Finite_difference_method
+            /// [`autodiff`]: crate::autodiff
             pub fn derivative<F>(f: F, x: $f, h: $f) -> Float<$f>
             where
                 F: Fn($f) -> $f,
@@ -1011,13 +1013,7 @@ macro_rules! custom_impls {
             /// Uses the [Riemann Sum](https://en.wikipedia.org/wiki/Riemann_sum).
             ///
             /// # Formula
-            /// $$
-            /// \int_a^b f(x) \, dx \approx \sum_{i=0}^{n-1} f(x_i) \cdot \Delta x
-            /// $$
-            /// where
-            /// $$
-            /// \Delta x = \frac{b-a}{n}
-            /// $$
+            #[doc = FORMULA_INTEGRATE!()]
             pub fn integrate<F>(f: F, x: $f, y: $f, n: usize) -> Float<$f>
             where
                 F: Fn($f) -> $f,
@@ -1034,9 +1030,7 @@ macro_rules! custom_impls {
             /// with step size `h`, differentiating over `x`.
             ///
             /// # Formula
-            /// $$
-            /// \frac{\partial f}{\partial x} \approx \frac{f(x + h, y) - f(x, y)}{h}
-            /// $$
+            #[doc = FORMULA_PARTIAL_DERIVATIVE_X!()]
             pub fn partial_derivative_x<F>(f: F, x: $f, y: $f, h: $f) -> Float<$f>
             where
                 F: Fn($f, $f) -> $f,
@@ -1048,9 +1042,7 @@ macro_rules! custom_impls {
             /// with step size `h`, differentiating over `x`.
             ///
             /// # Formula
-            /// $$
-            /// \frac{\partial f}{\partial x} \approx \frac{f(x + h, y) - f(x, y)}{h}
-            /// $$
+            #[doc = FORMULA_PARTIAL_DERIVATIVE_Y!()]
             pub fn partial_derivative_y<F>(f: F, x: $f, y: $f, h: $f) -> Float<$f>
             where
                 F: Fn($f, $f) -> $f,
