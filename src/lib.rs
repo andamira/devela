@@ -25,7 +25,7 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
 // nightly:
-#![cfg_attr(feature = "nightly_autodiff", feature(auto_diff))]
+#![cfg_attr(feature = "nightly_autodiff", feature(autodiff))]
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(all(feature = "nightly_doc", miri), allow(unused_attributes))]
 #![cfg_attr(all(feature = "nightly_doc", not(doc)), allow(unused_attributes))]

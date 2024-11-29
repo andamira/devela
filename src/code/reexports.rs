@@ -16,6 +16,9 @@ pub use devela_macros::{
 
 /* `core` re-exports */
 
+reexport! { rust: core::autodiff, extra_features: "nightly_autodiff",
+doc: "Automatic Differentiation macro.", autodiff }
+
 // source code
 reexport! { rust: core,
 doc: "Expands to the column number at which it was invoked.", @column as code_column }

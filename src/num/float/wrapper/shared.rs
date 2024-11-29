@@ -994,7 +994,8 @@ macro_rules! custom_impls {
             /// # Formula
             /// $$ f'(x) \approx \frac{f(x + h) - f(x)}{h} $$
             ///
-            /// See also the [`autodiff`] attr macro, enabled with the `nightly_autodiff` feature.
+            /// See also the [`autodiff`][crate::autodiff] attr macro,
+            /// enabled with the `nightly_autodiff` feature.
             ///
             /// [finite difference method]: https://en.wikipedia.org/wiki/Finite_difference_method
             pub fn derivative<F>(f: F, x: $f, h: $f) -> Float<$f>
