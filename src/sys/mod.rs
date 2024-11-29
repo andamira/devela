@@ -15,16 +15,10 @@ use crate::code::items;
 
 mod arch;
 mod env;
+pub mod io;
 #[allow(unused_imports)]
-pub use {arch::*, env::*};
+pub use {arch::*, env::*, io::all::*};
 
-#[cfg(feature = "io")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
-    pub mod io;
-    #[allow(unused_imports)]
-    pub use io::all::*;
-}
 #[cfg(feature = "sys")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
 items! {
@@ -56,11 +50,8 @@ pub(crate) mod all {
     #![allow(unused_imports)]
 
     #[doc(inline)]
-    pub use super::{arch::all::*, env::all::*, ffi::all::*, log::all::*, os::all::*};
+    pub use super::{arch::all::*, env::all::*, ffi::all::*, io::all::*, log::all::*, os::all::*};
 
-    #[doc(inline)]
-    #[cfg(feature = "io")]
-    pub use super::io::all::*;
     #[doc(inline)]
     #[cfg(feature = "sys")]
     pub use super::path::all::*;

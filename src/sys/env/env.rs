@@ -7,7 +7,7 @@
 // rustc +nightly -Z unstable-options --print all-target-specs-json | jq '[ to_entries[] | {"arch": .value.arch, "target": .key, "target-family": (.value."target-family" // [] | join(", ")), "os": (.value.os // "") } ]' | grep -v '""'
 // ```
 
-use crate::sys::IoResult;
+use crate::IoResult;
 use std::{
     env::*,
     ffi::{OsStr, OsString},
