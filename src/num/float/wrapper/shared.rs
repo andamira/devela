@@ -986,6 +986,76 @@ macro_rules! custom_impls {
                     }
                 }
             }
+
+            /// Approximates the derivative of the 1D function `f` at `x` point using step size `h`.
+            ///
+            /// Uses the [finite difference method].
+            ///
+            /// # Formula
+            /// $$ f'(x) \approx \frac{f(x + h) - f(x)}{h} $$
+            ///
+            /// See also the [`autodiff`] attr macro, enabled with the `nightly_autodiff` feature.
+            ///
+            /// [finite difference method]: https://en.wikipedia.org/wiki/Finite_difference_method
+            pub fn derivative<F>(f: F, x: $f, h: $f) -> Float<$f>
+            where
+                F: Fn($f) -> $f,
+            {
+                Float((f(x + h) - f(x)) / h)
+            }
+
+            /// Approximates the integral of the 1D function `f` over the range `[x, y]`
+            /// using `n` subdivisions.
+            ///
+            /// Uses the [Riemann Sum](https://en.wikipedia.org/wiki/Riemann_sum).
+            ///
+            /// # Formula
+            /// $$
+            /// \int_a^b f(x) \, dx \approx \sum_{i=0}^{n-1} f(x_i) \cdot \Delta x
+            /// $$
+            /// where
+            /// $$
+            /// \Delta x = \frac{b-a}{n}
+            /// $$
+            pub fn integrate<F>(f: F, x: $f, y: $f, n: usize) -> Float<$f>
+            where
+                F: Fn($f) -> $f,
+            {
+                let dx = (y - x) / n as $f;
+                Float(
+                    (0..n)
+                    .map(|i| { let x = x + i as $f * dx; f(x) * dx })
+                    .sum()
+                )
+            }
+
+            /// Approximates the partial derivative of the 2D function `f` at point (`x`, `y`)
+            /// with step size `h`, differentiating over `x`.
+            ///
+            /// # Formula
+            /// $$
+            /// \frac{\partial f}{\partial x} \approx \frac{f(x + h, y) - f(x, y)}{h}
+            /// $$
+            pub fn partial_derivative_x<F>(f: F, x: $f, y: $f, h: $f) -> Float<$f>
+            where
+                F: Fn($f, $f) -> $f,
+            {
+                Float((f(x + h, y) - f(x, y)) / h)
+            }
+
+            /// Approximates the partial derivative of the 2D function `f` at point (`x`, `y`)
+            /// with step size `h`, differentiating over `x`.
+            ///
+            /// # Formula
+            /// $$
+            /// \frac{\partial f}{\partial x} \approx \frac{f(x + h, y) - f(x, y)}{h}
+            /// $$
+            pub fn partial_derivative_y<F>(f: F, x: $f, y: $f, h: $f) -> Float<$f>
+            where
+                F: Fn($f, $f) -> $f,
+            {
+                Float((f(x, y + h) - f(x, y)) / h)
+            }
         }
     };
 }

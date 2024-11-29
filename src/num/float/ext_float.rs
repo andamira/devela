@@ -438,6 +438,37 @@ pub trait ExtFloat: ExtFloatConst + Sized {
     /// [Horner's method]: https://en.wikipedia.org/wiki/Horner%27s_method#Polynomial_evaluation_and_long_division
     #[must_use]
     fn eval_poly(self, coefficients: &[Self]) -> Self;
+
+    /// Approximates the derivative of the 1D function `f` at `x` point using step size `h`.
+    ///
+    /// Uses the [finite difference method].
+    ///
+    /// See also the [`autodiff`] attr macro, enabled with the `nightly_autodiff` feature.
+    ///
+    /// [finite difference method]: https://en.wikipedia.org/wiki/Finite_difference_method
+    fn derivative<F>(f: F, x: Self, h: Self) -> Self
+    where
+        F: Fn(Self) -> Self;
+
+    /// Approximates the integral of the 1D function `f` over the range `[x, y]`
+    /// using `n` subdivisions.
+    ///
+    /// Uses the [Riemann Sum](https://en.wikipedia.org/wiki/Riemann_sum).
+    fn integrate<F>(f: F, x: Self, y: Self, n: usize) -> Self
+    where
+        F: Fn(Self) -> Self;
+
+    /// Approximates the partial derivative of the 2D function `f` at point (`x`, `y`)
+    /// with step size `h`, differentiating over `x`.
+    fn partial_derivative_x<F>(f: F, x: Self, y: Self, h: Self) -> Self
+    where
+        F: Fn(Self, Self) -> Self;
+
+    /// Approximates the partial derivative of the 2D function `f` at point (`x`, `y`)
+    /// with step size `h`, differentiating over `x`.
+    fn partial_derivative_y<F>(f: F, x: Self, y: Self, h: Self) -> Self
+    where
+        F: Fn(Self, Self) -> Self;
 }
 
 #[doc = crate::doc_private!()]
@@ -710,6 +741,29 @@ macro_rules! impl_float_ext {
 
             fn eval_poly(self, coefficients: &[Self]) -> Self {
                 Float(self).eval_poly(coefficients).0
+            }
+
+            fn derivative<F>(f: F, x: Self, h: Self) -> Self
+            where F: Fn(Self) -> Self {
+                Float::<Self>::derivative(f, x, h).0
+            }
+            fn integrate<F>(f: F, x: Self, y: Self, n: usize) -> Self
+            where F: Fn(Self) -> Self {
+                Float::<Self>::integrate(f, x, y, n).0
+            }
+
+            fn partial_derivative_x<F>(f: F, x: Self, y: Self, h: Self) -> Self
+            where
+                F: Fn(Self, Self) -> Self,
+            {
+                Float::<Self>::partial_derivative_x(f, x, y, h).0
+            }
+
+            fn partial_derivative_y<F>(f: F, x: Self, y: Self, h: Self) -> Self
+            where
+                F: Fn(Self, Self) -> Self,
+            {
+                Float::<Self>::partial_derivative_y(f, x, y, h).0
             }
         }
     }

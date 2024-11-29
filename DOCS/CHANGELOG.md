@@ -48,7 +48,9 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Array` when storing `Option<T>`.
   - `BareBox`.
   - `ExtAny` method `type_id`.
-  - `Float` and `ExtFloat` method `eval_poly` to evaluate polynomials.
+  - `Float` and `ExtFloat`:
+    - `eval_poly` to evaluate polynomials.
+    - for calculus: `derivative`, `integrate`, `partial_derivative_[x|y]`.
   - `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
   - `Graph` methods: `edge_exists_unchecked`, `edge_remove`.
   - `NonValue*`: `is_max`, `is_min`, `[checked|strict|saturating|wrapping]_[add|sub]`.
