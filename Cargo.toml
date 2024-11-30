@@ -534,26 +534,26 @@ dep_all = [ # enables all optional dependencies:
 	text_deps = ["dep_const_str", "dep_memchr", "dep_unicode_segmentation", "dep_unicode_width"]
 	work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 
-dep_atomic = ["dep:atomic"]
-dep_bytemuck = ["dep:bytemuck"]
-dep_const_str = ["dep:const-str"]
-dep_hashbrown = ["dep:hashbrown", "alloc"]
-dep_jiff = ["dep:jiff", "alloc"]
-dep_libm = ["dep:libm"]
-dep_log = ["dep:log"]
-dep_memchr = ["dep:memchr"]
-dep_miniquad = ["dep:miniquad"]
-dep_portable_atomic = ["dep:portable-atomic"]
-dep_rand_core = ["dep:rand_core"]
-dep_rayon = ["dep:rayon"]
-dep_rodio = ["dep:rodio"]
-dep_tinyaudio = ["dep:tinyaudio"]
-dep_unicode_segmentation = ["dep:unicode-segmentation"]
-dep_unicode_width = ["dep:unicode-width"]
-dep_wide = ["dep:wide"]
+dep_atomic = ["dep:atomic"]                                  # work::sync
+dep_bytemuck = ["dep:bytemuck"]                              # *
+dep_const_str = ["dep:const-str"]                            # text::str
+dep_hashbrown = ["dep:hashbrown", "alloc"]                   # data::collections
+dep_jiff = ["dep:jiff", "alloc"]                             # sys::time
+dep_libm = ["dep:libm"]                                      # num::float
+dep_log = ["dep:log"]                                        # sys::log
+dep_memchr = ["dep:memchr"]                                  # text
+dep_miniquad = ["dep:miniquad"]                              # sys::window? MAYBE
+dep_portable_atomic = ["dep:portable-atomic"]                # work::sync
+dep_rand_core = ["dep:rand_core"]                            # num::rand
+dep_rayon = ["dep:rayon"]                                    # work::thread
+dep_rodio = ["dep:rodio"]                                    # sys::sound
+dep_tinyaudio = ["dep:tinyaudio"]                            # sys::sound
+dep_unicode_segmentation = ["dep:unicode-segmentation"]      # text
+dep_unicode_width = ["dep:unicode-width"]                    # text
+dep_wide = ["dep:wide"]                                      # *
 
 
-[dependencies] # 20 (2 required, 17 optional)
+[dependencies] # 19 (2 required, 17 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -566,7 +566,8 @@ dep_wide = ["dep:wide"]
 
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
 version  = "0.11.0" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
-# path = "./macros" # safe
+# path = "./macros" # safe # WIP
+
 [dependencies.paste_crate] # https://crates.io/crates/paste
 version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
 package = "paste" # safe, ARCHIVED
@@ -576,78 +577,96 @@ package = "paste" # safe, ARCHIVED
 [dependencies.atomic] # https://crates.io/crates/atomic
 version = "0.6.0" # ✗ https://github.com/Amanieu/atomic-rs/commits/master/
 optional = true # unsafe
-default-features = false
+default-features = false # 4 https://docs.rs/crate/atomic/latest/features
 features = ["fallback"]
+
 [dependencies.bytemuck] # https://crates.io/crates/bytemuck
 version = "1.19.0" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
 optional = true # unsafe
-default-features = false
+default-features = false # 21 https://docs.rs/crate/bytemuck/latest/features
 features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 	"zeroable_maybe_uninit"]
+
 [dependencies.const-str] # https://crates.io/crates/const-str
 version = "0.5.7" # ✗ https://github.com/Nugine/const-str/commits/main/
 optional = true # unsafe
-default-features = false
+default-features = false # 8 https://docs.rs/crate/const-str/latest/features
+
 [dependencies.hashbrown] # https://crates.io/crates/hashbrown
 version = "0.15.1" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md
 optional = true # unsafe
-default-features = false
+default-features = false # 14 https://docs.rs/crate/hashbrown/latest/features
 features = ["default-hasher", "inline-more"]
+
 [dependencies.jiff] # https://crates.io/crates/jiff
 version = "0.1.14" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
-default-features = false # https://docs.rs/jiff/0.1.14/jiff/#crate-features
-# features = [""]
+default-features = false # 10 https://docs.rs/crate/jiff/latest/features
+# features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
+
 [dependencies.libm] # https://crates.io/crates/libm
 version = "0.2.11" # ✓ https://github.com/rust-lang/libm/blob/master/CHANGELOG.md
 optional = true # unsafe
-default-features = false
+default-features = false # 3 https://docs.rs/crate/libm/latest/features
+
 [dependencies.log] # https://crates.io/crates/log
 version = "0.4.22" # ✓ https://github.com/rust-lang/log/blob/master/CHANGELOG.md
 optional = true # safe (optional unsafe)
-default-features = false
+default-features = false # 25 https://docs.rs/crate/log/latest/features
+# features = ["kv"]
+
 [dependencies.memchr] # https://crates.io/crates/memchr
 version = "2.7.4" # ✗ https://github.com/BurntSushi/memchr/commits/master/
 optional = true # unsafe
-default-features = false
+default-features = false # 9 https://docs.rs/crate/memchr/latest/features
+
 [dependencies.miniquad] # https://crates.io/crates/miniquad
 version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
 optional = true # unsafe
-default-features = false
+default-features = false # 1 https://docs.rs/crate/miniquad/latest/features
+
 [dependencies.rand_core] # https://crates.io/crates/rand_core
 version = "0.6.4" # ✓ https://github.com/rust-random/rand/blob/master/rand_core/CHANGELOG.md
 optional = true # safe
-default-features = false
+default-features = false # 5 https://docs.rs/crate/rand_core/latest/features
+
 [dependencies.portable-atomic] # https://crates.io/crates/portable-atomic
 version = "1.10.0" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
 optional = true # unsafe
-default-features = false
+default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/features
 features = ["fallback", "float"]
+
 [dependencies.rayon] # https://crates.io/crates/rayon
 version = "1.10.0" # ✗ https://github.com/rayon-rs/rayon/commits/main/
 optional = true # unsafe
-default-features = false
+default-features = false # 1 https://docs.rs/crate/rayon/latest/features
+
 [dependencies.rodio] # https://crates.io/crates/rodio
 version = "0.20.1" # ✓ https://github.com/RustAudio/rodio/blob/master/CHANGELOG.md
 optional = true # unsafe (unsafe dependencies)
-default-features = false
+default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"]
+
 [dependencies.tinyaudio] # https://crates.io/crates/tinyaudio
 version = "1.0.0" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
 optional = true # unsafe
-default-features = false
+default-features = false # 0 https://docs.rs/crate/tinyaudio/latest/features
+
 [dependencies.unicode-segmentation] # https://crates.io/crates/unicode-segmentation
 version = "1.12.0" # ✓ https://github.com/unicode-rs/unicode-segmentation?tab=readme-ov-file#change-log
 optional = true # safe
-default-features = false
+default-features = false # 1 https://docs.rs/crate/unicode-segmentation/latest/features
+
 [dependencies.unicode-width] # https://crates.io/crates/unicode-width
 version = "0.2.0" # ✓ https://github.com/unicode-rs/unicode-width?tab=readme-ov-file#changelog
 optional = true # safe
-default-features = false
+default-features = false # 7 https://docs.rs/crate/unicode-width/latest/features
+# features = ["cjk"]
+
 [dependencies.wide] # https://crates.io/crates/wide
 version = "0.7.26" # ✗ https://github.com/Lokathor/wide/commits/main/
 optional = true # unsafe
-default-features = false
+default-features = false # 3 https://docs.rs/crate/wide/latest/features
 
 
 [dev-dependencies]
