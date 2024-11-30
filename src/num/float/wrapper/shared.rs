@@ -482,7 +482,7 @@ macro_rules! custom_impls {
             ///
             /// This Taylor series converges relatively quickly and uniformly
             /// over the entire domain.
-            #[doc = TABLE_SIN_SERIES_TERMS!()]
+            #[doc = TABLE_COS_SERIES_TERMS!()]
             #[must_use]
             pub const fn cos_series(self, terms: $ue) -> Float<$f> {
                 let x = self.clamp_nan(-Self::PI.0, Self::PI.0).0;

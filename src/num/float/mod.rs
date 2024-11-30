@@ -14,5 +14,6 @@ crate::items! {
     mod ext_float; // ExtFloat
     mod wrapper; // Float
     mod shared_docs; // FORMULA_*!()
+    #[allow(unused_imports)]
     pub use {ext_float::*, wrapper::*, shared_docs::*};
 }
