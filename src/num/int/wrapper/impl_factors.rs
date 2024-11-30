@@ -75,7 +75,7 @@ macro_rules! impl_int {
             /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
-            #[doc = "assert_eq![Int(0_" $t ").factors(), vec![]];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors(), vec![] as Vec<" $t ">];"]
             #[doc = "assert_eq![Int(1_" $t ").factors(), vec![1]];"]
             #[doc = "assert_eq![Int(7_" $t ").factors(), vec![1, 7]];"]
             /// ```
@@ -109,9 +109,9 @@ macro_rules! impl_int {
             /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
-            #[doc = "assert_eq![Int(0_" $t ").factors_proper(), vec![]];"]
-            #[doc = "assert_eq![Int(1_" $t ").factors_proper(), vec![]];"]
-            #[doc = "assert_eq![Int(7_" $t ").factors_proper(), vec![]];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors_proper(), vec![] as Vec<" $t ">];"]
+            #[doc = "assert_eq![Int(1_" $t ").factors_proper(), vec![] as Vec<" $t ">];"]
+            #[doc = "assert_eq![Int(7_" $t ").factors_proper(), vec![] as Vec<" $t ">];"]
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
@@ -146,8 +146,8 @@ macro_rules! impl_int {
             /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
-            #[doc = "assert_eq![Int(0_" $t ").factors_prime(), vec![]];"]
-            #[doc = "assert_eq![Int(1_" $t ").factors_prime(), vec![]];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors_prime(), vec![] as Vec<" $t ">];"]
+            #[doc = "assert_eq![Int(1_" $t ").factors_prime(), vec![] as Vec<" $t ">];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_prime(), vec![7]];"]
             /// ```
             #[must_use]
@@ -199,8 +199,8 @@ macro_rules! impl_int {
             /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
             #[doc = "assert_eq![Int(-24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
-            #[doc = "assert_eq![Int(0_" $t ").factors_prime_unique_exp(), vec![]];"]
-            #[doc = "assert_eq![Int(1_" $t ").factors_prime_unique_exp(), vec![]];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors_prime_unique_exp(), vec![] as Vec<" $t ">];"]
+            #[doc = "assert_eq![Int(1_" $t ").factors_prime_unique_exp(), vec![] as Vec<" $t ">];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_unique_exp(), vec![(7, 1)]];"]
             /// ```
             #[must_use]
@@ -627,7 +627,7 @@ macro_rules! impl_int {
             /// ```
             /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors(), vec![1, 2, 3, 4, 6, 8, 12, 24]];"]
-            #[doc = "assert_eq![Int(0_" $t ").factors(), vec![]];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors(), vec![] as Vec<" $t ">];"]
             #[doc = "assert_eq![Int(1_" $t ").factors(), vec![1]];"]
             #[doc = "assert_eq![Int(7_" $t ").factors(), vec![1, 7]];"]
             /// ```
@@ -661,9 +661,9 @@ macro_rules! impl_int {
             /// ```
             /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_proper(), vec![2, 3, 4, 6, 8, 12]];"]
-            #[doc = "assert_eq![Int(0_" $t ").factors_proper(), vec![]];"]
-            #[doc = "assert_eq![Int(1_" $t ").factors_proper(), vec![]];"]
-            #[doc = "assert_eq![Int(7_" $t ").factors_proper(), vec![]];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors_proper(), vec![] as Vec<" $t ">];"]
+            #[doc = "assert_eq![Int(1_" $t ").factors_proper(), vec![] as Vec<" $t ">];"]
+            #[doc = "assert_eq![Int(7_" $t ").factors_proper(), vec![] as Vec<" $t ">];"]
             /// ```
             #[must_use]
             #[cfg(feature = "alloc")]
@@ -697,8 +697,8 @@ macro_rules! impl_int {
             /// ```
             /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime(), vec![2, 2, 2, 3]];"]
-            #[doc = "assert_eq![Int(0_" $t ").factors_prime(), vec![]];"]
-            #[doc = "assert_eq![Int(1_" $t ").factors_prime(), vec![]];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors_prime(), vec![] as Vec<" $t ">];"]
+            #[doc = "assert_eq![Int(1_" $t ").factors_prime(), vec![] as Vec<" $t ">];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_prime(), vec![7]];"]
             /// ```
             #[must_use]
@@ -748,8 +748,8 @@ macro_rules! impl_int {
             /// ```
             /// # use devela::Int;
             #[doc = "assert_eq![Int(24_" $t ").factors_prime_unique_exp(), vec![(2, 3), (3, 1)]];"]
-            #[doc = "assert_eq![Int(0_" $t ").factors_prime_unique_exp(), vec![]];"]
-            #[doc = "assert_eq![Int(1_" $t ").factors_prime_unique_exp(), vec![]];"]
+            #[doc = "assert_eq![Int(0_" $t ").factors_prime_unique_exp(), vec![] as Vec<" $t ">];"]
+            #[doc = "assert_eq![Int(1_" $t ").factors_prime_unique_exp(), vec![] as Vec<" $t ">];"]
             #[doc = "assert_eq![Int(7_" $t ").factors_prime_unique_exp(), vec![(7, 1)]];"]
             /// ```
             #[must_use]
