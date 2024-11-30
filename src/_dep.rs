@@ -69,8 +69,14 @@ reexport! { optional_crate (safe) "dep_rand_core", "rand_core", rand_core,
 reexport! { optional_crate (safe) "dep_rayon", "rayon", rayon,
     doc: "Simple work-stealing parallelism for Rust."
 }
+reexport! { optional_crate (unsafe) "dep_regex_lite", "regex-lite", regex_lite,
+    doc: " A lightweight regex engine that optimizes for binary size and compilation time."
+}
 reexport! { optional_crate (unsafe) "dep_rodio", "rodio", rodio,
     doc: "Audio playback library."
+}
+reexport! { optional_crate (unsafe) "dep_stringzilla", "stringzilla", stringzilla,
+    doc: "Faster SIMD-accelerated string search, sorting, fingerprints, and edit distances."
 }
 reexport! { optional_crate (unsafe) "dep_tinyaudio", "tinyaudio", tinyaudio,
     doc: "A cross-platform, easy-to-use, low-level, audio output library.",

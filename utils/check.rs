@@ -31,19 +31,20 @@ const ROOT_MODULES: [&str; 9 + 1] = [
     "linux"
 ];
 
-// All the dependencies. In sync with Cargo.toml::dep_all
+// All the optional dependencies.
+// In sync with Cargo.toml::dep_all & build/features.rs::DEPENDENCY.features
 #[rustfmt::skip]
-const DEP_ALL: [&str; 20] = [
-    "dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
-    "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
-    "dep_portable_atomic", "dep_rand_core", "dep_rayon", "dep_rodio", "dep_tinyaudio",
-    "dep_unicode_segmentation", "dep_unicode_width", "dep_wasm_bindgen",
-    "dep_web_sys", "dep_wide",
+const DEP_ALL: [&str; 22] = [
+	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
+	"dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
+	"dep_portable_atomic", "dep_rand_core", "dep_rayon", "dep_regex_lite",
+	"dep_rodio", "dep_stringzilla", "dep_tinyaudio", "dep_unicode_segmentation",
+	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
 ];
 // Dependencies that does not cross compile.
 #[rustfmt::skip]
 const DEP_NO_CROSS_COMPILE: [&str; 2] = [
-	"dep_rodio", "dep_tinyaudio", // alsa-sys
+	"dep_rodio", "dep_tinyaudio", // REASON: alsa-sys
 ];
 
 const STD_ARCHES: &[&str] = &[

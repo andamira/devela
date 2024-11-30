@@ -74,7 +74,7 @@ publish = true
 bench = false
 
 
-[features] # 200/300 (100 remaining), 87 visible, 113 hidden
+[features] # 202/300 (98 remaining), 89 visible, 113 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -118,8 +118,8 @@ alloc = [ # enables `alloc` functionality
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
 	"atomic?/std", "bytemuck?/extern_crate_std", "jiff?/std", "js-sys?/std",
-	"log?/std", "memchr?/std", "rand_core?/std", "wasm-bindgen?/std", "web-sys?/std",
-	"wide?/std",
+	"log?/std", "memchr?/std", "rand_core?/std", "regex-lite?/std",
+	"wasm-bindgen?/std", "web-sys?/std", "wide?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
@@ -160,6 +160,12 @@ sys = ["io", "time"]
 	time = [] # time-related functionality
 text = []
 work = ["bytemuck?/zeroable_atomics"]
+
+
+linux_deps = ["linux", "dep_atomic", "dep_bytemuck"]
+text_deps = ["text", "dep_const_str", "dep_memchr", "dep_regex_lite", "dep_stringzilla",
+	"dep_unicode_segmentation", "dep_unicode_width"]
+work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 
 
 #* Safety features *#
@@ -520,21 +526,18 @@ _docs_max = [ # the maximum capabities relevant for documentation
 # The names are prefixed with `dep_`, and don't have dashes.
 # They are associated to optional dependencies and groups of modules.
 #
-# In sync with ./utils/check.rs::DEP_ALL & build/features.rs
+# In sync with ./utils/check.rs::DEP_ALL & build/features.rs::DEPENDENCY.features
 #
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-dep_all = [ # enables all optional dependencies:
+dep_all = [ # enables all 22 optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
 	"dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
-	"dep_portable_atomic", "dep_rand_core", "dep_rayon", "dep_rodio", "dep_tinyaudio",
-	"dep_unicode_segmentation", "dep_unicode_width", "dep_wasm_bindgen",
-	"dep_web_sys", "dep_wide",
+	"dep_portable_atomic", "dep_rand_core", "dep_rayon", "dep_regex_lite",
+	"dep_rodio", "dep_stringzilla", "dep_tinyaudio", "dep_unicode_segmentation",
+	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
-	linux_deps = ["dep_atomic", "dep_bytemuck"]
-	text_deps = ["dep_const_str", "dep_memchr", "dep_unicode_segmentation", "dep_unicode_width"]
-	work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 
 dep_atomic = ["dep:atomic"]                                  # work::sync
 dep_bytemuck = ["dep:bytemuck"]                              # *
@@ -549,7 +552,9 @@ dep_miniquad = ["dep:miniquad"]                              # sys::window? MAYB
 dep_portable_atomic = ["dep:portable-atomic"]                # work::sync
 dep_rand_core = ["dep:rand_core"]                            # num::rand
 dep_rayon = ["dep:rayon"]                                    # work::thread
+dep_regex_lite = ["dep:regex-lite", "std"]                   # text
 dep_rodio = ["dep:rodio"]                                    # sys::sound
+dep_stringzilla = ["dep:stringzilla"]                        # text
 dep_tinyaudio = ["dep:tinyaudio"]                            # sys::sound
 dep_unicode_segmentation = ["dep:unicode-segmentation"]      # text
 dep_unicode_width = ["dep:unicode-width"]                    # text
@@ -558,7 +563,7 @@ dep_web_sys = ["dep:web-sys"]                                # CHECK
 dep_wide = ["dep:wide"]                                      # *
 
 
-[dependencies] # 22 (2 required, 20 optional)
+[dependencies] # 24 (2 required, 22 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -652,11 +657,22 @@ version = "1.10.0" # ✗ https://github.com/rayon-rs/rayon/commits/main/
 optional = true # unsafe
 default-features = false # 1 https://docs.rs/crate/rayon/latest/features
 
+[dependencies.regex-lite] # https://crates.io/crates/regex-lite
+version = "0.1.6" # ✗ https://github.com/rust-lang/regex/commits/master/regex-lite
+optional = true # safe
+default-features = false # 2 https://docs.rs/crate/rayon/latest/features
+features = ["string"]
+
 [dependencies.rodio] # https://crates.io/crates/rodio
 version = "0.20.1" # ✓ https://github.com/RustAudio/rodio/blob/master/CHANGELOG.md
 optional = true # unsafe (unsafe dependencies)
 default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"]
+
+[dependencies.stringzilla] # https://crates.io/crates/stringzilla
+version = "3.10.11" # ✗ https://github.com/ashvardanian/StringZilla/releases
+optional = true  # unsafe
+default-features = false # 0 https://docs.rs/crate/stringzilla/latest/features
 
 [dependencies.tinyaudio] # https://crates.io/crates/tinyaudio
 version = "1.0.0" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
