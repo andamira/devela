@@ -10,7 +10,7 @@ documentation = "https://docs.rs/devela_macros"
 license = "MIT OR Apache-2.0"
 include = [
 	"/Cargo.toml",
-	"/DOCS/*",
+	"/DOCS/*", "/LICENSE*",
 	"/src/**/*.rs", "/src/**/*.md",
 
 	# examples used in docs:
