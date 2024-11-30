@@ -1,3 +1,32 @@
+# ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/manifest.html
+#
+## TOC
+#
+# * [package]
+# * [lib]
+#
+# * [features]
+#   - miscellaneous
+#   - environment          (std,alloc,no_std)
+#   - safety               (safe,unsafe,safest)
+#   - nightly
+#   - capability
+#   - dependencies
+#
+# * [dependencies]
+#
+# - [package.metadata.*]
+# - [badges]
+#
+# - lints
+#   - [lints.rust]
+#   - [lints.rustdoc]
+#   - [lints.clippy]
+#   - [lints.rust.unexpected_cfgs]
+#
+# - [[example]]
+
 [package]
 name = "devela_macros"
 description = "procedural macros for devela"
@@ -24,15 +53,13 @@ publish = true
 proc-macro = true
 
 
-[features] # total: 9/300, visible: 7, hidden: 2
+[features] # # 9/300 (291 remaining), 8 visible, 1 hidden
 # ==============================================================================
 
 #* Miscellaneous features *#
 # ------------------------------------------------------------------------------
 
 default = ["safe", "dep_hashbrown"]
-
-__lints = [] # enables extra lints (enabled on cl* aliases)
 
 
 #* Environment features *#
@@ -66,7 +93,7 @@ _docsrs = ["nightly", "std", "unsafe", "dep_hashbrown"]
 dep_hashbrown = ["dep:hashbrown", "alloc"]
 
 
-[dependencies]
+[dependencies] # 3 (2 required, 1 optional)
 # ==============================================================================
 # WAIT: [proc_macro_quote](https://github.com/rust-lang/rust/issues/54722)
 proc-macro2 = "1.0.88"
@@ -77,10 +104,6 @@ version = "0.15.1"
 optional = true
 default-features = false
 features = ["default-hasher", "inline-more"]
-
-
-[dev-dependencies]
-# ------------------------------------------------------------------------------
 
 
 [package.metadata.docs.rs]
