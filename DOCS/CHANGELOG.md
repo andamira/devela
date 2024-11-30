@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
-## [Unreleased]
+## [0.12.0] - [Unreleased]
+
+- add `hashbrown` optional dependency.
+- replace `std` with `dep_hashbrown` in `default` feature.
+- make `ident_unique` and `ident_total_unique` compile without `std`.
+- remove support from 32 and 64 bit `enumint` representations.
 
 ## [0.11.0] - 2024-10-14
 
@@ -168,6 +173,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new attribute macro `include_block`.
 
 [unreleased]: https://github.com/andamira/devela_macros/compare/v0.11.0...HEAD
+[0.12.0]: https://github.com/andamira/devela_macros/releases/tag/v0.12.0
 [0.11.0]: https://github.com/andamira/devela_macros/releases/tag/v0.11.0
 [0.10.0]: https://github.com/andamira/devela_macros/releases/tag/v0.10.0
 [0.9.0]: https://github.com/andamira/devela_macros/releases/tag/v0.9.0
