@@ -638,7 +638,7 @@ macro_rules! impl_destaque {
             /// q.clear();
             /// assert![q.is_empty()];
             /// ```
-            pub fn clear(&mut self) {
+            pub const fn clear(&mut self) {
                 self.front = 0;
                 self.back = 0;
                 self.len = 0;

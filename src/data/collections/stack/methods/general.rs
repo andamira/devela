@@ -1,14 +1,14 @@
 // devela::data::collections::stack::methods::general
 
-#[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
-use crate::Mem;
 use crate::{
     Array, Bare,
     DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds},
-    DataResult as Result, MaybeUninit, Slice, Stack, StackIter, Storage,
+    DataResult as Result, Stack, StackIter, Storage,
 };
 #[cfg(feature = "alloc")]
 use crate::{Boxed, Vec};
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
+use crate::{MaybeUninit, Mem};
 
 // helper macro to impl methods for a Stack with custom index size.
 macro_rules! impl_stack {
@@ -237,7 +237,7 @@ macro_rules! impl_stack {
             /// s.clear();
             /// assert![s.is_empty()];
             /// ```
-            pub fn clear(&mut self) {
+            pub const fn clear(&mut self) {
                 self.len = 0;
             }
 
