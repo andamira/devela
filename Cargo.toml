@@ -74,7 +74,7 @@ publish = true
 bench = false
 
 
-[features] # 197/300 (103 remaining), 84 visible, 113 hidden
+[features] # 200/300 (100 remaining), 87 visible, 113 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -117,8 +117,9 @@ alloc = [ # enables `alloc` functionality
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
-	"atomic?/std", "bytemuck?/extern_crate_std", "jiff?/std", "log?/std",
-	"memchr?/std", "rand_core?/std", "wide?/std",
+	"atomic?/std", "bytemuck?/extern_crate_std", "jiff?/std", "js-sys?/std",
+	"log?/std", "memchr?/std", "rand_core?/std", "wasm-bindgen?/std", "web-sys?/std",
+	"wide?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
@@ -526,9 +527,10 @@ _docs_max = [ # the maximum capabities relevant for documentation
 
 dep_all = [ # enables all optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
-	"dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
+	"dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
 	"dep_portable_atomic", "dep_rand_core", "dep_rayon", "dep_rodio", "dep_tinyaudio",
-	"dep_unicode_segmentation", "dep_unicode_width", "dep_wide",
+	"dep_unicode_segmentation", "dep_unicode_width", "dep_wasm_bindgen",
+	"dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 	linux_deps = ["dep_atomic", "dep_bytemuck"]
 	text_deps = ["dep_const_str", "dep_memchr", "dep_unicode_segmentation", "dep_unicode_width"]
@@ -539,6 +541,7 @@ dep_bytemuck = ["dep:bytemuck"]                              # *
 dep_const_str = ["dep:const-str"]                            # text::str
 dep_hashbrown = ["dep:hashbrown", "alloc"]                   # data::collections
 dep_jiff = ["dep:jiff", "alloc"]                             # sys::time
+dep_js_sys = ["dep:js-sys"]                                  # CHECK
 dep_libm = ["dep:libm"]                                      # num::float
 dep_log = ["dep:log"]                                        # sys::log
 dep_memchr = ["dep:memchr"]                                  # text
@@ -550,10 +553,12 @@ dep_rodio = ["dep:rodio"]                                    # sys::sound
 dep_tinyaudio = ["dep:tinyaudio"]                            # sys::sound
 dep_unicode_segmentation = ["dep:unicode-segmentation"]      # text
 dep_unicode_width = ["dep:unicode-width"]                    # text
+dep_wasm_bindgen = ["dep:wasm-bindgen"]                      # CHECK
+dep_web_sys = ["dep:web-sys"]                                # CHECK
 dep_wide = ["dep:wide"]                                      # *
 
 
-[dependencies] # 19 (2 required, 17 optional)
+[dependencies] # 22 (2 required, 20 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -603,6 +608,12 @@ version = "0.1.14" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
+
+[dependencies.js-sys] # https://crates.io/crates/js-sys
+version = "0.3.74" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/js-sys
+optional = true # unsafe
+default-features = false # 2 https://docs.rs/crate/js-sys/latest/features
+# deps: once-cell, wasm-bindgen/std
 
 [dependencies.libm] # https://crates.io/crates/libm
 version = "0.2.11" # ✓ https://github.com/rust-lang/libm/blob/master/CHANGELOG.md
@@ -662,6 +673,16 @@ version = "0.2.0" # ✓ https://github.com/unicode-rs/unicode-width?tab=readme-o
 optional = true # safe
 default-features = false # 7 https://docs.rs/crate/unicode-width/latest/features
 # features = ["cjk"]
+
+[dependencies.wasm-bindgen] # https://crates.io/crates/wasm-bindgen
+version = "0.2.97" # ✓ https://github.com/rustwasm/wasm-bindgen/blob/main/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 10 https://docs.rs/crate/wasm-bindgen/latest/features
+
+[dependencies.web-sys] # https://crates.io/crates/web-sys
+version = "0.3.74" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/web-sys
+optional = true # unsafe (unsafe dependencies)
+default-features = false # 1657 https://docs.rs/crate/web-sys/latest/features
 
 [dependencies.wide] # https://crates.io/crates/wide
 version = "0.7.26" # ✗ https://github.com/Lokathor/wide/commits/main/

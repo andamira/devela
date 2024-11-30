@@ -48,6 +48,9 @@ reexport! { optional_crate (unsafe) "dep_hashbrown", "hashbrown", hashbrown,
 reexport! { optional_crate (safe) "dep_jiff", "jiff", jiff,
     doc: "A high level datetime library that is secure and performant."
 }
+reexport! { optional_crate (unsafe) "dep_js_sys", "js-sys", js_sys,
+    doc: "Bindings for all JS global objects and functions in all JS environments."
+}
 reexport! { optional_crate (unsafe) "dep_libm", "libm", libm,
     doc: "A port of [`MUSL`](https://musl.libc.org/)'s libm to Rust."
 }
@@ -73,11 +76,18 @@ reexport! { optional_crate (unsafe) "dep_tinyaudio", "tinyaudio", tinyaudio,
     doc: "A cross-platform, easy-to-use, low-level, audio output library.",
     features: "alloc"
 }
-reexport! { optional_crate (safe) "dep_unicode_segmentation", "unicode-segmentation", unicode_segmentation,
+reexport! { optional_crate (safe)
+    "dep_unicode_segmentation", "unicode-segmentation", unicode_segmentation,
     doc: "Split strings on Grapheme Clusters, Words or Sentences."
 }
 reexport! { optional_crate (safe) "dep_unicode_width", "unicode-width", unicode_width,
     doc: "Determine displayed width of `char` and `str` types."
+}
+reexport! { optional_crate (unsafe) "dep_wasm_bindgen", "wasm-bindgen", wasm_bindgen,
+    doc: "Easy support for interacting between JS and Rust."
+}
+reexport! { optional_crate (unsafe) "dep_web_sys", "web-sys", web_sys,
+    doc: "Bindings for all Web APIs."
 }
 reexport! { optional_crate (unsafe) "dep_wide", "wide", wide,
     doc: "SIMD-compatible data types."
