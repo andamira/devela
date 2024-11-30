@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - replace `std` with `dep_hashbrown` in `default` feature.
 - make `ident_unique` and `ident_total_unique` compile without `std`.
 - remove support from 32 and 64 bit `enumint` representations.
+- remove feature `__lints`.
 
 ## [0.11.0] - 2024-10-14
 
