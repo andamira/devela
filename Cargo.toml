@@ -230,7 +230,7 @@ nightly = [ # sync with src/lib.rs
 	nightly_autodiff = [] # autodiff
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-	nightly_doc = [] # disabled: doc_auto_cfg
+	nightly_doc = [] # DISABLED(DOC_AUTO_CFG)
 	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
@@ -301,6 +301,7 @@ nightly = [ # sync with src/lib.rs
 	# 1.?? [box_into_inner](https://github.com/rust-lang/rust/issues/80437)
 	# 1.?? [const_cmp](https://github.com/rust-lang/rust/issues/92391) REMOVED
 	# 1.?? [const_for](https://github.com/rust-lang/rust/issues/87575) depends on const_trait_impl
+	# 1.?? [const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
 	# 1.?? [const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
 	# 1.?? [mpmc_channel](https://github.com/rust-lang/rust/pull/126839)
 	#

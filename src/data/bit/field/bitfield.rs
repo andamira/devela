@@ -42,7 +42,6 @@
 /// ```
 ///
 /// See also the [`enumset!`][crate::code::enumset] macro.
-// NOTE: Fixed to use it from the root: https://github.com/rust-lang/rust/pull/52234
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _bitfield {
@@ -972,4 +971,4 @@ macro_rules! _bitfield {
 }
 #[doc(inline)]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(_bit_·)))]
-pub use _bitfield as bitfield;
+pub use _bitfield as bitfield; // see crate::code::macros::mod.rs

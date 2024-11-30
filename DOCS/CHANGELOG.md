@@ -70,7 +70,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt}`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
   - macros:
-    - `autodiff`, `compile_error`, `option_env`, `enumint`, `assert_unchecked!`, `format!`, `format_args!`, `concat`, `stringify`, `write!`, `writeln!`.
+    - `autodiff`, `compile_error!`, `option_env!`, `enumint!`, `assert_unchecked!`, `format!`, `format_args!`, `concat`, `stringify`, `write!`, `writeln!`.
     - wrapped: `env!`, as `env_!`, `vec!` as `vec_!`.
   - structs:
     - `NonZero`, `Saturating`, `Wrapping`, `OsStr`, `OsString`.

@@ -37,7 +37,6 @@
 /// // It also supports…
 /// CONST!{ /* …empty declarations */ }
 /// ```
-// NOTE: Fixed to use it from the root: https://github.com/rust-lang/rust/pull/52234
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _CONST {

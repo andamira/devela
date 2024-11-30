@@ -30,7 +30,6 @@
 /// eset.mut_set_field_variant1();
 /// assert![eset.is_field_variant1()];
 /// ```
-// NOTE: Fixed to use it from the root: https://github.com/rust-lang/rust/pull/52234
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _enumset {

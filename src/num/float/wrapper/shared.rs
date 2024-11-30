@@ -5,7 +5,10 @@
 
 use crate::{cfor, concat as cc, iif, paste, stringify as sfy, Float, Sign};
 #[allow(unused_imports)]
-use {super::{helpers::*, super::shared_docs::*}, crate::ExtFloat};
+use {
+    super::{super::shared_docs::*, helpers::*},
+    crate::ExtFloat,
+};
 
 #[doc = crate::doc_private!()]
 /// Implements methods independently of any features

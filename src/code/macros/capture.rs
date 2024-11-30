@@ -68,10 +68,10 @@ pub use capture_tail_tuple;
 // pub use capture_tail;
 
 /// Captures the last token from a list of inputs.
+#[doc(hidden)]
 #[macro_export]
 #[rustfmt::skip]
-#[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! capture_last {
+macro_rules! _capture_last {
     // Base case: when there is only one item left, return it
     (block $first:block) => { $first };
     (expr $first:expr) => { $first };
@@ -84,28 +84,27 @@ macro_rules! capture_last {
     (ty $first:ty) => { $first };
 
     // Recursive case: discard the first item and continue with the rest
-    // NOTE: using long path because: https://github.com/rust-lang/rust/pull/52234
     (block $first:block, $($tail:block),* $(,)?) => {
-        $crate::code::capture_last!(block $($tail),*) };
+        $crate::capture_last!(block $($tail),*) };
     (expr $first:expr, $($tail:expr),* $(,)?) => {
-        $crate::code::capture_last!(expr $($tail),*) };
+        $crate::capture_last!(expr $($tail),*) };
     (ident $first:ident, $($tail:ident),* $(,)?) => {
-        $crate::code::capture_last!(ident $($tail),*) };
+        $crate::capture_last!(ident $($tail),*) };
     (literal $first:literal, $($tail:literal),* $(,)?) => {
-        $crate::code::capture_last!(literal $($tail),*) };
+        $crate::capture_last!(literal $($tail),*) };
     (meta $first:meta, $($tail:meta),* $(,)?) => {
-        $crate::code::capture_last!(meta $($tail),*) };
+        $crate::capture_last!(meta $($tail),*) };
     (pat $first:pat, $($tail:pat),* $(,)?) => {
-        $crate::code::capture_last!(pat $($tail),*) };
+        $crate::capture_last!(pat $($tail),*) };
     (path $first:path, $($tail:path),* $(,)?) => {
-        $crate::code::capture_last!(path $($tail),*) };
+        $crate::capture_last!(path $($tail),*) };
     (tt $first:tt, $($tail:tt),* $(,)?) => {
-        $crate::code::capture_last!(tt $($tail),*) };
+        $crate::capture_last!(tt $($tail),*) };
     (ty $first:ty, $($tail:ty),* $(,)?) => {
-        $crate::code::capture_last!(ty $($tail),*) };
+        $crate::capture_last!(ty $($tail),*) };
 }
 #[doc(inline)]
-pub use capture_last;
+pub use _capture_last as capture_last;
 
 #[cfg(test)]
 mod tests {
