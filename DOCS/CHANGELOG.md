@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - namespaces: `Char`, `Env`, `Mem`, `Ptr`, `Str`.
   - `CompressionMode`, `EncodingMode`, `Pnm`,
   - `False`, `True`, `UnitBi`, `UnitSi`.
+  - `Lgc16`.
   - `TimeSplit`.
   - `TypeResource`.
   - `WaveletHaar`, `WaveletUnitVec`.

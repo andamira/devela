@@ -13,13 +13,14 @@
 //! [`RngCore`]: https://docs.rs/rand_core/latest/rand_core/trait.RngCore.html
 //
 
+mod lgc;
 mod xabc;
 mod xoroshiro;
 mod xorshift;
 mod xyza8;
-pub use {xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
+pub use {lgc::*, xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
 
 pub(crate) mod all {
     #[doc(inline)]
-    pub use super::{xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
+    pub use super::{lgc::*, xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
 }
