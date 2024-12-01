@@ -1,42 +1,42 @@
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/manifest.html
 #
-## TOC
+## Table of Contents
 #
 # * [workspace]
 # * [package]
 # * [lib]
 #
 # * [features]
-#   - misc.
-#   - environment          (std,alloc,no_std)
-#   - module               (mem,num,rend,sys,text,work…)
-#   - safety               (safe,unsafe,safest)
-#   - nightly
-#   - _capabilities:
+#   - Development
+#   - Environment          (std,alloc,no_std)
+#   - Modules              (mem,num,rend,sys,text,work…)
+#   - Safety               (safe,unsafe,safest)
+#   - Nightly
+#   - Capability
+#     - default/docs
 #     - data
 #     - num
 #     - text
-#     - docs/default
-#   - dependencies
+#   - Dependency
 #
 # * [dependencies] (required|optional)
-#   - [dev-dependencies]
-#   - [build-dependencies]
+#   * [dev-dependencies]
+#   * [build-dependencies]
 #
-# - [patch]
-# - [profile.*]
-# - [package.metadata.*]
-# - [badges]
+# * [patch]
+# * [profile.*]
+# * [package.metadata.*]
+# * [badges]
 #
 # - lints
-#   - [lints.rust]
-#   - [lints.rustdoc]
-#   - [lints.clippy]
-#   - [lints.rust.unexpected_cfgs]
+#   * [lints.rust]
+#   * [lints.rustdoc]
+#   * [lints.clippy]
+#   * [lints.rust.unexpected_cfgs]
 #
-# - [[bench]]
-# - [[example]]
+# * [[bench]]
+# * [[example]]
 
 [workspace]
 members = [".", "macros"]
@@ -79,28 +79,26 @@ bench = false
 # https://doc.rust-lang.org/cargo/reference/features.html
 
 # Features are grouped in the following categories:
-# - Miscellaneous    __[dbg,…]
+# - Development      __[dbg,…]
 # - Environment      alloc,[no_]std
 # - Modules
 # - Safety           [safe|unsafe]_
 # - Nightly          nightly_[coro|simd|stable[_…]]
 # - Capability       _[data,num,…]
-# - Dependencies     (dep_[all|linux|text|…]
+# - Dependency       (dep_[all|linux|text|…]
 #
 # Sintax:
 # - ["name"]: Visible public-facing features.
 # - ["_name"]: Hidden extra capability features.
-# - ["__name"]: Miscellaneous maintenance features.
+# - ["__name"]: Development & maintenance features.
 #
 # Notes:
 # - Features are in sync with build/features.rs & src/_doc/features.md.
 # - List and count features with the utils/manifest_features.sh script.
 
 
-#* Miscellaneous features *#
+#* Development features *#
 # ------------------------------------------------------------------------------
-
-# default = []
 
 __dbg = [] # for debugging purposes, shows enabled features
 __no_test = [] # allows excluding examples from being tested
@@ -156,8 +154,8 @@ rend = [
 sys = ["io", "time"]
 	io = []
 	# os
-		linux = [] # sys::os::linux functionality
-	time = [] # time-related functionality
+		linux = []
+	time = []
 text = []
 work = ["bytemuck?/zeroable_atomics"]
 
@@ -346,12 +344,43 @@ nightly = [ # sync with src/lib.rs
 
 #* Capability features *#
 # ------------------------------------------------------------------------------
-# These features are prefixed with an underscore (_) and therefore semi-hidden.
+# Most of these features are prefixed with an underscore (_) to be semi-hidden.
 #
 # Enabling them enables extra implementations which increases compilation times.
 #
 # They set automatic compile flags named `_*_·`, used for reflection.
 # For example, `_stack_·` will be set if any _stack_* feature is enabled.
+
+#* default and docs *#
+# ------------------------------
+
+# default = [] # default capabilities
+
+# The most complete versions of the documentation:
+_docsrs = ["_docsrs_min", "_docs_max"]
+_docsrs_min = ["_docsrs_nodep", "dep_all"]
+_docsrs_nodep = ["_docsrs_stable_nodep", "nightly"]
+
+_docsrs_stable = ["_docsrs_stable_min", "_docs_max"]
+_docsrs_stable_min = ["_docsrs_stable_nodep", "dep_all"]
+_docsrs_stable_nodep = ["std", "unsafe", "_docs_min"]
+
+_docs_min = [ # the minimum capabilities that document all library items
+	"all",
+	"linux",
+	# data:
+	"_bit_u8",
+	"_destaque_u8", "_stack_u8", "_graph_u8",
+	"_tuple",
+	# num:
+	"_cmp_u8",
+	"_float_f32", "_int_u8",
+	# text:
+	"_string_u8", "_string_nonul",
+	"_char7", "_char8", "_char16", "_char24",
+]
+_docs_max = [ # the maximum capabities relevant for documentation
+	"_data_all", "_num_all", "_text_all"] # _tuple_72
 
 #* data capabilities *#
 # ---------------------
@@ -494,39 +523,8 @@ _string_all = [
 	#
 	_string_nonul = []
 
-#* default and docs *#
-# ------------------------------
 
-# _default = [] # default capabilities
-
-# The most complete versions of the documentation:
-_docsrs = ["_docsrs_min", "_docs_max"]
-_docsrs_min = ["_docsrs_nodep", "dep_all"]
-_docsrs_nodep = ["_docsrs_stable_nodep", "nightly"]
-
-_docsrs_stable = ["_docsrs_stable_min", "_docs_max"]
-_docsrs_stable_min = ["_docsrs_stable_nodep", "dep_all"]
-_docsrs_stable_nodep = ["std", "unsafe", "_docs_min"]
-
-_docs_min = [ # the minimum capabilities that document all library items
-	"all",
-	"linux",
-	# data:
-	"_bit_u8",
-	"_destaque_u8", "_stack_u8", "_graph_u8",
-	"_tuple",
-	# num:
-	"_cmp_u8",
-	"_float_f32", "_int_u8",
-	# text:
-	"_string_u8", "_string_nonul",
-	"_char7", "_char8", "_char16", "_char24",
-]
-_docs_max = [ # the maximum capabities relevant for documentation
-	"_data_all", "_num_all", "_text_all"] # _tuple_72
-
-
-#* Dependencies features *#
+#* Dependency features *#
 # ------------------------------------------------------------------------------
 # The names are prefixed with `dep_`, and don't have dashes.
 # They are associated to optional dependencies and groups of modules.
@@ -849,6 +847,7 @@ check-cfg = [ # Allowed config flags:
 	# text:
 	'cfg(_char·, _string_·, _string_u·)',
 ]
+
 
 # [[bench]]
 # ==============================================================================
