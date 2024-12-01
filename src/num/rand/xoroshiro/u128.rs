@@ -23,6 +23,7 @@ use crate::{Hasher, HasherBuild, RandomState};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xoroshiro128pp([u32; 4]);
 
+/// # Constructors
 impl Xoroshiro128pp {
     /// Creates a new Xoroshiro128++ PRNG with the given `seed`.
     ///
@@ -92,6 +93,16 @@ impl Xoroshiro128pp {
 
 /// # Methods taking `&mut self`
 impl Xoroshiro128pp {
+    /// The jump function for the generator, equivalent to 2^64 `next_u32` calls.
+    pub fn jump(&mut self) {
+        self.jump_with_constant(Self::JUMP);
+    }
+
+    /// The long jump function for the generator, equivalent to 2^96 `next_u32` calls.
+    pub fn long_jump(&mut self) {
+        self.jump_with_constant(Self::LONG_JUMP);
+    }
+
     /// Generates the next random `u32` value.
     // Note how the output of the RNG is computed before updating the state.
     // unlike on Xorshift128, for example.
@@ -108,16 +119,35 @@ impl Xoroshiro128pp {
         result
     }
 
-    /// The jump function for the generator, equivalent to 2^64 `next_u32` calls.
-    #[inline]
-    pub fn jump(&mut self) {
-        self.jump_with_constant(Self::JUMP);
+    /// Generates the next 2 random `u32` values.
+    #[must_use]
+    pub fn next2(&mut self) -> [u32; 2] {
+        [self.next_u32(), self.next_u32()]
     }
-
-    /// The long jump function for the generator, equivalent to 2^96 `next_u32` calls.
-    #[inline]
-    pub fn long_jump(&mut self) {
-        self.jump_with_constant(Self::LONG_JUMP);
+    /// Generates the next 4 random `u32` values.
+    #[must_use]
+    pub fn next4(&mut self) -> [u32; 4] {
+        [self.next_u32(), self.next_u32(), self.next_u32(), self.next_u32()]
+    }
+    /// Generates the next random value split into 4 u8 values.
+    #[must_use]
+    pub fn next4_u8(&mut self) -> [u8; 4] {
+        Cast(self.next_u32()).into_u8_ne()
+    }
+    /// Generates the next random value split into 2 u16 values.
+    #[must_use]
+    pub fn next2_u16(&mut self) -> [u16; 2] {
+        Cast(self.next_u32()).into_u16_ne()
+    }
+    /// Returns the next u64, advancing the state 2 times.
+    #[must_use]
+    pub fn next_u64(&mut self) -> u64 {
+        Cast::<u64>::from_u32_ne(self.next2())
+    }
+    /// Returns the next u128, advancing the state 4 times.
+    #[must_use]
+    pub fn next_u128(&mut self) -> u128 {
+        Cast::<u128>::from_u32_ne(self.next4())
     }
 }
 
