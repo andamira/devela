@@ -231,24 +231,29 @@ safest = [ # forbids `unsafe` even in dependencies (except standard library)
 # - https://doc.rust-lang.org/unstable-book/library-features.html
 
 nightly = [ # sync with src/lib.rs
-	"nightly_coro", "nightly_doc", "nightly_simd", "nightly_stable",
+	"nightly_autodiff", "nightly_coro", "nightly_doc", "nightly_simd",
+	"nightly_stable",
 ] # enables all the following features:
 	# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 	nightly_autodiff = [] # autodiff
+
+	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
+	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
+
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 	nightly_doc = [] # DISABLED(DOC_AUTO_CFG)
-	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
-	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine
+
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 	nightly_simd = []
+
 	# See: ./utils/release_dates.rs ; https://releases.rs/
 	nightly_stable = [ # a selection of nightly features that will become stable soon:
 		"nightly_stable_next1", "nightly_stable_next2", "nightly_stable_later"]
 		nightly_stable_next1 = [] # 1.84
 		nightly_stable_next2 = [] # 1.85 (+edition 2024)
 		nightly_stable_later = [] # 1.?? stable soon enough
-	#
+
 	##1.83 became stable on 2024-11-28:
 	# 1.83: ✓[char::MIN](https://github.com/rust-lang/rust/pull/130154)
 	# 1.83:  [const_cell_into_inner](https://github.com/rust-lang/rust/pull/130972)
