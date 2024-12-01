@@ -30,7 +30,7 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* external dependencies */
+/* 23 optional dependencies */
 
 reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
     doc: "A generic atomic wrapper type."
@@ -60,6 +60,9 @@ reexport! { optional_crate (safe) "dep_log", "log", log,
 reexport! { optional_crate (unsafe) "dep_memchr", "memchr", memchr,
     doc: "Optimized routines for string search primitives."
 }
+reexport! { optional_crate (unsafe) "dep_miniquad", "miniquad", miniquad,
+    doc: "Cross-platform window context and rendering library."
+}
 reexport! { optional_crate (unsafe) "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "Portable atomic types including 128-bit atomics, floats, etc."
 }
@@ -72,7 +75,7 @@ reexport! { optional_crate (safe) "dep_rand_core", "rand_core", rand_core,
 reexport! { optional_crate (safe) "dep_rayon", "rayon", rayon,
     doc: "Simple work-stealing parallelism for Rust."
 }
-reexport! { optional_crate (unsafe) "dep_regex_lite", "regex-lite", regex_lite,
+reexport! { optional_crate (safe) "dep_regex_lite", "regex-lite", regex_lite,
     doc: " A lightweight regex engine that optimizes for binary size and compilation time."
 }
 reexport! { optional_crate (unsafe) "dep_rodio", "rodio", rodio,

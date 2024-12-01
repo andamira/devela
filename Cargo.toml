@@ -580,7 +580,8 @@ dep_wide = ["dep:wide"]                                       # *
 #
 # Crates using unsafe, even if transitively, are marked as so,
 # preventing enabling them if the `safest` feature is enabled.
-#
+
+#* required dependencies *#
 
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
 version  = "0.12.0" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
@@ -661,8 +662,8 @@ default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/featu
 features = ["fallback", "float"]
 
 [dependencies.pyo3] # https://crates.io/crates/pyo3
-version = "0.23.2" #
-optional = true
+version = "0.23.2" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
+optional = true  # unsafe
 default-features = false # 35 https://docs.rs/crate/pyo3/latest/features
 features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags
 # WAIT [no_std](https://github.com/PyO3/pyo3/issues/3510)
