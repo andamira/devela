@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
-## [0.12.0] - [Unreleased]
+## [0.13.0] - (TBD)
+
+
+## [0.12.0] - 2024-12-01
 
 - add `hashbrown` optional dependency.
 - replace `std` with `dep_hashbrown` in `default` feature.
