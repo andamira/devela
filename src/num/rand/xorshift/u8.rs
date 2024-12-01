@@ -72,7 +72,7 @@ impl XorShift8 {
     }
 
     /// Returns a copy of the next new random state.
-    pub const fn next_new(&self) -> Self {
+    pub const fn next_state(&self) -> Self {
         let mut x = self.0;
         x ^= x << 3;
         x ^= x >> 4;
@@ -82,7 +82,7 @@ impl XorShift8 {
 
     /// Returns both the next random state and the `u8` value.
     pub const fn own_next_u8(self) -> Own<Self, u8> {
-        let s = self.next_new();
+        let s = self.next_state();
         let v = s.current_u8();
         Own::new(s, v)
     }
@@ -181,7 +181,7 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
     }
 
     /// Returns a copy of the next new random state.
-    pub const fn next_new(&self) -> Self {
+    pub const fn next_state(&self) -> Self {
         let mut x = self.0;
         x ^= x << SH1;
         x ^= x >> SH2;
@@ -191,7 +191,7 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
 
     /// Returns both the next random state and the `u8` value.
     pub const fn own_next_u8(self) -> Own<Self, u8> {
-        let s = self.next_new();
+        let s = self.next_state();
         let v = s.current_u8();
         Own::new(s, v)
     }

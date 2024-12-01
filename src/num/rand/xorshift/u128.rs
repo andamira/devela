@@ -80,8 +80,7 @@ impl XorShift128 {
     }
 
     /// Returns a copy of the next new random state.
-    #[inline]
-    pub const fn next_new(&self) -> Self {
+    pub const fn next_state(&self) -> Self {
         let mut x = self.0;
 
         let t = x[3];
@@ -98,7 +97,7 @@ impl XorShift128 {
 
     /// Returns both the next random state and the `u64` value.
     pub const fn own_next_u64(self) -> Own<Self, u64> {
-        let s = self.next_new();
+        let s = self.next_state();
         let v = s.current_u64();
         Own::new(s, v)
     }
@@ -228,8 +227,7 @@ impl XorShift128p {
     }
 
     /// Returns a copy of the next new random state.
-    #[inline]
-    pub const fn next_new(&self) -> Self {
+    pub const fn next_state(&self) -> Self {
         let mut x = self.0;
         let [s0, mut s1] = [x[0], x[1]];
 
@@ -242,7 +240,7 @@ impl XorShift128p {
 
     /// Returns both the next random state and the `u64` value.
     pub const fn own_next_u64(self) -> Own<Self, u64> {
-        let s = self.next_new();
+        let s = self.next_state();
         let v = s.current_u64();
         Own::new(s, v)
     }

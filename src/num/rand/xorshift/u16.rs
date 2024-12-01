@@ -74,7 +74,7 @@ impl XorShift16 {
     }
 
     /// Returns a copy of the next new random state.
-    pub const fn next_new(&self) -> Self {
+    pub const fn next_state(&self) -> Self {
         let mut x = self.0;
         x ^= x << 7;
         x ^= x >> 9;
@@ -84,7 +84,7 @@ impl XorShift16 {
 
     /// Returns both the next random state and the `u16` value.
     pub const fn own_next_u16(self) -> Own<Self, u16> {
-        let s = self.next_new();
+        let s = self.next_state();
         let v = s.current_u16();
         Own::new(s, v)
     }

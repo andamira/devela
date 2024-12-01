@@ -75,7 +75,7 @@ impl XorShift32 {
     }
 
     /// Returns a copy of the next new random state.
-    pub const fn next_new(&self) -> Self {
+    pub const fn next_state(&self) -> Self {
         let mut x = self.0;
         x ^= x << 13;
         x ^= x >> 17;
@@ -85,7 +85,7 @@ impl XorShift32 {
 
     /// Returns both the next random state and the `u32` value.
     pub const fn own_next_u32(self) -> Own<Self, u32> {
-        let s = self.next_new();
+        let s = self.next_state();
         let v = s.current_u32();
         Own::new(s, v)
     }

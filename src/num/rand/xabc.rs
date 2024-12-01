@@ -112,7 +112,7 @@ impl Xabc {
 
     /// Returns a copy of the next new random state.
     #[must_use]
-    pub const fn next_new(&self) -> Self {
+    pub const fn next_state(&self) -> Self {
         let [mut a, mut b, mut c, mut x] = [self.a, self.b, self.c, self.x];
         x += 1;
         a = a ^ c ^ x;
@@ -123,7 +123,7 @@ impl Xabc {
 
     /// Returns both the next random state and the `u8` value.
     pub const fn own_next_u8(self) -> Own<Self, u8> {
-        let s = self.next_new();
+        let s = self.next_state();
         let v = s.current_u8();
         Own::new(s, v)
     }
