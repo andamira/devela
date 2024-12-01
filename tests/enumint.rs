@@ -1,5 +1,6 @@
 #[cfg(feature = "alloc")]
 mod allocating {
+    use core::mem::size_of;
     use devela_macros::enumint;
 
     enumint!(Enum253, u8, 1, 253);

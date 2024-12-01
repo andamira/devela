@@ -5,30 +5,44 @@
 // TOC
 // - enumint
 
-use super::shared::parse_vis_ident;
+use super::shared::{expect_punct, parse_int, parse_visibility};
+use alloc::{format, string::ToString, vec::Vec};
 use proc_macro::TokenStream;
-use proc_macro2::{Ident, Span};
+use proc_macro2::{Ident, Span, TokenStream as TokenStream2, TokenTree};
 use quote::quote;
-use alloc::{format, vec::Vec, string::ToString};
 
 #[inline(always)]
 #[cfg(feature = "alloc")]
 pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
-    let input_str = input.to_string();
+    let input: TokenStream2 = input.into();
+    let tokens: Vec<TokenTree> = input.into_iter().collect();
 
-    let parts: Vec<&str> = input_str.split(',').collect();
-    if parts.len() != 4 {
-        panic!("Expected format: [visibility] enum_name, repr, start, end");
-    }
+    // Process the tokens to extract: visibility, enum_name, repr, start, end
+    // Expected format: [visibility] enum_name, repr, start, end
+    let mut iter = tokens.into_iter().peekable();
 
-    let enum_name_str = parts[0].trim();
-    let (visibility, enum_name) = parse_vis_ident(enum_name_str);
-    let repr_str = parts[1].trim();
+    let visibility = parse_visibility(&mut iter);
 
-    let start: i128 = parts[2].trim().parse().expect("Invalid start value");
-    let end: i128 = parts[3].trim().parse().expect("Invalid end value");
-    if start > end {
-        panic!("Start value must be less than or equal to end value");
+    let enum_name = match iter.next() {
+        Some(TokenTree::Ident(ident)) => ident,
+        other => panic!("Expected enum name, found {:?}", other),
+    };
+    expect_punct(&mut iter, ',');
+
+    let repr = match iter.next() {
+        Some(TokenTree::Ident(ident)) => ident.to_string(),
+        other => panic!("Expected representation type, found {:?}", other),
+    };
+    let repr_str = repr.as_str();
+
+    expect_punct(&mut iter, ',');
+    let start = parse_int(&mut iter);
+    expect_punct(&mut iter, ',');
+    let end = parse_int(&mut iter);
+
+    // Ensure no more tokens
+    if let Some(tok) = iter.next() {
+        panic!("Unexpected token after end value: {:?}", tok);
     }
 
     // Validate the provided representation against the range length
@@ -68,6 +82,9 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
         _ => repr.clone(), // For unsigned types, use the same repr
     };
 
+    let visibility = visibility.unwrap_or_default();
+    let enum_name = Ident::new(&enum_name.to_string(), Span::call_site());
+
     // Generate the enum variants, handling negative and positive values.
     let mut enum_variants = Vec::new();
     for i in start..=end {
@@ -82,15 +99,16 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
     // Generate the final output
     let enum_definition = quote! {
         /// An auto-generated enum for values between #start and #end.
+        #[allow(missing_docs)] // reason = "undocumented variants"
         #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[repr(#repr)]
         #visibility enum #enum_name {
             #(
-                /// .
                 #enum_variants
             ),*
         }
 
+        // SAFETY: The type is Copy.
         unsafe impl Send for #enum_name {}
         unsafe impl Sync for #enum_name {}
 
