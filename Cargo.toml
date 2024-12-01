@@ -578,8 +578,8 @@ dep_wide = ["dep:wide"]                                      # *
 #
 
 [dependencies.devela_macros] # https://crates.io/crates/devela_macros
-version  = "0.11.0" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
-# path = "./macros" # safe # WIP
+version  = "0.12.0" # ✓ https://github.com/andamira/devela_macros/blob/main/DOCS/CHANGELOG.md
+# path = "./macros" # safe
 
 [dependencies.paste_crate] # https://crates.io/crates/paste
 version = "1.0.15" # ✗ https://github.com/dtolnay/paste/commits/master/
@@ -612,7 +612,7 @@ default-features = false # 14 https://docs.rs/crate/hashbrown/latest/features
 features = ["default-hasher", "inline-more"]
 
 [dependencies.jiff] # https://crates.io/crates/jiff
-version = "0.1.14" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
+version = "0.1.15" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
@@ -673,7 +673,7 @@ default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 # features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"]
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
-version = "3.10.11" # ✗ https://github.com/ashvardanian/StringZilla/releases
+version = "3.11.0" # ✗ https://github.com/ashvardanian/StringZilla/releases
 optional = true  # unsafe
 default-features = false # 0 https://docs.rs/crate/stringzilla/latest/features
 
