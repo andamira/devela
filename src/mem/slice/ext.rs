@@ -74,7 +74,7 @@ pub trait ExtSlice<T>: Sealed {
     /// # Examples
     /// ```
     /// # use devela::ExtSlice;
-    /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array()];
+    /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array::<u16, 3>()];
     /// assert_eq![[1_u16, 2, 3], [1_u8, 2, 3].slice_into_array::<u16, 3>()];
     /// ```
     /// # Features
