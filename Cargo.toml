@@ -228,8 +228,9 @@ safest = [ # forbids `unsafe` even in dependencies (except standard library)
 #
 # - https://doc.rust-lang.org/unstable-book/library-features.html
 
-nightly = [ # sync with src/lib.rs
-	"nightly_autodiff", "nightly_coro", "nightly_doc", "nightly_simd",
+
+nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
+	"nightly_autodiff", "nightly_coro", "nightly_doc", "nightly_float", "nightly_simd",
 	"nightly_stable",
 ] # enables all the following features:
 	# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
@@ -241,6 +242,9 @@ nightly = [ # sync with src/lib.rs
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
 	nightly_doc = [] # DISABLED(DOC_AUTO_CFG)
+
+	# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
+	nightly_float = ["bytemuck?/nightly_float"] # f16, f128
 
 	# WAIT: [portable_simd](https://github.com/rust-lang/rust/issues/86656)
 	nightly_simd = []
@@ -529,7 +533,7 @@ _string_all = [
 # The names are prefixed with `dep_`, and don't have dashes.
 # They are associated to optional dependencies and groups of modules.
 #
-# In sync with ./utils/check.rs::DEP_ALL & build/features.rs::DEPENDENCY.features
+# In sync with ./utils/check.rs::DEP_ALL & build/features.rs::DEPENDENCY
 #
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html

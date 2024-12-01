@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - rend: `rend`, `safe_rend`, `audio`, `color`, `draw`, `font`, `image`, `layout`.
   - sys: `time`, `linux`, `dep_linux`, `unsafe_syscall`.
   - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
-  - nightly: `nightly_autodiff`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
+  - nightly: `nightly_autodiff`, `nightly_float`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
   - safety: `safest`, `unsafe_async`, `safe_io`, `safe_audio`, `safe_color`, `safe_draw`, `safe_font`, `safe_image`, `safe_layout`.
   - other  `work_deps`, `__force_miri_dst`.
 - new cfg flag: `cargo_primary_package`.

@@ -25,11 +25,13 @@
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
 // nightly:
+// In sync with Cargo.toml::nightly & build/features.rs::NIGHTLY
 #![cfg_attr(feature = "nightly_autodiff", feature(autodiff))]
+#![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(all(feature = "nightly_doc", miri), allow(unused_attributes))]
 #![cfg_attr(all(feature = "nightly_doc", not(doc)), allow(unused_attributes))]
-#![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
+#![cfg_attr(feature = "nightly_float", feature(f16, f128))]
 #![cfg_attr(feature = "nightly_simd", feature(portable_simd))]
 // "nightly_stable" includes:
 #![cfg_attr( // 1.84
@@ -96,6 +98,7 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 // safeguard safety:
 #[cfg(all(
     feature = "safe",
+    // In sync with Cargo.toml::unsafe & build/features.rs::SAFETY
     any(feature = "unsafe", // includes all 12 specific purposes below:
         feature = "unsafe_array", feature = "unsafe_async", feature = "unsafe_hint",
         feature = "unsafe_layout", feature = "unsafe_niche", feature = "unsafe_ptr",

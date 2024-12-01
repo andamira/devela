@@ -132,10 +132,17 @@ In order to use any unsafe functionality:
 Enabling any of them sets the `_nightly_·` flag.
 
 - `nightly`: enables the nightly features.
-  - `nightly_coro`: enables `coroutines`, `coroutine_trait`, `iter_from_coroutine`.
-  - `nightly_doc`: enables `doc_cfg`.
-  - `nightly_simd`: enables `portable_simd`.
-  - `nightly_stabilized`: enables stabilized features to be released soon.
+  - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
+  - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
+  - `nightly_float`: enables [`f16`, `f128`].
+  - `nightly_simd`: enables [`portable_simd`].
+  - `nightly_stabilized`: enables stabilized features to be released soon. See `Cargo.toml`.
+
+[coroutines]: https://github.com/rust-lang/rust/issues/43122
+[`doc_cfg]: https://github.com/rust-lang/rust/issues/43781
+[`doc_notable_trait`]: https://github.com/rust-lang/rust/issues/45040
+[`f16`, `f128`]: https://github.com/rust-lang/rust/issues/116909
+[portable_simd]: https://github.com/rust-lang/rust/issues/86656
 
 ### Capability features
 
