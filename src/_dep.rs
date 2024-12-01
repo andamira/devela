@@ -63,6 +63,9 @@ reexport! { optional_crate (unsafe) "dep_memchr", "memchr", memchr,
 reexport! { optional_crate (unsafe) "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "Portable atomic types including 128-bit atomics, floats, etc."
 }
+reexport! { optional_crate (unsafe) "dep_pyo3", "pyo3", pyo3,
+    doc: " Bindings to Python interpreter."
+}
 reexport! { optional_crate (safe) "dep_rand_core", "rand_core", rand_core,
     doc: "Random number generation traits."
 }

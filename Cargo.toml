@@ -74,7 +74,7 @@ publish = true
 bench = false
 
 
-[features] # 202/300 (98 remaining), 89 visible, 113 hidden
+[features] # 207/300 (93 remaining), 94 visible, 113 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -369,7 +369,7 @@ _docsrs_stable = ["_docsrs_stable_min", "_docs_max"]
 _docsrs_stable_min = ["_docsrs_stable_nodep", "dep_all"]
 _docsrs_stable_nodep = ["std", "unsafe", "_docs_min"]
 
-_docs_min = [ # the minimum capabilities that document all library items
+_docs_min = [ # the minimum capabilities to document each library item
 	"all",
 	"linux",
 	# data:
@@ -538,39 +538,40 @@ _string_all = [
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-dep_all = [ # enables all 22 optional dependencies:
+dep_all = [ # enables all 23 optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
 	"dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
-	"dep_portable_atomic", "dep_rand_core", "dep_rayon", "dep_regex_lite",
+	"dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon", "dep_regex_lite",
 	"dep_rodio", "dep_stringzilla", "dep_tinyaudio", "dep_unicode_segmentation",
 	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 
-dep_atomic = ["dep:atomic"]                                  # work::sync
-dep_bytemuck = ["dep:bytemuck"]                              # *
-dep_const_str = ["dep:const-str"]                            # text::str
-dep_hashbrown = ["dep:hashbrown", "alloc"]                   # data::collections
-dep_jiff = ["dep:jiff", "alloc"]                             # sys::time
-dep_js_sys = ["dep:js-sys"]                                  # CHECK
-dep_libm = ["dep:libm"]                                      # num::float
-dep_log = ["dep:log"]                                        # sys::log
-dep_memchr = ["dep:memchr"]                                  # text
-dep_miniquad = ["dep:miniquad"]                              # sys::window? MAYBE
-dep_portable_atomic = ["dep:portable-atomic"]                # work::sync
-dep_rand_core = ["dep:rand_core"]                            # num::rand
-dep_rayon = ["dep:rayon"]                                    # work::thread
-dep_regex_lite = ["dep:regex-lite", "std"]                   # text
-dep_rodio = ["dep:rodio"]                                    # sys::sound
-dep_stringzilla = ["dep:stringzilla"]                        # text
-dep_tinyaudio = ["dep:tinyaudio"]                            # sys::sound
-dep_unicode_segmentation = ["dep:unicode-segmentation"]      # text
-dep_unicode_width = ["dep:unicode-width"]                    # text
-dep_wasm_bindgen = ["dep:wasm-bindgen"]                      # CHECK
-dep_web_sys = ["dep:web-sys"]                                # CHECK
-dep_wide = ["dep:wide"]                                      # *
+dep_atomic = ["dep:atomic"]                                   # work::sync
+dep_bytemuck = ["dep:bytemuck"]                               # *
+dep_const_str = ["dep:const-str"]                             # text::str
+dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"] # data::collections
+dep_jiff = ["dep:jiff", "alloc"]                              # sys::time
+dep_js_sys = ["dep:js-sys"]                                   # sys::ffi
+dep_libm = ["dep:libm"]                                       # num::float
+dep_log = ["dep:log"]                                         # sys::log
+dep_memchr = ["dep:memchr"]                                   # text
+dep_miniquad = ["dep:miniquad"]                               # sys::?
+dep_portable_atomic = ["dep:portable-atomic"]                 # work::sync
+dep_pyo3 = ["dep:pyo3", "std"]                                # sys::ffi
+dep_rand_core = ["dep:rand_core"]                             # num::rand
+dep_rayon = ["dep:rayon"]                                     # work::thread
+dep_regex_lite = ["dep:regex-lite", "std"]                    # text
+dep_rodio = ["dep:rodio"]                                     # sys::sound
+dep_stringzilla = ["dep:stringzilla"]                         # text
+dep_tinyaudio = ["dep:tinyaudio"]                             # sys::sound
+dep_unicode_segmentation = ["dep:unicode-segmentation"]       # text
+dep_unicode_width = ["dep:unicode-width"]                     # text
+dep_wasm_bindgen = ["dep:wasm-bindgen"]                       # sys::ffi
+dep_web_sys = ["dep:web-sys"]                                 # sys::?
+dep_wide = ["dep:wide"]                                       # *
 
 
-[dependencies] # 24 (2 required, 22 optional)
+[dependencies] # 25 (2 required, 23 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -659,6 +660,13 @@ optional = true # unsafe
 default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/features
 features = ["fallback", "float"]
 
+[dependencies.pyo3] # https://crates.io/crates/pyo3
+version = "0.23.2" #
+optional = true
+default-features = false # 35 https://docs.rs/crate/pyo3/latest/features
+features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags
+# WAIT [no_std](https://github.com/PyO3/pyo3/issues/3510)
+
 [dependencies.rayon] # https://crates.io/crates/rayon
 version = "1.10.0" # ✗ https://github.com/rayon-rs/rayon/commits/main/
 optional = true # unsafe
@@ -669,6 +677,7 @@ version = "0.1.6" # ✗ https://github.com/rust-lang/regex/commits/master/regex-
 optional = true # safe
 default-features = false # 2 https://docs.rs/crate/rayon/latest/features
 features = ["string"]
+# WAIT: [no_std](https://github.com/rust-lang/regex/issues/1122)
 
 [dependencies.rodio] # https://crates.io/crates/rodio
 version = "0.20.1" # ✓ https://github.com/RustAudio/rodio/blob/master/CHANGELOG.md

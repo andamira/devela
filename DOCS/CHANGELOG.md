@@ -65,7 +65,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - macros: `assert_const!`, `cfg_if!`.
   - traits: `ConstBool`.
 - optional dependencies:
-  - `jiff`, `js-sys`, `rayon`, `regex-lite`, `rodio`, `stringzilla`, `tinyaudio`, `wasm-bindgen`, `web-sys`.
+  - `jiff`, `js-sys`, `pyo3`, `rayon`, `regex-lite`, `rodio`, `stringzilla`, `tinyaudio`, `wasm-bindgen`, `web-sys`.
 - re-export:
   - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt}`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
