@@ -13,7 +13,7 @@ enum UEnum {
 }
 */
 
-enumint!(pub IEnum, i16, -2, 3); // Generates the following enum:
+enumint!(pub(crate) IEnum, i16, -2, 3); // Generates the following enum:
 
 /*
 #[repr(i16)]

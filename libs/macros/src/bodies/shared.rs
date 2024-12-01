@@ -13,10 +13,10 @@ use alloc::{
     string::{String, ToString},
     vec::Vec,
 };
-use proc_macro2::{Ident, TokenStream, TokenTree};
-use quote::quote;
+use core::iter::{once, Peekable};
+use proc_macro2::{TokenStream as TokenStream2, TokenTree};
 
-// Argument parser that correctly deals with nested arguments with commas.
+/// Argument parser that correctly deals with nested arguments with commas.
 pub(crate) fn split_args(arg: &str) -> Vec<String> {
     let mut args = Vec::new();
     let (mut start, mut level) = (0, 0);
@@ -37,7 +37,7 @@ pub(crate) fn split_args(arg: &str) -> Vec<String> {
     args
 }
 
-// splits a tuple of two elements; used for the `compile_doc` macro
+/// Splits a tuple of two elements; used for the `compile_doc` macro.
 pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
     let tuple = tuple.trim();
     if !tuple.starts_with('(') {
@@ -75,12 +75,12 @@ pub(crate) fn split_compile_doc_tuple(tuple: &str) -> (String, String) {
     (condition.to_string(), comment.to_string())
 }
 
-// de-indents a string
-//
-// calculates the minimum indentation across all non-empty lines
-// and then removes that amount of leading whitespace from each line.
-//
-// should support spaces and tabs
+/// De-indents a string.
+///
+/// Calculates the minimum indentation across all non-empty lines
+/// and then removes that amount of leading whitespace from each line.
+///
+/// Should support spaces and tabs.
 pub(crate) fn deindent(s: &str) -> String {
     let lines: Vec<&str> = s.lines().collect();
     let min_indent = lines
@@ -98,7 +98,7 @@ pub(crate) fn deindent(s: &str) -> String {
         .join("\n")
 }
 
-// Evaluator of compilation predicates
+/// Evaluator of compilation predicates
 #[rustfmt::skip]
 pub(crate) fn compile_eval(arg: String) -> bool {
     /* unary */
@@ -268,48 +268,72 @@ pub(crate) fn compile_eval(arg: String) -> bool {
     }
 }
 
-// Helper function for parsing visibility and ident
-pub(crate) fn parse_vis_ident(enum_name_str: &str) -> (Option<TokenStream>, Ident) {
-    let enum_name_tokens: TokenStream = enum_name_str.parse().expect("Failed to parse ident");
-    let mut tokens_iter = enum_name_tokens.into_iter();
-
-    let mut visibility = None;
-    let identifier;
-
-    if let Some(first_token) = tokens_iter.next() {
-        match first_token {
-            TokenTree::Ident(ident) if ident == "pub" => {
-                // Handle pub visibility
-                if let Some(next_token) = tokens_iter.next() {
-                    match next_token {
-                        TokenTree::Group(group) => {
-                            // Use the entire `pub(crate)` or `pub(self)` as a single token
-                            visibility = Some(quote! { pub #group });
-                        }
-                        TokenTree::Ident(ident) => {
-                            visibility = Some(quote! { pub });
-                            identifier = ident;
-                            return (visibility, identifier);
-                        }
-                        _ => panic!("Expected ident after pub"),
-                    }
-                }
-
-                // Handle the case when the next token after pub(crate) is the enum name
-                if let Some(TokenTree::Ident(ident)) = tokens_iter.next() {
-                    identifier = ident;
-                } else {
-                    panic!("Expected ident after visibility");
-                }
-            }
-            TokenTree::Ident(ident) => {
-                identifier = ident;
-            }
-            _ => panic!("Invalid token: expected visibility specifier or ident"),
+/// Expects a specific punctuation.
+pub(crate) fn expect_punct(iter: &mut Peekable<impl Iterator<Item = TokenTree>>, expected: char) {
+    if let Some(TokenTree::Punct(punct)) = iter.next() {
+        if punct.as_char() != expected {
+            panic!("Expected '{}', found '{}'", expected, punct.as_char());
         }
     } else {
-        panic!("No tokens found for the ident");
+        panic!("Expected '{}'", expected);
+    }
+}
+
+/// Parses an integer from the token stream.
+pub(crate) fn parse_int(iter: &mut Peekable<impl Iterator<Item = TokenTree>>) -> i128 {
+    let mut is_negative = false;
+    if let Some(TokenTree::Punct(punct)) = iter.peek() {
+        if punct.as_char() == '-' {
+            is_negative = true;
+            iter.next(); // Consume '-'
+        }
     }
 
-    (visibility, identifier)
+    let value = match iter.next() {
+        Some(TokenTree::Literal(lit)) => {
+            let s = lit.to_string();
+            // Remove any underscores from the literal
+            let s = s.replace('_', "");
+            s.parse::<i128>().expect("Invalid integer literal")
+        }
+        other => panic!("Expected integer literal, found {:?}", other),
+    };
+
+    if is_negative {
+        -value
+    } else {
+        value
+    }
+}
+
+/// Parses visibility.
+pub(crate) fn parse_visibility(
+    iter: &mut Peekable<impl Iterator<Item = TokenTree>>,
+) -> Option<TokenStream2> {
+    if let Some(TokenTree::Ident(ident)) = iter.peek() {
+        if *ident == "pub" {
+            let mut vis_stream = TokenStream2::new();
+            let ident = match iter.next() {
+                Some(TokenTree::Ident(ident)) => ident,
+                _ => unreachable!(),
+            };
+            vis_stream.extend(once(TokenTree::Ident(ident.clone())));
+
+            // Check for optional group (e.g., (crate), (super), (self), (in path))
+            if let Some(TokenTree::Group(group)) = iter.peek() {
+                if group.delimiter() == proc_macro2::Delimiter::Parenthesis {
+                    let group = match iter.next() {
+                        Some(TokenTree::Group(group)) => group,
+                        _ => unreachable!(),
+                    };
+                    vis_stream.extend(once(TokenTree::Group(group)));
+                }
+            }
+            Some(vis_stream)
+        } else {
+            None
+        }
+    } else {
+        None
+    }
 }
