@@ -6,7 +6,37 @@
 //! itertools = "0.13"
 //! toml_edit = "0.20"
 //! ```
-// This script needs [rust-script](https://crates.io/crates/rust-script) to run.
+// NOTE: needs [rust-script](https://crates.io/crates/rust-script) to run.
+//
+// TOC
+// - config:
+//   - const root_modules
+//   - const dep_all
+//   - const dep_no_cross_compile_std
+//   - const dep_no_cross_compile_ever
+//   - const std_arches_no_cross_compile
+//   - const std_arches
+//   - const no_std_arches
+//   - const linux_arches
+//
+// - fn main:
+//   - tests
+//   - docs
+//   - arches
+//   - miri
+//   - modules
+//
+// - helpers:
+//   - struct Args
+//   - fn get_args
+//   - fn print_help
+//   - fn get_msrv
+//   - fn run_cargo
+//   - fn rust_setup_arches
+//   - fn rust_setup_nightly
+//   - fn headline
+//   - fn is_current_host_compatible
+//   - fn filter_deps
 
 use devela::all::{crate_root, iif, sf};
 use itertools::Itertools;
@@ -21,7 +51,7 @@ use std::{
 };
 use toml_edit::Document;
 
-/* global configuration */
+/* config */
 
 #[rustfmt::skip]
 const ROOT_MODULES: [&str; 9 + 1] = [
@@ -144,6 +174,7 @@ const LINUX_ARCHES: &[&str] = &[
 
 type Result<T> = core::result::Result<T, Box<dyn core::error::Error>>;
 
+/// Main logic.
 fn main() -> Result<()> {
     let args = get_args()?;
     let msrv = iif![args.no_msrv; "".into(); get_msrv().unwrap_or("".into())];
@@ -236,14 +267,8 @@ fn main() -> Result<()> {
 
         // std, all dependencies (except DEP_NO_CROSS_COMPILE_EVER)
         for arch in STD_ARCHES {
-            // Filter out dependencies to never cross-compile, and build a filtered list
-            let enabled_dependencies: Vec<&str> = DEP_ALL
-                .iter()
-                .filter(|&&dep| !DEP_NO_CROSS_COMPILE_EVER.contains(&dep))
-                .copied()
-                .collect();
-            let feature_flags = format!("all,std,unsafe,{}", enabled_dependencies.join(","));
-
+            let deps = filter_deps(&DEP_ALL, &[&DEP_NO_CROSS_COMPILE_EVER]);
+            let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
             sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever): arch {a}/{atotal}")); }
             run_cargo(&msrv, cmd, &["--target", arch, "-F", &feature_flags])?;
 
@@ -257,15 +282,9 @@ fn main() -> Result<()> {
                 run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe,dep_all"])?;
                 a += 1;
             } else {
-                // Filter out incompatible dependencies and build a filtered list
-                let enabled_dependencies: Vec<&str> = DEP_ALL
-                    .iter()
-                    .filter(|&&dep| !DEP_NO_CROSS_COMPILE_EVER.contains(&dep))
-                    .filter(|&&dep| !DEP_NO_CROSS_COMPILE_STD.contains(&dep))
-                    .copied()
-                    .collect();
-                let feature_flags = format!("all,std,unsafe,{}", enabled_dependencies.join(","));
-
+                let deps =
+                    filter_deps(&DEP_ALL, &[&DEP_NO_CROSS_COMPILE_EVER, &DEP_NO_CROSS_COMPILE_STD]);
+                let feature_flags = format!("all,std,unsafe,{}", deps.join(","));
                 sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever,_std): arch {a}/{atotal}")); }
                 run_cargo(&msrv, cmd, &["--target", arch, "-F", &feature_flags])?;
                 a += 1;
@@ -296,14 +315,8 @@ fn main() -> Result<()> {
         // std + dep_all (except DEP_*_EVER)
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
-            // Filter out dependencies to never cross-compile, and build a filtered list
-            let enabled_dependencies: Vec<&str> = DEP_ALL
-                .iter()
-                .filter(|&&dep| !DEP_NO_CROSS_COMPILE_EVER.contains(&dep))
-                .copied()
-                .collect();
-            let feature_flags =
-                format!("all,std,unsafe,nightly,{}", enabled_dependencies.join(","));
+            let deps = filter_deps(&DEP_ALL, &[&DEP_NO_CROSS_COMPILE_EVER]);
+            let feature_flags = format!("all,std,unsafe,nightly,{}", deps.join(","));
 
             sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever) arch {a}/{atotal}")); }
             run_cargo("", "+nightly", &["miri", "test", "--target", arch, "-F", &feature_flags])?;
@@ -396,6 +409,8 @@ fn main() -> Result<()> {
 
     Ok(())
 }
+
+/* helpers */
 
 /// CLI arguments state.
 #[derive(Debug, Default, Clone, Eq, PartialEq)]
@@ -641,4 +656,13 @@ fn is_current_host_compatible(target_arch: &str) -> bool {
     };
 
     is_arch_compatible && is_os_compatible
+}
+
+/// Filters a list of dependencies by excluding those found in any of the provided exclusion lists.
+fn filter_deps<'a>(all_deps: &'a [&'a str], exclude_lists: &[&[&'a str]]) -> Vec<&'a str> {
+    all_deps
+        .iter()
+        .filter(|&&dep| exclude_lists.iter().all(|exclude| !exclude.contains(&dep)))
+        .copied()
+        .collect()
 }
