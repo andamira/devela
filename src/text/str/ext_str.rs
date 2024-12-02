@@ -3,15 +3,10 @@
 //! trait ExtStr
 //
 
-use crate::{iif, AsciiChar, Str};
+use crate::{cold_empty_string, iif, AsciiChar, Str};
 
-// IMPROVE: use NumToStr
-use crate::{mem::Slice, text::Ascii};
-
-#[doc = crate::doc_private!()]
-/// The cold path that returns an empty string slice.
-#[cold] #[rustfmt::skip]
-const fn cold_empty_string() -> &'static str { "" }
+// IMPROVE: use `NumToStr`
+use crate::{Ascii, Slice};
 
 #[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.
@@ -26,7 +21,7 @@ pub trait ExtStr: Sealed {
     /// and returns a reference to the new `&str`.
     /// # Examples
     /// ```
-    /// use devela::text::ExtStr;
+    /// use devela::ExtStr;
     ///
     /// let mut buf = [0_u8; 12];
     /// let repeated = "ay".repeat_into(3, &mut buf);
@@ -34,6 +29,8 @@ pub trait ExtStr: Sealed {
     /// ```
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
+    ///
+    /// For the *const* version see [`Str::repeat_into`].
     #[must_use]
     fn repeat_into<'input, const CAP: usize>(
         &self,
@@ -48,7 +45,7 @@ pub trait ExtStr: Sealed {
     /// with a `separator` positioned after the immediately preceding number.
     /// # Examples
     /// ```
-    /// use devela::text::{AsciiChar, ExtStr};
+    /// use devela::{AsciiChar, ExtStr};
     ///
     /// let mut buf = [0; 15];
     /// assert_eq!("2*4*6*8*11*14*", str::new_counter(&mut buf, 14, AsciiChar::Asterisk));
@@ -56,8 +53,11 @@ pub trait ExtStr: Sealed {
     /// ```
     /// # Panics
     /// Panics if `buffer.len() < length`
+    ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
+    ///
+    /// For the *const* version see [`Str::new_counter`].
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]
@@ -70,19 +70,17 @@ impl ExtStr for str {
         n: usize,
         buffer: &'input mut [u8; CAP],
     ) -> &'input str {
-        let s_bytes = self.as_bytes();
+        // Str::repeat_into(self, n, buffer) // BENCH
 
+        let s_bytes = self.as_bytes();
         let mut index = 0;
         for _ in 0..n {
             for &b in s_bytes {
-                if index == CAP {
-                    break;
-                }
+                iif![index == CAP; break];
                 buffer[index] = b;
                 index += 1;
             }
         }
-
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
         return Str::from_utf8(&buffer[..index]).unwrap();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
@@ -133,7 +131,7 @@ impl ExtStr for str {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
             return Str::from_utf8(&buffer[..length]).unwrap();
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
-            // SAFETY: TODO
+            // SAFETY: We are only using with Ascii characters
             return unsafe { Str::from_utf8_unchecked(&buffer[..length]) };
         }
     }
