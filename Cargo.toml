@@ -666,6 +666,7 @@ version = "0.23.2" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
 optional = true  # unsafe
 default-features = false # 35 https://docs.rs/crate/pyo3/latest/features
 features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags
+# https://pyo3.rs/latest/features.html#features-reference
 # WAIT [no_std](https://github.com/PyO3/pyo3/issues/3510)
 
 [dependencies.rayon] # https://crates.io/crates/rayon
@@ -690,6 +691,8 @@ default-features = false # 26 https://docs.rs/crate/rodio/latest/features
 version = "3.11.0" # ✗ https://github.com/ashvardanian/StringZilla/releases
 optional = true  # unsafe
 default-features = false # 0 https://docs.rs/crate/stringzilla/latest/features
+# WAIT [fix msvc cross-compile](https://github.com/ashvardanian/StringZilla/pull/169)
+# WAIT [fix cmake code](https://github.com/ashvardanian/StringZilla/pull/85)
 
 [dependencies.tinyaudio] # https://crates.io/crates/tinyaudio
 version = "1.0.0" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md

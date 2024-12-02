@@ -31,7 +31,9 @@ const ROOT_MODULES: [&str; 9 + 1] = [
     "linux"
 ];
 
-// All the optional dependencies.
+//* dependencies *//
+
+/// All the optional dependencies.
 // In sync with Cargo.toml::dep_all & build/features.rs::DEPENDENCY.features
 #[rustfmt::skip]
 const DEP_ALL: [&str; 23] = [
@@ -41,12 +43,20 @@ const DEP_ALL: [&str; 23] = [
     "dep_rodio", "dep_stringzilla", "dep_tinyaudio", "dep_unicode_segmentation",
     "dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
 ];
-// Dependencies that does not cross compile.
+/// Dependencies to not cross compile in arches in STD_ARCHES_NO_CROSS_COMPILE.
 #[rustfmt::skip]
-const DEP_NO_CROSS_COMPILE: [&str; 3] = [
+const DEP_NO_CROSS_COMPILE_STD: [&str; 2] = [
     "dep_rodio", "dep_tinyaudio", // REASON: alsa-sys
-    "dep_pyo3", // https://pyo3.rs/v0.23.2/building-and-distribution.html#cross-compiling
 ];
+/// Dependencies to not cross compile, ever.
+const DEP_NO_CROSS_COMPILE_EVER: [&str; 2] = [
+    // IMPROVE: https://pyo3.rs/v0.23.2/building-and-distribution.html#cross-compiling
+    "dep_pyo3",
+    // WAIT: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)
+    "dep_stringzilla",
+];
+
+//* cross-compilation targets *//
 
 const STD_ARCHES: &[&str] = &[
     // Linux 64-bit
@@ -132,7 +142,7 @@ const LINUX_ARCHES: &[&str] = &[
     // "riscv32gc-unknown-linux-gnu", // not available
 ];
 
-type Result<T> = core::result::Result<T, Box<dyn std::error::Error>>;
+type Result<T> = core::result::Result<T, Box<dyn core::error::Error>>;
 
 fn main() -> Result<()> {
     let args = get_args()?;
@@ -180,7 +190,7 @@ fn main() -> Result<()> {
     if args.docs {
         rust_setup_nightly()?;
         headline(0, &format!["`all` docs compilation:"]);
-        run_cargo("", "+nightly", &["doc", "--no-deps", "-F docsrs"])?;
+        run_cargo("", "+nightly", &["doc", "--no-deps", "-F _docsrs"])?;
     }
 
     /* arches */
@@ -224,31 +234,39 @@ fn main() -> Result<()> {
             a += 1;
         }
 
-        // std, all dependencies
+        // std, all dependencies (except DEP_NO_CROSS_COMPILE_EVER)
         for arch in STD_ARCHES {
-            sf! { headline(1, &format!("std,unsafe,dep_all: arch {a}/{atotal}")); }
-            run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe,dep_all"])?;
+            // Filter out dependencies to never cross-compile, and build a filtered list
+            let enabled_dependencies: Vec<&str> = DEP_ALL
+                .iter()
+                .filter(|&&dep| !DEP_NO_CROSS_COMPILE_EVER.contains(&dep))
+                .copied()
+                .collect();
+            let feature_flags = format!("all,std,unsafe,{}", enabled_dependencies.join(","));
+
+            sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever): arch {a}/{atotal}")); }
+            run_cargo(&msrv, cmd, &["--target", arch, "-F", &feature_flags])?;
+
             a += 1;
         }
-        // std, (almost) all dependencies, when cross-compiling
+
+        // std, all dependencies (except DEP_NO_CROSS_COMPILE_[EVER|STD])
         for arch in STD_ARCHES_NO_CROSS_COMPILE {
             if is_current_host_compatible(arch) {
                 sf! { headline(1, &format!("std,unsafe,dep_all: arch {a}/{atotal}")); }
                 run_cargo(&msrv, cmd, &["--target", arch, "-F all,std,unsafe,dep_all"])?;
                 a += 1;
             } else {
-                // alternative
-                // sf! { headline(1, &format!("std,unsafe,dep_all (no cross-compiling): {arch} {a}/{atotal}")); }
-
                 // Filter out incompatible dependencies and build a filtered list
                 let enabled_dependencies: Vec<&str> = DEP_ALL
                     .iter()
-                    .filter(|&&dep| !DEP_NO_CROSS_COMPILE.contains(&dep))
+                    .filter(|&&dep| !DEP_NO_CROSS_COMPILE_EVER.contains(&dep))
+                    .filter(|&&dep| !DEP_NO_CROSS_COMPILE_STD.contains(&dep))
                     .copied()
                     .collect();
                 let feature_flags = format!("all,std,unsafe,{}", enabled_dependencies.join(","));
 
-                sf! { headline(1, &format!("std,unsafe,dep_all(filtered) (no cross-compile): arch {a}/{atotal}")); }
+                sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever,_std): arch {a}/{atotal}")); }
                 run_cargo(&msrv, cmd, &["--target", arch, "-F", &feature_flags])?;
                 a += 1;
             }
@@ -275,12 +293,21 @@ fn main() -> Result<()> {
             a += 1;
         }
 
-        // std + dep_all
+        // std + dep_all (except DEP_*_EVER)
         env::set_var("MIRIFLAGS", "-Zmiri-disable-isolation");
         for arch in STD_ARCHES {
-            sf! { headline(1, &format!("std,unsafe,dep_all: arch {a}/{atotal}")); }
-            sf! { run_cargo("", "+nightly", &[ "miri", "test", "--target", arch,
-            "-F all,std,unsafe,nightly,dep_all"])?; }
+            // Filter out dependencies to never cross-compile, and build a filtered list
+            let enabled_dependencies: Vec<&str> = DEP_ALL
+                .iter()
+                .filter(|&&dep| !DEP_NO_CROSS_COMPILE_EVER.contains(&dep))
+                .copied()
+                .collect();
+            let feature_flags =
+                format!("all,std,unsafe,nightly,{}", enabled_dependencies.join(","));
+
+            sf! { headline(1, &format!("std,unsafe,dep_all(filtered:_ever) arch {a}/{atotal}")); }
+            run_cargo("", "+nightly", &["miri", "test", "--target", arch, "-F", &feature_flags])?;
+
             a += 1;
         }
 
