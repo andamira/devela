@@ -33,9 +33,11 @@ impl_non_value![U 16];
 /// ```
 ///
 /// See for example: [`NonValueI8`] and [`NonExtremeI8`].
+//
+// NOTE: can't use doc(cfg) attributes in generated methods.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! impl_non_value{
+macro_rules! impl_non_value {
     (
         // Defines a new signed non-value type. E.g.: impl_non_value![i 32]
         // would generate NonValueI32 and NonExtremeI32
@@ -64,7 +66,7 @@ macro_rules! impl_non_value{
             ];
         }
     };
-
+    (
     // $name: the full name of the new type. E.g. NonValueI8.
     // $n0: the full name of the inner NonZero. E.g. NonZeroI8.
     // $ne: the full name of the new type. E.g. NonExtremeI8.
@@ -74,7 +76,7 @@ macro_rules! impl_non_value{
     // $IP:   the type of the corresponding integer primitive. E.g. i8
     // $s:    the sign identifier: i or u.
     // $b:    the bits of the type, from 8 to 128, or the `size` suffix.
-    (@$name:ident, $n0:ident, $ne:ident, $XTR:ident, $doc:literal, $IP:ty, $s:ident, $b:literal)
+    @$name:ident, $n0:ident, $ne:ident, $XTR:ident, $doc:literal, $IP:ty, $s:ident, $b:literal)
         => { $crate::paste! {
 
         pub use [<__impls_ $name >]::*;
@@ -191,7 +193,6 @@ macro_rules! impl_non_value{
                 /// The given `value` must never be equal to `V`.
                 #[must_use]
                 #[cfg(all(not(feature = "safe_num"), feature = "unsafe_niche"))]
-                #[cfg_attr(all(feature = "nightly_doc", not(miri)), doc(cfg(feature = "unsafe_niche")))]
                 pub const unsafe fn new_unchecked(value: $IP) -> Self {
                     #[cfg(debug_assertions)]
                     if value == V { panic!("The given value was specifically prohibited.") }
@@ -368,8 +369,6 @@ macro_rules! impl_non_value{
             /* external impls*/
 
             #[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
-            #[cfg_attr(all(feature = "nightly_doc", not(miri)),
-                doc(cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche"))))]
             #[allow(non_snake_case)]
             mod [<$name $s $b>] {
                 use super::*;
