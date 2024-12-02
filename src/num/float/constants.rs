@@ -1,6 +1,6 @@
 // devela::num::float::ext_trait
 //
-//! Extention trait for floatin-point constants.
+//! Extention trait for floating-point constants.
 //
 
 #![allow(clippy::excessive_precision)]

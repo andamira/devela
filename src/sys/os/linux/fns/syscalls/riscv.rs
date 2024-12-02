@@ -55,7 +55,7 @@ pub unsafe fn linux_sys_write(fd: c_int, buf: *const u8, count: usize) -> isize 
             in("a2") count,
             lateout("a7") result,
             options(nostack)
-        )
+        );
     }
     result
 }
@@ -74,7 +74,7 @@ pub unsafe fn linux_sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTime
             lateout("a7") result,
             lateout("a2") _,
             options(nostack)
-        )
+        );
     }
     result
 }
@@ -153,7 +153,7 @@ pub unsafe fn linux_sys_rt_sigaction(
             in("a3") sigsetsize,
             lateout("a7") result,
             options(nostack)
-        )
+        );
     }
     result
 }

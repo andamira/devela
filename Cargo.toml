@@ -241,7 +241,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 
 	# WAIT: [doc_cfg](https://github.com/rust-lang/rust/issues/43781)
 	# WAIT: [doc_notable_trait](https://github.com/rust-lang/rust/issues/45040)
-	nightly_doc = [] # DISABLED(DOC_AUTO_CFG)
+	nightly_doc = [] # DISABLED(doc_auto_cfg)
 
 	# WAIT: [f16_and_f128](https://github.com/rust-lang/rust/issues/116909)
 	nightly_float = ["bytemuck?/nightly_float"] # f16, f128
@@ -277,7 +277,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.83: ✓[rustdoc: table of contents](https://github.com/rust-lang/rust/pull/120736)
 	# 1.83: ✓[waker_getters](https://github.com/rust-lang/rust/pull/129919)
 	#
-	##1.84 will be stable on 2024-01-09:
+	##1.84 will be stable on 2024-01-09: (next1)
 	# 1.84: ·[const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
 	# 1.84: ·[const_char_encode_utf16](https://github.com/rust-lang/rust/pull/132153)
 	# 1.84:  [const_float_methods(unstable)](https://github.com/rust-lang/rust/pull/130568)
@@ -291,11 +291,13 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.84: ?[Ipv6Addr::is_(unicast_link|unique)_local](https://github.com/rust-lang/rust/pull/129238)
 	# 1.84: ·[pin_deref_mut](https://github.com/rust-lang/rust/pull/129424)
 	#
-	##1.85 will be stable on 2025-02-20:
+	##1.85 will be stable on 2025-02-20: (next2)
 	# 1.85:  [2024 edition](https://github.com/rust-lang/rust/issues/117258)
 	# 1.85: ·[const_float_methods](https://github.com/rust-lang/rust/issues/117258)
+	# 1.85:  [home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
+	# 1.85:  [num_midpoint:unsigned,float](https://github.com/rust-lang/rust/pull/131784)
 	#
-	##1.‥… later
+	##1.‥… (later)
 	# 1.??: ·[async_closure](https://github.com/rust-lang/rust/pull/132706)
 	# 1.??: ?[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 	# 1.??: ·[const_·array|slice·_from_ref](https://github.com/rust-lang/rust/issues/90206)
@@ -308,6 +310,9 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.??: ?[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 	# 1.??: ·[num_midpoint|const_num_midpoint](https://github.com/rust-lang/rust/pull/131784)
 	# 1.??: ·[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker
+	# 1.??: ·[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
+	# 1.??: ·[const_collections_with_hasher](https://github.com/rust-lang/rust/pull/133696)
+	#       · build_hasher_default_const_new
 	# 1.??: ·[unbounded_shifts](https://github.com/rust-lang/rust/issues/129375)
 	# 1.??: ·[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 	#

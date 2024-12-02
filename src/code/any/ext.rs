@@ -8,7 +8,7 @@
 use core::any::{type_name_of_val, Any, TypeId};
 
 #[cfg(feature = "alloc")]
-use crate::mem::Box;
+use crate::Box;
 
 #[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtAny`] trait.

@@ -18,7 +18,7 @@
 )]
 //
 // environment:
-// #![no_implicit_prelude] // WIP
+// #![no_implicit_prelude] // MAYBE
 #![cfg_attr(not(feature = "std"), no_std)]
 //
 // safety:
@@ -51,8 +51,7 @@
 )]
 // #![cfg_attr( // 1.84 not(miri)
 //     all(not(miri), feature = "nightly_stable_next1"),
-//     feature(
-//     )
+//     feature()
 // )]
 #![cfg_attr( // 1.85
     feature = "nightly_stable_next2",
@@ -62,8 +61,7 @@
 )]
 // #![cfg_attr( // 1.85 not(miri)
 //     all(not(miri), feature = "nightly_stable_next2"),
-//     feature(
-//     )
+//     feature()
 // )]
 #![cfg_attr( // 1.??
     feature = "nightly_stable_later",
@@ -81,14 +79,16 @@
         // new_zeroed_alloc, // ?
         noop_waker,
         num_midpoint,
+        ptr_fn_addr_eq,
+        // const_collections_with_hasher, // ?
+        build_hasher_default_const_new,
         unbounded_shifts,
         unsafe_cell_from_mut,
     )
 )]
 // #![cfg_attr( // 1.?? not(miri)
 //     all(not(miri), feature = "nightly_stable_later"),
-//     feature(
-//     )
+//     feature()
 // )]
 
 // safeguard environment:
