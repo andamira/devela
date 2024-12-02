@@ -185,11 +185,15 @@ fn main() -> Result<()> {
 
     if args.tests {
         rust_setup_arches(&msrv)?;
+        rust_setup_nightly()?;
 
         let cmd = "test";
         sf! { headline(0, &format!["`all` test checking [alloc|std] + [safe|unsafe]):"]); }
 
         // WAIT: https://github.com/rust-lang/cargo/issues/1983 (colored output)
+
+        // nightly unsafe
+        run_cargo("", "+nightly", &[cmd, "-F _docsrs", "--", "--color=always"])?;
 
         // std (un)safe (max capabilities)
         run_cargo(&msrv, cmd, &["-F all,std,safe,_docs_max", "--", "--color=always"])?;
