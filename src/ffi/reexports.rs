@@ -1,9 +1,9 @@
-// devela::sys::ffi::reexports
+// devela::ffi::reexports
 //
 //! Reexported items from `core`.
 //
 
-use crate::code::reexport;
+use crate::reexport;
 
 reexport! { rust: core::ffi,
     doc: "Equivalent to the corresponding C type.",

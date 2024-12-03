@@ -132,6 +132,7 @@ all = [ # enables all the modules and submodules
 # code = []
 # data = []
 # error = []
+# ffi = []
 mem = [
 	"bit",
 	]
@@ -180,12 +181,13 @@ work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 # (except for Rust's `core`, `alloc` and `std`).
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_error", "safe_mem", "safe_num",
-	"safe_rend", "safe_sys", "safe_text", "safe_work",
+	"safe_code", "safe_data", "safe_error", "safe_ffi", "safe_mem",
+	"safe_num", "safe_rend", "safe_sys", "safe_text", "safe_work",
 ] # in 9 specific root modules:
 	safe_code = []
 	safe_data = []
 	safe_error = []
+	safe_ffi = []
 	safe_mem = []
 	safe_num = []
 	safe_rend = ["safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image", "safe_layout"]
@@ -558,13 +560,13 @@ dep_const_str = ["dep:const-str"]                             # text::str
 dep_crossterm = ["dep:crossterm", "std"]                      # ui::backend
 dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"] # data::collections
 dep_jiff = ["dep:jiff", "alloc"]                              # sys::time
-dep_js_sys = ["dep:js-sys"]                                   # sys::ffi
+dep_js_sys = ["dep:js-sys"]                                   # ffi
 dep_libm = ["dep:libm"]                                       # num::float
 dep_log = ["dep:log"]                                         # sys::log
 dep_memchr = ["dep:memchr"]                                   # text
 dep_miniquad = ["dep:miniquad"]                               # sys::?
 dep_portable_atomic = ["dep:portable-atomic"]                 # work::sync
-dep_pyo3 = ["dep:pyo3", "std"]                                # sys::ffi
+dep_pyo3 = ["dep:pyo3", "std"]                                # ffi
 dep_rand_core = ["dep:rand_core"]                             # num::rand
 dep_rayon = ["dep:rayon"]                                     # work::thread
 dep_regex_lite = ["dep:regex-lite", "std"]                    # text
@@ -573,7 +575,7 @@ dep_stringzilla = ["dep:stringzilla"]                         # text
 dep_tinyaudio = ["dep:tinyaudio"]                             # sys::sound
 dep_unicode_segmentation = ["dep:unicode-segmentation"]       # text
 dep_unicode_width = ["dep:unicode-width"]                     # text
-dep_wasm_bindgen = ["dep:wasm-bindgen"]                       # sys::ffi
+dep_wasm_bindgen = ["dep:wasm-bindgen"]                       # ffi
 dep_web_sys = ["dep:web-sys"]                                 # sys::?
 dep_wide = ["dep:wide"]                                       # *
 

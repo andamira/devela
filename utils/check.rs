@@ -54,8 +54,8 @@ use toml_edit::Document;
 /* config */
 
 #[rustfmt::skip]
-const ROOT_MODULES: [&str; 9 + 1] = [
-    "code", "data", "error", "mem", "num", "rend", "sys", "text", "work",
+const ROOT_MODULES: [&str; 10 + 1] = [
+    "code", "data", "error", "ffi", "mem", "num", "rend", "sys", "text", "work",
 
     // sys::os submodules (platforms)
     "linux"

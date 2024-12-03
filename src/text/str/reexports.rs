@@ -6,7 +6,7 @@
 //! prefixed with `str_` and with a new first line of documentation.
 //
 
-use crate::code::{impl_cdef, reexport};
+use crate::{impl_cdef, reexport};
 
 impl_cdef!["" => &str];
 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
@@ -20,11 +20,11 @@ impl_cdef![Self::new() => String];
 
 /* from other modules */
 
-pub use crate::sys::ffi::CStr;
+pub use crate::CStr;
 #[cfg(feature = "alloc")]
-pub use crate::sys::ffi::CString;
+pub use crate::CString;
 #[cfg(feature = "std")]
-crate::items! { pub use crate::sys::ffi::{OsStr, OsString}; }
+crate::items! { pub use crate::{OsStr, OsString}; }
 
 /* core */
 

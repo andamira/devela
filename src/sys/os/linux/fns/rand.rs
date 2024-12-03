@@ -5,10 +5,8 @@
 // - https://www.man7.org/linux/man-pages/man2/getrandom.2.html
 // - https://www.gnu.org/software/libc/manual/html_node/Unpredictable-Bytes.html
 
-use crate::code::{iif, paste};
-use crate::sys::ffi::c_uint;
-use crate::sys::os::linux::{
-    linux_print, linux_sys_exit, linux_sys_getrandom, LINUX_ERRNO as ERRNO,
+use crate::{
+    c_uint, iif, linux_print, linux_sys_exit, linux_sys_getrandom, paste, LINUX_ERRNO as ERRNO,
 };
 
 // from `sys/random.h`

@@ -42,6 +42,7 @@ Single modules:
 - [`code`]
 - [`data`]
 - [`error`]
+- [`ffi`]
 - [`mem`]
   - `bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
@@ -66,6 +67,7 @@ Single modules:
 [`code`]: crate::code
 [`data`]: crate::data
 [`error`]: mod@crate::error
+[`ffi`]: crate::ffi
 [`rend`]: mod@crate::rend
   [`audio`]: crate::rend::audio
   [`color`]: crate::rend::color
@@ -97,6 +99,7 @@ In order to use any unsafe functionality:
   - `safe_code`
   - `safe_data`
   - `safe_error`
+  - `safe_ffi`
   - `safe_mem`
   - `safe_num`
   - `safe_rend`
