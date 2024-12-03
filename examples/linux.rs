@@ -1,10 +1,10 @@
 // examples/linux.rs
-
 // #!/usr/bin/env rust-script
 // //! ```cargo
 // //! [dependencies]
 // //! devela = { path = "..", features = ["linux", "unsafe_syscall"] }
 // //! ```
+//!
 
 use devela::all::*;
 

@@ -20,7 +20,7 @@ use crate::{NoTime, TimeSplit, TimeSplitHourNano};
 ///
 /// # Examples
 /// ```
-/// # use devela::sys::time::Timecode;
+/// # use devela::Timecode;
 /// #[cfg(feature = "_string_u8")]
 /// #[cfg(any(feature = "std", feature = "_float_f64"))]
 /// assert_eq!(Timecode::secs_f64(3661.5), "01:01:01.500");

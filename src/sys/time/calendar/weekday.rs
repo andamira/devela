@@ -295,7 +295,7 @@ impl Weekday {
     ///
     /// # Examples
     /// ```
-    /// # use devela::sys::time::Weekday;
+    /// # use devela::Weekday;
     /// assert_eq![Weekday::Thursday.emoji(), '⚡'];
     /// ```
     pub const fn emoji(self) -> char {
@@ -323,7 +323,7 @@ impl Weekday {
     ///
     /// # Examples
     /// ```
-    /// # use devela::sys::time::Weekday;
+    /// # use devela::Weekday;
     /// assert_eq![Weekday::Thursday.planet(), '♃'];
     /// ```
     pub const fn planet(self) -> char {
@@ -351,7 +351,7 @@ impl Weekday {
     ///
     /// # Examples
     /// ```
-    /// # use devela::sys::time::Weekday;
+    /// # use devela::Weekday;
     /// assert_eq![Weekday::Thursday.planet_name(), "Jupiter"];
     /// ```
     pub const fn planet_name(self) -> &'static str {
