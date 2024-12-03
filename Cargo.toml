@@ -133,9 +133,9 @@ all = [ # enables all the modules and submodules
 # data = []
 # error = []
 mem = [
-	"mem_bit",
+	"bit",
 	]
-	mem_bit = [] # BitSize
+	bit = [] # BitSize
 num = [
 	"geom", "rand", "wave",
 	]

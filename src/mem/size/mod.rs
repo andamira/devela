@@ -11,7 +11,7 @@ mod expr;
 #[allow(unused_imports)]
 pub use {byte::*, expr::*};
 
-#[cfg(feature = "mem_bit")]
+#[cfg(feature = "bit")]
 items! { mod bit; pub use bit::*; }
 
 pub(crate) mod all {
@@ -21,6 +21,6 @@ pub(crate) mod all {
     pub use super::{byte::*, expr::size_of_expr};
 
     #[doc(inline)]
-    #[cfg(feature = "mem_bit")]
+    #[cfg(feature = "bit")]
     pub use super::bit::*;
 }

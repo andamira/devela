@@ -86,7 +86,7 @@ macro_rules! impl_non_value {
             use $crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
             // #[cfg(feature = "unsafe_layout")]
             // use $crate::mem::MemPod;
-            #[cfg(feature = "mem_bit")]
+            #[cfg(feature = "bit")]
             use $crate::{BitSized, ByteSized};
             use $crate::{
                 _core::num::*,
@@ -359,7 +359,7 @@ macro_rules! impl_non_value {
             /* internal impls */
 
             // BitSized
-            #[cfg(feature = "mem_bit")]
+            #[cfg(feature = "bit")]
             impl<const V: $IP> BitSized<{$IP::BYTE_SIZE * 8}> for $name<V> {}
 
             // NOTE: due to the orphan rule we can't implement MemPod for Option<NonValue*>

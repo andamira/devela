@@ -43,7 +43,7 @@ Single modules:
 - [`data`]
 - [`error`]
 - [`mem`]
-  - `mem_bit`: `BitSize`.
+  - `bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
     - [`geom`]: geometry, linear algebra.
     - [`rand`]: random number generators.

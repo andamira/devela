@@ -115,7 +115,7 @@ mod reflection {
 
     pub const MEM: FlagsFeatures = FlagsFeatures {
         flags: &["_mem_·"],
-        features: &["mem_bit"]
+        features: &["bit"]
     };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         flags: &["_num_·"],

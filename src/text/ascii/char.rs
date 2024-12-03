@@ -593,5 +593,5 @@ impl ConstDefault for AsciiChar {
     const DEFAULT: Self = AsciiChar::Null;
 }
 
-#[cfg(feature = "mem_bit")]
+#[cfg(feature = "bit")]
 crate::bit_sized![= 7; for AsciiChar];

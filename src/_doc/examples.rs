@@ -10,10 +10,10 @@
 
 /* in-crate integrated examples */
 
-#[cfg(all(feature = "mem_bit", feature = "_bit_u8"))]
+#[cfg(all(feature = "bit", feature = "_bit_u8"))]
 #[path = "../../examples/bitfield.rs"]
 pub mod bitfield;
-#[cfg(all(feature = "mem_bit", feature = "_bit_u8"))]
+#[cfg(all(feature = "bit", feature = "_bit_u8"))]
 #[path = "../../examples/enumset.rs"]
 pub mod enumset;
 
