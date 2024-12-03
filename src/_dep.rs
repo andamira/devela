@@ -30,7 +30,7 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* 23 optional dependencies */
+/* 24 optional dependencies */
 
 reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
     doc: "A generic atomic wrapper type."
@@ -40,6 +40,9 @@ reexport! { optional_crate (unsafe) "dep_bytemuck", "bytemuck", bytemuck,
 }
 reexport! { optional_crate (unsafe) "dep_const_str", "const-str", const_str,
     doc: "Compile-time string operations."
+}
+reexport! { optional_crate (safe) "dep_crossterm", "crossterm", crossterm,
+    doc: "Cross-platform Terminal Manipulation Library."
 }
 reexport! { optional_crate (unsafe) "dep_hashbrown", "hashbrown", hashbrown,
     doc: "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`.",

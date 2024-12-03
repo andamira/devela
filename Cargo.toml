@@ -155,6 +155,7 @@ sys = ["io", "time"]
 	io = []
 	# os
 		linux = []
+		windows = ["crossterm?/windows"]
 	time = []
 text = []
 work = ["bytemuck?/zeroable_atomics"]
@@ -543,9 +544,9 @@ _string_all = [
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-dep_all = [ # enables all 23 optional dependencies:
-	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
-	"dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
+dep_all = [ # enables all 24 optional dependencies:
+	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
+	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
 	"dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon", "dep_regex_lite",
 	"dep_rodio", "dep_stringzilla", "dep_tinyaudio", "dep_unicode_segmentation",
 	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
@@ -554,6 +555,7 @@ dep_all = [ # enables all 23 optional dependencies:
 dep_atomic = ["dep:atomic"]                                   # work::sync
 dep_bytemuck = ["dep:bytemuck"]                               # *
 dep_const_str = ["dep:const-str"]                             # text::str
+dep_crossterm = ["dep:crossterm", "std"]                      # ui::backend
 dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"] # data::collections
 dep_jiff = ["dep:jiff", "alloc"]                              # sys::time
 dep_js_sys = ["dep:js-sys"]                                   # sys::ffi
@@ -576,7 +578,7 @@ dep_web_sys = ["dep:web-sys"]                                 # sys::?
 dep_wide = ["dep:wide"]                                       # *
 
 
-[dependencies] # 25 (2 required, 23 optional)
+[dependencies] # 26 (2 required, 24 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -615,6 +617,12 @@ features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
 version = "0.5.7" # ✗ https://github.com/Nugine/const-str/commits/main/
 optional = true # unsafe
 default-features = false # 8 https://docs.rs/crate/const-str/latest/features
+
+[dependencies.crossterm] # https://crates.io/crates/crossterm
+version = "0.28.1" # ✓ https://github.com/crossterm-rs/crossterm/blob/master/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 9 https://docs.rs/crate/crossterm/latest/features
+features = ["bracketed-paste", "events"]
 
 [dependencies.hashbrown] # https://crates.io/crates/hashbrown
 version = "0.15.1" # ✓ https://github.com/rust-lang/hashbrown/blob/master/CHANGELOG.md

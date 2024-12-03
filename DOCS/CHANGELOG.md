@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
   - nightly: `nightly_autodiff`, `nightly_float`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
   - safety: `safest`, `unsafe_async`, `safe_io`, `safe_audio`, `safe_color`, `safe_draw`, `safe_font`, `safe_image`, `safe_layout`.
-  - other  `work_deps`, `__force_miri_dst`.
+  - other `windows`, `work_deps`, `__force_miri_dst`.
 - new cfg flag: `cargo_primary_package`.
 
 #### New items
@@ -66,7 +66,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - macros: `assert_const!`, `cfg_if!`.
   - traits: `ConstBool`.
 - optional dependencies:
-  - `jiff`, `js-sys`, `pyo3`, `rayon`, `regex-lite`, `rodio`, `stringzilla`, `tinyaudio`, `wasm-bindgen`, `web-sys`.
+  - `crossterm`, `jiff`, `js-sys`, `pyo3`, `rayon`, `regex-lite`, `rodio`, `stringzilla`, `tinyaudio`, `wasm-bindgen`, `web-sys`.
 - re-export:
   - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt}`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.

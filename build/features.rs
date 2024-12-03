@@ -50,11 +50,6 @@ mod reflection {
         features: &["std", "alloc", "no_std"]
     };
 
-    pub const PLATFORM: FlagsFeatures = FlagsFeatures {
-        flags: &[],
-        features: &["linux"]
-    };
-
     pub const SAFETY: FlagsFeatures = FlagsFeatures {
         flags: &[],
         features: &[
@@ -102,9 +97,9 @@ mod reflection {
     // In sync with Cargo.toml::dep_all & ./utils/check.rs::DEP_ALL
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
         flags: &["_dep_·"],
-        features: &[ // 23
-            "dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
-            "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
+        features: &[ // 24
+            "dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
+            "dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
             "dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon", "dep_regex_lite",
             "dep_rodio", "dep_stringzilla", "dep_tinyaudio", "dep_unicode_segmentation",
             "dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
@@ -129,7 +124,10 @@ mod reflection {
     };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         flags: &["_sys_·"],
-        features: &["io", "time"] // THINK: sys::os::linux
+        features: &[
+            "io", "time",
+            "linux", "windows", // os
+        ]
     };
 
     /* # capabilities */
@@ -225,7 +223,6 @@ mod reflection {
 
             MISCELLANEOUS,
             ENVIRONMENT,
-            PLATFORM,
             SAFETY,
             NIGHTLY,
             DEPENDENCY,

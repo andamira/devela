@@ -66,9 +66,9 @@ const ROOT_MODULES: [&str; 9 + 1] = [
 /// All the optional dependencies.
 // In sync with Cargo.toml::dep_all & build/features.rs::DEPENDENCY.features
 #[rustfmt::skip]
-const DEP_ALL: [&str; 23] = [
-    "dep_atomic", "dep_bytemuck", "dep_const_str", "dep_hashbrown", "dep_jiff",
-    "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
+const DEP_ALL: [&str; 24] = [
+    "dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
+    "dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
     "dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon", "dep_regex_lite",
     "dep_rodio", "dep_stringzilla", "dep_tinyaudio", "dep_unicode_segmentation",
     "dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
@@ -79,11 +79,13 @@ const DEP_NO_CROSS_COMPILE_STD: [&str; 2] = [
     "dep_rodio", "dep_tinyaudio", // REASON: alsa-sys
 ];
 /// Dependencies to not cross compile, ever.
-const DEP_NO_CROSS_COMPILE_EVER: [&str; 2] = [
+const DEP_NO_CROSS_COMPILE_EVER: [&str; 3] = [
     // IMPROVE: https://pyo3.rs/v0.23.2/building-and-distribution.html#cross-compiling
     "dep_pyo3",
     // WAIT: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)
     "dep_stringzilla",
+    // IMPROVE: allow activating `windows` feature
+    "dep_crossterm",
 ];
 
 //* cross-compilation targets *//
