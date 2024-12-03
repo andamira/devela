@@ -68,8 +68,10 @@
     feature(
         async_closure,
         // box_uninit_write, // ?
+        const_align_of_val,
         const_array_from_ref,
         const_maybe_uninit_write,
+        const_size_of_val,
         const_slice_from_ref,
         do_not_recommend,
         impl_trait_in_assoc_type,

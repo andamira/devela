@@ -200,7 +200,7 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 	safe_text = []
 	safe_work = []
 
-unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
+unsafe = [ # enables `unsafe` (as long as it isn't forbidden for that module)
 	"unsafe_array", "unsafe_async", "unsafe_hint", "unsafe_layout",
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
 	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
@@ -301,6 +301,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.??: ?[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 	# 1.??: ·[const_·array|slice·_from_ref](https://github.com/rust-lang/rust/issues/90206)
 	# 1.??: ·[const_maybe_uninit_write](https://github.com/rust-lang/rust/pull/131713)
+	# 1.??: ·[const_[align|size]_of_val](https://github.com/rust-lang/rust/pull/133762)
 	# 1.??: ·[do_not_recommend](https://github.com/rust-lang/rust/pull/132056)
 	# 1.??: ·[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 	# 1.??: ·[isqrt](https://github.com/rust-lang/rust/pull/131391)
