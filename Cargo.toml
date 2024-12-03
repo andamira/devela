@@ -10,7 +10,7 @@
 # * [features]
 #   - Development
 #   - Environment          (std,alloc,no_std)
-#   - Modules              (mem,num,rend,sys,text,work…)
+#   - Module               (mem,num,rend,sys,text,work…)
 #   - Safety               (safe,unsafe,safest)
 #   - Nightly
 #   - Capability
@@ -81,7 +81,7 @@ bench = false
 # Features are grouped in the following categories:
 # - Development      __[dbg,…]
 # - Environment      alloc,[no_]std
-# - Modules
+# - Module
 # - Safety           [safe|unsafe]_
 # - Nightly          nightly_[coro|simd|stable[_…]]
 # - Capability       _[data,num,…]
@@ -122,7 +122,7 @@ std = [ # disables `no_std` compatibility and enables `std` functionality
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
 
-#* Modules features *#
+#* Module features *#
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
@@ -168,7 +168,7 @@ work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 
 #* Safety features *#
 # ------------------------------------------------------------------------------
-# They are prefixed with either `safe_` or `unsafe_`.
+# They are prefixed with either `safe` or `unsafe`.
 # Safe features are associated to *modules*, and unsafe features to *purposes*.
 #
 # Usage:
@@ -217,7 +217,7 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden in the module)
 	unsafe_syscall = [] # os syscalls.
 	unsafe_thread = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
-safest = [ # forbids `unsafe` even in dependencies (except standard library)
+safest = [ # forbids `unsafe` even in dependencies (except the standard library)
 	"safe",
 ]
 
@@ -227,7 +227,6 @@ safest = [ # forbids `unsafe` even in dependencies (except standard library)
 # They are prefixed with `nightly_`.
 #
 # - https://doc.rust-lang.org/unstable-book/library-features.html
-
 
 nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	"nightly_autodiff", "nightly_coro", "nightly_doc", "nightly_float", "nightly_simd",

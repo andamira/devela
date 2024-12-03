@@ -1,23 +1,22 @@
 ## Features
 
 Features are grouped in the following categories:
-- *Miscellaneous*
+- *Development*
 - *Environment*
-- *Platform*
-- *Modules*
+- *Module*
 - *Safety*
 - *Nightly*
 - *Capability*
-- *Dependencies*
+- *Dependency*
 
-Only the `_default` capabilities are enabled by default.
+There are no features enabled by default.
 
 Features from different categories are designed to be mostly independent from
-each other, and composable, except from the miscellaneous features.
+each other, and composable.
 
-### Miscellaneous features
+### Development features
 
-In this category there are features with varied purposes mostly for internal use.
+Intended for development and internal purposes, like debugging and maintenance.
 
 - `__dbg`: for debugging purposes, shows enabled features and reflection flags.
 - `__no_test`: allows excluding examples from being tested.
@@ -33,17 +32,7 @@ By default the crate is `no_std` compatible without allocation.
   - enables the `libm` optional dependency.
 
 
-### Platform features
-
-Platform-specific functionality is not automatically enabled since *OS* detection
-depends on `std`, and we want to use it from `no_std`.
-
-Platform features are `os` submodules that have to be explicitly enabled:
-
-- `linux`: enables `sys::os::linux` functionality.
-
-
-### Modules features
+### Module features
 
 Modules can be enabled independently of *environment*, *platform*, *dependencies* or *safety*.
 
@@ -67,12 +56,12 @@ Single modules:
   - [`image`]
   - [`layout`]
 - [`sys`]: enables all the sys subfeatures (except platform-specific).
+  - [`io`]
   - [`time`]: enables time-related functionality.
+  - os:
+    - `linux`: enables `sys::os::linux` functionality.
 - [`text`]
 - [`work`]: enables work-related functionality.
-
-Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
-`_mem_·`, `_num_·`.
 
 [`code`]: crate::code
 [`data`]: crate::data
@@ -97,6 +86,9 @@ Enabling `mem`, `num`, or their submodules, sets the corresponding flags:
 
 ### Safety features
 
+- `unsafe_*` features enable the use of unsafe by *purpose*.
+- `safe_*` features disable the use of unsafe per *module*.
+
 In order to use any unsafe functionality:
 1. enable the corresponding `unsafe` feature.
 2. don't enable the `safe` feature for that module.
@@ -108,12 +100,19 @@ In order to use any unsafe functionality:
   - `safe_mem`
   - `safe_num`
   - `safe_rend`
+    - `safe_audio`
+		- `safe_color`
+		- `safe_draw`
+		- `safe_font`
+		- `safe_image`
+		- `safe_layout`
   - `safe_sys`
+    - `safe_io`
     - `safe_time`
   - `safe_text`
   - `safe_work`
 
-- `unsafe`: enables `unsafe` (as long as it isn't forbidden in the module), includes:
+- `unsafe`: enables `unsafe` (as long as it isn't forbidden for that module), includes:
 	- `unsafe_array`: faster array initialization, `UninitArray`.
 	- `unsafe_async`: task_waker_noop, `CoroRun`.
 	- `unsafe_hint`: unreachable_unchecked, assert_unchecked.
@@ -125,6 +124,8 @@ In order to use any unsafe functionality:
 	- `unsafe_sync`: implement `Send` and `Sync`.
 	- `unsafe_syscall`: os syscalls.
 	- `unsafe_thread`: `Logging::set_logger_racy`, `Env::{remove_var, set_var}`.
+
+- `safest`: forbids `unsafe` even in dependencies (except the standard library).
 
 
 ### Nightly features
@@ -248,7 +249,7 @@ They also set the corresponding flags:
 [`StringNonul`]: crate::text::StringNonul
 
 
-### Dependencies features
+### Dependency features
 
 Enabling any of them sets the `_dep_·` flag.
 
