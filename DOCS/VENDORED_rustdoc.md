@@ -27,8 +27,8 @@
 <!-- orig: OTHER -->
   [`Xyza8a`]: crate::Xyza8a
   [`Xyza8b`]: crate::Xyza8b
-  [`Also`]: crate::Also
-  [`Apply`]: crate::Apply
+  [`Chain`]: crate::Chain
+  [`Hook`]: crate::Hook
   [`hash_pengy`]: crate::hash_pengy
   [`mem_size_of_expr`]: crate::size_of_expr
   [`Xabc`]: crate::Xabc

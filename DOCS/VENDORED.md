@@ -74,7 +74,7 @@ See linked files for detailed changes.
 
 ## Other Licenses
 - [8bit_rng] by Edward Rosten, (BSD-2) as the [`Xyza8a`] and [`Xyza8b`] structs.
-- [apply] by GeorgeBurton (Unlicense) as part of the [`Also`] and [`Apply`] structs.
+- [apply] by GeorgeBurton (Unlicense) as part of the [`Chain`] and [`Hook`] structs.
 - [pengyhash] by Alberto Fajardo (BSD-2), as the [`hash_pengy`] fn.
 - [size_of_trait] byt Joshua Nelson (BSD-3) as the [`mem_size_of_expr`] fn.
 - [Xabc] by *EternityForest* (openly shared) as the [`Xabc`] struct.
@@ -84,8 +84,8 @@ See linked files for detailed changes.
   [`Xyza8a`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xyza8a.html
   [`Xyza8b`]: https://docs.rs/devela/latest/devela/num/rand/struct.Xyza8b.html
 [apply]: https://crates.io/crates/apply/0.3.0
-  [`Also`]: https://docs.rs/devela/latest/devela/error/trait.Also.html
-  [`Apply`]: https://docs.rs/devela/latest/devela/error/trait.Apply.html
+  [`Chain`]: https://docs.rs/devela/latest/devela/error/trait.Chain.html
+  [`Hook`]: https://docs.rs/devela/latest/devela/error/trait.Hook.html
 [pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
   [`hash_pengy`]: https://docs.rs/devela/latest/devela/data/hash/fn.hash_pengy.html
 [size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3
