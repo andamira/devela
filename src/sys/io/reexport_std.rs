@@ -47,7 +47,7 @@ reexport! { rust: not(std)|std::io,
     @Cursor as IoCursor
 }
 reexport! { rust: not(std)|std::io,
-    doc: "The error type for I/O operations of [`IoRead`], [`IoWrite`], [`IoSeek`],
+    doc: "Error type for I/O operations of [`IoRead`], [`IoWrite`], [`IoSeek`],
     and associated traits.",
     @Error as IoError
 }

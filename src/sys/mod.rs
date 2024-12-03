@@ -11,13 +11,12 @@
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
 #[allow(unused_imports)]
-use crate::code::items;
+use crate::items;
 
 mod arch;
 mod env;
-pub mod io;
 #[allow(unused_imports)]
-pub use {arch::*, env::*, io::all::*};
+pub use {arch::*, env::*};
 
 #[cfg(feature = "sys")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
@@ -31,20 +30,25 @@ items! {
     #[allow(unused_imports)]
     pub use sound::*;
 }
+
+/* public */
+
 #[cfg(feature = "time")]
 items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
     pub mod time;
+    #[doc(no_inline)]
     #[allow(unused_imports)]
     pub use time::all::*;
 }
 
 pub mod ffi;
+pub mod io;
 pub mod log;
 pub mod os;
 #[doc(no_inline)]
 #[allow(unused_imports)]
-pub use {ffi::all::*, os::all::*};
+pub use {ffi::all::*, io::all::*, os::all::*};
 
 pub(crate) mod all {
     #![allow(unused_imports)]
