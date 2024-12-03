@@ -65,6 +65,7 @@ mod reflection {
             "safe_sys",
                 "safe_io", "safe_time",
             "safe_text",
+            "safe_ui",
             "safe_work",
 
             "unsafe",

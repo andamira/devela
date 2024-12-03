@@ -127,7 +127,7 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 
 all = [ # enables all the modules and submodules
 	# "code", "data", "error",
-	"mem", "num", "rend", "sys", "text", "work",
+	"mem", "num", "rend", "sys", "text", "work", "ui",
 ]
 # code = []
 # data = []
@@ -159,6 +159,7 @@ sys = ["io", "time"]
 		windows = ["crossterm?/windows"]
 	time = []
 text = []
+ui = []
 work = ["bytemuck?/zeroable_atomics"]
 
 
@@ -201,6 +202,7 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 		safe_io = []
 		safe_time = []
 	safe_text = []
+	safe_ui = []
 	safe_work = []
 
 unsafe = [ # enables `unsafe` (as long as it isn't forbidden for that module)

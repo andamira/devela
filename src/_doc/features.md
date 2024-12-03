@@ -62,6 +62,7 @@ Single modules:
   - os:
     - `linux`: Linux functionality.
 - [`text`]
+- [`ui`]
 - [`work`]
 
 [`code`]: crate::code
