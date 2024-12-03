@@ -4,7 +4,7 @@
 #![doc = crate::doc_!(modules: crate; rend: audio, color, draw, font, image, layout)]
 #![doc = crate::doc_!(newline)]
 //
-// safety:
+// safety
 #![cfg_attr(feature = "safe_rend", forbid(unsafe_code))]
 
 #[cfg(_rend_·)]

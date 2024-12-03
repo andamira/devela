@@ -1,13 +1,13 @@
 ## Features
 
 Features are grouped in the following categories:
-- *Development*
-- *Environment*
-- *Module*
-- *Safety*
-- *Nightly*
-- *Capability*
-- *Dependency*
+- [*Development*][#develoment-features]
+- [*Environment*][#environment-features]
+- [*Module*][#module-features]
+- [*Safety*][#safety-features]
+- [*Nightly*][#nightly-features]
+- [*Capability*][#capability-features]
+- [*Dependency*][#dependency-features]
 
 There are no features enabled by default.
 
@@ -34,7 +34,7 @@ By default the crate is `no_std` compatible without allocation.
 
 ### Module features
 
-Modules can be enabled independently of *environment*, *platform*, *dependencies* or *safety*.
+Modules can be enabled independently of *environment*, *dependencies* or *safety*.
 
 - `all`: enables all the root modules and extra submodules:
 
@@ -56,13 +56,13 @@ Single modules:
   - [`font`]
   - [`image`]
   - [`layout`]
-- [`sys`]: enables all the sys subfeatures (except platform-specific).
+- [`sys`]: enables all `sys` sub-features (except os-specific).
   - [`io`]
-  - [`time`]: enables time-related functionality.
+  - [`time`]
   - os:
-    - `linux`: enables `sys::os::linux` functionality.
+    - `linux`: Linux functionality.
 - [`text`]
-- [`work`]: enables work-related functionality.
+- [`work`]
 
 [`code`]: crate::code
 [`data`]: crate::data

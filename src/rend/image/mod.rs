@@ -4,8 +4,7 @@
 // #![doc = crate::doc_!(modules: crate::rend; image: pnm)]
 // #![doc = crate::doc_!(newline)]
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_image", forbid(unsafe_code))]
 
 mod error;

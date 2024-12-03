@@ -2,8 +2,7 @@
 //
 //! Drawing functionality.
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_draw", forbid(unsafe_code))]
 
 mod error;

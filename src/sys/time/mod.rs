@@ -4,8 +4,7 @@
 //!
 #![doc = crate::doc_!(extends: time)]
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_time", forbid(unsafe_code))]
 
 mod calendar;

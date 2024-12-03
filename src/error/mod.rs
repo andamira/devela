@@ -10,6 +10,8 @@
 //!
 //! It re-exports the error and result types defined in other modules.
 //
+// safety
+#![cfg_attr(feature = "safe_error", forbid(unsafe_code))]
 
 mod all_error; // AllError
 mod chain_hook; // Chain, Hook

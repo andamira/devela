@@ -2,8 +2,7 @@
 //
 //! Font functionality.
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_font", forbid(unsafe_code))]
 
 mod error;

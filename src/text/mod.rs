@@ -6,8 +6,7 @@
 //!
 #![doc = crate::doc_!(extends: ascii, char, fmt, str, string)]
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 
 #[allow(unused_imports)]

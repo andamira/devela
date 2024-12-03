@@ -6,8 +6,7 @@
 //!
 #![doc = crate::doc_!(extends: array, collections, hash, iter, vec)]
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
 mod bit;

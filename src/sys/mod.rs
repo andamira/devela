@@ -6,8 +6,7 @@
 //!
 #![doc = crate::doc_!(extends: arch, env, fs, io, net, os, path, simd, time)]
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
 #[allow(unused_imports)]

@@ -6,8 +6,7 @@
 //!
 #![doc = crate::doc_!(extends: alloc, borrow, boxed, cell, mem, pin, ptr, rc, slice)]
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_mem", forbid(unsafe_code))]
 
 #[allow(unused_imports)]

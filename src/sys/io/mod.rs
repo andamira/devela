@@ -7,8 +7,7 @@
 //! # Derived work
 #![doc = include_str!("./define_no_std_io/MODIFICATIONS.md")]
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_io", forbid(unsafe_code))]
 
 mod impls;

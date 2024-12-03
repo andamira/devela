@@ -6,8 +6,7 @@
 //!
 #![doc = crate::doc_!(extends: cmp, num)]
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
 #[allow(unused_imports)]

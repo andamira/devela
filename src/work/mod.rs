@@ -6,8 +6,7 @@
 //!
 #![doc = crate::doc_!(extends: future, process, sync, task, thread)]
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_work", forbid(unsafe_code))]
 
 mod r#async;

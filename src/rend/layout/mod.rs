@@ -2,8 +2,7 @@
 //
 //! Layout functionality.
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_layout", forbid(unsafe_code))]
 
 mod error;

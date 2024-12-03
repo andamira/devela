@@ -2,8 +2,7 @@
 //
 //! Audio functionality.
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_audio", forbid(unsafe_code))]
 
 mod error;

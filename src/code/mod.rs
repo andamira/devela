@@ -6,19 +6,18 @@
 //!
 #![doc = crate::doc_!(extends: any, clone, convert, default, hint, marker, ops)]
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
+
+mod macros; // macros: assert*, cdbg, head, items, paste, sf…
+mod reexports; // re-exported items
 
 mod any; // dynamic typing and reflection
 mod default; // ConstDefault, Default
-mod macros; // macros: assert*, cdbg, head, items, paste, sf…
-mod reexports; // re-exported items
 mod r#type; // type_marker!, type_resource, TypeResource, TypeResourced
-#[allow(unused_imports)]
-pub use {any::all::*, default::*, macros::*, r#type::*, reexports::*};
 
-pub(crate) mod all {
+pub use all::*;
+pub(super) mod all {
     #![allow(unused_imports)]
     #[doc(inline)]
     pub use super::{any::all::*, default::*, macros::*, r#type::*, reexports::*};

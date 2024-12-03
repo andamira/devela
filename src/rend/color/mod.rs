@@ -2,8 +2,7 @@
 //
 //! Chromatic functionality.
 //
-
-// safety:
+// safety
 #![cfg_attr(feature = "safe_color", forbid(unsafe_code))]
 
 mod base;

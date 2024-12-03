@@ -9,7 +9,7 @@
 //
 // Most lints are set in Cargo.toml
 //
-// doc:
+// docs
 // https://doc.rust-lang.org/rustdoc/write-documentation/the-doc-attribute.html
 // #![doc(test(attr(warn(dead_code))))]
 #![cfg_attr(
@@ -17,14 +17,14 @@
     allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links
 )]
 //
-// environment:
+// environment
 // #![no_implicit_prelude] // MAYBE
 #![cfg_attr(not(feature = "std"), no_std)]
 //
-// safety:
+// safety
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
-// nightly:
+// nightly
 // In sync with Cargo.toml::nightly & build/features.rs::NIGHTLY
 #![cfg_attr(feature = "nightly_autodiff", feature(autodiff))]
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
@@ -93,11 +93,11 @@
 //     feature()
 // )]
 
-// safeguard environment:
+// environment safeguards
 #[cfg(all(feature = "std", feature = "no_std"))]
 compile_error!("You can't enable the `std` and `no_std` features at the same time.");
 //
-// safeguard safety:
+// safety safeguards
 #[cfg(all(
     feature = "safe",
     // In sync with Cargo.toml::unsafe & build/features.rs::SAFETY
