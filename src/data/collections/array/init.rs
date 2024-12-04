@@ -198,7 +198,7 @@ macro_rules! array_init {
     (
     // initialize an array in the stack with $T: ConstDefault::DEFAULT
     const_default [$T:ty; $LEN:expr]) => {{
-        [<$T as $crate::code::ConstDefault>::DEFAULT; $LEN]
+        [<$T as $crate::ConstDefault>::DEFAULT; $LEN]
     }};
     (
 

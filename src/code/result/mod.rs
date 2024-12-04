@@ -1,8 +1,8 @@
 // devela::code::result
 //
-//! Error management, result handling.
-#![doc = crate::doc_!(modules: crate; error)]
-#![doc = crate::doc_!(newline)]
+//! Result handling.
+// #![doc = crate::doc_!(modules: crate::code; result)]
+// #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: backtrace, error, option, panic, result)]
 //!

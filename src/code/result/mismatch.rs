@@ -25,10 +25,7 @@ pub struct Mismatch<N, H> {
 impl<N, H> Mismatch<N, H> {}
 
 mod core_impls {
-    use crate::{
-        data::{Hash, Hasher},
-        Debug, Display, FmtResult, Formatter, Mismatch, Ordering,
-    };
+    use crate::{Debug, Display, FmtResult, Formatter, Hash, Hasher, Mismatch, Ordering};
 
     impl<N: Clone, H: Clone> Clone for Mismatch<N, H> {
         fn clone(&self) -> Self {

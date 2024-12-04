@@ -3,11 +3,7 @@
 //!
 //
 
-use crate::{code::ConstDefault, data::array_init, num::algebra::linear::Vector};
-use core::{
-    fmt,
-    hash::{Hash, Hasher},
-};
+use crate::{array_init, ConstDefault, Hash, Hasher, Vector, _core::fmt};
 
 /* Clone, Copy */
 
