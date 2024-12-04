@@ -1,6 +1,6 @@
 // devela::data::dst::queue::private
 //
-//! DstQueu private API
+//! DstQueue private API
 //
 // TOC
 

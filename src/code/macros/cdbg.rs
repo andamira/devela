@@ -3,7 +3,7 @@
 //! Custom debug macro.
 //
 
-/// *`c`ustomizable [`dbg!`]* macro. Concise by default
+/// *`c`ustomizable [`dbg!`]* macro.
 ///
 /// - By default uses `{:?}` instead of `{:#?}` for formatting.
 /// - By default doesn't show the location (file, line and column).

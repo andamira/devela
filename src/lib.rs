@@ -128,15 +128,18 @@ pub mod text;
 pub mod ui;
 pub mod work;
 
-/// All the crate's items re-exported flat.
-/// <br/><hr>
-///
-/// Note that these items are already re-exported (hidden) from the root,
-/// as is every other public module from its parent.
-///
-/// There's a more exhaustive list that includes all of the dependencies items,
-/// without their descriptions, in [All items](../all.html).
+#[doc(hidden)]
+#[allow(unused_imports)]
+pub use all::*;
 pub mod all {
+    //! All the crate's items re-exported flat.
+    //! <br/><hr>
+    //!
+    //! Note that these items are already re-exported (hidden) from the root,
+    //! as is every other public module from its parent.
+    //!
+    //! There's a more exhaustive list that includes all of the dependencies items,
+    //! without their descriptions, in [All items](../all.html).
     #[allow(unused_imports)]
     #[rustfmt::skip]
     #[doc(inline)]
@@ -152,9 +155,10 @@ pub mod all {
         work::all::*,
     };
 }
-#[doc(hidden)]
-#[allow(unused_imports)]
-pub use all::*;
+pub(crate) use private::*;
+pub(crate) mod private {
+    pub(crate) use super::code::private::*;
+}
 
 /// <span class='stab portability' title='re-exported `core`'>`core`</span>
 /// *Re-exported Rust `core` library.*

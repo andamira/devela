@@ -9,20 +9,30 @@
 // safety
 #![cfg_attr(feature = "safe_code", forbid(unsafe_code))]
 
+mod reexports; // re-exported items
+pub use reexports::*;
+
 mod any; // dynamic typing and reflection
 mod default; // ConstDefault, Default
 mod r#type; // type_marker!, type_resource, TypeResource, TypeResourced
-mod reexports; // re-exported items
-pub use {any::all::*, default::*, r#type::*, reexports::*};
+pub use {any::all::*, default::*, r#type::*};
 
 pub mod macros; // macros: assert*, cdbg, head, items, paste, sf…
 pub mod result;
 #[doc(no_inline)]
 #[allow(unused_imports)]
-pub use {macros::*, result::all::*};
+pub use {macros::all::*, result::all::*};
 
 pub(super) mod all {
     #![allow(unused_imports)]
+
     #[doc(inline)]
-    pub use super::{any::all::*, default::*, macros::*, r#type::*, reexports::*, result::all::*};
+    pub use super::{
+        any::all::*, default::*, macros::all::*, r#type::*, reexports::*, result::all::*,
+    };
+}
+
+pub(crate) use private::*;
+pub(super) mod private {
+    pub(crate) use super::macros::private::*;
 }

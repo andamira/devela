@@ -92,5 +92,5 @@ pub(crate) mod all {
 
     #[doc(inline)]
     #[cfg(feature = "wave")]
-    pub use super::wave::*;
+    pub use super::wave::all::*;
 }

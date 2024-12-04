@@ -16,10 +16,12 @@
 // private
 mod _doc;
 mod _reexport;
-pub(crate) use {_doc::*, _reexport::*};
 
 #[doc(hidden)]
 pub use paste::__paste;
+
+mod reexports; // re-exported items
+pub use reexports::*;
 
 mod asserts; // assertion macros
 mod capture; // capture_[first|last|tail]!
@@ -51,10 +53,16 @@ pub(crate) mod all {
     #[doc(inline)]
     pub use super::{
         asserts::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*, iif::*,
-        impl_trait::*, items::*, paste::*, r#const::*,
+        impl_trait::*, items::*, paste::*, r#const::*, reexports::*,
     };
 
     #[cfg(_bit_·)]
     #[doc(inline)]
     pub use super::enumset::*;
+}
+
+#[allow(unused_imports)]
+pub(crate) use private::*;
+pub(crate) mod private {
+    pub(crate) use super::{_doc::*, _reexport::*};
 }
