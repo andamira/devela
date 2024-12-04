@@ -42,11 +42,12 @@
         const_make_ascii,
         const_maybe_uninit_assume_init,
         const_option_ext,
-        // const_pin, // subset (_2)
+        const_pin, // subset (_2)
         const_ptr_is_null,
         const_unicode_case_lookup,
         // ip, // subset
         pin_deref_mut,
+        result_ffi_guarantees,
     )
 )]
 // #![cfg_attr( // 1.84 not(miri)
@@ -56,7 +57,15 @@
 #![cfg_attr( // 1.85
     feature = "nightly_stable_next2",
     feature(
+        build_hasher_default_const_new,
+        const_align_of_val,
+        // const_collections_with_hasher, // ?
         const_float_methods,
+        const_maybe_uninit_write,
+        const_size_of_val,
+        extended_varargs_abi_support,
+        num_midpoint,
+        ptr_fn_addr_eq,
     )
 )]
 // #![cfg_attr( // 1.85 not(miri)
@@ -68,11 +77,9 @@
     feature(
         async_closure,
         // box_uninit_write, // ?
-        const_align_of_val,
         const_array_from_ref,
-        const_maybe_uninit_write,
-        const_size_of_val,
         const_slice_from_ref,
+        // derive_smart_pointer, // x
         do_not_recommend,
         impl_trait_in_assoc_type,
         isqrt,
@@ -80,10 +87,6 @@
         macro_metavar_expr,
         // new_zeroed_alloc, // ?
         noop_waker,
-        num_midpoint,
-        ptr_fn_addr_eq,
-        // const_collections_with_hasher, // ?
-        build_hasher_default_const_new,
         unbounded_shifts,
         unsafe_cell_from_mut,
     )
