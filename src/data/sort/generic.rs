@@ -1,85 +1,18 @@
-// devela::data::sort
+// devela::data::sort::impl_generic
 //
-//! Helpers for sorting.
+//! Implements sorting algorithms for exclusive generic arrays `[T: Ord; N]`.
 //
-// TOC
-// - Sort definition
-// - impl Sort for exclusive array
-// - impl Sort for exclusive array with lifetime
-// - helper fns
-// - impl Sort for primitives
 
-use crate::iif;
-#[cfg(_sort_float_·)]
-use crate::Compare;
-#[cfg(_sort_·)]
-use crate::{cfor, cswap, paste};
+use crate::{iif, Sort};
 #[cfg(feature = "alloc")]
 use crate::{BTreeMap, Vec};
-
-/// Provides sorting methods for arrays and slices of `T`.
-///
-/// It implements the following methods for sorting exclusive slices:
-/// [`bubble`][Sort#bubble],
-/// [`counting`][Sort#counting],
-/// [`counting_buf`][Sort#counting_buf],
-/// [`insertion`][Sort#insertion],
-/// [`merge`][Sort#merge],
-/// [`quick_lomuto`][Sort#quick_lomuto],
-/// [`quick_hoare`][Sort#quick_hoare],
-/// [`quick_3way`][Sort#quick_3way],
-/// [`quick_selection`][Sort#quick_selection],
-/// [`quick_shaker`][Sort#quick_shaker].
-///
-/// # Features
-/// When the corresponding feature `_sort_f[32|64]` or `_sort_[iu][8|16|32|64|128]` is enabled,
-/// It implements the following *const* methods for sorting copied arrays of primitives:
-/// `bubble_array`, `insertion_array`, `selection_array`.
-/// In the case of floating-point primitives it uses total ordering.
-///
-/// # Examples
-/// Sort copied arrays of primitives:
-/// ```
-/// # use devela::data::Sort;
-/// # #[cfg(feature = "_sort_i32")]
-/// # {
-/// let mut arr = [4i32, 7, -5, 1, -13, 0]; // signed primitives
-/// assert_eq![Sort(arr).bubble_array(),    [-13, -5, 0, 1, 4, 7]];
-/// assert_eq![Sort(arr).insertion_array(), [-13, -5, 0, 1, 4, 7]];
-/// assert_eq![Sort(arr).selection_array(), [-13, -5, 0, 1, 4, 7]];
-/// # }
-///
-/// # #[cfg(feature = "_sort_u32")]
-/// # {
-/// let mut arr = [4u32, 7, 5, 1, 13, 0]; // unsigned primitives
-/// assert_eq![Sort(arr).bubble_array(),    [0, 1, 4, 5, 7, 13]];
-/// assert_eq![Sort(arr).insertion_array(), [0, 1, 4, 5, 7, 13]];
-/// assert_eq![Sort(arr).selection_array(), [0, 1, 4, 5, 7, 13]];
-/// # }
-///
-/// # #[cfg(feature = "_sort_f32")]
-/// # {
-/// let mut arr = [4.01f32, 7.9, -5.4, 1.0, 0.0, -0.0]; // floating-point primitives
-/// assert_eq![Sort(arr).bubble_array(),    [-5.4, -0.0, 0.0, 1.0, 4.01, 7.9]];
-/// assert_eq![Sort(arr).insertion_array(), [-5.4, -0.0, 0.0, 1.0, 4.01, 7.9]];
-/// assert_eq![Sort(arr).selection_array(), [-5.4, -0.0, 0.0, 1.0, 4.01, 7.9]];
-/// # }
-/// ```
-///
-/// # Performance
-/// The `_array` suffixed methods calls the [`cswap`] macro using the xor swap
-/// algorithm, excep for the floting-point version which uses a temporary variable.
-///
-/// [`cswap`]: crate::cswap
-#[repr(transparent)]
-pub struct Sort<T>(pub T);
 
 impl<T: Ord> Sort<&mut [T]> {
     /// Sorts a slice using bubble sort.
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::Sort;
+    /// # use devela::Sort;
     /// let mut data = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut data[..]).bubble();
     /// assert_eq![data, [-13, -5, 0, 1, 4, 7]];
@@ -99,7 +32,7 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::Sort;
+    /// # use devela::Sort;
     /// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
     /// let freq = Sort(&mut data[..]).counting();
     /// assert_eq![data, [2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 64, 64]];
@@ -147,7 +80,7 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::Sort;
+    /// # use devela::Sort;
     /// let mut data = [4, 64, 4, 2, 4, 8, 8, 4, 8, 4, 2, 8, 64, 4, 8, 4, 2];
     /// let values = [64, 4, 2, 8];
     /// let mut freq = [0; 4];
@@ -186,7 +119,7 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::Sort;
+    /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).insertion();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -207,7 +140,7 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::Sort;
+    /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).merge();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -228,7 +161,7 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::Sort;
+    /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).selection();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -250,7 +183,7 @@ impl<T: Ord> Sort<&mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::Sort;
+    /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort(&mut arr[..]).shaker();
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -283,7 +216,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::Sort;
+    /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// // Sort(&mut arr[..]).quick_lomuto();
     /// Sort::quick_lomuto(&mut arr[..]);
@@ -309,7 +242,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::Sort;
+    /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort::quick_3way(&mut arr);
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -339,7 +272,7 @@ impl<'a, T: Ord + 'a> Sort<&'a mut [T]> {
     ///
     /// # Examples
     /// ```
-    /// # use devela::data::Sort;
+    /// # use devela::Sort;
     /// let mut arr = [4, 7, -5, 1, -13, 0];
     /// Sort::quick_hoare(&mut arr);
     /// assert_eq![arr, [-13, -5, 0, 1, 4, 7]];
@@ -438,162 +371,3 @@ mod helper {
         }
     }
 }
-
-/* impl Sort on primitives */
-
-#[cfg(_sort_·)]
-macro_rules! impl_sort {
-    () => {
-        impl_sort![signed i8:"_sort_i8", i16:"_sort_i16", i32:"_sort_i32",
-            i64:"_sort_i64", i128:"_sort_i128", isize:"_sort_isize"];
-        impl_sort![unsigned u8:"_sort_u8", u16:"_sort_u16", u32:"_sort_u32",
-            u64:"_sort_u64", u128:"_sort_u128", usize:"_sort_usize"];
-        impl_sort![float f32:"_sort_f32", f64:"_sort_f64"];
-    };
-
-    // $t: the input/output primitive type
-    (signed   $( $t:ty : $cap:literal ),+) => { $( impl_sort![@signed $t:$cap]; )+ };
-    (unsigned $( $t:ty : $cap:literal ),+) => { $( impl_sort![@unsigned $t:$cap]; )+ };
-    (float    $( $t:ty : $cap:literal ),+) => { $( impl_sort![@float $t:$cap]; )+ };
-
-    (@signed $t:ty : $cap:literal) => { paste! {
-        /// Implement const sorting methods for arrays of primitives.
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        #[cfg(feature = $cap)]
-        impl<const N: usize> Sort<[$t; N]> {
-            /// Returns a copied sorted array using bubble sort.
-            #[must_use]
-            pub const fn bubble_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 0..N => {
-                    cfor![j in 0..N-i-1 => {
-                        iif![arr[j] > arr[j+1]; cswap!(xor arr[j], arr[j+1])];
-                    }];
-                }];
-                arr
-            }
-
-            /// Returns a copied sorted array using insertion sort.
-            #[must_use]
-            pub const fn insertion_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 1..N => {
-                    let mut j = i;
-                    while j > 0 && arr[j-1] > arr[j] {
-                        cswap!(xor arr[j], arr[j-1]);
-                        j -= 1;
-                    }
-                }];
-                arr
-            }
-
-            /// Returns a copied sorted array using insertion sort.
-            #[must_use]
-            pub const fn selection_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 0..N-1 => {
-                    let mut min_index = i;
-                    cfor![j in (i+1)..N => {
-                        iif![arr[j] < arr[min_index]; min_index = j];
-                    }];
-                    cswap!(xor arr[min_index], arr[i]);
-                }];
-                arr
-            }
-        }
-    }};
-
-    (@unsigned $t:ty : $cap:literal) => { paste! {
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        #[cfg(feature = $cap)]
-        impl<const N: usize> Sort<[$t; N]> {
-            /// Returns a copied sorted array using bubble sort.
-            #[must_use]
-            pub const fn bubble_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 0..N => {
-                    cfor![j in 0..N-i-1 => {
-                        iif![arr[j] > arr[j+1]; cswap!(xor arr[j], arr[j+1])];
-                    }];
-                }];
-                arr
-            }
-
-            /// Returns a copied sorted array using insertion sort.
-            #[must_use]
-            pub const fn insertion_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 1..N => {
-                    let mut j = i;
-                    while j > 0 && arr[j-1] > arr[j] {
-                        cswap!(xor arr[j], arr[j-1]);
-                        j -= 1;
-                    }
-                }];
-                arr
-            }
-
-            /// Returns a copied sorted array using selection sort.
-            #[must_use]
-            pub const fn selection_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 0..N-1 => {
-                    let mut min_index = i;
-                    cfor![j in (i+1)..N => {
-                        iif![arr[j] < arr[min_index]; min_index = j];
-                    }];
-                    cswap!(xor arr[min_index], arr[i]);
-                }];
-                arr
-            }
-        }
-    }};
-
-    (@float $t:ty : $cap:literal) => { paste! {
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
-        #[cfg(feature = $cap)]
-        impl<const N: usize> Sort<[$t; N]> {
-            /// Returns a copied sorted array using bubble sort.
-            #[must_use]
-            pub const fn bubble_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 0..N => {
-                    cfor![j in 0..N-i-1 => {
-                        iif![Compare(arr[j]).gt(arr[j+1]); cswap!(arr[j], arr[j+1])];
-                    }];
-                }];
-                arr
-            }
-
-            /// Returns a copied sorted array using insertion sort.
-            #[must_use]
-            pub const fn insertion_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 1..N => {
-                    let mut j = i;
-                    while j > 0 && Compare(arr[j-1]).gt(arr[j]) {
-                        cswap!(arr[j], arr[j-1]);
-                        j -= 1;
-                    }
-                }];
-                arr
-            }
-
-            /// Returns a copied sorted array using selection sort.
-            #[must_use]
-            pub const fn selection_array(self) -> [$t; N] {
-                let mut arr = self.0;
-                cfor![i in 0..N-1 => {
-                    let mut min_index = i;
-                    cfor![j in (i+1)..N => {
-                        iif![Compare(arr[j]).lt(arr[min_index]); min_index = j];
-                    }];
-                    cswap!(arr[min_index], arr[i]);
-                }];
-                arr
-            }
-        }
-    }};
-}
-#[cfg(_sort_·)]
-impl_sort![];

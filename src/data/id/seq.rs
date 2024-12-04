@@ -7,7 +7,7 @@
 ///
 /// It generates the necessary static instances dynamically.
 ///
-/// # Examples
+/// # Example
 /// ```
 /// # use devela::id_seq;
 /// id_seq![AppId1, u8];

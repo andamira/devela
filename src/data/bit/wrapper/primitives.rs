@@ -1,6 +1,6 @@
 // devela::data::bit::ops::wrapper::primitives
 //
-//! Implements `Bitwise` for the integer primitives
+//! Implements `Bitwise` for the integer primitives.
 //
 
 #[cfg(_bit_·)]

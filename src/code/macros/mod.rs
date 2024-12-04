@@ -41,7 +41,6 @@ mod enumset; // enumset!
 
 #[allow(unused_imports)]
 pub use {doc_inline::*, private::*};
-
 mod doc_inline {
     #[cfg(_bit_·)]
     pub use super::enumset::*;

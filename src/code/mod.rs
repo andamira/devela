@@ -21,7 +21,6 @@ pub mod result;
 
 #[allow(unused_imports)]
 pub use {doc_hidden::*, doc_inline::*, private::*};
-
 mod doc_inline {
     pub use super::{any::all::*, default::*, r#type::*, reexports::*};
 }

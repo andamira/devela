@@ -1,18 +1,21 @@
-// devela::data::id
+// devela::data::sort
 //
-//! Data identifiers.
+//! Sorting functionality.
 //
 
-mod pin; // pinned memory-based ids
-mod seq; // static sequential ids
+// no items defined
+mod generic;
+#[cfg(_sort_·)]
+mod primitives;
+
+mod definition;
 
 /* structural access */
 
 #[allow(unused_imports)]
 pub use doc_inline::*;
-
 mod doc_inline {
-    pub use super::{pin::*, seq::*};
+    pub use super::definition::*;
 }
 pub(super) mod all {
     #[doc(inline)]

@@ -28,9 +28,8 @@ pub mod dst;
 
 #[allow(unused_imports)]
 pub use {doc_hidden::*, doc_inline::*};
-
 mod doc_inline {
-    pub use super::{bit::all::*, error::*, fmt::all::*, id::all::*, sort::*};
+    pub use super::{bit::all::*, error::*, fmt::all::*, id::all::*, sort::all::*};
 }
 mod doc_hidden {
     #[doc(hidden)]
