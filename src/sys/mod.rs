@@ -4,7 +4,8 @@
 #![doc = crate::doc_!(modules: crate; sys: io, os, time)]
 #![doc = crate::doc_!(newline)]
 //!
-#![doc = crate::doc_!(extends: arch, env, fs, io, net, os, path, simd, time)]
+#![doc = crate::doc_!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
+    io, net, os, path, pin, ptr, rc, slice, simd, time)]
 //
 // safety
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
@@ -32,6 +33,14 @@ items! {
 
 /* public */
 
+pub mod io;
+pub mod log;
+pub mod mem;
+pub mod os;
+#[doc(no_inline)]
+#[allow(unused_imports)]
+pub use {io::all::*, log::all::*, mem::all::*, os::all::*};
+
 #[cfg(feature = "time")]
 items! {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
@@ -41,18 +50,11 @@ items! {
     pub use time::all::*;
 }
 
-pub mod io;
-pub mod log;
-pub mod os;
-#[doc(no_inline)]
-#[allow(unused_imports)]
-pub use {io::all::*, os::all::*};
-
 pub(crate) mod all {
     #![allow(unused_imports)]
 
     #[doc(inline)]
-    pub use super::{arch::all::*, env::all::*, io::all::*, log::all::*, os::all::*};
+    pub use super::{arch::all::*, env::all::*, io::all::*, log::all::*, mem::all::*, os::all::*};
 
     #[doc(inline)]
     #[cfg(feature = "sys")]

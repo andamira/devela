@@ -16,26 +16,26 @@ pub type AllResult<T> = crate::Result<T, AllError>;
 /// See also: [`AllErrorKind`].
 #[derive(Debug)]
 pub enum AllError {
-    /// A data error.
+    /// A data-related error.
     Data(DataError),
 
-    /// A numeric error.
+    /// A media-related error.
+    #[cfg(_media_·)]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(_media_·)))]
+    Media(MediaError),
+
+    /// A numeric-related error.
     Num(NumError),
 
-    /// A rendering error.
-    #[cfg(_rend_·)]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(_rend_·)))]
-    Rend(RendError),
-
-    /// A text error.
+    /// A text-related error.
     Text(TextError),
 
-    /// An I/O error.
+    /// An I/O-related error.
     #[cfg(feature = "io")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
     Io(IoError),
 
-    /// A time error.
+    /// A time-related error.
     #[cfg(feature = "time")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
     Time(TimeError),
@@ -49,19 +49,19 @@ pub enum AllError {
 /// See also: [`AllError`].
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum AllErrorKind {
-    /// A data error.
+    /// A data-related error.
     Data(()), // TODO
 
-    /// A numeric error.
+    /// A numeric-related error.
     Num(()), // TODO
 
-    /// A text error.
+    /// A text-related error.
     Text(()), // TODO
 
-    /// A rendering error.
-    #[cfg(_rend_·)]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(_rend_·)))]
-    Rend(()), // TODO
+    /// A media-related error.
+    #[cfg(_media_·)]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(_media_·)))]
+    Media(()), // TODO
 
     /// An I/O error.
     #[cfg(feature = "io")]
@@ -95,8 +95,8 @@ mod core_impls {
                 (E::Num(e1), E::Num(e2)) => e1.error_eq(e2),
                 (E::Text(e1), E::Text(e2)) => e1.error_eq(e2),
 
-                #[cfg(_rend_·)]
-                (E::Rend(e1), E::Rend(e2)) => e1.error_eq(e2),
+                #[cfg(_media_·)]
+                (E::Media(e1), E::Media(e2)) => e1.error_eq(e2),
                 #[cfg(feature = "io")]
                 (E::Io(e1), E::Io(e2)) => e1.error_eq(e2),
                 #[cfg(feature = "time")]
@@ -115,8 +115,8 @@ mod core_impls {
                 E::Num(e) => K::Num(e.error_kind()),
                 E::Text(e) => K::Text(e.error_kind()),
 
-                #[cfg(_rend_·)]
-                E::Rend(e) => K::Rend(e.error_kind()),
+                #[cfg(_media_·)]
+                E::Media(e) => K::Media(e.error_kind()),
                 #[cfg(feature = "io")]
                 E::Io(e) => K::Io(e.error_kind()),
                 #[cfg(feature = "time")]
@@ -132,13 +132,14 @@ mod core_impls {
         match self {
             E::Data(e) => write!(f, "{e:?}"),
             E::Num(e) => write!(f, "{e:?}"),
-            #[cfg(_rend_·)]
-            E::Rend(e) => write!(f, "{e:?}"),
             E::Text(e) => write!(f, "{e:?}"),
+            #[cfg(_media_·)]
+            E::Media(e) => write!(f, "{e:?}"),
             #[cfg(feature = "io")]
             E::Io(e) => write!(f, "{e:?}"),
             #[cfg(feature = "time")]
             E::Time(e) => write!(f, "{e:?}"),
+
             E::Other(s) => write!(f, "{s}"),
         }
     }}

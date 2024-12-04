@@ -1,17 +1,17 @@
-// devela::rend
+// devela::media
 //
-//! Rendering multi-media functionality.
-#![doc = crate::doc_!(modules: crate; rend: audio, color, draw, font, image, layout)]
+//! Multimedia functionality.
+#![doc = crate::doc_!(modules: crate; media: audio, color, draw, font, image, layout)]
 #![doc = crate::doc_!(newline)]
 //
 // safety
-#![cfg_attr(feature = "safe_rend", forbid(unsafe_code))]
+#![cfg_attr(feature = "safe_media", forbid(unsafe_code))]
 
-#[cfg(_rend_·)]
+#[cfg(_media_·)]
 crate::items! {
     use crate::items;
 
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(_rend_·)))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(_media_·)))]
     mod error;
     #[doc(inline)]
     pub use error::*;
@@ -70,7 +70,7 @@ pub(crate) mod all {
     #![allow(unused_imports)]
 
     #[doc(inline)]
-    #[cfg(_rend_·)]
+    #[cfg(_media_·)]
     pub use super::error::*;
 
     #[doc(inline)]

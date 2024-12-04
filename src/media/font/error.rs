@@ -1,12 +1,12 @@
-// devela::rend::font::error
+// devela::media::font::error
 //
 //!
 //
 
-/// A font rendering result.
+/// A font-related result.
 pub type FontResult<T> = crate::Result<T, FontError>;
 
-/// A font rendering error.
+/// A font-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum FontError {

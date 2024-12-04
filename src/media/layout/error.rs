@@ -1,12 +1,12 @@
-// devela::rend::layout::error
+// devela::media::layout::error
 //
 //!
 //
 
-/// A layout rendering result.
+/// A layout-related result.
 pub type LayoutResult<T> = crate::Result<T, LayoutError>;
 
-/// A layout rendering error.
+/// A layout-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum LayoutError {

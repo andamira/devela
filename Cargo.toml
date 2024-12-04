@@ -10,7 +10,7 @@
 # * [features]
 #   - Development
 #   - Environment          (std,alloc,no_std)
-#   - Module               (mem,num,rend,sys,text,work…)
+#   - Module               (data,media,num,sys,text,work…)
 #   - Safety               (safe,unsafe,safest)
 #   - Nightly
 #   - Capability
@@ -127,19 +127,13 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 
 all = [ # enables all the modules and submodules
 	# "code", "data", "error",
-	"mem", "num", "rend", "sys", "text", "work", "ui",
+	"media", "num", "sys", "text", "work", "ui",
 ]
 # code = []
 # data = []
 # error = []
 # ffi = []
-num = [
-	"geom", "rand", "wave",
-	]
-	geom = [] # geometry, linear algebra
-	rand = [] # random number generators
-	wave = [] # wavelets
-rend = [
+media = [
 	"audio", "color", "draw", "font", "image", "layout",
 	]
 	audio = []
@@ -148,7 +142,13 @@ rend = [
 	font = []
 	image = []
 	layout = []
-sys = ["io", "time"]
+num = [
+	"geom", "rand", "wave",
+	]
+	geom = [] # geometry, linear algebra
+	rand = [] # random number generators
+	wave = [] # wavelets
+sys = ["io", "mem", "time"]
 	io = []
 	mem = ["bit"]
 		bit = [] # BitSize
@@ -181,20 +181,20 @@ work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
 	"safe_code", "safe_data", "safe_error", "safe_ffi",
-	"safe_num", "safe_rend", "safe_sys", "safe_text", "safe_work",
+	"safe_media", "safe_num", "safe_sys", "safe_text", "safe_work",
 ] # in 9 specific root modules:
 	safe_code = []
 	safe_data = []
 	safe_error = []
 	safe_ffi = []
-	safe_num = []
-	safe_rend = ["safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image", "safe_layout"]
+	safe_media = ["safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image", "safe_layout"]
 		safe_audio = []
 		safe_color = []
 		safe_draw = []
 		safe_font = []
 		safe_image = []
 		safe_layout = []
+	safe_num = []
 	safe_sys = ["safe_io", "safe_mem", "safe_time"]
 		safe_io = []
 		safe_mem = []
@@ -877,13 +877,13 @@ check-cfg = [ # Allowed config flags:
 	# data:
 	'cfg(_bit_·, _destaque_·, _stack_·)',
 	'cfg(_graph_·, _node_·)',
+	# media:
+	'cfg(_media_·)',
 	# num:
 	'cfg(_num_·)',
 	'cfg(_sort_·, _sort_int_·, _sort_float_·)',
 	'cfg(_nums_·, _cmp_·, _float_·, _int_·, _int_i·, _int_u·)',
 	'cfg(_non_value_·, _non_value_i_·, _non_value_u_·)',
-	# rend:
-	'cfg(_rend_·)',
 	# sys
 	'cfg(_sys_·, _mem_·)',
 	# text:

@@ -1,4 +1,4 @@
-// devela::rend::audio
+// devela::media::audio
 //
 //! Audio functionality.
 //

@@ -122,8 +122,8 @@ pub mod code;
 pub mod data;
 pub mod error;
 pub mod ffi;
+pub mod media;
 pub mod num;
-pub mod rend;
 pub mod sys;
 pub mod text;
 pub mod ui;
@@ -146,8 +146,8 @@ pub mod all {
         data::all::*,
         error::all::*,
         ffi::all::*,
+        media::all::*,
         num::all::*,
-        rend::all::*,
         sys::all::*,
         text::all::*,
         ui::all::*,

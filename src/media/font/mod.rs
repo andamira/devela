@@ -1,4 +1,4 @@
-// devela::rend::font
+// devela::media::font
 //
 //! Font functionality.
 //

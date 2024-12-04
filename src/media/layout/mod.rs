@@ -1,4 +1,4 @@
-// devela::rend::layout
+// devela::media::layout
 //
 //! Layout functionality.
 //

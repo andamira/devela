@@ -9,28 +9,28 @@ use crate::reexport;
 
 pub use crate_errors::*;
 pub(crate) mod crate_errors {
-    /* rend */
+    /* media */
     #[doc(inline)]
     #[cfg(feature = "audio")]
-    pub use crate::rend::audio::{AudioError, AudioResult};
+    pub use crate::media::audio::{AudioError, AudioResult};
     #[doc(inline)]
     #[cfg(feature = "color")]
-    pub use crate::rend::color::{ColorError, ColorResult};
+    pub use crate::media::color::{ColorError, ColorResult};
     #[doc(inline)]
     #[cfg(feature = "draw")]
-    pub use crate::rend::draw::{DrawError, DrawResult};
+    pub use crate::media::draw::{DrawError, DrawResult};
     #[doc(inline)]
     #[cfg(feature = "font")]
-    pub use crate::rend::font::{FontError, FontResult};
+    pub use crate::media::font::{FontError, FontResult};
     #[doc(inline)]
     #[cfg(feature = "image")]
-    pub use crate::rend::image::{ImageError, ImageResult};
+    pub use crate::media::image::{ImageError, ImageResult};
     #[doc(inline)]
     #[cfg(feature = "layout")]
-    pub use crate::rend::layout::{LayoutError, LayoutResult};
+    pub use crate::media::layout::{LayoutError, LayoutResult};
     #[doc(inline)]
-    #[cfg(_rend_·)]
-    pub use crate::rend::{RendError, RendResult};
+    #[cfg(_media_·)]
+    pub use crate::media::{MediaError, MediaResult};
 
     /* sys */
     #[doc(inline)]

@@ -1,12 +1,12 @@
-// devela::rend::color::error
+// devela::media::color::error
 //
 //!
 //
 
-/// A chromatic result.
+/// A color-related result.
 pub type ColorResult<T> = crate::Result<T, ColorError>;
 
-/// A chromatic error.
+/// A color-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)] // Hash
 pub enum ColorError {

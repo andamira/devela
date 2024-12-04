@@ -1,12 +1,12 @@
-// devela::rend::audio::error
+// devela::media::audio::error
 //
 //!
 //
 
-/// An audio rendering result.
+/// An audio-related result.
 pub type AudioResult<T> = crate::Result<T, AudioError>;
 
-/// An audio rendering error.
+/// An audio-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum AudioError {

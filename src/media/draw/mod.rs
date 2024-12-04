@@ -1,4 +1,4 @@
-// devela::rend::draw
+// devela::media::draw
 //
 //! Drawing functionality.
 //

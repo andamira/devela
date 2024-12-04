@@ -1,12 +1,12 @@
-// devela::rend::draw::error
+// devela::media::draw::error
 //
 //!
 //
 
-/// A drawing result.
+/// A drawing-related result.
 pub type DrawResult<T> = crate::Result<T, DrawError>;
 
-/// A drawing error.
+/// A drawing-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum DrawError {

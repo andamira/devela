@@ -43,17 +43,17 @@ Single modules:
 - [`data`]
 - [`error`]
 - [`ffi`]
-- [`num`]: enables all of the `num` sub-features:
-    - [`geom`]: geometry, linear algebra.
-    - [`rand`]: random number generators.
-    - [`wave`]: wavelets.
-- [`rend`]
+- [`media`]
   - [`audio`]
   - [`color`]
   - [`draw`]
   - [`font`]
   - [`image`]
   - [`layout`]
+- [`num`]: enables all of the `num` sub-features:
+  - [`geom`]: geometry, linear algebra.
+  - [`rand`]: random number generators.
+  - [`wave`]: wavelets.
 - [`sys`]: enables all `sys` sub-features (except os-specific).
   - [`io`]
   - [`mem`]
@@ -69,13 +69,13 @@ Single modules:
 [`data`]: crate::data
 [`error`]: mod@crate::error
 [`ffi`]: crate::ffi
-[`rend`]: mod@crate::rend
-  [`audio`]: crate::rend::audio
-  [`color`]: crate::rend::color
-  [`draw`]: crate::rend::draw
-  [`font`]: crate::rend::font
-  [`image`]: crate::rend::image
-  [`layout`]: crate::rend::layout
+[`media`]: mod@crate::media
+  [`audio`]: crate::media::audio
+  [`color`]: crate::media::color
+  [`draw`]: crate::media::draw
+  [`font`]: crate::media::font
+  [`image`]: crate::media::image
+  [`layout`]: crate::media::layout
 [`num`]: crate::num
   [`geom`]: crate::num::geom
   [`rand`]: crate::num::rand
@@ -102,17 +102,17 @@ In order to use any unsafe functionality:
   - `safe_data`
   - `safe_error`
   - `safe_ffi`
-  - `safe_mem`
-  - `safe_num`
-  - `safe_rend`
+  - `safe_media`
     - `safe_audio`
 		- `safe_color`
 		- `safe_draw`
 		- `safe_font`
 		- `safe_image`
 		- `safe_layout`
+  - `safe_num`
   - `safe_sys`
     - `safe_io`
+    - `safe_mem`
     - `safe_time`
   - `safe_text`
   - `safe_work`

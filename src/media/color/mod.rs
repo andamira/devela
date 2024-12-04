@@ -1,4 +1,4 @@
-// devela::rend::color
+// devela::media::color
 //
 //! Chromatic functionality.
 //

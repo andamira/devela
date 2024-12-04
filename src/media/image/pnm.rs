@@ -1,4 +1,4 @@
-// devela::rend::image::pnm
+// devela::media::image::pnm
 //
 //! PNM is the portable anymap format Netpbm image format family (PBM, PGM, PPM)
 

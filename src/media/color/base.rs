@@ -1,4 +1,4 @@
-// devela::rend::color::base
+// devela::media::color::base
 //
 //!
 //

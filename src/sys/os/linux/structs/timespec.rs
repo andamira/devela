@@ -1,6 +1,6 @@
 // devela::sys::os::linux::structs::timespec
 
-use crate::Duration;
+use crate::_core::time::Duration;
 
 /// Represents the [`timespec`] structure from libc.
 /// Time in seconds and nanoseconds.

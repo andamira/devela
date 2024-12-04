@@ -1,4 +1,4 @@
-// devela::rend::image::error
+// devela::media::image::error
 //
 //!
 //
@@ -6,10 +6,10 @@
 // use crate::Mismatch; use crate::IntErrorKind;
 use crate::IoErrorKind;
 
-/// An image rendering result.
+/// An image-related result.
 pub type ImageResult<T> = crate::Result<T, ImageError>;
 
-/// An image rendering error.
+/// An image-related error.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ImageError {
     /// Invalid image size, with an optional width and height.

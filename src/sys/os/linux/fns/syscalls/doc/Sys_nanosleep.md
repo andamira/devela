@@ -13,7 +13,7 @@ Returns the syscall return value.
 
 # Examples
 ```
-use devela::sys::os::linux::{linux_sys_nanosleep, LinuxTimespec};
+use devela::{linux_sys_nanosleep, LinuxTimespec};
 use core::time::Duration;
 
 let mut req = LinuxTimespec::from(Duration::from_millis(99));

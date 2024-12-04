@@ -1,7 +1,7 @@
-// devela::rend::image
+// devela::media::image
 //
 //! Image manipulation.
-// #![doc = crate::doc_!(modules: crate::rend; image: pnm)]
+// #![doc = crate::doc_!(modules: crate::media; image: pnm)]
 // #![doc = crate::doc_!(newline)]
 //
 // safety

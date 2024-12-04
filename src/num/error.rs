@@ -5,10 +5,10 @@
 
 use crate::Sign;
 
-/// A numerical result.
+/// A numeric-related result.
 pub type NumResult<T> = crate::Result<T, NumError>;
 
-/// A numerical error.
+/// A numeric-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum NumError {

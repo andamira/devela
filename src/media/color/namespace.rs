@@ -1,4 +1,4 @@
-// devela::rend::color::namespace
+// devela::media::color::namespace
 //
 //! Standalone color functions and constants.
 //

@@ -109,15 +109,15 @@ mod reflection {
 
     /* # modules */
 
-    pub const NUM: FlagsFeatures = FlagsFeatures {
-        flags: &["_num_·"],
-        features: &["geom", "rand", "wave"]
-    };
-    pub const REND: FlagsFeatures = FlagsFeatures {
-        flags: &["_rend_·"],
+    pub const MEDIA: FlagsFeatures = FlagsFeatures {
+        flags: &["_media_·"],
         features: &[
             "audio", "color", "draw", "font", "image", "layout"
         ]
+    };
+    pub const NUM: FlagsFeatures = FlagsFeatures {
+        flags: &["_num_·"],
+        features: &["geom", "rand", "wave"]
     };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         flags: &["_sys_·"],
@@ -231,8 +231,8 @@ mod reflection {
 
             /* modules */
 
+            MEDIA,
             NUM,
-            REND,
             SYS, MEM,
 
             /* capabilities */
