@@ -1,7 +1,7 @@
 // devela::media
 //
 //! Multimedia functionality.
-#![doc = crate::doc_!(modules: crate; media: audio, color, draw, font, image, layout)]
+#![doc = crate::doc_!(modules: crate; media: audio, color, draw, font, image)]
 #![doc = crate::doc_!(newline)]
 //
 // safety
@@ -57,14 +57,6 @@ items! {
     #[allow(unused_imports)]
     pub use image::all::*;
 }
-#[cfg(feature = "layout")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "layout")))]
-    pub mod layout;
-    #[doc(no_inline)]
-    #[allow(unused_imports)]
-    pub use layout::all::*;
-}
 
 pub(crate) mod all {
     #![allow(unused_imports)]
@@ -88,7 +80,4 @@ pub(crate) mod all {
     #[doc(inline)]
     #[cfg(feature = "image")]
     pub use super::image::all::*;
-    #[doc(inline)]
-    #[cfg(feature = "layout")]
-    pub use super::layout::all::*;
 }

@@ -59,12 +59,12 @@ mod reflection {
             "safe_error",
             "safe_ffi",
             "safe_num",
-            "safe_rend",
-                "safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image", "safe_layout",
+            "safe_media",
+                "safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image",
             "safe_sys",
                 "safe_io", "safe_mem", "safe_time",
             "safe_text",
-            "safe_ui",
+            "safe_ui", "safe_layout",
             "safe_work",
 
             "unsafe",
@@ -111,26 +111,28 @@ mod reflection {
 
     pub const MEDIA: FlagsFeatures = FlagsFeatures {
         flags: &["_media_·"],
-        features: &[
-            "audio", "color", "draw", "font", "image", "layout"
-        ]
+        features: &["media", "audio", "color", "draw", "font", "image"]
     };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         flags: &["_num_·"],
-        features: &["geom", "rand", "wave"]
+        features: &["num", "geom", "rand", "wave"]
     };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         flags: &["_sys_·"],
-        features: &[
+        features: &["sys",
             "io", "time",
-            "linux", "windows", // os
-        ]
+            "linux", "windows", /* os */]
     };
+        // RETHINK:
         pub const MEM: FlagsFeatures = FlagsFeatures {
             flags: &["_mem_·"],
-            features: &["bit"]
+            features: &["mem", "bit"]
         };
 
+    pub const UI: FlagsFeatures = FlagsFeatures {
+        flags: &["_ui_·"],
+        features: &["ui", "layout"]
+    };
 
     /* # capabilities */
 
@@ -234,6 +236,7 @@ mod reflection {
             MEDIA,
             NUM,
             SYS, MEM,
+            UI,
 
             /* capabilities */
 

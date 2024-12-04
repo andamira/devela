@@ -49,7 +49,6 @@ Single modules:
   - [`draw`]
   - [`font`]
   - [`image`]
-  - [`layout`]
 - [`num`]: enables all of the `num` sub-features:
   - [`geom`]: geometry, linear algebra.
   - [`rand`]: random number generators.
@@ -63,6 +62,7 @@ Single modules:
     - `linux`: Linux functionality.
 - [`text`]
 - [`ui`]
+  - [`layout`]
 - [`work`]
 
 [`code`]: crate::code
@@ -75,7 +75,6 @@ Single modules:
   [`draw`]: crate::media::draw
   [`font`]: crate::media::font
   [`image`]: crate::media::image
-  [`layout`]: crate::media::layout
 [`num`]: crate::num
   [`geom`]: crate::num::geom
   [`rand`]: crate::num::rand
@@ -86,6 +85,8 @@ Single modules:
   [`time`]: crate::sys::time
 [`text`]: crate::text
 [`work`]: crate::work
+[`ui`]: crate::ui
+  [`layout`]: crate::ui::layout
 
 
 ### Safety features
@@ -108,7 +109,6 @@ In order to use any unsafe functionality:
 		- `safe_draw`
 		- `safe_font`
 		- `safe_image`
-		- `safe_layout`
   - `safe_num`
   - `safe_sys`
     - `safe_io`
@@ -116,6 +116,8 @@ In order to use any unsafe functionality:
     - `safe_time`
   - `safe_text`
   - `safe_work`
+  - `safe_ui`
+		- `safe_layout`
 
 - `unsafe`: enables `unsafe` (as long as it isn't forbidden for that module), includes:
 	- `unsafe_array`: faster array initialization, `UninitArray`.

@@ -4,17 +4,15 @@
 //
 
 #[cfg(feature = "audio")]
-use crate::media::AudioError;
+use crate::AudioError;
 #[cfg(feature = "color")]
-use crate::media::ColorError;
+use crate::ColorError;
 #[cfg(feature = "draw")]
-use crate::media::DrawError;
+use crate::DrawError;
 #[cfg(feature = "font")]
-use crate::media::FontError;
+use crate::FontError;
 #[cfg(feature = "image")]
-use crate::media::ImageError;
-#[cfg(feature = "layout")]
-use crate::media::LayoutError;
+use crate::ImageError;
 
 /// A media-related result.
 pub type MediaResult<T> = crate::Result<T, MediaError>;
@@ -25,27 +23,23 @@ pub enum MediaError {
     ///
     #[cfg(feature = "audio")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "audio")))]
-    AudioError(AudioError),
+    Audio(AudioError),
     ///
     #[cfg(feature = "color")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "color")))]
-    ColorError(ColorError),
+    Color(ColorError),
     ///
     #[cfg(feature = "draw")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "draw")))]
-    DrawError(DrawError),
+    Draw(DrawError),
     ///
     #[cfg(feature = "font")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "font")))]
-    FontError(FontError),
+    Font(FontError),
     ///
     #[cfg(feature = "image")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "font")))]
-    ImageError(ImageError),
-    ///
-    #[cfg(feature = "layout")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "layout")))]
-    LayoutError(LayoutError),
+    Image(ImageError),
 }
 
 mod core_impls {
@@ -59,8 +53,6 @@ mod core_impls {
     use crate::FontError;
     #[cfg(feature = "image")]
     use crate::ImageError;
-    #[cfg(feature = "layout")]
-    use crate::LayoutError;
     use crate::{Display, FmtResult, Formatter, MediaError};
 
     impl crate::Error for MediaError {}
@@ -76,54 +68,46 @@ mod core_impls {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             match self {
                 #[cfg(feature = "audio")]
-                MediaError::AudioError(e) => write!(f, "{e:?}"),
+                MediaError::Audio(e) => write!(f, "{e:?}"),
                 #[cfg(feature = "color")]
-                MediaError::ColorError(e) => write!(f, "{e:?}"),
+                MediaError::Color(e) => write!(f, "{e:?}"),
                 #[cfg(feature = "draw")]
-                MediaError::DrawError(e) => write!(f, "{e:?}"),
+                MediaError::Draw(e) => write!(f, "{e:?}"),
                 #[cfg(feature = "font")]
-                MediaError::FontError(e) => write!(f, "{e:?}"),
+                MediaError::Font(e) => write!(f, "{e:?}"),
                 #[cfg(feature = "image")]
-                MediaError::ImageError(e) => write!(f, "{e:?}"),
-                #[cfg(feature = "layout")]
-                MediaError::LayoutError(e) => write!(f, "{e:?}"),
+                MediaError::Image(e) => write!(f, "{e:?}"),
             }
         }
     }
     #[cfg(feature = "audio")]
     impl From<AudioError> for MediaError {
         fn from(e: AudioError) -> Self {
-            Self::AudioError(e)
+            Self::Audio(e)
         }
     }
     #[cfg(feature = "color")]
     impl From<ColorError> for MediaError {
         fn from(e: ColorError) -> Self {
-            Self::ColorError(e)
+            Self::Color(e)
         }
     }
     #[cfg(feature = "draw")]
     impl From<DrawError> for MediaError {
         fn from(e: DrawError) -> Self {
-            Self::DrawError(e)
+            Self::Draw(e)
         }
     }
     #[cfg(feature = "font")]
     impl From<FontError> for MediaError {
         fn from(e: FontError) -> Self {
-            Self::FontError(e)
+            Self::Font(e)
         }
     }
     #[cfg(feature = "image")]
     impl From<ImageError> for MediaError {
         fn from(e: ImageError) -> Self {
-            Self::ImageError(e)
-        }
-    }
-    #[cfg(feature = "layout")]
-    impl From<LayoutError> for MediaError {
-        fn from(e: LayoutError) -> Self {
-            Self::LayoutError(e)
+            Self::Image(e)
         }
     }
 }

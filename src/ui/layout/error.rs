@@ -1,4 +1,4 @@
-// devela::media::layout::error
+// devela::ui::layout::error
 //
 //!
 //

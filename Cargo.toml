@@ -74,7 +74,7 @@ publish = true
 bench = false
 
 
-[features] # 207/300 (93 remaining), 94 visible, 113 hidden
+[features] # 209/300 (91 remaining), 96 visible, 113 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -133,15 +133,12 @@ all = [ # enables all the modules and submodules
 # data = []
 # error = []
 # ffi = []
-media = [
-	"audio", "color", "draw", "font", "image", "layout",
-	]
+media = [ "audio", "color", "draw", "font", "image"]
 	audio = []
 	draw = []
 	color = []
 	font = []
 	image = []
-	layout = []
 num = [
 	"geom", "rand", "wave",
 	]
@@ -157,7 +154,8 @@ sys = ["io", "mem", "time"]
 		windows = ["crossterm?/windows"]
 	time = []
 text = []
-ui = []
+ui = ["layout"]
+	layout = []
 work = ["bytemuck?/zeroable_atomics"]
 
 
@@ -187,20 +185,20 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 	safe_data = []
 	safe_error = []
 	safe_ffi = []
-	safe_media = ["safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image", "safe_layout"]
+	safe_media = ["safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image"]
 		safe_audio = []
 		safe_color = []
 		safe_draw = []
 		safe_font = []
 		safe_image = []
-		safe_layout = []
 	safe_num = []
 	safe_sys = ["safe_io", "safe_mem", "safe_time"]
 		safe_io = []
 		safe_mem = []
 		safe_time = []
 	safe_text = []
-	safe_ui = []
+	safe_ui = ["safe_layout"]
+		safe_layout = []
 	safe_work = []
 
 unsafe = [ # enables `unsafe` (as long as it isn't forbidden for that module)
@@ -888,6 +886,8 @@ check-cfg = [ # Allowed config flags:
 	'cfg(_sys_·, _mem_·)',
 	# text:
 	'cfg(_char·, _string_·, _string_u·)',
+	# sys
+	'cfg(_ui_·)',
 ]
 
 

@@ -26,9 +26,6 @@ pub(crate) mod crate_errors {
     #[cfg(feature = "image")]
     pub use crate::media::image::{ImageError, ImageResult};
     #[doc(inline)]
-    #[cfg(feature = "layout")]
-    pub use crate::media::layout::{LayoutError, LayoutResult};
-    #[doc(inline)]
     #[cfg(_media_·)]
     pub use crate::media::{MediaError, MediaResult};
 
@@ -39,6 +36,11 @@ pub(crate) mod crate_errors {
     #[doc(inline)]
     #[cfg(feature = "time")]
     pub use crate::sys::time::{TimeError, TimeResult};
+
+    /* ui */
+    #[doc(inline)]
+    #[cfg(feature = "layout")]
+    pub use crate::ui::layout::{LayoutError, LayoutResult};
 
     /* other */
     #[doc(inline)]
