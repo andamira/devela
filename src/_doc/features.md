@@ -43,8 +43,6 @@ Single modules:
 - [`data`]
 - [`error`]
 - [`ffi`]
-- [`mem`]
-  - `bit`: `BitSize`.
 - [`num`]: enables all of the `num` sub-features:
     - [`geom`]: geometry, linear algebra.
     - [`rand`]: random number generators.
@@ -58,6 +56,8 @@ Single modules:
   - [`layout`]
 - [`sys`]: enables all `sys` sub-features (except os-specific).
   - [`io`]
+  - [`mem`]
+    - `bit`: `BitSize`.
   - [`time`]
   - os:
     - `linux`: Linux functionality.
@@ -76,12 +76,13 @@ Single modules:
   [`font`]: crate::rend::font
   [`image`]: crate::rend::image
   [`layout`]: crate::rend::layout
-[`mem`]: crate::mem
 [`num`]: crate::num
   [`geom`]: crate::num::geom
   [`rand`]: crate::num::rand
   [`wave`]: crate::num::wave
 [`sys`]: crate::sys
+  [`io`]: crate::sys::io
+  [`mem`]: crate::sys::mem
   [`time`]: crate::sys::time
 [`text`]: crate::text
 [`work`]: crate::work

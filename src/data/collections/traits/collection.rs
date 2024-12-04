@@ -16,14 +16,11 @@
 //   - UnorderedMap
 //   - UnorderedSet
 
+use crate::{Array, DataError as E, DataResult as Result, Storage};
 #[cfg(feature = "alloc")]
-use crate::data::collections::{BTreeMap, BTreeSet, BinaryHeap, Vec, VecDeque};
+use crate::{BTreeMap, BTreeSet, BinaryHeap, Vec, VecDeque};
 #[cfg(all(feature = "alloc", feature = "dep_hashbrown"))]
-use crate::data::collections::{HashMap, HashSet};
-use crate::{
-    data::{Array, DataError as E, DataResult as Result},
-    mem::Storage,
-};
+use crate::{HashMap, HashSet};
 
 /// An abstract data collection.
 ///

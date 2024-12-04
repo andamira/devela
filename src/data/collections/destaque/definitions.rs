@@ -4,10 +4,7 @@
 //! either end.
 //
 
-use crate::{
-    data::Array,
-    mem::{Bare, Storage},
-};
+use crate::{Array, Bare, Storage};
 
 /* types */
 

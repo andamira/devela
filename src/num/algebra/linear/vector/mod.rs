@@ -8,13 +8,9 @@
 //! their direction can be decomposed into *orientation* and *sense*.
 //
 
-use crate::num::Num;
+use crate::Num;
 #[cfg(feature = "alloc")]
-use crate::{
-    data::Vec,
-    mem::Box,
-    num::{NumError, NumResult as Result},
-};
+use crate::{Box, NumError, NumResult as Result, Vec};
 
 mod array;
 #[cfg(feature = "alloc")]

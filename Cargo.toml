@@ -133,10 +133,6 @@ all = [ # enables all the modules and submodules
 # data = []
 # error = []
 # ffi = []
-mem = [
-	"bit",
-	]
-	bit = [] # BitSize
 num = [
 	"geom", "rand", "wave",
 	]
@@ -154,6 +150,8 @@ rend = [
 	layout = []
 sys = ["io", "time"]
 	io = []
+	mem = ["bit"]
+		bit = [] # BitSize
 	# os
 		linux = []
 		windows = ["crossterm?/windows"]
@@ -182,14 +180,13 @@ work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 # (except for Rust's `core`, `alloc` and `std`).
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_error", "safe_ffi", "safe_mem",
+	"safe_code", "safe_data", "safe_error", "safe_ffi",
 	"safe_num", "safe_rend", "safe_sys", "safe_text", "safe_work",
 ] # in 9 specific root modules:
 	safe_code = []
 	safe_data = []
 	safe_error = []
 	safe_ffi = []
-	safe_mem = []
 	safe_num = []
 	safe_rend = ["safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image", "safe_layout"]
 		safe_audio = []
@@ -198,8 +195,9 @@ safe = [ # forbids `unsafe` (and overrides unsafe features)
 		safe_font = []
 		safe_image = []
 		safe_layout = []
-	safe_sys = ["safe_io", "safe_time"]
+	safe_sys = ["safe_io", "safe_mem", "safe_time"]
 		safe_io = []
+		safe_mem = []
 		safe_time = []
 	safe_text = []
 	safe_ui = []
@@ -876,16 +874,18 @@ check-cfg = [ # Allowed config flags:
 	# Compilation flags for reflection are enabled in: "/build/features.rs"
 	# ---------------------------------------------------------------------
 	"cfg(_nightly_·, _dep_·)",
-	'cfg(_mem_·, _num_·, _sys_·)',
 	# data:
 	'cfg(_bit_·, _destaque_·, _stack_·)',
 	'cfg(_graph_·, _node_·)',
 	# num:
+	'cfg(_num_·)',
 	'cfg(_sort_·, _sort_int_·, _sort_float_·)',
 	'cfg(_nums_·, _cmp_·, _float_·, _int_·, _int_i·, _int_u·)',
 	'cfg(_non_value_·, _non_value_i_·, _non_value_u_·)',
 	# rend:
 	'cfg(_rend_·)',
+	# sys
+	'cfg(_sys_·, _mem_·)',
 	# text:
 	'cfg(_char·, _string_·, _string_u·)',
 ]

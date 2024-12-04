@@ -4,23 +4,12 @@
 //
 
 use crate::{
-    code::ConstDefault,
-    data::{
-        array_init,
-        error::{
-            DataError::{NotEnoughSpace, OutOfBounds},
-            DataResult as Result,
-        },
-        Array, Stack,
-    },
-    error::Own,
-    mem::Bare,
+    array_init, Array, Bare, ConstDefault,
+    DataError::{NotEnoughSpace, OutOfBounds},
+    DataResult as Result, Own, Stack,
 };
 #[cfg(feature = "alloc")]
-use crate::{
-    data::Vec,
-    mem::{Box, Boxed},
-};
+use crate::{Box, Boxed, Vec};
 
 // helper macro to impl methods for a Stack with custom index size.
 //

@@ -7,10 +7,7 @@
 // - impl for:
 //   - Array
 
-use crate::{
-    data::{DataCollection, DataError::OutOfBounds, DataResult as Result},
-    mem::Storage,
-};
+use crate::{DataCollection, DataError::OutOfBounds, DataResult as Result, Storage};
 
 /// An abstract *array+ data type.
 ///

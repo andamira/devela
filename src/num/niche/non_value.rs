@@ -85,7 +85,7 @@ macro_rules! impl_non_value {
             #[cfg(all(feature = "dep_bytemuck", feature = "unsafe_niche", not(feature = "safe_num")))]
             use $crate::_dep::bytemuck::{CheckedBitPattern, NoUninit, PodInOption, ZeroableInOption};
             // #[cfg(feature = "unsafe_layout")]
-            // use $crate::mem::MemPod;
+            // use $crate::MemPod;
             #[cfg(feature = "bit")]
             use $crate::{BitSized, ByteSized};
             use $crate::{

@@ -5,10 +5,7 @@
 //! <https://en.wikipedia.org/wiki/Stack_(abstract_data_type)>
 //
 
-use crate::{
-    data::Array,
-    mem::{Bare, Storage},
-};
+use crate::{Array, Bare, Storage};
 
 /* types */
 

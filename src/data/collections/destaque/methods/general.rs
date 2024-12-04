@@ -1,14 +1,14 @@
 // devela::data::collections::destaque::methods::general
 
+#[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
+use crate::_core::mem::{transmute_copy, MaybeUninit};
 use crate::{
     array_from_fn, Array, Bare,
     DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds},
     DataResult as Result, Destaque, DestaqueIter, Storage,
 };
 #[cfg(feature = "alloc")]
-use crate::{mem::Boxed, vec_ as vec, Vec};
-#[cfg(all(not(feature = "safe_data"), feature = "unsafe_array"))]
-use core::mem::{transmute_copy, MaybeUninit};
+use crate::{vec_ as vec, Boxed, Vec};
 
 // helper macro to impl methods for a Destque with custom index size.
 macro_rules! impl_destaque {

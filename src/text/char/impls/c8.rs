@@ -191,4 +191,4 @@ impl char8 {
 
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
 #[cfg(all(not(feature = "safe_text"), feature = "unsafe_layout"))]
-unsafe impl crate::mem::MemPod for char8 {}
+unsafe impl crate::MemPod for char8 {}

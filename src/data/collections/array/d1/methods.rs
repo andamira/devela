@@ -8,20 +8,13 @@
 // - methods for Option<T>
 
 use crate::{
-    code::iif,
-    data::{
-        array_from_fn, array_init, Array,
-        DataError::{ElementNotFound, MismatchedIndices, OutOfBounds},
-        DataResult as Result,
-    },
-    mem::{Bare, BareBox, Storage},
+    array_from_fn, array_init, iif, Array, Bare, BareBox,
+    DataError::{ElementNotFound, MismatchedIndices, OutOfBounds},
+    DataResult as Result, Storage,
 };
 #[allow(unused_imports)]
 #[cfg(feature = "alloc")]
-use crate::{
-    data::Vec,
-    mem::{Box, Boxed},
-};
+use crate::{Box, Boxed, Vec};
 
 /* constructors */
 // -----------------------------------------------------------------------------

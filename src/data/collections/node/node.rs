@@ -5,14 +5,10 @@
 //
 
 use crate::{
-    code::{paste, ConstDefault},
-    data::{
-        DataError::{NodeLinkNotSet, NodeLinkNotUnique, NotEnoughSpace, OutOfBounds},
-        DataResult as Result,
-    },
-    error::{unwrap, Own},
-    mem::mem_replace,
     num::niche::*,
+    paste, unwrap, ConstDefault,
+    DataError::{NodeLinkNotSet, NodeLinkNotUnique, NotEnoughSpace, OutOfBounds},
+    DataResult as Result, Mem, Own,
 };
 
 macro_rules! impl_node {
@@ -190,7 +186,7 @@ macro_rules! impl_node {
             /// assert_eq!["hello", n.replace_data("world")];
             /// assert_eq!["world", n.replace_data(".")];
             /// ```
-            pub fn replace_data(&mut self, data: D) -> D { mem_replace::<D>(&mut self.data, data) }
+            pub fn replace_data(&mut self, data: D) -> D { Mem::replace::<D>(&mut self.data, data) }
 
             /* methods: links */
 
@@ -271,7 +267,7 @@ macro_rules! impl_node {
                     Some(link) => Some(Self::validate_into(link)?),
                     None => None,
                 };
-                match mem_replace::<Option<$NodeIndex>>(&mut self.links[id], link) {
+                match Mem::replace::<Option<$NodeIndex>>(&mut self.links[id], link) {
                     None => Ok(None),
                     Some(link) => Ok(Some(link.get()))
                 }
@@ -292,7 +288,7 @@ macro_rules! impl_node {
                     Some(link) => $NodeIndex::new(link),
                     None => None,
                 };
-                match mem_replace::<Option<$NodeIndex>>(&mut self.links[id], link) {
+                match Mem::replace::<Option<$NodeIndex>>(&mut self.links[id], link) {
                     None => None,
                     Some(link) => Some(link.get())
                 }

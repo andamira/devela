@@ -4,23 +4,14 @@
 //
 
 #[cfg(doc)]
-use crate::mem::BareBox;
+use crate::BareBox;
+use crate::{
+    Array, Array2d, Bare,
+    DataError::{MismatchedLength, Overflow},
+    DataResult as Result, Mismatch, Storage,
+};
 #[cfg(feature = "alloc")]
-use crate::{
-    data::Vec,
-    mem::{Box, Boxed},
-};
-use crate::{
-    data::{
-        error::{
-            DataError::{MismatchedLength, Overflow},
-            DataResult as Result,
-        },
-        Array, Array2d,
-    },
-    error::Mismatch,
-    mem::{Bare, Storage},
-};
+use crate::{Box, Boxed, Vec};
 
 /* constructors */
 

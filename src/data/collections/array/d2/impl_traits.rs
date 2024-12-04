@@ -4,12 +4,8 @@
 //
 
 #[cfg(feature = "alloc")]
-use crate::mem::Boxed;
-use crate::{
-    code::ConstDefault,
-    data::{Array, Array2d},
-    mem::{Bare, Storage},
-};
+use crate::Boxed;
+use crate::{Array, Array2d, Bare, ConstDefault, Storage};
 use core::fmt;
 
 /* Clone, Copy */

@@ -3,14 +3,7 @@
 //! 2-dimensional array coordinates and indexing methods
 //
 
-use crate::{
-    code::iif,
-    data::{
-        error::{DataError::Overflow, DataResult as Result},
-        Array2d,
-    },
-    mem::Storage,
-};
+use crate::{iif, Array2d, DataError::Overflow, DataResult as Result, Storage};
 
 // Helper macro for implementing common methods generic on storage order
 macro_rules! impl_maj {

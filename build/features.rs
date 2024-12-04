@@ -58,12 +58,11 @@ mod reflection {
             "safe_data",
             "safe_error",
             "safe_ffi",
-            "safe_mem",
             "safe_num",
             "safe_rend",
                 "safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image", "safe_layout",
             "safe_sys",
-                "safe_io", "safe_time",
+                "safe_io", "safe_mem", "safe_time",
             "safe_text",
             "safe_ui",
             "safe_work",
@@ -110,10 +109,6 @@ mod reflection {
 
     /* # modules */
 
-    pub const MEM: FlagsFeatures = FlagsFeatures {
-        flags: &["_mem_·"],
-        features: &["bit"]
-    };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         flags: &["_num_·"],
         features: &["geom", "rand", "wave"]
@@ -131,6 +126,11 @@ mod reflection {
             "linux", "windows", // os
         ]
     };
+        pub const MEM: FlagsFeatures = FlagsFeatures {
+            flags: &["_mem_·"],
+            features: &["bit"]
+        };
+
 
     /* # capabilities */
 
@@ -231,7 +231,9 @@ mod reflection {
 
             /* modules */
 
-            MEM, NUM, REND, SYS,
+            NUM,
+            REND,
+            SYS, MEM,
 
             /* capabilities */
 

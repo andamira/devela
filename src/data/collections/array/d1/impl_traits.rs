@@ -4,18 +4,13 @@
 //
 
 use crate::{
-    code::{
-        AsMut, AsRef, BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, ConstDefault,
-        Deref, DerefMut, Not,
-    },
-    data::{array_init, Array},
-    mem::{Bare, BareBox, Borrow, BorrowMut, Storage},
-    text::{FmtResult, Formatter},
-    Debug, Hash, Hasher, Ordering,
+    array_init, Array, AsMut, AsRef, Bare, BareBox, BitAnd, BitAndAssign, BitOr, BitOrAssign,
+    BitXor, BitXorAssign, Borrow, BorrowMut, ConstDefault, Debug, Deref, DerefMut, FmtResult,
+    Formatter, Hash, Hasher, Not, Ordering, Storage,
 };
 
 #[cfg(feature = "alloc")]
-use crate::mem::{Box, Boxed};
+use crate::{Box, Boxed};
 
 // Deref
 impl<T, const CAP: usize, S: Storage> Deref for Array<T, CAP, S> {
