@@ -13,12 +13,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new features for:
   - doc: `_docsrs[_stable]_nodep`.
   - num: `geom`, `wave`.
-  - rend: `rend`, `safe_rend`, `audio`, `color`, `draw`, `font`, `image`, `layout`.
+  - media `media`, `safe_media`, `audio`, `color`, `draw`, `font`, `image`.
   - sys: `time`, `linux`, `dep_linux`, `unsafe_syscall`.
   - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
   - nightly: `nightly_autodiff`, `nightly_float`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
-  - safety: `safest`, `unsafe_async`, `safe_io`, `safe_audio`, `safe_color`, `safe_draw`, `safe_font`, `safe_image`, `safe_layout`.
-  - other `windows`, `work_deps`, `__force_miri_dst`.
+  - safety: `safe_audio`, `safe_color`, `safe_draw`, `safe_ffi`, `safe_font`, `safe_image`, `safe_io`, `safe_layout`, `safe_ui`, `safest`, `unsafe_async`.
+  - ui: `ui`, `layout`.
+  - other: `windows`, `work_deps`, `__force_miri_dst`.
 - new cfg flag: `cargo_primary_package`.
 
 #### New items
@@ -32,12 +33,14 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `WaveletHaar`, `WaveletUnitVec`.
 - aliases:
   - `AllocMapFx`, `AllocSetFx`, `FmtResult`, `NoTime`.
-  - `AudioResult`, `ColorResult`, `DrawResult`,`FontResult`, `ImageResult`, `LayoutResult`, `RendResult`.
+  - `MediaResult`, `AudioResult`, `ColorResult`, `DrawResult`,`FontResult`, `ImageResult`.
+  - `UiResult`, `LayoutResult`,
   - re-exported primitives: `char`.
   - `TimeSplitYearNano`, `TimeSplitYearDay`, `TimeSplitYearSec`, `TimeSplitHourSec`, `TimeSplitHourNano`, `TimeSplitMilliNano`.
 - enums:
   - `AllError`, `AllErrorKind`.
-  - `RendError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`, `LayoutError`.
+  - `MediaError`, `ColorError`, `AudioError`, `DrawError`, `FontError`, `ImageError`.
+  - `UiError`, `LayoutError`.
   - `WaveletUnitRole`.
 - enum variants:
   - `DataError::ElementNotFound`.
@@ -79,7 +82,7 @@ The format is based on [Keep a Changelog], and this project adheres to
     - `HashMap` and `BTreeMap` from `std` if `hashbrown` is disabled.
     - `FromStr`, `IterChars`, `Utf8Error`.
   - crate items from multiple related modules, like errors and strings.
-- new modules: `num::algebra`, `sys::sound`, `rend::{audio, color, draw, font, image, layout}`.
+- new modules: `num::algebra`, `sys::sound`, `media::{audio, color, draw, font, image, layout}`, `ui`.
 - new `NonValue*` constants `MAX`, `MIN`.
 - new `sys::os::linux` module and example `linux`.
 - new lints.
@@ -166,17 +169,19 @@ The format is based on [Keep a Changelog], and this project adheres to
   - rename re-wrapped macros to avoid prelude collision when glob importing:
     - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.
 - modules:
-  - make modules public: `sys::ffi`, `text::fmt`.
+  - make modules public: `ffi`, `text::fmt`.
   - rename:
-    - `num::geom::algebra` module to `num::algebra::linear`.
-    - `code::result` module to `error`.
-    - `_dep::_core` module to `_core`.
+    - `num::geom::algebra` to `num::algebra::linear`.
+    - `code::result` to `error`.
+    - `exec` to `work`, and related features.
+    - `mem` to `sys::mem`.
+    - `sys::ffi` to `ffi.
+    - `time` to `sys::time`.
     - `_alloc` & `_std` inside `_dep`.
-    - `time` module to `sys::time`.
-    - `_deps` module to `_dep`.
-    - `_info` module to `_doc`.
-    - `_lib*` libs removing the `lib` prefix.
-    - `exec` module to `work`, and related features.
+    - `_dep::_core` to `_core`.
+    - `_deps` to `_dep`.
+    - `_info` to `_doc`.
+    - `_lib*` by removing the `lib` prefix.
 - traits:
   - impl `Num` for niche types.
 - dependencies:
