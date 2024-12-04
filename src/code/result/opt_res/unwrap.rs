@@ -1,4 +1,4 @@
-// devela::error::opt_res::unwrap
+// devela::code::result::opt_res::unwrap
 //
 //!
 //

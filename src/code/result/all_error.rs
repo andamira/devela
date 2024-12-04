@@ -1,4 +1,4 @@
-// devela::error::all_error
+// devela::code::result::all_error
 //
 //! Defines the [`AllError`] enum.
 //

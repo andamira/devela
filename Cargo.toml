@@ -74,7 +74,7 @@ publish = true
 bench = false
 
 
-[features] # 209/300 (91 remaining), 96 visible, 113 hidden
+[features] # 208/300 (92 remaining), 95 visible, 113 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -126,12 +126,11 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	# "code", "data", "error",
+	# "code", "data",
 	"media", "num", "sys", "text", "work", "ui",
 ]
 # code = []
 # data = []
-# error = []
 # ffi = []
 media = [ "audio", "color", "draw", "font", "image"]
 	audio = []
@@ -178,12 +177,11 @@ work_deps = ["dep_atomic", "dep_portable_atomic", "dep_rayon"]
 # (except for Rust's `core`, `alloc` and `std`).
 
 safe = [ # forbids `unsafe` (and overrides unsafe features)
-	"safe_code", "safe_data", "safe_error", "safe_ffi",
+	"safe_code", "safe_data", "safe_ffi",
 	"safe_media", "safe_num", "safe_sys", "safe_text", "safe_work",
 ] # in 9 specific root modules:
 	safe_code = []
 	safe_data = []
-	safe_error = []
 	safe_ffi = []
 	safe_media = ["safe_audio", "safe_color", "safe_draw", "safe_font", "safe_image"]
 		safe_audio = []

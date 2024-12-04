@@ -3,13 +3,12 @@
 //! impl methods for Vector
 //
 
-use crate::num::algebra::linear::Vector;
 #[allow(unused_imports)]
 #[cfg(all(not(feature = "std"), _float_·))]
-use crate::num::ExtFloat;
+use crate::ExtFloat;
+use crate::Vector;
 #[cfg(_int_·)]
-use crate::{error::unwrap, num::Int};
-use core::{concat as cc, stringify as fy};
+use crate::{concat as cc, stringify as fy, unwrap, Int};
 
 /* common methods */
 

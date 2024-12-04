@@ -1,8 +1,8 @@
-// devela::error::panic
+// devela::code::result::panic
 //
 //! Panic support,
 #![doc = crate::doc_!(extends: panic)]
-#![doc = crate::doc_!(modules: crate::error; panic)]
+#![doc = crate::doc_!(modules: crate::code::result; panic)]
 #![doc = crate::doc_!(newline)]
 //!
 //

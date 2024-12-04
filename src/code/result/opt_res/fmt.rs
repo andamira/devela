@@ -1,4 +1,4 @@
-// devela::error::option::fmt
+// devela::code::result::option::fmt
 //
 //!
 //

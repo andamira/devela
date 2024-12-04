@@ -56,7 +56,6 @@ mod reflection {
             "safe",
             "safe_code",
             "safe_data",
-            "safe_error",
             "safe_ffi",
             "safe_num",
             "safe_media",

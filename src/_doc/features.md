@@ -40,8 +40,8 @@ Modules can be enabled independently of *environment*, *dependencies* or *safety
 
 Single modules:
 - [`code`]
+  - [`result`]
 - [`data`]
-- [`error`]
 - [`ffi`]
 - [`media`]
   - [`audio`]
@@ -66,8 +66,8 @@ Single modules:
 - [`work`]
 
 [`code`]: crate::code
+  [`result`]: mod@crate::result
 [`data`]: crate::data
-[`error`]: mod@crate::error
 [`ffi`]: crate::ffi
 [`media`]: mod@crate::media
   [`audio`]: crate::media::audio
@@ -101,7 +101,6 @@ In order to use any unsafe functionality:
 - `safe`: forbids `unsafe` (and overrides unsafe features), includes:
   - `safe_code`
   - `safe_data`
-  - `safe_error`
   - `safe_ffi`
   - `safe_media`
     - `safe_audio`

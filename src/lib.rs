@@ -120,7 +120,6 @@ extern crate self as devela;
 
 pub mod code;
 pub mod data;
-pub mod error;
 pub mod ffi;
 pub mod media;
 pub mod num;
@@ -144,7 +143,6 @@ pub mod all {
     pub use super::{
         code::all::*,
         data::all::*,
-        error::all::*,
         ffi::all::*,
         media::all::*,
         num::all::*,

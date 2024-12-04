@@ -1,4 +1,4 @@
-// devela::error::option::ext
+// devela::code::result::option::ext
 //
 //!
 //

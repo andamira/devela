@@ -1,4 +1,4 @@
-// devela::error::reexports
+// devela::code::result::reexports
 //
 //! Reexported items.
 //

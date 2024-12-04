@@ -1,4 +1,4 @@
-// devela::error::own
+// devela::code::result::own
 //
 //!
 //

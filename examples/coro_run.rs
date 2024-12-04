@@ -2,10 +2,7 @@
 //
 //!
 
-use devela::{
-    error::{serr, sok},
-    work::CoroRun,
-};
+use devela::{serr, sok, CoroRun};
 
 fn main() {
     let mut cr = CoroRun::<char, String>::new();

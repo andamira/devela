@@ -1,4 +1,4 @@
-// devela::error::option::optres
+// devela::code::result::option::optres
 //
 //!
 //
