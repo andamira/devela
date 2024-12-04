@@ -5,60 +5,47 @@
 #![doc = crate::doc_!(extends: array, collections, vec)]
 //
 
-#[allow(unused_imports)]
-use crate::code::items;
-
 mod array;
 mod list;
 mod reexports;
 mod traits;
-#[allow(unused_imports)]
-pub use {array::all::*, list::all::*, reexports::*, traits::*};
 
 #[cfg(_destaque_·)]
-items! { mod destaque; pub use destaque::*; }
-
+mod destaque;
 // #[cfg(_graph_·)]
-// items! { mod graph; pub use graph::*; }
-
+// mod graph;
 // #[cfg(_node_·)]
-// items! { mod node; pub use node::*; }
-
+// mod node;
 #[cfg(_stack_·)]
-items! { mod stack; pub use stack::*; }
-
+mod stack;
 #[cfg(feature = "_tuple")]
-items! { mod tuple; pub use tuple::*; } // Tuple, TupleFmt
-
+mod tuple; // Tuple, TupleFmt
 #[cfg(feature = "alloc")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-items! {
-    mod vec;
-    #[allow(unused_imports)]
-    pub use vec::*;
-}
+mod vec;
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::{array::all::*, list::all::*, reexports::*, traits::*};
+/* structural access */
 
+#[allow(unused_imports)]
+pub use doc_inline::*;
+
+mod doc_inline {
     #[cfg(_destaque_·)]
     pub use super::destaque::all::*;
-
+    #[allow(unused_imports)]
+    pub use super::{array::all::*, list::all::*, reexports::*, traits::*};
     // #[cfg(_graph_·)]
     // pub use super::graph::*;
-
     // #[cfg(_node_·)]
     // pub use super::node::*;
-
     #[cfg(_stack_·)]
     pub use super::stack::all::*;
-
     #[cfg(feature = "_tuple")]
     pub use super::tuple::*;
-
-    #[allow(unused_imports)]
     #[cfg(feature = "alloc")]
-    pub use super::vec::*;
+    pub use super::vec::all::*;
+}
+pub(super) mod all {
+    #[doc(inline)]
+    pub use super::doc_inline::*;
 }

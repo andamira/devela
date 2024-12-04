@@ -4,21 +4,25 @@
 //
 
 mod r#trait;
-pub use r#trait::BitOps;
 
 #[cfg(_bit_·)]
 crate::items! {
     mod field;
     mod wrapper;
-    #[doc(inline)]
-    pub use {field::bitfield, wrapper::Bitwise};
 }
 
-pub(crate) mod all {
-    #[doc(inline)]
+/* structural access */
+
+#[allow(unused_imports)]
+pub use doc_inline::*;
+
+mod doc_inline {
     pub use super::r#trait::BitOps;
 
-    #[doc(inline)]
     #[cfg(_bit_·)]
     pub use super::{field::bitfield, wrapper::Bitwise};
+}
+pub(super) mod all {
+    #[doc(inline)]
+    pub use super::doc_inline::*;
 }

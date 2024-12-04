@@ -11,11 +11,16 @@
 
 mod chunk;
 mod ext;
-#[allow(unused_imports)]
-pub use {chunk::*, ext::*};
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
+/* structural access */
+
+#[allow(unused_imports)]
+pub use doc_inline::*;
+
+mod doc_inline {
     pub use super::{chunk::*, ext::*};
+}
+pub(super) mod all {
+    #[doc(inline)]
+    pub use super::doc_inline::*;
 }

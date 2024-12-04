@@ -3,14 +3,21 @@
 //! A type that can be used as a single-ended stack.
 //
 
+// no items defined
 mod impl_traits;
 mod methods;
 
 mod definitions;
-#[allow(unused_imports)]
-pub use definitions::*;
 
-pub(crate) mod all {
-    #[doc(inline)]
+/* structural access */
+
+#[allow(unused_imports)]
+pub use doc_inline::*;
+
+mod doc_inline {
     pub use super::definitions::*;
+}
+pub(super) mod all {
+    #[doc(inline)]
+    pub use super::doc_inline::*;
 }
