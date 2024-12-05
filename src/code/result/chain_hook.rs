@@ -90,9 +90,6 @@ pub trait Hook: Sized {
     /// Similar to [`chain_ref`], but instead of returning self directly from `f`,
     /// since it has a different signature, returns it indirectly.
     ///
-    /// Similar to [`chain_ref`], but the function is used for side effects
-    /// and does not directly return a transformed value.
-    ///
     /// [`chain_ref`]: Chain::chain_ref
     #[must_use]
     fn hook_ref<F>(self, f: F) -> Self

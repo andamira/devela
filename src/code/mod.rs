@@ -15,6 +15,7 @@ mod r#type; // type_marker!, type_resource, TypeResource, TypeResourced
 mod reexports; // re-exported items
 
 pub mod macros; // macros: assert*, cdbg, head, items, paste, sf…
+pub mod ops; // re-exported overloadable operators
 pub mod result;
 
 /* structural access */
@@ -27,7 +28,7 @@ mod doc_inline {
 mod doc_hidden {
     #[doc(hidden)]
     #[doc(no_inline)]
-    pub use super::{macros::all::*, result::all::*};
+    pub use super::{macros::all::*, ops::*, result::all::*};
 }
 pub(super) mod all {
     #[doc(inline)]
