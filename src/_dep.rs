@@ -30,7 +30,7 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* 25 optional dependencies */
+/* 27 optional dependencies */
 
 reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
     doc: "A generic atomic wrapper type."
@@ -66,6 +66,9 @@ reexport! { optional_crate (unsafe) "dep_memchr", "memchr", memchr,
 reexport! { optional_crate (unsafe) "dep_miniquad", "miniquad", miniquad,
     doc: "Cross-platform window context and rendering library."
 }
+reexport! { optional_crate (unsafe) "dep_nc", "nc", nc,
+    doc: "Access system calls directly in: linux, android, freebsd, netbsd, macos."
+}
 reexport! { optional_crate (unsafe) "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "Portable atomic types including 128-bit atomics, floats, etc."
 }
@@ -83,6 +86,9 @@ reexport! { optional_crate (safe) "dep_regex_lite", "regex-lite", regex_lite,
 }
 reexport! { optional_crate (unsafe) "dep_rodio", "rodio", rodio,
     doc: "Audio playback library."
+}
+reexport! { optional_crate (unsafe) "dep_rustix", "rustix", rustix,
+    doc: "Safe Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls."
 }
 reexport! { optional_crate (unsafe) "dep_stringzilla", "stringzilla", stringzilla,
     doc: "Faster SIMD-accelerated string search, sorting, fingerprints, and edit distances."

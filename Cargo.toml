@@ -75,7 +75,7 @@ publish = true
 bench = false
 
 
-[features] # 209/300 (91 remaining), 96 visible, 113 hidden
+[features] # 211/300 (89 remaining), 98 visible, 113 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -111,14 +111,14 @@ __force_miri_dst = [] # inhibits disabling miri on the data::dst module
 # ------------------------------------------------------------------------------
 
 alloc = [ # enables `alloc` functionality
-	"bytemuck?/extern_crate_alloc", "jiff?/alloc",
-	"memchr?/alloc", "rand_core?/alloc"
+	"bytemuck?/extern_crate_alloc", "jiff?/alloc", "memchr?/alloc",
+	"rand_core?/alloc", "rustix?/alloc",
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
 	"atomic?/std", "bytemuck?/extern_crate_std", "jiff?/std", "js-sys?/std",
-	"log?/std", "memchr?/std", "rand_core?/std", "regex-lite?/std",
-	"wasm-bindgen?/std", "web-sys?/std", "wide?/std",
+	"log?/std", "memchr?/std", "nc?/std", "rand_core?/std", "regex-lite?/std",
+	"rustix?/std", "wasm-bindgen?/std", "web-sys?/std", "wide?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
@@ -557,12 +557,13 @@ _string_all = [
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-dep_all = [ # enables all 25 optional dependencies:
+dep_all = [ # enables all 27 optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
-	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
+	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad", "dep_nc",
 	"dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon", "dep_regex_lite",
-	"dep_rodio", "dep_stringzilla", "dep_sysinfo", "dep_tinyaudio", "dep_unicode_segmentation",
-	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
+	"dep_rodio", "dep_rustix", "dep_stringzilla", "dep_sysinfo", "dep_tinyaudio",
+	"dep_unicode_segmentation", "dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys",
+	"dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 
 dep_atomic = ["dep:atomic"]                                   # work::sync
@@ -576,12 +577,14 @@ dep_libm = ["dep:libm"]                                       # num::float
 dep_log = ["dep:log"]                                         # sys::log
 dep_memchr = ["dep:memchr"]                                   # text
 dep_miniquad = ["dep:miniquad"]                               # sys::?
+dep_nc = ["dep:nc"]                                           # sys::os::linux
 dep_portable_atomic = ["dep:portable-atomic"]                 # work::sync
 dep_pyo3 = ["dep:pyo3", "std"]                                # ffi
 dep_rand_core = ["dep:rand_core"]                             # num::rand
 dep_rayon = ["dep:rayon", "sysinfo?/multithread"]             # work::thread
 dep_regex_lite = ["dep:regex-lite", "std"]                    # text
 dep_rodio = ["dep:rodio"]                                     # sys::sound
+dep_rustix = ["dep:rustix"]                                   # sys::os::linux
 dep_stringzilla = ["dep:stringzilla"]                         # text
 dep_sysinfo = ["dep:sysinfo", "std"]                          # sys
 dep_tinyaudio = ["dep:tinyaudio"]                             # sys::sound
@@ -677,10 +680,11 @@ version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
 optional = true # unsafe
 default-features = false # 1 https://docs.rs/crate/miniquad/latest/features
 
-[dependencies.rand_core] # https://crates.io/crates/rand_core
-version = "0.6.4" # ✓ https://github.com/rust-random/rand/blob/master/rand_core/CHANGELOG.md
-optional = true # safe
-default-features = false # 5 https://docs.rs/crate/rand_core/latest/features
+[dependencies.nc] # https://crates.io/crates/nc
+version = "0.9.5" # ✗ https://github.com/XuShaohua/nc/commits/main/
+optional = true # unsafe
+default-features = false # 2 https://docs.rs/crate/nc/latest/features
+# WAIT: [rt_sigaction](https://github.com/XuShaohua/nc/issues/29)
 
 [dependencies.portable-atomic] # https://crates.io/crates/portable-atomic
 version = "1.10.0" # ✓ https://github.com/taiki-e/portable-atomic/blob/main/CHANGELOG.md
@@ -695,6 +699,11 @@ default-features = false # 35 https://docs.rs/crate/pyo3/latest/features
 features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags
 # https://pyo3.rs/latest/features.html#features-reference
 # WAIT [no_std](https://github.com/PyO3/pyo3/issues/3510)
+
+[dependencies.rand_core] # https://crates.io/crates/rand_core
+version = "0.6.4" # ✓ https://github.com/rust-random/rand/blob/master/rand_core/CHANGELOG.md
+optional = true # safe
+default-features = false # 5 https://docs.rs/crate/rand_core/latest/features
 
 [dependencies.rayon] # https://crates.io/crates/rayon
 version = "1.10.0" # ✗ https://github.com/rayon-rs/rayon/commits/main/
@@ -712,7 +721,17 @@ features = ["string"]
 version = "0.20.1" # ✓ https://github.com/RustAudio/rodio/blob/master/CHANGELOG.md
 optional = true # unsafe (unsafe dependencies)
 default-features = false # 26 https://docs.rs/crate/rodio/latest/features
-# features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"]
+# features = ["claxon", "flac", "hound", "lewton", "mp3", "vorbis", "wav"] # IMPROVE: feature-gate
+
+[dependencies.rustix] # https://crates.io/crates/rustix
+version = "0.38.41" # ✓ https://github.com/bytecodealliance/rustix/releases
+optional = true # unsafe
+default-features = false # 39 https://docs.rs/crate/rustix/latest/features
+features = [ # IMPROVE: feature-gate
+    "event", "fs", "io_uring", "mm", "mount", "net", "param", "pipe", "process",
+    "procfs", "pty", "rand", "runtime", "shm", "stdio", "system", "termios",
+    "thread", "time",
+]
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
 version = "3.11.0" # ✗ https://github.com/ashvardanian/StringZilla/releases
