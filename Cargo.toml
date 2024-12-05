@@ -75,7 +75,7 @@ publish = true
 bench = false
 
 
-[features] # 208/300 (92 remaining), 95 visible, 113 hidden
+[features] # 209/300 (91 remaining), 96 visible, 113 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -557,11 +557,11 @@ _string_all = [
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-dep_all = [ # enables all 24 optional dependencies:
+dep_all = [ # enables all 25 optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
 	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
 	"dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon", "dep_regex_lite",
-	"dep_rodio", "dep_stringzilla", "dep_tinyaudio", "dep_unicode_segmentation",
+	"dep_rodio", "dep_stringzilla", "dep_sysinfo", "dep_tinyaudio", "dep_unicode_segmentation",
 	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 
@@ -579,10 +579,11 @@ dep_miniquad = ["dep:miniquad"]                               # sys::?
 dep_portable_atomic = ["dep:portable-atomic"]                 # work::sync
 dep_pyo3 = ["dep:pyo3", "std"]                                # ffi
 dep_rand_core = ["dep:rand_core"]                             # num::rand
-dep_rayon = ["dep:rayon"]                                     # work::thread
+dep_rayon = ["dep:rayon", "sysinfo?/multithread"]             # work::thread
 dep_regex_lite = ["dep:regex-lite", "std"]                    # text
 dep_rodio = ["dep:rodio"]                                     # sys::sound
 dep_stringzilla = ["dep:stringzilla"]                         # text
+dep_sysinfo = ["dep:sysinfo", "std"]                          # sys
 dep_tinyaudio = ["dep:tinyaudio"]                             # sys::sound
 dep_unicode_segmentation = ["dep:unicode-segmentation"]       # text
 dep_unicode_width = ["dep:unicode-width"]                     # text
@@ -591,7 +592,7 @@ dep_web_sys = ["dep:web-sys"]                                 # sys::?
 dep_wide = ["dep:wide"]                                       # *
 
 
-[dependencies] # 26 (2 required, 24 optional)
+[dependencies] # 27 (2 required, 25 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -719,6 +720,12 @@ optional = true  # unsafe
 default-features = false # 0 https://docs.rs/crate/stringzilla/latest/features
 # WAIT [fix msvc cross-compile](https://github.com/ashvardanian/StringZilla/pull/169)
 # WAIT [fix cmake code](https://github.com/ashvardanian/StringZilla/pull/85)
+
+[dependencies.sysinfo] # https://crates.io/crates/sysinfo
+version = "0.33.0" # ✓ https://github.com/GuillaumeGomez/sysinfo/blob/master/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 16 https://docs.rs/crate/sysinfo/latest/features
+features = ["component", "disk", "network", "system", "user"] # IMPROVE: feature-gate
 
 [dependencies.tinyaudio] # https://crates.io/crates/tinyaudio
 version = "1.0.0" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
