@@ -7,20 +7,17 @@
 //
 
 mod reexports;
-#[allow(unused_imports)]
-pub use reexports::*;
 
 #[cfg(_cmp_·)]
+mod compare; // `Compare`
+
+// structural access
 crate::items! {
-    mod compare; // `Compare`
-    pub use compare::*;
-}
-
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::reexports::*;
-
-    #[cfg(_cmp_·)]
-    pub use super::compare::*;
+    mod doc_inline {
+        pub use super::reexports::*;
+        #[cfg(_cmp_·)]
+        pub use super::compare::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(crate) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

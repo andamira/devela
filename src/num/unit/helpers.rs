@@ -1,7 +1,4 @@
 // devela::num::unit::helpers
-//
-//!
-//
 
 // Implements TryFrom for `$to_prim` from the `$unit` type `$from_prim` value
 macro_rules! impl_try_from {

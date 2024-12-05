@@ -6,32 +6,21 @@
 #[cfg(test)]
 mod tests;
 
+mod shared; // WaveletHaar, WaveletUnitRole
+
 #[cfg(feature = "alloc")]
 #[cfg(any(feature = "std", feature = "_float_f64"))] // NOTE: not documented
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+mod alloc;
+
+// structural access
 crate::items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-    mod alloc;
-    pub use alloc::*;
+    mod doc_inline {
+        pub use super::shared::*;
+        #[cfg(feature = "alloc")]
+        #[cfg(any(feature = "std", feature = "_float_f64"))]
+        pub use super::alloc::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(crate) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }
-pub(crate) mod all {
-    #[doc(inline)]
-    pub use super::*;
-}
-
-/// Distinguishes the role of a component in wavelet analysis.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub enum WaveletUnitRole {
-    /// Represents the base approximation in the wavelet transform,
-    /// capturing the coarser features of the data.
-    Scaling,
-    /// Represents the detail component in the wavelet transform,
-    /// capturing finer variations in the data.
-    Wavelet,
-}
-
-/// A Haar wavelet is a simple, piecewise-constant wavelet.
-///
-/// It is ideal for basic signal decomposition and testing.
-///
-/// - <https://en.wikipedia.org/wiki/Haar_wavelet>.
-pub struct WaveletHaar;

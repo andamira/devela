@@ -4,12 +4,12 @@
 //
 
 pub mod linear;
-#[doc(hidden)]
-#[allow(unused_imports)]
-pub use linear::*;
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::linear::all::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::linear::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(crate) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

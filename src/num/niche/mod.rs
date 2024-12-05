@@ -8,11 +8,12 @@ mod tests;
 
 mod non_value;
 mod reexports;
-#[allow(unused_imports)]
-pub use {non_value::*, reexports::*};
 
-pub(crate) mod all {
-    #![allow(unused_imports)]
-    #[doc(inline)]
-    pub use super::{non_value::*, reexports::*};
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{non_value::*, reexports::*};
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(crate) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

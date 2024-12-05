@@ -3,7 +3,7 @@
 //! (Extended) Greatest Common Divisor return type.
 //
 
-use core::fmt;
+use ::core::fmt;
 
 /// A return type for the calculated
 /// <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.

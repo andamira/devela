@@ -18,9 +18,12 @@ mod xabc;
 mod xoroshiro;
 mod xorshift;
 mod xyza8;
-pub use {lgc::*, xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
 
-pub(crate) mod all {
-    #[doc(inline)]
-    pub use super::{lgc::*, xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{lgc::*, xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(crate) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

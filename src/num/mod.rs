@@ -9,88 +9,62 @@
 // safety
 #![cfg_attr(feature = "safe_num", forbid(unsafe_code))]
 
-#[allow(unused_imports)]
-use crate::code::items;
-
 mod _private;
 #[allow(unused_imports)]
 pub(crate) use _private::*;
 
-mod alias;
-mod cmp;
-mod error;
-mod float;
-mod interval;
-mod no;
-mod primitive;
-mod sign;
-mod unit;
-mod r#trait;
-pub use {
-    alias::*, cmp::*, error::*, float::*, interval::*, no::*, primitive::*, r#trait::*, sign::*,
-    unit::*,
-};
+mod alias; // fsize, [i|u]size_[down|up]
+mod cmp; // Compare
+mod error; // NumError, NumResult
+mod float; // Float, ExtFloat, ExtFloatConst
+mod interval; // Interval
+mod no; // NoNum
+mod primitive; // Cast, Primitive[Cast|Join|Split]
+mod sign; // Sign
+mod traits; // Num, NumRef
+mod unit; // Unit, Unit[Bi|Si]
+
+#[cfg(_int_·)]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_int_·)))]
+mod frac;
+#[cfg(_int_·)]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_int_·)))]
+mod int;
 
 pub mod algebra;
 pub mod logic;
 pub mod niche;
-#[doc(no_inline)]
-pub use {algebra::all::*, logic::all::*, niche::all::*};
-
-#[cfg(_int_·)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_int_·)))]
-items! {
-    mod frac;
-    mod int;
-    pub use {frac::*, int::*};
-}
 
 #[cfg(feature = "geom")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "geom")))]
-    pub mod geom;
-    #[doc(no_inline)]
-    pub use geom::all::*;
-}
-
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "geom")))]
+pub mod geom;
 #[cfg(feature = "rand")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
-    pub mod rand;
-    #[doc(no_inline)]
-    pub use rand::all::*;
-}
-
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "rand")))]
+pub mod rand;
 #[cfg(feature = "wave")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "wave")))]
-    pub mod wave;
-    #[doc(no_inline)]
-    pub use wave::all::*;
-}
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "wave")))]
+pub mod wave;
 
-pub(crate) mod all {
-    #![allow(unused_imports)]
-
-    #[doc(inline)]
-    pub use super::{
-        algebra::all::*, alias::*, cmp::all::*, error::*, float::*, interval::*, logic::all::*,
-        niche::all::*, no::*, primitive::*, r#trait::*, sign::*, unit::*,
-    };
-
-    #[doc(inline)]
-    #[cfg(_int_·)]
-    pub use super::{frac::*, int::*};
-
-    #[doc(inline)]
-    #[cfg(feature = "geom")]
-    pub use super::geom::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "rand")]
-    pub use super::rand::all::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "wave")]
-    pub use super::wave::all::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{
+            alias::*, cmp::all::*, error::*, float::all::*, interval::*, no::*, primitive::all::*,
+            sign::*, traits::*, unit::all::*,
+        };
+        #[cfg(_int_·)]
+        pub use super::{frac::all::*, int::all::*};
+        #[cfg(feature = "geom")]
+        pub use super::geom::all::*;
+        #[cfg(feature = "rand")]
+        pub use super::rand::all::*;
+        #[cfg(feature = "wave")]
+        pub use super::wave::all::*;
+    }
+    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
+        pub use super::{algebra::all::*, logic::all::*, niche::all::*};
+    }
+    #[allow(unused_imports)] pub use {doc_hidden::*, doc_inline::*, private::*};
+    pub(super) mod all { #[doc(inline)] pub use super::{doc_hidden::*, doc_inline::*}; }
+    pub(super) mod private { #[allow(unused_imports)] pub(crate) use super::_private::*; }
 }
