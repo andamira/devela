@@ -69,7 +69,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - macros: `assert_const!`, `cfg_if!`.
   - traits: `ConstBool`.
 - optional dependencies:
-  - `crossterm`, `jiff`, `js-sys`, `pyo3`, `rayon`, `regex-lite`, `rodio`, `stringzilla`, `tinyaudio`, `wasm-bindgen`, `web-sys`.
+  - `crossterm`, `jiff`, `js-sys`, `nc`, `pyo3`, `rayon`, `regex-lite`, `rodio`, `rustix`, `stringzilla`, `sysinfo`, `tinyaudio`, `wasm-bindgen`, `web-sys`.
 - re-export:
   - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt}`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
@@ -112,7 +112,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove most re-exported fns from `std::mem` (namespaced in `Mem`).
 - remove re-exported fns from `std::ptr` (namespaced in `Ptr`).
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
-- comment out unused features: `code`, `data`, `error`.
+- comment out unused features: `code`, `data`.
 - remove convenience fn: `out_dir` from the build script.
 - remove redundant `char32` type.
 - remove `Float::const_abs`.
@@ -172,7 +172,6 @@ The format is based on [Keep a Changelog], and this project adheres to
   - make modules public: `ffi`, `text::fmt`.
   - rename:
     - `num::geom::algebra` to `num::algebra::linear`.
-    - `code::result` to `error`.
     - `exec` to `work`, and related features.
     - `mem` to `sys::mem`.
     - `sys::ffi` to `ffi.
