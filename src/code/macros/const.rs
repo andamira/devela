@@ -2,9 +2,13 @@
 
 /// A helper for constructing macro constants.
 ///
+/// It accepts either a series of expressions or a series of functions.
+///
 /// # Examples
 /// ```
 /// # use devela::CONST;
+/// CONST!{ /* Supports empty declarations */ }
+///
 /// // Supports any expresion
 /// CONST!{EXPR = 2 * 15 / 3}
 /// assert_eq![EXPR![], 10u8];
@@ -18,13 +22,12 @@
 /// assert_eq![ARRAY![], [1u16, 2, 3]];
 /// assert_eq![ARRAY![], [1i32, 2, 3]];
 ///
-/// // Supports multiple definitions, ended by ;
+/// // Supports multiple definitions of constant expressions, ended with ;
 /// CONST! {
-///     DOC_1 = "Doc 1." ;
-///     pub(crate) DOC_2 = "Doc 2.";
+///     DOC_1 = "Document expression." ;
+///     DOC_2 = "Document expression." ;
 /// }
-/// assert_eq![DOC_1![], "Doc 1."];
-/// assert_eq![DOC_2![], "Doc 2."];
+/// assert_eq![DOC_1![], "Document expression."];
 ///
 /// // A good use-case is for repeated documentation
 /// /// Function 1, version a.
@@ -34,21 +37,76 @@
 /// #[doc = DOC_1!()]
 /// pub fn version_1b() {}
 ///
-/// // It also supports…
-/// CONST!{ /* …empty declarations */ }
+/// // Supports multiple definitions of constants functions, ended with ;
+/// CONST! {
+///     /// Supports *const* functions.
+///     FN_1 =
+///     /// Returns `n × 5`.
+///     #[inline] #[must_use]
+///     pub const fn fn_1(n: i32) -> i64 { (n * 5) as i64 };
+///
+///     /// You can repeat functions.
+///     FN_2 = pub const fn fn_2(c: char) { };
+///
+///     /// Supports optional *unsafe*.
+///     FN_3 = pub const unsafe fn fn_3() {};
+///
+///     // NOTE: It's not possible to mix expressions and functions in the same invocation.
+///     // EXPR_ERR = "Compile fails if this line is uncommented";
+/// }
+/// pub struct Fns;
+/// impl Fns {
+///     FN_1!{}
+///     FN_2!{}
+///     FN_3!{}
+/// }
+///
+/// assert_eq![Fns::fn_1(0i32), 0i64];
+/// assert_eq![Fns::fn_1(5), 25];
+/// let _: () = Fns::fn_2('a');
+/// unsafe { Fns::fn_3(); }
 /// ```
+// Related links
+// - https://doc.rust-lang.org/reference/items/external-blocks.html#functions
 #[doc(hidden)]
 #[macro_export]
 macro_rules! _CONST {
-    ($(
-        $(#[$attrs:meta])*
-        $vis:vis $NAME:ident = $expr:expr
+    (
+    // Either multiple `const fn`
+    $(
+        $(#[$CONST_ATTRS:meta])*
+        $vis:vis $CONST_NAME:ident =
+            $(#[$fn_attrs:meta])*
+            $fn_vis:vis const
+            $(async$($_a:block)?)? $(safe$($_s:block)?)? $(unsafe$($_u:block)?)?
+            fn $fn:ident($($param:ident: $param_ty:ty),* $(,)?)
+        $(-> $fn_return:ty)?
+        $fn_body:block
+    );* $(;)?) => {
+        $(
+            $(#[$CONST_ATTRS])*
+            #[allow(unused_macros)]
+            macro_rules! $CONST_NAME {
+                () => {
+                    $(#[$fn_attrs])*
+                    $fn_vis const $(async$($_a)?)? $(safe$($_s)?)? $(unsafe$($_u)?)?
+                    fn $fn($($param: $param_ty),*) $(-> $fn_return)? $fn_body
+                }
+            }
+            $vis use $CONST_NAME;
+        )*
+    };
+    (
+    // Either multiple expressions
+    $(
+        $(#[$CONST_ATTRS:meta])*
+        $vis:vis $CONST_NAME:ident = $expr:expr
      );* $(;)?) => {
         $(
-            $(#[$attrs])*
+            $(#[$CONST_ATTRS])*
             #[allow(unused_macro)]
-            macro_rules! $NAME { () => { $expr } }
-            $vis use $NAME;
+            macro_rules! $CONST_NAME { () => { $expr } }
+            $vis use $CONST_NAME;
         )*
     };
 }
