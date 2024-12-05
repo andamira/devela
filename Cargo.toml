@@ -577,14 +577,14 @@ dep_libm = ["dep:libm"]                                       # num::float
 dep_log = ["dep:log"]                                         # sys::log
 dep_memchr = ["dep:memchr"]                                   # text
 dep_miniquad = ["dep:miniquad"]                               # sys::?
-dep_nc = ["dep:nc"]                                           # sys::os::linux
+dep_nc = ["dep:nc"]                                           # sys::os
 dep_portable_atomic = ["dep:portable-atomic"]                 # work::sync
 dep_pyo3 = ["dep:pyo3", "std"]                                # ffi
 dep_rand_core = ["dep:rand_core"]                             # num::rand
 dep_rayon = ["dep:rayon", "sysinfo?/multithread"]             # work::thread
 dep_regex_lite = ["dep:regex-lite", "std"]                    # text
 dep_rodio = ["dep:rodio"]                                     # sys::sound
-dep_rustix = ["dep:rustix"]                                   # sys::os::linux
+dep_rustix = ["dep:rustix"]                                   # sys::os
 dep_stringzilla = ["dep:stringzilla"]                         # text
 dep_sysinfo = ["dep:sysinfo", "std"]                          # sys
 dep_tinyaudio = ["dep:tinyaudio"]                             # sys::sound
@@ -599,11 +599,19 @@ dep_wide = ["dep:wide"]                                       # *
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
+# Dependencies in each category (required, optional) are sorted alfabetically.
+#
 # Links to each crate's crates.io page are provided alongside the entries,
 # as well as to the changelogs (✓), if available, or commit histories (✗).
 #
 # Crates using unsafe, even if transitively, are marked as so,
 # preventing enabling them if the `safest` feature is enabled.
+#
+# When adding a new optional dependency:
+# 1. Add a new entry below.
+# 2. Update `dep_all` above.
+# 3. Add a new entry in src/_deps.rs.
+# 4. Update `DEPENDENCY` in build/features.rs.
 
 #* required dependencies *#
 
