@@ -1,6 +1,26 @@
+# https://doc.rust-lang.org/cargo/reference/config.html
+#
+# WAIT: [build.warnings](https://github.com/rust-lang/cargo/issues/14802)
+# WAIT: [config-include](https://github.com/rust-lang/cargo/issues/7723)
+# WAIT: [multiple cargo config files](https://github.com/rust-lang/cargo/issues/9306)
+# WAIT: [pass config in nested aliases](https://github.com/rust-lang/cargo/issues/13822)
+# WAIT: [pass unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
+# WAIT: [jump to definition](https://github.com/rust-lang/rust/issues/89095)
+
+# NOTE: this is a temporary fix to be able to pass unstable flags only in nightly
+include = "nightly.toml"
+
+
+[unstable]
+unstable-options = true
+config-include = true
+
+
 [build]
-# https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
-rustdocflags = ["--html-in-header", "./DOCS/rustdoc-header.html"]
+rustdocflags = [
+	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
+	"--html-in-header", "./DOCS/rustdoc-header.html",
+]
 
 
 [alias]

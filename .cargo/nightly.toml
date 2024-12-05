@@ -1,0 +1,11 @@
+# NOTE: this is a temporary fix for nightly-only.
+#
+# Because including files is an unstable feature,
+# this will only be included while using nightly.
+
+[build]
+rustdocflags = [
+	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
+	"--html-in-header", "./DOCS/rustdoc-header.html",
+	"-Zunstable-options", "--generate-link-to-definition",
+]

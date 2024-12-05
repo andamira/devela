@@ -782,7 +782,11 @@ devela = { path = './' }
 
 no-default-features = true
 features = ["_docsrs"]
-rustdoc-args = [ "--html-in-header", "./DOCS/rustdoc-header.html" ]
+default-target = "x86_64-unknown-linux-gnu"
+rustdoc-args = [
+	"--generate-link-to-definition",
+	"--html-in-header", "./DOCS/rustdoc-header.html"
+]
 
 
 [badges]
