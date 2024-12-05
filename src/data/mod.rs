@@ -24,26 +24,21 @@ pub mod iter;
 #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
 pub mod dst;
 
-/* structural access */
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{bit::all::*, error::*, fmt::all::*, id::all::*, sort::all::*};
+    }
+    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
+        pub use super::{collections::all::*, hash::all::*, iter::all::*};
 
-#[allow(unused_imports)]
-pub use {doc_hidden::*, doc_inline::*};
-mod doc_inline {
-    pub use super::{bit::all::*, error::*, fmt::all::*, id::all::*, sort::all::*};
-}
-mod doc_hidden {
-    #[doc(hidden)]
-    #[doc(no_inline)]
-    pub use super::{collections::all::*, hash::all::*, iter::all::*};
-
-    #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
-    #[cfg(all(
-        not(any(feature = "safe_data", feature = "safe_mem")),
-        feature = "unsafe_layout"
-    ))]
-    pub use super::dst::all::*;
-}
-pub(super) mod all {
-    #[doc(inline)]
-    pub use super::{doc_hidden::*, doc_inline::*};
+        #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
+        #[cfg(all(
+            not(any(feature = "safe_data", feature = "safe_mem")),
+            feature = "unsafe_layout"
+        ))]
+        pub use super::dst::all::*;
+    }
+    #[allow(unused_imports)] pub use {doc_hidden::*, doc_inline::*};
+    pub(super) mod all { #[doc(inline)] pub use super::{doc_hidden::*, doc_inline::*}; }
 }

@@ -9,14 +9,11 @@ mod reexports;
 #[allow(unused_imports)]
 pub use reexports::*;
 
-/* structural access */
-
-#[allow(unused_imports)]
-pub use doc_inline::*;
-mod doc_inline {
-    pub use super::reexports::*;
-}
-pub(super) mod all {
-    #[doc(inline)]
-    pub use super::doc_inline::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::reexports::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

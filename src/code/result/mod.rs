@@ -28,11 +28,14 @@ pub use {
     reexports::*, value_quant::*,
 };
 
-pub(crate) mod all {
-    #![allow(unused_imports)]
-    #[doc(inline)]
-    pub use super::{
-        all_error::*, chain_hook::*, ext::*, mismatch::*, opt_res::all::*, own::*, panic::all::*,
-        reexports::*, value_quant::*,
-    };
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{
+            all_error::*, chain_hook::*, ext::*, mismatch::*, opt_res::all::*, own::*,
+            panic::all::*, reexports::*, value_quant::*,
+        };
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

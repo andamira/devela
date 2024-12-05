@@ -18,22 +18,15 @@ pub mod macros; // macros: assert*, cdbg, head, items, paste, sf…
 pub mod ops; // re-exported overloadable operators
 pub mod result;
 
-/* structural access */
-
-#[allow(unused_imports)]
-pub use {doc_hidden::*, doc_inline::*, private::*};
-mod doc_inline {
-    pub use super::{any::all::*, default::*, r#type::*, reexports::*};
-}
-mod doc_hidden {
-    #[doc(hidden)]
-    #[doc(no_inline)]
-    pub use super::{macros::all::*, ops::*, result::all::*};
-}
-pub(super) mod all {
-    #[doc(inline)]
-    pub use super::{doc_hidden::*, doc_inline::*};
-}
-pub(super) mod private {
-    pub(crate) use super::macros::private::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{any::all::*, default::*, r#type::*, reexports::*};
+    }
+    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
+        pub use super::{macros::all::*, ops::*, result::all::*};
+    }
+    #[allow(unused_imports)] pub use {doc_hidden::*, doc_inline::*, private::*};
+    pub(super) mod all { #[doc(inline)] pub use super::{doc_hidden::*, doc_inline::*}; }
+    pub(super) mod private { pub(crate) use super::macros::private::*; }
 }
