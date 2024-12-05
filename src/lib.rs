@@ -75,6 +75,7 @@
 #![cfg_attr( // 1.??
     feature = "nightly_stable_later",
     feature(
+        asm_goto,
         async_closure,
         // box_uninit_write, // ?
         const_array_from_ref,
