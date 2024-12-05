@@ -542,9 +542,9 @@ pub trait ExtFloatConst: Sized {
     const LN_10: Self;
 }
 
-// Private helper struct to define manual, type-dependendent constants.
+/// Private helper struct to define manual, type-dependendent constants.
 struct TempFloat<T> {
-    _marker: core::marker::PhantomData<T>,
+    _marker: ::core::marker::PhantomData<T>,
 }
 macro_rules! impl_temp_float {
     () => {
@@ -566,124 +566,125 @@ impl_temp_float![];
 //
 // $f: the floating-point type.
 macro_rules! math_const_impls {
-    ($( $f:ty),+) => { $( math_const_impls![@$f]; )+ };
-    (@$f:ty) => {
-        /// # *Mathematical constants*.
-        impl ExtFloatConst for $f {
-            const ONE: $f = 1.0;
-            const ZERO: $f = 0.0;
-            const NEG_ONE: $f = -1.0;
-            const NEG_ZERO: $f = -0.0;
+($( $f:ty),+) => { $( math_const_impls![@$f]; )+ };
+(@$f:ty) => {
 
-            // ...
+    /// # *Mathematical constants*.
+    impl ExtFloatConst for $f {
+        const ONE: $f = 1.0;
+        const ZERO: $f = 0.0;
+        const NEG_ONE: $f = -1.0;
+        const NEG_ZERO: $f = -0.0;
 
-            const NAN: $f = <$f>::NAN;
-            const INFINITY: $f = <$f>::INFINITY;
-            const NEG_INFINITY: $f = <$f>::NEG_INFINITY;
+        // ...
 
-            const EPSILON: $f = <$f>::EPSILON;
-            const LOW_MARGIN: $f = TempFloat::<$f>::LOW_MARGIN;
-            const MEDIUM_MARGIN: $f = TempFloat::<$f>::MEDIUM_MARGIN;
-            const HIGH_MARGIN: $f = TempFloat::<$f>::HIGH_MARGIN;
+        const NAN:              $f = <$f>::NAN;
+        const INFINITY:         $f = <$f>::INFINITY;
+        const NEG_INFINITY:     $f = <$f>::NEG_INFINITY;
 
-            const RADIX: u32 = <$f>::RADIX;
-            const DIGITS: u32 = <$f>::DIGITS;
-            const MANTISSA_DIGITS: u32 = <$f>::MANTISSA_DIGITS;
+        const EPSILON:          $f = <$f>::EPSILON;
+        const LOW_MARGIN:       $f = TempFloat::<$f>::LOW_MARGIN;
+        const MEDIUM_MARGIN:    $f = TempFloat::<$f>::MEDIUM_MARGIN;
+        const HIGH_MARGIN:      $f = TempFloat::<$f>::HIGH_MARGIN;
 
-            const MIN: $f = <$f>::MIN;
-            const MIN_POSITIVE: $f = <$f>::MIN_POSITIVE;
-            const MAX: $f = <$f>::MAX;
+        const RADIX:            u32 = <$f>::RADIX;
+        const DIGITS:           u32 = <$f>::DIGITS;
+        const MANTISSA_DIGITS:  u32 = <$f>::MANTISSA_DIGITS;
 
-            const MIN_EXP: i32 = <$f>::MIN_EXP;
-            const MAX_EXP: i32 = <$f>::MAX_EXP;
+        const MIN:              $f = <$f>::MIN;
+        const MIN_POSITIVE:     $f = <$f>::MIN_POSITIVE;
+        const MAX:              $f = <$f>::MAX;
 
-            const MIN_10_EXP: i32 = <$f>::MIN_10_EXP;
-            const MAX_10_EXP: i32 = <$f>::MAX_10_EXP;
+        const MIN_EXP:          i32 = <$f>::MIN_EXP;
+        const MAX_EXP:          i32 = <$f>::MAX_EXP;
 
-            /* Arc degrees */
+        const MIN_10_EXP:       i32 = <$f>::MIN_10_EXP;
+        const MAX_10_EXP:       i32 = <$f>::MAX_10_EXP;
 
-            const ARC_DEGREE: $f = Self::FRAC_TAU_360;
-            const ARC_MINUTE: $f = 0.00029088820866572159615394846141477;
-            const ARC_SECOND: $f = 0.00000484813681109535993589914102358;
+        /* Arc degrees */
 
-            /* Mathematical constants related to Pi (π) */
+        const ARC_DEGREE:       $f = Self::FRAC_TAU_360;
+        const ARC_MINUTE:       $f =  0.00029088820866572159615394846141477;
+        const ARC_SECOND:       $f =  0.00000484813681109535993589914102358;
 
-            const PI: $f = 3.14159265358979323846264338327950288;
-            const FRAC_PI_2: $f = 1.57079632679489661923132169163975144;
-            const FRAC_PI_3: $f = 1.04719755119659774615421446109316763;
-            const FRAC_PI_4: $f = 0.785398163397448309615660845819875721;
-            const FRAC_PI_6: $f = 0.52359877559829887307710723054658381;
-            const FRAC_PI_8: $f = 0.39269908169872415480783042290993786;
-            const SQRT_PI: $f = 1.77245385090551602729816748334114518;
-            const FRAC_1_PI: $f = 0.318309886183790671537767526745028724;
-            const FRAC_1_SQRT_PI: $f = 0.564189583547756286948079451560772586;
-            const FRAC_2_PI: $f = 0.636619772367581343075535053490057448;
-            const FRAC_2_SQRT_PI: $f = 1.12837916709551257389615890312154517;
+        /* Mathematical constants related to Pi (π) */
 
-            /* Mathematical constants related to Tau (τ) */
+        const PI:               $f =  3.14159265358979323846264338327950288;
+        const FRAC_PI_2:        $f =  1.57079632679489661923132169163975144;
+        const FRAC_PI_3:        $f =  1.04719755119659774615421446109316763;
+        const FRAC_PI_4:        $f =  0.785398163397448309615660845819875721;
+        const FRAC_PI_6:        $f =  0.52359877559829887307710723054658381;
+        const FRAC_PI_8:        $f =  0.39269908169872415480783042290993786;
+        const SQRT_PI:          $f =  1.77245385090551602729816748334114518;
+        const FRAC_1_PI:        $f =  0.318309886183790671537767526745028724;
+        const FRAC_1_SQRT_PI:   $f =  0.564189583547756286948079451560772586;
+        const FRAC_2_PI:        $f =  0.636619772367581343075535053490057448;
+        const FRAC_2_SQRT_PI:   $f =  1.12837916709551257389615890312154517;
 
-            const TAU: $f = 6.28318530717958647692528676655900577;
+        /* Mathematical constants related to Tau (τ) */
 
-            const FRAC_TAU_2: $f = Self::PI;
-            const FRAC_TAU_3: $f = 2.09439510239319549230842892218633526;
-            const FRAC_TAU_4: $f = Self::FRAC_PI_2;
-            const FRAC_TAU_5: $f = 1.25663706143591729538505735331180115;
-            const FRAC_TAU_6: $f = Self::FRAC_PI_3;
-            const FRAC_TAU_8: $f = Self::FRAC_PI_4;
-            const FRAC_TAU_9: $f = 0.69813170079773183076947630739544508;
-            const FRAC_TAU_12: $f = Self::FRAC_PI_6;
-            const FRAC_TAU_16: $f = Self::FRAC_PI_8;
-            const FRAC_TAU_24: $f = 0.26179938779914943653855361527329191;
-            const FRAC_TAU_72: $f = 0.08726646259971647884618453842443063;
-            const FRAC_TAU_360: $f = 0.01745329251994329576923690768488613;
-            const FRAC_360_TAU: $f = 57.29577951308232087679815481410517033;
+        const TAU: $f= 6.28318530717958647692528676655900577;
 
-            const SQRT_TAU: $f = 2.50662827463100050241576528481104525;
+        const FRAC_TAU_2:       $f = Self::PI;
+        const FRAC_TAU_3:       $f =  2.09439510239319549230842892218633526;
+        const FRAC_TAU_4:       $f = Self::FRAC_PI_2;
+        const FRAC_TAU_5:       $f =  1.25663706143591729538505735331180115;
+        const FRAC_TAU_6:       $f = Self::FRAC_PI_3;
+        const FRAC_TAU_8:       $f = Self::FRAC_PI_4;
+        const FRAC_TAU_9:       $f =  0.69813170079773183076947630739544508;
+        const FRAC_TAU_12:      $f = Self::FRAC_PI_6;
+        const FRAC_TAU_16:      $f = Self::FRAC_PI_8;
+        const FRAC_TAU_24:      $f =  0.26179938779914943653855361527329191;
+        const FRAC_TAU_72:      $f =  0.08726646259971647884618453842443063;
+        const FRAC_TAU_360:     $f =  0.01745329251994329576923690768488613;
+        const FRAC_360_TAU:     $f = 57.29577951308232087679815481410517033;
 
-            const FRAC_1_TAU: $f = 0.159154943091895335768883763372514362;
-            const FRAC_1_SQRT_TAU: $f = 0.398942280401432677939946059934381868;
-            const FRAC_2_TAU: $f = Self::FRAC_1_PI;
-            const FRAC_2_SQRT_TAU: $f = 0.797884560802865355879892119868763737;
+        const SQRT_TAU:         $f =  2.50662827463100050241576528481104525;
 
-            /* Mathematical constants related to Phi (φ) */
+        const FRAC_1_TAU:       $f =  0.159154943091895335768883763372514362;
+        const FRAC_1_SQRT_TAU:  $f =  0.398942280401432677939946059934381868;
+        const FRAC_2_TAU:       $f = Self::FRAC_1_PI;
+        const FRAC_2_SQRT_TAU:  $f =  0.797884560802865355879892119868763737;
 
-            const PHI: $f = 1.618033988749894848204586834365638118; // last 77 → 8
-            const SQ_PHI: $f = 2.618033988749894848204586834365638118; // last 77 → 8
-            const FRAC_1_PHI: $f = 0.618033988749894848204586834365638118; // last 77 → 8
-            const NEG_FRAC_1_PHI: $f = -0.618033988749894848204586834365638118; // last 77 → 8
-            const SQRT_PHI: $f = 1.272019649514068964252422461737491492; // last 17 → 2
-            const FRAC_1_SQRT_PHI: $f = 0.786151377757423286069558585842958929; // last 95 = 9
-            const TRIBONACCI: $f = 1.83928675521416113255185256465328660; // last 00 = 0
+        /* Mathematical constants related to Phi (φ) */
 
-            /* Mathematical constants related to integer roots */
+        const PHI:              $f =  1.618033988749894848204586834365638118;
+        const SQ_PHI:           $f =  2.618033988749894848204586834365638118;
+        const FRAC_1_PHI:       $f =  0.618033988749894848204586834365638118;
+        const NEG_FRAC_1_PHI:   $f = -0.618033988749894848204586834365638118;
+        const SQRT_PHI:         $f =  1.272019649514068964252422461737491492;
+        const FRAC_1_SQRT_PHI:  $f =  0.786151377757423286069558585842958929;
+        const TRIBONACCI:       $f =  1.83928675521416113255185256465328660;
 
-            const SQRT_2: $f = 1.41421356237309504880168872420969808; // last 78 = 8
-            const FRAC_1_SQRT_2: $f = 0.707106781186547524400844362104849039;
-            const SQRT_3: $f = 1.732050807568877293527446341505872367;
-            const FRAC_1_SQRT_3: $f = 0.577350269189625764509148780501957456;
-            const SQRT_5: $f = 2.236067977499789696409173668731276235;
-            const SQRT_6: $f = 2.449489742783178098197284074705891392;
-            const SQRT_7: $f = 2.645751311064590590501615753639260426;
-            const SQRT_8: $f = 2.828427124746190097603377448419396157;
-            const SQRT_10: $f = 3.162277660168379331998893544432718534;
-            const SQRT_11: $f = 3.316624790355399849114932736670686684;
-            const SQRT_12: $f = 3.464101615137754587054892683011744734;
+        /* Mathematical constants related to integer roots */
 
-            const CBRT_2: $f = 1.259921049894873164767210607278228350;
-            const CBRT_3: $f = 1.442249570307408382321638310780109588;
-            const FRAC_1_CBRT_3: $f = 0.693361274350634704843352274785961795;
+        const SQRT_2:           $f = 1.41421356237309504880168872420969808;
+        const FRAC_1_SQRT_2:    $f = 0.707106781186547524400844362104849039;
+        const SQRT_3:           $f = 1.732050807568877293527446341505872367;
+        const FRAC_1_SQRT_3:    $f = 0.577350269189625764509148780501957456;
+        const SQRT_5:           $f = 2.236067977499789696409173668731276235;
+        const SQRT_6:           $f = 2.449489742783178098197284074705891392;
+        const SQRT_7:           $f = 2.645751311064590590501615753639260426;
+        const SQRT_8:           $f = 2.828427124746190097603377448419396157;
+        const SQRT_10:          $f = 3.162277660168379331998893544432718534;
+        const SQRT_11:          $f = 3.316624790355399849114932736670686684;
+        const SQRT_12:          $f = 3.464101615137754587054892683011744734;
 
-            /* Other mathematical constants */
+        const CBRT_2:           $f = 1.259921049894873164767210607278228350;
+        const CBRT_3:           $f = 1.442249570307408382321638310780109588;
+        const FRAC_1_CBRT_3:    $f = 0.693361274350634704843352274785961795;
 
-            const E: $f = 2.71828182845904523536028747135266250;
-            const EGAMMA: $f = 0.577215664901532860606512090082402431;
-            const LOG2_E: $f = 1.44269504088896340735992468100189214;
-            const LOG2_10: $f = 3.32192809488736234787031942948939018;
-            const LOG10_E: $f = 0.434294481903251827651128918916605082;
-            const LOG10_2: $f = 0.301029995663981195213738894724493027;
-            const LN_2: $f = 0.693147180559945309417232121458176568;
-            const LN_10: $f = 2.30258509299404568401799145468436421;
-        }
-    };
+        /* Other mathematical constants */
+
+        const E:                $f = 2.71828182845904523536028747135266249775724709369995957496697;
+        const EGAMMA:           $f = 0.577215664901532860606512090082402431;
+        const LOG2_E:           $f = 1.44269504088896340735992468100189214;
+        const LOG2_10:          $f = 3.32192809488736234787031942948939018;
+        const LOG10_E:          $f = 0.434294481903251827651128918916605082;
+        const LOG10_2:          $f = 0.301029995663981195213738894724493027;
+        const LN_2:             $f = 0.693147180559945309417232121458176568;
+        const LN_10:            $f = 2.30258509299404568401799145468436421;
+    }
+};
 }
 math_const_impls![f32, f64];
