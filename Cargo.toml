@@ -54,9 +54,10 @@ documentation = "https://docs.rs/devela"
 license = "MIT OR Apache-2.0"
 include = [
 	"/Cargo.toml",
-	"/DOCS/*", "/LICENSE*",
 	"/build/**/*.rs",
 	"/src/**/*.rs", "/src/**/*.md",
+	"/DOCS/VENDORED*.md", "DOCS/*.html",
+	"/LICENSE*",
 
 	# examples used in docs:
 	"/examples/bitfield.rs",
@@ -367,10 +368,10 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 # They set automatic compile flags named `_*_·`, used for reflection.
 # For example, `_stack_·` will be set if any _stack_* feature is enabled.
 
-#* default and docs *#
-# ------------------------------
-
 # default = [] # default capabilities
+
+#* docs capabilities *#
+# ---------------------
 
 # The most complete versions of the documentation:
 _docsrs = ["_docsrs_min", "_docs_max"]
@@ -681,7 +682,7 @@ default-features = false # 11 https://docs.rs/crate/portable-atomic/latest/featu
 features = ["fallback", "float"]
 
 [dependencies.pyo3] # https://crates.io/crates/pyo3
-version = "0.23.2" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
+version = "0.23.3" # ✓ https://github.com/PyO3/pyo3/blob/main/CHANGELOG.md
 optional = true  # unsafe
 default-features = false # 35 https://docs.rs/crate/pyo3/latest/features
 features = [] # https://docs.rs/pyo3/latest/pyo3/#feature-flags
