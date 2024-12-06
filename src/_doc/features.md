@@ -42,7 +42,7 @@ Single modules:
 - [`code`]
   - [`result`]
 - [`data`]
-- [`ffi`]
+- [`lang`]
 - [`media`]
   - [`audio`]
   - [`color`]
@@ -68,7 +68,7 @@ Single modules:
 [`code`]: crate::code
   [`result`]: mod@crate::result
 [`data`]: crate::data
-[`ffi`]: crate::ffi
+[`lang`]: crate::lang
 [`media`]: mod@crate::media
   [`audio`]: crate::media::audio
   [`color`]: crate::media::color
@@ -101,7 +101,7 @@ In order to use any unsafe functionality:
 - `safe`: forbids `unsafe` (and overrides unsafe features), includes:
   - `safe_code`
   - `safe_data`
-  - `safe_ffi`
+  - `safe_lang`
   - `safe_media`
     - `safe_audio`
 		- `safe_color`

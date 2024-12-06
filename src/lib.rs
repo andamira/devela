@@ -121,7 +121,7 @@ extern crate self as devela;
 
 pub mod code;
 pub mod data;
-pub mod ffi;
+pub mod lang;
 pub mod media;
 pub mod num;
 pub mod sys;
@@ -147,7 +147,7 @@ pub mod all {
     pub use super::{
         code::all::*,
         data::all::*,
-        ffi::all::*,
+        lang::all::*,
         media::all::*,
         num::all::*,
         sys::all::*,
