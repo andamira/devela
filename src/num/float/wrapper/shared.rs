@@ -1,14 +1,11 @@
 // devela::num::float::wrapper::shared
 //
-//! Shared methods
+//! Shared methods.
 //
 
-use crate::{cfor, concat as cc, iif, paste, stringify as sfy, Float, Sign};
 #[allow(unused_imports)]
-use {
-    super::{super::shared_docs::*, helpers::*},
-    crate::ExtFloat,
-};
+use super::super::shared_docs::*;
+use crate::{concat as cc, iif, stringify as sfy, Float, Sign};
 
 #[doc = crate::doc_private!()]
 /// Implements methods independently of any features
@@ -18,16 +15,16 @@ use {
 /// $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
 /// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
 /// $cmp: the feature that enables some methods depending on Compare. E.g "_cmp_f32".
-macro_rules! custom_impls {
+macro_rules! impl_float_shared {
     () => {
-        custom_impls![
+        impl_float_shared![
             (f32:u32, u32):"_float_f32":"_cmp_f32",
             (f64:u64, u32):"_float_f64":"_cmp_f64"
         ];
     };
 
     ($( ($f:ty:$uf:ty, $ue:ty) : $cap:literal : $cmp:literal ),+) => {
-        $( custom_impls![@$f:$uf, $ue, $cap:$cmp]; )+
+        $( impl_float_shared![@$f:$uf, $ue, $cap:$cmp]; )+
     };
     (@$f:ty:$uf:ty, $ue:ty, $cap:literal : $cmp:literal) => {
         #[doc = crate::doc_availability!(feature = $cap)]
@@ -101,7 +98,7 @@ macro_rules! custom_impls {
             // NOTE: [incorrect computations](https://github.com/rust-lang/rust/issues/107904)
             #[must_use]
             pub fn div_euclid(self, other: $f) -> Float<$f> {
-                let q = (self.0 / other).trunc();
+                let q = Float(self.0 / other).trunc().0;
                 if self.0 % other < 0.0 {
                     iif![other > 0.0; Float(q - 1.0); Float(q + 1.0)]
                 } else {
@@ -146,39 +143,25 @@ macro_rules! custom_impls {
             ///
             /// # Formula
             #[doc = FORMULA_LERP!()]
-            /// # Examples
+            /// # Example
             /// ```
             /// # use devela::Float;
             #[doc = cc!["assert_eq![Float(0.5_", sfy![$f], ").lerp(40., 80.), 60.];"]]
+            // TODO more examples extrapolated
             /// ```
             #[must_use]
             pub const fn lerp(self, u: $f, v: $f) -> Float<$f> {
                 Float((1.0 - self.0) * u + self.0 * v)
             }
 
-            /// Raises itself to the `y` floating point power using the Taylor series via the
-            /// `exp` and `ln` functions.
-            ///
-            /// # Formula
-            #[doc = FORMULA_POWF_SERIES!()]
-            ///
-            /// See also [`ln_series_terms`][Self::ln_series_terms].
-            ///
-            /// The terms for the exponential function are calculated using
-            /// [`exp_series_terms`][Self::exp_series_terms] using $y\cdot\ln(x)$.
-            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
+            /// $ 1 / \sqrt{x} $ the
+            /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
             #[must_use]
-            pub const fn powf_series(self, y: $f, ln_x_terms: $ue) -> Float<$f> {
-                let xabs = self.abs().0;
-                if xabs == 0.0 {
-                    iif![Float(y).abs().0 == 0.0; Self::ONE; Self::ZERO]
-                } else {
-                    let ln_x = Float(xabs).ln_series(ln_x_terms).0;
-                    let power = Float(y * ln_x);
-                    let exp_y_terms = power.exp_series_terms();
-                    let result = power.exp_series(exp_y_terms);
-                    iif![self.is_sign_negative(); Float(-result.0); result]
-                }
+            pub const fn fisr(self) -> Float<$f> {
+                let (mut i, three_halfs, x2) = (self.0.to_bits(), 1.5, self.0 * 0.5);
+                i = Self::FISR_MAGIC - (i >> 1);
+                let y = <$f>::from_bits(i);
+                Float(y * (three_halfs - (x2 * y * y)))
             }
 
             /// $ \sqrt{x} $ The square root calculated using the
@@ -205,14 +188,24 @@ macro_rules! custom_impls {
             #[must_use]
             pub const fn sqrt_fisr(self) -> Float<$f> { Float(1.0 / self.fisr().0) }
 
-            /// $ 1 / \sqrt{x} $ the
+            /// The hypothenuse (the euclidean distance) using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
+            ///
+            /// # Formula
+            #[doc = FORMULA_HYPOT_FISR!()]
             #[must_use]
-            pub const fn fisr(self) -> Float<$f> {
-                let (mut i, three_halfs, x2) = (self.0.to_bits(), 1.5, self.0 * 0.5);
-                i = Self::FISR_MAGIC - (i >> 1);
-                let y = <$f>::from_bits(i);
-                Float(y * (three_halfs - (x2 * y * y)))
+            pub const fn hypot_fisr(self, y: $f) -> Float<$f> {
+                Float(self.0 * self.0 + y * y).sqrt_fisr()
+            }
+
+            /// The hypothenuse (the euclidean distance) using the
+            /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
+            ///
+            /// # Formula
+            #[doc = FORMULA_HYPOT_NR!()]
+            #[must_use]
+            pub const fn hypot_nr(self, y: $f) -> Float<$f> {
+                Float(self.0 * self.0 + y * y).sqrt_nr()
             }
 
             /// $ \sqrt\[3\]{x} $ The cubic root calculated using the
@@ -230,211 +223,6 @@ macro_rules! custom_impls {
                 }
             }
 
-            /// The hypothenuse (the euclidean distance) using the
-            /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
-            ///
-            /// # Formula
-            #[doc = FORMULA_HYPOT_NR!()]
-            #[must_use]
-            pub const fn hypot_nr(self, y: $f) -> Float<$f> {
-                Float(self.0 * self.0 + y * y).sqrt_nr()
-            }
-
-            /// The hypothenuse (the euclidean distance) using the
-            /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
-            ///
-            /// # Formula
-            #[doc = FORMULA_HYPOT_FISR!()]
-            #[must_use]
-            pub const fn hypot_fisr(self, y: $f) -> Float<$f> {
-                Float(self.0 * self.0 + y * y).sqrt_fisr()
-            }
-
-            /// Computes the exponential function $e^x$ using Taylor series expansion.
-            ///
-            /// # Formula
-            #[doc = FORMULA_EXP_SERIES!()]
-            ///
-            /// See also [`exp_series_terms`][Self::exp_series_terms].
-            #[must_use]
-            pub const fn exp_series(self, terms: $ue) -> Float<$f> {
-                iif![self.0 < 0.0; return Float(1.0 / Float(-self.0).exp_series(terms).0)];
-                let (mut result, mut term) = (1.0, 1.0);
-                let mut i = 1;
-                while i <= terms {
-                    term *= self.0 / i as $f;
-                    result += term;
-                    i += 1;
-                }
-                Float(result)
-            }
-
-            /// Determines the number of terms needed for [`exp_series`][Self::exp_series]
-            /// to reach a stable result based on the input value.
-            #[doc = TABLE_EXP_SERIES_TERMS!()]
-            #[must_use]
-            pub const fn exp_series_terms(self) -> $ue { paste! {
-                Self::[<exp_series_terms_ $f>](self.0)
-            }}
-
-            /// Calculates $ e^x - 1 $ using the Taylor series expansion.
-            ///
-            /// # Formula
-            #[doc = FORMULA_EXP_M1_SERIES!()]
-            ///
-            /// See also [`exp_series_terms`][Self::exp_series_terms].
-            #[must_use]
-            pub const fn exp_m1_series(self, terms: $ue) -> Float<$f> {
-                if self.0 < 0.0 {
-                    Float(1.0 / Float(-self.0).exp_m1_series(terms).0)
-                } else if self.0 > 0.001 {
-                    Float(self.exp_series(terms).0 - 1.0)
-                } else {
-                    let (mut result, mut term, mut factorial) = (0.0, self.0, 1.0);
-                    let mut i = 1;
-                    while i <= terms {
-                        result += term;
-                        factorial *= (i + 1) as $f;
-                        term *= self.0 / factorial;
-                        i += 1;
-                    }
-                    Float(result)
-                }
-            }
-
-            /// Calculates $ 2^x $ using the Taylor series expansion.
-            ///
-            /// # Formula
-            #[doc = FORMULA_EXP2_SERIES!()]
-            ///
-            /// The maximum values with a representable result are:
-            /// 127 for `f32` and 1023 for `f64`.
-            #[must_use]
-            pub const fn exp2_series(self, terms: $ue) -> Float<$f> {
-                let (mut result, mut term) = (1.0, self.0 * Self::LN_2.0);
-                let mut n = 1;
-                while n < terms {
-                    result += term;
-                    term *= self.0 * Self::LN_2.0 / (n as $f + 1.0);
-                    n += 1;
-                }
-                Float(result)
-            }
-
-            /// Determines the number of terms needed for [`exp2_series`][Self::exp2_series]
-            /// to reach a stable result based on the input value.
-            #[doc = TABLE_EXP2_SERIES_TERMS!()]
-            #[must_use]
-            pub const fn exp2_series_terms(self) -> $ue { paste! {
-                Self::[<exp2_series_terms_ $f>](self.0)
-            }}
-
-            /// Computes the natural logarithm of `self` using a Taylor-Mercator series expansion.
-            ///
-            /// This method is more efficient for values of `self` near 1. Values too
-            /// small or too big could be impractical to calculate with precision.
-            ///
-            /// # Formula
-            #[doc = FORMULA_LN_SERIES!()]
-            ///
-            /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
-            pub const fn ln_series(self, terms: $ue) -> Float<$f> {
-                if self.0 < 0.0 {
-                    Self::NAN
-                } else if self.0 > 0.0 {
-                    let mut sum = 0.0;
-                    let y = (self.0 - 1.0) / (self.0 + 1.0);
-                    let mut y_pow = y;
-                    cfor![i in 0..terms => {
-                        sum += y_pow / (2 * i + 1) as $f;
-                        y_pow *= y * y;
-                    }];
-                    Float(2.0 * sum)
-                } else {
-                    Self::NEG_INFINITY
-                }
-            }
-
-            /// Computes the natural logarithm of `1 + self`
-            /// using a Taylor-Mercator series expansion.
-            ///
-            /// This method is more efficient for values of `self` near 0.
-            /// Values too small or too big could be impractical to calculate with precision.
-            ///
-            /// Returns `ln(1+self)` more accurately
-            /// than if the operations were performed separately.
-            ///
-            /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
-            pub const fn ln_1p_series(self, terms: $ue) -> Float<$f> {
-                if self.0 < -1.0 {
-                    Self::NAN
-                } else if self.0 > -1.0 {
-                    let x1 = self.0 + 1.0;
-                    let mut sum = 0.0;
-                    let y = (x1 - 1.0) / (x1 + 1.0);
-                    let mut y_pow = y;
-                    cfor![i in 0..terms => {
-                        sum += y_pow / (2 * i + 1) as $f;
-                        y_pow *= y * y;
-                    }];
-                    Float(2.0 * sum)
-                } else {
-                    Self::NEG_INFINITY
-                }
-            }
-
-            /// Computes the logarithm to the given `base` using the change of base formula.
-            ///
-            /// # Formula
-            #[doc = FORMULA_LOG_SERIES!()]
-            ///
-            /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
-            pub const fn log_series(self, base: $f, terms: $ue) -> Float<$f> {
-                if base <= 0.0 {
-                    Self::NAN
-                // The logarithm with a base of 1 is undefined except when the argument is also 1.
-                } else if Float(base - 1.0).abs().0 < Self::MEDIUM_MARGIN.0 { // + robust
-                // } else if base == 1.0 { // good enough for direct input
-                    #[expect(clippy::float_cmp, reason = "we've already checked it with a margin")]
-                    { iif![self.0 == 1.0; Self::NAN; Self::NEG_INFINITY] }
-                } else {
-                    Float(self.ln_series(terms).0 / base).ln_series(terms)
-                }
-            }
-
-            /// Computes the base-2 logarithm using the change of base formula.
-            ///
-            /// # Formula
-            #[doc = FORMULA_LOG2_SERIES!()]
-            ///
-            /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
-            pub const fn log2_series(self, terms: $ue) -> Float<$f> {
-                Float(self.ln_series(terms).0 / 2.0).ln_series(terms)
-            }
-
-            /// Computes the base-10 logarithm using the change of base formula.
-            ///
-            /// # Formula
-            #[doc = FORMULA_LOG10_SERIES!()]
-            ///
-            /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
-            pub const fn log10_series(self, terms: $ue) -> Float<$f> {
-                Float(self.ln_series(terms).0 / 10.0).ln_series(terms)
-            }
-
-            /// Determines the number of terms needed for [`exp2_series`][Self::exp2_series]
-            /// to reach a stable result based on the input value.
-            #[doc = TABLE_LN_SERIES_TERMS!()]
-            #[must_use]
-            pub const fn ln_series_terms(self) -> $ue { paste! {
-                Self::[<ln_series_terms_ $f>](self.0)
-            }}
-
             /// The factorial of the integer value `x`.
             ///
             /// The maximum values with a representable result are:
@@ -451,286 +239,6 @@ macro_rules! custom_impls {
                     i += 1;
                 }
                 Float(result)
-            }
-
-            /// The sine calculated using Taylor series expansion.
-            ///
-            /// # Formula
-            #[doc = FORMULA_SIN_SERIES!()]
-            ///
-            /// This Taylor series converges relatively quickly and uniformly
-            /// over the entire domain.
-            #[doc = TABLE_SIN_SERIES_TERMS!()]
-            #[must_use]
-            pub const fn sin_series(self, terms: $ue) -> Float<$f> {
-                let x = self.clamp_nan(-Self::PI.0, Self::PI.0).0;
-                let (mut sin, mut term, mut factorial) = (x, x, 1.0);
-                let mut i = 1;
-                while i < terms {
-                    term *= -x * x;
-                    factorial *= ((2 * i + 1) * (2 * i)) as $f;
-                    sin += term / factorial;
-                    i += 1;
-                }
-                Float(sin)
-            }
-
-            /// Computes the cosine using taylor series expansion.
-            ///
-            /// # Formula
-            #[doc = FORMULA_COS_SERIES!()]
-            ///
-            /// This Taylor series converges relatively quickly and uniformly
-            /// over the entire domain.
-            #[doc = TABLE_COS_SERIES_TERMS!()]
-            #[must_use]
-            pub const fn cos_series(self, terms: $ue) -> Float<$f> {
-                let x = self.clamp_nan(-Self::PI.0, Self::PI.0).0;
-                let (mut cos, mut term, mut factorial) = (1.0, 1.0, 1.0);
-                let mut i = 1;
-                while i < terms {
-                    term *= -x * x;
-                    factorial *= ((2 * i - 1) * (2 * i)) as $f;
-                    cos += term / factorial;
-                    i += 1;
-                }
-                Float(cos)
-            }
-
-            /// Computes the sine and the cosine using Taylor series expansion.
-            #[must_use]
-            pub const fn sin_cos_series(self, terms: $ue) -> (Float<$f>, Float<$f>) {
-                (self.sin_series(terms), self.cos_series(terms))
-            }
-
-            /// Computes the tangent using Taylor series expansion of sine and cosine.
-            ///
-            /// # Formula
-            #[doc = FORMULA_TAN_SERIES!()]
-            ///
-            /// The tangent function has singularities and is not defined for
-            /// `cos(x) = 0`. This function clamps `self` within an appropriate range
-            /// to avoid such issues.
-            ///
-            /// The Taylor series for sine and cosine converge relatively quickly
-            /// and uniformly over the entire domain.
-            #[doc = TABLE_TAN_SERIES_TERMS!()]
-            #[must_use]
-            pub const fn tan_series(self, terms: $ue) -> Float<$f> {
-                let x = self.clamp_nan(-Self::PI.0 / 2.0 + 0.0001, Self::PI.0 / 2.0 - 0.0001);
-                let (sin, cos) = x.sin_cos_series(terms);
-                iif![cos.abs().0 < 0.0001; return Self::MAX];
-                Float(sin.0 / cos.0)
-            }
-
-            /// Computes the arcsine using Taylor series expansion.
-            ///
-            /// # Formula
-            #[doc = FORMULA_ASIN_SERIES!()]
-            ///
-            /// asin is undefined for $ |x| > 1 $ and in that case returns `NaN`.
-            ///
-            /// The series converges more slowly near the edges of the domain
-            /// (i.e., as `self` approaches -1 or 1). For more accurate results,
-            /// especially near these boundary values, a higher number of terms
-            /// may be necessary.
-            ///
-            /// See also [`asin_series_terms`][Self::asin_series_terms].
-            #[must_use]
-            pub const fn asin_series(self, terms: $ue) -> Float<$f> {
-                iif![self.abs().0 > 1.0; return Self::NAN];
-                let (mut asin_approx, mut multiplier, mut power_x) = (0.0, 1.0, self.0);
-                let mut i = 0;
-                while i < terms {
-                    if i != 0 {
-                        multiplier *= (2 * i - 1) as $f / (2 * i) as $f;
-                        power_x *= self.0 * self.0;
-                    }
-                    asin_approx += multiplier * power_x / (2 * i + 1) as $f;
-                    i += 1;
-                }
-                Float(asin_approx)
-            }
-
-            /// Determines the number of terms needed for [`asin_series`][Self::asin_series]
-            /// to reach a stable result based on the input value.
-            ///
-            #[doc = TABLE_ASIN_SERIES_TERMS!()]
-            #[must_use]
-            pub const fn asin_series_terms(self) -> $ue { paste! {
-                Self::[<asin_acos_series_terms_ $f>](self.0)
-            }}
-
-            /// Computes the arccosine using the Taylor expansion of arcsine.
-            ///
-            /// # Formula
-            #[doc = FORMULA_ACOS_SERIES!()]
-            ///
-            /// See the [`asin_series_terms`][Self#method.asin_series_terms] table for
-            /// information about the number of `terms` needed.
-            #[must_use]
-            pub const fn acos_series(self, terms: $ue) -> Float<$f> {
-                iif![self.abs().0 > 1.0; return Self::NAN];
-                Float(Self::FRAC_PI_2.0 - self.asin_series(terms).0)
-            }
-
-            /// Determines the number of terms needed for [`acos_series`][Self::acos_series]
-            /// to reach a stable result based on the input value.
-            ///
-            /// The table is the same as [`asin_series_terms`][Self::asin_series_terms].
-            #[must_use]
-            pub const fn acos_series_terms(self) -> $ue { paste! {
-                Self::[<asin_acos_series_terms_ $f>](self.0)
-            }}
-
-            /// Computes the arctangent using Taylor series expansion.
-            ///
-            /// # Formula
-            #[doc = FORMULA_ATAN_SERIES!()]
-            ///
-            /// The series converges more slowly near the edges of the domain
-            /// (i.e., as `self` approaches -1 or 1). For more accurate results,
-            /// especially near these boundary values, a higher number of terms
-            /// may be necessary.
-            ///
-            /// See also [`atan_series_terms`][Self::atan_series_terms].
-            #[must_use]
-            pub const fn atan_series(self, terms: $ue) -> Float<$f> {
-                if self.abs().0 > 1.0 {
-                    if self.0 > 0.0 {
-                        Float(Self::FRAC_PI_2.0 - Float(1.0 / self.0).atan_series(terms).0)
-                    } else {
-                        Float(-Self::FRAC_PI_2.0 - Float(1.0 / self.0).atan_series(terms).0)
-                    }
-                } else {
-                    let (mut atan_approx, mut num, mut sign) = (Self::ZERO.0, self.0, Self::ONE.0);
-                    let mut i = 0;
-                    while i < terms {
-                        if i > 0 {
-                            num *= self.0 * self.0;
-                            sign = -sign;
-                        }
-                        atan_approx += sign * num / (2.0 * i as $f + 1.0);
-                        i += 1;
-                    }
-                    Float(atan_approx)
-                }
-            }
-
-            /// Determines the number of terms needed for [`atan_series`][Self::atan_series]
-            /// to reach a stable result based on the input value.
-            #[doc = TABLE_ATAN_SERIES_TERMS!()]
-            #[must_use]
-            pub const fn atan_series_terms(self) -> $ue { paste! {
-                Self::[<atan_series_terms_ $f>](self.0)
-            }}
-
-            /// Computes the four quadrant arctangent of `self` and `other`
-            /// using Taylor series expansion.
-            ///
-            /// See also [`atan_series_terms`][Self::atan_series_terms].
-            #[must_use]
-            pub const fn atan2_series(self, other: $f, terms: $ue) -> Float<$f> {
-                if other > 0.0 {
-                    Float(self.0 / other).atan_series(terms)
-                } else if self.0 >= 0.0 && other < 0.0 {
-                    Float(Float(self.0 / other).atan_series(terms).0 + Self::PI.0)
-                } else if self.0 < 0.0 && other < 0.0 {
-                    Float(Float(self.0 / other).atan_series(terms).0 - Self::PI.0)
-                } else if self.0 > 0.0 && other == 0.0 {
-                    Float(Self::PI.0 / 2.0)
-                } else if self.0 < 0.0 && other == 0.0 {
-                    Float(-Self::PI.0 / 2.0)
-                } else {
-                    // self and other are both zero, undefined behavior
-                    Self::NAN
-                }
-            }
-
-            /// The hyperbolic sine calculated using Taylor series expansion
-            /// via the exponent formula.
-            ///
-            /// # Formula
-            #[doc = FORMULA_SINH_SERIES!()]
-            ///
-            /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
-            /// information about the number of `terms` needed.
-            #[must_use]
-            pub const fn sinh_series(self, terms: $ue) -> Float<$f> {
-                Float((self.exp_series(terms).0 - -self.exp_series(terms).0) / 2.0)
-            }
-
-            /// The hyperbolic cosine calculated using Taylor series expansion
-            /// via the exponent formula.
-            ///
-            /// # Formula
-            #[doc = FORMULA_COSH_SERIES!()]
-            ///
-            /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
-            /// information about the number of `terms` needed.
-            #[must_use]
-            pub const fn cosh_series(self, terms: $ue) -> Float<$f> {
-                Float((self.exp_series(terms).0 + -self.exp_series(terms).0) / 2.0)
-            }
-
-            /// Computes the hyperbolic tangent using Taylor series expansion of
-            /// hyperbolic sine and cosine.
-            ///
-            /// # Formula
-            #[doc = FORMULA_TANH_SERIES!()]
-            ///
-            /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
-            /// information about the number of `terms` needed.
-            #[must_use]
-            pub const fn tanh_series(self, terms: $ue) -> Float<$f> {
-                let sinh_approx = self.sinh_series(terms);
-                let cosh_approx = self.cosh_series(terms);
-                Float(sinh_approx.0 / cosh_approx.0)
-            }
-
-            /// Computes the inverse hyperbolic sine using the natural logarithm definition.
-            ///
-            /// # Formula
-            #[doc = FORMULA_ASINH_SERIES!()]
-            ///
-            /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
-            pub const fn asinh_series(self, terms: $ue) -> Float<$f> {
-                let sqrt = Float(self.0 * self.0 + 1.0).sqrt_nr().0;
-                Float(self.0 + sqrt).ln_series(terms)
-            }
-
-            /// Computes the inverse hyperbolic cosine using the natural logarithm definition.
-            ///
-            /// # Formula
-            #[doc = FORMULA_ACOSH_SERIES!()]
-            ///
-            /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
-            pub const fn acosh_series(self, terms: $ue) -> Float<$f> {
-                if self.0 < 1.0 {
-                    Self::NAN
-                } else {
-                    let sqrt = Float(self.0 * self.0 - 1.0).sqrt_nr().0;
-                    Float(self.0 + sqrt).ln_series(terms)
-                }
-            }
-
-            /// Computes the inverse hyperbolic tangent using the natural logarithm definition.
-            ///
-            /// # Formula
-            #[doc = FORMULA_ATANH_SERIES!()]
-            ///
-            /// See also [`ln_series_terms`][Self::ln_series_terms].
-            #[must_use]
-            pub const fn atanh_series(self, terms: $ue) -> Float<$f> {
-                if self.0 >= 1.0 {
-                    Self::INFINITY
-                } else if self.0 <= -1.0 {
-                    Self::NEG_INFINITY
-                } else {
-                    Float(Float((self.0 + 1.0) / (1.0 - self.0)).ln_series(terms).0 * 0.5)
-                }
             }
 
             /// The absolute value of `self`.
@@ -971,4 +479,4 @@ macro_rules! custom_impls {
         }
     };
 }
-custom_impls!();
+impl_float_shared!();

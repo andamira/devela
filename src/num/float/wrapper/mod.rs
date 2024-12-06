@@ -5,10 +5,9 @@
 
 #[cfg(_float_·)]
 crate::items! {
-    mod helpers;
-    mod shared;
-
-    mod libm_std;
+    mod libm_std; // for either or neither.
+    mod shared; // implements shared methods.
+    mod shared_series; // with Taylor Series.
 }
 
 mod consts;
