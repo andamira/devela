@@ -102,6 +102,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 - hide `no_inline` items re-exports.
 - new file `DOCS/VENDORED_rustdoc.md`
 - show docs for the build scripts (private).
+- update katex in rustdoc header:
+  - load extensions `mchem` and `copy-tex`.
+  - trust `\href` commands.
 
 ### Removed
 - remove custom no_std `Error` definition.

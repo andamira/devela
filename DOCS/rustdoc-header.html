@@ -2,24 +2,27 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
 
-<!-- The loading of KaTeX is deferred to speed up page rendering -->
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
-
-<!-- To automatically render math in text elements, include the auto-render extension: -->
+<!-- https://github.com/KaTeX/KaTeX/blob/main/contrib/mhchem/README.md -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/mhchem.min.js" integrity="sha384-ifpG+NlgMq0kvOSGqGQxW1mJKpjjMDmZdpKGq3tbvD3WPhyshCEEYClriK/wRVU0"  crossorigin="anonymous"></script>
+<!-- https://github.com/KaTeX/KaTeX/tree/main/contrib/copy-tex -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" integrity="sha384-HORx6nWi8j5/mYA+y57/9/CZc5z8HnEw4WUZWy5yOn9ToKBv1l58vJaufFAn9Zzi" crossorigin="anonymous"></script>
+<!-- https://katex.org/docs/autorender.html -->
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"
     onload="renderMathInElement(document.body);"></script>
-
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement(document.body, {
-            delimiters: [
-                {left: "$$", right: "$$", display: true},
-                {left: "\\(", right: "\\)", display: false},
-                {left: "$", right: "$", display: false},
-                {left: "\\[", right: "\\]", display: true}
-            ]
-        });
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\(", right: "\\)", display: false},
+        {left: "$", right: "$", display: false},
+        {left: "\\[", right: "\\]", display: true}
+      ],
+      // trust: true, // https://katex.org/docs/options
+      trust: (context) => context.command === "\\href",
     });
+  });
 </script>
 
 <!-- https://katex.org/docs/issues.html#css-customization -->
