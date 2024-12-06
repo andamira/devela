@@ -1,9 +1,20 @@
 // devela::num::float::ext_trait
 //
-//! Extention trait for floating-point constants.
+//! Defines `ExtFloatConst` and implements it for primitives.
 //
+// TOC
+// - trait ExtFloatConst
+// - CONST shared doc strings
+// - macro impl_ext_float_const!
+// - struct TempFloat
+//
+// WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
+// - SQRT_3, FRAC_1_SQRT_3, FRAC_1_SQRT_PI, PHI, EGAMMA…
 
 #![allow(clippy::excessive_precision)]
+
+#[cfg(feature = "nightly_float")]
+use ::core::{f16, f128};
 
 /// Extension trait for floating-point types. Associated constants.
 ///
@@ -132,424 +143,526 @@
 /// [`LN_10`]: Self::LN_10
 #[rustfmt::skip]
 pub trait ExtFloatConst: Sized {
-    /* identities */
-
-    /// The multiplicative identity 1.
-    const ONE: Self;
-    /// The additive identity 0.
-    const ZERO: Self;
-    /// The negative of the multiplicative identity -1.
-    const NEG_ONE: Self;
-    /// The negative of the additive identity -0.
-    const NEG_ZERO: Self;
-
-    /* representation, precision and range */
-
-    /// Not a Number (NaN).
-    const NAN: Self;
-    /// Infinity (∞).
-    const INFINITY: Self;
-    /// Negative infinity (-∞).
-    const NEG_INFINITY: Self;
-
-    /// Smallest finite value.
-    const MIN: Self;
-    /// Smallest positive normal value.
-    const MIN_POSITIVE: Self;
-    /// Largest finite value.
-    const MAX: Self;
-
-    /// One greater than the minimum possible normal power of 2 exponent.
-    const MIN_EXP: i32;
-    /// Maximum possible power of 2 exponent.
-    const MAX_EXP: i32;
-
-    /// Minimum *x* for which 10<sup>*x*</sup> is normal.
-    const MIN_10_EXP: i32;
-    /// Maximum *x* for which 10<sup>*x*</sup> is normal.
-    const MAX_10_EXP: i32;
-
-    /// Machine epsilon value.
-    ///
-    /// This is the smallest difference detectable between 1.0 and the next
-    /// representable number in the floating-point format.
-    const EPSILON: Self;
-    /// Allows for minimal deviation; use for high precision needs.
-    const LOW_MARGIN: Self;
-    /// Accommodates moderate deviation; balances precision and flexibility.
-    const MEDIUM_MARGIN: Self;
-    /// Permits generous deviation; suitable for less precise scenarios.
-    const HIGH_MARGIN: Self;
-
-    /// The radix or base of the internal representation.
-    const RADIX: u32;
-    /// Approximate number of significant digits in base 10.
-    const DIGITS: u32;
-    /// Number of significant digits in base 2.
-    const MANTISSA_DIGITS: u32;
-
-    /* consts: pi */
-
-    /// $ π = \frac{1}{2} τ = 180º $
-    /// ([A000796](https://oeis.org/A000796/constant))
-    /// `≈ 3.14159265…`
-    ///
-    /// *The ratio of the circumference to the diameter, a half-turn*.
-    const PI: Self;
-
-    /// $ π/2 = τ/4 = 90º $
-    /// ([A019669](https://oeis.org/A019669/constant))
-    /// `≈ 1.57079632…`
-    const FRAC_PI_2: Self;
-
-    /// $ π/3 = τ/6 = 60º $
-    /// ([A019670](https://oeis.org/A019670/constant))
-    /// `≈ 1.04719755…`
-    const FRAC_PI_3: Self;
-
-    /// $ π/4 = τ/8 = 45º $
-    /// ([A003881](https://oeis.org/A003881/constant))
-    /// `≈ 0.78539816…`
-    const FRAC_PI_4: Self;
-
-    /// $ π/6 = τ/12 = 30º $
-    /// ([A019673](https://oeis.org/A019673/constant))
-    /// `≈ 0.52359877…`
-    const FRAC_PI_6: Self;
-
-    /// $ π/8 = τ/16 = 22.5º $
-    /// ([A019675](https://oeis.org/A019675/constant))
-    /// `≈ 0.39269908…`
-    const FRAC_PI_8: Self;
-
-    /// $ \sqrt{π} = \sqrt{\frac{1}{2} τ} $
-    /// ([A002161](https://oeis.org/A002161/constant))
-    /// `≈ 1.77245385…`
-    const SQRT_PI: Self;
-
-    /// $ 1/π = 2/τ $
-    /// ([A049541](https://oeis.org/A049541/constant))
-    /// `≈ 0.31830988…`
-    const FRAC_1_PI: Self;
-
-    /// $ 1/\sqrt{π} = 1/\sqrt{τ/2} $
-    /// ([A087197](https://oeis.org/A087197/constant))
-    /// `≈ 0.56418958…`
-    // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
-    const FRAC_1_SQRT_PI: Self;
-
-    /// $ 2/π $
-    /// ([A060294](https://oeis.org/A060294/constant))
-    /// `≈ 0.63661977…`
-    ///
-    /// *Buffon's constant*.
-    const FRAC_2_PI: Self;
-
-    /// $ 2/\sqrt{π} $
-    /// ([A190732](https://oeis.org/A190732/constant))
-    /// `≈ 1.12837916…`
-    const FRAC_2_SQRT_PI: Self;
-
-    /* consts: TAU */
-
-    /// $ τ = 2π = 360º $
-    /// ([A019692](https://oeis.org/A019692/constant))
-    /// `≈ 6.28318530…`
-    ///
-    /// *The ratio of the circumference to the radius, a full-turn*.
-    const TAU: Self;
-
-    /// $ τ/2 = π = 180º $
-    /// ([A000796](https://oeis.org/A000796/constant))
-    /// `≈ 3.14159265…`
-    const FRAC_TAU_2: Self;
-
-    /// $ τ/3  = 2π/3 = 120º $
-    /// ([A019693](https://oeis.org/A019693/constant))
-    /// `≈ 2.09439510…`
-    const FRAC_TAU_3: Self;
-
-    /// $ τ/4 = π/2 = 90º $
-    /// ([A019693](https://oeis.org/A019693/constant))
-    /// `≈ 1.57079632…`
-    const FRAC_TAU_4: Self;
-
-    /// $ τ/5 = 2π/5 = 72º $
-    /// ([A019694](https://oeis.org/A019694/constant))
-    /// `≈ 1.25663706…`
-    const FRAC_TAU_5: Self;
-
-    /// $ τ/6 = π/3 = 60º $
-    /// ([A019670](https://oeis.org/A019670/constant))
-    /// `≈ 1.04719755…`
-    const FRAC_TAU_6: Self;
-
-    /// $ τ/8 = π/4 = 45º $
-    /// ([A003881](https://oeis.org/A003881/constant))
-    /// `≈ 0.78539816…`
-    const FRAC_TAU_8: Self;
-
-    /// $ τ/9 = 2π/9 = 40º $
-    /// ([A019696](https://oeis.org/A019696/constant))
-    /// `≈ 0.69813170…`
-    const FRAC_TAU_9: Self;
-
-    /// $ τ/12 = π/6 = 30º $
-    /// ([A019673](https://oeis.org/A019673/constant))
-    /// `≈ 0.52359877…`
-    const FRAC_TAU_12: Self;
-
-    /// $ τ/16 = π/8 = 22.5º $
-    /// ([A019675](https://oeis.org/A019675/constant))
-    /// `≈ 0.39269908…`
-    const FRAC_TAU_16: Self;
-
-    /// $ τ/24 = π/12 = 15º $
-    /// ([A019679](https://oeis.org/A019679/constant))
-    /// `≈ 0.26179938…`
-    const FRAC_TAU_24: Self;
-
-    /// $ τ/72 = π/36 = 5º $
-    /// `≈ 0.08726646…`
-    const FRAC_TAU_72: Self;
-
-    /// $ τ/360 = π/180 = 1º $ *arc degree*
-    /// ([A019685](https://oeis.org/A019685),
-    /// [wikipedia](https://en.wikipedia.org/wiki/Degree_(angle)))
-    /// `≈ 0.01745329…`
-    const FRAC_TAU_360: Self;
-
-    /// $ 360/τ = 180/π $
-    /// ([A072097](https://oeis.org/A072097/constant))
-    /// `≈ 57.2957795…`
-    const FRAC_360_TAU: Self;
-
-    /// $ \sqrt{τ} = \sqrt{2π} $
-    /// ([A019727](https://oeis.org/A019727/constant))
-    /// `≈ 2.50662827…`
-    const SQRT_TAU: Self;
-
-    /// $ 1/τ = 1/2π $
-    /// ([A086201](https://oeis.org/A086201/constant))
-    /// `≈ 0.15915494…`
-    const FRAC_1_TAU: Self;
-
-    /// $ 1/\sqrt{τ} = 1/\sqrt{2π} $
-    /// ([A231863](https://oeis.org/A231863/constant))
-    /// `≈ 0.39894228…`
-    const FRAC_1_SQRT_TAU: Self;
-
-    /// $ 2/τ = 1/π $
-    /// ([A049541](https://oeis.org/A049541/constant))
-    /// `≈ 0.31830988…`
-    const FRAC_2_TAU: Self;
-
-    /// $ 2/\sqrt{τ} = \sqrt{2/π} $
-    /// ([A231863](https://oeis.org/A231863/constant))
-    /// `≈ 0.79788456…`
-    const FRAC_2_SQRT_TAU: Self;
-
-    /* degrees */
-
-    /// $ τ/360 = π/180 = 1º $ *arc degree*
-    /// ([A019685](https://oeis.org/A019685),
-    /// [wikipedia](https://en.wikipedia.org/wiki/Degree_(angle)))
-    /// `≈ 0.01745329…`
-    const ARC_DEGREE: Self;
-
-    /// $ τ/(360*60) = 1' $ *arc minute*
-    /// ([wikipedia](https://en.wikipedia.org/wiki/Minute_and_second_of_arc))
-    /// `≈ 0.00029088…`
-    const ARC_MINUTE: Self;
-
-    /// $ τ/(360 * 60 * 60) = 1'' $ *arc second*
-    /// ([wikipedia](https://en.wikipedia.org/wiki/Minute_and_second_of_arc))
-    /// `≈ 0.00000484…`
-    const ARC_SECOND: Self;
-    /* consts: PHI */
-
-    /// $ φ  = (1+\sqrt{5})/2 $
-    /// ([A001622](https://oeis.org/A001622/constant))
-    /// `≈ 1.61803398…`
-    ///
-    /// *The golden ratio*.
-    ///
-    /// Continued fraction: $ [1;1,1,1,…] $
-    // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
-    const PHI: Self;
-
-    /// $ φ^2 = φ+1 = (3+\sqrt{5})/2 $
-    /// ([A104457](https://oeis.org/A104457/constant))
-    /// `≈ 2.61803398…`
-    const SQ_PHI: Self;
-
-    /// $ 1/φ = φ-1 $
-    /// ([A094214](https://oeis.org/A094214/constant))
-    /// `≈ 0.61803398…`
-    ///
-    /// *The reciprocal of [φ][Self#PHI]*.
-    const FRAC_1_PHI: Self;
-
-    /// $ -1/φ = 1-φ $
-    /// `≈ -0.61803398…`
-    ///
-    /// *The negative reciprocal of [φ][Self#PHI] and its conjugate in $ x^2-x-1 $*.
-    const NEG_FRAC_1_PHI: Self;
-
-    /// $ \sqrt{φ} $
-    /// ([A139339](https://oeis.org/A139339/constant))
-    /// `≈ 1.27201964…`
-    const SQRT_PHI: Self;
-
-    /// $ 1/\sqrt{φ} = \sqrt{φ/φ^2} = \sqrt{φ^2-2} $
-    /// ([A197762](https://oeis.org/A197762/constant))
-    /// `≈ 0.78615137…`
-    const FRAC_1_SQRT_PHI: Self;
-
-    /// ([A058265](https://oeis.org/A058265/constant))
-    /// `≈ 1.83928675…`
-    ///
-    /// *The tribonacci constant*.
-    const TRIBONACCI: Self;
-
-    /* consts: sqrt */
-
-    /// $ \sqrt{2} $
-    /// ([A002193](https://oeis.org/A002193/constant),
-    /// [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_2))
-    /// `≈ 1.41421356…`
-    const SQRT_2: Self;
-
-    /// $ 1/\sqrt{2} = \sqrt{1/2} $
-    /// ([A010503](https://oeis.org/A010503/constant),
-    /// [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_2#Multiplicative_inverse))
-    /// `≈ 0.70710678…`
-    const FRAC_1_SQRT_2: Self;
-
-    /// $ \sqrt{3} $
-    /// ([A002194](https://oeis.org/A002194/constant),
-    /// [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_3))
-    /// `≈ 1.73205080…`
-    // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
-    const SQRT_3: Self;
-
-    /// $ 1/\sqrt{3} = \sqrt{1/3} $
-    /// `≈ 0.57735026…`
-    // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
-    const FRAC_1_SQRT_3: Self;
-
-    /// $ \sqrt{5} $
-    /// ([A002163](https://oeis.org/A002163/constant),
-    /// [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_5))
-    /// `≈ 2.23606797…`
-    const SQRT_5: Self;
-
-    /// $ \sqrt{6} $
-    /// ([A010464](https://oeis.org/A010464/constant))
-    /// `≈ 2.44948974…`
-    const SQRT_6: Self;
-
-    /// $ \sqrt{7} $
-    /// ([A010465](https://oeis.org/A010465/constant))
-    /// `≈ 2.64575131…`
-    const SQRT_7: Self;
-
-    /// $ \sqrt{8} $
-    /// ([A010466](https://oeis.org/A010466/constant))
-    /// `≈ 2.82842712…`
-    const SQRT_8: Self;
-
-    /// $ \sqrt{10} $
-    /// ([A010467](https://oeis.org/A010467/constant))
-    /// `≈ 3.16227766…`
-    const SQRT_10: Self;
-
-    /// $ \sqrt{11} $
-    /// ([A010468](https://oeis.org/A010468/constant))
-    /// `≈ 3.31662479…`
-    const SQRT_11: Self;
-
-    /// $ \sqrt{12} $
-    /// ([A010469](https://oeis.org/A010469/constant))
-    /// `≈ 3.46410161…`
-    const SQRT_12: Self;
-
-    /* consts: cbrt */
-
-    /// $ \sqrt[\small 3]{2} $
-    /// ([A002580](https://oeis.org/A002580/constant),
-    /// [wikipedia](https://en.wikipedia.org/wiki/Doubling_the_cube))
-    /// `≈ 1.25992104…`
-    const CBRT_2: Self;
-
-    /// $ \sqrt[\small 3]{3} $
-    /// ([A002581](https://oeis.org/A002581/constant))
-    /// `≈ 1.44224957…`
-    const CBRT_3: Self;
-
-    /// $ 1/\sqrt[\small 3]{3} = (\normalsize\frac{1}{3})^{\small\frac{1}{3}} $
-    /// ([A072365](https://oeis.org/A072365/constant))
-    /// `≈ 0.69336127…`
-    const FRAC_1_CBRT_3: Self;
-
-    /* consts: other */
-
-    /// $ e $
-    /// ([A001113](https://oeis.org/A001113/constant))
-    /// `≈ 2.71828182…`
-    ///
-    /// *The Euler number or Napier's constant*.
-    ///
-    /// Continuous fraction: $ [2;1,2,1,1,4,1,1,6,1,…,1,2n,1,…] $
-    const E: Self;
-
-    /// $ γ $
-    /// ([A001620](https://oeis.org/A001620/constant))
-    /// `≈ 0.57721566…`
-    ///
-    /// *Gamma, or the Euler-Mascheroni constant*.
-    // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
-    const EGAMMA: Self;
-
-    /// $ \log_2{e} $
-    /// ([A007525](https://oeis.org/A007525/constant))
-    /// `≈ 1.44269504…`
-    const LOG2_E: Self;
-
-    /// log<sub>2</sub>(10)
-    /// ([A020862](https://oeis.org/A020862/constant))
-    /// `≈ 3.32192809…`
-    const LOG2_10: Self;
-
-    /// log<sub>10</sub>(e)
-    /// ([A002285](https://oeis.org/A002285/constant))
-    /// `≈ 0.43429448…`
-    const LOG10_E: Self;
-
-    /// log<sub>10</sub>(2)
-    /// ([A007524](https://oeis.org/A007524/constant))
-    /// `≈ 0.30102999…`
-    const LOG10_2: Self;
-
-    /// ln(2)
-    /// ([A002162](https://oeis.org/A002162/constant))
-    /// `≈ 0.69314718…`
-    const LN_2: Self;
-
-    /// ln(10)
-    /// ([A002392](https://oeis.org/A002392/constant))
-    /// `≈ 2.30258509…`
-    const LN_10: Self;
+    // identities
+    #[doc = ONE!()]                 const ONE: Self;
+    #[doc = ZERO!()]                const ZERO: Self;
+    #[doc = NEG_ONE!()]             const NEG_ONE: Self;
+    #[doc = NEG_ZERO!()]            const NEG_ZERO: Self;
+    // representation, precision and range
+    #[doc = NAN!()]                 const NAN: Self;
+    #[doc = INFINITY!()]            const INFINITY: Self;
+    #[doc = NEG_INFINITY!()]        const NEG_INFINITY: Self;
+    #[doc = MIN!()]                 const MIN: Self;
+    #[doc = MIN_POSITIVE!()]        const MIN_POSITIVE: Self;
+    #[doc = MAX!()]                 const MAX: Self;
+    #[doc = MIN_EXP!()]             const MIN_EXP: i32;
+    #[doc = MAX_EXP!()]             const MAX_EXP: i32;
+    #[doc = MIN_10_EXP!()]          const MIN_10_EXP: i32;
+    #[doc = MAX_10_EXP!()]          const MAX_10_EXP: i32;
+    #[doc = EPSILON!()]             const EPSILON: Self;
+    #[doc = LOW_MARGIN!()]          const LOW_MARGIN: Self;
+    #[doc = MEDIUM_MARGIN!()]       const MEDIUM_MARGIN: Self;
+    #[doc = HIGH_MARGIN!()]         const HIGH_MARGIN: Self;
+    #[doc = RADIX!()]               const RADIX: u32;
+    #[doc = DIGITS!()]              const DIGITS: u32;
+    #[doc = MANTISSA_DIGITS!()]     const MANTISSA_DIGITS: u32;
+    // pi
+    #[doc = PI!()]                  const PI: Self;
+    #[doc = FRAC_PI_2!()]           const FRAC_PI_2: Self;
+    #[doc = FRAC_PI_3!()]           const FRAC_PI_3: Self;
+    #[doc = FRAC_PI_4!()]           const FRAC_PI_4: Self;
+    #[doc = FRAC_PI_6!()]           const FRAC_PI_6: Self;
+    #[doc = FRAC_PI_8!()]           const FRAC_PI_8: Self;
+    #[doc = SQRT_PI!()]             const SQRT_PI: Self;
+    #[doc = FRAC_1_PI!()]           const FRAC_1_PI: Self;
+    #[doc = FRAC_1_SQRT_PI!()]      const FRAC_1_SQRT_PI: Self;
+    #[doc = FRAC_2_PI!()]           const FRAC_2_PI: Self;
+    #[doc = FRAC_2_SQRT_PI!()]      const FRAC_2_SQRT_PI: Self;
+    // tau
+    #[doc = TAU!()]                 const TAU: Self;
+    #[doc = FRAC_TAU_2!()]          const FRAC_TAU_2: Self;
+    #[doc = FRAC_TAU_3!()]          const FRAC_TAU_3: Self;
+    #[doc = FRAC_TAU_4!()]          const FRAC_TAU_4: Self;
+    #[doc = FRAC_TAU_5!()]          const FRAC_TAU_5: Self;
+    #[doc = FRAC_TAU_6!()]          const FRAC_TAU_6: Self;
+    #[doc = FRAC_TAU_8!()]          const FRAC_TAU_8: Self;
+    #[doc = FRAC_TAU_9!()]          const FRAC_TAU_9: Self;
+    #[doc = FRAC_TAU_12!()]         const FRAC_TAU_12: Self;
+    #[doc = FRAC_TAU_16!()]         const FRAC_TAU_16: Self;
+    #[doc = FRAC_TAU_24!()]         const FRAC_TAU_24: Self;
+    #[doc = FRAC_TAU_72!()]         const FRAC_TAU_72: Self;
+    #[doc = FRAC_TAU_360!()]        const FRAC_TAU_360: Self;
+    #[doc = FRAC_360_TAU!()]        const FRAC_360_TAU: Self;
+    #[doc = SQRT_TAU!()]            const SQRT_TAU: Self;
+    #[doc = FRAC_1_TAU!()]          const FRAC_1_TAU: Self;
+    #[doc = FRAC_1_SQRT_TAU!()]     const FRAC_1_SQRT_TAU: Self;
+    #[doc = FRAC_2_TAU!()]          const FRAC_2_TAU: Self;
+    #[doc = FRAC_2_SQRT_TAU!()]     const FRAC_2_SQRT_TAU: Self;
+    // arc degrees
+    #[doc = ARC_DEGREE!()]          const ARC_DEGREE: Self;
+    #[doc = ARC_MINUTE!()]          const ARC_MINUTE: Self;
+    #[doc = ARC_SECOND!()]          const ARC_SECOND: Self;
+    // phi
+    #[doc = PHI!()]                 const PHI: Self;
+    #[doc = SQ_PHI!()]              const SQ_PHI: Self;
+    #[doc = FRAC_1_PHI!()]          const FRAC_1_PHI: Self;
+    #[doc = NEG_FRAC_1_PHI!()]      const NEG_FRAC_1_PHI: Self;
+    #[doc = SQRT_PHI!()]            const SQRT_PHI: Self;
+    #[doc = FRAC_1_SQRT_PHI!()]     const FRAC_1_SQRT_PHI: Self;
+    #[doc = TRIBONACCI!()]          const TRIBONACCI: Self;
+    // sqrt
+    #[doc = SQRT_2!()]              const SQRT_2: Self;
+    #[doc = FRAC_1_SQRT_2!()]       const FRAC_1_SQRT_2: Self;
+    #[doc = SQRT_3!()]              const SQRT_3: Self;
+    #[doc = FRAC_1_SQRT_3!()]       const FRAC_1_SQRT_3: Self;
+    #[doc = SQRT_5!()]              const SQRT_5: Self;
+    #[doc = SQRT_6!()]              const SQRT_6: Self;
+    #[doc = SQRT_7!()]              const SQRT_7: Self;
+    #[doc = SQRT_8!()]              const SQRT_8: Self;
+    #[doc = SQRT_10!()]             const SQRT_10: Self;
+    #[doc = SQRT_11!()]             const SQRT_11: Self;
+    #[doc = SQRT_12!()]             const SQRT_12: Self;
+    #[doc = CBRT_2!()]              const CBRT_2: Self;
+    #[doc = CBRT_3!()]              const CBRT_3: Self;
+    #[doc = FRAC_1_CBRT_3!()]       const FRAC_1_CBRT_3: Self;
+    // other
+    #[doc = E!()]                   const E: Self;
+    #[doc = EGAMMA!()]              const EGAMMA: Self;
+    #[doc = LOG2_E!()]              const LOG2_E: Self;
+    #[doc = LOG2_10!()]             const LOG2_10: Self;
+    #[doc = LOG10_E!()]             const LOG10_E: Self;
+    #[doc = LOG10_2!()]             const LOG10_2: Self;
+    #[doc = LN_2!()]                const LN_2: Self;
+    #[doc = LN_10!()]               const LN_10: Self;
 }
 
+// Define shared doc strings
+crate::CONST! {
+    // identities
+    ONE = r#"The multiplicative identity 1."#;
+    ZERO = r#"The additive identity 0."#;
+    NEG_ONE = r#"The negative of the multiplicative identity -1."#;
+    NEG_ZERO = r#"The negative of the additive identity -0."#;
+
+    // representation, precision and range
+    NAN = r#"Not a Number (NaN)."#;
+    INFINITY = r#"Infinity (∞)."#;
+    NEG_INFINITY = r#"Negative infinity (-∞)."#;
+    MIN = r#"Smallest finite value."#;
+    MIN_POSITIVE = r#"Smallest positive normal value."#;
+    MAX = r#"Largest finite value."#;
+    MIN_EXP = r#"One greater than the minimum possible normal power of 2 exponent."#;
+    MAX_EXP = r#"Maximum possible power of 2 exponent."#;
+    MIN_10_EXP = r#"Minimum *x* for which 10<sup>*x*</sup> is normal."#;
+    MAX_10_EXP = r#"Maximum *x* for which 10<sup>*x*</sup> is normal."#;
+    EPSILON = r#"Machine epsilon value.
+    <p>This is the smallest difference detectable between 1.0 and the next
+    representable number in the floating-point format.</p>"#;
+    LOW_MARGIN = r#"Allows for minimal deviation; use for high precision needs.."#;
+    MEDIUM_MARGIN = r#"Accommodates moderate deviation; balances precision and flexibility."#;
+    HIGH_MARGIN = r#"Permits generous deviation; suitable for less precise scenarios."#;
+    RADIX = r#"The radix or base of the internal representation."#;
+    DIGITS = r#"Approximate number of significant digits in base 10."#;
+    MANTISSA_DIGITS = r#"Number of significant digits in base 2."#;
+
+    // pi
+    PI = r#"$ π = \frac{1}{2} τ = 180º $
+    ([A000796](https://oeis.org/A000796/constant))
+    `≈ 3.14159265…`
+    <p>*The ratio of the circumference to the diameter, a half-turn*.</p>"#;
+    FRAC_PI_2 = r#"$ π/2 = τ/4 = 90º $
+    ([A019669](https://oeis.org/A019669/constant))
+    `≈ 1.57079632…`"#;
+    FRAC_PI_3 = r#"$ π/3 = τ/6 = 60º $
+    ([A019670](https://oeis.org/A019670/constant))
+    `≈ 1.04719755…`"#;
+    FRAC_PI_4 = r#"$ π/4 = τ/8 = 45º $
+    ([A003881](https://oeis.org/A003881/constant))
+    `≈ 0.78539816…`"#;
+    FRAC_PI_6 = r#"$ π/6 = τ/12 = 30º $
+    ([A019673](https://oeis.org/A019673/constant))
+    `≈ 0.52359877…`"#;
+    FRAC_PI_8 = r#"$ π/8 = τ/16 = 22.5º $
+    ([A019675](https://oeis.org/A019675/constant))
+    `≈ 0.39269908…`"#;
+    SQRT_PI = r#"$ \sqrt{π} = \sqrt{\frac{1}{2} τ} $
+    ([A002161](https://oeis.org/A002161/constant))
+    `≈ 1.77245385…`"#;
+    FRAC_1_PI = r#"$ 1/π = 2/τ $
+    ([A049541](https://oeis.org/A049541/constant))
+    `≈ 0.31830988…`"#;
+    FRAC_1_SQRT_PI = r#"$ 1/\sqrt{π} = 1/\sqrt{τ/2} $
+    ([A087197](https://oeis.org/A087197/constant))
+    `≈ 0.56418958…`"#;
+    FRAC_2_PI = r#"$ 2/π $
+    ([A060294](https://oeis.org/A060294/constant))
+    `≈ 0.63661977…`
+    <p>*Buffon's constant*.</p>"#;
+    FRAC_2_SQRT_PI = r#"$ 2/\sqrt{π} $
+    ([A190732](https://oeis.org/A190732/constant))
+    `≈ 1.12837916…`"#;
+
+    // tau
+    TAU = r#"$ τ = 2π = 360º $
+    ([A019692](https://oeis.org/A019692/constant))
+    `≈ 6.28318530…`
+    <p>*The ratio of the circumference to the radius, a full-turn*.</p>"#;
+    FRAC_TAU_2 = r#"$ τ/2 = π = 180º $
+    ([A000796](https://oeis.org/A000796/constant))
+    `≈ 3.14159265…`"#;
+    FRAC_TAU_3 = r#"$ τ/3  = 2π/3 = 120º $
+    ([A019693](https://oeis.org/A019693/constant))
+    `≈ 2.09439510…`"#;
+    FRAC_TAU_4 = r#"$ τ/4 = π/2 = 90º $
+    ([A019693](https://oeis.org/A019693/constant))
+    `≈ 1.57079632…`"#;
+    FRAC_TAU_5 = r#"$ τ/5 = 2π/5 = 72º $
+    ([A019694](https://oeis.org/A019694/constant))
+    `≈ 1.25663706…`"#;
+    FRAC_TAU_6 = r#"$ τ/6 = π/3 = 60º $
+    ([A019670](https://oeis.org/A019670/constant))
+    `≈ 1.04719755…`"#;
+    FRAC_TAU_8 = r#"$ τ/8 = π/4 = 45º $
+    ([A003881](https://oeis.org/A003881/constant))
+    `≈ 0.78539816…`"#;
+    FRAC_TAU_9 = r#"$ τ/9 = 2π/9 = 40º $
+    ([A019696](https://oeis.org/A019696/constant))
+    `≈ 0.69813170…`"#;
+    FRAC_TAU_12 = r#"$ τ/12 = π/6 = 30º $
+    ([A019673](https://oeis.org/A019673/constant))
+    `≈ 0.52359877…`"#;
+    FRAC_TAU_16 = r#"$ τ/16 = π/8 = 22.5º $
+    ([A019675](https://oeis.org/A019675/constant))
+    `≈ 0.39269908…`"#;
+    FRAC_TAU_24 = r#"$ τ/24 = π/12 = 15º $
+    ([A019679](https://oeis.org/A019679/constant))
+    `≈ 0.26179938…`"#;
+    FRAC_TAU_72 = r#"$ τ/72 = π/36 = 5º $
+    `≈ 0.08726646…`"#;
+    FRAC_TAU_360 = r#"$ τ/360 = π/180 = 1º $ *arc degree*
+    ([A019685](https://oeis.org/A019685),
+    [wikipedia](https://en.wikipedia.org/wiki/Degree_(angle)))
+    `≈ 0.01745329…`"#;
+    FRAC_360_TAU = r#"$ 360/τ = 180/π $
+    ([A072097](https://oeis.org/A072097/constant))
+    `≈ 57.2957795…`"#;
+    SQRT_TAU = r#"$ \sqrt{τ} = \sqrt{2π} $
+    ([A019727](https://oeis.org/A019727/constant))
+    `≈ 2.50662827…`"#;
+    FRAC_1_TAU = r#"$ 1/τ = 1/2π $
+    ([A086201](https://oeis.org/A086201/constant))
+    `≈ 0.15915494…`"#;
+    FRAC_1_SQRT_TAU = r#"$ 1/\sqrt{τ} = 1/\sqrt{2π} $
+    ([A231863](https://oeis.org/A231863/constant))
+    `≈ 0.39894228…`"#;
+    FRAC_2_TAU = r#"$ 2/τ = 1/π $
+    ([A049541](https://oeis.org/A049541/constant))
+    `≈ 0.31830988…`"#;
+    FRAC_2_SQRT_TAU = r#"$ 2/\sqrt{τ} = \sqrt{2/π} $
+    ([A231863](https://oeis.org/A231863/constant))
+    `≈ 0.79788456…`"#;
+
+    // arc degrees
+    ARC_DEGREE = r#"$ τ/360 = π/180 = 1º $ *arc degree*
+    ([A019685](https://oeis.org/A019685),
+    [wikipedia](https://en.wikipedia.org/wiki/Degree_(angle)))
+    `≈ 0.01745329…`"#;
+    ARC_MINUTE = r#"$ τ/(360*60) = 1' $ *arc minute*
+    ([wikipedia](https://en.wikipedia.org/wiki/Minute_and_second_of_arc))
+    `≈ 0.00029088…`"#;
+    ARC_SECOND = r#"$ τ/(360 * 60 * 60) = 1'' $ *arc second*
+    ([wikipedia](https://en.wikipedia.org/wiki/Minute_and_second_of_arc))
+    `≈ 0.00000484…`"#;
+
+    // phi
+    PHI = r#"$ φ  = (1+\sqrt{5})/2 $
+    ([A001622](https://oeis.org/A001622/constant))
+    `≈ 1.61803398…`
+    <p>*The golden ratio*.</p>
+    <p>Continued fraction: $ [1;1,1,1,…] $</p>"#;
+    SQ_PHI = r#"$ φ^2 = φ+1 = (3+\sqrt{5})/2 $
+    ([A104457](https://oeis.org/A104457/constant))
+    `≈ 2.61803398…`"#;
+    FRAC_1_PHI = r#"$ 1/φ = φ-1 $
+    ([A094214](https://oeis.org/A094214/constant))
+    `≈ 0.61803398…`
+    <p>*The reciprocal of [φ][Self#PHI]*.</p>"#;
+    NEG_FRAC_1_PHI = r#"$ -1/φ = 1-φ $
+    `≈ -0.61803398…`
+    <p>*The negative reciprocal of [φ][Self#PHI] and its conjugate in $ x^2-x-1 $*.</p>"#;
+    SQRT_PHI = r#"$ \sqrt{φ} $
+    ([A139339](https://oeis.org/A139339/constant))
+    `≈ 1.27201964…`"#;
+    FRAC_1_SQRT_PHI = r#"$ 1/\sqrt{φ} = \sqrt{φ/φ^2} = \sqrt{φ^2-2} $
+    ([A197762](https://oeis.org/A197762/constant))
+    `≈ 0.78615137…`"#;
+    TRIBONACCI = r#"([A058265](https://oeis.org/A058265/constant))
+    `≈ 1.83928675…`
+    <p>*The tribonacci constant*.</p>"#;
+
+    // integer roots
+    SQRT_2 = r#"$ \sqrt{2} $
+    ([A002193](https://oeis.org/A002193/constant),
+    [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_2))
+    `≈ 1.41421356…`"#;
+    FRAC_1_SQRT_2 = r#"$ 1/\sqrt{2} = \sqrt{1/2} $
+    ([A010503](https://oeis.org/A010503/constant),
+    [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_2#Multiplicative_inverse))
+    `≈ 0.70710678…`"#;
+    SQRT_3 = r#"$ \sqrt{3} $
+    ([A002194](https://oeis.org/A002194/constant),
+    [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_3))
+    `≈ 1.73205080…`"#;
+    FRAC_1_SQRT_3 = r#"$ 1/\sqrt{3} = \sqrt{1/3} $
+    `≈ 0.57735026…`"#;
+    SQRT_5 = r#"$ \sqrt{5} $
+    ([A002163](https://oeis.org/A002163/constant),
+    [wikipedia](https://en.wikipedia.org/wiki/Square_root_of_5))
+    `≈ 2.23606797…`"#;
+    SQRT_6 = r#"$ \sqrt{6} $
+    ([A010464](https://oeis.org/A010464/constant))
+    `≈ 2.44948974…`"#;
+    SQRT_7 = r#"$ \sqrt{7} $
+    ([A010465](https://oeis.org/A010465/constant))
+    `≈ 2.64575131…`"#;
+    SQRT_8 = r#"$ \sqrt{8} $
+    ([A010466](https://oeis.org/A010466/constant))
+    `≈ 2.82842712…`"#;
+    SQRT_10 = r#"$ \sqrt{10} $
+    ([A010467](https://oeis.org/A010467/constant))
+    `≈ 3.16227766…`"#;
+    SQRT_11 = r#"$ \sqrt{11} $
+    ([A010468](https://oeis.org/A010468/constant))
+    `≈ 3.31662479…`"#;
+    SQRT_12 = r#"$ \sqrt{12} $
+    ([A010469](https://oeis.org/A010469/constant))
+    `≈ 3.46410161…`"#;
+    CBRT_2 = r#"$ \sqrt[\small 3]{2} $
+    ([A002580](https://oeis.org/A002580/constant),
+    [wikipedia](https://en.wikipedia.org/wiki/Doubling_the_cube))
+    `≈ 1.25992104…`"#;
+    CBRT_3 = r#"$ \sqrt[\small 3]{3} $
+    ([A002581](https://oeis.org/A002581/constant))
+    `≈ 1.44224957…`"#;
+    FRAC_1_CBRT_3 = r#"$ 1/\sqrt[\small 3]{3} = (\normalsize\frac{1}{3})^{\small\frac{1}{3}} $
+    ([A072365](https://oeis.org/A072365/constant))
+    `≈ 0.69336127…`"#;
+
+    // other
+    E = r#"$ e $
+    ([A001113](https://oeis.org/A001113/constant))
+    `≈ 2.71828182…`
+    <p>*The Euler number or Napier's constant*.</p>
+    <p>Continuous fraction: $ [2;1,2,1,1,4,1,1,6,1,…,1,2n,1,…] $</p>"#;
+    EGAMMA = r#"$ γ $
+    ([A001620](https://oeis.org/A001620/constant))
+    `≈ 0.57721566…`
+    <p>*Gamma, or the Euler-Mascheroni constant*</p>."#;
+    LOG2_E = r#"$ \log_2{e} $
+    ([A007525](https://oeis.org/A007525/constant))
+    `≈ 1.44269504…`"#;
+    LOG2_10 = r#"log<sub>2</sub>(10)
+    ([A020862](https://oeis.org/A020862/constant))
+    `≈ 3.32192809…`"#;
+    LOG10_E = r#"log<sub>10</sub>(e)
+    ([A002285](https://oeis.org/A002285/constant))
+    `≈ 0.43429448…`"#;
+    LOG10_2 = r#"log<sub>10</sub>(2)
+    ([A007524](https://oeis.org/A007524/constant))
+    `≈ 0.30102999…`"#;
+    LN_2 = r#"ln(2)
+    ([A002162](https://oeis.org/A002162/constant))
+    `≈ 0.69314718…`"#;
+    LN_10 = r#"ln(10)
+    ([A002392](https://oeis.org/A002392/constant))
+    `≈ 2.30258509…`"#;
+}
+
+#[doc = crate::doc_private!()]
+/// impl mathematical constants
+///
+/// $f: the floating-point type.
+macro_rules! impl_ext_float_const {
+    ($( $(#[$attrs:meta])* $f:ty ),+) => { $( impl_ext_float_const![@$(#[$attrs])* $f]; )+ };
+    (@$(#[$attrs:meta])* $f:ty) => {
+        /// # *Mathematical constants*.
+        $(#[$attrs])*
+        impl ExtFloatConst for $f {
+            // identities
+            #[doc = ONE!()]             const ONE: $f = 1.0;
+            #[doc = ZERO!()]            const ZERO: $f = 0.0;
+            #[doc = NEG_ONE!()]         const NEG_ONE: $f = -1.0;
+            #[doc = NEG_ZERO!()]        const NEG_ZERO: $f = -0.0;
+
+            // representation, precision and range
+            #[doc = NAN!()]             const NAN: $f = <$f>::NAN;
+            #[doc = INFINITY!()]        const INFINITY: $f = <$f>::INFINITY;
+            #[doc = NEG_INFINITY!()]    const NEG_INFINITY: $f = <$f>::NEG_INFINITY;
+            #[doc = EPSILON!()]         const EPSILON: $f = <$f>::EPSILON;
+            #[doc = LOW_MARGIN!()]      const LOW_MARGIN: $f = TempFloat::<$f>::LOW_MARGIN;
+            #[doc = MEDIUM_MARGIN!()]   const MEDIUM_MARGIN: $f = TempFloat::<$f>::MEDIUM_MARGIN;
+            #[doc = HIGH_MARGIN!()]     const HIGH_MARGIN: $f = TempFloat::<$f>::HIGH_MARGIN;
+            #[doc = RADIX!()]           const RADIX: u32 = <$f>::RADIX;
+            #[doc = DIGITS!()]          const DIGITS: u32 = <$f>::DIGITS;
+            #[doc = MANTISSA_DIGITS!()] const MANTISSA_DIGITS: u32 = <$f>::MANTISSA_DIGITS;
+            #[doc = MIN!()]             const MIN: $f = <$f>::MIN;
+            #[doc = MIN_POSITIVE!()]    const MIN_POSITIVE: $f = <$f>::MIN_POSITIVE;
+            #[doc = MAX!()]             const MAX: $f = <$f>::MAX;
+            #[doc = MIN_EXP!()]         const MIN_EXP: i32 = <$f>::MIN_EXP;
+            #[doc = MAX_EXP!()]         const MAX_EXP: i32 = <$f>::MAX_EXP;
+            #[doc = MIN_10_EXP!()]      const MIN_10_EXP: i32 = <$f>::MIN_10_EXP;
+            #[doc = MAX_10_EXP!()]      const MAX_10_EXP: i32 = <$f>::MAX_10_EXP;
+
+            // pi
+            #[doc = PI!()]              const PI: $f
+            =  3.14159265358979323846264338327950288;
+            #[doc = FRAC_PI_2!()]       const FRAC_PI_2: $f
+            =  1.57079632679489661923132169163975144;
+            #[doc = FRAC_PI_3!()]       const FRAC_PI_3: $f
+            =  1.04719755119659774615421446109316763;
+            #[doc = FRAC_PI_4!()]       const FRAC_PI_4: $f
+            =  0.785398163397448309615660845819875721;
+            #[doc = FRAC_PI_6!()]       const FRAC_PI_6: $f
+            =  0.52359877559829887307710723054658381;
+            #[doc = FRAC_PI_8!()]       const FRAC_PI_8: $f
+            =  0.39269908169872415480783042290993786;
+            #[doc = SQRT_PI!()]         const SQRT_PI: $f
+            =  1.77245385090551602729816748334114518;
+            #[doc = FRAC_1_PI!()]       const FRAC_1_PI: $f
+            =  0.318309886183790671537767526745028724;
+            #[doc = FRAC_1_SQRT_PI!()]  const FRAC_1_SQRT_PI: $f
+            =  0.564189583547756286948079451560772586;
+            #[doc = FRAC_2_PI!()]       const FRAC_2_PI: $f
+            =  0.636619772367581343075535053490057448;
+            #[doc = FRAC_2_SQRT_PI!()]  const FRAC_2_SQRT_PI: $f
+            =  1.12837916709551257389615890312154517;
+
+            // tau
+            #[doc = TAU!()] const TAU: $f
+            =  6.28318530717958647692528676655900577;
+            #[doc = FRAC_TAU_2!()]      const FRAC_TAU_2: $f = Self::PI;
+            #[doc = FRAC_TAU_3!()]      const FRAC_TAU_3: $f
+            =  2.09439510239319549230842892218633526;
+            #[doc = FRAC_TAU_4!()]      const FRAC_TAU_4: $f = Self::FRAC_PI_2;
+            #[doc = FRAC_TAU_5!()]      const FRAC_TAU_5: $f
+            =  1.25663706143591729538505735331180115;
+            #[doc = FRAC_TAU_6!()]      const FRAC_TAU_6: $f = Self::FRAC_PI_3;
+            #[doc = FRAC_TAU_8!()]      const FRAC_TAU_8: $f = Self::FRAC_PI_4;
+            #[doc = FRAC_TAU_9!()]      const FRAC_TAU_9: $f
+            =  0.69813170079773183076947630739544508;
+            #[doc = FRAC_TAU_12!()]     const FRAC_TAU_12: $f = Self::FRAC_PI_6;
+            #[doc = FRAC_TAU_16!()]     const FRAC_TAU_16: $f = Self::FRAC_PI_8;
+            #[doc = FRAC_TAU_24!()]     const FRAC_TAU_24: $f
+            =  0.26179938779914943653855361527329191;
+            #[doc = FRAC_TAU_72!()]     const FRAC_TAU_72: $f
+            =  0.08726646259971647884618453842443063;
+            #[doc = FRAC_TAU_360!()]    const FRAC_TAU_360: $f
+            =  0.01745329251994329576923690768488613;
+            #[doc = FRAC_360_TAU!()]    const FRAC_360_TAU: $f
+            = 57.29577951308232087679815481410517033;
+            #[doc = SQRT_TAU!()]        const SQRT_TAU: $f
+            =  2.50662827463100050241576528481104525;
+            #[doc = FRAC_1_TAU!()]      const FRAC_1_TAU: $f
+            =  0.159154943091895335768883763372514362;
+            #[doc = FRAC_1_SQRT_TAU!()] const FRAC_1_SQRT_TAU: $f
+            =  0.398942280401432677939946059934381868;
+            #[doc = FRAC_2_TAU!()]      const FRAC_2_TAU: $f = Self::FRAC_1_PI;
+            #[doc = FRAC_2_SQRT_TAU!()] const FRAC_2_SQRT_TAU: $f
+            =  0.797884560802865355879892119868763737;
+
+            // arc degrees
+            #[doc = ARC_DEGREE!()]      const ARC_DEGREE: $f = Self::FRAC_TAU_360;
+            #[doc = ARC_MINUTE!()]      const ARC_MINUTE: $f
+            =  0.00029088820866572159615394846141477;
+            #[doc = ARC_SECOND!()]      const ARC_SECOND: $f
+            =  0.00000484813681109535993589914102358;
+
+            // phi
+            #[doc = PHI!()]             const PHI: $f
+            =  1.618033988749894848204586834365638118;
+            #[doc = SQ_PHI!()]          const SQ_PHI: $f
+            =  2.618033988749894848204586834365638118;
+            #[doc = FRAC_1_PHI!()]      const FRAC_1_PHI: $f
+            =  0.618033988749894848204586834365638118;
+            #[doc = NEG_FRAC_1_PHI!()]  const NEG_FRAC_1_PHI: $f
+            = -0.618033988749894848204586834365638118;
+            #[doc = SQRT_PHI!()]        const SQRT_PHI: $f
+            =  1.272019649514068964252422461737491492;
+            #[doc = FRAC_1_SQRT_PHI!()] const FRAC_1_SQRT_PHI: $f
+            =  0.786151377757423286069558585842958929;
+            #[doc = TRIBONACCI!()]      const TRIBONACCI: $f
+            =  1.83928675521416113255185256465328660;
+
+            // integer roots
+            #[doc = SQRT_2!()]          const SQRT_2: $f
+            =  1.41421356237309504880168872420969808;
+            #[doc = FRAC_1_SQRT_2!()]   const FRAC_1_SQRT_2: $f
+            =  0.707106781186547524400844362104849039;
+            #[doc = SQRT_3!()]          const SQRT_3: $f
+            =  1.732050807568877293527446341505872367;
+            #[doc = FRAC_1_SQRT_3!()]   const FRAC_1_SQRT_3: $f
+            =  0.577350269189625764509148780501957456;
+            #[doc = SQRT_5!()]          const SQRT_5: $f
+            =  2.236067977499789696409173668731276235;
+            #[doc = SQRT_6!()]          const SQRT_6: $f
+            =  2.449489742783178098197284074705891392;
+            #[doc = SQRT_7!()]          const SQRT_7: $f
+            =  2.645751311064590590501615753639260426;
+            #[doc = SQRT_8!()]          const SQRT_8: $f
+            =  2.828427124746190097603377448419396157;
+            #[doc = SQRT_10!()]         const SQRT_10: $f
+            =  3.162277660168379331998893544432718534;
+            #[doc = SQRT_11!()]         const SQRT_11: $f
+            =  3.316624790355399849114932736670686684;
+            #[doc = SQRT_12!()]         const SQRT_12: $f
+            =  3.464101615137754587054892683011744734;
+            #[doc = CBRT_2!()]          const CBRT_2: $f
+            =  1.259921049894873164767210607278228350;
+            #[doc = CBRT_3!()]          const CBRT_3: $f
+            =  1.442249570307408382321638310780109588;
+            #[doc = FRAC_1_CBRT_3!()]   const FRAC_1_CBRT_3: $f
+            =  0.693361274350634704843352274785961795;
+
+            // other
+            #[doc = E!()]               const E: $f
+            =  2.71828182845904523536028747135266249775724709369995957496697;
+            #[doc = EGAMMA!()]          const EGAMMA: $f
+            =  0.577215664901532860606512090082402431;
+            #[doc = LOG2_E!()]          const LOG2_E: $f
+            =  1.44269504088896340735992468100189214;
+            #[doc = LOG2_10!()]         const LOG2_10: $f
+            =  3.32192809488736234787031942948939018;
+            #[doc = LOG10_E!()]         const LOG10_E: $f
+            =  0.434294481903251827651128918916605082;
+            #[doc = LOG10_2!()]         const LOG10_2: $f
+            =  0.301029995663981195213738894724493027;
+            #[doc = LN_2!()]            const LN_2: $f
+            =  0.693147180559945309417232121458176568;
+            #[doc = LN_10!()]           const LN_10: $f
+            =  2.30258509299404568401799145468436421;
+        }
+    };
+}
+impl_ext_float_const![f32, f64];
+#[cfg(feature = "nightly_float")]
+impl_ext_float_const![
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_float")))] f16,
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_float")))] f128
+];
+
+#[doc = crate::doc_private!()]
 /// Private helper struct to define manual, type-dependendent constants.
 struct TempFloat<T> {
     _marker: ::core::marker::PhantomData<T>,
 }
 macro_rules! impl_temp_float {
     () => {
-        impl_temp_float![f32: 1e-7, 1e-6, 1e-5];
-        impl_temp_float![f64: 1e-12, 1e-9, 1e-6];
+        #[cfg(feature = "nightly_float")]
+        impl_temp_float![f16: 1e-4, 1e-3, 1e-2]; // ~3–4 decimal digits of precision.
+        impl_temp_float![f32: 1e-7, 1e-6, 1e-5]; // ~7 decimal digits of precision.
+        impl_temp_float![f64: 1e-12, 1e-9, 1e-6]; // ~15–16 decimal digits of precision.
+        #[cfg(feature = "nightly_float")]
+        impl_temp_float![f128: 1e-30, 1e-27, 1e-24]; // ~33–34 decimal digits of precision.
     };
     ($f:ty: $lm:literal, $mm:literal, $hm:literal) => {
         impl TempFloat<$f> {
@@ -561,130 +674,3 @@ macro_rules! impl_temp_float {
     };
 }
 impl_temp_float![];
-
-// impl mathematical constants
-//
-// $f: the floating-point type.
-macro_rules! math_const_impls {
-($( $f:ty),+) => { $( math_const_impls![@$f]; )+ };
-(@$f:ty) => {
-
-    /// # *Mathematical constants*.
-    impl ExtFloatConst for $f {
-        const ONE: $f = 1.0;
-        const ZERO: $f = 0.0;
-        const NEG_ONE: $f = -1.0;
-        const NEG_ZERO: $f = -0.0;
-
-        // ...
-
-        const NAN:              $f = <$f>::NAN;
-        const INFINITY:         $f = <$f>::INFINITY;
-        const NEG_INFINITY:     $f = <$f>::NEG_INFINITY;
-
-        const EPSILON:          $f = <$f>::EPSILON;
-        const LOW_MARGIN:       $f = TempFloat::<$f>::LOW_MARGIN;
-        const MEDIUM_MARGIN:    $f = TempFloat::<$f>::MEDIUM_MARGIN;
-        const HIGH_MARGIN:      $f = TempFloat::<$f>::HIGH_MARGIN;
-
-        const RADIX:            u32 = <$f>::RADIX;
-        const DIGITS:           u32 = <$f>::DIGITS;
-        const MANTISSA_DIGITS:  u32 = <$f>::MANTISSA_DIGITS;
-
-        const MIN:              $f = <$f>::MIN;
-        const MIN_POSITIVE:     $f = <$f>::MIN_POSITIVE;
-        const MAX:              $f = <$f>::MAX;
-
-        const MIN_EXP:          i32 = <$f>::MIN_EXP;
-        const MAX_EXP:          i32 = <$f>::MAX_EXP;
-
-        const MIN_10_EXP:       i32 = <$f>::MIN_10_EXP;
-        const MAX_10_EXP:       i32 = <$f>::MAX_10_EXP;
-
-        /* Arc degrees */
-
-        const ARC_DEGREE:       $f = Self::FRAC_TAU_360;
-        const ARC_MINUTE:       $f =  0.00029088820866572159615394846141477;
-        const ARC_SECOND:       $f =  0.00000484813681109535993589914102358;
-
-        /* Mathematical constants related to Pi (π) */
-
-        const PI:               $f =  3.14159265358979323846264338327950288;
-        const FRAC_PI_2:        $f =  1.57079632679489661923132169163975144;
-        const FRAC_PI_3:        $f =  1.04719755119659774615421446109316763;
-        const FRAC_PI_4:        $f =  0.785398163397448309615660845819875721;
-        const FRAC_PI_6:        $f =  0.52359877559829887307710723054658381;
-        const FRAC_PI_8:        $f =  0.39269908169872415480783042290993786;
-        const SQRT_PI:          $f =  1.77245385090551602729816748334114518;
-        const FRAC_1_PI:        $f =  0.318309886183790671537767526745028724;
-        const FRAC_1_SQRT_PI:   $f =  0.564189583547756286948079451560772586;
-        const FRAC_2_PI:        $f =  0.636619772367581343075535053490057448;
-        const FRAC_2_SQRT_PI:   $f =  1.12837916709551257389615890312154517;
-
-        /* Mathematical constants related to Tau (τ) */
-
-        const TAU: $f= 6.28318530717958647692528676655900577;
-
-        const FRAC_TAU_2:       $f = Self::PI;
-        const FRAC_TAU_3:       $f =  2.09439510239319549230842892218633526;
-        const FRAC_TAU_4:       $f = Self::FRAC_PI_2;
-        const FRAC_TAU_5:       $f =  1.25663706143591729538505735331180115;
-        const FRAC_TAU_6:       $f = Self::FRAC_PI_3;
-        const FRAC_TAU_8:       $f = Self::FRAC_PI_4;
-        const FRAC_TAU_9:       $f =  0.69813170079773183076947630739544508;
-        const FRAC_TAU_12:      $f = Self::FRAC_PI_6;
-        const FRAC_TAU_16:      $f = Self::FRAC_PI_8;
-        const FRAC_TAU_24:      $f =  0.26179938779914943653855361527329191;
-        const FRAC_TAU_72:      $f =  0.08726646259971647884618453842443063;
-        const FRAC_TAU_360:     $f =  0.01745329251994329576923690768488613;
-        const FRAC_360_TAU:     $f = 57.29577951308232087679815481410517033;
-
-        const SQRT_TAU:         $f =  2.50662827463100050241576528481104525;
-
-        const FRAC_1_TAU:       $f =  0.159154943091895335768883763372514362;
-        const FRAC_1_SQRT_TAU:  $f =  0.398942280401432677939946059934381868;
-        const FRAC_2_TAU:       $f = Self::FRAC_1_PI;
-        const FRAC_2_SQRT_TAU:  $f =  0.797884560802865355879892119868763737;
-
-        /* Mathematical constants related to Phi (φ) */
-
-        const PHI:              $f =  1.618033988749894848204586834365638118;
-        const SQ_PHI:           $f =  2.618033988749894848204586834365638118;
-        const FRAC_1_PHI:       $f =  0.618033988749894848204586834365638118;
-        const NEG_FRAC_1_PHI:   $f = -0.618033988749894848204586834365638118;
-        const SQRT_PHI:         $f =  1.272019649514068964252422461737491492;
-        const FRAC_1_SQRT_PHI:  $f =  0.786151377757423286069558585842958929;
-        const TRIBONACCI:       $f =  1.83928675521416113255185256465328660;
-
-        /* Mathematical constants related to integer roots */
-
-        const SQRT_2:           $f = 1.41421356237309504880168872420969808;
-        const FRAC_1_SQRT_2:    $f = 0.707106781186547524400844362104849039;
-        const SQRT_3:           $f = 1.732050807568877293527446341505872367;
-        const FRAC_1_SQRT_3:    $f = 0.577350269189625764509148780501957456;
-        const SQRT_5:           $f = 2.236067977499789696409173668731276235;
-        const SQRT_6:           $f = 2.449489742783178098197284074705891392;
-        const SQRT_7:           $f = 2.645751311064590590501615753639260426;
-        const SQRT_8:           $f = 2.828427124746190097603377448419396157;
-        const SQRT_10:          $f = 3.162277660168379331998893544432718534;
-        const SQRT_11:          $f = 3.316624790355399849114932736670686684;
-        const SQRT_12:          $f = 3.464101615137754587054892683011744734;
-
-        const CBRT_2:           $f = 1.259921049894873164767210607278228350;
-        const CBRT_3:           $f = 1.442249570307408382321638310780109588;
-        const FRAC_1_CBRT_3:    $f = 0.693361274350634704843352274785961795;
-
-        /* Other mathematical constants */
-
-        const E:                $f = 2.71828182845904523536028747135266249775724709369995957496697;
-        const EGAMMA:           $f = 0.577215664901532860606512090082402431;
-        const LOG2_E:           $f = 1.44269504088896340735992468100189214;
-        const LOG2_10:          $f = 3.32192809488736234787031942948939018;
-        const LOG10_E:          $f = 0.434294481903251827651128918916605082;
-        const LOG10_2:          $f = 0.301029995663981195213738894724493027;
-        const LN_2:             $f = 0.693147180559945309417232121458176568;
-        const LN_10:            $f = 2.30258509299404568401799145468436421;
-    }
-};
-}
-math_const_impls![f32, f64];
