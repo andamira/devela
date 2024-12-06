@@ -75,7 +75,7 @@ publish = true
 bench = false
 
 
-[features] # 211/300 (89 remaining), 98 visible, 113 hidden
+[features] # 212/300 (88 remaining), 99 visible, 113 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -117,8 +117,9 @@ alloc = [ # enables `alloc` functionality
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
 	"atomic?/std", "bytemuck?/extern_crate_std", "jiff?/std", "js-sys?/std",
-	"log?/std", "memchr?/std", "nc?/std", "rand_core?/std", "regex-lite?/std",
-	"rustix?/std", "wasm-bindgen?/std", "web-sys?/std", "wide?/std",
+	"log?/std", "memchr?/std", "nc?/std", "rand_core?/std", "raw-cpuid?/std",
+	"regex-lite?/std", "rustix?/std", "wasm-bindgen?/std", "web-sys?/std",
+	"wide?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
@@ -557,13 +558,13 @@ _string_all = [
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-dep_all = [ # enables all 27 optional dependencies:
+dep_all = [ # enables all 28 optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
-	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad", "dep_nc",
-	"dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon", "dep_regex_lite",
-	"dep_rodio", "dep_rustix", "dep_stringzilla", "dep_sysinfo", "dep_tinyaudio",
-	"dep_unicode_segmentation", "dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys",
-	"dep_wide",
+	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
+	"dep_nc", "dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon",
+	"dep_raw_cpuid", "dep_regex_lite", "dep_rodio", "dep_rustix", "dep_stringzilla",
+	"dep_sysinfo", "dep_tinyaudio", "dep_unicode_segmentation", "dep_unicode_width",
+	"dep_wasm_bindgen", "dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 
 dep_atomic = ["dep:atomic"]                                   # work::sync
@@ -582,7 +583,8 @@ dep_portable_atomic = ["dep:portable-atomic"]                 # work::sync
 dep_pyo3 = ["dep:pyo3", "std"]                                # lang
 dep_rand_core = ["dep:rand_core"]                             # num::rand
 dep_rayon = ["dep:rayon", "sysinfo?/multithread"]             # work::thread
-dep_regex_lite = ["dep:regex-lite", "std"]                    # text
+dep_raw_cpuid = ["dep:raw-cpuid"]                             # sys::arch
+dep_regex_lite = ["dep:regex-lite", "std"]                    # text::parse
 dep_rodio = ["dep:rodio"]                                     # sys::sound
 dep_rustix = ["dep:rustix"]                                   # sys::os
 dep_stringzilla = ["dep:stringzilla"]                         # text
@@ -717,6 +719,11 @@ default-features = false # 5 https://docs.rs/crate/rand_core/latest/features
 version = "1.10.0" # ✗ https://github.com/rayon-rs/rayon/commits/main/
 optional = true # unsafe
 default-features = false # 1 https://docs.rs/crate/rayon/latest/features
+
+[dependencies.raw-cpuid] # https://crates.io/crates/raw-cpuid
+version = "11.2.0" # ✓ https://github.com/gz/rust-cpuid/blob/master/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 9 https://docs.rs/crate/raw-cpuid/latest/features
 
 [dependencies.regex-lite] # https://crates.io/crates/regex-lite
 version = "0.1.6" # ✗ https://github.com/rust-lang/regex/commits/master/regex-lite

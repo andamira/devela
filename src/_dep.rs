@@ -30,7 +30,7 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* 27 optional dependencies */
+/* 28 optional dependencies */
 
 reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
     doc: "A generic atomic wrapper type."
@@ -80,6 +80,9 @@ reexport! { optional_crate (safe) "dep_rand_core", "rand_core", rand_core,
 }
 reexport! { optional_crate (safe) "dep_rayon", "rayon", rayon,
     doc: "Simple work-stealing parallelism for Rust."
+}
+reexport! { optional_crate (unsafe) "dep_raw_cpuid", "raw-cpuid", raw_cpuid,
+    doc: "A library to parse the x86 CPUID instruction."
 }
 reexport! { optional_crate (safe) "dep_regex_lite", "regex-lite", regex_lite,
     doc: " A lightweight regex engine that optimizes for binary size and compilation time."
