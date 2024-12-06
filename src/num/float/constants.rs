@@ -457,7 +457,7 @@ crate::CONST! {
     EGAMMA = r#"$ γ $
     ([A001620](https://oeis.org/A001620/constant))
     `≈ 0.57721566…`
-    <p>*Gamma, or the Euler-Mascheroni constant*</p>."#;
+    <p>*Gamma, or the Euler-Mascheroni constant.*</p>"#;
     LOG2_E = r#"$ \log_2{e} $
     ([A007525](https://oeis.org/A007525/constant))
     `≈ 1.44269504…`"#;

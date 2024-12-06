@@ -756,6 +756,13 @@ macro_rules! custom_impls {
 
             /// Returns itself clamped between `min` and `max`, ignoring `NaN`.
             ///
+            /// # Example
+            /// ```
+            /// # use devela::Float;
+            #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").clamp(40., 80.), 50.];"]]
+            #[doc = cc!["assert_eq![Float(100.0_", sfy![$f], ").clamp(40., 80.), 80.];"]]
+            #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp(40., 80.), 40.];"]]
+            /// ```
             /// See also: [`clamp_nan`][Self::clamp_nan], [`clamp_total`][Self::clamp_total].
             // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
@@ -763,6 +770,13 @@ macro_rules! custom_impls {
 
             /// Returns itself clamped between `min` and `max`, using total order.
             ///
+            /// # Example
+            /// ```
+            /// # use devela::Float;
+            #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").clamp_total(40., 80.), 50.];"]]
+            #[doc = cc!["assert_eq![Float(100.0_", sfy![$f], ").clamp_total(40., 80.), 80.];"]]
+            #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp_total(40., 80.), 40.];"]]
+            /// ```
             /// See also: [`clamp`][Self::clamp], [`clamp_nan`][Self::clamp_nan].
             #[must_use]
             #[cfg(feature = $cmp)]
@@ -793,6 +807,13 @@ macro_rules! custom_impls {
 
             /// Returns itself clamped between `min` and `max`, propagating `NaN`.
             ///
+            /// # Example
+            /// ```
+            /// # use devela::Float;
+            #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").clamp_nan(40., 80.), 50.];"]]
+            #[doc = cc!["assert_eq![Float(100.0_", sfy![$f], ").clamp_nan(40., 80.), 80.];"]]
+            #[doc = cc!["assert_eq![Float(10.0_", sfy![$f], ").clamp_nan(40., 80.), 40.];"]]
+            /// ```
             /// See also: [`clamp`][Self::clamp], [`clamp_total`][Self::clamp_total].
             #[must_use]
             pub const fn clamp_nan(self, min: $f, max: $f) -> Float<$f> {
@@ -801,6 +822,12 @@ macro_rules! custom_impls {
 
             /// Returns the maximum between itself and `other`, propagating `Nan`.
             ///
+            /// # Example
+            /// ```
+            /// # use devela::Float;
+            #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").max_nan(80.), 80.];"]]
+            #[doc = cc!["assert_eq![Float(100.0_", sfy![$f], ").max_nan(80.), 100.];"]]
+            /// ```
             /// See also: [`max_total`][Self::max_total].
             // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
             #[must_use]
@@ -820,6 +847,12 @@ macro_rules! custom_impls {
 
             /// Returns the minimum between itself and `other`, propagating `Nan`.
             ///
+            /// # Example
+            /// ```
+            /// # use devela::Float;
+            #[doc = cc!["assert_eq![Float(50.0_", sfy![$f], ").min_nan(80.), 50.];"]]
+            #[doc = cc!["assert_eq![Float(100.0_", sfy![$f], ").min_nan(80.), 80.];"]]
+            /// ```
             /// See also: [`min_total`][Self::min_total].
             // WAIT: [float_minimum_maximum](https://github.com/rust-lang/rust/issues/91079)
             #[must_use]
@@ -827,7 +860,7 @@ macro_rules! custom_impls {
             pub const fn min_nan(self, other: $f) -> Float<$f> {
                 if self.0 < other {
                     self
-                } else if self.0 < other {
+                } else if self.0 > other {
                     Float(other)
                 } else if self.0 == other {
                     iif![self.is_sign_negative() && other.is_sign_positive(); self; Float(other)]

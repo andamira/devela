@@ -67,7 +67,7 @@ pub(crate) FORMULA_EXP_M1_SERIES = r#"$$
 e^x -1 = x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots $$
 For values $ x < 0 $ it uses the identity: $$ e^x -1 = -\frac{1}{e^{-x}+1} $$
 For values $ x > 0.001 $ it uses [`exp_series`][Self::exp_series]."#;
-pub(crate) FORMULA_EXP2_SERIES = r#"$$
+pub(crate) FORMULA_EXP2_SERIES = r#"
 The series based on the formula $ 2^x = e^{x \ln(2)} $ is:
 $$ 2^x = 1 + x \ln(2) + \frac{(x \ln(2))^2}{2!} +
 \frac{(x \ln(2))^3}{3!} + \frac{(x \ln(2))^4}{4!} + \cdots $$"#;
