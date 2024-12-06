@@ -757,6 +757,7 @@ macro_rules! custom_impls {
             /// Returns itself clamped between `min` and `max`, ignoring `NaN`.
             ///
             /// See also: [`clamp_nan`][Self::clamp_nan], [`clamp_total`][Self::clamp_total].
+            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
             pub fn clamp(self, min: $f, max: $f) -> Float<$f> { self.max(min).min(max) }
 

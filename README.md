@@ -26,7 +26,7 @@ e.g. it's not possible to enable at the same time `std` and `no_std`.
 
 - [Development] features (`__dbg`, …).
 - [Environment] features (`alloc`, `std`, `no_std`).
-- [Module] features (`all`, `data`, `num`, `rend`, …).
+- [Module] features (`code`, `data`, `lang`, `media`, `num`, `sys`, `text`, `ui`, `work`).
 - [Safety] features (`safe*`, `unsafe*`).
 - [Nightly] features (`nightly_*`).
 - [Capability] features (`_*`).

@@ -641,7 +641,7 @@ macro_rules! impl_int {
             #[doc = concat!("assert_eq![Int(0_", stringify!($t), ").midpoint(4), 2];")]
             #[doc = concat!("assert_eq![Int(1_", stringify!($t), ").midpoint(4), 2];")]
             /// ```
-            // WAIT: [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
+            // WAIT: [num_midpoint](https://github.com/rust-lang/rust/pull/131784)
             // NOTE: based on Rust's std implementation.
             pub const fn midpoint(self, other: $t) -> Int<$t> {
                 // Use the well known branchless algorithm from Hacker's Delight to compute

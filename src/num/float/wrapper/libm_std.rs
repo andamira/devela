@@ -202,6 +202,7 @@ mod _libm {
                 }
 
                 /// A number that represents the sign of `x`, propagating `NaN`.
+                // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
                 #[must_use]
                 pub fn signum(self) -> Float<$f> {
                     if self.0.is_nan() {
@@ -554,12 +555,14 @@ mod _no_std_no_libm {
                 }
 
                 /// The maximum between itself and `other`, ignoring `NaN`.
+                // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
                 #[must_use]
                 pub fn max(self, other: $f) -> Float<$f> {
                     if self.0.is_nan() || self.0 < other { Float(other) } else { self }
                 }
 
                 /// The minimum between itself and other, ignoring `NaN`.
+                // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
                 #[must_use]
                 pub fn min(self, other: $f) -> Float<$f> {
                     if other.is_nan() || self.0 < other { self } else { Float(other) }

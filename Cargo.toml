@@ -330,6 +330,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.?? [box_into_inner](https://github.com/rust-lang/rust/issues/80437)
 	# 1.?? [cfg(accessible(::path::to::thing))](https://github.com/rust-lang/rust/issues/64797)
 	# 1.?? [cfg(version(..))](https://github.com/rust-lang/rust/issues/64796)
+	# 1.?? [const_async_blocks](https://github.com/rust-lang/rust/issues/85368)
 	# 1.?? [const_cmp](https://github.com/rust-lang/rust/issues/92391) REMOVED
 	# 1.?? [const_for](https://github.com/rust-lang/rust/issues/87575) depends on const_trait_impl
 	# 1.?? [const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
@@ -379,6 +380,8 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 
 #* docs capabilities *#
 # ---------------------
+# WAIT [\href does not work in display mode](https://github.com/KaTeX/KaTeX/issues/3571)
+# WAIT [support \SI and \si from siunitx](https://github.com/KaTeX/KaTeX/issues/817)
 
 # The most complete versions of the documentation:
 _docsrs = ["_docsrs_min", "_docs_max"]
@@ -941,7 +944,7 @@ check-cfg = [ # Allowed config flags:
 ]
 
 
-# [[bench]]
+# benches
 # ==============================================================================
 
 
