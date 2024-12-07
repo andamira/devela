@@ -24,7 +24,9 @@ mod block;
 // structural access
 crate::items! {
     mod doc_inline {
-        pub use super::{coroutine::*, ext::*, reexports::*, waker::*};
+        #![allow(unused_imports, reason = "feature-gated")]
+        pub use super::coroutine::all::*;
+        pub use super::{ext::*, reexports::*, waker::*};
         #[cfg(feature = "std")]
         pub use super::block::*;
     }

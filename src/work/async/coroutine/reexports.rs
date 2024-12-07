@@ -3,7 +3,7 @@
 //! Reexported items.
 //
 
-use crate::code::reexport;
+use crate::reexport;
 
 reexport! { rust: core::ops,
     extra_features: "nightly_coro",

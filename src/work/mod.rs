@@ -16,7 +16,9 @@ mod thread;
 // structural access
 crate::items! {
     mod doc_inline {
-        pub use super::{r#async::all::*, sync::all::*, thread::all::*};
+        pub use super::r#async::all::*;
+        #[allow(unused_imports, reason = "feature-gated")]
+        pub use super::{sync::all::*, thread::all::*};
     }
     #[allow(unused_imports)] pub use doc_inline::*;
     pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
