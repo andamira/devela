@@ -22,20 +22,18 @@ mod own; // Own
 mod panic;
 mod reexports;
 mod value_quant; // ValueQuant
-#[allow(unused_imports)]
-pub use {
-    all_error::*, chain_hook::*, ext::*, mismatch::*, opt_res::all::*, own::*, panic::all::*,
-    reexports::*, value_quant::*,
-};
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
     mod doc_inline {
         pub use super::{
             all_error::*, chain_hook::*, ext::*, mismatch::*, opt_res::all::*, own::*,
             panic::all::*, reexports::*, value_quant::*,
         };
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
-    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

@@ -38,16 +38,21 @@ mod reexports; // re-exported items
 mod enumset; // enumset!
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use {doc_inline::*, private::*};
+
     mod doc_inline {
         pub use super::{
-            asserts::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*, iif::*,
-            impl_trait::*, items::*, paste::*, r#const::*, reexports::*,
+            asserts::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*,
+            iif::*, impl_trait::*, items::*, paste::*, r#const::*, reexports::*,
         };
         #[cfg(_bit_·)]
         pub use super::enumset::*;
     }
-    #[allow(unused_imports)] pub use {doc_inline::*, private::*};
-    pub(crate) mod all { #[doc(inline)] pub use super::doc_inline::*; }
-    pub(crate) mod private { pub(crate) use super::{_doc::*, _reexport::*}; }
+    pub(crate) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
+    pub(crate) mod private {
+        pub(crate) use super::{_doc::*, _reexport::*};
+    }
 }
