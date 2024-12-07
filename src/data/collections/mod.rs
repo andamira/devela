@@ -25,9 +25,12 @@ mod tuple; // Tuple, TupleFmt, TupleEnumRef, TupleEnumMut
 mod vec;
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
     mod doc_inline {
         pub use super::{array::all::*, list::all::*, reexports::*, traits::all::*};
+
         #[cfg(_destaque_·)]
         pub use super::destaque::all::*;
         // #[cfg(_graph_·)]
@@ -41,6 +44,7 @@ crate::items! {
         #[cfg(feature = "alloc")]
         pub use super::vec::all::*;
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
-    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

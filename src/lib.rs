@@ -163,9 +163,9 @@ mod items_hidden {
     pub use super::sys::items_hidden::*;
 }
 // private items, crate-use only
-pub(crate) use private::*;
-mod private {
-    pub(crate) use super::code::private::*;
+pub(crate) use items_private::*;
+mod items_private {
+    pub(crate) use super::code::items_private::*;
 }
 
 /// <span class='stab portability' title='re-exported `core`'>`core`</span>

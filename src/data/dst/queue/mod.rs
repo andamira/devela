@@ -4,7 +4,7 @@
 //
 
 use super::{DstArray, DstBuf};
-use crate::code::PhantomData;
+use crate::PhantomData;
 
 mod impl_traits;
 mod methods;

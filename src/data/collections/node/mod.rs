@@ -8,10 +8,15 @@
 
 mod index;
 mod node;
-pub use {index::*, node::*};
 
-pub(crate) mod all {
-    #[allow(unused_imports)]
-    #[doc(inline)]
-    pub use super::{index::*, node::*};
+// structural access
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
+    mod doc_inline {
+        pub use super::{index::*, node::*};
+    }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

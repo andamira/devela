@@ -13,7 +13,7 @@
 // - [Macros By Example](https://doc.rust-lang.org/reference/macros-by-example.html)
 // - [Specification](https://doc.rust-lang.org/reference/macro-ambiguity.html)
 
-// private
+// private modules
 mod _doc;
 mod _reexport;
 
@@ -39,7 +39,7 @@ mod enumset; // enumset!
 
 // structural access
 crate::items! { #[allow(unused_imports)]
-    pub use {doc_inline::*, private::*};
+    pub use {doc_inline::*, items_private::*};
 
     mod doc_inline {
         pub use super::{
@@ -52,7 +52,7 @@ crate::items! { #[allow(unused_imports)]
     pub(crate) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
     }
-    pub(crate) mod private {
+    pub(crate) mod items_private {
         pub(crate) use super::{_doc::*, _reexport::*};
     }
 }

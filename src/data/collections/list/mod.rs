@@ -10,8 +10,14 @@
 
 mod r#const;
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::r#const::*;
+// structural access
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
+    mod doc_inline {
+        pub use super::r#const::*;
+    }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

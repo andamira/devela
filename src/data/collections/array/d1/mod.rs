@@ -3,26 +3,25 @@
 //! 1-dimensional array
 //
 
-// without re-exports
 mod impl_traits;
 mod methods;
-// with re-exports
-mod definitions;
-#[allow(unused_imports)]
-pub use definitions::*;
+
+mod definitions; // Array
 
 #[cfg(feature = "unsafe_array")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_array")))]
-mod uninit;
-#[allow(unused_imports)]
-#[cfg(feature = "unsafe_array")]
-pub use uninit::*;
+mod uninit; // UninitArray
 
-pub(crate) mod all {
-    #[doc(inline)]
-    pub use super::definitions::*;
+// structural access
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
 
-    #[doc(inline)]
-    #[cfg(feature = "unsafe_array")]
-    pub use super::uninit::*;
+    mod doc_inline {
+        pub use super::definitions::*;
+        #[cfg(feature = "unsafe_array")]
+        pub use super::uninit::*;
+    }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

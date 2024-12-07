@@ -20,7 +20,7 @@ pub mod result;
 
 // structural access
 crate::items! { #[allow(unused_imports)]
-    pub use {doc_hidden::*, doc_inline::*, private::*};
+    pub use {doc_hidden::*, doc_inline::*, items_private::*};
 
     mod doc_inline {
         pub use super::{any::all::*, default::*, r#type::*, reexports::*};
@@ -31,7 +31,7 @@ crate::items! { #[allow(unused_imports)]
     pub(super) mod all { #[doc(inline)]
         pub use super::{doc_hidden::*, doc_inline::*};
     }
-    pub(super) mod private {
+    pub(super) mod items_private {
         pub(crate) use super::macros::private::*;
     }
 }

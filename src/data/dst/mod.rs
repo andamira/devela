@@ -10,13 +10,10 @@
 //! # Derived Work
 #![doc = include_str!("./MODIFICATIONS.md")]
 //
+//
 #![allow(clippy::result_unit_err)] // IMPROVE
 
 mod helpers;
-use helpers::{
-    check_fat_pointer, decompose_pointer, list_push_gen, make_fat_ptr, round_to_words,
-    store_metadata,
-};
 
 #[cfg(test)]
 mod tests;
@@ -26,9 +23,20 @@ mod queue;
 mod stack;
 mod value;
 
-pub use all::*;
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::{buffer::*, queue::*, stack::*, value::*};
+// structural access
+crate::items! { #[allow(unused_imports)]
+    pub use {doc_inline::*, items_private::*} ;
+
+    mod doc_inline {
+        pub use super::{buffer::*, queue::*, stack::*, value::*};
+    }
+    pub(crate) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
+    mod items_private {
+        pub(super) use super::helpers::{
+            check_fat_pointer, decompose_pointer, list_push_gen, make_fat_ptr,
+            round_to_words, store_metadata,
+        };
+    }
 }

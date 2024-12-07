@@ -3,8 +3,6 @@
 //! Stacks.
 //
 
-mod general;
-
-mod own;
-
 mod convert;
+mod general;
+mod own;

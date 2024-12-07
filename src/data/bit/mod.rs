@@ -3,21 +3,24 @@
 //! Bit-focused types and traits.
 //
 
-mod r#trait;
+mod r#trait; // BitOps
 
 #[cfg(_bit_·)]
 crate::items! {
-    mod field;
-    mod wrapper;
+    mod field; // bitfield
+    mod wrapper; // Bitwise
 }
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
     mod doc_inline {
-        pub use super::r#trait::BitOps;
+        pub use super::r#trait::*;
         #[cfg(_bit_·)]
-        pub use super::{field::bitfield, wrapper::Bitwise};
+        pub use super::{field::*, wrapper::*};
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
-    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }
