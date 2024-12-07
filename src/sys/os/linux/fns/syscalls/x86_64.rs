@@ -4,9 +4,10 @@
 //
 // - https://arm64.syscall.sh/
 
+use super::shared_docs::*;
 use crate::{asm, c_int, c_uint, c_ulong, LinuxSigaction, LinuxTimespec, LINUX_SYS_X86_64 as SYS};
 
-#[doc = include_str!("./doc/Sys_exit.md")]
+#[doc = SYS_EXIT!()]
 pub unsafe fn linux_sys_exit(status: c_int) -> ! {
     unsafe {
         asm!(
@@ -19,7 +20,7 @@ pub unsafe fn linux_sys_exit(status: c_int) -> ! {
     }
 }
 
-#[doc = include_str!("./doc/Sys_read.md")]
+#[doc = SYS_READ!()]
 #[must_use]
 pub unsafe fn linux_sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     let result;
@@ -40,7 +41,7 @@ pub unsafe fn linux_sys_read(fd: c_int, buf: *mut u8, count: usize) -> isize {
     result
 }
 
-#[doc = include_str!("./doc/Sys_write.md")]
+#[doc = SYS_WRITE!()]
 #[must_use]
 pub unsafe fn linux_sys_write(fd: c_int, buf: *const u8, count: usize) -> isize {
     let result;
@@ -61,7 +62,7 @@ pub unsafe fn linux_sys_write(fd: c_int, buf: *const u8, count: usize) -> isize 
     result
 }
 
-#[doc = include_str!("./doc/Sys_nanosleep.md")]
+#[doc = SYS_NANOSLEEP!()]
 #[must_use]
 pub unsafe fn linux_sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTimespec) -> isize {
     let result;
@@ -81,7 +82,7 @@ pub unsafe fn linux_sys_nanosleep(req: *const LinuxTimespec, rem: *mut LinuxTime
     result
 }
 
-#[doc = include_str!("./doc/Sys_ioctl.md")]
+#[doc = SYS_IOCTL!()]
 #[must_use]
 pub unsafe fn linux_sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isize {
     let result;
@@ -102,7 +103,7 @@ pub unsafe fn linux_sys_ioctl(fd: c_int, request: c_ulong, argp: *mut u8) -> isi
     result
 }
 
-#[doc = include_str!("./doc/Sys_getrandom.md")]
+#[doc = SYS_GETRANDOM!()]
 #[must_use]
 pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -> isize {
     let result;
@@ -123,7 +124,7 @@ pub unsafe fn linux_sys_getrandom(buffer: *mut u8, size: usize, flags: c_uint) -
     result
 }
 
-#[doc = include_str!("./doc/Sys_getpid.md")]
+#[doc = SYS_GETPID!()]
 #[must_use]
 pub unsafe fn linux_sys_getpid() -> i32 {
     let result: isize;
@@ -139,7 +140,7 @@ pub unsafe fn linux_sys_getpid() -> i32 {
     result as i32
 }
 
-#[doc = include_str!("./doc/Sys_rt_sigaction.md")]
+#[doc = SYS_RT_SIGACTION!()]
 #[must_use]
 pub unsafe fn linux_sys_rt_sigaction(
     sig: c_int,
