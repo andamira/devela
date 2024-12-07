@@ -10,11 +10,14 @@
 mod char;
 mod wrapper;
 
-#[allow(unused_imports)]
-pub use {char::AsciiChar, wrapper::Ascii};
+// structural access
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::{char::AsciiChar, wrapper::Ascii};
+    mod doc_inline {
+        pub use super::{char::AsciiChar, wrapper::Ascii};
+    }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

@@ -16,11 +16,14 @@ mod tests;
 mod definitions;
 mod namespace;
 mod reexports;
-#[allow(unused_imports)]
-pub use {definitions::*, namespace::*, reexports::*};
 
-pub(crate) mod all {
-    #[doc(inline)]
+// structural access
+crate::items! {
     #[allow(unused_imports)]
-    pub use super::{definitions::*, namespace::*, reexports::*};
+    pub use {doc_inline::*};
+
+    mod doc_inline {
+        pub use super::{definitions::*, namespace::*, reexports::*};
+    }
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

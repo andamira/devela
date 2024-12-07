@@ -9,33 +9,28 @@
 //
 
 mod r#trait; // Grapheme
-#[allow(unused_imports)]
-pub use r#trait::*;
 
 #[cfg(feature = "_string_nonul")]
 mod nonul;
 #[cfg(feature = "_string_u8")]
 mod string_u8;
-
 #[cfg(feature = "alloc")]
 mod string;
 
-#[allow(unused_imports)]
-pub use all::*;
-pub(crate) mod all {
-    #![allow(unused_imports)]
+// structural access
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
 
-    #[doc(inline)]
-    pub use super::r#trait::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "_string_nonul")]
-    pub use super::nonul::*;
-    #[doc(inline)]
-    #[cfg(feature = "_string_u8")]
-    pub use super::string_u8::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "alloc")]
-    pub use super::string::*;
+    mod doc_inline {
+        pub use super::r#trait::*;
+        #[cfg(feature = "_string_nonul")]
+        pub use super::nonul::*;
+        #[cfg(feature = "_string_u8")]
+        pub use super::string_u8::*;
+        #[cfg(feature = "alloc")]
+        pub use super::string::*;
+    }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }
