@@ -3,6 +3,7 @@
 //! Floating point functionality.
 //
 
+mod alias; // fsize
 mod constants; // ExtFloatConst
 mod reexports;
 
@@ -18,7 +19,8 @@ crate::items! { #[allow(unused_imports)]
     pub use doc_inline::*;
 
     mod doc_inline {
-        pub use super::{constants::*, reexports::*};
+        pub use super::{alias::*, constants::*, reexports::*};
+
         #[cfg(_float_·)] #[allow(unused_imports)]
         pub use super::{ext_float::*, wrapper::*, shared_docs::*};
     }

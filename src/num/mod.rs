@@ -11,23 +11,17 @@
 
 mod _private; // upcasted_op!, impl_ops!
 
-mod alias; // fsize, [i|u]size_[down|up]
 mod cmp; // Compare
 mod error; // NumError, NumResult
-mod float; // Float, ExtFloat, ExtFloatConst
+mod float; // fsize, ExtFloat, ExtFloatConst, Float
+mod frac; // Frac
+mod int; // [i|u]size_[down|up], Int
 mod interval; // Interval
 mod no; // NoNum
 mod primitive; // Cast, Primitive[Cast|Join|Split]
 mod sign; // Sign
 mod traits; // Num, NumRef
 mod unit; // Unit, Unit[Bi|Si]
-
-#[cfg(_int_·)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_int_·)))]
-mod frac;
-#[cfg(_int_·)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_int_·)))]
-mod int;
 
 pub mod algebra;
 pub mod logic;
@@ -47,13 +41,12 @@ pub mod wave;
 crate::items! { #[allow(unused_imports)]
     pub use {doc_hidden::*, doc_inline::*, items_private::*};
 
-    mod doc_inline {
+    mod doc_inline { #[allow(unused_imports, reason = "frac")]
         pub use super::{
-            alias::*, cmp::all::*, error::*, float::all::*, interval::*, no::*,
-            primitive::all::*, sign::*, traits::*, unit::all::*,
+            cmp::all::*, error::*, float::all::*, frac::all::*, int::all::*,
+            interval::*, no::*, primitive::all::*, sign::*, traits::*,
+            unit::all::*,
         };
-        #[cfg(_int_·)]
-        pub use super::{frac::all::*, int::all::*};
         #[cfg(feature = "geom")]
         pub use super::geom::all::*;
         #[cfg(feature = "rand")]
