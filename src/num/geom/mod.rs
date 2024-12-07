@@ -3,14 +3,16 @@
 //! Geometric types and operations, spatial constructs and analysis.
 //
 
-// mod algebra;
 mod shape;
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
     mod doc_inline {
-        pub use super::{ /* algebra::all::*, */ shape::all::*};
+        pub use super::shape::all::*;
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
-    pub(crate) mod all { #[doc(inline)] pub use super::doc_inline::*; }
+    pub(crate) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

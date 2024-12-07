@@ -7,11 +7,15 @@
 
 mod option;
 mod reexports;
-#[allow(unused_imports)]
-pub use {option::*, reexports::*};
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::{option::*, reexports::*};
+// structural access
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
+    mod doc_inline {
+        pub use super::{option::*, reexports::*};
+    }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

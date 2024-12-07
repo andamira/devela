@@ -43,7 +43,7 @@ pub use assert_eq_all;
 /// # Examples
 /// The following examples compile:
 /// ```
-/// # use devela::code::assert_approx_eq_all;
+/// # use devela::assert_approx_eq_all;
 /// assert_approx_eq_all![tolerance: 0.01, 1.0, 1.001, 0.999]; // up to 0.01 away from 1.0
 /// assert_approx_eq_all![tolerance: 1_u32, 4, 3, 5]; // up to 1 away from 4
 ///
@@ -53,23 +53,23 @@ pub use assert_eq_all;
 /// ```
 /// The following examples panic:
 /// ```should_panic
-/// # use devela::code::assert_approx_eq_all;
+/// # use devela::assert_approx_eq_all;
 /// assert_approx_eq_all![tolerance: 0.01, 1.0, 1.001, 0.989]; // |0.989 - 1.0| > |0.01|
 /// ```
 /// ```should_panic
-/// # use devela::code::assert_approx_eq_all;
+/// # use devela::assert_approx_eq_all;
 /// assert_approx_eq_all![tolerance: 1_u32, 4, 3, 5, 6]; // |6 - 4| > |1|
 /// ```
 /// ```should_panic
-/// # use devela::code::assert_approx_eq_all;
+/// # use devela::assert_approx_eq_all;
 /// assert_approx_eq_all![tolerance: 1_u32, 3, 4, 5]; // |5 - 3| > |1|
 /// ```
 /// ```should_panic
-/// # use devela::code::assert_approx_eq_all;
+/// # use devela::assert_approx_eq_all;
 /// assert_approx_eq_all![tolerance: -0.01, 1.0, 1.001, 0.999]; // tolerance: -0.01 < 0
 /// ```
 /// ```should_panic
-/// # use devela::code::assert_approx_eq_all;
+/// # use devela::assert_approx_eq_all;
 /// assert_approx_eq_all![tolerance: -1_i32, 4, 3, 5]; // tolerance: -1 < 0
 /// ```
 #[macro_export]

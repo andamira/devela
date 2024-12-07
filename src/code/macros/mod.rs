@@ -43,8 +43,9 @@ crate::items! { #[allow(unused_imports)]
 
     mod doc_inline {
         pub use super::{
-            asserts::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*, ident::*,
-            iif::*, impl_trait::*, items::*, paste::*, r#const::*, reexports::*,
+            asserts::all::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*,
+            ident::*, iif::*, impl_trait::*, items::*, paste::*, r#const::*,
+            reexports::*,
         };
         #[cfg(_bit_·)]
         pub use super::enumset::*;

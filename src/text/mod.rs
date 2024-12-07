@@ -26,7 +26,9 @@ crate::items! { #[allow(unused_imports)]
     pub use {doc_hidden::*, doc_inline::*};
 
     mod doc_inline {
-        pub use super::{ascii::all::*, char::all::*, error::*, grapheme::all::*, parse::*};
+        pub use super::{
+            ascii::all::*, char::all::*, error::*, grapheme::all::*, parse::all::*,
+        };
     }
     mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
         pub use super::{fmt::all::*, str::all::*};

@@ -18,7 +18,6 @@ crate::items! {
         pub use super::{byte::*, expr::size_of_expr};
         #[cfg(feature = "bit")]
         pub use super::bit::*;
-        #[cfg(feature = "alloc")] pub use super::heap::*; // WIP
     }
     pub(super) mod items_hidden { #[doc(hidden)]
         pub use super::expr::__size_of_expr;

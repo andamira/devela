@@ -3,14 +3,18 @@
 //! Linear algebra.
 //
 
-// mod matrix;
+// mod matrix; // TODO
 mod vector;
 
-// pub use matrix::*;
-pub use vector::*;
-
-pub(crate) mod all {
-    #[doc(inline)]
+// structural access
+crate::items! {
     #[allow(unused_imports)]
-    pub use super::vector::*;
+    pub use doc_inline::*;
+
+    mod doc_inline {
+        pub use super::vector::*;
+    }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

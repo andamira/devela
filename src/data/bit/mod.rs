@@ -18,7 +18,7 @@ crate::items! { #[allow(unused_imports)]
     mod doc_inline {
         pub use super::r#trait::*;
         #[cfg(_bit_·)]
-        pub use super::{field::*, wrapper::*};
+        pub use super::{field::all::*, wrapper::*};
     }
     pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;

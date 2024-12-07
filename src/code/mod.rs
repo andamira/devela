@@ -32,6 +32,6 @@ crate::items! { #[allow(unused_imports)]
         pub use super::{doc_hidden::*, doc_inline::*};
     }
     pub(super) mod items_private {
-        pub(crate) use super::macros::private::*;
+        pub(crate) use super::macros::items_private::*;
     }
 }

@@ -10,10 +10,13 @@ mod si; // UnitSi
 mod traits; // Unit
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
     mod doc_inline {
         pub use super::{bi::*, si::*, traits::*};
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
-    pub(crate) mod all { #[doc(inline)] pub use super::doc_inline::*; }
+    pub(crate) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

@@ -3,14 +3,17 @@
 //! Asserts.
 //
 
-mod dynamic;
+mod dynamic; // assert_eq_all, assert_approx_eq_all
 mod r#static;
-#[allow(unused_imports)]
-pub use {dynamic::*, r#static::*};
 
-pub(crate) mod all {
-    #![allow(unused_imports)]
+// structural access
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
 
-    #[doc(inline)]
-    pub use super::{dynamic::*, r#static::*};
+    mod doc_inline {
+        pub use super::{dynamic::*, r#static::all::*};
+    }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

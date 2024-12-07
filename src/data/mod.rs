@@ -25,7 +25,9 @@ pub mod iter;
 pub mod dst;
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use {doc_hidden::*, doc_inline::*};
+
     mod doc_inline {
         pub use super::{bit::all::*, error::*, fmt::all::*, id::all::*, sort::all::*};
     }
@@ -39,6 +41,7 @@ crate::items! {
         ))]
         pub use super::dst::all::*;
     }
-    #[allow(unused_imports)] pub use {doc_hidden::*, doc_inline::*};
-    pub(super) mod all { #[doc(inline)] pub use super::{doc_hidden::*, doc_inline::*}; }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::{doc_hidden::*, doc_inline::*};
+    }
 }
