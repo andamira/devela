@@ -29,17 +29,27 @@ pub mod time;
 
 // structural access
 crate::items! {
+    #[allow(unused_imports)]
+    pub use {doc_inline::*, doc_hidden::*, items_hidden::*};
+
     mod doc_inline {
-        #![expect(unused_imports, reason = "WIP")]
-        pub use super::{
-            arch::all::*, env::all::*, io::all::*, log::all::*, mem::all::*, os::all::*,
-        };
-        pub use super::sound::all::*;
+        pub use super::{arch::all::*, env::all::*, io::all::*, mem::all::*};
+        #[allow(unused_imports, reason = "feature-gated")]
+        pub use super::{log::all::*, os::all::*, sound::all::*};
         #[cfg(feature = "sys")]
         pub use super::path::all::*;
+    }
+    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
+        #[allow(unused_imports, reason = "feature-gated")]
+        pub use super::{
+            io::all::*, log::all::*, mem::all::*, os::all::*,
+        };
         #[cfg(feature = "time")]
         pub use super::time::all::*;
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
-    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
+    pub(super) mod items_hidden { pub use super::mem::items_hidden::*; }
+    pub(super) mod all { #[doc(inline)]
+        #[allow(unused_imports, reason = "feature-gated")]
+        pub use super::{doc_inline::*, doc_hidden::*};
+    }
 }

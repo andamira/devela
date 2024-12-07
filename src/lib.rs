@@ -129,8 +129,8 @@ pub mod text;
 pub mod ui;
 pub mod work;
 
+// public items, visible in several places
 #[doc(hidden)]
-#[allow(unused_imports)]
 pub use all::*;
 pub mod all {
     //! All the crate's items re-exported flat.
@@ -156,8 +156,15 @@ pub mod all {
         work::all::*,
     };
 }
+// public items, hidden everywhere
+#[doc(hidden)]
+pub use items_hidden::*;
+mod items_hidden {
+    pub use super::sys::items_hidden::*;
+}
+// private items, crate-use only
 pub(crate) use private::*;
-pub(crate) mod private {
+mod private {
     pub(crate) use super::code::private::*;
 }
 

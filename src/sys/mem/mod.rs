@@ -31,10 +31,13 @@ pub mod cell;
 
 // structural access
 crate::items! {
+    #[allow(unused_imports)]
+    pub use {doc_hidden::*, doc_inline::*, items_hidden::*};
+
     mod doc_inline {
         pub use super::{
-            aligned::*, cache_align::*, cswap::*, ext::*, namespace::*, ptr::all::*, reexports::*,
-            size::all::*, slice::all::*, storage::*,
+            aligned::*, cache_align::*, cswap::*, ext::*, namespace::*, ptr::all::*,
+            reexports::*, size::all::*, slice::all::*, storage::*,
         };
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
         pub use super::pin::Pinned;
@@ -44,6 +47,8 @@ crate::items! {
     mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
         pub use super::cell::all::*;
     }
-    #[allow(unused_imports)] pub use {doc_hidden::*, doc_inline::*};
-    pub(super) mod all { #[doc(inline)] pub use super::{doc_hidden::*, doc_inline::*}; }
+    pub(super) mod items_hidden { pub use super::size::items_hidden::*; }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::{doc_hidden::*, doc_inline::*};
+    }
 }

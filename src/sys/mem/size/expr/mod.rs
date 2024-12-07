@@ -3,6 +3,12 @@
 // Original source code by Joshua Nelson, licensed as BSD-3,
 // https://crates.io/crates/size-of-trait/1.1.3
 
+/// A helper macro used to bridge the gap between compile-time and runtime.
+#[doc(hidden)]
+pub const fn __size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0]; 0]) -> usize {
+    crate::Mem::size_of::<T>()
+}
+
 /// Returns the size of an expression in bytes.
 ///
 /// - The expression will not be evaluated.
@@ -49,12 +55,6 @@ macro_rules! size_of_expr {
 }
 #[doc(inline)]
 pub use size_of_expr;
-
-// A helper macro used to bridge the gap between compile-time and runtime.
-#[doc(hidden)]
-pub const fn __size_of_expr<T>(_zero_len_fn_ptr_array: [impl FnOnce() -> [T; 0]; 0]) -> usize {
-    crate::Mem::size_of::<T>()
-}
 
 /* tests */
 
