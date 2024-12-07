@@ -10,58 +10,36 @@
 // safety
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
-#[allow(unused_imports)]
-use crate::items;
-
 mod arch;
 mod env;
-#[allow(unused_imports)]
-pub use {arch::*, env::*};
+mod sound; // IMPROVE
 
 #[cfg(feature = "sys")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
-items! {
-    mod path;
-    #[allow(unused_imports)]
-    pub use path::*;
-}
-items! {
-    mod sound;
-    #[allow(unused_imports)]
-    pub use sound::*;
-}
-
-/* public */
+mod path;
 
 pub mod io;
 pub mod log;
 pub mod mem;
 pub mod os;
-#[doc(no_inline)]
-#[allow(unused_imports)]
-pub use {io::all::*, log::all::*, mem::all::*, os::all::*};
 
 #[cfg(feature = "time")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
-    pub mod time;
-    #[doc(no_inline)]
-    #[allow(unused_imports)]
-    pub use time::all::*;
-}
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
+pub mod time;
 
-pub(crate) mod all {
-    #![allow(unused_imports)]
-
-    #[doc(inline)]
-    pub use super::{arch::all::*, env::all::*, io::all::*, log::all::*, mem::all::*, os::all::*};
-
-    #[doc(inline)]
-    #[cfg(feature = "sys")]
-    pub use super::path::all::*;
-    #[doc(inline)]
-    pub use super::sound::all::*;
-    #[doc(inline)]
-    #[cfg(feature = "time")]
-    pub use super::time::all::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        #![expect(unused_imports, reason = "WIP")]
+        pub use super::{
+            arch::all::*, env::all::*, io::all::*, log::all::*, mem::all::*, os::all::*,
+        };
+        pub use super::sound::all::*;
+        #[cfg(feature = "sys")]
+        pub use super::path::all::*;
+        #[cfg(feature = "time")]
+        pub use super::time::all::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

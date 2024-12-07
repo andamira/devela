@@ -14,11 +14,12 @@ mod no;
 mod reexports;
 mod split;
 mod unix;
-#[allow(unused_imports)]
-pub use {calendar::*, error::*, fmt::*, no::*, reexports::*, split::*, unix::*};
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::{calendar::*, error::*, fmt::*, no::*, reexports::*, split::*, unix::*};
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{calendar::*, error::*, fmt::*, no::*, reexports::*, split::*, unix::*};
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

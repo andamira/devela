@@ -16,24 +16,18 @@ mod coroutine;
 mod ext;
 mod reexports;
 mod waker;
-#[allow(unused_imports)]
-pub use {coroutine::*, ext::*, reexports::*, waker::*};
 
 #[cfg(feature = "std")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
+mod block;
+
+// structural access
 crate::items! {
-    mod block;
-    #[allow(unused_imports)]
-    pub use block::*;
-}
-
-pub(crate) mod all {
-    #![allow(unused_imports)]
-
-    #[doc(inline)]
-    pub use super::{coroutine::*, ext::*, reexports::*, waker::*};
-
-    #[doc(inline)]
-    #[cfg(feature = "std")]
-    pub use super::block::*;
+    mod doc_inline {
+        pub use super::{coroutine::*, ext::*, reexports::*, waker::*};
+        #[cfg(feature = "std")]
+        pub use super::block::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

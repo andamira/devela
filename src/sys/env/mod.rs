@@ -6,18 +6,17 @@
 //
 
 mod reexports;
-pub use reexports::*;
 
 #[cfg(feature = "std")]
 mod env;
-#[cfg(feature = "std")]
-pub use env::*;
 
-pub(crate) mod all {
-    #[doc(inline)]
-    pub use super::reexports::*;
-
-    #[allow(unused_imports)]
-    #[cfg(feature = "std")]
-    pub use super::env::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::reexports::*;
+        #[cfg(feature = "std")]
+        pub use super::env::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

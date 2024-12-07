@@ -9,13 +9,13 @@
 
 #[cfg(feature = "sys")]
 mod project;
-#[allow(unused_imports)]
-#[cfg(feature = "sys")]
-pub use project::*;
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    #[cfg(feature = "sys")]
-    pub use super::project::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        #[cfg(feature = "sys")]
+        pub use super::project::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

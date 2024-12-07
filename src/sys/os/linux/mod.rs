@@ -19,15 +19,12 @@
 // This is so both for syscalls and safe syscall wrappers. And when more
 // platforms are supported they will all need to be updated accordingly.
 
-#![allow(unused)] // TEMP
-
 mod consts;
+mod structs;
+
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_syscall")))]
 mod fns;
-mod structs;
-
-/* public modules */
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_syscall")))]
@@ -101,19 +98,13 @@ pub mod thread {
     };
 }
 
-// reexport the const structs not-specific to any submodule
-pub use consts::{errno::*, fd::*, ioctl::*, syscall::*};
-
-pub use {io::*, process::*, thread::*};
-
-#[cfg(all(feature = "unsafe_syscall", not(miri)))]
-pub use terminal::*;
-
-pub(super) mod all {
-    #[doc(inline)]
-    pub use super::{consts::all::*, io::*, process::*, thread::*};
-
-    #[doc(inline)]
-    #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-    pub use super::terminal::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{consts::all::*, io::*, process::*, thread::*};
+        #[cfg(all(feature = "unsafe_syscall", not(miri)))]
+        pub use super::terminal::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

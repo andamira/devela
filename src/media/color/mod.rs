@@ -8,11 +8,12 @@
 mod base;
 mod error;
 mod namespace;
-#[allow(unused_imports)]
-pub use {base::*, error::*, namespace::*};
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::{base::*, error::*, namespace::*};
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{base::*, error::*, namespace::*};
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

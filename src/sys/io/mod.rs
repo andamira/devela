@@ -13,21 +13,18 @@
 mod impls;
 
 #[cfg(not(feature = "std"))]
-crate::items! {
-    mod define_no_std_io;
-    pub use define_no_std_io::*;
-}
+mod define_no_std_io;
 #[cfg(feature = "std")]
-crate::items! {
-    mod reexport_std;
-    pub use reexport_std::*;
-}
+mod reexport_std;
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[cfg(not(feature = "std"))]
-    pub use super::define_no_std_io::*;
-    #[doc(inline)]
-    #[cfg(feature = "std")]
-    pub use super::reexport_std::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        #[cfg(not(feature = "std"))]
+        pub use super::define_no_std_io::*;
+        #[cfg(feature = "std")]
+        pub use super::reexport_std::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

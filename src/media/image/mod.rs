@@ -9,10 +9,12 @@
 
 mod error;
 mod pnm;
-pub use {error::*, pnm::*};
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::{error::*, pnm::*};
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{error::*, pnm::*};
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

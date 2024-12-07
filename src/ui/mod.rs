@@ -7,32 +7,21 @@
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
 
 #[cfg(_ui_·)]
-crate::items! {
-    use crate::items;
-
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(_ui_·)))]
-    mod error;
-    #[doc(inline)]
-    pub use error::*;
-}
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_ui_·)))]
+mod error;
 
 #[cfg(feature = "layout")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "layout")))]
-    pub mod layout;
-    #[doc(no_inline)]
-    #[allow(unused_imports)]
-    pub use layout::all::*;
-}
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "layout")))]
+pub mod layout;
 
-pub(crate) mod all {
-    #![allow(unused_imports)]
-
-    #[doc(inline)]
-    #[cfg(_ui_·)]
-    pub use super::error::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "layout")]
-    pub use super::layout::all::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        #[cfg(_ui_·)]
+        pub use super::error::*;
+        #[cfg(feature = "layout")]
+        pub use super::layout::all::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

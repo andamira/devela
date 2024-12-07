@@ -8,76 +8,42 @@
 #![cfg_attr(feature = "safe_media", forbid(unsafe_code))]
 
 #[cfg(_media_·)]
-crate::items! {
-    use crate::items;
-
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(_media_·)))]
-    mod error;
-    #[doc(inline)]
-    pub use error::*;
-}
-
+#[cfg_attr(feature = "nightly_doc", doc(cfg(_media_·)))]
+mod error;
 #[cfg(feature = "audio")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "audio")))]
-    pub mod audio;
-    #[doc(no_inline)]
-    #[allow(unused_imports)]
-    pub use audio::all::*;
-}
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "audio")))]
+pub mod audio;
 #[cfg(feature = "color")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "color")))]
-    pub mod color;
-    #[doc(no_inline)]
-    #[allow(unused_imports)]
-    pub use color::all::*;
-}
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "color")))]
+pub mod color;
 #[cfg(feature = "draw")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "draw")))]
-    pub mod draw;
-    #[doc(no_inline)]
-    #[allow(unused_imports)]
-    pub use draw::all::*;
-}
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "draw")))]
+pub mod draw;
 #[cfg(feature = "font")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "font")))]
-    pub mod font;
-    #[doc(no_inline)]
-    #[allow(unused_imports)]
-    pub use font::all::*;
-}
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "font")))]
+pub mod font;
 #[cfg(feature = "image")]
-items! {
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "image")))]
-    pub mod image;
-    #[doc(no_inline)]
-    #[allow(unused_imports)]
-    pub use image::all::*;
-}
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "image")))]
+pub mod image;
 
-pub(crate) mod all {
-    #![allow(unused_imports)]
-
-    #[doc(inline)]
-    #[cfg(_media_·)]
-    pub use super::error::*;
-
-    #[doc(inline)]
-    #[cfg(feature = "audio")]
-    pub use super::audio::all::*;
-    #[doc(inline)]
-    #[cfg(feature = "color")]
-    pub use super::color::all::*;
-    #[doc(inline)]
-    #[cfg(feature = "draw")]
-    pub use super::draw::all::*;
-    #[doc(inline)]
-    #[cfg(feature = "font")]
-    pub use super::font::all::*;
-    #[doc(inline)]
-    #[cfg(feature = "image")]
-    pub use super::image::all::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        #[cfg(_media_·)]
+        pub use super::error::*;
+        #[cfg(feature = "audio")]
+        pub use super::audio::all::*;
+        #[cfg(feature = "color")]
+        pub use super::color::all::*;
+        #[cfg(feature = "draw")]
+        pub use super::draw::all::*;
+        #[cfg(feature = "font")]
+        pub use super::font::all::*;
+        #[cfg(feature = "image")]
+        pub use super::image::all::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] #[allow(unused_imports)]
+        pub use super::doc_inline::*;
+    }
 }

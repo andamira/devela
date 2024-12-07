@@ -12,11 +12,12 @@
 mod r#async;
 mod sync;
 mod thread;
-#[allow(unused_imports)]
-pub use {r#async::all::*, sync::all::*, thread::all::*};
 
-pub(crate) mod all {
-    #![allow(unused_imports)]
-    #[doc(inline)]
-    pub use super::{r#async::all::*, sync::all::*, thread::all::*};
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{r#async::all::*, sync::all::*, thread::all::*};
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

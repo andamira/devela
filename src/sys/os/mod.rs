@@ -8,17 +8,17 @@
 //
 
 #[cfg(feature = "linux")]
-crate::items! {
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
-    pub mod linux;
-    #[doc(no_inline)]
-    #[allow(unused_imports)]
-    pub use linux::all::*;
-}
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
+pub mod linux;
 
-pub(crate) mod all {
-    #[cfg(feature = "linux")]
-    #[allow(unused_imports)]
-    #[doc(inline)]
-    pub use super::linux::all::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        #[cfg(feature = "linux")]
+        pub use super::linux::all::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] #[allow(unused_imports)]
+        pub use super::doc_inline::*;
+    }
 }
