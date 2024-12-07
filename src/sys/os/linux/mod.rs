@@ -28,7 +28,7 @@ mod fns;
 
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unsafe_syscall")))]
-pub mod terminal;
+mod terminal;
 
 /// Linux-specific extensions to [`std::io`].
 pub mod io {
@@ -101,10 +101,12 @@ pub mod thread {
 // structural access
 crate::items! {
     mod doc_inline {
-        pub use super::{consts::all::*, io::*, process::*, thread::*};
         #[cfg(all(feature = "unsafe_syscall", not(miri)))]
         pub use super::terminal::*;
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
-    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
+    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
+        pub use super::{consts::all::*, io::*, process::*, thread::*};
+    }
+    #[allow(unused_imports)] pub use {doc_inline::*, doc_hidden::*};
+    pub(super) mod all { #[doc(inline)] pub use super::{doc_inline::*, doc_hidden::*}; }
 }

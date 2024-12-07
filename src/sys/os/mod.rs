@@ -13,12 +13,12 @@ pub mod linux;
 
 // structural access
 crate::items! {
-    mod doc_inline {
+    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
         #[cfg(feature = "linux")]
         pub use super::linux::all::*;
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
+    #[allow(unused_imports)] pub use doc_hidden::*;
     pub(super) mod all { #[doc(inline)] #[allow(unused_imports)]
-        pub use super::doc_inline::*;
+        pub use super::doc_hidden::*;
     }
 }
