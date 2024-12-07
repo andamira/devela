@@ -3,24 +3,19 @@
 //! Memory size functionality.
 //
 
-#[allow(unused_imports)]
-use crate::code::items;
-
 mod byte;
 mod expr;
-#[allow(unused_imports)]
-pub use {byte::*, expr::*};
 
 #[cfg(feature = "bit")]
-items! { mod bit; pub use bit::*; }
+mod bit;
 
-pub(crate) mod all {
-    #![allow(unused_imports)]
-
-    #[doc(inline)]
-    pub use super::{byte::*, expr::size_of_expr};
-
-    #[doc(inline)]
-    #[cfg(feature = "bit")]
-    pub use super::bit::*;
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{byte::*, expr::size_of_expr};
+        #[cfg(feature = "bit")]
+        pub use super::bit::*;
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }

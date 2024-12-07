@@ -10,10 +10,12 @@ mod tests;
 
 mod ext;
 mod namespace;
-pub use {ext::*, namespace::*};
 
-pub(crate) mod all {
-    #[doc(inline)]
-    #[allow(unused_imports)]
-    pub use super::{ext::*, namespace::*};
+// structural access
+crate::items! {
+    mod doc_inline {
+        pub use super::{ext::*, namespace::*};
+    }
+    #[allow(unused_imports)] pub use doc_inline::*;
+    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
 }
