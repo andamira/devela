@@ -14,7 +14,7 @@
 #![allow(clippy::excessive_precision)]
 
 #[cfg(feature = "nightly_float")]
-use ::core::{f16, f128};
+use ::core::{f128, f16};
 
 /// Extension trait for floating-point types. Associated constants.
 ///
@@ -646,8 +646,10 @@ macro_rules! impl_ext_float_const {
 impl_ext_float_const![f32, f64];
 #[cfg(feature = "nightly_float")]
 impl_ext_float_const![
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_float")))] f16,
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_float")))] f128
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_float")))]
+    f16,
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_float")))]
+    f128
 ];
 
 #[doc = crate::doc_private!()]

@@ -4,11 +4,7 @@
 //
 // - https://arm64.syscall.sh/
 
-use crate::sys::os::linux::{LinuxSigaction, LinuxTimespec, LINUX_SYS_X86_64 as SYS};
-use core::{
-    arch::asm,
-    ffi::{c_int, c_uint, c_ulong},
-};
+use crate::{asm, c_int, c_uint, c_ulong, LinuxSigaction, LinuxTimespec, LINUX_SYS_X86_64 as SYS};
 
 #[doc = include_str!("./doc/Sys_exit.md")]
 pub unsafe fn linux_sys_exit(status: c_int) -> ! {

@@ -1,7 +1,7 @@
 // devela::code
 //
 //! Code reflective synthesis.
-#![doc = crate::doc_!(modules: crate; code: macros, result)]
+#![doc = crate::doc_!(modules: crate; code: macros, ops, result)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: any, clone, convert, default, hint, marker, ops)]
