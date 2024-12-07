@@ -13,7 +13,9 @@ mod coro;
 mod reexports;
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
     mod doc_inline {
         #[cfg(feature = "nightly_coro")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "nightly_coro")))]
@@ -21,7 +23,6 @@ crate::items! {
         #[cfg(all(not(feature = "safe_work"), feature = "unsafe_async"))]
         pub use super::coro::*;
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
     pub(super) mod all { #[doc(inline)]
         #[allow(unused_imports, reason = "feature-gated")]
         pub use super::doc_inline::*;

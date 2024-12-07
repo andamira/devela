@@ -15,14 +15,15 @@ mod error;
 pub mod layout;
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
     mod doc_inline {
         #[cfg(_ui_·)]
         pub use super::error::*;
         #[cfg(feature = "layout")]
         pub use super::layout::all::*;
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
     pub(super) mod all { #[doc(inline)]
         #[allow(unused_imports, reason = "feature-gated")]
         pub use super::doc_inline::*;

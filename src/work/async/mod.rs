@@ -22,7 +22,9 @@ mod waker;
 mod block;
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
     mod doc_inline {
         #![allow(unused_imports, reason = "feature-gated")]
         pub use super::coroutine::all::*;
@@ -30,6 +32,7 @@ crate::items! {
         #[cfg(feature = "std")]
         pub use super::block::*;
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
-    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
+    pub(super) mod all { #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

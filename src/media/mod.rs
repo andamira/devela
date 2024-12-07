@@ -27,7 +27,9 @@ pub mod font;
 pub mod image;
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
     mod doc_inline {
         #[cfg(_media_·)]
         pub use super::error::*;
@@ -42,7 +44,6 @@ crate::items! {
         #[cfg(feature = "image")]
         pub use super::image::all::*;
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
     pub(super) mod all { #[doc(inline)] #[allow(unused_imports)]
         pub use super::doc_inline::*;
     }

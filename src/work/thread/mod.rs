@@ -11,12 +11,13 @@ mod reexports;
 mod sleep;
 
 // structural access
-crate::items! {
+crate::items! { #[allow(unused_imports)]
+    pub use doc_inline::*;
+
     mod doc_inline {
         #[cfg(feature = "std")]
         pub use super::{reexports::*, sleep::*};
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
     pub(super) mod all { #[doc(inline)]
         #[allow(unused_imports, reason = "feature-gated")]
         pub use super::doc_inline::*;
