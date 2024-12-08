@@ -497,7 +497,7 @@ _num_all = ["_nums_all", "_cmp_all"]
 _cmp_all = [
 	"_cmp_i8", "_cmp_i16", "_cmp_i32", "_cmp_i64", "_cmp_i128", "_cmp_isize",
 	"_cmp_u8", "_cmp_u16", "_cmp_u32", "_cmp_u64", "_cmp_u128", "_cmp_usize",
-	"_cmp_f32", "_cmp_f64"]
+	"_cmp_f16", "_cmp_f32", "_cmp_f64", "_cmp_f128"]
 	_cmp_i8 = []
 	_cmp_i16 = []
 	_cmp_i32 = []
@@ -510,14 +510,18 @@ _cmp_all = [
 	_cmp_u64 = []
 	_cmp_u128 = []
 	_cmp_usize = []
+	_cmp_f16 = ["_float_f16"]
 	_cmp_f32 = ["_float_f32"]
 	_cmp_f64 = ["_float_f64"]
+	_cmp_f128 = ["_float_f128"]
 
 # `[Num]Int`, `[Num]Float`, `[Num]Frac`, `Point`, `Angle`, `Vector`:
 _nums_all = ["_float_all", "_int_all"]
-	_float_all = ["_float_f32", "_float_f64"]
+	_float_all = ["_float_f16", "_float_f32", "_float_f64", "_float_f128"]
+		_float_f16 = []
 		_float_f32 = []
 		_float_f64 = []
+		_float_f128 = []
 	_int_all = ["_int_iall", "_int_uall"]
 		_int_iall = ["_int_i8", "_int_i16", "_int_i32", "_int_i64", "_int_i128", "_int_isize"]
 			_int_i8 = []

@@ -17,6 +17,8 @@ use crate::Float;
 use crate::Ordering::{self, Equal, Greater, Less};
 #[allow(unused_imports)]
 use crate::{iif, paste};
+#[cfg(feature = "nightly_float")]
+use ::core::{f128, f16};
 
 /// Provides comparing methods for `T`, most of them *const*.
 ///
@@ -138,7 +140,8 @@ impl<T: PartialOrd> Compare<T> {
     }
 }
 
-// implement for primitives
+#[doc = crate::doc_private!()]
+/// Implement [`Comparing`] for primitives.
 macro_rules! impl_comparing {
     () => {
         impl_comparing![int:
@@ -153,15 +156,22 @@ macro_rules! impl_comparing {
             i32:"_cmp_i32",
             i64:"_cmp_i64",
             i128:"_cmp_i128",
-            isize:"_cmp_isize"];
+            isize:"_cmp_isize"
+        ];
         impl_comparing![float:
             f32:"_cmp_f32":32:31,
-            f64:"_cmp_f64":64:63];
+            f64:"_cmp_f64":64:63
+        ];
+        #[cfg(feature = "nightly_float")]
+        impl_comparing![float:
+            f16:"_cmp_f16":16:15,
+            f128:"_cmp_f128":128:127
+        ];
     };
-
+    (
     // $p: the integer type
     // $cap: the capability feature associated with the `$f` type. E.g "_cmp_usize".
-    (int: $($p:ty : $cap:literal),+) => { $( impl_comparing![@int: $p:$cap]; )+ };
+    int: $($p:ty : $cap:literal),+) => { $( impl_comparing![@int: $p:$cap]; )+ };
     (@int: $p:ty : $cap:literal) => {
         #[cfg(feature = $cap)]
         impl Compare<$p> {
@@ -199,12 +209,12 @@ macro_rules! impl_comparing {
             pub const fn ge(self, other: $p) -> bool { self.0 >= other }
         }
     };
-
+    (
     // $f:    the floating-point type
     // $fcap: the capability feature associated with the `$f` type. E.g "_cmp_f32".
     // $b:    the bits of the floating-point primitive
     // $sh:   the shift amount for the given bits ($b - 1)
-    (float: $($f:ty:$fcap:literal:$b:literal:$sh:literal),+) => {
+    float: $($f:ty:$fcap:literal:$b:literal:$sh:literal),+) => {
         $( impl_comparing![@float: $f:$fcap:$b:$sh]; )+
     };
     (@float: $f:ty:$fcap:literal:$b:literal:$sh:literal) => { paste! {
@@ -226,6 +236,7 @@ macro_rules! impl_comparing {
             ///
             /// # Examples
             /// ```
+            #[cfg_attr(feature = "nightly_float", doc = "#![feature(f16, f128)]")]
             /// # use devela::Compare;
             #[doc = "assert_eq![2.0, Compare(5.0" $f ").clamp(-1.0, 2.0)];"]
             #[doc = "assert_eq![-1.0, Compare(-5.0" $f ").clamp(-1.0, 2.0)];"]
@@ -246,6 +257,7 @@ macro_rules! impl_comparing {
             ///
             /// # Examples
             /// ```
+            #[cfg_attr(feature = "nightly_float", doc = "#![feature(f16, f128)]")]
             /// # use devela::Compare;
             #[doc = "assert_eq![2.0, Compare(2.0" $f ").max(-1.0)];"]
             #[doc = "assert_eq![2.0, Compare(1.0" $f ").max(2.0)];"]
@@ -263,6 +275,7 @@ macro_rules! impl_comparing {
             ///
             /// # Examples
             /// ```
+            #[cfg_attr(feature = "nightly_float", doc = "#![feature(f16, f128)]")]
             /// # use devela::Compare;
             #[doc = "assert_eq![-1.0, Compare(2.0" $f ").min(-1.0)];"]
             #[doc = "assert_eq![1.0, Compare(1.0" $f ").min(2.0)];"]
