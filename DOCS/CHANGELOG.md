@@ -53,6 +53,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `BareBox`.
   - `ExtAny` method `type_id`.
   - `Float` and `ExtFloat`:
+    - `FRAC_1_SQRT_2PI`.
     - `eval_poly` to evaluate polynomials.
     - for calculus: `derivative`, `integrate`, `partial_derivative_[x|y]`.
   - `Float` and `ExtFloatConst` consts: `LOW_MARGIN`, `MEDIUM_MARGIN`, `HIGH_MARGIN`.
@@ -165,6 +166,7 @@ The format is based on [Keep a Changelog], and this project adheres to
     `eval_poly`, `factorial`, `mul_add_fallback`, `scale`, `lerp`, `ln*_series`, `log[10|2]_series`.
   - make *const* versions of the following `Float` methods:
     `clamp_nan`, `fisr`, `hypot_fisr`, `max_nan`, `min_nan`, `cbrt_nr`, `sqrt_nr`, `hypot_nr`, `rem_euclid`, `*_series`, `*_series_terms*`.
+    improve precision of `ExtFloatConst` constants from 35 to 80 decimals.
   - remove all `inline` attributes for most functions
 - macros:
   - update `cdbg!` to support a single `@`.
