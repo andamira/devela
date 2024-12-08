@@ -24,13 +24,13 @@ Features are grouped in several categories mostly independent from each other,
 so that they can be enabled orthogonally, and they're not fully additive,
 e.g. it's not possible to enable at the same time `std` and `no_std`.
 
-- [Development] features (`__dbg`, …).
-- [Environment] features (`alloc`, `std`, `no_std`).
-- [Module] features (`code`, `data`, `lang`, `media`, `num`, `sys`, `text`, `ui`, `work`).
-- [Safety] features (`safe*`, `unsafe*`).
-- [Nightly] features (`nightly_*`).
-- [Capability] features (`_*`).
-- [Dependency] features: (`dep_*`).
+- [Development]: (`__*`).
+- [Environment]: (`alloc`, `std`, `no_std`).
+- [Module] + submodules.
+- [Safety]: (`safe*`, `unsafe*`).
+- [Nightly]: (`nightly_*`).
+- [Capability]: (`_*`).
+- [Dependency]: (`dep_*`).
 
 <!-- -->
 [Development]: https://andamira.github.io/libera/doc/devela/_doc/features/index.html#development-features
