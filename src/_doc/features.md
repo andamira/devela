@@ -53,11 +53,12 @@ Single modules:
   - [`geom`]: geometry, linear algebra.
   - [`rand`]: random number generators.
   - [`wave`]: wavelets.
+- [`phys`]: enables all `phys` sub-features.
+    - [`time`]
 - [`sys`]: enables all `sys` sub-features (except os-specific).
   - [`io`]
   - [`mem`]
     - `bit`: `BitSize`.
-  - [`time`]
   - os:
     - `linux`: Linux functionality.
 - [`text`]
@@ -79,10 +80,11 @@ Single modules:
   [`geom`]: crate::num::geom
   [`rand`]: crate::num::rand
   [`wave`]: crate::num::wave
+[`phys`]: crate::phys
+  [`time`]: crate::phys::time
 [`sys`]: crate::sys
   [`io`]: crate::sys::io
   [`mem`]: crate::sys::mem
-  [`time`]: crate::sys::time
 [`text`]: crate::text
 [`work`]: crate::work
 [`ui`]: crate::ui
@@ -109,10 +111,11 @@ In order to use any unsafe functionality:
 		- `safe_font`
 		- `safe_image`
   - `safe_num`
+  - `safe_phys`
+    - `safe_time`
   - `safe_sys`
     - `safe_io`
     - `safe_mem`
-    - `safe_time`
   - `safe_text`
   - `safe_work`
   - `safe_ui`

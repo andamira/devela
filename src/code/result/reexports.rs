@@ -29,13 +29,15 @@ pub(crate) mod crate_errors {
     #[cfg(_media_·)]
     pub use crate::media::{MediaError, MediaResult};
 
+    /* phys */
+    #[doc(inline)]
+    #[cfg(feature = "time")]
+    pub use crate::phys::time::{TimeError, TimeResult};
+
     /* sys */
     #[doc(inline)]
     #[cfg(feature = "io")]
     pub use crate::sys::io::{IoError, IoErrorKind, IoResult};
-    #[doc(inline)]
-    #[cfg(feature = "time")]
-    pub use crate::sys::time::{TimeError, TimeResult};
 
     /* ui */
     #[doc(inline)]

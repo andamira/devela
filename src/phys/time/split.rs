@@ -1,4 +1,4 @@
-// devela::sys::time::split
+// devela::phys::time::split
 //
 //! Splitting and decomposing time.
 //

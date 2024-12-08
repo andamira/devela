@@ -1,4 +1,4 @@
-// devela::sys::time
+// devela::phys::time
 //
 //! Reexported items from `core`.
 //

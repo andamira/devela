@@ -1,4 +1,4 @@
-// devela::sys::time::unix
+// devela::phys::time::unix
 //
 // # LINKS
 // - https://en.wikipedia.org/wiki/Unix_time
@@ -313,10 +313,7 @@ impl TryFrom<UnixTimeI64> for UnixTimeU32 {
 #[cfg(feature = "std")]
 mod std_impls {
     use super::{UnixTimeI64, UnixTimeU32};
-    use crate::{
-        num::Cast,
-        sys::time::{SystemTime, SystemTimeError, TimeError},
-    };
+    use crate::{Cast, SystemTime, SystemTimeError, TimeError};
 
     impl TryFrom<SystemTime> for UnixTimeI64 {
         type Error = SystemTimeError;

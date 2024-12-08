@@ -1,4 +1,4 @@
-// devela::sys::time::calendar
+// devela::phys::time::calendar
 //
 //! Month and Weekday types.
 //

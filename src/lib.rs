@@ -124,6 +124,7 @@ pub mod data;
 pub mod lang;
 pub mod media;
 pub mod num;
+pub mod phys;
 pub mod sys;
 pub mod text;
 pub mod ui;
@@ -150,6 +151,7 @@ pub mod all {
         lang::all::*,
         media::all::*,
         num::all::*,
+        phys::all::*,
         sys::all::*,
         text::all::*,
         ui::all::*,

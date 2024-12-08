@@ -82,9 +82,9 @@ The format is based on [Keep a Changelog], and this project adheres to
     - `HashMap` and `BTreeMap` from `std` if `hashbrown` is disabled.
     - `FromStr`, `IterChars`, `Utf8Error`.
   - crate items from multiple related modules, like errors and strings.
-- new modules: `num::algebra`, `sys::sound`, `media::{audio, color, draw, font, image, layout}`, `ui`.
-- new `NonValue*` constants `MAX`, `MIN`.
+- new modules: `num::algebra`, `sys::sound`, `media::{audio, color, draw, font, image, layout}`, `phys`, `ui`.
 - new `sys::os::linux` module and example `linux`.
+- new `NonValue*` constants `MAX`, `MIN`.
 - new lints.
 
 #### Examples, utilities, manifest, files
@@ -178,7 +178,7 @@ The format is based on [Keep a Changelog], and this project adheres to
     - `exec` to `work`, and related features.
     - `mem` to `sys::mem`.
     - `sys::ffi` to `ffi.
-    - `time` to `sys::time`.
+    - `time` to `phys::time`.
     - `_alloc` & `_std` inside `_dep`.
     - `_dep::_core` to `_core`.
     - `_deps` to `_dep`.

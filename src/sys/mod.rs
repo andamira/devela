@@ -1,11 +1,11 @@
 // devela::sys
 //
 //! System interfaces and hardware abstractions.
-#![doc = crate::doc_!(modules: crate; sys: io, mem, os, time)]
+#![doc = crate::doc_!(modules: crate; sys: io, mem, os)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
-    io, net, os, path, pin, ptr, rc, slice, simd, time)]
+    io, net, os, path, pin, ptr, rc, slice, simd)]
 //
 // safety
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
@@ -22,10 +22,6 @@ pub mod io;
 pub mod log;
 pub mod mem;
 pub mod os;
-
-#[cfg(feature = "time")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
-pub mod time;
 
 // structural access
 crate::items! {
@@ -44,8 +40,6 @@ crate::items! {
         pub use super::{
             io::all::*, log::all::*, mem::all::*, os::all::*,
         };
-        #[cfg(feature = "time")]
-        pub use super::time::all::*;
     }
     pub(super) mod items_hidden { pub use super::mem::items_hidden::*; }
     pub(super) mod all { #[doc(inline)]
