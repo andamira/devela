@@ -153,6 +153,7 @@ The format is based on [Keep a Changelog], and this project adheres to
     - `sys::io` items by prefixing them with `Io`.
     - `Egc` to `Grapheme`, `EgcString` to `GraphemeString`.
     - `EgcNonul` to `GraphemeNonul`, `EgcU8` to `GraphemeU8`.
+    - `UninitArray` to `ArrayUninit`.
 - functions and constant:
   - `Graph::edge_exists` no loger panics.
   - rename:

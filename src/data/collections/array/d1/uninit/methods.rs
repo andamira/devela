@@ -3,11 +3,11 @@
 use crate::{
     iif,
     DataError::{NotEnoughSpace, OutOfBounds, PartiallyAdded},
-    DataResult as Result, MaybeUninit, Mem, Storage, UninitArray,
+    DataResult as Result, MaybeUninit, Mem, Storage, ArrayUninit,
 };
 
 // T, S
-impl<T, const CAP: usize, S: Storage> UninitArray<T, CAP, S> {
+impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /* construct */
 
     /// Returns a new uninitialized empty array.

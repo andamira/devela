@@ -9,7 +9,7 @@ mod methods;
 
 /// A static array allowing uninitialized elements.
 #[derive(Default)]
-pub struct UninitArray<T, const CAP: usize, S: Storage = Bare> {
+pub struct ArrayUninit<T, const CAP: usize, S: Storage = Bare> {
     data: S::Stored<[MaybeUninit<T>; CAP]>,
 
     // The number of already initialized elements, and
