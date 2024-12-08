@@ -12,7 +12,6 @@ use alloc::{format, string::ToString};
 use super::shared::split_args;
 use proc_macro::{TokenStream, TokenTree};
 
-#[inline(always)]
 pub(crate) fn body_coalesce(input: TokenStream) -> TokenStream {
     let input = input.to_string();
     let args = split_args(&input);
@@ -24,7 +23,6 @@ pub(crate) fn body_coalesce(input: TokenStream) -> TokenStream {
     first_non_empty_arg.parse().expect("Failed to parse TokenStream")
 }
 
-#[inline(always)]
 pub(crate) fn body_ident_total(input: TokenStream) -> TokenStream {
     let mut count = 0;
     for token in input {
@@ -38,7 +36,6 @@ pub(crate) fn body_ident_total(input: TokenStream) -> TokenStream {
     result.parse().unwrap()
 }
 
-#[inline(always)]
 #[cfg(any(feature = "dep_hashbrown", feature = "std"))]
 pub(crate) fn body_ident_total_unique(input: TokenStream) -> TokenStream {
     let mut unique = crate::HashSet::new();
@@ -57,7 +54,6 @@ pub(crate) fn body_ident_total_unique(input: TokenStream) -> TokenStream {
     result.parse().unwrap()
 }
 
-#[inline(always)]
 #[cfg(any(feature = "dep_hashbrown", feature = "std"))]
 pub(crate) fn body_ident_unique(input: TokenStream) -> TokenStream {
     let mut unique = crate::HashSet::new();
