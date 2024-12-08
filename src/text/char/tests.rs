@@ -47,11 +47,7 @@ fn char_encodings() {
     assert![c16_1.to_char() == c1];
 
     assert![size(&c7_1) == 1 && size(&c8_1) == 1 && size(&c16_1) == 2];
-    assert![
-        size(&Some(c7_1)) == 1
-            && size(&Some(c8_1)) == 2
-            && size(&Some(c16_1)) == 2
-    ];
+    assert![size(&Some(c7_1)) == 1 && size(&Some(c8_1)) == 2 && size(&Some(c16_1)) == 2];
 
     //
 
