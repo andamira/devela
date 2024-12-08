@@ -83,18 +83,6 @@ impl<const CAP: usize> GraphemeU8<CAP> {
         Ok(Self(unwrap![ok? StringU8::from_char16(c)]))
     }
 
-    /// Creates a new `GraphemeU8` from a `char24`.
-    ///
-    /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255 or < `c.`[`len_utf8()`][char24#method.len_utf8].
-    ///
-    /// Will always succeed if `CAP` >= 4 and <= 255.
-    #[cfg(feature = "_char24")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
-    pub const fn from_char24(c: char24) -> Result<Self> {
-        Ok(Self(unwrap![ok? StringU8::from_char24(c)]))
-    }
-
     /// Creates a new `GraphemeU8` from a `char`.
     /// # Panics
     /// Panics if `CAP` > 255 or < `c.`[`len_utf8()`][UnicodeScalar#method.len_utf8].

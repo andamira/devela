@@ -62,8 +62,7 @@ macro_rules! impl_string_u {
         ///   [`from_char`][Self::from_char]*(
         ///     [`7`](Self::from_char7),
         ///     [`8`](Self::from_char8),
-        ///     [`16`](Self::from_char16),
-        ///     [`24`](Self::from_char24).
+        ///     [`16`](Self::from_char16).
         ///   )*.
         /// - Deconstruct:
         ///   [`into_array`][Self::into_array],
@@ -403,29 +402,6 @@ macro_rules! impl_string_u {
                 new.arr[0] = bytes[0];
                 if new.len > 1 { new.arr[1] = bytes[1]; }
                 if new.len > 2 { new.arr[2] = bytes[2]; }
-                Ok(new)
-            }
-
-            #[doc = "Creates a new `String" $t:camel "` from a `char24`."]
-            ///
-            /// # Panics
-            #[doc = "Panics if `CAP > `[`" $t
-                "::MAX`]` || CAP < c.`[`len_utf8()`][char24#method.len_utf8]."]
-            ///
-            #[doc = "Will never panic if `CAP >= 4 && CAP <= `[`" $t "::MAX`]."]
-            #[rustfmt::skip]
-            #[cfg(feature = "_char24")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
-            pub const fn from_char24(c: char24) -> Result<Self> {
-                let mut new = unwrap![ok? Self::new()];
-
-                let bytes = c.to_utf8_bytes();
-                new.len = Char::utf8_4bytes_len(bytes) as $t;
-
-                new.arr[0] = bytes[0];
-                if new.len > 1 { new.arr[1] = bytes[1]; }
-                if new.len > 2 { new.arr[2] = bytes[2]; }
-                if new.len > 3 { new.arr[3] = bytes[3]; }
                 Ok(new)
             }
 

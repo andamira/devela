@@ -35,8 +35,7 @@ const NUL_CHAR: char = '\0';
 ///   [`from_char`][Self::from_char]*(
 ///     [`7`](Self::from_char7),
 ///     [`8`](Self::from_char8),
-///     [`16`](Self::from_char16),
-///     [`24`](Self::from_char24).
+///     [`16`](Self::from_char16).
 ///   )*.
 /// - Deconstruct:
 ///   [`into_array`][Self::into_array],
@@ -448,33 +447,6 @@ impl<const CAP: usize> StringNonul<CAP> {
             new.arr[0] = bytes[0];
             if len > 1 { new.arr[1] = bytes[1]; }
             if len > 2 { new.arr[2] = bytes[2]; }
-        }
-        Ok(new)
-    }
-
-    /// Creates a new `StringNonul` from a `char24`.
-    ///
-    /// If `c`.[`is_nul()`][char24#method.is_nul] an empty string will be returned.
-    ///
-    /// # Errors
-    /// Returns [`OutOfBounds`] if `CAP` > 255,
-    /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`][char24#method.len_utf8].
-    ///
-    /// Will always succeed if `CAP` >= 4.
-    #[rustfmt::skip]
-    #[cfg(feature = "_char24")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
-    pub const fn from_char24(c: char24) -> Result<Self> {
-        let mut new = unwrap![ok? Self::new()];
-        if !c.is_nul() {
-            let bytes = c.to_utf8_bytes();
-            let len = Char::utf8_4bytes_len(bytes);
-
-            new.arr[0] = bytes[0];
-            if len > 1 { new.arr[1] = bytes[1]; }
-            if len > 2 { new.arr[2] = bytes[2]; }
-            if len > 3 { new.arr[3] = bytes[3]; }
         }
         Ok(new)
     }

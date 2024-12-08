@@ -54,16 +54,6 @@ impl GraphemeString {
         Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
-    /// Creates a new `GraphemeString` from a `char24`.
-    #[must_use]
-    #[cfg(feature = "_char24")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
-    #[cfg(feature = "dep_unicode_segmentation")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
-    pub fn from_char24(c: char24) -> GraphemeString {
-        Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
-    }
-
     /// Creates a new `GraphemeString` from a `char`.
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
