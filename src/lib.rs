@@ -64,6 +64,7 @@
         const_maybe_uninit_write,
         const_size_of_val,
         extended_varargs_abi_support,
+        noop_waker,
         num_midpoint,
         ptr_fn_addr_eq,
     )
@@ -87,7 +88,6 @@
         let_chains,
         macro_metavar_expr,
         // new_zeroed_alloc, // ?
-        noop_waker,
         unbounded_shifts,
         unsafe_cell_from_mut,
     )
