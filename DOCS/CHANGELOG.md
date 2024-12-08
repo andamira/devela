@@ -25,7 +25,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 #### New items
 - structs:
   - namespaces: `Char`, `Env`, `Mem`, `Ptr`, `Str`.
-  - `CompressionMode`, `EncodingMode`, `Pnm`,
+  - `CompressionMode`, `EncodingMode`, `Pnm`.
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `Lgc16`.
   - `TimeSplit`.
@@ -34,7 +34,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - aliases:
   - `AllocMapFx`, `AllocSetFx`, `FmtResult`, `NoTime`.
   - `MediaResult`, `AudioResult`, `ColorResult`, `DrawResult`,`FontResult`, `ImageResult`.
-  - `UiResult`, `LayoutResult`,
+  - `UiResult`, `LayoutResult`.
   - re-exported primitives: `char`.
   - `TimeSplitYearNano`, `TimeSplitYearDay`, `TimeSplitYearSec`, `TimeSplitHourSec`, `TimeSplitHourNano`, `TimeSplitMilliNano`.
 - enums:
@@ -61,7 +61,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Slice`: `from_mut`, `from_ref`, `from_raw_parts`, `from_raw_parts_mut`, `range[_mut][_checked]`, `range_from[_mut][_checked]`, `range_to[_mut][_checked]`, `take_first[_mut][_checked]`, `take_last[_mut][_checked]`, `take_omit_last[_mut][_checked]`.
   - `UnicodeScalar` & `char*` types: `MIN`.
 - macros:
-  - `id_seq!`, `impl_trait!`, `type_marker!`, `type_resource!`,
+  - `id_seq!`, `impl_trait!`, `type_marker!`, `type_resource!`.
   - `const_bool!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `impl_non_value!`.
   - private: `doc_availability!`, `doc_primitive!`, `doc_private!`.
 - vendored:
@@ -334,7 +334,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - feature-gate `StackU*` method `own_resize_default_truncate`.
 - feature-gate `Float` methods: `clamp_total`, `max_total`, `min_total`.
 - feature-gate `ExtFloat` methods: `clamp_total`, `max_total`, `min_total`.
-- make optionally *const* `Int` methods: `is_prime`, `prime_nth`, `prime_pi`,
+- make optionally *const* `Int` methods: `is_prime`, `prime_nth`, `prime_pi`.
 - move the enabling of all module's sub-features to the root module feature.
 - update CI actions/checkout@v3 -> v4.
 - update `devela_macros`.
@@ -893,18 +893,14 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.6.0] - 2023-08-06
 
 ### Added
-- new features: `nightly_docs`, `unsafe_cmp_float`, `unsafe_int_buf`,
-  `unsafe_uninit_array`, `unsafe_non_specific`.
+- new features: `nightly_docs`, `unsafe_cmp_float`, `unsafe_int_buf`, `unsafe_uninit_array`, `unsafe_non_specific`.
 - add `bytemuck` as an optional dependency.
-- new const functions for comparing primitives: `total_cmp_*`, `max_*`, `min_*`,
-  `clamp_*`.
+- new const functions for comparing primitives: `total_cmp_*`, `max_*`, `min_*`, `clamp_*`.
   - includes const unsafe and non-const safe versions of functions for comparing
     floating-point primitives.
 - add `IntBuf` struct.
 - new traits: `FromPrimitives`, `IntoPrimitives`, `SliceExt`,  `IntBufAble`.
-- add additional targets for testing `x86_64-unknown-linux-gnu`,
-  `x86_64-pc-windows-msvc`, `x86_64-apple-darwin`, `x86_64-unknown-none`,
-  `i686-unknown-linux-gnu`, `aarch64-unknown-none`.
+- add additional targets for testing `x86_64-unknown-linux-gnu`, `x86_64-pc-windows-msvc`, `x86_64-apple-darwin`, `x86_64-unknown-none`, `i686-unknown-linux-gnu`, `aarch64-unknown-none`.
 
 ### Removed
 - delete `safest` feature.
@@ -958,8 +954,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.4.0] - 2023-05-23
 
 ### Added
-- new functions: `slice_into_vec`, `try_slice_into_vec`, `try_vec_into_vec`,
-  `vec_into_vec`, `slice_into_array`.
+- new functions: `slice_into_vec`, `try_slice_into_vec`, `try_vec_into_vec`, `vec_into_vec`, `slice_into_array`.
 - new macros: `manifest_dir`, `cdbg`.
 
 ### Changed
@@ -1046,8 +1041,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## [0.1.0] - 2022-12-17
 
 ### Added
-- add functions `pclamp`, `pmax`, `pmin`, `project_root_path`,
-  `project_root_path_string`.
+- add functions `pclamp`, `pmax`, `pmin`, `project_root_path`, `project_root_path_string`.
 - add macro `iif`.
 
 
