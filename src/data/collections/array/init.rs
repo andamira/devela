@@ -103,7 +103,7 @@ macro_rules! array_init {
         //   - https://github.com/rust-lang/rust/issues/62875 (duplicate)
         // unsafe { $crate::transmute::<_, [T; LEN]>(&arr) }
         // SAFETY: we've initialized all the elements
-        unsafe { $crate::Mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
+        unsafe { ::core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
     }};
     (
     // unsafe array initialization in the heap
@@ -129,7 +129,7 @@ macro_rules! array_init {
             i += 1;
         }
         // SAFETY: we've initialized all the elements
-        unsafe { $crate::Mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
+        unsafe { ::core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
     }};
     (
 
@@ -252,7 +252,7 @@ macro_rules! array_init {
                 arr[i].write(data?);
             }
             // SAFETY: we've initialized all the elements
-            unsafe { $crate::Mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
+            unsafe { ::core::mem::transmute_copy::<_, [$T; $LEN]>(&arr) }
         }
     }};
 }
