@@ -7,7 +7,9 @@ macro_rules! impl_fsize {
         impl_fsize![f32, "32"];
         impl_fsize![f64, "64"];
         #[cfg(feature = "nightly_float")]
-        impl_fsize![::core::primitive::f16, "16"];
+        impl_fsize![::core::f16, "16"];
+        #[cfg(feature = "nightly_float")]
+        impl_fsize![::core::f128, "128"];
     };
     ($float:ty , $pointer_width:literal) => {
         #[doc = crate::doc_primitive!()]
