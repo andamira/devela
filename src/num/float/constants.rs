@@ -1,4 +1,4 @@
-// devela::num::float::ext_trait
+// devela::num::float::constants
 //
 //! Defines `ExtFloatConst` and implements it for primitives.
 //
@@ -10,6 +10,8 @@
 //
 // WAIT: [more_float_constants](https://github.com/rust-lang/rust/issues/103883)
 // - SQRT_3, FRAC_1_SQRT_3, FRAC_1_SQRT_PI, PHI, EGAMMA…
+//
+// NOTE: In sync with num::float:wrapper::consts
 
 #![allow(clippy::excessive_precision)]
 
@@ -239,7 +241,7 @@ pub trait ExtFloatConst: Sized {
 }
 
 // Define shared doc strings
-crate::CONST! {
+crate::CONST! { pub(in crate::num::float),
     // identities
     ONE = r#"The multiplicative identity 1."#;
     ZERO = r#"The additive identity 0."#;
