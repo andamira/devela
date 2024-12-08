@@ -670,7 +670,7 @@ default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
 
 [dependencies.js-sys] # https://crates.io/crates/js-sys
-version = "0.3.74" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/js-sys
+version = "0.3.76" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/js-sys
 optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/js-sys/latest/features
 # deps: once-cell, wasm-bindgen/std
@@ -784,12 +784,12 @@ default-features = false # 7 https://docs.rs/crate/unicode-width/latest/features
 # features = ["cjk"]
 
 [dependencies.wasm-bindgen] # https://crates.io/crates/wasm-bindgen
-version = "0.2.97" # ✓ https://github.com/rustwasm/wasm-bindgen/blob/main/CHANGELOG.md
+version = "0.2.99" # ✓ https://github.com/rustwasm/wasm-bindgen/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 10 https://docs.rs/crate/wasm-bindgen/latest/features
 
 [dependencies.web-sys] # https://crates.io/crates/web-sys
-version = "0.3.74" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/web-sys
+version = "0.3.76" # ✗ https://github.com/rustwasm/wasm-bindgen/commits/main/crates/web-sys
 optional = true # unsafe (unsafe dependencies)
 default-features = false # 1657 https://docs.rs/crate/web-sys/latest/features
 
