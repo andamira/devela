@@ -11,7 +11,6 @@ use proc_macro::TokenStream;
 use proc_macro2::{Ident, Span, TokenStream as TokenStream2, TokenTree};
 use quote::quote;
 
-#[inline(always)]
 #[cfg(feature = "alloc")]
 pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
     let input: TokenStream2 = input.into();
@@ -132,7 +131,6 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
             /// Returns the appropriate variant from the given `value`.
             ///
             /// Returns `None` if it's out of range.
-            #[inline]
             #[must_use]
             pub const fn new(value: #repr) -> Option<Self> {
                 if value >= #start as #repr && value <= #end as #repr {
@@ -159,7 +157,6 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
 
             /// Returns the appropriate variant from the given `value`,
             /// saturating at the type bounds.
-            #[inline]
             #[must_use]
             pub const fn new_saturated(value: #repr) -> Self {
                 // SAFETY: The `clamp` function ensures that the value is within the valid range,
@@ -169,7 +166,6 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
 
             /// Returns the appropriate variant from the given `value`,
             /// wrapping around within the type bounds.
-            #[inline]
             #[must_use]
             pub const fn new_wrapped(value: #repr) -> Self {
                 let range_size = (#end - #start + 1) as #repr;
@@ -185,7 +181,6 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
             }
 
             /// Cast the enum to its underlying representation.
-            #[inline]
             #[must_use]
             pub const fn get(self) -> #repr {
                 self as #repr
@@ -193,13 +188,10 @@ pub(crate) fn body_enumint(input: TokenStream) -> TokenStream {
 
             /* helpers */
 
-            #[inline]
             const fn clamp(v: #repr, min: #repr, max: #repr) -> #repr {
                 if v < min { min } else if v > max { max } else { v }
             }
-            // #[inline]
             // const fn max(a: {repr}) -> {repr} {{ if a > b {{ a }} else {{ b }} }}
-            // #[inline]
             // const fn min(a: {repr}) -> {repr} {{ if a < b {{ a }} else {{ b }} }}
         }
     };
