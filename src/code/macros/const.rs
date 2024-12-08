@@ -46,7 +46,7 @@
 ///     pub const fn fn_1(n: i32) -> i64 { (n * 5) as i64 };
 ///
 ///     /// You can repeat functions.
-///     FN_2 = pub const fn fn_2(c: char) { };
+///     pub(crate) FN_2 = pub const fn fn_2(c: char) { };
 ///
 ///     /// Supports optional *unsafe*.
 ///     FN_3 = pub const unsafe fn fn_3() {};
@@ -65,6 +65,18 @@
 /// assert_eq![Fns::fn_1(5), 25];
 /// let _: () = Fns::fn_2('a');
 /// unsafe { Fns::fn_3(); }
+///
+/// // Supports giving a shared visibility for all defined constants
+/// CONST! { pub(crate),
+///     E1 = 1 + 1;
+///     E2 = 2 + 2;
+///     // pub E3 = 3 + 3; // shared visibility can't be overriden
+/// }
+/// CONST! { pub(crate),
+///     F1 = pub const fn f1(a: i32) -> i32 { a + 1 };
+///     F2 = pub const fn f2(a: i32) -> i32 { a + 2 };
+///     // pub F3 = pub const fn f3(a: i32) -> i32 { a + 3 };
+/// }
 /// ```
 // Related links
 // - https://doc.rust-lang.org/reference/items/external-blocks.html#functions
@@ -75,7 +87,7 @@ macro_rules! _CONST {
     // Either multiple `const fn`
     $(
         $(#[$CONST_ATTRS:meta])*
-        $vis:vis $CONST_NAME:ident =
+        $item_vis:vis $CONST_NAME:ident =
             $(#[$fn_attrs:meta])*
             $fn_vis:vis const
             $(async$($_a:block)?)? $(safe$($_s:block)?)? $(unsafe$($_u:block)?)?
@@ -93,20 +105,59 @@ macro_rules! _CONST {
                     fn $fn($($param: $param_ty),*) $(-> $fn_return)? $fn_body
                 }
             }
-            $vis use $CONST_NAME;
+            $item_vis use $CONST_NAME;
         )*
     };
     (
+    $shared_vis:vis, // (could use a shared visibility for all items)
+    $(
+        $(#[$CONST_ATTRS:meta])*
+        $CONST_NAME:ident =
+            $(#[$fn_attrs:meta])*
+            $fn_vis:vis const
+            $(async$($_a:block)?)? $(safe$($_s:block)?)? $(unsafe$($_u:block)?)?
+            fn $fn:ident($($param:ident: $param_ty:ty),* $(,)?)
+        $(-> $fn_return:ty)?
+        $fn_body:block
+    );* $(;)?) => {
+        $(
+            $(#[$CONST_ATTRS])*
+            #[allow(unused_macros)]
+            macro_rules! $CONST_NAME {
+                () => {
+                    $(#[$fn_attrs])*
+                    $shared_vis const $(async$($_a)?)? $(safe$($_s)?)? $(unsafe$($_u)?)?
+                    fn $fn($($param: $param_ty),*) $(-> $fn_return)? $fn_body
+                }
+            }
+            $shared_vis use $CONST_NAME;
+        )*
+    };
+    (
+
     // Either multiple expressions
     $(
         $(#[$CONST_ATTRS:meta])*
-        $vis:vis $CONST_NAME:ident = $expr:expr
+        $item_vis:vis $CONST_NAME:ident = $expr:expr
      );* $(;)?) => {
         $(
             $(#[$CONST_ATTRS])*
             #[allow(unused_macro)]
             macro_rules! $CONST_NAME { () => { $expr } }
-            $vis use $CONST_NAME;
+            $item_vis use $CONST_NAME;
+        )*
+    };
+    (
+    $shared_vis:vis, // (could use a shared visibility for all items)
+    $(
+        $(#[$CONST_ATTRS:meta])*
+        $CONST_NAME:ident = $expr:expr
+     );* $(;)?) => {
+        $(
+            $(#[$CONST_ATTRS])*
+            #[allow(unused_macro)]
+            macro_rules! $CONST_NAME { () => { $expr } }
+            $shared_vis use $CONST_NAME;
         )*
     };
 }

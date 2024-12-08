@@ -1,4 +1,4 @@
-// devela::num::float::ext_trait
+// devela::num::float::ext_float
 //
 //! Extention trait for floatin-point methods.
 //
