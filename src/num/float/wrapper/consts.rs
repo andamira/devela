@@ -6,11 +6,13 @@
 //
 // NOTE: In sync with num::float::constants
 
-// constants are defined with 81 decimals.
-#![allow(clippy::excessive_precision)]
+#![allow(clippy::excessive_precision, reason = "constants are defined with 81 decimals")]
+#![allow(dead_code, reason = "WIP f16,f128")]
 
 use super::super::constants::{ExtFloatConst, *};
 use crate::Float;
+#[cfg(feature = "nightly_float")]
+use ::core::{f128, f16};
 
 #[doc = crate::doc_private!()]
 /// impl technical constants
@@ -18,42 +20,52 @@ use crate::Float;
 /// $f: the floating-point type.
 /// $u: unsigned integer type with the same bit-size.
 macro_rules! float_technical_const_impls {
+    () => {
+        float_technical_const_impls![
+            // Uses Lomont's single precision magic number for fisqrt
+            f32:u32[127, 8, 23, 0x5f37_59df, 1e-6],
+
+            // Uses Lomont's double precision magic number for fisqrt
+            // f64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-15],
+            //
+            // Uses Matthew Robertson's double precision magic number
+            f64:u64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-12]
+        ];
+        #[cfg(feature = "nightly_float")]
+        float_technical_const_impls![
+            // Uses a half-precision magic number found by brute-force
+            f16:u16[15, 5, 10, 0x59b9, 1e-3],
+            // Uses Matthew Robertson's quadruple precision magic number
+            f128:u128[16383, 15, 112, 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf, 1e-30]
+        ];
+    };
     ($( $f:ty:$u:ty
         [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal] ),+) => {
         $( float_technical_const_impls![@$f:$u[$bias, $exp, $sig, $fisr, $nrt]]; )+
     };
     (@$f:ty:$u:ty
         [$bias:literal, $exp:literal, $sig:literal, $fisr:literal, $nrt:literal] ) => {
-        #[allow(unused)]
+        // #[allow(unused)]
         impl Float<$f> {
-            // Bias value used in the exponent to allow representation of both positive
-            // and negative exponents.
+            /// Bias value used in the exponent to allow representation of both positive
+            /// and negative exponents.
             pub(super) const BIAS: u32 = $bias;
-            // Number of bits used to represent the exponent.
+            /// Number of bits used to represent the exponent.
             pub(super) const EXPONENT_BITS: u32 = $exp;
-            // Number of explicit bits used to represent the significand (or mantissa).
-            //
-            // Note that std's `MANTISSA_DIGITS` floating-point constant equals
-            // `SIGNIFICAND_BITS + 1` since it accounts for an additional implicit leading bit,
-            // which is not stored but assumed in the standard floating-point representation.
+            /// Number of explicit bits used to represent the significand (or mantissa).
+            ///
+            /// Note that std's `MANTISSA_DIGITS` floating-point constant equals
+            /// `SIGNIFICAND_BITS + 1` since it accounts for an additional implicit leading bit,
+            /// which is not stored but assumed in the standard floating-point representation.
             pub(super) const SIGNIFICAND_BITS: u32 = $sig;
             pub(super) const FISR_MAGIC: $u = $fisr;
-            // Tolerances for the difference between successive guesses using the
-            // Newton-Raphson method for square root calculation:
+            /// Tolerances for the difference between successive guesses using the
+            /// Newton-Raphson method for square root calculation:
             pub(super) const NR_TOLERANCE: $f = $nrt;
         }
     };
 }
-float_technical_const_impls![
-    // Uses Lomont's single precision magic number for fisqrt
-    f32:u32[127, 8, 23, 0x5f37_59df, 1e-6],
-    // Uses Lomont's double precision magic number for fisqrt
-    // f64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-15],
-    // Uses Matthew Robertson's double precision magic number
-    f64:u64[1023, 11, 52, 0x5fe6_eb50_c7b5_37a9, 1e-12]
-    // Matthew Robertson's quadruple precision magic number
-    // f128:u128[, , , 0x5ffe_6eb5_0c7b_537a_9cd9_f02e_504f_cfbf, ]
-];
+float_technical_const_impls![];
 
 #[doc = crate::doc_private!()]
 /// impl mathematical constants
@@ -62,6 +74,8 @@ float_technical_const_impls![
 macro_rules! float_const_impls {
     () => {
         float_const_impls![f32, f64];
+        #[cfg(feature = "nightly_float")]
+        float_const_impls![f16, f128];
     };
     ($( $f:ty),+) => { $( float_const_impls![@$f]; )+ };
     (@$f:ty) => {
