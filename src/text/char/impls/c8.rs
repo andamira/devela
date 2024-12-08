@@ -46,17 +46,6 @@ impl char8 {
             Err(CharConversion)
         }
     }
-    /// Tries to convert a `char24` to `char8`.
-    #[cfg(feature = "_char24")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
-    pub const fn try_from_char24(c: char24) -> Result<char8> {
-        let c = c.to_u32();
-        if Char::byte_len(c) == 1 {
-            Ok(char8(c as u8))
-        } else {
-            Err(CharConversion)
-        }
-    }
     /// Tries to convert a `char` to `char8`.
     pub const fn try_from_char(c: char) -> Result<char8> {
         if Char::byte_len(c as u32) == 1 {
@@ -99,13 +88,6 @@ impl char8 {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
     pub const fn to_char16(self) -> char16 {
         char16::from_char8(self)
-    }
-    /// Converts this `char8` to `char24`.
-    #[must_use]
-    #[cfg(feature = "_char24")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
-    pub const fn to_char24(self) -> char24 {
-        char24::from_char8(self)
     }
     /// Converts this `char8` to `char`.
     #[must_use]

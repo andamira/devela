@@ -8,7 +8,7 @@
 // Centralized automatic definitions based on enabled features & flags
 #[cfg(any(doc, test))]
 impl_non_value![I 8];
-#[cfg(any(feature = "_char7", feature = "_char24"))]
+#[cfg(feature = "_char7")]
 impl_non_value![U 8];
 #[cfg(feature = "_char16")]
 impl_non_value![U 16];

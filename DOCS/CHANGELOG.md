@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - num: `geom`, `wave`.
   - media `media`, `safe_media`, `audio`, `color`, `draw`, `font`, `image`.
   - sys: `time`, `linux`, `dep_linux`, `unsafe_syscall`.
-  - text: `_char7`, `_char8`, `_char16`, `_char24`, `_char32`,
+  - text: `_char7`, `_char8`, `_char16`.
   - nightly: `nightly_autodiff`, `nightly_float`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
   - safety: `safe_audio`, `safe_color`, `safe_draw`, `safe_ffi`, `safe_font`, `safe_image`, `safe_io`, `safe_layout`, `safe_ui`, `safest`, `unsafe_async`.
   - ui: `ui`, `layout`.
@@ -109,7 +109,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Removed
 - remove custom no_std `Error` definition.
 - remove items: `NeverOk`, `NeverErr`, `HasherFx32`, `HasherFx64`.
-- remove types: `InRange*`, `NonRange*`, `HourMilliSplit`, `SecNanoSplit`, `YearSecSplit`.
+- remove types: `char24`, `char32`, `InRange*`, `NonRange*`, `HourMilliSplit`, `SecNanoSplit`, `YearSecSplit`.
 - remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`, `unsafe_const`.
 - remove standalone `char_*` fns (namespaced in `Char`).
 - remove most re-exported fns from `std::mem` (namespaced in `Mem`).
@@ -117,7 +117,6 @@ The format is based on [Keep a Changelog], and this project adheres to
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
 - comment out unused features: `code`, `data`.
 - remove convenience fn: `out_dir` from the build script.
-- remove redundant `char32` type.
 - remove `Float::const_abs`.
 
 ### Changed

@@ -14,8 +14,6 @@ use super::*; // char*
 mod c;
 #[cfg(feature = "_char16")]
 mod c16;
-#[cfg(feature = "_char24")]
-mod c24;
 #[cfg(feature = "_char7")]
 mod c7;
 #[cfg(feature = "_char8")]
@@ -26,6 +24,9 @@ mod c8;
 #[doc = crate::doc_private!()]
 /// implements `UnicodeScalar` for custom char types.
 macro_rules! impl_char {
+    () => {
+        impl_char![7|"_char7", 8|"_char8", 16|"_char16"];
+    };
     ($( $bits:literal | $feature:literal ),+ ) => { $crate::paste! {
         $(
             #[cfg(feature = $feature)]
@@ -128,4 +129,4 @@ macro_rules! impl_char {
         }
     };
 }
-impl_char![7 | "_char7", 8 | "_char8", 16 | "_char16", 24 | "_char24"];
+impl_char!();

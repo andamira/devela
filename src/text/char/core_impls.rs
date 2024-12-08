@@ -11,11 +11,19 @@ use crate::{
 /* Default, Display, Debug */
 
 #[doc = crate::doc_private!()]
-macro_rules! core_impls {
+///
+macro_rules! char_core_impls {
+    () => {
+        char_core_impls![
+            char7 | "_char7" + Self(unwrap![some NonExtremeU8::new(0)]),
+            char8 | "_char8" + Self(0),
+            char16 | "_char16" + Self(unwrap![some NonSurrogateU16::new(0)])
+        ];
+    };
     ($( $name:ident | $feature:literal + $default:expr ),+ ) => {
         $(
             #[cfg(feature = $feature)]
-            core_impls![@$name + $default];
+            char_core_impls![@$name + $default];
         )+
     };
     (@$name:ident + $default:expr) => { paste! {
@@ -61,12 +69,7 @@ macro_rules! core_impls {
     }};
 }
 #[rustfmt::skip]
-core_impls![
-    char7 | "_char7" + Self(unwrap![some NonExtremeU8::new(0)]),
-    char8 | "_char8" + Self(0),
-    char16 | "_char16" + Self(unwrap![some NonSurrogateU16::new(0)]),
-    char24 | "_char24" + Self { hi: unwrap![some NonExtremeU8::new(0)], mi: 0, lo: 0 }
-];
+char_core_impls!();
 
 /* From char7 */
 
@@ -92,13 +95,6 @@ mod c7 {
         #[must_use]
         fn from(c: char7) -> char16 {
             c.to_char16()
-        }
-    }
-    #[cfg(feature = "_char24")]
-    impl From<char7> for char24 {
-        #[must_use]
-        fn from(c: char7) -> char24 {
-            c.to_char24()
         }
     }
 }
@@ -129,13 +125,6 @@ mod c8 {
             c.to_char16()
         }
     }
-    #[cfg(feature = "_char24")]
-    impl From<char8> for char24 {
-        #[must_use]
-        fn from(c: char8) -> char24 {
-            c.to_char24()
-        }
-    }
 }
 
 /* From char16 */
@@ -164,48 +153,6 @@ mod c16 {
             c.try_to_char8()
         }
     }
-    #[cfg(feature = "_char24")]
-    impl From<char16> for char24 {
-        #[must_use]
-        fn from(c: char16) -> char24 {
-            c.to_char24()
-        }
-    }
-}
-
-/* From char24 */
-
-#[cfg(feature = "_char24")]
-mod c24 {
-    use super::*;
-
-    impl From<char24> for char {
-        #[must_use]
-        fn from(c: char24) -> char {
-            c.to_char()
-        }
-    }
-    #[cfg(feature = "_char7")]
-    impl TryFrom<char24> for char7 {
-        type Error = TextError;
-        fn try_from(c: char24) -> Result<char7> {
-            c.try_to_char7()
-        }
-    }
-    #[cfg(feature = "_char8")]
-    impl TryFrom<char24> for char8 {
-        type Error = TextError;
-        fn try_from(c: char24) -> Result<char8> {
-            c.try_to_char8()
-        }
-    }
-    #[cfg(feature = "_char16")]
-    impl TryFrom<char24> for char16 {
-        type Error = TextError;
-        fn try_from(c: char24) -> Result<char16> {
-            c.try_to_char16()
-        }
-    }
 }
 
 /* From char */
@@ -229,12 +176,5 @@ impl TryFrom<char> for char16 {
     type Error = TextError;
     fn try_from(c: char) -> Result<char16> {
         char16::try_from_char(c)
-    }
-}
-#[cfg(feature = "_char24")]
-impl From<char> for char24 {
-    #[must_use]
-    fn from(c: char) -> char24 {
-        char24::from_char(c)
     }
 }

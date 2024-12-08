@@ -6,12 +6,12 @@
 // - struct char7
 // - struct char8
 // - struct char16
-// - struct char24
 // - trait UnicodeScalar
 
 #![allow(non_camel_case_types)]
 
-#[cfg(any(feature = "_char7", feature = "_char24"))]
+// In sync with devela::num::niche::non_value
+#[cfg(feature = "_char7")]
 pub(super) use crate::NonExtremeU8;
 #[cfg(feature = "_char16")]
 pub(super) use crate::NonValueU16;
@@ -23,11 +23,11 @@ pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 /* primitive alias */
 
 #[doc = crate::doc_primitive!()]
-/// A 32-bit [unicode scalar value][scalar].
+/// A 32-bit [unicode scalar][scalar].
 ///
 /// It can represent each and every scalar.
 ///
-/// See also: [`char7`], [`char8`], [`char16`], [`char24`].
+/// See also: [`char7`], [`char8`], [`char16`].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 // NOTE: this reexport type is not recognized implicity by rustdoc, is it a BUG?
@@ -37,12 +37,12 @@ pub type char = crate::_core::primitive::char;
 
 /* public types */
 
-/// A 7-bit [unicode scalar value][scalar], limited to [basic latin][0w] subset
+/// A 7-bit [unicode scalar][scalar], limited to [basic latin][0w] subset
 /// (ASCII).
 ///
 /// `Option<char7>` is the same size as `char7` or `char8` (1 byte).
 ///
-/// See also: [`char8`], [`char16`], [`char24`], [`char`][crate::char].
+/// See also: [`char8`], [`char16`], [`char`][crate::char].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
@@ -52,14 +52,14 @@ pub type char = crate::_core::primitive::char;
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char7(pub(super) NonExtremeU8);
 
-/// An 8-bit [unicode scalar value][scalar], limited to [basic latin][0w]
+/// An 8-bit [unicode scalar][scalar], limited to [basic latin][0w]
 /// and [latin-1][1w] subsets.
 ///
 /// This is the only scalar type without memory layout optimization
 /// because each possible value is a valid unicode scalar. Therefore
 /// `Option<char8>` is the same size as `char16` or `Option<char16>` (2 bytes).
 ///
-/// See also: [`char7`], [`char16`], [`char24`], [`char`][crate::char].
+/// See also: [`char7`], [`char16`], [`char`][crate::char].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
@@ -70,7 +70,7 @@ pub struct char7(pub(super) NonExtremeU8);
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char8(pub(super) u8);
 
-/// A 16-bit [unicode scalar value][scalar], limited to the
+/// A 16-bit [unicode scalar][scalar], limited to the
 /// [Basic Multilingual Plane][0w] subset.
 ///
 /// It can represent every scalar from the [Basic Multilingual Plane][0w] (BMP),
@@ -79,7 +79,7 @@ pub struct char8(pub(super) u8);
 ///
 /// `Option<char16>` is the same size as `char16` (2 bytes).
 ///
-/// See also: [`char7`], [`char8`], [`char24`], [`char`][crate::char].
+/// See also: [`char7`], [`char8`], [`char`][crate::char].
 ///
 /// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
 /// [0w]: https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
@@ -89,28 +89,9 @@ pub struct char8(pub(super) u8);
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct char16(pub(super) NonSurrogateU16);
 
-/// A 24-bit [unicode scalar value][scalar], unlimited value representation.
-///
-/// It can represent each and every scalar the same as [`char`][crate::char],
-/// since the maximum value (`\u{10FFFF}`) needs only 21 bits.
-///
-/// `Option<char24>` is the same size as `char24` (3 bytes).
-///
-/// See also: [`char7`], [`char8`], [`char16`], [`char`][crate::char].
-///
-/// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
-#[cfg(feature = "_char24")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char24")))]
-#[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct char24 {
-    pub(super) hi: NonExtremeU8, // highest byte
-    pub(super) mi: u8,           // middle byte
-    pub(super) lo: u8,           // lowest byte
-}
-
 /// Common trait for unicode scalar types.
 ///
-/// It's implemented for: [`char7`], [`char8`], [`char16`], [`char24`],
+/// It's implemented for: [`char7`], [`char8`], [`char16`],
 /// and [`char`][crate::char].
 pub trait UnicodeScalar {
     /// The lowest unicode scalar that can be represented.

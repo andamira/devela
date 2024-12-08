@@ -75,7 +75,7 @@ publish = true
 bench = false
 
 
-[features] # 214/300 (86 remaining), 101 visible, 113 hidden
+[features] # 213/300 (87 remaining), 101 visible, 112 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -408,7 +408,7 @@ _docs_min = [ # the minimum capabilities to document each library item
 	"_float_f32", "_int_u8",
 	# text:
 	"_string_u8", "_string_nonul",
-	"_char7", "_char8", "_char16", "_char24",
+	"_char7", "_char8", "_char16",
 ]
 _docs_max = [ # the maximum capabities relevant for documentation
 	"_data_all", "_num_all", "_text_all"] # _tuple_72
@@ -537,11 +537,10 @@ _nums_all = ["_float_all", "_int_all"]
 _text_all = ["_char_all", "_string_all"]
 
 # char*
-_char_all = ["_char7", "_char8", "_char16", "_char24"]
+_char_all = ["_char7", "_char8", "_char16"]
 	_char7 = []
 	_char8 = []
 	_char16 = []
-	_char24 = []
 
 # StringU*, StringNonul:
 _string_all = [

@@ -36,62 +36,42 @@ fn char_encodings() {
     assert![char16::try_from(c3).is_ok()];
     assert![char16::try_from(c4).is_err()];
 
-    assert![char24::try_from(c1).is_ok()];
-    assert![char24::try_from(c2).is_ok()];
-    assert![char24::try_from(c3).is_ok()];
-    assert![char24::try_from(c4).is_ok()];
-
     //
 
     let c7_1 = char7::try_from(c1).unwrap();
     let c8_1 = char8::try_from(c1).unwrap();
     let c16_1 = char16::try_from(c1).unwrap();
-    let c24_1 = char24::from(c1);
 
     assert![c7_1.to_char() == c1];
     assert![c8_1.to_char() == c1];
     assert![c16_1.to_char() == c1];
-    assert![c24_1.to_char() == c1];
 
-    assert![size(&c7_1) == 1 && size(&c8_1) == 1 && size(&c16_1) == 2 && size(&c24_1) == 3];
+    assert![size(&c7_1) == 1 && size(&c8_1) == 1 && size(&c16_1) == 2];
     assert![
         size(&Some(c7_1)) == 1
             && size(&Some(c8_1)) == 2
             && size(&Some(c16_1)) == 2
-            && size(&Some(c24_1)) == 3
     ];
 
     //
 
     let c8_2 = char8::try_from(c2).unwrap();
     let c16_2 = char16::try_from(c2).unwrap();
-    let c24_2 = char24::from(c2);
 
     assert![c8_2.to_char() == c2];
     assert![c16_2.to_char() == c2];
-    assert![c24_2.to_char() == c2];
 
     //
 
     let c16_3 = char16::try_from(c3).unwrap();
-    let c24_3 = char24::from(c3);
 
     assert![c16_3.to_char() == c3];
-    assert![c24_3.to_char() == c3];
-
-    //
-
-    let c24_4 = char24::from(c4);
-
-    assert![c24_4.to_char() == c4];
 
     //
 
     assert_eq![char8::from(char7::try_from(c1).unwrap()).to_char(), c1];
     assert_eq![char16::from(char7::try_from(c1).unwrap()).to_char(), c1];
     assert_eq![char16::from(char8::try_from(c1).unwrap()).to_char(), c1];
-    assert_eq![char24::from(char8::try_from(c2).unwrap()).to_char(), c2];
-    assert_eq![char24::from(char16::try_from(c3).unwrap()).to_char(), c3];
 }
 
 #[test]
@@ -131,12 +111,5 @@ fn char_to_utf8_bytes() {
                 c
             );
         }
-        let our_bytes = char24::from_char(c).to_utf8_bytes();
-        assert_eq!(
-            std_bytes.as_bytes(),
-            &our_bytes[..std_bytes.len()],
-            "Mismatch for character '{}'",
-            c
-        );
     }
 }

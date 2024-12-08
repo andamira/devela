@@ -192,8 +192,6 @@ bit_sized![= 7; for crate::char7];
 bit_sized![= 8; for crate::char8];
 #[cfg(feature = "_char16")]
 bit_sized![= 16; for crate::char16];
-#[cfg(feature = "_char24")]
-bit_sized![= 24; for crate::char24];
 
 bit_sized![= 8; for NonZeroI8, NonZeroU8];
 bit_sized![= 16; for NonZeroI16, NonZeroU16];
