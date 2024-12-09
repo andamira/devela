@@ -68,6 +68,7 @@ Root modules & public sub-modules:
   - `os`:
     - [`linux`]: Linux functionality.
 - [`text`]
+  - [`fmt`]: `NumToStr`.
 - [`ui`]
   - [`layout`]
 - [`work`]
@@ -94,6 +95,7 @@ Root modules & public sub-modules:
   [`mem`]: crate::sys::mem
     [`linux`]: crate::sys::os::linux
 [`text`]: crate::text
+  [`fmt`]: crate::text::fmt
 [`work`]: crate::work
 [`ui`]: crate::ui
   [`layout`]: crate::ui::layout

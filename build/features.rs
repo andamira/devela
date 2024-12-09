@@ -134,7 +134,10 @@ mod reflection {
             flags: &["_mem_·"],
             features: &["mem", "bit"]
         };
-
+    pub const TEXT: FlagsFeatures = FlagsFeatures {
+        flags: &["_text_·"],
+        features: &["text", "fmt"]
+    };
     pub const UI: FlagsFeatures = FlagsFeatures {
         flags: &["_ui_·"],
         features: &["ui", "layout"]
@@ -243,6 +246,7 @@ mod reflection {
             MEDIA,
             NUM,
             SYS, MEM,
+            TEXT,
             UI,
 
             /* capabilities */

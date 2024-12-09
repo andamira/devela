@@ -5,16 +5,21 @@
 #![doc = crate::doc_!(extends: fmt)]
 //
 
-mod buf;
-mod num_to_str;
 mod reexports;
+mod buf;
+
+#[cfg(feature = "fmt")]
+mod num_to_str;
 
 // structural access
 crate::items! { #[allow(unused_imports)]
     pub use {always::*, doc_inline::*};
 
     mod doc_inline {
-        pub use super::{buf::*, num_to_str::*, reexports::*};
+        pub use super::{buf::*, reexports::*};
+        #[cfg(feature = "fmt")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "fmt")))]
+        pub use super::num_to_str::*;
     }
     pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
