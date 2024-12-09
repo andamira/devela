@@ -57,6 +57,7 @@ Root modules & public sub-modules:
 - [`num`]: enables all of the `num` sub-features:
   - [`geom`]: geometry, linear algebra.
   - [`rand`]: random number generators.
+  - `unit`: unit prefixes.
   - [`wave`]: wavelets.
 - [`phys`]: enables all `phys` sub-features.
     - [`time`]
@@ -74,6 +75,7 @@ Root modules & public sub-modules:
 [`code`]: crate::code
   [`result`]: mod@crate::result
 [`data`]: crate::data
+  [`hash`]: crate::data::hash
 [`lang`]: crate::lang
 [`media`]: mod@crate::media
   [`audio`]: crate::media::audio

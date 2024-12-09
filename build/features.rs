@@ -121,7 +121,7 @@ mod reflection {
     };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         flags: &["_num_·"],
-        features: &["num", "geom", "rand", "wave"]
+        features: &["num", "geom", "rand", "unit", "wave"]
     };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         flags: &["_sys_·"],

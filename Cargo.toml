@@ -142,10 +142,11 @@ media = [ "audio", "color", "draw", "font", "image"]
 	font = []
 	image = []
 num = [
-	"geom", "rand", "wave",
+	"geom", "rand", "unit", "wave",
 	]
 	geom = [] # geometry, linear algebra
 	rand = [] # random number generators
+	unit = [] # unit prefixes
 	wave = [] # wavelets
 phys = [
 	"time",

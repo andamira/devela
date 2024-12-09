@@ -21,6 +21,9 @@ mod no; // NoNum
 mod primitive; // Cast, Primitive[Cast|Join|Split]
 mod sign; // Sign
 mod traits; // Num, NumRef
+
+#[cfg(feature = "unit")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unit")))]
 mod unit; // Unit, Unit[Bi|Si]
 
 pub mod algebra;
@@ -46,8 +49,10 @@ crate::items! { #[allow(unused_imports)]
         pub use super::{
             cmp::all::*, error::*, float::all::*, frac::all::*, int::all::*,
             interval::*, no::*, primitive::all::*, sign::*, traits::*,
-            unit::all::*,
         };
+        #[cfg(feature = "unit")]
+        pub use super::unit::all::*;
+
         #[cfg(feature = "geom")]
         pub use super::geom::all::*;
         #[cfg(feature = "rand")]

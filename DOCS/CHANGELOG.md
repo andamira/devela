@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new features for:
   - data: `hash`.
   - doc: `_docsrs[_stable]_nodep`.
-  - num: `geom`, `wave`, `_cmp_f16`, `_cmp_f128`, `_float_f16`, `_float_f128`.
+  - num: `geom`, `unit`, `wave`, `_cmp_f16`, `_cmp_f128`, `_float_f16`, `_float_f128`.
   - media `media`, `safe_media`, `audio`, `color`, `draw`, `font`, `image`.
   - sys: `time`, `linux`, `dep_linux`, `unsafe_syscall`.
   - text: `_char7`, `_char8`, `_char16`.
