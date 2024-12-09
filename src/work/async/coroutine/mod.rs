@@ -14,7 +14,7 @@ mod reexports;
 
 // structural access
 crate::items! { #[allow(unused_imports)]
-    pub use doc_inline::*;
+    pub use {always::*, doc_inline::*};
 
     mod doc_inline {
         #[cfg(feature = "nightly_coro")]
@@ -28,7 +28,7 @@ crate::items! { #[allow(unused_imports)]
         pub use super::doc_inline::*;
     }
     pub(super) mod always { #![allow(unused_imports)]
-        #[cfg(feature = "nightly_coro")]
+        #[cfg(feature = "nightly_coro")] #[doc(hidden)] #[doc(no_inline)]
         pub use super::reexports::*;
     }
 }

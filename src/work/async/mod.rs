@@ -23,7 +23,7 @@ mod block;
 
 // structural access
 crate::items! { #[allow(unused_imports)]
-    pub use doc_inline::*;
+    pub use {always::*, doc_inline::*};
 
     mod doc_inline {
         #![allow(unused_imports, reason = "feature-gated")]
@@ -36,6 +36,7 @@ crate::items! { #[allow(unused_imports)]
         pub use super::doc_inline::*;
     }
     pub(super) mod always { #![allow(unused_imports)]
+        #[doc(hidden)] #[doc(no_inline)]
         pub use super::{coroutine::always::*, reexports::*};
     }
 }

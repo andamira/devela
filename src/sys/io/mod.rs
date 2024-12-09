@@ -19,7 +19,8 @@ mod reexport_std;
 
 // structural access
 crate::items! { #[allow(unused_imports)]
-    pub use doc_inline::*;
+    pub use {always::*, doc_inline::*};
+
     mod doc_inline {
         #[cfg(not(feature = "std"))]
         pub use super::define_no_std_io::*;
@@ -30,7 +31,7 @@ crate::items! { #[allow(unused_imports)]
         pub use super::doc_inline::*;
     }
     pub(super) mod always { #![allow(unused_imports)]
-        #[cfg(feature = "std")]
+        #[cfg(feature = "std")] #[doc(hidden)] #[doc(no_inline)]
         pub use super::reexport_std::*;
     }
 }

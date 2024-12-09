@@ -23,20 +23,22 @@ pub mod str;
 
 // structural access
 crate::items! { #[allow(unused_imports)]
-    pub use {doc_hidden::*, doc_inline::*};
+    pub use {always::*, doc_hidden::*, doc_inline::*};
 
     mod doc_inline {
         pub use super::{
             ascii::all::*, char::all::*, error::*, grapheme::all::*, parse::all::*,
         };
     }
-    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
+    mod doc_hidden { #![doc(hidden)]
+        #[doc(no_inline)]
         pub use super::{fmt::all::*, str::all::*};
     }
     pub(super) mod all { #[doc(inline)]
         pub use super::{doc_hidden::*, doc_inline::*};
     }
     pub(super) mod always { #![allow(unused_imports)]
+        #[doc(hidden)] #[doc(no_inline)]
         pub use super::{
             fmt::always::*, char::always::*, parse::always::*, str::always::*,
         };

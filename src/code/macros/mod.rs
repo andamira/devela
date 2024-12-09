@@ -39,7 +39,7 @@ mod enumset; // enumset!
 
 // structural access
 crate::items! { #[allow(unused_imports)]
-    pub use {doc_inline::*, items_private::*};
+    pub use {always::*, doc_inline::*, items_private::*};
 
     mod doc_inline {
         pub use super::{
@@ -54,6 +54,7 @@ crate::items! { #[allow(unused_imports)]
         pub use super::doc_inline::*;
     }
     pub(super) mod always { #[allow(unused_imports)]
+        #[doc(hidden)] #[doc(no_inline)]
         pub use super::{reexports::*, items_private::*};
     }
     pub(super) mod items_private {

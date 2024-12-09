@@ -172,8 +172,9 @@ pub mod all {
     };
 }
 // public items, NOT feature-gated
-#[doc(hidden)]
 #[allow(unused_imports)]
+#[doc(no_inline)]
+#[doc(hidden)]
 pub use always::*;
 mod always {
     #[allow(unused_imports)]

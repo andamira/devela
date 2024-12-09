@@ -26,16 +26,18 @@ pub mod os;
 // structural access
 crate::items! {
     #[allow(unused_imports)]
-    pub use {doc_inline::*, doc_hidden::*, items_hidden::*};
+    pub use {always::*, doc_inline::*, doc_hidden::*, items_hidden::*};
 
     mod doc_inline {
         pub use super::{arch::all::*, env::all::*, io::all::*, mem::all::*};
         #[allow(unused_imports, reason = "feature-gated")]
         pub use super::{log::all::*, os::all::*, sound::all::*};
+        #[allow(unused_imports, reason = "feature-gated")]
         #[cfg(feature = "sys")]
         pub use super::path::all::*;
     }
-    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
+    mod doc_hidden { #[doc(hidden)]
+        #[doc(no_inline)]
         #[allow(unused_imports, reason = "feature-gated")]
         pub use super::{
             io::all::*, log::all::*, mem::all::*, os::all::*,
@@ -47,6 +49,7 @@ crate::items! {
         pub use super::{doc_inline::*, doc_hidden::*};
     }
     pub(super) mod always { #![allow(unused_imports)]
+        #[doc(hidden)] #[doc(no_inline)]
         pub use super::{
             arch::always::*, env::always::*, io::always::*, mem::always::*,
         };

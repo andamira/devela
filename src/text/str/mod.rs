@@ -18,7 +18,7 @@ mod string_u;
 
 // structural access
 crate::items! { #[allow(unused_imports)]
-    pub use doc_inline::*;
+    pub use {always::*, doc_inline::*};
 
     mod doc_inline {
         pub use super::{ext_str::*, namespace::*, reexports::*};
@@ -33,6 +33,7 @@ crate::items! { #[allow(unused_imports)]
         pub use super::doc_inline::*;
     }
     pub(super) mod always { #![allow(unused_imports)]
+        #[doc(hidden)] #[doc(no_inline)]
         pub use super::reexports::*;
     }
 }
