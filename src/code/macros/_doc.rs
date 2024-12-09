@@ -6,6 +6,7 @@
 // - doc_!
 // - doc_availability!
 // - doc_miri_warn!
+//
 
 #[doc = doc_private!()]
 /// Generates a formatted meta-documentation string.
@@ -26,6 +27,7 @@ macro_rules! doc_ {
 
     /* list of submodules */
 
+    // IMPROVE: pass optional feature-gate arg for each module
     (modules: $path:path; $self:ident) => {
         concat!(
             $crate::doc_!(@meta_start),

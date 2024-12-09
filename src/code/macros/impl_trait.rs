@@ -27,6 +27,7 @@
 ///     write!(f, "S? {{ v: {:?} }}", self.v)
 /// }}
 /// ```
+// IMPROVE? support `$generic` as `ty` instead of `ident` (e.g. for `Divisor`)
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! impl_trait {
