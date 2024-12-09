@@ -7,16 +7,26 @@
 # WAIT: [pass unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
 # WAIT: [jump to definition](https://github.com/rust-lang/rust/issues/89095)
 
+
 # NOTE: this is a temporary fix to be able to pass unstable flags only in nightly
+# ------------------------------------------------------------------------------
 include = "nightly.toml"
 
 
 [unstable]
+# ==============================================================================
+# These features correspond to the -Z command-line flags.
+# https://doc.rust-lang.org/cargo/reference/unstable.html
+
+codegen-backend = true #codegen-backend
+config-include = true  #config-include
 unstable-options = true
-config-include = true
+# mtime-on-use = true
 
 
 [build]
+# ==============================================================================
+
 rustdocflags = [
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 	"--html-in-header", "./DOCS/rustdoc-header.html",
@@ -24,6 +34,7 @@ rustdocflags = [
 
 
 [alias]
+# ==============================================================================
 
 # CHECK
 c = "check"
@@ -123,6 +134,14 @@ trf = "tree --format {p}:{f}" # with feature list
 trr = "tree --format {p}:{r}" # with repository url
 
 #/ cargo subcommands: /#
+# ------------------------------------------------------------------------------
+
+# https://crates.io/crates/cargo-llvm-lines
+# https://doc.rust-lang.org/stable/rustc/codegen-options/index.html#symbol-mangling-version
+L = "llvm-lines --profile dev -- -Csymbol-mangling-version=v0"
+Lo = "llvm-lines --profile dev-lto -- -Csymbol-mangling-version=v0"
+Lr = "llvm-lines --profile release -- -Csymbol-mangling-version=v0"
+Lro = "llvm-lines --profile release-lto -- -Csymbol-mangling-version=v0"
 
 # https://crates.io/crates/cargo-expand
 E = "expand"
