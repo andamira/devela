@@ -3,8 +3,6 @@
 //!
 //
 
-#[allow(unused_imports)] // IMPROVE: impl for ArrayString, …
-use crate::text::AsciiChar;
 #[cfg(feature = "alloc")]
 use crate::text::{String, ToString};
 
@@ -27,19 +25,19 @@ pub trait ExtString: Sealed {
     ///
     /// # Examples
     /// ```
-    /// use devela::text::{AsciiChar, ExtString};
+    /// use devela::ExtString;
     ///
-    /// assert_eq!("2*4*6*8*11*14*", String::new_counter(14, AsciiChar::Asterisk));
-    /// assert_eq!("_3_5_7_9_12_15_", String::new_counter(15, AsciiChar::LowLine));
+    /// assert_eq!("2*4*6*8*11*14*", String::new_counter(14, '*'));
+    /// assert_eq!("_3_5_7_9_12_15_", String::new_counter(15, '_'));
     /// ```
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]
-    fn new_counter(length: usize, separator: AsciiChar) -> String;
+    fn new_counter(length: usize, separator: char) -> String;
 }
 
 #[cfg(feature = "alloc")]
 impl ExtString for String {
-    fn new_counter(mut length: usize, separator: AsciiChar) -> String {
+    fn new_counter(mut length: usize, separator: char) -> String {
         let mut cstr = String::new();
 
         while length > 0 {

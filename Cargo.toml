@@ -159,7 +159,8 @@ sys = ["io", "mem"]
 	# os
 		linux = []
 		windows = ["crossterm?/windows"]
-text = ["fmt"]
+text = ["ascii", "fmt"]
+	ascii = [] # AsciiChar
 	fmt = [] # NumStr
 ui = ["layout"]
 	layout = []

@@ -4,7 +4,7 @@
 //
 
 use crate::{
-    iif, Ascii, AsciiChar, Slice, Utf8Error,
+    iif, Ascii, Slice, Utf8Error,
     _core::str::{from_utf8, from_utf8_mut},
 };
 #[allow(unused_imports, reason = "unsafe_str only")]
@@ -135,13 +135,13 @@ impl Str {
     /// with a `separator` positioned after the immediately preceding number.
     /// # Examples
     /// ```
-    /// # use devela::{AsciiChar, Str};
+    /// # use devela::Str;
     /// let mut buf = [0; 15];
-    /// assert_eq!("2*4*6*8*11*14*", Str::new_counter(&mut buf, 14, AsciiChar::Asterisk));
-    /// assert_eq!("_3_5_7_9_12_15_", Str::new_counter(&mut buf, 15, AsciiChar::LowLine));
+    /// assert_eq!("2*4*6*8*11*14*", Str::new_counter(&mut buf, 14, '*'));
+    /// assert_eq!("_3_5_7_9_12_15_", Str::new_counter(&mut buf, 15, '_'));
     /// ```
     /// # Panics
-    /// Panics if `buffer.len() < length`
+    /// Panics if `buffer.len() < length`, or if `!char.is_ascii()`.
     ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
@@ -149,12 +149,13 @@ impl Str {
     /// See also [`ExtStr::new_counter`].
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
-    pub const fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str {
+    pub const fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str {
         assert![buffer.len() >= length];
+        assert![separator.is_ascii()];
         if length == 0 {
             cold_empty_string()
         } else {
-            let separator = separator.as_u8();
+            let separator = separator as u8;
             let mut index = length - 1; // start writing from the end
             let mut num = length; // the first number to write is the length
             let mut separator_turn = true; // start writing the separator

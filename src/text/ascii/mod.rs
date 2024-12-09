@@ -7,15 +7,20 @@
 //!
 //
 
-mod char;
 mod wrapper;
+
+#[cfg(feature = "ascii")]
+mod char;
 
 // structural access
 crate::items! { #[allow(unused_imports)]
     pub use doc_inline::*;
 
     mod doc_inline {
-        pub use super::{char::AsciiChar, wrapper::Ascii};
+        pub use super::wrapper::Ascii;
+        #[cfg(feature = "ascii")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ascii")))]
+        pub use super::char::AsciiChar;
     }
     pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;

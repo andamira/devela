@@ -68,6 +68,7 @@ Root modules & public sub-modules:
   - `os`:
     - [`linux`]: Linux functionality.
 - [`text`]
+  - `ascii`: `AsciiChar`.
   - [`fmt`]: `NumToStr`.
 - [`ui`]
   - [`layout`]

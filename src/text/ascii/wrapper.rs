@@ -3,7 +3,7 @@
 //! Ascii functionality wrapper struct.
 //
 
-use crate::code::iif;
+use crate::iif;
 
 // imports for the `digits_str` method
 #[cfg(all(feature = "_string_u8", any(feature = "safe_text", not(feature = "unsafe_str"))))]

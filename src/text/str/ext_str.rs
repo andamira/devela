@@ -3,7 +3,7 @@
 //! trait ExtStr
 //
 
-use crate::{cold_empty_string, iif, AsciiChar, Str};
+use crate::{cold_empty_string, iif, Str};
 
 // IMPROVE: use `NumToStr`
 use crate::{Ascii, Slice};
@@ -45,14 +45,14 @@ pub trait ExtStr: Sealed {
     /// with a `separator` positioned after the immediately preceding number.
     /// # Examples
     /// ```
-    /// use devela::{AsciiChar, ExtStr};
+    /// use devela::ExtStr;
     ///
     /// let mut buf = [0; 15];
-    /// assert_eq!("2*4*6*8*11*14*", str::new_counter(&mut buf, 14, AsciiChar::Asterisk));
-    /// assert_eq!("_3_5_7_9_12_15_", str::new_counter(&mut buf, 15, AsciiChar::LowLine));
+    /// assert_eq!("2*4*6*8*11*14*", str::new_counter(&mut buf, 14, '*'));
+    /// assert_eq!("_3_5_7_9_12_15_", str::new_counter(&mut buf, 15, '_'));
     /// ```
     /// # Panics
-    /// Panics if `buffer.len() < length`
+    /// Panics if `buffer.len() < length`, or if `!char.is_ascii()`.
     ///
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
@@ -61,7 +61,7 @@ pub trait ExtStr: Sealed {
     ///
     /// [0]: https://www.satisfice.com/blog/archives/22
     #[must_use]
-    fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str;
+    fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str;
 }
 
 impl ExtStr for str {
@@ -90,12 +90,12 @@ impl ExtStr for str {
         }
     }
 
-    fn new_counter(buffer: &mut [u8], length: usize, separator: AsciiChar) -> &str {
+    fn new_counter(buffer: &mut [u8], length: usize, separator: char) -> &str {
         assert![buffer.len() >= length];
         if length == 0 {
             cold_empty_string()
         } else {
-            let separator = separator.as_u8();
+            let separator = separator as u8;
             let mut index = length - 1; // start writing from the end
             let mut num = length; // the first number to write is the length
             let mut separator_turn = true; // start writing the separator

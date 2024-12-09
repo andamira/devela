@@ -136,7 +136,7 @@ mod reflection {
         };
     pub const TEXT: FlagsFeatures = FlagsFeatures {
         flags: &["_text_·"],
-        features: &["text", "fmt"]
+        features: &["text", "ascii", "fmt"]
     };
     pub const UI: FlagsFeatures = FlagsFeatures {
         flags: &["_ui_·"],
