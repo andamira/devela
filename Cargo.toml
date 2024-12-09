@@ -829,6 +829,9 @@ devela = { path = './' }
 
 # profiles
 # ==============================================================================
+# https://doc.rust-lang.org/cargo/reference/profiles.html
+# https://doc.rust-lang.org/stable/rustc/codegen-options/
+# https://nnethercote.github.io/perf-book/build-configuration.html
 
 # [profile.dev]
 # codegen-backend = "cranelift"
@@ -836,6 +839,14 @@ devela = { path = './' }
 # [profile.dev.package."*"]
 # codegen-backend = "llvm"
 # opt-level = 3
+
+[profile.dev-lto]
+inherits = "dev"
+lto = "thin" # false, thin, fat, off
+
+[profile.release-lto]
+inherits = "release"
+lto = "thin"
 
 
 [package.metadata.docs.rs]

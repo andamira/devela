@@ -96,6 +96,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - update manifest:
   - add `patches` section.
   - add table of contents.
+- nw profiles: `dev-lto`, `release-lto`.
 - new `.clippy.toml` configuration file.
 - new github workflows: `get_errno.yml`, `get_syscall.yml`.
 - new scripts in `utils/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`, `docs_coverage.sh`, `docs_items.rs`.
