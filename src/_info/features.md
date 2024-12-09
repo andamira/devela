@@ -1,18 +1,23 @@
 ## Features
 
 Features are grouped in the following categories:
-- [*Development*][#develoment-features]
-- [*Environment*][#environment-features]
-- [*Module*][#module-features]
-- [*Safety*][#safety-features]
-- [*Nightly*][#nightly-features]
-- [*Capability*][#capability-features]
-- [*Dependency*][#dependency-features]
+- [*Development*](#development-features) (`__*`)
+- [*Environment*](#environment-features) (`alloc`, `std`, `no_std`)
+- [*Module*](#module-features) (`all`, `code`, `data`, `lang`, `media`, `num`, …)
+- [*Safety*](#safety-features) (`safe*`, `unsafe*`)
+- [*Nightly*](#nightly-features) (`nightly_*`)
+- [*Capability*](#capability-features)  (`_*`)
+- [*Dependency*](#dependency-features) (`dep_*`)
+
+[*environment*]: #environment-features
+[*dependency*]: #dependency-features
+[*safety*]: #safety-features
 
 There are no features enabled by default.
 
 Features from different categories are designed to be mostly independent from
 each other, and composable.
+
 
 ### Development features
 
@@ -34,11 +39,11 @@ By default the crate is `no_std` compatible without allocation.
 
 ### Module features
 
-Modules can be enabled independently of *environment*, *dependencies* or *safety*.
+Modules can be enabled independently of [*environment*], [*safety*] or [*dependency*] features.
 
 - `all`: enables all the root modules and extra submodules:
 
-Single modules:
+Root modules & public sub-modules:
 - [`code`]
   - [`result`]
 - [`data`]
@@ -55,7 +60,7 @@ Single modules:
   - [`wave`]: wavelets.
 - [`phys`]: enables all `phys` sub-features.
     - [`time`]
-- [`sys`]: enables all `sys` sub-features (except os-specific).
+- [`sys`]: enables all `sys` sub-features (except for `os`).
   - [`io`]
   - [`mem`]
     - `bit`: `BitSize`.
@@ -93,14 +98,16 @@ Single modules:
 
 ### Safety features
 
+They offer a convenient way to opt in and out of safety in a granular fashion.
+
 - `unsafe_*` features enable the use of unsafe by *purpose*.
 - `safe_*` features disable the use of unsafe per *module*.
 
-In order to use any unsafe functionality:
+To be able to use any unsafe functionality it's necessary to:
 1. enable the corresponding `unsafe` feature.
-2. don't enable the `safe` feature for that module.
+2. don't enable that module's `safe` feature.
 
-- `safe`: forbids `unsafe` (and overrides unsafe features), includes:
+- `safe`: forbids `unsafe` (and overrides unsafe features), including
   - `safe_code`
   - `safe_data`
   - `safe_lang`
@@ -121,7 +128,7 @@ In order to use any unsafe functionality:
   - `safe_ui`
 		- `safe_layout`
 
-- `unsafe`: enables `unsafe` (as long as it isn't forbidden for that module), includes:
+- `unsafe`: enables `unsafe` (as long as it isn't forbidden for that module), including:
 	- `unsafe_array`: faster array initialization, `UninitArray`.
 	- `unsafe_async`: task_waker_noop, `CoroRun`.
 	- `unsafe_hint`: unreachable_unchecked, assert_unchecked.
@@ -134,7 +141,7 @@ In order to use any unsafe functionality:
 	- `unsafe_syscall`: os syscalls.
 	- `unsafe_thread`: `Logging::set_logger_racy`, `Env::{remove_var, set_var}`.
 
-- `safest`: forbids `unsafe` even in dependencies (except the standard library).
+- `safest`: forbids `unsafe` even in dependencies (except for the standard library).
 
 
 ### Nightly features
@@ -142,17 +149,23 @@ In order to use any unsafe functionality:
 Enabling any of them sets the `_nightly_·` flag.
 
 - `nightly`: enables the nightly features.
+	- `nightly_autodiff` = enables [`autodiff`].
   - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
   - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
   - `nightly_float`: enables [`f16`, `f128`].
   - `nightly_simd`: enables [`portable_simd`].
-  - `nightly_stabilized`: enables stabilized features to be released soon. See `Cargo.toml`.
+  - `nightly_stable`: enables stabilized features marked to be released *soon*™.
+		- `nightly_stable_next1`: in the next version.
+		- `nightly_stable_next2`: in the version after that.
+		- `nightly_stable_later`: at a later time, soon enough.
 
+[`autodiff`]: https://github.com/rust-lang/rust/issues/124509
 [coroutines]: https://github.com/rust-lang/rust/issues/43122
 [`doc_cfg]: https://github.com/rust-lang/rust/issues/43781
 [`doc_notable_trait`]: https://github.com/rust-lang/rust/issues/45040
 [`f16`, `f128`]: https://github.com/rust-lang/rust/issues/116909
 [portable_simd]: https://github.com/rust-lang/rust/issues/86656
+
 
 ### Capability features
 

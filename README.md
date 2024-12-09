@@ -20,46 +20,36 @@
 
 ## Features
 
-Features are grouped in several categories mostly independent from each other,
+[Features] are grouped in 7 categories, mostly independent from each other,
 so that they can be enabled orthogonally, and they're not fully additive,
 e.g. it's not possible to enable at the same time `std` and `no_std`.
 
-- [Development]: (`__*`).
-- [Environment]: (`alloc`, `std`, `no_std`).
-- [Module] + submodules.
-- [Safety]: (`safe*`, `unsafe*`).
-- [Nightly]: (`nightly_*`).
-- [Capability]: (`_*`).
-- [Dependency]: (`dep_*`).
-
+[Features]: https://andamira.github.io/libera/doc/devela/_info/features/index.html
 <!-- -->
-[Development]: https://andamira.github.io/libera/doc/devela/_doc/features/index.html#development-features
-[Environment]: https://andamira.github.io/libera/doc/devela/_doc/features/index.html#environment-features
-[Module]: https://andamira.github.io/libera/doc/devela/_doc/features/index.html#module-features
-[Safety]: https://andamira.github.io/libera/doc/devela/_doc/features/index.html#safety-features
-[Nightly]: https://andamira.github.io/libera/doc/devela/_doc/features/index.html#nightly-features
-[Capability]: https://andamira.github.io/libera/doc/devela/_doc/features/index.html#capability-features
-[Dependency]: https://andamira.github.io/libera/doc/devela/_doc/features/index.html#dependency-features
+[Features]: https://docs.rs/devela/latest/devela/_info/features/index.html
+
+
+## Dependencies
+
+The library comes with a curated palette of lightweight optional [`dependencies`],
+none of them enabled by default.
+
+[dependencies]: https://andamira.github.io/libera/doc/devela/_dep/index.html
 <!-- -->
-[Environment]: https://docs.rs/devela/latest/devela/_doc/features/index.html#environment-features
-[Module]: https://docs.rs/devela/latest/devela/_doc/features/index.html#module-features
-[Safety]: https://docs.rs/devela/latest/devela/_doc/features/index.html#safety-features
-[Nightly]: https://docs.rs/devela/latest/devela/_doc/features/index.html#nightly-features
-[Capability]: https://docs.rs/devela/latest/devela/_doc/features/index.html#capability-features
-[Dependency]: https://docs.rs/devela/latest/devela/_doc/features/index.html#dependency-features
-
-# Dependencies
-
-It includes a curated palette of lightweight optional crates.
+[dependencies]: https://docs.rs/devela/latest/devela/_dep/index.html
 
 
 ## Status
 This project is currently in an experimental stage of development.
+There are a lot of breaking changes in between `0.*` versions,
+while trying to find the most coherent and ergonomic APIs.
+
 
 ## License
 This project is dual licensed under either [MIT](LICENSE-MIT)
 or [Apache-2.0](LICENSE-APACHE), and includes includes several
 [vendored works](DOCS/VENDORED.md).
+
 
 ## Contributing
 Contributions are welcome, see [CONTRIBUTING](DOCS/CONTRIBUTING.md)

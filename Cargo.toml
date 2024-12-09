@@ -75,7 +75,7 @@ publish = true
 bench = false
 
 
-[features] # 213/300 (87 remaining), 101 visible, 112 hidden
+[features] # 217/300 (83 remaining), 101 visible, 116 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -222,7 +222,7 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden for that module)
 	unsafe_syscall = [] # os syscalls.
 	unsafe_thread = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
-safest = [ # forbids `unsafe` even in dependencies (except the standard library)
+safest = [ # forbids `unsafe` even in dependencies (except for the standard library)
 	"safe",
 ]
 
