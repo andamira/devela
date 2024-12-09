@@ -1,4 +1,4 @@
-// devela::_doc::examples
+// devela::_info::examples
 //
 //!
 //! These examples generate example structures for documentation purposes.

@@ -185,7 +185,6 @@ The format is based on [Keep a Changelog], and this project adheres to
     - `_alloc` & `_std` inside `_dep`.
     - `_dep::_core` to `_core`.
     - `_deps` to `_dep`.
-    - `_info` to `_doc`.
     - `_lib*` by removing the `lib` prefix.
 - traits:
   - impl `Num` for niche types.

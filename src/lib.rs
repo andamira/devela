@@ -176,4 +176,4 @@ mod items_private {
 pub use ::core as _core;
 
 pub mod _dep;
-pub mod _doc;
+pub mod _info;

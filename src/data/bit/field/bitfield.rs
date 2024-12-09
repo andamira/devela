@@ -21,7 +21,7 @@
 /// This macro depends on enabling any of the `_bit_*` features. E.g. `_bit_u8`.
 ///
 /// # Examples
-/// See also the [bitfield][crate::_doc::examples::bitfield] example.
+/// See also the [bitfield][crate::_info::examples::bitfield] example.
 ///
 /// ```
 /// # use devela::bitfield;

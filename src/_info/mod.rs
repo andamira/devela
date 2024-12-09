@@ -1,6 +1,6 @@
-// devela::_doc
+// devela::_info
 //
-//! Additional library documentation.
+//! Extra information about the library.
 //
 
 #![cfg(any(doc, test))]

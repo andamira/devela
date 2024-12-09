@@ -13,7 +13,7 @@
 /// This macro depends on enabling any of the `_bit` features. E.g. `_bit_u8`.
 ///
 /// # Examples
-/// See also the [enumset][crate::_doc::examples::enumset] example.
+/// See also the [enumset][crate::_info::examples::enumset] example.
 ///
 /// ```
 /// # use devela::enumset;
