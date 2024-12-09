@@ -28,4 +28,6 @@ crate::items! { #[allow(unused_imports)]
         #[allow(unused_imports, reason = "feature-gated")]
         pub use super::doc_inline::*;
     }
+    pub(super) mod always { #![allow(unused_imports)]
+    }
 }

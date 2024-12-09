@@ -47,4 +47,16 @@ crate::items! { #[allow(unused_imports)]
     pub(super) mod all { #[doc(inline)] #[allow(unused_imports)]
         pub use super::doc_inline::*;
     }
+    pub(super) mod always { #![allow(unused_imports)]
+        #[cfg(feature = "audio")]
+        pub use super::audio::always::*;
+        #[cfg(feature = "color")]
+        pub use super::color::always::*;
+        #[cfg(feature = "draw")]
+        pub use super::draw::always::*;
+        #[cfg(feature = "font")]
+        pub use super::font::always::*;
+        #[cfg(feature = "image")]
+        pub use super::image::always::*;
+    }
 }

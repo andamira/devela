@@ -26,7 +26,7 @@ crate::items! { #[allow(unused_imports)]
     mod doc_inline {
         pub use super::{lgc::*, xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
     }
-    pub(crate) mod all { #[doc(inline)]
+    pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
     }
 }

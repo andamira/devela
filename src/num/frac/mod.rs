@@ -16,7 +16,7 @@ crate::items! { #[allow(unused_imports)]
         #[cfg(_int_·)]
         pub use super::wrapper::*;
     }
-    pub(crate) mod all { #[doc(inline)]
+    pub(super) mod all { #[doc(inline)]
         #[allow(unused_imports, reason = "feature-gated")]
         pub use super::doc_inline::*;
     }

@@ -18,9 +18,11 @@ crate::items! { #[allow(unused_imports)]
     pub use doc_inline::*;
 
     mod doc_inline {
-        pub use super::{ext_option::*, ext_result::*, fmt::*, opt_res::*, unwrap::*};
+        pub use super::{
+            ext_option::*, ext_result::*, fmt::*, opt_res::*, unwrap::*,
+        };
     }
-    pub(crate) mod all { #[doc(inline)]
+    pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
     }
 }

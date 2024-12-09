@@ -20,4 +20,6 @@ crate::items! { #[allow(unused_imports)]
     pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
     }
+    pub(super) mod always { #![allow(unused_imports)]
+    }
 }

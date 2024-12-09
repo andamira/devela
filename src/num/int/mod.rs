@@ -23,7 +23,7 @@ crate::items! { #[allow(unused_imports)]
         #[cfg(_int_·)]
         pub use super::{divisor::*, num_trait::*, wrapper::all::*};
     }
-    pub(crate) mod all { #[doc(inline)]
+    pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
     }
 }

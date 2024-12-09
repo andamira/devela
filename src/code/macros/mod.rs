@@ -50,10 +50,13 @@ crate::items! { #[allow(unused_imports)]
         #[cfg(_bit_·)]
         pub use super::enumset::*;
     }
-    pub(crate) mod all { #[doc(inline)]
+    pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
     }
-    pub(crate) mod items_private {
+    pub(super) mod always { #[allow(unused_imports)]
+        pub use super::{reexports::*, items_private::*};
+    }
+    pub(super) mod items_private {
         pub(crate) use super::{_doc::*, _reexport::*};
     }
 }

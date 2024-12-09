@@ -131,7 +131,19 @@ pub mod text;
 pub mod ui;
 pub mod work;
 
-// public items, visible in several places
+/* special root modules */
+
+/// <span class='stab portability' title='re-exported `core`'>`core`</span>
+/// *Re-exported Rust `core` library.*
+#[doc(inline)]
+pub use ::core as _core;
+
+pub mod _dep;
+pub mod _info;
+
+/* structural re-exports */
+
+// public items, feature-gated, visible in several places
 #[doc(hidden)]
 pub use all::*;
 pub mod all {
@@ -159,22 +171,36 @@ pub mod all {
         work::all::*,
     };
 }
-// public items, hidden everywhere
+// public items, NOT feature-gated
+#[doc(hidden)]
+#[allow(unused_imports)]
+pub use always::*;
+mod always {
+    #[allow(unused_imports)]
+    #[rustfmt::skip]
+    pub use super::{
+        code::always::*,
+        data::always::*,
+        lang::always::*,
+        media::always::*,
+        num::always::*,
+        phys::always::*,
+        sys::always::*,
+        text::always::*,
+        ui::always::*,
+        work::always::*,
+    };
+}
+// public items, hidden for non-public exposure
 #[doc(hidden)]
 pub use items_hidden::*;
 mod items_hidden {
     pub use super::sys::items_hidden::*;
 }
-// private items, crate-use only
+// private items, for internal use only
+#[allow(unused_imports)]
 pub(crate) use items_private::*;
 mod items_private {
+    #[allow(unused_imports)]
     pub(crate) use super::code::items_private::*;
 }
-
-/// <span class='stab portability' title='re-exported `core`'>`core`</span>
-/// *Re-exported Rust `core` library.*
-#[doc(inline)]
-pub use ::core as _core;
-
-pub mod _dep;
-pub mod _info;

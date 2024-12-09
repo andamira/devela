@@ -30,7 +30,7 @@ crate::items! { #[allow(unused_imports)]
     mod doc_inline {
         pub use super::{buffer::*, queue::*, stack::*, value::*};
     }
-    pub(crate) mod all { #[doc(inline)]
+    pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
     }
     mod items_private {

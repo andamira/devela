@@ -8,7 +8,7 @@
 #[cfg(feature = "std")]
 mod reexports;
 #[cfg(feature = "std")]
-mod sleep;
+mod sleep; // sleep4!
 
 // structural access
 crate::items! { #[allow(unused_imports)]
@@ -21,5 +21,9 @@ crate::items! { #[allow(unused_imports)]
     pub(super) mod all { #[doc(inline)]
         #[allow(unused_imports, reason = "feature-gated")]
         pub use super::doc_inline::*;
+    }
+    pub(super) mod always { #[allow(unused_imports)]
+        #[cfg(feature = "std")]
+        pub use super::reexports::*;
     }
 }

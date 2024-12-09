@@ -23,7 +23,7 @@ crate::items! { #[allow(unused_imports)]
         #[cfg(any(feature = "std", feature = "_float_f64"))]
         pub use super::alloc::*;
     }
-    pub(crate) mod all { #[doc(inline)]
+    pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
     }
 }

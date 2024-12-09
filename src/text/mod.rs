@@ -15,7 +15,7 @@ mod ascii;
 #[allow(hidden_glob_reexports, reason = "re-exported char")]
 mod char;
 mod error;
-mod grapheme;
+mod grapheme; // Grapheme
 mod parse;
 
 pub mod fmt;
@@ -35,5 +35,10 @@ crate::items! { #[allow(unused_imports)]
     }
     pub(super) mod all { #[doc(inline)]
         pub use super::{doc_hidden::*, doc_inline::*};
+    }
+    pub(super) mod always { #![allow(unused_imports)]
+        pub use super::{
+            fmt::always::*, char::always::*, parse::always::*, str::always::*,
+        };
     }
 }

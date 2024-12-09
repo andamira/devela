@@ -6,11 +6,11 @@
 mod alias; // fsize
 mod constants; // ExtFloatConst
 mod reexports;
+mod wrapper; // Float
 
 #[cfg(_float_·)]
 crate::items! {
     mod ext_float; // ExtFloat
-    mod wrapper; // Float
     mod shared_docs; // FORMULA_*!()
 }
 
@@ -19,12 +19,15 @@ crate::items! { #[allow(unused_imports)]
     pub use doc_inline::*;
 
     mod doc_inline {
-        pub use super::{alias::*, constants::*, reexports::*};
+        pub use super::{alias::*, constants::*, reexports::*, wrapper::*};
 
         #[cfg(_float_·)] #[allow(unused_imports)]
         pub use super::{ext_float::*, wrapper::*, shared_docs::*};
     }
-    pub(crate) mod all { #[doc(inline)]
+    pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
+    }
+    pub(super) mod always { #![allow(unused_imports)]
+        pub use super::reexports::*;
     }
 }

@@ -19,7 +19,7 @@ crate::items! { #[allow(unused_imports)]
     mod doc_inline {
         pub use super::{cast::*, join::*, namespace::*, split::*};
     }
-    pub(crate) mod all { #[doc(inline)]
+    pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;
     }
 }
