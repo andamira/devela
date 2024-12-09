@@ -81,6 +81,7 @@
         // box_uninit_write, // ?
         const_array_from_ref,
         const_slice_from_ref,
+        coverage_attribute,
         // derive_smart_pointer, // x
         do_not_recommend,
         impl_trait_in_assoc_type,

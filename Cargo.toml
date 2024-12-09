@@ -281,7 +281,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.83: ✓[rustdoc: table of contents](https://github.com/rust-lang/rust/pull/120736)
 	# 1.83: ✓[waker_getters](https://github.com/rust-lang/rust/pull/129919)
 	#
-	##1.84 will be stable on 2024-01-09: (next1)
+	##1.84 will be stable on 2024-01-09: (nightly_stable_next1)
 	# 1.84: ·[const_atomic_from_ptr](https://github.com/rust-lang/rust/pull/131717)
 	# 1.84: ·[const_char_encode_utf16](https://github.com/rust-lang/rust/pull/132153)
 	# 1.84: →[const_float_methods(unstable)](https://github.com/rust-lang/rust/pull/130568)
@@ -300,7 +300,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.84: ·[result_ffi_guarantees](https://github.com/rust-lang/rust/pull/130628)
 	# 1.84: ?[wasm:multivalue,reference-types,tail-call](https://github.com/rust-lang/rust/pull/131080)
 	#
-	##1.85 will be stable on 2025-02-20: (next2)
+	##1.85 will be stable on 2025-02-20: (nightly_stable_next2)
 	# 1.85: …[2024 edition](https://github.com/rust-lang/rust/issues/117258)
 	# 1.85: ·[const_align_of_val](https://github.com/rust-lang/rust/pull/133762)
 	#       · const_size_of_val
@@ -314,13 +314,14 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.85: ·[num_midpoint:unsigned,float](https://github.com/rust-lang/rust/pull/131784)
 	# 1.85: ·[ptr_fn_addr_eq](https://github.com/rust-lang/rust/pull/133678)
 	#
-	##1.‥… (later)
+	##1.‥… (nightly_stable_later) <https://releases.rs/#ongoing-stabilization-prs>
 	# 1.??: ·[asm_goto](https://github.com/rust-lang/rust/pull/133870)
 	# 1.??: ·[async_closure](https://github.com/rust-lang/rust/pull/132706)
 	# 1.??: ?[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 	# 1.??: ·[const_·array|slice·_from_ref](https://github.com/rust-lang/rust/issues/90206)
 	# 1.??: ·[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
 	#       · const_str_split_at
+	# 1.??: ·[coverage_attribute](https://github.com/rust-lang/rust/pull/130766)
 	# 1.??: x[derive_smart_pointer](https://github.com/rust-lang/rust/pull/133820)
 	# 1.??: ·[do_not_recommend](https://github.com/rust-lang/rust/pull/132056)
 	# 1.??: ·[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)

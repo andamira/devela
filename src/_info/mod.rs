@@ -13,7 +13,7 @@ mod build;
 /// Documented examples.
 pub mod examples;
 
-/// Library features explained.
+/// Library features.
 #[cfg(doc)]
 pub mod features {
     #![cfg_attr(not(feature = "all"), allow(rustdoc::private_intra_doc_links))]

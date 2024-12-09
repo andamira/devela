@@ -64,8 +64,8 @@ Root modules & public sub-modules:
   - [`io`]
   - [`mem`]
     - `bit`: `BitSize`.
-  - os:
-    - `linux`: Linux functionality.
+  - `os`:
+    - [`linux`]: Linux functionality.
 - [`text`]
 - [`ui`]
   - [`layout`]
@@ -90,6 +90,7 @@ Root modules & public sub-modules:
 [`sys`]: crate::sys
   [`io`]: crate::sys::io
   [`mem`]: crate::sys::mem
+    [`linux`]: crate::sys::os::linux
 [`text`]: crate::text
 [`work`]: crate::work
 [`ui`]: crate::ui
@@ -113,10 +114,10 @@ To be able to use any unsafe functionality it's necessary to:
   - `safe_lang`
   - `safe_media`
     - `safe_audio`
-		- `safe_color`
-		- `safe_draw`
-		- `safe_font`
-		- `safe_image`
+    - `safe_color`
+    - `safe_draw`
+    - `safe_font`
+    - `safe_image`
   - `safe_num`
   - `safe_phys`
     - `safe_time`
@@ -126,20 +127,20 @@ To be able to use any unsafe functionality it's necessary to:
   - `safe_text`
   - `safe_work`
   - `safe_ui`
-		- `safe_layout`
+    - `safe_layout`
 
 - `unsafe`: enables `unsafe` (as long as it isn't forbidden for that module), including:
-	- `unsafe_array`: faster array initialization, `UninitArray`.
-	- `unsafe_async`: task_waker_noop, `CoroRun`.
-	- `unsafe_hint`: unreachable_unchecked, assert_unchecked.
-	- `unsafe_layout`: `MemPod`, DSTs in the stack, `ExtAny::downcast*`.
-	- `unsafe_niche`: unchecked niche constructors.
-	- `unsafe_ptr`: `Pinned`, pop methods without `Clone`.
-	- `unsafe_slice`: extra slice methods, avoid bound checks.
-	- `unsafe_str`: unchecked utf-8 `char` and `&str` conversions.
-	- `unsafe_sync`: implement `Send` and `Sync`.
-	- `unsafe_syscall`: os syscalls.
-	- `unsafe_thread`: `Logging::set_logger_racy`, `Env::{remove_var, set_var}`.
+  - `unsafe_array`: faster array initialization, `UninitArray`.
+  - `unsafe_async`: task_waker_noop, `CoroRun`.
+  - `unsafe_hint`: unreachable_unchecked, assert_unchecked.
+  - `unsafe_layout`: `MemPod`, DSTs in the stack, `ExtAny::downcast*`.
+  - `unsafe_niche`: unchecked niche constructors.
+  - `unsafe_ptr`: `Pinned`, pop methods without `Clone`.
+  - `unsafe_slice`: extra slice methods, avoid bound checks.
+  - `unsafe_str`: unchecked utf-8 `char` and `&str` conversions.
+  - `unsafe_sync`: implement `Send` and `Sync`.
+  - `unsafe_syscall`: os syscalls.
+  - `unsafe_thread`: `Logging::set_logger_racy`, `Env::{remove_var, set_var}`.
 
 - `safest`: forbids `unsafe` even in dependencies (except for the standard library).
 
@@ -148,23 +149,23 @@ To be able to use any unsafe functionality it's necessary to:
 
 Enabling any of them sets the `_nightly_·` flag.
 
-- `nightly`: enables the nightly features.
-	- `nightly_autodiff` = enables [`autodiff`].
+- `nightly`: enables the nightly features:
+  - `nightly_autodiff`: enables [`autodiff`].
   - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
   - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
   - `nightly_float`: enables [`f16`, `f128`].
   - `nightly_simd`: enables [`portable_simd`].
-  - `nightly_stable`: enables stabilized features marked to be released *soon*™.
-		- `nightly_stable_next1`: in the next version.
-		- `nightly_stable_next2`: in the version after that.
-		- `nightly_stable_later`: at a later time, soon enough.
+  - `nightly_stable`: enables stabilized features marked to be released *soon*:
+    - `nightly_stable_next1`: in the next version.
+    - `nightly_stable_next2`: in the version after that.
+    - `nightly_stable_later`: later than that but *soon enough*.
 
 [`autodiff`]: https://github.com/rust-lang/rust/issues/124509
-[coroutines]: https://github.com/rust-lang/rust/issues/43122
+[`coroutines`]: https://github.com/rust-lang/rust/issues/43122
 [`doc_cfg]: https://github.com/rust-lang/rust/issues/43781
 [`doc_notable_trait`]: https://github.com/rust-lang/rust/issues/45040
 [`f16`, `f128`]: https://github.com/rust-lang/rust/issues/116909
-[portable_simd]: https://github.com/rust-lang/rust/issues/86656
+[`portable_simd`]: https://github.com/rust-lang/rust/issues/86656
 
 
 ### Capability features
@@ -196,10 +197,10 @@ They also set the corresponding flag:
 Enable specific implementations of data collections
 [`Destaque`], [`Stack`]:
 - `_collections_all`:
-	- `_destaque_all`:
+  - `_destaque_all`:
     - `_destaque_u8`, `_destaque_u16`, `_destaque_u32`, `_destaque_usize`.
-	`_stack_all`:
-		`_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
+  `_stack_all`:
+    `_stack_u8`, `_stack_u16`, `_stack_u32`, `_stack_usize`.
 
 They also set the corresponding flags:
 `_destaque_·`, `_graph_·`, `_node_·`, `_stack_·`.
@@ -226,6 +227,7 @@ Implement the [`Tuple`] trait for some maximum arity (12 by default).
 Enable specific implementations for [`Compare`]:
 - `_cmp_all`:
   - `_cmp_f32`, `_cmp_f64`.
+  - `_cmp_f16`, `_cmp_f128`. ←(needs `nightly_float`)
   - `_cmp_i8`, `_cmp_i16`, `_cmp_i32`, `_cmp_i64`, `_cmp_i128`, `_cmp_isize`.
   - `_cmp_u8`, `_cmp_u16`, `_cmp_u32`, `_cmp_u64`, `_cmp_u128`, `_cmp_usize`.
 
@@ -236,6 +238,7 @@ Enable specific implementations for [`Int`], [`Float`], [`Frac`], [`Divisor`], [
 - `_num_all`:
   - `_float_all`:
     - `_float_f32`, `_float_f64`.
+    - `_float_f16`, `_float_f128`. ←(needs `nightly_float`)
   - `_int_all`:
     - `_int_iall`:
       - `_int_i8`, `_int_i16`, `_int_i32`, `_int_i64`, `_int_i128`, `_int_isize`.
@@ -254,8 +257,8 @@ They also set the corresponding flags:
 
 #### `text` capabilities
 
-Enable specific implementations for [`char*`]*:
-- `_char7`, `_char8`, `_char16`, `_char24`.
+Enable specific implementations for [`char*`]:
+- `_char7`, `_char8`, `_char16`.
 
 Enable specific implementations for [`StringU*`]*, [`StringNonul`]:
 - `_string_all`:
