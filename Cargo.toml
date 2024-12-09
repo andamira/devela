@@ -128,11 +128,12 @@ no_std = [] # enables functionality incompatible with or substitute of `std`
 # ------------------------------------------------------------------------------
 
 all = [ # enables all the modules and submodules
-	# "code", "data", "lang",
-	"media", "num", "phys", "sys", "text", "work", "ui",
+	# "code", "lang",
+	"data", "media", "num", "phys", "sys", "text", "ui", "work",
 ]
 # code = []
-# data = []
+data = ["hash"]
+	hash = []
 # lang = []
 media = [ "audio", "color", "draw", "font", "image"]
 	audio = []
@@ -401,6 +402,7 @@ _docsrs_stable_min = ["_docsrs_stable_nodep", "dep_all"]
 _docsrs_stable_nodep = ["std", "unsafe", "_docs_min"]
 
 _docs_min = [ # the minimum capabilities to document each library item
+	# modules:
 	"all",
 	"linux",
 	# data:
@@ -948,6 +950,7 @@ check-cfg = [ # Allowed config flags:
 	# ---------------------------------------------------------------------
 	"cfg(_nightly_·, _dep_·)",
 	# data:
+	'cfg(_data_·)',
 	'cfg(_bit_·, _destaque_·, _stack_·)',
 	'cfg(_graph_·, _node_·)',
 	# media:

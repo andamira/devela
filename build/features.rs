@@ -111,6 +111,10 @@ mod reflection {
 
     /* # modules */
 
+    pub const DATA: FlagsFeatures = FlagsFeatures {
+        flags: &["_data_·"],
+        features: &["data", "hash"]
+    };
     pub const MEDIA: FlagsFeatures = FlagsFeatures {
         flags: &["_media_·"],
         features: &["media", "audio", "color", "draw", "font", "image"]
@@ -235,6 +239,7 @@ mod reflection {
 
             /* modules */
 
+            DATA,
             MEDIA,
             NUM,
             SYS, MEM,

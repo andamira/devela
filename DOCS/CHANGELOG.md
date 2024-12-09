@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### New features & flags
 - new features for:
+  - data: `hash`.
   - doc: `_docsrs[_stable]_nodep`.
   - num: `geom`, `wave`, `_cmp_f16`, `_cmp_f128`, `_float_f16`, `_float_f128`.
   - media `media`, `safe_media`, `audio`, `color`, `draw`, `font`, `image`.
@@ -20,7 +21,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - safety: `safe_audio`, `safe_color`, `safe_draw`, `safe_ffi`, `safe_font`, `safe_image`, `safe_io`, `safe_layout`, `safe_ui`, `safest`, `unsafe_async`.
   - ui: `ui`, `layout`.
   - other: `windows`, `work_deps`, `__force_miri_dst`.
-- new cfg flag: `cargo_primary_package`.
+- new cfg flag: `cargo_primary_package`, `_data_·`.
 
 #### New items
 - structs:
@@ -118,7 +119,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove most re-exported fns from `std::mem` (namespaced in `Mem`).
 - remove re-exported fns from `std::ptr` (namespaced in `Ptr`).
 - disable `Graph*`, `Node*`, and `NodeIndex*` types.
-- comment out unused features: `code`, `data`.
+- comment out unused features: `code`.
 - remove convenience fn: `out_dir` from the build script.
 - remove `Float::const_abs`.
 

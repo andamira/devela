@@ -45,8 +45,8 @@ Modules can be enabled independently of [*environment*], [*safety*] or [*depende
 
 Root modules & public sub-modules:
 - [`code`]
-  - [`result`]
 - [`data`]
+  - [`hash`]
 - [`lang`]
 - [`media`]
   - [`audio`]
