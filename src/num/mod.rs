@@ -63,7 +63,9 @@ crate::items! { #[allow(unused_imports)]
     }
     pub(super) mod always { #![allow(unused_imports)]
         #[doc(hidden)] #[doc(no_inline)]
-        pub use super::{cmp::always::*, float::always::*, niche::always::*};
+        pub use super::{
+            cmp::always::*, float::always::*, int::always::*, niche::always::*,
+        };
     }
     pub(super) mod items_private { #![allow(unused_imports)]
         pub(crate) use super::_private::*;

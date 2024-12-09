@@ -29,6 +29,6 @@ crate::items! { #[allow(unused_imports)]
     }
     pub(super) mod always { #![allow(unused_imports)]
         #[doc(hidden)] #[doc(no_inline)]
-        pub use super::reexports::*;
+        pub use super::{alias::*, reexports::*};
     }
 }

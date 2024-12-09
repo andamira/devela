@@ -143,7 +143,7 @@ pub mod _info;
 
 /* structural re-exports */
 
-// public items, feature-gated, visible only at their origin
+// public items, feature-gated, visible at their origin and in `all`
 #[doc(hidden)]
 pub use all::*;
 pub mod all {
@@ -169,16 +169,14 @@ pub mod all {
         text::all::*,
         ui::all::*,
         work::all::*,
+
+        always::*,
     };
 }
-// public items, NOT feature-gated, invisible
-#[allow(unused_imports)]
-pub use always::*;
+// public items, NOT feature-gated, visible only in `all`
 mod always {
     #[allow(unused_imports)]
     #[rustfmt::skip]
-    #[doc(hidden)]
-    #[doc(no_inline)]
     pub use super::{
         code::always::*,
         data::always::*,
