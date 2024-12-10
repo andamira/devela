@@ -142,6 +142,11 @@ L = "llvm-lines --profile dev -- -Csymbol-mangling-version=v0"
 Lo = "llvm-lines --profile dev-lto -- -Csymbol-mangling-version=v0"
 Lr = "llvm-lines --profile release -- -Csymbol-mangling-version=v0"
 Lro = "llvm-lines --profile release-lto -- -Csymbol-mangling-version=v0"
+# sort by copies:
+L_c = "llvm-lines -s copies --profile dev -- -Csymbol-mangling-version=v0"
+Lo_c = "llvm-lines -s copies --profile dev-lto -- -Csymbol-mangling-version=v0"
+Lr_c = "llvm-lines -s copies --profile release -- -Csymbol-mangling-version=v0"
+Lro_c = "llvm-lines -s copies --profile release-lto -- -Csymbol-mangling-version=v0"
 
 # https://crates.io/crates/cargo-expand
 E = "expand"
@@ -152,65 +157,33 @@ El = "expand --lib"
 # https://crates.io/crates/cargo-show-asm
 # Functions need not to be inlined. Defaults to release mode.
 A = "asm --simplify -p devela"
-Ab = "asm --simplify -p devela --bin"
-Ae = "asm --simplify -p devela --example"
-Al = "asm --simplify -p devela --lib"
-Aub = "asm --simplify -p devela --features=unsafe,std --bin"
-Aue = "asm --simplify -p devela --features=unsafe,std --example"
-Aul = "asm --simplify -p devela --features=unsafe,std --lib"
-
-# additional targets
-# TODO: IMPROVE: SIMPLIFY
-# 1: x86_64-unknown-linux-gnu (std)
-AbT1 = "asm --simplify -p devela --target x86_64-unknown-linux-gnu --features=std,safe --bin"
-AubT1 = "asm --simplify -p devela --target x86_64-unknown-linux-gnu --features=std,unsafe --bin"
-AeT1 = "asm --simplify -p devela --target x86_64-unknown-linux-gnu --features=std,safe --example"
-AueT1 = "asm --simplify -p devela --target x86_64-unknown-linux-gnu --features=std,unsafe --example"
-AlT1 = "asm --simplify -p devela --target x86_64-unknown-linux-gnu --features=std,safe --lib"
-AulT1 = "asm --simplify -p devela --target x86_64-unknown-linux-gnu --features=std,unsafe --lib"
-# 2: x86_64-pc-windows-msvc (std)
-AbT2 = "asm --simplify -p devela --target x86_64-pc-windows-msvc --features=std,safe --bin"
-AubT2 = "asm --simplify -p devela --target x86_64-pc-windows-msvc --features=std,unsafe --bin"
-AeT2 = "asm --simplify -p devela --target x86_64-pc-windows-msvc --features=std,safe --example"
-AueT2 = "asm --simplify -p devela --target x86_64-pc-windows-msvc --features=std,unsafe --example"
-AlT2 = "asm --simplify -p devela --target x86_64-pc-windows-msvc --features=std,safe --lib"
-AulT2 = "asm --simplify -p devela --target x86_64-pc-windows-msvc --features=std,unsafe --lib"
-# 3: x86_64-apple-darwin (std)
-AbT3 = "asm --simplify -p devela --target x86_64-apple-darwin --features=std,safe --bin"
-AubT3 = "asm --simplify -p devela --target x86_64-apple-darwin --features=std,unsafe --bin"
-AeT3 = "asm --simplify -p devela --target x86_64-apple-darwin --features=std,safe --example"
-AueT3 = "asm --simplify -p devela --target x86_64-apple-darwin --features=std,unsafe --example"
-AlT3 = "asm --simplify -p devela --target x86_64-apple-darwin --features=std,safe --lib"
-AulT3 = "asm --simplify -p devela --target x86_64-apple-darwin --features=std,unsafe --lib"
-# 4: i686-unknown-linu-gnu (std)
-AbT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,safe --bin"
-AubT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,unsafe --bin"
-AeT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,safe --example"
-AueT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,unsafe --example"
-AlT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,safe --lib"
-AulT4 = "asm --simplify -p devela --target i686-unknown-linux-gnu --features=std,unsafe --lib"
-#
-# 6: x86_64 (no_std):
-AnbT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,safe --bin"
-AnubT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,unsafe --bin"
-AneT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,safe --example"
-AnueT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,unsafe --example"
-AnlT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,safe --lib"
-AnulT6 = "asm --simplify -p devela --target x86_64-unknown-none --features=no_std,unsafe --lib"
-# 7: thumbv7m-none-eabi (no_std)
-AnbT7 = "asm --simplify -p devela --target aarch64-unknown-none --features=no_std,safe --bin"
-AnubT7 = "asm --simplify -p devela --target aarch64-unknown-none --features=no_std,unsafe --bin"
-AneT7 = "asm --simplify -p devela --target aarch64-unknown-none --features=no_std,safe --example"
-AnueT7 = "asm --simplify -p devela --target aarch64-unknown-none --features=no_std,unsafe --example"
-AnlT7 = "asm --simplify -p devela --target aarch64-unknown-none --features=no_std,safe --lib"
-AnulT7 = "asm --simplify -p devela --target aarch64-unknown-none --features=no_std,unsafe --lib"
-# 8: aarch64-unknown-none (no_std)
-AnbT8 = "asm --simplify -p devela --target thumbv7m-none-eabi --features=no_std,safe --bin"
-AnubT8 = "asm --simplify -p devela --target thumbv7m-none-eabi --features=no_std,unsafe --bin"
-AneT8 = "asm --simplify -p devela --target thumbv7m-none-eabi --features=no_std,safe --example"
-AnueT8 = "asm --simplify -p devela --target thumbv7m-none-eabi --features=no_std,unsafe --example"
-AnlT8 = "asm --simplify -p devela --target thumbv7m-none-eabi --features=no_std,safe --lib"
-AnulT8 = "asm --simplify -p devela --target thumbv7m-none-eabi --features=no_std,unsafe --lib"
+Ar = "asm --simplify --rust -p devela" # print interleaved rust code
+# std targets:
+A_win64        = "A  --target x86_64-pc-windows-msvc"
+Ar_win64       = "Ar --target x86_64-pc-windows-msvc"
+A_mac64        = "A  --target x86_64-apple-darwin"
+Ar_mac64       = "Ar --target x86_64-apple-darwin"
+A_lin64        = "A  --target x86_64-unknown-linux-gnu"
+Ar_lin64       = "Ar --target x86_64-unknown-linux-gnu"
+A_lin32        = "A  --target i686-unknown-linux-gnu"
+Ar_lin32       = "Ar --target i686-unknown-linux-gnu"
+A_lin_riscv64  = "A  --target riscv64gc-unknown-linux-gnu"
+Ar_lin_riscv64 = "Ar --target riscv64gc-unknown-linux-gnu"
+A_lin_arm64    = "A  --target aarch64-unknown-linux-gnu"
+Ar_lin_arm64   = "Ar --target aarch64-unknown-linux-gnu"
+# no_std targets:
+A_64       = "A  --target x86_64-unknown-none"
+Ar_64      = "Ar --target x86_64-unknown-none"
+A_arm64    = "A  --target aarch64-unknown-none"
+Ar_arm64   = "Ar --target aarch64-unknown-none"
+A_arm32    = "A  --target thumbv7m-none-eabi"
+Ar_arm32   = "Ar --target thumbv7m-none-eabi"
+A_riscv64  = "A  --target thumbv7m-none-eabi"
+Ar_riscv64 = "Ar --target thumbv7m-none-eabi"
+A_wasi32   = "A  --target wasm32-wasip1"
+Ar_wasi32  = "Ar --target wasm32-wasip1"
+A_wasm32   = "A  --target wasm32-unknown-unknown"
+Ar_wasm32  = "Ar --target wasm32-unknown-unknown"
 
 # https://crates.io/crates/cargo-supply-chain
 S = "supply-chain"
