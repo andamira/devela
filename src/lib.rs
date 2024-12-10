@@ -5,26 +5,28 @@
 #![doc = include_str!("./Lib.md")]
 //
 
-//* global config *//
+/* global configuration */
 //
-// Most lints are set in Cargo.toml
+// lints
 //
-// docs
+// (Most are defined in Cargo.toml)
 // https://doc.rust-lang.org/rustdoc/write-documentation/the-doc-attribute.html
-// #![doc(test(attr(warn(dead_code))))]
 #![cfg_attr(
     not(all(doc, feature = "_docsrs_stable")), // if docs are incomplete...
     allow(rustdoc::broken_intra_doc_links) // …allow broken intra-doc links
 )]
 //
 // environment
-// #![no_implicit_prelude] // MAYBE
+//
 #![cfg_attr(not(feature = "std"), no_std)]
+// #![no_implicit_prelude] //?
 //
 // safety
+//
 #![cfg_attr(feature = "safe", forbid(unsafe_code))]
 //
 // nightly
+//
 // In sync with Cargo.toml::nightly & build/features.rs::NIGHTLY
 #![cfg_attr(feature = "nightly_autodiff", feature(autodiff))]
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
@@ -50,10 +52,6 @@
         result_ffi_guarantees,
     )
 )]
-// #![cfg_attr( // 1.84 not(miri)
-//     all(not(miri), feature = "nightly_stable_next1"),
-//     feature()
-// )]
 #![cfg_attr( // 1.85
     feature = "nightly_stable_next2",
     feature(
@@ -69,10 +67,6 @@
         ptr_fn_addr_eq,
     )
 )]
-// #![cfg_attr( // 1.85 not(miri)
-//     all(not(miri), feature = "nightly_stable_next2"),
-//     feature()
-// )]
 #![cfg_attr( // 1.??
     feature = "nightly_stable_later",
     feature(
@@ -83,7 +77,7 @@
         const_slice_from_ref,
         coverage_attribute,
         // derive_smart_pointer, // x
-        do_not_recommend,
+        do_not_recommend, // diagnostics
         impl_trait_in_assoc_type,
         isqrt,
         let_chains,
@@ -94,15 +88,14 @@
     )
 )]
 // #![cfg_attr( // 1.?? not(miri)
-//     all(not(miri), feature = "nightly_stable_later"),
-//     feature()
-// )]
+//     all(not(miri), feature = "nightly_stable_later"), feature() )]
 
-// environment safeguards
+/* global safeguards */
+
+// environment
 #[cfg(all(feature = "std", feature = "no_std"))]
 compile_error!("You can't enable the `std` and `no_std` features at the same time.");
-//
-// safety safeguards
+// safety
 #[cfg(all(
     feature = "safe",
     // In sync with Cargo.toml::unsafe & build/features.rs::SAFETY
@@ -116,9 +109,9 @@ compile_error!("You can't enable the `std` and `no_std` features at the same tim
 compile_error!("You can't enable `safe` and any `unsafe*` features at the same time.");
 // (note: you can enable `safe_*` features to prevent `unsafe` use in specific modules)
 
-//* root modules *//
-
 extern crate self as devela;
+
+/* root modules */
 
 pub mod code;
 pub mod data;
@@ -131,8 +124,6 @@ pub mod text;
 pub mod ui;
 pub mod work;
 
-/* special root modules */
-
 /// <span class='stab portability' title='re-exported `core`'>`core`</span>
 /// *Re-exported Rust `core` library.*
 #[doc(inline)]
@@ -143,10 +134,11 @@ pub mod _info;
 
 /* structural re-exports */
 
-// public items, feature-gated, visible at their origin and in `all`
 #[doc(hidden)]
 pub use all::*;
 pub mod all {
+    // public items, feature-gated, visible at their origin and in `all`
+    //
     //! All the crate's items re-exported flat.
     //! <br/><hr>
     //!
@@ -169,12 +161,12 @@ pub mod all {
         text::all::*,
         ui::all::*,
         work::all::*,
-
+        //
         always::*,
     };
 }
-// public items, NOT feature-gated, visible only in `all`
 mod always {
+    // public items, not as feature-gated
     #[allow(unused_imports)]
     #[rustfmt::skip]
     pub use super::{
@@ -190,16 +182,16 @@ mod always {
         work::always::*,
     };
 }
-// public items, hidden for non-public exposure
 #[doc(hidden)]
 pub use items_hidden::*;
 mod items_hidden {
+    // public items, hidden from public
     pub use super::sys::items_hidden::*;
 }
-// private items, for internal use only
 #[allow(unused_imports)]
 pub(crate) use items_private::*;
 mod items_private {
+    // private items, internal use only
     #[allow(unused_imports)]
     pub(crate) use super::code::items_private::*;
 }

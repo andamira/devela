@@ -75,7 +75,7 @@ publish = true
 bench = false
 
 
-[features] # 223/300 (77 remaining), 107 visible, 116 hidden
+[features] # 228/300 (72 remaining), 112 visible, 116 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -133,7 +133,7 @@ all = [ # enables all the modules and submodules
 ]
 # code = []
 data = ["hash"]
-	hash = []
+	hash = [] # HashFnv, HashFx
 # lang = []
 media = ["audio", "color", "draw", "font", "image"]
 	audio = []
@@ -329,7 +329,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	#       · const_str_split_at
 	# 1.??: ·[coverage_attribute](https://github.com/rust-lang/rust/pull/130766)
 	# 1.??: x[derive_smart_pointer](https://github.com/rust-lang/rust/pull/133820)
-	# 1.??: ·[do_not_recommend](https://github.com/rust-lang/rust/pull/132056)
+	# 1.??: ·[diagnostics::do_not_recommend](https://github.com/rust-lang/rust/pull/132056)
 	# 1.??: ·[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 	# 1.??: ·[isqrt](https://github.com/rust-lang/rust/pull/131391)
 	# 1.??: ·[let_chains](https://github.com/rust-lang/rust/pull/132833)
