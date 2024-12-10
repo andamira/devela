@@ -4,9 +4,11 @@
 //
 
 use super::*;
-use crate::{
-    text::char::NonSurrogateU16, AsciiChar, Char, TextError::CharConversion, TextResult as Result,
-};
+#[cfg(feature = "ascii")]
+use crate::AsciiChar;
+use crate::{text::char::NonSurrogateU16, Char};
+#[cfg(feature = "text")]
+use crate::{TextError::CharConversion, TextResult as Result};
 
 impl char16 {
     /* private helper fns */
@@ -51,6 +53,8 @@ impl char16 {
 
     /// Converts an `AsciiChar` to `char16`.
     #[must_use]
+    #[cfg(feature = "ascii")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ascii")))]
     pub const fn from_ascii_char(c: AsciiChar) -> char16 {
         char16::new_unchecked(c as u8 as u16)
     }
@@ -70,6 +74,8 @@ impl char16 {
         char16::new_unchecked(c.0 as u16)
     }
     /// Tries to convert a `char` to `char16`.
+    #[cfg(feature = "text")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     pub const fn try_from_char(c: char) -> Result<char16> {
         if Char::byte_len(c as u32) <= 2 {
             Ok(char16::new_unchecked(c as u32 as u16))
@@ -83,6 +89,10 @@ impl char16 {
     /// Tries to convert this `char16` to `AsciiChar`.
     /// # Features
     /// Makes use of the `unsafe_niche` feature if enabled.
+    #[cfg(feature = "text")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "ascii")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ascii")))]
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
         if Char::is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_niche")))]
@@ -101,13 +111,17 @@ impl char16 {
 
     /// Tries to convert this `char16` to `char7`.
     #[cfg(feature = "_char7")]
+    #[cfg(feature = "text")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     pub const fn try_to_char7(self) -> Result<char7> {
         char7::try_from_char16(self)
     }
     /// Tries to convert this `char16` to `char8`.
+    #[cfg(feature = "text")]
     #[cfg(feature = "_char8")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char8")))]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     pub const fn try_to_char8(self) -> Result<char8> {
         char8::try_from_char16(self)
     }

@@ -29,14 +29,18 @@ pub enum AllError {
     /// A numeric-related error.
     Num(NumError),
 
-    /// A text-related error.
-    Text(TextError),
-
+    // IMPROVE Sys
     /// An I/O-related error.
     #[cfg(feature = "io")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "io")))]
     Io(IoError),
 
+    /// A text-related error.
+    #[cfg(feature = "text")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    Text(TextError),
+
+    // IMPROVE Phys
     /// A time-related error.
     #[cfg(feature = "time")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
@@ -56,16 +60,13 @@ pub enum AllErrorKind {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     Data(()), // TODO
 
-    /// A numeric-related error.
-    Num(()), // TODO
-
-    /// A text-related error.
-    Text(()), // TODO
-
     /// A media-related error.
     #[cfg(_media_·)]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(_media_·)))]
     Media(()), // TODO
+    //
+    /// A numeric-related error.
+    Num(()), // TODO
 
     /// An I/O error.
     #[cfg(feature = "io")]
@@ -76,6 +77,11 @@ pub enum AllErrorKind {
     #[cfg(feature = "time")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "time")))]
     Time(()), // TODO
+
+    /// A text-related error.
+    #[cfg(feature = "text")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    Text(()), // TODO
 
     /// Other static error.
     Other,
@@ -95,18 +101,17 @@ mod core_impls {
         fn error_eq(&self, other: &Self) -> bool {
             use AllError as E;
             match (self, other) {
-                (E::Num(e1), E::Num(e2)) => e1.error_eq(e2),
-                (E::Text(e1), E::Text(e2)) => e1.error_eq(e2),
-
                 #[cfg(feature = "data")]
                 (E::Data(e1), E::Data(e2)) => e1.error_eq(e2),
                 #[cfg(_media_·)]
                 (E::Media(e1), E::Media(e2)) => e1.error_eq(e2),
+                (E::Num(e1), E::Num(e2)) => e1.error_eq(e2),
                 #[cfg(feature = "io")]
                 (E::Io(e1), E::Io(e2)) => e1.error_eq(e2),
                 #[cfg(feature = "time")]
                 (E::Time(e1), E::Time(e2)) => e1.error_eq(e2),
-
+                #[cfg(feature = "text")]
+                (E::Text(e1), E::Text(e2)) => e1.error_eq(e2),
                 (E::Other(s1), E::Other(s2)) => s1 == s2,
 
                 _ => false, // Different variants cannot be equal.
@@ -116,18 +121,17 @@ mod core_impls {
             use {AllError as E, AllErrorKind as K};
             #[expect(clippy::unit_arg, reason = "WIP () placeholder")]
             match self {
-                E::Num(e) => K::Num(e.error_kind()),
-                E::Text(e) => K::Text(e.error_kind()),
-
                 #[cfg(feature = "data")]
                 E::Data(e) => K::Data(e.error_kind()),
                 #[cfg(_media_·)]
                 E::Media(e) => K::Media(e.error_kind()),
+                E::Num(e) => K::Num(e.error_kind()),
                 #[cfg(feature = "io")]
                 E::Io(e) => K::Io(e.error_kind()),
                 #[cfg(feature = "time")]
                 E::Time(e) => K::Time(e.error_kind()),
-
+                #[cfg(feature = "text")]
+                E::Text(e) => K::Text(e.error_kind()),
                 E::Other(_s) => K::Other,
             }
         }
@@ -136,17 +140,17 @@ mod core_impls {
     impl_trait! { fmt::Display for AllError |self, f| {
         use AllError as E;
         match self {
-            E::Num(e) => write!(f, "{e:?}"),
-            E::Text(e) => write!(f, "{e:?}"),
             #[cfg(feature = "data")]
             E::Data(e) => write!(f, "{e:?}"),
             #[cfg(_media_·)]
             E::Media(e) => write!(f, "{e:?}"),
+            E::Num(e) => write!(f, "{e:?}"),
             #[cfg(feature = "io")]
             E::Io(e) => write!(f, "{e:?}"),
             #[cfg(feature = "time")]
             E::Time(e) => write!(f, "{e:?}"),
-
+            #[cfg(feature = "text")]
+            E::Text(e) => write!(f, "{e:?}"),
             E::Other(s) => write!(f, "{s}"),
         }
     }}

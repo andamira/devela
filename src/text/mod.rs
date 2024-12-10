@@ -14,9 +14,12 @@ mod helpers; // impl_sized_alias!
 mod ascii;
 #[allow(hidden_glob_reexports, reason = "re-exported char")]
 mod char;
-mod error;
 mod grapheme; // Grapheme
 mod parse;
+
+#[cfg(feature = "text")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+mod error;
 
 pub mod fmt;
 pub mod str;
@@ -26,9 +29,9 @@ crate::items! { #[allow(unused_imports)]
     pub use {always::*, doc_hidden::*, doc_inline::*};
 
     mod doc_inline {
-        pub use super::{
-            ascii::all::*, char::all::*, error::*, grapheme::all::*, parse::all::*,
-        };
+        pub use super::{ascii::all::*, char::all::*, grapheme::all::*, parse::all::*};
+        #[cfg(feature = "text")]
+        pub use super::error::*;
     }
     mod doc_hidden { #![doc(hidden)]
         #[doc(no_inline)]

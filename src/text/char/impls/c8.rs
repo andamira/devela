@@ -1,7 +1,11 @@
 // devela::text::char::impls::char8
 
 use super::*;
-use crate::{AsciiChar, Char, TextError::CharConversion, TextResult as Result};
+#[cfg(feature = "ascii")]
+use crate::AsciiChar;
+use crate::Char;
+#[cfg(feature = "text")]
+use crate::{TextError::CharConversion, TextResult as Result};
 
 impl char8 {
     /* private helper fns */
@@ -25,6 +29,8 @@ impl char8 {
 
     /// Converts an `AsciiChar` to `char8`.
     #[must_use]
+    #[cfg(feature = "ascii")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ascii")))]
     pub const fn from_ascii_char(c: AsciiChar) -> char8 {
         char8(c as u8)
     }
@@ -39,6 +45,8 @@ impl char8 {
     /// Tries to convert a `char16` to `char8`.
     #[cfg(feature = "_char16")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char16")))]
+    #[cfg(feature = "text")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     pub const fn try_from_char16(c: char16) -> Result<char8> {
         if Char::byte_len(c.to_u32()) == 1 {
             Ok(char8(c.to_u32() as u8))
@@ -47,6 +55,8 @@ impl char8 {
         }
     }
     /// Tries to convert a `char` to `char8`.
+    #[cfg(feature = "text")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     pub const fn try_from_char(c: char) -> Result<char8> {
         if Char::byte_len(c as u32) == 1 {
             Ok(char8(c as u32 as u8))
@@ -60,6 +70,10 @@ impl char8 {
     /// Tries to convert this `char8` to `AsciiChar`.
     /// # Features
     /// Makes use of the `unsafe_str` feature if enabled.
+    #[cfg(feature = "text")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
+    #[cfg(feature = "ascii")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ascii")))]
     pub const fn try_to_ascii_char(self) -> Result<AsciiChar> {
         if Char::is_7bit(self.to_u32()) {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
@@ -77,6 +91,8 @@ impl char8 {
     }
 
     /// Tries to convert this `char8` to `char7`.
+    #[cfg(feature = "text")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "text")))]
     #[cfg(feature = "_char7")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_char7")))]
     pub const fn try_to_char7(self) -> Result<char7> {

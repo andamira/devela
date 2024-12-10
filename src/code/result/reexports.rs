@@ -34,6 +34,10 @@ pub(crate) mod crate_errors {
     #[cfg(_media_·)]
     pub use crate::media::{MediaError, MediaResult};
 
+    /* num */
+    #[doc(inline)]
+    pub use crate::num::{NumError, NumResult};
+
     /* phys */
     #[doc(inline)]
     #[cfg(feature = "time")]
@@ -44,17 +48,14 @@ pub(crate) mod crate_errors {
     #[cfg(feature = "io")]
     pub use crate::sys::io::{IoError, IoErrorKind, IoResult};
 
+    #[doc(inline)]
+    #[cfg(feature = "text")]
+    pub use crate::text::{TextError, TextResult};
+
     /* ui */
     #[doc(inline)]
     #[cfg(feature = "layout")]
     pub use crate::ui::layout::{LayoutError, LayoutResult};
-
-    /* other */
-    #[doc(inline)]
-    pub use crate::{
-        num::{NumError, NumResult},
-        text::{TextError, TextResult},
-    };
 }
 
 /* `core` re-exports */
