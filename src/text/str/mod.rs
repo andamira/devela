@@ -4,11 +4,14 @@
 //!
 #![doc = crate::doc_!(extends: str, string)]
 
-mod ext_str;
-mod namespace;
 mod reexports;
 
-#[cfg(feature = "alloc")]
+#[cfg(feature = "str")]
+mod ext_str;
+#[cfg(feature = "str")]
+mod namespace;
+
+#[cfg(all(feature = "str", feature = "alloc"))]
 mod ext_string;
 #[cfg(feature = "_string_nonul")] // RETHINK
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_string_nonul")))]
@@ -21,8 +24,12 @@ crate::items! { #[allow(unused_imports)]
     pub use {always::*, doc_inline::*};
 
     mod doc_inline {
-        pub use super::{ext_str::*, namespace::*, reexports::*};
-        #[cfg(feature = "alloc")]
+        pub use super::reexports::*;
+        #[cfg(feature = "str")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "str")))]
+        pub use super::{ext_str::*, namespace::*};
+        #[cfg(all(feature = "str", feature = "alloc"))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "str")))]
         pub use super::ext_string::*;
         #[cfg(feature = "_string_nonul")] // RETHINK
         pub use super::nonul::*;

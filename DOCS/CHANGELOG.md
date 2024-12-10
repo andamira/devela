@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - num: `geom`, `unit`, `wave`, `_cmp_f16`, `_cmp_f128`, `_float_f16`, `_float_f128`.
   - media `media`, `safe_media`, `audio`, `color`, `draw`, `font`, `image`.
   - sys: `time`, `linux`, `dep_linux`, `unsafe_syscall`.
-  - text: `ascii`, `fmt`, `_char7`, `_char8`, `_char16`.
+  - text: `ascii`, `fmt`, `str`, `_char7`, `_char8`, `_char16`.
   - nightly: `nightly_autodiff`, `nightly_float`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.
   - safety: `safe_audio`, `safe_color`, `safe_draw`, `safe_ffi`, `safe_font`, `safe_image`, `safe_io`, `safe_layout`, `safe_ui`, `safest`, `unsafe_async`.
   - ui: `ui`, `layout`.

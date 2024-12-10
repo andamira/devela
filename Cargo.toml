@@ -75,7 +75,7 @@ publish = true
 bench = false
 
 
-[features] # 217/300 (83 remaining), 101 visible, 116 hidden
+[features] # 223/300 (77 remaining), 107 visible, 116 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -159,9 +159,10 @@ sys = ["io", "mem"]
 	# os
 		linux = []
 		windows = ["crossterm?/windows"]
-text = ["ascii", "fmt"]
+text = ["ascii", "fmt", "str"]
 	ascii = [] # AsciiChar
 	fmt = [] # NumStr
+	str = [] # Str, ExtStr, ExtString
 ui = ["layout"]
 	layout = []
 work = ["bytemuck?/zeroable_atomics"]

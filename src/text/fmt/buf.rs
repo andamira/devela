@@ -3,7 +3,9 @@
 //! Non-allocating formatting backed by a buffer.
 //
 
-use crate::{fmt_write, iif, FmtArguments, FmtError, FmtResult, Str, TextWrite, _core::cmp::min};
+use crate::{fmt_write, iif, FmtArguments, FmtError, FmtResult, TextWrite, _core::cmp::min};
+#[allow(unused_imports, reason = "±unsafe")]
+use ::core::str::{from_utf8, from_utf8_unchecked};
 
 /// Returns a formatted [`str`] slice backed by a buffer, non-allocating.
 ///
@@ -60,10 +62,10 @@ impl<'a> WriteTo<'a> {
     fn as_str(self) -> Result<&'a str, FmtError> {
         if self.len <= self.buf.len() {
             #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-            { Str::from_utf8(&self.buf[..self.len]).map_err(|_| FmtError) }
+            { from_utf8(&self.buf[..self.len]).map_err(|_| FmtError) }
             #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
             // SAFETY: the buffer is always filled from a previous &str
-            { Ok(unsafe { Str::from_utf8_unchecked(&self.buf[..self.len]) }) }
+            { Ok(unsafe { from_utf8_unchecked(&self.buf[..self.len]) }) }
         } else {
             Err(FmtError)
         }

@@ -74,6 +74,7 @@ Root modules & public sub-modules:
 - [`text`]
   - `ascii`: `AsciiChar`.
   - [`fmt`]: `NumToStr`.
+  - [`str`]: `Str`, `ExtStr`, `ExtString`.
 - [`ui`]
   - [`layout`]
 - [`work`]
@@ -101,6 +102,7 @@ Root modules & public sub-modules:
     [`linux`]: crate::sys::os::linux
 [`text`]: crate::text
   [`fmt`]: crate::text::fmt
+  [`str`]: crate::text::str
 [`work`]: crate::work
 [`ui`]: crate::ui
   [`layout`]: crate::ui::layout
