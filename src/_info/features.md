@@ -43,9 +43,13 @@ By default the crate is `no_std` compatible without allocation.
 
 ### Module features
 
-Modules can be enabled independently of [*environment*], [*safety*] or [*dependency*] features.
+*Module* features can be enabled independently of
+[*environment*], [*safety*] or [*dependency*].
 
-- `all`: enables all the root modules and extra submodules:
+Enabling a parent module enables all its sub-modules,
+except for `os`.
+
+- `all`: enables all the root modules and extra submodules.
 
 Root modules & public sub-modules:
 - [`code`]
@@ -58,10 +62,13 @@ Root modules & public sub-modules:
   - [`draw`]
   - [`font`]
   - [`image`]
-- [`num`]: enables all of the `num` sub-features:
+- [`num`]:
   - [`alg`]: algebra (linear & symbolic).
   - [`geom`]: geometry.
-  - [`prim`]: `Primitive[Cast|Join|Split]`.
+  - [`prim`]:
+    - `cast`: `PrimitiveCast`.
+    - `join`: `PrimitiveJoin`.
+    - `split`: `PrimitiveSplit`.
   - [`rand`]: random number generators.
   - `unit`: unit prefixes.
   - [`wave`]: wavelets.
@@ -72,7 +79,7 @@ Root modules & public sub-modules:
   - [`mem`]
     - `bit`: `BitSize`.
   - `os`:
-    - [`linux`]: Linux functionality.
+    - [`linux`]
 - [`text`]
   - `ascii`: `AsciiChar`.
   - [`fmt`]: `NumToStr`.

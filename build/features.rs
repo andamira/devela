@@ -123,11 +123,14 @@ mod reflection {
         flags: &["_num_·"],
         features: &["num", "alg", "geom", "prim", "rand", "unit", "wave"]
     };
+        pub const PRIM: FlagsFeatures = FlagsFeatures {
+            flags: &["prim···"],
+            features: &["prim", "cast", "join", "split"]
+        };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         flags: &["_sys_·"],
-        features: &["sys",
-            "io", "time",
-            "linux", "windows", /* os */]
+        features: &["sys", "io", "mem", "time",
+            /* os: */ "linux", "windows"]
     };
         // RETHINK:
         pub const MEM: FlagsFeatures = FlagsFeatures {
@@ -243,7 +246,7 @@ mod reflection {
 
             DATA,
             MEDIA,
-            NUM,
+            NUM, PRIM,
             SYS, MEM,
             TEXT,
             UI,

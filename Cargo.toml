@@ -144,7 +144,10 @@ media = ["audio", "color", "draw", "font", "image"]
 num = ["alg", "geom", "prim", "rand", "unit", "wave"]
 	alg  = [] # algebra (linear & symbolic)
 	geom = [] # geometry
-	prim = [] # Primitive[Cast|Join|Split]
+	prim = ["cast", "join", "split"]
+		cast = []  # PrimitiveCast
+		join = []  # PrimitiveJoin
+		split = [] # PrimitiveSplit
 	rand = [] # random number generators
 	unit = [] # unit prefixes
 	wave = [] # wavelets
@@ -962,6 +965,7 @@ check-cfg = [ # Allowed config flags:
 	'cfg(_sort_·, _sort_int_·, _sort_float_·)',
 	'cfg(_nums_·, _cmp_·, _float_·, _int_·, _int_i·, _int_u·)',
 	'cfg(_non_value_·, _non_value_i_·, _non_value_u_·)',
+	'cfg(prim···)',
 	# sys
 	'cfg(_sys_·, _mem_·)',
 	# text:

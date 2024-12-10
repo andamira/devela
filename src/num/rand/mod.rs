@@ -13,18 +13,26 @@
 //! [`RngCore`]: https://docs.rs/rand_core/latest/rand_core/trait.RngCore.html
 //
 
-mod lgc;
 mod xabc;
-mod xoroshiro;
-mod xorshift;
-mod xyza8;
+
+#[cfg(feature = "cast")]
+crate::items! {
+    mod lgc;
+    mod xoroshiro;
+    mod xorshift;
+    mod xyza8;
+}
 
 // structural access
 crate::items! { #[allow(unused_imports)]
     pub use doc_inline::*;
 
     mod doc_inline {
-        pub use super::{lgc::*, xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
+        pub use super::xabc::*;
+
+        #[cfg(feature = "cast")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+        pub use super::{lgc::*, xoroshiro::*, xorshift::*, xyza8::*};
     }
     pub(super) mod all { #[doc(inline)]
         pub use super::doc_inline::*;

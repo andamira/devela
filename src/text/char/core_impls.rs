@@ -3,7 +3,7 @@
 //! implementations of core traits
 //
 
-#[cfg(feature = "text")]
+#[cfg(all(feature = "text", _char·))]
 use crate::{TextError, TextResult as Result};
 #[allow(unused_imports)]
 use crate::{_core::fmt, paste, text::char::*, unwrap, ConstDefault};

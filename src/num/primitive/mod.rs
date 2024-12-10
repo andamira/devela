@@ -3,29 +3,43 @@
 //! Helpers for converting between primitives.
 //
 
-#[cfg(test)]
-mod tests;
-
-mod namespace; // Cast
-
-#[cfg(feature = "prim")]
+#[cfg(prim···)]
 crate::items! {
-    mod cast; // PrimitiveCast
-    mod join; // PrimitiveJoin
-    mod split; // PrimitiveSplit
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(prim···)))]
+    mod namespace; // Cast
+
+    #[cfg(test)]
+    mod tests;
 }
+
+#[cfg(feature = "cast")]
+mod cast; // PrimitiveCast
+#[cfg(feature = "join")]
+mod join; // PrimitiveJoin
+#[cfg(feature = "split")]
+mod split; // PrimitiveSplit
 
 // structural access
 crate::items! { #[allow(unused_imports)]
     pub use doc_inline::*;
 
     mod doc_inline {
+        #[cfg(prim···)]
         pub use super::namespace::*;
-        #[cfg(feature = "prim")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "prim")))]
-        pub use super::{cast::*, join::*, split::*};
+
+        #[cfg(feature = "cast")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
+        pub use super::cast::*;
+
+        #[cfg(feature = "join")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
+        pub use super::join::*;
+
+        #[cfg(feature = "split")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
+        pub use super::split::*;
     }
-    pub(super) mod all { #[doc(inline)]
+    pub(super) mod all { #![allow(unused_imports)] #[doc(inline)]
         pub use super::doc_inline::*;
     }
 }
