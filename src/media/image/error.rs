@@ -4,6 +4,7 @@
 //
 
 // use crate::Mismatch; use crate::IntErrorKind;
+#[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
 use crate::IoErrorKind;
 
 /// An image-related result.
@@ -32,11 +33,18 @@ pub enum ImageError {
     FmtError,
 
     /// An `I/O` error.
+    #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
+    #[cfg_attr(
+        feature = "nightly_doc",
+        doc(cfg(any(feature = "std", all(not(feature = "std"), feature = "io"))))
+    )]
     IoError(IoErrorKind),
 }
 
 mod core_impls {
-    use crate::{Display, FmtResult, Formatter, ImageError, IoError};
+    #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
+    use crate::IoError;
+    use crate::{Display, FmtResult, Formatter, ImageError};
     use core::fmt;
 
     impl crate::Error for ImageError {}
@@ -59,6 +67,7 @@ mod core_impls {
                 // E::InvalidParsedInteger(k) => write!(f, "Invalid parsed integer: {k:?}."),
                 E::InvalidParsedInteger => write!(f, "Invalid parsed integer."),
                 E::FmtError => write!(f, "A core::fmt::Error."),
+                #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
                 E::IoError(e) => write!(f, "An I/O Error: {e:?}"),
             }
         }
@@ -77,6 +86,7 @@ mod core_impls {
             Self::FmtError
         }
     }
+    #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
     impl From<IoError> for ImageError {
         fn from(e: IoError) -> Self {
             Self::IoError(e.kind())
