@@ -142,15 +142,14 @@ media = [ "audio", "color", "draw", "font", "image"]
 	font = []
 	image = []
 num = [
-	"geom", "rand", "unit", "wave",
+	"alg", "geom", "rand", "unit", "wave",
 	]
-	geom = [] # geometry, linear algebra
+	alg  = [] # algebra (linear & symbolic)
+	geom = [] # geometry
 	rand = [] # random number generators
 	unit = [] # unit prefixes
 	wave = [] # wavelets
-phys = [
-	"time",
-	]
+phys = ["time"]
 	time = []
 sys = ["io", "mem"]
 	io = [] # no_std io impls

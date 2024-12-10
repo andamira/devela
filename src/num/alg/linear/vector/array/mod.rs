@@ -1,4 +1,4 @@
-// devela::num::algebra::linear::vector::array
+// devela::num::alg::linear::vector::array
 //
 //!
 //

@@ -1,4 +1,4 @@
-// devela::num::algebra::linear
+// devela::num::alg::linear
 //
 //! Linear algebra.
 //

@@ -26,10 +26,12 @@ mod traits; // Num, NumRef
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "unit")))]
 mod unit; // Unit, Unit[Bi|Si]
 
-pub mod algebra;
 pub mod logic;
 pub mod niche;
 
+#[cfg(feature = "alg")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alg")))]
+pub mod alg;
 #[cfg(feature = "geom")]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "geom")))]
 pub mod geom;
@@ -44,24 +46,27 @@ pub mod wave;
 crate::items! { #[allow(unused_imports)]
     pub use {always::*, doc_hidden::*, doc_inline::*, items_private::*};
 
-    mod doc_inline {
-        #[allow(unused_imports, reason = "frac")]
+    mod doc_inline { #![allow(unused_imports)]
         pub use super::{
             cmp::all::*, error::*, float::all::*, frac::all::*, int::all::*,
             interval::*, no::*, primitive::all::*, sign::*, traits::*,
         };
-        #[cfg(feature = "unit")]
-        pub use super::unit::all::*;
-
         #[cfg(feature = "geom")]
         pub use super::geom::all::*;
         #[cfg(feature = "rand")]
         pub use super::rand::all::*;
+        #[cfg(feature = "unit")]
+        pub use super::unit::all::*;
         #[cfg(feature = "wave")]
         pub use super::wave::all::*;
     }
-    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
-        pub use super::{algebra::all::*, logic::all::*, niche::all::*};
+    mod doc_hidden {
+        #[doc(hidden)] #[doc(no_inline)]
+        pub use super::{logic::all::*, niche::all::*};
+
+        #[doc(hidden)] #[doc(no_inline)]
+        #[cfg(feature = "alg")]
+        pub use super::alg::all::*;
     }
     pub(super) mod all { #[doc(inline)]
         pub use super::{doc_hidden::*, doc_inline::*};

@@ -1,9 +1,9 @@
-// devela::num::algebra::linear::vector::vec::impl_traits
+// devela::num::alg::linear::vector::vec::impl_traits
 //
 //!
 //
 
-use crate::num::algebra::linear::VecVector;
+use crate::VecVector;
 use core::fmt;
 
 /* Clone, Copy */

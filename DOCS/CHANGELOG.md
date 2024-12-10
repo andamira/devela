@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new features for:
   - data: `hash`.
   - doc: `_docsrs[_stable]_nodep`.
-  - num: `geom`, `unit`, `wave`, `_cmp_f16`, `_cmp_f128`, `_float_f16`, `_float_f128`.
+  - num: `alg`, `geom`, `unit`, `wave`, `_cmp_f16`, `_cmp_f128`, `_float_f16`, `_float_f128`.
   - media `media`, `safe_media`, `audio`, `color`, `draw`, `font`, `image`.
   - sys: `time`, `linux`, `dep_linux`, `unsafe_syscall`.
   - text: `ascii`, `fmt`, `str`, `_char7`, `_char8`, `_char16`.
@@ -84,7 +84,7 @@ The format is based on [Keep a Changelog], and this project adheres to
     - `HashMap` and `BTreeMap` from `std` if `hashbrown` is disabled.
     - `FromStr`, `IterChars`, `Utf8Error`.
   - crate items from multiple related modules, like errors and strings.
-- new modules: `num::algebra`, `sys::sound`, `media::{audio, color, draw, font, image, layout}`, `phys`, `ui`.
+- new modules: `num::alg`, `sys::sound`, `media::{audio, color, draw, font, image, layout}`, `phys`, `ui`.
 - new `sys::os::linux` module and example `linux`.
 - new `NonValue*` constants `MAX`, `MIN`.
 - new lints.

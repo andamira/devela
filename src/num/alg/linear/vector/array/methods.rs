@@ -1,4 +1,4 @@
-// devela::num::algebra::linear::vector::array::methods
+// devela::num::alg::linear::vector::array::methods
 //
 //! impl methods for Vector
 //

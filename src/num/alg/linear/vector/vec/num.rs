@@ -1,11 +1,9 @@
-// devela::num::algebra::linear::vector::vec::num
+// devela::num::alg::linear::vector::vec::num
 //
 //!
 //
 
-use super::super::{NumVector, VecVector};
-use crate::data::Vec;
-use crate::num::Num;
+use crate::{Num, NumVector, Vec, VecVector};
 
 impl<T: Num> NumVector for VecVector<T> {
     type Scalar = T;

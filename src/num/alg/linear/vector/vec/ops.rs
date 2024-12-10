@@ -1,4 +1,4 @@
-// devela::num::algebra::linear::vector::vec::ops
+// devela::num::alg::linear::vector::vec::ops
 //
 //! implement overloadable operators
 //
