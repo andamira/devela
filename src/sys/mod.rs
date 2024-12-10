@@ -28,24 +28,20 @@ crate::items! {
     #[allow(unused_imports)]
     pub use {always::*, doc_inline::*, doc_hidden::*, items_hidden::*};
 
-    mod doc_inline {
+    mod doc_inline { #![allow(unused_imports)]
         pub use super::{arch::all::*, env::all::*, io::all::*, mem::all::*};
-        #[allow(unused_imports, reason = "feature-gated")]
         pub use super::{log::all::*, os::all::*, sound::all::*};
-        #[allow(unused_imports, reason = "feature-gated")]
         #[cfg(feature = "sys")]
         pub use super::path::all::*;
     }
-    mod doc_hidden { #[doc(hidden)]
-        #[doc(no_inline)]
-        #[allow(unused_imports, reason = "feature-gated")]
+    mod doc_hidden { #[allow(unused_imports)]
+        #[doc(hidden)] #[doc(no_inline)]
         pub use super::{
             io::all::*, log::all::*, mem::all::*, os::all::*,
         };
     }
     pub(super) mod items_hidden { pub use super::mem::items_hidden::*; }
-    pub(super) mod all { #[doc(inline)]
-        #[allow(unused_imports, reason = "feature-gated")]
+    pub(super) mod all { #![allow(unused_imports)] #[doc(inline)]
         pub use super::{doc_inline::*, doc_hidden::*};
     }
     pub(super) mod always { #![allow(unused_imports)]
