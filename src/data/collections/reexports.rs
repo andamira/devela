@@ -179,13 +179,19 @@ pub type HashMapStd<K, V> = std::collections::HashMap<K, V>;
 #[cfg(feature = "std")]
 pub type HashSetStd<T> = std::collections::HashSet<T>;
 
-#[cfg(any(feature = "std", feature = "dep_hashbrown"))]
+#[cfg(all(feature = "hash", any(feature = "std", feature = "dep_hashbrown")))]
 pub use aliases::*;
-#[cfg(any(feature = "std", feature = "dep_hashbrown"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "dep_hashbrown", feature = "std"))))]
+#[cfg(all(feature = "hash", any(feature = "std", feature = "dep_hashbrown")))]
+#[cfg_attr(
+    feature = "nightly_doc",
+    doc(cfg(all(
+        feature = "hash",
+        any(feature = "std", all(feature = "dep_hashbrown", feature = "hash"))
+    )))
+)]
 mod aliases {
     use super::{HashMap, HashSet};
-    use crate::data::hash::HasherBuildFx;
+    use crate::HasherBuildFx;
 
     /// A [`HashMap`] using a default Fx hasher.
     ///
