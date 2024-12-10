@@ -135,17 +135,16 @@ all = [ # enables all the modules and submodules
 data = ["hash"]
 	hash = []
 # lang = []
-media = [ "audio", "color", "draw", "font", "image"]
+media = ["audio", "color", "draw", "font", "image"]
 	audio = []
 	draw = []
 	color = []
 	font = []
 	image = []
-num = [
-	"alg", "geom", "rand", "unit", "wave",
-	]
+num = ["alg", "geom", "prim", "rand", "unit", "wave"]
 	alg  = [] # algebra (linear & symbolic)
 	geom = [] # geometry
+	prim = [] # Primitive[Cast|Join|Split]
 	rand = [] # random number generators
 	unit = [] # unit prefixes
 	wave = [] # wavelets

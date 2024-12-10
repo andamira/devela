@@ -1,8 +1,6 @@
 // devela::data::hash::fnv
 
-use crate::{
-    concat as cc, stringify as fy, ConstDefault, Hasher, HasherBuildDefault, PrimitiveCast,
-};
+use crate::{concat as cc, stringify as fy, Cast, ConstDefault, Hasher, HasherBuildDefault};
 
 /// A builder for default Fnv hashers.
 pub type HasherBuildFnv = HasherBuildDefault<HasherFnv<usize>>;
@@ -180,7 +178,7 @@ macro_rules! impl_fnv {
                 }
             }
             fn finish(&self) -> u64 {
-                self.state.wrapping_cast_to_u64()
+                Cast(self.state).wrapping_cast_to_u64()
             }
         }
     };

@@ -121,7 +121,7 @@ mod reflection {
     };
     pub const NUM: FlagsFeatures = FlagsFeatures {
         flags: &["_num_·"],
-        features: &["num", "alg", "geom", "rand", "unit", "wave"]
+        features: &["num", "alg", "geom", "prim", "rand", "unit", "wave"]
     };
     pub const SYS: FlagsFeatures = FlagsFeatures {
         flags: &["_sys_·"],
@@ -154,7 +154,6 @@ mod reflection {
             "_bit_u8", "_bit_u16", "_bit_u32", "_bit_u64", "_bit_u128", "_bit_usize",
         ]
     };
-
     pub const TUPLE: FlagsFeatures = FlagsFeatures {
         flags: &[],
         features: &["_tuple", "_tuple_24", "_tuple_36", "_tuple_48", "_tuple_72"]

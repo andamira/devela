@@ -59,8 +59,9 @@ Root modules & public sub-modules:
   - [`font`]
   - [`image`]
 - [`num`]: enables all of the `num` sub-features:
-    [`alg`]: algebra (linear & symbolic).
+  - [`alg`]: algebra (linear & symbolic).
   - [`geom`]: geometry.
+  - [`prim`]: `Primitive[Cast|Join|Split]`.
   - [`rand`]: random number generators.
   - `unit`: unit prefixes.
   - [`wave`]: wavelets.
