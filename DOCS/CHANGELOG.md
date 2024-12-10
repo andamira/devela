@@ -94,10 +94,10 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `id_pin`.
   - `id_seq` and type `ExampleIdSeqUsize`.
   - `enumint` and type `ExampleEnumIntU8`.
-- update manifest:
+- manifest:
   - add `patches` section.
   - add table of contents.
-- nw profiles: `dev-lto`, `release-lto`.
+  - add profiles: `dev-lto`, `release-lto`.
 - new `.clippy.toml` configuration file.
 - new github workflows: `get_errno.yml`, `get_syscall.yml`.
 - new scripts in `utils/`: `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`, `docs_coverage.sh`, `docs_items.rs`.
@@ -106,8 +106,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - new file `DOCS/VENDORED_rustdoc.md`
 - show docs for the build scripts (private).
 - add system of internal structural modules.
-- update katex in rustdoc header:
-  - load extensions `mchem` and `copy-tex`.
+- rustdoc html header:
+  - load katexextensions `mchem` and `copy-tex`.
   - trust `\href` commands.
 
 ### Removed
@@ -194,9 +194,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 - dependencies:
   - make `bytemuck` an optional dependency.
 
-#### Examples, utilities, files
+#### Examples, utilities, manifest, files
 - rename `DOCS/DERIVED.md` to `VENDORED.md`.
 - rename the `tools` directory to `utils`.
+- simplify aliases for `cargo-asm`.
 - refactor the build script.
 
 ### Fixed

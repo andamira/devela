@@ -143,7 +143,7 @@ const NO_STD_ARCHES: &[&str] = &[
 const LINUX_ARCHES: &[&str] = &[
     //* Tier 1 *
     //----------
-    // https://doc.rust-lang.org/nightly/rustc/platform-support.html#tier-1-with-host-tools
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
     //
     // Linux 64-bit
     // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
@@ -153,7 +153,8 @@ const LINUX_ARCHES: &[&str] = &[
     // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
     "i686-unknown-linux-gnu",
     //
-    // https://doc.rust-lang.org/nightly/rustc/platform-support/riscv64gc-unknown-linux-gnu.html
+    // ARM64 Linux (kernel 4.1, glibc 2.17+)
+    // https://doc.rust-lang.org/rustc/platform-support.html#tier-1-with-host-tools
     "aarch64-unknown-linux-gnu",
     //
     //* Tier 2 with host tools *

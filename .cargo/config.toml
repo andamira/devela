@@ -155,6 +155,7 @@ Ee = "expand --example"
 El = "expand --lib"
 
 # https://crates.io/crates/cargo-show-asm
+# Has to be run from the root of the crate.
 # Functions need not to be inlined. Defaults to release mode.
 A = "asm --simplify -p devela"
 Ar = "asm --simplify --rust -p devela" # print interleaved rust code

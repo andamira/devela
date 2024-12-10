@@ -16,7 +16,11 @@ Features are grouped in the following categories:
 There are no features enabled by default.
 
 Features from different categories are designed to be mostly independent from
-each other, and composable.
+each other, to be composable.
+
+Note that features are not all additive,
+e.g. it's not possible to enable at the same time `std` and `no_std`,
+nor `safe` and `unsafe`.
 
 
 ### Development features

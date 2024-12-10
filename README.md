@@ -20,13 +20,12 @@
 
 ## Features
 
-[Features] are grouped in 7 categories, mostly independent from each other,
-so that they can be enabled orthogonally, and they're not fully additive,
-e.g. it's not possible to enable at the same time `std` and `no_std`.
+Features are [grouped in categories], mostly independent from each other,
+so that they can be enabled orthogonally.
 
-[Features]: https://andamira.github.io/libera/doc/devela/_info/features/index.html
-<!-- -->
-[Features]: https://docs.rs/devela/latest/devela/_info/features/index.html
+[grouped in caregories]: https://andamira.github.io/libera/doc/devela/_info/features/index.html
+<!-- WAIT: publish -->
+[grouped in caregories]: https://docs.rs/devela/latest/devela/_info/features/index.html
 
 
 ## Dependencies
