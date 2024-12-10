@@ -13,7 +13,7 @@
 #[cfg(any(feature = "std", all(not(feature = "std"), feature = "io")))]
 #[cfg_attr(
     feature = "nightly_doc",
-    doc(any(feature = "std", all(not(feature = "std"), feature = "io")))
+    doc(cfg(any(feature = "std", all(not(feature = "std"), feature = "io"))))
 )]
 mod impls;
 
