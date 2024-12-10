@@ -17,6 +17,8 @@ pub type AllResult<T> = crate::Result<T, AllError>;
 #[derive(Debug)]
 pub enum AllError {
     /// A data-related error.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     Data(DataError),
 
     /// A media-related error.
@@ -50,6 +52,8 @@ pub enum AllError {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum AllErrorKind {
     /// A data-related error.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     Data(()), // TODO
 
     /// A numeric-related error.
@@ -91,10 +95,11 @@ mod core_impls {
         fn error_eq(&self, other: &Self) -> bool {
             use AllError as E;
             match (self, other) {
-                (E::Data(e1), E::Data(e2)) => e1.error_eq(e2),
                 (E::Num(e1), E::Num(e2)) => e1.error_eq(e2),
                 (E::Text(e1), E::Text(e2)) => e1.error_eq(e2),
 
+                #[cfg(feature = "data")]
+                (E::Data(e1), E::Data(e2)) => e1.error_eq(e2),
                 #[cfg(_media_·)]
                 (E::Media(e1), E::Media(e2)) => e1.error_eq(e2),
                 #[cfg(feature = "io")]
@@ -111,10 +116,11 @@ mod core_impls {
             use {AllError as E, AllErrorKind as K};
             #[expect(clippy::unit_arg, reason = "WIP () placeholder")]
             match self {
-                E::Data(e) => K::Data(e.error_kind()),
                 E::Num(e) => K::Num(e.error_kind()),
                 E::Text(e) => K::Text(e.error_kind()),
 
+                #[cfg(feature = "data")]
+                E::Data(e) => K::Data(e.error_kind()),
                 #[cfg(_media_·)]
                 E::Media(e) => K::Media(e.error_kind()),
                 #[cfg(feature = "io")]
@@ -130,9 +136,10 @@ mod core_impls {
     impl_trait! { fmt::Display for AllError |self, f| {
         use AllError as E;
         match self {
-            E::Data(e) => write!(f, "{e:?}"),
             E::Num(e) => write!(f, "{e:?}"),
             E::Text(e) => write!(f, "{e:?}"),
+            #[cfg(feature = "data")]
+            E::Data(e) => write!(f, "{e:?}"),
             #[cfg(_media_·)]
             E::Media(e) => write!(f, "{e:?}"),
             #[cfg(feature = "io")]

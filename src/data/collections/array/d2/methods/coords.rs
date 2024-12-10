@@ -3,9 +3,12 @@
 //! 2-dimensional array coordinates and indexing methods
 //
 
-use crate::{iif, Array2d, DataError::Overflow, DataResult as Result, Storage};
+#[cfg(feature = "data")]
+use crate::{iif, DataError::Overflow, DataResult as Result};
+use crate::{Array2d, Storage};
 
-// Helper macro for implementing common methods generic on storage order
+#[doc = crate::doc_private![]]
+/// Helper macro for implementing common methods generic on storage order.
 macro_rules! impl_maj {
     () => {
         impl_maj![true:r:"row", false:c:"column"];
@@ -32,6 +35,8 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub fn get_ref(&self, col_row: [usize; 2]) -> Result<&T> {
                 Self::get_index(col_row).map(|idx| &self.data[idx])
             }
@@ -50,6 +55,8 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub fn get_mut(&mut self, col_row: [usize; 2]) -> Result<&mut T> {
                 Self::get_index(col_row).map(|idx| &mut self.data[idx])
             }
@@ -68,6 +75,8 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub fn set(&mut self, element: T, col_row: [usize; 2]) -> Result<()> {
                 self.get_mut(col_row).map(|e| {
                     *e = element;
@@ -94,6 +103,8 @@ macro_rules! impl_maj {
             #[doc = "in the current " $D1long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub fn get(&self, col_row: [usize; 2]) -> Result<T> {
                 Self::get_index(col_row).map(|idx| self.data[idx].clone())
             }
@@ -120,6 +131,8 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub fn [<get_ref_ $D2 maj>](&self, col_row: [usize; 2]) -> Result<&T> {
                 Self::[<get_index_ $D2 maj>](col_row).map(|idx| &self.data[idx])
             }
@@ -138,6 +151,8 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub fn [<get_mut_ $D2 maj>](&mut self, col_row: [usize; 2]) -> Result<&mut T> {
                 Self::[<get_index_ $D2 maj>](col_row).map(|idx| &mut self.data[idx])
             }
@@ -156,6 +171,8 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub fn [<set_ $D2 maj>](&mut self, element: T, col_row: [usize; 2]) -> Result<()> {
                 self.[<get_mut_ $D2 maj>](col_row).map(|e| {
                     *e = element;
@@ -176,6 +193,8 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the resulting index is `> CR`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn [<get_index_ $D2 maj>](col_row: [usize; 2]) -> Result<usize> {
                 Array2d::<T, C, R, CR, $CMAJ, S>::[<get_index>](col_row)
             }
@@ -190,6 +209,8 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if `index` is `> CR`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn [<get_coords_ $D2 maj>](index: usize) -> Result<[usize; 2]> {
                 Array2d::<T, C, R, CR, $CMAJ, S>::[<get_coords>](index)
             }
@@ -210,6 +231,8 @@ macro_rules! impl_maj {
             #[doc = "in the opposite " $D2long "-major order."]
             /// # Errors
             /// Returns [`Overflow`] if the coordinates are out of bounds.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub fn [<get_ $D2 maj>](&self, col_row: [usize; 2]) -> Result<T> {
                 Self::[<get_index_ $D2 maj>](col_row).map(|idx| self.data[idx].clone())
             }
@@ -235,6 +258,8 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     /// in the current row-major order.
     /// # Errors
     /// Returns [`Overflow`] if the resulting index is `>= CR`.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub const fn get_index(col_row: [usize; 2]) -> Result<usize> {
         let idx = Self::get_index_unchecked(col_row);
         iif![idx < CR; Ok(idx); Err(Overflow)]
@@ -254,6 +279,8 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage> Array2d<T, 
     /// in the current row-major order.
     /// # Errors
     /// Returns [`Overflow`] if `index` is `>= CR`.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub const fn get_coords(index: usize) -> Result<[usize; 2]> {
         iif![index < CR; Ok(Self::get_coords_unchecked(index)); Err(Overflow)]
     }
@@ -278,6 +305,8 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     /// in the current column-major order.
     /// # Errors
     /// Returns [`Overflow`] if the resulting index is `>= CR`.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub const fn get_index(col_row: [usize; 2]) -> Result<usize> {
         let idx = Self::get_index_unchecked(col_row);
         iif![idx < CR; Ok(idx); Err(Overflow)]
@@ -297,6 +326,8 @@ impl<T, const C: usize, const R: usize, const CR: usize, S: Storage>
     /// in the current column-major order.
     /// # Errors
     /// Returns [`Overflow`] if `index` is `>= CR`.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub const fn get_coords(index: usize) -> Result<[usize; 2]> {
         iif![index < CR; Ok(Self::get_coords_unchecked(index)); Err(Overflow)]
     }

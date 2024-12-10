@@ -4,13 +4,11 @@
 //
 
 #[cfg(_bit_·)]
+use crate::{iif, Bitwise};
+#[cfg(feature = "data")]
 use crate::{
-    code::iif,
-    data::{
-        Bitwise,
-        DataError::{MismatchedIndices, OutOfBounds, Overflow},
-        DataResult as Result,
-    },
+    DataError::{MismatchedIndices, OutOfBounds, Overflow},
+    DataResult as Result,
 };
 
 macro_rules! impl_bits_wrapper {
@@ -64,6 +62,8 @@ macro_rules! impl_bits_wrapper {
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
             #[doc = include_str!("../benches/mask_checked_range.md")]
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn mask_checked_range(start: u32, end: u32) -> Result<Self> {
                 if start >= <$t>::BITS {
                     Err(OutOfBounds(Some(start as usize)))
@@ -98,6 +98,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn get_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self(self.0 & mask.0)),
@@ -129,6 +131,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn get_value_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self((self.0 & mask.0) >> start)),
@@ -154,6 +158,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`
             /// and [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn set_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self(self.0 | mask.0)),
@@ -185,6 +191,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`
             /// and [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn set_value_checked_range(self, value: $t, start: u32, end: u32)
                 -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
@@ -203,6 +211,8 @@ macro_rules! impl_bits_wrapper {
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS`,
             /// [`MismatchedIndices`] if `start > end`, and
             /// [`Overflow`] if `value` does not fit within the specified bit range.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn set_checked_value_checked_range(self, value: $t, start: u32, end: u32)
                 -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
@@ -233,6 +243,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn unset_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self(self.0 & !mask.0)),
@@ -258,6 +270,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn flip_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok(Self(self.0 ^ mask.0)),
@@ -294,6 +308,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn reverse_checked_range(self, start: u32, end: u32) -> Result<Self> {
                 if start >= Self::BITS {
                     Err(OutOfBounds(Some(start as usize)))
@@ -330,6 +346,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn count_ones_checked_range(self, start: u32, end: u32) -> Result<u32> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => Ok((self.0 & mask.0).count_ones()),
@@ -351,6 +369,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn count_zeros_checked_range(self, start: u32, end: u32) -> Result<u32> {
                 match Self::mask_checked_range(start, end) {
                     Ok(mask) => {
@@ -389,6 +409,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn find_first_one_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>> {
                 match Self::mask_checked_range(start, end) {
@@ -432,6 +454,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn find_first_zero_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>> {
                 match Self::mask_checked_range(start, end) {
@@ -477,6 +501,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn find_last_one_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>> {
                 match Self::mask_checked_range(start, end) {
@@ -521,6 +547,8 @@ macro_rules! impl_bits_wrapper {
             /// # Errors
             /// Returns [`OutOfBounds`] if `start >= BITS || end >= BITS` and
             /// [`MismatchedIndices`] if `start > end`.
+            #[cfg(feature = "data")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
             pub const fn find_last_zero_checked_range(self, start: u32, end: u32)
                 -> Result<Option<u32>> {
                 match Self::mask_checked_range(start, end) {

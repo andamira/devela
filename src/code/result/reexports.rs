@@ -9,6 +9,11 @@ use crate::reexport;
 
 pub use crate_errors::*;
 pub(crate) mod crate_errors {
+    /* data */
+    #[doc(inline)]
+    #[cfg(feature = "data")]
+    pub use crate::data::{DataError, DataResult};
+
     /* media */
     #[doc(inline)]
     #[cfg(feature = "audio")]
@@ -47,7 +52,6 @@ pub(crate) mod crate_errors {
     /* other */
     #[doc(inline)]
     pub use crate::{
-        data::{DataError, DataResult},
         num::{NumError, NumResult},
         text::{TextError, TextResult},
     };

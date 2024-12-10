@@ -7,14 +7,15 @@
 // - methods
 // - methods for Option<T>
 
-use crate::{
-    array_from_fn, array_init, iif, Array, Bare, BareBox,
-    DataError::{ElementNotFound, MismatchedIndices, OutOfBounds},
-    DataResult as Result, Storage,
-};
+use crate::{array_from_fn, array_init, iif, Array, Bare, BareBox, Storage};
 #[allow(unused_imports)]
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
+#[cfg(feature = "data")]
+use crate::{
+    DataError::{ElementNotFound, MismatchedIndices, OutOfBounds},
+    DataResult as Result,
+};
 
 /* constructors */
 // -----------------------------------------------------------------------------
@@ -141,6 +142,8 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `start >= CAP`.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn contains_from(&self, element: &T, start: usize) -> Result<bool> {
         iif![start >= CAP; return Err(OutOfBounds(Some(start)))];
         Ok(self.iter().skip(start).any(|n| n == element))
@@ -151,6 +154,8 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if `end >= CAP`.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn contains_until(&self, element: &T, end: usize) -> Result<bool> {
         iif![end >= CAP; return Err(OutOfBounds(Some(end)))];
         Ok(self.iter().take(end + 1).any(|n| n == element))
@@ -162,6 +167,8 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// # Errors
     /// Returns [`OutOfBounds`] if either `start` or `end` `>= CAP`,
     /// or [`MismatchedIndices`] if `start > end`.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn contains_between(&self, element: &T, start: usize, end: usize) -> Result<bool> {
         iif![start >= CAP; return Err(OutOfBounds(Some(start)))];
         iif![end >= CAP; return Err(OutOfBounds(Some(end)))];
@@ -181,6 +188,8 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     ///
     /// # Errors
     /// Returns [`ElementNotFound`] if the `element` can't be found.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn find_index(&self, element: &T) -> Result<usize> {
         self.iter()
             .enumerate()
@@ -310,6 +319,8 @@ impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     ///
     /// # Errors
     /// Returns [`ElementNotFound`] if the array is full.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn first_none(&self) -> Result<usize> {
         self.iter().position(|opt| opt.is_none()).ok_or(ElementNotFound)
     }
@@ -317,6 +328,8 @@ impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     ///
     /// # Errors
     /// Returns [`ElementNotFound`] if the array is full.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn first_none_ref(&self) -> Result<&Option<T>> {
         self.iter().find(|opt| opt.is_none()).ok_or(ElementNotFound)
     }
@@ -324,6 +337,8 @@ impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     ///
     /// # Errors
     /// Returns [`ElementNotFound`] if the array is full.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn first_none_mut(&mut self) -> Result<&mut Option<T>> {
         self.iter_mut().find(|opt| opt.is_none()).ok_or(ElementNotFound)
     }
@@ -332,6 +347,8 @@ impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     ///
     /// # Errors
     /// Returns [`ElementNotFound`] if the array is full.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn first_some(&self) -> Result<usize> {
         self.iter().position(|opt| opt.is_some()).ok_or(ElementNotFound)
     }
@@ -339,6 +356,8 @@ impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     ///
     /// # Errors
     /// Returns [`ElementNotFound`] if the array is full.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn first_some_ref(&self) -> Result<&Option<T>> {
         self.iter().find(|opt| opt.is_some()).ok_or(ElementNotFound)
     }
@@ -346,6 +365,8 @@ impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     ///
     /// # Errors
     /// Returns [`ElementNotFound`] if the array is full.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn first_some_mut(&mut self) -> Result<&mut Option<T>> {
         self.iter_mut().find(|opt| opt.is_some()).ok_or(ElementNotFound)
     }

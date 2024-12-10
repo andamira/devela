@@ -5,10 +5,10 @@
 #![doc = crate::doc_!(extends: array, collections, vec)]
 //
 
+mod reexports;
+
 mod array;
 mod list;
-mod reexports;
-mod traits;
 
 #[cfg(_destaque_·)]
 mod destaque;
@@ -18,6 +18,8 @@ mod destaque;
 // mod node;
 #[cfg(_stack_·)]
 mod stack;
+#[cfg(feature = "data")]
+mod traits;
 #[cfg(feature = "_tuple")]
 mod tuple; // Tuple, TupleFmt, TupleEnumRef, TupleEnumMut
 #[cfg(feature = "alloc")]
@@ -29,7 +31,7 @@ crate::items! { #[allow(unused_imports)]
     pub use {always::*, doc_inline::*};
 
     mod doc_inline {
-        pub use super::{array::all::*, list::all::*, reexports::*, traits::all::*};
+        pub use super::{array::all::*, list::all::*, reexports::*};
 
         #[cfg(_destaque_·)]
         pub use super::destaque::all::*;
@@ -39,6 +41,8 @@ crate::items! { #[allow(unused_imports)]
         // pub use super::node::*;
         #[cfg(_stack_·)]
         pub use super::stack::all::*;
+        #[cfg(feature = "data")]
+        pub use super::traits::all::*;
         #[cfg(feature = "_tuple")]
         pub use super::tuple::all::*;
         #[cfg(feature = "alloc")]

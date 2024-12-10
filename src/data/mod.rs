@@ -10,10 +10,13 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
 mod bit;
-mod error;
 mod id;
 mod fmt;
 mod sort;
+
+#[cfg(feature = "data")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
+mod error;
 
 pub mod collections;
 pub mod hash;
@@ -29,9 +32,12 @@ crate::items! { #[allow(unused_imports)]
     pub use {always::*, doc_hidden::*, doc_inline::*};
 
     mod doc_inline {
-        pub use super::{bit::all::*, error::*, fmt::all::*, id::all::*, sort::all::*};
+        pub use super::{bit::all::*, fmt::all::*, id::all::*, sort::all::*};
+        #[cfg(feature = "data")]
+        pub use super::error::*;
     }
-    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
+    mod doc_hidden {
+        #[doc(hidden)] #[doc(no_inline)]
         pub use super::{collections::all::*, hash::all::*, iter::all::*};
 
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
@@ -39,6 +45,7 @@ crate::items! { #[allow(unused_imports)]
             not(any(feature = "safe_data", feature = "safe_mem")),
             feature = "unsafe_layout"
         ))]
+        #[doc(hidden)] #[doc(no_inline)]
         pub use super::dst::all::*;
     }
     pub(super) mod all { #[doc(inline)]

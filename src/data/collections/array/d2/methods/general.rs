@@ -5,11 +5,13 @@
 
 #[cfg(doc)]
 use crate::BareBox;
+#[cfg(feature = "data")]
 use crate::{
-    Array, Array2d, Bare,
+    Array,
     DataError::{MismatchedLength, Overflow},
-    DataResult as Result, Mismatch, Storage,
+    DataResult as Result, Mismatch,
 };
+use crate::{Array2d, Bare, Storage};
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
 
@@ -29,6 +31,8 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// # use devela::data::Array2d;
     /// let g = Array2d::<_, 4, 4, {4 * 4}>::with_cloned('.');
     /// ```
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn with_cloned(element: T) -> Result<Self> {
         Self::check_CR()?;
         Ok(Self { data: Array::<T, CR, Bare>::with_cloned(element) })
@@ -49,6 +53,8 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     /// const GRID: DataResult<Array2d::<char, 4, 4, {4 * 4}>> = Array2d::with_copied('.');
     /// assert![GRID.is_ok()];
     /// ```
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub const fn with_copied(element: T) -> Result<Self> {
         match Self::check_CR() {
             Ok(()) => Ok(Self { data: Array::<T, CR, Bare>::with_copied(element) }),
@@ -73,6 +79,8 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// # use devela::{Boxed, Array2d};
     /// let g = Array2d::<_, 4, 4, {4 * 4}, true, Boxed>::with_cloned(String::from("·"));
     /// ```
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn with_cloned(element: T) -> Result<Self> {
         Self::check_CR()?;
         Ok(Self { data: Array::<T, CR, Boxed>::with_cloned(element) })
@@ -117,6 +125,8 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
     /// Returns [`Overflow`] if `C * R > usize::MAX`
     /// or [`MismatchedLength`] if `C * R != CR`.
     #[allow(non_snake_case)]
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub(crate) const fn check_CR() -> Result<()> {
         if let Some(len) = C.checked_mul(R) {
             if len == CR {
