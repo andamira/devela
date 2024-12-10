@@ -5,7 +5,10 @@
 
 use crate::Grapheme;
 #[allow(unused)]
-use crate::{Char, Str};
+use crate::{
+    Char,
+    _core::str::{from_utf8, from_utf8_unchecked},
+};
 #[cfg(feature = "alloc")]
 use crate::{IterChars, String};
 #[cfg(feature = "dep_unicode_segmentation")]
@@ -31,7 +34,7 @@ impl GraphemeString {
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char7(c: char7) -> GraphemeString {
-        Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
+        from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
     /// Creates a new `GraphemeString` from a `char8`.
@@ -41,7 +44,7 @@ impl GraphemeString {
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char8(c: char8) -> GraphemeString {
-        Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
+        from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
     /// Creates a new `GraphemeString` from a `char16`.
@@ -51,7 +54,7 @@ impl GraphemeString {
     #[cfg(feature = "dep_unicode_segmentation")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char16(c: char16) -> GraphemeString {
-        Str::from_utf8(&c.to_utf8_bytes()).unwrap().into()
+        from_utf8(&c.to_utf8_bytes()).unwrap().into()
     }
 
     /// Creates a new `GraphemeString` from a `char`.
@@ -62,10 +65,10 @@ impl GraphemeString {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_unicode_segmentation")))]
     pub fn from_char(c: char) -> GraphemeString {
         #[cfg(any(feature = "safe_text", not(feature = "unsafe_str")))]
-        return Str::from_utf8(&crate::Char::to_utf8_bytes(c)).unwrap().into();
+        return from_utf8(&crate::Char::to_utf8_bytes(c)).unwrap().into();
         #[cfg(all(not(feature = "safe_text"), feature = "unsafe_str"))]
         unsafe {
-            Str::from_utf8_unchecked(&crate::Char::to_utf8_bytes(c)).into()
+            from_utf8_unchecked(&crate::Char::to_utf8_bytes(c)).into()
         }
     }
 

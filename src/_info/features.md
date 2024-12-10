@@ -66,7 +66,7 @@ Root modules & public sub-modules:
 - [`phys`]: enables all `phys` sub-features.
     - [`time`]
 - [`sys`]: enables all `sys` sub-features (except for `os`).
-  - [`io`]
+  - [`io`]: no_std `io` implementations.
   - [`mem`]
     - `bit`: `BitSize`.
   - `os`:
