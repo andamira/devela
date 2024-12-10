@@ -1,9 +1,10 @@
 // devela::data::collections:array::d1::uninit::methods
 
+use crate::{iif, ArrayUninit, MaybeUninit, Mem, Storage};
+#[cfg(feature = "data")]
 use crate::{
-    iif, ArrayUninit,
     DataError::{NotEnoughSpace, OutOfBounds, PartiallyAdded},
-    DataResult as Result, MaybeUninit, Mem, Storage,
+    DataResult as Result,
 };
 
 // T, S
@@ -28,6 +29,8 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// - Returns a new array initialized with the elements from the `iterator`.
     /// - Returns [`PartiallyAdded`] if not all elements could be initialized.
     /// - Returns [`NotEnoughSpace`] if the array had no uninitialized elements.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn from_range<I>(iterator: I) -> Result<Self>
     where
         I: IntoIterator<Item = T>,
@@ -56,6 +59,8 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// # Errors
     /// Returns [`OutOfBounds`] if the index is larger than the initialized length.
     #[rustfmt::skip]
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub const fn verify_index(&self, index: usize) -> Result<usize> {
         iif![index < self.init_len; Ok(index); Err(OutOfBounds(Some(index)))]
     }
@@ -67,6 +72,8 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// # Errors
     /// Returns [`OutOfBounds`] if the index is larger than the initialized length.
     /// or if the element at that index is not initialized.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn get(&self, index: usize) -> Result<&T> {
         let _ = self.verify_index(index)?;
         // SAFETY: the index is verified
@@ -78,6 +85,8 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// # Errors
     /// Returns [`OutOfBounds`] if the index is larger than the initialized length.
     /// or if the element at that index is not initialized.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn get_mut(&mut self, index: usize) -> Result<&mut T> {
         let _ = self.verify_index(index)?;
         // SAFETY: the index is verified
@@ -90,6 +99,8 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     ///
     /// # Errors
     /// Returns [`OutOfBounds`] if the index is larger than the initialized length.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn init_next(&mut self, value: T) -> Result<()> {
         if self.is_full() {
             Err(OutOfBounds(None))
@@ -109,6 +120,8 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// - Returns the number of elements initialized.
     /// - Returns [`PartiallyAdded`] if not all elements could be initialized.
     /// - Returns [`NotEnoughSpace`] if the array had no uninitialized elements.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn init_range<I>(&mut self, values: I) -> Result<usize>
     where
         I: IntoIterator<Item = T>,
@@ -131,6 +144,8 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// Replaces the value at a given index with a new value and returns the old value.
     /// # Errors
     /// Returns [`OutOfBounds`] if the index is not within the range of initialized elements.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn replace(&mut self, index: usize, value: T) -> Result<T> {
         let index = self.verify_index(index)?;
         // SAFETY: If the index is verified, the value is initialized
@@ -141,6 +156,8 @@ impl<T, const CAP: usize, S: Storage> ArrayUninit<T, CAP, S> {
     /// Swaps the values at two indices.
     /// # Errors
     /// Returns [`OutOfBounds`] if either index is not within the range of initialized elements.
+    #[cfg(feature = "data")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn swap(&mut self, index1: usize, index2: usize) -> Result<()> {
         let idx1 = self.verify_index(index1)?;
         let idx2 = self.verify_index(index2)?;

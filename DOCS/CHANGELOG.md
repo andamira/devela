@@ -139,7 +139,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `_some_*` to `_*_·`.
   - `_int_i_·` to `_int_i·`, `_int_u_·` to `_int_u·`, `_string_u_·` to `_string_u·`.
 - modify how features `_non_value_u8`, `_non_value_u16` are enabled for `Char*` types.
-- feature gate methods returning `DataResult` in: `Array`, `Array2d`, `Bitwise`, `BitOps`.
+- feature gate methods returning `DataResult` in: `Array`, `Array2d`, `ArrayUninit`, `Bitwise`, `BitOps`.
 - show build *env* variables if `__dbg` feature is enabled.
 
 #### Items
