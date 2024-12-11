@@ -1,4 +1,4 @@
-// devela::code::macros::cfg_if
+// devela::code::util::cfg_if
 //
 //! cfg_if macro.
 //

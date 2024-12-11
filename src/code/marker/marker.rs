@@ -1,4 +1,4 @@
-// devela::code::type::marker
+// devela::code::marker::marker
 //
 //! Zero-cost generic marker IDs.
 //

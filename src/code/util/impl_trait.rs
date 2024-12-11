@@ -1,4 +1,4 @@
-// devela::code::macros::impl_trait
+// devela::code::util::impl_trait
 
 /// A helper macro to concisely implement a few common utility traits.
 ///

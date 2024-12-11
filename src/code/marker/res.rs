@@ -1,4 +1,4 @@
-// devela::code::type::res
+// devela::code::marker::res
 //
 //! Type-safe resource IDs.
 //

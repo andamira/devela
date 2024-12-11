@@ -1,4 +1,4 @@
-// devela::code::macros::asserts::static
+// devela::code::util::asserts::static
 //
 //! Static assertions.
 //

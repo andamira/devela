@@ -43,34 +43,3 @@ doc: "The identity function. Just returns back its input.", identity }
 // NOTE: the trait and the derive macro have the same name
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 pub use core::default::Default;
-
-/* `core::hint` re-exports */
-
-reexport! { rust: core::hint,
-doc: "Makes a *soundness* promise to the compiler that the `cond`ition holds.", assert_unchecked }
-reexport! { rust: core::hint,
-doc: "Hints the compiler to be maximally pessimistic about what black_box could do.", black_box }
-reexport! { rust: core::hint,
-doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_loop }
-reexport! { rust: core::hint,
-doc: "Informs the compiler that the current calling site is not reachable.", unreachable_unchecked }
-
-/* `core::marker` re-exports */
-
-/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-// <https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns>
-pub use core::marker::PhantomData;
-/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-pub use core::marker::PhantomPinned;
-
-// NOTE: the trait and the derive macro have the same name
-/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-pub use core::marker::Copy;
-/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-pub use core::marker::Send;
-/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-pub use core::marker::Sized;
-/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-pub use core::marker::Sync;
-/// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-pub use core::marker::Unpin;

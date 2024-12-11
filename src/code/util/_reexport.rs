@@ -1,4 +1,4 @@
-// devela::code::macros::_reexport
+// devela::code::util::_reexport
 //
 //! private reexport meta helper
 //

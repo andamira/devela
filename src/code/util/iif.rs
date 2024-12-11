@@ -1,4 +1,4 @@
-// devela::code::macros::iif
+// devela::code::util::iif
 //
 //! inline if macro.
 //

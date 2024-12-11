@@ -1,6 +1,8 @@
 // devela::code::ops
 //
 //! Overloadable operators.
+//!
+#![doc = crate::doc_!(extends: ops)]
 //
 
 // #![allow(unused_imports)] // DELETE

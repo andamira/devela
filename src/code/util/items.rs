@@ -1,4 +1,4 @@
-// devela::code::macros::items
+// devela::code::util::items
 //
 //! skip formatting macros
 //

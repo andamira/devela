@@ -1,4 +1,4 @@
-// devela::code::macros::_doc
+// devela::code::util::_doc
 //
 //! private doc meta helpers
 //

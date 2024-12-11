@@ -1,4 +1,4 @@
-// devela::code::macros::capture
+// devela::code::util::capture
 //
 //! capture tokens macro functionality
 //

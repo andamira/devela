@@ -14,7 +14,7 @@ mod error;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "layout")))]
 pub mod layout;
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: doc_inline, all, always
     #[allow(unused)]
     pub use doc_inline::*;
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]

@@ -1,4 +1,4 @@
-// devela::code::macros::enumset
+// devela::code::util::enumset
 //
 //! An enum with an associated bitfield.
 //

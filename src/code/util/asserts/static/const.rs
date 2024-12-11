@@ -1,4 +1,4 @@
-// devela::code::macros::asserts::static::const
+// devela::code::util::asserts::static::const
 //
 //! Compile-time assertions.
 //

@@ -1,6 +1,6 @@
-// devela::code::macros::reexports
+// devela::code::util::reexports
 //
-//! Reexported macros.
+//! Reexported macros and hints.
 //
 
 #![allow(unused_imports)]
@@ -14,7 +14,18 @@ pub use devela_macros::{
     ident_unique,
 };
 
-/* `core` re-exports */
+/* `core::hint` functions re-exports */
+
+reexport! { rust: core::hint,
+doc: "Makes a *soundness* promise to the compiler that the `cond`ition holds.", assert_unchecked }
+reexport! { rust: core::hint,
+doc: "Hints the compiler to be maximally pessimistic about what black_box could do.", black_box }
+reexport! { rust: core::hint,
+doc: "Signals the processor that it is running in a busy-wait spin-loop.", spin_loop }
+reexport! { rust: core::hint,
+doc: "Informs the compiler that the current calling site is not reachable.", unreachable_unchecked }
+
+/* `core` macros re-exports */
 
 reexport! { rust: core::autodiff, extra_features: "nightly_autodiff",
 doc: "Automatic Differentiation macro.", autodiff }

@@ -1,4 +1,4 @@
-// devela::code::macros::const
+// devela::code::util::const
 
 /// A helper for constructing macro constants.
 ///

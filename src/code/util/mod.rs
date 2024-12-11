@@ -1,6 +1,8 @@
-// devela::code::macros
+// devela::code::util
 //
-//! Utility macros
+//! Utility macros and hint functions.
+//!
+#![doc = crate::doc_!(extends: hint)]
 //
 // # Implementation notes
 // Several macros are defined hidden, prefixed with `_`, an publicly re-exported
