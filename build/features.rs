@@ -88,6 +88,7 @@ mod reflection {
         flags: &["_nightly_·"],
         features: &[
             "nightly_autodiff",
+            "nightly_bigint",
             "nightly_coro",
             "nightly_doc",
             "nightly_float",

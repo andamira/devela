@@ -75,7 +75,7 @@ publish = true
 bench = false
 
 
-[features] # 228/300 (72 remaining), 112 visible, 116 hidden
+[features] # 229/300 (71 remaining), 113 visible, 116 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -237,14 +237,21 @@ safest = [ # forbids `unsafe` even in dependencies (except for the standard libr
 # ------------------------------------------------------------------------------
 # They are prefixed with `nightly_`.
 #
+# In sync with build/features.rs::DEPENDENCY
+#
+## Links
 # - https://doc.rust-lang.org/unstable-book/library-features.html
 
 nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
-	"nightly_autodiff", "nightly_coro", "nightly_doc", "nightly_float", "nightly_simd",
+	"nightly_autodiff", "nightly_bigint", "nightly_coro", "nightly_doc",
+	"nightly_float", "nightly_simd",
 	"nightly_stable",
 ] # enables all the following features:
 	# WAIT: [autodiff](https://github.com/rust-lang/rust/issues/124509)
 	nightly_autodiff = [] # autodiff
+
+	# WAIT: [bigint_helper_methods](https://github.com/rust-lang/rust/issues/85532)
+	nightly_bigint = [] # bigint_helper_methods
 
 	# WAIT: [coroutines](https://github.com/rust-lang/rust/issues/43122)
 	nightly_coro= [] # coroutines, coroutine_trait, iter_from_coroutine

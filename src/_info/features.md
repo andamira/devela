@@ -171,6 +171,7 @@ Enabling any of them sets the `_nightly_·` flag.
 
 - `nightly`: enables the nightly features:
   - `nightly_autodiff`: enables [`autodiff`].
+  - `nightly_bigint`: enables [`bigint_helper_methods`].
   - `nightly_coro`: enables [`coroutines`], `coroutine_trait`, `iter_from_coroutine`.
   - `nightly_doc`: enables [`doc_cfg`], [`doc_notable_trait`].
   - `nightly_float`: enables [`f16`, `f128`].
