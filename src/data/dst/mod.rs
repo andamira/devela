@@ -23,14 +23,15 @@ mod queue;
 mod stack;
 mod value;
 
-// structural access
-crate::items! { #[allow(unused_imports)]
+crate::items! { // structural access: doc_inline, all, items_private
+    #[allow(unused)]
     pub use {doc_inline::*, items_private::*} ;
 
     mod doc_inline {
         pub use super::{buffer::*, queue::*, stack::*, value::*};
     }
-    pub(super) mod all { #[doc(inline)]
+    pub(super) mod all {
+        #[doc(inline)]
         pub use super::doc_inline::*;
     }
     mod items_private {

@@ -12,14 +12,20 @@
 mod chunk; // VecChunk
 mod ext; // ExtVec
 
-// structural access
-crate::items! { #[allow(unused_imports)]
+crate::items! { // structural access: doc_inline, all, always
+    #[allow(unused)]
     pub use doc_inline::*;
+    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    pub use always::*;
 
     mod doc_inline {
         pub use super::{chunk::*, ext::*};
     }
-    pub(super) mod all { #[doc(inline)]
+    pub(super) mod all {
+        #[doc(inline)]
         pub use super::doc_inline::*;
+    }
+    pub(super) mod always {
+        pub use super::ext::*;
     }
 }

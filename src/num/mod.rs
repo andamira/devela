@@ -42,11 +42,13 @@ pub mod rand;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "wave")))]
 pub mod wave;
 
-// structural access
-crate::items! { #[allow(unused_imports)]
-    pub use {always::*, doc_hidden::*, doc_inline::*, items_private::*};
+crate::items! { // structural access: doc_inline, doc_hidden, items_private, all, always
+    #[allow(unused)]
+    pub use {doc_hidden::*, doc_inline::*, items_private::*};
+    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    pub use always::*;
 
-    mod doc_inline { #![allow(unused_imports)]
+    mod doc_inline { #![allow(unused)]
         pub use super::{
             cmp::all::*, error::*, float::all::*, frac::all::*, int::all::*,
             interval::*, no::*, primitive::all::*, sign::*, traits::*,
@@ -68,16 +70,16 @@ crate::items! { #[allow(unused_imports)]
         #[cfg(feature = "alg")]
         pub use super::alg::all::*;
     }
-    pub(super) mod all { #[doc(inline)]
+    pub(super) mod items_private { #![allow(unused)]
+        pub(crate) use super::_private::*;
+    }
+    pub(super) mod all {
+        #[doc(inline)]
         pub use super::{doc_hidden::*, doc_inline::*};
     }
-    pub(super) mod always { #![allow(unused_imports)]
-        #[doc(hidden)] #[doc(no_inline)]
+    pub(super) mod always { #![allow(unused)]
         pub use super::{
             cmp::always::*, float::always::*, int::always::*, niche::always::*,
         };
-    }
-    pub(super) mod items_private { #![allow(unused_imports)]
-        pub(crate) use super::_private::*;
     }
 }

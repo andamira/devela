@@ -11,14 +11,17 @@
 #[cfg_attr(feature = "nightly", doc(cfg(feature = "linux")))]
 pub mod linux;
 
-// structural access
-crate::items! {
-    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
+crate::items! { // structural access: doc_hidden, all
+    #[allow(unused)]
+    pub use doc_hidden::*;
+
+    mod doc_hidden {
+        #[doc(hidden)] #[doc(no_inline)]
         #[cfg(feature = "linux")]
         pub use super::linux::all::*;
     }
-    #[allow(unused_imports)] pub use doc_hidden::*;
-    pub(super) mod all { #[doc(inline)] #[allow(unused_imports)]
+    pub(super) mod all { #[allow(unused)]
+        #[doc(inline)]
         pub use super::doc_hidden::*;
     }
 }

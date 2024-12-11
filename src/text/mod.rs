@@ -24,24 +24,26 @@ mod error;
 pub mod fmt;
 pub mod str;
 
-// structural access
-crate::items! { #[allow(unused_imports)]
-    pub use {always::*, doc_hidden::*, doc_inline::*};
+crate::items! { // structural access: doc_inline, doc_hidden, all, always
+    #[allow(unused)]
+    pub use {doc_hidden::*, doc_inline::*};
+    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    pub use always::*;
 
     mod doc_inline {
         pub use super::{ascii::all::*, char::all::*, grapheme::all::*, parse::all::*};
         #[cfg(feature = "text")]
         pub use super::error::*;
     }
-    mod doc_hidden { #![doc(hidden)]
-        #[doc(no_inline)]
+    mod doc_hidden {
+        #[doc(hidden)] #[doc(no_inline)]
         pub use super::{fmt::all::*, str::all::*};
     }
-    pub(super) mod all { #[doc(inline)]
+    pub(super) mod all {
+        #[doc(inline)]
         pub use super::{doc_hidden::*, doc_inline::*};
     }
-    pub(super) mod always { #![allow(unused_imports)]
-        #[doc(hidden)] #[doc(no_inline)]
+    pub(super) mod always { #![allow(unused)]
         pub use super::{
             fmt::always::*, char::always::*, parse::always::*, str::always::*,
         };

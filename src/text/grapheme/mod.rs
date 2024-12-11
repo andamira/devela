@@ -17,12 +17,13 @@ mod string_u8;
 #[cfg(feature = "alloc")]
 mod string;
 
-// structural access
-crate::items! { #[allow(unused_imports)]
+crate::items! { // structural access: doc_inline, all
+    #[allow(unused)]
     pub use doc_inline::*;
 
     mod doc_inline {
         pub use super::r#trait::*;
+
         #[cfg(feature = "_string_nonul")]
         pub use super::nonul::*;
         #[cfg(feature = "_string_u8")]
@@ -30,7 +31,8 @@ crate::items! { #[allow(unused_imports)]
         #[cfg(feature = "alloc")]
         pub use super::string::*;
     }
-    pub(super) mod all { #[doc(inline)]
+    pub(super) mod all {
+        #[doc(inline)]
         pub use super::doc_inline::*;
     }
 }

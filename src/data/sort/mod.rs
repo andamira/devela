@@ -10,14 +10,15 @@ mod primitives;
 
 mod definition;
 
-// structural access
-crate::items! { #[allow(unused_imports)]
+crate::items! { // structural access: doc_inline, all
+    #[allow(unused)]
     pub use doc_inline::*;
 
     mod doc_inline {
         pub use super::definition::*;
     }
-    pub(super) mod all { #[doc(inline)]
+    pub(super) mod all {
+        #[doc(inline)]
         pub use super::doc_inline::*;
     }
 }

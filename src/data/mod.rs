@@ -27,9 +27,11 @@ pub mod iter;
 #[cfg(all(not(any(feature = "safe_data", feature = "safe_mem")), feature = "unsafe_layout"))]
 pub mod dst;
 
-// structural access
-crate::items! { #[allow(unused_imports)]
-    pub use {always::*, doc_hidden::*, doc_inline::*};
+crate::items! { // structural access: doc_inline, doc_hidden, all, always
+    #[allow(unused)]
+    pub use {doc_hidden::*, doc_inline::*};
+    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    pub use always::*;
 
     mod doc_inline {
         pub use super::{bit::all::*, fmt::all::*, id::all::*, sort::all::*};
@@ -48,11 +50,11 @@ crate::items! { #[allow(unused_imports)]
         #[doc(hidden)] #[doc(no_inline)]
         pub use super::dst::all::*;
     }
-    pub(super) mod all { #[doc(inline)]
+    pub(super) mod all {
+        #[doc(inline)]
         pub use super::{doc_hidden::*, doc_inline::*};
     }
-    pub(super) mod always { #![allow(unused_imports)]
-        #[doc(hidden)] #[doc(no_inline)]
+    pub(super) mod always { #![allow(unused)]
         pub use super::{collections::always::*, hash::always::*, iter::always::*};
     }
 }

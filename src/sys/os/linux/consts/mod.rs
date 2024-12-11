@@ -10,8 +10,10 @@ pub(super) mod signal;
 pub(super) mod syscall;
 pub(super) mod termios;
 
-// structural access
-crate::items! {
+crate::items! { // structural access: doc_inline, all
+    #[allow(unused)]
+    pub use doc_inline::*;
+
     mod doc_inline {
         pub use super::{
             errno::LINUX_ERRNO,
@@ -24,6 +26,8 @@ crate::items! {
             },
         };
     }
-    #[allow(unused_imports)] pub use doc_inline::*;
-    pub(super) mod all { #[doc(inline)] pub use super::doc_inline::*; }
+    pub(super) mod all {
+        #[doc(inline)]
+        pub use super::doc_inline::*;
+    }
 }

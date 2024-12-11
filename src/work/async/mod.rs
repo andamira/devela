@@ -21,22 +21,23 @@ mod waker;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 mod block;
 
-// structural access
-crate::items! { #[allow(unused_imports)]
-    pub use {always::*, doc_inline::*};
+crate::items! { // structural access: doc_inline, all, always
+    #[allow(unused)]
+    pub use doc_inline::*;
+    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    pub use always::*;
 
-    mod doc_inline {
-        #![allow(unused_imports, reason = "feature-gated")]
-        pub use super::coroutine::all::*;
-        pub use super::{ext::*, reexports::*, waker::*};
+    mod doc_inline { #![allow(unused)]
+        pub use super::{coroutine::all::*, ext::*, reexports::*, waker::*};
+
         #[cfg(feature = "std")]
         pub use super::block::*;
     }
-    pub(super) mod all { #[doc(inline)]
+    pub(super) mod all {
+        #[doc(inline)]
         pub use super::doc_inline::*;
     }
-    pub(super) mod always { #![allow(unused_imports)]
-        #[doc(hidden)] #[doc(no_inline)]
+    pub(super) mod always { #![allow(unused)]
         pub use super::{coroutine::always::*, reexports::*};
     }
 }

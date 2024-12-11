@@ -29,9 +29,11 @@ mod pod;
 
 pub mod cell;
 
-// structural access
-crate::items! { #[allow(unused_imports)]
-    pub use {always::*, doc_hidden::*, doc_inline::*, items_hidden::*};
+crate::items! { // structural access: doc_inline, doc_hidden, items_hidden, all, always
+    #[allow(unused)]
+    pub use {doc_hidden::*, doc_inline::*, items_hidden::*};
+    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    pub use always::*;
 
     mod doc_inline {
         pub use super::{
@@ -46,12 +48,14 @@ crate::items! { #[allow(unused_imports)]
     mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
         pub use super::cell::all::*;
     }
-    pub(super) mod items_hidden { pub use super::size::items_hidden::*; }
-    pub(super) mod all { #[doc(inline)]
+    pub(super) mod items_hidden {
+        pub use super::size::items_hidden::*;
+    }
+    pub(super) mod all {
+        #[doc(inline)]
         pub use super::{doc_hidden::*, doc_inline::*};
     }
-    pub(super) mod always { #![allow(unused_imports)]
-        #[doc(hidden)] #[doc(no_inline)]
+    pub(super) mod always { #![allow(unused)]
         pub use super::{cell::always::*, ptr::always::*, reexports::*};
     }
 }

@@ -26,9 +26,11 @@ pub mod font;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "image")))]
 pub mod image;
 
-// structural access
-crate::items! { #[allow(unused_imports)]
-    pub use {always::*, doc_inline::*};
+crate::items! { // structural access: doc_inline, all, always
+    #[allow(unused)]
+    pub use doc_inline::*;
+    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    pub use always::*;
 
     mod doc_inline {
         #[cfg(_media_·)]
@@ -44,19 +46,20 @@ crate::items! { #[allow(unused_imports)]
         #[cfg(feature = "image")]
         pub use super::image::all::*;
     }
-    pub(super) mod all { #[doc(inline)] #[allow(unused_imports)]
+    pub(super) mod all { #![allow(unused)]
+        #[doc(inline)]
         pub use super::doc_inline::*;
     }
-    pub(super) mod always { #![allow(unused_imports)]
-        #[cfg(feature = "audio")] #[doc(hidden)] #[doc(no_inline)]
+    pub(super) mod always { #![allow(unused)]
+        #[cfg(feature = "audio")]
         pub use super::audio::always::*;
-        #[cfg(feature = "color")] #[doc(hidden)] #[doc(no_inline)]
+        #[cfg(feature = "color")]
         pub use super::color::always::*;
-        #[cfg(feature = "draw")] #[doc(hidden)] #[doc(no_inline)]
+        #[cfg(feature = "draw")]
         pub use super::draw::always::*;
-        #[cfg(feature = "font")] #[doc(hidden)] #[doc(no_inline)]
+        #[cfg(feature = "font")]
         pub use super::font::always::*;
-        #[cfg(feature = "image")] #[doc(hidden)] #[doc(no_inline)]
+        #[cfg(feature = "image")]
         pub use super::image::always::*;
     }
 }
