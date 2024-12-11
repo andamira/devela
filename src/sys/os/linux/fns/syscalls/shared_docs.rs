@@ -31,7 +31,7 @@ Get process identification.
 - <https://www.man7.org/linux/man-pages/man2/getpid.2.html>
 
 # Example
-```ignore
+```no_run
 use devela::linux_sys_getpid;
 
 # #[cfg(target_os = "linux")]
@@ -50,8 +50,8 @@ Obtain a series of random bytes.
 - <https://www.man7.org/linux/man-pages/man2/getrandom.2.html>
 
 # Example
-```ignore
-use devela::::linux_sys_getrandom;
+```no_run
+use devela::linux_sys_getrandom;
 
 let mut r = 0u8;
 # #[cfg(target_os = "linux")]
@@ -132,8 +132,8 @@ Read `count` bytes from a file descriptor `fd` into a buffer `buf`.
 - <https://www.man7.org/linux/man-pages/man2/read.2.html>
 
 # Example
-```ignore
-use devela::{LINUX_FILENO, linux_sys_read};
+```no_run
+use devela::{linux_sys_read, LINUX_FILENO};
 
 # #[cfg(target_os = "linux")] {
 let mut buf: [u8; 1024] = [0; 1024];

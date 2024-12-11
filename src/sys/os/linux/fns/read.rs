@@ -108,11 +108,11 @@ pub fn linux_get_utf8_bytes() -> Option<[u8; 4]> {
 /// Prompts the user for a string from *stdin*, backed by a `buffer`.
 ///
 /// # Examples
-/// ```ignore
-/// use devela::sys::os::linux::prompt;
+/// ```no_run
+/// use devela::linux_prompt;
 ///
 /// let mut name_buffer = [0_u8; 32];
-/// let name: &str = prompt::<32>("Enter your name: ", &mut name_buffer);
+/// let name: &str = linux_prompt::<32>("Enter your name: ", &mut name_buffer);
 /// ```
 ///
 /// # Error Handling
@@ -129,8 +129,8 @@ pub fn linux_prompt<'input, const CAP: usize>(
 /// Gets a string from *stdin* backed by a `buffer`, until a newline.
 ///
 /// # Examples
-/// ```ignore
-/// use devela::sys::os::linux::get_line;
+/// ```no_run
+/// use devela::linux_get_line;
 ///
 /// let mut buf = [0_u8; 32];
 /// let name: &str = linux_get_line::<32>(&mut buf);
@@ -146,8 +146,8 @@ pub fn linux_get_line<const CAP: usize>(buffer: &mut [u8; CAP]) -> &str {
 /// until the `stop` char is received.
 ///
 /// # Examples
-/// ```ignore
-/// use devela::sys::os::linux::linux_get_str;
+/// ```no_run
+/// use devela::linux_get_str;
 ///
 /// let mut buf = [0_u8; 32];
 /// let name: &str = linux_get_str::<32>(&mut buf, '\n');

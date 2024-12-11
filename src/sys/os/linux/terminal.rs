@@ -13,6 +13,7 @@ use crate::_dep::atomic::{Atomic, Ordering as AtomicOrdering};
 /// This allows to restore the initial terminal state from a panic handler. E.g.:
 ///
 /// ```ignore
+/// # use devela::LinuxTerminal;
 /// #[panic_handler]
 /// fn panic(_info: &core::panic::PanicInfo) -> ! {
 ///     LinuxTerminal::restore_saved_state().unwrap();

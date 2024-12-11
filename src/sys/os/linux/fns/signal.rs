@@ -3,20 +3,18 @@
 //! signal related functions
 //
 
-use super::super::{linux_sys_rt_sigaction, LinuxSigaction, LinuxSigset, LINUX_SIGACTION as SA};
+use crate::{
+    linux_sys_rt_sigaction, AtomicOrdering, AtomicPtr, LinuxSigaction, LinuxSigset,
+    LINUX_SIGACTION as SA,
+};
 use core::{mem::transmute, ptr::null_mut};
-
-#[cfg(feature = "work")]
-use crate::work::{AtomicOrdering, AtomicPtr};
-#[cfg(not(feature = "work"))]
-use core::sync::atomic::{AtomicPtr, Ordering as AtomicOrdering};
 
 /// Registers multiple signals using a handler function that never returns.
 ///
 /// # Examples
-/// ```ignore
+/// ```no_run
 /// use std::{process::exit, time::Duration, thread::sleep};
-/// use devela::sys::os::linux::LINUX_SIGNAL as LS;
+/// use devela::{linux_sig_handler_no_return, LINUX_SIGNAL as LS};
 ///
 /// fn handler(sig: i32) -> ! {
 ///    println!("\nsignal `{sig}` received! exiting. . .");

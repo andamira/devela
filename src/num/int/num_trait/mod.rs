@@ -14,8 +14,8 @@
 // - trait NumIntRef
 
 #[cfg(feature = "alloc")]
-use crate::data::Vec;
-use crate::num::{GcdReturn, Num, NumError as E, NumResult as Result};
+use crate::Vec;
+use crate::{GcdReturn, Num, NumError as E, NumResult as Result};
 #[cfg(doc)]
 use E::{
     MismatchedSizes, NonNegativeRequired, NonZeroRequired, NotImplemented, NotSupported, Overflow,
@@ -364,8 +364,8 @@ pub trait NumInt: Num {
     /// This is the allocating version of [`int_factors_buf`][Self::int_factors_buf].
     ///
     /// # Examples
-    /// ```ignore
-    /// # use devela::num::NumInt;
+    /// ```
+    /// # use devela::NumInt;
     /// assert_eq![24_i32.int_factors(), Ok(vec![1, 2, 3, 4, 6, 8, 12, 24])];
     /// assert_eq![(-24_i32).int_factors(), Ok(vec![1, 2, 3, 4, 6, 8, 12, 24])];
     /// assert_eq![0_i32.int_factors(), Ok(vec![])];
@@ -386,8 +386,8 @@ pub trait NumInt: Num {
     /// This is the allocating version of [`int_factors_proper_buf`][Self::int_factors_proper_buf].
     ///
     /// # Examples
-    /// ```ignore
-    /// # use devela::num::NumInt;
+    /// ```
+    /// # use devela::NumInt;
     /// assert_eq![24_i32.int_factors_proper(), Ok(vec![2, 3, 4, 6, 8, 12])];
     /// assert_eq![(-24_i32).int_factors_proper(), Ok(vec![2, 3, 4, 6, 8, 12])];
     /// assert_eq![0_i32.int_factors_proper(), Ok(vec![])];
@@ -408,8 +408,8 @@ pub trait NumInt: Num {
     /// This is the allocating version of [`int_factors_prime_buf`][Self::int_factors_prime_buf].
     ///
     /// # Examples
-    /// ```ignore
-    /// # use devela::num::NumInt;
+    /// ```
+    /// # use devela::NumInt;
     /// assert_eq![24_i32.int_factors_prime(), Ok(vec![2, 2, 2, 3])];
     /// assert_eq![(-24_i32).int_factors_prime(), Ok(vec![2, 2, 2, 3])];
     /// assert_eq![0_i32.int_factors_prime(), Ok(vec![])];
@@ -431,8 +431,8 @@ pub trait NumInt: Num {
     /// [`int_factors_prime_unique_buf`][Self::int_factors_prime_unique_buf].
     ///
     /// # Examples
-    /// ```ignore
-    /// # use devela::num::NumInt;
+    /// ```
+    /// # use devela::NumInt;
     /// assert_eq![24_i32.int_factors_prime_unique(), Ok(vec![2, 3])];
     /// ```
     #[cfg(feature = "alloc")]
@@ -457,8 +457,8 @@ pub trait NumInt: Num {
     /// than the length of any buffer.
     ///
     /// # Examples
-    /// ```ignore
-    /// # use devela::num::NumInt;
+    /// ```
+    /// # use devela::NumInt;
     /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
     /// assert_eq![24_i32.int_factors_buf(&mut fbuf, &mut upbuf), Ok((8, 2))];
     ///
@@ -482,8 +482,8 @@ pub trait NumInt: Num {
     /// than the length of any buffer.
     ///
     /// # Examples
-    /// ```ignore
-    /// # use devela::num::NumInt;
+    /// ```
+    /// # use devela::NumInt;
     /// let (mut fbuf, mut upbuf) = ([0; 20], [0; 20]);
     /// assert_eq![24_i32.int_factors_proper_buf(&mut fbuf, &mut upbuf), Ok((6, 2))];
     ///
@@ -508,8 +508,8 @@ pub trait NumInt: Num {
     /// than the length of the `buffer`.
     ///
     /// # Examples
-    /// ```ignore
-    /// # use devela::num::NumInt;
+    /// ```
+    /// # use devela::NumInt;
     /// let mut buf = [0; 5];
     /// assert_eq![24_i32.int_factors_prime_buf(&mut buf), Ok(4)];
     ///
@@ -542,8 +542,8 @@ pub trait NumInt: Num {
     /// factors that can fit, like [`int_factors_prime_buf`][Self::int_factors_prime_buf].
     ///
     /// # Examples
-    /// ```ignore
-    /// # use devela::num::NumInt;
+    /// ```
+    /// # use devela::NumInt;
     /// let mut uniq = [0; 5];
     /// assert_eq![24_i32.int_factors_prime_unique_buf(&mut uniq), Ok(2)];
     /// assert_eq![uniq, [2, 3, 2, 3, 0]];
