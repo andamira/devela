@@ -1,5 +1,7 @@
 // devela::sys::os::linux::structs::sigaction
 
+#![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
+
 /// Represents the [`sigaction`] structure from libc.
 /// Examine and change a signal action.
 ///

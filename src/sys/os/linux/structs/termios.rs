@@ -1,11 +1,10 @@
 // devela::sys::os::linux::structs::termios
 
-use core::ffi::c_uint;
+#![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
+
+use crate::c_uint;
 #[cfg(all(feature = "unsafe_syscall", not(miri)))]
-use {
-    super::super::{linux_sys_ioctl, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG},
-    crate::code::iif,
-};
+use crate::{iif, linux_sys_ioctl, LINUX_ERRNO, LINUX_FILENO, LINUX_IOCTL, LINUX_TERMIOS_LFLAG};
 
 /// Represents the [`termios`] structure from libc,
 /// used to control terminal I/O.

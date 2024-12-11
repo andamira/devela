@@ -1,6 +1,8 @@
 // devela::sys::os::linux::structs::timespec
 
-use crate::_core::time::Duration;
+#![cfg_attr(not(feature = "unsafe_syscall"), allow(dead_code))]
+
+use crate::Duration;
 
 /// Represents the [`timespec`] structure from libc.
 /// Time in seconds and nanoseconds.

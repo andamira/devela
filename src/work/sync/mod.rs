@@ -7,12 +7,10 @@
 //!
 //
 
+mod atomic;
+
 #[cfg(feature = "alloc")]
 mod reexports;
-
-#[cfg(feature = "work")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
-mod atomic;
 
 crate::items! { // structural access: doc_inline, all, always
     #[allow(unused)]
@@ -21,16 +19,16 @@ crate::items! { // structural access: doc_inline, all, always
     pub use always::*;
 
     mod doc_inline {
+        pub use super::atomic::*;
         #[cfg(feature = "alloc")]
         pub use super::reexports::*;
-        #[cfg(feature = "work")]
-        pub use super::atomic::*;
     }
     pub(super) mod all { #[allow(unused)]
         #[doc(inline)]
         pub use super::doc_inline::*;
     }
     pub(super) mod always { #![allow(unused)]
+        pub use super::atomic::*;
         #[cfg(feature = "alloc")]
         pub use super::reexports::*;
     }

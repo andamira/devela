@@ -7,7 +7,7 @@
 //! and some useful definitions from `core`.
 //
 
-use crate::code::reexport;
+use crate::reexport;
 
 /* from `core` */
 
