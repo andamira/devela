@@ -188,6 +188,7 @@ pub trait IoRead {
     ///
     /// See <https://doc.rust-lang.org/std/io/trait.Read.html#method.read_to_end>.
     #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> Result<usize> {
         alloc_impls::read_to_end(self, buf)
     }
@@ -544,6 +545,7 @@ impl<T: IoRead> IoRead for IoTake<T> {
     }
 
     #[cfg(feature = "alloc")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> Result<usize> {
         // Pass in a reservation_size closure that respects the current value
         // of limit for each read. If we hit the read limit, this prevents the

@@ -24,7 +24,7 @@ reexport! { rust: not(std)|std::io,
     @Write as IoWrite
 }
 
-/* io structs and enums */
+/* io structs */
 
 reexport! { rust: not(std)|std::io,
     doc: "Adds buffering to any reader.",
@@ -51,22 +51,50 @@ reexport! { rust: not(std)|std::io,
     and associated traits.",
     @Error as IoError
 }
-reexport! { rust: not(std)|std::io,
-    doc: "A list specifying general categories of I/O error.",
-    @ErrorKind as IoErrorKind
+// @IntoInnerError as IoIntoInnerError
+reexport! { rust: std::io,
+    doc: "A buffer type used with `IoWrite::write_vectored`.",
+    IoSlice
+}
+reexport! { rust: std::io,
+    doc: "A buffer type used with `IoRead::read_vectored`.",
+    IoSliceMut
 }
 reexport! { rust: not(std)|std::io,
     doc: "Like `BufWriter`, but flushing whenever a newline (`0x0a`, `'\n'`) is detected.",
     @LineWriter as IoLineWriter
 }
+reexport! { rust: std::io,
+    doc: "An iterator over the lines of an instance of [`IoBufRead`].",
+    @Lines as IoLines
+}
+// @Repeat as IoRepeat
 reexport! { rust: not(std)|std::io,
     doc: "A specialized [`Result`] type for I/O operations.",
     @Result as IoResult
 }
+reexport! { rust: std::io,
+    doc: "A writer which will move data into the void.",
+    @Sink as IoSink
+}
+reexport! { rust: std::io,
+    doc: "An iterator over the contents of an instance of BufRead split on a particular byte.",
+    @Split as IoSplit
+}
+// ...Std...
 reexport! { rust: not(std)|std::io,
     doc: "Reader adapter which limits the bytes read from an underlying reader.",
     @Take as IoTake
 }
+// @WriterPanicked as IoWriterPanicked
+
+/* io enums */
+
+reexport! { rust: not(std)|std::io,
+    doc: "A list specifying general categories of I/O error.",
+    @ErrorKind as IoErrorKind
+}
+// @SeekFrom as IoSeekFrom
 
 /* io functions */
 
