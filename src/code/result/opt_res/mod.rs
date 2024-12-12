@@ -1,10 +1,8 @@
 // devela::code::result::option
 //
 //! Optional values.
-#![doc = crate::doc_!(extends: option)]
-#![doc = crate::doc_!(modules: crate::code::result; option)]
-#![doc = crate::doc_!(newline)]
 //!
+#![doc = crate::doc_!(extends: option, result)]
 //
 
 mod ext_option; // ExtOption

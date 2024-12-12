@@ -1,4 +1,4 @@
-// devela::code::result::ext
+// devela::code::result::error::ext
 //
 //! Defines the `ExtError` trait.
 //
