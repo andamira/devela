@@ -6,8 +6,8 @@
 //
 
 mod reexports; // core::marker re-exports
-mod marker; // zero-cost generic type markers
-mod res; // zero-cost type-safe resource markers
+mod type_marker; // zero-cost generic type markers
+mod type_resource; // zero-cost type-safe resource markers
 
 crate::items! { // structural access: doc_inline, all, always
     #[allow(unused)]
@@ -16,13 +16,13 @@ crate::items! { // structural access: doc_inline, all, always
     pub use always::*;
 
     mod doc_inline {
-        pub use super::{marker::*, reexports::*, res::*};
+        pub use super::{reexports::*, type_marker::*, type_resource::*};
     }
     pub(super) mod all { #![allow(unused)]
         #[doc(inline)]
         pub use super::doc_inline::*;
     }
     pub(super) mod always { #![allow(unused)]
-        pub use super::{marker::*, reexports::*, res::*};
+        pub use super::{reexports::*, type_marker::*, type_resource::*};
     }
 }

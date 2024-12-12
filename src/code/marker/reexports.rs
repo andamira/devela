@@ -3,12 +3,10 @@
 //! Reexported items from `core::marker`.
 //
 
-#![allow(unused_imports)]
-
-use crate::reexport;
-
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
-// <https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns>
+//
+// See also
+// - <https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns>
 pub use core::marker::PhantomData;
 /// <span class='stab portability' title='re-exported from rust&#39;s `core`'>`core`</span>
 pub use core::marker::PhantomPinned;

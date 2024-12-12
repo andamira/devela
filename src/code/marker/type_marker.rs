@@ -1,4 +1,4 @@
-// devela::code::marker::marker
+// devela::code::marker::type_marker
 //
 //! Zero-cost generic marker IDs.
 //
@@ -6,10 +6,18 @@
 // - macro type_marker!
 // - tests
 
-/// Defines zero-cost, generic marker IDs.
+/// Defines zero-cost, zero-sized, generic *marker* IDs.
 ///
-/// Supports attributes and generics without bounds, in which case also
-/// defines a `new` constructor method.
+/// These marker types carry no runtime data and serve as compile-time indicators
+/// of state, configuration, or constraints, helping enforce type-level invariants
+/// without introducing runtime overhead.
+///
+/// The macro provides a `new` constructor method, derives common utility traits
+/// (e.g., `Clone`, `Copy`, `Default`, `Debug`, `Display`, `PartialEq`, `Eq`,
+/// `PartialOrd`, `Ord`, `Hash`), and supports defining multiple types at once.
+///
+/// Unlike [`type_resource!`][crate::type_resource], which ties types to an inner ID,
+/// `type_marker!` generates purely zero-sized marker types.
 ///
 /// # Example
 /// ```
@@ -33,39 +41,30 @@
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! type_marker {
-    (
-        // no generics
-        //
-        // $meta: an optional list of attributes
-        // $name: the name of the marker type
-        $(#[$meta:meta])*
-        $name:ident
-    ) => {
+    // without generics
+    ($(#[$meta:meta])* $name:ident) => {
         $(#[$meta])*
         #[derive(Clone, Copy, Default, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct $name;
+
+        $crate::impl_trait!{ fmt::Display for $name |_, f| { write![f, "{}", stringify!($name)] }}
 
         impl $name {
             #[doc = concat!("Creates a new `", stringify!($name), "`.")]
             #[allow(dead_code)]
             pub fn new() -> Self { Self }
         }
-
     };
-    (
-        // one or more generics
-        //
-        // ...
-        // $gen:  a list of generics (>= 1)
-        $(#[$meta:meta])*
-        $name:ident< $($gen:ident),+ >
-    ) => {
+    // with generics
+    ($(#[$meta:meta])* $name:ident < $($gen:ident),+ >) => {
         $(#[$meta])*
         #[derive(Clone, Copy, Default, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         #[allow(unused_parens, reason = "can have >1 generics")]
         pub struct $name< $($gen),+ > {
             _marker: core::marker::PhantomData<($($gen),+)>
         }
+
+        $crate::impl_trait!{ fmt::Display for $name |_, f| { write![f, "{}", stringify!($name)] }}
 
         impl<$($gen),+> $name<$($gen),+> {
             #[doc = concat!("Creates a new `", stringify!($name), "`.")]
@@ -76,12 +75,16 @@ macro_rules! type_marker {
         }
     };
     (
-        // multiple types separated by a semicolon (;)
+        // a list of types separated by semicolon (;)
         //
-        // ...
+        // Arguments:
+        // $meta: an optional list of attributes
+        // $name: the name of the marker type
+        // $gen:  an optional list of generics (>= 1)
+        // ;
         $(
             $(#[$meta:meta])*
-            $name:ident $(< $($gen:ident),* >)?
+            $name:ident $( < $($gen:ident),* > )?
         );+ $(;)?
     ) => {
         $(

@@ -1,4 +1,4 @@
-// devela::code::marker::res
+// devela::code::marker::type_resource
 //
 //! Type-safe resource IDs.
 //
@@ -9,10 +9,21 @@
 // - core_impls
 // - tests
 
-/// Defines zero-sized, type-safe resource IDs.
+/// Defines zero-cost, zero-sized, type-safe *resource* IDs.
 ///
-/// Defines a zero-sized struct per each `$name`, implements [`TypeResourced`]
-/// for it, and a `new` constructor that returns [`TypeResource`].
+/// This macro generates zero-sized types associated with an inner ID type.
+/// These types enable strong type safety at compile time
+/// while adding no runtime overhead.
+///
+/// By associating resources with unique types, the system enforces correct
+/// usage of identifiers and reduces errors from mixing unrelated IDs.
+///
+/// Each generated type provides a `new` constructor method returning a
+/// [`TypeResource`] instance of the associated inner type.
+///
+/// Unlike [`type_marker!`][crate::type_marker], which generates purely marker
+/// types with no data, `type_resource!` ties each type to an inner ID type
+/// for handling type-safe resources.
 ///
 /// # Example
 /// ```
@@ -21,6 +32,7 @@
 /// type_resource![Id1,Id2:u16]; // multiple definitions, same resource
 /// type_resource![Id3,Id4:u32; Id5:u64; Id6,Id7:i8]; // diferent resources
 /// ```
+/// See also: [`TypeResource`] and [`TypeResourced`].
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! type_resource {
@@ -63,7 +75,7 @@ pub trait TypeResourced {
 
 /// A newtype-based ID that associates a resource with its inner ID.
 ///
-/// # Example
+/// # Examples
 /// ```
 /// # use devela::type_resource;
 /// type_resource![Id1, Id2: u32];
