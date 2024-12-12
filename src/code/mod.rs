@@ -15,7 +15,7 @@ mod reexports; // re-exported items
 
 pub mod marker; // core::marker, type_marker!, type_resource!, TypeResource, TypeResourced
 pub mod ops; // re-exported overloadable operators
-pub mod result;
+pub mod result; // AllError, serr, sok, Mismatch, OptRes, ValueQuant…
 pub mod util; // utility macros and functions
 
 crate::items! { // structural access: doc_inline, doc_hidden, items_private, all, always
@@ -39,6 +39,6 @@ crate::items! { // structural access: doc_inline, doc_hidden, items_private, all
         pub use super::{doc_hidden::*, doc_inline::*};
     }
     pub(super) mod always { #![allow(unused)]
-        pub use super::{marker::always::*, reexports::*, util::always::*};
+        pub use super::{marker::always::*, reexports::*, result::always::*, util::always::*};
     }
 }

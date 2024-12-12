@@ -25,7 +25,7 @@ crate::items! { // structural access: doc_inline, all, always
         #[doc(inline)]
         pub use super::doc_inline::*;
     }
-    pub(super) mod always {
+    pub(super) mod always { #![allow(unused)]
         pub use super::ext::*;
     }
 }
