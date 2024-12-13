@@ -587,17 +587,17 @@ _string_all = [
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-dep_all = [ # enables all 28 optional dependencies:
+dep_all = [ # enables all 29 optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
 	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
 	"dep_nc", "dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon",
-	"dep_raw_cpuid", "dep_regex_lite", "dep_rodio", "dep_rustix", "dep_stringzilla",
-	"dep_sysinfo", "dep_tinyaudio", "dep_unicode_segmentation", "dep_unicode_width",
-	"dep_wasm_bindgen", "dep_web_sys", "dep_wide",
+	"dep_raw_cpuid", "dep_regex_lite", "dep_rodio", "dep_rustix", "dep_safe_arch",
+	"dep_stringzilla", "dep_sysinfo", "dep_tinyaudio", "dep_unicode_segmentation",
+	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 
 dep_atomic = ["dep:atomic"]                                   # work::sync
-dep_bytemuck = ["dep:bytemuck"]                               # *
+dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]        # *
 dep_const_str = ["dep:const-str"]                             # text::str
 dep_crossterm = ["dep:crossterm", "std"]                      # ui::backend
 dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"] # data::collections
@@ -616,6 +616,7 @@ dep_raw_cpuid = ["dep:raw-cpuid"]                             # sys::arch
 dep_regex_lite = ["dep:regex-lite", "std"]                    # text::parse
 dep_rodio = ["dep:rodio"]                                     # sys::sound
 dep_rustix = ["dep:rustix"]                                   # sys::os
+dep_safe_arch = ["dep:safe_arch"]                             # sys::arch
 dep_stringzilla = ["dep:stringzilla"]                         # text
 dep_sysinfo = ["dep:sysinfo", "std"]                          # sys
 dep_tinyaudio = ["dep:tinyaudio"]                             # sys::sound
@@ -626,7 +627,7 @@ dep_web_sys = ["dep:web-sys"]                                 # sys::?
 dep_wide = ["dep:wide"]                                       # *
 
 
-[dependencies] # 27 (2 required, 25 optional)
+[dependencies] # 31 (2 required, 29 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -776,6 +777,11 @@ features = [ # IMPROVE: feature-gate
     "procfs", "pty", "rand", "runtime", "shm", "stdio", "system", "termios",
     "thread", "time",
 ]
+
+[dependencies.safe_arch] # https://crates.io/crates/safe_arch
+version = "0.7.2" # ✗ https://github.com/Lokathor/wide/commits/main/
+optional = true # unsafe
+default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
 version = "3.11.0" # ✗ https://github.com/ashvardanian/StringZilla/releases
@@ -985,6 +991,7 @@ check-cfg = [ # Allowed config flags:
 
 # benches
 # ==============================================================================
+
 
 
 # examples
