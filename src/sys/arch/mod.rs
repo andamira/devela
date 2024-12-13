@@ -1,13 +1,16 @@
 // devela::sys::arch
 //
-//! SIMD and vendor intrinsics.
-// #![doc = crate::doc_!(modules: crate::sys; arch)]
+//! Architecture-specific intrinsics.
 //!
 #![doc = crate::doc_!(extends: arch)]
 #![doc = crate::doc_!(newline)]
 //
 
 mod reexports;
+
+#[cfg(feature = "dep_safe_arch")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_safe_arch")))]
+mod namespace;
 
 crate::items! { // structural access: doc_inline, all, always
     #[allow(unused)]
@@ -17,6 +20,9 @@ crate::items! { // structural access: doc_inline, all, always
 
     mod doc_inline {
         pub use super::reexports::*;
+
+        #[cfg(feature = "dep_safe_arch")]
+        pub use super::namespace::*;
     }
     pub(super) mod all {
         #[doc(inline)]
