@@ -29,6 +29,7 @@
 //
 // In sync with Cargo.toml::nightly & build/features.rs::NIGHTLY
 #![cfg_attr(feature = "nightly_autodiff", feature(autodiff))]
+#![cfg_attr(feature = "nightly_bigint", feature(bigint_helper_methods))]
 #![cfg_attr(feature = "nightly_coro", feature(coroutines, coroutine_trait, iter_from_coroutine))]
 #![cfg_attr(feature = "nightly_doc", feature(doc_cfg, doc_notable_trait))]
 #![cfg_attr(all(feature = "nightly_doc", miri), allow(unused_attributes))]
@@ -55,6 +56,7 @@
 #![cfg_attr( // 1.85
     feature = "nightly_stable_next2",
     feature(
+        async_closure,
         build_hasher_default_const_new,
         const_align_of_val,
         // const_collections_with_hasher, // ?
@@ -82,6 +84,7 @@
         isqrt,
         let_chains,
         macro_metavar_expr,
+        naked_functions,
         // new_zeroed_alloc, // ?
         unbounded_shifts,
         unsafe_cell_from_mut,

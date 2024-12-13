@@ -315,6 +315,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	#
 	##1.85 will be stable on 2025-02-20: (nightly_stable_next2)
 	# 1.85: …[2024 edition](https://github.com/rust-lang/rust/issues/117258)
+	# 1.85: ·[async_closure](https://github.com/rust-lang/rust/pull/132706)
 	# 1.85: ·[const_align_of_val](https://github.com/rust-lang/rust/pull/133762)
 	#       · const_size_of_val
 	# 1.85: ?[const_collections_with_hasher](https://github.com/rust-lang/rust/pull/133696)
@@ -329,7 +330,6 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	#
 	##1.‥… (nightly_stable_later) <https://releases.rs/#ongoing-stabilization-prs>
 	# 1.??: ·[asm_goto](https://github.com/rust-lang/rust/pull/133870)
-	# 1.??: ·[async_closure](https://github.com/rust-lang/rust/pull/132706)
 	# 1.??: ?[box_uninit_write](https://github.com/rust-lang/rust/issues/129397)
 	# 1.??: ·[const_·array|slice·_from_ref](https://github.com/rust-lang/rust/issues/90206)
 	# 1.??: ·[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
@@ -341,6 +341,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.??: ·[isqrt](https://github.com/rust-lang/rust/pull/131391)
 	# 1.??: ·[let_chains](https://github.com/rust-lang/rust/pull/132833)
 	# 1.??: ·[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
+	# 1.??: ·[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 	# 1.??: ?[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
 	# 1.??: ·[num_midpoint|const_num_midpoint](https://github.com/rust-lang/rust/pull/131784)
 	# 1.??: ·[unbounded_shifts](https://github.com/rust-lang/rust/issues/129375)
