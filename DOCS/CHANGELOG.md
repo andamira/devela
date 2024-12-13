@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - namespaces: `Char`, `Env`, `Mem`, `Ptr`, `Str`.
   - `CompressionMode`, `EncodingMode`, `Pnm`.
   - `False`, `True`, `UnitBi`, `UnitSi`.
+  - `HasherPengy`.
   - `Lgc16`.
   - `TimeSplit`.
   - `TypeResource`.
@@ -116,6 +117,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - remove types: `char24`, `char32`, `InRange*`, `NonRange*`, `HourMilliSplit`, `SecNanoSplit`, `YearSecSplit`.
 - remove features: `_default`, `_max`, `_non_value_*`, `_in_range`, `num_geom`, `unsafe_const`.
 - remove standalone `char_*` fns (namespaced in `Char`).
+- remove standalone fn `hash_pengy` (made part of `HasherPengy`).
 - remove most re-exported fns from `std::mem` (namespaced in `Mem`).
 - remove re-exported fns from `std::ptr` (namespaced in `Ptr`).
 - remove convenience fn: `out_dir` from the build script.

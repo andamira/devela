@@ -29,6 +29,6 @@
   [`Xyza8b`]: crate::Xyza8b
   [`Chain`]: crate::Chain
   [`Hook`]: crate::Hook
-  [`hash_pengy`]: crate::hash_pengy
+  [`HasherPengy`]: crate::HasherPengy
   [`mem_size_of_expr`]: crate::size_of_expr
   [`Xabc`]: crate::Xabc

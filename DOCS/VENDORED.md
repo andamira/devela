@@ -75,7 +75,7 @@ See linked files for detailed changes.
 ## Other Licenses
 - [8bit_rng] by Edward Rosten, (BSD-2) as the [`Xyza8a`] and [`Xyza8b`] structs.
 - [apply] by GeorgeBurton (Unlicense) as part of the [`Chain`] and [`Hook`] structs.
-- [pengyhash] by Alberto Fajardo (BSD-2), as the [`hash_pengy`] fn.
+- [pengyhash] by Alberto Fajardo (BSD-2), as the [`HasherPengy`] struct.
 - [size_of_trait] byt Joshua Nelson (BSD-3) as the [`mem_size_of_expr`] fn.
 - [Xabc] by *EternityForest* (openly shared) as the [`Xabc`] struct.
 - Graphics Gems (1985–1994) (permissive [EULA]), as various algorithms.
@@ -87,7 +87,7 @@ See linked files for detailed changes.
   [`Chain`]: https://docs.rs/devela/latest/devela/error/trait.Chain.html
   [`Hook`]: https://docs.rs/devela/latest/devela/error/trait.Hook.html
 [pengyhash]: https://github.com/tinypeng/pengyhash/blob/70a23e40a2be2e784a68078213b7675055f21949/pengyhash.c
-  [`hash_pengy`]: https://docs.rs/devela/latest/devela/data/hash/fn.hash_pengy.html
+  [`HasherPengy`]: https://docs.rs/devela/latest/devela/data/hash/struct.HasherPengy.html
 [size_of_trait]: https://crates.io/crates/size-of-trait/1.1.3
   [`mem_size_of_expr`]: https://docs.rs/devela/latest/devela/mem/macro.size_of_expr.html
 [Xabc]: https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/

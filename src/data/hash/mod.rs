@@ -9,10 +9,11 @@ mod reexports;
 
 #[cfg(feature = "hash")]
 crate::items! {
-    #[cfg(feature = "cast")]
-    mod fnv; // HasherBuildFnv, HasherFnv
     mod fx; // HasherBuildFx, HasherFx
     mod pengy; // hash_pengy
+
+    #[cfg(feature = "cast")]
+    mod fnv; // HasherBuildFnv, HasherFnv
 }
 
 crate::items! { // structural access: doc_inline, all, always
