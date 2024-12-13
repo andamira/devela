@@ -47,7 +47,9 @@ macro_rules! type_marker {
         #[derive(Clone, Copy, Default, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct $name;
 
-        $crate::impl_trait!{ fmt::Display for $name |_, f| { write![f, "{}", stringify!($name)] }}
+        $crate::impl_trait! { fmt::Display for $name |self, f|
+            write![f, "{}", stringify!($name)]
+        }
 
         impl $name {
             #[doc = concat!("Creates a new `", stringify!($name), "`.")]
@@ -64,7 +66,9 @@ macro_rules! type_marker {
             _marker: core::marker::PhantomData<($($gen),+)>
         }
 
-        $crate::impl_trait!{ fmt::Display for $name |_, f| { write![f, "{}", stringify!($name)] }}
+        $crate::impl_trait! { fmt::Display for $name<$($gen),+> |self, f|
+            write![f, "{}", stringify!($name)]
+        }
 
         impl<$($gen),+> $name<$($gen),+> {
             #[doc = concat!("Creates a new `", stringify!($name), "`.")]
