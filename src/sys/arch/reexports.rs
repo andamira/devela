@@ -3,7 +3,7 @@
 //! Reexported items from `core`.
 //
 
-use crate::code::reexport;
+use crate::reexport;
 
 /* `core` re-exports */
 

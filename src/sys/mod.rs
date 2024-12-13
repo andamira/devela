@@ -7,10 +7,17 @@
 #![doc = crate::doc_!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
     io, net, os, path, pin, ptr, rc, slice, simd)]
 //
+//
+// NOTE: You can get the full list of: `arch`, `os`, `target` and `target`-family, like this:
+// ```
+// rustc +nightly -Z unstable-options --print all-target-specs-json  \
+//     | jq '[ to_entries[] | {"arch": .value.arch, "target": .key,  \
+//     "target-family": (.value."target-family" // [] | join(", ")), \
+//     "os": (.value.os // "") } ]' | grep -v '""'
+// ```
 // safety
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 
-mod arch;
 mod env;
 mod sound; // IMPROVE
 
@@ -18,6 +25,7 @@ mod sound; // IMPROVE
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
 mod path;
 
+pub mod arch;
 pub mod io;
 pub mod log;
 pub mod mem;
@@ -30,13 +38,13 @@ crate::items! { // structural access: doc_inline, doc_hidden, items_hidden, all,
     pub use always::*;
 
     mod doc_inline { #![allow(unused)]
-        pub use super::{arch::all::*, env::all::*, sound::all::*};
+        pub use super::{env::all::*, sound::all::*};
         #[cfg(feature = "sys")]
         pub use super::path::all::*;
     }
     mod doc_hidden { #![allow(unused)]
         #[doc(hidden)] #[doc(no_inline)]
-        pub use super::{io::all::*, log::all::*, mem::all::*, os::all::*};
+        pub use super::{arch::all::*, io::all::*, log::all::*, mem::all::*, os::all::*};
     }
     pub(super) mod items_hidden {
         pub use super::mem::items_hidden::*;

@@ -2,10 +2,6 @@
 //
 //! A namespaced wrapper for std
 //
-// NOTE: You can get the full list of: `arch`, `os`, `target` and `target`-family, like this:
-// ```
-// rustc +nightly -Z unstable-options --print all-target-specs-json | jq '[ to_entries[] | {"arch": .value.arch, "target": .key, "target-family": (.value."target-family" // [] | join(", ")), "os": (.value.os // "") } ]' | grep -v '""'
-// ```
 
 use crate::IoResult;
 use std::{
