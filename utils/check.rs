@@ -61,6 +61,23 @@ const ROOT_MODULES: [&str; 8 + 1] = [
     // sys::os submodules (platforms)
     "linux"
 ];
+#[rustfmt::skip]
+const SUB_MODULES: &[&str] = &[
+    // data
+	"hash",
+    // media
+    "audio", "draw", "color", "font", "image",
+    // num
+    "alg", "geom", "prim", "cast", "join", "split", "rand", "unit", "wave",
+    // phys
+    "time",
+    // sys
+    "io", "mem", "bit",
+    // text
+    "ascii", "fmt", "str",
+    // ui
+    "layout"
+];
 
 //* dependencies *//
 
@@ -348,16 +365,20 @@ fn main() -> Result<()> {
 
     // check individual modules
     if args.single_modules {
-        // let cmd = "clippy";
-
-        let mod_total: usize = ROOT_MODULES.len() * 2;
+        let mod_total: usize = (ROOT_MODULES.len() + SUB_MODULES.len()) * 2;
         let mut mod_count = 1_usize;
 
         sf! { headline(0,
         &format!["Checking the presence and absence of individual modules ({mod_total}):"]); }
 
         for module in ROOT_MODULES {
-            headline(1, &format!("module `{module}` {mod_count}/{mod_total}"));
+            headline(1, &format!("root-module `{module}` {mod_count}/{mod_total}"));
+            run_cargo(&msrv, cmd, &["-F", &module])?;
+            mod_count += 1;
+        }
+
+        for module in SUB_MODULES {
+            headline(1, &format!("sub-module `{module}` {mod_count}/{mod_total}"));
             run_cargo(&msrv, cmd, &["-F", &module])?;
             mod_count += 1;
         }
@@ -369,6 +390,19 @@ fn main() -> Result<()> {
             let modules = ROOT_MODULES
                 .iter()
                 .filter(|&m| m != &module_to_filter)
+                .copied()
+                .collect::<Vec<_>>()
+                .join(",");
+            run_cargo(&msrv, cmd, &["-F", &modules])?;
+            mod_count += 1;
+        }
+        for module_to_filter in SUB_MODULES {
+            sf! { headline(1,
+            &format!("all modules except `{module_to_filter}` {mod_count}/{mod_total}")); }
+
+            let modules = SUB_MODULES
+                .iter()
+                .filter(|&m| m != module_to_filter)
                 .copied()
                 .collect::<Vec<_>>()
                 .join(",");
