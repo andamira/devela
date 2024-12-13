@@ -84,15 +84,17 @@ macro_rules! impl_fnv {
             /// Updates the hasher with more data.
             ///
             /// Allows the hasher to receive additional bytes incrementally.
-            pub fn update(&mut self, input: &[u8]) {
-                for &byte in input {
-                    self.state ^= <$t>::from(byte);
+            pub const fn update(&mut self, input: &[u8]) {
+                let mut i = 0;
+                while i < input.len() {
+                    self.state ^= input[i] as $t;
                     self.state = self.state.wrapping_mul($prime as $t);
+                    i += 1;
                 }
             }
 
             /// Resets the inner state to the default basis value.
-            pub fn reset(&mut self) {
+            pub const fn reset(&mut self) {
                 self.state = $basis as $t;
             }
 
@@ -116,13 +118,13 @@ macro_rules! impl_fnv {
             /// This method only does an additional mod at the end.
             /// But there's a small bias against the larger values.
             #[must_use]
-            pub fn hash_mod_lazy(input: &[u8], range: $t) -> $t {
+            pub const fn hash_mod_lazy(input: &[u8], range: $t) -> $t {
                 Self::hash(input) % range
             }
 
             /// Maps the computed FNV hash to the given `range` using retried mod mapping.
             #[must_use]
-            pub fn hash_mod_retry(input: &[u8], range: $t) -> $t {
+            pub const fn hash_mod_retry(input: &[u8], range: $t) -> $t {
                 let mut hash = Self::hash(input);
                 let retry_level = (<$t>::MAX / range) * range;
                 while hash >= retry_level {
@@ -136,7 +138,7 @@ macro_rules! impl_fnv {
             /// # Panics
             #[doc =  cc!["Panics in debug if `n` exceeds [`", fy![$t], "::BITS`]."]]
             #[must_use]
-            pub fn hash_n_bits(input: &[u8], n: usize) -> $t {
+            pub const fn hash_n_bits(input: &[u8], n: usize) -> $t {
                 Self::fold_hash(Self::hash(input), n)
             }
 
