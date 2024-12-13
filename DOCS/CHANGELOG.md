@@ -25,7 +25,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 #### New items
 - structs:
-  - namespaces: `Char`, `Env`, `Mem`, `Ptr`, `Str`.
+  - namespaces: `Arch`, `Char`, `Env`, `Mem`, `Ptr`, `Str`.
   - `CompressionMode`, `EncodingMode`, `Pnm`.
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `HasherPengy`.
