@@ -136,24 +136,6 @@ trr = "tree --format {p}:{r}" # with repository url
 #/ cargo subcommands: /#
 # ------------------------------------------------------------------------------
 
-# https://crates.io/crates/cargo-llvm-lines
-# https://doc.rust-lang.org/stable/rustc/codegen-options/index.html#symbol-mangling-version
-L = "llvm-lines --profile dev -- -Csymbol-mangling-version=v0"
-Lo = "llvm-lines --profile dev-lto -- -Csymbol-mangling-version=v0"
-Lr = "llvm-lines --profile release -- -Csymbol-mangling-version=v0"
-Lro = "llvm-lines --profile release-lto -- -Csymbol-mangling-version=v0"
-# sort by copies:
-L_c = "llvm-lines -s copies --profile dev -- -Csymbol-mangling-version=v0"
-Lo_c = "llvm-lines -s copies --profile dev-lto -- -Csymbol-mangling-version=v0"
-Lr_c = "llvm-lines -s copies --profile release -- -Csymbol-mangling-version=v0"
-Lro_c = "llvm-lines -s copies --profile release-lto -- -Csymbol-mangling-version=v0"
-
-# https://crates.io/crates/cargo-expand
-E = "expand"
-Eb = "expand --bin"
-Ee = "expand --example"
-El = "expand --lib"
-
 # https://crates.io/crates/cargo-show-asm
 # Has to be run from the root of the crate.
 # Functions need not to be inlined. Defaults to release mode.
@@ -185,6 +167,20 @@ A_wasi32   = "A  --target wasm32-wasip1"
 Ar_wasi32  = "Ar --target wasm32-wasip1"
 A_wasm32   = "A  --target wasm32-unknown-unknown"
 Ar_wasm32  = "Ar --target wasm32-unknown-unknown"
+
+# https://crates.io/crates/cargo-expand
+E = "expand"
+Eb = "expand --bin"
+Ee = "expand --example"
+El = "expand --lib"
+
+# https://crates.io/crates/cargo-llvm-lines
+L = "llvm-lines --profile dev"
+Lo = "llvm-lines --profile dev-lto"
+Lr = "llvm-lines --profile release"
+Lro = "llvm-lines --profile release-lto"
+# https://doc.rust-lang.org/stable/rustc/codegen-options/index.html#symbol-mangling-version
+L0 = "llvm-lines --profile dev -- -Csymbol-mangling-version=v0"
 
 # https://crates.io/crates/cargo-supply-chain
 S = "supply-chain"
