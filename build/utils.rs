@@ -49,6 +49,21 @@ pub(crate) fn println_var(var: &str) {
         println(&format!["x {var}:"]);
     }
 }
+/// Prints the value of an encoded environment variable,
+/// replacing unit separator characters `'0x1f'` with spaces.
+///
+/// It accepts a new name to show for the decoded variable.
+#[cfg(feature = "__dbg")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "__dbg")))]
+pub(crate) fn println_var_encoded(var: &str, new_var_name: &str) {
+    if let Ok(ev) = env::var(var) {
+        let v = ev.replace('\x1f', " ");
+        println(&format!["· {new_var_name}(*): {v}"]);
+    } else {
+        // println(&format!["Environment variable `{var}` not set"]);
+        println(&format!["x {new_var_name}:"]);
+    }
+}
 
 /// Prints the build script `start` or end message to *stdout*.
 #[cfg(feature = "__dbg")]

@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+#
+# A simple wrapper to enable native CPU optimizations for Cargo commands.
+# Copy this script to a directory in your PATH (e.g., ~/.cargo/bin).
+# Ensure the script is executable: chmod +x ~/.cargo/bin/cargo-native
+#
+# Usage:
+#   $ cargo native <cargo-command> [args...]
+# Examples:
+#   $ cargo native build
+#   $ cargo native test --release
+#   $ cargo native run --example example_name
+#
+
+# Default flags for the "native" profile
+FLAGS="-C target-cpu=native"
+
+# Shift the first argument ("native") and pass the rest to Cargo
+shift
+
+# Set RUSTFLAGS and execute the Cargo command
+RUSTDOCFLAGS="$FLAGS" RUSTFLAGS="$FLAGS" exec cargo "$@"

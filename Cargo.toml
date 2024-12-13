@@ -879,7 +879,7 @@ features = ["_docsrs"]
 default-target = "x86_64-unknown-linux-gnu"
 rustdoc-args = [
 	"--generate-link-to-definition",
-	"--html-in-header", "./DOCS/rustdoc-header.html"
+	"--html-in-header", "./DOCS/rustdoc-header.html",
 ]
 
 

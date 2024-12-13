@@ -11,7 +11,7 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
 
     #[cfg(feature = "__dbg")]
     {
-        use super::utils::{println, println_heading, println_var};
+        use super::utils::{println, println_heading, println_var, println_var_encoded};
 
         // https://doc.rust-lang.org/cargo/reference/environment-variables.html
         println_heading("Environment variables:");
@@ -42,6 +42,9 @@ pub(crate) fn main() -> Result<(), std::io::Error> {
         // for (key, value) in std::env::vars() {
         //     super::utils::println(&format![">> {key}: {value}"]);
         // }
+
+        println_var_encoded("CARGO_ENCODED_RUSTFLAGS", "RUSTFLAGS");
+        println_var("RUSTDOCFLAGS");
     }
 
     Ok(())

@@ -37,8 +37,7 @@ By default the crate is `no_std` compatible without allocation.
 
 - `std`: disables `no_std` compatibility and enables `std` functionality.
 - `alloc`: enables `alloc` functionality.
-- `no_std`: enables functionality incompatible with or substitute of `std`:
-  - enables the `libm` optional dependency.
+- `no_std`: enables functionality incompatible with or substitute of `std`.
 
 
 ### Module features
