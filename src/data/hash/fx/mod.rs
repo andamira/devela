@@ -12,7 +12,7 @@ pub type HasherBuildFx = HasherBuildDefault<HasherFx<usize>>;
 /// any platform, where the FNV algorithm works on one byte at a time.
 ///
 /// This hashing algorithm should not be used for cryptographic,
-/// or in scenarios where DOS attacks are a concern.
+/// or in scenarios where DoS attacks are a concern.
 ///
 /// It's implemented for
 /// [u32](#impl-HasherFx<u32>),

@@ -10,7 +10,7 @@
 /// An optional result for simple ternary logic.
 ///
 /// Combines [`Option`] and [`Result`] to handle three outcomes:
-/// success ([`Ok`]), failure ([`Err`]), or absence ([`None`]).
+/// success ([`Ok`]), failure ([`Err`]), or no value ([`None`]).
 ///
 /// It can simplify insertion, removal, and value presence management for
 /// collections lacking [`Clone`] or [`Default`], by using [`Option::take`],
