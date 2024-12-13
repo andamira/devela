@@ -26,10 +26,10 @@ pub struct HasherFnv<T> {
 
 const BASIS32: u32 = 0x811c_9dc5;
 const PRIME32: u32 = 0x0100_0193;
-const BASIS64: u64 = 0x0000_0100_0000_01B3;
-const PRIME64: u64 = 0xcbf2_9ce4_8422_2325;
-const BASIS128: u128 = 0x0000_0000_0100_0000_0000_0000_0000_013B;
-const PRIME128: u128 = 0x6c62_272e_07bb_0142_62b8_2175_6295_c58d;
+const BASIS64: u64 = 0xcbf2_9ce4_8422_2325;
+const PRIME64: u64 = 0x0000_0100_0000_01B3;
+const BASIS128: u128 = 0x6c62_272e_07bb_0142_62b8_2175_6295_c58d;
+const PRIME128: u128 = 0x0000_0000_0100_0000_0000_0000_0000_013B;
 
 #[doc = crate::doc_private!()]
 macro_rules! impl_fnv {
@@ -186,3 +186,27 @@ macro_rules! impl_fnv {
     };
 }
 impl_fnv!();
+
+#[cfg(test)]
+mod tests {
+    use super::HasherFnv;
+
+    #[test]
+    fn fnv1a_32() {
+        assert_eq!(HasherFnv::<u32>::hash(b""), 0x811c9dc5);
+        assert_eq!(HasherFnv::<u32>::hash(b"a"), 0xe40c292c);
+        assert_eq!(HasherFnv::<u32>::hash(b"foobar"), 0xbf9cf968);
+    }
+    #[test]
+    fn fnv1a_64() {
+        assert_eq!(HasherFnv::<u64>::hash(b""), 0xcbf29ce484222325);
+        assert_eq!(HasherFnv::<u64>::hash(b"a"), 0xaf63dc4c8601ec8c);
+        assert_eq!(HasherFnv::<u64>::hash(b"foobar"), 0x85944171f73967e8);
+    }
+    #[test]
+    fn fnv1a_128() {
+        assert_eq!(HasherFnv::<u128>::hash(b""), 0x6C62272E07BB014262B821756295C58D);
+        assert_eq!(HasherFnv::<u128>::hash(b"a"), 0xD228CB696F1A8CAF78912B704E4A8964);
+        assert_eq!(HasherFnv::<u128>::hash(b"foobar"), 0x343E1662793C64BF6F0D3597BA446F18);
+    }
+}
