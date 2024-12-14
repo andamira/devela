@@ -19,10 +19,10 @@
 use crate::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::usize_up;
+#[cfg(feature = "cast")]
+use crate::Cast;
 #[allow(unused_imports)]
-use crate::{
-    cswap, iif, paste, unwrap, Cast, GcdReturn, Int, NumError::Overflow, NumResult as Result,
-};
+use crate::{cswap, iif, paste, unwrap, GcdReturn, Int, NumError::Overflow, NumResult as Result};
 
 #[doc = crate::doc_private!()]
 /// $t:    the input/output type
@@ -283,6 +283,8 @@ macro_rules! impl_int {
             /// # #[cfg(feature = "_int_i8")]
             /// assert![Int(100_i8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```
+            #[cfg(feature = "cast")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
                 let v = self.0 as $up;
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);
@@ -465,8 +467,8 @@ macro_rules! impl_int {
             /// assert_eq!(gcd.0, 4);
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
-            #[cfg(feature = $icap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
+            #[cfg(all(feature = $icap, feature = "cast"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $icap, feature = "cast"))))]
             pub const fn gcd_ext(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
                 if self.0 == 0 { return Ok(GcdReturn::new(Int(b), Int(0), Int(1))); }
                 if b == 0 { return Ok(GcdReturn::new(self, Int(1), Int(0))); }
@@ -535,8 +537,8 @@ macro_rules! impl_int {
             /// assert_eq!(gcd.0, 4);
             #[doc = "assert_eq![x.0 * 32 + y.0 * 36, gcd.0 as " $iup "];"]
             /// ```
-            #[cfg(feature = $icap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $icap)))]
+            #[cfg(all(feature = $icap, feature = "cast"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $icap, feature = "cast"))))]
             pub const fn gcd_ext_euc(self, b: $t) -> Result<GcdReturn<Int<$t>, Int<$iup>>> {
                 let a = unwrap![ok? Cast(self.0).[<checked_cast_to_ $iup>]()];
                 let b = unwrap![ok? Cast(b).[<checked_cast_to_ $iup>]()];
@@ -588,6 +590,8 @@ macro_rules! impl_int {
             /// # #[cfg(feature = "_int_u8")]
             /// assert![Int(200_u8).scale(0, 50, 0, 90).is_err()]; // extrapolate and overflow
             /// ```
+            #[cfg(feature = "cast")]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
             pub const fn scale(self, min: $t, max: $t, a: $t, b: $t) -> Result<Int<$t>> {
                 let v = self.0 as $up;
                 let (min, max, a, b) = (min as $up, max as $up, a as $up, b as $up);

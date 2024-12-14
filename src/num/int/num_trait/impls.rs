@@ -103,13 +103,13 @@ macro_rules! impl_int {
 
             /* core */
 
-            #[cfg(feature = $iocap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $iocap)))]
+            #[cfg(all(feature = $iocap, feature = "cast"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
             fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 let g = Int(self).gcd_ext(other)?;
                 Ok(GcdReturn::new(g.gcd.0, g.x.0, g.y.0)) }
-            #[cfg(feature = $iocap )]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $iocap)))]
+            #[cfg(all(feature = $iocap, feature = "cast"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
             fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 let g = Int(*self).gcd_ext(*other)?;
                 Ok(GcdReturn::new(g.gcd.0, g.x.0, g.y.0)) }
@@ -190,8 +190,12 @@ macro_rules! impl_int {
         fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> {
             match Int(*self).lcm(*other) { Ok(res) => Ok(res.0), Err(e) => Err(e) } }
 
+        #[cfg(feature = "cast")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
         fn int_scale(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
             -> Result<Self::Out> where Self: Sized { Int(self).scale(min, max, a, b).map(|n|n.0) }
+        #[cfg(feature = "cast")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
         fn int_ref_scale(&self, min: &Self::Rhs, max: &Self::Rhs, a: &Self::Rhs, b: &Self::Rhs)
             -> Result<Self::Out> { Int(*self).scale(*min, *max, *a, *b).map(|n|n.0) }
 
@@ -215,8 +219,12 @@ macro_rules! impl_int {
             Int(self).permute(r).map(|n|n.0) }
         fn int_ref_permute(&self, r: &Self) -> Result<Self::Out> {
             Int(*self).permute(*r).map(|n|n.0) }
+        #[cfg(feature = "cast")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
         fn int_permute_rep(self, r: Self) -> Result<Self::Out> {
             Int(self).permute_rep(r).map(|n|n.0) }
+        #[cfg(feature = "cast")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
         fn int_ref_permute_rep(&self, r: &Self) -> Result<Self::Out> {
             Int(*self).permute_rep(*r).map(|n|n.0) }
 
