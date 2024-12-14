@@ -3,7 +3,7 @@
 //!
 //
 // TOC
-// - trait NumIntRef
+// - trait NumRefInt
 //   - base
 //   - core
 //   - combinatorics
@@ -22,8 +22,9 @@ use core::ops::Deref;
 /// # Notes
 /// - This is automatically implemented for references of types implementing [`NumInt`].
 /// - Mutable operations are only available for exclusive (`&mut`) references.
+//
+// In sync with src/num/int/num_trait/mod.rs (int_ref_* methods)
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[expect(unused_variables, reason = "pretty signatures")]
 #[rustfmt::skip]
 pub trait NumRefInt<'a>: NumRef<'a>
 where
@@ -32,121 +33,52 @@ where
 {
     /* base */
 
-    /// *Calls `NumInt::`[`int_ref_digital_root`][NumInt::int_ref_digital_root].
-    fn int_ref_digital_root(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digital_root() }
-    /// *Calls `NumInt::`[`int_ref_digital_root_base`][NumInt::int_ref_digital_root_base]*.
-    fn int_ref_digital_root_base(&self, base: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digital_root_base(base) }
+    impl_int_ref![int_ref_digital_root(&self) -> Out];
+    impl_int_ref![int_ref_digital_root_base(&self, base: &Rhs) -> Out];
 
-    /// *Calls `NumInt::`[`int_ref_digits`][NumInt::int_ref_digits]*.
-    fn int_ref_digits(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits() }
-    /// *Calls `NumInt::`[`int_ref_digits_sign`][NumInt::int_ref_digits_sign]*.
-    fn int_ref_digits_sign(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits_sign() }
-    /// *Calls `NumInt::`[`int_ref_digits_base`][NumInt::int_ref_digits_base]*.
-    fn int_ref_digits_base(&self, base: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits_base(base) }
-    /// *Calls `NumInt::`[`int_ref_digits_base_sign`][NumInt::int_ref_digits_base_sign]*.
-    fn int_ref_digits_base_sign(&self, base: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_digits_base_sign(base) }
+    impl_int_ref![int_ref_digits(&self) -> Out];
+    impl_int_ref![int_ref_digits_sign(&self) -> Out];
+    impl_int_ref![int_ref_digits_base(&self, base: &Rhs) -> Out];
+    impl_int_ref![int_ref_digits_base_sign(&self, base: &Rhs) -> Out];
 
     /* core */
 
-    /// *Calls `NumInt::`[`int_ref_abs`][NumInt::int_ref_abs]*.
-    fn int_ref_abs(&self) -> Result<<Self::Own as Num>::Out> { self.deref().int_ref_abs() }
+    impl_int_ref![int_ref_abs(&self) -> Out];
+    impl_int_ref![int_ref_is_even(&self) -> bool];
+    impl_int_ref![int_ref_is_odd(&self) -> bool];
 
-    /// *Calls `NumInt::`[`int_ref_is_even`][NumInt::int_ref_is_even]*.
-    fn int_ref_is_even(&self) -> Result<bool> { self.deref().int_ref_is_even() }
-    /// *Calls `NumInt::`[`int_ref_is_odd`][NumInt::int_ref_is_odd]*.
-    fn int_ref_is_odd(&self) -> Result<bool> { self.deref().int_ref_is_odd() }
+    impl_int_ref![int_ref_gcd(&self, other: &Rhs) -> Out];
 
-    /// *Calls `NumInt::`[`int_ref_gcd`][NumInt::int_ref_gcd]*.
-    fn int_ref_gcd(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_gcd(other) }
     /// *Calls `NumInt::`[`int_ref_gcd_ext`][NumInt::int_ref_gcd_ext]*.
     #[allow(clippy::type_complexity)]
     fn int_ref_gcd_ext(&self, other: &<Self::Own as Num>::Rhs)
         -> Result<GcdReturn<<Self::Own as Num>::Out, <Self::Own as NumInt>::OutI>> {
             self.deref().int_ref_gcd_ext(other) }
+    // impl_int_ref![int_ref_gcd_ext(&self, other: &Rhs) -> GcdReturn<Out, OutI>]; MAYBE
 
-    /// *Calls `NumInt::`[`int_ref_lcm`][NumInt::int_ref_lcm]*.
-    fn int_ref_lcm(&self, other: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_lcm(other) }
-
-    /// *Calls `NumInt::`[`int_ref_scale`][NumInt::int_ref_scale]*.
-    fn int_ref_scale(&self,
-        min: &<Self::Own as Num>::Rhs, max: &<Self::Own as Num>::Rhs,
-        a: &<Self::Own as Num>::Rhs, b: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_scale(min, max, a, b) }
-    /// *Calls `NumInt::`[`int_ref_scale_wrap`][NumInt::int_ref_scale_wrap]*.
-    fn int_ref_scale_wrap(&self,
-        min: &<Self::Own as Num>::Rhs, max: &<Self::Own as Num>::Rhs,
-        a: &<Self::Own as Num>::Rhs, b: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_scale_wrap(min, max, a, b) }
-
-    /// *Calls `NumInt::`[`int_ref_midpoint`][NumInt::int_ref_midpoint]*.
-    fn int_ref_midpoint(&self, other: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_midpoint(other) }
+    impl_int_ref![int_ref_lcm(&self, other: &Rhs) -> Out];
+    impl_int_ref![int_ref_scale(&self, min: &Rhs, max: &Rhs, a: &Rhs, b: &Rhs) -> Out];
+    impl_int_ref![int_ref_scale_wrap(&self, min: &Rhs, max: &Rhs, a: &Rhs, b: &Rhs) -> Out];
+    impl_int_ref![int_ref_midpoint(&self, other: &Rhs) -> Out];
 
     /* combinatorics */
 
-    /// *Calls `NumInt::`[`int_ref_factorial`][NumInt::int_ref_factorial]*.
-    fn int_ref_factorial(&self) -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_factorial() }
-    /// *Calls `NumInt::`[`int_ref_subfactorial`][NumInt::int_ref_subfactorial]*.
-    fn int_ref_subfactorial(&self) -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_subfactorial() }
-    /// *Calls `NumInt::`[`int_ref_permute`][NumInt::int_ref_permute]*.
-    fn int_ref_permute(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_permute(r) }
-    /// *Calls `NumInt::`[`int_ref_permute_rep`][NumInt::int_ref_permute_rep]*.
-    fn int_ref_permute_rep(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_permute_rep(r) }
-    /// *Calls `NumInt::`[`int_ref_combine`][NumInt::int_ref_combine]*.
-    fn int_ref_combine(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_combine(r) }
-    /// *Calls `NumInt::`[`int_ref_combine_rep`][NumInt::int_ref_combine_rep]*.
-    fn int_ref_combine_rep(&self, r: &<Self::Own as Num>::Rhs) -> Result<<Self::Own as Num>::Out> {
-        self.deref().int_ref_combine_rep(r) }
+    impl_int_ref![int_ref_factorial(&self) -> Out];
+    impl_int_ref![int_ref_subfactorial(&self) -> Out];
+    impl_int_ref![int_ref_permute(&self, r: &Rhs) -> Out];
+    impl_int_ref![int_ref_permute_rep(&self, r: &Rhs) -> Out];
+    impl_int_ref![int_ref_combine(&self, r: &Rhs) -> Out];
+    impl_int_ref![int_ref_combine_rep(&self, r: &Rhs) -> Out];
 
     /* division */
 
-    /// *Calls `NumInt::`[`int_ref_div_rem`][NumInt::int_ref_div_rem]*.
-    fn int_ref_div_rem(&self, b: &<Self::Own as Num>::Rhs)
-        -> Result<[<Self::Own as Num>::Out; 2]> {
-            self.deref().int_ref_div_rem(b) }
-    /// *Calls `NumInt::`[`int_ref_div_ceil`][NumInt::int_ref_div_ceil]*.
-    fn int_ref_div_ceil(&self, b: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ceil(b) }
-    /// *Calls `NumInt::`[`int_ref_div_floor`][NumInt::int_ref_div_floor]*.
-    fn int_ref_div_floor(&self, b: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_floor(b) }
-    /// *Calls `NumInt::`[`int_ref_div_ties_away`][NumInt::int_ref_div_ties_away]*.
-    fn int_ref_div_ties_away(&self, b: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_away(b) }
-    /// *Calls `NumInt::`[`int_ref_div_ties_towards`][NumInt::int_ref_div_ties_towards]*.
-    fn int_ref_div_ties_towards(&self, b: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_towards(b) }
-    /// *Calls `NumInt::`[`int_ref_div_ties_even`][NumInt::int_ref_div_ties_even]*.
-    fn int_ref_div_ties_even(&self, b: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_even(b) }
-    /// *Calls `NumInt::`[`int_ref_div_ties_odd`][NumInt::int_ref_div_ties_odd]*.
-    fn int_ref_div_ties_odd(&self, b: &<Self::Own as Num>::Rhs)
-        -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_div_ties_odd(b) }
+    impl_int_ref![int_ref_div_rem(&self, r: &Rhs) -> [Out; 2]];
+    impl_int_ref![int_ref_div_ceil(&self, r: &Rhs) -> Out];
+    impl_int_ref![int_ref_div_floor(&self, r: &Rhs) -> Out];
+    impl_int_ref![int_ref_div_ties_away(&self, r: &Rhs) -> Out];
+    impl_int_ref![int_ref_div_ties_towards(&self, r: &Rhs) -> Out];
+    impl_int_ref![int_ref_div_ties_even(&self, r: &Rhs) -> Out];
+    impl_int_ref![int_ref_div_ties_odd(&self, r: &Rhs) -> Out];
 
     /* factors (allocating) */
 
@@ -190,40 +122,55 @@ where
 
     /* primes */
 
-    /// *Calls `NumInt::`[`int_ref_is_prime`][NumInt::int_ref_is_prime]*.
-    fn int_ref_is_prime(&self) -> Result<bool> {
-            self.deref().int_ref_is_prime() }
-    /// *Calls `NumInt::`[`int_ref_prime_nth`][NumInt::int_ref_prime_nth]*.
-    fn int_ref_prime_nth(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_prime_nth() }
-    /// *Calls `NumInt::`[`int_ref_prime_pi`][NumInt::int_ref_prime_pi]*.
-    fn int_ref_prime_pi(&self) -> Result<usize> {
-            self.deref().int_ref_prime_pi() }
-    /// *Calls `NumInt::`[`int_ref_totient`][NumInt::int_ref_totient]*.
-    fn int_ref_totient(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_totient() }
+    impl_int_ref![int_ref_is_prime(&self) -> bool];
+    impl_int_ref![int_ref_prime_nth(&self) -> Out];
+    impl_int_ref![int_ref_prime_pi(&self) -> usize];
+    impl_int_ref![int_ref_totient(&self) -> Out];
 
     /* roots (square) */
 
-    /// *Calls `NumInt::`[`int_ref_is_square`][NumInt::int_ref_is_square]*.
-    fn int_ref_is_square(&self) -> Result<bool> {
-            self.deref().int_ref_is_square() }
-    /// *Calls `NumInt::`[`int_ref_sqrt_ceil`][NumInt::int_ref_sqrt_ceil]*.
-    fn int_ref_sqrt_ceil(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_sqrt_ceil() }
-    /// *Calls `NumInt::`[`int_ref_sqrt_floor`][NumInt::int_ref_sqrt_floor]*.
-    fn int_ref_sqrt_floor(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_sqrt_floor() }
-    /// *Calls `NumInt::`[`int_ref_sqrt_round`][NumInt::int_ref_sqrt_round]*.
-    fn int_ref_sqrt_round(&self) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_sqrt_round() }
+    impl_int_ref![int_ref_is_square(&self) -> bool];
+    impl_int_ref![int_ref_sqrt_ceil(&self) -> Out];
+    impl_int_ref![int_ref_sqrt_floor(&self) -> Out];
+    impl_int_ref![int_ref_sqrt_round(&self) -> Out];
 
     /* roots */
 
-    /// *Calls `NumInt::`[`int_ref_root_ceil`][NumInt::int_ref_root_ceil]*.
-    fn int_ref_root_ceil(&self, nth: u32) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_root_ceil(nth) }
-    /// *Calls `NumInt::`[`int_ref_root_floor`][NumInt::int_ref_root_floor]*.
-    fn int_ref_root_floor(&self, nth: u32) -> Result<<Self::Own as Num>::Out> {
-            self.deref().int_ref_root_floor(nth) }
+    impl_int_ref![int_ref_root_ceil(&self, nth: u32) -> Out];
+    impl_int_ref![int_ref_root_floor(&self, nth: u32) -> Out];
 }
+
+macro_rules! impl_int_ref {
+    () => {};
+
+    // >=0 Num::Rhs args, returns Self::Out
+    ($fn_name:ident(&$self:ident $(, $arg:ident: &Rhs)*) -> Out) => { $crate::paste! {
+        #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
+        fn $fn_name(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
+            -> Result<<Self::Own as Num>::Out> {
+            $self.deref().$fn_name($($arg),*) }
+    }};
+    // >=0 Num::Rhs args, returns an array of Self::Out
+    ($fn_name:ident(&$self:ident $(, $arg:ident: &Rhs)*)
+     -> [Out; $LEN:literal]) => { $crate::paste! {
+        #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
+        fn $fn_name(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
+            -> Result<[<Self::Own as Num>::Out; $LEN]> {
+            $self.deref().$fn_name($($arg),*) }
+    }};
+
+    // >=0 ty args, returns Self::Out
+    ($fn_name:ident(&$self:ident $(, $arg:ident: $arg_ty:ty)*) -> Out) => { $crate::paste! {
+        #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
+        fn $fn_name(&$self $(, $arg: $arg_ty)*) -> Result<<Self::Own as Num>::Out> {
+            $self.deref().$fn_name($($arg),*) }
+    }};
+
+    // 0 args returns ty (bool, usize…)
+    ($fn_name:ident(&$self:ident) -> $out:ty) => { $crate::paste! {
+        #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
+        fn $fn_name(&$self) -> Result<$out> {
+            $self.deref().$fn_name() }
+    }};
+}
+use impl_int_ref;

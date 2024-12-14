@@ -104,6 +104,8 @@ mod auto_impls {
 //     [`root_round`][Self::int_root_round], TODO
 ///
 /// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.
+//
+// In sync with src/num/int/num_trait/ref.rs (int_ref_* methods)
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 #[expect(unused_variables, reason = "pretty signatures")]
 #[rustfmt::skip]
