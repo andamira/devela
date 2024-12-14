@@ -13,6 +13,7 @@
 // - root_floor
 // - root_round TODO
 
+use super::super::shared_docs::*;
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::isize_up;
 #[cfg(feature = "_int_usize")]
@@ -89,12 +90,7 @@ macro_rules! impl_int {
             ///
             /// Returns `false` otherwise, which includes all negative values.
             /// # Algorithm
-            /// $$ \large
-            /// \text{is\textunderscore square}(a) = \begin{cases}
-            /// \text{true} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 = a \cr
-            /// \text{false} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 \neq a
-            /// \end{cases}
-            /// $$
+            #[doc = ALGORITHM_IS_SQUARE!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -123,14 +119,7 @@ macro_rules! impl_int {
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative.
             /// # Algorithm
-            /// $$ \large
-            /// \begin{align}
-            /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
-            /// n & \text{if } n^2 = a \cr
-            /// n+1 & \text{if } n^2 < a \end{cases} \cr
-            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
-            /// \end{align}
-            /// $$
+            #[doc = ALGORITHM_SQRT_CEIL!()]
             /// # Examples
             /// ```
             /// # use devela::{Int, NumError::NonNegativeRequired};
@@ -168,26 +157,7 @@ macro_rules! impl_int {
             /// Returns [`NonNegativeRequired`] if `self` is negative.
             ///
             /// # Algorithm
-            /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
-            ///
-            /// Where $n_{k}$ is the result of a sequence of estimates that
-            /// starts with an initial $n_{0} = a/2$ which is updated using
-            /// [*Heron's method*](
-            /// https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method):
-            /// $$ \large
-            /// n_{i+1} = n_{i} - ( n_{i}^{2} - a) / 2n_{i},
-            /// \quad \small\text{for} \quad i = 0, 1, \ldots, k,
-            /// $$
-            /// Where $n_{i}$ is the current estimate, $n_{i+1}$ is the next
-            /// estimate, $a$ is self, and $k$ is the number of iterations
-            /// needed to converge to a solution, on the order of the number of
-            /// bits of self, about $O(\log_2 b)$, which for e.g. 128 bits would
-            /// be $ ±7 $ iterations.
-            ///
-            /// Hence, the function continues updating the estimate until
-            /// reaching $n_{k}$, which provides the largest integer less than
-            /// or equal to the square root of `a`.
-            ///
+            #[doc = ALGORITHM_SQRT_FLOOR!()]
             /// # Examples
             /// ```
             /// # use devela::{Int, NumError::NonNegativeRequired};
@@ -244,14 +214,7 @@ macro_rules! impl_int {
             /// Returns [`NonNegativeRequired`] if `self` is negative, or possibly [`Overflow`]
             /// if there's no larger type to upcast and the value is close to its maximum.
             /// # Algorithm
-            /// $$ \large
-            /// \begin{align}
-            /// \notag \left\lfloor\sqrt{a} \thinspace\right\rceil = \begin{cases}
-            /// n & \text{if } a - n^2 < (n+1)^2 - a \cr
-            /// n+1 & \text{if } a - n^2 \geq (n+1)^2 - a \end{cases} \cr
-            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
-            /// \end{align}
-            /// $$
+            #[doc = ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```
             /// # use devela::{Int, NumError::NonNegativeRequired};
@@ -290,6 +253,9 @@ macro_rules! impl_int {
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0, or
             /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
+            ///
+            /// # Algorithm
+            #[doc = ALGORITHM_ROOT_CEIL_SIGNED!()]
             ///
             /// # Examples
             /// ```
@@ -333,6 +299,9 @@ macro_rules! impl_int {
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0, or
             /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
+            ///
+            /// # Algorithm
+            #[doc = ALGORITHM_ROOT_FLOOR_SIGNED!()]
             ///
             /// # Examples
             /// ```
@@ -387,12 +356,7 @@ macro_rules! impl_int {
 
             /// Returns `true` if it's a perfect square, false otherwise.
             /// # Algorithm
-            /// $$ \large
-            /// \text{is\textunderscore square}(a) = \begin{cases}
-            /// \text{true} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 = a \cr
-            /// \text{false} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 \neq a
-            /// \end{cases}
-            /// $$
+            #[doc = ALGORITHM_IS_SQUARE!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -419,15 +383,10 @@ macro_rules! impl_int {
             }
 
             /// Returns the ceiled integer square root.
+            ///
             /// # Algorithm
-            /// $$ \large
-            /// \begin{align}
-            /// \notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
-            /// n & \text{if } n^2 = a \cr
-            /// n+1 & \text{if } n^2 < a \end{cases} \cr
-            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
-            /// \end{align}
-            /// $$
+            #[doc = ALGORITHM_SQRT_CEIL!()]
+            ///
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -452,26 +411,10 @@ macro_rules! impl_int {
             }
 
             /// Returns the floored integer square root.
+            ///
             /// # Algorithm
-            /// $$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
+            #[doc = ALGORITHM_SQRT_FLOOR!()]
             ///
-            /// Where $n_{k}$ is the result of a sequence of estimates that
-            /// starts with an initial $n_{0} = a/2$ which is updated using
-            /// [*Heron's method*](
-            /// https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method):
-            /// $$ \large
-            /// n_{i+1} = n_{i} - ( n_{i}^{2} - a) / 2n_{i},
-            /// \quad \small\text{for} \quad i = 0, 1, \ldots, k,
-            /// $$
-            /// Where $n_{i}$ is the current estimate, $n_{i+1}$ is the next
-            /// estimate, $a$ is `a`, and $k$ is the number of iterations
-            /// needed to converge to a solution, on the order of the number of
-            /// bits of `a`, about $O(\log_2 b)$, which for e.g. 128 bits would
-            /// be $ ±7 $ iterations.
-            ///
-            /// Hence, the function continues updating the estimate until
-            /// reaching $n_{k}$, which provides the largest integer less than
-            /// or equal to the square root of `a`.
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -523,15 +466,9 @@ macro_rules! impl_int {
             /// # Errors
             /// Can returns [`Overflow`] if there's no larger type to upcast and the value
             /// is close to its maximum.
+            ///
             /// # Algorithm
-            /// $$ \large
-            /// \begin{align}
-            /// \notag \left\lfloor\sqrt{a} \thinspace\right\rceil = \begin{cases}
-            /// n & \text{if } a - n^2 < (n+1)^2 - a \cr
-            /// n+1 & \text{if } a - n^2 \geq (n+1)^2 - a \end{cases} \cr
-            /// \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
-            /// \end{align}
-            /// $$
+            #[doc = ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -567,9 +504,12 @@ macro_rules! impl_int {
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0.
             ///
+            /// # Algorithm
+            #[doc = ALGORITHM_ROOT_CEIL_UNSIGNED!()]
+            ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumError::NonNegativeRequired};
+            /// # use devela::Int;
             #[doc="assert_eq![Int(48_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(70_" $t ").root_ceil(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(81_" $t ").root_ceil(4), Ok(Int(3))];"]
@@ -595,9 +535,12 @@ macro_rules! impl_int {
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0.
             ///
+            /// # Algorithm
+            #[doc = ALGORITHM_ROOT_FLOOR_UNSIGNED!()]
+            ///
             /// # Examples
             /// ```
-            /// # use devela::{Int, NumError::NonNegativeRequired};
+            /// # use devela::Int;
             #[doc="assert_eq![Int(48_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(70_" $t ").root_floor(4), Ok(Int(2))];"]
             #[doc="assert_eq![Int(81_" $t ").root_floor(4), Ok(Int(3))];"]

@@ -1,6 +1,6 @@
 // devela::num::int::num_trait::impls
 //
-//!
+//! Implementations of `NumInt` for primitives.
 //
 
 #[cfg(feature = "_int_usize")]

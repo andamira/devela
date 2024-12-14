@@ -1,0 +1,131 @@
+// devela::num::int::shared_docs
+//
+//! Defines constants for shared documentation on [`Int`] and [`NumInt`].
+//
+
+crate::CONST! { pub(crate),
+/* core */
+
+FORMULA_SCALE = r#"$$ \large v' = (b - a) \frac{v - min}{max - min} + a $$"#; // & wrap
+
+/* combinatorics */
+
+FORMULA_FACTORIAL = r#"$$ n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (n-1) \cdot n $$"#;
+ALGORITHM_SUBFACTORIAL = r#"$$ !n = (n - 1) * (!(n - 1) + !(n - 2)) $$"#;
+FORMULA_SUBFACTORIAL_OTHER = r#"$$
+\begin{alignat}{1}
+!n & = n! \times \sum_{k=0}^{n} \frac{(-1)^k}{k!} \newline
+!n & = \left\lfloor \frac{n!}{e} + \frac{1}{2} \right\rfloor =
+    \left\lfloor n! \times \left(\frac{1}{e}\right) + \frac{1}{2} \right\rfloor
+\end{alignat}
+$$"#;
+FORMULA_PERMUTE = r#"$$ \large P(n,r) = \frac{n!}{(n−r)!} $$"#;
+FORMULA_PERMUTE_REP = r#"$$ \large P_\text{rep}(n,r) = n_r $$"#;
+FORMULA_COMBINE = r#"$$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$"#;
+FORMULA_COMBINE_REP = r#"$$
+\large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$"#;
+
+/* division */
+
+NOTATION_DIV_CEIL = r#"$$ \large \left\lceil \frac{x}{y} \right\rceil $$"#;
+NOTATION_DIV_FLOOR = r#"$$ \large \left\lfloor \frac{x}{y} \right\rfloor $$"#;
+
+/* primes */
+
+NOTATION_PI = r#"$$ \pi(x) $$"#;
+ALGORITHM_TOTIENT = r#"
+This function iterates through all numbers from 2 up to the square
+root of $|n|$. If it finds a divisor, it reduces `n` by its factors
+and adjusts result accordingly. If after the loop, $n > 1$, it
+means `n` has a prime factor greater than its square root, and the
+function adjusts result for this last factor.
+$$\large\varphi(n) =n \prod_{p\mid |n|} \left(1-\frac{1}{p}\right)$$
+"#;
+
+/* roots */
+
+ALGORITHM_IS_SQUARE = r#"$$
+\large
+\text{is\textunderscore square}(a) = \begin{cases}
+\text{true} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 = a \cr
+\text{false} & \text{if } \left(\lfloor \sqrt{a} \rfloor\right)^2 \neq a
+\end{cases}
+$$"#;
+ALGORITHM_SQRT_CEIL = r#"$$
+\large
+\begin{align}
+\notag \left\lceil \sqrt{a} \thinspace\right\rceil = \begin{cases}
+n & \text{if } n^2 = a \cr
+n+1 & \text{if } n^2 < a \end{cases} \cr
+\notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
+\end{align}
+$$"#;
+ALGORITHM_SQRT_FLOOR = r#"
+$$ \large \left\lfloor \sqrt{a} \right\rfloor = n_{k} $$
+
+Where $n_{k}$ is the result of a sequence of estimates that
+starts with an initial $n_{0} = a/2$ which is updated using
+[*Heron's method*](
+https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Heron's_method):
+
+$$ \large
+n_{i+1} = n_{i} - ( n_{i}^{2} - a) / 2n_{i},
+\quad \small\text{for} \quad i = 0, 1, \ldots, k,
+$$
+
+Where $n_{i}$ is the current estimate, $n_{i+1}$ is the next
+estimate, $a$ is self, and $k$ is the number of iterations
+needed to converge to a solution, on the order of the number of
+bits of self, about $O(\log_2 b)$, which for e.g. 128 bits would
+be $ ±7 $ iterations.
+
+Hence, the function continues updating the estimate until
+reaching $n_{k}$, which provides the largest integer less than
+or equal to the square root of `a`.
+"#;
+ALGORITHM_SQRT_ROUND = r#"$$
+\begin{align}
+\notag \left\lfloor\sqrt{a} \thinspace\right\rceil = \begin{cases}
+n & \text{if } a - n^2 < (n+1)^2 - a \cr
+n+1 & \text{if } a - n^2 \geq (n+1)^2 - a \end{cases} \cr
+\notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
+\end{align}
+$$"#;
+ALGORITHM_ROOT_CEIL_SIGNED /* more general version */ = r#"$$
+\large
+\begin{align}
+\notag \text{If } a < 0 \text{ and } n \% 2 = 0, \text{ then error.} \cr
+\notag \left\lceil |a|^{\frac{1}{n}} \thinspace\right\rceil = \begin{cases}
+m & \text{if } m^n = |a| \cr
+m+1 & \text{if } m^n < |a| \end{cases} \cr
+\notag \normalsize\text{Output: } \text{ceil\\_root} \cdot \text{sign}(a) &
+\end{align}
+$$"#;
+ALGORITHM_ROOT_CEIL_UNSIGNED = r#"$$
+\large
+\begin{align}
+\notag \left\lceil a^{\frac{1}{n}} \thinspace\right\rceil = \begin{cases}
+m & \text{if } m^n = a \cr
+m+1 & \text{if } m^n < a \end{cases} \cr
+\notag \normalsize\text{where } m = \lfloor a^{\frac{1}{n}} \rfloor &
+\end{align}
+$$"#;
+ALGORITHM_ROOT_FLOOR_SIGNED = r#"
+$$ \large \left\lfloor |a|^{\frac{1}{n}} \right\rfloor = m \cdot \text{sign}(a) $$
+Where $m$ is the result of finding the largest integer such that:
+$$ \large m^n \leq |a|, $$
+subject to the condition:
+$$ \large a < 0 \quad \text{and} \quad n \% 2 = 0 \quad \text{is invalid.} $$
+The algorithm incrementally tests values starting from $m = 1$ and continues until the next value $m+1$ satisfies:
+$$ \large (m+1)^n > |a|. $$
+Hence, the function returns $m \cdot \text{sign}(a)$, the largest integer such that
+$m^n \leq |a|$, with the sign adjusted for signed integers."#;
+ALGORITHM_ROOT_FLOOR_UNSIGNED = r#"
+$$ \large \left\lfloor a^{\frac{1}{n}} \right\rfloor = m $$
+Where $m$ is the result of finding the largest integer such that:
+$$ \large m^n \leq a $$
+The algorithm incrementally tests values starting from $m = 1$
+and continues until the next value $m+1$ satisfies:
+$$ \large (m+1)^n > a. $$
+Hence, the function returns $m$, the largest integer such that $m^n \leq a$."#;
+}

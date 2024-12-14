@@ -9,6 +9,7 @@
 //   - prime_pi
 //   - totient
 
+use super::super::shared_docs::*;
 #[cfg(feature = "_int_isize")]
 use crate::isize_up;
 #[cfg(feature = "_int_usize")]
@@ -157,8 +158,10 @@ macro_rules! impl_int {
             /// # Panics
             /// It can panic if `n == i128|u128`, at the last iteration of a loop
             /// that would take an unfeasable amount of time.
+            ///
             /// # Notation
-            /// $$\pi(x)$$
+            #[doc = NOTATION_PI!()]
+            ///
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -195,13 +198,10 @@ macro_rules! impl_int {
             ///
             /// Note: If `n` is negative, this function treats it as its absolute
             /// value. For example, a value of `-3` will be treated as `3`.
+            ///
             /// # Algorithm
-            /// This function iterates through all numbers from 2 up to the square
-            /// root of $|n|$. If it finds a divisor, it reduces `n` by its factors
-            /// and adjusts result accordingly. If after the loop, $n > 1$, it
-            /// means `n` has a prime factor greater than its square root, and the
-            /// function adjusts result for this last factor.
-            /// $$\large\varphi(n) =n \prod_{p\mid |n|} \left(1-\frac{1}{p}\right)$$
+            #[doc = ALGORITHM_TOTIENT!()]
+            ///
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -331,8 +331,10 @@ macro_rules! impl_int {
             /// # Panics
             /// It can panic if `n == i128|u128`, at the last iteration of a loop
             /// that would take an unfeasable amount of time.
+            ///
             /// # Notation
-            /// $$\pi(x)$$
+            #[doc = NOTATION_PI!()]
+            ///
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -365,13 +367,10 @@ macro_rules! impl_int {
             }
 
             /// Counts the number of integers $<n$ that are relatively prime to `n`.
+            ///
             /// # Algorithm
-            /// This function iterates through all numbers from 2 up to the square
-            /// root of $n$. If it finds a divisor, it reduces `n` by its factors
-            /// and adjusts result accordingly. If after the loop, $n > 1$, it
-            /// means `n` has a prime factor greater than its square root, and the
-            /// function adjusts result for this last factor.
-            /// $$\large\varphi(n) =n \prod_{p\mid n} \left(1-\frac{1}{p}\right)$$
+            #[doc = ALGORITHM_TOTIENT!()]
+            ///
             /// # Examples
             /// ```
             /// # use devela::Int;

@@ -10,6 +10,7 @@
 //   - permute
 //   - permute_rep
 
+use super::super::shared_docs::*;
 #[cfg(feature = "cast")]
 use crate::Cast;
 #[cfg(_int_i·)]
@@ -62,7 +63,7 @@ macro_rules! impl_int {
             /// Permutations of *n* items, ordered, where $n = r$.
             ///
             /// # Formula
-            /// $$ n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (n-1) \cdot n $$
+            #[doc = FORMULA_FACTORIAL!()]
             ///
             /// These are the maximum numbers whose factorials can fit within
             /// standard signed integer types:
@@ -103,17 +104,11 @@ macro_rules! impl_int {
             ///
             /// # Algorithm
             /// The current implementation uses following recursive algorithm:
-            /// $$ !n = (n - 1) * (!(n - 1) + !(n - 2)) $$
-            //
-            // Other possible formulas are:
-            // $$
-            // \begin{alignat}{1}
-            // !n & = n! \times \sum_{k=0}^{n} \frac{(-1)^k}{k!} \newline
-            // !n & = \left\lfloor \frac{n!}{e} + \frac{1}{2} \right\rfloor =
-            //     \left\lfloor n! \times \left(\frac{1}{e}\right) + \frac{1}{2} \right\rfloor
-            // \end{alignat}
-            // $$
-            //
+            #[doc = ALGORITHM_SUBFACTORIAL!()]
+            ///
+            /// Other possible formulas are:
+            #[doc = FORMULA_SUBFACTORIAL_OTHER!()]
+
             /// These are the maximum numbers whose subfactorials can fit within
             /// standard signed integer types:
             ///
@@ -165,7 +160,7 @@ macro_rules! impl_int {
             /// Combinations of `n` items taken `r` at a time, ordered.
             ///
             /// # Formula
-            /// $$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$
+            #[doc = FORMULA_COMBINE!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -206,7 +201,7 @@ macro_rules! impl_int {
             /// Also known as *multichoose*.
             ///
             /// # Formula
-            /// $$ \large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
+            #[doc = FORMULA_COMBINE_REP!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -248,7 +243,7 @@ macro_rules! impl_int {
             /// When $n=r$ or $n=r-1$ the result is the same as calculating the factorial $n!$.
             ///
             /// # Formula
-            /// $$ \large P(n,r) = \frac{|n|!}{(|n|−|r|)!} $$
+            #[doc = FORMULA_PERMUTE!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -282,7 +277,7 @@ macro_rules! impl_int {
             /// Permutations of `n` items taken `r` at a time with repetitions, ordered.
             ///
             /// # Formula
-            /// $$ \large P_\text{rep}(n,r) = n_r $$
+            #[doc = FORMULA_PERMUTE_REP!()]
             ///
             /// # Errors
             /// Returns [`NonNegativeRequired`] if $n<0 \lor r<0$,
@@ -334,7 +329,7 @@ macro_rules! impl_int {
             /// Permutations of *n* items, ordered, where $n = r$.
             ///
             /// # Formula
-            /// $$ n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (n-1) \cdot n $$
+            #[doc = FORMULA_FACTORIAL!()]
             ///
             /// These are the maximum numbers whose factorials can fit within
             /// standard signed integer types:
@@ -371,17 +366,11 @@ macro_rules! impl_int {
             ///
             /// # Algorithm
             /// The current implementation uses following recursive algorithm:
-            /// $$ !n = (n - 1) * (!(n - 1) + !(n - 2)) $$
-            //
-            // Other possible formulas are:
-            // $$
-            // \begin{alignat}{1}
-            // !n & = n! \times \sum_{k=0}^{n} \frac{(-1)^k}{k!} \newline
-            // !n & = \left\lfloor \frac{n!}{e} + \frac{1}{2} \right\rfloor =
-            //     \left\lfloor n! \times \left(\frac{1}{e}\right) + \frac{1}{2} \right\rfloor
-            // \end{alignat}
-            // $$
-            //
+            #[doc = ALGORITHM_SUBFACTORIAL!()]
+            ///
+            /// Other possible formulas are:
+            #[doc = FORMULA_SUBFACTORIAL_OTHER!()]
+            ///
             /// These are the maximum numbers whose subfactorials can fit within
             /// standard signed integer types:
             ///
@@ -430,7 +419,7 @@ macro_rules! impl_int {
             /// Combinations of `n` items taken `r` at a time, unordered.
             ///
             /// # Formula
-            /// $$ \large C(n,r) = {n \choose r} = \frac{n!}{(n−r)!r!} $$
+            #[doc = FORMULA_COMBINE!()]
             ///
             /// # Errors
             /// Returns [`MismatchedSizes`] if $r > n$ and
@@ -468,7 +457,7 @@ macro_rules! impl_int {
             /// Also known as *multichoose*.
             ///
             /// # Formula
-            /// $$ \large C(n+r-1,r) = {n+k-1 \choose r} = \frac{(n+r-1)!}{(n−1)!r!} $$
+            #[doc = FORMULA_COMBINE_REP!()]
             ///
             /// # Errors
             /// Returns [`Overflow`] if the result cant't fit the type.
@@ -506,7 +495,7 @@ macro_rules! impl_int {
             /// When $n=r$ or $n=r-1$ the result is the same as calculating the factorial $n!$.
             ///
             /// # Formula
-            /// $$ \large P(n,r) = \frac{n!}{(n−r)!} $$
+            #[doc = FORMULA_PERMUTE!()]
             ///
             /// # Errors
             /// Returns [`MismatchedSizes`] if $r > n$ and
@@ -538,7 +527,7 @@ macro_rules! impl_int {
             /// Permutations of `n` items taken `r` at a time with repetitions, ordered.
             ///
             /// # Formula
-            /// $$ \large P_\text{rep}(n,r) = n_r $$
+            #[doc = FORMULA_PERMUTE_REP!()]
             ///
             /// # Errors
             /// Returns [`Overflow`] if the result cant't fit the type.

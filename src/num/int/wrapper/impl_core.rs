@@ -15,6 +15,7 @@
 //   - scale_wrap
 //   - midpoint
 
+use super::super::shared_docs::*;
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::isize_up;
 #[cfg(feature = "_int_usize")]
@@ -273,7 +274,7 @@ macro_rules! impl_int {
             /// and for overflowing arithmetic operations in the following formula:
             ///
             /// # Formula
-            /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            #[doc = FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```
@@ -311,7 +312,7 @@ macro_rules! impl_int {
             /// Could panic for large values of `i128` or `u128`.
             ///
             /// # Formula
-            /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            #[doc = FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```
@@ -580,7 +581,7 @@ macro_rules! impl_int {
             /// and for overflowing arithmetic operations in the following formula:
             ///
             /// # Formula
-            /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            #[doc = FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```
@@ -618,7 +619,7 @@ macro_rules! impl_int {
             /// Could panic for large values of `i128` or `u128`.
             ///
             /// # Formula
-            /// $$ \large v' = (b - a) \frac{v - min}{max - min} + a $$
+            #[doc = FORMULA_SCALE!()]
             ///
             /// # Examples
             /// ```

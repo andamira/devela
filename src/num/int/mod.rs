@@ -9,9 +9,10 @@ mod gcd; // GcdReturn
 
 #[cfg(_int_·)]
 crate::items! {
-    mod num_trait; // NumInt, NumRefInt
-    mod wrapper; // Int
     mod divisor;
+    mod num_trait; // NumInt, NumRefInt
+    mod shared_docs; // FORMULA_*!()
+    mod wrapper; // Int
 }
 
 crate::items! { // structural access: doc_inline, all, always

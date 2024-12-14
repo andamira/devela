@@ -12,6 +12,7 @@
 //   - div_ties_even
 //   - div_ties_odd
 
+use super::super::shared_docs::*;
 use crate::{iif, paste, Int};
 
 #[doc = crate::doc_private!()]
@@ -61,7 +62,7 @@ macro_rules! impl_int {
 
             /// Returns the quotient, rounding the result towards positive infinity.
             /// # Notation
-            /// $$ \large \left\lceil \frac{x}{y} \right\rceil $$
+            #[doc = NOTATION_DIV_CEIL!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -93,7 +94,7 @@ macro_rules! impl_int {
 
             /// Returns the quotient, rounding the result towards negative infinity.
             /// # Notation
-            /// $$ \large \left\lfloor \frac{x}{y} \right\rfloor $$
+            #[doc = NOTATION_DIV_FLOOR!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -261,7 +262,7 @@ macro_rules! impl_int {
 
             /// Returns the quotient, rounding the result towards positive infinity.
             /// # Notation
-            /// $$ \large \left\lceil \frac{x}{y} \right\rceil $$
+            #[doc = NOTATION_DIV_CEIL!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -286,7 +287,7 @@ macro_rules! impl_int {
 
             /// Returns the quotient, rounding the result towards negative infinity.
             /// # Notation
-            /// $$ \large \left\lfloor \frac{x}{y} \right\rfloor $$
+            #[doc = NOTATION_DIV_FLOOR!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
