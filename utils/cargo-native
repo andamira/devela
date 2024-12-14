@@ -14,10 +14,13 @@
 #
 
 # Default flags for the "native" profile
+#
+# In sync with .cargo/config.toml
 FLAGS="-C target-cpu=native"
+DOCFLAGS="--html-in-header ./DOCS/rustdoc-header.html -C target-cpu=native"
 
 # Shift the first argument ("native") and pass the rest to Cargo
 shift
 
 # Set RUSTFLAGS and execute the Cargo command
-RUSTDOCFLAGS="$FLAGS" RUSTFLAGS="$FLAGS" exec cargo "$@"
+RUSTDOCFLAGS="$DOCFLAGS" RUSTFLAGS="$FLAGS" exec cargo "$@"

@@ -27,6 +27,7 @@ unstable-options = true
 [build]
 # ==============================================================================
 
+# In sync with utils/cargo-native
 rustdocflags = [
 	# WAIT: https://github.com/rust-lang/cargo/issues/331#issuecomment-1081704033
 	"--html-in-header", "./DOCS/rustdoc-header.html",
