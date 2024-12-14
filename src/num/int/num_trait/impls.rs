@@ -9,7 +9,7 @@ use crate::isize_up;
 use crate::GcdReturn;
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{Int, NumInt, NumResult as Result};
+use crate::{Int, NumInt, NumResult as Result, ValueQuant};
 
 #[doc = crate::doc_private!()]
 /// $t:     the primitive type
@@ -53,12 +53,14 @@ macro_rules! impl_int {
 
             /* core */
 
-            fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdReturn<Self::Out, Self::OutI>> {
-                let g = Int(self).gcd_ext(other);
-                Ok(GcdReturn::new(g.gcd.0, g.x.0, g.y.0)) }
-            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdReturn<Self::Out, Self::OutI>> {
-                let g = Int(*self).gcd_ext(*other);
-                Ok(GcdReturn::new(g.gcd.0, g.x.0, g.y.0)) }
+            fn int_gcd_ext(self, other: Self::Rhs)
+                -> Result<GcdReturn<Self::Out, Self::OutI>> {
+                match Int(self).gcd_ext(other) {
+                    GcdReturn { gcd, x, y } => Ok(GcdReturn { gcd: gcd.0, x: x.0, y: y.0 }) }}
+            fn int_ref_gcd_ext(&self, other: &Self::Rhs)
+                -> Result<GcdReturn<Self::Out, Self::OutI>> {
+                match Int(*self).gcd_ext(*other) {
+                    GcdReturn { gcd, x, y } => Ok(GcdReturn { gcd: gcd.0, x: x.0, y: y.0 }) }}
 
             #[cfg(feature = $ucap )]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $ucap)))]
@@ -105,14 +107,17 @@ macro_rules! impl_int {
 
             #[cfg(all(feature = $iocap, feature = "cast"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
-            fn int_gcd_ext(self, other: Self::Rhs) -> Result<GcdReturn<Self::Out, Self::OutI>> {
-                let g = Int(self).gcd_ext(other)?;
-                Ok(GcdReturn::new(g.gcd.0, g.x.0, g.y.0)) }
+            fn int_gcd_ext(self, other: Self::Rhs)
+                -> Result<GcdReturn<Self::Out, Self::OutI>> {
+                Int(self).gcd_ext(other)
+                    .map(|res| GcdReturn { gcd: res.gcd.0, x: res.x.0, y: res.y.0 }) }
+
             #[cfg(all(feature = $iocap, feature = "cast"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
-            fn int_ref_gcd_ext(&self, other: &Self::Rhs) -> Result<GcdReturn<Self::Out, Self::OutI>> {
-                let g = Int(*self).gcd_ext(*other)?;
-                Ok(GcdReturn::new(g.gcd.0, g.x.0, g.y.0)) }
+            fn int_ref_gcd_ext(&self, other: &Self::Rhs)
+                -> Result<GcdReturn<Self::Out, Self::OutI>> {
+                Int(*self).gcd_ext(*other)
+                    .map(|res| GcdReturn { gcd: res.gcd.0, x: res.x.0, y: res.y.0 }) }
 
             fn int_midpoint(self, other: Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(self).midpoint(other).0) }
@@ -257,23 +262,31 @@ macro_rules! impl_int {
         /* factors (allocating) */
 
         #[cfg(feature = "alloc")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         fn int_factors(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors()) }
         #[cfg(feature = "alloc")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         fn int_ref_factors(&self) -> Result<Vec<Self::Out>> { Ok(Int(*self).factors()) }
         #[cfg(feature = "alloc")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         fn int_factors_proper(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors_proper()) }
         #[cfg(feature = "alloc")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         fn int_ref_factors_proper(&self) -> Result<Vec<Self::Out>> {
             Ok(Int(*self).factors_proper()) }
         #[cfg(feature = "alloc")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         fn int_factors_prime(self) -> Result<Vec<Self::Out>> { Ok(Int(self).factors_prime()) }
         #[cfg(feature = "alloc")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         fn int_ref_factors_prime(&self) -> Result<Vec<Self::Out>> {
             Ok(Int(*self).factors_prime()) }
         #[cfg(feature = "alloc")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         fn int_factors_prime_unique(self) -> Result<Vec<Self::Out>> {
             Ok(Int(self).factors_prime_unique()) }
         #[cfg(feature = "alloc")]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
         fn int_ref_factors_prime_unique(&self) -> Result<Vec<Self::Out>> {
             Ok(Int(*self).factors_prime_unique()) }
 
@@ -298,6 +311,65 @@ macro_rules! impl_int {
             -> Result<usize> { Int(self).factors_prime_unique_buf(buffer) }
         fn int_ref_factors_prime_unique_buf(&self, buffer: &mut [Self::Out])
          -> Result<usize> { Int(*self).factors_prime_unique_buf(buffer) }
+
+        /* modulo */
+
+        fn int_modulo(self, modulus: Self) -> Result<Self> {
+            Int(self).modulo(modulus).map(|n|n.0) }
+        fn int_ref_modulo(&self, modulus: &Self) -> Result<Self> {
+            Int(*self).modulo(*modulus).map(|n|n.0) }
+
+        fn int_modulo_add(self, other: Self, modulus: Self) -> Result<Self> {
+            Int(self).modulo_add(other, modulus).map(|n|n.0) }
+        fn int_ref_modulo_add(&self, other: &Self, modulus: &Self) -> Result<Self> {
+            Int(*self).modulo_add(*other, *modulus).map(|n|n.0) }
+        fn int_modulo_add_cycles(self, other: Self, modulus: Self)
+            -> Result<ValueQuant<Self, Self>> {
+            Int(self).modulo_add_cycles(other, modulus)
+                .map(|res| ValueQuant { v: res.v.0, q: res.q.0 }) }
+        fn int_ref_modulo_add_cycles(&self, other: &Self, modulus: &Self)
+            -> Result<ValueQuant<Self, Self>> {
+            Int(*self).modulo_add_cycles(*other, *modulus)
+                .map(|res| ValueQuant { v: res.v.0, q: res.q.0 }) }
+        fn int_modulo_add_inv(self, modulus: Self) -> Result<Self> {
+            Int(self).modulo_add_inv(modulus).map(|n|n.0) }
+        fn int_ref_modulo_add_inv(&self, modulus: &Self) -> Result<Self> {
+            Int(*self).modulo_add_inv(*modulus).map(|n|n.0) }
+
+        fn int_modulo_sub(self, other: Self, modulus: Self) -> Result<Self> {
+            Int(self).modulo_sub(other, modulus).map(|n|n.0) }
+        fn int_ref_modulo_sub(&self, other: &Self, modulus: &Self) -> Result<Self> {
+            Int(*self).modulo_sub(*other, *modulus).map(|n|n.0) }
+        fn int_modulo_sub_cycles(self, other: Self, modulus: Self)
+            -> Result<ValueQuant<Self, Self>> {
+            Int(self).modulo_sub_cycles(other, modulus)
+                .map(|res| ValueQuant { v: res.v.0, q: res.q.0 }) }
+        fn int_ref_modulo_sub_cycles(&self, other: &Self, modulus: &Self)
+            -> Result<ValueQuant<Self, Self>> {
+            Int(*self).modulo_sub_cycles(*other, *modulus)
+                .map(|res| ValueQuant { v: res.v.0, q: res.q.0 }) }
+
+        fn int_modulo_mul(self, other: Self, modulus: Self) -> Result<Self> {
+            Int(self).modulo_mul(other, modulus).map(|n|n.0) }
+        fn int_ref_modulo_mul(&self, other: &Self, modulus: &Self) -> Result<Self> {
+            Int(*self).modulo_mul(*other, *modulus).map(|n|n.0) }
+        fn int_modulo_mul_cycles(self, other: Self, modulus: Self)
+            -> Result<ValueQuant<Self, Self>> {
+            Int(self).modulo_mul_cycles(other, modulus)
+                .map(|res| ValueQuant { v: res.v.0, q: res.q.0 }) }
+        fn int_ref_modulo_mul_cycles(&self, other: &Self, modulus: &Self)
+            -> Result<ValueQuant<Self, Self>> {
+            Int(*self).modulo_mul_cycles(*other, *modulus)
+                .map(|res| ValueQuant { v: res.v.0, q: res.q.0 }) }
+        fn int_modulo_mul_inv(self, modulus: Self) -> Result<Self> {
+            Int(self).modulo_mul_inv(modulus).map(|n|n.0) }
+        fn int_ref_modulo_mul_inv(&self, modulus: &Self) -> Result<Self> {
+            Int(*self).modulo_mul_inv(*modulus).map(|n|n.0) }
+
+        fn int_modulo_div(self, other: Self, modulus: Self) -> Result<Self> {
+            Int(self).modulo_div(other, modulus).map(|n|n.0) }
+        fn int_ref_modulo_div(&self, other: &Self, modulus: &Self) -> Result<Self> {
+            Int(*self).modulo_div(*other, *modulus).map(|n|n.0) }
 
         /* primes */
 

@@ -14,7 +14,7 @@
 
 #[cfg(feature = "alloc")]
 use crate::Vec;
-use crate::{GcdReturn, Num, NumError as E, NumResult as Result};
+use crate::{GcdReturn, Num, NumError as E, NumResult as Result, ValueQuant};
 #[cfg(doc)]
 use E::{
     MismatchedSizes, NonNegativeRequired, NonZeroRequired, NotImplemented, NotSupported, Overflow,
@@ -48,6 +48,7 @@ mod auto_impls {
 ///   - `int_*` methods take the arguments by value.
 ///   - `int_ref_*` methods take the arguments by reference.
 ///
+/// # Methods
 /// - base:
 ///     [`digital_root`][Self::int_digital_root],
 ///     [`digital_root_base`][Self::int_digital_root_base],
@@ -87,12 +88,24 @@ mod auto_impls {
 ///     [`factors_buf`][Self::int_factors_buf`],
 ///     [`factors_proper_buf`][Self::int_factors_proper_buf`],
 ///     [`factors_prime_buf`][Self::int_factors_prime_buf`],
-///     [`factors_prime_unique_buf`][Self::int_factors_prime_unique_buf`],
+///     [`factors_prime_unique_buf`][Self::int_factors_prime_unique_buf`].
+/// - modulo:
+///     [`modulo`][Self::int_modulo],
+///     [`modulo_cycles`][Self::int_modulo_cycles],
+///     [`modulo_add`][Self::int_modulo_add],
+///     [`modulo_add_cycles`][Self::int_modulo_add_cycles],
+///     [`modulo_add_inv`][Self::int_modulo_add_inv],
+///     [`modulo_sub`][Self::int_modulo_sub],
+///     [`modulo_sub_cycles`][Self::int_modulo_sub_cycles],
+///     [`modulo_mul`][Self::int_modulo_mul],
+///     [`modulo_mul_cycles`][Self::int_modulo_mul_cycles],
+///     [`modulo_mul_inv`][Self::int_modulo_mul_inv],
+///     [`modulo_div`][Self::int_modulo_div].
 /// - primes:
 ///     [`is_prime`][Self::int_is_prime],
 ///     [`prime_nth`][Self::int_prime_nth],
 ///     [`prime_pi`][Self::int_prime_pi],
-///     [`totient`][Self::int_totient],
+///     [`totient`][Self::int_totient].
 /// - roots:
 ///     [`is_square`][Self::int_is_square],
 //     [`is_power`][Self::int_is_power], TODO
@@ -100,7 +113,7 @@ mod auto_impls {
 ///     [`sqrt_floor`][Self::int_sqrt_floor],
 ///     [`sqrt_round`][Self::int_sqrt_round],
 ///     [`root_ceil`][Self::int_root_ceil],
-///     [`root_floor`][Self::int_root_floor],
+///     [`root_floor`][Self::int_root_floor].
 //     [`root_round`][Self::int_root_round], TODO
 ///
 /// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.
@@ -673,6 +686,56 @@ pub trait NumInt: Num {
     fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     /// *Like [`int_sqrt_round`][Self::int_sqrt_round] but takes the arguments by reference.*
     fn int_ref_sqrt_round(&self) -> Result<Self::Out> { E::ni() }
+
+    /* modulo */
+
+    fn int_modulo(self, modulus: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
+    fn int_ref_modulo(&self, modulus: &Self::Rhs) -> Result<Self::Out> { E::ni() }
+
+    fn int_modulo_cycles(self, modulus: Self::Rhs)
+        -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
+    fn int_ref_modulo_cycles(&self, modulus: &Self::Rhs)
+        -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
+
+    fn int_modulo_add(self, other: Self::Rhs, modulus: Self::Rhs)
+        -> Result<Self::Out> where Self: Sized { E::ni() }
+    fn int_ref_modulo_add(&self, other: &Self::Rhs, modulus: &Self::Rhs)
+        -> Result<Self::Out> { E::ni() }
+    fn int_modulo_add_cycles(self, other: Self::Rhs, modulus: Self::Rhs)
+        -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
+    fn int_ref_modulo_add_cycles(&self, other: &Self::Rhs, modulus: &Self::Rhs)
+        -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
+    fn int_modulo_add_inv(self, modulus: Self::Rhs)
+        -> Result<Self::Out> where Self: Sized { E::ni() }
+    fn int_ref_modulo_add_inv(&self, modulus: &Self::Rhs)
+        -> Result<Self::Out> { E::ni() }
+
+    fn int_modulo_sub(self, other: Self::Rhs, modulus: Self::Rhs)
+        -> Result<Self::Out> where Self: Sized { E::ni() }
+    fn int_ref_modulo_sub(&self, other: &Self::Rhs, modulus: &Self::Rhs)
+        -> Result<Self::Out> { E::ni() }
+    fn int_modulo_sub_cycles(self, other: Self::Rhs, modulus: Self::Rhs)
+        -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
+    fn int_ref_modulo_sub_cycles(&self, other: &Self::Rhs, modulus: &Self::Rhs)
+        -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
+
+    fn int_modulo_mul(self, other: Self::Rhs, modulus: Self::Rhs)
+        -> Result<Self::Out> where Self: Sized { E::ni() }
+    fn int_ref_modulo_mul(&self, other: &Self::Rhs, modulus: &Self::Rhs)
+        -> Result<Self::Out> { E::ni() }
+    fn int_modulo_mul_cycles(self, other: Self::Rhs, modulus: Self::Rhs)
+        -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
+    fn int_ref_modulo_mul_cycles(&self, other: &Self::Rhs, modulus: &Self::Rhs)
+        -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
+    fn int_modulo_mul_inv(self, modulus: Self::Rhs)
+        -> Result<Self::Out> where Self: Sized { E::ni() }
+    fn int_ref_modulo_mul_inv(&self, modulus: &Self::Rhs)
+        -> Result<Self::Out> { E::ni() }
+
+    fn int_modulo_div(self, other: Self::Rhs, modulus: Self::Rhs)
+        -> Result<Self::Out> where Self: Sized { E::ni() }
+    fn int_ref_modulo_div(&self, other: &Self::Rhs, modulus: &Self::Rhs)
+        -> Result<Self::Out> { E::ni() }
 
     /* roots */
 

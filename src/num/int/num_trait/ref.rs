@@ -10,12 +10,12 @@
 //   - division
 //   - factors
 //   - primes
+//   - modulo
 //   - roots
 
 #[cfg(feature = "alloc")]
-use crate::data::Vec;
-use crate::num::{GcdReturn, Num, NumInt, NumRef, NumResult as Result};
-use core::ops::Deref;
+use crate::Vec;
+use crate::{Deref, GcdReturn, Num, NumInt, NumRef, NumResult as Result, ValueQuant};
 
 /// Common trait for referenced integer types.
 ///
@@ -134,6 +134,24 @@ where
     impl_int_ref![int_ref_sqrt_floor(&self) -> Out];
     impl_int_ref![int_ref_sqrt_round(&self) -> Out];
 
+    /* modulo */
+
+    impl_int_ref![int_ref_modulo(&self, modulus: &Rhs) -> Out];
+    impl_int_ref![int_ref_modulo_cycles(&self, modulus: &Rhs) -> ValueQuant<Out, Out>];
+
+    impl_int_ref![int_ref_modulo_add(&self, other: &Rhs, modulus: &Rhs) -> Out];
+    impl_int_ref![int_ref_modulo_add_cycles(&self, other: &Rhs, modulus: &Rhs)
+        -> ValueQuant<Out, Out>];
+    impl_int_ref![int_ref_modulo_add_inv(&self, modulus: &Rhs) -> Out];
+    impl_int_ref![int_ref_modulo_sub(&self, other: &Rhs, modulus: &Rhs) -> Out];
+    impl_int_ref![int_ref_modulo_sub_cycles(&self, other: &Rhs, modulus: &Rhs)
+        -> ValueQuant<Out, Out>];
+    impl_int_ref![int_ref_modulo_mul(&self, other: &Rhs, modulus: &Rhs) -> Out];
+    impl_int_ref![int_ref_modulo_mul_cycles(&self, other: &Rhs, modulus: &Rhs)
+        -> ValueQuant<Out, Out>];
+    impl_int_ref![int_ref_modulo_mul_inv(&self, modulus: &Rhs) -> Out];
+    impl_int_ref![int_ref_modulo_div(&self, other: &Rhs, modulus: &Rhs) -> Out];
+
     /* roots */
 
     impl_int_ref![int_ref_root_ceil(&self, nth: u32) -> Out];
@@ -143,31 +161,42 @@ where
 macro_rules! impl_int_ref {
     () => {};
 
+    (
     // >=0 Num::Rhs args, returns Self::Out
-    ($fn_name:ident(&$self:ident $(, $arg:ident: &Rhs)*) -> Out) => { $crate::paste! {
+    $fn_name:ident(&$self:ident $(, $arg:ident: &Rhs)*) -> Out) => { $crate::paste! {
         #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
         fn $fn_name(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
             -> Result<<Self::Own as Num>::Out> {
             $self.deref().$fn_name($($arg),*) }
     }};
+    (
     // >=0 Num::Rhs args, returns an array of Self::Out
-    ($fn_name:ident(&$self:ident $(, $arg:ident: &Rhs)*)
+    $fn_name:ident(&$self:ident $(, $arg:ident: &Rhs)*)
      -> [Out; $LEN:literal]) => { $crate::paste! {
         #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
         fn $fn_name(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
             -> Result<[<Self::Own as Num>::Out; $LEN]> {
             $self.deref().$fn_name($($arg),*) }
     }};
-
+    (
+    // >=0 Num::Rhs args, returns Valuequant<Self::Out, Self::Out>
+    $fn_name:ident(&$self:ident $(, $arg:ident: &Rhs)*)
+    -> ValueQuant<Out, Out>) => { $crate::paste! {
+        #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
+        fn $fn_name(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
+            -> Result<ValueQuant<<Self::Own as Num>::Out, <Self::Own as Num>::Out>> {
+            $self.deref().$fn_name($($arg),*) }
+    }};
+    (
     // >=0 ty args, returns Self::Out
-    ($fn_name:ident(&$self:ident $(, $arg:ident: $arg_ty:ty)*) -> Out) => { $crate::paste! {
+    $fn_name:ident(&$self:ident $(, $arg:ident: $arg_ty:ty)*) -> Out) => { $crate::paste! {
         #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
         fn $fn_name(&$self $(, $arg: $arg_ty)*) -> Result<<Self::Own as Num>::Out> {
             $self.deref().$fn_name($($arg),*) }
     }};
-
+    (
     // 0 args returns ty (bool, usize…)
-    ($fn_name:ident(&$self:ident) -> $out:ty) => { $crate::paste! {
+    $fn_name:ident(&$self:ident) -> $out:ty) => { $crate::paste! {
         #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
         fn $fn_name(&$self) -> Result<$out> {
             $self.deref().$fn_name() }
