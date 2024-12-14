@@ -9,9 +9,8 @@
 //   - combinatorics
 //   - division
 //   - factors
-//   - prime
-//   - sqrt
-// - trait NumIntRef
+//   - primes
+//   - roots
 
 #[cfg(feature = "alloc")]
 use crate::Vec;
@@ -94,15 +93,20 @@ mod auto_impls {
 ///     [`prime_nth`][Self::int_prime_nth],
 ///     [`prime_pi`][Self::int_prime_pi],
 ///     [`totient`][Self::int_totient],
-/// - square root:
+/// - roots:
 ///     [`is_square`][Self::int_is_square],
-///     [`sqrt_floor`][Self::int_sqrt_floor],
+//     [`is_power`][Self::int_is_power], TODO
 ///     [`sqrt_ceil`][Self::int_sqrt_ceil],
+///     [`sqrt_floor`][Self::int_sqrt_floor],
 ///     [`sqrt_round`][Self::int_sqrt_round],
+///     [`root_ceil`][Self::int_root_ceil],
+///     [`root_floor`][Self::int_root_floor],
+//     [`root_round`][Self::int_root_round], TODO
 ///
 /// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[rustfmt::skip] #[allow(unused_variables)]
+#[expect(unused_variables, reason = "pretty signatures")]
+#[rustfmt::skip]
 pub trait NumInt: Num {
     /// Specifically signed output type for some operations (▶ `int_gcd_ext`).
     type OutI;
@@ -584,7 +588,7 @@ pub trait NumInt: Num {
     /// *Like [`int_totient`][Self::int_totient] but takes the arguments by reference.*
     fn int_ref_totient(&self) -> Result<Self::Out> { E::ni() }
 
-    /* sqrt roots */
+    /* roots (square) */
 
     /// Returns `true` if it's a perfect square.
     ///

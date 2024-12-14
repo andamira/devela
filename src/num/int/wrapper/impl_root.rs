@@ -13,8 +13,6 @@
 // - root_floor
 // - root_round TODO
 
-#![allow(unused_imports)] // TEMP WIP unwrap
-
 #[cfg(any(feature = "_int_isize", feature = "_int_usize"))]
 use crate::isize_up;
 #[cfg(feature = "_int_usize")]
@@ -22,7 +20,7 @@ use crate::usize_up;
 use crate::{
     iif,
     num::upcasted_op,
-    paste, unwrap, Int,
+    paste, Int,
     NumError::{self, NonZeroRequired},
     NumResult as Result,
 };
@@ -82,6 +80,8 @@ macro_rules! impl_int {
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
+        #[doc = "- [root_ceil](#method.sqrt_ceil" $d ")"]
+        #[doc = "- [root_floor](#method.sqrt_floor" $d ")"]
         #[cfg(feature = $cap )]
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
@@ -378,6 +378,8 @@ macro_rules! impl_int {
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
+        #[doc = "- [root_ceil](#method.sqrt_ceil" $d ")"]
+        #[doc = "- [root_floor](#method.sqrt_floor" $d ")"]
         #[cfg(feature = $cap )]
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
@@ -613,14 +615,14 @@ macro_rules! impl_int {
                 } else {
                     let mut x = 1 as $t;
                     while let Some(val) = x.checked_pow(nth) {
-                        if val > self.0 {
-                            break;
-                        }
+                        iif![val > self.0; break];
                         x += 1;
                     }
                     Ok(Int(x - 1))
                 }
             }
+
+            // TODO: root_round
         }
     }};
 }

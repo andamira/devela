@@ -9,8 +9,8 @@
 //   - combinatorics
 //   - division
 //   - factors
-//   - prime
-//   - sqrt
+//   - primes
+//   - roots
 
 #[cfg(feature = "alloc")]
 use crate::data::Vec;
@@ -23,7 +23,8 @@ use core::ops::Deref;
 /// - This is automatically implemented for references of types implementing [`NumInt`].
 /// - Mutable operations are only available for exclusive (`&mut`) references.
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
-#[rustfmt::skip] #[allow(unused_variables)]
+#[expect(unused_variables, reason = "pretty signatures")]
+#[rustfmt::skip]
 pub trait NumRefInt<'a>: NumRef<'a>
 where
     Self: Deref<Target = <Self as NumRef<'a>>::Own>,
@@ -202,7 +203,7 @@ where
     fn int_ref_totient(&self) -> Result<<Self::Own as Num>::Out> {
             self.deref().int_ref_totient() }
 
-    /* sqrt roots */
+    /* roots (square) */
 
     /// *Calls `NumInt::`[`int_ref_is_square`][NumInt::int_ref_is_square]*.
     fn int_ref_is_square(&self) -> Result<bool> {
