@@ -532,8 +532,8 @@ macro_rules! impl_float_shared_series {
 }
 impl_float_shared_series!();
 
-crate::CONST! {
-pub(crate) TABLE_EXP_SERIES_TERMS = "
+crate::CONST! { pub(crate),
+TABLE_EXP_SERIES_TERMS = "
 The following table shows the required number of `terms` needed
 to reach the most precise result for both `f32` and `f64`:
 ```txt
@@ -551,8 +551,7 @@ to reach the most precise result for both `f32` and `f64`:
 ± 500.000 →   ---    692
 ± 709.782 →   ---    938  (max for f64 == f64:MAX.ln())
 ```";
-
-pub(crate) TABLE_EXP2_SERIES_TERMS = "
+TABLE_EXP2_SERIES_TERMS = "
 The following table shows the required number of `terms` needed
 to reach the most precise result for both `f32` and `f64`:
 ```txt
@@ -569,7 +568,7 @@ to reach the most precise result for both `f32` and `f64`:
 ± 511.0 →    ---    520
 ± 1023.999 → ---    939 (max for f64)
 ```";
-pub(crate) TABLE_LN_SERIES_TERMS = "
+TABLE_LN_SERIES_TERMS = "
 The following table shows the required number of `terms` needed
 to reach the most precise result for both `f32` and `f64`:
 ```txt
@@ -590,7 +589,7 @@ to reach the most precise result for both `f32` and `f64`:
 ± 100000. →  81181 536609
 /// ```
 ```";
-pub(crate) TABLE_SIN_SERIES_TERMS = "
+TABLE_SIN_SERIES_TERMS = "
 The following table shows the required number of `terms` needed
 to reach the most precise result for both `f32` and `f64`:
 ```txt
@@ -604,7 +603,7 @@ to reach the most precise result for both `f32` and `f64`:
 ± 0.900 →      6     10
 ± 0.999 →      6     10
 ```";
-pub(crate) TABLE_COS_SERIES_TERMS = "
+TABLE_COS_SERIES_TERMS = "
 The following table shows the required number of `terms` needed
 to reach the most precise result for both `f32` and `f64`:
 ```txt
@@ -618,7 +617,7 @@ to reach the most precise result for both `f32` and `f64`:
 ± 0.900 →      7     10
 ± 0.999 →      7     11
 ```";
-pub(crate) TABLE_TAN_SERIES_TERMS = "
+TABLE_TAN_SERIES_TERMS = "
 The following table shows the required number of `terms` needed
 to reach the most precise result for both `f32` and `f64`:
 ```txt
@@ -632,7 +631,7 @@ to reach the most precise result for both `f32` and `f64`:
 ± 0.900 →      7     10
 ± 0.999 →      7     11
 ```";
-pub(crate) TABLE_ASIN_SERIES_TERMS = "
+TABLE_ASIN_SERIES_TERMS = "
 The following table shows the required number of `terms` needed
 to reach the most precise result for both `f32` and `f64`:
 ```txt
@@ -647,7 +646,7 @@ to reach the most precise result for both `f32` and `f64`:
 ± 0.990 →    333   1235
 ± 0.999 →   1989  10768
 ```";
-pub(crate) TABLE_ATAN_SERIES_TERMS = "
+TABLE_ATAN_SERIES_TERMS = "
 The following table shows the required number of `terms` needed
 to reach the most precise result for both `f32` and `f64`:
 ```txt
