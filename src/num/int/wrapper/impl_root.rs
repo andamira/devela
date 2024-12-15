@@ -250,12 +250,11 @@ macro_rules! impl_int {
 
             /// Returns the ceiled integer `nth` root.
             ///
+            #[doc = FORMULA_ROOT_CEIL_SIGNED!()]
+            ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0, or
             /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
-            ///
-            /// # Algorithm
-            #[doc = ALGORITHM_ROOT_CEIL_SIGNED!()]
             ///
             /// # Examples
             /// ```
@@ -268,6 +267,11 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(-81" $t ").root_ceil(4), Err(NonNegativeRequired)];"]
             #[doc="assert_eq![Int(" $t "::MAX).root_ceil(1), Ok(Int(" $t "::MAX))];"]
             /// ```
+            /// # Formulation
+            /// ## Piece-wise
+            #[doc = PIECEWISE_ROOT_CEIL_SIGNED!()]
+            /// ## Algorithm
+            #[doc = ALGORITHM_ROOT_CEIL_SIGNED!()]
             pub const fn root_ceil(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()
@@ -296,12 +300,11 @@ macro_rules! impl_int {
 
             /// Returns the floored integer `nth` root.
             ///
+            #[doc = FORMULA_ROOT_FLOOR_SIGNED!()]
+            ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0, or
             /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
-            ///
-            /// # Algorithm
-            #[doc = ALGORITHM_ROOT_FLOOR_SIGNED!()]
             ///
             /// # Examples
             /// ```
@@ -314,6 +317,11 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(-81_" $t ").root_floor(4), Err(NonNegativeRequired)];"]
             #[doc="assert_eq![Int(" $t "::MAX).root_floor(1), Ok(Int(" $t "::MAX))];"]
             /// ```
+            /// # Formulations
+            /// ## Piece-wise
+            #[doc = PIECEWISE_ROOT_FLOOR_SIGNED!()]
+            /// ## Algorithm
+            #[doc = ALGORITHM_ROOT_FLOOR_SIGNED!()]
             pub const fn root_floor(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()
@@ -501,11 +509,10 @@ macro_rules! impl_int {
 
             /// Returns the ceiled integer `nth` root.
             ///
+            #[doc = FORMULA_ROOT_CEIL_UNSIGNED!()]
+            ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0.
-            ///
-            /// # Algorithm
-            #[doc = ALGORITHM_ROOT_CEIL_UNSIGNED!()]
             ///
             /// # Examples
             /// ```
@@ -517,6 +524,11 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(114_" $t ").root_ceil(4), Ok(Int(4))];"]
             #[doc="assert_eq![Int(" $t "::MAX).root_ceil(1), Ok(Int(" $t "::MAX))];"]
             /// ```
+            /// # Formulation
+            /// ## Piece-wise
+            #[doc = PIECEWISE_ROOT_CEIL_UNSIGNED!()]
+            /// ## Algorithm
+            #[doc = ALGORITHM_ROOT_CEIL_UNSIGNED!()]
             pub const fn root_ceil(self, nth: u32) -> Result<Int<$t>> {
                 match self.root_floor(nth) {
                     Ok(floor_root) => {
@@ -532,11 +544,10 @@ macro_rules! impl_int {
 
             /// Returns the floored integer `nth` root.
             ///
+            #[doc = FORMULA_ROOT_FLOOR_UNSIGNED!()]
+            ///
             /// # Errors
             /// Returns [`NonZeroRequired`] if `nth` is 0.
-            ///
-            /// # Algorithm
-            #[doc = ALGORITHM_ROOT_FLOOR_UNSIGNED!()]
             ///
             /// # Examples
             /// ```
@@ -548,6 +559,11 @@ macro_rules! impl_int {
             #[doc="assert_eq![Int(114_" $t ").root_floor(4), Ok(Int(3))];"]
             #[doc="assert_eq![Int(" $t "::MAX).root_floor(1), Ok(Int(" $t "::MAX))];"]
             /// ```
+            /// # Formulations
+            /// ## Piece-wise
+            #[doc = PIECEWISE_ROOT_FLOOR_UNSIGNED!()]
+            /// ## Algorithm
+            #[doc = ALGORITHM_ROOT_FLOOR_UNSIGNED!()]
             pub const fn root_floor(self, nth: u32) -> Result<Int<$t>> {
                 if nth == 0 {
                     cold_err_zero()

@@ -42,7 +42,7 @@ function adjusts result for this last factor.
 $$\large\varphi(n) =n \prod_{p\mid |n|} \left(1-\frac{1}{p}\right)$$
 "#;
 
-/* roots */
+/* roots (square) */
 
 ALGORITHM_IS_SQUARE = r#"$$
 \large
@@ -91,41 +91,111 @@ n+1 & \text{if } a - n^2 \geq (n+1)^2 - a \end{cases} \cr
 \notag \normalsize\text{where } n = \lfloor \sqrt{a} \rfloor &
 \end{align}
 $$"#;
-ALGORITHM_ROOT_CEIL_SIGNED /* more general version */ = r#"$$
+
+/* roots */
+
+FORMULA_ROOT_CEIL_SIGNED = r#"$$
+\large \left\lceil |a|^{\frac{1}{n}} \right\rceil \cdot \text{sign}(a) = m $$"#;
+PIECEWISE_ROOT_CEIL_SIGNED = r#"$$
 \large
 \begin{align}
-\notag \text{If } a < 0 \text{ and } n \% 2 = 0, \text{ then error.} \cr
-\notag \left\lceil |a|^{\frac{1}{n}} \thinspace\right\rceil = \begin{cases}
-m & \text{if } m^n = |a| \cr
-m+1 & \text{if } m^n < |a| \end{cases} \cr
-\notag \normalsize\text{Output: } \text{ceil\\_root} \cdot \text{sign}(a) &
+\notag \text{If } n = 0, \text{ then error.} \cr
+\notag \text{If } n = 1, \text{ then output } a. \cr
+\notag \text{If } a = 0, \text{ then output } 0. \cr
+\notag \text{If } a < 0 \text{ and } n \\% 2 = 0, \text{ then error.} \cr
+\notag m = \lfloor |a|^{\frac{1}{n}} \rfloor \cr
+\notag \left\lceil |a|^{\frac{1}{n}} \right\rceil =
+\begin{cases}
+m & \text{if } m^n = |a|, \cr
+m+1 & \text{if } m^n < |a|.
+\end{cases} \cr
+\notag \text{Output: } m \cdot \text{sign}(a)
 \end{align}
 $$"#;
-ALGORITHM_ROOT_CEIL_UNSIGNED = r#"$$
+ALGORITHM_ROOT_CEIL_SIGNED = r#"
+The algorithm computes the smallest integer $ m $ such that:
+$$ \large m^n \geq |a|. $$
+Subject to the condition:
+$$ \large a < 0 \quad \text{and} \quad n \\% 2 = 0 \quad \text{is invalid.} $$
+The process is as follows:
+1. Iteratively tests values starting from $ m = 1 $,
+   calculating $ m^n $ until $ m^n > |a| $.
+2. Computes the floored nth root as $ m - 1 $.
+3. Checks if $ (m - 1)^n = |a| $.
+   - If true, returns $ m - 1 \cdot \text{sign}(a) $.
+   - Otherwise, returns $ m \cdot \text{sign}(a) $,
+   the smallest integer such that $ m^n \geq |a| $."#;
+
+FORMULA_ROOT_CEIL_UNSIGNED = r#"$$
+\large \left\lceil a^{\frac{1}{n}} \right\rceil = m $$"#;
+PIECEWISE_ROOT_CEIL_UNSIGNED = r#"
+$$ \large
+\begin{align}
+\notag \text{If } n = 0, \text{ then error.} \cr
+\notag \text{If } n = 1, \text{ then output } a. \cr
+\notag \text{If } a = 0, \text{ then output } 0. \cr
+\notag m = \lfloor a^{\frac{1}{n}} \rfloor \cr
+\notag \left\lceil a^{\frac{1}{n}} \right\rceil =
+\begin{cases}
+m & \text{if } m^n = a, \cr
+m+1 & \text{if } m^n < a.
+\end{cases}
+\end{align}
+$$"#;
+ALGORITHM_ROOT_CEIL_UNSIGNED = r#"
+The algorithm computes the smallest integer $ m $ such that:
+$$ \large m^n \geq a. $$
+It first computes the floored nth root $ \lfloor a^{\frac{1}{n}} \rfloor $ and then:
+1. Checks if $ \lfloor a^{\frac{1}{n}} \rfloor^n = a $.
+2. If true, returns $ m = \lfloor a^{\frac{1}{n}} \rfloor $.
+3. Otherwise, returns $ m = \lfloor a^{\frac{1}{n}} \rfloor + 1 $."#;
+
+FORMULA_ROOT_FLOOR_SIGNED = r#"$$
+\large \left\lfloor |a|^{\frac{1}{n}} \right\rfloor = m \cdot \text{sign}(a) $$"#;
+PIECEWISE_ROOT_FLOOR_SIGNED = r#"$$
 \large
 \begin{align}
-\notag \left\lceil a^{\frac{1}{n}} \thinspace\right\rceil = \begin{cases}
-m & \text{if } m^n = a \cr
-m+1 & \text{if } m^n < a \end{cases} \cr
-\notag \normalsize\text{where } m = \lfloor a^{\frac{1}{n}} \rfloor &
+\notag \text{If } n = 0, \text{ then error.} \cr
+\notag \text{If } n = 1, \text{ then output } a. \cr
+\notag \text{If } a = 0, \text{ then output } 0. \cr
+\notag \text{If } a < 0 \text{ and } n \% 2 = 0, \text{ then error.} \cr
+\notag m = \max \{ k \in \Z \mid k^n \leq |a| \} \cr
+\notag \text{Output: } m \cdot \text{sign}(a) &
 \end{align}
 $$"#;
 ALGORITHM_ROOT_FLOOR_SIGNED = r#"
-$$ \large \left\lfloor |a|^{\frac{1}{n}} \right\rfloor = m \cdot \text{sign}(a) $$
-Where $m$ is the result of finding the largest integer such that:
+The algorithm computes the floored nth root,
+$ \left\lfloor |a|^{\frac{1}{n}} \right\rfloor = m \cdot \text{sign}(a) $,
+where $ m $ is the largest integer such that:
 $$ \large m^n \leq |a|, $$
 subject to the condition:
 $$ \large a < 0 \quad \text{and} \quad n \% 2 = 0 \quad \text{is invalid.} $$
-The algorithm incrementally tests values starting from $m = 1$ and continues until the next value $m+1$ satisfies:
+The algorithm incrementally tests values starting from $ m = 1 $
+and continues until the next value $ m+1 $ satisfies:
 $$ \large (m+1)^n > |a|. $$
-Hence, the function returns $m \cdot \text{sign}(a)$, the largest integer such that
-$m^n \leq |a|$, with the sign adjusted for signed integers."#;
+The function then returns $ m \cdot \text{sign}(a) $,
+the largest integer such that $ m^n \leq |a| $,
+with the sign adjusted for signed integers."#;
+
+FORMULA_ROOT_FLOOR_UNSIGNED = r#"$$
+\large \left\lfloor a^{\frac{1}{n}} \right\rfloor = m $$"#;
+PIECEWISE_ROOT_FLOOR_UNSIGNED = r#"$$
+\large
+\begin{align}
+\notag \text{If } n = 0, \text{ then error.} \cr
+\notag \text{If } n = 1, \text{ then output } a. \cr
+\notag \text{If } a = 0, \text{ then output } 0. \cr
+\notag m = \max \{ k \in \Z_{\geq 0} \mid k^n \leq a \} \cr
+\notag \text{Output: } m &
+\end{align}
+$$"#;
 ALGORITHM_ROOT_FLOOR_UNSIGNED = r#"
-$$ \large \left\lfloor a^{\frac{1}{n}} \right\rfloor = m $$
-Where $m$ is the result of finding the largest integer such that:
-$$ \large m^n \leq a $$
-The algorithm incrementally tests values starting from $m = 1$
-and continues until the next value $m+1$ satisfies:
+The algorithm computes the floored nth root,
+$ \left\lfloor a^{\frac{1}{n}} \right\rfloor = m $,
+where $ m $ is the largest integer such that:
+$$ \large m^n \leq a. $$
+It incrementally tests values starting from $ m = 1 $
+and continues until the next value $ m+1 $ satisfies:
 $$ \large (m+1)^n > a. $$
-Hence, the function returns $m$, the largest integer such that $m^n \leq a$."#;
+The function then returns $ m $."#;
 }

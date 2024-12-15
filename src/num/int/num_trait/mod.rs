@@ -664,22 +664,22 @@ pub trait NumInt: Num {
 
     /// Returns the ceiled integer `nth` root.
     ///
+    #[doc = FORMULA_ROOT_CEIL_SIGNED!()]
+    ///
     /// # Errors
     /// Returns [`NonZeroRequired`] if `nth` is 0, or
     /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
-    /// # Algorithm
-    #[doc = ALGORITHM_ROOT_CEIL_SIGNED!()]
     fn int_root_ceil(self, nth: u32) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_root_ceil"]]
     fn int_ref_root_ceil(&self, nth: u32) -> Result<Self::Out> { E::ni() }
 
     /// Returns the floored integer `nth` root.
     ///
+    #[doc = FORMULA_ROOT_FLOOR_SIGNED!()]
+    ///
     /// # Errors
     /// Returns [`NonZeroRequired`] if `nth` is 0, or
     /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
-    /// # Algorithm
-    #[doc = ALGORITHM_ROOT_FLOOR_SIGNED!()]
     fn int_root_floor(self, nth: u32) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_root_floor"]]
     fn int_ref_root_floor(&self, nth: u32) -> Result<Self::Out> { E::ni() }
