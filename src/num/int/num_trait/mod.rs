@@ -1,6 +1,6 @@
 // devela::num::int::num_trait
 //
-//!
+//! Defines the `NumInt` trait.
 //
 // TOC
 // - trait NumInt
@@ -11,6 +11,9 @@
 //   - factors
 //   - primes
 //   - roots
+// - macro helpers
+//   - link_impls
+//   - ref_fn
 
 use super::shared_docs::*;
 #[cfg(feature = "alloc")]
@@ -37,17 +40,19 @@ mod auto_impls {
 
 /// Common auto-trait for integer types.
 ///
-/// # Notes
-/// - We use `n` to refer to the `self` argument in all the method descriptions and formulas.
+/// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.
 ///
+/// # Notes
+/// - We use `n` to refer to the `self` argument in all method descriptions and formulations.
 /// - Every method in this trait returns [`NotImplemented`] by default.
-/// - Any concrete implementation must implement the operations it wants to support.
-/// - Any operations specifically not supported should ideally return [`NotSupported`].
-/// - This trait tries to offer the same methods everywhere, giving a result when possible.
-/// - Operations are generally supported if they can be valid for some values.
-/// - Most methods come in two variants, starting with different prefixes:
-///   - `int_*` methods take the arguments by value.
-///   - `int_ref_*` methods take the arguments by reference.
+/// - Any concrete implementation must define the operations it wants to support.
+/// - Unsupported operations should ideally return [`NotSupported`].
+/// - This trait only includes checked methods, which return a `Result` to handle errors explicitly.
+/// - It aims to provide the same methods across all implementations, returning a result when possible.
+/// - Operations are generally supported if they are valid for some input values.
+/// - Most methods come in two variants, distinguished by their prefixes:
+///   - `int_*` methods take arguments by value.
+///   - `int_ref_*` methods take arguments by reference.
 ///
 /// # Methods
 /// - base:
@@ -116,8 +121,6 @@ mod auto_impls {
 ///     [`root_ceil`][Self::int_root_ceil],
 ///     [`root_floor`][Self::int_root_floor].
 //     [`root_round`][Self::int_root_round], TODO
-///
-/// See also [`NumRefInt`] which is automatically implemented for `NumInt` references.
 //
 // In sync with src/num/int/num_trait/ref.rs (int_ref_* methods)
 #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
@@ -130,32 +133,38 @@ pub trait NumInt: Num {
     /* base */
 
     /// Returns the digital root in base 10.
+    #[doc = link_impls!["digital_root"]]
     fn int_digital_root(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_digital_root"]]
     fn int_ref_digital_root(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the digital root in the given `base`.
+    #[doc = link_impls!["digital_root_base"]]
     fn int_digital_root_base(self, base: Self::Rhs) -> Result<Self::Out>
         where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_digital_root_base"]]
     fn int_ref_digital_root_base(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of digits in base 10.
+    #[doc = link_impls!["digits"]]
     fn int_digits(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_digits"]]
     fn int_ref_digits(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of digits in base 10 including the negative sign.
+    #[doc = link_impls!["digits_sign"]]
     fn int_digits_sign(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_digits_sign"]]
     fn int_ref_digits_sign(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of digits in the given `base`.
+    #[doc = link_impls!["digits_base"]]
     fn int_digits_base(self, base: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_digits_base"]]
     fn int_ref_digits_base(&self, base: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the number of digits in the given `base`.
+    #[doc = link_impls!["digits_base_sign"]]
     fn int_digits_base_sign(self, base: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_digits_base_sign"]]
@@ -164,26 +173,31 @@ pub trait NumInt: Num {
     /* core */
 
     /// Returns the absolute value.
+    #[doc = link_impls!["abs"]]
     fn int_abs(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_abs"]]
     fn int_ref_abs(&self) -> Result<Self::Out> { E::ni() }
 
     /// Returns `true` if `self` is even.
+    #[doc = link_impls!["is_even"]]
     fn int_is_even(self) -> Result<bool> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_is_even"]]
     fn int_ref_is_even(&self) -> Result<bool> { E::ni() }
 
     /// Returns `true` if `self` is odd.
+    #[doc = link_impls!["is_odd"]]
     fn int_is_odd(self) -> Result<bool> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_is_odd"]]
     fn int_ref_is_odd(&self) -> Result<bool> { E::ni() }
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr>.
+    #[doc = link_impls!["gcd"]]
     fn int_gcd(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_gcd"]]
     fn int_ref_gcd(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the <abbr title="Greatest Common Divisor">GCD</abbr> and the Bézout coeficients.
+    #[doc = link_impls!["gcd_ext"]]
     fn int_gcd_ext(self, other: Self::Rhs)
         -> Result<GcdReturn<Self::Out, Self::OutI>> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_gcd_ext"]]
@@ -191,6 +205,7 @@ pub trait NumInt: Num {
         -> Result<GcdReturn<Self::Out, Self::OutI>> { E::ni() }
 
     /// Returns the <abbr title="Least Common Multiple">LCM</abbr>.
+    #[doc = link_impls!["lcm"]]
     fn int_lcm(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_lcm"]]
     fn int_ref_lcm(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
@@ -204,6 +219,7 @@ pub trait NumInt: Num {
     ///
     /// # Formula
     #[doc = FORMULA_SCALE!()]
+    #[doc = link_impls!["scale"]]
     fn int_scale(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_scale"]]
@@ -220,6 +236,7 @@ pub trait NumInt: Num {
     ///
     /// # Formula
     #[doc = FORMULA_SCALE!()] // (same as scale)
+    #[doc = link_impls!["scale_wrap"]]
     fn int_scale_wrap(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_scale_wrap"]]
@@ -227,6 +244,7 @@ pub trait NumInt: Num {
         -> Result<Self::Out> { E::ni() }
 
     /// Returns the midpoint of `self` and `other`.
+    #[doc = link_impls!["midpoint"]]
     fn int_midpoint(self, other: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_midpoint"]]
     fn int_ref_midpoint(&self, other: &Self::Rhs) -> Result<Self::Out> { E::ni() }
@@ -246,8 +264,8 @@ pub trait NumInt: Num {
     /// - 5 for `u8`, 8 for `u16`, 12 for `u32`, 20 for `u64` and 34 for `u128`.
     /// # Errors
     /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
+    #[doc = link_impls!["factorial"]]
     fn int_factorial(self) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_factorial`][Self::int_factorial] but takes the arguments by reference.*
     #[doc = ref_fn!["int_factorial"]]
     fn int_ref_factorial(&self) -> Result<Self::Out> { E::ni() }
 
@@ -272,8 +290,8 @@ pub trait NumInt: Num {
     /// and [`Overflow`] if the result can't fit the type.
     /// # Links
     /// - The list of subfactorials is available in <https://oeis.org/A000166>.
+    #[doc = link_impls!["subfactorial"]]
     fn int_subfactorial(self) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_subfactorial`][Self::int_subfactorial] but takes the arguments by reference.*
     #[doc = ref_fn!["int_subfactorial"]]
     fn int_ref_subfactorial(&self) -> Result<Self::Out> { E::ni() }
 
@@ -284,8 +302,8 @@ pub trait NumInt: Num {
     ///
     /// # Errors
     /// Returns [`MismatchedSizes`] if $r > n$ and [`Overflow`] if the result cant't fit the type.
+    #[doc = link_impls!["combine"]]
     fn int_combine(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_combine`][Self::int_combine] but takes the arguments by reference.*
     #[doc = ref_fn!["int_combine"]]
     fn int_ref_combine(&self, r: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
@@ -299,8 +317,8 @@ pub trait NumInt: Num {
     ///
     /// # Errors
     /// Returns [`Overflow`] if the result cant't fit the type.
+    #[doc = link_impls!["combine_rep"]]
     fn int_combine_rep(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_combine_rep`][Self::int_combine_rep] but takes the arguments by reference.*
     #[doc = ref_fn!["int_combine_rep"]]
     fn int_ref_combine_rep(&self, r: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
@@ -313,8 +331,8 @@ pub trait NumInt: Num {
     ///
     /// # Errors
     /// Returns [`MismatchedSizes`] if $r > n$ and [`Overflow`] if the result cant't fit the type.
+    #[doc = link_impls!["permute"]]
     fn int_permute(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_permute`][Self::int_permute] but takes the arguments by reference.*
     #[doc = ref_fn!["int_permute"]]
     fn int_ref_permute(&self, r: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
@@ -326,16 +344,16 @@ pub trait NumInt: Num {
     ///
     /// # Errors
     /// Returns [`Overflow`] if the result cant't fit the type.
+    #[doc = link_impls!["permute_rep"]]
     fn int_permute_rep(self, r: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_permute_rep`][Self::int_permute_rep] but takes the arguments by reference.*
     #[doc = ref_fn!["int_permute_rep"]]
     fn int_ref_permute_rep(&self, r: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /* division */
 
     /// Returns the truncated quotient and the remainder.
+    #[doc = link_impls!["div_rem"]]
     fn int_div_rem(self, b: Self::Rhs) -> Result<[Self::Out; 2]> where Self: Sized { E::ni() }
-    /// *Like [`int_div_rem`][Self::int_div_rem] but takes the arguments by reference.*
     #[doc = ref_fn!["int_div_rem"]]
     fn int_ref_div_rem(&self, b: &Self::Rhs) -> Result<[Self::Out; 2]> { E::ni() }
 
@@ -343,8 +361,8 @@ pub trait NumInt: Num {
     ///
     /// # Notation
     #[doc = NOTATION_DIV_CEIL!()]
+    #[doc = link_impls!["div_ceil"]]
     fn int_div_ceil(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ceil`][Self::int_div_ceil] but takes the arguments by reference.*
     #[doc = ref_fn!["int_div_ceil"]]
     fn int_ref_div_ceil(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
@@ -352,33 +370,32 @@ pub trait NumInt: Num {
     ///
     /// # Notation
     #[doc = NOTATION_DIV_FLOOR!()]
+    #[doc = link_impls!["div_floor"]]
     fn int_div_floor(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_floor`][Self::int_div_floor] but takes the arguments by reference.*
     #[doc = ref_fn!["int_div_floor"]]
     fn int_ref_div_floor(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding ties away from zero.
+    #[doc = link_impls!["div_ties_away"]]
     fn int_div_ties_away(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ties_away`][Self::int_div_ties_away] but takes the arguments by reference.*
     #[doc = ref_fn!["int_div_ties_away"]]
     fn int_ref_div_ties_away(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding ties towards from zero.
+    #[doc = link_impls!["div_ties_towards"]]
     fn int_div_ties_towards(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ties_towards`][Self::int_div_ties_towards]
-    /// but takes the arguments by reference.*
     #[doc = ref_fn!["int_div_ties_towards"]]
     fn int_ref_div_ties_towards(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding ties to the nearest even number.
+    #[doc = link_impls!["div_ties_even"]]
     fn int_div_ties_even(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ties_even`][Self::int_div_ties_even] but takes the arguments by reference.*
     #[doc = ref_fn!["int_div_ties_even"]]
     fn int_ref_div_ties_even(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
     /// Returns the quotient, rounding ties to the nearest odd number.
+    #[doc = link_impls!["div_ties_odd"]]
     fn int_div_ties_odd(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
-    /// *Like [`int_div_ties_odd`][Self::int_div_ties_odd] but takes the arguments by reference.*
     #[doc = ref_fn!["int_div_ties_odd"]]
     fn int_ref_div_ties_odd(&self, b: &Self::Rhs) -> Result<Self::Out> { E::ni() }
 
@@ -399,9 +416,8 @@ pub trait NumInt: Num {
     /// ```
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[doc = link_impls!["factors"]]
     fn int_factors(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
-    /// *Like [`int_factors`][Self::int_factors]
-    /// but takes the arguments by reference.*
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     #[doc = ref_fn!["int_factors"]]
@@ -422,9 +438,8 @@ pub trait NumInt: Num {
     /// ```
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[doc = link_impls!["factors_proper"]]
     fn int_factors_proper(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
-    /// *Like [`int_factors_proper`][Self::int_factors_proper]
-    /// but takes the arguments by reference.*
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     #[doc = ref_fn!["int_factors_proper"]]
@@ -445,9 +460,8 @@ pub trait NumInt: Num {
     /// ```
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[doc = link_impls!["factors_prime"]]
     fn int_factors_prime(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
-    /// *Like [`int_factors_prime`][Self::int_factors_prime]
-    /// but takes the arguments by reference.*
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     #[doc = ref_fn!["int_factors_prime"]]
@@ -465,9 +479,8 @@ pub trait NumInt: Num {
     /// ```
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
+    #[doc = link_impls!["factors_prime_unique"]]
     fn int_factors_prime_unique(self) -> Result<Vec<Self::Out>> where Self: Sized { E::ni() }
-    /// *Like [`int_factors_prime_unique`][Self::int_factors_prime_unique]
-    /// but takes the arguments by reference.*
     #[cfg(feature = "alloc")]
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     #[doc = ref_fn!["int_factors_prime_unique"]]
@@ -494,9 +507,9 @@ pub trait NumInt: Num {
     /// assert_eq![fbuf[..8], [1, 2, 3, 4, 6, 8, 12, 24]];
     /// assert_eq![upbuf[..2], [2, 3]];
     /// ```
+    #[doc = link_impls!["factors_buf"]]
     fn int_factors_buf(self, fbuf: &mut [Self::Out], upfbuf: &mut [Self::Out])
         -> Result<(usize, usize)> where Self: Sized { E::ni() }
-    /// *Like [`int_factors_buf`][Self::int_factors_buf] but takes the arguments by reference.*
     #[doc = ref_fn!["int_factors_buf"]]
     fn int_ref_factors_buf(&self, fbuf: &mut [Self::Out], upfbuf: &mut [Self::Out])
         -> Result<(usize, usize)> { E::ni() }
@@ -520,10 +533,9 @@ pub trait NumInt: Num {
     /// assert_eq![fbuf[..6], [2, 3, 4, 6, 8, 12,]];
     /// assert_eq![upbuf[..2], [2, 3]];
     /// ```
+    #[doc = link_impls!["factors_proper_buf"]]
     fn int_factors_proper_buf(self, fbuf: &mut [Self], upfbuf: &mut [Self])
         -> Result<(usize, usize)> where Self: Sized { E::ni() }
-    /// *Like [`int_factors_proper_buf`][Self::int_factors_proper_buf]
-    /// but takes the arguments by reference.*
     #[doc = ref_fn!["int_factors_proper_buf"]]
     fn int_ref_factors_proper_buf(&self, fbuf: &mut [Self::Out], upfbuf: &mut [Self::Out])
         -> Result<(usize, usize)> { E::ni() }
@@ -553,10 +565,9 @@ pub trait NumInt: Num {
     /// assert_eq![7_i32.int_factors_prime_buf(&mut buf), Ok(1)];
     /// assert_eq![buf[..1], [7]];
     /// ```
+    #[doc = link_impls!["factors_prime_buf"]]
     fn int_factors_prime_buf(self, buffer: &mut [Self])
         -> Result<usize> where Self: Sized { E::ni() }
-    /// *Like [`int_factors_prime_buf`][Self::int_factors_prime_buf]
-    /// but takes the arguments by reference.*
     #[doc = ref_fn!["int_factors_prime_buf"]]
     fn int_ref_factors_prime_buf(&self, buffer: &mut [Self::Out]) -> Result<usize> { E::ni() }
 
@@ -580,6 +591,7 @@ pub trait NumInt: Num {
     /// assert_eq![24_i32.int_factors_prime_unique_buf(&mut uniq), Ok(2)];
     /// assert_eq![uniq, [2, 3, 2, 3, 0]];
     /// ```
+    #[doc = link_impls!["factors_prime_unique_buf"]]
     fn int_factors_prime_unique_buf(self, buffer: &mut [Self])
         -> Result<usize> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_factors_prime_unique_buf"]]
@@ -589,6 +601,7 @@ pub trait NumInt: Num {
     /* primes */
 
     /// Returns `true` if `n` is prime.
+    #[doc = link_impls!["is_prime"]]
     fn int_is_prime(self) -> Result<bool> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_is_prime"]]
     fn int_ref_is_prime(&self) -> Result<bool> { E::ni() }
@@ -599,11 +612,13 @@ pub trait NumInt: Num {
     ///
     /// # Errors
     /// Returns [`Overflow`] if the result can't fit the type.
+    #[doc = link_impls!["prime_nth"]]
     fn int_prime_nth(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_prime_nth"]]
     fn int_ref_prime_nth(&self) -> Result<Self::Out> { E::ni() }
 
     /// Counts the number of primes upto and including `n`.
+    #[doc = link_impls!["prime_pi"]]
     fn int_prime_pi(self) -> Result<usize> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_prime_pi"]]
     fn int_ref_prime_pi(&self) -> Result<usize> { E::ni() }
@@ -611,6 +626,7 @@ pub trait NumInt: Num {
     /// Counts the number of integers $<|n|$ that are relatively prime to `n`.
     ///
     /// Note: If `n` is negative, this function should treat it as its absolute value.
+    #[doc = link_impls!["totient"]]
     fn int_totient(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_totient"]]
     fn int_ref_totient(&self) -> Result<Self::Out> { E::ni() }
@@ -626,6 +642,7 @@ pub trait NumInt: Num {
     ///
     /// # Algorithm
     #[doc = ALGORITHM_IS_SQUARE!()]
+    #[doc = link_impls!["is_square"]]
     fn int_is_square(self) -> Result<bool> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_is_square"]]
     fn int_ref_is_square(&self) -> Result<bool> { E::ni() }
@@ -637,6 +654,7 @@ pub trait NumInt: Num {
     ///
     /// # Algorithm
     #[doc = ALGORITHM_SQRT_CEIL!()]
+    #[doc = link_impls!["sqrt_ceil"]]
     fn int_sqrt_ceil(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_sqrt_ceil"]]
     fn int_ref_sqrt_ceil(&self) -> Result<Self::Out> { E::ni() }
@@ -648,6 +666,7 @@ pub trait NumInt: Num {
     ///
     /// # Algorithm
     #[doc = ALGORITHM_SQRT_FLOOR!()]
+    #[doc = link_impls!["sqrt_floor"]]
     fn int_sqrt_floor(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_sqrt_floor"]]
     fn int_ref_sqrt_floor(&self) -> Result<Self::Out> { E::ni() }
@@ -656,6 +675,7 @@ pub trait NumInt: Num {
     ///
     /// # Algorithm
     #[doc = ALGORITHM_SQRT_ROUND!()]
+    #[doc = link_impls!["sqrt_round"]]
     fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_sqrt_round"]]
     fn int_ref_sqrt_round(&self) -> Result<Self::Out> { E::ni() }
@@ -669,6 +689,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonZeroRequired`] if `nth` is 0, or
     /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
+    #[doc = link_impls!["root_ceil"]]
     fn int_root_ceil(self, nth: u32) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_root_ceil"]]
     fn int_ref_root_ceil(&self, nth: u32) -> Result<Self::Out> { E::ni() }
@@ -680,6 +701,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonZeroRequired`] if `nth` is 0, or
     /// [`NonNegativeRequired`] if `self` is negative and `nth` is even.
+    #[doc = link_impls!["root_floor"]]
     fn int_root_floor(self, nth: u32) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_root_floor"]]
     fn int_ref_root_floor(&self, nth: u32) -> Result<Self::Out> { E::ni() }
@@ -694,6 +716,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonZeroRequired`] if `modulus == 0`,
     /// and it could also return [`Overflow`].
+    #[doc = link_impls!["modulo"]]
     fn int_modulo(self, modulus: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo"]]
     fn int_ref_modulo(&self, modulus: &Self::Rhs) -> Result<Self::Out> { E::ni() }
@@ -704,6 +727,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonZeroRequired`] if `modulus == 0`,
     /// and it could also return [`Overflow`].
+    #[doc = link_impls!["modulo_cycles"]]
     fn int_modulo_cycles(self, modulus: Self::Rhs)
         -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo_cycles"]]
@@ -715,6 +739,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonZeroRequired`] if `modulus == 0`,
     /// and it could also return [`Overflow`].
+    #[doc = link_impls!["modulo_add"]]
     fn int_modulo_add(self, other: Self::Rhs, modulus: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo_add"]]
@@ -727,6 +752,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonZeroRequired`] if `modulus == 0`,
     /// and it could also return [`Overflow`].
+    #[doc = link_impls!["modulo_add_cycles"]]
     fn int_modulo_add_cycles(self, other: Self::Rhs, modulus: Self::Rhs)
         -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo_add_cycles"]]
@@ -743,6 +769,7 @@ pub trait NumInt: Num {
     ///
     /// # Errors
     /// Returns [`NonZeroRequired`] if `modulus == 0`.
+    #[doc = link_impls!["modulo_add_inv"]]
     fn int_modulo_add_inv(self, modulus: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo_add_inv"]]
@@ -754,6 +781,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonZeroRequired`] if `modulus == 0`,
     /// and [`Overflow`] if the result would be a negative value.
+    #[doc = link_impls!["modulo_sub"]]
     fn int_modulo_sub(self, other: Self::Rhs, modulus: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo_sub"]]
@@ -766,6 +794,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonZeroRequired`] if `modulus == 0`,
     /// and [`Overflow`] if the result would be a negative value.
+    #[doc = link_impls!["modulo_sub_cycles"]]
     fn int_modulo_sub_cycles(self, other: Self::Rhs, modulus: Self::Rhs)
         -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo_sub_cycles"]]
@@ -777,6 +806,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonZeroRequired`] if `modulus == 0`,
     /// and it could also return [`Overflow`].
+    #[doc = link_impls!["modulo_mul"]]
     fn int_modulo_mul(self, other: Self::Rhs, modulus: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo_mul"]]
@@ -789,6 +819,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonZeroRequired`] if `modulus == 0`,
     /// and it could also return [`Overflow`].
+    #[doc = link_impls!["modulo_mul_cycles"]]
     fn int_modulo_mul_cycles(self, other: Self::Rhs, modulus: Self::Rhs)
         -> Result<ValueQuant<Self::Out, Self::Out>> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo_mul_cycles"]]
@@ -807,6 +838,7 @@ pub trait NumInt: Num {
     /// Returns [`NonZeroRequired`] if `modulus == 0`,
     /// [`NoInverse`] if there's no inverse,
     /// and it could also return [`Overflow`].
+    #[doc = link_impls!["modulo_mul_inv"]]
     fn int_modulo_mul_inv(self, modulus: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo_mul_inv"]]
@@ -822,6 +854,7 @@ pub trait NumInt: Num {
     /// Returns [`NonZeroRequired`] if `modulus == 0`,
     /// [`NoInverse`] if there's no multiplicative inverse of `other`,
     /// and it could also return [`Overflow`].
+    #[doc = link_impls!["modulo_div"]]
     fn int_modulo_div(self, other: Self::Rhs, modulus: Self::Rhs)
         -> Result<Self::Out> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_modulo_div"]]
@@ -829,10 +862,25 @@ pub trait NumInt: Num {
         -> Result<Self::Out> { E::ni() }
 }
 
+/* macro helpers */
+
+#[doc = crate::doc_private!()]
+/// Links to the implementation for primitive integers.
+macro_rules! link_impls {
+    ($fn:literal) => {
+        concat! {
+        "\n\n # Implementations\n\nSee an implementation for primitive integers: [`Int::`",
+        $fn, "][crate::Int::", $fn, "]." }
+    };
+}
+use link_impls;
+
+#[doc = crate::doc_private!()]
+/// Links to the version that operates on references.
 macro_rules! ref_fn {
-    () => {};
-    ($fn:literal) => { concat! {
-        "*Like [`", $fn, "`][Self::", $fn, "] but takes the arguments by reference.*"
-    }};
+    ($fn:literal) => {
+        concat! { "Similar to [", $fn, "][Self::",
+        $fn, "], but operates on references instead of values." }
+    };
 }
 use ref_fn;

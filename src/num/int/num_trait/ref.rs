@@ -1,6 +1,6 @@
 // devela::num::int::num_trait::ref
 //
-//!
+//! Defines the `NumRefInt` trait and auto-implements it.
 //
 // TOC
 // - trait NumRefInt
@@ -12,6 +12,9 @@
 //   - primes
 //   - modulo
 //   - roots
+// - macro helpers
+//   - impl_int_ref
+//   - own_fn
 
 #[cfg(feature = "alloc")]
 use crate::Vec;
@@ -49,8 +52,8 @@ where
 
     impl_int_ref![int_ref_gcd(&self, other: &Rhs) -> Out];
 
-    /// *Calls `NumInt::`[`int_ref_gcd_ext`][NumInt::int_ref_gcd_ext]*.
-    #[allow(clippy::type_complexity)]
+    #[doc = own_fn!["int_ref_gcd_ext"]]
+    #[allow(clippy::type_complexity, reason = "unavoidable")]
     fn int_ref_gcd_ext(&self, other: &<Self::Own as Num>::Rhs)
         -> Result<GcdReturn<<Self::Own as Num>::Out, <Self::Own as NumInt>::OutI>> {
             self.deref().int_ref_gcd_ext(other) }
@@ -82,40 +85,39 @@ where
 
     /* factors (allocating) */
 
-    /// *Calls `NumInt::`[`int_ref_factors`][NumInt::int_ref_factors]*.
+    #[doc = own_fn!["int_ref_factors"]]
     #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors() }
-    /// *Calls `NumInt::`[`int_ref_factors_proper`][NumInt::int_ref_factors_proper]*.
+    #[doc = own_fn!["int_ref_factors_proper"]]
     #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors_proper(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors_proper() }
-    /// *Calls `NumInt::`[`int_ref_factors_prime`][NumInt::int_ref_factors_prime]*.
+    #[doc = own_fn!["int_ref_factors_prime"]]
     #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors_prime(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors_prime() }
-    /// *Calls `NumInt::`[`int_ref_factors_prime_unique`][NumInt::int_ref_factors_prime_unique]*.
+    #[doc = own_fn!["int_ref_factors_prime_unique"]]
     #[cfg(feature = "alloc")] #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
     fn int_ref_factors_prime_unique(&self) -> Result<Vec<<Self::Own as Num>::Out>> {
             self.deref().int_ref_factors_prime_unique() }
 
     /* factors (non-allocating) */
 
-    /// *Calls `NumInt::`[`int_ref_factors_buf`][NumInt::int_ref_factors_buf]*.
+    #[doc = own_fn!["int_ref_factors_buf"]]
     fn int_ref_factors_buf(&self,
         fbuf: &mut [<Self::Own as Num>::Out], upfbuf: &mut [<Self::Own as Num>::Out])
         -> Result<(usize, usize)> {
             self.deref().int_ref_factors_buf(fbuf, upfbuf) }
-    /// *Calls `NumInt::`[`int_ref_factors_proper_buf`][NumInt::int_ref_factors_proper_buf]*.
+    #[doc = own_fn!["int_ref_factors_proper_buf"]]
     fn int_ref_factors_proper_buf(&self,
         fbuf: &mut [<Self::Own as Num>::Out], upfbuf: &mut [<Self::Own as Num>::Out])
         -> Result<(usize, usize)> {
             self.deref().int_ref_factors_proper_buf(fbuf, upfbuf) }
-    /// *Calls `NumInt::`[`int_ref_factors_prime_buf`][NumInt::int_ref_factors_prime_buf]*.
+    #[doc = own_fn!["int_ref_factors_prime_buf"]]
     fn int_ref_factors_prime_buf(&self, buffer: &mut [<Self::Own as Num>::Out]) -> Result<usize> {
             self.deref().int_ref_factors_prime_buf(buffer) }
-    /// *Calls
-    /// `NumInt::`[`int_ref_factors_prime_unique_buf`][NumInt::int_ref_factors_prime_unique_buf]*.
+    #[doc = own_fn!["int_ref_factors_prime_unique_buf"]]
     fn int_ref_factors_prime_unique_buf(&self, buffer: &mut [<Self::Own as Num>::Out])
         -> Result<usize> {
             self.deref().int_ref_factors_prime_unique_buf(buffer) }
@@ -158,48 +160,59 @@ where
     impl_int_ref![int_ref_root_floor(&self, nth: u32) -> Out];
 }
 
+#[doc = doc_private!()]
+/// Implements the given method.
 macro_rules! impl_int_ref {
-    () => {};
-
     (
     // >=0 Num::Rhs args, returns Self::Out
-    $fn_name:ident(&$self:ident $(, $arg:ident: &Rhs)*) -> Out) => { $crate::paste! {
-        #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
-        fn $fn_name(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
+    $fn:ident(&$self:ident $(, $arg:ident: &Rhs)*) -> Out) => { $crate::paste! {
+        #[doc = own_fn![$fn]]
+        fn $fn(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
             -> Result<<Self::Own as Num>::Out> {
-            $self.deref().$fn_name($($arg),*) }
+            $self.deref().$fn($($arg),*) }
     }};
     (
     // >=0 Num::Rhs args, returns an array of Self::Out
-    $fn_name:ident(&$self:ident $(, $arg:ident: &Rhs)*)
+    $fn:ident(&$self:ident $(, $arg:ident: &Rhs)*)
      -> [Out; $LEN:literal]) => { $crate::paste! {
-        #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
-        fn $fn_name(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
+        #[doc = own_fn![$fn]]
+        fn $fn(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
             -> Result<[<Self::Own as Num>::Out; $LEN]> {
-            $self.deref().$fn_name($($arg),*) }
+            $self.deref().$fn($($arg),*) }
     }};
     (
     // >=0 Num::Rhs args, returns Valuequant<Self::Out, Self::Out>
-    $fn_name:ident(&$self:ident $(, $arg:ident: &Rhs)*)
+    $fn:ident(&$self:ident $(, $arg:ident: &Rhs)*)
     -> ValueQuant<Out, Out>) => { $crate::paste! {
-        #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
-        fn $fn_name(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
+        #[doc = own_fn![$fn]]
+        fn $fn(&$self $(, $arg: &<Self::Own as Num>::Rhs)*)
             -> Result<ValueQuant<<Self::Own as Num>::Out, <Self::Own as Num>::Out>> {
-            $self.deref().$fn_name($($arg),*) }
+            $self.deref().$fn($($arg),*) }
     }};
     (
     // >=0 ty args, returns Self::Out
-    $fn_name:ident(&$self:ident $(, $arg:ident: $arg_ty:ty)*) -> Out) => { $crate::paste! {
-        #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
-        fn $fn_name(&$self $(, $arg: $arg_ty)*) -> Result<<Self::Own as Num>::Out> {
-            $self.deref().$fn_name($($arg),*) }
+    $fn:ident(&$self:ident $(, $arg:ident: $arg_ty:ty)*) -> Out) => { $crate::paste! {
+        #[doc = own_fn![$fn]]
+        fn $fn(&$self $(, $arg: $arg_ty)*) -> Result<<Self::Own as Num>::Out> {
+            $self.deref().$fn($($arg),*) }
     }};
     (
     // 0 args returns ty (bool, usize…)
-    $fn_name:ident(&$self:ident) -> $out:ty) => { $crate::paste! {
-        #[doc = "*Calls `NumInt::`[`" $fn_name "`][NumInt::" $fn_name "]*."]
-        fn $fn_name(&$self) -> Result<$out> {
-            $self.deref().$fn_name() }
+    $fn:ident(&$self:ident) -> $out:ty) => { $crate::paste! {
+        #[doc = own_fn![$fn]]
+        fn $fn(&$self) -> Result<$out> {
+            $self.deref().$fn() }
     }};
 }
 use impl_int_ref;
+
+#[doc = crate::doc_private!()]
+/// Links to the version that operates on values.
+macro_rules! own_fn {
+    ($fn:ident) => { own_fn!(@stringify!($fn)) };
+    ($fn:literal) => { own_fn!(@$fn) };
+    (@$fn_str:expr) => {
+        concat! { "Calls [`NumInt::", $fn_str, "][NumInt::", $fn_str, "]." }
+    };
+}
+use own_fn;
