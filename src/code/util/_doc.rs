@@ -6,7 +6,7 @@
 // - doc_!
 // - doc_availability!
 // - doc_miri_warn!
-//
+// - std_core!
 
 #[doc = doc_private!()]
 /// Generates a formatted meta-documentation string.
@@ -61,15 +61,15 @@ macro_rules! doc_ {
     (extends: $($mod:ident),+ $(,)?) => {
         concat!(
             $crate::doc_!(@meta_start_nobr), "Extends: ",
-            "std::{", $crate::doc_!(@extends: $($mod),+), "}",
+            $crate::std_core!(), "::{", $crate::doc_!(@extends: $($mod),+), "}",
             $crate::doc_!(@meta_end_hr),
         )
     };
     // Handles the list of modules ensuring commas are only added between elements.
     (@extends: $first:ident $(, $rest:ident)*) => {
         concat!(
-            "[", stringify!($first), "](mod@std::", stringify!($first), ")",
-            $( ", [", stringify!($rest), "](mod@std::", stringify!($rest), ")" ),*
+            "[", stringify!($first), "](mod@", $crate::std_core!(), "::", stringify!($first), ")",
+            $( ", [", stringify!($rest), "](mod@", $crate::std_core!(), "::", stringify!($rest), ")" ),*
         )
     };
 }
@@ -192,3 +192,10 @@ macro_rules! doc_primitive {
 }
 #[allow(unused_imports)]
 pub(crate) use doc_primitive;
+
+/// Returns the string literal "std" if `std` is enabled, or "core" otherwise.
+#[cfg(feature = "std")]
+macro_rules! std_core { () => { "std" }}
+#[cfg(not(feature = "std"))]
+macro_rules! std_core { () => { "core" }}
+pub(crate) use std_core;
