@@ -1,6 +1,5 @@
 // devela::data::collections::graph::edge
 
-#[doc = crate::doc_private!()]
 macro_rules! impl_graph_edge {
     // $IDX:  the index primitive type. E.g. u8.
     //

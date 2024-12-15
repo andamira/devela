@@ -14,7 +14,6 @@ use crate::Float;
 #[cfg(feature = "nightly_float")]
 use ::core::{f128, f16};
 
-#[doc = crate::doc_private!()]
 /// impl technical constants
 ///
 /// $f: the floating-point type.
@@ -67,7 +66,6 @@ macro_rules! float_technical_const_impls {
 }
 float_technical_const_impls![];
 
-#[doc = crate::doc_private!()]
 /// impl mathematical constants
 ///
 /// $f: the floating-point type.

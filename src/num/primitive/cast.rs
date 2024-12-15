@@ -162,7 +162,6 @@ pub trait PrimitiveCast {
     fn wrapping_cast_to_isize_down(self) -> isize_down;
 }
 
-#[doc = crate::doc_private!()]
 /// Implements the public casting methods for the trait and [`Cast`] wrapper.
 macro_rules! impl_cast_methods {
     ($($t:ty),+) => { $( impl_cast_methods![@$t]; )+ };
@@ -481,7 +480,6 @@ macro_rules! impl_cast_methods {
 }
 impl_cast_methods![u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize];
 
-#[doc = crate::doc_private!()]
 /// Implements private, standalone casting functions between integer primitives
 ///
 /// `$f`:   the type to cast from
@@ -765,7 +763,6 @@ macro_rules! impl_cast_fns {
 }
 impl_cast_fns![];
 
-#[doc = crate::doc_private!()]
 /// implement the casting functions for the upcasted aliases
 ///
 /// `$f`: the type to cast from

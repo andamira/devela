@@ -22,7 +22,6 @@ impl<T, const D: usize> Vector<T, D> {
 
 /* compile-time ops for primitives */
 
-#[doc = crate::doc_private!()]
 /// helper for implementing methods on `Vector`.
 ///
 /// $t: the inner integer primitive type

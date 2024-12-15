@@ -3,7 +3,7 @@
 #[allow(unused_imports)]
 use crate::{
     _core::{fmt, hash, ops},
-    compile, doc_private, iif, isize_up, paste, usize_up,
+    compile, iif, isize_up, paste, usize_up,
 };
 
 /// Faster divisor for division and modulo operations.
@@ -32,7 +32,6 @@ pub struct Divisor<T> {
     inner: DivisorInner<T>,
 }
 
-#[doc = doc_private!()]
 /// Inner representation of [`Divisor`].
 #[derive(Clone, Copy)]
 enum DivisorInner<T> {
@@ -47,7 +46,6 @@ enum DivisorInner<T> {
     MultiplyAddShiftNegate(T, T, u8),
 }
 
-#[doc = doc_private!()]
 /// Implements [`Divisor`]`<T>` for each enabled integer primitive.
 macro_rules! impl_divisor {
     () => {
@@ -90,7 +88,6 @@ macro_rules! impl_divisor {
         impl Divisor<$t> {
             impl_divisor![@shared $t|$un|$up|$unup:$is_up:$cap]; // shared methods
 
-            #[doc = doc_private!()]
             /// Returns the absolute value of the signed primitive as its unsigned equivalent.
             #[must_use]
             const fn abs(n: $t) -> $un {
@@ -357,12 +354,10 @@ macro_rules! impl_divisor {
             pub const fn [<new_ $t>](d: $t) -> Option<Divisor<$t>> { Self::new(d) }
         }
 
-        #[doc = doc_private!()]
         /// Helper function to be called from the cold path branch when divisor == 0.
         #[cold] #[inline(never)]
         const fn cold_0_divisor() -> Option<Self> { None }
 
-        #[doc = doc_private!()]
         /// Multiply two words together, returning only the top half of the product.
         ///
         /// Works by extending the factors to 2N-bits, using the built-in 2N-by-2N-bit
@@ -371,7 +366,6 @@ macro_rules! impl_divisor {
         const fn mulh(x: $t, y: $t) -> $t {
             (((x as $up) * (y as $up)) >> <$t>::BITS) as $t
         }
-        #[doc = doc_private!()]
         /// Non-upcasting version, adapted from Figure 8-2 in Hacker's Delight, 2nd Ed.
         #[compile(any(same($is_up, N), all(same($is_up, PW), not(pointer_width_eq(64)))))]
         const fn mulh(x: $t, y: $t) -> $t {
@@ -395,7 +389,6 @@ macro_rules! impl_divisor {
             x_high.wrapping_mul(y_high) + w1 + k
         }
 
-        #[doc = doc_private!()]
         /// Divide a 2N-bit dividend by an N-bit divisor with remainder, assuming
         /// that the result fits into N bits and that the lower half of bits of the
         /// dividend are all zero.
@@ -409,7 +402,6 @@ macro_rules! impl_divisor {
             let rem = (n % (d as $unup)) as $un;
             (quot, rem)
         }
-        #[doc = doc_private!()]
         /// Non-upcasting version, adapted from Figure 9-3 in Hacker's Delight, 2nd Ed.
         #[compile(any(same($is_up, N), all(same($is_up, PW), not(pointer_width_eq(64)))))]
         const fn div_rem_wide_by_base(top_half: $un, d: $un) -> ($un, $un) {

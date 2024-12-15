@@ -24,7 +24,6 @@ use crate::{
 #[cfg(all(_string_u·, feature = "alloc"))]
 use crate::{CString, ToString};
 
-#[doc = crate::doc_private!()]
 macro_rules! impl_string_u {
     () => {
         impl_string_u![

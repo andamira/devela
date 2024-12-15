@@ -5,7 +5,6 @@
 //! Always available for internal use.
 //
 
-#[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`MemAligned`] trait.
 trait Sealed {}
 impl<Candidate, Requirement> Sealed for (Candidate, Requirement) {}

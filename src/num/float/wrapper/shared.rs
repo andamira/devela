@@ -7,7 +7,6 @@
 use super::super::shared_docs::*;
 use crate::{concat as cc, iif, stringify as sfy, Float, Sign};
 
-#[doc = crate::doc_private!()]
 /// Implements methods independently of any features
 ///
 /// $f:   the floating-point type.

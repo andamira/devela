@@ -6,7 +6,6 @@
 #[cfg(feature = "alloc")]
 use crate::text::{String, ToString};
 
-#[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtString`] trait.
 #[cfg(feature = "alloc")]
 trait Sealed {}

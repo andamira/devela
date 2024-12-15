@@ -5,7 +5,6 @@
 
 use crate::Cell;
 
-#[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtCell`] trait.
 trait Sealed {}
 impl<T> Sealed for Cell<Option<T>> {}
@@ -69,7 +68,6 @@ pub trait ExtCellOption<T>: Sealed {
 }
 
 impl<T> ExtCellOption<T> for Cell<Option<T>> {
-    #[doc = crate::doc_private!()]
     fn modify<F: FnOnce(T) -> T>(&self, func: F) {
         let mut value = self.take();
         // If the value exists, apply the function and store it back
@@ -78,7 +76,6 @@ impl<T> ExtCellOption<T> for Cell<Option<T>> {
         }
     }
 
-    #[doc = crate::doc_private!()]
     fn modify_ret<F: FnOnce(T) -> T>(&self, func: F) -> Option<T>
     where
         T: Clone,
@@ -89,7 +86,6 @@ impl<T> ExtCellOption<T> for Cell<Option<T>> {
         })
     }
 
-    #[doc = crate::doc_private!()]
     fn modify_mut<R, F: FnOnce(&mut T) -> R>(&self, func: F) -> Option<R> {
         if let Some(mut v) = self.take() {
             // Apply the function to a mutable reference and capture the return value

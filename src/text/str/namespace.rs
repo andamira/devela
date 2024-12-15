@@ -204,7 +204,6 @@ impl Str {
     }
 }
 
-#[doc = crate::doc_private!()]
 /// The cold path that returns an empty string slice.
 #[cold] #[rustfmt::skip]
 pub(crate) const fn cold_empty_string() -> &'static str { "" }

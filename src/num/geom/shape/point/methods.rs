@@ -105,7 +105,6 @@ impl<T> Point3d<T> {
     pub fn z_mut(&mut self) -> &mut T { &mut self.coords[2] }
 }
 
-#[doc = crate::doc_private!()]
 /// helper for implementing methods on `Point`.
 ///
 /// $t: the inner integer primitive type

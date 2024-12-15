@@ -7,7 +7,6 @@
 use crate::{iif, DataError::Overflow, DataResult as Result};
 use crate::{Array2d, Storage};
 
-#[doc = crate::doc_private![]]
 /// Helper macro for implementing common methods generic on storage order.
 macro_rules! impl_maj {
     () => {

@@ -9,13 +9,11 @@ use crate::{Debug, Display, FmtResult, Formatter};
 #[repr(transparent)]
 pub struct ArrayFmt<'a, T: ExtArray>(&'a T);
 
-#[doc = crate::doc_private!()]
 /// Private trait for arrays with elements that implement [`Display`].
 trait ArrayDisplay: ExtArray {
     fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()>;
 }
 
-#[doc = crate::doc_private!()]
 /// Private trait for arrays with elements that implement [`Debug`].
 ///
 /// This trait is a bit redundant since arrays of any size can impl `Debug`,
@@ -35,7 +33,6 @@ impl<T: ArrayDebug> Debug for ArrayFmt<'_, T> {
     }
 }
 
-#[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtArray`] trait.
 trait Sealed {}
 impl<T, const LEN: usize> Sealed for [T; LEN] {}

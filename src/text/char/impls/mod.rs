@@ -21,7 +21,6 @@ mod c8;
 
 /* common implementations */
 
-#[doc = crate::doc_private!()]
 /// implements `UnicodeScalar` for custom char types.
 macro_rules! impl_char {
     () => {

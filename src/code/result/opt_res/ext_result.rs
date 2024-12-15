@@ -3,7 +3,6 @@
 //!
 //
 
-#[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtResult`] trait.
 trait Sealed {}
 impl<T, E> Sealed for Result<T, E> {}

@@ -31,7 +31,6 @@ const PRIME64: u64 = 0x0000_0100_0000_01B3;
 const BASIS128: u128 = 0x6c62_272e_07bb_0142_62b8_2175_6295_c58d;
 const PRIME128: u128 = 0x0000_0000_0100_0000_0000_0000_0000_013B;
 
-#[doc = crate::doc_private!()]
 macro_rules! impl_fnv {
     () => {
         impl_fnv![u32:BASIS32:PRIME32, u64:BASIS64:PRIME64, u128:BASIS128:PRIME128];

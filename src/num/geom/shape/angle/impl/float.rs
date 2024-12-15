@@ -7,7 +7,6 @@
 #[allow(unused_imports)]
 use crate::{Angle, AngleDirection, AngleKind, ExtFloat, ExtFloatConst, Float};
 
-#[doc = crate::doc_private!()]
 /// impl `Angle` methods with a floating-point representation.
 ///
 /// # Macro arguments

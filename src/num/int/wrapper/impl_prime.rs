@@ -16,7 +16,6 @@ use crate::isize_up;
 use crate::usize_up;
 use crate::{iif, paste, Int, NumError::Overflow, NumResult as Result};
 
-#[doc = crate::doc_private!()]
 /// $t:   the input/output type
 /// $up:  the upcasted type to do the operations on (for prime_pi)
 /// $cap: the capability feature that enables the given implementation. E.g "_int_i8".

@@ -37,7 +37,6 @@ const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 #[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_int_·)]
 const fn cold_ok_int<T>(t: T) -> Result<T> { Ok(t) }
 
-#[doc = crate::doc_private!()]
 /// $t:   the input/output type. E.g. i8.
 /// $up:  the upcasted input/output type. E.g. i16.
 /// $cap: the capability feature that enables the given implementation. E.g "_int_i8".

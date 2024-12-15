@@ -8,7 +8,6 @@
 
 #![allow(unused, non_camel_case_types)]
 
-#[doc = crate::doc_private!()]
 /// helper macro to only do checked operations when we can't upcast (i.e. for 128-bits).
 ///
 /// Performs checked operations only if the upcasted type is the same
@@ -157,7 +156,6 @@ macro_rules! upcasted_op {
 }
 pub(crate) use upcasted_op;
 
-#[doc = crate::doc_private!()]
 /// implement the arithmetic operators for a unit struct wrapper, based on the inner type
 ///
 /// # Arguments:

@@ -140,7 +140,6 @@ impl<T: PartialOrd> Compare<T> {
     }
 }
 
-#[doc = crate::doc_private!()]
 /// Implement [`Comparing`] for primitives.
 macro_rules! impl_comparing {
     () => {

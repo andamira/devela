@@ -13,7 +13,6 @@ use crate::num::ExtFloat;
 /// Color namespace for constants and methods
 pub struct Color;
 
-#[doc = crate::doc_private!()]
 ///
 ///
 /// # Args

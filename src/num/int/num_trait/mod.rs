@@ -864,7 +864,6 @@ pub trait NumInt: Num {
 
 /* macro helpers */
 
-#[doc = crate::doc_private!()]
 /// Links to the implementation for primitive integers.
 macro_rules! link_impls {
     ($fn:literal) => {
@@ -875,7 +874,6 @@ macro_rules! link_impls {
 }
 use link_impls;
 
-#[doc = crate::doc_private!()]
 /// Links to the version that operates on references.
 macro_rules! ref_fn {
     ($fn:literal) => {

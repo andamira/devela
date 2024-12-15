@@ -8,7 +8,6 @@ use crate::{cold_empty_string, iif, Str};
 // IMPROVE: use `NumToStr`
 use crate::{Ascii, Slice};
 
-#[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.
 trait Sealed {}
 impl Sealed for str {}

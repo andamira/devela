@@ -108,7 +108,6 @@ impl<T> Extent3d<T> {
     }
 }
 
-#[doc = crate::doc_private!()]
 /// Implement `Extent`.
 macro_rules! impl_extent {
     () => {

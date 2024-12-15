@@ -1,6 +1,6 @@
 // devela::sys::io::error
 
-use crate::{doc_private, impl_trait, Debug, From, Result};
+use crate::{impl_trait, Debug, From, Result};
 
 /// A specialized [`Result`] type for I/O operations.
 ///
@@ -24,7 +24,6 @@ impl_trait![fmt::Display for IoError |self, f|
     }
 ];
 
-#[doc = doc_private!()]
 #[derive(Clone, Copy, PartialEq)]
 enum Repr {
     Custom(Custom),
@@ -37,7 +36,6 @@ impl_trait![fmt::Debug for Repr |self, f|
     }
 ];
 
-#[doc = doc_private!()]
 #[derive(Clone, Copy, Debug, PartialEq)]
 struct Custom {
     kind: IoErrorKind,
@@ -277,7 +275,6 @@ impl IoError {
 }
 
 // IMPROVE
-#[doc = doc_private!()]
 fn _assert_error_is_sync_send() {
     fn _is_sync_send<T: Sync + Send>() {}
     _is_sync_send::<IoError>();

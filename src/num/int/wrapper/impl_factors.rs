@@ -24,7 +24,6 @@ use crate::{iif, paste, Int, NumError::MismatchedSizes, NumResult as Result};
 #[cfg(feature = "alloc")]
 use crate::{vec_ as vec, BTreeSet, Hook, Vec};
 
-#[doc = crate::doc_private!()]
 /// $t:   the input/output type
 /// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 /// $d:  the doclink suffix for the method name

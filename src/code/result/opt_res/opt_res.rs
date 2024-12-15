@@ -90,7 +90,6 @@ pub const fn serr<T, E>(error: E) -> OptRes<T, E> {
     Some(Err(error))
 }
 
-#[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtOptRes`] trait.
 pub(super) trait Sealed {}
 impl<T, E> Sealed for OptRes<T, E> {}

@@ -9,7 +9,6 @@
 
 use crate::Float;
 
-#[doc = crate::doc_private!()]
 /// macro helper for implementing methods for `Float`, from either `libm` or `std`.
 ///
 /// $lib: the library to use.
@@ -377,7 +376,6 @@ mod _std {
         // WAIT: (gamma, ln_gamma) [float_gamma](https://github.com/rust-lang/rust/issues/99842)
     ];
 
-    #[doc = crate::doc_private!()]
     /// $f:   the floating-point type.
     /// $e:   the integer type for integer exponentiation.
     /// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
@@ -423,7 +421,6 @@ mod _no_std_no_libm {
     use super::{super::super::shared_docs::*, Float};
     use crate::iif;
 
-    #[doc = crate::doc_private!()]
     /// $f:   the floating-point type.
     /// $ub:  unsigned int type with the same bit-size.
     /// $ie:  the integer type for integer exponentiation.

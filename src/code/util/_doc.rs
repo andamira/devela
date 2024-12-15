@@ -8,7 +8,6 @@
 // - doc_miri_warn!
 // - std_core!
 
-#[doc = doc_private!()]
 /// Generates a formatted meta-documentation string.
 macro_rules! doc_ {
     (@meta_start) => {
@@ -75,7 +74,6 @@ macro_rules! doc_ {
 }
 pub(crate) use doc_;
 
-#[doc = doc_private!()]
 /// Generates a formatted documentation string for conditional availability.
 ///
 /// It's intended to be used like this:
@@ -150,7 +148,6 @@ macro_rules! doc_availability {
 #[allow(unused_imports)]
 pub(crate) use doc_availability;
 
-#[doc = doc_private!()]
 /// Generates a formatted documentation string for a miri warning.
 #[allow(unused_macros)]
 macro_rules! doc_miri_warn {
@@ -172,16 +169,6 @@ macro_rules! doc_miri_warn {
 }
 #[allow(unused_imports)]
 pub(crate) use doc_miri_warn;
-
-/// Generates a doc tag for private items.
-#[allow(unused_macros)]
-macro_rules! doc_private {
-    () => {
-        concat!("<span class='stab portability' ", "title='Private item'>", "🔒</span>")
-    };
-}
-#[allow(unused_imports)]
-pub(crate) use doc_private;
 
 /// Generates a doc tag for Rust's primitive items.
 #[allow(unused_macros)]

@@ -35,7 +35,6 @@ const SEED: usize = SEED32 as usize;
 #[cfg(target_pointer_width = "64")]
 const SEED: usize = SEED64 as usize;
 
-#[doc = crate::doc_private!()]
 macro_rules! impl_fx {
     () => { impl_fx![u32:SEED32, u64:SEED64, usize:SEED]; };
 

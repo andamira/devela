@@ -50,7 +50,6 @@ pub fn format_buf_args<'a>(buf: &'a mut [u8], arg: FmtArguments) -> Result<&'a s
     w.as_str()
 }
 
-#[doc = crate::doc_private!()]
 #[derive(Debug)]
 struct WriteTo<'a> {
     buf: &'a mut [u8],

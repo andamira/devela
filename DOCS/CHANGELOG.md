@@ -66,7 +66,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - macros:
   - `id_seq!`, `impl_trait!`, `type_marker!`, `type_resource!`.
   - `const_bool!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `impl_non_value!`.
-  - private: `doc_availability!`, `doc_primitive!`, `doc_private!`.
+  - private: `doc_availability!`, `doc_primitive!`.
 - vendored:
   - structs: `CacheAlign`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`, `VecChunk`.
   - macros: `assert_const!`, `cfg_if!`.

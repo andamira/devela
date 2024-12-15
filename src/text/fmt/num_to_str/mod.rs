@@ -59,7 +59,6 @@ const DEC_LOOKUP: &[u8; 200] = b"0001020304050607080910111213141516171819\
                                  6061626364656667686970717273747576777879\
                                  8081828384858687888990919293949596979899";
 
-#[doc = crate::doc_private!()]
 macro_rules! base_10 {
     ($number:ident, $index:ident, $string:ident) => {
         // Decode four characters at the same time
@@ -99,7 +98,6 @@ macro_rules! base_10 {
     };
 }
 
-#[doc = crate::doc_private!()]
 macro_rules! impl_primitive {
     ( signed $($t:ty),+ ) => { $( impl_primitive![@signed $t]; )+ };
     ( unsigned $($t:ty),+ ) => { $( impl_primitive![@unsigned $t]; )+ };

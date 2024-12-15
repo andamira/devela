@@ -486,7 +486,6 @@ crate::CONST! { pub(in crate::num::float),
     `≈ 2.30258509…`"#;
 }
 
-#[doc = crate::doc_private!()]
 /// impl mathematical constants
 ///
 /// $f: the floating-point type.
@@ -661,7 +660,6 @@ impl_ext_float_const![
     f128
 ];
 
-#[doc = crate::doc_private!()]
 /// Private helper struct to define manual, type-dependendent constants.
 struct TempFloat<T> {
     _marker: ::core::marker::PhantomData<T>,

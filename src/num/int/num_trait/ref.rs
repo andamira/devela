@@ -160,7 +160,6 @@ where
     impl_int_ref![int_ref_root_floor(&self, nth: u32) -> Out];
 }
 
-#[doc = crate::doc_private!()]
 /// Implements the given method.
 macro_rules! impl_int_ref {
     (
@@ -206,7 +205,6 @@ macro_rules! impl_int_ref {
 }
 use impl_int_ref;
 
-#[doc = crate::doc_private!()]
 /// Links to the version that operates on values.
 macro_rules! own_fn {
     ($fn:ident) => { own_fn!(@stringify!($fn)) };

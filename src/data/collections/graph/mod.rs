@@ -16,7 +16,6 @@ use crate::{
     DataResult as Result, Storage,
 };
 
-#[doc = crate::doc_private!()]
 macro_rules! impl_graph {
     () => {
         impl_graph!(u8:"_graph_u8", u16:"_graph_u16", u32:"_graph_u32", usize:"_graph_usize");

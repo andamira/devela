@@ -2,6 +2,8 @@
 //
 //!
 //
+// See also
+// - https://dev-doc.rust-lang.org/stable/unstable-book/library-features/tuple-trait.html
 
 #[cfg(test)]
 mod tests;
@@ -13,7 +15,6 @@ mod codegen {
     // - enums `TupleEnumRef` and `TupleEnumMut`.
     include!(concat!(env!("OUT_DIR"), "/build/tuple.rs"));
 
-    #[doc = crate::doc_private!()]
     /// Marker trait to prevent downstream implementations of the [`Tuple`] trait.
     trait Sealed {}
 
@@ -21,7 +22,6 @@ mod codegen {
     #[repr(transparent)]
     pub struct TupleFmt<'a, T: Tuple>(&'a T);
 
-    #[doc = crate::doc_private!()]
     /// Private trait for [`Tuple`]s with elements that implement `Debug`.
     trait TupleDebug: Tuple {
         fn fmt_debug(&self, f: &mut Formatter) -> FmtResult<()>;
@@ -32,7 +32,6 @@ mod codegen {
         }
     }
 
-    #[doc = crate::doc_private!()]
     /// Private trait for [`Tuple`]s with elements that implement `Display`.
     trait TupleDisplay: Tuple {
         fn fmt_display(&self, f: &mut Formatter) -> FmtResult<()>;

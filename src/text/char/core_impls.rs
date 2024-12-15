@@ -10,7 +10,6 @@ use crate::{_core::fmt, paste, text::char::*, unwrap, ConstDefault};
 
 /* Default, Display, Debug */
 
-#[doc = crate::doc_private!()]
 ///
 macro_rules! char_core_impls {
     () => {

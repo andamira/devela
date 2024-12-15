@@ -35,7 +35,6 @@ const fn cold_err_zero<T>() -> Result<T> { Err(NonZeroRequired) }
 #[cold] #[inline(never)] #[cfg(_int_i·)] #[rustfmt::skip]
 const fn cold_err_overflow<T>() -> Result<T> { Err(Overflow(None)) }
 
-#[doc = crate::doc_private!()]
 /// helper macro to deal with the case when we can't upcast (i.e. for 128-bits).
 ///
 /// $op:  an overloadable operator (+, -, *, /)
@@ -93,7 +92,6 @@ macro_rules! upcastop {
     }};
 }
 
-#[doc = crate::doc_private!()]
 /// $t:     the input/output type
 /// $cap:   the capability feature that enables the given implementation. E.g "_int_u8".
 /// $up:    the upcasted type to do the operations on (the ones that can overflow) E.g. u16.

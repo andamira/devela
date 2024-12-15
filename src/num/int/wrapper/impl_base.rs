@@ -13,7 +13,6 @@
 
 use crate::{iif, paste, Int};
 
-#[doc = crate::doc_private!()]
 /// $t:  the integer primitive input/output type, and the niche inner type
 /// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
 /// $d:  the doclink suffix for the method name

@@ -5,7 +5,6 @@
 
 use crate::Vec;
 
-#[doc = crate::doc_private!()]
 /// Marker trait to prevent downstream implementations of the [`ExtVec`] trait.
 trait Sealed {}
 impl<T> Sealed for Vec<T> {}

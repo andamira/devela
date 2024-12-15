@@ -42,7 +42,6 @@ pub trait PrimitiveJoin<T, U, const LEN: usize> {
     fn from_slice_ne(values: &[U]) -> T;
 }
 
-#[doc = crate::doc_private!()]
 /// Implements the trait methods.
 macro_rules! impl_from_trait {
     ( $( $T:ident, $U:ident, $LEN:literal );+ $(;)? ) => {

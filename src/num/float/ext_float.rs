@@ -453,7 +453,6 @@ pub trait ExtFloat: ExtFloatConst + Sized {
         F: Fn(Self, Self) -> Self;
 }
 
-#[doc = crate::doc_private!()]
 macro_rules! impl_float_ext {
     () => {
         impl_float_ext![
