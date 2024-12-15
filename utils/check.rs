@@ -94,17 +94,19 @@ const DEP_ALL: [&str; 29] = [
 ];
 /// Dependencies to not cross compile in arches in STD_ARCHES_NO_CROSS_COMPILE.
 #[rustfmt::skip]
-const DEP_NO_CROSS_COMPILE_STD: [&str; 2] = [
+const DEP_NO_CROSS_COMPILE_STD: &[&str] = [
     "dep_rodio", "dep_tinyaudio", // REASON: alsa-sys
 ];
 /// Dependencies to not cross compile, ever.
-const DEP_NO_CROSS_COMPILE_EVER: [&str; 3] = [
+const DEP_NO_CROSS_COMPILE_EVER: &[&str] = [
+    // IMPROVE: allow activating `windows` feature
+    "dep_crossterm",
     // IMPROVE: https://pyo3.rs/v0.23.2/building-and-distribution.html#cross-compiling
     "dep_pyo3",
     // WAIT: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)
     "dep_stringzilla",
-    // IMPROVE: allow activating `windows` feature
-    "dep_crossterm",
+    // NOTE: https://github.com/xushaohua/nc?tab=readme-ov-file#supported-operating-systems-and-architectures
+    "dep_nc",
 ];
 
 //* cross-compilation targets *//
