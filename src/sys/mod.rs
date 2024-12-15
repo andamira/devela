@@ -8,13 +8,11 @@
     io, net, os, path, pin, ptr, rc, slice, simd)]
 //
 //
-// NOTE: You can get the full list of: `arch`, `os`, `target` and `target`-family, like this:
-// ```
-// rustc +nightly -Z unstable-options --print all-target-specs-json  \
-//     | jq '[ to_entries[] | {"arch": .value.arch, "target": .key,  \
-//     "target-family": (.value."target-family" // [] | join(", ")), \
-//     "os": (.value.os // "") } ]' | grep -v '""'
-// ```
+/* NOTE: You can get the full list of: `arch`, `os`, `target` and `target`-family, like this:
+```shell
+rustc +nightly -Z unstable-options --print all-target-specs-json | jq '[ to_entries[] | {"arch": .value.arch, "target": .key, "target-family": (.value."target-family" // [] | join(", ")), "os": (.value.os // "") } ]' | grep -v '""'
+```
+*/
 // safety
 #![cfg_attr(feature = "safe_sys", forbid(unsafe_code))]
 

@@ -11,7 +11,6 @@
 use super::super::shared_docs::*;
 use crate::{cfor, iif, paste, Float};
 
-#[doc = crate::doc_private!()]
 /// Implements methods independently of any features
 ///
 /// $f:   the floating-point type.
