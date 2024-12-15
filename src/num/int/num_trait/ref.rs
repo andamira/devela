@@ -160,7 +160,7 @@ where
     impl_int_ref![int_ref_root_floor(&self, nth: u32) -> Out];
 }
 
-#[doc = doc_private!()]
+#[doc = crate::doc_private!()]
 /// Implements the given method.
 macro_rules! impl_int_ref {
     (

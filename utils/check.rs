@@ -59,7 +59,7 @@ const ROOT_MODULES: [&str; 8 + 1] = [
     "data", "media", "num", "phys", "sys", "text", "ui", "work",
 
     // sys::os submodules (platforms)
-    "linux"
+    "linux", // "windows",
 ];
 #[rustfmt::skip]
 const SUB_MODULES: &[&str] = &[
@@ -68,11 +68,13 @@ const SUB_MODULES: &[&str] = &[
     // media
     "audio", "draw", "color", "font", "image",
     // num
-    "alg", "geom", "prim", "cast", "join", "split", "rand", "unit", "wave",
+    "alg", "geom", "prim", "rand", "unit", "wave",
+        "cast", "join", "split",
     // phys
     "time",
     // sys
-    "io", "mem", "bit",
+    "io", "mem",
+        "bit",
     // text
     "ascii", "fmt", "str",
     // ui
@@ -94,11 +96,11 @@ const DEP_ALL: [&str; 29] = [
 ];
 /// Dependencies to not cross compile in arches in STD_ARCHES_NO_CROSS_COMPILE.
 #[rustfmt::skip]
-const DEP_NO_CROSS_COMPILE_STD: &[&str] = [
+const DEP_NO_CROSS_COMPILE_STD: &[&str] = &[
     "dep_rodio", "dep_tinyaudio", // REASON: alsa-sys
 ];
 /// Dependencies to not cross compile, ever.
-const DEP_NO_CROSS_COMPILE_EVER: &[&str] = [
+const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
     // IMPROVE: allow activating `windows` feature
     "dep_crossterm",
     // IMPROVE: https://pyo3.rs/v0.23.2/building-and-distribution.html#cross-compiling
