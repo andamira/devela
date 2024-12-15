@@ -103,12 +103,14 @@ const DEP_NO_CROSS_COMPILE_STD: &[&str] = &[
 const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
     // IMPROVE: allow activating `windows` feature
     "dep_crossterm",
+    // NOTE: https://docs.rs/nc/latest/nc/#supported-operating-systems-and-architectures
+    "dep_nc",
     // IMPROVE: https://pyo3.rs/v0.23.2/building-and-distribution.html#cross-compiling
     "dep_pyo3",
+    // NOTE: https://docs.rs/safe_arch/latest/safe_arch/#current-support
+    "dep_safe_arch",
     // WAIT: [x86_64-pc-windows-msvc](https://github.com/ashvardanian/StringZilla/pull/169)
     "dep_stringzilla",
-    // NOTE: https://github.com/xushaohua/nc?tab=readme-ov-file#supported-operating-systems-and-architectures
-    "dep_nc",
 ];
 
 //* cross-compilation targets *//
