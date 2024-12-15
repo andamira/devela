@@ -42,44 +42,44 @@ pub mod rand;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "wave")))]
 pub mod wave;
 
-crate::items! { // structural access: doc_inline, doc_hidden, items_private, all, always
+crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     #[allow(unused)]
-    pub use {doc_hidden::*, doc_inline::*, items_private::*};
+    pub use {_pub_mods::*, _mods::*, _internals::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use always::*;
+    pub use _always::*;
 
-    mod doc_inline { #![allow(unused)]
+    mod _mods { #![allow(unused)]
         pub use super::{
-            cmp::all::*, error::*, float::all::*, frac::all::*, int::all::*,
-            interval::*, no::*, primitive::all::*, sign::*, traits::*,
+            cmp::_all::*, error::*, float::_all::*, frac::_all::*, int::_all::*,
+            interval::*, no::*, primitive::_all::*, sign::*, traits::*,
         };
         #[cfg(feature = "geom")]
-        pub use super::geom::all::*;
+        pub use super::geom::_all::*;
         #[cfg(feature = "rand")]
-        pub use super::rand::all::*;
+        pub use super::rand::_all::*;
         #[cfg(feature = "unit")]
-        pub use super::unit::all::*;
+        pub use super::unit::_all::*;
         #[cfg(feature = "wave")]
-        pub use super::wave::all::*;
+        pub use super::wave::_all::*;
     }
-    mod doc_hidden {
+    mod _pub_mods {
         #[doc(hidden)] #[doc(no_inline)]
-        pub use super::{logic::all::*, niche::all::*};
+        pub use super::{logic::_all::*, niche::_all::*};
 
         #[doc(hidden)] #[doc(no_inline)]
         #[cfg(feature = "alg")]
-        pub use super::alg::all::*;
+        pub use super::alg::_all::*;
     }
-    pub(super) mod items_private { #![allow(unused)]
+    pub(super) mod _internals { #![allow(unused)]
         pub(crate) use super::_private::*;
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::{doc_hidden::*, doc_inline::*};
+        pub use super::{_pub_mods::*, _mods::*};
     }
-    pub(super) mod always { #![allow(unused)]
+    pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            cmp::always::*, float::always::*, int::always::*, niche::always::*,
+            cmp::_always::*, float::_always::*, int::_always::*, niche::_always::*,
         };
     }
 }

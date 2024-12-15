@@ -8,15 +8,15 @@ mod collection;
 mod queues;
 mod stacks;
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {
+    mod _mods {
         pub use super::{array::*, collection::*, queues::*, stacks::*};
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

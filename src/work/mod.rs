@@ -13,23 +13,23 @@ mod r#async;
 mod sync;
 mod thread;
 
-crate::items! { // structural access: doc_inline, all, always
+crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use always::*;
+    pub use _always::*;
 
-    mod doc_inline {
-        pub use super::r#async::all::*;
+    mod _mods {
+        pub use super::r#async::_all::*;
 
         #[allow(unused, reason = "feature-gated")]
-        pub use super::{sync::all::*, thread::all::*};
+        pub use super::{sync::_all::*, thread::_all::*};
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
-    pub(super) mod always { #![allow(unused)]
-        pub use super::{r#async::always::*, sync::always::*, thread::always::*};
+    pub(super) mod _always { #![allow(unused)]
+        pub use super::{r#async::_always::*, sync::_always::*, thread::_always::*};
     }
 }

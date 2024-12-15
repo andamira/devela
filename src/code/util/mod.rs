@@ -39,29 +39,29 @@ mod reexports; // re-exported items
 #[cfg(_bit_·)]
 mod enumset; // enumset!
 
-crate::items! { // structural access: doc_inline, items_private, all, always
+crate::items! { // structural access: _mods, _internals, _all, _always
     #[allow(unused)]
-    pub use {doc_inline::*, items_private::*};
+    pub use {_mods::*, _internals::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use always::*;
+    pub use _always::*;
 
-    mod doc_inline {
+    mod _mods {
         pub use super::{
-            asserts::all::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*,
+            asserts::_all::*, capture::*, cdbg::*, cfg_if::*, cfor::*, deprecate::*,
             ident::*, iif::*, impl_trait::*, items::*, paste::*, r#const::*,
             reexports::*,
         };
         #[cfg(_bit_·)]
         pub use super::enumset::*;
     }
-    pub(super) mod items_private {
+    pub(super) mod _internals {
         pub(crate) use super::{_doc::*, _reexport::*};
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
-    pub(super) mod always { #![allow(unused)]
-        pub use super::{reexports::*, items_private::*};
+    pub(super) mod _always { #![allow(unused)]
+        pub use super::{_internals::*, reexports::*};
     }
 }

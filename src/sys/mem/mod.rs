@@ -29,33 +29,33 @@ mod pod;
 
 pub mod cell;
 
-crate::items! { // structural access: doc_inline, doc_hidden, items_hidden, all, always
+crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     #[allow(unused)]
-    pub use {doc_hidden::*, doc_inline::*, items_hidden::*};
+    pub use {_pub_mods::*, _mods::*, _hidden::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use always::*;
+    pub use _always::*;
 
-    mod doc_inline {
+    mod _mods {
         pub use super::{
-            aligned::*, cache_align::*, cswap::*, ext::*, namespace::*, ptr::all::*,
-            reexports::*, size::all::*, slice::all::*, storage::*,
+            aligned::*, cache_align::*, cswap::*, ext::*, namespace::*, ptr::_all::*,
+            reexports::*, size::_all::*, slice::_all::*, storage::*,
         };
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_ptr"))]
         pub use super::pin::Pinned;
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         pub use super::pod::MemPod;
     }
-    mod doc_hidden { #[doc(hidden)] #[doc(no_inline)]
-        pub use super::cell::all::*;
+    mod _pub_mods { #[doc(hidden)] #[doc(no_inline)]
+        pub use super::cell::_all::*;
     }
-    pub(super) mod items_hidden {
-        pub use super::size::items_hidden::*;
+    pub(super) mod _hidden {
+        pub use super::size::_hidden::*;
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::{doc_hidden::*, doc_inline::*};
+        pub use super::{_pub_mods::*, _mods::*};
     }
-    pub(super) mod always { #![allow(unused)]
-        pub use super::{cell::always::*, ptr::always::*, reexports::*};
+    pub(super) mod _always { #![allow(unused)]
+        pub use super::{cell::_always::*, ptr::_always::*, reexports::*};
     }
 }

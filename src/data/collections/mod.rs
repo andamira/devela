@@ -26,35 +26,35 @@ mod tuple; // Tuple, TupleFmt, TupleEnumRef, TupleEnumMut
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
 mod vec;
 
-crate::items! { // structural access: doc_inline, all, always
+crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use always::*;
+    pub use _always::*;
 
-    mod doc_inline {
-        pub use super::{array::all::*, list::all::*, reexports::*};
+    mod _mods {
+        pub use super::{array::_all::*, list::_all::*, reexports::*};
 
         #[cfg(_destaque_·)]
-        pub use super::destaque::all::*;
+        pub use super::destaque::_all::*;
         // #[cfg(_graph_·)]
         // pub use super::graph::*;
         // #[cfg(_node_·)]
         // pub use super::node::*;
         #[cfg(_stack_·)]
-        pub use super::stack::all::*;
+        pub use super::stack::_all::*;
         #[cfg(feature = "data")]
-        pub use super::traits::all::*;
+        pub use super::traits::_all::*;
         #[cfg(feature = "_tuple")]
-        pub use super::tuple::all::*;
+        pub use super::tuple::_all::*;
         #[cfg(feature = "alloc")]
-        pub use super::vec::all::*;
+        pub use super::vec::_all::*;
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
-    pub(super) mod always { #![allow(unused)]
+    pub(super) mod _always { #![allow(unused)]
         pub use super::reexports::*;
     }
 }

@@ -1814,6 +1814,7 @@ macro_rules! impl_arch {
 use impl_arch;
 
 /// Helps to re-export standalone functions as namespaced methods of a struct.
+#[allow(unused_macros, reason = "feature-gated")]
 macro_rules! arch_fn {
     () => {};
     (   // Function with return type
@@ -1852,4 +1853,5 @@ macro_rules! arch_fn {
         ]; )+
     };
 }
+#[allow(unused_imports, reason = "feature-gated")]
 use arch_fn;

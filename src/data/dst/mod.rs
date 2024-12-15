@@ -23,18 +23,18 @@ mod queue;
 mod stack;
 mod value;
 
-crate::items! { // structural access: doc_inline, all, items_private
+crate::items! { // structural access: _mods, _all, _internals
     #[allow(unused)]
-    pub use {doc_inline::*, items_private::*} ;
+    pub use {_mods::*, _internals::*} ;
 
-    mod doc_inline {
+    mod _mods {
         pub use super::{buffer::*, queue::*, stack::*, value::*};
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
-    mod items_private {
+    mod _internals {
         pub(super) use super::helpers::{
             check_fat_pointer, decompose_pointer, list_push_gen, make_fat_ptr,
             round_to_words, store_metadata,

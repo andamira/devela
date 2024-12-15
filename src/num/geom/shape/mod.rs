@@ -7,15 +7,15 @@ mod angle; // Angle, AngleDirection, AngleKind
 mod extent; // Extent, Extent2d, Extent3d
 mod point; // Point, Points, Point2d, Point3d, VecPoints
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {
+    mod _mods {
         pub use super::{angle::*, extent::*, point::*};
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

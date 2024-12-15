@@ -10,17 +10,17 @@
 #[cfg(all(feature = "sys", feature = "std"))]
 mod project;
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {
+    mod _mods {
         #[cfg(all(feature = "sys", feature = "std"))]
         pub use super::project::*;
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[allow(unused_imports, reason = "feature-gated")]
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

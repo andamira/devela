@@ -98,20 +98,20 @@ pub mod thread {
     };
 }
 
-crate::items! { // structural access: doc_inline, doc_hidden, all
+crate::items! { // structural access: _mods, _pub_mods, _all
     #[allow(unused)]
-    pub use {doc_inline::*, doc_hidden::*};
+    pub use {_mods::*, _pub_mods::*};
 
-    mod doc_inline {
+    mod _mods {
         #[cfg(all(feature = "unsafe_syscall", not(miri)))]
         pub use super::terminal::*;
     }
-    mod doc_hidden { #![allow(unused)]
+    mod _pub_mods { #![allow(unused)]
         #[doc(hidden)] #[doc(no_inline)]
-        pub use super::{consts::all::*, io::*, process::*, thread::*};
+        pub use super::{consts::_all::*, io::*, process::*, thread::*};
     }
-    pub(super) mod all { #![allow(unused)]
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
-        pub use super::{doc_inline::*, doc_hidden::*};
+        pub use super::{_mods::*, _pub_mods::*};
     }
 }

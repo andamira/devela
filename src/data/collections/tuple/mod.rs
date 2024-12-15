@@ -43,15 +43,15 @@ mod codegen {
     }
 }
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {
+    mod _mods {
         pub use super::codegen::*;
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

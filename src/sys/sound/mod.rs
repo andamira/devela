@@ -3,14 +3,14 @@
 //! Sound I/O functionality.
 //
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {}
+    mod _mods {}
 
-    pub(super) mod all { #![allow(unused)]
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

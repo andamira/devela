@@ -9,11 +9,11 @@ mod expr;
 #[cfg(feature = "bit")]
 mod bit;
 
-crate::items! { // structural access: doc_inline, items_hidden, all
+crate::items! { // structural access: _mods, _hidden, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {
+    mod _mods {
         #[doc(inline)]
         pub use super::{byte::*, expr::size_of_expr};
 
@@ -21,12 +21,12 @@ crate::items! { // structural access: doc_inline, items_hidden, all
         #[cfg(feature = "bit")]
         pub use super::bit::*;
     }
-    pub(super) mod items_hidden {
+    pub(super) mod _hidden {
         #[doc(hidden)]
         pub use super::expr::__size_of_expr;
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

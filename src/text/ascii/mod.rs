@@ -12,19 +12,19 @@ mod wrapper;
 #[cfg(feature = "ascii")]
 mod char;
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {
+    mod _mods {
         pub use super::wrapper::Ascii;
 
         #[cfg(feature = "ascii")]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "ascii")))]
         pub use super::char::AsciiChar;
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

@@ -18,27 +18,27 @@ pub mod ops; // re-exported overloadable operators
 pub mod result; // AllError, serr, sok, Mismatch, OptRes, ValueQuant…
 pub mod util; // utility macros and functions
 
-crate::items! { // structural access: doc_inline, doc_hidden, items_private, all, always
+crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     #[allow(unused)]
-    pub use {doc_hidden::*, doc_inline::*, items_private::*};
+    pub use {_pub_mods::*, _mods::*, _internals::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use always::*;
+    pub use _always::*;
 
-    mod doc_inline {
-        pub use super::{any::all::*, default::*, reexports::*};
+    mod _mods {
+        pub use super::{any::_all::*, default::*, reexports::*};
     }
-    mod doc_hidden {
+    mod _pub_mods {
         #[doc(hidden)] #[doc(no_inline)]
-        pub use super::{marker::all::*, ops::*, result::all::*, util::all::*};
+        pub use super::{marker::_all::*, ops::*, result::_all::*, util::_all::*};
     }
-    pub(super) mod items_private {
-        pub(crate) use super::util::items_private::*;
+    pub(super) mod _internals {
+        pub(crate) use super::util::_internals::*;
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::{doc_hidden::*, doc_inline::*};
+        pub use super::{_pub_mods::*, _mods::*};
     }
-    pub(super) mod always { #![allow(unused)]
-        pub use super::{marker::always::*, reexports::*, result::always::*, util::always::*};
+    pub(super) mod _always { #![allow(unused)]
+        pub use super::{marker::_always::*, reexports::*, result::_always::*, util::_always::*};
     }
 }

@@ -26,40 +26,40 @@ pub mod font;
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "image")))]
 pub mod image;
 
-crate::items! { // structural access: doc_inline, all, always
+crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use always::*;
+    pub use _always::*;
 
-    mod doc_inline {
+    mod _mods {
         #[cfg(_media_·)]
         pub use super::error::*;
         #[cfg(feature = "audio")]
-        pub use super::audio::all::*;
+        pub use super::audio::_all::*;
         #[cfg(feature = "color")]
-        pub use super::color::all::*;
+        pub use super::color::_all::*;
         #[cfg(feature = "draw")]
-        pub use super::draw::all::*;
+        pub use super::draw::_all::*;
         #[cfg(feature = "font")]
-        pub use super::font::all::*;
+        pub use super::font::_all::*;
         #[cfg(feature = "image")]
-        pub use super::image::all::*;
+        pub use super::image::_all::*;
     }
-    pub(super) mod all { #![allow(unused)]
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
-    pub(super) mod always { #![allow(unused)]
+    pub(super) mod _always { #![allow(unused)]
         #[cfg(feature = "audio")]
-        pub use super::audio::always::*;
+        pub use super::audio::_always::*;
         #[cfg(feature = "color")]
-        pub use super::color::always::*;
+        pub use super::color::_always::*;
         #[cfg(feature = "draw")]
-        pub use super::draw::always::*;
+        pub use super::draw::_always::*;
         #[cfg(feature = "font")]
-        pub use super::font::always::*;
+        pub use super::font::_always::*;
         #[cfg(feature = "image")]
-        pub use super::image::always::*;
+        pub use super::image::_always::*;
     }
 }

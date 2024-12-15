@@ -20,15 +20,15 @@ items! { mod aarch64; use aarch64 as sys; }
 #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
 items! { mod riscv; use riscv as sys; }
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {
+    mod _mods {
         pub use super::sys::*;
     }
-    pub(super) mod all { #![allow(unused)]
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

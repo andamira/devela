@@ -8,17 +8,17 @@
 #[cfg(_int_·)]
 mod wrapper;
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {
+    mod _mods {
         #[cfg(_int_·)]
         pub use super::wrapper::*;
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
         #[allow(unused, reason = "feature-gated")]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

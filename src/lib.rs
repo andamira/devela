@@ -153,47 +153,47 @@ pub mod all {
     #[rustfmt::skip]
     #[doc(inline)]
     pub use super::{
-        code::all::*,
-        data::all::*,
-        lang::all::*,
-        media::all::*,
-        num::all::*,
-        phys::all::*,
-        sys::all::*,
-        text::all::*,
-        ui::all::*,
-        work::all::*,
+        code::_all::*,
+        data::_all::*,
+        lang::_all::*,
+        media::_all::*,
+        num::_all::*,
+        phys::_all::*,
+        sys::_all::*,
+        text::_all::*,
+        ui::_all::*,
+        work::_all::*,
         //
-        always::*,
+        _always::*,
     };
 }
-mod always {
-    // public items, not as feature-gated
+mod _always {
+    // public items, not as much feature-gated
     #[allow(unused_imports)]
     #[rustfmt::skip]
     pub use super::{
-        code::always::*,
-        data::always::*,
-        lang::always::*,
-        media::always::*,
-        num::always::*,
-        phys::always::*,
-        sys::always::*,
-        text::always::*,
-        ui::always::*,
-        work::always::*,
+        code::_always::*,
+        data::_always::*,
+        lang::_always::*,
+        media::_always::*,
+        num::_always::*,
+        phys::_always::*,
+        sys::_always::*,
+        text::_always::*,
+        ui::_always::*,
+        work::_always::*,
     };
 }
 #[doc(hidden)]
-pub use items_hidden::*;
-mod items_hidden {
-    // public items, hidden from public
-    pub use super::sys::items_hidden::*;
+pub use _hidden::*;
+mod _hidden {
+    // public items, but hidden
+    pub use super::sys::_hidden::*;
 }
 #[allow(unused_imports)]
-pub(crate) use items_private::*;
-mod items_private {
-    // private items, internal use only
+pub(crate) use _internals::*;
+mod _internals {
+    // for internal use only
     #[allow(unused_imports)]
-    pub(crate) use super::code::items_private::*;
+    pub(crate) use super::code::_internals::*;
 }

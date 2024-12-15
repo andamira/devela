@@ -29,31 +29,31 @@ pub mod log;
 pub mod mem;
 pub mod os;
 
-crate::items! { // structural access: doc_inline, doc_hidden, items_hidden, all, always
+crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     #[allow(unused)]
-    pub use {doc_inline::*, doc_hidden::*, items_hidden::*};
+    pub use {_mods::*, _pub_mods::*, _hidden::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use always::*;
+    pub use _always::*;
 
-    mod doc_inline { #![allow(unused)]
-        pub use super::{env::all::*, sound::all::*};
+    mod _mods { #![allow(unused)]
+        pub use super::{env::_all::*, sound::_all::*};
         #[cfg(feature = "sys")]
-        pub use super::path::all::*;
+        pub use super::path::_all::*;
     }
-    mod doc_hidden { #![allow(unused)]
+    mod _pub_mods { #![allow(unused)]
         #[doc(hidden)] #[doc(no_inline)]
-        pub use super::{arch::all::*, io::all::*, log::all::*, mem::all::*, os::all::*};
+        pub use super::{arch::_all::*, io::_all::*, log::_all::*, mem::_all::*, os::_all::*};
     }
-    pub(super) mod items_hidden {
-        pub use super::mem::items_hidden::*;
+    pub(super) mod _hidden {
+        pub use super::mem::_hidden::*;
     }
-    pub(super) mod all { #![allow(unused)]
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
-        pub use super::{doc_inline::*, doc_hidden::*};
+        pub use super::{_mods::*, _pub_mods::*};
     }
-    pub(super) mod always { #![allow(unused)]
+    pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            arch::always::*, env::always::*, io::always::*, mem::always::*,
+            arch::_always::*, env::_always::*, io::_always::*, mem::_always::*,
         };
     }
 }

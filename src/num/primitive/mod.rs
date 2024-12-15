@@ -19,11 +19,11 @@ mod join; // PrimitiveJoin
 #[cfg(feature = "split")]
 mod split; // PrimitiveSplit
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {
+    mod _mods {
         #[cfg(prim···)]
         pub use super::namespace::*;
 
@@ -39,8 +39,8 @@ crate::items! { // structural access: doc_inline, all
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
         pub use super::split::*;
     }
-    pub(super) mod all { #![allow(unused)]
+    pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

@@ -15,15 +15,15 @@ mod d2; // 2-dimensional Array2d
 mod ext; // ExtArray, ArrayFmt
 mod init; // array_init!
 
-crate::items! { // structural access: doc_inline, all
+crate::items! { // structural access: _mods, _all
     #[allow(unused)]
-    pub use doc_inline::*;
+    pub use _mods::*;
 
-    mod doc_inline {
-        pub use super::{d1::all::*, d2::all::*, ext::*, init::*};
+    mod _mods {
+        pub use super::{d1::_all::*, d2::_all::*, ext::*, init::*};
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
 }

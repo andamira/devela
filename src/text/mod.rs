@@ -24,28 +24,28 @@ mod error;
 pub mod fmt;
 pub mod str;
 
-crate::items! { // structural access: doc_inline, doc_hidden, all, always
+crate::items! { // structural access: _mods, _pub_mods, _all, _always
     #[allow(unused)]
-    pub use {doc_hidden::*, doc_inline::*};
+    pub use {_pub_mods::*, _mods::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use always::*;
+    pub use _always::*;
 
-    mod doc_inline {
-        pub use super::{ascii::all::*, char::all::*, grapheme::all::*, parse::all::*};
+    mod _mods {
+        pub use super::{ascii::_all::*, char::_all::*, grapheme::_all::*, parse::_all::*};
         #[cfg(feature = "text")]
         pub use super::error::*;
     }
-    mod doc_hidden {
+    mod _pub_mods {
         #[doc(hidden)] #[doc(no_inline)]
-        pub use super::{fmt::all::*, str::all::*};
+        pub use super::{fmt::_all::*, str::_all::*};
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::{doc_hidden::*, doc_inline::*};
+        pub use super::{_pub_mods::*, _mods::*};
     }
-    pub(super) mod always { #![allow(unused)]
+    pub(super) mod _always { #![allow(unused)]
         pub use super::{
-            fmt::always::*, char::always::*, parse::always::*, str::always::*,
+            fmt::_always::*, char::_always::*, parse::_always::*, str::_always::*,
         };
     }
 }

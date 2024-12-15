@@ -19,27 +19,27 @@ mod value_quant; // ValueQuant
 
 pub mod error; // AllError, modular errors
 
-crate::items! { // structural access: doc_inline, doc_hidden, all, always
+crate::items! { // structural access: _mods, _pub_mods, _all, _always
     #[allow(unused)]
-    pub use {doc_inline::*, doc_hidden::*};
+    pub use {_mods::*, _pub_mods::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use always::*;
+    pub use _always::*;
 
-    mod doc_inline {
+    mod _mods {
         pub use super::{
-            chain_hook::*, mismatch::*, opt_res::all::*, own::*,
-            panic::all::*, reexports::*, value_quant::*,
+            chain_hook::*, mismatch::*, opt_res::_all::*, own::*,
+            panic::_all::*, reexports::*, value_quant::*,
         };
     }
-    mod doc_hidden {
+    mod _pub_mods {
         #[doc(hidden)] #[doc(no_inline)]
-        pub use super::error::all::*;
+        pub use super::error::_all::*;
     }
-    pub(super) mod all {
+    pub(super) mod _all {
         #[doc(inline)]
-        pub use super::doc_inline::*;
+        pub use super::_mods::*;
     }
-    pub(super) mod always { #![allow(unused)]
-        pub use super::{error::always::*, panic::always::*, reexports::*};
+    pub(super) mod _always { #![allow(unused)]
+        pub use super::{error::_always::*, panic::_always::*, reexports::*};
     }
 }
