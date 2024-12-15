@@ -195,7 +195,15 @@ pub(crate) use doc_primitive;
 
 /// Returns the string literal "std" if `std` is enabled, or "core" otherwise.
 #[cfg(feature = "std")]
-macro_rules! std_core { () => { "std" }}
+macro_rules! std_core {
+    () => {
+        "std"
+    };
+}
 #[cfg(not(feature = "std"))]
-macro_rules! std_core { () => { "core" }}
+macro_rules! std_core {
+    () => {
+        "core"
+    };
+}
 pub(crate) use std_core;

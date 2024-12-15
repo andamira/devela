@@ -6,11 +6,8 @@
 #![doc = crate::doc_!(newline)]
 //
 
-mod reexports;
-
-#[cfg(feature = "dep_safe_arch")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_safe_arch")))]
 mod namespace;
+mod reexports;
 
 crate::items! { // structural access: doc_inline, all, always
     #[allow(unused)]
@@ -19,10 +16,7 @@ crate::items! { // structural access: doc_inline, all, always
     pub use always::*;
 
     mod doc_inline {
-        pub use super::reexports::*;
-
-        #[cfg(feature = "dep_safe_arch")]
-        pub use super::namespace::*;
+        pub use super::{namespace::*, reexports::*};
     }
     pub(super) mod all {
         #[doc(inline)]

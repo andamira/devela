@@ -2,14 +2,20 @@
 //
 //! Target feature-dependant namespaces.
 //
+// TOC
+// - impl Arch blocks
+// - macro helpers
+//   - impl_arch
+//   - arch_fn
 
 #![allow(clippy::too_many_arguments)]
 
+#[cfg(feature = "dep_safe_arch")]
 use crate::_dep::safe_arch::*;
 
 /// Arch-related functionality.
 ///
-/// Implementations depending on target features:
+/// Implementations that depend on: `dep_safe_arch` and (`x86` or `x86_64`) and target features:
 /// - [none](#functions-not-requiring-any-target-feature).
 /// - [`adx`](#functions-requiring-the-adx-target-feature).
 /// - [`aes`](#functions-requiring-the-aes-target-feature).
@@ -32,51 +38,9 @@ use crate::_dep::safe_arch::*;
 /// - [`ssse3`](#functions-requiring-the-ssse3-target-feature).
 pub struct Arch;
 
-#[doc = crate::doc_private!()]
-/// Helps to re-export standalone functions as namespaced methods of a struct.
-// ORIG
-macro_rules! arch_fn {
-    () => {};
-    (   // Function with return type
-        $doc:literal,
-        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
-        ($($param:ident: $ty:ty),* $(,)?) -> $ret:ty
-     ) => { $crate::paste! { // compiles faster using paste! than concat! + stringify!
-        #[doc = $doc]
-        #[doc = "\n\nSee: [`" $fn_name "`][crate::_dep::safe_arch::" $fn_name "]."] // faster
-        // #[doc = concat!("\n\nSee: [`", stringify!($fn_name), "`][", stringify!($fn_name), "].")]
-        #[must_use]
-        pub fn $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) -> $ret {
-            $fn_name$(::<$($const_name),*>)?($($param),*)
-        }
-    }};
-    (   // Function without return type
-        $doc:literal,
-        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
-        ($($param:ident: $ty:ty),* $(,)?)
-    ) => { $crate::paste! {
-        #[doc = $doc]
-        #[doc = "\n\nSee: [`" $fn_name "`][crate::_dep::safe_arch::" $fn_name "]."] // faster
-        // #[doc = concat!("\n\nSee: [`", stringify!($fn_name), "`][", stringify!($fn_name), "].")]
-        pub fn $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) {
-            $fn_name$(::<$($const_name),*>)?($($param),*)
-        }
-    }};
-    (   // List of functions
-        $($doc:literal,
-        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
-        ($($param:ident: $ty:ty),* $(,)?) $(-> $ret:ty)?);+ $(;)?
-    ) => {
-        $( arch_fn![
-            $doc,
-            $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) $(-> $ret)?
-        ]; )+
-    };
-}
-
-/// # Functions not requiring any target feature.
-/// ---
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions not requiring any target feature.\n\n---"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64";
     arch_fn! {
         "Swap the bytes of the given 32-bit value.",
         byte_swap_i32(i: i32) -> i32;
@@ -88,14 +52,10 @@ impl Arch {
         read_timestamp_counter_p(aux: &mut u32) -> u64;
     }
 }
-
-/// # Functions requiring the `adx` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/Intel_ADX>
-#[cfg(target_feature = "adx")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "adx")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `adx` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/Intel_ADX>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "adx";
     arch_fn! {
         "Add two `u32` with a carry value.",
         add_carry_u32(c_in: u8, a: u32, b: u32, out: &mut u32) -> u8;
@@ -103,14 +63,10 @@ impl Arch {
         add_carry_u64(c_in: u8, a: u64, b: u64, out: &mut u64) -> u8;
     }
 }
-
-/// # Functions requiring the `aes` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/AES_instruction_set>
-#[cfg(target_feature = "aes")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "aes")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `aes` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/AES_instruction_set>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "aes";
     arch_fn! {
         "Perform the last round of an AES decryption flow on `a` using the `round_key`.",
         aes_decrypt_last_m128i(a: m128i, round_key: m128i) -> m128i;
@@ -126,14 +82,10 @@ impl Arch {
         aes_key_gen_assist_m128i<const IMM: i32>(a: m128i) -> m128i;
     }
 }
-
-/// # Functions requiring the `avx` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/Advanced_Vector_Extensions>
-#[cfg(target_feature = "avx")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "avx")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `avx` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/Advanced_Vector_Extensions>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "avx";
     arch_fn! {
         "Add adjacent `f32` lanes.",
         add_horizontal_m256(a: m256, b: m256) -> m256;
@@ -504,14 +456,10 @@ impl Arch {
         zeroed_m256i() -> m256i;
     }
 }
-
-/// # Functions requiring the `avx2` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/Advanced_Vector_Extensions>
-#[cfg(target_feature = "avx2")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "avx2")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `avx2` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/Advanced_Vector_Extensions>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "avx2";
     arch_fn! {
         "Absolute value of `i16` lanes.",
         abs_i16_m256i(a: m256i) -> m256i;
@@ -832,15 +780,10 @@ impl Arch {
         unpack_low_i8_m256i(a: m256i, b: m256i) -> m256i;
     }
 }
-
-/// # Functions requiring the `bmi1` target feature.
-/// ---
-///
-/// See:
-/// <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#BMI1_(Bit_Manipulation_Instruction_Set_1)>
-#[cfg(target_feature = "bmi1")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "bmi1")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `bmi1` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#BMI1_(Bit_Manipulation_Instruction_Set_1)>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "bmi1";
     arch_fn! {
         "Extract a span of bits from the `u32`, control value style.",
         bit_extract2_u32(a: u32, control: u32) -> u32;
@@ -872,15 +815,10 @@ impl Arch {
         trailing_zero_count_u64(a: u64) -> u64;
     }
 }
-
-/// # Functions requiring the `bmi2` target feature.
-/// ---
-///
-/// See:
-/// <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#BMI2_(Bit_Manipulation_Instruction_Set_2)>
-#[cfg(target_feature = "bmi2")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "bmi2")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `bmi2` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#BMI2_(Bit_Manipulation_Instruction_Set_2)>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "bmi2";
     arch_fn! {
         "Zero out all high bits in a `u32` starting at the index given.",
         bit_zero_high_index_u32(a: u32, index: u32) -> u32;
@@ -900,14 +838,10 @@ impl Arch {
         population_extract_u64(a: u64, index: u64) -> u64;
     }
 }
-
-/// # Functions requiring the `fma` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/FMA_instruction_set>
-#[cfg(target_feature = "fma")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "fma")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `fma` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/FMA_instruction_set>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "fma";
     arch_fn! {
         "Lanewise fused `(a * b) + c`",
         fused_mul_add_m128(a: m128, b: m128, c: m128) -> m128;
@@ -975,15 +909,10 @@ impl Arch {
         fused_mul_subadd_m256d(a: m256d, b: m256d, c: m256d) -> m256d;
     }
 }
-
-/// # Functions requiring the `lzcnt` target feature.
-/// ---
-///
-/// See:
-/// <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#ABM_(Advanced_Bit_Manipulation)>
-#[cfg(target_feature = "lzcnt")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "lzcnt")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `lzcnt` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#ABM_(Advanced_Bit_Manipulation)>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "lzcnt";
     arch_fn! {
         "Count the leading zeroes in a `u32`.",
         leading_zero_count_u32(a: u32) -> u32;
@@ -991,28 +920,19 @@ impl Arch {
         leading_zero_count_u64(a: u64) -> u64;
     }
 }
-
-/// # Functions requiring the `pclmulqdq` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/CLMUL_instruction_set>
-#[cfg(target_feature = "popcnt")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "pclmulqdq")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `pclmulqdq` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/CLMUL_instruction_set>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "pclmulqdq";
     arch_fn! {
         "Performs a “carryless” multiplication of two `i64` values.",
         mul_i64_carryless_m128i<const IMM: i32>(a: m128i, b: m128i) -> m128i;
     }
 }
-
-/// # Functions requiring the `popcnt` target feature.
-/// ---
-///
-/// See:
-/// <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#ABM_(Advanced_Bit_Manipulation)>
-#[cfg(target_feature = "popcnt")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "popcnt")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `popcnt` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/X86_Bit_manipulation_instruction_set#ABM_(Advanced_Bit_Manipulation)>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "popcnt";
     arch_fn! {
         "Count the number of bits set within an `i32`",
         population_count_i32(a: i32) -> i32;
@@ -1020,14 +940,10 @@ impl Arch {
         population_count_i64(a: i64) -> i32;
     }
 }
-
-/// # Functions requiring the `rdrand` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/RDRAND>
-#[cfg(target_feature = "rdrand")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "rdrand")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `rdrand` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/RDRAND>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "rdrand";
     arch_fn! {
         "Try to obtain a random `u16` from the hardware RNG.",
         rdrand_u16(out: &mut u16) -> i32;
@@ -1037,14 +953,10 @@ impl Arch {
         rdrand_u64(out: &mut u64) -> i32;
     }
 }
-
-/// # Functions requiring the `rdseed` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/RDRAND>
-#[cfg(target_feature = "rdseed")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "rdseed")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `rdseed` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/RDRAND>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "rdseed";
     arch_fn! {
         "Try to obtain a random `u16` from the hardware RNG.",
         rdseed_u16(out: &mut u16) -> i32;
@@ -1054,14 +966,10 @@ impl Arch {
         rdseed_u64(out: &mut u64) -> i32;
     }
 }
-
-/// # Functions requiring the `sse` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions>
-#[cfg(target_feature = "sse")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "sse")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `sse` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse";
     arch_fn! {
         "Lanewise `a + b`.",
         add_m128(a: m128, b: m128) -> m128;
@@ -1221,13 +1129,11 @@ impl Arch {
         zeroed_m128() -> m128;
     }
 }
+impl_arch! {
+    #[doc = "# Generic functions requiring the `sse` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse";
 
-/// # Generic functions requiring the `sse` target feature.
-///
-/// See: <https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions>
-#[cfg(target_feature = "sse")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "sse")))]
-impl Arch {
     /// Fetches the cache line containing `addr` into all levels of the cache hierarchy,
     /// anticipating write.
     pub fn prefetch_et0<T>(addr: &T) {
@@ -1259,14 +1165,10 @@ impl Arch {
         prefetch_t2(addr);
     }
 }
-
-/// # Functions requiring the `sse2` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/SSE2>
-#[cfg(target_feature = "sse2")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "sse2")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `sse2` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/SSE2>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse2";
     arch_fn! {
         "Lanewise `a + b` with lanes as `i16`.",
         add_i16_m128i(a: m128i, b: m128i) -> m128i;
@@ -1660,14 +1562,10 @@ impl Arch {
         zeroed_m128i() -> m128i;
     }
 }
-
-/// # Functions requiring the `sse3` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/SSE3>
-#[cfg(target_feature = "sse3")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "sse3")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `sse3` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/SSE3>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse3";
     arch_fn! {
         "Add each lane horizontally, pack the outputs as `a` then `b`.",
         add_horizontal_m128(a: m128, b: m128) -> m128;
@@ -1689,14 +1587,10 @@ impl Arch {
         sub_horizontal_m128d(a: m128d, b: m128d) -> m128d;
     }
 }
-
-/// # Functions requiring the `sse4.1` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/SSE4#SSE4.1>
-#[cfg(target_feature = "sse4.1")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "sse4.1")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `sse4.1` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/SSE4#SSE4.1>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse4.1";
     arch_fn! {
         "Blends the `i16` lanes according to the immediate mask.",
         blend_imm_i16_m128i<const IMM: i32>(a: m128i, b: m128i) -> m128i;
@@ -1820,14 +1714,10 @@ impl Arch {
         testz_m128i(a: m128i, b: m128i) -> i32;
     }
 }
-
-/// # Functions requiring the `sse4.2` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/SSE4#SSE4.2>
-#[cfg(target_feature = "sse4.2")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "sse4.2")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `sse4.2` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/SSE4#SSE4.2>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "sse4.2";
     arch_fn! {
         "Lanewise `a &gt; b` with lanes as `i64`.",
         cmp_gt_mask_i64_m128i(a: m128i, b: m128i) -> m128i;
@@ -1851,14 +1741,10 @@ impl Arch {
         search_implicit_str_for_mask<const IMM: i32>(needle: m128i, haystack: m128i) -> m128i;
     }
 }
-
-/// # Functions requiring the `ssse3` target feature.
-/// ---
-///
-/// See: <https://en.wikipedia.org/wiki/SSSE3>
-#[cfg(target_feature = "ssse3")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(target_feature = "ssse3")))]
-impl Arch {
+impl_arch! {
+    #[doc = "# Functions requiring the `ssse3` target feature.\n\n---"]
+    #[doc = "See: <https://en.wikipedia.org/wiki/SSSE3>"]
+    features = "dep_safe_arch", any_target_arch = "x86", "x86_64", target_features = "ssse3";
     arch_fn! {
         "Lanewise absolute value with lanes as `i16`.",
         abs_i16_m128i(a: m128i) -> m128i;
@@ -1896,3 +1782,74 @@ impl Arch {
         sub_horizontal_saturating_i16_m128i(a: m128i, b: m128i) -> m128i;
     }
 }
+
+/* macro helpers */
+
+/// Generates an impl Arch block with optional conditional configurations and documentation.
+macro_rules! impl_arch {
+    (
+        $( #[doc = $doc:literal] )*
+        $( features = $( $feature:literal ),+ $(,)? )? // all
+        $( any_target_arch = $( $target_arch:literal ),+ $(,)? )? // any
+        $( target_features = $( $target_feature:literal ),+ $(,)? )? // all
+        ;
+        $($item:item)*
+    ) => {
+        $( #[doc = $doc] )*
+        $(
+        #[cfg(any($(feature = $feature),+))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(any($(feature = $feature),+))))]
+        )?
+        $(
+        #[cfg(any($(target_arch = $target_arch),+))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(any($(target_arch = $target_arch),+))))]
+        )?
+        $(
+        #[cfg(any($(target_feature = $target_feature),+))]
+        #[cfg_attr(feature = "nightly_doc", doc(cfg(any($(target_feature = $target_feature),+))))]
+        )?
+        impl Arch { $($item)* }
+    };
+}
+use impl_arch;
+
+/// Helps to re-export standalone functions as namespaced methods of a struct.
+macro_rules! arch_fn {
+    () => {};
+    (   // Function with return type
+        $doc:literal,
+        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
+        ($($param:ident: $ty:ty),* $(,)?) -> $ret:ty
+     ) => { $crate::paste! { // NOTE: compiles faster using paste! than concat! + stringify!
+        #[doc = $doc]
+        #[doc = "\n\nSee: [`" $fn_name "`][crate::_dep::safe_arch::" $fn_name "]."] // faster
+        // #[doc = concat!("\n\nSee: [`", stringify!($fn_name), "`][", stringify!($fn_name), "].")]
+        #[must_use]
+        pub fn $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) -> $ret {
+            $fn_name$(::<$($const_name),*>)?($($param),*)
+        }
+    }};
+    (   // Function without return type
+        $doc:literal,
+        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
+        ($($param:ident: $ty:ty),* $(,)?)
+    ) => { $crate::paste! {
+        #[doc = $doc]
+        #[doc = "\n\nSee: [`" $fn_name "`][crate::_dep::safe_arch::" $fn_name "]."] // faster
+        // #[doc = concat!("\n\nSee: [`", stringify!($fn_name), "`][", stringify!($fn_name), "].")]
+        pub fn $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) {
+            $fn_name$(::<$($const_name),*>)?($($param),*)
+        }
+    }};
+    (   // List of functions
+        $($doc:literal,
+        $fn_name:ident$(<$(const $const_name:ident: $const_ty:ty),*>)?
+        ($($param:ident: $ty:ty),* $(,)?) $(-> $ret:ty)?);+ $(;)?
+    ) => {
+        $( arch_fn![
+            $doc,
+            $fn_name$(<$(const $const_name: $const_ty),*>)?($($param: $ty),*) $(-> $ret)?
+        ]; )+
+    };
+}
+use arch_fn;
