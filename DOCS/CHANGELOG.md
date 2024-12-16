@@ -110,6 +110,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 - rustdoc html header:
   - load katexextensions `mchem` and `copy-tex`.
   - trust `\href` commands.
+  - move to `config/`.
+- new directory `config/`.
 
 ### Removed
 - remove custom no_std `Error` definition.
