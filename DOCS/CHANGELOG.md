@@ -101,7 +101,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - add profiles: `dev-lto`, `release-lto`.
 - new `.clippy.toml` configuration file.
 - new github workflows: `get_errno.yml`, `get_syscall.yml`.
-- new scripts in `utils/`: `cargo-native`, `features.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`, `docs_coverage.sh`, `docs_items.rs`.
+- new scripts in `utils/`: `cargo-native`, `manifest.sh`, `release_dates.rs`, `get_errno.sh`, `get_syscall.sh`, `docs_coverage.sh`, `docs_items.rs`.
 - new convenience fn: `manifest_dir` in `build::utils`.
 - hide `no_inline` items re-exports.
 - new file `DOCS/VENDORED_rustdoc.md`

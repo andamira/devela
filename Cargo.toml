@@ -95,7 +95,7 @@ bench = false
 #
 # Notes:
 # - Features are in sync with build/features.rs & src/_doc/features.md.
-# - List and count features with the utils/manifest_features.sh script.
+# - List and count features with `utils/manifest.sh features`.
 
 
 #* Development features *#
@@ -645,6 +645,10 @@ dep_wide = ["dep:wide"]                                                         
 # 2. Update `dep_all` above.
 # 3. Add a new entry in src/_deps.rs.
 # 4. Update `DEPENDENCY` in build/features.rs.
+#
+# Notes:
+# - Dependencies are in sync with ./utils/check.rs::DEP_ALL & build/features.rs::DEPENDENCY
+# - List and count dependencies with `utils/manifest.sh dependencies`.
 
 #* required dependencies *#
 
