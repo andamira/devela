@@ -76,7 +76,7 @@ publish = true
 bench = false
 
 
-[features] # 231/300 (69 remaining), 115 visible, 116 hidden
+[features] # 232/300 (68 remaining), 116 visible, 116 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -136,12 +136,13 @@ all = [ # enables all the modules and submodules
 data = ["hash"]
 	hash = [] # HashFnv, HashFx
 # lang = []
-media = ["audio", "color", "draw", "font", "image"]
+media = ["audio", "color", "draw", "font", "image", "midi"]
 	audio = []
 	draw = []
 	color = []
 	font = []
 	image = []
+	midi = []
 num = ["alg", "geom", "prim", "rand", "unit", "wave"]
 	alg  = [] # algebra (linear & symbolic)
 	geom = [] # geometry

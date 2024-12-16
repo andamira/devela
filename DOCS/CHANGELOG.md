@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - data: `hash`.
   - doc: `_docsrs[_stable]_nodep`.
   - num: `alg`, `geom`, `prim`, `cast`, `join`, `split`, `unit`, `wave`, `_cmp_f16`, `_cmp_f128`, `_float_f16`, `_float_f128`.
-  - media `media`, `safe_media`, `audio`, `color`, `draw`, `font`, `image`.
+  - media `media`, `safe_media`, `audio`, `color`, `draw`, `font`, `image`, `midi`.
   - sys: `time`, `linux`, `dep_linux`, `unsafe_syscall`.
   - text: `ascii`, `fmt`, `str`, `_char7`, `_char8`, `_char16`.
   - nightly: `nightly_autodiff`, `nightly_bigint`, `nightly_float`, `nightly_stable_next1`, `nightly_stable_next2`, `nightly_stable_later`.

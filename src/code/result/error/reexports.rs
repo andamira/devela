@@ -35,6 +35,9 @@ pub(crate) mod crate_errors {
     #[cfg(feature = "image")]
     pub use crate::media::image::{ImageError, ImageResult};
     #[doc(inline)]
+    #[cfg(feature = "midi")]
+    pub use crate::media::midi::{MidiError, MidiResult};
+    #[doc(inline)]
     #[cfg(_media_·)]
     pub use crate::media::{MediaError, MediaResult};
 
