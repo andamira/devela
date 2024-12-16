@@ -30,7 +30,8 @@ pub extern crate alloc as _alloc;
 #[doc(inline)]
 pub use ::std as _std;
 
-/* 29 optional dependencies */
+/* 30 optional dependencies */
+// In sync with /Cargo.toml::dep_all & /utils/check.rs::DEP_ALL
 
 reexport! { optional_crate (unsafe) "dep_atomic", "atomic", atomic,
     doc: "A generic atomic wrapper type."
@@ -62,6 +63,9 @@ reexport! { optional_crate (safe) "dep_log", "log", log,
 }
 reexport! { optional_crate (unsafe) "dep_memchr", "memchr", memchr,
     doc: "Optimized routines for string search primitives."
+}
+reexport! { optional_crate (unsafe) "dep_midir", "midir", midir,
+    doc: "A cross-platform, realtime MIDI processing library."
 }
 reexport! { optional_crate (unsafe) "dep_miniquad", "miniquad", miniquad,
     doc: "Cross-platform window context and rendering library."

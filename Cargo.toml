@@ -75,7 +75,7 @@ publish = true
 bench = false
 
 
-[features] # 229/300 (71 remaining), 113 visible, 116 hidden
+[features] # 231/300 (69 remaining), 115 visible, 116 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -159,7 +159,7 @@ sys = ["io", "mem"]
 		bit = [] # BitSize
 	# os
 		linux = []
-		windows = ["crossterm?/windows"]
+		windows = ["crossterm?/windows", "midir?/winrt"]
 text = ["ascii", "fmt", "str"]
 	ascii = [] # AsciiChar
 	fmt = [] # NumStr
@@ -582,52 +582,53 @@ _string_all = [
 # The names are prefixed with `dep_`, and don't have dashes.
 # They are associated to optional dependencies and groups of modules.
 #
-# In sync with ./utils/check.rs::DEP_ALL & build/features.rs::DEPENDENCY
-#
 ##Links
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
-dep_all = [ # enables all 29 optional dependencies:
+# In sync with ./utils/check.rs::DEP_ALL & build/features.rs::DEPENDENCY
+dep_all = [ # enables all 30 optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
-	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_miniquad",
-	"dep_nc", "dep_portable_atomic", "dep_pyo3", "dep_rand_core", "dep_rayon",
-	"dep_raw_cpuid", "dep_regex_lite", "dep_rodio", "dep_rustix", "dep_safe_arch",
-	"dep_stringzilla", "dep_sysinfo", "dep_tinyaudio", "dep_unicode_segmentation",
-	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
+	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_midir",
+	"dep_miniquad", "dep_nc", "dep_portable_atomic", "dep_pyo3", "dep_rand_core",
+	"dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_rodio", "dep_rustix",
+	"dep_safe_arch", "dep_stringzilla", "dep_sysinfo", "dep_tinyaudio",
+	"dep_unicode_segmentation", "dep_unicode_width", "dep_wasm_bindgen",
+	"dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 
-dep_atomic = ["dep:atomic"]                                   # work::sync
-dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]        # *
-dep_const_str = ["dep:const-str"]                             # text::str
-dep_crossterm = ["dep:crossterm", "std"]                      # ui::backend
-dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"] # data::collections
-dep_jiff = ["dep:jiff", "alloc"]                              # phys::time
-dep_js_sys = ["dep:js-sys"]                                   # lang
-dep_libm = ["dep:libm"]                                       # num::float
-dep_log = ["dep:log"]                                         # sys::log
-dep_memchr = ["dep:memchr"]                                   # text
-dep_miniquad = ["dep:miniquad"]                               # sys::?
-dep_nc = ["dep:nc"]                                           # sys::os
-dep_portable_atomic = ["dep:portable-atomic"]                 # work::sync
-dep_pyo3 = ["dep:pyo3", "std"]                                # lang
-dep_rand_core = ["dep:rand_core"]                             # num::rand
-dep_rayon = ["dep:rayon", "sysinfo?/multithread"]             # work::thread
-dep_raw_cpuid = ["dep:raw-cpuid"]                             # sys::arch
-dep_regex_lite = ["dep:regex-lite", "std"]                    # text::parse
-dep_rodio = ["dep:rodio"]                                     # sys::sound
-dep_rustix = ["dep:rustix"]                                   # sys::os
-dep_safe_arch = ["dep:safe_arch"]                             # sys::arch
-dep_stringzilla = ["dep:stringzilla"]                         # text
-dep_sysinfo = ["dep:sysinfo", "std"]                          # sys
-dep_tinyaudio = ["dep:tinyaudio"]                             # sys::sound
-dep_unicode_segmentation = ["dep:unicode-segmentation"]       # text
-dep_unicode_width = ["dep:unicode-width"]                     # text
-dep_wasm_bindgen = ["dep:wasm-bindgen"]                       # lang
-dep_web_sys = ["dep:web-sys"]                                 # sys::?
-dep_wide = ["dep:wide"]                                       # *
+dep_atomic = ["dep:atomic"]                                                     # work::sync
+dep_bytemuck = ["dep:bytemuck", "safe_arch?/bytemuck"]                          # *
+dep_const_str = ["dep:const-str"]                                               # text::str
+dep_crossterm = ["dep:crossterm", "std"]                                        # ui::backend
+dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"]                   # data::collections
+dep_jiff = ["dep:jiff", "alloc"]                                                # phys::time
+dep_js_sys = ["dep:js-sys"]                                                     # lang
+dep_libm = ["dep:libm"]                                                         # num::float
+dep_log = ["dep:log"]                                                           # sys::log
+dep_memchr = ["dep:memchr"]                                                     # text
+dep_midir = ["dep:midir"]                                                       # media::midi
+dep_miniquad = ["dep:miniquad"]                                                 # sys::?
+dep_nc = ["dep:nc"]                                                             # sys::os
+dep_portable_atomic = ["dep:portable-atomic"]                                   # work::sync
+dep_pyo3 = ["dep:pyo3", "std"]                                                  # lang
+dep_rand_core = ["dep:rand_core"]                                               # num::rand
+dep_rayon = ["dep:rayon", "sysinfo?/multithread"]                               # work::thread
+dep_raw_cpuid = ["dep:raw-cpuid"]                                               # sys::arch
+dep_regex_lite = ["dep:regex-lite", "std"]                                      # text::parse
+dep_rodio = ["dep:rodio"]                                                       # sys::sound
+dep_rustix = ["dep:rustix"]                                                     # sys::os
+dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
+dep_stringzilla = ["dep:stringzilla"]                                           # text
+dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys
+dep_tinyaudio = ["dep:tinyaudio"]                                               # sys::sound
+dep_unicode_segmentation = ["dep:unicode-segmentation"]                         # text
+dep_unicode_width = ["dep:unicode-width"]                                       # text
+dep_wasm_bindgen = ["dep:wasm-bindgen"]                                         # lang
+dep_web_sys = ["dep:web-sys"]                                                   # sys::?
+dep_wide = ["dep:wide"]                                                         # *
 
 
-[dependencies] # 31 (2 required, 29 optional)
+[dependencies] # 32 (2 required, 30 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -714,6 +715,11 @@ default-features = false # 25 https://docs.rs/crate/log/latest/features
 version = "2.7.4" # ✗ https://github.com/BurntSushi/memchr/commits/master/
 optional = true # unsafe
 default-features = false # 9 https://docs.rs/crate/memchr/latest/features
+
+[dependencies.midir] # https://crates.io/crates/midir
+version = "0.10.1" # ✓ https://github.com/Boddlnagg/midir/blob/master/CHANGELOG.md
+optional = true # unsafe
+default-features = false # 7 https://docs.rs/crate/midir/latest/features
 
 [dependencies.miniquad] # https://crates.io/crates/miniquad
 version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
