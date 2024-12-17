@@ -7,7 +7,7 @@ crate::CONST! { pub(crate),
 /* Rounding */
 
 FORMULA_FLOOR = r#"$$
-\lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$"#;
+\large \lfloor x \rfloor = \max \{ n \in \mathbb{Z} \,|\, n \leq x \} $$"#;
 FORMULA_CEIL = r#"$$
 $$ \lceil x \rceil = \min \{ n \in \mathbb{Z} \,|\, n \geq x \} $$"#;
 FORMULA_ROUND_TIES_AWAY = r#"$$

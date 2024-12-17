@@ -2,6 +2,7 @@
 //
 //! Extention trait for floatin-point methods.
 //
+// IMPROVE: remove redundant methods implemented in `core`
 
 use super::shared_docs::*;
 #[cfg(_float_·)]
@@ -367,18 +368,6 @@ pub trait ExtFloat: ExtFloatConst + Sized {
     #[must_use]
     fn atanh(self) -> Self;
 
-    /// The clamped value, ignoring `NaN`.
-    #[must_use]
-    fn clamp(self, min: Self, max: Self) -> Self;
-
-    /// The maximum of two numbers, ignoring `NaN`.
-    #[must_use]
-    fn max(self, other: Self) -> Self;
-
-    /// The minimum of two numbers, ignoring `NaN`.
-    #[must_use]
-    fn min(self, other: Self) -> Self;
-
     /// The clamped value, propagating `NaN`.
     #[must_use]
     fn clamp_nan(self, min: Self, max: Self) -> Self;
@@ -690,12 +679,6 @@ macro_rules! impl_float_ext {
             #[cfg(not(any(feature = "std", feature = "dep_libm")))]
             fn atanh(self) -> Self {
                 Float(self).atanh_series(Float(self).exp_series_terms()).0 }
-
-            fn clamp(self, min: Self, max: Self) -> Self { Float(self).clamp(min, max).0 }
-
-            fn max(self, other: Self) -> Self { Float(self).max(other).0 }
-
-            fn min(self, other: Self) -> Self { Float(self).min(other).0 }
 
             fn clamp_nan(self, min: Self, max: Self) -> Self { Float(self).clamp_nan(min, max).0 }
 

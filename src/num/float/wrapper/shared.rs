@@ -11,27 +11,129 @@ use crate::{concat as cc, iif, stringify as sfy, Float, Sign};
 ///
 /// $f:   the floating-point type.
 /// $uf:  unsigned int type with the same bit-size.
+/// $ie:  signed int type used for integer exponentiation.
 /// $ue:  unsigned int type used for integer exponentiation and number of terms (u32).
 /// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
 /// $cmp: the feature that enables some methods depending on Compare. E.g "_cmp_f32".
 macro_rules! impl_float_shared {
     () => {
         impl_float_shared![
-            (f32:u32, u32):"_float_f32":"_cmp_f32",
-            (f64:u64, u32):"_float_f64":"_cmp_f64"
+            (f32:u32, i32, u32):"_float_f32":"_cmp_f32",
+            (f64:u64, i32, u32):"_float_f64":"_cmp_f64"
         ];
     };
 
-    ($( ($f:ty:$uf:ty, $ue:ty) : $cap:literal : $cmp:literal ),+) => {
-        $( impl_float_shared![@$f:$uf, $ue, $cap:$cmp]; )+
+    ($( ($f:ty:$uf:ty, $ie:ty, $ue:ty) : $cap:literal : $cmp:literal ),+) => {
+        $( impl_float_shared![@$f:$uf, $ie, $ue, $cap:$cmp]; )+
     };
-    (@$f:ty:$uf:ty, $ue:ty, $cap:literal : $cmp:literal) => {
+    (@$f:ty:$uf:ty, $ie:ty, $ue:ty, $cap:literal : $cmp:literal) => {
         #[doc = crate::doc_availability!(feature = $cap)]
         ///
         /// # *Common implementations with or without `std` or `libm`*.
         #[cfg(feature = $cap )]
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Float<$f> {
+            /// The largest integer less than or equal to itself.
+            /// # Formulation
+            #[doc = crate::FORMULA_FLOOR!()]
+            #[must_use]
+            pub const fn const_floor(self) -> Float<$f> {
+                let mut result = self.const_trunc().0;
+                if self.0.is_sign_negative() && Float(self.0 - result).abs().0 > <$f>::EPSILON {
+                    result -= 1.0;
+                }
+                Float(result)
+            }
+
+            /// The smallest integer greater than or equal to itself.
+            /// # Formulation
+            #[doc = FORMULA_CEIL!()]
+            #[must_use]
+            pub const fn const_ceil(self) -> Float<$f> {
+                let mut result = self.const_trunc().0;
+                if self.0.is_sign_positive() && Float(self.0 - result).abs().0 > <$f>::EPSILON {
+                    result += 1.0;
+                }
+                Float(result)
+            }
+
+            /// The nearest integer to itself, default rounding
+            ///
+            /// This is the default [`round_ties_away`] implementation.
+            #[must_use]
+            pub const fn const_round(self) -> Float<$f> { self.const_round_ties_away() }
+
+            /// The nearest integer to itself, rounding ties away from `0.0`.
+            ///
+            /// This is the default [`round`] implementation.
+            ///
+            /// # Formulation
+            #[doc = FORMULA_ROUND_TIES_AWAY!()]
+            #[must_use]
+            pub const fn const_round_ties_away(self) -> Float<$f> {
+                Float(self.0 +
+                    Float(0.5 - 0.25 * <$f>::EPSILON).const_copysign(self.0).0)
+                        .const_trunc()
+            }
+
+            /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
+            /// # Formulation
+            #[doc = FORMULA_ROUND_TIES_EVEN!()]
+            #[must_use]
+            pub const fn const_round_ties_even(self) -> Float<$f> {
+                let r = self.const_round_ties_away();
+                if r.0 % 2.0 == 0.0 {
+                    r
+                } else {
+                    #[allow(clippy::float_cmp, reason = "IMPROVE")]
+                    if Float(self.0 - r.0).abs().0 == 0.5 { // -0.5 < error_margin
+                        Float(r.0 - self.const_signum().0)
+                    } else {
+                        r
+                    }
+                }
+            }
+
+            /// The integral part.
+            /// This means that non-integer numbers are always truncated towards zero.
+            ///
+            /// # Formulation
+            #[doc = FORMULA_TRUNC!()]
+            ///
+            /// This implementation uses bitwise manipulation to remove the fractional part
+            /// of the floating-point number. The exponent is extracted, and a mask is
+            /// created to remove the fractional part. The new bits are then used to create
+            /// the truncated floating-point number.
+            #[must_use]
+            pub const fn const_trunc(self) -> Float<$f> {
+                let bits = self.0.to_bits();
+                const BIAS: $ie = Float::<$f>::BIAS as $ie;
+                const SIG_BITS: $ie = Float::<$f>::SIGNIFICAND_BITS as $ie;
+                const EXP_MASK: $uf = (1 << Float::<$f>::EXPONENT_BITS) - 1;
+
+                #[allow(clippy::cast_possible_wrap)]
+                let exponent = (((bits >> SIG_BITS) & EXP_MASK) as $ie) - BIAS;
+                if exponent < 0 {
+                    iif![self.0.is_sign_positive(); Float(0.0); Float(-0.0)]
+                } else if exponent < SIG_BITS {
+                    let mask = !(((1 as $uf) << (SIG_BITS - exponent)) - 1);
+                    let new_bits = bits & mask;
+                    Float(<$f>::from_bits(new_bits))
+                } else {
+                    self
+                }
+            }
+
+            /// Returns the nearest integer, rounding ties to the nearest odd integer.
+            /// # Formulation
+            #[doc = FORMULA_ROUND_TIES_ODD!()]
+            #[must_use]
+            pub fn const_round_ties_odd(self) -> Float<$f> {
+                let r = self.const_round_ties_away();
+                iif![r.0 % 2.0 != 0.0; r ;
+                    iif![(self - r).abs() == 0.5; r + self.const_signum(); r]]
+            }
+
             /// Returns the nearest integer, rounding ties to the nearest odd integer.
             /// # Formulation
             #[doc = FORMULA_ROUND_TIES_ODD!()]
@@ -40,6 +142,39 @@ macro_rules! impl_float_shared {
                 let r = self.round_ties_away();
                 iif![r.0 % 2.0 != 0.0; r ;
                     iif![(self - r).abs() == 0.5; r + self.signum(); r]]
+            }
+
+            /// The fractional part.
+            /// # Formulation
+            #[doc = FORMULA_FRACT!()]
+            #[must_use]
+            pub const fn const_fract(self) -> Float<$f> {
+                Float(self.0 - self.const_trunc().0)
+            }
+
+            /// The integral and fractional parts.
+            /// # Formulation
+            #[doc = FORMULA_SPLIT!()]
+            #[must_use]
+            pub const fn const_split(self) -> (Float<$f>, Float<$f>) {
+                let trunc = self.const_trunc();
+                (trunc, Float(self.0 - trunc.0))
+            }
+
+            /// A number that represents its sign, propagating `NaN`.
+            #[must_use]
+            pub const fn const_signum(self) -> Float<$f> {
+                if self.0.is_nan() { Float(<$f>::NAN) } else { Self::ONE.const_copysign(self.0) }
+            }
+
+            /// A number composed of the magnitude of itself and the `sign` of other.
+            #[must_use]
+            pub const fn const_copysign(self, sign: $f) -> Float<$f> {
+                const SIGN_MASK: $uf = <$uf>::MAX / 2 + 1;
+                const VALUE_MASK: $uf = <$uf>::MAX / 2;
+                let sign_bit = sign.to_bits() & SIGN_MASK;
+                let value_bits = self.0.to_bits() & VALUE_MASK;
+                Float(<$f>::from_bits(value_bits | sign_bit))
             }
 
             /// Returns the [`Sign`].
@@ -273,7 +408,23 @@ macro_rules! impl_float_shared {
             /// See also: [`clamp_nan`][Self::clamp_nan], [`clamp_total`][Self::clamp_total].
             // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
             #[must_use]
-            pub fn clamp(self, min: $f, max: $f) -> Float<$f> { self.max(min).min(max) }
+            pub const fn const_clamp(self, min: $f, max: $f) -> Float<$f> {
+                self.const_max(min).const_min(max)
+            }
+
+            /// The maximum between itself and `other`, ignoring `NaN`.
+            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
+            #[must_use]
+            pub const fn const_max(self, other: $f) -> Float<$f> {
+                if self.0.is_nan() || self.0 < other { Float(other) } else { self }
+            }
+
+            /// The minimum between itself and other, ignoring `NaN`.
+            // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
+            #[must_use]
+            pub const fn const_min(self, other: $f) -> Float<$f> {
+                if other.is_nan() || self.0 < other { self } else { Float(other) }
+            }
 
             /// Returns itself clamped between `min` and `max`, using total order.
             ///
@@ -374,6 +525,33 @@ macro_rules! impl_float_shared {
                 } else {
                     // At least one input is NaN. Use `+` to perform NaN propagation and quieting.
                     Float(self.0 + other)
+                }
+            }
+
+            /// Raises itself to the `p` integer power.
+            #[must_use]
+            pub const fn const_powi(self, p: $ie) -> Float<$f> {
+                match p {
+                    0 => Self::ONE,
+                    1.. => {
+                        let mut result = self.0;
+                        let mut i = 1;
+                        while i < p {
+                            result *= self.0;
+                            i += 1;
+                        }
+                        Float(result)
+                    }
+                    _ => {
+                        let mut result = self.0;
+                        let mut i = 1;
+                        let abs_p = p.abs();
+                        while i < abs_p {
+                            result /= self.0;
+                            i += 1;
+                        }
+                        Float(result)
+                    }
                 }
             }
 

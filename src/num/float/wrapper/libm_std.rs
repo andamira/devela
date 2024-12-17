@@ -6,58 +6,9 @@
 // - impls for libm
 // - impls for std && not(libm)
 // - impls for not(std) && not(libm)
+// - macro helper: impl_fp!
 
 use crate::Float;
-
-/// macro helper for implementing methods for `Float`, from either `libm` or `std`.
-///
-/// $lib: the library to use.
-/// $f: the floating-point type to support.
-/// $doc: an optional documentation string.
-/// $opfn: the original operation function name.
-/// $op: the new operation function name in Float.
-#[cfg(any(feature = "dep_libm", feature = "std"))]
-macro_rules! impl_fp {
-    // Matches a wildcard floating-point type (f*).
-    // Expands to specific floating-point types (f32, f64).
-    ($lib:ident : f* : $($ops:tt)*) => {
-        impl_fp![$lib : f32 : $($ops)*];
-        impl_fp![$lib : f64 : $($ops)*];
-    };
-    // Matches a specific floating-point type and any number of operations.
-    // Generates the impl block for Float<$f> and calls the matching implementation.
-    ($lib:ident : $f:ty : $($ops:tt)*) => {
-        #[doc =
-        concat!["# *This implementation block leverages the `", stringify![$lib], "` feature.*"]]
-        impl Float<$f> {
-            impl_fp![@$lib : $f : $($ops)*];
-        }
-    };
-    // Matches multiple operations and uses recursion to process each one.
-    (@$lib:ident : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*
-     ; $($rest:tt)*) => {
-        impl_fp![@$lib : $f : $($doc)? $opfn = $op : $($arg),*];
-        impl_fp![@$lib : $f : $($rest)*];
-    };
-    // Matches a single operation and implements it using the `libm` library.
-    (@libm : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*) => {
-        $(#[doc = $doc])?
-        #[must_use]
-        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
-            Float($crate::_dep::libm::Libm::<$f>::$opfn(self.0, $($arg),*))
-        }
-    };
-    // Matches a single operation and implements it using the `std` library.
-    (@std : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*) => {
-        $(#[doc = $doc])?
-        #[must_use]
-        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
-            Float(<$f>::$opfn(self.0, $($arg),*))
-        }
-    };
-}
-#[cfg(any(feature = "dep_libm", feature = "std"))]
-use impl_fp;
 
 #[cfg(feature = "dep_libm")]
 mod _libm {
@@ -167,9 +118,10 @@ mod _libm {
         y1 = y1:
         // yn
     ];
-    // $f:   the floating-point type.
-    // $e:   the integer type for integer exponentiation.
-    // $cap: the capability feature enables the given implementation. E.g "_float_f32".
+
+    /// $f:   the floating-point type.
+    /// $e:   the integer type for integer exponentiation.
+    /// $cap: the capability feature enables the given implementation. E.g "_float_f32".
     macro_rules! custom_impls {
         () => {
             custom_impls![(f32, i32):"_float_f32", (f64, i32):"_float_f64"];
@@ -201,7 +153,6 @@ mod _libm {
                 }
 
                 /// A number that represents the sign of `x`, propagating `NaN`.
-                // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
                 #[must_use]
                 pub fn signum(self) -> Float<$f> {
                     if self.0.is_nan() {
@@ -217,6 +168,12 @@ mod _libm {
                     let r = self.round_ties_away();
                     iif![r.0 % 2.0 == 0.0; r;
                         iif![(self - r).abs() == 0.5; r - self.signum(); r]]
+                }
+
+                /// Returns itself clamped between `min` and `max`, ignoring `NaN`.
+                #[must_use]
+                pub fn clamp(self, min: $f, max: $f) -> Float<$f> {
+                    self.max(min).min(max)
                 }
 
                 /// Raises `x` to the `p` integer power.
@@ -365,6 +322,8 @@ mod _std {
         "The inverse hyperbolic tangent."
         atanh = atanh: ;
 
+        "The clamped value between `min` and `max`, ignoring `NaN`."
+        clamp = clamp: min, max;
         "The maximum of two numbers, ignoring `NaN`."
         max = max: other;
         "The minimum of two numbers, ignoring `NaN`."
@@ -419,20 +378,19 @@ mod _std {
 #[cfg(all(not(feature = "dep_libm"), not(feature = "std")))]
 mod _no_std_no_libm {
     use super::{super::super::shared_docs::*, Float};
-    use crate::iif;
 
     /// $f:   the floating-point type.
-    /// $ub:  unsigned int type with the same bit-size.
+    /// $uf:  unsigned int type with the same bit-size.
     /// $ie:  the integer type for integer exponentiation.
     /// $cap: the capability feature that enables the given implementation. E.g "_float_f32".
     macro_rules! custom_impls {
         () => {
             custom_impls![(f32, u32, i32):"_float_f32", (f64, u64, i32):"_float_f64"];
         };
-        ($( ($f:ty, $ub:ty, $ie:ty) : $cap:literal ),+) => {
-            $( custom_impls![@$f, $ub, $ie, $cap]; )+
+        ($( ($f:ty, $uf:ty, $ie:ty) : $cap:literal ),+) => {
+            $( custom_impls![@$f, $uf, $ie, $cap]; )+
         };
-        (@$f:ty, $ub:ty, $ie:ty, $cap:literal) => {
+        (@$f:ty, $uf:ty, $ie:ty, $cap:literal) => {
             #[doc = crate::doc_availability!(feature = $cap)]
             ///
             /// # *Implementations without `std` or `libm`*.
@@ -443,31 +401,19 @@ mod _no_std_no_libm {
                 /// # Formulation
                 #[doc = crate::FORMULA_FLOOR!()]
                 #[must_use]
-                pub fn floor(self) -> Float<$f> {
-                    let mut result = self.trunc().0;
-                    if self.0.is_sign_negative() && Float(self.0 - result).abs().0 > <$f>::EPSILON {
-                        result -= 1.0;
-                    }
-                    Float(result)
-                }
+                pub const fn floor(self) -> Float<$f> { self.const_floor() }
 
                 /// The smallest integer greater than or equal to itself.
                 /// # Formulation
                 #[doc = FORMULA_CEIL!()]
                 #[must_use]
-                pub fn ceil(self) -> Float<$f> {
-                    let mut result = self.trunc().0;
-                    if self.0.is_sign_positive() && Float(self.0 - result).abs().0 > <$f>::EPSILON {
-                        result += 1.0;
-                    }
-                    Float(result)
-                }
+                pub const fn ceil(self) -> Float<$f> { self.const_ceil() }
 
                 /// The nearest integer to itself, default rounding
                 ///
                 /// This is the default [`round_ties_away`] implementation.
                 #[must_use]
-                pub fn round(self) -> Float<$f> { self.round_ties_away() }
+                pub const fn round(self) -> Float<$f> { self.const_round() }
 
                 /// The nearest integer to itself, rounding ties away from `0.0`.
                 ///
@@ -476,19 +422,13 @@ mod _no_std_no_libm {
                 /// # Formulation
                 #[doc = FORMULA_ROUND_TIES_AWAY!()]
                 #[must_use]
-                pub fn round_ties_away(self) -> Float<$f> {
-                    Float(self.0 + Float(0.5 - 0.25 * <$f>::EPSILON).copysign(self.0).0).trunc()
-                }
+                pub const fn round_ties_away(self) -> Float<$f> {self.const_round_ties_away() }
 
                 /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
                 /// # Formulation
                 #[doc = FORMULA_ROUND_TIES_EVEN!()]
                 #[must_use]
-                pub fn round_ties_even(self) -> Float<$f> {
-                    let r = self.round_ties_away();
-                    iif![r.0 % 2.0 == 0.0; r;
-                        iif![(self - r).abs() == 0.5; r - self.signum(); r]]
-                }
+                pub const fn round_ties_even(self) -> Float<$f> { self.const_round_ties_even() }
 
                 /// The integral part.
                 /// This means that non-integer numbers are always truncated towards zero.
@@ -501,93 +441,104 @@ mod _no_std_no_libm {
                 /// created to remove the fractional part. The new bits are then used to create
                 /// the truncated floating-point number.
                 #[must_use]
-                pub fn trunc(self) -> Float<$f> {
-                    let bits = self.0.to_bits();
-                    const BIAS: $ie = Float::<$f>::BIAS as $ie;
-                    const SIG_BITS: $ie = Float::<$f>::SIGNIFICAND_BITS as $ie;
-                    const EXP_MASK: $ub = (1 << Float::<$f>::EXPONENT_BITS) - 1;
-
-                    #[allow(clippy::cast_possible_wrap)]
-                    let exponent = (((bits >> SIG_BITS) & EXP_MASK) as $ie) - BIAS;
-                    if exponent < 0 {
-                        iif![self.0.is_sign_positive(); Float(0.0); Float(-0.0)]
-                    } else if exponent < SIG_BITS {
-                        let mask = !(((1 as $ub) << (SIG_BITS - exponent)) - 1);
-                        let new_bits = bits & mask;
-                        Float(<$f>::from_bits(new_bits))
-                    } else {
-                        self
-                    }
-                }
+                pub const fn trunc(self) -> Float<$f> { self.const_trunc() }
 
                 /// The fractional part.
                 /// # Formulation
                 #[doc = FORMULA_FRACT!()]
                 #[must_use]
-                pub fn fract(self) -> Float<$f> { Float(self.0 - self.trunc().0) }
+                pub const fn fract(self) -> Float<$f> { self.const_fract() }
 
                 /// The integral and fractional parts.
                 /// # Formulation
                 #[doc = FORMULA_SPLIT!()]
                 #[must_use]
-                pub fn split(self) -> (Float<$f>, Float<$f>) {
-                    let trunc = self.trunc();
-                    (trunc, Float(self.0 - trunc.0))
-                }
+                pub const fn split(self) -> (Float<$f>, Float<$f>) { self.const_split() }
 
                 /// A number that represents its sign, propagating `NaN`.
                 #[must_use]
-                pub fn signum(self) -> Float<$f> {
-                    if self.0.is_nan() { Float(<$f>::NAN) } else { Self::ONE.copysign(self.0) }
-                }
+                pub const fn signum(self) -> Float<$f> { self.const_signum() }
 
                 /// A number composed of the magnitude of itself and the `sign` of other.
                 #[must_use]
-                pub fn copysign(self, sign: $f) -> Float<$f> {
-                    const SIGN_MASK: $ub = <$ub>::MAX / 2 + 1;
-                    const VALUE_MASK: $ub = <$ub>::MAX / 2;
-                    let sign_bit = sign.to_bits() & SIGN_MASK;
-                    let value_bits = self.0.to_bits() & VALUE_MASK;
-                    Float(<$f>::from_bits(value_bits | sign_bit))
+                pub const fn copysign(self, sign: $f) -> Float<$f> { self.const_copysign(sign) }
+
+                /// Returns itself clamped between `min` and `max`, ignoring `NaN`.
+                // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
+                #[must_use]
+                pub const fn clamp(self, min: $f, max: $f) -> Float<$f> {
+                    self.const_clamp(min, max)
                 }
 
                 /// The maximum between itself and `other`, ignoring `NaN`.
                 // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
                 #[must_use]
-                pub fn max(self, other: $f) -> Float<$f> {
-                    if self.0.is_nan() || self.0 < other { Float(other) } else { self }
-                }
+                pub const fn max(self, other: $f) -> Float<$f> { self.const_max(other) }
 
                 /// The minimum between itself and other, ignoring `NaN`.
                 // WAIT:1.85 [const_float_methods](https://github.com/rust-lang/rust/pull/133389)
                 #[must_use]
-                pub fn min(self, other: $f) -> Float<$f> {
-                    if other.is_nan() || self.0 < other { self } else { Float(other) }
-                }
+                pub const fn min(self, other: $f) -> Float<$f> { self.const_min(other) }
 
                 /// Raises itself to the `p` integer power.
                 #[must_use]
-                pub fn powi(self, p: $ie) -> Float<$f> {
-                    match p {
-                        0 => Self::ONE,
-                        1.. => {
-                            let mut result = self.0;
-                            for _i in 1..p {
-                                result *= self.0;
-                            }
-                            Float(result)
-                        }
-                        _ => {
-                            let mut result = self.0;
-                            for _i in 1..p.abs() {
-                                result /= self.0;
-                            }
-                            Float(result)
-                        }
-                    }
-                }
+                pub const fn powi(self, p: $ie) -> Float<$f> { self.const_powi(p) }
             }
         };
     }
     custom_impls!();
 }
+
+/// macro helper for implementing methods for `Float`, from either `libm` or `std`.
+///
+/// $lib: the library to use.
+/// $f: the floating-point type to support.
+/// $doc: an optional documentation string.
+/// $opfn: the original operation function name.
+/// $op: the new operation function name in Float.
+#[cfg(any(feature = "dep_libm", feature = "std"))]
+macro_rules! impl_fp {
+    (
+    // Matches a wildcard floating-point type (f*).
+    // Expands to specific floating-point types (f32, f64).
+    $lib:ident : f* : $($ops:tt)*) => {
+        impl_fp![$lib : f32 : $($ops)*];
+        impl_fp![$lib : f64 : $($ops)*];
+    };
+    (
+    // Matches a specific floating-point type and any number of operations.
+    // Generates the impl block for Float<$f> and calls the matching implementation.
+    $lib:ident : $f:ty : $($ops:tt)*) => { $crate::paste! {
+        #[doc = "# *This implementation block leverages the `" $lib "` feature.*"]
+        impl Float<$f> {
+            impl_fp![@$lib : $f : $($ops)*];
+        }
+    }};
+    (
+    // Matches multiple operations and uses recursion to process each one.
+    @$lib:ident : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*
+    ; $($rest:tt)*) => {
+        impl_fp![@$lib : $f : $($doc)? $opfn = $op : $($arg),*];
+        impl_fp![@$lib : $f : $($rest)*];
+    };
+    (
+    // Matches a single operation and implements it using the `libm` library.
+    @libm : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*) => {
+        $(#[doc = $doc])?
+        #[must_use]
+        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
+            Float($crate::_dep::libm::Libm::<$f>::$opfn(self.0, $($arg),*))
+        }
+    };
+    (
+    // Matches a single operation and implements it using the `std` library.
+    @std : $f:ty : $($doc:literal)? $opfn:ident = $op:ident : $($arg:ident),*) => {
+        $(#[doc = $doc])?
+        #[must_use]
+        pub fn $op(self, $($arg: $f),*) -> Float<$f> {
+            Float(<$f>::$opfn(self.0, $($arg),*))
+        }
+    };
+}
+#[cfg(any(feature = "dep_libm", feature = "std"))]
+use impl_fp;

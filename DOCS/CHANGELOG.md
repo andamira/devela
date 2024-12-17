@@ -174,6 +174,7 @@ The format is based on [Keep a Changelog], and this project adheres to
     `eval_poly`, `factorial`, `mul_add_fallback`, `scale`, `lerp`, `ln*_series`, `log[10|2]_series`.
   - make *const* versions of the following `Float` methods:
     `clamp_nan`, `fisr`, `hypot_fisr`, `max_nan`, `min_nan`, `cbrt_nr`, `sqrt_nr`, `hypot_nr`, `rem_euclid`, `*_series`, `*_series_terms*`.
+  - add additional *const* methods: `const_floor`, `const_ceil`, `const_round`, `const_round_ties_away`, `const_round_ties_even`, `const_round_ties_odd`, `const_trunc`, `const_fract`, `const_split`, `const_signum`, `const_copysign`, `const_clamp`, `const_min`, `const_max`, `const_powi`.
   - improve precision of `ExtFloatConst` constants from 35 to 80 decimals.
   - implement Compare for `f16` and `128`.
   - remove all `inline` attributes for most functions
