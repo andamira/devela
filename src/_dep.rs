@@ -104,6 +104,9 @@ reexport! { optional_crate (unsafe) "dep_rustix", "rustix", rustix,
 reexport! { optional_crate (unsafe) "dep_safe_arch", "safe_arch", safe_arch,
     doc: "Exposes arch-specific intrinsics as safe functions."
 }
+reexport! { optional_crate (unsafe) "dep_serde", "serde", serde,
+    doc: " A generic serialization/deserialization framework."
+}
 reexport! { optional_crate (unsafe) "dep_stringzilla", "stringzilla", stringzilla,
     doc: "Faster SIMD-accelerated string search, sorting, fingerprints, and edit distances."
 }

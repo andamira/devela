@@ -113,13 +113,13 @@ __force_miri_dst = [] # inhibits disabling miri on the data::dst module
 
 alloc = [ # enables `alloc` functionality
 	"bytemuck?/extern_crate_alloc", "jiff?/alloc", "memchr?/alloc",
-	"rand_core?/alloc", "rustix?/alloc",
+	"rand_core?/alloc", "rustix?/alloc", "serde?/alloc"
 ]
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
 	"atomic?/std", "bytemuck?/extern_crate_std", "jiff?/std", "js-sys?/std",
 	"log?/std", "memchr?/std", "nanoserde?/std", "nc?/std", "rand_core?/std",
-	"raw-cpuid?/std", "regex-lite?/std", "rustix?/std", "tracing?/std",
+	"raw-cpuid?/std", "regex-lite?/std", "rustix?/std", "serde?/std", "tracing?/std",
 	"wasm-bindgen?/std", "web-sys?/std", "wide?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
@@ -591,14 +591,14 @@ _string_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./utils/check.rs::DEP_ALL & build/features.rs::DEPENDENCY
-dep_all = [ # enables all 33 optional dependencies:
+dep_all = [ # enables all 34 optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
 	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_midir",
 	"dep_miniquad", "dep_nanoserde", "dep_nc", "dep_portable_atomic", "dep_pyo3",
 	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_rodio",
-	"dep_rustix", "dep_safe_arch", "dep_stringzilla", "dep_sysinfo", "dep_tinyaudio",
-	"dep_tokio", "dep_tracing", "dep_unicode_segmentation", "dep_unicode_width",
-	"dep_wasm_bindgen", "dep_web_sys", "dep_wide",
+	"dep_rustix", "dep_safe_arch", "dep_stringzilla", "dep_sysinfo", "dep_serde",
+	"dep_tinyaudio", "dep_tokio", "dep_tracing", "dep_unicode_segmentation",
+	"dep_unicode_width", "dep_wasm_bindgen", "dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 
 dep_atomic = ["dep:atomic"]                                                     # work::sync
@@ -624,6 +624,7 @@ dep_regex_lite = ["dep:regex-lite", "std"]                                      
 dep_rodio = ["dep:rodio"]                                                       # sys::sound
 dep_rustix = ["dep:rustix"]                                                     # sys::os
 dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
+dep_serde = ["dep:serde"]                                                       # data
 dep_stringzilla = ["dep:stringzilla"]                                           # text::str
 dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys
 dep_tinyaudio = ["dep:tinyaudio"]                                               # sys::sound
@@ -636,7 +637,7 @@ dep_web_sys = ["dep:web-sys"]                                                   
 dep_wide = ["dep:wide"]                                                         # *
 
 
-[dependencies] # 35 (2 required, 33 optional)
+[dependencies] # 36 (2 required, 34 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -808,6 +809,11 @@ features = [ # IMPROVE: feature-gate
 version = "0.7.2" # ✗ https://github.com/Lokathor/wide/commits/main/
 optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
+
+[dependencies.serde] # https://crates.io/crates/serde
+version = "1.0.216" # ✗ https://github.com/serde-rs/serde/releases
+optional = true # unsafe
+default-features = false # 7 https://docs.rs/crate/serde/latest/features
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
 version = "3.11.0" # ✗ https://github.com/ashvardanian/StringZilla/releases
