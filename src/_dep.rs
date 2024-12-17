@@ -43,14 +43,16 @@ reexport! { optional_crate (unsafe) "dep_const_str", "const-str", const_str,
     doc: "Compile-time string operations."
 }
 reexport! { optional_crate (safe) "dep_crossterm", "crossterm", crossterm,
-    doc: "Cross-platform Terminal Manipulation Library."
+    doc: "Cross-platform Terminal Manipulation Library.",
+    features: "std"
 }
 reexport! { optional_crate (unsafe) "dep_hashbrown", "hashbrown", hashbrown,
     doc: "A drop-in replacement for Rust’s standard `HashMap` and `HashSet`.",
     features: "alloc"
 }
 reexport! { optional_crate (safe) "dep_jiff", "jiff", jiff,
-    doc: "A high level datetime library that is secure and performant."
+    doc: "A high level datetime library that is secure and performant.",
+    features: "alloc"
 }
 reexport! { optional_crate (unsafe) "dep_js_sys", "js-sys", js_sys,
     doc: "Bindings for all JS global objects and functions in all JS environments."
@@ -81,7 +83,8 @@ reexport! { optional_crate (unsafe) "dep_portable_atomic", "portable-atomic", po
     doc: "Portable atomic types including 128-bit atomics, floats, etc."
 }
 reexport! { optional_crate (unsafe) "dep_pyo3", "pyo3", pyo3,
-    doc: " Bindings to Python interpreter."
+    doc: " Bindings to Python interpreter.",
+    features: "std"
 }
 reexport! { optional_crate (safe) "dep_rand_core", "rand_core", rand_core,
     doc: "Random number generation traits."
