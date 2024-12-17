@@ -98,7 +98,7 @@ const DEP_ALL: [&str; 34] = [
 /// Dependencies to not cross compile in arches in STD_ARCHES_NO_CROSS_COMPILE.
 #[rustfmt::skip]
 const DEP_NO_CROSS_COMPILE_STD: &[&str] = &[
-    "dep_rodio", "dep_tinyaudio", // REASON: alsa-sys
+    "dep_midir", "dep_rodio", "dep_tinyaudio", // REASON: alsa-sys
 ];
 /// Dependencies to not cross compile, ever.
 const DEP_NO_CROSS_COMPILE_EVER: &[&str] = &[
