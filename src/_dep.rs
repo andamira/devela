@@ -110,6 +110,10 @@ reexport! { optional_crate (unsafe) "dep_tinyaudio", "tinyaudio", tinyaudio,
     doc: "A cross-platform, easy-to-use, low-level, audio output library.",
     features: "alloc"
 }
+reexport! { optional_crate (unsafe) "dep_tokio", "tokio", tokio,
+    doc: "A runtime for writing reliable network applications without compromising speed.",
+    features: "std"
+}
 reexport! { optional_crate (unsafe) "dep_tracing", "tracing", tracing,
     doc: "A scoped, structured logging and diagnostics system.",
     features: "alloc"
