@@ -110,6 +110,10 @@ reexport! { optional_crate (unsafe) "dep_tinyaudio", "tinyaudio", tinyaudio,
     doc: "A cross-platform, easy-to-use, low-level, audio output library.",
     features: "alloc"
 }
+reexport! { optional_crate (unsafe) "dep_tracing", "tracing", tracing,
+    doc: "A scoped, structured logging and diagnostics system.",
+    features: "alloc"
+}
 reexport! { optional_crate (safe)
     "dep_unicode_segmentation", "unicode-segmentation", unicode_segmentation,
     doc: "Split strings on Grapheme Clusters, Words or Sentences."

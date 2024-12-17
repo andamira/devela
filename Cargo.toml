@@ -76,7 +76,7 @@ publish = true
 bench = false
 
 
-[features] # 232/300 (68 remaining), 116 visible, 116 hidden
+[features] # 233/300 (67 remaining), 117 visible, 116 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -119,8 +119,8 @@ std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
 	"atomic?/std", "bytemuck?/extern_crate_std", "jiff?/std", "js-sys?/std",
 	"log?/std", "memchr?/std", "nc?/std", "rand_core?/std", "raw-cpuid?/std",
-	"regex-lite?/std", "rustix?/std", "wasm-bindgen?/std", "web-sys?/std",
-	"wide?/std",
+	"regex-lite?/std", "rustix?/std", "tracing?/std", "wasm-bindgen?/std",
+	"web-sys?/std", "wide?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
@@ -588,12 +588,12 @@ _string_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./utils/check.rs::DEP_ALL & build/features.rs::DEPENDENCY
-dep_all = [ # enables all 30 optional dependencies:
+dep_all = [ # enables all 31 optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
 	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_midir",
 	"dep_miniquad", "dep_nc", "dep_portable_atomic", "dep_pyo3", "dep_rand_core",
 	"dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_rodio", "dep_rustix",
-	"dep_safe_arch", "dep_stringzilla", "dep_sysinfo", "dep_tinyaudio",
+	"dep_safe_arch", "dep_stringzilla", "dep_sysinfo", "dep_tinyaudio", "dep_tracing",
 	"dep_unicode_segmentation", "dep_unicode_width", "dep_wasm_bindgen",
 	"dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
@@ -606,7 +606,7 @@ dep_hashbrown = ["dep:hashbrown", "alloc", "pyo3?/hashbrown"]                   
 dep_jiff = ["dep:jiff", "alloc"]                                                # phys::time
 dep_js_sys = ["dep:js-sys"]                                                     # lang
 dep_libm = ["dep:libm"]                                                         # num::float
-dep_log = ["dep:log"]                                                           # sys::log
+dep_log = ["dep:log", "tracing?/log"]                                           # sys::log
 dep_memchr = ["dep:memchr"]                                                     # text
 dep_midir = ["dep:midir"]                                                       # media::midi
 dep_miniquad = ["dep:miniquad"]                                                 # sys::?
@@ -623,6 +623,7 @@ dep_safe_arch = ["dep:safe_arch"]                                               
 dep_stringzilla = ["dep:stringzilla"]                                           # text
 dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys
 dep_tinyaudio = ["dep:tinyaudio"]                                               # sys::sound
+dep_tracing = ["dep:tracing"]                                                   # sys::log
 dep_unicode_segmentation = ["dep:unicode-segmentation"]                         # text
 dep_unicode_width = ["dep:unicode-width"]                                       # text
 dep_wasm_bindgen = ["dep:wasm-bindgen"]                                         # lang
@@ -630,7 +631,7 @@ dep_web_sys = ["dep:web-sys"]                                                   
 dep_wide = ["dep:wide"]                                                         # *
 
 
-[dependencies] # 32 (2 required, 30 optional)
+[dependencies] # 33 (2 required, 31 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -812,6 +813,12 @@ features = ["component", "disk", "network", "system", "user"] # IMPROVE: feature
 version = "1.0.0" # ✓ https://github.com/mrDIMAS/tinyaudio/blob/main/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 0 https://docs.rs/crate/tinyaudio/latest/features
+
+[dependencies.tracing] # https://crates.io/crates/tracing
+version = "0.1.41" # ✗ https://github.com/tokio-rs/tracing/releases
+optional = true # unsafe
+default-features = false # 20 https://docs.rs/crate/tracing/latest/features
+features = [] # https://docs.rs/tracing/#crate-feature-flags
 
 [dependencies.unicode-segmentation] # https://crates.io/crates/unicode-segmentation
 version = "1.12.0" # ✓ https://github.com/unicode-rs/unicode-segmentation?tab=readme-ov-file#change-log
