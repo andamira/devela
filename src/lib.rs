@@ -85,6 +85,8 @@
         macro_metavar_expr,
         naked_functions,
         // new_zeroed_alloc, // ?
+        num_midpoint_signed,
+        trait_upcasting,
         unbounded_shifts,
         unsafe_cell_from_mut,
     )

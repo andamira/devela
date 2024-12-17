@@ -345,7 +345,8 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.??: ·[macro_metavar_expr](https://github.com/rust-lang/rust/pull/122808)
 	# 1.??: ·[naked_functions](https://github.com/rust-lang/rust/pull/134213)
 	# 1.??: ?[new_zeroed_alloc](https://github.com/rust-lang/rust/issues/129396)
-	# 1.??: ·[num_midpoint|const_num_midpoint](https://github.com/rust-lang/rust/pull/131784)
+	# 1.??: ·[num_midpoint_signed](https://github.com/rust-lang/rust/pull/134340)
+	# 1.??: ·[trait_upcasting](https://github.com/rust-lang/rust/pull/134367)
 	# 1.??: ·[unbounded_shifts](https://github.com/rust-lang/rust/issues/129375)
 	# 1.??: ·[unsafe_cell_from_mut](https://github.com/rust-lang/rust/pull/131261)
 	#
@@ -361,6 +362,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# 1.?? [const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
 	# 1.?? [mpmc_channel](https://github.com/rust-lang/rust/pull/126839)
 	# 1.?? [passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
+	# 1.?? [stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137)
 	#
 	## Experimental features:
 	# - [stmt_expr_attributes](https://github.com/rust-lang/rust/issues/15701)
@@ -376,6 +378,7 @@ nightly = [ # sync with src/lib.rs & build/features.rs::NIGHTLY
 	# - [impl Trait](https://github.com/rust-lang/rust/issues/63066)
 	# - [int_roundings](https://github.com/rust-lang/rust/issues/88581)
 	# - [MaybeUninit methods for arrays](https://github.com/rust-lang/rust/issues/96097)
+	# - [num_midpoint](https://github.com/rust-lang/rust/issues/110840)
 	# - [Reproducible Build bugs](https://github.com/rust-lang/rust/issues/129080)
 	# - [unchecked_* on integers](https://github.com/rust-lang/rust/issues/85122)
 	#
