@@ -76,7 +76,7 @@ publish = true
 bench = false
 
 
-[features] # # 237/300 (63 remaining), 121 visible, 116 hidden
+[features] # # 238/300 (62 remaining), 122 visible, 116 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -118,9 +118,9 @@ alloc = [ # enables `alloc` functionality
 std = [ # disables `no_std` compatibility and enables `std` functionality
 	"alloc",
 	"atomic?/std", "bytemuck?/extern_crate_std", "jiff?/std", "js-sys?/std",
-	"log?/std", "memchr?/std", "nc?/std", "rand_core?/std", "raw-cpuid?/std",
-	"regex-lite?/std", "rustix?/std", "tracing?/std", "wasm-bindgen?/std",
-	"web-sys?/std", "wide?/std",
+	"log?/std", "memchr?/std", "nanoserde?/std", "nc?/std", "rand_core?/std",
+	"raw-cpuid?/std", "regex-lite?/std", "rustix?/std", "tracing?/std",
+	"wasm-bindgen?/std", "web-sys?/std", "wide?/std",
 ]
 no_std = [] # enables functionality incompatible with or substitute of `std`
 
@@ -591,14 +591,14 @@ _string_all = [
 # - https://doc.rust-lang.org/edition-guide/rust-2024/cargo-remove-implicit-features.html
 
 # In sync with ./utils/check.rs::DEP_ALL & build/features.rs::DEPENDENCY
-dep_all = [ # enables all 32 optional dependencies:
+dep_all = [ # enables all 33 optional dependencies:
 	"dep_atomic", "dep_bytemuck", "dep_const_str", "dep_crossterm", "dep_hashbrown",
 	"dep_jiff", "dep_js_sys", "dep_libm", "dep_log", "dep_memchr", "dep_midir",
-	"dep_miniquad", "dep_nc", "dep_portable_atomic", "dep_pyo3", "dep_rand_core",
-	"dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_rodio", "dep_rustix",
-	"dep_safe_arch", "dep_stringzilla", "dep_sysinfo", "dep_tinyaudio", "dep_tokio",
-	"dep_tracing", "dep_unicode_segmentation", "dep_unicode_width", "dep_wasm_bindgen",
-	"dep_web_sys", "dep_wide",
+	"dep_miniquad", "dep_nanoserde", "dep_nc", "dep_portable_atomic", "dep_pyo3",
+	"dep_rand_core", "dep_rayon", "dep_raw_cpuid", "dep_regex_lite", "dep_rodio",
+	"dep_rustix", "dep_safe_arch", "dep_stringzilla", "dep_sysinfo", "dep_tinyaudio",
+	"dep_tokio", "dep_tracing", "dep_unicode_segmentation", "dep_unicode_width",
+	"dep_wasm_bindgen", "dep_web_sys", "dep_wide",
 ] # enable groups of dependencies (unlocking extra functionality in certain modules):
 
 dep_atomic = ["dep:atomic"]                                                     # work::sync
@@ -613,6 +613,7 @@ dep_log = ["dep:log", "tracing?/log"]                                           
 dep_memchr = ["dep:memchr"]                                                     # text
 dep_midir = ["dep:midir"]                                                       # media::midi
 dep_miniquad = ["dep:miniquad"]                                                 # sys::?
+dep_nanoserde = ["dep:nanoserde"]                                               # data
 dep_nc = ["dep:nc"]                                                             # sys::os
 dep_portable_atomic = ["dep:portable-atomic"]                                   # work::sync
 dep_pyo3 = ["dep:pyo3", "std"]                                                  # lang
@@ -623,7 +624,7 @@ dep_regex_lite = ["dep:regex-lite", "std"]                                      
 dep_rodio = ["dep:rodio"]                                                       # sys::sound
 dep_rustix = ["dep:rustix"]                                                     # sys::os
 dep_safe_arch = ["dep:safe_arch"]                                               # sys::arch
-dep_stringzilla = ["dep:stringzilla"]                                           # text
+dep_stringzilla = ["dep:stringzilla"]                                           # text::str
 dep_sysinfo = ["dep:sysinfo", "std"]                                            # sys
 dep_tinyaudio = ["dep:tinyaudio"]                                               # sys::sound
 dep_tokio = ["dep:tokio"]                                                       # work::async
@@ -635,7 +636,7 @@ dep_web_sys = ["dep:web-sys"]                                                   
 dep_wide = ["dep:wide"]                                                         # *
 
 
-[dependencies] # 34 (2 required, 32 optional)
+[dependencies] # 35 (2 required, 33 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #
@@ -736,6 +737,14 @@ default-features = false # 7 https://docs.rs/crate/midir/latest/features
 version = "0.4.7" # ✗ https://github.com/not-fl3/miniquad/commits/master/
 optional = true # unsafe
 default-features = false # 1 https://docs.rs/crate/miniquad/latest/features
+
+[dependencies.nanoserde] # https://crates.io/crates/nanoserde
+version = "0.2.0-beta.0" # ✗ https://github.com/not-fl3/nanoserde/commits/master/
+# WAIT: [0.2.0-beta.0 needs nightly](https://github.com/not-fl3/nanoserde/issues/121)
+# git = "https://github.com/not-fl3/nanoserde" # 0.2.0-beta.2 TEMP
+optional = true # unsafe (few)
+default-features = false # 6 https://docs.rs/crate/nanoserde/0.2.0-beta.0/features
+features = ["json", "binary", "ron", "toml"]
 
 [dependencies.nc] # https://crates.io/crates/nc
 version = "0.9.5" # ✗ https://github.com/XuShaohua/nc/commits/main/

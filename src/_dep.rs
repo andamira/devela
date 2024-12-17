@@ -70,6 +70,10 @@ reexport! { optional_crate (unsafe) "dep_midir", "midir", midir,
 reexport! { optional_crate (unsafe) "dep_miniquad", "miniquad", miniquad,
     doc: "Cross-platform window context and rendering library."
 }
+reexport! { optional_crate (unsafe) "dep_nanoserde", "nanoserde", nanoserde,
+    doc: "Data serialization library with zero dependencies.",
+    features: "std" // TEMP: WAIT: https://github.com/not-fl3/nanoserde/issues/121
+}
 reexport! { optional_crate (unsafe) "dep_nc", "nc", nc,
     doc: "Access system calls directly in: linux, android, freebsd, netbsd, macos."
 }
