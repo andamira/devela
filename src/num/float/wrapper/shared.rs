@@ -33,7 +33,7 @@ macro_rules! impl_float_shared {
         // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Float<$f> {
             /// Returns the nearest integer, rounding ties to the nearest odd integer.
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_ROUND_TIES_ODD!()]
             #[must_use]
             pub fn round_ties_odd(self) -> Float<$f> {
@@ -119,7 +119,7 @@ macro_rules! impl_float_shared {
             /// Values of `self` outside of `[min..=max]` are not clamped
             /// and will result in extrapolation.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_SCALE!()]
             /// # Examples
             /// ```
@@ -140,7 +140,7 @@ macro_rules! impl_float_shared {
             /// Values of `self` outside `[0..=1]` are not clamped
             /// and will result in extrapolation.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_LERP!()]
             /// # Example
             /// ```
@@ -190,7 +190,7 @@ macro_rules! impl_float_shared {
             /// The hypothenuse (the euclidean distance) using the
             /// [fast inverse square root algorithm](https://en.wikipedia.org/wiki/Fast_inverse_square_root).
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_HYPOT_FISR!()]
             #[must_use]
             pub const fn hypot_fisr(self, y: $f) -> Float<$f> {
@@ -200,7 +200,7 @@ macro_rules! impl_float_shared {
             /// The hypothenuse (the euclidean distance) using the
             /// [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method).
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_HYPOT_NR!()]
             #[must_use]
             pub const fn hypot_nr(self, y: $f) -> Float<$f> {
@@ -419,7 +419,7 @@ macro_rules! impl_float_shared {
             ///
             /// Uses the [finite difference method].
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_DERIVATIVE!()]
             ///
             /// See also the [`autodiff`] attr macro, enabled with the `nightly_autodiff` feature.
@@ -438,7 +438,7 @@ macro_rules! impl_float_shared {
             ///
             /// Uses the [Riemann Sum](https://en.wikipedia.org/wiki/Riemann_sum).
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_INTEGRATE!()]
             pub fn integrate<F>(f: F, x: $f, y: $f, n: usize) -> Float<$f>
             where
@@ -455,7 +455,7 @@ macro_rules! impl_float_shared {
             /// Approximates the partial derivative of the 2D function `f` at point (`x`, `y`)
             /// with step size `h`, differentiating over `x`.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_PARTIAL_DERIVATIVE_X!()]
             pub fn partial_derivative_x<F>(f: F, x: $f, y: $f, h: $f) -> Float<$f>
             where
@@ -467,7 +467,7 @@ macro_rules! impl_float_shared {
             /// Approximates the partial derivative of the 2D function `f` at point (`x`, `y`)
             /// with step size `h`, differentiating over `x`.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_PARTIAL_DERIVATIVE_Y!()]
             pub fn partial_derivative_y<F>(f: F, x: $f, y: $f, h: $f) -> Float<$f>
             where

@@ -40,7 +40,7 @@ macro_rules! impl_float_shared_series {
             /// Raises itself to the `y` floating point power using the Taylor series via the
             /// `exp` and `ln` functions.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_POWF_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
@@ -64,7 +64,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the exponential function $e^x$ using Taylor series expansion.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_EXP_SERIES!()]
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
@@ -91,7 +91,7 @@ macro_rules! impl_float_shared_series {
 
             /// Calculates $ e^x - 1 $ using the Taylor series expansion.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_EXP_M1_SERIES!()]
             ///
             /// See also [`exp_series_terms`][Self::exp_series_terms].
@@ -116,7 +116,7 @@ macro_rules! impl_float_shared_series {
 
             /// Calculates $ 2^x $ using the Taylor series expansion.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_EXP2_SERIES!()]
             ///
             /// The maximum values with a representable result are:
@@ -146,7 +146,7 @@ macro_rules! impl_float_shared_series {
             /// This method is more efficient for values of `self` near 1. Values too
             /// small or too big could be impractical to calculate with precision.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_LN_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
@@ -199,7 +199,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the logarithm to the given `base` using the change of base formula.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_LOG_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
@@ -219,7 +219,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the base-2 logarithm using the change of base formula.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_LOG2_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
@@ -230,7 +230,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the base-10 logarithm using the change of base formula.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_LOG10_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
@@ -249,7 +249,7 @@ macro_rules! impl_float_shared_series {
 
             /// The sine calculated using Taylor series expansion.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_SIN_SERIES!()]
             ///
             /// This Taylor series converges relatively quickly and uniformly
@@ -271,7 +271,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the cosine using taylor series expansion.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_COS_SERIES!()]
             ///
             /// This Taylor series converges relatively quickly and uniformly
@@ -299,7 +299,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the tangent using Taylor series expansion of sine and cosine.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_TAN_SERIES!()]
             ///
             /// The tangent function has singularities and is not defined for
@@ -319,7 +319,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the arcsine using Taylor series expansion.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_ASIN_SERIES!()]
             ///
             /// asin is undefined for $ |x| > 1 $ and in that case returns `NaN`.
@@ -357,7 +357,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the arccosine using the Taylor expansion of arcsine.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_ACOS_SERIES!()]
             ///
             /// See the [`asin_series_terms`][Self#method.asin_series_terms] table for
@@ -379,7 +379,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the arctangent using Taylor series expansion.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_ATAN_SERIES!()]
             ///
             /// The series converges more slowly near the edges of the domain
@@ -444,7 +444,7 @@ macro_rules! impl_float_shared_series {
             /// The hyperbolic sine calculated using Taylor series expansion
             /// via the exponent formula.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_SINH_SERIES!()]
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
@@ -457,7 +457,7 @@ macro_rules! impl_float_shared_series {
             /// The hyperbolic cosine calculated using Taylor series expansion
             /// via the exponent formula.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_COSH_SERIES!()]
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
@@ -470,7 +470,7 @@ macro_rules! impl_float_shared_series {
             /// Computes the hyperbolic tangent using Taylor series expansion of
             /// hyperbolic sine and cosine.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_TANH_SERIES!()]
             ///
             /// See the [`exp_series_terms`][Self#method.exp_series_terms] table for
@@ -484,7 +484,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the inverse hyperbolic sine using the natural logarithm definition.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_ASINH_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
@@ -496,7 +496,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the inverse hyperbolic cosine using the natural logarithm definition.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_ACOSH_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].
@@ -512,7 +512,7 @@ macro_rules! impl_float_shared_series {
 
             /// Computes the inverse hyperbolic tangent using the natural logarithm definition.
             ///
-            /// # Formula
+            /// # Formulation
             #[doc = FORMULA_ATANH_SERIES!()]
             ///
             /// See also [`ln_series_terms`][Self::ln_series_terms].

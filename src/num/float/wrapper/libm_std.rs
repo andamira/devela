@@ -186,13 +186,13 @@ mod _libm {
             // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The fractional part.
-                /// # Formula
+                /// # Formulation
                 #[doc = FORMULA_FRACT!()]
                 #[must_use]
                 pub fn fract(self) -> Float<$f> { Float(self.0 - Libm::<$f>::trunc(self.0)) }
 
                 /// The integral and fractional parts.
-                /// # Formula
+                /// # Formulation
                 #[doc = FORMULA_SPLIT!()]
                 #[must_use]
                 pub fn split(self) -> (Float<$f>, Float<$f>) {
@@ -403,7 +403,7 @@ mod _std {
                     (Float(sin), Float(cos))
                 }
                 /// The integral and fractional parts of `x`.
-                /// # Formula
+                /// # Formulation
                 #[doc = FORMULA_SPLIT!()]
                 #[must_use]
                 pub fn split(self) -> (Float<$f>, Float<$f>) {
@@ -440,7 +440,7 @@ mod _no_std_no_libm {
             // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
             impl Float<$f> {
                 /// The largest integer less than or equal to itself.
-                /// # Formula
+                /// # Formulation
                 #[doc = crate::FORMULA_FLOOR!()]
                 #[must_use]
                 pub fn floor(self) -> Float<$f> {
@@ -452,7 +452,7 @@ mod _no_std_no_libm {
                 }
 
                 /// The smallest integer greater than or equal to itself.
-                /// # Formula
+                /// # Formulation
                 #[doc = FORMULA_CEIL!()]
                 #[must_use]
                 pub fn ceil(self) -> Float<$f> {
@@ -473,7 +473,7 @@ mod _no_std_no_libm {
                 ///
                 /// This is the default [`round`] implementation.
                 ///
-                /// # Formula
+                /// # Formulation
                 #[doc = FORMULA_ROUND_TIES_AWAY!()]
                 #[must_use]
                 pub fn round_ties_away(self) -> Float<$f> {
@@ -481,7 +481,7 @@ mod _no_std_no_libm {
                 }
 
                 /// Returns the nearest integer to `x`, rounding ties to the nearest even integer.
-                /// # Formula
+                /// # Formulation
                 #[doc = FORMULA_ROUND_TIES_EVEN!()]
                 #[must_use]
                 pub fn round_ties_even(self) -> Float<$f> {
@@ -493,7 +493,7 @@ mod _no_std_no_libm {
                 /// The integral part.
                 /// This means that non-integer numbers are always truncated towards zero.
                 ///
-                /// # Formula
+                /// # Formulation
                 #[doc = FORMULA_TRUNC!()]
                 ///
                 /// This implementation uses bitwise manipulation to remove the fractional part
@@ -521,13 +521,13 @@ mod _no_std_no_libm {
                 }
 
                 /// The fractional part.
-                /// # Formula
+                /// # Formulation
                 #[doc = FORMULA_FRACT!()]
                 #[must_use]
                 pub fn fract(self) -> Float<$f> { Float(self.0 - self.trunc().0) }
 
                 /// The integral and fractional parts.
-                /// # Formula
+                /// # Formulation
                 #[doc = FORMULA_SPLIT!()]
                 #[must_use]
                 pub fn split(self) -> (Float<$f>, Float<$f>) {

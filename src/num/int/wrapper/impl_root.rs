@@ -88,8 +88,7 @@ macro_rules! impl_int {
             /// Returns `true` if it's a perfect square.
             ///
             /// Returns `false` otherwise, which includes all negative values.
-            /// # Algorithm
-            #[doc = ALGORITHM_IS_SQUARE!()]
+            #[doc = FORMULA_IS_SQUARE!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -117,7 +116,7 @@ macro_rules! impl_int {
             /// Returns the ceiled integer square root.
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative.
-            /// # Algorithm
+            /// # Formulation
             #[doc = ALGORITHM_SQRT_CEIL!()]
             /// # Examples
             /// ```
@@ -155,7 +154,7 @@ macro_rules! impl_int {
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative.
             ///
-            /// # Algorithm
+            /// # Formulation
             #[doc = ALGORITHM_SQRT_FLOOR!()]
             /// # Examples
             /// ```
@@ -212,7 +211,7 @@ macro_rules! impl_int {
             /// # Errors
             /// Returns [`NonNegativeRequired`] if `self` is negative, or possibly [`Overflow`]
             /// if there's no larger type to upcast and the value is close to its maximum.
-            /// # Algorithm
+            /// # Formulation
             #[doc = ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```
@@ -362,8 +361,8 @@ macro_rules! impl_int {
             /* sqrt (unsigned) */
 
             /// Returns `true` if it's a perfect square, false otherwise.
-            /// # Algorithm
-            #[doc = ALGORITHM_IS_SQUARE!()]
+            /// # Formulation
+            #[doc = FORMULA_IS_SQUARE!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -391,7 +390,7 @@ macro_rules! impl_int {
 
             /// Returns the ceiled integer square root.
             ///
-            /// # Algorithm
+            /// # Formulation
             #[doc = ALGORITHM_SQRT_CEIL!()]
             ///
             /// # Examples
@@ -419,7 +418,7 @@ macro_rules! impl_int {
 
             /// Returns the floored integer square root.
             ///
-            /// # Algorithm
+            /// # Formulation
             #[doc = ALGORITHM_SQRT_FLOOR!()]
             ///
             /// # Examples
@@ -474,7 +473,7 @@ macro_rules! impl_int {
             /// Can returns [`Overflow`] if there's no larger type to upcast and the value
             /// is close to its maximum.
             ///
-            /// # Algorithm
+            /// # Formulation
             #[doc = ALGORITHM_SQRT_ROUND!()]
             /// # Examples
             /// ```

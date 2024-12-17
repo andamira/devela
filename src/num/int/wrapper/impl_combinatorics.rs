@@ -101,13 +101,19 @@ macro_rules! impl_int {
             ///
             /// Permutations of *n* items which no element appears in its original position.
             ///
-            /// # Algorithm
-            /// The current implementation uses following recursive algorithm:
+            /// # Formulation
+            /// ## Algorithm
+            /// The current implementation uses the recursive definition:
             #[doc = ALGORITHM_SUBFACTORIAL!()]
             ///
-            /// Other possible formulas are:
-            #[doc = FORMULA_SUBFACTORIAL_OTHER!()]
-
+            /// ## Closed-Form Formulas
+            /// Other equivalent formulas for \( !n \) include:
+            ///
+            /// 1. **Summation Formula**:
+            #[doc = FORMULA_SUBFACTORIAL_SUMMATION!()]
+            /// 2. **Approximation Formula**:
+            #[doc = FORMULA_SUBFACTORIAL_APPROXIMATION!()]
+            ///
             /// These are the maximum numbers whose subfactorials can fit within
             /// standard signed integer types:
             ///
@@ -363,12 +369,18 @@ macro_rules! impl_int {
             ///
             /// Permutations of *n* items which no element appears in its original position.
             ///
-            /// # Algorithm
-            /// The current implementation uses following recursive algorithm:
+            /// # Formulation
+            /// ## Algorithm
+            /// The current implementation uses the recursive definition:
             #[doc = ALGORITHM_SUBFACTORIAL!()]
             ///
-            /// Other possible formulas are:
-            #[doc = FORMULA_SUBFACTORIAL_OTHER!()]
+            /// ## Closed-Form Formulas
+            /// Other equivalent formulas for \( !n \) include:
+            ///
+            /// 1. **Summation Formula**:
+            #[doc = FORMULA_SUBFACTORIAL_SUMMATION!()]
+            /// 2. **Approximation Formula**:
+            #[doc = FORMULA_SUBFACTORIAL_APPROXIMATION!()]
             ///
             /// These are the maximum numbers whose subfactorials can fit within
             /// standard signed integer types:

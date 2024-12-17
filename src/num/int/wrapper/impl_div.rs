@@ -60,8 +60,10 @@ macro_rules! impl_int {
             }
 
             /// Returns the quotient, rounding the result towards positive infinity.
-            /// # Notation
             #[doc = NOTATION_DIV_CEIL!()]
+            ///
+            /// # Formulation
+            #[doc = FORMULA_DIV_CEIL!()]
             /// # Examples
             /// ```
             /// # use devela::Int;
@@ -92,7 +94,6 @@ macro_rules! impl_int {
             // }
 
             /// Returns the quotient, rounding the result towards negative infinity.
-            /// # Notation
             #[doc = NOTATION_DIV_FLOOR!()]
             /// # Examples
             /// ```
@@ -260,7 +261,6 @@ macro_rules! impl_int {
             }
 
             /// Returns the quotient, rounding the result towards positive infinity.
-            /// # Notation
             #[doc = NOTATION_DIV_CEIL!()]
             /// # Examples
             /// ```
@@ -285,7 +285,6 @@ macro_rules! impl_int {
             // }
 
             /// Returns the quotient, rounding the result towards negative infinity.
-            /// # Notation
             #[doc = NOTATION_DIV_FLOOR!()]
             /// # Examples
             /// ```

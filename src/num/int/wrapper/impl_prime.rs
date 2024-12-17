@@ -153,13 +153,12 @@ macro_rules! impl_int {
 
             /// Counts the number of primes upto and including `n`.
             ///
+            #[doc = NOTATION_PI!()]
+            ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             /// # Panics
             /// It can panic if `n == i128|u128`, at the last iteration of a loop
             /// that would take an unfeasable amount of time.
-            ///
-            /// # Notation
-            #[doc = NOTATION_PI!()]
             ///
             /// # Examples
             /// ```
@@ -198,7 +197,8 @@ macro_rules! impl_int {
             /// Note: If `n` is negative, this function treats it as its absolute
             /// value. For example, a value of `-3` will be treated as `3`.
             ///
-            /// # Algorithm
+            /// # Formulation
+            /// ## Algorithm
             #[doc = ALGORITHM_TOTIENT!()]
             ///
             /// # Examples
@@ -326,13 +326,12 @@ macro_rules! impl_int {
 
             /// Counts the number of primes upto and including `n`.
             ///
+            #[doc = NOTATION_PI!()]
+            ///
             #[doc = "It upcasts internally to [`" $up "`] for the inner operations."]
             /// # Panics
             /// It can panic if `n == i128|u128`, at the last iteration of a loop
             /// that would take an unfeasable amount of time.
-            ///
-            /// # Notation
-            #[doc = NOTATION_PI!()]
             ///
             /// # Examples
             /// ```
@@ -367,7 +366,8 @@ macro_rules! impl_int {
 
             /// Counts the number of integers $<n$ that are relatively prime to `n`.
             ///
-            /// # Algorithm
+            /// # Formulation
+            /// ## Algorithm
             #[doc = ALGORITHM_TOTIENT!()]
             ///
             /// # Examples

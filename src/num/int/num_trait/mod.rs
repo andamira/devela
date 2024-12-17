@@ -217,7 +217,7 @@ pub trait NumInt: Num {
     /// Can [`Overflow`] for extrapolated values that can't fit the type,
     /// and for overflowing arithmetic operations in the following formula:
     ///
-    /// # Formula
+    /// # Formulation
     #[doc = FORMULA_SCALE!()]
     #[doc = link_impls!["scale"]]
     fn int_scale(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
@@ -234,7 +234,7 @@ pub trait NumInt: Num {
     /// # Panics
     /// Could panic for very large values on some implementations.
     ///
-    /// # Formula
+    /// # Formulation
     #[doc = FORMULA_SCALE!()] // (same as scale)
     #[doc = link_impls!["scale_wrap"]]
     fn int_scale_wrap(self, min: Self::Rhs, max: Self::Rhs, a: Self::Rhs, b: Self::Rhs)
@@ -255,7 +255,7 @@ pub trait NumInt: Num {
     ///
     /// Permutations of *n* items, ordered, where $n = r$.
     ///
-    /// # Formula
+    /// # Formulation
     #[doc = FORMULA_FACTORIAL!()]
     ///
     /// These are the maximum numbers whose factorials can fit within
@@ -273,12 +273,9 @@ pub trait NumInt: Num {
     ///
     /// Permutations of *n* items which no element appears in its original position.
     ///
-    /// # Algorithm
-    /// The current implementation uses following recursive algorithm:
-    #[doc = ALGORITHM_SUBFACTORIAL!()]
-    ///
-    /// Other possible formulas are:
-    #[doc = FORMULA_SUBFACTORIAL_OTHER!()]
+    /// # Formulation
+    /// The subfactorial $!n$ is defined recursively as:
+    #[doc = FORMULA_SUBFACTORIAL_RECURSIVE!()]
     ///
     /// These are the maximum numbers whose subfactorials can fit within
     /// standard signed integer types:
@@ -297,7 +294,7 @@ pub trait NumInt: Num {
 
     /// Returns the number of combinations of `n` items taken `r` at a time, unordered.
     ///
-    /// # Formula
+    /// # Formulation
     #[doc = FORMULA_COMBINE_REP!()]
     ///
     /// # Errors
@@ -312,7 +309,7 @@ pub trait NumInt: Num {
     ///
     /// Also known as *multichoose*.
     ///
-    /// # Formula
+    /// # Formulation
     #[doc = FORMULA_COMBINE_REP!()]
     ///
     /// # Errors
@@ -326,7 +323,7 @@ pub trait NumInt: Num {
     ///
     /// When $n=r$ or $n=r-1$ the result is the same as calculating the factorial $n!$.
     ///
-    /// # Formula
+    /// # Formulation
     #[doc = FORMULA_PERMUTE!()]
     ///
     /// # Errors
@@ -339,7 +336,7 @@ pub trait NumInt: Num {
     /// Returns the number of permutations of n` items taken `r` at a time with repetitions,
     /// ordered.
     ///
-    /// # Formula
+    /// # Formulation
     #[doc = FORMULA_PERMUTE_REP!()]
     ///
     /// # Errors
@@ -359,7 +356,7 @@ pub trait NumInt: Num {
 
     /// Returns the quotient, rounding the result towards positive infinity.
     ///
-    /// # Notation
+    /// # Formulation
     #[doc = NOTATION_DIV_CEIL!()]
     #[doc = link_impls!["div_ceil"]]
     fn int_div_ceil(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -368,7 +365,6 @@ pub trait NumInt: Num {
 
     /// Returns the quotient, rounding the result towards negative infinity.
     ///
-    /// # Notation
     #[doc = NOTATION_DIV_FLOOR!()]
     #[doc = link_impls!["div_floor"]]
     fn int_div_floor(self, b: Self::Rhs) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -618,6 +614,8 @@ pub trait NumInt: Num {
     fn int_ref_prime_nth(&self) -> Result<Self::Out> { E::ni() }
 
     /// Counts the number of primes upto and including `n`.
+    ///
+    #[doc = NOTATION_PI!()]
     #[doc = link_impls!["prime_pi"]]
     fn int_prime_pi(self) -> Result<usize> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_prime_pi"]]
@@ -640,8 +638,8 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonNegativeRequired`] if $n<0$ and [`Overflow`] if the result can't fit the type.
     ///
-    /// # Algorithm
-    #[doc = ALGORITHM_IS_SQUARE!()]
+    /// # Formulation
+    #[doc = FORMULA_IS_SQUARE!()]
     #[doc = link_impls!["is_square"]]
     fn int_is_square(self) -> Result<bool> where Self: Sized { E::ni() }
     #[doc = ref_fn!["int_is_square"]]
@@ -652,7 +650,7 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonNegativeRequired`] if `self` is negative.
     ///
-    /// # Algorithm
+    /// # Formulation
     #[doc = ALGORITHM_SQRT_CEIL!()]
     #[doc = link_impls!["sqrt_ceil"]]
     fn int_sqrt_ceil(self) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -664,7 +662,8 @@ pub trait NumInt: Num {
     /// # Errors
     /// Returns [`NonNegativeRequired`] if `self` is negative.
     ///
-    /// # Algorithm
+    /// # Formulation
+    /// ## Algorithm
     #[doc = ALGORITHM_SQRT_FLOOR!()]
     #[doc = link_impls!["sqrt_floor"]]
     fn int_sqrt_floor(self) -> Result<Self::Out> where Self: Sized { E::ni() }
@@ -673,7 +672,8 @@ pub trait NumInt: Num {
 
     /// Returns the rounded integer square root.
     ///
-    /// # Algorithm
+    /// # Formulation
+    /// ## Algorithm
     #[doc = ALGORITHM_SQRT_ROUND!()]
     #[doc = link_impls!["sqrt_round"]]
     fn int_sqrt_round(self) -> Result<Self::Out> where Self: Sized { E::ni() }
