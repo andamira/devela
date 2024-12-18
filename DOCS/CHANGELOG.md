@@ -112,6 +112,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - trust `\href` commands.
   - move to `config/`.
 - new directory `config/`.
+  - put here a copy of `Cargo.toml::dep_all`.
 
 ### Removed
 - remove custom no_std `Error` definition.
