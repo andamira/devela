@@ -63,6 +63,7 @@
         const_float_methods,
         const_maybe_uninit_write,
         const_size_of_val,
+        coverage_attribute,
         extended_varargs_abi_support,
         noop_waker,
         num_midpoint,
@@ -74,9 +75,9 @@
     feature(
         asm_goto,
         // box_uninit_write, // ?
+        cell_update,
         const_array_from_ref,
         const_slice_from_ref,
-        coverage_attribute,
         // derive_smart_pointer, // x
         do_not_recommend, // diagnostics
         impl_trait_in_assoc_type,
