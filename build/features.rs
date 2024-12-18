@@ -83,7 +83,7 @@ mod reflection {
         ]
     };
 
-    // In sync with Cargo.toml::nightly & src/lib.rs
+    // In sync with ./Cargo.toml::nightly & ./src/lib.rs
     pub const NIGHTLY: FlagsFeatures = FlagsFeatures {
         flags: &["_nightly_·"],
         features: &[
