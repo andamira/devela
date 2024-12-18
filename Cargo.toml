@@ -687,6 +687,7 @@ default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 version = "1.0.216" # ✗ https://github.com/serde-rs/serde/releases
 optional = true # unsafe
 default-features = false # 7 https://docs.rs/crate/serde/latest/features
+features = ["derive"] # (syn)
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
 version = "3.11.0" # ✗ https://github.com/ashvardanian/StringZilla/releases
