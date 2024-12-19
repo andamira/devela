@@ -101,7 +101,7 @@ impl<T, E> Future for CoroYield<'_, T, E> {
 ///
 /// # Examples
 /// ```
-#[doc = include_str!("../../../../examples/coro_run.rs")]
+#[doc = include_str!("../../../../examples/work/coro_run.rs")]
 /// ```
 /// It outputs:
 /// ```text

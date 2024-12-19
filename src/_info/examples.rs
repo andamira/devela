@@ -11,19 +11,19 @@
 /* in-crate integrated examples */
 
 #[cfg(all(feature = "bit", feature = "_bit_u8"))]
-#[path = "../../examples/bitfield.rs"]
+#[path = "../../examples/data/bitfield.rs"]
 pub mod bitfield;
 #[cfg(all(feature = "bit", feature = "_bit_u8"))]
-#[path = "../../examples/enumset.rs"]
+#[path = "../../examples/code/enumset.rs"]
 pub mod enumset;
 
-#[path = "../../examples/enumint.rs"]
+#[path = "../../examples/code/enumint.rs"]
 pub mod enumint;
 
-#[path = "../../examples/id_seq.rs"]
+#[path = "../../examples/data/id_seq.rs"]
 pub mod id_seq;
 
-#[path = "../../examples/niche.rs"]
+#[path = "../../examples/num/niche.rs"]
 pub mod niche;
 
 /* out-crate standalone examples */
