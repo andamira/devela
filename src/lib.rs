@@ -64,6 +64,7 @@
         const_maybe_uninit_write,
         const_size_of_val,
         coverage_attribute,
+        do_not_recommend, // diagnostics
         extended_varargs_abi_support,
         noop_waker,
         num_midpoint,
@@ -79,7 +80,6 @@
         const_array_from_ref,
         const_slice_from_ref,
         // derive_smart_pointer, // x
-        do_not_recommend, // diagnostics
         impl_trait_in_assoc_type,
         isqrt,
         let_chains,
