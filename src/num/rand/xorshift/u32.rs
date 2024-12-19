@@ -3,7 +3,7 @@
 //! 32-bit versions of XorShift generators.
 //
 
-use crate::{Cast, ConstDefault, Own};
+use crate::{ConstDefault, Own};
 
 /// The `XorShift32` pseudo-random number generator.
 ///
@@ -105,8 +105,10 @@ impl XorShift32 {
     ///
     /// The seeds will be joined in little endian order.
     #[must_use]
+    #[cfg(feature = "join")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
     pub const fn new2_u16(seeds: [u16; 2]) -> Option<Self> {
-        Self::new(Cast::<u32>::from_u16_le(seeds))
+        Self::new(crate::Cast::<u32>::from_u16_le(seeds))
     }
 
     /// Returns a seeded `XorShift32` generator from the given 4 × 8-bit seeds.
@@ -114,14 +116,14 @@ impl XorShift32 {
     /// The seeds will be joined in little endian order.
     #[must_use]
     pub const fn new4_u8(seeds: [u8; 4]) -> Option<Self> {
-        Self::new(Cast::<u32>::from_u8_le(seeds))
+        Self::new(u32::from_le_bytes(seeds))
     }
 }
 
-#[cfg(feature = "dep_rand_core")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
+#[cfg(all(feature = "dep_rand_core", feature = "join"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "dep_rand_core", feature = "join"))))]
 mod impl_rand {
-    use super::{Cast, XorShift32};
+    use crate::{Cast, XorShift32};
     use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
 
     impl RngCore for XorShift32 {

@@ -15,7 +15,6 @@
 
 mod xabc;
 
-#[cfg(feature = "cast")]
 crate::items! {
     mod lgc;
     mod xoroshiro;
@@ -28,11 +27,7 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods {
-        pub use super::xabc::*;
-
-        #[cfg(feature = "cast")]
-        #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "cast")))]
-        pub use super::{lgc::*, xoroshiro::*, xorshift::*, xyza8::*};
+        pub use super::{lgc::*, xabc::*, xoroshiro::*, xorshift::*, xyza8::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

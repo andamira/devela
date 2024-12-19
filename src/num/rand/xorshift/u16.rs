@@ -3,7 +3,7 @@
 //! 16-bit versions of XorShift generators.
 //
 
-use crate::{Cast, ConstDefault, Own};
+use crate::{ConstDefault, Own};
 
 /// The `XorShift16` pseudo-random number generator.
 ///
@@ -104,14 +104,14 @@ impl XorShift16 {
     /// The seeds will be joined in little endian order.
     #[must_use]
     pub const fn new2_u8(seeds: [u8; 2]) -> Option<Self> {
-        Self::new(Cast::<u16>::from_u8_le(seeds))
+        Self::new(u16::from_le_bytes(seeds))
     }
 }
 
-#[cfg(feature = "dep_rand_core")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_rand_core")))]
+#[cfg(all(feature = "dep_rand_core", feature = "join"))]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "dep_rand_core", feature = "join"))))]
 mod impl_rand {
-    use super::{Cast, XorShift16};
+    use crate::{Cast, XorShift16};
     use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
 
     impl RngCore for XorShift16 {

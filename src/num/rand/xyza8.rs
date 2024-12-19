@@ -29,7 +29,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
 
-use crate::{Cast, ConstDefault, Own};
+use crate::{ConstDefault, Own};
 
 /// A simple 8-bit pseudo-random number generator with 32-bit of state,
 /// based on the *XorShift* algorithm.
@@ -119,15 +119,15 @@ impl Xyza8a {
     ///
     /// The seeds will be split in little endian order.
     pub const fn new1_u32(seed: u32) -> Self {
-        Self::new(Cast(seed).into_u8_le())
+        Self::new(seed.to_le_bytes())
     }
 
     /// Returns a seeded `Xyza8a` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be split in little endian order.
     pub const fn new2_u16(seeds: [u16; 2]) -> Self {
-        let [x, y] = Cast(seeds[0]).into_u8_le();
-        let [z, a] = Cast(seeds[1]).into_u8_le();
+        let [x, y] = seeds[0].to_le_bytes();
+        let [z, a] = seeds[1].to_le_bytes();
         Self::new([x, y, z, a])
     }
 
@@ -218,15 +218,15 @@ impl Xyza8b {
     ///
     /// The seeds will be split in little endian order.
     pub const fn new1_u32(seed: u32) -> Self {
-        Self::new(Cast(seed).into_u8_le())
+        Self::new(seed.to_le_bytes())
     }
 
     /// Returns a seeded `Xyza8a` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be split in little endian order.
     pub const fn new2_u16(seeds: [u16; 2]) -> Self {
-        let [x, y] = Cast(seeds[0]).into_u8_le();
-        let [z, b] = Cast(seeds[1]).into_u8_le();
+        let [x, y] = seeds[0].to_le_bytes();
+        let [z, b] = seeds[1].to_le_bytes();
         Self::new([x, y, z, b])
     }
 

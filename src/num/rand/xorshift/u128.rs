@@ -3,7 +3,9 @@
 //! 128-bit versions of XorShift generators.
 //
 
-use crate::{Cast, ConstDefault, Own};
+use crate::{ConstDefault, Own};
+#[cfg(any(feature = "join", feature = "split"))]
+use crate::Cast;
 
 /// The `XorShift128` pseudo-random number generator.
 ///
@@ -108,6 +110,8 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 128-bit seed.
     ///
     /// The seeds will be split in little endian order.
+    #[cfg(feature = "split")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
     pub const fn new1_u128(seed: u128) -> Option<Self> {
         Self::new(Cast(seed).into_u32_le())
     }
@@ -115,6 +119,8 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 2 × 64-bit seeds.
     ///
     /// The seeds will be split in little endian order.
+    #[cfg(feature = "split")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
     pub const fn new2_u64(seeds: [u64; 2]) -> Option<Self> {
         let [x, y] = Cast(seeds[0]).into_u32_le();
         let [z, a] = Cast(seeds[1]).into_u32_le();
@@ -131,6 +137,8 @@ impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 8 × 16-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
+    #[cfg(feature = "join")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
     pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
         Self::new([
             Cast::<u32>::from_u16_le([seeds[0], seeds[1]]),
@@ -145,10 +153,10 @@ impl XorShift128 {
     /// The seeds will be joined in little endian order.
     pub const fn new16_u8(seeds: [u8; 16]) -> Option<Self> {
         Self::new([
-            Cast::<u32>::from_u8_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
-            Cast::<u32>::from_u8_le([seeds[4], seeds[5], seeds[6], seeds[7]]),
-            Cast::<u32>::from_u8_le([seeds[8], seeds[9], seeds[10], seeds[11]]),
-            Cast::<u32>::from_u8_le([seeds[12], seeds[13], seeds[14], seeds[15]]),
+            u32::from_le_bytes([seeds[0], seeds[1], seeds[2], seeds[3]]),
+            u32::from_le_bytes([seeds[4], seeds[5], seeds[6], seeds[7]]),
+            u32::from_le_bytes([seeds[8], seeds[9], seeds[10], seeds[11]]),
+            u32::from_le_bytes([seeds[12], seeds[13], seeds[14], seeds[15]]),
         ])
     }
 }
@@ -251,6 +259,8 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 128-bit seed.
     ///
     /// The seeds will be split in little endian order.
+    #[cfg(feature = "split")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "split")))]
     pub const fn new1_u128(seed: u128) -> Option<Self> {
         Self::new(Cast(seed).into_u64_le())
     }
@@ -265,6 +275,8 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 4 × 32-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
+    #[cfg(feature = "join")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
     pub const fn new4_u32(seeds: [u32; 4]) -> Option<Self> {
         Self::new([
             Cast::<u64>::from_u32_le([seeds[0], seeds[1]]),
@@ -275,6 +287,8 @@ impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 8 × 16-bit seeds.
     ///
     /// The seeds will be joined in little endian order.
+    #[cfg(feature = "join")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "join")))]
     pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
         Self::new([
             Cast::<u64>::from_u16_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
@@ -288,8 +302,8 @@ impl XorShift128p {
     pub const fn new16_u8(seeds: [u8; 16]) -> Option<Self> {
         let s = seeds;
         Self::new([
-            Cast::<u64>::from_u8_le([s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]]),
-            Cast::<u64>::from_u8_le([s[8], s[9], s[10], s[11], s[12], s[13], s[14], s[15]]),
+            u64::from_le_bytes([s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]]),
+            u64::from_le_bytes([s[8], s[9], s[10], s[11], s[12], s[13], s[14], s[15]]),
         ])
     }
 }
