@@ -3,7 +3,7 @@
 //!
 //! These examples generate example structures for documentation purposes.
 //
-// NOTE1: rustdoc doesn't detect changes in the examples, only in the library,
+// NOTE: rustdoc doesn't detect changes in the examples, only in the library,
 // so it's necessary to modify the library to rebuild the examples docs
 
 #![allow(unused)]

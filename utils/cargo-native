@@ -12,7 +12,8 @@
 # # Examples
 #   $ cargo native build
 #   $ cargo native test --release
-#   $ cargo native run --example example_name
+#   $ cargo native re example_name
+#   $ cargo +nightly native nd -F _docsrs
 #
 
 # Default flags for the "native" profile

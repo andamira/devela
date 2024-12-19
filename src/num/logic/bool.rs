@@ -13,7 +13,7 @@ use crate::sf;
 ///
 /// See also the [`const_bool`] macro, and the [`True`] and [`False`] types.
 #[rustfmt::skip]
-pub trait ConstBool: Sized {
+pub trait ConstBool {
     /// The resulting type-level boolean (`True` or `False`).
     type Value: Sized;
     /// The constant value of the type-level boolean.

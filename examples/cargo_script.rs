@@ -7,7 +7,7 @@ devela = { path = ".." }
 //
 //! A minimal standalone rust script.
 //
-// WAIT:[Tracking Issue for #3424](https://github.com/rust-lang/cargo/issues/12207)
+// WAIT:[Tracking Issue](https://github.com/rust-lang/cargo/issues/12207)
 
 use devela::cdbg;
 

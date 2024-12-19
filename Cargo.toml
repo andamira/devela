@@ -76,7 +76,7 @@ publish = true
 bench = false
 
 
-[features] # # 238/300 (62 remaining), 122 visible, 116 hidden
+[features] # 238/300 (62 remaining), 122 visible, 116 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -532,12 +532,10 @@ dep_wide = ["dep:wide"]                                                         
 #
 # When adding a new optional dependency:
 # 1. Add a new entry below.
-# 2. Update `dep_all` above.
-# 3. Add a new entry in src/_deps.rs.
-# 4. Update `DEPENDENCY` in build/features.rs.
+# 2. Add a new entry in src/_deps.rs.
+# 3. Update `dep_all` above and ./config/dep_all.rs.
 #
 # Notes:
-# - Dependencies are in sync with ./utils/check.rs::DEP_ALL & build/features.rs::DEPENDENCY
 # - List and count dependencies with `utils/manifest.sh dependencies`.
 
 #* required dependencies *#
@@ -690,7 +688,7 @@ default-features = false # 7 https://docs.rs/crate/serde/latest/features
 features = ["derive"] # (syn)
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
-version = "3.11.0" # ✗ https://github.com/ashvardanian/StringZilla/releases
+version = "3.11.2" # ✗ https://github.com/ashvardanian/StringZilla/releases
 optional = true  # unsafe
 default-features = false # 0 https://docs.rs/crate/stringzilla/latest/features
 # WAIT [fix msvc cross-compile](https://github.com/ashvardanian/StringZilla/pull/169)
