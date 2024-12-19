@@ -5,16 +5,8 @@
 use super::{
     IoBufRead, IoError, IoErrorKind, IoRead, IoResult as Result, IoSeek, IoSeekFrom, IoWrite,
 };
+use crate::ByteSearch;
 use core::{cmp, fmt};
-
-#[cfg(feature = "dep_memchr")]
-use memchr::memrchr;
-#[rustfmt::skip]
-#[cfg(not(feature = "dep_memchr"))]
-fn memrchr(needle: u8, haystack: &[u8]) -> Option<usize> {
-    haystack.iter().enumerate().rev().find_map(
-        |(index, &byte)| crate::iif![byte == needle; Some(index); None])
-}
 
 /// The `IoBufReader<R, S>` struct adds buffering to any reader.
 ///
@@ -471,7 +463,7 @@ impl<W: IoWrite, const S: usize> IoWrite for LineWriterShim<'_, W, S> {
     /// writer, it will also flush the existing buffer if it ends with a
     /// newline, even if the incoming data does not contain any newlines.
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
-        let newline_idx = match memrchr(b'\n', buf) {
+        let newline_idx = match ByteSearch::last1(b'\n', buf) {
             // If there are no new newlines (that is, if this write is less than
             // one line), just do a regular buffered write (which may flush if
             // we exceed the inner buffer's size)
@@ -529,7 +521,7 @@ impl<W: IoWrite, const S: usize> IoWrite for LineWriterShim<'_, W, S> {
         } else {
             let scan_area = &buf[flushed..];
             let scan_area = &scan_area[..self.buffer.capacity()];
-            match memrchr(b'\n', scan_area) {
+            match ByteSearch::last1(b'\n', scan_area) {
                 Some(newline_idx) => &scan_area[..newline_idx + 1],
                 None => scan_area,
             }
@@ -552,7 +544,7 @@ impl<W: IoWrite, const S: usize> IoWrite for LineWriterShim<'_, W, S> {
     /// writer, it will also flush the existing buffer if it contains any
     /// newlines, even if the incoming data does not contain any newlines.
     fn write_all(&mut self, buf: &[u8]) -> Result<()> {
-        match memrchr(b'\n', buf) {
+        match ByteSearch::last1(b'\n', buf) {
             // If there are no new newlines (that is, if this write is less than
             // one line), just do a regular buffered write (which may flush if
             // we exceed the inner buffer's size)
