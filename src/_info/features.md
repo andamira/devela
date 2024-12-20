@@ -249,7 +249,7 @@ Enable specific implementations for [`Compare`]:
   - `_cmp_f32`, `_cmp_f64`.
   - `_cmp_f16`, `_cmp_f128`. ←(needs `nightly_float`)
   - `_cmp_i8`, `_cmp_i16`, `_cmp_i32`, `_cmp_i64`, `_cmp_i128`, `_cmp_isize`.
-  - `_cmp_u8`, `_cmp_u16`, `_cmp_u32`, `_cmp_u64`, `_cmp_u128`, `_cmp_usize`.
+  - `_cmp_u8`, `_cmp_u16`, `_cmp_u32`, `_cmp_u64`, `_cmp_u128`,
 
 They also set the corresponding flag:
 `_cmp_·`.

@@ -149,7 +149,7 @@ macro_rules! impl_comparing {
             u32:"_cmp_u32",
             u64:"_cmp_u64",
             u128:"_cmp_u128",
-            usize:"_cmp_usize",
+            usize, // always compiled
             i8:"_cmp_i8",
             i16:"_cmp_i16",
             i32:"_cmp_i32",
@@ -169,10 +169,10 @@ macro_rules! impl_comparing {
     };
     (
     // $p: the integer type
-    // $cap: the capability feature associated with the `$f` type. E.g "_cmp_usize".
-    int: $($p:ty : $cap:literal),+) => { $( impl_comparing![@int: $p:$cap]; )+ };
-    (@int: $p:ty : $cap:literal) => {
-        #[cfg(feature = $cap)]
+    // $cap: the capability feature associated with the `$f` type. E.g "_cmp_u8".
+    int: $($p:ty $(: $cap:literal)? ),+) => { $( impl_comparing![@int: $p $(:$cap)? ]; )+ };
+    (@int: $p:ty $(: $cap:literal)? ) => {
+        $( #[cfg(feature = $cap)] )?
         impl Compare<$p> {
             /// Compares and returns `self` clamped between `min` and `max`.
             #[must_use]

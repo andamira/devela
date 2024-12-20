@@ -164,6 +164,9 @@ The format is based on [Keep a Changelog], and this project adheres to
     - `Egc` to `Grapheme`, `EgcString` to `GraphemeString`.
     - `EgcNonul` to `GraphemeNonul`, `EgcU8` to `GraphemeU8`.
     - `UninitArray` to `ArrayUninit`.
+- `Compare`
+  - make `Compare<usize>` always compiled.
+  - implement for `f16` and `128`.
 - functions and constant:
   - `Graph::edge_exists` no loger panics.
   - rename:
@@ -177,7 +180,6 @@ The format is based on [Keep a Changelog], and this project adheres to
     `clamp_nan`, `fisr`, `hypot_fisr`, `max_nan`, `min_nan`, `cbrt_nr`, `sqrt_nr`, `hypot_nr`, `rem_euclid`, `*_series`, `*_series_terms*`.
   - add additional *const* methods: `const_floor`, `const_ceil`, `const_round`, `const_round_ties_away`, `const_round_ties_even`, `const_round_ties_odd`, `const_trunc`, `const_fract`, `const_split`, `const_signum`, `const_copysign`, `const_clamp`, `const_min`, `const_max`, `const_powi`.
   - improve precision of `ExtFloatConst` constants from 35 to 80 decimals.
-  - implement Compare for `f16` and `128`.
   - remove all `inline` attributes for most functions
 - macros:
   - update `cdbg!` to support a single `@`.
@@ -297,7 +299,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - add lints table in manifest.
 
 ### Removed
-- remove features: `num_all`, `ui`, `ui_all`, `num_float`, `num_int`, `num_niche_impls`, `num_niche_range`, `result`, `safe_result`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`, `rend`, `safe_rend`, `safe_ui`, `safe_ui_term`.
+- remove features: `num_all`, `ui`, `ui_all`, `num_float`, `num_int`, `num_niche_impls`, `num_niche_range`, `result`, `safe_result`, `fig`, `safe_fig`, `io`, `io_safe`, `os`, `os_safe`, `rend`, `safe_rend`, `safe_ui`, `safe_ui_term`, `_cmp_usize`.
 - remove dependencies: `either`, `crossterm`, `miniquad`.
 - remove deprecated `ident_total_count` macro.
 - remove `repr(C)` attribute from niche types.

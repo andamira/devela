@@ -190,7 +190,7 @@ mod reflection {
         flags: &["_cmp_·"],
         features: &[
             "_cmp_i8", "_cmp_i16", "_cmp_i32", "_cmp_i64", "_cmp_i128", "_cmp_isize",
-            "_cmp_u8", "_cmp_u16", "_cmp_u32", "_cmp_u64", "_cmp_u128", "_cmp_usize",
+            "_cmp_u8", "_cmp_u16", "_cmp_u32", "_cmp_u64", "_cmp_u128",
             "_cmp_f32", "_cmp_f64",
         ]
     };
