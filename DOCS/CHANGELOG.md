@@ -50,7 +50,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `ColorBase`, `ExtCellOption`, `ExtOptRes`, `ExtError`, `MemPod`, `TypeResourced`, `Unit`.
   - `WaveletCompressionVec`, `WaveletTransformVec`.
 - associated methods and constants for:
-  - `Array`: `from_fn`, `contains_[from|to|between]`.
+  - `Array`: `from_fn`, `contains_[from|to|between]`, `as_bare_mut_slice`, `get[_mut]`.
   - `Array` when storing `Option<T>`.
   - `BareBox`.
   - `ExtAny` method `type_id`.

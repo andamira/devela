@@ -1,26 +1,22 @@
 // devela::data::collections::array::d1::methods
 //
-//! 1-dimensional array methods
+//! 1-dimensional array common methods (Storage-independent).
 //
 // TOC
 // - constructors
 // - methods
 // - methods for Option<T>
 
-use crate::{array_from_fn, array_init, iif, Array, Bare, BareBox, Storage};
+use crate::{array_from_fn, Array, Storage};
 #[allow(unused_imports)]
-#[cfg(feature = "alloc")]
-use crate::{Box, Boxed, Vec};
 #[cfg(feature = "data")]
 use crate::{
+    iif,
     DataError::{ElementNotFound, MismatchedIndices, OutOfBounds},
     DataResult as Result,
 };
 
-/* constructors */
-// -----------------------------------------------------------------------------
-
-// S
+/// # Common constructors
 impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Returns a new `Array` from the given primitive `array`.
     pub fn new(array: [T; CAP]) -> Self {
@@ -36,92 +32,44 @@ impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
     // WAIT [array_try_from_fn](https://github.com/rust-lang/rust/issues/89379)
 }
 
-// T, S: Bare
-impl<T, const CAP: usize> Array<T, CAP, Bare> {
-    /// Returns a new [`Array`] allocated in the stack,
-    /// from the given primitive `array` in compile-time.
-    pub const fn new_bare(array: [T; CAP]) -> Self {
-        Self { data: BareBox::new(array) }
+/// # Common methods
+impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
+    /// Returns the capacity of the array.
+    #[must_use]
+    pub const fn capacity(&self) -> usize {
+        CAP
     }
-}
 
-// T: Clone, S: Bare
-impl<T: Clone, const CAP: usize> Array<T, CAP, Bare> {
-    /// Returns an array, allocated in the stack, filled with `element`, cloned.
-    ///
-    /// # Example
-    /// ```
-    /// # use devela::data::Array;
-    /// let a = Array::<_, 16>::with_cloned(0);
-    /// ```
-    pub fn with_cloned(element: T) -> Self {
-        let data = BareBox::new(array_init!(clone [T; CAP], "safe_data", "unsafe_array", element));
-        Self { data }
+    /// Returns a shared slice containing the entire array.
+    #[must_use]
+    pub fn as_slice(&self) -> &[T] {
+        self.data.as_slice()
     }
-}
 
-// T: Copy, S: Bare
-impl<T: Copy, const CAP: usize> Array<T, CAP, Bare> {
-    /// Returns an array, allocated in the stack, filled with `element`, copied, in compile-time.
-    ///
-    /// # Example
-    /// ```
-    /// # use devela::data::Array;
-    /// const A: Array<i32, 16> = Array::with_copied(0);
-    /// ```
-    pub const fn with_copied(element: T) -> Self {
-        let data = BareBox::new([element; CAP]);
-        Self { data }
+    /// Returns an exclusive slice containing the entire array.
+    #[must_use]
+    pub fn as_mut_slice(&mut self) -> &mut [T] {
+        self.data.as_mut_slice()
     }
-}
 
-// T, S: Boxed
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T, const CAP: usize> Array<T, CAP, Boxed> {
-    /// Returns a new `Array` from the given `boxed_array`.
-    pub fn new_boxed(boxed_array: Box<[T; CAP]>) -> Self {
-        Array { data: boxed_array }
-    }
-}
-
-// T:Clone, S: Boxed
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T: Clone, const CAP: usize> Array<T, CAP, Boxed> {
-    /// Returns an array, allocated in the heap, filled with `element`, cloned.
-    ///
-    /// # Example
-    /// ```
-    /// # use devela::{Array, Boxed};
-    /// let mut a = Array::<_, 1_000, Boxed>::with_cloned(0);
-    /// ```
-    pub fn with_cloned(element: T) -> Self {
-        let data = array_init!(clone_heap [T; CAP], "safe_data", "unsafe_array", element);
-        Self { data }
-    }
-}
-
-/* methods */
-// -----------------------------------------------------------------------------
-
-// T: Clone, S
-impl<T: Clone, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Fills all elements of the array with the given `element`.
-    pub fn fill(&mut self, element: T) {
+    pub fn fill(&mut self, element: T)
+    where
+        T: Clone,
+    {
         self.iter_mut().for_each(|i| *i = element.clone());
     }
-}
 
-// T: Default, S
-impl<T: Default, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Fills all elements of the array with the default value.
-    pub fn fill_default(&mut self) {
+    pub fn fill_default(&mut self)
+    where
+        T: Default,
+    {
         self.iter_mut().for_each(|i| *i = T::default());
     }
 }
 
-// T: PartialEq, S
+/// # Common `T: PartialEq` methods
 impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     /// Returns `true` if the array contains `element`.
     ///
@@ -198,77 +146,7 @@ impl<T: PartialEq, const CAP: usize, S: Storage> Array<T, CAP, S> {
     }
 }
 
-// T, S
-impl<T, const CAP: usize, S: Storage> Array<T, CAP, S> {
-    /// Returns the capacity of the array.
-    #[must_use]
-    pub const fn capacity(&self) -> usize {
-        CAP
-    }
-
-    /// Returns a shared slice containing the entire array.
-    #[must_use]
-    pub fn as_slice(&self) -> &[T] {
-        self.data.as_slice()
-    }
-
-    /// Returns an exclusive slice containing the entire array.
-    #[must_use]
-    pub fn as_mut_slice(&mut self) -> &mut [T] {
-        self.data.as_mut_slice()
-    }
-}
-
-// T, S: Boxed
-#[cfg(feature = "alloc")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "alloc")))]
-impl<T, const CAP: usize> Array<T, CAP, Boxed> {
-    /// Returns the inner [`Box`]ed primitive array.
-    #[must_use]
-    pub fn into_array(self) -> Box<[T; CAP]> {
-        self.data
-    }
-    /// Returns the inner [`Box`]ed primitive array as a slice.
-    #[must_use]
-    pub fn into_slice(self) -> Box<[T]> {
-        self.data
-    }
-    /// Returns the inner [`Box`]ed primitive array as a `Vec`.
-    #[must_use]
-    pub fn into_vec(self) -> Vec<T> {
-        self.into_slice().into_vec()
-    }
-}
-// T, S: Bare
-impl<T, const CAP: usize> Array<T, CAP, Bare> {
-    /// Returns the inner [`BareBox`]ed primitive array.
-    #[must_use]
-    pub fn into_array(self) -> [T; CAP] {
-        self.data.into_inner()
-    }
-
-    /// Returns a slice containing the entire array in compile time.
-    ///
-    /// It allows to sidestep `Deref` coercion for indexing purposes.
-    #[must_use]
-    pub const fn as_bare_slice(&self) -> &[T] {
-        self.data.as_ref() // const method on BareBox
-    }
-}
-// T:Copy, S: Bare
-impl<T: Copy, const CAP: usize> Array<T, CAP, Bare> {
-    /// Returns the inner [`BareBox`]ed primitive array in compile-time.
-    #[must_use]
-    pub const fn into_array_copy(self) -> [T; CAP] {
-        self.data.into_inner_copy()
-    }
-}
-
-/* methods for Option<T> */
-// -----------------------------------------------------------------------------
-
-// Option<T>, S
-/// # Operations depending on `Option<T>`.
+/// # Common `Option<T>` methods
 impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     /// Takes out some element at `index`, leaving `None` in its place.
     #[must_use]
@@ -313,6 +191,14 @@ impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     #[must_use]
     pub fn is_full(&self) -> bool {
         self.iter().all(|opt| opt.is_some())
+    }
+
+    /// Fills all `None` elements of the array with the given cloned `value`.
+    pub fn fill_none(&mut self, value: T)
+    where
+        T: Clone,
+    {
+        self.iter_mut().filter(|opt| opt.is_none()).for_each(|opt| *opt = Some(value.clone()));
     }
 
     /// Returns the index of the first `None` element.
@@ -369,38 +255,5 @@ impl<T, const CAP: usize, S: Storage> Array<Option<T>, CAP, S> {
     #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
     pub fn first_some_mut(&mut self) -> Result<&mut Option<T>> {
         self.iter_mut().find(|opt| opt.is_some()).ok_or(ElementNotFound)
-    }
-}
-
-// Option<T: Clone>, S
-/// # Methods depending on `Option<T: Clone>`.
-impl<T: Clone, const CAP: usize> Array<Option<T>, CAP, Bare> {
-    /// Fills all `None` elements of the array with the given cloned `value`.
-    pub fn fill_none(&mut self, value: T) {
-        self.iter_mut().filter(|opt| opt.is_none()).for_each(|opt| *opt = Some(value.clone()));
-    }
-}
-
-// Option<T>, S: Bare
-/// # Methods depending on `Option<T: Copy>`.
-impl<T, const CAP: usize> Array<Option<T>, CAP, Bare> {
-    /// Checks if all elements are `None`, returning early if a `Some` is found.
-    pub const fn is_bare_empty(&self) -> bool {
-        let mut n = 0;
-        while n <= CAP {
-            iif![self.as_bare_slice()[n].is_some(); return false];
-            n += 1;
-        }
-        true
-    }
-
-    /// Checks if all elements are `Some`, returning early if a `None` is found.
-    pub const fn is_bare_full(&self) -> bool {
-        let mut n = 0;
-        while n <= CAP {
-            iif![self.as_bare_slice()[n].is_none(); return false];
-            n += 1;
-        }
-        true
     }
 }
