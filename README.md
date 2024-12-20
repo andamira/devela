@@ -10,48 +10,48 @@
 
 ---
 
-*A cohesive development layer*
+> A multi-domain development layer
 
-> A lightweight, enduring foundation for multi-disciplinary development.
+*devela* is a modular foundation for easing development across diverse domains.
+
+It aims to reduce cognitive burdens and encourage clarity in creative explorations.
+
+At its heart is a quiet dedication to learning, discovery, and sharing practical tools.
 
 
 ## Features
 
-Features are [grouped in categories], mostly independent from each other,
-so that they can be enabled orthogonally.
+Features are grouped into categories, enabling modular and orthogonal development.
 
-[grouped in caregories]: https://andamira.github.io/libera/doc/devela/_info/features/index.html
+For a full list of features and their categories, see the [Features Documentation].
+
+[Features Doucumentation]: https://andamira.github.io/libera/doc/devela/_info/features/index.html
 <!-- WAIT: publish -->
-[grouped in caregories]: https://docs.rs/devela/latest/devela/_info/features/index.html
+[Features Documentation]: https://docs.rs/devela/latest/devela/_info/features/index.html
 
 
-## Dependencies
+### Dependencies
 
-The library comes with a curated palette of lightweight optional [`dependencies`],
-none of them enabled by default.
+*devela* integrates [optional dependencies] to support specific capabilities and
+domains, ensuring you only enable what you need. Over time, these dependencies
+may evolve as its core functionality expands.
 
-[dependencies]: https://andamira.github.io/libera/doc/devela/_dep/index.html
+
+[optional dependencies]: https://andamira.github.io/libera/doc/devela/_dep/index.html
 <!-- -->
-[dependencies]: https://docs.rs/devela/latest/devela/_dep/index.html
+[optional dependencies]: https://docs.rs/devela/latest/devela/_dep/index.html
 
-
-## Try it out
-
-```sh
-git clone https://github.com/andamira/devela --recurse-submodules
-```
 
 ## Status
-This project is currently in an experimental stage of development.
-There are a lot of breaking changes in between `0.*` versions,
-while trying to find the most coherent and ergonomic APIs.
+Devela is in active development, with breaking changes expected during `0.*`
+versions as the API evolves toward coherence and clarity.
 
 
 ## License
-This project is dual licensed under either [MIT](LICENSE-MIT)
-or [Apache-2.0](LICENSE-APACHE), and includes includes several
-[vendored works](DOCS/VENDORED.md).
+Dual-licensed under either [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE),
+with additional [vendored works](DOCS/VENDORED.md).
 
 
 ## Contributing
-Contributions are welcome, see [CONTRIBUTING](DOCS/CONTRIBUTING.md)
+While *devela* is a personal project, contributions are welcome and appreciated.
+See [CONTRIBUTING](DOCS/CONTRIBUTING.md) for more details.
