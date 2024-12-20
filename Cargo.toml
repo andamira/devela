@@ -917,28 +917,27 @@ check-cfg = [ # Allowed config flags:
 # code
 [[example]]
 name = "cargo_script"
-required-features = ["__no_test"]
 path = "examples/code/cargo_script.rs"
+required-features = ["__no_test"]
 [[example]]
 name = "enumint"
 path = "examples/code/enumint.rs"
-required-features = ["_bit_u8"]
 [[example]]
 name = "enumset"
 path = "examples/code/enumset.rs"
+required-features = ["_bit_u8"]
 
 # data
 [[example]]
 name = "bitfield"
-required-features = ["_bit_u8"]
 path = "examples/data/bitfield.rs"
+required-features = ["_bit_u8"]
 [[example]]
 name = "id_pin"
-required-features = [] # optional: "alloc"
 path = "examples/data/id_pin.rs"
+required-features = [] # optional: "alloc"
 [[example]]
 name = "id_seq"
-required-features = []
 path = "examples/data/id_seq.rs"
 
 # num
@@ -955,7 +954,7 @@ required-features = ["linux", "unsafe_syscall"]
 # work
 [[example]]
 name = "coro_run"
-required-features = ["unsafe_async", "alloc"]
 path = "examples/work/coro_run.rs"
+required-features = ["unsafe_async", "alloc"]
 
 # ==============================================================================

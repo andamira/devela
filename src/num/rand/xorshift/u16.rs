@@ -111,8 +111,8 @@ impl XorShift16 {
 #[cfg(all(feature = "dep_rand_core", feature = "join"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "dep_rand_core", feature = "join"))))]
 mod impl_rand {
-    use crate::{Cast, XorShift16};
     use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
+    use crate::{Cast, XorShift16};
 
     impl RngCore for XorShift16 {
         /// Returns the next 2 × random `u16` combined as a single `u32`.

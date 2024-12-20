@@ -16,7 +16,7 @@
 ///
 /// # Examples
 /// ```
-/// # use devela::data::array_init;
+/// # use devela::array_init;
 /// assert_eq![[2,4,6], array_init![safe_init [i32; 3], |n| (n as i32 + 1) * 2]];
 /// #[cfg(feature = "unsafe_array")]
 /// assert_eq![[3,6,9], array_init![unsafe_init [i32; 3], |n| (n as i32 + 1) * 3]];

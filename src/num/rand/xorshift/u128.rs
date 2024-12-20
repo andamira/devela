@@ -3,9 +3,9 @@
 //! 128-bit versions of XorShift generators.
 //
 
-use crate::{ConstDefault, Own};
 #[cfg(any(feature = "join", feature = "split"))]
 use crate::Cast;
+use crate::{ConstDefault, Own};
 
 /// The `XorShift128` pseudo-random number generator.
 ///

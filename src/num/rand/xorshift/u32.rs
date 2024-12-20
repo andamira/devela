@@ -123,8 +123,8 @@ impl XorShift32 {
 #[cfg(all(feature = "dep_rand_core", feature = "join"))]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = "dep_rand_core", feature = "join"))))]
 mod impl_rand {
-    use crate::{Cast, XorShift32};
     use crate::_dep::rand_core::{Error, RngCore, SeedableRng};
+    use crate::{Cast, XorShift32};
 
     impl RngCore for XorShift32 {
         /// Returns the next random `u32`.

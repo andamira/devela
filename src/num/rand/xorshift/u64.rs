@@ -3,9 +3,9 @@
 //! 64-bit versions of XorShift generators.
 //
 
-use crate::{ConstDefault, Own};
 #[cfg(feature = "join")]
 use crate::Cast;
+use crate::{ConstDefault, Own};
 
 /// The `XorShift64` pseudo-random number generator.
 ///

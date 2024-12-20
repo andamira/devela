@@ -10,9 +10,9 @@
 
 #[cfg(feature = "alloc")]
 use crate::Box;
-use crate::{ConstDefault, Own};
 #[cfg(any(feature = "join", feature = "split"))]
 use crate::Cast;
+use crate::{ConstDefault, Own};
 #[cfg(feature = "std")]
 use crate::{Hasher, HasherBuild, RandomState};
 
