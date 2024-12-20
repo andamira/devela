@@ -2,8 +2,11 @@
 //
 //! `Slice` namespace.
 //
+// TODO:
+// - unchecked subslicing.
+// - saturating subslicing.
+// - first_chunk_padded
 
-#[cfg(feature = "_cmp_usize")]
 use crate::Compare;
 use core::slice::{from_mut, from_ref};
 #[allow(unused_imports, reason = "unsafe feature-gated")]
@@ -36,7 +39,7 @@ impl<T> Slice<T> {
     ///
     /// See `core::slice::`[`from_mut`].
     #[must_use]
-    pub fn from_mut(s: &mut T) -> &mut [T] {
+    pub const fn from_mut(s: &mut T) -> &mut [T] {
         from_mut(s)
     }
 
@@ -234,17 +237,13 @@ impl<T> Slice<T> {
             None => None,
         }
     }
-
-    /* TODO Unchecked */
-
-    /* TODO Saturating */
 }
 
 /// # Methods for exclusive subslicing using index-based splitting.
 impl<T> Slice<T> {
     /* panicking */
 
-    /// Returns a subslice up to the given `end` index.
+    /// Returns an exclusive subslice up to the given `end` index.
     ///
     /// Equivalent to `&mut slice[..end]`.
     ///
@@ -254,7 +253,7 @@ impl<T> Slice<T> {
     pub const fn range_to_mut(slice: &mut [T], end: usize) -> &mut [T] {
         slice.split_at_mut(end).0
     }
-    /// Returns a subslice starting from the given `start` index.
+    /// Returns an exclusive subslice starting from the given `start` index.
     ///
     /// Equivalent to `&mut slice[start..]`.
     ///
@@ -264,7 +263,7 @@ impl<T> Slice<T> {
     pub const fn range_from_mut(slice: &mut [T], start: usize) -> &mut [T] {
         slice.split_at_mut(start).1
     }
-    /// Returns a subslice from `start` (inclusive) to `end` (exclusive).
+    /// Returns an exclusive subslice from `start` (inclusive) to `end` (exclusive).
     ///
     /// Equivalent to `&mut slice[start..end]`.
     ///
@@ -275,7 +274,7 @@ impl<T> Slice<T> {
         slice.split_at_mut(start).1.split_at_mut(end - start).0
     }
 
-    /// Returns the first `n` elements of the slice.
+    /// Returns the first `n` elements of the exclusive slice.
     ///
     /// Equivalent to `&mut slice[..n]`.
     ///
@@ -285,7 +284,7 @@ impl<T> Slice<T> {
     pub const fn take_first_mut(slice: &mut [T], n: usize) -> &mut [T] {
         slice.split_at_mut(n).0
     }
-    /// Returns the last `n` elements of the slice.
+    /// Returns the last `n` elements of the exclusive slice.
     ///
     /// Equivalent to `&mut slice[slice.len() - n..]`.
     ///
@@ -295,14 +294,14 @@ impl<T> Slice<T> {
     pub const fn take_last_mut(slice: &mut [T], n: usize) -> &mut [T] {
         slice.split_at_mut(slice.len() - n).1
     }
-    /// Returns the slice omitting the last `n` elements.
+    /// Returns the exclusive slice omitting the last `n` elements.
     ///
     /// Equivalent to `&mut slice[..slice.len() - n]`.
     ///
     /// # Panics
     /// Panics if `n` > `slice.len()`.
     #[must_use]
-    pub const fn take_omit_last_mut(slice: &mut [T], n: usize) -> &[T] {
+    pub const fn take_omit_last_mut(slice: &mut [T], n: usize) -> &mut [T] {
         slice.split_at_mut(slice.len() - n).0
     }
 
@@ -427,19 +426,8 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::lsplit(&v, 0), &[] as &[i32]);
     /// assert_eq!(Slice::lsplit(&v, 10), &[1, 2, 3, 4, 5, 6]);
     /// ```
-    /// # Features
-    /// This method will only be const if the `_cmp_usize` feature is enabled.
-    // WAIT: [const_cmp](https://github.com/rust-lang/rust/issues/92391)
-    #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
     pub const fn lsplit(slice: &[T], len: usize) -> &[T] {
         let end_idx = Compare(len).clamp(0, slice.len());
-        let (left, _) = slice.split_at(end_idx);
-        left
-    }
-    #[allow(missing_docs)]
-    #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
-    pub fn lsplit(slice: &[T], len: usize) -> &[T] {
-        let end_idx = len.clamp(0, slice.len());
         let (left, _) = slice.split_at(end_idx);
         left
     }
@@ -457,19 +445,8 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::lsplit_mut(&mut v, 10), &mut [1, 2, 3, 4, 5, 6]);
     /// ```
     /// See also [`Slice::lsplit_mut`].
-    ///
-    /// # Features
-    /// This method will only be const if the `_cmp_usize` feature is enabled.
-    #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
     pub const fn lsplit_mut(slice: &mut [T], len: usize) -> &mut [T] {
         let end_idx = Compare(len).clamp(0, slice.len());
-        let (left, _) = slice.split_at_mut(end_idx);
-        left
-    }
-    #[allow(missing_docs)]
-    #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
-    pub fn lsplit_mut(slice: &mut [T], len: usize) -> &mut [T] {
-        let end_idx = len.clamp(0, slice.len());
         let (left, _) = slice.split_at_mut(end_idx);
         left
     }
@@ -508,18 +485,7 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::rsplit_mut(&mut v, 10), &mut [1, 2, 3, 4, 5, 6]);
     /// ```
     /// See also [`Slice::lsplit_mut`].
-    ///
-    /// # Features
-    /// This method will only be const if the `_cmp_usize` feature is enabled.
-    #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
-    // WAIT:? [const_cmp](https://github.com/rust-lang/rust/issues/92391)
-    pub const fn rsplit_mut(slice: &mut [T], len: usize) -> &mut [T] {
-        let start_idx = slice.len().saturating_sub(len);
-        let (_, right) = slice.split_at_mut(start_idx);
-        right
-    }
-    #[allow(missing_docs)]
-    #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
+    #[must_use]
     pub const fn rsplit_mut(slice: &mut [T], len: usize) -> &mut [T] {
         let start_idx = slice.len().saturating_sub(len);
         let (_, right) = slice.split_at_mut(start_idx);
@@ -548,27 +514,12 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::msplit_left(&v, 10), &[1, 2, 3, 4, 5, 6]);
     /// ```
     /// See also [`Slice::msplit_right`].
-    ///
-    /// # Features
-    /// This method will only be const if the `_cmp_usize` feature is enabled.
-    // WAIT:? [const_cmp](https://github.com/rust-lang/rust/issues/92391)
-    #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
+    #[must_use]
     pub const fn msplit_left(slice: &[T], len: usize) -> &[T] {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
         let end_idx = Compare(mid_idx + half_len).min(slice.len());
-        let (_, right) = slice.split_at(start_idx);
-        let (middle, _) = right.split_at(end_idx - start_idx);
-        middle
-    }
-    #[allow(missing_docs)]
-    #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
-    pub fn msplit_left(slice: &[T], len: usize) -> &[T] {
-        let mid_idx = slice.len() / 2;
-        let half_len = len / 2;
-        let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-        let end_idx = (mid_idx + half_len).min(slice.len());
         let (_, right) = slice.split_at(start_idx);
         let (middle, _) = right.split_at(end_idx - start_idx);
         middle
@@ -595,27 +546,12 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::msplit_left_mut(&mut v, 10), &mut [1, 2, 3, 4, 5, 6]);
     /// ```
     /// See also [`Slice::msplit_right_mut`].
-    ///
-    /// # Features
-    /// This method will only be const if the `_cmp_usize` feature is enabled.
-    // WAIT:? [const_cmp](https://github.com/rust-lang/rust/issues/92391)
-    #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
+    #[must_use]
     pub const fn msplit_left_mut(slice: &mut [T], len: usize) -> &mut [T] {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
         let end_idx = Compare(mid_idx + half_len).min(slice.len());
-        let (_, right) = slice.split_at_mut(start_idx);
-        let (middle, _) = right.split_at_mut(end_idx - start_idx);
-        middle
-    }
-    #[allow(missing_docs)]
-    #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
-    pub fn msplit_left_mut(slice: &mut [T], len: usize) -> &mut [T] {
-        let mid_idx = slice.len() / 2;
-        let half_len = len / 2;
-        let start_idx = mid_idx.saturating_sub(half_len + (len % 2));
-        let end_idx = (mid_idx + half_len).min(slice.len());
         let (_, right) = slice.split_at_mut(start_idx);
         let (middle, _) = right.split_at_mut(end_idx - start_idx);
         middle
@@ -643,27 +579,12 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::msplit_right(&v, 10), &[1, 2, 3, 4, 5, 6]);
     /// ```
     /// See also [`Slice::msplit_left`].
-    ///
-    /// # Features
-    /// This method will only be const if the `_cmp_usize` feature is enabled.
-    #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
-    // WAIT: [const_cmp](https://github.com/rust-lang/rust/issues/92391)
+    #[must_use]
     pub const fn msplit_right(slice: &[T], len: usize) -> &[T] {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len);
         let end_idx = Compare(mid_idx + half_len + (len % 2)).min(slice.len());
-        let (_, right) = slice.split_at(start_idx);
-        let (middle, _) = right.split_at(end_idx - start_idx);
-        middle
-    }
-    #[allow(missing_docs)]
-    #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
-    pub fn msplit_right(slice: &[T], len: usize) -> &[T] {
-        let mid_idx = slice.len() / 2;
-        let half_len = len / 2;
-        let start_idx = mid_idx.saturating_sub(half_len);
-        let end_idx = (mid_idx + half_len + (len % 2)).min(slice.len());
         let (_, right) = slice.split_at(start_idx);
         let (middle, _) = right.split_at(end_idx - start_idx);
         middle
@@ -689,27 +610,12 @@ impl<T> Slice<T> {
     /// assert_eq!(Slice::msplit_right_mut(&mut v, 10), &mut [1, 2, 3, 4, 5, 6]);
     /// ```
     /// See also [`Slice::msplit_left_mut`].
-    ///
-    /// # Features
-    /// This method will only be const if the `_cmp_usize` feature is enabled.
-    // WAIT:? [const_cmp](https://github.com/rust-lang/rust/issues/92391)
-    #[must_use] #[cfg(feature = "_cmp_usize")] #[rustfmt::skip]
+    #[must_use]
     pub const fn msplit_right_mut(slice: &mut [T], len: usize) -> &mut [T] {
         let mid_idx = slice.len() / 2;
         let half_len = len / 2;
         let start_idx = mid_idx.saturating_sub(half_len);
         let end_idx = Compare(mid_idx + half_len + (len % 2)).min(slice.len());
-        let (_, right) = slice.split_at_mut(start_idx);
-        let (middle, _) = right.split_at_mut(end_idx - start_idx);
-        middle
-    }
-    #[allow(missing_docs)]
-    #[must_use] #[cfg(not(feature = "_cmp_usize"))] #[rustfmt::skip]
-    pub fn msplit_right_mut(slice: &mut [T], len: usize) -> &mut [T] {
-        let mid_idx = slice.len() / 2;
-        let half_len = len / 2;
-        let start_idx = mid_idx.saturating_sub(half_len);
-        let end_idx = (mid_idx + half_len + (len % 2)).min(slice.len());
         let (_, right) = slice.split_at_mut(start_idx);
         let (middle, _) = right.split_at_mut(end_idx - start_idx);
         middle
