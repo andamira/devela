@@ -65,6 +65,22 @@ impl<T> BareBox<T> {
     #[must_use]
     pub const fn as_ref(&self) -> &T { &self.0 }
 
+    /// Returns an exclusive reference to the inner stored type, in compile-time.
+    ///
+    /// Example
+    /// ```
+    /// # use devela::BareBox;
+    /// const fn modify_value(mut b: BareBox<char>) -> BareBox<char> {
+    ///     let mb = b.as_mut();
+    ///     *mb = 'z';
+    ///     b
+    /// }
+    /// const MODIFIED: BareBox<char> = modify_value(BareBox::new('a'));
+    /// assert_eq!('z', *MODIFIED);
+    /// ```
+    #[must_use]
+    pub const fn as_mut(&mut self) -> &mut T { &mut self.0 }
+
     /// Replaces the stored value with a `new` one, returning the old value.
     ///
     /// Example
