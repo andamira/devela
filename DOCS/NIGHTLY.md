@@ -49,8 +49,10 @@
         · build_hasher_default_const_new
 - 1.85: ·[const_float_methods](https://github.com/rust-lang/rust/issues/117258)
 - 1.85: ·[const_maybe_uninit_write](https://github.com/rust-lang/rust/pull/131713)
+- 1.85: ·[const_nonnull_new](https://github.com/rust-lang/rust/pull/134116)
 - 1.85: ·[coverage_attribute](https://github.com/rust-lang/rust/pull/130766)
 - 1.85: ·[diagnostics::do_not_recommend](https://github.com/rust-lang/rust/pull/132056)
+- 1.85:  [Extend impls for tuples 1-12](https://github.com/rust-lang/rust/pull/132187)
 - 1.85: ·[extended_varargs_abi_support](https://github.com/rust-lang/rust/pull/116161)
 - 1.85: ?[home_dir:fix&undeprecate](https://github.com/rust-lang/rust/pull/132515)
 - 1.85: ·[noop_waker](https://github.com/rust-lang/rust/issues/98286) work::async::waker

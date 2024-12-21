@@ -62,6 +62,7 @@
         // const_collections_with_hasher, // ?
         const_float_methods,
         const_maybe_uninit_write,
+        const_nonnull_new,
         const_size_of_val,
         coverage_attribute,
         do_not_recommend, // diagnostics
