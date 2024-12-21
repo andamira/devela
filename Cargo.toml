@@ -556,7 +556,7 @@ default-features = false # 4 https://docs.rs/crate/atomic/latest/features
 features = ["fallback"]
 
 [dependencies.bytemuck] # https://crates.io/crates/bytemuck
-version = "1.19.0" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
+version = "1.21.0" # ✓ https://github.com/Lokathor/bytemuck/blob/main/changelog.md
 optional = true # unsafe
 default-features = false # 21 https://docs.rs/crate/bytemuck/latest/features
 features = ["alloc_uninit", "align_offset", "min_const_generics", "must_cast",
@@ -676,7 +676,7 @@ features = [ # IMPROVE: feature-gate
 ]
 
 [dependencies.safe_arch] # https://crates.io/crates/safe_arch
-version = "0.7.2" # ✗ https://github.com/Lokathor/wide/commits/main/
+version = "0.7.3" # ✗ https://github.com/Lokathor/wide/commits/main/
 optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 
