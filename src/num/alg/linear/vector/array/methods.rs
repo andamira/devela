@@ -25,8 +25,8 @@ impl<T, const D: usize> Vector<T, D> {
 /// helper for implementing methods on `Vector`.
 ///
 /// $t: the inner integer primitive type
-/// $cap:  the capability feature that enables the given implementation. E.g "_int_i8".
-/// $cmp: the feature that enables the given implementation. E.g "_cmp_i8".
+/// $cap: the capability feature that enables the given implementation. E.g "_int_i8".
+/// $cmp: the optional feature that enables the given implementation. E.g "_cmp_i8".
 macro_rules! impl_vector {
     () => {
         impl_vector![sint
@@ -35,24 +35,27 @@ macro_rules! impl_vector {
             i32:"_int_i32":"_cmp_i32",
             i64:"_int_i64":"_cmp_i64",
             i128:"_int_i128":"_cmp_i128",
-            isize:"_int_isize":"_cmp_isize"];
+            isize:"_int_isize":"_cmp_isize"
+        ];
         impl_vector![uint
             u8:"_int_u8":"_cmp_u8",
             u16:"_int_u16":"_cmp_u16",
             u32:"_int_u32":"_cmp_u32",
             u64:"_int_u64":"_cmp_u64",
             u128:"_int_u128":"_cmp_u128",
-            usize:"_int_usize":"_cmp_usize"];
+            usize:"_int_usize" // no _cmp_usize
+        ];
         impl_vector![float
             f32:"_float_f32":"_cmp_f32",
-            f64:"_float_f64":"_cmp_f64"];
+            f64:"_float_f64":"_cmp_f64"
+        ];
     };
 
     // integers common methods
-    (int $($t:ty : $cap:literal : $cmp:literal),+) => {
-        $( impl_vector![@int $t:$cap:$cmp]; )+
+    (int $($t:ty : $cap:literal $(: $cmp:literal)? ),+) => {
+        $( impl_vector![@int $t:$cap $(:$cmp)? ]; )+
     };
-    (@int $t:ty : $cap:literal : $cmp:literal) => {
+    (@int $t:ty : $cap:literal $(: $cmp:literal)? ) => {
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`.")]
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
@@ -182,11 +185,11 @@ macro_rules! impl_vector {
     };
 
     // signed integers specific methods
-    (sint $($t:ty : $cap:literal : $cmp:literal),+) => {
-        $( impl_vector![@sint $t:$cap:$cmp]; )+
+    (sint $($t:ty : $cap:literal $(: $cmp:literal)? ),+) => {
+        $( impl_vector![@sint $t:$cap $(:$cmp)? ]; )+
     };
-    (@sint $t:ty : $cap:literal : $cmp:literal) => {
-        impl_vector![int $t:$cap:$cmp];
+    (@sint $t:ty : $cap:literal $(: $cmp:literal)? ) => {
+        impl_vector![int $t:$cap $(:$cmp)? ];
 
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`, signed.")]
         #[cfg(feature = $cap )]
@@ -198,32 +201,38 @@ macro_rules! impl_vector {
             /// Calculates the floored magnitude of the vector.
             ///
             /// It could underestimate the true magnitude.
-            ///
+            $(
             /// # Features
             #[doc = cc!("This will only be *const* if the ", fy!($cmp), " feature is enabled.")]
             #[cfg(feature = $cmp)]
+            )? // $cmp
             pub const fn c_magnitude_floor(self) -> $t {
                 unwrap![ok Int(self.c_dot(self).abs()).sqrt_floor()].0
             }
+            $( // $cmp
             #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
             pub fn c_magnitude_floor(self) -> $t {
                 unwrap![ok Int(self.c_dot(self).abs()).sqrt_floor()].0
             }
+            )?
 
             /// Calculates the ceiled magnitude of the vector.
             ///
             /// It could overestimate the true magnitude.
-            ///
+            $(
             /// # Features
             #[doc = cc!("This will only be *const* if the ", fy!($cmp), " feature is enabled.")]
             #[cfg(feature = $cmp)]
+            )? // $cmp
             pub const fn c_magnitude_ceil(self) -> $t {
                 unwrap![ok Int(self.c_dot(self).abs()).sqrt_ceil()].0
             }
+            $( // $cmp
             #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
             pub fn c_magnitude_ceil(self) -> $t {
                 unwrap![ok Int(self.c_dot(self).abs()).sqrt_ceil()].0
             }
+            )?
 
             /// Calculates the rounded magnitude of the vector.
             /// # Panics
@@ -235,11 +244,11 @@ macro_rules! impl_vector {
     };
 
     // unsigned integers specific methods
-    (uint $($t:ty : $cap:literal : $cmp:literal),+) => {
-        $( impl_vector![@uint $t:$cap:$cmp]; )+
+    (uint $($t:ty : $cap:literal $(: $cmp:literal)? ),+) => {
+        $( impl_vector![@uint $t:$cap $(:$cmp)? ]; )+
     };
-    (@uint $t:ty : $cap:literal : $cmp:literal) => {
-        impl_vector![int $t:$cap:$cmp];
+    (@uint $t:ty : $cap:literal $(: $cmp:literal)? ) => {
+        impl_vector![int $t:$cap $(:$cmp)? ];
 
         #[doc = cc!("# Methods for vectors represented using `", fy!($t), "`, unsigned.")]
         #[cfg(feature = $cap )]
@@ -248,32 +257,38 @@ macro_rules! impl_vector {
             /// Calculates the floored magnitude of the vector.
             ///
             /// It could underestimate the true magnitude.
-            ///
+            $(
             /// # Features
             #[doc = cc!("This will only be *const* if the ", fy!($cmp), " feature is enabled.")]
             #[cfg(feature = $cmp)]
+            )? // $cmp
             pub const fn c_magnitude_floor(self) -> $t {
                 Int(self.c_dot(self)).sqrt_floor().0
             }
+            $( // $cmp
             #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
             pub fn c_magnitude_floor(self) -> $t {
                 Int(self.c_dot(self)).sqrt_floor().0
             }
+            )?
 
             /// Calculates the ceiled magnitude of the vector.
             ///
             /// It could overestimate the true magnitude.
-            ///
+            $(
             /// # Features
             #[doc = cc!("This will only be *const* if the ", fy!($cmp), " feature is enabled.")]
             #[cfg(feature = $cmp)]
+            )? // $cmp
             pub const fn c_magnitude_ceil(self) -> $t {
                 Int(self.c_dot(self)).sqrt_ceil().0
             }
+            $( // $cmp
             #[cfg(not(feature = $cmp))] #[allow(missing_docs)]
             pub fn c_magnitude_ceil(self) -> $t {
                 Int(self.c_dot(self)).sqrt_ceil().0
             }
+            )?
 
             /// Calculates the rounded magnitude of the vector.
             /// # Panics
@@ -285,10 +300,10 @@ macro_rules! impl_vector {
     };
 
     // $f: the inner floating-point primitive type
-    (float $($f:ty : $cap:literal : $cmp:literal),+) => {
-        $( impl_vector![@float $f:$cap:$cmp]; )+
+    (float $($f:ty : $cap:literal $(: $cmp:literal)? ),+) => {
+        $( impl_vector![@float $f:$cap $(:$cmp)? ]; )+
     };
-    (@float $f:ty : $cap:literal : $cmp:literal) => {
+    (@float $f:ty : $cap:literal $(: $cmp:literal)? ) => {
         #[doc = cc!("# Methods for vectors represented using `", fy!($f), "`.")]
         #[cfg(feature = $cap )]
         #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]

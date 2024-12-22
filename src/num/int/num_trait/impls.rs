@@ -19,16 +19,22 @@ use crate::{Int, NumInt, NumResult as Result, ValueQuant};
 ///
 /// $io:    the signed output primitive type (upcasted for unsigned, same as $t for signed).
 /// $iocap: the capability feature that enables some ops with signed output primitive type.
+///         also corresponds to $iup in impl_modulo, for example.
 macro_rules! impl_int {
     () => {
         impl_int![signed
-            i8:"_int_i8"|u8:"_int_u8", i16:"_int_i16"|u16:"_int_u16",
-            i32:"_int_i32"|u32:"_int_u32", i64:"_int_i64"|u64:"_int_u64",
-            i128:"_int_i128"|u128:"_int_u128", isize:"_int_isize"|usize:"_int_usize"
+            i8:"_int_i8"|u8:"_int_u8",
+            i16:"_int_i16"|u16:"_int_u16",
+            i32:"_int_i32"|u32:"_int_u32",
+            i64:"_int_i64"|u64:"_int_u64",
+            i128:"_int_i128"|u128:"_int_u128",
+            isize:"_int_isize"|usize:"_int_usize"
         ];
         impl_int![unsigned
-            u8:"_int_u8"|i16:"_int_i16", u16:"_int_u16"|i32:"_int_i32",
-            u32:"_int_u32"|i64:"_int_i64", u64:"_int_u64"|i128:"_int_i128",
+            u8:"_int_u8"|i16:"_int_i16",
+            u16:"_int_u16"|i32:"_int_i32",
+            u32:"_int_u32"|i64:"_int_i64",
+            u64:"_int_u64"|i128:"_int_i128",
             u128:"_int_u128"|i128:"_int_i128"
         ];
         #[cfg(target_pointer_width = "32")]
@@ -70,6 +76,18 @@ macro_rules! impl_int {
             fn int_ref_midpoint(&self, other: &Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(*self).midpoint(*other).0) }
 
+            /* modulo */
+
+            fn int_modulo_mul_inv(self, modulus: Self) -> Result<Self> {
+                Int(self).modulo_mul_inv(modulus).map(|n|n.0) }
+            fn int_ref_modulo_mul_inv(&self, modulus: &Self) -> Result<Self> {
+                Int(*self).modulo_mul_inv(*modulus).map(|n|n.0) }
+
+            fn int_modulo_div(self, other: Self, modulus: Self) -> Result<Self> {
+                Int(self).modulo_div(other, modulus).map(|n|n.0) }
+            fn int_ref_modulo_div(&self, other: &Self, modulus: &Self) -> Result<Self> {
+                Int(*self).modulo_div(*other, *modulus).map(|n|n.0) }
+
             /* sqrt roots */
 
             fn int_sqrt_ceil(self) -> Result<Self::Out> {
@@ -110,7 +128,6 @@ macro_rules! impl_int {
                 -> Result<GcdReturn<Self::Out, Self::OutI>> {
                 Int(self).gcd_ext(other)
                     .map(|res| GcdReturn { gcd: res.gcd.0, x: res.x.0, y: res.y.0 }) }
-
             #[cfg(all(feature = $iocap, feature = "cast"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
             fn int_ref_gcd_ext(&self, other: &Self::Rhs)
@@ -122,6 +139,26 @@ macro_rules! impl_int {
                 Ok(Int(self).midpoint(other).0) }
             fn int_ref_midpoint(&self, other: &Self::Rhs) -> Result<Self::Out> {
                 Ok(Int(*self).midpoint(*other).0) }
+
+            /* modulo */
+
+            #[cfg(all(feature = $iocap, feature = "cast"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
+            fn int_modulo_mul_inv(self, modulus: Self) -> Result<Self> {
+                Int(self).modulo_mul_inv(modulus).map(|n|n.0) }
+            #[cfg(all(feature = $iocap, feature = "cast"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
+            fn int_ref_modulo_mul_inv(&self, modulus: &Self) -> Result<Self> {
+                Int(*self).modulo_mul_inv(*modulus).map(|n|n.0) }
+
+            #[cfg(all(feature = $iocap, feature = "cast"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
+            fn int_modulo_div(self, other: Self, modulus: Self) -> Result<Self> {
+                Int(self).modulo_div(other, modulus).map(|n|n.0) }
+            #[cfg(all(feature = $iocap, feature = "cast"))]
+            #[cfg_attr(feature = "nightly_doc", doc(cfg(all(feature = $iocap, feature = "cast"))))]
+            fn int_ref_modulo_div(&self, other: &Self, modulus: &Self) -> Result<Self> {
+                Int(*self).modulo_div(*other, *modulus).map(|n|n.0) }
 
             /* sqrt roots */
 
@@ -360,15 +397,6 @@ macro_rules! impl_int {
             -> Result<ValueQuant<Self, Self>> {
             Int(*self).modulo_mul_cycles(*other, *modulus)
                 .map(|res| ValueQuant { v: res.v.0, q: res.q.0 }) }
-        fn int_modulo_mul_inv(self, modulus: Self) -> Result<Self> {
-            Int(self).modulo_mul_inv(modulus).map(|n|n.0) }
-        fn int_ref_modulo_mul_inv(&self, modulus: &Self) -> Result<Self> {
-            Int(*self).modulo_mul_inv(*modulus).map(|n|n.0) }
-
-        fn int_modulo_div(self, other: Self, modulus: Self) -> Result<Self> {
-            Int(self).modulo_div(other, modulus).map(|n|n.0) }
-        fn int_ref_modulo_div(&self, other: &Self, modulus: &Self) -> Result<Self> {
-            Int(*self).modulo_div(*other, *modulus).map(|n|n.0) }
 
         /* primes */
 

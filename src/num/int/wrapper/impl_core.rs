@@ -37,30 +37,34 @@ use crate::{cswap, iif, paste, unwrap, GcdReturn, Int, NumError::Overflow, NumRe
 /// $icap: the feature that enables some methods related to `$iup`. E.g "_int_i16". (only for unsigned)
 ///
 /// $d:    the doclink suffix for the method name
-macro_rules! impl_int {
+macro_rules! impl_core {
     () => {
-        impl_int![signed
-            i8:"_int_i8":u8:"_int_u8"|i16:"", i16:"_int_i16":u16:"_int_u16"|i32:"-1",
-            i32:"_int_i32":u32:"_int_u32"|i64:"-2", i64:"_int_i64":u64:"_int_u64"|i128:"-3",
+        impl_core![signed
+            i8:"_int_i8":u8:"_int_u8"|i16:"",
+            i16:"_int_i16":u16:"_int_u16"|i32:"-1",
+            i32:"_int_i32":u32:"_int_u32"|i64:"-2",
+            i64:"_int_i64":u64:"_int_u64"|i128:"-3",
             i128:"_int_i128":u128:"_int_u128"|i128:"-4",
             isize:"_int_isize":usize:"_int_usize"|isize_up:"-5"
         ];
-        impl_int![unsigned
-            u8:"_int_u8":u16|i16:"_int_i16":"-6", u16:"_int_u16":u32|i32:"_int_i32":"-7",
-            u32:"_int_u32":u64|i64:"_int_i64":"-8", u64:"_int_u64":u128|i128:"_int_i128":"-9",
+        impl_core![unsigned
+            u8:"_int_u8":u16|i16:"_int_i16":"-6",
+            u16:"_int_u16":u32|i32:"_int_i32":"-7",
+            u32:"_int_u32":u64|i64:"_int_i64":"-8",
+            u64:"_int_u64":u128|i128:"_int_i128":"-9",
             u128:"_int_u128":u128|i128:"_int_i128":"-10"
         ];
         #[cfg(target_pointer_width = "32")]
-        impl_int![unsigned usize:"_int_usize":usize_up|isize_up:"_int_i64":"-11"];
+        impl_core![unsigned usize:"_int_usize":usize_up|isize_up:"_int_i64":"-11"];
         #[cfg(target_pointer_width = "64")]
-        impl_int![unsigned usize:"_int_usize":usize_up|isize_up:"_int_i128":"-11"];
+        impl_core![unsigned usize:"_int_usize":usize_up|isize_up:"_int_i128":"-11"];
     };
 
     (signed $( $t:ty : $cap:literal : $ut:ty : $ucap:literal | $up:ty : $d:literal ),+) => {
-        $( impl_int![@signed $t:$cap:$ut:$ucap:$up:$d]; )+
+        $( impl_core![@signed $t:$cap:$ut:$ucap:$up:$d]; )+
     };
     (unsigned $( $t:ty : $cap:literal : $up:ty | $iup:ty : $icap:literal : $d:literal ),+) => {
-        $( impl_int![@unsigned $t:$cap:$up|$iup:$icap : $d]; )+
+        $( impl_core![@unsigned $t:$cap:$up|$iup:$icap : $d]; )+
     };
 
     // implements signed ops
@@ -80,7 +84,6 @@ macro_rules! impl_int {
         #[doc = "- [midpoint](#method.midpoint" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the absolute value of `self`.
             #[must_use]
@@ -376,7 +379,6 @@ macro_rules! impl_int {
         #[doc = "- [midpoint](#method.midpoint" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the absolute value of `self` (no-op).
             #[must_use]
@@ -655,4 +657,4 @@ macro_rules! impl_int {
         }
     }};
 }
-impl_int!();
+impl_core!();

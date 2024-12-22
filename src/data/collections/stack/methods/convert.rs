@@ -270,8 +270,6 @@ macro_rules! impl_stack {
             #[doc = "const U: Stack" $IDX:camel "<i32, 2> = S.own_resize_default_truncate().s;"]
             /// assert_eq![U.as_slice(), &[2, 3]];
             /// ```
-            #[cfg(feature = "_cmp_usize")]
-            #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "_cmp_usize")))]
             pub const fn own_resize_default_truncate<const NEW_CAP: usize>(self)
                 -> Own<Stack<T, NEW_CAP, $IDX, Bare>, ()> {
                 let start_idx = if self.len as usize > NEW_CAP {
