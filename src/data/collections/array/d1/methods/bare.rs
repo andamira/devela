@@ -122,7 +122,7 @@ impl<T, const CAP: usize> Array<T, CAP, Bare> {
     ///     a
     /// }
     /// const A: Array<i32, 4> = modify_array();
-    /// assert_eq!(A.const_get(2), &50);
+    /// assert_eq!(A.get_mut(2), &50);
     /// ```
     #[must_use]
     pub const fn get_mut(&mut self, index: usize) -> &mut T {
