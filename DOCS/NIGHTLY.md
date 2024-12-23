@@ -67,6 +67,8 @@
 - 1.??: ·[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
         · const_str_split_at
 - 1.??: x[derive_smart_pointer](https://github.com/rust-lang/rust/pull/133820)
+- 1.??: ·[get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)
+- 1.??: ·[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)
 - 1.??: ·[impl_trait_in_assoc_type](https://github.com/rust-lang/rust/pull/120700)
 - 1.??: ·[isqrt](https://github.com/rust-lang/rust/pull/131391)
 - 1.??: ·[let_chains](https://github.com/rust-lang/rust/pull/132833)
