@@ -29,22 +29,22 @@ reexport! { rust: core::sync::atomic,
 
 /* from the `atomic` crate */
 
-reexport! { "dep_atomic", "atomic", atomic, features: "work",
+reexport! { "dep_atomic", "atomic", atomic,
     doc: "A generic atomic wrapper type.",
     Atomic
 }
 
 /* from `portable-atomic` */
 
-reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic, features: "work",
+reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "A floating point type which can be safely shared between threads.",
     AtomicF32, AtomicF64
 }
-reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic, features: "work",
+reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "A signed integer type which can be safely shared between threads.",
     AtomicI128
 }
-reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic, features: "work",
+reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "An unsigned integer type which can be safely shared between threads.",
     AtomicU128
 }
