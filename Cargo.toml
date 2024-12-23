@@ -76,7 +76,7 @@ publish = true
 bench = false
 
 
-[features] # 238/300 (62 remaining), 122 visible, 116 hidden
+[features] # 237/300 (63 remaining), 122 visible, 115 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -517,7 +517,7 @@ dep_web_sys = ["dep:web-sys"]                                                   
 dep_wide = ["dep:wide"]                                                         # *
 
 
-[dependencies] # 36 (2 required, 34 optional)
+[dependencies] # 35 (2 required, 33 optional)
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 #

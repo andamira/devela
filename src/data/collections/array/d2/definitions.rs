@@ -62,12 +62,9 @@ use crate::{Array, Bare, Storage};
 /// Note that the `Default` and `ConstDefault` constructors will panic if `C * R != CR`.
 //
 // WAIT: [adt_const_params](https://github.com/rust-lang/rust/issues/95174)
-//       will allow to use enums and arrays as const-generic parameters.
+//       would allow to use enums and arrays as const-generic parameters.
 // WAIT: [generic_const_exprs](https://github.com/rust-lang/rust/issues/76560)
-//       will allow calculating CR automatically from C and R. WAIT: Depends on:
-// DONE:1.78: [allow constants refer to statics](https://github.com/rust-lang/rust/pull/119614)
-// DONE:1.77: [const-eval interning improvements](https://github.com/rust-lang/rust/pull/119044)
-// DONE:1.76: [compile-time evaluation improvements](https://github.com/rust-lang/rust/pull/118324)
+//       would allow calculating CR automatically from C and R.
 pub struct Array2d<
     T,
     const C: usize,

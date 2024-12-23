@@ -24,7 +24,7 @@ macro_rules! impl_stack {
             impl_stack!(@$IDX:$cap);
         )+
     };
-    (@$IDX:ty : $cap:literal) => { crate::code::paste! {
+    (@$IDX:ty : $cap:literal) => { $crate::paste! {
 
         /* constructors */
 
