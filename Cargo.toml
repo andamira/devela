@@ -676,7 +676,7 @@ features = [ # IMPROVE: feature-gate
 ]
 
 [dependencies.safe_arch] # https://crates.io/crates/safe_arch
-version = "0.7.3" # ✗ https://github.com/Lokathor/wide/commits/main/
+version = "0.7.4" # ✗ https://github.com/Lokathor/safe_arch/commits/main/
 optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 
@@ -739,7 +739,7 @@ optional = true # unsafe (unsafe dependencies)
 default-features = false # 1657 https://docs.rs/crate/web-sys/latest/features
 
 [dependencies.wide] # https://crates.io/crates/wide
-version = "0.7.26" # ✗ https://github.com/Lokathor/wide/commits/main/
+version = "0.7.30" # ✗ https://github.com/Lokathor/wide/commits/main/
 optional = true # unsafe
 default-features = false # 3 https://docs.rs/crate/wide/latest/features
 
