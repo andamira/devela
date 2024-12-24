@@ -81,8 +81,8 @@
         const_array_from_ref,
         const_slice_from_ref,
         // derive_smart_pointer, // x
-        get_disjoint_mut,
-        hash_extract_if,
+        // get_disjoint_mut, // ?
+        // hash_extract_if, // ?
         impl_trait_in_assoc_type,
         isqrt,
         let_chains,

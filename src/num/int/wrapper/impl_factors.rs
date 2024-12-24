@@ -71,7 +71,6 @@ macro_rules! impl_factors {
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* signed factors alloc */
 
@@ -625,7 +624,6 @@ macro_rules! impl_factors {
         #[doc = "   - [factors_prime_unique_buf](#method.factors_prime_unique_buf" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned factors alloc */
 

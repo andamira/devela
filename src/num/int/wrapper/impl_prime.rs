@@ -59,7 +59,6 @@ macro_rules! impl_prime {
         #[doc = "- [totient](#method.totient" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns `true` if `n` is prime.
             ///
@@ -251,7 +250,6 @@ macro_rules! impl_prime {
         #[doc = "- [totient](#method.totient" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns `true` if `n` is prime.
             ///

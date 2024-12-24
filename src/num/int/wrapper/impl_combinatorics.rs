@@ -63,7 +63,6 @@ macro_rules! impl_combinatorics {
         #[doc = "- [combine_rep](#method.combine_rep" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the factorial.
             ///
@@ -335,7 +334,6 @@ macro_rules! impl_combinatorics {
         #[doc = "- [permute_rep](#method.permute_rep" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the factorial.
             ///

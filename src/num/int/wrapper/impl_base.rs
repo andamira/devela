@@ -56,7 +56,6 @@ macro_rules! impl_base {
         #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns the number of digits in base 10.
             /// # Examples
@@ -196,7 +195,6 @@ macro_rules! impl_base {
         #[doc = "- [digital_root_base](#method.digital_root_base" $d ")"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* unsigned digits */
 

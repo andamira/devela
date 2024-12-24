@@ -163,7 +163,6 @@ macro_rules! impl_modulo {
             ") *([uc](#method.modulo_div_unchecked" $d "))*"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* modulo (signed) */
 
@@ -913,7 +912,6 @@ macro_rules! impl_modulo {
             ") *([uc](#method.modulo_div_unchecked" $d "))*"]
         ///
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* modulo (unsigned) */
 

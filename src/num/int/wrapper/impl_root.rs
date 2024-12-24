@@ -18,17 +18,9 @@ use super::super::shared_docs::*;
 use crate::isize_up;
 #[cfg(feature = "_int_usize")]
 use crate::usize_up;
-use crate::{
-    iif,
-    num::upcasted_op,
-    paste, Int,
-    NumError::{self, NonZeroRequired},
-    NumResult as Result,
-};
-#[cfg(_int_i·)]
-use NumError::NonNegativeRequired;
-#[cfg(doc)]
-use NumError::Overflow;
+#[allow(unused_imports, reason = "various reasons")]
+use crate::NumError::{self, NonNegativeRequired, NonZeroRequired, Overflow};
+use crate::{iif, num::upcasted_op, paste, Int, NumResult as Result};
 
 // helper function to be called from the cold path branch when nth == 0 in root_*.
 #[cold] #[inline(never)] #[rustfmt::skip] #[cfg(_int_·)]
@@ -80,10 +72,9 @@ macro_rules! impl_root {
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
-        #[doc = "- [root_ceil](#method.sqrt_ceil" $d ")"]
-        #[doc = "- [root_floor](#method.sqrt_floor" $d ")"]
+        #[doc = "- [root_ceil](#method.root_ceil" $d ")"]
+        #[doc = "- [root_floor](#method.root_floor" $d ")"]
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /// Returns `true` if it's a perfect square.
             ///
@@ -365,10 +356,9 @@ macro_rules! impl_root {
         #[doc = "- [sqrt_ceil](#method.sqrt_ceil" $d ")"]
         #[doc = "- [sqrt_floor](#method.sqrt_floor" $d ")"]
         #[doc = "- [sqrt_round](#method.sqrt_round" $d ")"]
-        #[doc = "- [root_ceil](#method.sqrt_ceil" $d ")"]
-        #[doc = "- [root_floor](#method.sqrt_floor" $d ")"]
+        #[doc = "- [root_ceil](#method.root_ceil" $d ")"]
+        #[doc = "- [root_floor](#method.root_floor" $d ")"]
         #[cfg(feature = $cap )]
-        // #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $cap)))]
         impl Int<$t> {
             /* sqrt (unsigned) */
 

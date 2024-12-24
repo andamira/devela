@@ -3,6 +3,8 @@
 //! Defines constants for shared documentation on [`Int`] and [`NumInt`].
 //
 
+#![allow(unused, reason = "if only compiling either unsigned or signed…")]
+
 crate::CONST! { pub(crate),
 /* core */
 
