@@ -18,6 +18,7 @@
 // private modules
 mod _doc;
 mod _reexport;
+mod error; // define_error!
 
 #[doc(hidden)]
 pub use paste::__paste;
@@ -55,13 +56,13 @@ crate::items! { // structural access: _mods, _internals, _all, _always
         pub use super::enumset::*;
     }
     pub(super) mod _internals {
-        pub(crate) use super::{_doc::*, _reexport::*};
+        pub(crate) use super::{_doc::*, _reexport::*, error::*};
     }
     pub(super) mod _all {
         #[doc(inline)]
         pub use super::_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{_internals::*, reexports::*};
+        pub use super::{_internals::*, reexports::*, error::*};
     }
 }

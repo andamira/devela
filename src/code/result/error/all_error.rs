@@ -4,6 +4,18 @@
 //
 
 use super::reexports::crate_errors::*;
+use crate::define_error;
+
+define_error![ErrorNotImplemented,
+    DOC_ERROR_NOT_IMPLEMENTED = "The requested functionality is not implemented.",
+    self+f => write!(f, "The requested functionality is not implemented."),
+];
+define_error![ErrorNotSupported,
+    DOC_ERROR_NOT_SUPPORTED = "The requested functionality is not supported by this type.",
+    self+f => write!(f, "The requested functionality is not supported by this type."),
+];
+
+/* aggregated errors: */
 
 /// The root result type, aggregating all module-specific results.
 pub type AllResult<T> = crate::Result<T, AllError>;

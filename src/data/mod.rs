@@ -10,13 +10,10 @@
 #![cfg_attr(feature = "safe_data", forbid(unsafe_code))]
 
 mod bit;
+mod error;
 mod id;
 mod fmt;
 mod sort;
-
-#[cfg(feature = "data")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-mod error;
 
 pub mod collections;
 pub mod hash;
@@ -34,9 +31,7 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        pub use super::{bit::_all::*, fmt::_all::*, id::_all::*, sort::_all::*};
-        #[cfg(feature = "data")]
-        pub use super::error::*;
+        pub use super::{bit::_all::*, error::*, fmt::_all::*, id::_all::*, sort::_all::*};
     }
     mod _pub_mods {
         #[doc(hidden)] #[doc(no_inline)]
@@ -55,6 +50,6 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
         pub use super::{_pub_mods::*, _mods::*};
     }
     pub(super) mod _always { #![allow(unused)]
-        pub use super::{collections::_always::*, hash::_always::*, iter::_always::*};
+        pub use super::{collections::_always::*, error::*, hash::_always::*, iter::_always::*};
     }
 }

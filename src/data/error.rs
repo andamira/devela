@@ -1,89 +1,137 @@
 // devela::data::error
 //
-//!
+//! Data-related error types.
 //
+// TOC
+// - standalone data-related error types:
+//   - ElementNotFound
+//   - InvalidAxisLength
+//   - KeyAlreadyExists
+//   - MismatchedDimensions
+//   - MismatchedIndices
+//   - MismatchedLength
+//   - NodeEmpty
+//   - NodeLinkNotSet
+//   - NodeLinkNotUnique
+//   - NotEnoughElements
+//   - NotEnoughSpace
+//   - OutOfBounds
+//   - Overflow
+//   - PartiallyAdded
+// - aggregated Data-related error types:
+//   - DataResult
+//   - DataError
 
-use crate::Mismatch;
+use crate::{define_error, Mismatch};
 
-/// A data-related result.
-pub type DataResult<T> = crate::Result<T, DataError>;
+define_error![ErrorElementNotFound,
+    DOC_ERROR_ELEMENT_NOT_FOUND = "The requested element has not been found.",
+    self+f => write!(f, "The requested element has not been found."),
+];
+define_error![ErrorInvalidAxisLength(pub Option<usize>),
+    DOC_ERROR_INVALID_AXIS_LENGTH = "The given axis has an invalid length.\n\n,
+    Optionally contains some given axis number.",
+    self+f => if let Some(n) = self.0 {
+        write!(f, "Axis number {n} has 0 length, which is not allowed.")
+    } else { write!(f, "One ore more axis have 0 length, which is not allowed.") }
+];
+define_error![ErrorKeyAlreadyExists,
+    DOC_ERROR_KEY_ALREADY_EXISTS = "The key already exists.",
+    self+f => write!(f, "The key already exists.")
+];
+define_error![ErrorMismatchedDimensions(pub Mismatch<usize, usize>),
+    DOC_ERROR_MISMATCHED_DIMENSIONS = "The dimensions given did not match the elements provided.",
+    self+f => write!(f, "Mismatched dimensions: {:?}.", self.0)
+];
+define_error![ErrorMismatchedIndices,
+    DOC_ERROR_MISMATCHED_INDICES = "The given indices does not match the expected order.",
+    self+f => write!(f, "The given indices does not match the expected order.")
+];
+define_error![ErrorMismatchedLength(pub Mismatch<usize, usize>),
+    DOC_ERROR_MISMATCHED_LENGTH =
+    "The given length or capacity did not match the required constraints.",
+    self+f => write!(f, "Mismatched length or capacity: {:?}.", self.0)
+];
+define_error![ErrorNodeEmpty(pub Option<usize>),
+    DOC_ERROR_NODE_EMPTY = "The node is empty.",
+    self+f => if let Some(n) = self.0 { write!(f, "The given node `{n}` is empty.")
+    } else { write!(f, "The node is empty.") }
+];
+define_error![ErrorNodeLinkNotSet(pub Option<usize>),
+    DOC_ERROR_NODE_LINK_NOT_SET = "The link is not set.",
+    self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not set.")
+    } else { write!(f, "The node link is not set.") }
+];
+define_error![ErrorNodeLinkNotUnique(pub Option<usize>),
+    DOC_ERROR_NODE_LINK_NOT_UNIQUE = "The link is not unique.",
+    self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not unique.")
+    } else { write!(f, "The node link is not unique.") }
+];
+define_error![ErrorNotEnoughElements(pub Option<usize>),
+    DOC_ERROR_NOT_ENOUGH_ELEMENTS = "There are not enough elements for the operation.\n\n
+    Optionally contains the minimum number of elements needed.",
+    self+f => if let Some(n) = self.0 {
+        write!(f, "Not enough elements. Needs at least `{n}` elements.")
+    } else { write!(f, "Not enough elements.") }
+];
+define_error![ErrorNotEnoughSpace(pub Option<usize>),
+    DOC_ERROR_NOT_ENOUGH_SPACE = "There is not enough free space for the operation.\n\n
+    Optionally contains the number of free spaces needed.",
+    self+f => if let Some(n) = self.0 {
+        write!(f, "Not enough space. Needs at least `{n}` free space for elements.")
+    } else { write!(f, "Not enough space.") }
+];
+define_error![ErrorOutOfBounds(pub Option<usize>),
+    DOC_ERROR_OUT_OF_BOUNDS = "The given `index`, `length` or `capacity` is out of bounds.\n\n
+    Optionally contains some given magnitude.",
+    self+f => if let Some(i) = self.0 { write!(f, "The given index {i} is out of bounds.")
+    } else { write!(f, "The given index is out of bounds.") }
+];
+define_error![ErrorOverflow,
+    DOC_ERROR_OVERFLOW = "Value above maximum representable.",
+    self+f => write!(f, "Value above maximum representable.")
+];
+define_error![ErrorPartiallyAdded(pub Option<usize>),
+    DOC_ERROR_PARTIALLY_ADDED = "The operation could only add a subset of the elements.\n\n
+    Optionally contains the number of elements added.",
+    self+f => if let Some(n) = self.0 { write!(f, "Only `{n}` elements could be added.")
+    } else { write!(f, "Only a subset of elements could be added.") }
+];
 
-/// A data-related error.
-#[non_exhaustive]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub enum DataError {
-    /// The requested data-related functionality is not implemented.
-    NotImplemented,
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
+#[cfg(feature = "data")]
+mod aggregated {
+    use super::*;
+    use crate::{
+        Display, ErrorNotImplemented, ErrorNotSupported, FmtResult, Formatter,
+        DOC_ERROR_NOT_IMPLEMENTED, DOC_ERROR_NOT_SUPPORTED,
+    };
 
-    /// The requested data-related functionality is not supported by this data type.
-    NotSupported,
+    /// A data-related aggregated result.
+    pub type DataResult<T> = crate::Result<T, DataError>;
 
-    /// Value above maximum representable.
-    Overflow,
-
-    /// The given `index`, `length` or `capacity` is out of bounds.
-    ///
-    /// Optionally contains given magnitude.
-    OutOfBounds(Option<usize>),
-
-    /// The given axis has 0 length, which is not allowed.
-    ///
-    /// Optionally contains the given axis number.
-    InvalidAxisLength(Option<usize>),
-
-    /// The given indices does not match the expected order.
-    MismatchedIndices,
-
-    /// The dimensions given did not match the elements provided
-    MismatchedDimensions(Mismatch<usize, usize>),
-
-    /// The given length or capacity did not match the required constraints.
-    MismatchedLength(Mismatch<usize, usize>),
-
-    /// There are not enough elements for the operation.
-    ///
-    /// Optionally contains the minimum number of elements needed.
-    NotEnoughElements(Option<usize>),
-
-    /// There is not enough free space for the operation.
-    ///
-    /// Optionally contains the number of free spaces needed.
-    NotEnoughSpace(Option<usize>),
-
-    /// The requested element has not been found.
-    ElementNotFound,
-
-    /// The operation could only add a subset of the elements.
-    ///
-    /// Optionally contains the number of elements added.
-    PartiallyAdded(Option<usize>),
-
-    /// The key already exists.
-    KeyAlreadyExists,
-
-    /// The node is empty.
-    NodeEmpty(Option<usize>),
-
-    /// The link is not set.
-    NodeLinkNotSet(Option<usize>),
-
-    /// The link is not unique.
-    NodeLinkNotUnique(Option<usize>),
-}
-
-#[allow(dead_code)]
-impl DataError {
-    pub(crate) const fn ni<T>() -> DataResult<T> {
-        Err(DataError::NotImplemented)
+    /// A data-related aggregated error.
+    #[non_exhaustive] #[rustfmt::skip]
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+    pub enum DataError {
+        #[doc = DOC_ERROR_NOT_IMPLEMENTED!()]       NotImplemented,
+        #[doc = DOC_ERROR_NOT_SUPPORTED!()]         NotSupported,
+        //
+        #[doc = DOC_ERROR_ELEMENT_NOT_FOUND!()]     ElementNotFound,
+        #[doc = DOC_ERROR_INVALID_AXIS_LENGTH!()]   InvalidAxisLength(Option<usize>),
+        #[doc = DOC_ERROR_KEY_ALREADY_EXISTS!()]    KeyAlreadyExists,
+        #[doc = DOC_ERROR_MISMATCHED_DIMENSIONS!()] MismatchedDimensions(Mismatch<usize, usize>),
+        #[doc = DOC_ERROR_MISMATCHED_INDICES!()]    MismatchedIndices,
+        #[doc = DOC_ERROR_MISMATCHED_LENGTH!()]     MismatchedLength(Mismatch<usize, usize>),
+        #[doc = DOC_ERROR_NODE_EMPTY!()]            NodeEmpty(Option<usize>),
+        #[doc = DOC_ERROR_NODE_LINK_NOT_SET!()]     NodeLinkNotSet(Option<usize>),
+        #[doc = DOC_ERROR_NODE_LINK_NOT_UNIQUE!()]  NodeLinkNotUnique(Option<usize>),
+        #[doc = DOC_ERROR_NOT_ENOUGH_ELEMENTS!()]   NotEnoughElements(Option<usize>),
+        #[doc = DOC_ERROR_NOT_ENOUGH_SPACE!()]      NotEnoughSpace(Option<usize>),
+        #[doc = DOC_ERROR_OUT_OF_BOUNDS!()]         OutOfBounds(Option<usize>),
+        #[doc = DOC_ERROR_OVERFLOW!()]              Overflow,
+        #[doc = DOC_ERROR_PARTIALLY_ADDED!()]       PartiallyAdded(Option<usize>),
     }
-    pub(crate) const fn ns<T>() -> DataResult<T> {
-        Err(DataError::NotSupported)
-    }
-}
-
-mod core_impls {
-    use crate::{DataError, Display, FmtResult, Formatter};
-
     impl crate::Error for DataError {}
     impl crate::ExtError for DataError {
         type Kind = (); // TODO
@@ -92,60 +140,39 @@ mod core_impls {
         }
         fn error_kind(&self) -> Self::Kind {}
     }
-
     impl Display for DataError {
         fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult<()> {
             use super::DataError as E;
             match self {
-                E::NotImplemented => write!(f, "Not implemented."),
-                E::NotSupported => write!(f, "Not supported."),
-                E::Overflow => write!(f, "Value above maximum representable."),
-                E::InvalidAxisLength(n) => match n {
-                    Some(n) => write!(f, "Axis number {n} has 0 length, which is not allowed."),
-                    None => write!(f, "One ore more axis have 0 length, which is not allowed."),
-                },
-                E::MismatchedIndices => {
-                    write!(f, "The given indices does not match the expected order.")
-                }
-                E::OutOfBounds(i) => match i {
-                    Some(i) => write!(f, "The given index {i} is out of bounds."),
-                    None => write!(f, "The given index is out of bounds."),
-                },
-                E::MismatchedDimensions(m) => {
-                    write!(f, "Mismatched dimensions: {m:?}.")
-                }
-                E::MismatchedLength(m) => {
-                    write!(f, "Mismatched length or capacity: {m:?}.")
-                }
-                E::NotEnoughElements(n) => match n {
-                    Some(n) => write!(f, "Not enough elements. Needs at least `{n}` elements."),
-                    None => write!(f, "Not enough elements."),
-                },
-                E::NotEnoughSpace(n) => match n {
-                    Some(n) => {
-                        write!(f, "Not enough space. Needs at least `{n}` free space for elements.")
-                    }
-                    None => write!(f, "Not enough space."),
-                },
-                E::ElementNotFound => write!(f, "The requested element has not been found."),
-                E::PartiallyAdded(n) => match n {
-                    Some(n) => write!(f, "Only `{n}` elements could be added."),
-                    None => write!(f, "Only a subset of elements could be added."),
-                },
-                E::KeyAlreadyExists => write!(f, "The key already exists."),
-                E::NodeEmpty(n) => match n {
-                    Some(n) => write!(f, "The given node `{n}` is empty."),
-                    None => write!(f, "The node is empty."),
-                },
-                E::NodeLinkNotSet(n) => match n {
-                    Some(n) => write!(f, "The given node link `{n}` is not set."),
-                    None => write!(f, "The node link is not set."),
-                },
-                E::NodeLinkNotUnique(n) => match n {
-                    Some(n) => write!(f, "The given node link `{n}` is not unique."),
-                    None => write!(f, "The node link is not unique."),
-                },
+                E::NotImplemented => Display::fmt(&ErrorNotImplemented, f),
+                E::NotSupported => Display::fmt(&ErrorNotSupported, f),
+                //
+                E::ElementNotFound => Display::fmt(&ErrorElementNotFound, f),
+                E::InvalidAxisLength(n) => Display::fmt(&ErrorInvalidAxisLength(*n), f),
+                E::KeyAlreadyExists => Display::fmt(&ErrorKeyAlreadyExists, f),
+                E::MismatchedDimensions(m) => Display::fmt(&ErrorMismatchedDimensions(*m), f),
+                E::MismatchedIndices => Display::fmt(&ErrorMismatchedIndices, f),
+                E::MismatchedLength(l) => Display::fmt(&ErrorMismatchedLength(*l), f),
+                E::NodeEmpty(n) => Display::fmt(&ErrorNodeEmpty(*n), f),
+                E::NodeLinkNotSet(n) => Display::fmt(&ErrorNodeLinkNotSet(*n), f),
+                E::NodeLinkNotUnique(n) => Display::fmt(&ErrorNodeLinkNotUnique(*n), f),
+                E::NotEnoughElements(n) => Display::fmt(&ErrorNotEnoughElements(*n), f),
+                E::NotEnoughSpace(n) => Display::fmt(&ErrorNotEnoughSpace(*n), f),
+                E::OutOfBounds(i) => Display::fmt(&ErrorOutOfBounds(*i), f),
+                E::Overflow => Display::fmt(&ErrorOverflow, f),
+                E::PartiallyAdded(n) => Display::fmt(&ErrorPartiallyAdded(*n), f),
             }
         }
     }
+    #[allow(dead_code)]
+    impl DataError {
+        pub(crate) const fn ni<T>() -> DataResult<T> {
+            Err(DataError::NotImplemented)
+        }
+        pub(crate) const fn ns<T>() -> DataResult<T> {
+            Err(DataError::NotSupported)
+        }
+    }
 }
+#[cfg(feature = "data")]
+pub use aggregated::*;
