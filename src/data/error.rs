@@ -165,24 +165,24 @@ mod aggregated {
         }
     }
 
-    impl_error! { for: DataError, from: {
+    impl_error! { for: DataError, try(ErrorNotSupported => ErrorNotSupported), from: {
         ErrorNotImplemented,        _f => NotImplemented,
         ErrorNotSupported,          _f => NotSupported,
         //
         ErrorElementNotFound,       _f => ElementNotFound,
-        ErrorInvalidAxisLength,      f => InvalidAxisLength(f.0),
+        ErrorInvalidAxisLength,      f => InvalidAxisLength(f.0), try:i,
         ErrorKeyAlreadyExists,      _f => KeyAlreadyExists,
-        ErrorMismatchedDimensions,   f => MismatchedDimensions(f.0),
+        ErrorMismatchedDimensions,   f => MismatchedDimensions(f.0), try:i,
         ErrorMismatchedIndices,     _f => MismatchedIndices,
-        ErrorMismatchedLength,       f => MismatchedLength(f.0),
-        ErrorNodeEmpty,              f => NodeEmpty(f.0),
-        ErrorNodeLinkNotSet,         f => NodeLinkNotSet(f.0),
-        ErrorNodeLinkNotUnique,      f => NodeLinkNotUnique(f.0),
-        ErrorNotEnoughElements,      f => NotEnoughElements(f.0),
-        ErrorNotEnoughSpace,         f => NotEnoughSpace(f.0),
-        ErrorOutOfBounds,            f => OutOfBounds(f.0),
+        ErrorMismatchedLength,       f => MismatchedLength(f.0), try:i,
+        ErrorNodeEmpty,              f => NodeEmpty(f.0), try:i,
+        ErrorNodeLinkNotSet,         f => NodeLinkNotSet(f.0), try:i,
+        ErrorNodeLinkNotUnique,      f => NodeLinkNotUnique(f.0), try:i,
+        ErrorNotEnoughElements,      f => NotEnoughElements(f.0), try:i,
+        ErrorNotEnoughSpace,         f => NotEnoughSpace(f.0), try:i,
+        ErrorOutOfBounds,            f => OutOfBounds(f.0), try:i,
         ErrorOverflow,              _f => Overflow,
-        ErrorPartiallyAdded,         f => PartiallyAdded(f.0),
+        ErrorPartiallyAdded,         f => PartiallyAdded(f.0), try:i,
     }}
 
     // RETHINK
