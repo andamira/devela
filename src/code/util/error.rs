@@ -28,18 +28,13 @@ macro_rules! impl_error {
         }
     };
     (
-    // Single impl From.
-    from: $from:ty, for: $for:ty, $arg:ident => $expr:expr) => {
-        impl From<$from> for $for { fn from($arg: $from) -> $for { $expr } }
-    };
-    (
     // Multiple impl From for a single type.
-    for: $for:ty, from: {
-        $( $from:ty, $arg:ident => $expr:expr ),* $(,)?
-    } ) => {
-        $(
-        impl From<$from> for $for { fn from($arg: $from) -> $for { $expr } }
-        )*
-    };
+    for: $for:ident, from: { $(
+        $from:ty, $arg:ident => $variant:ident $(( $expr:expr ))?
+    ),* $(,)? } ) => { $(
+        impl From<$from> for $for { fn from($arg: $from) -> $for {
+            $for :: $variant $(($expr))?
+        } }
+    )* };
 }
 pub(crate) use impl_error;

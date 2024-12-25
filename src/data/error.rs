@@ -166,23 +166,23 @@ mod aggregated {
     }
 
     impl_error! { for: DataError, from: {
-        ErrorNotImplemented,        _f => DataError::NotImplemented,
-        ErrorNotSupported,          _f => DataError::NotSupported,
+        ErrorNotImplemented,        _f => NotImplemented,
+        ErrorNotSupported,          _f => NotSupported,
         //
-        ErrorElementNotFound,       _f => DataError::ElementNotFound,
-        ErrorInvalidAxisLength,      f => DataError::InvalidAxisLength(f.0),
-        ErrorKeyAlreadyExists,      _f => DataError::KeyAlreadyExists,
-        ErrorMismatchedDimensions,   f => DataError::MismatchedDimensions(f.0),
-        ErrorMismatchedIndices,     _f => DataError::MismatchedIndices,
-        ErrorMismatchedLength,       f => DataError::MismatchedLength(f.0),
-        ErrorNodeEmpty,              f => DataError::NodeEmpty(f.0),
-        ErrorNodeLinkNotSet,         f => DataError::NodeLinkNotSet(f.0),
-        ErrorNodeLinkNotUnique,      f => DataError::NodeLinkNotUnique(f.0),
-        ErrorNotEnoughElements,      f => DataError::NotEnoughElements(f.0),
-        ErrorNotEnoughSpace,         f => DataError::NotEnoughSpace(f.0),
-        ErrorOutOfBounds,            f => DataError::OutOfBounds(f.0),
-        ErrorOverflow,              _f => DataError::Overflow,
-        ErrorPartiallyAdded,         f => DataError::PartiallyAdded(f.0),
+        ErrorElementNotFound,       _f => ElementNotFound,
+        ErrorInvalidAxisLength,      f => InvalidAxisLength(f.0),
+        ErrorKeyAlreadyExists,      _f => KeyAlreadyExists,
+        ErrorMismatchedDimensions,   f => MismatchedDimensions(f.0),
+        ErrorMismatchedIndices,     _f => MismatchedIndices,
+        ErrorMismatchedLength,       f => MismatchedLength(f.0),
+        ErrorNodeEmpty,              f => NodeEmpty(f.0),
+        ErrorNodeLinkNotSet,         f => NodeLinkNotSet(f.0),
+        ErrorNodeLinkNotUnique,      f => NodeLinkNotUnique(f.0),
+        ErrorNotEnoughElements,      f => NotEnoughElements(f.0),
+        ErrorNotEnoughSpace,         f => NotEnoughSpace(f.0),
+        ErrorOutOfBounds,            f => OutOfBounds(f.0),
+        ErrorOverflow,              _f => Overflow,
+        ErrorPartiallyAdded,         f => PartiallyAdded(f.0),
     }}
 
     // RETHINK
