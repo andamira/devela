@@ -4,7 +4,7 @@
 macro_rules! impl_error {
     (
     // standalone error type definition.
-    define: $struct_name:ident $(( $vis:vis $inner:ty ))?,
+    single: $struct_name:ident $(( $vis:vis $inner:ty ))?,
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
         $(,)?
@@ -47,5 +47,48 @@ macro_rules! impl_error {
             }
         }
     )* };
+
+    (
+    // Define a composite Error enum, plus:
+    // - impl Error, ExtError and Display.
+    // - impl From and TryFrom in reverse.
+    composite:
+        $(#[$enum_attr:meta])*
+        $vis:vis enum $name:ident { $(
+            $DOC_VAR:ident: $variant:ident $( ($var_arg:ident: $var_data:ty) )?
+        ),+ $(,)? }
+        [$fmt:ident]
+    ) => {
+        $(#[$enum_attr])*
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+        $vis enum $name { $(
+            #[doc = $DOC_VAR!()]
+            $variant $(($var_data))?
+        ),+ }
+
+        // impl Error, ExtError & Display:
+        impl $crate::Error for $name {}
+        impl $crate::ExtError for $name {
+            type Kind = ();
+            fn error_eq(&self, other: &Self) -> bool { self == other }
+            fn error_kind(&self) -> Self::Kind {}
+        }
+        impl $crate::Display for $name  {
+            fn fmt(&self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
+                match self { $(
+                    $name::$variant $(($var_arg))? => $crate::Display::fmt(
+                        &$crate::paste!{[<Error $variant>]} $( (*$var_arg) )?, $fmt),
+                )+ }
+            }
+        }
+        // impl From, and TryFrom in reverse:
+        $crate::paste! { $crate::impl_error! { for: $name,
+            try($crate::ErrorNotSupported => $crate::ErrorNotSupported),
+            from: {
+                $(
+                [<Error $variant>], _f => $variant $((_f.0), try:$var_arg)?
+                ),+
+        }}}
+    };
 }
 pub(crate) use impl_error;
