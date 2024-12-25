@@ -66,6 +66,7 @@
 - 1.??: ·[const_·array|slice·_from_ref](https://github.com/rust-lang/rust/issues/90206)
 - 1.??: ·[const_is_char_boundary](https://github.com/rust-lang/rust/pull/134016)
         · const_str_split_at
+- 1.??: ·[const_swap](https://github.com/rust-lang/rust/pull/134757)
 - 1.??: x[derive_smart_pointer](https://github.com/rust-lang/rust/pull/133820)
 - 1.??: ?[get_disjoint_mut](https://github.com/rust-lang/rust/pull/134633)
 - 1.??: ?[hash_extract_if](https://github.com/rust-lang/rust/pull/134655)

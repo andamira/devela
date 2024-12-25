@@ -6,7 +6,7 @@
 ///
 /// [xor swap method]: https://en.wikipedia.org/wiki/XOR_swap_algorithm
 //
-// WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
+// WAIT: [const_swap](https://github.com/rust-lang/rust/pull/134757)
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
 macro_rules! cswap {

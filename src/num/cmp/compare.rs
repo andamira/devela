@@ -11,12 +11,14 @@
 //   - float
 // - tests
 
-#[allow(unused_imports)]
-#[cfg(_float_·)]
-use crate::Float;
 use crate::Ordering::{self, Equal, Greater, Less};
 #[allow(unused_imports)]
 use crate::{iif, paste};
+
+#[allow(unused_imports)]
+#[cfg(_float_·)]
+use crate::Float;
+#[allow(unused_imports)]
 #[cfg(feature = "nightly_float")]
 use ::core::{f128, f16};
 

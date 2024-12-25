@@ -520,7 +520,7 @@ macro_rules! impl_stack {
             ///     .own_rot_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 2, 3, 1]];
             /// ```
-            // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
+            // WAIT: [const_swap](https://github.com/rust-lang/rust/pull/134757)
             pub const fn own_rot_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
                 let mut arr = self.data.into_array_copy();
@@ -567,7 +567,7 @@ macro_rules! impl_stack {
             ///     .own_rot_cc_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 1, 2]];
             /// ```
-            // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
+            // WAIT: [const_swap](https://github.com/rust-lang/rust/pull/134757)
             pub const fn own_rot_cc_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
                 let mut arr = self.data.into_array_copy();
@@ -613,7 +613,7 @@ macro_rules! impl_stack {
             ///     .own_rot2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 5, 6, 1, 2]];
             /// ```
-            // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
+            // WAIT: [const_swap](https://github.com/rust-lang/rust/pull/134757)
             pub const fn own_rot2_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
                 let mut arr = self.data.into_array_copy();
@@ -664,7 +664,7 @@ macro_rules! impl_stack {
             ///     .own_rot2_cc_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 5, 6, 1, 2, 3, 4]];
             /// ```
-            // WAIT: [const_swap](https://github.com/rust-lang/rust/issues/83163)
+            // WAIT: [const_swap](https://github.com/rust-lang/rust/pull/134757)
             pub const fn own_rot2_cc_unchecked(self) -> Own<Self, ()> {
                 let len = self.len as usize;
                 let mut arr = self.data.into_array_copy();

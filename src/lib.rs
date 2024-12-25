@@ -80,6 +80,7 @@
         cell_update,
         const_array_from_ref,
         const_slice_from_ref,
+        const_swap,
         // derive_smart_pointer, // x
         // get_disjoint_mut, // ?
         // hash_extract_if, // ?
