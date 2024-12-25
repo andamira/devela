@@ -22,76 +22,76 @@
 //   - DataResult
 //   - DataError
 
-use crate::{define_error, Mismatch};
+use crate::{impl_error, Mismatch};
 
-define_error![ErrorElementNotFound,
+impl_error![define: ErrorElementNotFound,
     DOC_ERROR_ELEMENT_NOT_FOUND = "The requested element has not been found.",
     self+f => write!(f, "The requested element has not been found."),
 ];
-define_error![ErrorInvalidAxisLength(pub Option<usize>),
+impl_error![define: ErrorInvalidAxisLength(pub Option<usize>),
     DOC_ERROR_INVALID_AXIS_LENGTH = "The given axis has an invalid length.\n\n
 Optionally contains some given axis number.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Axis number {n} has 0 length, which is not allowed.")
     } else { write!(f, "One ore more axis have 0 length, which is not allowed.") }
 ];
-define_error![ErrorKeyAlreadyExists,
+impl_error![define: ErrorKeyAlreadyExists,
     DOC_ERROR_KEY_ALREADY_EXISTS = "The key already exists.",
     self+f => write!(f, "The key already exists.")
 ];
-define_error![ErrorMismatchedDimensions(pub Mismatch<usize, usize>),
+impl_error![define: ErrorMismatchedDimensions(pub Mismatch<usize, usize>),
     DOC_ERROR_MISMATCHED_DIMENSIONS = "The dimensions given did not match the elements provided.",
     self+f => write!(f, "Mismatched dimensions: {:?}.", self.0)
 ];
-define_error![ErrorMismatchedIndices,
+impl_error![define: ErrorMismatchedIndices,
     DOC_ERROR_MISMATCHED_INDICES = "The given indices does not match the expected order.",
     self+f => write!(f, "The given indices does not match the expected order.")
 ];
-define_error![ErrorMismatchedLength(pub Mismatch<usize, usize>),
+impl_error![define: ErrorMismatchedLength(pub Mismatch<usize, usize>),
     DOC_ERROR_MISMATCHED_LENGTH =
     "The given length or capacity did not match the required constraints.",
     self+f => write!(f, "Mismatched length or capacity: {:?}.", self.0)
 ];
-define_error![ErrorNodeEmpty(pub Option<usize>),
+impl_error![define: ErrorNodeEmpty(pub Option<usize>),
     DOC_ERROR_NODE_EMPTY = "The node is empty.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node `{n}` is empty.")
     } else { write!(f, "The node is empty.") }
 ];
-define_error![ErrorNodeLinkNotSet(pub Option<usize>),
+impl_error![define: ErrorNodeLinkNotSet(pub Option<usize>),
     DOC_ERROR_NODE_LINK_NOT_SET = "The link is not set.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not set.")
     } else { write!(f, "The node link is not set.") }
 ];
-define_error![ErrorNodeLinkNotUnique(pub Option<usize>),
+impl_error![define: ErrorNodeLinkNotUnique(pub Option<usize>),
     DOC_ERROR_NODE_LINK_NOT_UNIQUE = "The link is not unique.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not unique.")
     } else { write!(f, "The node link is not unique.") }
 ];
-define_error![ErrorNotEnoughElements(pub Option<usize>),
+impl_error![define: ErrorNotEnoughElements(pub Option<usize>),
     DOC_ERROR_NOT_ENOUGH_ELEMENTS = "There are not enough elements for the operation.\n\n
 Optionally contains the minimum number of elements needed.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Not enough elements. Needs at least `{n}` elements.")
     } else { write!(f, "Not enough elements.") }
 ];
-define_error![ErrorNotEnoughSpace(pub Option<usize>),
+impl_error![define: ErrorNotEnoughSpace(pub Option<usize>),
     DOC_ERROR_NOT_ENOUGH_SPACE = "There is not enough free space for the operation.\n\n
 Optionally contains the number of free spaces needed.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Not enough space. Needs at least `{n}` free space for elements.")
     } else { write!(f, "Not enough space.") }
 ];
-define_error![ErrorOutOfBounds(pub Option<usize>),
+impl_error![define: ErrorOutOfBounds(pub Option<usize>),
     DOC_ERROR_OUT_OF_BOUNDS = "The given `index`, `length` or `capacity` is out of bounds.\n\n
 Optionally contains some given magnitude.",
     self+f => if let Some(i) = self.0 { write!(f, "The given index {i} is out of bounds.")
     } else { write!(f, "The given index is out of bounds.") }
 ];
-define_error![ErrorOverflow,
+impl_error![define: ErrorOverflow,
     DOC_ERROR_OVERFLOW = "Value above maximum representable.",
     self+f => write!(f, "Value above maximum representable.")
 ];
-define_error![ErrorPartiallyAdded(pub Option<usize>),
+impl_error![define: ErrorPartiallyAdded(pub Option<usize>),
     DOC_ERROR_PARTIALLY_ADDED = "The operation could only add a subset of the elements.\n\n
 Optionally contains the number of elements added.",
     self+f => if let Some(n) = self.0 { write!(f, "Only `{n}` elements could be added.")
@@ -164,6 +164,28 @@ mod aggregated {
             }
         }
     }
+
+    impl_error! { for: DataError, from: {
+        ErrorNotImplemented,        _f => DataError::NotImplemented,
+        ErrorNotSupported,          _f => DataError::NotSupported,
+        //
+        ErrorElementNotFound,       _f => DataError::ElementNotFound,
+        ErrorInvalidAxisLength,      f => DataError::InvalidAxisLength(f.0),
+        ErrorKeyAlreadyExists,      _f => DataError::KeyAlreadyExists,
+        ErrorMismatchedDimensions,   f => DataError::MismatchedDimensions(f.0),
+        ErrorMismatchedIndices,     _f => DataError::MismatchedIndices,
+        ErrorMismatchedLength,       f => DataError::MismatchedLength(f.0),
+        ErrorNodeEmpty,              f => DataError::NodeEmpty(f.0),
+        ErrorNodeLinkNotSet,         f => DataError::NodeLinkNotSet(f.0),
+        ErrorNodeLinkNotUnique,      f => DataError::NodeLinkNotUnique(f.0),
+        ErrorNotEnoughElements,      f => DataError::NotEnoughElements(f.0),
+        ErrorNotEnoughSpace,         f => DataError::NotEnoughSpace(f.0),
+        ErrorOutOfBounds,            f => DataError::OutOfBounds(f.0),
+        ErrorOverflow,              _f => DataError::Overflow,
+        ErrorPartiallyAdded,         f => DataError::PartiallyAdded(f.0),
+    }}
+
+    // RETHINK
     #[allow(dead_code)]
     impl DataError {
         pub(crate) const fn ni<T>() -> DataResult<T> {

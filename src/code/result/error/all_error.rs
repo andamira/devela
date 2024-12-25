@@ -4,13 +4,13 @@
 //
 
 use super::reexports::crate_errors::*;
-use crate::define_error;
+use crate::impl_error;
 
-define_error![ErrorNotImplemented,
+impl_error![define: ErrorNotImplemented,
     DOC_ERROR_NOT_IMPLEMENTED = "The requested functionality is not implemented.",
     self+f => write!(f, "The requested functionality is not implemented."),
 ];
-define_error![ErrorNotSupported,
+impl_error![define: ErrorNotSupported,
     DOC_ERROR_NOT_SUPPORTED = "The requested functionality is not supported by this type.",
     self+f => write!(f, "The requested functionality is not supported by this type."),
 ];

@@ -1,11 +1,10 @@
 // devela::code::util::error
 
-/// Helper to define separate error types.
-///
-/// - implements Display, Error and ExtError.
-macro_rules! define_error {
+/// Helper to define separate error types and implement From
+macro_rules! impl_error {
     (
-        $struct_name:ident $(( $vis:vis $inner:ty ))?,
+    // Standalone error type definition.
+    define: $struct_name:ident $(( $vis:vis $inner:ty ))?,
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
         $(,)?
@@ -28,5 +27,19 @@ macro_rules! define_error {
             fn error_kind(&self) -> Self::Kind {}
         }
     };
+    (
+    // Single impl From.
+    from: $from:ty, for: $for:ty, $arg:ident => $expr:expr) => {
+        impl From<$from> for $for { fn from($arg: $from) -> $for { $expr } }
+    };
+    (
+    // Multiple impl From for a single type.
+    for: $for:ty, from: {
+        $( $from:ty, $arg:ident => $expr:expr ),* $(,)?
+    } ) => {
+        $(
+        impl From<$from> for $for { fn from($arg: $from) -> $for { $expr } }
+        )*
+    };
 }
-pub(crate) use define_error;
+pub(crate) use impl_error;
