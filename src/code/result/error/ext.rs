@@ -6,7 +6,7 @@
 use crate::Error;
 
 /// Extension trait providing additional methods for `T:`[`Error`].
-#[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
+// #[cfg_attr(feature = "nightly_doc", doc(notable_trait))]
 pub trait ExtError: Error {
     /// Represents the specific kind of error, if applicable.
     ///

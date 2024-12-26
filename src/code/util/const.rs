@@ -109,7 +109,7 @@ macro_rules! _CONST {
         )*
     };
     (
-    $shared_vis:vis, // (could use a shared visibility for all items)
+    $shared_vis:vis, // (shared visibility alternative)
     $(
         $(#[$CONST_ATTRS:meta])*
         $CONST_NAME:ident =
@@ -148,7 +148,7 @@ macro_rules! _CONST {
         )*
     };
     (
-    $shared_vis:vis, // (could use a shared visibility for all items)
+    $shared_vis:vis, // (shared visibility alternative)
     $(
         $(#[$CONST_ATTRS:meta])*
         $CONST_NAME:ident = $expr:expr
