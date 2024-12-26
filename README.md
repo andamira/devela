@@ -10,7 +10,7 @@
 
 ---
 
-> A multi-domain development layer
+> A cohesive development layer
 
 *devela* is a modular foundation for easing development across diverse domains.
 

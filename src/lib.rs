@@ -152,10 +152,7 @@ pub mod all {
     //! <br/><hr>
     //!
     //! Note that these items are already re-exported (hidden) from the root,
-    //! as is every other public module from its parent.
-    //!
-    //! There's a more exhaustive list that includes all of the dependencies items,
-    //! without their descriptions, in [All items](../all.html).
+    //! as is every other public module's contents from their parent.
     #[allow(unused_imports)]
     #[rustfmt::skip]
     #[doc(inline)]

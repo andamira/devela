@@ -175,9 +175,11 @@ mod std_reexports {
 
 /// The `HashMap` in the standard library.
 #[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 pub type HashMapStd<K, V> = std::collections::HashMap<K, V>;
 /// The `HashSet` in the standard library.
 #[cfg(feature = "std")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 pub type HashSetStd<T> = std::collections::HashSet<T>;
 
 #[cfg(all(feature = "hash", any(feature = "std", feature = "dep_hashbrown")))]

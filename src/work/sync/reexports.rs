@@ -85,6 +85,7 @@ reexport! { rust: std::sync,
     LockResult
 }
 reexport! { rust: std::sync,
+    tag: crate::TAG_RESULT!(),
     doc: "A type alias for the result of a nonblocking locking method.",
     TryLockResult
 }

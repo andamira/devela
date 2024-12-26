@@ -1,6 +1,6 @@
 // devela::work::thread::sleep
 
-/// A more compact [`thread_sleep`][crate::work::thread::thread_sleep].
+/// A more compact [`Thread::sleep`][crate::Thread#method.sleep].
 ///
 /// Sleeps for `$ns` seconds + `$ms` milliseconds + `$us` microseconds + `$ns` nanoseconds
 ///
