@@ -22,17 +22,17 @@ use crate::Float;
 #[cfg(feature = "nightly_float")]
 use ::core::{f128, f16};
 
-/// Provides comparing methods for `T`, most of them *const*.
+/// Provides comparing methods for `T`.
 ///
-/// It provides the non-const methods `pclamp`, `pmax`, `pmin`
+/// It provides the non-*const* methods `pclamp`, `pmax`, `pmin`
 /// for comparing [`PartialOrd`]ered values.
 ///
 /// It provides the following *const* methods for comparing primitives:
 /// `clamp`, `max`, `min`, `eq`, `ne`, `lt`, `le`, `gt`, `ge`.
 ///
 /// In the case of floating-point primitives:
-/// - they use total ordering.
-/// - they implement aditional methods:
+/// - total ordering is used.
+/// - aditional methods are provided:
 ///  `is_positive`, `is_negative`, `is_finite`, `is_infinite`, `is_nan`.
 #[repr(transparent)]
 pub struct Compare<T>(pub T);
@@ -237,7 +237,7 @@ macro_rules! impl_comparing {
             ///
             /// # Examples
             /// ```
-            #[cfg_attr(feature = "nightly_float", doc = "#![feature(f16, f128)]")]
+            #[cfg_attr(feature = "nightly_float", doc = "# #![feature(f16, f128)]")]
             /// # use devela::Compare;
             #[doc = "assert_eq![2.0, Compare(5.0" $f ").clamp(-1.0, 2.0)];"]
             #[doc = "assert_eq![-1.0, Compare(-5.0" $f ").clamp(-1.0, 2.0)];"]
@@ -258,7 +258,7 @@ macro_rules! impl_comparing {
             ///
             /// # Examples
             /// ```
-            #[cfg_attr(feature = "nightly_float", doc = "#![feature(f16, f128)]")]
+            #[cfg_attr(feature = "nightly_float", doc = "# #![feature(f16, f128)]")]
             /// # use devela::Compare;
             #[doc = "assert_eq![2.0, Compare(2.0" $f ").max(-1.0)];"]
             #[doc = "assert_eq![2.0, Compare(1.0" $f ").max(2.0)];"]
@@ -276,7 +276,7 @@ macro_rules! impl_comparing {
             ///
             /// # Examples
             /// ```
-            #[cfg_attr(feature = "nightly_float", doc = "#![feature(f16, f128)]")]
+            #[cfg_attr(feature = "nightly_float", doc = "# #![feature(f16, f128)]")]
             /// # use devela::Compare;
             #[doc = "assert_eq![-1.0, Compare(2.0" $f ").min(-1.0)];"]
             #[doc = "assert_eq![1.0, Compare(1.0" $f ").min(2.0)];"]
