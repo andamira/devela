@@ -188,17 +188,20 @@ pub(crate) use std_core;
 
 // Tags definitions for visual type categorization in documentation.
 crate::CONST! { pub(crate),
+    EMOJI_ATOMIC = "⚛️"; // ⚛️,🔬,🌐
     EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
-    EMOJI_COMPOSITE = "📎"; // 🧩,📦,🖇️,📎,🗂️,
+    // EMOJI_COMPOSITE = "+"; // 📎,🧩,📦,🖇️,🗂️,
     EMOJI_ITERATOR = "🔄"; // 🔄,
     EMOJI_PRIMITIVE = "⚙️"; // ⚙️,
     EMOJI_RESULT = "⚖️"; // ⚖️,↔️,✅,🗳,
     //
+    TAG_ATOMIC = concat!("<span class='stab portability' title='Atomic type'>",
+        crate::EMOJI_ATOMIC!(), "</span>");
     TAG_ERROR = concat!("<span class='stab portability' title='Error type'>",
         crate::EMOJI_ERROR!(), "</span>");
     TAG_ERROR_COMPOSITE =
         concat!("<span class='stab portability' title='Composite error type'>",
-        crate::EMOJI_ERROR!(), crate::EMOJI_COMPOSITE!(), "</span>");
+        crate::EMOJI_ERROR!(), "+</span>");
     TAG_ITERATOR = concat!("<span class='stab portability' title='Iterator type'>",
         crate::EMOJI_ITERATOR!(), "</span>");
     TAG_PRIMITIVE = concat!("<span class='stab portability' title='Rust primitive'>",
