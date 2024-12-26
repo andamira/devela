@@ -20,7 +20,7 @@
 use crate::Vec;
 use crate::{Deref, GcdReturn, Num, NumInt, NumRef, NumResult as Result, ValueQuant};
 
-/// Common trait for referenced integer types.
+/// Common auto-trait for referenced integer types.
 ///
 /// # Notes
 /// - This is automatically implemented for references of types implementing [`NumInt`].

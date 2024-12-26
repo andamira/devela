@@ -14,9 +14,11 @@ use crate::FontError;
 #[cfg(feature = "image")]
 use crate::ImageError;
 
+#[doc = crate::TAG_RESULT!()]
 /// A media-related result.
 pub type MediaResult<T> = crate::Result<T, MediaError>;
 
+#[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// A media-related error.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum MediaError {

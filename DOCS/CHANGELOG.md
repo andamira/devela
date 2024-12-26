@@ -68,7 +68,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - macros:
   - `id_seq!`, `impl_trait!`, `type_marker!`, `type_resource!`.
   - `const_bool!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `impl_non_value!`.
-  - private: `doc_availability!`, `doc_primitive!`, `impl_error`.
+  - private: `doc_availability!`, `impl_error`, `EMOJI_*`, `TAG_*`.
 - vendored:
   - structs: `CacheAlign`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`, `VecChunk`.
   - macros: `assert_const!`, `cfg_if!`.
@@ -185,6 +185,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - remove all `inline` attributes for most functions
 - macros:
   - update `cdbg!` to support a single `@`.
+  - update `reexport!` to support receiving an optional tag argument.
   - rename `mem_size_of_expr!` to `size_of_expr!`.
   - rename re-wrapped macros to avoid prelude collision when glob importing:
     - `env`→`env_`, `panic`→`panic_`, `vec`→`vec_`.

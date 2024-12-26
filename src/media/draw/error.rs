@@ -3,9 +3,11 @@
 //!
 //
 
+#[doc = crate::TAG_RESULT!()]
 /// A drawing-related result.
 pub type DrawResult<T> = crate::Result<T, DrawError>;
 
+#[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// A drawing-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

@@ -11,6 +11,7 @@ macro_rules! impl_error {
     ) => {
         $crate::CONST! { pub(crate) $DOC_NAME = $doc_str; }
 
+        #[doc = crate::TAG_ERROR!()]
         #[doc = $DOC_NAME!()]
         #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
         pub struct $struct_name $(($vis $inner ))?;
@@ -59,6 +60,7 @@ macro_rules! impl_error {
         ),+ $(,)? }
         [$fmt:ident]
     ) => {
+        #[doc = crate::TAG_ERROR_COMPOSITE!()]
         $(#[$enum_attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
         $vis enum $name { $(

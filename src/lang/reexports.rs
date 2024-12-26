@@ -6,6 +6,7 @@
 use crate::reexport;
 
 reexport! { rust: core::ffi,
+    tag: crate::TAG_PRIMITIVE!(),
     doc: "Equivalent to the corresponding C type.",
     c_char, c_double, c_float, c_int, c_long, c_longlong, c_schar, c_short,
     c_uchar, c_uint, c_ulong, c_ulonglong, c_ushort, c_void

@@ -108,7 +108,8 @@ mod full_composite {
         ErrorNotImplemented, ErrorNotSupported, DOC_ERROR_NOT_IMPLEMENTED, DOC_ERROR_NOT_SUPPORTED,
     };
 
-    /// A data-related composite result.
+    #[doc = crate::TAG_RESULT!()]
+    /// A data-related result.
     pub type DataResult<T> = crate::Result<T, DataError>;
 
     impl_error! { composite:

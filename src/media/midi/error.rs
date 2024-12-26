@@ -3,9 +3,11 @@
 //!
 //
 
+#[doc = crate::TAG_RESULT!()]
 /// A midi-related result.
 pub type MidiResult<T> = crate::Result<T, MidiError>;
 
+#[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// A midi-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

@@ -9,6 +9,7 @@ use crate::IoError;
 #[cfg(feature = "layout")]
 use crate::LayoutError;
 
+#[doc = crate::TAG_RESULT!()]
 /// A user-interface result.
 pub type UiResult<T> = core::result::Result<T, UiError>;
 

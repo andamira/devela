@@ -47,6 +47,7 @@ reexport! { rust: not(std)|std::io,
     @Cursor as IoCursor
 }
 reexport! { rust: not(std)|std::io,
+    tag: crate::TAG_ERROR_COMPOSITE!(),
     doc: "Error type for I/O operations of [`IoRead`], [`IoWrite`], [`IoSeek`],
     and associated traits.",
     @Error as IoError
@@ -70,6 +71,7 @@ reexport! { rust: std::io,
 }
 // @Repeat as IoRepeat
 reexport! { rust: not(std)|std::io,
+    tag: crate::TAG_RESULT!(),
     doc: "A specialized [`Result`] type for I/O operations.",
     @Result as IoResult
 }
@@ -91,6 +93,7 @@ reexport! { rust: not(std)|std::io,
 /* io enums */
 
 reexport! { rust: not(std)|std::io,
+    tag: crate::TAG_ERROR_COMPOSITE!(),
     doc: "A list specifying general categories of I/O error.",
     @ErrorKind as IoErrorKind
 }

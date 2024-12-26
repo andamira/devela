@@ -20,21 +20,6 @@ pub(super) use crate::NonValueU16;
 #[cfg(feature = "_char16")]
 pub(super) type NonSurrogateU16 = NonValueU16<0xDFFF>;
 
-/* primitive alias */
-
-#[doc = crate::doc_primitive!()]
-/// A 32-bit [unicode scalar][scalar].
-///
-/// It can represent each and every scalar.
-///
-/// See also: [`char7`], [`char8`], [`char16`].
-///
-/// [scalar]: https://www.unicode.org/glossary/#unicode_scalar_value
-// NOTE: this reexport type is not recognized implicity by rustdoc, is it a BUG?
-// TODO: minimal example and the search/make an ISSUE in rust-repo
-#[allow(non_camel_case_types)]
-pub type char = crate::_core::primitive::char;
-
 /* public types */
 
 /// A 7-bit [unicode scalar][scalar], limited to [basic latin][0w] subset

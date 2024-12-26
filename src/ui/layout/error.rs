@@ -3,9 +3,11 @@
 //!
 //
 
+#[doc = crate::TAG_RESULT!()]
 /// A layout-related result.
 pub type LayoutResult<T> = crate::Result<T, LayoutError>;
 
+#[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// A layout-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

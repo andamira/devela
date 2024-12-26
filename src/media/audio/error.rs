@@ -3,9 +3,11 @@
 //!
 //
 
+#[doc = crate::TAG_RESULT!()]
 /// An audio-related result.
 pub type AudioResult<T> = crate::Result<T, AudioError>;
 
+#[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// An audio-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

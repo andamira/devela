@@ -5,6 +5,7 @@
 
 use super::Duration;
 
+#[doc = crate::TAG_RESULT!()]
 /// A time-related result.
 pub type TimeResult<T> = crate::Result<T, TimeError>;
 

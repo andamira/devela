@@ -87,6 +87,7 @@ reexport! { rust: core::fmt,
 
 /* aliases */
 
+#[doc = crate::TAG_RESULT!()]
 /// The type returned by formatter methods.
 ///
 /// Note that this is not the same as [`core::fmt::Result`], since this one
@@ -120,6 +121,7 @@ reexport! { rust: core::fmt,
     DebugTuple
 }
 reexport! { rust: core::fmt,
+    tag: crate::TAG_ERROR!(),
     doc: "The error type which is returned from formatting a message into a stream.",
     @Error as FmtError
 }

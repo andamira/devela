@@ -5,6 +5,7 @@
 
 use crate::Utf8Error;
 
+#[doc = crate::TAG_RESULT!()]
 /// A text-related result.
 pub type TextResult<T> = crate::Result<T, TextError>;
 

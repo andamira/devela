@@ -18,6 +18,7 @@ mod impls_alloc {
 /* from `array` */
 
 reexport! { rust: core::array,
+    tag: crate::TAG_ITERATOR!(),
     doc: "A by-value [array] iterator.",
     @IntoIter as ArrayIntoIter
 }

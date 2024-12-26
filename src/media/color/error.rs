@@ -3,9 +3,11 @@
 //!
 //
 
+#[doc = crate::TAG_RESULT!()]
 /// A color-related result.
 pub type ColorResult<T> = crate::Result<T, ColorError>;
 
+#[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// A color-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)] // Hash

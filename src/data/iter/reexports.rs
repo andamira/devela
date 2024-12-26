@@ -15,118 +15,147 @@ use crate::code::reexport;
 /* types */
 
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that links two iterators together, in a chain.",
     @Chain as IterChain
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that clones the elements of an underlying iterator.",
     @Cloned as IterCloned
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that copies the elements of an underlying iterator.",
     @Copied as IterCopied
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that repeats endlessly.",
     @Cycle as IterCycle
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that yields nothing.",
     @Empty as IterEmpty
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that yields the current count and the element during iteration.",
     @Enumerate as IterEnumerate
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that filters the elements of `iter` with `predicate`.",
     @Filter as IterFilter
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that uses `f` to both filter and map elements from `iter`.",
     @FilterMap as IterFilterMap
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that maps each element to an iterator, and yields their elements.",
     @FlatMap as IterFlatMap
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that flattens one level of nesting in an iterator of iterables.",
     @Flatten as IterFlatten
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator where each iteration calls the provided closure `F: FnMut() -> Option<T>`.",
     @FromFn as IterFromFn
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that yields `None` forever after the underlying iterator yields `None` once.",
     @Fuse as IterFuse
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that calls a function with a reference to each element before yielding it.",
     @Inspect as IterInspect
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that maps the values of iter with `f`.",
     @Map as IterMap
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that only accepts elements while `predicate` returns `Some(_)`.",
     @MapWhile as IterMapWhile
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that yields an element exactly once.",
     @Once as IterOnce
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that yields a single element `A` by calling `F: FnOnce() -> A`.",
     @OnceWith as IterOnceWith
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator with a `peek()` that returns an optional reference to the next element.",
     @Peekable as IterPeekable
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that repeats an element endlessly.",
     @Repeat as IterRepeat
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that endlessly repeats `A` by calling `F: FnMut() -> A`.",
     @RepeatWith as IterRepeatWith
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "A double-ended iterator with the direction inverted.",
     @Rev as IterRev
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator to maintain state while iterating another iterator.",
     @Scan as IterScan
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that skips over `n` elements of `iter`.",
     @Skip as IterSkip
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that rejects elements while `predicate` returns `true`.",
     @SkipWhile as IterSkipWhile
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator for stepping iterators by a custom amount.",
     @StepBy as IterStepBy
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator where each successive item is computed based on the preceding one.",
     @Successors as IterSuccessors
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that only iterates over the first `n` iterations of `iter`.",
     @Take as IterTake
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that only accepts elements while `predicate` returns `true`.",
     @TakeWhile as IterTakeWhile
 }
 reexport! { rust: core::iter,
+    tag: crate::TAG_ITERATOR!(),
     doc: "An iterator that iterates two other iterators simultaneously.",
     @Zip as IterZip
 }

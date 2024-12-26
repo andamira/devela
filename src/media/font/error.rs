@@ -3,9 +3,11 @@
 //!
 //
 
+#[doc = crate::TAG_RESULT!()]
 /// A font-related result.
 pub type FontResult<T> = crate::Result<T, FontError>;
 
+#[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// A font-related error.
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

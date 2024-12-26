@@ -123,7 +123,7 @@ pub trait Num {
     fn num_ref_abs(&self) -> Result<Self::Out> { E::ni() }
 }
 
-/// Common trait for referenced numeric types.
+/// Common auto-trait for referenced numeric types.
 ///
 /// It is automatically implemented for references of types implementing [`Num`].
 /// Mutable operations are only available for exclusive (`&mut`) references.

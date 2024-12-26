@@ -7,6 +7,7 @@
 // - doc_availability!
 // - doc_miri_warn!
 // - std_core!
+// - EMOJI_*!, TAG_*!
 
 /// Generates a formatted meta-documentation string.
 macro_rules! doc_ {
@@ -170,16 +171,6 @@ macro_rules! doc_miri_warn {
 #[allow(unused_imports)]
 pub(crate) use doc_miri_warn;
 
-/// Generates a doc tag for Rust's primitive items.
-#[allow(unused_macros)]
-macro_rules! doc_primitive {
-    () => {
-        concat!("<span class='stab portability' ", "title='Rust primitive'>", "⚙️</span>")
-    };
-}
-#[allow(unused_imports)]
-pub(crate) use doc_primitive;
-
 /// Returns the string literal "std" if `std` is enabled, or "core" otherwise.
 #[cfg(feature = "std")]
 macro_rules! std_core {
@@ -194,3 +185,24 @@ macro_rules! std_core {
     };
 }
 pub(crate) use std_core;
+
+// Tags definitions for visual type categorization in documentation.
+crate::CONST! { pub(crate),
+    EMOJI_ERROR = "🚩"; // ❌,🚫,📛,🚧,📉,🚩,
+    EMOJI_COMPOSITE = "📎"; // 🧩,📦,🖇️,📎,🗂️,
+    EMOJI_ITERATOR = "🔄"; // 🔄,
+    EMOJI_PRIMITIVE = "⚙️"; // ⚙️,
+    EMOJI_RESULT = "⚖️"; // ⚖️,↔️,✅,🗳,
+    //
+    TAG_ERROR = concat!("<span class='stab portability' title='Error type'>",
+        crate::EMOJI_ERROR!(), "</span>");
+    TAG_ERROR_COMPOSITE =
+        concat!("<span class='stab portability' title='Composite error type'>",
+        crate::EMOJI_ERROR!(), crate::EMOJI_COMPOSITE!(), "</span>");
+    TAG_ITERATOR = concat!("<span class='stab portability' title='Iterator type'>",
+        crate::EMOJI_ITERATOR!(), "</span>");
+    TAG_PRIMITIVE = concat!("<span class='stab portability' title='Rust primitive'>",
+        crate::EMOJI_PRIMITIVE!(), "</span>");
+    TAG_RESULT = concat!("<span class='stab portability' title='error type'>",
+        crate::EMOJI_RESULT!() ,"</span>");
+}

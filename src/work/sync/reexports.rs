@@ -44,6 +44,7 @@ reexport! { rust: std::sync,
     OnceState
 }
 reexport! { rust: std::sync,
+    tag: crate::TAG_ERROR!(),
     doc: "A type of error which can be returned whenever a lock is acquired.",
     PoisonError
 }
@@ -72,6 +73,7 @@ reexport! { rust: alloc::sync,
 /* enums */
 
 reexport! { rust: std::sync,
+    tag: crate::TAG_ERROR_COMPOSITE!(),
     doc: "An enumeration of possible errors associated with a [`TryLockResult`].",
     TryLockError
 }

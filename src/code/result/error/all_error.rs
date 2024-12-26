@@ -17,9 +17,11 @@ impl_error![single: ErrorNotSupported,
 
 /* aggregated errors: */
 
+#[doc = crate::TAG_RESULT!()]
 /// The root result type, aggregating all module-specific results.
 pub type AllResult<T> = crate::Result<T, AllError>;
 
+#[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// The root error type, aggregating all module-specific errors.
 ///
 /// This error is designed to encompass all possible errors within the library's domain,
@@ -62,6 +64,7 @@ pub enum AllError {
     Other(&'static str),
 }
 
+#[doc = crate::TAG_ERROR_COMPOSITE!()]
 /// The kind of root error type, aggregating all module-specific error kinds.
 ///
 /// See also: [`AllError`].
