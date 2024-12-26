@@ -42,6 +42,13 @@ reexport! { rust: std::thread,
     ThreadId
 }
 
+/* macros */
+
+reexport! { rust: std,
+    doc: "Declare a new thread local storage key of type [`ThreadLocalKey`].",
+    thread_local
+}
+
 /* aliases */
 
 reexport! { rust: std::thread,
