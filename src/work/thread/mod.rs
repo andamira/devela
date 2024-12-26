@@ -6,9 +6,11 @@
 //
 
 #[cfg(feature = "std")]
-mod reexports;
-#[cfg(feature = "std")]
-mod sleep; // sleep4!
+crate::items! {
+    mod ext; // ExtThread
+    mod reexports;
+    mod sleep; // sleep4!
+}
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -18,7 +20,7 @@ crate::items! { // structural access: _mods, _all, _always
 
     mod _mods {
         #[cfg(feature = "std")]
-        pub use super::{reexports::*, sleep::*};
+        pub use super::{ext::*, reexports::*, sleep::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]
