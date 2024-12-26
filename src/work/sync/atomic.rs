@@ -30,6 +30,7 @@ reexport! { rust: core::sync::atomic,
 /* from the `atomic` crate */
 
 reexport! { "dep_atomic", "atomic", atomic,
+    tag: crate::TAG_ATOMIC!(),
     doc: "A generic atomic wrapper type.",
     Atomic
 }
@@ -37,76 +38,93 @@ reexport! { "dep_atomic", "atomic", atomic,
 /* from `portable-atomic` */
 
 reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+    tag: crate::TAG_ATOMIC!(),
     doc: "A floating point type which can be safely shared between threads.",
     AtomicF32, AtomicF64
 }
 reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+    tag: crate::TAG_ATOMIC!(),
     doc: "A signed integer type which can be safely shared between threads.",
     AtomicI128
 }
 reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+    tag: crate::TAG_ATOMIC!(),
     doc: "An unsigned integer type which can be safely shared between threads.",
     AtomicU128
 }
 
 /* from either `portable-atomic` or `core` */
 
-// MAYBE: IMPROVE create new arm in `reexport` to deal with this case:
+crate::CONST! { pub(crate),
+    TAG_ATOMIC_CORE_PORTABLE = concat!("<span class='stab portability' ",
+        "title='re-exported either from `core` or from the `portable-atomic` crate'>",
+        "`?core`</span>");
+    DOC_ATOMIC_CORE_PORTABLE = concat!("*Re-exported either from `core` or from the ",
+        "[`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---");
+}
 
-/// <span class="stab portability" title="re-exported either from `core` or from the
-/// `portable-atomic` crate">`*`</span>
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[doc = "A signed integer type which can be safely shared between threads.\n\n"]
-#[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
+#[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use crate::_dep::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
 
-/// <span class="stab portability" title="re-exported either from `core` or from the
-/// `portable-atomic` crate">`*`</span>
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
-#[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
+#[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use crate::_dep::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
 
-#[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "16"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
-pub use core::sync::atomic::{AtomicI16, AtomicU16};
-#[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "32"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
-pub use core::sync::atomic::{AtomicI32, AtomicU32};
-#[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "64"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
-pub use core::sync::atomic::{AtomicI64, AtomicU64};
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "8"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::{AtomicI8, AtomicU8};
+//
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
+#[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "16"))]
+pub use core::sync::atomic::{AtomicI16, AtomicU16};
+//
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
+#[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "32"))]
+pub use core::sync::atomic::{AtomicI32, AtomicU32};
+//
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
+#[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "64"))]
+pub use core::sync::atomic::{AtomicI64, AtomicU64};
+//
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "ptr"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
 
-/// <span class="stab portability" title="re-exported either from `core` or from the
-/// `portable-atomic` crate">`*`</span>
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[doc = "A raw pointer type which can be safely shared between threads.\n\n"]
-#[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
+#[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use crate::_dep::portable_atomic::AtomicPtr;
 //
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "ptr"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use core::sync::atomic::AtomicPtr;
 
-/// <span class="stab portability" title="re-exported either from `core` or from the
-/// `portable-atomic` crate">`*`</span>
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[doc = "A boolean type which can be safely shared between threads.\n\n"]
-#[doc = "*Re-exported from the [`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---"]
+#[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
 pub use crate::_dep::portable_atomic::AtomicBool;
 //
+#[doc = crate::TAG_ATOMIC!()]
+#[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(not(feature = "dep_portable_atomic"))]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "work")))]
+#[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()] // TEMP
 pub use core::sync::atomic::AtomicBool;
 
 /* impl ConstDefaut */
