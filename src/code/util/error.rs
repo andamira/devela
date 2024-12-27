@@ -80,11 +80,11 @@ macro_rules! impl_error {
             fn from($arg: $from) -> $for { $for :: $variant $(($expr))? }
         }
         impl TryFrom<$for> for $from {
-            type Error = crate::InvalidErrorConversion;
-            fn try_from($arg: $for) -> Result<$from, crate::InvalidErrorConversion> {
+            type Error = crate::FailedErrorConversion;
+            fn try_from($arg: $for) -> Result<$from, crate::FailedErrorConversion> {
                 match $arg {
                     $for::$variant $(($try_arg))? => Ok($from $(($try_arg))? ),
-                    _ => Err(crate::InvalidErrorConversion)
+                    _ => Err(crate::FailedErrorConversion)
                 }
             }
         }

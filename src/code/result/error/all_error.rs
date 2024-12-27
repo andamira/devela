@@ -6,8 +6,8 @@
 use super::reexports::crate_errors::*;
 use crate::impl_error;
 
-impl_error![single: InvalidErrorConversion,
-    DOC_INVALID_ERROR_CONVERSION = "When a conversion between two error types fails.",
+impl_error![single: FailedErrorConversion,
+    DOC_FAILED_ERROR_CONVERSION = "A failed conversion between two error types.",
     self+f => write!(f, "Failed to convert between error types"),
 ];
 impl_error![single: NotImplemented,
