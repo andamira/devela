@@ -580,7 +580,7 @@ default-features = false # 14 https://docs.rs/crate/hashbrown/latest/features
 features = ["default-hasher", "inline-more"]
 
 [dependencies.jiff] # https://crates.io/crates/jiff
-version = "0.1.15" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
+version = "0.1.16" # https://github.com/BurntSushi/jiff/blob/master/CHANGELOG.md
 optional = true # safe ± (few & checked)
 default-features = false # 10 https://docs.rs/crate/jiff/latest/features
 # features = [""] # https://docs.rs/jiff/0.1.14/jiff/#crate-features
@@ -681,20 +681,20 @@ optional = true # unsafe
 default-features = false # 2 https://docs.rs/crate/safe_arch/latest/features
 
 [dependencies.serde] # https://crates.io/crates/serde
-version = "1.0.216" # ✗ https://github.com/serde-rs/serde/releases
+version = "1.0.217" # ✗ https://github.com/serde-rs/serde/releases
 optional = true # unsafe
 default-features = false # 7 https://docs.rs/crate/serde/latest/features
 features = ["derive"] # (syn)
 
 [dependencies.stringzilla] # https://crates.io/crates/stringzilla
-version = "3.11.2" # ✗ https://github.com/ashvardanian/StringZilla/releases
+version = "3.11.3" # ✗ https://github.com/ashvardanian/StringZilla/releases
 optional = true  # unsafe
 default-features = false # 0 https://docs.rs/crate/stringzilla/latest/features
 # WAIT [fix msvc cross-compile](https://github.com/ashvardanian/StringZilla/pull/169)
 # WAIT [fix cmake code](https://github.com/ashvardanian/StringZilla/pull/85)
 
 [dependencies.sysinfo] # https://crates.io/crates/sysinfo
-version = "0.33.0" # ✓ https://github.com/GuillaumeGomez/sysinfo/blob/master/CHANGELOG.md
+version = "0.33.1" # ✓ https://github.com/GuillaumeGomez/sysinfo/blob/master/CHANGELOG.md
 optional = true # unsafe
 default-features = false # 16 https://docs.rs/crate/sysinfo/latest/features
 features = ["component", "disk", "network", "system", "user"] # IMPROVE: feature-gate
