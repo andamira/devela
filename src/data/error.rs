@@ -110,7 +110,7 @@ mod full_composite {
     /// A data-related result.
     pub type DataResult<T> = crate::Result<T, DataError>;
 
-    impl_error! { composite:
+    impl_error! { composite: fmt(f)
         /// A data-related composite error.
         #[non_exhaustive]
         pub enum DataError {
@@ -132,8 +132,12 @@ mod full_composite {
             DOC_ERROR_OVERFLOW:              Overflow,
             DOC_ERROR_PARTIALLY_ADDED:       PartiallyAdded(i: Option<usize>),
         }
-        [fmt]
     }
+
+    impl_error! { composite: from(f): PartialSpace, for: DataError {
+        NotEnoughSpace(i) => NotEnoughSpace(i),
+        PartiallyAdded(i) => PartiallyAdded(i),
+    } }
 
     #[allow(dead_code)]
     impl DataError {
@@ -150,7 +154,7 @@ pub use full_composite::*;
 
 /* Partial Composite Errors */
 
-impl_error! { composite:
+impl_error! { composite: fmt(f)
     /// An error composite of
     /// [`NotEnoughSpace`], [`PartiallyAdded`].
     ///
@@ -160,5 +164,4 @@ impl_error! { composite:
         DOC_ERROR_NOT_ENOUGH_SPACE: NotEnoughSpace(i: Option<usize>),
         DOC_ERROR_PARTIALLY_ADDED: PartiallyAdded(i: Option<usize>),
     }
-    [fmt]
 }

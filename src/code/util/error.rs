@@ -1,6 +1,8 @@
 // devela::code::util::error
 
 /// Helper to define separate error types and implement From
+//
+// NOTE: It only supports empty or tuple enum variants.
 macro_rules! impl_error {
     (
     // Defines a standalone error type.
@@ -32,12 +34,11 @@ macro_rules! impl_error {
     // Defines a composite Error enum, plus:
     // - impl Error, ExtError and Display.
     // - impl From and TryFrom in reverse.
-    composite:
+    composite: fmt($fmt:ident)
         $(#[$enum_attr:meta])*
         $vis:vis enum $name:ident { $(
             $DOC_VAR:ident: $variant:ident $( ($var_arg:ident: $var_data:ty) )?
         ),+ $(,)? }
-        [$fmt:ident]
     ) => {
         #[doc = crate::TAG_ERROR_COMPOSITE!()]
         $(#[$enum_attr])*
@@ -74,10 +75,9 @@ macro_rules! impl_error {
     for: $for:ident, from: { $(
         $from:ident, $arg:ident => $variant:ident $(( $expr:expr ),)?
         $(try: $try_arg:ident)?
-
     ),* $(,)? } ) => { $(
         impl From<$from> for $for {
-            fn from($arg: $from) -> $for { $for :: $variant $(($expr))? }
+            fn from($arg: $from) -> $for { $for::$variant $(($expr))? }
         }
         impl TryFrom<$for> for $from {
             type Error = crate::FailedErrorConversion;
@@ -89,5 +89,31 @@ macro_rules! impl_error {
             }
         }
     )* };
+    (
+    // Impl `From` a composite error type and a composite error superset of it,
+    // and impl `TryFrom` in reverse.
+    // E.g. from: PartialSpace for: DataError
+    composite: from($fn_arg:ident): $from:ident, for: $for:ident { $(
+        $from_variant:ident $(($from_arg:ident))? => $for_variant:ident $(($for_arg:ident))?
+    ),+ $(,)? }
+    ) => {
+        impl From<$from> for $for {
+            fn from($fn_arg: $from) -> $for { match $fn_arg { $(
+                $from::$from_variant $(($from_arg))? => $for::$for_variant $(($for_arg))?
+            ),+ } }
+        }
+        impl TryFrom<$for> for $from {
+            type Error = crate::FailedErrorConversion;
+            fn try_from($fn_arg: $for) -> Result<$from, crate::FailedErrorConversion> {
+                match $fn_arg {
+                    $(
+                        $for::$for_variant $(($for_arg))?
+                            => Ok($from::$from_variant $(($from_arg))?)
+                    ,)+
+                    _ => Err(crate::FailedErrorConversion)
+                }
+            }
+        }
+    };
 }
 pub(crate) use impl_error;
