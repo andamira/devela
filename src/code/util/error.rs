@@ -1,12 +1,15 @@
 // devela::code::util::error
-
-/// Helper to define separate error types and implement From
 //
-// NOTE: It only supports empty or tuple enum variants.
+
+/// Helper to define individual and composite error types.
+///
+/// It also helps implementing `From` and `TryFrom` between them.
+///
+/// NOTE: For now it only supports *empty* or *tuple* enum variants.
 macro_rules! impl_error {
     (
     // Defines a standalone error type.
-    single: $struct_name:ident $(( $vis:vis $inner:ty ))?,
+    individual: $struct_name:ident $(( $vis:vis $inner:ty ))?,
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
         $(,)?
@@ -63,16 +66,16 @@ macro_rules! impl_error {
                 )+ }
             }
         }
-        // impl From, and TryFrom in reverse:
-        $crate::impl_error! { for: $name, from: { $(
+        // impl From multiple individual errors for a composite error, and TryFrom in reverse:
+        $crate::impl_error! { from multiple for: $name { $(
             $variant, _f => $variant $((_f.0), try:$var_arg)?
         ),+ }}
     };
     (
-    // Impl `From` multiple single error types and a composite error containing them,
+    // Impl `From` multiple individual error types and a composite error containing them,
     // and impl `TryFrom` in reverse.
     // E.g. for: DataError from: NotEnoughElements, NotEnoughSpace,
-    for: $for:ident, from: { $(
+    from multiple for: $for:ident { $(
         $from:ident, $arg:ident => $variant:ident $(( $expr:expr ),)?
         $(try: $try_arg:ident)?
     ),* $(,)? } ) => { $(

@@ -2,24 +2,32 @@
 //
 //! Defines the [`AllError`] enum.
 //
+// TOC
+// - individual errors:
+//   - InvalidErrorConversion
+//   - NotImplemented
+//   - NotSupported
+// - composite errors:
+//   - AllResult
+//   - AllError
 
 use super::reexports::crate_errors::*;
 use crate::impl_error;
 
-impl_error![single: FailedErrorConversion,
+impl_error![individual: FailedErrorConversion,
     DOC_FAILED_ERROR_CONVERSION = "A failed conversion between two error types.",
     self+f => write!(f, "Failed to convert between error types"),
 ];
-impl_error![single: NotImplemented,
+impl_error![individual: NotImplemented,
     DOC_ERROR_NOT_IMPLEMENTED = "The requested functionality is not implemented.",
     self+f => write!(f, "The requested functionality is not implemented."),
 ];
-impl_error![single: NotSupported,
+impl_error![individual: NotSupported,
     DOC_ERROR_NOT_SUPPORTED = "The requested functionality is not supported by this type.",
     self+f => write!(f, "The requested functionality is not supported by this type."),
 ];
 
-/* aggregated errors: */
+/* composite errors: */
 
 #[doc = crate::TAG_RESULT!()]
 /// The root result type, aggregating all module-specific results.

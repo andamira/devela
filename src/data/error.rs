@@ -26,79 +26,79 @@
 
 use crate::{impl_error, Mismatch};
 
-impl_error![single: ElementNotFound,
+impl_error! { individual: ElementNotFound,
     DOC_ERROR_ELEMENT_NOT_FOUND = "The requested element has not been found.",
     self+f => write!(f, "The requested element has not been found."),
-];
-impl_error![single: InvalidAxisLength(pub Option<usize>),
+}
+impl_error! { individual: InvalidAxisLength(pub Option<usize>),
     DOC_ERROR_INVALID_AXIS_LENGTH = "The given axis has an invalid length.\n\n
 Optionally contains some given axis number.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Axis number {n} has 0 length, which is not allowed.")
     } else { write!(f, "One ore more axis have 0 length, which is not allowed.") }
-];
-impl_error![single: KeyAlreadyExists,
+}
+impl_error! { individual: KeyAlreadyExists,
     DOC_ERROR_KEY_ALREADY_EXISTS = "The key already exists.",
     self+f => write!(f, "The key already exists.")
-];
-impl_error![single: MismatchedDimensions(pub Mismatch<usize, usize>),
+}
+impl_error! { individual: MismatchedDimensions(pub Mismatch<usize, usize>),
     DOC_ERROR_MISMATCHED_DIMENSIONS = "The dimensions given did not match the elements provided.",
     self+f => write!(f, "Mismatched dimensions: {:?}.", self.0)
-];
-impl_error![single: MismatchedIndices,
+}
+impl_error! { individual: MismatchedIndices,
     DOC_ERROR_MISMATCHED_INDICES = "The given indices does not match the expected order.",
     self+f => write!(f, "The given indices does not match the expected order.")
-];
-impl_error![single: MismatchedLength(pub Mismatch<usize, usize>),
+}
+impl_error! { individual: MismatchedLength(pub Mismatch<usize, usize>),
     DOC_ERROR_MISMATCHED_LENGTH =
     "The given length or capacity did not match the required constraints.",
     self+f => write!(f, "Mismatched length or capacity: {:?}.", self.0)
-];
-impl_error![single: NodeEmpty(pub Option<usize>),
+}
+impl_error! { individual: NodeEmpty(pub Option<usize>),
     DOC_ERROR_NODE_EMPTY = "The node is empty.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node `{n}` is empty.")
     } else { write!(f, "The node is empty.") }
-];
-impl_error![single: NodeLinkNotSet(pub Option<usize>),
+}
+impl_error! { individual: NodeLinkNotSet(pub Option<usize>),
     DOC_ERROR_NODE_LINK_NOT_SET = "The link is not set.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not set.")
     } else { write!(f, "The node link is not set.") }
-];
-impl_error![single: NodeLinkNotUnique(pub Option<usize>),
+}
+impl_error! { individual: NodeLinkNotUnique(pub Option<usize>),
     DOC_ERROR_NODE_LINK_NOT_UNIQUE = "The link is not unique.",
     self+f => if let Some(n) = self.0 { write!(f, "The given node link `{n}` is not unique.")
     } else { write!(f, "The node link is not unique.") }
-];
-impl_error![single: NotEnoughElements(pub Option<usize>),
+}
+impl_error! { individual: NotEnoughElements(pub Option<usize>),
     DOC_ERROR_NOT_ENOUGH_ELEMENTS = "There are not enough elements for the operation.\n\n
 Optionally contains the minimum number of elements needed.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Not enough elements. Needs at least `{n}` elements.")
     } else { write!(f, "Not enough elements.") }
-];
-impl_error![single: NotEnoughSpace(pub Option<usize>),
+}
+impl_error! { individual: NotEnoughSpace(pub Option<usize>),
     DOC_ERROR_NOT_ENOUGH_SPACE = "There is not enough free space for the operation.\n\n
 Optionally contains the number of free spaces needed.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Not enough space. Needs at least `{n}` free space for elements.")
     } else { write!(f, "Not enough space.") }
-];
-impl_error![single: OutOfBounds(pub Option<usize>),
+}
+impl_error! { individual: OutOfBounds(pub Option<usize>),
     DOC_ERROR_OUT_OF_BOUNDS = "The given `index`, `length` or `capacity` is out of bounds.\n\n
 Optionally contains some given magnitude.",
     self+f => if let Some(i) = self.0 { write!(f, "The given index {i} is out of bounds.")
     } else { write!(f, "The given index is out of bounds.") }
-];
-impl_error![single: Overflow,
+}
+impl_error! { individual: Overflow,
     DOC_ERROR_OVERFLOW = "Value above maximum representable.",
     self+f => write!(f, "Value above maximum representable.")
-];
-impl_error![single: PartiallyAdded(pub Option<usize>),
+}
+impl_error! { individual: PartiallyAdded(pub Option<usize>),
     DOC_ERROR_PARTIALLY_ADDED = "The operation could only add a subset of the elements.\n\n
 Optionally contains the number of elements added.",
     self+f => if let Some(n) = self.0 { write!(f, "Only `{n}` elements could be added.")
     } else { write!(f, "Only a subset of elements could be added.") }
-];
+}
 
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
 #[cfg(feature = "data")]
