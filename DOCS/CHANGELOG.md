@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - structs:
   - namespaces: `Arch`, `ByteSearch`, `Char`, `Env`, `Mem`, `Ptr`, `Str`.
   - `CompressionMode`, `EncodingMode`, `Pnm`.
-  - standalone error types: `ErrorNotImplemented`, `ErrorNotSupported`, `ErrorElementNotFound`, `ErrorInvalidAxisLength`, `ErrorKeyAlreadyExists`, `ErrorMismatchedDimensions`, `ErrorMismatchedIndices`, `ErrorMismatchedLength`, `ErrorNodeEmpty`, `ErrorNodeLinkNotSet`, `ErrorNodeLinkNotUnique`, `ErrorNotEnoughElements`, `ErrorNotEnoughSpace`, `ErrorOutOfBounds`, `ErrorOverflow`, `ErrorPartiallyAdded`.
+  - standalone error types: `InvalidErrorConversion`, `ErrorNotImplemented`, `ErrorNotSupported`, `ErrorElementNotFound`, `ErrorInvalidAxisLength`, `ErrorKeyAlreadyExists`, `ErrorMismatchedDimensions`, `ErrorMismatchedIndices`, `ErrorMismatchedLength`, `ErrorNodeEmpty`, `ErrorNodeLinkNotSet`, `ErrorNodeLinkNotUnique`, `ErrorNotEnoughElements`, `ErrorNotEnoughSpace`, `ErrorOutOfBounds`, `ErrorOverflow`, `ErrorPartiallyAdded`.
   - composite error types: `ErrorPartialSpace`.
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `HasherPengy`.

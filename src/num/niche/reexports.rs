@@ -28,6 +28,7 @@ reexport! { rust: core::num,
 
 // IMPROVE: Make custom type
 reexport! { rust: core::num,
+    tag: crate::TAG_ERROR!(),
     doc: "The error type returned when a checked integral type conversion fails.",
     TryFromIntError
 }

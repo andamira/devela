@@ -3,7 +3,7 @@
 /// Helper to define separate error types and implement From
 macro_rules! impl_error {
     (
-    // standalone error type definition.
+    // Defines a standalone error type.
     single: $struct_name:ident $(( $vis:vis $inner:ty ))?,
         $DOC_NAME:ident = $doc_str:literal,
         $self:ident + $fmt:ident => $display_expr:expr
@@ -29,28 +29,7 @@ macro_rules! impl_error {
         }
     };
     (
-    // multiple impl `From` for a single type, and `TryFrom` in reverse.
-    for: $for:ident, try($try_err_ty:ty => $try_err:expr), from: { $(
-        $from:ident, $arg:ident => $variant:ident $(( $expr:expr ),)?
-        $(try: $try_arg:ident)?
-
-    ),* $(,)? } ) => { $(
-        impl From<$from> for $for {
-            fn from($arg: $from) -> $for { $for :: $variant $(($expr))? }
-        }
-        impl TryFrom<$for> for $from { // in reverse
-            type Error = $try_err_ty;
-            fn try_from($arg: $for) -> Result<$from, $try_err_ty> {
-                match $arg {
-                    $for::$variant $(($try_arg))? => Ok($from $(($try_arg))? ),
-                    _ => Err($try_err)
-                }
-            }
-        }
-    )* };
-
-    (
-    // Define a composite Error enum, plus:
+    // Defines a composite Error enum, plus:
     // - impl Error, ExtError and Display.
     // - impl From and TryFrom in reverse.
     composite:
@@ -84,13 +63,31 @@ macro_rules! impl_error {
             }
         }
         // impl From, and TryFrom in reverse:
-        $crate::paste! { $crate::impl_error! { for: $name,
-            try($crate::ErrorNotSupported => $crate::ErrorNotSupported),
-            from: {
-                $(
-                [<Error $variant>], _f => $variant $((_f.0), try:$var_arg)?
-                ),+
-        }}}
+        $crate::paste! { $crate::impl_error! { for: $name, from: { $(
+            [<Error $variant>], _f => $variant $((_f.0), try:$var_arg)?
+        ),+ }}}
     };
+    (
+    // Impl `From` multiple single error types and a composite error containing them,
+    // and impl `TryFrom` in reverse.
+    // E.g. for: DataError from: ErrorNotEnoughElements, ErrorNotEnoughSpace,
+    for: $for:ident, from: { $(
+        $from:ident, $arg:ident => $variant:ident $(( $expr:expr ),)?
+        $(try: $try_arg:ident)?
+
+    ),* $(,)? } ) => { $(
+        impl From<$from> for $for {
+            fn from($arg: $from) -> $for { $for :: $variant $(($expr))? }
+        }
+        impl TryFrom<$for> for $from {
+            type Error = crate::InvalidErrorConversion;
+            fn try_from($arg: $for) -> Result<$from, crate::InvalidErrorConversion> {
+                match $arg {
+                    $for::$variant $(($try_arg))? => Ok($from $(($try_arg))? ),
+                    _ => Err(crate::InvalidErrorConversion)
+                }
+            }
+        }
+    )* };
 }
 pub(crate) use impl_error;

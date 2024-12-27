@@ -6,6 +6,10 @@
 use super::reexports::crate_errors::*;
 use crate::impl_error;
 
+impl_error![single: InvalidErrorConversion,
+    DOC_INVALID_ERROR_CONVERSION = "When a conversion between two error types fails.",
+    self+f => write!(f, "Failed to convert between error types"),
+];
 impl_error![single: ErrorNotImplemented,
     DOC_ERROR_NOT_IMPLEMENTED = "The requested functionality is not implemented.",
     self+f => write!(f, "The requested functionality is not implemented."),
