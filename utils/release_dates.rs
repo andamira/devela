@@ -67,8 +67,7 @@ fn print_prev_next_n_releases(p: u32, n: u32) {
     for n in current - p + 1..current + n + 1 {
         let date = nth_rust_version_date(n);
         let remain = today.until(date).unwrap();
-        // WAIT: [fmt::friendly](https://github.com/BurntSushi/jiff/issues/111)
-        println!("1.{n}_{date}, ({remain}) ");
+        println!("1.{n}_{date} ({remain:#}) ");
     }
 }
 
