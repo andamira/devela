@@ -57,20 +57,20 @@ macro_rules! impl_error {
         impl $crate::Display for $name  {
             fn fmt(&self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
                 match self { $(
-                    $name::$variant $(($var_arg))? => $crate::Display::fmt(
-                        &$crate::paste!{[<Error $variant>]} $( (*$var_arg) )?, $fmt),
+                    $name::$variant $(($var_arg))? =>
+                        $crate::Display::fmt(&$variant $((*$var_arg))?, $fmt),
                 )+ }
             }
         }
         // impl From, and TryFrom in reverse:
-        $crate::paste! { $crate::impl_error! { for: $name, from: { $(
-            [<Error $variant>], _f => $variant $((_f.0), try:$var_arg)?
-        ),+ }}}
+        $crate::impl_error! { for: $name, from: { $(
+            $variant, _f => $variant $((_f.0), try:$var_arg)?
+        ),+ }}
     };
     (
     // Impl `From` multiple single error types and a composite error containing them,
     // and impl `TryFrom` in reverse.
-    // E.g. for: DataError from: ErrorNotEnoughElements, ErrorNotEnoughSpace,
+    // E.g. for: DataError from: NotEnoughElements, NotEnoughSpace,
     for: $for:ident, from: { $(
         $from:ident, $arg:ident => $variant:ident $(( $expr:expr ),)?
         $(try: $try_arg:ident)?

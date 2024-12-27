@@ -10,11 +10,11 @@ impl_error![single: InvalidErrorConversion,
     DOC_INVALID_ERROR_CONVERSION = "When a conversion between two error types fails.",
     self+f => write!(f, "Failed to convert between error types"),
 ];
-impl_error![single: ErrorNotImplemented,
+impl_error![single: NotImplemented,
     DOC_ERROR_NOT_IMPLEMENTED = "The requested functionality is not implemented.",
     self+f => write!(f, "The requested functionality is not implemented."),
 ];
-impl_error![single: ErrorNotSupported,
+impl_error![single: NotSupported,
     DOC_ERROR_NOT_SUPPORTED = "The requested functionality is not supported by this type.",
     self+f => write!(f, "The requested functionality is not supported by this type."),
 ];
