@@ -133,7 +133,10 @@ mod full_composite {
             DOC_ERROR_PARTIALLY_ADDED:       PartiallyAdded(i: Option<usize>),
         }
     }
-
+    impl_error! { composite: from(f): DataNotEnough, for: DataError {
+        NotEnoughElements(i) => NotEnoughElements(i),
+        NotEnoughSpace(i) => NotEnoughSpace(i),
+    } }
     impl_error! { composite: from(f): PartialSpace, for: DataError {
         NotEnoughSpace(i) => NotEnoughSpace(i),
         PartiallyAdded(i) => PartiallyAdded(i),
@@ -154,6 +157,17 @@ pub use full_composite::*;
 
 /* Partial Composite Errors */
 
+impl_error! { composite: fmt(f)
+    /// An error composite of
+    /// [`NotEnoughElements`], [`NotEnoughSpace`].
+    ///
+    /// Used in methods of:
+    /// - [`Destaque`][crate::Destaque].
+    pub enum DataNotEnough {
+        DOC_ERROR_NOT_ENOUGH_ELEMENTS: NotEnoughElements(i: Option<usize>),
+        DOC_ERROR_NOT_ENOUGH_SPACE: NotEnoughSpace(i: Option<usize>),
+    }
+}
 impl_error! { composite: fmt(f)
     /// An error composite of
     /// [`NotEnoughSpace`], [`PartiallyAdded`].
