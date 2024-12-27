@@ -39,36 +39,38 @@ macro_rules! impl_error {
     // - impl From and TryFrom in reverse.
     composite: fmt($fmt:ident)
         $(#[$enum_attr:meta])*
-        $vis:vis enum $name:ident { $(
-            $DOC_VAR:ident: $variant:ident $( ($var_arg:ident: $var_data:ty) )?
+        $vis:vis enum $enum_name:ident { $(
+            $DOC_VAR:ident:
+            $variant:ident $(($var_arg:ident: $var_data:ty))?
+                => $indiv_type:ident $(($indiv_expr:expr))?
         ),+ $(,)? }
     ) => {
         #[doc = crate::TAG_ERROR_COMPOSITE!()]
         $(#[$enum_attr])*
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-        $vis enum $name { $(
+        $vis enum $enum_name { $(
             #[doc = $DOC_VAR!()]
             $variant $(($var_data))?
         ),+ }
 
         // impl Error, ExtError & Display:
-        impl $crate::Error for $name {}
-        impl $crate::ExtError for $name {
+        impl $crate::Error for $enum_name {}
+        impl $crate::ExtError for $enum_name {
             type Kind = ();
             fn error_eq(&self, other: &Self) -> bool { self == other }
             fn error_kind(&self) -> Self::Kind {}
         }
-        impl $crate::Display for $name  {
+        impl $crate::Display for $enum_name  {
             fn fmt(&self, $fmt: &mut $crate::Formatter<'_>) -> $crate::FmtResult<()> {
                 match self { $(
-                    $name::$variant $(($var_arg))? =>
-                        $crate::Display::fmt(&$variant $((*$var_arg))?, $fmt),
+                    $enum_name::$variant $(($var_arg))? =>
+                        $crate::Display::fmt(&$indiv_type $(($indiv_expr))?, $fmt),
                 )+ }
             }
         }
         // impl From multiple individual errors for a composite error, and TryFrom in reverse:
-        $crate::impl_error! { from multiple for: $name { $(
-            $variant, _f => $variant $((_f.0), try:$var_arg)?
+        $crate::impl_error! { from multiple for: $enum_name { $(
+            $indiv_type, _f => $variant $((_f.0), try:$var_arg)?
         ),+ }}
     };
     (
