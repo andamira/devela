@@ -13,6 +13,10 @@ use crate::sf;
 ///
 /// See also the [`const_bool`] macro, and the [`True`] and [`False`] types.
 #[rustfmt::skip]
+#[diagnostic::on_unimplemented(
+    message = "Only expressions that evaluate to a constant 0 or 1 are valid for `ConstBool`.",
+    label = "This expression does not evaluate to a constant 0 or 1 (as usize)."
+)]
 pub trait ConstBool {
     /// The resulting type-level boolean (`True` or `False`).
     type Value: Sized;
