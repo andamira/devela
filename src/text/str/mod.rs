@@ -11,6 +11,9 @@ mod ext_str; // ExtStr
 #[cfg(feature = "str")]
 mod namespace; // Str
 
+#[cfg(feature = "dep_const_str")]
+mod r#macro; // str!
+
 #[cfg(all(feature = "str", feature = "alloc"))]
 mod ext_string;
 #[cfg(feature = "_string_nonul")] // RETHINK
@@ -39,6 +42,9 @@ crate::items! { // structural access: _mods, _all, _always
         pub use super::nonul::*;
         #[cfg(_string_u·)]
         pub use super::string_u::*;
+
+        #[doc(inline)] #[cfg(feature = "dep_const_str")]
+        pub use super::r#macro::str;
     }
     pub(super) mod _all {
         #[doc(inline)]
