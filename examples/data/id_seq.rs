@@ -1,4 +1,4 @@
-// devela::examples::id_seq
+// devela::examples::data::id_seq
 //
 //! Shows a sequential ID generator made with the [`id_seq!`] macro.
 //!

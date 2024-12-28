@@ -1,4 +1,4 @@
-// devela::examples::niche
+// devela::examples::num::niche
 //
 //! Shows how to define niche types.
 //!

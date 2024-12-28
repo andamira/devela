@@ -3,7 +3,7 @@
 //! [dependencies]
 //! devela = { path = "../..", features = ["linux", "unsafe_syscall"] }
 //! ```
-// examples/linux/terminal.rs
+// devela::examples::term::linux
 
 use devela::all::*;
 

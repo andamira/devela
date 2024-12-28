@@ -1,4 +1,4 @@
-// devela::examples::bitfield
+// devela::examples::data::bitfield
 //
 //! Shows how to use the [`bitfield!`] declarative macro.
 //

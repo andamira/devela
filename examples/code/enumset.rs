@@ -1,4 +1,4 @@
-// devela::examples::enumset
+// devela::examples::code::enumset
 //
 //! Shows how to use the [`enumset!`] declarative macro.
 //!
