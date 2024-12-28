@@ -76,7 +76,7 @@ publish = true
 bench = false
 
 
-[features] # 237/300 (63 remaining), 122 visible, 115 hidden
+[features] # 234/300 (66 remaining), 119 visible, 115 hidden
 # ==============================================================================
 # https://doc.rust-lang.org/cargo/reference/features.html
 
@@ -218,17 +218,17 @@ unsafe = [ # enables `unsafe` (as long as it isn't forbidden for that module)
 	"unsafe_niche", "unsafe_ptr", "unsafe_slice", "unsafe_str",
 	"unsafe_sync", "unsafe_syscall", "unsafe_thread",
 ] # for 11 specific purposes:
-	unsafe_array = [] # faster array initialization, UninitArray.
-	unsafe_async = [] # task_waker_noop, CoroRun.
-	unsafe_hint = [] # unreachable_unchecked, unchecked arithmetic.
-	unsafe_layout = [] # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*.
-	unsafe_niche = [] # unchecked niche constructors.
-	unsafe_ptr = [] # Pinned, pop methods without Clone, Ptr::*.
-	unsafe_slice = [] # extra slice methods, avoid bound checks.
-	unsafe_str = [] # unchecked utf-8 char and &str conversions.
-	unsafe_sync = [] # Send and Sync impls.
+	unsafe_array   = [] # faster array initialization, UninitArray.
+	unsafe_async   = [] # task_waker_noop, CoroRun.
+	unsafe_hint    = [] # unreachable_unchecked, unchecked arithmetic.
+	unsafe_layout  = [] # MemPod, DSTs in the stack, ExtAny::downcast*, Mem::*.
+	unsafe_niche   = [] # unchecked niche constructors.
+	unsafe_ptr     = [] # Pinned, pop methods without Clone, Ptr::*.
+	unsafe_slice   = [] # extra slice methods, avoid bound checks.
+	unsafe_str     = [] # unchecked utf-8 char and &str conversions.
+	unsafe_sync    = [] # Send and Sync impls.
 	unsafe_syscall = [] # os syscalls.
-	unsafe_thread = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
+	unsafe_thread  = [] # Logging::set_logger_racy, Env::{remove_var, set_var}.
 
 safest = [ # forbids `unsafe` even in dependencies (except for the standard library)
 	"safe",

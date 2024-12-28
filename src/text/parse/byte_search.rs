@@ -3,10 +3,10 @@
 //! Naive versions of `memchr` fns
 //
 
-#[cfg(not(feature = "dep_memchr"))]
-use crate::iif;
 #[cfg(feature = "dep_memchr")]
 use crate::_dep::memchr::*;
+#[cfg(not(feature = "dep_memchr"))]
+use crate::iif;
 
 /// A utility struct for searching bytes in slices.
 ///

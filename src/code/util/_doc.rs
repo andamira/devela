@@ -206,6 +206,6 @@ crate::CONST! { pub(crate),
         crate::EMOJI_ITERATOR!(), "</span>");
     TAG_PRIMITIVE = concat!("<span class='stab portability' title='Rust primitive'>",
         crate::EMOJI_PRIMITIVE!(), "</span>");
-    TAG_RESULT = concat!("<span class='stab portability' title='error type'>",
+    TAG_RESULT = concat!("<span class='stab portability' title='Result type'>",
         crate::EMOJI_RESULT!() ,"</span>");
 }

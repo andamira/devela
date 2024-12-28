@@ -91,6 +91,7 @@
 - 1.?? [const_for](https://github.com/rust-lang/rust/issues/87575) depends on const_trait_impl
 - 1.?? [const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
 - 1.?? [const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
+- 1.?? [generic_atomic](https://github.com/rust-lang/rust/issues/130539)
 - 1.?? [mpmc_channel](https://github.com/rust-lang/rust/pull/126839)
 - 1.?? [passing unstable flags only on nightly](https://github.com/rust-lang/cargo/issues/14733)
 - 1.?? [stdarch_x86_avx512](https://github.com/rust-lang/rust/issues/111137)
