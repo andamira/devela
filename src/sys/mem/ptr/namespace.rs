@@ -253,7 +253,7 @@ impl Ptr {
     /// Overwrites a memory location with `src` without reading or dropping.
     ///
     /// # Safety
-    /// See `core::ptr::`[`write`].
+    /// See `core::ptr::`[`write`][fn@write].
     pub unsafe fn write<T>(dst: *mut T, src: T) {
         // SAFETY: Caller must uphold the safety contract.
         unsafe { write(dst, src); };

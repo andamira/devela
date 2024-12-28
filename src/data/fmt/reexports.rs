@@ -6,6 +6,6 @@
 use crate::reexport;
 
 reexport! { "dep_serde", "serde", serde,
-    doc: "",
+    doc: "Derive macro from `serde`.",
     Serialize, Deserialize
 }

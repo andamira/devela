@@ -264,8 +264,8 @@ macro_rules! reexport {
     ) => { $crate::paste! {
         #[doc(inline)]
         $( #[doc = $tag] )?
-        #[doc = "<span class='stab portability' title='re-exported from `"
-            $dep_name "`'>`" $dep_name "`</span>"]
+        #[doc = "<span class='stab portability' title='re-exported from the `"
+            $dep_name "` crate'>`" $dep_name "`</span>"]
         #[doc = $description]
         #[doc = "\n\n*Re-exported from the [`" $dep_name
             "`](https://docs.rs/" $dep_name " ) crate*"]
@@ -308,8 +308,8 @@ macro_rules! reexport {
     ) => { $crate::paste! {
         #[doc(inline)]
         $( #[doc = $tag] )?
-        #[doc = "<span class='stab portability' title='re-exported from `" $dep_str
-            "`'>`" $dep_str "`</span>"]
+        #[doc = "<span class='stab portability' title='re-exported from the `" $dep_str
+            "` crate'>`" $dep_str "`</span>"]
         #[doc = $description]
         #[doc = "\n\n*Re-exported from the [`" $dep_str
             "`](https://docs.rs/" $dep_str " ) crate*"]

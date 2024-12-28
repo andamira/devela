@@ -7,7 +7,7 @@
 
 use crate::reexport;
 
-/// <span class="stab portability" title="re-exported from `devela_macros`
+/// <span class="stab portability" title="re-exported from the `devela_macros`
 /// crate">`devela_macros`</span>
 pub use devela_macros::{
     cif, coalesce, compile, compile_attr, compile_doc, enumint, ident_total, ident_total_unique,

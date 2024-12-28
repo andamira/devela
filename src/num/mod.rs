@@ -44,7 +44,7 @@ pub mod wave;
 
 crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     #[allow(unused)]
-    pub use {_mods::*, _internals::*};
+    pub use {_internals::*, _mods::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
     pub use {_always::*, _pub_mods::*,};
 

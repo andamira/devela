@@ -18,7 +18,7 @@ mod vec;
 
 /* types */
 
-/// A static `D`-dimensional vector, backed by a primitive [`array`].
+/// A static `D`-dimensional vector, backed by a primitive [`array`][prim@array].
 #[repr(transparent)]
 pub struct Vector<T, const D: usize> {
     /// The vector coordinates in some basis.

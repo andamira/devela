@@ -364,7 +364,7 @@ impl<const CAP: usize> StringNonul<CAP> {
     /// # Errors
     /// Returns [`OutOfBounds`] if `CAP` > 255,
     /// or [`NotEnoughCapacity`] if `!c.is_nul()`
-    /// and `CAP` < `c.`[`len_utf8()`].
+    /// and `CAP` < `c.`[`len_utf8()`][Char::len_utf8].
     ///
     /// Will always succeed if `CAP` >= 4.
     #[rustfmt::skip]

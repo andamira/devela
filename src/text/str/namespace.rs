@@ -3,6 +3,8 @@
 //! `Str` namespace.
 //
 
+#[cfg(doc)]
+use crate::ExtStr;
 use crate::{
     iif, Ascii, Slice, Utf8Error,
     _core::str::{from_utf8, from_utf8_mut},
