@@ -54,7 +54,7 @@
 ///   Converts a [`&str`] into a [`[char; _]`](array).
 /// - [`to_str:`][::const_str::to_str]
 ///   Returns a [`&str`] from a value ([`&str`] | [`char`] | [`bool`] | `u*` | `i*`).
-/// 
+///
 /// Ascii related:
 /// - [`is_ascii:`][::const_str::is_ascii]
 ///   Returns [`true`] if all codes in this

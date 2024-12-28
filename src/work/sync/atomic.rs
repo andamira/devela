@@ -42,16 +42,6 @@ reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     doc: "A floating point type which can be safely shared between threads.",
     AtomicF32, AtomicF64
 }
-reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
-    tag: crate::TAG_ATOMIC!(),
-    doc: "A signed integer type which can be safely shared between threads.",
-    AtomicI128
-}
-reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
-    tag: crate::TAG_ATOMIC!(),
-    doc: "An unsigned integer type which can be safely shared between threads.",
-    AtomicU128
-}
 
 /* from either `portable-atomic` or `core` */
 
@@ -68,14 +58,18 @@ crate::CONST! { pub(crate),
 #[doc = "A signed integer type which can be safely shared between threads.\n\n"]
 #[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
-pub use crate::_dep::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
+pub use crate::_dep::portable_atomic::{
+    AtomicI128, AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize,
+};
 
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
 #[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
-pub use crate::_dep::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
+pub use crate::_dep::portable_atomic::{
+    AtomicU128, AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize,
+};
 
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
@@ -96,6 +90,12 @@ pub use core::sync::atomic::{AtomicI32, AtomicU32};
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "64"))]
 pub use core::sync::atomic::{AtomicI64, AtomicU64};
+//
+// WAIT: [integer_atomics](https://github.com/rust-lang/rust/issues/99069)
+// #[doc = crate::TAG_ATOMIC!()]
+// #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
+// #[cfg(all(not(feature = "dep_portable_atomic"), target_has_atomic = "128"))]
+// pub use core::sync::atomic::{AtomicI128, AtomicU128};
 //
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
@@ -180,12 +180,16 @@ mod impl_const_default_for_core {
     impl_cdef![Self::new(i64::DEFAULT) => super::AtomicI64];
     #[cfg(target_has_atomic = "64")]
     impl_cdef![Self::new(u64::DEFAULT) => super::AtomicU64];
+
     // WAIT: [AtomicU128/AtomicI128 not shown](https://github.com/rust-lang/rust/issues/130539)
     // WAIT: [integer_atomics](https://github.com/rust-lang/rust/issues/99069)
-    #[cfg(target_has_atomic = "128")]
-    impl_cdef![Self::new(i128::DEFAULT) => super::AtomicI128];
-    #[cfg(target_has_atomic = "128")]
-    impl_cdef![Self::new(u128::DEFAULT) => super::AtomicU128];
+    // #[cfg(target_has_atomic = "128")]
+    // #[cfg(feature = "nightly_atomics")]
+    // impl_cdef![Self::new(i128::DEFAULT) => super::AtomicI128];
+    // #[cfg(target_has_atomic = "128")]
+    // #[cfg(feature = "nightly_atomics")]
+    // impl_cdef![Self::new(u128::DEFAULT) => super::AtomicU128];
+
     #[cfg(target_has_atomic = "ptr")]
     impl_cdef![Self::new(isize::DEFAULT) => super::AtomicIsize];
     #[cfg(target_has_atomic = "ptr")]
