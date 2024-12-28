@@ -66,7 +66,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - `Slice`: `eq`, `from_mut`, `from_ref`, `from_raw_parts`, `from_raw_parts_mut`, `range[_mut][_checked]`, `range_from[_mut][_checked]`, `range_to[_mut][_checked]`, `take_first[_mut][_checked]`, `take_last[_mut][_checked]`, `take_omit_last[_mut][_checked]`.
   - `UnicodeScalar` & `char*` types: `MIN`.
 - macros:
-  - `id_seq!`, `impl_trait!`, `type_marker!`, `type_resource!`.
+  - `id_seq!`, `impl_trait!`, `include_from!`, `mod_from!`, `type_marker!`, `type_resource!`.
   - `const_bool!`, `capture_first!`, `capture_last!`, `capture_tail_tuple!`, `impl_non_value!`.
   - private: `doc_availability!`, `impl_error`, `EMOJI_*`, `TAG_*`.
 - vendored:
