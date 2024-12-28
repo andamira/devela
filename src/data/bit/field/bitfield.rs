@@ -971,4 +971,4 @@ macro_rules! _bitfield {
 }
 #[doc(inline)]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(_bit_·)))]
-pub use _bitfield as bitfield; // see crate::code::macros::mod.rs
+pub use _bitfield as bitfield; // see crate::code::utils::mod.rs

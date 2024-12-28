@@ -44,9 +44,9 @@ pub mod wave;
 
 crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     #[allow(unused)]
-    pub use {_pub_mods::*, _mods::*, _internals::*};
+    pub use {_mods::*, _internals::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use _always::*;
+    pub use {_always::*, _pub_mods::*,};
 
     mod _mods { #![allow(unused)]
         pub use super::{
@@ -63,10 +63,8 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
         pub use super::wave::_all::*;
     }
     mod _pub_mods {
-        #[doc(hidden)] #[doc(no_inline)]
         pub use super::{logic::_all::*, niche::_all::*};
 
-        #[doc(hidden)] #[doc(no_inline)]
         #[cfg(feature = "alg")]
         pub use super::alg::_all::*;
     }
@@ -75,7 +73,7 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
     }
     pub(super) mod _all {
         #[doc(inline)]
-        pub use super::{_pub_mods::*, _mods::*};
+        pub use super::{_mods::*, _pub_mods::*};
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{

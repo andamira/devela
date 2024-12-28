@@ -21,9 +21,9 @@ pub mod error; // AllError, modular errors
 
 crate::items! { // structural access: _mods, _pub_mods, _all, _always
     #[allow(unused)]
-    pub use {_mods::*, _pub_mods::*};
+    pub use _mods::*;
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use _always::*;
+    pub use {_always::*, _pub_mods::*};
 
     mod _mods {
         pub use super::{
@@ -32,7 +32,6 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
         };
     }
     mod _pub_mods {
-        #[doc(hidden)] #[doc(no_inline)]
         pub use super::error::_all::*;
     }
     pub(super) mod _all {

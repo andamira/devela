@@ -31,9 +31,9 @@ pub mod cell;
 
 crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     #[allow(unused)]
-    pub use {_pub_mods::*, _mods::*, _hidden::*};
+    pub use {_mods::*, _hidden::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use _always::*;
+    pub use {_always::*, _pub_mods::*};
 
     mod _mods {
         pub use super::{
@@ -45,7 +45,7 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
         #[cfg(all(not(feature = "safe_mem"), feature = "unsafe_layout"))]
         pub use super::pod::MemPod;
     }
-    mod _pub_mods { #[doc(hidden)] #[doc(no_inline)]
+    mod _pub_mods {
         pub use super::cell::_all::*;
     }
     pub(super) mod _hidden {
@@ -53,7 +53,7 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     }
     pub(super) mod _all {
         #[doc(inline)]
-        pub use super::{_pub_mods::*, _mods::*};
+        pub use super::{_mods::*, _pub_mods::*};
     }
     pub(super) mod _always { #![allow(unused)]
         pub use super::{cell::_always::*, ptr::_always::*, reexports::*};

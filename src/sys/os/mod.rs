@@ -12,11 +12,10 @@
 pub mod linux;
 
 crate::items! { // structural access: _pub_mods, _all
-    #[allow(unused)]
+    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
     pub use _pub_mods::*;
 
     mod _pub_mods {
-        #[doc(hidden)] #[doc(no_inline)]
         #[cfg(feature = "linux")]
         pub use super::linux::_all::*;
     }

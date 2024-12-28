@@ -26,15 +26,14 @@ pub mod dst;
 
 crate::items! { // structural access: _mods, _pub_mods, _all, _always
     #[allow(unused)]
-    pub use {_pub_mods::*, _mods::*};
+    pub use _mods::*;
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use _always::*;
+    pub use {_always::*, _pub_mods::*};
 
     mod _mods {
         pub use super::{bit::_all::*, error::*, fmt::_all::*, id::_all::*, sort::_all::*};
     }
     mod _pub_mods {
-        #[doc(hidden)] #[doc(no_inline)]
         pub use super::{collections::_all::*, hash::_all::*, iter::_all::*};
 
         #[cfg_attr(not(feature = "__force_miri_dst"), cfg(not(miri)))]
@@ -42,7 +41,6 @@ crate::items! { // structural access: _mods, _pub_mods, _all, _always
             not(any(feature = "safe_data", feature = "safe_mem")),
             feature = "unsafe_layout"
         ))]
-        #[doc(hidden)] #[doc(no_inline)]
         pub use super::dst::_all::*;
     }
     pub(super) mod _all {

@@ -30,10 +30,8 @@ pub mod image;
 pub mod midi;
 
 crate::items! { // structural access: _pub_mods, _all, _always
-    #[allow(unused)]
-    pub use _pub_mods::*;
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use _always::*;
+    pub use {_always::*, _pub_mods::*};
 
     mod _pub_mods {
         #[cfg(_media_·)] pub use super::error::*;
@@ -45,7 +43,8 @@ crate::items! { // structural access: _pub_mods, _all, _always
         #[cfg(feature = "midi")]  pub use super::midi::_all::*;
     }
     pub(super) mod _all { #![allow(unused)]
-        #[doc(inline)] pub use super::_pub_mods::*;
+        #[doc(inline)]
+        pub use super::_pub_mods::*;
     }
     pub(super) mod _always { #![allow(unused)]
         #[cfg(feature = "audio")] pub use super::audio::_always::*;

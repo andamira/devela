@@ -20,16 +20,15 @@ pub mod util; // utility macros and functions
 
 crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _always
     #[allow(unused)]
-    pub use {_pub_mods::*, _mods::*, _internals::*};
+    pub use {_mods::*, _internals::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use _always::*;
+    pub use {_always::*, _pub_mods::*};
 
     mod _mods {
         pub use super::{any::_all::*, default::*, reexports::*};
     }
     mod _pub_mods {
-        #[doc(hidden)] #[doc(no_inline)]
-        pub use super::{marker::_all::*, ops::*, result::_all::*, util::_all::*};
+        pub use super::{marker::_all::*, ops::_all::*, result::_all::*, util::_all::*};
     }
     pub(super) mod _internals {
         pub(crate) use super::util::_internals::*;

@@ -31,9 +31,9 @@ pub mod os;
 
 crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     #[allow(unused)]
-    pub use {_mods::*, _pub_mods::*, _hidden::*};
+    pub use {_mods::*, _hidden::*};
     #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
-    pub use _always::*;
+    pub use {_always::*, _pub_mods::*};
 
     mod _mods { #![allow(unused)]
         pub use super::{env::_all::*, sound::_all::*};
@@ -41,7 +41,6 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
         pub use super::path::_all::*;
     }
     mod _pub_mods { #![allow(unused)]
-        #[doc(hidden)] #[doc(no_inline)]
         pub use super::{arch::_all::*, io::_all::*, log::_all::*, mem::_all::*, os::_all::*};
     }
     pub(super) mod _hidden {

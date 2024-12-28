@@ -32,83 +32,94 @@ mod terminal;
 
 /// Linux-specific extensions to [`std::io`].
 pub mod io {
-    #[cfg(all(
-        any(
-            target_arch = "x86_64",
-            target_arch = "x86",
-            target_arch = "arm",
-            target_arch = "aarch64",
-            target_arch = "riscv32",
-            target_arch = "riscv64"
-        ),
-        feature = "unsafe_syscall",
-        not(miri),
-    ))]
-    pub use super::{
-        consts::termios::*,
-        fns::{
-            linux_eprint, linux_eprintln, linux_get_byte, linux_get_char, linux_get_dirty_char,
-            linux_get_line, linux_get_str, linux_get_utf8_bytes, linux_pause_until_char,
-            linux_print, linux_print_bytes, linux_println, linux_prompt, linux_random_bytes,
-            linux_random_u128, linux_random_u16, linux_random_u32, linux_random_u64,
-            linux_random_u8, linux_sys_getrandom, linux_sys_ioctl, linux_sys_read, linux_sys_write,
-        },
-        structs::{LinuxTerminalSize, LinuxTermios},
-    };
+    pub use _all::*;
+    pub(super) mod _all {
+        #[cfg(all(
+            any(
+                target_arch = "x86_64",
+                target_arch = "x86",
+                target_arch = "arm",
+                target_arch = "aarch64",
+                target_arch = "riscv32",
+                target_arch = "riscv64"
+            ),
+            feature = "unsafe_syscall",
+            not(miri),
+        ))]
+        pub use super::super::{
+            consts::termios::*,
+            fns::{
+                linux_eprint, linux_eprintln, linux_get_byte, linux_get_char, linux_get_dirty_char,
+                linux_get_line, linux_get_str, linux_get_utf8_bytes, linux_pause_until_char,
+                linux_print, linux_print_bytes, linux_println, linux_prompt, linux_random_bytes,
+                linux_random_u128, linux_random_u16, linux_random_u32, linux_random_u64,
+                linux_random_u8, linux_sys_getrandom, linux_sys_ioctl, linux_sys_read,
+                linux_sys_write,
+            },
+            structs::{LinuxTerminalSize, LinuxTermios},
+        };
+    }
 }
 
 /// Linux-specific extensions to [`std::process`].
 pub mod process {
-    #[cfg(all(
-        any(
-            target_arch = "x86_64",
-            target_arch = "x86",
-            target_arch = "arm",
-            target_arch = "aarch64",
-            target_arch = "riscv32",
-            target_arch = "riscv64"
-        ),
-        feature = "unsafe_syscall",
-        not(miri),
-    ))]
-    pub use super::{
-        consts::signal::*,
-        fns::{linux_sig_handler_no_return, linux_sys_exit, linux_sys_rt_sigaction},
-        structs::{LinuxSigaction, LinuxSigset},
-    };
+    pub use _all::*;
+    pub(super) mod _all {
+        #[cfg(all(
+            any(
+                target_arch = "x86_64",
+                target_arch = "x86",
+                target_arch = "arm",
+                target_arch = "aarch64",
+                target_arch = "riscv32",
+                target_arch = "riscv64"
+            ),
+            feature = "unsafe_syscall",
+            not(miri),
+        ))]
+        pub use super::super::{
+            consts::signal::*,
+            fns::{linux_sig_handler_no_return, linux_sys_exit, linux_sys_rt_sigaction},
+            structs::{LinuxSigaction, LinuxSigset},
+        };
+    }
 }
 
 /// Linux-specific extensions to [`std::thread`].
 pub mod thread {
-    #[cfg(all(
-        any(
-            target_arch = "x86_64",
-            target_arch = "x86",
-            target_arch = "arm",
-            target_arch = "aarch64",
-            target_arch = "riscv32",
-            target_arch = "riscv64"
-        ),
-        feature = "unsafe_syscall",
-        not(miri),
-    ))]
-    pub use super::{
-        fns::{linux_getpid, linux_sleep, linux_sys_getpid, linux_sys_nanosleep},
-        structs::LinuxTimespec,
-    };
+    pub use _all::*;
+    pub(super) mod _all {
+        #[cfg(all(
+            any(
+                target_arch = "x86_64",
+                target_arch = "x86",
+                target_arch = "arm",
+                target_arch = "aarch64",
+                target_arch = "riscv32",
+                target_arch = "riscv64"
+            ),
+            feature = "unsafe_syscall",
+            not(miri),
+        ))]
+        pub use super::super::{
+            fns::{linux_getpid, linux_sleep, linux_sys_getpid, linux_sys_nanosleep},
+            structs::LinuxTimespec,
+        };
+    }
 }
 
 crate::items! { // structural access: _mods, _pub_mods, _all
     #[allow(unused)]
-    pub use {_mods::*, _pub_mods::*};
+    pub use _mods::*;
+    #[allow(unused)] #[doc(hidden)] #[doc(no_inline)]
+    pub use _pub_mods::*;
 
     mod _mods {
         #[cfg(all(feature = "unsafe_syscall", not(miri)))]
         pub use super::terminal::*;
     }
     mod _pub_mods { #![allow(unused)]
-        #[doc(hidden)] #[doc(no_inline)]
-        pub use super::{consts::_all::*, io::*, process::*, thread::*};
+        pub use super::{consts::_all::*, io::_all::*, process::_all::*, thread::_all::*};
     }
     pub(super) mod _all { #![allow(unused)]
         #[doc(inline)]

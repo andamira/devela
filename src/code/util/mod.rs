@@ -8,7 +8,7 @@
 // Several macros are defined hidden, prefixed with `_`, an publicly re-exported
 // unprefixed. This fixes able to import them from the root.
 // See: <https://github.com/rust-lang/rust/pull/52234#issuecomment-976702997>
-// These are: bitfield, capture_last, const, enumset.
+// E.g.: bitfield, capture_last, CONST, enumset.
 //
 // # Documentation for declarative macros
 // - [The Little Book of Rust Macros](https://veykril.github.io/tlborm/decl-macros.html)
