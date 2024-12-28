@@ -59,13 +59,14 @@ include = [
 	"/config/*",
 	"/DOCS/VENDORED*.md",
 	"/LICENSE*",
-
 	# examples used in docs:
-	"/examples/bitfield.rs",
-	"/examples/enumset.rs",
-	"/examples/id_seq.rs",
-	"/examples/niche.rs",
+	"/examples/code/enumint.rs",
+	"/examples/code/enumset.rs",
+	"/examples/data/bitfield.rs",
+	"/examples/data/id_seq.rs",
+	"/examples/num/niche.rs",
 ]
+autoexamples = false
 categories = ["development-tools", "rust-patterns", "no-std::no-alloc"]
 keywords = ["dev", "helper", "library", "std", "extension"]
 build = "build/mod.rs"
