@@ -643,3 +643,25 @@ impl Slice<u8> {
         }
     }
 }
+
+/// Helper for implementing slice operations for primitives.
+macro_rules! impl_prim {
+    () => { impl_prim![u8, u16, u32, u64, u128, i8, i16, i32, i64, i128]; };
+    ($($t:ty),+) => { $( impl_prim![@$t]; )+ };
+    (@$t:ty) => {
+        impl Slice<$t> {
+            /// Checks the equality of two slices in compile-time.
+            #[must_use]
+            pub const fn eq(a: &[$t], b: &[$t]) -> bool {
+                if a.len() != b.len() { return false; }
+                let mut i = 0;
+                while i < a.len() {
+                    if a[i] != b[i] { return false; }
+                    i += 1;
+                }
+                true
+            }
+        }
+    };
+}
+impl_prim!();
