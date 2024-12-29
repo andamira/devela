@@ -5,10 +5,9 @@
 #![doc = crate::doc_!(extends: env)]
 //
 
-mod reexports;
-
-#[cfg(feature = "std")]
+mod arg;
 mod env;
+mod reexports;
 
 crate::items! { // structural access: _mods, _all, _always
     #[allow(unused)]
@@ -17,9 +16,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods { #![allow(unused)]
-        pub use super::reexports::*;
-        #[cfg(feature = "std")]
-        pub use super::env::*;
+        pub use super::{arg::*, env::*, reexports::*};
     }
     pub(super) mod _all {
         #[doc(inline)]

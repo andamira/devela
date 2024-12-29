@@ -2,13 +2,17 @@
 //
 //! A namespaced wrapper for std
 //
+// NOTES:
+// - The lists of expected values for configuration flags can be copied from:
+//   https://github.com/rust-lang/rust/blob/master/tests/ui/check-cfg/well-known-values.stderr
+//   - Afterwards they can be procesed with vim commands similar to:
+//     s/`//g
+//     s/, /\r/g
+//     s/\([a-z0-9_.]\+\)/#[cfg(target_arch = "\1")]\r{ "\1" }/
+//     s/\([a-z0-9_.]\+\)/target_arch = "\1",/
 
-use crate::IoResult;
-use std::{
-    env::*,
-    ffi::{OsStr, OsString},
-    path::{Path, PathBuf},
-};
+#[cfg(feature = "std")]
+use crate::{IoResult, OsStr, OsString, Path, PathBuf, _dep::_std::env::*};
 
 /// A namespaced wrapper for `std::env` functions and constants.
 pub struct Env;
@@ -139,27 +143,324 @@ impl Env {
 }
 
 /// # Constants
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 impl Env {
     /// A string describing the architecture of the CPU that is currently in use.
     ///
-    /// Some possible values:
-    /// - x86
-    /// - x86_64
-    /// - arm
-    /// - aarch64
-    /// - loongarch64
-    /// - m68k
-    /// - csky
-    /// - mips
-    /// - mips64
-    /// - powerpc
-    /// - powerpc64
-    /// - riscv64
-    /// - s390x
-    /// - sparc64
-    pub const ARCH: &'static str = std::env::consts::ARCH;
+    /// Expected values are:
+    /// `aarch64`, `arm`, `arm64ec`, `avr`, `bpf`, `csky`, `hexagon`, `loongarch64`, `m68k`, `mips`, `mips32r6`, `mips64`, `mips64r6`, `msp430`, `nvptx64`, `powerpc`, `powerpc64`, `riscv32`, `riscv64`, `s390x`, `sparc`, `sparc64`, `wasm32`, `wasm64`, `x86`, `x86_64`, and `xtensa`.
+    #[rustfmt::skip]
+    pub const ARCH: &'static str = {
+        #[cfg(feature = "std")]
+        { std::env::consts::ARCH }
+        #[cfg(not(feature = "std"))]
+        { // 27 arches:
+            #[cfg(target_arch = "aarch64")]
+            { "aarch64" }
+            #[cfg(target_arch = "arm")]
+            { "arm" }
+            #[cfg(target_arch = "arm64ec")]
+            { "arm64ec" }
+            #[cfg(target_arch = "avr")]
+            { "avr" }
+            #[cfg(target_arch = "bpf")]
+            { "bpf" }
+            #[cfg(target_arch = "csky")]
+            { "csky" }
+            #[cfg(target_arch = "hexagon")]
+            { "hexagon" }
+            #[cfg(target_arch = "loongarch64")]
+            { "loongarch64" }
+            #[cfg(target_arch = "m68k")]
+            { "m68k" }
+            #[cfg(target_arch = "mips")]
+            { "mips" }
+            #[cfg(target_arch = "mips32r6")]
+            { "mips32r6" }
+            #[cfg(target_arch = "mips64")]
+            { "mips64" }
+            #[cfg(target_arch = "mips64r6")]
+            { "mips64r6" }
+            #[cfg(target_arch = "msp430")]
+            { "msp430" }
+            #[cfg(target_arch = "nvptx64")]
+            { "nvptx64" }
+            #[cfg(target_arch = "powerpc")]
+            { "powerpc" }
+            #[cfg(target_arch = "powerpc64")]
+            { "powerpc64" }
+            #[cfg(target_arch = "riscv32")]
+            { "riscv32" }
+            #[cfg(target_arch = "riscv64")]
+            { "riscv64" }
+            #[cfg(target_arch = "s390x")]
+            { "s390x" }
+            #[cfg(target_arch = "sparc")]
+            { "sparc" }
+            #[cfg(target_arch = "sparc64")]
+            { "sparc64" }
+            #[cfg(target_arch = "wasm32")]
+            { "wasm32" }
+            #[cfg(target_arch = "wasm64")]
+            { "wasm64" }
+            #[cfg(target_arch = "x86")]
+            { "x86" }
+            #[cfg(target_arch = "x86_64")]
+            { "x86_64" }
+            #[cfg(target_arch = "xtensa")]
+            { "xtensa" }
+            #[cfg(not(any(
+                target_arch = "aarch64",
+                target_arch = "arm",
+                target_arch = "arm64ec",
+                target_arch = "avr",
+                target_arch = "bpf",
+                target_arch = "csky",
+                target_arch = "hexagon",
+                target_arch = "loongarch64",
+                target_arch = "m68k",
+                target_arch = "mips",
+                target_arch = "mips32r6",
+                target_arch = "mips64",
+                target_arch = "mips64r6",
+                target_arch = "msp430",
+                target_arch = "nvptx64",
+                target_arch = "powerpc",
+                target_arch = "powerpc64",
+                target_arch = "riscv32",
+                target_arch = "riscv64",
+                target_arch = "s390x",
+                target_arch = "sparc",
+                target_arch = "sparc64",
+                target_arch = "wasm32",
+                target_arch = "wasm64",
+                target_arch = "x86",
+                target_arch = "x86_64",
+                target_arch = "xtensa",
+            )))]
+            { "unknown" }
+        }
+    };
+
+    /// The family of the operating system.
+    ///
+    /// The expected values are: `unix`, `wasm`, and `windows`
+    #[rustfmt::skip]
+    pub const FAMILY: &'static str = {
+        #[cfg(feature = "std")]
+        { std::env::consts::FAMILY }
+        #[cfg(not(feature = "std"))]
+        {
+            #[cfg(target_family = "unix")]
+            { "unix" }
+            #[cfg(target_family = "wasm")]
+            { "wasm" }
+            #[cfg(target_family = "windows")]
+            { "windows" }
+            #[cfg(not(any(
+                target_family = "unix",
+                target_family = "wasm",
+                target_family = "windows",
+            )))]
+            { "unknown" }
+        }
+    };
+
+    /// A string describing the vendor of the CPU that is currently in use.
+    ///
+    /// Expected values are:
+    ///  `apple`, `espressif`, `fortanix`, `ibm`, `kmc`, `nintendo`, `nvidia`, `pc`, `risc0`, `sony`, `sun`, `unikraft`, `unknown`, `uwp`, `win7`, and `wrs`.
+    #[rustfmt::skip]
+    pub const VENDOR: &'static str = { // 15 vendors
+        #[cfg(target_vendor = "apple")]
+        { "apple" }
+        #[cfg(target_vendor = "espressif")]
+        { "espressif" }
+        #[cfg(target_vendor = "fortanix")]
+        { "fortanix" }
+        #[cfg(target_vendor = "ibm")]
+        { "ibm" }
+        #[cfg(target_vendor = "kmc")]
+        { "kmc" }
+        #[cfg(target_vendor = "nintendo")]
+        { "nintendo" }
+        #[cfg(target_vendor = "nvidia")]
+        { "nvidia" }
+        #[cfg(target_vendor = "pc")]
+        { "pc" }
+        #[cfg(target_vendor = "risc0")]
+        { "risc0" }
+        #[cfg(target_vendor = "sony")]
+        { "sony" }
+        #[cfg(target_vendor = "sun")]
+        { "sun" }
+        #[cfg(target_vendor = "unikraft")]
+        { "unikraft" }
+        #[cfg(target_vendor = "uwp")]
+        { "uwp" }
+        #[cfg(target_vendor = "win7")]
+        { "win7" }
+        #[cfg(target_vendor = "wrs")]
+        { "wrs" }
+        #[cfg(not(any(
+            target_vendor = "apple",
+            target_vendor = "espressif",
+            target_vendor = "fortanix",
+            target_vendor = "ibm",
+            target_vendor = "kmc",
+            target_vendor = "nintendo",
+            target_vendor = "nvidia",
+            target_vendor = "pc",
+            target_vendor = "risc0",
+            target_vendor = "sony",
+            target_vendor = "sun",
+            target_vendor = "unikraft",
+            target_vendor = "uwp",
+            target_vendor = "win7",
+            target_vendor = "wrs",
+        )))]
+        { "unknown" }
+    };
+
+    /// A string describing the specific operating system in use.
+    ///
+    /// The expected values are:
+    /// `aix`, `android`, `cuda`, `dragonfly`, `emscripten`, `espidf`, `freebsd`, `fuchsia`, `haiku`, `hermit`, `horizon`, `hurd`, `illumos`, `ios`, `l4re`, `linux`, `macos`, `netbsd`, `none`, `nto`, `nuttx`, `openbsd`, `psp`, `redox`, `rtems`, `solaris`, `solid_asp3`, `teeos`, `trusty`, `tvos`, `uefi`, `unknown`, `visionos`, `vita`, `vxworks`, `wasi`, `watchos`, `windows`, `xous`, and `zkvm`.
+    #[rustfmt::skip]
+    pub const OS: &'static str = {
+        #[cfg(feature = "std")]
+        { std::env::consts::OS }
+        #[cfg(not(feature = "std"))]
+        { // 40 oses:
+            #[cfg(target_os = "aix")]
+            { "aix" }
+            #[cfg(target_os = "android")]
+            { "android" }
+            #[cfg(target_os = "cuda")]
+            { "cuda" }
+            #[cfg(target_os = "dragonfly")]
+            { "dragonfly" }
+            #[cfg(target_os = "emscripten")]
+            { "emscripten" }
+            #[cfg(target_os = "espidf")]
+            { "espidf" }
+            #[cfg(target_os = "freebsd")]
+            { "freebsd" }
+            #[cfg(target_os = "fuchsia")]
+            { "fuchsia" }
+            #[cfg(target_os = "haiku")]
+            { "haiku" }
+            #[cfg(target_os = "hermit")]
+            { "hermit" }
+            #[cfg(target_os = "horizon")]
+            { "horizon" }
+            #[cfg(target_os = "hurd")]
+            { "hurd" }
+            #[cfg(target_os = "illumos")]
+            { "illumos" }
+            #[cfg(target_os = "ios")]
+            { "ios" }
+            #[cfg(target_os = "l4re")]
+            { "l4re" }
+            #[cfg(target_os = "linux")]
+            { "linux" }
+            #[cfg(target_os = "macos")]
+            { "macos" }
+            #[cfg(target_os = "netbsd")]
+            { "netbsd" }
+            #[cfg(target_os = "none")]
+            { "none" }
+            #[cfg(target_os = "nto")]
+            { "nto" }
+            #[cfg(target_os = "nuttx")]
+            { "nuttx" }
+            #[cfg(target_os = "openbsd")]
+            { "openbsd" }
+            #[cfg(target_os = "psp")]
+            { "psp" }
+            // WAIT: 1.84
+            // #[cfg(target_os = "psx")]
+            // { "psx" }
+            #[cfg(target_os = "redox")]
+            { "redox" }
+            #[cfg(target_os = "rtems")]
+            { "rtems" }
+            #[cfg(target_os = "solaris")]
+            { "solaris" }
+            #[cfg(target_os = "solid_asp3")]
+            { "solid_asp3" }
+            #[cfg(target_os = "teeos")]
+            { "teeos" }
+            #[cfg(target_os = "trusty")]
+            { "trusty" }
+            #[cfg(target_os = "tvos")]
+            { "tvos" }
+            #[cfg(target_os = "uefi")]
+            { "uefi" }
+            #[cfg(target_os = "unknown")]
+            { "unknown" }
+            #[cfg(target_os = "visionos")]
+            { "visionos" }
+            #[cfg(target_os = "vita")]
+            { "vita" }
+            #[cfg(target_os = "vxworks")]
+            { "vxworks" }
+            #[cfg(target_os = "wasi")]
+            { "wasi" }
+            #[cfg(target_os = "watchos")]
+            { "watchos" }
+            #[cfg(target_os = "windows")]
+            { "windows" }
+            #[cfg(target_os = "xous")]
+            { "xous" }
+            #[cfg(target_os = "zkvm")]
+            { "zkvm" }
+            #[cfg(not(any(
+                target_os = "aix",
+                target_os = "android",
+                target_os = "cuda",
+                target_os = "dragonfly",
+                target_os = "emscripten",
+                target_os = "espidf",
+                target_os = "freebsd",
+                target_os = "fuchsia",
+                target_os = "haiku",
+                target_os = "hermit",
+                target_os = "horizon",
+                target_os = "hurd",
+                target_os = "illumos",
+                target_os = "ios",
+                target_os = "l4re",
+                target_os = "linux",
+                target_os = "macos",
+                target_os = "netbsd",
+                target_os = "none",
+                target_os = "nto",
+                target_os = "nuttx",
+                target_os = "openbsd",
+                target_os = "psp",
+                // WAIT: 1.84
+                // target_os = "psx",
+                target_os = "redox",
+                target_os = "rtems",
+                target_os = "solaris",
+                target_os = "solid_asp3",
+                target_os = "teeos",
+                target_os = "trusty",
+                target_os = "tvos",
+                target_os = "uefi",
+                target_os = "unknown",
+                target_os = "visionos",
+                target_os = "vita",
+                target_os = "vxworks",
+                target_os = "wasi",
+                target_os = "watchos",
+                target_os = "windows",
+                target_os = "xous",
+                target_os = "zkvm",
+            )))]
+            { "unknown" }
+        }
+    };
 
     /// Specifies the file extension used for shared libraries on this platform
     /// that goes after the dot.
@@ -168,6 +469,8 @@ impl Env {
     /// - so
     /// - dylib
     /// - dll
+    #[cfg(feature = "std")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub const DLL_EXTENSION: &'static str = std::env::consts::DLL_EXTENSION;
 
     /// Specifies the filename prefix used for shared libraries on this platform.
@@ -175,6 +478,8 @@ impl Env {
     /// Some possible values:
     /// - lib
     /// - "" (an empty string)
+    #[cfg(feature = "std")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub const DLL_PREFIX: &'static str = std::env::consts::DLL_PREFIX;
 
     /// Specifies the filename suffix used for shared libraries on this platform.
@@ -183,6 +488,8 @@ impl Env {
     /// - .so
     /// - .dylib
     /// - .dll
+    #[cfg(feature = "std")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub const DLL_SUFFIX: &'static str = std::env::consts::DLL_SUFFIX;
 
     /// Specifies the file extension, if any, used for executable binaries on this platform.
@@ -190,6 +497,8 @@ impl Env {
     /// Some possible values:
     /// - exe
     /// - "" (an empty string)
+    #[cfg(feature = "std")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub const EXE_EXTENSION: &'static str = std::env::consts::EXE_EXTENSION;
 
     /// Specifies the filename suffix used for executable binaries on this platform.
@@ -199,28 +508,7 @@ impl Env {
     /// - .nexe
     /// - .pexe
     /// - "" (an empty string)
+    #[cfg(feature = "std")]
+    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
     pub const EXE_SUFFIX: &'static str = std::env::consts::EXE_SUFFIX;
-
-    /// The family of the operating system.
-    ///
-    /// Some possible values:
-    /// - unix
-    /// - windows
-    /// - wasm
-    pub const FAMILY: &'static str = std::env::consts::FAMILY;
-
-    /// A string describing the specific operating system in use.
-    ///
-    /// Some possible values:
-    /// - linux
-    /// - macos
-    /// - ios
-    /// - freebsd
-    /// - dragonfly
-    /// - netbsd
-    /// - openbsd
-    /// - solaris
-    /// - android
-    /// - windows
-    pub const OS: &'static str = std::env::consts::OS;
 }

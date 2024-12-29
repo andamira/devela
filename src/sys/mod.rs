@@ -15,9 +15,9 @@ rustc +nightly -Z unstable-options --print all-target-specs-json | jq '[ to_entr
 ```
 - Altenatively:
 ```sh
-rustc --print target-list | cut -f2 -d'-'| sort | uniq # List of arches supported
+rustc --print target-list | cut -f1 -d'-'| sort | uniq # List of arches supported
 rustc --print target-list | cut -f2 -d'-'| sort | uniq # List of vendors supported
-rustc --print target-list | cut -f2 -d'-'| sort | uniq # List of OSes supported
+rustc --print target-list | cut -f3 -d'-'| sort | uniq # List of OSes supported
 ```
 */
 // safety
