@@ -49,7 +49,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - enum variants:
   - `DataError::ElementNotFound`.
 - traits:
-  - `ColorBase`, `ExtCellOption`, `ExtOptRes`, `ExtError`, `ExtThread`, `MemPod`, `TypeResourced`, `Unit`.
+  - `ColorBase`, `ExtCellOption`, `ExtError`, `ExtOptRes`, `ExtPath`, `ExtThread`, `MemPod`, `TypeResourced`, `Unit`.
   - `WaveletCompressionVec`, `WaveletTransformVec`.
 - associated methods and constants for:
   - `Array`: `from_fn`, `contains_[from|to|between]`, `as_bare_mut_slice`, `get[_mut]`.

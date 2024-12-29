@@ -8,7 +8,7 @@ use std::thread::{
     available_parallelism, current, panicking, park, park_timeout, scope, sleep, spawn, yield_now,
 };
 
-/// Marker trait to prevent downstream implementations of the [`ExtStr`] trait.
+/// Marker trait to prevent downstream implementations of the [`ExtThread`] trait.
 trait Sealed {}
 impl Sealed for Thread {}
 

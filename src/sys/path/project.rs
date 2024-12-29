@@ -4,7 +4,6 @@
 //
 
 #[cfg(not(miri))]
-#[cfg(feature = "std")]
 use std::{
     convert::AsRef,
     env, fs, io,
@@ -30,8 +29,6 @@ use std::{
 /// };
 /// ```
 #[cfg(not(miri))] // unsupported operation: `getcwd` not available when isolation is enabled
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 pub fn crate_root<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
     let current_path = env::current_dir()?;
     let mut root_path = current_path.clone();
@@ -52,8 +49,6 @@ pub fn crate_root<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> {
 #[cfg(not(miri))]
 #[must_use]
 #[inline]
-#[cfg(feature = "std")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "std")))]
 pub fn crate_root_string<P: AsRef<Path>>(path: P) -> String {
     crate_root(Path::new(path.as_ref())).map_or(String::new(), |p| p.to_str().unwrap().to_owned())
 }

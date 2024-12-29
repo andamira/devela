@@ -3,6 +3,7 @@
 //! Reexported items from `core`.
 //
 
+#[allow(unused_imports)]
 use crate::{reexport, TAG_ERROR, TAG_ITERATOR};
 
 /* structs */
@@ -35,8 +36,7 @@ reexport! { rust: std::path,
     PathBuf
 }
 reexport! { rust: std::path,
-    doc: "A structure wrapping a Windows path prefix
-as well as its unparsed string representation.",
+    doc: "Wraps a Windows path prefix as well as its unparsed string representation.",
     @PrefixComponent as PathPrefixComponent
 }
 reexport! { rust: std::path,
