@@ -9,8 +9,6 @@
 // safety
 #![cfg_attr(feature = "safe_text", forbid(unsafe_code))]
 
-mod helpers; // impl_sized_alias!
-
 mod ascii;
 #[allow(hidden_glob_reexports, reason = "re-exported char")]
 mod char;

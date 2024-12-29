@@ -13,10 +13,7 @@ use crate::text::char::*;
 use crate::CString;
 #[cfg(doc)]
 use crate::TextError::OutOfBounds;
-use crate::{
-    text::helpers::impl_sized_alias, unwrap, ConstDefault, IterChars, StringU8,
-    TextResult as Result,
-};
+use crate::{unwrap, ConstDefault, IterChars, StringU8, TextResult as Result};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
@@ -27,16 +24,6 @@ use crate::{
 #[repr(transparent)]
 #[must_use]
 pub struct GraphemeU8<const CAP: usize>(StringU8<CAP>);
-
-impl_sized_alias![
-    Grapheme, GraphemeU8,
-    "<abbr title='Extended Grapheme Cluster'>EGC</abbr>, backed by an array of ",
-    ".":
-    "A" 16, 1 "";
-    "A" 32, 3 "s";
-    "A" 64, 7 "s";
-    "A" 128, 15 "s"
-];
 
 impl<const CAP: usize> GraphemeU8<CAP> {
     /// Creates a new empty `GraphemeU8`.

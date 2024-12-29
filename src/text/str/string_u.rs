@@ -707,16 +707,6 @@ macro_rules! impl_string_u {
 }
 impl_string_u!();
 
-#[cfg(feature = "_string_u8")]
-crate::text::helpers::impl_sized_alias![
-    String, StringU8,
-    "UTF-8–encoded string, backed by an array of ", ".":
-    "A" 16, 1 "";
-    "A" 32, 3 "s";
-    "A" 64, 7 "s";
-    "A" 128, 15 "s";
-];
-
 #[cfg(test)]
 mod tests {
     #[allow(unused_imports)]

@@ -14,10 +14,7 @@ use crate::text::char::*;
 use crate::CString;
 #[cfg(doc)]
 use crate::TextError::{NotEnoughCapacity, OutOfBounds};
-use crate::{
-    text::helpers::impl_sized_alias, unwrap, ConstDefault, IterChars, StringNonul,
-    TextResult as Result,
-};
+use crate::{unwrap, ConstDefault, IterChars, StringNonul, TextResult as Result};
 // use unicode_segmentation::UnicodeSegmentation;
 
 /* definitions */
@@ -27,17 +24,6 @@ use crate::{
 #[repr(transparent)]
 #[derive(Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct GraphemeNonul<const CAP: usize>(StringNonul<CAP>);
-
-impl_sized_alias![
-    GraphemeNonul, GraphemeNonul,
-    "<abbr title='Extended Grapheme Cluster'>EGC</abbr>, backed by an array of ",
-    ". Can't contain nul chars.":
-    "An" 8, 1 "";
-    "A" 16, 2 "s";
-    "A" 32, 4 "s";
-    "A" 64, 8 "s";
-    "A" 128, 16 "s"
-];
 
 /* impls */
 

@@ -10,7 +10,7 @@
 use crate::_core::str::{from_utf8, from_utf8_unchecked};
 use crate::{
     cfor, iif,
-    text::{char::*, helpers::impl_sized_alias},
+    text::char::*,
     unwrap, ConstDefault, Deref, IterChars,
     TextError::{self, InvalidNul, InvalidUtf8, NotEnoughCapacity, NotEnoughElements, OutOfBounds},
     TextResult as Result,
@@ -593,14 +593,3 @@ impl<const CAP: usize> TryFrom<&[u8]> for StringNonul<CAP> {
         }
     }
 }
-
-impl_sized_alias![
-    StringNonul, StringNonul,
-    "UTF-8–encoded string, backed by an array of ",
-    ". Can't contain nul chars.":
-    "An" 8, 1 "";
-    "A" 16, 2 "s";
-    "A" 32, 4 "s";
-    "A" 64, 8 "s";
-    "A" 128, 16 "s";
-];
