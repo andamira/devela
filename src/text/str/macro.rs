@@ -1,9 +1,8 @@
 // devela::text::str::macro
 
-/// String slice *const* operations, namespaced macros
-/// from the [const-str][::const_str] crate.
+/// [`&str`] compile-time operations, namespaced from the [const-str][::const_str] crate.
 ///
-/// The name of the operation links to the original macro documentation.
+/// The name of each operation links to the original macro documentation.
 ///
 /// # Operations
 /// - [`compare:`][::const_str::compare]
@@ -28,6 +27,8 @@
 ///   Returns a [`&str`] from a [`&[u8]`](slice). Panics if it's not valid utf8.
 /// - [`hex:`][::const_str::hex]
 ///   Converts a [`&str`] with hexadecimals (`0-9` | `A-F` | `a-f`) into a [`[u8; _]`](array).
+/// - [`join:`][::const_str::join]
+///   Concatenates multiple [`&str`] into a [&str] separated by the given separator.
 /// - [`parse:`][::const_str::parse]
 ///   Parses a [`&str`] into a value ([`&str`] | [`char`] | [`bool`] | `u*` | `i*`).
 /// - [`raw_cstr:`][::const_str::raw_cstr]
@@ -54,20 +55,22 @@
 ///   Converts a [`&str`] into a [`[char; _]`](array).
 /// - [`to_str:`][::const_str::to_str]
 ///   Returns a [`&str`] from a value ([`&str`] | [`char`] | [`bool`] | `u*` | `i*`).
+/// - [`unwrap:`][::const_str::unwrap] Unwraps a container, returns the content
+///   (see also the [`unwrap!`][crate::unwrap] macro).
 ///
 /// Ascii related:
-/// - [`is_ascii:`][::const_str::is_ascii]
-///   Returns [`true`] if all codes in this
-///   ([`&str`] | [`&[u8]`](slice) | [`&[u8; N]`](array)) are ASCII.
 /// - [`convert_ascii_case:`][::const_str::convert_ascii_case]
 ///   Converts a [`&str`] to a specified case. Non-ASCII characters are not affected.
 /// - [`eq_ignore_ascii_case:`][::const_str::eq_ignore_ascii_case]
 ///   Returns [`true`] if two [`&str`] are an ASCII *case-insensitive* match.
+/// - [`is_ascii:`][::const_str::is_ascii]
+///   Returns [`true`] if all codes in this
+///   ([`&str`] | [`&[u8]`](slice) | [`&[u8; N]`](array)) are ASCII.
 /// - [`squish:`][::const_str::squish]
 ///   Splits a [`&str`] by ASCII whitespaces, and joins the parts with a single space.
 #[macro_export]
 #[doc(hidden)]
-macro_rules! _str { // 27 arms
+macro_rules! _str { // 29 arms
     (compare: $($t:tt)*) => {$crate::_dep::const_str::compare!{$($t)*} };
     (concat: $($t:tt)*) => {$crate::_dep::const_str::concat!{$($t)*} };
     (concat_bytes: $($t:tt)*) => {$crate::_dep::const_str::concat_bytes!{$($t)*} };
@@ -79,6 +82,7 @@ macro_rules! _str { // 27 arms
     (equal: $($t:tt)*) => {$crate::_dep::const_str::equal!{$($t)*} };
     (from_utf8: $($t:tt)*) => {$crate::_dep::const_str::from_utf8!{$($t)*} };
     (hex: $($t:tt)*) => {$crate::_dep::const_str::hex!{$($t)*} };
+    (join: $($t:tt)*) => {$crate::_dep::const_str::join!{$($t)*} };
     (parse: $($t:tt)*) => {$crate::_dep::const_str::parse!{$($t)*} };
     (raw_cstr: $($t:tt)*) => {$crate::_dep::const_str::raw_cstr!{$($t)*} };
     (repeat: $($t:tt)*) => {$crate::_dep::const_str::repeat!{$($t)*} };
@@ -96,6 +100,7 @@ macro_rules! _str { // 27 arms
     (convert_ascii_case: $($t:tt)*) => {$crate::_dep::const_str::convert_ascii_case!{$($t)*} };
     (eq_ignore_ascii_case: $($t:tt)*) => {$crate::_dep::const_str::eq_ignore_ascii_case!{$($t)*} };
     (squish: $($t:tt)*) => {$crate::_dep::const_str::squish!{$($t)*} };
+    (unwrap: $($t:tt)*) => {$crate::_dep::const_str::unwrap!{$($t)*} };
 }
 #[doc(inline)]
 #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "dep_const_str")))]
