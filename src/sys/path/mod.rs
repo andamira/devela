@@ -7,7 +7,9 @@
 //!
 //
 
-#[cfg(all(feature = "sys", feature = "std"))]
+mod reexports;
+
+#[cfg(feature = "std")]
 mod project;
 
 crate::items! { // structural access: _mods, _all
@@ -15,11 +17,12 @@ crate::items! { // structural access: _mods, _all
     pub use _mods::*;
 
     mod _mods {
-        #[cfg(all(feature = "sys", feature = "std"))]
+        pub use super::reexports::*;
+
+        #[cfg(feature = "std")]
         pub use super::project::*;
     }
     pub(super) mod _all {
-        #[allow(unused_imports, reason = "feature-gated")]
         #[doc(inline)]
         pub use super::_mods::*;
     }

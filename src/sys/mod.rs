@@ -1,16 +1,23 @@
 // devela::sys
 //
 //! System interfaces and hardware abstractions.
-#![doc = crate::doc_!(modules: crate; sys: arch, io, mem, os)]
+#![doc = crate::doc_!(modules: crate; sys: arch, io, log, mem, os, path)]
 #![doc = crate::doc_!(newline)]
 //!
 #![doc = crate::doc_!(extends: alloc, arch, borrow, boxed, cell, env, fs, mem,
     io, net, os, path, pin, ptr, rc, slice, simd)]
 //
 //
-/* NOTE: You can get the full list of: `arch`, `os`, `target` and `target`-family, like this:
-```shell
+/* NOTES
+- To get the full list of: `arch`, `os`, `target` and `target-family`:
+```sh
 rustc +nightly -Z unstable-options --print all-target-specs-json | jq '[ to_entries[] | {"arch": .value.arch, "target": .key, "target-family": (.value."target-family" // [] | join(", ")), "os": (.value.os // "") } ]' | grep -v '""'
+```
+- Altenatively:
+```sh
+rustc --print target-list | cut -f2 -d'-'| sort | uniq # List of arches supported
+rustc --print target-list | cut -f2 -d'-'| sort | uniq # List of vendors supported
+rustc --print target-list | cut -f2 -d'-'| sort | uniq # List of OSes supported
 ```
 */
 // safety
@@ -19,15 +26,12 @@ rustc +nightly -Z unstable-options --print all-target-specs-json | jq '[ to_entr
 mod env;
 mod sound; // IMPROVE
 
-#[cfg(feature = "sys")]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "sys")))]
-mod path;
-
 pub mod arch;
 pub mod io;
 pub mod log;
 pub mod mem;
 pub mod os;
+pub mod path;
 
 crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
     #[allow(unused)]
@@ -37,11 +41,11 @@ crate::items! { // structural access: _mods, _pub_mods, _hidden, _all, _always
 
     mod _mods { #![allow(unused)]
         pub use super::{env::_all::*, sound::_all::*};
-        #[cfg(feature = "sys")]
-        pub use super::path::_all::*;
     }
     mod _pub_mods { #![allow(unused)]
-        pub use super::{arch::_all::*, io::_all::*, log::_all::*, mem::_all::*, os::_all::*};
+        pub use super::{
+            arch::_all::*, io::_all::*, log::_all::*, mem::_all::*, os::_all::*, path::_all::*,
+        };
     }
     pub(super) mod _hidden {
         pub use super::mem::_hidden::*;

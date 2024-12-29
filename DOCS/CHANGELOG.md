@@ -76,7 +76,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - optional dependencies:
   - `crossterm`, `jiff`, `js-sys`, `midir`, `nc`, `pyo3`, `rayon`, `regex-lite`, `rodio`, `rustix`, `stringzilla`, `safe_arch`, `serde`, `sysinfo`, `tinyaudio`, `tokio`, `tracing`, `wasm-bindgen`, `web-sys`.
 - re-export:
-  - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt}`.
+  - items from: `core::{cell, num, ops, result}`, `std::{backtrace, fmt, path}`.
   - fns: `array_from_fn`, `array_from_mut`, `array_from_ref`.
   - macros:
     - `autodiff`, `compile_error!`, `option_env!`, `enumint!`, `assert_unchecked!`, `format!`, `format_args!`, `concat`, `stringify`, `thread_local!`, `write!`, `writeln!`.

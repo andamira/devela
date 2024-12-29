@@ -5,7 +5,7 @@
 
 #[cfg(all(doc, feature = "alloc"))]
 use super::Boxed;
-use crate::code::reexport;
+use crate::reexport;
 
 #[cfg(feature = "alloc")]
 crate::impl_cdef![<T: ConstDefault> Self::new() => RcWeak<T>];
