@@ -6,7 +6,7 @@
 /// Asserts various comparisons on constants.
 #[macro_export]
 #[cfg_attr(cargo_primary_package, doc(hidden))]
-macro_rules! assert_const {
+macro_rules! const_assert {
     (
         // Asserts that a single expression evaluates to `true`.
         $x:expr $(,)?) => {
@@ -15,18 +15,18 @@ macro_rules! assert_const {
     (
         // Asserts that constants are equal in value.
         eq $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::assert_const!($($x == $y)&&+);
+        $crate::const_assert!($($x == $y)&&+);
     };
     (
         // Asserts that byte slice buffers are equal in value.
         eq_buf $buf:expr, $($other:expr),+ $(,)?) => {
-        $( $crate::assert_const!($crate::Slice::<u8>::eq($buf, $other)); )+
+        $( $crate::const_assert!($crate::Slice::<u8>::eq($buf, $other)); )+
     };
     (
         // Asserts that string slices are equal in value.
         eq_str $str:expr, $($other:expr),+ $(,)?) => {
         $(
-            $crate::assert_const!($crate::Slice::<u8>::eq({$str}.as_bytes(), {$other}.as_bytes()));
+            $crate::const_assert!($crate::Slice::<u8>::eq({$str}.as_bytes(), {$other}.as_bytes()));
         )+
     };
     (
@@ -38,27 +38,27 @@ macro_rules! assert_const {
     (
         // Asserts that constants are not equal in value.
         ne $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::assert_const!($($x != $y)&&+);
+        $crate::const_assert!($($x != $y)&&+);
     };
    (
         // Asserts that constants are less than each other.
         lt $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::assert_const!(@build $x, $($y),+; <);
+        $crate::const_assert!(@build $x, $($y),+; <);
     };
     (
         // Asserts that constants are less than or equal to each other.
         le $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::assert_const!(@build $x, $($y),+; <=);
+        $crate::const_assert!(@build $x, $($y),+; <=);
     };
     (
         // Asserts that constants are greater than each other.
         gt $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::assert_const!(@build $x, $($y),+; >);
+        $crate::const_assert!(@build $x, $($y),+; >);
     };
     (
         // Asserts that constants are greater than or equal to each other.
         ge $x:expr, $($y:expr),+ $(,)?) => {
-        $crate::assert_const!(@build $x, $($y),+; >=);
+        $crate::const_assert!(@build $x, $($y),+; >=);
     };
 
     // receives the expressions and the operator, and performs the appropriate comparison.
@@ -66,36 +66,36 @@ macro_rules! assert_const {
     /* private arms*/
 
         @build $x:expr, $($y:expr),+; $op:tt) => {
-        $crate::assert_const!($x $op $crate::code::capture_first!(expr $($y),+)); // keep code path
-        $crate::assert_const!(@build $($y),+; $op);
+        $crate::const_assert!($x $op $crate::code::capture_first!(expr $($y),+)); // keep code path
+        $crate::const_assert!(@build $($y),+; $op);
     };
     // terminates recursion when there’s only one expression left.
     (
         @build $x:expr; $op:tt) => {};
 }
 #[doc(inline)]
-pub use assert_const;
+pub use const_assert;
 
 #[cfg(test)]
 mod tests {
     pub use super::*;
 
     #[test]
-    const fn assert_const() {
-        assert_const!(true && (true != false));
-        assert_const!((true && true) != false);
-        assert_const!(eq false, false);
-        assert_const!(ne true, false);
+    const fn const_assert() {
+        const_assert!(true && (true != false));
+        const_assert!((true && true) != false);
+        const_assert!(eq false, false);
+        const_assert!(ne true, false);
 
         #[allow(dead_code)]
         const FIVE: usize = 5;
 
-        assert_const!(FIVE * 2 == 10);
-        assert_const!(FIVE > 2);
+        const_assert!(FIVE * 2 == 10);
+        const_assert!(FIVE > 2);
 
-        assert_const!(le 1, 1, 2, 3, 4, 4);
-        assert_const!(lt 1, 2, 3);
-        assert_const!(ge 4, 4, 3, 2, 1, 1);
-        assert_const!(gt 4, 3, 2, 1);
+        const_assert!(le 1, 1, 2, 3, 4, 4);
+        const_assert!(lt 1, 2, 3);
+        const_assert!(ge 4, 4, 3, 2, 1, 1);
+        const_assert!(gt 4, 3, 2, 1);
     }
 }

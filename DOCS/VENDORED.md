@@ -14,7 +14,7 @@ See linked files for detailed changes.
 - [pollster] by Joshua Barretto, as the [`future_block`] fn.
 - [quickdiv] by Darko Trifunovski, as the [`Divisor`] struct ([*mod*][m7]).
 - [stack_dst] by John Hodge, as the [`data::dst`] module ([*mod*][m2]).
-- [static_assertions] by Nikolai Vazquez, as part of the [`assert_const`] macro
+- [static_assertions] by Nikolai Vazquez, as part of the [`const_assert`] macro
   and the [`ConstBool`] trait ([*mod*][m3]).
 - [tailcall-chunk] by Tushar Mathur, as the [`VecChunk`] struct ([*mod*][m4]).
 - [tupl] by *Dragoteryx*, as part of the [`Tuple`] trait ([*mod*][m5]).
@@ -45,7 +45,7 @@ See linked files for detailed changes.
   [`Divisor`]: https://docs.rs/devela/latest/devela/num/struct.Divisor.html
 [static_assertions]: https://crates.io/crates/static_assertions/1.1.0
   [m3]: https://github.com/andamira/devela/blob/main/src/code/asserts/static/MODIFICATIONS.md
-  [`assert_const`]: https://docs.rs/devela/latest/devela/code/macro.assert_const.html
+  [`const_assert`]: https://docs.rs/devela/latest/devela/code/macro.const_assert.html
   [`ConstBool`]: https://docs.rs/devela/latest/devela/num/logic/trait.ConstBool.html
 [tailcall-chunk]: https://crates.io/crates/tailcall-chunk/0.3.1
   [m4]: https://github.com/andamira/devela/blob/main/src/data/collections/vec/chunk/MODIFICATIONS.md

@@ -71,7 +71,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - private: `doc_availability!`, `impl_error`, `EMOJI_*`, `TAG_*`.
 - vendored:
   - structs: `CacheAlign`, `ConstList`, `FatPtr`, `IdPinBox`, `IdPin`, `VecChunk`.
-  - macros: `assert_const!`, `cfg_if!`.
+  - macros: `cfg_if!`, `const_assert!`.
   - traits: `ConstBool`.
 - optional dependencies:
   - `crossterm`, `jiff`, `js-sys`, `midir`, `nc`, `pyo3`, `rayon`, `regex-lite`, `rodio`, `rustix`, `stringzilla`, `safe_arch`, `serde`, `sysinfo`, `tinyaudio`, `tokio`, `tracing`, `wasm-bindgen`, `web-sys`.

@@ -11,7 +11,7 @@
   [`NumToStr`]: crate::NumToStr
   [`data::dst`]: crate::data::dst
   [`future_block`]: crate::future_block
-  [`assert_const`]: crate::assert_const
+  [`const_assert`]: crate::const_assert
   [`ConstBool`]: crate::ConstBool
   [`VecChunk`]: crate::VecChunk
   [`Tuple`]: crate::Tuple
