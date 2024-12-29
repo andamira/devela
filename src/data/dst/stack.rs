@@ -45,9 +45,11 @@ pub struct DstStack<DST: ?Sized, BUF: DstBuf> {
     data: BUF,
 }
 
+#[doc = crate::TAG_ITERATOR!()]
 /// An iterator over the elements of a [`DstStack`].
 pub struct DstStackIter<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(&'a DstStack<DST, BUF>, usize);
 
+#[doc = crate::TAG_ITERATOR!()]
 /// A mutable iterator over the elements of a [`DstStack`].
 pub struct DstStackIterMut<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(
     &'a mut DstStack<DST, BUF>,

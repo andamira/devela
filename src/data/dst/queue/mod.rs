@@ -45,9 +45,11 @@ pub struct DstQueuePopHandle<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf> {
     parent: &'a mut DstQueue<DST, BUF>,
 }
 
+#[doc = crate::TAG_ITERATOR!()]
 /// An iterator over the elements of a [`DstQueue`].
 pub struct DstQueueIter<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(&'a DstQueue<DST, BUF>, usize);
 
+#[doc = crate::TAG_ITERATOR!()]
 /// A mutable iterator over the elements of a [`DstQueue`].
 pub struct DstQueueIterMut<'a, DST: 'a + ?Sized, BUF: 'a + DstBuf>(
     &'a mut DstQueue<DST, BUF>,

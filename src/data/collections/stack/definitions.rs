@@ -152,6 +152,7 @@ pub type StackUsize<T, const CAP: usize, S = Bare> = Stack<T, CAP, usize, S>;
 
 /* iterators */
 
+#[doc = crate::TAG_ITERATOR!()]
 /// An iterator over [`Stack`] elements.
 #[must_use]
 pub struct StackIter<'s, T, const CAP: usize, IDX, S: Storage = Bare> {

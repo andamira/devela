@@ -10,7 +10,7 @@
 // - bound `unsafe` use.
 // - misc. refactor.
 
-/// Pads and aligns a value to the length of a cache line.
+/// Aligns and pads a value to the length of a cache line.
 ///
 /// In concurrent programming, sometimes it is desirable to make sure commonly accessed pieces of
 /// data are not placed into the same cache line. Updating an atomic value invalidates the whole

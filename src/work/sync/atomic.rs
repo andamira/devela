@@ -43,6 +43,17 @@ reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
     AtomicF32, AtomicF64
 }
 
+reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+    tag: crate::TAG_ATOMIC!(),
+    doc: "A signed integer type which can be safely shared between threads.",
+    AtomicI128
+}
+reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
+    tag: crate::TAG_ATOMIC!(),
+    doc: "An unsigned integer type which can be safely shared between threads.",
+    AtomicU128
+}
+
 /* from either `portable-atomic` or `core` */
 
 crate::CONST! { pub(crate),
@@ -58,18 +69,14 @@ crate::CONST! { pub(crate),
 #[doc = "A signed integer type which can be safely shared between threads.\n\n"]
 #[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
-pub use crate::_dep::portable_atomic::{
-    AtomicI128, AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize,
-};
+pub use crate::_dep::portable_atomic::{AtomicI16, AtomicI32, AtomicI64, AtomicI8, AtomicIsize};
 
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[doc = "An unsigned integer type which can be safely shared between threads.\n\n"]
 #[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
-pub use crate::_dep::portable_atomic::{
-    AtomicU128, AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize,
-};
+pub use crate::_dep::portable_atomic::{AtomicU16, AtomicU32, AtomicU64, AtomicU8, AtomicUsize};
 
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]

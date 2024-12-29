@@ -104,6 +104,7 @@ impl<'a, T> IntoIterator for &'a ConstList<'a, T> {
     }
 }
 
+#[doc = crate::TAG_ITERATOR!()]
 /// Iterates over the contents of a `ConstList`.
 #[must_use]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
