@@ -3,7 +3,7 @@
 //! Defines and documents [`Sort`].
 //
 
-/// Provides sorting methods for arrays and slices of `T`.
+/// Provides sorting methods for arrays and slices of `T`, some of them *const*.
 ///
 /// It implements the following methods for sorting exclusive slices:
 /// [`bubble`][Sort#bubble],

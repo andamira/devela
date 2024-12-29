@@ -89,6 +89,8 @@
 - 1.?? [const_closures](https://github.com/rust-lang/rust/issues/106003)
 - 1.?? [const_cmp](https://github.com/rust-lang/rust/issues/92391) REMOVED
 - 1.?? [const_for](https://github.com/rust-lang/rust/issues/87575) depends on const_trait_impl
+- 1.?? [integer_atomics](https://github.com/rust-lang/rust/issues/99069)
+- 1.?? [slice_as_array](https://github.com/rust-lang/rust/issues/133508)
 - 1.?? [const_str_from_utf8](https://github.com/rust-lang/rust/issues/91006)
 - 1.?? [const_trait_impl](https://github.com/rust-lang/rust/issues/67792)
 - 1.?? [generic_atomic](https://github.com/rust-lang/rust/issues/130539)
