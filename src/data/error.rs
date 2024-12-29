@@ -22,6 +22,8 @@
 //   - DataResult
 //   - DataError
 // - partial composite errors:
+//   - DataNotEnough
+//   - MismatchedBounds
 //   - PartialSpace
 
 use crate::{impl_error, Mismatch};
@@ -83,10 +85,10 @@ Optionally contains the number of free spaces needed.",
     } else { write!(f, "Not enough space.") }
 }
 impl_error! { individual: OutOfBounds(pub Option<usize>),
-    DOC_OUT_OF_BOUNDS = "The given `index`, `length` or `capacity` is out of bounds.\n\n
+    DOC_OUT_OF_BOUNDS = "The given magnitude is out of bounds.\n\n
 Optionally contains some given magnitude.",
-    self+f => if let Some(i) = self.0 { write!(f, "The given index {i} is out of bounds.")
-    } else { write!(f, "The given index is out of bounds.") }
+    self+f => if let Some(i) = self.0 { write!(f, "The given magnitude {i} is out of bounds.")
+    } else { write!(f, "The given magnitude is out of bounds.") }
 }
 impl_error! { individual: Overflow,
     DOC_OVERFLOW = "Value above maximum representable.",
@@ -178,5 +180,16 @@ impl_error! { composite: fmt(f)
     pub enum PartialSpace {
         DOC_NOT_ENOUGH_SPACE:   NotEnoughSpace(i: Option<usize>) => NotEnoughSpace(*i),
         DOC_PARTIALLY_ADDED:    PartiallyAdded(i: Option<usize>) => PartiallyAdded(*i),
+    }
+}
+impl_error! { composite: fmt(f)
+    /// An error composite of [`MismatchedIndices`] + [`OutOfBounds`].
+    ///
+    /// Used in methods of:
+    /// - [`Array`][crate::Array].
+    pub enum MismatchedBounds {
+        DOC_MISMATCHED_INDICES: MismatchedIndices => MismatchedIndices,
+        DOC_MISMATCHED_LENGTH: MismatchedLength(i: Mismatch<usize, usize>) => MismatchedLength(*i),
+        DOC_OUT_OF_BOUNDS:      OutOfBounds(i: Option<usize>) => OutOfBounds(*i),
     }
 }

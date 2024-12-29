@@ -8,12 +8,6 @@
 // - methods for Option<T>
 
 use crate::{array_init, iif, Array, Bare, BareBox};
-#[allow(unused_imports)]
-#[cfg(feature = "data")]
-use crate::{
-    DataError::{ElementNotFound, MismatchedIndices, OutOfBounds},
-    DataResult as Result,
-};
 
 /// # *Bare* constructors
 impl<T, const CAP: usize> Array<T, CAP, Bare> {

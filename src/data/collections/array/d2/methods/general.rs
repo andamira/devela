@@ -5,13 +5,11 @@
 
 #[cfg(doc)]
 use crate::BareBox;
-#[cfg(feature = "data")]
 use crate::{
-    Array,
-    DataError::{MismatchedLength, Overflow},
-    DataResult as Result, Mismatch,
+    Array, Array2d, Bare, Mismatch,
+    MismatchedBounds::{self, MismatchedLength, OutOfBounds},
+    Storage,
 };
-use crate::{Array2d, Bare, Storage};
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
 
@@ -24,16 +22,14 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// Returns a 2-dimensional grid, allocated in the stack,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`Overflow`] if `C * R > usize::MAX`
+    /// Returns [`OutOfBounds`] if `C * R > usize::MAX`
     /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::data::Array2d;
     /// let g = Array2d::<_, 4, 4, {4 * 4}>::with_cloned('.');
     /// ```
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    pub fn with_cloned(element: T) -> Result<Self> {
+    pub fn with_cloned(element: T) -> Result<Self, MismatchedBounds> {
         Self::check_CR()?;
         Ok(Self { data: Array::<T, CR, Bare>::with_cloned(element) })
     }
@@ -45,17 +41,16 @@ impl<T: Copy, const C: usize, const R: usize, const CR: usize, const RMAJ: bool>
     /// Returns a 2-dimensional grid, allocated in the stack,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`Overflow`] if `C * R > usize::MAX`
+    /// Returns [`OutOfBounds`] if `C * R > usize::MAX`
     /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
-    /// # use devela::{DataResult, Array2d};
-    /// const GRID: DataResult<Array2d::<char, 4, 4, {4 * 4}>> = Array2d::with_copied('.');
+    /// # use devela::{Array2d, MismatchedBounds};
+    /// const GRID: Result<Array2d::<char, 4, 4, {4 * 4}>, MismatchedBounds>
+    ///     = Array2d::with_copied('.');
     /// assert![GRID.is_ok()];
     /// ```
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    pub const fn with_copied(element: T) -> Result<Self> {
+    pub const fn with_copied(element: T) -> Result<Self, MismatchedBounds> {
         match Self::check_CR() {
             Ok(()) => Ok(Self { data: Array::<T, CR, Bare>::with_copied(element) }),
             Err(e) => Err(e),
@@ -72,16 +67,14 @@ impl<T: Clone, const C: usize, const R: usize, const CR: usize, const RMAJ: bool
     /// Returns a 2-dimensional grid, allocated in the heap,
     /// using `element` to fill the remaining free data.
     /// # Errors
-    /// Returns [`Overflow`] if `C * R > usize::MAX`
+    /// Returns [`OutOfBounds`] if `C * R > usize::MAX`
     /// or [`MismatchedLength`] if `C * R != CR`.
     /// # Examples
     /// ```
     /// # use devela::{Boxed, Array2d};
     /// let g = Array2d::<_, 4, 4, {4 * 4}, true, Boxed>::with_cloned(String::from("·"));
     /// ```
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    pub fn with_cloned(element: T) -> Result<Self> {
+    pub fn with_cloned(element: T) -> Result<Self, MismatchedBounds> {
         Self::check_CR()?;
         Ok(Self { data: Array::<T, CR, Boxed>::with_cloned(element) })
     }
@@ -122,20 +115,19 @@ impl<T, const C: usize, const R: usize, const CR: usize, const RMAJ: bool, S: St
 
     /// Checks the geometry of the columns, rows and their product length.
     /// # Errors
-    /// Returns [`Overflow`] if `C * R > usize::MAX`
+    /// Returns [`OutOfBounds`] if `C * R > usize::MAX`
     /// or [`MismatchedLength`] if `C * R != CR`.
     #[allow(non_snake_case)]
-    #[cfg(feature = "data")]
-    #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-    pub(crate) const fn check_CR() -> Result<()> {
+    pub(crate) const fn check_CR() -> Result<(), MismatchedBounds> {
         if let Some(len) = C.checked_mul(R) {
             if len == CR {
                 Ok(())
             } else {
-                Err(MismatchedLength(Mismatch { need: CR, have: len, info: "C * R != CR" }))
+                Err(MismatchedLength(
+                        Mismatch { need: CR, have: len, info: "C * R != CR" }))
             }
         } else {
-            Err(Overflow)
+            Err(OutOfBounds(None)) // RETHINK: return some value
         }
     }
 

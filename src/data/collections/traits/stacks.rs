@@ -8,8 +8,8 @@
 //   - VecDeque
 
 #[cfg(feature = "alloc")]
-use crate::data::DataError::NotEnoughElements;
-use crate::data::{DataCollection, DataResult as Result};
+use crate::DataError::NotEnoughElements;
+use crate::{DataCollection, DataResult as Result};
 
 /// An abstract *stack* data type.
 pub trait DataStack: DataCollection {
@@ -41,7 +41,7 @@ pub trait DataDesta: DataStack {
 
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataStack for crate::data::collections::reexports::VecDeque<T> {
+impl<T> DataStack for crate::VecDeque<T> {
     fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
         self.pop_back().ok_or(NotEnoughElements(Some(1)))
     }
@@ -51,7 +51,7 @@ impl<T> DataStack for crate::data::collections::reexports::VecDeque<T> {
 }
 #[rustfmt::skip]
 #[cfg(feature = "alloc")]
-impl<T> DataDesta for crate::data::collections::reexports::VecDeque<T> {
+impl<T> DataDesta for crate::VecDeque<T> {
     fn stack_pop_front(&mut self) -> Result<<Self as DataCollection>::Element> {
         self.pop_front().ok_or(NotEnoughElements(Some(1)))
     }
