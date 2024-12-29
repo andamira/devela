@@ -18,6 +18,18 @@ macro_rules! assert_const {
         $crate::assert_const!($($x == $y)&&+);
     };
     (
+        // Asserts that byte slice buffers are equal in value.
+        eq_buf $buf:expr, $($other:expr),+ $(,)?) => {
+        $( $crate::assert_const!($crate::Slice::<u8>::eq($buf, $other)); )+
+    };
+    (
+        // Asserts that string slices are equal in value.
+        eq_str $str:expr, $($other:expr),+ $(,)?) => {
+        $(
+            $crate::assert_const!($crate::Slice::<u8>::eq({$str}.as_bytes(), {$other}.as_bytes()));
+        )+
+    };
+    (
         // Asserts that constants of type `usize` are equal in value.
         // (Allows for inspecting the values in error messages).
         eq_usize $x:expr, $($y:expr),+ $(,)?) => {
