@@ -646,11 +646,20 @@ impl Slice<u8> {
 
 /// Helper for implementing slice operations for primitives.
 macro_rules! impl_prim {
-    () => { impl_prim![u8, u16, u32, u64, u128, i8, i16, i32, i64, i128]; };
+    () => {
+        impl_prim![
+            u8, u16, u32, u64, u128, usize,
+            i8, i16, i32, i64, i128, isize,
+            f32, f64,
+            bool, char
+        ];
+        #[cfg(feature = "nightly_float")]
+        impl_prim![f16, f128];
+    };
     ($($t:ty),+) => { $( impl_prim![@$t]; )+ };
     (@$t:ty) => {
         impl Slice<$t> {
-            /// Checks the equality of two slices in compile-time.
+            /// Checks the equality of two slices of primitives in compile-time.
             #[must_use]
             pub const fn eq(a: &[$t], b: &[$t]) -> bool {
                 if a.len() != b.len() { return false; }
@@ -665,3 +674,28 @@ macro_rules! impl_prim {
     };
 }
 impl_prim!();
+
+impl Slice<&str> {
+    /// Checks the equality of two string slices in compile-time.
+    #[must_use]
+    pub const fn eq(a: &str, b: &str) -> bool {
+        Slice::<u8>::eq(a.as_bytes(), b.as_bytes())
+    }
+}
+impl Slice<&[&str]> {
+    /// Checks the equality of two slices of string slices in compile-time.
+    #[must_use]
+    pub const fn eq(a: &[&str], b: &[&str]) -> bool {
+        if a.len() != b.len() {
+            return false;
+        }
+        let mut i = 0;
+        while i < a.len() {
+            if !Slice::<&str>::eq(a[i], b[i]) {
+                return false;
+            }
+            i += 1;
+        }
+        true
+    }
+}
