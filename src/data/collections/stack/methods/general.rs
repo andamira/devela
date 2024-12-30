@@ -1,9 +1,8 @@
 // devela::data::collections::stack::methods::general
 
 use crate::{
-    Array, Bare,
-    DataError::{NotEnoughElements, NotEnoughSpace, OutOfBounds},
-    DataResult as Result, Stack, StackIter, Storage,
+    Array, Bare, DataNotEnough, NotEnoughElements, NotEnoughSpace, OutOfBounds, Stack, StackIter,
+    Storage,
 };
 #[cfg(feature = "alloc")]
 use crate::{Boxed, Vec};
@@ -48,7 +47,7 @@ macro_rules! impl_stack {
             #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "let s = Stack" $IDX:camel "::<_, 16>::new(0).unwrap();"]
             /// ```
-            pub fn new(element: T) -> Result<Self> {
+            pub fn new(element: T) -> Result<Self, OutOfBounds> {
                 if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
                     Err(OutOfBounds(Some(CAP)))
                 } else {
@@ -75,7 +74,7 @@ macro_rules! impl_stack {
             #[doc = "const S: Stack" $IDX:camel
                 "<i32, 16> = unwrap![ok Stack" $IDX:camel "::new_copied(0)];"]
             /// ```
-            pub const fn new_copied(element: T) -> Result<Self> {
+            pub const fn new_copied(element: T) -> Result<Self, OutOfBounds> {
                 if CAP > $IDX::MAX as usize || CAP > isize::MAX as usize / size_of::<T>() {
                     Err(OutOfBounds(Some(CAP)))
                 } else {
@@ -187,7 +186,7 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 3>::default();"]
             /// assert_eq![3, s.remaining_capacity()];
             /// s.push(1)?;
@@ -251,7 +250,7 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 2>::default();"]
             /// s.push(1)?;
             /// s.push(2)?;
@@ -259,7 +258,7 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), &[1, 2]];
             /// # Ok(()) }
             /// ```
-            pub fn push(&mut self, element: T) -> Result<()> {
+            pub fn push(&mut self, element: T) -> Result<(), NotEnoughSpace> {
                 if self.is_full() {
                     Err(NotEnoughSpace(Some(1)))
                 } else {
@@ -279,7 +278,7 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 2>::from([1, 2]);"]
             /// assert_eq![2, s.pop()?];
             /// assert_eq![1, s.pop()?];
@@ -290,7 +289,7 @@ macro_rules! impl_stack {
             /// It's depends on `T: Clone`, unless the `unsafe_ptr` feature is enabled.
             #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
-            pub fn pop(&mut self) -> Result<T> {
+            pub fn pop(&mut self) -> Result<T, NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
                 } else {
@@ -319,7 +318,7 @@ macro_rules! impl_stack {
             #[doc = "let s = Stack" $IDX:camel "::<_, 2>::from([1, 2]);"]
             /// assert_eq![s.peek(), Ok(&2)];
             /// ```
-            pub fn peek(&self) -> Result<&T> {
+            pub fn peek(&self) -> Result<&T, NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
                 } else {
@@ -341,7 +340,7 @@ macro_rules! impl_stack {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 2>::from([1, 2]);"]
             /// assert_eq![s.peek_mut(), Ok(&mut 2)];
             /// ```
-            pub fn peek_mut(&mut self) -> Result<&mut T> {
+            pub fn peek_mut(&mut self) -> Result<&mut T, NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
                 } else {
@@ -365,7 +364,7 @@ macro_rules! impl_stack {
             /// assert_eq![s.peek_nth(0), Ok(&5)];
             /// assert_eq![s.peek_nth(4), Ok(&1)];
             /// ```
-            pub fn peek_nth(&self, nth: $IDX) -> Result<&T> {
+            pub fn peek_nth(&self, nth: $IDX) -> Result<&T, NotEnoughElements> {
                 if self.len() <= nth {
                     Err(NotEnoughElements(Some(nth as usize)))
                 } else {
@@ -389,7 +388,7 @@ macro_rules! impl_stack {
             /// assert_eq![s.peek_nth_mut(0), Ok(&mut 5)];
             /// assert_eq![s.peek_nth_mut(4), Ok(&mut 1)];
             /// ```
-            pub fn peek_nth_mut(&mut self, nth: $IDX) -> Result<&mut T> {
+            pub fn peek_nth_mut(&mut self, nth: $IDX) -> Result<&mut T, NotEnoughElements> {
                 if self.len() <= nth {
                     Err(NotEnoughElements(Some(nth as usize)))
                 } else {
@@ -412,7 +411,7 @@ macro_rules! impl_stack {
             /// s.drop();
             /// assert_eq![s.as_slice(), &[1]];
             /// ```
-            pub fn drop(&mut self) -> Result<()> {
+            pub fn drop(&mut self) -> Result<(), NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
                 } else {
@@ -433,7 +432,7 @@ macro_rules! impl_stack {
             /// s.drop_n(3);
             /// assert_eq![s.as_slice(), &[1]];
             /// ```
-            pub fn drop_n(&mut self, n: $IDX) -> Result<()> {
+            pub fn drop_n(&mut self, n: $IDX) -> Result<(), NotEnoughElements> {
                 if self.len() < n {
                     Err(NotEnoughElements(Some(n as usize)))
                 } else {
@@ -456,7 +455,7 @@ macro_rules! impl_stack {
             /// s.nip();
             /// assert_eq![s.as_slice(), &[2]];
             /// ```
-            pub fn nip(&mut self) -> Result<()> {
+            pub fn nip(&mut self) -> Result<(), NotEnoughElements> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
                 } else {
@@ -478,7 +477,7 @@ macro_rules! impl_stack {
             /// s.nip2();
             /// assert_eq![s.as_slice(), &[3, 4]];
             /// ```
-            pub fn nip2(&mut self) -> Result<()> {
+            pub fn nip2(&mut self) -> Result<(), NotEnoughElements> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
                 } else {
@@ -503,7 +502,7 @@ macro_rules! impl_stack {
             /// s.swap();
             /// assert_eq![s.as_slice(), &[2, 1]];
             /// ```
-            pub fn swap(&mut self) -> Result<()> {
+            pub fn swap(&mut self) -> Result<(), NotEnoughElements> {
                 if self.len() < 2 {
                     Err(NotEnoughElements(Some(2)))
                 } else {
@@ -524,7 +523,7 @@ macro_rules! impl_stack {
             /// s.swap2();
             /// assert_eq![s.as_slice(), &[3, 4, 1, 2]];
             /// ```
-            pub fn swap2(&mut self) -> Result<()> {
+            pub fn swap2(&mut self) -> Result<(), NotEnoughElements> {
                 if self.len() < 4 {
                     Err(NotEnoughElements(Some(4)))
                 } else {
@@ -544,13 +543,13 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 3>::from(['a', 'b', 'c']);"]
             /// s.rot()?;
             /// assert_eq![s.as_slice(), &['b', 'c', 'a']];
             /// # Ok(()) }
             /// ```
-            pub fn rot(&mut self) -> Result<()> {
+            pub fn rot(&mut self) -> Result<(), NotEnoughElements> {
                 if self.len() < 3 {
                     Err(NotEnoughElements(Some(3)))
                 } else {
@@ -567,13 +566,13 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 3>::from(['a', 'b', 'c']);"]
             /// s.rot_cc()?;
             /// assert_eq![s.as_slice(), &['c', 'a', 'b']];
             /// # Ok(()) }
             /// ```
-            pub fn rot_cc(&mut self) -> Result<()> {
+            pub fn rot_cc(&mut self) -> Result<(), NotEnoughElements> {
                 if self.len() < 3 {
                     Err(NotEnoughElements(Some(3)))
                 } else {
@@ -590,13 +589,13 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 6>::from(['a', 'b', 'c', 'd', 'e', 'f']);"]
             /// s.rot2()?;
             /// assert_eq![s.as_slice(), &['c', 'd', 'e', 'f', 'a', 'b']];
             /// # Ok(()) }
             /// ```
-            pub fn rot2(&mut self) -> Result<()> {
+            pub fn rot2(&mut self) -> Result<(), NotEnoughElements> {
                 if self.len() < 6 {
                     Err(NotEnoughElements(Some(6)))
                 } else {
@@ -613,13 +612,13 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 6>::from(['a', 'b', 'c', 'd', 'e', 'f']);"]
             /// s.rot2()?;
             /// assert_eq![s.as_slice(), &['c', 'd', 'e', 'f', 'a', 'b']];
             /// # Ok(()) }
             /// ```
-            pub fn rot2_cc(&mut self) -> Result<()> {
+            pub fn rot2_cc(&mut self) -> Result<(), NotEnoughElements> {
                 if self.len() < 6 {
                     Err(NotEnoughElements(Some(6)))
                 } else {
@@ -644,7 +643,7 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 2>::from([1, 2]);"]
             /// assert_eq![2, s.pop()?];
             /// assert_eq![1, s.pop()?];
@@ -656,7 +655,7 @@ macro_rules! impl_stack {
             #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(any(feature = "unsafe_ptr", Clone))))]
             // safe-only version that depends on T: Clone
-            pub fn pop(&mut self) -> Result<T> {
+            pub fn pop(&mut self) -> Result<T, NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
                 } else {
@@ -672,22 +671,22 @@ macro_rules! impl_stack {
             ///
             /// `( 1 -- 1 1 )`
             /// # Errors
-            /// Returns [`NotEnoughElements`] if the stack is empty or
-            /// [`NotEnoughSpace`] if the stack is full.
+            /// Returns [`DataNotEnough::Elements`] if the stack is empty or
+            /// [`DataNotEnough::Space`] if the stack is full.
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 2>::from([1]);"]
             /// s.dup()?;
             /// assert_eq![&[1, 1], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            pub fn dup(&mut self) -> Result<()> {
+            pub fn dup(&mut self) -> Result<(), DataNotEnough> {
                 if self.is_empty() {
-                    Err(NotEnoughElements(Some(1)))
+                    Err(DataNotEnough::Elements(Some(1)))
                 } else if self.is_full() {
-                    Err(NotEnoughSpace(Some(1)))
+                    Err(DataNotEnough::Space(Some(1)))
                 } else {
                     self.data[self.len as usize] = self.data[self.len as usize - 1].clone();
                     self.len += 1;
@@ -699,22 +698,22 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 -- 1 2 1 2 )`
             /// # Errors
-            /// Returns [`NotEnoughElements`] if the stack doesn't have at least 2 elements,
-            /// or [`NotEnoughSpace`] if it doesn't have enough space for 2 extra elements.
+            /// Returns [`DataNotEnough::Elements`] if the stack doesn't have at least 2 elements,
+            /// or [`DataNotEnough::Space`] if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 5>::from([1, 2]);"]
             /// s.dup2()?;
             /// assert_eq![&[1, 2, 1, 2], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            pub fn dup2(&mut self) -> Result<()> {
+            pub fn dup2(&mut self) -> Result<(), DataNotEnough> {
                 if self.len() < 2 {
-                    Err(NotEnoughElements(Some(2)))
+                    Err(DataNotEnough::Elements(Some(2)))
                 } else if self.len() as usize > CAP - 2 {
-                    Err(NotEnoughSpace(Some(2)))
+                    Err(DataNotEnough::Space(Some(2)))
                 } else {
                     let a = self.data[self.len as usize - 2].clone();
                     let b = self.data[self.len as usize - 1].clone();
@@ -731,22 +730,22 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 -- 1 2 1 )`
             /// # Errors
-            /// Errors stack doesn't have at least 2 elements,
-            /// or if it doesn't have enough space for 1 extra element.
+            /// Returns [`DataNotEnough::Elements`] if the stack doesn't have at least 2 elements,
+            /// or [`DataNotEnough::Space`] if it doesn't have enough space for 1 extra element.
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 3>::from([1, 2]);"]
             /// s.over()?;
             /// assert_eq![&[1, 2, 1], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            pub fn over(&mut self) -> Result<()> {
+            pub fn over(&mut self) -> Result<(), DataNotEnough> {
                 if self.len() < 2 {
-                    Err(NotEnoughElements(Some(2)))
+                    Err(DataNotEnough::Elements(Some(2)))
                 } else if self.is_full() {
-                    Err(NotEnoughSpace(Some(1)))
+                    Err(DataNotEnough::Space(Some(1)))
                 } else {
                     self.data[self.len as usize] = self.data[self.len as usize - 2].clone();
                     self.len += 1;
@@ -758,22 +757,22 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 3 4 -- 1 2 3 4 1 2 )`
             /// # Errors
-            /// Errors stack doesn't have at least 4 elements,
-            /// or if it doesn't have enough space for 2 extra elements.
+            /// Returns [`DataNotEnough::Elements`] if the stack doesn't have at least 4 elements,
+            /// or [`DataNotEnough::Space`] if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 6>::from([1, 2, 3, 4]);"]
             /// s.over2()?;
             /// assert_eq![&[1, 2, 3, 4, 1, 2], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            pub fn over2(&mut self) -> Result<()> {
+            pub fn over2(&mut self) -> Result<(), DataNotEnough> {
                 if self.len() < 4 {
-                    Err(NotEnoughElements(Some(4)))
+                    Err(DataNotEnough::Elements(Some(4)))
                 } else if self.remaining_capacity() < 2 {
-                    Err(NotEnoughSpace(Some(2)))
+                    Err(DataNotEnough::Space(Some(2)))
                 } else {
                     let a = self.data[self.len as usize - 4].clone();
                     let b = self.data[self.len as usize - 3].clone();
@@ -790,22 +789,22 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 -- 2 1 2 )`
             /// # Errors
-            /// Errors stack doesn't have at least 2 elements,
-            /// or if it doesn't have enough space for 1 extra element.
+            /// Returns [`DataNotEnough::Elements`] if the stack doesn't have at least 2 elements,
+            /// or [`DataNotEnough::Space`] if it doesn't have enough space for 1 extra element.
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()>  {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>>  {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 3>::from([1, 2]);"]
             /// s.tuck()?;
             /// assert_eq![&[2, 1, 2], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            pub fn tuck(&mut self) -> Result<()> {
+            pub fn tuck(&mut self) -> Result<(), DataNotEnough> {
                 if self.len() < 2 {
-                    Err(NotEnoughElements(Some(2)))
+                    Err(DataNotEnough::Elements(Some(2)))
                 } else if self.is_full() {
-                    Err(NotEnoughSpace(Some(1)))
+                    Err(DataNotEnough::Space(Some(1)))
                 } else {
                     let a = self.data[self.len as usize - 1].clone();
                     self.data.swap(self.len as usize - 2, self.len as usize - 1);
@@ -819,22 +818,22 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 3 4 -- 3 4 1 2 3 4 )`
             /// # Errors
-            /// Errors stack doesn't have at least 4 elements,
-            /// or if it doesn't have enough space for 2 extra elements.
+            /// Returns [`DataNotEnough::Elements`] if the stack doesn't have at least 4 elements,
+            /// or [`DataNotEnough::Space`] if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()>  {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>>  {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 6>::from([1, 2, 3, 4]);"]
             /// s.tuck2()?;
             /// assert_eq![&[3, 4, 1, 2, 3, 4], s.as_slice()];
             /// # Ok(()) }
             /// ```
-            pub fn tuck2(&mut self) -> Result<()> {
+            pub fn tuck2(&mut self) -> Result<(), DataNotEnough> {
                 if self.len() < 4 {
-                    Err(NotEnoughElements(Some(4)))
+                    Err(DataNotEnough::Elements(Some(4)))
                 } else if self.remaining_capacity() < 2 {
-                    Err(NotEnoughSpace(Some(2)))
+                    Err(DataNotEnough::Space(Some(2)))
                 } else {
                     // swap2
                     self.data.swap(self.len as usize - 4, self.len as usize - 2);
@@ -857,7 +856,7 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 5>::from([1, 2]);"]
             /// s.push(3)?;
             /// s.push(4)?;
@@ -885,7 +884,7 @@ macro_rules! impl_stack {
             /// # Examples
             /// ```
             #[doc = "# use devela::Stack" $IDX:camel ";"]
-            /// # fn main() -> devela::data::DataResult<()> {
+            /// # fn main() -> Result<(), Box<dyn devela::Error>> {
             #[doc = "let mut s = Stack" $IDX:camel "::<_, 5>::from([1, 2]);"]
             /// s.push(3)?;
             /// s.push(4)?;
@@ -952,7 +951,7 @@ macro_rules! impl_stack {
             /// s.extend([4, 5, 6, 7, 8]);
             /// assert_eq![s.as_slice(), &[1, 2, 3, 4, 5]];
             /// ```
-            pub fn extend<I>(&mut self, iterator: I) -> Result<()>
+            pub fn extend<I>(&mut self, iterator: I) -> Result<(), NotEnoughSpace>
             where
                 I: IntoIterator<Item = T>,
             {
@@ -1002,7 +1001,7 @@ macro_rules! impl_stack {
             /// s.drop_replace_default();
             /// assert_eq![s.as_slice(), &[1]];
             /// ```
-            pub fn drop_replace_default(&mut self) -> Result<()> {
+            pub fn drop_replace_default(&mut self) -> Result<(), NotEnoughElements> {
                 if self.is_empty() {
                     Err(NotEnoughElements(Some(1)))
                 } else {

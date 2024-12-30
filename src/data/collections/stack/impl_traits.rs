@@ -6,8 +6,8 @@
 #[cfg(feature = "alloc")]
 use crate::Boxed;
 use crate::{
-    Array, Bare, ConstDefault, DataCollection, DataResult as Result, DataStack, Ordering, Stack,
-    StackIter, Storage, _core::fmt,
+    Array, Bare, ConstDefault, DataCollection, DataStack, NotAvailable, NotEnoughElements,
+    NotEnoughSpace, Ordering, Stack, StackIter, Storage, _core::fmt,
 };
 
 // helper macro for implementing traits for a Stack depending on the custom index size.
@@ -25,31 +25,37 @@ macro_rules! impl_stack {
             impl_stack![@$IDX:$cap];
         )+
     };
-    (@$IDX:ty : $cap:literal) => { crate::code::paste! {
+    (@$IDX:ty : $cap:literal) => { crate::paste! {
         /* impl data traits */
 
         impl<T, const LEN: usize, S: Storage> DataCollection for Stack<T, LEN, $IDX, S> {
             type Element = T;
-            fn collection_capacity(&self) -> Result<usize> { Ok(self.capacity() as usize) }
-            fn collection_len(&self) -> Result<usize> { Ok(self.len() as usize) }
-            fn collection_is_empty(&self) -> Result<bool> { Ok(self.is_empty()) }
-            fn collection_is_full(&self) -> Result<bool> { Ok(self.is_full()) }
-            fn collection_contains(&self, element: Self::Element) -> Result<bool> where T: PartialEq {
-                Ok(self.contains(&element))
-            }
-            fn collection_count(&self, element: &Self::Element) -> Result<usize> where T: PartialEq {
-                Ok(self.iter().filter(|&e| e == element).count())
-            }
+            fn collection_capacity(&self)
+                -> Result<usize, NotAvailable> { Ok(self.capacity() as usize) }
+            fn collection_len(&self)
+                -> Result<usize, NotAvailable> { Ok(self.len() as usize) }
+            fn collection_is_empty(&self)
+                -> Result<bool, NotAvailable> { Ok(self.is_empty()) }
+            fn collection_is_full(&self)
+                -> Result<bool, NotAvailable> { Ok(self.is_full()) }
+            fn collection_contains(&self, element: Self::Element)
+                -> Result<bool, NotAvailable> where T: PartialEq {
+                    Ok(self.contains(&element)) }
+            fn collection_count(&self, element: &Self::Element)
+                -> Result<usize, NotAvailable> where T: PartialEq {
+                    Ok(self.iter().filter(|&e| e == element).count()) }
         }
 
         // safe alternative with T: Clone
         #[rustfmt::skip]
         #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
         impl<T: Clone, const CAP: usize, S: Storage> DataStack for Stack<T, CAP, $IDX, S> {
-            fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
+            fn stack_pop(&mut self)
+                -> Result<<Self as DataCollection>::Element, NotEnoughElements> {
                 self.pop()
             }
-            fn stack_push(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
+            fn stack_push(&mut self, element: <Self as DataCollection>::Element)
+                -> Result<(), NotEnoughSpace> {
                 self.push(element)
             }
         }
@@ -57,10 +63,12 @@ macro_rules! impl_stack {
         #[rustfmt::skip]
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
         impl<T, const CAP: usize, S: Storage> DataStack for Stack<T, CAP, $IDX, S> {
-            fn stack_pop(&mut self) -> Result<<Self as DataCollection>::Element> {
+            fn stack_pop(&mut self)
+                -> Result<<Self as DataCollection>::Element, NotEnoughElements> {
                 self.pop()
             }
-            fn stack_push(&mut self, element: <Self as DataCollection>::Element) -> Result<()> {
+            fn stack_push(&mut self, element: <Self as DataCollection>::Element)
+                -> Result<(), NotEnoughSpace> {
                 self.push(element)
             }
         }

@@ -10,12 +10,8 @@
 // - adjusting its length if necessary.
 // - returning it.
 
-#[cfg(doc)]
-use crate::DataError::OutOfBounds;
 use crate::{
-    cswap, sf, Bare,
-    DataError::{NotEnoughElements, NotEnoughSpace},
-    DataResult as Result, Own, Stack,
+    cswap, sf, Bare, DataNotEnough, NotEnoughElements, NotEnoughSpace, OutOfBounds, Own, Stack,
 };
 
 // helper macro to impl methods for a Stack with custom index size.
@@ -37,7 +33,7 @@ macro_rules! impl_stack {
             impl_stack![@own $IDX:$cap];
         )+
     };
-    (@own $IDX:ty : $cap:literal) => { crate::code::paste! {
+    (@own $IDX:ty : $cap:literal) => { crate::paste! {
         // T: Copy, S: Bare
         /// # Chainable *const* operations depending on `T: Copy`
         ///
@@ -57,7 +53,7 @@ macro_rules! impl_stack {
             #[doc = "const S: Stack" $IDX:camel "<i32, 16> = Stack" $IDX:camel
                 "::own_new(0).s_const_unwrap().s;"]
             /// ```
-            pub const fn own_new(element: T) -> Own<Result<Self>, ()> {
+            pub const fn own_new(element: T) -> Own<Result<Self, OutOfBounds>, ()> {
                 Own::empty(Self::new_copied(element))
             }
 
@@ -88,15 +84,15 @@ macro_rules! impl_stack {
             /// Returns `Own<S,`[`NotEnoughSpace`]`>` if the stack is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{DataResult, DataError, Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
                 "::own_new(0).s_const_unwrap().s"]
             ///     .own_push(1).v_assert_ok().s
             ///     .own_push(2).v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[1, 2]];
-            /// assert![S.own_push(3).v.is_err_and(|e| matches![e, DataError::NotEnoughSpace(_)])];
+            /// assert![S.own_push(3).v.is_err_and(|e| matches![e, NotEnoughSpace])];
             /// ```
-            pub const fn own_push(self, element: T) -> Own<Self, Result<()>> {
+            pub const fn own_push(self, element: T) -> Own<Self, Result<(), NotEnoughSpace>> {
                 if self.len as usize == CAP {
                     Own::new(self, Err(NotEnoughSpace(Some(1))))
                 } else {
@@ -111,7 +107,7 @@ macro_rules! impl_stack {
             /// Panics if the stack is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{DataResult,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::Stack" $IDX:camel ";"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
                 "::own_new(0).s_const_unwrap().s"]
             ///     .own_push_unchecked(1).s.own_push_unchecked(2).s;
@@ -134,12 +130,13 @@ macro_rules! impl_stack {
             /// Returns `Own<S,`[`NotEnoughElements`]`>` if the stack is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{DataResult, Own,Stack" $IDX:camel "};"]
-            #[doc = "const S: Own<Stack" $IDX:camel "<i32, 3>, DataResult<i32>> =\n"]
+            #[doc = "# use devela::{NotEnoughElements, Own, Stack" $IDX:camel "};"]
+            #[doc = "const S: Own<Stack" $IDX:camel
+                "<i32, 3>, Result<i32, NotEnoughElements>> =\n"]
             #[doc = "    Stack" $IDX:camel "::from_array_copy([1, 2, 3]).own_pop();"]
             /// S.s_assert(|s| s.as_slice() == &[1, 2]).v_assert_eq(&Ok(3));
             /// ```
-            pub const fn own_pop(self) -> Own<Self, Result<T>> {
+            pub const fn own_pop(self) -> Own<Self, Result<T, NotEnoughElements>> {
                 if self.len == 0 {
                     Own::new(self, Err(NotEnoughElements(Some(1))))
                 } else {
@@ -154,7 +151,7 @@ macro_rules! impl_stack {
             /// Panics if the stack is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{DataResult, Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Own<Stack" $IDX:camel "<i32, 3>, i32> =\n"]
             #[doc = "    Stack" $IDX:camel "::from_array_copy([1, 2, 3]).own_pop_unchecked();"]
             /// S.s_assert(|s| s.as_slice() == &[1, 2]).v_assert_eq(&3);
@@ -176,12 +173,13 @@ macro_rules! impl_stack {
             /// Returns `Own<S,`[`NotEnoughElements`]`>` if the stack is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{DataResult, Own,Stack" $IDX:camel "};"]
-            #[doc = "const S: Own<Stack" $IDX:camel "<i32, 3>, DataResult<i32>> =\n"]
+            #[doc = "# use devela::{NotEnoughElements, Own, Stack" $IDX:camel "};"]
+            #[doc = "const S: Own<Stack" $IDX:camel
+                "<i32, 3>, Result<i32, NotEnoughElements>> =\n"]
             #[doc = "   Stack" $IDX:camel "::from_array_copy([1, 2, 3]).own_peek();"]
             /// S.s_assert(|s| s.as_slice() == &[1, 2, 3]).v_assert_eq(&Ok(3));
             /// ```
-            pub const fn own_peek(self) -> Own<Self, Result<T>> {
+            pub const fn own_peek(self) -> Own<Self, Result<T, NotEnoughElements>> {
                 if self.len == 0 {
                     Own::new(self, Err(NotEnoughElements(Some(1))))
                 } else {
@@ -196,7 +194,7 @@ macro_rules! impl_stack {
             /// Panics if the stack is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{DataResult, Own, Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Own<Stack" $IDX:camel "<i32, 3>, i32> = Stack" $IDX:camel
                 "::from_array_copy([1, 2, 3])"]
             ///     .own_peek_unchecked();
@@ -218,7 +216,7 @@ macro_rules! impl_stack {
             /// Returns `Own<self,`[`NotEnoughElements`]`>` if the stack is empty.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
                 "::from_array_copy([1, 2])"]
             ///     .own_drop().v_assert_ok().s;
@@ -229,7 +227,7 @@ macro_rules! impl_stack {
             ///     .own_drop().v_assert_err().s;
             /// assert![T.is_empty()];
             /// ```
-            pub const fn own_drop(self) -> Own<Self, Result<()>> {
+            pub const fn own_drop(self) -> Own<Self, Result<(), NotEnoughElements>> {
                 if self.len == 0 {
                     Own::new(self, Err(NotEnoughElements(Some(1))))
                 } else {
@@ -263,13 +261,13 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least `n` elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_drop_n(3).v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[1]];
             /// ```
-            pub const fn own_drop_n(self, n: $IDX) -> Own<Self, Result<()>> {
+            pub const fn own_drop_n(self, n: $IDX) -> Own<Self, Result<(), NotEnoughElements>> {
                 if self.len < n {
                     Own::new(self, Err(NotEnoughElements(Some(n as usize))))
                 } else {
@@ -283,7 +281,7 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least `n` elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_drop_n_unchecked(3).s;
@@ -305,7 +303,7 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
                 "::from_array_copy([1, 2])"]
             ///     .own_nip().v_assert_ok().s;
@@ -316,7 +314,7 @@ macro_rules! impl_stack {
             ///     .own_push(1).v_assert_ok().s.own_nip().v_assert_err().s;
             /// assert_eq![T.as_slice(), &[1]];
             /// ```
-            pub const fn own_nip(self) -> Own<Self, Result<()>> {
+            pub const fn own_nip(self) -> Own<Self, Result<(), NotEnoughElements>> {
                 if self.len < 2 {
                     Own::new(self, Err(NotEnoughElements(Some(2))))
                 } else {
@@ -331,7 +329,7 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
                 "::from_array_copy([1, 2])"]
             ///     .own_nip_unchecked().s;
@@ -353,13 +351,13 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_nip2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[3, 4]];
             /// ```
-            pub const fn own_nip2(self) -> Own<Self, Result<()>> {
+            pub const fn own_nip2(self) -> Own<Self, Result<(), NotEnoughElements>> {
                 if self.len < 4 {
                     Own::new(self, Err(NotEnoughElements(Some(4))))
                 } else {
@@ -374,7 +372,7 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_nip2_unchecked().s;
@@ -399,7 +397,7 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{DataResult, Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
                 "::from_array_copy([1, 2])"]
             ///     .own_swap().v_assert_ok().s;
@@ -410,7 +408,7 @@ macro_rules! impl_stack {
             ///     .own_swap().v_assert_err().s;
             /// assert_eq![T.as_slice(), &[1]];
             /// ```
-            pub const fn own_swap(self) -> Own<Self, Result<()>> {
+            pub const fn own_swap(self) -> Own<Self, Result<(), NotEnoughElements>> {
                 if self.len < 2 {
                     Own::new(self, Err(NotEnoughElements(Some(2))))
                 } else {
@@ -424,7 +422,7 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 2 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 2> = Stack" $IDX:camel
                 "::from_array_copy([1, 2])"]
             ///     .own_swap_unchecked().s;
@@ -444,7 +442,7 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_swap2().v_assert_ok().s;
@@ -455,7 +453,7 @@ macro_rules! impl_stack {
             ///     .own_swap2().v_assert_err().s;
             /// assert_eq![T.as_slice(), &[1, 2, 3]];
             /// ```
-            pub const fn own_swap2(self) -> Own<Self, Result<()>> {
+            pub const fn own_swap2(self) -> Own<Self, Result<(), NotEnoughElements>> {
                 if self.len < 4 {
                     Own::new(self, Err(NotEnoughElements(Some(4))))
                 } else {
@@ -469,7 +467,7 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 4 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([1, 2, 3, 4])"]
             ///     .own_swap2_unchecked().s;
@@ -492,13 +490,13 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3])"]
             ///     .own_rot().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 2, 3, 1]];
             /// ```
-            pub const fn own_rot(self) -> Own<Self, Result<()>> {
+            pub const fn own_rot(self) -> Own<Self, Result<(), NotEnoughElements>> {
                 if self.len < 3 {
                     Own::new(self, Err(NotEnoughElements(Some(3))))
                 } else {
@@ -514,7 +512,7 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3])"]
             ///     .own_rot_unchecked().s;
@@ -540,13 +538,13 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3])"]
             ///     .own_rot_cc().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 3, 1, 2]];
             /// ```
-            pub const fn own_rot_cc(self) -> Own<Self, Result<()>> {
+            pub const fn own_rot_cc(self) -> Own<Self, Result<(), NotEnoughElements>> {
                 if self.len < 3 {
                     Own::new(self, Err(NotEnoughElements(Some(3))))
                 } else {
@@ -561,7 +559,7 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 3 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3])"]
             ///     .own_rot_cc_unchecked().s;
@@ -587,13 +585,13 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 6 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 5, 6, 1, 2]];
             /// ```
-            pub const fn own_rot2(self) -> Own<Self, Result<()>> {
+            pub const fn own_rot2(self) -> Own<Self, Result<(), NotEnoughElements>> {
                 if self.len < 6 {
                     Own::new(self, Err(NotEnoughElements(Some(6))))
                 } else {
@@ -607,7 +605,7 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 6 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2_unchecked().s;
@@ -638,13 +636,13 @@ macro_rules! impl_stack {
             /// if the stack doesn't contain at least 6 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2_cc().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 5, 6, 1, 2, 3, 4]];
             /// ```
-            pub const fn own_rot2_cc(self) -> Own<Self, Result<()>> {
+            pub const fn own_rot2_cc(self) -> Own<Self, Result<(), NotEnoughElements>> {
                 if self.len < 6 {
                     Own::new(self, Err(NotEnoughElements(Some(6))))
                 } else {
@@ -658,7 +656,7 @@ macro_rules! impl_stack {
             /// Panics if the stack doesn't contain at least 6 elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3, 4, 5, 6])"]
             ///     .own_rot2_cc_unchecked().s;
@@ -687,21 +685,21 @@ macro_rules! impl_stack {
             ///
             /// `( 1 -- 1 1 )`
             /// # Errors
-            /// Returns `Own<self,`[`NotEnoughElements`]`>` if the stack is empty or
-            /// `Own<self,`[`NotEnoughSpace`]`>` if the stack is full.
+            /// Returns `Own<self,`[`DataNotEnough::Elements`]`>` if the stack is empty or
+            /// `Own<self,`[`DataNotEnough::Space`]`>` if the stack is full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 3> = Stack" $IDX:camel
                 "::own_new(0).s_const_unwrap().s"]
             ///     .own_push(1).s.own_dup().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[1, 1]];
             /// ```
-            pub const fn own_dup(self) -> Own<Self, Result<()>> {
+            pub const fn own_dup(self) -> Own<Self, Result<(), DataNotEnough>> {
                 if self.len == 0 {
-                    Own::new(self, Err(NotEnoughElements(Some(1))))
+                    Own::new(self, Err(DataNotEnough::Elements(Some(1))))
                 } else if self.len as usize == CAP {
-                    Own::new(self, Err(NotEnoughSpace(Some(1))))
+                    Own::new(self, Err(DataNotEnough::Space(Some(1))))
                 } else {
                     self.own_dup_unchecked().v_const_wrap_ok()
                 }
@@ -713,7 +711,7 @@ macro_rules! impl_stack {
             /// Panics if the stack is either empty or full.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 3> = Stack" $IDX:camel
                 "::own_new(0).s_const_unwrap().s"]
             ///     .own_push(1).s.own_dup_unchecked().s;
@@ -731,23 +729,23 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 -- 1 2 1 2 )`
             /// # Errors
-            /// Returns `Own<self,`[`NotEnoughElements`]`>`
+            /// Returns `Own<self,`[`DataNotEnough::Elements`]`>`
             /// if the stack doesn't have at least 2 elements,
-            /// or `Own<self,`[`NotEnoughSpace`]`>`
+            /// or `Own<self,`[`DataNotEnough::Space`]`>`
             /// if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 6> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 0, 0, 0])"]
             ///     .own_drop_n(3).s.own_dup2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1, 2]];
             /// ```
-            pub const fn own_dup2(self) -> Own<Self, Result<()>> {
+            pub const fn own_dup2(self) -> Own<Self, Result<(), DataNotEnough>> {
                 if self.len < 2 {
-                    Own::new(self, Err(NotEnoughElements(Some(2))))
+                    Own::new(self, Err(DataNotEnough::Elements(Some(2))))
                 } else if self.len as usize > CAP - 2 {
-                    Own::new(self, Err(NotEnoughSpace(Some(2))))
+                    Own::new(self, Err(DataNotEnough::Space(Some(2))))
                 } else {
                     self.own_dup2_unchecked().v_const_wrap_ok()
                 }
@@ -760,7 +758,7 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 6> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 0, 0, 0])"]
             ///     .own_drop_n(3).s.own_dup2_unchecked().s;
@@ -783,23 +781,23 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 -- 1 2 1 )`
             /// # Errors
-            /// Returns `Own<self,`[`NotEnoughElements`]`>`
+            /// Returns `Own<self,`[`DataNotEnough::Elements`]`>`
             /// if the stack doesn't have at least 2 elements,
-            /// or `Own<self,`[`NotEnoughSpace`]`>`
+            /// or `Own<self,`[`DataNotEnough::Space`]`>`
             /// if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 0])"]
             ///     .own_drop().s.own_over().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 1]];
             /// ```
-            pub const fn own_over(self) -> Own<Self, Result<()>> {
+            pub const fn own_over(self) -> Own<Self, Result<(), DataNotEnough>> {
                 if self.len < 2 {
-                    Own::new(self, Err(NotEnoughElements(Some(2))))
+                    Own::new(self, Err(DataNotEnough::Elements(Some(2))))
                 } else if self.len as usize == CAP {
-                    Own::new(self, Err(NotEnoughSpace(Some(1))))
+                    Own::new(self, Err(DataNotEnough::Space(Some(1))))
                 } else {
                     self.own_over_unchecked().v_const_wrap_ok()
                 }
@@ -812,7 +810,7 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 0])"]
             ///     .own_drop().s.own_over_unchecked().s;
@@ -830,23 +828,23 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 3 4 -- 1 2 3 4 1 2 )`
             /// # Errors
-            /// Returns `Own<self,`[`NotEnoughElements`]`>`
+            /// Returns `Own<self,`[`DataNotEnough::Elements`]`>`
             /// if the stack doesn't have at least 4 elements,
-            /// or `Own<self,`[`NotEnoughSpace`]`>`
+            /// or `Own<self,`[`DataNotEnough::Space`]`>`
             /// if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).s.own_over2().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 1, 2, 3, 4, 1, 2]];
             /// ```
-            pub const fn own_over2(self) -> Own<Self, Result<()>> {
+            pub const fn own_over2(self) -> Own<Self, Result<(), DataNotEnough>> {
                 if self.len < 4 {
-                    Own::new(self, Err(NotEnoughElements(Some(4))))
+                    Own::new(self, Err(DataNotEnough::Elements(Some(4))))
                 } else if CAP - (self.len as usize) < 2 {
-                    Own::new(self, Err(NotEnoughSpace(Some(2))))
+                    Own::new(self, Err(DataNotEnough::Space(Some(2))))
                 } else {
                     self.own_over2_unchecked().v_const_wrap_ok()
                 }
@@ -859,7 +857,7 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).s.own_over2_unchecked().s;
@@ -882,23 +880,23 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 -- 2 1 2 )`
             /// # Errors
-            /// Returns `Own<self,`[`NotEnoughElements`]`>`
+            /// Returns `Own<self,`[`DataNotEnough::Elements`]`>`
             /// if the stack doesn't have at least 2 elements,
-            /// or `Own<self,`[`NotEnoughSpace`]`>`
+            /// or `Own<self,`[`DataNotEnough::Space`]`>`
             /// if it doesn't have enough space for 1 extra elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 0])"]
             ///     .own_drop().s.own_tuck().v_assert_ok().s;
             /// assert_eq![S.as_slice(), &[0, 2, 1, 2]];
             /// ```
-            pub const fn own_tuck(self) -> Own<Self, Result<()>> {
+            pub const fn own_tuck(self) -> Own<Self, Result<(), DataNotEnough>> {
                 if self.len < 2 {
-                    Own::new(self, Err(NotEnoughElements(Some(2))))
+                    Own::new(self, Err(DataNotEnough::Elements(Some(2))))
                 } else if self.len as usize == CAP {
-                    Own::new(self, Err(NotEnoughSpace(Some(1))))
+                    Own::new(self, Err(DataNotEnough::Space(Some(1))))
                 } else {
                     self.own_tuck_unchecked().v_const_wrap_ok()
                 }
@@ -911,7 +909,7 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 1 extra elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 4> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 0])"]
             ///     .own_drop().s.own_tuck_unchecked().s;
@@ -931,23 +929,23 @@ macro_rules! impl_stack {
             ///
             /// `( 1 2 3 4 -- 3 4 1 2 3 4 )`
             /// # Errors
-            /// Returns `Own<self,`[`NotEnoughElements`]`>`
+            /// Returns `Own<self,`[`DataNotEnough::Elements`]`>`
             /// if the stack doesn't have at least 4 elements,
-            /// or `Own<self,`[`NotEnoughSpace`]`>`
+            /// or `Own<self,`[`DataNotEnough::Space`]`>`
             /// if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).s.own_tuck2_unchecked().s;
             /// assert_eq![S.as_slice(), &[0, 3, 4, 1, 2, 3, 4]];
             /// ```
-            pub const fn own_tuck2(self) -> Own<Self, Result<()>> {
+            pub const fn own_tuck2(self) -> Own<Self, Result<(), DataNotEnough>> {
                 if self.len < 4 {
-                    Own::new(self, Err(NotEnoughElements(Some(4))))
+                    Own::new(self, Err(DataNotEnough::Elements(Some(4))))
                 } else if CAP - (self.len as usize) < 2 {
-                    Own::new(self, Err(NotEnoughSpace(Some(2))))
+                    Own::new(self, Err(DataNotEnough::Space(Some(2))))
                 } else {
                     self.own_tuck2_unchecked().v_const_wrap_ok()
                 }
@@ -961,7 +959,7 @@ macro_rules! impl_stack {
             /// or if it doesn't have enough space for 2 extra elements.
             /// # Examples
             /// ```
-            #[doc = "# use devela::{Own,Stack" $IDX:camel "};"]
+            #[doc = "# use devela::{Own, Stack" $IDX:camel "};"]
             #[doc = "const S: Stack" $IDX:camel "<i32, 7> = Stack" $IDX:camel
                 "::from_array_copy([0, 1, 2, 3, 4, 0, 0])"]
             ///     .own_drop_n(2).s.own_tuck2_unchecked().s;

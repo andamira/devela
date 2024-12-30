@@ -6,8 +6,8 @@
 #[cfg(feature = "alloc")]
 use crate::Boxed;
 use crate::{
-    Array, Bare, ConstDefault, DataCollection, DataDeque, DataDesta, DataQueue, DataResult,
-    DataStack, Destaque, DestaqueIter, NotEnoughElements, NotEnoughSpace, Ordering, Storage,
+    Array, Bare, ConstDefault, DataCollection, DataDeque, DataDesta, DataQueue, DataStack,
+    Destaque, DestaqueIter, NotAvailable, NotEnoughElements, NotEnoughSpace, Ordering, Storage,
     _core::fmt,
 };
 
@@ -34,16 +34,20 @@ macro_rules! impl_destaque {
         #[rustfmt::skip]
         impl<T, const LEN: usize, S: Storage> DataCollection for Destaque<T, LEN, $IDX, S> {
             type Element = T;
-            fn collection_capacity(&self) -> DataResult<usize> { Ok(self.capacity() as usize) }
-            fn collection_len(&self) -> DataResult<usize> { Ok(self.len() as usize) }
-            fn collection_is_empty(&self) -> DataResult<bool> { Ok(self.is_empty()) }
-            fn collection_is_full(&self) -> DataResult<bool> { Ok(self.is_full()) }
-            fn collection_contains(&self, element: Self::Element) -> DataResult<bool> where T: PartialEq {
-                Ok(self.contains(&element))
-            }
-            fn collection_count(&self, element: &Self::Element) -> DataResult<usize> where T: PartialEq {
-                Ok(self.iter().filter(|&e| e == element).count())
-            }
+            fn collection_capacity(&self)
+                -> Result<usize, NotAvailable> { Ok(self.capacity() as usize) }
+            fn collection_len(&self)
+                -> Result<usize, NotAvailable> { Ok(self.len() as usize) }
+            fn collection_is_empty(&self)
+                -> Result<bool, NotAvailable> { Ok(self.is_empty()) }
+            fn collection_is_full(&self)
+                -> Result<bool, NotAvailable> { Ok(self.is_full()) }
+            fn collection_contains(&self, element: Self::Element)
+                -> Result<bool, NotAvailable> where T: PartialEq {
+                    Ok(self.contains(&element)) }
+            fn collection_count(&self, element: &Self::Element)
+                -> Result<usize, NotAvailable> where T: PartialEq {
+                    Ok(self.iter().filter(|&e| e == element).count()) }
         }
 
         /* queue, deque */
@@ -103,46 +107,46 @@ macro_rules! impl_destaque {
         #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
         impl<T: Clone, const CAP: usize, S: Storage> DataStack for Destaque<T, CAP, $IDX, S> {
             fn stack_pop(&mut self)
-                -> DataResult<<Self as DataCollection>::Element> {
-                Ok(self.pop_back()?) // TEMP
+                -> Result<<Self as DataCollection>::Element, NotEnoughElements> {
+                self.pop_back()
             }
             fn stack_push(&mut self, element: <Self as DataCollection>::Element)
-                -> DataResult<()> {
-                Ok(self.push_back(element)?) // TEMP
+                -> Result<(), NotEnoughSpace> {
+                self.push_back(element)
             }
         }
         #[cfg(any(feature = "safe_data", not(feature = "unsafe_ptr")))]
         impl<T: Clone, const CAP: usize, S: Storage> DataDesta for Destaque<T, CAP, $IDX, S> {
             fn stack_pop_front(&mut self)
-                -> DataResult<<Self as DataCollection>::Element> {
-                Ok(self.pop_front()?) // TEMP
+                -> Result<<Self as DataCollection>::Element, NotEnoughElements> {
+                self.pop_front()
             }
             fn stack_push_front(&mut self, element: <Self as DataCollection>::Element)
-                -> DataResult<()> {
-                Ok(self.push_front(element)?) // TEMP
+                -> Result<(), NotEnoughSpace> {
+                self.push_front(element)
             }
         }
         // unsafe alternative without T: Clone
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
         impl<T, const CAP: usize, S: Storage> DataStack for Destaque<T, CAP, $IDX, S> {
             fn stack_pop(&mut self)
-                -> DataResult<<Self as DataCollection>::Element> {
-                Ok(self.pop_back()?) // TEMP
+                -> Result<<Self as DataCollection>::Element, NotEnoughElements> {
+                self.pop_back()
             }
             fn stack_push(&mut self, element: <Self as DataCollection>::Element)
-                -> DataResult<()> {
-                Ok(self.push_back(element)?) // TEMP
+                -> Result<(), NotEnoughSpace> {
+                self.push_back(element)
             }
         }
         #[cfg(all(not(feature = "safe_data"), feature = "unsafe_ptr"))]
         impl<T, const CAP: usize, S: Storage> DataDesta for Destaque<T, CAP, $IDX, S> {
             fn stack_pop_front(&mut self)
-                -> DataResult<<Self as DataCollection>::Element> {
-                Ok(self.pop_front()?) // TEMP
+                -> Result<<Self as DataCollection>::Element, NotEnoughElements> {
+                self.pop_front()
             }
             fn stack_push_front(&mut self, element: <Self as DataCollection>::Element)
-                -> DataResult<()> {
-                Ok(self.push_front(element)?) // TEMP
+                -> Result<(), NotEnoughSpace> {
+                self.push_front(element)
             }
         }
         /* impl From<IntoIterator<Item = T>> */

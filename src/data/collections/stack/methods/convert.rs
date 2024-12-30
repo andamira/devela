@@ -3,11 +3,7 @@
 //!
 //
 
-use crate::{
-    array_init, Array, Bare, ConstDefault,
-    DataError::{NotEnoughSpace, OutOfBounds},
-    DataResult as Result, Own, Stack,
-};
+use crate::{array_init, Array, Bare, ConstDefault, NotEnoughSpace, OutOfBounds, Own, Stack};
 #[cfg(feature = "alloc")]
 use crate::{Box, Boxed, Vec};
 
@@ -63,7 +59,7 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), more_cap.as_slice()];
             /// assert![s.resize_default::<2>().is_err()]; // too small
             /// ```
-            pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Bare>> {
+            pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Bare>, OutOfBounds> {
                 if NEW_CAP < (self.len() as usize) ||
                     NEW_CAP > $IDX::MAX as usize ||
                     NEW_CAP > isize::MAX as usize / size_of::<T>() {
@@ -147,7 +143,7 @@ macro_rules! impl_stack {
             /// assert_eq![s.as_slice(), more_cap.as_slice()];
             /// assert![s.resize_default::<2>().is_err()]; // too small
             /// ```
-            pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Boxed>> {
+            pub fn resize_default<const NEW_CAP: usize>(self) -> Result<Stack<T, NEW_CAP, $IDX, Boxed>, OutOfBounds> {
                 if NEW_CAP < (self.len() as usize) ||
                     NEW_CAP > $IDX::MAX as usize ||
                     NEW_CAP > isize::MAX as usize / size_of::<T>() {
@@ -233,7 +229,7 @@ macro_rules! impl_stack {
             /// let _ = S.own_resize_default::<2>().s_assert_err(); // too small
             /// ```
             pub const fn own_resize_default<const NEW_CAP: usize>(self)
-                -> Own<Result<Stack<T, NEW_CAP, $IDX, Bare>>, ()> {
+                -> Own<Result<Stack<T, NEW_CAP, $IDX, Bare>, OutOfBounds>, ()> {
                 if NEW_CAP < (self.len as usize) ||
                     NEW_CAP > $IDX::MAX as usize ||
                     NEW_CAP > isize::MAX as usize / size_of::<T>() {
@@ -315,7 +311,8 @@ macro_rules! impl_stack {
             /// ```
             #[cfg(feature = $new_cap)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $new_cap)))]
-            pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, CAP, $NEW_IDX, Bare>> {
+            pub fn [<to_idx_ $NEW_IDX>](self)
+            -> Result<Stack<T, CAP, $NEW_IDX, Bare>, NotEnoughSpace> {
                 if CAP > $NEW_IDX::MAX as usize {
                     Err(NotEnoughSpace(Some($NEW_IDX::MAX as usize - CAP)))
                 } else {
@@ -345,7 +342,8 @@ macro_rules! impl_stack {
             /// ```
             #[cfg(feature = $new_cap)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $new_cap)))]
-            pub fn [<to_idx_ $NEW_IDX>](self) -> Result<Stack<T, CAP, $NEW_IDX, Boxed>> {
+            pub fn [<to_idx_ $NEW_IDX>](self)
+            -> Result<Stack<T, CAP, $NEW_IDX, Boxed>, NotEnoughSpace> {
                 if CAP > $NEW_IDX::MAX as usize {
                     Err(NotEnoughSpace(Some($NEW_IDX::MAX as usize - CAP)))
                 } else {
@@ -375,7 +373,7 @@ macro_rules! impl_stack {
             #[cfg(feature = $new_cap)]
             #[cfg_attr(feature = "nightly_doc", doc(cfg(feature = $new_cap)))]
             pub const fn [<own_to_idx_ $NEW_IDX>](self)
-                -> Own<Result<Stack<T, CAP, $NEW_IDX, Bare>>, ()> {
+            -> Own<Result<Stack<T, CAP, $NEW_IDX, Bare>, NotEnoughSpace>, ()> {
                 if CAP > $NEW_IDX::MAX as usize {
                     Own::empty(Err(NotEnoughSpace(Some($NEW_IDX::MAX as usize - CAP))))
                 } else {
