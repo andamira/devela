@@ -105,7 +105,9 @@ Optionally contains the number of elements added.",
 #[cfg(feature = "data")]
 mod full_composite {
     use super::*;
-    use crate::{NotImplemented, NotSupported, DOC_NOT_IMPLEMENTED, DOC_NOT_SUPPORTED};
+    use crate::{
+        NotAvailable, NotImplemented, NotSupported, DOC_NOT_IMPLEMENTED, DOC_NOT_SUPPORTED,
+    };
 
     #[doc = crate::TAG_RESULT!()]
     /// A data-related result.
@@ -138,6 +140,10 @@ mod full_composite {
             DOC_PARTIALLY_ADDED: PartiallyAdded(i: Option<usize>) => PartiallyAdded(*i),
         }
     }
+    impl_error! { composite: from(f): NotAvailable, for: DataError {
+        NotImplemented => NotImplemented,
+        NotSupported => NotSupported,
+    }}
     impl_error! { composite: from(f): DataNotEnough, for: DataError {
         Elements(i) => NotEnoughElements(i),
         Space(i) => NotEnoughSpace(i),
@@ -146,16 +152,6 @@ mod full_composite {
         NotEnoughSpace(i) => NotEnoughSpace(i),
         PartiallyAdded(i) => PartiallyAdded(i),
     }}
-
-    #[allow(dead_code)]
-    impl DataError {
-        pub(crate) const fn ni<T>() -> DataResult<T> {
-            Err(DataError::NotImplemented)
-        }
-        pub(crate) const fn ns<T>() -> DataResult<T> {
-            Err(DataError::NotSupported)
-        }
-    }
 }
 #[cfg(feature = "data")]
 pub use full_composite::*;
