@@ -29,6 +29,17 @@ impl_error![individual: NotSupported,
 
 /* composite errors: */
 
+impl_error! { composite: fmt(f)
+    /// An error composite of [`NotImplemented`] + [`NotSupported`].
+    ///
+    /// Used in methods of:
+    /// - [`DataCollection`][crate::DataCollection].
+    pub enum NotAvailable {
+        DOC_NOT_IMPLEMENTED: NotImplemented => NotImplemented,
+        DOC_NOT_SUPPORTED: NotSupported => NotSupported,
+    }
+}
+
 #[doc = crate::TAG_RESULT!()]
 /// The root result type, aggregating all module-specific results.
 pub type AllResult<T> = crate::Result<T, AllError>;

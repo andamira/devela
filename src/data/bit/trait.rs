@@ -1,4 +1,4 @@
-// devela::data::bit::ops::trait
+// devela::data::bit::trait
 //
 // TOC
 // - definition

@@ -28,7 +28,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   - namespaces: `Arch`, `ByteSearch`, `Char`, `Env`, `Mem`, `Ptr`, `Str`.
   - `CompressionMode`, `EncodingMode`, `Pnm`.
   - standalone error types: `FailedErrorConversion`, `DataNotEnough`, `NotImplemented`, `NotSupported`, `ElementNotFound`, `InvalidAxisLength`, `KeyAlreadyExists`, `MismatchedDimensions`, `MismatchedIndices`, `MismatchedLength`, `NodeEmpty`, `NodeLinkNotSet`, `NodeLinkNotUnique`, `NotEnoughElements`, `NotEnoughSpace`, `OutOfBounds`, `Overflow`, `PartiallyAdded`.
-  - composite error types: `PartialSpace`.
+  - composite error types: `NotAvailable`, `DataNotEnough`, `MismatchedBounds`, `PartialSpace`.
   - `False`, `True`, `UnitBi`, `UnitSi`.
   - `HasherPengy`.
   - `Lgc16`.
