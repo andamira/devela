@@ -4,7 +4,9 @@
 //
 // TOC
 // - standalone data-related error types:
+//   - DataOverflow
 //   - ElementNotFound
+//   - IndexOutOfBounds
 //   - InvalidAxisLength
 //   - KeyAlreadyExists
 //   - MismatchedDimensions
@@ -15,8 +17,6 @@
 //   - NodeLinkNotUnique
 //   - NotEnoughElements
 //   - NotEnoughSpace
-//   - OutOfBounds
-//   - Overflow
 //   - PartiallyAdded
 // - full composite errors:
 //   - DataResult
@@ -28,13 +28,25 @@
 
 use crate::{impl_error, Mismatch};
 
+impl_error! { individual: DataOverflow(Option<usize>),
+    DOC_DATA_OVERFLOW = "The value has surpassed the bounds of the representable data space.",
+    self+f => if let Some(v) = self.0 {
+        write!(f, "The value {v} has surpassed the bounds of the representable data space.")
+    } else { write!(f, "The value has surpassed the bounds of the representable data space.") }
+}
 impl_error! { individual: ElementNotFound,
     DOC_ELEMENT_NOT_FOUND = "The requested element has not been found.",
     self+f => write!(f, "The requested element has not been found."),
 }
+impl_error! { individual: IndexOutOfBounds(pub Option<usize>),
+    DOC_INDEX_OUT_OF_BOUNDS = "The given index is out of bounds.\n\n
+Optionally contains the given index.",
+    self+f => if let Some(i) = self.0 { write!(f, "The given index {i} is out of bounds.")
+    } else { write!(f, "The given index is out of bounds.") }
+}
 impl_error! { individual: InvalidAxisLength(pub Option<usize>),
     DOC_INVALID_AXIS_LENGTH = "The given axis has an invalid length.\n\n
-Optionally contains some given axis number.",
+Optionally contains the given axis number.",
     self+f => if let Some(n) = self.0 {
         write!(f, "Axis number {n} has 0 length, which is not allowed.")
     } else { write!(f, "One ore more axis have 0 length, which is not allowed.") }
@@ -84,16 +96,6 @@ Optionally contains the number of free spaces needed.",
         write!(f, "Not enough space. Needs at least `{n}` free space for elements.")
     } else { write!(f, "Not enough space.") }
 }
-impl_error! { individual: OutOfBounds(pub Option<usize>),
-    DOC_OUT_OF_BOUNDS = "The given magnitude is out of bounds.\n\n
-Optionally contains some given magnitude.",
-    self+f => if let Some(i) = self.0 { write!(f, "The given magnitude {i} is out of bounds.")
-    } else { write!(f, "The given magnitude is out of bounds.") }
-}
-impl_error! { individual: Overflow,
-    DOC_OVERFLOW = "Value above maximum representable.",
-    self+f => write!(f, "Value above maximum representable.")
-}
 impl_error! { individual: PartiallyAdded(pub Option<usize>),
     DOC_PARTIALLY_ADDED = "The operation could only add a subset of the elements.\n\n
 Optionally contains the number of elements added.",
@@ -122,6 +124,8 @@ mod full_composite {
             //
             DOC_ELEMENT_NOT_FOUND:
                 ElementNotFound => ElementNotFound,
+            DOC_INDEX_OUT_OF_BOUNDS:
+                IndexOutOfBounds(i: Option<usize>) => IndexOutOfBounds(*i),
             DOC_INVALID_AXIS_LENGTH:
                 InvalidAxisLength(i: Option<usize>) => InvalidAxisLength(*i),
             DOC_KEY_ALREADY_EXISTS:
@@ -142,10 +146,8 @@ mod full_composite {
                 NotEnoughElements(i: Option<usize>) => NotEnoughElements(*i),
             DOC_NOT_ENOUGH_SPACE:
                 NotEnoughSpace(i: Option<usize>) => NotEnoughSpace(*i),
-            DOC_OUT_OF_BOUNDS:
-                OutOfBounds(i: Option<usize>) => OutOfBounds(*i),
-            DOC_OVERFLOW:
-                Overflow => Overflow,
+            DOC_DATA_OVERFLOW:
+                DataOverflow => DataOverflow,
             DOC_PARTIALLY_ADDED:
                 PartiallyAdded(i: Option<usize>) => PartiallyAdded(*i),
         }
@@ -161,6 +163,12 @@ mod full_composite {
     impl_error! { composite: from(f): PartialSpace, for: DataError {
         NotEnoughSpace(i) => NotEnoughSpace(i),
         PartiallyAdded(i) => PartiallyAdded(i),
+    }}
+    impl_error! { composite: from(f): MismatchedBounds, for: DataError {
+        DataOverflow(i) => DataOverflow(i),
+        MismatchedIndices(i) => MismatchedIndices(i),
+        MismatchedLength(i) => MismatchedLength(i),
+        IndexOutOfBounds(i) => IndexOutOfBounds(i),
     }}
 }
 #[cfg(all(data··, feature = "error"))]
@@ -189,13 +197,18 @@ impl_error! { composite: fmt(f)
     }
 }
 impl_error! { composite: fmt(f)
-    /// An error composite of [`MismatchedIndices`] + [`OutOfBounds`].
+    /// An error composite of [`MismatchedIndices`] + [`IndexOutOfBounds`].
     ///
     /// Used in methods of:
     /// - [`Array`][crate::Array].
     pub enum MismatchedBounds {
-        DOC_MISMATCHED_INDICES: MismatchedIndices => MismatchedIndices,
-        DOC_MISMATCHED_LENGTH: MismatchedLength(i: Mismatch<usize, usize>) => MismatchedLength(*i),
-        DOC_OUT_OF_BOUNDS:      OutOfBounds(i: Option<usize>) => OutOfBounds(*i),
+        DOC_DATA_OVERFLOW:
+            DataOverflow(i: Option<usize>) => DataOverflow(*i),
+        DOC_MISMATCHED_INDICES:
+            MismatchedIndices => MismatchedIndices,
+        DOC_MISMATCHED_LENGTH:
+            MismatchedLength(i: Mismatch<usize, usize>) => MismatchedLength(*i),
+        DOC_OUT_OF_BOUNDS:
+            IndexOutOfBounds(i: Option<usize>) => IndexOutOfBounds(*i),
     }
 }

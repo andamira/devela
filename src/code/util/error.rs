@@ -18,7 +18,7 @@ macro_rules! impl_error {
 
         #[doc = crate::TAG_ERROR!()]
         #[doc = $DOC_NAME!()]
-        #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
+        #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
         pub struct $struct_name $(($vis $inner ))?;
 
         impl $crate::Display for $struct_name {
