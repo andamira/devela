@@ -101,8 +101,8 @@ Optionally contains the number of elements added.",
     } else { write!(f, "Only a subset of elements could be added.") }
 }
 
-#[cfg_attr(feature = "nightly_doc", doc(cfg(feature = "data")))]
-#[cfg(feature = "data")]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(all(data··, feature = "error"))))]
+#[cfg(all(data··, feature = "error"))]
 mod full_composite {
     use super::*;
     use crate::{
@@ -120,24 +120,34 @@ mod full_composite {
             DOC_NOT_IMPLEMENTED: NotImplemented => NotImplemented,
             DOC_NOT_SUPPORTED: NotSupported => NotSupported,
             //
-            DOC_ELEMENT_NOT_FOUND: ElementNotFound => ElementNotFound,
+            DOC_ELEMENT_NOT_FOUND:
+                ElementNotFound => ElementNotFound,
             DOC_INVALID_AXIS_LENGTH:
                 InvalidAxisLength(i: Option<usize>) => InvalidAxisLength(*i),
-            DOC_KEY_ALREADY_EXISTS: KeyAlreadyExists => KeyAlreadyExists,
+            DOC_KEY_ALREADY_EXISTS:
+                KeyAlreadyExists => KeyAlreadyExists,
             DOC_MISMATCHED_DIMENSIONS:
                 MismatchedDimensions(i: Mismatch<usize, usize>) => MismatchedDimensions(*i),
-            DOC_MISMATCHED_INDICES: MismatchedIndices => MismatchedIndices,
+            DOC_MISMATCHED_INDICES:
+                MismatchedIndices => MismatchedIndices,
             DOC_MISMATCHED_LENGTH:
                 MismatchedLength(i: Mismatch<usize, usize>) => MismatchedLength(*i),
-            DOC_NODE_EMPTY: NodeEmpty(i: Option<usize>) => NodeEmpty(*i),
-            DOC_NODE_LINK_NOT_SET: NodeLinkNotSet(i: Option<usize>) => NodeLinkNotSet(*i),
-            DOC_NODE_LINK_NOT_UNIQUE: NodeLinkNotUnique(i: Option<usize>) => NodeLinkNotUnique(*i),
+            DOC_NODE_EMPTY:
+                NodeEmpty(i: Option<usize>) => NodeEmpty(*i),
+            DOC_NODE_LINK_NOT_SET:
+                NodeLinkNotSet(i: Option<usize>) => NodeLinkNotSet(*i),
+            DOC_NODE_LINK_NOT_UNIQUE:
+                NodeLinkNotUnique(i: Option<usize>) => NodeLinkNotUnique(*i),
             DOC_NOT_ENOUGH_ELEMENTS:
                 NotEnoughElements(i: Option<usize>) => NotEnoughElements(*i),
-            DOC_NOT_ENOUGH_SPACE: NotEnoughSpace(i: Option<usize>) => NotEnoughSpace(*i),
-            DOC_OUT_OF_BOUNDS: OutOfBounds(i: Option<usize>) => OutOfBounds(*i),
-            DOC_OVERFLOW: Overflow => Overflow,
-            DOC_PARTIALLY_ADDED: PartiallyAdded(i: Option<usize>) => PartiallyAdded(*i),
+            DOC_NOT_ENOUGH_SPACE:
+                NotEnoughSpace(i: Option<usize>) => NotEnoughSpace(*i),
+            DOC_OUT_OF_BOUNDS:
+                OutOfBounds(i: Option<usize>) => OutOfBounds(*i),
+            DOC_OVERFLOW:
+                Overflow => Overflow,
+            DOC_PARTIALLY_ADDED:
+                PartiallyAdded(i: Option<usize>) => PartiallyAdded(*i),
         }
     }
     impl_error! { composite: from(f): NotAvailable, for: DataError {
@@ -153,7 +163,7 @@ mod full_composite {
         PartiallyAdded(i) => PartiallyAdded(i),
     }}
 }
-#[cfg(feature = "data")]
+#[cfg(all(data··, feature = "error"))]
 pub use full_composite::*;
 
 /* Partial Composite Errors */

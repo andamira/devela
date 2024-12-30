@@ -11,11 +11,13 @@ reexport! { rust: core::error,
     Error
 }
 
+#[cfg(feature = "error")]
 pub use crate_errors::*;
+#[cfg(feature = "error")]
 pub(crate) mod crate_errors {
     /* data */
     #[doc(inline)]
-    #[cfg(feature = "data")]
+    #[cfg(data··)]
     pub use crate::data::{DataError, DataResult};
 
     /* media */
@@ -38,7 +40,7 @@ pub(crate) mod crate_errors {
     #[cfg(feature = "midi")]
     pub use crate::media::midi::{MidiError, MidiResult};
     #[doc(inline)]
-    #[cfg(_media_·)]
+    #[cfg(media··)]
     pub use crate::media::{MediaError, MediaResult};
 
     /* num */

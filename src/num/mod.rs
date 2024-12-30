@@ -53,20 +53,20 @@ crate::items! { // structural access: _mods, _pub_mods, _internals, _all, _alway
             cmp::_all::*, error::*, float::_all::*, frac::_all::*, int::_all::*,
             interval::*, no::*, primitive::_all::*, sign::*, traits::*,
         };
-        #[cfg(feature = "geom")]
-        pub use super::geom::_all::*;
-        #[cfg(feature = "rand")]
-        pub use super::rand::_all::*;
         #[cfg(feature = "unit")]
         pub use super::unit::_all::*;
-        #[cfg(feature = "wave")]
-        pub use super::wave::_all::*;
     }
     mod _pub_mods {
         pub use super::{logic::_all::*, niche::_all::*};
 
         #[cfg(feature = "alg")]
         pub use super::alg::_all::*;
+        #[cfg(feature = "geom")]
+        pub use super::geom::_all::*;
+        #[cfg(feature = "rand")]
+        pub use super::rand::_all::*;
+        #[cfg(feature = "wave")]
+        pub use super::wave::_all::*;
     }
     pub(super) mod _internals { #![allow(unused)]
         pub(crate) use super::_private::*;

@@ -887,28 +887,29 @@ check-cfg = [ # Allowed config flags:
 	#
 	# Compilation flags for reflection are enabled in: "/build/features.rs"
 	# ---------------------------------------------------------------------
-	"cfg(_nightly_·, _dep_·)",
+	"cfg(nightly··, dep··)",
 	# data:
-	'cfg(_data_·)',
+	'cfg(data··)',
 	'cfg(_bit_·, _destaque_·, _stack_·)',
 	'cfg(_graph_·, _node_·)',
 	# lang:
-	'cfg(lang·)',
+	'cfg(lang··)',
 	# media:
-	'cfg(_media_·)',
+	'cfg(media··)',
 	# num:
-	'cfg(_num_·)',
+	'cfg(num··, prim···)',
 	'cfg(_sort_·, _sort_int_·, _sort_float_·)',
 	'cfg(_nums_·, _cmp_·, _float_·, _int_·, _int_i·, _int_u·)',
 	'cfg(_non_value_·, _non_value_i_·, _non_value_u_·)',
 	# phys
 	'cfg(phys··)',
 	# sys
-	'cfg(_sys_·, _mem_·)',
+	'cfg(sys··, mem··)',
 	# text:
+	'cfg(text··)',
 	'cfg(_char·, _string_·, _string_u·)',
 	# ui
-	'cfg(_ui_·)',
+	'cfg(ui··)',
 	# work
 	'cfg(work··)',
 ]

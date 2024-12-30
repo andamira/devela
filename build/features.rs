@@ -85,7 +85,7 @@ mod reflection {
 
     // In sync with ./Cargo.toml::nightly & ./src/lib.rs
     pub const NIGHTLY: FlagsFeatures = FlagsFeatures {
-        flags: &["_nightly_·"],
+        flags: &["nightly··"],
         features: &[
             "nightly_autodiff",
             "nightly_bigint",
@@ -98,7 +98,7 @@ mod reflection {
     };
 
     pub const DEPENDENCY: FlagsFeatures = FlagsFeatures {
-        flags: &["_dep_·"],
+        flags: &["dep··"],
         features: &include!{"../config/dep_all.rs"},
     };
 
@@ -109,19 +109,19 @@ mod reflection {
         features: &["code", "error"]
     };
     pub const DATA: FlagsFeatures = FlagsFeatures {
-        flags: &["_data_·"],
+        flags: &["data··"],
         features: &["data", "hash"]
     };
     pub const LANG: FlagsFeatures = FlagsFeatures {
-        flags: &["lang·"],
+        flags: &["lang··"],
         features: &["lang"]
     };
     pub const MEDIA: FlagsFeatures = FlagsFeatures {
-        flags: &["_media_·"],
+        flags: &["media··"],
         features: &["media", "audio", "color", "draw", "font", "image"]
     };
     pub const NUM: FlagsFeatures = FlagsFeatures {
-        flags: &["_num_·"],
+        flags: &["num··"],
         features: &["num", "alg", "geom", "prim", "rand", "unit", "wave"]
     };
         pub const PRIM: FlagsFeatures = FlagsFeatures {
@@ -133,21 +133,21 @@ mod reflection {
         features: &["phys", "time"]
     };
     pub const SYS: FlagsFeatures = FlagsFeatures {
-        flags: &["_sys_·"],
+        flags: &["sys··"],
         features: &["sys", "io", "mem",
             /* os: */ "linux", "windows"]
     };
         // RETHINK:
         pub const MEM: FlagsFeatures = FlagsFeatures {
-            flags: &["_mem_·"],
+            flags: &["mem··"],
             features: &["mem", "bit"]
         };
     pub const TEXT: FlagsFeatures = FlagsFeatures {
-        flags: &["_text_·"],
+        flags: &["text··"],
         features: &["text", "ascii", "fmt", "str"]
     };
     pub const UI: FlagsFeatures = FlagsFeatures {
-        flags: &["_ui_·"],
+        flags: &["ui··"],
         features: &["ui", "layout"]
     };
     pub const WORK: FlagsFeatures = FlagsFeatures {

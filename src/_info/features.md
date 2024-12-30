@@ -91,7 +91,7 @@ Root modules & public sub-modules features:
   - [`thread`]
 
 [`code`]:         crate::code
-  [`error`]:      crate::code::error
+  [`error`]:      crate::code::result::error
 [`data`]:         crate::data
   [`hash`]:       crate::data::hash
 [`lang`]:         crate::lang

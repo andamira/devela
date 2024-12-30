@@ -56,13 +56,17 @@ reexport! { "dep_portable_atomic", "portable-atomic", portable_atomic,
 
 /* from either `portable-atomic` or `core` */
 
-crate::CONST! { pub(crate),
-    TAG_ATOMIC_CORE_PORTABLE = concat!("<span class='stab portability' ",
-        "title='re-exported either from `core` or from the `portable-atomic` crate'>",
-        "`?core`</span>");
-    DOC_ATOMIC_CORE_PORTABLE = concat!("*Re-exported either from `core` or from the ",
-        "[`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---");
+mod consts {
+    #![allow(unused)]
+    crate::CONST! { pub(crate),
+        TAG_ATOMIC_CORE_PORTABLE = concat!("<span class='stab portability' ",
+            "title='re-exported either from `core` or from the `portable-atomic` crate'>",
+            "`?core`</span>");
+        DOC_ATOMIC_CORE_PORTABLE = concat!("*Re-exported either from `core` or from the ",
+            "[`portable-atomic`](https://docs.rs/portable-atomic)* crate.\n\n---");
+    }
 }
+pub(crate) use consts::*;
 
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
@@ -111,8 +115,6 @@ pub use core::sync::atomic::{AtomicIsize, AtomicUsize};
 
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
-#[doc = "A raw pointer type which can be safely shared between threads.\n\n"]
-#[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
 pub use crate::_dep::portable_atomic::AtomicPtr;
 //
@@ -123,15 +125,12 @@ pub use core::sync::atomic::AtomicPtr;
 
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
-#[doc = "A boolean type which can be safely shared between threads.\n\n"]
-#[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()]
 #[cfg(feature = "dep_portable_atomic")]
 pub use crate::_dep::portable_atomic::AtomicBool;
 //
 #[doc = crate::TAG_ATOMIC!()]
 #[doc = crate::TAG_ATOMIC_CORE_PORTABLE!()]
 #[cfg(not(feature = "dep_portable_atomic"))]
-#[doc = crate::DOC_ATOMIC_CORE_PORTABLE!()] // TEMP
 pub use core::sync::atomic::AtomicBool;
 
 /* impl ConstDefaut */

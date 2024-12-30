@@ -6,8 +6,8 @@
 // safety
 #![cfg_attr(feature = "safe_ui", forbid(unsafe_code))]
 
-#[cfg(_ui_·)]
-#[cfg_attr(feature = "nightly_doc", doc(cfg(_ui_·)))]
+#[cfg(ui··)]
+#[cfg_attr(feature = "nightly_doc", doc(cfg(ui··)))]
 mod error;
 
 #[cfg(feature = "layout")]
@@ -21,7 +21,7 @@ crate::items! { // structural access: _mods, _all, _always
     pub use _always::*;
 
     mod _mods {
-        #[cfg(_ui_·)]
+        #[cfg(ui··)]
         pub use super::error::*;
         #[cfg(feature = "layout")]
         pub use super::layout::_all::*;
